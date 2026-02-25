@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>CONCRETRACK • Setor Count</title>
+
+  <!-- PWA (manifest unificado na raiz) -->
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <style>
+    :root{
+      --bg:#0b1220; --card:#111a2e; --ink:#e5e7eb; --muted:#9aa4b2;
+      --blue:#2563eb; --green:#10b981; --err:#ef4444;
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--ink)}
+    .wrap{max-width:520px;margin:0 auto;padding:14px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:14px}
+    h1{margin:0 0 10px 0;font-size:20px;font-weight:900;text-align:center}
+    #reader{
+      width:100%;
+      aspect-ratio: 1 / 1;
+      border-radius:16px;
+      overflow:hidden;
+      background:#000;
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .btn{
+      width:100%;
+      border:0;
+      border-radius:18px;
+      padding:18px 16px;
+      margin-top:12px;
+      font-size:24px;
+      font-weight:950;
+      color:#fff;
+      cursor:pointer;
+      touch-action:manipulation;
+    }
+    .scan{background:var(--blue)}
+    .send{background:var(--green)}
+    #msg{margin-top:12px;font-size:16px;font-weight:900;text-align:center;color:var(--muted)}
+    #msg.err{color:#fecaca}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="../index.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:800;margin-bottom:8px;">← Hub</a>
+    <div class="card">
+      <h1>📷 LEITOR QR</h1>
+
+      <div id="reader"></div>
+
+      <button id="btnScan" class="btn scan">LER QR CODE</button>
+      <button id="btnSend" class="btn send">ENVIAR</button>
+
+      <div id="msg">Pronto para ler.</div>
+    </div>
+  </div>
+
+  <script>
+  /* SW unificado */
+  (async function(){
+    try{ if("serviceWorker" in navigator) await navigator.serviceWorker.register("../sw.js",{scope:"../"}); }catch(e){}
+  })();
+  </script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script>
+    // ✅ seu /exec
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4kF_-n7IjXYhGLOtZLIs71WISQoOsYOtWitiLskb7a3E4l7XJfezf4keFC8yM_Ua67A/exec";
+
+    const msgEl = document.getElementById("msg");
+    const setMsg = (t, err=false) => {
+      msgEl.textContent = t;
+      msgEl.className = err ? "err" : "";
+    };
+
+    let scanner = null;
+    let lastQR = "";
+    let running = false;
+
+    async function startScan(){
+      if (running) return;
+      running = true;
+
+      try{
+        setMsg("Abrindo câmera… aponte para o QR.");
+        if (!scanner) scanner = new Html5Qrcode("reader");
+
+        await scanner.start(
+          { facingMode: "environment" },
+          { fps: 12, qrbox: { width: 260, height: 260 } },
+          async (decodedText) => {
+            lastQR = (decodedText || "").trim();
+            setMsg("QR lido ✅ Clique ENVIAR");
+            try { await scanner.stop(); } catch(_){}
+            running = false;
+          }
+        );
+
+      }catch(e){
+        setMsg("Erro câmera: " + e, true);
+        running = false;
+      }
+    }
+
+    async function send(){
+      if (!lastQR){
+        setMsg("Nenhum QR lido. Clique em LER QR CODE.", true);
+        return;
+      }
+
+      setMsg("Enviando…");
+
+      try{
+        const form = new URLSearchParams();
+        form.append("qr_raw", lastQR);
+
+        // ✅ fire-and-forget (não lê resposta, evita CORS)
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: form
+        });
+
+        setMsg("✅ Enviado! confira na planilha.");
+        lastQR = "";
+
+      }catch(e){
+        setMsg("Falha ao enviar: " + e, true);
+      }
+    }
+
+    document.getElementById("btnScan").onclick = startScan;
+    document.getElementById("btnSend").onclick = send;
+  </script>
+</body>
+</html>

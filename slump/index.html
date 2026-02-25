@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CONCRETRACK • Slump / Flow</title>
+
+  <!-- PWA (manifest unificado na raiz) -->
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#2F3640">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- anti-cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <style>
+    :root{
+      --bg0:#2F3640; --bg1:#262C35; --bg2:#1F242C;
+      --line: rgba(255,255,255,.12); --line2: rgba(255,255,255,.18);
+      --text:#F3F6FF; --muted:#B9C4D0;
+      --ok:#16A34A; --warn:#F59E0B; --err:#EF4444;
+      --shadow: 0 18px 45px rgba(0,0,0,.45);
+    }
+    *{ box-sizing:border-box; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    body{
+      margin:0; min-height:100vh; color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(255,255,255,.06), transparent 55%),
+        radial-gradient(900px 600px at 80% 30%, rgba(0,0,0,.35), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg2));
+    }
+    .wrap{ max-width:720px; margin:0 auto; padding:18px; }
+    .title{ font-size:28px; font-weight:1000; letter-spacing:.3px; }
+    .subtitle{ font-size:14px; color:var(--muted); margin:6px 0 10px; line-height:1.2; }
+    .accentLine{ height:4px; border-radius:999px; background: linear-gradient(90deg,#A72141,#8AC968,transparent); opacity:.9; margin:10px 0 14px; }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.20));
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      display:grid;
+      gap:14px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+    .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .ops{ display:flex; gap:10px; flex-wrap:wrap; }
+    .field{ background: rgba(0,0,0,.25); border:1px solid var(--line2); border-radius:14px; padding:12px; }
+    .label{ font-size:14px; font-weight:900; color:var(--muted); }
+    input{
+      margin-top:8px; width:100%;
+      font-size:20px; font-weight:1000;
+      padding:16px; border-radius:14px;
+      border:1px solid rgba(138,201,104,.35);
+      background: rgba(0,0,0,.35);
+      color:var(--text);
+      outline:none;
+    }
+    input:focus{ box-shadow:0 0 0 4px rgba(138,201,104,.15); border-color: rgba(138,201,104,.55); }
+
+    .btn{
+      padding:18px; border-radius:18px;
+      border:1px solid var(--line2);
+      background: rgba(0,0,0,.30);
+      color:var(--text);
+      font-weight:1000;
+      font-size:18px;
+      cursor:pointer;
+      flex:1;
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn.good{ background: linear-gradient(180deg,#16A34A,#107737); color:#08130c; border-color: rgba(22,163,74,.9); text-shadow: 0 1px 0 rgba(255,255,255,.20); }
+    .btn.light{ background: rgba(255,255,255,.06); }
+    .btn.danger{ background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.35); }
+
+    .pillRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .pill{
+      display:flex; align-items:center; gap:12px;
+      padding:16px 18px;
+      border-radius:999px;
+      border:1px solid var(--line2);
+      background: rgba(0,0,0,.30);
+      font-size:18px;
+      font-weight:1000;
+      flex: 1;
+      min-width: 260px;
+    }
+    .dot{ width:14px; height:14px; border-radius:999px; background:var(--muted); }
+    .dot.ok{ background:var(--ok); }
+    .dot.warn{ background:var(--warn); }
+    .dot.err{ background:var(--err); }
+    .mini{
+      color:var(--muted);
+      font-weight:800;
+      font-size:14px;
+      line-height:1.2;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      flex: 2;
+      min-width: 260px;
+    }
+
+    .pvGrid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+    .pvFull{ grid-column:1/-1; }
+    .pvValue{
+      margin-top:8px;
+      font-size:30px;
+      font-weight:1000;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      letter-spacing:.2px;
+    }
+    .pvSmall{ color:var(--muted); font-size:14px; font-weight:900; }
+
+    .lvl-ico{ font-size:34px; font-weight:1000; line-height:1; transform: translateY(1px); }
+    .lvl-ok{ color:var(--ok); }
+    .lvl-warn{ color:var(--warn); }
+    .lvl-bad{ color:var(--err); }
+
+    @media(max-width:520px){ .pvGrid{ grid-template-columns:1fr 1fr; } }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+  <a href="../index.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:900;margin-bottom:8px;">← Hub</a>
+  <div class="title">🧪 CONCRETRACK • Slump / Flow</div>
+  <div class="subtitle">Data/Hora → Preview do clima (planilha) → Salvar registro</div>
+  <div class="accentLine"></div>
+
+  <div class="card">
+    <form id="frm" autocomplete="off">
+      <div class="grid2">
+        <div class="field">
+          <div class="label">Data</div>
+          <input id="data" type="date" required>
+        </div>
+        <div class="field">
+          <div class="label">Hora</div>
+          <input id="hora" type="time" step="60" required>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <div class="label">ID do Lote</div>
+          <input id="lote" placeholder="Ex.: LOTE-2026-001" required>
+        </div>
+        <div class="field">
+          <div class="label">Flow (mm)</div>
+          <input id="flow" type="number" min="0" step="1" placeholder="Ex.: 650" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="label">Traço</div>
+        <input id="traco" placeholder="Ex.: TR-320" required>
+      </div>
+
+      <div class="ops">
+        <button class="btn light" id="btnAgora" type="button">🕒 Agora</button>
+        <button class="btn danger" id="btnLimpar" type="button">🧹 Limpar</button>
+        <button class="btn good" id="btnSalvar" type="submit">💾 SALVAR</button>
+      </div>
+
+      <div class="pillRow">
+        <div class="pill">
+          <span id="dot" class="dot"></span>
+          <span id="statusTxt">Pronto para registrar</span>
+        </div>
+        <div class="mini" id="helpTxt">Escolha Data/Hora para puxar Temperatura/Umidade/Nível/Cura.</div>
+      </div>
+
+      <div class="pvGrid">
+        <div class="field">
+          <div class="label">Temperatura</div>
+          <div class="pvValue"><span id="pvTemp">—</span> <span class="pvSmall">°C</span></div>
+        </div>
+
+        <div class="field">
+          <div class="label">Umidade</div>
+          <div class="pvValue"><span id="pvUmid">—</span> <span class="pvSmall">%</span></div>
+        </div>
+
+        <div class="field">
+          <div class="label">Nível</div>
+          <div class="pvValue">
+            <span id="pvNivelIco" class="lvl-ico">●</span>
+            <span id="pvNivel">—</span>
+          </div>
+        </div>
+
+        <div class="field pvFull">
+          <div class="label">Cura</div>
+          <div class="pvValue"><span id="pvCura">—</span></div>
+        </div>
+      </div>
+
+      <div class="pillRow">
+        <div class="pill">
+          <span class="dot warn"></span>
+          <span>Match:</span> <b id="pvMatch">—</b>
+        </div>
+        <div class="pill">
+          <span class="dot warn"></span>
+          <span>Dif:</span> <b id="pvDiff">—</b>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+/* ===============================
+   ✅ SW UNIFICADO
+   =============================== */
+(async function(){
+  try{
+    if ("serviceWorker" in navigator) {
+      await navigator.serviceWorker.register("../sw.js", { scope: "../" });
+    }
+  }catch(e){}
+})();
+
+/* ===============================
+   ✅ CONFIG
+   =============================== */
+const CONFIG = {
+  API_URL: "https://script.google.com/macros/s/AKfycbzgro8m_TssbzMo_5OWcF98_2nuZndVOIGrGs3hKF6iHvNJ-rthNQQQTo-KYY15yUdx/exec"
+};
+
+const $ = (id) => document.getElementById(id);
+
+const frm = $("frm");
+const btnAgora = $("btnAgora");
+const btnLimpar = $("btnLimpar");
+
+const dot = $("dot");
+const statusTxt = $("statusTxt");
+const helpTxt = $("helpTxt");
+
+const pvTemp = $("pvTemp");
+const pvUmid = $("pvUmid");
+const pvNivel = $("pvNivel");
+const pvNivelIco = $("pvNivelIco");
+const pvCura = $("pvCura");
+const pvMatch = $("pvMatch");
+const pvDiff = $("pvDiff");
+
+function setDot(kind){
+  dot.classList.remove("ok","warn","err");
+  if (kind === "ok") dot.classList.add("ok");
+  else if (kind === "err") dot.classList.add("err");
+  else dot.classList.add("warn");
+}
+
+function setStatus(kind, text, help){
+  setDot(kind);
+  statusTxt.textContent = text || "";
+  if (help !== undefined) helpTxt.textContent = help;
+}
+
+function clearPreview(){
+  pvTemp.textContent = "—";
+  pvUmid.textContent = "—";
+  pvNivel.textContent = "—";
+  pvCura.textContent = "—";
+  pvMatch.textContent = "—";
+  pvDiff.textContent = "—";
+  pvNivelIco.textContent = "●";
+  pvNivelIco.classList.remove("lvl-ok","lvl-warn","lvl-bad");
+}
+
+function pad2(n){ return String(n).padStart(2,"0"); }
+function setNow(){
+  const d = new Date();
+  $("data").value = `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+  $("hora").value = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+
+function toNumber(v){
+  const x = Number(String(v ?? "").trim().replace(",", "."));
+  return Number.isFinite(x) ? x : null;
+}
+
+/* ===============================
+   ✅ PREVIEW
+   =============================== */
+let previewTimer = null;
+
+function schedulePreview(){
+  if (previewTimer) clearTimeout(previewTimer);
+  previewTimer = setTimeout(fetchPreview, 250);
+}
+
+async function fetchPreview(){
+  const data = $("data").value;
+  const hora = $("hora").value;
+
+  if (!data || !hora){
+    clearPreview();
+    setStatus("warn","Pronto","Escolha Data/Hora para puxar Temperatura/Umidade/Nível/Cura.");
+    return;
+  }
+
+  setStatus("warn","Buscando clima…","Consultando planilha (action=preview)…");
+
+  const url = `${CONFIG.API_URL}?action=preview&data=${encodeURIComponent(data)}&hora=${encodeURIComponent(hora)}&t=${Date.now()}`;
+
+  try{
+    const res = await fetch(url, { method:"GET", cache:"no-store" });
+    const raw = await res.text();
+
+    let json;
+    try { json = JSON.parse(raw); }
+    catch { throw new Error("Resposta não é JSON: " + raw.slice(0,140)); }
+
+    if (!json.ok) throw new Error(json.error || json.message || "preview ok=false");
+
+    const p = json.preview || {};
+
+    // Compat: aceita chaves alternativas (caso seu GAS retorne nomes diferentes)
+    pvTemp.textContent  = (p.temperatura ?? p.temp ?? p.Temperatura ?? "—");
+    pvUmid.textContent  = (p.umidade ?? p.umid ?? p.Umidade ?? "—");
+    pvNivel.textContent = (p.nivel_de_risco ?? p.nivel ?? p.Nivel ?? "—");
+    pvCura.textContent  = (p.risco_de_cura ?? p.cura ?? p.Cura ?? "—");
+
+    if (p.matched_datahora) pvMatch.textContent = new Date(p.matched_datahora).toLocaleString("pt-BR");
+    else pvMatch.textContent = (p.match ?? "—");
+
+    pvDiff.textContent = (p.diff_minutes ?? p.diff ?? "—");
+
+    // Ícone nível
+    const t = String(p.nivel_de_risco ?? p.nivel ?? "").toUpperCase();
+    pvNivelIco.classList.remove("lvl-ok","lvl-warn","lvl-bad");
+    if (t.includes("SEGURO") || t.includes("OK")) pvNivelIco.classList.add("lvl-ok");
+    else if (t.includes("ATEN") || t.includes("ALERTA") || t.includes("CUIDADO")) pvNivelIco.classList.add("lvl-warn");
+    else if (t.includes("ALTO") || t.includes("RISCO") || t.includes("CRIT")) pvNivelIco.classList.add("lvl-bad");
+    else pvNivelIco.classList.add("lvl-warn");
+
+    setStatus("ok","Preview OK","Temperatura/Umidade/Nível/Cura carregados.");
+  }catch(e){
+    console.error(e);
+    clearPreview();
+    setStatus("err","Erro preview","Seu Apps Script não retornou preview (ver console).");
+  }
+}
+
+/* ===============================
+   ✅ SALVAR
+   =============================== */
+async function apiPost(payload){
+  const res = await fetch(CONFIG.API_URL, {
+    method:"POST",
+    headers:{ "Content-Type":"text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  });
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { return { ok:false, raw:text }; }
+}
+
+frm.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+
+  const payload = {
+    action: "registrar_slump",
+    data: $("data").value || "",
+    hora: $("hora").value || "",
+    lote: ($("lote").value || "").trim(),
+    traco: ($("traco").value || "").trim(),
+    flow: toNumber($("flow").value)
+  };
+
+  if (!payload.data || !payload.hora || !payload.lote || !payload.traco || payload.flow === null){
+    setStatus("warn","Preencha os campos","Data/Hora/Lote/Traço/Flow são obrigatórios.");
+    return;
+  }
+
+  setStatus("warn","Salvando…","Gravando registro na planilha…");
+
+  try{
+    const r = await apiPost(payload);
+    if (r && r.ok){
+      setStatus("ok","Salvo ✅","Registro gravado. Atualizando preview…");
+      schedulePreview();
+      return;
+    }
+    setStatus("err","Falha ao salvar", String(r?.message || r?.error || r?.raw || "Sem ok=true"));
+  }catch(err){
+    console.error(err);
+    setStatus("err","Erro de conexão","Sem resposta do Apps Script.");
+  }
+});
+
+$("data").addEventListener("change", schedulePreview);
+$("hora").addEventListener("change", schedulePreview);
+
+btnAgora.addEventListener("click", ()=>{ setNow(); schedulePreview(); });
+btnLimpar.addEventListener("click", ()=>{ frm.reset(); clearPreview(); setStatus("warn","Pronto","Escolha Data/Hora para puxar Temperatura/Umidade/Nível/Cura."); });
+
+// init
+clearPreview();
+setStatus("warn","Pronto","Escolha Data/Hora para puxar Temperatura/Umidade/Nível/Cura.");
+</script>
+</body>
+</html>
