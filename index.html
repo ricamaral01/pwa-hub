@@ -16,132 +16,58 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
+  <link rel="stylesheet" href="./styles.css">
   <style>
-    :root{
-      --bg0:#2F3640; --bg1:#262C35; --bg2:#1F242C;
-      --line: rgba(255,255,255,.12); --line2: rgba(255,255,255,.18);
-      --text:#F3F6FF; --muted:#B9C4D0;
-      --shadow: 0 18px 45px rgba(0,0,0,.45);
-    }
-    *{ box-sizing:border-box; margin:0; padding:0;
-       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
-    body{
-      min-height:100vh; color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(255,255,255,.06), transparent 55%),
-        radial-gradient(900px 600px at 80% 30%, rgba(0,0,0,.35), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg2));
-      display:flex; flex-direction:column; align-items:center;
-      padding: 32px 18px 48px;
-    }
-
-    .logo{
+    body{ display:flex; flex-direction:column; align-items:center; padding:32px 18px 48px; }
+    .hub-logo{
       width:80px; height:80px; border-radius:22px;
       background: linear-gradient(135deg, #15416F, #0f2e52);
       box-shadow: 0 12px 30px rgba(21,65,111,.35);
       display:grid; place-items:center;
       font-size:36px; margin-bottom:14px;
     }
-    .brand{ font-size:32px; font-weight:1000; letter-spacing:.4px; text-align:center; }
-    .tagline{ font-size:14px; color:var(--muted); margin:6px 0 12px; text-align:center; }
-    .accentLine{
-      height:4px; width:200px; border-radius:999px;
-      background: linear-gradient(90deg, #A72141, #8AC968, transparent);
-      opacity:.9; margin-bottom:28px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap:16px;
-      max-width:560px;
-      width:100%;
-    }
-
-    .app-card{
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.20));
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:24px 16px;
-      display:flex; flex-direction:column; align-items:center; gap:12px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(6px);
-      text-decoration:none; color:var(--text);
-      transition: transform .12s ease, border-color .2s ease, box-shadow .2s ease;
-      cursor:pointer;
-      user-select:none;
-    }
-    .app-card:hover{
-      transform: translateY(-4px) scale(1.02);
-      border-color: rgba(255,255,255,.25);
-      box-shadow: 0 24px 55px rgba(0,0,0,.55);
-    }
-    .app-card:active{ transform: translateY(0) scale(.98); }
-
-    .app-icon{
-      width:64px; height:64px; border-radius:18px;
-      display:grid; place-items:center;
-      font-size:30px;
-      box-shadow: 0 8px 20px rgba(0,0,0,.3);
-    }
-    .app-name{ font-size:15px; font-weight:900; text-align:center; letter-spacing:.2px; }
-    .app-desc{ font-size:12px; color:var(--muted); text-align:center; line-height:1.3; }
-
-    /* Cores por app */
-    .ic-qr      { background: linear-gradient(135deg, #15416F, #1e5a9a); }
-    .ic-setor   { background: linear-gradient(135deg, #2563EB, #1d4ed8); }
-    .ic-slump   { background: linear-gradient(135deg, #16A34A, #107737); }
-    .ic-parada  { background: linear-gradient(135deg, #E05533, #B8432A); }
-    .ic-massadas{ background: linear-gradient(135deg, #D946EF, #A21CAF); }
-
-    .footer{
-      margin-top:40px;
-      font-size:12px; color:var(--muted);
-      text-align:center; opacity:.6;
-    }
-
-    @media(max-width:380px){
-      .grid{ grid-template-columns: 1fr 1fr; }
-      .brand{ font-size:26px; }
-    }
+    .hub-brand{ font-size:32px; font-weight:1000; letter-spacing:.4px; text-align:center; }
+    .hub-tag{ font-size:14px; color:var(--muted); margin:6px 0 12px; text-align:center; }
+    .accentLine{ width:200px; margin-bottom:28px; }
+    .footer{ margin-top:40px; font-size:12px; color:var(--muted); text-align:center; opacity:.6; }
   </style>
 </head>
 
 <body>
 
-  <div class="logo">🏗️</div>
-  <div class="brand">CONCRETRACK</div>
-  <div class="tagline">Hub de Aplicativos • Controle da Usina</div>
+  <div class="hub-logo">🏗️</div>
+  <div class="hub-brand">CONCRETRACK</div>
+  <div class="hub-tag">Hub de Aplicativos • Controle da Usina</div>
   <div class="accentLine"></div>
 
-  <div class="grid">
+  <div class="hub-grid">
 
     <a class="app-card" href="./qr-concreto/index.html">
-      <div class="app-icon ic-qr">📷</div>
+      <div class="app-icon">📷</div>
       <div class="app-name">QR Concreto</div>
       <div class="app-desc">Leitura CP via QR Code</div>
     </a>
 
     <a class="app-card" href="./setor_count/index.html">
-      <div class="app-icon ic-setor">📊</div>
+      <div class="app-icon">📊</div>
       <div class="app-name">Setor Count</div>
       <div class="app-desc">Leitura QR → Planilha</div>
     </a>
 
     <a class="app-card" href="./slump/index.html">
-      <div class="app-icon ic-slump">🧪</div>
+      <div class="app-icon">🧪</div>
       <div class="app-name">Slump / Flow</div>
       <div class="app-desc">Registro de Slump e Flow</div>
     </a>
 
     <a class="app-card" href="./parada-usina/index.html">
-      <div class="app-icon ic-parada">🏭</div>
+      <div class="app-icon">🏭</div>
       <div class="app-name">Parada Usina</div>
       <div class="app-desc">Paradas técnicas da usina</div>
     </a>
 
     <a class="app-card" href="./massadas/index.html">
-      <div class="app-icon ic-massadas">🧱</div>
+      <div class="app-icon">🧱</div>
       <div class="app-name">Massadas</div>
       <div class="app-desc">Massadas com problemas</div>
     </a>
@@ -155,7 +81,6 @@
 (async function(){
   try{
     if ("serviceWorker" in navigator) {
-      // Remove SWs antigos dos sub-apps
       const regs = await navigator.serviceWorker.getRegistrations();
       for (const r of regs) {
         if (r.scope !== new URL("./", location.href).href) {
