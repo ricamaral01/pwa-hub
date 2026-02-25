@@ -9,7 +9,7 @@
   "background_color": "#15416F",
   "theme_color": "#15416F",
   "icons": [
-    { "src": "./assets/img/logo-concrefer.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "./assets/img/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "shortcuts": [
     {
