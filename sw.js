@@ -3,13 +3,22 @@
    Cacheia Home + todos os 5 sub-apps
    ============================================= */
 
-const CACHE = "ct-hub-v1";
+const CACHE = "ct-hub-v2";
 
 const ASSETS = [
+  /* ---- Splash ---- */
+  "./splash.html",
+
   /* ---- Home ---- */
   "./",
   "./index.html",
+  "./styles.css",
   "./manifest.json",
+
+  /* ---- Assets ---- */
+  "./assets/img/icon.png",
+  "./assets/img/logo-concretrack.png",
+  "./assets/img/logo-concrefer.png",
 
   /* ---- QR Concreto ---- */
   "./qr-concreto/index.html",

@@ -1,24 +1,15 @@
 {
-  "name": "CONCRETRACK • Hub",
-  "short_name": "CONCRETRACK",
+  "name": "Concre HUB",
+  "short_name": "Concre HUB",
   "description": "Hub de apps para controle de usina de concreto",
-  "start_url": "./index.html",
+  "start_url": "./splash.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#1F242C",
-  "theme_color": "#2F3640",
+  "background_color": "#15416F",
+  "theme_color": "#15416F",
   "icons": [
-    { "src": "./qr-concreto/assets/icon-48x48.png",     "sizes": "48x48",     "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-72x72.png",     "sizes": "72x72",     "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-96x96.png",     "sizes": "96x96",     "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-128x128.png",   "sizes": "128x128",   "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-144x144.png",   "sizes": "144x144",   "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-192x192.png",   "sizes": "192x192",   "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-256x256.png",   "sizes": "256x256",   "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-384x384.png",   "sizes": "384x384",   "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-512x512.png",   "sizes": "512x512",   "type": "image/png" },
-    { "src": "./qr-concreto/assets/icon-1024x1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+    { "src": "./assets/img/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "shortcuts": [
     {
