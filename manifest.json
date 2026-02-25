@@ -13,14 +13,14 @@
   ],
   "shortcuts": [
     {
-      "name": "QR Concreto",
-      "short_name": "QR",
+      "name": "Leitor de Etiquetas",
+      "short_name": "Etiquetas",
       "url": "./qr-concreto/index.html",
       "icons": [{ "src": "./qr-concreto/assets/icon-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Setor Count",
-      "short_name": "Setor",
+      "name": "Contagem Caçambas",
+      "short_name": "Caçambas",
       "url": "./setor_count/index.html"
     },
     {
@@ -34,7 +34,7 @@
       "url": "./parada-usina/index.html"
     },
     {
-      "name": "Massadas",
+      "name": "Problema Massadas",
       "short_name": "Massadas",
       "url": "./massadas/index.html"
     }
