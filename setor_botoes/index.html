@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>CONCRETRACK • Setor Botões</title>
+
+  <!-- PWA (manifest unificado na raiz) -->
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#d4d4d4">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#e8e8e8;
+      --card-bg:rgba(255,255,255,.72);
+      --card-border:rgba(0,0,0,.08);
+      --ink:#1a1a1a;
+      --muted:#6b7280;
+      --blue:#2563eb;
+      --green:#10b981;
+      --orange:#f59e0b;
+      --purple:#8b5cf6;
+      --red:#ef4444;
+      --r:18px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(135deg,#f0f0f0 0%,#e0e0e0 40%,#ececec 70%,#d9d9d9 100%);
+      color:var(--ink);
+      min-height:100vh;min-height:100dvh;
+    }
+
+    .wrap{max-width:520px;margin:0 auto;padding:14px 14px 40px}
+
+    /* ---- Header / Splash com logos ---- */
+    .splash-header{
+      background:rgba(255,255,255,.60);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,.85);
+      border-radius:24px;
+      padding:28px 20px 22px;
+      margin-bottom:16px;
+      box-shadow:0 8px 30px rgba(0,0,0,.06);
+      display:flex;flex-direction:column;align-items:center;
+    }
+    .logos-row{
+      display:flex;align-items:center;justify-content:center;gap:16px;
+      margin-bottom:16px;
+    }
+    .logo-img{
+      width:72px;height:72px;object-fit:contain;
+      filter:drop-shadow(0 3px 10px rgba(0,0,0,.18));
+    }
+    .logo-divider{
+      width:2px;height:50px;
+      background:linear-gradient(180deg,transparent,rgba(0,0,0,.12),transparent);
+      border-radius:2px;
+    }
+    .brand-name{
+      font-size:22px;font-weight:900;letter-spacing:1.2px;
+      text-transform:uppercase;text-align:center;
+      background:linear-gradient(135deg,#15416F 30%,#A72141 100%);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:2px;
+    }
+    .brand-sub{
+      font-size:12px;font-weight:600;
+      color:rgba(0,0,0,.35);letter-spacing:1.5px;
+      text-transform:uppercase;
+    }
+
+    /* ---- Back link ---- */
+    .back{
+      display:inline-flex;align-items:center;gap:8px;
+      color:var(--muted);text-decoration:none;
+      font-size:13px;font-weight:800;margin-bottom:10px;
+      transition:color .15s;
+    }
+    .back:hover{color:var(--ink)}
+
+    /* ---- Card container ---- */
+    .card{
+      background:var(--card-bg);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border:1px solid var(--card-border);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 12px 36px rgba(0,0,0,.06);
+      margin-bottom:14px;
+    }
+    .card-title{
+      font-size:18px;font-weight:900;text-align:center;
+      margin-bottom:14px;color:var(--ink);
+    }
+
+    /* ---- Sector buttons ---- */
+    .sector-grid{
+      display:grid;gap:12px;
+    }
+    .sector-btn{
+      width:100%;border:0;border-radius:18px;
+      padding:22px 16px;
+      font-size:22px;font-weight:900;
+      color:#fff;cursor:pointer;
+      touch-action:manipulation;
+      transition:transform .1s,box-shadow .15s;
+      position:relative;overflow:hidden;
+      letter-spacing:.5px;
+    }
+    .sector-btn:active{
+      transform:scale(.97);
+    }
+    .sector-btn::after{
+      content:'';position:absolute;
+      top:50%;left:50%;
+      width:0;height:0;
+      background:rgba(255,255,255,.25);
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      transition:width .4s,height .4s,opacity .4s;
+      opacity:0;
+    }
+    .sector-btn:active::after{
+      width:300px;height:300px;opacity:1;
+      transition:0s;
+    }
+    .sector-btn.s1{background:linear-gradient(135deg,#2563eb,#1d4ed8);box-shadow:0 6px 20px rgba(37,99,235,.35)}
+    .sector-btn.s2{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 6px 20px rgba(16,185,129,.35)}
+    .sector-btn.s3{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 6px 20px rgba(245,158,11,.35)}
+    .sector-btn.s4{background:linear-gradient(135deg,#8b5cf6,#7c3aed);box-shadow:0 6px 20px rgba(139,92,246,.35)}
+    .sector-btn.obra{background:linear-gradient(135deg,#ef4444,#dc2626);box-shadow:0 6px 20px rgba(239,68,68,.35)}
+
+    .sector-btn .icon{font-size:26px;margin-right:8px;vertical-align:middle}
+
+    /* ---- Feedback toast ---- */
+    #toast{
+      position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);
+      background:rgba(0,0,0,.85);color:#fff;
+      padding:14px 28px;border-radius:16px;
+      font-size:15px;font-weight:700;
+      box-shadow:0 8px 30px rgba(0,0,0,.25);
+      transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s;
+      opacity:0;pointer-events:none;z-index:999;
+      text-align:center;
+    }
+    #toast.show{
+      transform:translateX(-50%) translateY(0);
+      opacity:1;
+    }
+
+    /* ---- Summary ---- */
+    .summary-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;
+    }
+    .summary-item{
+      background:rgba(0,0,0,.04);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:14px;
+      padding:14px;
+      text-align:center;
+    }
+    .summary-item.full{grid-column:1/-1}
+    .summary-label{
+      font-size:12px;font-weight:700;
+      color:var(--muted);text-transform:uppercase;
+      letter-spacing:.8px;margin-bottom:4px;
+    }
+    .summary-value{
+      font-size:32px;font-weight:900;
+    }
+    .summary-item.s1 .summary-value{color:#2563eb}
+    .summary-item.s2 .summary-value{color:#10b981}
+    .summary-item.s3 .summary-value{color:#f59e0b}
+    .summary-item.s4 .summary-value{color:#8b5cf6}
+    .summary-item.obra .summary-value{color:#ef4444}
+    .summary-item.total .summary-value{color:var(--ink)}
+
+    .summary-date{
+      font-size:12px;font-weight:600;
+      color:var(--muted);text-align:center;
+      margin-bottom:10px;
+    }
+
+    /* ---- Disabled state ---- */
+    .sector-btn:disabled{
+      opacity:.55;pointer-events:none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+
+    <!-- Back -->
+    <a class="back" href="../index.html">← Hub</a>
+
+    <!-- Splash header com logos -->
+    <div class="splash-header">
+      <div class="logos-row">
+        <img class="logo-img" src="../assets/img/logo-concretrack.png" alt="ConcreTrack">
+        <div class="logo-divider"></div>
+        <img class="logo-img" src="../assets/img/logo-concrefer.png" alt="Concrefer">
+      </div>
+      <div class="brand-name">Setor Count</div>
+      <div class="brand-sub">Contagem por Setor</div>
+    </div>
+
+    <!-- Botões de setor -->
+    <div class="card">
+      <div class="card-title">🏗️ Registrar Entrada</div>
+      <div class="sector-grid">
+        <button class="sector-btn s1" onclick="enviar('Setor 1')">
+          <span class="icon">1️⃣</span> SETOR 1
+        </button>
+        <button class="sector-btn s2" onclick="enviar('Setor 2')">
+          <span class="icon">2️⃣</span> SETOR 2
+        </button>
+        <button class="sector-btn s3" onclick="enviar('Setor 3')">
+          <span class="icon">3️⃣</span> SETOR 3
+        </button>
+        <button class="sector-btn s4" onclick="enviar('Setor 4')">
+          <span class="icon">4️⃣</span> SETOR 4
+        </button>
+        <button class="sector-btn obra" onclick="enviar('Obra')">
+          <span class="icon">🏢</span> OBRA
+        </button>
+      </div>
+    </div>
+
+    <!-- Resumo do dia -->
+    <div class="card">
+      <div class="card-title">📊 Resumo do Dia</div>
+      <div class="summary-date" id="summaryDate"></div>
+      <div class="summary-grid">
+        <div class="summary-item s1">
+          <div class="summary-label">Setor 1</div>
+          <div class="summary-value" id="countS1">0</div>
+        </div>
+        <div class="summary-item s2">
+          <div class="summary-label">Setor 2</div>
+          <div class="summary-value" id="countS2">0</div>
+        </div>
+        <div class="summary-item s3">
+          <div class="summary-label">Setor 3</div>
+          <div class="summary-value" id="countS3">0</div>
+        </div>
+        <div class="summary-item s4">
+          <div class="summary-label">Setor 4</div>
+          <div class="summary-value" id="countS4">0</div>
+        </div>
+        <div class="summary-item obra">
+          <div class="summary-label">Obra</div>
+          <div class="summary-value" id="countObra">0</div>
+        </div>
+        <div class="summary-item total full">
+          <div class="summary-label">Total do Dia</div>
+          <div class="summary-value" id="countTotal">0</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <script>
+  /* SW unificado */
+  (async function(){
+    try{ if("serviceWorker" in navigator) await navigator.serviceWorker.register("../sw.js",{scope:"../"}); }catch(e){}
+  })();
+  </script>
+
+  <script>
+    // ✅ Mesma URL do setor_count (leitor QR)
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4kF_-n7IjXYhGLOtZLIs71WISQoOsYOtWitiLskb7a3E4l7XJfezf4keFC8yM_Ua67A/exec";
+
+    // ---- LocalStorage para resumo do dia ----
+    const STORAGE_KEY = "setor_botoes_counts";
+
+    function todayKey(){
+      const d = new Date();
+      return d.getFullYear() + "-" +
+             String(d.getMonth()+1).padStart(2,"0") + "-" +
+             String(d.getDate()).padStart(2,"0");
+    }
+
+    function loadCounts(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return null;
+        const data = JSON.parse(raw);
+        if(data.date !== todayKey()) return null; // dia diferente, zera
+        return data.counts;
+      }catch(e){ return null; }
+    }
+
+    function saveCounts(counts){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        date: todayKey(),
+        counts: counts
+      }));
+    }
+
+    // Contagem atual
+    let counts = loadCounts() || {
+      "Setor 1": 0,
+      "Setor 2": 0,
+      "Setor 3": 0,
+      "Setor 4": 0,
+      "Obra": 0
+    };
+
+    function updateUI(){
+      document.getElementById("countS1").textContent    = counts["Setor 1"];
+      document.getElementById("countS2").textContent    = counts["Setor 2"];
+      document.getElementById("countS3").textContent    = counts["Setor 3"];
+      document.getElementById("countS4").textContent    = counts["Setor 4"];
+      document.getElementById("countObra").textContent  = counts["Obra"];
+
+      const total = Object.values(counts).reduce((a,b) => a + b, 0);
+      document.getElementById("countTotal").textContent = total;
+
+      // Data formatada
+      const d = new Date();
+      const dias = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+      const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+      document.getElementById("summaryDate").textContent =
+        dias[d.getDay()] + ", " + d.getDate() + " de " + meses[d.getMonth()] + " de " + d.getFullYear();
+    }
+
+    // ---- Toast ----
+    let toastTimer = null;
+    function showToast(msg, duration = 2200){
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), duration);
+    }
+
+    // ---- Enviar ----
+    let sending = false;
+
+    async function enviar(setor){
+      if(sending) return;
+      sending = true;
+
+      // Desabilita botões enquanto envia
+      const btns = document.querySelectorAll(".sector-btn");
+      btns.forEach(b => b.disabled = true);
+
+      try{
+        const form = new URLSearchParams();
+        form.append("qr_raw", setor);
+
+        // fire-and-forget (no-cors, mesmo esquema do setor_count)
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: form
+        });
+
+        // Incrementa contagem local
+        counts[setor] = (counts[setor] || 0) + 1;
+        saveCounts(counts);
+        updateUI();
+
+        showToast("✅ " + setor + " registrado!");
+
+      }catch(e){
+        showToast("❌ Falha ao enviar: " + e, 3000);
+      }finally{
+        sending = false;
+        btns.forEach(b => b.disabled = false);
+      }
+    }
+
+    // Init
+    updateUI();
+  </script>
+</body>
+</html>

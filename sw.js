@@ -3,7 +3,7 @@
    Cacheia Home + todos os 5 sub-apps
    ============================================= */
 
-const CACHE = "ct-hub-v2";
+const CACHE = "ct-hub-v3";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -37,7 +37,10 @@ const ASSETS = [
   "./parada-usina/index.html",
 
   /* ---- Massadas ---- */
-  "./massadas/index.html"
+  "./massadas/index.html",
+
+  /* ---- Setor Botões ---- */
+  "./setor_botoes/index.html"
 ];
 
 /* ---- INSTALL: cacheia tudo ---- */
