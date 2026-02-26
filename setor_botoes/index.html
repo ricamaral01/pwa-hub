@@ -106,8 +106,9 @@
 
     /* ---- Sector buttons ---- */
     .sector-grid{
-      display:grid;gap:12px;
+      display:grid;grid-template-columns:1fr 1fr;gap:12px;
     }
+    .sector-grid .full{grid-column:1/-1}
     .sector-btn{
       width:100%;border:0;border-radius:18px;
       padding:22px 16px;
@@ -232,7 +233,7 @@
         <button class="sector-btn s4" onclick="enviar('Setor 4')">
           <span class="icon">4️⃣</span> SETOR 4
         </button>
-        <button class="sector-btn obra" onclick="enviar('Obra')">
+        <button class="sector-btn obra full" onclick="enviar('Obra')">
           <span class="icon">🏢</span> OBRA
         </button>
       </div>
