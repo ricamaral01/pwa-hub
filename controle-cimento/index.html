@@ -173,6 +173,55 @@
       cursor:pointer;
     }
     .hist-table .del-btn:active{ opacity:.7; }
+
+    /* === SILO VISUAL (representação gráfica) === */
+    .silos-visual{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-top:14px; }
+    .silo-vis{
+      display:flex; flex-direction:column; align-items:center;
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 8px 10px;
+    }
+    .silo-vis-label{ font-size:12px; font-weight:900; color:var(--muted); margin-bottom:6px; }
+    .silo-tank{
+      position:relative;
+      width:52px;
+      background: rgba(255,255,255,.04);
+      border:2px solid rgba(255,255,255,.15);
+      border-radius:6px 6px 2px 2px;
+      overflow:hidden;
+    }
+    .silo-cone{
+      width:0; height:0;
+      border-left:26px solid transparent;
+      border-right:26px solid transparent;
+      border-top:18px solid rgba(255,255,255,.04);
+      position:relative;
+    }
+    .silo-cone-border{
+      width:56px;
+      margin-left:-2px;
+    }
+    .silo-fill{
+      position:absolute; bottom:0; left:0; right:0;
+      transition: height .6s ease;
+    }
+    .silo-fill-ok{ background: linear-gradient(180deg, #22c55e88, #16a34a); }
+    .silo-fill-warn{ background: linear-gradient(180deg, #f59e0b88, #d97706); }
+    .silo-fill-err{ background: linear-gradient(180deg, #ef444488, #dc2626); }
+    .silo-pct{
+      font-size:16px; font-weight:1000; margin-top:6px;
+    }
+    .silo-cap{
+      font-size:10px; color:var(--muted); margin-top:2px;
+    }
+    .silo-days{
+      font-size:10px; margin-top:4px; font-weight:900;
+    }
+    .days-ok{ color:#16A34A; }
+    .days-warn{ color:#F59E0B; }
+    .days-err{ color:#EF4444; }
   </style>
 </head>
 
@@ -237,6 +286,9 @@
             <div class="silo-sub" id="saldo3sub"></div>
           </div>
         </div>
+
+        <!-- Representação Gráfica dos Silos -->
+        <div class="silos-visual" id="silosVisual"></div>
       </div>
 
       <!-- Resumo do Dia -->
@@ -319,6 +371,11 @@
         <div class="field">
           <div class="label">Quantidade (toneladas)</div>
           <input id="entQtd" type="number" step="0.01" min="0" placeholder="Ex.: 32.5" required>
+        </div>
+
+        <div class="field">
+          <div class="label">Nota Fiscal (NF)</div>
+          <input id="entNF" type="text" placeholder="Ex.: 123456" autocomplete="off">
         </div>
 
         <div class="ops" style="margin-top:10px;">
@@ -494,6 +551,14 @@ let consumoData = [];
 let entradasData = [];
 let saldoInicialData = { data:'', silo1:0, silo2:0, silo3:0 };
 
+// Capacidades reais dos silos (toneladas)
+const SILO_CAP = {
+  'Silo 1': { nominal: 60,  real: 59.15 },
+  'Silo 2': { nominal: 90,  real: 86.07 },
+  'Silo 3': { nominal: 105, real: 82.58 }
+};
+const DIAS_ENTREGA = 2; // tempo de entrega em dias
+
 /* ===============================
    PAINEL — carregar e calcular saldo
    =============================== */
@@ -508,13 +573,18 @@ async function loadPainel(){
       apiCall({ action: 'get_saldo_inicial' })
     ]);
 
+    // Tratar respostas com erro
+    if(consumo && consumo.error) console.warn('Erro consumo:', consumo.error);
+    if(entradas && entradas.error) console.warn('Erro entradas:', entradas.error);
+    if(saldoIni && saldoIni.error) console.warn('Erro saldo:', saldoIni.error);
+
     consumoData = Array.isArray(consumo) ? consumo : [];
     entradasData = Array.isArray(entradas) ? entradas : [];
-    saldoInicialData = saldoIni || { data:'', silo1:0, silo2:0, silo3:0 };
+    saldoInicialData = (saldoIni && saldoIni.data !== undefined) ? saldoIni : { data:'', silo1:0, silo2:0, silo3:0 };
 
     console.log('Consumo:', consumoData.length, 'registros');
     console.log('Entradas:', entradasData.length, 'registros');
-    console.log('Saldo Ini:', saldoInicialData);
+    console.log('Saldo Ini:', JSON.stringify(saldoInicialData));
 
     lastLoadTime = Date.now();
     renderPainel();
@@ -533,6 +603,9 @@ function renderPainel(){
 
   // Aviso se saldo inicial não configurado
   const semSaldo = !saldoInicialData.data;
+
+  // Calcular consumo médio diário (últimos 7 dias)
+  const consumoMedio = calcularConsumoMedio(7);
 
   // Saldo atual por silo
   for(let s = 1; s <= 3; s++){
@@ -562,8 +635,84 @@ function renderPainel(){
     $('entDia'+s).textContent = round2(entradasHoje).toFixed(2) + ' t';
   }
 
+  // Renderizar gráfico visual dos silos
+  renderSilosVisual(saldos, consumoMedio, semSaldo);
+
   $("painelLoader").style.display = "none";
   $("painelContent").style.display = "block";
+}
+
+/**
+ * Calcula consumo médio diário por silo (últimos N dias)
+ */
+function calcularConsumoMedio(dias){
+  const hoje = new Date();
+  hoje.setHours(0,0,0,0);
+  const limite = new Date(hoje);
+  limite.setDate(limite.getDate() - dias);
+  const limISO = limite.getFullYear() + '-' + pad2(limite.getMonth()+1) + '-' + pad2(limite.getDate());
+
+  const med = { 'Silo 1':0, 'Silo 2':0, 'Silo 3':0 };
+  const diasComDados = new Set();
+
+  consumoData.forEach(c => {
+    if(c.data >= limISO){
+      med[c.silo] = (med[c.silo] || 0) + (c.consumo || 0);
+      diasComDados.add(c.data);
+    }
+  });
+
+  const n = Math.max(diasComDados.size, 1);
+  for(const silo in med) med[silo] = med[silo] / n;
+  return med;
+}
+
+/**
+ * Renderiza a representação gráfica dos silos
+ */
+function renderSilosVisual(saldos, consumoMedio, semSaldo){
+  let html = '';
+
+  for(let s = 1; s <= 3; s++){
+    const nome = 'Silo ' + s;
+    const cap = SILO_CAP[nome];
+    const saldo = round2(saldos[nome] || 0);
+    const pct = semSaldo ? 0 : Math.min(100, Math.max(0, (saldo / cap.real) * 100));
+    const tankH = 80 + (s === 3 ? 10 : (s === 2 ? 5 : 0)); // altura proporcional
+
+    // Cor baseada no percentual
+    let fillClass = 'silo-fill-ok';
+    let pctColor = '#16A34A';
+    if(pct <= 15){ fillClass = 'silo-fill-err'; pctColor = '#EF4444'; }
+    else if(pct <= 35){ fillClass = 'silo-fill-warn'; pctColor = '#F59E0B'; }
+
+    // Dias restantes com base no consumo médio
+    const consMedio = consumoMedio[nome] || 0;
+    const diasRestantes = consMedio > 0 ? Math.floor(saldo / consMedio) : 999;
+    let diasClass = 'days-ok';
+    let diasText = diasRestantes + ' dias restantes';
+    if(diasRestantes <= DIAS_ENTREGA){ diasClass = 'days-err'; diasText = '⚠️ ' + diasRestantes + 'd — Pedir agora!'; }
+    else if(diasRestantes <= DIAS_ENTREGA + 3){ diasClass = 'days-warn'; diasText = '⚡ ' + diasRestantes + 'd — Planejar pedido'; }
+    if(semSaldo) diasText = '—';
+
+    const fillH = (pct / 100) * tankH;
+
+    html += `
+      <div class="silo-vis">
+        <div class="silo-vis-label">Silo ${s} (${cap.nominal}t)</div>
+        <div class="silo-tank" style="height:${tankH}px;">
+          <div class="silo-fill ${fillClass}" style="height:${fillH}px;"></div>
+        </div>
+        <div class="silo-cone-border">
+          <div class="silo-cone"></div>
+        </div>
+        <div class="silo-pct" style="color:${pctColor};">${semSaldo ? '—' : round2(pct).toFixed(0) + '%'}</div>
+        <div class="silo-cap">${semSaldo ? '—' : saldo.toFixed(1) + ' / ' + cap.real.toFixed(0) + ' t'}</div>
+        <div class="silo-days ${diasClass}">${diasText}</div>
+      </div>`;
+  }
+
+  $('silosVisual').innerHTML = html;
 }
 
 /**
@@ -640,7 +789,8 @@ $("frmEntrada").addEventListener("submit", async (e) => {
     silo: $("entSilo").value,
     qtd: parseFloat($("entQtd").value),
     fornecedor: $("entMarca").value,
-    tipo: $("entTipo").value
+    tipo: $("entTipo").value,
+    nf: $("entNF").value.trim()
   };
 
   if(!payload.silo || !payload.qtd || !payload.fornecedor || !payload.tipo){
@@ -656,7 +806,7 @@ $("frmEntrada").addEventListener("submit", async (e) => {
     if(r && r.ok){
       setStatus("dotEnt","statusEnt","ok","Entrada registrada ✅");
       showModal("✅ Entrada Registrada!",
-        `${payload.qtd} t — ${payload.silo} — ${payload.fornecedor} — ${payload.tipo}`);
+        `${payload.qtd} t — ${payload.silo} — ${payload.fornecedor} — ${payload.tipo}${payload.nf ? ' — NF: '+payload.nf : ''}`);
 
       // Limpar mantendo a data
       const keepData = $("entData").value;
@@ -712,7 +862,7 @@ function renderHistorico(){
   const sorted = [...entradasData].sort((a,b) => b.data.localeCompare(a.data));
 
   let html = '<table class="hist-table"><thead><tr>';
-  html += '<th>Data</th><th>Silo</th><th>Qtd (t)</th><th>Marca</th><th>Tipo</th><th></th>';
+  html += '<th>Data</th><th>Silo</th><th>Qtd (t)</th><th>Marca</th><th>Tipo</th><th>NF</th><th></th>';
   html += '</tr></thead><tbody>';
 
   sorted.forEach(e => {
@@ -722,6 +872,7 @@ function renderHistorico(){
       <td class="col-num">${round2(e.qtd).toFixed(2)}</td>
       <td>${e.fornecedor}</td>
       <td>${e.tipo}</td>
+      <td>${e.nf || ''}</td>
       <td><button class="del-btn" onclick="deletarEntrada('${e.id}')">🗑️</button></td>
     </tr>`;
   });

@@ -84,7 +84,7 @@ function doPost(e) {
         break;
       // === Escritas ===
       case 'registrar_entrada':
-        result = registrarEntrada(d.data, d.silo, d.qtd, d.fornecedor, d.tipo);
+        result = registrarEntrada(d.data, d.silo, d.qtd, d.fornecedor, d.tipo, d.nf);
         break;
       case 'deletar_entrada':
         result = deletarEntrada(d.id);
@@ -234,7 +234,7 @@ function getEntradasRegistradas() {
   if (lastRow < 2) return [];
 
   var numLinhas = lastRow - 1;
-  var numColunas = Math.max(6, sheet.getLastColumn());
+  var numColunas = Math.max(7, sheet.getLastColumn());
   var values = sheet.getRange(2, 1, numLinhas, numColunas).getValues();
 
   var tz = Session.getScriptTimeZone() || 'America/Sao_Paulo';
@@ -263,7 +263,8 @@ function getEntradasRegistradas() {
       silo: String(row[1]),
       qtd: qtd,
       fornecedor: row[3] || '',
-      tipo: row[4] || ''
+      tipo: row[4] || '',
+      nf: row[6] ? String(row[6]) : ''
     });
   }
 
@@ -277,20 +278,20 @@ function getEntradasRegistradas() {
 // ========================
 // REGISTRAR ENTRADA
 // ========================
-function registrarEntrada(dataISO, silo, qtd, fornecedor, tipo) {
+function registrarEntrada(dataISO, silo, qtd, fornecedor, tipo, nf) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(NOME_ABA_ENTRADAS);
   if (!sheet) {
     sheet = ss.insertSheet(NOME_ABA_ENTRADAS);
-    sheet.getRange(1, 1, 1, 6).setValues([[
-      'Data', 'Silo', 'Quantidade (t)', 'Fornecedor', 'Tipo', 'ID'
+    sheet.getRange(1, 1, 1, 7).setValues([[
+      'Data', 'Silo', 'Quantidade (t)', 'Fornecedor', 'Tipo', 'ID', 'NF'
     ]]);
     sheet.setFrozenRows(1);
   }
 
   var d = parseDataFlex(dataISO) || new Date(dataISO);
   var id = Utilities.getUuid();
-  sheet.appendRow([d, silo, qtd, fornecedor || '', tipo || '', id]);
+  sheet.appendRow([d, silo, qtd, fornecedor || '', tipo || '', id, nf || '']);
 
   return { ok: true, id: id };
 }
