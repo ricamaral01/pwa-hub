@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Completo — Calculadora de Dosagem (PWA-HUB)</title>
+  <style>
+    :root {
+      --primary:#1a5276;
+      --primary-light:#2980b9;
+      --accent:#27ae60;
+      --bg:#eef3f7;
+      --card:#ffffff;
+      --text:#22313f;
+      --muted:#5f7286;
+      --border:#d9e2ec;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:28px 18px}
+    header h1{margin:0;font-size:1.45rem}
+    header p{margin:6px 0 0;opacity:.9}
+    main{max-width:1100px;margin:0 auto;padding:18px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+    .card h2{margin:0 0 10px;color:var(--primary);font-size:1.08rem}
+    .card h3{margin:10px 0 6px;color:var(--primary-light);font-size:.96rem}
+    ul{margin:6px 0 0 18px;padding:0}
+    li{margin:4px 0}
+    table{width:100%;border-collapse:collapse;font-size:.92rem}
+    th,td{border:1px solid var(--border);padding:7px 8px;text-align:left;vertical-align:top}
+    th{background:#eaf2fa}
+    .tag{display:inline-block;border-radius:999px;padding:2px 8px;font-size:.78rem;background:#edf6ff;color:#0e4f7a;font-weight:700}
+    code{background:#f5f7fa;padding:2px 6px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📘 Manual Completo — Calculadora de Dosagem (PWA-HUB)</h1>
+    <p>Guia de todas as funcionalidades, botões, armazenamento e fluxo de uso.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1) Objetivo</h2>
+      <p>Este manual descreve toda a operação da calculadora para estudos de dosagem, ensaios laboratoriais e geração de relatórios técnicos para uso no PWA-HUB.</p>
+    </section>
+
+    <section class="card">
+      <h2>2) Estrutura de navegação</h2>
+      <ul>
+        <li><strong>Página Principal:</strong> hub com atalhos para todas as seções.</li>
+        <li><strong>Laboratório:</strong> Massa específica, granulometria miúdo e graúdo.</li>
+        <li><strong>Entrada/Análise:</strong> Materiais, Dosagem, Volume, Argamassa, Empacotamento e Cálculo Inverso.</li>
+        <li><strong>Resultados:</strong> Curva de Abrams, Resumo/Carta, Detalhamento dos Cálculos, Normas e Memória de Cálculo.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>3) O que cada botão faz</h2>
+      <table>
+        <thead><tr><th>Seção</th><th>Botão</th><th>Ação</th></tr></thead>
+        <tbody>
+          <tr><td>Massa Específica</td><td><span class="tag">Calcular Massa Específica</span></td><td>Calcula ρ do miúdo (Chapman), ρ seca/SSS/real do graúdo e absorção.</td></tr>
+          <tr><td>Massa Específica</td><td><span class="tag">Aplicar na Dosagem</span></td><td>Transfere massas específicas calculadas para a Aba ① Materiais.</td></tr>
+          <tr><td>Massa Específica</td><td><span class="tag">Salvar Ensaio (local)</span></td><td>Salva no <code>localStorage</code> com chave <code>ensaiosME</code>.</td></tr>
+          <tr><td>Granulometria (miúdo/graúdo)</td><td><span class="tag">Calcular Granulometria</span></td><td>Calcula massa retida média, %retida, acumulada, passante, MF, DMC e valida divergência ≤ 4%.</td></tr>
+          <tr><td>Granulometria (miúdo/graúdo)</td><td><span class="tag">Aplicar na Dosagem</span></td><td>Aplica curva granulométrica na Aba ① Materiais.</td></tr>
+          <tr><td>Granulometria (miúdo/graúdo)</td><td><span class="tag">Salvar Ensaio (local)</span></td><td>Salva localmente com peneiras, resultados e massa específica vinculada.</td></tr>
+          <tr><td>Granulometria (miúdo/graúdo)</td><td><span class="tag">Salvar no Google Sheets</span></td><td>Envia ensaio completo para aba <code>ensaios_granulometria</code> (payload JSON completo).</td></tr>
+          <tr><td>Granulometria (miúdo/graúdo)</td><td><span class="tag">Atualizar Lista</span></td><td>Consulta ensaios salvos na planilha e atualiza select de abertura.</td></tr>
+          <tr><td>Granulometria (miúdo/graúdo)</td><td><span class="tag">Abrir Ensaio</span></td><td>Importa ensaio da planilha, preenche granulometria e massa específica, recalcula resultados e gráfico.</td></tr>
+          <tr><td>Fornecedor</td><td><span class="tag">Salvar Cadastro</span></td><td>Salva localmente e envia para aba <code>fornecedor</code> no Google Sheets.</td></tr>
+          <tr><td>Abrams</td><td><span class="tag">Calcular Curva de Abrams</span></td><td>Calcula e plota resistência x relação a/c para os traços.</td></tr>
+          <tr><td>Resumo</td><td><span class="tag">Gerar Resumo / Carta</span></td><td>Consolida dados de dosagem e projeções em relatório técnico.</td></tr>
+          <tr><td>Resumo</td><td><span class="tag">Salvar JSON</span></td><td>Exporta carta traço para JSON.</td></tr>
+          <tr><td>Memória</td><td><span class="tag">Gerar Memória de Cálculo</span></td><td>Gera relatório detalhado completo com etapas e normas.</td></tr>
+          <tr><td>Várias seções</td><td><span class="tag">Imprimir / Salvar PDF</span></td><td>Ativa layout de impressão enxuto e permite exportação em PDF.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>4) Onde os dados são salvos</h2>
+      <h3>Armazenamento local (navegador)</h3>
+      <ul>
+        <li><code>cadastroFornecedoresV1</code> → cadastro de fornecedores.</li>
+        <li><code>ensaiosME</code> → ensaios de massa específica.</li>
+        <li><code>ensaiosGranMiudo</code> → granulometria miúdo (local).</li>
+        <li><code>ensaiosGranGraudo</code> → granulometria graúdo (local).</li>
+      </ul>
+      <h3>Google Sheets (Web App)</h3>
+      <ul>
+        <li>Aba <code>fornecedor</code> → registros de fornecedores.</li>
+        <li>Aba <code>ensaios_granulometria</code> → ensaios granulométricos com payload completo (inclui massa específica vinculada).</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>5) Fluxo recomendado de uso</h2>
+      <ol>
+        <li>Preencher e calcular <strong>Massa Específica</strong>.</li>
+        <li>Executar e salvar <strong>Granulometria Miúdo/Graúdo</strong> (local e/ou Google Sheets).</li>
+        <li>Aplicar dados na Aba ① e ajustar <strong>Dosagem 1 m³</strong>.</li>
+        <li>Validar em <strong>Volume</strong>, <strong>Argamassa</strong>, <strong>Empacotamento</strong> e <strong>Cálculo Inverso</strong>.</li>
+        <li>Gerar <strong>Abrams</strong>, <strong>Resumo/Carta Traço</strong> e <strong>Memória de Cálculo</strong>.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>6) Publicação no PWA-HUB</h2>
+      <ul>
+        <li>Publicar a calculadora HTML e este manual no mesmo pacote do hub.</li>
+        <li>Garantir que a URL do Web App Google esteja atualizada no código.</li>
+        <li>Reimplantar o Apps Script sempre que mudar funções <code>doGet/doPost</code>.</li>
+        <li>Validar permissões do deploy: acesso com link e permissões de escrita na planilha.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,9 +1,9 @@
 /* =============================================
-   CONCRETRACK HUB — Service Worker Unificado
-   Cacheia Home + todos os 5 sub-apps
-   ============================================= */
+  CONCRETRACK HUB — Service Worker Unificado
+  Cacheia Home + todos os sub-apps
+  ============================================= */
 
-const CACHE = "ct-hub-v3";
+const CACHE = "ct-hub-v4";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -40,7 +40,11 @@ const ASSETS = [
   "./massadas/index.html",
 
   /* ---- Setor Botões ---- */
-  "./setor_botoes/index.html"
+  "./setor_botoes/index.html",
+
+  /* ---- Dosagem Concreto ---- */
+  "./dosagem-concreto/index.html",
+  "./dosagem-concreto/manual.html"
 ];
 
 /* ---- INSTALL: cacheia tudo ---- */
