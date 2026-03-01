@@ -1,0 +1,21 @@
+{
+  "name": "CONCRETRACK • Controle de Cimento",
+  "short_name": "Cimento",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1F242C",
+  "theme_color": "#2F3640",
+  "icons": [
+    {
+      "src": "../assets/img/concre.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../assets/img/concre.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
