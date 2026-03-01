@@ -71,6 +71,17 @@ function doPost(e) {
     var action = d.action || '';
 
     switch (action) {
+      // === Leituras (GET via POST para evitar CORS) ===
+      case 'get_consumo':
+        result = getConsumoDados();
+        break;
+      case 'get_entradas':
+        result = getEntradasRegistradas();
+        break;
+      case 'get_saldo_inicial':
+        result = getSaldoInicial();
+        break;
+      // === Escritas ===
       case 'registrar_entrada':
         result = registrarEntrada(d.data, d.silo, d.qtd, d.fornecedor, d.tipo);
         break;

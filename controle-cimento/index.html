@@ -404,15 +404,9 @@ function showModal(title, text){
 }
 
 /* ===============================
-   API CALLS
+   API CALLS — tudo via POST (evita CORS/redirect do Apps Script)
    =============================== */
-async function apiGet(action){
-  const url = API_URL + "?action=" + encodeURIComponent(action) + "&t=" + Date.now();
-  const res = await fetch(url);
-  return res.json();
-}
-
-async function apiPost(payload){
+async function apiCall(payload){
   const url = API_URL + "?t=" + Date.now();
   const res = await fetch(url, {
     method: "POST",
@@ -456,19 +450,23 @@ async function loadPainel(){
 
   try {
     const [consumo, entradas, saldoIni] = await Promise.all([
-      apiGet('consumo'),
-      apiGet('entradas'),
-      apiGet('saldo_inicial')
+      apiCall({ action: 'get_consumo' }),
+      apiCall({ action: 'get_entradas' }),
+      apiCall({ action: 'get_saldo_inicial' })
     ]);
 
     consumoData = Array.isArray(consumo) ? consumo : [];
     entradasData = Array.isArray(entradas) ? entradas : [];
     saldoInicialData = saldoIni || { data:'', silo1:0, silo2:0, silo3:0 };
 
+    console.log('Consumo:', consumoData.length, 'registros');
+    console.log('Entradas:', entradasData.length, 'registros');
+    console.log('Saldo Ini:', saldoInicialData);
+
     renderPainel();
   } catch(err) {
-    console.error(err);
-    $("painelLoader").innerHTML = '<span style="color:var(--err);">Erro ao carregar dados ❌</span>';
+    console.error('Erro loadPainel:', err);
+    $("painelLoader").innerHTML = '<span style="color:var(--err);">Erro ao carregar dados ❌<br><small>' + err.message + '</small></span>';
   }
 }
 
@@ -479,13 +477,21 @@ function renderPainel(){
   // Calcular saldo acumulado até hoje
   const saldos = calcularSaldoAte(hoje);
 
+  // Aviso se saldo inicial não configurado
+  const semSaldo = !saldoInicialData.data;
+
   // Saldo atual por silo
   for(let s = 1; s <= 3; s++){
     const val = round2(saldos['Silo '+s] || 0);
-    $('saldo'+s).textContent = val.toFixed(2) + ' t';
-    const el = $('saldo'+s);
-    el.className = 'silo-value ' + (val > 20 ? 'silo-ok' : val > 5 ? 'silo-warn' : 'silo-err');
-    $('saldo'+s+'sub').textContent = val <= 5 ? '⚠️ Nível baixo!' : val <= 20 ? '⚡ Atenção' : '✅ OK';
+    if(semSaldo){
+      $('saldo'+s).textContent = '—';
+      $('saldo'+s).className = 'silo-value';
+      $('saldo'+s+'sub').textContent = '⚙️ Configure o saldo inicial';
+    } else {
+      $('saldo'+s).textContent = val.toFixed(2) + ' t';
+      $('saldo'+s).className = 'silo-value ' + (val > 20 ? 'silo-ok' : val > 5 ? 'silo-warn' : 'silo-err');
+      $('saldo'+s+'sub').textContent = val <= 5 ? '⚠️ Nível baixo!' : val <= 20 ? '⚡ Atenção' : '✅ OK';
+    }
   }
 
   // Consumo e entradas do dia
@@ -592,7 +598,7 @@ $("frmEntrada").addEventListener("submit", async (e) => {
   $("btnSalvarEnt").disabled = true;
 
   try {
-    const r = await apiPost(payload);
+    const r = await apiCall(payload);
     if(r && r.ok){
       setStatus("dotEnt","statusEnt","ok","Entrada registrada ✅");
       showModal("✅ Entrada Registrada!",
@@ -621,7 +627,7 @@ async function loadHistorico(){
   $("histContent").innerHTML = "";
 
   try {
-    entradasData = await apiGet('entradas');
+    entradasData = await apiCall({ action: 'get_entradas' });
     if(!Array.isArray(entradasData)) entradasData = [];
     renderHistorico();
   } catch(err){
@@ -659,7 +665,7 @@ async function deletarEntrada(id){
   if(!confirm("Excluir esta entrada?")) return;
 
   try {
-    const r = await apiPost({ action: "deletar_entrada", id: id });
+    const r = await apiCall({ action: "deletar_entrada", id: id });
     if(r && r.ok){
       showModal("🗑️ Excluído", "Entrada removida com sucesso.");
       loadHistorico();
@@ -676,7 +682,7 @@ async function deletarEntrada(id){
    =============================== */
 async function loadSaldoAtual(){
   try {
-    const s = await apiGet('saldo_inicial');
+    const s = await apiCall({ action: 'get_saldo_inicial' });
     saldoInicialData = s || { data:'', silo1:0, silo2:0, silo3:0 };
 
     if(s && s.data){
@@ -716,7 +722,7 @@ $("frmSaldo").addEventListener("submit", async (e) => {
   $("btnSalvarSaldo").disabled = true;
 
   try {
-    const r = await apiPost(payload);
+    const r = await apiCall(payload);
     if(r && r.ok){
       setStatus("dotSaldo","statusSaldo","ok","Saldo salvo ✅");
       showModal("✅ Saldo Inicial Salvo!",
