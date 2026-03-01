@@ -24,8 +24,9 @@ const NOME_ABA_ENTRADAS = 'entradas_silo';
 const NOME_ABA_SALDO    = 'saldo_inicial';
 
 const CONSUMO_WINDOW_DIAS = 180;
-const CACHE_TTL_SEG       = 60;
+const CACHE_TTL_SEG       = 300;   // 5 min (dados de consumo não mudam com tanta freq.)
 const CACHE_MAX_CHARS     = 90000;
+const MAX_LINHAS_LEITURA  = 5000;  // Lê no máximo as últimas N linhas da aba arquivo
 
 // Colunas da aba "arquivo" (0-based)
 const COL_DATA   = 0;   // A – TimeStamp
@@ -150,9 +151,11 @@ function getConsumoDados() {
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
 
-  var n = lastRow - 1;
-  var colA  = sheet.getRange(2, 1,  n, 1).getValues();
-  var colSU = sheet.getRange(2, 19, n, 3).getValues();
+  // Otimização: lê apenas as últimas MAX_LINHAS_LEITURA linhas
+  var startRow = Math.max(2, lastRow - MAX_LINHAS_LEITURA + 1);
+  var n = lastRow - startRow + 1;
+  var colA  = sheet.getRange(startRow, 1,  n, 1).getValues();
+  var colSU = sheet.getRange(startRow, 19, n, 3).getValues();
 
   var tz = Session.getScriptTimeZone() || 'America/Sao_Paulo';
   var hoje = new Date();

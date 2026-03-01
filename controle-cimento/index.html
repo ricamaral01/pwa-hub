@@ -128,21 +128,34 @@
     /* === HISTORY TABLE === */
     .hist-table{
       width:100%; border-collapse:collapse;
-      font-size:12px; margin-top:10px;
+      font-size:13px; margin-top:10px;
+      min-width:520px;
     }
     .hist-table th{
       background: rgba(255,255,255,.06);
-      padding:8px 6px;
+      padding:10px 8px;
       text-align:left;
       font-weight:900;
       color:var(--muted);
       border-bottom:1px solid var(--line);
+      white-space:nowrap;
     }
     .hist-table td{
-      padding:7px 6px;
+      padding:9px 8px;
       border-bottom:1px solid rgba(255,255,255,.05);
     }
     .hist-table tr:hover td{ background: rgba(255,255,255,.03); }
+    .hist-table .col-num{ text-align:right; font-variant-numeric:tabular-nums; }
+    .hist-table .del-btn{
+      background: rgba(239,68,68,.15);
+      border:1px solid rgba(239,68,68,.35);
+      color:#EF4444;
+      border-radius:8px;
+      padding:4px 10px;
+      font-size:12px; font-weight:900;
+      cursor:pointer;
+    }
+    .hist-table .del-btn:active{ opacity:.7; }
   </style>
 </head>
 
@@ -290,10 +303,15 @@
   <!-- TAB: HISTÓRICO           -->
   <!-- ======================== -->
   <div class="tabContent" id="tab-historico">
-    <div class="card">
-      <div class="label" style="font-size:16px;">Entradas Registradas</div>
+    <div class="card" style="overflow-x:auto;">
+      <div class="label" style="font-size:16px;">📥 Entradas Registradas</div>
       <div id="histLoader" class="loader">Carregando…</div>
       <div id="histContent"></div>
+    </div>
+    <div class="card" style="overflow-x:auto; margin-top:14px;">
+      <div class="label" style="font-size:16px;">📊 Consumo Diário por Silo</div>
+      <div id="consLoader" class="loader" style="display:none;">Carregando…</div>
+      <div id="consContent"></div>
     </div>
   </div>
 
@@ -625,13 +643,23 @@ $("frmEntrada").addEventListener("submit", async (e) => {
 async function loadHistorico(){
   $("histLoader").style.display = "block";
   $("histContent").innerHTML = "";
+  $("consLoader").style.display = "block";
+  $("consContent").innerHTML = "";
 
   try {
-    entradasData = await apiCall({ action: 'get_entradas' });
-    if(!Array.isArray(entradasData)) entradasData = [];
+    const [entradas, consumo] = await Promise.all([
+      apiCall({ action: 'get_entradas' }),
+      apiCall({ action: 'get_consumo' })
+    ]);
+
+    entradasData = Array.isArray(entradas) ? entradas : [];
+    consumoData  = Array.isArray(consumo)  ? consumo  : [];
+
     renderHistorico();
+    renderConsumoHistorico();
   } catch(err){
     $("histLoader").innerHTML = '<span style="color:var(--err);">Erro ❌</span>';
+    $("consLoader").innerHTML = '<span style="color:var(--err);">Erro ❌</span>';
   }
 }
 
@@ -646,19 +674,64 @@ function renderHistorico(){
   // Ordenar por data desc
   const sorted = [...entradasData].sort((a,b) => b.data.localeCompare(a.data));
 
-  let html = '';
+  let html = '<table class="hist-table"><thead><tr>';
+  html += '<th>Data</th><th>Silo</th><th>Qtd (t)</th><th>Marca</th><th>Tipo</th><th></th>';
+  html += '</tr></thead><tbody>';
+
   sorted.forEach(e => {
-    html += `
-      <div class="entrada-item">
-        <div class="entrada-info">
-          <div class="entrada-main">${formatDate(e.data)} — ${e.silo} — ${e.qtd} t</div>
-          <div class="entrada-det">${e.fornecedor} • ${e.tipo}</div>
-        </div>
-        <button class="entrada-del" onclick="deletarEntrada('${e.id}')">🗑️</button>
-      </div>`;
+    html += `<tr>
+      <td>${formatDate(e.data)}</td>
+      <td>${e.silo}</td>
+      <td class="col-num">${round2(e.qtd).toFixed(2)}</td>
+      <td>${e.fornecedor}</td>
+      <td>${e.tipo}</td>
+      <td><button class="del-btn" onclick="deletarEntrada('${e.id}')">🗑️</button></td>
+    </tr>`;
   });
 
+  html += '</tbody></table>';
   $("histContent").innerHTML = html;
+}
+
+function renderConsumoHistorico(){
+  $("consLoader").style.display = "none";
+
+  if(!consumoData.length){
+    $("consContent").innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px;">Nenhum dado de consumo</div>';
+    return;
+  }
+
+  // Agrupar consumo por data (resumo diário por silo)
+  const mapDia = {};
+  consumoData.forEach(c => {
+    if(!mapDia[c.data]) mapDia[c.data] = { s1:0, s2:0, s3:0, total:0 };
+    const v = c.consumo || 0;
+    if(c.silo === 'Silo 1') mapDia[c.data].s1 += v;
+    else if(c.silo === 'Silo 2') mapDia[c.data].s2 += v;
+    else if(c.silo === 'Silo 3') mapDia[c.data].s3 += v;
+    mapDia[c.data].total += v;
+  });
+
+  // Ordenar datas da mais nova para mais antiga
+  const datas = Object.keys(mapDia).sort((a,b) => b.localeCompare(a));
+
+  let html = '<table class="hist-table"><thead><tr>';
+  html += '<th>Data</th><th class="col-num">Silo 1 (t)</th><th class="col-num">Silo 2 (t)</th><th class="col-num">Silo 3 (t)</th><th class="col-num">Total (t)</th>';
+  html += '</tr></thead><tbody>';
+
+  datas.forEach(d => {
+    const r = mapDia[d];
+    html += `<tr>
+      <td>${formatDate(d)}</td>
+      <td class="col-num">${round2(r.s1).toFixed(2)}</td>
+      <td class="col-num">${round2(r.s2).toFixed(2)}</td>
+      <td class="col-num">${round2(r.s3).toFixed(2)}</td>
+      <td class="col-num" style="font-weight:900;">${round2(r.total).toFixed(2)}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  $("consContent").innerHTML = html;
 }
 
 async function deletarEntrada(id){
