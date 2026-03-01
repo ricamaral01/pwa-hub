@@ -222,6 +222,101 @@
     .days-ok{ color:#16A34A; }
     .days-warn{ color:#F59E0B; }
     .days-err{ color:#EF4444; }
+
+    /* === TOTAL SUMMARY CARD === */
+    .total-card{
+      background: linear-gradient(135deg, #0d2137, #15416F);
+      border:1px solid rgba(138,201,104,.25);
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:14px;
+      text-align:center;
+      box-shadow: 0 6px 24px rgba(0,0,0,.35);
+    }
+    .total-card .total-title{ font-size:13px; font-weight:900; color:var(--muted); margin-bottom:4px; }
+    .total-card .total-value{ font-size:36px; font-weight:1000; color:#8AC968; }
+    .total-card .total-sub{ font-size:12px; color:var(--muted); margin-top:4px; }
+    .total-stats{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;
+    }
+    .total-stat{
+      background: rgba(0,0,0,.25);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+    }
+    .total-stat .ts-label{ font-size:11px; color:var(--muted); }
+    .total-stat .ts-value{ font-size:20px; font-weight:1000; margin-top:2px; }
+    .total-stat .ts-sub{ font-size:10px; color:var(--muted); margin-top:2px; }
+
+    /* === SUPPLIER BADGE === */
+    .silo-forn{
+      display:inline-block;
+      font-size:10px; font-weight:900;
+      background: rgba(138,201,104,.12);
+      border:1px solid rgba(138,201,104,.25);
+      color:#8AC968;
+      border-radius:6px;
+      padding:2px 6px;
+      margin-top:4px;
+    }
+
+    /* === HISTORY SUB-CARDS === */
+    .hist-cards{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+    .hist-card{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:24px 10px; border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.22));
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      cursor:pointer; user-select:none;
+      transition: all .18s ease;
+    }
+    .hist-card:hover, .hist-card:active{
+      border-color: rgba(138,201,104,.45);
+      background: linear-gradient(135deg, #15416F, #0f2e52);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    }
+    .hist-card-icon{ font-size:36px; margin-bottom:8px; }
+    .hist-card-name{ font-size:14px; font-weight:900; }
+    .hist-card-desc{ font-size:11px; color:var(--muted); margin-top:4px; text-align:center; }
+
+    /* === FILTER BAR === */
+    .filter-bar{
+      display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+      margin-bottom:12px;
+    }
+    .filter-bar select{
+      margin-top:0; width:auto; font-size:13px; padding:8px 12px;
+      border-radius:10px; min-width:120px;
+    }
+    .filter-bar .filter-label{
+      font-size:12px; font-weight:900; color:var(--muted);
+    }
+    .filter-bar input[type="date"]{
+      font-size:13px; padding:8px 10px; border-radius:10px;
+      border:1px solid rgba(138,201,104,.22);
+      background: rgba(0,0,0,.35); color:var(--text);
+    }
+    .filter-pill{
+      display:inline-flex; align-items:center; gap:4px;
+      padding:6px 12px; border-radius:20px;
+      font-size:12px; font-weight:900;
+      cursor:pointer; user-select:none;
+      transition: all .15s;
+    }
+    .filter-pill.active{
+      background: rgba(138,201,104,.18);
+      border:1px solid rgba(138,201,104,.4);
+      color:#8AC968;
+    }
+    .filter-pill:not(.active){
+      background: rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      color:var(--muted);
+    }
   </style>
 </head>
 
@@ -266,24 +361,46 @@
     <div id="painelLoader" class="loader">Carregando dados…</div>
     <div id="painelContent" style="display:none;">
 
+      <!-- RESUMO TOTAL DE CIMENTO -->
+      <div class="total-card" id="totalCard">
+        <div class="total-title">ESTOQUE TOTAL DE CIMENTO</div>
+        <div class="total-value" id="totalCimento">–</div>
+        <div class="total-sub" id="totalCimentoSub"></div>
+        <div class="total-stats">
+          <div class="total-stat">
+            <div class="ts-label">Consumo Médio/Dia</div>
+            <div class="ts-value" id="totalConsMedio" style="color:#EF4444;">–</div>
+            <div class="ts-sub">(últimos 7 dias)</div>
+          </div>
+          <div class="total-stat">
+            <div class="ts-label">Previsão Produção</div>
+            <div class="ts-value" id="totalDiasProd">–</div>
+            <div class="ts-sub" id="totalDiasSub"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Saldo Atual -->
       <div class="card" style="margin-bottom:14px;">
-        <div class="label" style="font-size:16px;">Saldo Atual (toneladas)</div>
+        <div class="label" style="font-size:16px;">Saldo Atual por Silo (toneladas)</div>
         <div class="silos-row">
           <div class="silo-card">
             <div class="silo-label">Silo 1</div>
             <div class="silo-value" id="saldo1">–</div>
             <div class="silo-sub" id="saldo1sub"></div>
+            <div class="silo-forn" id="forn1">Nacional</div>
           </div>
           <div class="silo-card">
             <div class="silo-label">Silo 2</div>
             <div class="silo-value" id="saldo2">–</div>
             <div class="silo-sub" id="saldo2sub"></div>
+            <div class="silo-forn" id="forn2">Intercement</div>
           </div>
           <div class="silo-card">
             <div class="silo-label">Silo 3</div>
             <div class="silo-value" id="saldo3">–</div>
             <div class="silo-sub" id="saldo3sub"></div>
+            <div class="silo-forn" id="forn3">Votoran</div>
           </div>
         </div>
 
@@ -398,15 +515,62 @@
   <!-- ======================== -->
   <div class="tabContent" id="tab-historico">
     <button class="btn-voltar" onclick="goTab('menu')">← Menu</button>
-    <div class="card" style="overflow-x:auto;">
-      <div class="label" style="font-size:16px;">📥 Entradas Registradas</div>
-      <div id="histLoader" class="loader">Carregando…</div>
-      <div id="histContent"></div>
+
+    <!-- Sub-navegação: dois cards -->
+    <div id="histMenu" class="hist-cards">
+      <div class="hist-card" onclick="goHistView('entradas')">
+        <div class="hist-card-icon">📥</div>
+        <div class="hist-card-name">Histórico de Entrada</div>
+        <div class="hist-card-desc">Recebimentos registrados</div>
+      </div>
+      <div class="hist-card" onclick="goHistView('consumo')">
+        <div class="hist-card-icon">📊</div>
+        <div class="hist-card-name">Histórico de Consumo</div>
+        <div class="hist-card-desc">Consumo diário por silo</div>
+      </div>
     </div>
-    <div class="card" style="overflow-x:auto; margin-top:14px;">
-      <div class="label" style="font-size:16px;">📊 Consumo Diário por Silo</div>
-      <div id="consLoader" class="loader" style="display:none;">Carregando…</div>
-      <div id="consContent"></div>
+
+    <!-- SUB-VIEW: Entradas -->
+    <div id="histEntradas" style="display:none;">
+      <button class="btn-voltar" onclick="goHistView('menu')">← Histórico</button>
+      <div class="card" style="overflow-x:auto;">
+        <div class="label" style="font-size:16px;">📥 Entradas Registradas</div>
+        <div class="filter-bar" id="filterBarEnt">
+          <span class="filter-label">Filtrar:</span>
+          <select id="filtroEntMes" onchange="applyFiltroEntradas()">
+            <option value="all">Todos os meses</option>
+          </select>
+          <span class="filter-label" style="margin-left:8px;">Silo:</span>
+          <select id="filtroEntSilo" onchange="applyFiltroEntradas()">
+            <option value="all">Todos</option>
+            <option value="Silo 1">Silo 1 - Nacional</option>
+            <option value="Silo 2">Silo 2 - Intercement</option>
+            <option value="Silo 3">Silo 3 - Votoran</option>
+          </select>
+        </div>
+        <div id="histLoader" class="loader">Carregando…</div>
+        <div id="histContent"></div>
+      </div>
+    </div>
+
+    <!-- SUB-VIEW: Consumo -->
+    <div id="histConsumo" style="display:none;">
+      <button class="btn-voltar" onclick="goHistView('menu')">← Histórico</button>
+      <div class="card" style="overflow-x:auto;">
+        <div class="label" style="font-size:16px;">📊 Consumo Diário por Silo</div>
+        <div class="filter-bar" id="filterBarCons">
+          <span class="filter-label">Filtrar:</span>
+          <select id="filtroConsMes" onchange="applyFiltroConsumo()">
+            <option value="all">Todos os meses</option>
+          </select>
+          <span class="filter-label" style="margin-left:8px;">Período:</span>
+          <input type="date" id="filtroConsDe" onchange="applyFiltroConsumo()" style="max-width:130px;">
+          <span class="filter-label">a</span>
+          <input type="date" id="filtroConsAte" onchange="applyFiltroConsumo()" style="max-width:130px;">
+        </div>
+        <div id="consLoader" class="loader" style="display:none;">Carregando…</div>
+        <div id="consContent"></div>
+      </div>
     </div>
   </div>
 
@@ -559,6 +723,13 @@ const SILO_CAP = {
 };
 const DIAS_ENTREGA = 2; // tempo de entrega em dias
 
+// Fornecedor padrão por silo
+const SILO_FORN = {
+  'Silo 1': 'Nacional',
+  'Silo 2': 'Intercement',
+  'Silo 3': 'Votoran'
+};
+
 /* ===============================
    PAINEL — carregar e calcular saldo
    =============================== */
@@ -607,9 +778,41 @@ function renderPainel(){
   // Calcular consumo médio diário (últimos 7 dias)
   const consumoMedio = calcularConsumoMedio(7);
 
-  // Saldo atual por silo
+  // Determinar fornecedor atual de cada silo (último registro de entrada)
+  const fornAtual = detectarFornecedorSilos();
+
+  // ========== RESUMO TOTAL ==========
+  const totalCimento = round2((saldos['Silo 1'] || 0) + (saldos['Silo 2'] || 0) + (saldos['Silo 3'] || 0));
+  const totalConsMed = round2((consumoMedio['Silo 1'] || 0) + (consumoMedio['Silo 2'] || 0) + (consumoMedio['Silo 3'] || 0));
+  const diasProd = totalConsMed > 0 ? Math.floor(totalCimento / totalConsMed) : 999;
+
+  if(semSaldo){
+    $('totalCimento').textContent = '—';
+    $('totalCimentoSub').textContent = '⚙️ Configure o saldo inicial';
+    $('totalConsMedio').textContent = '—';
+    $('totalDiasProd').textContent = '—';
+    $('totalDiasSub').textContent = '';
+  } else {
+    $('totalCimento').textContent = totalCimento.toFixed(2) + ' t';
+    $('totalCimentoSub').textContent = `S1: ${round2(saldos['Silo 1']||0).toFixed(1)}t  |  S2: ${round2(saldos['Silo 2']||0).toFixed(1)}t  |  S3: ${round2(saldos['Silo 3']||0).toFixed(1)}t`;
+    $('totalConsMedio').textContent = totalConsMed.toFixed(2) + ' t';
+
+    let diasColor = '#16A34A';
+    let diasIcon = '✅';
+    if(diasProd <= DIAS_ENTREGA){ diasColor = '#EF4444'; diasIcon = '🚨'; }
+    else if(diasProd <= DIAS_ENTREGA + 3){ diasColor = '#F59E0B'; diasIcon = '⚡'; }
+    $('totalDiasProd').style.color = diasColor;
+    $('totalDiasProd').textContent = diasProd >= 999 ? '—' : diasProd + ' dias';
+    $('totalDiasSub').textContent = diasProd >= 999 ? 'sem dados de consumo' : diasIcon + ' de produção restantes';
+  }
+
+  // ========== SALDO POR SILO ==========
   for(let s = 1; s <= 3; s++){
-    const val = round2(saldos['Silo '+s] || 0);
+    const nome = 'Silo ' + s;
+    const val = round2(saldos[nome] || 0);
+    const forn = fornAtual[nome];
+    $('forn'+s).textContent = forn;
+
     if(semSaldo){
       $('saldo'+s).textContent = '—';
       $('saldo'+s).className = 'silo-value';
@@ -636,10 +839,37 @@ function renderPainel(){
   }
 
   // Renderizar gráfico visual dos silos
-  renderSilosVisual(saldos, consumoMedio, semSaldo);
+  renderSilosVisual(saldos, consumoMedio, semSaldo, fornAtual);
 
   $("painelLoader").style.display = "none";
   $("painelContent").style.display = "block";
+}
+
+/**
+ * Detecta o fornecedor atual de cada silo
+ * com base na última entrada registrada, ou usa o padrão
+ */
+function detectarFornecedorSilos(){
+  const forn = {
+    'Silo 1': SILO_FORN['Silo 1'],
+    'Silo 2': SILO_FORN['Silo 2'],
+    'Silo 3': SILO_FORN['Silo 3']
+  };
+
+  // Ordenar entradas por data (mais recente primeiro)
+  const sorted = [...entradasData].sort((a,b) => b.data.localeCompare(a.data));
+
+  // Para cada silo, pegar o fornecedor da entrada mais recente
+  const found = {};
+  for(const e of sorted){
+    if(!found[e.silo] && e.fornecedor){
+      found[e.silo] = true;
+      forn[e.silo] = e.fornecedor;
+    }
+    if(Object.keys(found).length >= 3) break;
+  }
+
+  return forn;
 }
 
 /**
@@ -670,7 +900,7 @@ function calcularConsumoMedio(dias){
 /**
  * Renderiza a representação gráfica dos silos
  */
-function renderSilosVisual(saldos, consumoMedio, semSaldo){
+function renderSilosVisual(saldos, consumoMedio, semSaldo, fornAtual){
   let html = '';
 
   for(let s = 1; s <= 3; s++){
@@ -679,6 +909,7 @@ function renderSilosVisual(saldos, consumoMedio, semSaldo){
     const saldo = round2(saldos[nome] || 0);
     const pct = semSaldo ? 0 : Math.min(100, Math.max(0, (saldo / cap.real) * 100));
     const tankH = 80 + (s === 3 ? 10 : (s === 2 ? 5 : 0)); // altura proporcional
+    const forn = fornAtual ? fornAtual[nome] : SILO_FORN[nome];
 
     // Cor baseada no percentual
     let fillClass = 'silo-fill-ok';
@@ -700,6 +931,7 @@ function renderSilosVisual(saldos, consumoMedio, semSaldo){
     html += `
       <div class="silo-vis">
         <div class="silo-vis-label">Silo ${s} (${cap.nominal}t)</div>
+        <div class="silo-forn" style="margin-bottom:6px;">${forn}</div>
         <div class="silo-tank" style="height:${tankH}px;">
           <div class="silo-fill ${fillClass}" style="height:${fillH}px;"></div>
         </div>
@@ -774,6 +1006,21 @@ function calcularSaldoAte(dataAlvo){
    =============================== */
 $("entData").value = todayISO();
 
+// Auto-select fornecedor quando silo é selecionado
+$("entSilo").addEventListener("change", () => {
+  const silo = $("entSilo").value;
+  if(silo && SILO_FORN[silo]){
+    const marca = SILO_FORN[silo];
+    const sel = $("entMarca");
+    for(let i = 0; i < sel.options.length; i++){
+      if(sel.options[i].value === marca){
+        sel.selectedIndex = i;
+        break;
+      }
+    }
+  }
+});
+
 $("btnLimparEnt").addEventListener("click", () => {
   $("frmEntrada").reset();
   $("entData").value = todayISO();
@@ -824,44 +1071,106 @@ $("frmEntrada").addEventListener("submit", async (e) => {
 });
 
 /* ===============================
-   HISTÓRICO
+   HISTÓRICO — sub-navegação
    =============================== */
-async function loadHistorico(){
+function goHistView(view){
+  $('histMenu').style.display = view === 'menu' ? 'grid' : 'none';
+  $('histEntradas').style.display = view === 'entradas' ? 'block' : 'none';
+  $('histConsumo').style.display = view === 'consumo' ? 'block' : 'none';
+
+  if(view === 'entradas') loadHistEntradas();
+  if(view === 'consumo') loadHistConsumo();
+}
+
+async function loadHistEntradas(){
   $("histLoader").style.display = "block";
   $("histContent").innerHTML = "";
+
+  try {
+    const entradas = await apiCall({ action: 'get_entradas' });
+    entradasData = Array.isArray(entradas) ? entradas : [];
+    lastLoadTime = Date.now();
+    populateFiltroEntMeses();
+    applyFiltroEntradas();
+  } catch(err){
+    $("histLoader").innerHTML = '<span style="color:var(--err);">Erro ❌</span>';
+  }
+}
+
+async function loadHistConsumo(){
   $("consLoader").style.display = "block";
   $("consContent").innerHTML = "";
 
   try {
-    const [entradas, consumo] = await Promise.all([
-      apiCall({ action: 'get_entradas' }),
-      apiCall({ action: 'get_consumo' })
-    ]);
-
-    entradasData = Array.isArray(entradas) ? entradas : [];
-    consumoData  = Array.isArray(consumo)  ? consumo  : [];
-
+    const consumo = await apiCall({ action: 'get_consumo' });
+    consumoData = Array.isArray(consumo) ? consumo : [];
     lastLoadTime = Date.now();
-    renderHistorico();
-    renderConsumoHistorico();
+    populateFiltroConsMeses();
+    applyFiltroConsumo();
   } catch(err){
-    $("histLoader").innerHTML = '<span style="color:var(--err);">Erro ❌</span>';
     $("consLoader").innerHTML = '<span style="color:var(--err);">Erro ❌</span>';
   }
 }
 
-function renderHistorico(){
-  $("histLoader").style.display = "none";
+/* ===============================
+   HISTÓRICO — carrega entradas+consumo juntos (para auto-refresh)
+   =============================== */
+async function loadHistorico(){
+  // Descobre qual sub-view está ativa
+  const entView = $('histEntradas').style.display !== 'none';
+  const consView = $('histConsumo').style.display !== 'none';
 
-  if(!entradasData.length){
-    $("histContent").innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px;">Nenhuma entrada registrada</div>';
+  if(entView) loadHistEntradas();
+  else if(consView) loadHistConsumo();
+  // se está no menu de cards, não carrega nada
+}
+
+/* ===============================
+   FILTROS — Entradas
+   =============================== */
+function populateFiltroEntMeses(){
+  const meses = new Set();
+  entradasData.forEach(e => {
+    if(e.data) meses.add(e.data.slice(0,7)); // yyyy-MM
+  });
+  const sorted = [...meses].sort().reverse();
+  const sel = $('filtroEntMes');
+  sel.innerHTML = '<option value="all">Todos os meses</option>';
+  sorted.forEach(m => {
+    const [y, mm] = m.split('-');
+    const nomes = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    sel.innerHTML += `<option value="${m}">${nomes[parseInt(mm)]} ${y}</option>`;
+  });
+}
+
+function applyFiltroEntradas(){
+  const mes = $('filtroEntMes').value;
+  const silo = $('filtroEntSilo').value;
+
+  let filtered = [...entradasData];
+  if(mes !== 'all') filtered = filtered.filter(e => e.data && e.data.startsWith(mes));
+  if(silo !== 'all') filtered = filtered.filter(e => e.silo === silo);
+
+  renderHistorico(filtered);
+}
+
+function renderHistorico(data){
+  $("histLoader").style.display = "none";
+  const list = data || entradasData;
+
+  if(!list.length){
+    $("histContent").innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px;">Nenhuma entrada encontrada</div>';
     return;
   }
 
   // Ordenar por data desc
-  const sorted = [...entradasData].sort((a,b) => b.data.localeCompare(a.data));
+  const sorted = [...list].sort((a,b) => b.data.localeCompare(a.data));
 
-  let html = '<table class="hist-table"><thead><tr>';
+  // Calcular totais
+  const totalQtd = sorted.reduce((a,e) => a + e.qtd, 0);
+
+  let html = `<div style="margin-bottom:8px;font-size:13px;color:var(--muted);">${sorted.length} registros — Total: <b style="color:var(--text);">${round2(totalQtd).toFixed(2)} t</b></div>`;
+  html += '<table class="hist-table"><thead><tr>';
   html += '<th>Data</th><th>Silo</th><th>Qtd (t)</th><th>Marca</th><th>Tipo</th><th>NF</th><th></th>';
   html += '</tr></thead><tbody>';
 
@@ -881,17 +1190,55 @@ function renderHistorico(){
   $("histContent").innerHTML = html;
 }
 
-function renderConsumoHistorico(){
-  $("consLoader").style.display = "none";
+/* ===============================
+   FILTROS — Consumo
+   =============================== */
+function populateFiltroConsMeses(){
+  const meses = new Set();
+  consumoData.forEach(c => {
+    if(c.data) meses.add(c.data.slice(0,7));
+  });
+  const sorted = [...meses].sort().reverse();
+  const sel = $('filtroConsMes');
+  sel.innerHTML = '<option value="all">Todos os meses</option>';
+  sorted.forEach(m => {
+    const [y, mm] = m.split('-');
+    const nomes = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    sel.innerHTML += `<option value="${m}">${nomes[parseInt(mm)]} ${y}</option>`;
+  });
+}
 
-  if(!consumoData.length){
+function applyFiltroConsumo(){
+  const mes = $('filtroConsMes').value;
+  const de = $('filtroConsDe').value;
+  const ate = $('filtroConsAte').value;
+
+  let filtered = [...consumoData];
+
+  // Se selecionou um mês, filtra por mês
+  if(mes !== 'all'){
+    filtered = filtered.filter(c => c.data && c.data.startsWith(mes));
+  }
+
+  // Se informou datas específicas, filtra por período
+  if(de) filtered = filtered.filter(c => c.data >= de);
+  if(ate) filtered = filtered.filter(c => c.data <= ate);
+
+  renderConsumoHistorico(filtered);
+}
+
+function renderConsumoHistorico(data){
+  $("consLoader").style.display = "none";
+  const list = data || consumoData;
+
+  if(!list.length){
     $("consContent").innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px;">Nenhum dado de consumo</div>';
     return;
   }
 
   // Agrupar consumo por data (resumo diário por silo)
   const mapDia = {};
-  consumoData.forEach(c => {
+  list.forEach(c => {
     if(!mapDia[c.data]) mapDia[c.data] = { s1:0, s2:0, s3:0, total:0 };
     const v = c.consumo || 0;
     if(c.silo === 'Silo 1') mapDia[c.data].s1 += v;
@@ -903,7 +1250,17 @@ function renderConsumoHistorico(){
   // Ordenar datas da mais nova para mais antiga
   const datas = Object.keys(mapDia).sort((a,b) => b.localeCompare(a));
 
-  let html = '<table class="hist-table"><thead><tr>';
+  // Totais do período
+  let totS1=0, totS2=0, totS3=0, totGeral=0;
+  datas.forEach(d => {
+    totS1 += mapDia[d].s1;
+    totS2 += mapDia[d].s2;
+    totS3 += mapDia[d].s3;
+    totGeral += mapDia[d].total;
+  });
+
+  let html = `<div style="margin-bottom:8px;font-size:13px;color:var(--muted);">${datas.length} dias — Total: <b style="color:var(--text);">${round2(totGeral).toFixed(2)} t</b></div>`;
+  html += '<table class="hist-table"><thead><tr>';
   html += '<th>Data</th><th class="col-num">Silo 1 (t)</th><th class="col-num">Silo 2 (t)</th><th class="col-num">Silo 3 (t)</th><th class="col-num">Total (t)</th>';
   html += '</tr></thead><tbody>';
 
@@ -918,6 +1275,15 @@ function renderConsumoHistorico(){
     </tr>`;
   });
 
+  // Linha de total
+  html += `<tr style="border-top:2px solid var(--line); font-weight:900;">
+    <td>TOTAL</td>
+    <td class="col-num">${round2(totS1).toFixed(2)}</td>
+    <td class="col-num">${round2(totS2).toFixed(2)}</td>
+    <td class="col-num">${round2(totS3).toFixed(2)}</td>
+    <td class="col-num" style="color:#8AC968;">${round2(totGeral).toFixed(2)}</td>
+  </tr>`;
+
   html += '</tbody></table>';
   $("consContent").innerHTML = html;
 }
@@ -929,7 +1295,7 @@ async function deletarEntrada(id){
     const r = await apiCall({ action: "deletar_entrada", id: id });
     if(r && r.ok){
       showModal("🗑️ Excluído", "Entrada removida com sucesso.");
-      loadHistorico();
+      loadHistEntradas();
     } else {
       alert("Erro: " + (r?.msg || r?.error || "Falha"));
     }
