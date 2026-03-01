@@ -481,6 +481,7 @@ async function loadPainel(){
     console.log('Entradas:', entradasData.length, 'registros');
     console.log('Saldo Ini:', saldoInicialData);
 
+    lastLoadTime = Date.now();
     renderPainel();
   } catch(err) {
     console.error('Erro loadPainel:', err);
@@ -655,6 +656,7 @@ async function loadHistorico(){
     entradasData = Array.isArray(entradas) ? entradas : [];
     consumoData  = Array.isArray(consumo)  ? consumo  : [];
 
+    lastLoadTime = Date.now();
     renderHistorico();
     renderConsumoHistorico();
   } catch(err){
@@ -812,9 +814,38 @@ $("frmSaldo").addEventListener("submit", async (e) => {
 });
 
 /* ===============================
-   INIT
+   INIT + AUTO-REFRESH
    =============================== */
+let lastLoadTime = Date.now();
+const AUTO_REFRESH_MS = 2 * 60 * 1000; // 2 minutos
+
 loadPainel();
+
+// Quando o app volta ao foco após 2+ min, recarrega dados
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    const elapsed = Date.now() - lastLoadTime;
+    if (elapsed >= AUTO_REFRESH_MS) {
+      console.log('Auto-refresh: ' + Math.round(elapsed/1000) + 's inativo');
+      // Descobre qual aba está ativa e recarrega
+      const activeTab = document.querySelector('.tab.active');
+      const tab = activeTab ? activeTab.dataset.tab : 'painel';
+      if (tab === 'painel') loadPainel();
+      else if (tab === 'historico') loadHistorico();
+      else if (tab === 'config') loadSaldoAtual();
+      else loadPainel();
+    }
+  }
+});
+
+// Checa por atualização do SW a cada 2 min
+if ('serviceWorker' in navigator) {
+  setInterval(() => {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg) reg.update();
+    });
+  }, AUTO_REFRESH_MS);
+}
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v4";
+const CACHE = "ct-hub-v5";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -71,7 +71,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-/* ---- FETCH: cache-first, exceto Apps Script ---- */
+/* ---- FETCH: network-first p/ HTML, cache-first p/ assets ---- */
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
@@ -81,11 +81,27 @@ self.addEventListener("fetch", (event) => {
   // Nunca cachear chamadas externas de CDN (html5-qrcode etc.)
   if (url.origin !== location.origin) return;
 
+  // HTML / navegação → network-first (sempre pega a versão mais recente)
+  if (event.request.mode === "navigate" || url.pathname.endsWith(".html")) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((c) => c || caches.match("./index.html")))
+    );
+    return;
+  }
+
+  // Assets estáticos (CSS, JS, imagens) → cache-first
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
       return fetch(event.request).then((response) => {
-        // Cacheia novos recursos do mesmo origin
         if (response.ok && event.request.method === "GET") {
           const clone = response.clone();
           caches.open(CACHE).then((cache) => cache.put(event.request, clone));
@@ -93,7 +109,6 @@ self.addEventListener("fetch", (event) => {
         return response;
       });
     }).catch(() => {
-      // Offline fallback: volta pra home
       if (event.request.mode === "navigate") {
         return caches.match("./index.html");
       }
