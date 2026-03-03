@@ -811,6 +811,13 @@
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-group">
+        <span class="sidebar-group-label">Experimental</span>
+        <button class="sidebar-btn" data-sec="sec-experimental" onclick="showSection('sec-experimental',this)">
+            <span class="sb-num">E1</span><span class="sb-icon">🔬</span><span class="sb-label">Traço Experimental</span>
+        </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group">
         <span class="sidebar-group-label">Resultados</span>
         <button class="sidebar-btn" data-sec="sec-abrams" onclick="showSection('sec-abrams',this)">
             <span class="sb-num">7</span><span class="sb-icon">📉</span><span class="sb-label">Curva de Abrams</span>
@@ -856,6 +863,7 @@
         <option value="sec-normas-concreto">📚 Normas</option>
         <option value="sec-memoria">📝 Memória de Cálculo</option>
         <option value="sec-tracos-salvos">📂 Traços Salvos</option>
+        <option value="sec-experimental">🔬 Traço Experimental</option>
     </select>
 </div>
 
@@ -879,6 +887,7 @@
             <button class="hub-card" type="button" onclick="showSection('sec-normas-concreto')"><span class="hub-icon">📚</span><span class="hub-title">Normas</span><span class="hub-desc">Normas usadas e catálogo técnico</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-memoria')"><span class="hub-icon">📝</span><span class="hub-title">Memória</span><span class="hub-desc">Documento técnico</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-tracos-salvos')"><span class="hub-icon">📂</span><span class="hub-title">Traços Salvos</span><span class="hub-desc">Salvar e consultar traços</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-experimental')"><span class="hub-icon">🔬</span><span class="hub-title">Experimental</span><span class="hub-desc">Traço experimental com resistência</span></button>
         </div>
     </div>
 </div>
@@ -1534,6 +1543,39 @@
             </div>
         </div>
 
+        <!-- SEÇÃO DE UMIDADE -->
+        <div style="margin-top:18px;background:linear-gradient(135deg,#fff8e1 0%,#fff3cd 100%);border:2px solid #f5c96e;border-radius:12px;padding:16px 20px;" id="dos-umidade-box">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+                <strong style="font-size:0.95rem;color:#856404;">💧 Correção de Umidade dos Agregados</strong>
+                <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:6px 14px;border-radius:6px;background:#fff;border:1.5px solid #f5c96e;">
+                    <input type="checkbox" id="dos_usar_umidade" onchange="toggleUmidadeDosagem()" style="width:16px;height:16px;">
+                    <span style="font-size:0.88rem;font-weight:600;color:#856404;">Aplicar correção de umidade</span>
+                </label>
+            </div>
+            <div id="dos-umidade-campos" style="display:none;">
+                <p style="font-size:0.82rem;color:#856404;margin-bottom:12px;">Informe a umidade (%) de cada agregado. A água será reduzida e os agregados acrescidos proporcionalmente.</p>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Umidade Areia Natural (%)</label>
+                        <input type="number" id="dos_um_an" value="4.0" step="0.1" min="0" max="20">
+                    </div>
+                    <div class="form-group">
+                        <label>Umidade Areia Industrial (%)</label>
+                        <input type="number" id="dos_um_ai" value="2.5" step="0.1" min="0" max="20">
+                    </div>
+                    <div class="form-group">
+                        <label>Umidade Brita 0 (%)</label>
+                        <input type="number" id="dos_um_b0" value="1.0" step="0.1" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Umidade Brita ½ (%)</label>
+                        <input type="number" id="dos_um_b1" value="0.5" step="0.1" min="0" max="10">
+                    </div>
+                </div>
+            </div>
+            <div id="dos-umidade-resultado" style="margin-top:10px;"></div>
+        </div>
+
         <div class="btn-wrap">
             <button class="btn btn-primary" onclick="calcularDosagem()">📐 Calcular Dosagem</button>
             <button class="btn btn-accent" onclick="abrirModalSalvarTraco()">💾 Salvar Traço</button>
@@ -1590,6 +1632,215 @@
                 <p>Clique em <strong>Atualizar Lista</strong> para carregar os traços salvos.</p>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SEÇÃO — TRAÇO EXPERIMENTAL                          -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="sec-experimental" class="section">
+    <div class="card">
+        <h2><span class="icon">🔬</span> Traço Experimental</h2>
+        <p class="subtitle">Módulo completo para traços experimentais em betoneira/misturador. Correção de umidade, projeção de resistência, gráficos e salvamento na planilha.</p>
+
+        <div class="info-box" style="background:linear-gradient(135deg,#e8f8f5,#d5f5e3);border-left-color:#27ae60;">
+            <strong>🚀 Workflow:</strong> Configure o traço base → Informe o volume → Ative umidade → Calcule → Registre abatimento → Informe rupturas → Analise gráficos → Salve
+        </div>
+
+        <!-- TRAÇO BASE -->
+        <div style="background:#f0f4ff;border:2px solid var(--primary-light);border-radius:12px;padding:18px 22px;margin-bottom:18px;">
+            <h3 style="font-size:1rem;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;">⚖️ Traço Base para 1 m³</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Cimento (kg)</label>
+                    <input type="number" id="exp_cim" value="380" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Adição (kg)</label>
+                    <input type="number" id="exp_adic" value="50" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Areia Natural (kg)</label>
+                    <input type="number" id="exp_an" value="420" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Areia Industrial (kg)</label>
+                    <input type="number" id="exp_ai" value="380" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Brita 0 (kg)</label>
+                    <input type="number" id="exp_b0" value="330" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Brita ½ (kg)</label>
+                    <input type="number" id="exp_b1" value="300" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Água (kg)</label>
+                    <input type="number" id="exp_agua" value="185" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Aditivo SP (kg)</label>
+                    <input type="number" id="exp_adit" value="4.5" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label>Ar Incorporado (%)</label>
+                    <input type="number" id="exp_ar" value="2.5" step="0.1" min="0" max="10">
+                </div>
+                <div class="form-group">
+                    <label>FCK de Projeto (MPa)</label>
+                    <input type="number" id="exp_fck" value="40" step="1">
+                </div>
+            </div>
+            <div style="margin-top:10px;">
+                <button class="btn btn-primary" style="padding:8px 16px;font-size:0.85rem;" onclick="importarDosagemParaExp()">📥 Importar da Dosagem 1 m³</button>
+            </div>
+        </div>
+
+        <!-- VOLUME DO MISTURADOR -->
+        <div style="background:linear-gradient(135deg,#e8f4f8,#d4ecf7);border:2px solid #85c1e9;border-radius:12px;padding:18px 22px;margin-bottom:18px;">
+            <h3 style="font-size:1rem;color:var(--primary);margin-bottom:12px;display:flex;align-items:center;gap:8px;">🏗️ Volume a Bater</h3>
+            <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+                <div class="form-group">
+                    <label>Volume da Betonada (litros)</label>
+                    <input type="number" id="exp_volume" value="40" step="1" min="1" max="2000">
+                </div>
+                <div class="form-group">
+                    <label>Nº de Betonadas</label>
+                    <input type="number" id="exp_num_betonadas" value="1" step="1" min="1" max="100">
+                </div>
+            </div>
+        </div>
+
+        <!-- UMIDADES -->
+        <div style="background:linear-gradient(135deg,#fff8e1,#fff3cd);border:2px solid #f5c96e;border-radius:12px;padding:18px 22px;margin-bottom:18px;">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+                <h3 style="font-size:1rem;color:#856404;margin:0;display:flex;align-items:center;gap:8px;">💧 Correção de Umidade</h3>
+                <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:6px 14px;border-radius:6px;background:#fff;border:1.5px solid #f5c96e;">
+                    <input type="checkbox" id="exp_usar_umidade" checked style="width:16px;height:16px;">
+                    <span style="font-size:0.85rem;font-weight:600;color:#856404;">Aplicar correção</span>
+                </label>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Umidade Areia Natural (%)</label>
+                    <input type="number" id="exp_um_an" value="4.0" step="0.1" min="0" max="20">
+                </div>
+                <div class="form-group">
+                    <label>Umidade Areia Industrial (%)</label>
+                    <input type="number" id="exp_um_ai" value="2.5" step="0.1" min="0" max="20">
+                </div>
+                <div class="form-group">
+                    <label>Umidade Brita 0 (%)</label>
+                    <input type="number" id="exp_um_b0" value="1.0" step="0.1" min="0" max="10">
+                </div>
+                <div class="form-group">
+                    <label>Umidade Brita ½ (%)</label>
+                    <input type="number" id="exp_um_b1" value="0.5" step="0.1" min="0" max="10">
+                </div>
+            </div>
+        </div>
+
+        <!-- ABATIMENTO -->
+        <div style="background:linear-gradient(135deg,#fce4ec,#f8bbd0);border:2px solid #e08e9d;border-radius:12px;padding:18px 22px;margin-bottom:18px;">
+            <h3 style="font-size:1rem;color:#880e4f;margin-bottom:12px;display:flex;align-items:center;gap:8px;">📐 Abatimento / Slump / Flow</h3>
+            <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));">
+                <div class="form-group">
+                    <label>Tipo de Ensaio</label>
+                    <select id="exp_tipo_consist">
+                        <option value="slump">Slump (cone de Abrams)</option>
+                        <option value="flow">Flow (espalhamento)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Valor Medido (mm)</label>
+                    <input type="number" id="exp_consist_valor" value="" step="5" min="0" max="1000" placeholder="Ex: 120 ou 720">
+                </div>
+                <div class="form-group">
+                    <label>Temperatura Ambiente (°C)</label>
+                    <input type="number" id="exp_temp" value="" step="0.5" min="0" max="50" placeholder="Ex: 28">
+                </div>
+                <div class="form-group">
+                    <label>Temperatura do Concreto (°C)</label>
+                    <input type="number" id="exp_temp_concreto" value="" step="0.5" min="0" max="50" placeholder="Ex: 32">
+                </div>
+            </div>
+        </div>
+
+        <!-- RESISTÊNCIAS -->
+        <div style="background:linear-gradient(135deg,#e8eaf6,#c5cae9);border:2px solid #7986cb;border-radius:12px;padding:18px 22px;margin-bottom:18px;">
+            <h3 style="font-size:1rem;color:#283593;margin-bottom:6px;display:flex;align-items:center;gap:8px;">🏋️ Resultados de Resistência à Compressão</h3>
+            <p style="font-size:0.82rem;color:#5c6bc0;margin-bottom:14px;">Informe as rupturas dos corpos de prova (MPa). Deixe em branco as idades ainda não ensaiadas.</p>
+            <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr));">
+                <div class="form-group">
+                    <label>R 24h — CP1 (MPa)</label>
+                    <input type="number" id="exp_r24h_1" step="0.1" min="0" placeholder="—">
+                </div>
+                <div class="form-group">
+                    <label>R 24h — CP2 (MPa)</label>
+                    <input type="number" id="exp_r24h_2" step="0.1" min="0" placeholder="—">
+                </div>
+                <div class="form-group">
+                    <label>R 3d — CP1 (MPa)</label>
+                    <input type="number" id="exp_r3d_1" step="0.1" min="0" placeholder="—">
+                </div>
+                <div class="form-group">
+                    <label>R 3d — CP2 (MPa)</label>
+                    <input type="number" id="exp_r3d_2" step="0.1" min="0" placeholder="—">
+                </div>
+                <div class="form-group">
+                    <label>R 7d — CP1 (MPa)</label>
+                    <input type="number" id="exp_r7d_1" step="0.1" min="0" placeholder="—">
+                </div>
+                <div class="form-group">
+                    <label>R 7d — CP2 (MPa)</label>
+                    <input type="number" id="exp_r7d_2" step="0.1" min="0" placeholder="—">
+                </div>
+                <div class="form-group">
+                    <label>R 28d — CP1 (MPa)</label>
+                    <input type="number" id="exp_r28d_1" step="0.1" min="0" placeholder="—">
+                </div>
+                <div class="form-group">
+                    <label>R 28d — CP2 (MPa)</label>
+                    <input type="number" id="exp_r28d_2" step="0.1" min="0" placeholder="—">
+                </div>
+            </div>
+        </div>
+
+        <!-- OBSERVAÇÕES -->
+        <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:18px;">
+            <div class="form-group">
+                <label>Nome do Traço Experimental *</label>
+                <input type="text" id="exp_nome" placeholder="Ex: Experimental CAA FC40 - Lote 05">
+            </div>
+            <div class="form-group">
+                <label>Observações</label>
+                <textarea id="exp_obs" rows="3" placeholder="Anotações, ajustes feitos, condições climáticas..." style="padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="btn-wrap">
+            <button class="btn btn-primary" onclick="calcularExperimental()">🧮 Calcular Tudo</button>
+            <button class="btn btn-accent" onclick="salvarExperimental()">💾 Salvar Traço Exp.</button>
+            <button class="btn btn-warning" onclick="listarExperimentais()">📋 Listar Traços Exp.</button>
+            <button class="btn-print" onclick="imprimirSecao('sec-experimental','Relatório — Traço Experimental')">🖨️ Imprimir / PDF</button>
+        </div>
+        <div id="exp-salvar-status" style="margin-top:12px;"></div>
+
+        <!-- RESULTADOS -->
+        <div id="res-experimental"></div>
+
+        <!-- GRÁFICO DE RESISTÊNCIA -->
+        <div id="exp-chart-container" style="display:none;margin-top:24px;">
+            <div class="card" style="padding:20px;">
+                <h3 style="font-size:1rem;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:8px;">📈 Evolução da Resistência à Compressão</h3>
+                <canvas id="chartExpResistencia" width="800" height="400" style="max-width:100%;"></canvas>
+            </div>
+        </div>
+
+        <!-- LISTA DE TRAÇOS EXPERIMENTAIS -->
+        <div id="res-experimental-lista" style="margin-top:24px;"></div>
     </div>
 </div>
 
@@ -2290,6 +2541,32 @@ function closeSidebar() {
 // CADASTRO DE FORNECEDORES
 // ═══════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════
+// DOSAGEM — CORREÇÃO DE UMIDADE
+// ═══════════════════════════════════════════════════
+function toggleUmidadeDosagem() {
+    const usar = document.getElementById('dos_usar_umidade').checked;
+    document.getElementById('dos-umidade-campos').style.display = usar ? 'block' : 'none';
+    if (!usar) document.getElementById('dos-umidade-resultado').innerHTML = '';
+}
+
+function calcularCorrecaoUmidade(m, umidades) {
+    // m = massas secas, umidades = {an, ai, b0, b1} em %
+    const corrigido = { ...m };
+    const aguaAgregados =
+        m.an * (umidades.an / 100) +
+        m.ai * (umidades.ai / 100) +
+        m.b0 * (umidades.b0 / 100) +
+        m.b1 * (umidades.b1 / 100);
+    corrigido.an   = m.an  * (1 + umidades.an / 100);
+    corrigido.ai   = m.ai  * (1 + umidades.ai / 100);
+    corrigido.b0   = m.b0  * (1 + umidades.b0 / 100);
+    corrigido.b1   = m.b1  * (1 + umidades.b1 / 100);
+    corrigido.agua = Math.max(0, m.agua - aguaAgregados);
+    corrigido._aguaCorrigida = aguaAgregados;
+    return corrigido;
+}
+
+// ═══════════════════════════════════════════════════
 // DOSAGEM — SALVAR / LISTAR TRAÇOS (Google Sheets)
 // ═══════════════════════════════════════════════════
 // IMPORTANTE: Após implantar o AppsScript_dosagem.gs como Web App,
@@ -2474,6 +2751,609 @@ function carregarTraco(t) {
     showSection('sec-dosagem');
     calcularDosagem();
     alert('✅ Traço "' + (t.nomeTraco || '') + '" carregado com sucesso!');
+}
+
+// ═══════════════════════════════════════════════════
+// MÓDULO EXPERIMENTAL — COMPLETO
+// ═══════════════════════════════════════════════════
+
+function importarDosagemParaExp() {
+    const campos = [
+        ['dos_cim','exp_cim'], ['dos_adic','exp_adic'], ['dos_an','exp_an'],
+        ['dos_ai','exp_ai'], ['dos_b0','exp_b0'], ['dos_b1','exp_b1'],
+        ['dos_agua','exp_agua'], ['dos_adit','exp_adit'], ['dos_ar','exp_ar']
+    ];
+    campos.forEach(([src, dst]) => {
+        const el = document.getElementById(src);
+        if (el) document.getElementById(dst).value = el.value;
+    });
+    alert('✅ Dados importados da Dosagem 1 m³!');
+}
+
+function getExpMassas() {
+    return {
+        cim:  parseFloat(document.getElementById('exp_cim').value) || 0,
+        adic: parseFloat(document.getElementById('exp_adic').value) || 0,
+        an:   parseFloat(document.getElementById('exp_an').value) || 0,
+        ai:   parseFloat(document.getElementById('exp_ai').value) || 0,
+        b0:   parseFloat(document.getElementById('exp_b0').value) || 0,
+        b1:   parseFloat(document.getElementById('exp_b1').value) || 0,
+        agua: parseFloat(document.getElementById('exp_agua').value) || 0,
+        adit: parseFloat(document.getElementById('exp_adit').value) || 0
+    };
+}
+
+function getExpUmidades() {
+    return {
+        an: parseFloat(document.getElementById('exp_um_an').value) || 0,
+        ai: parseFloat(document.getElementById('exp_um_ai').value) || 0,
+        b0: parseFloat(document.getElementById('exp_um_b0').value) || 0,
+        b1: parseFloat(document.getElementById('exp_um_b1').value) || 0
+    };
+}
+
+function getExpResistencias() {
+    const v = id => { const el = document.getElementById(id); return el && el.value !== '' ? parseFloat(el.value) : null; };
+    return {
+        r24h: { cp1: v('exp_r24h_1'), cp2: v('exp_r24h_2') },
+        r3d:  { cp1: v('exp_r3d_1'),  cp2: v('exp_r3d_2') },
+        r7d:  { cp1: v('exp_r7d_1'),  cp2: v('exp_r7d_2') },
+        r28d: { cp1: v('exp_r28d_1'), cp2: v('exp_r28d_2') }
+    };
+}
+
+function mediaResist(r) {
+    if (r.cp1 !== null && r.cp2 !== null) return (r.cp1 + r.cp2) / 2;
+    if (r.cp1 !== null) return r.cp1;
+    if (r.cp2 !== null) return r.cp2;
+    return null;
+}
+
+function projetarResistencia28d(resist) {
+    // Projeção pela Lei de Abrams/curva logarítmica
+    const m24h = mediaResist(resist.r24h);
+    const m3d = mediaResist(resist.r3d);
+    const m7d = mediaResist(resist.r7d);
+    const m28d = mediaResist(resist.r28d);
+
+    const projecoes = {};
+
+    // Fatores NBR típicos: r3/r28 ≈ 0.46, r7/r28 ≈ 0.65, r24h/r28 ≈ 0.25
+    if (m24h !== null) projecoes.de24h = m24h / 0.25;
+    if (m3d !== null) projecoes.de3d = m3d / 0.46;
+    if (m7d !== null) projecoes.de7d = m7d / 0.65;
+    if (m28d !== null) projecoes.real = m28d;
+
+    // Projeção logarítmica: fc(t) = fc28 * ln(t)/ln(28)
+    if (m7d !== null && m3d !== null) {
+        // Regressão log: fc = a * ln(t) + b
+        const ln3 = Math.log(3), ln7 = Math.log(7), ln28 = Math.log(28);
+        const a = (m7d - m3d) / (ln7 - ln3);
+        const b = m3d - a * ln3;
+        projecoes.logRegressao = a * ln28 + b;
+    }
+
+    return projecoes;
+}
+
+function calcularExperimental() {
+    const rho = getRho();
+    const m = getExpMassas();
+    const usarUmidade = document.getElementById('exp_usar_umidade').checked;
+    const umidades = getExpUmidades();
+    const volumeLitros = parseFloat(document.getElementById('exp_volume').value) || 40;
+    const numBetonadas = parseFloat(document.getElementById('exp_num_betonadas').value) || 1;
+    const arPct = parseFloat(document.getElementById('exp_ar').value) || 0;
+    const fck = parseFloat(document.getElementById('exp_fck').value) || 0;
+    const tipoConsist = document.getElementById('exp_tipo_consist').value;
+    const consistValor = parseFloat(document.getElementById('exp_consist_valor').value) || 0;
+    const tempAmb = document.getElementById('exp_temp').value;
+    const tempConcreto = document.getElementById('exp_temp_concreto').value;
+    const resist = getExpResistencias();
+
+    // Volumes absolutos para 1 m³
+    const v = {};
+    Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
+    const vAr = arPct * 10;
+    const vTotal1m3 = Object.values(v).reduce((a,b)=>a+b,0) + vAr;
+    const massaTotal1m3 = Object.values(m).reduce((a,b)=>a+b,0);
+
+    // Fator de escala: volume pedido / 1000L
+    const fatorVol = volumeLitros / 1000;
+    const fatorTotal = fatorVol * numBetonadas;
+
+    // Massas para o volume pedido (secas)
+    const mVol = {};
+    Object.keys(m).forEach(k => { mVol[k] = m[k] * fatorTotal; });
+
+    // Correção de umidade
+    let mCorrigido = { ...mVol };
+    let aguaCorrigidaInfo = null;
+    if (usarUmidade) {
+        const aguaAgregados =
+            mVol.an * (umidades.an / 100) +
+            mVol.ai * (umidades.ai / 100) +
+            mVol.b0 * (umidades.b0 / 100) +
+            mVol.b1 * (umidades.b1 / 100);
+        mCorrigido.an   = mVol.an  * (1 + umidades.an / 100);
+        mCorrigido.ai   = mVol.ai  * (1 + umidades.ai / 100);
+        mCorrigido.b0   = mVol.b0  * (1 + umidades.b0 / 100);
+        mCorrigido.b1   = mVol.b1  * (1 + umidades.b1 / 100);
+        mCorrigido.agua = Math.max(0, mVol.agua - aguaAgregados);
+        aguaCorrigidaInfo = aguaAgregados;
+    }
+
+    const ac = m.cim > 0 ? m.agua / m.cim : 0;
+    const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
+    const mArg = m.cim + m.adic + m.an + m.ai + m.adit;
+    const mAgrG = m.b0 + m.b1;
+    const argMassa = (mArg + mAgrG) > 0 ? (mArg / (mArg + mAgrG)) * 100 : 0;
+    const consumoCim = vTotal1m3 > 0 ? m.cim * (1000 / vTotal1m3) : 0;
+    const massaEsp = vTotal1m3 > 0 ? massaTotal1m3 * 1000 / vTotal1m3 : 0;
+
+    // Resistências
+    const m24h = mediaResist(resist.r24h);
+    const m3d = mediaResist(resist.r3d);
+    const m7d = mediaResist(resist.r7d);
+    const m28d = mediaResist(resist.r28d);
+    const proj = projetarResistencia28d(resist);
+
+    const consistLabel = tipoConsist === 'slump' ? 'Slump' : 'Flow';
+    const consistOk = tipoConsist === 'slump'
+        ? (consistValor >= 100 && consistValor <= 220 ? 'ok' : (consistValor >= 60 && consistValor <= 250 ? 'warn' : 'error'))
+        : (consistValor >= 650 && consistValor <= 850 ? 'ok' : (consistValor >= 550 && consistValor <= 900 ? 'warn' : 'error'));
+
+    // ==================== HTML DO RESULTADO ====================
+    let html = `
+    <div class="result-box ok" style="margin-top:22px;">
+        <h3>🔬 Resultado do Traço Experimental</h3>
+
+        <!-- DADOS GERAIS -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div style="background:#f0f4ff;border-radius:8px;padding:12px;">
+                <strong style="font-size:0.85rem;color:var(--primary);">📋 Parâmetros</strong>
+                <table class="result-table" style="margin-top:6px;">
+                    <tr><td>Volume por betonada</td><td class="highlight">${fmt(volumeLitros,0)} L</td></tr>
+                    <tr><td>Nº de betonadas</td><td class="highlight">${numBetonadas}</td></tr>
+                    <tr><td>Volume total</td><td class="highlight">${fmt(volumeLitros * numBetonadas,0)} L</td></tr>
+                    <tr><td>a/c</td><td class="highlight">${fmt(ac,3)}</td></tr>
+                    <tr><td>a/aglomerante</td><td class="highlight">${fmt(aAgl,3)}</td></tr>
+                    <tr><td>Consumo cimento</td><td class="highlight">${fmt(consumoCim,1)} kg/m³</td></tr>
+                    <tr><td>Massa esp. concreto</td><td class="highlight">${fmt(massaEsp,0)} kg/m³</td></tr>
+                    <tr><td>Teor de argamassa</td><td class="highlight">${fmt(argMassa,1)}%</td></tr>
+                    <tr><td>FCK de projeto</td><td class="highlight">${fck} MPa</td></tr>
+                </table>
+            </div>
+            <div style="background:#fef8f0;border-radius:8px;padding:12px;">
+                <strong style="font-size:0.85rem;color:#856404;">📐 Consistência</strong>
+                <table class="result-table" style="margin-top:6px;">
+                    <tr><td>Tipo</td><td>${consistLabel}</td></tr>
+                    <tr><td>Valor</td><td class="${consistOk === 'ok' ? 'ok-val' : (consistOk === 'warn' ? 'warn-val' : 'err-val')}">${consistValor > 0 ? consistValor + ' mm' : '—'}</td></tr>
+                    ${tempAmb ? `<tr><td>Temp. ambiente</td><td>${tempAmb}°C</td></tr>` : ''}
+                    ${tempConcreto ? `<tr><td>Temp. concreto</td><td>${tempConcreto}°C</td></tr>` : ''}
+                </table>
+            </div>
+        </div>
+
+        <!-- TABELA DE MATERIAIS -->
+        <h3 style="margin-top:14px;">📦 Materiais para ${numBetonadas > 1 ? numBetonadas + ' betonadas (' + fmt(volumeLitros*numBetonadas,0) + ' L)' : fmt(volumeLitros,0) + ' L'}</h3>
+        <table class="result-table">
+            <thead><tr>
+                <th>Material</th>
+                <th>p/ 1 m³ (kg)</th>
+                <th>p/ ${fmt(volumeLitros*numBetonadas,0)} L (kg, seco)</th>
+                ${usarUmidade ? '<th>Umid. (%)</th><th>Massa Úmida (kg)</th>' : ''}
+            </tr></thead>
+            <tbody>
+                <tr><td>Cimento</td><td>${fmt(m.cim,1)}</td><td>${fmt(mVol.cim,2)}</td>${usarUmidade ? '<td>—</td><td>' + fmt(mCorrigido.cim,2) + '</td>' : ''}</tr>
+                <tr><td>Adição</td><td>${fmt(m.adic,1)}</td><td>${fmt(mVol.adic,2)}</td>${usarUmidade ? '<td>—</td><td>' + fmt(mCorrigido.adic,2) + '</td>' : ''}</tr>
+                <tr><td>Areia Natural</td><td>${fmt(m.an,1)}</td><td>${fmt(mVol.an,2)}</td>${usarUmidade ? '<td>' + fmt(umidades.an,1) + '</td><td class="warn-val">' + fmt(mCorrigido.an,2) + '</td>' : ''}</tr>
+                <tr><td>Areia Industrial</td><td>${fmt(m.ai,1)}</td><td>${fmt(mVol.ai,2)}</td>${usarUmidade ? '<td>' + fmt(umidades.ai,1) + '</td><td class="warn-val">' + fmt(mCorrigido.ai,2) + '</td>' : ''}</tr>
+                <tr><td>Brita 0</td><td>${fmt(m.b0,1)}</td><td>${fmt(mVol.b0,2)}</td>${usarUmidade ? '<td>' + fmt(umidades.b0,1) + '</td><td class="warn-val">' + fmt(mCorrigido.b0,2) + '</td>' : ''}</tr>
+                <tr><td>Brita ½</td><td>${fmt(m.b1,1)}</td><td>${fmt(mVol.b1,2)}</td>${usarUmidade ? '<td>' + fmt(umidades.b1,1) + '</td><td class="warn-val">' + fmt(mCorrigido.b1,2) + '</td>' : ''}</tr>
+                <tr><td>Água</td><td>${fmt(m.agua,1)}</td><td>${fmt(mVol.agua,2)}</td>${usarUmidade ? '<td>—</td><td class="ok-val">' + fmt(mCorrigido.agua,2) + '</td>' : ''}</tr>
+                <tr><td>Aditivo SP</td><td>${fmt(m.adit,1)}</td><td>${fmt(mVol.adit,2)}</td>${usarUmidade ? '<td>—</td><td>' + fmt(mCorrigido.adit,2) + '</td>' : ''}</tr>
+            </tbody>
+        </table>`;
+
+    if (usarUmidade && aguaCorrigidaInfo !== null) {
+        html += `<div style="margin-top:10px;padding:10px 14px;background:#fff8e1;border-radius:8px;border:1px solid #f5c96e;font-size:0.85rem;">
+            💧 <strong>Água nos agregados:</strong> ${fmt(aguaCorrigidaInfo,2)} kg →
+            Água efetiva de dosagem: <strong>${fmt(mCorrigido.agua,2)} kg</strong> (redução de ${fmt(mVol.agua - mCorrigido.agua,2)} kg)
+        </div>`;
+    }
+
+    // ==================== RESISTÊNCIAS ====================
+    const temResist = m24h !== null || m3d !== null || m7d !== null || m28d !== null;
+    if (temResist) {
+        html += `
+        <div class="sep"></div>
+        <h3 style="margin-top:14px;">🏋️ Resistência à Compressão</h3>
+        <table class="result-table">
+            <thead><tr><th>Idade</th><th>CP1 (MPa)</th><th>CP2 (MPa)</th><th>Média (MPa)</th><th>% do FCK</th><th>Status</th></tr></thead>
+            <tbody>`;
+
+        const idades = [
+            { label: '24 horas', data: resist.r24h, media: m24h, meta: fck * 0.25 },
+            { label: '3 dias', data: resist.r3d, media: m3d, meta: fck * 0.46 },
+            { label: '7 dias', data: resist.r7d, media: m7d, meta: fck * 0.65 },
+            { label: '28 dias', data: resist.r28d, media: m28d, meta: fck }
+        ];
+
+        idades.forEach(id => {
+            if (id.media !== null) {
+                const pctFck = fck > 0 ? (id.media / fck * 100) : 0;
+                const status = id.media >= id.meta
+                    ? '<span class="badge badge-ok">✓ OK</span>'
+                    : (id.media >= id.meta * 0.85
+                        ? '<span class="badge badge-warn">⚠ Atenção</span>'
+                        : '<span class="badge badge-err">✗ Baixo</span>');
+                html += `<tr>
+                    <td><strong>${id.label}</strong></td>
+                    <td>${id.data.cp1 !== null ? fmt(id.data.cp1, 1) : '—'}</td>
+                    <td>${id.data.cp2 !== null ? fmt(id.data.cp2, 1) : '—'}</td>
+                    <td class="highlight">${fmt(id.media, 1)}</td>
+                    <td>${fmt(pctFck, 1)}%</td>
+                    <td>${status}</td>
+                </tr>`;
+            }
+        });
+
+        html += '</tbody></table>';
+
+        // Projeções
+        const projEntries = Object.entries(proj);
+        if (projEntries.length > 0) {
+            html += `
+            <div style="margin-top:14px;background:linear-gradient(135deg,#e8eaf6,#c5cae9);border-radius:10px;padding:14px 18px;">
+                <h3 style="font-size:0.95rem;color:#283593;margin-bottom:10px;">🔮 Projeções para 28 dias</h3>
+                <table class="result-table">
+                    <thead><tr><th>Método</th><th>fc28 Projetado (MPa)</th><th>vs FCK</th></tr></thead>
+                    <tbody>`;
+
+            const projLabels = {
+                de24h: 'A partir de 24h (fator 0.25)',
+                de3d: 'A partir de 3 dias (fator 0.46)',
+                de7d: 'A partir de 7 dias (fator 0.65)',
+                real: 'Resultado real 28 dias',
+                logRegressao: 'Regressão logarítmica (3d + 7d)'
+            };
+
+            projEntries.forEach(([key, val]) => {
+                const ok = val >= fck;
+                html += `<tr>
+                    <td>${projLabels[key] || key}</td>
+                    <td class="${ok ? 'ok-val' : 'err-val'}">${fmt(val, 1)} MPa</td>
+                    <td>${ok ? '<span class="badge badge-ok">≥ FCK</span>' : '<span class="badge badge-err">< FCK</span>'}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table></div>';
+        }
+    }
+
+    html += '</div>';
+    document.getElementById('res-experimental').innerHTML = html;
+
+    // ==================== GRÁFICO ====================
+    if (temResist) {
+        desenharGraficoResistencia(resist, fck, proj);
+    }
+}
+
+function desenharGraficoResistencia(resist, fck, proj) {
+    const container = document.getElementById('exp-chart-container');
+    container.style.display = 'block';
+    const canvas = document.getElementById('chartExpResistencia');
+    const ctx = canvas.getContext('2d');
+
+    // High DPI
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.parentElement.offsetWidth - 40;
+    const h = 400;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.scale(dpr, dpr);
+
+    const pad = { top: 50, right: 40, bottom: 60, left: 65 };
+    const cw = w - pad.left - pad.right;
+    const ch = h - pad.top - pad.bottom;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Background
+    const bg = ctx.createLinearGradient(0, 0, 0, h);
+    bg.addColorStop(0, '#f8fbff');
+    bg.addColorStop(1, '#eef3f7');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Dados
+    const idades = [0.04, 1, 3, 7, 28]; // 1h, 1d, 3d, 7d, 28d
+    const m24h = mediaResist(resist.r24h);
+    const m3d = mediaResist(resist.r3d);
+    const m7d = mediaResist(resist.r7d);
+    const m28d = mediaResist(resist.r28d);
+    const pontos = [
+        { x: 1, y: m24h },
+        { x: 3, y: m3d },
+        { x: 7, y: m7d },
+        { x: 28, y: m28d }
+    ].filter(p => p.y !== null);
+
+    if (pontos.length === 0) return;
+
+    const maxY = Math.max(fck * 1.3, ...pontos.map(p => p.y)) * 1.1;
+    const xLabels = [1, 3, 7, 14, 21, 28];
+    const xMin = 0, xMax = 30;
+
+    const toX = v => pad.left + (v / xMax) * cw;
+    const toY = v => pad.top + ch - (v / maxY) * ch;
+
+    // Grid
+    ctx.strokeStyle = '#dce1e6';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 5; i++) {
+        const yv = (maxY / 5) * i;
+        const y = toY(yv);
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
+        ctx.fillStyle = '#7f8c8d'; ctx.font = '11px Segoe UI'; ctx.textAlign = 'right';
+        ctx.fillText(fmt(yv, 0), pad.left - 8, y + 4);
+    }
+    xLabels.forEach(xl => {
+        const x = toX(xl);
+        ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ch); ctx.stroke();
+        ctx.fillStyle = '#7f8c8d'; ctx.font = '11px Segoe UI'; ctx.textAlign = 'center';
+        ctx.fillText(xl + 'd', x, h - pad.bottom + 18);
+    });
+
+    // FCK line
+    ctx.strokeStyle = '#e74c3c';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([8, 4]);
+    ctx.beginPath();
+    ctx.moveTo(pad.left, toY(fck));
+    ctx.lineTo(w - pad.right, toY(fck));
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 11px Segoe UI'; ctx.textAlign = 'left';
+    ctx.fillText('FCK = ' + fck + ' MPa', w - pad.right - 120, toY(fck) - 6);
+
+    // Curva projetada (logarítmica suave)
+    if (pontos.length >= 2) {
+        // Regressão logarítmica: y = a * ln(x) + b
+        let sumLnX = 0, sumY = 0, sumLnX2 = 0, sumLnXY = 0;
+        pontos.forEach(p => {
+            const lnx = Math.log(p.x);
+            sumLnX += lnx; sumY += p.y; sumLnX2 += lnx * lnx; sumLnXY += lnx * p.y;
+        });
+        const n = pontos.length;
+        const a = (n * sumLnXY - sumLnX * sumY) / (n * sumLnX2 - sumLnX * sumLnX);
+        const b = (sumY - a * sumLnX) / n;
+
+        ctx.strokeStyle = 'rgba(41,128,185,0.35)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        for (let d = 0.5; d <= 30; d += 0.5) {
+            const yVal = a * Math.log(d) + b;
+            const px = toX(d), py = toY(Math.max(0, yVal));
+            if (d === 0.5) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // Pontos e linha principal
+    ctx.strokeStyle = '#1a5276';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    pontos.forEach((p, i) => {
+        const px = toX(p.x), py = toY(p.y);
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    });
+    ctx.stroke();
+
+    // Dots
+    pontos.forEach(p => {
+        const px = toX(p.x), py = toY(p.y);
+        // Glow
+        ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(26,82,118,0.15)'; ctx.fill();
+        // Dot
+        ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI * 2);
+        ctx.fillStyle = p.y >= fck ? '#27ae60' : '#1a5276'; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+        // Label
+        ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 12px Segoe UI'; ctx.textAlign = 'center';
+        ctx.fillText(fmt(p.y, 1) + ' MPa', px, py - 14);
+    });
+
+    // Título
+    ctx.fillStyle = '#1a5276'; ctx.font = 'bold 14px Segoe UI'; ctx.textAlign = 'center';
+    ctx.fillText('Evolução da Resistência à Compressão', w / 2, 22);
+
+    // Eixos
+    ctx.fillStyle = '#7f8c8d'; ctx.font = '12px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText('Idade (dias)', w / 2, h - 8);
+    ctx.save();
+    ctx.translate(15, h / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Resistência (MPa)', 0, 0);
+    ctx.restore();
+
+    // Legenda
+    const legY = h - 15;
+    ctx.fillStyle = '#1a5276'; ctx.fillRect(pad.left, legY, 12, 3);
+    ctx.fillStyle = '#555'; ctx.font = '10px Segoe UI'; ctx.textAlign = 'left';
+    ctx.fillText('Resultados', pad.left + 16, legY + 4);
+    ctx.fillStyle = 'rgba(41,128,185,0.35)'; ctx.fillRect(pad.left + 90, legY, 12, 3);
+    ctx.fillStyle = '#555'; ctx.fillText('Projeção log.', pad.left + 106, legY + 4);
+    ctx.fillStyle = '#e74c3c'; ctx.fillRect(pad.left + 180, legY, 12, 3);
+    ctx.fillStyle = '#555'; ctx.fillText('FCK', pad.left + 196, legY + 4);
+}
+
+async function salvarExperimental() {
+    const nome = document.getElementById('exp_nome').value.trim();
+    if (!nome) {
+        document.getElementById('exp-salvar-status').innerHTML = '<span class="badge badge-err">⚠ Informe o nome do traço experimental!</span>';
+        return;
+    }
+
+    const m = getExpMassas();
+    const rho = getRho();
+    const usarUmidade = document.getElementById('exp_usar_umidade').checked;
+    const umidades = getExpUmidades();
+    const volumeLitros = parseFloat(document.getElementById('exp_volume').value) || 40;
+    const numBetonadas = parseFloat(document.getElementById('exp_num_betonadas').value) || 1;
+    const arPct = parseFloat(document.getElementById('exp_ar').value) || 0;
+    const fck = parseFloat(document.getElementById('exp_fck').value) || 0;
+    const consistValor = parseFloat(document.getElementById('exp_consist_valor').value) || 0;
+    const tipoConsist = document.getElementById('exp_tipo_consist').value;
+    const tempAmb = document.getElementById('exp_temp').value || '';
+    const tempConcreto = document.getElementById('exp_temp_concreto').value || '';
+    const obs = document.getElementById('exp_obs').value.trim();
+    const resist = getExpResistencias();
+
+    const v = {};
+    Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
+    const vTotal = Object.values(v).reduce((a,b)=>a+b,0) + arPct * 10;
+    const ac = m.cim > 0 ? m.agua / m.cim : 0;
+    const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
+    const consumoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
+
+    const agora = new Date();
+    const id = 'EXP-' + agora.getFullYear() + String(agora.getMonth()+1).padStart(2,'0') + String(agora.getDate()).padStart(2,'0') + String(agora.getHours()).padStart(2,'0') + String(agora.getMinutes()).padStart(2,'0') + String(agora.getSeconds()).padStart(2,'0') + '-' + Math.floor(Math.random()*9000+1000);
+    const dataHora = agora.toLocaleString('pt-BR');
+
+    const payload = {
+        action: 'salvar_experimental',
+        id, dataHora, nomeTraco: nome, fck,
+        cimento: m.cim, adicao: m.adic, areiaNatural: m.an, areiaIndustrial: m.ai,
+        brita0: m.b0, brita1: m.b1, agua: m.agua, aditivoSP: m.adit,
+        arIncorporado: arPct, volumeBetonada: volumeLitros, numBetonadas,
+        umAN: usarUmidade ? umidades.an : '', umAI: usarUmidade ? umidades.ai : '',
+        umB0: usarUmidade ? umidades.b0 : '', umB1: usarUmidade ? umidades.b1 : '',
+        tipoConsistencia: tipoConsist, consistencia: consistValor,
+        tempAmbiente: tempAmb, tempConcreto,
+        ac: fmt(ac,3), aAgl: fmt(aAgl,3), consumoCimento: fmt(consumoCim,1),
+        r24h_1: resist.r24h.cp1 ?? '', r24h_2: resist.r24h.cp2 ?? '',
+        r3d_1: resist.r3d.cp1 ?? '', r3d_2: resist.r3d.cp2 ?? '',
+        r7d_1: resist.r7d.cp1 ?? '', r7d_2: resist.r7d.cp2 ?? '',
+        r28d_1: resist.r28d.cp1 ?? '', r28d_2: resist.r28d.cp2 ?? '',
+        observacoes: obs
+    };
+
+    const statusEl = document.getElementById('exp-salvar-status');
+    statusEl.innerHTML = '<span class="badge badge-warn">⏳ Enviando...</span>';
+
+    if (!DOSAGEM_WEBAPP_URL) {
+        statusEl.innerHTML = '<span class="badge badge-err">❌ URL do Web App não configurada.</span>';
+        return;
+    }
+
+    try {
+        await fetch(DOSAGEM_WEBAPP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload),
+            mode: 'no-cors'
+        });
+        statusEl.innerHTML = '<span class="badge badge-ok">✅ Traço experimental salvo! — ' + nome + ' em ' + dataHora + '</span>';
+    } catch (err) {
+        statusEl.innerHTML = '<span class="badge badge-err">❌ Erro: ' + err.message + '</span>';
+    }
+}
+
+async function listarExperimentais() {
+    const container = document.getElementById('res-experimental-lista');
+    container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-light);"><div style="font-size:2rem;">⏳</div><p>Carregando traços experimentais...</p></div>';
+
+    if (!DOSAGEM_WEBAPP_URL) {
+        container.innerHTML = '<div class="result-box error"><h3>❌ URL não configurada</h3></div>';
+        return;
+    }
+
+    try {
+        const resp = await fetch(DOSAGEM_WEBAPP_URL + '?action=listar_experimentais', { method: 'GET' });
+        const data = await resp.json();
+
+        if (!data.ok || !data.tracos || data.tracos.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-light);"><p>Nenhum traço experimental salvo ainda.</p></div>';
+            return;
+        }
+
+        let html = '<div class="card" style="margin-top:16px;"><h3 style="font-size:1rem;color:var(--primary);margin-bottom:12px;">📋 Traços Experimentais Salvos</h3>';
+        html += '<div style="overflow-x:auto;"><table class="result-table"><thead><tr>';
+        html += '<th>Nome</th><th>Data</th><th>FCK</th><th>a/c</th><th>Consist.</th><th>R24h</th><th>R3d</th><th>R7d</th><th>R28d</th><th>Ações</th>';
+        html += '</tr></thead><tbody>';
+
+        data.tracos.forEach(t => {
+            const r24 = (t.r24h_1 || t.r24h_2) ? fmt(((parseFloat(t.r24h_1)||0)+(parseFloat(t.r24h_2)||0))/ ((t.r24h_1?1:0)+(t.r24h_2?1:0) || 1), 1) : '—';
+            const r3 = (t.r3d_1 || t.r3d_2) ? fmt(((parseFloat(t.r3d_1)||0)+(parseFloat(t.r3d_2)||0))/ ((t.r3d_1?1:0)+(t.r3d_2?1:0) || 1), 1) : '—';
+            const r7 = (t.r7d_1 || t.r7d_2) ? fmt(((parseFloat(t.r7d_1)||0)+(parseFloat(t.r7d_2)||0))/ ((t.r7d_1?1:0)+(t.r7d_2?1:0) || 1), 1) : '—';
+            const r28 = (t.r28d_1 || t.r28d_2) ? fmt(((parseFloat(t.r28d_1)||0)+(parseFloat(t.r28d_2)||0))/ ((t.r28d_1?1:0)+(t.r28d_2?1:0) || 1), 1) : '—';
+            html += `<tr>
+                <td><strong>${t.nomeTraco || '—'}</strong></td>
+                <td style="font-size:0.8rem;">${t.dataHora || '—'}</td>
+                <td>${t.fck || '—'}</td>
+                <td>${t.ac || '—'}</td>
+                <td>${t.consistencia ? t.consistencia + ' mm' : '—'}</td>
+                <td>${r24}</td><td>${r3}</td><td>${r7}</td><td>${r28}</td>
+                <td><button class="btn btn-primary" style="padding:5px 10px;font-size:0.75rem;" onclick='carregarExperimental(${JSON.stringify(t).replace(/'/g,"&#39;")})'>📥 Carregar</button></td>
+            </tr>`;
+        });
+
+        html += '</tbody></table></div>';
+        html += `<div style="margin-top:10px;font-size:0.82rem;color:var(--text-light);">Total: <strong>${data.tracos.length}</strong> traço(s) experimental(is)</div>`;
+        html += '</div>';
+        container.innerHTML = html;
+    } catch (err) {
+        container.innerHTML = '<div class="result-box error"><h3>❌ Erro</h3><p>' + err.message + '</p></div>';
+    }
+}
+
+function carregarExperimental(t) {
+    if (t.cimento !== undefined) document.getElementById('exp_cim').value = t.cimento;
+    if (t.adicao !== undefined) document.getElementById('exp_adic').value = t.adicao;
+    if (t.areiaNatural !== undefined) document.getElementById('exp_an').value = t.areiaNatural;
+    if (t.areiaIndustrial !== undefined) document.getElementById('exp_ai').value = t.areiaIndustrial;
+    if (t.brita0 !== undefined) document.getElementById('exp_b0').value = t.brita0;
+    if (t.brita1 !== undefined) document.getElementById('exp_b1').value = t.brita1;
+    if (t.agua !== undefined) document.getElementById('exp_agua').value = t.agua;
+    if (t.aditivoSP !== undefined) document.getElementById('exp_adit').value = t.aditivoSP;
+    if (t.arIncorporado !== undefined) document.getElementById('exp_ar').value = t.arIncorporado;
+    if (t.fck !== undefined) document.getElementById('exp_fck').value = t.fck;
+    if (t.volumeBetonada !== undefined) document.getElementById('exp_volume').value = t.volumeBetonada;
+    if (t.numBetonadas !== undefined) document.getElementById('exp_num_betonadas').value = t.numBetonadas;
+    if (t.tipoConsistencia) document.getElementById('exp_tipo_consist').value = t.tipoConsistencia;
+    if (t.consistencia) document.getElementById('exp_consist_valor').value = t.consistencia;
+    if (t.tempAmbiente) document.getElementById('exp_temp').value = t.tempAmbiente;
+    if (t.tempConcreto) document.getElementById('exp_temp_concreto').value = t.tempConcreto;
+    if (t.nomeTraco) document.getElementById('exp_nome').value = t.nomeTraco;
+    if (t.observacoes) document.getElementById('exp_obs').value = t.observacoes;
+    // Umidades
+    if (t.umAN) { document.getElementById('exp_um_an').value = t.umAN; document.getElementById('exp_usar_umidade').checked = true; }
+    if (t.umAI) document.getElementById('exp_um_ai').value = t.umAI;
+    if (t.umB0) document.getElementById('exp_um_b0').value = t.umB0;
+    if (t.umB1) document.getElementById('exp_um_b1').value = t.umB1;
+    // Resistências
+    if (t.r24h_1) document.getElementById('exp_r24h_1').value = t.r24h_1;
+    if (t.r24h_2) document.getElementById('exp_r24h_2').value = t.r24h_2;
+    if (t.r3d_1) document.getElementById('exp_r3d_1').value = t.r3d_1;
+    if (t.r3d_2) document.getElementById('exp_r3d_2').value = t.r3d_2;
+    if (t.r7d_1) document.getElementById('exp_r7d_1').value = t.r7d_1;
+    if (t.r7d_2) document.getElementById('exp_r7d_2').value = t.r7d_2;
+    if (t.r28d_1) document.getElementById('exp_r28d_1').value = t.r28d_1;
+    if (t.r28d_2) document.getElementById('exp_r28d_2').value = t.r28d_2;
+
+    // Scroll to top and recalculate
+    document.querySelector('.content-area').scrollTo({top: 0, behavior: 'smooth'});
+    calcularExperimental();
+    alert('✅ Traço experimental "' + (t.nomeTraco || '') + '" carregado!');
 }
 
 const FORNECEDORES_STORAGE_KEY = 'cadastroFornecedoresV1';
@@ -4182,6 +5062,36 @@ function calcularDosagem() {
             </div>
         </div>
     </div>`;
+
+    // Se umidade ativa, adicionar tabela de correção
+    const usarUmidade = document.getElementById('dos_usar_umidade') && document.getElementById('dos_usar_umidade').checked;
+    if (usarUmidade) {
+        const umidades = {
+            an: parseFloat(document.getElementById('dos_um_an').value) || 0,
+            ai: parseFloat(document.getElementById('dos_um_ai').value) || 0,
+            b0: parseFloat(document.getElementById('dos_um_b0').value) || 0,
+            b1: parseFloat(document.getElementById('dos_um_b1').value) || 0
+        };
+        const mc = calcularCorrecaoUmidade(m, umidades);
+        html += `
+        <div class="result-box ok" style="margin-top:18px;">
+            <h3>💧 Traço Corrigido pela Umidade</h3>
+            <p style="font-size:0.85rem;color:#666;margin-bottom:10px;">Água dos agregados = ${fmt(mc._aguaCorrigida,1)} kg → Água efetiva reduzida de ${fmt(m.agua,1)} para ${fmt(mc.agua,1)} kg</p>
+            <table class="result-table">
+                <thead><tr><th>Material</th><th>Massa Seca (kg)</th><th>Umidade (%)</th><th>Massa Úmida (kg)</th><th>Diferença (kg)</th></tr></thead>
+                <tbody>
+                    <tr><td>Cimento</td><td>${fmt(m.cim,1)}</td><td>—</td><td>${fmt(m.cim,1)}</td><td>—</td></tr>
+                    <tr><td>Adição</td><td>${fmt(m.adic,1)}</td><td>—</td><td>${fmt(m.adic,1)}</td><td>—</td></tr>
+                    <tr><td>Areia Natural</td><td>${fmt(m.an,1)}</td><td>${fmt(umidades.an,1)}</td><td>${fmt(mc.an,1)}</td><td class="warn-val">+${fmt(mc.an - m.an,1)}</td></tr>
+                    <tr><td>Areia Industrial</td><td>${fmt(m.ai,1)}</td><td>${fmt(umidades.ai,1)}</td><td>${fmt(mc.ai,1)}</td><td class="warn-val">+${fmt(mc.ai - m.ai,1)}</td></tr>
+                    <tr><td>Brita 0</td><td>${fmt(m.b0,1)}</td><td>${fmt(umidades.b0,1)}</td><td>${fmt(mc.b0,1)}</td><td class="warn-val">+${fmt(mc.b0 - m.b0,1)}</td></tr>
+                    <tr><td>Brita ½</td><td>${fmt(m.b1,1)}</td><td>${fmt(umidades.b1,1)}</td><td>${fmt(mc.b1,1)}</td><td class="warn-val">+${fmt(mc.b1 - m.b1,1)}</td></tr>
+                    <tr><td>Água</td><td>${fmt(m.agua,1)}</td><td>—</td><td class="ok-val">${fmt(mc.agua,1)}</td><td class="ok-val">${fmt(mc.agua - m.agua,1)}</td></tr>
+                    <tr><td>Aditivo SP</td><td>${fmt(m.adit,1)}</td><td>—</td><td>${fmt(m.adit,1)}</td><td>—</td></tr>
+                </tbody>
+            </table>
+        </div>`;
+    }
 
     document.getElementById('res-dosagem').innerHTML = html;
 }
