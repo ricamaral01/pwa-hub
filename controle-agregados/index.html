@@ -1,0 +1,1339 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CONCRETRACK • Controle de Agregados</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#2F3640">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- anti-cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    /* === NAV CARDS === */
+    .nav-cards{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+    .nav-card{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:20px 10px; border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.22));
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      cursor:pointer; user-select:none;
+      transition: all .18s ease;
+      text-decoration:none; color:var(--text);
+    }
+    .nav-card:hover, .nav-card:active{
+      border-color: rgba(138,201,104,.45);
+      background: linear-gradient(135deg, #15416F, #0f2e52);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    }
+    .nav-card-icon{ font-size:32px; margin-bottom:8px; }
+    .nav-card-name{ font-size:14px; font-weight:900; text-align:center; }
+    .nav-card-desc{ font-size:11px; color:var(--muted); margin-top:4px; text-align:center; }
+
+    .btn-voltar{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:8px 16px; border-radius:12px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--muted); font-size:13px; font-weight:900;
+      cursor:pointer; margin-bottom:14px;
+      transition: all .15s;
+    }
+    .btn-voltar:hover{ color:var(--text); border-color: rgba(138,201,104,.35); }
+
+    .tabContent{ display:none; }
+    .tabContent.active{ display:block; }
+
+    /* === MATERIAL DASHBOARD === */
+    .mat-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+    .mat-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.22));
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+      text-align:center;
+      box-shadow: var(--shadow);
+    }
+    .mat-label{ font-size:12px; font-weight:900; color:var(--muted); margin-bottom:4px; }
+    .mat-value{ font-size:24px; font-weight:1000; }
+    .mat-sub{ font-size:11px; color:var(--muted); margin-top:4px; }
+    .mat-ok{ color:#16A34A; }
+    .mat-warn{ color:#F59E0B; }
+    .mat-err{ color:#EF4444; }
+
+    /* === RESUMO DIA === */
+    .resumo-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+    .resumo-item{
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--line2);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+    }
+    .resumo-item .label{ font-size:11px; }
+    .resumo-item .value{ font-size:16px; font-weight:1000; margin-top:2px; }
+
+    /* === LOADER === */
+    .loader{
+      text-align:center; padding:24px;
+      color:var(--muted); font-size:14px; font-weight:800;
+    }
+    .loader::after{
+      content:''; display:block;
+      width:28px; height:28px;
+      margin:10px auto 0;
+      border:3px solid var(--line);
+      border-top-color: #16A34A;
+      border-radius:50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+
+    /* === HISTORY TABLE === */
+    .hist-table{
+      width:100%; border-collapse:collapse;
+      font-size:13px; margin-top:10px;
+      min-width:520px;
+    }
+    .hist-table th{
+      background: rgba(255,255,255,.06);
+      padding:10px 8px;
+      text-align:left;
+      font-weight:900;
+      color:var(--muted);
+      border-bottom:1px solid var(--line);
+      white-space:nowrap;
+    }
+    .hist-table td{
+      padding:9px 8px;
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .hist-table tr:hover td{ background: rgba(255,255,255,.03); }
+    .hist-table .col-num{ text-align:right; font-variant-numeric:tabular-nums; }
+    .hist-table .del-btn{
+      background: rgba(239,68,68,.15);
+      border:1px solid rgba(239,68,68,.35);
+      color:#EF4444;
+      border-radius:8px;
+      padding:4px 10px;
+      font-size:12px; font-weight:900;
+      cursor:pointer;
+    }
+    .hist-table .del-btn:active{ opacity:.7; }
+
+    /* === MATERIAL VISUAL (barras) === */
+    .mat-visual{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+    .mat-vis{
+      display:flex; flex-direction:column; align-items:center;
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 8px 10px;
+    }
+    .mat-vis-label{ font-size:11px; font-weight:900; color:var(--muted); margin-bottom:4px; }
+    .mat-vis-icon{ font-size:24px; margin-bottom:4px; }
+    .mat-bar-wrap{
+      width:100%; height:16px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:8px;
+      overflow:hidden;
+      margin-top:6px;
+    }
+    .mat-bar{
+      height:100%;
+      border-radius:8px;
+      transition: width .6s ease;
+    }
+    .mat-bar-ok{ background: linear-gradient(90deg, #16a34a, #22c55e); }
+    .mat-bar-warn{ background: linear-gradient(90deg, #d97706, #f59e0b); }
+    .mat-bar-err{ background: linear-gradient(90deg, #dc2626, #ef4444); }
+    .mat-pct{
+      font-size:16px; font-weight:1000; margin-top:6px;
+    }
+    .mat-cap{
+      font-size:10px; color:var(--muted); margin-top:2px;
+    }
+    .mat-days{
+      font-size:10px; margin-top:4px; font-weight:900;
+    }
+    .days-ok{ color:#16A34A; }
+    .days-warn{ color:#F59E0B; }
+    .days-err{ color:#EF4444; }
+
+    /* === TOTAL SUMMARY CARD === */
+    .total-card{
+      background: linear-gradient(135deg, #0d2137, #15416F);
+      border:1px solid rgba(138,201,104,.25);
+      border-radius:16px;
+      padding:18px;
+      margin-bottom:14px;
+      text-align:center;
+      box-shadow: 0 6px 24px rgba(0,0,0,.35);
+    }
+    .total-card .total-title{ font-size:13px; font-weight:900; color:var(--muted); margin-bottom:4px; }
+    .total-card .total-value{ font-size:36px; font-weight:1000; color:#8AC968; }
+    .total-card .total-sub{ font-size:12px; color:var(--muted); margin-top:4px; }
+    .total-stats{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;
+    }
+    .total-stat{
+      background: rgba(0,0,0,.25);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+    }
+    .total-stat .ts-label{ font-size:11px; color:var(--muted); }
+    .total-stat .ts-value{ font-size:20px; font-weight:1000; margin-top:2px; }
+    .total-stat .ts-sub{ font-size:10px; color:var(--muted); margin-top:2px; }
+
+    /* === SUPPLIER BADGE === */
+    .mat-forn{
+      display:inline-block;
+      font-size:10px; font-weight:900;
+      background: rgba(138,201,104,.12);
+      border:1px solid rgba(138,201,104,.25);
+      color:#8AC968;
+      border-radius:6px;
+      padding:2px 6px;
+      margin-top:4px;
+    }
+
+    /* === HISTORY SUB-CARDS === */
+    .hist-cards{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+    .hist-card{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:24px 10px; border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.22));
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      cursor:pointer; user-select:none;
+      transition: all .18s ease;
+    }
+    .hist-card:hover, .hist-card:active{
+      border-color: rgba(138,201,104,.45);
+      background: linear-gradient(135deg, #15416F, #0f2e52);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    }
+    .hist-card-icon{ font-size:36px; margin-bottom:8px; }
+    .hist-card-name{ font-size:14px; font-weight:900; }
+    .hist-card-desc{ font-size:11px; color:var(--muted); margin-top:4px; text-align:center; }
+
+    /* === FILTER BAR === */
+    .filter-bar{
+      display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+      margin-bottom:12px;
+    }
+    .filter-bar select{
+      margin-top:0; width:auto; font-size:13px; padding:8px 12px;
+      border-radius:10px; min-width:120px;
+    }
+    .filter-bar .filter-label{
+      font-size:12px; font-weight:900; color:var(--muted);
+    }
+    .filter-bar input[type="date"]{
+      font-size:13px; padding:8px 10px; border-radius:10px;
+      border:1px solid rgba(138,201,104,.22);
+      background: rgba(0,0,0,.35); color:var(--text);
+    }
+
+    /* === SELECT CUSTOM === */
+    select{
+      margin-top:8px; width:100%;
+      font-size:18px; font-weight:900;
+      padding:14px; border-radius:14px;
+      border:1px solid rgba(138,201,104,.22);
+      background: rgba(0,0,0,.35);
+      color:var(--text);
+      outline:none;
+      -webkit-appearance:none;
+      appearance:none;
+    }
+    select:focus{ box-shadow:0 0 0 4px rgba(138,201,104,.12); border-color: rgba(138,201,104,.55); }
+
+    /* === RESPONSIVE === */
+    @media(max-width:520px){
+      .mat-row{ grid-template-columns:1fr; }
+      .resumo-grid{ grid-template-columns:1fr 1fr; }
+      .mat-visual{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Hub</a>
+  <div class="title">🪨 Controle de Agregados</div>
+  <div class="subtitle">Saldo, consumo e entradas de agregados</div>
+  <div class="accentLine"></div>
+
+  <!-- NAV CARDS (Menu Principal) -->
+  <div class="tabContent active" id="tab-menu">
+    <div class="nav-cards">
+      <div class="nav-card" onclick="goTab('painel')">
+        <div class="nav-card-icon">📊</div>
+        <div class="nav-card-name">Painel</div>
+        <div class="nav-card-desc">Saldo e resumo do dia</div>
+      </div>
+      <div class="nav-card" onclick="goTab('entrada')">
+        <div class="nav-card-icon">📥</div>
+        <div class="nav-card-name">Nova Entrada</div>
+        <div class="nav-card-desc">Registrar recebimento</div>
+      </div>
+      <div class="nav-card" onclick="goTab('historico')">
+        <div class="nav-card-icon">📋</div>
+        <div class="nav-card-name">Histórico</div>
+        <div class="nav-card-desc">Entradas e consumo</div>
+      </div>
+      <div class="nav-card" onclick="goTab('config')">
+        <div class="nav-card-icon">⚙️</div>
+        <div class="nav-card-name">Saldo Inicial</div>
+        <div class="nav-card-desc">Configurar referência</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== -->
+  <!-- TAB: PAINEL              -->
+  <!-- ======================== -->
+  <div class="tabContent" id="tab-painel">
+    <button class="btn-voltar" onclick="goTab('menu')">← Menu</button>
+    <div id="painelLoader" class="loader">Carregando dados…</div>
+    <div id="painelContent" style="display:none;">
+
+      <!-- Saldo Atual -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="label" style="font-size:16px;">Saldo Atual por Material (toneladas)</div>
+        <div class="mat-row">
+          <div class="mat-card">
+            <div class="mat-label">Areia Natural</div>
+            <div class="mat-value" id="saldoAN">–</div>
+            <div class="mat-sub" id="saldoANsub"></div>
+            <div class="mat-forn" id="fornAN">Caju</div>
+          </div>
+          <div class="mat-card">
+            <div class="mat-label">Areia Industrial</div>
+            <div class="mat-value" id="saldoAI">–</div>
+            <div class="mat-sub" id="saldoAIsub"></div>
+            <div class="mat-forn" id="fornAI">Quibrita</div>
+          </div>
+          <div class="mat-card">
+            <div class="mat-label">Brita 0</div>
+            <div class="mat-value" id="saldoB0">–</div>
+            <div class="mat-sub" id="saldoB0sub"></div>
+            <div class="mat-forn" id="fornB0">Quibrita</div>
+          </div>
+          <div class="mat-card">
+            <div class="mat-label">Brita 1/2</div>
+            <div class="mat-value" id="saldoB12">–</div>
+            <div class="mat-sub" id="saldoB12sub"></div>
+            <div class="mat-forn" id="fornB12">Quibrita</div>
+          </div>
+        </div>
+
+        <!-- Representação Gráfica dos Materiais -->
+        <div class="mat-visual" id="matVisual"></div>
+      </div>
+
+      <!-- RESUMO TOTAL DE AGREGADOS -->
+      <div class="total-card" id="totalCard">
+        <div class="total-title">ESTOQUE TOTAL DE AGREGADOS</div>
+        <div class="total-value" id="totalAgregados">–</div>
+        <div class="total-sub" id="totalAgregadosSub"></div>
+        <div class="total-stats">
+          <div class="total-stat">
+            <div class="ts-label">Consumo Médio/Dia</div>
+            <div class="ts-value" id="totalConsMedio" style="color:#EF4444;">–</div>
+            <div class="ts-sub">(últimos 7 dias)</div>
+          </div>
+          <div class="total-stat">
+            <div class="ts-label">Material Crítico</div>
+            <div class="ts-value" id="totalCritico">–</div>
+            <div class="ts-sub" id="totalCriticoSub"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumo do Dia -->
+      <div class="card">
+        <div class="label" style="font-size:16px;">Resumo de Hoje — <span id="dataHoje"></span></div>
+        <div class="resumo-grid">
+          <div class="resumo-item">
+            <div class="label">Consumo AN</div>
+            <div class="value" id="consDiaAN" style="color:#EF4444; font-size:16px;">–</div>
+          </div>
+          <div class="resumo-item">
+            <div class="label">Consumo AI</div>
+            <div class="value" id="consDiaAI" style="color:#EF4444; font-size:16px;">–</div>
+          </div>
+          <div class="resumo-item">
+            <div class="label">Consumo B0</div>
+            <div class="value" id="consDiaB0" style="color:#EF4444; font-size:16px;">–</div>
+          </div>
+          <div class="resumo-item">
+            <div class="label">Consumo B1/2</div>
+            <div class="value" id="consDiaB12" style="color:#EF4444; font-size:16px;">–</div>
+          </div>
+        </div>
+        <div class="resumo-grid">
+          <div class="resumo-item">
+            <div class="label">Entradas AN</div>
+            <div class="value" id="entDiaAN" style="color:#16A34A; font-size:16px;">–</div>
+          </div>
+          <div class="resumo-item">
+            <div class="label">Entradas AI</div>
+            <div class="value" id="entDiaAI" style="color:#16A34A; font-size:16px;">–</div>
+          </div>
+          <div class="resumo-item">
+            <div class="label">Entradas B0</div>
+            <div class="value" id="entDiaB0" style="color:#16A34A; font-size:16px;">–</div>
+          </div>
+          <div class="resumo-item">
+            <div class="label">Entradas B1/2</div>
+            <div class="value" id="entDiaB12" style="color:#16A34A; font-size:16px;">–</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== -->
+  <!-- TAB: NOVA ENTRADA        -->
+  <!-- ======================== -->
+  <div class="tabContent" id="tab-entrada">
+    <button class="btn-voltar" onclick="goTab('menu')">← Menu</button>
+    <div class="card">
+      <form id="frmEntrada" autocomplete="off">
+        <div class="field">
+          <div class="label">Data</div>
+          <input id="entData" type="date" required>
+        </div>
+
+        <div class="field">
+          <div class="label">Material</div>
+          <select id="entMaterial" required onchange="updateFornecedorOptions()">
+            <option value="">Selecione…</option>
+            <option value="Areia Natural">Areia Natural</option>
+            <option value="Areia Industrial">Areia Industrial</option>
+            <option value="Brita 0">Brita 0</option>
+            <option value="Brita 1/2">Brita 1/2</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <div class="label">Fornecedor</div>
+          <select id="entFornecedor" required>
+            <option value="">Selecione o material primeiro…</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <div class="label">Quantidade (toneladas)</div>
+          <input id="entQtd" type="number" step="0.01" min="0" placeholder="Ex.: 28.5" required>
+        </div>
+
+        <div class="field">
+          <div class="label">Nota Fiscal (NF)</div>
+          <input id="entNF" type="text" placeholder="Ex.: 123456" autocomplete="off">
+        </div>
+
+        <div class="ops" style="margin-top:10px;">
+          <button class="btn light" type="button" id="btnLimparEnt">🧹 Limpar</button>
+          <button class="btn good" type="submit" id="btnSalvarEnt">📤 REGISTRAR</button>
+        </div>
+
+        <div class="pillRow" style="margin-top:8px;">
+          <div class="pill">
+            <span id="dotEnt" class="dot warn"></span>
+            <span id="statusEnt">Pronto para registrar</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================== -->
+  <!-- TAB: HISTÓRICO           -->
+  <!-- ======================== -->
+  <div class="tabContent" id="tab-historico">
+    <button class="btn-voltar" onclick="goTab('menu')">← Menu</button>
+
+    <div id="histMenu" class="hist-cards">
+      <div class="hist-card" onclick="goHistView('entradas')">
+        <div class="hist-card-icon">📥</div>
+        <div class="hist-card-name">Histórico de Entrada</div>
+        <div class="hist-card-desc">Recebimentos registrados</div>
+      </div>
+      <div class="hist-card" onclick="goHistView('consumo')">
+        <div class="hist-card-icon">📊</div>
+        <div class="hist-card-name">Histórico de Consumo</div>
+        <div class="hist-card-desc">Consumo diário por material</div>
+      </div>
+    </div>
+
+    <!-- SUB-VIEW: Entradas -->
+    <div id="histEntradas" style="display:none;">
+      <button class="btn-voltar" onclick="goHistView('menu')">← Histórico</button>
+      <div class="card" style="overflow-x:auto;">
+        <div class="label" style="font-size:16px;">📥 Entradas Registradas</div>
+        <div class="filter-bar" id="filterBarEnt">
+          <span class="filter-label">Filtrar:</span>
+          <select id="filtroEntMes" onchange="applyFiltroEntradas()">
+            <option value="all">Todos os meses</option>
+          </select>
+          <span class="filter-label" style="margin-left:8px;">Material:</span>
+          <select id="filtroEntMat" onchange="applyFiltroEntradas()">
+            <option value="all">Todos</option>
+            <option value="Areia Natural">Areia Natural</option>
+            <option value="Areia Industrial">Areia Industrial</option>
+            <option value="Brita 0">Brita 0</option>
+            <option value="Brita 1/2">Brita 1/2</option>
+          </select>
+        </div>
+        <div id="histLoader" class="loader">Carregando…</div>
+        <div id="histContent"></div>
+      </div>
+    </div>
+
+    <!-- SUB-VIEW: Consumo -->
+    <div id="histConsumo" style="display:none;">
+      <button class="btn-voltar" onclick="goHistView('menu')">← Histórico</button>
+      <div class="card" style="overflow-x:auto;">
+        <div class="label" style="font-size:16px;">📊 Consumo Diário por Material</div>
+        <div class="filter-bar" id="filterBarCons">
+          <span class="filter-label">Filtrar:</span>
+          <select id="filtroConsMes" onchange="applyFiltroConsumo()">
+            <option value="all">Todos os meses</option>
+          </select>
+          <span class="filter-label" style="margin-left:8px;">Período:</span>
+          <input type="date" id="filtroConsDe" onchange="applyFiltroConsumo()" style="max-width:130px;">
+          <span class="filter-label">a</span>
+          <input type="date" id="filtroConsAte" onchange="applyFiltroConsumo()" style="max-width:130px;">
+        </div>
+        <div id="consLoader" class="loader" style="display:none;">Carregando…</div>
+        <div id="consContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== -->
+  <!-- TAB: SALDO INICIAL       -->
+  <!-- ======================== -->
+  <div class="tabContent" id="tab-config">
+    <button class="btn-voltar" onclick="goTab('menu')">← Menu</button>
+    <div class="card">
+      <div class="label" style="font-size:16px;">Definir Saldo Inicial dos Agregados</div>
+      <div class="subtitle" style="margin-bottom:10px;">
+        Informe o saldo em <b>toneladas</b> para a data de referência.
+        O cálculo dos dias seguintes será automático.
+      </div>
+
+      <form id="frmSaldo" autocomplete="off" class="saldo-form" style="display:grid; gap:10px;">
+        <div class="field">
+          <div class="label">Data de Referência</div>
+          <input id="saldoData" type="date" required>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <div class="label">Areia Natural (t)</div>
+            <input id="saldoAN" type="number" step="0.01" min="0" placeholder="0" required>
+          </div>
+          <div class="field">
+            <div class="label">Areia Industrial (t)</div>
+            <input id="saldoAI" type="number" step="0.01" min="0" placeholder="0" required>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <div class="label">Brita 0 (t)</div>
+            <input id="saldoB0" type="number" step="0.01" min="0" placeholder="0" required>
+          </div>
+          <div class="field">
+            <div class="label">Brita 1/2 (t)</div>
+            <input id="saldoB12" type="number" step="0.01" min="0" placeholder="0" required>
+          </div>
+        </div>
+
+        <div class="ops">
+          <button class="btn good" type="submit" id="btnSalvarSaldo">💾 SALVAR SALDO INICIAL</button>
+        </div>
+
+        <div class="pillRow" style="margin-top:8px;">
+          <div class="pill">
+            <span id="dotSaldo" class="dot warn"></span>
+            <span id="statusSaldo">Pronto</span>
+          </div>
+        </div>
+      </form>
+
+      <div id="saldoAtual" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-title" id="modalTitle">✅</div>
+    <div class="modal-text" id="modalText"></div>
+    <button class="modal-btn" onclick="document.getElementById('modal').classList.remove('show')">OK</button>
+  </div>
+</div>
+
+<script>
+/* ===============================
+   SW UNIFICADO
+   =============================== */
+(async function(){
+  try{
+    if ("serviceWorker" in navigator) {
+      await navigator.serviceWorker.register("../sw.js", { scope: "../" });
+    }
+  }catch(e){}
+})();
+
+/* ===============================
+   CONFIG — URL do Apps Script
+   =============================== */
+const API_URL = "https://script.google.com/macros/s/AKfycbx2gVQrDlQ7uXJWwDhrJ4fv4rB13ZziuibZzMnphfVWWbv3kqZiA0oRl-j_oXFxJzAh/exec";
+
+const $ = id => document.getElementById(id);
+
+/* ===============================
+   MATERIAIS CONFIG
+   =============================== */
+const MATERIAIS = ['Areia Natural', 'Areia Industrial', 'Brita 0', 'Brita 1/2'];
+const MAT_KEY   = { 'Areia Natural':'AN', 'Areia Industrial':'AI', 'Brita 0':'B0', 'Brita 1/2':'B12' };
+const MAT_ICON  = { 'Areia Natural':'🏖️', 'Areia Industrial':'⛏️', 'Brita 0':'🪨', 'Brita 1/2':'🪨' };
+const MAT_CAP   = {
+  'Areia Natural':    { nominal: 400, real: 400 },
+  'Areia Industrial': { nominal: 400, real: 400 },
+  'Brita 0':          { nominal: 400, real: 400 },
+  'Brita 1/2':        { nominal: 400, real: 400 }
+};
+const DIAS_ENTREGA = 2;
+
+// Fornecedor padrão por material
+const MAT_FORN = {
+  'Areia Natural':    'Caju',
+  'Areia Industrial': 'Quibrita',
+  'Brita 0':          'Quibrita',
+  'Brita 1/2':        'Quibrita'
+};
+
+// Opções de fornecedor por material
+const FORN_OPTIONS = {
+  'Areia Natural':    ['Caju', 'Transporte Nene', 'Acerto Estoque'],
+  'Areia Industrial': ['Quibrita', 'Acerto Estoque'],
+  'Brita 0':          ['Quibrita', 'Acerto Estoque'],
+  'Brita 1/2':        ['Quibrita', 'Acerto Estoque']
+};
+
+/* ===============================
+   HELPERS
+   =============================== */
+function pad2(n){ return String(n).padStart(2,"0"); }
+function todayISO(){
+  const d = new Date();
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+}
+function formatDate(iso){
+  if(!iso) return '–';
+  const p = iso.split('-');
+  return `${p[2]}/${p[1]}/${p[0]}`;
+}
+function round2(n){ return Math.round(n * 100) / 100; }
+
+function setStatus(dotId, textId, kind, text){
+  const dot = $(dotId);
+  dot.classList.remove("ok","warn","err");
+  dot.classList.add(kind);
+  $(textId).textContent = text;
+}
+
+function showModal(title, text){
+  $("modalTitle").textContent = title;
+  $("modalText").textContent = text;
+  $("modal").classList.add("show");
+}
+
+/* ===============================
+   API CALLS — tudo via POST
+   =============================== */
+async function apiCall(payload){
+  const url = API_URL + "?t=" + Date.now();
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  });
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { return { ok: res.ok, raw: text }; }
+}
+
+/* ===============================
+   NAVEGAÇÃO POR CARDS
+   =============================== */
+function goTab(tab) {
+  document.querySelectorAll(".tabContent").forEach(c => c.classList.remove("active"));
+  $("tab-" + tab).classList.add("active");
+
+  if(tab === 'painel') loadPainel();
+  if(tab === 'historico') loadHistorico();
+  if(tab === 'config') loadSaldoAtual();
+}
+
+/* ===============================
+   DADOS GLOBAIS
+   =============================== */
+let consumoData = [];
+let entradasData = [];
+let saldoInicialData = { data:'', areiaNatural:0, areiaIndustrial:0, brita0:0, brita12:0 };
+
+/* ===============================
+   PAINEL — carregar e calcular saldo
+   =============================== */
+async function loadPainel(){
+  $("painelLoader").style.display = "block";
+  $("painelContent").style.display = "none";
+
+  try {
+    const [consumo, entradas, saldoIni] = await Promise.all([
+      apiCall({ action: 'get_consumo' }),
+      apiCall({ action: 'get_entradas' }),
+      apiCall({ action: 'get_saldo_inicial' })
+    ]);
+
+    if(consumo && consumo.error) console.warn('Erro consumo:', consumo.error);
+    if(entradas && entradas.error) console.warn('Erro entradas:', entradas.error);
+    if(saldoIni && saldoIni.error) console.warn('Erro saldo:', saldoIni.error);
+
+    consumoData = Array.isArray(consumo) ? consumo : [];
+    entradasData = Array.isArray(entradas) ? entradas : [];
+    saldoInicialData = (saldoIni && saldoIni.data !== undefined) ? saldoIni : { data:'', areiaNatural:0, areiaIndustrial:0, brita0:0, brita12:0 };
+
+    lastLoadTime = Date.now();
+    renderPainel();
+  } catch(err) {
+    console.error('loadPainel:', err);
+    $("painelLoader").innerHTML = '<span style="color:var(--err);">Erro ao carregar ❌</span>';
+  }
+}
+
+function renderPainel(){
+  const hoje = todayISO();
+  $("dataHoje").textContent = formatDate(hoje);
+
+  const semSaldo = !saldoInicialData.data;
+  const saldos = semSaldo ? {} : calcularSaldoAte(hoje);
+  const consumoMedio = calcularConsumoMedio(7);
+  const fornAtual = detectarFornecedorMateriais();
+
+  // ========== TOTAL ==========
+  let totalEstoque = 0;
+  let totalConsMediaDia = 0;
+  MATERIAIS.forEach(m => {
+    totalEstoque += (saldos[m] || 0);
+    totalConsMediaDia += (consumoMedio[m] || 0);
+  });
+
+  $('totalAgregados').textContent = semSaldo ? '—' : round2(totalEstoque).toFixed(2) + ' t';
+  $('totalAgregadosSub').textContent = semSaldo ? '⚙️ Configure o saldo inicial' : 'distribuído em 4 materiais';
+  $('totalConsMedio').textContent = round2(totalConsMediaDia).toFixed(2) + ' t';
+
+  // Material crítico (menor dias restantes)
+  let matCritico = '—';
+  let minDias = 999;
+  MATERIAIS.forEach(m => {
+    const cons = consumoMedio[m] || 0;
+    const saldo = saldos[m] || 0;
+    const dias = cons > 0 ? Math.floor(saldo / cons) : 999;
+    if(dias < minDias){ minDias = dias; matCritico = m; }
+  });
+  if(semSaldo || minDias >= 999){
+    $('totalCritico').textContent = '—';
+    $('totalCriticoSub').textContent = '';
+  } else {
+    $('totalCritico').textContent = minDias + 'd';
+    $('totalCritico').style.color = minDias <= DIAS_ENTREGA ? '#EF4444' : minDias <= DIAS_ENTREGA + 3 ? '#F59E0B' : '#16A34A';
+    $('totalCriticoSub').textContent = matCritico;
+  }
+
+  // ========== SALDO POR MATERIAL ==========
+  MATERIAIS.forEach(m => {
+    const key = MAT_KEY[m];
+    const val = round2(saldos[m] || 0);
+    const forn = fornAtual[m];
+    $('forn' + key).textContent = forn;
+
+    if(semSaldo){
+      $('saldo' + key).textContent = '—';
+      $('saldo' + key).className = 'mat-value';
+      $('saldo' + key + 'sub').textContent = '⚙️ Configure o saldo inicial';
+    } else {
+      $('saldo' + key).textContent = val.toFixed(2) + ' t';
+      $('saldo' + key).className = 'mat-value ' + (val > 80 ? 'mat-ok' : val > 30 ? 'mat-warn' : 'mat-err');
+      $('saldo' + key + 'sub').textContent = val <= 30 ? '⚠️ Nível baixo!' : val <= 80 ? '⚡ Atenção' : '✅ OK';
+    }
+  });
+
+  // Consumo e entradas do dia
+  MATERIAIS.forEach(m => {
+    const key = MAT_KEY[m];
+    const consumoHoje = consumoData
+      .filter(c => c.data === hoje && c.material === m)
+      .reduce((a, c) => a + c.consumo, 0);
+    const entradasHoje = entradasData
+      .filter(e => e.data === hoje && e.material === m)
+      .reduce((a, e) => a + e.qtd, 0);
+
+    $('consDia' + key).textContent = round2(consumoHoje).toFixed(2) + ' t';
+    $('entDia' + key).textContent = round2(entradasHoje).toFixed(2) + ' t';
+  });
+
+  // Renderizar gráfico visual
+  renderMatVisual(saldos, consumoMedio, semSaldo, fornAtual);
+
+  $("painelLoader").style.display = "none";
+  $("painelContent").style.display = "block";
+}
+
+/**
+ * Detecta o fornecedor atual de cada material
+ * com base na última entrada registrada
+ */
+function detectarFornecedorMateriais(){
+  const forn = {};
+  MATERIAIS.forEach(m => forn[m] = MAT_FORN[m]);
+
+  const sorted = [...entradasData].sort((a,b) => b.data.localeCompare(a.data));
+  const found = {};
+  for(const e of sorted){
+    if(!found[e.material] && e.fornecedor){
+      found[e.material] = true;
+      forn[e.material] = e.fornecedor;
+    }
+    if(Object.keys(found).length >= 4) break;
+  }
+
+  return forn;
+}
+
+/**
+ * Calcula consumo médio diário por material (últimos N dias)
+ */
+function calcularConsumoMedio(dias){
+  const hoje = new Date();
+  hoje.setHours(0,0,0,0);
+  const limite = new Date(hoje);
+  limite.setDate(limite.getDate() - dias);
+  const limISO = limite.getFullYear() + '-' + pad2(limite.getMonth()+1) + '-' + pad2(limite.getDate());
+
+  const med = {};
+  MATERIAIS.forEach(m => med[m] = 0);
+  const diasComDados = new Set();
+
+  consumoData.forEach(c => {
+    if(c.data >= limISO){
+      med[c.material] = (med[c.material] || 0) + (c.consumo || 0);
+      diasComDados.add(c.data);
+    }
+  });
+
+  const n = Math.max(diasComDados.size, 1);
+  for(const m in med) med[m] = med[m] / n;
+  return med;
+}
+
+/**
+ * Renderiza a representação gráfica dos materiais (barras horizontais)
+ */
+function renderMatVisual(saldos, consumoMedio, semSaldo, fornAtual){
+  let html = '';
+
+  MATERIAIS.forEach(m => {
+    const key = MAT_KEY[m];
+    const cap = MAT_CAP[m];
+    const saldo = round2(saldos[m] || 0);
+    const pct = semSaldo ? 0 : Math.min(100, Math.max(0, (saldo / cap.real) * 100));
+    const forn = fornAtual ? fornAtual[m] : MAT_FORN[m];
+    const icon = MAT_ICON[m];
+
+    // Cor baseada no percentual
+    let fillClass = 'mat-bar-ok';
+    let pctColor = '#16A34A';
+    if(pct <= 15){ fillClass = 'mat-bar-err'; pctColor = '#EF4444'; }
+    else if(pct <= 35){ fillClass = 'mat-bar-warn'; pctColor = '#F59E0B'; }
+
+    // Dias restantes
+    const consMedio = consumoMedio[m] || 0;
+    const diasRestantes = consMedio > 0 ? Math.floor(saldo / consMedio) : 999;
+    let diasClass = 'days-ok';
+    let diasText = diasRestantes + ' dias restantes';
+    if(diasRestantes <= DIAS_ENTREGA){ diasClass = 'days-err'; diasText = '⚠️ ' + diasRestantes + 'd — Pedir agora!'; }
+    else if(diasRestantes <= DIAS_ENTREGA + 3){ diasClass = 'days-warn'; diasText = '⚡ ' + diasRestantes + 'd — Planejar pedido'; }
+    if(semSaldo) diasText = '—';
+
+    html += `
+      <div class="mat-vis">
+        <div class="mat-vis-icon">${icon}</div>
+        <div class="mat-vis-label">${m}</div>
+        <div class="mat-forn" style="margin-bottom:4px;">${forn}</div>
+        <div class="mat-bar-wrap">
+          <div class="mat-bar ${fillClass}" style="width:${pct}%;"></div>
+        </div>
+        <div class="mat-pct" style="color:${pctColor};">${semSaldo ? '—' : round2(pct).toFixed(0) + '%'}</div>
+        <div class="mat-cap">${semSaldo ? '—' : saldo.toFixed(1) + ' / ' + cap.real.toFixed(0) + ' t'}</div>
+        <div class="mat-days ${diasClass}">${diasText}</div>
+      </div>`;
+  });
+
+  $('matVisual').innerHTML = html;
+}
+
+/**
+ * Calcula o saldo acumulado de cada material até a dataAlvo
+ */
+function calcularSaldoAte(dataAlvo){
+  const dataIni = saldoInicialData.data;
+  if(!dataIni) return {};
+
+  const consumoMap = {};
+  consumoData.forEach(c => {
+    const k = c.data + '|' + c.material;
+    consumoMap[k] = (consumoMap[k] || 0) + c.consumo;
+  });
+
+  const entradaMap = {};
+  entradasData.forEach(e => {
+    const k = e.data + '|' + e.material;
+    entradaMap[k] = (entradaMap[k] || 0) + e.qtd;
+  });
+
+  const saldos = {
+    'Areia Natural':    saldoInicialData.areiaNatural,
+    'Areia Industrial': saldoInicialData.areiaIndustrial,
+    'Brita 0':          saldoInicialData.brita0,
+    'Brita 1/2':        saldoInicialData.brita12
+  };
+
+  const inicio = new Date(dataIni + 'T00:00:00');
+  const fim    = new Date(dataAlvo + 'T00:00:00');
+  const dia = new Date(inicio);
+  dia.setDate(dia.getDate() + 1);
+
+  while(dia <= fim){
+    const iso = dia.getFullYear() + '-' + pad2(dia.getMonth()+1) + '-' + pad2(dia.getDate());
+
+    MATERIAIS.forEach(m => {
+      const cons = consumoMap[iso + '|' + m] || 0;
+      const entr = entradaMap[iso + '|' + m] || 0;
+      saldos[m] = saldos[m] - cons + entr;
+    });
+
+    dia.setDate(dia.getDate() + 1);
+  }
+
+  return saldos;
+}
+
+/* ===============================
+   NOVA ENTRADA — Fornecedores dinâmicos
+   =============================== */
+function updateFornecedorOptions(){
+  const material = $("entMaterial").value;
+  const sel = $("entFornecedor");
+  sel.innerHTML = '<option value="">Selecione…</option>';
+
+  if(material && FORN_OPTIONS[material]){
+    FORN_OPTIONS[material].forEach(f => {
+      sel.innerHTML += `<option value="${f}">${f}</option>`;
+    });
+    // Auto-seleciona o fornecedor padrão
+    const def = MAT_FORN[material];
+    for(let i = 0; i < sel.options.length; i++){
+      if(sel.options[i].value === def){ sel.selectedIndex = i; break; }
+    }
+  }
+}
+
+$("entData").value = todayISO();
+
+$("btnLimparEnt").addEventListener("click", () => {
+  $("frmEntrada").reset();
+  $("entData").value = todayISO();
+  $("entFornecedor").innerHTML = '<option value="">Selecione o material primeiro…</option>';
+  setStatus("dotEnt","statusEnt","warn","Pronto para registrar");
+});
+
+$("frmEntrada").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    action: "registrar_entrada",
+    data: $("entData").value,
+    material: $("entMaterial").value,
+    qtd: parseFloat($("entQtd").value),
+    fornecedor: $("entFornecedor").value,
+    nf: $("entNF").value.trim()
+  };
+
+  if(!payload.material || !payload.qtd || !payload.fornecedor){
+    setStatus("dotEnt","statusEnt","warn","Preencha todos os campos");
+    return;
+  }
+
+  setStatus("dotEnt","statusEnt","warn","Salvando…");
+  $("btnSalvarEnt").disabled = true;
+
+  try {
+    const r = await apiCall(payload);
+    if(r && r.ok){
+      setStatus("dotEnt","statusEnt","ok","Entrada registrada ✅");
+      showModal("✅ Entrada Registrada!",
+        `${payload.qtd} t — ${payload.material} — ${payload.fornecedor}${payload.nf ? ' — NF: '+payload.nf : ''}`);
+
+      const keepData = $("entData").value;
+      $("frmEntrada").reset();
+      $("entData").value = keepData;
+      $("entFornecedor").innerHTML = '<option value="">Selecione o material primeiro…</option>';
+    } else {
+      setStatus("dotEnt","statusEnt","err","Erro: " + (r?.error || r?.msg || "Falha"));
+    }
+  } catch(err){
+    console.error(err);
+    setStatus("dotEnt","statusEnt","err","Erro de conexão ❌");
+  } finally {
+    $("btnSalvarEnt").disabled = false;
+  }
+});
+
+/* ===============================
+   HISTÓRICO — sub-navegação
+   =============================== */
+function goHistView(view){
+  $('histMenu').style.display = view === 'menu' ? 'grid' : 'none';
+  $('histEntradas').style.display = view === 'entradas' ? 'block' : 'none';
+  $('histConsumo').style.display = view === 'consumo' ? 'block' : 'none';
+
+  if(view === 'entradas') loadHistEntradas();
+  if(view === 'consumo') loadHistConsumo();
+}
+
+async function loadHistEntradas(){
+  $("histLoader").style.display = "block";
+  $("histContent").innerHTML = "";
+
+  try {
+    const entradas = await apiCall({ action: 'get_entradas' });
+    entradasData = Array.isArray(entradas) ? entradas : [];
+    lastLoadTime = Date.now();
+    populateFiltroEntMeses();
+    applyFiltroEntradas();
+  } catch(err){
+    $("histLoader").innerHTML = '<span style="color:var(--err);">Erro ❌</span>';
+  }
+}
+
+async function loadHistConsumo(){
+  $("consLoader").style.display = "block";
+  $("consContent").innerHTML = "";
+
+  try {
+    const consumo = await apiCall({ action: 'get_consumo' });
+    consumoData = Array.isArray(consumo) ? consumo : [];
+    lastLoadTime = Date.now();
+    populateFiltroConsMeses();
+    applyFiltroConsumo();
+  } catch(err){
+    $("consLoader").innerHTML = '<span style="color:var(--err);">Erro ❌</span>';
+  }
+}
+
+async function loadHistorico(){
+  const entView = $('histEntradas').style.display !== 'none';
+  const consView = $('histConsumo').style.display !== 'none';
+  if(entView) loadHistEntradas();
+  else if(consView) loadHistConsumo();
+}
+
+/* ===============================
+   FILTROS — Entradas
+   =============================== */
+function populateFiltroEntMeses(){
+  const meses = new Set();
+  entradasData.forEach(e => {
+    if(e.data) meses.add(e.data.slice(0,7));
+  });
+  const sorted = [...meses].sort().reverse();
+  const sel = $('filtroEntMes');
+  sel.innerHTML = '<option value="all">Todos os meses</option>';
+  sorted.forEach(m => {
+    const [y, mm] = m.split('-');
+    const nomes = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    sel.innerHTML += `<option value="${m}">${nomes[parseInt(mm)]} ${y}</option>`;
+  });
+}
+
+function applyFiltroEntradas(){
+  const mes = $('filtroEntMes').value;
+  const mat = $('filtroEntMat').value;
+
+  let filtered = [...entradasData];
+  if(mes !== 'all') filtered = filtered.filter(e => e.data && e.data.startsWith(mes));
+  if(mat !== 'all') filtered = filtered.filter(e => e.material === mat);
+
+  renderHistorico(filtered);
+}
+
+function renderHistorico(data){
+  $("histLoader").style.display = "none";
+  const list = data || entradasData;
+
+  if(!list.length){
+    $("histContent").innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px;">Nenhuma entrada encontrada</div>';
+    return;
+  }
+
+  const sorted = [...list].sort((a,b) => b.data.localeCompare(a.data));
+  const totalQtd = sorted.reduce((a,e) => a + e.qtd, 0);
+
+  let html = `<div style="margin-bottom:8px;font-size:13px;color:var(--muted);">${sorted.length} registros — Total: <b style="color:var(--text);">${round2(totalQtd).toFixed(2)} t</b></div>`;
+  html += '<table class="hist-table"><thead><tr>';
+  html += '<th>Data</th><th>Material</th><th>Qtd (t)</th><th>Fornecedor</th><th>NF</th><th></th>';
+  html += '</tr></thead><tbody>';
+
+  sorted.forEach(e => {
+    html += `<tr>
+      <td>${formatDate(e.data)}</td>
+      <td>${e.material}</td>
+      <td class="col-num">${round2(e.qtd).toFixed(2)}</td>
+      <td>${e.fornecedor}</td>
+      <td>${e.nf || ''}</td>
+      <td><button class="del-btn" onclick="deletarEntrada('${e.id}')">🗑️</button></td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  $("histContent").innerHTML = html;
+}
+
+/* ===============================
+   FILTROS — Consumo
+   =============================== */
+function populateFiltroConsMeses(){
+  const meses = new Set();
+  consumoData.forEach(c => {
+    if(c.data) meses.add(c.data.slice(0,7));
+  });
+  const sorted = [...meses].sort().reverse();
+  const sel = $('filtroConsMes');
+  sel.innerHTML = '<option value="all">Todos os meses</option>';
+  sorted.forEach(m => {
+    const [y, mm] = m.split('-');
+    const nomes = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    sel.innerHTML += `<option value="${m}">${nomes[parseInt(mm)]} ${y}</option>`;
+  });
+}
+
+function applyFiltroConsumo(){
+  const mes = $('filtroConsMes').value;
+  const de = $('filtroConsDe').value;
+  const ate = $('filtroConsAte').value;
+
+  let filtered = [...consumoData];
+  if(mes !== 'all') filtered = filtered.filter(c => c.data && c.data.startsWith(mes));
+  if(de) filtered = filtered.filter(c => c.data >= de);
+  if(ate) filtered = filtered.filter(c => c.data <= ate);
+
+  renderConsumoHistorico(filtered);
+}
+
+function renderConsumoHistorico(data){
+  $("consLoader").style.display = "none";
+  const list = data || consumoData;
+
+  if(!list.length){
+    $("consContent").innerHTML = '<div style="text-align:center;color:var(--muted);padding:16px;">Nenhum dado de consumo</div>';
+    return;
+  }
+
+  // Agrupar consumo por data
+  const mapDia = {};
+  list.forEach(c => {
+    if(!mapDia[c.data]) mapDia[c.data] = { an:0, ai:0, b0:0, b12:0, total:0 };
+    const v = c.consumo || 0;
+    if(c.material === 'Areia Natural')    mapDia[c.data].an  += v;
+    else if(c.material === 'Areia Industrial') mapDia[c.data].ai  += v;
+    else if(c.material === 'Brita 0')     mapDia[c.data].b0  += v;
+    else if(c.material === 'Brita 1/2')   mapDia[c.data].b12 += v;
+    mapDia[c.data].total += v;
+  });
+
+  const datas = Object.keys(mapDia).sort((a,b) => b.localeCompare(a));
+
+  let totAN=0, totAI=0, totB0=0, totB12=0, totGeral=0;
+  datas.forEach(d => {
+    totAN  += mapDia[d].an;
+    totAI  += mapDia[d].ai;
+    totB0  += mapDia[d].b0;
+    totB12 += mapDia[d].b12;
+    totGeral += mapDia[d].total;
+  });
+
+  let html = `<div style="margin-bottom:8px;font-size:13px;color:var(--muted);">${datas.length} dias — Total: <b style="color:var(--text);">${round2(totGeral).toFixed(2)} t</b></div>`;
+  html += '<table class="hist-table"><thead><tr>';
+  html += '<th>Data</th><th class="col-num">A.Nat (t)</th><th class="col-num">A.Ind (t)</th><th class="col-num">B0 (t)</th><th class="col-num">B1/2 (t)</th><th class="col-num">Total (t)</th>';
+  html += '</tr></thead><tbody>';
+
+  datas.forEach(d => {
+    const r = mapDia[d];
+    html += `<tr>
+      <td>${formatDate(d)}</td>
+      <td class="col-num">${round2(r.an).toFixed(2)}</td>
+      <td class="col-num">${round2(r.ai).toFixed(2)}</td>
+      <td class="col-num">${round2(r.b0).toFixed(2)}</td>
+      <td class="col-num">${round2(r.b12).toFixed(2)}</td>
+      <td class="col-num" style="font-weight:900;">${round2(r.total).toFixed(2)}</td>
+    </tr>`;
+  });
+
+  html += `<tr style="border-top:2px solid var(--line); font-weight:900;">
+    <td>TOTAL</td>
+    <td class="col-num">${round2(totAN).toFixed(2)}</td>
+    <td class="col-num">${round2(totAI).toFixed(2)}</td>
+    <td class="col-num">${round2(totB0).toFixed(2)}</td>
+    <td class="col-num">${round2(totB12).toFixed(2)}</td>
+    <td class="col-num" style="color:#8AC968;">${round2(totGeral).toFixed(2)}</td>
+  </tr>`;
+
+  html += '</tbody></table>';
+  $("consContent").innerHTML = html;
+}
+
+async function deletarEntrada(id){
+  if(!confirm("Excluir esta entrada?")) return;
+
+  try {
+    const r = await apiCall({ action: "deletar_entrada", id: id });
+    if(r && r.ok){
+      showModal("🗑️ Excluído", "Entrada removida com sucesso.");
+      loadHistEntradas();
+    } else {
+      alert("Erro: " + (r?.msg || r?.error || "Falha"));
+    }
+  } catch(err){
+    alert("Erro de conexão");
+  }
+}
+
+/* ===============================
+   SALDO INICIAL
+   =============================== */
+async function loadSaldoAtual(){
+  try {
+    const s = await apiCall({ action: 'get_saldo_inicial' });
+    saldoInicialData = s || { data:'', areiaNatural:0, areiaIndustrial:0, brita0:0, brita12:0 };
+
+    if(s && s.data){
+      $("saldoAtual").innerHTML = `
+        <div class="field" style="margin-top:8px;">
+          <div class="label">Saldo Inicial Configurado</div>
+          <div style="margin-top:6px; font-size:14px;">
+            📅 <b>${formatDate(s.data)}</b><br>
+            Areia Natural: <b>${s.areiaNatural} t</b><br>
+            Areia Industrial: <b>${s.areiaIndustrial} t</b><br>
+            Brita 0: <b>${s.brita0} t</b><br>
+            Brita 1/2: <b>${s.brita12} t</b>
+          </div>
+        </div>`;
+    }
+  } catch(err) {
+    console.error(err);
+  }
+}
+
+$("frmSaldo").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    action: "salvar_saldo_inicial",
+    data: $("saldoData").value,
+    areiaNatural:    parseFloat($("saldoAN").value) || 0,
+    areiaIndustrial: parseFloat($("saldoAI").value) || 0,
+    brita0:          parseFloat($("saldoB0").value) || 0,
+    brita12:         parseFloat($("saldoB12").value) || 0
+  };
+
+  if(!payload.data){
+    setStatus("dotSaldo","statusSaldo","warn","Informe a data");
+    return;
+  }
+
+  setStatus("dotSaldo","statusSaldo","warn","Salvando…");
+  $("btnSalvarSaldo").disabled = true;
+
+  try {
+    const r = await apiCall(payload);
+    if(r && r.ok){
+      setStatus("dotSaldo","statusSaldo","ok","Saldo salvo ✅");
+      showModal("✅ Saldo Inicial Salvo!",
+        `AN: ${payload.areiaNatural}t | AI: ${payload.areiaIndustrial}t | B0: ${payload.brita0}t | B1/2: ${payload.brita12}t — ${formatDate(payload.data)}`);
+      loadSaldoAtual();
+    } else {
+      setStatus("dotSaldo","statusSaldo","err","Erro: " + (r?.error || "Falha"));
+    }
+  } catch(err){
+    setStatus("dotSaldo","statusSaldo","err","Erro de conexão ❌");
+  } finally {
+    $("btnSalvarSaldo").disabled = false;
+  }
+});
+
+/* ===============================
+   INIT + AUTO-REFRESH
+   =============================== */
+let lastLoadTime = Date.now();
+const AUTO_REFRESH_MS = 2 * 60 * 1000;
+
+loadPainel();
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    const elapsed = Date.now() - lastLoadTime;
+    if (elapsed >= AUTO_REFRESH_MS) {
+      console.log('Auto-refresh: ' + Math.round(elapsed/1000) + 's inativo');
+      const activeSection = document.querySelector('.tabContent.active');
+      const id = activeSection ? activeSection.id : '';
+      if (id === 'tab-painel') loadPainel();
+      else if (id === 'tab-historico') loadHistorico();
+      else if (id === 'tab-config') loadSaldoAtual();
+      else loadPainel();
+    }
+  }
+});
+
+if ('serviceWorker' in navigator) {
+  setInterval(() => {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg) reg.update();
+    });
+  }, AUTO_REFRESH_MS);
+}
+</script>
+</body>
+</html>

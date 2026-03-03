@@ -547,6 +547,16 @@
 
             /* Total-row */
             .result-table .total-row td { font-size: 0.6rem !important; }
+
+            /* Correção de Umidade — sem padding na impressão */
+            #dos-umidade-box,
+            #dos-umidade-box * {
+                padding: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+                background: none !important;
+            }
+            #dos-umidade-box { display: none !important; }
         }
 
         /* RESPONSIVE */
@@ -1578,6 +1588,23 @@
                 <label>Flow Medido (mm)</label>
                 <input type="number" id="dos_flow" value="720" step="5" min="0" max="1000">
             </div>
+            <div class="form-group">
+                <label>FCK de Projeto (MPa)</label>
+                <input type="number" id="dos_fck" value="30" step="1" min="10" max="100">
+            </div>
+            <div class="form-group">
+                <label>Tipo de Cimento</label>
+                <select id="dos_tipo_cimento">
+                    <option value="cpv" selected>CP-V ARI</option>
+                    <option value="cpii">CP-II (Composto)</option>
+                    <option value="cpiii">CP-III (Alto-Forno)</option>
+                    <option value="cpiv">CP-IV (Pozolânico)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Desvio Padrão Sd (MPa) <span class="tip" data-tip="NBR 12655: Sd=4 (A), Sd=5.5 (B), Sd=7 (C)">?</span></label>
+                <input type="number" id="dos_sd" value="4.0" step="0.5" min="1" max="10">
+            </div>
         </div>
 
         <!-- SEÇÃO DE UMIDADE -->
@@ -1727,6 +1754,15 @@
                 <div class="form-group">
                     <label>FCK de Projeto (MPa)</label>
                     <input type="number" id="exp_fck" value="40" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Tipo de Cimento</label>
+                    <select id="exp_tipo_cimento">
+                        <option value="cpv" selected>CP-V ARI</option>
+                        <option value="cpii">CP-II (Composto)</option>
+                        <option value="cpiii">CP-III (Alto-Forno)</option>
+                        <option value="cpiv">CP-IV (Pozolânico)</option>
+                    </select>
                 </div>
             </div>
             <div style="margin-top:10px;">
@@ -2644,7 +2680,8 @@ function abrirModalSalvarTraco() {
     const modal = document.getElementById('modal-salvar-traco');
     modal.style.display = 'flex';
     document.getElementById('traco_nome').value = '';
-    document.getElementById('traco_fck').value = '';
+    const fckVal = parseFloat(document.getElementById('dos_fck').value) || '';
+    document.getElementById('traco_fck').value = fckVal;
     document.getElementById('traco_obs').value = '';
     document.getElementById('modal-traco-status').innerHTML = '';
     document.getElementById('traco_nome').focus();
@@ -2976,6 +3013,19 @@ function calcularExperimental() {
     const m28d = mediaResist(resist.r28d);
     const proj = projetarResistencia28d(resist);
 
+    // Projeção baseada em a/c (Abrams) + maturidade
+    const expTipoCim = document.getElementById('exp_tipo_cimento') ? document.getElementById('exp_tipo_cimento').value : 'cpv';
+    const K1mapExp = { cpv: 120, cpii: 96, cpiii: 85, cpiv: 78 };
+    const K2mapExp = { cpv: 14, cpii: 12, cpiii: 11, cpiv: 10.5 };
+    const K1exp = K1mapExp[expTipoCim] || 120;
+    const K2exp = K2mapExp[expTipoCim] || 14;
+    const fc28_abrams_exp = ac > 0 ? K1exp / Math.pow(K2exp, ac) : 0;
+    const fatExp = getFatoresMaturidade(expTipoCim);
+    const fc1d_exp  = fc28_abrams_exp * fatExp.d1;
+    const fc3d_exp  = fc28_abrams_exp * fatExp.d3;
+    const fc7d_exp  = fc28_abrams_exp * fatExp.d7;
+    const fc28d_exp = fc28_abrams_exp * fatExp.d28;
+
     const consistLabel = tipoConsist === 'slump' ? 'Slump' : 'Flow';
     const consistOk = tipoConsist === 'slump'
         ? (consistValor >= 100 && consistValor <= 220 ? 'ok' : (consistValor >= 60 && consistValor <= 250 ? 'warn' : 'error'))
@@ -3108,6 +3158,77 @@ function calcularExperimental() {
 
             html += '</tbody></table></div>';
         }
+    }
+
+    // ==================== PROJEÇÃO POR a/c (ABRAMS + MATURIDADE) ====================
+    if (ac > 0) {
+        const nomeCimExp = getNomeCimento(expTipoCim);
+        const fck_calc_exp = fc28_abrams_exp - 1.65 * 4.0;
+        const statusProjExp = (val, meta) => val >= meta
+            ? '<span class="badge badge-ok">✓ Atende</span>'
+            : (val >= meta * 0.85 ? '<span class="badge badge-warn">⚠ Atenção</span>' : '<span class="badge badge-err">✗ Abaixo</span>');
+
+        html += `
+        <div style="margin-top:14px;background:linear-gradient(135deg,#e0f2f1,#b2dfdb);border-radius:10px;padding:14px 18px;">
+            <h3 style="font-size:0.95rem;color:#00695c;margin-bottom:6px;">📈 Projeção de Resistência por a/c (Abrams)</h3>
+            <p style="font-size:0.82rem;color:#00796b;margin-bottom:10px;">
+                Lei de Abrams: fc₂₈ = ${K1exp}/${K2exp}<sup>${fmt(ac,3)}</sup> = <strong>${fmt(fc28_abrams_exp,1)} MPa</strong> · 
+                Cimento: <strong>${nomeCimExp}</strong> · a/c = <strong>${fmt(ac,3)}</strong> · Consumo = <strong>${fmt(consumoCim,1)} kg/m³</strong>
+            </p>
+            <table class="result-table">
+                <thead><tr><th>Idade</th><th>Fator Maturidade</th><th>fc estimado (MPa)</th><th>Meta (% FCK)</th><th>Status</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:700">24 horas</td>
+                        <td>${fmt(fatExp.d1,2)}</td>
+                        <td class="highlight">${fmt(fc1d_exp,1)} MPa</td>
+                        <td>${fmt(fck * 0.25,1)} MPa (25%)</td>
+                        <td>${statusProjExp(fc1d_exp, fck * 0.25)}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">3 dias</td>
+                        <td>${fmt(fatExp.d3,2)}</td>
+                        <td class="highlight">${fmt(fc3d_exp,1)} MPa</td>
+                        <td>${fmt(fck * 0.46,1)} MPa (46%)</td>
+                        <td>${statusProjExp(fc3d_exp, fck * 0.46)}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">7 dias</td>
+                        <td>${fmt(fatExp.d7,2)}</td>
+                        <td class="highlight">${fmt(fc7d_exp,1)} MPa</td>
+                        <td>${fmt(fck * 0.65,1)} MPa (65%)</td>
+                        <td>${statusProjExp(fc7d_exp, fck * 0.65)}</td>
+                    </tr>
+                    <tr style="background:#e0f2f1">
+                        <td style="font-weight:700">28 dias</td>
+                        <td>${fmt(fatExp.d28,2)}</td>
+                        <td class="highlight" style="font-size:1.1rem;color:#00695c">${fmt(fc28d_exp,1)} MPa</td>
+                        <td>${fmt(fck,1)} MPa (100%)</td>
+                        <td>${fc28d_exp >= fck ? '<span class="badge badge-ok">✓ ≥ FCK</span>' : '<span class="badge badge-err">✗ < FCK</span>'}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div style="background:rgba(255,255,255,0.7);border-radius:8px;padding:10px;">
+                    <strong style="font-size:0.82rem;color:#00695c;">🔬 Abrams</strong>
+                    <table class="result-table" style="margin-top:4px;">
+                        <tr><td>fc₂₈ (Abrams)</td><td class="highlight">${fmt(fc28_abrams_exp,1)} MPa</td></tr>
+                        <tr><td>fck = fc₂₈ − 1,65·Sd</td><td class="highlight">${fmt(fck_calc_exp,1)} MPa</td></tr>
+                        <tr><td>Margem vs FCK ${fck}</td><td class="${fck_calc_exp >= fck ? 'ok-val' : 'err-val'}">${fck_calc_exp >= fck ? '+' : ''}${fmt(fck_calc_exp - fck,1)} MPa</td></tr>
+                    </table>
+                </div>
+                <div style="background:rgba(255,255,255,0.7);border-radius:8px;padding:10px;">
+                    <strong style="font-size:0.82rem;color:#00695c;">📋 Comparação Real vs Projeção</strong>
+                    <table class="result-table" style="margin-top:4px;">
+                        ${m24h !== null ? `<tr><td>24h — Real</td><td>${fmt(m24h,1)}</td><td>Proj.</td><td>${fmt(fc1d_exp,1)}</td><td>${m24h >= fc1d_exp*0.9 ? '<span class="badge badge-ok">OK</span>' : '<span class="badge badge-warn">↓</span>'}</td></tr>` : ''}
+                        ${m3d !== null ? `<tr><td>3d — Real</td><td>${fmt(m3d,1)}</td><td>Proj.</td><td>${fmt(fc3d_exp,1)}</td><td>${m3d >= fc3d_exp*0.9 ? '<span class="badge badge-ok">OK</span>' : '<span class="badge badge-warn">↓</span>'}</td></tr>` : ''}
+                        ${m7d !== null ? `<tr><td>7d — Real</td><td>${fmt(m7d,1)}</td><td>Proj.</td><td>${fmt(fc7d_exp,1)}</td><td>${m7d >= fc7d_exp*0.9 ? '<span class="badge badge-ok">OK</span>' : '<span class="badge badge-warn">↓</span>'}</td></tr>` : ''}
+                        ${m28d !== null ? `<tr><td>28d — Real</td><td>${fmt(m28d,1)}</td><td>Proj.</td><td>${fmt(fc28d_exp,1)}</td><td>${m28d >= fc28d_exp*0.9 ? '<span class="badge badge-ok">OK</span>' : '<span class="badge badge-warn">↓</span>'}</td></tr>` : ''}
+                        ${m24h === null && m3d === null && m7d === null && m28d === null ? '<tr><td colspan="5" style="text-align:center;color:#999;">Nenhum resultado real informado</td></tr>' : ''}
+                    </table>
+                </div>
+            </div>
+        </div>`;
     }
 
     html += '</div>';
@@ -5059,6 +5180,9 @@ function calcularDosagem() {
 
     const arPct = parseFloat(document.getElementById('dos_ar').value) || 0;
     const flow  = parseFloat(document.getElementById('dos_flow').value) || 0;
+    const dosFck = parseFloat(document.getElementById('dos_fck').value) || 30;
+    const dosTipoCim = document.getElementById('dos_tipo_cimento').value || 'cpv';
+    const dosSd = parseFloat(document.getElementById('dos_sd').value) || 4.0;
     const modoInfo = usarGran && granOK
         ? '<div style="background:#d5f5e3;border:1.5px solid #82c99a;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:0.88rem;"><strong>📊 Curva Granulométrica CONSIDERADA</strong> — Os dados da Aba ① (massas específicas e granulometria) foram utilizados neste cálculo. Os volumes absolutos e proporções refletem a caracterização real dos materiais.</div>'
         : usarGran && !granOK
@@ -5202,7 +5326,92 @@ function calcularDosagem() {
         </div>`;
     }
 
-    document.getElementById('res-dosagem').innerHTML = html;
+    // ==================== PROJEÇÃO DE RESISTÊNCIA ====================
+    {
+        const K1map = { cpv: 120, cpii: 96, cpiii: 85, cpiv: 78 };
+        const K2map = { cpv: 14, cpii: 12, cpiii: 11, cpiv: 10.5 };
+        const K1 = K1map[dosTipoCim] || 120;
+        const K2 = K2map[dosTipoCim] || 14;
+        const fc28_abrams = K1 / Math.pow(K2, ac);
+        const fck_calc = fc28_abrams - 1.65 * dosSd;
+        const fat = getFatoresMaturidade(dosTipoCim);
+        const fc1d  = fc28_abrams * fat.d1;
+        const fc3d  = fc28_abrams * fat.d3;
+        const fc7d  = fc28_abrams * fat.d7;
+        const fc28d = fc28_abrams * fat.d28;
+        const nomeCim = getNomeCimento(dosTipoCim);
+
+        html += `
+        <div class="result-box ok" style="margin-top:18px;">
+            <h3>📈 Projeção de Resistência à Compressão</h3>
+            <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:10px;">Baseada na Lei de Abrams (fc₂₈ = ${K1}/${K2}^a/c) e fatores de maturidade para ${nomeCim}</p>
+
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>Idade</th>
+                        <th>Fator de Maturidade</th>
+                        <th>fc estimado (MPa)</th>
+                        <th>Observação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:700">24 horas (1 dia)</td>
+                        <td>${fmt(fat.d1,2)}</td>
+                        <td class="highlight" style="font-size:1.1rem">${fmt(fc1d,1)} MPa</td>
+                        <td>${fc1d>=15?'<span class="badge badge-ok">Desforma possível</span>':'<span class="badge badge-warn">Baixo p/ desforma</span>'}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">3 dias</td>
+                        <td>${fmt(fat.d3,2)}</td>
+                        <td class="highlight" style="font-size:1.1rem">${fmt(fc3d,1)} MPa</td>
+                        <td>${fc3d>=20?'<span class="badge badge-ok">Protensão possível</span>':'<span class="badge badge-warn">Verificar</span>'}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">7 dias</td>
+                        <td>${fmt(fat.d7,2)}</td>
+                        <td class="highlight" style="font-size:1.1rem">${fmt(fc7d,1)} MPa</td>
+                        <td>${fc7d>=0.65*fc28_abrams?'<span class="badge badge-ok">≥ 65% do fc₂₈</span>':'<span class="badge badge-warn">< 65% do fc₂₈</span>'}</td>
+                    </tr>
+                    <tr style="background:#e8f4f8">
+                        <td style="font-weight:700">28 dias</td>
+                        <td>${fmt(fat.d28,2)}</td>
+                        <td class="highlight" style="font-size:1.3rem;color:var(--primary)">${fmt(fc28d,1)} MPa</td>
+                        <td>fck = ${fmt(fck_calc,1)} MPa ${fck_calc >= dosFck ? '<span class="badge badge-ok">≥ FCK '+dosFck+'</span>' : '<span class="badge badge-err">< FCK '+dosFck+'</span>'}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top:16px;">
+                <canvas id="chartResistenciaDos" width="700" height="300"></canvas>
+            </div>
+
+            <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="background:#f0f4ff;border-radius:8px;padding:12px;">
+                    <strong style="font-size:0.85rem;color:var(--primary);">🔬 Dosagem (Abrams)</strong>
+                    <table class="result-table" style="margin-top:6px;">
+                        <tr><td>fc₂₈ (Abrams)</td><td class="highlight">${fmt(fc28_abrams,1)} MPa</td></tr>
+                        <tr><td>fck = fc₂₈ − 1,65·Sd</td><td class="highlight">${fmt(fck_calc,1)} MPa</td></tr>
+                        <tr><td>FCK de Projeto</td><td class="highlight">${dosFck} MPa</td></tr>
+                        <tr><td>Margem</td><td class="${fck_calc >= dosFck ? 'ok-val' : 'err-val'}">${fck_calc >= dosFck ? '+' : ''}${fmt(fck_calc - dosFck,1)} MPa</td></tr>
+                    </table>
+                </div>
+                <div style="background:#fef8f0;border-radius:8px;padding:12px;">
+                    <strong style="font-size:0.85rem;color:#856404;">📋 Referência NBR 12655</strong>
+                    <table class="result-table" style="margin-top:6px;">
+                        <tr><td>Consumo mín. cimento</td><td>${consumoCim >= 280 ? '<span class="badge badge-ok">≥ 280 kg/m³</span>' : '<span class="badge badge-err">&lt; 280 kg/m³</span>'}</td></tr>
+                        <tr><td>a/c máx. (ambiente II)</td><td>${ac <= 0.60 ? '<span class="badge badge-ok">≤ 0,60</span>' : '<span class="badge badge-warn">&gt; 0,60</span>'}</td></tr>
+                        <tr><td>a/c máx. (ambiente IV)</td><td>${ac <= 0.45 ? '<span class="badge badge-ok">≤ 0,45</span>' : '<span class="badge badge-warn">&gt; 0,45</span>'}</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>`;
+
+        // Renderizar gráfico de resistência
+        document.getElementById('res-dosagem').innerHTML = html;
+        desenharGraficoResistencia_dos(fc1d, fc3d, fc7d, fc28d, dosFck);
+    }
 }
 
 // ═══════════════════════════════════════════════════
@@ -6723,9 +6932,19 @@ function carregarCartaTracoJSON(jsonObj) {
     }
 }
 
+function desenharGraficoResistencia_dos(fc1, fc3, fc7, fc28, fckAlvo) {
+    const canvas = document.getElementById('chartResistenciaDos');
+    if (!canvas) return;
+    _desenharGraficoResistenciaInterno(canvas, fc1, fc3, fc7, fc28, fckAlvo);
+}
+
 function desenharGraficoResistencia(fc1, fc3, fc7, fc28, fckAlvo) {
     const canvas = document.getElementById('chartResistencia');
     if (!canvas) return;
+    _desenharGraficoResistenciaInterno(canvas, fc1, fc3, fc7, fc28, fckAlvo);
+}
+
+function _desenharGraficoResistenciaInterno(canvas, fc1, fc3, fc7, fc28, fckAlvo) {
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
     const pad = { top: 40, right: 40, bottom: 55, left: 65 };
