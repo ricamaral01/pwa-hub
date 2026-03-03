@@ -80,6 +80,9 @@ var HEADERS_EXPERIMENTAL = [
   "R7d CP2 (MPa)",
   "R28d CP1 (MPa)",
   "R28d CP2 (MPa)",
+  "Consist. 10min (mm)",
+  "Consist. 20min (mm)",
+  "Consist. 30min (mm)",
   "Observações"
 ];
 
@@ -212,6 +215,9 @@ function doPost(e) {
         d.r7d_2            || "",
         d.r28d_1           || "",
         d.r28d_2           || "",
+        d.consist10min     || "",
+        d.consist20min     || "",
+        d.consist30min     || "",
         d.observacoes      || ""
       ]);
 
@@ -322,7 +328,10 @@ function doGet(e) {
           r7d_2: data[i][31],
           r28d_1: data[i][32],
           r28d_2: data[i][33],
-          observacoes: data[i][34]
+          consist10min: data[i][34],
+          consist20min: data[i][35],
+          consist30min: data[i][36],
+          observacoes: data[i][37]
         });
       }
       return ContentService

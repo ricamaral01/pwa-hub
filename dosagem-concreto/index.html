@@ -1790,7 +1790,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Valor Medido (mm)</label>
+                    <label>Valor Inicial — 0 min (mm)</label>
                     <input type="number" id="exp_consist_valor" value="" step="5" min="0" max="1000" placeholder="Ex: 120 ou 720">
                 </div>
                 <div class="form-group">
@@ -1800,6 +1800,28 @@
                 <div class="form-group">
                     <label>Temperatura do Concreto (°C)</label>
                     <input type="number" id="exp_temp_concreto" value="" step="0.5" min="0" max="50" placeholder="Ex: 32">
+                </div>
+            </div>
+
+            <!-- MANUTENÇÃO DO ESPALHAMENTO -->
+            <div style="margin-top:14px;border-top:1.5px dashed #e08e9d;padding-top:14px;">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+                    <h4 style="font-size:0.92rem;color:#880e4f;margin:0;">🔄 Manutenção do Espalhamento / Slump</h4>
+                    <span style="font-size:0.78rem;color:#ad1457;background:#fce4ec;padding:3px 10px;border-radius:6px;">Medições ao longo do tempo</span>
+                </div>
+                <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
+                    <div class="form-group">
+                        <label>⏱️ 10 minutos (mm)</label>
+                        <input type="number" id="exp_consist_10min" value="" step="5" min="0" max="1000" placeholder="—">
+                    </div>
+                    <div class="form-group">
+                        <label>⏱️ 20 minutos (mm)</label>
+                        <input type="number" id="exp_consist_20min" value="" step="5" min="0" max="1000" placeholder="—">
+                    </div>
+                    <div class="form-group">
+                        <label>⏱️ 30 minutos (mm)</label>
+                        <input type="number" id="exp_consist_30min" value="" step="5" min="0" max="1000" placeholder="—">
+                    </div>
                 </div>
             </div>
         </div>
@@ -1872,7 +1894,15 @@
         <div id="exp-chart-container" style="display:none;margin-top:24px;">
             <div class="card" style="padding:20px;">
                 <h3 style="font-size:1rem;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:8px;">📈 Evolução da Resistência à Compressão</h3>
-                <canvas id="chartExpResistencia" width="800" height="400" style="max-width:100%;"></canvas>
+                <div id="chartExpResistencia" class="gran-chart-svg-wrap" style="min-height:420px;"></div>
+            </div>
+        </div>
+
+        <!-- GRÁFICO DE MANUTENÇÃO DE ESPALHAMENTO -->
+        <div id="exp-manut-chart-container" style="display:none;margin-top:18px;">
+            <div class="card" style="padding:20px;">
+                <h3 style="font-size:1rem;color:#880e4f;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📉 Manutenção do Espalhamento ao Longo do Tempo</h3>
+                <div id="chartExpManutencao" class="gran-chart-svg-wrap" style="min-height:360px;"></div>
             </div>
         </div>
 
@@ -2888,6 +2918,17 @@ function calcularExperimental() {
     const tempConcreto = document.getElementById('exp_temp_concreto').value;
     const resist = getExpResistencias();
 
+    // Manutenção do espalhamento
+    const consist10 = document.getElementById('exp_consist_10min').value;
+    const consist20 = document.getElementById('exp_consist_20min').value;
+    const consist30 = document.getElementById('exp_consist_30min').value;
+    const manutencao = {
+        t0: consistValor || null,
+        t10: consist10 !== '' ? parseFloat(consist10) : null,
+        t20: consist20 !== '' ? parseFloat(consist20) : null,
+        t30: consist30 !== '' ? parseFloat(consist30) : null
+    };
+
     // Volumes absolutos para 1 m³
     const v = {};
     Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
@@ -3070,97 +3111,124 @@ function calcularExperimental() {
     }
 
     html += '</div>';
+
+    // ==================== MANUTENÇÃO DO ESPALHAMENTO (TABELA) ====================
+    const temManut = manutencao.t0 !== null || manutencao.t10 !== null || manutencao.t20 !== null || manutencao.t30 !== null;
+    if (temManut) {
+        const consistLabel2 = tipoConsist === 'slump' ? 'Slump' : 'Flow';
+        html += `
+        <div class="result-box ok" style="margin-top:18px;">
+            <h3>🔄 Manutenção do ${consistLabel2}</h3>
+            <table class="result-table">
+                <thead><tr><th>Tempo</th><th>Valor (mm)</th><th>Perda (%)</th><th>Status</th></tr></thead>
+                <tbody>`;
+        const manutPontos = [
+            { label: '0 min (inicial)', val: manutencao.t0 },
+            { label: '10 min', val: manutencao.t10 },
+            { label: '20 min', val: manutencao.t20 },
+            { label: '30 min', val: manutencao.t30 }
+        ];
+        manutPontos.forEach(p => {
+            if (p.val !== null) {
+                const perda = manutencao.t0 && manutencao.t0 > 0 ? ((manutencao.t0 - p.val) / manutencao.t0 * 100) : 0;
+                const perdaOk = perda <= 10 ? 'ok' : (perda <= 20 ? 'warn' : 'error');
+                html += `<tr>
+                    <td><strong>${p.label}</strong></td>
+                    <td class="highlight">${fmt(p.val, 0)} mm</td>
+                    <td>${perda > 0 ? fmt(perda, 1) + '%' : '—'}</td>
+                    <td>${perdaOk === 'ok' ? '<span class="badge badge-ok">✓ Estável</span>' : (perdaOk === 'warn' ? '<span class="badge badge-warn">⚠ Atenção</span>' : '<span class="badge badge-err">✗ Perda Alta</span>')}</td>
+                </tr>`;
+            }
+        });
+        html += '</tbody></table></div>';
+    }
+
     document.getElementById('res-experimental').innerHTML = html;
 
-    // ==================== GRÁFICO ====================
+    // ==================== GRÁFICO DE RESISTÊNCIA (SVG) ====================
     if (temResist) {
-        desenharGraficoResistencia(resist, fck, proj);
+        desenharGraficoResistenciaSVG(resist, fck, proj);
+    }
+
+    // ==================== GRÁFICO DE MANUTENÇÃO (SVG) ====================
+    if (temManut && manutencao.t0 !== null) {
+        desenharGraficoManutencao(manutencao, tipoConsist);
+    } else {
+        document.getElementById('exp-manut-chart-container').style.display = 'none';
     }
 }
 
-function desenharGraficoResistencia(resist, fck, proj) {
+function desenharGraficoResistenciaSVG(resist, fck, proj) {
     const container = document.getElementById('exp-chart-container');
     container.style.display = 'block';
-    const canvas = document.getElementById('chartExpResistencia');
-    const ctx = canvas.getContext('2d');
+    const target = document.getElementById('chartExpResistencia');
 
-    // High DPI
-    const dpr = window.devicePixelRatio || 1;
-    const w = canvas.parentElement.offsetWidth - 40;
-    const h = 400;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.scale(dpr, dpr);
+    const W = 900, H = 440;
+    const pad = { top: 56, right: 180, bottom: 65, left: 70 };
+    const cw = W - pad.left - pad.right;
+    const ch = H - pad.top - pad.bottom;
 
-    const pad = { top: 50, right: 40, bottom: 60, left: 65 };
-    const cw = w - pad.left - pad.right;
-    const ch = h - pad.top - pad.bottom;
-
-    ctx.clearRect(0, 0, w, h);
-
-    // Background
-    const bg = ctx.createLinearGradient(0, 0, 0, h);
-    bg.addColorStop(0, '#f8fbff');
-    bg.addColorStop(1, '#eef3f7');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, w, h);
-
-    // Dados
-    const idades = [0.04, 1, 3, 7, 28]; // 1h, 1d, 3d, 7d, 28d
     const m24h = mediaResist(resist.r24h);
     const m3d = mediaResist(resist.r3d);
     const m7d = mediaResist(resist.r7d);
     const m28d = mediaResist(resist.r28d);
     const pontos = [
-        { x: 1, y: m24h },
-        { x: 3, y: m3d },
-        { x: 7, y: m7d },
-        { x: 28, y: m28d }
+        { x: 1, y: m24h, label: '24h' },
+        { x: 3, y: m3d, label: '3d' },
+        { x: 7, y: m7d, label: '7d' },
+        { x: 28, y: m28d, label: '28d' }
     ].filter(p => p.y !== null);
 
-    if (pontos.length === 0) return;
+    if (pontos.length === 0) { target.innerHTML = ''; return; }
 
-    const maxY = Math.max(fck * 1.3, ...pontos.map(p => p.y)) * 1.1;
-    const xLabels = [1, 3, 7, 14, 21, 28];
-    const xMin = 0, xMax = 30;
-
+    const maxY = Math.max(fck * 1.3, ...pontos.map(p => p.y)) * 1.15;
+    const xMax = 32;
     const toX = v => pad.left + (v / xMax) * cw;
     const toY = v => pad.top + ch - (v / maxY) * ch;
 
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" font-family="'Segoe UI',system-ui,sans-serif">`;
+    svg += `<defs>
+      <linearGradient id="bgResist" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f0f5ff"/><stop offset="100%" stop-color="#e6ecf5"/>
+      </linearGradient>
+      <linearGradient id="areaResist" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1565c0" stop-opacity="0.18"/><stop offset="100%" stop-color="#1565c0" stop-opacity="0.02"/>
+      </linearGradient>
+      <filter id="dotShadow"><feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-opacity="0.18"/></filter>
+      <filter id="boxShadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.1"/></filter>
+    </defs>`;
+    svg += `<rect x="0" y="0" width="${W}" height="${H}" fill="url(#bgResist)" rx="12"/>`;
+
+    // Title
+    svg += `<text x="${pad.left+cw/2}" y="26" text-anchor="middle" font-size="16" font-weight="800" fill="#1a2e44">Evolução da Resistência à Compressão</text>`;
+    svg += `<text x="${pad.left+cw/2}" y="44" text-anchor="middle" font-size="11" font-weight="600" fill="#5a7a96">Resultados • Projeção Logarítmica • FCK de Projeto</text>`;
+
     // Grid
-    ctx.strokeStyle = '#dce1e6';
-    ctx.lineWidth = 0.5;
-    for (let i = 0; i <= 5; i++) {
-        const yv = (maxY / 5) * i;
+    const ySteps = 5;
+    for (let i = 0; i <= ySteps; i++) {
+        const yv = (maxY / ySteps) * i;
         const y = toY(yv);
-        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
-        ctx.fillStyle = '#7f8c8d'; ctx.font = '11px Segoe UI'; ctx.textAlign = 'right';
-        ctx.fillText(fmt(yv, 0), pad.left - 8, y + 4);
+        svg += `<line x1="${pad.left}" y1="${y}" x2="${pad.left+cw}" y2="${y}" stroke="#c0cdd8" stroke-width="${i===0?1.2:0.6}" ${i>0&&i<ySteps?'stroke-dasharray="4,3"':''}/>`;
+        svg += `<text x="${pad.left-10}" y="${y+4}" text-anchor="end" font-size="11" font-weight="600" fill="#4a6278">${fmt(yv,0)} MPa</text>`;
     }
+    const xLabels = [1, 3, 7, 14, 21, 28];
     xLabels.forEach(xl => {
         const x = toX(xl);
-        ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ch); ctx.stroke();
-        ctx.fillStyle = '#7f8c8d'; ctx.font = '11px Segoe UI'; ctx.textAlign = 'center';
-        ctx.fillText(xl + 'd', x, h - pad.bottom + 18);
+        svg += `<line x1="${x}" y1="${pad.top}" x2="${x}" y2="${pad.top+ch}" stroke="#d5e0ea" stroke-width="0.6" stroke-dasharray="3,2"/>`;
+        svg += `<text x="${x}" y="${pad.top+ch+20}" text-anchor="middle" font-size="11" font-weight="700" fill="#4a6278">${xl}d</text>`;
     });
 
-    // FCK line
-    ctx.strokeStyle = '#e74c3c';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([8, 4]);
-    ctx.beginPath();
-    ctx.moveTo(pad.left, toY(fck));
-    ctx.lineTo(w - pad.right, toY(fck));
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = '#e74c3c'; ctx.font = 'bold 11px Segoe UI'; ctx.textAlign = 'left';
-    ctx.fillText('FCK = ' + fck + ' MPa', w - pad.right - 120, toY(fck) - 6);
+    // Frame
+    svg += `<rect x="${pad.left}" y="${pad.top}" width="${cw}" height="${ch}" fill="none" stroke="#94aec4" stroke-width="1.5" rx="2"/>`;
 
-    // Curva projetada (logarítmica suave)
+    // FCK line
+    const yFck = toY(fck);
+    svg += `<line x1="${pad.left}" y1="${yFck}" x2="${pad.left+cw}" y2="${yFck}" stroke="#e53935" stroke-width="2.5" stroke-dasharray="10,5"/>`;
+    svg += `<rect x="${pad.left+cw-130}" y="${yFck-18}" width="126" height="18" rx="4" fill="#e53935" fill-opacity="0.12"/>`;
+    svg += `<text x="${pad.left+cw-68}" y="${yFck-5}" text-anchor="middle" font-size="11" font-weight="800" fill="#c62828">FCK = ${fck} MPa</text>`;
+
+    // Log regression curve
     if (pontos.length >= 2) {
-        // Regressão logarítmica: y = a * ln(x) + b
         let sumLnX = 0, sumY = 0, sumLnX2 = 0, sumLnXY = 0;
         pontos.forEach(p => {
             const lnx = Math.log(p.x);
@@ -3170,67 +3238,157 @@ function desenharGraficoResistencia(resist, fck, proj) {
         const a = (n * sumLnXY - sumLnX * sumY) / (n * sumLnX2 - sumLnX * sumLnX);
         const b = (sumY - a * sumLnX) / n;
 
-        ctx.strokeStyle = 'rgba(41,128,185,0.35)';
-        ctx.lineWidth = 2;
-        ctx.setLineDash([4, 3]);
-        ctx.beginPath();
-        for (let d = 0.5; d <= 30; d += 0.5) {
-            const yVal = a * Math.log(d) + b;
-            const px = toX(d), py = toY(Math.max(0, yVal));
-            if (d === 0.5) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        let regPath = '';
+        for (let d = 0.5; d <= 32; d += 0.3) {
+            const yVal = Math.max(0, a * Math.log(d) + b);
+            const px = toX(d), py = toY(yVal);
+            regPath += (d === 0.5 ? 'M' : 'L') + px + ',' + py;
         }
-        ctx.stroke();
-        ctx.setLineDash([]);
+        svg += `<path d="${regPath}" fill="none" stroke="#42a5f5" stroke-width="2.5" stroke-opacity="0.5" stroke-dasharray="6,4" stroke-linecap="round"/>`;
     }
 
-    // Pontos e linha principal
-    ctx.strokeStyle = '#1a5276';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    pontos.forEach((p, i) => {
-        const px = toX(p.x), py = toY(p.y);
-        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-    });
-    ctx.stroke();
+    // Area fill
+    let areaPath = `M${toX(pontos[0].x)},${toY(0)}`;
+    pontos.forEach(p => { areaPath += ` L${toX(p.x)},${toY(p.y)}`; });
+    areaPath += ` L${toX(pontos[pontos.length-1].x)},${toY(0)} Z`;
+    svg += `<path d="${areaPath}" fill="url(#areaResist)"/>`;
 
-    // Dots
+    // Main line (glow + line)
+    let linePath = '';
+    pontos.forEach((p, i) => {
+        linePath += (i === 0 ? 'M' : 'L') + toX(p.x) + ',' + toY(p.y);
+    });
+    svg += `<path d="${linePath}" fill="none" stroke="#42a5f5" stroke-width="8" stroke-opacity="0.25" stroke-linecap="round" stroke-linejoin="round"/>`;
+    svg += `<path d="${linePath}" fill="none" stroke="#1565c0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+    // Points + labels
     pontos.forEach(p => {
         const px = toX(p.x), py = toY(p.y);
-        // Glow
-        ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(26,82,118,0.15)'; ctx.fill();
-        // Dot
-        ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI * 2);
-        ctx.fillStyle = p.y >= fck ? '#27ae60' : '#1a5276'; ctx.fill();
-        ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-        // Label
-        ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 12px Segoe UI'; ctx.textAlign = 'center';
-        ctx.fillText(fmt(p.y, 1) + ' MPa', px, py - 14);
+        const cor = p.y >= fck ? '#2e7d32' : '#1565c0';
+        svg += `<circle cx="${px}" cy="${py}" r="8" fill="#fff" stroke="${cor}" stroke-width="2.5" filter="url(#dotShadow)"/>`;
+        svg += `<circle cx="${px}" cy="${py}" r="4.5" fill="${cor}"/>`;
+        // Label background
+        const label = fmt(p.y, 1) + ' MPa';
+        const tw = label.length * 7.2 + 12;
+        svg += `<rect x="${px-tw/2}" y="${py-28}" width="${tw}" height="18" rx="5" fill="#fff" fill-opacity="0.95" stroke="${cor}" stroke-width="0.8" filter="url(#boxShadow)"/>`;
+        svg += `<text x="${px}" y="${py-15}" text-anchor="middle" font-size="11" font-weight="800" fill="${cor}">${label}</text>`;
     });
 
-    // Título
-    ctx.fillStyle = '#1a5276'; ctx.font = 'bold 14px Segoe UI'; ctx.textAlign = 'center';
-    ctx.fillText('Evolução da Resistência à Compressão', w / 2, 22);
+    // Axis titles
+    svg += `<text x="${pad.left+cw/2}" y="${H-10}" text-anchor="middle" font-size="13" font-weight="700" fill="#1a2e44">Idade (dias)</text>`;
+    svg += `<g transform="translate(18,${pad.top+ch/2}) rotate(-90)"><text text-anchor="middle" font-size="13" font-weight="700" fill="#1a2e44">Resistência (MPa)</text></g>`;
 
-    // Eixos
-    ctx.fillStyle = '#7f8c8d'; ctx.font = '12px Segoe UI';
-    ctx.textAlign = 'center';
-    ctx.fillText('Idade (dias)', w / 2, h - 8);
-    ctx.save();
-    ctx.translate(15, h / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText('Resistência (MPa)', 0, 0);
-    ctx.restore();
+    // Legend
+    const lx = pad.left + cw + 14, ly = pad.top + 6;
+    svg += `<rect x="${lx-6}" y="${ly-6}" width="162" height="110" rx="8" fill="#fff" stroke="#b0c4d8" stroke-width="1.2" filter="url(#boxShadow)"/>`;
+    svg += `<text x="${lx+2}" y="${ly+12}" font-size="11" font-weight="800" fill="#1a2e44">LEGENDA</text>`;
+    let liy = ly + 30;
+    svg += `<line x1="${lx}" y1="${liy}" x2="${lx+24}" y2="${liy}" stroke="#1565c0" stroke-width="3.5" stroke-linecap="round"/>`;
+    svg += `<circle cx="${lx+12}" cy="${liy}" r="3.5" fill="#1565c0"/>`;
+    svg += `<text x="${lx+30}" y="${liy+4}" font-size="10" font-weight="600" fill="#4a6278">Resultados</text>`;
+    liy += 20;
+    svg += `<line x1="${lx}" y1="${liy}" x2="${lx+24}" y2="${liy}" stroke="#42a5f5" stroke-width="2.5" stroke-dasharray="6,4" stroke-opacity="0.6"/>`;
+    svg += `<text x="${lx+30}" y="${liy+4}" font-size="10" font-weight="600" fill="#4a6278">Projeção log.</text>`;
+    liy += 20;
+    svg += `<line x1="${lx}" y1="${liy}" x2="${lx+24}" y2="${liy}" stroke="#e53935" stroke-width="2.5" stroke-dasharray="8,4"/>`;
+    svg += `<text x="${lx+30}" y="${liy+4}" font-size="10" font-weight="600" fill="#4a6278">FCK = ${fck} MPa</text>`;
 
-    // Legenda
-    const legY = h - 15;
-    ctx.fillStyle = '#1a5276'; ctx.fillRect(pad.left, legY, 12, 3);
-    ctx.fillStyle = '#555'; ctx.font = '10px Segoe UI'; ctx.textAlign = 'left';
-    ctx.fillText('Resultados', pad.left + 16, legY + 4);
-    ctx.fillStyle = 'rgba(41,128,185,0.35)'; ctx.fillRect(pad.left + 90, legY, 12, 3);
-    ctx.fillStyle = '#555'; ctx.fillText('Projeção log.', pad.left + 106, legY + 4);
-    ctx.fillStyle = '#e74c3c'; ctx.fillRect(pad.left + 180, legY, 12, 3);
-    ctx.fillStyle = '#555'; ctx.fillText('FCK', pad.left + 196, legY + 4);
+    svg += '</svg>';
+    target.innerHTML = svg;
+}
+
+function desenharGraficoManutencao(manut, tipoConsist) {
+    const container = document.getElementById('exp-manut-chart-container');
+    container.style.display = 'block';
+    const target = document.getElementById('chartExpManutencao');
+
+    const pontos = [
+        { t: 0, v: manut.t0, label: '0 min' },
+        { t: 10, v: manut.t10, label: '10 min' },
+        { t: 20, v: manut.t20, label: '20 min' },
+        { t: 30, v: manut.t30, label: '30 min' }
+    ].filter(p => p.v !== null);
+
+    if (pontos.length < 2) { target.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">Informe pelo menos 2 medições para gerar o gráfico.</p>'; return; }
+
+    const W = 700, H = 370;
+    const pad = { top: 52, right: 40, bottom: 60, left: 70 };
+    const cw = W - pad.left - pad.right;
+    const ch = H - pad.top - pad.bottom;
+
+    const consistLabel = tipoConsist === 'slump' ? 'Slump' : 'Flow';
+    const corPrincipal = '#ad1457';
+    const corLight = '#f06292';
+
+    const maxV = Math.max(...pontos.map(p => p.v)) * 1.15;
+    const minV = 0;
+    const toX = t => pad.left + (t / 30) * cw;
+    const toY = v => pad.top + ch - ((v - minV) / (maxV - minV)) * ch;
+
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" font-family="'Segoe UI',system-ui,sans-serif">`;
+    svg += `<defs>
+      <linearGradient id="bgManut" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef0f4"/><stop offset="100%" stop-color="#fce4ec"/></linearGradient>
+      <linearGradient id="areaManut" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${corPrincipal}" stop-opacity="0.2"/><stop offset="100%" stop-color="${corPrincipal}" stop-opacity="0.02"/></linearGradient>
+      <filter id="dotManut"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.15"/></filter>
+    </defs>`;
+    svg += `<rect x="0" y="0" width="${W}" height="${H}" fill="url(#bgManut)" rx="12"/>`;
+
+    // Title
+    svg += `<text x="${W/2}" y="24" text-anchor="middle" font-size="15" font-weight="800" fill="#880e4f">Manutenção do ${consistLabel}</text>`;
+    svg += `<text x="${W/2}" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="#ad1457">Perda ao longo do tempo (0, 10, 20, 30 min)</text>`;
+
+    // Grid horizontal
+    const ySteps = 5;
+    for (let i = 0; i <= ySteps; i++) {
+        const yv = minV + ((maxV - minV) / ySteps) * i;
+        const y = toY(yv);
+        svg += `<line x1="${pad.left}" y1="${y}" x2="${pad.left+cw}" y2="${y}" stroke="#dba9bc" stroke-width="0.6" ${i>0&&i<ySteps?'stroke-dasharray="4,3"':''}/>`;
+        svg += `<text x="${pad.left-10}" y="${y+4}" text-anchor="end" font-size="10" font-weight="600" fill="#8e5068">${fmt(yv,0)}</text>`;
+    }
+    // Vertical grid
+    [0, 10, 20, 30].forEach(t => {
+        const x = toX(t);
+        svg += `<line x1="${x}" y1="${pad.top}" x2="${x}" y2="${pad.top+ch}" stroke="#dba9bc" stroke-width="0.6" stroke-dasharray="3,2"/>`;
+        svg += `<text x="${x}" y="${pad.top+ch+20}" text-anchor="middle" font-size="11" font-weight="700" fill="#8e5068">${t} min</text>`;
+    });
+
+    // Frame
+    svg += `<rect x="${pad.left}" y="${pad.top}" width="${cw}" height="${ch}" fill="none" stroke="#c97e97" stroke-width="1.4" rx="2"/>`;
+
+    // Area
+    let areaPath = `M${toX(pontos[0].t)},${toY(minV)}`;
+    pontos.forEach(p => { areaPath += ` L${toX(p.t)},${toY(p.v)}`; });
+    areaPath += ` L${toX(pontos[pontos.length-1].t)},${toY(minV)} Z`;
+    svg += `<path d="${areaPath}" fill="url(#areaManut)"/>`;
+
+    // Line
+    let linePath = '';
+    pontos.forEach((p, i) => { linePath += (i === 0 ? 'M' : 'L') + toX(p.t) + ',' + toY(p.v); });
+    svg += `<path d="${linePath}" fill="none" stroke="${corLight}" stroke-width="6" stroke-opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>`;
+    svg += `<path d="${linePath}" fill="none" stroke="${corPrincipal}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+    // Points + labels
+    pontos.forEach(p => {
+        const px = toX(p.t), py = toY(p.v);
+        const perda = manut.t0 > 0 ? ((manut.t0 - p.v) / manut.t0 * 100) : 0;
+        const perdaCor = perda <= 10 ? '#2e7d32' : (perda <= 20 ? '#f57f17' : '#c62828');
+        svg += `<circle cx="${px}" cy="${py}" r="7" fill="#fff" stroke="${corPrincipal}" stroke-width="2.5" filter="url(#dotManut)"/>`;
+        svg += `<circle cx="${px}" cy="${py}" r="4" fill="${corPrincipal}"/>`;
+        const label = fmt(p.v, 0) + ' mm';
+        const tw = label.length * 7 + 10;
+        svg += `<rect x="${px-tw/2}" y="${py-28}" width="${tw}" height="18" rx="4" fill="#fff" fill-opacity="0.95" stroke="${corPrincipal}" stroke-width="0.8"/>`;
+        svg += `<text x="${px}" y="${py-15}" text-anchor="middle" font-size="10.5" font-weight="800" fill="${corPrincipal}">${label}</text>`;
+        if (p.t > 0 && perda > 0) {
+            svg += `<text x="${px}" y="${py+20}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${perdaCor}">-${fmt(perda,1)}%</text>`;
+        }
+    });
+
+    // Axes
+    svg += `<text x="${W/2}" y="${H-10}" text-anchor="middle" font-size="12" font-weight="700" fill="#880e4f">Tempo (minutos)</text>`;
+    svg += `<g transform="translate(16,${pad.top+ch/2}) rotate(-90)"><text text-anchor="middle" font-size="12" font-weight="700" fill="#880e4f">${consistLabel} (mm)</text></g>`;
+
+    svg += '</svg>';
+    target.innerHTML = svg;
 }
 
 async function salvarExperimental() {
@@ -3281,6 +3439,9 @@ async function salvarExperimental() {
         r3d_1: resist.r3d.cp1 ?? '', r3d_2: resist.r3d.cp2 ?? '',
         r7d_1: resist.r7d.cp1 ?? '', r7d_2: resist.r7d.cp2 ?? '',
         r28d_1: resist.r28d.cp1 ?? '', r28d_2: resist.r28d.cp2 ?? '',
+        consist10min: document.getElementById('exp_consist_10min').value || '',
+        consist20min: document.getElementById('exp_consist_20min').value || '',
+        consist30min: document.getElementById('exp_consist_30min').value || '',
         observacoes: obs
     };
 
@@ -3386,6 +3547,10 @@ function carregarExperimental(t) {
     if (t.r7d_2) document.getElementById('exp_r7d_2').value = t.r7d_2;
     if (t.r28d_1) document.getElementById('exp_r28d_1').value = t.r28d_1;
     if (t.r28d_2) document.getElementById('exp_r28d_2').value = t.r28d_2;
+    // Manutenção de consistência
+    if (t.consist10min) document.getElementById('exp_consist_10min').value = t.consist10min;
+    if (t.consist20min) document.getElementById('exp_consist_20min').value = t.consist20min;
+    if (t.consist30min) document.getElementById('exp_consist_30min').value = t.consist30min;
 
     // Scroll to top and recalculate
     document.querySelector('.content-area').scrollTo({top: 0, behavior: 'smooth'});
