@@ -38,8 +38,31 @@
             text-align: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.12);
         }
+        header { position: relative; }
         header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px; }
         header p { font-size: 0.95rem; opacity: 0.85; margin-top: 6px; }
+        .btn-voltar-hub {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.45);
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            backdrop-filter: blur(6px);
+            z-index: 10;
+        }
+        .btn-voltar-hub:hover {
+            background: rgba(255,255,255,0.35);
+            border-color: #fff;
+            transform: translateY(-1px);
+        }
 
         /* SIDEBAR NAVIGATION */
         .app-layout {
@@ -619,6 +642,19 @@
             border-radius: 10px;
             background: #fff;
         }
+        .gran-chart-svg-wrap {
+            width: 100%;
+            min-height: 520px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            overflow: hidden;
+        }
+        .gran-chart-svg-wrap svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
         .cloud-ensaio-tools {
             margin-top: 10px;
@@ -740,6 +776,7 @@
 <body>
 
 <header>
+    <a href="../index.html" class="btn-voltar-hub" title="Voltar ao HUB Principal">⬅ HUB</a>
     <h1>⬡ Calculadora de Dosagem de Concreto</h1>
     <p>Método de Empacotamento de Partículas · Concreto Autoadensável (Flow 650–850 mm)</p>
 </header>
@@ -1266,7 +1303,7 @@
         <!-- RESULTADOS MIÚDO -->
         <div id="res-gran-miudo" style="margin-top:16px;"></div>
         <div style="margin-top:16px;">
-            <canvas id="chartGranMiudo" class="gran-chart-canvas" width="1200" height="560"></canvas>
+            <div id="chartGranMiudo" class="gran-chart-svg-wrap"></div>
         </div>
     </div>
 </div>
@@ -1391,7 +1428,7 @@
         <!-- RESULTADOS GRAÚDO -->
         <div id="res-gran-graudo" style="margin-top:16px;"></div>
         <div style="margin-top:16px;">
-            <canvas id="chartGranGraudo" class="gran-chart-canvas" width="1200" height="560"></canvas>
+            <div id="chartGranGraudo" class="gran-chart-svg-wrap"></div>
         </div>
     </div>
 </div>
@@ -4021,273 +4058,180 @@ function calcularGranGraudo() {
 }
 
 // ═══════════════════════════════════════════════════
-// GRÁFICO GRANULOMÉTRICO (CANVAS)
+// GRÁFICO GRANULOMÉTRICO (SVG — alta definição)
 // ═══════════════════════════════════════════════════
 
-function desenharGraficoGran(canvasId, dados, titulo, MF, DMC, tipo) {
-    const canvas = document.getElementById(canvasId);
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
-    const pad = { top: 62, right: 220, bottom: 84, left: 78 };
-    const gW = W - pad.left - pad.right;
-    const gH = H - pad.top - pad.bottom;
-
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, W, H);
+function desenharGraficoGran(containerId, dados, titulo, MF, DMC, tipo) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
     const dadosNum = dados.filter(d => d.peneira !== 'Fundo' && typeof d.peneira === 'number');
-    if (dadosNum.length === 0) return;
+    if (dadosNum.length === 0) { container.innerHTML = ''; return; }
+
+    const W = 1200, H = 600;
+    const pad = { top: 68, right: 230, bottom: 90, left: 80 };
+    const gW = W - pad.left - pad.right;
+    const gH = H - pad.top - pad.bottom;
 
     const peneirasLog = dadosNum.map(d => Math.log10(d.peneira));
     const logMin = Math.min(...peneirasLog) - 0.15;
     const logMax = Math.max(...peneirasLog) + 0.15;
 
-    function toX(logP) { return pad.left + ((logP - logMin) / (logMax - logMin)) * gW; }
-    function toY(pct) { return pad.top + gH - (pct / 100) * gH; }
+    const toX = logP => pad.left + ((logP - logMin) / (logMax - logMin)) * gW;
+    const toY = pct => pad.top + gH - (pct / 100) * gH;
 
-    ctx.strokeStyle = '#d5dde6';
-    ctx.lineWidth = 0.9;
+    const corCurva = tipo === 'miudo' ? '#1565c0' : '#1b7a3d';
+    const corCurvaLight = tipo === 'miudo' ? '#42a5f5' : '#4caf50';
+
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" font-family="'Segoe UI',system-ui,sans-serif">`;
+
+    // Defs — gradients, filters, markers
+    svg += `<defs>
+      <linearGradient id="bgGrad_${tipo}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f8faff"/>
+        <stop offset="100%" stop-color="#eef3fa"/>
+      </linearGradient>
+      <linearGradient id="areaGrad_${tipo}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${corCurva}" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="${corCurva}" stop-opacity="0.03"/>
+      </linearGradient>
+      <filter id="glow_${tipo}" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="shadow_${tipo}"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter>
+    </defs>`;
+
+    // Background
+    svg += `<rect x="0" y="0" width="${W}" height="${H}" fill="url(#bgGrad_${tipo})" rx="12"/>`;
+
+    // Title
+    svg += `<text x="${pad.left + gW/2}" y="28" text-anchor="middle" font-size="18" font-weight="800" fill="#1a2e44">${titulo}</text>`;
+    svg += `<text x="${pad.left + gW/2}" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#5a7a96">NBR NM 248 / NBR 7211 — Escala logarítmica de peneiras</text>`;
+
+    // Grid lines
     for (let pct = 0; pct <= 100; pct += 10) {
         const y = toY(pct);
-        ctx.beginPath();
-        ctx.moveTo(pad.left, y);
-        ctx.lineTo(pad.left + gW, y);
-        ctx.stroke();
-        ctx.fillStyle = '#4b5f73';
-        ctx.font = '600 10px Segoe UI';
-        ctx.textAlign = 'right';
-        ctx.fillText(pct + '%', pad.left - 8, y + 3);
+        svg += `<line x1="${pad.left}" y1="${y}" x2="${pad.left+gW}" y2="${y}" stroke="#c8d6e5" stroke-width="${pct%50===0?1.2:0.6}" ${pct%50!==0?'stroke-dasharray="4,3"':''}/>`;
+        svg += `<text x="${pad.left-10}" y="${y+4}" text-anchor="end" font-size="11" font-weight="600" fill="#3d5875">${pct}%</text>`;
     }
 
+    // Vertical grid + labels
     dadosNum.forEach(d => {
         const x = toX(Math.log10(d.peneira));
-        ctx.strokeStyle = '#dbe4ec';
-        ctx.lineWidth = 0.8;
-        ctx.beginPath();
-        ctx.moveTo(x, pad.top);
-        ctx.lineTo(x, pad.top + gH);
-        ctx.stroke();
-
-        ctx.fillStyle = '#4b5f73';
-        ctx.font = '600 10px Segoe UI';
-        ctx.textAlign = 'center';
-        ctx.save();
-        ctx.translate(x, pad.top + gH + 16);
-        ctx.rotate(-Math.PI / 5);
-        ctx.fillText(d.peneira + ' mm', 0, 0);
-        ctx.restore();
+        svg += `<line x1="${x}" y1="${pad.top}" x2="${x}" y2="${pad.top+gH}" stroke="#d5e1ed" stroke-width="0.7" stroke-dasharray="3,2"/>`;
+        svg += `<g transform="translate(${x},${pad.top+gH+18}) rotate(-30)">`;
+        svg += `<text font-size="11" font-weight="700" fill="#3d5875" text-anchor="end">${d.peneira} mm</text></g>`;
     });
 
+    // Axis frame
+    svg += `<rect x="${pad.left}" y="${pad.top}" width="${gW}" height="${gH}" fill="none" stroke="#94aec4" stroke-width="1.5" rx="2"/>`;
+
+    // Zona shading (miúdo only)
     if (tipo === 'miudo') {
         const zonaUtil = [
-            { p: 9.5, min: 97, max: 100 },
-            { p: 6.3, min: 94, max: 100 },
-            { p: 4.75, min: 88, max: 100 },
-            { p: 2.36, min: 58, max: 95 },
-            { p: 1.18, min: 38, max: 82 },
-            { p: 0.6, min: 20, max: 65 },
-            { p: 0.3, min: 8, max: 36 },
-            { p: 0.15, min: 2, max: 16 }
+            {p:9.5,min:97,max:100},{p:6.3,min:94,max:100},{p:4.75,min:88,max:100},
+            {p:2.36,min:58,max:95},{p:1.18,min:38,max:82},{p:0.6,min:20,max:65},
+            {p:0.3,min:8,max:36},{p:0.15,min:2,max:16}
         ];
-
         const zonaOtima = [
-            { p: 9.5, min: 99, max: 100 },
-            { p: 6.3, min: 97, max: 100 },
-            { p: 4.75, min: 92, max: 98 },
-            { p: 2.36, min: 70, max: 88 },
-            { p: 1.18, min: 50, max: 70 },
-            { p: 0.6, min: 30, max: 50 },
-            { p: 0.3, min: 14, max: 25 },
-            { p: 0.15, min: 4, max: 10 }
+            {p:9.5,min:99,max:100},{p:6.3,min:97,max:100},{p:4.75,min:92,max:98},
+            {p:2.36,min:70,max:88},{p:1.18,min:50,max:70},{p:0.6,min:30,max:50},
+            {p:0.3,min:14,max:25},{p:0.15,min:4,max:10}
         ];
-
-        const drawZona = (faixa, fill, stroke, alpha) => {
-            ctx.save();
-            ctx.globalAlpha = alpha;
-            ctx.fillStyle = fill;
-            ctx.beginPath();
-            faixa.forEach((f, idx) => {
-                const x = toX(Math.log10(f.p));
-                const y = toY(f.max);
-                if (idx === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+        const zonaPath = (faixa) => {
+            let path = '';
+            faixa.forEach((f,i) => {
+                const x = toX(Math.log10(f.p)), y = toY(f.max);
+                path += (i===0?'M':'L')+x+','+y;
             });
-            for (let i = faixa.length - 1; i >= 0; i--) {
-                const f = faixa[i];
-                ctx.lineTo(toX(Math.log10(f.p)), toY(f.min));
+            for (let i=faixa.length-1;i>=0;i--) {
+                const f=faixa[i];
+                path += 'L'+toX(Math.log10(f.p))+','+toY(f.min);
             }
-            ctx.closePath();
-            ctx.fill();
-            ctx.globalAlpha = 1;
-            ctx.strokeStyle = stroke;
-            ctx.lineWidth = 1.8;
-            ctx.stroke();
-            ctx.restore();
+            return path+'Z';
         };
-
-        drawZona(zonaUtil, '#f1c40f', '#b58500', 0.22);
-        drawZona(zonaOtima, '#2ecc71', '#1b8a4a', 0.28);
+        svg += `<path d="${zonaPath(zonaUtil)}" fill="#f1c40f" fill-opacity="0.25" stroke="#c99700" stroke-width="1.5" stroke-opacity="0.6"/>`;
+        svg += `<path d="${zonaPath(zonaOtima)}" fill="#2ecc71" fill-opacity="0.3" stroke="#1b8a4a" stroke-width="1.5" stroke-opacity="0.7"/>`;
     }
 
-    const corCurva = tipo === 'miudo' ? '#256bb1' : '#1f9a55';
-    const gradient = ctx.createLinearGradient(0, pad.top, 0, pad.top + gH);
-    gradient.addColorStop(0, corCurva + '25');
-    gradient.addColorStop(1, corCurva + '06');
-
-    ctx.beginPath();
-    let first = true;
-    dadosNum.forEach(d => {
-        const x = toX(Math.log10(d.peneira));
-        const y = toY(d.passante);
-        if (first) { ctx.moveTo(x, y); first = false; }
-        else ctx.lineTo(x, y);
+    // Area fill under curve
+    let areaPath = 'M';
+    dadosNum.forEach((d,i) => {
+        const x = toX(Math.log10(d.peneira)), y = toY(d.passante);
+        areaPath += (i===0?'':' L') + x + ',' + y;
     });
-    ctx.lineTo(toX(Math.log10(dadosNum[dadosNum.length - 1].peneira)), toY(0));
-    ctx.lineTo(toX(Math.log10(dadosNum[0].peneira)), toY(0));
-    ctx.closePath();
-    ctx.fillStyle = gradient;
-    ctx.fill();
+    areaPath += ` L${toX(Math.log10(dadosNum[dadosNum.length-1].peneira))},${toY(0)}`;
+    areaPath += ` L${toX(Math.log10(dadosNum[0].peneira))},${toY(0)} Z`;
+    svg += `<path d="${areaPath}" fill="url(#areaGrad_${tipo})"/>`;
 
-    ctx.strokeStyle = corCurva;
-    ctx.lineWidth = 3.2;
-    ctx.setLineDash([]);
-    ctx.beginPath();
-    first = true;
-    dadosNum.forEach(d => {
-        const x = toX(Math.log10(d.peneira));
-        const y = toY(d.passante);
-        if (first) { ctx.moveTo(x, y); first = false; }
-        else ctx.lineTo(x, y);
+    // Main curve line
+    let curvePath = '';
+    dadosNum.forEach((d,i) => {
+        const x = toX(Math.log10(d.peneira)), y = toY(d.passante);
+        curvePath += (i===0?'M':'L') + x + ',' + y;
     });
-    ctx.stroke();
+    // Glow line first
+    svg += `<path d="${curvePath}" fill="none" stroke="${corCurvaLight}" stroke-width="8" stroke-opacity="0.3" stroke-linecap="round" stroke-linejoin="round"/>`;
+    // Main line
+    svg += `<path d="${curvePath}" fill="none" stroke="${corCurva}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>`;
 
-    dadosNum.forEach((d, i) => {
-        const x = toX(Math.log10(d.peneira));
-        const y = toY(d.passante);
-        ctx.beginPath();
-        ctx.arc(x, y, 6, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(x, y, 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = corCurva;
-        ctx.fill();
-
-        const offsetY = i % 2 === 0 ? -12 : 16;
-        const label = fmt(d.passante, 1) + '%';
-        ctx.font = '700 10px Segoe UI';
-        ctx.textAlign = 'center';
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 3;
-        ctx.strokeText(label, x, y + offsetY);
-        ctx.fillStyle = corCurva;
-        ctx.fillText(label, x, y + offsetY);
+    // Data points + labels
+    dadosNum.forEach((d,i) => {
+        const x = toX(Math.log10(d.peneira)), y = toY(d.passante);
+        const label = fmt(d.passante,1) + '%';
+        const offY = i%2===0 ? -18 : 22;
+        // Outer ring
+        svg += `<circle cx="${x}" cy="${y}" r="7" fill="#fff" stroke="${corCurva}" stroke-width="2.5" filter="url(#shadow_${tipo})"/>`;
+        // Inner dot
+        svg += `<circle cx="${x}" cy="${y}" r="4" fill="${corCurva}"/>`;
+        // Label with background
+        const tw = label.length * 7 + 8;
+        svg += `<rect x="${x-tw/2}" y="${y+offY-11}" width="${tw}" height="16" rx="4" fill="#fff" fill-opacity="0.92" stroke="${corCurva}" stroke-width="0.8" stroke-opacity="0.4"/>`;
+        svg += `<text x="${x}" y="${y+offY}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${corCurva}">${label}</text>`;
     });
 
+    // DMC line
     if (typeof DMC === 'number') {
         const xDMC = toX(Math.log10(DMC));
-        ctx.strokeStyle = '#e74c3c';
-        ctx.lineWidth = 2;
-        ctx.setLineDash([6, 3]);
-        ctx.beginPath();
-        ctx.moveTo(xDMC, pad.top);
-        ctx.lineTo(xDMC, pad.top + gH);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.font = '700 11px Segoe UI';
-        ctx.fillStyle = '#d84335';
-        ctx.textAlign = 'left';
-        ctx.fillText('DMC = ' + DMC + ' mm', xDMC + 6, pad.top + 16);
+        svg += `<line x1="${xDMC}" y1="${pad.top}" x2="${xDMC}" y2="${pad.top+gH}" stroke="#e53935" stroke-width="2.5" stroke-dasharray="8,4"/>`;
+        svg += `<rect x="${xDMC+6}" y="${pad.top+4}" width="100" height="20" rx="4" fill="#e53935" fill-opacity="0.12"/>`;
+        svg += `<text x="${xDMC+10}" y="${pad.top+18}" font-size="12" font-weight="800" fill="#c62828">DMC = ${DMC} mm</text>`;
     }
 
-    ctx.font = '700 16px Segoe UI';
-    ctx.fillStyle = '#1f3347';
-    ctx.textAlign = 'center';
-    ctx.fillText(titulo, pad.left + gW / 2, 24);
-    ctx.font = '600 11px Segoe UI';
-    ctx.fillStyle = '#4e657b';
-    ctx.fillText('NBR NM 248 / NBR 7211 — Escala logarítmica de peneiras', pad.left + gW / 2, 44);
+    // Axis titles
+    svg += `<text x="${pad.left+gW/2}" y="${H-12}" text-anchor="middle" font-size="13" font-weight="700" fill="#1a2e44">Abertura da peneira (mm) — escala log</text>`;
+    svg += `<g transform="translate(20,${pad.top+gH/2}) rotate(-90)">`;
+    svg += `<text text-anchor="middle" font-size="13" font-weight="700" fill="#1a2e44">% Passante Acumulada</text></g>`;
 
-    ctx.font = '600 12px Segoe UI';
-    ctx.fillStyle = '#1f3347';
-    ctx.textAlign = 'center';
-    ctx.fillText('Abertura da peneira (mm) — escala log', pad.left + gW / 2, H - 10);
-    ctx.save();
-    ctx.translate(18, pad.top + gH / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText('% Passante Acumulada', 0, 0);
-    ctx.restore();
+    // Legend box
+    const lx = pad.left + gW + 16, ly = pad.top + 6;
+    const legendH = tipo === 'miudo' ? 165 : 115;
+    svg += `<rect x="${lx-6}" y="${ly-6}" width="210" height="${legendH}" rx="8" fill="#fff" stroke="#b0c4d8" stroke-width="1.2" filter="url(#shadow_${tipo})"/>`;
+    svg += `<text x="${lx+2}" y="${ly+14}" font-size="12" font-weight="800" fill="#1a2e44">RESULTADOS</text>`;
+    svg += `<text x="${lx+2}" y="${ly+32}" font-size="11" font-weight="600" fill="#3d5875">MF = ${fmt(MF,2)}</text>`;
+    svg += `<text x="${lx+2}" y="${ly+48}" font-size="11" font-weight="600" fill="#3d5875">DMC = ${DMC} mm</text>`;
 
-    ctx.strokeStyle = '#bcc9d6';
-    ctx.lineWidth = 1.2;
-    ctx.strokeRect(pad.left, pad.top, gW, gH);
-
-    const lx = pad.left + gW + 14;
-    let ly = pad.top + 8;
-    ctx.fillStyle = 'rgba(255,255,255,0.98)';
-    ctx.fillRect(lx - 6, ly - 8, 194, 142);
-    ctx.strokeStyle = '#cfd8e3';
-    ctx.lineWidth = 1.2;
-    ctx.strokeRect(lx - 6, ly - 8, 194, 142);
-
-    ctx.font = '700 11px Segoe UI';
-    ctx.fillStyle = '#1f3347';
-    ctx.textAlign = 'left';
-    ctx.fillText('RESULTADOS', lx, ly + 6);
-    ly += 18;
-
-    ctx.font = '600 10px Segoe UI';
-    ctx.fillStyle = '#44596f';
-    ctx.fillText(`MF = ${fmt(MF,2)}`, lx, ly);
-    ly += 14;
-    ctx.fillText(`DMC = ${DMC} mm`, lx, ly);
-    ly += 14;
-
-    ctx.strokeStyle = corCurva;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(lx, ly);
-    ctx.lineTo(lx + 20, ly);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(lx + 10, ly, 3.2, 0, Math.PI * 2);
-    ctx.fillStyle = corCurva;
-    ctx.fill();
-    ctx.font = '600 10px Segoe UI';
-    ctx.fillStyle = '#44596f';
-    ctx.fillText('% Passante', lx + 26, ly + 3);
-    ly += 16;
-
-    ctx.strokeStyle = '#e74c3c';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([6, 3]);
-    ctx.beginPath();
-    ctx.moveTo(lx, ly);
-    ctx.lineTo(lx + 20, ly);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillText('DMC', lx + 26, ly + 3);
-    ly += 16;
+    // Legend items
+    let liy = ly + 66;
+    svg += `<line x1="${lx}" y1="${liy}" x2="${lx+24}" y2="${liy}" stroke="${corCurva}" stroke-width="3.5" stroke-linecap="round"/>`;
+    svg += `<circle cx="${lx+12}" cy="${liy}" r="3.5" fill="${corCurva}"/>`;
+    svg += `<text x="${lx+30}" y="${liy+4}" font-size="11" font-weight="600" fill="#3d5875">% Passante</text>`;
+    liy += 20;
+    svg += `<line x1="${lx}" y1="${liy}" x2="${lx+24}" y2="${liy}" stroke="#e53935" stroke-width="2.5" stroke-dasharray="6,3"/>`;
+    svg += `<text x="${lx+30}" y="${liy+4}" font-size="11" font-weight="600" fill="#3d5875">DMC</text>`;
 
     if (tipo === 'miudo') {
-        ctx.fillStyle = 'rgba(241,196,15,0.35)';
-        ctx.fillRect(lx, ly - 4, 20, 10);
-        ctx.strokeStyle = '#b58500';
-        ctx.strokeRect(lx, ly - 4, 20, 10);
-        ctx.fillStyle = '#44596f';
-        ctx.fillText('Zona Útil', lx + 26, ly + 4);
-        ly += 16;
-
-        ctx.fillStyle = 'rgba(46,204,113,0.35)';
-        ctx.fillRect(lx, ly - 4, 20, 10);
-        ctx.strokeStyle = '#1b8a4a';
-        ctx.strokeRect(lx, ly - 4, 20, 10);
-        ctx.fillStyle = '#44596f';
-        ctx.fillText('Zona Ótima', lx + 26, ly + 4);
+        liy += 20;
+        svg += `<rect x="${lx}" y="${liy-5}" width="24" height="12" rx="2" fill="#f1c40f" fill-opacity="0.4" stroke="#c99700" stroke-width="1"/>`;
+        svg += `<text x="${lx+30}" y="${liy+4}" font-size="11" font-weight="600" fill="#3d5875">Zona Útil</text>`;
+        liy += 20;
+        svg += `<rect x="${lx}" y="${liy-5}" width="24" height="12" rx="2" fill="#2ecc71" fill-opacity="0.45" stroke="#1b8a4a" stroke-width="1"/>`;
+        svg += `<text x="${lx+30}" y="${liy+4}" font-size="11" font-weight="600" fill="#3d5875">Zona Ótima</text>`;
     }
+
+    svg += '</svg>';
+    container.innerHTML = svg;
 }
 
 // ═══════════════════════════════════════════════════
