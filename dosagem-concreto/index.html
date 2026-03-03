@@ -804,6 +804,13 @@
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-group">
+        <span class="sidebar-group-label">Traços</span>
+        <button class="sidebar-btn" data-sec="sec-tracos-salvos" onclick="showSection('sec-tracos-salvos',this)">
+            <span class="sb-num">T1</span><span class="sb-icon">📂</span><span class="sb-label">Traços Salvos</span>
+        </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group">
         <span class="sidebar-group-label">Resultados</span>
         <button class="sidebar-btn" data-sec="sec-abrams" onclick="showSection('sec-abrams',this)">
             <span class="sb-num">7</span><span class="sb-icon">📉</span><span class="sb-label">Curva de Abrams</span>
@@ -848,6 +855,7 @@
         <option value="sec-resultados-calc">🧮 Detalhamento Cálculos</option>
         <option value="sec-normas-concreto">📚 Normas</option>
         <option value="sec-memoria">📝 Memória de Cálculo</option>
+        <option value="sec-tracos-salvos">📂 Traços Salvos</option>
     </select>
 </div>
 
@@ -870,6 +878,7 @@
             <button class="hub-card" type="button" onclick="showSection('sec-resultados-calc')"><span class="hub-icon">🧮</span><span class="hub-title">Detalhamento Cálculos</span><span class="hub-desc">Explicação completa por aba</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-normas-concreto')"><span class="hub-icon">📚</span><span class="hub-title">Normas</span><span class="hub-desc">Normas usadas e catálogo técnico</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-memoria')"><span class="hub-icon">📝</span><span class="hub-title">Memória</span><span class="hub-desc">Documento técnico</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-tracos-salvos')"><span class="hub-icon">📂</span><span class="hub-title">Traços Salvos</span><span class="hub-desc">Salvar e consultar traços</span></button>
         </div>
     </div>
 </div>
@@ -1527,10 +1536,60 @@
 
         <div class="btn-wrap">
             <button class="btn btn-primary" onclick="calcularDosagem()">📐 Calcular Dosagem</button>
+            <button class="btn btn-accent" onclick="abrirModalSalvarTraco()">💾 Salvar Traço</button>
             <button class="btn-print" onclick="imprimirSecao('sec-dosagem','Relatório — Dosagem para 1 m³')">🖨️ Imprimir</button>
         </div>
 
         <div id="res-dosagem"></div>
+        <div id="salvar-traco-status" style="margin-top:12px;"></div>
+    </div>
+</div>
+
+<!-- MODAL SALVAR TRAÇO -->
+<div id="modal-salvar-traco" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.5);backdrop-filter:blur(3px);align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:14px;max-width:480px;width:92%;padding:28px;box-shadow:0 8px 40px rgba(0,0,0,0.2);position:relative;">
+        <button onclick="fecharModalSalvarTraco()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#888;">✕</button>
+        <h2 style="font-size:1.15rem;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:8px;">💾 Salvar Traço na Planilha</h2>
+        <div class="form-grid" style="grid-template-columns:1fr;">
+            <div class="form-group">
+                <label>Nome do Traço *</label>
+                <input type="text" id="traco_nome" placeholder="Ex: CAA FC40 - Usina 01">
+            </div>
+            <div class="form-group">
+                <label>FCK (MPa)</label>
+                <input type="number" id="traco_fck" placeholder="Ex: 40" step="1">
+            </div>
+            <div class="form-group">
+                <label>Observações</label>
+                <textarea id="traco_obs" rows="3" placeholder="Anotações opcionais sobre o traço..." style="padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+        </div>
+        <div class="btn-wrap" style="justify-content:flex-end;">
+            <button class="btn" style="background:#e0e5ea;color:var(--text);" onclick="fecharModalSalvarTraco()">Cancelar</button>
+            <button class="btn btn-accent" onclick="confirmarSalvarTraco()" id="btn-confirmar-salvar-traco">💾 Salvar</button>
+        </div>
+        <div id="modal-traco-status" style="margin-top:12px;"></div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SEÇÃO — TRAÇOS SALVOS                               -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="sec-tracos-salvos" class="section">
+    <div class="card">
+        <h2><span class="icon">📂</span> Traços Salvos</h2>
+        <p class="subtitle">Consulte os traços de concreto salvos na planilha Google Sheets. Clique em um traço para carregar seus valores na seção de Dosagem.</p>
+
+        <div class="btn-wrap" style="margin-top:0;margin-bottom:18px;">
+            <button class="btn btn-primary" onclick="listarTracos()">🔄 Atualizar Lista</button>
+        </div>
+
+        <div id="res-tracos-lista">
+            <div style="text-align:center;padding:40px;color:var(--text-light);">
+                <div style="font-size:2.5rem;margin-bottom:12px;">📂</div>
+                <p>Clique em <strong>Atualizar Lista</strong> para carregar os traços salvos.</p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -2230,6 +2289,193 @@ function closeSidebar() {
 // ═══════════════════════════════════════════════════
 // CADASTRO DE FORNECEDORES
 // ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+// DOSAGEM — SALVAR / LISTAR TRAÇOS (Google Sheets)
+// ═══════════════════════════════════════════════════
+// IMPORTANTE: Após implantar o AppsScript_dosagem.gs como Web App,
+// cole a URL gerada abaixo:
+const DOSAGEM_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxcyw_jx8_63mmfxuB9V1b0GDTZU2LY2XMaHwVx5a2qyQek7xUsStSQDFPrWIVQAieb-A/exec';
+
+function abrirModalSalvarTraco() {
+    const modal = document.getElementById('modal-salvar-traco');
+    modal.style.display = 'flex';
+    document.getElementById('traco_nome').value = '';
+    document.getElementById('traco_fck').value = '';
+    document.getElementById('traco_obs').value = '';
+    document.getElementById('modal-traco-status').innerHTML = '';
+    document.getElementById('traco_nome').focus();
+}
+
+function fecharModalSalvarTraco() {
+    document.getElementById('modal-salvar-traco').style.display = 'none';
+}
+
+async function confirmarSalvarTraco() {
+    const nomeTraco = document.getElementById('traco_nome').value.trim();
+    if (!nomeTraco) {
+        document.getElementById('modal-traco-status').innerHTML = '<span class="badge badge-err">⚠ Informe o nome do traço!</span>';
+        return;
+    }
+
+    const rho = getRho();
+    const m = {
+        cim:  parseFloat(document.getElementById('dos_cim').value)  || 0,
+        adic: parseFloat(document.getElementById('dos_adic').value) || 0,
+        an:   parseFloat(document.getElementById('dos_an').value)   || 0,
+        ai:   parseFloat(document.getElementById('dos_ai').value)   || 0,
+        b0:   parseFloat(document.getElementById('dos_b0').value)   || 0,
+        b1:   parseFloat(document.getElementById('dos_b1').value)   || 0,
+        agua: parseFloat(document.getElementById('dos_agua').value) || 0,
+        adit: parseFloat(document.getElementById('dos_adit').value) || 0
+    };
+    const arPct = parseFloat(document.getElementById('dos_ar').value) || 0;
+    const flow  = parseFloat(document.getElementById('dos_flow').value) || 0;
+    const fck   = parseFloat(document.getElementById('traco_fck').value) || 0;
+    const obs   = document.getElementById('traco_obs').value.trim();
+
+    const v = {};
+    Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
+    const vAr = arPct * 10;
+    const vSolidos = Object.values(v).reduce((a,b)=>a+b,0);
+    const vTotal = vSolidos + vAr;
+    const massaTotal = Object.values(m).reduce((a,b)=>a+b,0);
+    const ac = m.cim > 0 ? m.agua / m.cim : 0;
+    const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
+    const mArg = m.cim + m.adic + m.an + m.ai + m.adit;
+    const mAgrGraudo = m.b0 + m.b1;
+    const argMassa = (mArg + mAgrGraudo) > 0 ? (mArg / (mArg + mAgrGraudo)) * 100 : 0;
+    const vArg = v.cim + v.adic + v.an + v.ai + v.adit;
+    const vAgrGraudo = v.b0 + v.b1;
+    const argVol = (vArg + vAgrGraudo) > 0 ? (vArg / (vArg + vAgrGraudo)) * 100 : 0;
+    const consumoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
+    const massaEsp = vTotal > 0 ? massaTotal * 1000 / vTotal : 0;
+
+    const agora = new Date();
+    const id = 'TRC-' + agora.getFullYear() + String(agora.getMonth()+1).padStart(2,'0') + String(agora.getDate()).padStart(2,'0') + String(agora.getHours()).padStart(2,'0') + String(agora.getMinutes()).padStart(2,'0') + String(agora.getSeconds()).padStart(2,'0') + '-' + Math.floor(Math.random()*9000+1000);
+    const dataHora = agora.toLocaleString('pt-BR');
+
+    const payload = {
+        action: 'salvar_traco',
+        id: id,
+        dataHora: dataHora,
+        nomeTraco: nomeTraco,
+        fck: fck,
+        cimento: m.cim,
+        adicao: m.adic,
+        areiaNatural: m.an,
+        areiaIndustrial: m.ai,
+        brita0: m.b0,
+        brita1: m.b1,
+        agua: m.agua,
+        aditivoSP: m.adit,
+        arIncorporado: arPct,
+        flow: flow,
+        ac: fmt(ac, 3),
+        aAgl: fmt(aAgl, 3),
+        consumoCimento: fmt(consumoCim, 1),
+        massaEspConcreto: fmt(massaEsp, 0),
+        volumeTotal: fmt(vTotal, 1),
+        teorArgMassa: fmt(argMassa, 1),
+        teorArgVolume: fmt(argVol, 1),
+        observacoes: obs
+    };
+
+    const statusEl = document.getElementById('modal-traco-status');
+    const btnSalvar = document.getElementById('btn-confirmar-salvar-traco');
+    btnSalvar.disabled = true;
+    btnSalvar.innerHTML = '⏳ Salvando...';
+    statusEl.innerHTML = '<span class="badge badge-warn">⏳ Enviando para a planilha...</span>';
+
+    if (!DOSAGEM_WEBAPP_URL) {
+        statusEl.innerHTML = '<span class="badge badge-err">❌ URL do Web App não configurada. Configure a variável DOSAGEM_WEBAPP_URL no código.</span>';
+        btnSalvar.disabled = false;
+        btnSalvar.innerHTML = '💾 Salvar';
+        return;
+    }
+
+    try {
+        const resp = await fetch(DOSAGEM_WEBAPP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload),
+            mode: 'no-cors'
+        });
+        statusEl.innerHTML = '<span class="badge badge-ok">✅ Traço enviado para a planilha com sucesso!</span>';
+        document.getElementById('salvar-traco-status').innerHTML = '<span class="badge badge-ok">✅ Último traço salvo: ' + nomeTraco + ' em ' + dataHora + '</span>';
+        setTimeout(() => fecharModalSalvarTraco(), 1500);
+    } catch (err) {
+        statusEl.innerHTML = '<span class="badge badge-err">❌ Erro ao enviar: ' + err.message + '</span>';
+    } finally {
+        btnSalvar.disabled = false;
+        btnSalvar.innerHTML = '💾 Salvar';
+    }
+}
+
+async function listarTracos() {
+    const container = document.getElementById('res-tracos-lista');
+    container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-light);"><div style="font-size:2rem;">⏳</div><p>Carregando traços...</p></div>';
+
+    if (!DOSAGEM_WEBAPP_URL) {
+        container.innerHTML = '<div class="result-box error"><h3>❌ URL não configurada</h3><p>Configure a variável <code>DOSAGEM_WEBAPP_URL</code> no código com a URL do Web App do Google Apps Script.</p></div>';
+        return;
+    }
+
+    try {
+        const resp = await fetch(DOSAGEM_WEBAPP_URL + '?action=listar_tracos', { method: 'GET' });
+        const data = await resp.json();
+
+        if (!data.ok || !data.tracos || data.tracos.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);"><div style="font-size:2.5rem;margin-bottom:12px;">📭</div><p>Nenhum traço salvo ainda.</p></div>';
+            return;
+        }
+
+        let html = '<div style="overflow-x:auto;"><table class="result-table"><thead><tr>';
+        html += '<th>Nome</th><th>Data</th><th>FCK</th><th>Cimento</th><th>Adição</th><th>Ar. Nat.</th><th>Ar. Ind.</th><th>Brita 0</th><th>Brita ½</th><th>Água</th><th>Adit.</th><th>a/c</th><th>Flow</th><th>Ações</th>';
+        html += '</tr></thead><tbody>';
+
+        data.tracos.forEach((t, i) => {
+            html += `<tr>
+                <td><strong>${t.nomeTraco || '—'}</strong></td>
+                <td style="font-size:0.8rem;">${t.dataHora || '—'}</td>
+                <td>${t.fck || '—'}</td>
+                <td>${t.cimento || '—'}</td>
+                <td>${t.adicao || '—'}</td>
+                <td>${t.areiaNatural || '—'}</td>
+                <td>${t.areiaIndustrial || '—'}</td>
+                <td>${t.brita0 || '—'}</td>
+                <td>${t.brita1 || '—'}</td>
+                <td>${t.agua || '—'}</td>
+                <td>${t.aditivoSP || '—'}</td>
+                <td>${t.ac || '—'}</td>
+                <td>${t.flow || '—'}</td>
+                <td><button class="btn btn-primary" style="padding:6px 12px;font-size:0.78rem;" onclick='carregarTraco(${JSON.stringify(t).replace(/'/g,"&#39;")})'>📥 Carregar</button></td>
+            </tr>`;
+        });
+
+        html += '</tbody></table></div>';
+        html += `<div style="margin-top:12px;font-size:0.82rem;color:var(--text-light);">Total: <strong>${data.tracos.length}</strong> traço(s) salvo(s)</div>`;
+        container.innerHTML = html;
+    } catch (err) {
+        container.innerHTML = '<div class="result-box error"><h3>❌ Erro ao carregar</h3><p>' + err.message + '</p></div>';
+    }
+}
+
+function carregarTraco(t) {
+    if (t.cimento !== undefined) document.getElementById('dos_cim').value = t.cimento;
+    if (t.adicao !== undefined) document.getElementById('dos_adic').value = t.adicao;
+    if (t.areiaNatural !== undefined) document.getElementById('dos_an').value = t.areiaNatural;
+    if (t.areiaIndustrial !== undefined) document.getElementById('dos_ai').value = t.areiaIndustrial;
+    if (t.brita0 !== undefined) document.getElementById('dos_b0').value = t.brita0;
+    if (t.brita1 !== undefined) document.getElementById('dos_b1').value = t.brita1;
+    if (t.agua !== undefined) document.getElementById('dos_agua').value = t.agua;
+    if (t.aditivoSP !== undefined) document.getElementById('dos_adit').value = t.aditivoSP;
+    if (t.arIncorporado !== undefined) document.getElementById('dos_ar').value = t.arIncorporado;
+    if (t.flow !== undefined) document.getElementById('dos_flow').value = t.flow;
+    showSection('sec-dosagem');
+    calcularDosagem();
+    alert('✅ Traço "' + (t.nomeTraco || '') + '" carregado com sucesso!');
+}
+
 const FORNECEDORES_STORAGE_KEY = 'cadastroFornecedoresV1';
 const GOOGLE_SHEET_ID = '1kfCQChHSAHG3s9u4fginpXonXYNxAlEc3yBRCN1wtOk';
 const GOOGLE_SHEET_TAB = 'fornecedor';
