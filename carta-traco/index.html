@@ -1,0 +1,1450 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CONCRETRACK • Cartas Traço</title>
+
+  <!-- PWA (manifest unificado na raiz) -->
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#2F3640">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- anti-cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+/* ============================================
+   CARTAS TRAÇO — Estilos
+   ============================================ */
+:root {
+  --primary: #1a5276;
+  --primary-light: #2980b9;
+  --primary-dark: #0e3a54;
+  --secondary: #27ae60;
+  --secondary-light: #2ecc71;
+  --danger: #e74c3c;
+  --warning: #f39c12;
+  --info: #3498db;
+  --bg: #f0f2f5;
+  --card-bg: #ffffff;
+  --text: #2c3e50;
+  --text-light: #7f8c8d;
+  --border: #dfe6e9;
+  --shadow: 0 2px 8px rgba(0,0,0,0.1);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.15);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --nav-height: 64px;
+  --header-height: 70px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Header ---- */
+.header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  padding: 16px 20px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+.header h1 { font-size: 1.3rem; font-weight: 700; }
+.header .subtitle { font-size: 0.75rem; opacity: 0.85; margin-top: 2px; }
+.header-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.btn-hub {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.18); color: #fff; border: none;
+  border-radius: 8px; padding: 6px 12px; font-size: 0.82rem;
+  font-weight: 700; cursor: pointer; text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-hub:hover { background: rgba(255,255,255,0.32); }
+
+/* ---- Main Content ---- */
+.main-content { padding: 12px; max-width: 900px; margin: 0 auto; }
+
+/* ---- Pages ---- */
+.page { display: none; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-header { margin-bottom: 16px; }
+.page-header h2 {
+  font-size: 1.2rem; color: var(--primary);
+  border-bottom: 2px solid var(--primary-light); padding-bottom: 8px;
+}
+
+/* ---- Home Page ---- */
+.home-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px; padding: 20px 0;
+}
+.home-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 32px 24px; text-align: center;
+  cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent;
+}
+.home-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.home-card:active { transform: translateY(0); }
+.home-card-icon { font-size: 3rem; margin-bottom: 14px; }
+.home-card-title { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.home-card-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; }
+
+/* ---- Back Button ---- */
+.btn-back {
+  background: none; border: none; color: var(--primary-light);
+  font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  padding: 6px 0; margin-bottom: 4px; display: inline-flex;
+  align-items: center; gap: 4px; transition: color 0.2s;
+}
+.btn-back:hover { color: var(--primary); }
+
+/* ---- Form Card ---- */
+.form-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px;
+}
+.form-section {
+  margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.form-section:last-child { border-bottom: none; margin-bottom: 0; }
+.form-section h3 {
+  font-size: 1rem; color: var(--primary); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 6px;
+}
+.form-hint { font-size: 0.8rem; color: var(--text-light); margin-bottom: 12px; }
+.form-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.form-group { flex: 1; min-width: 180px; }
+.form-group-small { flex: 0 0 100px; min-width: 80px; }
+.form-group label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: var(--text); margin-bottom: 4px;
+}
+.form-group input, .form-group select {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 0.9rem;
+  transition: border-color 0.2s; background: white; color: var(--text);
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(41,128,185,0.15);
+}
+.readonly-field { background: #f7f9fa !important; font-weight: 600; color: var(--secondary) !important; }
+.checkbox-label {
+  display: flex !important; align-items: center; gap: 8px;
+  font-size: 0.85rem !important; cursor: pointer; padding-top: 22px;
+}
+.checkbox-label input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+
+/* ---- Material Grid (Traço) ---- */
+.mat-grid { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+.mat-grid-header {
+  display: grid; grid-template-columns: 1fr 120px 130px; gap: 0;
+  background: var(--primary); color: white; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase;
+}
+.mat-grid-header span { padding: 8px 10px; }
+.mat-grid-row {
+  display: grid; grid-template-columns: 1fr 120px 130px; gap: 0;
+  border-bottom: 1px solid var(--border); align-items: center;
+}
+.mat-grid-row:nth-child(even) { background: #f8f9fa; }
+.mat-grid-row:hover { background: #eef2f7; }
+.mat-grid-row label { padding: 6px 10px; font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.mat-grid-row input {
+  width: 100%; padding: 6px 8px; border: none;
+  border-left: 1px solid var(--border); font-size: 0.85rem;
+  text-align: right; background: transparent; outline: none;
+}
+.mat-grid-row input:focus { background: #fff8e1; }
+
+/* ---- Indicadores Técnicos ---- */
+.indicadores-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; margin-bottom: 16px;
+}
+.indicador-card {
+  background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 12px; text-align: center; display: flex;
+  flex-direction: column; gap: 2px;
+}
+.indicador-label {
+  font-size: 0.7rem; font-weight: 600; color: var(--text-light);
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.indicador-valor { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
+.indicador-unit { font-size: 0.7rem; color: var(--text-light); }
+.distribuicao-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.dist-box {
+  flex: 1; min-width: 200px; background: #f8f9fa;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px;
+}
+.dist-box h4 { font-size: 0.8rem; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; }
+.dist-item {
+  display: flex; justify-content: space-between; padding: 4px 0;
+  font-size: 0.85rem; border-bottom: 1px solid var(--border);
+}
+.dist-item:last-child { border-bottom: none; }
+.dist-item .dist-name { color: var(--text); }
+.dist-item .dist-pct { font-weight: 700; color: var(--primary); }
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; border: none; border-radius: var(--radius-sm);
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; text-decoration: none;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-light); }
+.btn-secondary { background: #ecf0f1; color: var(--text); }
+.btn-secondary:hover { background: #dfe6e9; }
+.btn-info { background: var(--info); color: white; }
+.btn-info:hover { background: #2487c7; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-small { padding: 7px 14px; font-size: 0.8rem; }
+.form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+/* ---- Filter Bar ---- */
+.filter-bar {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px;
+  display: flex; gap: 12px; align-items: flex-end;
+  flex-wrap: wrap; margin-bottom: 16px;
+}
+.section-header-row {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; margin-bottom: 12px;
+}
+.section-header-row h3 { margin-bottom: 0; }
+
+/* ---- Results ---- */
+.results-container { min-height: 100px; }
+.empty-state { text-align: center; color: var(--text-light); padding: 30px; font-size: 0.9rem; }
+
+/* ---- Carta Card ---- */
+.carta-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px; margin-bottom: 12px;
+  cursor: pointer; transition: all 0.2s; border-left: 4px solid var(--secondary);
+}
+.carta-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.carta-card.inativa { border-left-color: var(--text-light); opacity: 0.7; }
+.carta-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.carta-card-title { font-size: 1rem; font-weight: 700; color: var(--primary); }
+.carta-card-badge {
+  padding: 3px 10px; border-radius: 12px; font-size: 0.7rem;
+  font-weight: 700; text-transform: uppercase;
+}
+.badge-ativa { background: #d5f5e3; color: #1e8449; }
+.badge-inativa { background: #fadbd8; color: #c0392b; }
+.carta-card-info { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-light); }
+.carta-card-info span { display: flex; align-items: center; gap: 4px; }
+
+/* ---- Cost Table ---- */
+.cost-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 10px; }
+.cost-table th {
+  background: var(--primary); color: white; padding: 8px 10px;
+  text-align: left; font-weight: 600; font-size: 0.75rem; text-transform: uppercase;
+}
+.cost-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+.cost-table tr:nth-child(even) { background: #f8f9fa; }
+.cost-table tr:hover { background: #eef2f7; }
+.cost-table .text-right { text-align: right; }
+.cost-table .total-row { background: #eaf2f8 !important; font-weight: 700; }
+.cost-table .total-row td { border-top: 2px solid var(--primary); }
+
+/* ---- MCC Info ---- */
+.mcc-info { display: flex; justify-content: center; margin-bottom: 12px; }
+.mcc-total {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white; padding: 12px 24px; border-radius: var(--radius);
+  font-size: 1.1rem; display: flex; align-items: center; gap: 10px;
+}
+.mcc-total strong { font-size: 1.4rem; }
+
+/* ---- Chart ---- */
+.chart-container { max-width: 350px; margin: 0 auto 16px; }
+
+/* ---- Modal ---- */
+.modal {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 2000;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.modal.hidden { display: none; }
+.modal-content {
+  background: white; border-radius: var(--radius);
+  max-height: 90vh; overflow-y: auto; width: 100%;
+  max-width: 600px; box-shadow: var(--shadow-lg);
+}
+.modal-large { max-width: 800px; }
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: white; z-index: 1;
+}
+.modal-header h3 { font-size: 1.05rem; color: var(--primary); }
+.modal-close {
+  background: none; border: none; font-size: 1.5rem; cursor: pointer;
+  color: var(--text-light); width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; transition: background 0.2s;
+}
+.modal-close:hover { background: #f0f0f0; }
+.modal-body { padding: 20px; }
+.modal-footer {
+  display: flex; gap: 10px; justify-content: flex-end;
+  padding: 12px 20px; border-top: 1px solid var(--border);
+}
+
+/* ---- Loading Overlay ---- */
+.loading-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.92); z-index: 5000;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 12px;
+}
+.loading-overlay.hidden { display: none; }
+.spinner {
+  width: 40px; height: 40px; border: 4px solid var(--border);
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--primary); color: white; padding: 12px 24px;
+  border-radius: var(--radius); z-index: 3000; font-size: 0.9rem;
+  box-shadow: var(--shadow-lg); animation: toastIn 0.3s ease;
+  max-width: 90%; text-align: center;
+}
+.toast.hidden { display: none; }
+.toast.success { background: var(--secondary); }
+.toast.error { background: var(--danger); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ---- Detail Section in Modal ---- */
+.detail-section { margin-bottom: 16px; }
+.detail-section h4 {
+  font-size: 0.9rem; color: var(--primary); margin-bottom: 8px;
+  padding-bottom: 4px; border-bottom: 1px solid var(--border);
+}
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.detail-item { font-size: 0.85rem; }
+.detail-item .label { font-weight: 600; color: var(--text-light); font-size: 0.75rem; text-transform: uppercase; }
+.detail-item .value { color: var(--text); margin-top: 2px; }
+
+/* ---- Print Styles ---- */
+.print-area { display: none; }
+@media print {
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible !important; display: block !important; }
+  .print-area {
+    position: absolute; top: 0; left: 0; width: 100%; padding: 20px;
+  }
+  .print-area .print-header { text-align: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #333; }
+  .print-area .print-header h2 { font-size: 1.4rem; margin-bottom: 4px; }
+  .print-area .print-header p { font-size: 0.85rem; color: #666; }
+  .print-area .cost-table { font-size: 0.85rem; }
+  .print-area .cost-table th {
+    background: #333 !important; color: white !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .header, .modal, .loading-overlay, .toast { display: none !important; }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+  .header h1 { font-size: 1.1rem; }
+  .main-content { padding: 8px; }
+  .form-card { padding: 14px; }
+  .form-row { flex-direction: column; gap: 8px; }
+  .form-group { min-width: 100%; }
+  .form-group-small { flex: 1; min-width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .form-actions { flex-direction: column; }
+  .btn { justify-content: center; }
+  .cost-table { font-size: 0.7rem; }
+  .cost-table th, .cost-table td { padding: 5px 6px; }
+  .detail-grid { grid-template-columns: 1fr 1fr; }
+  .mcc-total { font-size: 0.95rem; }
+  .mcc-total strong { font-size: 1.2rem; }
+}
+</style>
+</head>
+
+<body>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p>Carregando...</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Header -->
+  <header class="header" style="position:relative;">
+    <a class="btn-hub" href="../index.html">← Hub</a>
+    <h1>📋 Cartas Traço</h1>
+    <p class="subtitle">Repositório de Composições</p>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ==================== HOME PAGE ==================== -->
+    <section id="page-home" class="page active">
+      <div class="home-grid">
+        <div class="home-card" data-page="cadastro">
+          <div class="home-card-icon">📝</div>
+          <div class="home-card-title">Cadastro</div>
+          <div class="home-card-desc">Cadastrar novas cartas traço com composição de materiais</div>
+        </div>
+        <div class="home-card" data-page="consulta">
+          <div class="home-card-icon">🔍</div>
+          <div class="home-card-title">Consulta</div>
+          <div class="home-card-desc">Consultar, visualizar e imprimir cartas traço existentes</div>
+        </div>
+        <div class="home-card" data-page="materiais">
+          <div class="home-card-icon">💰</div>
+          <div class="home-card-title">Materiais</div>
+          <div class="home-card-desc">Gerenciar custos de materiais e fornecedores</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 1: CADASTRO ==================== -->
+    <section id="page-cadastro" class="page">
+      <div class="page-header">
+        <button type="button" class="btn-back" data-page="home">← Voltar</button>
+        <h2>Cadastro de Carta Traço</h2>
+      </div>
+
+      <form id="form-cadastro" class="form-card">
+        <!-- Informações da Carta -->
+        <div class="form-section">
+          <h3>Informações da Carta</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="carta-nome">Nome da Carta Traço</label>
+              <input type="text" id="carta-nome" placeholder="Ex: Concreto FCK 25" required>
+            </div>
+            <div class="form-group form-group-small">
+              <label for="carta-revisao">Revisão</label>
+              <input type="number" id="carta-revisao" min="0" value="0" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="carta-unidade">Unidade de Vigência</label>
+              <select id="carta-unidade" required>
+                <option value="">Selecione a unidade...</option>
+                <option value="Campinas">Campinas</option>
+                <option value="Pederneiras">Pederneiras</option>
+                <option value="Ribeirão Preto">Ribeirão Preto</option>
+                <option value="Noroeste">Noroeste</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="carta-vigencia">Data de Vigência</label>
+              <input type="date" id="carta-vigencia" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="carta-status">Status</label>
+              <select id="carta-status" required>
+                <option value="Ativa">Ativa</option>
+                <option value="Inativa">Inativa</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Materiais da Carta -->
+        <div class="form-section">
+          <h3>Composição de Materiais (kg/m³)</h3>
+          <p class="form-hint">Informe a quantidade (kg/m³) e a massa específica (kg/dm³) de cada material do traço.</p>
+
+          <div class="mat-grid">
+            <div class="mat-grid-header">
+              <span class="mat-col-nome">Material</span>
+              <span class="mat-col-qtd">Consumo (kg/m³)</span>
+              <span class="mat-col-me">Massa Esp. (kg/dm³)</span>
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Cimento</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-cimento" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-cimento" value="3.150" placeholder="3.150">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Adição</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-adicao" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-adicao" value="2.940" placeholder="2.940">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Areia Fina</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-areia-fina" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-areia-fina" value="2.630" placeholder="2.630">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Areia Média</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-areia-media" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-areia-media" value="2.630" placeholder="2.630">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Areia Industrial</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-areia-industrial" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-areia-industrial" value="2.650" placeholder="2.650">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Areia Grossa</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-areia-grossa" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-areia-grossa" value="2.630" placeholder="2.630">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Brita 0</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-brita0" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-brita0" value="2.750" placeholder="2.750">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Brita 1</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-brita1" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-brita1" value="2.750" placeholder="2.750">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Água</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-agua" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-agua" value="1.000" placeholder="1.000">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Aditivo 1</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-aditivo1" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-aditivo1" value="1.200" placeholder="1.200">
+            </div>
+            <div class="mat-grid-row">
+              <label class="mat-col-nome">Aditivo 2</label>
+              <input type="number" step="0.01" min="0" class="mat-col-qtd" id="mat-aditivo2" placeholder="0">
+              <input type="number" step="0.001" min="0" class="mat-col-me" id="me-aditivo2" value="1.200" placeholder="1.200">
+            </div>
+          </div>
+        </div>
+
+        <!-- Indicadores Técnicos -->
+        <div class="form-section" id="indicadores-section" style="display:none;">
+          <h3>Indicadores Técnicos do Traço</h3>
+          <div class="indicadores-grid">
+            <div class="indicador-card">
+              <span class="indicador-label">Peso Total</span>
+              <span class="indicador-valor" id="ind-peso">-</span>
+              <span class="indicador-unit">kg/m³</span>
+            </div>
+            <div class="indicador-card">
+              <span class="indicador-label">Volume Calculado</span>
+              <span class="indicador-valor" id="ind-volume">-</span>
+              <span class="indicador-unit">dm³</span>
+            </div>
+            <div class="indicador-card">
+              <span class="indicador-label">Relação A/C</span>
+              <span class="indicador-valor" id="ind-ac">-</span>
+              <span class="indicador-unit"></span>
+            </div>
+            <div class="indicador-card">
+              <span class="indicador-label">Taxa de Argamassa</span>
+              <span class="indicador-valor" id="ind-argamassa">-</span>
+              <span class="indicador-unit">%</span>
+            </div>
+            <div class="indicador-card">
+              <span class="indicador-label">% Aditivo 1 / Cimento</span>
+              <span class="indicador-valor" id="ind-adit1">-</span>
+              <span class="indicador-unit">%</span>
+            </div>
+            <div class="indicador-card">
+              <span class="indicador-label">% Aditivo 2 / Cimento</span>
+              <span class="indicador-valor" id="ind-adit2">-</span>
+              <span class="indicador-unit">%</span>
+            </div>
+          </div>
+          <div class="distribuicao-row">
+            <div class="dist-box">
+              <h4>Distribuição Areias</h4>
+              <div id="dist-areias"></div>
+            </div>
+            <div class="dist-box">
+              <h4>Distribuição Britas</h4>
+              <div id="dist-britas"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MCC Preview -->
+        <div class="form-section" id="mcc-preview-section" style="display:none;">
+          <h3>MCC - Composição de Custo de Material</h3>
+          <div class="mcc-info">
+            <div class="mcc-total">
+              <span>MCC Total:</span>
+              <strong id="mcc-total-value">R$ 0,00</strong>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="chart-cadastro-mcc"></canvas>
+          </div>
+          <div id="mcc-table-container"></div>
+        </div>
+
+        <!-- Botões -->
+        <div class="form-actions">
+          <button type="button" id="btn-calcular-mcc" class="btn btn-info">📊 Calcular MCC</button>
+          <button type="submit" class="btn btn-primary">💾 Salvar Carta Traço</button>
+          <button type="button" id="btn-limpar-cadastro" class="btn btn-secondary">🗑️ Limpar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ==================== PAGE 2: CONSULTA ==================== -->
+    <section id="page-consulta" class="page">
+      <div class="page-header">
+        <button type="button" class="btn-back" data-page="home">← Voltar</button>
+        <h2>Consulta de Cartas Traço</h2>
+      </div>
+
+      <div class="filter-bar">
+        <div class="form-group">
+          <label for="filtro-unidade">Unidade</label>
+          <select id="filtro-unidade">
+            <option value="">Todas as unidades</option>
+            <option value="Campinas">Campinas</option>
+            <option value="Pederneiras">Pederneiras</option>
+            <option value="Ribeirão Preto">Ribeirão Preto</option>
+            <option value="Noroeste">Noroeste</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="filtro-inativas"> Mostrar versões inativas
+          </label>
+        </div>
+        <button type="button" id="btn-consultar" class="btn btn-primary">🔍 Consultar</button>
+      </div>
+
+      <div id="consulta-results" class="results-container">
+        <p class="empty-state">Selecione uma unidade e clique em Consultar para ver as cartas traço.</p>
+      </div>
+
+      <!-- Modal de Detalhe da Carta -->
+      <div id="modal-detalhe" class="modal hidden">
+        <div class="modal-content modal-large">
+          <div class="modal-header">
+            <h3 id="modal-titulo">Detalhe da Carta Traço</h3>
+            <button class="modal-close" id="btn-fechar-modal">&times;</button>
+          </div>
+          <div class="modal-body" id="modal-body-detalhe"></div>
+          <div class="modal-footer">
+            <button type="button" id="btn-imprimir" class="btn btn-info">🖨️ Imprimir / Salvar PDF</button>
+            <button type="button" id="btn-fechar-modal-2" class="btn btn-secondary">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 3: MATERIAIS / CUSTOS ==================== -->
+    <section id="page-materiais" class="page">
+      <div class="page-header">
+        <button type="button" class="btn-back" data-page="home">← Voltar</button>
+        <h2>Cadastro de Materiais e Custos</h2>
+      </div>
+
+      <form id="form-custo" class="form-card">
+        <div class="form-section">
+          <h3>Novo Material</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="custo-unidade">Unidade</label>
+              <select id="custo-unidade" required>
+                <option value="">Selecione a unidade...</option>
+                <option value="Campinas">Campinas</option>
+                <option value="Pederneiras">Pederneiras</option>
+                <option value="Ribeirão Preto">Ribeirão Preto</option>
+                <option value="Noroeste">Noroeste</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="custo-fornecedor">Fornecedor</label>
+              <input type="text" id="custo-fornecedor" placeholder="Nome do fornecedor" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="custo-material">Material</label>
+              <input type="text" id="custo-material" placeholder="Nome do material" required>
+            </div>
+            <div class="form-group">
+              <label for="custo-un-medida">Unidade de Medida</label>
+              <select id="custo-un-medida" required>
+                <option value="">Selecione...</option>
+                <option value="kg">kg</option>
+                <option value="ton">tonelada</option>
+                <option value="litro">litro</option>
+                <option value="m³">m³</option>
+                <option value="saco">saco</option>
+                <option value="unidade">unidade</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="custo-valor">Valor por Unidade (R$)</label>
+              <input type="number" id="custo-valor" step="0.01" min="0" placeholder="0,00" required>
+            </div>
+            <div class="form-group">
+              <label for="custo-icms">ICMS (%)</label>
+              <input type="number" id="custo-icms" step="0.01" min="0" max="100" placeholder="0" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="custo-frete">Frete por Unidade (R$)</label>
+              <input type="number" id="custo-frete" step="0.01" min="0" placeholder="0,00" required>
+            </div>
+            <div class="form-group">
+              <label for="custo-liquido">Valor Líquido (R$)</label>
+              <input type="number" id="custo-liquido" step="0.01" readonly class="readonly-field">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">💾 Salvar Material</button>
+          <button type="button" id="btn-limpar-custo" class="btn btn-secondary">🗑️ Limpar</button>
+        </div>
+      </form>
+
+      <!-- Lista de Materiais Cadastrados -->
+      <div class="form-section" style="margin-top: 20px;">
+        <div class="section-header-row">
+          <h3>Materiais Cadastrados</h3>
+          <div class="form-group" style="min-width: 200px;">
+            <select id="filtro-custos-unidade">
+              <option value="">Todas as unidades</option>
+              <option value="Campinas">Campinas</option>
+              <option value="Pederneiras">Pederneiras</option>
+              <option value="Ribeirão Preto">Ribeirão Preto</option>
+              <option value="Noroeste">Noroeste</option>
+            </select>
+          </div>
+          <button type="button" id="btn-carregar-custos" class="btn btn-primary btn-small">🔄 Carregar</button>
+        </div>
+        <div id="custos-lista" class="results-container">
+          <p class="empty-state">Clique em Carregar para ver os materiais cadastrados.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Print Template (hidden, used for printing) -->
+  <div id="print-area" class="print-area"></div>
+
+<script>
+/* ============================================
+   CARTAS TRAÇO — Application Logic
+   ============================================ */
+
+// ========== CONFIGURAÇÃO ==========
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDHeeRa520coa0cz2X-r86QpvzDXTjoTNJOBEaHWwfWDxyYb6LDLEXZwqYhsxkeukZ/exec';
+
+// Lista fixa de materiais do traço
+var MATERIAIS_TRACO = [
+  { id: 'cimento',          nome: 'Cimento',          meDefault: 3.150, grupo: 'aglomerante' },
+  { id: 'adicao',           nome: 'Adição',            meDefault: 2.940, grupo: 'aglomerante' },
+  { id: 'areia-fina',       nome: 'Areia Fina',       meDefault: 2.630, grupo: 'areia' },
+  { id: 'areia-media',      nome: 'Areia Média',      meDefault: 2.630, grupo: 'areia' },
+  { id: 'areia-industrial', nome: 'Areia Industrial', meDefault: 2.650, grupo: 'areia' },
+  { id: 'areia-grossa',     nome: 'Areia Grossa',     meDefault: 2.630, grupo: 'areia' },
+  { id: 'brita0',           nome: 'Brita 0',          meDefault: 2.750, grupo: 'brita' },
+  { id: 'brita1',           nome: 'Brita 1',          meDefault: 2.750, grupo: 'brita' },
+  { id: 'agua',             nome: 'Água',              meDefault: 1.000, grupo: 'agua' },
+  { id: 'aditivo1',         nome: 'Aditivo 1',        meDefault: 1.200, grupo: 'aditivo' },
+  { id: 'aditivo2',         nome: 'Aditivo 2',        meDefault: 1.200, grupo: 'aditivo' }
+];
+
+// ========== ESTADO ==========
+var currentPage = 'home';
+var chartCadastro = null;
+var chartDetalhe = null;
+
+// ========== INICIALIZAÇÃO ==========
+document.addEventListener('DOMContentLoaded', function() {
+  initNavigation();
+  initCadastro();
+  initConsulta();
+  initCustos();
+});
+
+// ========== NAVEGAÇÃO ==========
+function initNavigation() {
+  document.querySelectorAll('.home-card').forEach(function(card) {
+    card.addEventListener('click', function() { navigateTo(card.dataset.page); });
+  });
+  document.querySelectorAll('.btn-back').forEach(function(btn) {
+    btn.addEventListener('click', function() { navigateTo(btn.dataset.page); });
+  });
+}
+
+function navigateTo(page) {
+  currentPage = page;
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('page-' + page).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ========== UTILITÁRIOS ==========
+function showLoading() { document.getElementById('loading-overlay').classList.remove('hidden'); }
+function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
+
+function showToast(message, type) {
+  type = type || '';
+  var toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = 'toast ' + type;
+  setTimeout(function() { toast.classList.add('hidden'); }, 3500);
+}
+
+function formatCurrency(value) {
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '-';
+  var parts = dateStr.split('-');
+  return parts.length === 3 ? parts[2] + '/' + parts[1] + '/' + parts[0] : dateStr;
+}
+
+function getToday() { return new Date().toISOString().split('T')[0]; }
+
+function escapeHtml(text) {
+  var div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ========== API CALLS ==========
+async function apiGet(action, params) {
+  params = params || {};
+  var url = SCRIPT_URL + '?' + new URLSearchParams(Object.assign({ action: action }, params)).toString();
+  var response = await fetch(url, { redirect: 'follow' });
+  if (!response.ok) throw new Error('Erro na requisição');
+  return await response.json();
+}
+
+async function apiPost(action, data) {
+  var response = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({ action: action }, data)),
+    redirect: 'follow'
+  });
+  if (!response.ok) throw new Error('Erro na requisição');
+  return await response.json();
+}
+
+// ===========================================
+// ========== MATERIAIS DO TRAÇO =============
+// ===========================================
+function getMateriaisFromForm() {
+  var materiais = [];
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var qtdEl = document.getElementById('mat-' + mat.id);
+    var meEl = document.getElementById('me-' + mat.id);
+    var qtd = parseFloat(qtdEl ? qtdEl.value : 0) || 0;
+    var me = parseFloat(meEl ? meEl.value : mat.meDefault) || mat.meDefault;
+    if (qtd > 0) {
+      materiais.push({
+        produto: mat.nome,
+        quantidade: qtd,
+        massaEspecifica: me,
+        unidade: 'kg',
+        grupo: mat.grupo,
+        fornecedor: '-'
+      });
+    }
+  });
+  return materiais;
+}
+
+function calcularIndicadores(materiais) {
+  var cimento = 0, adicao = 0, agua = 0, aditivo1 = 0, aditivo2 = 0;
+  var areias = [], britas = [];
+  var totalAreias = 0, totalBritas = 0;
+
+  materiais.forEach(function(m) {
+    if (m.produto === 'Cimento') cimento += m.quantidade;
+    else if (m.produto === 'Adição') adicao += m.quantidade;
+    else if (m.grupo === 'agua') agua += m.quantidade;
+    else if (m.produto === 'Aditivo 1') aditivo1 += m.quantidade;
+    else if (m.produto === 'Aditivo 2') aditivo2 += m.quantidade;
+    if (m.grupo === 'areia') { areias.push(m); totalAreias += m.quantidade; }
+    if (m.grupo === 'brita') { britas.push(m); totalBritas += m.quantidade; }
+  });
+
+  var pesoTotal = materiais.reduce(function(s, m) { return s + m.quantidade; }, 0);
+  var volume = materiais.reduce(function(s, m) { return s + (m.quantidade / m.massaEspecifica); }, 0);
+  var aglomerante = cimento + adicao;
+  var relacaoAC = aglomerante > 0 ? agua / aglomerante : 0;
+  var argamassa = aglomerante + totalAreias + agua;
+  var totalTraco = aglomerante + totalAreias + totalBritas + agua;
+  var taxaArgamassa = totalTraco > 0 ? (argamassa / totalTraco) * 100 : 0;
+  var pctAditivo1 = cimento > 0 ? (aditivo1 / cimento) * 100 : 0;
+  var pctAditivo2 = cimento > 0 ? (aditivo2 / cimento) * 100 : 0;
+
+  var distAreias = areias.map(function(a) {
+    return { nome: a.produto, quantidade: a.quantidade, pct: totalAreias > 0 ? (a.quantidade / totalAreias) * 100 : 0 };
+  });
+  var distBritas = britas.map(function(b) {
+    return { nome: b.produto, quantidade: b.quantidade, pct: totalBritas > 0 ? (b.quantidade / totalBritas) * 100 : 0 };
+  });
+
+  return {
+    pesoTotal: pesoTotal, volume: volume, relacaoAC: relacaoAC,
+    taxaArgamassa: taxaArgamassa, pctAditivo1: pctAditivo1, pctAditivo2: pctAditivo2,
+    distAreias: distAreias, distBritas: distBritas, totalAreias: totalAreias, totalBritas: totalBritas
+  };
+}
+
+function renderIndicadores(ind) {
+  document.getElementById('ind-peso').textContent = ind.pesoTotal.toFixed(1);
+  document.getElementById('ind-volume').textContent = ind.volume.toFixed(1);
+  document.getElementById('ind-ac').textContent = ind.relacaoAC.toFixed(3);
+  document.getElementById('ind-argamassa').textContent = ind.taxaArgamassa.toFixed(1);
+  document.getElementById('ind-adit1').textContent = ind.pctAditivo1.toFixed(3);
+  document.getElementById('ind-adit2').textContent = ind.pctAditivo2.toFixed(3);
+
+  var areiasDiv = document.getElementById('dist-areias');
+  if (areiasDiv) {
+    var items = ind.distAreias.filter(function(a) { return a.quantidade > 0; });
+    areiasDiv.innerHTML = items.length > 0 ?
+      items.map(function(a) { return '<div class="dist-item"><span class="dist-name">' + escapeHtml(a.nome) + '</span><span class="dist-pct">' + a.pct.toFixed(1) + '%</span></div>'; }).join('') :
+      '<div class="dist-item"><span class="dist-name">Nenhuma areia</span></div>';
+  }
+
+  var britasDiv = document.getElementById('dist-britas');
+  if (britasDiv) {
+    var bitems = ind.distBritas.filter(function(b) { return b.quantidade > 0; });
+    britasDiv.innerHTML = bitems.length > 0 ?
+      bitems.map(function(b) { return '<div class="dist-item"><span class="dist-name">' + escapeHtml(b.nome) + '</span><span class="dist-pct">' + b.pct.toFixed(1) + '%</span></div>'; }).join('') :
+      '<div class="dist-item"><span class="dist-name">Nenhuma brita</span></div>';
+  }
+}
+
+// ===========================================
+// ========== CADASTRO DE CARTA TRAÇO ========
+// ===========================================
+function initCadastro() {
+  document.getElementById('carta-vigencia').value = getToday();
+  document.getElementById('btn-calcular-mcc').addEventListener('click', calcularMCC);
+  document.getElementById('btn-limpar-cadastro').addEventListener('click', limparCadastro);
+  document.getElementById('form-cadastro').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    await salvarCarta();
+  });
+}
+
+async function calcularMCC() {
+  var materiais = getMateriaisFromForm();
+  if (materiais.length === 0) { showToast('Preencha pelo menos um material com quantidade.', 'error'); return; }
+
+  var unidadeCarta = document.getElementById('carta-unidade').value;
+  if (!unidadeCarta) { showToast('Selecione a unidade de vigência antes de calcular.', 'error'); return; }
+
+  var ind = calcularIndicadores(materiais);
+  document.getElementById('indicadores-section').style.display = 'block';
+  renderIndicadores(ind);
+
+  showLoading();
+  try {
+    var result = await apiGet('getCustos', { unidade: unidadeCarta });
+    if (result.error) throw new Error(result.error);
+    var custos = result.data || [];
+
+    var mccData = [];
+    var mccTotal = 0;
+
+    materiais.forEach(function(mat) {
+      var custoItem = custos.find(function(c) {
+        return c.material.toLowerCase() === mat.produto.toLowerCase() && c.unidade === unidadeCarta;
+      });
+      var custoUnitario = custoItem ? parseFloat(custoItem.valorLiquido) : 0;
+      var custoTotal = mat.quantidade * custoUnitario;
+      mccTotal += custoTotal;
+      mccData.push({
+        produto: mat.produto, fornecedor: custoItem ? custoItem.fornecedor : '-',
+        quantidade: mat.quantidade, massaEspecifica: mat.massaEspecifica,
+        unidade: 'kg', custoUnitario: custoUnitario, custoTotal: custoTotal
+      });
+    });
+
+    document.getElementById('mcc-preview-section').style.display = 'block';
+    document.getElementById('mcc-total-value').textContent = formatCurrency(mccTotal);
+    renderMCCTable(mccData, mccTotal, 'mcc-table-container');
+    renderPieChart(mccData, mccTotal, 'chart-cadastro-mcc', 'cadastro');
+
+    if (mccData.some(function(m) { return m.custoUnitario === 0; })) {
+      showToast('Atenção: Alguns materiais não possuem custo cadastrado.', 'error');
+    } else {
+      showToast('MCC e indicadores calculados!', 'success');
+    }
+  } catch (error) {
+    showToast('Erro ao calcular MCC: ' + error.message, 'error');
+  } finally {
+    hideLoading();
+  }
+}
+
+function renderMCCTable(mccData, mccTotal, containerId) {
+  var container = document.getElementById(containerId);
+  var html = '<table class="cost-table"><thead><tr>' +
+    '<th>Material</th><th class="text-right">Consumo (kg)</th><th class="text-right">M.E.</th>' +
+    '<th class="text-right">Custo Unit.</th><th class="text-right">Custo Total</th><th class="text-right">%</th>' +
+    '</tr></thead><tbody>';
+
+  mccData.forEach(function(item) {
+    var pct = mccTotal > 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : '0.0';
+    html += '<tr><td>' + escapeHtml(item.produto) + '</td>' +
+      '<td class="text-right">' + item.quantidade.toFixed(2) + '</td>' +
+      '<td class="text-right">' + item.massaEspecifica.toFixed(3) + '</td>' +
+      '<td class="text-right">' + formatCurrency(item.custoUnitario) + '</td>' +
+      '<td class="text-right">' + formatCurrency(item.custoTotal) + '</td>' +
+      '<td class="text-right">' + pct + '%</td></tr>';
+  });
+
+  html += '<tr class="total-row"><td colspan="4"><strong>TOTAL MCC</strong></td>' +
+    '<td class="text-right"><strong>' + formatCurrency(mccTotal) + '</strong></td>' +
+    '<td class="text-right"><strong>100%</strong></td></tr></tbody></table>';
+  container.innerHTML = html;
+}
+
+function renderPieChart(mccData, mccTotal, canvasId, chartKey) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  if (chartKey === 'cadastro' && chartCadastro) chartCadastro.destroy();
+  else if (chartKey === 'detalhe' && chartDetalhe) chartDetalhe.destroy();
+
+  var labels = mccData.map(function(m) { return m.produto; });
+  var data = mccData.map(function(m) { return m.custoTotal; });
+  var colors = generateColors(mccData.length);
+
+  var chart = new Chart(canvas, {
+    type: 'pie',
+    data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } },
+        tooltip: { callbacks: { label: function(ctx) {
+          var pct = mccTotal > 0 ? ((ctx.parsed / mccTotal) * 100).toFixed(1) : 0;
+          return ctx.label + ': ' + formatCurrency(ctx.parsed) + ' (' + pct + '%)';
+        }}}
+      }
+    }
+  });
+  if (chartKey === 'cadastro') chartCadastro = chart;
+  else chartDetalhe = chart;
+}
+
+function generateColors(count) {
+  var palette = ['#3498db','#e74c3c','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22','#34495e','#16a085','#c0392b','#8e44ad','#27ae60','#d35400','#2c3e50','#f1c40f','#7f8c8d','#2980b9','#e84393','#00b894','#fdcb6e'];
+  var colors = [];
+  for (var i = 0; i < count; i++) colors.push(palette[i % palette.length]);
+  return colors;
+}
+
+async function salvarCarta() {
+  var nome = document.getElementById('carta-nome').value.trim();
+  var revisao = parseInt(document.getElementById('carta-revisao').value) || 0;
+  var unidade = document.getElementById('carta-unidade').value;
+  var vigencia = document.getElementById('carta-vigencia').value;
+  var status = document.getElementById('carta-status').value;
+  var materiais = getMateriaisFromForm();
+
+  if (!nome || !unidade || !vigencia) { showToast('Preencha todos os campos obrigatórios.', 'error'); return; }
+  if (materiais.length === 0) { showToast('Informe pelo menos um material.', 'error'); return; }
+
+  showLoading();
+  try {
+    var result = await apiPost('salvarCarta', {
+      nome: nome, revisao: revisao, unidade: unidade, vigencia: vigencia, status: status,
+      materiais: materiais.map(function(m) {
+        return { produto: m.produto, quantidade: m.quantidade, massaEspecifica: m.massaEspecifica, unidade: m.unidade, fornecedor: m.fornecedor };
+      }),
+      dataCadastro: getToday()
+    });
+    if (result.error) throw new Error(result.error);
+    showToast('Carta Traço salva com sucesso!', 'success');
+    limparCadastro();
+  } catch (error) {
+    showToast('Erro ao salvar: ' + error.message, 'error');
+  } finally {
+    hideLoading();
+  }
+}
+
+function limparCadastro() {
+  document.getElementById('form-cadastro').reset();
+  document.getElementById('carta-vigencia').value = getToday();
+  document.getElementById('mcc-preview-section').style.display = 'none';
+  document.getElementById('indicadores-section').style.display = 'none';
+  if (chartCadastro) { chartCadastro.destroy(); chartCadastro = null; }
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var meInput = document.getElementById('me-' + mat.id);
+    if (meInput) meInput.value = mat.meDefault.toFixed(3);
+  });
+}
+
+// ===========================================
+// ========== CONSULTA DE CARTAS =============
+// ===========================================
+function initConsulta() {
+  document.getElementById('btn-consultar').addEventListener('click', consultarCartas);
+  document.getElementById('btn-fechar-modal').addEventListener('click', fecharModal);
+  document.getElementById('btn-fechar-modal-2').addEventListener('click', fecharModal);
+  document.getElementById('btn-imprimir').addEventListener('click', imprimirCarta);
+  document.getElementById('modal-detalhe').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('modal-detalhe')) fecharModal();
+  });
+}
+
+async function consultarCartas() {
+  var unidade = document.getElementById('filtro-unidade').value;
+  var mostrarInativas = document.getElementById('filtro-inativas').checked;
+
+  showLoading();
+  try {
+    var result = await apiGet('getCartas', { unidade: unidade, mostrarInativas: mostrarInativas ? 'true' : 'false' });
+    if (result.error) throw new Error(result.error);
+    renderCartasList(result.data || []);
+  } catch (error) {
+    showToast('Erro ao consultar: ' + error.message, 'error');
+    document.getElementById('consulta-results').innerHTML = '<p class="empty-state">Erro ao carregar.</p>';
+  } finally {
+    hideLoading();
+  }
+}
+
+function renderCartasList(cartas) {
+  var container = document.getElementById('consulta-results');
+  if (cartas.length === 0) {
+    container.innerHTML = '<p class="empty-state">Nenhuma carta traço encontrada.</p>';
+    return;
+  }
+
+  var grupos = {};
+  cartas.forEach(function(c) {
+    var key = c.nome + '|' + c.unidade + '|' + c.revisao;
+    if (!grupos[key]) {
+      grupos[key] = { id: c.id, nome: c.nome, revisao: c.revisao, unidade: c.unidade,
+        status: c.status, vigencia: c.vigencia, dataCadastro: c.dataCadastro, materiais: [] };
+    }
+    grupos[key].materiais.push({
+      fornecedor: c.fornecedor, produto: c.produto,
+      quantidade: c.quantidade, massaEspecifica: c.massaEspecifica || 0, unidadeMedida: c.unidadeMedida
+    });
+  });
+
+  var html = '';
+  Object.values(grupos).forEach(function(carta) {
+    var isInativa = carta.status === 'Inativa';
+    html += '<div class="carta-card ' + (isInativa ? 'inativa' : '') + '"' +
+      " onclick='abrirDetalhe(" + JSON.stringify(carta).replace(/'/g, "&#39;") + ")'>" +
+      '<div class="carta-card-header">' +
+      '<span class="carta-card-title">' + escapeHtml(carta.nome) + '</span>' +
+      '<span class="carta-card-badge ' + (isInativa ? 'badge-inativa' : 'badge-ativa') + '">' + carta.status + '</span></div>' +
+      '<div class="carta-card-info">' +
+      '<span>\ud83d\udccb Rev. ' + carta.revisao + '</span>' +
+      '<span>\ud83c\udfed ' + escapeHtml(carta.unidade) + '</span>' +
+      '<span>\ud83d\udcc5 ' + formatDate(carta.vigencia) + '</span>' +
+      '<span>\ud83d\udce6 ' + carta.materiais.length + ' materiais</span></div></div>';
+  });
+  container.innerHTML = html;
+}
+
+async function abrirDetalhe(carta) {
+  var modal = document.getElementById('modal-detalhe');
+  var titulo = document.getElementById('modal-titulo');
+  var body = document.getElementById('modal-body-detalhe');
+
+  titulo.textContent = carta.nome + ' - Rev. ' + carta.revisao;
+
+  var materiaisComGrupo = carta.materiais.map(function(mat) {
+    var def = MATERIAIS_TRACO.find(function(m) { return m.nome.toLowerCase() === mat.produto.toLowerCase(); });
+    return {
+      produto: mat.produto, quantidade: parseFloat(mat.quantidade) || 0,
+      massaEspecifica: parseFloat(mat.massaEspecifica) || (def ? def.meDefault : 1),
+      unidade: mat.unidadeMedida || 'kg', grupo: def ? def.grupo : 'outro', fornecedor: mat.fornecedor || '-'
+    };
+  });
+
+  var ind = calcularIndicadores(materiaisComGrupo);
+  var mccData = [];
+  var mccTotal = 0;
+
+  try {
+    var result = await apiGet('getCustos', { unidade: carta.unidade });
+    var custos = result.data || [];
+    materiaisComGrupo.forEach(function(mat) {
+      var custoItem = custos.find(function(c) { return c.material.toLowerCase() === mat.produto.toLowerCase() && c.unidade === carta.unidade; });
+      var custoUnitario = custoItem ? parseFloat(custoItem.valorLiquido) : 0;
+      var custoTotal = mat.quantidade * custoUnitario;
+      mccTotal += custoTotal;
+      mccData.push({ produto: mat.produto, fornecedor: custoItem ? custoItem.fornecedor : '-',
+        quantidade: mat.quantidade, massaEspecifica: mat.massaEspecifica, unidade: mat.unidade,
+        custoUnitario: custoUnitario, custoTotal: custoTotal });
+    });
+  } catch (e) { console.error('Erro ao buscar custos:', e); }
+
+  var html = '<div class="detail-section"><h4>Informações da Carta</h4><div class="detail-grid">' +
+    '<div class="detail-item"><div class="label">Nome</div><div class="value">' + escapeHtml(carta.nome) + '</div></div>' +
+    '<div class="detail-item"><div class="label">Revisão</div><div class="value">' + carta.revisao + '</div></div>' +
+    '<div class="detail-item"><div class="label">Unidade</div><div class="value">' + escapeHtml(carta.unidade) + '</div></div>' +
+    '<div class="detail-item"><div class="label">Status</div><div class="value">' + carta.status + '</div></div>' +
+    '<div class="detail-item"><div class="label">Data de Vigência</div><div class="value">' + formatDate(carta.vigencia) + '</div></div>' +
+    '<div class="detail-item"><div class="label">Data de Cadastro</div><div class="value">' + formatDate(carta.dataCadastro) + '</div></div>' +
+    '</div></div>';
+
+  html += '<div class="detail-section"><h4>Indicadores Técnicos</h4><div class="indicadores-grid">' +
+    '<div class="indicador-card"><span class="indicador-label">Peso Total</span><span class="indicador-valor">' + ind.pesoTotal.toFixed(1) + '</span><span class="indicador-unit">kg/m³</span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">Volume</span><span class="indicador-valor">' + ind.volume.toFixed(1) + '</span><span class="indicador-unit">dm³</span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">Relação A/C</span><span class="indicador-valor">' + ind.relacaoAC.toFixed(3) + '</span><span class="indicador-unit"></span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">Taxa Argamassa</span><span class="indicador-valor">' + ind.taxaArgamassa.toFixed(1) + '</span><span class="indicador-unit">%</span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">% Aditivo 1</span><span class="indicador-valor">' + ind.pctAditivo1.toFixed(3) + '</span><span class="indicador-unit">% s/ cimento</span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">% Aditivo 2</span><span class="indicador-valor">' + ind.pctAditivo2.toFixed(3) + '</span><span class="indicador-unit">% s/ cimento</span></div>' +
+    '</div>';
+
+  var distAreiasHtml = ind.distAreias.filter(function(a) { return a.quantidade > 0; }).map(function(a) {
+    return '<div class="dist-item"><span class="dist-name">' + escapeHtml(a.nome) + '</span><span class="dist-pct">' + a.pct.toFixed(1) + '%</span></div>';
+  }).join('') || '<div class="dist-item"><span class="dist-name">-</span></div>';
+
+  var distBritasHtml = ind.distBritas.filter(function(b) { return b.quantidade > 0; }).map(function(b) {
+    return '<div class="dist-item"><span class="dist-name">' + escapeHtml(b.nome) + '</span><span class="dist-pct">' + b.pct.toFixed(1) + '%</span></div>';
+  }).join('') || '<div class="dist-item"><span class="dist-name">-</span></div>';
+
+  html += '<div class="distribuicao-row">' +
+    '<div class="dist-box"><h4>Distribuição Areias</h4>' + distAreiasHtml + '</div>' +
+    '<div class="dist-box"><h4>Distribuição Britas</h4>' + distBritasHtml + '</div></div></div>';
+
+  html += '<div class="detail-section"><h4>MCC - Composição de Custo de Material</h4>' +
+    '<div class="mcc-info"><div class="mcc-total"><span>MCC Total:</span><strong>' + formatCurrency(mccTotal) + '</strong></div></div>' +
+    '<div class="chart-container"><canvas id="chart-detalhe-mcc"></canvas></div>' +
+    '<div id="mcc-detalhe-table"></div></div>';
+
+  body.innerHTML = html;
+
+  var tableContainer = document.getElementById('mcc-detalhe-table');
+  var tableHtml = '<table class="cost-table"><thead><tr><th>Material</th><th class="text-right">Consumo (kg)</th><th class="text-right">M.E.</th>' +
+    '<th class="text-right">Custo Unit.</th><th class="text-right">Custo Total</th><th class="text-right">%</th></tr></thead><tbody>';
+  mccData.forEach(function(item) {
+    var pct = mccTotal > 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : '0.0';
+    tableHtml += '<tr><td>' + escapeHtml(item.produto) + '</td><td class="text-right">' + item.quantidade.toFixed(2) +
+      '</td><td class="text-right">' + item.massaEspecifica.toFixed(3) + '</td><td class="text-right">' + formatCurrency(item.custoUnitario) +
+      '</td><td class="text-right">' + formatCurrency(item.custoTotal) + '</td><td class="text-right">' + pct + '%</td></tr>';
+  });
+  tableHtml += '<tr class="total-row"><td colspan="4"><strong>TOTAL MCC</strong></td>' +
+    '<td class="text-right"><strong>' + formatCurrency(mccTotal) + '</strong></td>' +
+    '<td class="text-right"><strong>100%</strong></td></tr></tbody></table>';
+  tableContainer.innerHTML = tableHtml;
+
+  if (mccData.length > 0) renderPieChart(mccData, mccTotal, 'chart-detalhe-mcc', 'detalhe');
+
+  modal.dataset.printData = JSON.stringify({ carta: carta, mccData: mccData, mccTotal: mccTotal, ind: ind });
+  modal.classList.remove('hidden');
+}
+
+function fecharModal() {
+  document.getElementById('modal-detalhe').classList.add('hidden');
+  if (chartDetalhe) { chartDetalhe.destroy(); chartDetalhe = null; }
+}
+
+function imprimirCarta() {
+  var modal = document.getElementById('modal-detalhe');
+  var data = JSON.parse(modal.dataset.printData || '{}');
+  var carta = data.carta, mccData = data.mccData, mccTotal = data.mccTotal, ind = data.ind;
+  if (!carta) return;
+
+  var printArea = document.getElementById('print-area');
+  var html = '<div class="print-header"><h2>CARTA TRAÇO - ' + escapeHtml(carta.nome) + '</h2>' +
+    '<p>Revisão: ' + carta.revisao + ' | Unidade: ' + escapeHtml(carta.unidade) + ' | Status: ' + carta.status + '</p>' +
+    '<p>Vigência: ' + formatDate(carta.vigencia) + ' | Cadastro: ' + formatDate(carta.dataCadastro) + '</p></div>';
+
+  html += '<h3 style="margin:16px 0 8px;">Indicadores Técnicos</h3>' +
+    '<table class="cost-table" style="margin-bottom:16px;"><tr>' +
+    '<td><strong>Peso Total</strong></td><td>' + ind.pesoTotal.toFixed(1) + ' kg/m³</td>' +
+    '<td><strong>Volume</strong></td><td>' + ind.volume.toFixed(1) + ' dm³</td></tr>' +
+    '<tr><td><strong>Relação A/C</strong></td><td>' + ind.relacaoAC.toFixed(3) + '</td>' +
+    '<td><strong>Taxa Argamassa</strong></td><td>' + ind.taxaArgamassa.toFixed(1) + '%</td></tr>' +
+    '<tr><td><strong>% Aditivo 1</strong></td><td>' + ind.pctAditivo1.toFixed(3) + '%</td>' +
+    '<td><strong>% Aditivo 2</strong></td><td>' + ind.pctAditivo2.toFixed(3) + '%</td></tr></table>';
+
+  var distAText = ind.distAreias.filter(function(a){return a.quantidade>0;}).map(function(a){return a.nome+': '+a.pct.toFixed(1)+'%';}).join('<br>') || '-';
+  var distBText = ind.distBritas.filter(function(b){return b.quantidade>0;}).map(function(b){return b.nome+': '+b.pct.toFixed(1)+'%';}).join('<br>') || '-';
+  html += '<div style="display:flex;gap:20px;margin-bottom:16px;">' +
+    '<div style="flex:1;"><strong>Distribuição Areias:</strong><br>' + distAText + '</div>' +
+    '<div style="flex:1;"><strong>Distribuição Britas:</strong><br>' + distBText + '</div></div>';
+
+  html += '<h3 style="margin:16px 0 8px;">Composição de Custo de Material (MCC)</h3>' +
+    '<p style="font-size:1.1rem;margin-bottom:12px;"><strong>MCC Total: ' + formatCurrency(mccTotal) + '</strong></p>' +
+    '<table class="cost-table"><thead><tr><th>Material</th><th style="text-align:right">Consumo (kg)</th><th style="text-align:right">M.E.</th>' +
+    '<th style="text-align:right">Custo Unit.</th><th style="text-align:right">Custo Total</th><th style="text-align:right">%</th></tr></thead><tbody>';
+
+  (mccData || []).forEach(function(item) {
+    var pct = mccTotal > 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : '0.0';
+    html += '<tr><td>' + escapeHtml(item.produto) + '</td><td style="text-align:right">' + item.quantidade.toFixed(2) +
+      '</td><td style="text-align:right">' + item.massaEspecifica.toFixed(3) + '</td><td style="text-align:right">' + formatCurrency(item.custoUnitario) +
+      '</td><td style="text-align:right">' + formatCurrency(item.custoTotal) + '</td><td style="text-align:right">' + pct + '%</td></tr>';
+  });
+
+  html += '<tr class="total-row"><td colspan="4"><strong>TOTAL MCC</strong></td>' +
+    '<td style="text-align:right"><strong>' + formatCurrency(mccTotal) + '</strong></td>' +
+    '<td style="text-align:right"><strong>100%</strong></td></tr></tbody></table>' +
+    '<p style="margin-top:30px;font-size:0.75rem;color:#999;text-align:center;">Documento gerado em ' + new Date().toLocaleString('pt-BR') + ' - Sistema Cartas Traço</p>';
+
+  printArea.innerHTML = html;
+  setTimeout(function() { window.print(); }, 300);
+}
+
+// ===========================================
+// ========== CUSTOS / MATERIAIS =============
+// ===========================================
+function initCustos() {
+  var valorInput = document.getElementById('custo-valor');
+  var icmsInput = document.getElementById('custo-icms');
+  var freteInput = document.getElementById('custo-frete');
+
+  function calcularLiquido() {
+    var valor = parseFloat(valorInput.value) || 0;
+    var icms = parseFloat(icmsInput.value) || 0;
+    var frete = parseFloat(freteInput.value) || 0;
+    document.getElementById('custo-liquido').value = ((valor * (1 - icms / 100)) + frete).toFixed(2);
+  }
+
+  valorInput.addEventListener('input', calcularLiquido);
+  icmsInput.addEventListener('input', calcularLiquido);
+  freteInput.addEventListener('input', calcularLiquido);
+
+  document.getElementById('form-custo').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    await salvarCusto();
+  });
+
+  document.getElementById('btn-limpar-custo').addEventListener('click', function() {
+    document.getElementById('form-custo').reset();
+    document.getElementById('custo-liquido').value = '';
+  });
+
+  document.getElementById('btn-carregar-custos').addEventListener('click', carregarCustos);
+}
+
+async function salvarCusto() {
+  var unidade = document.getElementById('custo-unidade').value;
+  var fornecedor = document.getElementById('custo-fornecedor').value.trim();
+  var material = document.getElementById('custo-material').value.trim();
+  var unMedida = document.getElementById('custo-un-medida').value;
+  var valor = parseFloat(document.getElementById('custo-valor').value) || 0;
+  var icms = parseFloat(document.getElementById('custo-icms').value) || 0;
+  var frete = parseFloat(document.getElementById('custo-frete').value) || 0;
+  var valorLiquido = parseFloat(document.getElementById('custo-liquido').value) || 0;
+
+  if (!unidade || !fornecedor || !material || !unMedida) {
+    showToast('Preencha todos os campos obrigatórios.', 'error');
+    return;
+  }
+
+  showLoading();
+  try {
+    var result = await apiPost('salvarCusto', {
+      unidade: unidade, fornecedor: fornecedor, material: material,
+      unidadeMedida: unMedida, valor: valor, icms: icms, frete: frete, valorLiquido: valorLiquido,
+      data: getToday()
+    });
+    if (result.error) throw new Error(result.error);
+    showToast('Material salvo com sucesso!', 'success');
+    document.getElementById('form-custo').reset();
+    document.getElementById('custo-liquido').value = '';
+    if (document.getElementById('filtro-custos-unidade').value) carregarCustos();
+  } catch (error) {
+    showToast('Erro ao salvar: ' + error.message, 'error');
+  } finally {
+    hideLoading();
+  }
+}
+
+async function carregarCustos() {
+  var unidade = document.getElementById('filtro-custos-unidade').value;
+  showLoading();
+  try {
+    var result = await apiGet('getCustos', { unidade: unidade });
+    if (result.error) throw new Error(result.error);
+    renderCustosList(result.data || []);
+  } catch (error) {
+    showToast('Erro ao carregar custos: ' + error.message, 'error');
+    document.getElementById('custos-lista').innerHTML = '<p class="empty-state">Erro ao carregar.</p>';
+  } finally {
+    hideLoading();
+  }
+}
+
+function renderCustosList(custos) {
+  var container = document.getElementById('custos-lista');
+  if (custos.length === 0) {
+    container.innerHTML = '<p class="empty-state">Nenhum material cadastrado.</p>';
+    return;
+  }
+
+  var html = '<table class="cost-table"><thead><tr>' +
+    '<th>Data</th><th>Unidade</th><th>Fornecedor</th><th>Material</th><th>Un. Med.</th>' +
+    '<th class="text-right">Valor Unit.</th><th class="text-right">ICMS %</th>' +
+    '<th class="text-right">Frete</th><th class="text-right">Vlr. Líquido</th>' +
+    '</tr></thead><tbody>';
+
+  custos.forEach(function(c) {
+    html += '<tr><td>' + formatDate(c.data) + '</td><td>' + escapeHtml(c.unidade) + '</td>' +
+      '<td>' + escapeHtml(c.fornecedor) + '</td><td>' + escapeHtml(c.material) + '</td>' +
+      '<td>' + (c.unidadeMedida || '-') + '</td><td class="text-right">' + formatCurrency(c.valor) + '</td>' +
+      '<td class="text-right">' + parseFloat(c.icms).toFixed(1) + '%</td>' +
+      '<td class="text-right">' + formatCurrency(c.frete) + '</td>' +
+      '<td class="text-right">' + formatCurrency(c.valorLiquido) + '</td></tr>';
+  });
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+</script>
+</body>
+</html>
