@@ -288,9 +288,9 @@ textarea{ resize:vertical; min-height:80px; }
 /* ---- Hub Home grid ---- */
 .hub-grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap:16px;
-  max-width:560px;
+  max-width:900px;
   width:100%;
 }
 .app-card{
@@ -353,6 +353,9 @@ textarea{ resize:vertical; min-height:80px; }
 }
 
 /* ---- Responsive ---- */
+@media(max-width:900px){
+  .hub-grid{ grid-template-columns: repeat(3, 1fr); }
+}
 @media(max-width:520px){
   .grid2{ grid-template-columns:1fr; }
   .grid3{ grid-template-columns:1fr; }
