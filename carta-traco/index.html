@@ -510,6 +510,11 @@ body {
           <div class="home-card-title">Materiais</div>
           <div class="home-card-desc">Gerenciar custos de materiais e fornecedores</div>
         </div>
+        <div class="home-card" data-page="resumo">
+          <div class="home-card-icon">📊</div>
+          <div class="home-card-title">Resumo</div>
+          <div class="home-card-desc">Visão geral das cartas traço com MCC consolidado</div>
+        </div>
       </div>
     </section>
 
@@ -662,8 +667,13 @@ body {
               <span class="indicador-unit"></span>
             </div>
             <div class="indicador-card">
-              <span class="indicador-label">Taxa de Argamassa</span>
+              <span class="indicador-label">Tx Argamassa (massa)</span>
               <span class="indicador-valor" id="ind-argamassa">-</span>
+              <span class="indicador-unit">%</span>
+            </div>
+            <div class="indicador-card">
+              <span class="indicador-label">Tx Argamassa (volume)</span>
+              <span class="indicador-valor" id="ind-argamassa-vol">-</span>
               <span class="indicador-unit">%</span>
             </div>
             <div class="indicador-card">
@@ -854,6 +864,24 @@ body {
     </section>
   </main>
 
+    <!-- ==================== PAGE 4: RESUMO ==================== -->
+    <section id="page-resumo" class="page">
+      <div class="page-header">
+        <button type="button" class="btn-back" data-page="home">← Voltar</button>
+        <h2>Resumo Geral</h2>
+      </div>
+      <div class="form-section">
+        <div class="section-header-row">
+          <h3>Cartas Traço — Resumo</h3>
+          <button type="button" id="btn-carregar-resumo" class="btn btn-primary btn-small">🔄 Carregar</button>
+        </div>
+        <div id="resumo-lista" class="results-container">
+          <p class="empty-state">Clique em Carregar para ver o resumo das cartas traço.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <!-- Print Template (hidden, used for printing) -->
   <div id="print-area" class="print-area"></div>
 
@@ -891,6 +919,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initCadastro();
   initConsulta();
   initCustos();
+  initResumo();
 });
 
 // ========== NAVEGAÇÃO ==========
@@ -1006,9 +1035,18 @@ function calcularIndicadores(materiais) {
   var volume = materiais.reduce(function(s, m) { return s + (m.quantidade / m.massaEspecifica); }, 0);
   var aglomerante = cimento + adicao;
   var relacaoAC = cimento > 0 ? agua / cimento : 0;
-  var argamassa = aglomerante + totalAreias + agua;
-  var totalTraco = aglomerante + totalAreias + totalBritas + agua;
-  var taxaArgamassa = totalTraco > 0 ? (argamassa / totalTraco) * 100 : 0;
+
+  // Taxa de argamassa = miúdos / (miúdos + graúdos) — sem água
+  var totalAgregados = totalAreias + totalBritas;
+  var taxaArgamassa = totalAgregados > 0 ? (totalAreias / totalAgregados) * 100 : 0;
+
+  // Taxa de argamassa em volume
+  var volAreias = 0, volBritas = 0;
+  areias.forEach(function(a) { volAreias += a.quantidade / a.massaEspecifica; });
+  britas.forEach(function(b) { volBritas += b.quantidade / b.massaEspecifica; });
+  var totalVolAgregados = volAreias + volBritas;
+  var taxaArgamassaVol = totalVolAgregados > 0 ? (volAreias / totalVolAgregados) * 100 : 0;
+
   var pctAditivo1 = cimento > 0 ? (aditivo1 / cimento) * 100 : 0;
   var pctAditivo2 = cimento > 0 ? (aditivo2 / cimento) * 100 : 0;
 
@@ -1021,7 +1059,8 @@ function calcularIndicadores(materiais) {
 
   return {
     pesoTotal: pesoTotal, volume: volume, relacaoAC: relacaoAC,
-    taxaArgamassa: taxaArgamassa, pctAditivo1: pctAditivo1, pctAditivo2: pctAditivo2,
+    taxaArgamassa: taxaArgamassa, taxaArgamassaVol: taxaArgamassaVol,
+    pctAditivo1: pctAditivo1, pctAditivo2: pctAditivo2,
     distAreias: distAreias, distBritas: distBritas, totalAreias: totalAreias, totalBritas: totalBritas
   };
 }
@@ -1031,6 +1070,7 @@ function renderIndicadores(ind) {
   document.getElementById('ind-volume').textContent = ind.volume.toFixed(1);
   document.getElementById('ind-ac').textContent = ind.relacaoAC.toFixed(3);
   document.getElementById('ind-argamassa').textContent = ind.taxaArgamassa.toFixed(1);
+  document.getElementById('ind-argamassa-vol').textContent = ind.taxaArgamassaVol.toFixed(1);
   document.getElementById('ind-adit1').textContent = ind.pctAditivo1.toFixed(3);
   document.getElementById('ind-adit2').textContent = ind.pctAditivo2.toFixed(3);
 
@@ -1121,7 +1161,9 @@ async function calcularMCC() {
 
     materiais.forEach(function(mat) {
       var custoItem = custos.find(function(c) {
-        return c.material.toLowerCase() === mat.produto.toLowerCase() && c.unidade === unidadeCarta;
+        var matchMaterial = c.material.toLowerCase() === mat.produto.toLowerCase() && c.unidade === unidadeCarta;
+        if (mat.fornecedor) return matchMaterial && c.fornecedor === mat.fornecedor;
+        return matchMaterial;
       });
       var custoUnitario = custoItem ? parseFloat(custoItem.valorLiquido) : 0;
       var custoTotal = mat.quantidade * custoUnitario;
@@ -1153,13 +1195,14 @@ async function calcularMCC() {
 function renderMCCTable(mccData, mccTotal, containerId) {
   var container = document.getElementById(containerId);
   var html = '<table class="cost-table"><thead><tr>' +
-    '<th>Material</th><th class="text-right">Consumo (kg)</th><th class="text-right">M.E.</th>' +
+    '<th>Material</th><th>Fornecedor</th><th class="text-right">Consumo (kg)</th><th class="text-right">M.E.</th>' +
     '<th class="text-right">Custo Unit.</th><th class="text-right">Custo Total</th><th class="text-right">%</th>' +
     '</tr></thead><tbody>';
 
   mccData.forEach(function(item) {
     var pct = mccTotal > 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : '0.0';
     html += '<tr><td>' + escapeHtml(item.produto) + '</td>' +
+      '<td>' + escapeHtml(item.fornecedor || '-') + '</td>' +
       '<td class="text-right">' + item.quantidade.toFixed(2) + '</td>' +
       '<td class="text-right">' + item.massaEspecifica.toFixed(3) + '</td>' +
       '<td class="text-right">' + formatCurrency(item.custoUnitario) + '</td>' +
@@ -1167,7 +1210,7 @@ function renderMCCTable(mccData, mccTotal, containerId) {
       '<td class="text-right">' + pct + '%</td></tr>';
   });
 
-  html += '<tr class="total-row"><td colspan="4"><strong>TOTAL MCC</strong></td>' +
+  html += '<tr class="total-row"><td colspan="5"><strong>TOTAL MCC</strong></td>' +
     '<td class="text-right"><strong>' + formatCurrency(mccTotal) + '</strong></td>' +
     '<td class="text-right"><strong>100%</strong></td></tr></tbody></table>';
   container.innerHTML = html;
@@ -1344,7 +1387,11 @@ async function abrirDetalhe(carta) {
     var result = await apiGet('getCustos', { unidade: carta.unidade });
     var custos = result.data || [];
     materiaisComGrupo.forEach(function(mat) {
-      var custoItem = custos.find(function(c) { return c.material.toLowerCase() === mat.produto.toLowerCase() && c.unidade === carta.unidade; });
+      var custoItem = custos.find(function(c) {
+        var matchBase = c.material.toLowerCase() === mat.produto.toLowerCase() && c.unidade === carta.unidade;
+        if (mat.fornecedor && mat.fornecedor !== '-') return matchBase && c.fornecedor === mat.fornecedor;
+        return matchBase;
+      });
       var custoUnitario = custoItem ? parseFloat(custoItem.valorLiquido) : 0;
       var custoTotal = mat.quantidade * custoUnitario;
       mccTotal += custoTotal;
@@ -1367,9 +1414,10 @@ async function abrirDetalhe(carta) {
     '<div class="indicador-card"><span class="indicador-label">Peso Total</span><span class="indicador-valor">' + ind.pesoTotal.toFixed(1) + '</span><span class="indicador-unit">kg/m³</span></div>' +
     '<div class="indicador-card"><span class="indicador-label">Volume</span><span class="indicador-valor">' + ind.volume.toFixed(1) + '</span><span class="indicador-unit">dm³</span></div>' +
     '<div class="indicador-card"><span class="indicador-label">Relação A/C</span><span class="indicador-valor">' + ind.relacaoAC.toFixed(3) + '</span><span class="indicador-unit"></span></div>' +
-    '<div class="indicador-card"><span class="indicador-label">Taxa Argamassa</span><span class="indicador-valor">' + ind.taxaArgamassa.toFixed(1) + '</span><span class="indicador-unit">%</span></div>' +
-    '<div class="indicador-card"><span class="indicador-label">% Aditivo 1</span><span class="indicador-valor">' + ind.pctAditivo1.toFixed(3) + '</span><span class="indicador-unit">% s/ cimento</span></div>' +
-    '<div class="indicador-card"><span class="indicador-label">% Aditivo 2</span><span class="indicador-valor">' + ind.pctAditivo2.toFixed(3) + '</span><span class="indicador-unit">% s/ cimento</span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">Tx Argamassa (massa)</span><span class="indicador-valor">' + ind.taxaArgamassa.toFixed(1) + '</span><span class="indicador-unit">%</span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">Tx Argamassa (volume)</span><span class="indicador-valor">' + ind.taxaArgamassaVol.toFixed(1) + '</span><span class="indicador-unit">%</span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">% Aditivo 1</span><span class="indicador-valor">' + ind.pctAditivo1.toFixed(2).replace('.', ',') + '</span><span class="indicador-unit">% s/ cimento</span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">% Aditivo 2</span><span class="indicador-valor">' + ind.pctAditivo2.toFixed(2).replace('.', ',') + '</span><span class="indicador-unit">% s/ cimento</span></div>' +
     '</div>';
 
   var distAreiasHtml = ind.distAreias.filter(function(a) { return a.quantidade > 0; }).map(function(a) {
@@ -1392,15 +1440,15 @@ async function abrirDetalhe(carta) {
   body.innerHTML = html;
 
   var tableContainer = document.getElementById('mcc-detalhe-table');
-  var tableHtml = '<table class="cost-table"><thead><tr><th>Material</th><th class="text-right">Consumo (kg)</th><th class="text-right">M.E.</th>' +
+  var tableHtml = '<table class="cost-table"><thead><tr><th>Material</th><th>Fornecedor</th><th class="text-right">Consumo (kg)</th><th class="text-right">M.E.</th>' +
     '<th class="text-right">Custo Unit.</th><th class="text-right">Custo Total</th><th class="text-right">%</th></tr></thead><tbody>';
   mccData.forEach(function(item) {
     var pct = mccTotal > 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : '0.0';
-    tableHtml += '<tr><td>' + escapeHtml(item.produto) + '</td><td class="text-right">' + item.quantidade.toFixed(2) +
+    tableHtml += '<tr><td>' + escapeHtml(item.produto) + '</td><td>' + escapeHtml(item.fornecedor || '-') + '</td><td class="text-right">' + item.quantidade.toFixed(2) +
       '</td><td class="text-right">' + item.massaEspecifica.toFixed(3) + '</td><td class="text-right">' + formatCurrency(item.custoUnitario) +
       '</td><td class="text-right">' + formatCurrency(item.custoTotal) + '</td><td class="text-right">' + pct + '%</td></tr>';
   });
-  tableHtml += '<tr class="total-row"><td colspan="4"><strong>TOTAL MCC</strong></td>' +
+  tableHtml += '<tr class="total-row"><td colspan="5"><strong>TOTAL MCC</strong></td>' +
     '<td class="text-right"><strong>' + formatCurrency(mccTotal) + '</strong></td>' +
     '<td class="text-right"><strong>100%</strong></td></tr></tbody></table>';
   tableContainer.innerHTML = tableHtml;
@@ -1491,9 +1539,10 @@ function imprimirCarta() {
     '<div class="print-ind-card"><div class="print-ind-label">Peso Total</div><div class="print-ind-valor">' + ind.pesoTotal.toFixed(1) + '</div><div class="print-ind-unit">kg/m\u00b3</div></div>' +
     '<div class="print-ind-card"><div class="print-ind-label">Volume</div><div class="print-ind-valor">' + ind.volume.toFixed(1) + '</div><div class="print-ind-unit">dm\u00b3</div></div>' +
     '<div class="print-ind-card"><div class="print-ind-label">Rela\u00e7\u00e3o A/C</div><div class="print-ind-valor">' + ind.relacaoAC.toFixed(3) + '</div><div class="print-ind-unit"></div></div>' +
-    '<div class="print-ind-card"><div class="print-ind-label">Taxa Argamassa</div><div class="print-ind-valor">' + ind.taxaArgamassa.toFixed(1) + '</div><div class="print-ind-unit">%</div></div>' +
-    '<div class="print-ind-card"><div class="print-ind-label">% Aditivo 1</div><div class="print-ind-valor">' + ind.pctAditivo1.toFixed(3) + '</div><div class="print-ind-unit">% s/ cim.</div></div>' +
-    '<div class="print-ind-card"><div class="print-ind-label">% Aditivo 2</div><div class="print-ind-valor">' + ind.pctAditivo2.toFixed(3) + '</div><div class="print-ind-unit">% s/ cim.</div></div></div>';
+    '<div class="print-ind-card"><div class="print-ind-label">Tx Argamassa (massa)</div><div class="print-ind-valor">' + ind.taxaArgamassa.toFixed(1) + '</div><div class="print-ind-unit">%</div></div>' +
+    '<div class="print-ind-card"><div class="print-ind-label">Tx Argamassa (volume)</div><div class="print-ind-valor">' + ind.taxaArgamassaVol.toFixed(1) + '</div><div class="print-ind-unit">%</div></div>' +
+    '<div class="print-ind-card"><div class="print-ind-label">% Aditivo 1</div><div class="print-ind-valor">' + ind.pctAditivo1.toFixed(2).replace('.', ',') + '</div><div class="print-ind-unit">% s/ cim.</div></div>' +
+    '<div class="print-ind-card"><div class="print-ind-label">% Aditivo 2</div><div class="print-ind-valor">' + ind.pctAditivo2.toFixed(2).replace('.', ',') + '</div><div class="print-ind-unit">% s/ cim.</div></div></div>';
 
   // === Distribui\u00e7\u00e3o ===
   var distAItems = ind.distAreias.filter(function(a){ return a.quantidade > 0; }).map(function(a) {
@@ -1513,13 +1562,14 @@ function imprimirCarta() {
     '<div class="print-mcc-total">MCC Total: ' + formatCurrency(mccTotal) + '</div>';
 
   html += '<table class="cost-table"><thead><tr>' +
-    '<th>Material</th><th style="text-align:right">Consumo (kg)</th><th style="text-align:right">M.E. (kg/dm\u00b3)</th>' +
+    '<th>Material</th><th>Fornecedor</th><th style="text-align:right">Consumo (kg)</th><th style="text-align:right">M.E. (kg/dm\u00b3)</th>' +
     '<th style="text-align:right">Custo Unit.</th><th style="text-align:right">Custo Total</th><th style="text-align:right">%</th>' +
     '</tr></thead><tbody>';
 
   (mccData || []).forEach(function(item) {
     var pct = mccTotal > 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : '0.0';
     html += '<tr><td>' + escapeHtml(item.produto) + '</td>' +
+      '<td>' + escapeHtml(item.fornecedor || '-') + '</td>' +
       '<td style="text-align:right">' + item.quantidade.toFixed(2) + '</td>' +
       '<td style="text-align:right">' + item.massaEspecifica.toFixed(3) + '</td>' +
       '<td style="text-align:right">' + formatCurrency(item.custoUnitario) + '</td>' +
@@ -1527,7 +1577,7 @@ function imprimirCarta() {
       '<td style="text-align:right">' + pct + '%</td></tr>';
   });
 
-  html += '<tr class="total-row"><td colspan="4"><strong>TOTAL MCC</strong></td>' +
+  html += '<tr class="total-row"><td colspan="5"><strong>TOTAL MCC</strong></td>' +
     '<td style="text-align:right"><strong>' + formatCurrency(mccTotal) + '</strong></td>' +
     '<td style="text-align:right"><strong>100%</strong></td></tr></tbody></table>';
 
@@ -1646,6 +1696,47 @@ function renderCustosList(custos) {
 
   html += '</tbody></table>';
   container.innerHTML = html;
+}
+
+// ===========================================
+// ============= RESUMO GERAL ===============
+// ===========================================
+function initResumo() {
+  document.getElementById('btn-carregar-resumo').addEventListener('click', carregarResumo);
+}
+
+async function carregarResumo() {
+  var container = document.getElementById('resumo-lista');
+  showLoading();
+  try {
+    var result = await apiGet('getResumo');
+    if (result.error) throw new Error(result.error);
+    var data = result.data || [];
+    if (data.length === 0) {
+      container.innerHTML = '<p class="empty-state">Nenhum dado de resumo encontrado.</p>';
+      return;
+    }
+    var html = '<table class="cost-table"><thead><tr>' +
+      '<th>Unidade</th><th>Nome</th><th class="text-right">Revisão</th>' +
+      '<th class="text-right">MCC Total</th><th>Status</th><th>Vigência</th>' +
+      '</tr></thead><tbody>';
+    data.forEach(function(r) {
+      html += '<tr><td>' + escapeHtml(r.unidade || '') + '</td>' +
+        '<td>' + escapeHtml(r.nome || '') + '</td>' +
+        '<td class="text-right">' + (r.revisao || 0) + '</td>' +
+        '<td class="text-right">' + formatCurrency(parseFloat(r.mccTotal) || 0) + '</td>' +
+        '<td>' + escapeHtml(r.status || '') + '</td>' +
+        '<td>' + formatDate(r.vigencia) + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+    showToast('Resumo carregado!', 'success');
+  } catch (error) {
+    showToast('Erro ao carregar resumo: ' + error.message, 'error');
+    container.innerHTML = '<p class="empty-state">Erro ao carregar.</p>';
+  } finally {
+    hideLoading();
+  }
 }
 </script>
 </body>
