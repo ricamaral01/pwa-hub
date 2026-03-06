@@ -176,8 +176,14 @@ body {
   background: transparent; outline: none;
 }
 .mat-grid-row input[type="number"] { text-align: right; }
-.mat-grid-row input[type="text"] { text-align: left; }
 .mat-grid-row input:focus { background: #fff8e1; }
+.mat-grid-row select {
+  width: 100%; padding: 5px 6px; border: none;
+  border-left: 1px solid var(--border); font-size: 0.82rem;
+  background: transparent; outline: none; cursor: pointer;
+  color: var(--text); appearance: auto;
+}
+.mat-grid-row select:focus { background: #fff8e1; }
 
 /* ---- Indicadores Técnicos ---- */
 .indicadores-grid {
@@ -569,67 +575,67 @@ body {
             </div>
             <div class="mat-grid-row">
               <label>Cimento</label>
-              <input type="text" id="forn-cimento" placeholder="Fornecedor">
+              <select id="forn-cimento"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-cimento" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-cimento" value="3.150" placeholder="3.150">
             </div>
             <div class="mat-grid-row">
               <label>Adição</label>
-              <input type="text" id="forn-adicao" placeholder="Fornecedor">
+              <select id="forn-adicao"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-adicao" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-adicao" value="2.940" placeholder="2.940">
             </div>
             <div class="mat-grid-row">
               <label>Areia Fina</label>
-              <input type="text" id="forn-areia-fina" placeholder="Fornecedor">
+              <select id="forn-areia-fina"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-areia-fina" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-areia-fina" value="2.630" placeholder="2.630">
             </div>
             <div class="mat-grid-row">
               <label>Areia Média</label>
-              <input type="text" id="forn-areia-media" placeholder="Fornecedor">
+              <select id="forn-areia-media"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-areia-media" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-areia-media" value="2.630" placeholder="2.630">
             </div>
             <div class="mat-grid-row">
               <label>Areia Industrial</label>
-              <input type="text" id="forn-areia-industrial" placeholder="Fornecedor">
+              <select id="forn-areia-industrial"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-areia-industrial" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-areia-industrial" value="2.650" placeholder="2.650">
             </div>
             <div class="mat-grid-row">
               <label>Areia Grossa</label>
-              <input type="text" id="forn-areia-grossa" placeholder="Fornecedor">
+              <select id="forn-areia-grossa"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-areia-grossa" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-areia-grossa" value="2.630" placeholder="2.630">
             </div>
             <div class="mat-grid-row">
               <label>Brita 0</label>
-              <input type="text" id="forn-brita0" placeholder="Fornecedor">
+              <select id="forn-brita0"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-brita0" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-brita0" value="2.750" placeholder="2.750">
             </div>
             <div class="mat-grid-row">
               <label>Brita 1</label>
-              <input type="text" id="forn-brita1" placeholder="Fornecedor">
+              <select id="forn-brita1"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-brita1" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-brita1" value="2.750" placeholder="2.750">
             </div>
             <div class="mat-grid-row">
               <label>Água</label>
-              <input type="text" id="forn-agua" placeholder="Fornecedor">
+              <select id="forn-agua"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-agua" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-agua" value="1.000" placeholder="1.000">
             </div>
             <div class="mat-grid-row">
               <label>Aditivo 1</label>
-              <input type="text" id="forn-aditivo1" placeholder="Fornecedor">
+              <select id="forn-aditivo1"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-aditivo1" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-aditivo1" value="1.200" placeholder="1.200">
             </div>
             <div class="mat-grid-row">
               <label>Aditivo 2</label>
-              <input type="text" id="forn-aditivo2" placeholder="Fornecedor">
+              <select id="forn-aditivo2"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-aditivo2" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-aditivo2" value="1.200" placeholder="1.200">
             </div>
@@ -1056,6 +1062,41 @@ function initCadastro() {
     e.preventDefault();
     await salvarCarta();
   });
+  document.getElementById('carta-unidade').addEventListener('change', carregarFornecedores);
+}
+
+async function carregarFornecedores() {
+  var unidade = document.getElementById('carta-unidade').value;
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var sel = document.getElementById('forn-' + mat.id);
+    if (sel) { sel.innerHTML = '<option value="">Selecione...</option>'; }
+  });
+  if (!unidade) return;
+  try {
+    var result = await apiGet('getCustos', { unidade: unidade });
+    if (result.error) throw new Error(result.error);
+    var custos = result.data || [];
+    MATERIAIS_TRACO.forEach(function(mat) {
+      var sel = document.getElementById('forn-' + mat.id);
+      if (!sel) return;
+      var fornecedores = [];
+      custos.forEach(function(c) {
+        if (c.material && c.material.toLowerCase() === mat.nome.toLowerCase() && c.fornecedor) {
+          var nome = c.fornecedor.trim();
+          if (nome && fornecedores.indexOf(nome) === -1) fornecedores.push(nome);
+        }
+      });
+      fornecedores.sort();
+      fornecedores.forEach(function(f) {
+        var opt = document.createElement('option');
+        opt.value = f;
+        opt.textContent = f;
+        sel.appendChild(opt);
+      });
+    });
+  } catch (error) {
+    showToast('Erro ao carregar fornecedores: ' + error.message, 'error');
+  }
 }
 
 async function calcularMCC() {
@@ -1375,7 +1416,7 @@ function fecharModal() {
   if (chartDetalhe) { chartDetalhe.destroy(); chartDetalhe = null; }
 }
 
-function editarCarta() {
+async function editarCarta() {
   var modal = document.getElementById('modal-detalhe');
   var data = JSON.parse(modal.dataset.printData || '{}');
   var carta = data.carta;
@@ -1390,6 +1431,9 @@ function editarCarta() {
   document.getElementById('carta-unidade').value = carta.unidade || '';
   document.getElementById('carta-vigencia').value = getToday();
   document.getElementById('carta-status').value = 'Ativa';
+
+  // Carregar fornecedores da unidade antes de preencher
+  await carregarFornecedores();
 
   // Limpar todos os campos de materiais primeiro
   MATERIAIS_TRACO.forEach(function(mat) {
