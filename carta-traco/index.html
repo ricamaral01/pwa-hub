@@ -823,6 +823,12 @@ body {
               <input type="text" id="custo-material" placeholder="Nome do material" required>
             </div>
             <div class="form-group">
+              <label for="custo-produto-fornecedor">Produto do Fornecedor</label>
+              <input type="text" id="custo-produto-fornecedor" placeholder="Ex: AdvaCast 518, CP V ARI" autocomplete="off">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
               <label for="custo-un-medida">Unidade de Medida</label>
               <select id="custo-un-medida" required>
                 <option value="">Selecione...</option>
@@ -1763,6 +1769,7 @@ async function salvarCusto() {
   try {
     var result = await apiPost('salvarCusto', {
       unidade: unidade, fornecedor: fornecedor, material: material,
+      produtoFornecedor: document.getElementById('custo-produto-fornecedor').value.trim(),
       unidadeMedida: unMedida, valor: valor, icms: icms, frete: frete, valorLiquido: valorLiquido,
       tipoFrete: document.getElementById('custo-tipo-frete').value,
       data: getToday()
@@ -1802,7 +1809,7 @@ function renderCustosList(custos) {
   }
 
   var html = '<table class="cost-table"><thead><tr>' +
-    '<th>Data</th><th>Unidade</th><th>Fornecedor</th><th>Material</th><th>Un. Med.</th>' +
+    '<th>Data</th><th>Unidade</th><th>Fornecedor</th><th>Material</th><th>Produto</th><th>Un. Med.</th>' +
     '<th class="text-right">Valor Unit.</th><th class="text-right">ICMS %</th>' +
     '<th class="text-right">Frete</th><th class="text-right">Vlr. Líquido</th>' +
     '</tr></thead><tbody>';
@@ -1810,6 +1817,7 @@ function renderCustosList(custos) {
   custos.forEach(function(c) {
     html += '<tr><td>' + formatDate(c.data) + '</td><td>' + escapeHtml(c.unidade) + '</td>' +
       '<td>' + escapeHtml(c.fornecedor) + '</td><td>' + escapeHtml(c.material) + '</td>' +
+      '<td>' + escapeHtml(c.produtoFornecedor || '-') + '</td>' +
       '<td>' + (c.unidadeMedida || '-') + '</td><td class="text-right">' + formatCurrency(c.valor) + '</td>' +
       '<td class="text-right">' + parseFloat(c.icms).toFixed(1) + '%</td>' +
       '<td class="text-right">' + formatCurrency(c.frete) + '</td>' +
@@ -1847,6 +1855,7 @@ async function consultarFornecedores() {
       var key = c.fornecedor + '|' + c.material + '|' + c.unidade;
       if (!fornMap[key]) {
         fornMap[key] = { fornecedor: c.fornecedor, material: c.material, unidade: c.unidade,
+          produtoFornecedor: c.produtoFornecedor || '',
           valorLiquido: parseFloat(c.valorLiquido) || 0, unidadeMedida: c.unidadeMedida || '-',
           tipoFrete: c.tipoFrete || '-', data: c.data };
       }
@@ -1862,12 +1871,13 @@ async function consultarFornecedores() {
     items.sort(function(a, b) { return a.material.localeCompare(b.material) || a.fornecedor.localeCompare(b.fornecedor); });
 
     var html = '<table class="cost-table"><thead><tr>' +
-      '<th>Material</th><th>Fornecedor</th><th>Unidade</th><th>Un. Med.</th>' +
+      '<th>Material</th><th>Produto</th><th>Fornecedor</th><th>Unidade</th><th>Un. Med.</th>' +
       '<th class="text-right">Vlr. Líquido</th><th>Tipo Frete</th><th>Data</th>' +
       '</tr></thead><tbody>';
 
     items.forEach(function(item) {
       html += '<tr><td>' + escapeHtml(item.material) + '</td>' +
+        '<td>' + escapeHtml(item.produtoFornecedor || '-') + '</td>' +
         '<td>' + escapeHtml(item.fornecedor) + '</td>' +
         '<td>' + escapeHtml(item.unidade) + '</td>' +
         '<td>' + item.unidadeMedida + '</td>' +

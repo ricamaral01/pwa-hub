@@ -45,9 +45,9 @@ function initSheetHeaders(sheet, name) {
       sheet.appendRow([
         'ID', 'Data', 'Unidade', 'Fornecedor', 'Material',
         'Unidade Medida', 'Valor Unitário', 'ICMS %',
-        'Frete', 'Valor Líquido', 'Tipo Frete'
+        'Frete', 'Valor Líquido', 'Produto Fornecedor', 'Tipo Frete'
       ]);
-      sheet.getRange(1, 1, 1, 11).setFontWeight('bold').setBackground('#1a5276').setFontColor('white');
+      sheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#1a5276').setFontColor('white');
       sheet.setFrozenRows(1);
       break;
     case 'resumo':
@@ -247,7 +247,8 @@ function getCustos(params) {
     icms: row[7],
     frete: row[8],
     valorLiquido: row[9],
-    tipoFrete: row[10] || ''
+    produtoFornecedor: row[10] || '',
+    tipoFrete: row[11] || ''
   }));
 
   // Filtrar por unidade
@@ -276,6 +277,7 @@ function salvarCusto(payload) {
     payload.icms,
     payload.frete,
     payload.valorLiquido,
+    payload.produtoFornecedor || '',
     payload.tipoFrete || ''
   ]);
 
