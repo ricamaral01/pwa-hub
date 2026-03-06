@@ -111,6 +111,9 @@ function doPost(e) {
       case 'salvarCusto':
         result = salvarCusto(payload);
         break;
+      case 'salvarCustoBatch':
+        result = salvarCustoBatch(payload);
+        break;
       default:
         result = { error: 'Ação não reconhecida: ' + action };
     }
@@ -282,6 +285,31 @@ function salvarCusto(payload) {
   ]);
 
   return { success: true, id: id, message: 'Material salvo com sucesso!' };
+}
+
+function salvarCustoBatch(payload) {
+  const sheet = getSheet('custos');
+  const items = payload.items || [];
+  if (items.length === 0) return { error: 'Nenhum item para importar.' };
+
+  const rows = items.map(item => [
+    generateId(),
+    item.data || Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'yyyy-MM-dd'),
+    item.unidade,
+    item.fornecedor,
+    item.material,
+    item.unidadeMedida || '',
+    item.valor || 0,
+    item.icms || 0,
+    item.frete || 0,
+    item.valorLiquido || 0,
+    item.produtoFornecedor || '',
+    item.tipoFrete || ''
+  ]);
+
+  sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 12).setValues(rows);
+
+  return { success: true, count: rows.length, message: rows.length + ' materiais importados com sucesso!' };
 }
 
 // ========== RESUMO ==========

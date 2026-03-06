@@ -87,11 +87,19 @@ body {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.page-header { margin-bottom: 16px; }
+.page-header { margin-bottom: 16px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .page-header h2 {
   font-size: 1.2rem; color: var(--primary);
   border-bottom: 2px solid var(--primary-light); padding-bottom: 8px;
+  flex: 1;
 }
+.btn-icon-consulta {
+  background: var(--primary-light); color: #fff; border: none; border-radius: 50%;
+  width: 36px; height: 36px; font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.2s; box-shadow: var(--shadow);
+}
+.btn-icon-consulta:hover { background: var(--primary); transform: scale(1.1); }
 
 /* ---- Home Page ---- */
 .home-grid {
@@ -528,6 +536,7 @@ body {
       <div class="page-header">
         <button type="button" class="btn-back" data-page="home">← Voltar</button>
         <h2>Cadastro de Carta Traço</h2>
+        <button type="button" class="btn-icon-consulta" data-page="consulta" title="Consultar Cartas">🔍</button>
       </div>
 
       <form id="form-cadastro" class="form-card">
@@ -566,13 +575,6 @@ body {
               <select id="carta-status" required>
                 <option value="Ativa">Ativa</option>
                 <option value="Inativa">Inativa</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="carta-frete">Tipo de Frete</label>
-              <select id="carta-frete" required>
-                <option value="CIF">CIF</option>
-                <option value="FOB">FOB</option>
               </select>
             </div>
           </div>
@@ -913,6 +915,45 @@ body {
           <p class="empty-state">Clique em Consultar para ver os fornecedores.</p>
         </div>
       </div>
+
+      <!-- Importação em Massa -->
+      <div class="form-section" style="margin-top: 20px;">
+        <div class="section-header-row">
+          <h3>📥 Importação em Massa</h3>
+          <button type="button" id="btn-toggle-import" class="btn btn-secondary btn-small">Expandir</button>
+        </div>
+        <div id="import-section" style="display:none;">
+          <div class="form-row" style="margin-top:12px;">
+            <div class="form-group">
+              <label for="import-unidade">Unidade</label>
+              <select id="import-unidade" required>
+                <option value="">Selecione a unidade...</option>
+                <option value="Campinas">Campinas</option>
+                <option value="Pederneiras">Pederneiras</option>
+                <option value="Ribeirão Preto">Ribeirão Preto</option>
+                <option value="Noroeste">Noroeste</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="import-tipo-frete">Tipo de Frete</label>
+              <select id="import-tipo-frete">
+                <option value="CIF">CIF</option>
+                <option value="FOB">FOB</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:8px;">
+            <label>Cole os dados (separados por TAB ou ;)</label>
+            <p class="form-hint">Formato: Fornecedor | Material | Produto Fornecedor | Un. Medida | Valor Unit. | ICMS % | Frete</p>
+            <textarea id="import-dados" rows="8" placeholder="Fornecedor&#9;Material&#9;Produto&#9;kg&#9;150.00&#9;12&#9;5.00&#10;Fornecedor 2&#9;Areia Fina&#9;Areia Lavada&#9;ton&#9;90.00&#9;7&#9;10.00" style="width:100%;font-family:monospace;font-size:0.85rem;"></textarea>
+          </div>
+          <div id="import-preview" style="margin-top:12px;display:none;"></div>
+          <div class="form-actions" style="margin-top:12px;">
+            <button type="button" id="btn-preview-import" class="btn btn-info">👁️ Pré-visualizar</button>
+            <button type="button" id="btn-executar-import" class="btn btn-primary" disabled>📥 Importar Todos</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ==================== PAGE 4: RESUMO ==================== -->
@@ -970,6 +1011,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initCadastro();
   initConsulta();
   initCustos();
+  initImportacao();
   initResumo();
 });
 
@@ -979,6 +1021,9 @@ function initNavigation() {
     card.addEventListener('click', function() { navigateTo(card.dataset.page); });
   });
   document.querySelectorAll('.btn-back').forEach(function(btn) {
+    btn.addEventListener('click', function() { navigateTo(btn.dataset.page); });
+  });
+  document.querySelectorAll('.btn-icon-consulta').forEach(function(btn) {
     btn.addEventListener('click', function() { navigateTo(btn.dataset.page); });
   });
 }
@@ -1333,7 +1378,6 @@ async function salvarCarta() {
   var unidade = document.getElementById('carta-unidade').value;
   var vigencia = document.getElementById('carta-vigencia').value;
   var status = document.getElementById('carta-status').value;
-  var tipoFrete = document.getElementById('carta-frete').value;
   var observacao = document.getElementById('carta-observacao').value.trim();
   var materiais = getMateriaisFromForm();
 
@@ -1344,7 +1388,7 @@ async function salvarCarta() {
   try {
     var result = await apiPost('salvarCarta', {
       nome: nome, revisao: revisao, unidade: unidade, vigencia: vigencia, status: status,
-      tipoFrete: tipoFrete, observacao: observacao,
+      observacao: observacao,
       materiais: materiais.map(function(m) {
         return { produto: m.produto, quantidade: m.quantidade, massaEspecifica: m.massaEspecifica, unidade: m.unidade, fornecedor: m.fornecedor };
       }),
@@ -1498,7 +1542,6 @@ async function abrirDetalhe(carta) {
     '<div class="detail-item"><div class="label">Status</div><div class="value">' + carta.status + '</div></div>' +
     '<div class="detail-item"><div class="label">Data de Vigência</div><div class="value">' + formatDate(carta.vigencia) + '</div></div>' +
     '<div class="detail-item"><div class="label">Data de Cadastro</div><div class="value">' + formatDate(carta.dataCadastro) + '</div></div>' +
-    '<div class="detail-item"><div class="label">Tipo de Frete</div><div class="value">' + escapeHtml(carta.tipoFrete || '-') + '</div></div>' +
     '<div class="detail-item"><div class="label">Observação</div><div class="value">' + escapeHtml(carta.observacao || '-') + '</div></div>' +
     '</div></div>';
 
@@ -1571,7 +1614,6 @@ async function editarCarta() {
   document.getElementById('carta-unidade').value = carta.unidade || '';
   document.getElementById('carta-vigencia').value = getToday();
   document.getElementById('carta-status').value = 'Ativa';
-  document.getElementById('carta-frete').value = carta.tipoFrete || 'CIF';
   document.getElementById('carta-observacao').value = carta.observacao || '';
 
   // Carregar fornecedores da unidade antes de preencher
@@ -1631,7 +1673,6 @@ function imprimirCarta() {
     '<div class="print-info-item"><div class="label">Status</div><div class="value">' + carta.status + '</div></div>' +
     '<div class="print-info-item"><div class="label">Vig\u00eancia</div><div class="value">' + formatDate(carta.vigencia) + '</div></div>' +
     '<div class="print-info-item"><div class="label">Cadastro</div><div class="value">' + formatDate(carta.dataCadastro) + '</div></div>' +
-    '<div class="print-info-item"><div class="label">Tipo de Frete</div><div class="value">' + escapeHtml(carta.tipoFrete || '-') + '</div></div>' +
     '<div class="print-info-item"><div class="label">Observação</div><div class="value">' + escapeHtml(carta.observacao || '-') + '</div></div></div>';
 
   // === Indicadores T\u00e9cnicos ===
@@ -1892,6 +1933,94 @@ async function consultarFornecedores() {
   } catch (error) {
     showToast('Erro ao consultar fornecedores: ' + error.message, 'error');
     document.getElementById('fornecedores-lista').innerHTML = '<p class="empty-state">Erro ao carregar.</p>';
+  } finally {
+    hideLoading();
+  }
+}
+
+// ===========================================
+// ========== IMPORTAÇÃO EM MASSA ============
+// ===========================================
+var importParsedItems = [];
+
+function initImportacao() {
+  document.getElementById('btn-toggle-import').addEventListener('click', function() {
+    var sec = document.getElementById('import-section');
+    var isHidden = sec.style.display === 'none';
+    sec.style.display = isHidden ? 'block' : 'none';
+    this.textContent = isHidden ? 'Recolher' : 'Expandir';
+  });
+  document.getElementById('btn-preview-import').addEventListener('click', previewImport);
+  document.getElementById('btn-executar-import').addEventListener('click', executarImport);
+}
+
+function previewImport() {
+  var unidade = document.getElementById('import-unidade').value;
+  if (!unidade) { showToast('Selecione a unidade.', 'error'); return; }
+
+  var raw = document.getElementById('import-dados').value.trim();
+  if (!raw) { showToast('Cole os dados para importar.', 'error'); return; }
+
+  var tipoFrete = document.getElementById('import-tipo-frete').value;
+  var lines = raw.split('\n').filter(function(l) { return l.trim() !== ''; });
+  importParsedItems = [];
+
+  lines.forEach(function(line) {
+    var cols = line.indexOf('\t') !== -1 ? line.split('\t') : line.split(';');
+    cols = cols.map(function(c) { return c.trim(); });
+    if (cols.length < 5) return;
+
+    var valor = parseFloat((cols[4] || '0').replace(',', '.')) || 0;
+    var icms = parseFloat((cols[5] || '0').replace(',', '.')) || 0;
+    var frete = parseFloat((cols[6] || '0').replace(',', '.')) || 0;
+    var valorLiquido = (valor * (1 - icms / 100)) + frete;
+
+    importParsedItems.push({
+      unidade: unidade, fornecedor: cols[0], material: cols[1],
+      produtoFornecedor: cols[2] || '', unidadeMedida: cols[3] || 'kg',
+      valor: valor, icms: icms, frete: frete, valorLiquido: Math.round(valorLiquido * 100) / 100,
+      tipoFrete: tipoFrete, data: getToday()
+    });
+  });
+
+  if (importParsedItems.length === 0) { showToast('Nenhuma linha válida encontrada. Use ao menos 5 colunas.', 'error'); return; }
+
+  var html = '<h4>' + importParsedItems.length + ' itens para importar</h4>' +
+    '<table class="cost-table"><thead><tr><th>Fornecedor</th><th>Material</th><th>Produto</th><th>Un.</th>' +
+    '<th class="text-right">Valor</th><th class="text-right">ICMS%</th><th class="text-right">Frete</th>' +
+    '<th class="text-right">Vlr. Líq.</th></tr></thead><tbody>';
+
+  importParsedItems.forEach(function(item) {
+    html += '<tr><td>' + escapeHtml(item.fornecedor) + '</td><td>' + escapeHtml(item.material) + '</td>' +
+      '<td>' + escapeHtml(item.produtoFornecedor) + '</td><td>' + item.unidadeMedida + '</td>' +
+      '<td class="text-right">' + formatCurrency(item.valor) + '</td><td class="text-right">' + item.icms.toFixed(1) + '%</td>' +
+      '<td class="text-right">' + formatCurrency(item.frete) + '</td>' +
+      '<td class="text-right">' + formatCurrency(item.valorLiquido) + '</td></tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('import-preview').innerHTML = html;
+  document.getElementById('import-preview').style.display = 'block';
+  document.getElementById('btn-executar-import').disabled = false;
+  showToast(importParsedItems.length + ' itens prontos para importar.', 'success');
+}
+
+async function executarImport() {
+  if (importParsedItems.length === 0) { showToast('Nenhum item para importar.', 'error'); return; }
+
+  showLoading();
+  try {
+    var result = await apiPost('salvarCustoBatch', { items: importParsedItems });
+    if (result.error) throw new Error(result.error);
+    showToast(result.message || 'Importação concluída!', 'success');
+    document.getElementById('import-dados').value = '';
+    document.getElementById('import-preview').style.display = 'none';
+    document.getElementById('import-preview').innerHTML = '';
+    document.getElementById('btn-executar-import').disabled = true;
+    importParsedItems = [];
+    if (document.getElementById('filtro-custos-unidade').value) carregarCustos();
+  } catch (error) {
+    showToast('Erro na importação: ' + error.message, 'error');
   } finally {
     hideLoading();
   }
