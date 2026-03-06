@@ -35,18 +35,19 @@ function initSheetHeaders(sheet, name) {
       sheet.appendRow([
         'ID', 'Nome', 'Revisão', 'Unidade', 'Status',
         'Data Vigência', 'Data Cadastro', 'Fornecedor',
-        'Produto', 'Quantidade', 'Unidade Medida', 'Massa Específica'
+        'Produto', 'Quantidade', 'Unidade Medida', 'Massa Específica',
+        'Observação', 'Tipo Frete'
       ]);
-      sheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#1a5276').setFontColor('white');
+      sheet.getRange(1, 1, 1, 14).setFontWeight('bold').setBackground('#1a5276').setFontColor('white');
       sheet.setFrozenRows(1);
       break;
     case 'custos':
       sheet.appendRow([
         'ID', 'Data', 'Unidade', 'Fornecedor', 'Material',
         'Unidade Medida', 'Valor Unitário', 'ICMS %',
-        'Frete', 'Valor Líquido'
+        'Frete', 'Valor Líquido', 'Tipo Frete'
       ]);
-      sheet.getRange(1, 1, 1, 10).setFontWeight('bold').setBackground('#1a5276').setFontColor('white');
+      sheet.getRange(1, 1, 1, 11).setFontWeight('bold').setBackground('#1a5276').setFontColor('white');
       sheet.setFrozenRows(1);
       break;
     case 'resumo':
@@ -145,7 +146,9 @@ function getCartas(params) {
     produto: row[8],
     quantidade: row[9],
     unidadeMedida: row[10],
-    massaEspecifica: row[11] || 0
+    massaEspecifica: row[11] || 0,
+    observacao: row[12] || '',
+    tipoFrete: row[13] || ''
   }));
 
   // Filtrar por unidade
@@ -170,6 +173,8 @@ function salvarCarta(payload) {
   const vigencia = payload.vigencia;
   const status = payload.status || 'Ativa';
   const dataCadastro = payload.dataCadastro || Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'yyyy-MM-dd');
+  const observacao = payload.observacao || '';
+  const tipoFrete = payload.tipoFrete || '';
   const materiais = payload.materiais || [];
 
   // Se a nova carta é Ativa, inativar versões anteriores do mesmo nome e unidade
@@ -191,7 +196,9 @@ function salvarCarta(payload) {
       mat.produto,
       mat.quantidade,
       mat.unidade,
-      mat.massaEspecifica || 0
+      mat.massaEspecifica || 0,
+      observacao,
+      tipoFrete
     ]);
   });
 
@@ -239,7 +246,8 @@ function getCustos(params) {
     valor: row[6],
     icms: row[7],
     frete: row[8],
-    valorLiquido: row[9]
+    valorLiquido: row[9],
+    tipoFrete: row[10] || ''
   }));
 
   // Filtrar por unidade
@@ -267,7 +275,8 @@ function salvarCusto(payload) {
     payload.valor,
     payload.icms,
     payload.frete,
-    payload.valorLiquido
+    payload.valorLiquido,
+    payload.tipoFrete || ''
   ]);
 
   return { success: true, id: id, message: 'Material salvo com sucesso!' };

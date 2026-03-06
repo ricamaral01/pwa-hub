@@ -184,6 +184,11 @@ body {
   color: var(--text); appearance: auto;
 }
 .mat-grid-row select:focus { background: #fff8e1; }
+.mat-tipo-cimento {
+  font-weight: 600 !important; font-size: 0.85rem !important;
+  color: var(--text) !important; border-left: none !important;
+  padding: 6px 10px !important;
+}
 
 /* ---- Indicadores Técnicos ---- */
 .indicadores-grid {
@@ -563,6 +568,19 @@ body {
                 <option value="Inativa">Inativa</option>
               </select>
             </div>
+            <div class="form-group">
+              <label for="carta-frete">Tipo de Frete</label>
+              <select id="carta-frete" required>
+                <option value="CIF">CIF</option>
+                <option value="FOB">FOB</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="carta-observacao">Observação</label>
+              <input type="text" id="carta-observacao" placeholder="Observações sobre a carta traço">
+            </div>
           </div>
         </div>
 
@@ -579,7 +597,10 @@ body {
               <span>M.E. (kg/dm³)</span>
             </div>
             <div class="mat-grid-row">
-              <label>Cimento</label>
+              <select id="tipo-cimento" class="mat-tipo-cimento">
+                <option value="Cimento CP V">Cimento CP V</option>
+                <option value="Cimento CP II F-40">Cimento CP II F-40</option>
+              </select>
               <select id="forn-cimento"><option value="">Selecione...</option></select>
               <input type="number" step="0.01" min="0" id="mat-cimento" placeholder="0">
               <input type="number" step="0.001" min="0" id="me-cimento" value="3.150" placeholder="3.150">
@@ -830,6 +851,15 @@ body {
               <input type="number" id="custo-frete" step="0.01" min="0" placeholder="0,00" required>
             </div>
             <div class="form-group">
+              <label for="custo-tipo-frete">Tipo de Frete</label>
+              <select id="custo-tipo-frete" required>
+                <option value="CIF">CIF</option>
+                <option value="FOB">FOB</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
               <label for="custo-liquido">Valor Líquido (R$)</label>
               <input type="number" id="custo-liquido" step="0.01" readonly class="readonly-field">
             </div>
@@ -861,8 +891,23 @@ body {
           <p class="empty-state">Clique em Carregar para ver os materiais cadastrados.</p>
         </div>
       </div>
+
+      <!-- Consulta de Fornecedores -->
+      <div class="form-section" style="margin-top: 20px;">
+        <div class="section-header-row">
+          <h3>Consulta de Fornecedores</h3>
+          <div class="form-group" style="min-width: 200px;">
+            <select id="filtro-fornecedor-material">
+              <option value="">Todos os materiais</option>
+            </select>
+          </div>
+          <button type="button" id="btn-consultar-fornecedores" class="btn btn-primary btn-small">🔍 Consultar</button>
+        </div>
+        <div id="fornecedores-lista" class="results-container">
+          <p class="empty-state">Clique em Consultar para ver os fornecedores.</p>
+        </div>
+      </div>
     </section>
-  </main>
 
     <!-- ==================== PAGE 4: RESUMO ==================== -->
     <section id="page-resumo" class="page">
@@ -995,6 +1040,7 @@ async function apiPost(action, data) {
 // ===========================================
 function getMateriaisFromForm() {
   var materiais = [];
+  var tipoCimento = document.getElementById('tipo-cimento').value;
   MATERIAIS_TRACO.forEach(function(mat) {
     var qtdEl = document.getElementById('mat-' + mat.id);
     var meEl = document.getElementById('me-' + mat.id);
@@ -1003,8 +1049,9 @@ function getMateriaisFromForm() {
     var me = parseFloat(meEl ? meEl.value : mat.meDefault) || mat.meDefault;
     var forn = (fornEl ? fornEl.value.trim() : '') || '-';
     if (qtd > 0) {
+      var nomeProduto = mat.id === 'cimento' ? tipoCimento : mat.nome;
       materiais.push({
-        produto: mat.nome,
+        produto: nomeProduto,
         quantidade: qtd,
         massaEspecifica: me,
         unidade: 'kg',
@@ -1022,7 +1069,7 @@ function calcularIndicadores(materiais) {
   var totalAreias = 0, totalBritas = 0;
 
   materiais.forEach(function(m) {
-    if (m.produto === 'Cimento') cimento += m.quantidade;
+    if (m.produto.startsWith('Cimento')) cimento += m.quantidade;
     else if (m.produto === 'Adição') adicao += m.quantidade;
     else if (m.grupo === 'agua') agua += m.quantidade;
     else if (m.produto === 'Aditivo 1') aditivo1 += m.quantidade;
@@ -1120,8 +1167,11 @@ async function carregarFornecedores() {
       var sel = document.getElementById('forn-' + mat.id);
       if (!sel) return;
       var fornecedores = [];
+      var nomesBusca = mat.id === 'cimento'
+        ? ['cimento', 'cimento cp v', 'cimento cp ii f-40']
+        : [mat.nome.toLowerCase()];
       custos.forEach(function(c) {
-        if (c.material && c.material.toLowerCase() === mat.nome.toLowerCase() && c.fornecedor) {
+        if (c.material && nomesBusca.indexOf(c.material.toLowerCase()) !== -1 && c.fornecedor) {
           var nome = c.fornecedor.trim();
           if (nome && fornecedores.indexOf(nome) === -1) fornecedores.push(nome);
         }
@@ -1136,6 +1186,19 @@ async function carregarFornecedores() {
     });
   } catch (error) {
     showToast('Erro ao carregar fornecedores: ' + error.message, 'error');
+  }
+}
+
+// ========== CONVERSÃO DE CUSTO PARA KG ==========
+function converterCustoParaKg(valor, unidadeMedida, massaEspecifica) {
+  if (!valor || valor === 0) return 0;
+  switch ((unidadeMedida || 'kg').toLowerCase()) {
+    case 'kg': return valor;
+    case 'ton': return valor / 1000;
+    case 'litro': return valor * (massaEspecifica || 1);
+    case 'm³': case 'm3': return valor / ((massaEspecifica || 1) * 1000);
+    case 'saco': return valor / 50;
+    default: return valor;
   }
 }
 
@@ -1162,10 +1225,17 @@ async function calcularMCC() {
     materiais.forEach(function(mat) {
       var custoItem = custos.find(function(c) {
         var matchMaterial = c.material.toLowerCase() === mat.produto.toLowerCase() && c.unidade === unidadeCarta;
-        if (mat.fornecedor) return matchMaterial && c.fornecedor === mat.fornecedor;
+        if (mat.fornecedor && mat.fornecedor !== '-') return matchMaterial && c.fornecedor === mat.fornecedor;
         return matchMaterial;
       });
-      var custoUnitario = custoItem ? parseFloat(custoItem.valorLiquido) : 0;
+      var custoUnitario = 0;
+      if (custoItem) {
+        custoUnitario = converterCustoParaKg(
+          parseFloat(custoItem.valorLiquido),
+          custoItem.unidadeMedida || 'kg',
+          mat.massaEspecifica
+        );
+      }
       var custoTotal = mat.quantidade * custoUnitario;
       mccTotal += custoTotal;
       mccData.push({
@@ -1257,6 +1327,8 @@ async function salvarCarta() {
   var unidade = document.getElementById('carta-unidade').value;
   var vigencia = document.getElementById('carta-vigencia').value;
   var status = document.getElementById('carta-status').value;
+  var tipoFrete = document.getElementById('carta-frete').value;
+  var observacao = document.getElementById('carta-observacao').value.trim();
   var materiais = getMateriaisFromForm();
 
   if (!nome || !unidade || !vigencia) { showToast('Preencha todos os campos obrigatórios.', 'error'); return; }
@@ -1266,6 +1338,7 @@ async function salvarCarta() {
   try {
     var result = await apiPost('salvarCarta', {
       nome: nome, revisao: revisao, unidade: unidade, vigencia: vigencia, status: status,
+      tipoFrete: tipoFrete, observacao: observacao,
       materiais: materiais.map(function(m) {
         return { produto: m.produto, quantidade: m.quantidade, massaEspecifica: m.massaEspecifica, unidade: m.unidade, fornecedor: m.fornecedor };
       }),
@@ -1338,7 +1411,8 @@ function renderCartasList(cartas) {
     var key = c.nome + '|' + c.unidade + '|' + c.revisao;
     if (!grupos[key]) {
       grupos[key] = { id: c.id, nome: c.nome, revisao: c.revisao, unidade: c.unidade,
-        status: c.status, vigencia: c.vigencia, dataCadastro: c.dataCadastro, materiais: [] };
+        status: c.status, vigencia: c.vigencia, dataCadastro: c.dataCadastro,
+        tipoFrete: c.tipoFrete || '', observacao: c.observacao || '', materiais: [] };
     }
     grupos[key].materiais.push({
       fornecedor: c.fornecedor, produto: c.produto,
@@ -1371,7 +1445,10 @@ async function abrirDetalhe(carta) {
   titulo.textContent = carta.nome + ' - Rev. ' + carta.revisao;
 
   var materiaisComGrupo = carta.materiais.map(function(mat) {
-    var def = MATERIAIS_TRACO.find(function(m) { return m.nome.toLowerCase() === mat.produto.toLowerCase(); });
+    var def = MATERIAIS_TRACO.find(function(m) {
+      return m.nome.toLowerCase() === mat.produto.toLowerCase()
+        || (m.id === 'cimento' && mat.produto.toLowerCase().startsWith('cimento'));
+    });
     return {
       produto: mat.produto, quantidade: parseFloat(mat.quantidade) || 0,
       massaEspecifica: parseFloat(mat.massaEspecifica) || (def ? def.meDefault : 1),
@@ -1392,7 +1469,14 @@ async function abrirDetalhe(carta) {
         if (mat.fornecedor && mat.fornecedor !== '-') return matchBase && c.fornecedor === mat.fornecedor;
         return matchBase;
       });
-      var custoUnitario = custoItem ? parseFloat(custoItem.valorLiquido) : 0;
+      var custoUnitario = 0;
+      if (custoItem) {
+        custoUnitario = converterCustoParaKg(
+          parseFloat(custoItem.valorLiquido),
+          custoItem.unidadeMedida || 'kg',
+          mat.massaEspecifica
+        );
+      }
       var custoTotal = mat.quantidade * custoUnitario;
       mccTotal += custoTotal;
       mccData.push({ produto: mat.produto, fornecedor: custoItem ? custoItem.fornecedor : '-',
@@ -1408,6 +1492,8 @@ async function abrirDetalhe(carta) {
     '<div class="detail-item"><div class="label">Status</div><div class="value">' + carta.status + '</div></div>' +
     '<div class="detail-item"><div class="label">Data de Vigência</div><div class="value">' + formatDate(carta.vigencia) + '</div></div>' +
     '<div class="detail-item"><div class="label">Data de Cadastro</div><div class="value">' + formatDate(carta.dataCadastro) + '</div></div>' +
+    '<div class="detail-item"><div class="label">Tipo de Frete</div><div class="value">' + escapeHtml(carta.tipoFrete || '-') + '</div></div>' +
+    '<div class="detail-item"><div class="label">Observação</div><div class="value">' + escapeHtml(carta.observacao || '-') + '</div></div>' +
     '</div></div>';
 
   html += '<div class="detail-section"><h4>Indicadores Técnicos</h4><div class="indicadores-grid">' +
@@ -1479,6 +1565,8 @@ async function editarCarta() {
   document.getElementById('carta-unidade').value = carta.unidade || '';
   document.getElementById('carta-vigencia').value = getToday();
   document.getElementById('carta-status').value = 'Ativa';
+  document.getElementById('carta-frete').value = carta.tipoFrete || 'CIF';
+  document.getElementById('carta-observacao').value = carta.observacao || '';
 
   // Carregar fornecedores da unidade antes de preencher
   await carregarFornecedores();
@@ -1495,10 +1583,15 @@ async function editarCarta() {
 
   // Preencher materiais da carta
   (carta.materiais || []).forEach(function(m) {
+    var isCimento = (m.produto || '').toLowerCase().startsWith('cimento');
     var def = MATERIAIS_TRACO.find(function(d) {
+      if (isCimento) return d.id === 'cimento';
       return d.nome.toLowerCase() === (m.produto || '').toLowerCase();
     });
     if (def) {
+      if (isCimento) {
+        document.getElementById('tipo-cimento').value = m.produto || 'Cimento CP V';
+      }
       var qtdEl = document.getElementById('mat-' + def.id);
       var meEl = document.getElementById('me-' + def.id);
       var fornEl = document.getElementById('forn-' + def.id);
@@ -1531,7 +1624,9 @@ function imprimirCarta() {
     '<div class="print-info-item"><div class="label">Unidade</div><div class="value">' + escapeHtml(carta.unidade) + '</div></div>' +
     '<div class="print-info-item"><div class="label">Status</div><div class="value">' + carta.status + '</div></div>' +
     '<div class="print-info-item"><div class="label">Vig\u00eancia</div><div class="value">' + formatDate(carta.vigencia) + '</div></div>' +
-    '<div class="print-info-item"><div class="label">Cadastro</div><div class="value">' + formatDate(carta.dataCadastro) + '</div></div></div>';
+    '<div class="print-info-item"><div class="label">Cadastro</div><div class="value">' + formatDate(carta.dataCadastro) + '</div></div>' +
+    '<div class="print-info-item"><div class="label">Tipo de Frete</div><div class="value">' + escapeHtml(carta.tipoFrete || '-') + '</div></div>' +
+    '<div class="print-info-item"><div class="label">Observação</div><div class="value">' + escapeHtml(carta.observacao || '-') + '</div></div></div>';
 
   // === Indicadores T\u00e9cnicos ===
   html += '<div class="print-section-title">Indicadores T\u00e9cnicos</div>' +
@@ -1595,6 +1690,22 @@ function imprimirCarta() {
 // ========== CUSTOS / MATERIAIS =============
 // ===========================================
 function initCustos() {
+  // Populate material dropdown
+  var matSelect = document.getElementById('custo-material');
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var opt = document.createElement('option');
+    opt.value = mat.nome;
+    opt.textContent = mat.nome;
+    matSelect.appendChild(opt);
+  });
+  // Add cimento types as separate options
+  var optCPV = document.createElement('option');
+  optCPV.value = 'Cimento CP V'; optCPV.textContent = 'Cimento CP V';
+  var optCPII = document.createElement('option');
+  optCPII.value = 'Cimento CP II F-40'; optCPII.textContent = 'Cimento CP II F-40';
+  matSelect.appendChild(optCPV);
+  matSelect.appendChild(optCPII);
+
   var valorInput = document.getElementById('custo-valor');
   var icmsInput = document.getElementById('custo-icms');
   var freteInput = document.getElementById('custo-frete');
@@ -1621,6 +1732,16 @@ function initCustos() {
   });
 
   document.getElementById('btn-carregar-custos').addEventListener('click', carregarCustos);
+  document.getElementById('btn-consultar-fornecedores').addEventListener('click', consultarFornecedores);
+
+  // Populate filtro-fornecedor-material dropdown
+  var filtroMat = document.getElementById('filtro-fornecedor-material');
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var opt = document.createElement('option');
+    opt.value = mat.nome;
+    opt.textContent = mat.nome;
+    filtroMat.appendChild(opt);
+  });
 }
 
 async function salvarCusto() {
@@ -1643,6 +1764,7 @@ async function salvarCusto() {
     var result = await apiPost('salvarCusto', {
       unidade: unidade, fornecedor: fornecedor, material: material,
       unidadeMedida: unMedida, valor: valor, icms: icms, frete: frete, valorLiquido: valorLiquido,
+      tipoFrete: document.getElementById('custo-tipo-frete').value,
       data: getToday()
     });
     if (result.error) throw new Error(result.error);
@@ -1696,6 +1818,73 @@ function renderCustosList(custos) {
 
   html += '</tbody></table>';
   container.innerHTML = html;
+
+  // Update fornecedores datalist
+  var datalist = document.getElementById('fornecedores-list');
+  var fornSet = {};
+  custos.forEach(function(c) { if (c.fornecedor) fornSet[c.fornecedor] = true; });
+  datalist.innerHTML = Object.keys(fornSet).sort().map(function(f) {
+    return '<option value="' + escapeHtml(f) + '">';
+  }).join('');
+}
+
+async function consultarFornecedores() {
+  var filtroMaterial = document.getElementById('filtro-fornecedor-material').value;
+  showLoading();
+  try {
+    var result = await apiGet('getCustos');
+    if (result.error) throw new Error(result.error);
+    var custos = result.data || [];
+
+    if (filtroMaterial) {
+      custos = custos.filter(function(c) {
+        return c.material && c.material.toLowerCase() === filtroMaterial.toLowerCase();
+      });
+    }
+
+    var fornMap = {};
+    custos.forEach(function(c) {
+      var key = c.fornecedor + '|' + c.material + '|' + c.unidade;
+      if (!fornMap[key]) {
+        fornMap[key] = { fornecedor: c.fornecedor, material: c.material, unidade: c.unidade,
+          valorLiquido: parseFloat(c.valorLiquido) || 0, unidadeMedida: c.unidadeMedida || '-',
+          tipoFrete: c.tipoFrete || '-', data: c.data };
+      }
+    });
+
+    var container = document.getElementById('fornecedores-lista');
+    var items = Object.values(fornMap);
+    if (items.length === 0) {
+      container.innerHTML = '<p class="empty-state">Nenhum fornecedor encontrado.</p>';
+      return;
+    }
+
+    items.sort(function(a, b) { return a.material.localeCompare(b.material) || a.fornecedor.localeCompare(b.fornecedor); });
+
+    var html = '<table class="cost-table"><thead><tr>' +
+      '<th>Material</th><th>Fornecedor</th><th>Unidade</th><th>Un. Med.</th>' +
+      '<th class="text-right">Vlr. Líquido</th><th>Tipo Frete</th><th>Data</th>' +
+      '</tr></thead><tbody>';
+
+    items.forEach(function(item) {
+      html += '<tr><td>' + escapeHtml(item.material) + '</td>' +
+        '<td>' + escapeHtml(item.fornecedor) + '</td>' +
+        '<td>' + escapeHtml(item.unidade) + '</td>' +
+        '<td>' + item.unidadeMedida + '</td>' +
+        '<td class="text-right">' + formatCurrency(item.valorLiquido) + '</td>' +
+        '<td>' + escapeHtml(item.tipoFrete) + '</td>' +
+        '<td>' + formatDate(item.data) + '</td></tr>';
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+    showToast('Fornecedores carregados!', 'success');
+  } catch (error) {
+    showToast('Erro ao consultar fornecedores: ' + error.message, 'error');
+    document.getElementById('fornecedores-lista').innerHTML = '<p class="empty-state">Erro ao carregar.</p>';
+  } finally {
+    hideLoading();
+  }
 }
 
 // ===========================================
