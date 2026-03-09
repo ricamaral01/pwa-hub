@@ -387,7 +387,7 @@ textarea {
 
 .sheet-table th:nth-child(1),
 .sheet-table td:nth-child(1) {
-  width: 86px;
+  width: 200px;
 }
 
 .sheet-table th:nth-child(3),
@@ -455,7 +455,7 @@ body.mode-liberacao .ins-related {
   background: #fff;
   color: #0f172a;
   border-radius: 6px;
-  padding: 12px 14px;
+  padding: 14px 22px;
   font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
