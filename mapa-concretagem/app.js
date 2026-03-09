@@ -613,13 +613,14 @@ function createFormaButton(item, setor) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "lib-btn";
-  btn.textContent = item.forma;
+  const formaLabel = `${item.modelo || "-"} - ${item.forma}`;
+  btn.textContent = formaLabel;
   btn.dataset.formaNumero = normalizeUpper(item.forma);
   btn.dataset.modelo = item.modelo;
 
   if (setor && isFormaClicked(item.forma, setor)) {
     btn.classList.add("active", "btn-liberado");
-    btn.textContent = `${item.forma} ✓`;
+    btn.textContent = `${formaLabel} ✓`;
     btn.disabled = true;
   } else {
     btn.addEventListener("click", () => {
@@ -733,17 +734,20 @@ async function salvarFormaClicada(forma, setor, btn) {
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
     btn.classList.add("active", "btn-liberado");
-    btn.textContent = `${forma} ✓`;
+    const modelo = btn.dataset.modelo || "-";
+    btn.textContent = `${modelo} - ${forma} ✓`;
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
     btn.disabled = false;
-    btn.textContent = forma;
+    const modelo = btn.dataset.modelo || "-";
+    btn.textContent = `${modelo} - ${forma}`;
     setSyncStatus("warn", "API não configurada. Registro não enviado.");
     showLibFeedback(`${forma} — salvo localmente (sem API).`, "error");
   } else {
     btn.disabled = false;
-    btn.textContent = forma;
+    const modelo = btn.dataset.modelo || "-";
+    btn.textContent = `${modelo} - ${forma}`;
     setSyncStatus("error", `Falha ao registrar ${forma}: ${apiResult.error || "erro desconhecido"}`);
     showLibFeedback(`${forma} — falha no envio!`, "error");
   }
