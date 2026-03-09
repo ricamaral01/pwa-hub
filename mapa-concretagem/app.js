@@ -765,7 +765,9 @@ async function salvarFormaClicada(forma, setor, btn) {
     dia,
     hora,
     setor,
-    forma
+    forma,
+    dataFabricacao: el.libData?.value || todayYmd(),
+    modelo: btn.dataset.modelo || ""
   };
 
   showLibFeedback(`Registrando ${forma}...`, "ok");
@@ -1375,7 +1377,6 @@ function navigateBack() {
     window.history.back();
     return;
   }
-
   if (state.mode !== "LIBERACAO") {
     setMode("LIBERACAO");
     return;
@@ -1401,10 +1402,8 @@ function bindEvents() {
   });
 
   el.backButtons.forEach((btn) => btn.addEventListener("click", navigateBack));
-
   el.libSetor.addEventListener("change", renderSheetGrid);
   el.libData.addEventListener("change", renderSheetGrid);
-
   if (el.btnLimparFormas) {
     el.btnLimparFormas.addEventListener("click", () => {
       if (!confirm("Limpar todas as formas concretadas? (não apaga da planilha)")) return;
@@ -1453,6 +1452,10 @@ function init() {
   el.dashData.value = now;
   el.relData.value = now;
   el.relSetor.value = "Setor 2";
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  }
 
   renderSheetGrid();
   renderInspecaoLiberados();
