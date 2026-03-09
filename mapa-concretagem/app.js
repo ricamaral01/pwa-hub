@@ -262,6 +262,7 @@ const el = {
   sheetSetorLabel: document.getElementById("sheetSetorLabel"),
   sheetLeftBody: document.getElementById("sheetLeftBody"),
   sheetRightBody: document.getElementById("sheetRightBody"),
+  btnLimparFormas: document.getElementById("btnLimparFormas"),
 
   insFiltroData: document.getElementById("insFiltroData"),
   insColaborador: document.getElementById("insColaborador"),
@@ -1011,6 +1012,12 @@ function bindEvents() {
   });
 
   el.libSetor.addEventListener("change", renderSheetGrid);
+
+  el.btnLimparFormas.addEventListener("click", () => {
+    if (!confirm("Limpar todas as formas concretadas? (não apaga da planilha)")) return;
+    localStorage.removeItem(CLICKED_FORMS_KEY);
+    renderSheetGrid();
+  });
 
   el.insFiltroData.addEventListener("change", renderInspecaoLiberados);
   el.insCarregarLiberados.addEventListener("click", renderInspecaoLiberados);

@@ -421,6 +421,19 @@ body.mode-liberacao .ins-related {
   background: #dcfce7 !important;
 }
 
+.btn-limpar {
+  margin-top: 16px;
+  width: 100%;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+  font-size: 0.85rem;
+}
+
+.btn-limpar:hover {
+  background: #fde68a;
+}
+
 .lib-feedback {
   padding: 10px 14px;
   border-radius: 8px;
