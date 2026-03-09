@@ -249,6 +249,7 @@ const state = {
 };
 
 const el = {
+  backButtons: Array.from(document.querySelectorAll("[data-back-btn]")),
   modeLiberacao: document.getElementById("modeLiberacao"),
   modeInspecao: document.getElementById("modeInspecao"),
   modeHistorico: document.getElementById("modeHistorico"),
@@ -1189,6 +1190,20 @@ function setMode(mode) {
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
 }
 
+function navigateBack() {
+  if (window.history.length > 1) {
+    window.history.back();
+    return;
+  }
+
+  if (state.mode !== "LIBERACAO") {
+    setMode("LIBERACAO");
+    return;
+  }
+
+  setSyncStatus("warn", "Nao ha pagina anterior para voltar.");
+}
+
 function bindEvents() {
   el.modeLiberacao.addEventListener("click", () => setMode("LIBERACAO"));
   el.modeInspecao.addEventListener("click", () => {
@@ -1200,6 +1215,8 @@ function bindEvents() {
     renderHistorico();
     carregarDashboardConcretagem();
   });
+
+  el.backButtons.forEach((btn) => btn.addEventListener("click", navigateBack));
 
   el.libSetor.addEventListener("change", renderSheetGrid);
 

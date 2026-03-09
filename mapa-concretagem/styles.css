@@ -58,6 +58,29 @@ body {
   font-size: 1rem;
 }
 
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.section-title-row h2 {
+  margin: 0;
+}
+
+.btn-back {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #334155;
+  min-width: 88px;
+}
+
+.btn-back:hover {
+  background: #e2e8f0;
+}
+
 .sync-card {
   padding: 10px 14px;
 }
