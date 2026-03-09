@@ -259,6 +259,7 @@ const el = {
   syncStatus: document.getElementById("syncStatus"),
 
   libSetor: document.getElementById("libSetor"),
+  libData: document.getElementById("libData"),
   libFeedback: document.getElementById("libFeedback"),
   sheetSetorLabel: document.getElementById("sheetSetorLabel"),
   sheetLeftBody: document.getElementById("sheetLeftBody"),
@@ -266,6 +267,7 @@ const el = {
   btnLimparFormas: document.getElementById("btnLimparFormas"),
 
   insFiltroData: document.getElementById("insFiltroData"),
+  insModoCarga: document.getElementById("insModoCarga"),
   insColaborador: document.getElementById("insColaborador"),
   insCarregarLiberados: document.getElementById("insCarregarLiberados"),
   insLiberadosBody: document.getElementById("insLiberadosBody"),
@@ -613,14 +615,17 @@ function createFormaButton(item, setor) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "lib-btn";
-  const formaLabel = `${item.modelo || "-"} - ${item.forma}`;
-  btn.textContent = formaLabel;
+  const setBtnLabel = (done = false) => {
+    const check = done ? " ✓" : "";
+    btn.innerHTML = `<span class="lib-btn-model">${item.modelo || "-"}</span> <span class="lib-btn-forma">${item.forma}${check}</span>`;
+  };
+  setBtnLabel(false);
   btn.dataset.formaNumero = normalizeUpper(item.forma);
   btn.dataset.modelo = item.modelo;
 
   if (setor && isFormaClicked(item.forma, setor)) {
     btn.classList.add("active", "btn-liberado");
-    btn.textContent = `${formaLabel} ✓`;
+    setBtnLabel(true);
     btn.disabled = true;
   } else {
     btn.addEventListener("click", () => {
@@ -640,8 +645,42 @@ function createLiberacaoRow(item, setor) {
     <td class="ins-related">-</td>
   `;
   const formaCell = tr.querySelector("td.lib-cell");
-  formaCell.appendChild(createFormaButton(item, setor));
+  const btn = createFormaButton(item, setor);
+  if (setor && isFormaClicked(item.forma, setor)) {
+    tr.classList.add("row-liberada");
+  }
+  formaCell.appendChild(btn);
   return tr;
+}
+
+async function getSetorRowsByDate(setor, dataFabricacao) {
+  if (!hasApiConfigured() || !dataFabricacao || !setor) return [];
+
+  try {
+    const url = `${CONFIG.API_URL}?action=relatorio_setor&dataFabricacao=${encodeURIComponent(dataFabricacao)}&setor=${encodeURIComponent(setor)}`;
+    const response = await fetch(url);
+    const text = await response.text();
+    const payload = JSON.parse(text);
+    if (payload.ok && Array.isArray(payload.rows)) return payload.rows;
+  } catch {
+    // Usa catalogo local quando a API nao responder.
+  }
+  return [];
+}
+
+async function getSectorFormsForLiberacao(setor) {
+  const forms = getSectorForms(setor);
+  const data = el.libData?.value || "";
+  if (!data) return forms;
+
+  const rows = await getSetorRowsByDate(setor, data);
+  if (!rows.length) return forms;
+
+  const produced = new Set(rows.map((r) => normalizeUpper(r.forma_numero || r.formaNumero || "")));
+  return {
+    left: forms.left.filter((item) => produced.has(normalizeUpper(item.forma))),
+    right: forms.right.filter((item) => produced.has(normalizeUpper(item.forma)))
+  };
 }
 
 function renderSheetBlocks(blocks, container, setor, labels = []) {
@@ -691,10 +730,10 @@ function renderSheetSide(items, container, options = {}) {
   });
 }
 
-function renderSheetGrid() {
+async function renderSheetGrid() {
   const setor = el.libSetor.value || "Setor 2";
   el.sheetSetorLabel.textContent = setor;
-  const forms = getSectorForms(setor);
+  const forms = await getSectorFormsForLiberacao(setor);
 
   renderSheetSide(forms.left, el.sheetLeftBody);
   renderSheetSide(forms.right, el.sheetRightBody);
@@ -734,20 +773,19 @@ async function salvarFormaClicada(forma, setor, btn) {
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
     btn.classList.add("active", "btn-liberado");
-    const modelo = btn.dataset.modelo || "-";
-    btn.textContent = `${modelo} - ${forma} ✓`;
+    btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma} ✓</span>`;
+    const row = btn.closest("tr");
+    if (row) row.classList.add("row-liberada");
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
     btn.disabled = false;
-    const modelo = btn.dataset.modelo || "-";
-    btn.textContent = `${modelo} - ${forma}`;
+    btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma}</span>`;
     setSyncStatus("warn", "API não configurada. Registro não enviado.");
     showLibFeedback(`${forma} — salvo localmente (sem API).`, "error");
   } else {
     btn.disabled = false;
-    const modelo = btn.dataset.modelo || "-";
-    btn.textContent = `${modelo} - ${forma}`;
+    btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma}</span>`;
     setSyncStatus("error", `Falha ao registrar ${forma}: ${apiResult.error || "erro desconhecido"}`);
     showLibFeedback(`${forma} — falha no envio!`, "error");
   }
@@ -762,20 +800,101 @@ function getInspecaoCodeOptions(selectedCode) {
   return first + options;
 }
 
-function renderInspecaoLiberados() {
+async function getInspecaoRowsFromApi(filtroData, modoCarga) {
+  if (!hasApiConfigured()) return null;
+
+  const params = new URLSearchParams();
+  params.set("action", "inspecao_pendentes");
+  if (modoCarga === "data" && filtroData) {
+    params.set("dataFabricacao", filtroData);
+  }
+
+  try {
+    const response = await fetch(`${CONFIG.API_URL}?${params.toString()}`);
+    const text = await response.text();
+    const payload = JSON.parse(text);
+    if (payload.ok && Array.isArray(payload.rows)) return payload.rows;
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+async function renderInspecaoLiberados() {
   const db = readDb();
   const filtroData = el.insFiltroData.value;
+  const modoCarga = el.insModoCarga?.value || "data";
 
   el.insLiberadosBody.innerHTML = "";
-  if (!filtroData) {
+  if (modoCarga === "data" && !filtroData) {
     el.insQtdItens.textContent = "0";
     el.insLiberadosBody.innerHTML = '<tr><td colspan="6" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
     return;
   }
 
+  const apiRows = await getInspecaoRowsFromApi(filtroData, modoCarga);
+  if (Array.isArray(apiRows)) {
+    const rows = apiRows
+      .filter((record) => String(record.liberacao_status || "") === "1")
+      .filter((record) => !String(record.ins_status || "").trim())
+      .sort((a, b) => String(a.forma_numero || "").localeCompare(String(b.forma_numero || "")));
+
+    el.insQtdItens.textContent = String(rows.length);
+
+    if (!rows.length) {
+      el.insLiberadosBody.innerHTML = '<tr><td colspan="6" class="muted">Nenhuma forma pendente de inspeção para os filtros informados.</td></tr>';
+      return;
+    }
+
+    rows.forEach((record) => {
+      const tr = document.createElement("tr");
+      tr.dataset.recordId = String(record.record_id || "");
+      tr.dataset.dataFabricacao = String(record.data_fabricacao || "");
+      tr.dataset.setor = String(record.setor || "");
+      tr.dataset.formaNumero = String(record.forma_numero || "");
+      tr.dataset.modelo = String(record.modelo || "");
+
+      tr.innerHTML = `
+        <td>${record.forma_numero || ""}</td>
+        <td>${record.modelo || ""}</td>
+        <td>${record.liberacao_status || ""}</td>
+        <td>
+          <select data-ins-status>
+            <option value="">Selecione</option>
+            <option value="A">A - Aprovado</option>
+            <option value="R">R - Reprovado</option>
+            <option value="RR">RR - Reprovado e retrabalhado</option>
+          </select>
+        </td>
+        <td>
+          <select data-ins-code>${getInspecaoCodeOptions("")}</select>
+        </td>
+        <td><input type="text" data-ins-row-obs placeholder="Observação"></td>
+      `;
+
+      const statusSelect = tr.querySelector("select[data-ins-status]");
+      const codeSelect = tr.querySelector("select[data-ins-code]");
+      if (statusSelect && codeSelect) {
+        statusSelect.addEventListener("change", () => {
+          if (statusSelect.value === "A") {
+            codeSelect.value = "A";
+            codeSelect.disabled = true;
+          } else {
+            codeSelect.disabled = false;
+          }
+        });
+      }
+
+      el.insLiberadosBody.appendChild(tr);
+    });
+    return;
+  }
+
   const rows = db.records
     .filter((record) => record.liberacao && record.liberacao.status === "1")
-    .filter((record) => !filtroData || record.dataFabricacao === filtroData)
+    .filter((record) => (modoCarga === "data" ? record.dataFabricacao === filtroData : true))
+    .filter((record) => !Array.isArray(record.inspecoes) || record.inspecoes.length === 0)
     .sort((a, b) => (a.formaNumero > b.formaNumero ? 1 : -1));
 
   el.insQtdItens.textContent = String(rows.length);
@@ -845,6 +964,50 @@ async function saveInspecao() {
 
   if (!selectedRows.length) {
     alert("Preencha o Status em ao menos uma forma para salvar a inspeção.");
+    return;
+  }
+
+  if (hasApiConfigured()) {
+    const entries = selectedRows.map((tr) => {
+      const status = tr?.querySelector("select[data-ins-status]")?.value || "";
+      const codigo = tr?.querySelector("select[data-ins-code]")?.value || "";
+      const codigoFinal = status === "A" ? (codigo || "A") : codigo;
+      return {
+        recordId: tr.dataset.recordId || "",
+        dataFabricacao: tr.dataset.dataFabricacao || el.insFiltroData.value,
+        setor: tr.dataset.setor || "",
+        formaNumero: tr.dataset.formaNumero || "",
+        tipo: "INSPECAO",
+        status,
+        codigo: codigoFinal,
+        colaborador,
+        observacoes: tr?.querySelector("input[data-ins-row-obs]")?.value?.trim() || observacaoGlobal,
+        fotosCount: state.insPhotos.length,
+        timestamp: nowIso()
+      };
+    });
+
+    const invalid = entries.some((entry) => !entry.status || (entry.status !== "A" && !entry.codigo));
+    if (invalid) {
+      alert("Preencha Status e Código para itens R/RR antes de salvar.");
+      return;
+    }
+
+    state.isSendingInspecao = true;
+    setSubmitButtonState(el.salvarInspecao, true);
+    try {
+      const apiResult = await postToApi("salvar_inspecao_lote", { entries });
+      if (apiResult.ok) {
+        setSyncStatus("ok", `Inspeção salva na mesma linha (${apiResult.updated || entries.length} itens).`);
+        await renderInspecaoLiberados();
+      } else {
+        setSyncStatus("error", "Falha ao salvar inspeção na planilha.");
+        alert("Falha ao salvar inspeção na planilha.");
+      }
+    } finally {
+      state.isSendingInspecao = false;
+      setSubmitButtonState(el.salvarInspecao, false);
+    }
     return;
   }
 
@@ -1194,7 +1357,7 @@ function setMode(mode) {
   if (mode === "LIBERACAO") document.body.classList.add("mode-liberacao");
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
-    if (!el.insFiltroData.value) {
+    if ((el.insModoCarga?.value || "data") === "data" && !el.insFiltroData.value) {
       el.insLiberadosBody.innerHTML = '<tr><td colspan="7" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
       el.insQtdItens.textContent = "0";
     }
@@ -1217,7 +1380,11 @@ function navigateBack() {
 }
 
 function bindEvents() {
-  el.modeLiberacao.addEventListener("click", () => setMode("LIBERACAO"));
+  el.modeLiberacao.addEventListener("click", () => {
+    setMode("LIBERACAO");
+    if (!el.libData.value) el.libData.value = todayYmd();
+    renderSheetGrid();
+  });
   el.modeInspecao.addEventListener("click", () => {
     setMode("INSPECAO");
     renderInspecaoLiberados();
@@ -1231,6 +1398,7 @@ function bindEvents() {
   el.backButtons.forEach((btn) => btn.addEventListener("click", navigateBack));
 
   el.libSetor.addEventListener("change", renderSheetGrid);
+  el.libData.addEventListener("change", renderSheetGrid);
 
   if (el.btnLimparFormas) {
     el.btnLimparFormas.addEventListener("click", () => {
@@ -1241,6 +1409,7 @@ function bindEvents() {
   }
 
   el.insFiltroData.addEventListener("change", renderInspecaoLiberados);
+  el.insModoCarga.addEventListener("change", renderInspecaoLiberados);
   el.insCarregarLiberados.addEventListener("click", renderInspecaoLiberados);
   el.insFiltroData.addEventListener("change", () => clearSubmitLock("inspecao"));
   el.insColaborador.addEventListener("input", () => clearSubmitLock("inspecao"));
@@ -1271,7 +1440,9 @@ function init() {
 
   const now = todayYmd();
   el.libSetor.value = "Setor 2";
+  el.libData.value = now;
   el.insFiltroData.value = "";
+  el.insModoCarga.value = "data";
   el.dashData.value = now;
   el.relData.value = now;
   el.relSetor.value = "Setor 2";

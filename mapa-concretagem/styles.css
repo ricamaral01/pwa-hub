@@ -455,9 +455,28 @@ body.mode-liberacao .ins-related {
   background: #fff;
   color: #0f172a;
   border-radius: 6px;
-  padding: 4px 6px;
-  font-size: 0.72rem;
+  padding: 12px 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
   cursor: pointer;
+  width: 100%;
+  min-height: 64px;
+  text-align: left;
+}
+
+.lib-btn-model {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.lib-btn-forma {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+tr.row-liberada td {
+  background: #dcfce7 !important;
+  border-color: #16a34a;
 }
 
 .lib-btn.active.btn-liberado {
