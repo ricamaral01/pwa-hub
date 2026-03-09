@@ -613,13 +613,13 @@ function createFormaButton(item, setor) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "lib-btn";
-  btn.textContent = "Registrar";
+  btn.textContent = item.forma;
   btn.dataset.formaNumero = normalizeUpper(item.forma);
   btn.dataset.modelo = item.modelo;
 
   if (setor && isFormaClicked(item.forma, setor)) {
     btn.classList.add("active", "btn-liberado");
-    btn.textContent = "Registrado";
+    btn.textContent = `${item.forma} ✓`;
     btn.disabled = true;
   } else {
     btn.addEventListener("click", () => {
@@ -633,14 +633,13 @@ function createFormaButton(item, setor) {
 function createLiberacaoRow(item, setor) {
   const tr = document.createElement("tr");
   tr.innerHTML = `
-    <td>${item.forma}</td>
-    <td>${item.modelo || ""}</td>
     <td class="lib-cell"></td>
+    <td>${item.modelo || ""}</td>
     <td class="ins-related">-</td>
     <td class="ins-related">-</td>
   `;
-  const actionCell = tr.querySelector("td.lib-cell");
-  actionCell.appendChild(createFormaButton(item, setor));
+  const formaCell = tr.querySelector("td.lib-cell");
+  formaCell.appendChild(createFormaButton(item, setor));
   return tr;
 }
 
@@ -733,15 +732,18 @@ async function salvarFormaClicada(forma, setor, btn) {
   const apiResult = await postToApi("salvar_forma_click", payload);
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
-    btn.classList.add("forma-btn-done");
+    btn.classList.add("active", "btn-liberado");
+    btn.textContent = `${forma} ✓`;
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
     btn.disabled = false;
+    btn.textContent = forma;
     setSyncStatus("warn", "API não configurada. Registro não enviado.");
     showLibFeedback(`${forma} — salvo localmente (sem API).`, "error");
   } else {
     btn.disabled = false;
+    btn.textContent = forma;
     setSyncStatus("error", `Falha ao registrar ${forma}: ${apiResult.error || "erro desconhecido"}`);
     showLibFeedback(`${forma} — falha no envio!`, "error");
   }
