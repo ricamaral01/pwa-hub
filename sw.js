@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v10";
+const CACHE = "ct-hub-v11";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -47,7 +47,12 @@ const ASSETS = [
   "./dosagem-concreto/manual.html",
 
   /* ---- Carta Traço ---- */
-  "./carta-traco/index.html"
+  "./carta-traco/index.html",
+
+  /* ---- Mapa de Concretagem ---- */
+  "./mapa-concretagem/index.html",
+  "./mapa-concretagem/app.js",
+  "./mapa-concretagem/styles.css"
 ];
 
 /* ---- INSTALL: cacheia tudo ---- */

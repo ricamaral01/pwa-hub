@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1e40af" />
+  <title>Mapa de Concretagem</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Mapa de Concretagem</h1>
+      <p>Liberação de formas por setor</p>
+    </header>
+
+    <section class="card sync-card">
+      <h2>Status de Sincronização</h2>
+      <div id="syncStatus" class="sync-status sync-pending">Verificando conexão com a planilha...</div>
+    </section>
+
+    <section class="card">
+      <h2>Escolha o fluxo</h2>
+      <div class="mode-switch">
+        <button id="modeLiberacao" class="btn primary active" type="button">Liberação</button>
+        <button id="modeInspecao" class="btn" type="button">Inspeção / Reinspeção</button>
+        <button id="modeHistorico" class="btn" type="button">Histórico</button>
+      </div>
+    </section>
+
+    <section id="viewLiberacao" class="card">
+      <h2>Liberação — Clique na forma para registrar</h2>
+      <div class="grid">
+        <label>Setor
+          <select id="libSetor" required>
+            <option value="">Selecione</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="libFeedback" class="lib-feedback hidden"></div>
+
+      <div class="sheet-box">
+        <div class="sheet-topline">
+          <div><strong>Formas</strong> — Clique para liberar</div>
+          <div><strong>Setor:</strong> <span id="sheetSetorLabel">-</span></div>
+        </div>
+
+        <div class="sheet-grid-wrap">
+          <div id="sheetLeftBody" class="forma-grid"></div>
+          <div id="sheetRightBody" class="forma-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="viewInspecao" class="card hidden">
+      <h2>Inspeção / Reinspeção</h2>
+      <div class="grid">
+        <label>Filtrar data
+          <input id="insFiltroData" type="date" />
+        </label>
+        <label>Colaborador
+          <input id="insColaborador" type="text" placeholder="Nome" required />
+        </label>
+      </div>
+      <button id="insCarregarLiberados" class="btn" type="button">Carregar itens liberados</button>
+
+      <div class="sheet-box">
+        <div class="sheet-topline">
+          <div><strong>Inspeção</strong> — Somente formas com Liberação = 1</div>
+          <div><strong>Itens:</strong> <span id="insQtdItens">0</span></div>
+        </div>
+        <table class="sheet-table">
+          <thead>
+            <tr>
+              <th>N Forma</th>
+              <th>Modelo</th>
+              <th>Liberação</th>
+              <th>Status</th>
+              <th>Código</th>
+              <th>Obs</th>
+            </tr>
+          </thead>
+          <tbody id="insLiberadosBody"></tbody>
+        </table>
+      </div>
+
+      <h3>Legenda Códigos (A-M)</h3>
+      <div id="insChecklistCodigos" class="checklist"></div>
+
+      <label>Observações
+        <textarea id="insObs" rows="3" placeholder="Observações da inspeção"></textarea>
+      </label>
+      <label>Fotos da inspeção
+        <input id="insFotos" type="file" accept="image/*" capture="environment" multiple />
+      </label>
+      <div id="insFotosPreview" class="photo-grid"></div>
+
+      <button id="salvarInspecao" class="btn primary" type="button">Salvar Inspeções</button>
+    </section>
+
+    <section id="viewHistorico" class="card hidden">
+      <h2>Histórico de registros</h2>
+      <div class="grid">
+        <label>Data
+          <input id="histData" type="date" />
+        </label>
+        <label>Forma
+          <input id="histForma" type="text" placeholder="Ex: A-52" />
+        </label>
+      </div>
+      <button id="filtrarHistorico" class="btn" type="button">Filtrar</button>
+      <div id="historicoLista" class="list"></div>
+
+      <hr />
+      <h3>Relatório Completo por Setor</h3>
+      <div class="grid">
+        <label>Data de produção
+          <input id="relData" type="date" />
+        </label>
+        <label>Setor
+          <select id="relSetor">
+            <option value="">Selecione</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+          </select>
+        </label>
+        <label>Encarregado (assinatura)
+          <input id="relEncarregado" type="text" placeholder="Nome do encarregado" />
+        </label>
+      </div>
+      <button id="gerarRelatorioSetor" class="btn primary" type="button">Gerar Relatório</button>
+      <div id="relatorioSetorOutput" class="report-box"></div>
+    </section>
+  </main>
+
+  <template id="tplItemRegistro">
+    <article class="item">
+      <div class="item-main"></div>
+      <div class="item-actions"></div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
