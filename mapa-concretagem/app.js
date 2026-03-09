@@ -63,6 +63,7 @@ const SETOR_1_LEFT_FORMS = [
   { forma: "BD-13", modelo: "1 CX VL" },
   { forma: "BD-14", modelo: "1 CX VL" },
   { forma: "BD-15", modelo: "1 CX VL" },
+  { forma: "AE-27", modelo: "1 CX VR" },
   { forma: "AE-26", modelo: "1 CX VR" },
   { forma: "AE-25", modelo: "1 CX VR" },
   { forma: "AE-24", modelo: "1 CX VR" },
