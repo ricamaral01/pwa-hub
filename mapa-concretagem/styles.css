@@ -475,6 +475,25 @@ body.mode-liberacao .ins-related {
   align-items: end;
 }
 
+.forma-block-wrap {
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 6px;
+}
+
+.forma-block-divider {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.72rem;
+  color: #1e3a8a;
+  background: #dbeafe;
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin-bottom: 6px;
+  border: 1px solid #93c5fd;
+}
+
 .forma-block {
   display: flex;
   flex-direction: column-reverse;

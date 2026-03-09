@@ -628,17 +628,27 @@ function createFormaButton(item, setor) {
   return btn;
 }
 
-function renderSheetBlocks(blocks, container, setor) {
+function renderSheetBlocks(blocks, container, setor, labels = []) {
   container.innerHTML = "";
   container.classList.add("forma-grid-blocos");
 
-  blocks.forEach((blockItems) => {
+  blocks.forEach((blockItems, index) => {
+    const blockWrap = document.createElement("div");
+    blockWrap.className = "forma-block-wrap";
+
+    const divider = document.createElement("div");
+    divider.className = "forma-block-divider";
+    divider.textContent = labels[index] || `Bloco ${index + 1}`;
+
     const block = document.createElement("div");
     block.className = "forma-block";
     (blockItems || []).forEach((item) => {
       block.appendChild(createFormaButton(item, setor));
     });
-    container.appendChild(block);
+
+    blockWrap.appendChild(divider);
+    blockWrap.appendChild(block);
+    container.appendChild(blockWrap);
   });
 }
 
@@ -650,7 +660,7 @@ function renderSheetSide(items, container, options = {}) {
   const catalog = Array.isArray(items) ? items : [];
 
   if (Array.isArray(options.blocks) && options.blocks.length) {
-    renderSheetBlocks(options.blocks, container, setor);
+    renderSheetBlocks(options.blocks, container, setor, options.blockLabels || []);
     return;
   }
 
@@ -666,8 +676,16 @@ function renderSheetGrid() {
   const forms = getSectorForms(setor);
 
   if (setor === "Setor 1") {
-    renderSheetSide(forms.left, el.sheetLeftBody, { blocks: buildSetor1LeftBlocks(forms.left) });
-    renderSheetSide(forms.right, el.sheetRightBody, { blocks: buildSetor1RightBlocks(forms.right) });
+    const leftLabels = ["Bloco 1", "Bloco 2", "Bloco 3"];
+    const rightLabels = ["Bloco 1", "Bloco 2", "Bloco 3"];
+    renderSheetSide(forms.left, el.sheetLeftBody, {
+      blocks: buildSetor1LeftBlocks(forms.left),
+      blockLabels: leftLabels
+    });
+    renderSheetSide(forms.right, el.sheetRightBody, {
+      blocks: buildSetor1RightBlocks(forms.right),
+      blockLabels: rightLabels
+    });
     return;
   }
 
