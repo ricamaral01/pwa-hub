@@ -111,6 +111,47 @@
 
     <section id="viewHistorico" class="card hidden">
       <h2>Histórico de registros</h2>
+      <h3>Painel de Concretagem por Setor</h3>
+      <div class="grid">
+        <label>Data das leituras
+          <input id="dashData" type="date" />
+        </label>
+      </div>
+      <button id="atualizarDashboard" class="btn primary" type="button">Atualizar painel</button>
+
+      <div class="dashboard-cards">
+        <article class="dash-card setor-1">
+          <div class="dash-title">Setor 1</div>
+          <div id="dashSetor1Count" class="dash-value">0</div>
+          <div id="dashSetor1Meta" class="dash-meta">0 leituras concretadas</div>
+        </article>
+        <article class="dash-card setor-2">
+          <div class="dash-title">Setor 2</div>
+          <div id="dashSetor2Count" class="dash-value">0</div>
+          <div id="dashSetor2Meta" class="dash-meta">0 leituras concretadas</div>
+        </article>
+        <article class="dash-card total">
+          <div class="dash-title">Total</div>
+          <div id="dashTotalCount" class="dash-value">0</div>
+          <div class="dash-meta">Formas concretadas no dia</div>
+        </article>
+      </div>
+
+      <div class="dash-chart">
+        <div class="dash-row">
+          <span>Setor 1</span>
+          <div class="dash-bar-track"><div id="dashBarSetor1" class="dash-bar setor-1" style="width:0%"></div></div>
+          <strong id="dashBarSetor1Label">0</strong>
+        </div>
+        <div class="dash-row">
+          <span>Setor 2</span>
+          <div class="dash-bar-track"><div id="dashBarSetor2" class="dash-bar setor-2" style="width:0%"></div></div>
+          <strong id="dashBarSetor2Label">0</strong>
+        </div>
+      </div>
+      <div id="dashStatus" class="muted">Aguardando atualização do painel...</div>
+
+      <hr />
       <div class="grid">
         <label>Data
           <input id="histData" type="date" />

@@ -277,6 +277,18 @@ const el = {
 
   histData: document.getElementById("histData"),
   histForma: document.getElementById("histForma"),
+  dashData: document.getElementById("dashData"),
+  atualizarDashboard: document.getElementById("atualizarDashboard"),
+  dashSetor1Count: document.getElementById("dashSetor1Count"),
+  dashSetor2Count: document.getElementById("dashSetor2Count"),
+  dashTotalCount: document.getElementById("dashTotalCount"),
+  dashSetor1Meta: document.getElementById("dashSetor1Meta"),
+  dashSetor2Meta: document.getElementById("dashSetor2Meta"),
+  dashBarSetor1: document.getElementById("dashBarSetor1"),
+  dashBarSetor2: document.getElementById("dashBarSetor2"),
+  dashBarSetor1Label: document.getElementById("dashBarSetor1Label"),
+  dashBarSetor2Label: document.getElementById("dashBarSetor2Label"),
+  dashStatus: document.getElementById("dashStatus"),
   filtrarHistorico: document.getElementById("filtrarHistorico"),
   historicoLista: document.getElementById("historicoLista"),
   relData: document.getElementById("relData"),
@@ -909,6 +921,85 @@ function buildReportDataFromRows(rows) {
   return { total, liberado, naoMontado, manutencao };
 }
 
+function getRowsFromLocalForDashboard(data, setor) {
+  const db = readDb();
+  return db.records
+    .filter((r) => r.dataFabricacao === data)
+    .filter((r) => r.setor === setor)
+    .map((r) => ({
+      forma_numero: r.formaNumero,
+      modelo: r.modelo,
+      liberacao_status: r.liberacao?.status || ""
+    }));
+}
+
+async function getRowsForDashboard(data, setor) {
+  if (!hasApiConfigured()) {
+    return { rows: getRowsFromLocalForDashboard(data, setor), source: "local" };
+  }
+
+  try {
+    const url = `${CONFIG.API_URL}?action=relatorio_setor&dataFabricacao=${encodeURIComponent(data)}&setor=${encodeURIComponent(setor)}`;
+    const response = await fetch(url);
+    const text = await response.text();
+    const payload = JSON.parse(text);
+    if (payload.ok && Array.isArray(payload.rows)) {
+      return { rows: payload.rows, source: "api" };
+    }
+  } catch {
+    // Fallback local em caso de falha temporária da API.
+  }
+
+  return { rows: getRowsFromLocalForDashboard(data, setor), source: "local" };
+}
+
+function renderDashboardConcretagem({ setor1, setor2, source, data }) {
+  const concretadasSetor1 = buildReportDataFromRows(setor1).liberado;
+  const concretadasSetor2 = buildReportDataFromRows(setor2).liberado;
+  const totalConcretadas = concretadasSetor1 + concretadasSetor2;
+
+  const max = Math.max(concretadasSetor1, concretadasSetor2, 1);
+  const width1 = Math.round((concretadasSetor1 / max) * 100);
+  const width2 = Math.round((concretadasSetor2 / max) * 100);
+
+  el.dashSetor1Count.textContent = String(concretadasSetor1);
+  el.dashSetor2Count.textContent = String(concretadasSetor2);
+  el.dashTotalCount.textContent = String(totalConcretadas);
+
+  el.dashSetor1Meta.textContent = `${concretadasSetor1} de ${setor1.length} leituras concretadas`;
+  el.dashSetor2Meta.textContent = `${concretadasSetor2} de ${setor2.length} leituras concretadas`;
+
+  el.dashBarSetor1.style.width = `${width1}%`;
+  el.dashBarSetor2.style.width = `${width2}%`;
+  el.dashBarSetor1Label.textContent = String(concretadasSetor1);
+  el.dashBarSetor2Label.textContent = String(concretadasSetor2);
+
+  el.dashStatus.textContent = `Painel atualizado para ${data} (${source === "api" ? "dados da planilha" : "cache local"}).`;
+}
+
+async function carregarDashboardConcretagem() {
+  if (!el.dashData?.value) {
+    el.dashStatus.textContent = "Selecione uma data para atualizar o painel.";
+    return;
+  }
+
+  const data = el.dashData.value;
+  el.dashStatus.textContent = "Atualizando painel de concretagem...";
+
+  const [setor1Result, setor2Result] = await Promise.all([
+    getRowsForDashboard(data, "Setor 1"),
+    getRowsForDashboard(data, "Setor 2")
+  ]);
+
+  const source = setor1Result.source === "api" && setor2Result.source === "api" ? "api" : "local";
+  renderDashboardConcretagem({
+    setor1: setor1Result.rows,
+    setor2: setor2Result.rows,
+    source,
+    data
+  });
+}
+
 function renderRelatorioSetor({ data, setor, encarregado, rows }) {
   if (!el.relatorioSetorOutput) return;
   const resumo = buildReportDataFromRows(rows);
@@ -1009,6 +1100,7 @@ function bindEvents() {
   el.modeHistorico.addEventListener("click", () => {
     setMode("HISTORICO");
     renderHistorico();
+    carregarDashboardConcretagem();
   });
 
   el.libSetor.addEventListener("change", renderSheetGrid);
@@ -1029,6 +1121,8 @@ function bindEvents() {
   el.insLiberadosBody.addEventListener("input", () => clearSubmitLock("inspecao"));
 
   el.salvarInspecao.addEventListener("click", saveInspecao);
+  el.atualizarDashboard.addEventListener("click", carregarDashboardConcretagem);
+  el.dashData.addEventListener("change", carregarDashboardConcretagem);
   el.filtrarHistorico.addEventListener("click", renderHistorico);
   el.gerarRelatorioSetor.addEventListener("click", gerarRelatorioSetor);
 
@@ -1049,12 +1143,14 @@ function init() {
   const now = todayYmd();
   el.libSetor.value = "Setor 2";
   el.insFiltroData.value = "";
+  el.dashData.value = now;
   el.relData.value = now;
   el.relSetor.value = "Setor 2";
 
   renderSheetGrid();
   renderInspecaoLiberados();
   renderHistorico();
+  carregarDashboardConcretagem();
   checkApiStatus();
 }
 
