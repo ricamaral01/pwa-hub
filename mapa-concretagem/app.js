@@ -118,11 +118,11 @@ const SETOR_1_RIGHT_FORMS = [
   { forma: "E-04", modelo: "Ec. 1 CX VR" },
   { forma: "E-05", modelo: "Ec. 1 CX VR" },
   { forma: "E-06", modelo: "Ec. 1 CX VR" },
-  { forma: "D-02", modelo: "2 CXS VL" },
   { forma: "D-03", modelo: "2 CXS VL" },
   { forma: "D-04", modelo: "2 CXS VL" },
   { forma: "D-05", modelo: "2 CXS VL" },
   { forma: "D-06", modelo: "2 CXS VL" },
+  { forma: "D-07", modelo: "2 CXS VL" },
   { forma: "M-01", modelo: "1 CX VR - 600" },
   { forma: "CE-13", modelo: "2 CXS VR" },
   { forma: "CE-12", modelo: "2 CXS VR" },
@@ -135,7 +135,7 @@ const SETOR_1_RIGHT_FORMS = [
   { forma: "100-4", modelo: "SUB. 100 AMP." },
   { forma: "100-5", modelo: "SUB. 100 AMP." },
   { forma: "SB-E1", modelo: "SUB. 100-AMP-E" },
-  { forma: "SB-1", modelo: "SUB. 100 AMP." },
+  { forma: "100-6", modelo: "SUB. 100 AMP." },
   { forma: "200-1", modelo: "SUB. 200-AMP C/ TC" },
   { forma: "200-2", modelo: "SUB. 200-AMP C/ TC" },
   { forma: "DE-03", modelo: "2 CXS VL" },
@@ -613,7 +613,7 @@ function createFormaButton(item, setor) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "forma-btn";
-  btn.textContent = item.forma;
+  btn.innerHTML = `<span class="forma-numero">${item.forma}</span><span class="forma-modelo">${item.modelo || ""}</span>`;
   btn.dataset.formaNumero = normalizeUpper(item.forma);
   btn.dataset.modelo = item.modelo;
 
@@ -675,20 +675,6 @@ function renderSheetGrid() {
   const setor = el.libSetor.value || "Setor 2";
   el.sheetSetorLabel.textContent = setor;
   const forms = getSectorForms(setor);
-
-  if (setor === "Setor 1") {
-    const leftLabels = ["Bloco 1", "Bloco 2", "Bloco 3"];
-    const rightLabels = ["Bloco 1", "Bloco 2", "Bloco 3"];
-    renderSheetSide(forms.left, el.sheetLeftBody, {
-      blocks: buildSetor1LeftBlocks(forms.left),
-      blockLabels: leftLabels
-    });
-    renderSheetSide(forms.right, el.sheetRightBody, {
-      blocks: buildSetor1RightBlocks(forms.right),
-      blockLabels: rightLabels
-    });
-    return;
-  }
 
   renderSheetSide(forms.left, el.sheetLeftBody);
   renderSheetSide(forms.right, el.sheetRightBody);

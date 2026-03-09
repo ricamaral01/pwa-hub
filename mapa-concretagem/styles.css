@@ -545,13 +545,30 @@ body.mode-liberacao .ins-related {
   background: #fff;
   color: var(--accent);
   border-radius: 8px;
-  padding: 10px 6px;
-  font-size: 0.85rem;
+  padding: 8px 8px;
+  font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.15s, color 0.15s, transform 0.1s;
-  text-align: center;
+  text-align: left;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.forma-numero {
+  font-weight: 800;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.forma-modelo {
+  color: inherit;
+  opacity: 0.9;
+  font-size: 0.74rem;
+  white-space: nowrap;
 }
 
 .forma-btn:hover {
