@@ -152,7 +152,10 @@ const SETOR_2_LEFT_FORMS = [
   { forma: "A-85", modelo: "1 CX VR" },
   { forma: "A-10", modelo: "1 CX VR" },
   { forma: "A-36", modelo: "1 CX VR" },
+  { forma: "A-82", modelo: "1 CX VR" },
+  { forma: "A-22", modelo: "1 CX VR" },
   { forma: "A-11", modelo: "1 CX VR" },
+  { forma: "ESTOQ", modelo: "ESTOQUE" },
   { forma: "A-52", modelo: "1 CX VR" },
   { forma: "A-70", modelo: "1 CX VR" },
   { forma: "A-83", modelo: "1 CX VR" },
@@ -169,7 +172,7 @@ const SETOR_2_LEFT_FORMS = [
   { forma: "A-57", modelo: "1 CX VR" },
   { forma: "A-30", modelo: "1 CX VR" },
   { forma: "A-55", modelo: "1 CX VR" },
-  { forma: "A-22", modelo: "1 CX VR" },
+  { forma: "A-02", modelo: "1 CX VR" },
   { forma: "A-03", modelo: "1 CX VR" },
   { forma: "B-22", modelo: "1 CX VL" },
   { forma: "B-21", modelo: "1 CX VL" },
@@ -179,9 +182,9 @@ const SETOR_2_LEFT_FORMS = [
   { forma: "B-20", modelo: "1 CX VL" },
   { forma: "B-10", modelo: "1 CX VL" },
   { forma: "B-17", modelo: "1 CX VL" },
+  { forma: "B-14", modelo: "1 CX VL" },
   { forma: "B-05", modelo: "1 CX VL" },
   { forma: "B-16", modelo: "1 CX VL" },
-  { forma: "B-14", modelo: "1 CX VL" },
   { forma: "B-15", modelo: "1 CX VL" }
 ];
 
