@@ -268,6 +268,7 @@ const el = {
 
   insFiltroData: document.getElementById("insFiltroData"),
   insModoCarga: document.getElementById("insModoCarga"),
+  insSetor: document.getElementById("insSetor"),
   insColaborador: document.getElementById("insColaborador"),
   insCarregarLiberados: document.getElementById("insCarregarLiberados"),
   insLiberadosBody: document.getElementById("insLiberadosBody"),
@@ -800,7 +801,7 @@ function getInspecaoCodeOptions(selectedCode) {
   return first + options;
 }
 
-async function getInspecaoRowsFromApi(filtroData, modoCarga) {
+async function getInspecaoRowsFromApi(filtroData, modoCarga, setor) {
   if (!hasApiConfigured()) return null;
 
   const params = new URLSearchParams();
@@ -808,6 +809,7 @@ async function getInspecaoRowsFromApi(filtroData, modoCarga) {
   if (modoCarga === "data" && filtroData) {
     params.set("dataFabricacao", filtroData);
   }
+  if (setor) params.set("setor", setor);
 
   try {
     const response = await fetch(`${CONFIG.API_URL}?${params.toString()}`);
@@ -825,6 +827,7 @@ async function renderInspecaoLiberados() {
   const db = readDb();
   const filtroData = el.insFiltroData.value;
   const modoCarga = el.insModoCarga?.value || "data";
+  const setor = el.insSetor?.value || "";
 
   el.insLiberadosBody.innerHTML = "";
   if (modoCarga === "data" && !filtroData) {
@@ -833,10 +836,11 @@ async function renderInspecaoLiberados() {
     return;
   }
 
-  const apiRows = await getInspecaoRowsFromApi(filtroData, modoCarga);
+  const apiRows = await getInspecaoRowsFromApi(filtroData, modoCarga, setor);
   if (Array.isArray(apiRows)) {
     const rows = apiRows
       .filter((record) => String(record.liberacao_status || "") === "1")
+      .filter((record) => !setor || String(record.setor || "") === setor)
       .filter((record) => !String(record.ins_status || "").trim())
       .sort((a, b) => String(a.forma_numero || "").localeCompare(String(b.forma_numero || "")));
 
@@ -894,6 +898,7 @@ async function renderInspecaoLiberados() {
   const rows = db.records
     .filter((record) => record.liberacao && record.liberacao.status === "1")
     .filter((record) => (modoCarga === "data" ? record.dataFabricacao === filtroData : true))
+    .filter((record) => !setor || record.setor === setor)
     .filter((record) => !Array.isArray(record.inspecoes) || record.inspecoes.length === 0)
     .sort((a, b) => (a.formaNumero > b.formaNumero ? 1 : -1));
 
@@ -1410,6 +1415,7 @@ function bindEvents() {
 
   el.insFiltroData.addEventListener("change", renderInspecaoLiberados);
   el.insModoCarga.addEventListener("change", renderInspecaoLiberados);
+  el.insSetor.addEventListener("change", renderInspecaoLiberados);
   el.insCarregarLiberados.addEventListener("click", renderInspecaoLiberados);
   el.insFiltroData.addEventListener("change", () => clearSubmitLock("inspecao"));
   el.insColaborador.addEventListener("input", () => clearSubmitLock("inspecao"));
@@ -1443,6 +1449,7 @@ function init() {
   el.libData.value = now;
   el.insFiltroData.value = "";
   el.insModoCarga.value = "data";
+  el.insSetor.value = "Setor 2";
   el.dashData.value = now;
   el.relData.value = now;
   el.relSetor.value = "Setor 2";
