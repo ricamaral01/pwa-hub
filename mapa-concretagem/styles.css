@@ -552,16 +552,18 @@ body.mode-liberacao .ins-related {
   transition: background 0.15s, color 0.15s, transform 0.1s;
   text-align: left;
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 86px 128px;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
+  justify-content: start;
 }
 
 .forma-numero {
   font-weight: 800;
   color: inherit;
   white-space: nowrap;
+  text-align: left;
 }
 
 .forma-modelo {
@@ -569,6 +571,10 @@ body.mode-liberacao .ins-related {
   opacity: 0.9;
   font-size: 0.74rem;
   white-space: nowrap;
+  width: 128px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
 }
 
 .forma-btn:hover {
@@ -692,6 +698,15 @@ hr {
 
   .sheet-grid-wrap {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .forma-btn {
+    grid-template-columns: 78px 112px;
+    gap: 6px;
+  }
+
+  .forma-modelo {
+    width: 112px;
   }
 
   .checklist {
