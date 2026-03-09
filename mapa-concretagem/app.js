@@ -561,36 +561,116 @@ async function filesToCompressedDataUrls(fileList) {
   return out;
 }
 
-function renderSheetSide(items, container) {
+function pad2(value) {
+  return String(value).padStart(2, "0");
+}
+
+function buildFormaRange(prefix, start, end) {
+  const out = [];
+  const step = start <= end ? 1 : -1;
+  for (let i = start; step > 0 ? i <= end : i >= end; i += step) {
+    out.push(`${prefix}${pad2(i)}`);
+  }
+  return out;
+}
+
+function mapCatalogByForma(catalog) {
+  const map = new Map();
+  (catalog || []).forEach((item) => {
+    map.set(normalizeUpper(item.forma), item);
+  });
+  return map;
+}
+
+function resolveFormasFromCatalog(catalog, formas) {
+  const map = mapCatalogByForma(catalog);
+  return formas.map((forma) => map.get(normalizeUpper(forma))).filter(Boolean);
+}
+
+function buildSetor1LeftBlocks(catalog) {
+  const block1 = ["100-3", "100-2", "100-1", ...buildFormaRange("AE-", 1, 11)];
+  const block2 = buildFormaRange("AE-", 12, 25);
+  const block3 = ["AE-26", "AE-27", ...buildFormaRange("BD-", 15, 1), "IE-01"];
+
+  return [
+    resolveFormasFromCatalog(catalog, block1),
+    resolveFormasFromCatalog(catalog, block2),
+    resolveFormasFromCatalog(catalog, block3)
+  ];
+}
+
+function buildSetor1RightBlocks(catalog) {
+  const bottomUp = Array.isArray(catalog) ? [...catalog].reverse() : [];
+  return [
+    bottomUp.slice(0, 14),
+    bottomUp.slice(14, 28),
+    bottomUp.slice(28)
+  ];
+}
+
+function createFormaButton(item, setor) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "forma-btn";
+  btn.textContent = item.forma;
+  btn.dataset.formaNumero = normalizeUpper(item.forma);
+  btn.dataset.modelo = item.modelo;
+
+  if (setor && isFormaClicked(item.forma, setor)) {
+    btn.classList.add("forma-btn-done");
+    btn.disabled = true;
+  } else {
+    btn.addEventListener("click", () => {
+      salvarFormaClicada(item.forma, setor, btn);
+    });
+  }
+
+  return btn;
+}
+
+function renderSheetBlocks(blocks, container, setor) {
+  container.innerHTML = "";
+  container.classList.add("forma-grid-blocos");
+
+  blocks.forEach((blockItems) => {
+    const block = document.createElement("div");
+    block.className = "forma-block";
+    (blockItems || []).forEach((item) => {
+      block.appendChild(createFormaButton(item, setor));
+    });
+    container.appendChild(block);
+  });
+}
+
+function renderSheetSide(items, container, options = {}) {
   const setor = el.libSetor.value;
   container.innerHTML = "";
+  container.classList.remove("forma-grid-blocos");
 
   const catalog = Array.isArray(items) ? items : [];
 
+  if (Array.isArray(options.blocks) && options.blocks.length) {
+    renderSheetBlocks(options.blocks, container, setor);
+    return;
+  }
+
   catalog.forEach((item) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "forma-btn";
-    btn.textContent = item.forma;
-    btn.dataset.formaNumero = normalizeUpper(item.forma);
-    btn.dataset.modelo = item.modelo;
-
-    if (setor && isFormaClicked(item.forma, setor)) {
-      btn.classList.add("forma-btn-done");
-      btn.disabled = true;
-    } else {
-      btn.addEventListener("click", () => {
-        salvarFormaClicada(item.forma, setor, btn);
-      });
-    }
-
+    const btn = createFormaButton(item, setor);
     container.appendChild(btn);
   });
 }
 
 function renderSheetGrid() {
-  el.sheetSetorLabel.textContent = el.libSetor.value || "-";
-  const forms = getSectorForms(el.libSetor.value || "Setor 2");
+  const setor = el.libSetor.value || "Setor 2";
+  el.sheetSetorLabel.textContent = setor;
+  const forms = getSectorForms(setor);
+
+  if (setor === "Setor 1") {
+    renderSheetSide(forms.left, el.sheetLeftBody, { blocks: buildSetor1LeftBlocks(forms.left) });
+    renderSheetSide(forms.right, el.sheetRightBody, { blocks: buildSetor1RightBlocks(forms.right) });
+    return;
+  }
+
   renderSheetSide(forms.left, el.sheetLeftBody);
   renderSheetSide(forms.right, el.sheetRightBody);
 }

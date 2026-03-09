@@ -468,6 +468,20 @@ body.mode-liberacao .ins-related {
   gap: 6px;
 }
 
+.forma-grid.forma-grid-blocos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  align-items: end;
+}
+
+.forma-block {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+  min-width: 0;
+}
+
 .forma-col {
   display: flex;
   flex-direction: column;
@@ -627,6 +641,10 @@ hr {
 
   .dashboard-cards {
     grid-template-columns: 1fr;
+  }
+
+  .forma-grid.forma-grid-blocos {
+    gap: 6px;
   }
 
   .dash-row {
