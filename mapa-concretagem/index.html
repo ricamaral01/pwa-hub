@@ -29,11 +29,11 @@
     </section>
 
     <section id="viewLiberacao" class="card">
-      <div class="section-title-row">
-        <h2>Liberação — Clique na forma para registrar</h2>
-        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
-      </div>
+      <h2>Formulário — Produção (Liberação)</h2>
       <div class="grid">
+        <label>Data de fabricação
+          <input id="libData" type="date" required />
+        </label>
         <label>Setor
           <select id="libSetor" required>
             <option value="">Selecione</option>
@@ -41,29 +41,60 @@
             <option value="Setor 2">Setor 2</option>
           </select>
         </label>
+        <label>Colaborador
+          <input id="libColaborador" type="text" placeholder="Nome" required />
+        </label>
       </div>
 
       <div id="libFeedback" class="lib-feedback hidden"></div>
 
       <div class="sheet-box">
         <div class="sheet-topline">
-          <div><strong>Formas</strong> — Clique para liberar</div>
+          <div><strong>Formulário</strong> — Liberação e Inspeção produto</div>
           <div><strong>Setor:</strong> <span id="sheetSetorLabel">-</span></div>
         </div>
 
         <div class="sheet-grid-wrap">
-          <div class="forma-col">
-            <div class="forma-col-header">Corredor</div>
-            <div id="sheetLeftBody" class="forma-grid"></div>
-          </div>
-          <div class="forma-col">
-            <div class="forma-col-header">Direita</div>
-            <div id="sheetRightBody" class="forma-grid"></div>
-          </div>
-        </div>
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th>N Forma</th>
+                <th>Modelo</th>
+                <th>Liberação</th>
+                <th class="ins-related">Status</th>
+                <th class="ins-related">Cód</th>
+              </tr>
+            </thead>
+            <tbody id="sheetLeftBody"></tbody>
+          </table>
 
-        <button id="btnLimparFormas" class="btn btn-limpar" type="button">🧹 Limpar formas concretadas</button>
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th>N Forma</th>
+                <th>Modelo</th>
+                <th>Liberação</th>
+                <th class="ins-related">Status</th>
+                <th class="ins-related">Cód</th>
+              </tr>
+            </thead>
+            <tbody id="sheetRightBody"></tbody>
+          </table>
+        </div>
       </div>
+
+      <p id="sheetSelectedInfo" class="hint">Defina o status por forma.</p>
+
+      <label>Observações
+        <textarea id="libObs" rows="3" placeholder="Observações da liberação"></textarea>
+      </label>
+
+      <label>Fotos da liberação
+        <input id="libFotos" type="file" accept="image/*" capture="environment" multiple />
+      </label>
+      <div id="libFotosPreview" class="photo-grid"></div>
+
+      <button id="salvarLiberacao" class="btn primary" type="button">Salvar</button>
     </section>
 
     <section id="viewInspecao" class="card hidden">

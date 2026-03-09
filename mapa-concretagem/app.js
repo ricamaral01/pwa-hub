@@ -612,13 +612,14 @@ function buildSetor1RightBlocks(catalog) {
 function createFormaButton(item, setor) {
   const btn = document.createElement("button");
   btn.type = "button";
-  btn.className = "forma-btn";
-  btn.innerHTML = `<span class="forma-numero">${item.forma}</span><span class="forma-modelo">${item.modelo || ""}</span>`;
+  btn.className = "lib-btn";
+  btn.textContent = "Registrar";
   btn.dataset.formaNumero = normalizeUpper(item.forma);
   btn.dataset.modelo = item.modelo;
 
   if (setor && isFormaClicked(item.forma, setor)) {
-    btn.classList.add("forma-btn-done");
+    btn.classList.add("active", "btn-liberado");
+    btn.textContent = "Registrado";
     btn.disabled = true;
   } else {
     btn.addEventListener("click", () => {
@@ -627,6 +628,20 @@ function createFormaButton(item, setor) {
   }
 
   return btn;
+}
+
+function createLiberacaoRow(item, setor) {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${item.forma}</td>
+    <td>${item.modelo || ""}</td>
+    <td class="lib-cell"></td>
+    <td class="ins-related">-</td>
+    <td class="ins-related">-</td>
+  `;
+  const actionCell = tr.querySelector("td.lib-cell");
+  actionCell.appendChild(createFormaButton(item, setor));
+  return tr;
 }
 
 function renderSheetBlocks(blocks, container, setor, labels = []) {
@@ -659,6 +674,7 @@ function renderSheetSide(items, container, options = {}) {
   container.classList.remove("forma-grid-blocos");
 
   const catalog = Array.isArray(items) ? items : [];
+  const isTableBody = container.tagName === "TBODY";
 
   if (Array.isArray(options.blocks) && options.blocks.length) {
     renderSheetBlocks(options.blocks, container, setor, options.blockLabels || []);
@@ -666,6 +682,10 @@ function renderSheetSide(items, container, options = {}) {
   }
 
   catalog.forEach((item) => {
+    if (isTableBody) {
+      container.appendChild(createLiberacaoRow(item, setor));
+      return;
+    }
     const btn = createFormaButton(item, setor);
     container.appendChild(btn);
   });
@@ -1206,11 +1226,13 @@ function bindEvents() {
 
   el.libSetor.addEventListener("change", renderSheetGrid);
 
-  el.btnLimparFormas.addEventListener("click", () => {
-    if (!confirm("Limpar todas as formas concretadas? (não apaga da planilha)")) return;
-    localStorage.removeItem(CLICKED_FORMS_KEY);
-    renderSheetGrid();
-  });
+  if (el.btnLimparFormas) {
+    el.btnLimparFormas.addEventListener("click", () => {
+      if (!confirm("Limpar todas as formas concretadas? (não apaga da planilha)")) return;
+      localStorage.removeItem(CLICKED_FORMS_KEY);
+      renderSheetGrid();
+    });
+  }
 
   el.insFiltroData.addEventListener("change", renderInspecaoLiberados);
   el.insCarregarLiberados.addEventListener("click", renderInspecaoLiberados);
