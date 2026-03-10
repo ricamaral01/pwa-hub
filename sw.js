@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v17";
+const CACHE = "ct-hub-v18";
 
 const ASSETS = [
   /* ---- Splash ---- */

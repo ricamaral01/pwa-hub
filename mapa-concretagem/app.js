@@ -773,6 +773,32 @@ async function salvarFormaClicada(forma, setor, btn) {
   showLibFeedback(`Registrando ${forma}...`, "ok");
 
   const apiResult = await postToApi("salvar_forma_click", payload);
+  if (apiResult.ok || apiResult.skipped) {
+    // Salva no db.records local para que a inspecao funcione offline/API vazia
+    const dataFabricacao = payload.dataFabricacao;
+    const modelo = payload.modelo;
+    const db = readDb();
+    let record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
+    if (!record) {
+      record = {
+        id: uuid(),
+        dataFabricacao,
+        setor,
+        formaNumero: normalizeUpper(forma),
+        modelo,
+        createdAt: nowIso(),
+        updatedAt: nowIso(),
+        liberacao: null,
+        inspecoes: []
+      };
+    }
+    if (!record.liberacao || record.liberacao.status !== "1") {
+      record.liberacao = { status: "1", colaborador: "", observacoes: "", fotos: [], timestamp: nowIso() };
+      record.updatedAt = nowIso();
+    }
+    upsertRecord(db, record);
+    writeDb(db);
+  }
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
     btn.classList.add("active", "btn-liberado");
@@ -782,10 +808,13 @@ async function salvarFormaClicada(forma, setor, btn) {
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
-    btn.disabled = false;
-    btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma}</span>`;
-    setSyncStatus("warn", "API não configurada. Registro não enviado.");
-    showLibFeedback(`${forma} — salvo localmente (sem API).`, "error");
+    markFormaClicked(forma, setor);
+    btn.classList.add("active", "btn-liberado");
+    btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma} ✓</span>`;
+    const row = btn.closest("tr");
+    if (row) row.classList.add("row-liberada");
+    setSyncStatus("warn", "API não configurada. Forma salva localmente.");
+    showLibFeedback(`${forma} — salvo localmente.`, "ok");
   } else {
     btn.disabled = false;
     btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma}</span>`;
@@ -841,7 +870,8 @@ async function renderInspecaoLiberados() {
   }
 
   const apiRows = await getInspecaoRowsFromApi(filtroData, modoCarga, setor);
-  if (Array.isArray(apiRows)) {
+  // Usa API se retornou dados; se retornou vazio ou null, usa localStorage
+  if (Array.isArray(apiRows) && apiRows.length > 0) {
     const rows = apiRows
       .filter((record) => String(record.liberacao_status || "") === "1")
       .filter((record) => !setor || String(record.setor || "") === setor)
