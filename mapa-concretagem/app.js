@@ -690,17 +690,7 @@ async function getSetorRowsByDate(setor, dataFabricacao) {
 
 async function getSectorFormsForLiberacao(setor) {
   const forms = getSectorForms(setor);
-  const data = el.libData?.value || "";
-  if (!data) return forms;
-
-  const rows = await getSetorRowsByDate(setor, data);
-  if (!rows.length) return forms;
-
-  const produced = new Set(rows.map((r) => normalizeUpper(r.forma_numero || r.formaNumero || "")));
-  return {
-    left: forms.left.filter((item) => produced.has(normalizeUpper(item.forma))),
-    right: forms.right.filter((item) => produced.has(normalizeUpper(item.forma)))
-  };
+  return forms;
 }
 
 function renderSheetBlocks(blocks, container, setor, labels = []) {
