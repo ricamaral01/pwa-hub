@@ -249,6 +249,7 @@ const state = {
 };
 
 const el = {
+  backMain: document.getElementById("btnBackMain"),
   backButtons: Array.from(document.querySelectorAll("[data-back-btn]")),
   hubView: document.getElementById("viewHub"),
   hubLiberacao: document.getElementById("hubLiberacao"),
@@ -953,6 +954,10 @@ async function renderInspecaoLiberados() {
     const ultima = Array.isArray(record.inspecoes) && record.inspecoes.length ? record.inspecoes[record.inspecoes.length - 1] : null;
     const tr = document.createElement("tr");
     tr.dataset.recordId = record.id;
+    tr.dataset.dataFabricacao = record.dataFabricacao || "";
+    tr.dataset.setor = record.setor || "";
+    tr.dataset.formaNumero = record.formaNumero || "";
+    tr.dataset.modelo = record.modelo || "";
     tr.innerHTML = `
       <td>${record.formaNumero}</td>
       <td>${record.modelo || ""}</td>
@@ -1012,50 +1017,6 @@ async function saveInspecao() {
     return;
   }
 
-  if (hasApiConfigured()) {
-    const entries = selectedRows.map((tr) => {
-      const status = tr?.querySelector("select[data-ins-status]")?.value || "";
-      const codigo = tr?.querySelector("select[data-ins-code]")?.value || "";
-      const codigoFinal = status === "A" ? (codigo || "A") : codigo;
-      return {
-        recordId: tr.dataset.recordId || "",
-        dataFabricacao: tr.dataset.dataFabricacao || el.insFiltroData.value,
-        setor: tr.dataset.setor || "",
-        formaNumero: tr.dataset.formaNumero || "",
-        tipo: "INSPECAO",
-        status,
-        codigo: codigoFinal,
-        colaborador,
-        observacoes: tr?.querySelector("input[data-ins-row-obs]")?.value?.trim() || observacaoGlobal,
-        fotosCount: state.insPhotos.length,
-        timestamp: nowIso()
-      };
-    });
-
-    const invalid = entries.some((entry) => !entry.status || (entry.status !== "A" && !entry.codigo));
-    if (invalid) {
-      alert("Preencha Status e Código para itens R/RR antes de salvar.");
-      return;
-    }
-
-    state.isSendingInspecao = true;
-    setSubmitButtonState(el.salvarInspecao, true);
-    try {
-      const apiResult = await postToApi("salvar_inspecao_lote", { entries });
-      if (apiResult.ok) {
-        setSyncStatus("ok", `Inspeção salva na mesma linha (${apiResult.updated || entries.length} itens).`);
-        await renderInspecaoLiberados();
-      } else {
-        setSyncStatus("error", "Falha ao salvar inspeção na planilha.");
-        alert("Falha ao salvar inspeção na planilha.");
-      }
-    } finally {
-      state.isSendingInspecao = false;
-      setSubmitButtonState(el.salvarInspecao, false);
-    }
-    return;
-  }
-
   const lockPayloadRows = selectedRows
     .map((tr) => {
       return {
@@ -1092,7 +1053,11 @@ async function saveInspecao() {
     const inspecaoEntries = [];
 
     for (const tr of selectedRows) {
-      const recordId = tr?.dataset.recordId;
+      const dataFabricacao = tr?.dataset.dataFabricacao || el.insFiltroData.value;
+      const setor = tr?.dataset.setor || el.insSetor.value || "";
+      const formaNumero = normalizeUpper(tr?.dataset.formaNumero || "");
+      const modelo = tr?.dataset.modelo || "";
+      const recordId = tr?.dataset.recordId || uuid();
       const status = tr?.querySelector("select[data-ins-status]")?.value || "";
       const codigo = tr?.querySelector("select[data-ins-code]")?.value || "";
       const codigoFinal = status === "A" ? (codigo || "A") : codigo;
@@ -1108,8 +1073,40 @@ async function saveInspecao() {
         return;
       }
 
-      const record = db.records.find((item) => item.id === recordId);
-      if (!record || !record.liberacao || record.liberacao.status !== "1") continue;
+      let record = db.records.find((item) => item.id === recordId);
+      if (!record) {
+        record = findRecordByKey(db, dataFabricacao, setor, formaNumero);
+      }
+      if (!record) {
+        record = {
+          id: recordId,
+          dataFabricacao,
+          setor,
+          formaNumero,
+          modelo,
+          createdAt: nowIso(),
+          updatedAt: nowIso(),
+          liberacao: {
+            status: "1",
+            statusFlags: statusFlagsFromCode("1"),
+            colaborador: "",
+            observacoes: "",
+            fotos: [],
+            timestamp: nowIso()
+          },
+          inspecoes: []
+        };
+      }
+      if (!record.liberacao || record.liberacao.status !== "1") {
+        record.liberacao = {
+          status: "1",
+          statusFlags: statusFlagsFromCode("1"),
+          colaborador: record.liberacao?.colaborador || "",
+          observacoes: record.liberacao?.observacoes || "",
+          fotos: Array.isArray(record.liberacao?.fotos) ? record.liberacao.fotos : [],
+          timestamp: record.liberacao?.timestamp || nowIso()
+        };
+      }
 
       const tipo = Array.isArray(record.inspecoes) && record.inspecoes.length ? "REINSPECAO" : "INSPECAO";
       const observacoes = obsLinha || observacaoGlobal;
@@ -1137,9 +1134,9 @@ async function saveInspecao() {
         etapa: tipo,
         status,
         colaborador,
-        setor: record.setor,
-        formaNumero: record.formaNumero,
-        dataFabricacao: record.dataFabricacao,
+        setor: record.setor || setor,
+        formaNumero: record.formaNumero || formaNumero,
+        dataFabricacao: record.dataFabricacao || dataFabricacao,
         codigos: [codigoFinal],
         observacoes,
         fotosCount: state.insPhotos.length,
@@ -1148,9 +1145,9 @@ async function saveInspecao() {
 
       inspecaoEntries.push({
         recordId: record.id,
-        dataFabricacao: record.dataFabricacao,
-        setor: record.setor,
-        formaNumero: record.formaNumero,
+        dataFabricacao: record.dataFabricacao || dataFabricacao,
+        setor: record.setor || setor,
+        formaNumero: record.formaNumero || formaNumero,
         tipo,
         status,
         codigo: codigoFinal,
@@ -1192,13 +1189,13 @@ async function saveInspecao() {
   }
 }
 
-function renderHistorico() {
+async function renderHistorico() {
   const db = readDb();
   const data = el.histData.value;
   const tipo = (el.histTipo?.value || "").trim();
   const forma = normalizeUpper(el.histForma.value);
 
-  const rows = db.events
+  let rows = db.events
     .filter((event) => !data || event.dataFabricacao === data)
     .filter((event) => {
       if (!tipo) return true;
@@ -1208,6 +1205,58 @@ function renderHistorico() {
     })
     .filter((event) => !forma || event.formaNumero === forma)
     .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+
+  if (!rows.length && hasApiConfigured() && data) {
+    const [setor1, setor2] = await Promise.all([
+      getRowsForDashboard(data, "Setor 1"),
+      getRowsForDashboard(data, "Setor 2")
+    ]);
+    const apiRows = [...(setor1.rows || []), ...(setor2.rows || [])];
+    const apiEvents = [];
+    apiRows.forEach((row) => {
+      const formaNumero = String(row.forma_numero || "");
+      const setor = String(row.setor || "");
+      const baseTs = row.lib_timestamp || row.updated_at || nowIso();
+      if (String(row.liberacao_status || "") === "1") {
+        apiEvents.push({
+          etapa: "LIBERACAO",
+          status: String(row.liberacao_status || ""),
+          dataFabricacao: String(row.data_fabricacao || data),
+          setor,
+          formaNumero,
+          colaborador: String(row.lib_colaborador || ""),
+          timestamp: baseTs,
+          fotosCount: 0,
+          codigos: [],
+          observacoes: ""
+        });
+      }
+      if (String(row.ins_status || "").trim()) {
+        apiEvents.push({
+          etapa: "INSPECAO",
+          status: String(row.ins_status || ""),
+          dataFabricacao: String(row.data_fabricacao || data),
+          setor,
+          formaNumero,
+          colaborador: String(row.ins_colaborador || ""),
+          timestamp: row.ins_timestamp || baseTs,
+          fotosCount: 0,
+          codigos: row.ins_codigo ? [String(row.ins_codigo)] : [],
+          observacoes: String(row.ins_observacoes || "")
+        });
+      }
+    });
+
+    rows = apiEvents
+      .filter((event) => {
+        if (!tipo) return true;
+        if (tipo === "LIBERACAO") return event.etapa === "LIBERACAO";
+        if (tipo === "INSPECAO") return event.etapa === "INSPECAO" || event.etapa === "REINSPECAO";
+        return true;
+      })
+      .filter((event) => !forma || normalizeUpper(event.formaNumero) === forma)
+      .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+  }
 
   el.historicoLista.innerHTML = "";
   if (!rows.length) {
@@ -1453,6 +1502,15 @@ function bindEvents() {
   });
 
   el.backButtons.forEach((btn) => btn.addEventListener("click", navigateBack));
+  if (el.backMain) {
+    el.backMain.addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "../index.html";
+      }
+    });
+  }
   el.libSetor.addEventListener("change", renderSheetGrid);
   el.libData.addEventListener("change", renderSheetGrid);
   if (el.btnLimparFormas) {
@@ -1477,8 +1535,8 @@ function bindEvents() {
   el.salvarInspecao.addEventListener("click", saveInspecao);
   el.atualizarDashboard.addEventListener("click", carregarDashboardConcretagem);
   el.dashData.addEventListener("change", carregarDashboardConcretagem);
-  el.filtrarHistorico.addEventListener("click", renderHistorico);
-  el.histTipo?.addEventListener("change", renderHistorico);
+  el.filtrarHistorico.addEventListener("click", () => renderHistorico());
+  el.histTipo?.addEventListener("change", () => renderHistorico());
   el.gerarRelatorioSetor.addEventListener("click", gerarRelatorioSetor);
 
   el.insFotos.addEventListener("change", async (event) => {
