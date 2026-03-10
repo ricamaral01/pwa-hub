@@ -329,6 +329,18 @@ function normalizeUpper(text) {
   return String(text || "").trim().toUpperCase();
 }
 
+function dateToYmd(value) {
+  if (!value) return "";
+  if (/^\d{4}-\d{2}-\d{2}$/.test(String(value).trim())) return String(value).trim();
+  const d = new Date(String(value));
+  if (!Number.isNaN(d.getTime())) {
+    const tzOffset = d.getTimezoneOffset() * 60000;
+    const local = new Date(d.getTime() - tzOffset);
+    return local.toISOString().slice(0, 10);
+  }
+  return String(value).trim();
+}
+
 function readDb() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return { records: [], events: [] };
@@ -844,9 +856,7 @@ async function getInspecaoRowsFromApi(filtroData, modoCarga, setor) {
 
   const params = new URLSearchParams();
   params.set("action", "inspecao_pendentes");
-  if (modoCarga === "data" && filtroData) {
-    params.set("dataFabricacao", filtroData);
-  }
+  // O backend pode estar com datas em formato textual longo; filtramos por data no cliente.
   if (setor) params.set("setor", setor);
 
   try {
@@ -882,6 +892,7 @@ async function renderInspecaoLiberados() {
     const rows = apiRows
       .filter((record) => String(record.liberacao_status || "") === "1")
       .filter((record) => !setor || String(record.setor || "") === setor)
+      .filter((record) => (modoCarga === "data" ? dateToYmd(record.data_fabricacao || "") === filtroData : true))
       .filter((record) => !String(record.ins_status || "").trim())
       .sort((a, b) => String(a.forma_numero || "").localeCompare(String(b.forma_numero || "")));
 
