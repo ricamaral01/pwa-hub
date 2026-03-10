@@ -27,7 +27,7 @@ function isFormaClicked(forma, setor) {
   return !!data.formas[key];
 }
 const CONFIG = {
-  API_URL: "https://script.google.com/macros/s/AKfycbw0HO5hZ9lHQCRjkt26WljaqqCy_hGEJ-1CKM8xrug7dGKA77SuUfbVATndqI3W1MBf3w/exec"
+  API_URL: "https://script.google.com/macros/s/AKfycbxYo9fsMjEuU-IqN1i5qLDRkv_mv7qzRu202tptLJ4jWHgDMG6JQFi56eZAMYiUSrRZhg/exec"
 };
 
 const CHECKLIST_INSPECAO_CODIGOS = [
