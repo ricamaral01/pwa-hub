@@ -818,7 +818,9 @@ async function getInspecaoRowsFromApi(filtroData, modoCarga, setor) {
     const text = await response.text();
     const payload = JSON.parse(text);
     if (payload.ok && Array.isArray(payload.rows)) return payload.rows;
-  } catch {
+    console.error("[inspecao_pendentes] resposta inesperada:", payload);
+  } catch (err) {
+    console.error("[inspecao_pendentes] erro na requisição:", err);
     return null;
   }
 
@@ -1393,6 +1395,7 @@ function bindEvents() {
   });
   el.modeInspecao.addEventListener("click", () => {
     setMode("INSPECAO");
+    if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd();
     renderInspecaoLiberados();
   });
   el.modeHistorico.addEventListener("click", () => {
@@ -1446,7 +1449,7 @@ function init() {
   const now = todayYmd();
   el.libSetor.value = "Setor 2";
   el.libData.value = now;
-  el.insFiltroData.value = "";
+  el.insFiltroData.value = now;
   el.insModoCarga.value = "data";
   el.insSetor.value = "Setor 2";
   el.dashData.value = now;
