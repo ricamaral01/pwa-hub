@@ -240,7 +240,7 @@ function getSectorForms(setor) {
 }
 
 const state = {
-  mode: "LIBERACAO",
+  mode: "HUB",
   libPhotos: [],
   insPhotos: [],
   isSendingLiberacao: false,
@@ -250,12 +250,17 @@ const state = {
 
 const el = {
   backButtons: Array.from(document.querySelectorAll("[data-back-btn]")),
-  modeLiberacao: document.getElementById("modeLiberacao"),
-  modeInspecao: document.getElementById("modeInspecao"),
-  modeHistorico: document.getElementById("modeHistorico"),
+  hubView: document.getElementById("viewHub"),
+  hubLiberacao: document.getElementById("hubLiberacao"),
+  hubInspecao: document.getElementById("hubInspecao"),
+  hubRelatorio: document.getElementById("hubRelatorio"),
+  hubHistorico: document.getElementById("hubHistorico"),
+  hubAcompanhamento: document.getElementById("hubAcompanhamento"),
   viewLiberacao: document.getElementById("viewLiberacao"),
   viewInspecao: document.getElementById("viewInspecao"),
+  viewRelatorio: document.getElementById("viewRelatorio"),
   viewHistorico: document.getElementById("viewHistorico"),
+  viewAcompanhamento: document.getElementById("viewAcompanhamento"),
   syncStatus: document.getElementById("syncStatus"),
 
   libSetor: document.getElementById("libSetor"),
@@ -280,6 +285,7 @@ const el = {
   salvarInspecao: document.getElementById("salvarInspecao"),
 
   histData: document.getElementById("histData"),
+  histTipo: document.getElementById("histTipo"),
   histForma: document.getElementById("histForma"),
   dashData: document.getElementById("dashData"),
   atualizarDashboard: document.getElementById("atualizarDashboard"),
@@ -1189,10 +1195,17 @@ async function saveInspecao() {
 function renderHistorico() {
   const db = readDb();
   const data = el.histData.value;
+  const tipo = (el.histTipo?.value || "").trim();
   const forma = normalizeUpper(el.histForma.value);
 
   const rows = db.events
     .filter((event) => !data || event.dataFabricacao === data)
+    .filter((event) => {
+      if (!tipo) return true;
+      if (tipo === "LIBERACAO") return event.etapa === "LIBERACAO";
+      if (tipo === "INSPECAO") return event.etapa === "INSPECAO" || event.etapa === "REINSPECAO";
+      return true;
+    })
     .filter((event) => !forma || event.formaNumero === forma)
     .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
 
@@ -1382,17 +1395,17 @@ async function gerarRelatorioSetor() {
 
 function setMode(mode) {
   state.mode = mode;
-  [el.viewLiberacao, el.viewInspecao, el.viewHistorico].forEach((view) => view.classList.add("hidden"));
+  [el.hubView, el.viewLiberacao, el.viewInspecao, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento]
+    .forEach((view) => view.classList.add("hidden"));
+  if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "LIBERACAO") el.viewLiberacao.classList.remove("hidden");
   if (mode === "INSPECAO") el.viewInspecao.classList.remove("hidden");
+  if (mode === "RELATORIO") el.viewRelatorio.classList.remove("hidden");
   if (mode === "HISTORICO") el.viewHistorico.classList.remove("hidden");
+  if (mode === "ACOMPANHAMENTO") el.viewAcompanhamento.classList.remove("hidden");
 
-  [el.modeLiberacao, el.modeInspecao, el.modeHistorico].forEach((button) => button.classList.remove("active", "primary"));
-  if (mode === "LIBERACAO") el.modeLiberacao.classList.add("active", "primary");
-  if (mode === "INSPECAO") el.modeInspecao.classList.add("active", "primary");
-  if (mode === "HISTORICO") el.modeHistorico.classList.add("active", "primary");
-
-  document.body.classList.remove("mode-liberacao", "mode-inspecao", "mode-historico");
+  document.body.classList.remove("mode-hub", "mode-liberacao", "mode-inspecao", "mode-relatorio", "mode-historico", "mode-acompanhamento");
+  if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "LIBERACAO") document.body.classList.add("mode-liberacao");
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
@@ -1401,36 +1414,41 @@ function setMode(mode) {
       el.insQtdItens.textContent = "0";
     }
   }
+  if (mode === "RELATORIO") document.body.classList.add("mode-relatorio");
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
+  if (mode === "ACOMPANHAMENTO") document.body.classList.add("mode-acompanhamento");
 }
 
 function navigateBack() {
-  if (window.history.length > 1) {
-    window.history.back();
-    return;
-  }
-  if (state.mode !== "LIBERACAO") {
-    setMode("LIBERACAO");
+  if (state.mode !== "HUB") {
+    setMode("HUB");
     return;
   }
 
-  setSyncStatus("warn", "Nao ha pagina anterior para voltar.");
+  setSyncStatus("warn", "Voce ja esta na tela principal.");
 }
 
 function bindEvents() {
-  el.modeLiberacao.addEventListener("click", () => {
+  el.hubLiberacao.addEventListener("click", () => {
     setMode("LIBERACAO");
     if (!el.libData.value) el.libData.value = todayYmd();
     renderSheetGrid();
   });
-  el.modeInspecao.addEventListener("click", () => {
+  el.hubInspecao.addEventListener("click", () => {
     setMode("INSPECAO");
     if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd();
     renderInspecaoLiberados();
   });
-  el.modeHistorico.addEventListener("click", () => {
+  el.hubRelatorio.addEventListener("click", () => {
+    setMode("RELATORIO");
+    if (!el.relData.value) el.relData.value = todayYmd();
+  });
+  el.hubHistorico.addEventListener("click", () => {
     setMode("HISTORICO");
     renderHistorico();
+  });
+  el.hubAcompanhamento.addEventListener("click", () => {
+    setMode("ACOMPANHAMENTO");
     carregarDashboardConcretagem();
   });
 
@@ -1460,6 +1478,7 @@ function bindEvents() {
   el.atualizarDashboard.addEventListener("click", carregarDashboardConcretagem);
   el.dashData.addEventListener("change", carregarDashboardConcretagem);
   el.filtrarHistorico.addEventListener("click", renderHistorico);
+  el.histTipo?.addEventListener("change", renderHistorico);
   el.gerarRelatorioSetor.addEventListener("click", gerarRelatorioSetor);
 
   el.insFotos.addEventListener("change", async (event) => {
@@ -1471,7 +1490,7 @@ function bindEvents() {
 }
 
 function init() {
-  setMode("LIBERACAO");
+  setMode("HUB");
   setSyncStatus("pending", "Verificando conexão com a planilha...");
   renderInspecaoCodigosChecklist();
   bindEvents();
@@ -1482,6 +1501,7 @@ function init() {
   el.insFiltroData.value = now;
   el.insModoCarga.value = "data";
   el.insSetor.value = "Setor 2";
+  if (el.histTipo) el.histTipo.value = "";
   el.dashData.value = now;
   el.relData.value = now;
   el.relSetor.value = "Setor 2";

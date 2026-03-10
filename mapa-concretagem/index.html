@@ -19,12 +19,29 @@
       <div id="syncStatus" class="sync-status sync-pending">Verificando conexão com a planilha...</div>
     </section>
 
-    <section class="card">
-      <h2>Escolha o fluxo</h2>
-      <div class="mode-switch">
-        <button id="modeLiberacao" class="btn primary active" type="button">Liberação</button>
-        <button id="modeInspecao" class="btn" type="button">Inspeção / Reinspeção</button>
-        <button id="modeHistorico" class="btn" type="button">Histórico</button>
+    <section id="viewHub" class="card">
+      <h2>Mapa de Concretagem - Hub</h2>
+      <div class="hub-grid">
+        <button id="hubLiberacao" class="hub-item" type="button">
+          <span class="hub-icon">PL</span>
+          <span class="hub-label">Producao / Liberacao</span>
+        </button>
+        <button id="hubInspecao" class="hub-item" type="button">
+          <span class="hub-icon">MI</span>
+          <span class="hub-label">Montagem / Inspecao</span>
+        </button>
+        <button id="hubRelatorio" class="hub-item" type="button">
+          <span class="hub-icon">RE</span>
+          <span class="hub-label">Relatorio</span>
+        </button>
+        <button id="hubHistorico" class="hub-item" type="button">
+          <span class="hub-icon">HI</span>
+          <span class="hub-label">Historico</span>
+        </button>
+        <button id="hubAcompanhamento" class="hub-item" type="button">
+          <span class="hub-icon">AC</span>
+          <span class="hub-label">Acompanhamento</span>
+        </button>
       </div>
     </section>
 
@@ -100,7 +117,7 @@
 
     <section id="viewInspecao" class="card hidden">
       <div class="section-title-row">
-        <h2>Inspeção / Reinspeção</h2>
+        <h2>Montagem / Inspecao</h2>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
       </div>
       <div class="grid">
@@ -160,12 +177,62 @@
       <button id="salvarInspecao" class="btn primary" type="button">Salvar Inspeções</button>
     </section>
 
-    <section id="viewHistorico" class="card hidden">
+    <section id="viewRelatorio" class="card hidden">
       <div class="section-title-row">
-        <h2>Histórico de registros</h2>
+        <h2>Relatorio</h2>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
       </div>
-      <h3>Painel de Concretagem por Setor</h3>
+      <h3>Relatorio Completo por Setor</h3>
+      <div class="grid">
+        <label>Data de producao
+          <input id="relData" type="date" />
+        </label>
+        <label>Setor
+          <select id="relSetor">
+            <option value="">Selecione</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+          </select>
+        </label>
+        <label>Encarregado (assinatura)
+          <input id="relEncarregado" type="text" placeholder="Nome do encarregado" />
+        </label>
+      </div>
+      <button id="gerarRelatorioSetor" class="btn primary" type="button">Gerar Relatorio</button>
+      <div id="relatorioSetorOutput" class="report-box"></div>
+    </section>
+
+    <section id="viewHistorico" class="card hidden">
+      <div class="section-title-row">
+        <h2>Historico de Lancamentos</h2>
+        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+
+      <div class="grid">
+        <label>Data
+          <input id="histData" type="date" />
+        </label>
+        <label>Tipo de lancamento
+          <select id="histTipo">
+            <option value="">Todos</option>
+            <option value="LIBERACAO">Producao</option>
+            <option value="INSPECAO">Inspecao</option>
+          </select>
+        </label>
+        <label>Forma
+          <input id="histForma" type="text" placeholder="Ex: A-52" />
+        </label>
+      </div>
+      <button id="filtrarHistorico" class="btn" type="button">Filtrar</button>
+      <div id="historicoLista" class="list"></div>
+    </section>
+
+    <section id="viewAcompanhamento" class="card hidden">
+      <div class="section-title-row">
+        <h2>Acompanhamento</h2>
+        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+      <h3>Grafico de Producao do Dia</h3>
       <div class="grid">
         <label>Data das leituras
           <input id="dashData" type="date" />
@@ -204,38 +271,6 @@
         </div>
       </div>
       <div id="dashStatus" class="muted">Aguardando atualização do painel...</div>
-
-      <hr />
-      <div class="grid">
-        <label>Data
-          <input id="histData" type="date" />
-        </label>
-        <label>Forma
-          <input id="histForma" type="text" placeholder="Ex: A-52" />
-        </label>
-      </div>
-      <button id="filtrarHistorico" class="btn" type="button">Filtrar</button>
-      <div id="historicoLista" class="list"></div>
-
-      <hr />
-      <h3>Relatório Completo por Setor</h3>
-      <div class="grid">
-        <label>Data de produção
-          <input id="relData" type="date" />
-        </label>
-        <label>Setor
-          <select id="relSetor">
-            <option value="">Selecione</option>
-            <option value="Setor 1">Setor 1</option>
-            <option value="Setor 2">Setor 2</option>
-          </select>
-        </label>
-        <label>Encarregado (assinatura)
-          <input id="relEncarregado" type="text" placeholder="Nome do encarregado" />
-        </label>
-      </div>
-      <button id="gerarRelatorioSetor" class="btn primary" type="button">Gerar Relatório</button>
-      <div id="relatorioSetorOutput" class="report-box"></div>
     </section>
   </main>
 
