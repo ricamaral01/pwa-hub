@@ -310,7 +310,9 @@ const el = {
 };
 
 function nowIso() {
-  return new Date().toISOString();
+  const d = new Date();
+  const tzOffset = d.getTimezoneOffset() * 60000;
+  return new Date(d.getTime() - tzOffset).toISOString().slice(0, 19).replace("T", "T");
 }
 
 function uuid() {
