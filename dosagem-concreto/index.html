@@ -66,140 +66,8 @@
             transform: translateY(-1px);
         }
 
-        /* SIDEBAR NAVIGATION */
-        .app-layout {
-            display: flex;
-            flex: 1;
-        }
-        .sidebar {
-            width: 220px;
-            background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
-            border-right: 2px solid var(--border);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            padding: 8px 0 20px;
-            flex-shrink: 0;
-            box-shadow: 3px 0 16px rgba(0,0,0,0.04);
-            z-index: 50;
-            scrollbar-width: thin;
-        }
-        .sidebar::-webkit-scrollbar { width: 4px; }
-        .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-        .sidebar-group { margin-bottom: 2px; }
-        .sidebar-group-label {
-            font-size: 0.58rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--primary);
-            opacity: 0.45;
-            padding: 14px 18px 5px;
-            display: block;
-        }
-        .sidebar-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-            padding: 10px 14px 10px 16px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 0.82rem;
-            font-weight: 500;
-            color: var(--text-light);
-            transition: all 0.15s;
-            border-left: 3px solid transparent;
-            text-align: left;
-            line-height: 1.3;
-            font-family: inherit;
-        }
-        .sidebar-btn:hover {
-            background: #eaf2f8;
-            color: var(--primary);
-            border-left-color: var(--primary-light);
-        }
-        .sidebar-btn.active {
-            background: linear-gradient(90deg, #e3edf5 0%, #f4f8fb 100%);
-            color: var(--primary);
-            font-weight: 700;
-            border-left-color: var(--primary);
-        }
-        .sidebar-btn .sb-icon {
-            font-size: 1.05rem;
-            width: 22px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        .sidebar-btn .sb-num {
-            font-size: 0.55rem;
-            font-weight: 800;
-            background: #e0e5ea;
-            color: var(--text-light);
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.15s;
-        }
-        .sidebar-btn.active .sb-num {
-            background: var(--primary);
-            color: #fff;
-        }
-        .sidebar-btn .sb-label { flex: 1; }
-        .sidebar-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-            margin: 4px 16px;
-        }
-
-        /* Mobile sidebar toggle */
-        .sidebar-toggle {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 300;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 52px;
-            height: 52px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(26,82,118,0.4);
-            transition: transform 0.2s;
-            align-items: center;
-            justify-content: center;
-        }
-        .sidebar-toggle:hover { transform: scale(1.08); }
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            z-index: 150;
-            backdrop-filter: blur(2px);
-        }
-        .sidebar-overlay.visible { display: block; }
-
-        /* Content area */
-        .content-area {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
         /* MAIN */
-        main { flex: 1; max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; width: 100%; }
+        main { max-width: 1200px; margin: 0 auto; padding: 24px 20px 40px; width: 100%; box-sizing: border-box; }
 
         /* SECTION / CARD */
         .section { display: none; }
@@ -425,9 +293,8 @@
             .info-box, .tip, footer, .gran-table-container:not(.print-keep),
             .progress-bar-container, #dosagem-modo-box { display: none !important; }
 
-            /* Layout full-width sem sidebar */
-            .app-layout { display: block !important; }
-            .content-area { width: 100% !important; }
+            /* Layout full-width */
+            main { width: 100% !important; max-width: 100% !important; }
 
             /* Header compacto */
             header {
@@ -563,19 +430,7 @@
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                left: -230px;
-                top: 0;
-                z-index: 200;
-                transition: left 0.3s ease;
-                height: 100vh;
-                box-shadow: 4px 0 24px rgba(0,0,0,0.15);
-            }
-            .sidebar.open { left: 0; }
-            .sidebar-toggle { display: flex; }
-            .content-area { width: 100%; }
-            main { padding: 16px 12px 80px; }
+            main { padding: 16px 12px 40px; }
         }
         @media (max-width: 600px) {
             .form-grid { grid-template-columns: 1fr; }
@@ -937,7 +792,10 @@
 
 <div class="app-layout">
 
-<aside class="sidebar" id="sidebar">
+<!-- sidebar removido -->
+
+<div style="width:100%">
+<aside style="display:none" id="sidebar">
     <div class="sidebar-group">
         <span class="sidebar-group-label">Início</span>
         <button class="sidebar-btn active" data-sec="sec-hub" onclick="showSection('sec-hub',this)">
@@ -1041,7 +899,6 @@
     </div>
 </aside>
 
-<div class="content-area">
 <main>
 
 <div class="section-jump" id="sectionJump" style="display:none;">
@@ -3239,15 +3096,9 @@
 </div>
 
 </main>
-
-<footer style="text-align:center;padding:20px;font-size:0.78rem;color:var(--text-light);border-top:1px solid var(--border);">
-    Calculadora de Dosagem de Concreto — Empacotamento de Partículas · Ricardo Do Amaral · 2026
-</footer>
-</div><!-- /content-area -->
 </div><!-- /app-layout -->
 
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
+
 
 <script>
 // ═══════════════════════════════════════════════════
@@ -3256,45 +3107,20 @@
 function showSection(id, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-    if (btn) {
-        btn.classList.add('active');
-    } else {
-        document.querySelectorAll('.sidebar-btn').forEach(b => {
-            if (b.dataset && b.dataset.sec === id) b.classList.add('active');
-        });
-    }
     const jump = document.getElementById('sectionJump');
     if (jump) jump.style.display = (id === 'sec-hub') ? 'none' : 'flex';
     const quickSelect = document.getElementById('quickSectionSelect');
     if (quickSelect) quickSelect.value = id;
-    // Close sidebar on mobile
-    if (window.innerWidth <= 768) {
-        closeSidebar();
-    }
     // Auto-draw standard Abrams curves when entering the chart tab
     if (id === 'sec-abrams') {
         const canvas = document.getElementById('chartAbrams');
         const ctx = canvas.getContext('2d');
         const pixel = ctx.getImageData(50, 50, 1, 1).data;
         if (pixel[3] === 0) {
-            // Canvas is blank — auto-draw standard curves
             desenharCurvasPadrao();
         }
     }
-    // Scroll content to top
-    document.querySelector('.content-area').scrollTo({top: 0, behavior: 'smooth'});
-}
-
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('visible');
-}
-function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
+    window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 // ═══════════════════════════════════════════════════
@@ -4336,7 +4162,7 @@ function carregarExperimental(t) {
     if (t.consist30min) document.getElementById('exp_consist_30min').value = t.consist30min;
 
     // Scroll to top and recalculate
-    document.querySelector('.content-area').scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({top: 0, behavior: 'smooth'});
     calcularExperimental();
     alert('✅ Traço experimental "' + (t.nomeTraco || '') + '" carregado!');
 }
