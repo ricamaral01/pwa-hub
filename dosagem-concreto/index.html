@@ -8164,30 +8164,18 @@ async function mccListarProdutos() {
     const url = CUSTO_MCC_WEBAPP_URL;
     const wrap = document.getElementById('mcc_tabela_wrap');
     if (!wrap) return;
-    if (!url) {
-        wrap.innerHTML = '<div class="result-box error"><p>URL do Web App não configurada.</p></div>';
-        return;
-    }
-    // Show cache immediately while fetching in background
-    const cached = localStorage.getItem('ctMCCProdutos');
-    if (cached) {
-        try { mccRenderProdutos(wrap, JSON.parse(cached), true); } catch(e) {}
-    } else {
-        wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando...</div>';
-    }
+    wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando da planilha...</div>';
     try {
         const resp = await fetch(url + '?action=listar_custo_mcc', { method:'GET', credentials:'omit', redirect:'follow' });
         const data = await resp.json();
-        if (!data.ok) { if (!cached) wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
-        localStorage.setItem('ctMCCProdutos', JSON.stringify(data.produtos || []));
+        if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
         mccRenderProdutos(wrap, data.produtos || []);
     } catch(err) {
-        if (!cached) wrap.innerHTML = `<div class="result-box error">❌ Erro: ${err.message}</div>`;
-        // if cache was shown, keep it silently
+        wrap.innerHTML = `<div class="result-box error">❌ Erro ao carregar da planilha: ${err.message}</div>`;
     }
 }
-function mccRenderProdutos(wrap, produtos, fromCache) {
-    let prefix = fromCache ? '<div style="padding:6px 14px;background:#fff3cd;border-radius:8px;font-size:0.8rem;margin-bottom:10px;color:#856404;">📦 Exibindo dados salvos localmente — clique em 🔄 Carregar para sincronizar.</div>' : '';
+function mccRenderProdutos(wrap, produtos) {
+    let prefix = '';
     if (!produtos || !produtos.length) {
         wrap.innerHTML = prefix + '<div style="padding:24px;text-align:center;color:var(--text-light);">Nenhum produto cadastrado.</div>';
         return;
@@ -8293,23 +8281,11 @@ function mccLimparForm() {
     ['mcc_ded_icms','mcc_ded_icms_frete'].forEach(id => { const el=document.getElementById(id); if(el) el.checked=false; });
     const liq = document.getElementById('mcc_custo_liq_preview'); if(liq) liq.textContent='—';
 }
-// Carrega URL salva no campo de configuração ao abrir
-(function mccInitUrl(){
-    const urlEl = document.getElementById('mcc_url_input');
-    if (urlEl && CUSTO_MCC_WEBAPP_URL) urlEl.value = CUSTO_MCC_WEBAPP_URL;
-    // Bind preview ao vivo
+// Bind preview ao vivo
+(function mccInitPreview(){
     const previewIds = ['mcc_preco','mcc_icms_pct','mcc_frete','mcc_icms_frete_pct','mcc_ded_icms','mcc_ded_icms_frete','mcc_unid','mcc_unid_frete'];
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            previewIds.forEach(id => { const el=document.getElementById(id); if(el) el.addEventListener('input', mccPreviewCusto); el?.addEventListener('change', mccPreviewCusto); });
-            const urlEl2 = document.getElementById('mcc_url_input');
-            if (urlEl2 && CUSTO_MCC_WEBAPP_URL) urlEl2.value = CUSTO_MCC_WEBAPP_URL;
-        });
-    } else {
-        previewIds.forEach(id => { const el=document.getElementById(id); if(el) { el.addEventListener('input', mccPreviewCusto); el.addEventListener('change', mccPreviewCusto); }});
-        const urlEl2 = document.getElementById('mcc_url_input');
-        if (urlEl2 && CUSTO_MCC_WEBAPP_URL) urlEl2.value = CUSTO_MCC_WEBAPP_URL;
-    }
+    const bind = () => previewIds.forEach(id => { const el=document.getElementById(id); if(el) { el.addEventListener('input', mccPreviewCusto); el.addEventListener('change', mccPreviewCusto); }});
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', bind); } else { bind(); }
 })();
 
 // ===== PAINEL DE CUSTO AVANÇADO — ICMS + FRETE =====
