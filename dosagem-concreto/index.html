@@ -2873,15 +2873,6 @@
     <h2><span class="icon">💲</span> Banco de Custos MCC</h2>
     <p class="subtitle">Cadastre produtos, fornecedores, ICMS e frete. Aplique ao painel de custos com um clique para calcular o custo real do m³.</p>
 
-    <div class="info-box" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-left-color:#2e7d32;margin-bottom:16px;">
-      <strong>⚙️ Configuração:</strong> Cole a URL do Web App do Apps Script (<code>AppsScript_custoMCC.gs</code>) na variável <code>CUSTO_MCC_WEBAPP_URL</code> no código, ou informe abaixo:
-      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;">
-        <input type="text" id="mcc_url_input" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1;min-width:280px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;">
-        <button class="btn btn-primary" style="padding:6px 14px;font-size:0.82rem;" onclick="mccSetUrl()">💾 Salvar URL</button>
-      </div>
-    </div>
-
-    <!-- FORMULÁRIO DE CADASTRO -->
     <div style="background:#f0fdf4;border:2px solid #a5d6a7;border-radius:12px;padding:18px 20px;margin-bottom:20px;">
       <h3 style="font-size:1rem;color:#2e7d32;margin-bottom:14px;">➕ Cadastrar / Editar Produto</h3>
       <input type="hidden" id="mcc_edit_id" value="">
@@ -3119,6 +3110,10 @@ function showSection(id, btn) {
         if (pixel[3] === 0) {
             desenharCurvasPadrao();
         }
+    }
+    // Auto-load MCC when entering the section
+    if (id === 'sec-custo-mcc') {
+        mccListarProdutos();
     }
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
@@ -8173,28 +8168,43 @@ async function mccListarProdutos() {
         wrap.innerHTML = '<div class="result-box error"><p>URL do Web App não configurada.</p></div>';
         return;
     }
-    wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando...</div>';
+    // Show cache immediately while fetching in background
+    const cached = localStorage.getItem('ctMCCProdutos');
+    if (cached) {
+        try { mccRenderProdutos(wrap, JSON.parse(cached), true); } catch(e) {}
+    } else {
+        wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando...</div>';
+    }
     try {
-        const resp = await fetch(url + '?action=listar_custo_mcc', { method:'GET' });
+        const resp = await fetch(url + '?action=listar_custo_mcc', { method:'GET', credentials:'omit', redirect:'follow' });
         const data = await resp.json();
-        if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
-        if (!data.produtos || !data.produtos.length) {
-            wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">Nenhum produto cadastrado.</div>';
-            return;
-        }
-        let html = `<div style="overflow-x:auto;"><table class="cost-adv-table">
+        if (!data.ok) { if (!cached) wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
+        localStorage.setItem('ctMCCProdutos', JSON.stringify(data.produtos || []));
+        mccRenderProdutos(wrap, data.produtos || []);
+    } catch(err) {
+        if (!cached) wrap.innerHTML = `<div class="result-box error">❌ Erro: ${err.message}</div>`;
+        // if cache was shown, keep it silently
+    }
+}
+function mccRenderProdutos(wrap, produtos, fromCache) {
+    let prefix = fromCache ? '<div style="padding:6px 14px;background:#fff3cd;border-radius:8px;font-size:0.8rem;margin-bottom:10px;color:#856404;">📦 Exibindo dados salvos localmente — clique em 🔄 Carregar para sincronizar.</div>' : '';
+    if (!produtos || !produtos.length) {
+        wrap.innerHTML = prefix + '<div style="padding:24px;text-align:center;color:var(--text-light);">Nenhum produto cadastrado.</div>';
+        return;
+    }
+    let html = prefix + `<div style="overflow-x:auto;"><table class="cost-adv-table">
             <thead><tr>
               <th>Nome</th><th>Tipo</th><th>Fornecedor</th>
               <th>R$/Unid.</th><th>Unid.</th><th>ICMS%</th><th>Ded.ICMS</th>
               <th>Frete</th><th>Unid.Fr.</th><th>ICMS Fr.%</th><th>Ded.Fr.</th>
               <th>Custo Líq. R$/kg</th><th>Ativo</th><th>Obs.</th><th>Ações</th>
             </tr></thead><tbody>`;
-        data.produtos.forEach(p => {
-            const liqFmt = 'R$ ' + (Number(p.custoLiq)||0).toFixed(4).replace('.', ',');
-            const ativo  = p.ativo === 'Sim' ? '✅' : '⛔';
-            const pid    = p.id.replace(/'/g, "\\'");
-            const pj     = btoa(unescape(encodeURIComponent(JSON.stringify(p))));
-            html += `<tr>
+    produtos.forEach(p => {
+        const liqFmt = 'R$ ' + (Number(p.custoLiq)||0).toFixed(4).replace('.', ',');
+        const ativo  = p.ativo === 'Sim' ? '✅' : '⛔';
+        const pid    = p.id.replace(/'/g, "\\'" );
+        const pj     = btoa(unescape(encodeURIComponent(JSON.stringify(p))));
+        html += `<tr>
               <td style="text-align:left;font-weight:600;white-space:nowrap;">${p.nomeProduto}</td>
               <td>${p.tipoMaterial}</td>
               <td>${p.fornecedor}</td>
@@ -8215,12 +8225,9 @@ async function mccListarProdutos() {
                 <button class="smart-chip" style="color:var(--danger);" onclick="mccExcluirProduto('${pid}')">🗑️</button>
               </td>
             </tr>`;
-        });
-        html += '</tbody></table></div>';
-        wrap.innerHTML = html;
-    } catch(err) {
-        wrap.innerHTML = `<div class="result-box error">❌ Erro: ${err.message}</div>`;
-    }
+    });
+    html += '</tbody></table></div>';
+    wrap.innerHTML = html;
 }
 function mccAplicarAoPainel(b64) {
     try {
