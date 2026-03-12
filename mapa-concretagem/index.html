@@ -50,72 +50,43 @@
 
     <section id="viewLiberacao" class="card">
       <div class="section-title-row">
-        <h2>Formulário — Produção (Liberação)</h2>
+        <h2>Produção / Liberação</h2>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
       </div>
-      <div class="grid">
-        <label>Data de fabricação
-          <input id="libData" type="date" required />
-        </label>
-        <label>Setor
-          <select id="libSetor" required>
-            <option value="">Selecione</option>
-            <option value="Setor 1">Setor 1</option>
-            <option value="Setor 2">Setor 2</option>
-          </select>
-        </label>
-        <label>Colaborador
-          <input id="libColaborador" type="text" placeholder="Nome" required />
-        </label>
+
+      <div class="lib-global-panel">
+        <div class="lib-global-fields">
+          <label>Data de fabricação
+            <input id="libData" type="date" required />
+          </label>
+          <label>Colaborador
+            <input id="libColaborador" type="text" placeholder="Nome do operador" required />
+          </label>
+        </div>
       </div>
 
       <div id="libFeedback" class="lib-feedback hidden"></div>
 
-      <div class="sheet-box">
-        <div class="sheet-topline">
-          <div><strong>Formulário</strong> — Liberação e Inspeção produto</div>
-          <div><strong>Setor:</strong> <span id="sheetSetorLabel">-</span></div>
+      <div id="libDualPanel" class="lib-dual-panel">
+        <div class="lib-sector-block lib-sector-1">
+          <div class="lib-sector-header">
+            <span class="lib-sector-title">Setor 1</span>
+            <span class="lib-sector-counter" id="libCounterSetor1">0 / 90</span>
+          </div>
+          <div class="lib-sector-cols" id="libSetor1Cols"></div>
         </div>
-
-        <div class="sheet-grid-wrap">
-          <table class="sheet-table">
-            <thead>
-              <tr>
-                <th>N Forma</th>
-                <th>Modelo</th>
-                <th class="ins-related">Status</th>
-                <th class="ins-related">Cód</th>
-              </tr>
-            </thead>
-            <tbody id="sheetLeftBody"></tbody>
-          </table>
-
-          <table class="sheet-table">
-            <thead>
-              <tr>
-                <th>N Forma</th>
-                <th>Modelo</th>
-                <th class="ins-related">Status</th>
-                <th class="ins-related">Cód</th>
-              </tr>
-            </thead>
-            <tbody id="sheetRightBody"></tbody>
-          </table>
+        <div class="lib-sector-block lib-sector-2">
+          <div class="lib-sector-header">
+            <span class="lib-sector-title">Setor 2</span>
+            <span class="lib-sector-counter" id="libCounterSetor2">0 / 80</span>
+          </div>
+          <div class="lib-sector-cols" id="libSetor2Cols"></div>
         </div>
       </div>
 
-      <p id="sheetSelectedInfo" class="hint">Defina o status por forma.</p>
 
-      <label>Observações
-        <textarea id="libObs" rows="3" placeholder="Observações da liberação"></textarea>
-      </label>
 
-      <label>Fotos da liberação
-        <input id="libFotos" type="file" accept="image/*" capture="environment" multiple />
-      </label>
-      <div id="libFotosPreview" class="photo-grid"></div>
-
-      <button id="salvarLiberacao" class="btn primary" type="button">Salvar</button>
+      <button id="btnLimparFormas" class="btn btn-limpar" type="button">Limpar formas (sessão local)</button>
     </section>
 
     <section id="viewInspecao" class="card hidden">

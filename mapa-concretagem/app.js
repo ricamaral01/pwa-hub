@@ -264,8 +264,8 @@ const el = {
   viewAcompanhamento: document.getElementById("viewAcompanhamento"),
   syncStatus: document.getElementById("syncStatus"),
 
-  libSetor: document.getElementById("libSetor"),
   libData: document.getElementById("libData"),
+  libColaborador: document.getElementById("libColaborador"),
   libFeedback: document.getElementById("libFeedback"),
   sheetSetorLabel: document.getElementById("sheetSetorLabel"),
   sheetLeftBody: document.getElementById("sheetLeftBody"),
@@ -718,7 +718,7 @@ function renderSheetBlocks(blocks, container, setor, labels = []) {
 }
 
 function renderSheetSide(items, container, options = {}) {
-  const setor = el.libSetor.value;
+  const setor = el.libSetor?.value || "";
   container.innerHTML = "";
   container.classList.remove("forma-grid-blocos");
 
@@ -740,13 +740,129 @@ function renderSheetSide(items, container, options = {}) {
   });
 }
 
-async function renderSheetGrid() {
-  const setor = el.libSetor.value || "Setor 2";
-  el.sheetSetorLabel.textContent = setor;
-  const forms = await getSectorFormsForLiberacao(setor);
+function setCardState(card, state) {
+  card.classList.remove("is-idle", "is-saving", "is-saved", "is-error");
+  card.classList.add("is-" + state);
+  const statusEl = card.querySelector(".fc-status");
+  if (!statusEl) return;
+  if (state === "saving") {
+    statusEl.textContent = "⋯";
+    card.disabled = true;
+  } else if (state === "saved") {
+    statusEl.textContent = "✓";
+    card.disabled = true;
+  } else if (state === "error") {
+    statusEl.textContent = "✗";
+    card.disabled = false;
+  } else {
+    statusEl.textContent = "";
+    card.disabled = false;
+  }
+}
 
-  renderSheetSide(forms.left, el.sheetLeftBody);
-  renderSheetSide(forms.right, el.sheetRightBody);
+function createFormaCard(item, setor) {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "forma-card is-idle";
+  card.dataset.formaNumero = normalizeUpper(item.forma);
+  card.dataset.modelo = item.modelo || "";
+
+  const numEl = document.createElement("span");
+  numEl.className = "fc-number";
+  numEl.textContent = item.forma;
+
+  const statusEl = document.createElement("span");
+  statusEl.className = "fc-status";
+
+  card.appendChild(numEl);
+  card.appendChild(statusEl);
+
+  if (isFormaClicked(item.forma, setor)) {
+    setCardState(card, "saved");
+  } else {
+    card.addEventListener("click", () => {
+      const data = el.libData?.value;
+      const colaborador = (el.libColaborador?.value || "").trim();
+      if (!data) {
+        showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
+        el.libData?.focus();
+        return;
+      }
+      if (!colaborador) {
+        showLibFeedback("Preencha o colaborador antes de registrar.", "error");
+        el.libColaborador?.focus();
+        return;
+      }
+      salvarFormaClicada(item.forma, setor, card, item.modelo || "");
+    });
+  }
+
+  return card;
+}
+
+function renderSectorCols(container, leftForms, rightForms, setor) {
+  if (!container) return;
+  container.innerHTML = "";
+  const leftCol = document.createElement("div");
+  leftCol.className = "lib-forms-col";
+  const rightCol = document.createElement("div");
+  rightCol.className = "lib-forms-col";
+  leftForms.forEach((item) => leftCol.appendChild(createFormaCard(item, setor)));
+  rightForms.forEach((item) => rightCol.appendChild(createFormaCard(item, setor)));
+  container.appendChild(leftCol);
+  container.appendChild(rightCol);
+}
+
+function renderLiberacaoDual() {
+  renderSectorCols(
+    document.getElementById("libSetor1Cols"),
+    SETOR_1_LEFT_FORMS,
+    SETOR_1_RIGHT_FORMS,
+    "Setor 1"
+  );
+  renderSectorCols(
+    document.getElementById("libSetor2Cols"),
+    SETOR_2_LEFT_FORMS,
+    SETOR_2_RIGHT_FORMS,
+    "Setor 2"
+  );
+  updateSectorCounters();
+}
+
+function updateSectorCounters() {
+  const clicked = getClickedFormsToday();
+  const formas = clicked.formas || {};
+
+  const s1All = SETOR_1_LEFT_FORMS.concat(SETOR_1_RIGHT_FORMS);
+  const s2All = SETOR_2_LEFT_FORMS.concat(SETOR_2_RIGHT_FORMS);
+
+  let s1Count = 0;
+  s1All.forEach((item) => {
+    if (formas["Setor 1||" + normalizeUpper(item.forma)]) s1Count++;
+  });
+
+  let s2Count = 0;
+  s2All.forEach((item) => {
+    if (formas["Setor 2||" + normalizeUpper(item.forma)]) s2Count++;
+  });
+
+  const c1 = document.getElementById("libCounterSetor1");
+  const c2 = document.getElementById("libCounterSetor2");
+  if (c1) {
+    c1.textContent = s1Count + " / " + s1All.length;
+    c1.classList.toggle("counter-done", s1Count === s1All.length && s1All.length > 0);
+  }
+  if (c2) {
+    c2.textContent = s2Count + " / " + s2All.length;
+    c2.classList.toggle("counter-done", s2Count === s2All.length && s2All.length > 0);
+  }
+}
+
+async function renderSheetGrid() {
+  const setor = el.sheetSetorLabel?.textContent || "Setor 2";
+  const forms = await getSectorFormsForLiberacao(setor);
+  if (el.sheetLeftBody) renderSheetSide(forms.left, el.sheetLeftBody);
+  if (el.sheetRightBody) renderSheetSide(forms.right, el.sheetRightBody);
 }
 
 function showLibFeedback(message, type) {
@@ -759,33 +875,29 @@ function showLibFeedback(message, type) {
   setTimeout(() => el.libFeedback.classList.add("hidden"), 3000);
 }
 
-async function salvarFormaClicada(forma, setor, btn) {
-  if (!setor) {
-    alert("Selecione o setor antes de clicar na forma.");
-    return;
-  }
+async function salvarFormaClicada(forma, setor, card, modelo) {
+  setCardState(card, "saving");
 
-  btn.disabled = true;
   const agora = new Date();
   const dia = agora.toLocaleDateString("pt-BR");
   const hora = agora.toLocaleTimeString("pt-BR");
+  const dataFabricacao = el.libData?.value || todayYmd();
+  const colaborador = (el.libColaborador?.value || "").trim();
+  const modeloFinal = modelo || card.dataset.modelo || "";
 
   const payload = {
     dia,
     hora,
     setor,
     forma,
-    dataFabricacao: el.libData?.value || todayYmd(),
-    modelo: btn.dataset.modelo || ""
+    dataFabricacao,
+    colaborador,
+    modelo: modeloFinal
   };
 
-  showLibFeedback(`Registrando ${forma}...`, "ok");
-
   const apiResult = await postToApi("salvar_forma_click", payload);
+
   if (apiResult.ok || apiResult.skipped) {
-    // Salva no db.records local para que a inspecao funcione offline/API vazia
-    const dataFabricacao = payload.dataFabricacao;
-    const modelo = payload.modelo;
     const db = readDb();
     let record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
     if (!record) {
@@ -794,7 +906,7 @@ async function salvarFormaClicada(forma, setor, btn) {
         dataFabricacao,
         setor,
         formaNumero: normalizeUpper(forma),
-        modelo,
+        modelo: modeloFinal,
         createdAt: nowIso(),
         updatedAt: nowIso(),
         liberacao: null,
@@ -802,31 +914,27 @@ async function salvarFormaClicada(forma, setor, btn) {
       };
     }
     if (!record.liberacao || record.liberacao.status !== "1") {
-      record.liberacao = { status: "1", colaborador: "", observacoes: "", fotos: [], timestamp: nowIso() };
+      record.liberacao = { status: "1", colaborador, observacoes: "", fotos: [], timestamp: nowIso() };
       record.updatedAt = nowIso();
     }
     upsertRecord(db, record);
     writeDb(db);
   }
+
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
-    btn.classList.add("active", "btn-liberado");
-    btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma} ✓</span>`;
-    const row = btn.closest("tr");
-    if (row) row.classList.add("row-liberada");
+    setCardState(card, "saved");
+    updateSectorCounters();
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
     markFormaClicked(forma, setor);
-    btn.classList.add("active", "btn-liberado");
-    btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma} ✓</span>`;
-    const row = btn.closest("tr");
-    if (row) row.classList.add("row-liberada");
+    setCardState(card, "saved");
+    updateSectorCounters();
     setSyncStatus("warn", "API não configurada. Forma salva localmente.");
     showLibFeedback(`${forma} — salvo localmente.`, "ok");
   } else {
-    btn.disabled = false;
-    btn.innerHTML = `<span class="lib-btn-model">${btn.dataset.modelo || "-"}</span> <span class="lib-btn-forma">${forma}</span>`;
+    setCardState(card, "error");
     setSyncStatus("error", `Falha ao registrar ${forma}: ${apiResult.error || "erro desconhecido"}`);
     showLibFeedback(`${forma} — falha no envio!`, "error");
   }
@@ -1170,7 +1278,7 @@ async function saveInspecao() {
     renderPhotoPreview(el.insFotosPreview, state.insPhotos);
 
     renderInspecaoLiberados();
-    renderSheetGrid();
+    renderLiberacaoDual();
     renderHistorico();
 
     const apiResult = await postToApi("salvar_inspecao_lote", { entries: inspecaoEntries });
@@ -1482,7 +1590,7 @@ function bindEvents() {
   el.hubLiberacao.addEventListener("click", () => {
     setMode("LIBERACAO");
     if (!el.libData.value) el.libData.value = todayYmd();
-    renderSheetGrid();
+    renderLiberacaoDual();
   });
   el.hubInspecao.addEventListener("click", () => {
     setMode("INSPECAO");
@@ -1512,13 +1620,12 @@ function bindEvents() {
       }
     });
   }
-  el.libSetor.addEventListener("change", renderSheetGrid);
-  el.libData.addEventListener("change", renderSheetGrid);
+  el.libData.addEventListener("change", renderLiberacaoDual);
   if (el.btnLimparFormas) {
     el.btnLimparFormas.addEventListener("click", () => {
       if (!confirm("Limpar todas as formas concretadas? (não apaga da planilha)")) return;
       localStorage.removeItem(CLICKED_FORMS_KEY);
-      renderSheetGrid();
+      renderLiberacaoDual();
     });
   }
 
@@ -1555,7 +1662,6 @@ function init() {
   bindEvents();
 
   const now = todayYmd();
-  el.libSetor.value = "Setor 2";
   el.libData.value = now;
   el.insFiltroData.value = now;
   el.insModoCarga.value = "data";
@@ -1569,7 +1675,7 @@ function init() {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
   }
 
-  renderSheetGrid();
+  renderLiberacaoDual();
   renderInspecaoLiberados();
   renderHistorico();
   carregarDashboardConcretagem();
