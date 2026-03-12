@@ -828,6 +828,16 @@
         .compare-toolbar { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
         .cost-grid { display:grid; grid-template-columns: repeat(4, minmax(120px,1fr)); gap:12px; margin-top:14px; }
         .cost-summary { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-top:16px; }
+        .cost-adv-table { width:100%; border-collapse:collapse; font-size:0.81rem; }
+        .cost-adv-table thead tr { background:var(--primary); color:#fff; }
+        .cost-adv-table th { padding:7px 6px; text-align:center; white-space:nowrap; font-weight:700; }
+        .cost-adv-table td { padding:6px 5px; border-bottom:1px solid var(--border); vertical-align:middle; text-align:center; }
+        .cost-adv-table tbody tr:nth-child(even) { background:#f7f9fc; }
+        .cost-adv-input { width:76px; padding:4px 5px; border:1px solid var(--border); border-radius:6px; font-size:0.81rem; text-align:right; }
+        .cost-adv-select { padding:4px 4px; border:1px solid var(--border); border-radius:6px; font-size:0.81rem; background:#fff; }
+        .cost-adv-chk-label { display:inline-flex; align-items:center; gap:4px; cursor:pointer; font-size:0.81rem; white-space:nowrap; }
+        .cost-adv-chk { width:15px; height:15px; cursor:pointer; accent-color:var(--accent); }
+        .cost-adv-liq { font-weight:800; color:var(--accent); white-space:nowrap; font-size:0.83rem; }
         .summary-chip { border:1px solid var(--border); border-radius:14px; padding:14px; background:#fff; box-shadow:var(--shadow); }
         .summary-chip__label { font-size:0.74rem; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-light); font-weight:800; }
         .summary-chip__value { margin-top:6px; font-size:1.25rem; font-weight:800; color:var(--primary); }
@@ -983,6 +993,13 @@
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-group">
+        <span class="sidebar-group-label">Custos</span>
+        <button class="sidebar-btn" data-sec="sec-custo-mcc" onclick="showSection('sec-custo-mcc',this)">
+            <span class="sb-num">M1</span><span class="sb-icon">💲</span><span class="sb-label">Banco de Custos MCC</span>
+        </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group">
         <span class="sidebar-group-label">Traços</span>
         <button class="sidebar-btn" data-sec="sec-tracos-salvos" onclick="showSection('sec-tracos-salvos',this)">
             <span class="sb-num">T1</span><span class="sb-icon">📂</span><span class="sb-label">Traços Salvos</span>
@@ -1049,6 +1066,7 @@
         <option value="sec-resultados-calc">🧮 Detalhamento Cálculos</option>
         <option value="sec-normas-concreto">📚 Normas</option>
         <option value="sec-memoria">📝 Memória de Cálculo</option>
+        <option value="sec-custo-mcc">💲 Banco de Custos MCC</option>
         <option value="sec-tracos-salvos">📂 Traços Salvos</option>
         <option value="sec-experimental">🔬 Traço Experimental</option>
     </select>
@@ -1912,21 +1930,138 @@
 
             <div>
                 <div class="result-box ok">
-                    <h3>💰 Painel de custo por m³</h3>
-                    <p>Informe os preços unitários em <strong>R$/kg</strong>. O traço atual da dosagem alimenta automaticamente o cálculo do custo estimado.</p>
-                    <div class="cost-grid">
-                        <div class="form-group"><label>Cimento (R$/kg)</label><input type="number" id="cost_cim" step="0.01" value="0.70"></div>
-                        <div class="form-group"><label>Adição (R$/kg)</label><input type="number" id="cost_adic" step="0.01" value="0.25"></div>
-                        <div class="form-group"><label>Areia Nat. (R$/kg)</label><input type="number" id="cost_an" step="0.01" value="0.12"></div>
-                        <div class="form-group"><label>Areia Ind. (R$/kg)</label><input type="number" id="cost_ai" step="0.01" value="0.11"></div>
-                        <div class="form-group"><label>Brita 0 (R$/kg)</label><input type="number" id="cost_b0" step="0.01" value="0.16"></div>
-                        <div class="form-group"><label>Brita 1/2 (R$/kg)</label><input type="number" id="cost_b1" step="0.01" value="0.17"></div>
-                        <div class="form-group"><label>Água (R$/kg)</label><input type="number" id="cost_agua" step="0.01" value="0.01"></div>
-                        <div class="form-group"><label>Aditivo (R$/kg)</label><input type="number" id="cost_adit" step="0.01" value="8.50"></div>
+                    <h3>💰 Painel de Custo por m³</h3>
+                    <p class="subtitle" style="margin-bottom:14px;">Configure o preço de cada material em <strong>R$/kg ou R$/t</strong>, o ICMS e o frete. Os valores são salvos automaticamente no navegador.</p>
+
+                    <!-- inputs legado ocultos, alimentados por costAdvSync() -->
+                    <input type="hidden" id="cost_cim"  value="0.70">
+                    <input type="hidden" id="cost_adic" value="0.25">
+                    <input type="hidden" id="cost_an"   value="0.12">
+                    <input type="hidden" id="cost_ai"   value="0.11">
+                    <input type="hidden" id="cost_b0"   value="0.16">
+                    <input type="hidden" id="cost_b1"   value="0.17">
+                    <input type="hidden" id="cost_agua" value="0.01">
+                    <input type="hidden" id="cost_adit" value="8.50">
+
+                    <div style="overflow-x:auto;margin-bottom:8px;">
+                      <table class="cost-adv-table">
+                        <thead>
+                          <tr>
+                            <th style="text-align:left;min-width:110px;">Material</th>
+                            <th style="min-width:80px;">Preço</th>
+                            <th style="min-width:72px;">Unid.</th>
+                            <th style="min-width:68px;">ICMS %</th>
+                            <th style="min-width:82px;">Ded. ICMS</th>
+                            <th style="min-width:80px;">Frete</th>
+                            <th style="min-width:72px;">Unid. Frete</th>
+                            <th style="min-width:80px;">ICMS Frete %</th>
+                            <th style="min-width:90px;">Ded. ICMS Frete</th>
+                            <th style="min-width:115px;">Custo líq. R$/kg</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td style="text-align:left;font-weight:600;">Cimento</td>
+                            <td><input type="number" id="costadv_cim_preco" class="cost-adv-input" step="0.01" min="0" value="0.70"></td>
+                            <td><select id="costadv_cim_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_cim_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_cim_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_cim_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
+                            <td><select id="costadv_cim_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_cim_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_cim_ded_icms_frete" class="cost-adv-chk"> Sim</label></td>
+                            <td><span id="costadv_cim_liquido" class="cost-adv-liq">—</span></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align:left;font-weight:600;">Adição</td>
+                            <td><input type="number" id="costadv_adic_preco" class="cost-adv-input" step="0.01" min="0" value="0.25"></td>
+                            <td><select id="costadv_adic_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_adic_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_adic_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_adic_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
+                            <td><select id="costadv_adic_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_adic_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_adic_ded_icms_frete" class="cost-adv-chk"> Sim</label></td>
+                            <td><span id="costadv_adic_liquido" class="cost-adv-liq">—</span></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align:left;font-weight:600;">Areia Natural</td>
+                            <td><input type="number" id="costadv_an_preco" class="cost-adv-input" step="0.01" min="0" value="0.12"></td>
+                            <td><select id="costadv_an_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_an_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_an_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_an_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
+                            <td><select id="costadv_an_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_an_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_an_ded_icms_frete" class="cost-adv-chk"> Sim</label></td>
+                            <td><span id="costadv_an_liquido" class="cost-adv-liq">—</span></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align:left;font-weight:600;">Areia Industrial</td>
+                            <td><input type="number" id="costadv_ai_preco" class="cost-adv-input" step="0.01" min="0" value="0.11"></td>
+                            <td><select id="costadv_ai_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_ai_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_ai_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_ai_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
+                            <td><select id="costadv_ai_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_ai_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_ai_ded_icms_frete" class="cost-adv-chk"> Sim</label></td>
+                            <td><span id="costadv_ai_liquido" class="cost-adv-liq">—</span></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align:left;font-weight:600;">Brita 0</td>
+                            <td><input type="number" id="costadv_b0_preco" class="cost-adv-input" step="0.01" min="0" value="0.16"></td>
+                            <td><select id="costadv_b0_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_b0_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_b0_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_b0_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
+                            <td><select id="costadv_b0_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_b0_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_b0_ded_icms_frete" class="cost-adv-chk"> Sim</label></td>
+                            <td><span id="costadv_b0_liquido" class="cost-adv-liq">—</span></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align:left;font-weight:600;">Brita 1/2</td>
+                            <td><input type="number" id="costadv_b1_preco" class="cost-adv-input" step="0.01" min="0" value="0.17"></td>
+                            <td><select id="costadv_b1_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_b1_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_b1_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_b1_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
+                            <td><select id="costadv_b1_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_b1_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_b1_ded_icms_frete" class="cost-adv-chk"> Sim</label></td>
+                            <td><span id="costadv_b1_liquido" class="cost-adv-liq">—</span></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align:left;font-weight:600;">Água</td>
+                            <td><input type="number" id="costadv_agua_preco" class="cost-adv-input" step="0.001" min="0" value="0.01"></td>
+                            <td><select id="costadv_agua_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_agua_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_agua_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_agua_frete" class="cost-adv-input" step="0.001" min="0" value="0"></td>
+                            <td><select id="costadv_agua_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_agua_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_agua_ded_icms_frete" class="cost-adv-chk"> Sim</label></td>
+                            <td><span id="costadv_agua_liquido" class="cost-adv-liq">—</span></td>
+                          </tr>
+                          <tr>
+                            <td style="text-align:left;font-weight:600;">Aditivo SP</td>
+                            <td><input type="number" id="costadv_adit_preco" class="cost-adv-input" step="0.01" min="0" value="8.50"></td>
+                            <td><select id="costadv_adit_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_adit_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_adit_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_adit_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
+                            <td><select id="costadv_adit_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
+                            <td><input type="number" id="costadv_adit_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_adit_ded_icms_frete" class="cost-adv-chk"> Sim</label></td>
+                            <td><span id="costadv_adit_liquido" class="cost-adv-liq">—</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
-                    <div class="btn-wrap">
-                        <button class="btn btn-primary" type="button" onclick="calculateCostPanel()">🧮 Recalcular custo</button>
-                        <button class="btn btn-accent" type="button" onclick="saveCompareSlot('A')">📌 Salvar atual em A</button>
+                    <div class="btn-wrap" style="margin-bottom:4px;">
+                        <button class="btn btn-primary" type="button" onclick="costAdvSave(); calculateCostPanel();">🧮 Calcular / Salvar Custos</button>
+                        <button class="btn btn-accent" type="button" onclick="saveCompareSlot('A')">📌 Salvar em A</button>
                     </div>
                     <div class="cost-summary">
                         <div class="summary-chip"><div class="summary-chip__label">Custo total / m³</div><div class="summary-chip__value" id="cost_total_display">R$ 0,00</div></div>
@@ -2871,6 +3006,135 @@
 </div>
 
 
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SEÇÃO — BANCO DE CUSTOS MCC                          -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="sec-custo-mcc" class="section">
+  <div class="card">
+    <h2><span class="icon">💲</span> Banco de Custos MCC</h2>
+    <p class="subtitle">Cadastre produtos, fornecedores, ICMS e frete. Aplique ao painel de custos com um clique para calcular o custo real do m³.</p>
+
+    <div class="info-box" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-left-color:#2e7d32;margin-bottom:16px;">
+      <strong>⚙️ Configuração:</strong> Cole a URL do Web App do Apps Script (<code>AppsScript_custoMCC.gs</code>) na variável <code>CUSTO_MCC_WEBAPP_URL</code> no código, ou informe abaixo:
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+        <input type="text" id="mcc_url_input" placeholder="https://script.google.com/macros/s/.../exec" style="flex:1;min-width:280px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;">
+        <button class="btn btn-primary" style="padding:6px 14px;font-size:0.82rem;" onclick="mccSetUrl()">💾 Salvar URL</button>
+      </div>
+    </div>
+
+    <!-- FORMULÁRIO DE CADASTRO -->
+    <div style="background:#f0fdf4;border:2px solid #a5d6a7;border-radius:12px;padding:18px 20px;margin-bottom:20px;">
+      <h3 style="font-size:1rem;color:#2e7d32;margin-bottom:14px;">➕ Cadastrar / Editar Produto</h3>
+      <input type="hidden" id="mcc_edit_id" value="">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;">
+        <div class="form-group">
+          <label>Nome do Produto *</label>
+          <input type="text" id="mcc_nome" placeholder="ex: CP V ARI RS" style="width:100%;">
+        </div>
+        <div class="form-group">
+          <label>Tipo de Material *</label>
+          <select id="mcc_tipo" style="width:100%;" onchange="mccAutoChave()">
+            <option value="">Selecione...</option>
+            <option value="Cimento">Cimento</option>
+            <option value="Adição">Adição</option>
+            <option value="Areia Natural">Areia Natural</option>
+            <option value="Areia Industrial">Areia Industrial</option>
+            <option value="Brita 0">Brita 0</option>
+            <option value="Brita 1/2">Brita 1/2</option>
+            <option value="Água">Água</option>
+            <option value="Aditivo SP">Aditivo SP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Chave MCC (auto)</label>
+          <select id="mcc_chave" style="width:100%;">
+            <option value="cim">cim — Cimento</option>
+            <option value="adic">adic — Adição</option>
+            <option value="an">an — Areia Natural</option>
+            <option value="ai">ai — Areia Industrial</option>
+            <option value="b0">b0 — Brita 0</option>
+            <option value="b1">b1 — Brita 1/2</option>
+            <option value="agua">agua — Água</option>
+            <option value="adit">adit — Aditivo SP</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fornecedor</label>
+          <input type="text" id="mcc_fornecedor" placeholder="ex: Votorantim" style="width:100%;">
+        </div>
+        <div class="form-group">
+          <label>Unidade Medida</label>
+          <select id="mcc_unid" style="width:100%;">
+            <option value="kg">R$/kg</option>
+            <option value="t">R$/t</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Preço (R$/unid.)</label>
+          <input type="number" id="mcc_preco" step="0.01" min="0" value="0" style="width:100%;">
+        </div>
+        <div class="form-group">
+          <label>ICMS (%)</label>
+          <input type="number" id="mcc_icms_pct" step="0.1" min="0" max="100" value="0" style="width:100%;">
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-end;gap:8px;">
+          <label class="cost-adv-chk-label" style="padding-bottom:4px;"><input type="checkbox" id="mcc_ded_icms" class="cost-adv-chk"> Deduz ICMS</label>
+        </div>
+        <div class="form-group">
+          <label>Frete (R$/unid.)</label>
+          <input type="number" id="mcc_frete" step="0.01" min="0" value="0" style="width:100%;">
+        </div>
+        <div class="form-group">
+          <label>Unid. Frete</label>
+          <select id="mcc_unid_frete" style="width:100%;">
+            <option value="kg">R$/kg</option>
+            <option value="t">R$/t</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>ICMS Frete (%)</label>
+          <input type="number" id="mcc_icms_frete_pct" step="0.1" min="0" max="100" value="0" style="width:100%;">
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-end;gap:8px;">
+          <label class="cost-adv-chk-label" style="padding-bottom:4px;"><input type="checkbox" id="mcc_ded_icms_frete" class="cost-adv-chk"> Deduz ICMS Frete</label>
+        </div>
+        <div class="form-group">
+          <label>Custo Líq. R$/kg</label>
+          <div id="mcc_custo_liq_preview" style="padding:8px 10px;background:#e8f5e9;border-radius:8px;font-weight:800;color:#2e7d32;font-size:1rem;">—</div>
+        </div>
+        <div class="form-group">
+          <label>Ativo?</label>
+          <select id="mcc_ativo" style="width:100%;">
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label>Observações</label>
+          <input type="text" id="mcc_obs" placeholder="Notas, validade de cotação, etc." style="width:100%;">
+        </div>
+      </div>
+      <div class="btn-wrap" style="margin-top:14px;">
+        <button class="btn btn-primary" onclick="mccPreviewCusto()">🔢 Calcular Custo Líq.</button>
+        <button class="btn btn-accent" onclick="mccSalvarProduto()">💾 Salvar no Banco</button>
+        <button class="btn" style="background:#e0e5ea;color:var(--text);" onclick="mccLimparForm()">🗑️ Limpar</button>
+      </div>
+      <div id="mcc_form_status" style="margin-top:8px;"></div>
+    </div>
+
+    <!-- TABELA DE PRODUTOS SALVOS -->
+    <div class="btn-wrap" style="margin-bottom:10px;">
+      <button class="btn btn-primary" onclick="mccListarProdutos()">🔄 Carregar do Banco</button>
+    </div>
+    <div id="mcc_tabela_wrap">
+      <div style="text-align:center;padding:32px;color:var(--text-light);">
+        <div style="font-size:2rem;margin-bottom:8px;">💲</div>
+        <p>Clique em <strong>Carregar do Banco</strong> para listar os produtos cadastrados.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="sec-premium-bank" class="section">
     <div class="card">
         <h2><span class="icon">🏛️</span> Banco Premium de Traços</h2>
@@ -3066,6 +3330,11 @@ function calcularCorrecaoUmidade(m, umidades) {
 // IMPORTANTE: Após implantar o AppsScript_dosagem.gs como Web App,
 // cole a URL gerada abaixo:
 const DOSAGEM_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxUSO5OQ9G6DFQAKOTydxURfr1Ncc2lkeAHavKV2bV8vL5tn-Y_mTlbL024p6dORgLaxg/exec';
+
+/* === BANCO DE CUSTOS MCC === */
+// Cole aqui a URL do Web App gerado pelo AppsScript_custoMCC.gs
+// Ou use o campo de configuração na seção "Banco de Custos MCC"
+let CUSTO_MCC_WEBAPP_URL = localStorage.getItem('ctCustoMCCUrl') || '';
 
 function abrirModalSalvarTraco() {
     const modal = document.getElementById('modal-salvar-traco');
@@ -7969,6 +8238,364 @@ function ctPremiumRefresh(){
     const bind = () => ids.forEach(id => { const el=document.getElementById(id); if(el && !el.dataset.premiumBound){ el.dataset.premiumBound='1'; el.addEventListener('input', () => { try { ctPremiumRenderCurve(ctPremiumGetBank()); } catch(e){} }); }});
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ()=>{ bind(); ctPremiumRefresh(); });
     else { bind(); ctPremiumRefresh(); }
+})();
+
+// ===== BANCO DE CUSTOS MCC =====
+const MCC_TIPO_TO_CHAVE = {
+    'Cimento':           'cim',
+    'Adição':            'adic',
+    'Areia Natural':     'an',
+    'Areia Industrial':  'ai',
+    'Brita 0':           'b0',
+    'Brita 1/2':         'b1',
+    'Água':              'agua',
+    'Aditivo SP':        'adit'
+};
+function mccSetUrl() {
+    const url = (document.getElementById('mcc_url_input')?.value || '').trim();
+    if (!url) return;
+    CUSTO_MCC_WEBAPP_URL = url;
+    localStorage.setItem('ctCustoMCCUrl', url);
+    mccStatus('URL salva com sucesso!', 'ok');
+}
+function mccStatus(msg, kind='ok') {
+    const el = document.getElementById('mcc_form_status');
+    if (!el) return;
+    const color = kind==='error' ? 'var(--danger)' : kind==='warn' ? 'var(--warning)' : 'var(--accent)';
+    el.innerHTML = `<span style="color:${color};font-weight:700;">${msg}</span>`;
+}
+function mccNum(id) {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    const v = parseFloat(String(el.value||'').replace(',','.'));
+    return Number.isFinite(v) ? v : 0;
+}
+function mccAutoChave() {
+    const tipo = document.getElementById('mcc_tipo')?.value || '';
+    const chave = MCC_TIPO_TO_CHAVE[tipo] || '';
+    const sel = document.getElementById('mcc_chave');
+    if (sel && chave) sel.value = chave;
+}
+function mccCalcLiq() {
+    const preco     = mccNum('mcc_preco');
+    const unid      = document.getElementById('mcc_unid')?.value || 'kg';
+    const icms      = mccNum('mcc_icms_pct');
+    const dedIcms   = document.getElementById('mcc_ded_icms')?.checked || false;
+    const frete     = mccNum('mcc_frete');
+    const unidF     = document.getElementById('mcc_unid_frete')?.value || 'kg';
+    const icmsF     = mccNum('mcc_icms_frete_pct');
+    const dedIcmsF  = document.getElementById('mcc_ded_icms_frete')?.checked || false;
+    const preco_kg  = unid  === 't' ? preco  / 1000 : preco;
+    const frete_kg  = unidF === 't' ? frete  / 1000 : frete;
+    const ded_i     = dedIcms  ? preco_kg  * (icms  / 100) : 0;
+    const ded_if    = dedIcmsF ? frete_kg  * (icmsF / 100) : 0;
+    return Math.max(0, preco_kg - ded_i + frete_kg - ded_if);
+}
+function mccPreviewCusto() {
+    const liq = mccCalcLiq();
+    const el = document.getElementById('mcc_custo_liq_preview');
+    if (el) el.textContent = 'R$ ' + liq.toFixed(4).replace('.', ',') + '/kg';
+}
+async function mccSalvarProduto() {
+    const nome  = (document.getElementById('mcc_nome')?.value || '').trim();
+    const tipo  = document.getElementById('mcc_tipo')?.value || '';
+    const chave = document.getElementById('mcc_chave')?.value || '';
+    if (!nome)  { mccStatus('Informe o nome do produto.', 'warn'); return; }
+    if (!tipo)  { mccStatus('Selecione o tipo de material.', 'warn'); return; }
+    if (!chave) { mccStatus('Selecione a chave MCC.', 'warn'); return; }
+    const url = CUSTO_MCC_WEBAPP_URL;
+    if (!url)   { mccStatus('URL do Web App não configurada.', 'error'); return; }
+    const custoLiq = mccCalcLiq();
+    const editId   = (document.getElementById('mcc_edit_id')?.value || '').trim();
+    const payload  = {
+        action:         'salvar_custo_mcc',
+        id:             editId || undefined,
+        nomeProduto:    nome,
+        tipoMaterial:   tipo,
+        chaveMCC:       chave,
+        fornecedor:     (document.getElementById('mcc_fornecedor')?.value || '').trim(),
+        unidadeMedida:  document.getElementById('mcc_unid')?.value || 'kg',
+        preco:          mccNum('mcc_preco'),
+        icmsPct:        mccNum('mcc_icms_pct'),
+        deduzICMS:      document.getElementById('mcc_ded_icms')?.checked ? 'Sim' : 'Não',
+        frete:          mccNum('mcc_frete'),
+        unidFrete:      document.getElementById('mcc_unid_frete')?.value || 'kg',
+        icmsFreteP:     mccNum('mcc_icms_frete_pct'),
+        deduzICMSFrete: document.getElementById('mcc_ded_icms_frete')?.checked ? 'Sim' : 'Não',
+        custoLiq:       custoLiq,
+        ativo:          document.getElementById('mcc_ativo')?.value || 'Sim',
+        observacoes:    (document.getElementById('mcc_obs')?.value || '').trim()
+    };
+    mccStatus('⏳ Salvando...', 'warn');
+    try {
+        await fetch(url, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload), mode:'no-cors' });
+        mccStatus(`✅ ${nome} salvo no banco MCC!`, 'ok');
+        document.getElementById('mcc_custo_liq_preview').textContent = 'R$ ' + custoLiq.toFixed(4).replace('.', ',') + '/kg';
+        mccLimparForm();
+        setTimeout(() => mccListarProdutos(), 800);
+    } catch(err) {
+        mccStatus('❌ Erro ao salvar: ' + err.message, 'error');
+    }
+}
+async function mccListarProdutos() {
+    const url = CUSTO_MCC_WEBAPP_URL;
+    const wrap = document.getElementById('mcc_tabela_wrap');
+    if (!wrap) return;
+    if (!url) {
+        wrap.innerHTML = '<div class="result-box error"><p>URL do Web App não configurada.</p></div>';
+        return;
+    }
+    wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando...</div>';
+    try {
+        const resp = await fetch(url + '?action=listar_custo_mcc', { method:'GET' });
+        const data = await resp.json();
+        if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
+        if (!data.produtos || !data.produtos.length) {
+            wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">Nenhum produto cadastrado.</div>';
+            return;
+        }
+        let html = `<div style="overflow-x:auto;"><table class="cost-adv-table">
+            <thead><tr>
+              <th>Nome</th><th>Tipo</th><th>Fornecedor</th>
+              <th>R$/Unid.</th><th>Unid.</th><th>ICMS%</th><th>Ded.ICMS</th>
+              <th>Frete</th><th>Unid.Fr.</th><th>ICMS Fr.%</th><th>Ded.Fr.</th>
+              <th>Custo Líq. R$/kg</th><th>Ativo</th><th>Obs.</th><th>Ações</th>
+            </tr></thead><tbody>`;
+        data.produtos.forEach(p => {
+            const liqFmt = 'R$ ' + (Number(p.custoLiq)||0).toFixed(4).replace('.', ',');
+            const ativo  = p.ativo === 'Sim' ? '✅' : '⛔';
+            const pid    = p.id.replace(/'/g, "\\'");
+            const pj     = btoa(unescape(encodeURIComponent(JSON.stringify(p))));
+            html += `<tr>
+              <td style="text-align:left;font-weight:600;white-space:nowrap;">${p.nomeProduto}</td>
+              <td>${p.tipoMaterial}</td>
+              <td>${p.fornecedor}</td>
+              <td>${(p.preco||0).toFixed(2).replace('.',',')}</td>
+              <td>${p.unidadeMedida}</td>
+              <td>${p.icmsPct||0}</td>
+              <td>${p.deduzICMS}</td>
+              <td>${(p.frete||0).toFixed(2).replace('.',',')}</td>
+              <td>${p.unidFrete}</td>
+              <td>${p.icmsFreteP||0}</td>
+              <td>${p.deduzICMSFrete}</td>
+              <td style="font-weight:800;color:var(--accent);">${liqFmt}</td>
+              <td>${ativo}</td>
+              <td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.observacoes}</td>
+              <td style="white-space:nowrap;">
+                <button class="smart-chip" onclick="mccAplicarAoPainel('${pj}')">📥 Aplicar</button>
+                <button class="smart-chip" onclick="mccEditarForm('${pj}')">✏️ Editar</button>
+                <button class="smart-chip" style="color:var(--danger);" onclick="mccExcluirProduto('${pid}')">🗑️</button>
+              </td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+        wrap.innerHTML = html;
+    } catch(err) {
+        wrap.innerHTML = `<div class="result-box error">❌ Erro: ${err.message}</div>`;
+    }
+}
+function mccAplicarAoPainel(b64) {
+    try {
+        const p = JSON.parse(decodeURIComponent(escape(atob(b64))));
+        const key = p.chaveMCC;
+        if (!key) return;
+        const setV = (id, v) => { const el=document.getElementById(id); if(el) el.value=v; };
+        const setC = (id, v) => { const el=document.getElementById(id); if(el) el.checked=(v==='Sim'||v===true); };
+        const setS = (id, v) => { const el=document.getElementById(id); if(el && v) el.value=v; };
+        setV(`costadv_${key}_preco`,         p.preco         ?? 0);
+        setS(`costadv_${key}_unid`,          p.unidadeMedida || 'kg');
+        setV(`costadv_${key}_icms_pct`,      p.icmsPct       ?? 0);
+        setC(`costadv_${key}_ded_icms`,      p.deduzICMS);
+        setV(`costadv_${key}_frete`,         p.frete         ?? 0);
+        setS(`costadv_${key}_unid_frete`,    p.unidFrete     || 'kg');
+        setV(`costadv_${key}_icms_frete_pct`,p.icmsFreteP    ?? 0);
+        setC(`costadv_${key}_ded_icms_frete`,p.deduzICMSFrete);
+        costAdvSave();
+        if (typeof calculateCostPanel === 'function') calculateCostPanel();
+        mccStatus(`✅ ${p.nomeProduto} aplicado ao painel de custos!`, 'ok');
+        showSection('sec-compare-cost');
+    } catch(err) { alert('Erro ao aplicar: ' + err.message); }
+}
+function mccEditarForm(b64) {
+    try {
+        const p = JSON.parse(decodeURIComponent(escape(atob(b64))));
+        const setV = (id, v) => { const el=document.getElementById(id); if(el) el.value=v; };
+        const setC = (id, v) => { const el=document.getElementById(id); if(el) el.checked=(v==='Sim'||v===true); };
+        const setS = (id, v) => { const el=document.getElementById(id); if(el && v) el.value=v; };
+        document.getElementById('mcc_edit_id').value = p.id || '';
+        setV('mcc_nome',          p.nomeProduto);
+        setS('mcc_tipo',          p.tipoMaterial);
+        setS('mcc_chave',         p.chaveMCC);
+        setV('mcc_fornecedor',    p.fornecedor);
+        setS('mcc_unid',          p.unidadeMedida || 'kg');
+        setV('mcc_preco',         p.preco         ?? 0);
+        setV('mcc_icms_pct',      p.icmsPct       ?? 0);
+        setC('mcc_ded_icms',      p.deduzICMS);
+        setV('mcc_frete',         p.frete         ?? 0);
+        setS('mcc_unid_frete',    p.unidFrete     || 'kg');
+        setV('mcc_icms_frete_pct',p.icmsFreteP    ?? 0);
+        setC('mcc_ded_icms_frete',p.deduzICMSFrete);
+        setS('mcc_ativo',         p.ativo         || 'Sim');
+        setV('mcc_obs',           p.observacoes);
+        mccPreviewCusto();
+        mccStatus('Editando: ' + p.nomeProduto + '. Ajuste e clique em Salvar.', 'warn');
+        document.getElementById('mcc_nome').scrollIntoView({ behavior:'smooth', block:'center' });
+    } catch(err) { alert('Erro ao carregar edição: ' + err.message); }
+}
+async function mccExcluirProduto(id) {
+    if (!confirm(`Excluir produto ${id}?`)) return;
+    const url = CUSTO_MCC_WEBAPP_URL;
+    if (!url) { alert('URL do Web App não configurada.'); return; }
+    try {
+        await fetch(url, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({ action:'deletar_custo_mcc', id }), mode:'no-cors' });
+        mccStatus('Produto excluído.', 'ok');
+        setTimeout(() => mccListarProdutos(), 600);
+    } catch(err) { mccStatus('Erro: ' + err.message, 'error'); }
+}
+function mccLimparForm() {
+    ['mcc_nome','mcc_fornecedor','mcc_obs','mcc_edit_id'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    ['mcc_preco','mcc_icms_pct','mcc_frete','mcc_icms_frete_pct'].forEach(id => { const el=document.getElementById(id); if(el) el.value='0'; });
+    ['mcc_ded_icms','mcc_ded_icms_frete'].forEach(id => { const el=document.getElementById(id); if(el) el.checked=false; });
+    const liq = document.getElementById('mcc_custo_liq_preview'); if(liq) liq.textContent='—';
+}
+// Carrega URL salva no campo de configuração ao abrir
+(function mccInitUrl(){
+    const urlEl = document.getElementById('mcc_url_input');
+    if (urlEl && CUSTO_MCC_WEBAPP_URL) urlEl.value = CUSTO_MCC_WEBAPP_URL;
+    // Bind preview ao vivo
+    const previewIds = ['mcc_preco','mcc_icms_pct','mcc_frete','mcc_icms_frete_pct','mcc_ded_icms','mcc_ded_icms_frete','mcc_unid','mcc_unid_frete'];
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            previewIds.forEach(id => { const el=document.getElementById(id); if(el) el.addEventListener('input', mccPreviewCusto); el?.addEventListener('change', mccPreviewCusto); });
+            const urlEl2 = document.getElementById('mcc_url_input');
+            if (urlEl2 && CUSTO_MCC_WEBAPP_URL) urlEl2.value = CUSTO_MCC_WEBAPP_URL;
+        });
+    } else {
+        previewIds.forEach(id => { const el=document.getElementById(id); if(el) { el.addEventListener('input', mccPreviewCusto); el.addEventListener('change', mccPreviewCusto); }});
+        const urlEl2 = document.getElementById('mcc_url_input');
+        if (urlEl2 && CUSTO_MCC_WEBAPP_URL) urlEl2.value = CUSTO_MCC_WEBAPP_URL;
+    }
+})();
+
+// ===== PAINEL DE CUSTO AVANÇADO — ICMS + FRETE =====
+const COST_ADV_KEY = 'ctCustosAvancados_v1';
+const COST_ADV_MATS = [
+    { key:'cim',  label:'Cimento' },
+    { key:'adic', label:'Adição' },
+    { key:'an',   label:'Areia Natural' },
+    { key:'ai',   label:'Areia Industrial' },
+    { key:'b0',   label:'Brita 0' },
+    { key:'b1',   label:'Brita 1/2' },
+    { key:'agua', label:'Água' },
+    { key:'adit', label:'Aditivo SP' }
+];
+const COST_ADV_HIDDEN_MAP = { cim:'cost_cim', adic:'cost_adic', an:'cost_an', ai:'cost_ai', b0:'cost_b0', b1:'cost_b1', agua:'cost_agua', adit:'cost_adit' };
+
+function costAdvNum(id) {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    const v = parseFloat(String(el.value || '').replace(',', '.'));
+    return Number.isFinite(v) ? v : 0;
+}
+function costAdvEffective(key) {
+    const preco      = costAdvNum(`costadv_${key}_preco`);
+    const unid       = document.getElementById(`costadv_${key}_unid`)?.value || 'kg';
+    const icms       = costAdvNum(`costadv_${key}_icms_pct`);
+    const dedIcms    = document.getElementById(`costadv_${key}_ded_icms`)?.checked || false;
+    const frete      = costAdvNum(`costadv_${key}_frete`);
+    const unidFrete  = document.getElementById(`costadv_${key}_unid_frete`)?.value || 'kg';
+    const icmsF      = costAdvNum(`costadv_${key}_icms_frete_pct`);
+    const dedIcmsF   = document.getElementById(`costadv_${key}_ded_icms_frete`)?.checked || false;
+    const preco_kg   = unid      === 't' ? preco  / 1000 : preco;
+    const frete_kg   = unidFrete === 't' ? frete  / 1000 : frete;
+    const icms_ded   = dedIcms  ? preco_kg  * (icms  / 100) : 0;
+    const icmsF_ded  = dedIcmsF ? frete_kg  * (icmsF / 100) : 0;
+    return Math.max(0, preco_kg - icms_ded + frete_kg - icmsF_ded);
+}
+function costAdvSync() {
+    COST_ADV_MATS.forEach(({ key }) => {
+        const eff = costAdvEffective(key);
+        const hidden = document.getElementById(COST_ADV_HIDDEN_MAP[key]);
+        if (hidden) hidden.value = eff.toFixed(6);
+        const liq = document.getElementById(`costadv_${key}_liquido`);
+        if (liq) liq.textContent = 'R$ ' + eff.toFixed(4).replace('.', ',') + '/kg';
+    });
+}
+function costAdvSave() {
+    const data = {};
+    COST_ADV_MATS.forEach(({ key }) => {
+        data[key] = {
+            preco:          costAdvNum(`costadv_${key}_preco`),
+            unid:           document.getElementById(`costadv_${key}_unid`)?.value || 'kg',
+            icms_pct:       costAdvNum(`costadv_${key}_icms_pct`),
+            ded_icms:       document.getElementById(`costadv_${key}_ded_icms`)?.checked || false,
+            frete:          costAdvNum(`costadv_${key}_frete`),
+            unid_frete:     document.getElementById(`costadv_${key}_unid_frete`)?.value || 'kg',
+            icms_frete_pct: costAdvNum(`costadv_${key}_icms_frete_pct`),
+            ded_icms_frete: document.getElementById(`costadv_${key}_ded_icms_frete`)?.checked || false
+        };
+    });
+    data._savedAt = new Date().toISOString();
+    localStorage.setItem(COST_ADV_KEY, JSON.stringify(data));
+    costAdvSync();
+}
+function costAdvLoad() {
+    try {
+        const raw = localStorage.getItem(COST_ADV_KEY);
+        if (!raw) { costAdvSync(); return; }
+        const data = JSON.parse(raw);
+        COST_ADV_MATS.forEach(({ key }) => {
+            const d = data[key];
+            if (!d) return;
+            const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+            const setChk = (id, val) => { const el = document.getElementById(id); if (el) el.checked = !!val; };
+            const setSel = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+            setVal(`costadv_${key}_preco`,          d.preco ?? 0);
+            setSel(`costadv_${key}_unid`,            d.unid || 'kg');
+            setVal(`costadv_${key}_icms_pct`,        d.icms_pct ?? 0);
+            setChk(`costadv_${key}_ded_icms`,        d.ded_icms);
+            setVal(`costadv_${key}_frete`,           d.frete ?? 0);
+            setSel(`costadv_${key}_unid_frete`,      d.unid_frete || 'kg');
+            setVal(`costadv_${key}_icms_frete_pct`,  d.icms_frete_pct ?? 0);
+            setChk(`costadv_${key}_ded_icms_frete`,  d.ded_icms_frete);
+        });
+        costAdvSync();
+    } catch(e) { costAdvSync(); }
+}
+function costAdvBindListeners() {
+    COST_ADV_MATS.forEach(({ key }) => {
+        const ids = [
+            `costadv_${key}_preco`, `costadv_${key}_unid`,
+            `costadv_${key}_icms_pct`, `costadv_${key}_ded_icms`,
+            `costadv_${key}_frete`, `costadv_${key}_unid_frete`,
+            `costadv_${key}_icms_frete_pct`, `costadv_${key}_ded_icms_frete`
+        ];
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && !el.dataset.costAdvBound) {
+                el.addEventListener('input',  () => { costAdvSync(); if(typeof updateDosagemCockpit==='function') updateDosagemCockpit(); });
+                el.addEventListener('change', () => { costAdvSync(); if(typeof updateDosagemCockpit==='function') updateDosagemCockpit(); });
+                el.dataset.costAdvBound = '1';
+            }
+        });
+    });
+}
+// Injeta costAdvSync() no pipeline de preços sem quebrar funções existentes
+if (typeof ev3GetPriceMap === 'function') {
+    const _origEv3GetPriceMap = ev3GetPriceMap;
+    ev3GetPriceMap = function() { costAdvSync(); return _origEv3GetPriceMap(); };
+}
+if (typeof ctPremiumCurrentTrace === 'function') {
+    const _origCtPremiumCurrentTrace = ctPremiumCurrentTrace;
+    ctPremiumCurrentTrace = function() { costAdvSync(); return _origCtPremiumCurrentTrace(); };
+}
+(function costAdvInit(){
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => { costAdvLoad(); costAdvBindListeners(); });
+    } else {
+        costAdvLoad();
+        costAdvBindListeners();
+    }
 })();
 
 </script>
