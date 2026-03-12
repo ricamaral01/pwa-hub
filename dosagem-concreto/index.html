@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Dosagem de Concreto — Empacotamento de Partículas</title>
+    <title>CONCRETRACK DOSAGEM — Laboratório e Engenharia do Concreto</title>
     <style>
         :root {
             --primary: #1a5276;
@@ -781,14 +781,146 @@
             .two-col { grid-template-columns: 1fr; }
             .section-jump { flex-direction: column; align-items: stretch; }
         }
+    
+        .panel-hero { background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 16px; padding: 20px; color:#fff; margin-bottom:18px; box-shadow: var(--shadow); }
+        .panel-hero__grid { display:grid; grid-template-columns: 1.4fr 1fr; gap:18px; align-items:stretch; }
+        .eyebrow { display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:rgba(255,255,255,0.16); color:#fff; font-size:0.72rem; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:10px; }
+        .panel-hero h3 { font-size:1.45rem; line-height:1.15; margin-bottom:8px; }
+        .panel-hero p { color: rgba(255,255,255,0.86); font-size:0.92rem; }
+        .summary-shell, .executive-side { background: rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.18); border-radius: 14px; padding:16px; backdrop-filter: blur(8px); }
+        .summary-shell h4, .executive-side h4 { margin-bottom:10px; font-size:1rem; }
+        .smart-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+        .smart-chip { border:none; background:#fff; color:var(--primary); border-radius:999px; padding:9px 14px; font-weight:700; cursor:pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .smart-chip:hover { transform: translateY(-1px); }
+        .kpi-grid, .summary-kpis { display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; margin: 16px 0 20px; }
+        .kpi-card { border:1px solid var(--border); border-radius: 16px; background: linear-gradient(180deg,#fff 0%,#f8fbff 100%); padding:16px; box-shadow: var(--shadow); }
+        .kpi-card__label { font-size:0.74rem; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-light); font-weight:800; }
+        .kpi-card__value { margin-top:8px; font-size:1.55rem; font-weight:800; color:var(--primary); }
+        .kpi-card__hint { margin-top:8px; font-size:0.82rem; color:var(--text-light); }
+        .kpi-card.is-good { border-color:#9fdfb6; background:#f1fbf4; }
+        .kpi-card.is-warn { border-color:#f5d08f; background:#fff9ee; }
+        .kpi-card.is-danger { border-color:#efb2b2; background:#fff3f3; }
+        .stepper { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin: 0 0 18px; }
+        .step-card { border:1px solid var(--border); border-radius:14px; padding:14px; background:#fff; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; }
+        .step-card strong { color: var(--primary); }
+        .executive-banner { background: linear-gradient(135deg, var(--primary) 0%, #244f86 100%); border-radius:16px; padding:20px; color:#fff; display:grid; grid-template-columns:1.35fr 1fr; gap:18px; margin-bottom:18px; box-shadow: var(--shadow); }
+        .executive-box h3 { font-size:1.35rem; margin-bottom:8px; }
+        .executive-banner p, .executive-side li { color:rgba(255,255,255,0.86); }
+        .executive-side ul { margin-left:18px; display:grid; gap:8px; }
+        .ops-dashboard { display:grid; grid-template-columns: 1.25fr 1fr 1fr 1fr; gap:14px; margin: 18px 0 22px; }
+        .ops-card { background: linear-gradient(180deg,#fff 0%,#f7fbff 100%); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); padding:18px; }
+        .ops-card.hero { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color:#fff; }
+        .ops-card__label { font-size:0.74rem; text-transform:uppercase; letter-spacing:1.2px; font-weight:800; color:var(--text-light); }
+        .ops-card.hero .ops-card__label { color:rgba(255,255,255,0.78); }
+        .ops-card__value { margin-top:8px; font-size:1.5rem; font-weight:800; color:var(--primary); }
+        .ops-card.hero .ops-card__value { color:#fff; }
+        .ops-card__hint { margin-top:8px; font-size:0.82rem; color:var(--text-light); }
+        .ops-card.hero .ops-card__hint { color:rgba(255,255,255,0.84); }
+        .ops-mini-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+        .ops-mini { background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.18); border-radius:12px; padding:10px; }
+        .ops-mini strong { display:block; margin-top:4px; font-size:1rem; }
+        .compare-shell { display:grid; grid-template-columns: 1.1fr 0.9fr; gap:18px; margin-top:18px; }
+        .compare-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:14px; }
+        .compare-card { border:1px solid var(--border); border-radius:16px; padding:16px; background:linear-gradient(180deg,#fff 0%,#fbfdff 100%); box-shadow:var(--shadow); }
+        .compare-card h4 { color:var(--primary); margin-bottom:10px; }
+        .compare-metric { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px dashed var(--border); font-size:0.88rem; }
+        .compare-metric:last-child { border-bottom:none; }
+        .compare-toolbar { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+        .cost-grid { display:grid; grid-template-columns: repeat(4, minmax(120px,1fr)); gap:12px; margin-top:14px; }
+        .cost-summary { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-top:16px; }
+        .summary-chip { border:1px solid var(--border); border-radius:14px; padding:14px; background:#fff; box-shadow:var(--shadow); }
+        .summary-chip__label { font-size:0.74rem; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-light); font-weight:800; }
+        .summary-chip__value { margin-top:6px; font-size:1.25rem; font-weight:800; color:var(--primary); }
+        .matrix-note { margin-top:12px; padding:12px 14px; border-radius:12px; background:#f8fbff; border:1px solid var(--border); color:var(--text-light); font-size:0.86rem; }
+        @media (max-width: 1024px) { .ops-dashboard,.kpi-grid,.summary-kpis,.stepper,.compare-shell,.cost-summary { grid-template-columns:1fr 1fr; } .panel-hero__grid,.executive-banner { grid-template-columns:1fr; } .compare-grid,.cost-grid{ grid-template-columns:1fr 1fr; } }
+        @media (max-width: 700px) { .ops-dashboard,.kpi-grid,.summary-kpis,.stepper,.compare-shell,.compare-grid,.cost-grid,.cost-summary { grid-template-columns:1fr; } }
+
+    
+        /* EVOLUÇÃO 4 — BANCO PREMIUM / CURVA DE CUSTO */
+        .premium-shell {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 18px;
+        }
+        .premium-panel {
+            background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+        .premium-panel h3 {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        .premium-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0,1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .premium-metric {
+            background: #f4f8fb;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .premium-metric span { display:block; font-size:0.75rem; color:var(--text-light); text-transform:uppercase; letter-spacing:0.4px; }
+        .premium-metric strong { display:block; margin-top:4px; font-size:1.1rem; color:var(--primary); }
+        .premium-bank-table-wrap { overflow:auto; margin-top:14px; }
+        .premium-bank-table { width:100%; border-collapse: collapse; font-size:0.86rem; }
+        .premium-bank-table th, .premium-bank-table td { padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top; }
+        .premium-bank-table th { background:#eef4f9; color:var(--primary); font-size:0.76rem; text-transform:uppercase; letter-spacing:0.45px; position:sticky; top:0; }
+        .premium-tag {
+            display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; background:#edf5fb; color:var(--primary); font-size:0.74rem; font-weight:700;
+        }
+        .premium-actions { display:flex; gap:8px; flex-wrap:wrap; }
+        .premium-btn {
+            border:none; border-radius:999px; padding:8px 12px; font-size:0.78rem; font-weight:700; cursor:pointer; background:#eaf2f8; color:var(--primary);
+        }
+        .premium-btn:hover { background:#dceaf5; }
+        .premium-btn.danger { background:#fdecea; color:#b03a2e; }
+        .premium-btn.success { background:#eaf7ef; color:#1e8449; }
+        .premium-compare-grid {
+            display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; margin-top:16px;
+        }
+        .premium-compare-card {
+            border:1px solid var(--border); border-radius:14px; padding:16px; background:#fff; box-shadow: var(--shadow); min-height:220px;
+        }
+        .premium-compare-card h4 { color: var(--primary); font-size:0.96rem; margin-bottom:6px; }
+        .premium-compare-empty { color: var(--text-light); font-size:0.84rem; }
+        .premium-points { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; margin-top:10px; }
+        .premium-point { background:#f8fbfd; border:1px solid var(--border); border-radius:10px; padding:10px; }
+        .premium-point span { display:block; font-size:0.72rem; color:var(--text-light); text-transform:uppercase; }
+        .premium-point strong { display:block; margin-top:3px; font-size:0.98rem; }
+        .curve-box {
+            margin-top:16px; background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px;
+        }
+        .curve-box svg { width:100%; height:auto; display:block; }
+        .curve-legend { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; font-size:0.78rem; color:var(--text-light); }
+        .curve-legend span { display:inline-flex; align-items:center; gap:6px; }
+        .curve-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+        .premium-status { margin-top:10px; font-size:0.84rem; }
+        .premium-highlight {
+            background: linear-gradient(135deg, rgba(26,82,118,0.08), rgba(39,174,96,0.08));
+            border:1px solid rgba(26,82,118,0.12);
+            border-radius:16px; padding:18px;
+        }
+        .premium-highlight h3 { margin-bottom:6px; }
+        .premium-inline-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; }
+        @media (max-width: 900px) {
+            .premium-shell, .premium-inline-grid, .premium-metrics, .premium-compare-grid { grid-template-columns:1fr; }
+        }
+
     </style>
 </head>
 <body>
 
 <header>
     <a href="../index.html" class="btn-voltar-hub" title="Voltar ao HUB Principal">⬅ HUB</a>
-    <h1>⬡ Calculadora de Dosagem de Concreto</h1>
-    <p>Método de Empacotamento de Partículas · Concreto Autoadensável (Flow 650–850 mm)</p>
+    <h1>⬡ CONCRETRACK DOSAGEM</h1>
+    <p>Laboratório e Engenharia do Concreto · Dosagem, Comparação de Traços e Custo por m³</p>
 </header>
 
 <div class="app-layout">
@@ -872,6 +1004,12 @@
         <button class="sidebar-btn" data-sec="sec-resumo" onclick="showSection('sec-resumo',this)">
             <span class="sb-num">8</span><span class="sb-icon">📄</span><span class="sb-label">Resumo / Carta</span>
         </button>
+        <button class="sidebar-btn" data-sec="sec-compare-cost" onclick="showSection('sec-compare-cost',this)">
+            <span class="sb-num">8A</span><span class="sb-icon">📊</span><span class="sb-label">Comparador / Custo</span>
+        </button>
+        <button class="sidebar-btn" data-sec="sec-premium-bank" onclick="showSection('sec-premium-bank',this)">
+            <span class="sb-num">8B</span><span class="sb-icon">🏛️</span><span class="sb-label">Banco Premium</span>
+        </button>
         <button class="sidebar-btn" data-sec="sec-resultados-calc" onclick="showSection('sec-resultados-calc',this)">
             <span class="sb-num">9</span><span class="sb-icon">🧮</span><span class="sb-label">Detalhamento Cálculos</span>
         </button>
@@ -906,6 +1044,8 @@
         <option value="sec-inverso">🔄 Cálculo Inverso</option>
         <option value="sec-abrams">📉 Curva de Abrams</option>
         <option value="sec-resumo">📄 Resumo / Carta</option>
+        <option value="sec-compare-cost">📊 Comparador / Custo</option>
+        <option value="sec-premium-bank">🏛️ Banco Premium de Traços</option>
         <option value="sec-resultados-calc">🧮 Detalhamento Cálculos</option>
         <option value="sec-normas-concreto">📚 Normas</option>
         <option value="sec-memoria">📝 Memória de Cálculo</option>
@@ -916,27 +1056,47 @@
 
 <div id="sec-hub" class="section active">
     <div class="card">
-        <h2><span class="icon">🧭</span> Página Principal</h2>
-        <p class="subtitle">Escolha uma área para entrar. Dentro de cada seção, use o menu rápido no topo para navegar direto para outra parte.</p>
+        <h2><span class="icon">🧭</span> CONCRETRACK DOSAGEM</h2>
+        <p class="subtitle">Plataforma técnica para dosagem, laboratório, traço experimental, comparação de cenários e emissão da carta do traço.</p>
+
+        <div class="ops-dashboard">
+            <div class="ops-card hero">
+                <div class="ops-card__label">Painel executivo</div>
+                <div class="ops-card__value">Central técnica do concreto</div>
+                <div class="ops-card__hint">Monitore o traço atual, compare alternativas A/B/C e acompanhe custo estimado por m³ em tempo real.</div>
+                <div class="ops-mini-grid">
+                    <div class="ops-mini"><span>Flow atual</span><strong id="dash-flow-main">720 mm</strong></div>
+                    <div class="ops-mini"><span>Relação a/c</span><strong id="dash-ac-main">0,430</strong></div>
+                </div>
+            </div>
+            <div class="ops-card">
+                <div class="ops-card__label">Custo estimado</div>
+                <div class="ops-card__value" id="dash-cost">R$ 0,00</div>
+                <div class="ops-card__hint" id="dash-cost-hint">Preencha o comparador para ligar custo ao traço atual.</div>
+            </div>
+            <div class="ops-card">
+                <div class="ops-card__label">Melhor referência</div>
+                <div class="ops-card__value" id="dash-best-slot">—</div>
+                <div class="ops-card__hint" id="dash-best-hint">Slots A/B/C ajudam a comparar desempenho e custo.</div>
+            </div>
+            <div class="ops-card">
+                <div class="ops-card__label">Massa total</div>
+                <div class="ops-card__value" id="dash-total-mass">0 kg</div>
+                <div class="ops-card__hint" id="dash-total-hint">Leitura consolidada do traço base atual.</div>
+            </div>
+        </div>
 
         <div class="hub-grid">
-            <button class="hub-card" type="button" onclick="showSection('sec-cadastro-materiais')"><span class="hub-icon">🏢</span><span class="hub-title">Cadastro de Materiais</span><span class="hub-desc">Fornecedores e consulta</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-laboratorio-hub')"><span class="hub-icon">🧪</span><span class="hub-title">Laboratório</span><span class="hub-desc">Análises e ensaios</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-materiais')"><span class="hub-icon">🧪</span><span class="hub-title">Materiais</span><span class="hub-desc">Dados de entrada</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-dosagem')"><span class="hub-icon">⚖️</span><span class="hub-title">Dosagem 1 m³</span><span class="hub-desc">Traço base</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-volume')"><span class="hub-icon">📏</span><span class="hub-title">Volume</span><span class="hub-desc">Verificação volumétrica</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-argamassa')"><span class="hub-icon">🧱</span><span class="hub-title">Argamassa</span><span class="hub-desc">Teor de argamassa</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-empacotamento')"><span class="hub-icon">📈</span><span class="hub-title">Empacotamento</span><span class="hub-desc">Modelo de partículas</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-inverso')"><span class="hub-icon">🔄</span><span class="hub-title">Cálculo Inverso</span><span class="hub-desc">Ajuste de traço</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-abrams')"><span class="hub-icon">📉</span><span class="hub-title">Curva de Abrams</span><span class="hub-desc">Projeções de resistência</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-resumo')"><span class="hub-icon">📄</span><span class="hub-title">Resumo / Carta</span><span class="hub-desc">Saída consolidada</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-resultados-calc')"><span class="hub-icon">🧮</span><span class="hub-title">Detalhamento Cálculos</span><span class="hub-desc">Explicação completa por aba</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-normas-concreto')"><span class="hub-icon">📚</span><span class="hub-title">Normas</span><span class="hub-desc">Normas usadas e catálogo técnico</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-memoria')"><span class="hub-icon">📝</span><span class="hub-title">Memória</span><span class="hub-desc">Documento técnico</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-tracos-salvos')"><span class="hub-icon">📂</span><span class="hub-title">Traços Salvos</span><span class="hub-desc">Salvar e consultar traços</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-experimental')"><span class="hub-icon">🔬</span><span class="hub-title">Experimental</span><span class="hub-desc">Traço experimental com resistência</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-cadastro-materiais')"><span class="hub-icon">🏢</span><span class="hub-title">Cadastro de Materiais</span><span class="hub-desc">Fornecedores, materiais e propriedades</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-laboratorio-hub')"><span class="hub-icon">🧪</span><span class="hub-title">Laboratório</span><span class="hub-desc">Granulometria e massa específica</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-dosagem')"><span class="hub-icon">⚖️</span><span class="hub-title">Dosagem 1 m³</span><span class="hub-desc">Cockpit técnico do traço base</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-experimental')"><span class="hub-icon">🔬</span><span class="hub-title">Traço Experimental</span><span class="hub-desc">Flow, resistência e validação</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-resumo')"><span class="hub-icon">📄</span><span class="hub-title">Carta do Traço</span><span class="hub-desc">Saída executiva e impressão</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-compare-cost')"><span class="hub-icon">📊</span><span class="hub-title">Comparador & Custo</span><span class="hub-desc">Comparação de cenários e custo por m³</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-premium-bank')"><span class="hub-icon">🏛️</span><span class="hub-title">Banco Premium</span><span class="hub-desc">Banco de traços, ranking e curva de custo</span></button>
         </div>
     </div>
+</div>
 </div>
 
 <div id="sec-cadastro-materiais" class="section">
@@ -1529,7 +1689,43 @@
 <div id="sec-dosagem" class="section">
     <div class="card">
         <h2><span class="icon">⚖️</span> Dosagem para 1 m³ de Concreto</h2>
-        <p class="subtitle">Informe as massas dos materiais para produzir 1 m³ de concreto. O sistema calcula os volumes absolutos e verifica o fechamento em 1000 L.</p>
+        <p class="subtitle">Cockpit técnico para montar o traço base, validar metas de flow, comparar cenários e consolidar a carta final.</p>
+
+        <div class="panel-hero">
+            <div class="panel-hero__grid">
+                <div>
+                    <div class="eyebrow">⬡ Cockpit de dosagem</div>
+                    <h3>Monte, valide e feche o traço com leitura executiva em tempo real</h3>
+                    <p>Esta área agora funciona como uma central operacional: você ajusta os materiais, acompanha indicadores críticos e navega direto para verificações técnicas sem sair do fluxo.</p>
+                    <div class="smart-actions">
+                        <button class="smart-chip" type="button" onclick="showSection('sec-materiais')">🧱 Caracterização</button>
+                        <button class="smart-chip" type="button" onclick="showSection('sec-volume')">📏 Volume</button>
+                        <button class="smart-chip" type="button" onclick="showSection('sec-argamassa')">🧪 Argamassa</button>
+                        <button class="smart-chip" type="button" onclick="showSection('sec-empacotamento')">📈 Empacotamento</button>
+                        <button class="smart-chip" type="button" onclick="showSection('sec-compare-cost')">📊 Comparar / Custo</button>
+                        <button class="smart-chip" type="button" onclick="showSection('sec-resumo')">📄 Carta do Traço</button>
+                    </div>
+                </div>
+                <div class="summary-shell">
+                    <h4>Leitura rápida da meta</h4>
+                    <p>Meta de flow entre <strong>650 e 850 mm</strong>, fechamento em <strong>1000 L</strong>, relação a/c, consumo de cimento e custo estimado em leitura imediata.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="kpi-grid" id="dosagem-kpis">
+            <div class="kpi-card" id="kpi-flow-card"><div class="kpi-card__label">Flow</div><div class="kpi-card__value" id="kpi-flow">720 mm</div><div class="kpi-card__hint" id="kpi-flow-hint">Dentro da faixa operacional.</div></div>
+            <div class="kpi-card" id="kpi-ac-card"><div class="kpi-card__label">Relação a/c</div><div class="kpi-card__value" id="kpi-ac">0,43</div><div class="kpi-card__hint" id="kpi-ac-hint">Água / ligantes cimentícios.</div></div>
+            <div class="kpi-card" id="kpi-cimento-card"><div class="kpi-card__label">Consumo de Cimento</div><div class="kpi-card__value" id="kpi-cimento">380 kg</div><div class="kpi-card__hint" id="kpi-cimento-hint">Valor atual da entrada de cimento.</div></div>
+            <div class="kpi-card" id="kpi-fechamento-card"><div class="kpi-card__label">Custo estimado</div><div class="kpi-card__value" id="kpi-fechamento">R$ 0,00</div><div class="kpi-card__hint" id="kpi-fechamento-hint">Preencha o painel de custos.</div></div>
+        </div>
+
+        <div class="stepper">
+            <div class="step-card"><strong>1. Materiais</strong><span>Confirme massas específicas e base dos insumos.</span><button class="smart-chip" type="button" onclick="showSection('sec-materiais')">Abrir</button></div>
+            <div class="step-card"><strong>2. Dosagem</strong><span>Informe massas, flow, fck e tipo de cimento.</span><button class="smart-chip" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})">Preencher</button></div>
+            <div class="step-card"><strong>3. Verificação</strong><span>Confira volume, argamassa e empacotamento.</span><button class="smart-chip" type="button" onclick="showSection('sec-volume')">Validar</button></div>
+            <div class="step-card"><strong>4. Evolução 3</strong><span>Compare cenários e acompanhe custo por m³.</span><button class="smart-chip" type="button" onclick="showSection('sec-compare-cost')">Comparar</button></div>
+        </div>
 
         <div class="info-box">
             <strong>Flow alvo:</strong> 650 a 850 mm (concreto autoadensável — CAA).<br>
@@ -1681,6 +1877,70 @@
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- SEÇÃO — TRAÇOS SALVOS                               -->
 <!-- ═══════════════════════════════════════════════════ -->
+<div id="sec-compare-cost" class="section">
+    <div class="card">
+        <h2><span class="icon">📊</span> Comparador de Traços & Custo por m³</h2>
+        <p class="subtitle">Evolução 3 do CONCRETRACK DOSAGEM: salve referências do traço atual, compare desempenho técnico e acompanhe o custo estimado do m³ em leitura executiva.</p>
+
+        <div class="compare-shell">
+            <div>
+                <div class="panel-hero">
+                    <div class="panel-hero__grid">
+                        <div>
+                            <div class="eyebrow">⬡ Comparador técnico</div>
+                            <h3>Capture o traço atual e compare até 3 cenários lado a lado</h3>
+                            <p>Use os slots A, B e C para guardar variações de cimento, água, agregados, flow e custo. Ideal para otimização de consumo, validação técnica e negociação com produção.</p>
+                        </div>
+                        <div class="summary-shell">
+                            <h4>Atalhos</h4>
+                            <div class="smart-actions">
+                                <button class="smart-chip" type="button" onclick="saveCompareSlot('A')">💾 Salvar A</button>
+                                <button class="smart-chip" type="button" onclick="saveCompareSlot('B')">💾 Salvar B</button>
+                                <button class="smart-chip" type="button" onclick="saveCompareSlot('C')">💾 Salvar C</button>
+                                <button class="smart-chip" type="button" onclick="showSection('sec-dosagem')">⚖️ Voltar à dosagem</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-grid">
+                    <div class="compare-card" id="compare-slot-A"></div>
+                    <div class="compare-card" id="compare-slot-B"></div>
+                    <div class="compare-card" id="compare-slot-C"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="result-box ok">
+                    <h3>💰 Painel de custo por m³</h3>
+                    <p>Informe os preços unitários em <strong>R$/kg</strong>. O traço atual da dosagem alimenta automaticamente o cálculo do custo estimado.</p>
+                    <div class="cost-grid">
+                        <div class="form-group"><label>Cimento (R$/kg)</label><input type="number" id="cost_cim" step="0.01" value="0.70"></div>
+                        <div class="form-group"><label>Adição (R$/kg)</label><input type="number" id="cost_adic" step="0.01" value="0.25"></div>
+                        <div class="form-group"><label>Areia Nat. (R$/kg)</label><input type="number" id="cost_an" step="0.01" value="0.12"></div>
+                        <div class="form-group"><label>Areia Ind. (R$/kg)</label><input type="number" id="cost_ai" step="0.01" value="0.11"></div>
+                        <div class="form-group"><label>Brita 0 (R$/kg)</label><input type="number" id="cost_b0" step="0.01" value="0.16"></div>
+                        <div class="form-group"><label>Brita 1/2 (R$/kg)</label><input type="number" id="cost_b1" step="0.01" value="0.17"></div>
+                        <div class="form-group"><label>Água (R$/kg)</label><input type="number" id="cost_agua" step="0.01" value="0.01"></div>
+                        <div class="form-group"><label>Aditivo (R$/kg)</label><input type="number" id="cost_adit" step="0.01" value="8.50"></div>
+                    </div>
+                    <div class="btn-wrap">
+                        <button class="btn btn-primary" type="button" onclick="calculateCostPanel()">🧮 Recalcular custo</button>
+                        <button class="btn btn-accent" type="button" onclick="saveCompareSlot('A')">📌 Salvar atual em A</button>
+                    </div>
+                    <div class="cost-summary">
+                        <div class="summary-chip"><div class="summary-chip__label">Custo total / m³</div><div class="summary-chip__value" id="cost_total_display">R$ 0,00</div></div>
+                        <div class="summary-chip"><div class="summary-chip__label">Custo ligantes</div><div class="summary-chip__value" id="cost_binders_display">R$ 0,00</div></div>
+                        <div class="summary-chip"><div class="summary-chip__label">Custo agregados</div><div class="summary-chip__value" id="cost_aggregates_display">R$ 0,00</div></div>
+                        <div class="summary-chip"><div class="summary-chip__label">Custo químico + água</div><div class="summary-chip__value" id="cost_chem_display">R$ 0,00</div></div>
+                    </div>
+                    <div class="matrix-note" id="compare_note">Dica: use este painel para descobrir rapidamente qual ajuste de cimento, água ou aditivo reduz custo sem perder flow e relação a/c.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="sec-tracos-salvos" class="section">
     <div class="card">
         <h2><span class="icon">📂</span> Traços Salvos</h2>
@@ -2352,7 +2612,36 @@
 <div id="sec-resumo" class="section">
     <div class="card">
         <h2><span class="icon">📄</span> Resumo Geral & Carta Traço</h2>
-        <p class="subtitle">Consolidação de todos os dados do estudo de dosagem com projeções de resistência nas idades de 24h, 3, 7 e 28 dias.</p>
+        <p class="subtitle">Saída executiva do estudo de dosagem, pronta para impressão, padronização interna e comunicação com produção, qualidade e engenharia.</p>
+
+        <div class="executive-banner">
+            <div class="executive-box">
+                <div class="eyebrow">⬡ Carta do traço</div>
+                <h3>Transforme o cálculo em documento técnico de operação</h3>
+                <p>Use esta área como fechamento oficial do traço: consolide parâmetros, registre aplicação, defina o responsável e gere uma carta clara para produção, laboratório e gestão.</p>
+                <div class="smart-actions">
+                    <button class="smart-chip" type="button" onclick="syncResumoFieldsFromDosagem()">🔄 Puxar dados da dosagem</button>
+                    <button class="smart-chip" type="button" onclick="showSection('sec-dosagem')">⚖️ Voltar para dosagem</button>
+                    <button class="smart-chip" type="button" onclick="showSection('sec-compare-cost')">📊 Comparador / Custo</button>
+                </div>
+            </div>
+            <div class="executive-side">
+                <h4>Checklist da carta</h4>
+                <ul>
+                    <li>Aplicação e classe do concreto definidas.</li>
+                    <li>Flow e teor de ar sincronizados com a dosagem.</li>
+                    <li>Tipo de cimento compatível com a projeção de resistência.</li>
+                    <li>Resumo final validado antes da impressão.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="summary-kpis">
+            <div class="kpi-card" id="sum-kpi-flow-card"><div class="kpi-card__label">Flow de referência</div><div class="kpi-card__value" id="sum-kpi-flow">720 mm</div><div class="kpi-card__hint" id="sum-kpi-flow-hint">Sincronizado com a dosagem.</div></div>
+            <div class="kpi-card" id="sum-kpi-fck-card"><div class="kpi-card__label">FCK / Classe</div><div class="kpi-card__value" id="sum-kpi-fck">30 MPa</div><div class="kpi-card__hint" id="sum-kpi-fck-hint">Classe C30 por padrão.</div></div>
+            <div class="kpi-card" id="sum-kpi-ac-card"><div class="kpi-card__label">Relação a/c</div><div class="kpi-card__value" id="sum-kpi-ac">0,43</div><div class="kpi-card__hint" id="sum-kpi-ac-hint">Indicador-chave do traço.</div></div>
+            <div class="kpi-card" id="sum-kpi-status-card"><div class="kpi-card__label">Status do traço</div><div class="kpi-card__value" id="sum-kpi-status">Aguardando</div><div class="kpi-card__hint" id="sum-kpi-status-hint">Gere o resumo para consolidar.</div></div>
+        </div>
 
         <div class="info-box">
             <strong>Carta Traço:</strong> Documento técnico que consolida a dosagem, propriedades do concreto e projeções de resistência.<br>
@@ -2578,6 +2867,108 @@
         </div>
 
         <div id="res-memoria"></div>
+    </div>
+</div>
+
+
+<div id="sec-premium-bank" class="section">
+    <div class="card">
+        <h2><span class="icon">🏛️</span> Banco Premium de Traços</h2>
+        <p class="subtitle">Evolução 4 do CONCRETRACK DOSAGEM: capture o traço atual, monte um banco técnico interno, compare cenários lado a lado e acompanhe a curva de custo do seu portfólio.</p>
+
+        <div class="premium-shell">
+            <div class="premium-panel premium-highlight">
+                <div class="eyebrow">⬡ Banco técnico</div>
+                <h3>Salvar o traço atual como referência estratégica</h3>
+                <p>Use este módulo para consolidar referências de laboratório, produção e desenvolvimento. O sistema puxa os dados atuais da dosagem, calcula custo estimado e transforma cada traço em ativo técnico comparável.</p>
+                <div class="premium-inline-grid" style="margin-top:14px;">
+                    <div class="form-group">
+                        <label>Nome da Referência</label>
+                        <input type="text" id="premium_nome" placeholder="Ex: CAA FC40 - Poste Duplo T">
+                    </div>
+                    <div class="form-group">
+                        <label>Aplicação</label>
+                        <input type="text" id="premium_aplicacao" placeholder="Ex: Postes centrifugados / aduelas / peças especiais">
+                    </div>
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <input type="text" id="premium_responsavel" value="Ricardo Do Amaral">
+                    </div>
+                    <div class="form-group">
+                        <label>Classificação Interna</label>
+                        <select id="premium_classe_ref">
+                            <option value="Produção">Produção</option>
+                            <option value="Desenvolvimento">Desenvolvimento</option>
+                            <option value="Laboratório">Laboratório</option>
+                            <option value="Validação">Validação</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Observações Estratégicas</label>
+                        <input type="text" id="premium_obs" placeholder="Ex: melhor equilíbrio entre flow, custo e consumo de cimento para a linha de postes DT.">
+                    </div>
+                </div>
+                <div class="btn-wrap">
+                    <button class="btn btn-primary" type="button" onclick="ctPremiumSaveCurrentTrace()">🏛️ Salvar traço atual no banco</button>
+                    <button class="btn btn-accent" type="button" onclick="ctPremiumRefresh()">🔄 Atualizar painel</button>
+                    <button class="btn btn-warning" type="button" onclick="ctPremiumClearAll()">🧹 Limpar banco</button>
+                </div>
+                <div id="premium_status" class="premium-status"></div>
+            </div>
+
+            <div class="premium-panel">
+                <h3>Leitura executiva do banco</h3>
+                <p class="subtitle" style="margin-bottom:10px;">Ranking vivo do portfólio de traços com base nas referências salvas localmente.</p>
+                <div class="premium-metrics">
+                    <div class="premium-metric"><span>Total de traços</span><strong id="premium_total">0</strong></div>
+                    <div class="premium-metric"><span>Mais econômico</span><strong id="premium_best_cost">—</strong></div>
+                    <div class="premium-metric"><span>Maior flow</span><strong id="premium_best_flow">—</strong></div>
+                    <div class="premium-metric"><span>Menor cimento</span><strong id="premium_best_cim">—</strong></div>
+                </div>
+                <div class="curve-box">
+                    <h3 style="margin-bottom:4px;">Curva de custo do banco</h3>
+                    <p class="subtitle" style="margin-bottom:12px;">Distribuição do custo estimado por m³ entre os traços salvos.</p>
+                    <div id="premium_curve_svg"></div>
+                    <div class="curve-legend">
+                        <span><i class="curve-dot" style="background:#1a5276"></i> Custo estimado por m³</span>
+                        <span><i class="curve-dot" style="background:#27ae60"></i> Melhor custo do banco</span>
+                        <span><i class="curve-dot" style="background:#f39c12"></i> Traço atual vs referências</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-panel" style="margin-top:18px;">
+            <h3>Portfólio de traços salvos</h3>
+            <p class="subtitle">Carregue qualquer referência para os slots A/B/C do comparador visual ou traga de volta para a dosagem.</p>
+            <div class="premium-bank-table-wrap">
+                <table class="premium-bank-table">
+                    <thead>
+                        <tr>
+                            <th>Referência</th>
+                            <th>Aplicação</th>
+                            <th>Flow</th>
+                            <th>FCK</th>
+                            <th>Relação a/c</th>
+                            <th>Cimento</th>
+                            <th>Custo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="premium_bank_body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="premium-panel" style="margin-top:18px;">
+            <h3>Comparador visual premium</h3>
+            <p class="subtitle">Posicione até 3 referências do banco lado a lado para decidir qual traço vai para validação, produção ou carta final.</p>
+            <div class="premium-compare-grid">
+                <div class="premium-compare-card" id="premium_compare_A"></div>
+                <div class="premium-compare-card" id="premium_compare_B"></div>
+                <div class="premium-compare-card" id="premium_compare_C"></div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -7302,7 +7693,284 @@ document.addEventListener('DOMContentLoaded', () => {
         const el = document.getElementById(id);
         if (el && !el.value) el.value = hoje;
     });
+    setTimeout(ctAttachListeners, 80);
 });
+
+// ═══════════════════════════════════════════════════
+// CONCRETRACK DOSAGEM — PAINÉIS EXECUTIVOS
+// ═══════════════════════════════════════════════════
+function ctFmt(num, dec=2) { const n = Number(num); return isFinite(n) ? n.toLocaleString('pt-BR',{minimumFractionDigits:dec,maximumFractionDigits:dec}) : '—'; }
+function ctMoney(num){ const n=Number(num)||0; return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); }
+function ctSetCardState(cardId, state) { const el=document.getElementById(cardId); if(!el) return; el.classList.remove('is-good','is-warn','is-danger'); if(state) el.classList.add(state); }
+function updateDosagemCockpit() {
+    const cim = parseFloat(document.getElementById('dos_cim')?.value) || 0;
+    const adic = parseFloat(document.getElementById('dos_adic')?.value) || 0;
+    const agua = parseFloat(document.getElementById('dos_agua')?.value) || 0;
+    const flow = parseFloat(document.getElementById('dos_flow')?.value) || 0;
+    const fck = parseFloat(document.getElementById('dos_fck')?.value) || 0;
+    const lig = cim + adic;
+    const ac = lig > 0 ? agua / lig : 0;
+    const setTxt=(id,val)=>{ const el=document.getElementById(id); if(el) el.textContent=val; };
+    setTxt('kpi-flow', flow ? `${ctFmt(flow,0)} mm` : '—');
+    setTxt('kpi-flow-hint', flow>=650 && flow<=850 ? 'Dentro da faixa operacional do CAA.' : 'Revise o flow para a faixa 650–850 mm.');
+    ctSetCardState('kpi-flow-card', flow>=650 && flow<=850 ? 'is-good' : flow ? 'is-danger' : 'is-warn');
+    setTxt('kpi-ac', lig>0 ? ctFmt(ac,3) : '—');
+    setTxt('kpi-ac-hint', `Água ${ctFmt(agua,0)} / ligantes ${ctFmt(lig,0)} kg.`);
+    ctSetCardState('kpi-ac-card', ac>0 && ac<=0.45 ? 'is-good' : ac<=0.55 ? 'is-warn' : 'is-danger');
+    setTxt('kpi-cimento', `${ctFmt(cim,0)} kg`);
+    setTxt('kpi-cimento-hint', `Ligantes totais ${ctFmt(lig,0)} kg · FCK ${ctFmt(fck,0)} MPa.`);
+    ctSetCardState('kpi-cimento-card', cim>=320 ? 'is-good' : 'is-warn');
+    calculateCostPanel();
+    updateResumoCockpit();
+}
+function syncResumoFieldsFromDosagem() {
+    [['dos_flow','res_flow'],['dos_ar','res_ar'],['dos_tipo_cimento','res_cimento']].forEach(([src,dst])=>{ const s=document.getElementById(src), d=document.getElementById(dst); if(s&&d) d.value=s.value; });
+    const fck = parseFloat(document.getElementById('dos_fck')?.value) || 30;
+    const classe = document.getElementById('res_classe');
+    if (classe) { const candidate=`C${Math.round(fck/5)*5}`; if ([...classe.options].some(o=>o.value===candidate)) classe.value=candidate; }
+    updateResumoCockpit();
+}
+function updateResumoCockpit() {
+    const flow = parseFloat(document.getElementById('res_flow')?.value || document.getElementById('dos_flow')?.value) || 0;
+    const ar = parseFloat(document.getElementById('res_ar')?.value || document.getElementById('dos_ar')?.value) || 0;
+    const fck = parseFloat(document.getElementById('dos_fck')?.value) || 30;
+    const classe = document.getElementById('res_classe')?.value || 'C30';
+    const cim = parseFloat(document.getElementById('dos_cim')?.value) || 0;
+    const adic = parseFloat(document.getElementById('dos_adic')?.value) || 0;
+    const agua = parseFloat(document.getElementById('dos_agua')?.value) || 0;
+    const ac = (cim+adic)>0 ? agua/(cim+adic) : 0;
+    const setTxt=(id,val)=>{ const el=document.getElementById(id); if(el) el.textContent=val; };
+    setTxt('sum-kpi-flow', flow ? `${ctFmt(flow,0)} mm` : '—');
+    setTxt('sum-kpi-flow-hint', `Teor de ar de referência: ${ctFmt(ar,1)}%.`);
+    ctSetCardState('sum-kpi-flow-card', flow>=650 && flow<=850 ? 'is-good' : flow ? 'is-danger' : 'is-warn');
+    setTxt('sum-kpi-fck', `${ctFmt(fck,0)} MPa`); setTxt('sum-kpi-fck-hint', `Classe selecionada: ${classe}.`); ctSetCardState('sum-kpi-fck-card','is-good');
+    setTxt('sum-kpi-ac', (cim+adic)>0 ? ctFmt(ac,3) : '—'); setTxt('sum-kpi-ac-hint', `Cimento ${ctFmt(cim,0)} kg + adição ${ctFmt(adic,0)} kg.`); ctSetCardState('sum-kpi-ac-card', ac<=0.45 ? 'is-good' : ac<=0.55 ? 'is-warn' : 'is-danger');
+    const status = flow>=650 && flow<=850 && ac>0 && ac<=0.55 ? 'Pronto' : flow>0 ? 'Ajustar' : 'Aguardando';
+    setTxt('sum-kpi-status', status); setTxt('sum-kpi-status-hint', status==='Pronto' ? 'Traço com leitura executiva coerente.' : status==='Ajustar' ? 'Revise flow e custo antes de emitir.' : 'Sincronize os dados da dosagem.');
+    ctSetCardState('sum-kpi-status-card', status==='Pronto' ? 'is-good' : status==='Ajustar' ? 'is-warn' : 'is-danger');
+}
+// ═══════════════════════════════════════════════════
+// EVOLUÇÃO 3 — COMPARADOR DE TRAÇOS + CUSTO + DASHBOARD
+// ═══════════════════════════════════════════════════
+function ev3Num(id) { const el=document.getElementById(id); const v=parseFloat(el&&el.value?String(el.value).replace(',','.'):'0'); return isFinite(v)?v:0; }
+function ev3CurrentSnapshot() {
+    const snap = { cim:ev3Num('dos_cim'), adic:ev3Num('dos_adic'), an:ev3Num('dos_an'), ai:ev3Num('dos_ai'), b0:ev3Num('dos_b0'), b1:ev3Num('dos_b1'), agua:ev3Num('dos_agua'), adit:ev3Num('dos_adit'), flow:ev3Num('dos_flow'), fck:ev3Num('dos_fck'), timestamp:new Date().toISOString(), note:document.getElementById('res_projeto')?.value || 'Traço atual' };
+    snap.lig = snap.cim + snap.adic; snap.total = snap.cim+snap.adic+snap.an+snap.ai+snap.b0+snap.b1+snap.agua+snap.adit; snap.ac = snap.lig>0 ? snap.agua/snap.lig : 0;
+    const c=ev3ComputeCost(snap); snap.costTotal=c.total; snap.costBinders=c.binders; snap.costAggregates=c.aggregates; snap.costChem=c.chem; return snap;
+}
+function ev3GetPriceMap(){ return { cim:ev3Num('cost_cim'), adic:ev3Num('cost_adic'), an:ev3Num('cost_an'), ai:ev3Num('cost_ai'), b0:ev3Num('cost_b0'), b1:ev3Num('cost_b1'), agua:ev3Num('cost_agua'), adit:ev3Num('cost_adit')}; }
+function ev3ComputeCost(m){ const p=ev3GetPriceMap(); const binders=(m.cim||0)*p.cim+(m.adic||0)*p.adic; const aggregates=(m.an||0)*p.an+(m.ai||0)*p.ai+(m.b0||0)*p.b0+(m.b1||0)*p.b1; const chem=(m.agua||0)*p.agua+(m.adit||0)*p.adit; return {binders,aggregates,chem,total:binders+aggregates+chem}; }
+function calculateCostPanel(){ const s=ev3CurrentSnapshot(); const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;}; set('cost_total_display', ctMoney(s.costTotal)); set('cost_binders_display', ctMoney(s.costBinders)); set('cost_aggregates_display', ctMoney(s.costAggregates)); set('cost_chem_display', ctMoney(s.costChem)); set('kpi-fechamento', ctMoney(s.costTotal)); set('kpi-fechamento-hint', `Custo estimado para o traço atual: ${ctMoney(s.costTotal)} por m³.`); ctSetCardState('kpi-fechamento-card', s.costTotal>0 ? 'is-good' : 'is-warn'); const note=document.getElementById('compare_note'); if(note) note.textContent=`Traço atual: ${ctFmt(s.flow,0)} mm · a/c ${ctFmt(s.ac,3)} · massa total ${ctFmt(s.total,0)} kg · custo estimado ${ctMoney(s.costTotal)}.`; ev3UpdateDashboard(); ev3RenderCompare(); return s.costTotal; }
+function saveCompareSlot(slot){ const s=ev3CurrentSnapshot(); s.slot=slot; localStorage.setItem('ctDosagemCompare_'+slot, JSON.stringify(s)); ev3RenderCompare(); ev3UpdateDashboard(); }
+function ev3LoadSlot(slot){ try { return JSON.parse(localStorage.getItem('ctDosagemCompare_'+slot)||'null'); } catch(e){ return null; } }
+function ev3ClearSlot(slot){ localStorage.removeItem('ctDosagemCompare_'+slot); ev3RenderCompare(); ev3UpdateDashboard(); }
+function ev3ApplySlot(slot){ const data=ev3LoadSlot(slot); if(!data) return; const map={dos_cim:'cim',dos_adic:'adic',dos_an:'an',dos_ai:'ai',dos_b0:'b0',dos_b1:'b1',dos_agua:'agua',dos_adit:'adit',dos_flow:'flow',dos_fck:'fck'}; Object.entries(map).forEach(([id,key])=>{ const el=document.getElementById(id); if(el && data[key]!=null) el.value=data[key]; }); updateDosagemCockpit(); showSection('sec-dosagem'); }
+function ev3SlotCardHtml(slot,data){ if(!data) return `<h4>Slot ${slot}</h4><div class="matrix-note">Vazio. Ajuste a dosagem atual e clique em “Salvar ${slot}”.</div>`; const d=new Date(data.timestamp); return `<h4>Slot ${slot}</h4><div class="compare-metric"><span>Flow</span><strong>${ctFmt(data.flow,0)} mm</strong></div><div class="compare-metric"><span>Relação a/c</span><strong>${ctFmt(data.ac,3)}</strong></div><div class="compare-metric"><span>Cimento</span><strong>${ctFmt(data.cim,0)} kg</strong></div><div class="compare-metric"><span>Ligantes</span><strong>${ctFmt(data.lig,0)} kg</strong></div><div class="compare-metric"><span>Massa total</span><strong>${ctFmt(data.total,0)} kg</strong></div><div class="compare-metric"><span>Custo estimado</span><strong>${ctMoney(data.costTotal||0)}</strong></div><div class="matrix-note">${data.note||'Traço salvo'} · ${isNaN(d.getTime())?'—':d.toLocaleString('pt-BR')}</div><div class="compare-toolbar"><button class="smart-chip" type="button" onclick="ev3ApplySlot('${slot}')">📥 Carregar</button><button class="smart-chip" type="button" onclick="ev3ClearSlot('${slot}')">🗑️ Limpar</button></div>`; }
+function ev3RenderCompare(){ ['A','B','C'].forEach(slot=>{ const el=document.getElementById('compare-slot-'+slot); if(el) el.innerHTML=ev3SlotCardHtml(slot, ev3LoadSlot(slot)); }); }
+function ev3BestSlot(){ const slots=['A','B','C'].map(ev3LoadSlot).filter(Boolean); if(!slots.length) return null; return slots.reduce((b,c)=>(c.costTotal||1e9)<(b.costTotal||1e9)?c:b, slots[0]); }
+function ev3UpdateDashboard(){ const s=ev3CurrentSnapshot(), best=ev3BestSlot(); const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;}; set('dash-flow-main', `${ctFmt(s.flow,0)} mm`); set('dash-ac-main', ctFmt(s.ac,3)); set('dash-cost', ctMoney(s.costTotal)); set('dash-total-mass', `${ctFmt(s.total,0)} kg`); set('dash-total-hint', `Ligantes ${ctFmt(s.lig,0)} kg · FCK ${ctFmt(s.fck,0)} MPa.`); if(best){ set('dash-best-slot', `Slot ${best.slot}`); set('dash-best-hint', `Menor custo salvo: ${ctMoney(best.costTotal||0)} · flow ${ctFmt(best.flow,0)} mm · a/c ${ctFmt(best.ac,3)}.`); } else { set('dash-best-slot','—'); set('dash-best-hint','Salve cenários A/B/C para descobrir a melhor alternativa.'); } set('dash-cost-hint', `Traço atual com ${ctFmt(s.cim,0)} kg de cimento e custo estimado de ${ctMoney(s.costTotal)} por m³.`); }
+function ctAttachListeners(){ ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_ar','dos_flow','dos_fck','res_flow','res_ar','res_classe','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'].forEach(id=>{ const el=document.getElementById(id); if(el && !el.dataset.ctBound){ el.addEventListener('input', updateDosagemCockpit); el.addEventListener('change', updateDosagemCockpit); el.dataset.ctBound='1'; } }); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); ev3RenderCompare(); }
+if (typeof calcularDosagem === 'function') { const _origCalcularDosagem = calcularDosagem; calcularDosagem = function(){ const out=_origCalcularDosagem.apply(this, arguments); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); return out; } }
+if (typeof gerarResumo === 'function') { const _origGerarResumo = gerarResumo; gerarResumo = function(){ syncResumoFieldsFromDosagem(); const out=_origGerarResumo.apply(this, arguments); updateResumoCockpit(); return out; } }
+if (typeof gerarCartaTraco === 'function') { const _origGerarCartaTraco = gerarCartaTraco; gerarCartaTraco = function(){ syncResumoFieldsFromDosagem(); const out=_origGerarCartaTraco.apply(this, arguments); updateResumoCockpit(); return out; } }
+if (typeof carregarTraco === 'function') { const _origCarregarTraco = carregarTraco; carregarTraco = function(t){ const out=_origCarregarTraco.apply(this, arguments); setTimeout(()=>{ updateDosagemCockpit(); syncResumoFieldsFromDosagem(); }, 60); return out; } }
+
+
+// ===== EVOLUÇÃO 4 — BANCO PREMIUM DE TRAÇOS =====
+const CT_PREMIUM_BANK_KEY = 'concretrack_premium_bank_v4';
+window.ctPremiumCompareSlots = window.ctPremiumCompareSlots || { A: null, B: null, C: null };
+
+function ctNum(id){
+    const el = document.getElementById(id);
+    if(!el) return 0;
+    const raw = String(el.value ?? el.textContent ?? '').replace(',', '.');
+    const n = parseFloat(raw);
+    return Number.isFinite(n) ? n : 0;
+}
+function ctFmtMoney(v){ return 'R$ ' + (Number(v)||0).toFixed(2).replace('.', ','); }
+function ctFmtNum(v, d=1){ return (Number(v)||0).toFixed(d).replace('.', ','); }
+function ctPremiumGetBank(){ try { return JSON.parse(localStorage.getItem(CT_PREMIUM_BANK_KEY) || '[]'); } catch(e){ return []; } }
+function ctPremiumSetBank(list){ localStorage.setItem(CT_PREMIUM_BANK_KEY, JSON.stringify(list)); }
+function ctPremiumCurrentTrace(){
+    const masses = {
+        cimento: ctNum('dos_cim'), adicao: ctNum('dos_adic'), areiaNat: ctNum('dos_an'), areiaInd: ctNum('dos_ai'),
+        brita0: ctNum('dos_b0'), brita1: ctNum('dos_b1'), agua: ctNum('dos_agua'), aditivo: ctNum('dos_adit')
+    };
+    const flow = ctNum('dos_flow');
+    const fck = ctNum('dos_fck');
+    const ar = ctNum('dos_ar');
+    const ligantes = masses.cimento + masses.adicao;
+    const ac = ligantes > 0 ? masses.agua / ligantes : 0;
+    const costs = {
+        cimento: ctNum('cost_cim'), adicao: ctNum('cost_adic'), areiaNat: ctNum('cost_an'), areiaInd: ctNum('cost_ai'),
+        brita0: ctNum('cost_b0'), brita1: ctNum('cost_b1'), agua: ctNum('cost_agua'), aditivo: ctNum('cost_adit')
+    };
+    const custo = masses.cimento*costs.cimento + masses.adicao*costs.adicao + masses.areiaNat*costs.areiaNat + masses.areiaInd*costs.areiaInd + masses.brita0*costs.brita0 + masses.brita1*costs.brita1 + masses.agua*costs.agua + masses.aditivo*costs.aditivo;
+    return { masses, flow, fck, ar, ac, custo, tipoCimento: (document.getElementById('dos_tipo_cimento')?.value || 'cpv').toUpperCase(), sd: ctNum('dos_sd') };
+}
+function ctPremiumStatus(msg, kind='ok'){
+    const el = document.getElementById('premium_status');
+    if(!el) return;
+    const color = kind==='error' ? 'var(--danger)' : kind==='warn' ? 'var(--warning)' : 'var(--accent)';
+    el.innerHTML = `<span style="color:${color};font-weight:700;">${msg}</span>`;
+}
+function ctPremiumSaveCurrentTrace(){
+    const nome = document.getElementById('premium_nome')?.value.trim();
+    const aplicacao = document.getElementById('premium_aplicacao')?.value.trim();
+    if(!nome){ ctPremiumStatus('Informe um nome para a referência antes de salvar.', 'warn'); return; }
+    const trace = ctPremiumCurrentTrace();
+    const list = ctPremiumGetBank();
+    const item = {
+        id: 'PT-' + Date.now(),
+        nome,
+        aplicacao: aplicacao || 'Sem aplicação definida',
+        responsavel: document.getElementById('premium_responsavel')?.value.trim() || '',
+        classeRef: document.getElementById('premium_classe_ref')?.value || 'Produção',
+        obs: document.getElementById('premium_obs')?.value.trim() || '',
+        createdAt: new Date().toISOString(),
+        ...trace
+    };
+    list.unshift(item);
+    ctPremiumSetBank(list);
+    ctPremiumStatus(`Referência ${nome} salva no banco premium.`);
+    ctPremiumRefresh();
+}
+function ctPremiumDelete(id){
+    const list = ctPremiumGetBank().filter(item => item.id !== id);
+    ctPremiumSetBank(list);
+    ['A','B','C'].forEach(slot => { if(window.ctPremiumCompareSlots[slot]?.id===id) window.ctPremiumCompareSlots[slot]=null; });
+    ctPremiumRefresh();
+}
+function ctPremiumClearAll(){
+    localStorage.removeItem(CT_PREMIUM_BANK_KEY);
+    window.ctPremiumCompareSlots = { A:null, B:null, C:null };
+    ctPremiumStatus('Banco premium limpo.', 'warn');
+    ctPremiumRefresh();
+}
+function ctPremiumLoadToDosagem(id){
+    const item = ctPremiumGetBank().find(x => x.id === id);
+    if(!item) return;
+    const map = { dos_cim:'cimento', dos_adic:'adicao', dos_an:'areiaNat', dos_ai:'areiaInd', dos_b0:'brita0', dos_b1:'brita1', dos_agua:'agua', dos_adit:'aditivo' };
+    Object.entries(map).forEach(([idField,key]) => { const el = document.getElementById(idField); if(el) el.value = item.masses[key] ?? 0; });
+    const pairs = [['dos_flow', item.flow], ['dos_fck', item.fck], ['dos_ar', item.ar]];
+    pairs.forEach(([fid,val]) => { const el=document.getElementById(fid); if(el) el.value = val ?? 0; });
+    ctPremiumStatus(`Referência ${item.nome} carregada na dosagem.`);
+    if(typeof syncResumoFieldsFromDosagem === 'function') syncResumoFieldsFromDosagem();
+    if(typeof calcularDosagem === 'function') { try { calcularDosagem(); } catch(e){} }
+    ctPremiumRefresh();
+}
+function ctPremiumAssign(slot, id){
+    const item = ctPremiumGetBank().find(x => x.id === id);
+    if(!item) return;
+    window.ctPremiumCompareSlots[slot] = item;
+    ctPremiumRenderCompare();
+    ctPremiumStatus(`Referência ${item.nome} posicionada no slot ${slot}.`);
+}
+function ctPremiumRenderCompareCard(slot, item){
+    if(!item){
+        return `<div class="premium-compare-empty"><h4>Slot ${slot}</h4><p>Nenhuma referência posicionada ainda. Use os botões A/B/C na tabela do banco.</p></div>`;
+    }
+    return `
+        <h4>Slot ${slot} · ${item.nome}</h4>
+        <div class="premium-tag">${item.classeRef}</div>
+        <p style="margin-top:8px;font-size:0.84rem;color:var(--text-light);">${item.aplicacao || 'Sem aplicação definida'}</p>
+        <div class="premium-points">
+            <div class="premium-point"><span>Flow</span><strong>${ctFmtNum(item.flow,0)} mm</strong></div>
+            <div class="premium-point"><span>FCK</span><strong>${ctFmtNum(item.fck,0)} MPa</strong></div>
+            <div class="premium-point"><span>Relação a/c</span><strong>${ctFmtNum(item.ac,3)}</strong></div>
+            <div class="premium-point"><span>Cimento</span><strong>${ctFmtNum(item.masses.cimento,0)} kg</strong></div>
+            <div class="premium-point"><span>Ligantes</span><strong>${ctFmtNum(item.masses.cimento + item.masses.adicao,0)} kg</strong></div>
+            <div class="premium-point"><span>Custo</span><strong>${ctFmtMoney(item.custo)}</strong></div>
+        </div>
+        <div class="premium-actions" style="margin-top:12px;">
+            <button class="premium-btn success" type="button" onclick="ctPremiumLoadToDosagem('${item.id}')">⚖️ Carregar</button>
+            <button class="premium-btn danger" type="button" onclick="window.ctPremiumCompareSlots['${slot}']=null;ctPremiumRenderCompare();">✖ Remover</button>
+        </div>
+    `;
+}
+function ctPremiumRenderCompare(){
+    ['A','B','C'].forEach(slot => {
+        const el = document.getElementById('premium_compare_' + slot);
+        if(el) el.innerHTML = ctPremiumRenderCompareCard(slot, window.ctPremiumCompareSlots[slot]);
+    });
+}
+function ctPremiumRenderCurve(list){
+    const holder = document.getElementById('premium_curve_svg');
+    if(!holder) return;
+    if(!list.length){ holder.innerHTML = '<div class="premium-compare-empty">Salve referências para visualizar a curva de custo do banco.</div>'; return; }
+    const sorted = [...list].sort((a,b)=>a.custo-b.custo);
+    const w=760, h=250, pl=56, pr=24, pt=24, pb=42;
+    const min = Math.min(...sorted.map(x=>x.custo), 0);
+    const max = Math.max(...sorted.map(x=>x.custo), 1);
+    const range = max-min || 1;
+    const xStep = sorted.length>1 ? (w-pl-pr)/(sorted.length-1) : 0;
+    const yOf = v => pt + (h-pt-pb) * (1 - ((v-min)/range));
+    const points = sorted.map((item,i)=>`${pl + i*xStep},${yOf(item.custo)}`).join(' ');
+    const best = sorted[0];
+    const lines = Array.from({length:5}, (_,i)=>{
+        const y = pt + ((h-pt-pb)/4)*i;
+        const val = max - (range/4)*i;
+        return `<line x1="${pl}" y1="${y}" x2="${w-pr}" y2="${y}" stroke="#e6edf3" stroke-dasharray="4 4"/><text x="${pl-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#7f8c8d">${ctFmtNum(val,2)}</text>`;
+    }).join('');
+    const labels = sorted.map((item,i)=>`<text x="${pl + i*xStep}" y="${h-16}" text-anchor="middle" font-size="11" fill="#5d6d7e">${(item.nome||'').slice(0,14)}</text>`).join('');
+    const dots = sorted.map((item,i)=>{
+        const x = pl + i*xStep, y = yOf(item.custo), bestDot = item.id===best.id;
+        return `<circle cx="${x}" cy="${y}" r="${bestDot?6:5}" fill="${bestDot?'#27ae60':'#1a5276'}" />` +
+               `<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" fill="#2c3e50">${ctFmtNum(item.custo,2)}</text>`;
+    }).join('');
+    holder.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Curva de custo do banco premium">
+        ${lines}
+        <line x1="${pl}" y1="${h-pb}" x2="${w-pr}" y2="${h-pb}" stroke="#9fb3c8"/>
+        <line x1="${pl}" y1="${pt}" x2="${pl}" y2="${h-pb}" stroke="#9fb3c8"/>
+        <polyline fill="none" stroke="#1a5276" stroke-width="3" points="${points}" />
+        ${dots}
+        ${labels}
+    </svg>`;
+}
+function ctPremiumRefresh(){
+    const list = ctPremiumGetBank();
+    const body = document.getElementById('premium_bank_body');
+    if(body){
+        body.innerHTML = list.length ? list.map(item => `
+            <tr>
+                <td><strong>${item.nome}</strong><br><span class="premium-tag">${item.classeRef || 'Referência'}</span><br><small style="color:var(--text-light);">${new Date(item.createdAt).toLocaleDateString('pt-BR')}</small></td>
+                <td>${item.aplicacao || '—'}<br><small style="color:var(--text-light);">${item.responsavel || ''}</small></td>
+                <td>${ctFmtNum(item.flow,0)} mm</td>
+                <td>${ctFmtNum(item.fck,0)} MPa</td>
+                <td>${ctFmtNum(item.ac,3)}</td>
+                <td>${ctFmtNum(item.masses.cimento,0)} kg</td>
+                <td><strong>${ctFmtMoney(item.custo)}</strong></td>
+                <td>
+                    <div class="premium-actions">
+                        <button class="premium-btn" type="button" onclick="ctPremiumAssign('A','${item.id}')">A</button>
+                        <button class="premium-btn" type="button" onclick="ctPremiumAssign('B','${item.id}')">B</button>
+                        <button class="premium-btn" type="button" onclick="ctPremiumAssign('C','${item.id}')">C</button>
+                        <button class="premium-btn success" type="button" onclick="ctPremiumLoadToDosagem('${item.id}')">Carregar</button>
+                        <button class="premium-btn danger" type="button" onclick="ctPremiumDelete('${item.id}')">Excluir</button>
+                    </div>
+                </td>
+            </tr>`).join('') : '<tr><td colspan="8" class="premium-compare-empty">Nenhuma referência salva ainda. Capture o traço atual para começar o banco técnico.</td></tr>';
+    }
+    const total = list.length;
+    const bestCost = total ? [...list].sort((a,b)=>a.custo-b.custo)[0] : null;
+    const bestFlow = total ? [...list].sort((a,b)=>b.flow-a.flow)[0] : null;
+    const bestCim = total ? [...list].sort((a,b)=>a.masses.cimento-b.masses.cimento)[0] : null;
+    const setTxt = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent = txt; };
+    setTxt('premium_total', String(total));
+    setTxt('premium_best_cost', bestCost ? `${bestCost.nome} · ${ctFmtMoney(bestCost.custo)}` : '—');
+    setTxt('premium_best_flow', bestFlow ? `${bestFlow.nome} · ${ctFmtNum(bestFlow.flow,0)} mm` : '—');
+    setTxt('premium_best_cim', bestCim ? `${bestCim.nome} · ${ctFmtNum(bestCim.masses.cimento,0)} kg` : '—');
+    ctPremiumRenderCompare();
+    ctPremiumRenderCurve(list);
+}
+
+(function(){
+    const ids = ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_flow','dos_fck','dos_ar','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'];
+    const bind = () => ids.forEach(id => { const el=document.getElementById(id); if(el && !el.dataset.premiumBound){ el.dataset.premiumBound='1'; el.addEventListener('input', () => { try { ctPremiumRenderCurve(ctPremiumGetBank()); } catch(e){} }); }});
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ()=>{ bind(); ctPremiumRefresh(); });
+    else { bind(); ctPremiumRefresh(); }
+})();
+
 </script>
 
 </body>
