@@ -901,7 +901,7 @@
 
 <main>
 
-<div class="section-jump" id="sectionJump" style="display:none;">
+<div class="section-jump" id="sectionJump" style="display:flex;">
     <button class="btn btn-primary" type="button" onclick="showSection('sec-hub')">🏠 Principal</button>
     <select id="quickSectionSelect" onchange="if(this.value){showSection(this.value)}">
         <option value="">Ir direto para outra parte...</option>
@@ -3099,9 +3099,9 @@ function showSection(id, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const jump = document.getElementById('sectionJump');
-    if (jump) jump.style.display = (id === 'sec-hub') ? 'none' : 'flex';
+    if (jump) jump.style.display = 'flex';
     const quickSelect = document.getElementById('quickSectionSelect');
-    if (quickSelect) quickSelect.value = id;
+    if (quickSelect) quickSelect.value = (id === 'sec-hub') ? '' : id;
     // Auto-draw standard Abrams curves when entering the chart tab
     if (id === 'sec-abrams') {
         const canvas = document.getElementById('chartAbrams');
@@ -8166,7 +8166,7 @@ async function mccListarProdutos() {
     if (!wrap) return;
     wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando da planilha...</div>';
     try {
-        const resp = await fetch(url + '?action=listar_custo_mcc', { method:'GET', credentials:'omit', redirect:'follow' });
+        const resp = await fetch(url + '?action=listar_custo_mcc&t=' + Date.now(), { redirect:'follow' });
         const data = await resp.json();
         if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
         mccRenderProdutos(wrap, data.produtos || []);
