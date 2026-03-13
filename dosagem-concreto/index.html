@@ -3122,10 +3122,8 @@ function showSection(id, btn) {
     }
     // Auto-load MCC when entering the section
     if (id === 'sec-custo-mcc') {
-        const inp = document.getElementById('mcc_url_input');
-        if (inp && !inp.value) inp.value = CUSTO_MCC_WEBAPP_URL;
         const el = document.getElementById('mcc_url_atual');
-        if (el) el.textContent = 'Atual: ' + CUSTO_MCC_WEBAPP_URL;
+        if (el) el.textContent = CUSTO_MCC_WEBAPP_URL ? '✅ URL configurada' : '⚠️ URL não configurada';
         mccListarProdutos();
     }
     window.scrollTo({top: 0, behavior: 'smooth'});
@@ -3168,9 +3166,8 @@ function calcularCorrecaoUmidade(m, umidades) {
 const DOSAGEM_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxUSO5OQ9G6DFQAKOTydxURfr1Ncc2lkeAHavKV2bV8vL5tn-Y_mTlbL024p6dORgLaxg/exec';
 
 /* === BANCO DE CUSTOS MCC === */
-// Cole aqui a URL do Web App gerado pelo AppsScript_custoMCC.gs
-// Ou use o campo de configuração na seção "Banco de Custos MCC"
-let CUSTO_MCC_WEBAPP_URL = localStorage.getItem('ctCustoMCCUrl') || 'https://script.google.com/macros/s/AKfycbyNV73sf5uPZ2xAmb0Q-mtXLeZhap251Fi424SJHrEPNHbbWzJ8ETlDhiJzH84oQLYU3A/exec';
+// A URL do Apps Script é armazenada apenas localmente no browser (não fica no código)
+let CUSTO_MCC_WEBAPP_URL = localStorage.getItem('ctCustoMCCUrl_v2') || '';
 
 function abrirModalSalvarTraco() {
     const modal = document.getElementById('modal-salvar-traco');
@@ -8092,9 +8089,10 @@ function mccSetUrl() {
     const url = (inp?.value || '').trim();
     if (!url) { mccStatus('Cole a URL antes de salvar.', 'warn'); return; }
     CUSTO_MCC_WEBAPP_URL = url;
-    localStorage.setItem('ctCustoMCCUrl', url);
+    localStorage.setItem('ctCustoMCCUrl_v2', url);
+    if (inp) inp.value = ''; // não exibir a URL após salvar
     const el = document.getElementById('mcc_url_atual');
-    if (el) el.textContent = 'Atual: ' + url;
+    if (el) el.textContent = '✅ URL configurada';
     mccStatus('✅ URL salva! Recarregando...', 'ok');
     setTimeout(mccListarProdutos, 300);
 }
@@ -8208,14 +8206,27 @@ async function mccListarProdutos() {
     const url = CUSTO_MCC_WEBAPP_URL;
     const wrap = document.getElementById('mcc_tabela_wrap');
     if (!wrap) return;
-    wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando da planilha...</div>';
-    try {
-        const data = await mccJsonpFetch(url, 'action=listar_custo_mcc');
-        if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
-        mccRenderProdutos(wrap, data.produtos || []);
-    } catch(err) {
-        wrap.innerHTML = `<div class="result-box error">❌ ${err.message}</div>`;
+    if (!url) {
+        wrap.innerHTML = '<div class="result-box error">⚙️ Configure a URL do Apps Script no campo acima e clique em <strong>Salvar URL</strong>.</div>';
+        return;
     }
+    wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando da planilha...</div>';
+    let data;
+    try {
+        // Tenta fetch direto primeiro
+        const resp = await fetch(url + '?action=listar_custo_mcc&t=' + Date.now(), { method:'GET', credentials:'omit', redirect:'follow' });
+        data = await resp.json();
+    } catch(_) {
+        // Fallback JSONP (contorna CORS em browsers mais restritivos)
+        try {
+            data = await mccJsonpFetch(url, 'action=listar_custo_mcc');
+        } catch(err) {
+            wrap.innerHTML = `<div class="result-box error">❌ Não foi possível conectar ao Apps Script.<br><small>Verifique: Implantar → Gerenciar implantações → Acesso: <b>Qualquer pessoa</b><br>${err.message}</small></div>`;
+            return;
+        }
+    }
+    if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
+    mccRenderProdutos(wrap, data.produtos || []);
 }
 function mccRenderProdutos(wrap, produtos) {
     let prefix = '';
