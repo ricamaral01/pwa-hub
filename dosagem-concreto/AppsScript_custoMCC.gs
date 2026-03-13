@@ -12,6 +12,7 @@
  *    - Executar como: Eu (seu e-mail)
  *    - Quem tem acesso: Qualquer pessoa
  * 6. Copie a URL gerada e cole no index.html na variável CUSTO_MCC_WEBAPP_URL
+ * URL atual: https://script.google.com/macros/s/AKfycbyNV73sf5uPZ2xAmb0Q-mtXLeZhap251Fi424SJHrEPNHbbWzJ8ETlDhiJzH84oQLYU3A/exec
  */
 
 var SHEET_CUSTO_MCC = "custo";
