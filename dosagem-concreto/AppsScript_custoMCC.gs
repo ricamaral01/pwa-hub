@@ -1,6 +1,6 @@
 /**
  * BANCO DE CUSTOS MCC — Apps Script
- * Aba: custo_mcc  |  Planilha: https://docs.google.com/spreadsheets/d/1GSDEQYAbjXLbi6o2_Rrhjn2JDBhTZzjcx53rtIpcwRY/edit?usp=sharing
+ * Aba: custo  |  Planilha: https://docs.google.com/spreadsheets/d/13VnYbzJ-9sVtfIoe2twOwK6kwdOWFMxnJC1v1_72Nik/edit?gid=0#gid=0
  *
  * COMO USAR:
  * 1. Abra a planilha acima → Extensões → Apps Script
@@ -14,7 +14,7 @@
  * 6. Copie a URL gerada e cole no index.html na variável CUSTO_MCC_WEBAPP_URL
  */
 
-var SHEET_CUSTO_MCC = "custo_mcc";
+var SHEET_CUSTO_MCC = "custo";
 
 var HEADERS_CUSTO_MCC = [
   "ID",                    // 1
