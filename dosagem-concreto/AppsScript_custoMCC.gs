@@ -181,6 +181,18 @@ function doPost(e) {
 
 /* ================ ROTEAMENTO GET ================ */
 function doGet(e) {
+  // Suporte a JSONP: se callback= for passado, envolve o JSON na função callback
+  function respond(obj) {
+    var json = JSON.stringify(obj);
+    var cb = (e && e.parameter && e.parameter.callback) ? e.parameter.callback : null;
+    if (cb) {
+      return ContentService
+        .createTextOutput(cb + "(" + json + ");")
+        .setMimeType(ContentService.MimeType.JAVASCRIPT);
+    }
+    return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
+  }
+
   try {
     var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "";
 
@@ -189,9 +201,7 @@ function doGet(e) {
       var sh      = getOrCreateSheetCustoMCC();
       var lastRow = sh.getLastRow();
       if (lastRow <= 1) {
-        return ContentService
-          .createTextOutput(JSON.stringify({ ok: true, produtos: [] }))
-          .setMimeType(ContentService.MimeType.JSON);
+        return respond({ ok: true, produtos: [] });
       }
       var data     = sh.getRange(2, 1, lastRow - 1, HEADERS_CUSTO_MCC.length).getValues();
       var produtos = [];
@@ -216,30 +226,23 @@ function doGet(e) {
           observacoes:    String(data[i][16])
         });
       }
-      // filtrar por chave se passado
       var filtroChave = (e.parameter.chave || "").trim().toLowerCase();
       if (filtroChave) {
         produtos = produtos.filter(function(p){ return p.chaveMCC.toLowerCase() === filtroChave; });
       }
-      return ContentService
-        .createTextOutput(JSON.stringify({ ok: true, produtos: produtos }))
-        .setMimeType(ContentService.MimeType.JSON);
+      return respond({ ok: true, produtos: produtos });
     }
 
     /* ping */
-    return ContentService
-      .createTextOutput(JSON.stringify({
-        status:  "online",
-        aba:     SHEET_CUSTO_MCC,
-        colunas: HEADERS_CUSTO_MCC.length,
-        actions: ["salvar_custo_mcc", "deletar_custo_mcc", "listar_custo_mcc"]
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return respond({
+      status:  "online",
+      aba:     SHEET_CUSTO_MCC,
+      colunas: HEADERS_CUSTO_MCC.length,
+      actions: ["salvar_custo_mcc", "deletar_custo_mcc", "listar_custo_mcc"]
+    });
 
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: false, error: err.message }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return respond({ ok: false, error: err.message });
   }
 }
 

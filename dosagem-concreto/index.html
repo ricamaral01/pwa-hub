@@ -2873,6 +2873,15 @@
     <h2><span class="icon">💲</span> Banco de Custos MCC</h2>
     <p class="subtitle">Cadastre produtos, fornecedores, ICMS e frete. Aplique ao painel de custos com um clique para calcular o custo real do m³.</p>
 
+    <!-- Configuração da URL da planilha -->
+    <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+      <span style="font-size:.85rem;color:#795548;font-weight:600;">⚙️ URL Apps Script:</span>
+      <input type="url" id="mcc_url_input" placeholder="Cole aqui a URL do Apps Script webapp..." style="flex:1;min-width:220px;font-size:.78rem;padding:5px 10px;border:1px solid #ffe082;border-radius:6px;background:#fff;">
+      <button type="button" onclick="mccSetUrl()" style="background:#f57f17;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:.82rem;cursor:pointer;">Salvar URL</button>
+      <button type="button" onclick="mccListarProdutos()" style="background:#2e7d32;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:.82rem;cursor:pointer;">🔄 Recarregar</button>
+      <span id="mcc_url_atual" style="font-size:.72rem;color:#aaa;width:100%;word-break:break-all;"></span>
+    </div>
+
     <div style="background:#f0fdf4;border:2px solid #a5d6a7;border-radius:12px;padding:18px 20px;margin-bottom:20px;">
       <h3 style="font-size:1rem;color:#2e7d32;margin-bottom:14px;">➕ Cadastrar / Editar Produto</h3>
       <input type="hidden" id="mcc_edit_id" value="">
@@ -3113,6 +3122,10 @@ function showSection(id, btn) {
     }
     // Auto-load MCC when entering the section
     if (id === 'sec-custo-mcc') {
+        const inp = document.getElementById('mcc_url_input');
+        if (inp && !inp.value) inp.value = CUSTO_MCC_WEBAPP_URL;
+        const el = document.getElementById('mcc_url_atual');
+        if (el) el.textContent = 'Atual: ' + CUSTO_MCC_WEBAPP_URL;
         mccListarProdutos();
     }
     window.scrollTo({top: 0, behavior: 'smooth'});
@@ -8075,11 +8088,15 @@ const MCC_TIPO_TO_CHAVE = {
     'Aditivo SP':        'adit'
 };
 function mccSetUrl() {
-    const url = (document.getElementById('mcc_url_input')?.value || '').trim();
-    if (!url) return;
+    const inp = document.getElementById('mcc_url_input');
+    const url = (inp?.value || '').trim();
+    if (!url) { mccStatus('Cole a URL antes de salvar.', 'warn'); return; }
     CUSTO_MCC_WEBAPP_URL = url;
     localStorage.setItem('ctCustoMCCUrl', url);
-    mccStatus('URL salva com sucesso!', 'ok');
+    const el = document.getElementById('mcc_url_atual');
+    if (el) el.textContent = 'Atual: ' + url;
+    mccStatus('✅ URL salva! Recarregando...', 'ok');
+    setTimeout(mccListarProdutos, 300);
 }
 function mccStatus(msg, kind='ok') {
     const el = document.getElementById('mcc_form_status');
@@ -8160,18 +8177,44 @@ async function mccSalvarProduto() {
         mccStatus('❌ Erro ao salvar: ' + err.message, 'error');
     }
 }
+// JSONP helper — contorna CORS do Google Apps Script redirect
+function mccJsonpFetch(url, params) {
+    return new Promise(function(resolve, reject) {
+        var cbName = '__mccCb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
+        var script = document.createElement('script');
+        var timer = setTimeout(function() {
+            delete window[cbName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            reject(new Error('Timeout — verifique a URL do Apps Script'));
+        }, 20000);
+        window[cbName] = function(data) {
+            clearTimeout(timer);
+            delete window[cbName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            resolve(data);
+        };
+        var sep = url.indexOf('?') === -1 ? '?' : '&';
+        script.src = url + sep + params + '&callback=' + cbName + '&t=' + Date.now();
+        script.onerror = function() {
+            clearTimeout(timer);
+            delete window[cbName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            reject(new Error('Erro ao carregar script — URL inválida ou sem acesso público'));
+        };
+        document.head.appendChild(script);
+    });
+}
 async function mccListarProdutos() {
     const url = CUSTO_MCC_WEBAPP_URL;
     const wrap = document.getElementById('mcc_tabela_wrap');
     if (!wrap) return;
     wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando da planilha...</div>';
     try {
-        const resp = await fetch(url + '?action=listar_custo_mcc&t=' + Date.now(), { redirect:'follow' });
-        const data = await resp.json();
+        const data = await mccJsonpFetch(url, 'action=listar_custo_mcc');
         if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
         mccRenderProdutos(wrap, data.produtos || []);
     } catch(err) {
-        wrap.innerHTML = `<div class="result-box error">❌ Erro ao carregar da planilha: ${err.message}</div>`;
+        wrap.innerHTML = `<div class="result-box error">❌ ${err.message}</div>`;
     }
 }
 function mccRenderProdutos(wrap, produtos) {
