@@ -2871,26 +2871,40 @@
 <div id="sec-custo-mcc" class="section">
   <div class="card">
     <h2><span class="icon">💲</span> Banco de Custos MCC</h2>
-    <p class="subtitle">Cadastre produtos, fornecedores, ICMS e frete. Aplique ao painel de custos com um clique para calcular o custo real do m³.</p>
+    <p class="subtitle">Cadastre insumos por unidade fabril. O sistema versiona automaticamente: ao salvar o mesmo produto+fornecedor+unidade, a versão anterior é inativada.</p>
 
-    <!-- Configuração da URL da planilha -->
-    <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
-      <span style="font-size:.85rem;color:#795548;font-weight:600;">⚙️ URL Apps Script:</span>
-      <input type="url" id="mcc_url_input" placeholder="Cole aqui a URL do Apps Script webapp..." style="flex:1;min-width:220px;font-size:.78rem;padding:5px 10px;border:1px solid #ffe082;border-radius:6px;background:#fff;">
-      <button type="button" onclick="mccSetUrl()" style="background:#f57f17;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:.82rem;cursor:pointer;">Salvar URL</button>
-      <button type="button" onclick="mccListarProdutos()" style="background:#2e7d32;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:.82rem;cursor:pointer;">🔄 Recarregar</button>
-      <span id="mcc_url_atual" style="font-size:.72rem;color:#aaa;width:100%;word-break:break-all;"></span>
-    </div>
-
-    <div style="background:#f0fdf4;border:2px solid #a5d6a7;border-radius:12px;padding:18px 20px;margin-bottom:20px;">
-      <h3 style="font-size:1rem;color:#2e7d32;margin-bottom:14px;">➕ Cadastrar / Editar Produto</h3>
-      <input type="hidden" id="mcc_edit_id" value="">
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;">
-        <div class="form-group">
-          <label>Nome do Produto *</label>
-          <input type="text" id="mcc_nome" placeholder="ex: CP V ARI RS" style="width:100%;">
+    <!-- FORMULÁRIO CADASTRO -->
+    <div style="background:#f0fdf4;border:2px solid #a5d6a7;border-radius:14px;padding:20px 22px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <h3 style="font-size:1rem;color:#2e7d32;margin:0;">➕ <span id="mcc_form_title">Novo Cadastro</span></h3>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span style="font-size:.75rem;color:#888;">Versão:</span>
+          <span id="mcc_versao_badge" style="background:#2e7d32;color:#fff;border-radius:20px;padding:2px 10px;font-size:.78rem;font-weight:700;">auto</span>
         </div>
-        <div class="form-group">
+      </div>
+      <input type="hidden" id="mcc_edit_id" value="">
+
+      <!-- LINHA 1: Identificação -->
+      <div style="display:grid;grid-template-columns:2fr 1.5fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-group" style="margin:0;">
+          <label>Nome do Produto *</label>
+          <input type="text" id="mcc_nome" placeholder="ex: CP V ARI RS — Votorantim" style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Fornecedor *</label>
+          <input type="text" id="mcc_fornecedor" placeholder="ex: Votorantim" style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Unidade MCC *</label>
+          <select id="mcc_unidade_mcc" style="width:100%;">
+            <option value="">Selecione...</option>
+            <option value="Campinas">Campinas</option>
+            <option value="Pederneiras">Pederneiras</option>
+            <option value="Ribeirão">Ribeirão</option>
+            <option value="Noroeste">Noroeste</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
           <label>Tipo de Material *</label>
           <select id="mcc_tipo" style="width:100%;" onchange="mccAutoChave()">
             <option value="">Selecione...</option>
@@ -2904,91 +2918,105 @@
             <option value="Aditivo SP">Aditivo SP</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Chave MCC (auto)</label>
-          <select id="mcc_chave" style="width:100%;">
-            <option value="cim">cim — Cimento</option>
-            <option value="adic">adic — Adição</option>
-            <option value="an">an — Areia Natural</option>
-            <option value="ai">ai — Areia Industrial</option>
-            <option value="b0">b0 — Brita 0</option>
-            <option value="b1">b1 — Brita 1/2</option>
-            <option value="agua">agua — Água</option>
-            <option value="adit">adit — Aditivo SP</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Fornecedor</label>
-          <input type="text" id="mcc_fornecedor" placeholder="ex: Votorantim" style="width:100%;">
-        </div>
-        <div class="form-group">
-          <label>Unidade Medida</label>
-          <select id="mcc_unid" style="width:100%;">
-            <option value="kg">R$/kg</option>
-            <option value="t">R$/t</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Preço (R$/unid.)</label>
-          <input type="number" id="mcc_preco" step="0.01" min="0" value="0" style="width:100%;">
-        </div>
-        <div class="form-group">
-          <label>ICMS (%)</label>
-          <input type="number" id="mcc_icms_pct" step="0.1" min="0" max="100" value="0" style="width:100%;">
-        </div>
-        <div class="form-group" style="display:flex;align-items:flex-end;gap:8px;">
-          <label class="cost-adv-chk-label" style="padding-bottom:4px;"><input type="checkbox" id="mcc_ded_icms" class="cost-adv-chk"> Deduz ICMS</label>
-        </div>
-        <div class="form-group">
-          <label>Frete (R$/unid.)</label>
-          <input type="number" id="mcc_frete" step="0.01" min="0" value="0" style="width:100%;">
-        </div>
-        <div class="form-group">
-          <label>Unid. Frete</label>
-          <select id="mcc_unid_frete" style="width:100%;">
-            <option value="kg">R$/kg</option>
-            <option value="t">R$/t</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>ICMS Frete (%)</label>
-          <input type="number" id="mcc_icms_frete_pct" step="0.1" min="0" max="100" value="0" style="width:100%;">
-        </div>
-        <div class="form-group" style="display:flex;align-items:flex-end;gap:8px;">
-          <label class="cost-adv-chk-label" style="padding-bottom:4px;"><input type="checkbox" id="mcc_ded_icms_frete" class="cost-adv-chk"> Deduz ICMS Frete</label>
-        </div>
-        <div class="form-group">
-          <label>Custo Líq. R$/kg</label>
-          <div id="mcc_custo_liq_preview" style="padding:8px 10px;background:#e8f5e9;border-radius:8px;font-weight:800;color:#2e7d32;font-size:1rem;">—</div>
-        </div>
-        <div class="form-group">
-          <label>Ativo?</label>
-          <select id="mcc_ativo" style="width:100%;">
-            <option value="Sim">Sim</option>
-            <option value="Não">Não</option>
-          </select>
-        </div>
-        <div class="form-group" style="grid-column:1/-1;">
-          <label>Observações</label>
-          <input type="text" id="mcc_obs" placeholder="Notas, validade de cotação, etc." style="width:100%;">
+      </div>
+
+      <!-- LINHA 2: Preço + ICMS -->
+      <div style="background:#fff;border:1px solid #c8e6c9;border-radius:10px;padding:14px 16px;margin-bottom:10px;">
+        <div style="font-size:.78rem;font-weight:700;color:#388e3c;margin-bottom:10px;letter-spacing:.03em;">💰 PREÇO BASE</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;">
+          <div class="form-group" style="margin:0;">
+            <label>Preço (R$/unid.)</label>
+            <input type="number" id="mcc_preco" step="0.01" min="0" value="0" style="width:100%;">
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label>Unidade</label>
+            <select id="mcc_unid" style="width:100%;">
+              <option value="kg">R$/kg</option>
+              <option value="t">R$/t</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label>ICMS (%)</label>
+            <input type="number" id="mcc_icms_pct" step="0.1" min="0" max="100" value="0" style="width:100%;">
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label style="display:block;margin-bottom:8px;">&nbsp;</label>
+            <label class="cost-adv-chk-label"><input type="checkbox" id="mcc_ded_icms" class="cost-adv-chk"> Deduz ICMS</label>
+          </div>
         </div>
       </div>
-      <div class="btn-wrap" style="margin-top:14px;">
-        <button class="btn btn-primary" onclick="mccPreviewCusto()">🔢 Calcular Custo Líq.</button>
-        <button class="btn btn-accent" onclick="mccSalvarProduto()">💾 Salvar no Banco</button>
-        <button class="btn" style="background:#e0e5ea;color:var(--text);" onclick="mccLimparForm()">🗑️ Limpar</button>
+
+      <!-- LINHA 3: Frete -->
+      <div style="background:#fff;border:1px solid #c8e6c9;border-radius:10px;padding:14px 16px;margin-bottom:10px;">
+        <div style="font-size:.78rem;font-weight:700;color:#388e3c;margin-bottom:10px;letter-spacing:.03em;">🚚 FRETE</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;">
+          <div class="form-group" style="margin:0;">
+            <label>Frete (R$/unid.)</label>
+            <input type="number" id="mcc_frete" step="0.01" min="0" value="0" style="width:100%;">
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label>Unidade Frete</label>
+            <select id="mcc_unid_frete" style="width:100%;">
+              <option value="kg">R$/kg</option>
+              <option value="t">R$/t</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label>ICMS Frete (%)</label>
+            <input type="number" id="mcc_icms_frete_pct" step="0.1" min="0" max="100" value="0" style="width:100%;">
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label style="display:block;margin-bottom:8px;">&nbsp;</label>
+            <label class="cost-adv-chk-label"><input type="checkbox" id="mcc_ded_icms_frete" class="cost-adv-chk"> Deduz ICMS Frete</label>
+          </div>
+        </div>
       </div>
+
+      <!-- LINHA 4: Resultado + Obs + Botões -->
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;margin-top:4px;">
+        <div style="background:#e8f5e9;border-radius:10px;padding:12px 20px;text-align:center;min-width:160px;">
+          <div style="font-size:.72rem;color:#388e3c;margin-bottom:4px;">CUSTO LÍQ. R$/kg</div>
+          <div id="mcc_custo_liq_preview" style="font-size:1.4rem;font-weight:900;color:#2e7d32;">—</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <input type="text" id="mcc_obs" placeholder="Observações, validade de cotação, notas..." style="width:100%;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-accent" style="flex:1;" onclick="mccSalvarProduto()">💾 Salvar no Banco</button>
+            <button class="btn" style="background:#e0e5ea;color:var(--text);" onclick="mccLimparForm()">↺ Limpar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chave MCC oculta (preenchida automaticamente) -->
+      <select id="mcc_chave" style="display:none;">
+        <option value="cim">cim</option><option value="adic">adic</option>
+        <option value="an">an</option><option value="ai">ai</option>
+        <option value="b0">b0</option><option value="b1">b1</option>
+        <option value="agua">agua</option><option value="adit">adit</option>
+      </select>
+
       <div id="mcc_form_status" style="margin-top:8px;"></div>
     </div>
 
-    <!-- TABELA DE PRODUTOS SALVOS -->
-    <div class="btn-wrap" style="margin-bottom:10px;">
-      <button class="btn btn-primary" onclick="mccListarProdutos()">🔄 Carregar do Banco</button>
+    <!-- FILTROS + TABELA -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
+      <select id="mcc_filtro_unidade" style="padding:6px 10px;border-radius:6px;border:1px solid #ddd;font-size:.85rem;" onchange="mccAplicarFiltro()">
+        <option value="">Todas as unidades</option>
+        <option value="Campinas">Campinas</option>
+        <option value="Pederneiras">Pederneiras</option>
+        <option value="Ribeirão">Ribeirão</option>
+        <option value="Noroeste">Noroeste</option>
+      </select>
+      <select id="mcc_filtro_ativo" style="padding:6px 10px;border-radius:6px;border:1px solid #ddd;font-size:.85rem;" onchange="mccAplicarFiltro()">
+        <option value="Sim">Somente ativos</option>
+        <option value="">Todos (incl. inativos)</option>
+      </select>
+      <button class="btn btn-primary" style="padding:6px 14px;font-size:.85rem;" onclick="mccListarProdutos()">🔄 Recarregar</button>
     </div>
     <div id="mcc_tabela_wrap">
-      <div style="text-align:center;padding:32px;color:var(--text-light);">
-        <div style="font-size:2rem;margin-bottom:8px;">💲</div>
-        <p>Clique em <strong>Carregar do Banco</strong> para listar os produtos cadastrados.</p>
+      <div style="text-align:center;padding:40px;color:var(--text-light);">
+        <div style="font-size:2.5rem;margin-bottom:8px;">💲</div>
+        <p>Carregando banco de custos...</p>
       </div>
     </div>
   </div>
@@ -3122,8 +3150,6 @@ function showSection(id, btn) {
     }
     // Auto-load MCC when entering the section
     if (id === 'sec-custo-mcc') {
-        const el = document.getElementById('mcc_url_atual');
-        if (el) el.textContent = CUSTO_MCC_WEBAPP_URL ? '✅ URL configurada' : '⚠️ URL não configurada';
         mccListarProdutos();
     }
     window.scrollTo({top: 0, behavior: 'smooth'});
@@ -3166,8 +3192,10 @@ function calcularCorrecaoUmidade(m, umidades) {
 const DOSAGEM_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxUSO5OQ9G6DFQAKOTydxURfr1Ncc2lkeAHavKV2bV8vL5tn-Y_mTlbL024p6dORgLaxg/exec';
 
 /* === BANCO DE CUSTOS MCC === */
-// A URL do Apps Script é armazenada apenas localmente no browser (não fica no código)
-let CUSTO_MCC_WEBAPP_URL = localStorage.getItem('ctCustoMCCUrl_v2') || '';
+// URL do Apps Script fixada — não altere sem atualizar o index.html
+const _MCC_URL_FIXED = 'https://script.google.com/macros/s/AKfycbyNV73sf5uPZ2xAmb0Q-mtXLeZhap251Fi424SJHrEPNHbbWzJ8ETlDhiJzH84oQLYU3A/exec';
+let CUSTO_MCC_WEBAPP_URL = _MCC_URL_FIXED;
+let _mccProdutosTodos = [];
 
 function abrirModalSalvarTraco() {
     const modal = document.getElementById('modal-salvar-traco');
@@ -8084,18 +8112,7 @@ const MCC_TIPO_TO_CHAVE = {
     'Água':              'agua',
     'Aditivo SP':        'adit'
 };
-function mccSetUrl() {
-    const inp = document.getElementById('mcc_url_input');
-    const url = (inp?.value || '').trim();
-    if (!url) { mccStatus('Cole a URL antes de salvar.', 'warn'); return; }
-    CUSTO_MCC_WEBAPP_URL = url;
-    localStorage.setItem('ctCustoMCCUrl_v2', url);
-    if (inp) inp.value = ''; // não exibir a URL após salvar
-    const el = document.getElementById('mcc_url_atual');
-    if (el) el.textContent = '✅ URL configurada';
-    mccStatus('✅ URL salva! Recarregando...', 'ok');
-    setTimeout(mccListarProdutos, 300);
-}
+// mccSetUrl removida — URL fixada no código
 function mccStatus(msg, kind='ok') {
     const el = document.getElementById('mcc_form_status');
     if (!el) return;
@@ -8135,23 +8152,22 @@ function mccPreviewCusto() {
     if (el) el.textContent = 'R$ ' + liq.toFixed(4).replace('.', ',') + '/kg';
 }
 async function mccSalvarProduto() {
-    const nome  = (document.getElementById('mcc_nome')?.value || '').trim();
-    const tipo  = document.getElementById('mcc_tipo')?.value || '';
-    const chave = document.getElementById('mcc_chave')?.value || '';
-    if (!nome)  { mccStatus('Informe o nome do produto.', 'warn'); return; }
-    if (!tipo)  { mccStatus('Selecione o tipo de material.', 'warn'); return; }
-    if (!chave) { mccStatus('Selecione a chave MCC.', 'warn'); return; }
-    const url = CUSTO_MCC_WEBAPP_URL;
-    if (!url)   { mccStatus('URL do Web App não configurada.', 'error'); return; }
+    const nome       = (document.getElementById('mcc_nome')?.value || '').trim();
+    const tipo       = document.getElementById('mcc_tipo')?.value || '';
+    const chave      = document.getElementById('mcc_chave')?.value || '';
+    const unidadeMCC = document.getElementById('mcc_unidade_mcc')?.value || '';
+    const fornecedor = (document.getElementById('mcc_fornecedor')?.value || '').trim();
+    if (!nome)       { mccStatus('Informe o nome do produto.', 'warn'); return; }
+    if (!tipo)       { mccStatus('Selecione o tipo de material.', 'warn'); return; }
+    if (!unidadeMCC) { mccStatus('Selecione a Unidade MCC.', 'warn'); return; }
     const custoLiq = mccCalcLiq();
-    const editId   = (document.getElementById('mcc_edit_id')?.value || '').trim();
     const payload  = {
         action:         'salvar_custo_mcc',
-        id:             editId || undefined,
         nomeProduto:    nome,
         tipoMaterial:   tipo,
         chaveMCC:       chave,
-        fornecedor:     (document.getElementById('mcc_fornecedor')?.value || '').trim(),
+        fornecedor:     fornecedor,
+        unidadeMCC:     unidadeMCC,
         unidadeMedida:  document.getElementById('mcc_unid')?.value || 'kg',
         preco:          mccNum('mcc_preco'),
         icmsPct:        mccNum('mcc_icms_pct'),
@@ -8161,16 +8177,14 @@ async function mccSalvarProduto() {
         icmsFreteP:     mccNum('mcc_icms_frete_pct'),
         deduzICMSFrete: document.getElementById('mcc_ded_icms_frete')?.checked ? 'Sim' : 'Não',
         custoLiq:       custoLiq,
-        ativo:          document.getElementById('mcc_ativo')?.value || 'Sim',
         observacoes:    (document.getElementById('mcc_obs')?.value || '').trim()
     };
     mccStatus('⏳ Salvando...', 'warn');
     try {
-        await fetch(url, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload), mode:'no-cors' });
-        mccStatus(`✅ ${nome} salvo no banco MCC!`, 'ok');
-        document.getElementById('mcc_custo_liq_preview').textContent = 'R$ ' + custoLiq.toFixed(4).replace('.', ',') + '/kg';
+        await fetch(CUSTO_MCC_WEBAPP_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload), mode:'no-cors' });
+        mccStatus(`✅ ${nome} (${unidadeMCC}) salvo! Versão gerenciada automaticamente.`, 'ok');
         mccLimparForm();
-        setTimeout(() => mccListarProdutos(), 800);
+        setTimeout(() => mccListarProdutos(), 1200);
     } catch(err) {
         mccStatus('❌ Erro ao salvar: ' + err.message, 'error');
     }
@@ -8203,67 +8217,69 @@ function mccJsonpFetch(url, params) {
     });
 }
 async function mccListarProdutos() {
-    const url = CUSTO_MCC_WEBAPP_URL;
     const wrap = document.getElementById('mcc_tabela_wrap');
     if (!wrap) return;
-    if (!url) {
-        wrap.innerHTML = '<div class="result-box error">⚙️ Configure a URL do Apps Script no campo acima e clique em <strong>Salvar URL</strong>.</div>';
-        return;
-    }
     wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">⏳ Carregando da planilha...</div>';
     let data;
     try {
-        // Tenta fetch direto primeiro
-        const resp = await fetch(url + '?action=listar_custo_mcc&t=' + Date.now(), { method:'GET', credentials:'omit', redirect:'follow' });
+        const resp = await fetch(CUSTO_MCC_WEBAPP_URL + '?action=listar_custo_mcc&t=' + Date.now(), { method:'GET', credentials:'omit', redirect:'follow' });
         data = await resp.json();
     } catch(_) {
-        // Fallback JSONP (contorna CORS em browsers mais restritivos)
         try {
-            data = await mccJsonpFetch(url, 'action=listar_custo_mcc');
+            data = await mccJsonpFetch(CUSTO_MCC_WEBAPP_URL, 'action=listar_custo_mcc');
         } catch(err) {
             wrap.innerHTML = `<div class="result-box error">❌ Não foi possível conectar ao Apps Script.<br><small>Verifique: Implantar → Gerenciar implantações → Acesso: <b>Qualquer pessoa</b><br>${err.message}</small></div>`;
             return;
         }
     }
     if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
-    mccRenderProdutos(wrap, data.produtos || []);
+    _mccProdutosTodos = data.produtos || [];
+    mccAplicarFiltro();
+}
+function mccAplicarFiltro() {
+    const wrap = document.getElementById('mcc_tabela_wrap');
+    if (!wrap) return;
+    const filtroUnidade = document.getElementById('mcc_filtro_unidade')?.value || '';
+    const filtroAtivo   = document.getElementById('mcc_filtro_ativo')?.value;
+    let lista = _mccProdutosTodos;
+    if (filtroUnidade) lista = lista.filter(p => p.unidadeMCC === filtroUnidade);
+    if (filtroAtivo)   lista = lista.filter(p => p.ativo === filtroAtivo);
+    mccRenderProdutos(wrap, lista);
 }
 function mccRenderProdutos(wrap, produtos) {
-    let prefix = '';
     if (!produtos || !produtos.length) {
-        wrap.innerHTML = prefix + '<div style="padding:24px;text-align:center;color:var(--text-light);">Nenhum produto cadastrado.</div>';
+        wrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);">Nenhum produto cadastrado para este filtro.</div>';
         return;
     }
-    let html = prefix + `<div style="overflow-x:auto;"><table class="cost-adv-table">
+    let html = `<div style="overflow-x:auto;"><table class="cost-adv-table">
             <thead><tr>
-              <th>Nome</th><th>Tipo</th><th>Fornecedor</th>
-              <th>R$/Unid.</th><th>Unid.</th><th>ICMS%</th><th>Ded.ICMS</th>
-              <th>Frete</th><th>Unid.Fr.</th><th>ICMS Fr.%</th><th>Ded.Fr.</th>
+              <th>Unidade</th><th>Versão</th><th>Nome</th><th>Tipo</th><th>Fornecedor</th>
+              <th>R$/Unid.</th><th>Unid.</th><th>ICMS%</th><th>Frete</th>
               <th>Custo Líq. R$/kg</th><th>Ativo</th><th>Obs.</th><th>Ações</th>
             </tr></thead><tbody>`;
     produtos.forEach(p => {
-        const liqFmt = 'R$ ' + (Number(p.custoLiq)||0).toFixed(4).replace('.', ',');
-        const ativo  = p.ativo === 'Sim' ? '✅' : '⛔';
-        const pid    = p.id.replace(/'/g, "\\'" );
-        const pj     = btoa(unescape(encodeURIComponent(JSON.stringify(p))));
-        html += `<tr>
+        const liqFmt  = 'R$ ' + (Number(p.custoLiq)||0).toFixed(4).replace('.', ',');
+        const ativo   = p.ativo === 'Sim';
+        const versao  = p.versao || p.versão || '1';
+        const rowStyle = ativo ? '' : 'opacity:.45;';
+        const pid     = (p.id || '').replace(/'/g, "\\'");
+        const pj      = btoa(unescape(encodeURIComponent(JSON.stringify(p))));
+        html += `<tr style="${rowStyle}">
+              <td style="white-space:nowrap;font-weight:600;">${p.unidadeMCC || '—'}</td>
+              <td style="text-align:center;"><span style="background:${ativo?'#2e7d32':'#999'};color:#fff;border-radius:20px;padding:1px 8px;font-size:.75rem;font-weight:700;">v${versao}</span></td>
               <td style="text-align:left;font-weight:600;white-space:nowrap;">${p.nomeProduto}</td>
               <td>${p.tipoMaterial}</td>
               <td>${p.fornecedor}</td>
-              <td>${(p.preco||0).toFixed(2).replace('.',',')}</td>
+              <td>${(Number(p.preco)||0).toFixed(2).replace('.',',')}</td>
               <td>${p.unidadeMedida}</td>
-              <td>${p.icmsPct||0}</td>
-              <td>${p.deduzICMS}</td>
-              <td>${(p.frete||0).toFixed(2).replace('.',',')}</td>
-              <td>${p.unidFrete}</td>
-              <td>${p.icmsFreteP||0}</td>
-              <td>${p.deduzICMSFrete}</td>
+              <td>${p.icmsPct||0}%</td>
+              <td>${(Number(p.frete)||0).toFixed(2).replace('.',',')}</td>
               <td style="font-weight:800;color:var(--accent);">${liqFmt}</td>
-              <td>${ativo}</td>
-              <td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.observacoes}</td>
+              <td style="text-align:center;">${ativo ? '✅' : '⛔'}</td>
+              <td style="max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.observacoes || ''}</td>
               <td style="white-space:nowrap;">
-                <button class="smart-chip" onclick="mccAplicarAoPainel('${pj}')">📥 Aplicar</button>
-                <button class="smart-chip" onclick="mccEditarForm('${pj}')">✏️ Editar</button>
+                ${ativo ? `<button class="smart-chip" onclick="mccAplicarAoPainel('${pj}')">📥 Aplicar</button>` : ''}
+                <button class="smart-chip" onclick="mccEditarForm('${pj}')">✏️ Novo a partir deste</button>
                 <button class="smart-chip" style="color:var(--danger);" onclick="mccExcluirProduto('${pid}')">🗑️</button>
               </td>
             </tr>`;
@@ -8298,24 +8314,29 @@ function mccEditarForm(b64) {
         const p = JSON.parse(decodeURIComponent(escape(atob(b64))));
         const setV = (id, v) => { const el=document.getElementById(id); if(el) el.value=v; };
         const setC = (id, v) => { const el=document.getElementById(id); if(el) el.checked=(v==='Sim'||v===true); };
-        const setS = (id, v) => { const el=document.getElementById(id); if(el && v) el.value=v; };
-        document.getElementById('mcc_edit_id').value = p.id || '';
-        setV('mcc_nome',          p.nomeProduto);
-        setS('mcc_tipo',          p.tipoMaterial);
-        setS('mcc_chave',         p.chaveMCC);
-        setV('mcc_fornecedor',    p.fornecedor);
-        setS('mcc_unid',          p.unidadeMedida || 'kg');
-        setV('mcc_preco',         p.preco         ?? 0);
-        setV('mcc_icms_pct',      p.icmsPct       ?? 0);
-        setC('mcc_ded_icms',      p.deduzICMS);
-        setV('mcc_frete',         p.frete         ?? 0);
-        setS('mcc_unid_frete',    p.unidFrete     || 'kg');
-        setV('mcc_icms_frete_pct',p.icmsFreteP    ?? 0);
-        setC('mcc_ded_icms_frete',p.deduzICMSFrete);
-        setS('mcc_ativo',         p.ativo         || 'Sim');
-        setV('mcc_obs',           p.observacoes);
+        const setS = (id, v) => { const el=document.getElementById(id); if(el && v!==undefined) el.value=v; };
+        document.getElementById('mcc_edit_id').value = '';
+        setV('mcc_nome',           p.nomeProduto);
+        setS('mcc_tipo',           p.tipoMaterial);
+        setS('mcc_chave',          p.chaveMCC);
+        setV('mcc_fornecedor',     p.fornecedor);
+        setS('mcc_unidade_mcc',    p.unidadeMCC || '');
+        setS('mcc_unid',           p.unidadeMedida || 'kg');
+        setV('mcc_preco',          p.preco         ?? 0);
+        setV('mcc_icms_pct',       p.icmsPct       ?? 0);
+        setC('mcc_ded_icms',       p.deduzICMS);
+        setV('mcc_frete',          p.frete         ?? 0);
+        setS('mcc_unid_frete',     p.unidFrete     || 'kg');
+        setV('mcc_icms_frete_pct', p.icmsFreteP    ?? 0);
+        setC('mcc_ded_icms_frete', p.deduzICMSFrete);
+        setV('mcc_obs',            p.observacoes || '');
+        const versao = p.versao || p.versão || '1';
+        const badge = document.getElementById('mcc_versao_badge');
+        if (badge) { badge.textContent = 'será v' + (Number(versao) + 1); badge.style.background = '#f57f17'; }
+        const title = document.getElementById('mcc_form_title');
+        if (title) title.textContent = 'Novo a partir de: ' + p.nomeProduto + ' (v' + versao + ')';
         mccPreviewCusto();
-        mccStatus('Editando: ' + p.nomeProduto + '. Ajuste e clique em Salvar.', 'warn');
+        mccStatus('Pré-preenchido a partir de v' + versao + '. Ajuste e salve para criar a próxima versão.', 'warn');
         document.getElementById('mcc_nome').scrollIntoView({ behavior:'smooth', block:'center' });
     } catch(err) { alert('Erro ao carregar edição: ' + err.message); }
 }
@@ -8333,7 +8354,11 @@ function mccLimparForm() {
     ['mcc_nome','mcc_fornecedor','mcc_obs','mcc_edit_id'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
     ['mcc_preco','mcc_icms_pct','mcc_frete','mcc_icms_frete_pct'].forEach(id => { const el=document.getElementById(id); if(el) el.value='0'; });
     ['mcc_ded_icms','mcc_ded_icms_frete'].forEach(id => { const el=document.getElementById(id); if(el) el.checked=false; });
+    const unidEl = document.getElementById('mcc_unidade_mcc'); if(unidEl) unidEl.value='';
     const liq = document.getElementById('mcc_custo_liq_preview'); if(liq) liq.textContent='—';
+    const badge = document.getElementById('mcc_versao_badge'); if(badge) { badge.textContent='auto'; badge.style.background='#2e7d32'; }
+    const title = document.getElementById('mcc_form_title'); if(title) title.textContent='Novo Cadastro';
+    const status = document.getElementById('mcc_form_status'); if(status) status.innerHTML='';
 }
 // Bind preview ao vivo
 (function mccInitPreview(){
