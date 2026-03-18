@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checklist da Usina</title>
+  <style>
+    :root{
+      --bg:#0f1720;
+      --panel:#16202b;
+      --panel-2:#1c2835;
+      --line:#2a3948;
+      --text:#ecf3f9;
+      --muted:#9fb0c0;
+      --blue:#1d5fa7;
+      --magenta:#a72141;
+      --shadow:0 12px 30px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(29,95,167,.18), transparent 28%),
+        radial-gradient(circle at top left, rgba(167,33,65,.16), transparent 24%),
+        linear-gradient(180deg, #0d141b 0%, #121b24 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+    .wrap{width:min(100%, 980px); margin:0 auto; padding:14px;}
+    .hero{
+      background:linear-gradient(135deg, rgba(20,63,111,.96), rgba(10,24,40,.96));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto -40px -40px auto;
+      width:180px;height:180px;
+      background:radial-gradient(circle, rgba(167,33,65,.28), transparent 65%);
+      pointer-events:none;
+    }
+    h1{margin:0 0 8px 0; font-size:clamp(24px,4vw,34px); line-height:1.05;}
+    .subtitle{margin:0; color:#d1deeb; line-height:1.45; font-size:14px; max-width:780px;}
+    .top-badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+    .badge{
+      padding:8px 12px; border:1px solid rgba(255,255,255,.1); border-radius:999px;
+      font-size:12px; color:#d7e6f5; background:rgba(255,255,255,.05);
+    }
+
+    .meta-grid{display:grid; grid-template-columns:1fr; gap:10px; margin-top:16px;}
+    .field{display:flex; flex-direction:column; gap:6px;}
+    .field label{
+      font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.7px; font-weight:700;
+    }
+    .field input, .field select, .field textarea{
+      width:100%; border:1px solid var(--line); background:var(--panel-2); color:var(--text);
+      border-radius:14px; min-height:48px; padding:12px 14px; font-size:16px; outline:none;
+    }
+    .field textarea{min-height:104px; resize:vertical;}
+
+    .section{
+      margin-top:14px;
+      background:linear-gradient(180deg, rgba(22,32,43,.98), rgba(18,27,36,.98));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .section-head{
+      padding:14px 16px;
+      background:linear-gradient(135deg, rgba(29,95,167,.22), rgba(167,33,65,.18));
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .section-head h2{margin:0; font-size:18px;}
+    .section-head p{margin:6px 0 0 0; color:var(--muted); font-size:13px; line-height:1.4;}
+    .section-body{padding:12px; display:grid; grid-template-columns:1fr; gap:10px;}
+
+    .double-grid,.three-grid,.five-grid{display:grid; grid-template-columns:1fr; gap:10px;}
+
+    .check-card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+    }
+    .check-title{display:block; font-size:15px; font-weight:700; margin-bottom:10px; line-height:1.35;}
+    .options{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+    .option{position:relative;}
+    .option input{position:absolute; opacity:0; pointer-events:none;}
+    .option span{
+      display:flex; align-items:center; justify-content:center; min-height:46px; border-radius:14px;
+      border:1px solid var(--line); background:#111922; color:#d6e3ee; font-size:14px; font-weight:700;
+      text-align:center; padding:8px;
+    }
+    .option input:checked + span{
+      border-color:#4e88c7; box-shadow:inset 0 0 0 1px #4e88c7; background:#13283d;
+    }
+
+    .actions{display:flex; flex-wrap:wrap; gap:10px; margin:16px 0 24px;}
+    .btn{
+      border:none; border-radius:14px; min-height:48px; padding:12px 16px; font-size:15px; font-weight:700; cursor:pointer;
+    }
+    .btn-primary{background:linear-gradient(135deg, var(--blue), #2572c4); color:#fff;}
+    .btn-dark{background:#0e151d;color:#dbe8f4;border:1px solid var(--line)}
+    .btn-warn{background:linear-gradient(135deg, #9a6b16, #c6861a); color:#fff;}
+    .footer-box{
+      background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:18px;
+      padding:12px 14px; color:var(--muted); font-size:12px; line-height:1.45; margin-bottom:30px;
+    }
+
+    @media (min-width: 700px){
+      .meta-grid{grid-template-columns:repeat(3, 1fr)}
+      .double-grid{grid-template-columns:1fr 1fr}
+      .three-grid{grid-template-columns:repeat(3,1fr)}
+      .five-grid{grid-template-columns:repeat(5,1fr)}
+    }
+
+    @media print{
+      body{background:#fff;color:#000}
+      .hero,.section,.footer-box{box-shadow:none;background:#fff;color:#000}
+      .section-head,.badge,.option span,.field input,.field select,.field textarea,.check-card{
+        background:#fff !important;color:#000 !important
+      }
+      .actions{display:none}
+      .field input, .field select, .field textarea, .option span, .check-card, .hero, .section{
+        border:1px solid #999
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Checklist da Usina</h1>
+      <p class="subtitle">Checklist diária para </p>
+      <div class="top-badges">
+        <span class="badge">Rotina 1: Início da Operação</span>
+        <span class="badge">Rotina 2: Horário de Almoço</span>
+      </div>
+
+      <div class="meta-grid">
+        <div class="field">
+          <label>Data</label>
+          <input type="date" id="meta_data">
+        </div>
+        <div class="field">
+          <label>Turno</label>
+          <select id="meta_turno">
+            <option>Manhã</option>
+            <option>Tarde</option>
+            <option>Noite</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Momento da Inspeção</label>
+          <select id="meta_momento_inspecao">
+            <option>Início da Operação</option>
+            <option>Horário de Almoço</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Responsável</label>
+          <input type="text" id="meta_responsavel" placeholder="Nome do responsável">
+        </div>
+        <div class="field">
+          <label>Misturador em operação</label>
+          <select id="meta_misturador_operacao">
+            <option>Misturador 1</option>
+            <option>Misturador 2</option>
+            <option>Misturador 1 e 2</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>1. Limpeza e Organização</h2>
+        <p>Primeira etapa do checklist operacional.</p>
+      </div>
+      <div class="section-body double-grid">
+        <div class="check-card">
+          <span class="check-title">Limpeza das esteiras Misturador 1, horizontal</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="limpeza_esteira_m1"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="limpeza_esteira_m1"><span>Não</span></label>
+            <label class="option"><input type="radio" name="limpeza_esteira_m1"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Limpeza das esteiras Misturador 2, horizontal</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="limpeza_esteira_m2"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="limpeza_esteira_m2"><span>Não</span></label>
+            <label class="option"><input type="radio" name="limpeza_esteira_m2"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Limpeza dos sensores de umidade executada</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="limpeza_sensores"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="limpeza_sensores"><span>Não</span></label>
+            <label class="option"><input type="radio" name="limpeza_sensores"><span>Não Verificado</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>2. Baias de Agregado</h2>
+        <p>Marcar condição das baias com a lógica Baixo / Médio / Cheia.</p>
+      </div>
+      <div class="section-body five-grid">
+        <div class="check-card">
+          <span class="check-title">Brita 0</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="baia_b0"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="baia_b0"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="baia_b0"><span>Cheia</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Brita 1/2</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="baia_b12"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="baia_b12"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="baia_b12"><span>Cheia</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Areia Natural</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="baia_an"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="baia_an"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="baia_an"><span>Cheia</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Areia Industrial</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="baia_ai"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="baia_ai"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="baia_ai"><span>Cheia</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Coque</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="baia_coque"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="baia_coque"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="baia_coque"><span>Cheia</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>3. Caixas de Agregado</h2>
+        <p>Volume das 5 caixas com botões.</p>
+      </div>
+      <div class="section-body five-grid">
+        <div class="check-card">
+          <span class="check-title">Caixa 1 — Brita 0</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="cx_b0"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="cx_b0"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="cx_b0"><span>Cheia</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Caixa 2 — Brita 1/2</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="cx_b12"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="cx_b12"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="cx_b12"><span>Cheia</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Caixa 3 — Areia Natural</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="cx_an"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="cx_an"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="cx_an"><span>Cheia</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Caixa 4 — Areia Industrial</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="cx_ai"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="cx_ai"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="cx_ai"><span>Cheia</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Caixa 5 — Coque</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="cx_coque"><span>Baixo</span></label>
+            <label class="option"><input type="radio" name="cx_coque"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="cx_coque"><span>Cheia</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>4. Nível de Cimento nos Silos</h2>
+        <p>Verificar os 3 silos e a capacidade operacional para produção no dia.</p>
+      </div>
+      <div class="section-body three-grid">
+        <div class="check-card">
+          <span class="check-title">Silo 1 com capacidade operacional para produzir no dia</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="silo1"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="silo1"><span>Não</span></label>
+            <label class="option"><input type="radio" name="silo1"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Silo 2 com capacidade operacional para produzir no dia</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="silo2"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="silo2"><span>Não</span></label>
+            <label class="option"><input type="radio" name="silo2"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Silo 3 com capacidade operacional para produzir no dia</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="silo3"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="silo3"><span>Não</span></label>
+            <label class="option"><input type="radio" name="silo3"><span>Não Verificado</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>5. Água Misturadores 1 e 2</h2>
+        <p>Volume do tanque de água dos misturadores.</p>
+      </div>
+      <div class="section-body double-grid">
+        <div class="check-card">
+          <span class="check-title">Volume Tanque de Água Mist. 1</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="agua_m1"><span>Alto</span></label>
+            <label class="option"><input type="radio" name="agua_m1"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="agua_m1"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Volume Tanque de Água Mist. 2</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="agua_m2"><span>Alto</span></label>
+            <label class="option"><input type="radio" name="agua_m2"><span>Médio</span></label>
+            <label class="option"><input type="radio" name="agua_m2"><span>Não Verificado</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>6. Aditivos Misturadores</h2>
+        <p>Conferência detalhada de linhas e volumes dos aditivos.</p>
+      </div>
+      <div class="section-body double-grid">
+        <div class="check-card">
+          <span class="check-title">Misturador 1 — Aditivo 1 linha aberta</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="m1_ad1_linha"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="m1_ad1_linha"><span>Não</span></label>
+            <label class="option"><input type="radio" name="m1_ad1_linha"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Misturador 1 — Aditivo 2 linha aberta</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="m1_ad2_linha"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="m1_ad2_linha"><span>Não</span></label>
+            <label class="option"><input type="radio" name="m1_ad2_linha"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Misturador 1 — Volume Aditivo 1</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="m1_ad1_vol"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="m1_ad1_vol"><span>Não</span></label>
+            <label class="option"><input type="radio" name="m1_ad1_vol"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Misturador 1 — Volume Aditivo 2</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="m1_ad2_vol"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="m1_ad2_vol"><span>Não</span></label>
+            <label class="option"><input type="radio" name="m1_ad2_vol"><span>Não Verificado</span></label>
+          </div>
+        </div>
+
+        <div class="check-card">
+          <span class="check-title">Misturador 2 — Aditivo 1 linha aberta</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="m2_ad1_linha"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="m2_ad1_linha"><span>Não</span></label>
+            <label class="option"><input type="radio" name="m2_ad1_linha"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Misturador 2 — Aditivo 2 linha aberta</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="m2_ad2_linha"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="m2_ad2_linha"><span>Não</span></label>
+            <label class="option"><input type="radio" name="m2_ad2_linha"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Misturador 2 — Volume Aditivo 1</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="m2_ad1_vol"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="m2_ad1_vol"><span>Não</span></label>
+            <label class="option"><input type="radio" name="m2_ad1_vol"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Misturador 2 — Volume Aditivo 2</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="m2_ad2_vol"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="m2_ad2_vol"><span>Não</span></label>
+            <label class="option"><input type="radio" name="m2_ad2_vol"><span>Não Verificado</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>7. Start Usina</h2>
+        <p>Última etapa antes da liberação operacional.</p>
+      </div>
+      <div class="section-body double-grid">
+        <div class="check-card">
+          <span class="check-title">Computador usina reiniciado</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="pc_reiniciado"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="pc_reiniciado"><span>Não</span></label>
+            <label class="option"><input type="radio" name="pc_reiniciado"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Umidade manual checada</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="umidade_manual"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="umidade_manual"><span>Não</span></label>
+            <label class="option"><input type="radio" name="umidade_manual"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Umidade manual imputada no supervisório</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="umidade_supervisorio"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="umidade_supervisorio"><span>Não</span></label>
+            <label class="option"><input type="radio" name="umidade_supervisorio"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Sensores de umidade ligados</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="sensores_ligados"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="sensores_ligados"><span>Não</span></label>
+            <label class="option"><input type="radio" name="sensores_ligados"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Traço correto selecionado</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="traco_correto"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="traco_correto"><span>Não</span></label>
+            <label class="option"><input type="radio" name="traco_correto"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Temperatura lançada no supervisório</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="temp_sup"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="temp_sup"><span>Não</span></label>
+            <label class="option"><input type="radio" name="temp_sup"><span>Não Verificado</span></label>
+          </div>
+        </div>
+        <div class="check-card">
+          <span class="check-title">Corte de água em 40 no início</span>
+          <div class="options">
+            <label class="option"><input type="radio" name="corte_agua"><span>Sim</span></label>
+            <label class="option"><input type="radio" name="corte_agua"><span>Não</span></label>
+            <label class="option"><input type="radio" name="corte_agua"><span>Não Verificado</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>8. Observações Operacionais</h2>
+        <p>Registre pendências, anomalias e necessidades de intervenção.</p>
+      </div>
+      <div class="section-body">
+        <div class="field">
+          <label>Observações gerais</label>
+          <textarea id="meta_observacoes" placeholder="Descreva tudo que foi encontrado nesta verificação..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="btn-salvar" class="btn btn-primary" onclick="salvarChecklist()" disabled>Salvar checklist</button>
+      <button class="btn btn-primary" onclick="window.print()">Imprimir / Salvar em PDF</button>
+      <button class="btn btn-dark" onclick="marcarTodosPrimeiraOpcao()">Marcar primeira opção</button>
+      <button class="btn btn-warn" onclick="limparTudo()">Limpar marcações</button>
+    </div>
+    <div id="save-status" class="footer-box" style="display:none;margin-top:-8px;"></div>
+
+    <div class="footer-box">
+      Atualização aplicada: remoção de operador e unidade, inclusão da seleção do misturador em operação, novo bloco de silos, revisão do start usina e detalhamento completo dos aditivos dos misturadores 1 e 2.
+    </div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxzH8L_YtWF5Lwhe6QlraVxs0iPHDsmVeVmJt6exp0yctkCn8QFsGFSD2ijz1j5cba0cg/exec';
+    let isSaving = false;
+
+    function getChecklistNames(){
+      const all = Array.from(document.querySelectorAll('.section .options input[type="radio"]')).map(el => el.name);
+      return [...new Set(all)];
+    }
+
+    function getSelecionadoPorGrupo(name){
+      const checked = document.querySelector('input[name="' + name + '"]:checked');
+      if(!checked) return '';
+      const labelText = checked.parentElement ? checked.parentElement.textContent.trim() : '';
+      return labelText;
+    }
+
+    function getChecklistPendencias(){
+      const names = getChecklistNames();
+      return names.filter(name => !document.querySelector('input[name="' + name + '"]:checked'));
+    }
+
+    function atualizarEstadoBotaoSalvar(){
+      const btn = document.getElementById('btn-salvar');
+      if(!btn) return;
+      const pendencias = getChecklistPendencias();
+      btn.disabled = isSaving || pendencias.length > 0;
+    }
+
+    function setStatus(texto, isErro){
+      const el = document.getElementById('save-status');
+      if(!el) return;
+      el.style.display = 'block';
+      el.textContent = texto;
+      if(isErro){
+        el.style.borderColor = 'rgba(167,33,65,.65)';
+        el.style.color = '#ffd8df';
+      } else {
+        el.style.borderColor = 'rgba(76,175,80,.65)';
+        el.style.color = '#d6f5dd';
+      }
+    }
+
+    function montarPayload(){
+      const responses = {};
+      getChecklistNames().forEach(name => {
+        responses[name] = getSelecionadoPorGrupo(name);
+      });
+
+      return {
+        data: document.getElementById('meta_data')?.value || '',
+        turno: document.getElementById('meta_turno')?.value || '',
+        momentoInspecao: document.getElementById('meta_momento_inspecao')?.value || '',
+        responsavel: document.getElementById('meta_responsavel')?.value || '',
+        misturadorOperacao: document.getElementById('meta_misturador_operacao')?.value || '',
+        observacoes: document.getElementById('meta_observacoes')?.value || '',
+        responses,
+        criadoEm: new Date().toISOString()
+      };
+    }
+
+    function salvarViaGoogleScriptRun(payload){
+      return new Promise((resolve, reject) => {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(reject)
+          .salvarChecklistUsina(payload);
+      });
+    }
+
+    async function salvarViaWebApp(payload){
+      if(!WEB_APP_URL || WEB_APP_URL === 'COLE_AQUI_URL_DO_WEB_APP'){
+        throw new Error('Configure a constante WEB_APP_URL com a URL do Web App do Apps Script.');
+      }
+
+      const response = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if(!response.ok){
+        throw new Error('Falha no envio para o Apps Script (' + response.status + ').');
+      }
+
+      return response.json();
+    }
+
+    async function salvarChecklist(){
+      const pendencias = getChecklistPendencias();
+      if(pendencias.length > 0){
+        setStatus('Preencha todos os itens do checklist antes de salvar. Pendentes: ' + pendencias.length + '.', true);
+        atualizarEstadoBotaoSalvar();
+        return;
+      }
+
+      isSaving = true;
+      atualizarEstadoBotaoSalvar();
+      setStatus('Salvando checklist...', false);
+
+      try{
+        const payload = montarPayload();
+        if(window.google && google.script && google.script.run){
+          await salvarViaGoogleScriptRun(payload);
+        } else {
+          await salvarViaWebApp(payload);
+        }
+        setStatus('Checklist salvo com sucesso na planilha.', false);
+      } catch(error){
+        const msg = error && error.message ? error.message : 'Erro inesperado ao salvar.';
+        setStatus('Erro ao salvar: ' + msg, true);
+      } finally {
+        isSaving = false;
+        atualizarEstadoBotaoSalvar();
+      }
+    }
+
+    function marcarTodosPrimeiraOpcao(){
+      document.querySelectorAll('.section .options').forEach(group => {
+        const first = group.querySelector('input[type="radio"]');
+        if(first) first.checked = true;
+      });
+      atualizarEstadoBotaoSalvar();
+    }
+    function limparTudo(){
+      document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+      document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(el => el.value = '');
+      document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+      atualizarEstadoBotaoSalvar();
+    }
+
+    document.querySelectorAll('.section .options input[type="radio"]').forEach(el => {
+      el.addEventListener('change', atualizarEstadoBotaoSalvar);
+    });
+
+    document.addEventListener('DOMContentLoaded', atualizarEstadoBotaoSalvar);
+  </script>
+</body>
+</html>
