@@ -310,9 +310,7 @@ const el = {
 };
 
 function nowIso() {
-  const d = new Date();
-  const tzOffset = d.getTimezoneOffset() * 60000;
-  return new Date(d.getTime() - tzOffset).toISOString().slice(0, 19).replace("T", "T");
+  return new Date().toLocaleString("sv-SE", { timeZone: "America/Sao_Paulo" }).replace(" ", "T");
 }
 
 function uuid() {
@@ -321,10 +319,7 @@ function uuid() {
 }
 
 function todayYmd() {
-  const d = new Date();
-  const tzOffset = d.getTimezoneOffset() * 60000;
-  const local = new Date(d.getTime() - tzOffset);
-  return local.toISOString().slice(0, 10);
+  return new Date().toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" });
 }
 
 function normalizeUpper(text) {
@@ -336,9 +331,7 @@ function dateToYmd(value) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(String(value).trim())) return String(value).trim();
   const d = new Date(String(value));
   if (!Number.isNaN(d.getTime())) {
-    const tzOffset = d.getTimezoneOffset() * 60000;
-    const local = new Date(d.getTime() - tzOffset);
-    return local.toISOString().slice(0, 10);
+    return d.toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" });
   }
   return String(value).trim();
 }
