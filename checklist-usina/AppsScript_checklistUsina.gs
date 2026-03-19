@@ -39,7 +39,7 @@ const CHECKLIST_ORDER = [
 
 function doPost(e) {
   try {
-    const payload = JSON.parse(e.postData.contents || '{}');
+    const payload = parsePayload_(e);
     const result = salvarChecklistUsina(payload);
 
     return ContentService
@@ -50,6 +50,28 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ ok: false, error: String(error) }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function parsePayload_(e) {
+  const raw = e && e.postData && e.postData.contents ? String(e.postData.contents) : '';
+
+  if (raw) {
+    try {
+      return JSON.parse(raw);
+    } catch (error) {
+      // Continua para tentar outros formatos simples de envio.
+    }
+  }
+
+  if (e && e.parameter && e.parameter.payload) {
+    return JSON.parse(e.parameter.payload);
+  }
+
+  if (e && e.parameters && e.parameters.payload && e.parameters.payload[0]) {
+    return JSON.parse(e.parameters.payload[0]);
+  }
+
+  throw new Error('Payload inválido.');
 }
 
 function salvarChecklistUsina(payload) {
