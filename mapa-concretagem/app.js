@@ -1409,6 +1409,13 @@ function statusLabelFromCode(code) {
   return "-";
 }
 
+function formatTime(iso) {
+  if (!iso) return "-";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return String(iso);
+  return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+}
+
 const ACMP_NOTES_KEY = "pwa_acmp_notas_v1";
 
 function getAcmpNoteKey(data, setor, forma) {
@@ -1528,8 +1535,8 @@ async function renderAcmpConcretagem() {
         <td>${forma}</td>
         <td>${r.modelo || ""}</td>
         <td>${formatTime(r.lib_timestamp)}</td>
-        <td><input type="text" class="acmp-input" data-acmp-traco placeholder="Traço" value="${saved.traco || ""}"></td>
-        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="Obs" value="${saved.obs || ""}"></td>
+        <td><input type="text" class="acmp-input" data-acmp-traco placeholder="" value="${saved.traco || ""}"></td>
+        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="" value="${saved.obs || ""}"></td>
       </tr>`;
     }).join("");
     html += `
