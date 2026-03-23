@@ -731,6 +731,37 @@ tr.row-liberada td {
   overflow: hidden;
 }
 
+.acmp-table th:nth-child(1),
+.acmp-table td:nth-child(1) {
+  width: 9%;
+}
+
+.acmp-table th:nth-child(2),
+.acmp-table td:nth-child(2) {
+  width: 14%;
+}
+
+.acmp-table th:nth-child(3),
+.acmp-table td:nth-child(3) {
+  width: 9%;
+}
+
+.acmp-table th:nth-child(4),
+.acmp-table td:nth-child(4),
+.acmp-table th:nth-child(5),
+.acmp-table td:nth-child(5) {
+  width: auto;
+}
+
+.acmp-input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 3px 5px;
+  font-size: 0.75rem;
+  background: #fff;
+}
+
 .lib-feedback {
   padding: 10px 14px;
   border-radius: 8px;

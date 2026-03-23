@@ -1485,9 +1485,9 @@ async function renderAcmpConcretagem() {
       <div class="acmp-setor-grupo">
         <div class="acmp-setor-header">${setor} — ${rows.length} formas concretadas</div>
         <table class="sheet-table acmp-table">
-          <thead><tr><th>Nº Forma</th><th>Modelo</th><th>Horário</th></tr></thead>
+          <thead><tr><th>Nº Forma</th><th>Modelo</th><th>Horário</th><th>Traço</th><th>Obs</th></tr></thead>
           <tbody>
-            ${rows.map((r) => `<tr><td>${r.forma_numero || ""}</td><td>${r.modelo || ""}</td><td>${formatTime(r.lib_timestamp)}</td></tr>`).join("")}
+            ${rows.map((r) => `<tr><td>${r.forma_numero || ""}</td><td>${r.modelo || ""}</td><td>${formatTime(r.lib_timestamp)}</td><td><input type="text" class="acmp-input" placeholder="Traço"></td><td><input type="text" class="acmp-input" placeholder="Obs"></td></tr>`).join("")}
           </tbody>
         </table>
       </div>`;
