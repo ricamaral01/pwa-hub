@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1e40af" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css?v=6" />
 </head>
 <body>
   <main class="container">
@@ -275,6 +275,11 @@
         </label>
       </div>
       <button id="acmpCarregar" class="btn primary" type="button">Carregar Relatório</button>
+      <div class="acmp-actions">
+        <button id="acmpSalvar" class="btn btn-acmp-salvar" type="button">Salvar</button>
+        <button id="acmpImprimir" class="btn btn-acmp-imprimir" type="button">Imprimir</button>
+      </div>
+      <div id="acmpFeedback" class="lib-feedback hidden"></div>
       <div id="acmpOutput" class="report-box" style="margin-top:12px"></div>
     </section>
   </main>
@@ -286,6 +291,6 @@
     </article>
   </template>
 
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>

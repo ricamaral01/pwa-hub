@@ -306,6 +306,9 @@ const el = {
   acmpModoCarga: document.getElementById("acmpModoCarga"),
   acmpSetor: document.getElementById("acmpSetor"),
   acmpCarregar: document.getElementById("acmpCarregar"),
+  acmpSalvar: document.getElementById("acmpSalvar"),
+  acmpImprimir: document.getElementById("acmpImprimir"),
+  acmpFeedback: document.getElementById("acmpFeedback"),
   acmpOutput: document.getElementById("acmpOutput"),
   filtrarHistorico: document.getElementById("filtrarHistorico"),
   historicoLista: document.getElementById("historicoLista"),
@@ -1406,11 +1409,47 @@ function statusLabelFromCode(code) {
   return "-";
 }
 
-function formatTime(iso) {
-  if (!iso) return "-";
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return String(iso);
-  return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+const ACMP_NOTES_KEY = "pwa_acmp_notas_v1";
+
+function getAcmpNoteKey(data, setor, forma) {
+  return `${data}||${setor}||${forma}`;
+}
+
+function readAcmpNotes() {
+  try { return JSON.parse(localStorage.getItem(ACMP_NOTES_KEY) || "{}"); } catch { return {}; }
+}
+
+function writeAcmpNotes(notes) {
+  localStorage.setItem(ACMP_NOTES_KEY, JSON.stringify(notes));
+}
+
+function showAcmpFeedback(msg, type) {
+  if (!el.acmpFeedback) return;
+  el.acmpFeedback.textContent = msg;
+  el.acmpFeedback.className = "lib-feedback";
+  el.acmpFeedback.classList.add(type === "ok" ? "feedback-ok" : "feedback-error");
+  el.acmpFeedback.classList.remove("hidden");
+  setTimeout(() => el.acmpFeedback.classList.add("hidden"), 3000);
+}
+
+function salvarAcmp() {
+  const output = el.acmpOutput;
+  if (!output) return;
+  const data = el.acmpData?.value || "";
+  const notes = readAcmpNotes();
+  output.querySelectorAll("tr[data-acmp-forma]").forEach((tr) => {
+    const forma = tr.dataset.acmpForma;
+    const setor = tr.dataset.acmpSetor;
+    const traco = tr.querySelector("input[data-acmp-traco]")?.value || "";
+    const obs = tr.querySelector("input[data-acmp-obs]")?.value || "";
+    notes[getAcmpNoteKey(data, setor, forma)] = { traco, obs };
+  });
+  writeAcmpNotes(notes);
+  showAcmpFeedback("Dados salvos com sucesso!", "ok");
+}
+
+function imprimirAcmp() {
+  window.print();
 }
 
 async function renderAcmpConcretagem() {
@@ -1427,6 +1466,7 @@ async function renderAcmpConcretagem() {
   }
 
   output.innerHTML = '<p class="muted">Carregando...</p>';
+  const notes = readAcmpNotes();
 
   const setores = setorFiltro ? [setorFiltro] : ["Setor 1", "Setor 2"];
   const allRows = [];
@@ -1481,19 +1521,28 @@ async function renderAcmpConcretagem() {
       formatTime(a.lib_timestamp).localeCompare(formatTime(b.lib_timestamp))
     );
     totalCount += rows.length;
+    const linhas = rows.map((r) => {
+      const forma = r.forma_numero || "";
+      const saved = notes[getAcmpNoteKey(data, setor, forma)] || {};
+      return `<tr data-acmp-forma="${forma}" data-acmp-setor="${setor}">
+        <td>${forma}</td>
+        <td>${r.modelo || ""}</td>
+        <td>${formatTime(r.lib_timestamp)}</td>
+        <td><input type="text" class="acmp-input" data-acmp-traco placeholder="Traço" value="${saved.traco || ""}"></td>
+        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="Obs" value="${saved.obs || ""}"></td>
+      </tr>`;
+    }).join("");
     html += `
       <div class="acmp-setor-grupo">
         <div class="acmp-setor-header">${setor} — ${rows.length} formas concretadas</div>
         <table class="sheet-table acmp-table">
           <thead><tr><th>Nº Forma</th><th>Modelo</th><th>Horário</th><th>Traço</th><th>Obs</th></tr></thead>
-          <tbody>
-            ${rows.map((r) => `<tr><td>${r.forma_numero || ""}</td><td>${r.modelo || ""}</td><td>${formatTime(r.lib_timestamp)}</td><td><input type="text" class="acmp-input" placeholder="Traço"></td><td><input type="text" class="acmp-input" placeholder="Obs"></td></tr>`).join("")}
-          </tbody>
+          <tbody>${linhas}</tbody>
         </table>
       </div>`;
   });
 
-  output.innerHTML = `<div class="acmp-total">Total: ${totalCount} formas concretadas</div>` + html;
+  output.innerHTML = `<div class="acmp-total">Total: ${totalCount} formas concretadas | Data: ${data}</div>` + html;
 }
 
 function buildReportDataFromRows(rows) {
@@ -1756,6 +1805,8 @@ function bindEvents() {
   if (el.acmpData) el.acmpData.addEventListener("change", renderAcmpConcretagem);
   if (el.acmpModoCarga) el.acmpModoCarga.addEventListener("change", renderAcmpConcretagem);
   if (el.acmpSetor) el.acmpSetor.addEventListener("change", renderAcmpConcretagem);
+  if (el.acmpSalvar) el.acmpSalvar.addEventListener("click", salvarAcmp);
+  if (el.acmpImprimir) el.acmpImprimir.addEventListener("click", imprimirAcmp);
 
   el.insFotos.addEventListener("change", async (event) => {
     clearSubmitLock("inspecao");
