@@ -450,7 +450,28 @@ textarea {
 }
 
 #viewInspecao .sheet-table {
-  min-width: 740px;
+  min-width: unset;
+}
+
+#viewInspecao .sheet-table th:nth-child(1),
+#viewInspecao .sheet-table td:nth-child(1) {
+  width: 10%;
+}
+
+#viewInspecao .sheet-table th:nth-child(3),
+#viewInspecao .sheet-table td:nth-child(3) {
+  width: 15%;
+}
+
+#viewInspecao .sheet-table th:nth-child(2),
+#viewInspecao .sheet-table td:nth-child(2),
+#viewInspecao .sheet-table th:nth-child(4),
+#viewInspecao .sheet-table td:nth-child(4),
+#viewInspecao .sheet-table th:nth-child(5),
+#viewInspecao .sheet-table td:nth-child(5),
+#viewInspecao .sheet-table th:nth-child(6),
+#viewInspecao .sheet-table td:nth-child(6) {
+  width: auto;
 }
 
 #viewInspecao .sheet-table select,
