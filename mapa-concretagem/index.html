@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1e40af" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <main class="container">
@@ -44,6 +44,10 @@
         <button id="hubAcompanhamento" class="hub-item" type="button">
           <span class="hub-icon">AC</span>
           <span class="hub-label">Acompanhamento</span>
+        </button>
+        <button id="hubAcmpConcretagem" class="hub-item" type="button">
+          <span class="hub-icon">CC</span>
+          <span class="hub-label">Acmp. Concretagem</span>
         </button>
       </div>
     </section>
@@ -245,6 +249,33 @@
         </div>
       </div>
       <div id="dashStatus" class="muted">Aguardando atualização do painel...</div>
+    </section>
+
+    <section id="viewAcmpConcretagem" class="card hidden">
+      <div class="section-title-row">
+        <h2>Acompanhamento Concretagem</h2>
+        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+      <div class="grid">
+        <label>Data
+          <input id="acmpData" type="date" />
+        </label>
+        <label>Modo de carga
+          <select id="acmpModoCarga">
+            <option value="data">Produção da data</option>
+            <option value="pendentes">Produzidos não inspecionados</option>
+          </select>
+        </label>
+        <label>Setor
+          <select id="acmpSetor">
+            <option value="">Todos</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+          </select>
+        </label>
+      </div>
+      <button id="acmpCarregar" class="btn primary" type="button">Carregar Relatório</button>
+      <div id="acmpOutput" class="report-box" style="margin-top:12px"></div>
     </section>
   </main>
 

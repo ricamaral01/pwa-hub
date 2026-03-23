@@ -252,7 +252,7 @@ body {
 
 .hub-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -702,6 +702,33 @@ tr.row-liberada td {
 
 .btn-limpar:hover {
   background: #fde68a;
+}
+
+.acmp-total {
+  text-align: right;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.acmp-setor-grupo {
+  margin-bottom: 16px;
+}
+
+.acmp-setor-header {
+  font-weight: 700;
+  font-size: 0.92rem;
+  background: #dbeafe;
+  color: #1e3a8a;
+  border: 1px solid #93c5fd;
+  border-radius: 8px 8px 0 0;
+  padding: 7px 10px;
+}
+
+.acmp-table {
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
 }
 
 .lib-feedback {

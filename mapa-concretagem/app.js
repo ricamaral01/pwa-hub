@@ -262,6 +262,8 @@ const el = {
   viewRelatorio: document.getElementById("viewRelatorio"),
   viewHistorico: document.getElementById("viewHistorico"),
   viewAcompanhamento: document.getElementById("viewAcompanhamento"),
+  hubAcmpConcretagem: document.getElementById("hubAcmpConcretagem"),
+  viewAcmpConcretagem: document.getElementById("viewAcmpConcretagem"),
   syncStatus: document.getElementById("syncStatus"),
 
   libData: document.getElementById("libData"),
@@ -300,6 +302,11 @@ const el = {
   dashBarSetor1Label: document.getElementById("dashBarSetor1Label"),
   dashBarSetor2Label: document.getElementById("dashBarSetor2Label"),
   dashStatus: document.getElementById("dashStatus"),
+  acmpData: document.getElementById("acmpData"),
+  acmpModoCarga: document.getElementById("acmpModoCarga"),
+  acmpSetor: document.getElementById("acmpSetor"),
+  acmpCarregar: document.getElementById("acmpCarregar"),
+  acmpOutput: document.getElementById("acmpOutput"),
   filtrarHistorico: document.getElementById("filtrarHistorico"),
   historicoLista: document.getElementById("historicoLista"),
   relData: document.getElementById("relData"),
@@ -310,7 +317,9 @@ const el = {
 };
 
 function nowIso() {
-  return new Date().toLocaleString("sv-SE", { timeZone: "America/Sao_Paulo" }).replace(" ", "T");
+  const d = new Date();
+  const tzOffset = d.getTimezoneOffset() * 60000;
+  return new Date(d.getTime() - tzOffset).toISOString().slice(0, 19).replace("T", "T");
 }
 
 function uuid() {
@@ -319,7 +328,10 @@ function uuid() {
 }
 
 function todayYmd() {
-  return new Date().toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" });
+  const d = new Date();
+  const tzOffset = d.getTimezoneOffset() * 60000;
+  const local = new Date(d.getTime() - tzOffset);
+  return local.toISOString().slice(0, 10);
 }
 
 function normalizeUpper(text) {
@@ -331,7 +343,9 @@ function dateToYmd(value) {
   if (/^\d{4}-\d{2}-\d{2}$/.test(String(value).trim())) return String(value).trim();
   const d = new Date(String(value));
   if (!Number.isNaN(d.getTime())) {
-    return d.toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" });
+    const tzOffset = d.getTimezoneOffset() * 60000;
+    const local = new Date(d.getTime() - tzOffset);
+    return local.toISOString().slice(0, 10);
   }
   return String(value).trim();
 }
@@ -1392,6 +1406,96 @@ function statusLabelFromCode(code) {
   return "-";
 }
 
+function formatTime(iso) {
+  if (!iso) return "-";
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return String(iso);
+  return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+}
+
+async function renderAcmpConcretagem() {
+  const output = el.acmpOutput;
+  if (!output) return;
+
+  const data = el.acmpData?.value || "";
+  const modoCarga = el.acmpModoCarga?.value || "data";
+  const setorFiltro = el.acmpSetor?.value || "";
+
+  if (modoCarga === "data" && !data) {
+    output.innerHTML = '<p class="muted">Selecione a data para carregar o relatório.</p>';
+    return;
+  }
+
+  output.innerHTML = '<p class="muted">Carregando...</p>';
+
+  const setores = setorFiltro ? [setorFiltro] : ["Setor 1", "Setor 2"];
+  const allRows = [];
+
+  for (const setor of setores) {
+    let fetched = false;
+    if (hasApiConfigured()) {
+      try {
+        const params = new URLSearchParams({ action: "relatorio_setor", setor });
+        if (data) params.set("dataFabricacao", data);
+        const response = await fetch(`${CONFIG.API_URL}?${params}`);
+        const payload = JSON.parse(await response.text());
+        if (payload.ok && Array.isArray(payload.rows)) {
+          let rows = payload.rows.filter((r) => String(r.liberacao_status || "") === "1");
+          if (modoCarga === "pendentes") rows = rows.filter((r) => !String(r.ins_status || "").trim());
+          rows.forEach((r) => allRows.push({ ...r, _setor: setor }));
+          fetched = true;
+        }
+      } catch { /* fallback local */ }
+    }
+    if (!fetched) {
+      const db = readDb();
+      db.records
+        .filter((r) => r.setor === setor && r.liberacao && r.liberacao.status === "1")
+        .filter((r) => modoCarga === "data" ? r.dataFabricacao === data : true)
+        .filter((r) => modoCarga === "pendentes" ? (!r.inspecoes || !r.inspecoes.length) : true)
+        .forEach((r) => allRows.push({
+          forma_numero: r.formaNumero,
+          modelo: r.modelo || "",
+          lib_timestamp: r.liberacao.timestamp || "",
+          _setor: setor
+        }));
+    }
+  }
+
+  if (!allRows.length) {
+    output.innerHTML = '<p class="muted">Nenhuma forma concretada para os filtros informados.</p>';
+    return;
+  }
+
+  const grouped = {};
+  allRows.forEach((r) => {
+    const s = r._setor || r.setor || "Sem Setor";
+    if (!grouped[s]) grouped[s] = [];
+    grouped[s].push(r);
+  });
+
+  let totalCount = 0;
+  let html = "";
+  Object.keys(grouped).sort().forEach((setor) => {
+    const rows = grouped[setor].sort((a, b) =>
+      formatTime(a.lib_timestamp).localeCompare(formatTime(b.lib_timestamp))
+    );
+    totalCount += rows.length;
+    html += `
+      <div class="acmp-setor-grupo">
+        <div class="acmp-setor-header">${setor} — ${rows.length} formas concretadas</div>
+        <table class="sheet-table acmp-table">
+          <thead><tr><th>Nº Forma</th><th>Modelo</th><th>Horário</th></tr></thead>
+          <tbody>
+            ${rows.map((r) => `<tr><td>${r.forma_numero || ""}</td><td>${r.modelo || ""}</td><td>${formatTime(r.lib_timestamp)}</td></tr>`).join("")}
+          </tbody>
+        </table>
+      </div>`;
+  });
+
+  output.innerHTML = `<div class="acmp-total">Total: ${totalCount} formas concretadas</div>` + html;
+}
+
 function buildReportDataFromRows(rows) {
   const total = rows.length;
   const liberado = rows.filter((r) => String(r.liberacao_status || r.liberacaoStatus || "") === "1").length;
@@ -1548,7 +1652,7 @@ async function gerarRelatorioSetor() {
 
 function setMode(mode) {
   state.mode = mode;
-  [el.hubView, el.viewLiberacao, el.viewInspecao, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento]
+  [el.hubView, el.viewLiberacao, el.viewInspecao, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem]
     .forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "LIBERACAO") el.viewLiberacao.classList.remove("hidden");
@@ -1556,8 +1660,9 @@ function setMode(mode) {
   if (mode === "RELATORIO") el.viewRelatorio.classList.remove("hidden");
   if (mode === "HISTORICO") el.viewHistorico.classList.remove("hidden");
   if (mode === "ACOMPANHAMENTO") el.viewAcompanhamento.classList.remove("hidden");
+  if (mode === "ACMP_CONCRETAGEM") el.viewAcmpConcretagem.classList.remove("hidden");
 
-  document.body.classList.remove("mode-hub", "mode-liberacao", "mode-inspecao", "mode-relatorio", "mode-historico", "mode-acompanhamento");
+  document.body.classList.remove("mode-hub", "mode-liberacao", "mode-inspecao", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "LIBERACAO") document.body.classList.add("mode-liberacao");
   if (mode === "INSPECAO") {
@@ -1570,6 +1675,7 @@ function setMode(mode) {
   if (mode === "RELATORIO") document.body.classList.add("mode-relatorio");
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
   if (mode === "ACOMPANHAMENTO") document.body.classList.add("mode-acompanhamento");
+  if (mode === "ACMP_CONCRETAGEM") document.body.classList.add("mode-acmp-concretagem");
 }
 
 function navigateBack() {
@@ -1603,6 +1709,11 @@ function bindEvents() {
   el.hubAcompanhamento.addEventListener("click", () => {
     setMode("ACOMPANHAMENTO");
     carregarDashboardConcretagem();
+  });
+  el.hubAcmpConcretagem.addEventListener("click", () => {
+    setMode("ACMP_CONCRETAGEM");
+    if (!el.acmpData.value) el.acmpData.value = todayYmd();
+    renderAcmpConcretagem();
   });
 
   el.backButtons.forEach((btn) => btn.addEventListener("click", navigateBack));
@@ -1641,6 +1752,10 @@ function bindEvents() {
   el.filtrarHistorico.addEventListener("click", () => renderHistorico());
   el.histTipo?.addEventListener("change", () => renderHistorico());
   el.gerarRelatorioSetor.addEventListener("click", gerarRelatorioSetor);
+  if (el.acmpCarregar) el.acmpCarregar.addEventListener("click", renderAcmpConcretagem);
+  if (el.acmpData) el.acmpData.addEventListener("change", renderAcmpConcretagem);
+  if (el.acmpModoCarga) el.acmpModoCarga.addEventListener("change", renderAcmpConcretagem);
+  if (el.acmpSetor) el.acmpSetor.addEventListener("change", renderAcmpConcretagem);
 
   el.insFotos.addEventListener("change", async (event) => {
     clearSubmitLock("inspecao");
@@ -1665,6 +1780,8 @@ function init() {
   el.dashData.value = now;
   el.relData.value = now;
   el.relSetor.value = "Setor 2";
+  if (el.acmpData) el.acmpData.value = now;
+  if (el.acmpSetor) el.acmpSetor.value = "";
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
