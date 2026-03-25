@@ -1,60 +1,133 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!doctype html>
+<html lang="pt-br">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>CONCRETRACK • Hub</title>
-  
+
   <!-- PWA -->
   <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#15416F">
+  <meta name="theme-color" content="#2F3640">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  
+
   <!-- anti-cache -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <link rel="icon" href="./static/img/logo-128.png">
-  <link rel="stylesheet" href="./static/css/theme.css">
-  <script src="./static/js/template-config.js"></script>
-  <script src="./static/js/app.js"></script>
-  <script src="./static/js/clock.js" defer></script>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    body{ display:flex; flex-direction:column; align-items:center; padding:32px 18px 48px; }
+    .hub-logo{
+      width:80px; height:80px; border-radius:22px;
+      overflow:hidden;
+      box-shadow: 0 12px 30px rgba(21,65,111,.35);
+      display:grid; place-items:center;
+      margin-bottom:14px;
+    }
+    .hub-logo img{ width:100%; height:100%; object-fit:contain; }
+    .hub-brand{ font-size:32px; font-weight:1000; letter-spacing:.4px; text-align:center; }
+    .hub-tag{ font-size:14px; color:var(--muted); margin:6px 0 12px; text-align:center; }
+    .accentLine{ width:200px; margin-bottom:28px; }
+    .footer{ margin-top:40px; font-size:12px; color:var(--muted); text-align:center; opacity:.6; }
+  </style>
 </head>
 
 <body>
-  <div id="headerSlot" data-include="./frontend/shared/header.html"></div>
 
-  <main class="page-section shell">
-    <section id="modulos">
-      <div class="section-heading">
-        <div>
-          <h2>Aplicativos da Usina</h2>
-          <p>Acesso centralizado aos módulos de controle operacional.</p>
-        </div>
-      </div>
-      <div class="module-grid" id="moduleGrid"></div>
-    </section>
-  </main>
+  <div class="hub-logo"><img src="./assets/img/concre.png" alt="Concrefer"></div>
+  <div class="hub-brand">Usina Concrefer</div>
+  <div class="hub-tag">Hub de Aplicativos • Controle da Usina</div>
+  <div class="accentLine"></div>
 
-  <div id="footerSlot" data-include="./frontend/shared/footer.html"></div>
+  <div class="hub-grid">
 
-  <script>
-  /* Registra o SW unificado na raiz */
-  (async function(){
-    try{
-      if ("serviceWorker" in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        for (const r of regs) {
-          if (r.scope !== new URL("./", location.href).href) {
-            await r.unregister();
-          }
+    <a class="app-card" href="./qr-concreto/index.html">
+      <div class="app-icon"><img src="./assets/img/leitorqr-icon.png" alt="Leitor de Etiquetas"></div>
+      <div class="app-name">Leitor de Etiquetas</div>
+      <div class="app-desc">Leitura CP via QR Code</div>
+    </a>
+
+    <a class="app-card" href="./slump/index.html">
+      <div class="app-icon"><img src="./assets/img/flow-icon.png" alt="Slump / Flow"></div>
+      <div class="app-name">Slump / Flow</div>
+      <div class="app-desc">Registro de Slump e Flow</div>
+    </a>
+
+    <a class="app-card" href="./parada-usina/index.html">
+      <div class="app-icon"><img src="./assets/img/paradas-icon.png" alt="Parada Usina"></div>
+      <div class="app-name">Parada Usina</div>
+      <div class="app-desc">Paradas técnicas da usina</div>
+    </a>
+
+    <a class="app-card" href="./massadas/index.html">
+      <div class="app-icon">🧱</div>
+      <div class="app-name">Problema Massadas</div>
+      <div class="app-desc">Massadas com problemas</div>
+    </a>
+
+    <a class="app-card" href="./setor_botoes/index.html">
+      <div class="app-icon">🔘</div>
+      <div class="app-name">Setor Botões</div>
+      <div class="app-desc">Contagem por setor via botões</div>
+    </a>
+
+    <a class="app-card" href="./dosagem-concreto/index.html">
+      <div class="app-icon">🧮</div>
+      <div class="app-name">Calculadora Dosagem</div>
+      <div class="app-desc">Traço, ensaios e memória</div>
+    </a>
+
+    <a class="app-card" href="./dosagem-concreto/manual.html">
+      <div class="app-icon">📘</div>
+      <div class="app-name">Manual Dosagem</div>
+      <div class="app-desc">Guia completo do módulo</div>
+    </a>
+
+    <a class="app-card" href="./controle-cimento/index.html">
+      <div class="app-icon"><img src="./assets/img/controle-cimento-icon.png" alt="Controle de Cimento"></div>
+      <div class="app-name">Controle de Cimento</div>
+      <div class="app-desc">Saldo, consumo e entradas por silo</div>
+    </a>
+
+    <a class="app-card" href="./controle-agregados/index.html">
+      <div class="app-icon">🪨</div>
+      <div class="app-name">Controle de Agregados</div>
+      <div class="app-desc">Saldo, consumo e entradas de agregados</div>
+    </a>
+
+    <a class="app-card" href="./checklist-usina/index.html">
+      <div class="app-icon">✅</div>
+      <div class="app-name">Checklist da Usina</div>
+      <div class="app-desc">Inspeção operacional e salvamento em planilha</div>
+    </a>
+
+    <a class="app-card" href="./mapa-concretagem/index.html">
+      <div class="app-icon">🗺️</div>
+      <div class="app-name">Mapa de Concretagem</div>
+      <div class="app-desc">Visualização e registro de concretagem</div>
+    </a>
+
+  </div>
+
+  <div class="footer">CONCRETRACK © 2026 — v1.0</div>
+
+<script>
+/* Registra o SW unificado na raiz */
+(async function(){
+  try{
+    if ("serviceWorker" in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) {
+        if (r.scope !== new URL("./", location.href).href) {
+          await r.unregister();
         }
-        await navigator.serviceWorker.register("./sw.js", { scope: "./" });
       }
-    }catch(e){ console.error("SW:", e); }
-  })();
-  </script>
+      await navigator.serviceWorker.register("./sw.js", { scope: "./" });
+    }
+  }catch(e){ console.error("SW:", e); }
+})();
+</script>
 </body>
 </html>
