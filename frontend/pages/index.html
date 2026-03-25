@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ERP Template • Home</title>
+  <link rel="icon" href="../../static/img/logo-128.png">
+  <link rel="stylesheet" href="../../static/css/theme.css">
+  <script src="../../static/js/template-config.js"></script>
+  <script src="../../static/js/app.js"></script>
+  <script src="../../static/js/clock.js" defer></script>
+</head>
+<body>
+  <div id="headerSlot" data-include="../shared/header.html"></div>
+
+  <main class="page-section shell">
+    <section class="hero">
+      <div class="hero-panel">
+        <span class="eyebrow">Base visual reutilizavel</span>
+        <h1 class="hero-title">Estruture novos ERPs, paineis e operacoes a partir desta base.</h1>
+        <p class="hero-copy">
+          Este starter reaproveita a linguagem visual do ERP original, mas troca os acoplamentos rigidos por configuracao central, caminhos relativos e hooks opcionais de autenticacao.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#modulos">Explorar modulos</a>
+          <a class="btn btn-secondary" href="./login.html">Abrir login base</a>
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <div>
+          <p class="eyebrow">Diretrizes</p>
+          <div class="metric-list">
+            <div class="metric">
+              <p class="metric-label">Acoplamento</p>
+              <p class="metric-value">0 prefixos fixos</p>
+            </div>
+            <div class="metric">
+              <p class="metric-label">Reuso</p>
+              <p class="metric-value">Header, footer, tema e login</p>
+            </div>
+            <div class="metric">
+              <p class="metric-label">Integracao</p>
+              <p class="metric-value">Hooks de auth opcionais</p>
+            </div>
+          </div>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Ponto de partida</p>
+          <p class="metric-value">Copie, configure e duplique paginas.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section id="modulos">
+      <div class="section-heading">
+        <div>
+          <h2>Modulos iniciais</h2>
+          <p>O grid abaixo eh abastecido por `window.erpTemplateConfig.modules`, permitindo adaptar o portal sem reescrever o HTML base.</p>
+        </div>
+      </div>
+      <div class="module-grid" id="moduleGrid"></div>
+    </section>
+  </main>
+
+  <div id="footerSlot" data-include="../shared/footer.html"></div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ERP Template • Login</title>
+  <link rel="icon" href="../../static/img/logo-128.png">
+  <link rel="stylesheet" href="../../static/css/theme.css">
+  <script src="../../static/js/template-config.js"></script>
+  <script src="../../static/js/login.js"></script>
+</head>
+<body class="login-page" data-public-page="true">
+  <main class="login-layout">
+    <section class="login-showcase">
+      <span class="eyebrow">Acesso</span>
+      <h2 class="hero-title">Tela base de autenticacao pronta para conectar com sua API.</h2>
+      <p class="hero-copy">
+        O comportamento de login foi isolado em hooks de configuracao. Assim voce preserva a experiencia visual do ERP e integra rapidamente qualquer backend.
+      </p>
+
+      <div class="helper-list">
+        <div class="helper-item">
+          <strong>Hook de login</strong>
+          <p>Implemente `window.erpTemplateConfig.auth.login(payload)`.</p>
+        </div>
+        <div class="helper-item">
+          <strong>Guard opcional</strong>
+          <p>Ative `requireAuth` para proteger paginas internas.</p>
+        </div>
+        <div class="helper-item">
+          <strong>Redirecionamento</strong>
+          <p>Defina `homeHref` e `loginPage` em `template-config.js`.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="login-card">
+      <img class="logo" src="../../static/img/logo-128.png" alt="Logo do sistema">
+      <h1>Entrar</h1>
+      <p>Use este formulario como base para areas restritas, portais internos e operacoes administrativas.</p>
+
+      <form id="loginForm" class="form-stack">
+        <div class="field">
+          <label for="username">Usuario</label>
+          <input id="username" name="username" type="text" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Senha</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <div id="loginError" class="alert alert-error" hidden></div>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+        <a class="btn btn-secondary" href="./index.html">Voltar para Home</a>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
