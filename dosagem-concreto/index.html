@@ -1797,7 +1797,7 @@
       </div>
 
       <!-- 3 slot cards -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+      <div id="mccComp_grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
         <div id="compare-slot-A" class="compare-card"></div>
         <div id="compare-slot-B" class="compare-card"></div>
         <div id="compare-slot-C" class="compare-card"></div>
@@ -8798,6 +8798,19 @@ function mccTracaoCarregar() {
     const item = _mccTracaoBancoAll[parseInt(sel.value)];
     if (!item) return;
     _mccTracaoCurrentData = item;
+    // Restore per-trace product config if saved
+    const traceId = item.id;
+    if (traceId && _mccTracaoConfig[traceId] && typeof _mccTracaoConfig[traceId] === 'object') {
+        const perTrace = _mccTracaoConfig[traceId];
+        MCCTR_MATS.forEach(({ key }) => {
+            if (perTrace[key]) {
+                if (!_mccTracaoConfig[key]) _mccTracaoConfig[key] = {};
+                _mccTracaoConfig[key].nome     = perTrace[key].nome     || '';
+                _mccTracaoConfig[key].forn     = perTrace[key].forn     || '';
+                _mccTracaoConfig[key].custoLiq = perTrace[key].custoLiq || 0;
+            }
+        });
+    }
     const panel = document.getElementById('mcctr_traco_info');
     if (panel) {
         panel.style.display = 'block';
@@ -8805,7 +8818,7 @@ function mccTracaoCarregar() {
         setT('mcctr_info_nome',   item.nome);
         setT('mcctr_info_fck',    item.fck  ? item.fck  + ' MPa' : '—');
         setT('mcctr_info_flow',   item.flow ? item.flow + ' mm'  : '—');
-        setT('mcctr_info_ac',     item.ac   ? Number(item.ac).toFixed(3) : '—');
+        setT('mcctr_info_ac',     item.ac   ? Number(item.ac).toFixed(2).replace('.',',') : '—');
         const total = MCCTR_MATS.reduce((s, m) => s + (Number(item.masses?.[m.massKey]) || 0), 0);
         setT('mcctr_info_total',  total ? total.toFixed(1) + ' kg' : '—');
         setT('mcctr_info_aplic',  item.aplicacao || '');
@@ -8819,12 +8832,23 @@ function mccTracaoLoadConfig() {
 }
 
 function mccTracaoSalvarConfig() {
+    const traceId = _mccTracaoCurrentData?.id || '_global';
+    const todos = _mccProdutosTodos || [];
+    if (!_mccTracaoConfig[traceId]) _mccTracaoConfig[traceId] = {};
     MCCTR_MATS.forEach(({ key }) => {
         const nomeEl = document.getElementById('mcctr_' + key + '_nome');
         const fornEl = document.getElementById('mcctr_' + key + '_forn');
+        const nome = nomeEl?.value || '';
+        const forn = fornEl?.value || '';
+        const prod = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const custoLiq = prod ? (Number(prod.custoLiq) || 0) : (_mccTracaoConfig[key]?.custoLiq || 0);
+        // save per-traço
+        _mccTracaoConfig[traceId][key] = { nome, forn, custoLiq };
+        // save flat (legacy read by mccTracaoRenderTable)
         if (!_mccTracaoConfig[key]) _mccTracaoConfig[key] = {};
-        _mccTracaoConfig[key].nome = nomeEl?.value || '';
-        _mccTracaoConfig[key].forn = fornEl?.value || '';
+        _mccTracaoConfig[key].nome     = nome;
+        _mccTracaoConfig[key].forn     = forn;
+        _mccTracaoConfig[key].custoLiq = custoLiq;
     });
     localStorage.setItem(MCCTR_CFG_KEY, JSON.stringify(_mccTracaoConfig));
     const st = document.getElementById('mcctr_status');
@@ -8860,7 +8884,7 @@ function mccTracaoRenderTable() {
             let fOpts = '<option value="">— Fornecedor —</option>';
             fornsU.forEach(f => { fOpts += '<option value="' + f + '"' + (cfg.forn === f ? ' selected' : '') + '>' + f + '</option>'; });
             const produto  = cfg.nome && cfg.forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === cfg.nome && p.fornecedor === cfg.forn) : null;
-            const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
+            const custoLiq = produto ? (Number(produto.custoLiq) || 0) : (cfg.custoLiq || 0);
             const custoM3  = kg * custoLiq;
             gTotals[grp] += custoM3;
             totalCusto   += custoM3;
@@ -9180,7 +9204,15 @@ function mccCompClearSlot(slot) {
 
 function mccCompRender() {
     const slots = mccCompLoad();
-    const slotColors = { A: '#3730a3', B: '#b45309', C: '#166534' };
+    const slotColors = { A: '#1d4ed8', B: '#7c3aed', C: '#059669' };
+    // Show/hide slot C and adjust grid columns
+    const gridEl = document.getElementById('mccComp_grid');
+    const cEl = document.getElementById('compare-slot-C');
+    const hasC = !!slots['C'];
+    if (gridEl && cEl) {
+        if (!hasC) { cEl.style.display = 'none'; gridEl.style.gridTemplateColumns = 'repeat(2,1fr)'; }
+        else { cEl.style.display = ''; gridEl.style.gridTemplateColumns = 'repeat(3,1fr)'; }
+    }
     ['A','B','C'].forEach(slot => {
         const el = document.getElementById('compare-slot-' + slot);
         if (!el) return;
@@ -9196,35 +9228,36 @@ function mccCompRender() {
         }
         const fmt2 = v => (Number(v)||0).toFixed(2).replace('.',',');
         const fmt1 = v => (Number(v)||0).toFixed(1).replace('.',',');
-        const col = slotColors[slot] || '#1a1a2e';
-        const GC = { 'Ligantes': '#e0e7ff', 'Agregados': '#fef9c3', 'Quím./Água': '#dcfce7' };
+        const fmtAC = v => v ? Number(v).toFixed(2).replace('.',',') : '—';
+        const col = slotColors[slot] || '#1e293b';
+        const GC = { 'Ligantes': '#dbeafe', 'Agregados': '#fef9c3', 'Quím./Água': '#dcfce7' };
         let matHtml = '';
         ['Ligantes','Agregados','Quím./Água'].forEach(grp => {
             const mats = (d.materiais || []).filter(m => m.group === grp && m.kg > 0);
             if (!mats.length) return;
-            matHtml += '<div style="background:' + GC[grp] + ';padding:3px 8px;font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:' + col + ';">' + grp + '</div>';
+            matHtml += '<div style="background:' + GC[grp] + ';padding:3px 10px;font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:' + col + ';text-align:center;">' + grp + '</div>';
             mats.forEach(m => {
-                matHtml += '<div style="display:flex;justify-content:space-between;padding:3px 8px;border-bottom:1px solid #f5f5f5;font-size:.72rem;">'
-                    + '<span style="color:#555;">' + m.label + '</span>'
-                    + '<span style="font-weight:700;">' + fmt1(m.kg) + '\u00a0kg</span>'
-                    + '<span style="color:' + col + ';font-weight:700;">' + (m.custoM3 > 0 ? 'R$\u00a0' + fmt2(m.custoM3) : '—') + '</span>'
+                matHtml += '<div style="display:grid;grid-template-columns:1fr auto auto;gap:4px;align-items:center;padding:4px 10px;border-bottom:1px solid #f0f0f0;font-size:.72rem;">'
+                    + '<span style="color:#444;">' + m.label + '</span>'
+                    + '<span style="font-weight:700;text-align:right;">' + fmt1(m.kg) + '\u00a0kg</span>'
+                    + '<span style="color:' + col + ';font-weight:700;text-align:right;min-width:50px;">' + (m.custoM3 > 0 ? 'R$\u00a0' + fmt2(m.custoM3) : '—') + '</span>'
                     + '</div>';
             });
         });
         el.innerHTML =
             '<div style="background:' + col + ';color:#fff;padding:10px 12px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;">'
-            + '<div><div style="font-size:.7rem;opacity:.7;text-transform:uppercase;letter-spacing:.05em;">Traço ' + slot + '</div><div style="font-weight:800;font-size:.9rem;">' + (d.nome || '—') + '</div></div>'
-            + '<button onclick="mccCompClearSlot(\'' + slot + '\')" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:.75rem;">✕</button>'
+            + '<div><div style="font-size:.68rem;opacity:.72;text-transform:uppercase;letter-spacing:.06em;">Traço ' + slot + '</div><div style="font-weight:800;font-size:.92rem;">' + (d.nome || '—') + '</div></div>'
+            + '<button onclick="mccCompClearSlot(\'' + slot + '\')" style="background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:6px;padding:3px 9px;cursor:pointer;font-size:.75rem;">✕</button>'
             + '</div>'
-            + '<div style="padding:8px 12px;background:#f8f9ff;border-bottom:1px solid #eee;display:flex;flex-wrap:wrap;gap:6px 14px;">'
-            + '<div><div style="font-size:.6rem;color:#888;text-transform:uppercase;">FCK</div><div style="font-weight:800;font-size:.85rem;color:' + col + ';">' + (d.fck ? d.fck + ' MPa' : '—') + '</div></div>'
-            + '<div><div style="font-size:.6rem;color:#888;text-transform:uppercase;">Flow</div><div style="font-weight:800;font-size:.85rem;">' + (d.flow ? d.flow + ' mm' : '—') + '</div></div>'
-            + '<div><div style="font-size:.6rem;color:#888;text-transform:uppercase;">a/c</div><div style="font-weight:800;font-size:.85rem;">' + (d.ac ? Number(d.ac).toFixed(3) : '—') + '</div></div>'
-            + '<div><div style="font-size:.6rem;color:#888;text-transform:uppercase;">Massa</div><div style="font-weight:800;font-size:.85rem;">' + (d.totalMassa ? fmt1(d.totalMassa) + ' kg' : '—') + '</div></div>'
+            + '<div style="padding:8px 10px;background:#f8faff;border-bottom:1px solid #eee;display:flex;flex-wrap:wrap;gap:5px 10px;justify-content:center;">'
+            + '<div style="text-align:center;"><div style="font-size:.58rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">FCK</div><div style="font-weight:800;font-size:.85rem;color:' + col + ';">' + (d.fck ? d.fck + '\u00a0MPa' : '—') + '</div></div>'
+            + '<div style="text-align:center;"><div style="font-size:.58rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Flow</div><div style="font-weight:800;font-size:.85rem;">' + (d.flow ? d.flow + '\u00a0mm' : '—') + '</div></div>'
+            + '<div style="text-align:center;"><div style="font-size:.58rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">a/c</div><div style="font-weight:800;font-size:.85rem;">' + fmtAC(d.ac) + '</div></div>'
+            + '<div style="text-align:center;"><div style="font-size:.58rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Massa</div><div style="font-weight:800;font-size:.85rem;">' + (d.totalMassa ? fmt1(d.totalMassa) + '\u00a0kg' : '—') + '</div></div>'
             + '</div>'
             + '<div style="font-size:.72rem;">' + matHtml + '</div>'
-            + '<div style="padding:10px 12px;background:' + col + ';color:#fff;border-radius:0 0 8px 8px;display:flex;justify-content:space-between;align-items:center;">'
-            + '<span style="font-size:.7rem;opacity:.75;">Total / m³ (com ded. ICMS+IPI)</span>'
+            + '<div style="padding:9px 12px;background:' + col + ';color:#fff;border-radius:0 0 8px 8px;display:flex;justify-content:space-between;align-items:center;">'
+            + '<span style="font-size:.68rem;opacity:.78;">Total/m³ · ICMS+IPI ded.</span>'
             + '<span style="font-weight:900;font-size:1rem;">R$\u00a0' + fmt2(d.totalCusto || 0) + '</span>'
             + '</div>';
     });
@@ -9247,8 +9280,9 @@ function mccCompSumario() {
     const bestAC  = filled.reduce((b,c) => (Number(c.ac)||1) < (Number(b.ac)||1) ? c : b, filled[0]);
     const maxCost = Math.max(...filled.map(f => f.totalCusto || 0));
     const minCost = Math.min(...filled.map(f => f.totalCusto || 0));
-    const slotColors = { A: '#3730a3', B: '#b45309', C: '#166534' };
-    const colHdr = filled.map(r => '<th style="background:' + (slotColors[r.slot]||'#1a1a2e') + ';color:#fff;padding:8px;font-size:.75rem;font-weight:700;text-align:center;">Traço ' + r.slot + '<br><span style="font-weight:500;opacity:.85;font-size:.68rem;">' + (r.nome||'') + '</span></th>').join('');
+    const slotColors = { A: '#1d4ed8', B: '#7c3aed', C: '#059669' };
+    const fmtAC = v => v ? Number(v).toFixed(2).replace('.',',') : '—';
+    const colHdr = filled.map(r => '<th style="background:' + (slotColors[r.slot]||'#1e293b') + ';color:#fff;padding:8px;font-size:.75rem;font-weight:700;text-align:center;">Traço ' + r.slot + '<br><span style="font-weight:500;opacity:.85;font-size:.68rem;">' + (r.nome||'') + '</span></th>').join('');
     const mkRow = (label, fn) => '<tr><td style="padding:7px 10px;font-size:.78rem;color:#555;white-space:nowrap;">' + label + '</td>' + filled.map(r => '<td style="padding:7px;text-align:center;font-weight:700;font-size:.8rem;">' + fn(r) + '</td>').join('') + '</tr>';
     let html = '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin-bottom:14px;">'
         + '<div style="background:#1e293b;color:#fff;padding:10px 14px;font-size:.8rem;font-weight:700;letter-spacing:.04em;">📋 RESUMO SINTÉTICO COMPARATIVO — ICMS e IPI deduzidos no custo líquido</div>'
@@ -9257,29 +9291,29 @@ function mccCompSumario() {
         + '<tbody>'
         + mkRow('FCK (MPa)', r => r.fck ? r.fck + ' MPa' : '—')
         + mkRow('Flow (mm)', r => r.flow ? r.flow + ' mm' : '—')
-        + mkRow('Relação a/c', r => r.ac ? Number(r.ac).toFixed(3) : '—')
+        + mkRow('Relação a/c', r => fmtAC(r.ac))
         + mkRow('Massa total (kg/m³)', r => r.totalMassa ? fmt1(r.totalMassa) : '—')
         + mkRow('Ligantes (R$/m³)', r => 'R$\u00a0' + fmt2((r.gTotais||{})['Ligantes'] || 0))
         + mkRow('Agregados (R$/m³)', r => 'R$\u00a0' + fmt2((r.gTotais||{})['Agregados'] || 0))
         + mkRow('Quím./Água (R$/m³)', r => 'R$\u00a0' + fmt2((r.gTotais||{})['Quím./Água'] || 0))
         + '<tr style="background:#1e293b;"><td style="padding:8px 10px;font-size:.8rem;font-weight:800;color:#fff;">Total / m³</td>'
-        + filled.map(r => '<td style="padding:8px;text-align:center;font-weight:900;font-size:.9rem;color:#fff;' + (r.totalCusto===minCost ? 'background:#166534;' : r.totalCusto===maxCost ? 'background:#991b1b;' : '') + '">' + (r.totalCusto > 0 ? 'R$\u00a0' + fmt2(r.totalCusto) : '—') + '</td>').join('')
+        + filled.map(r => '<td style="padding:8px;text-align:center;font-weight:900;font-size:.9rem;color:#fff;' + (r.totalCusto===minCost ? 'background:#059669;' : r.totalCusto===maxCost ? 'background:#991b1b;' : '') + '">' + (r.totalCusto > 0 ? 'R$\u00a0' + fmt2(r.totalCusto) : '—') + '</td>').join('')
         + '</tr></tbody></table></div></div>'
         + '<div style="display:flex;gap:10px;flex-wrap:wrap;">'
         + '<div style="flex:1;background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:12px 14px;min-width:150px;">'
         + '<div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#15803d;margin-bottom:4px;">💰 Melhor Opção Financeira</div>'
-        + '<div style="font-weight:900;font-size:1rem;color:#166534;">Traço ' + bestFin.slot + ' — ' + (bestFin.nome||'') + '</div>'
-        + '<div style="font-size:.75rem;color:#166534;margin-top:3px;">R$\u00a0' + fmt2(bestFin.totalCusto) + ' / m³' + (maxCost !== minCost ? ' · economia R$\u00a0' + fmt2(maxCost - (bestFin.totalCusto||0)) + ' vs mais caro' : '') + '</div>'
+        + '<div style="font-weight:900;font-size:1rem;color:#059669;">Traço ' + bestFin.slot + ' — ' + (bestFin.nome||'') + '</div>'
+        + '<div style="font-size:.75rem;color:#059669;margin-top:3px;">R$\u00a0' + fmt2(bestFin.totalCusto) + ' / m³' + (maxCost !== minCost ? ' · economia R$\u00a0' + fmt2(maxCost - (bestFin.totalCusto||0)) + ' vs mais caro' : '') + '</div>'
         + '</div>'
         + '<div style="flex:1;background:#eff6ff;border:1.5px solid #93c5fd;border-radius:10px;padding:12px 14px;min-width:150px;">'
         + '<div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#1d4ed8;margin-bottom:4px;">🏆 Melhor Desempenho Técnico</div>'
         + '<div style="font-weight:900;font-size:1rem;color:#1d4ed8;">Traço ' + bestTec.slot + ' — ' + (bestTec.nome||'') + '</div>'
-        + '<div style="font-size:.75rem;color:#1d4ed8;margin-top:3px;">FCK ' + (bestTec.fck ? bestTec.fck + ' MPa' : '—') + ' · a/c ' + (bestTec.ac ? Number(bestTec.ac).toFixed(3) : '—') + '</div>'
+        + '<div style="font-size:.75rem;color:#1d4ed8;margin-top:3px;">FCK ' + (bestTec.fck ? bestTec.fck + ' MPa' : '—') + ' · a/c ' + fmtAC(bestTec.ac) + '</div>'
         + '</div>'
         + '<div style="flex:1;background:#fefce8;border:1.5px solid #fde68a;border-radius:10px;padding:12px 14px;min-width:150px;">'
         + '<div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#92400e;margin-bottom:4px;">⚖️ Menor Rel. Água/Cimento</div>'
         + '<div style="font-weight:900;font-size:1rem;color:#92400e;">Traço ' + bestAC.slot + ' — ' + (bestAC.nome||'') + '</div>'
-        + '<div style="font-size:.75rem;color:#92400e;margin-top:3px;">a/c ' + (bestAC.ac ? Number(bestAC.ac).toFixed(3) : '—') + ' · mais compacto e durável</div>'
+        + '<div style="font-size:.75rem;color:#92400e;margin-top:3px;">a/c ' + fmtAC(bestAC.ac) + ' · mais compacto e durável</div>'
         + '</div>'
         + '</div>';
     wrap.innerHTML = html;
@@ -9291,10 +9325,11 @@ function mccCompPrint() {
     if (!filled.length) { alert('Nenhum traço no comparador.'); return; }
     const fmt2 = v => (Number(v)||0).toFixed(2).replace('.',',');
     const fmt1 = v => (Number(v)||0).toFixed(1).replace('.',',');
-    const slotColors = { A: '#3730a3', B: '#b45309', C: '#166534' };
+    const slotColors = { A: '#1d4ed8', B: '#7c3aed', C: '#059669' };
     const maxCost = Math.max(...filled.map(f => f.totalCusto || 0));
     const minCost = Math.min(...filled.map(f => f.totalCusto || 0));
-    const colHdr = filled.map(r => '<th style="background:' + (slotColors[r.slot]||'#1a1a2e') + ';color:#fff;padding:10px;font-size:12px;text-align:center;">Traço ' + r.slot + '<br><span style="font-weight:500;font-size:10px;">' + (r.nome||'') + '</span></th>').join('');
+    const fmtAC = v => v ? Number(v).toFixed(2).replace('.',',') : '—';
+    const colHdr = filled.map(r => '<th style="background:' + (slotColors[r.slot]||'#1e293b') + ';color:#fff;padding:10px;font-size:12px;text-align:center;">Traço ' + r.slot + '<br><span style="font-weight:500;font-size:10px;">' + (r.nome||'') + '</span></th>').join('');
     const mkRow = (label, fn) => '<tr><td style="padding:7px 10px;font-size:11px;color:#555;">' + label + '</td>' + filled.map(r => '<td style="padding:7px;text-align:center;font-weight:600;font-size:11px;">' + fn(r) + '</td>').join('') + '</tr>';
     const htmlDoc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Comparativo MCC</title>'
         + '<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"Segoe UI",Arial,sans-serif;font-size:12px;color:#1a1a2e;padding:24px}'
@@ -9310,7 +9345,7 @@ function mccCompPrint() {
         + '<table><thead><tr><th style="text-align:left;min-width:140px;">Parâmetro</th>' + colHdr + '</tr></thead><tbody>'
         + mkRow('FCK (MPa)', r => r.fck ? r.fck + ' MPa' : '—')
         + mkRow('Flow (mm)', r => r.flow ? r.flow + ' mm' : '—')
-        + mkRow('Relação a/c', r => r.ac ? Number(r.ac).toFixed(3) : '—')
+        + mkRow('Relação a/c', r => fmtAC(r.ac))
         + mkRow('Massa total (kg/m³)', r => r.totalMassa ? fmt1(r.totalMassa) : '—')
         + mkRow('Ligantes (R$/m³)', r => 'R$ ' + fmt2((r.gTotais||{})['Ligantes'] || 0))
         + mkRow('Agregados (R$/m³)', r => 'R$ ' + fmt2((r.gTotais||{})['Agregados'] || 0))
