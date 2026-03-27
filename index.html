@@ -31,6 +31,55 @@
     .hub-tag{ font-size:14px; color:var(--muted); margin:6px 0 12px; text-align:center; }
     .accentLine{ width:200px; margin-bottom:28px; }
     .footer{ margin-top:40px; font-size:12px; color:var(--muted); text-align:center; opacity:.6; }
+
+    /* Hub grid */
+    .hub-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap:14px;
+      width:100%;
+      max-width:700px;
+    }
+    .app-card{
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.13);
+      border-radius:16px;
+      padding:18px 14px 16px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--text);
+      transition: background .15s, transform .1s, box-shadow .15s;
+      cursor:pointer;
+    }
+    .app-card:hover{
+      background:rgba(255,255,255,.13);
+      transform:translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    }
+    .app-icon{
+      font-size:2.2rem;
+      width:56px; height:56px;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(0,0,0,.22);
+      border-radius:14px;
+      overflow:hidden;
+    }
+    .app-icon img{ width:100%; height:100%; object-fit:contain; }
+    .app-name{
+      font-size:.88rem;
+      font-weight:800;
+      text-align:center;
+      letter-spacing:.01em;
+    }
+    .app-desc{
+      font-size:.72rem;
+      color:var(--muted);
+      text-align:center;
+      line-height:1.3;
+    }
   </style>
 </head>
 
@@ -107,6 +156,12 @@
       <div class="app-icon">🗺️</div>
       <div class="app-name">Mapa de Concretagem</div>
       <div class="app-desc">Visualização e registro de concretagem</div>
+    </a>
+
+    <a class="app-card" href="http://31.97.241.84:5050" target="_blank" rel="noopener">
+      <div class="app-icon">🏷️</div>
+      <div class="app-name">Etiquetas CP</div>
+      <div class="app-desc">Geração de etiquetas para corpos de prova</div>
     </a>
 
   </div>
