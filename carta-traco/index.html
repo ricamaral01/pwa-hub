@@ -1166,7 +1166,7 @@ function calcularIndicadores(materiais) {
 function renderIndicadores(ind) {
   document.getElementById('ind-peso').textContent = ind.pesoTotal.toFixed(1);
   document.getElementById('ind-volume').textContent = ind.volume.toFixed(1);
-  document.getElementById('ind-ac').textContent = ind.relacaoAC.toFixed(3);
+  document.getElementById('ind-ac').textContent = ind.relacaoAC.toFixed(2).replace('.', ',');
   document.getElementById('ind-argamassa').textContent = ind.taxaArgamassa.toFixed(1);
   document.getElementById('ind-argamassa-vol').textContent = ind.taxaArgamassaVol.toFixed(1);
   document.getElementById('ind-adit1').textContent = ind.pctAditivo1.toFixed(3);
@@ -1548,7 +1548,7 @@ async function abrirDetalhe(carta) {
   html += '<div class="detail-section"><h4>Indicadores Técnicos</h4><div class="indicadores-grid">' +
     '<div class="indicador-card"><span class="indicador-label">Peso Total</span><span class="indicador-valor">' + ind.pesoTotal.toFixed(1) + '</span><span class="indicador-unit">kg/m³</span></div>' +
     '<div class="indicador-card"><span class="indicador-label">Volume</span><span class="indicador-valor">' + ind.volume.toFixed(1) + '</span><span class="indicador-unit">dm³</span></div>' +
-    '<div class="indicador-card"><span class="indicador-label">Relação A/C</span><span class="indicador-valor">' + ind.relacaoAC.toFixed(3) + '</span><span class="indicador-unit"></span></div>' +
+    '<div class="indicador-card"><span class="indicador-label">Relação A/C</span><span class="indicador-valor">' + ind.relacaoAC.toFixed(2).replace('.', ',') + '</span><span class="indicador-unit"></span></div>' +
     '<div class="indicador-card"><span class="indicador-label">Tx Argamassa (massa)</span><span class="indicador-valor">' + ind.taxaArgamassa.toFixed(1) + '</span><span class="indicador-unit">%</span></div>' +
     '<div class="indicador-card"><span class="indicador-label">Tx Argamassa (volume)</span><span class="indicador-valor">' + ind.taxaArgamassaVol.toFixed(1) + '</span><span class="indicador-unit">%</span></div>' +
     '<div class="indicador-card"><span class="indicador-label">% Aditivo 1</span><span class="indicador-valor">' + ind.pctAditivo1.toFixed(2).replace('.', ',') + '</span><span class="indicador-unit">% s/ cimento</span></div>' +
@@ -1680,7 +1680,7 @@ function imprimirCarta() {
     '<div class="print-ind-grid">' +
     '<div class="print-ind-card"><div class="print-ind-label">Peso Total</div><div class="print-ind-valor">' + ind.pesoTotal.toFixed(1) + '</div><div class="print-ind-unit">kg/m\u00b3</div></div>' +
     '<div class="print-ind-card"><div class="print-ind-label">Volume</div><div class="print-ind-valor">' + ind.volume.toFixed(1) + '</div><div class="print-ind-unit">dm\u00b3</div></div>' +
-    '<div class="print-ind-card"><div class="print-ind-label">Rela\u00e7\u00e3o A/C</div><div class="print-ind-valor">' + ind.relacaoAC.toFixed(3) + '</div><div class="print-ind-unit"></div></div>' +
+    '<div class="print-ind-card"><div class="print-ind-label">Relação A/C</div><div class="print-ind-valor">' + ind.relacaoAC.toFixed(2).replace('.', ',') + '</div><div class="print-ind-unit"></div></div>' +
     '<div class="print-ind-card"><div class="print-ind-label">Tx Argamassa (massa)</div><div class="print-ind-valor">' + ind.taxaArgamassa.toFixed(1) + '</div><div class="print-ind-unit">%</div></div>' +
     '<div class="print-ind-card"><div class="print-ind-label">Tx Argamassa (volume)</div><div class="print-ind-valor">' + ind.taxaArgamassaVol.toFixed(1) + '</div><div class="print-ind-unit">%</div></div>' +
     '<div class="print-ind-card"><div class="print-ind-label">% Aditivo 1</div><div class="print-ind-valor">' + ind.pctAditivo1.toFixed(2).replace('.', ',') + '</div><div class="print-ind-unit">% s/ cim.</div></div>' +

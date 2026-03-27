@@ -3152,36 +3152,43 @@
     </div>
 
     <div style="padding:18px 22px;">
-      <!-- Cartas salvas panel -->
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px 16px;margin-bottom:12px;">
-        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#166534;margin-bottom:10px;">📋 Histórico de Cartas Traço</div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <select id="mcctr_carta_sel" style="flex:1;min-width:200px;padding:8px 11px;border:1.5px solid #86efac;border-radius:8px;font-size:.86rem;background:#fff;" onchange="mccCartaSelecionada(this.value)">
-            <option value="">— Selecionar carta salva —</option>
-          </select>
-          <button class="btn" style="height:38px;white-space:nowrap;font-size:.83rem;background:#dc2626;color:#fff;padding:0 12px;" onclick="mccCartaExcluir()" title="Excluir carta selecionada">🗑️ Excluir</button>
+      <!-- Cartas + Traço panels: side by side -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+
+        <!-- Cartas salvas panel -->
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px;">
+          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#166534;margin-bottom:8px;">📋 Histórico de Cartas</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <select id="mcctr_carta_sel" style="flex:1;min-width:0;padding:6px 8px;border:1.5px solid #86efac;border-radius:8px;font-size:.78rem;background:#fff;" onchange="mccCartaSelecionada(this.value)">
+              <option value="">— Selecionar carta —</option>
+            </select>
+            <button class="btn" style="height:32px;white-space:nowrap;font-size:.75rem;background:#dc2626;color:#fff;padding:0 8px;" onclick="mccCartaExcluir()" title="Excluir carta selecionada">🗑️</button>
+          </div>
         </div>
+
+        <!-- Selector panel -->
+        <div style="background:#f7f9ff;border:1px solid #dbe4ff;border-radius:10px;padding:12px 14px;">
+          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#3730a3;margin-bottom:8px;">📂 Seleção do Traço</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <select id="mcctr_traco_sel" style="flex:1;min-width:0;padding:6px 8px;border:1.5px solid #bfcbf5;border-radius:8px;font-size:.78rem;background:#fff;" onchange="mccTracaoCarregar()">
+              <option value="">— Selecione um traço —</option>
+            </select>
+            <button class="btn btn-primary" style="height:32px;white-space:nowrap;font-size:.75rem;padding:0 8px;" onclick="mccTracaoRefreshBanco()">🔄</button>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Selector panel -->
-      <div style="background:#f7f9ff;border:1px solid #dbe4ff;border-radius:10px;padding:14px 16px;margin-bottom:16px;">
-        <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#3730a3;margin-bottom:10px;">📂 Seleção do Traço</div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <select id="mcctr_traco_sel" style="flex:1;min-width:200px;padding:8px 11px;border:1.5px solid #bfcbf5;border-radius:8px;font-size:.86rem;background:#fff;" onchange="mccTracaoCarregar()">
-            <option value="">— Selecione um traço —</option>
-          </select>
-          <button class="btn btn-primary" style="height:38px;white-space:nowrap;font-size:.83rem;" onclick="mccTracaoRefreshBanco()">🔄 Atualizar</button>
-        </div>
-        <div id="mcctr_traco_info" style="display:none;margin-top:10px;background:#fff;border:1px solid #dbe4ff;border-radius:8px;padding:10px 14px;">
-          <div style="display:flex;flex-wrap:wrap;gap:12px 20px;">
-            <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Nome</div><div id="mcctr_info_nome" style="font-weight:700;font-size:.9rem;"></div></div>
-            <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">FCK</div><div id="mcctr_info_fck" style="font-weight:800;font-size:.9rem;color:#3730a3;"></div></div>
-            <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Flow</div><div id="mcctr_info_flow" style="font-weight:700;font-size:.9rem;"></div></div>
-            <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">a/c</div><div id="mcctr_info_ac" style="font-weight:700;font-size:.9rem;"></div></div>
-            <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Massa total</div><div id="mcctr_info_total" style="font-weight:800;font-size:.9rem;color:#166534;"></div></div>
-            <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Aplicação</div><div id="mcctr_info_aplic" style="font-weight:600;font-size:.85rem;"></div></div>
-            <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Fonte</div><div id="mcctr_info_source" style="font-weight:600;font-size:.8rem;"></div></div>
-          </div>
+      <!-- Traço info strip (expandes below both panels) -->
+      <div id="mcctr_traco_info" style="display:none;margin-top:-8px;margin-bottom:16px;background:#fff;border:1px solid #dbe4ff;border-radius:8px;padding:10px 14px;">
+        <div style="display:flex;flex-wrap:wrap;gap:12px 20px;">
+          <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Nome</div><div id="mcctr_info_nome" style="font-weight:700;font-size:.9rem;"></div></div>
+          <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">FCK</div><div id="mcctr_info_fck" style="font-weight:800;font-size:.9rem;color:#3730a3;"></div></div>
+          <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Flow</div><div id="mcctr_info_flow" style="font-weight:700;font-size:.9rem;"></div></div>
+          <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">a/c</div><div id="mcctr_info_ac" style="font-weight:700;font-size:.9rem;"></div></div>
+          <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Massa total</div><div id="mcctr_info_total" style="font-weight:800;font-size:.9rem;color:#166534;"></div></div>
+          <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Aplicação</div><div id="mcctr_info_aplic" style="font-weight:600;font-size:.85rem;"></div></div>
+          <div><div style="font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:.04em;">Fonte</div><div id="mcctr_info_source" style="font-weight:600;font-size:.8rem;"></div></div>
         </div>
       </div>
 

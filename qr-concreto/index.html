@@ -387,11 +387,12 @@ $("mpaInput").addEventListener("input", ()=>{
 $("btnSave").onclick=()=>send();
 
 function parseQR(raw){
-  const o={traco_id:"",cp:"",idade_dias:"",data_moldagem:"",hora_moldagem:"",data_ruptura:"",qr_raw:raw};
+  const o={traco_id:"",traco_nome:"",cp:"",idade_dias:"",data_moldagem:"",hora_moldagem:"",data_ruptura:"",qr_raw:raw};
   raw.split("|").forEach(p=>{
     const [k,v]=p.split("=");
     if(!v)return;
     if(k=="traco")o.traco_id=v;
+    if(k=="nome")o.traco_nome=v;
     if(k=="cp")o.cp=v;
     if(k=="idade")o.idade_dias=v;
     if(k=="mold")o.data_moldagem=v;
