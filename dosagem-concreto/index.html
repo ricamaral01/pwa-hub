@@ -703,7 +703,7 @@
         @media (max-width: 700px) { .ops-dashboard,.kpi-grid,.summary-kpis,.stepper,.compare-shell,.compare-grid,.cost-grid,.cost-summary { grid-template-columns:1fr; } }
 
     
-        /* EVOLUÇÃO 4 — BANCO PREMIUM / CURVA DE CUSTO */
+        /* EVOLUÇÃO 4 — BANCO DE TRAÇOS / CURVA DE CUSTO */
         .premium-shell {
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
@@ -885,7 +885,7 @@
             <span class="sb-num">8A</span><span class="sb-icon">📊</span><span class="sb-label">Comparador / Custo</span>
         </button>
         <button class="sidebar-btn" data-sec="sec-premium-bank" onclick="showSection('sec-premium-bank',this)">
-            <span class="sb-num">8B</span><span class="sb-icon">🏛️</span><span class="sb-label">Banco Premium</span>
+            <span class="sb-num">8B</span><span class="sb-icon">🏛️</span><span class="sb-label">Banco de Traços</span>
         </button>
         <button class="sidebar-btn" data-sec="sec-resultados-calc" onclick="showSection('sec-resultados-calc',this)">
             <span class="sb-num">9</span><span class="sb-icon">🧮</span><span class="sb-label">Detalhamento Cálculos</span>
@@ -921,7 +921,7 @@
         <option value="sec-abrams">📉 Curva de Abrams</option>
         <option value="sec-resumo">📄 Resumo / Carta</option>
         <option value="sec-compare-cost">📊 Comparador / Custo</option>
-        <option value="sec-premium-bank">🏛️ Banco Premium de Traços</option>
+        <option value="sec-premium-bank">🏛️ Banco de Traços</option>
         <option value="sec-resultados-calc">🧮 Detalhamento Cálculos</option>
         <option value="sec-normas-concreto">📚 Normas</option>
         <option value="sec-memoria">📝 Memória de Cálculo</option>
@@ -970,7 +970,7 @@
             <button class="hub-card" type="button" onclick="showSection('sec-experimental')"><span class="hub-icon">🔬</span><span class="hub-title">Traço Experimental</span><span class="hub-desc">Flow, resistência e validação</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-resumo')"><span class="hub-icon">📄</span><span class="hub-title">Carta do Traço</span><span class="hub-desc">Saída executiva e impressão</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-compare-cost')"><span class="hub-icon">📊</span><span class="hub-title">Comparador & Custo</span><span class="hub-desc">Comparação de cenários e custo por m³</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-premium-bank')"><span class="hub-icon">🏛️</span><span class="hub-title">Banco Premium</span><span class="hub-desc">Banco de traços, ranking e curva de custo</span></button>
+            <button class="hub-card" type="button" onclick="showSection('sec-premium-bank')"><span class="hub-icon">🏛️</span><span class="hub-title">Banco de Traços</span><span class="hub-desc">Banco de traços, ranking e curva de custo</span></button>
         </div>
     </div>
 </div>
@@ -3024,7 +3024,7 @@
 
 <div id="sec-premium-bank" class="section">
     <div class="card">
-        <h2><span class="icon">🏛️</span> Banco Premium de Traços</h2>
+        <h2><span class="icon">🏛️</span> Banco de Traços</h2>
         <p class="subtitle">Evolução 4 do CONCRETRACK DOSAGEM: capture o traço atual, monte um banco técnico interno, compare cenários lado a lado e acompanhe a curva de custo do seu portfólio.</p>
 
         <div class="premium-shell">
@@ -3091,7 +3091,10 @@
 
         <div class="premium-panel" style="margin-top:18px;">
             <h3>Portfólio de traços salvos</h3>
-            <p class="subtitle">Carregue qualquer referência para os slots A/B/C do comparador visual ou traga de volta para a dosagem.</p>
+            <p class="subtitle">Carregue qualquer referência para os slots A/B/C do comparador visual, traga de volta para a dosagem ou consulte todos os traços salvos na planilha.</p>
+            <div class="btn-wrap" style="margin-top:0; margin-bottom:10px;">
+                <button class="btn btn-primary" type="button" onclick="showSection('sec-tracos-salvos'); listarTracos();">📂 Listar todos os traços salvos</button>
+            </div>
             <div class="premium-bank-table-wrap">
                 <table class="premium-bank-table">
                     <thead>
@@ -3112,7 +3115,7 @@
         </div>
 
         <div class="premium-panel" style="margin-top:18px;">
-            <h3>Comparador visual premium</h3>
+            <h3>Comparador visual do banco</h3>
             <p class="subtitle">Posicione até 3 referências do banco lado a lado para decidir qual traço vai para validação, produção ou carta final.</p>
             <div class="premium-compare-grid">
                 <div class="premium-compare-card" id="premium_compare_A"></div>
@@ -3151,6 +3154,9 @@ function showSection(id, btn) {
     // Auto-load MCC when entering the section
     if (id === 'sec-custo-mcc') {
         mccListarProdutos();
+    }
+    if (id === 'sec-tracos-salvos' && typeof listarTracos === 'function') {
+        listarTracos();
     }
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
@@ -7906,7 +7912,7 @@ if (typeof gerarCartaTraco === 'function') { const _origGerarCartaTraco = gerarC
 if (typeof carregarTraco === 'function') { const _origCarregarTraco = carregarTraco; carregarTraco = function(t){ const out=_origCarregarTraco.apply(this, arguments); setTimeout(()=>{ updateDosagemCockpit(); syncResumoFieldsFromDosagem(); }, 60); return out; } }
 
 
-// ===== EVOLUÇÃO 4 — BANCO PREMIUM DE TRAÇOS =====
+// ===== EVOLUÇÃO 4 — BANCO DE TRAÇOS =====
 const CT_PREMIUM_BANK_KEY = 'concretrack_premium_bank_v4';
 window.ctPremiumCompareSlots = window.ctPremiumCompareSlots || { A: null, B: null, C: null };
 
@@ -7962,7 +7968,7 @@ function ctPremiumSaveCurrentTrace(){
     };
     list.unshift(item);
     ctPremiumSetBank(list);
-    ctPremiumStatus(`Referência ${nome} salva no banco premium.`);
+    ctPremiumStatus(`Referência ${nome} salva no banco de traços.`);
     ctPremiumRefresh();
 }
 function ctPremiumDelete(id){
@@ -7974,7 +7980,7 @@ function ctPremiumDelete(id){
 function ctPremiumClearAll(){
     localStorage.removeItem(CT_PREMIUM_BANK_KEY);
     window.ctPremiumCompareSlots = { A:null, B:null, C:null };
-    ctPremiumStatus('Banco premium limpo.', 'warn');
+    ctPremiumStatus('Banco de traços limpo.', 'warn');
     ctPremiumRefresh();
 }
 function ctPremiumLoadToDosagem(id){
@@ -8048,7 +8054,7 @@ function ctPremiumRenderCurve(list){
         return `<circle cx="${x}" cy="${y}" r="${bestDot?6:5}" fill="${bestDot?'#27ae60':'#1a5276'}" />` +
                `<text x="${x}" y="${y-12}" text-anchor="middle" font-size="11" fill="#2c3e50">${ctFmtNum(item.custo,2)}</text>`;
     }).join('');
-    holder.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Curva de custo do banco premium">
+    holder.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Curva de custo do banco de traços">
         ${lines}
         <line x1="${pl}" y1="${h-pb}" x2="${w-pr}" y2="${h-pb}" stroke="#9fb3c8"/>
         <line x1="${pl}" y1="${pt}" x2="${pl}" y2="${h-pb}" stroke="#9fb3c8"/>
