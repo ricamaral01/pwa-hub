@@ -1577,6 +1577,14 @@
             <button class="btn-print" onclick="imprimirSecao('sec-materiais','Relatório — Caracterização dos Materiais')">🖨️ Imprimir</button>
         </div>
         <div id="mat-status" style="margin-top:12px;"></div>
+        <!-- NAV PASSO 1/7 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
+            <div></div>
+            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 1 / 7</span>
+            <div>
+                <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-dosagem')">⚖️ Dosagem →</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1741,6 +1749,16 @@
 
         <div id="res-dosagem"></div>
         <div id="salvar-traco-status" style="margin-top:12px;"></div>
+        <!-- NAV PASSO 2/7 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
+            <div>
+                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-materiais')">← 🧪 Materiais</button>
+            </div>
+            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 2 / 7</span>
+            <div>
+                <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-volume')">📏 Volume →</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -2151,6 +2169,16 @@
         </div>
 
         <div id="res-volume"></div>
+        <!-- NAV PASSO 3/7 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
+            <div>
+                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-dosagem')">← ⚖️ Dosagem</button>
+            </div>
+            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 3 / 7</span>
+            <div>
+                <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-argamassa')">🧱 Argamassa →</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -2214,6 +2242,16 @@
         </div>
 
         <div id="res-argamassa"></div>
+        <!-- NAV PASSO 4/7 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
+            <div>
+                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-volume')">← 📏 Volume</button>
+            </div>
+            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 4 / 7</span>
+            <div>
+                <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-empacotamento')">📈 Empacotamento →</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -2287,6 +2325,16 @@
 
         <div style="margin-top:20px;">
             <canvas id="chartEmpacotamento" width="900" height="380"></canvas>
+        </div>
+        <!-- NAV PASSO 5/7 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
+            <div>
+                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-argamassa')">← 🧱 Argamassa</button>
+            </div>
+            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 5 / 7</span>
+            <div>
+                <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-abrams')">📉 Curva de Abrams →</button>
+            </div>
         </div>
     </div>
 </div>
@@ -2489,6 +2537,16 @@
         <div style="margin-top:20px;">
             <canvas id="chartAbrams" width="1000" height="480"></canvas>
         </div>
+        <!-- NAV PASSO 6/7 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
+            <div>
+                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-empacotamento')">← 📈 Empacotamento</button>
+            </div>
+            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 6 / 7</span>
+            <div>
+                <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-resumo')">📄 Resumo / Carta →</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -2591,6 +2649,14 @@
         </div>
 
         <div id="res-resumo"></div>
+        <!-- NAV PASSO 7/7 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
+            <div>
+                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-abrams')">← 📉 Curva de Abrams</button>
+            </div>
+            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 7 / 7</span>
+            <div></div>
+        </div>
     </div>
 </div>
 
