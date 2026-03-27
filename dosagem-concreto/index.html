@@ -1820,7 +1820,12 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td style="text-align:left;font-weight:600;">Cimento</td>
+                            <td style="text-align:left;">
+                              <div style="font-weight:600;font-size:.8rem;margin-bottom:3px;">Cimento</div>
+                              <select id="costadv_cim_produto" class="cost-adv-select" style="width:100%;min-width:130px;" onchange="costAdvProdutoChange('cim',this.value)">
+                                <option value="">— Manual —</option>
+                              </select>
+                            </td>
                             <td><input type="number" id="costadv_cim_preco" class="cost-adv-input" step="0.01" min="0" value="0.70"></td>
                             <td><select id="costadv_cim_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_cim_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1832,7 +1837,12 @@
                             <td><span id="costadv_cim_liquido" class="cost-adv-liq">—</span></td>
                           </tr>
                           <tr>
-                            <td style="text-align:left;font-weight:600;">Adição</td>
+                            <td style="text-align:left;">
+                              <div style="font-weight:600;font-size:.8rem;margin-bottom:3px;">Adição</div>
+                              <select id="costadv_adic_produto" class="cost-adv-select" style="width:100%;min-width:130px;" onchange="costAdvProdutoChange('adic',this.value)">
+                                <option value="">— Manual —</option>
+                              </select>
+                            </td>
                             <td><input type="number" id="costadv_adic_preco" class="cost-adv-input" step="0.01" min="0" value="0.25"></td>
                             <td><select id="costadv_adic_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_adic_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1844,7 +1854,12 @@
                             <td><span id="costadv_adic_liquido" class="cost-adv-liq">—</span></td>
                           </tr>
                           <tr>
-                            <td style="text-align:left;font-weight:600;">Areia Natural</td>
+                            <td style="text-align:left;">
+                              <div style="font-weight:600;font-size:.8rem;margin-bottom:3px;">Areia Natural</div>
+                              <select id="costadv_an_produto" class="cost-adv-select" style="width:100%;min-width:130px;" onchange="costAdvProdutoChange('an',this.value)">
+                                <option value="">— Manual —</option>
+                              </select>
+                            </td>
                             <td><input type="number" id="costadv_an_preco" class="cost-adv-input" step="0.01" min="0" value="0.12"></td>
                             <td><select id="costadv_an_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_an_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1856,7 +1871,12 @@
                             <td><span id="costadv_an_liquido" class="cost-adv-liq">—</span></td>
                           </tr>
                           <tr>
-                            <td style="text-align:left;font-weight:600;">Areia Industrial</td>
+                            <td style="text-align:left;">
+                              <div style="font-weight:600;font-size:.8rem;margin-bottom:3px;">Areia Industrial</div>
+                              <select id="costadv_ai_produto" class="cost-adv-select" style="width:100%;min-width:130px;" onchange="costAdvProdutoChange('ai',this.value)">
+                                <option value="">— Manual —</option>
+                              </select>
+                            </td>
                             <td><input type="number" id="costadv_ai_preco" class="cost-adv-input" step="0.01" min="0" value="0.11"></td>
                             <td><select id="costadv_ai_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_ai_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1868,7 +1888,12 @@
                             <td><span id="costadv_ai_liquido" class="cost-adv-liq">—</span></td>
                           </tr>
                           <tr>
-                            <td style="text-align:left;font-weight:600;">Brita 0</td>
+                            <td style="text-align:left;">
+                              <div style="font-weight:600;font-size:.8rem;margin-bottom:3px;">Brita 0</div>
+                              <select id="costadv_b0_produto" class="cost-adv-select" style="width:100%;min-width:130px;" onchange="costAdvProdutoChange('b0',this.value)">
+                                <option value="">— Manual —</option>
+                              </select>
+                            </td>
                             <td><input type="number" id="costadv_b0_preco" class="cost-adv-input" step="0.01" min="0" value="0.16"></td>
                             <td><select id="costadv_b0_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_b0_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1880,7 +1905,12 @@
                             <td><span id="costadv_b0_liquido" class="cost-adv-liq">—</span></td>
                           </tr>
                           <tr>
-                            <td style="text-align:left;font-weight:600;">Brita 1/2</td>
+                            <td style="text-align:left;">
+                              <div style="font-weight:600;font-size:.8rem;margin-bottom:3px;">Brita 1/2</div>
+                              <select id="costadv_b1_produto" class="cost-adv-select" style="width:100%;min-width:130px;" onchange="costAdvProdutoChange('b1',this.value)">
+                                <option value="">— Manual —</option>
+                              </select>
+                            </td>
                             <td><input type="number" id="costadv_b1_preco" class="cost-adv-input" step="0.01" min="0" value="0.17"></td>
                             <td><select id="costadv_b1_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_b1_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1892,7 +1922,12 @@
                             <td><span id="costadv_b1_liquido" class="cost-adv-liq">—</span></td>
                           </tr>
                           <tr>
-                            <td style="text-align:left;font-weight:600;">Água</td>
+                            <td style="text-align:left;">
+                              <div style="font-weight:600;font-size:.8rem;margin-bottom:3px;">Água</div>
+                              <select id="costadv_agua_produto" class="cost-adv-select" style="width:100%;min-width:130px;" onchange="costAdvProdutoChange('agua',this.value)">
+                                <option value="">— Manual —</option>
+                              </select>
+                            </td>
                             <td><input type="number" id="costadv_agua_preco" class="cost-adv-input" step="0.001" min="0" value="0.01"></td>
                             <td><select id="costadv_agua_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_agua_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1904,7 +1939,12 @@
                             <td><span id="costadv_agua_liquido" class="cost-adv-liq">—</span></td>
                           </tr>
                           <tr>
-                            <td style="text-align:left;font-weight:600;">Aditivo SP</td>
+                            <td style="text-align:left;">
+                              <div style="font-weight:600;font-size:.8rem;margin-bottom:3px;">Aditivo SP</div>
+                              <select id="costadv_adit_produto" class="cost-adv-select" style="width:100%;min-width:130px;" onchange="costAdvProdutoChange('adit',this.value)">
+                                <option value="">— Manual —</option>
+                              </select>
+                            </td>
                             <td><input type="number" id="costadv_adit_preco" class="cost-adv-input" step="0.01" min="0" value="8.50"></td>
                             <td><select id="costadv_adit_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_adit_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -3158,6 +3198,7 @@ function showSection(id, btn) {
     if (id === 'sec-tracos-salvos' && typeof listarTracos === 'function') {
         listarTracos();
     }
+    if (id === 'sec-compare-cost') costAdvPopulateSelectors();
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
@@ -8240,6 +8281,7 @@ async function mccListarProdutos() {
     }
     if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
     _mccProdutosTodos = data.produtos || [];
+    costAdvPopulateSelectors();
     mccAplicarFiltro();
 }
 function mccAplicarFiltro() {
@@ -8372,6 +8414,57 @@ function mccLimparForm() {
     const bind = () => previewIds.forEach(id => { const el=document.getElementById(id); if(el) { el.addEventListener('input', mccPreviewCusto); el.addEventListener('change', mccPreviewCusto); }});
     if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', bind); } else { bind(); }
 })();
+
+// ===== SELETOR DE PRODUTO POR CATEGORIA NO PAINEL DE CUSTO =====
+function costAdvPopulateSelectors() {
+    const todos = _mccProdutosTodos || [];
+    if (typeof COST_ADV_MATS === 'undefined') return;
+    COST_ADV_MATS.forEach(({ key }) => {
+        const sel = document.getElementById(`costadv_${key}_produto`);
+        if (!sel) return;
+        const atual = sel.value;
+        while (sel.options.length > 1) sel.remove(1);
+        const ativos = todos.filter(p => p.chaveMCC === key && p.ativo === 'Sim');
+        ativos.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = JSON.stringify({
+                preco:          p.preco         ?? 0,
+                unidadeMedida:  p.unidadeMedida || 'kg',
+                icmsPct:        p.icmsPct       ?? 0,
+                deduzICMS:      p.deduzICMS,
+                frete:          p.frete         ?? 0,
+                unidFrete:      p.unidFrete     || 'kg',
+                icmsFreteP:     p.icmsFreteP    ?? 0,
+                deduzICMSFrete: p.deduzICMSFrete
+            });
+            opt.textContent = p.nomeProduto + (p.fornecedor ? ' — ' + p.fornecedor : '');
+            sel.appendChild(opt);
+        });
+        if (atual) {
+            const found = Array.from(sel.options).some(o => o.value === atual);
+            if (found) sel.value = atual;
+        }
+    });
+}
+function costAdvProdutoChange(key, jsonVal) {
+    if (!jsonVal) return;
+    try {
+        const p = JSON.parse(jsonVal);
+        const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+        const setS = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+        const setC = (id, v) => { const el = document.getElementById(id); if (el) el.checked = (v === 'Sim' || v === true); };
+        setV(`costadv_${key}_preco`,          p.preco         ?? 0);
+        setS(`costadv_${key}_unid`,           p.unidadeMedida || 'kg');
+        setV(`costadv_${key}_icms_pct`,       p.icmsPct       ?? 0);
+        setC(`costadv_${key}_ded_icms`,       p.deduzICMS);
+        setV(`costadv_${key}_frete`,          p.frete         ?? 0);
+        setS(`costadv_${key}_unid_frete`,     p.unidFrete     || 'kg');
+        setV(`costadv_${key}_icms_frete_pct`, p.icmsFreteP    ?? 0);
+        setC(`costadv_${key}_ded_icms_frete`, p.deduzICMSFrete);
+        costAdvSave();
+        if (typeof calculateCostPanel === 'function') calculateCostPanel();
+    } catch (e) { /* ignore parse errors */ }
+}
 
 // ===== PAINEL DE CUSTO AVANÇADO — ICMS + FRETE =====
 const COST_ADV_KEY = 'ctCustosAvancados_v1';
