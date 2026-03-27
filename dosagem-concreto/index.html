@@ -676,7 +676,7 @@
         .ops-mini-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
         .ops-mini { background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.18); border-radius:12px; padding:10px; }
         .ops-mini strong { display:block; margin-top:4px; font-size:1rem; }
-        .compare-shell { display:grid; grid-template-columns: 1.1fr 0.9fr; gap:18px; margin-top:18px; }
+        .compare-shell { display:flex; flex-direction:column; gap:22px; margin-top:18px; }
         .compare-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:14px; }
         .compare-card { border:1px solid var(--border); border-radius:16px; padding:16px; background:linear-gradient(180deg,#fff 0%,#fbfdff 100%); box-shadow:var(--shadow); }
         .compare-card h4 { color:var(--primary); margin-bottom:10px; }
@@ -699,8 +699,8 @@
         .summary-chip__label { font-size:0.74rem; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-light); font-weight:800; }
         .summary-chip__value { margin-top:6px; font-size:1.25rem; font-weight:800; color:var(--primary); }
         .matrix-note { margin-top:12px; padding:12px 14px; border-radius:12px; background:#f8fbff; border:1px solid var(--border); color:var(--text-light); font-size:0.86rem; }
-        @media (max-width: 1024px) { .ops-dashboard,.kpi-grid,.summary-kpis,.stepper,.compare-shell,.cost-summary { grid-template-columns:1fr 1fr; } .panel-hero__grid,.executive-banner { grid-template-columns:1fr; } .compare-grid,.cost-grid{ grid-template-columns:1fr 1fr; } }
-        @media (max-width: 700px) { .ops-dashboard,.kpi-grid,.summary-kpis,.stepper,.compare-shell,.compare-grid,.cost-grid,.cost-summary { grid-template-columns:1fr; } }
+        @media (max-width: 1024px) { .ops-dashboard,.kpi-grid,.summary-kpis,.stepper,.cost-summary { grid-template-columns:1fr 1fr; } .panel-hero__grid,.executive-banner { grid-template-columns:1fr; } .compare-grid,.cost-grid{ grid-template-columns:1fr 1fr; } }
+        @media (max-width: 700px) { .ops-dashboard,.kpi-grid,.summary-kpis,.stepper,.compare-grid,.cost-grid,.cost-summary { grid-template-columns:1fr; } }
 
     
         /* EVOLUÇÃO 4 — BANCO DE TRAÇOS / CURVA DE CUSTO */
@@ -2005,7 +2005,7 @@
                       </table>
                     </div>
                     <div class="btn-wrap" style="margin-bottom:4px;">
-                        <button class="btn btn-primary" type="button" onclick="costAdvSave(); calculateCostPanel();">🧮 Calcular / Salvar Custos</button>
+                        <button class="btn btn-primary" type="button" onclick="costAdvSave(); costAdvUpdateTraceBar(); calculateCostPanel();">🧮 Calcular / Salvar Custos</button>
                         <button class="btn btn-accent" type="button" onclick="saveCompareSlot('A')">📌 Salvar em A</button>
                     </div>
                     <div class="cost-summary">
@@ -3244,7 +3244,16 @@ function showSection(id, btn) {
     if (id === 'sec-tracos-salvos' && typeof listarTracos === 'function') {
         listarTracos();
     }
-    if (id === 'sec-compare-cost') { costAdvUpdateTraceBar(); costAdvPopulateSelectors(); }
+    if (id === 'sec-compare-cost') {
+        costAdvUpdateTraceBar();
+        if ((_mccProdutosTodos || []).length === 0 && typeof mccListarProdutos === 'function') {
+            mccListarProdutos();
+        } else {
+            costAdvPopulateSelectors();
+        }
+        if (typeof ev3RenderCompare === 'function') ev3RenderCompare();
+        if (typeof calculateCostPanel === 'function') calculateCostPanel();
+    }
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
@@ -8328,6 +8337,10 @@ async function mccListarProdutos() {
     if (!data.ok) { wrap.innerHTML = `<div class="result-box error">❌ ${data.error || 'Erro'}</div>`; return; }
     _mccProdutosTodos = data.produtos || [];
     costAdvPopulateSelectors();
+    if (document.getElementById('sec-compare-cost')?.classList.contains('active')) {
+        if (typeof ev3RenderCompare === 'function') ev3RenderCompare();
+        if (typeof calculateCostPanel === 'function') calculateCostPanel();
+    }
     mccAplicarFiltro();
 }
 function mccAplicarFiltro() {
@@ -8465,18 +8478,32 @@ function mccLimparForm() {
 function costAdvUpdateTraceBar() {
     const inner = document.getElementById('cost-trace-bar-inner');
     if (!inner) return;
+    if (typeof costAdvSync === 'function') costAdvSync();
     const mapa = [
-        ['dos_cim','Cimento'],['dos_adic','Adição'],['dos_an','Areia Natural'],
-        ['dos_ai','Areia Industrial'],['dos_b0','Brita 0'],['dos_b1','Brita 1/2'],
-        ['dos_agua','Água'],['dos_adit','Aditivo SP']
+        ['dos_cim','cim','Cimento'],['dos_adic','adic','Adição'],
+        ['dos_an','an','Areia Natural'],['dos_ai','ai','Areia Industrial'],
+        ['dos_b0','b0','Brita 0'],['dos_b1','b1','Brita 1/2'],
+        ['dos_agua','agua','Água'],['dos_adit','adit','Aditivo SP']
     ];
-    const partes = mapa.map(([id, lbl]) => {
-        const v = parseFloat(document.getElementById(id)?.value) || 0;
-        return v > 0 ? `<span><strong>${lbl}</strong>: ${v.toFixed(1)}&nbsp;kg</span>` : null;
+    let total = 0;
+    const partes = mapa.map(([id, key, lbl]) => {
+        const kg = parseFloat(document.getElementById(id)?.value) || 0;
+        if (!kg) return null;
+        const preco_kg = parseFloat(document.getElementById('cost_' + key)?.value) || 0;
+        const custo = kg * preco_kg;
+        total += custo;
+        const custoStr = preco_kg > 0 ? ` &nbsp;<em style="color:var(--accent);font-style:normal;font-weight:700;">R$&nbsp;${custo.toFixed(2)}</em>` : '';
+        return `<span style="white-space:nowrap;" title="${kg.toFixed(1)} kg × R$${preco_kg.toFixed(4)}/kg"><strong>${lbl}</strong>: ${kg.toFixed(1)}&nbsp;kg${custoStr}</span>`;
     }).filter(Boolean);
-    inner.innerHTML = partes.length
-        ? partes.join('')
-        : '<span style="color:var(--text-light,#aaa);">Calcule a dosagem primeiro.</span>';
+    if (!partes.length) {
+        inner.innerHTML = '<span style="color:var(--text-light,#aaa);">Calcule a dosagem primeiro.</span>';
+        return;
+    }
+    const totalChip = total > 0
+        ? `<span style="font-weight:800;color:var(--accent);border-left:2px solid var(--accent);padding-left:10px;margin-left:6px;white-space:nowrap;">Total: R$&nbsp;${total.toFixed(2)}/m³</span>`
+        : '';
+    inner.innerHTML = partes.join('') + totalChip;
+    if (typeof calculateCostPanel === 'function') calculateCostPanel();
 }
 function costAdvNomeChange(key, nome, silent) {
     const todos = _mccProdutosTodos || [];
