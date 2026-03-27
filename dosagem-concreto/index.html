@@ -7997,10 +7997,69 @@ function saveCompareSlot(slot){ const s=ev3CurrentSnapshot(); s.slot=slot; local
 function ev3LoadSlot(slot){ try { return JSON.parse(localStorage.getItem('ctDosagemCompare_'+slot)||'null'); } catch(e){ return null; } }
 function ev3ClearSlot(slot){ localStorage.removeItem('ctDosagemCompare_'+slot); ev3RenderCompare(); ev3UpdateDashboard(); }
 function ev3ApplySlot(slot){ const data=ev3LoadSlot(slot); if(!data) return; const map={dos_cim:'cim',dos_adic:'adic',dos_an:'an',dos_ai:'ai',dos_b0:'b0',dos_b1:'b1',dos_agua:'agua',dos_adit:'adit',dos_flow:'flow',dos_fck:'fck'}; Object.entries(map).forEach(([id,key])=>{ const el=document.getElementById(id); if(el && data[key]!=null) el.value=data[key]; }); updateDosagemCockpit(); showSection('sec-dosagem'); }
-function ev3SlotCardHtml(slot,data){ if(!data) return `<h4>Slot ${slot}</h4><div class="matrix-note">Vazio. Ajuste a dosagem atual e clique em “Salvar ${slot}”.</div>`; const d=new Date(data.timestamp); return `<h4>Slot ${slot}</h4><div class="compare-metric"><span>Flow</span><strong>${ctFmt(data.flow,0)} mm</strong></div><div class="compare-metric"><span>Relação a/c</span><strong>${ctFmt(data.ac,3)}</strong></div><div class="compare-metric"><span>Cimento</span><strong>${ctFmt(data.cim,0)} kg</strong></div><div class="compare-metric"><span>Ligantes</span><strong>${ctFmt(data.lig,0)} kg</strong></div><div class="compare-metric"><span>Massa total</span><strong>${ctFmt(data.total,0)} kg</strong></div><div class="compare-metric"><span>Custo estimado</span><strong>${ctMoney(data.costTotal||0)}</strong></div><div class="matrix-note">${data.note||'Traço salvo'} · ${isNaN(d.getTime())?'—':d.toLocaleString('pt-BR')}</div><div class="compare-toolbar"><button class="smart-chip" type="button" onclick="ev3ApplySlot('${slot}')">📥 Carregar</button><button class="smart-chip" type="button" onclick="ev3ClearSlot('${slot}')">🗑️ Limpar</button></div>`; }
+function ev3SlotCardHtml(slot,data){ if(!data) return `<h4>Traço ${slot}</h4><div class="matrix-note">Vazio. Ajuste a dosagem atual e clique em “Salvar ${slot}”.</div>`; const d=new Date(data.timestamp); return `<h4>Traço ${slot}${data.note?' — '+data.note:''}</h4><div class="compare-metric"><span>Flow</span><strong>${ctFmt(data.flow,0)} mm</strong></div><div class="compare-metric"><span>Relação a/c</span><strong>${ctFmt(data.ac,3)}</strong></div><div class="compare-metric"><span>Cimento</span><strong>${ctFmt(data.cim,0)} kg</strong></div><div class="compare-metric"><span>Ligantes</span><strong>${ctFmt(data.lig,0)} kg</strong></div><div class="compare-metric"><span>Massa total</span><strong>${ctFmt(data.total,0)} kg</strong></div><div class="compare-metric"><span>Custo estimado</span><strong>${ctMoney(data.costTotal||0)}</strong></div><div class="matrix-note">${isNaN(d.getTime())?'—':d.toLocaleString('pt-BR')}</div><div class="compare-toolbar"><button class="smart-chip" type="button" onclick="ev3ApplySlot('${slot}')">📥 Carregar</button><button class="smart-chip" type="button" onclick="ev3PrintCost('${slot}')">🖨️ Imprimir</button><button class="smart-chip" type="button" onclick="ev3ClearSlot('${slot}')">🗑️ Limpar</button></div>`; }
+function ev3PrintCost(slot) {
+    const data = ev3LoadSlot(slot);
+    if (!data) { alert('Traço ' + slot + ' está vazio.'); return; }
+    let cfg = {};
+    try { cfg = JSON.parse(localStorage.getItem('ctCustosAvancados_v1') || '{}'); } catch(e) {}
+    const mats = [
+        { key:'cim',  label:'Cimento',         group:'Ligantes' },
+        { key:'adic', label:'Adição',           group:'Ligantes' },
+        { key:'an',   label:'Areia Natural',    group:'Agregados' },
+        { key:'ai',   label:'Areia Industrial', group:'Agregados' },
+        { key:'b0',   label:'Brita 0',          group:'Agregados' },
+        { key:'b1',   label:'Brita 1/2',        group:'Agregados' },
+        { key:'agua', label:'Água',             group:'Quím./Água' },
+        { key:'adit', label:'Aditivo SP',       group:'Quím./Água' }
+    ];
+    const fmt2 = v => (Number(v)||0).toFixed(2).replace('.',',');
+    const fmt1 = v => (Number(v)||0).toFixed(1).replace('.',',');
+    const fmt4 = v => (Number(v)||0).toFixed(4).replace('.',',');
+    const fmtR = v => 'R$\u00a0' + fmt2(v);
+    const dt = new Date(data.timestamp);
+    const dateStr = isNaN(dt.getTime()) ? '—' : dt.toLocaleString('pt-BR');
+    const rows = mats.map(mat => {
+        const kg = Number(data[mat.key]) || 0;
+        const c = cfg[mat.key] || {};
+        const preco = Number(c.preco) || 0;
+        const unid = c.unid || 'kg';
+        const pKg = unid === 't' ? preco / 1000 : preco;
+        const icmsDed  = c.ded_icms        ? pKg * ((Number(c.icms_pct)||0)/100) : 0;
+        const ipiDed   = c.ded_ipi         ? pKg * ((Number(c.ipi_pct)||0)/100)  : 0;
+        const freteKg  = c.unid_frete==='t'? (Number(c.frete)||0)/1000 : (Number(c.frete)||0);
+        const icmsFDed = c.ded_icms_frete  ? freteKg * ((Number(c.icms_frete_pct)||0)/100) : 0;
+        const eff = Math.max(0, pKg - icmsDed - ipiDed + freteKg - icmsFDed);
+        const custo = kg * eff;
+        const prodForn = c.nome ? (c.forn ? c.nome + ' / ' + c.forn : c.nome) : '—';
+        return { ...mat, kg, eff, custo, prodForn };
+    });
+    const totalMassa = rows.reduce((s,r)=>s+r.kg,0);
+    const totalCusto = rows.reduce((s,r)=>s+r.custo,0);
+    const groups = ['Ligantes','Agregados','Quím./Água'];
+    let tbody = '';
+    groups.forEach(grp => {
+        const gr = rows.filter(r=>r.group===grp);
+        if (!gr.some(r=>r.kg>0)) return;
+        tbody += `<tr class="g-head"><td colspan="5">${grp}</td></tr>`;
+        gr.forEach(r => {
+            if (!r.kg && !r.custo) return;
+            tbody += `<tr><td>${r.label}</td><td>${r.prodForn}</td><td class="n">${fmt1(r.kg)} kg</td><td class="n">${r.eff>0?fmt4(r.eff)+' R$/kg':'—'}</td><td class="n">${r.custo>0?fmtR(r.custo):'—'}</td></tr>`;
+        });
+        const gKg  = gr.reduce((s,r)=>s+r.kg,0);
+        const gCst = gr.reduce((s,r)=>s+r.custo,0);
+        tbody += `<tr class="sub"><td colspan="2">Subtotal ${grp}</td><td class="n">${fmt1(gKg)} kg</td><td></td><td class="n">${fmtR(gCst)}</td></tr>`;
+    });
+    tbody += `<tr class="tot"><td colspan="2">TOTAL GERAL / m³</td><td class="n">${fmt1(totalMassa)} kg</td><td></td><td class="n">${fmtR(totalCusto)}</td></tr>`;
+    const tracoLabel = `Traço ${slot}${data.note?' — '+data.note:''}`;
+    const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Custo — ${tracoLabel}</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Arial,sans-serif;font-size:12px;color:#1a1a2e;background:#fff;padding:24px}.hdr{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #1a1a2e;padding-bottom:12px;margin-bottom:18px}.hdr h1{font-size:19px;font-weight:800;letter-spacing:.4px}.hdr .sub{font-size:11px;color:#666;margin-top:3px}.hdr .info{text-align:right;font-size:11px;color:#666;line-height:1.7}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.kpi{border:1px solid #ddd;border-radius:8px;padding:10px 14px}.kpi .lbl{font-size:10px;text-transform:uppercase;color:#888;letter-spacing:.5px}.kpi .val{font-size:17px;font-weight:800;margin-top:2px;color:#1a1a2e}table{width:100%;border-collapse:collapse;margin-bottom:16px}thead th{background:#1a1a2e;color:#fff;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;text-align:left}thead th.n{text-align:right}tbody td{padding:7px 10px;border-bottom:1px solid #eee;vertical-align:middle}td.n{text-align:right;font-variant-numeric:tabular-nums}.g-head td{background:#eef2ff;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#3730a3;padding:5px 10px}.sub td{background:#e0e7ff;font-weight:600;border-top:1px solid #bfcbf5}.tot td{background:#1a1a2e;color:#fff;font-weight:700;font-size:13px}tr:hover:not(.g-head):not(.sub):not(.tot) td{background:#f8f9ff}.ftr{margin-top:20px;border-top:1px solid #ddd;padding-top:10px;font-size:10px;color:#aaa;display:flex;justify-content:space-between}.pbtn{margin-bottom:16px;padding:8px 20px;background:#1a1a2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}.pbtn:hover{background:#2d2d6e}@media print{.pbtn{display:none}}</style></head><body><button class="pbtn" onclick="window.print()">🖨️ Imprimir</button><div class="hdr"><div><h1>RELATÓRIO DE CUSTO DE CONCRETO</h1><div class="sub">${tracoLabel}</div></div><div class="info"><div>Emitido: ${new Date().toLocaleString('pt-BR')}</div><div>Traço salvo: ${dateStr}</div></div></div><div class="kpis"><div class="kpi"><div class="lbl">FCK</div><div class="val">${Number(data.fck||0).toFixed(0)} MPa</div></div><div class="kpi"><div class="lbl">Flow</div><div class="val">${Number(data.flow||0).toFixed(0)} mm</div></div><div class="kpi"><div class="lbl">Relação a/c</div><div class="val">${(Number(data.ac)||0).toFixed(3).replace('.',',')}</div></div><div class="kpi"><div class="lbl">Custo / m³</div><div class="val">R$\u00a0${fmt2(totalCusto)}</div></div></div><table><thead><tr><th>Material</th><th>Produto / Fornecedor</th><th class="n">kg/m³</th><th class="n">R$/kg líq.</th><th class="n">R$/m³</th></tr></thead><tbody>${tbody}</tbody></table><div class="ftr"><span>ConcreTrack — Sistema de Dosagem de Concreto</span><span>${tracoLabel} · ${dateStr}</span></div></body></html>`;
+    const w = window.open('', '_blank', 'width=920,height=760,scrollbars=yes');
+    if (!w) { alert('Pop-up bloqueado. Permita pop-ups para este site.'); return; }
+    w.document.open(); w.document.write(html); w.document.close();
+}
 function ev3RenderCompare(){ ['A','B','C'].forEach(slot=>{ const el=document.getElementById('compare-slot-'+slot); if(el) el.innerHTML=ev3SlotCardHtml(slot, ev3LoadSlot(slot)); }); }
 function ev3BestSlot(){ const slots=['A','B','C'].map(ev3LoadSlot).filter(Boolean); if(!slots.length) return null; return slots.reduce((b,c)=>(c.costTotal||1e9)<(b.costTotal||1e9)?c:b, slots[0]); }
-function ev3UpdateDashboard(){ const s=ev3CurrentSnapshot(), best=ev3BestSlot(); const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;}; set('dash-flow-main', `${ctFmt(s.flow,0)} mm`); set('dash-ac-main', ctFmt(s.ac,3)); set('dash-cost', ctMoney(s.costTotal)); set('dash-total-mass', `${ctFmt(s.total,0)} kg`); set('dash-total-hint', `Ligantes ${ctFmt(s.lig,0)} kg · FCK ${ctFmt(s.fck,0)} MPa.`); if(best){ set('dash-best-slot', `Slot ${best.slot}`); set('dash-best-hint', `Menor custo salvo: ${ctMoney(best.costTotal||0)} · flow ${ctFmt(best.flow,0)} mm · a/c ${ctFmt(best.ac,3)}.`); } else { set('dash-best-slot','—'); set('dash-best-hint','Salve cenários A/B/C para descobrir a melhor alternativa.'); } set('dash-cost-hint', `Traço atual com ${ctFmt(s.cim,0)} kg de cimento e custo estimado de ${ctMoney(s.costTotal)} por m³.`); }
+function ev3UpdateDashboard(){ const s=ev3CurrentSnapshot(), best=ev3BestSlot(); const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;}; set('dash-flow-main', `${ctFmt(s.flow,0)} mm`); set('dash-ac-main', ctFmt(s.ac,3)); set('dash-cost', ctMoney(s.costTotal)); set('dash-total-mass', `${ctFmt(s.total,0)} kg`); set('dash-total-hint', `Ligantes ${ctFmt(s.lig,0)} kg · FCK ${ctFmt(s.fck,0)} MPa.`); if(best){ set('dash-best-slot', `Traço ${best.slot}`); set('dash-best-hint', `Menor custo salvo: ${ctMoney(best.costTotal||0)} · flow ${ctFmt(best.flow,0)} mm · a/c ${ctFmt(best.ac,3)}.`); } else { set('dash-best-slot','—'); set('dash-best-hint','Salve cenários A/B/C para descobrir a melhor alternativa.'); } set('dash-cost-hint', `Traço atual com ${ctFmt(s.cim,0)} kg de cimento e custo estimado de ${ctMoney(s.costTotal)} por m³.`); }
 function ctAttachListeners(){ ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_ar','dos_flow','dos_fck','res_flow','res_ar','res_classe','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'].forEach(id=>{ const el=document.getElementById(id); if(el && !el.dataset.ctBound){ el.addEventListener('input', updateDosagemCockpit); el.addEventListener('change', updateDosagemCockpit); el.dataset.ctBound='1'; } }); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); ev3RenderCompare(); }
 if (typeof calcularDosagem === 'function') { const _origCalcularDosagem = calcularDosagem; calcularDosagem = function(){ const out=_origCalcularDosagem.apply(this, arguments); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); return out; } }
 if (typeof gerarResumo === 'function') { const _origGerarResumo = gerarResumo; gerarResumo = function(){ syncResumoFieldsFromDosagem(); const out=_origGerarResumo.apply(this, arguments); updateResumoCockpit(); return out; } }
@@ -8536,14 +8595,16 @@ function costAdvFornChange(key, forn) {
     const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
     const setS = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
     const setC = (id, v) => { const el = document.getElementById(id); if (el) el.checked = (v === 'Sim' || v === true); };
-    setV(`costadv_${key}_preco`,          produto.preco         ?? 0);
-    setS(`costadv_${key}_unid`,           produto.unidadeMedida || 'kg');
-    setV(`costadv_${key}_icms_pct`,       produto.icmsPct       ?? 0);
-    setC(`costadv_${key}_ded_icms`,       produto.deduzICMS);
-    setV(`costadv_${key}_frete`,          produto.frete         ?? 0);
-    setS(`costadv_${key}_unid_frete`,     produto.unidFrete     || 'kg');
-    setV(`costadv_${key}_icms_frete_pct`, produto.icmsFreteP    ?? 0);
-    setC(`costadv_${key}_ded_icms_frete`, produto.deduzICMSFrete);
+    setV(`costadv_${key}_preco`,          produto.custoLiq ?? produto.preco ?? 0);
+    setS(`costadv_${key}_unid`,           'kg');
+    setV(`costadv_${key}_icms_pct`,       0);
+    setC(`costadv_${key}_ded_icms`,       false);
+    setV(`costadv_${key}_ipi_pct`,        0);
+    setC(`costadv_${key}_ded_ipi`,        false);
+    setV(`costadv_${key}_frete`,          0);
+    setS(`costadv_${key}_unid_frete`,     'kg');
+    setV(`costadv_${key}_icms_frete_pct`, 0);
+    setC(`costadv_${key}_ded_icms_frete`, false);
     costAdvSave();
     if (typeof calculateCostPanel === 'function') calculateCostPanel();
 }
