@@ -804,6 +804,39 @@
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-group">
+        <span class="sidebar-group-label">Cadastro</span>
+        <button class="sidebar-btn" data-sec="sec-cadastro-materiais" onclick="showSection('sec-cadastro-materiais',this)">
+            <span class="sb-num">C1</span><span class="sb-icon">🏢</span><span class="sb-label">Cadastro Materiais</span>
+        </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group">
+        <span class="sidebar-group-label">Materiais & Dosagem</span>
+        <button class="sidebar-btn" data-sec="sec-materiais" onclick="showSection('sec-materiais',this)">
+            <span class="sb-num">1</span><span class="sb-icon">🧪</span><span class="sb-label">Materiais</span>
+        </button>
+        <button class="sidebar-btn" data-sec="sec-dosagem" onclick="showSection('sec-dosagem',this)">
+            <span class="sb-num">2</span><span class="sb-icon">⚖️</span><span class="sb-label">Dosagem 1 m³</span>
+        </button>
+        <button class="sidebar-btn" data-sec="sec-inverso" onclick="showSection('sec-inverso',this)">
+            <span class="sb-num">3</span><span class="sb-icon">🔄</span><span class="sb-label">Cálculo Inverso</span>
+        </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group">
+        <span class="sidebar-group-label">Análise Volumétrica</span>
+        <button class="sidebar-btn" data-sec="sec-volume" onclick="showSection('sec-volume',this)">
+            <span class="sb-num">4</span><span class="sb-icon">📏</span><span class="sb-label">Volume</span>
+        </button>
+        <button class="sidebar-btn" data-sec="sec-argamassa" onclick="showSection('sec-argamassa',this)">
+            <span class="sb-num">5</span><span class="sb-icon">🧱</span><span class="sb-label">Argamassa</span>
+        </button>
+        <button class="sidebar-btn" data-sec="sec-empacotamento" onclick="showSection('sec-empacotamento',this)">
+            <span class="sb-num">6</span><span class="sb-icon">📈</span><span class="sb-label">Empacotamento</span>
+        </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group">
         <span class="sidebar-group-label">Laboratório</span>
         <button class="sidebar-btn" data-sec="sec-laboratorio-hub" onclick="showSection('sec-laboratorio-hub',this)">
             <span class="sb-num">L0</span><span class="sb-icon">🧪</span><span class="sb-label">Menu Laboratório</span>
@@ -820,35 +853,15 @@
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-group">
-        <span class="sidebar-group-label">Entrada</span>
-        <button class="sidebar-btn" data-sec="sec-materiais" onclick="showSection('sec-materiais',this)">
-            <span class="sb-num">1</span><span class="sb-icon">🧪</span><span class="sb-label">Materiais</span>
+        <span class="sidebar-group-label">Traços</span>
+        <button class="sidebar-btn" data-sec="sec-tracos-salvos" onclick="showSection('sec-tracos-salvos',this)">
+            <span class="sb-num">T1</span><span class="sb-icon">📂</span><span class="sb-label">Traços Salvos</span>
         </button>
-        <button class="sidebar-btn" data-sec="sec-dosagem" onclick="showSection('sec-dosagem',this)">
-            <span class="sb-num">2</span><span class="sb-icon">⚖️</span><span class="sb-label">Dosagem 1 m³</span>
+        <button class="sidebar-btn" data-sec="sec-experimental" onclick="showSection('sec-experimental',this)">
+            <span class="sb-num">T2</span><span class="sb-icon">🔬</span><span class="sb-label">Traço Experimental</span>
         </button>
-    </div>
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-group">
-        <span class="sidebar-group-label">Análise</span>
-        <button class="sidebar-btn" data-sec="sec-volume" onclick="showSection('sec-volume',this)">
-            <span class="sb-num">3</span><span class="sb-icon">📏</span><span class="sb-label">Volume</span>
-        </button>
-        <button class="sidebar-btn" data-sec="sec-argamassa" onclick="showSection('sec-argamassa',this)">
-            <span class="sb-num">4</span><span class="sb-icon">🧱</span><span class="sb-label">Argamassa</span>
-        </button>
-        <button class="sidebar-btn" data-sec="sec-empacotamento" onclick="showSection('sec-empacotamento',this)">
-            <span class="sb-num">5</span><span class="sb-icon">📈</span><span class="sb-label">Empacotamento</span>
-        </button>
-        <button class="sidebar-btn" data-sec="sec-inverso" onclick="showSection('sec-inverso',this)">
-            <span class="sb-num">6</span><span class="sb-icon">🔄</span><span class="sb-label">Cálculo Inverso</span>
-        </button>
-    </div>
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-group">
-        <span class="sidebar-group-label">Cadastro</span>
-        <button class="sidebar-btn" data-sec="sec-cadastro-materiais" onclick="showSection('sec-cadastro-materiais',this)">
-            <span class="sb-num">C1</span><span class="sb-icon">🏢</span><span class="sb-label">Cadastro Materiais</span>
+        <button class="sidebar-btn" data-sec="sec-premium-bank" onclick="showSection('sec-premium-bank',this)">
+            <span class="sb-num">T3</span><span class="sb-icon">🏛️</span><span class="sb-label">Banco de Traços</span>
         </button>
     </div>
     <div class="sidebar-divider"></div>
@@ -857,19 +870,8 @@
         <button class="sidebar-btn" data-sec="sec-custo-mcc" onclick="showSection('sec-custo-mcc',this)">
             <span class="sb-num">M1</span><span class="sb-icon">💲</span><span class="sb-label">Banco de Custos MCC</span>
         </button>
-    </div>
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-group">
-        <span class="sidebar-group-label">Traços</span>
-        <button class="sidebar-btn" data-sec="sec-tracos-salvos" onclick="showSection('sec-tracos-salvos',this)">
-            <span class="sb-num">T1</span><span class="sb-icon">📂</span><span class="sb-label">Traços Salvos</span>
-        </button>
-    </div>
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-group">
-        <span class="sidebar-group-label">Experimental</span>
-        <button class="sidebar-btn" data-sec="sec-experimental" onclick="showSection('sec-experimental',this)">
-            <span class="sb-num">E1</span><span class="sb-icon">🔬</span><span class="sb-label">Traço Experimental</span>
+        <button class="sidebar-btn" data-sec="sec-compare-cost" onclick="showSection('sec-compare-cost',this)">
+            <span class="sb-num">M2</span><span class="sb-icon">📊</span><span class="sb-label">Comparador / Custo</span>
         </button>
     </div>
     <div class="sidebar-divider"></div>
@@ -881,20 +883,18 @@
         <button class="sidebar-btn" data-sec="sec-resumo" onclick="showSection('sec-resumo',this)">
             <span class="sb-num">8</span><span class="sb-icon">📄</span><span class="sb-label">Resumo / Carta</span>
         </button>
-        <button class="sidebar-btn" data-sec="sec-compare-cost" onclick="showSection('sec-compare-cost',this)">
-            <span class="sb-num">8A</span><span class="sb-icon">📊</span><span class="sb-label">Comparador / Custo</span>
-        </button>
-        <button class="sidebar-btn" data-sec="sec-premium-bank" onclick="showSection('sec-premium-bank',this)">
-            <span class="sb-num">8B</span><span class="sb-icon">🏛️</span><span class="sb-label">Banco de Traços</span>
-        </button>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-group">
+        <span class="sidebar-group-label">Referência</span>
         <button class="sidebar-btn" data-sec="sec-resultados-calc" onclick="showSection('sec-resultados-calc',this)">
-            <span class="sb-num">9</span><span class="sb-icon">🧮</span><span class="sb-label">Detalhamento Cálculos</span>
+            <span class="sb-num">R1</span><span class="sb-icon">🧮</span><span class="sb-label">Detalhamento Cálculos</span>
         </button>
         <button class="sidebar-btn" data-sec="sec-normas-concreto" onclick="showSection('sec-normas-concreto',this)">
-            <span class="sb-num">10</span><span class="sb-icon">📚</span><span class="sb-label">Normas</span>
+            <span class="sb-num">R2</span><span class="sb-icon">📚</span><span class="sb-label">Normas</span>
         </button>
         <button class="sidebar-btn" data-sec="sec-memoria" onclick="showSection('sec-memoria',this)">
-            <span class="sb-num">11</span><span class="sb-icon">📝</span><span class="sb-label">Memória Cálc.</span>
+            <span class="sb-num">R3</span><span class="sb-icon">📝</span><span class="sb-label">Memória Cálc.</span>
         </button>
     </div>
 </aside>
@@ -905,29 +905,45 @@
     <button class="btn btn-primary" type="button" onclick="showSection('sec-hub')">🏠 Principal</button>
     <select id="quickSectionSelect" onchange="if(this.value){showSection(this.value)}">
         <option value="">Ir direto para outra parte...</option>
+        <optgroup label="Cadastro">
         <option value="sec-cadastro-materiais">🏢 Cadastro de Materiais</option>
         <option value="sec-cadastro-fornecedor">📝 Cadastro de Fornecedor</option>
         <option value="sec-relatorio-fornecedor">📋 Relatório de Fornecedores</option>
+        </optgroup>
+        <optgroup label="Materiais & Dosagem">
+        <option value="sec-materiais">🧪 Materiais</option>
+        <option value="sec-dosagem">⚖️ Dosagem 1 m³</option>
+        <option value="sec-inverso">🔄 Cálculo Inverso</option>
+        </optgroup>
+        <optgroup label="Análise Volumétrica">
+        <option value="sec-volume">📏 Volume</option>
+        <option value="sec-argamassa">🧱 Argamassa</option>
+        <option value="sec-empacotamento">📈 Empacotamento</option>
+        </optgroup>
+        <optgroup label="Laboratório">
         <option value="sec-laboratorio-hub">🧪 Menu Laboratório</option>
         <option value="sec-massa-esp">⚗️ Massa Específica</option>
         <option value="sec-gran-miudo">🏖️ Granulometria Miúdo</option>
         <option value="sec-gran-graudo">🪨 Granulometria Graúdo</option>
-        <option value="sec-materiais">🧪 Materiais</option>
-        <option value="sec-dosagem">⚖️ Dosagem 1 m³</option>
-        <option value="sec-volume">📏 Volume</option>
-        <option value="sec-argamassa">🧱 Argamassa</option>
-        <option value="sec-empacotamento">📈 Empacotamento</option>
-        <option value="sec-inverso">🔄 Cálculo Inverso</option>
+        </optgroup>
+        <optgroup label="Traços">
+        <option value="sec-tracos-salvos">📂 Traços Salvos</option>
+        <option value="sec-experimental">🔬 Traço Experimental</option>
+        <option value="sec-premium-bank">🏛️ Banco de Traços</option>
+        </optgroup>
+        <optgroup label="Custos">
+        <option value="sec-custo-mcc">💲 Banco de Custos MCC</option>
+        <option value="sec-compare-cost">📊 Comparador / Custo</option>
+        </optgroup>
+        <optgroup label="Resultados">
         <option value="sec-abrams">📉 Curva de Abrams</option>
         <option value="sec-resumo">📄 Resumo / Carta</option>
-        <option value="sec-compare-cost">📊 Comparador / Custo</option>
-        <option value="sec-premium-bank">🏛️ Banco de Traços</option>
+        </optgroup>
+        <optgroup label="Referência">
         <option value="sec-resultados-calc">🧮 Detalhamento Cálculos</option>
         <option value="sec-normas-concreto">📚 Normas</option>
         <option value="sec-memoria">📝 Memória de Cálculo</option>
-        <option value="sec-custo-mcc">💲 Banco de Custos MCC</option>
-        <option value="sec-tracos-salvos">📂 Traços Salvos</option>
-        <option value="sec-experimental">🔬 Traço Experimental</option>
+        </optgroup>
     </select>
 </div>
 
