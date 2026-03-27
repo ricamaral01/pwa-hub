@@ -1823,6 +1823,8 @@
                             <th style="min-width:72px;">Unid.</th>
                             <th style="min-width:68px;">ICMS %</th>
                             <th style="min-width:82px;">Ded. ICMS</th>
+                            <th style="min-width:64px;" title="IPI — crédito Lucro Presumido">IPI %</th>
+                            <th style="min-width:78px;">Ded. IPI</th>
                             <th style="min-width:80px;">Frete</th>
                             <th style="min-width:72px;">Unid. Frete</th>
                             <th style="min-width:80px;">ICMS Frete %</th>
@@ -1845,6 +1847,8 @@
                             <td><select id="costadv_cim_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_cim_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
                             <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_cim_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_cim_ipi_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0" title="IPI crédito — Lucro Presumido"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_cim_ded_ipi" class="cost-adv-chk"> Sim</label></td>
                             <td><input type="number" id="costadv_cim_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
                             <td><select id="costadv_cim_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_cim_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1865,6 +1869,8 @@
                             <td><select id="costadv_adic_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_adic_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
                             <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_adic_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_adic_ipi_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0" title="IPI crédito — Lucro Presumido"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_adic_ded_ipi" class="cost-adv-chk"> Sim</label></td>
                             <td><input type="number" id="costadv_adic_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
                             <td><select id="costadv_adic_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_adic_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1885,6 +1891,8 @@
                             <td><select id="costadv_an_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_an_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
                             <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_an_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_an_ipi_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0" title="IPI crédito — Lucro Presumido"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_an_ded_ipi" class="cost-adv-chk"> Sim</label></td>
                             <td><input type="number" id="costadv_an_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
                             <td><select id="costadv_an_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_an_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1905,6 +1913,8 @@
                             <td><select id="costadv_ai_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_ai_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
                             <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_ai_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_ai_ipi_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0" title="IPI crédito — Lucro Presumido"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_ai_ded_ipi" class="cost-adv-chk"> Sim</label></td>
                             <td><input type="number" id="costadv_ai_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
                             <td><select id="costadv_ai_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_ai_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1925,6 +1935,8 @@
                             <td><select id="costadv_b0_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_b0_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
                             <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_b0_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_b0_ipi_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0" title="IPI crédito — Lucro Presumido"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_b0_ded_ipi" class="cost-adv-chk"> Sim</label></td>
                             <td><input type="number" id="costadv_b0_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
                             <td><select id="costadv_b0_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_b0_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1945,6 +1957,8 @@
                             <td><select id="costadv_b1_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_b1_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
                             <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_b1_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_b1_ipi_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0" title="IPI crédito — Lucro Presumido"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_b1_ded_ipi" class="cost-adv-chk"> Sim</label></td>
                             <td><input type="number" id="costadv_b1_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
                             <td><select id="costadv_b1_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_b1_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1957,6 +1971,8 @@
                             <td><select id="costadv_agua_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_agua_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
                             <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_agua_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td style="text-align:center;color:var(--text-light,#888);font-size:.75rem;">—</td>
+                            <td style="text-align:center;color:var(--text-light,#888);font-size:.75rem;">—</td>
                             <td><input type="number" id="costadv_agua_frete" class="cost-adv-input" step="0.001" min="0" value="0"></td>
                             <td><select id="costadv_agua_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_agua_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -1977,6 +1993,8 @@
                             <td><select id="costadv_adit_unid" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_adit_icms_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
                             <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_adit_ded_icms" class="cost-adv-chk"> Sim</label></td>
+                            <td><input type="number" id="costadv_adit_ipi_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0" title="IPI crédito — Lucro Presumido"></td>
+                            <td><label class="cost-adv-chk-label"><input type="checkbox" id="costadv_adit_ded_ipi" class="cost-adv-chk"> Sim</label></td>
                             <td><input type="number" id="costadv_adit_frete" class="cost-adv-input" step="0.01" min="0" value="0"></td>
                             <td><select id="costadv_adit_unid_frete" class="cost-adv-select"><option value="kg">R$/kg</option><option value="t">R$/t</option></select></td>
                             <td><input type="number" id="costadv_adit_icms_frete_pct" class="cost-adv-input" step="0.1" min="0" max="100" value="0"></td>
@@ -8556,6 +8574,8 @@ function costAdvEffective(key) {
     const unid       = document.getElementById(`costadv_${key}_unid`)?.value || 'kg';
     const icms       = costAdvNum(`costadv_${key}_icms_pct`);
     const dedIcms    = document.getElementById(`costadv_${key}_ded_icms`)?.checked || false;
+    const ipi        = costAdvNum(`costadv_${key}_ipi_pct`);
+    const dedIpi     = document.getElementById(`costadv_${key}_ded_ipi`)?.checked || false;
     const frete      = costAdvNum(`costadv_${key}_frete`);
     const unidFrete  = document.getElementById(`costadv_${key}_unid_frete`)?.value || 'kg';
     const icmsF      = costAdvNum(`costadv_${key}_icms_frete_pct`);
@@ -8563,8 +8583,9 @@ function costAdvEffective(key) {
     const preco_kg   = unid      === 't' ? preco  / 1000 : preco;
     const frete_kg   = unidFrete === 't' ? frete  / 1000 : frete;
     const icms_ded   = dedIcms  ? preco_kg  * (icms  / 100) : 0;
+    const ipi_ded    = dedIpi   ? preco_kg  * (ipi   / 100) : 0;
     const icmsF_ded  = dedIcmsF ? frete_kg  * (icmsF / 100) : 0;
-    return Math.max(0, preco_kg - icms_ded + frete_kg - icmsF_ded);
+    return Math.max(0, preco_kg - icms_ded - ipi_ded + frete_kg - icmsF_ded);
 }
 function costAdvSync() {
     COST_ADV_MATS.forEach(({ key }) => {
@@ -8587,6 +8608,8 @@ function costAdvSave() {
             unid_frete:     document.getElementById(`costadv_${key}_unid_frete`)?.value || 'kg',
             icms_frete_pct: costAdvNum(`costadv_${key}_icms_frete_pct`),
             ded_icms_frete: document.getElementById(`costadv_${key}_ded_icms_frete`)?.checked || false,
+            ipi_pct:        costAdvNum(`costadv_${key}_ipi_pct`),
+            ded_ipi:        document.getElementById(`costadv_${key}_ded_ipi`)?.checked || false,
             nome:           document.getElementById(`costadv_${key}_nome`)?.value || '',
             forn:           document.getElementById(`costadv_${key}_forn`)?.value || ''
         };
@@ -8614,6 +8637,8 @@ function costAdvLoad() {
             setSel(`costadv_${key}_unid_frete`,      d.unid_frete || 'kg');
             setVal(`costadv_${key}_icms_frete_pct`,  d.icms_frete_pct ?? 0);
             setChk(`costadv_${key}_ded_icms_frete`,  d.ded_icms_frete);
+            setVal(`costadv_${key}_ipi_pct`,          d.ipi_pct ?? 0);
+            setChk(`costadv_${key}_ded_ipi`,          d.ded_ipi);
         });
         costAdvSync();
     } catch(e) { costAdvSync(); }
@@ -8623,6 +8648,7 @@ function costAdvBindListeners() {
         const ids = [
             `costadv_${key}_preco`, `costadv_${key}_unid`,
             `costadv_${key}_icms_pct`, `costadv_${key}_ded_icms`,
+            `costadv_${key}_ipi_pct`, `costadv_${key}_ded_ipi`,
             `costadv_${key}_frete`, `costadv_${key}_unid_frete`,
             `costadv_${key}_icms_frete_pct`, `costadv_${key}_ded_icms_frete`
         ];
