@@ -3208,16 +3208,16 @@
         <div style="background:#f7f9ff;border:1px solid #dbe4ff;border-radius:10px;padding:14px;">
           <div style="font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#3730a3;margin-bottom:8px;text-align:center;">🧱 Composição da Massa (kg/m³)</div>
           <div style="display:flex;justify-content:center;">
-            <svg id="mcctr_pie_svg" width="176" height="176" viewBox="-1 -1 178 178" style="display:block;"></svg>
+            <svg id="mcctr_pie_svg" width="250" height="250" viewBox="-1 -1 178 178" style="display:block;"></svg>
           </div>
-          <div id="mcctr_chart_legend" style="margin-top:8px;font-size:.69rem;display:flex;flex-direction:column;gap:3px;"></div>
+          <div id="mcctr_chart_legend" style="margin-top:10px;font-size:.97rem;display:flex;flex-direction:column;gap:5px;"></div>
         </div>
         <div style="background:#f7f9ff;border:1px solid #dbe4ff;border-radius:10px;padding:14px;">
           <div style="font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#3730a3;margin-bottom:8px;text-align:center;">💰 Composição de Custo (R$/m³)</div>
           <div style="display:flex;justify-content:center;">
-            <svg id="mcctr_pie_cost_svg" width="176" height="176" viewBox="-1 -1 178 178" style="display:block;"></svg>
+            <svg id="mcctr_pie_cost_svg" width="250" height="250" viewBox="-1 -1 178 178" style="display:block;"></svg>
           </div>
-          <div id="mcctr_cost_legend" style="margin-top:8px;font-size:.69rem;display:flex;flex-direction:column;gap:3px;"></div>
+          <div id="mcctr_cost_legend" style="margin-top:10px;font-size:.97rem;display:flex;flex-direction:column;gap:5px;"></div>
         </div>
       </div>
 
@@ -9354,12 +9354,12 @@ function mccTracaoRenderChart() {
     if (legend) legend.innerHTML = lgH;
     // % breakdown table (agrupada por grupo + linha de total)
     const _GC2 = {'Ligantes':'#eef2ff','Agregados':'#fefce8','Quím./Água':'#f0fdf4'};
-    let tH = '<table style="width:100%;border-collapse:collapse;font-size:.78rem;">';
-    tH += '<thead><tr style="background:#1a1f2e;color:#fff;"><th style="padding:5px 8px;text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;">Material</th><th style="padding:5px 8px;text-align:right;font-size:.7rem;">kg/m³</th><th style="padding:5px 8px;text-align:right;font-size:.7rem;color:#93c5fd;">% Massa</th><th style="padding:5px 8px;text-align:right;font-size:.7rem;color:#fca5a5;">% Custo</th></tr></thead><tbody>';
+    let tH = '<table style="width:100%;border-collapse:collapse;font-size:1.09rem;">';
+    tH += '<thead><tr style="background:#1a1f2e;color:#fff;"><th style="padding:7px 8px;text-align:left;font-size:.98rem;text-transform:uppercase;letter-spacing:.04em;">Material</th><th style="padding:7px 8px;text-align:right;font-size:.98rem;">kg/m³</th><th style="padding:7px 8px;text-align:right;font-size:.98rem;color:#93c5fd;">% Massa</th><th style="padding:7px 8px;text-align:right;font-size:.98rem;color:#fca5a5;">% Custo</th></tr></thead><tbody>';
     ['Ligantes','Agregados','Quím./Água'].forEach(grp => {
         const grpMats = MCCTR_MATS.filter(m => m.group === grp);
         if (!grpMats.some(m => (Number(data.masses?.[m.massKey])||0)>0 || (costPerMat[m.key]||0)>0)) return;
-        tH += '<tr style="background:'+_GC2[grp]+'"><td colspan="4" style="padding:4px 8px;font-size:.65rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.04em;">'+grp+'</td></tr>';
+        tH += '<tr style="background:'+_GC2[grp]+'"><td colspan="4" style="padding:5px 8px;font-size:.91rem;font-weight:800;color:#555;text-transform:uppercase;letter-spacing:.04em;">'+grp+'</td></tr>';
         grpMats.forEach(({ key, label, massKey }) => {
             const kg  = Number(data.masses?.[massKey]) || 0;
             const cst = costPerMat[key] || 0;
@@ -9369,7 +9369,7 @@ function mccTracaoRenderChart() {
             tH += '<tr style="border-bottom:1px solid #f0f4ff;"><td style="padding:5px 8px;"><span style="display:inline-block;width:8px;height:8px;background:'+MCCTR_COLORS[key]+';border-radius:2px;margin-right:5px;vertical-align:middle;"></span>'+label+'</td><td style="padding:5px 8px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums;">'+(kg>0?kg.toFixed(1):'—')+'</td><td style="padding:5px 8px;text-align:right;font-weight:700;color:#3730a3;font-variant-numeric:tabular-nums;">'+(pm!=='—'?pm+'%':'—')+'</td><td style="padding:5px 8px;text-align:right;font-weight:700;color:#92400e;font-variant-numeric:tabular-nums;">'+(pc!=='—'?pc+'%':'—')+'</td></tr>';
         });
     });
-    tH += '<tr style="background:#1a1f2e;color:#fff;font-weight:800;"><td style="padding:6px 8px;font-size:.8rem;">TOTAL</td><td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;">'+(totalKg>0?totalKg.toFixed(1):'—')+'</td><td style="padding:6px 8px;text-align:right;">100%</td><td style="padding:6px 8px;text-align:right;">100%</td></tr>';
+    tH += '<tr style="background:#1a1f2e;color:#fff;font-weight:800;"><td style="padding:8px 8px;font-size:1.12rem;">TOTAL</td><td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;">'+(totalKg>0?totalKg.toFixed(1):'—')+'</td><td style="padding:6px 8px;text-align:right;">100%</td><td style="padding:6px 8px;text-align:right;">100%</td></tr>';
     tH += '</tbody></table>';
     if (pctDiv) pctDiv.innerHTML = tH;
     // Segundo gráfico de pizza: Composição de Custo R$/m³
@@ -9466,7 +9466,7 @@ function mccTracaoPrint() {
         const subKg=grpMats.reduce((s,m)=>s+m.kg,0);
         const subM3=gTotals[grp];
         matRows+='<tr class="grp-hdr" style="background:'+GC[grp]+';-webkit-print-color-adjust:exact;print-color-adjust:exact;">'
-            +'<td colspan="6" style="color:'+GT[grp]+';font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:5px 10px;">'+grp+'</td></tr>';
+            +'<td colspan="7" style="color:'+GT[grp]+';font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:5px 10px;">'+grp+'</td></tr>';
         grpMats.forEach(m=>{
             const pM=totalMassa>0?(m.kg/totalMassa*100).toFixed(1)+'%':'—';
             const pC=totalCusto>0?(m.m3/totalCusto*100).toFixed(1)+'%':'—';
@@ -9475,6 +9475,7 @@ function mccTracaoPrint() {
                 +'<td>'+(m.nomeProd||'—')+'</td>'
                 +'<td>'+(m.fornProd||'—')+'</td>'
                 +'<td class="n">'+(m.kg>0?fmt1(m.kg)+' kg':'—')+'</td>'
+                +'<td class="n">'+pM+'</td>'
                 +'<td class="n">'+(m.custoLiq>0?'R$ '+fmt4(m.custoLiq):'—')+'</td>'
                 +'<td class="n acc">'+(m.m3>0?'R$ '+fmt2(m.m3):'—')+'</td>'
                 +'</tr>';
@@ -9482,6 +9483,7 @@ function mccTracaoPrint() {
         matRows+='<tr class="sub-row" style="background:'+GC[grp]+';-webkit-print-color-adjust:exact;print-color-adjust:exact;">'
             +'<td colspan="3" style="color:'+GT[grp]+';font-weight:700;font-size:10px;">Subtotal '+grp+'</td>'
             +'<td class="n" style="color:'+GT[grp]+';font-weight:700;">'+fmt1(subKg)+' kg</td>'
+            +'<td></td>'
             +'<td></td>'
             +'<td class="n" style="color:'+GT[grp]+';font-weight:700;">R$ '+fmt2(subM3)+'</td></tr>';
     });
@@ -9516,9 +9518,9 @@ body{font-family:"Segoe UI",Arial,sans-serif;font-size:11px;color:#1a1f2e;backgr
 .sec-title{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#fff;background:#1a1f2e;padding:5px 10px;margin:14px 0 0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 /* ── Tabela materiais ── */
 table.mat{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:0}
-table.mat thead th{background:#2d2d5e;color:#fff;padding:6px 10px;font-size:9px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+table.mat thead th{background:#2d2d5e;color:#fff;padding:7px 10px;font-size:9px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;vertical-align:middle;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 table.mat thead th.n{text-align:right}
-table.mat tbody td{padding:5px 10px;border-bottom:1px solid #ececec}
+table.mat tbody td{padding:6px 10px;border-bottom:1px solid #ececec;vertical-align:middle}
 table.mat td.n{text-align:right;font-variant-numeric:tabular-nums}
 table.mat td.acc{color:#b35d00;font-weight:700}
 table.mat tr:nth-child(even) td{background:#fafafa}
@@ -9646,13 +9648,6 @@ table.mat tr:nth-child(even) td{background:#fafafa}
       <table class="leg-table">${legC}</table>
     </div>
   </div>
-</div>
-
-<!-- Assinaturas -->
-<div class="sign-row">
-  <div class="sign-box"><strong>Elaborado por</strong><p>Assinatura / Data</p></div>
-  <div class="sign-box"><strong>Verificado por</strong><p>Assinatura / Data</p></div>
-  <div class="sign-box"><strong>Aprovado por</strong><p>Assinatura / Data</p></div>
 </div>
 
 <!-- Rodapé -->
