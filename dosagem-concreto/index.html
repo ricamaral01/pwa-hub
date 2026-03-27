@@ -873,6 +873,9 @@
         <button class="sidebar-btn" data-sec="sec-compare-cost" onclick="showSection('sec-compare-cost',this)">
             <span class="sb-num">M2</span><span class="sb-icon">📊</span><span class="sb-label">Comparador / Custo</span>
         </button>
+        <button class="sidebar-btn" data-sec="sec-mcc-traco" onclick="showSection('sec-mcc-traco',this)">
+            <span class="sb-num">M3</span><span class="sb-icon">💰</span><span class="sb-label">MCC Traço</span>
+        </button>
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-group">
@@ -934,6 +937,7 @@
         <optgroup label="Custos">
         <option value="sec-custo-mcc">💲 Banco de Custos MCC</option>
         <option value="sec-compare-cost">📊 Comparador / Custo</option>
+        <option value="sec-mcc-traco">💰 MCC Traço</option>
         </optgroup>
         <optgroup label="Resultados">
         <option value="sec-abrams">📉 Curva de Abrams</option>
@@ -3228,6 +3232,65 @@
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SEÇÃO — MCC TRAÇO                                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="sec-mcc-traco" class="section">
+  <div class="card">
+    <h2><span class="icon">💰</span> MCC Traço</h2>
+    <p class="subtitle">Selecione um traço do banco local, vincule produto e fornecedor do Banco de Custos MCC a cada categoria e calcule o custo líquido por m³ automaticamente.</p>
+
+    <div style="background:#f0f4ff;border:2px solid #bfcbf5;border-radius:14px;padding:18px 20px;margin-bottom:20px;">
+      <h3 style="font-size:.95rem;color:#3730a3;margin:0 0 14px;">📂 Seleção do Traço</h3>
+      <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+        <div class="form-group" style="margin:0;flex:1;min-width:220px;">
+          <label>Traço do Banco Local</label>
+          <select id="mcctr_traco_sel" style="width:100%;" onchange="mccTracaoCarregar()">
+            <option value="">— Selecione um traço salvo —</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" style="height:42px;" onclick="mccTracaoRefreshBanco()">🔄 Atualizar banco</button>
+      </div>
+      <div id="mcctr_traco_info" style="display:none;margin-top:14px;background:#fff;border:1px solid #bfcbf5;border-radius:10px;padding:12px 16px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;">
+          <div><div style="font-size:.7rem;color:#888;text-transform:uppercase;">Nome</div><div id="mcctr_info_nome" style="font-weight:700;"></div></div>
+          <div><div style="font-size:.7rem;color:#888;text-transform:uppercase;">FCK</div><div id="mcctr_info_fck" style="font-weight:700;"></div></div>
+          <div><div style="font-size:.7rem;color:#888;text-transform:uppercase;">Flow</div><div id="mcctr_info_flow" style="font-weight:700;"></div></div>
+          <div><div style="font-size:.7rem;color:#888;text-transform:uppercase;">Rel. a/c</div><div id="mcctr_info_ac" style="font-weight:700;"></div></div>
+          <div><div style="font-size:.7rem;color:#888;text-transform:uppercase;">Massa total</div><div id="mcctr_info_total" style="font-weight:700;"></div></div>
+          <div><div style="font-size:.7rem;color:#888;text-transform:uppercase;">Aplicação</div><div id="mcctr_info_aplic" style="font-weight:700;font-size:.85rem;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:.84rem;">
+        <thead>
+          <tr style="background:#1a1a2e;color:#fff;">
+            <th style="padding:10px 12px;text-align:left;border-radius:8px 0 0 0;white-space:nowrap;">Material</th>
+            <th style="padding:10px 12px;text-align:right;white-space:nowrap;">kg/m³</th>
+            <th style="padding:10px 12px;text-align:left;min-width:160px;">Produto</th>
+            <th style="padding:10px 12px;text-align:left;min-width:160px;">Fornecedor</th>
+            <th style="padding:10px 12px;text-align:right;white-space:nowrap;">R$/kg líq.</th>
+            <th style="padding:10px 12px;text-align:right;border-radius:0 8px 0 0;white-space:nowrap;">R$/m³</th>
+          </tr>
+        </thead>
+        <tbody id="mcctr_tbody"></tbody>
+        <tfoot id="mcctr_tfoot"></tfoot>
+      </table>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="mcctr_resumo" style="flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;"></div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="btn btn-accent" onclick="mccTracaoPrint()">🖨️ Imprimir / Visualizar</button>
+        <button class="btn" style="background:#e0e5ea;" onclick="mccTracaoSalvarConfig()">💾 Salvar configuração</button>
+      </div>
+    </div>
+    <div id="mcctr_status" style="margin-top:10px;min-height:24px;"></div>
+  </div>
+</div>
+
 </main>
 </div><!-- /app-layout -->
 
@@ -3269,6 +3332,12 @@ function showSection(id, btn) {
         }
         if (typeof ev3RenderCompare === 'function') ev3RenderCompare();
         if (typeof calculateCostPanel === 'function') calculateCostPanel();
+    }
+    if (id === 'sec-mcc-traco') {
+        if ((_mccProdutosTodos || []).length === 0 && typeof mccListarProdutos === 'function') {
+            mccListarProdutos();
+        }
+        if (typeof mccTracaoInit === 'function') mccTracaoInit();
     }
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
@@ -8783,6 +8852,290 @@ if (typeof ctPremiumCurrentTrace === 'function') {
         costAdvBindListeners();
     }
 })();
+
+// ═══════════════════════════════════════════════════
+// MCC TRAÇO — CUSTO POR TRAÇO
+// ═══════════════════════════════════════════════════
+const MCCTR_CFG_KEY = 'mccTracao_v1';
+const MCCTR_MATS = [
+    { key:'cim',  label:'Cimento',         massKey:'cimento',  group:'Ligantes'   },
+    { key:'adic', label:'Adição',           massKey:'adicao',   group:'Ligantes'   },
+    { key:'an',   label:'Areia Natural',    massKey:'areiaNat', group:'Agregados'  },
+    { key:'ai',   label:'Areia Industrial', massKey:'areiaInd', group:'Agregados'  },
+    { key:'b0',   label:'Brita 0',          massKey:'brita0',   group:'Agregados'  },
+    { key:'b1',   label:'Brita 1/2',        massKey:'brita1',   group:'Agregados'  },
+    { key:'agua', label:'Água',             massKey:'agua',     group:'Quím./Água' },
+    { key:'adit', label:'Aditivo SP',       massKey:'aditivo',  group:'Quím./Água' }
+];
+let _mccTracaoCurrentData = null;
+let _mccTracaoConfig = {};
+
+function mccTracaoInit() {
+    mccTracaoRefreshBanco();
+    mccTracaoLoadConfig();
+    mccTracaoRenderTable();
+}
+
+function mccTracaoRefreshBanco() {
+    const sel = document.getElementById('mcctr_traco_sel');
+    if (!sel) return;
+    const banco = mccTracaoGetBanco();
+    const prevId = _mccTracaoCurrentData?.id;
+    while (sel.options.length > 1) sel.remove(1);
+    banco.forEach((item, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = item.nome + (item.fck ? ' — C' + item.fck : '') + (item.aplicacao ? ' · ' + item.aplicacao : '');
+        sel.appendChild(opt);
+    });
+    if (prevId) {
+        const idx = banco.findIndex(x => x.id === prevId);
+        if (idx >= 0) sel.value = idx;
+    }
+}
+
+function mccTracaoGetBanco() {
+    try { return JSON.parse(localStorage.getItem(CT_PREMIUM_BANK_KEY) || '[]'); } catch(e) { return []; }
+}
+
+function mccTracaoCarregar() {
+    const sel = document.getElementById('mcctr_traco_sel');
+    if (!sel || sel.value === '') {
+        _mccTracaoCurrentData = null;
+        const panel = document.getElementById('mcctr_traco_info');
+        if (panel) panel.style.display = 'none';
+        mccTracaoRenderTable();
+        return;
+    }
+    const banco = mccTracaoGetBanco();
+    const item = banco[parseInt(sel.value)];
+    if (!item) return;
+    _mccTracaoCurrentData = item;
+    const panel = document.getElementById('mcctr_traco_info');
+    if (panel) {
+        panel.style.display = 'block';
+        const setT = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v || '—'; };
+        setT('mcctr_info_nome',  item.nome);
+        setT('mcctr_info_fck',   item.fck  ? item.fck  + ' MPa' : '—');
+        setT('mcctr_info_flow',  item.flow ? item.flow + ' mm'  : '—');
+        setT('mcctr_info_ac',    item.ac   ? Number(item.ac).toFixed(3) : '—');
+        const total = MCCTR_MATS.reduce((s, m) => s + (Number(item.masses?.[m.massKey]) || 0), 0);
+        setT('mcctr_info_total', total ? total.toFixed(1) + ' kg' : '—');
+        setT('mcctr_info_aplic', item.aplicacao);
+    }
+    mccTracaoRenderTable();
+}
+
+function mccTracaoLoadConfig() {
+    try { _mccTracaoConfig = JSON.parse(localStorage.getItem(MCCTR_CFG_KEY) || '{}'); } catch(e) { _mccTracaoConfig = {}; }
+}
+
+function mccTracaoSalvarConfig() {
+    MCCTR_MATS.forEach(({ key }) => {
+        const nomeEl = document.getElementById('mcctr_' + key + '_nome');
+        const fornEl = document.getElementById('mcctr_' + key + '_forn');
+        if (!_mccTracaoConfig[key]) _mccTracaoConfig[key] = {};
+        _mccTracaoConfig[key].nome = nomeEl?.value || '';
+        _mccTracaoConfig[key].forn = fornEl?.value || '';
+    });
+    localStorage.setItem(MCCTR_CFG_KEY, JSON.stringify(_mccTracaoConfig));
+    const st = document.getElementById('mcctr_status');
+    if (st) {
+        st.innerHTML = '<span style="color:var(--accent);font-weight:700;">✅ Configuração de produtos salva.</span>';
+        setTimeout(() => { if (st) st.innerHTML = ''; }, 3000);
+    }
+}
+
+function mccTracaoRenderTable() {
+    const tbody = document.getElementById('mcctr_tbody');
+    const tfoot = document.getElementById('mcctr_tfoot');
+    if (!tbody) return;
+    const todos = _mccProdutosTodos || [];
+    const GC = { 'Ligantes':'#e0e7ff', 'Agregados':'#fef9c3', 'Quím./Água':'#dcfce7' };
+    const GT = { 'Ligantes':'#3730a3', 'Agregados':'#92400e', 'Quím./Água':'#166534' };
+    const groups = ['Ligantes','Agregados','Quím./Água'];
+    let totalCusto = 0;
+    const gTotals = { 'Ligantes':0, 'Agregados':0, 'Quím./Água':0 };
+    let html = '';
+    groups.forEach(grp => {
+        const mats = MCCTR_MATS.filter(m => m.group === grp);
+        html += '<tr><td colspan="6" style="background:' + GC[grp] + ';color:' + GT[grp] + ';font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:5px 12px;">' + grp + '</td></tr>';
+        mats.forEach(({ key, label, massKey }) => {
+            const kg  = _mccTracaoCurrentData ? (Number(_mccTracaoCurrentData.masses?.[massKey]) || 0) : 0;
+            const cfg = _mccTracaoConfig[key] || {};
+            const ativos  = todos.filter(p => p.chaveMCC === key && p.ativo === 'Sim');
+            const nomesU  = [...new Set(ativos.map(p => p.nomeProduto).filter(Boolean))];
+            let nOpts = '<option value="">— Produto —</option>';
+            nomesU.forEach(n => { nOpts += '<option value="' + n + '"' + (cfg.nome === n ? ' selected' : '') + '>' + n + '</option>'; });
+            const fornsA = cfg.nome ? ativos.filter(p => p.nomeProduto === cfg.nome) : [];
+            const fornsU = [...new Set(fornsA.map(p => p.fornecedor).filter(Boolean))];
+            let fOpts = '<option value="">— Fornecedor —</option>';
+            fornsU.forEach(f => { fOpts += '<option value="' + f + '"' + (cfg.forn === f ? ' selected' : '') + '>' + f + '</option>'; });
+            const produto  = cfg.nome && cfg.forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === cfg.nome && p.fornecedor === cfg.forn) : null;
+            const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
+            const custoM3  = kg * custoLiq;
+            gTotals[grp] += custoM3;
+            totalCusto   += custoM3;
+            html += '<tr style="border-bottom:1px solid #eee;">'
+                + '<td style="padding:8px 12px;font-weight:600;">' + label + '</td>'
+                + '<td style="padding:8px 12px;text-align:right;font-variant-numeric:tabular-nums;">' + (kg > 0 ? kg.toFixed(1) + ' kg' : '—') + '</td>'
+                + '<td style="padding:6px 8px;"><select style="width:100%;padding:4px 6px;border-radius:6px;border:1px solid #ddd;font-size:.82rem;" id="mcctr_' + key + '_nome" onchange="mccTracaoNomeChange(\'' + key + '\')">'
+                + nOpts + '</select></td>'
+                + '<td style="padding:6px 8px;"><select style="width:100%;padding:4px 6px;border-radius:6px;border:1px solid #ddd;font-size:.82rem;" id="mcctr_' + key + '_forn" onchange="mccTracaoFornChange(\'' + key + '\')">'
+                + fOpts + '</select></td>'
+                + '<td style="padding:8px 12px;text-align:right;color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;" id="mcctr_' + key + '_liq">' + (custoLiq > 0 ? 'R$\u00a0' + custoLiq.toFixed(4).replace('.', ',') : '—') + '</td>'
+                + '<td style="padding:8px 12px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;" id="mcctr_' + key + '_m3">'  + (custoM3  > 0 ? 'R$\u00a0' + custoM3.toFixed(2).replace('.', ',')  : '—') + '</td>'
+                + '</tr>';
+        });
+        html += '<tr style="background:' + GC[grp] + ';border-top:2px solid ' + GC[grp] + ';">';
+        html += '<td colspan="4" style="padding:6px 12px;font-weight:700;color:' + GT[grp] + ';font-size:.82rem;">Subtotal ' + grp + '</td><td></td>';
+        html += '<td style="padding:6px 12px;text-align:right;font-weight:800;color:' + GT[grp] + ';">R$\u00a0' + gTotals[grp].toFixed(2).replace('.', ',') + '</td></tr>';
+    });
+    tbody.innerHTML = html;
+    if (tfoot) tfoot.innerHTML = '<tr style="background:#1a1a2e;color:#fff;"><td colspan="5" style="padding:10px 12px;font-weight:800;font-size:.9rem;">TOTAL GERAL / m³</td><td style="padding:10px 12px;text-align:right;font-weight:900;font-size:1.05rem;">R$\u00a0' + totalCusto.toFixed(2).replace('.', ',') + '</td></tr>';
+    mccTracaoUpdateResumo(gTotals, totalCusto);
+}
+
+function mccTracaoNomeChange(key) {
+    const nomeEl = document.getElementById('mcctr_' + key + '_nome');
+    const fornEl = document.getElementById('mcctr_' + key + '_forn');
+    if (!nomeEl || !fornEl) return;
+    const nome = nomeEl.value;
+    const todos = _mccProdutosTodos || [];
+    const fornAtual = fornEl.value;
+    while (fornEl.options.length > 1) fornEl.remove(1);
+    if (nome) {
+        const forns = [...new Set(todos.filter(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome).map(p => p.fornecedor).filter(Boolean))];
+        forns.forEach(f => { const o = document.createElement('option'); o.value = f; o.textContent = f; fornEl.appendChild(o); });
+        if (forns.includes(fornAtual)) fornEl.value = fornAtual;
+        else if (forns.length === 1) fornEl.value = forns[0];
+    }
+    if (!_mccTracaoConfig[key]) _mccTracaoConfig[key] = {};
+    _mccTracaoConfig[key].nome = nome;
+    _mccTracaoConfig[key].forn = fornEl.value;
+    mccTracaoUpdateRowPrice(key);
+}
+
+function mccTracaoFornChange(key) {
+    const fornEl = document.getElementById('mcctr_' + key + '_forn');
+    if (!fornEl) return;
+    if (!_mccTracaoConfig[key]) _mccTracaoConfig[key] = {};
+    _mccTracaoConfig[key].forn = fornEl.value;
+    mccTracaoUpdateRowPrice(key);
+}
+
+function mccTracaoUpdateRowPrice(key) {
+    const todos = _mccProdutosTodos || [];
+    const nomeEl = document.getElementById('mcctr_' + key + '_nome');
+    const fornEl = document.getElementById('mcctr_' + key + '_forn');
+    const nome = nomeEl?.value || '';
+    const forn = fornEl?.value || '';
+    const produto  = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+    const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
+    const mat  = MCCTR_MATS.find(m => m.key === key);
+    const kg   = _mccTracaoCurrentData && mat ? (Number(_mccTracaoCurrentData.masses?.[mat.massKey]) || 0) : 0;
+    const custoM3 = kg * custoLiq;
+    const liqEl = document.getElementById('mcctr_' + key + '_liq');
+    const m3El  = document.getElementById('mcctr_' + key + '_m3');
+    if (liqEl) liqEl.textContent = custoLiq > 0 ? 'R$\u00a0' + custoLiq.toFixed(4).replace('.', ',') : '—';
+    if (m3El)  m3El.textContent  = custoM3  > 0 ? 'R$\u00a0' + custoM3.toFixed(2).replace('.', ',')  : '—';
+    mccTracaoRecalcTotals();
+}
+
+function mccTracaoRecalcTotals() {
+    const todos = _mccProdutosTodos || [];
+    const groups = ['Ligantes','Agregados','Quím./Água'];
+    const GT = { 'Ligantes':'#3730a3', 'Agregados':'#92400e', 'Quím./Água':'#166534' };
+    let totalCusto = 0;
+    const gTotals = { 'Ligantes':0, 'Agregados':0, 'Quím./Água':0 };
+    MCCTR_MATS.forEach(({ key, massKey, group }) => {
+        const nomeEl = document.getElementById('mcctr_' + key + '_nome');
+        const fornEl = document.getElementById('mcctr_' + key + '_forn');
+        const nome = nomeEl?.value || '';
+        const forn = fornEl?.value || '';
+        const produto  = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
+        const kg = _mccTracaoCurrentData ? (Number(_mccTracaoCurrentData.masses?.[massKey]) || 0) : 0;
+        gTotals[group] += kg * custoLiq;
+        totalCusto     += kg * custoLiq;
+    });
+    const tfoot = document.getElementById('mcctr_tfoot');
+    if (tfoot) tfoot.innerHTML = '<tr style="background:#1a1a2e;color:#fff;"><td colspan="5" style="padding:10px 12px;font-weight:800;font-size:.9rem;">TOTAL GERAL / m³</td><td style="padding:10px 12px;text-align:right;font-weight:900;font-size:1.05rem;">R$\u00a0' + totalCusto.toFixed(2).replace('.', ',') + '</td></tr>';
+    mccTracaoUpdateResumo(gTotals, totalCusto);
+}
+
+function mccTracaoUpdateResumo(gTotals, totalCusto) {
+    const resumo = document.getElementById('mcctr_resumo');
+    if (!resumo) return;
+    const chip = (lbl, val, col) => '<div style="background:#f5f7fa;border-radius:10px;padding:10px 14px;border-left:4px solid ' + col + ';">'  + '<div style="font-size:.7rem;text-transform:uppercase;color:#888;letter-spacing:.04em;">' + lbl + '</div>' + '<div style="font-weight:800;font-size:1rem;color:' + col + ';">' + val + '</div></div>';
+    resumo.innerHTML =
+        chip('Ligantes',   'R$\u00a0' + gTotals['Ligantes'].toFixed(2).replace('.', ','),   '#3730a3') +
+        chip('Agregados',  'R$\u00a0' + gTotals['Agregados'].toFixed(2).replace('.', ','),  '#92400e') +
+        chip('Quím./Água', 'R$\u00a0' + gTotals['Quím./Água'].toFixed(2).replace('.', ','), '#166534') +
+        chip('Total / m³', 'R$\u00a0' + totalCusto.toFixed(2).replace('.', ','),            '#1a1a2e');
+}
+
+function mccTracaoPrint() {
+    if (!_mccTracaoCurrentData) { alert('Selecione um traço antes de imprimir.'); return; }
+    const todos = _mccProdutosTodos || [];
+    const item  = _mccTracaoCurrentData;
+    const tracoNome = item.nome || 'Traço';
+    const fmt2 = v => (Number(v) || 0).toFixed(2).replace('.', ',');
+    const fmt1 = v => (Number(v) || 0).toFixed(1).replace('.', ',');
+    const fmt4 = v => (Number(v) || 0).toFixed(4).replace('.', ',');
+    const groups = ['Ligantes','Agregados','Quím./Água'];
+    let totalCusto = 0;
+    const gTotals = { 'Ligantes':0, 'Agregados':0, 'Quím./Água':0 };
+    let tbodyHtml = '';
+    groups.forEach(grp => {
+        tbodyHtml += '<tr class="g-head"><td colspan="5">' + grp + '</td></tr>';
+        MCCTR_MATS.filter(m => m.group === grp).forEach(({ key, label, massKey }) => {
+            const nomeEl = document.getElementById('mcctr_' + key + '_nome');
+            const fornEl = document.getElementById('mcctr_' + key + '_forn');
+            const nome = nomeEl?.value || (_mccTracaoConfig[key]?.nome || '');
+            const forn = fornEl?.value || (_mccTracaoConfig[key]?.forn || '');
+            const produto  = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+            const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
+            const kg  = Number(item.masses?.[massKey]) || 0;
+            const m3  = kg * custoLiq;
+            gTotals[grp] += m3;
+            totalCusto   += m3;
+            const pf = nome ? (forn ? nome + ' / ' + forn : nome) : '—';
+            tbodyHtml += '<tr><td>' + label + '</td><td>' + pf + '</td><td class="n">' + (kg > 0 ? fmt1(kg) + ' kg' : '—') + '</td><td class="n">' + (custoLiq > 0 ? fmt4(custoLiq) + ' R$/kg' : '—') + '</td><td class="n">' + (m3 > 0 ? 'R$\u00a0' + fmt2(m3) : '—') + '</td></tr>';
+        });
+        tbodyHtml += '<tr class="sub"><td colspan="3">Subtotal ' + grp + '</td><td></td><td class="n">R$\u00a0' + fmt2(gTotals[grp]) + '</td></tr>';
+    });
+    tbodyHtml += '<tr class="tot"><td colspan="4">TOTAL GERAL / m³</td><td class="n">R$\u00a0' + fmt2(totalCusto) + '</td></tr>';
+    const totalMassa = MCCTR_MATS.reduce((s, m) => s + (Number(item.masses?.[m.massKey]) || 0), 0);
+    const css = '*{box-sizing:border-box;margin:0;padding:0}body{font-family:"Segoe UI",Arial,sans-serif;font-size:12px;color:#1a1a2e;background:#fff;padding:24px}'
+        + '.hdr{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #1a1a2e;padding-bottom:12px;margin-bottom:18px}'
+        + '.hdr h1{font-size:18px;font-weight:800}.hdr .sub{font-size:11px;color:#666;margin-top:3px}.hdr .info{text-align:right;font-size:11px;color:#666;line-height:1.7}'
+        + '.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}.kpi{border:1px solid #ddd;border-radius:8px;padding:10px 12px}'
+        + '.kpi .lbl{font-size:10px;text-transform:uppercase;color:#888;letter-spacing:.5px}.kpi .val{font-size:15px;font-weight:800;margin-top:2px}'
+        + 'table{width:100%;border-collapse:collapse;margin-bottom:14px}thead th{background:#1a1a2e;color:#fff;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;text-align:left}'
+        + 'thead th.n{text-align:right}tbody td{padding:7px 10px;border-bottom:1px solid #eee}td.n{text-align:right;font-variant-numeric:tabular-nums}'
+        + '.g-head td{background:#f3f4f6;font-weight:700;font-size:10px;text-transform:uppercase;color:#6b7280;padding:5px 10px}'
+        + '.sub td{background:#f0f4ff;font-weight:600;border-top:1px solid #ddd}.tot td{background:#1a1a2e;color:#fff;font-weight:700;font-size:13px}'
+        + '.ftr{margin-top:16px;border-top:1px solid #ddd;padding-top:10px;font-size:10px;color:#aaa;display:flex;justify-content:space-between}'
+        + '.pbtn{margin-bottom:16px;padding:8px 20px;background:#1a1a2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}@media print{.pbtn{display:none}}';
+    const htmlDoc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>MCC Traço — ' + tracoNome + '</title><style>' + css + '</style></head><body>'
+        + '<button class="pbtn" onclick="window.print()">🖨️ Imprimir</button>'
+        + '<div class="hdr"><div><h1>MCC TRAÇO — RELATÓRIO DE CUSTO</h1><div class="sub">' + tracoNome + (item.aplicacao ? ' · ' + item.aplicacao : '') + '</div></div>'
+        + '<div class="info"><div>Emitido: ' + new Date().toLocaleString('pt-BR') + '</div><div>Responsável: ' + (item.responsavel || '—') + '</div></div></div>'
+        + '<div class="kpis">'
+        + '<div class="kpi"><div class="lbl">FCK</div><div class="val">'  + Number(item.fck  || 0).toFixed(0) + ' MPa</div></div>'
+        + '<div class="kpi"><div class="lbl">Flow</div><div class="val">' + Number(item.flow || 0).toFixed(0) + ' mm</div></div>'
+        + '<div class="kpi"><div class="lbl">Rel. a/c</div><div class="val">' + (Number(item.ac) || 0).toFixed(3).replace('.', ',') + '</div></div>'
+        + '<div class="kpi"><div class="lbl">Massa total</div><div class="val">' + totalMassa.toFixed(1) + ' kg</div></div>'
+        + '<div class="kpi"><div class="lbl">Custo / m³</div><div class="val">R$ ' + fmt2(totalCusto) + '</div></div>'
+        + '</div>'
+        + '<table><thead><tr><th>Material</th><th>Produto / Fornecedor</th><th class="n">kg/m³</th><th class="n">R$/kg líq.</th><th class="n">R$/m³</th></tr></thead><tbody>' + tbodyHtml + '</tbody></table>'
+        + '<div class="ftr"><span>ConcreTrack — MCC Traço</span><span>' + tracoNome + ' · ' + new Date().toLocaleString('pt-BR') + '</span></div>'
+        + '</body></html>';
+    const w = window.open('', '_blank', 'width=900,height=740,scrollbars=yes');
+    if (!w) { alert('Pop-up bloqueado. Permita pop-ups para este site.'); return; }
+    w.document.open(); w.document.write(htmlDoc); w.document.close();
+}
 
 </script>
 
