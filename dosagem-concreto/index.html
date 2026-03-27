@@ -328,13 +328,17 @@
 
             /* Header compacto */
             header {
-                background: var(--primary) !important;
+                background: #1a1f2e !important;
+                border-bottom: 3px solid #e8762a !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
-                padding: 6px 10px !important;
+                padding: 6px 14px !important;
             }
-            header h1 { font-size: 0.9rem !important; margin: 0 !important; }
-            header p { font-size: 0.6rem !important; margin: 2px 0 0 !important; }
+            .header-brand { gap: 8px !important; }
+            .header-brand img { height: 38px !important; width: 38px !important; }
+            .header-text h1 { font-size: 0.85rem !important; margin: 0 !important; color: #fff !important; }
+            .brand-accent { color: #e8762a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .header-text p { font-size: 0.55rem !important; margin: 1px 0 0 !important; }
 
             /* Mostrar apenas seção ativa */
             .section { display: none !important; }
@@ -6661,14 +6665,17 @@ function imprimirSecao(secId, titulo) {
     const dataStr = agora.toLocaleDateString('pt-BR');
     const horaStr = agora.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
     reportDiv.innerHTML = `
-        <div class="report-header">
-            <h2>⬡ ${titulo}</h2>
-            <p style="font-size:0.85rem;color:#666;">Calculadora de Dosagem de Concreto — Empacotamento de Partículas</p>
+        <div style="display:flex;align-items:center;gap:14px;border-bottom:3px solid #e8762a;padding-bottom:8px;margin-bottom:8px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
+            <img src="../assets/img/logo-concretrack.png" style="height:50px;width:50px;object-fit:contain;flex-shrink:0;" alt="ConcreTrack">
+            <div>
+                <div style="font-size:.95rem;font-weight:900;color:#1a1f2e;letter-spacing:.04em;">CONCRE<span style="color:#e8762a;-webkit-print-color-adjust:exact;print-color-adjust:exact;">TRACK</span> &mdash; ${titulo}</div>
+                <div style="font-size:.65rem;color:#666;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">Laborat&oacute;rio &amp; Engenharia do Concreto &middot; Dosagem de Concreto</div>
+            </div>
         </div>
         <div class="report-meta">
-            <span><strong>Responsável:</strong> Ricardo Do Amaral</span>
-            <span><strong>Data:</strong> ${dataStr} — ${horaStr}</span>
-            <span><strong>Ref.:</strong> Dosagem CAA</span>
+            <span><strong>Respons&aacute;vel:</strong> Ricardo Do Amaral</span>
+            <span><strong>Data:</strong> ${dataStr} &mdash; ${horaStr}</span>
+            <span><strong>Ref.:</strong> Dosagem CAA &middot; ConcreTrack</span>
         </div>
     `;
 
@@ -9178,62 +9185,139 @@ function mccTracaoPrint() {
     const fmt2 = v => (Number(v) || 0).toFixed(2).replace('.', ',');
     const fmt1 = v => (Number(v) || 0).toFixed(1).replace('.', ',');
     const fmt4 = v => (Number(v) || 0).toFixed(4).replace('.', ',');
-    const groups = ['Ligantes','Agregados','Quím./Água'];
-    let totalCusto = 0;
-    const gTotals = { 'Ligantes':0, 'Agregados':0, 'Quím./Água':0 };
-    let tbodyHtml = '';
-    groups.forEach(grp => {
-        tbodyHtml += '<tr class="g-head"><td colspan="5">' + grp + '</td></tr>';
-        MCCTR_MATS.filter(m => m.group === grp).forEach(({ key, label, massKey }) => {
-            const nomeEl = document.getElementById('mcctr_' + key + '_nome');
-            const fornEl = document.getElementById('mcctr_' + key + '_forn');
-            const nome = nomeEl?.value || (_mccTracaoConfig[key]?.nome || '');
-            const forn = fornEl?.value || (_mccTracaoConfig[key]?.forn || '');
-            const produto  = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
-            const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
-            const kg  = Number(item.masses?.[massKey]) || 0;
-            const m3  = kg * custoLiq;
-            gTotals[grp] += m3;
-            totalCusto   += m3;
-            const pf = nome ? (forn ? nome + ' / ' + forn : nome) : '—';
-            tbodyHtml += '<tr><td>' + label + '</td><td>' + pf + '</td><td class="n">' + (kg > 0 ? fmt1(kg) + ' kg' : '—') + '</td><td class="n">' + (custoLiq > 0 ? fmt4(custoLiq) + ' R$/kg' : '—') + '</td><td class="n">' + (m3 > 0 ? 'R$\u00a0' + fmt2(m3) : '—') + '</td></tr>';
-        });
-        tbodyHtml += '<tr class="sub"><td colspan="3">Subtotal ' + grp + '</td><td></td><td class="n">R$\u00a0' + fmt2(gTotals[grp]) + '</td></tr>';
+    const logoUrl = new URL('../assets/img/logo-concretrack.png', window.location.href).href;
+    const MAT_CLR = {cim:'#E8762A',adic:'#F4A261',an:'#F7D44C',ai:'#CC8B2F',b0:'#7B8A8B',b1:'#4A5568',agua:'#4FC3F7',adit:'#5B5BD6'};
+    const matData = [];
+    let totalCusto = 0, totalMassa = 0;
+    const gTotals = {'Ligantes':0,'Agregados':0,'Quím./Água':0};
+    MCCTR_MATS.forEach(({key, label, massKey, group}) => {
+        const nEl = document.getElementById('mcctr_' + key + '_nome');
+        const fEl = document.getElementById('mcctr_' + key + '_forn');
+        const nome = nEl?.value || (_mccTracaoConfig[key]?.nome || '');
+        const forn = fEl?.value || (_mccTracaoConfig[key]?.forn || '');
+        const prod = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const custoLiq = prod ? (Number(prod.custoLiq) || 0) : 0;
+        const kg = Number(item.masses?.[massKey]) || 0;
+        const m3 = kg * custoLiq;
+        gTotals[group] += m3; totalCusto += m3; totalMassa += kg;
+        matData.push({key, label, kg, custoLiq, m3, group, color: MAT_CLR[key]||'#999', nomeProd: nome?(forn?nome+' / '+forn:nome):'—'});
     });
-    tbodyHtml += '<tr class="tot"><td colspan="4">TOTAL GERAL / m³</td><td class="n">R$\u00a0' + fmt2(totalCusto) + '</td></tr>';
-    const totalMassa = MCCTR_MATS.reduce((s, m) => s + (Number(item.masses?.[m.massKey]) || 0), 0);
-    const css = '*{box-sizing:border-box;margin:0;padding:0}body{font-family:"Segoe UI",Arial,sans-serif;font-size:12px;color:#1a1a2e;background:#fff;padding:24px}'
-        + '.hdr{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #1a1a2e;padding-bottom:12px;margin-bottom:18px}'
-        + '.hdr h1{font-size:18px;font-weight:800}.hdr .sub{font-size:11px;color:#666;margin-top:3px}.hdr .info{text-align:right;font-size:11px;color:#666;line-height:1.7}'
-        + '.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}.kpi{border:1px solid #ddd;border-radius:8px;padding:10px 12px}'
-        + '.kpi .lbl{font-size:10px;text-transform:uppercase;color:#888;letter-spacing:.5px}.kpi .val{font-size:15px;font-weight:800;margin-top:2px}'
-        + 'table{width:100%;border-collapse:collapse;margin-bottom:14px}thead th{background:#1a1a2e;color:#fff;padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;text-align:left}'
-        + 'thead th.n{text-align:right}tbody td{padding:7px 10px;border-bottom:1px solid #eee}td.n{text-align:right;font-variant-numeric:tabular-nums}'
-        + '.g-head td{background:#f3f4f6;font-weight:700;font-size:10px;text-transform:uppercase;color:#6b7280;padding:5px 10px}'
-        + '.sub td{background:#f0f4ff;font-weight:600;border-top:1px solid #ddd}.tot td{background:#1a1a2e;color:#fff;font-weight:700;font-size:13px}'
-        + '.ftr{margin-top:16px;border-top:1px solid #ddd;padding-top:10px;font-size:10px;color:#aaa;display:flex;justify-content:space-between}'
-        + '.pbtn{margin-bottom:16px;padding:8px 20px;background:#1a1a2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}@media print{.pbtn{display:none}}';
-    const htmlDoc = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>MCC Traço — ' + tracoNome + '</title><style>' + css + '</style></head><body>'
-        + '<button class="pbtn" onclick="window.print()">🖨️ Imprimir</button>'
-        + '<div class="hdr"><div><h1>MCC TRAÇO — RELATÓRIO DE CUSTO</h1><div class="sub">' + tracoNome + (item.aplicacao ? ' · ' + item.aplicacao : '') + '</div></div>'
-        + '<div class="info"><div>Emitido: ' + new Date().toLocaleString('pt-BR') + '</div><div>Responsável: ' + (item.responsavel || '—') + '</div></div></div>'
-        + '<div class="kpis">'
-        + '<div class="kpi"><div class="lbl">FCK</div><div class="val">'  + Number(item.fck  || 0).toFixed(0) + ' MPa</div></div>'
-        + '<div class="kpi"><div class="lbl">Flow</div><div class="val">' + Number(item.flow || 0).toFixed(0) + ' mm</div></div>'
-        + '<div class="kpi"><div class="lbl">Rel. a/c</div><div class="val">' + (Number(item.ac) || 0).toFixed(3).replace('.', ',') + '</div></div>'
-        + '<div class="kpi"><div class="lbl">Massa total</div><div class="val">' + totalMassa.toFixed(1) + ' kg</div></div>'
-        + '<div class="kpi"><div class="lbl">Custo / m³</div><div class="val">R$ ' + fmt2(totalCusto) + '</div></div>'
-        + '</div>'
-        + '<table><thead><tr><th>Material</th><th>Produto / Fornecedor</th><th class="n">kg/m³</th><th class="n">R$/kg líq.</th><th class="n">R$/m³</th></tr></thead><tbody>' + tbodyHtml + '</tbody></table>'
-        + '<div class="ftr"><span>ConcreTrack — MCC Traço</span><span>' + tracoNome + ' · ' + new Date().toLocaleString('pt-BR') + '</span></div>'
-        + '</body></html>';
-    const w = window.open('', '_blank', 'width=900,height=740,scrollbars=yes');
-    if (!w) { alert('Pop-up bloqueado. Permita pop-ups para este site.'); return; }
-    w.document.open(); w.document.write(htmlDoc); w.document.close();
+
+    function makePie(segs, W, H, cx, cy, r) {
+        const tot = segs.reduce((s,d)=>s+d.val,0);
+        if (tot===0) return '<svg width="'+W+'" height="'+H+'"><text x="50%" y="50%" text-anchor="middle" font-size="11" fill="#bbb">Sem dados</text></svg>';
+        let ang=-Math.PI/2, out='';
+        segs.forEach(d=>{
+            if(d.val<=0)return;
+            const sl=d.val/tot*2*Math.PI;
+            const x1=cx+r*Math.cos(ang),y1=cy+r*Math.sin(ang);
+            ang+=sl;
+            const x2=cx+r*Math.cos(ang),y2=cy+r*Math.sin(ang);
+            const mid=ang-sl/2,lg=sl>Math.PI?1:0;
+            out+='<path d="M'+cx+','+cy+' L'+x1.toFixed(1)+','+y1.toFixed(1)+' A'+r+','+r+' 0 '+lg+',1 '+x2.toFixed(1)+','+y2.toFixed(1)+' Z" fill="'+d.color+'" stroke="#fff" stroke-width="1.5"/>';
+            if(sl>0.18){const lx=cx+r*0.66*Math.cos(mid),ly=cy+r*0.66*Math.sin(mid);out+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="8" font-weight="700">'+(d.val/tot*100).toFixed(1)+'%</text>';}
+        });
+        return '<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+out+'</svg>';
+    }
+    function makeLegend(segs,tot){
+        return segs.filter(d=>d.val>0).map(d=>'<div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;"><div style="width:10px;height:10px;border-radius:2px;background:'+d.color+';flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;"></div><div style="font-size:10px;line-height:1.4;">'+d.label+'<span style="color:#888;"> · '+(tot>0?(d.val/tot*100).toFixed(1):0)+'% · '+d.fmt+'</span></div></div>').join('');
+    }
+    const segsMassa=matData.filter(m=>m.kg>0).map(m=>({val:m.kg,color:m.color,label:m.label,fmt:fmt1(m.kg)+' kg'}));
+    const segsCusto=matData.filter(m=>m.m3>0).map(m=>({val:m.m3,color:m.color,label:m.label,fmt:'R$ '+fmt2(m.m3)}));
+    const svgM=makePie(segsMassa,160,160,80,80,72);
+    const svgC=makePie(segsCusto,160,160,80,80,72);
+    const legM=makeLegend(segsMassa,totalMassa);
+    const legC=makeLegend(segsCusto,totalCusto);
+
+    const groups=['Ligantes','Agregados','Quím./Água'];
+    let tbody='';
+    groups.forEach(grp=>{
+        tbody+='<tr class="g-head"><td colspan="6">'+grp+'</td></tr>';
+        const grpMats=matData.filter(m=>m.group===grp);
+        grpMats.forEach(m=>{
+            const pM=totalMassa>0?(m.kg/totalMassa*100).toFixed(1)+'%':'—';
+            const pC=totalCusto>0?(m.m3/totalCusto*100).toFixed(1)+'%':'—';
+            tbody+='<tr>'
+                +'<td><span class="dot" style="background:'+m.color+'"></span>'+m.label+'</td>'
+                +'<td>'+m.nomeProd+'</td>'
+                +'<td class="n">'+(m.kg>0?fmt1(m.kg)+' kg':'—')+'</td>'
+                +'<td class="n">'+pM+'</td>'
+                +'<td class="n">'+(m.custoLiq>0?fmt4(m.custoLiq)+' R$/kg':'—')+'</td>'
+                +'<td class="n">'+(m.m3>0?'R$\u00a0'+fmt2(m.m3):'—')+'</td>'
+                +'</tr>';
+        });
+        const subKg=grpMats.reduce((s,m)=>s+m.kg,0);
+        const subPct=totalMassa>0?(subKg/totalMassa*100).toFixed(1)+'%':'—';
+        tbody+='<tr class="sub"><td colspan="2">Subtotal '+grp+'</td><td class="n">'+fmt1(subKg)+' kg</td><td class="n">'+subPct+'</td><td></td><td class="n">R$\u00a0'+fmt2(gTotals[grp])+'</td></tr>';
+    });
+    tbody+='<tr class="tot"><td colspan="2">TOTAL GERAL / m³</td><td class="n tot-acc">'+fmt1(totalMassa)+' kg</td><td class="n">100%</td><td></td><td class="n tot-acc">R$\u00a0'+fmt2(totalCusto)+'</td></tr>';
+
+    const css='*{box-sizing:border-box;margin:0;padding:0}'
+        +'body{font-family:"Segoe UI",Arial,sans-serif;font-size:12px;color:#1a1f2e;background:#fff;padding:20px 24px}'
+        +'.hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #e8762a;padding-bottom:12px;margin-bottom:16px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'.hdr-brand{display:flex;align-items:center;gap:12px}'
+        +'.hdr-brand img{height:54px;width:54px;object-fit:contain}'
+        +'.hdr-brand h1{font-size:17px;font-weight:900;color:#1a1f2e;letter-spacing:.04em}'
+        +'.hdr-brand h1 span{color:#e8762a;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'.hdr-brand .sub{font-size:10px;color:#666;margin-top:3px}'
+        +'.hdr-info{text-align:right;font-size:10px;color:#666;line-height:1.9}'
+        +'.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}'
+        +'.kpi{border:1px solid #e4e4e4;border-radius:8px;padding:10px 12px}'
+        +'.kpi .lbl{font-size:9px;text-transform:uppercase;color:#888;letter-spacing:.5px}'
+        +'.kpi .val{font-size:15px;font-weight:800;margin-top:2px;color:#1a1f2e}'
+        +'.kpi.acc .val{color:#e8762a;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}'
+        +'.cbox{border:1px solid #eee;border-radius:8px;padding:12px}'
+        +'.cbox h3{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#444;margin-bottom:10px;padding-bottom:5px;border-bottom:2px solid #e8762a;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'.cinner{display:flex;align-items:center;gap:12px}'
+        +'.sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#1a1f2e;margin:14px 0 6px;border-left:3px solid #e8762a;padding-left:8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'table{width:100%;border-collapse:collapse;margin-bottom:14px}'
+        +'thead th{background:#1a1f2e;color:#fff;padding:7px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.4px;text-align:left;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'thead th.n{text-align:right}'
+        +'tbody td{padding:6px 10px;border-bottom:1px solid #eee;font-size:11px}'
+        +'td.n{text-align:right;font-variant-numeric:tabular-nums}'
+        +'.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'.g-head td{background:#f3f4f6;font-weight:700;font-size:9px;text-transform:uppercase;color:#6b7280;padding:4px 10px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'.sub td{background:#fff4ed;font-weight:600;border-top:1px solid #e8d5c4;color:#a64208;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'.tot td{background:#1a1f2e;color:#fff;font-weight:700;font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'td.tot-acc{color:#e8762a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}'
+        +'.ftr{margin-top:14px;border-top:1px solid #ddd;padding-top:10px;font-size:9px;color:#aaa;display:flex;justify-content:space-between;align-items:center}'
+        +'.ftr img{height:22px;opacity:.55}'
+        +'.pbtn{margin-bottom:16px;padding:8px 20px;background:#1a1f2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}'
+        +'.pbtn:hover{background:#e8762a}'
+        +'@media print{.pbtn{display:none}svg path,svg text{-webkit-print-color-adjust:exact;print-color-adjust:exact}}';
+
+    const html='<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>MCC Traço — '+tracoNome+'</title><style>'+css+'</style></head><body>'
+        +'<button class="pbtn" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>'
+        +'<div class="hdr"><div class="hdr-brand"><img src="'+logoUrl+'" alt="Concretrack">'
+        +'<div><h1>CONCRE<span>TRACK</span> — MCC TRAÇO</h1>'
+        +'<div class="sub">Relatório de Custo por m³ · '+tracoNome+(item.aplicacao?' · '+item.aplicacao:'')+'</div></div></div>'
+        +'<div class="hdr-info"><div><strong>Emitido:</strong> '+new Date().toLocaleString('pt-BR')+'</div>'
+        +'<div><strong>Responsável:</strong> '+(item.responsavel||'—')+'</div></div></div>'
+        +'<div class="kpis">'
+        +'<div class="kpi"><div class="lbl">FCK</div><div class="val">'+Number(item.fck||0).toFixed(0)+' MPa</div></div>'
+        +'<div class="kpi"><div class="lbl">Flow</div><div class="val">'+Number(item.flow||0).toFixed(0)+' mm</div></div>'
+        +'<div class="kpi"><div class="lbl">Rel. a/c</div><div class="val">'+(Number(item.ac)||0).toFixed(3).replace('.',',')+'</div></div>'
+        +'<div class="kpi"><div class="lbl">Massa total</div><div class="val">'+fmt1(totalMassa)+' kg</div></div>'
+        +'<div class="kpi acc"><div class="lbl">Custo / m³</div><div class="val">R$ '+fmt2(totalCusto)+'</div></div>'
+        +'</div>'
+        +'<div class="charts">'
+        +'<div class="cbox"><h3>🧱 Composição da Massa — kg/m³</h3><div class="cinner">'+svgM+'<div>'+legM+'</div></div></div>'
+        +'<div class="cbox"><h3>💰 Composição de Custo — R$/m³</h3><div class="cinner">'+svgC+'<div>'+legC+'</div></div></div>'
+        +'</div>'
+        +'<div class="sec-title">Participação por Material</div>'
+        +'<table><thead><tr><th>Material</th><th>Produto / Fornecedor</th><th class="n">kg/m³</th><th class="n">% Massa</th><th class="n">R$/kg líq.</th><th class="n">R$/m³</th></tr></thead><tbody>'+tbody+'</tbody></table>'
+        +'<div class="ftr"><img src="'+logoUrl+'" alt="Concretrack"><span>ConcreTrack · MCC Traço · '+tracoNome+' · '+new Date().toLocaleString('pt-BR')+'</span></div>'
+        +'</body></html>';
+
+    const w=window.open('','_blank','width=980,height=820,scrollbars=yes');
+    if(!w){alert('Pop-up bloqueado. Permita pop-ups para este site.');return;}
+    w.document.open();w.document.write(html);w.document.close();
 }
 
+
 // ════════════════════════════════════════════════════
-// COMPARADOR MCC — SLOTS A / B / C
+// // COMPARADOR MCC — SLOTS A / B / C
 // ════════════════════════════════════════════════════
 const MCCCOMP_KEY = 'mccComp_v2';
 
