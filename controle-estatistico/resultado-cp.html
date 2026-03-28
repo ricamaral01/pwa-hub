@@ -15,26 +15,490 @@
   <meta http-equiv="Expires" content="0" />
 
   <link rel="stylesheet" href="../styles.css">
+  <style>
+    body { padding-bottom: 40px; }
+
+    /* ---- Formulário de registro ---- */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .form-grid .full { grid-column: 1 / -1; }
+    @media (max-width: 480px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .full { grid-column: 1; }
+    }
+
+    /* ---- Tabela de resultados ---- */
+    .tbl-wrap {
+      overflow-x: auto;
+      margin-top: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .78rem;
+      white-space: nowrap;
+    }
+    thead th {
+      background: rgba(43,108,176,.55);
+      color: #e8f0ff;
+      font-weight: 700;
+      padding: 8px 10px;
+      text-align: center;
+      border-bottom: 2px solid rgba(255,255,255,.18);
+      position: sticky;
+      top: 0;
+    }
+    thead th.group {
+      background: rgba(26,82,160,.7);
+      font-size: .7rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,.07); }
+    tbody tr:nth-child(even) { background: rgba(255,255,255,.04); }
+    tbody tr:hover { background: rgba(255,255,255,.09); }
+    tbody td {
+      padding: 7px 10px;
+      text-align: center;
+      color: var(--text);
+    }
+    tbody td.left { text-align: left; }
+
+    /* resultado colorido */
+    .badge {
+      display: inline-block;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+    .badge.ok   { background: rgba(39,174,96,.22); color: #2ecc71; border: 1px solid #27ae60; }
+    .badge.fail { background: rgba(192,57,43,.22);  color: #e74c3c; border: 1px solid #c0392b; }
+    .badge.pend { background: rgba(150,150,150,.2); color: #aaa;    border: 1px solid #555; }
+
+    /* ---- barra de filtros ---- */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .filter-bar input, .filter-bar select {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 6px 10px;
+      font-size: .8rem;
+      flex: 1;
+      min-width: 130px;
+    }
+    .filter-bar input::placeholder { color: var(--muted); }
+
+    .section-title {
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin: 22px 0 8px;
+    }
+    .ops { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+    .count-pill {
+      background: rgba(43,108,176,.35);
+      border: 1px solid rgba(43,108,176,.5);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: .75rem;
+      color: #a8c8ff;
+      font-weight: 700;
+    }
+  </style>
 </head>
 
 <body>
 <div class="wrap">
   <a class="back" href="./index.html">← Controle Estatístico</a>
   <div class="title">🧱 Resultado de Corpo de Prova</div>
-  <div class="subtitle">Lançamento e consulta de resultados de rompimento</div>
+  <div class="subtitle">Lançamento e consulta de rompimentos — Campinas</div>
   <div class="accentLine"></div>
 
-  <div class="card" style="text-align:center; padding:48px 24px;">
-    <div style="font-size:3rem; margin-bottom:16px;">🚧</div>
-    <div style="font-weight:800; font-size:1.1rem; margin-bottom:8px;">Em desenvolvimento</div>
-    <div style="color:var(--muted); font-size:.9rem; line-height:1.5;">
-      Esta funcionalidade está sendo construída.<br>
-      Em breve será possível lançar e consultar resultados de rompimento de CPs.
-    </div>
+  <!-- ============ FORMULÁRIO ============ -->
+  <div class="card">
+    <div class="section-title">Registrar Resultado</div>
+    <form id="frmCP" autocomplete="off">
+      <div class="form-grid">
+
+        <div class="field">
+          <div class="label">N° Etiqueta / CP</div>
+          <input id="cp_etiqueta" placeholder="Ex.: CP-2026-001" required>
+        </div>
+
+        <div class="field">
+          <div class="label">Data Moldagem</div>
+          <input id="cp_dataMoldagem" type="date" required>
+        </div>
+
+        <div class="field">
+          <div class="label">Traço / Classe</div>
+          <input id="cp_traco" placeholder="Ex.: C30, FCK 30 MPa">
+        </div>
+
+        <div class="field">
+          <div class="label">Fck projeto (MPa)</div>
+          <input id="cp_fck" type="number" step="0.1" min="0" placeholder="30">
+        </div>
+
+        <div class="field">
+          <div class="label">Slump (cm)</div>
+          <input id="cp_slump" type="number" step="0.5" min="0" placeholder="10">
+        </div>
+
+        <div class="field">
+          <div class="label">Volume (m³)</div>
+          <input id="cp_volume" type="number" step="0.1" min="0" placeholder="7.0">
+        </div>
+
+        <div class="field full">
+          <div class="label">Obra / Local</div>
+          <input id="cp_obra" placeholder="Ex.: Fundação Bloco B1">
+        </div>
+
+        <div class="field full">
+          <div class="label">Elemento Estrutural</div>
+          <input id="cp_elemento" placeholder="Ex.: Pilar P12, Viga V3">
+        </div>
+
+        <div class="field">
+          <div class="label">Responsável</div>
+          <input id="cp_responsavel" placeholder="Nome do operador">
+        </div>
+
+        <div class="field">
+          <div class="label">N° Nota Fiscal / NF</div>
+          <input id="cp_nf" placeholder="Ex.: NF-12345">
+        </div>
+
+      </div>
+
+      <div class="section-title" style="margin-top:18px;">Resultados de Rompimento</div>
+      <div class="form-grid">
+
+        <div class="field">
+          <div class="label">Data Rompimento 7d</div>
+          <input id="cp_data7" type="date">
+        </div>
+        <div class="field">
+          <div class="label">fc 7d (MPa)</div>
+          <input id="cp_fc7" type="number" step="0.1" min="0" placeholder="—">
+        </div>
+
+        <div class="field">
+          <div class="label">Data Rompimento 14d</div>
+          <input id="cp_data14" type="date">
+        </div>
+        <div class="field">
+          <div class="label">fc 14d (MPa)</div>
+          <input id="cp_fc14" type="number" step="0.1" min="0" placeholder="—">
+        </div>
+
+        <div class="field">
+          <div class="label">Data Rompimento 28d</div>
+          <input id="cp_data28" type="date">
+        </div>
+        <div class="field">
+          <div class="label">fc 28d (MPa)</div>
+          <input id="cp_fc28" type="number" step="0.1" min="0" placeholder="—">
+        </div>
+
+        <div class="field">
+          <div class="label">Data Rompimento 91d</div>
+          <input id="cp_data91" type="date">
+        </div>
+        <div class="field">
+          <div class="label">fc 91d (MPa)</div>
+          <input id="cp_fc91" type="number" step="0.1" min="0" placeholder="—">
+        </div>
+
+        <div class="field full">
+          <div class="label">Observações</div>
+          <textarea id="cp_obs" placeholder="Anomalias, descarte, reensaio..."></textarea>
+        </div>
+      </div>
+
+      <div class="ops">
+        <button class="btn danger" id="btnLimpar" type="button">🧹 Limpar</button>
+        <button class="btn good" type="submit">💾 Salvar Registro</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ============ TABELA ============ -->
+  <div style="display:flex; align-items:center; gap:10px; margin-top:24px; flex-wrap:wrap;">
+    <div class="section-title" style="margin:0;">Registros</div>
+    <span class="count-pill" id="countPill">0 registros</span>
+    <button class="btn danger" id="btnExcluirSel" type="button" style="font-size:.75rem; padding:4px 12px; display:none;">🗑 Excluir selecionados</button>
+  </div>
+
+  <div class="filter-bar">
+    <input type="text" id="filtroTexto" placeholder="🔍 Buscar etiqueta, obra, elemento...">
+    <select id="filtroResultado">
+      <option value="">Todos os resultados</option>
+      <option value="ok">✅ Aprovado</option>
+      <option value="fail">❌ Reprovado</option>
+      <option value="pend">⏳ Pendente</option>
+    </select>
+  </div>
+
+  <div class="tbl-wrap">
+    <table id="tblCP">
+      <thead>
+        <tr>
+          <th rowspan="2"><input type="checkbox" id="chkAll" title="Selecionar todos"></th>
+          <th rowspan="2">N° Etiqueta</th>
+          <th rowspan="2">Data<br>Moldagem</th>
+          <th rowspan="2">Traço</th>
+          <th rowspan="2">Fck<br>(MPa)</th>
+          <th rowspan="2">Slump<br>(cm)</th>
+          <th rowspan="2">Vol.<br>(m³)</th>
+          <th rowspan="2">Obra / Local</th>
+          <th rowspan="2">Elemento</th>
+          <th rowspan="2">NF</th>
+          <th rowspan="2">Responsável</th>
+          <th class="group" colspan="2">7 dias</th>
+          <th class="group" colspan="2">14 dias</th>
+          <th class="group" colspan="2">28 dias</th>
+          <th class="group" colspan="2">91 dias</th>
+          <th rowspan="2">Resultado<br>28d</th>
+          <th rowspan="2">Obs.</th>
+        </tr>
+        <tr>
+          <th>Data</th><th>fc (MPa)</th>
+          <th>Data</th><th>fc (MPa)</th>
+          <th>Data</th><th>fc (MPa)</th>
+          <th>Data</th><th>fc (MPa)</th>
+        </tr>
+      </thead>
+      <tbody id="tblBody">
+        <tr id="emptyRow">
+          <td colspan="21" style="padding:32px; color:var(--muted); font-style:italic;">
+            Nenhum resultado registrado ainda.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Modal de confirmação ---- -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-title" id="modalTitle">✅ Salvo!</div>
+    <div class="modal-text" id="modalText">Registro salvo localmente.</div>
+    <button class="modal-btn" onclick="document.getElementById('modal').classList.remove('show')">OK</button>
   </div>
 </div>
 
 <script>
+/* =========================================================
+   STORAGE KEY
+   ========================================================= */
+const STORE_KEY = "cp_resultados_campinas";
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+function fmtDate(iso) {
+  if (!iso) return "—";
+  const [y, m, d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+function v(id)  { return document.getElementById(id).value.trim(); }
+function vn(id) { const x = parseFloat(document.getElementById(id).value); return isNaN(x) ? null : x; }
+
+function calcResultado(fc28, fck) {
+  if (fc28 === null || fck === null || fck === 0) return "pend";
+  return fc28 >= fck ? "ok" : "fail";
+}
+
+function badgeHtml(res) {
+  const map = { ok: ["ok","✅ Aprovado"], fail: ["fail","❌ Reprovado"], pend: ["pend","⏳ Pendente"] };
+  const [cls, txt] = map[res] || map.pend;
+  return `<span class="badge ${cls}">${txt}</span>`;
+}
+
+function showModal(title, text) {
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalText").textContent  = text;
+  document.getElementById("modal").classList.add("show");
+}
+
+/* =========================================================
+   LOAD / SAVE
+   ========================================================= */
+function loadAll() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); }
+  catch { return []; }
+}
+function saveAll(arr) {
+  localStorage.setItem(STORE_KEY, JSON.stringify(arr));
+}
+
+/* =========================================================
+   RENDER TABLE
+   ========================================================= */
+let _allRows = [];
+
+function renderTable(rows) {
+  const tbody  = document.getElementById("tblBody");
+  const empty  = document.getElementById("emptyRow");
+  const pill   = document.getElementById("countPill");
+
+  // filtros
+  const txt    = document.getElementById("filtroTexto").value.toLowerCase();
+  const resF   = document.getElementById("filtroResultado").value;
+
+  let filtered = rows.filter(r => {
+    if (txt && ![r.etiqueta, r.obra, r.elemento, r.traco, r.nf, r.responsavel]
+              .join(" ").toLowerCase().includes(txt)) return false;
+    if (resF && r.resultado !== resF) return false;
+    return true;
+  });
+
+  pill.textContent = `${filtered.length} registro${filtered.length !== 1 ? "s" : ""}`;
+
+  // limpa linhas antigas (mantém emptyRow)
+  Array.from(tbody.querySelectorAll("tr:not(#emptyRow)")).forEach(r => r.remove());
+
+  if (!filtered.length) {
+    empty.style.display = "";
+    return;
+  }
+  empty.style.display = "none";
+
+  filtered.slice().reverse().forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input type="checkbox" class="chk-row" data-id="${r.id}"></td>
+      <td class="left"><b>${r.etiqueta || "—"}</b></td>
+      <td>${fmtDate(r.dataMoldagem)}</td>
+      <td>${r.traco || "—"}</td>
+      <td>${r.fck ?? "—"}</td>
+      <td>${r.slump ?? "—"}</td>
+      <td>${r.volume ?? "—"}</td>
+      <td class="left">${r.obra || "—"}</td>
+      <td class="left">${r.elemento || "—"}</td>
+      <td>${r.nf || "—"}</td>
+      <td>${r.responsavel || "—"}</td>
+      <td>${fmtDate(r.data7)}</td>
+      <td>${r.fc7 ?? "—"}</td>
+      <td>${fmtDate(r.data14)}</td>
+      <td>${r.fc14 ?? "—"}</td>
+      <td>${fmtDate(r.data28)}</td>
+      <td>${r.fc28 ?? "—"}</td>
+      <td>${fmtDate(r.data91)}</td>
+      <td>${r.fc91 ?? "—"}</td>
+      <td>${badgeHtml(r.resultado)}</td>
+      <td class="left" style="max-width:160px; white-space:normal;">${r.obs || "—"}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // checkboxes individuais
+  document.querySelectorAll(".chk-row").forEach(chk => {
+    chk.addEventListener("change", updateBtnExcluir);
+  });
+}
+
+function refresh() {
+  _allRows = loadAll();
+  renderTable(_allRows);
+}
+
+function updateBtnExcluir() {
+  const any = document.querySelectorAll(".chk-row:checked").length > 0;
+  document.getElementById("btnExcluirSel").style.display = any ? "" : "none";
+}
+
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+document.getElementById("filtroTexto").addEventListener("input", () => renderTable(_allRows));
+document.getElementById("filtroResultado").addEventListener("change", () => renderTable(_allRows));
+
+document.getElementById("chkAll").addEventListener("change", function() {
+  document.querySelectorAll(".chk-row").forEach(c => c.checked = this.checked);
+  updateBtnExcluir();
+});
+
+document.getElementById("btnExcluirSel").addEventListener("click", () => {
+  const ids = Array.from(document.querySelectorAll(".chk-row:checked")).map(c => +c.dataset.id);
+  if (!ids.length) return;
+  if (!confirm(`Excluir ${ids.length} registro(s)?`)) return;
+  saveAll(loadAll().filter(r => !ids.includes(r.id)));
+  document.getElementById("chkAll").checked = false;
+  updateBtnExcluir();
+  refresh();
+});
+
+document.getElementById("btnLimpar").addEventListener("click", () => {
+  document.getElementById("frmCP").reset();
+});
+
+document.getElementById("frmCP").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const fc28 = vn("cp_fc28");
+  const fck  = vn("cp_fck");
+
+  const registro = {
+    id:           Date.now(),
+    etiqueta:     v("cp_etiqueta"),
+    dataMoldagem: v("cp_dataMoldagem"),
+    traco:        v("cp_traco"),
+    fck:          fck,
+    slump:        vn("cp_slump"),
+    volume:       vn("cp_volume"),
+    obra:         v("cp_obra"),
+    elemento:     v("cp_elemento"),
+    nf:           v("cp_nf"),
+    responsavel:  v("cp_responsavel"),
+    data7:        v("cp_data7"),
+    fc7:          vn("cp_fc7"),
+    data14:       v("cp_data14"),
+    fc14:         vn("cp_fc14"),
+    data28:       v("cp_data28"),
+    fc28:         fc28,
+    data91:       v("cp_data91"),
+    fc91:         vn("cp_fc91"),
+    obs:          v("cp_obs"),
+    resultado:    calcResultado(fc28, fck)
+  };
+
+  const arr = loadAll();
+  arr.push(registro);
+  saveAll(arr);
+
+  const resLabel = { ok: "✅ Aprovado", fail: "❌ Reprovado", pend: "⏳ Pendente" };
+  showModal("💾 Registrado!", `CP ${registro.etiqueta || "#"} salvo. Resultado 28d: ${resLabel[registro.resultado]}`);
+
+  document.getElementById("frmCP").reset();
+  refresh();
+});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+refresh();
+
+/* SW */
 (async function(){
   try{
     if ("serviceWorker" in navigator) {
