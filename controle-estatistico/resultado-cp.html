@@ -120,8 +120,6 @@
             <th class="th-rupt">DATA<br>RUPTURA</th>
             <th class="th-idade">IDADE</th>
             <th class="th-cp">TRA&#199;O / ID</th>
-            <th class="th-cp">CP 1</th>
-            <th class="th-cp">CP 2</th>
             <th class="th-mpa">MPA<br>CP 1</th>
             <th class="th-mpa">MPA<br>CP 2</th>
             <th class="th-med">M&#201;DIA<br>MPa</th>
@@ -208,8 +206,8 @@ function groupRows(rawRows){
     map.get(key).cps.push(r);
   });
   return Array.from(map.values()).sort(function(a,b){
-    if(a.data_moldagem<b.data_moldagem)return-1;
-    if(a.data_moldagem>b.data_moldagem)return 1;
+    if(a.data_moldagem>b.data_moldagem)return-1;
+    if(a.data_moldagem<b.data_moldagem)return 1;
     return parseInt(a.idade_dias||0)-parseInt(b.idade_dias||0);
   });
 }
@@ -232,7 +230,7 @@ function renderTable(){
   });
   tbody.innerHTML='';
   if(!filtered.length){
-    tbody.innerHTML='<tr><td colspan="10" style="padding:32px;text-align:center;color:var(--muted);font-style:italic;">Nenhum resultado encontrado.</td></tr>';
+    tbody.innerHTML='<tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted);font-style:italic;">Nenhum resultado encontrado.</td></tr>';
     footer.textContent='0 registros exibidos';
     return;
   }
@@ -251,9 +249,7 @@ function renderTable(){
       +'<td>'+fmtDate(dataRupt)+'</td>'
       +'<td>'+ageBadge(g.idade_dias)+'</td>'
       +'<td class="lft">'+(g.traco_id||'--')+'</td>'
-      +'<td>'+(c1?String(c1.cp||1):'--')+'</td>'
-      +'<td>'+(c2?String(c2.cp||2):'--')+'</td>'
-      +'<td class="'+mpaClass(mpa1,age)+'">'+fmtMpa(mpa1)+'</td>'
+      +'<td class="'+mpaClass(mpa1,age)+'">'++fmtMpa(mpa1)+'</td>'
       +'<td class="'+mpaClass(mpa2,age)+'">'+fmtMpa(mpa2)+'</td>'
       +'<td class="'+medClass(med,age)+'">'+(med!==null?String(r1(med)):'--')+'</td>'
       +'<td>'+statusBadge(mpa1,mpa2,age)+'</td>';
