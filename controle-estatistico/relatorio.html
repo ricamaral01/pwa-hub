@@ -1,46 +1,592 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>CONCRETRACK • Relatório Controle Estatístico</title>
-
+  <title>CONCRETRACK &#8226; Relat&#243;rio Controle Estat&#237;stico</title>
   <link rel="manifest" href="../manifest.json">
   <meta name="theme-color" content="#2F3640">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-
   <link rel="stylesheet" href="../styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <style>
+    body { padding-bottom:60px; }
+    /* ---- layout ---- */
+    .rpt-wrap { max-width:none; padding:18px 16px; }
+    .rpt-topbar { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:10px; }
+    .btn-print { background:#10b981; color:#fff; border:none; border-radius:10px; padding:8px 16px; font-size:.82rem; font-weight:700; cursor:pointer; }
+    .btn-print:hover { background:#059669; }
+    /* ---- filter ---- */
+    .filter-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:18px; }
+    .filter-bar label { font-size:.78rem; color:var(--muted); display:flex; align-items:center; gap:5px; }
+    .filter-bar select, .filter-bar input[type="number"] {
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15);
+      border-radius:8px; color:var(--text); padding:5px 9px; font-size:.78rem;
+    }
+    .btn-filter { background:rgba(245,158,11,.18); border:1px solid rgba(245,158,11,.4); color:#f59e0b; border-radius:8px; padding:6px 14px; font-size:.78rem; font-weight:700; cursor:pointer; }
+    /* ---- KPI grid ---- */
+    .kpi-group-title { font-size:.68rem; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); font-weight:700; margin:18px 0 8px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-bottom:6px; }
+    .kpi-card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:14px 14px 12px; }
+    .kpi-card .kpi-label { font-size:.64rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:6px; }
+    .kpi-card .kpi-val { font-size:1.55rem; font-weight:800; line-height:1; margin-bottom:2px; }
+    .kpi-card .kpi-sub { font-size:.68rem; color:var(--muted); }
+    .kpi-ok   { border-left:3px solid #10b981; }
+    .kpi-warn { border-left:3px solid #f59e0b; }
+    .kpi-fail { border-left:3px solid #ef4444; }
+    .kpi-neu  { border-left:3px solid #6366f1; }
+    /* ---- age header badge ---- */
+    .age-hdr { display:inline-block; border-radius:8px; padding:4px 12px; font-size:.72rem; font-weight:800; margin-bottom:10px; }
+    .hdr-1  { background:rgba(30,58,138,.5);  color:#93c5fd; border:1px solid #3b82f6; }
+    .hdr-3  { background:rgba(20,83,45,.5);   color:#86efac; border:1px solid #22c55e; }
+    .hdr-7  { background:rgba(124,45,18,.5);  color:#fdba74; border:1px solid #f97316; }
+    .hdr-28 { background:rgba(76,29,149,.5);  color:#c4b5fd; border:1px solid #a855f7; }
+    /* ---- section cards ---- */
+    .section-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:18px; margin-bottom:14px; }
+    .section-title { font-size:.80rem; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:#dbe6ff; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .section-title span { font-size:1rem; }
+    /* ---- charts ---- */
+    .chart-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px; margin-bottom:14px; }
+    .chart-box { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:14px; }
+    .chart-box h4 { font-size:.72rem; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; }
+    .chart-box canvas { max-height:240px; }
+    /* ---- tabela resumo ---- */
+    .tbl-wrap { overflow-x:auto; border-radius:10px; border:1px solid rgba(255,255,255,.1); }
+    table { border-collapse:collapse; white-space:nowrap; font-size:.73rem; width:100%; }
+    thead th { padding:8px 12px; font-size:.66rem; text-transform:uppercase; letter-spacing:.06em; font-weight:800; text-align:center; color:#dbe6ff; background:#0f172a; border:1px solid rgba(255,255,255,.1); }
+    thead th.th-mold { background:#1e3a5f; }
+    thead th.th-1  { background:#1e3a8a; }
+    thead th.th-3  { background:#14532d; }
+    thead th.th-7  { background:#7c2d12; }
+    thead th.th-28 { background:#4c1d95; }
+    thead th.th-stat { background:#1e293b; }
+    tbody tr { border-bottom:1px solid rgba(255,255,255,.06); }
+    tbody tr:nth-child(even) { background:rgba(255,255,255,.025); }
+    tbody tr:hover { background:rgba(255,255,255,.07); }
+    tbody td { padding:5px 10px; text-align:center; color:var(--text); font-size:.72rem; border-right:1px solid rgba(255,255,255,.05); }
+    tbody td.lft { text-align:left; }
+    .v-ok   { color:#34d399; font-weight:700; }
+    .v-fail { color:#f87171; font-weight:700; }
+    .v-warn { color:#fbbf24; font-weight:700; }
+    .v-pend { color:#9ca3af; }
+    .rbadge { display:inline-block; border-radius:5px; padding:1px 6px; font-size:.63rem; font-weight:700; }
+    .b-ok   { background:rgba(16,185,129,.18); color:#6ee7b7; border:1px solid #10b981; }
+    .b-fail { background:rgba(239,68,68,.18);  color:#fca5a5; border:1px solid #ef4444; }
+    .b-warn { background:rgba(245,158,11,.18); color:#fcd34d; border:1px solid #f59e0b; }
+    .b-pend { background:rgba(156,163,175,.12);color:#9ca3af; border:1px solid #4b5563; }
+    /* ---- stat summary table ---- */
+    .stat-tbl td { font-size:.71rem; padding:6px 10px; }
+    .stat-tbl tr.hdr-row td { background:#1e293b; color:#94a3b8; font-weight:700; font-size:.66rem; text-transform:uppercase; letter-spacing:.05em; }
+    /* ---- state box ---- */
+    .state-box { text-align:center; padding:48px 20px; color:var(--muted); }
+    .state-box .sico { font-size:2.8rem; margin-bottom:12px; }
+    .state-box p { font-size:.85rem; line-height:1.55; margin:6px 0; }
+    /* ---- footer info ---- */
+    .rpt-footer { font-size:.68rem; color:var(--muted); text-align:right; margin-top:18px; }
+    @media print {
+      .back,.btn-print,.filter-bar,.accentLine { display:none !important; }
+      body { background:#fff; color:#000; padding:0; }
+      .section-card,.kpi-card,.chart-box { background:#fff; border-color:#ccc; }
+      td,th { color:#000 !important; border-color:#999 !important; background:#f8f8f8 !important; }
+      canvas { max-height:180px !important; }
+    }
+  </style>
 </head>
-
 <body>
-<div class="wrap">
-  <a class="back" href="./index.html">← Controle Estatístico</a>
-  <div class="title">📈 Relatório Controle Estatístico</div>
-  <div class="subtitle">Gráficos e análise estatística do concreto</div>
-  <div class="accentLine"></div>
+<div class="wrap rpt-wrap">
+  <a class="back" href="./index.html">&#8592; Controle Estat&#237;stico</a>
 
-  <div class="card" style="text-align:center; padding:48px 24px;">
-    <div style="font-size:3rem; margin-bottom:16px;">🚧</div>
-    <div style="font-weight:800; font-size:1.1rem; margin-bottom:8px;">Em desenvolvimento</div>
-    <div style="color:var(--muted); font-size:.9rem; line-height:1.5;">
-      Esta funcionalidade está sendo construída.<br>
-      Em breve será possível visualizar gráficos de controle estatístico e análise de resistência do concreto.
+  <div class="rpt-topbar" style="margin-top:8px;">
+    <div>
+      <div class="title">&#128202; Relat&#243;rio Controle <span style="color:#f59e0b;">Estat&#237;stico</span></div>
+      <div class="subtitle">An&#225;lise estat&#237;stica de resist&#234;ncia &#224; compress&#227;o (MPa) por idade</div>
     </div>
+    <button class="btn-print" onclick="window.print()">&#11041; Imprimir</button>
+  </div>
+  <div class="accentLine" style="margin:10px 0 16px;"></div>
+
+  <!-- Filtros -->
+  <div class="filter-bar">
+    <label>M&#234;s:
+      <select id="filtroMes">
+        <option value="">Todos</option>
+        <option value="01">Janeiro</option><option value="02">Fevereiro</option>
+        <option value="03">Mar&#231;o</option><option value="04">Abril</option>
+        <option value="05">Maio</option><option value="06">Junho</option>
+        <option value="07">Julho</option><option value="08">Agosto</option>
+        <option value="09">Setembro</option><option value="10">Outubro</option>
+        <option value="11">Novembro</option><option value="12">Dezembro</option>
+      </select>
+    </label>
+    <label>Ano: <input type="number" id="filtroAno" min="2020" max="2040" style="width:72px;"></label>
+    <button class="btn-filter" onclick="applyFilters()">&#9660; Filtrar</button>
+  </div>
+
+  <!-- Estado de carregamento -->
+  <div id="stateBox" class="state-box">
+    <div class="sico">&#8987;</div><p>Carregando dados da planilha...</p>
+  </div>
+
+  <!-- Conteudo principal -->
+  <div id="rptContent" style="display:none;">
+
+    <!-- ======= KPIs por idade ======= -->
+    <div id="kpiSection"></div>
+
+    <!-- ======= Graficos ======= -->
+    <div class="section-card" style="margin-top:16px;">
+      <div class="section-title"><span>&#128200;</span> Evolu&#231;&#227;o da Resist&#234;ncia por M&#234;s</div>
+      <div class="chart-grid">
+        <div class="chart-box"><h4>&#60; 24 horas</h4><canvas id="chart1"></canvas></div>
+        <div class="chart-box"><h4>3 dias</h4><canvas id="chart3"></canvas></div>
+        <div class="chart-box"><h4>7 dias</h4><canvas id="chart7"></canvas></div>
+        <div class="chart-box"><h4>28 dias</h4><canvas id="chart28"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ======= Carta de Shewhart 28d ======= -->
+    <div class="section-card">
+      <div class="section-title"><span>&#128202;</span> Carta de Controle Shewhart &#8212; 28 dias</div>
+      <div class="chart-box" style="max-width:100%;"><canvas id="chartShewhart" style="max-height:260px;"></canvas></div>
+    </div>
+
+    <!-- ======= Ultimos 5 dias ======= -->
+    <div class="section-card">
+      <div class="section-title"><span>&#128197;</span> &#218;ltimas 5 Datas de Moldagem</div>
+      <div class="tbl-wrap">
+        <table id="tblUltimos">
+          <thead>
+            <tr>
+              <th class="th-mold" rowspan="2">DATA<br>MOLDAGEM</th>
+              <th class="th-mold" rowspan="2">TRA&#199;O</th>
+              <th colspan="3" class="th-1">&#60; 24 Horas</th>
+              <th colspan="3" class="th-3">3 Dias</th>
+              <th colspan="3" class="th-7">7 Dias</th>
+              <th colspan="3" class="th-28">28 Dias</th>
+            </tr>
+            <tr>
+              <th class="th-1">MPa 1</th><th class="th-1">MPa 2</th><th class="th-1">M&#233;d.</th>
+              <th class="th-3">MPa 1</th><th class="th-3">MPa 2</th><th class="th-3">M&#233;d.</th>
+              <th class="th-7">MPa 1</th><th class="th-7">MPa 2</th><th class="th-7">M&#233;d.</th>
+              <th class="th-28">MPa 1</th><th class="th-28">MPa 2</th><th class="th-28">M&#233;d.</th>
+            </tr>
+          </thead>
+          <tbody id="tblUltimosBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ======= Resumo mensal ======= -->
+    <div class="section-card">
+      <div class="section-title"><span>&#128203;</span> Resumo Estat&#237;stico Mensal</div>
+      <div class="tbl-wrap">
+        <table id="tblMensal" class="stat-tbl">
+          <thead>
+            <tr>
+              <th class="th-mold">M&#202;S</th>
+              <th class="th-1">N&#176; (1d)</th><th class="th-1">M&#233;d (1d)</th><th class="th-1">Sd (1d)</th>
+              <th class="th-3">N&#176; (3d)</th><th class="th-3">M&#233;d (3d)</th><th class="th-3">Sd (3d)</th>
+              <th class="th-7">N&#176; (7d)</th><th class="th-7">M&#233;d (7d)</th><th class="th-7">Sd (7d)</th>
+              <th class="th-28">N&#176; (28d)</th><th class="th-28">M&#233;d (28d)</th><th class="th-28">Sd (28d)</th>
+              <th class="th-stat">Conforme %</th>
+            </tr>
+          </thead>
+          <tbody id="tblMensalBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="rpt-footer" id="rptFooter"></div>
   </div>
 </div>
 
 <script>
-(async function(){
-  try{
-    if ("serviceWorker" in navigator) {
-      await navigator.serviceWorker.register("../sw.js", { scope: "../" });
+/* ===================== CONFIG ===================== */
+const SHEET_ID  = "1eC2DGsEUKkX22A0IUaYvUcEj9xbzZr7K-7Eus0iSavw";
+const SHEET_GID = "0";
+const META_FAIXA = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
+const AGES = [1,3,7,28];
+const MESES_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const AGE_COLORS = { 1:'#3b82f6', 3:'#22c55e', 7:'#f97316', 28:'#a855f7' };
+const AGE_FILLS  = { 1:'rgba(59,130,246,.15)', 3:'rgba(34,197,94,.15)', 7:'rgba(249,115,22,.15)', 28:'rgba(168,85,247,.15)' };
+
+/* ===================== UTIL ===================== */
+function fmtDate(v){
+  if(!v)return'--';
+  v=String(v).trim();
+  var m=v.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m)return m[3]+'/'+m[2]+'/'+m[1];
+  if(v.match(/^\d{2}\/\d{2}\/\d{4}/))return v.substring(0,10);
+  return v;
+}
+function mesNum(d){
+  d=String(d||'');
+  var m=d.match(/^(\d{4})-(\d{2})/);
+  if(m)return m[2];
+  m=d.match(/^\d{2}\/(\d{2})\/(\d{4})/);
+  if(m)return m[1];
+  return'';
+}
+function anoNum(d){
+  d=String(d||'');
+  var m=d.match(/^(\d{4})/);
+  if(m)return m[1];
+  m=d.match(/\d{2}\/\d{2}\/(\d{4})/);
+  if(m)return m[1];
+  return'';
+}
+function mesAbrev(mes,ano){ return MESES_PT[parseInt(mes)-1]+'/'+(ano?ano.substring(2,4):''); }
+function r1(v){ return(v!==null&&v!==''&&!isNaN(parseFloat(v)))?Math.round(parseFloat(v)*10)/10:null; }
+function fmtN(v){ return v!==null?String(v):'--'; }
+function avg(arr){ if(!arr.length)return null; return arr.reduce(function(a,b){return a+b;},0)/arr.length; }
+function sd(arr){
+  if(arr.length<2)return null;
+  var m=avg(arr);
+  var variance=arr.reduce(function(sum,v){return sum+Math.pow(v-m,2);},0)/arr.length;
+  return Math.round(Math.sqrt(variance)*100)/100;
+}
+function mpaClass(v,age){
+  var meta=META_FAIXA[age]; var n=r1(v);
+  if(n===null||!meta)return'v-pend';
+  if(n<meta.min)return'v-fail';
+  if(n>meta.max)return'v-warn';
+  return'v-ok';
+}
+function badge(cls,txt){ return'<span class="rbadge '+cls+'">'+txt+'</span>'; }
+
+/* ===================== GVIZ PARSER ===================== */
+function parseGVizDate_(col,cell){
+  if(!cell||cell.v===null||cell.v===undefined)return'';
+  if(col.type==='date'||col.type==='datetime'){
+    var m=String(cell.v).match(/Date\((\d+),(\d+),(\d+)/);
+    if(m){ var mo=String(parseInt(m[2])+1).padStart(2,'0'); return m[1]+'-'+mo+'-'+String(m[3]).padStart(2,'0'); }
+    return cell.f||String(cell.v);
+  }
+  return(cell.v!==null&&cell.v!==undefined)?String(cell.v):'';
+}
+
+/* ===================== GROUPING ===================== */
+// Input: flat rows. Output: map keyed by data_moldagem+traco_id+idade
+// Each group: { data_moldagem, traco_id, idade_dias, cps:[{cp,mpa,data_ruptura}] }
+function buildGroups(rawRows){
+  var map=new Map();
+  rawRows.forEach(function(r){
+    var key=r.data_moldagem+'|'+r.traco_id+'|'+r.idade_dias;
+    if(!map.has(key))map.set(key,{data_moldagem:r.data_moldagem,traco_id:r.traco_id,idade_dias:parseInt(r.idade_dias)||0,cps:[]});
+    map.get(key).cps.push({cp:parseInt(r.cp)||0,mpa:r.mpa,data_ruptura:r.data_ruptura});
+  });
+  // compute avg per group
+  var groups=Array.from(map.values());
+  groups.forEach(function(g){
+    g.cps.sort(function(a,b){return a.cp-b.cp;});
+    var vals=g.cps.map(function(c){return r1(c.mpa);}).filter(function(v){return v!==null;});
+    g.mpa1=g.cps[0]?r1(g.cps[0].mpa):null;
+    g.mpa2=g.cps[1]?r1(g.cps[1].mpa):null;
+    g.med=vals.length?r1(avg(vals)):null;
+    g.data_ruptura=g.cps[0]?g.cps[0].data_ruptura:'';
+    var meta=META_FAIXA[g.idade_dias];
+    if(g.med===null){ g.status='pend'; }
+    else if(meta&&g.med<meta.min){ g.status='fail'; }
+    else if(meta&&g.med>meta.max){ g.status='warn'; }
+    else { g.status='ok'; }
+  });
+  return groups;
+}
+
+// Apply period filter to groups
+function filterGroups(groups,mes,ano){
+  return groups.filter(function(g){
+    if(ano&&anoNum(g.data_moldagem)!==ano)return false;
+    if(mes&&mesNum(g.data_moldagem)!==mes)return false;
+    return true;
+  });
+}
+
+/* ===================== KPI COMPUTATION ===================== */
+function computeKPI(groups, age){
+  var sub=groups.filter(function(g){return g.idade_dias===age;});
+  var vals=sub.map(function(g){return g.med;}).filter(function(v){return v!==null;});
+  var n=sub.length;
+  var mean=vals.length?r1(avg(vals)):null;
+  var stddev=vals.length>=2?sd(vals):null;
+  var ok=sub.filter(function(g){return g.status==='ok';}).length;
+  var fail=sub.filter(function(g){return g.status==='fail';}).length;
+  var pct=n>0?Math.round((ok/n)*100):null;
+  var meta=META_FAIXA[age];
+  var fckEst=mean!==null&&stddev!==null?r1(mean-1.65*stddev):null;
+  return{n:n,mean:mean,stddev:stddev,ok:ok,fail:fail,pct:pct,meta:meta,fckEst:fckEst};
+}
+
+/* ===================== RENDER KPIs ===================== */
+function renderKPIs(groups){
+  var AGE_LABELS={1:'&#60; 24 Horas',3:'3 Dias',7:'7 Dias',28:'28 Dias'};
+  var AGE_HDR_CLS={1:'hdr-1',3:'hdr-3',7:'hdr-7',28:'hdr-28'};
+  var html='';
+  AGES.forEach(function(age){
+    var k=computeKPI(groups,age);
+    var pctCls=k.pct===null?'kpi-neu':k.pct>=90?'kpi-ok':k.pct>=70?'kpi-warn':'kpi-fail';
+    var meanCls=k.mean===null?'kpi-neu':(k.meta&&k.mean>=k.meta.min?'kpi-ok':'kpi-fail');
+    html+='<div class="kpi-group-title"><span class="age-hdr '+AGE_HDR_CLS[age]+'">'+AGE_LABELS[age]+'</span></div>';
+    html+='<div class="kpi-grid">';
+    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">Amostras</div><div class="kpi-val">'+k.n+'</div><div class="kpi-sub">moldagens analisadas</div></div>';
+    html+='<div class="kpi-card '+meanCls+'"><div class="kpi-label">M&#233;dia MPa</div><div class="kpi-val">'+(k.mean!==null?k.mean:'--')+'</div><div class="kpi-sub">faixa: '+(k.meta?k.meta.min+' &ndash; '+k.meta.max:'--')+' MPa</div></div>';
+    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">Sd estimado</div><div class="kpi-val">'+(k.stddev!==null?k.stddev:'--')+'</div><div class="kpi-sub">desvio padr&#227;o (MPa)</div></div>';
+    html+='<div class="kpi-card '+pctCls+'"><div class="kpi-label">Conformes</div><div class="kpi-val">'+(k.pct!==null?k.pct+'%':'--')+'</div><div class="kpi-sub">'+k.ok+' de '+k.n+' dentro da faixa</div></div>';
+    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">N&#227;o Conforme</div><div class="kpi-val" style="color:#f87171;">'+(k.n?k.fail:'-')+'</div><div class="kpi-sub">abaixo do m&#237;nimo</div></div>';
+    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">fck,est</div><div class="kpi-val" style="color:#c4b5fd;">'+(k.fckEst!==null?k.fckEst:'--')+'</div><div class="kpi-sub">MPa (&#956; &minus; 1,65&sigma;)</div></div>';
+    html+='</div>';
+  });
+  document.getElementById('kpiSection').innerHTML=html;
+}
+
+/* ===================== CHARTS ===================== */
+var _charts={};
+
+function destroyChart(id){ if(_charts[id]){ _charts[id].destroy(); delete _charts[id]; } }
+
+function buildMonthlyData(groups,age){
+  var byMonth={};
+  groups.filter(function(g){return g.idade_dias===age&&g.med!==null;}).forEach(function(g){
+    var mn=mesNum(g.data_moldagem); var an=anoNum(g.data_moldagem);
+    if(!mn||!an)return;
+    var key=an+'-'+mn;
+    if(!byMonth[key])byMonth[key]={key:key,mes:mn,ano:an,vals:[]};
+    byMonth[key].vals.push(g.med);
+  });
+  var sorted=Object.values(byMonth).sort(function(a,b){return a.key.localeCompare(b.key);});
+  return{
+    labels:sorted.map(function(x){return mesAbrev(x.mes,x.ano);}),
+    values:sorted.map(function(x){return r1(avg(x.vals));}),
+    mins:sorted.map(function(){return META_FAIXA[age]?META_FAIXA[age].min:null;}),
+    maxs:sorted.map(function(){return META_FAIXA[age]?META_FAIXA[age].max:null;})
+  };
+}
+
+function makeLineChart(canvasId, data, color, fill){
+  destroyChart(canvasId);
+  var ctx=document.getElementById(canvasId).getContext('2d');
+  _charts[canvasId]=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:data.labels,
+      datasets:[
+        { label:'M\u00e9dia MPa', data:data.values, borderColor:color, backgroundColor:fill, borderWidth:2.5, pointRadius:4, pointHoverRadius:6, tension:.35, fill:true },
+        { label:'M\u00edn.', data:data.mins, borderColor:'rgba(239,68,68,.6)', borderDash:[5,4], borderWidth:1.5, pointRadius:0, fill:false },
+        { label:'M\u00e1x.', data:data.maxs, borderColor:'rgba(245,158,11,.5)', borderDash:[5,4], borderWidth:1.5, pointRadius:0, fill:false }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:true,
+      plugins:{ legend:{ labels:{ color:'#94a3b8', font:{size:10} } } },
+      scales:{
+        x:{ ticks:{ color:'#94a3b8', font:{size:10} }, grid:{ color:'rgba(255,255,255,.05)' } },
+        y:{ ticks:{ color:'#94a3b8', font:{size:10} }, grid:{ color:'rgba(255,255,255,.07)' }, title:{ display:true, text:'MPa', color:'#64748b', font:{size:10} } }
+      }
     }
-  }catch(e){}
+  });
+}
+
+function makeShewhartChart(groups){
+  destroyChart('chartShewhart');
+  var sub=groups.filter(function(g){return g.idade_dias===28&&g.med!==null;});
+  sub.sort(function(a,b){return a.data_moldagem.localeCompare(b.data_moldagem);});
+  var vals=sub.map(function(g){return g.med;});
+  if(!vals.length)return;
+  var mean=avg(vals); var stddev=sd(vals)||0;
+  var ucl=r1(mean+3*stddev); var lcl=r1(mean-3*stddev); var cl=r1(mean);
+  var ctx=document.getElementById('chartShewhart').getContext('2d');
+  _charts['chartShewhart']=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:sub.map(function(g,i){return fmtDate(g.data_moldagem)+' #'+(i+1);}),
+      datasets:[
+        { label:'M\u00e9dia MPa', data:vals, borderColor:'#a855f7', backgroundColor:'rgba(168,85,247,.12)', borderWidth:2, pointRadius:3, tension:.2, fill:true },
+        { label:'LC ('+cl+')', data:vals.map(function(){return cl;}), borderColor:'rgba(100,200,100,.7)', borderDash:[6,3], borderWidth:1.5, pointRadius:0, fill:false },
+        { label:'LSC ('+ucl+')', data:vals.map(function(){return ucl;}), borderColor:'rgba(239,68,68,.7)', borderDash:[4,3], borderWidth:1.5, pointRadius:0, fill:false },
+        { label:'LIC ('+lcl+')', data:vals.map(function(){return lcl;}), borderColor:'rgba(239,68,68,.7)', borderDash:[4,3], borderWidth:1.5, pointRadius:0, fill:false }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:true,
+      plugins:{ legend:{ labels:{ color:'#94a3b8', font:{size:10} } } },
+      scales:{
+        x:{ ticks:{ color:'#94a3b8', font:{size:10}, maxRotation:35 }, grid:{ color:'rgba(255,255,255,.05)' } },
+        y:{ ticks:{ color:'#94a3b8', font:{size:10} }, grid:{ color:'rgba(255,255,255,.07)' } }
+      }
+    }
+  });
+}
+
+/* ===================== TABELA ULTIMOS 5 DIAS ===================== */
+function renderUltimos(allGroups){
+  // get last 5 unique moldagem dates (descending)
+  var dates=[...new Set(allGroups.map(function(g){return g.data_moldagem;}).filter(Boolean))];
+  dates.sort(function(a,b){return b.localeCompare(a);});
+  var last5=dates.slice(0,5);
+  // para cada data: get unique traco_id
+  var rows=[];
+  last5.forEach(function(dt){
+    var tracoes=[...new Set(allGroups.filter(function(g){return g.data_moldagem===dt;}).map(function(g){return g.traco_id;}))];
+    tracoes.forEach(function(tr){
+      var byAge={};
+      allGroups.filter(function(g){return g.data_moldagem===dt&&g.traco_id===tr;}).forEach(function(g){ byAge[g.idade_dias]=g; });
+      rows.push({dt:dt,tr:tr,byAge:byAge});
+    });
+  });
+
+  function cell(g,age){
+    if(!g)return'<td class="v-pend">--</td><td class="v-pend">--</td><td class="v-pend">--</td>';
+    var cls=function(v){return'<td class="'+mpaClass(v,age)+'">'+fmtN(v)+'</td>';};
+    var medCls=g.med!==null?mpaClass(g.med,age):'v-pend';
+    return cls(g.mpa1)+cls(g.mpa2)+'<td class="'+medCls+'"><b>'+fmtN(g.med)+'</b></td>';
+  }
+  var html='';
+  rows.forEach(function(r){
+    html+='<tr>';
+    html+='<td>'+fmtDate(r.dt)+'</td>';
+    html+='<td class="lft">'+(r.tr||'--')+'</td>';
+    html+=cell(r.byAge[1]||r.byAge['1'],1);
+    html+=cell(r.byAge[3]||r.byAge['3'],3);
+    html+=cell(r.byAge[7]||r.byAge['7'],7);
+    html+=cell(r.byAge[28]||r.byAge['28'],28);
+    html+='</tr>';
+  });
+  if(!html)html='<tr><td colspan="14" style="padding:24px;text-align:center;color:var(--muted);">Sem dados dispon&#237;veis.</td></tr>';
+  document.getElementById('tblUltimosBody').innerHTML=html;
+}
+
+/* ===================== TABELA RESUMO MENSAL ===================== */
+function renderMensal(allGroups){
+  // get all month-year combos sorted desc
+  var byMonth={};
+  allGroups.forEach(function(g){
+    if(!g.data_moldagem)return;
+    var mn=mesNum(g.data_moldagem); var an=anoNum(g.data_moldagem);
+    if(!mn||!an)return;
+    var key=an+'-'+mn;
+    if(!byMonth[key])byMonth[key]={key:key,mes:mn,ano:an,groups:[]};
+    byMonth[key].groups.push(g);
+  });
+  var sorted=Object.values(byMonth).sort(function(a,b){return b.key.localeCompare(a.key);});
+  var html='';
+  sorted.forEach(function(m){
+    var row='<tr><td class="lft"><b>'+mesAbrev(m.mes,m.ano)+'</b></td>';
+    var allN=0; var allOk=0;
+    AGES.forEach(function(age){
+      var sub=m.groups.filter(function(g){return g.idade_dias===age;});
+      var vals=sub.map(function(g){return g.med;}).filter(function(v){return v!==null;});
+      var n=sub.length;
+      var mean=vals.length?r1(avg(vals)):null;
+      var stddev=vals.length>=2?sd(vals):null;
+      allN+=n;
+      allOk+=sub.filter(function(g){return g.status==='ok';}).length;
+      var meta=META_FAIXA[age];
+      var meanCls=mean!==null&&meta?(mean<meta.min?'v-fail':mean>meta.max?'v-warn':'v-ok'):'v-pend';
+      row+='<td>'+n+'</td>';
+      row+='<td class="'+meanCls+'">'+(mean!==null?mean:'--')+'</td>';
+      row+='<td>'+(stddev!==null?stddev:'--')+'</td>';
+    });
+    var pct=allN>0?Math.round((allOk/allN)*100):null;
+    var pctCls=pct===null?'v-pend':pct>=90?'v-ok':pct>=70?'v-warn':'v-fail';
+    row+='<td class="'+pctCls+'"><b>'+(pct!==null?pct+'%':'--')+'</b></td>';
+    row+='</tr>';
+    html+=row;
+  });
+  if(!html)html='<tr><td colspan="14" style="padding:24px;text-align:center;color:var(--muted);">Sem dados dispon&#237;veis.</td></tr>';
+  document.getElementById('tblMensalBody').innerHTML=html;
+}
+
+/* ===================== MAIN RENDER ===================== */
+var _allGroups=[];
+
+function renderAll(){
+  var mes=document.getElementById('filtroMes').value;
+  var ano=String(document.getElementById('filtroAno').value||'');
+  var groups=filterGroups(_allGroups,mes,ano);
+
+  renderKPIs(groups);
+
+  AGES.forEach(function(age){
+    var data=buildMonthlyData(groups,age);
+    makeLineChart('chart'+age,data,AGE_COLORS[age],AGE_FILLS[age]);
+  });
+
+  makeShewhartChart(groups);
+  renderUltimos(_allGroups);  // sempre com todos, nao filtrado
+  renderMensal(_allGroups);   // sempre com todos
+
+  // footer
+  document.getElementById('rptFooter').textContent=
+    'Total de registros: '+_allGroups.length+
+    ' | Per\u00edodo analisado: '+(mes?MESES_PT[parseInt(mes)-1]+'/':'')+ano+
+    ' | Gerado em: '+new Date().toLocaleString('pt-BR');
+}
+
+function applyFilters(){ renderAll(); }
+document.getElementById('filtroMes').addEventListener('change',applyFilters);
+document.getElementById('filtroAno').addEventListener('change',applyFilters);
+
+/* ===================== SHOW/HIDE ===================== */
+function showState(icon,html){
+  document.getElementById('stateBox').innerHTML='<div class="sico">'+icon+'</div>'+html;
+  document.getElementById('stateBox').style.display='';
+  document.getElementById('rptContent').style.display='none';
+}
+function showContent(){
+  document.getElementById('stateBox').style.display='none';
+  document.getElementById('rptContent').style.display='';
+}
+
+/* ===================== FETCH ===================== */
+async function loadData(){
+  try{
+    var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&gid='+SHEET_GID+'&t='+Date.now();
+    var res=await fetch(url,{redirect:'follow'});
+    var text=await res.text();
+    var start=text.indexOf('{'); var end=text.lastIndexOf('}');
+    if(start===-1||end===-1){ showState('&#128295;','<p>Resposta inv\u00e1lida da planilha.<br>Verifique se est\u00e1 compartilhada publicamente.</p>'); return; }
+    var parsed;
+    try{ parsed=JSON.parse(text.substring(start,end+1)); }
+    catch(e){ showState('&#128295;','<p>Erro ao ler dados.<br><code>'+e.message+'</code></p>'); return; }
+    if(!parsed||!parsed.table){ showState('&#9888;&#65039;','<p>Resposta inesperada da planilha.</p>'); return; }
+    var cols=parsed.table.cols;
+    var gvizRows=parsed.table.rows;
+    if(!gvizRows||!gvizRows.length){ showState('&#128237;','<p>Nenhum resultado registrado na planilha.</p>'); return; }
+    var rows=gvizRows.map(function(row){
+      var obj={};
+      cols.forEach(function(col,i){
+        var cell=row.c?row.c[i]:null;
+        if(col.type==='date'||col.type==='datetime') obj[col.label]=parseGVizDate_(col,cell);
+        else if(col.type==='number') obj[col.label]=(cell&&cell.v!==null&&cell.v!==undefined)?cell.v:'';
+        else obj[col.label]=(cell&&cell.v!==null&&cell.v!==undefined)?String(cell.v):'';
+      });
+      return{
+        data_moldagem:obj['Data_Moldagem']||'',
+        traco_id:obj['Tra\u00e7o_ID']||obj['Traco_ID']||obj['traco_id']||'',
+        cp:obj['CP']||'',
+        idade_dias:obj['Idade_dias']||obj['Idade_Dias']||'',
+        data_ruptura:obj['Data_Ruptura']||'',
+        mpa:obj['MPA']||''
+      };
+    }).filter(function(r){ return r.data_moldagem||r.mpa; });
+    if(!rows.length){ showState('&#128237;','<p>Nenhum resultado registrado na planilha.</p>'); return; }
+    _allGroups=buildGroups(rows);
+    showContent();
+    renderAll();
+  }catch(err){
+    showState('&#10060;','<p>Falha ao buscar dados:<br><code>'+err.message+'</code></p>');
+  }
+}
+
+document.getElementById('filtroAno').value=new Date().getFullYear();
+loadData();
+
+(async function(){
+  try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('../sw.js',{scope:'../'}); }catch(e){}
 })();
 </script>
 </body>
