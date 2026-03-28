@@ -186,6 +186,25 @@
       </div>
     </div>
 
+    <!-- ======= Pendencias de ruptura ======= -->
+    <div class="section-card">
+      <div class="section-title"><span>&#9888;&#65039;</span> Dias com Pend&#234;ncias de Rompimento</div>
+      <div class="tbl-wrap">
+        <table id="tblPendenciasRuptura" class="stat-tbl">
+          <thead>
+            <tr>
+              <th class="th-mold">DATA MOLDAGEM</th>
+              <th class="th-mold">TRA&#199;O</th>
+              <th class="th-mold">IDADE</th>
+              <th class="th-stat">CPs sem DATA_RUPTURA</th>
+              <th class="th-stat">TOTAL CPs</th>
+            </tr>
+          </thead>
+          <tbody id="tblPendenciasRupturaBody"></tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- ======= Resumo mensal ======= -->
     <div class="section-card">
       <div class="section-title"><span>&#128203;</span> Resumo Estat&#237;stico Mensal</div>
@@ -543,6 +562,44 @@ function renderMensal(allGroups){
   document.getElementById('tblMensalBody').innerHTML=html;
 }
 
+/* ===================== TABELA PENDENCIAS RUPTURA ===================== */
+function renderPendenciasRuptura(allGroups){
+  var pend=[];
+  allGroups.forEach(function(g){
+    var missing=(g.cps||[]).filter(function(cp){return !String(cp.data_ruptura||'').trim();});
+    if(!missing.length)return;
+    pend.push({
+      data_moldagem:g.data_moldagem,
+      traco_id:g.traco_id,
+      idade_dias:g.idade_dias,
+      missingCps:missing.map(function(cp){return cp.cp||'?';}).sort(function(a,b){return a-b;}),
+      total:(g.cps||[]).length
+    });
+  });
+
+  pend.sort(function(a,b){
+    if(a.data_moldagem===b.data_moldagem){
+      if(a.traco_id===b.traco_id)return a.idade_dias-b.idade_dias;
+      return String(a.traco_id||'').localeCompare(String(b.traco_id||''));
+    }
+    return String(b.data_moldagem||'').localeCompare(String(a.data_moldagem||''));
+  });
+
+  var html='';
+  pend.forEach(function(p){
+    html+='<tr>';
+    html+='<td>'+fmtDate(p.data_moldagem)+'</td>';
+    html+='<td class="lft">'+(p.traco_id||'--')+'</td>';
+    html+='<td>'+(p.idade_dias||'--')+' dias</td>';
+    html+='<td class="v-fail"><b>'+p.missingCps.join(', ')+'</b></td>';
+    html+='<td>'+p.total+'</td>';
+    html+='</tr>';
+  });
+
+  if(!html)html='<tr><td colspan="5" style="padding:24px;text-align:center;color:var(--muted);">Sem pend&#234;ncias de DATA_RUPTURA.</td></tr>';
+  document.getElementById('tblPendenciasRupturaBody').innerHTML=html;
+}
+
 /* ===================== MAIN RENDER ===================== */
 var _allGroups=[];
 
@@ -562,6 +619,7 @@ function renderAll(){
 
   makeShewhartChart(groups);
   renderUltimos(_allGroups);  // sempre com todos, nao filtrado
+  renderPendenciasRuptura(_allGroups); // sempre com todos, nao filtrado
   renderMensal(_allGroups);   // sempre com todos
 
   // footer
