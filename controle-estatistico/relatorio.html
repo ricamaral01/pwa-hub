@@ -225,6 +225,29 @@
       </div>
     </div>
 
+    <!-- ======= Controle diario de moldagem ======= -->
+    <div class="section-card">
+      <div class="section-title"><span>&#128198;</span> Controle Di&#225;rio de Moldagem (Dias &#218;teis)</div>
+      <div class="tbl-wrap">
+        <table id="tblMoldagemDiaria" class="stat-tbl">
+          <thead>
+            <tr>
+              <th class="th-mold">DATA</th>
+              <th class="th-stat">STATUS</th>
+              <th class="th-stat">TOTAL CPs</th>
+              <th class="th-stat">ESPERADO</th>
+              <th class="th-1">1d (2)</th>
+              <th class="th-3">3d (2)</th>
+              <th class="th-7">7d (2)</th>
+              <th class="th-28">28d (2)</th>
+              <th class="th-stat">FALTANTES</th>
+            </tr>
+          </thead>
+          <tbody id="tblMoldagemDiariaBody"></tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="rpt-footer" id="rptFooter"></div>
   </div>
 </div>
@@ -268,6 +291,24 @@ function mesAbrev(mes,ano){ return MESES_PT[parseInt(mes)-1]+'/'+(ano?ano.substr
 function r1(v){ return(v!==null&&v!==''&&!isNaN(parseFloat(v)))?Math.round(parseFloat(v)*10)/10:null; }
 function fmtN(v){ return v!==null?String(v):'--'; }
 function avg(arr){ if(!arr.length)return null; return arr.reduce(function(a,b){return a+b;},0)/arr.length; }
+function isoFromDate(d){
+  var y=d.getFullYear();
+  var m=String(d.getMonth()+1).padStart(2,'0');
+  var day=String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+function toDateObj(v){
+  v=String(v||'').trim();
+  var m=v.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m)return new Date(parseInt(m[1],10),parseInt(m[2],10)-1,parseInt(m[3],10));
+  m=v.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if(m)return new Date(parseInt(m[3],10),parseInt(m[2],10)-1,parseInt(m[1],10));
+  return null;
+}
+function isBusinessDay(d){
+  var wd=d.getDay();
+  return wd!==0&&wd!==6;
+}
 function sd(arr){
   if(arr.length<2)return null;
   var m=avg(arr);
@@ -600,6 +641,76 @@ function renderPendenciasRuptura(allGroups){
   document.getElementById('tblPendenciasRupturaBody').innerHTML=html;
 }
 
+/* ===================== CONTROLE DIARIO MOLDAGEM ===================== */
+function renderControleMoldagemDiaria(groups,mes,ano){
+  var EXPECTED_TOTAL=8;
+  var EXPECTED_BY_AGE={1:2,3:2,7:2,28:2};
+
+  var byDate={};
+  groups.forEach(function(g){
+    if(!g.data_moldagem)return;
+    if(!byDate[g.data_moldagem])byDate[g.data_moldagem]={1:0,3:0,7:0,28:0,total:0};
+    var qtd=(g.cps||[]).length;
+    var age=parseInt(g.idade_dias,10);
+    if(EXPECTED_BY_AGE.hasOwnProperty(age))byDate[g.data_moldagem][age]+=qtd;
+    byDate[g.data_moldagem].total+=qtd;
+  });
+
+  var startDate=null;
+  var endDate=null;
+  if(ano&&mes){
+    startDate=new Date(parseInt(ano,10),parseInt(mes,10)-1,1);
+    endDate=new Date(parseInt(ano,10),parseInt(mes,10),0);
+  }else if(ano){
+    startDate=new Date(parseInt(ano,10),0,1);
+    endDate=new Date(parseInt(ano,10),11,31);
+  }else{
+    var keys=Object.keys(byDate).sort();
+    if(keys.length){
+      startDate=toDateObj(keys[0]);
+      endDate=toDateObj(keys[keys.length-1]);
+    }
+  }
+
+  var html='';
+  if(startDate&&endDate){
+    var cur=new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate());
+    while(cur<=endDate){
+      if(isBusinessDay(cur)){
+        var key=isoFromDate(cur);
+        var day=byDate[key]||{1:0,3:0,7:0,28:0,total:0};
+        var f1=Math.max(0,EXPECTED_BY_AGE[1]-day[1]);
+        var f3=Math.max(0,EXPECTED_BY_AGE[3]-day[3]);
+        var f7=Math.max(0,EXPECTED_BY_AGE[7]-day[7]);
+        var f28=Math.max(0,EXPECTED_BY_AGE[28]-day[28]);
+        var faltantes=f1+f3+f7+f28;
+
+        var status='OK';
+        var statusCls='v-ok';
+        if(day.total===0){ status='Sem moldagem'; statusCls='v-fail'; }
+        else if(faltantes>0){ status='Incompleto'; statusCls='v-warn'; }
+        else if(day.total>EXPECTED_TOTAL){ status='Acima do esperado'; statusCls='v-neu'; }
+
+        html+='<tr>';
+        html+='<td>'+fmtDate(key)+'</td>';
+        html+='<td class="'+statusCls+'"><b>'+status+'</b></td>';
+        html+='<td><b>'+day.total+'</b></td>';
+        html+='<td>'+EXPECTED_TOTAL+'</td>';
+        html+='<td class="'+(day[1]===EXPECTED_BY_AGE[1]?'v-ok':'v-warn')+'">'+day[1]+'</td>';
+        html+='<td class="'+(day[3]===EXPECTED_BY_AGE[3]?'v-ok':'v-warn')+'">'+day[3]+'</td>';
+        html+='<td class="'+(day[7]===EXPECTED_BY_AGE[7]?'v-ok':'v-warn')+'">'+day[7]+'</td>';
+        html+='<td class="'+(day[28]===EXPECTED_BY_AGE[28]?'v-ok':'v-warn')+'">'+day[28]+'</td>';
+        html+='<td class="'+(faltantes===0?'v-ok':'v-fail')+'"><b>'+faltantes+'</b></td>';
+        html+='</tr>';
+      }
+      cur.setDate(cur.getDate()+1);
+    }
+  }
+
+  if(!html)html='<tr><td colspan="9" style="padding:24px;text-align:center;color:var(--muted);">Sem dados suficientes para o controle de moldagem.</td></tr>';
+  document.getElementById('tblMoldagemDiariaBody').innerHTML=html;
+}
+
 /* ===================== MAIN RENDER ===================== */
 var _allGroups=[];
 
@@ -620,6 +731,7 @@ function renderAll(){
   makeShewhartChart(groups);
   renderUltimos(_allGroups);  // sempre com todos, nao filtrado
   renderPendenciasRuptura(_allGroups); // sempre com todos, nao filtrado
+  renderControleMoldagemDiaria(groups,mes,ano);
   renderMensal(_allGroups);   // sempre com todos
 
   // footer
