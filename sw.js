@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v25";
+const CACHE = "ct-hub-v26";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -52,7 +52,10 @@ const ASSETS = [
   /* ---- Mapa de Concretagem ---- */
   "./mapa-concretagem/index.html",
   "./mapa-concretagem/app.js",
-  "./mapa-concretagem/styles.css"
+  "./mapa-concretagem/styles.css",
+
+  /* ---- Alertas ---- */
+  "./alertas.html"
 ];
 
 /* ---- INSTALL: cacheia tudo ---- */
@@ -133,6 +136,8 @@ self.addEventListener('push', e => {
   };
   try { data = Object.assign(data, e.data.json()); } catch (_) {}
 
+  _storeAlert(data.title, data.body, Date.now());
+
   e.waitUntil(
     self.registration.showNotification(data.title, {
       body:               data.body,
@@ -162,3 +167,27 @@ self.addEventListener('notificationclick', e => {
     })
   );
 });
+
+// ── IndexedDB: histórico de alertas ──────────────────────────
+function _storeAlert(title, body, ts) {
+  try {
+    const req = indexedDB.open('ct-alerts-db', 1);
+    req.onupgradeneeded = ev => {
+      ev.target.result.createObjectStore('alerts', { keyPath: 'id', autoIncrement: true });
+    };
+    req.onsuccess = ev => {
+      const db  = ev.target.result;
+      const tx  = db.transaction('alerts', 'readwrite');
+      const str = tx.objectStore('alerts');
+      str.add({ title, body, ts });
+      const cnt = str.count();
+      cnt.onsuccess = () => {
+        if (cnt.result > 100) {
+          str.openCursor().onsuccess = ce => {
+            if (ce.target.result) ce.target.result.delete();
+          };
+        }
+      };
+    };
+  } catch (_) {}
+}

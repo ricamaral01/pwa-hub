@@ -4,7 +4,7 @@
    - Push notifications (checklist enviada + alerta 08:30)
    ============================================================ */
 
-const CACHE = 'checklist-usina-v1';
+const CACHE = 'checklist-usina-v2';
 const CHECKLIST_ORIGIN = 'https://ricamaral01.github.io';
 const CHECKLIST_URL    = CHECKLIST_ORIGIN + '/pwa-hub/checklist-usina/';
 
@@ -57,6 +57,8 @@ self.addEventListener('push', e => {
   };
   try { data = Object.assign(data, e.data.json()); } catch (_) {}
 
+  _storeAlert(data.title, data.body, Date.now());
+
   e.waitUntil(
     self.registration.showNotification(data.title, {
       body:             data.body,
@@ -85,3 +87,27 @@ self.addEventListener('notificationclick', e => {
     })
   );
 });
+
+// ── IndexedDB: histórico de alertas ──────────────────────────
+function _storeAlert(title, body, ts) {
+  try {
+    const req = indexedDB.open('ct-alerts-db', 1);
+    req.onupgradeneeded = ev => {
+      ev.target.result.createObjectStore('alerts', { keyPath: 'id', autoIncrement: true });
+    };
+    req.onsuccess = ev => {
+      const db  = ev.target.result;
+      const tx  = db.transaction('alerts', 'readwrite');
+      const str = tx.objectStore('alerts');
+      str.add({ title, body, ts });
+      const cnt = str.count();
+      cnt.onsuccess = () => {
+        if (cnt.result > 100) {
+          str.openCursor().onsuccess = ce => {
+            if (ce.target.result) ce.target.result.delete();
+          };
+        }
+      };
+    };
+  } catch (_) {}
+}
