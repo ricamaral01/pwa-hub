@@ -2128,7 +2128,7 @@
             <button class="btn btn-primary" onclick="calcularExperimental()">🧮 Calcular Tudo</button>
             <button class="btn btn-accent" onclick="salvarExperimental()">💾 Salvar Traço Exp.</button>
             <button class="btn btn-warning" onclick="listarExperimentais()">📋 Listar Traços Exp.</button>
-            <button class="btn-print" onclick="imprimirSecao('sec-experimental','Relatório — Traço Experimental')">🖨️ Imprimir / PDF</button>
+            <button class="btn-print" onclick="imprimirExpTraco()">🖨️ Relatório / PDF</button>
         </div>
         <div id="exp-salvar-status" style="margin-top:12px;"></div>
 
@@ -4183,6 +4183,233 @@ function desenharGraficoManutencao(manut, tipoConsist) {
 
     svg += '</svg>';
     target.innerHTML = svg;
+}
+
+function imprimirExpTraco() {
+    const nome     = document.getElementById('exp_nome').value.trim() || 'Traço Experimental';
+    const fck      = parseFloat(document.getElementById('exp_fck').value) || 0;
+    const m        = getExpMassas();
+    const arPct    = parseFloat(document.getElementById('exp_ar').value) || 0;
+    const rho      = getRho();
+    const ac       = m.cim > 0 ? m.agua / m.cim : 0;
+    const aAgl     = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
+    const v        = {};
+    Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
+    const vTotal   = Object.values(v).reduce((a,b)=>a+b,0) + arPct * 10;
+    const consoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
+    const massaEsp = vTotal > 0 ? Object.values(m).reduce((a,b)=>a+b,0) * 1000 / vTotal : 0;
+    const mArg     = m.cim + m.adic + m.an + m.ai + m.adit;
+    const mAgrG    = m.b0 + m.b1;
+    const argMassa = (mArg + mAgrG) > 0 ? (mArg / (mArg + mAgrG)) * 100 : 0;
+    const volume   = parseFloat(document.getElementById('exp_volume').value) || 40;
+    const numBet   = parseFloat(document.getElementById('exp_num_betonadas').value) || 1;
+    const fator    = volume * numBet / 1000;
+
+    const tipoConsist = document.getElementById('exp_tipo_consist').value;
+    const cvLabel  = tipoConsist === 'slump' ? 'Slump' : 'Flow';
+    const cv       = parseFloat(document.getElementById('exp_consist_valor').value) || 0;
+    const c10      = document.getElementById('exp_consist_10min').value;
+    const c20      = document.getElementById('exp_consist_20min').value;
+    const c30      = document.getElementById('exp_consist_30min').value;
+    const tempAmb  = document.getElementById('exp_temp').value;
+    const tempConc = document.getElementById('exp_temp_concreto').value;
+    const obs      = document.getElementById('exp_obs').value.trim();
+    const usarUm   = document.getElementById('exp_usar_umidade').checked;
+    const umid     = getExpUmidades();
+    const tipoCim  = document.getElementById('exp_tipo_cimento')?.value || 'cpv';
+    const nomeCim  = getNomeCimento ? getNomeCimento(tipoCim) : tipoCim.toUpperCase();
+    const resist   = getExpResistencias();
+    const m24h     = mediaResist(resist.r24h);
+    const m3d      = mediaResist(resist.r3d);
+    const m7d      = mediaResist(resist.r7d);
+    const m28d     = mediaResist(resist.r28d);
+    const proj     = projetarResistencia28d(resist);
+    const dataStr  = new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+
+    const row = (l,v,bold) => `<tr><td style="padding:5px 8px;border:1px solid #ddd;color:#555;font-size:.8rem;">${l}</td><td style="padding:5px 8px;border:1px solid #ddd;font-weight:${bold?700:400};color:#1a1f2e;">${v}</td></tr>`;
+    const fmtN = (n, d=1) => (n !== null && n !== undefined) ? Number(n).toFixed(d).replace('.',',') : '—';
+
+    /* Materiais por m³ e por betonada */
+    const matRows = [
+        ['Cimento',          m.cim,  m.cim*fator],
+        ['Adição',           m.adic, m.adic*fator],
+        ['Areia Natural',    m.an,   m.an*fator],
+        ['Areia Industrial', m.ai,   m.ai*fator],
+        ['Brita 0',          m.b0,   m.b0*fator],
+        ['Brita ½',          m.b1,   m.b1*fator],
+        ['Água',             m.agua, m.agua*fator],
+        ['Aditivo SP',       m.adit, m.adit*fator],
+    ];
+    const matHtml = matRows.map(([lbl, v1, vt]) =>
+        `<tr><td style="padding:5px 8px;border:1px solid #ddd;font-size:.82rem;">${lbl}</td>
+         <td style="padding:5px 8px;border:1px solid #ddd;text-align:right;">${fmtN(v1,1)}</td>
+         <td style="padding:5px 8px;border:1px solid #ddd;text-align:right;font-weight:700;">${fmtN(vt,2)}</td></tr>`
+    ).join('');
+
+    /* Resistências */
+    const resistCols = [
+        {label:'24 horas', d:resist.r24h, med:m24h, meta:fck*0.25},
+        {label:'3 dias',   d:resist.r3d,  med:m3d,  meta:fck*0.46},
+        {label:'7 dias',   d:resist.r7d,  med:m7d,  meta:fck*0.65},
+        {label:'28 dias',  d:resist.r28d, med:m28d, meta:fck},
+    ];
+    const resistHtml = resistCols.filter(r => r.med !== null).map(r => {
+        const ok = r.med >= r.meta;
+        const pct = fck > 0 ? (r.med/fck*100).toFixed(1)+'%' : '—';
+        return `<tr>
+          <td style="padding:5px 8px;border:1px solid #ddd;font-size:.82rem;font-weight:700;">${r.label}</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:right;">${r.d.cp1 !== null ? fmtN(r.d.cp1,1) : '—'}</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:right;">${r.d.cp2 !== null ? fmtN(r.d.cp2,1) : '—'}</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:right;font-weight:700;color:${ok?'#2e7d32':'#c62828'};">${fmtN(r.med,1)}</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:center;">${pct}</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:center;">${ok?'✓ OK':'✗ Baixo'}</td>
+        </tr>`;
+    }).join('');
+
+    /* Projeções */
+    const projLabels = {de24h:'A partir 24h (×4,0)',de3d:'A partir 3d (×2,17)',de7d:'A partir 7d (×1,54)',real:'Medido 28 dias',logRegressao:'Regressão log. (3d+7d)'};
+    const projHtml = Object.entries(proj).map(([k,val]) => {
+        const ok = val >= fck;
+        return `<tr>
+          <td style="padding:5px 8px;border:1px solid #ddd;font-size:.82rem;">${projLabels[k]||k}</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:right;font-weight:700;color:${ok?'#2e7d32':'#c62828'};">${fmtN(val,1)} MPa</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:center;">${ok?'≥ FCK':'< FCK'}</td>
+        </tr>`;
+    }).join('');
+
+    /* Manutenção */
+    const manutRows = [
+        {t:'0 min (inicial)', v:cv || null},
+        {t:'10 min', v: c10 !== '' ? parseFloat(c10) : null},
+        {t:'20 min', v: c20 !== '' ? parseFloat(c20) : null},
+        {t:'30 min', v: c30 !== '' ? parseFloat(c30) : null},
+    ].filter(r => r.v !== null);
+    const manutHtml = manutRows.length > 1 ? manutRows.map(r => {
+        const perda = cv > 0 ? ((cv - r.v)/cv*100) : 0;
+        return `<tr>
+          <td style="padding:5px 8px;border:1px solid #ddd;">${r.t}</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:right;font-weight:700;">${fmtN(r.v,0)} mm</td>
+          <td style="padding:5px 8px;border:1px solid #ddd;text-align:right;">${perda>0?fmtN(perda,1)+'%':'—'}</td>
+        </tr>`;
+    }).join('') : '';
+
+    const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+    <title>Relatório — Traço Experimental: ${nome}</title>
+    <style>
+      @page { size:A4; margin:18mm 14mm 16mm; }
+      * { box-sizing:border-box; margin:0; padding:0; }
+      body { font-family:'Segoe UI',Arial,sans-serif; font-size:.88rem; color:#1a1f2e; background:#fff; }
+      .header { background:linear-gradient(135deg,#1a1f2e 0%,#2d3a5e 100%); color:#fff; padding:16px 20px 12px; border-radius:8px 8px 0 0; margin-bottom:14px; }
+      .header h1 { font-size:1.3rem; font-weight:900; letter-spacing:.02em; }
+      .header .sub { font-size:.75rem; opacity:.75; margin-top:4px; }
+      .header .badge { display:inline-block; background:#e8762a; color:#fff; border-radius:20px; padding:2px 12px; font-size:.75rem; font-weight:700; margin-top:6px; }
+      .section-title { background:#e8762a; color:#fff; padding:5px 12px; font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; border-radius:4px; margin:14px 0 6px; }
+      .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:10px; }
+      table { width:100%; border-collapse:collapse; margin-bottom:6px; font-size:.82rem; }
+      th { background:#1a1f2e; color:#fff; padding:6px 8px; text-align:left; font-size:.76rem; font-weight:700; }
+      td { padding:5px 8px; border:1px solid #ddd; }
+      tr:nth-child(even) td { background:#f7f9fc; }
+      .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px; }
+      .kpi { background:#f0f4ff; border:1.5px solid #c5cae9; border-radius:8px; padding:8px 10px; text-align:center; }
+      .kpi .lbl { font-size:.65rem; color:#5c6bc0; text-transform:uppercase; letter-spacing:.04em; }
+      .kpi .val { font-size:1.15rem; font-weight:900; color:#1a237e; margin-top:2px; }
+      .obs-box { background:#fffbe6; border:1.5px solid #ffe082; border-radius:6px; padding:10px 14px; font-size:.83rem; color:#5d4037; margin-top:10px; }
+      .footer { border-top:1.5px solid #ddd; margin-top:18px; padding-top:10px; font-size:.72rem; color:#888; display:flex; justify-content:space-between; }
+      @media print { body { -webkit-print-color-adjust:exact; print-color-adjust:exact; } .no-print { display:none; } }
+    </style></head><body>
+    <div class="header">
+      <h1>🔬 Relatório de Traço Experimental</h1>
+      <div class="sub">${nome}</div>
+      <div class="badge">FCK ${fck} MPa · ${nomeCim} · a/c ${fmtN(ac,3)}</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="lbl">FCK Projeto</div><div class="val">${fck} MPa</div></div>
+      <div class="kpi"><div class="lbl">Relação a/c</div><div class="val">${fmtN(ac,3)}</div></div>
+      <div class="kpi"><div class="lbl">Consumo Cim.</div><div class="val">${fmtN(consoCim,1)} kg/m³</div></div>
+      <div class="kpi"><div class="lbl">${cvLabel}</div><div class="val">${cv > 0 ? cv+' mm' : '—'}</div></div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <div class="section-title">Parâmetros do Traço</div>
+        <table>
+          ${row('Tipo de Cimento', nomeCim, false)}
+          ${row('a/c (água/cimento)', fmtN(ac,3), true)}
+          ${row('a/aglomerante', fmtN(aAgl,3), false)}
+          ${row('Consumo de Cimento', fmtN(consoCim,1)+' kg/m³', true)}
+          ${row('Massa Esp. Concreto', fmtN(massaEsp,0)+' kg/m³', false)}
+          ${row('Teor de Argamassa', fmtN(argMassa,1)+'%', false)}
+          ${row('Ar Incorporado', arPct+'%', false)}
+          ${row('FCK de Projeto', fck+' MPa', true)}
+        </table>
+      </div>
+      <div>
+        <div class="section-title">Volume / Consistência</div>
+        <table>
+          ${row('Volume por Betonada', volume+' L', false)}
+          ${row('Nº de Betonadas', numBet, false)}
+          ${row('Volume Total', fmtN(volume*numBet,0)+' L', true)}
+          ${row('Tipo Consistência', cvLabel, false)}
+          ${row(cvLabel+' Inicial', cv > 0 ? cv+' mm' : '—', true)}
+          ${c10 ? row(cvLabel+' 10 min', c10+' mm', false) : ''}
+          ${c20 ? row(cvLabel+' 20 min', c20+' mm', false) : ''}
+          ${c30 ? row(cvLabel+' 30 min', c30+' mm', false) : ''}
+          ${tempAmb ? row('Temp. Ambiente', tempAmb+'°C', false) : ''}
+          ${tempConc ? row('Temp. Concreto', tempConc+'°C', false) : ''}
+        </table>
+      </div>
+    </div>
+
+    <div class="section-title">Composição do Traço (kg/m³ e por betonada)</div>
+    <table>
+      <thead><tr>
+        <th>Material</th>
+        <th style="text-align:right">1 m³ (kg)</th>
+        <th style="text-align:right">${fmtN(volume*numBet,0)} L (seco, kg)</th>
+        ${usarUm ? '<th style="text-align:right">Umid. (%)</th><th style="text-align:right">Úmido (kg)</th>' : ''}
+      </tr></thead>
+      <tbody>
+        ${matRows.map(([lbl, v1, vt]) => {
+            const umMap = {Cimento:null,Adição:null,'Areia Natural':umid.an,'Areia Industrial':umid.ai,'Brita 0':umid.b0,'Brita ½':umid.b1,Água:null,'Aditivo SP':null};
+            const u = umMap[lbl];
+            const mUmido = u !== null ? v1 * fator * (1 + u/100) : (lbl === 'Água' ? Math.max(0, v1*fator - (m.an*fator*(umid.an/100)+m.ai*fator*(umid.ai/100)+m.b0*fator*(umid.b0/100)+m.b1*fator*(umid.b1/100))) : vt);
+            return `<tr><td>${lbl}</td><td style="text-align:right;">${fmtN(v1,1)}</td><td style="text-align:right;font-weight:700;">${fmtN(vt,2)}</td>${usarUm ? `<td style="text-align:right;">${u !== null ? fmtN(u,1) : '—'}</td><td style="text-align:right;font-weight:700;">${fmtN(mUmido,2)}</td>` : ''}</tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+
+    ${resistHtml ? `<div class="section-title">Resistências à Compressão</div>
+    <table><thead><tr><th>Idade</th><th style="text-align:right">CP1 (MPa)</th><th style="text-align:right">CP2 (MPa)</th><th style="text-align:right">Média (MPa)</th><th style="text-align:center">% FCK</th><th style="text-align:center">Status</th></tr></thead>
+    <tbody>${resistHtml}</tbody></table>` : ''}
+
+    ${projHtml ? `<div class="section-title">Projeções para 28 dias</div>
+    <table><thead><tr><th>Método</th><th style="text-align:right">fc₂₈ Projetado (MPa)</th><th style="text-align:center">vs FCK</th></tr></thead>
+    <tbody>${projHtml}</tbody></table>` : ''}
+
+    ${manutHtml ? `<div class="section-title">Manutenção do ${cvLabel}</div>
+    <table><thead><tr><th>Tempo</th><th style="text-align:right">Valor (mm)</th><th style="text-align:right">Perda (%)</th></tr></thead>
+    <tbody>${manutHtml}</tbody></table>` : ''}
+
+    ${obs ? `<div class="obs-box"><strong>Observações:</strong> ${obs}</div>` : ''}
+
+    <div class="footer">
+      <span>ConcreTrack — Traço Experimental</span>
+      <span>${nome}</span>
+      <span>${dataStr}</span>
+    </div>
+
+    <div class="no-print" style="text-align:center;padding:18px;">
+      <button onclick="window.print()" style="background:#e8762a;color:#fff;border:none;border-radius:8px;padding:10px 32px;font-size:1rem;font-weight:700;cursor:pointer;">🖨️ Imprimir / Salvar PDF</button>
+      <button onclick="window.close()" style="margin-left:12px;background:#ddd;color:#333;border:none;border-radius:8px;padding:10px 24px;font-size:1rem;cursor:pointer;">✖ Fechar</button>
+    </div>
+    </body></html>`;
+
+    const w = window.open('', 'expPrint', 'width=900,height=700,scrollbars=yes');
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+    setTimeout(() => { try { w.focus(); } catch(e){} }, 400);
 }
 
 async function salvarExperimental() {
@@ -8890,6 +9117,7 @@ async function mccTracaoRefreshBanco() {
     if (st) st.innerHTML = '<span style="color:#888;">⏳ Carregando traços...</span>';
     const local = mccTracaoGetBanco().map(item => ({ ...item, _source: 'local' }));
     let remote = [];
+    let expRemote = [];
     try {
         const resp = await fetch(DOSAGEM_WEBAPP_URL + '?action=listar_tracos');
         const data = await resp.json();
@@ -8913,7 +9141,30 @@ async function mccTracaoRefreshBanco() {
             }));
         }
     } catch(e) { /* servidor offline, usa apenas banco local */ }
-    _mccTracaoBancoAll = [...local, ...remote];
+    try {
+        const resp2 = await fetch(DOSAGEM_WEBAPP_URL + '?action=listar_experimentais');
+        const data2 = await resp2.json();
+        if (data2.ok && Array.isArray(data2.tracos)) {
+            expRemote = data2.tracos.map(t => ({
+                id: 'exp_' + (t.id || t.dataHora || Math.random().toString(36).slice(2)),
+                nome: (t.nomeTraco || '(sem nome)') + ' [EXP]',
+                fck: t.fck, flow: t.consistencia, ac: t.ac,
+                aplicacao: 'Experimental', responsavel: '',
+                masses: {
+                    cimento:  Number(t.cimento)          || 0,
+                    adicao:   Number(t.adicao)            || 0,
+                    areiaNat: Number(t.areiaNatural)      || 0,
+                    areiaInd: Number(t.areiaIndustrial)   || 0,
+                    brita0:   Number(t.brita0)            || 0,
+                    brita1:   Number(t.brita1)            || 0,
+                    agua:     Number(t.agua)              || 0,
+                    aditivo:  Number(t.aditivoSP)         || 0
+                },
+                _source: 'experimental', _date: t.dataHora
+            }));
+        }
+    } catch(e) { /* experimental offline */ }
+    _mccTracaoBancoAll = [...local, ...remote, ...expRemote];
     const prevId = _mccTracaoCurrentData?.id;
     while (sel.options.length > 1) sel.remove(1);
     if (local.length) {
@@ -8938,10 +9189,21 @@ async function mccTracaoRefreshBanco() {
         });
         sel.appendChild(og2);
     }
+    if (expRemote.length) {
+        const og3 = document.createElement('optgroup');
+        og3.label = '🔬 Traços Experimentais (Servidor)';
+        expRemote.forEach((item, idx) => {
+            const opt = document.createElement('option');
+            opt.value = local.length + remote.length + idx;
+            opt.textContent = item.nome + (item.fck ? ' — C' + item.fck : '') + (item._date ? ' · ' + item._date.substring(0, 10) : '');
+            og3.appendChild(opt);
+        });
+        sel.appendChild(og3);
+    }
     if (_mccTracaoBancoAll.length === 0) {
         if (st) st.innerHTML = '<span style="color:#f59e0b;">⚠️ Nenhum traço encontrado. Salve traços no banco ou na aba Traços Salvos.</span>';
     } else {
-        if (st) st.innerHTML = '<span style="color:#166534;">✅ ' + _mccTracaoBancoAll.length + ' traço(s) — ' + local.length + ' local · ' + remote.length + ' servidor</span>';
+        if (st) st.innerHTML = '<span style="color:#166534;">✅ ' + _mccTracaoBancoAll.length + ' traço(s) — ' + local.length + ' local · ' + remote.length + ' salvos · ' + expRemote.length + ' experimental</span>';
         setTimeout(() => { const s = document.getElementById('mcctr_status'); if (s && !s.dataset.editado) s.innerHTML = ''; }, 3500);
     }
     if (prevId) {
