@@ -137,6 +137,12 @@
     <!-- ======= KPIs por idade ======= -->
     <div id="kpiSection"></div>
 
+    <!-- ======= Comparativo de Idades ======= -->
+    <div class="section-card">
+      <div class="section-title"><span>&#128200;</span> Comparat&#237;vo de Idades &#8212; M&#233;dia por M&#234;s</div>
+      <div class="chart-box" style="max-width:100%; background:rgba(255,255,255,.04);"><canvas id="chartAgeComparison" style="max-height:280px;"></canvas></div>
+    </div>
+
     <!-- ======= Graficos ======= -->
     <div class="section-card" style="margin-top:16px;">
       <div class="section-title"><span>&#128200;</span> Evolu&#231;&#227;o da Resist&#234;ncia por M&#234;s</div>
@@ -335,8 +341,6 @@ function renderKPIs(groups){
     html+='<div class="kpi-card kpi-neu"><div class="kpi-label">Amostras</div><div class="kpi-val">'+k.n+'</div><div class="kpi-sub">moldagens analisadas</div></div>';
     html+='<div class="kpi-card '+meanCls+'"><div class="kpi-label">M&#233;dia MPa</div><div class="kpi-val">'+(k.mean!==null?k.mean:'--')+'</div><div class="kpi-sub">faixa: '+(k.meta?k.meta.min+' &ndash; '+k.meta.max:'--')+' MPa</div></div>';
     html+='<div class="kpi-card kpi-neu"><div class="kpi-label">Sd estimado</div><div class="kpi-val">'+(k.stddev!==null?k.stddev:'--')+'</div><div class="kpi-sub">desvio padr&#227;o (MPa)</div></div>';
-    html+='<div class="kpi-card '+pctCls+'"><div class="kpi-label">Conformes</div><div class="kpi-val">'+(k.pct!==null?k.pct+'%':'--')+'</div><div class="kpi-sub">'+k.ok+' de '+k.n+' dentro da faixa</div></div>';
-    html+='<div class="kpi-card kpi-neu"><div class="kpi-label">N&#227;o Conforme</div><div class="kpi-val" style="color:#f87171;">'+(k.n?k.fail:'-')+'</div><div class="kpi-sub">abaixo do m&#237;nimo</div></div>';
     html+='<div class="kpi-card kpi-neu"><div class="kpi-label">fck,est</div><div class="kpi-val" style="color:#c4b5fd;">'+(k.fckEst!==null?k.fckEst:'--')+'</div><div class="kpi-sub">MPa (&#956; &minus; 1,65&sigma;)</div></div>';
     html+='</div>';
   });
@@ -385,6 +389,45 @@ function makeLineChart(canvasId, data, color, fill){
       scales:{
         x:{ ticks:{ color:'#94a3b8', font:{size:10} }, grid:{ color:'rgba(255,255,255,.05)' } },
         y:{ ticks:{ color:'#94a3b8', font:{size:10} }, grid:{ color:'rgba(255,255,255,.07)' }, title:{ display:true, text:'MPa', color:'#64748b', font:{size:10} } }
+      }
+    }
+  });
+}
+
+function makeAgeComparisonChart(groups){
+  destroyChart('chartAgeComparison');
+  var byMonth={};
+  groups.filter(function(g){return g.med!==null;}).forEach(function(g){
+    var mn=mesNum(g.data_moldagem); var an=anoNum(g.data_moldagem);
+    if(!mn||!an)return;
+    var key=an+'-'+mn;
+    if(!byMonth[key])byMonth[key]={key:key,mes:mn,ano:an,byAge:{1:[],3:[],7:[],28:[]}};
+    byMonth[key].byAge[g.idade_dias].push(g.med);
+  });
+  var sorted=Object.values(byMonth).sort(function(a,b){return a.key.localeCompare(b.key);});
+  var labels=sorted.map(function(x){return mesAbrev(x.mes,x.ano);});
+  var d1=sorted.map(function(x){return x.byAge[1].length?r1(avg(x.byAge[1])):null;});
+  var d3=sorted.map(function(x){return x.byAge[3].length?r1(avg(x.byAge[3])):null;});
+  var d7=sorted.map(function(x){return x.byAge[7].length?r1(avg(x.byAge[7])):null;});
+  var d28=sorted.map(function(x){return x.byAge[28].length?r1(avg(x.byAge[28])):null;});
+  var ctx=document.getElementById('chartAgeComparison').getContext('2d');
+  _charts['chartAgeComparison']=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:labels,
+      datasets:[
+        { label:'1 dia', data:d1, borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,.12)', borderWidth:2.5, pointRadius:4, tension:.35 },
+        { label:'3 dias', data:d3, borderColor:'#22c55e', backgroundColor:'rgba(34,197,94,.12)', borderWidth:2.5, pointRadius:4, tension:.35 },
+        { label:'7 dias', data:d7, borderColor:'#f97316', backgroundColor:'rgba(249,115,22,.12)', borderWidth:2.5, pointRadius:4, tension:.35 },
+        { label:'28 dias', data:d28, borderColor:'#a855f7', backgroundColor:'rgba(168,85,247,.12)', borderWidth:2.5, pointRadius:4, tension:.35 }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:true,
+      plugins:{ legend:{ labels:{ color:'#94a3b8', font:{size:11}, padding:12 } } },
+      scales:{
+        x:{ ticks:{ color:'#94a3b8', font:{size:11} }, grid:{ color:'rgba(255,255,255,.05)' } },
+        y:{ ticks:{ color:'#94a3b8', font:{size:11} }, grid:{ color:'rgba(255,255,255,.07)' }, title:{ display:true, text:'M&#233;dia de MPa', color:'#64748b', font:{size:11} } }
       }
     }
   });
@@ -509,6 +552,8 @@ function renderAll(){
   var groups=filterGroups(_allGroups,mes,ano);
 
   renderKPIs(groups);
+
+  makeAgeComparisonChart(groups);
 
   AGES.forEach(function(age){
     var data=buildMonthlyData(groups,age);

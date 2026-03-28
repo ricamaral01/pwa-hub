@@ -83,8 +83,12 @@ def _send_push_all(title, body, url='https://ricamaral01.github.io/pwa-hub/check
                 )
             except WebPushException as exc:
                 resp = exc.response
+                status = resp.status_code if resp is not None else 'N/A'
+                print(f"[PUSH] WebPushException status={status} endpoint={sub.get('endpoint','?')[:60]} err={exc}", flush=True)
                 if resp is not None and resp.status_code in (404, 410):
                     dead.append(sub)  # subscription expirada
+            except Exception as exc:
+                print(f"[PUSH] Unexpected error: {exc}", flush=True)
         if dead:
             data['subscriptions'] = [
                 s for s in data['subscriptions'] if s not in dead
