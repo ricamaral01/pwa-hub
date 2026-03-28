@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CONCRETRACK • Relatório Controle Estatístico</title>
+
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#2F3640">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+<div class="wrap">
+  <a class="back" href="./index.html">← Controle Estatístico</a>
+  <div class="title">📈 Relatório Controle Estatístico</div>
+  <div class="subtitle">Gráficos e análise estatística do concreto</div>
+  <div class="accentLine"></div>
+
+  <div class="card" style="text-align:center; padding:48px 24px;">
+    <div style="font-size:3rem; margin-bottom:16px;">🚧</div>
+    <div style="font-weight:800; font-size:1.1rem; margin-bottom:8px;">Em desenvolvimento</div>
+    <div style="color:var(--muted); font-size:.9rem; line-height:1.5;">
+      Esta funcionalidade está sendo construída.<br>
+      Em breve será possível visualizar gráficos de controle estatístico e análise de resistência do concreto.
+    </div>
+  </div>
+</div>
+
+<script>
+(async function(){
+  try{
+    if ("serviceWorker" in navigator) {
+      await navigator.serviceWorker.register("../sw.js", { scope: "../" });
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
