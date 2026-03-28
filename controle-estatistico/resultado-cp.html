@@ -1,509 +1,369 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>CONCRETRACK • Resultado de Corpo de Prova</title>
-
+  <title>CONCRETRACK • Resultado de Corpos de Prova</title>
   <link rel="manifest" href="../manifest.json">
   <meta name="theme-color" content="#2F3640">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-
   <link rel="stylesheet" href="../styles.css">
   <style>
-    body { padding-bottom: 40px; }
-
-    /* ---- Formulário de registro ---- */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .form-grid .full { grid-column: 1 / -1; }
-    @media (max-width: 480px) {
-      .form-grid { grid-template-columns: 1fr; }
-      .form-grid .full { grid-column: 1; }
-    }
-
-    /* ---- Tabela de resultados ---- */
-    .tbl-wrap {
-      overflow-x: auto;
-      margin-top: 20px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .78rem;
-      white-space: nowrap;
-    }
-    thead th {
-      background: rgba(43,108,176,.55);
-      color: #e8f0ff;
-      font-weight: 700;
-      padding: 8px 10px;
-      text-align: center;
-      border-bottom: 2px solid rgba(255,255,255,.18);
-      position: sticky;
-      top: 0;
-    }
-    thead th.group {
-      background: rgba(26,82,160,.7);
-      font-size: .7rem;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-    }
-    tbody tr { border-bottom: 1px solid rgba(255,255,255,.07); }
-    tbody tr:nth-child(even) { background: rgba(255,255,255,.04); }
-    tbody tr:hover { background: rgba(255,255,255,.09); }
-    tbody td {
-      padding: 7px 10px;
-      text-align: center;
-      color: var(--text);
-    }
-    tbody td.left { text-align: left; }
-
-    /* resultado colorido */
-    .badge {
-      display: inline-block;
-      border-radius: 6px;
-      padding: 2px 8px;
-      font-size: .72rem;
-      font-weight: 700;
-    }
-    .badge.ok   { background: rgba(39,174,96,.22); color: #2ecc71; border: 1px solid #27ae60; }
-    .badge.fail { background: rgba(192,57,43,.22);  color: #e74c3c; border: 1px solid #c0392b; }
-    .badge.pend { background: rgba(150,150,150,.2); color: #aaa;    border: 1px solid #555; }
-
-    /* ---- barra de filtros ---- */
-    .filter-bar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .filter-bar input, .filter-bar select {
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: 8px;
-      color: var(--text);
-      padding: 6px 10px;
-      font-size: .8rem;
-      flex: 1;
-      min-width: 130px;
-    }
-    .filter-bar input::placeholder { color: var(--muted); }
-
-    .section-title {
-      font-size: .72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: var(--muted);
-      margin: 22px 0 8px;
-    }
-    .ops { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
-    .count-pill {
-      background: rgba(43,108,176,.35);
-      border: 1px solid rgba(43,108,176,.5);
-      border-radius: 20px;
-      padding: 3px 12px;
-      font-size: .75rem;
-      color: #a8c8ff;
-      font-weight: 700;
+    body { padding-bottom: 60px; }
+    .cp-topbar { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:10px; }
+    .btn-print { background:#10b981; color:#fff; border:none; border-radius:10px; padding:8px 16px; font-size:.82rem; font-weight:700; cursor:pointer; white-space:nowrap; }
+    .btn-print:hover { background:#059669; }
+    .filter-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:14px; }
+    .filter-bar label { font-size:.78rem; color:var(--muted); display:flex; align-items:center; gap:5px; }
+    .filter-bar select, .filter-bar input[type="number"], .filter-bar input[type="text"] { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:8px; color:var(--text); padding:5px 9px; font-size:.78rem; }
+    .filter-bar input[type="text"] { flex:1; min-width:150px; }
+    .filter-bar input::placeholder { color:var(--muted); }
+    .btn-filter { background:rgba(245,158,11,.18); border:1px solid rgba(245,158,11,.4); color:#f59e0b; border-radius:8px; padding:6px 14px; font-size:.78rem; font-weight:700; cursor:pointer; }
+    .tbl-wrap { overflow-x:auto; border-radius:10px; border:1px solid rgba(255,255,255,.1); }
+    table { border-collapse:collapse; white-space:nowrap; font-size:.72rem; width:100%; }
+    thead tr.h1 th { padding:8px 12px; font-size:.71rem; text-transform:uppercase; letter-spacing:.07em; font-weight:800; text-align:center; color:#dbe6ff; border:1px solid rgba(255,255,255,.1); }
+    .g-ident { background:#0f172a; }
+    .g-resist { background:#0f172a; }
+    thead tr.h2 th { padding:5px 10px; font-size:.68rem; font-weight:700; text-align:center; color:rgba(255,255,255,.92); border:1px solid rgba(255,255,255,.1); }
+    .age-24h { background:#1e3a8a; }
+    .age-3d  { background:#14532d; }
+    .age-7d  { background:#7c2d12; }
+    .age-28d { background:#4c1d95; }
+    thead tr.h3 th { background:#1e293b; color:#94a3b8; padding:4px 6px; font-size:.64rem; font-weight:600; text-align:center; border:1px solid rgba(255,255,255,.07); }
+    .sl { border-left:2px solid rgba(255,255,255,.18) !important; }
+    tbody tr { border-bottom:1px solid rgba(255,255,255,.06); }
+    tbody tr:nth-child(even) { background:rgba(255,255,255,.025); }
+    tbody tr:hover { background:rgba(255,255,255,.07); }
+    tbody td { padding:5px 7px; text-align:center; color:var(--text); font-size:.72rem; border-right:1px solid rgba(255,255,255,.05); }
+    tbody td.sl  { border-left:2px solid rgba(255,255,255,.14) !important; }
+    tbody td.lft { text-align:left; font-weight:600; }
+    .v-ok   { color:#34d399; font-weight:700; }
+    .v-fail { color:#f87171; font-weight:700; }
+    .v-warn { color:#fbbf24; font-weight:700; }
+    .rbadge { display:inline-block; border-radius:5px; padding:1px 5px; font-size:.63rem; font-weight:700; }
+    .b-ok   { background:rgba(16,185,129,.18); color:#6ee7b7; border:1px solid #10b981; }
+    .b-fail { background:rgba(239,68,68,.18);  color:#fca5a5; border:1px solid #ef4444; }
+    .b-warn { background:rgba(245,158,11,.18); color:#fcd34d; border:1px solid #f59e0b; }
+    .b-pend { background:rgba(156,163,175,.12); color:#9ca3af; border:1px solid #4b5563; }
+    .state-box { text-align:center; padding:48px 20px; color:var(--muted); }
+    .state-box .sico { font-size:2.8rem; margin-bottom:12px; }
+    .state-box p { font-size:.85rem; line-height:1.55; margin:6px 0; }
+    .state-box code { font-family:monospace; background:rgba(255,255,255,.08); padding:2px 6px; border-radius:4px; font-size:.8rem; }
+    .tbl-footer { text-align:right; font-size:.72rem; color:var(--muted); margin-top:8px; }
+    @media print {
+      .back, .btn-print, .filter-bar, .accentLine { display:none !important; }
+      body { background:#fff; color:#000; padding:0; }
+      .tbl-wrap { overflow:visible; border:none; }
+      td, th { color:#000 !important; border-color:#999 !important; }
     }
   </style>
 </head>
-
 <body>
-<div class="wrap">
-  <a class="back" href="./index.html">← Controle Estatístico</a>
-  <div class="title">🧱 Resultado de Corpo de Prova</div>
-  <div class="subtitle">Lançamento e consulta de rompimentos — Campinas</div>
-  <div class="accentLine"></div>
-
-  <!-- ============ FORMULÁRIO ============ -->
-  <div class="card">
-    <div class="section-title">Registrar Resultado</div>
-    <form id="frmCP" autocomplete="off">
-      <div class="form-grid">
-
-        <div class="field">
-          <div class="label">N° Etiqueta / CP</div>
-          <input id="cp_etiqueta" placeholder="Ex.: CP-2026-001" required>
-        </div>
-
-        <div class="field">
-          <div class="label">Data Moldagem</div>
-          <input id="cp_dataMoldagem" type="date" required>
-        </div>
-
-        <div class="field">
-          <div class="label">Traço / Classe</div>
-          <input id="cp_traco" placeholder="Ex.: C30, FCK 30 MPa">
-        </div>
-
-        <div class="field">
-          <div class="label">Fck projeto (MPa)</div>
-          <input id="cp_fck" type="number" step="0.1" min="0" placeholder="30">
-        </div>
-
-        <div class="field">
-          <div class="label">Slump (cm)</div>
-          <input id="cp_slump" type="number" step="0.5" min="0" placeholder="10">
-        </div>
-
-        <div class="field">
-          <div class="label">Volume (m³)</div>
-          <input id="cp_volume" type="number" step="0.1" min="0" placeholder="7.0">
-        </div>
-
-        <div class="field full">
-          <div class="label">Obra / Local</div>
-          <input id="cp_obra" placeholder="Ex.: Fundação Bloco B1">
-        </div>
-
-        <div class="field full">
-          <div class="label">Elemento Estrutural</div>
-          <input id="cp_elemento" placeholder="Ex.: Pilar P12, Viga V3">
-        </div>
-
-        <div class="field">
-          <div class="label">Responsável</div>
-          <input id="cp_responsavel" placeholder="Nome do operador">
-        </div>
-
-        <div class="field">
-          <div class="label">N° Nota Fiscal / NF</div>
-          <input id="cp_nf" placeholder="Ex.: NF-12345">
-        </div>
-
-      </div>
-
-      <div class="section-title" style="margin-top:18px;">Resultados de Rompimento</div>
-      <div class="form-grid">
-
-        <div class="field">
-          <div class="label">Data Rompimento 24h</div>
-          <input id="cp_data24h" type="date">
-        </div>
-        <div class="field">
-          <div class="label">fc 24h (MPa)</div>
-          <input id="cp_fc24h" type="number" step="0.1" min="0" placeholder="—">
-        </div>
-
-        <div class="field">
-          <div class="label">Data Rompimento 3d</div>
-          <input id="cp_data3" type="date">
-        </div>
-        <div class="field">
-          <div class="label">fc 3d (MPa)</div>
-          <input id="cp_fc3" type="number" step="0.1" min="0" placeholder="—">
-        </div>
-
-        <div class="field">
-          <div class="label">Data Rompimento 7d</div>
-          <input id="cp_data7" type="date">
-        </div>
-        <div class="field">
-          <div class="label">fc 7d (MPa)</div>
-          <input id="cp_fc7" type="number" step="0.1" min="0" placeholder="—">
-        </div>
-
-        <div class="field">
-          <div class="label">Data Rompimento 28d</div>
-          <input id="cp_data28" type="date">
-        </div>
-        <div class="field">
-          <div class="label">fc 28d (MPa)</div>
-          <input id="cp_fc28" type="number" step="0.1" min="0" placeholder="—">
-        </div>
-
-        <div class="field full">
-          <div class="label">Observações</div>
-          <textarea id="cp_obs" placeholder="Anomalias, descarte, reensaio..."></textarea>
-        </div>
-      </div>
-
-      <div class="ops">
-        <button class="btn danger" id="btnLimpar" type="button">🧹 Limpar</button>
-        <button class="btn good" type="submit">💾 Salvar Registro</button>
-      </div>
-    </form>
+<div class="wrap" style="max-width:none; padding:18px 14px;">
+  <a class="back" href="./index.html">&#8592; Controle Estat&#237;stico</a>
+  <div class="cp-topbar" style="margin-top:8px;">
+    <div>
+      <div class="title">&#129521; Resultado Corpos de <span style="color:#f59e0b;">Prova</span></div>
+      <div class="subtitle">Resist&#234;ncia &#224; compress&#227;o &#8212; 24 horas, 3 dias, 7 dias e 28 dias</div>
+    </div>
+    <button class="btn-print" onclick="window.print()">&#11041; Imprimir</button>
   </div>
-
-  <!-- ============ TABELA ============ -->
-  <div style="display:flex; align-items:center; gap:10px; margin-top:24px; flex-wrap:wrap;">
-    <div class="section-title" style="margin:0;">Registros</div>
-    <span class="count-pill" id="countPill">0 registros</span>
-    <button class="btn danger" id="btnExcluirSel" type="button" style="font-size:.75rem; padding:4px 12px; display:none;">🗑 Excluir selecionados</button>
-  </div>
+  <div class="accentLine" style="margin:12px 0 16px;"></div>
 
   <div class="filter-bar">
-    <input type="text" id="filtroTexto" placeholder="🔍 Buscar etiqueta, obra, elemento...">
-    <select id="filtroResultado">
-      <option value="">Todos os resultados</option>
-      <option value="ok">✅ Aprovado</option>
-      <option value="fail">❌ Reprovado</option>
-      <option value="pend">⏳ Pendente</option>
-    </select>
+    <label>M&#234;s:
+      <select id="filtroMes">
+        <option value="">Todos</option>
+        <option value="01">Janeiro</option><option value="02">Fevereiro</option>
+        <option value="03">Mar&#231;o</option><option value="04">Abril</option>
+        <option value="05">Maio</option><option value="06">Junho</option>
+        <option value="07">Julho</option><option value="08">Agosto</option>
+        <option value="09">Setembro</option><option value="10">Outubro</option>
+        <option value="11">Novembro</option><option value="12">Dezembro</option>
+      </select>
+    </label>
+    <label>Ano: <input type="number" id="filtroAno" min="2020" max="2040" style="width:72px;"></label>
+    <input type="text" id="filtroBusca" placeholder="Massada, aplica&#231;&#227;o...">
+    <button class="btn-filter" onclick="applyFilters()">&#9660; Filtrar</button>
   </div>
 
-  <div class="tbl-wrap">
-    <table id="tblCP">
-      <thead>
-        <tr>
-          <th rowspan="2"><input type="checkbox" id="chkAll" title="Selecionar todos"></th>
-          <th rowspan="2">N° Etiqueta</th>
-          <th rowspan="2">Data<br>Moldagem</th>
-          <th rowspan="2">Traço</th>
-          <th rowspan="2">Fck<br>(MPa)</th>
-          <th rowspan="2">Slump<br>(cm)</th>
-          <th rowspan="2">Vol.<br>(m³)</th>
-          <th rowspan="2">Obra / Local</th>
-          <th rowspan="2">Elemento</th>
-          <th rowspan="2">NF</th>
-          <th rowspan="2">Responsável</th>
-          <th class="group" colspan="2">24 horas</th>
-          <th class="group" colspan="2">3 dias</th>
-          <th class="group" colspan="2">7 dias</th>
-          <th class="group" colspan="2">28 dias</th>
-          <th rowspan="2">Resultado<br>28d</th>
-          <th rowspan="2">Obs.</th>
-        </tr>
-        <tr>
-          <th>Data</th><th>fc (MPa)</th>
-          <th>Data</th><th>fc (MPa)</th>
-          <th>Data</th><th>fc (MPa)</th>
-          <th>Data</th><th>fc (MPa)</th>
-        </tr>
-      </thead>
-      <tbody id="tblBody">
-        <tr id="emptyRow">
-          <td colspan="21" style="padding:32px; color:var(--muted); font-style:italic;">
-            Nenhum resultado registrado ainda.
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div id="stateBox" class="state-box">
+    <div class="sico">&#8987;</div><p>Carregando dados do servidor...</p>
   </div>
 
-</div>
-
-<!-- Modal de confirmação ---- -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <div class="modal-title" id="modalTitle">✅ Salvo!</div>
-    <div class="modal-text" id="modalText">Registro salvo localmente.</div>
-    <button class="modal-btn" onclick="document.getElementById('modal').classList.remove('show')">OK</button>
+  <div id="tblArea" style="display:none;">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr class="h1">
+            <th colspan="7" rowspan="2" class="g-ident">IDENTIFICA&#199;&#195;O DAS AMOSTRAS</th>
+            <th colspan="40" class="g-resist">RESIST&#202;NCIA &#192; COMPRESS&#195;O (MPa)</th>
+          </tr>
+          <tr class="h2">
+            <th colspan="9"  class="age-24h">&lt; 24 Horas &mdash; 75% a 80%</th>
+            <th colspan="11" class="age-3d">3 dias &mdash; 55% a 80%</th>
+            <th colspan="11" class="age-7d">7 dias &mdash; 85% a 100%</th>
+            <th colspan="9"  class="age-28d">28 dias &mdash; esperado 120%</th>
+          </tr>
+          <tr class="h3">
+            <th>DATA<br>Mold.</th><th>M&#202;S</th><th>N&#176;</th><th>MASSADA</th><th>APLICA&#199;&#195;O</th><th>FLOW<br>(mm)</th><th>fck</th>
+            <th class="sl">Data<br>Rupt.</th><th>CP<br>Idade</th><th>1/2</th><th>2/2</th><th>D2</th><th>M&#201;D</th><th>EXE.</th><th>T.R.</th><th>Res.</th>
+            <th class="sl">Data<br>Rupt.</th><th>CP<br>Idade</th><th>Ton<br>1</th><th>Ton<br>2</th><th>1/2</th><th>2/2</th><th>D2</th><th>M&#201;D</th><th>EXE.</th><th>T.R.</th><th>Res.</th>
+            <th class="sl">Data<br>Rupt.</th><th>CP<br>Idade</th><th>Ton<br>1</th><th>Ton<br>2</th><th>1/2</th><th>2/2</th><th>D2</th><th>M&#201;D</th><th>EXE.</th><th>T.R.</th><th>Res.</th>
+            <th class="sl">Data<br>Rupt.</th><th>CP<br>Idade</th><th>1/2</th><th>2/2</th><th>D2</th><th>M&#201;D</th><th>EXE.</th><th>T.R.</th><th>Res.</th>
+          </tr>
+        </thead>
+        <tbody id="tblBody"></tbody>
+      </table>
+    </div>
+    <div class="tbl-footer" id="tblFooter">0 registros exibidos</div>
   </div>
 </div>
 
 <script>
-/* =========================================================
-   STORAGE KEY
-   ========================================================= */
-const STORE_KEY = "cp_resultados_campinas";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxP_jn_bMwt3mVER_1nyK-NevqGrA8A9d3C8mf-u5Din31nenDbrrI3miGyQ9rbUaZH/exec";
+const META = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
+const MESES_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
-function fmtDate(iso) {
-  if (!iso) return "—";
-  const [y, m, d] = iso.split("-");
-  return `${d}/${m}/${y}`;
+function fmtDate(v){
+  if(!v)return'--';
+  v=String(v).trim();
+  if(v.includes('/'))return v.substring(0,10);
+  const p=v.split(/[-T]/);
+  if(p.length>=3)return p[2].substring(0,2)+'/'+p[1]+'/'+p[0];
+  return v;
 }
-function v(id)  { return document.getElementById(id).value.trim(); }
-function vn(id) { const x = parseFloat(document.getElementById(id).value); return isNaN(x) ? null : x; }
-
-function calcResultado(fc28, fck) {
-  if (fc28 === null || fck === null || fck === 0) return "pend";
-  return fc28 >= fck ? "ok" : "fail";
+function mesAbrev(d){
+  d=String(d||'');
+  let m=d.match(/^(\d{4})-(\d{2})/);
+  if(m)return MESES_PT[+m[2]-1]||'--';
+  m=d.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if(m)return MESES_PT[+m[2]-1]||'--';
+  return'--';
+}
+function mesNum(d){
+  d=String(d||'');
+  let m=d.match(/^(\d{4})-(\d{2})/);
+  if(m)return m[2];
+  m=d.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if(m)return m[2];
+  return'';
+}
+function r1(v){return typeof v==='number'?Math.round(v*10)/10:null;}
+function fmt(v){return(v!==null&&v!==undefined)?String(r1(v)):'--';}
+function mpaClass(mpa,age){
+  const meta=META[age];
+  if(mpa===null||!meta)return'';
+  if(mpa<meta.min)return'v-fail';
+  if(mpa>meta.max)return'v-warn';
+  return'v-ok';
+}
+function badge(res){
+  const map={ok:['b-ok','OK'],fail:['b-fail','NOK'],warn:['b-warn','AMP'],pend:['b-pend','--']};
+  const[cls,txt]=map[res]||map.pend;
+  return'<span class="rbadge '+cls+'">'+txt+'</span>';
+}
+function normalise(raw){
+  const out={};
+  Object.keys(raw).forEach(function(k){out[k.toLowerCase().replace(/\s+/g,'_')]=raw[k];});
+  function get(){
+    for(var i=0;i<arguments.length;i++){if(out[arguments[i]]!==undefined&&out[arguments[i]]!=='')return out[arguments[i]];}
+    return'';
+  }
+  return{
+    timestamp:get('timestamp'),
+    data_moldagem:get('data_moldagem','datamoldagem','data_mold','moldagem','data'),
+    traco_id:get('traco_id','tracoid','traco','massada','id_massada'),
+    traco_nome:get('traco_nome','traconome','nome','nome_traco','aplicacao'),
+    cp:get('cp','cp_numero','numero_cp','n_cp'),
+    idade_dias:get('idade_dias','idadedias','idade','age_days','dias'),
+    data_ruptura:get('data_ruptura','dataruptura','ruptura','data_rupt'),
+    hora_moldagem:get('hora_moldagem','hora','hora_mold'),
+    mpa:get('mpa','resistencia','fc','valor_mpa'),
+    status_meta:get('status_meta','statusmeta','status','resultado'),
+    meta_min:get('meta_min','metamin','min'),
+    meta_max:get('meta_max','metamax','max'),
+    operador:get('operador')
+  };
+}
+function calcBlock(cps,fck){
+  if(!cps||!cps.length)return{empty:true};
+  var age=parseInt(cps[0].idade_dias)||0;
+  var meta=META[age]||null;
+  var sorted=cps.slice().sort(function(a,b){return(parseInt(a.cp)||1)-(parseInt(b.cp)||1);});
+  var r1c=sorted[0];
+  var r2c=sorted[1]||null;
+  var mpa1=r1c?(parseFloat(r1c.mpa)||null):null;
+  var mpa2=r2c?(parseFloat(r2c.mpa)||null):null;
+  var dataRupt=r1c?r1c.data_ruptura:null;
+  var med=(mpa1!==null&&mpa2!==null)?(mpa1+mpa2)/2:(mpa1!==null?mpa1:mpa2);
+  var d2=(mpa1!==null&&mpa2!==null)?Math.abs(mpa1-mpa2)/2:null;
+  var metaMin=(r1c&&parseFloat(r1c.meta_min)>0)?parseFloat(r1c.meta_min):(meta?meta.min:null);
+  var exe=(med!==null&&fck>0)?r1(med/fck*100):null;
+  var tr=(med!==null&&metaMin>0)?r1(med/metaMin*100):null;
+  var statuses=cps.map(function(c){return(c.status_meta||'').toUpperCase();});
+  var res='pend';
+  if(mpa1!==null||mpa2!==null){
+    if(statuses.some(function(s){return s==='ABAIXO';}))res='fail';
+    else if(statuses.some(function(s){return s==='ACIMA';}))res='warn';
+    else res='ok';
+  }
+  return{mpa1:mpa1,mpa2:mpa2,d2:r1(d2),med:r1(med),exe:exe,tr:tr,res:res,dataRupt:dataRupt,cpIdade:age,age:age};
+}
+function groupRows(rows){
+  var map=new Map();
+  rows.forEach(function(raw){
+    var r=normalise(raw);
+    var key=r.data_moldagem+'|'+r.traco_id;
+    if(!map.has(key))map.set(key,{data_moldagem:r.data_moldagem,traco_id:r.traco_id,traco_nome:r.traco_nome,cps:{}});
+    var g=map.get(key);
+    var age=parseInt(r.idade_dias)||0;
+    if(!age)return;
+    if(!g.cps[age])g.cps[age]=[];
+    g.cps[age].push(r);
+    if(!g.traco_nome&&r.traco_nome)g.traco_nome=r.traco_nome;
+  });
+  return Array.from(map.values()).sort(function(a,b){return(a.data_moldagem||'').localeCompare(b.data_moldagem||'');});
+}
+function emptyBlock(span,sepClass){
+  return'<td colspan="'+span+'" class="'+sepClass+'" style="color:var(--muted);text-align:center;">--</td>';
+}
+function blockCells(b,age_key,hasTon,sepClass){
+  if(b.empty)return emptyBlock(hasTon?11:9,sepClass);
+  var ton=hasTon?'<td>--</td><td>--</td>':'';
+  return'<td class="'+sepClass+'">'+fmtDate(b.dataRupt)+'</td>'
+    +'<td>'+(b.cpIdade?b.cpIdade+'d':'--')+'</td>'
+    +ton
+    +'<td class="'+mpaClass(b.mpa1,age_key)+'">'+fmt(b.mpa1)+'</td>'
+    +'<td class="'+mpaClass(b.mpa2,age_key)+'">'+fmt(b.mpa2)+'</td>'
+    +'<td>'+fmt(b.d2)+'</td>'
+    +'<td><b>'+fmt(b.med)+'</b></td>'
+    +'<td>'+(b.exe!==null?b.exe+'%':'--')+'</td>'
+    +'<td>'+(b.tr!==null?b.tr+'%':'--')+'</td>'
+    +'<td>'+badge(b.res)+'</td>';
 }
 
-function badgeHtml(res) {
-  const map = { ok: ["ok","✅ Aprovado"], fail: ["fail","❌ Reprovado"], pend: ["pend","⏳ Pendente"] };
-  const [cls, txt] = map[res] || map.pend;
-  return `<span class="badge ${cls}">${txt}</span>`;
-}
+var _groups=[];
 
-function showModal(title, text) {
-  document.getElementById("modalTitle").textContent = title;
-  document.getElementById("modalText").textContent  = text;
-  document.getElementById("modal").classList.add("show");
-}
-
-/* =========================================================
-   LOAD / SAVE
-   ========================================================= */
-function loadAll() {
-  try { return JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); }
-  catch { return []; }
-}
-function saveAll(arr) {
-  localStorage.setItem(STORE_KEY, JSON.stringify(arr));
-}
-
-/* =========================================================
-   RENDER TABLE
-   ========================================================= */
-let _allRows = [];
-
-function renderTable(rows) {
-  const tbody  = document.getElementById("tblBody");
-  const empty  = document.getElementById("emptyRow");
-  const pill   = document.getElementById("countPill");
-
-  // filtros
-  const txt    = document.getElementById("filtroTexto").value.toLowerCase();
-  const resF   = document.getElementById("filtroResultado").value;
-
-  let filtered = rows.filter(r => {
-    if (txt && ![r.etiqueta, r.obra, r.elemento, r.traco, r.nf, r.responsavel]
-              .join(" ").toLowerCase().includes(txt)) return false;
-    if (resF && r.resultado !== resF) return false;
+function renderTable(){
+  var tbody=document.getElementById('tblBody');
+  var footer=document.getElementById('tblFooter');
+  var mes=document.getElementById('filtroMes').value;
+  var ano=String(document.getElementById('filtroAno').value||'');
+  var busca=document.getElementById('filtroBusca').value.toLowerCase();
+  var filtered=_groups.filter(function(g){
+    if(ano&&!String(g.data_moldagem).startsWith(ano))return false;
+    if(mes&&mesNum(g.data_moldagem)!==mes)return false;
+    if(busca){
+      var hay=[g.traco_id,g.traco_nome].join(' ').toLowerCase();
+      if(!hay.includes(busca))return false;
+    }
     return true;
   });
-
-  pill.textContent = `${filtered.length} registro${filtered.length !== 1 ? "s" : ""}`;
-
-  // limpa linhas antigas (mantém emptyRow)
-  Array.from(tbody.querySelectorAll("tr:not(#emptyRow)")).forEach(r => r.remove());
-
-  if (!filtered.length) {
-    empty.style.display = "";
+  var fck=35;
+  _groups.forEach(function(g){
+    (g.cps[28]||[]).forEach(function(c){
+      var mm=parseFloat(c.meta_max);
+      if(mm>0)fck=Math.round(mm/1.2);
+    });
+  });
+  tbody.innerHTML='';
+  if(!filtered.length){
+    tbody.innerHTML='<tr><td colspan="47" style="padding:32px;text-align:center;color:var(--muted);font-style:italic;">Nenhum resultado encontrado.</td></tr>';
+    footer.textContent='0 registros exibidos';
     return;
   }
-  empty.style.display = "none";
-
-  filtered.slice().reverse().forEach(r => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><input type="checkbox" class="chk-row" data-id="${r.id}"></td>
-      <td class="left"><b>${r.etiqueta || "—"}</b></td>
-      <td>${fmtDate(r.dataMoldagem)}</td>
-      <td>${r.traco || "—"}</td>
-      <td>${r.fck ?? "—"}</td>
-      <td>${r.slump ?? "—"}</td>
-      <td>${r.volume ?? "—"}</td>
-      <td class="left">${r.obra || "—"}</td>
-      <td class="left">${r.elemento || "—"}</td>
-      <td>${r.nf || "—"}</td>
-      <td>${r.responsavel || "—"}</td>
-      <td>${fmtDate(r.data24h)}</td>
-      <td>${r.fc24h ?? "—"}</td>
-      <td>${fmtDate(r.data3)}</td>
-      <td>${r.fc3 ?? "—"}</td>
-      <td>${fmtDate(r.data7)}</td>
-      <td>${r.fc7 ?? "—"}</td>
-      <td>${fmtDate(r.data28)}</td>
-      <td>${r.fc28 ?? "—"}</td>
-      <td>${badgeHtml(r.resultado)}</td>
-      <td class="left" style="max-width:160px; white-space:normal;">${r.obs || "—"}</td>
-    `;
+  filtered.forEach(function(g,idx){
+    var b24=calcBlock(g.cps[1]||g.cps[24]||[],fck);
+    var b3=calcBlock(g.cps[3]||[],fck);
+    var b7=calcBlock(g.cps[7]||[],fck);
+    var b28=calcBlock(g.cps[28]||[],fck);
+    var tr=document.createElement('tr');
+    tr.innerHTML=
+      '<td class="lft">'+fmtDate(g.data_moldagem)+'</td>'
+      +'<td>'+mesAbrev(g.data_moldagem)+'</td>'
+      +'<td>'+(idx+1)+'</td>'
+      +'<td class="lft">'+(g.traco_id||'--')+'</td>'
+      +'<td class="lft">'+(g.traco_nome||'--')+'</td>'
+      +'<td>--</td>'
+      +'<td>'+fck+'</td>'
+      +blockCells(b24,1,false,'sl')
+      +blockCells(b3,3,true,'sl')
+      +blockCells(b7,7,true,'sl')
+      +blockCells(b28,28,false,'sl');
     tbody.appendChild(tr);
   });
-
-  // checkboxes individuais
-  document.querySelectorAll(".chk-row").forEach(chk => {
-    chk.addEventListener("change", updateBtnExcluir);
-  });
+  footer.textContent=filtered.length+' registro'+(filtered.length!==1?'s':'')+' exibido'+(filtered.length!==1?'s':'');
 }
 
-function refresh() {
-  _allRows = loadAll();
-  renderTable(_allRows);
+function applyFilters(){renderTable();}
+
+document.getElementById('filtroMes').addEventListener('change',applyFilters);
+document.getElementById('filtroAno').addEventListener('change',applyFilters);
+document.getElementById('filtroBusca').addEventListener('keydown',function(e){if(e.key==='Enter')applyFilters();});
+
+function showState(icon,html){
+  document.getElementById('stateBox').innerHTML='<div class="sico">'+icon+'</div>'+html;
+  document.getElementById('stateBox').style.display='';
+  document.getElementById('tblArea').style.display='none';
+}
+function showTable(){
+  document.getElementById('stateBox').style.display='none';
+  document.getElementById('tblArea').style.display='';
 }
 
-function updateBtnExcluir() {
-  const any = document.querySelectorAll(".chk-row:checked").length > 0;
-  document.getElementById("btnExcluirSel").style.display = any ? "" : "none";
+async function loadData(){
+  try{
+    var url=WEBAPP_URL+'?action=listar&t='+Date.now();
+    var res=await fetch(url,{redirect:'follow'});
+    var text=await res.text();
+    var data;
+    try{data=JSON.parse(text);}catch(e){
+      showState('&#128295;','<p><b>O Apps Script precisa ser atualizado</b></p>'
+        +'<p>Adicione o handler <code>action=listar</code> ao GAS do projeto <em>qr-concreto</em>.<br>'
+        +'Arquivo: <code>qr-concreto/AppsScript_qrConcreto.gs</code></p>');
+      return;
+    }
+    if(!data.ok||!Array.isArray(data.rows)){
+      showState('&#9888;&#65039;','<p>Resposta inesperada do GAS.<br><code>'+(data.error||'')+'</code></p>');
+      return;
+    }
+    if(!data.rows.length){
+      showState('&#128237;','<p>Nenhum resultado registrado ainda.</p>');
+      return;
+    }
+    _groups=groupRows(data.rows);
+    showTable();
+    renderTable();
+  }catch(err){
+    showState('&#10060;','<p>Falha ao buscar dados:<br><code>'+err.message+'</code></p>');
+  }
 }
 
-/* =========================================================
-   EVENTOS
-   ========================================================= */
-document.getElementById("filtroTexto").addEventListener("input", () => renderTable(_allRows));
-document.getElementById("filtroResultado").addEventListener("change", () => renderTable(_allRows));
+document.getElementById('filtroAno').value=new Date().getFullYear();
+loadData();
 
-document.getElementById("chkAll").addEventListener("change", function() {
-  document.querySelectorAll(".chk-row").forEach(c => c.checked = this.checked);
-  updateBtnExcluir();
-});
-
-document.getElementById("btnExcluirSel").addEventListener("click", () => {
-  const ids = Array.from(document.querySelectorAll(".chk-row:checked")).map(c => +c.dataset.id);
-  if (!ids.length) return;
-  if (!confirm(`Excluir ${ids.length} registro(s)?`)) return;
-  saveAll(loadAll().filter(r => !ids.includes(r.id)));
-  document.getElementById("chkAll").checked = false;
-  updateBtnExcluir();
-  refresh();
-});
-
-document.getElementById("btnLimpar").addEventListener("click", () => {
-  document.getElementById("frmCP").reset();
-});
-
-document.getElementById("frmCP").addEventListener("submit", e => {
-  e.preventDefault();
-
-  const fc28 = vn("cp_fc28");
-  const fck  = vn("cp_fck");
-
-  const registro = {
-    id:           Date.now(),
-    etiqueta:     v("cp_etiqueta"),
-    dataMoldagem: v("cp_dataMoldagem"),
-    traco:        v("cp_traco"),
-    fck:          fck,
-    slump:        vn("cp_slump"),
-    volume:       vn("cp_volume"),
-    obra:         v("cp_obra"),
-    elemento:     v("cp_elemento"),
-    nf:           v("cp_nf"),
-    responsavel:  v("cp_responsavel"),
-    data24h:      v("cp_data24h"),
-    fc24h:        vn("cp_fc24h"),
-    data3:        v("cp_data3"),
-    fc3:          vn("cp_fc3"),
-    data7:        v("cp_data7"),
-    fc7:          vn("cp_fc7"),
-    data28:       v("cp_data28"),
-    fc28:         fc28,
-    obs:          v("cp_obs"),
-    resultado:    calcResultado(fc28, fck)
-  };
-
-  const arr = loadAll();
-  arr.push(registro);
-  saveAll(arr);
-
-  const resLabel = { ok: "✅ Aprovado", fail: "❌ Reprovado", pend: "⏳ Pendente" };
-  showModal("💾 Registrado!", `CP ${registro.etiqueta || "#"} salvo. Resultado 28d: ${resLabel[registro.resultado]}`);
-
-  document.getElementById("frmCP").reset();
-  refresh();
-});
-
-/* =========================================================
-   INIT
-   ========================================================= */
-refresh();
-
-/* SW */
 (async function(){
   try{
-    if ("serviceWorker" in navigator) {
-      await navigator.serviceWorker.register("../sw.js", { scope: "../" });
-    }
+    if('serviceWorker' in navigator)
+      await navigator.serviceWorker.register('../sw.js',{scope:'../'});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
+
+document.getElementById('filtroAno').value=new Date().getFullYear();
+loadData();
+
+(async function(){
+  try{
+    if('serviceWorker' in navigator)
+      await navigator.serviceWorker.register('../sw.js',{scope:'../'});
   }catch(e){}
 })();
 </script>
