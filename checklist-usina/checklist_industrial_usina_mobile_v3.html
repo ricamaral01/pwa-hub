@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checklist da Usina</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#1d5fa7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <style>
     :root{
       --bg:#0f1720;
@@ -687,7 +693,56 @@
       el.addEventListener('change', atualizarEstadoBotaoSalvar);
     });
 
-    document.addEventListener('DOMContentLoaded', atualizarEstadoBotaoSalvar);
+    document.addEventListener('DOMContentLoaded', () => {
+      atualizarEstadoBotaoSalvar();
+      initPush();
+    });
+
+    // ── Push Notifications ─────────────────────────────────────
+    const PUSH_SERVER = 'https://dautomacao.com/etiquetas';
+
+    function _urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+      const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+      const raw     = atob(base64);
+      return Uint8Array.from(Array.from(raw).map(c => c.charCodeAt(0)));
+    }
+
+    async function initPush() {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+      try {
+        const reg = await navigator.serviceWorker.register('./sw.js');
+        await navigator.serviceWorker.ready;
+
+        // Busca a chave pública VAPID no servidor
+        const keyRes = await fetch(PUSH_SERVER + '/push/vapid-public');
+        if (!keyRes.ok) return;
+        const { key } = await keyRes.json();
+        if (!key) return;
+
+        // Pede permissão (silencioso se já concedida)
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') return;
+
+        // Cria ou reutiliza a subscription
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) {
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly:      true,
+            applicationServerKey: _urlBase64ToUint8Array(key)
+          });
+        }
+
+        // Registra a subscription no servidor
+        await fetch(PUSH_SERVER + '/push/subscribe', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(sub.toJSON())
+        });
+      } catch (err) {
+        console.warn('[Push] Erro na inicialização:', err);
+      }
+    }
   </script>
 </body>
 </html>

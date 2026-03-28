@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CONCRETRACK • Status do Projeto</title>
+  <link rel="icon" type="image/png" href="./assets/img/logo-concretrack.png">
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    :root{
+      --ok:   #16A34A;
+      --warn: #F59E0B;
+      --err:  #EF4444;
+      --orange: #e8762a;
+      --card-bg: var(--bg1, #262C35);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 18px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg0, #2F3640);
+      color: var(--text, #F3F6FF);
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 36px;
+      text-align: center;
+    }
+    .page-header img {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      object-fit: contain;
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    }
+    .page-header h1 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: .5px;
+    }
+    .page-header h1 span { color: var(--orange); }
+    .page-header p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted, #B9C4D0);
+    }
+    .accent-bar {
+      width: 160px;
+      height: 3px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--orange), transparent);
+      margin: 4px 0 0;
+    }
+
+    /* ── BACK LINK ── */
+    .back-link {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted, #B9C4D0);
+      text-decoration: none;
+      margin-bottom: 24px;
+      transition: color .2s;
+    }
+    .back-link:hover { color: var(--orange); }
+
+    /* ── SECTION ── */
+    .section { width: 100%; max-width: 860px; margin-bottom: 36px; }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .section-title .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-ok   { background: var(--ok); }
+    .dot-warn { background: var(--warn); }
+    .dot-err  { background: var(--err); }
+    .dot-info { background: var(--orange); }
+
+    /* ── SUMMARY CHIPS ── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .chip .num { font-size: 22px; font-weight: 900; }
+    .chip.ok  .num { color: var(--ok); }
+    .chip.warn .num { color: var(--warn); }
+    .chip.err  .num { color: var(--err); }
+    .chip.info .num { color: var(--orange); }
+
+    /* ── TABLE ── */
+    .tbl-wrap { overflow-x: auto; border-radius: 12px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    thead tr { background: rgba(255,255,255,.05); }
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--muted, #B9C4D0);
+      white-space: nowrap;
+    }
+    tbody tr { border-top: 1px solid rgba(255,255,255,.045); transition: background .15s; }
+    tbody tr:hover { background: rgba(255,255,255,.03); }
+    td { padding: 9px 14px; vertical-align: top; line-height: 1.5; }
+    td code {
+      background: rgba(255,255,255,.07);
+      border-radius: 5px;
+      padding: 1px 6px;
+      font-size: 11.5px;
+      font-family: 'Consolas', monospace;
+      color: #c9d8ff;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .b-ok   { background: rgba(22,163,74,.18);  color: #4ade80; }
+    .b-no   { background: rgba(239,68,68,.15);  color: #f87171; }
+    .b-warn { background: rgba(245,158,11,.15); color: #fbbf24; }
+    .b-info { background: rgba(232,118,42,.15); color: #fb923c; }
+
+    /* ── PRIORITY LIST ── */
+    .priority-list { display: flex; flex-direction: column; gap: 8px; }
+    .pitem {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .pitem .pnum {
+      min-width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .pitem.crit .pnum { background: rgba(239,68,68,.2);  color: #f87171; }
+    .pitem.med  .pnum { background: rgba(245,158,11,.2); color: #fbbf24; }
+    .pitem.low  .pnum { background: rgba(22,163,74,.2);  color: #4ade80; }
+    .pitem .ptxt { font-size: 13px; line-height: 1.55; }
+    .pitem .ptxt strong { display: block; margin-bottom: 2px; }
+    .pitem .ptxt span { color: var(--muted, #B9C4D0); font-size: 12px; }
+    .pitem .paffect {
+      margin-left: auto;
+      flex-shrink: 0;
+      font-size: 11px;
+      color: var(--muted, #B9C4D0);
+      text-align: right;
+      padding-left: 12px;
+    }
+
+    /* ── COMMIT LIST ── */
+    .commit-list { display: flex; flex-direction: column; gap: 6px; }
+    .commit {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--orange);
+    }
+    .commit code {
+      font-family: 'Consolas', monospace;
+      font-size: 11px;
+      color: var(--orange);
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+    .commit .cmsg { font-size: 12.5px; line-height: 1.5; }
+    .commit .cmsg strong { display: block; font-size: 13px; }
+    .commit .cmsg span { color: var(--muted, #B9C4D0); }
+
+    /* ── MODULES GRID ── */
+    .mod-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .mod-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 14px 16px;
+    }
+    .mod-card .mod-name { font-weight: 700; font-size: 13.5px; margin-bottom: 6px; }
+    .mod-card .mod-desc { font-size: 12px; color: var(--muted, #B9C4D0); margin-bottom: 10px; line-height: 1.45; }
+    .mod-badges { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 40px;
+      font-size: 11px;
+      color: var(--muted, #B9C4D0);
+      opacity: .5;
+      text-align: center;
+    }
+
+    @media (max-width: 520px) {
+      .pitem .paffect { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <a class="back-link" href="./index.html">
+    ← Voltar ao Hub
+  </a>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <img src="./assets/img/logo-concretrack.png" alt="Logo ConcreTrack" onerror="this.style.display='none'">
+    <h1>CONCRETRACK <span>• Status</span></h1>
+    <p>Inventário completo do PWA-HUB — criado, alterado e pendências</p>
+    <div class="accent-bar"></div>
+  </div>
+
+  <!-- SUMMARY CHIPS -->
+  <div class="chips" style="max-width:860px;width:100%">
+    <div class="chip ok">  <span class="num">6</span>  <span>Apps PWA completos</span></div>
+    <div class="chip err"> <span class="num">6</span>  <span>Apps sem offline/manifest</span></div>
+    <div class="chip warn"><span class="num">3</span>  <span>Apps fora do grid do Hub</span></div>
+    <div class="chip info"><span class="num">13</span> <span>Módulos no total</span></div>
+    <div class="chip info"><span class="num">20+</span><span>Commits de feature</span></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SEÇÃO 1: MÓDULOS
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="dot dot-info"></span>Módulos — Inventário Completo</div>
+    <div class="mod-grid">
+
+      <div class="mod-card">
+        <div class="mod-name">qr-concreto</div>
+        <div class="mod-desc">Leitura de CP com QR code, traço e nome do traço</div>
+        <div class="mod-badges">
+          <span class="badge b-ok">✓ Manifest</span>
+          <span class="badge b-ok">✓ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+          <span class="badge b-ok">✓ Shortcut</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">slump</div>
+        <div class="mod-desc">Registro de slump e flow com app.js separado</div>
+        <div class="mod-badges">
+          <span class="badge b-ok">✓ Manifest</span>
+          <span class="badge b-ok">✓ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+          <span class="badge b-ok">✓ Shortcut</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">parada-usina</div>
+        <div class="mod-desc">Parada técnica → Google Sheets</div>
+        <div class="mod-badges">
+          <span class="badge b-ok">✓ Manifest</span>
+          <span class="badge b-ok">✓ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+          <span class="badge b-ok">✓ Shortcut</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">massadas</div>
+        <div class="mod-desc">Log de problemas de massadas → Sheets</div>
+        <div class="mod-badges">
+          <span class="badge b-ok">✓ Manifest</span>
+          <span class="badge b-ok">✓ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+          <span class="badge b-ok">✓ Shortcut</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">controle-cimento</div>
+        <div class="mod-desc">Balanço de cimento por silo → Sheets</div>
+        <div class="mod-badges">
+          <span class="badge b-ok">✓ Manifest</span>
+          <span class="badge b-ok">✓ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">controle-agregados</div>
+        <div class="mod-desc">Balanço de agregados → Sheets</div>
+        <div class="mod-badges">
+          <span class="badge b-ok">✓ Manifest</span>
+          <span class="badge b-ok">✓ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">dosagem-concreto</div>
+        <div class="mod-desc">Lab/engenharia: Abrams, empacotamento, MCC, comparador, banco de traços, relatórios A4</div>
+        <div class="mod-badges">
+          <span class="badge b-no">✗ Manifest</span>
+          <span class="badge b-no">✗ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">carta-traco</div>
+        <div class="mod-desc">Cartas de traço com Chart.js (CDN externo)</div>
+        <div class="mod-badges">
+          <span class="badge b-no">✗ Manifest</span>
+          <span class="badge b-no">✗ SW / Offline</span>
+          <span class="badge b-no">✗ No Hub</span>
+          <span class="badge b-warn">⚠ CDN externo</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">checklist-usina</div>
+        <div class="mod-desc">Checklist industrial mobile v3 → Sheets. index.html é redirect.</div>
+        <div class="mod-badges">
+          <span class="badge b-no">✗ Manifest</span>
+          <span class="badge b-no">✗ SW / Offline</span>
+          <span class="badge b-no">✗ No Hub</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">mapa-concretagem</div>
+        <div class="mod-desc">Mapa de concretagem por setor + checklist de homologação</div>
+        <div class="mod-badges">
+          <span class="badge b-no">✗ Manifest</span>
+          <span class="badge b-no">✗ SW / Offline</span>
+          <span class="badge b-no">✗ No Hub</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">setor_botoes</div>
+        <div class="mod-desc">Contagem por setor via botões</div>
+        <div class="mod-badges">
+          <span class="badge b-no">✗ Manifest</span>
+          <span class="badge b-no">✗ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">setor_count</div>
+        <div class="mod-desc">Contagem de caçambas via QR</div>
+        <div class="mod-badges">
+          <span class="badge b-no">✗ Manifest</span>
+          <span class="badge b-no">✗ SW / Offline</span>
+          <span class="badge b-ok">✓ No Hub</span>
+          <span class="badge b-ok">✓ Shortcut</span>
+        </div>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-name">PWA-etiquetas</div>
+        <div class="mod-desc">Backend Python (Flask) na VPS — geração de etiquetas CP com QR + PDF</div>
+        <div class="mod-badges">
+          <span class="badge b-info">Backend VPS</span>
+          <span class="badge b-ok">✓ Serviço ativo</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SEÇÃO 2: COMMITS / O QUE FOI ALTERADO
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="dot dot-ok"></span>Histórico de Alterações (commits)</div>
+    <div class="commit-list">
+
+      <div class="commit">
+        <code>572b774</code>
+        <div class="cmsg">
+          <strong>checklist-usina + manifest orientation</strong>
+          <span>Novo campo <em>Umidade Areia Natural (%)</em> antes do campo areia industrial · manifest.json: <code>orientation → "any"</code> para permitir rotação no tablet</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>08e9ce9</code>
+        <div class="cmsg">
+          <strong>dosagem: print experimental + banco unificado</strong>
+          <span><code>imprimirExpTraco()</code> — relatório A4 completo para traços experimentais · MCC selector com 3 optgroups: local + servidor + experimentais</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>e485fec</code>
+        <div class="cmsg">
+          <strong>A/C format, MCC side-by-side, favicon, HTTPS, umidade areia industrial, traco_nome QR</strong>
+          <span>A/C exibido como <code>0,57</code> · caixas MCC lado a lado · favicon adicionado · etiquetas via HTTPS · campo umidade areia industrial no checklist · nome do traço no QR</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>eb7004a</code>
+        <div class="cmsg">
+          <strong>Fontes maiores, print 7-col alinhado, remove bloco assinatura</strong>
+          <span>Gráficos pizza e tabela com fontes maiores · tabela de impressão 7 colunas alinhada · bloco de assinatura removido</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>6779a61</code>
+        <div class="cmsg">
+          <strong>Print MCC Traço profissional + comparação resistência + link hub etiquetas</strong>
+          <span>Layout de impressão reestruturado como relatório técnico · seção de comparação de resistência · card "Leitor de Etiquetas" adicionado ao hub</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>8524ca9</code>
+        <div class="cmsg">
+          <strong>Relatório: logo + gráficos pizza (massa kg/m³ + R$/m³) + tabela %</strong>
+          <span>Logo ConcreTrack nos relatórios impressos · 2 gráficos de pizza (composição em massa e em custo) · tabela de participação por material</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>a1d6e8c</code>
+        <div class="cmsg">
+          <strong>Header: logo + identidade visual dark charcoal + laranja</strong>
+          <span>Header do dosagem com logo ConcreTrack · paleta dark charcoal (#1a1f2e) + laranja (#e8762a)</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>f568794</code>
+        <div class="cmsg">
+          <strong>Navegação passo a passo no dosagem</strong>
+          <span>Fluxo guiado: Materiais → Dosagem → Volume → Argamassa → Empacotamento → Abrams → Resumo</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>42a6e09</code>
+        <div class="cmsg">
+          <strong>Comparador: cores padrão, slot C oculto, grid dinâmico, A/C 0,XX; MCC config por traço</strong>
+          <span>Comparador com 2 ou 3 colunas conforme slots preenchidos · custo líquido persistido · chips centralizados</span>
+        </div>
+      </div>
+
+      <div class="commit">
+        <code>a658d30 / 82db326</code>
+        <div class="cmsg">
+          <strong>MCC Traço: layout profissional + gráfico pizza + banco local + servidor</strong>
+          <span>Custo por traço com produto/fornecedor · report de impressão · carregamento local e remoto</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SEÇÃO 3: O QUE FALTA — PRIORIDADE ALTA
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="dot dot-err"></span>🔴 Falta — Crítico (PWA / Funcionalidade)</div>
+    <div class="priority-list">
+
+      <div class="pitem crit">
+        <span class="pnum">1</span>
+        <div class="ptxt">
+          <strong>manifest.json + sw.js para dosagem-concreto</strong>
+          <span>Não instala como PWA standalone · sem cache offline · não aparece nos shortcuts</span>
+        </div>
+        <div class="paffect">dosagem-concreto/</div>
+      </div>
+
+      <div class="pitem crit">
+        <span class="pnum">2</span>
+        <div class="ptxt">
+          <strong>manifest.json + sw.js para checklist-usina</strong>
+          <span>index.html é apenas redirect · sem instalação como app · sem offline</span>
+        </div>
+        <div class="paffect">checklist-usina/</div>
+      </div>
+
+      <div class="pitem crit">
+        <span class="pnum">3</span>
+        <div class="ptxt">
+          <strong>manifest.json + sw.js para carta-traco</strong>
+          <span>Sem offline · Chart.js via CDN quebra sem internet</span>
+        </div>
+        <div class="paffect">carta-traco/</div>
+      </div>
+
+      <div class="pitem crit">
+        <span class="pnum">4</span>
+        <div class="ptxt">
+          <strong>manifest.json + sw.js para mapa-concretagem</strong>
+          <span>Sem instalação · sem offline</span>
+        </div>
+        <div class="paffect">mapa-concretagem/</div>
+      </div>
+
+      <div class="pitem crit">
+        <span class="pnum">5</span>
+        <div class="ptxt">
+          <strong>manifest.json + sw.js para setor_botoes e setor_count</strong>
+          <span>Módulos completamente fora do padrão PWA</span>
+        </div>
+        <div class="paffect">setor_botoes/ setor_count/</div>
+      </div>
+
+      <div class="pitem crit">
+        <span class="pnum">6</span>
+        <div class="ptxt">
+          <strong>Cards faltando no grid do Hub</strong>
+          <span>carta-traco, mapa-concretagem e checklist-usina não aparecem na home</span>
+        </div>
+        <div class="paffect">index.html (root)</div>
+      </div>
+
+      <div class="pitem crit">
+        <span class="pnum">7</span>
+        <div class="ptxt">
+          <strong>sw.js root desatualizado ao adicionar módulos</strong>
+          <span>Cache não cobre novos arquivos automaticamente — versão precisa ser incrementada manualmente</span>
+        </div>
+        <div class="paffect">sw.js (root)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SEÇÃO 4: O QUE FALTA — UX / QUALIDADE
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="dot dot-warn"></span>🟡 Falta — UX / Qualidade</div>
+    <div class="priority-list">
+
+      <div class="pitem med">
+        <span class="pnum">8</span>
+        <div class="ptxt">
+          <strong>Campo de busca/filtro no Hub</strong>
+          <span>Com 13+ módulos, um filtro rápido melhora usabilidade</span>
+        </div>
+        <div class="paffect">index.html</div>
+      </div>
+
+      <div class="pitem med">
+        <span class="pnum">9</span>
+        <div class="ptxt">
+          <strong>Shortcuts do manifest root incompletos</strong>
+          <span>dosagem, controle-cimento, controle-agregados, carta-traco, mapa, checklist fora dos shortcuts</span>
+        </div>
+        <div class="paffect">manifest.json</div>
+      </div>
+
+      <div class="pitem med">
+        <span class="pnum">10</span>
+        <div class="ptxt">
+          <strong>Tela de erro offline customizada</strong>
+          <span>Nenhum app exibe mensagem amigável quando sem rede e sem cache</span>
+        </div>
+        <div class="paffect">Todos os módulos</div>
+      </div>
+
+      <div class="pitem med">
+        <span class="pnum">11</span>
+        <div class="ptxt">
+          <strong>Chart.js via CDN em carta-traco</strong>
+          <span>Quebra sem internet — precisa ser bundled ou cacheado no sw.js</span>
+        </div>
+        <div class="paffect">carta-traco/</div>
+      </div>
+
+      <div class="pitem med">
+        <span class="pnum">12</span>
+        <div class="ptxt">
+          <strong>checklist-usina/index.html sem estados de loading/fallback</strong>
+          <span>Apenas redirect puro — sem feedback visual durante a troca de página</span>
+        </div>
+        <div class="paffect">checklist-usina/</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SEÇÃO 5: NICE TO HAVE
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="dot dot-ok"></span>🟢 Nice-to-have / Nível Pro</div>
+    <div class="priority-list">
+
+      <div class="pitem low">
+        <span class="pnum">13</span>
+        <div class="ptxt">
+          <strong>Changelog / versão visível no Hub</strong>
+          <span>Página ou modal com versão atual e últimas alterações</span>
+        </div>
+        <div class="paffect">index.html</div>
+      </div>
+
+      <div class="pitem low">
+        <span class="pnum">14</span>
+        <div class="ptxt">
+          <strong>Ícones individuais distintos por módulo</strong>
+          <span>Vários módulos compartilham o mesmo ícone genérico</span>
+        </div>
+        <div class="paffect">manifests individuais</div>
+      </div>
+
+      <div class="pitem low">
+        <span class="pnum">15</span>
+        <div class="ptxt">
+          <strong>Push notifications</strong>
+          <span>Alertas para parada inesperada, checklist atrasado, estoque crítico</span>
+        </div>
+        <div class="paffect">sw.js + backend</div>
+      </div>
+
+      <div class="pitem low">
+        <span class="pnum">16</span>
+        <div class="ptxt">
+          <strong>dosagem-concreto refatorado com app.js separado</strong>
+          <span>HTML monolítico com ~3000+ linhas — candidato a separação de lógica</span>
+        </div>
+        <div class="paffect">dosagem-concreto/</div>
+      </div>
+
+      <div class="pitem low">
+        <span class="pnum">17</span>
+        <div class="ptxt">
+          <strong>apple-touch-icon em cada sub-app</strong>
+          <span>Necessário para instalação correta no iOS Safari</span>
+        </div>
+        <div class="paffect">manifests individuais</div>
+      </div>
+
+      <div class="pitem low">
+        <span class="pnum">18</span>
+        <div class="ptxt">
+          <strong>Validação de payload antes do envio ao Sheets</strong>
+          <span>Campos obrigatórios zerados ou vazios chegam silenciosamente ao servidor</span>
+        </div>
+        <div class="paffect">Formulários com GAS</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SEÇÃO 6: TABELA RESUMO APPS
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-title"><span class="dot dot-info"></span>Tabela Resumo — Todos os Apps</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Módulo</th>
+            <th>Finalidade</th>
+            <th>Manifest</th>
+            <th>SW/Offline</th>
+            <th>No Hub</th>
+            <th>Shortcut</th>
+            <th>Backend</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>qr-concreto</code></td>
+            <td>Leitura CP com QR + traço</td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><code>slump</code></td>
+            <td>Slump / Flow</td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><code>parada-usina</code></td>
+            <td>Parada técnica → Sheets</td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td>GAS</td>
+          </tr>
+          <tr>
+            <td><code>massadas</code></td>
+            <td>Log de massadas → Sheets</td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td>GAS</td>
+          </tr>
+          <tr>
+            <td><code>controle-cimento</code></td>
+            <td>Saldo de cimento por silo</td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td>GAS</td>
+          </tr>
+          <tr>
+            <td><code>controle-agregados</code></td>
+            <td>Saldo de agregados</td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td>GAS</td>
+          </tr>
+          <tr>
+            <td><code>dosagem-concreto</code></td>
+            <td>Lab/eng: Abrams, MCC, traços, relatórios</td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td>GAS</td>
+          </tr>
+          <tr>
+            <td><code>carta-traco</code></td>
+            <td>Cartas de traço (Chart.js)</td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td>GAS</td>
+          </tr>
+          <tr>
+            <td><code>checklist-usina</code></td>
+            <td>Checklist industrial v3 → Sheets</td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td>GAS</td>
+          </tr>
+          <tr>
+            <td><code>mapa-concretagem</code></td>
+            <td>Mapa de concretagem por setor</td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><code>setor_botoes</code></td>
+            <td>Contagem por botão/setor</td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><code>setor_count</code></td>
+            <td>Contagem de caçambas via QR</td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td><span class="badge b-ok">✓</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><code>PWA-etiquetas</code></td>
+            <td>Backend Flask — etiquetas CP + QR + PDF</td>
+            <td><span class="badge b-info">VPS</span></td>
+            <td><span class="badge b-info">VPS</span></td>
+            <td><span class="badge b-ok">✓ link</span></td>
+            <td><span class="badge b-no">✗</span></td>
+            <td>Flask/Python</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    ConcreTrack PWA-HUB · Gerado em 27/03/2026 · Último commit: <code style="font-size:10px;opacity:.8">572b774</code>
+  </div>
+
+</body>
+</html>

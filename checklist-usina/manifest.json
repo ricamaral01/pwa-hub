@@ -1,0 +1,26 @@
+{
+  "name": "Checklist Usina — ConcreTrack",
+  "short_name": "Checklist",
+  "description": "Checklist industrial da usina de concreto",
+  "start_url": "./checklist_industrial_usina_mobile_v3.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1720",
+  "theme_color": "#1d5fa7",
+  "icons": [
+    {
+      "src": "../assets/img/logo-concretrack.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Novo Checklist",
+      "url": "./checklist_industrial_usina_mobile_v3.html",
+      "description": "Abrir checklist da usina"
+    }
+  ]
+}

@@ -1,6 +1,11 @@
 const SPREADSHEET_ID = '1KSDyi6Sz1xAC063JIOofrRXX3bdhz-E5k85lz-OmVz8';
 const SHEET_NAME = 'Página1';
 
+// URL da VPS para disparar push notification após salvar checklist
+// Configurar o token: Arquivo > Propriedades do projeto > Propriedades do script
+// Chave: PUSH_SECRET  Valor: (mesmo valor de PUSH_SECRET no servidor)
+const PUSH_ENDPOINT = 'https://dautomacao.com/etiquetas/push/send';
+
 const CHECKLIST_ORDER = [
   'limpeza_esteira_m1',
   'limpeza_esteira_m2',
@@ -104,6 +109,25 @@ function salvarChecklistUsina(payload) {
   });
 
   sheet.appendRow(row);
+
+  // Dispara push notification para todos os dispositivos cadastrados
+  try {
+    const pushSecret = PropertiesService.getScriptProperties().getProperty('PUSH_SECRET') || '';
+    UrlFetchApp.fetch(PUSH_ENDPOINT, {
+      method: 'post',
+      contentType: 'application/json',
+      headers: { 'X-Token': pushSecret },
+      payload: JSON.stringify({
+        title: '✅ Checklist Enviada',
+        body:  'Usina pronta para começar — registrado por ' + (payload.responsavel || 'operador'),
+        url:   'https://ricamaral01.github.io/pwa-hub/checklist-usina/'
+      }),
+      muteHttpExceptions: true
+    });
+  } catch (e) {
+    // Falha no push não deve impedir o salvamento
+    Logger.log('Push error: ' + e);
+  }
 
   return {
     rowNumber: sheet.getLastRow(),

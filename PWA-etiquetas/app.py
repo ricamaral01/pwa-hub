@@ -1,16 +1,95 @@
 import datetime
+import json
+import os
+import threading
 from io import BytesIO
+from pathlib import Path
 
 import psycopg2
 import psycopg2.extras
 import qrcode
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, render_template_string, request, send_file
+from pywebpush import WebPushException, webpush
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 
 app = Flask(__name__)
+
+# ---------------------------------------------------------------------------
+# Push notification configuration
+# Gerar chaves VAPID (executar uma vez na VPS):
+#   pip3 install pywebpush
+#   python3 -c "from py_vapid import Vapid; v=Vapid(); v.generate_keys(); print('Public:', v.public_key); print('Private:', v.private_key)"
+# Depois adicionar ao /etc/systemd/system/pwa_etiquetas.service:
+#   Environment="VAPID_PUBLIC_KEY=B..."
+#   Environment="VAPID_PRIVATE_KEY=..."
+#   Environment="PUSH_SECRET=seu-token-aqui"
+# ---------------------------------------------------------------------------
+
+VAPID_PUBLIC  = os.environ.get('VAPID_PUBLIC_KEY', '')
+VAPID_PRIVATE = os.environ.get('VAPID_PRIVATE_KEY', '')
+PUSH_SECRET   = os.environ.get('PUSH_SECRET', 'concretrack-push-2026')
+VAPID_CLAIMS  = {'sub': 'mailto:admin@dautomacao.com'}
+
+PUSH_DB   = Path('/root/PWA-etiquetas/push_data.json')
+_push_lock = threading.Lock()
+
+ALLOWED_ORIGINS = {
+    'https://ricamaral01.github.io',
+    'https://dautomacao.com',
+    'http://localhost',
+}
+
+
+def _load_push_db():
+    if PUSH_DB.exists():
+        try:
+            return json.loads(PUSH_DB.read_text(encoding='utf-8'))
+        except Exception:
+            pass
+    return {'subscriptions': [], 'last_checklist_date': ''}
+
+
+def _save_push_db(data):
+    PUSH_DB.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
+
+
+def _cors_headers(response):
+    origin = request.headers.get('Origin', '')
+    if origin in ALLOWED_ORIGINS:
+        response.headers['Access-Control-Allow-Origin']  = origin
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    return response
+
+
+def _send_push_all(title, body, url='https://ricamaral01.github.io/pwa-hub/checklist-usina/'):
+    """Envia push para todos os subscribers. Remove subscriptions expiradas."""
+    if not VAPID_PRIVATE or not VAPID_PUBLIC:
+        return  # VAPID não configurado
+    with _push_lock:
+        data = _load_push_db()
+        dead = []
+        for sub in data['subscriptions']:
+            try:
+                webpush(
+                    subscription_info=sub,
+                    data=json.dumps({'title': title, 'body': body, 'url': url}),
+                    vapid_private_key=VAPID_PRIVATE,
+                    vapid_claims=VAPID_CLAIMS,
+                )
+            except WebPushException as exc:
+                resp = exc.response
+                if resp is not None and resp.status_code in (404, 410):
+                    dead.append(sub)  # subscription expirada
+        if dead:
+            data['subscriptions'] = [
+                s for s in data['subscriptions'] if s not in dead
+            ]
+            _save_push_db(data)
 
 DB_CONFIG = {
     "host": "127.0.0.1",
@@ -531,6 +610,127 @@ loadMassadas();
 @app.route("/")
 def index():
     return render_template_string(HTML_TEMPLATE)
+
+
+# ---------------------------------------------------------------------------
+# Push notification routes
+# ---------------------------------------------------------------------------
+
+@app.route("/push/vapid-public", methods=["GET", "OPTIONS"])
+def push_vapid_public():
+    """Retorna a chave pública VAPID (sem autenticação — é pública por definição)."""
+    response = jsonify({"key": VAPID_PUBLIC})
+    return _cors_headers(response)
+
+
+@app.route("/push/subscribe", methods=["POST", "OPTIONS"])
+def push_subscribe():
+    """Recebe e armazena a subscription do browser."""
+    if request.method == "OPTIONS":
+        return _cors_headers(jsonify({}))
+
+    sub = request.get_json(force=True, silent=True)
+    if not sub or "endpoint" not in sub:
+        return _cors_headers(jsonify({"error": "invalid subscription"})), 400
+
+    with _push_lock:
+        data = _load_push_db()
+        endpoints = {s["endpoint"] for s in data["subscriptions"]}
+        if sub["endpoint"] not in endpoints:
+            data["subscriptions"].append(sub)
+            _save_push_db(data)
+
+    return _cors_headers(jsonify({"ok": True}))
+
+
+@app.route("/push/unsubscribe", methods=["POST", "OPTIONS"])
+def push_unsubscribe():
+    """Remove a subscription do servidor."""
+    if request.method == "OPTIONS":
+        return _cors_headers(jsonify({}))
+
+    body     = request.get_json(force=True, silent=True) or {}
+    endpoint = body.get("endpoint")
+    if not endpoint:
+        return _cors_headers(jsonify({"error": "missing endpoint"})), 400
+
+    with _push_lock:
+        data = _load_push_db()
+        data["subscriptions"] = [
+            s for s in data["subscriptions"] if s.get("endpoint") != endpoint
+        ]
+        _save_push_db(data)
+
+    return _cors_headers(jsonify({"ok": True}))
+
+
+@app.route("/push/send", methods=["POST"])
+def push_send():
+    """
+    Chamado pelo Google Apps Script após salvar o checklist.
+    Header obrigatório: X-Token: <PUSH_SECRET>
+    Body JSON: { title, body, url }
+    """
+    if request.headers.get("X-Token") != PUSH_SECRET:
+        return jsonify({"error": "unauthorized"}), 401
+
+    payload = request.get_json(force=True, silent=True) or {}
+
+    # Registra que o checklist foi enviado hoje
+    with _push_lock:
+        data = _load_push_db()
+        data["last_checklist_date"] = datetime.date.today().isoformat()
+        _save_push_db(data)
+
+    _send_push_all(
+        title=payload.get("title", "✅ Checklist Enviada"),
+        body =payload.get("body",  "Usina pronta para começar"),
+        url  =payload.get("url",   "https://ricamaral01.github.io/pwa-hub/checklist-usina/"),
+    )
+    return jsonify({"ok": True})
+
+
+# ---------------------------------------------------------------------------
+# Agendador 08:30 Seg-Sex
+# ---------------------------------------------------------------------------
+
+def _alerta_checklist_manha():
+    """Dispara às 08:30 de Seg a Sex se checklist não foi enviada hoje."""
+    hoje = datetime.date.today()
+    if hoje.weekday() > 4:   # 5=Sáb, 6=Dom
+        return
+    with _push_lock:
+        data  = _load_push_db()
+        ultimo_checklist = data.get("last_checklist_date", "")
+        ultimo_alerta    = data.get("last_alerta_date", "")
+        if ultimo_checklist == hoje.isoformat():
+            return  # checklist já foi enviada hoje — sem alerta
+        if ultimo_alerta == hoje.isoformat():
+            return  # alerta já foi disparado (outro worker ou run anterior)
+        # Marca ANTES de enviar para prevenir duplicata em multi-worker
+        data["last_alerta_date"] = hoje.isoformat()
+        _save_push_db(data)
+
+    _send_push_all(
+        title="⚠️ Checklist não enviada",
+        body ="8:30 e ainda não foi iniciada a produção",
+        url  ="https://ricamaral01.github.io/pwa-hub/checklist-usina/",
+    )
+
+
+# Inicia scheduler apenas no processo principal (evita duplicação com gunicorn multi-worker)
+if not os.environ.get("WERKZEUG_RUN_MAIN"):
+    _scheduler = BackgroundScheduler(timezone="America/Sao_Paulo")
+    _scheduler.add_job(
+        _alerta_checklist_manha,
+        trigger="cron",
+        day_of_week="mon-fri",
+        hour=8,
+        minute=30,
+        id="alerta_checklist_manha",
+        replace_existing=True,
+    )
+    _scheduler.start()
 
 
 if __name__ == "__main__":
