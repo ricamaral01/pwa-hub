@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v24";
+const CACHE = "ct-hub-v25";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -120,6 +120,45 @@ self.addEventListener("fetch", (event) => {
       if (event.request.mode === "navigate") {
         return caches.match("./index.html");
       }
+    })
+  );
+});
+
+// ── Push — exibe notificação ─────────────────────────────────
+self.addEventListener('push', e => {
+  let data = {
+    title: 'ConcreTrack',
+    body:  '',
+    url:   'https://ricamaral01.github.io/pwa-hub/'
+  };
+  try { data = Object.assign(data, e.data.json()); } catch (_) {}
+
+  e.waitUntil(
+    self.registration.showNotification(data.title, {
+      body:               data.body,
+      icon:               '/pwa-hub/assets/img/logo-concretrack.png',
+      badge:              '/pwa-hub/assets/img/logo-concretrack.png',
+      vibrate:            [200, 100, 200],
+      requireInteraction: true,
+      data:               { url: data.url }
+    })
+  );
+});
+
+// ── Notification click ────────────────────────────────────────
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const target = (e.notification.data && e.notification.data.url)
+    ? e.notification.data.url
+    : 'https://ricamaral01.github.io/pwa-hub/';
+
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      for (const c of list) {
+        if (c.url.startsWith('https://ricamaral01.github.io/pwa-hub/') && 'focus' in c)
+          return c.focus();
+      }
+      return clients.openWindow(target);
     })
   );
 });
