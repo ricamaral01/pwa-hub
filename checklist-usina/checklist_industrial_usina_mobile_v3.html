@@ -471,6 +471,12 @@
           </div>
         </div>
         <div class="check-card">
+          <span class="check-title">Umidade Areia Natural (%)</span>
+          <div class="field" style="margin-top:6px;">
+            <input type="number" id="umidade_areia_natural" min="0" max="30" step="0.1" placeholder="Ex: 4,0" style="font-size:1.1rem;font-weight:700;text-align:center;" />
+          </div>
+        </div>
+        <div class="check-card">
           <span class="check-title">Umidade Areia Industrial (%)</span>
           <div class="field" style="margin-top:6px;">
             <input type="number" id="umidade_areia_industrial" min="0" max="30" step="0.1" placeholder="Ex: 5,2" style="font-size:1.1rem;font-weight:700;text-align:center;" />
@@ -600,6 +606,7 @@
         responsavel: document.getElementById('meta_responsavel')?.value || '',
         misturadorOperacao: document.getElementById('meta_misturador_operacao')?.value || '',
         observacoes: document.getElementById('meta_observacoes')?.value || '',
+        umidade_areia_natural: document.getElementById('umidade_areia_natural')?.value || '',
         umidade_areia_industrial: document.getElementById('umidade_areia_industrial')?.value || '',
         responses,
         criadoEm: new Date().toISOString()
