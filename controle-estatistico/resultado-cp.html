@@ -191,6 +191,24 @@
       <div class="form-grid">
 
         <div class="field">
+          <div class="label">Data Rompimento 24h</div>
+          <input id="cp_data24h" type="date">
+        </div>
+        <div class="field">
+          <div class="label">fc 24h (MPa)</div>
+          <input id="cp_fc24h" type="number" step="0.1" min="0" placeholder="—">
+        </div>
+
+        <div class="field">
+          <div class="label">Data Rompimento 3d</div>
+          <input id="cp_data3" type="date">
+        </div>
+        <div class="field">
+          <div class="label">fc 3d (MPa)</div>
+          <input id="cp_fc3" type="number" step="0.1" min="0" placeholder="—">
+        </div>
+
+        <div class="field">
           <div class="label">Data Rompimento 7d</div>
           <input id="cp_data7" type="date">
         </div>
@@ -200,30 +218,12 @@
         </div>
 
         <div class="field">
-          <div class="label">Data Rompimento 14d</div>
-          <input id="cp_data14" type="date">
-        </div>
-        <div class="field">
-          <div class="label">fc 14d (MPa)</div>
-          <input id="cp_fc14" type="number" step="0.1" min="0" placeholder="—">
-        </div>
-
-        <div class="field">
           <div class="label">Data Rompimento 28d</div>
           <input id="cp_data28" type="date">
         </div>
         <div class="field">
           <div class="label">fc 28d (MPa)</div>
           <input id="cp_fc28" type="number" step="0.1" min="0" placeholder="—">
-        </div>
-
-        <div class="field">
-          <div class="label">Data Rompimento 91d</div>
-          <input id="cp_data91" type="date">
-        </div>
-        <div class="field">
-          <div class="label">fc 91d (MPa)</div>
-          <input id="cp_fc91" type="number" step="0.1" min="0" placeholder="—">
         </div>
 
         <div class="field full">
@@ -271,10 +271,10 @@
           <th rowspan="2">Elemento</th>
           <th rowspan="2">NF</th>
           <th rowspan="2">Responsável</th>
+          <th class="group" colspan="2">24 horas</th>
+          <th class="group" colspan="2">3 dias</th>
           <th class="group" colspan="2">7 dias</th>
-          <th class="group" colspan="2">14 dias</th>
           <th class="group" colspan="2">28 dias</th>
-          <th class="group" colspan="2">91 dias</th>
           <th rowspan="2">Resultado<br>28d</th>
           <th rowspan="2">Obs.</th>
         </tr>
@@ -397,14 +397,14 @@ function renderTable(rows) {
       <td class="left">${r.elemento || "—"}</td>
       <td>${r.nf || "—"}</td>
       <td>${r.responsavel || "—"}</td>
+      <td>${fmtDate(r.data24h)}</td>
+      <td>${r.fc24h ?? "—"}</td>
+      <td>${fmtDate(r.data3)}</td>
+      <td>${r.fc3 ?? "—"}</td>
       <td>${fmtDate(r.data7)}</td>
       <td>${r.fc7 ?? "—"}</td>
-      <td>${fmtDate(r.data14)}</td>
-      <td>${r.fc14 ?? "—"}</td>
       <td>${fmtDate(r.data28)}</td>
       <td>${r.fc28 ?? "—"}</td>
-      <td>${fmtDate(r.data91)}</td>
-      <td>${r.fc91 ?? "—"}</td>
       <td>${badgeHtml(r.resultado)}</td>
       <td class="left" style="max-width:160px; white-space:normal;">${r.obs || "—"}</td>
     `;
@@ -470,14 +470,14 @@ document.getElementById("frmCP").addEventListener("submit", e => {
     elemento:     v("cp_elemento"),
     nf:           v("cp_nf"),
     responsavel:  v("cp_responsavel"),
+    data24h:      v("cp_data24h"),
+    fc24h:        vn("cp_fc24h"),
+    data3:        v("cp_data3"),
+    fc3:          vn("cp_fc3"),
     data7:        v("cp_data7"),
     fc7:          vn("cp_fc7"),
-    data14:       v("cp_data14"),
-    fc14:         vn("cp_fc14"),
     data28:       v("cp_data28"),
     fc28:         fc28,
-    data91:       v("cp_data91"),
-    fc91:         vn("cp_fc91"),
     obs:          v("cp_obs"),
     resultado:    calcResultado(fc28, fck)
   };
