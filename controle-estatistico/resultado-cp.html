@@ -261,7 +261,7 @@ function renderTable(){
       +'<td>'+fmtDate(dataRupt)+'</td>'
       +'<td>'+ageBadge(g.idade_dias)+'</td>'
       +'<td class="lft">'+(g.traco_id||'--')+'</td>'
-      +'<td class="'+mpaClass(mpa1,age)+'">'++fmtMpa(mpa1)+'</td>'
+      +'<td class="'+mpaClass(mpa1,age)+'">'+fmtMpa(mpa1)+'</td>'
       +'<td class="'+mpaClass(mpa2,age)+'">'+fmtMpa(mpa2)+'</td>'
       +'<td class="'+medClass(med,age)+'">'+(med!==null?String(r1(med)):'--')+'</td>'
       +'<td>'+statusBadge(mpa1,mpa2,age)+'</td>';
@@ -297,7 +297,10 @@ function processRenderQueue(){
 
 function updateProgress(label){
   var pb = document.getElementById('renderProgress');
-  if(pb) pb.textContent = '⏳ Carregando: ' + (label || '...');
+  if(pb){
+    pb.style.display = '';
+    pb.textContent = '⏳ Carregando: ' + (label || '...');
+  }
 }
 
 function hideProgress(){
@@ -356,6 +359,17 @@ function mapDbRows(parsed){
   }).filter(function(r){ return r.data_moldagem||r.mpa; });
 }
 
+async function fetchWithTimeout(url, options, timeoutMs){
+  var controller = new AbortController();
+  var timer = setTimeout(function(){ controller.abort(); }, timeoutMs || 12000);
+  try{
+    var opts = Object.assign({}, options || {}, { signal: controller.signal });
+    return await fetch(url, opts);
+  }finally{
+    clearTimeout(timer);
+  }
+}
+
 function renderFromRows(rows){
   _groups=groupRows(rows);
   showTable();
@@ -384,7 +398,7 @@ async function loadData(){
   }
 
   try{
-    var res=await fetch(DB_API_URL+'&t='+Date.now(),{cache:'no-store'});
+    var res=await fetchWithTimeout(DB_API_URL+'&t='+Date.now(),{cache:'no-store'},12000);
     if(!res.ok){
       if(!cache || !cache.rows || !cache.rows.length){
         showState('&#10060;','<p>Falha ao consultar DB (HTTP '+res.status+').</p>');
