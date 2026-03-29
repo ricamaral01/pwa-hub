@@ -128,7 +128,7 @@
 
   <!-- Estado de carregamento -->
   <div id="stateBox" class="state-box">
-    <div class="sico">&#8987;</div><p>Carregando dados da planilha...</p>
+    <div class="sico">&#8987;</div><p>Carregando dados do banco...</p>
   </div>
 
   <!-- Conteudo principal -->
@@ -154,10 +154,15 @@
       </div>
     </div>
 
-    <!-- ======= Carta de Shewhart 28d ======= -->
+    <!-- ======= Cartas de Shewhart por idade ======= -->
     <div class="section-card">
-      <div class="section-title"><span>&#128202;</span> Carta de Controle Shewhart &#8212; 28 dias</div>
-      <div class="chart-box" style="max-width:100%;"><canvas id="chartShewhart" style="max-height:260px;"></canvas></div>
+      <div class="section-title"><span>&#128202;</span> Cartas de Controle Shewhart &#8212; Todas as Idades</div>
+      <div class="chart-grid">
+        <div class="chart-box"><h4>&#60; 24 horas</h4><canvas id="chartShewhart1" style="max-height:220px;"></canvas></div>
+        <div class="chart-box"><h4>3 dias</h4><canvas id="chartShewhart3" style="max-height:220px;"></canvas></div>
+        <div class="chart-box"><h4>7 dias</h4><canvas id="chartShewhart7" style="max-height:220px;"></canvas></div>
+        <div class="chart-box"><h4>28 dias</h4><canvas id="chartShewhart28" style="max-height:220px;"></canvas></div>
+      </div>
     </div>
 
     <!-- ======= Ultimos 5 dias ======= -->
@@ -209,6 +214,7 @@
     <!-- ======= Controle diario de moldagem ======= -->
     <div class="section-card">
       <div class="section-title"><span>&#128198;</span> Controle Di&#225;rio de Moldagem (Dias &#218;teis)</div>
+      <div id="moldagemResumo" style="font-size:.72rem;color:var(--muted);margin:0 0 10px 0;"></div>
       <div class="tbl-wrap">
         <table id="tblMoldagemDiaria" class="stat-tbl">
           <thead>
@@ -222,7 +228,7 @@
               <th class="th-7">7d (2)</th>
               <th class="th-28">28d (2)</th>
               <th class="th-stat">FALTANTES</th>
-              <th class="th-stat">A&#199;&#195;O</th>
+              <th class="th-stat">RESUMO DO DIA</th>
             </tr>
           </thead>
           <tbody id="tblMoldagemDiariaBody"></tbody>
@@ -236,8 +242,7 @@
 
 <script>
 /* ===================== CONFIG ===================== */
-const SHEET_ID  = "1eC2DGsEUKkX22A0IUaYvUcEj9xbzZr7K-7Eus0iSavw";
-const SHEET_GID = "0";
+const DB_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos?limit=1000";
 const META_FAIXA = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
 const AGES = [1,3,7,28];
 const MESES_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -499,21 +504,23 @@ function makeAgeComparisonChart(groups){
   });
 }
 
-function makeShewhartChart(groups){
-  destroyChart('chartShewhart');
-  var sub=groups.filter(function(g){return g.idade_dias===28&&g.med!==null;});
+function makeShewhartChartForAge(groups, age, canvasId){
+  destroyChart(canvasId);
+  var sub=groups.filter(function(g){return g.idade_dias===age&&g.med!==null;});
   sub.sort(function(a,b){return a.data_moldagem.localeCompare(b.data_moldagem);});
   var vals=sub.map(function(g){return g.med;});
   if(!vals.length)return;
   var mean=avg(vals); var stddev=sd(vals)||0;
   var ucl=r1(mean+3*stddev); var lcl=r1(mean-3*stddev); var cl=r1(mean);
-  var ctx=document.getElementById('chartShewhart').getContext('2d');
-  _charts['chartShewhart']=new Chart(ctx,{
+  var canvas=document.getElementById(canvasId);
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  _charts[canvasId]=new Chart(ctx,{
     type:'line',
     data:{
       labels:sub.map(function(g,i){return fmtDate(g.data_moldagem)+' #'+(i+1);}),
       datasets:[
-        { label:'M\u00e9dia MPa', data:vals, borderColor:'#a855f7', backgroundColor:'rgba(168,85,247,.12)', borderWidth:2, pointRadius:3, tension:.2, fill:true },
+        { label:'M\u00e9dia MPa', data:vals, borderColor:AGE_COLORS[age], backgroundColor:AGE_FILLS[age], borderWidth:2, pointRadius:3, tension:.2, fill:true },
         { label:'LC ('+cl+')', data:vals.map(function(){return cl;}), borderColor:'rgba(100,200,100,.7)', borderDash:[6,3], borderWidth:1.5, pointRadius:0, fill:false },
         { label:'LSC ('+ucl+')', data:vals.map(function(){return ucl;}), borderColor:'rgba(239,68,68,.7)', borderDash:[4,3], borderWidth:1.5, pointRadius:0, fill:false },
         { label:'LIC ('+lcl+')', data:vals.map(function(){return lcl;}), borderColor:'rgba(239,68,68,.7)', borderDash:[4,3], borderWidth:1.5, pointRadius:0, fill:false }
@@ -610,7 +617,7 @@ function renderMensal(allGroups){
 }
 
 /* ===================== CONTROLE DIARIO MOLDAGEM ===================== */
-function renderControleMoldagemDiaria(groups,mes,ano){
+function renderControleMoldagemDiaria(groups){
   var EXPECTED_TOTAL=8;
   var EXPECTED_BY_AGE={1:2,3:2,7:2,28:2};
 
@@ -624,79 +631,56 @@ function renderControleMoldagemDiaria(groups,mes,ano){
     byDate[g.data_moldagem].total+=qtd;
   });
 
-  var startDate=null;
-  var endDate=null;
   var today=todayDateOnly();
-  if(ano&&mes){
-    startDate=new Date(parseInt(ano,10),parseInt(mes,10)-1,1);
-    endDate=new Date(parseInt(ano,10),parseInt(mes,10),0);
-  }else if(ano){
-    startDate=new Date(parseInt(ano,10),0,1);
-    endDate=new Date(parseInt(ano,10),11,31);
-  }else{
-    var keys=Object.keys(byDate).sort();
-    if(keys.length){
-      startDate=toDateObj(keys[0]);
-      endDate=toDateObj(keys[keys.length-1]);
-    }
-  }
+  var startDate=new Date(today.getFullYear(),today.getMonth(),1);
+  var endDate=today;
 
   var html='';
-  var nextBusinessDay=nextBusinessDayFrom(today);
-  if(startDate&&endDate){
-    var cur=new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate());
-    while(cur<=endDate){
-      if(isBusinessDay(cur) && cur<today){
-        var key=isoFromDate(cur);
-        if(isDeletedMoldagemRow(key)){
-          cur.setDate(cur.getDate()+1);
-          continue;
-        }
-        var day=byDate[key]||{1:0,3:0,7:0,28:0,total:0};
-        var f1=Math.max(0,EXPECTED_BY_AGE[1]-day[1]);
-        var f3=Math.max(0,EXPECTED_BY_AGE[3]-day[3]);
-        var f7=Math.max(0,EXPECTED_BY_AGE[7]-day[7]);
-        var f28=Math.max(0,EXPECTED_BY_AGE[28]-day[28]);
-        var faltantes=f1+f3+f7+f28;
+  var faltasResumo=[];
+  var cur=new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate());
+  while(cur<=endDate){
+    if(isBusinessDay(cur) && cur<today){
+      var key=isoFromDate(cur);
+      var day=byDate[key]||{1:0,3:0,7:0,28:0,total:0};
+      var f1=Math.max(0,EXPECTED_BY_AGE[1]-day[1]);
+      var f3=Math.max(0,EXPECTED_BY_AGE[3]-day[3]);
+      var f7=Math.max(0,EXPECTED_BY_AGE[7]-day[7]);
+      var f28=Math.max(0,EXPECTED_BY_AGE[28]-day[28]);
+      var faltantes=f1+f3+f7+f28;
 
-        var status='OK';
-        var statusCls='v-ok';
-        if(day.total===0){ status='Sem moldagem'; statusCls='v-fail'; }
-        else if(faltantes>0){ status='Incompleto'; statusCls='v-warn'; }
-        else if(day.total>EXPECTED_TOTAL){ status='Acima do esperado'; statusCls='v-neu'; }
+      var status='OK';
+      var statusCls='v-ok';
+      if(day.total===0){ status='Sem moldagem'; statusCls='v-fail'; }
+      else if(faltantes>0){ status='Incompleto'; statusCls='v-warn'; }
+      else if(day.total>EXPECTED_TOTAL){ status='Acima do esperado'; statusCls='v-neu'; }
 
-        html+='<tr>';
-        html+='<td>'+fmtDate(key)+'</td>';
-        html+='<td class="'+statusCls+'"><b>'+status+'</b></td>';
-        html+='<td><b>'+day.total+'</b></td>';
-        html+='<td>'+EXPECTED_TOTAL+'</td>';
-        html+='<td class="'+(day[1]===EXPECTED_BY_AGE[1]?'v-ok':'v-warn')+'">'+day[1]+'</td>';
-        html+='<td class="'+(day[3]===EXPECTED_BY_AGE[3]?'v-ok':'v-warn')+'">'+day[3]+'</td>';
-        html+='<td class="'+(day[7]===EXPECTED_BY_AGE[7]?'v-ok':'v-warn')+'">'+day[7]+'</td>';
-        html+='<td class="'+(day[28]===EXPECTED_BY_AGE[28]?'v-ok':'v-warn')+'">'+day[28]+'</td>';
-        html+='<td class="'+(faltantes===0?'v-ok':'v-fail')+'"><b>'+faltantes+'</b></td>';
-        html+='<td><button type="button" onclick="deleteMoldagemRow(\''+key+'\')" style="padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(239,68,68,.18);color:#fecaca;font-weight:700;cursor:pointer;">Excluir</button></td>';
-        html+='</tr>';
-      }
-      cur.setDate(cur.getDate()+1);
-    }
+      var resumoDia=faltantes===0
+        ? 'Completo'
+        : ('Faltam '+f1+'(1d), '+f3+'(3d), '+f7+'(7d), '+f28+'(28d)');
 
-    var withinRange=nextBusinessDay>=startDate&&nextBusinessDay<=endDate;
-    var nextKey=isoFromDate(nextBusinessDay);
-    if(withinRange && !isDeletedMoldagemRow(nextKey)){
+      if(faltantes>0)faltasResumo.push(fmtDate(key)+': '+resumoDia);
+
       html+='<tr>';
-      html+='<td>'+fmtDate(nextKey)+'</td>';
-      html+='<td class="v-pend"><b>Pr&#243;ximo dia &#250;til</b></td>';
-      html+='<td>--</td>';
+      html+='<td>'+fmtDate(key)+'</td>';
+      html+='<td class="'+statusCls+'"><b>'+status+'</b></td>';
+      html+='<td><b>'+day.total+'</b></td>';
       html+='<td>'+EXPECTED_TOTAL+'</td>';
-      html+='<td>--</td>';
-      html+='<td>--</td>';
-      html+='<td>--</td>';
-      html+='<td>--</td>';
-      html+='<td>--</td>';
-      html+='<td><button type="button" onclick="deleteMoldagemRow(\''+nextKey+'\')" style="padding:6px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(239,68,68,.18);color:#fecaca;font-weight:700;cursor:pointer;">Excluir</button></td>';
+      html+='<td class="'+(day[1]===EXPECTED_BY_AGE[1]?'v-ok':'v-warn')+'">'+day[1]+'</td>';
+      html+='<td class="'+(day[3]===EXPECTED_BY_AGE[3]?'v-ok':'v-warn')+'">'+day[3]+'</td>';
+      html+='<td class="'+(day[7]===EXPECTED_BY_AGE[7]?'v-ok':'v-warn')+'">'+day[7]+'</td>';
+      html+='<td class="'+(day[28]===EXPECTED_BY_AGE[28]?'v-ok':'v-warn')+'">'+day[28]+'</td>';
+      html+='<td class="'+(faltantes===0?'v-ok':'v-fail')+'"><b>'+faltantes+'</b></td>';
+      html+='<td class="lft">'+resumoDia+'</td>';
       html+='</tr>';
     }
+    cur.setDate(cur.getDate()+1);
+  }
+
+  var resumoEl=document.getElementById('moldagemResumo');
+  if(faltasResumo.length){
+    resumoEl.innerHTML='<b>Resumo do m&#234;s corrente:</b> '+faltasResumo.join(' &bull; ');
+  }else{
+    resumoEl.innerHTML='<b>Resumo do m&#234;s corrente:</b> Nenhuma pend&#234;ncia registrada nos dias &#250;teis at&#233; o momento.';
   }
 
   if(!html)html='<tr><td colspan="10" style="padding:24px;text-align:center;color:var(--muted);">Sem dados suficientes para o controle de moldagem.</td></tr>';
@@ -720,9 +704,12 @@ function renderAll(){
     makeLineChart('chart'+age,data,AGE_COLORS[age],AGE_FILLS[age]);
   });
 
-  makeShewhartChart(groups);
+  makeShewhartChartForAge(groups,1,'chartShewhart1');
+  makeShewhartChartForAge(groups,3,'chartShewhart3');
+  makeShewhartChartForAge(groups,7,'chartShewhart7');
+  makeShewhartChartForAge(groups,28,'chartShewhart28');
   renderUltimos(_allGroups);  // sempre com todos, nao filtrado
-  renderControleMoldagemDiaria(groups,mes,ano);
+  renderControleMoldagemDiaria(_allGroups);
   renderMensal(_allGroups);   // sempre com todos
 
   // footer
@@ -750,41 +737,30 @@ function showContent(){
 /* ===================== FETCH ===================== */
 async function loadData(){
   try{
-    var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&gid='+SHEET_GID+'&t='+Date.now();
-    var res=await fetch(url,{redirect:'follow'});
-    var text=await res.text();
-    var start=text.indexOf('{'); var end=text.lastIndexOf('}');
-    if(start===-1||end===-1){ showState('&#128295;','<p>Resposta inv\u00e1lida da planilha.<br>Verifique se est\u00e1 compartilhada publicamente.</p>'); return; }
-    var parsed;
-    try{ parsed=JSON.parse(text.substring(start,end+1)); }
-    catch(e){ showState('&#128295;','<p>Erro ao ler dados.<br><code>'+e.message+'</code></p>'); return; }
-    if(!parsed||!parsed.table){ showState('&#9888;&#65039;','<p>Resposta inesperada da planilha.</p>'); return; }
-    var cols=parsed.table.cols;
-    var gvizRows=parsed.table.rows;
-    if(!gvizRows||!gvizRows.length){ showState('&#128237;','<p>Nenhum resultado registrado na planilha.</p>'); return; }
-    var rows=gvizRows.map(function(row){
-      var obj={};
-      cols.forEach(function(col,i){
-        var cell=row.c?row.c[i]:null;
-        if(col.type==='date'||col.type==='datetime') obj[col.label]=parseGVizDate_(col,cell);
-        else if(col.type==='number') obj[col.label]=(cell&&cell.v!==null&&cell.v!==undefined)?cell.v:'';
-        else obj[col.label]=(cell&&cell.v!==null&&cell.v!==undefined)?String(cell.v):'';
-      });
+    var res=await fetch(DB_API_URL+'&t='+Date.now(),{cache:'no-store'});
+    if(!res.ok){
+      showState('&#10060;','<p>Falha ao consultar DB (HTTP '+res.status+').</p>');
+      return;
+    }
+    var parsed=await res.json();
+    var dbRows=(parsed&&parsed.rows)?parsed.rows:[];
+    if(!dbRows.length){ showState('&#128237;','<p>Nenhum resultado registrado no banco.</p>'); return; }
+    var rows=dbRows.map(function(r){
       return{
-        data_moldagem:obj['Data_Moldagem']||'',
-        traco_id:obj['Tra\u00e7o_ID']||obj['Traco_ID']||obj['traco_id']||'',
-        cp:obj['CP']||'',
-        idade_dias:obj['Idade_dias']||obj['Idade_Dias']||'',
-        data_ruptura:obj['Data_Ruptura']||'',
-        mpa:obj['MPA']||''
+        data_moldagem:r.data_moldagem||'',
+        traco_id:r.traco_id||'',
+        cp:r.cp||'',
+        idade_dias:r.idade_dias||'',
+        data_ruptura:r.data_ruptura||'',
+        mpa:r.mpa
       };
     }).filter(function(r){ return r.data_moldagem||r.mpa; });
-    if(!rows.length){ showState('&#128237;','<p>Nenhum resultado registrado na planilha.</p>'); return; }
+    if(!rows.length){ showState('&#128237;','<p>Nenhum resultado v&#225;lido retornado pelo banco.</p>'); return; }
     _allGroups=buildGroups(rows);
     showContent();
     renderAll();
   }catch(err){
-    showState('&#10060;','<p>Falha ao buscar dados:<br><code>'+err.message+'</code></p>');
+    showState('&#10060;','<p>Falha ao buscar dados do banco:<br><code>'+err.message+'</code></p>');
   }
 }
 

@@ -108,7 +108,7 @@
   </div>
 
   <div id="stateBox" class="state-box">
-    <div class="sico">&#8987;</div><p>Carregando dados da planilha...</p>
+    <div class="sico">&#8987;</div><p>Carregando dados do banco...</p>
   </div>
 
   <div id="tblArea" style="display:none;">
@@ -134,8 +134,7 @@
 </div>
 
 <script>
-const SHEET_ID  = "1eC2DGsEUKkX22A0IUaYvUcEj9xbzZr7K-7Eus0iSavw";
-const SHEET_GID = "0";
+const DB_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos?limit=1000";
 const META_FAIXA = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
 
 function fmtDate(v){
@@ -290,49 +289,28 @@ function parseGVizDate_(col,cell){
 
 async function loadData(){
   try{
-    var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&gid='+SHEET_GID+'&t='+Date.now();
-    var res=await fetch(url,{redirect:'follow'});
-    var text=await res.text();
-    var start=text.indexOf('{');
-    var end=text.lastIndexOf('}');
-    if(start===-1||end===-1){
-      showState('&#128295;','<p><b>Resposta inv\u00e1lida da planilha.</b></p><p>Verifique se a planilha est\u00e1 compartilhada publicamente.</p>');
+    var res=await fetch(DB_API_URL+'&t='+Date.now(),{cache:'no-store'});
+    if(!res.ok){
+      showState('&#10060;','<p>Falha ao consultar DB (HTTP '+res.status+').</p>');
       return;
     }
-    var parsed;
-    try{ parsed=JSON.parse(text.substring(start,end+1)); }
-    catch(e){ showState('&#128295;','<p><b>Erro ao ler dados.</b></p><p><code>'+e.message+'</code></p>'); return; }
-    if(!parsed||!parsed.table){ showState('&#9888;&#65039;','<p>Resposta inesperada da planilha.</p>'); return; }
-    var cols=parsed.table.cols;
-    var gvizRows=parsed.table.rows;
-    if(!gvizRows||!gvizRows.length){ showState('&#128237;','<p>Nenhum resultado registrado na planilha.</p>'); return; }
-    var rows=gvizRows.map(function(row){
-      var obj={};
-      cols.forEach(function(col,i){
-        var cell=row.c?row.c[i]:null;
-        if(col.type==='date'||col.type==='datetime'){
-          obj[col.label]=parseGVizDate_(col,cell);
-        }else if(col.type==='number'){
-          obj[col.label]=(cell&&cell.v!==null&&cell.v!==undefined)?cell.v:'';
-        }else{
-          obj[col.label]=(cell&&cell.v!==null&&cell.v!==undefined)?String(cell.v):'';
-        }
-      });
-      return{
-        data_moldagem: obj['Data_Moldagem']||'',
-        traco_id:      obj['Tra\u00e7o_ID']||obj['Traco_ID']||obj['traco_id']||'',
-        cp:            obj['CP']||'',
-        idade_dias:    obj['Idade_dias']||obj['Idade_Dias']||'',
-        data_ruptura:  obj['Data_Ruptura']||'',
-        mpa:           obj['MPA']||''
+    var parsed=await res.json();
+    var rows=(parsed&&parsed.rows?parsed.rows:[]).map(function(r){
+      return {
+        data_moldagem:r.data_moldagem||'',
+        traco_id:r.traco_id||'',
+        cp:r.cp||'',
+        idade_dias:r.idade_dias||'',
+        data_ruptura:r.data_ruptura||'',
+        mpa:r.mpa
       };
     }).filter(function(r){ return r.data_moldagem||r.mpa; });
-    if(!rows.length){ showState('&#128237;','<p>Nenhum resultado registrado na planilha.</p>'); return; }
+    if(!rows.length){ showState('&#128237;','<p>Nenhum resultado registrado no banco.</p>'); return; }
     _groups=groupRows(rows);
     showTable();
     renderTable();
   }catch(err){
-    showState('&#10060;','<p>Falha ao buscar dados:<br><code>'+err.message+'</code></p>');
+    showState('&#10060;','<p>Falha ao buscar dados do banco:<br><code>'+err.message+'</code></p>');
   }
 }
 
