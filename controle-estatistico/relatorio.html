@@ -755,8 +755,19 @@ function hideProgress(){
 var _lazyCharts={};
 var _chartObserver=null;
 
+function getLazyChartIdFromElement(el){
+  if(!el) return '';
+  if(el.id && _lazyCharts[el.id]) return el.id;
+  var canvas=el.querySelector('canvas[id]');
+  return canvas?canvas.id:'';
+}
+
 function initLazyChartObserver(){
-  if(_chartObserver) return;
+  if(_chartObserver){
+    _chartObserver.disconnect();
+    _chartObserver=null;
+  }
+
   if(!('IntersectionObserver' in window)){
     // Fallback: render all immediately
     Object.keys(_lazyCharts).forEach(function(id){
@@ -768,7 +779,7 @@ function initLazyChartObserver(){
   _chartObserver=new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if(entry.isIntersecting){
-        var id=entry.target.id;
+        var id=getLazyChartIdFromElement(entry.target);
         if(_lazyCharts[id]){
           _lazyCharts[id]();
           delete _lazyCharts[id];
