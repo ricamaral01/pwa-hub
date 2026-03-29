@@ -145,6 +145,7 @@
 </div>
 
 <script>
+const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbyZkdfk8OwLDGAzc2fznPUFS5cDvDgMVRz1nVBtRG1BSIqthuVjTwEY8XD1oyfOKgB9/exec?action=listar";
 const DB_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos?limit=1000";
 const META_FAIXA = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
 const CACHE_KEY_RESULTADO_CP = 'ct_resultado_cp_rows_v1';
@@ -370,6 +371,31 @@ async function fetchWithTimeout(url, options, timeoutMs){
   }
 }
 
+async function fetchRowsFromSources(){
+  var lastErr = '';
+
+  try{
+    var resSheet = await fetchWithTimeout(SHEETS_API_URL+'&t='+Date.now(), { cache:'no-store' }, 12000);
+    if(resSheet.ok){
+      var parsedSheet = await resSheet.json();
+      var rowsSheet = mapDbRows(parsedSheet);
+      if(rowsSheet.length) return rowsSheet;
+      lastErr = 'Planilha sem dados';
+    }else{
+      lastErr = 'Planilha HTTP '+resSheet.status;
+    }
+  }catch(errSheet){
+    lastErr = 'Planilha: '+(errSheet && errSheet.message ? errSheet.message : String(errSheet));
+  }
+
+  var resDb = await fetchWithTimeout(DB_API_URL+'&t='+Date.now(), { cache:'no-store' }, 12000);
+  if(!resDb.ok) throw new Error(lastErr+' | DB HTTP '+resDb.status);
+  var parsedDb = await resDb.json();
+  var rowsDb = mapDbRows(parsedDb);
+  if(!rowsDb.length) throw new Error(lastErr+' | DB sem dados');
+  return rowsDb;
+}
+
 function renderFromRows(rows){
   _groups=groupRows(rows);
   showTable();
@@ -398,18 +424,10 @@ async function loadData(){
   }
 
   try{
-    var res=await fetchWithTimeout(DB_API_URL+'&t='+Date.now(),{cache:'no-store'},12000);
-    if(!res.ok){
-      if(!cache || !cache.rows || !cache.rows.length){
-        showState('&#10060;','<p>Falha ao consultar DB (HTTP '+res.status+').</p>');
-      }
-      return;
-    }
-    var parsed=await res.json();
-    var rows=mapDbRows(parsed);
+    var rows=await fetchRowsFromSources();
     if(!rows.length){
       if(!cache || !cache.rows || !cache.rows.length){
-        showState('&#128237;','<p>Nenhum resultado registrado no banco.</p>');
+        showState('&#128237;','<p>Nenhum resultado encontrado na planilha/DB.</p>');
       }
       return;
     }
@@ -425,7 +443,7 @@ async function loadData(){
     }
   }catch(err){
     if(!cache || !cache.rows || !cache.rows.length){
-      showState('&#10060;','<p>Falha ao buscar dados do banco:<br><code>'+err.message+'</code></p>');
+      showState('&#10060;','<p>Falha ao buscar dados (planilha/DB):<br><code>'+err.message+'</code></p>');
     }
   }
 }
