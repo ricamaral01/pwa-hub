@@ -132,7 +132,6 @@
         <option value="11">Novembro</option><option value="12">Dezembro</option>
       </select>
     </label>
-    <label>Ano: <input type="number" id="filtroAno" min="2020" max="2040" style="width:72px;"></label>
     <button class="btn-filter" onclick="applyFilters()">&#9660; Filtrar</button>
   </div>
 
@@ -401,9 +400,8 @@ function buildGroups(rawRows){
 }
 
 // Apply period filter to groups
-function filterGroups(groups,mes,ano){
+function filterGroups(groups,mes){
   return groups.filter(function(g){
-    if(ano&&anoNum(g.data_moldagem)!==ano)return false;
     if(mes&&mesNum(g.data_moldagem)!==mes)return false;
     return true;
   });
@@ -788,8 +786,7 @@ function initLazyChartObserver(){
 /* ===================== MAIN RENDER ===================== */
 function renderAll(){
   var mes=document.getElementById('filtroMes').value;
-  var ano=String(document.getElementById('filtroAno').value||'');
-  var groups=filterGroups(_allGroups,mes,ano);
+  var groups=filterGroups(_allGroups,mes);
 
   _renderQueue=[];
 
@@ -836,7 +833,7 @@ function renderAll(){
       document.getElementById('rptFooter').textContent=
         'Total de registros em período: '+groups.length+
         ' | Total no banco: '+_allGroups.length+
-        ' | Per\u00edodo: '+(mes?MESES_PT[parseInt(mes)-1]+'/':'')+ano+
+        ' | Per\u00edodo: '+(mes?MESES_PT[parseInt(mes)-1]:'Todos os meses')+
         ' | Gerado em: '+new Date().toLocaleString('pt-BR');
       
       hideProgress();
@@ -846,7 +843,6 @@ function renderAll(){
 
 function applyFilters(){ renderAll(); }
 document.getElementById('filtroMes').addEventListener('change',applyFilters);
-document.getElementById('filtroAno').addEventListener('change',applyFilters);
 
 /* ===================== SHOW/HIDE ===================== */
 function showState(icon,html){
@@ -969,7 +965,6 @@ async function loadData(){
 document.addEventListener('DOMContentLoaded',function(){
   // Default: no pre-filter to avoid empty screen when current month has no records
   document.getElementById('filtroMes').value='';
-  document.getElementById('filtroAno').value='';
   
   loadData();
 });
