@@ -244,6 +244,8 @@
 /* ===================== CONFIG ===================== */
 const DB_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos?limit=1000";
 const META_FAIXA = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
+const CACHE_KEY_RELATORIO = 'ct_relatorio_rows_v1';
+const CACHE_MAX_AGE_MS = 5 * 60 * 1000;
 const AGES = [1,3,7,28];
 const MESES_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const AGE_COLORS = { 1:'#3b82f6', 3:'#22c55e', 7:'#f97316', 28:'#a855f7' };
@@ -734,33 +736,87 @@ function showContent(){
   document.getElementById('rptContent').style.display='';
 }
 
+function saveRowsCache(rows){
+  try{
+    localStorage.setItem(CACHE_KEY_RELATORIO, JSON.stringify({ ts: Date.now(), rows: rows }));
+  }catch(e){}
+}
+
+function readRowsCache(){
+  try{
+    var raw = localStorage.getItem(CACHE_KEY_RELATORIO);
+    if(!raw) return null;
+    var payload = JSON.parse(raw);
+    if(!payload || !Array.isArray(payload.rows)) return null;
+    return payload;
+  }catch(e){
+    return null;
+  }
+}
+
+function mapDbRows(dbRows){
+  return dbRows.map(function(r){
+    return{
+      data_moldagem:r.data_moldagem||'',
+      traco_id:r.traco_id||'',
+      cp:r.cp||'',
+      idade_dias:r.idade_dias||'',
+      data_ruptura:r.data_ruptura||'',
+      mpa:r.mpa
+    };
+  }).filter(function(r){ return r.data_moldagem||r.mpa; });
+}
+
+function renderFromRows(rows){
+  _allGroups=buildGroups(rows);
+  showContent();
+  renderAll();
+}
+
 /* ===================== FETCH ===================== */
 async function loadData(){
+  var cache = readRowsCache();
+  if(cache && cache.rows && cache.rows.length){
+    renderFromRows(cache.rows);
+  }
+
   try{
     var res=await fetch(DB_API_URL+'&t='+Date.now(),{cache:'no-store'});
     if(!res.ok){
-      showState('&#10060;','<p>Falha ao consultar DB (HTTP '+res.status+').</p>');
+      if(!cache || !cache.rows || !cache.rows.length){
+        showState('&#10060;','<p>Falha ao consultar DB (HTTP '+res.status+').</p>');
+      }
       return;
     }
     var parsed=await res.json();
     var dbRows=(parsed&&parsed.rows)?parsed.rows:[];
-    if(!dbRows.length){ showState('&#128237;','<p>Nenhum resultado registrado no banco.</p>'); return; }
-    var rows=dbRows.map(function(r){
-      return{
-        data_moldagem:r.data_moldagem||'',
-        traco_id:r.traco_id||'',
-        cp:r.cp||'',
-        idade_dias:r.idade_dias||'',
-        data_ruptura:r.data_ruptura||'',
-        mpa:r.mpa
-      };
-    }).filter(function(r){ return r.data_moldagem||r.mpa; });
-    if(!rows.length){ showState('&#128237;','<p>Nenhum resultado v&#225;lido retornado pelo banco.</p>'); return; }
-    _allGroups=buildGroups(rows);
-    showContent();
-    renderAll();
+    if(!dbRows.length){
+      if(!cache || !cache.rows || !cache.rows.length){
+        showState('&#128237;','<p>Nenhum resultado registrado no banco.</p>');
+      }
+      return;
+    }
+    var rows=mapDbRows(dbRows);
+    if(!rows.length){
+      if(!cache || !cache.rows || !cache.rows.length){
+        showState('&#128237;','<p>Nenhum resultado v&#225;lido retornado pelo banco.</p>');
+      }
+      return;
+    }
+
+    var shouldRenderFresh = true;
+    if(cache && Math.abs((cache.ts||0)-Date.now()) <= CACHE_MAX_AGE_MS && cache.rows.length === rows.length){
+      shouldRenderFresh = false;
+    }
+
+    saveRowsCache(rows);
+    if(shouldRenderFresh || !cache || !cache.rows || !cache.rows.length){
+      renderFromRows(rows);
+    }
   }catch(err){
-    showState('&#10060;','<p>Falha ao buscar dados do banco:<br><code>'+err.message+'</code></p>');
+    if(!cache || !cache.rows || !cache.rows.length){
+      showState('&#10060;','<p>Falha ao buscar dados do banco:<br><code>'+err.message+'</code></p>');
+    }
   }
 }
 
