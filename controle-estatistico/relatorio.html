@@ -109,6 +109,16 @@
   </div>
   <div class="accentLine" style="margin:10px 0 16px;"></div>
 
+  <!-- Progress Indicator -->
+  <div id="renderProgress" style="display:none; font-size:.78rem; color:var(--muted); padding:8px 12px; background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.3); border-radius:8px; margin-bottom:10px; animation:pulse 1s infinite;">
+    ⏳ Carregando...
+  </div>
+  <style>
+    @keyframes pulse {
+      0%,100%{ opacity:.7; } 50%{ opacity:1; }
+    }
+  </style>
+
   <!-- Filtros -->
   <div class="filter-bar">
     <label>M&#234;s:
@@ -140,17 +150,17 @@
     <!-- ======= Comparativo de Idades ======= -->
     <div class="section-card">
       <div class="section-title"><span>&#128200;</span> Comparat&#237;vo de Idades &#8212; M&#233;dia por M&#234;s</div>
-      <div class="chart-box" style="max-width:100%; background:rgba(255,255,255,.04);"><canvas id="chartAgeComparison" style="max-height:280px;"></canvas></div>
+      <div class="chart-box" style="max-width:100%; background:rgba(255,255,255,.04);" data-lazy-chart><canvas id="chartAgeComparison" style="max-height:280px;"></canvas></div>
     </div>
 
     <!-- ======= Graficos ======= -->
     <div class="section-card" style="margin-top:16px;">
       <div class="section-title"><span>&#128200;</span> Evolu&#231;&#227;o da Resist&#234;ncia por M&#234;s</div>
       <div class="chart-grid">
-        <div class="chart-box"><h4>&#60; 24 horas</h4><canvas id="chart1"></canvas></div>
-        <div class="chart-box"><h4>3 dias</h4><canvas id="chart3"></canvas></div>
-        <div class="chart-box"><h4>7 dias</h4><canvas id="chart7"></canvas></div>
-        <div class="chart-box"><h4>28 dias</h4><canvas id="chart28"></canvas></div>
+        <div class="chart-box" data-lazy-chart><h4>&#60; 24 horas</h4><canvas id="chart1"></canvas></div>
+        <div class="chart-box" data-lazy-chart><h4>3 dias</h4><canvas id="chart3"></canvas></div>
+        <div class="chart-box" data-lazy-chart><h4>7 dias</h4><canvas id="chart7"></canvas></div>
+        <div class="chart-box" data-lazy-chart><h4>28 dias</h4><canvas id="chart28"></canvas></div>
       </div>
     </div>
 
@@ -158,10 +168,10 @@
     <div class="section-card">
       <div class="section-title"><span>&#128202;</span> Cartas de Controle Shewhart &#8212; Todas as Idades</div>
       <div class="chart-grid">
-        <div class="chart-box"><h4>&#60; 24 horas</h4><canvas id="chartShewhart1" style="max-height:220px;"></canvas></div>
-        <div class="chart-box"><h4>3 dias</h4><canvas id="chartShewhart3" style="max-height:220px;"></canvas></div>
-        <div class="chart-box"><h4>7 dias</h4><canvas id="chartShewhart7" style="max-height:220px;"></canvas></div>
-        <div class="chart-box"><h4>28 dias</h4><canvas id="chartShewhart28" style="max-height:220px;"></canvas></div>
+        <div class="chart-box" data-lazy-chart><h4>&#60; 24 horas</h4><canvas id="chartShewhart1" style="max-height:220px;"></canvas></div>
+        <div class="chart-box" data-lazy-chart><h4>3 dias</h4><canvas id="chartShewhart3" style="max-height:220px;"></canvas></div>
+        <div class="chart-box" data-lazy-chart><h4>7 dias</h4><canvas id="chartShewhart7" style="max-height:220px;"></canvas></div>
+        <div class="chart-box" data-lazy-chart><h4>28 dias</h4><canvas id="chartShewhart28" style="max-height:220px;"></canvas></div>
       </div>
     </div>
 
@@ -689,36 +699,135 @@ function renderControleMoldagemDiaria(groups){
   document.getElementById('tblMoldagemDiariaBody').innerHTML=html;
 }
 
-/* ===================== MAIN RENDER ===================== */
+/* ===================== PROGRESSIVE RENDERING ===================== */
 var _allGroups=[];
+var _renderQueue=[];
+var _isRendering=false;
 
+function scheduleRender(task){
+  _renderQueue.push(task);
+  processRenderQueue();
+}
+
+function processRenderQueue(){
+  if(_isRendering || !_renderQueue.length) return;
+  _isRendering=true;
+
+  function next(){
+    if(!_renderQueue.length){ _isRendering=false; return; }
+    var task=_renderQueue.shift();
+    try{ task.fn(); }catch(e){ console.error(e); }
+    
+    // Schedule next frame
+    requestAnimationFrame(function(){
+      updateProgress(task.label);
+      next();
+    });
+  }
+  next();
+}
+
+function updateProgress(label){
+  var el=document.getElementById('renderProgress');
+  if(!el) return;
+  el.style.display='block';
+  el.textContent='Carregando: '+label+'...';
+}
+
+function hideProgress(){
+  var el=document.getElementById('renderProgress');
+  if(el) el.style.display='none';
+}
+
+/* ===================== LAZY LOAD CHARTS ===================== */
+var _lazyCharts={};
+var _chartObserver=null;
+
+function initLazyChartObserver(){
+  if(_chartObserver) return;
+  if(!('IntersectionObserver' in window)){
+    // Fallback: render all immediately
+    Object.keys(_lazyCharts).forEach(function(id){
+      if(_lazyCharts[id]) _lazyCharts[id]();
+    });
+    return;
+  }
+
+  _chartObserver=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id=entry.target.id;
+        if(_lazyCharts[id]){
+          _lazyCharts[id]();
+          delete _lazyCharts[id];
+          _chartObserver.unobserve(entry.target);
+        }
+      }
+    });
+  },{ rootMargin:'100px' });
+
+  document.querySelectorAll('[data-lazy-chart]').forEach(function(el){
+    _chartObserver.observe(el);
+  });
+}
+
+/* ===================== MAIN RENDER ===================== */
 function renderAll(){
   var mes=document.getElementById('filtroMes').value;
   var ano=String(document.getElementById('filtroAno').value||'');
   var groups=filterGroups(_allGroups,mes,ano);
 
-  renderKPIs(groups);
+  _renderQueue=[];
 
-  makeAgeComparisonChart(groups);
-
-  AGES.forEach(function(age){
-    var data=buildMonthlyData(groups,age);
-    makeLineChart('chart'+age,data,AGE_COLORS[age],AGE_FILLS[age]);
+  // Phase 1: KPIs (very fast)
+  scheduleRender({
+    label:'KPIs',
+    fn:function(){ renderKPIs(groups); }
   });
 
-  makeShewhartChartForAge(groups,1,'chartShewhart1');
-  makeShewhartChartForAge(groups,3,'chartShewhart3');
-  makeShewhartChartForAge(groups,7,'chartShewhart7');
-  makeShewhartChartForAge(groups,28,'chartShewhart28');
-  renderUltimos(_allGroups);  // sempre com todos, nao filtrado
-  renderControleMoldagemDiaria(_allGroups);
-  renderMensal(_allGroups);   // sempre com todos
+  // Phase 2: Tables (fast)
+  scheduleRender({
+    label:'Tabelas',
+    fn:function(){ 
+      renderUltimos(_allGroups);
+      renderControleMoldagemDiaria(_allGroups);
+      renderMensal(_allGroups);
+    }
+  });
 
-  // footer
-  document.getElementById('rptFooter').textContent=
-    'Total de registros: '+_allGroups.length+
-    ' | Per\u00edodo analisado: '+(mes?MESES_PT[parseInt(mes)-1]+'/':'')+ano+
-    ' | Gerado em: '+new Date().toLocaleString('pt-BR');
+  // Phase 3: Heavy charts (lazy-load)
+  scheduleRender({
+    label:'Gráficos',
+    fn:function(){
+      // Register lazy loaders
+      _lazyCharts['chartAgeComparison']=function(){
+        makeAgeComparisonChart(groups);
+      };
+      
+      AGES.forEach(function(age){
+        _lazyCharts['chart'+age]=function(){
+          var data=buildMonthlyData(groups,age);
+          makeLineChart('chart'+age,data,AGE_COLORS[age],AGE_FILLS[age]);
+        };
+        
+        _lazyCharts['chartShewhart'+age]=function(){
+          makeShewhartChartForAge(groups,age,'chartShewhart'+age);
+        };
+      });
+
+      // Initialize observer
+      initLazyChartObserver();
+      
+      // Footer
+      document.getElementById('rptFooter').textContent=
+        'Total de registros em período: '+groups.length+
+        ' | Total no banco: '+_allGroups.length+
+        ' | Per\u00edodo: '+(mes?MESES_PT[parseInt(mes)-1]+'/':'')+ano+
+        ' | Gerado em: '+new Date().toLocaleString('pt-BR');
+      
+      hideProgress();
+    }
+  });
 }
 
 function applyFilters(){ renderAll(); }
@@ -820,8 +929,15 @@ async function loadData(){
   }
 }
 
-document.getElementById('filtroAno').value=new Date().getFullYear();
-loadData();
+/* ===================== INIT ===================== */
+document.addEventListener('DOMContentLoaded',function(){
+  // Default: Set current month/year (windowing)
+  var now=new Date();
+  document.getElementById('filtroMes').value=String(now.getMonth()+1).padStart(2,'0');
+  document.getElementById('filtroAno').value=now.getFullYear();
+  
+  loadData();
+});
 
 (async function(){
   try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('../sw.js',{scope:'../'}); }catch(e){}

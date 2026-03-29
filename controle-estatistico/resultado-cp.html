@@ -81,6 +81,17 @@
   </div>
   <div class="accentLine" style="margin:12px 0 16px;"></div>
 
+  <!-- Progress Indicator -->
+  <div id="renderProgress" style="display:none; text-align:center; padding:12px; background:rgba(245,158,11,.1); border-radius:8px; margin-bottom:14px; color:#f59e0b; font-size:.85rem; font-weight:600; animation:pulse 1.5s infinite;">
+    ⏳ Carregando...
+  </div>
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity:.7; }
+      50% { opacity:1; }
+    }
+  </style>
+
   <div class="filter-bar">
     <label>M&#234;s:
       <select id="filtroMes">
@@ -259,7 +270,46 @@ function renderTable(){
   footer.textContent=filtered.length+' registro'+(filtered.length!==1?'s':'')+' exibido'+(filtered.length!==1?'s':'');
 }
 
-function applyFilters(){ renderTable(); }
+var _renderQueue = [];
+var _isRendering = false;
+
+function scheduleRender(task){
+  _renderQueue.push(task);
+  if(!_isRendering) processRenderQueue();
+}
+
+function processRenderQueue(){
+  if(!_renderQueue.length){
+    _isRendering = false;
+    hideProgress();
+    return;
+  }
+  _isRendering = true;
+  var task = _renderQueue.shift();
+  if(task.label) updateProgress(task.label);
+  try{
+    task.fn();
+  }catch(e){
+    console.error('Render task error:', task.label, e);
+  }
+  requestAnimationFrame(processRenderQueue);
+}
+
+function updateProgress(label){
+  var pb = document.getElementById('renderProgress');
+  if(pb) pb.textContent = '⏳ Carregando: ' + (label || '...');
+}
+
+function hideProgress(){
+  var pb = document.getElementById('renderProgress');
+  if(pb) pb.style.display = 'none';
+}
+
+function applyFilters(){ 
+  updateProgress('Tabela');
+  scheduleRender({ label: 'Tabela', fn: renderTable });
+}
+
 document.getElementById('filtroMes').addEventListener('change',applyFilters);
 document.getElementById('filtroAno').addEventListener('change',applyFilters);
 document.getElementById('filtroIdade').addEventListener('change',applyFilters);
@@ -309,7 +359,8 @@ function mapDbRows(parsed){
 function renderFromRows(rows){
   _groups=groupRows(rows);
   showTable();
-  renderTable();
+  updateProgress('Tabela');
+  scheduleRender({ label: 'Tabela', fn: renderTable });
 }
 
 function parseGVizDate_(col,cell){
@@ -365,8 +416,13 @@ async function loadData(){
   }
 }
 
-document.getElementById('filtroAno').value=new Date().getFullYear();
-loadData();
+document.addEventListener('DOMContentLoaded', function(){
+  updateProgress('Dados');
+  var now = new Date();
+  document.getElementById('filtroMes').value = String(now.getMonth() + 1).padStart(2, '0');
+  document.getElementById('filtroAno').value = now.getFullYear();
+  loadData();
+});
 
 (async function(){
   try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('../sw.js',{scope:'../'}); }catch(e){}
