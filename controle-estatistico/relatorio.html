@@ -954,10 +954,9 @@ async function loadData(){
 
 /* ===================== INIT ===================== */
 document.addEventListener('DOMContentLoaded',function(){
-  // Default: Set current month/year (windowing)
-  var now=new Date();
-  document.getElementById('filtroMes').value=String(now.getMonth()+1).padStart(2,'0');
-  document.getElementById('filtroAno').value=now.getFullYear();
+  // Default: no pre-filter to avoid empty screen when current month has no records
+  document.getElementById('filtroMes').value='';
+  document.getElementById('filtroAno').value='';
   
   loadData();
 });

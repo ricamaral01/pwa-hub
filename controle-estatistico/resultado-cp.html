@@ -450,9 +450,8 @@ async function loadData(){
 
 document.addEventListener('DOMContentLoaded', function(){
   updateProgress('Dados');
-  var now = new Date();
-  document.getElementById('filtroMes').value = String(now.getMonth() + 1).padStart(2, '0');
-  document.getElementById('filtroAno').value = now.getFullYear();
+  document.getElementById('filtroMes').value = '';
+  document.getElementById('filtroAno').value = '';
   loadData();
 });
 
