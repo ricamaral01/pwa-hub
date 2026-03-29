@@ -14,6 +14,7 @@
 
 const SPREADSHEET_ID = "1eC2DGsEUKkX22A0IUaYvUcEj9xbzZr7K-7Eus0iSavw";
 const SHEET_NAME = "dados";
+const VPS_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos";
 
 const HEADERS = [
   "ID (chave)",
@@ -88,6 +89,26 @@ function calcStatusMeta_(idadeDias, mpaNum) {
   if (mpaNum < meta.min) return { status: "ABAIXO", min: meta.min, max: meta.max };
   if (mpaNum > meta.max) return { status: "ACIMA",  min: meta.min, max: meta.max };
   return { status: "DENTRO", min: meta.min, max: meta.max };
+}
+
+function syncRompimentoToVps_(payload) {
+  try {
+    const response = UrlFetchApp.fetch(VPS_API_URL, {
+      method: 'post',
+      contentType: 'application/json; charset=utf-8',
+      muteHttpExceptions: true,
+      payload: JSON.stringify(payload),
+    });
+    const text = response.getContentText() || '';
+    let data = null;
+    try { data = JSON.parse(text); } catch (err) {}
+    if (response.getResponseCode() >= 200 && response.getResponseCode() < 300 && data && data.ok) {
+      return { ok: true, code: response.getResponseCode(), data: data };
+    }
+    return { ok: false, code: response.getResponseCode(), error: (data && data.error) || text || 'Falha no sync VPS' };
+  } catch (err) {
+    return { ok: false, error: String(err) };
+  }
 }
 
 /* ============== WEB APP ============== */
@@ -193,7 +214,25 @@ function doPost(e) {
     sh.getRange(rowIndex, colMin).setNumberFormat("0.00");
     sh.getRange(rowIndex, colMax).setNumberFormat("0.00");
 
-    return json_({ ok:true });
+    const vpsSync = syncRompimentoToVps_({
+      id: row[0],
+      source: 'apps-script-qr-concreto',
+      timestamp: row[1],
+      traco_id: row[2],
+      data_moldagem: row[3],
+      hora_moldagem: row[4],
+      idade_dias: row[5],
+      cp: row[6],
+      data_ruptura: row[7],
+      mpa: row[8],
+      status_meta: row[9],
+      meta_min: row[10],
+      meta_max: row[11],
+      operador: row[12],
+      qr_raw: row[13]
+    });
+
+    return json_({ ok:true, vps_sync: vpsSync });
 
   } catch (err) {
     return json_({ ok:false, error:String(err) });

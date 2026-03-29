@@ -462,6 +462,16 @@ async function send(){
   if(!canSave(mpa)){ setStatus("verifique QR + MPA + operador","err"); return; }
 
   const meta = calcMetaStatus(mpa);
+  const payload = {
+    operador,
+    mpa: String(mpa),
+    status_meta: meta.status,
+    meta_min: meta.metaMin,
+    meta_max: meta.metaMax,
+    ...lastParsed,
+    qr_raw:lastRaw,
+    timestamp:new Date().toISOString()
+  };
 
   setStatus("salvando...","warn");
   $("btnSave").disabled = true;
@@ -472,16 +482,7 @@ async function send(){
     const res = await fetch(url,{
       method:"POST",
       headers:{ "Content-Type":"text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        operador,
-        mpa: String(mpa),
-        status_meta: meta.status,
-        meta_min: meta.metaMin,
-        meta_max: meta.metaMax,
-        ...lastParsed,
-        qr_raw:lastRaw,
-        timestamp:new Date().toISOString()
-      })
+      body: JSON.stringify(payload)
     });
 
     const text = await res.text();
@@ -490,7 +491,9 @@ async function send(){
     try { data = JSON.parse(text); } catch(e) {}
 
     if(text.includes("ok") || (data && data.ok)){
-      setStatus("gravado na planilha ✅","ok");
+      var vpsOk = !!(data && data.vps_sync && data.vps_sync.ok);
+      var vpsError = data && data.vps_sync && data.vps_sync.error ? data.vps_sync.error : "";
+      setStatus(vpsOk ? "gravado na planilha e no banco ✅" : "gravado na planilha ✅","ok");
       $("mpaInput").value="";
       $("btnSave").disabled = true;
       updateMPAStatus();
@@ -499,6 +502,10 @@ async function send(){
         $("btnDash").href = WEBAPP_URL + data.dashboard_path;
       } else {
         $("btnDash").href = DASH_URL;
+      }
+
+      if(data && data.vps_sync && !data.vps_sync.ok){
+        $("helpTxt").textContent = "Planilha salva. Banco VPS falhou: " + vpsError;
       }
 
       $("modalSucesso").classList.add("show");

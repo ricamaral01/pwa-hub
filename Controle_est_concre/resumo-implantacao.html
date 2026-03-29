@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Controle_est_concre - Resumo de Implantacao</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #1e293b;
+      --line: #334155;
+      --text: #e5eefc;
+      --muted: #94a3b8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --info: #38bdf8;
+      --accent: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Segoe UI, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.16), transparent 25%),
+        radial-gradient(circle at top right, rgba(167,139,250,.12), transparent 30%),
+        linear-gradient(180deg, #020617, var(--bg));
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+    }
+    h1, h2, h3, p { margin: 0; }
+    .hero {
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(30,41,59,.92), rgba(15,23,42,.92));
+      box-shadow: 0 24px 60px rgba(0,0,0,.28);
+      margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      letter-spacing: .02em;
+    }
+    .hero p {
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 820px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin: 18px 0 0;
+    }
+    .stat {
+      background: rgba(15,23,42,.75);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .stat .k {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+    .stat .v {
+      font-size: 20px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+    .section {
+      margin-top: 18px;
+      background: rgba(15,23,42,.8);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 20px;
+    }
+    .section h2 {
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+    .section p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(30,41,59,.58);
+    }
+    .item strong {
+      color: #fff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .ok { background: rgba(34,197,94,.16); color: #86efac; }
+    .warn { background: rgba(245,158,11,.16); color: #fcd34d; }
+    .info { background: rgba(56,189,248,.16); color: #7dd3fc; }
+    code {
+      font-family: Consolas, monospace;
+      background: rgba(2,6,23,.8);
+      color: #dbeafe;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      vertical-align: top;
+    }
+    th {
+      background: rgba(51,65,85,.45);
+      color: #dbeafe;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    td {
+      background: rgba(15,23,42,.5);
+      color: var(--text);
+    }
+    .muted { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Controle_est_concre - Resumo de Implantacao</h1>
+      <p>Documento gerado para registrar o que foi criado, provisionado, atualizado e validado durante a implantacao do backend do QR Concreto com escrita dupla: Google Sheets + banco PostgreSQL na VPS.</p>
+      <div class="grid">
+        <div class="stat">
+          <div class="k">VPS</div>
+          <div class="v">31.97.241.84</div>
+        </div>
+        <div class="stat">
+          <div class="k">Pasta do Projeto</div>
+          <div class="v">/root/Controle_est_concre</div>
+        </div>
+        <div class="stat">
+          <div class="k">Banco</div>
+          <div class="v">controle_est_concre_db</div>
+        </div>
+        <div class="stat">
+          <div class="k">Porta Publica</div>
+          <div class="v">8086</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Arquitetura final</h2>
+      <div class="list">
+        <div class="item"><strong>Frontend QR</strong>: o PWA em <code>qr-concreto/index.html</code> continua enviando o registro para o Apps Script.</div>
+        <div class="item"><strong>Planilha</strong>: o Apps Script continua gravando normalmente na aba <code>dados</code> da planilha Google Sheets.</div>
+        <div class="item"><strong>Banco VPS</strong>: o mesmo Apps Script foi ajustado para espelhar cada salvamento para a API da VPS em <code>http://31.97.241.84:8086/api/v1/rompimentos</code>.</div>
+        <div class="item"><strong>API</strong>: serviço Node.js com Express e PostgreSQL executando sob PM2 e servido externamente por Nginx.</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Servicos criados na VPS</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Servico</th>
+            <th>Funcao</th>
+            <th>Status</th>
+            <th>Detalhe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Node.js</td>
+            <td>Runtime da API</td>
+            <td><span class="badge ok">Instalado</span></td>
+            <td>Versao validada: <code>v22.22.0</code></td>
+          </tr>
+          <tr>
+            <td>npm</td>
+            <td>Gerenciador de pacotes</td>
+            <td><span class="badge ok">Instalado</span></td>
+            <td>Versao validada: <code>10.9.4</code></td>
+          </tr>
+          <tr>
+            <td>PM2</td>
+            <td>Gerencia o processo da API</td>
+            <td><span class="badge ok">Ativo</span></td>
+            <td>Versao validada: <code>6.0.14</code></td>
+          </tr>
+          <tr>
+            <td>Nginx</td>
+            <td>Publica a API na porta externa</td>
+            <td><span class="badge ok">Ativo</span></td>
+            <td>Proxy para a API interna na porta <code>3086</code></td>
+          </tr>
+          <tr>
+            <td>PostgreSQL</td>
+            <td>Persistencia central</td>
+            <td><span class="badge ok">Ativo</span></td>
+            <td>Versao validada: <code>14.22</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Banco criado</h2>
+      <div class="list">
+        <div class="item"><strong>Database</strong>: <code>controle_est_concre_db</code></div>
+        <div class="item"><strong>Usuario</strong>: <code>controle_est_concre_user</code></div>
+        <div class="item"><strong>Host</strong>: <code>127.0.0.1</code></div>
+        <div class="item"><strong>Porta PostgreSQL</strong>: <code>5432</code></div>
+        <div class="item"><strong>Senha</strong>: <span class="muted">configurada no servidor e no arquivo .env da VPS</span> <span class="badge warn">sensivel</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Portas utilizadas</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Porta</th>
+            <th>Uso</th>
+            <th>Exposicao</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>3086</code></td>
+            <td>API Node interna</td>
+            <td>Interna</td>
+          </tr>
+          <tr>
+            <td><code>8086</code></td>
+            <td>Nginx publico para a API</td>
+            <td>Externa</td>
+          </tr>
+          <tr>
+            <td><code>5432</code></td>
+            <td>PostgreSQL local</td>
+            <td>Local da VPS</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Arquivos criados no repositório</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Arquivo</th>
+            <th>Objetivo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Controle_est_concre/package.json</code></td><td>Dependencias e script de start da API</td></tr>
+          <tr><td><code>Controle_est_concre/src/server.js</code></td><td>API Express com endpoints de health e persistencia de rompimentos</td></tr>
+          <tr><td><code>Controle_est_concre/schema.sql</code></td><td>DDL da tabela <code>rompimentos</code> e indices</td></tr>
+          <tr><td><code>Controle_est_concre/.env.example</code></td><td>Modelo de configuracao da aplicacao</td></tr>
+          <tr><td><code>Controle_est_concre/ecosystem.config.cjs</code></td><td>Configuracao do PM2</td></tr>
+          <tr><td><code>Controle_est_concre/nginx.controle_est_concre.conf</code></td><td>Proxy reverso do Nginx</td></tr>
+          <tr><td><code>Controle_est_concre/README.md</code></td><td>Resumo tecnico do projeto e deploy</td></tr>
+          <tr><td><code>Controle_est_concre/provision_remote.sh</code></td><td>Script de provisionamento da VPS</td></tr>
+          <tr><td><code>Controle_est_concre/resumo-implantacao.html</code></td><td>Este documento</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Arquivos atualizados</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Arquivo</th>
+            <th>Alteracao</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>qr-concreto/AppsScript_qrConcreto.gs</code></td>
+            <td>Adicionado espelhamento para a API da VPS apos salvar na planilha, retornando o resultado em <code>vps_sync</code>.</td>
+          </tr>
+          <tr>
+            <td><code>qr-concreto/index.html</code></td>
+            <td>Ajustado para interpretar o retorno do Apps Script e informar na interface se salvou na planilha e no banco.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Endpoints publicados</h2>
+      <div class="list">
+        <div class="item"><strong>Health interno</strong>: <code>http://127.0.0.1:3086/health</code></div>
+        <div class="item"><strong>Health publico local</strong>: <code>http://127.0.0.1:8086/health</code></div>
+        <div class="item"><strong>Health externo</strong>: <code>http://31.97.241.84:8086/health</code></div>
+        <div class="item"><strong>Insercao de rompimento</strong>: <code>POST http://31.97.241.84:8086/api/v1/rompimentos</code></div>
+        <div class="item"><strong>Consulta de rompimentos</strong>: <code>GET http://31.97.241.84:8086/api/v1/rompimentos?limit=100</code></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Saidas de validacao</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Checagem</th>
+            <th>Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Pasta do projeto</td><td><code>APP_DIR=ok</code></td></tr>
+          <tr><td>Node.js</td><td><code>NODE=v22.22.0</code></td></tr>
+          <tr><td>npm</td><td><code>NPM=10.9.4</code></td></tr>
+          <tr><td>PM2</td><td><code>PM2=6.0.14</code></td></tr>
+          <tr><td>Nginx</td><td><code>ativo</code></td></tr>
+          <tr><td>Banco</td><td><code>controle_est_concre_db</code></td></tr>
+          <tr><td>Usuario do banco</td><td><code>controle_est_concre_user</code></td></tr>
+          <tr><td>Health interno</td><td><code>{"ok":true,"service":"controle-est-concre-api"}</code></td></tr>
+          <tr><td>Health publico</td><td><code>{"ok":true,"service":"controle-est-concre-api"}</code></td></tr>
+          <tr><td>Health remoto</td><td><code>{"ok":true,"service":"controle-est-concre-api"}</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Fluxo de gravacao</h2>
+      <div class="list">
+        <div class="item">1. Operador le o QR no PWA.</div>
+        <div class="item">2. PWA envia os dados para o Apps Script do Google.</div>
+        <div class="item">3. Apps Script salva na planilha <span class="badge ok">mantido</span>.</div>
+        <div class="item">4. Apps Script envia o mesmo payload para a API da VPS <span class="badge ok">novo</span>.</div>
+        <div class="item">5. API grava no PostgreSQL.</div>
+        <div class="item">6. PWA exibe o status final com base no retorno <code>vps_sync</code>.</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Pendencia operacional</h2>
+      <p>A infraestrutura da VPS esta pronta. Para a escrita dupla entrar em producao, ainda e necessario publicar a versao atualizada do arquivo <code>qr-concreto/AppsScript_qrConcreto.gs</code> no Web App do Apps Script vinculado a planilha.</p>
+      <div class="list">
+        <div class="item"><strong>Status</strong>: <span class="badge warn">pendente de publicacao</span></div>
+        <div class="item"><strong>Motivo</strong>: a publicacao do Apps Script nao foi automatizada neste repositório porque nao existe configuracao local de <code>clasp</code> nem vinculo ativo com o projeto Apps Script.</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
