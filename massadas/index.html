@@ -53,6 +53,26 @@
         <input id="horaMassada" type="time" step="60" required>
       </div>
 
+      <!-- Flow -->
+      <div class="field">
+        <div class="label">Flow?</div>
+        <div class="segRow">
+          <div class="segBtn" data-group="flow" data-value="Sim">✅ Sim</div>
+          <div class="segBtn" data-group="flow" data-value="Não">❌ Não</div>
+        </div>
+        <input type="hidden" id="flow" value="">
+      </div>
+
+      <!-- Faltou Água -->
+      <div class="field">
+        <div class="label">Faltou Água?</div>
+        <div class="segRow">
+          <div class="segBtn" data-group="faltouAgua" data-value="Sim">✅ Sim</div>
+          <div class="segBtn" data-group="faltouAgua" data-value="Não">❌ Não</div>
+        </div>
+        <input type="hidden" id="faltouAgua" value="">
+      </div>
+
       <!-- Exsudação -->
       <div class="field">
         <div class="label">Houve Exsudação?</div>
@@ -63,15 +83,15 @@
         <input type="hidden" id="exsudacao" value="">
       </div>
 
-      <!-- Nível de Exsudação (aparece quando Sim) -->
-      <div class="field" id="nivelWrap" style="display:none;">
-        <div class="label">Nível de Exsudação</div>
+      <!-- Grau de Exsudação (aparece quando Sim) -->
+      <div class="field" id="grauWrap" style="display:none;">
+        <div class="label">Grau Exsudação</div>
         <div class="segRow">
-          <div class="segBtn" data-group="nivel" data-value="Leve">🟡 Leve</div>
-          <div class="segBtn" data-group="nivel" data-value="Moderado">🟠 Moderado</div>
-          <div class="segBtn" data-group="nivel" data-value="Severo">🔴 Severo</div>
+          <div class="segBtn" data-group="grauExsudacao" data-value="Leve">🟡 Leve</div>
+          <div class="segBtn" data-group="grauExsudacao" data-value="Moderado">🟠 Moderado</div>
+          <div class="segBtn" data-group="grauExsudacao" data-value="Severo">🔴 Severo</div>
         </div>
-        <input type="hidden" id="nivel" value="">
+        <input type="hidden" id="grauExsudacao" value="">
       </div>
 
       <!-- Perdeu a massada -->
@@ -134,7 +154,7 @@
 /* ===============================
    CONFIG — Apps Script para a aba "massada"
    =============================== */
-const API_URL = "https://script.google.com/macros/s/AKfycbzp_VqDJZrjKg0IdUmLMZVwAo0-YfmaaS1TRoRxqT9CRx_tlxNpzkk9eARKY_H2X_17/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxzLWNHORDWnCFjFkgO730bctT3scuWyWdV5kykcyI-wGMYCZzg3WNFCQmbrlnUIhoq/exec";
 
 const $ = id => document.getElementById(id);
 
@@ -166,12 +186,12 @@ function setActive(group, value){
   const hidden = $(group);
   if (hidden) hidden.value = value;
 
-  // Mostrar/esconder nível de exsudação
+  // Mostrar/esconder grau de exsudação
   if (group === "exsudacao") {
-    $("nivelWrap").style.display = value === "Sim" ? "" : "none";
+    $("grauWrap").style.display = value === "Sim" ? "" : "none";
     if (value !== "Sim") {
-      $("nivel").value = "";
-      setActive("nivel", "");
+      $("grauExsudacao").value = "";
+      setActive("grauExsudacao", "");
     }
   }
 }
@@ -187,8 +207,8 @@ $("btnAgora").addEventListener("click", setNow);
 
 $("btnLimpar").addEventListener("click", () => {
   $("frm").reset();
-  ["exsudacao","nivel","perdeu"].forEach(g => { $(g).value = ""; setActive(g, ""); });
-  $("nivelWrap").style.display = "none";
+  ["flow","faltouAgua","exsudacao","grauExsudacao","perdeu"].forEach(g => { $(g).value = ""; setActive(g, ""); });
+  $("grauWrap").style.display = "none";
   setStatus("warn", "Pronto para registrar");
 });
 
@@ -204,7 +224,9 @@ function loadHistory(){
       `<div class="histItem">
         <span>${h.dataHora}</span>
         <b>${h.numSerie}</b>
-        <span>Exsud: ${h.exsudacao}${h.nivel ? " ("+h.nivel+")" : ""}</span>
+        <span>Flow: ${h.flow}</span>
+        <span>Faltou água: ${h.faltouAgua}</span>
+        <span>Exsud: ${h.exsudacao}${h.grauExsudacao ? " ("+h.grauExsudacao+")" : ""}</span>
         <span>Perdeu: ${h.perdeu}</span>
       </div>`
     ).join("");
@@ -235,16 +257,27 @@ async function apiPost(payload){
 $("frm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const flow       = $("flow").value;
+  const faltouAgua = $("faltouAgua").value;
   const exsudacao = $("exsudacao").value;
   const perdeu    = $("perdeu").value;
-  const nivel     = $("nivel").value;
+  const grauExsudacao = $("grauExsudacao").value;
+
+  if (!flow){
+    setStatus("warn", "Informe se houve flow");
+    return;
+  }
+  if (!faltouAgua){
+    setStatus("warn", "Informe se faltou água");
+    return;
+  }
 
   if (!exsudacao){
     setStatus("warn", "Informe se houve exsudação");
     return;
   }
-  if (exsudacao === "Sim" && !nivel){
-    setStatus("warn", "Selecione o nível de exsudação");
+  if (exsudacao === "Sim" && !grauExsudacao){
+    setStatus("warn", "Selecione o grau de exsudação");
     return;
   }
   if (!perdeu){
@@ -260,8 +293,10 @@ $("frm").addEventListener("submit", async (e) => {
     dataHora: dataISO + " " + hora,
     numSerie: $("numSerie").value.trim(),
     horaMassada: $("horaMassada").value,
+    flow: flow,
+    faltouAgua: faltouAgua,
     exsudacao: exsudacao,
-    nivel: exsudacao === "Sim" ? nivel : "",
+    grauExsudacao: exsudacao === "Sim" ? grauExsudacao : "",
     perdeu: perdeu,
     observacoes: $("observacoes").value.trim()
   };
@@ -281,13 +316,13 @@ $("frm").addEventListener("submit", async (e) => {
       saveHistory(payload);
 
       $("modalTitle").textContent = "✅ Registrado!";
-      $("modalText").textContent = `Série ${payload.numSerie} — Exsudação: ${payload.exsudacao}`;
+      $("modalText").textContent = `Série ${payload.numSerie} — Flow: ${payload.flow} — Exsudação: ${payload.exsudacao}`;
       $("modal").classList.add("show");
 
       const keepData = $("dataM").value;
       $("frm").reset();
-      ["exsudacao","nivel","perdeu"].forEach(g => { $(g).value = ""; setActive(g, ""); });
-      $("nivelWrap").style.display = "none";
+      ["flow","faltouAgua","exsudacao","grauExsudacao","perdeu"].forEach(g => { $(g).value = ""; setActive(g, ""); });
+      $("grauWrap").style.display = "none";
       $("dataM").value = keepData;
     } else {
       setStatus("err", "Erro: " + (r?.message || r?.error || "Falha ao salvar"));

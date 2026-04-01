@@ -27,11 +27,49 @@ var HEADERS_MASSADA = [
   "Data e Hora",
   "Número de Série",
   "Hora da Massada",
+  "Flow",
+  "Faltou Água",
+  "Exsudação",
+  "Grau Exsudação",
+  "Perdeu a Massada",
+  "Observações"
+];
+
+var LEGACY_HEADERS_MASSADA = [
+  "Data e Hora",
+  "Número de Série",
+  "Hora da Massada",
   "Exsudação",
   "Nível de Exsudação",
   "Perdeu a Massada",
   "Observações"
 ];
+
+function headersMatch_(actual, expected) {
+  return expected.every(function(header, index) {
+    return actual[index] === header;
+  });
+}
+
+function formatMassadaSheet_(sh) {
+  var headerRange = sh.getRange(1, 1, 1, HEADERS_MASSADA.length);
+  headerRange.setFontWeight("bold");
+  headerRange.setBackground("#2F3640");
+  headerRange.setFontColor("#F3F6FF");
+  headerRange.setHorizontalAlignment("center");
+
+  sh.setColumnWidth(1, 160);  // Data e Hora
+  sh.setColumnWidth(2, 160);  // Número de Série
+  sh.setColumnWidth(3, 130);  // Hora da Massada
+  sh.setColumnWidth(4, 100);  // Flow
+  sh.setColumnWidth(5, 120);  // Faltou Água
+  sh.setColumnWidth(6, 110);  // Exsudação
+  sh.setColumnWidth(7, 150);  // Grau Exsudação
+  sh.setColumnWidth(8, 140);  // Perdeu a Massada
+  sh.setColumnWidth(9, 300);  // Observações
+
+  sh.setFrozenRows(1);
+}
 
 function getOrCreateSheetMassada() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -42,24 +80,19 @@ function getOrCreateSheetMassada() {
   }
 
   if (sh.getLastRow() === 0) {
-    sh.appendRow(HEADERS_MASSADA);
+    sh.getRange(1, 1, 1, HEADERS_MASSADA.length).setValues([HEADERS_MASSADA]);
+  } else {
+    var currentHeaders = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
 
-    var headerRange = sh.getRange(1, 1, 1, HEADERS_MASSADA.length);
-    headerRange.setFontWeight("bold");
-    headerRange.setBackground("#2F3640");
-    headerRange.setFontColor("#F3F6FF");
-    headerRange.setHorizontalAlignment("center");
-
-    sh.setColumnWidth(1, 160);  // Data e Hora
-    sh.setColumnWidth(2, 160);  // Número de Série
-    sh.setColumnWidth(3, 130);  // Hora da Massada
-    sh.setColumnWidth(4, 110);  // Exsudação
-    sh.setColumnWidth(5, 150);  // Nível de Exsudação
-    sh.setColumnWidth(6, 140);  // Perdeu a Massada
-    sh.setColumnWidth(7, 300);  // Observações
-
-    sh.setFrozenRows(1);
+    if (headersMatch_(currentHeaders, LEGACY_HEADERS_MASSADA)) {
+      sh.insertColumnsAfter(3, 2);
+      sh.getRange(1, 1, 1, HEADERS_MASSADA.length).setValues([HEADERS_MASSADA]);
+    } else if (!headersMatch_(currentHeaders, HEADERS_MASSADA)) {
+      sh.getRange(1, 1, 1, HEADERS_MASSADA.length).setValues([HEADERS_MASSADA]);
+    }
   }
+
+  formatMassadaSheet_(sh);
 
   return sh;
 }
@@ -73,8 +106,10 @@ function doPost(e) {
       d.dataHora      || "",
       d.numSerie      || "",
       d.horaMassada   || "",
+      d.flow          || "",
+      d.faltouAgua    || "",
       d.exsudacao     || "",
-      d.nivel         || "",
+      d.grauExsudacao || "",
       d.perdeu        || "",
       d.observacoes   || ""
     ]);
@@ -137,8 +172,10 @@ function doPost(e) {
         d.dataHora      || "",
         d.numSerie      || "",
         d.horaMassada   || "",
+        d.flow          || "",
+        d.faltouAgua    || "",
         d.exsudacao     || "",
-        d.nivel         || "",
+        d.grauExsudacao || "",
         d.perdeu        || "",
         d.observacoes   || ""
       ]);
