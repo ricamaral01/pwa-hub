@@ -31,10 +31,15 @@
 var SHEET_NAME_MASSADA = "massada";
 
 /* ── PUSH NOTIFICATIONS ─────────────────────────────────────
-   Defina um tópico único e privado (use letras + números).
-   Deixe vazio ("") para desativar as notificações.
+   ntfy.sh : notificação via app gratuito (Android/iOS/Web)
+   Deixe vazio ("") para desativar o ntfy.
+   Web Push nativo via VPS já é ativado automaticamente.
    ─────────────────────────────────────────────────────────── */
 var NTFY_TOPIC = "concretrack-massadas"; // ← TROQUE por um nome privado seu
+
+/* VPS Web Push — usa a infra já existente em dautomacao.com */
+var VPS_PUSH_URL    = "https://dautomacao.com/etiquetas/push/send";
+var VPS_PUSH_SECRET = "concretrack-push-2026";
 
 var HEADERS_MASSADA = [
   "Data e Hora",
@@ -57,6 +62,36 @@ var LEGACY_HEADERS_MASSADA = [
   "Perdeu a Massada",
   "Observações"
 ];
+
+function sendVpsPush_(d) {
+  if (!VPS_PUSH_URL || !VPS_PUSH_SECRET) return;
+  try {
+    var prioridade = (d.perdeu === "Sim" || d.grauExsudacao === "Severo") ? "urgent" : "high";
+    var corpo = [
+      "📋 Série: "        + (d.numSerie    || "-"),
+      "⏰ "               + (d.dataHora    || "-"),
+      "🌊 Flow: "         + (d.flow        || "-"),
+      "💧 Faltou água: "  + (d.faltouAgua || "-"),
+      "💦 Exsudação: "   + (d.exsudacao  || "-") + (d.grauExsudacao ? " (" + d.grauExsudacao + ")" : ""),
+      "❌ Perdeu: "        + (d.perdeu     || "-")
+    ];
+    if (d.observacoes) corpo.push("📝 " + d.observacoes);
+
+    UrlFetchApp.fetch(VPS_PUSH_URL, {
+      method:      "post",
+      contentType: "application/json",
+      payload: JSON.stringify({
+        title: "⚠️ Massada com Problema — " + (d.numSerie || ""),
+        body:  corpo.join("\n"),
+        url:   "https://ricamaral01.github.io/pwa-hub/massadas/"
+      }),
+      headers: { "X-Token": VPS_PUSH_SECRET },
+      muteHttpExceptions: true
+    });
+  } catch (e) {
+    // não-crítico
+  }
+}
 
 function sendNtfyNotification_(d) {
   if (!NTFY_TOPIC) return;
@@ -161,6 +196,7 @@ function doPost(e) {
     ]);
 
     sendNtfyNotification_(d);
+    sendVpsPush_(d);
 
     return ContentService
       .createTextOutput(JSON.stringify({ ok: true, message: "Massada registrada com sucesso" }))
@@ -228,6 +264,7 @@ function doPost(e) {
         d.observacoes   || ""
       ]);
       sendNtfyNotification_(d);
+      sendVpsPush_(d);
     }
     else {
       return ContentService
