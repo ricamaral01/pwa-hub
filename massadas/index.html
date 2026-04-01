@@ -188,7 +188,7 @@ function setActive(group, value){
 
   // Mostrar/esconder grau de exsudação
   if (group === "exsudacao") {
-    $("grauWrap").style.display = value === "Sim" ? "" : "none";
+    $("grauWrap").style.display = value === "Sim" ? "block" : "none";
     if (value !== "Sim") {
       $("grauExsudacao").value = "";
       setActive("grauExsudacao", "");
