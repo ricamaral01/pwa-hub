@@ -15,6 +15,13 @@
  *
  * IMPORTANTE: Se já existe o doPost do "tecnica" no mesmo projeto,
  * use o modelo UNIFICADO no final deste arquivo.
+ *
+ * PUSH NOTIFICATIONS (ntfy.sh):
+ * 1. Instale o app ntfy no celular: https://ntfy.sh  (Android / iOS / Web)
+ * 2. Escolha um nome de tópico único e PRIVADO (ex: concretrack-massadas-abc123)
+ * 3. Cole o nome em NTFY_TOPIC abaixo
+ * 4. No app ntfy, assine esse mesmo tópico
+ * 5. Toda massada registrada enviará push para todos os assinantes
  */
 
 /* ========================================================
@@ -22,6 +29,12 @@
    ======================================================== */
 
 var SHEET_NAME_MASSADA = "massada";
+
+/* ── PUSH NOTIFICATIONS ─────────────────────────────────────
+   Defina um tópico único e privado (use letras + números).
+   Deixe vazio ("") para desativar as notificações.
+   ─────────────────────────────────────────────────────────── */
+var NTFY_TOPIC = "concretrack-massadas"; // ← TROQUE por um nome privado seu
 
 var HEADERS_MASSADA = [
   "Data e Hora",
@@ -44,6 +57,39 @@ var LEGACY_HEADERS_MASSADA = [
   "Perdeu a Massada",
   "Observações"
 ];
+
+function sendNtfyNotification_(d) {
+  if (!NTFY_TOPIC) return;
+  try {
+    var prioridade = (d.perdeu === "Sim" || d.grauExsudacao === "Severo") ? "urgent" : "high";
+    var tags = "warning";
+    if (d.perdeu === "Sim")          tags += ",x";
+    if (d.grauExsudacao === "Severo") tags += ",rotating_light";
+
+    var corpo = [
+      "📋 Série: "   + (d.numSerie    || "-"),
+      "⏰ "          + (d.dataHora    || "-"),
+      "🌊 Flow: "    + (d.flow        || "-"),
+      "💧 Faltou água: " + (d.faltouAgua || "-"),
+      "💦 Exsudação: " + (d.exsudacao  || "-") + (d.grauExsudacao ? " (" + d.grauExsudacao + ")" : ""),
+      "❌ Perdeu massada: " + (d.perdeu  || "-")
+    ];
+    if (d.observacoes) corpo.push("📝 " + d.observacoes);
+
+    UrlFetchApp.fetch("https://ntfy.sh/" + NTFY_TOPIC, {
+      method: "post",
+      payload: corpo.join("\n"),
+      headers: {
+        "Title":    "⚠️ Massada com Problema — " + (d.numSerie || ""),
+        "Priority": prioridade,
+        "Tags":     tags
+      },
+      muteHttpExceptions: true
+    });
+  } catch (e) {
+    // notificação é não-crítica; falha silenciosa
+  }
+}
 
 function headersMatch_(actual, expected) {
   return expected.every(function(header, index) {
@@ -114,6 +160,8 @@ function doPost(e) {
       d.observacoes   || ""
     ]);
 
+    sendNtfyNotification_(d);
+
     return ContentService
       .createTextOutput(JSON.stringify({ ok: true, message: "Massada registrada com sucesso" }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -179,6 +227,7 @@ function doPost(e) {
         d.perdeu        || "",
         d.observacoes   || ""
       ]);
+      sendNtfyNotification_(d);
     }
     else {
       return ContentService
