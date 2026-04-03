@@ -1845,6 +1845,20 @@
                     <label>Revisão do Traço</label>
                     <input type="number" id="dos_revisao_traco" value="0" min="0" step="1" placeholder="Ex: 0">
                 </div>
+                <div class="form-group">
+                    <label>Unidade Fabril</label>
+                    <select id="dos_unidade" style="padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;width:100%;box-sizing:border-box;">
+                        <option value="">— Selecione —</option>
+                        <option value="campinas">Campinas</option>
+                        <option value="ribeirao">Ribeirão Preto</option>
+                        <option value="pederneiras">Pederneiras</option>
+                        <option value="noroeste">Noroeste</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:24px;">
+                    <input type="checkbox" id="dos_ativa_automacao" style="width:18px;height:18px;cursor:pointer;accent-color:#3730a3;">
+                    <label for="dos_ativa_automacao" style="cursor:pointer;font-weight:700;color:#3730a3;">✅ Carta Ativa na Automação</label>
+                </div>
                 <div class="form-group" style="grid-column:1/-1;">
                     <label>Nome Cadastrado na Automação</label>
                     <input type="text" id="dos_nome_automacao" placeholder="Ex: CAA_C40_SF2_001 — nome registrado no sistema de automação">
@@ -8535,36 +8549,75 @@ function toggleModoArgamassa() {
 // ═══════════════════════════════════════════════════
 function salvarCartaTracoDosagem() {
     const g = id => document.getElementById(id)?.value?.trim() || '';
-    const cartaData = {
-        id: 'CT-' + Date.now(),
-        dataHora: new Date().toLocaleString('pt-BR'),
-        cliente: g('dos_cliente'),
-        obra: g('dos_obra'),
-        local: g('dos_local'),
-        aplicacao: g('dos_aplicacao'),
-        engenheiro: g('dos_engenheiro'),
-        art: g('dos_art'),
-        data: g('dos_data_carta'),
-        obs: g('dos_obs_carta'),
-        tracoNome: g('res_projeto') || g('dos_obra') || 'Traço',
-        cim: parseFloat(document.getElementById('dos_cim')?.value) || 0,
-        adic: parseFloat(document.getElementById('dos_adic')?.value) || 0,
-        an: parseFloat(document.getElementById('dos_an')?.value) || 0,
-        ai: parseFloat(document.getElementById('dos_ai')?.value) || 0,
-        b0: parseFloat(document.getElementById('dos_b0')?.value) || 0,
-        b1: parseFloat(document.getElementById('dos_b1')?.value) || 0,
-        agua: parseFloat(document.getElementById('dos_agua')?.value) || 0,
-        adit: parseFloat(document.getElementById('dos_adit')?.value) || 0,
-        fck: parseFloat(document.getElementById('dos_fck')?.value) || 0,
-        flow: parseFloat(document.getElementById('dos_flow')?.value) || 0,
-        ar: parseFloat(document.getElementById('dos_ar')?.value) || 0
-    };
+    const n = id => parseFloat(document.getElementById(id)?.value) || 0;
+
+    const cim  = n('dos_cim');
+    const adic = n('dos_adic');
+    const an   = n('dos_an');
+    const ai   = n('dos_ai');
+    const b0   = n('dos_b0');
+    const b1   = n('dos_b1');
+    const agua = n('dos_agua');
+    const adit = n('dos_adit');
+    const lig  = cim + adic;
+    const pctAdit = lig > 0 ? (adit / lig) * 100 : 0;
+
+    const tracoNome = g('res_projeto') || g('dos_obra') || 'Traço';
+    const unidade   = g('dos_unidade');
+    const ativaAutomacao = document.getElementById('dos_ativa_automacao')?.checked || false;
+
+    // ── Versionamento automático ──────────────────────────────────────────
     const cartas = JSON.parse(localStorage.getItem('ct_cartas_traco') || '[]');
+    const versoesMesmoNome = cartas.filter(c => c.tracoNome === tracoNome && (unidade ? c.unidade === unidade : true));
+    const versao = versoesMesmoNome.length > 0
+        ? Math.max(...versoesMesmoNome.map(c => c.versao || 1)) + 1
+        : 1;
+    const versaoStr = String(versao).padStart(2, '0');
+
+    const cartaData = {
+        id:              'CT-' + Date.now(),
+        dataHora:        new Date().toLocaleString('pt-BR'),
+        tracoNome,
+        versao,
+        versaoStr,
+        unidade,
+        ativaAutomacao,
+        nomeAutomacao:   g('dos_nome_automacao'),
+        revisaoTraco:    parseInt(document.getElementById('dos_revisao_traco')?.value) || 0,
+        cliente:         g('dos_cliente'),
+        obra:            g('dos_obra'),
+        local:           g('dos_local'),
+        aplicacao:       g('dos_aplicacao'),
+        engenheiro:      g('dos_engenheiro'),
+        tecnicoResp:     g('dos_tecnico_resp'),
+        art:             g('dos_art'),
+        data:            g('dos_data_carta'),
+        obs:             g('dos_obs_carta'),
+        cim,
+        adic,
+        an,
+        ai,
+        b0,
+        b1,
+        agua,
+        adit,
+        pctAdit: parseFloat(pctAdit.toFixed(3)),
+        fck:  n('dos_fck'),
+        flow: n('dos_flow'),
+        ar:   n('dos_ar')
+    };
+
     cartas.unshift(cartaData);
     localStorage.setItem('ct_cartas_traco', JSON.stringify(cartas));
     localStorage.setItem('ct_carta_traco_atual', JSON.stringify(cartaData));
+
+    const unidadeLabel = { campinas:'Campinas', ribeirao:'Ribeirão Preto', pederneiras:'Pederneiras', noroeste:'Noroeste' }[unidade] || '—';
     const st = document.getElementById('dos-carta-status');
-    if (st) st.innerHTML = '<span class="badge badge-ok">✅ Carta traço salva localmente em ' + cartaData.dataHora + '</span>';
+    if (st) st.innerHTML = `<span class="badge badge-ok">✅ "${tracoNome}" — v${versaoStr}${unidade ? ' · ' + unidadeLabel : ''} salva em ${cartaData.dataHora}${ativaAutomacao ? ' · ⚙️ Ativa na Automação' : ''}</span>`;
+
+    // Atualiza contador no hub
+    const cartasEl = document.getElementById('dash-cartas-count');
+    if (cartasEl) cartasEl.textContent = cartas.length;
 }
 function imprimirCartaTracoDosagem() {
     const g = id => document.getElementById(id)?.value?.trim() || '—';
