@@ -19,6 +19,18 @@
 
 var SHEET_TRACOS = "Página1";
 var SHEET_EXPERIMENTAL = "Experimental";
+var SHEET_CARTAS = "CartasTraco";
+
+var HEADERS_CARTAS = [
+  "ID", "Data/Hora", "Nome do Traço", "Versão", "Unidade",
+  "Ativa Automação", "Nome Automação", "Revisão",
+  "Cliente", "Obra", "Local", "Aplicação",
+  "Engenheiro", "Técnico", "ART/RRT", "Data Carta",
+  "FCK (MPa)", "Flow (mm)", "a/c",
+  "Cimento (kg)", "Adição (kg)", "Areia Nat (kg)", "Areia Ind (kg)",
+  "Brita 0 (kg)", "Brita 1/2 (kg)", "Água (kg)", "Aditivo (kg)",
+  "% Aditivo/Lig", "Ar (%)", "Observações"
+];
 
 var HEADERS_TRACOS = [
   "ID",
@@ -86,6 +98,23 @@ var HEADERS_EXPERIMENTAL = [
   "Observações"
 ];
 
+function getOrCreateSheetCartas() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(SHEET_CARTAS);
+  if (!sh) sh = ss.insertSheet(SHEET_CARTAS);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(HEADERS_CARTAS);
+    var r = sh.getRange(1, 1, 1, HEADERS_CARTAS.length);
+    r.setFontWeight("bold");
+    r.setBackground("#1a3a5c");
+    r.setFontColor("#FFFFFF");
+    r.setHorizontalAlignment("center");
+    sh.setFrozenRows(1);
+    for (var i = 1; i <= HEADERS_CARTAS.length; i++) sh.setColumnWidth(i, 140);
+  }
+  return sh;
+}
+
 function getOrCreateSheetTracos() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(SHEET_TRACOS);
@@ -145,6 +174,47 @@ function getOrCreateSheetExperimental() {
 function doPost(e) {
   try {
     var d = JSON.parse(e.postData.contents);
+
+    if (d.action === "salvar_carta_traco") {
+      var sh = getOrCreateSheetCartas();
+      var lig = (d.cim || 0) + (d.adic || 0);
+      var ac  = lig > 0 ? (d.agua || 0) / lig : "";
+      sh.appendRow([
+        d.id              || "",
+        d.dataHora        || "",
+        d.tracoNome       || "",
+        d.versao          || 1,
+        d.unidade         || "",
+        d.ativaAutomacao  ? "SIM" : "NÃO",
+        d.nomeAutomacao   || "",
+        d.revisaoTraco    || 0,
+        d.cliente         || "",
+        d.obra            || "",
+        d.local           || "",
+        d.aplicacao       || "",
+        d.engenheiro      || "",
+        d.tecnicoResp     || "",
+        d.art             || "",
+        d.data            || "",
+        d.fck             || "",
+        d.flow            || "",
+        ac                || "",
+        d.cim             || "",
+        d.adic            || "",
+        d.an              || "",
+        d.ai              || "",
+        d.b0              || "",
+        d.b1              || "",
+        d.agua            || "",
+        d.adit            || "",
+        d.pctAdit         || "",
+        d.ar              || "",
+        d.obs             || ""
+      ]);
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: true, message: "Carta traço salva!" }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
 
     if (d.action === "salvar_traco") {
       var sh = getOrCreateSheetTracos();
@@ -240,6 +310,57 @@ function doPost(e) {
 function doGet(e) {
   try {
     var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "";
+
+    if (action === "listar_cartas_traco") {
+      var sh = getOrCreateSheetCartas();
+      var lastRow = sh.getLastRow();
+      if (lastRow <= 1) {
+        return ContentService
+          .createTextOutput(JSON.stringify({ ok: true, cartas: [] }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      var data = sh.getRange(2, 1, lastRow - 1, HEADERS_CARTAS.length).getValues();
+      var unidadeFiltro = (e && e.parameter && e.parameter.unidade) ? e.parameter.unidade : "";
+      var cartas = [];
+      for (var i = 0; i < data.length; i++) {
+        if (unidadeFiltro && data[i][4] !== unidadeFiltro) continue;
+        cartas.push({
+          id:             data[i][0],
+          dataHora:       data[i][1],
+          tracoNome:      data[i][2],
+          versao:         data[i][3],
+          unidade:        data[i][4],
+          ativaAutomacao: data[i][5] === "SIM",
+          nomeAutomacao:  data[i][6],
+          revisaoTraco:   data[i][7],
+          cliente:        data[i][8],
+          obra:           data[i][9],
+          local:          data[i][10],
+          aplicacao:      data[i][11],
+          engenheiro:     data[i][12],
+          tecnicoResp:    data[i][13],
+          art:            data[i][14],
+          data:           data[i][15],
+          fck:            data[i][16],
+          flow:           data[i][17],
+          ac:             data[i][18],
+          cim:            data[i][19],
+          adic:           data[i][20],
+          an:             data[i][21],
+          ai:             data[i][22],
+          b0:             data[i][23],
+          b1:             data[i][24],
+          agua:           data[i][25],
+          adit:           data[i][26],
+          pctAdit:        data[i][27],
+          ar:             data[i][28],
+          obs:            data[i][29]
+        });
+      }
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: true, cartas: cartas }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
 
     if (action === "listar_tracos") {
       var sh = getOrCreateSheetTracos();
@@ -342,8 +463,8 @@ function doGet(e) {
     return ContentService
       .createTextOutput(JSON.stringify({
         status: "online",
-        abas: [SHEET_TRACOS, SHEET_EXPERIMENTAL],
-        actions: ["salvar_traco", "salvar_experimental", "listar_tracos", "listar_experimentais"]
+        abas: [SHEET_TRACOS, SHEET_EXPERIMENTAL, SHEET_CARTAS],
+        actions: ["salvar_traco", "salvar_experimental", "listar_tracos", "listar_experimentais", "salvar_carta_traco", "listar_cartas_traco"]
       }))
       .setMimeType(ContentService.MimeType.JSON);
 
@@ -357,10 +478,12 @@ function doGet(e) {
 /* ================ SETUP (executar 1 vez) ================ */
 
 function setup() {
+  getOrCreateSheetCartas();
   getOrCreateSheetTracos();
   getOrCreateSheetExperimental();
   SpreadsheetApp.getUi().alert(
     "✅ Pronto!\n\n" +
+    "Aba \"" + SHEET_CARTAS + "\" → " + HEADERS_CARTAS.length + " colunas\n" +
     "Aba \"" + SHEET_TRACOS + "\" → " + HEADERS_TRACOS.length + " colunas\n" +
     "Aba \"" + SHEET_EXPERIMENTAL + "\" → " + HEADERS_EXPERIMENTAL.length + " colunas"
   );

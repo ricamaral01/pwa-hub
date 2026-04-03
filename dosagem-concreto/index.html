@@ -8611,6 +8611,15 @@ function salvarCartaTracoDosagem() {
     localStorage.setItem('ct_cartas_traco', JSON.stringify(cartas));
     localStorage.setItem('ct_carta_traco_atual', JSON.stringify(cartaData));
 
+    // ── Enviar para Google Sheets (assíncrono, sem bloquear UI) ──────────
+    if (typeof DOSAGEM_WEBAPP_URL !== 'undefined' && DOSAGEM_WEBAPP_URL) {
+        fetch(DOSAGEM_WEBAPP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'salvar_carta_traco', ...cartaData })
+        }).catch(() => {}); // silencioso: localStorage é a fonte primária
+    }
+
     const unidadeLabel = { campinas:'Campinas', ribeirao:'Ribeirão Preto', pederneiras:'Pederneiras', noroeste:'Noroeste' }[unidade] || '—';
     const st = document.getElementById('dos-carta-status');
     if (st) st.innerHTML = `<span class="badge badge-ok">✅ "${tracoNome}" — v${versaoStr}${unidade ? ' · ' + unidadeLabel : ''} salva em ${cartaData.dataHora}${ativaAutomacao ? ' · ⚙️ Ativa na Automação' : ''}</span>`;
