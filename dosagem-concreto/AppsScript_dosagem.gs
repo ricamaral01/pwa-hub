@@ -29,7 +29,8 @@ var HEADERS_CARTAS = [
   "FCK (MPa)", "Flow (mm)", "a/c",
   "Cimento (kg)", "Adição (kg)", "Areia Nat (kg)", "Areia Ind (kg)",
   "Brita 0 (kg)", "Brita 1/2 (kg)", "Água (kg)", "Aditivo (kg)",
-  "% Aditivo/Lig", "Ar (%)", "Observações"
+  "% Aditivo/Lig", "Ar (%)", "Observações",
+  "Custo Total (R$/m³)", "Custo Ligantes", "Custo Agregados", "Custo Quím./Água", "MCC Snapshot"
 ];
 
 var HEADERS_TRACOS = [
@@ -209,7 +210,12 @@ function doPost(e) {
         d.adit            || "",
         d.pctAdit         || "",
         d.ar              || "",
-        d.obs             || ""
+        d.obs             || "",
+        d.custoTotal      || 0,
+        d.custoLigantes   || 0,
+        d.custoAgregados  || 0,
+        d.custoQuimicos   || 0,
+        d.mccSnapshot     ? JSON.stringify(d.mccSnapshot) : ""
       ]);
       return ContentService
         .createTextOutput(JSON.stringify({ ok: true, message: "Carta traço salva!" }))
@@ -354,7 +360,12 @@ function doGet(e) {
           adit:           data[i][26],
           pctAdit:        data[i][27],
           ar:             data[i][28],
-          obs:            data[i][29]
+          obs:            data[i][29],
+          custoTotal:     Number(data[i][30]) || 0,
+          custoLigantes:  Number(data[i][31]) || 0,
+          custoAgregados: Number(data[i][32]) || 0,
+          custoQuimicos:  Number(data[i][33]) || 0,
+          mccSnapshot:    (function(v){ try { return v ? JSON.parse(v) : {}; } catch(e) { return {}; } })(data[i][34])
         });
       }
       return ContentService

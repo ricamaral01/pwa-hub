@@ -8574,6 +8574,31 @@ function salvarCartaTracoDosagem() {
         : 1;
     const versaoStr = String(versao).padStart(2, '0');
 
+    // ── Snapshot de custo MCC (lê mccTracao_v1) ─────────────────────────
+    let custoTotal = 0, custoLigantes = 0, custoAgregados = 0, custoQuimicos = 0;
+    const mccSnapshot = {};
+    try {
+        const mccCfg = JSON.parse(localStorage.getItem('mccTracao_v1') || '{}');
+        [
+            ['cim',  cim,  'L'], ['adic', adic, 'L'],
+            ['an',   an,   'A'], ['ai',   ai,   'A'],
+            ['b0',   b0,   'A'], ['b1',   b1,   'A'],
+            ['agua', agua, 'Q'], ['adit', adit, 'Q'],
+        ].forEach(([k, kg, grp]) => {
+            const liq = Number(mccCfg[k]?.custoLiq) || 0;
+            const m3  = liq > 0 ? parseFloat((kg * liq).toFixed(3)) : 0;
+            mccSnapshot[k] = { preco: liq, nome: mccCfg[k]?.nome || '' };
+            custoTotal += m3;
+            if (grp === 'L') custoLigantes  += m3;
+            if (grp === 'A') custoAgregados += m3;
+            if (grp === 'Q') custoQuimicos  += m3;
+        });
+        custoTotal     = parseFloat(custoTotal.toFixed(2));
+        custoLigantes  = parseFloat(custoLigantes.toFixed(2));
+        custoAgregados = parseFloat(custoAgregados.toFixed(2));
+        custoQuimicos  = parseFloat(custoQuimicos.toFixed(2));
+    } catch (e) {}
+
     const cartaData = {
         id:              'CT-' + Date.now(),
         dataHora:        new Date().toLocaleString('pt-BR'),
@@ -8604,7 +8629,12 @@ function salvarCartaTracoDosagem() {
         pctAdit: parseFloat(pctAdit.toFixed(3)),
         fck:  n('dos_fck'),
         flow: n('dos_flow'),
-        ar:   n('dos_ar')
+        ar:   n('dos_ar'),
+        custoTotal,
+        custoLigantes,
+        custoAgregados,
+        custoQuimicos,
+        mccSnapshot,
     };
 
     cartas.unshift(cartaData);

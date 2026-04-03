@@ -509,6 +509,183 @@
       color: var(--muted);
       margin-bottom: 10px;
     }
+
+    /* ══════════════════════════════════════════
+       NOVO DESIGN — DASHBOARD CARTAS TRAÇO
+    ══════════════════════════════════════════ */
+    :root {
+      --c-lig: #3730a3;
+      --c-agr: #b45309;
+      --c-qui: #0284c7;
+    }
+
+    /* ── TABS BAR ── */
+    .tabs-bar {
+      display: flex; overflow-x: auto; gap: 6px;
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--card-border);
+      scrollbar-width: none;
+      position: sticky; top: 64px; z-index: 40;
+      backdrop-filter: blur(8px);
+    }
+    .tabs-bar::-webkit-scrollbar { display: none; }
+    .tab {
+      flex-shrink: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: .82rem; font-weight: 700;
+      padding: 8px 18px; cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .tab:hover { background: rgba(255,255,255,0.10); color: var(--text); }
+    .tab.active {
+      background: rgba(37,99,168,0.22);
+      border-color: rgba(37,99,168,0.55);
+      color: #9ac4f0;
+    }
+
+    /* ── TOPBAR ACTIONS (novo) ── */
+    .topbar-actions { display: flex; align-items: center; gap: 8px; }
+    .btn-sm {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 9px; color: var(--text);
+      font-size: .8rem; font-weight: 700;
+      padding: 7px 12px; text-decoration: none; cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .btn-sm:hover { background: rgba(255,255,255,0.16); transform: translateY(-1px); }
+    .btn-sm.accent { background: rgba(232,118,42,0.15); border-color: rgba(232,118,42,0.35); color: var(--accent); }
+
+    /* ── MAIN CONTENT ── */
+    .ct-main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 0 20px 80px; }
+
+    /* ── SUMMARY BAR ── */
+    .summary-bar {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      padding: 16px 0 10px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 20px;
+    }
+    .summary-stat { display: flex; align-items: baseline; gap: 6px; }
+    .s-val { font-size: 1.1rem; font-weight: 900; color: var(--text); }
+    .s-lbl { font-size: .7rem; color: var(--muted); }
+    .fonte-badge {
+      margin-left: auto;
+      font-size: .7rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 999px;
+    }
+
+    /* ── SECTION LABEL (novo) ── */
+    .ct-section-label {
+      font-size: .68rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.1px; color: var(--muted);
+      margin: 22px 0 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .ct-section-label::after { content: ''; flex: 1; height: 1px; background: var(--card-border); }
+
+    /* ── CARTA CARDS ── */
+    .carta-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      margin-bottom: 14px; overflow: hidden;
+    }
+    .carta-ativo { border-color: rgba(76,237,154,0.30); background: rgba(76,237,154,0.03); }
+    .carta-inativo { opacity: .76; }
+    .carta-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 14px 16px; gap: 10px; flex-wrap: wrap;
+    }
+    .carta-left { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .carta-nome { font-size: 1rem; font-weight: 900; }
+    .versao-badge {
+      font-size: .78rem; font-weight: 800; color: #9ac4f0;
+      background: rgba(37,99,168,0.18); border: 1px solid rgba(37,99,168,0.30);
+      border-radius: 8px; padding: 3px 10px; white-space: nowrap;
+    }
+    .carta-kpis { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 14px; align-items: center; }
+    .kv-chip-custo { border-color: rgba(232,118,42,0.30) !important; background: rgba(232,118,42,0.08) !important; }
+    .kv-chip-custo strong { color: var(--accent) !important; }
+
+    /* ── DELTA BADGE ── */
+    .delta-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; font-size: .72rem; font-weight: 800; }
+    .delta-up { background: rgba(248,113,113,0.13); color: #f87171; border: 1px solid rgba(248,113,113,0.30); }
+    .delta-dn { background: rgba(76,237,154,0.10); color: #4ced9a; border: 1px solid rgba(76,237,154,0.28); }
+    .delta-eq { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--card-border); }
+
+    /* ── COST BAR ── */
+    .cost-bar-wrap { padding: 0 16px 14px; }
+    .cost-bar { display: flex; height: 8px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.06); }
+    .cb-lig { background: var(--c-lig); }
+    .cb-agr { background: var(--c-agr); }
+    .cb-qui { background: var(--c-qui); }
+    .cost-bar-legend { display: flex; gap: 14px; margin-top: 5px; }
+    .cost-bar-legend span { font-size: .65rem; color: var(--muted); }
+    .cbl-lig::before { content: '■ '; color: var(--c-lig); }
+    .cbl-agr::before { content: '■ '; color: var(--c-agr); }
+    .cbl-qui::before { content: '■ '; color: var(--c-qui); }
+
+    /* ── HISTORY DETAILS ── */
+    .hist-details { border-top: 1px solid var(--card-border); }
+    .hist-details summary {
+      padding: 10px 16px;
+      font-size: .75rem; font-weight: 700; color: var(--muted);
+      cursor: pointer; list-style: none; user-select: none;
+      transition: color .15s;
+    }
+    .hist-details summary:hover { color: var(--text); }
+    .hist-details summary::-webkit-details-marker { display: none; }
+    .hist-details[open] summary { color: #9ac4f0; }
+    .hist-table { width: 100%; border-collapse: collapse; font-size: .72rem; }
+    .hist-table th {
+      background: rgba(255,255,255,0.07); color: var(--muted);
+      font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+      padding: 7px 10px; text-align: left; white-space: nowrap;
+    }
+    .hist-table td { padding: 7px 10px; border-top: 1px solid rgba(255,255,255,0.06); color: var(--text); white-space: nowrap; }
+    .row-atual td { background: rgba(37,99,168,0.08); }
+
+    /* ── INACTIVE SECTION ── */
+    details.inactive-section { margin-top: 24px; }
+    details.inactive-section > summary {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); cursor: pointer; list-style: none; user-select: none;
+      padding: 8px 0; transition: color .15s;
+    }
+    details.inactive-section > summary:hover { color: var(--text); }
+    details.inactive-section > summary::-webkit-details-marker { display: none; }
+    details.inactive-section > summary::after { content: ''; flex: 1; height: 1px; background: var(--card-border); }
+    .inactive-list { margin-top: 8px; }
+
+    /* ── SPINNER ── */
+    .spinner-wrap { display: flex; flex-direction: column; align-items: center; padding: 60px 20px; color: var(--muted); gap: 12px; font-size: .85rem; }
+    .spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.10); border-top-color: #9ac4f0; border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-icon { font-size: 2.6rem; margin-bottom: 14px; }
+    .empty-state h3 { font-size: 1rem; color: var(--text); margin-bottom: 8px; }
+    .empty-state p { font-size: .82rem; line-height: 1.55; max-width: 380px; margin: 0 auto; }
+    .btn-action {
+      display: inline-block; margin-top: 16px;
+      background: rgba(232,118,42,0.15); color: var(--accent);
+      border: 1px solid rgba(232,118,42,0.35);
+      border-radius: 10px; padding: 8px 20px;
+      font-size: .82rem; font-weight: 700; text-decoration: none;
+    }
+    .btn-action:hover { background: rgba(232,118,42,0.25); }
+
+    /* ── FOOTER ── */
+    .ct-footer { text-align: center; font-size: .65rem; color: var(--muted); opacity: .4; padding: 16px 20px 32px; }
   </style>
 </head>
 <body>
@@ -522,106 +699,30 @@
       <div class="brand-sub">Cartas Traço · Unidades</div>
     </div>
   </div>
-  <a href="../index.html" class="btn-back">⬅ HUB</a>
+  <div class="topbar-actions">
+    <a href="../dosagem-concreto/index.html?sec=sec-custo-mcc" class="btn-sm accent">⚙️ MCC</a>
+    <a href="../index.html" class="btn-sm">⬅ HUB</a>
+  </div>
 </header>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-icon">📋</div>
-  <h1>Cartas Traço<br><span>Concrefer</span></h1>
-  <p>Acesse as cartas traço vigentes de cada unidade fabril. Selecione a unidade para visualizar os traços homologados.</p>
-  <div class="accent-line"></div>
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab" data-id="campinas">🏭 Campinas</button>
+  <button class="tab" data-id="ribeirao">🏭 Ribeirão Preto</button>
+  <button class="tab" data-id="pederneiras">🏭 Pederneiras</button>
+  <button class="tab" data-id="noroeste">🏭 Noroeste</button>
 </div>
 
-<!-- MAIN -->
-<main>
-
-  <div class="section-label">Selecione a unidade</div>
-
-  <div class="unit-grid">
-
-    <!-- CAMPINAS -->
-    <button class="unit-card" type="button" onclick="abrirUnidade('campinas')">
-      <div class="unit-icon">🏭</div>
-      <div class="unit-name">Campinas</div>
-      <div class="unit-desc">Unidade Campinas — SP</div>
-      <span class="unit-badge" id="badge-campinas">📄 Traços</span>
-    </button>
-
-    <!-- RIBEIRÃO PRETO -->
-    <button class="unit-card" type="button" onclick="abrirUnidade('ribeirao')">
-      <div class="unit-icon">🏭</div>
-      <div class="unit-name">Ribeirão Preto</div>
-      <div class="unit-desc">Unidade Ribeirão Preto — SP</div>
-      <span class="unit-badge" id="badge-ribeirao">📄 Traços</span>
-    </button>
-
-    <!-- PEDERNEIRAS -->
-    <button class="unit-card" type="button" onclick="abrirUnidade('pederneiras')">
-      <div class="unit-icon">🏭</div>
-      <div class="unit-name">Pederneiras</div>
-      <div class="unit-desc">Unidade Pederneiras — SP</div>
-      <span class="unit-badge" id="badge-pederneiras">📄 Traços</span>
-    </button>
-
-    <!-- NOROESTE -->
-    <button class="unit-card" type="button" onclick="abrirUnidade('noroeste')">
-      <div class="unit-icon">🏭</div>
-      <div class="unit-name">Noroeste</div>
-      <div class="unit-desc">Unidade Noroeste — SP</div>
-      <span class="unit-badge" id="badge-noroeste">📄 Traços</span>
-    </button>
-
+<!-- CONTENT -->
+<main class="ct-main" id="ct-content">
+  <div class="spinner-wrap">
+    <div class="spinner"></div>
+    <p>Carregando cartas traço…</p>
   </div>
-
-  <div class="info-box">
-    <span class="info-icon">ℹ️</span>
-    <span>As cartas traço exibidas são as versões mais atuais homologadas para cada unidade. A lógica de carregamento e filtragem será integrada conforme configuração do sistema.</span>
-  </div>
-
-  <div class="section-label">Ferramentas</div>
-
-  <div class="unit-grid">
-    <a class="unit-card" href="../dosagem-concreto/index.html?sec=sec-custo-mcc">
-      <div class="unit-icon">🏢</div>
-      <div class="unit-name">Cadastro de Materiais</div>
-      <div class="unit-desc">Fornecedores / Materiais MCC</div>
-      <span class="unit-badge active">🔗 Acessar</span>
-    </a>
-  </div>
-
 </main>
 
-<div class="page-footer">CONCRETRACK © 2026 — Cartas Traço Concrefer</div>
+<div class="ct-footer">CONCRETRACK © 2026 — Cartas Traço Concrefer</div>
 
-
-<!-- ═══════════════════════════════════════
-     MODAL — UNIDADE
-     ═══════════════════════════════════════ -->
-<div class="modal-overlay" id="modal-unidade" onclick="fecharModalCliqueForCa(event)">
-  <div class="modal-box">
-    <button class="modal-close" onclick="fecharModal()" aria-label="Fechar">✕</button>
-
-    <div class="modal-header">
-      <div class="modal-unit-icon" id="modal-unit-icon">🏭</div>
-      <div>
-        <h2 id="modal-unit-name">Unidade</h2>
-        <p id="modal-unit-sub">Cartas Traço Homologadas</p>
-      </div>
-    </div>
-
-    <!-- Área de conteúdo preenchida via JS -->
-    <div id="modal-body">
-      <div class="modal-placeholder">
-        <div class="placeholder-icon">📋</div>
-        <h3>Conteúdo em preparação</h3>
-        <p>A lógica de exibição das cartas traço desta unidade será integrada em breve.</p>
-        <span class="badge-soon">EM BREVE</span>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 
 <script>
@@ -631,238 +732,273 @@
 const DOSAGEM_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxUSO5OQ9G6DFQAKOTydxURfr1Ncc2lkeAHavKV2bV8vL5tn-Y_mTlbL024p6dORgLaxg/exec';
 
 const UNIDADES = {
-  campinas:    { name: 'Campinas',       sub: 'Unidade Campinas — SP',       icon: '🏭' },
-  ribeirao:    { name: 'Ribeirão Preto', sub: 'Unidade Ribeirão Preto — SP', icon: '🏭' },
-  pederneiras: { name: 'Pederneiras',    sub: 'Unidade Pederneiras — SP',    icon: '🏭' },
-  noroeste:    { name: 'Noroeste',       sub: 'Unidade Noroeste — SP',       icon: '🏭' },
+  campinas:    { name: 'Campinas',       sub: 'Unidade Campinas — SP' },
+  ribeirao:    { name: 'Ribeirão Preto', sub: 'Unidade Ribeirão Preto — SP' },
+  pederneiras: { name: 'Pederneiras',    sub: 'Unidade Pederneiras — SP' },
+  noroeste:    { name: 'Noroeste',       sub: 'Unidade Noroeste — SP' },
 };
 
-function fmt(num, dec = 1) {
-  const n = Number(num);
-  return isFinite(n) && n !== 0 ? n.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec }) : (n === 0 ? '0' : '—');
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+function fmt(n, d = 1) {
+  const v = Number(n);
+  return isFinite(v) && v !== 0
+    ? v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d })
+    : (v === 0 ? '0' : '—');
 }
+function fmtR(n) { return 'R$\u00a0' + fmt(n, 2); }
 function escHtml(s) {
-  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+function isAtivo(c) { return c.ativaAutomacao === true || c.ativaAutomacao === 'SIM'; }
 
 // ═══════════════════════════════════════════════
-// LER LOCALSTORAGE (fallback)
+// DATA SOURCES
 // ═══════════════════════════════════════════════
-function getCartasLocal(unidadeId) {
+function getCartasLocal(uid) {
   try {
-    const all = JSON.parse(localStorage.getItem('ct_cartas_traco') || '[]');
-    return all.filter(c => c.unidade === unidadeId);
+    return JSON.parse(localStorage.getItem('ct_cartas_traco') || '[]')
+      .filter(c => c.unidade === uid);
   } catch { return []; }
 }
-function getFornecedores() {
-  try { return JSON.parse(localStorage.getItem('cadastroFornecedoresV1') || '[]'); } catch { return []; }
-}
 
-// ═══════════════════════════════════════════════
-// BUSCAR DA PLANILHA
-// ═══════════════════════════════════════════════
-async function fetchCartasSheets(unidadeId) {
-  const url = `${DOSAGEM_WEBAPP_URL}?action=listar_cartas_traco&unidade=${encodeURIComponent(unidadeId)}`;
+async function fetchCartasSheets(uid) {
+  const url = `${DOSAGEM_WEBAPP_URL}?action=listar_cartas_traco&unidade=${encodeURIComponent(uid)}`;
   const resp = await fetch(url, { method: 'GET' });
   if (!resp.ok) throw new Error('HTTP ' + resp.status);
-  const json = await resp.json();
-  if (!json.ok) throw new Error(json.error || 'Erro na API');
-  return json.cartas || [];
+  const j = await resp.json();
+  if (!j.ok) throw new Error(j.error || 'Erro API');
+  return j.cartas || [];
 }
 
 // ═══════════════════════════════════════════════
-// ABRIR MODAL
+// LOAD UNIT
 // ═══════════════════════════════════════════════
-async function abrirUnidade(id) {
-  const u = UNIDADES[id];
-  if (!u) return;
+async function carregarUnidade(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.id === id));
 
-  document.getElementById('modal-unit-icon').textContent = u.icon;
-  document.getElementById('modal-unit-name').textContent = u.name;
-  document.getElementById('modal-unit-sub').textContent  = u.sub;
+  const main = document.getElementById('ct-content');
+  main.innerHTML = `<div class="spinner-wrap"><div class="spinner"></div><p>Buscando cartas traço…</p></div>`;
 
-  document.getElementById('modal-body').innerHTML = `
-    <div style="text-align:center;padding:40px 20px;color:var(--muted);">
-      <div style="font-size:2rem;margin-bottom:12px;animation:spin 1s linear infinite;display:inline-block;">⟳</div>
-      <div style="font-size:.88rem;">Buscando cartas traço da planilha…</div>
-    </div>`;
-
-  document.getElementById('modal-unidade').classList.add('open');
-  document.body.style.overflow = 'hidden';
-
-  let cartas = [];
-  let fonte = 'planilha';
-
+  let cartas = [], fonte = 'planilha';
   try {
     cartas = await fetchCartasSheets(id);
     if (cartas.length === 0) {
-      cartas = getCartasLocal(id);
-      fonte = cartas.length > 0 ? 'local' : 'vazio';
+      const local = getCartasLocal(id);
+      if (local.length > 0) { cartas = local; fonte = 'local'; }
     }
-  } catch (err) {
-    cartas = getCartasLocal(id);
-    fonte = cartas.length > 0 ? 'local-fallback' : 'erro';
-    console.warn('[CartasTraco] Sheets indisponível, usando localStorage:', err.message);
+  } catch (e) {
+    const local = getCartasLocal(id);
+    cartas = local;
+    fonte = local.length > 0 ? 'local-fallback' : 'erro';
+    console.warn('[CartasTraco] Sheets indisponível:', e.message);
   }
 
-  document.getElementById('modal-body').innerHTML = renderUnidadeContent(cartas, fonte, u.name, id);
+  renderDashboard(cartas, fonte, id);
 }
 
 // ═══════════════════════════════════════════════
-// RENDER CONTEÚDO
+// RENDER DASHBOARD
 // ═══════════════════════════════════════════════
-function renderUnidadeContent(cartas, fonte, unidadeNome, unidadeId) {
+function renderDashboard(cartas, fonte, uid) {
+  const main = document.getElementById('ct-content');
+
   if (cartas.length === 0) {
-    return renderPlaceholder(unidadeNome, fonte === 'erro');
+    main.innerHTML = renderEmpty(UNIDADES[uid]?.name, fonte === 'erro');
+    return;
   }
 
-  const fornecedores = getFornecedores();
-
-  const fonteMap = {
-    planilha:        { cor: '#4ced9a', icon: '🟢', label: 'Dados da planilha Google Sheets' },
-    local:           { cor: '#9ac4f0', icon: '🔵', label: 'Dados locais (planilha vazia)' },
-    'local-fallback':{ cor: '#f59e0b', icon: '🟡', label: 'Planilha indisponível — dados locais' },
-    erro:            { cor: '#f87171', icon: '🔴', label: 'Erro na planilha' },
-  };
-  const fb = fonteMap[fonte] || fonteMap['planilha'];
-
-  let html = `<div class="fonte-badge" style="border-color:${fb.cor}33;color:${fb.cor};">${fb.icon} ${fb.label}</div>`;
-
+  // Group by tracoNome, newest version first
   const grupos = {};
   cartas.forEach(c => {
-    const k = c.tracoNome || c.nomeTraco || 'Sem nome';
+    const k = c.tracoNome || 'Sem nome';
     if (!grupos[k]) grupos[k] = [];
     grupos[k].push(c);
   });
-  Object.values(grupos).forEach(g => g.sort((a, b) => (Number(b.versao) || 1) - (Number(a.versao) || 1)));
+  Object.values(grupos).forEach(g =>
+    g.sort((a, b) => (Number(b.versao) || 1) - (Number(a.versao) || 1))
+  );
 
-  const isAtivo = c => c.ativaAutomacao === true || c.ativaAutomacao === 'SIM';
-  const cartasAtivas = cartas.filter(isAtivo);
-
-  html += `<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
-    <div class="kv-chip"><span>Total</span><strong>${cartas.length}</strong></div>
-    <div class="kv-chip kv-chip-ok"><span>Ativas</span><strong>${cartasAtivas.length}</strong></div>
-    <div class="kv-chip"><span>Traços distintos</span><strong>${Object.keys(grupos).length}</strong></div>
-  </div>`;
-
-  const nomesAtivos   = [...new Set(cartasAtivas.map(c => c.tracoNome || c.nomeTraco || 'Sem nome'))];
+  const nomesAtivos   = [...new Set(cartas.filter(isAtivo).map(c => c.tracoNome || 'Sem nome'))];
   const nomesInativos = Object.keys(grupos).filter(n => !nomesAtivos.includes(n));
 
-  [...nomesAtivos, ...nomesInativos].forEach(nome => {
-    const versoes    = grupos[nome];
-    const ativa      = versoes.find(isAtivo) || null;
-    const ativoFlag  = !!ativa;
-    const versaoAtual = versoes[0];
+  // Summary stats
+  const custosAtivos = nomesAtivos
+    .map(n => Number(grupos[n]?.[0]?.custoTotal) || 0)
+    .filter(x => x > 0);
+  const custoMedio = custosAtivos.length > 0
+    ? custosAtivos.reduce((a, b) => a + b, 0) / custosAtivos.length : 0;
 
-    html += `<div class="traco-group ${ativoFlag ? 'traco-group--ativo' : ''}">
-      <div class="traco-group-header">
-        <div>
-          <span class="traco-nome">${escHtml(nome)}</span>
-          ${ativoFlag ? '<span class="badge-ativo">⚙️ ATIVA</span>' : '<span class="badge-inativo">Inativa</span>'}
-          ${ativa?.nomeAutomacao ? `<span class="badge-automacao">${escHtml(ativa.nomeAutomacao)}</span>` : ''}
-        </div>
-        <span class="traco-versions-count">${versoes.length} versão(ões)</span>
-      </div>`;
+  // Fonte badge
+  const fonteMap = {
+    planilha:         { cor: '#4ced9a', icon: '🟢', label: 'Planilha' },
+    local:            { cor: '#9ac4f0', icon: '🔵', label: 'Local' },
+    'local-fallback': { cor: '#f59e0b', icon: '🟡', label: 'Offline' },
+    erro:             { cor: '#f87171', icon: '🔴', label: 'Erro' },
+  };
+  const fb = fonteMap[fonte] || fonteMap.planilha;
 
-    if (versoes.length === 1) {
-      const c = versoes[0];
-      const lig = (Number(c.cim)||0) + (Number(c.adic)||0);
-      const ac  = lig > 0 ? (Number(c.agua)||0) / lig : 0;
-      html += `<div class="traco-detail-row">
-        <div class="kv-chip"><span>FCK</span><strong>${fmt(c.fck,0)} MPa</strong></div>
-        <div class="kv-chip"><span>Flow</span><strong>${fmt(c.flow,0)} mm</strong></div>
-        <div class="kv-chip"><span>a/c</span><strong>${fmt(ac,3)}</strong></div>
-        <div class="kv-chip"><span>Cimento</span><strong>${fmt(c.cim,1)} kg</strong></div>
-        <div class="kv-chip"><span>% Adit/Lig</span><strong>${fmt(c.pctAdit,2)}%</strong></div>
-        <div class="kv-chip"><span>Data</span><strong>${c.data || String(c.dataHora||'—').split(' ')[0]}</strong></div>
-      </div>`;
-    } else {
-      html += `<div class="compare-strip">
-        <div class="compare-strip-title">📊 Comparativo de Versões</div>
-        <div class="compare-table-wrap"><table class="compare-table">
-          <thead><tr>
-            <th>Versão</th><th>Data</th><th>FCK</th><th>Flow</th><th>a/c</th>
-            <th>Cimento</th><th>Adição</th><th>Aditivo</th><th>% Adit/Lig</th>
-            <th>Δ Cimento</th><th>Δ Flow</th><th>Status</th>
-          </tr></thead><tbody>`;
+  let html = `<div class="summary-bar">
+    <div class="summary-stat">
+      <span class="s-val">${nomesAtivos.length}</span>
+      <span class="s-lbl">Traços ativos</span>
+    </div>
+    ${custoMedio > 0 ? `<div class="summary-stat">
+      <span class="s-val">${fmtR(custoMedio)}/m³</span>
+      <span class="s-lbl">Custo médio</span>
+    </div>` : ''}
+    <div class="summary-stat">
+      <span class="s-val">${cartas.length}</span>
+      <span class="s-lbl">Versões total</span>
+    </div>
+    <div class="fonte-badge" style="border:1px solid ${fb.cor}55;color:${fb.cor};background:${fb.cor}18;">
+      ${fb.icon} ${fb.label}
+    </div>
+  </div>`;
 
-      versoes.forEach((c, idx) => {
-        const lig  = (Number(c.cim)||0) + (Number(c.adic)||0);
-        const ac   = lig > 0 ? (Number(c.agua)||0) / lig : 0;
-        const prev = versoes[idx + 1];
-        const dCim  = prev != null ? (Number(c.cim)||0)  - (Number(prev.cim)||0)  : null;
-        const dFlow = prev != null ? (Number(c.flow)||0) - (Number(prev.flow)||0) : null;
-        const fmtD  = v => v === null ? '—' : v > 0
-          ? `<span style="color:#4ced9a">+${fmt(v,1)}</span>`
-          : v < 0 ? `<span style="color:#f87171">${fmt(v,1)}</span>` : '0';
-
-        html += `<tr class="${isAtivo(c) ? 'row-ativo' : ''} ${c === versaoAtual ? 'row-atual' : ''}">
-          <td><strong>v${String(c.versao || 1).padStart(2,'0')}${c === versaoAtual ? ' ★' : ''}</strong></td>
-          <td>${c.data || String(c.dataHora||'—').split(' ')[0]}</td>
-          <td>${fmt(c.fck,0)} MPa</td>
-          <td>${fmt(c.flow,0)} mm</td>
-          <td>${fmt(ac,3)}</td>
-          <td>${fmt(c.cim,1)} kg</td>
-          <td>${fmt(c.adic,1)} kg</td>
-          <td>${fmt(c.adit,2)} kg</td>
-          <td>${fmt(c.pctAdit,2)}%</td>
-          <td>${fmtD(dCim)}</td>
-          <td>${fmtD(dFlow)}</td>
-          <td>${isAtivo(c) ? '✅' : '—'}</td>
-        </tr>`;
-      });
-      html += `</tbody></table></div></div>`;
-    }
-    html += `</div>`;
-  });
-
-  if (fornecedores.length > 0) {
-    html += `<div class="mcc-section">
-      <div class="mcc-title">🏗️ Materiais Cadastrados (MCC)</div>
-      <div class="compare-table-wrap"><table class="compare-table">
-        <thead><tr><th>Produto</th><th>Fornecedor</th><th>Valor (R$)</th><th>Avaliação</th></tr></thead><tbody>`;
-    fornecedores.forEach(f => {
-      html += `<tr>
-        <td>${escHtml(f.produto_nome || '—')}</td>
-        <td>${escHtml(f.nome || '—')}</td>
-        <td>${f.valor ? 'R$ ' + fmt(f.valor, 2) : '—'}</td>
-        <td>${f.avaliacao ? '⭐'.repeat(Math.min(parseInt(f.avaliacao)||0,5)) : '—'}</td>
-      </tr>`;
-    });
-    html += `</tbody></table></div></div>`;
+  // Active traços
+  if (nomesAtivos.length > 0) {
+    html += `<div class="ct-section-label">Ativos na Automação (${nomesAtivos.length})</div>`;
+    nomesAtivos.forEach(nome => { html += renderCartaCard(nome, grupos[nome], true); });
   }
 
-  return html;
+  // Inactive section (collapsible)
+  if (nomesInativos.length > 0) {
+    html += `<details class="inactive-section">
+      <summary>Traços Inativos (${nomesInativos.length})</summary>
+      <div class="inactive-list">`;
+    nomesInativos.forEach(nome => { html += renderCartaCard(nome, grupos[nome], false); });
+    html += `</div></details>`;
+  }
+
+  main.innerHTML = html;
 }
 
 // ═══════════════════════════════════════════════
-// FECHAR MODAL
+// RENDER CARTA CARD
 // ═══════════════════════════════════════════════
-function fecharModal() {
-  document.getElementById('modal-unidade').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function fecharModalCliqueForCa(e) {
-  if (e.target === document.getElementById('modal-unidade')) fecharModal();
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+function renderCartaCard(nome, versoes, ativo) {
+  if (!versoes || versoes.length === 0) return '';
+  const atual    = versoes[0];
+  const anterior = versoes[1] || null;
+  const hasCusto = Number(atual?.custoTotal) > 0;
+  const deltaCusto = (hasCusto && anterior && Number(anterior.custoTotal) > 0)
+    ? Number(atual.custoTotal) - Number(anterior.custoTotal) : null;
 
-// ═══════════════════════════════════════════════
-// PLACEHOLDER
-// ═══════════════════════════════════════════════
-function renderPlaceholder(nomeUnidade, erroApi) {
-  return `
-    <div class="modal-placeholder">
-      <div class="placeholder-icon">${erroApi ? '⚠️' : '📋'}</div>
-      <h3>${erroApi ? 'Planilha indisponível' : 'Nenhuma carta cadastrada — ' + escHtml(nomeUnidade)}</h3>
-      <p>${erroApi
-        ? 'Não foi possível conectar à planilha. Verifique a URL do Web App no Apps Script.'
-        : 'Salve cartas traço na <strong>Calculadora Dosagem</strong> selecionando esta unidade e marcando "Carta Ativa na Automação".'
-      }</p>
-      <a href="../dosagem-concreto/index.html" class="badge-soon" style="margin-top:14px;display:inline-block;text-decoration:none;">→ Ir para Dosagem</a>
+  const lig = (Number(atual?.cim) || 0) + (Number(atual?.adic) || 0);
+  const ac  = lig > 0 ? (Number(atual?.agua) || 0) / lig : 0;
+
+  // Delta badge
+  let deltaHtml = '';
+  if (deltaCusto !== null) {
+    const sign = deltaCusto > 0 ? '+' : '';
+    const cls  = deltaCusto > 0 ? 'delta-up' : deltaCusto < 0 ? 'delta-dn' : 'delta-eq';
+    deltaHtml  = `<span class="delta-badge ${cls}">${sign}${fmtR(deltaCusto)} vs v${String(Number(anterior.versao) || 1).padStart(2, '0')}</span>`;
+  }
+
+  // Cost composition bar
+  let barHtml = '';
+  if (hasCusto) {
+    const total = Number(atual.custoTotal) || 1;
+    const pLig  = Math.round((Number(atual.custoLigantes)  || 0) / total * 100);
+    const pAgr  = Math.round((Number(atual.custoAgregados) || 0) / total * 100);
+    const pQui  = Math.max(100 - pLig - pAgr, 0);
+    barHtml = `<div class="cost-bar-wrap">
+      <div class="cost-bar">
+        <div class="cb-lig" style="width:${pLig}%" title="Ligantes ${pLig}%"></div>
+        <div class="cb-agr" style="width:${pAgr}%" title="Agregados ${pAgr}%"></div>
+        <div class="cb-qui" style="width:${pQui}%" title="Quím./Água ${pQui}%"></div>
+      </div>
+      <div class="cost-bar-legend">
+        <span class="cbl-lig">Lig. ${pLig}%</span>
+        <span class="cbl-agr">Agr. ${pAgr}%</span>
+        <span class="cbl-qui">Quí. ${pQui}%</span>
+      </div>
+    </div>`;
+  }
+
+  // Version history table (collapsible)
+  let histHtml = '';
+  if (versoes.length > 1) {
+    histHtml = `<details class="hist-details">
+      <summary>📊 Histórico — ${versoes.length} versões</summary>
+      <div class="compare-table-wrap">
+        <table class="hist-table">
+          <thead><tr>
+            <th>Versão</th><th>Data</th><th>Custo/m³</th><th>Δ Custo</th>
+            <th>FCK</th><th>Flow</th><th>a/c</th><th>% Adit</th><th>Status</th>
+          </tr></thead>
+          <tbody>`;
+    versoes.forEach((c, i) => {
+      const ligC = (Number(c.cim) || 0) + (Number(c.adic) || 0);
+      const acC  = ligC > 0 ? (Number(c.agua) || 0) / ligC : 0;
+      const prev = versoes[i + 1] || null;
+      const dC   = (prev && Number(c.custoTotal) > 0 && Number(prev.custoTotal) > 0)
+        ? Number(c.custoTotal) - Number(prev.custoTotal) : null;
+      const dStr = dC === null ? '—'
+        : dC > 0 ? `<span style="color:#f87171">+${fmtR(dC)}</span>`
+        : dC < 0 ? `<span style="color:#4ced9a">${fmtR(dC)}</span>` : '0';
+      histHtml += `<tr class="${isAtivo(c) ? 'row-ativo' : ''} ${i === 0 ? 'row-atual' : ''}">
+        <td><strong>v${String(Number(c.versao) || 1).padStart(2, '0')}${i === 0 ? ' ★' : ''}</strong></td>
+        <td>${c.data || String(c.dataHora || '—').split(' ')[0]}</td>
+        <td>${Number(c.custoTotal) > 0 ? fmtR(c.custoTotal) : '—'}</td>
+        <td>${dStr}</td>
+        <td>${fmt(c.fck, 0)} MPa</td>
+        <td>${fmt(c.flow, 0)} mm</td>
+        <td>${fmt(acC, 3)}</td>
+        <td>${fmt(c.pctAdit, 2)}%</td>
+        <td>${isAtivo(c) ? '✅' : '—'}</td>
+      </tr>`;
+    });
+    histHtml += `</tbody></table></div></details>`;
+  }
+
+  return `<div class="carta-card ${ativo ? 'carta-ativo' : 'carta-inativo'}">
+    <div class="carta-header">
+      <div class="carta-left">
+        <span class="carta-nome">${escHtml(nome)}</span>
+        ${ativo ? '<span class="badge-ativo">⚙️ ATIVA</span>' : '<span class="badge-inativo">Inativa</span>'}
+        ${atual?.nomeAutomacao ? `<span class="badge-automacao">${escHtml(atual.nomeAutomacao)}</span>` : ''}
+      </div>
+      <span class="versao-badge">v${String(Number(atual?.versao) || 1).padStart(2, '0')} ★</span>
     </div>
-  `;
+    <div class="carta-kpis">
+      <div class="kv-chip"><span>FCK</span><strong>${fmt(atual?.fck, 0)} MPa</strong></div>
+      <div class="kv-chip"><span>Flow</span><strong>${fmt(atual?.flow, 0)} mm</strong></div>
+      <div class="kv-chip"><span>a/c</span><strong>${fmt(ac, 3)}</strong></div>
+      <div class="kv-chip"><span>Cimento</span><strong>${fmt(atual?.cim, 1)} kg</strong></div>
+      <div class="kv-chip"><span>% Adit/Lig</span><strong>${fmt(atual?.pctAdit, 2)}%</strong></div>
+      ${hasCusto ? `<div class="kv-chip kv-chip-custo"><span>Custo / m³</span><strong>${fmtR(atual.custoTotal)}</strong></div>` : ''}
+      ${deltaHtml}
+    </div>
+    ${barHtml}
+    ${histHtml}
+  </div>`;
 }
+
+// ═══════════════════════════════════════════════
+// EMPTY STATE
+// ═══════════════════════════════════════════════
+function renderEmpty(nome, erro) {
+  return `<div class="empty-state">
+    <div class="empty-icon">${erro ? '⚠️' : '📋'}</div>
+    <h3>${erro ? 'Planilha indisponível' : 'Nenhuma carta em ' + escHtml(nome || '')}</h3>
+    <p>${erro
+      ? 'Não foi possível conectar à planilha. Dados locais também estão vazios.'
+      : 'Salve cartas traço na Calculadora Dosagem, selecione a unidade e marque "Carta Ativa na Automação".'
+    }</p>
+    <a href="../dosagem-concreto/index.html" class="btn-action">→ Ir para Dosagem</a>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => carregarUnidade(btn.dataset.id));
+});
+carregarUnidade('campinas');
 </script>
 
 </body>
