@@ -11,20 +11,20 @@
       --primary:       #1a3a5c;
       --primary-light: #2563a8;
       --accent:        #e8762a;
-      --bg:            #0d1c2e;
-      --bg2:           #112035;
-      --card-bg:       rgba(255,255,255,0.06);
-      --card-border:   rgba(255,255,255,0.12);
-      --text:          #e8edf3;
-      --muted:         #8a9ab0;
+      --bg:            #f0f4f8;
+      --bg2:           #ffffff;
+      --card-bg:       rgba(0,0,0,0.04);
+      --card-border:   rgba(0,0,0,0.10);
+      --text:          #1a2840;
+      --muted:         #5a6a7e;
       --radius:        18px;
-      --shadow:        0 8px 28px rgba(0,0,0,0.35);
+      --shadow:        0 8px 28px rgba(0,0,0,0.12);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: linear-gradient(160deg, #0d1c2e 0%, #112035 60%, #0f2540 100%);
+      background: linear-gradient(160deg, #f0f4f8 0%, #ffffff 60%, #eef2f7 100%);
       color: var(--text);
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       min-height: 100vh;
@@ -38,7 +38,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 16px 20px;
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.92);
       border-bottom: 1px solid var(--card-border);
       backdrop-filter: blur(10px);
       position: sticky;
@@ -74,8 +74,8 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.07);
+      border: 1px solid rgba(0,0,0,0.18);
       border-radius: 10px;
       color: var(--text);
       font-size: .85rem;
@@ -85,7 +85,7 @@
       transition: background .15s, transform .1s;
     }
     .btn-back:hover {
-      background: rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.12);
       transform: translateY(-1px);
     }
 
@@ -190,10 +190,10 @@
       transition: opacity .2s;
     }
     .unit-card:hover {
-      background: rgba(255,255,255,0.11);
+      background: rgba(0,0,0,0.06);
       transform: translateY(-3px);
       box-shadow: var(--shadow);
-      border-color: rgba(255,255,255,0.22);
+      border-color: rgba(0,0,0,0.18);
     }
     .unit-card:hover::before { opacity: 1; }
 
@@ -245,12 +245,12 @@
 
     /* ── INFO BOX ── */
     .info-box {
-      background: rgba(37,99,168,0.12);
-      border: 1px solid rgba(37,99,168,0.30);
+      background: rgba(37,99,168,0.08);
+      border: 1px solid rgba(37,99,168,0.20);
       border-radius: 12px;
       padding: 14px 18px;
       font-size: .82rem;
-      color: #9ac4f0;
+      color: #1d4ed8;
       margin-top: 28px;
       display: flex;
       align-items: flex-start;
@@ -374,7 +374,7 @@
     .kv-chip {
       display: inline-flex;
       flex-direction: column;
-      background: rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.05);
       border: 1px solid var(--card-border);
       border-radius: 10px;
       padding: 6px 12px;
@@ -383,20 +383,20 @@
     }
     .kv-chip span { color: var(--muted); }
     .kv-chip strong { font-size: .88rem; color: var(--text); }
-    .kv-chip-ok { border-color: rgba(76,237,154,0.3); background: rgba(76,237,154,0.08); }
-    .kv-chip-ok strong { color: #4ced9a; }
+    .kv-chip-ok { border-color: rgba(5,150,105,0.30); background: rgba(5,150,105,0.08); }
+    .kv-chip-ok strong { color: #059669; }
 
     /* ── TRACO GROUP ── */
     .traco-group {
-      background: rgba(255,255,255,0.04);
+      background: rgba(0,0,0,0.03);
       border: 1px solid var(--card-border);
       border-radius: 14px;
       margin-bottom: 12px;
       overflow: hidden;
     }
     .traco-group--ativo {
-      border-color: rgba(76,237,154,0.35);
-      background: rgba(76,237,154,0.04);
+      border-color: rgba(5,150,105,0.30);
+      background: rgba(5,150,105,0.04);
     }
     .traco-group-header {
       display: flex;
@@ -414,9 +414,9 @@
     .badge-ativo {
       display: inline-block;
       margin-left: 8px;
-      background: rgba(76,237,154,0.15);
-      color: #4ced9a;
-      border: 1px solid rgba(76,237,154,0.3);
+      background: rgba(5,150,105,0.12);
+      color: #059669;
+      border: 1px solid rgba(5,150,105,0.28);
       border-radius: 999px;
       padding: 2px 10px;
       font-size: .65rem;
@@ -426,9 +426,9 @@
     .badge-inativo {
       display: inline-block;
       margin-left: 8px;
-      background: rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.05);
       color: var(--muted);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid var(--card-border);
       border-radius: 999px;
       padding: 2px 10px;
       font-size: .65rem;
@@ -437,9 +437,9 @@
     .badge-automacao {
       display: inline-block;
       margin-left: 6px;
-      background: rgba(37,99,168,0.2);
-      color: #9ac4f0;
-      border: 1px solid rgba(37,99,168,0.3);
+      background: rgba(37,99,168,0.12);
+      color: #1d4ed8;
+      border: 1px solid rgba(37,99,168,0.22);
       border-radius: 999px;
       padding: 2px 10px;
       font-size: .62rem;
@@ -478,7 +478,7 @@
       font-size: .75rem;
     }
     .compare-table th {
-      background: rgba(255,255,255,0.07);
+      background: rgba(0,0,0,0.05);
       color: var(--muted);
       font-weight: 700;
       text-transform: uppercase;
@@ -489,11 +489,11 @@
     }
     .compare-table td {
       padding: 7px 10px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid rgba(0,0,0,0.07);
       color: var(--text);
       white-space: nowrap;
     }
-    .compare-table .row-ativo td { background: rgba(76,237,154,0.06); }
+    .compare-table .row-ativo td { background: rgba(5,150,105,0.05); }
 
     /* ── MCC SECTION ── */
     .mcc-section {
@@ -523,7 +523,7 @@
     .tabs-bar {
       display: flex; overflow-x: auto; gap: 6px;
       padding: 12px 20px;
-      background: rgba(255,255,255,0.02);
+      background: rgba(0,0,0,0.02);
       border-bottom: 1px solid var(--card-border);
       scrollbar-width: none;
       position: sticky; top: 64px; z-index: 40;
@@ -541,26 +541,26 @@
       transition: background .15s, color .15s, border-color .15s;
       white-space: nowrap;
     }
-    .tab:hover { background: rgba(255,255,255,0.10); color: var(--text); }
+    .tab:hover { background: rgba(0,0,0,0.08); color: var(--text); }
     .tab.active {
-      background: rgba(37,99,168,0.22);
-      border-color: rgba(37,99,168,0.55);
-      color: #9ac4f0;
+      background: rgba(37,99,168,0.15);
+      border-color: rgba(37,99,168,0.45);
+      color: #1d4ed8;
     }
 
     /* ── TOPBAR ACTIONS (novo) ── */
     .topbar-actions { display: flex; align-items: center; gap: 8px; }
     .btn-sm {
       display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.07);
+      border: 1px solid rgba(0,0,0,0.15);
       border-radius: 9px; color: var(--text);
       font-size: .8rem; font-weight: 700;
       padding: 7px 12px; text-decoration: none; cursor: pointer;
       transition: background .15s, transform .1s;
     }
-    .btn-sm:hover { background: rgba(255,255,255,0.16); transform: translateY(-1px); }
-    .btn-sm.accent { background: rgba(232,118,42,0.15); border-color: rgba(232,118,42,0.35); color: var(--accent); }
+    .btn-sm:hover { background: rgba(0,0,0,0.12); transform: translateY(-1px); }
+    .btn-sm.accent { background: rgba(232,118,42,0.12); border-color: rgba(232,118,42,0.30); color: var(--accent); }
 
     /* ── MAIN CONTENT ── */
     .ct-main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 0 20px 80px; }
@@ -597,7 +597,7 @@
       border-radius: var(--radius);
       margin-bottom: 14px; overflow: hidden;
     }
-    .carta-ativo { border-color: rgba(76,237,154,0.30); background: rgba(76,237,154,0.03); }
+    .carta-ativo { border-color: rgba(5,150,105,0.30); background: rgba(5,150,105,0.03); }
     .carta-inativo { opacity: .76; }
     .carta-header {
       display: flex; align-items: flex-start; justify-content: space-between;
@@ -606,8 +606,8 @@
     .carta-left { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
     .carta-nome { font-size: 1rem; font-weight: 900; }
     .versao-badge {
-      font-size: .78rem; font-weight: 800; color: #9ac4f0;
-      background: rgba(37,99,168,0.18); border: 1px solid rgba(37,99,168,0.30);
+      font-size: .78rem; font-weight: 800; color: #1d4ed8;
+      background: rgba(37,99,168,0.12); border: 1px solid rgba(37,99,168,0.22);
       border-radius: 8px; padding: 3px 10px; white-space: nowrap;
     }
     .carta-kpis { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 14px; align-items: center; }
@@ -616,9 +616,9 @@
 
     /* ── DELTA BADGE ── */
     .delta-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 999px; font-size: .72rem; font-weight: 800; }
-    .delta-up { background: rgba(248,113,113,0.13); color: #f87171; border: 1px solid rgba(248,113,113,0.30); }
-    .delta-dn { background: rgba(76,237,154,0.10); color: #4ced9a; border: 1px solid rgba(76,237,154,0.28); }
-    .delta-eq { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--card-border); }
+    .delta-up { background: rgba(220,38,38,0.10); color: #dc2626; border: 1px solid rgba(220,38,38,0.25); }
+    .delta-dn { background: rgba(5,150,105,0.10); color: #059669; border: 1px solid rgba(5,150,105,0.25); }
+    .delta-eq { background: rgba(0,0,0,0.05); color: var(--muted); border: 1px solid var(--card-border); }
 
     /* ── COST BAR ── */
     .cost-bar-wrap { padding: 0 16px 14px; }
@@ -642,15 +642,15 @@
     }
     .hist-details summary:hover { color: var(--text); }
     .hist-details summary::-webkit-details-marker { display: none; }
-    .hist-details[open] summary { color: #9ac4f0; }
+    .hist-details[open] summary { color: #1d4ed8; }
     .hist-table { width: 100%; border-collapse: collapse; font-size: .72rem; }
     .hist-table th {
-      background: rgba(255,255,255,0.07); color: var(--muted);
+      background: rgba(0,0,0,0.05); color: var(--muted);
       font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
       padding: 7px 10px; text-align: left; white-space: nowrap;
     }
-    .hist-table td { padding: 7px 10px; border-top: 1px solid rgba(255,255,255,0.06); color: var(--text); white-space: nowrap; }
-    .row-atual td { background: rgba(37,99,168,0.08); }
+    .hist-table td { padding: 7px 10px; border-top: 1px solid rgba(0,0,0,0.07); color: var(--text); white-space: nowrap; }
+    .row-atual td { background: rgba(37,99,168,0.06); }
 
     /* ── INACTIVE SECTION ── */
     details.inactive-section { margin-top: 24px; }
@@ -667,7 +667,7 @@
 
     /* ── SPINNER ── */
     .spinner-wrap { display: flex; flex-direction: column; align-items: center; padding: 60px 20px; color: var(--muted); gap: 12px; font-size: .85rem; }
-    .spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.10); border-top-color: #9ac4f0; border-radius: 50%; animation: spin .8s linear infinite; }
+    .spinner { width: 36px; height: 36px; border: 3px solid rgba(0,0,0,0.10); border-top-color: #2563a8; border-radius: 50%; animation: spin .8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── EMPTY STATE ── */
@@ -784,14 +784,8 @@ async function carregarUnidade(id) {
   let cartas = [], fonte = 'planilha';
   try {
     cartas = await fetchCartasSheets(id);
-    if (cartas.length === 0) {
-      const local = getCartasLocal(id);
-      if (local.length > 0) { cartas = local; fonte = 'local'; }
-    }
   } catch (e) {
-    const local = getCartasLocal(id);
-    cartas = local;
-    fonte = local.length > 0 ? 'local-fallback' : 'erro';
+    fonte = 'erro';
     console.warn('[CartasTraco] Sheets indisponível:', e.message);
   }
 
@@ -937,8 +931,8 @@ function renderCartaCard(nome, versoes, ativo) {
       const dC   = (prev && Number(c.custoTotal) > 0 && Number(prev.custoTotal) > 0)
         ? Number(c.custoTotal) - Number(prev.custoTotal) : null;
       const dStr = dC === null ? '—'
-        : dC > 0 ? `<span style="color:#f87171">+${fmtR(dC)}</span>`
-        : dC < 0 ? `<span style="color:#4ced9a">${fmtR(dC)}</span>` : '0';
+        : dC > 0 ? `<span style="color:#dc2626">+${fmtR(dC)}</span>`
+        : dC < 0 ? `<span style="color:#059669">${fmtR(dC)}</span>` : '0';
       histHtml += `<tr class="${isAtivo(c) ? 'row-ativo' : ''} ${i === 0 ? 'row-atual' : ''}">
         <td><strong>v${String(Number(c.versao) || 1).padStart(2, '0')}${i === 0 ? ' ★' : ''}</strong></td>
         <td>${c.data || String(c.dataHora || '—').split(' ')[0]}</td>
@@ -952,6 +946,30 @@ function renderCartaCard(nome, versoes, ativo) {
       </tr>`;
     });
     histHtml += `</tbody></table></div></details>`;
+  }
+
+  // Materials table
+  const MATS_LABELS = [
+    { key:'cim',  label:'Cimento'          },
+    { key:'adic', label:'Adição'           },
+    { key:'an',   label:'Areia Natural'    },
+    { key:'ai',   label:'Areia Industrial' },
+    { key:'b0',   label:'Brita 0'          },
+    { key:'b1',   label:'Brita ½'          },
+    { key:'agua', label:'Água'             },
+    { key:'adit', label:'Aditivo SP'       },
+  ];
+  const snap = atual?.mccSnapshot || {};
+  let matsHtml = '';
+  if (MATS_LABELS.some(m => Number(atual?.[m.key]) > 0)) {
+    const rows = MATS_LABELS
+      .filter(m => Number(atual?.[m.key]) > 0)
+      .map(m => {
+        const nome = snap[m.key]?.nome || '—';
+        const forn = snap[m.key]?.forn || '—';
+        return `<tr><td>${escHtml(m.label)}</td><td>${fmt(Number(atual[m.key]),1)}</td><td>${escHtml(nome)}</td><td>${escHtml(forn)}</td></tr>`;
+      }).join('');
+    matsHtml = `<details class="hist-details"><summary>📦 Materiais — kg/m³ e Produtos</summary><div class="compare-table-wrap"><table class="hist-table"><thead><tr><th>Material</th><th>kg/m³</th><th>Produto</th><th>Fornecedor</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
   }
 
   return `<div class="carta-card ${ativo ? 'carta-ativo' : 'carta-inativo'}">
@@ -973,6 +991,7 @@ function renderCartaCard(nome, versoes, ativo) {
       ${deltaHtml}
     </div>
     ${barHtml}
+    ${matsHtml}
     ${histHtml}
   </div>`;
 }

@@ -1809,6 +1809,10 @@
         <div style="margin-top:20px;background:linear-gradient(135deg,#f0f4ff,#e8eaf6);border:2px solid #7986cb;border-radius:12px;padding:16px 20px;" id="dos-carta-box">
             <h3 style="font-size:1rem;color:#3730a3;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📋 Identificação da Carta Traço</h3>
             <div class="form-grid">
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label style="font-weight:800;color:#3730a3;">Nome da Carta Traço *</label>
+                    <input type="text" id="dos_nome_carta" placeholder="Ex: CAA C40 — Pilares Tipo A" style="border-color:#7986cb;font-weight:700;">
+                </div>
                 <div class="form-group">
                     <label>Cliente</label>
                     <input type="text" id="dos_cliente" placeholder="Nome do cliente">
@@ -3289,31 +3293,15 @@
     </div>
 
     <div style="padding:18px 22px;">
-      <!-- Cartas + Traço panels: side by side -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-
-        <!-- Cartas salvas panel -->
-        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px;">
-          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#166534;margin-bottom:8px;">📋 Histórico de Cartas</div>
-          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-            <select id="mcctr_carta_sel" style="flex:1;min-width:0;padding:6px 8px;border:1.5px solid #86efac;border-radius:8px;font-size:.78rem;background:#fff;" onchange="mccCartaSelecionada(this.value)">
-              <option value="">— Selecionar carta —</option>
-            </select>
-            <button class="btn" style="height:32px;white-space:nowrap;font-size:.75rem;background:#dc2626;color:#fff;padding:0 8px;" onclick="mccCartaExcluir()" title="Excluir carta selecionada">🗑️</button>
-          </div>
+      <!-- Carta Traço para MCC (da planilha CartasTraco) -->
+      <div style="background:#f7f9ff;border:1px solid #dbe4ff;border-radius:10px;padding:12px 14px;margin-bottom:16px;">
+        <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#3730a3;margin-bottom:8px;">📋 Carta Traço para Cálculo MCC <span style="font-weight:400;color:#888;font-size:.62rem;text-transform:none;">(planilha CartasTraco)</span></div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <select id="mcctr_traco_sel" style="flex:1;min-width:0;padding:6px 8px;border:1.5px solid #bfcbf5;border-radius:8px;font-size:.78rem;background:#fff;" onchange="mccTracaoCarregar()">
+            <option value="">— Selecione uma carta traço —</option>
+          </select>
+          <button class="btn btn-primary" style="height:32px;white-space:nowrap;font-size:.75rem;padding:0 10px;" onclick="mccTracaoRefreshBanco()">🔄 Atualizar</button>
         </div>
-
-        <!-- Selector panel -->
-        <div style="background:#f7f9ff;border:1px solid #dbe4ff;border-radius:10px;padding:12px 14px;">
-          <div style="font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#3730a3;margin-bottom:8px;">📂 Seleção do Traço</div>
-          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-            <select id="mcctr_traco_sel" style="flex:1;min-width:0;padding:6px 8px;border:1.5px solid #bfcbf5;border-radius:8px;font-size:.78rem;background:#fff;" onchange="mccTracaoCarregar()">
-              <option value="">— Selecione um traço —</option>
-            </select>
-            <button class="btn btn-primary" style="height:32px;white-space:nowrap;font-size:.75rem;padding:0 8px;" onclick="mccTracaoRefreshBanco()">🔄</button>
-          </div>
-        </div>
-
       </div>
 
       <!-- Traço info strip (expandes below both panels) -->
@@ -3376,7 +3364,7 @@
         <div id="mcctr_resumo" style="flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;"></div>
         <div style="display:flex;flex-direction:column;gap:7px;">
           <button class="btn btn-accent" style="font-size:.83rem;" onclick="mccTracaoPrint()">🖨️ Imprimir / Visualizar</button>
-          <button class="btn" style="background:#166534;color:#fff;font-size:.83rem;" onclick="mccCartaSalvar()">💾 Salvar Carta</button>
+          <button class="btn" style="background:#166534;color:#fff;font-size:.83rem;" onclick="mccTracaoSalvarConfig()">💾 Salvar Config. MCC</button>
           <div style="margin-top:4px;border-top:1px solid #dde3ea;padding-top:7px;">
             <div style="font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;color:#666;text-align:center;margin-bottom:5px;">Enviar ao Comparador</div>
             <div style="font-size:.6rem;color:#999;text-align:center;margin-bottom:5px;">ICMS e IPI deduzidos no custo líquido</div>
@@ -8562,7 +8550,7 @@ function salvarCartaTracoDosagem() {
     const lig  = cim + adic;
     const pctAdit = lig > 0 ? (adit / lig) * 100 : 0;
 
-    const tracoNome = g('res_projeto') || g('dos_obra') || 'Traço';
+    const tracoNome = g('dos_nome_carta') || g('dos_obra') || 'Traço';
     const unidade   = g('dos_unidade');
     const ativaAutomacao = document.getElementById('dos_ativa_automacao')?.checked || false;
 
@@ -8587,7 +8575,7 @@ function salvarCartaTracoDosagem() {
         ].forEach(([k, kg, grp]) => {
             const liq = Number(mccCfg[k]?.custoLiq) || 0;
             const m3  = liq > 0 ? parseFloat((kg * liq).toFixed(3)) : 0;
-            mccSnapshot[k] = { preco: liq, nome: mccCfg[k]?.nome || '' };
+            mccSnapshot[k] = { preco: liq, nome: mccCfg[k]?.nome || '', forn: mccCfg[k]?.forn || '' };
             custoTotal += m3;
             if (grp === 'L') custoLigantes  += m3;
             if (grp === 'A') custoAgregados += m3;
@@ -9531,108 +9519,73 @@ function mccTracaoInit() {
     mccTracaoLoadConfig();
     mccTracaoRenderTable();
     mccTracaoRefreshBanco();
-    mccCartasPopulateSelect();
 }
 
 async function mccTracaoRefreshBanco() {
     const sel = document.getElementById('mcctr_traco_sel');
     if (!sel) return;
     const st = document.getElementById('mcctr_status');
-    if (st) st.innerHTML = '<span style="color:#888;">⏳ Carregando traços...</span>';
-    const local = mccTracaoGetBanco().map(item => ({ ...item, _source: 'local' }));
-    let remote = [];
-    let expRemote = [];
+    if (st) st.innerHTML = '<span style="color:#888;">⏳ Carregando cartas traço…</span>';
     try {
-        const resp = await fetch(DOSAGEM_WEBAPP_URL + '?action=listar_tracos');
+        const resp = await fetch(DOSAGEM_WEBAPP_URL + '?action=listar_cartas_traco');
         const data = await resp.json();
-        if (data.ok && Array.isArray(data.tracos)) {
-            remote = data.tracos.map(t => ({
-                id: 'remote_' + (t.dataHora || Math.random().toString(36).slice(2)),
-                nome: t.nomeTraco || '(sem nome)',
-                fck: t.fck, flow: t.flow, ac: t.ac,
-                aplicacao: '', responsavel: '',
-                masses: {
-                    cimento:  Number(t.cimento)        || 0,
-                    adicao:   Number(t.adicao)          || 0,
-                    areiaNat: Number(t.areiaNatural)    || 0,
-                    areiaInd: Number(t.areiaIndustrial) || 0,
-                    brita0:   Number(t.brita0)          || 0,
-                    brita1:   Number(t.brita1)          || 0,
-                    agua:     Number(t.agua)            || 0,
-                    aditivo:  Number(t.aditivoSP)       || 0
-                },
-                _source: 'remoto', _date: t.dataHora
-            }));
-        }
-    } catch(e) { /* servidor offline, usa apenas banco local */ }
-    try {
-        const resp2 = await fetch(DOSAGEM_WEBAPP_URL + '?action=listar_experimentais');
-        const data2 = await resp2.json();
-        if (data2.ok && Array.isArray(data2.tracos)) {
-            expRemote = data2.tracos.map(t => ({
-                id: 'exp_' + (t.id || t.dataHora || Math.random().toString(36).slice(2)),
-                nome: (t.nomeTraco || '(sem nome)') + ' [EXP]',
-                fck: t.fck, flow: t.consistencia, ac: t.ac,
-                aplicacao: 'Experimental', responsavel: '',
-                masses: {
-                    cimento:  Number(t.cimento)          || 0,
-                    adicao:   Number(t.adicao)            || 0,
-                    areiaNat: Number(t.areiaNatural)      || 0,
-                    areiaInd: Number(t.areiaIndustrial)   || 0,
-                    brita0:   Number(t.brita0)            || 0,
-                    brita1:   Number(t.brita1)            || 0,
-                    agua:     Number(t.agua)              || 0,
-                    aditivo:  Number(t.aditivoSP)         || 0
-                },
-                _source: 'experimental', _date: t.dataHora
-            }));
-        }
-    } catch(e) { /* experimental offline */ }
-    _mccTracaoBancoAll = [...local, ...remote, ...expRemote];
-    const prevId = _mccTracaoCurrentData?.id;
+        if (!data.ok) throw new Error(data.error || 'Erro API');
+        _mccTracaoBancoAll = (data.cartas || []).map(c => ({
+            id:             c.id,
+            nome:           c.tracoNome || '(sem nome)',
+            versao:         c.versao || 1,
+            unidade:        c.unidade || '',
+            nomeAutomacao:  c.nomeAutomacao || '',
+            ativaAutomacao: c.ativaAutomacao,
+            fck:            c.fck, flow: c.flow, ac: c.ac,
+            aplicacao:      c.aplicacao || '',
+            custoTotal:     c.custoTotal,
+            mccSnapshot:    c.mccSnapshot || {},
+            masses: {
+                cimento:  Number(c.cim)  || 0,
+                adicao:   Number(c.adic) || 0,
+                areiaNat: Number(c.an)   || 0,
+                areiaInd: Number(c.ai)   || 0,
+                brita0:   Number(c.b0)   || 0,
+                brita1:   Number(c.b1)   || 0,
+                agua:     Number(c.agua) || 0,
+                aditivo:  Number(c.adit) || 0
+            },
+            _source: 'carta'
+        }));
+    } catch(e) {
+        if (st) st.innerHTML = '<span style="color:#dc2626;">❌ Planilha indisponível: ' + e.message + '</span>';
+        return;
+    }
     while (sel.options.length > 1) sel.remove(1);
-    if (local.length) {
+    // Group by unidade
+    const UNID_LABELS = { campinas:'Campinas', ribeirao:'Ribeirão Preto', pederneiras:'Pederneiras', noroeste:'Noroeste' };
+    const byUnid = {};
+    _mccTracaoBancoAll.forEach((item, idx) => {
+        const u = UNID_LABELS[item.unidade] || 'Sem Unidade';
+        if (!byUnid[u]) byUnid[u] = [];
+        byUnid[u].push({ item, idx });
+    });
+    Object.entries(byUnid).forEach(([unid, list]) => {
         const og = document.createElement('optgroup');
-        og.label = '📦 Banco Local';
-        local.forEach((item, idx) => {
+        og.label = '🏭 ' + unid;
+        list.forEach(({ item, idx }) => {
             const opt = document.createElement('option');
             opt.value = idx;
-            opt.textContent = item.nome + (item.fck ? ' — C' + item.fck : '') + (item.aplicacao ? ' · ' + item.aplicacao : '');
+            opt.textContent = item.nome
+                + ' v' + String(item.versao).padStart(2, '0')
+                + (item.fck ? ' — C' + item.fck : '')
+                + (item.ativaAutomacao ? ' ⚙️' : '');
             og.appendChild(opt);
         });
         sel.appendChild(og);
-    }
-    if (remote.length) {
-        const og2 = document.createElement('optgroup');
-        og2.label = '☁️ Traços Salvos (Servidor)';
-        remote.forEach((item, idx) => {
-            const opt = document.createElement('option');
-            opt.value = local.length + idx;
-            opt.textContent = item.nome + (item.fck ? ' — C' + item.fck : '') + (item._date ? ' · ' + item._date.substring(0, 10) : '');
-            og2.appendChild(opt);
-        });
-        sel.appendChild(og2);
-    }
-    if (expRemote.length) {
-        const og3 = document.createElement('optgroup');
-        og3.label = '🔬 Traços Experimentais (Servidor)';
-        expRemote.forEach((item, idx) => {
-            const opt = document.createElement('option');
-            opt.value = local.length + remote.length + idx;
-            opt.textContent = item.nome + (item.fck ? ' — C' + item.fck : '') + (item._date ? ' · ' + item._date.substring(0, 10) : '');
-            og3.appendChild(opt);
-        });
-        sel.appendChild(og3);
-    }
-    if (_mccTracaoBancoAll.length === 0) {
-        if (st) st.innerHTML = '<span style="color:#f59e0b;">⚠️ Nenhum traço encontrado. Salve traços no banco ou na aba Traços Salvos.</span>';
-    } else {
-        if (st) st.innerHTML = '<span style="color:#166534;">✅ ' + _mccTracaoBancoAll.length + ' traço(s) — ' + local.length + ' local · ' + remote.length + ' salvos · ' + expRemote.length + ' experimental</span>';
-        setTimeout(() => { const s = document.getElementById('mcctr_status'); if (s && !s.dataset.editado) s.innerHTML = ''; }, 3500);
-    }
-    if (prevId) {
-        const idx = _mccTracaoBancoAll.findIndex(x => x.id === prevId);
-        if (idx >= 0) sel.value = idx;
+    });
+    const count = _mccTracaoBancoAll.length;
+    if (st) {
+        st.innerHTML = count > 0
+            ? '<span style="color:#166534;">✅ ' + count + ' carta(s) carregada(s) da planilha</span>'
+            : '<span style="color:#f59e0b;">⚠️ Nenhuma carta encontrada. Salve cartas na Calculadora Dosagem.</span>';
+        setTimeout(() => { const s = document.getElementById('mcctr_status'); if (s) s.innerHTML = ''; }, 4000);
     }
 }
 
@@ -9676,7 +9629,7 @@ function mccTracaoCarregar() {
         const total = MCCTR_MATS.reduce((s, m) => s + (Number(item.masses?.[m.massKey]) || 0), 0);
         setT('mcctr_info_total',  total ? total.toFixed(1) + ' kg' : '—');
         setT('mcctr_info_aplic',  item.aplicacao || '');
-        setT('mcctr_info_source', item._source === 'remoto' ? '☁️ Servidor' : '📦 Local');
+        setT('mcctr_info_source', item._source === 'carta' ? '📋 CartasTraco' : item._source === 'remoto' ? '☁️ Servidor' : '📦 Local');
     }
     mccTracaoRenderTable();
 }
