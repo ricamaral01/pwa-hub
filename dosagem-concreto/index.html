@@ -1038,6 +1038,34 @@
             <button class="hub-card" type="button" onclick="showSection('sec-premium-bank')"><span class="hub-icon">🏛️</span><span class="hub-title">Banco de Traços</span><span class="hub-desc">Banco de traços, ranking e curva de custo</span></button>
         </div>
     </div>
+
+    <!-- CARD — INSUMOS PRINCIPAIS EM USO -->
+    <div class="card" style="margin-top:0;">
+        <h2><span class="icon">💰</span> Insumos Principais em Uso</h2>
+        <p class="subtitle">Registre o custo atual e o produto em uso para cimento e aditivo. Dados obrigatórios — sem valores padrão.</p>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Custo do Cimento (R$/t) <span style="color:var(--danger);font-weight:700;">*</span></label>
+                <input type="number" id="hub_custo_cimento" step="0.01" min="0" placeholder="Ex: 850,00" required>
+            </div>
+            <div class="form-group">
+                <label>Cimento Atual em Uso <span style="color:var(--danger);font-weight:700;">*</span></label>
+                <input type="text" id="hub_cimento_atual" placeholder="Ex: CP-V ARI — Mizu 50 kg" required>
+            </div>
+            <div class="form-group">
+                <label>Custo do Aditivo (R$/kg) <span style="color:var(--danger);font-weight:700;">*</span></label>
+                <input type="number" id="hub_custo_aditivo" step="0.01" min="0" placeholder="Ex: 12,50" required>
+            </div>
+            <div class="form-group">
+                <label>Marca do Aditivo em Uso <span style="color:var(--danger);font-weight:700;">*</span></label>
+                <input type="text" id="hub_aditivo_marca" placeholder="Ex: Basf MasterGlenium 51" required>
+            </div>
+        </div>
+        <div class="btn-wrap">
+            <button class="btn btn-primary" onclick="salvarDadosHub()">💾 Salvar</button>
+        </div>
+        <div id="hub-insumos-status" style="margin-top:10px;"></div>
+    </div>
 </div>
 </div>
 
@@ -1557,38 +1585,47 @@
             <strong>Materiais considerados:</strong> Cimento, Adição (sílica/filler), Areia Natural, Areia Industrial, Brita 0, Brita ½, Água, Aditivo (superplastificante).
         </div>
 
+        <!-- TABELA 1 — MATERIAIS CIMENTÍCIOS E QUÍMICOS -->
+        <h3 style="margin-bottom:10px;color:var(--primary);font-size:1rem;">🏗️ Tabela 1 — Materiais Cimentícios e Químicos</h3>
         <div class="form-grid">
             <div class="form-group">
-                <label>Cimento — ρ (g/cm³) <span class="tip" data-tip="Massa específica do cimento. Ex: CP-V ARI ≈ 3.12">?</span></label>
-                <input type="number" id="rho_cim" value="3.12" step="0.01" min="2.5" max="3.5">
+                <label>Cimento — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Massa específica do cimento. Ex: CP-V ARI ≈ 3.12">?</span></label>
+                <input type="number" id="rho_cim" step="0.01" min="2.5" max="3.5" placeholder="Ex: 3.12" required>
             </div>
             <div class="form-group">
-                <label>Adição (sílica/filler) — ρ (g/cm³) <span class="tip" data-tip="Sílica ativa ≈ 2.20 · Fíller calcário ≈ 2.70">?</span></label>
-                <input type="number" id="rho_adic" value="2.70" step="0.01" min="1.5" max="3.5">
-            </div>
-            <div class="form-group">
-                <label>Areia Natural — ρ (g/cm³) <span class="tip" data-tip="Areia natural de rio, tipicamente 2.62–2.65">?</span></label>
-                <input type="number" id="rho_an" value="2.63" step="0.01" min="2.0" max="3.0">
-            </div>
-            <div class="form-group">
-                <label>Areia Industrial — ρ (g/cm³) <span class="tip" data-tip="Areia de britagem, tipicamente 2.65–2.75">?</span></label>
-                <input type="number" id="rho_ai" value="2.66" step="0.01" min="2.0" max="3.0">
-            </div>
-            <div class="form-group">
-                <label>Brita 0 — ρ (g/cm³) <span class="tip" data-tip="Agregado graúdo 4.8–9.5 mm, tipicamente 2.65–2.80">?</span></label>
-                <input type="number" id="rho_b0" value="2.68" step="0.01" min="2.0" max="3.5">
-            </div>
-            <div class="form-group">
-                <label>Brita ½ — ρ (g/cm³) <span class="tip" data-tip="Agregado graúdo 9.5–19 mm, tipicamente 2.65–2.80">?</span></label>
-                <input type="number" id="rho_b1" value="2.70" step="0.01" min="2.0" max="3.5">
+                <label>Adição (sílica/filler) — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Sílica ativa ≈ 2.20 · Fíller calcário ≈ 2.70">?</span></label>
+                <input type="number" id="rho_adic" step="0.01" min="1.5" max="3.5" placeholder="Ex: 2.70" required>
             </div>
             <div class="form-group">
                 <label>Água — ρ (g/cm³)</label>
                 <input type="number" id="rho_agua" value="1.00" step="0.01" min="0.95" max="1.05" readonly>
             </div>
             <div class="form-group">
-                <label>Aditivo (SP) — ρ (g/cm³) <span class="tip" data-tip="Superplastificante, tipicamente 1.05–1.15">?</span></label>
-                <input type="number" id="rho_adit" value="1.10" step="0.01" min="0.8" max="1.5">
+                <label>Aditivo (SP) — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Superplastificante, tipicamente 1.05–1.15">?</span></label>
+                <input type="number" id="rho_adit" step="0.01" min="0.8" max="1.5" placeholder="Ex: 1.10" required>
+            </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <!-- TABELA 2 — AGREGADOS -->
+        <h3 style="margin-bottom:10px;color:var(--primary);font-size:1rem;">🪨 Tabela 2 — Agregados</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Areia Natural — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Areia natural de rio, tipicamente 2.62–2.65">?</span></label>
+                <input type="number" id="rho_an" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.63" required>
+            </div>
+            <div class="form-group">
+                <label>Areia Industrial — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Areia de britagem, tipicamente 2.65–2.75">?</span></label>
+                <input type="number" id="rho_ai" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.66" required>
+            </div>
+            <div class="form-group">
+                <label>Brita 0 — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Agregado graúdo 4.8–9.5 mm, tipicamente 2.65–2.80">?</span></label>
+                <input type="number" id="rho_b0" step="0.01" min="2.0" max="3.5" placeholder="Ex: 2.68" required>
+            </div>
+            <div class="form-group">
+                <label>Brita ½ — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Agregado graúdo 9.5–19 mm, tipicamente 2.65–2.80">?</span></label>
+                <input type="number" id="rho_b1" step="0.01" min="2.0" max="3.5" placeholder="Ex: 2.70" required>
             </div>
         </div>
 
@@ -1794,6 +1831,51 @@
 
         <div id="res-dosagem"></div>
         <div id="salvar-traco-status" style="margin-top:12px;"></div>
+
+        <!-- CARTA TRAÇO — IDENTIFICAÇÃO INLINE -->
+        <div style="margin-top:20px;background:linear-gradient(135deg,#f0f4ff,#e8eaf6);border:2px solid #7986cb;border-radius:12px;padding:16px 20px;" id="dos-carta-box">
+            <h3 style="font-size:1rem;color:#3730a3;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📋 Identificação da Carta Traço</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Cliente</label>
+                    <input type="text" id="dos_cliente" placeholder="Nome do cliente">
+                </div>
+                <div class="form-group">
+                    <label>Obra / Projeto</label>
+                    <input type="text" id="dos_obra" placeholder="Nome da obra ou projeto">
+                </div>
+                <div class="form-group">
+                    <label>Local / Endereço</label>
+                    <input type="text" id="dos_local" placeholder="Local da obra">
+                </div>
+                <div class="form-group">
+                    <label>Aplicação</label>
+                    <input type="text" id="dos_aplicacao" placeholder="Ex: Pilares, Lajes, CAA Estrutural">
+                </div>
+                <div class="form-group">
+                    <label>Engenheiro Responsável</label>
+                    <input type="text" id="dos_engenheiro" placeholder="Nome e CREA">
+                </div>
+                <div class="form-group">
+                    <label>ART / RRT</label>
+                    <input type="text" id="dos_art" placeholder="Número da ART ou RRT">
+                </div>
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="dos_data_carta">
+                </div>
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>Observações</label>
+                    <textarea id="dos_obs_carta" rows="2" placeholder="Observações gerais sobre a carta traço..." style="padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;resize:vertical;width:100%;box-sizing:border-box;"></textarea>
+                </div>
+            </div>
+            <div class="btn-wrap">
+                <button class="btn btn-accent" onclick="salvarCartaTracoDosagem()">💾 Salvar Carta Traço</button>
+                <button class="btn btn-primary" onclick="imprimirCartaTracoDosagem()">🖨️ Imprimir Carta</button>
+            </div>
+            <div id="dos-carta-status" style="margin-top:8px;"></div>
+        </div>
+
         <!-- NAV PASSO 2/7 -->
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
             <div>
@@ -1824,6 +1906,18 @@
             <div class="form-group">
                 <label>Observações</label>
                 <textarea id="traco_obs" rows="3" placeholder="Anotações opcionais sobre o traço..." style="padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:inherit;resize:vertical;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Cliente</label>
+                <input type="text" id="traco_cliente" placeholder="Nome do cliente">
+            </div>
+            <div class="form-group">
+                <label>Obra / Projeto</label>
+                <input type="text" id="traco_obra" placeholder="Nome da obra">
+            </div>
+            <div class="form-group">
+                <label>Engenheiro Responsável</label>
+                <input type="text" id="traco_engenheiro" placeholder="Nome e CREA">
             </div>
         </div>
         <div class="btn-wrap" style="justify-content:flex-end;">
@@ -2169,42 +2263,51 @@
             A soma de todos os volumes absolutos + volume de ar deve ser = <strong>1000 L</strong>.
         </div>
 
+        <div style="background:#e8f4f8;border:2px solid var(--primary-light);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <strong style="font-size:0.92rem;">📋 Fonte dos dados:</strong>
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:6px 14px;border-radius:6px;background:#fff;border:1.5px solid var(--border);">
+                <input type="checkbox" id="vol_modo_manual" onchange="toggleModoVolume()" style="width:16px;height:16px;">
+                <span style="font-size:0.88rem;font-weight:600;">Ignorar Dosagem 1 m³ e informar manualmente</span>
+            </label>
+            <button class="btn btn-primary" style="padding:6px 14px;font-size:0.84rem;" onclick="sincronizarDosagemParaVolume()">🔄 Sincronizar da Dosagem</button>
+        </div>
+
         <div class="form-grid">
             <div class="form-group">
                 <label>Cimento (kg)</label>
-                <input type="number" id="vol_cim" value="380" step="1">
+                <input type="number" id="vol_cim" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Adição (kg)</label>
-                <input type="number" id="vol_adic" value="50" step="1">
+                <input type="number" id="vol_adic" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Areia Natural (kg)</label>
-                <input type="number" id="vol_an" value="420" step="1">
+                <input type="number" id="vol_an" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Areia Industrial (kg)</label>
-                <input type="number" id="vol_ai" value="380" step="1">
+                <input type="number" id="vol_ai" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Brita 0 (kg)</label>
-                <input type="number" id="vol_b0" value="330" step="1">
+                <input type="number" id="vol_b0" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Brita ½ (kg)</label>
-                <input type="number" id="vol_b1" value="300" step="1">
+                <input type="number" id="vol_b1" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Água (kg)</label>
-                <input type="number" id="vol_agua" value="185" step="1">
+                <input type="number" id="vol_agua" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Aditivo SP (kg)</label>
-                <input type="number" id="vol_adit" value="4.5" step="0.1">
+                <input type="number" id="vol_adit" step="0.1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Teor de Ar (%) <span class="tip" data-tip="Percentual em relação ao volume total de 1 m³">?</span></label>
-                <input type="number" id="vol_ar" value="2.5" step="0.1" min="0" max="10">
+                <input type="number" id="vol_ar" step="0.1" min="0" max="10" style="background:#e8eef3;" readonly>
             </div>
         </div>
 
@@ -2242,42 +2345,51 @@
             <strong>Para CAA:</strong> normalmente entre 55% e 72%.
         </div>
 
+        <div style="background:#e8f4f8;border:2px solid var(--primary-light);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <strong style="font-size:0.92rem;">📋 Fonte dos dados:</strong>
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:6px 14px;border-radius:6px;background:#fff;border:1.5px solid var(--border);">
+                <input type="checkbox" id="arg_modo_manual" onchange="toggleModoArgamassa()" style="width:16px;height:16px;">
+                <span style="font-size:0.88rem;font-weight:600;">Ignorar Dosagem 1 m³ e informar manualmente</span>
+            </label>
+            <button class="btn btn-primary" style="padding:6px 14px;font-size:0.84rem;" onclick="sincronizarDosagemParaArgamassa()">🔄 Sincronizar da Dosagem</button>
+        </div>
+
         <div class="form-grid">
             <div class="form-group">
                 <label>Cimento (kg)</label>
-                <input type="number" id="arg_cim" value="380" step="1">
+                <input type="number" id="arg_cim" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Adição (kg)</label>
-                <input type="number" id="arg_adic" value="50" step="1">
+                <input type="number" id="arg_adic" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Areia Natural (kg)</label>
-                <input type="number" id="arg_an" value="420" step="1">
+                <input type="number" id="arg_an" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Areia Industrial (kg)</label>
-                <input type="number" id="arg_ai" value="380" step="1">
+                <input type="number" id="arg_ai" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Brita 0 (kg)</label>
-                <input type="number" id="arg_b0" value="330" step="1">
+                <input type="number" id="arg_b0" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Brita ½ (kg)</label>
-                <input type="number" id="arg_b1" value="300" step="1">
+                <input type="number" id="arg_b1" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Água (kg)</label>
-                <input type="number" id="arg_agua" value="185" step="1">
+                <input type="number" id="arg_agua" step="1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Aditivo SP (kg)</label>
-                <input type="number" id="arg_adit" value="4.5" step="0.1">
+                <input type="number" id="arg_adit" step="0.1" style="background:#e8eef3;" readonly>
             </div>
             <div class="form-group">
                 <label>Teor de Ar (%)</label>
-                <input type="number" id="arg_ar" value="2.5" step="0.1" min="0" max="10">
+                <input type="number" id="arg_ar" step="0.1" min="0" max="10" style="background:#e8eef3;" readonly>
             </div>
         </div>
 
@@ -2639,12 +2751,28 @@
 
         <div class="form-grid">
             <div class="form-group">
-                <label>Aplicação Carta Traço</label>
-                <input type="text" id="res_projeto" value="" placeholder="Ex: Edifício Residencial Alpha">
+                <label>Cliente</label>
+                <input type="text" id="res_cliente" placeholder="Nome do cliente">
             </div>
             <div class="form-group">
-                <label>Responsável Técnico</label>
+                <label>Obra / Projeto</label>
+                <input type="text" id="res_projeto" value="" placeholder="Nome da obra ou projeto">
+            </div>
+            <div class="form-group">
+                <label>Local</label>
+                <input type="text" id="res_local" placeholder="Local da obra">
+            </div>
+            <div class="form-group">
+                <label>Aplicação</label>
+                <input type="text" id="res_aplicacao" placeholder="Ex: Pilares, Lajes, CAA Estrutural">
+            </div>
+            <div class="form-group">
+                <label>Engenheiro Responsável</label>
                 <input type="text" id="res_resp" value="Ricardo Do Amaral">
+            </div>
+            <div class="form-group">
+                <label>ART / RRT</label>
+                <input type="text" id="res_art" placeholder="Número da ART ou RRT">
             </div>
             <div class="form-group">
                 <label>Classe do Concreto</label>
@@ -3304,6 +3432,15 @@ function showSection(id, btn) {
         }
         if (typeof mccTracaoInit === 'function') mccTracaoInit();
     }
+    if (id === 'sec-volume') {
+        if (!document.getElementById('vol_modo_manual')?.checked) sincronizarDosagemParaVolume();
+    }
+    if (id === 'sec-argamassa') {
+        if (!document.getElementById('arg_modo_manual')?.checked) sincronizarDosagemParaArgamassa();
+    }
+    if (id === 'sec-resumo') {
+        syncResumoFieldsFromDosagem();
+    }
     window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
@@ -3357,6 +3494,11 @@ function abrirModalSalvarTraco() {
     document.getElementById('traco_fck').value = fckVal;
     document.getElementById('traco_obs').value = '';
     document.getElementById('modal-traco-status').innerHTML = '';
+    // Pre-fill client/obra/engenheiro from dos_* fields
+    const g = (src, dst) => { const s = document.getElementById(src), d = document.getElementById(dst); if (s && d && s.value) d.value = s.value; };
+    g('dos_cliente', 'traco_cliente');
+    g('dos_obra', 'traco_obra');
+    g('dos_engenheiro', 'traco_engenheiro');
     document.getElementById('traco_nome').focus();
 }
 
@@ -3386,6 +3528,9 @@ async function confirmarSalvarTraco() {
     const flow  = parseFloat(document.getElementById('dos_flow').value) || 0;
     const fck   = parseFloat(document.getElementById('traco_fck').value) || 0;
     const obs   = document.getElementById('traco_obs').value.trim();
+    const cliente   = document.getElementById('traco_cliente')?.value.trim() || document.getElementById('dos_cliente')?.value.trim() || '';
+    const obra      = document.getElementById('traco_obra')?.value.trim() || document.getElementById('dos_obra')?.value.trim() || '';
+    const engenheiro = document.getElementById('traco_engenheiro')?.value.trim() || document.getElementById('dos_engenheiro')?.value.trim() || '';
 
     const v = {};
     Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
@@ -3431,7 +3576,10 @@ async function confirmarSalvarTraco() {
         volumeTotal: fmt(vTotal, 1),
         teorArgMassa: fmt(argMassa, 1),
         teorArgVolume: fmt(argVol, 1),
-        observacoes: obs
+        observacoes: obs,
+        cliente: cliente,
+        obra: obra,
+        engenheiro: engenheiro
     };
 
     const statusEl = document.getElementById('modal-traco-status');
@@ -5945,8 +6093,53 @@ function getRho() {
 // SALVAR / CARREGAR EXEMPLO
 // ═══════════════════════════════════════════════════
 function salvarMateriais() {
+    const dados = {
+        rho_cim:  document.getElementById('rho_cim').value,
+        rho_adic: document.getElementById('rho_adic').value,
+        rho_an:   document.getElementById('rho_an').value,
+        rho_ai:   document.getElementById('rho_ai').value,
+        rho_b0:   document.getElementById('rho_b0').value,
+        rho_b1:   document.getElementById('rho_b1').value,
+        rho_adit: document.getElementById('rho_adit').value
+    };
+    localStorage.setItem('ct_materiais_rho', JSON.stringify(dados));
     document.getElementById('mat-status').innerHTML =
         '<span class="badge badge-ok">✓ Dados dos materiais salvos com sucesso!</span>';
+}
+
+function carregarDadosMateriais() {
+    try {
+        const dados = JSON.parse(localStorage.getItem('ct_materiais_rho') || '{}');
+        const campos = ['rho_cim','rho_adic','rho_an','rho_ai','rho_b0','rho_b1','rho_adit'];
+        campos.forEach(id => {
+            if (dados[id] !== undefined && dados[id] !== '') {
+                const el = document.getElementById(id);
+                if (el) el.value = dados[id];
+            }
+        });
+    } catch(e) {}
+}
+
+function salvarDadosHub() {
+    const campos = ['hub_custo_cimento','hub_cimento_atual','hub_custo_aditivo','hub_aditivo_marca'];
+    const dados = {};
+    campos.forEach(id => { dados[id] = document.getElementById(id)?.value || ''; });
+    localStorage.setItem('ct_hub_insumos', JSON.stringify(dados));
+    const el = document.getElementById('hub-insumos-status');
+    if (el) el.innerHTML = '<span class="badge badge-ok">✓ Insumos salvos com sucesso!</span>';
+}
+
+function carregarDadosHub() {
+    try {
+        const dados = JSON.parse(localStorage.getItem('ct_hub_insumos') || '{}');
+        const campos = ['hub_custo_cimento','hub_cimento_atual','hub_custo_aditivo','hub_aditivo_marca'];
+        campos.forEach(id => {
+            if (dados[id] !== undefined && dados[id] !== '') {
+                const el = document.getElementById(id);
+                if (el) el.value = dados[id];
+            }
+        });
+    } catch(e) {}
 }
 
 function carregarExemplo() {
@@ -6311,6 +6504,24 @@ function calcularDosagem() {
         // Renderizar gráfico de resistência
         document.getElementById('res-dosagem').innerHTML = html;
         desenharGraficoResistencia_dos(fc1d, fc3d, fc7d, fc28d, dosFck);
+        // Atualizar KPI consumo de cimento com valor normalizado por m³
+        const kpiCimEl = document.getElementById('kpi-cimento');
+        const kpiCimHintEl = document.getElementById('kpi-cimento-hint');
+        if (kpiCimEl) kpiCimEl.textContent = `${fmt(consumoCim,1)} kg/m³`;
+        if (kpiCimHintEl) kpiCimHintEl.textContent = `Entrada: ${fmt(m.cim,1)} kg · Vol. total: ${fmt(vTotal,1)} L · Normalizado p/ 1 m³`;
+        ctSetCardState('kpi-cimento-card', consumoCim >= 280 ? 'is-good' : 'is-warn');
+        // Atualizar KPI flow com classe NBR 16889
+        const doFlow = parseFloat(document.getElementById('dos_flow')?.value) || 0;
+        let doFlowClass = '';
+        if (doFlow > 0) {
+            if (doFlow < 550) doFlowClass = ' — Abaixo SF1';
+            else if (doFlow <= 650) doFlowClass = ' — SF1';
+            else if (doFlow <= 750) doFlowClass = ' — SF2';
+            else if (doFlow <= 850) doFlowClass = ' — SF3';
+            else doFlowClass = ' — Acima SF3';
+        }
+        const kpiFlowHintEl = document.getElementById('kpi-flow-hint');
+        if (kpiFlowHintEl && doFlow) kpiFlowHintEl.textContent = `${doFlow} mm${doFlowClass} (NBR 16889)`;
     }
 }
 
@@ -8224,11 +8435,15 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTabelaFornecedores();
     carregarListaEnsaiosGranSheets('gran_miudo');
     carregarListaEnsaiosGranSheets('gran_graudo');
+    carregarDadosMateriais();
+    carregarDadosHub();
     showSection('sec-hub');
     // Set default dates
     const hoje = new Date().toISOString().split('T')[0];
     const dataEl = document.getElementById('res_data');
     if (dataEl) dataEl.value = hoje;
+    const cartaDataEl = document.getElementById('dos_data_carta');
+    if (cartaDataEl && !cartaDataEl.value) cartaDataEl.value = hoje;
     // Datas dos ensaios
     ['me_data_ensaio','me_data_amostra','gm_data_ensaio','gm_data_amostra','gg_data_ensaio','gg_data_amostra'].forEach(id => {
         const el = document.getElementById(id);
@@ -8252,20 +8467,142 @@ function updateDosagemCockpit() {
     const lig = cim + adic;
     const ac = lig > 0 ? agua / lig : 0;
     const setTxt=(id,val)=>{ const el=document.getElementById(id); if(el) el.textContent=val; };
+    // Classificação NBR 16889: SF1 (550–650), SF2 (660–750), SF3 (760–850)
+    let flowClassNBR = '';
+    if (flow > 0) {
+        if (flow < 550)       flowClassNBR = ' — Abaixo SF1';
+        else if (flow <= 650) flowClassNBR = ' — NBR 16889: SF1 (550–650 mm)';
+        else if (flow <= 750) flowClassNBR = ' — NBR 16889: SF2 (660–750 mm)';
+        else if (flow <= 850) flowClassNBR = ' — NBR 16889: SF3 (760–850 mm)';
+        else                  flowClassNBR = ' — Acima SF3 (>850 mm)';
+    }
     setTxt('kpi-flow', flow ? `${ctFmt(flow,0)} mm` : '—');
-    setTxt('kpi-flow-hint', flow>=650 && flow<=850 ? 'Dentro da faixa operacional do CAA.' : 'Revise o flow para a faixa 650–850 mm.');
-    ctSetCardState('kpi-flow-card', flow>=650 && flow<=850 ? 'is-good' : flow ? 'is-danger' : 'is-warn');
+    setTxt('kpi-flow-hint', flow ? `${flow} mm${flowClassNBR}` : 'Informe o Flow medido (mm).');
+    ctSetCardState('kpi-flow-card', flow>=660 && flow<=850 ? 'is-good' : (flow>=550 && flow<660 ? 'is-warn' : (flow ? 'is-danger' : 'is-warn')));
     setTxt('kpi-ac', lig>0 ? ctFmt(ac,3) : '—');
     setTxt('kpi-ac-hint', `Água ${ctFmt(agua,0)} / ligantes ${ctFmt(lig,0)} kg.`);
     ctSetCardState('kpi-ac-card', ac>0 && ac<=0.45 ? 'is-good' : ac<=0.55 ? 'is-warn' : 'is-danger');
     setTxt('kpi-cimento', `${ctFmt(cim,0)} kg`);
-    setTxt('kpi-cimento-hint', `Ligantes totais ${ctFmt(lig,0)} kg · FCK ${ctFmt(fck,0)} MPa.`);
+    setTxt('kpi-cimento-hint', `Valor de entrada · Pressione 📐 Calcular para ver consumo real (kg/m³).`);
     ctSetCardState('kpi-cimento-card', cim>=320 ? 'is-good' : 'is-warn');
     calculateCostPanel();
     updateResumoCockpit();
 }
+// ═══════════════════════════════════════════════════
+// SYNC: DOSAGEM → VOLUME / ARGAMASSA
+// ═══════════════════════════════════════════════════
+function sincronizarDosagemParaVolume() {
+    const map = [['dos_cim','vol_cim'],['dos_adic','vol_adic'],['dos_an','vol_an'],['dos_ai','vol_ai'],['dos_b0','vol_b0'],['dos_b1','vol_b1'],['dos_agua','vol_agua'],['dos_adit','vol_adit'],['dos_ar','vol_ar']];
+    let count = 0;
+    map.forEach(([src, dst]) => {
+        const s = document.getElementById(src), d = document.getElementById(dst);
+        if (s && d) { d.value = parseFloat(s.value) || ''; count++; }
+    });
+    const st = document.getElementById('res-volume');
+    if (st) st.innerHTML = '';
+}
+function toggleModoVolume() {
+    const manual = document.getElementById('vol_modo_manual')?.checked;
+    const inputs = ['vol_cim','vol_adic','vol_an','vol_ai','vol_b0','vol_b1','vol_agua','vol_adit','vol_ar'];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.readOnly = !manual;
+            el.style.background = manual ? '' : '#e8eef3';
+        }
+    });
+    if (!manual) sincronizarDosagemParaVolume();
+}
+function sincronizarDosagemParaArgamassa() {
+    const map = [['dos_cim','arg_cim'],['dos_adic','arg_adic'],['dos_an','arg_an'],['dos_ai','arg_ai'],['dos_b0','arg_b0'],['dos_b1','arg_b1'],['dos_agua','arg_agua'],['dos_adit','arg_adit'],['dos_ar','arg_ar']];
+    map.forEach(([src, dst]) => {
+        const s = document.getElementById(src), d = document.getElementById(dst);
+        if (s && d) d.value = parseFloat(s.value) || '';
+    });
+    const st = document.getElementById('res-argamassa');
+    if (st) st.innerHTML = '';
+}
+function toggleModoArgamassa() {
+    const manual = document.getElementById('arg_modo_manual')?.checked;
+    const inputs = ['arg_cim','arg_adic','arg_an','arg_ai','arg_b0','arg_b1','arg_agua','arg_adit','arg_ar'];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.readOnly = !manual;
+            el.style.background = manual ? '' : '#e8eef3';
+        }
+    });
+    if (!manual) sincronizarDosagemParaArgamassa();
+}
+
+// ═══════════════════════════════════════════════════
+// CARTA TRAÇO — DOSAGEM INLINE
+// ═══════════════════════════════════════════════════
+function salvarCartaTracoDosagem() {
+    const g = id => document.getElementById(id)?.value?.trim() || '';
+    const cartaData = {
+        id: 'CT-' + Date.now(),
+        dataHora: new Date().toLocaleString('pt-BR'),
+        cliente: g('dos_cliente'),
+        obra: g('dos_obra'),
+        local: g('dos_local'),
+        aplicacao: g('dos_aplicacao'),
+        engenheiro: g('dos_engenheiro'),
+        art: g('dos_art'),
+        data: g('dos_data_carta'),
+        obs: g('dos_obs_carta'),
+        tracoNome: g('res_projeto') || g('dos_obra') || 'Traço',
+        cim: parseFloat(document.getElementById('dos_cim')?.value) || 0,
+        adic: parseFloat(document.getElementById('dos_adic')?.value) || 0,
+        an: parseFloat(document.getElementById('dos_an')?.value) || 0,
+        ai: parseFloat(document.getElementById('dos_ai')?.value) || 0,
+        b0: parseFloat(document.getElementById('dos_b0')?.value) || 0,
+        b1: parseFloat(document.getElementById('dos_b1')?.value) || 0,
+        agua: parseFloat(document.getElementById('dos_agua')?.value) || 0,
+        adit: parseFloat(document.getElementById('dos_adit')?.value) || 0,
+        fck: parseFloat(document.getElementById('dos_fck')?.value) || 0,
+        flow: parseFloat(document.getElementById('dos_flow')?.value) || 0,
+        ar: parseFloat(document.getElementById('dos_ar')?.value) || 0
+    };
+    const cartas = JSON.parse(localStorage.getItem('ct_cartas_traco') || '[]');
+    cartas.unshift(cartaData);
+    localStorage.setItem('ct_cartas_traco', JSON.stringify(cartas));
+    localStorage.setItem('ct_carta_traco_atual', JSON.stringify(cartaData));
+    const st = document.getElementById('dos-carta-status');
+    if (st) st.innerHTML = '<span class="badge badge-ok">✅ Carta traço salva localmente em ' + cartaData.dataHora + '</span>';
+}
+function imprimirCartaTracoDosagem() {
+    const g = id => document.getElementById(id)?.value?.trim() || '—';
+    const n = (id, dec=1) => { const v = parseFloat(document.getElementById(id)?.value); return isFinite(v) ? v.toFixed(dec) : '—'; };
+    const win = window.open('', '_blank', 'width=900,height=700');
+    win.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Carta Traço</title>
+    <style>body{font-family:Arial,sans-serif;margin:0;padding:20px;color:#1a1a2e}h1{color:#3730a3;font-size:1.3rem;border-bottom:3px solid #7986cb;padding-bottom:8px}table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid #ccc;padding:7px 10px;font-size:0.88rem}th{background:#e8eaf6;color:#3730a3;font-weight:700}tr:nth-child(even){background:#f5f5f5}.sec{margin-top:18px}.sec-title{font-size:0.95rem;font-weight:700;color:#3730a3;background:#e8eaf6;padding:6px 10px;border-radius:6px;margin-bottom:8px}@media print{@page{margin:1.2cm}}</style></head><body>
+    <h1>📋 Carta Traço — Concreto Autoadensável</h1>
+    <div class="sec"><div class="sec-title">Identificação</div>
+    <table><tr><th>Cliente</th><td>${g('dos_cliente')}</td><th>Obra / Projeto</th><td>${g('dos_obra')}</td></tr>
+    <tr><th>Local</th><td>${g('dos_local')}</td><th>Aplicação</th><td>${g('dos_aplicacao')}</td></tr>
+    <tr><th>Engenheiro Responsável</th><td>${g('dos_engenheiro')}</td><th>ART / RRT</th><td>${g('dos_art')}</td></tr>
+    <tr><th>Data</th><td>${g('dos_data_carta')}</td><th>Observações</th><td>${g('dos_obs_carta')}</td></tr></table></div>
+    <div class="sec"><div class="sec-title">Dosagem — 1 m³</div>
+    <table><tr><th>Material</th><th>Quantidade (kg)</th></tr>
+    <tr><td>Cimento</td><td>${n('dos_cim',1)}</td></tr>
+    <tr><td>Adição</td><td>${n('dos_adic',1)}</td></tr>
+    <tr><td>Areia Natural</td><td>${n('dos_an',1)}</td></tr>
+    <tr><td>Areia Industrial</td><td>${n('dos_ai',1)}</td></tr>
+    <tr><td>Brita 0</td><td>${n('dos_b0',1)}</td></tr>
+    <tr><td>Brita ½</td><td>${n('dos_b1',1)}</td></tr>
+    <tr><td>Água</td><td>${n('dos_agua',1)}</td></tr>
+    <tr><td>Aditivo SP</td><td>${n('dos_adit',2)}</td></tr>
+    <tr><td>Teor de Ar</td><td>${n('dos_ar',1)} %</td></tr></table></div>
+    <div class="sec"><div class="sec-title">Parâmetros-Chave</div>
+    <table><tr><th>FCK Projeto</th><td>${n('dos_fck',0)} MPa</td><th>Flow (NBR 16889)</th><td>${n('dos_flow',0)} mm</td></tr></table></div>
+    <script>window.print();window.onafterprint=()=>window.close();<\/script></body></html>`);
+    win.document.close();
+}
+
 function syncResumoFieldsFromDosagem() {
     [['dos_flow','res_flow'],['dos_ar','res_ar'],['dos_tipo_cimento','res_cimento']].forEach(([src,dst])=>{ const s=document.getElementById(src), d=document.getElementById(dst); if(s&&d) d.value=s.value; });
+    [['dos_cliente','res_cliente'],['dos_obra','res_projeto'],['dos_local','res_local'],['dos_aplicacao','res_aplicacao'],['dos_engenheiro','res_resp'],['dos_art','res_art']].forEach(([src,dst])=>{ const s=document.getElementById(src), d=document.getElementById(dst); if(s&&d&&s.value) d.value=s.value; });
     const fck = parseFloat(document.getElementById('dos_fck')?.value) || 30;
     const classe = document.getElementById('res_classe');
     if (classe) { const candidate=`C${Math.round(fck/5)*5}`; if ([...classe.options].some(o=>o.value===candidate)) classe.value=candidate; }
