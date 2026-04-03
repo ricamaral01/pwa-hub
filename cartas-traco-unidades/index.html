@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartas Traço — Concrefer Unidades</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo-concretrack.png">
+  <link rel="apple-touch-icon" href="../assets/img/logo-concretrack.png">
+  <style>
+    :root {
+      --primary:       #1a3a5c;
+      --primary-light: #2563a8;
+      --accent:        #e8762a;
+      --bg:            #0d1c2e;
+      --bg2:           #112035;
+      --card-bg:       rgba(255,255,255,0.06);
+      --card-border:   rgba(255,255,255,0.12);
+      --text:          #e8edf3;
+      --muted:         #8a9ab0;
+      --radius:        18px;
+      --shadow:        0 8px 28px rgba(0,0,0,0.35);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(160deg, #0d1c2e 0%, #112035 60%, #0f2540 100%);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .topbar-brand img {
+      height: 40px;
+      width: 40px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    .topbar-brand .brand-name {
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: .04em;
+      line-height: 1.1;
+    }
+    .topbar-brand .brand-name span { color: var(--accent); }
+    .topbar-brand .brand-sub {
+      font-size: .65rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-top: 2px;
+    }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: .85rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: background .15s, transform .1s;
+    }
+    .btn-back:hover {
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-1px);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 44px 20px 32px;
+    }
+    .hero-icon {
+      font-size: 3rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%);
+      box-shadow: 0 8px 28px rgba(37,99,168,0.38);
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: .02em;
+      margin-bottom: 8px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      font-size: .9rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+    .accent-line {
+      width: 60px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin: 16px auto 0;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      flex: 1;
+      padding: 0 20px 60px;
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: .7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      margin: 32px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--card-border);
+    }
+
+    /* ── UNIT GRID ── */
+    .unit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── UNIT CARD ── */
+    .unit-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      cursor: pointer;
+      transition: background .15s, transform .12s, box-shadow .15s, border-color .15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .unit-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #2563a8);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .unit-card:hover {
+      background: rgba(255,255,255,0.11);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+      border-color: rgba(255,255,255,0.22);
+    }
+    .unit-card:hover::before { opacity: 1; }
+
+    .unit-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      flex-shrink: 0;
+      transition: transform .15s;
+    }
+    .unit-card:hover .unit-icon { transform: scale(1.08); }
+
+    .unit-name {
+      font-size: .95rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .unit-desc {
+      font-size: .72rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.35;
+    }
+    .unit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      background: rgba(232,118,42,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(232,118,42,0.28);
+      margin-top: 2px;
+    }
+    .unit-badge.active {
+      background: rgba(37,180,100,0.13);
+      color: #4ced9a;
+      border-color: rgba(37,180,100,0.28);
+    }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background: rgba(37,99,168,0.12);
+      border: 1px solid rgba(37,99,168,0.30);
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: .82rem;
+      color: #9ac4f0;
+      margin-top: 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+    .info-box .info-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      text-align: center;
+      font-size: .68rem;
+      color: var(--muted);
+      opacity: .5;
+      padding: 20px 20px 32px;
+    }
+
+    /* ── MODAL OVERLAY ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: #162a44;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 22px;
+      padding: 28px 26px 24px;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: slideUp .2s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(18px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color .15s;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .modal-header .modal-unit-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+    .modal-header h2 {
+      font-size: 1.1rem;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+    .modal-header p {
+      font-size: .72rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* Placeholder content inside modal */
+    .modal-placeholder {
+      background: rgba(255,255,255,0.05);
+      border: 1px dashed rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 32px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .modal-placeholder .placeholder-icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .modal-placeholder h3 { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .modal-placeholder p { font-size: .8rem; line-height: 1.5; }
+
+    .modal-placeholder .badge-soon {
+      display: inline-block;
+      margin-top: 14px;
+      background: rgba(232,118,42,0.18);
+      color: var(--accent);
+      border: 1px solid rgba(232,118,42,0.35);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .unit-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero h1   { font-size: 1.3rem; }
+    }
+
+    @media print { .topbar, .btn-back { display: none !important; } }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <img src="../assets/img/logo-concretrack.png" alt="Concretrack">
+    <div>
+      <div class="brand-name">CONCRE<span>TRACK</span></div>
+      <div class="brand-sub">Cartas Traço · Unidades</div>
+    </div>
+  </div>
+  <a href="../index.html" class="btn-back">⬅ HUB</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-icon">📋</div>
+  <h1>Cartas Traço<br><span>Concrefer</span></h1>
+  <p>Acesse as cartas traço vigentes de cada unidade fabril. Selecione a unidade para visualizar os traços homologados.</p>
+  <div class="accent-line"></div>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <div class="section-label">Selecione a unidade</div>
+
+  <div class="unit-grid">
+
+    <!-- CAMPINAS -->
+    <button class="unit-card" type="button" onclick="abrirUnidade('campinas')">
+      <div class="unit-icon">🏭</div>
+      <div class="unit-name">Campinas</div>
+      <div class="unit-desc">Unidade Campinas — SP</div>
+      <span class="unit-badge" id="badge-campinas">📄 Traços</span>
+    </button>
+
+    <!-- RIBEIRÃO PRETO -->
+    <button class="unit-card" type="button" onclick="abrirUnidade('ribeirao')">
+      <div class="unit-icon">🏭</div>
+      <div class="unit-name">Ribeirão Preto</div>
+      <div class="unit-desc">Unidade Ribeirão Preto — SP</div>
+      <span class="unit-badge" id="badge-ribeirao">📄 Traços</span>
+    </button>
+
+    <!-- PEDERNEIRAS -->
+    <button class="unit-card" type="button" onclick="abrirUnidade('pederneiras')">
+      <div class="unit-icon">🏭</div>
+      <div class="unit-name">Pederneiras</div>
+      <div class="unit-desc">Unidade Pederneiras — SP</div>
+      <span class="unit-badge" id="badge-pederneiras">📄 Traços</span>
+    </button>
+
+    <!-- NOROESTE -->
+    <button class="unit-card" type="button" onclick="abrirUnidade('noroeste')">
+      <div class="unit-icon">🏭</div>
+      <div class="unit-name">Noroeste</div>
+      <div class="unit-desc">Unidade Noroeste — SP</div>
+      <span class="unit-badge" id="badge-noroeste">📄 Traços</span>
+    </button>
+
+  </div>
+
+  <div class="info-box">
+    <span class="info-icon">ℹ️</span>
+    <span>As cartas traço exibidas são as versões mais atuais homologadas para cada unidade. A lógica de carregamento e filtragem será integrada conforme configuração do sistema.</span>
+  </div>
+
+  <div class="section-label">Ferramentas</div>
+
+  <div class="unit-grid">
+    <a class="unit-card" href="../dosagem-concreto/index.html?sec=sec-custo-mcc">
+      <div class="unit-icon">🏢</div>
+      <div class="unit-name">Cadastro de Materiais</div>
+      <div class="unit-desc">Fornecedores / Materiais MCC</div>
+      <span class="unit-badge active">🔗 Acessar</span>
+    </a>
+  </div>
+
+</main>
+
+<div class="page-footer">CONCRETRACK © 2026 — Cartas Traço Concrefer</div>
+
+
+<!-- ═══════════════════════════════════════
+     MODAL — UNIDADE
+     ═══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-unidade" onclick="fecharModalCliqueForCa(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="fecharModal()" aria-label="Fechar">✕</button>
+
+    <div class="modal-header">
+      <div class="modal-unit-icon" id="modal-unit-icon">🏭</div>
+      <div>
+        <h2 id="modal-unit-name">Unidade</h2>
+        <p id="modal-unit-sub">Cartas Traço Homologadas</p>
+      </div>
+    </div>
+
+    <!-- Área de conteúdo preenchida via JS -->
+    <div id="modal-body">
+      <div class="modal-placeholder">
+        <div class="placeholder-icon">📋</div>
+        <h3>Conteúdo em preparação</h3>
+        <p>A lógica de exibição das cartas traço desta unidade será integrada em breve.</p>
+        <span class="badge-soon">EM BREVE</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+// ═══════════════════════════════════════════════
+// CONFIGURAÇÃO DAS UNIDADES
+// (substituir / expandir ao integrar a lógica)
+// ═══════════════════════════════════════════════
+const UNIDADES = {
+  campinas:    { name: 'Campinas',       sub: 'Unidade Campinas — SP',       icon: '🏭' },
+  ribeirao:    { name: 'Ribeirão Preto', sub: 'Unidade Ribeirão Preto — SP', icon: '🏭' },
+  pederneiras: { name: 'Pederneiras',    sub: 'Unidade Pederneiras — SP',    icon: '🏭' },
+  noroeste:    { name: 'Noroeste',       sub: 'Unidade Noroeste — SP',       icon: '🏭' },
+};
+
+// ═══════════════════════════════════════════════
+// ABRIR MODAL DE UNIDADE
+// ═══════════════════════════════════════════════
+function abrirUnidade(id) {
+  const u = UNIDADES[id];
+  if (!u) return;
+
+  document.getElementById('modal-unit-icon').textContent = u.icon;
+  document.getElementById('modal-unit-name').textContent = u.name;
+  document.getElementById('modal-unit-sub').textContent  = u.sub;
+
+  // ─── PONTO DE INTEGRAÇÃO ────────────────────────
+  // Substitua o conteúdo abaixo pela lógica real de
+  // carregamento das cartas traço da unidade (id).
+  // renderizarCartasTraco(id);
+  // ────────────────────────────────────────────────
+  document.getElementById('modal-body').innerHTML = renderPlaceholder(u.name);
+
+  document.getElementById('modal-unidade').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ═══════════════════════════════════════════════
+// FECHAR MODAL
+// ═══════════════════════════════════════════════
+function fecharModal() {
+  document.getElementById('modal-unidade').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function fecharModalCliqueForCa(e) {
+  if (e.target === document.getElementById('modal-unidade')) fecharModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+
+// ═══════════════════════════════════════════════
+// RENDER PLACEHOLDER (substituir pela lógica real)
+// ═══════════════════════════════════════════════
+function renderPlaceholder(nomeUnidade) {
+  return `
+    <div class="modal-placeholder">
+      <div class="placeholder-icon">📋</div>
+      <h3>Cartas Traço — ${nomeUnidade}</h3>
+      <p>A lógica de exibição das cartas traço desta unidade será integrada conforme o sistema de automação.</p>
+      <span class="badge-soon">LÓGICA A INTEGRAR</span>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════
+// PONTO DE EXTENSÃO PARA A LÓGICA FUTURA
+// ═══════════════════════════════════════════════
+// function renderizarCartasTraco(unidadeId) {
+//   // Carregar dados (API / Google Sheets / localStorage)
+//   // Renderizar lista/tabela de cartas traço no #modal-body
+// }
+</script>
+
+</body>
+</html>

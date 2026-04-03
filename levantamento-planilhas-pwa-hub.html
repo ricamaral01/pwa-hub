@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Levantamento de Planilhas e Bancos de Dados - PWA HUB</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #dbe3ef;
+      --accent: #0f766e;
+      --accent-2: #0b5ed7;
+      --warn: #b45309;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eef3fb 0%, var(--bg) 100%);
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .header {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      color: var(--accent);
+    }
+
+    .meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 4px 0 12px;
+      font-size: 18px;
+      color: var(--accent-2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      vertical-align: top;
+      text-align: left;
+      word-wrap: break-word;
+    }
+
+    th {
+      background: #f0f5ff;
+      font-weight: 700;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 8px 0 0;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #f4d5a7;
+      color: var(--warn);
+      background: #fff8ec;
+    }
+
+    .tag-live {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #b7e4c7;
+      color: #166534;
+      background: #ecfdf3;
+    }
+
+    .tag-legacy {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #f4d5a7;
+      color: var(--warn);
+      background: #fff8ec;
+    }
+
+    a {
+      color: #0b5ed7;
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="header">
+      <h1>Levantamento Completo de Planilhas e Bancos - PWA HUB</h1>
+      <p class="meta">Consolidado da varredura do repositório (Apps Script + front-end) em 01/04/2026.</p>
+      <p class="meta">Inclui resultado da primeira pesquisa, complementos de Apps Script externo e mapeamento de bancos de dados.</p>
+      <p class="meta"><span class="tag-live">Origem atual</span> produção/banco ou endpoint operacional atual. <span class="tag-legacy">Legado</span> fonte histórica ainda encontrada no repositório.</p>
+    </section>
+
+    <section class="card">
+      <h2>Tabela Principal - Planilhas Identificadas</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:18%;">PWA</th>
+            <th style="width:10%;">Status</th>
+            <th style="width:26%;">Link da Planilha</th>
+            <th style="width:46%;">Função do que é salvo/consultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Parada Usina</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/1m_a4gI3l3cO3YvwMBTZ5KA8dVcQ8cPiZ6utQzDJ77YM" target="_blank">Planilha tecnica/massada</a></td>
+            <td>Salva paradas técnicas: data/hora, equipamento, duração, motivo, descrição, responsável e status (aba tecnica).</td>
+          </tr>
+          <tr>
+            <td>Massadas</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/1m_a4gI3l3cO3YvwMBTZ5KA8dVcQ8cPiZ6utQzDJ77YM" target="_blank">Planilha tecnica/massada</a></td>
+            <td>Salva massadas com problema: número de série, hora da massada, flow, faltou água, exsudação/grau, perdeu massada e observações (aba massada).</td>
+          </tr>
+          <tr>
+            <td>QR Concreto</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/1eC2DGsEUKkX22A0IUaYvUcEj9xbzZr7K-7Eus0iSavw" target="_blank">Planilha dados CP</a></td>
+            <td>Salva rompimentos de CP: traço, moldagem, idade, MPA, faixa meta, responsável e QR bruto (aba dados).</td>
+          </tr>
+          <tr>
+            <td>Controle Estatístico</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/1eC2DGsEUKkX22A0IUaYvUcEj9xbzZr7K-7Eus0iSavw" target="_blank">Planilha dados CP</a></td>
+            <td>Consulta os dados do QR Concreto para montar relatório e resultado de CP (leitura da mesma base).</td>
+          </tr>
+          <tr>
+            <td>Checklist Usina</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/1KSDyi6Sz1xAC063JIOofrRXX3bdhz-E5k85lz-OmVz8" target="_blank">Planilha checklist</a></td>
+            <td>Salva checklist operacional completo da usina, dados do turno, responsável e respostas de inspeção.</td>
+          </tr>
+          <tr>
+            <td>Controle de Consumo (Cimento + Agregados)</td>
+            <td><span class="tag-legacy">Legado</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/1xCNgiN9bb5ItdqvLvnxS-uw_H9N8CA6aCn5ds_ydy3A" target="_blank">Planilha legada de consumo</a></td>
+            <td>Módulo consolidado de consumo. Historicamente havia escrita/leitura em planilha para cimento e agregados, mas a origem operacional indicada agora é o banco da VPS via endpoints de relatórios.</td>
+          </tr>
+          <tr>
+            <td>Dosagem Concreto (Traços)</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/1IG4nNa8lsRrUqn8UHnA5Hu6eD4A1vt8BJqepCTv8i14" target="_blank">Planilha traços</a></td>
+            <td>Salva traços e traços experimentais com parâmetros de dosagem, consistência e resistências.</td>
+          </tr>
+          <tr>
+            <td>Dosagem Concreto (Banco MCC)</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/13VnYbzJ-9sVtfIoe2twOwK6kwdOWFMxnJC1v1_72Nik" target="_blank">Planilha custo MCC</a></td>
+            <td>Salva custos de materiais MCC com versionamento por produto/fornecedor/unidade e status ativo.</td>
+          </tr>
+          <tr>
+            <td>Dosagem Concreto (Fornecedores/Granulometria)</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/1kfCQChHSAHG3s9u4fginpXonXYNxAlEc3yBRCN1wtOk" target="_blank">Planilha fornecedores/ensaios</a></td>
+            <td>Salva cadastro de fornecedores e ensaios granulométricos (abas fornecedor e ensaios_granulometria).</td>
+          </tr>
+          <tr>
+            <td>Carta Traço</td>
+            <td><span class="tag-live">Origem atual</span></td>
+            <td><a href="https://docs.google.com/spreadsheets/d/14m7yrpXF2Q3To_C2H9oQqwIHLJ32uhPOzFbrKE63CjE" target="_blank">Planilha cartas/custos/resumo</a></td>
+            <td>Salva cartas de traço, custos dos materiais e resumo gerencial (abas cadastro, custos e resumo).</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">Obs.: Parada Usina e Massadas usam a mesma planilha, em abas diferentes.</p>
+    </section>
+
+    <section class="card">
+      <h2>PWAs com Apps Script Externo (Planilha não exposta no código local)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:20%;">PWA</th>
+            <th style="width:35%;">URL Web App (exec)</th>
+            <th style="width:45%;">Situação da planilha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Setor Count</td>
+            <td><a href="https://script.google.com/macros/s/AKfycbx4kF_-n7IjXYhGLOtZLIs71WISQoOsYOtWitiLskb7a3E4l7XJfezf4keFC8yM_Ua67A/exec" target="_blank">AKfycbx4kF_-n7Ij...</a></td>
+            <td><span class="tag">Não identificável localmente</span> A URL não expõe `doGet` com metadados; ID da planilha não aparece no repositório.</td>
+          </tr>
+          <tr>
+            <td>Setor Botões</td>
+            <td><a href="https://script.google.com/macros/s/AKfycbx4kF_-n7IjXYhGLOtZLIs71WISQoOsYOtWitiLskb7a3E4l7XJfezf4keFC8yM_Ua67A/exec" target="_blank">AKfycbx4kF_-n7Ij...</a></td>
+            <td><span class="tag">Não identificável localmente</span> Usa a mesma URL do Setor Count; planilha de destino não está no código deste repo.</td>
+          </tr>
+          <tr>
+            <td>Slump / Flow</td>
+            <td><a href="https://script.google.com/macros/s/AKfycbzgro8m_TssbzMo_5OWcF98_2nuZndVOIGrGs3hKF6iHvNJ-rthNQQQTo-KYY15yUdx/exec" target="_blank">AKfycbzgro8m_Tss...</a></td>
+            <td><span class="tag">Não identificável localmente</span> Front chama ações (`preview`, `save`), mas o Apps Script fonte não está no repositório.</td>
+          </tr>
+          <tr>
+            <td>Mapa Concretagem</td>
+            <td><a href="https://script.google.com/macros/s/AKfycbx83KmaFs3O3_RqfThs_0SCnaMBc3mb-RP30QKvtfJuEfnqft4eaFQVgYwuHxx3F-RttQ/exec" target="_blank">AKfycbx83KmaFs3O...</a></td>
+            <td><span class="tag">Não identificável localmente</span> API externa para status/liberação/inspeção; planilha base não aparece no repo.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Resumo da Primeira Pesquisa (Consolidado)</h2>
+      <p class="small">Total de planilhas identificadas com link direto: <strong>8 IDs únicos</strong>.</p>
+      <ul>
+        <li>ID 1: 1m_a4gI3l3cO3YvwMBTZ5KA8dVcQ8cPiZ6utQzDJ77YM (Parada Usina, Massadas)</li>
+        <li>ID 2: 1eC2DGsEUKkX22A0IUaYvUcEj9xbzZr7K-7Eus0iSavw (QR Concreto, Controle Estatístico)</li>
+        <li>ID 3: 1KSDyi6Sz1xAC063JIOofrRXX3bdhz-E5k85lz-OmVz8 (Checklist Usina)</li>
+        <li>ID 4: 1xCNgiN9bb5ItdqvLvnxS-uw_H9N8CA6aCn5ds_ydy3A (legado do módulo unificado de consumo: cimento + agregados)</li>
+        <li>ID 5: 1IG4nNa8lsRrUqn8UHnA5Hu6eD4A1vt8BJqepCTv8i14 (Dosagem Traços)</li>
+        <li>ID 6: 13VnYbzJ-9sVtfIoe2twOwK6kwdOWFMxnJC1v1_72Nik (Banco de Custos MCC)</li>
+        <li>ID 7: 1kfCQChHSAHG3s9u4fginpXonXYNxAlEc3yBRCN1wtOk (Fornecedores/Granulometria)</li>
+        <li>ID 8: 14m7yrpXF2Q3To_C2H9oQqwIHLJ32uhPOzFbrKE63CjE (Carta Traço)</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Mapeamento de Bancos de Dados (Estruturados)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:18%;">Sistema / Serviço</th>
+            <th style="width:16%;">Tipo de Banco</th>
+            <th style="width:20%;">Base / Arquivo</th>
+            <th style="width:18%;">Acesso</th>
+            <th style="width:28%;">Função</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Relatórios de Consumo (Cimento + Agregados)</td>
+            <td>Banco na VPS</td>
+            <td>Origem em banco acessado via SSH em 31.97.241.84<br>nome da base não exposto no repositório</td>
+            <td>Front: /concretrack/relatorios/consumo<br>Front: /concretrack/relatorios/exportar<br>API: /concretrack/api/relatorios/consumo?data_ini=2026-04-01&data_fim=2026-04-01<br>API: /concretrack/api/relatorios/consumo?data_ini=2026-04-01&data_fim=2026-04-01&produto=SEU_PRODUTO&formula=SUA_FORMULA<br>API: /concretrack/api/massadas?data_ini=2026-04-01&data_fim=2026-04-01<br>API: /concretrack/api/massadas/xlsx?data_ini=2026-04-01&data_fim=2026-04-01</td>
+            <td>Módulo consolidado para relatórios e exportação de consumo, substituindo a separação entre Controle de Cimento e Controle de Agregados e consumindo dados direto do banco da VPS.</td>
+          </tr>
+          <tr>
+            <td>Controle_est_concre API</td>
+            <td>PostgreSQL</td>
+            <td>controle_est_concre_db<br>tabela principal: rompimentos</td>
+            <td>Node API: /api/v1/rompimentos<br>VPS porta 8086 (interno 3086)</td>
+            <td>Persistência de rompimentos do QR Concreto para consulta analítica e escrita dupla com Google Sheets.</td>
+          </tr>
+          <tr>
+            <td>PWA-etiquetas (Flask)</td>
+            <td>PostgreSQL</td>
+            <td>supervisorio_db<br>consulta principal: tbl_massadas</td>
+            <td>Flask endpoint: /api/massadas</td>
+            <td>Leitura operacional de massadas para geração/apoio de etiquetas e fluxos auxiliares.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="small">Obs.: Os dados de rompimento também são consumidos por páginas de controle estatístico via endpoint DB da VPS.</p>
+    </section>
+
+    <section class="card">
+      <h2>Persistência Local no Navegador (Não relacional)</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:22%;">Módulo</th>
+            <th style="width:16%;">Tipo</th>
+            <th style="width:20%;">Nome</th>
+            <th style="width:42%;">Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hub SW / Alertas</td>
+            <td>IndexedDB</td>
+            <td>ct-alerts-db (store: alerts)</td>
+            <td>Armazena histórico local de notificações push recebidas para exibição em Alertas.</td>
+          </tr>
+          <tr>
+            <td>Checklist Usina SW</td>
+            <td>IndexedDB</td>
+            <td>ct-alerts-db (store: alerts)</td>
+            <td>Mesmo mecanismo de histórico de alertas quando o SW do checklist está ativo.</td>
+          </tr>
+          <tr>
+            <td>Vários PWAs</td>
+            <td>localStorage</td>
+            <td>chaves diversas (ex.: massadas_hist)</td>
+            <td>Cache de histórico, estados de formulário e dados de apoio offline no cliente.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</body>
+</html>

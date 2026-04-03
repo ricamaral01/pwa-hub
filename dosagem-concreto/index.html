@@ -1621,6 +1621,7 @@
             <button class="btn btn-primary" onclick="salvarMateriais()">💾 Salvar Dados dos Materiais</button>
             <button class="btn btn-warning" onclick="carregarExemplo()">📋 Carregar Exemplo</button>
             <button class="btn-print" onclick="imprimirSecao('sec-materiais','Relatório — Caracterização dos Materiais')">🖨️ Imprimir</button>
+            <button class="btn-print" onclick="salvarPDF('sec-materiais','Caracterizacao_Materiais')">📄 Salvar PDF</button>
         </div>
         <div id="mat-status" style="margin-top:12px;"></div>
         <!-- NAV PASSO 1/7 -->
@@ -1836,6 +1837,18 @@
                     <label>Data</label>
                     <input type="date" id="dos_data_carta">
                 </div>
+                <div class="form-group">
+                    <label>Técnico Responsável</label>
+                    <input type="text" id="dos_tecnico_resp" placeholder="Nome do técnico responsável">
+                </div>
+                <div class="form-group">
+                    <label>Revisão do Traço</label>
+                    <input type="number" id="dos_revisao_traco" value="0" min="0" step="1" placeholder="Ex: 0">
+                </div>
+                <div class="form-group" style="grid-column:1/-1;">
+                    <label>Nome Cadastrado na Automação</label>
+                    <input type="text" id="dos_nome_automacao" placeholder="Ex: CAA_C40_SF2_001 — nome registrado no sistema de automação">
+                </div>
                 <div class="form-group" style="grid-column:1/-1;">
                     <label>Observações</label>
                     <textarea id="dos_obs_carta" rows="2" placeholder="Observações gerais sobre a carta traço..." style="padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;resize:vertical;width:100%;box-sizing:border-box;"></textarea>
@@ -1843,7 +1856,8 @@
             </div>
             <div class="btn-wrap">
                 <button class="btn btn-accent" onclick="salvarCartaTracoDosagem()">💾 Salvar Carta Traço</button>
-                <button class="btn btn-primary" onclick="imprimirCartaTracoDosagem()">🖨️ Imprimir Carta</button>
+                <button class="btn-print" onclick="imprimirSecao('sec-dosagem','Carta Traço — Dosagem de Concreto')">🖨️ Imprimir</button>
+                <button class="btn-print" onclick="salvarPDF('sec-dosagem','Carta_Traco_Dosagem')">📄 Salvar PDF</button>
             </div>
             <div id="dos-carta-status" style="margin-top:8px;"></div>
         </div>
@@ -2194,7 +2208,9 @@
             <button class="btn btn-primary" onclick="calcularExperimental()">🧮 Calcular Tudo</button>
             <button class="btn btn-accent" onclick="salvarExperimental()">💾 Salvar Traço Exp.</button>
             <button class="btn btn-warning" onclick="listarExperimentais()">📋 Listar Traços Exp.</button>
-            <button class="btn-print" onclick="imprimirExpTraco()">🖨️ Relatório / PDF</button>
+            <button class="btn-print" onclick="imprimirExpTraco()">🖨️ Relatório Detalhado</button>
+            <button class="btn-print" onclick="imprimirSecao('sec-experimental','Traço Experimental')">🖨️ Imprimir</button>
+            <button class="btn-print" onclick="salvarPDF('sec-experimental','Traco_Experimental')">📄 Salvar PDF</button>
         </div>
         <div id="exp-salvar-status" style="margin-top:12px;"></div>
 
@@ -2286,6 +2302,7 @@
         <div class="btn-wrap">
             <button class="btn btn-primary" onclick="verificarVolume()">🔍 Verificar Volume</button>
             <button class="btn-print" onclick="imprimirSecao('sec-volume','Relatório — Verificação de Volume')">🖨️ Imprimir</button>
+            <button class="btn-print" onclick="salvarPDF('sec-volume','Verificacao_Volume')">📄 Salvar PDF</button>
         </div>
 
         <div id="res-volume"></div>
@@ -2368,6 +2385,7 @@
         <div class="btn-wrap">
             <button class="btn btn-primary" onclick="calcularArgamassa()">📊 Calcular Teor de Argamassa</button>
             <button class="btn-print" onclick="imprimirSecao('sec-argamassa','Relatório — Teor de Argamassa')">🖨️ Imprimir</button>
+            <button class="btn-print" onclick="salvarPDF('sec-argamassa','Teor_Argamassa')">📄 Salvar PDF</button>
         </div>
 
         <div id="res-argamassa"></div>
@@ -2448,6 +2466,7 @@
         <div class="btn-wrap">
             <button class="btn btn-primary" onclick="calcularEmpacotamento()">📈 Calcular Empacotamento</button>
             <button class="btn-print" onclick="imprimirSecao('sec-empacotamento','Relatório — Empacotamento de Partículas')">🖨️ Imprimir</button>
+            <button class="btn-print" onclick="salvarPDF('sec-empacotamento','Empacotamento_Particulas')">📄 Salvar PDF</button>
         </div>
 
         <div id="res-empacotamento"></div>
@@ -2522,6 +2541,7 @@
         <div class="btn-wrap">
             <button class="btn btn-accent" onclick="calcularInverso()">🔄 Calcular Volume de Concreto</button>
             <button class="btn-print" onclick="imprimirSecao('sec-inverso','Relatório — Cálculo Inverso')">🖨️ Imprimir</button>
+            <button class="btn-print" onclick="salvarPDF('sec-inverso','Calculo_Inverso')">📄 Salvar PDF</button>
         </div>
 
         <div id="res-inverso"></div>
@@ -2659,6 +2679,7 @@
             <button class="btn btn-warning" onclick="carregarTracosExemplo()">📋 Carregar Traços Exemplo</button>
             <button class="btn-print" onclick="downloadChartAbrams()">💾 Download PNG</button>
             <button class="btn-print" onclick="imprimirSecao('sec-abrams','Relatório — Curva de Abrams')">🖨️ Imprimir</button>
+            <button class="btn-print" onclick="salvarPDF('sec-abrams','Curva_Abrams')">📄 Salvar PDF</button>
         </div>
 
         <div id="res-abrams"></div>
@@ -2791,6 +2812,7 @@
             <button class="btn btn-accent" onclick="gerarCartaTraco()">📋 Gerar Carta Traço Completa</button>
             <button class="btn btn-warning" onclick="salvarCartaTracoJSON()">💾 Salvar JSON</button>
             <button class="btn-print" onclick="imprimirSecao('sec-resumo','Carta Traço — Relatório Técnico')">🖨️ Imprimir Carta Traço</button>
+            <button class="btn-print" onclick="salvarPDF('sec-resumo','Carta_Traco')">📄 Salvar PDF</button>
         </div>
 
         <div id="res-resumo"></div>
@@ -2961,6 +2983,7 @@
         <div class="btn-wrap">
             <button class="btn btn-primary" onclick="gerarMemoriaCalculo()">📝 Gerar Memória de Cálculo</button>
             <button class="btn-print" onclick="imprimirSecao('sec-memoria','Memória de Cálculo — Estudo de Dosagem')">🖨️ Imprimir</button>
+            <button class="btn-print" onclick="salvarPDF('sec-memoria','Memoria_Calculo')">📄 Salvar PDF</button>
         </div>
 
         <div id="res-memoria"></div>
@@ -5940,41 +5963,14 @@ function abrirEnsaioGranGraudoSheets() {
 }
 
 // ═══════════════════════════════════════════════════
-// SALVAR PDF (via window.print com preparo)
+// SALVAR PDF — usa o mesmo modelo unificado de impressão
 // ═══════════════════════════════════════════════════
 function salvarPDF(secId, nomeArquivo) {
-    // Prepara a seção para impressão e invoca print (salvar como PDF no diálogo)
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('print-active'));
-    const sec = document.getElementById(secId);
-    sec.classList.add('print-active');
-
-    let reportDiv = sec.querySelector('.print-report');
-    if (!reportDiv) {
-        reportDiv = document.createElement('div');
-        reportDiv.className = 'print-report';
-        sec.querySelector('.card').prepend(reportDiv);
-    }
     const agora = new Date();
-    reportDiv.innerHTML = `
-        <div class="report-header">
-            <h2>⬡ ${nomeArquivo.replace(/_/g,' ')}</h2>
-            <p>${agora.toLocaleDateString('pt-BR')} ${agora.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</p>
-        </div>
-        <div class="report-meta">
-            <span>Calculadora de Dosagem · Empacotamento de Partículas</span>
-            <span>Ricardo Do Amaral</span>
-        </div>
-    `;
-
-    // Mudar título para nome do arquivo
     const tituloOrig = document.title;
-    document.title = nomeArquivo + '_' + agora.toISOString().slice(0,10);
-    window.print();
-    // Restaurar
-    setTimeout(() => {
-        document.title = tituloOrig;
-        sec.classList.remove('print-active');
-    }, 1000);
+    document.title = nomeArquivo + '_' + agora.toISOString().slice(0, 10);
+    imprimirSecao(secId, nomeArquivo.replace(/_/g, ' '));
+    setTimeout(() => { document.title = tituloOrig; }, 1500);
 }
 
 // ═══════════════════════════════════════════════════
@@ -7087,41 +7083,45 @@ function calcularInverso() {
 }
 
 // ═══════════════════════════════════════════════════
-// IMPRESSÃO POR SEÇÃO
+// IMPRESSÃO POR SEÇÃO — MODELO UNIFICADO
 // ═══════════════════════════════════════════════════
 function imprimirSecao(secId, titulo) {
-    // Remove print-active de todas as seções
     document.querySelectorAll('.section').forEach(s => s.classList.remove('print-active'));
-    // Adiciona print-active à seção desejada
     const sec = document.getElementById(secId);
     sec.classList.add('print-active');
 
-    // Injeta cabeçalho de relatório temporário
-    let reportDiv = sec.querySelector('.print-report');
+    const agora    = new Date();
+    const dataStr  = agora.toLocaleDateString('pt-BR');
+    const horaStr  = agora.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+    const engResp  = document.getElementById('dos_engenheiro')?.value?.trim() || '';
+    const tecResp  = document.getElementById('dos_tecnico_resp')?.value?.trim() || '';
+    const revRaw   = parseInt(document.getElementById('dos_revisao_traco')?.value) || 0;
+    const revisao  = String(revRaw).padStart(2, '0');
+    const nomeAuto = document.getElementById('dos_nome_automacao')?.value?.trim() || '';
+
+    // ─── Header unificado ───
+    let reportDiv = sec.querySelector('.print-report:not(.report-footer-print)');
     if (!reportDiv) {
         reportDiv = document.createElement('div');
         reportDiv.className = 'print-report';
         sec.querySelector('.card').prepend(reportDiv);
     }
-    const agora = new Date();
-    const dataStr = agora.toLocaleDateString('pt-BR');
-    const horaStr = agora.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
     reportDiv.innerHTML = `
         <div style="display:flex;align-items:center;gap:14px;border-bottom:3px solid #e8762a;padding-bottom:8px;margin-bottom:8px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
             <img src="../assets/img/logo-concretrack.png" style="height:50px;width:50px;object-fit:contain;flex-shrink:0;" alt="ConcreTrack">
-            <div>
+            <div style="flex:1;">
                 <div style="font-size:.95rem;font-weight:900;color:#1a1f2e;letter-spacing:.04em;">CONCRE<span style="color:#e8762a;-webkit-print-color-adjust:exact;print-color-adjust:exact;">TRACK</span> &mdash; ${titulo}</div>
                 <div style="font-size:.65rem;color:#666;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">Laborat&oacute;rio &amp; Engenharia do Concreto &middot; Dosagem de Concreto</div>
+                ${nomeAuto ? `<div style="font-size:.65rem;color:#1a5276;margin-top:2px;font-weight:700;">Ref. Automa&ccedil;&atilde;o: ${nomeAuto}</div>` : ''}
             </div>
-        </div>
-        <div class="report-meta">
-            <span><strong>Respons&aacute;vel:</strong> Ricardo Do Amaral</span>
-            <span><strong>Data:</strong> ${dataStr} &mdash; ${horaStr}</span>
-            <span><strong>Ref.:</strong> Dosagem CAA &middot; ConcreTrack</span>
+            <div style="text-align:right;font-size:.62rem;color:#555;white-space:nowrap;">
+                <div><strong>Data:</strong> ${dataStr} &nbsp;${horaStr}</div>
+                <div><strong>Revis&atilde;o:</strong> ${revisao}</div>
+            </div>
         </div>
     `;
 
-    // Adiciona rodapé de relatório
+    // ─── Footer unificado ───
     let footerDiv = sec.querySelector('.report-footer-print');
     if (!footerDiv) {
         footerDiv = document.createElement('div');
@@ -7129,22 +7129,26 @@ function imprimirSecao(secId, titulo) {
         sec.querySelector('.card').append(footerDiv);
     }
     footerDiv.innerHTML = `
-        <div class="report-signature">
-            <div class="sig-line">Responsável Técnico</div>
-            <div class="sig-line">Aprovação</div>
-        </div>
-        <div class="report-footer">
-            Documento gerado em ${dataStr} às ${horaStr} — Calculadora de Dosagem · Ricardo Do Amaral · 2026
+        <div style="margin-top:24px;border-top:1px solid #bbb;padding-top:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;">
+            <div style="display:flex;justify-content:space-around;gap:20px;margin-bottom:10px;">
+                <div style="width:220px;text-align:center;">
+                    <div style="min-height:28px;padding-bottom:4px;border-bottom:1px solid #333;font-size:.6rem;color:#333;word-break:break-word;">${engResp}</div>
+                    <div style="font-size:.58rem;color:#666;margin-top:4px;font-weight:600;">Eng. Respons&aacute;vel</div>
+                </div>
+                <div style="width:220px;text-align:center;">
+                    <div style="min-height:28px;padding-bottom:4px;border-bottom:1px solid #333;font-size:.6rem;color:#333;word-break:break-word;">${tecResp}</div>
+                    <div style="font-size:.58rem;color:#666;margin-top:4px;font-weight:600;">T&eacute;cnico Respons&aacute;vel</div>
+                </div>
+            </div>
+            <div style="text-align:center;font-size:.5rem;color:#aaa;margin-top:4px;">
+                Revis&atilde;o ${revisao} &middot; Emitido em ${dataStr} &agrave;s ${horaStr} &middot; ConcreTrack Dosagem &middot; Laborat&oacute;rio &amp; Engenharia do Concreto
+            </div>
         </div>
     `;
 
-    // Dispara a impressão
     setTimeout(() => {
         window.print();
-        // Limpa após impressão
-        setTimeout(() => {
-            sec.classList.remove('print-active');
-        }, 500);
+        setTimeout(() => { sec.classList.remove('print-active'); }, 500);
     }, 200);
 }
 
@@ -8416,7 +8420,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init cartas count
     const cartasEl = document.getElementById('dash-cartas-count');
     if (cartasEl) cartasEl.textContent = JSON.parse(localStorage.getItem('ct_cartas_traco')||'[]').length;
-    showSection('sec-hub');
+    const _secParam = new URLSearchParams(location.search).get('sec');
+    if (_secParam && document.getElementById(_secParam)) { showSection(_secParam); } else { showSection('sec-hub'); }
     // Set default dates
     const hoje = new Date().toISOString().split('T')[0];
     const dataEl = document.getElementById('res_data');

@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v28";
+const CACHE = "ct-hub-v29";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -60,7 +60,10 @@ const ASSETS = [
   /* ---- Controle Estatístico ---- */
   "./controle-estatistico/index.html",
   "./controle-estatistico/resultado-cp.html",
-  "./controle-estatistico/relatorio.html"
+  "./controle-estatistico/relatorio.html",
+
+  /* ---- Cartas Traço Unidades ---- */
+  "./cartas-traco-unidades/index.html"
 ];
 
 /* ---- INSTALL: cacheia tudo ---- */
