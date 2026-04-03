@@ -1022,9 +1022,9 @@
                 <div class="ops-card__hint" id="dash-best-hint">Slots A/B/C ajudam a comparar desempenho e custo.</div>
             </div>
             <div class="ops-card">
-                <div class="ops-card__label">Massa total</div>
-                <div class="ops-card__value" id="dash-total-mass">0 kg</div>
-                <div class="ops-card__hint" id="dash-total-hint">Leitura consolidada do traço base atual.</div>
+                <div class="ops-card__label">Cartas Traço</div>
+                <div class="ops-card__value" id="dash-cartas-count">0</div>
+                <div class="ops-card__hint">Cartas traço cadastradas localmente.</div>
             </div>
         </div>
 
@@ -1037,34 +1037,6 @@
             <button class="hub-card" type="button" onclick="showSection('sec-compare-cost')"><span class="hub-icon">📊</span><span class="hub-title">Comparador & Custo</span><span class="hub-desc">Comparação de cenários e custo por m³</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-premium-bank')"><span class="hub-icon">🏛️</span><span class="hub-title">Banco de Traços</span><span class="hub-desc">Banco de traços, ranking e curva de custo</span></button>
         </div>
-    </div>
-
-    <!-- CARD — INSUMOS PRINCIPAIS EM USO -->
-    <div class="card" style="margin-top:0;">
-        <h2><span class="icon">💰</span> Insumos Principais em Uso</h2>
-        <p class="subtitle">Registre o custo atual e o produto em uso para cimento e aditivo. Dados obrigatórios — sem valores padrão.</p>
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Custo do Cimento (R$/t) <span style="color:var(--danger);font-weight:700;">*</span></label>
-                <input type="number" id="hub_custo_cimento" step="0.01" min="0" placeholder="Ex: 850,00" required>
-            </div>
-            <div class="form-group">
-                <label>Cimento Atual em Uso <span style="color:var(--danger);font-weight:700;">*</span></label>
-                <input type="text" id="hub_cimento_atual" placeholder="Ex: CP-V ARI — Mizu 50 kg" required>
-            </div>
-            <div class="form-group">
-                <label>Custo do Aditivo (R$/kg) <span style="color:var(--danger);font-weight:700;">*</span></label>
-                <input type="number" id="hub_custo_aditivo" step="0.01" min="0" placeholder="Ex: 12,50" required>
-            </div>
-            <div class="form-group">
-                <label>Marca do Aditivo em Uso <span style="color:var(--danger);font-weight:700;">*</span></label>
-                <input type="text" id="hub_aditivo_marca" placeholder="Ex: Basf MasterGlenium 51" required>
-            </div>
-        </div>
-        <div class="btn-wrap">
-            <button class="btn btn-primary" onclick="salvarDadosHub()">💾 Salvar</button>
-        </div>
-        <div id="hub-insumos-status" style="margin-top:10px;"></div>
     </div>
 </div>
 </div>
@@ -1585,9 +1557,8 @@
             <strong>Materiais considerados:</strong> Cimento, Adição (sílica/filler), Areia Natural, Areia Industrial, Brita 0, Brita ½, Água, Aditivo (superplastificante).
         </div>
 
-        <!-- TABELA 1 — MATERIAIS CIMENTÍCIOS E QUÍMICOS -->
-        <h3 style="margin-bottom:10px;color:var(--primary);font-size:1rem;">🏗️ Tabela 1 — Materiais Cimentícios e Químicos</h3>
-        <div class="form-grid">
+        <!-- MASSAS ESPECÍFICAS -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
             <div class="form-group">
                 <label>Cimento — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Massa específica do cimento. Ex: CP-V ARI ≈ 3.12">?</span></label>
                 <input type="number" id="rho_cim" step="0.01" min="2.5" max="3.5" placeholder="Ex: 3.12" required>
@@ -1604,13 +1575,6 @@
                 <label>Aditivo (SP) — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Superplastificante, tipicamente 1.05–1.15">?</span></label>
                 <input type="number" id="rho_adit" step="0.01" min="0.8" max="1.5" placeholder="Ex: 1.10" required>
             </div>
-        </div>
-
-        <div class="sep"></div>
-
-        <!-- TABELA 2 — AGREGADOS -->
-        <h3 style="margin-bottom:10px;color:var(--primary);font-size:1rem;">🪨 Tabela 2 — Agregados</h3>
-        <div class="form-grid">
             <div class="form-group">
                 <label>Areia Natural — ρ (g/cm³) <span style="color:var(--danger);font-weight:700;">*</span> <span class="tip" data-tip="Areia natural de rio, tipicamente 2.62–2.65">?</span></label>
                 <input type="number" id="rho_an" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.63" required>
@@ -1768,7 +1732,16 @@
                 <input type="number" id="dos_ar" value="2.5" step="0.1" min="0" max="10">
             </div>
             <div class="form-group">
-                <label>Flow Medido (mm)</label>
+                <label>Flow / Abatimento Projeto (mm) <span class="tip" data-tip="Meta de projeto conforme aplicação. NBR 16889: SF1 550–650 · SF2 660–750 · SF3 760–850 mm">?</span></label>
+                <select id="dos_flow_classe_projeto">
+                    <option value="">Selecione a classe NBR 16889</option>
+                    <option value="SF1">SF1 — 550 a 650 mm</option>
+                    <option value="SF2" selected>SF2 — 660 a 750 mm</option>
+                    <option value="SF3">SF3 — 760 a 850 mm</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Flow Medido (mm) <span class="tip" data-tip="Valor real medido no slump-flow (Abrams modificado)">?</span></label>
                 <input type="number" id="dos_flow" value="720" step="5" min="0" max="1000">
             </div>
             <div class="form-group">
@@ -1826,7 +1799,6 @@
         <div class="btn-wrap">
             <button class="btn btn-primary" onclick="calcularDosagem()">📐 Calcular Dosagem</button>
             <button class="btn btn-accent" onclick="abrirModalSalvarTraco()">💾 Salvar Traço</button>
-            <button class="btn-print" onclick="imprimirSecao('sec-dosagem','Relatório — Dosagem para 1 m³')">🖨️ Imprimir</button>
         </div>
 
         <div id="res-dosagem"></div>
@@ -6372,6 +6344,7 @@ function calcularDosagem() {
                     <tr><td>Consumo de cimento (kg/m³)</td><td class="highlight">${fmt(consumoCim,1)}</td></tr>
                     <tr><td>Massa específica do concreto (kg/m³)</td><td class="highlight">${fmt(massaTotal * 1000/vTotal,0)}</td></tr>
                     <tr><td>Flow</td><td>${fmt(flow,0)} mm ${flowBadge(flow)}</td></tr>
+                    <tr><td>Flow / Classe Projeto</td><td>${(()=>{ const cp=document.getElementById('dos_flow_classe_projeto')?.value; return cp ? `<span class="badge badge-ok">${cp}</span>` : '—'; })()}</td></tr>
                 </table>
             </div>
             <div>
@@ -6380,6 +6353,7 @@ function calcularDosagem() {
                     <tr><td>Teor de Argamassa (massa)</td><td class="highlight">${fmt(argMassa,1)}%</td></tr>
                     <tr><td>Teor de Argamassa (volume)</td><td class="highlight">${fmt(argVol,1)}%</td></tr>
                     <tr><td>Teor de Ar Incorporado</td><td class="highlight">${fmt(arPct,1)}%</td></tr>
+                    <tr><td>% Aditivo SP / Cimento</td><td class="highlight">${fmt(m.cim>0?(m.adit/m.cim)*100:0,2)}%</td></tr>
                     <tr><td>Areia Natural / Areia Total</td><td>${fmt(pctAN,1)}%</td></tr>
                     <tr><td>Areia Industrial / Areia Total</td><td>${fmt(pctAI,1)}%</td></tr>
                     <tr><td>Brita 0 / Brita Total</td><td>${fmt(pctB0,1)}%</td></tr>
@@ -7723,6 +7697,7 @@ function gerarResumo() {
     const pctAI = (ai/(an+ai)*100);
     const pctB0 = (b0/(b0+b1)*100);
     const pctB1 = (b1/(b0+b1)*100);
+    const pctAdit = cim > 0 ? (adit / cim) * 100 : 0;
 
     let html = `
     <div class="result-box ok" id="resumo-content">
@@ -7788,6 +7763,7 @@ function gerarResumo() {
                 <table class="result-table">
                     <tr><td>Teor de Argamassa (massa)</td><td class="highlight">${fmt(argMassa,1)}%</td></tr>
                     <tr><td>Teor de Argamassa (volume)</td><td class="highlight">${fmt(argVol,1)}%</td></tr>
+                    <tr><td>% Aditivo SP / Cimento</td><td class="highlight">${fmt(pctAdit,2)}%</td></tr>
                     <tr><td>Areia Natural / Total</td><td>${fmt(pctAN,1)}%</td></tr>
                     <tr><td>Areia Industrial / Total</td><td>${fmt(pctAI,1)}%</td></tr>
                     <tr><td>Brita 0 / Brita Total</td><td>${fmt(pctB0,1)}%</td></tr>
@@ -8437,6 +8413,9 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarListaEnsaiosGranSheets('gran_graudo');
     carregarDadosMateriais();
     carregarDadosHub();
+    // Init cartas count
+    const cartasEl = document.getElementById('dash-cartas-count');
+    if (cartasEl) cartasEl.textContent = JSON.parse(localStorage.getItem('ct_cartas_traco')||'[]').length;
     showSection('sec-hub');
     // Set default dates
     const hoje = new Date().toISOString().split('T')[0];
@@ -8464,6 +8443,7 @@ function updateDosagemCockpit() {
     const agua = parseFloat(document.getElementById('dos_agua')?.value) || 0;
     const flow = parseFloat(document.getElementById('dos_flow')?.value) || 0;
     const fck = parseFloat(document.getElementById('dos_fck')?.value) || 0;
+    const flowClasseProjeto = document.getElementById('dos_flow_classe_projeto')?.value || '';
     const lig = cim + adic;
     const ac = lig > 0 ? agua / lig : 0;
     const setTxt=(id,val)=>{ const el=document.getElementById(id); if(el) el.textContent=val; };
@@ -8476,9 +8456,19 @@ function updateDosagemCockpit() {
         else if (flow <= 850) flowClassNBR = ' — NBR 16889: SF3 (760–850 mm)';
         else                  flowClassNBR = ' — Acima SF3 (>850 mm)';
     }
+    // Validate measured flow against project class
+    const classeRanges = { SF1:[550,650], SF2:[660,750], SF3:[760,850] };
+    let flowOk = false;
+    if (flowClasseProjeto && classeRanges[flowClasseProjeto]) {
+        const [lo, hi] = classeRanges[flowClasseProjeto];
+        flowOk = flow >= lo && flow <= hi;
+    } else {
+        flowOk = flow >= 660 && flow <= 850;
+    }
+    const classeHint = flowClasseProjeto ? ` · Meta: ${flowClasseProjeto} (${(classeRanges[flowClasseProjeto]||[]).join('–')} mm)` : '';
     setTxt('kpi-flow', flow ? `${ctFmt(flow,0)} mm` : '—');
-    setTxt('kpi-flow-hint', flow ? `${flow} mm${flowClassNBR}` : 'Informe o Flow medido (mm).');
-    ctSetCardState('kpi-flow-card', flow>=660 && flow<=850 ? 'is-good' : (flow>=550 && flow<660 ? 'is-warn' : (flow ? 'is-danger' : 'is-warn')));
+    setTxt('kpi-flow-hint', flow ? `${flow} mm${flowClassNBR}${classeHint}` : 'Informe o Flow medido (mm).');
+    ctSetCardState('kpi-flow-card', flow && flowOk ? 'is-good' : (flow ? 'is-warn' : 'is-danger'));
     setTxt('kpi-ac', lig>0 ? ctFmt(ac,3) : '—');
     setTxt('kpi-ac-hint', `Água ${ctFmt(agua,0)} / ligantes ${ctFmt(lig,0)} kg.`);
     ctSetCardState('kpi-ac-card', ac>0 && ac<=0.45 ? 'is-good' : ac<=0.55 ? 'is-warn' : 'is-danger');
@@ -8705,7 +8695,7 @@ function ev3PrintCost(slot) {
 }
 function ev3RenderCompare(){ if(typeof mccCompRender==='function') mccCompRender(); }
 function ev3BestSlot(){ const slots=['A','B','C'].map(ev3LoadSlot).filter(Boolean); if(!slots.length) return null; return slots.reduce((b,c)=>(c.costTotal||1e9)<(b.costTotal||1e9)?c:b, slots[0]); }
-function ev3UpdateDashboard(){ const s=ev3CurrentSnapshot(), best=ev3BestSlot(); const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;}; set('dash-flow-main', `${ctFmt(s.flow,0)} mm`); set('dash-ac-main', ctFmt(s.ac,3)); set('dash-cost', ctMoney(s.costTotal)); set('dash-total-mass', `${ctFmt(s.total,0)} kg`); set('dash-total-hint', `Ligantes ${ctFmt(s.lig,0)} kg · FCK ${ctFmt(s.fck,0)} MPa.`); if(best){ set('dash-best-slot', `Traço ${best.slot}`); set('dash-best-hint', `Menor custo salvo: ${ctMoney(best.costTotal||0)} · flow ${ctFmt(best.flow,0)} mm · a/c ${ctFmt(best.ac,3)}.`); } else { set('dash-best-slot','—'); set('dash-best-hint','Salve cenários A/B/C para descobrir a melhor alternativa.'); } set('dash-cost-hint', `Traço atual com ${ctFmt(s.cim,0)} kg de cimento e custo estimado de ${ctMoney(s.costTotal)} por m³.`); }
+function ev3UpdateDashboard(){ const s=ev3CurrentSnapshot(), best=ev3BestSlot(); const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;}; set('dash-flow-main', `${ctFmt(s.flow,0)} mm`); set('dash-ac-main', ctFmt(s.ac,3)); set('dash-cost', ctMoney(s.costTotal)); const cartasCount = JSON.parse(localStorage.getItem('ct_cartas_traco')||'[]').length; set('dash-cartas-count', cartasCount); if(best){ set('dash-best-slot', `Traço ${best.slot}`); set('dash-best-hint', `Menor custo salvo: ${ctMoney(best.costTotal||0)} · flow ${ctFmt(best.flow,0)} mm · a/c ${ctFmt(best.ac,3)}.`); } else { set('dash-best-slot','—'); set('dash-best-hint','Salve cenários A/B/C para descobrir a melhor alternativa.'); } set('dash-cost-hint', `Traço atual com ${ctFmt(s.cim,0)} kg de cimento e custo estimado de ${ctMoney(s.costTotal)} por m³.`); }
 function ctAttachListeners(){ ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_ar','dos_flow','dos_fck','res_flow','res_ar','res_classe','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'].forEach(id=>{ const el=document.getElementById(id); if(el && !el.dataset.ctBound){ el.addEventListener('input', updateDosagemCockpit); el.addEventListener('change', updateDosagemCockpit); el.dataset.ctBound='1'; } }); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); ev3RenderCompare(); }
 if (typeof calcularDosagem === 'function') { const _origCalcularDosagem = calcularDosagem; calcularDosagem = function(){ const out=_origCalcularDosagem.apply(this, arguments); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); return out; } }
 if (typeof gerarResumo === 'function') { const _origGerarResumo = gerarResumo; gerarResumo = function(){ syncResumoFieldsFromDosagem(); const out=_origGerarResumo.apply(this, arguments); updateResumoCockpit(); return out; } }
