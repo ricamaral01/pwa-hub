@@ -33,7 +33,6 @@ var HEADERS_CARTAS = [
   "Custo Total (R$/m³)", "Custo Ligantes", "Custo Agregados", "Custo Quím./Água", "MCC Snapshot",
   "Volume Total (L)", "Teor Argamassa Massa (%)", "Teor Argamassa Volume (%)", "Vol. Arg. (L)"
 ];
-];
 
 function ensureSheetCartasHeaders(sh) {
   var currentCols = sh.getLastColumn();
