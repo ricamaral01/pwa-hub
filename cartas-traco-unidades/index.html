@@ -1031,8 +1031,11 @@ function renderCartaCard(nome, versoes, ativo) {
   const lig = (Number(atual?.cim) || 0) + (Number(atual?.adic) || 0);
   const ac  = lig > 0 ? (Number(atual?.agua) || 0) / lig : 0;
   const volumeTotal = Number(atual?.volumeTotal) || 0;
-  const teorArgMassa = Number(atual?.teorArgMassa) || 0;
-  const teorArgVolume = Number(atual?.teorArgVolume) || 0;
+  const volArg      = Number(atual?.volArg) || 0;
+  // Tx. Arg.: usa campo salvo; fallback calcula pela massa total (soma de todos os agregados)
+  const _mArg    = (Number(atual?.cim)||0) + (Number(atual?.adic)||0) + (Number(atual?.an)||0) + (Number(atual?.ai)||0) + (Number(atual?.agua)||0) + (Number(atual?.adit)||0);
+  const _mTotal  = _mArg + (Number(atual?.b0)||0) + (Number(atual?.b1)||0);
+  const teorArgMassa = Number(atual?.teorArgMassa) || (_mTotal > 0 ? _mArg / _mTotal * 100 : 0);
   const dataBadge = fmtDateBadge(atual);
 
   // Delta badge
@@ -1134,7 +1137,7 @@ function renderCartaCard(nome, versoes, ativo) {
       <div class="kv-chip"><span>a/c</span><strong>${fmt(ac, 3)}</strong></div>
       <div class="kv-chip"><span>Vol. Traço</span><strong>${volumeTotal > 0 ? fmt(volumeTotal, 1) + ' L' : '—'}</strong></div>
       <div class="kv-chip"><span>Tx. Arg.</span><strong>${teorArgMassa > 0 ? fmt(teorArgMassa, 1) + '%' : '—'}</strong></div>
-      <div class="kv-chip"><span>Vol. Arg.</span><strong>${teorArgVolume > 0 ? fmt(teorArgVolume, 1) + '%' : '—'}</strong></div>
+      <div class="kv-chip"><span>Vol. Arg.</span><strong>${volArg > 0 ? fmt(volArg, 1) + ' L' : '—'}</strong></div>
       <div class="kv-chip"><span>Cimento</span><strong>${fmt(atual?.cim, 1)} kg</strong></div>
       <div class="kv-chip"><span>% Adit/Lig</span><strong>${fmt(atual?.pctAdit, 2)}%</strong></div>
       ${hasCusto ? `<div class="kv-chip kv-chip-custo"><span>Custo / m³</span><strong>${fmtR(atual.custoTotal)}</strong></div>` : ''}
