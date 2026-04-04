@@ -8635,7 +8635,15 @@ function salvarCartaTracoDosagem() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'salvar_carta_traco', ...cartaData })
-        }).catch(() => {}); // silencioso: localStorage é a fonte primária
+        }).then(r => r.json()).then(j => {
+            if (!j.ok) {
+                const st2 = document.getElementById('dos-carta-status');
+                if (st2) st2.innerHTML += ' <span style="color:#f59e0b;">⚠️ Planilha: ' + (j.error || 'erro ao salvar') + '</span>';
+            }
+        }).catch(() => {
+            const st2 = document.getElementById('dos-carta-status');
+            if (st2) st2.innerHTML += ' <span style="color:#f59e0b;">⚠️ Planilha indisponível — carta salva apenas localmente.</span>';
+        });
     }
 
     const unidadeLabel = { campinas:'Campinas', ribeirao:'Ribeirão Preto', pederneiras:'Pederneiras', noroeste:'Noroeste' }[unidade] || '—';
@@ -9526,11 +9534,14 @@ async function mccTracaoRefreshBanco() {
     if (!sel) return;
     const st = document.getElementById('mcctr_status');
     if (st) st.innerHTML = '<span style="color:#888;">⏳ Carregando cartas traço…</span>';
+
+    let fromSheets = [];
+    let sheetsError = null;
     try {
         const resp = await fetch(DOSAGEM_WEBAPP_URL + '?action=listar_cartas_traco');
         const data = await resp.json();
         if (!data.ok) throw new Error(data.error || 'Erro API');
-        _mccTracaoBancoAll = (data.cartas || []).map(c => ({
+        fromSheets = (data.cartas || []).map(c => ({
             id:             c.id,
             nome:           c.tracoNome || '(sem nome)',
             versao:         c.versao || 1,
@@ -9554,11 +9565,48 @@ async function mccTracaoRefreshBanco() {
             _source: 'carta'
         }));
     } catch(e) {
-        if (st) st.innerHTML = '<span style="color:#dc2626;">❌ Planilha indisponível: ' + e.message + '</span>';
-        return;
+        sheetsError = e.message;
     }
+
+    // Merge with local ct_cartas_traco (cartas not yet in Sheets / Sheets offline)
+    let fromLocal = [];
+    try {
+        const localRaw = JSON.parse(localStorage.getItem('ct_cartas_traco') || '[]');
+        const sheetsIds = new Set(fromSheets.map(x => x.id));
+        fromLocal = localRaw
+            .filter(c => !sheetsIds.has(c.id))
+            .map(c => {
+                const lig = (Number(c.cim) || 0) + (Number(c.adic) || 0);
+                return {
+                    id:             c.id,
+                    nome:           c.tracoNome || '(sem nome)',
+                    versao:         c.versao || 1,
+                    unidade:        c.unidade || '',
+                    nomeAutomacao:  c.nomeAutomacao || '',
+                    ativaAutomacao: c.ativaAutomacao,
+                    fck:            c.fck, flow: c.flow,
+                    ac:             lig > 0 ? ((Number(c.agua) || 0) / lig) : 0,
+                    aplicacao:      c.aplicacao || '',
+                    custoTotal:     c.custoTotal,
+                    mccSnapshot:    c.mccSnapshot || {},
+                    masses: {
+                        cimento:  Number(c.cim)  || 0,
+                        adicao:   Number(c.adic) || 0,
+                        areiaNat: Number(c.an)   || 0,
+                        areiaInd: Number(c.ai)   || 0,
+                        brita0:   Number(c.b0)   || 0,
+                        brita1:   Number(c.b1)   || 0,
+                        agua:     Number(c.agua) || 0,
+                        aditivo:  Number(c.adit) || 0
+                    },
+                    _source: 'local'
+                };
+            });
+    } catch(e2) {}
+
+    _mccTracaoBancoAll = [...fromSheets, ...fromLocal];
+
     while (sel.options.length > 1) sel.remove(1);
-    // Group by unidade
     const UNID_LABELS = { campinas:'Campinas', ribeirao:'Ribeirão Preto', pederneiras:'Pederneiras', noroeste:'Noroeste' };
     const byUnid = {};
     _mccTracaoBancoAll.forEach((item, idx) => {
@@ -9575,17 +9623,25 @@ async function mccTracaoRefreshBanco() {
             opt.textContent = item.nome
                 + ' v' + String(item.versao).padStart(2, '0')
                 + (item.fck ? ' — C' + item.fck : '')
+                + (item._source === 'local' ? ' [Local]' : '')
                 + (item.ativaAutomacao ? ' ⚙️' : '');
             og.appendChild(opt);
         });
         sel.appendChild(og);
     });
+
     const count = _mccTracaoBancoAll.length;
     if (st) {
-        st.innerHTML = count > 0
-            ? '<span style="color:#166534;">✅ ' + count + ' carta(s) carregada(s) da planilha</span>'
-            : '<span style="color:#f59e0b;">⚠️ Nenhuma carta encontrada. Salve cartas na Calculadora Dosagem.</span>';
-        setTimeout(() => { const s = document.getElementById('mcctr_status'); if (s) s.innerHTML = ''; }, 4000);
+        if (sheetsError) {
+            st.innerHTML = count > 0
+                ? '<span style="color:#f59e0b;">⚠️ Planilha indisponível — ' + count + ' carta(s) local(is). Verifique conexão.</span>'
+                : '<span style="color:#dc2626;">❌ Planilha indisponível e nenhuma carta local: ' + sheetsError + '</span>';
+        } else {
+            st.innerHTML = count > 0
+                ? '<span style="color:#166534;">✅ ' + fromSheets.length + ' planilha' + (fromLocal.length > 0 ? ' · ' + fromLocal.length + ' local [Local]' : '') + '</span>'
+                : '<span style="color:#f59e0b;">⚠️ Nenhuma carta encontrada. Salve cartas na Calculadora Dosagem.</span>';
+        }
+        setTimeout(() => { const s = document.getElementById('mcctr_status'); if (s) s.innerHTML = ''; }, 5000);
     }
 }
 
