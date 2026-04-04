@@ -652,6 +652,45 @@
     .hist-table td { padding: 7px 10px; border-top: 1px solid rgba(0,0,0,0.07); color: var(--text); white-space: nowrap; }
     .row-atual td { background: rgba(37,99,168,0.06); }
 
+    .materials-block,
+    .compare-change-block {
+      border-top: 1px solid var(--card-border);
+      padding: 12px 16px 14px;
+    }
+    .materials-title,
+    .compare-change-title {
+      font-size: .72rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+    .change-list {
+      display: grid;
+      gap: 8px;
+    }
+    .change-item {
+      background: rgba(0,0,0,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 9px 11px;
+      font-size: .76rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .change-item strong { color: #1d4ed8; }
+    .change-item .change-old { color: var(--muted); }
+    .change-item .change-new { color: var(--text); font-weight: 700; }
+    .change-empty {
+      font-size: .76rem;
+      color: var(--muted);
+      background: rgba(0,0,0,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
     /* ── INACTIVE SECTION ── */
     details.inactive-section { margin-top: 24px; }
     details.inactive-section > summary {
@@ -748,10 +787,94 @@ function fmt(n, d = 1) {
     : (v === 0 ? '0' : '—');
 }
 function fmtR(n) { return 'R$\u00a0' + fmt(n, 2); }
+function fmtDelta(n, d = 2, suffix = '') {
+  const v = Number(n);
+  if (!isFinite(v)) return '—';
+  const sign = v > 0 ? '+' : '';
+  return sign + fmt(v, d) + suffix;
+}
 function escHtml(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 function isAtivo(c) { return c.ativaAutomacao === true || c.ativaAutomacao === 'SIM'; }
+
+const MATS_LABELS = [
+  { key:'cim',  label:'Cimento'          },
+  { key:'adic', label:'Adição'           },
+  { key:'an',   label:'Areia Natural'    },
+  { key:'ai',   label:'Areia Industrial' },
+  { key:'b0',   label:'Brita 0'          },
+  { key:'b1',   label:'Brita ½'          },
+  { key:'agua', label:'Água'             },
+  { key:'adit', label:'Aditivo SP'       },
+];
+
+function buildMaterialChanges(atual, anterior) {
+  if (!anterior) {
+    return [{
+      type: 'info',
+      html: 'Primeira versão cadastrada. Ainda não existe custo anterior para comparação.'
+    }];
+  }
+
+  const changes = [];
+  const custoAtual = Number(atual?.custoTotal) || 0;
+  const custoAnterior = Number(anterior?.custoTotal) || 0;
+  if (custoAtual > 0 && custoAnterior > 0) {
+    const delta = custoAtual - custoAnterior;
+    if (delta !== 0) {
+      changes.push({
+        type: 'delta',
+        html: `<strong>Custo / m³:</strong> <span class="change-old">${fmtR(custoAnterior)}</span> → <span class="change-new">${fmtR(custoAtual)}</span> (${fmtDelta(delta, 2)})`
+      });
+    } else {
+      changes.push({
+        type: 'same',
+        html: `<strong>Custo / m³:</strong> manteve ${fmtR(custoAtual)} em relação à v${String(Number(anterior?.versao) || 1).padStart(2, '0')}.`
+      });
+    }
+  }
+
+  const snapAtual = atual?.mccSnapshot || {};
+  const snapAnterior = anterior?.mccSnapshot || {};
+  MATS_LABELS.forEach(mat => {
+    const qAtual = Number(atual?.[mat.key]) || 0;
+    const qAnterior = Number(anterior?.[mat.key]) || 0;
+    const nomeAtual = snapAtual[mat.key]?.nome || '—';
+    const nomeAnterior = snapAnterior[mat.key]?.nome || '—';
+    const fornAtual = snapAtual[mat.key]?.forn || '—';
+    const fornAnterior = snapAnterior[mat.key]?.forn || '—';
+    const deltaQtd = qAtual - qAnterior;
+
+    if (deltaQtd !== 0) {
+      changes.push({
+        type: 'delta',
+        html: `<strong>${escHtml(mat.label)}:</strong> quantidade <span class="change-old">${fmt(qAnterior,1)} kg/m³</span> → <span class="change-new">${fmt(qAtual,1)} kg/m³</span> (${fmtDelta(deltaQtd, 1, ' kg/m³')})`
+      });
+    }
+    if (nomeAtual !== nomeAnterior) {
+      changes.push({
+        type: 'swap',
+        html: `<strong>${escHtml(mat.label)}:</strong> produto <span class="change-old">${escHtml(nomeAnterior)}</span> → <span class="change-new">${escHtml(nomeAtual)}</span>`
+      });
+    }
+    if (fornAtual !== fornAnterior) {
+      changes.push({
+        type: 'swap',
+        html: `<strong>${escHtml(mat.label)}:</strong> fornecedor <span class="change-old">${escHtml(fornAnterior)}</span> → <span class="change-new">${escHtml(fornAtual)}</span>`
+      });
+    }
+  });
+
+  if (changes.length === 0) {
+    changes.push({
+      type: 'same',
+      html: `Sem alteração de custo, material, produto ou fornecedor em relação à v${String(Number(anterior?.versao) || 1).padStart(2, '0')}.`
+    });
+  }
+
+  return changes;
+}
 
 // ═══════════════════════════════════════════════
 // DATA SOURCES
@@ -948,17 +1071,6 @@ function renderCartaCard(nome, versoes, ativo) {
     histHtml += `</tbody></table></div></details>`;
   }
 
-  // Materials table
-  const MATS_LABELS = [
-    { key:'cim',  label:'Cimento'          },
-    { key:'adic', label:'Adição'           },
-    { key:'an',   label:'Areia Natural'    },
-    { key:'ai',   label:'Areia Industrial' },
-    { key:'b0',   label:'Brita 0'          },
-    { key:'b1',   label:'Brita ½'          },
-    { key:'agua', label:'Água'             },
-    { key:'adit', label:'Aditivo SP'       },
-  ];
   const snap = atual?.mccSnapshot || {};
   let matsHtml = '';
   if (MATS_LABELS.some(m => Number(atual?.[m.key]) > 0)) {
@@ -969,8 +1081,11 @@ function renderCartaCard(nome, versoes, ativo) {
         const forn = snap[m.key]?.forn || '—';
         return `<tr><td>${escHtml(m.label)}</td><td>${fmt(Number(atual[m.key]),1)}</td><td>${escHtml(nome)}</td><td>${escHtml(forn)}</td></tr>`;
       }).join('');
-    matsHtml = `<details class="hist-details"><summary>📦 Materiais — kg/m³ e Produtos</summary><div class="compare-table-wrap"><table class="hist-table"><thead><tr><th>Material</th><th>kg/m³</th><th>Produto</th><th>Fornecedor</th></tr></thead><tbody>${rows}</tbody></table></div></details>`;
+    matsHtml = `<div class="materials-block"><div class="materials-title">📦 Materiais, Quantidades e Fornecedores</div><div class="compare-table-wrap"><table class="hist-table"><thead><tr><th>Material</th><th>kg/m³</th><th>Produto</th><th>Fornecedor</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
   }
+
+  const changeItems = buildMaterialChanges(atual, anterior);
+  const compareHtml = `<div class="compare-change-block"><div class="compare-change-title">Comparação com o custo anterior</div>${changeItems.length > 0 ? `<div class="change-list">${changeItems.map(item => `<div class="change-item ${item.type === 'same' || item.type === 'info' ? 'change-empty' : ''}">${item.html}</div>`).join('')}</div>` : `<div class="change-empty">Sem base anterior para comparar.</div>`}</div>`;
 
   return `<div class="carta-card ${ativo ? 'carta-ativo' : 'carta-inativo'}">
     <div class="carta-header">
@@ -991,6 +1106,7 @@ function renderCartaCard(nome, versoes, ativo) {
       ${deltaHtml}
     </div>
     ${barHtml}
+    ${compareHtml}
     ${matsHtml}
     ${histHtml}
   </div>`;
