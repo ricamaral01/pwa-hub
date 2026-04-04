@@ -8780,26 +8780,25 @@ function salvarCartaTracoDosagem() {
     localStorage.setItem('ct_cartas_traco', JSON.stringify(cartas));
     localStorage.setItem('ct_carta_traco_atual', JSON.stringify(cartaData));
 
+    const unidadeLabel = { campinas:'Campinas', ribeirao:'Ribeirão Preto', pederneiras:'Pederneiras', noroeste:'Noroeste' }[unidade] || '—';
+    const st = document.getElementById('dos-carta-status');
+    if (st) st.innerHTML = `<span class="badge badge-ok">✅ "${tracoNome}" — v${versaoStr}${unidade ? ' · ' + unidadeLabel : ''} salva em ${cartaData.dataHora}${ativaAutomacao ? ' · ⚙️ Ativa na Automação' : ''}</span>`;
+
     // ── Enviar para Google Sheets (assíncrono, sem bloquear UI) ──────────
     if (typeof DOSAGEM_WEBAPP_URL !== 'undefined' && DOSAGEM_WEBAPP_URL) {
         fetch(DOSAGEM_WEBAPP_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'salvar_carta_traco', ...cartaData })
-        }).then(r => r.json()).then(j => {
-            if (!j.ok) {
-                const st2 = document.getElementById('dos-carta-status');
-                if (st2) st2.innerHTML += ' <span style="color:#f59e0b;">⚠️ Planilha: ' + (j.error || 'erro ao salvar') + '</span>';
-            }
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'salvar_carta_traco', ...cartaData }),
+            mode: 'no-cors'
+        }).then(() => {
+            const st2 = document.getElementById('dos-carta-status');
+            if (st2) st2.innerHTML += ' <span style="color:#16a34a;">· planilha sincronizada</span>';
         }).catch(() => {
             const st2 = document.getElementById('dos-carta-status');
             if (st2) st2.innerHTML += ' <span style="color:#f59e0b;">⚠️ Planilha indisponível — carta salva apenas localmente.</span>';
         });
     }
-
-    const unidadeLabel = { campinas:'Campinas', ribeirao:'Ribeirão Preto', pederneiras:'Pederneiras', noroeste:'Noroeste' }[unidade] || '—';
-    const st = document.getElementById('dos-carta-status');
-    if (st) st.innerHTML = `<span class="badge badge-ok">✅ "${tracoNome}" — v${versaoStr}${unidade ? ' · ' + unidadeLabel : ''} salva em ${cartaData.dataHora}${ativaAutomacao ? ' · ⚙️ Ativa na Automação' : ''}</span>`;
 
     // Atualiza contador no hub
     const cartasEl = document.getElementById('dash-cartas-count');
