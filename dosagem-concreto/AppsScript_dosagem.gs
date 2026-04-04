@@ -42,8 +42,25 @@ var HEADERS_TRACOS = [
   "Adição (kg)",
   "Areia Natural (kg)",
   "Areia Industrial (kg)",
-  "Brita 0 (kg)",
+  "Custo Total (R$/m³)", "Custo Ligantes", "Custo Agregados", "Custo Quím./Água", "MCC Snapshot",
+  "Volume Total (L)", "Teor Argamassa Massa (%)", "Teor Argamassa Volume (%)"
   "Brita 1/2 (kg)",
+
+function ensureSheetCartasHeaders(sh) {
+  var currentCols = sh.getLastColumn();
+  if (currentCols >= HEADERS_CARTAS.length) return;
+
+  sh.getRange(1, currentCols + 1, 1, HEADERS_CARTAS.length - currentCols)
+    .setValues([HEADERS_CARTAS.slice(currentCols)]);
+
+  var r = sh.getRange(1, 1, 1, HEADERS_CARTAS.length);
+  r.setFontWeight("bold");
+  r.setBackground("#1a3a5c");
+  r.setFontColor("#FFFFFF");
+  r.setHorizontalAlignment("center");
+  sh.setFrozenRows(1);
+  for (var i = currentCols + 1; i <= HEADERS_CARTAS.length; i++) sh.setColumnWidth(i, 140);
+}
   "Água (kg)",
   "Aditivo SP (kg)",
   "Ar Incorporado (%)",
@@ -112,6 +129,8 @@ function getOrCreateSheetCartas() {
     r.setHorizontalAlignment("center");
     sh.setFrozenRows(1);
     for (var i = 1; i <= HEADERS_CARTAS.length; i++) sh.setColumnWidth(i, 140);
+  } else {
+    ensureSheetCartasHeaders(sh);
   }
   return sh;
 }
@@ -215,7 +234,10 @@ function doPost(e) {
         d.custoLigantes   || 0,
         d.custoAgregados  || 0,
         d.custoQuimicos   || 0,
-        d.mccSnapshot     ? JSON.stringify(d.mccSnapshot) : ""
+        d.mccSnapshot     ? JSON.stringify(d.mccSnapshot) : "",
+        d.volumeTotal     || 0,
+        d.teorArgMassa    || 0,
+        d.teorArgVolume   || 0
       ]);
       return ContentService
         .createTextOutput(JSON.stringify({ ok: true, message: "Carta traço salva!" }))
@@ -365,7 +387,10 @@ function doGet(e) {
           custoLigantes:  Number(data[i][31]) || 0,
           custoAgregados: Number(data[i][32]) || 0,
           custoQuimicos:  Number(data[i][33]) || 0,
-          mccSnapshot:    (function(v){ try { return v ? JSON.parse(v) : {}; } catch(e) { return {}; } })(data[i][34])
+          mccSnapshot:    (function(v){ try { return v ? JSON.parse(v) : {}; } catch(e) { return {}; } })(data[i][34]),
+          volumeTotal:    Number(data[i][35]) || 0,
+          teorArgMassa:   Number(data[i][36]) || 0,
+          teorArgVolume:  Number(data[i][37]) || 0
         });
       }
       return ContentService

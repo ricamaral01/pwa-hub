@@ -8700,6 +8700,25 @@ function salvarCartaTracoDosagem() {
     const adit = n('dos_adit');
     const lig  = cim + adic;
     const pctAdit = lig > 0 ? (adit / lig) * 100 : 0;
+    const rho = getRho();
+    const v = {
+        cim: volAbs(cim, rho.cim),
+        adic: volAbs(adic, rho.adic),
+        an: volAbs(an, rho.an),
+        ai: volAbs(ai, rho.ai),
+        b0: volAbs(b0, rho.b0),
+        b1: volAbs(b1, rho.b1),
+        agua: volAbs(agua, rho.agua),
+        adit: volAbs(adit, rho.adit)
+    };
+    const vAr = n('dos_ar') * 10;
+    const volumeTotal = Object.values(v).reduce((acc, val) => acc + val, 0) + vAr;
+    const mArg = cim + adic + an + ai + agua + adit;
+    const mBrita = b0 + b1;
+    const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
+    const vBrita = v.b0 + v.b1;
+    const teorArgMassa = (mArg + mBrita) > 0 ? (mArg / (mArg + mBrita)) * 100 : 0;
+    const teorArgVolume = (vArg + vBrita) > 0 ? (vArg / (vArg + vBrita)) * 100 : 0;
 
     const tracoNome = g('dos_nome_carta') || g('dos_obra') || 'Traço';
     const unidade   = g('dos_unidade');
@@ -8769,6 +8788,9 @@ function salvarCartaTracoDosagem() {
         fck:  n('dos_fck'),
         flow: n('dos_flow'),
         ar:   n('dos_ar'),
+        volumeTotal: parseFloat(volumeTotal.toFixed(1)),
+        teorArgMassa: parseFloat(teorArgMassa.toFixed(1)),
+        teorArgVolume: parseFloat(teorArgVolume.toFixed(1)),
         custoTotal,
         custoLigantes,
         custoAgregados,

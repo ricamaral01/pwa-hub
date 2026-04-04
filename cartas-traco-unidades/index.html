@@ -604,11 +604,17 @@
       padding: 14px 16px; gap: 10px; flex-wrap: wrap;
     }
     .carta-left { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .carta-right { display: flex; align-items: flex-end; flex-direction: column; gap: 6px; }
     .carta-nome { font-size: 1rem; font-weight: 900; }
     .versao-badge {
       font-size: .78rem; font-weight: 800; color: #1d4ed8;
       background: rgba(37,99,168,0.12); border: 1px solid rgba(37,99,168,0.22);
       border-radius: 8px; padding: 3px 10px; white-space: nowrap;
+    }
+    .date-badge {
+      font-size: .68rem; font-weight: 700; color: var(--muted);
+      background: rgba(0,0,0,0.04); border: 1px solid var(--card-border);
+      border-radius: 999px; padding: 3px 10px; white-space: nowrap;
     }
     .carta-kpis { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 14px; align-items: center; }
     .kv-chip-custo { border-color: rgba(232,118,42,0.30) !important; background: rgba(232,118,42,0.08) !important; }
@@ -792,6 +798,17 @@ function fmtDelta(n, d = 2, suffix = '') {
   if (!isFinite(v)) return '—';
   const sign = v > 0 ? '+' : '';
   return sign + fmt(v, d) + suffix;
+}
+function fmtDateBadge(c) {
+  if (c?.dataHora) {
+    const parts = String(c.dataHora).split(' ');
+    return parts[0] || c.dataHora;
+  }
+  if (c?.data) {
+    const d = new Date(String(c.data) + 'T12:00:00');
+    return isNaN(d.getTime()) ? String(c.data) : d.toLocaleDateString('pt-BR');
+  }
+  return '—';
 }
 function escHtml(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -1005,6 +1022,10 @@ function renderCartaCard(nome, versoes, ativo) {
 
   const lig = (Number(atual?.cim) || 0) + (Number(atual?.adic) || 0);
   const ac  = lig > 0 ? (Number(atual?.agua) || 0) / lig : 0;
+  const volumeTotal = Number(atual?.volumeTotal) || 0;
+  const teorArgMassa = Number(atual?.teorArgMassa) || 0;
+  const teorArgVolume = Number(atual?.teorArgVolume) || 0;
+  const dataBadge = fmtDateBadge(atual);
 
   // Delta badge
   let deltaHtml = '';
@@ -1094,12 +1115,18 @@ function renderCartaCard(nome, versoes, ativo) {
         ${ativo ? '<span class="badge-ativo">⚙️ ATIVA</span>' : '<span class="badge-inativo">Inativa</span>'}
         ${atual?.nomeAutomacao ? `<span class="badge-automacao">${escHtml(atual.nomeAutomacao)}</span>` : ''}
       </div>
-      <span class="versao-badge">v${String(Number(atual?.versao) || 1).padStart(2, '0')} ★</span>
+      <div class="carta-right">
+        <span class="versao-badge">v${String(Number(atual?.versao) || 1).padStart(2, '0')} ★</span>
+        <span class="date-badge">Atualizada em ${escHtml(dataBadge)}</span>
+      </div>
     </div>
     <div class="carta-kpis">
       <div class="kv-chip"><span>FCK</span><strong>${fmt(atual?.fck, 0)} MPa</strong></div>
       <div class="kv-chip"><span>Flow</span><strong>${fmt(atual?.flow, 0)} mm</strong></div>
       <div class="kv-chip"><span>a/c</span><strong>${fmt(ac, 3)}</strong></div>
+      <div class="kv-chip"><span>Volume do traço</span><strong>${volumeTotal > 0 ? fmt(volumeTotal, 1) + ' L' : '—'}</strong></div>
+      <div class="kv-chip"><span>Taxa de argamassa</span><strong>${teorArgMassa > 0 ? fmt(teorArgMassa, 1) + '%' : '—'}</strong></div>
+      <div class="kv-chip"><span>Volume de argamassa</span><strong>${teorArgVolume > 0 ? fmt(teorArgVolume, 1) + '%' : '—'}</strong></div>
       <div class="kv-chip"><span>Cimento</span><strong>${fmt(atual?.cim, 1)} kg</strong></div>
       <div class="kv-chip"><span>% Adit/Lig</span><strong>${fmt(atual?.pctAdit, 2)}%</strong></div>
       ${hasCusto ? `<div class="kv-chip kv-chip-custo"><span>Custo / m³</span><strong>${fmtR(atual.custoTotal)}</strong></div>` : ''}
