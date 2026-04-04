@@ -2445,7 +2445,7 @@
             <div>
                 <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-dosagem')">← ⚖️ Dosagem</button>
             </div>
-            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 3 / 7</span>
+
             <div>
                 <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-argamassa')">🧱 Argamassa →</button>
             </div>
@@ -6509,6 +6509,24 @@ function calcularDosagem() {
 
         <div class="sep"></div>
 
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+            <div style="background:#e8f8f0;border:1.5px solid #82c99a;border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;">
+                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">🧱 Tx. Arg.</div>
+                <div style="font-size:1.4rem;font-weight:900;color:#1a6635;">${fmt(argMassa,1)}%</div>
+                <div style="font-size:0.70rem;color:#777;">massa</div>
+            </div>
+            <div style="background:#e8f8f0;border:1.5px solid #82c99a;border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;">
+                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Vol. Arg.</div>
+                <div style="font-size:1.4rem;font-weight:900;color:#1a6635;">${fmt(vArg,1)} L</div>
+                <div style="font-size:0.70rem;color:#777;">argamassa</div>
+            </div>
+            <div style="background:#e8f0f8;border:1.5px solid #82a9c9;border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;">
+                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Vol. Traço</div>
+                <div style="font-size:1.4rem;font-weight:900;color:#1a3a6e;">${fmt(vTotal,1)} L</div>
+                <div style="font-size:0.70rem;color:#777;">1 m³ traço</div>
+            </div>
+        </div>
+
         <div class="two-col">
             <div>
                 <h3>🔑 Parâmetros Chave</h3>
@@ -7381,7 +7399,6 @@ function openUnifiedPrintWindow({ windowTitle, title, subtitle, docNumber, respo
     <button onclick="window.print()" style="padding:9px 22px;background:#1a1f2e;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:.03em;">🖨️ Imprimir / Salvar PDF</button>
     <button onclick="window.close()" style="padding:9px 18px;background:#f3f4f6;color:#333;border:1px solid #ccc;border-radius:6px;cursor:pointer;font-size:13px;">✕ Fechar</button>
 </div>
-${buildUnifiedPrintHeader({ title, subtitle, docNumber, emission, responsible, unitLabel })}
 ${bodyHtml}
 ${buildUnifiedPrintFooter({ label: footerLabel || title, docNumber, emission })}
 </body>
@@ -7546,14 +7563,7 @@ function imprimirSecao(secId, titulo) {
         sec.querySelector('.card').prepend(reportDiv);
     }
     reportDiv.className = 'print-report print-shell';
-    reportDiv.innerHTML = buildUnifiedPrintHeader({
-        title: titulo,
-        subtitle: nomeAuto ? `Laboratório & Engenharia do Concreto · Ref. Automação: ${nomeAuto}` : 'Laboratório & Engenharia do Concreto · Dosagem de Concreto',
-        docNumber: docNum,
-        emission: `${dataCarta} ${horaStr}`,
-        responsible: engResp || tecResp || '—',
-        unitLabel: unidadeLabel
-    });
+    reportDiv.innerHTML = '';
 
     let footerDiv = sec.querySelector('.report-footer-print');
     if (!footerDiv) {
@@ -9074,6 +9084,7 @@ function salvarCartaTracoDosagem() {
         volumeTotal: parseFloat(volumeTotal.toFixed(1)),
         teorArgMassa: parseFloat(teorArgMassa.toFixed(1)),
         teorArgVolume: parseFloat(teorArgVolume.toFixed(1)),
+        volArg: parseFloat(vArg.toFixed(1)),
         custoTotal,
         custoLigantes,
         custoAgregados,

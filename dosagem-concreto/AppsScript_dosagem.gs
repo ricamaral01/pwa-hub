@@ -31,7 +31,8 @@ var HEADERS_CARTAS = [
   "Brita 0 (kg)", "Brita 1/2 (kg)", "Água (kg)", "Aditivo (kg)",
   "% Aditivo/Lig", "Ar (%)", "Observações",
   "Custo Total (R$/m³)", "Custo Ligantes", "Custo Agregados", "Custo Quím./Água", "MCC Snapshot",
-  "Volume Total (L)", "Teor Argamassa Massa (%)", "Teor Argamassa Volume (%)"
+  "Volume Total (L)", "Teor Argamassa Massa (%)", "Teor Argamassa Volume (%)", "Vol. Arg. (L)"
+];
 ];
 
 function ensureSheetCartasHeaders(sh) {
@@ -237,7 +238,8 @@ function doPost(e) {
         d.mccSnapshot     ? JSON.stringify(d.mccSnapshot) : "",
         d.volumeTotal     || 0,
         d.teorArgMassa    || 0,
-        d.teorArgVolume   || 0
+        d.teorArgVolume   || 0,
+        d.volArg          || 0
       ]);
       return ContentService
         .createTextOutput(JSON.stringify({ ok: true, message: "Carta traço salva!" }))
@@ -390,7 +392,8 @@ function doGet(e) {
           mccSnapshot:    (function(v){ try { return v ? JSON.parse(v) : {}; } catch(e) { return {}; } })(data[i][34]),
           volumeTotal:    Number(data[i][35]) || 0,
           teorArgMassa:   Number(data[i][36]) || 0,
-          teorArgVolume:  Number(data[i][37]) || 0
+          teorArgVolume:  Number(data[i][37]) || 0,
+          volArg:         Number(data[i][38]) || 0
         });
       }
       return ContentService
