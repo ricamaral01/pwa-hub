@@ -1030,8 +1030,18 @@ function renderCartaCard(nome, versoes, ativo) {
 
   const lig = (Number(atual?.cim) || 0) + (Number(atual?.adic) || 0);
   const ac  = lig > 0 ? (Number(atual?.agua) || 0) / lig : 0;
-  const volumeTotal = Number(atual?.volumeTotal) || 0;
-  const volArg      = Number(atual?.volArg) || 0;
+
+  // Densidades padrão para fallback (g/cm³ = kg/L)
+  const _rho = { cim:3.12, adic:2.70, an:2.63, ai:2.66, b0:2.68, b1:2.70, agua:1.00, adit:1.10 };
+  const _v = k => (Number(atual?.[k])||0) / _rho[k];
+  const _vSolidos = _v('cim') + _v('adic') + _v('an') + _v('ai') + _v('b0') + _v('b1') + _v('agua') + _v('adit');
+  const _vAr = (Number(atual?.ar)||0) * 10;
+  const _vTotal_calc = _vSolidos + _vAr;
+  const _vArg_calc   = _v('cim') + _v('adic') + _v('an') + _v('ai') + _v('agua') + _v('adit');
+
+  const volumeTotal = Number(atual?.volumeTotal) || (_vTotal_calc > 0 ? parseFloat(_vTotal_calc.toFixed(1)) : 0);
+  const volArg      = Number(atual?.volArg)      || (_vArg_calc > 0   ? parseFloat(_vArg_calc.toFixed(1))   : 0);
+
   // Tx. Arg.: usa campo salvo; fallback calcula pela massa total (soma de todos os agregados)
   const _mArg    = (Number(atual?.cim)||0) + (Number(atual?.adic)||0) + (Number(atual?.an)||0) + (Number(atual?.ai)||0) + (Number(atual?.agua)||0) + (Number(atual?.adit)||0);
   const _mTotal  = _mArg + (Number(atual?.b0)||0) + (Number(atual?.b1)||0);
