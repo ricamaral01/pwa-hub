@@ -1032,7 +1032,16 @@ function renderCartaCard(nome, versoes, ativo) {
   const ac  = lig > 0 ? (Number(atual?.agua) || 0) / lig : 0;
 
   // Densidades padrão para fallback (g/cm³ = kg/L)
-  const _rho = { cim:3.12, adic:2.70, an:2.63, ai:2.66, b0:2.68, b1:2.70, agua:1.00, adit:1.10 };
+  const _rho = {
+    cim:  Number(atual?.rhoCim)  || 3.12,
+    adic: Number(atual?.rhoAdic) || 2.70,
+    an:   Number(atual?.rhoAn)   || 2.63,
+    ai:   Number(atual?.rhoAi)   || 2.66,
+    b0:   Number(atual?.rhoB0)   || 2.68,
+    b1:   Number(atual?.rhoB1)   || 2.70,
+    agua: 1.00,
+    adit: Number(atual?.rhoAdit) || 1.10
+  };
   const _v = k => (Number(atual?.[k])||0) / _rho[k];
   const _vSolidos = _v('cim') + _v('adic') + _v('an') + _v('ai') + _v('b0') + _v('b1') + _v('agua') + _v('adit');
   const _vAr = (Number(atual?.ar)||0) * 10;

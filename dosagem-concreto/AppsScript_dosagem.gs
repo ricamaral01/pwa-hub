@@ -31,7 +31,8 @@ var HEADERS_CARTAS = [
   "Brita 0 (kg)", "Brita 1/2 (kg)", "Água (kg)", "Aditivo (kg)",
   "% Aditivo/Lig", "Ar (%)", "Observações",
   "Custo Total (R$/m³)", "Custo Ligantes", "Custo Agregados", "Custo Quím./Água", "MCC Snapshot",
-  "Volume Total (L)", "Teor Argamassa Massa (%)", "Teor Argamassa Volume (%)", "Vol. Arg. (L)"
+  "Volume Total (L)", "Teor Argamassa Massa (%)", "Teor Argamassa Volume (%)", "Vol. Arg. (L)",
+  "ρ Cim (g/cm³)", "ρ Adic (g/cm³)", "ρ An (g/cm³)", "ρ Ai (g/cm³)", "ρ B0 (g/cm³)", "ρ B½ (g/cm³)", "ρ Adit (g/cm³)"
 ];
 
 function ensureSheetCartasHeaders(sh) {
@@ -238,7 +239,14 @@ function doPost(e) {
         d.volumeTotal     || 0,
         d.teorArgMassa    || 0,
         d.teorArgVolume   || 0,
-        d.volArg          || 0
+        d.volArg          || 0,
+        d.rhoCim          || 0,
+        d.rhoAdic         || 0,
+        d.rhoAn           || 0,
+        d.rhoAi           || 0,
+        d.rhoB0           || 0,
+        d.rhoB1           || 0,
+        d.rhoAdit         || 0
       ]);
       return ContentService
         .createTextOutput(JSON.stringify({ ok: true, message: "Carta traço salva!" }))
@@ -392,7 +400,14 @@ function doGet(e) {
           volumeTotal:    Number(data[i][35]) || 0,
           teorArgMassa:   Number(data[i][36]) || 0,
           teorArgVolume:  Number(data[i][37]) || 0,
-          volArg:         Number(data[i][38]) || 0
+          volArg:         Number(data[i][38]) || 0,
+          rhoCim:         Number(data[i][39]) || 0,
+          rhoAdic:        Number(data[i][40]) || 0,
+          rhoAn:          Number(data[i][41]) || 0,
+          rhoAi:          Number(data[i][42]) || 0,
+          rhoB0:          Number(data[i][43]) || 0,
+          rhoB1:          Number(data[i][44]) || 0,
+          rhoAdit:        Number(data[i][45]) || 0
         });
       }
       return ContentService

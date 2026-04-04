@@ -1880,6 +1880,51 @@
             </div>
         </div>
 
+        <!-- SEÇÃO DE DENSIDADES -->
+        <details open style="margin-top:14px;background:linear-gradient(135deg,#f0f4ff 0%,#e8f0ff 100%);border:2px solid #b0bfee;border-radius:12px;padding:14px 18px;" id="dos-densidades-box">
+            <summary style="cursor:pointer;font-size:0.92rem;font-weight:700;color:#1a3a7c;display:flex;align-items:center;gap:8px;list-style:none;">
+                ⚖️ Massas Específicas dos Materiais (g/cm³)
+                <span style="font-size:0.78rem;font-weight:400;color:#556;margin-left:4px;">— usadas nos cálculos de volume · salvas na carta traço</span>
+            </summary>
+            <div style="margin-top:10px;">
+                <button type="button" onclick="sincronizarRhosDosagem()" style="font-size:0.8rem;padding:4px 14px;border-radius:6px;border:1.5px solid #b0bfee;background:#fff;cursor:pointer;margin-bottom:12px;color:#1a3a7c;font-weight:600;">🔄 Sincronizar da Aba ① Materiais</button>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Cimento — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_cim" step="0.01" min="2.5" max="3.5" placeholder="Ex: 3.12">
+                    </div>
+                    <div class="form-group">
+                        <label>Adição — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_adic" step="0.01" min="1.5" max="3.5" placeholder="Ex: 2.70">
+                    </div>
+                    <div class="form-group">
+                        <label>Areia Natural — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_an" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.63">
+                    </div>
+                    <div class="form-group">
+                        <label>Areia Industrial — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_ai" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.66">
+                    </div>
+                    <div class="form-group">
+                        <label>Brita 0 — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_b0" step="0.01" min="2.0" max="3.5" placeholder="Ex: 2.68">
+                    </div>
+                    <div class="form-group">
+                        <label>Brita ½ — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_b1" step="0.01" min="2.0" max="3.5" placeholder="Ex: 2.70">
+                    </div>
+                    <div class="form-group">
+                        <label>Água — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_agua" value="1.00" step="0.001" min="0.95" max="1.05" readonly style="background:#f0f0f0;color:#888;">
+                    </div>
+                    <div class="form-group">
+                        <label>Aditivo SP — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_adit" step="0.01" min="0.8" max="1.5" placeholder="Ex: 1.10">
+                    </div>
+                </div>
+            </div>
+        </details>
+
         <!-- SEÇÃO DE UMIDADE -->
         <div style="margin-top:18px;background:linear-gradient(135deg,#fff8e1 0%,#fff3cd 100%);border:2px solid #f5c96e;border-radius:12px;padding:16px 20px;" id="dos-umidade-box">
             <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
@@ -6235,6 +6280,33 @@ function getRho() {
     };
 }
 
+function getDosagemRho() {
+    const g = getRho();
+    const v = id => parseFloat(document.getElementById(id)?.value) || 0;
+    return {
+        cim:  v('dos_rho_cim')  || g.cim,
+        adic: v('dos_rho_adic') || g.adic,
+        an:   v('dos_rho_an')   || g.an,
+        ai:   v('dos_rho_ai')   || g.ai,
+        b0:   v('dos_rho_b0')   || g.b0,
+        b1:   v('dos_rho_b1')   || g.b1,
+        agua: v('dos_rho_agua') || g.agua,
+        adit: v('dos_rho_adit') || g.adit
+    };
+}
+
+function sincronizarRhosDosagem() {
+    const g = getRho();
+    const set = (id, val) => { const el = document.getElementById(id); if (el && !el.readOnly) el.value = val; };
+    set('dos_rho_cim',  g.cim);
+    set('dos_rho_adic', g.adic);
+    set('dos_rho_an',   g.an);
+    set('dos_rho_ai',   g.ai);
+    set('dos_rho_b0',   g.b0);
+    set('dos_rho_b1',   g.b1);
+    set('dos_rho_adit', g.adit);
+}
+
 // ═══════════════════════════════════════════════════
 // SALVAR / CARREGAR EXEMPLO
 // ═══════════════════════════════════════════════════
@@ -6402,7 +6474,7 @@ function coletarGranulometria() {
 // SEÇÃO 2 — CALCULAR DOSAGEM
 // ═══════════════════════════════════════════════════
 function calcularDosagem() {
-    const rho = getRho();
+    const rho = getDosagemRho();
     const usarGran = document.getElementById('dos_usar_gran').checked;
     const granOK = granulometriaPreenchida();
 
@@ -8993,7 +9065,7 @@ function salvarCartaTracoDosagem() {
     const adit = n('dos_adit');
     const lig  = cim + adic;
     const pctAdit = lig > 0 ? (adit / lig) * 100 : 0;
-    const rho = getRho();
+    const rho = getDosagemRho();
     const v = {
         cim: volAbs(cim, rho.cim),
         adic: volAbs(adic, rho.adic),
@@ -9085,6 +9157,13 @@ function salvarCartaTracoDosagem() {
         teorArgMassa: parseFloat(teorArgMassa.toFixed(1)),
         teorArgVolume: parseFloat(teorArgVolume.toFixed(1)),
         volArg: parseFloat(vArg.toFixed(1)),
+        rhoCim:  parseFloat(rho.cim.toFixed(3)),
+        rhoAdic: parseFloat(rho.adic.toFixed(3)),
+        rhoAn:   parseFloat(rho.an.toFixed(3)),
+        rhoAi:   parseFloat(rho.ai.toFixed(3)),
+        rhoB0:   parseFloat(rho.b0.toFixed(3)),
+        rhoB1:   parseFloat(rho.b1.toFixed(3)),
+        rhoAdit: parseFloat(rho.adit.toFixed(3)),
         custoTotal,
         custoLigantes,
         custoAgregados,
@@ -9262,7 +9341,7 @@ ${buildUnifiedIdTable(`
 function ev3RenderCompare(){ if(typeof mccCompRender==='function') mccCompRender(); }
 function ev3BestSlot(){ const slots=['A','B','C'].map(ev3LoadSlot).filter(Boolean); if(!slots.length) return null; return slots.reduce((b,c)=>(c.costTotal||1e9)<(b.costTotal||1e9)?c:b, slots[0]); }
 function ev3UpdateDashboard(){ const s=ev3CurrentSnapshot(), best=ev3BestSlot(); const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;}; set('dash-flow-main', `${ctFmt(s.flow,0)} mm`); set('dash-ac-main', ctFmt(s.ac,3)); set('dash-cost', ctMoney(s.costTotal)); const cartasCount = JSON.parse(localStorage.getItem('ct_cartas_traco')||'[]').length; set('dash-cartas-count', cartasCount); if(best){ set('dash-best-slot', `Traço ${best.slot}`); set('dash-best-hint', `Menor custo salvo: ${ctMoney(best.costTotal||0)} · flow ${ctFmt(best.flow,0)} mm · a/c ${ctFmt(best.ac,3)}.`); } else { set('dash-best-slot','—'); set('dash-best-hint','Salve cenários A/B/C para descobrir a melhor alternativa.'); } set('dash-cost-hint', `Traço atual com ${ctFmt(s.cim,0)} kg de cimento e custo estimado de ${ctMoney(s.costTotal)} por m³.`); }
-function ctAttachListeners(){ ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_ar','dos_flow','dos_fck','res_flow','res_ar','res_classe','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'].forEach(id=>{ const el=document.getElementById(id); if(el && !el.dataset.ctBound){ el.addEventListener('input', updateDosagemCockpit); el.addEventListener('change', updateDosagemCockpit); el.dataset.ctBound='1'; } }); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); ev3RenderCompare(); }
+function ctAttachListeners(){ ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_ar','dos_flow','dos_fck','res_flow','res_ar','res_classe','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'].forEach(id=>{ const el=document.getElementById(id); if(el && !el.dataset.ctBound){ el.addEventListener('input', updateDosagemCockpit); el.addEventListener('change', updateDosagemCockpit); el.dataset.ctBound='1'; } }); if (!document.getElementById('dos_rho_cim')?.value) sincronizarRhosDosagem(); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); ev3RenderCompare(); }
 if (typeof calcularDosagem === 'function') { const _origCalcularDosagem = calcularDosagem; calcularDosagem = function(){ const out=_origCalcularDosagem.apply(this, arguments); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); return out; } }
 if (typeof gerarResumo === 'function') { const _origGerarResumo = gerarResumo; gerarResumo = function(){ syncResumoFieldsFromDosagem(); const out=_origGerarResumo.apply(this, arguments); updateResumoCockpit(); return out; } }
 if (typeof gerarCartaTraco === 'function') { const _origGerarCartaTraco = gerarCartaTraco; gerarCartaTraco = function(){ syncResumoFieldsFromDosagem(); const out=_origGerarCartaTraco.apply(this, arguments); updateResumoCockpit(); return out; } }
