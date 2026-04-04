@@ -601,7 +601,7 @@
     .carta-inativo { opacity: .76; }
     .carta-header {
       display: flex; align-items: flex-start; justify-content: space-between;
-      padding: 14px 16px; gap: 10px; flex-wrap: wrap;
+      padding: 18px 22px 12px; gap: 12px; flex-wrap: wrap;
     }
     .carta-left { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
     .carta-right { display: flex; align-items: flex-end; flex-direction: column; gap: 6px; }
@@ -616,7 +616,7 @@
       background: rgba(0,0,0,0.04); border: 1px solid var(--card-border);
       border-radius: 999px; padding: 3px 10px; white-space: nowrap;
     }
-    .carta-kpis { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 14px; align-items: center; }
+    .carta-kpis { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 22px 18px; align-items: center; }
     .kv-chip-custo { border-color: rgba(232,118,42,0.30) !important; background: rgba(232,118,42,0.08) !important; }
     .kv-chip-custo strong { color: var(--accent) !important; }
 
@@ -627,7 +627,7 @@
     .delta-eq { background: rgba(0,0,0,0.05); color: var(--muted); border: 1px solid var(--card-border); }
 
     /* ── COST BAR ── */
-    .cost-bar-wrap { padding: 0 16px 14px; }
+    .cost-bar-wrap { padding: 0 22px 18px; }
     .cost-bar { display: flex; height: 8px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.06); }
     .cb-lig { background: var(--c-lig); }
     .cb-agr { background: var(--c-agr); }
@@ -661,7 +661,7 @@
     .materials-block,
     .compare-change-block {
       border-top: 1px solid var(--card-border);
-      padding: 12px 16px 14px;
+      padding: 14px 22px 18px;
     }
     .materials-title,
     .compare-change-title {
@@ -801,12 +801,20 @@ function fmtDelta(n, d = 2, suffix = '') {
 }
 function fmtDateBadge(c) {
   if (c?.dataHora) {
-    const parts = String(c.dataHora).split(' ');
-    return parts[0] || c.dataHora;
+    const raw = String(c.dataHora).trim();
+    const brMatch = raw.match(/^(\d{2}\/\d{2}\/\d{4})/);
+    if (brMatch) return brMatch[1];
+    const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (isoMatch) return `${isoMatch[3]}/${isoMatch[2]}/${isoMatch[1]}`;
   }
   if (c?.data) {
-    const d = new Date(String(c.data) + 'T12:00:00');
-    return isNaN(d.getTime()) ? String(c.data) : d.toLocaleDateString('pt-BR');
+    const raw = String(c.data).trim();
+    const brMatch = raw.match(/^(\d{2}\/\d{2}\/\d{4})$/);
+    if (brMatch) return brMatch[1];
+    const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (isoMatch) return `${isoMatch[3]}/${isoMatch[2]}/${isoMatch[1]}`;
+    const d = new Date(raw + 'T12:00:00');
+    return isNaN(d.getTime()) ? raw : d.toLocaleDateString('pt-BR');
   }
   return '—';
 }
@@ -1124,9 +1132,9 @@ function renderCartaCard(nome, versoes, ativo) {
       <div class="kv-chip"><span>FCK</span><strong>${fmt(atual?.fck, 0)} MPa</strong></div>
       <div class="kv-chip"><span>Flow</span><strong>${fmt(atual?.flow, 0)} mm</strong></div>
       <div class="kv-chip"><span>a/c</span><strong>${fmt(ac, 3)}</strong></div>
-      <div class="kv-chip"><span>Volume do traço</span><strong>${volumeTotal > 0 ? fmt(volumeTotal, 1) + ' L' : '—'}</strong></div>
-      <div class="kv-chip"><span>Taxa de argamassa</span><strong>${teorArgMassa > 0 ? fmt(teorArgMassa, 1) + '%' : '—'}</strong></div>
-      <div class="kv-chip"><span>Volume de argamassa</span><strong>${teorArgVolume > 0 ? fmt(teorArgVolume, 1) + '%' : '—'}</strong></div>
+      <div class="kv-chip"><span>Vol. Traço</span><strong>${volumeTotal > 0 ? fmt(volumeTotal, 1) + ' L' : '—'}</strong></div>
+      <div class="kv-chip"><span>Tx. Arg.</span><strong>${teorArgMassa > 0 ? fmt(teorArgMassa, 1) + '%' : '—'}</strong></div>
+      <div class="kv-chip"><span>Vol. Arg.</span><strong>${teorArgVolume > 0 ? fmt(teorArgVolume, 1) + '%' : '—'}</strong></div>
       <div class="kv-chip"><span>Cimento</span><strong>${fmt(atual?.cim, 1)} kg</strong></div>
       <div class="kv-chip"><span>% Adit/Lig</span><strong>${fmt(atual?.pctAdit, 2)}%</strong></div>
       ${hasCusto ? `<div class="kv-chip kv-chip-custo"><span>Custo / m³</span><strong>${fmtR(atual.custoTotal)}</strong></div>` : ''}

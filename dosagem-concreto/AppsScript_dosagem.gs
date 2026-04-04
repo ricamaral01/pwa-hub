@@ -30,21 +30,9 @@ var HEADERS_CARTAS = [
   "Cimento (kg)", "Adição (kg)", "Areia Nat (kg)", "Areia Ind (kg)",
   "Brita 0 (kg)", "Brita 1/2 (kg)", "Água (kg)", "Aditivo (kg)",
   "% Aditivo/Lig", "Ar (%)", "Observações",
-  "Custo Total (R$/m³)", "Custo Ligantes", "Custo Agregados", "Custo Quím./Água", "MCC Snapshot"
-];
-
-var HEADERS_TRACOS = [
-  "ID",
-  "Data e Hora",
-  "Nome do Traço",
-  "FCK (MPa)",
-  "Cimento (kg)",
-  "Adição (kg)",
-  "Areia Natural (kg)",
-  "Areia Industrial (kg)",
   "Custo Total (R$/m³)", "Custo Ligantes", "Custo Agregados", "Custo Quím./Água", "MCC Snapshot",
   "Volume Total (L)", "Teor Argamassa Massa (%)", "Teor Argamassa Volume (%)"
-  "Brita 1/2 (kg)",
+];
 
 function ensureSheetCartasHeaders(sh) {
   var currentCols = sh.getLastColumn();
@@ -61,6 +49,18 @@ function ensureSheetCartasHeaders(sh) {
   sh.setFrozenRows(1);
   for (var i = currentCols + 1; i <= HEADERS_CARTAS.length; i++) sh.setColumnWidth(i, 140);
 }
+
+var HEADERS_TRACOS = [
+  "ID",
+  "Data e Hora",
+  "Nome do Traço",
+  "FCK (MPa)",
+  "Cimento (kg)",
+  "Adição (kg)",
+  "Areia Natural (kg)",
+  "Areia Industrial (kg)",
+  "Brita 0 (kg)",
+  "Brita 1/2 (kg)",
   "Água (kg)",
   "Aditivo SP (kg)",
   "Ar Incorporado (%)",
