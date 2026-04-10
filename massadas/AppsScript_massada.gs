@@ -43,13 +43,9 @@ var VPS_PUSH_SECRET = "concretrack-push-2026";
 
 var HEADERS_MASSADA = [
   "Data e Hora",
-  "Número de Série",
-  "Hora da Massada",
-  "Flow",
-  "Faltou Água",
-  "Exsudação",
-  "Grau Exsudação",
-  "Perdeu a Massada",
+  "Problema",
+  "Concreto na Produção",
+  "Forma",
   "Observações"
 ];
 
@@ -68,12 +64,10 @@ function sendVpsPush_(d) {
   try {
     var prioridade = (d.perdeu === "Sim" || d.grauExsudacao === "Severo") ? "urgent" : "high";
     var corpo = [
-      "📋 Série: "        + (d.numSerie    || "-"),
-      "⏰ "               + (d.dataHora    || "-"),
-      "🌊 Flow: "         + (d.flow        || "-"),
-      "💧 Faltou água: "  + (d.faltouAgua || "-"),
-      "💦 Exsudação: "   + (d.exsudacao  || "-") + (d.grauExsudacao ? " (" + d.grauExsudacao + ")" : ""),
-      "❌ Perdeu: "        + (d.perdeu     || "-")
+      "⚠️ Problema: "      + (d.problema         || "-"),
+      "⏰ "                + (d.dataHora          || "-"),
+      "🧱 Na produção: "  + (d.concretoProducao || "-"),
+      "📋 Forma: "         + (d.forma             || "-")
     ];
     if (d.observacoes) corpo.push("📝 " + d.observacoes);
 
@@ -81,9 +75,9 @@ function sendVpsPush_(d) {
       method:      "post",
       contentType: "application/json",
       payload: JSON.stringify({
-        title: "⚠️ Massada com Problema — " + (d.numSerie || ""),
+        title: "⚠️ Massada com Problema",
         body:  corpo.join("\n"),
-        url:   "https://ricamaral01.github.io/pwa-hub/massadas/"
+        url:   "https://usina.concretrack.com.br/massadas/"
       }),
       headers: { "X-Token": VPS_PUSH_SECRET },
       muteHttpExceptions: true
@@ -102,12 +96,10 @@ function sendNtfyNotification_(d) {
     if (d.grauExsudacao === "Severo") tags += ",rotating_light";
 
     var corpo = [
-      "📋 Série: "   + (d.numSerie    || "-"),
-      "⏰ "          + (d.dataHora    || "-"),
-      "🌊 Flow: "    + (d.flow        || "-"),
-      "💧 Faltou água: " + (d.faltouAgua || "-"),
-      "💦 Exsudação: " + (d.exsudacao  || "-") + (d.grauExsudacao ? " (" + d.grauExsudacao + ")" : ""),
-      "❌ Perdeu massada: " + (d.perdeu  || "-")
+      "⚠️ Problema: "      + (d.problema         || "-"),
+      "⏰ "                + (d.dataHora          || "-"),
+      "🧱 Na produção: "  + (d.concretoProducao || "-"),
+      "📋 Forma: "         + (d.forma             || "-")
     ];
     if (d.observacoes) corpo.push("📝 " + d.observacoes);
 
@@ -115,7 +107,7 @@ function sendNtfyNotification_(d) {
       method: "post",
       payload: corpo.join("\n"),
       headers: {
-        "Title":    "⚠️ Massada com Problema — " + (d.numSerie || ""),
+        "Title":    "⚠️ Massada com Problema",
         "Priority": prioridade,
         "Tags":     tags
       },
@@ -140,14 +132,10 @@ function formatMassadaSheet_(sh) {
   headerRange.setHorizontalAlignment("center");
 
   sh.setColumnWidth(1, 160);  // Data e Hora
-  sh.setColumnWidth(2, 160);  // Número de Série
-  sh.setColumnWidth(3, 130);  // Hora da Massada
-  sh.setColumnWidth(4, 100);  // Flow
-  sh.setColumnWidth(5, 120);  // Faltou Água
-  sh.setColumnWidth(6, 110);  // Exsudação
-  sh.setColumnWidth(7, 150);  // Grau Exsudação
-  sh.setColumnWidth(8, 140);  // Perdeu a Massada
-  sh.setColumnWidth(9, 300);  // Observações
+  sh.setColumnWidth(2, 220);  // Problema
+  sh.setColumnWidth(3, 160);  // Concreto na Produção
+  sh.setColumnWidth(4, 180);  // Forma
+  sh.setColumnWidth(5, 300);  // Observações
 
   sh.setFrozenRows(1);
 }
@@ -184,15 +172,11 @@ function doPost(e) {
     var sh = getOrCreateSheetMassada();
 
     sh.appendRow([
-      d.dataHora      || "",
-      d.numSerie      || "",
-      d.horaMassada   || "",
-      d.flow          || "",
-      d.faltouAgua    || "",
-      d.exsudacao     || "",
-      d.grauExsudacao || "",
-      d.perdeu        || "",
-      d.observacoes   || ""
+      d.dataHora         || "",
+      d.problema         || "",
+      d.concretoProducao || "",
+      d.forma            || "",
+      d.observacoes      || ""
     ]);
 
     sendNtfyNotification_(d);

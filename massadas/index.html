@@ -3,384 +3,503 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>CONCRETRACK • Massadas</title>
+  <title>Massadas com Problemas — Concrefer</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo-concretrack.png">
+  <link rel="apple-touch-icon" href="../assets/img/logo-concretrack.png">
 
-  <!-- PWA (manifest unificado na raiz) -->
+  <!-- PWA -->
   <link rel="manifest" href="../manifest.json">
-  <meta name="theme-color" content="#2F3640">
+  <meta name="theme-color" content="#f0f4f8">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
   <!-- anti-cache -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
-  <link rel="stylesheet" href="../styles.css">
+  <style>
+    :root {
+      --primary:       #1a3a5c;
+      --primary-light: #2563a8;
+      --accent:        #e8762a;
+      --bg:            #f0f4f8;
+      --card-bg:       rgba(0,0,0,0.04);
+      --card-border:   rgba(0,0,0,0.10);
+      --text:          #1a2840;
+      --muted:         #5a6a7e;
+      --radius:        18px;
+      --shadow:        0 8px 28px rgba(0,0,0,0.12);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: linear-gradient(160deg,#f0f4f8 0%,#ffffff 60%,#eef2f7 100%);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-brand { display:flex; align-items:center; gap:14px; }
+    .topbar-brand img { height:40px; width:40px; object-fit:contain; border-radius:10px; }
+    .brand-name { font-size:1rem; font-weight:900; letter-spacing:.04em; line-height:1.1; }
+    .brand-name span { color: var(--accent); }
+    .brand-sub { font-size:.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-top:2px; }
+    .btn-back {
+      display:inline-flex; align-items:center; gap:6px;
+      background: rgba(0,0,0,0.07); border: 1px solid rgba(0,0,0,0.18);
+      border-radius:10px; color:var(--text); font-size:.85rem; font-weight:700;
+      padding:8px 16px; text-decoration:none; transition:background .15s, transform .1s;
+    }
+    .btn-back:hover { background:rgba(0,0,0,0.12); transform:translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero { text-align:center; padding:44px 20px 32px; }
+    .hero-icon {
+      font-size:3rem; display:inline-flex; align-items:center; justify-content:center;
+      width:80px; height:80px; border-radius:22px;
+      background: linear-gradient(135deg,#7c1a1a 0%,#c0392b 100%);
+      box-shadow: 0 8px 28px rgba(192,57,43,0.38);
+      margin-bottom:18px;
+    }
+    .hero h1 { font-size:1.6rem; font-weight:900; letter-spacing:.02em; margin-bottom:8px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size:.9rem; color:var(--muted); max-width:480px; margin:0 auto; line-height:1.55; }
+    .accent-line { width:60px; height:3px; background:var(--accent); border-radius:2px; margin:16px auto 0; }
+
+    /* ── MAIN ── */
+    main { flex:1; padding:0 20px 60px; max-width:560px; width:100%; margin:0 auto; }
+
+    /* ── CARD ── */
+    .form-card {
+      background:#fff; border:1px solid var(--card-border);
+      border-radius:var(--radius); padding:28px 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      margin-top:8px;
+    }
+
+    /* ── DATA/HORA BADGE ── */
+    .dt-badge {
+      display:flex; align-items:center; gap:10px;
+      background: rgba(37,99,168,0.08); border:1px solid rgba(37,99,168,0.18);
+      border-radius:12px; padding:12px 16px; margin-bottom:24px;
+    }
+    .dt-badge .dt-icon { font-size:1.3rem; }
+    .dt-badge .dt-val { font-size:1rem; font-weight:800; color:var(--primary); }
+    .dt-badge .dt-lbl { font-size:.72rem; color:var(--muted); margin-top:1px; }
+
+    /* ── FIELD ── */
+    .field { margin-bottom:22px; }
+    .field-label {
+      font-size:.75rem; font-weight:800; text-transform:uppercase;
+      letter-spacing:.8px; color:var(--muted); margin-bottom:10px; display:block;
+    }
+
+    /* ── SEG BUTTONS ── */
+    .seg-row { display:flex; flex-wrap:wrap; gap:8px; }
+    .seg-btn {
+      flex:1; min-width:100px;
+      padding:11px 14px; border-radius:12px; border:2px solid var(--card-border);
+      background:#f8fafc; color:var(--text); font-size:.88rem; font-weight:700;
+      cursor:pointer; text-align:center; transition:all .15s; user-select:none;
+    }
+    .seg-btn:hover { background:rgba(232,118,42,0.08); border-color:var(--accent); }
+    .seg-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .seg-btn.active-yes { background:#059669; border-color:#059669; color:#fff; }
+    .seg-btn.active-no  { background:#dc2626; border-color:#dc2626; color:#fff; }
+
+    /* ── FORMA INPUT ── */
+    .forma-wrap { margin-top:14px; display:none; }
+    .forma-wrap input {
+      width:100%; padding:12px 14px; border-radius:12px;
+      border:2px solid var(--card-border); background:#f8fafc;
+      color:var(--text); font-size:.95rem; font-family:inherit;
+      transition:border-color .15s;
+    }
+    .forma-wrap input:focus { outline:none; border-color:var(--accent); }
+
+    /* ── OBS TOGGLE ── */
+    .obs-toggle {
+      display:inline-flex; align-items:center; gap:6px;
+      background:rgba(0,0,0,0.05); border:1px solid var(--card-border);
+      border-radius:10px; padding:8px 14px; font-size:.85rem; font-weight:700;
+      cursor:pointer; color:var(--muted); transition:background .15s;
+      margin-bottom:14px;
+    }
+    .obs-toggle:hover { background:rgba(0,0,0,0.09); }
+    .obs-wrap { display:none; }
+    .obs-wrap textarea {
+      width:100%; padding:12px 14px; border-radius:12px;
+      border:2px solid var(--card-border); background:#f8fafc;
+      color:var(--text); font-size:.9rem; font-family:inherit;
+      min-height:90px; resize:vertical; transition:border-color .15s;
+    }
+    .obs-wrap textarea:focus { outline:none; border-color:var(--accent); }
+
+    /* ── DIVIDER ── */
+    .divider { height:1px; background:var(--card-border); margin:20px 0; }
+
+    /* ── SUBMIT BTN ── */
+    .btn-submit {
+      width:100%; padding:15px; border-radius:14px; border:none;
+      background: linear-gradient(135deg,var(--accent) 0%,#c0602a 100%);
+      color:#fff; font-size:1rem; font-weight:900; letter-spacing:.04em;
+      cursor:pointer; transition:opacity .15s, transform .1s;
+      box-shadow: 0 4px 16px rgba(232,118,42,0.35);
+    }
+    .btn-submit:hover { opacity:.9; transform:translateY(-1px); }
+    .btn-submit:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+
+    /* ── STATUS PILL ── */
+    .status-pill {
+      display:flex; align-items:center; gap:8px; justify-content:center;
+      margin-top:14px; font-size:.82rem; color:var(--muted);
+    }
+    .pill-dot { width:8px; height:8px; border-radius:50%; background:#f59e0b; }
+    .pill-dot.ok  { background:#059669; }
+    .pill-dot.err { background:#dc2626; }
+
+    /* ── MODAL ── */
+    .modal {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45);
+      z-index:200; align-items:center; justify-content:center;
+    }
+    .modal.show { display:flex; }
+    .modal-box {
+      background:#fff; border-radius:20px; padding:32px 28px;
+      max-width:340px; width:90%; text-align:center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-icon { font-size:2.8rem; margin-bottom:12px; }
+    .modal-title { font-size:1.2rem; font-weight:900; margin-bottom:8px; color:var(--text); }
+    .modal-body { font-size:.9rem; color:var(--muted); line-height:1.5; margin-bottom:20px; }
+    .modal-ok {
+      padding:12px 32px; border-radius:12px; border:none;
+      background:var(--accent); color:#fff; font-size:.95rem; font-weight:800;
+      cursor:pointer; transition:opacity .15s;
+    }
+    .modal-ok:hover { opacity:.85; }
+
+    /* ── HISTORY ── */
+    .hist-section { margin-top:32px; }
+    .hist-label {
+      font-size:.7rem; font-weight:800; text-transform:uppercase;
+      letter-spacing:1px; color:var(--muted); margin-bottom:12px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .hist-label::after { content:''; flex:1; height:1px; background:var(--card-border); }
+    .hist-item {
+      background:#fff; border:1px solid var(--card-border); border-radius:14px;
+      padding:14px 16px; margin-bottom:10px; font-size:.83rem; line-height:1.7;
+    }
+    .hist-item strong { font-weight:900; color:var(--text); }
+    .hist-item .hi-tag {
+      display:inline-block; padding:2px 10px; border-radius:20px;
+      font-size:.75rem; font-weight:700; margin-right:4px;
+    }
+    .tag-prob { background:rgba(192,57,43,0.12); color:#c0392b; }
+    .tag-ok   { background:rgba(5,150,105,0.12); color:#059669; }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
-  <a class="back" href="../index.html">← Hub</a>
-  <div class="title"><img src="../assets/img/paradas-icon.png" alt="" style="height:28px;vertical-align:middle;margin-right:6px;"> CONCRETRACK • Massadas</div>
-  <div class="subtitle">Registrar massadas com problemas → Planilha Google Sheets</div>
-  <div class="accentLine"></div>
 
-  <div class="card">
-    <form id="frm" autocomplete="off">
-
-      <!-- Data e Hora -->
-      <div class="grid2">
-        <div class="field">
-          <div class="label">Data</div>
-          <input id="dataM" type="date" required>
-        </div>
-        <div class="field">
-          <div class="label">Hora</div>
-          <input id="horaM" type="time" step="60" required>
-        </div>
-      </div>
-
-      <!-- Número de Série -->
-      <div class="field">
-        <div class="label">Número de Série</div>
-        <input id="numSerie" placeholder="Ex.: M-2026-045" required>
-      </div>
-
-      <!-- Hora da Massada -->
-      <div class="field">
-        <div class="label">Hora da Massada</div>
-        <input id="horaMassada" type="time" step="60" required>
-      </div>
-
-      <!-- Flow -->
-      <div class="field">
-        <div class="label">Flow?</div>
-        <div class="segRow">
-          <div class="segBtn" data-group="flow" data-value="Sim">✅ Sim</div>
-          <div class="segBtn" data-group="flow" data-value="Não">❌ Não</div>
-        </div>
-        <input type="hidden" id="flow" value="">
-      </div>
-
-      <!-- Faltou Água -->
-      <div class="field">
-        <div class="label">Faltou Água?</div>
-        <div class="segRow">
-          <div class="segBtn" data-group="faltouAgua" data-value="Sim">✅ Sim</div>
-          <div class="segBtn" data-group="faltouAgua" data-value="Não">❌ Não</div>
-        </div>
-        <input type="hidden" id="faltouAgua" value="">
-      </div>
-
-      <!-- Exsudação -->
-      <div class="field">
-        <div class="label">Houve Exsudação?</div>
-        <div class="segRow">
-          <div class="segBtn" data-group="exsudacao" data-value="Sim">✅ Sim</div>
-          <div class="segBtn" data-group="exsudacao" data-value="Não">❌ Não</div>
-        </div>
-        <input type="hidden" id="exsudacao" value="">
-      </div>
-
-      <!-- Grau de Exsudação (aparece quando Sim) -->
-      <div class="field" id="grauWrap" style="display:none;">
-        <div class="label">Grau Exsudação</div>
-        <div class="segRow">
-          <div class="segBtn" data-group="grauExsudacao" data-value="Leve">🟡 Leve</div>
-          <div class="segBtn" data-group="grauExsudacao" data-value="Moderado">🟠 Moderado</div>
-          <div class="segBtn" data-group="grauExsudacao" data-value="Severo">🔴 Severo</div>
-        </div>
-        <input type="hidden" id="grauExsudacao" value="">
-      </div>
-
-      <!-- Perdeu a massada -->
-      <div class="field">
-        <div class="label">Perdeu a Massada?</div>
-        <div class="segRow">
-          <div class="segBtn" data-group="perdeu" data-value="Sim">✅ Sim</div>
-          <div class="segBtn" data-group="perdeu" data-value="Não">❌ Não</div>
-        </div>
-        <input type="hidden" id="perdeu" value="">
-      </div>
-
-      <!-- Observações -->
-      <div class="field">
-        <div class="label">Observações</div>
-        <textarea id="observacoes" placeholder="Descreva detalhes adicionais..."></textarea>
-      </div>
-
-      <!-- Botões -->
-      <div class="ops">
-        <button class="btn light" id="btnAgora" type="button">🕒 Agora</button>
-        <button class="btn danger" id="btnLimpar" type="button">🧹 Limpar</button>
-        <button class="btn good" id="btnSalvar" type="submit">📤 ENVIAR</button>
-      </div>
-
-      <div class="pillRow">
-        <div class="pill">
-          <span id="dot" class="dot warn"></span>
-          <span id="statusTxt">Pronto para registrar</span>
-        </div>
-      </div>
-
-    </form>
+<!-- ── TOP BAR ── -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <img src="../assets/img/logo-concretrack.png" alt="ConcreTrack">
+    <div>
+      <div class="brand-name">Concre<span>Track</span></div>
+      <div class="brand-sub">Laboratório Concrefer</div>
+    </div>
   </div>
+  <a class="btn-back" href="../index.html">← Hub</a>
+</header>
 
-  <div class="history" id="history"></div>
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-icon">🧱</div>
+  <h1>Massadas com <span>Problemas</span></h1>
+  <p>Registre rapidamente o problema identificado na massada.</p>
+  <div class="accent-line"></div>
 </div>
 
-<!-- Modal de Sucesso -->
+<!-- ── MAIN CONTENT ── -->
+
+<main>
+  <!-- Data/hora automática -->
+  <div class="dt-badge">
+    <div class="dt-icon">🕐</div>
+    <div>
+      <div class="dt-val" id="dtDisplay">--/-- --:--</div>
+      <div class="dt-lbl">Data e hora registradas automaticamente</div>
+    </div>
+  </div>
+
+  <form id="frm" class="form-card" autocomplete="off">
+
+    <!-- 1. Qual o Problema? -->
+    <div class="field">
+      <span class="field-label">Qual o Problema?</span>
+      <div class="seg-row" id="probRow">
+        <div class="seg-btn" data-prob="Exsudação">💧 Exsudação</div>
+        <div class="seg-btn" data-prob="Segregação">⚠️ Segregação</div>
+        <div class="seg-btn" data-prob="Traço Seco">🏜️ Traço Seco</div>
+      </div>
+    </div>
+
+    <!-- 2. Concreto Usado na Produção? -->
+    <div class="field">
+      <span class="field-label">Concreto Usado na Produção?</span>
+      <div class="seg-row">
+        <div class="seg-btn" id="btnSim" data-prod="Sim">✅ Sim</div>
+        <div class="seg-btn" id="btnNao" data-prod="Não">❌ Não</div>
+      </div>
+      <!-- Se Sim: qual a forma? -->
+      <div class="forma-wrap" id="formaWrap">
+        <input id="formaInput" type="text" placeholder="Informe a forma (ex.: Laje, Viga, Pilar...)">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- OBS -->
+    <div class="obs-toggle" id="obsToggle">📝 Adicionar Observação</div>
+    <div class="obs-wrap" id="obsWrap">
+      <textarea id="obsInput" placeholder="Observações adicionais..."></textarea>
+    </div>
+
+    <!-- Submit -->
+    <button class="btn-submit" type="submit" id="btnEnviar">📤 REGISTRAR MASSADA</button>
+
+    <div class="status-pill">
+      <div class="pill-dot" id="pillDot"></div>
+      <span id="pillTxt">Pronto para registrar</span>
+    </div>
+
+  </form>
+
+  <!-- Histórico -->
+  <div class="hist-section" id="histSection"></div>
+</main>
+
+<!-- Modal -->
 <div class="modal" id="modal">
-  <div class="modal-content">
-    <div class="modal-title" id="modalTitle">✅ Registrado!</div>
-    <div class="modal-text" id="modalText">Massada salva na planilha com sucesso.</div>
-    <button class="modal-btn" onclick="document.getElementById('modal').classList.remove('show')">OK</button>
+  <div class="modal-box">
+    <div class="modal-icon">✅</div>
+    <div class="modal-title">Massada Registrada!</div>
+    <div class="modal-body" id="modalBody"></div>
+    <button class="modal-ok" onclick="document.getElementById('modal').classList.remove('show')">OK</button>
   </div>
 </div>
 
 <script>
-/* ===============================
-   SW UNIFICADO + PUSH SUBSCRIBE
-   =============================== */
+/* ── SW + PUSH ── */
 const PUSH_SERVER = 'https://dautomacao.com/etiquetas';
-
-function _urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const raw     = atob(base64);
-  return Uint8Array.from(Array.from(raw).map(c => c.charCodeAt(0)));
+function _urlBase64ToUint8Array(b64){
+  const p='='.repeat((4-b64.length%4)%4), s=(b64+p).replace(/-/g,'+').replace(/_/g,'/');
+  const r=atob(s); return Uint8Array.from(Array.from(r).map(c=>c.charCodeAt(0)));
 }
-
-async function initPush(reg) {
-  if (!("PushManager" in window)) return;
-  try {
-    const keyRes = await fetch(PUSH_SERVER + '/push/vapid-public');
-    if (!keyRes.ok) return;
-    const { key } = await keyRes.json();
-    if (!key) return;
-
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') return;
-
-    let sub = await reg.pushManager.getSubscription();
-    if (!sub) {
-      sub = await reg.pushManager.subscribe({
-        userVisibleOnly:      true,
-        applicationServerKey: _urlBase64ToUint8Array(key)
-      });
-    }
-
-    await fetch(PUSH_SERVER + '/push/subscribe', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(sub.toJSON())
-    });
-  } catch (err) {
-    console.warn('[Push] Erro:', err);
-  }
-}
-
-(async function(){
+async function initPush(reg){
+  if(!('PushManager' in window)) return;
   try{
-    if ("serviceWorker" in navigator) {
-      const reg = await navigator.serviceWorker.register("../sw.js", { scope: "../" });
+    const kr=await fetch(PUSH_SERVER+'/push/vapid-public'); if(!kr.ok) return;
+    const {key}=await kr.json(); if(!key) return;
+    const perm=await Notification.requestPermission(); if(perm!=='granted') return;
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:_urlBase64ToUint8Array(key)});
+    await fetch(PUSH_SERVER+'/push/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(sub.toJSON())});
+  }catch(e){}
+}
+(async()=>{
+  try{
+    if('serviceWorker' in navigator){
+      const reg=await navigator.serviceWorker.register('../sw.js',{scope:'../'});
       await navigator.serviceWorker.ready;
       initPush(reg);
     }
   }catch(e){}
 })();
 
-/* ===============================
-   CONFIG — Apps Script para a aba "massada"
-   =============================== */
+/* ── CONFIG ── */
 const API_URL = "https://script.google.com/macros/s/AKfycbxzLWNHORDWnCFjFkgO730bctT3scuWyWdV5kykcyI-wGMYCZzg3WNFCQmbrlnUIhoq/exec";
-
 const $ = id => document.getElementById(id);
 
-/* ===============================
-   HELPERS
-   =============================== */
+/* ── HELPERS ── */
 function pad2(n){ return String(n).padStart(2,"0"); }
 
-function setStatus(kind, text){
-  const dot = $("dot");
-  dot.classList.remove("ok","warn","err");
-  dot.classList.add(kind);
-  $("statusTxt").textContent = text;
-}
-
-function setNow(){
+function getNow(){
   const d = new Date();
-  $("dataM").value = `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-  $("horaM").value = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  return {
+    iso:  `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`,
+    display: `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`
+  };
 }
 
-/* ===============================
-   SEGMENTED BUTTONS
-   =============================== */
-function setActive(group, value){
-  document.querySelectorAll(`.segBtn[data-group="${group}"]`).forEach(b => {
-    b.classList.toggle("active", b.dataset.value === value);
+function setStatus(kind, text){
+  const dot = $("pillDot");
+  dot.classList.remove("ok","err");
+  if(kind==="ok") dot.classList.add("ok");
+  else if(kind==="err") dot.classList.add("err");
+  $("pillTxt").textContent = text;
+}
+
+/* ── CLOCK display ── */
+function updateDisplay(){
+  const {display} = getNow();
+  $("dtDisplay").textContent = display;
+}
+updateDisplay();
+setInterval(updateDisplay, 20000);
+
+/* ── PROBLEMA — multi-select ── */
+const selectedProbs = new Set();
+document.querySelectorAll("#probRow .seg-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const p = btn.dataset.prob;
+    if(selectedProbs.has(p)){ selectedProbs.delete(p); btn.classList.remove("active"); }
+    else { selectedProbs.add(p); btn.classList.add("active"); }
   });
-  const hidden = $(group);
-  if (hidden) hidden.value = value;
-
-  // Mostrar/esconder grau de exsudação
-  if (group === "exsudacao") {
-    $("grauWrap").style.display = value === "Sim" ? "block" : "none";
-    if (value !== "Sim") {
-      $("grauExsudacao").value = "";
-      setActive("grauExsudacao", "");
-    }
-  }
-}
-
-document.querySelectorAll(".segBtn").forEach(btn => {
-  btn.addEventListener("click", () => setActive(btn.dataset.group, btn.dataset.value));
 });
 
-/* ===============================
-   EVENTS
-   =============================== */
-$("btnAgora").addEventListener("click", setNow);
-
-$("btnLimpar").addEventListener("click", () => {
-  $("frm").reset();
-  ["flow","faltouAgua","exsudacao","grauExsudacao","perdeu"].forEach(g => { $(g).value = ""; setActive(g, ""); });
-  $("grauWrap").style.display = "none";
-  setStatus("warn", "Pronto para registrar");
+/* ── PRODUÇÃO Sim/Não ── */
+let producao = "";
+$("btnSim").addEventListener("click", () => {
+  producao = "Sim";
+  $("btnSim").className = "seg-btn active-yes";
+  $("btnNao").className = "seg-btn";
+  $("formaWrap").style.display = "block";
+  $("formaInput").focus();
+});
+$("btnNao").addEventListener("click", () => {
+  producao = "Não";
+  $("btnNao").className = "seg-btn active-no";
+  $("btnSim").className = "seg-btn";
+  $("formaWrap").style.display = "none";
+  $("formaInput").value = "";
 });
 
-/* ===============================
-   HISTÓRICO LOCAL
-   =============================== */
+/* ── OBS TOGGLE ── */
+$("obsToggle").addEventListener("click", () => {
+  const wrap = $("obsWrap");
+  const open = wrap.style.display === "block";
+  wrap.style.display = open ? "none" : "block";
+  $("obsToggle").textContent = open ? "📝 Adicionar Observação" : "📝 Ocultar Observação";
+  if(!open) $("obsInput").focus();
+});
+
+/* ── HISTÓRICO ── */
 function loadHistory(){
-  const hist = JSON.parse(localStorage.getItem("massadas_hist") || "[]");
-  const el = $("history");
-  if (!hist.length){ el.innerHTML = ""; return; }
-  el.innerHTML = "<div class='label' style='margin-bottom:8px;'>Últimos registros</div>" +
-    hist.slice(-5).reverse().map(h =>
-      `<div class="histItem">
-        <span>${h.dataHora}</span>
-        <b>${h.numSerie}</b>
-        <span>Flow: ${h.flow}</span>
-        <span>Faltou água: ${h.faltouAgua}</span>
-        <span>Exsud: ${h.exsudacao}${h.grauExsudacao ? " ("+h.grauExsudacao+")" : ""}</span>
-        <span>Perdeu: ${h.perdeu}</span>
+  const hist = JSON.parse(localStorage.getItem("massadas_v2_hist") || "[]");
+  const sec = $("histSection");
+  if(!hist.length){ sec.innerHTML = ""; return; }
+  sec.innerHTML = `<div class="hist-label">Últimos registros</div>` +
+    hist.slice(-6).reverse().map(h =>
+      `<div class="hist-item">
+        <strong>${h.dataHora}</strong><br>
+        ${h.problema.split(",").map(p=>`<span class="hi-tag tag-prob">${p.trim()}</span>`).join("")}
+        <span class="hi-tag tag-ok">Produção: ${h.concretoProducao}</span>
+        ${h.forma ? `<span class="hi-tag" style="background:rgba(37,99,168,.1);color:#2563a8;">${h.forma}</span>` : ""}
+        ${h.observacoes ? `<div style="margin-top:6px;color:#5a6a7e;font-size:.8rem;">📝 ${h.observacoes}</div>` : ""}
       </div>`
     ).join("");
 }
 
-function saveHistory(payload){
-  const hist = JSON.parse(localStorage.getItem("massadas_hist") || "[]");
-  hist.push(payload);
-  if (hist.length > 30) hist.splice(0, hist.length - 30);
-  localStorage.setItem("massadas_hist", JSON.stringify(hist));
+function saveHistory(p){
+  const hist = JSON.parse(localStorage.getItem("massadas_v2_hist") || "[]");
+  hist.push(p);
+  if(hist.length > 30) hist.splice(0, hist.length - 30);
+  localStorage.setItem("massadas_v2_hist", JSON.stringify(hist));
   loadHistory();
 }
 
-/* ===============================
-   ENVIAR → GOOGLE SHEETS (aba "massada")
-   =============================== */
+/* ── ENVIAR ── */
 async function apiPost(payload){
-  const url = API_URL + "?t=" + Date.now();
-  const res = await fetch(url, {
+  const res = await fetch(API_URL + "?t=" + Date.now(), {
     method: "POST",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(payload)
   });
-  const text = await res.text();
-  try { return JSON.parse(text); } catch { return { ok: res.ok, raw: text }; }
+  const txt = await res.text();
+  try{ return JSON.parse(txt); }catch{ return {ok:res.ok}; }
 }
 
 $("frm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const flow       = $("flow").value;
-  const faltouAgua = $("faltouAgua").value;
-  const exsudacao = $("exsudacao").value;
-  const perdeu    = $("perdeu").value;
-  const grauExsudacao = $("grauExsudacao").value;
-
-  if (!flow){
-    setStatus("warn", "Informe se houve flow");
+  if(!selectedProbs.size){
+    setStatus("err", "Selecione pelo menos um problema");
     return;
   }
-  if (!faltouAgua){
-    setStatus("warn", "Informe se faltou água");
+  if(!producao){
+    setStatus("err", "Informe se o concreto foi usado na produção");
     return;
   }
-
-  if (!exsudacao){
-    setStatus("warn", "Informe se houve exsudação");
-    return;
-  }
-  if (exsudacao === "Sim" && !grauExsudacao){
-    setStatus("warn", "Selecione o grau de exsudação");
-    return;
-  }
-  if (!perdeu){
-    setStatus("warn", "Informe se perdeu a massada");
+  if(producao === "Sim" && !$("formaInput").value.trim()){
+    setStatus("err", "Informe a forma");
+    $("formaInput").focus();
     return;
   }
 
-  const dataISO = $("dataM").value;
-  const hora    = $("horaM").value;
-
+  const {iso} = getNow();
   const payload = {
-    action: "registrar_massada",
-    dataHora: dataISO + " " + hora,
-    numSerie: $("numSerie").value.trim(),
-    horaMassada: $("horaMassada").value,
-    flow: flow,
-    faltouAgua: faltouAgua,
-    exsudacao: exsudacao,
-    grauExsudacao: exsudacao === "Sim" ? grauExsudacao : "",
-    perdeu: perdeu,
-    observacoes: $("observacoes").value.trim()
+    action:           "registrar_massada",
+    dataHora:         iso,
+    problema:         [...selectedProbs].join(", "),
+    concretoProducao: producao,
+    forma:            producao === "Sim" ? $("formaInput").value.trim() : "",
+    observacoes:      $("obsInput").value.trim()
   };
 
-  if (!dataISO || !hora || !payload.numSerie || !payload.horaMassada){
-    setStatus("warn", "Preencha todos os campos obrigatórios");
-    return;
-  }
-
   setStatus("warn", "Salvando...");
-  $("btnSalvar").disabled = true;
+  $("btnEnviar").disabled = true;
 
-  try {
+  try{
     const r = await apiPost(payload);
-    if (r && r.ok){
-      setStatus("ok", "Massada registrada ✅");
+    if(r && r.ok){
+      setStatus("ok", "Registrado ✅");
       saveHistory(payload);
 
-      $("modalTitle").textContent = "✅ Registrado!";
-      $("modalText").textContent = `Série ${payload.numSerie} — Flow: ${payload.flow} — Exsudação: ${payload.exsudacao}`;
+      const probl = payload.problema;
+      const prod  = payload.concretoProducao + (payload.forma ? ` — ${payload.forma}` : "");
+      $("modalBody").textContent = `Problema: ${probl}\nProdução: ${prod}`;
       $("modal").classList.add("show");
 
-      const keepData = $("dataM").value;
-      $("frm").reset();
-      ["flow","faltouAgua","exsudacao","grauExsudacao","perdeu"].forEach(g => { $(g).value = ""; setActive(g, ""); });
-      $("grauWrap").style.display = "none";
-      $("dataM").value = keepData;
+      // Limpar
+      selectedProbs.clear();
+      document.querySelectorAll("#probRow .seg-btn").forEach(b=>b.classList.remove("active"));
+      producao = "";
+      $("btnSim").className = "seg-btn";
+      $("btnNao").className = "seg-btn";
+      $("formaWrap").style.display = "none";
+      $("formaInput").value = "";
+      $("obsWrap").style.display = "none";
+      $("obsInput").value = "";
+      $("obsToggle").textContent = "📝 Adicionar Observação";
     } else {
-      setStatus("err", "Erro: " + (r?.message || r?.error || "Falha ao salvar"));
+      setStatus("err", "Erro ao salvar ❌");
     }
-  } catch(err){
+  }catch(err){
     console.error(err);
     setStatus("err", "Erro de conexão ❌");
-  } finally {
-    $("btnSalvar").disabled = false;
+  }finally{
+    $("btnEnviar").disabled = false;
   }
 });
 
-/* ===============================
-   INIT
-   =============================== */
-setNow();
-setStatus("warn", "Pronto para registrar");
+/* ── INIT ── */
 loadHistory();
+setStatus("warn", "Pronto para registrar");
 </script>
 </body>
 </html>
