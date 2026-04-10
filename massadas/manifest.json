@@ -1,11 +1,12 @@
 {
-  "name": "CONCRETRACK • Massadas",
+  "name": "Massadas com Problemas",
   "short_name": "Massadas",
+  "description": "Registro de massadas com problemas — Laboratório Concrefer",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#1F242C",
-  "theme_color": "#2F3640",
+  "background_color": "#f0f4f8",
+  "theme_color": "#f0f4f8",
   "icons": [
     {
       "src": "./icon-192.png",
