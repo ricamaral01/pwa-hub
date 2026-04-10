@@ -460,23 +460,18 @@ textarea {
 
 #viewInspecao .sheet-table th:nth-child(2),
 #viewInspecao .sheet-table td:nth-child(2) {
-  width: 16%;
+  width: 14.7%;
 }
 
 #viewInspecao .sheet-table th:nth-child(3),
-#viewInspecao .sheet-table td:nth-child(3) {
-  width: 13%;
-}
-
+#viewInspecao .sheet-table td:nth-child(3),
 #viewInspecao .sheet-table th:nth-child(4),
-#viewInspecao .sheet-table td:nth-child(4),
-#viewInspecao .sheet-table th:nth-child(5),
-#viewInspecao .sheet-table td:nth-child(5) {
+#viewInspecao .sheet-table td:nth-child(4) {
   width: auto;
 }
 
-#viewInspecao .sheet-table th:nth-child(6),
-#viewInspecao .sheet-table td:nth-child(6) {
+#viewInspecao .sheet-table th:nth-child(5),
+#viewInspecao .sheet-table td:nth-child(5) {
   width: 16%;
 }
 

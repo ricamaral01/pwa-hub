@@ -956,7 +956,7 @@ function getInspecaoCodeOptions(selectedCode) {
   const first = '<option value="">Selecione</option>';
   const options = CHECKLIST_INSPECAO_CODIGOS.map((item) => {
     const selected = selectedCode === item.codigo ? "selected" : "";
-    return `<option value="${item.codigo}" ${selected}>${item.codigo}</option>`;
+    return `<option value="${item.codigo}" ${selected}>${item.codigo} — ${item.descricao}</option>`;
   }).join("");
   return first + options;
 }
@@ -992,7 +992,7 @@ async function renderInspecaoLiberados() {
   el.insLiberadosBody.innerHTML = "";
   if (modoCarga === "data" && !filtroData) {
     el.insQtdItens.textContent = "0";
-    el.insLiberadosBody.innerHTML = '<tr><td colspan="6" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
+    el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
     return;
   }
 
@@ -1009,7 +1009,7 @@ async function renderInspecaoLiberados() {
     el.insQtdItens.textContent = String(rows.length);
 
     if (!rows.length) {
-      el.insLiberadosBody.innerHTML = '<tr><td colspan="6" class="muted">Nenhuma forma pendente de inspeção para os filtros informados.</td></tr>';
+      el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Nenhuma forma pendente de inspeção para os filtros informados.</td></tr>';
       return;
     }
 
@@ -1024,7 +1024,6 @@ async function renderInspecaoLiberados() {
       tr.innerHTML = `
         <td>${record.forma_numero || ""}</td>
         <td>${record.modelo || ""}</td>
-        <td>${record.liberacao_status || ""}</td>
         <td>
           <select data-ins-status>
             <option value="">Selecione</option>
@@ -1067,7 +1066,7 @@ async function renderInspecaoLiberados() {
   el.insQtdItens.textContent = String(rows.length);
 
   if (!rows.length) {
-    el.insLiberadosBody.innerHTML = '<tr><td colspan="6" class="muted">Nenhuma forma liberada para os filtros informados.</td></tr>';
+    el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Nenhuma forma liberada para os filtros informados.</td></tr>';
     return;
   }
 
@@ -1082,7 +1081,6 @@ async function renderInspecaoLiberados() {
     tr.innerHTML = `
       <td>${record.formaNumero}</td>
       <td>${record.modelo || ""}</td>
-      <td>${record.liberacao.status}</td>
       <td>
         <select data-ins-status>
           <option value="">Selecione</option>
@@ -1724,7 +1722,7 @@ function setMode(mode) {
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
     if ((el.insModoCarga?.value || "data") === "data" && !el.insFiltroData.value) {
-      el.insLiberadosBody.innerHTML = '<tr><td colspan="7" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
+      el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
       el.insQtdItens.textContent = "0";
     }
   }
