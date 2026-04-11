@@ -1937,6 +1937,19 @@ function bindEvents() {
   });
   const navDashboard = document.getElementById("navDashboard");
   if (navDashboard) navDashboard.addEventListener("click", () => setMode("HUB"));
+
+  // Hub quick-cards
+  document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const mode = btn.dataset.hubMode;
+      if (mode === "LIBERACAO") { setMode("LIBERACAO"); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
+      else if (mode === "INSPECAO") { setMode("INSPECAO"); if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd(); renderInspecaoLiberados(); }
+      else if (mode === "RELATORIO") { setMode("RELATORIO"); if (!el.relData.value) el.relData.value = todayYmd(); }
+      else if (mode === "HISTORICO") { setMode("HISTORICO"); renderHistorico(); }
+      else if (mode === "ACOMPANHAMENTO") { setMode("ACOMPANHAMENTO"); carregarDashboardConcretagem(); }
+      else if (mode === "ACMP_CONCRETAGEM") { setMode("ACMP_CONCRETAGEM"); if (!el.acmpData.value) el.acmpData.value = todayYmd(); renderAcmpConcretagem(); }
+    });
+  });
 }
 
 function init() {
