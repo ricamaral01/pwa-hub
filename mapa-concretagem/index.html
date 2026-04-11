@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1e40af" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=41774cbe" />
+  <link rel="stylesheet" href="styles.css?v=9b14f2e5" />
 </head>
 <body>
   <main class="container">
@@ -125,6 +125,9 @@
         <div class="sheet-topline">
           <div><strong>Inspeção</strong> — Somente formas com Liberação = 1</div>
           <div><strong>Itens:</strong> <span id="insQtdItens">0</span></div>
+        </div>
+        <div class="sheet-filter-row">
+          <input id="insFormaFiltro" type="text" placeholder="🔍 Filtrar por N Forma..." autocomplete="off" />
         </div>
         <table class="sheet-table">
           <thead>
@@ -283,6 +286,10 @@
     </section>
   </main>
 
+  <div id="insFloatBar" class="ins-float-bar">
+    <button id="salvarInspecaoFloat" class="btn primary ins-float-salvar" type="button">💾 Salvar Inspeções</button>
+  </div>
+
   <template id="tplItemRegistro">
     <article class="item">
       <div class="item-main"></div>
@@ -290,6 +297,6 @@
     </article>
   </template>
 
-  <script src="app.js?v=35ed425e"></script>
+  <script src="app.js?v=63dab52d"></script>
 </body>
 </html>

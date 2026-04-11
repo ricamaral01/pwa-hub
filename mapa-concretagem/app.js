@@ -286,6 +286,8 @@ const el = {
   insFotos: document.getElementById("insFotos"),
   insFotosPreview: document.getElementById("insFotosPreview"),
   salvarInspecao: document.getElementById("salvarInspecao"),
+  insFormaFiltro: document.getElementById("insFormaFiltro"),
+  salvarInspecaoFloat: document.getElementById("salvarInspecaoFloat"),
 
   histData: document.getElementById("histData"),
   histTipo: document.getElementById("histTipo"),
@@ -990,6 +992,14 @@ async function getInspecaoRowsFromApi(filtroData, modoCarga, setor) {
   return null;
 }
 
+function filtrarFormasTabela() {
+  const texto = (el.insFormaFiltro?.value || "").trim().toUpperCase();
+  Array.from(el.insLiberadosBody.querySelectorAll("tr[data-forma-numero]")).forEach((tr) => {
+    const forma = (tr.dataset.formaNumero || "").toUpperCase();
+    tr.style.display = !texto || forma.includes(texto) ? "" : "none";
+  });
+}
+
 async function renderInspecaoLiberados() {
   const db = readDb();
   const filtroData = el.insFiltroData.value;
@@ -1060,6 +1070,7 @@ async function renderInspecaoLiberados() {
 
       el.insLiberadosBody.appendChild(tr);
     });
+    filtrarFormasTabela();
     return;
   }
 
@@ -1119,6 +1130,7 @@ async function renderInspecaoLiberados() {
 
     el.insLiberadosBody.appendChild(tr);
   });
+  filtrarFormasTabela();
 }
 
 async function saveInspecao() {
@@ -1171,6 +1183,7 @@ async function saveInspecao() {
 
   state.isSendingInspecao = true;
   setSubmitButtonState(el.salvarInspecao, true);
+  if (el.salvarInspecaoFloat) setSubmitButtonState(el.salvarInspecaoFloat, true);
 
   try {
 
@@ -1312,6 +1325,7 @@ async function saveInspecao() {
   } finally {
     state.isSendingInspecao = false;
     setSubmitButtonState(el.salvarInspecao, false);
+    if (el.salvarInspecaoFloat) setSubmitButtonState(el.salvarInspecaoFloat, false);
   }
 }
 
@@ -1808,6 +1822,8 @@ function bindEvents() {
   el.insLiberadosBody.addEventListener("input", () => clearSubmitLock("inspecao"));
 
   el.salvarInspecao.addEventListener("click", saveInspecao);
+  if (el.salvarInspecaoFloat) el.salvarInspecaoFloat.addEventListener("click", saveInspecao);
+  if (el.insFormaFiltro) el.insFormaFiltro.addEventListener("input", filtrarFormasTabela);
   el.atualizarDashboard.addEventListener("click", carregarDashboardConcretagem);
   el.dashData.addEventListener("change", carregarDashboardConcretagem);
   el.filtrarHistorico.addEventListener("click", () => renderHistorico());

@@ -496,6 +496,52 @@ textarea {
   background: #dbeafe;
 }
 
+/* Filtro de forma na tabela */
+.sheet-filter-row {
+  padding: 6px 0 4px;
+}
+.sheet-filter-row input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  background: #f8fafc;
+  outline: none;
+}
+.sheet-filter-row input:focus {
+  border-color: var(--accent);
+  background: #fff;
+}
+
+/* Floating save bar — visível apenas em tablet/celular no modo inspeção */
+.ins-float-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 2px solid var(--line);
+  padding: 10px 16px;
+  z-index: 200;
+  box-shadow: 0 -3px 16px rgba(0,0,0,0.13);
+}
+.ins-float-salvar {
+  width: 100%;
+  font-size: 1rem;
+  padding: 14px;
+}
+
+@media (max-width: 1024px) {
+  body.mode-inspecao .ins-float-bar {
+    display: block;
+  }
+  body.mode-inspecao .container {
+    padding-bottom: 80px;
+  }
+}
+
 body.mode-liberacao .ins-related {
   display: none !important;
 }
