@@ -495,6 +495,13 @@ function formatDateTime(iso) {
   return new Date(iso).toLocaleString("pt-BR");
 }
 
+function fmtDate(value) {
+  const ymd = dateToYmd(value);
+  if (!ymd) return "";
+  const [y, m, d] = ymd.split("-");
+  return `${d}/${m}/${y}`;
+}
+
 function statusFluxoFromRecord(record) {
   if (!record.liberacao) return "SEM_LIBERACAO";
   if (!record.inspecoes || record.inspecoes.length === 0) return "PENDENTE_INSPECAO";
@@ -1035,7 +1042,7 @@ async function renderInspecaoLiberados() {
         <td>
           <select data-ins-code>${getInspecaoCodeOptions("")}</select>
         </td>
-        <td><input type="text" data-ins-row-obs placeholder="Observação"></td>
+        <td>${fmtDate(record.data_fabricacao || "")}</td>
       `;
 
       const statusSelect = tr.querySelector("select[data-ins-status]");
@@ -1043,7 +1050,7 @@ async function renderInspecaoLiberados() {
       if (statusSelect && codeSelect) {
         statusSelect.addEventListener("change", () => {
           if (statusSelect.value === "A") {
-            codeSelect.value = "A";
+            codeSelect.value = "";
             codeSelect.disabled = true;
           } else {
             codeSelect.disabled = false;
@@ -1092,7 +1099,7 @@ async function renderInspecaoLiberados() {
       <td>
         <select data-ins-code>${getInspecaoCodeOptions(ultima?.codigos?.[0] || "")}</select>
       </td>
-      <td><input type="text" data-ins-row-obs placeholder="Observação"></td>
+      <td>${fmtDate(record.dataFabricacao || "")}</td>
     `;
 
     const statusSelect = tr.querySelector("select[data-ins-status]");
@@ -1100,7 +1107,7 @@ async function renderInspecaoLiberados() {
     if (statusSelect && codeSelect) {
       const syncCodeState = () => {
         if (statusSelect.value === "A") {
-          codeSelect.value = "A";
+          codeSelect.value = "";
           codeSelect.disabled = true;
         } else {
           codeSelect.disabled = false;
@@ -1142,7 +1149,7 @@ async function saveInspecao() {
         recordId: tr?.dataset.recordId || "",
         status: tr?.querySelector("select[data-ins-status]")?.value || "",
         codigo: tr?.querySelector("select[data-ins-code]")?.value || "",
-        observacoes: tr?.querySelector("input[data-ins-row-obs]")?.value?.trim() || ""
+        observacoes: ""
       };
     })
     .sort((a, b) => a.recordId.localeCompare(b.recordId));
@@ -1179,8 +1186,8 @@ async function saveInspecao() {
       const recordId = tr?.dataset.recordId || uuid();
       const status = tr?.querySelector("select[data-ins-status]")?.value || "";
       const codigo = tr?.querySelector("select[data-ins-code]")?.value || "";
-      const codigoFinal = status === "A" ? (codigo || "A") : codigo;
-      const obsLinha = tr?.querySelector("input[data-ins-row-obs]")?.value?.trim() || "";
+      const codigoFinal = status === "A" ? "" : codigo;
+      const obsLinha = "";
 
       if (!recordId || !status) {
         alert("Cada forma selecionada deve ter Status preenchido.");
