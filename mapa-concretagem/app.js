@@ -1398,17 +1398,34 @@ function renderDashboardCharts() {
   const prodByDate = {};
   const insByDate = {};
   const insStatusTotal = { A: 0, R: 0, RR: 0 };
+  const prodS1ByDate = {};
+  const prodS2ByDate = {};
+  const insS1 = { A: 0, R: 0, RR: 0 };
+  const insS2 = { A: 0, R: 0, RR: 0 };
+  const ncCount = {};
 
   db.events.forEach((ev) => {
     const etapa = (ev.etapa || "").toUpperCase();
     const d = ev.dataFabricacao || "";
+    const setor = (ev.setor || "").toLowerCase();
+    const isS1 = setor.includes("1");
+    const isS2 = setor.includes("2");
     if (etapa === "LIBERACAO") {
       prodByDate[d] = (prodByDate[d] || 0) + 1;
+      if (isS1) prodS1ByDate[d] = (prodS1ByDate[d] || 0) + 1;
+      if (isS2) prodS2ByDate[d] = (prodS2ByDate[d] || 0) + 1;
     } else if (etapa === "INSPECAO" || etapa === "REINSPECAO") {
       if (!insByDate[d]) insByDate[d] = { A: 0, R: 0, RR: 0, total: 0 };
       insByDate[d].total++;
       const s = (ev.status || "").toUpperCase();
-      if (s in insStatusTotal) { insStatusTotal[s]++; insByDate[d][s]++; }
+      if (s in insStatusTotal) {
+        insStatusTotal[s]++;
+        insByDate[d][s]++;
+        if (isS1 && s in insS1) insS1[s]++;
+        if (isS2 && s in insS2) insS2[s]++;
+      }
+      const codigos = Array.isArray(ev.codigos) ? ev.codigos : [];
+      codigos.forEach((c) => { if (c) ncCount[c.toUpperCase()] = (ncCount[c.toUpperCase()] || 0) + 1; });
     }
   });
 
@@ -1474,6 +1491,74 @@ function renderDashboardCharts() {
       options: {
         responsive: true, maintainAspectRatio: false,
         plugins: { legend: { position: "bottom" } }
+      }
+    });
+  }
+
+  // Bar: produção por setor por dia (7 dias)
+  destroyChart("chartProdSetor");
+  const ctxProdSetor = document.getElementById("chartProdSetor");
+  if (ctxProdSetor && typeof Chart !== "undefined") {
+    chartInstances["chartProdSetor"] = new Chart(ctxProdSetor, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [
+          { label: "Setor 1", data: allDates.map((d) => prodS1ByDate[d] || 0), backgroundColor: "#1e40af", borderRadius: 6 },
+          { label: "Setor 2", data: allDates.map((d) => prodS2ByDate[d] || 0), backgroundColor: "#059669", borderRadius: 6 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: "top" } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+      }
+    });
+  }
+
+  // Grouped bar: resultado inspeção por setor
+  destroyChart("chartInsSetor");
+  const ctxInsSetor = document.getElementById("chartInsSetor");
+  if (ctxInsSetor && typeof Chart !== "undefined") {
+    chartInstances["chartInsSetor"] = new Chart(ctxInsSetor, {
+      type: "bar",
+      data: {
+        labels: ["Aprovados", "Rejeitados", "Retrabalho"],
+        datasets: [
+          { label: "Setor 1", data: [insS1.A, insS1.R, insS1.RR], backgroundColor: "#1e40af", borderRadius: 6 },
+          { label: "Setor 2", data: [insS2.A, insS2.R, insS2.RR], backgroundColor: "#059669", borderRadius: 6 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: "top" } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+      }
+    });
+  }
+
+  // Horizontal bar: não conformidades por código
+  destroyChart("chartNc");
+  const ctxNc = document.getElementById("chartNc");
+  if (ctxNc && typeof Chart !== "undefined") {
+    const ncCodes = CHECKLIST_INSPECAO_CODIGOS.filter((item) => ncCount[item.codigo] > 0)
+      .sort((a, b) => (ncCount[b.codigo] || 0) - (ncCount[a.codigo] || 0));
+    const allNcCodes = ncCodes.length
+      ? ncCodes
+      : CHECKLIST_INSPECAO_CODIGOS.slice(0, 5);
+    const ncLabels = allNcCodes.map((item) => `${item.codigo} – ${item.descricao}`);
+    const ncData = allNcCodes.map((item) => ncCount[item.codigo] || 0);
+    chartInstances["chartNc"] = new Chart(ctxNc, {
+      type: "bar",
+      data: {
+        labels: ncLabels,
+        datasets: [{ label: "Ocorrências", data: ncData, backgroundColor: "#7c3aed", borderRadius: 6 }]
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
       }
     });
   }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=d58480ee" />
+  <link rel="stylesheet" href="styles.css?v=7a0a05c6" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -156,6 +156,35 @@
             <div class="db-chart-wrap"><canvas id="chartIns"></canvas></div>
           </div>
         </div>
+
+        <!-- Gráficos específicos — Produção -->
+        <div class="db-section-hdr">
+          <span class="db-section-icon" style="background:#1e40af">📦</span>
+          <span class="db-section-lbl">Produção por Setor</span>
+        </div>
+        <div class="db-charts-row db-charts-row-full">
+          <div class="db-chart-card">
+            <div class="db-chart-title">Produção Setor 1 × Setor 2 por Dia (7 dias)</div>
+            <div class="db-chart-wrap"><canvas id="chartProdSetor"></canvas></div>
+          </div>
+        </div>
+
+        <!-- Gráficos específicos — Inspeção -->
+        <div class="db-section-hdr">
+          <span class="db-section-icon" style="background:#059669">🔍</span>
+          <span class="db-section-lbl">Inspeção por Setor e Não Conformidades</span>
+        </div>
+        <div class="db-charts-row">
+          <div class="db-chart-card">
+            <div class="db-chart-title">Resultado por Setor (A / R / RR)</div>
+            <div class="db-chart-wrap"><canvas id="chartInsSetor"></canvas></div>
+          </div>
+          <div class="db-chart-card">
+            <div class="db-chart-title">Não Conformidades por Código</div>
+            <div class="db-chart-wrap db-chart-wrap-nc"><canvas id="chartNc"></canvas></div>
+          </div>
+        </div>
+
         <div class="db-hist-card">
           <div class="db-hist-title">Histórico por Data</div>
           <div id="dbHistory" class="ins-dash-history"></div>
@@ -426,6 +455,6 @@
     </article>
   </template>
 
-  <script src="app.js?v=cf99ad59"></script>
+  <script src="app.js?v=10d7c81c"></script>
 </body>
 </html>
