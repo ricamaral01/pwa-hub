@@ -3,56 +3,88 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#1e40af" />
+  <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=57f9c3a3" />
+  <link rel="stylesheet" href="styles.css?v=7bf850d0" />
 </head>
 <body>
-  <main class="container">
-    <header class="header">
-      <div class="section-title-row">
-        <h1>Mapa de Concretagem</h1>
-        <button id="btnBackMain" class="btn btn-back" type="button">Voltar</button>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="appSidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">MC</div>
+      <div class="sidebar-logo-name">
+        <span class="sidebar-logo-title">Mapa de Concretagem</span>
+        <span class="sidebar-logo-sub">Planejamento e Controle</span>
       </div>
-      <p>Liberação de formas por setor</p>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item nav-active" id="navDashboard" type="button">
+        <span class="nav-icon-wrap">⊞</span>
+        Dashboard
+      </button>
+      <button class="nav-item" id="hubLiberacao" type="button">
+        <span class="nav-icon-wrap">PL</span>
+        Produção / Liberação
+      </button>
+      <button class="nav-item" id="hubInspecao" type="button">
+        <span class="nav-icon-wrap">MI</span>
+        Montagem / Inspeção
+      </button>
+      <button class="nav-item" id="hubRelatorio" type="button">
+        <span class="nav-icon-wrap">RE</span>
+        Relatório
+      </button>
+      <button class="nav-item" id="hubHistorico" type="button">
+        <span class="nav-icon-wrap">HI</span>
+        Histórico
+      </button>
+      <button class="nav-item" id="hubAcompanhamento" type="button">
+        <span class="nav-icon-wrap">AC</span>
+        Acompanhamento
+      </button>
+      <button class="nav-item" id="hubAcmpConcretagem" type="button">
+        <span class="nav-icon-wrap">CC</span>
+        Acmp. Concretagem
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <button id="btnBackMain" class="sidebar-back" type="button">↩ Voltar ao Hub</button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Main -->
+  <div class="app-main">
+    <header class="topbar">
+      <button class="sidebar-toggle-btn" id="sidebarToggle" type="button">☰</button>
+      <span class="topbar-title" id="topbarTitle">Dashboard</span>
+      <div class="topbar-right">
+        <div id="syncStatus" class="sync-status sync-pending">Verificando conexão com a planilha...</div>
+      </div>
     </header>
 
-    <section class="card sync-card">
-      <h2>Status de Sincronização</h2>
-      <div id="syncStatus" class="sync-status sync-pending">Verificando conexão com a planilha...</div>
-    </section>
+    <main class="page-content container">
 
-    <section id="viewHub" class="card">
-      <h2>Mapa de Concretagem - Hub</h2>
-      <div class="hub-grid">
-        <button id="hubLiberacao" class="hub-item" type="button">
-          <span class="hub-icon">PL</span>
-          <span class="hub-label">Producao / Liberacao</span>
-        </button>
-        <button id="hubInspecao" class="hub-item" type="button">
-          <span class="hub-icon">MI</span>
-          <span class="hub-label">Montagem / Inspecao</span>
-        </button>
-        <button id="hubRelatorio" class="hub-item" type="button">
-          <span class="hub-icon">RE</span>
-          <span class="hub-label">Relatorio</span>
-        </button>
-        <button id="hubHistorico" class="hub-item" type="button">
-          <span class="hub-icon">HI</span>
-          <span class="hub-label">Historico</span>
-        </button>
-        <button id="hubAcompanhamento" class="hub-item" type="button">
-          <span class="hub-icon">AC</span>
-          <span class="hub-label">Acompanhamento</span>
-        </button>
-        <button id="hubAcmpConcretagem" class="hub-item" type="button">
-          <span class="hub-icon">CC</span>
-          <span class="hub-label">Acmp. Concretagem</span>
-        </button>
-      </div>
-    </section>
+      <!-- Dashboard -->
+      <section id="viewHub">
+        <div class="dash-welcome">
+          <h2>Mapa de Concretagem</h2>
+          <p>Selecione um módulo no menu lateral para começar.</p>
+        </div>
+        <div class="hub-quick-grid">
+          <div class="hub-quick-card"><div class="hub-quick-icon" style="background:#1e40af">PL</div><div class="hub-quick-label">Produção / Liberação</div></div>
+          <div class="hub-quick-card"><div class="hub-quick-icon" style="background:#059669">MI</div><div class="hub-quick-label">Montagem / Inspeção</div></div>
+          <div class="hub-quick-card"><div class="hub-quick-icon" style="background:#7c3aed">RE</div><div class="hub-quick-label">Relatório</div></div>
+          <div class="hub-quick-card"><div class="hub-quick-icon" style="background:#b45309">HI</div><div class="hub-quick-label">Histórico</div></div>
+          <div class="hub-quick-card"><div class="hub-quick-icon" style="background:#0e7490">AC</div><div class="hub-quick-label">Acompanhamento</div></div>
+          <div class="hub-quick-card"><div class="hub-quick-icon" style="background:#be185d">CC</div><div class="hub-quick-label">Acmp. Concretagem</div></div>
+        </div>
+      </section>
 
-    <section id="viewLiberacao" class="card">
+      <section id="viewLiberacao" class="card hidden">
       <div class="section-title-row">
         <h2>Produção / Liberação</h2>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
@@ -284,7 +316,10 @@
       <div id="acmpFeedback" class="lib-feedback hidden"></div>
       <div id="acmpOutput" class="report-box" style="margin-top:12px"></div>
     </section>
-  </main>
+
+    </main>
+  </div>
+</div>
 
   <div id="insFloatBar" class="ins-float-bar">
     <button id="salvarInspecaoFloat" class="btn primary ins-float-salvar" type="button">💾 Salvar Inspeções</button>
@@ -308,6 +343,6 @@
     </article>
   </template>
 
-  <script src="app.js?v=cbe8ba65"></script>
+  <script src="app.js?v=3f9d0f56"></script>
 </body>
 </html>

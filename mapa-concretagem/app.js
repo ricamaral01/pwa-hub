@@ -1800,6 +1800,25 @@ function setMode(mode) {
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
   if (mode === "ACOMPANHAMENTO") document.body.classList.add("mode-acompanhamento");
   if (mode === "ACMP_CONCRETAGEM") document.body.classList.add("mode-acmp-concretagem");
+
+  // Update sidebar nav + topbar title
+  const navTitles = {
+    HUB: ["navDashboard", "Dashboard"],
+    LIBERACAO: ["hubLiberacao", "Produção / Liberação"],
+    INSPECAO: ["hubInspecao", "Montagem / Inspeção"],
+    RELATORIO: ["hubRelatorio", "Relatório"],
+    HISTORICO: ["hubHistorico", "Histórico"],
+    ACOMPANHAMENTO: ["hubAcompanhamento", "Acompanhamento"],
+    ACMP_CONCRETAGEM: ["hubAcmpConcretagem", "Acmp. Concretagem"]
+  };
+  const navInfo = navTitles[mode];
+  document.querySelectorAll(".nav-item").forEach((btn) => btn.classList.remove("nav-active"));
+  if (navInfo) {
+    const activeBtn = document.getElementById(navInfo[0]);
+    if (activeBtn) activeBtn.classList.add("nav-active");
+    const titleEl = document.getElementById("topbarTitle");
+    if (titleEl) titleEl.textContent = navInfo[1];
+  }
 }
 
 function navigateBack() {
@@ -1891,6 +1910,33 @@ function bindEvents() {
     state.insPhotos = state.insPhotos.concat(photos);
     renderPhotoPreview(el.insFotosPreview, state.insPhotos);
   });
+
+  // Sidebar toggle (mobile)
+  const appSidebar = document.getElementById("appSidebar");
+  const sidebarOverlay = document.getElementById("sidebarOverlay");
+  const sidebarToggle = document.getElementById("sidebarToggle");
+  if (sidebarToggle && appSidebar) {
+    sidebarToggle.addEventListener("click", () => {
+      appSidebar.classList.toggle("sidebar-open");
+      if (sidebarOverlay) sidebarOverlay.classList.toggle("visible");
+    });
+  }
+  if (sidebarOverlay && appSidebar) {
+    sidebarOverlay.addEventListener("click", () => {
+      appSidebar.classList.remove("sidebar-open");
+      sidebarOverlay.classList.remove("visible");
+    });
+  }
+  document.querySelectorAll(".nav-item").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (window.innerWidth <= 768 && appSidebar) {
+        appSidebar.classList.remove("sidebar-open");
+        if (sidebarOverlay) sidebarOverlay.classList.remove("visible");
+      }
+    });
+  });
+  const navDashboard = document.getElementById("navDashboard");
+  if (navDashboard) navDashboard.addEventListener("click", () => setMode("HUB"));
 }
 
 function init() {
