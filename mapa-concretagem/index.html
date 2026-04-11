@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=7a0a05c6" />
+  <link rel="stylesheet" href="styles.css?v=9621a75f" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -301,25 +301,31 @@
         <h2>Relatório por Setor</h2>
         <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
       </div>
-      <div class="page-fc">
-        <div class="page-fc-grid">
-          <label>Data de produção
-            <input id="relData" type="date" />
-          </label>
-          <label>Setor
-            <select id="relSetor">
-              <option value="">Selecione</option>
-              <option value="Setor 1">Setor 1</option>
-              <option value="Setor 2">Setor 2</option>
-            </select>
-          </label>
-          <label>Encarregado
-            <input id="relEncarregado" type="text" placeholder="Nome do encarregado" />
-          </label>
+      <div class="desktop-split">
+        <div class="desktop-split-left">
+          <div class="page-fc page-fc-sticky">
+            <div class="page-fc-grid">
+              <label>Data de produção
+                <input id="relData" type="date" />
+              </label>
+              <label>Setor
+                <select id="relSetor">
+                  <option value="">Selecione</option>
+                  <option value="Setor 1">Setor 1</option>
+                  <option value="Setor 2">Setor 2</option>
+                </select>
+              </label>
+              <label>Encarregado
+                <input id="relEncarregado" type="text" placeholder="Nome do encarregado" />
+              </label>
+            </div>
+            <button id="gerarRelatorioSetor" class="btn primary btn-row-full" type="button">🖨️ Gerar Relatório</button>
+          </div>
         </div>
-        <button id="gerarRelatorioSetor" class="btn primary btn-row-full" type="button">🖨️ Gerar Relatório</button>
+        <div class="desktop-split-right">
+          <div id="relatorioSetorOutput" class="report-box report-box-lg"></div>
+        </div>
       </div>
-      <div id="relatorioSetorOutput" class="report-box"></div>
     </section>
 
     <section id="viewHistorico" class="card hidden">
@@ -327,25 +333,31 @@
         <h2>Histórico de Lançamentos</h2>
         <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
       </div>
-      <div class="page-fc">
-        <div class="page-fc-grid">
-          <label>Data
-            <input id="histData" type="date" />
-          </label>
-          <label>Tipo
-            <select id="histTipo">
-              <option value="">Todos</option>
-              <option value="LIBERACAO">Produção</option>
-              <option value="INSPECAO">Inspeção</option>
-            </select>
-          </label>
-          <label>Forma
-            <input id="histForma" type="text" placeholder="Ex: A-52" />
-          </label>
+      <div class="desktop-split">
+        <div class="desktop-split-left">
+          <div class="page-fc page-fc-sticky">
+            <div class="page-fc-grid">
+              <label>Data
+                <input id="histData" type="date" />
+              </label>
+              <label>Tipo
+                <select id="histTipo">
+                  <option value="">Todos</option>
+                  <option value="LIBERACAO">Produção</option>
+                  <option value="INSPECAO">Inspeção</option>
+                </select>
+              </label>
+              <label>Forma
+                <input id="histForma" type="text" placeholder="Ex: A-52" />
+              </label>
+            </div>
+            <button id="filtrarHistorico" class="btn primary btn-row-full" type="button">🔍 Filtrar</button>
+          </div>
         </div>
-        <button id="filtrarHistorico" class="btn primary btn-row-full" type="button">🔍 Filtrar</button>
+        <div class="desktop-split-right">
+          <div id="historicoLista" class="list hist-list hist-list-lg"></div>
+        </div>
       </div>
-      <div id="historicoLista" class="list hist-list"></div>
     </section>
 
     <section id="viewAcompanhamento" class="card hidden">
