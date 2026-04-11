@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=6b6b402e" />
+  <link rel="stylesheet" href="styles.css?v=d58480ee" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="app-shell">
@@ -20,8 +21,12 @@
       </div>
     </div>
     <nav class="sidebar-nav">
-      <button class="nav-item nav-active" id="navDashboard" type="button">
+      <button class="nav-item nav-active" id="navInicio" type="button">
         <span class="nav-icon-wrap">⊞</span>
+        Início
+      </button>
+      <button class="nav-item" id="navDashboard" type="button">
+        <span class="nav-icon-wrap">📊</span>
         Dashboard
       </button>
       <button class="nav-item" id="hubLiberacao" type="button">
@@ -60,7 +65,7 @@
   <div class="app-main">
     <header class="topbar">
       <button class="sidebar-toggle-btn" id="sidebarToggle" type="button">☰</button>
-      <span class="topbar-title" id="topbarTitle">Dashboard</span>
+      <span class="topbar-title" id="topbarTitle">Início</span>
       <div class="topbar-right">
         <div id="syncStatus" class="sync-status sync-pending">Verificando conexão com a planilha...</div>
       </div>
@@ -68,64 +73,93 @@
 
     <main class="page-content container">
 
-      <!-- Dashboard -->
+      <!-- Início -->
       <section id="viewHub">
-        <div class="dash-welcome">
-          <h2>Mapa de Concretagem</h2>
-          <p>Selecione um módulo no menu lateral para começar.</p>
+        <div class="hub-icon-grid">
+          <button class="hub-icon-btn" type="button" data-hub-mode="DASHBOARD">
+            <div class="hub-icon-circle" style="background:#0f1e3c">📊</div>
+            <span class="hub-icon-lbl">Dashboard</span>
+          </button>
+          <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO">
+            <div class="hub-icon-circle" style="background:#1e40af">PL</div>
+            <span class="hub-icon-lbl">Produção</span>
+          </button>
+          <button class="hub-icon-btn" type="button" data-hub-mode="INSPECAO">
+            <div class="hub-icon-circle" style="background:#059669">MI</div>
+            <span class="hub-icon-lbl">Inspeção</span>
+          </button>
+          <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO">
+            <div class="hub-icon-circle" style="background:#7c3aed">RE</div>
+            <span class="hub-icon-lbl">Relatório</span>
+          </button>
+          <button class="hub-icon-btn" type="button" data-hub-mode="HISTORICO">
+            <div class="hub-icon-circle" style="background:#b45309">HI</div>
+            <span class="hub-icon-lbl">Histórico</span>
+          </button>
+          <button class="hub-icon-btn" type="button" data-hub-mode="ACOMPANHAMENTO">
+            <div class="hub-icon-circle" style="background:#0e7490">AC</div>
+            <span class="hub-icon-lbl">Acompanhamento</span>
+          </button>
+          <button class="hub-icon-btn" type="button" data-hub-mode="ACMP_CONCRETAGEM">
+            <div class="hub-icon-circle" style="background:#be185d">CC</div>
+            <span class="hub-icon-lbl">Concretagem</span>
+          </button>
         </div>
-        <div class="hub-quick-grid">
-          <button class="hub-quick-card" type="button" data-hub-mode="LIBERACAO"><div class="hub-quick-icon" style="background:#1e40af">PL</div><div class="hub-quick-label">Produção / Liberação</div></button>
-          <button class="hub-quick-card" type="button" data-hub-mode="INSPECAO"><div class="hub-quick-icon" style="background:#059669">MI</div><div class="hub-quick-label">Montagem / Inspeção</div></button>
-          <button class="hub-quick-card" type="button" data-hub-mode="RELATORIO"><div class="hub-quick-icon" style="background:#7c3aed">RE</div><div class="hub-quick-label">Relatório</div></button>
-          <button class="hub-quick-card" type="button" data-hub-mode="HISTORICO"><div class="hub-quick-icon" style="background:#b45309">HI</div><div class="hub-quick-label">Histórico</div></button>
-          <button class="hub-quick-card" type="button" data-hub-mode="ACOMPANHAMENTO"><div class="hub-quick-icon" style="background:#0e7490">AC</div><div class="hub-quick-label">Acompanhamento</div></button>
-          <button class="hub-quick-card" type="button" data-hub-mode="ACMP_CONCRETAGEM"><div class="hub-quick-icon" style="background:#be185d">CC</div><div class="hub-quick-label">Acmp. Concretagem</div></button>
+      </section>
+
+      <!-- Dashboard com gráficos -->
+      <section id="viewDashboard" class="hidden">
+        <div class="section-title-row">
+          <h2>Dashboard</h2>
+          <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
         </div>
-
-        <!-- ── Painel de Indicadores de Inspeção ── -->
-        <div class="ins-dash-panel">
-          <div class="ins-dash-header">
-            <h3 class="ins-dash-title">📊 Indicadores de Inspeção</h3>
-            <div class="ins-dash-filter">
-              <label class="ins-dash-filter-label">Data
-                <input id="insDashData" type="date" class="ins-dash-date-input" />
-              </label>
-              <button id="insDashBtnHoje" class="btn ins-dash-btn-hoje" type="button">Hoje</button>
-              <button id="insDashBtnAtualizar" class="btn ins-dash-btn-atualizar" type="button">↻</button>
-            </div>
-          </div>
-
-          <div class="ins-dash-cards">
-            <div class="ins-dash-card ins-dash-card-total">
-              <div class="ins-dash-card-label">Inspecionados</div>
-              <div class="ins-dash-card-val" id="insDashTotal">—</div>
-            </div>
-            <div class="ins-dash-card ins-dash-card-ok">
-              <div class="ins-dash-card-label">Aprovados</div>
-              <div class="ins-dash-card-val" id="insDashAprovados">—</div>
-            </div>
-            <div class="ins-dash-card ins-dash-card-r">
-              <div class="ins-dash-card-label">Rejeitados</div>
-              <div class="ins-dash-card-val" id="insDashRejeitados">—</div>
-            </div>
-            <div class="ins-dash-card ins-dash-card-rr">
-              <div class="ins-dash-card-label">Retrabalho</div>
-              <div class="ins-dash-card-val" id="insDashRetrabalho">—</div>
-            </div>
-          </div>
-
-          <div class="ins-dash-rate-row">
-            <span class="ins-dash-rate-label">Taxa de rejeição:</span>
-            <div class="ins-dash-rate-bar-track">
-              <div class="ins-dash-rate-bar" id="insDashRateBar" style="width:0%"></div>
-            </div>
-            <span class="ins-dash-rate-pct" id="insDashRatePct">0%</span>
-          </div>
-
-          <div class="ins-dash-history" id="insDashHistory"></div>
+        <div class="db-toolbar">
+          <label class="db-toolbar-label">Data
+            <input id="dbData" type="date" />
+          </label>
+          <button id="dbBtnHoje" class="btn" type="button">Hoje</button>
+          <button id="dbBtnAtualizar" class="btn primary" type="button">↻ Atualizar</button>
         </div>
-
+        <div class="db-kpi-row">
+          <div class="db-kpi-card db-kpi-prod">
+            <span class="db-kpi-label">Produzidos</span>
+            <span class="db-kpi-val" id="dbKpiProd">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-ins">
+            <span class="db-kpi-label">Inspecionados</span>
+            <span class="db-kpi-val" id="dbKpiIns">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-ok">
+            <span class="db-kpi-label">Aprovados</span>
+            <span class="db-kpi-val" id="dbKpiA">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-r">
+            <span class="db-kpi-label">Rejeitados</span>
+            <span class="db-kpi-val" id="dbKpiR">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-rr">
+            <span class="db-kpi-label">Retrabalho</span>
+            <span class="db-kpi-val" id="dbKpiRR">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-pct">
+            <span class="db-kpi-label">Taxa Rejeição</span>
+            <span class="db-kpi-val" id="dbKpiRejPct">—</span>
+          </div>
+        </div>
+        <div class="db-charts-row">
+          <div class="db-chart-card">
+            <div class="db-chart-title">Produção × Inspeção por Dia</div>
+            <div class="db-chart-wrap"><canvas id="chartProd"></canvas></div>
+          </div>
+          <div class="db-chart-card db-chart-card-sm">
+            <div class="db-chart-title">Status de Inspeção</div>
+            <div class="db-chart-wrap"><canvas id="chartIns"></canvas></div>
+          </div>
+        </div>
+        <div class="db-hist-card">
+          <div class="db-hist-title">Histórico por Data</div>
+          <div id="dbHistory" class="ins-dash-history"></div>
+        </div>
       </section>
 
       <section id="viewLiberacao" class="card hidden">
@@ -235,110 +269,107 @@
 
     <section id="viewRelatorio" class="card hidden">
       <div class="section-title-row">
-        <h2>Relatorio</h2>
-        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+        <h2>Relatório por Setor</h2>
+        <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
       </div>
-      <h3>Relatorio Completo por Setor</h3>
-      <div class="grid">
-        <label>Data de producao
-          <input id="relData" type="date" />
-        </label>
-        <label>Setor
-          <select id="relSetor">
-            <option value="">Selecione</option>
-            <option value="Setor 1">Setor 1</option>
-            <option value="Setor 2">Setor 2</option>
-          </select>
-        </label>
-        <label>Encarregado (assinatura)
-          <input id="relEncarregado" type="text" placeholder="Nome do encarregado" />
-        </label>
+      <div class="page-fc">
+        <div class="page-fc-grid">
+          <label>Data de produção
+            <input id="relData" type="date" />
+          </label>
+          <label>Setor
+            <select id="relSetor">
+              <option value="">Selecione</option>
+              <option value="Setor 1">Setor 1</option>
+              <option value="Setor 2">Setor 2</option>
+            </select>
+          </label>
+          <label>Encarregado
+            <input id="relEncarregado" type="text" placeholder="Nome do encarregado" />
+          </label>
+        </div>
+        <button id="gerarRelatorioSetor" class="btn primary btn-row-full" type="button">🖨️ Gerar Relatório</button>
       </div>
-      <button id="gerarRelatorioSetor" class="btn primary" type="button">Gerar Relatorio</button>
       <div id="relatorioSetorOutput" class="report-box"></div>
     </section>
 
     <section id="viewHistorico" class="card hidden">
       <div class="section-title-row">
-        <h2>Historico de Lancamentos</h2>
-        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+        <h2>Histórico de Lançamentos</h2>
+        <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
       </div>
-
-      <div class="grid">
-        <label>Data
-          <input id="histData" type="date" />
-        </label>
-        <label>Tipo de lancamento
-          <select id="histTipo">
-            <option value="">Todos</option>
-            <option value="LIBERACAO">Producao</option>
-            <option value="INSPECAO">Inspecao</option>
-          </select>
-        </label>
-        <label>Forma
-          <input id="histForma" type="text" placeholder="Ex: A-52" />
-        </label>
+      <div class="page-fc">
+        <div class="page-fc-grid">
+          <label>Data
+            <input id="histData" type="date" />
+          </label>
+          <label>Tipo
+            <select id="histTipo">
+              <option value="">Todos</option>
+              <option value="LIBERACAO">Produção</option>
+              <option value="INSPECAO">Inspeção</option>
+            </select>
+          </label>
+          <label>Forma
+            <input id="histForma" type="text" placeholder="Ex: A-52" />
+          </label>
+        </div>
+        <button id="filtrarHistorico" class="btn primary btn-row-full" type="button">🔍 Filtrar</button>
       </div>
-      <button id="filtrarHistorico" class="btn" type="button">Filtrar</button>
-      <div id="historicoLista" class="list"></div>
+      <div id="historicoLista" class="list hist-list"></div>
     </section>
 
     <section id="viewAcompanhamento" class="card hidden">
       <div class="section-title-row">
-        <h2>Acompanhamento</h2>
-        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+        <h2>Acompanhamento de Produção</h2>
+        <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
       </div>
-      <h3>Grafico de Producao do Dia</h3>
-      <div class="grid">
-        <label>Data das leituras
+      <div class="page-fc acmp-bar">
+        <label>Data
           <input id="dashData" type="date" />
         </label>
+        <button id="atualizarDashboard" class="btn primary" type="button">↻ Atualizar</button>
       </div>
-      <button id="atualizarDashboard" class="btn primary" type="button">Atualizar painel</button>
-
-      <div class="dashboard-cards">
-        <article class="dash-card setor-1">
-          <div class="dash-title">Setor 1</div>
-          <div id="dashSetor1Count" class="dash-value">0</div>
-          <div id="dashSetor1Meta" class="dash-meta">0 leituras concretadas</div>
+      <div class="acmp-kpi-grid">
+        <article class="acmp-kpi acmp-kpi-s1">
+          <div class="acmp-kpi-lbl">Setor 1</div>
+          <div id="dashSetor1Count" class="acmp-kpi-val">0</div>
+          <div id="dashSetor1Meta" class="acmp-kpi-sub">0 concretados</div>
         </article>
-        <article class="dash-card setor-2">
-          <div class="dash-title">Setor 2</div>
-          <div id="dashSetor2Count" class="dash-value">0</div>
-          <div id="dashSetor2Meta" class="dash-meta">0 leituras concretadas</div>
+        <article class="acmp-kpi acmp-kpi-s2">
+          <div class="acmp-kpi-lbl">Setor 2</div>
+          <div id="dashSetor2Count" class="acmp-kpi-val">0</div>
+          <div id="dashSetor2Meta" class="acmp-kpi-sub">0 concretados</div>
         </article>
-        <article class="dash-card total">
-          <div class="dash-title">Total</div>
-          <div id="dashTotalCount" class="dash-value">0</div>
-          <div class="dash-meta">Formas concretadas no dia</div>
+        <article class="acmp-kpi acmp-kpi-tot">
+          <div class="acmp-kpi-lbl">Total</div>
+          <div id="dashTotalCount" class="acmp-kpi-val">0</div>
+          <div class="acmp-kpi-sub">formas concretadas</div>
         </article>
       </div>
-
-      <div class="dash-chart">
-        <div class="dash-row">
-          <span>Setor 1</span>
-          <div class="dash-bar-track"><div id="dashBarSetor1" class="dash-bar setor-1" style="width:0%"></div></div>
-          <strong id="dashBarSetor1Label">0</strong>
-        </div>
-        <div class="dash-row">
-          <span>Setor 2</span>
-          <div class="dash-bar-track"><div id="dashBarSetor2" class="dash-bar setor-2" style="width:0%"></div></div>
-          <strong id="dashBarSetor2Label">0</strong>
-        </div>
+      <div class="db-chart-card" style="margin-top:14px">
+        <div class="db-chart-title">Produção do Dia por Setor</div>
+        <div class="db-chart-wrap"><canvas id="chartAcmp"></canvas></div>
       </div>
-      <div id="dashStatus" class="muted">Aguardando atualização do painel...</div>
+      <p id="dashStatus" class="muted" style="margin-top:8px;font-size:0.82rem">Aguardando atualização do painel...</p>
+      <div style="display:none">
+        <div id="dashBarSetor1" style="width:0%"></div>
+        <div id="dashBarSetor2" style="width:0%"></div>
+        <span id="dashBarSetor1Label"></span>
+        <span id="dashBarSetor2Label"></span>
+      </div>
     </section>
 
     <section id="viewAcmpConcretagem" class="card hidden">
       <div class="section-title-row">
         <h2>Acompanhamento Concretagem</h2>
-        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+        <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
       </div>
-      <div class="grid">
+      <div class="page-fc acmp-bar">
         <label>Data
           <input id="acmpData" type="date" />
         </label>
-        <label>Modo de carga
+        <label>Modo
           <select id="acmpModoCarga">
             <option value="data">Produção da data</option>
             <option value="pendentes">Produzidos não inspecionados</option>
@@ -351,11 +382,11 @@
             <option value="Setor 2">Setor 2</option>
           </select>
         </label>
+        <button id="acmpCarregar" class="btn primary" type="button">📋 Carregar</button>
       </div>
-      <button id="acmpCarregar" class="btn primary" type="button">Carregar Relatório</button>
-      <div class="acmp-actions">
-        <button id="acmpSalvar" class="btn btn-acmp-salvar" type="button">Salvar</button>
-        <button id="acmpImprimir" class="btn btn-acmp-imprimir" type="button">Imprimir</button>
+      <div class="acmp-action-row">
+        <button id="acmpSalvar" class="btn" type="button">💾 Salvar</button>
+        <button id="acmpImprimir" class="btn" type="button">🖨️ Imprimir</button>
       </div>
       <div id="acmpFeedback" class="lib-feedback hidden"></div>
       <div id="acmpOutput" class="report-box" style="margin-top:12px"></div>
@@ -395,6 +426,6 @@
     </article>
   </template>
 
-  <script src="app.js?v=b6051375"></script>
+  <script src="app.js?v=cf99ad59"></script>
 </body>
 </html>

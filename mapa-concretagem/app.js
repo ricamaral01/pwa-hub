@@ -252,6 +252,7 @@ const el = {
   backMain: document.getElementById("btnBackMain"),
   backButtons: Array.from(document.querySelectorAll("[data-back-btn]")),
   hubView: document.getElementById("viewHub"),
+  viewDashboard: document.getElementById("viewDashboard"),
   hubLiberacao: document.getElementById("hubLiberacao"),
   hubInspecao: document.getElementById("hubInspecao"),
   hubRelatorio: document.getElementById("hubRelatorio"),
@@ -320,6 +321,12 @@ const el = {
   gerarRelatorioSetor: document.getElementById("gerarRelatorioSetor"),
   relatorioSetorOutput: document.getElementById("relatorioSetorOutput")
 };
+
+/* ── Chart.js instance tracker ───────────────────── */
+const chartInstances = {};
+function destroyChart(id) {
+  if (chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
+}
 
 function nowIso() {
   const d = new Date();
@@ -1382,6 +1389,120 @@ async function saveInspecao() {
   }
 }
 
+function renderDashboardCharts() {
+  const db = readDb();
+  const dbDataEl = document.getElementById("dbData");
+  const selectedDate = dbDataEl ? dbDataEl.value : "";
+
+  // Aggregate events by date
+  const prodByDate = {};
+  const insByDate = {};
+  const insStatusTotal = { A: 0, R: 0, RR: 0 };
+
+  db.events.forEach((ev) => {
+    const etapa = (ev.etapa || "").toUpperCase();
+    const d = ev.dataFabricacao || "";
+    if (etapa === "LIBERACAO") {
+      prodByDate[d] = (prodByDate[d] || 0) + 1;
+    } else if (etapa === "INSPECAO" || etapa === "REINSPECAO") {
+      if (!insByDate[d]) insByDate[d] = { A: 0, R: 0, RR: 0, total: 0 };
+      insByDate[d].total++;
+      const s = (ev.status || "").toUpperCase();
+      if (s in insStatusTotal) { insStatusTotal[s]++; insByDate[d][s]++; }
+    }
+  });
+
+  // KPI for selected date or all
+  let kpiProd = 0, kpiIns = 0, kpiA = 0, kpiR = 0, kpiRR = 0;
+  if (selectedDate) {
+    kpiProd = prodByDate[selectedDate] || 0;
+    const iv = insByDate[selectedDate] || { A: 0, R: 0, RR: 0, total: 0 };
+    kpiIns = iv.total; kpiA = iv.A; kpiR = iv.R; kpiRR = iv.RR;
+  } else {
+    kpiProd = Object.values(prodByDate).reduce((s, v) => s + v, 0);
+    kpiA = insStatusTotal.A; kpiR = insStatusTotal.R; kpiRR = insStatusTotal.RR;
+    kpiIns = kpiA + kpiR + kpiRR;
+  }
+  const rejPct = kpiIns > 0 ? Math.round(((kpiR + kpiRR) / kpiIns) * 100) : 0;
+
+  const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  setTxt("dbKpiProd", kpiProd);
+  setTxt("dbKpiIns", kpiIns);
+  setTxt("dbKpiA", kpiA);
+  setTxt("dbKpiR", kpiR);
+  setTxt("dbKpiRR", kpiRR);
+  setTxt("dbKpiRejPct", rejPct + "%");
+
+  // Last 7 dates sorted asc
+  const allDates = [...new Set([...Object.keys(prodByDate), ...Object.keys(insByDate)])]
+    .sort((a, b) => (a < b ? -1 : 1)).slice(-7);
+  const labels = allDates.map((d) => d.split("-").reverse().join("/"));
+  const prodData = allDates.map((d) => prodByDate[d] || 0);
+  const insData = allDates.map((d) => (insByDate[d] || {}).total || 0);
+
+  // Bar chart: production vs inspection by day
+  destroyChart("chartProd");
+  const ctxProd = document.getElementById("chartProd");
+  if (ctxProd && typeof Chart !== "undefined") {
+    chartInstances["chartProd"] = new Chart(ctxProd, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [
+          { label: "Produção", data: prodData, backgroundColor: "#1e40af", borderRadius: 6 },
+          { label: "Inspecionados", data: insData, backgroundColor: "#059669", borderRadius: 6 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: "top" } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+      }
+    });
+  }
+
+  // Doughnut: inspection status
+  destroyChart("chartIns");
+  const ctxIns = document.getElementById("chartIns");
+  if (ctxIns && typeof Chart !== "undefined") {
+    chartInstances["chartIns"] = new Chart(ctxIns, {
+      type: "doughnut",
+      data: {
+        labels: ["Aprovados", "Rejeitados", "Retrabalho"],
+        datasets: [{ data: [kpiA, kpiR, kpiRR], backgroundColor: ["#059669", "#dc2626", "#d97706"], borderWidth: 2 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: "bottom" } }
+      }
+    });
+  }
+
+  // History rows (last 7 dates sorted desc)
+  const histEl = document.getElementById("dbHistory");
+  if (!histEl) return;
+  const histDates = [...allDates].reverse();
+  const maxProd = histDates.reduce((m, d) => Math.max(m, prodByDate[d] || 0), 1);
+  if (!histDates.length) {
+    histEl.innerHTML = '<p class="muted" style="font-size:.82rem;margin:0">Nenhum registro encontrado.</p>';
+    return;
+  }
+  histEl.innerHTML = histDates.map((d) => {
+    const prod = prodByDate[d] || 0;
+    const ins = (insByDate[d] || {}).total || 0;
+    const rj = (insByDate[d] || { R: 0, RR: 0 }).R + (insByDate[d] || { R: 0, RR: 0 }).RR;
+    const pct = Math.round((prod / maxProd) * 100);
+    const fmt = d.split("-").reverse().join("/");
+    return `<div class="ins-dash-hist-row">
+  <span class="ins-dash-hist-date">${fmt}</span>
+  <div class="ins-dash-hist-bar-track"><div class="ins-dash-hist-bar" style="width:${pct}%"></div></div>
+  <span class="ins-dash-hist-count">${prod}</span>
+  <span style="color:#065f46;font-size:.78rem;min-width:50px">✔ ${ins}</span>
+  <span style="color:#991b1b;font-size:.78rem;min-width:46px">✘ ${rj}</span>
+</div>`;
+  }).join("");
+}
+
 function renderDashboardStats() {
   const db = readDb();
   const dataInput = document.getElementById("insDashData");
@@ -1750,6 +1871,29 @@ function renderDashboardConcretagem({ setor1, setor2, source, data }) {
   el.dashBarSetor1Label.textContent = String(concretadasSetor1);
   el.dashBarSetor2Label.textContent = String(concretadasSetor2);
 
+  // Canvas chart for Acompanhamento
+  destroyChart("chartAcmp");
+  const ctxAcmp = document.getElementById("chartAcmp");
+  if (ctxAcmp && typeof Chart !== "undefined") {
+    chartInstances["chartAcmp"] = new Chart(ctxAcmp, {
+      type: "bar",
+      data: {
+        labels: ["Setor 1", "Setor 2"],
+        datasets: [{
+          label: "Produzidos",
+          data: [concretadasSetor1, concretadasSetor2],
+          backgroundColor: ["#1e40af", "#059669"],
+          borderRadius: 10
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+      }
+    });
+  }
+
   el.dashStatus.textContent = `Painel atualizado para ${data} (${source === "api" ? "dados da planilha" : "cache local"}).`;
 }
 
@@ -1845,11 +1989,12 @@ async function gerarRelatorioSetor() {
 
 function setMode(mode) {
   state.mode = mode;
-  [el.hubView, el.viewLiberacao, el.viewInspecao, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem]
-    .forEach((view) => view.classList.add("hidden"));
-  if (mode === "HUB") {
-    el.hubView.classList.remove("hidden");
-    renderDashboardStats();
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem]
+    .filter(Boolean).forEach((view) => view.classList.add("hidden"));
+  if (mode === "HUB") el.hubView.classList.remove("hidden");
+  if (mode === "DASHBOARD") {
+    if (el.viewDashboard) el.viewDashboard.classList.remove("hidden");
+    renderDashboardCharts();
   }
   if (mode === "LIBERACAO") el.viewLiberacao.classList.remove("hidden");
   if (mode === "INSPECAO") el.viewInspecao.classList.remove("hidden");
@@ -1858,8 +2003,9 @@ function setMode(mode) {
   if (mode === "ACOMPANHAMENTO") el.viewAcompanhamento.classList.remove("hidden");
   if (mode === "ACMP_CONCRETAGEM") el.viewAcmpConcretagem.classList.remove("hidden");
 
-  document.body.classList.remove("mode-hub", "mode-liberacao", "mode-inspecao", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem");
   if (mode === "HUB") document.body.classList.add("mode-hub");
+  if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO") document.body.classList.add("mode-liberacao");
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
@@ -1875,7 +2021,8 @@ function setMode(mode) {
 
   // Update sidebar nav + topbar title
   const navTitles = {
-    HUB: ["navDashboard", "Dashboard"],
+    HUB: ["navInicio", "Início"],
+    DASHBOARD: ["navDashboard", "Dashboard"],
     LIBERACAO: ["hubLiberacao", "Produção / Liberação"],
     INSPECAO: ["hubInspecao", "Montagem / Inspeção"],
     RELATORIO: ["hubRelatorio", "Relatório"],
@@ -2007,25 +2154,28 @@ function bindEvents() {
       }
     });
   });
+  const navInicio = document.getElementById("navInicio");
+  if (navInicio) navInicio.addEventListener("click", () => setMode("HUB"));
   const navDashboard = document.getElementById("navDashboard");
-  if (navDashboard) navDashboard.addEventListener("click", () => setMode("HUB"));
+  if (navDashboard) navDashboard.addEventListener("click", () => setMode("DASHBOARD"));
 
-  // Dashboard stats filter
-  const insDashData = document.getElementById("insDashData");
-  if (insDashData) insDashData.addEventListener("change", renderDashboardStats);
-  const insDashBtnHoje = document.getElementById("insDashBtnHoje");
-  if (insDashBtnHoje) insDashBtnHoje.addEventListener("click", () => {
-    if (insDashData) insDashData.value = todayYmd();
-    renderDashboardStats();
+  // Dashboard charts filter
+  const dbData = document.getElementById("dbData");
+  if (dbData) dbData.addEventListener("change", renderDashboardCharts);
+  const dbBtnHoje = document.getElementById("dbBtnHoje");
+  if (dbBtnHoje) dbBtnHoje.addEventListener("click", () => {
+    if (dbData) dbData.value = todayYmd();
+    renderDashboardCharts();
   });
-  const insDashBtnAtualizar = document.getElementById("insDashBtnAtualizar");
-  if (insDashBtnAtualizar) insDashBtnAtualizar.addEventListener("click", renderDashboardStats);
+  const dbBtnAtualizar = document.getElementById("dbBtnAtualizar");
+  if (dbBtnAtualizar) dbBtnAtualizar.addEventListener("click", renderDashboardCharts);
 
-  // Hub quick-cards
+  // Hub icon-cards (data-hub-mode)
   document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const mode = btn.dataset.hubMode;
-      if (mode === "LIBERACAO") { setMode("LIBERACAO"); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
+      if (mode === "DASHBOARD") { setMode("DASHBOARD"); }
+      else if (mode === "LIBERACAO") { setMode("LIBERACAO"); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
       else if (mode === "INSPECAO") { setMode("INSPECAO"); if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd(); renderInspecaoLiberados(); }
       else if (mode === "RELATORIO") { setMode("RELATORIO"); if (!el.relData.value) el.relData.value = todayYmd(); }
       else if (mode === "HISTORICO") { setMode("HISTORICO"); renderHistorico(); }
@@ -2052,8 +2202,8 @@ function init() {
   el.relSetor.value = "Setor 2";
   if (el.acmpData) el.acmpData.value = now;
   if (el.acmpSetor) el.acmpSetor.value = "";
-  const insDashDataEl = document.getElementById("insDashData");
-  if (insDashDataEl) insDashDataEl.value = now;
+  const dbDataEl = document.getElementById("dbData");
+  if (dbDataEl) dbDataEl.value = now;
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
