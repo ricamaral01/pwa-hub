@@ -1231,6 +1231,9 @@ async function saveInspecao() {
   setSubmitButtonState(el.salvarInspecao, true);
   if (el.salvarInspecaoFloat) setSubmitButtonState(el.salvarInspecaoFloat, true);
 
+  const loadingModal = document.getElementById("loadingModal");
+  if (loadingModal) loadingModal.classList.add("modal-visible");
+
   try {
 
     const db = readDb();
@@ -1372,10 +1375,76 @@ async function saveInspecao() {
       showInspecaoModal(counts, "error");
     }
   } finally {
+    if (loadingModal) loadingModal.classList.remove("modal-visible");
     state.isSendingInspecao = false;
     setSubmitButtonState(el.salvarInspecao, false);
     if (el.salvarInspecaoFloat) setSubmitButtonState(el.salvarInspecaoFloat, false);
   }
+}
+
+function renderDashboardStats() {
+  const db = readDb();
+  const dataInput = document.getElementById("insDashData");
+  const selectedDate = dataInput ? dataInput.value : "";
+
+  // Aggregate inspection events from local DB
+  // Group by dataFabricacao, count statuses
+  const byDate = {};
+  db.events.forEach((ev) => {
+    const etapa = (ev.etapa || "").toUpperCase();
+    if (etapa !== "INSPECAO" && etapa !== "REINSPECAO") return;
+    const d = ev.dataFabricacao || "";
+    if (!byDate[d]) byDate[d] = { total: 0, A: 0, R: 0, RR: 0 };
+    byDate[d].total++;
+    const s = (ev.status || "").toUpperCase();
+    if (s === "A") byDate[d].A++;
+    else if (s === "R") byDate[d].R++;
+    else if (s === "RR") byDate[d].RR++;
+  });
+
+  // Summary for selected date (or all if no date)
+  const summary = selectedDate && byDate[selectedDate]
+    ? byDate[selectedDate]
+    : Object.values(byDate).reduce((acc, v) => {
+        acc.total += v.total; acc.A += v.A; acc.R += v.R; acc.RR += v.RR;
+        return acc;
+      }, { total: 0, A: 0, R: 0, RR: 0 });
+
+  const rejeitados = summary.R + summary.RR;
+  const rejPct = summary.total > 0 ? Math.round((rejeitados / summary.total) * 100) : 0;
+
+  const setTxt = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+  setTxt("insDashTotal", summary.total);
+  setTxt("insDashAprovados", summary.A);
+  setTxt("insDashRejeitados", summary.R);
+  setTxt("insDashRetrabalho", summary.RR);
+  setTxt("insDashRatePct", rejPct + "%");
+  const rateBar = document.getElementById("insDashRateBar");
+  if (rateBar) rateBar.style.width = rejPct + "%";
+
+  // History rows (last 7 dates sorted desc)
+  const histEl = document.getElementById("insDashHistory");
+  if (!histEl) return;
+  const dates = Object.keys(byDate).sort((a, b) => (a < b ? 1 : -1)).slice(0, 7);
+  const maxTotal = dates.reduce((m, d) => Math.max(m, byDate[d].total), 1);
+
+  if (!dates.length) {
+    histEl.innerHTML = '<p class="muted" style="font-size:0.82rem;margin:0">Nenhum registro de inspeção encontrado.</p>';
+    return;
+  }
+
+  histEl.innerHTML = dates.map((d) => {
+    const row = byDate[d];
+    const pct = Math.round((row.total / maxTotal) * 100);
+    const fmt = d.split("-").reverse().join("/");
+    const rj = row.R + row.RR;
+    return `<div class="ins-dash-hist-row">
+  <span class="ins-dash-hist-date">${fmt}</span>
+  <div class="ins-dash-hist-bar-track"><div class="ins-dash-hist-bar" style="width:${pct}%"></div></div>
+  <span class="ins-dash-hist-count">${row.total}</span>
+  <span style="color:#991b1b;font-size:0.78rem;min-width:46px">❌ ${rj}</span>
+</div>`;
+  }).join("");
 }
 
 async function renderHistorico() {
@@ -1778,7 +1847,10 @@ function setMode(mode) {
   state.mode = mode;
   [el.hubView, el.viewLiberacao, el.viewInspecao, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem]
     .forEach((view) => view.classList.add("hidden"));
-  if (mode === "HUB") el.hubView.classList.remove("hidden");
+  if (mode === "HUB") {
+    el.hubView.classList.remove("hidden");
+    renderDashboardStats();
+  }
   if (mode === "LIBERACAO") el.viewLiberacao.classList.remove("hidden");
   if (mode === "INSPECAO") el.viewInspecao.classList.remove("hidden");
   if (mode === "RELATORIO") el.viewRelatorio.classList.remove("hidden");
@@ -1938,6 +2010,17 @@ function bindEvents() {
   const navDashboard = document.getElementById("navDashboard");
   if (navDashboard) navDashboard.addEventListener("click", () => setMode("HUB"));
 
+  // Dashboard stats filter
+  const insDashData = document.getElementById("insDashData");
+  if (insDashData) insDashData.addEventListener("change", renderDashboardStats);
+  const insDashBtnHoje = document.getElementById("insDashBtnHoje");
+  if (insDashBtnHoje) insDashBtnHoje.addEventListener("click", () => {
+    if (insDashData) insDashData.value = todayYmd();
+    renderDashboardStats();
+  });
+  const insDashBtnAtualizar = document.getElementById("insDashBtnAtualizar");
+  if (insDashBtnAtualizar) insDashBtnAtualizar.addEventListener("click", renderDashboardStats);
+
   // Hub quick-cards
   document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -1969,6 +2052,8 @@ function init() {
   el.relSetor.value = "Setor 2";
   if (el.acmpData) el.acmpData.value = now;
   if (el.acmpSetor) el.acmpSetor.value = "";
+  const insDashDataEl = document.getElementById("insDashData");
+  if (insDashDataEl) insDashDataEl.value = now;
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=a41f2953" />
+  <link rel="stylesheet" href="styles.css?v=6b6b402e" />
 </head>
 <body>
 <div class="app-shell">
@@ -82,6 +82,50 @@
           <button class="hub-quick-card" type="button" data-hub-mode="ACOMPANHAMENTO"><div class="hub-quick-icon" style="background:#0e7490">AC</div><div class="hub-quick-label">Acompanhamento</div></button>
           <button class="hub-quick-card" type="button" data-hub-mode="ACMP_CONCRETAGEM"><div class="hub-quick-icon" style="background:#be185d">CC</div><div class="hub-quick-label">Acmp. Concretagem</div></button>
         </div>
+
+        <!-- ── Painel de Indicadores de Inspeção ── -->
+        <div class="ins-dash-panel">
+          <div class="ins-dash-header">
+            <h3 class="ins-dash-title">📊 Indicadores de Inspeção</h3>
+            <div class="ins-dash-filter">
+              <label class="ins-dash-filter-label">Data
+                <input id="insDashData" type="date" class="ins-dash-date-input" />
+              </label>
+              <button id="insDashBtnHoje" class="btn ins-dash-btn-hoje" type="button">Hoje</button>
+              <button id="insDashBtnAtualizar" class="btn ins-dash-btn-atualizar" type="button">↻</button>
+            </div>
+          </div>
+
+          <div class="ins-dash-cards">
+            <div class="ins-dash-card ins-dash-card-total">
+              <div class="ins-dash-card-label">Inspecionados</div>
+              <div class="ins-dash-card-val" id="insDashTotal">—</div>
+            </div>
+            <div class="ins-dash-card ins-dash-card-ok">
+              <div class="ins-dash-card-label">Aprovados</div>
+              <div class="ins-dash-card-val" id="insDashAprovados">—</div>
+            </div>
+            <div class="ins-dash-card ins-dash-card-r">
+              <div class="ins-dash-card-label">Rejeitados</div>
+              <div class="ins-dash-card-val" id="insDashRejeitados">—</div>
+            </div>
+            <div class="ins-dash-card ins-dash-card-rr">
+              <div class="ins-dash-card-label">Retrabalho</div>
+              <div class="ins-dash-card-val" id="insDashRetrabalho">—</div>
+            </div>
+          </div>
+
+          <div class="ins-dash-rate-row">
+            <span class="ins-dash-rate-label">Taxa de rejeição:</span>
+            <div class="ins-dash-rate-bar-track">
+              <div class="ins-dash-rate-bar" id="insDashRateBar" style="width:0%"></div>
+            </div>
+            <span class="ins-dash-rate-pct" id="insDashRatePct">0%</span>
+          </div>
+
+          <div class="ins-dash-history" id="insDashHistory"></div>
+        </div>
+
       </section>
 
       <section id="viewLiberacao" class="card hidden">
@@ -325,6 +369,14 @@
     <button id="salvarInspecaoFloat" class="btn primary ins-float-salvar" type="button">💾 Salvar Inspeções</button>
   </div>
 
+  <!-- Modal de carregamento / aguarde -->
+  <div id="loadingModal" class="modal-overlay modal-loading" role="status" aria-live="polite">
+    <div class="modal-box modal-box-loading">
+      <div class="loading-spinner"></div>
+      <p class="loading-msg">Salvando inspeções, aguarde...</p>
+    </div>
+  </div>
+
   <!-- Modal de resultado da inspeção -->
   <div id="inspecaoModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-box">
@@ -343,6 +395,6 @@
     </article>
   </template>
 
-  <script src="app.js?v=f8a03087"></script>
+  <script src="app.js?v=b6051375"></script>
 </body>
 </html>

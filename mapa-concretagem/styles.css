@@ -147,6 +147,148 @@ body {
 }
 .hub-quick-label { font-size: 0.83rem; font-weight: 600; color: #334155; }
 
+/* ── Painel de Indicadores de Inspeção no Dashboard ── */
+.ins-dash-panel {
+  margin-top: 22px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 18px 18px;
+}
+.ins-dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.ins-dash-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #0f172a;
+}
+.ins-dash-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ins-dash-filter-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ins-dash-date-input {
+  font-size: 0.82rem;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+.ins-dash-btn-hoje,
+.ins-dash-btn-atualizar {
+  font-size: 0.8rem;
+  padding: 5px 11px;
+}
+.ins-dash-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (max-width: 600px) {
+  .ins-dash-cards { grid-template-columns: repeat(2, 1fr); }
+}
+.ins-dash-card {
+  border-radius: 10px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.ins-dash-card-label {
+  font-size: 0.73rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.ins-dash-card-val {
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.ins-dash-card-total  { background: #eff6ff; color: #1d4ed8; }
+.ins-dash-card-ok     { background: #dcfce7; color: #166534; }
+.ins-dash-card-r      { background: #fee2e2; color: #991b1b; }
+.ins-dash-card-rr     { background: #fef9c3; color: #854d0e; }
+.ins-dash-rate-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.ins-dash-rate-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  white-space: nowrap;
+  min-width: 110px;
+}
+.ins-dash-rate-bar-track {
+  flex: 1;
+  height: 9px;
+  background: #f1f5f9;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.ins-dash-rate-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ef4444, #b91c1c);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+.ins-dash-rate-pct {
+  font-size: 0.87rem;
+  font-weight: 700;
+  color: #b91c1c;
+  min-width: 36px;
+  text-align: right;
+}
+.ins-dash-history {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ins-dash-hist-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+.ins-dash-hist-date {
+  min-width: 82px;
+  color: #475569;
+  font-weight: 600;
+}
+.ins-dash-hist-bar-track {
+  flex: 1;
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.ins-dash-hist-bar {
+  height: 100%;
+  background: #1e40af;
+  border-radius: 99px;
+}
+.ins-dash-hist-count {
+  min-width: 28px;
+  text-align: right;
+  color: #0f172a;
+  font-weight: 700;
+}
+
 /* ── Responsive ───────────────────────────────────── */
 @media (max-width: 768px) {
   .sidebar { transform: translateX(-100%); }
@@ -159,7 +301,7 @@ body {
 @media (min-width: 769px) {
   [data-back-btn] { display: none; }
 }
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 769px) {
   body.mode-inspecao .ins-float-bar { left: 240px; }
 }
 
@@ -641,7 +783,7 @@ textarea {
   background: #fff;
 }
 
-/* Floating save bar — visível apenas em tablet/celular no modo inspeção */
+/* Floating save bar — visível em inspeção em todos os tamanhos */
 .ins-float-bar {
   display: none;
   position: fixed;
@@ -659,14 +801,11 @@ textarea {
   font-size: 1rem;
   padding: 14px;
 }
-
-@media (max-width: 1024px) {
-  body.mode-inspecao .ins-float-bar {
-    display: block;
-  }
-  body.mode-inspecao .container {
-    padding-bottom: 80px;
-  }
+body.mode-inspecao .ins-float-bar {
+  display: block;
+}
+body.mode-inspecao .container {
+  padding-bottom: 80px;
 }
 
 /* ── Modal de resultado da inspeção ─────────────────────── */
@@ -741,6 +880,33 @@ textarea {
   width: 100%;
   padding: 13px;
   font-size: 1rem;
+}
+
+/* ── Loading modal ───────────────────────────────────── */
+.modal-box-loading {
+  padding: 44px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 300px;
+}
+.loading-spinner {
+  width: 52px;
+  height: 52px;
+  border: 5px solid #e2e8f0;
+  border-top-color: #1e40af;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.loading-msg {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+  text-align: center;
 }
 
 body.mode-liberacao .ins-related {
