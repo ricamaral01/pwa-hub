@@ -1000,6 +1000,52 @@ function filtrarFormasTabela() {
   });
 }
 
+function showInspecaoModal(counts, syncStatus) {
+  const modal = document.getElementById("inspecaoModal");
+  const icon = document.getElementById("modalIcon");
+  const subtitle = document.getElementById("modalSubtitle");
+  const stats = document.getElementById("modalStats");
+  const okBtn = document.getElementById("modalOkBtn");
+  if (!modal) return;
+
+  const total = (counts.A || 0) + (counts.R || 0) + (counts.RR || 0);
+
+  if (syncStatus === "ok") {
+    icon.textContent = "✅";
+    subtitle.textContent = "Sincronizado com a planilha com sucesso.";
+  } else if (syncStatus === "warn") {
+    icon.textContent = "📲";
+    subtitle.textContent = "Salvo localmente. Configure a API para sincronizar com a planilha.";
+  } else {
+    icon.textContent = "⚠️";
+    subtitle.textContent = "Salvo localmente, mas falhou atualização na planilha.";
+  }
+
+  const rows = [
+    { label: "✅ Aprovados (Liberados)", count: counts.A || 0, cls: "stat-ok" },
+    { label: "🔧 Retrabalhados", count: counts.RR || 0, cls: "stat-rr" },
+    { label: "❌ Rejeitados", count: counts.R || 0, cls: "stat-r" }
+  ];
+
+  stats.innerHTML = rows.map((row) =>
+    `<div class="stat-row ${row.cls}">
+      <span class="stat-label">${row.label}</span>
+      <span class="stat-count">${row.count} poste${row.count !== 1 ? "s" : ""}</span>
+    </div>`
+  ).join("");
+
+  modal.classList.add("modal-visible");
+
+  const close = () => {
+    modal.classList.remove("modal-visible");
+    okBtn.removeEventListener("click", close);
+    modal.removeEventListener("click", onOverlay);
+  };
+  const onOverlay = (e) => { if (e.target === modal) close(); };
+  okBtn.addEventListener("click", close);
+  modal.addEventListener("click", onOverlay);
+}
+
 async function renderInspecaoLiberados() {
   const db = readDb();
   const filtroData = el.insFiltroData.value;
@@ -1311,16 +1357,19 @@ async function saveInspecao() {
     renderLiberacaoDual();
     renderHistorico();
 
+    const counts = { A: 0, R: 0, RR: 0 };
+    inspecaoEntries.forEach((e) => { if (e.status in counts) counts[e.status]++; });
+
     const apiResult = await postToApi("salvar_inspecao_lote", { entries: inspecaoEntries });
     if (apiResult.ok) {
       setSyncStatus("ok", `Inspeção sincronizada com sucesso (${apiResult.updated || saved} atualizações).`);
-      alert(`Inspeções salvas: ${saved} (planilha atualizada).`);
+      showInspecaoModal(counts, "ok");
     } else if (apiResult.skipped) {
       setSyncStatus("warn", "Inspeções salvas localmente. Configure a URL da API para sincronizar.");
-      alert(`Inspeções salvas localmente: ${saved}. Configure a API para atualizar a planilha.`);
+      showInspecaoModal(counts, "warn");
     } else {
       setSyncStatus("error", "Inspeções salvas localmente, mas falhou atualização na planilha.");
-      alert(`Inspeções salvas localmente: ${saved}, mas falhou atualização da planilha.`);
+      showInspecaoModal(counts, "error");
     }
   } finally {
     state.isSendingInspecao = false;

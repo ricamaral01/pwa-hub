@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#1e40af" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=9b14f2e5" />
+  <link rel="stylesheet" href="styles.css?v=57f9c3a3" />
 </head>
 <body>
   <main class="container">
@@ -290,6 +290,17 @@
     <button id="salvarInspecaoFloat" class="btn primary ins-float-salvar" type="button">💾 Salvar Inspeções</button>
   </div>
 
+  <!-- Modal de resultado da inspeção -->
+  <div id="inspecaoModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <div class="modal-icon" id="modalIcon">✅</div>
+      <h2 class="modal-title" id="modalTitle">Inspeções Salvas</h2>
+      <div class="modal-subtitle" id="modalSubtitle"></div>
+      <div class="modal-stats" id="modalStats"></div>
+      <button class="btn primary modal-ok" id="modalOkBtn" type="button">OK</button>
+    </div>
+  </div>
+
   <template id="tplItemRegistro">
     <article class="item">
       <div class="item-main"></div>
@@ -297,6 +308,6 @@
     </article>
   </template>
 
-  <script src="app.js?v=63dab52d"></script>
+  <script src="app.js?v=cbe8ba65"></script>
 </body>
 </html>
