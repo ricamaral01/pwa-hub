@@ -10131,9 +10131,44 @@ const MCCTR_MATS = [
     { key:'agua', label:'Água',             massKey:'agua',     group:'Quím./Água' },
     { key:'adit', label:'Aditivo SP',       massKey:'aditivo',  group:'Quím./Água' }
 ];
+const MCCTR_UNID_LABELS = {
+    campinas: 'Campinas',
+    ribeirao: 'Ribeirão',
+    pederneiras: 'Pederneiras',
+    noroeste: 'Noroeste'
+};
 let _mccTracaoCurrentData = null;
 let _mccTracaoConfig = {};
 let _mccTracaoBancoAll = [];
+
+function mccUnitNorm(v) {
+    return String(v || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase();
+}
+
+function mccTracaoUnidadeAtualLabel() {
+    const un = _mccTracaoCurrentData?.unidade || '';
+    return MCCTR_UNID_LABELS[un] || un || '';
+}
+
+function mccTracaoProdutoDaUnidade(produto, unidadeLabel) {
+    if (!unidadeLabel) return true;
+    return mccUnitNorm(produto?.unidadeMCC) === mccUnitNorm(unidadeLabel);
+}
+
+function mccTracaoProdutosAtivosPorChave(key) {
+    const todos = _mccProdutosTodos || [];
+    const unidadeLabel = mccTracaoUnidadeAtualLabel();
+    return todos.filter(p => p.chaveMCC === key && p.ativo === 'Sim' && mccTracaoProdutoDaUnidade(p, unidadeLabel));
+}
+
+function mccTracaoFindProduto(key, nome, forn) {
+    if (!nome || !forn) return null;
+    return mccTracaoProdutosAtivosPorChave(key).find(p => p.nomeProduto === nome && p.fornecedor === forn) || null;
+}
 
 function mccTracaoInit() {
     mccTracaoLoadConfig();
@@ -10308,14 +10343,13 @@ function mccTracaoLoadConfig() {
 
 function mccTracaoSalvarConfig() {
     const traceId = _mccTracaoCurrentData?.id || '_global';
-    const todos = _mccProdutosTodos || [];
     if (!_mccTracaoConfig[traceId]) _mccTracaoConfig[traceId] = {};
     MCCTR_MATS.forEach(({ key }) => {
         const nomeEl = document.getElementById('mcctr_' + key + '_nome');
         const fornEl = document.getElementById('mcctr_' + key + '_forn');
         const nome = nomeEl?.value || '';
         const forn = fornEl?.value || '';
-        const prod = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const prod = mccTracaoFindProduto(key, nome, forn);
         const custoLiq = prod ? (Number(prod.custoLiq) || 0) : (_mccTracaoConfig[key]?.custoLiq || 0);
         // save per-traço
         _mccTracaoConfig[traceId][key] = { nome, forn, custoLiq };
@@ -10409,14 +10443,13 @@ function mccCartaCarregar(cartaId) {
 
 function mccCartaSalvar() {
     if (!_mccTracaoCurrentData) { alert('Selecione um traço antes de salvar a carta.'); return; }
-    const todos = _mccProdutosTodos || [];
     const materiais = {};
     MCCTR_MATS.forEach(({ key }) => {
         const nomeEl    = document.getElementById('mcctr_' + key + '_nome');
         const fornEl    = document.getElementById('mcctr_' + key + '_forn');
         const nome      = nomeEl?.value || '';
         const forn      = fornEl?.value || '';
-        const prod      = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const prod      = mccTracaoFindProduto(key, nome, forn);
         const custoLiq  = prod ? (Number(prod.custoLiq) || 0) : (_mccTracaoConfig[key]?.custoLiq || 0);
         materiais[key]  = { nome, forn, custoLiq };
     });
@@ -10474,7 +10507,6 @@ function mccTracaoRenderTable() {
     const tbody = document.getElementById('mcctr_tbody');
     const tfoot = document.getElementById('mcctr_tfoot');
     if (!tbody) return;
-    const todos = _mccProdutosTodos || [];
     const GC = { 'Ligantes':'#e0e7ff', 'Agregados':'#fef9c3', 'Quím./Água':'#dcfce7' };
     const GT = { 'Ligantes':'#3730a3', 'Agregados':'#92400e', 'Quím./Água':'#166534' };
     const groups = ['Ligantes','Agregados','Quím./Água'];
@@ -10487,7 +10519,7 @@ function mccTracaoRenderTable() {
         mats.forEach(({ key, label, massKey }) => {
             const kg  = _mccTracaoCurrentData ? (Number(_mccTracaoCurrentData.masses?.[massKey]) || 0) : 0;
             const cfg = _mccTracaoConfig[key] || {};
-            const ativos  = todos.filter(p => p.chaveMCC === key && p.ativo === 'Sim');
+            const ativos  = mccTracaoProdutosAtivosPorChave(key);
             const nomesU  = [...new Set(ativos.map(p => p.nomeProduto).filter(Boolean))];
             let nOpts = '<option value="">— Produto —</option>';
             nomesU.forEach(n => { nOpts += '<option value="' + n + '"' + (cfg.nome === n ? ' selected' : '') + '>' + n + '</option>'; });
@@ -10495,7 +10527,7 @@ function mccTracaoRenderTable() {
             const fornsU = [...new Set(fornsA.map(p => p.fornecedor).filter(Boolean))];
             let fOpts = '<option value="">— Fornecedor —</option>';
             fornsU.forEach(f => { fOpts += '<option value="' + f + '"' + (cfg.forn === f ? ' selected' : '') + '>' + f + '</option>'; });
-            const produto  = cfg.nome && cfg.forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === cfg.nome && p.fornecedor === cfg.forn) : null;
+            const produto  = mccTracaoFindProduto(key, cfg.nome, cfg.forn);
             const custoLiq = produto ? (Number(produto.custoLiq) || 0) : (cfg.custoLiq || 0);
             const custoM3  = kg * custoLiq;
             gTotals[grp] += custoM3;
@@ -10525,11 +10557,11 @@ function mccTracaoNomeChange(key) {
     const fornEl = document.getElementById('mcctr_' + key + '_forn');
     if (!nomeEl || !fornEl) return;
     const nome = nomeEl.value;
-    const todos = _mccProdutosTodos || [];
+    const ativos = mccTracaoProdutosAtivosPorChave(key);
     const fornAtual = fornEl.value;
     while (fornEl.options.length > 1) fornEl.remove(1);
     if (nome) {
-        const forns = [...new Set(todos.filter(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome).map(p => p.fornecedor).filter(Boolean))];
+        const forns = [...new Set(ativos.filter(p => p.nomeProduto === nome).map(p => p.fornecedor).filter(Boolean))];
         forns.forEach(f => { const o = document.createElement('option'); o.value = f; o.textContent = f; fornEl.appendChild(o); });
         if (forns.includes(fornAtual)) fornEl.value = fornAtual;
         else if (forns.length === 1) fornEl.value = forns[0];
@@ -10549,12 +10581,11 @@ function mccTracaoFornChange(key) {
 }
 
 function mccTracaoUpdateRowPrice(key) {
-    const todos = _mccProdutosTodos || [];
     const nomeEl = document.getElementById('mcctr_' + key + '_nome');
     const fornEl = document.getElementById('mcctr_' + key + '_forn');
     const nome = nomeEl?.value || '';
     const forn = fornEl?.value || '';
-    const produto  = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+    const produto  = mccTracaoFindProduto(key, nome, forn);
     const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
     const mat  = MCCTR_MATS.find(m => m.key === key);
     const kg   = _mccTracaoCurrentData && mat ? (Number(_mccTracaoCurrentData.masses?.[mat.massKey]) || 0) : 0;
@@ -10567,7 +10598,6 @@ function mccTracaoUpdateRowPrice(key) {
 }
 
 function mccTracaoRecalcTotals() {
-    const todos = _mccProdutosTodos || [];
     const groups = ['Ligantes','Agregados','Quím./Água'];
     const GT = { 'Ligantes':'#3730a3', 'Agregados':'#92400e', 'Quím./Água':'#166534' };
     let totalCusto = 0;
@@ -10577,7 +10607,7 @@ function mccTracaoRecalcTotals() {
         const fornEl = document.getElementById('mcctr_' + key + '_forn');
         const nome = nomeEl?.value || '';
         const forn = fornEl?.value || '';
-        const produto  = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const produto  = mccTracaoFindProduto(key, nome, forn);
         const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
         const kg = _mccTracaoCurrentData ? (Number(_mccTracaoCurrentData.masses?.[massKey]) || 0) : 0;
         gTotals[group] += kg * custoLiq;
@@ -10626,7 +10656,6 @@ function mccTracaoRenderChart() {
         if (pctDiv) pctDiv.innerHTML = '';
         return;
     }
-    const todos = _mccProdutosTodos || [];
     const costPerMat = {};
     let totalCost = 0;
     MCCTR_MATS.forEach(({ key, massKey }) => {
@@ -10634,7 +10663,7 @@ function mccTracaoRenderChart() {
         const fEl  = document.getElementById('mcctr_' + key + '_forn');
         const nome = nEl?.value || '';
         const forn = fEl?.value || '';
-        const prod = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const prod = mccTracaoFindProduto(key, nome, forn);
         const liq  = prod ? (Number(prod.custoLiq) || 0) : 0;
         const kg   = Number(data.masses?.[massKey]) || 0;
         costPerMat[key] = kg * liq;
@@ -10715,7 +10744,6 @@ function mccTracaoRenderChart() {
 
 function mccTracaoPrint() {
     if (!_mccTracaoCurrentData) { alert('Selecione um traço antes de imprimir.'); return; }
-    const todos = _mccProdutosTodos || [];
     const item  = _mccTracaoCurrentData;
     const tracoNome = item.nome || 'Traço';
     const fmt2 = v => (Number(v) || 0).toFixed(2).replace('.', ',');
@@ -10731,7 +10759,7 @@ function mccTracaoPrint() {
         const fEl = document.getElementById('mcctr_' + key + '_forn');
         const nome = nEl?.value || (_mccTracaoConfig[key]?.nome || '');
         const forn = fEl?.value || (_mccTracaoConfig[key]?.forn || '');
-        const prod = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const prod = mccTracaoFindProduto(key, nome, forn);
         const custoLiq = prod ? (Number(prod.custoLiq) || 0) : 0;
         const kg = Number(item.masses?.[massKey]) || 0;
         const m3 = kg * custoLiq;
@@ -10993,7 +11021,6 @@ function mccCompSave(slots) {
 
 function mccCompEnviar(slot) {
     if (!_mccTracaoCurrentData) { alert('Selecione um traço no MCC Traço antes de enviar ao comparador.'); return; }
-    const todos = _mccProdutosTodos || [];
     const item  = _mccTracaoCurrentData;
     const materiais = [];
     let totalCusto = 0;
@@ -11003,7 +11030,7 @@ function mccCompEnviar(slot) {
         const fEl  = document.getElementById('mcctr_' + key + '_forn');
         const nome = nEl?.value || (_mccTracaoConfig && _mccTracaoConfig[key]?.nome) || '';
         const forn = fEl?.value || (_mccTracaoConfig && _mccTracaoConfig[key]?.forn) || '';
-        const prod = nome && forn ? todos.find(p => p.chaveMCC === key && p.ativo === 'Sim' && p.nomeProduto === nome && p.fornecedor === forn) : null;
+        const prod = mccTracaoFindProduto(key, nome, forn);
         const custoLiq = prod ? (Number(prod.custoLiq) || 0) : 0;
         const kg = Number(item.masses?.[massKey]) || 0;
         const custoM3 = kg * custoLiq;
