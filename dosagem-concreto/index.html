@@ -989,11 +989,8 @@
         <button class="sidebar-btn" data-sec="sec-volume" onclick="showSection('sec-volume',this)">
             <span class="sb-num">4</span><span class="sb-icon">📏</span><span class="sb-label">Volume</span>
         </button>
-        <button class="sidebar-btn" data-sec="sec-argamassa" onclick="showSection('sec-argamassa',this)">
-            <span class="sb-num">5</span><span class="sb-icon">🧱</span><span class="sb-label">Argamassa</span>
-        </button>
         <button class="sidebar-btn" data-sec="sec-empacotamento" onclick="showSection('sec-empacotamento',this)">
-            <span class="sb-num">6</span><span class="sb-icon">📈</span><span class="sb-label">Empacotamento</span>
+            <span class="sb-num">5</span><span class="sb-icon">📈</span><span class="sb-label">Empacotamento</span>
         </button>
     </div>
     <div class="sidebar-divider"></div>
@@ -1081,7 +1078,6 @@
         </optgroup>
         <optgroup label="Análise Volumétrica">
         <option value="sec-volume">📏 Volume</option>
-        <option value="sec-argamassa">🧱 Argamassa</option>
         <option value="sec-empacotamento">📈 Empacotamento</option>
         </optgroup>
         <optgroup label="Laboratório">
@@ -1768,7 +1764,7 @@
                     <div class="smart-actions">
                         <button class="smart-chip" type="button" onclick="showSection('sec-materiais')">🧱 Caracterização</button>
                         <button class="smart-chip" type="button" onclick="showSection('sec-volume')">📏 Volume</button>
-                        <button class="smart-chip" type="button" onclick="showSection('sec-argamassa')">🧪 Argamassa</button>
+                        <button class="smart-chip" type="button" onclick="focusArgamassaIntegrada()">🧪 Argamassa</button>
                         <button class="smart-chip" type="button" onclick="showSection('sec-empacotamento')">📈 Empacotamento</button>
                         <button class="smart-chip" type="button" onclick="showSection('sec-compare-cost')">📊 Comparar / Custo</button>
                         <button class="smart-chip" type="button" onclick="showSection('sec-resumo')">📄 Carta do Traço</button>
@@ -1964,6 +1960,7 @@
         </div>
 
         <div id="res-dosagem"></div>
+        <div id="dos-argamassa-slot"></div>
         <div id="dosagem-print-layout" class="print-only"></div>
         <div id="salvar-traco-status" style="margin-top:12px;"></div>
 
@@ -2492,7 +2489,7 @@
             </div>
 
             <div>
-                <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-argamassa')">🧱 Argamassa →</button>
+                <button class="btn btn-accent" style="font-size:.85rem;" onclick="focusArgamassaIntegrada()">🧱 Argamassa (na Dosagem) →</button>
             </div>
         </div>
     </div>
@@ -2502,6 +2499,7 @@
 <!-- SEÇÃO 4 — TEOR DE ARGAMASSA                         -->
 <!-- ═══════════════════════════════════════════════════ -->
 <div id="sec-argamassa" class="section">
+    <div id="argamassa-separada-legacy">
     <div class="card">
         <h2><span class="icon">🧱</span> Teor de Argamassa e Ar Incorporado</h2>
         <p class="subtitle">Calcula o teor de argamassa em <strong>massa</strong> e em <strong>volume</strong>, e analisa o teor de ar incorporado.</p>
@@ -2578,6 +2576,7 @@
                 <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-empacotamento')">📈 Empacotamento →</button>
             </div>
         </div>
+    </div>
     </div>
 </div>
 
@@ -2656,7 +2655,7 @@
         <!-- NAV PASSO 5/7 -->
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
             <div>
-                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-argamassa')">← 🧱 Argamassa</button>
+                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="focusArgamassaIntegrada()">← 🧱 Argamassa (na Dosagem)</button>
             </div>
             <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 5 / 7</span>
             <div>
@@ -3593,13 +3592,73 @@ function showSection(id, btn) {
     if (id === 'sec-volume') {
         if (!document.getElementById('vol_modo_manual')?.checked) sincronizarDosagemParaVolume();
     }
-    if (id === 'sec-argamassa') {
+    if (id === 'sec-dosagem') {
         if (!document.getElementById('arg_modo_manual')?.checked) sincronizarDosagemParaArgamassa();
     }
     if (id === 'sec-resumo') {
         syncResumoFieldsFromDosagem();
     }
     window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function focusArgamassaIntegrada() {
+    showSection('sec-dosagem');
+    const alvo = document.getElementById('dos-argamassa-integrada');
+    if (alvo) {
+        setTimeout(() => alvo.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+    }
+}
+
+function integrarArgamassaNaDosagem() {
+    const dosagemCard = document.querySelector('#sec-dosagem .card');
+    const slot = document.getElementById('dos-argamassa-slot');
+    const argCard = document.querySelector('#argamassa-separada-legacy .card');
+    if (!dosagemCard || !slot || !argCard) return;
+
+    // Identificacao do traco precisa abrir a secao de dosagem.
+    const dosCarta = document.getElementById('dos-carta-box');
+    const subtitulo = dosagemCard.querySelector('p.subtitle');
+    if (dosCarta && subtitulo) {
+        subtitulo.insertAdjacentElement('afterend', dosCarta);
+    }
+
+    argCard.id = 'dos-argamassa-integrada';
+    argCard.style.marginTop = '20px';
+
+    const titulo = argCard.querySelector('h2');
+    if (titulo) {
+        titulo.innerHTML = '<span class="icon">🧱</span> Teor de Argamassa e Ar Incorporado (Integrado na Dosagem 1 m³)';
+    }
+
+    argCard.querySelectorAll('button[onclick]').forEach(btn => {
+        const on = btn.getAttribute('onclick') || '';
+        if (on.includes("imprimirSecao('sec-argamassa'")) {
+            btn.setAttribute('onclick', "imprimirSecao('sec-dosagem','Relatório — Dosagem e Teor de Argamassa')");
+        }
+        if (on.includes("salvarPDF('sec-argamassa'")) {
+            btn.setAttribute('onclick', "salvarPDF('sec-dosagem','Dosagem_Teor_Argamassa')");
+        }
+    });
+
+    const passoArg = Array.from(argCard.querySelectorAll('span')).find(s => (s.textContent || '').includes('Passo 4 / 7'));
+    if (passoArg) {
+        const nav = passoArg.closest('div[style*="display:flex"]');
+        if (nav) nav.remove();
+    }
+
+    slot.appendChild(argCard);
+
+    const secArgamassa = document.getElementById('sec-argamassa');
+    if (secArgamassa) {
+        secArgamassa.innerHTML = '' +
+            '<div class="card">' +
+            '  <h2><span class="icon">🧱</span> Argamassa Integrada na Dosagem</h2>' +
+            '  <p class="subtitle">A análise de argamassa foi incorporada na seção <strong>Dosagem 1 m³</strong>.</p>' +
+            '  <div class="btn-wrap">' +
+            '    <button class="btn btn-accent" onclick="focusArgamassaIntegrada()">⚖️ Abrir Dosagem + Argamassa</button>' +
+            '  </div>' +
+            '</div>';
+    }
 }
 
 // ═══════════════════════════════════════════════════
@@ -8928,6 +8987,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gerarTabelaGran();
     gerarTabelaPeneirasMiudo();
     gerarTabelaPeneirasGraudo();
+    integrarArgamassaNaDosagem();
     toggleModoGran(); // Inicializa estado do toggle
     preencherSelectFornecedores();
     renderTabelaFornecedores();
