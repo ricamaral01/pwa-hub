@@ -102,6 +102,7 @@
         /* SECTION / CARD */
         .section { display: none; }
         .section.active { display: block; }
+        #sec-dosagem.active { padding-bottom: 80px; }
 
         .card {
             background: var(--card);
@@ -1755,6 +1756,17 @@
         <h2><span class="icon">⚖️</span> Dosagem para 1 m³ de Concreto</h2>
         <p class="subtitle">Área técnica para montar o traço base, validar metas de flow, comparar cenários e consolidar a carta final.</p>
 
+        <!-- CARREGAR CARTA TRAÇO -->
+        <div style="background:#f0f7fb;border:1.5px solid #82a9c9;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <span style="font-size:0.82rem;font-weight:800;color:#1a3a6e;white-space:nowrap;">📂 Carregar Carta Traço:</span>
+            <select id="dos-carregar-sel" style="flex:1;min-width:0;padding:7px 10px;border:1.5px solid #82a9c9;border-radius:8px;font-size:0.82rem;background:#fff;" onclick="dosCarregarSelectCartas()" onchange="">
+                <option value="">— Selecione uma carta salva —</option>
+            </select>
+            <button class="btn btn-primary" style="padding:7px 16px;font-size:0.82rem;white-space:nowrap;" onclick="dosCarregarCartaSelecionada()">📥 Carregar</button>
+            <button class="btn" style="padding:7px 12px;font-size:0.82rem;background:#e8edf2;color:#444;" onclick="dosCarregarSelectCartas()" title="Atualizar lista">🔄</button>
+            <div id="dos-carregar-status" style="width:100%;font-size:0.8rem;margin-top:2px;"></div>
+        </div>
+
         <div class="kpi-grid" id="dosagem-kpis">
             <div class="kpi-card" id="kpi-flow-card"><div class="kpi-card__label">Flow</div><div class="kpi-card__value" id="kpi-flow">720 mm</div><div class="kpi-card__hint" id="kpi-flow-hint">Dentro da faixa operacional.</div></div>
             <div class="kpi-card" id="kpi-ac-card"><div class="kpi-card__label">Relação a/c</div><div class="kpi-card__value" id="kpi-ac">0,43</div><div class="kpi-card__hint" id="kpi-ac-hint">Água / ligantes cimentícios.</div></div>
@@ -1932,10 +1944,7 @@
             <div id="dos-umidade-resultado" style="margin-top:10px;"></div>
         </div>
 
-        <div class="btn-wrap">
-            <button class="btn btn-primary" onclick="calcularDosagem()">📐 Calcular Dosagem</button>
-            <button class="btn btn-accent" onclick="abrirModalSalvarTraco()">💾 Salvar Traço</button>
-        </div>
+        <!-- botões Calcular / Salvar Traço movidos para a barra flutuante #dos-fab -->
 
         <div id="res-dosagem"></div>
         <div id="dos-argamassa-slot"></div>
@@ -2009,10 +2018,7 @@
                     <textarea id="dos_obs_carta" rows="2" placeholder="Observações gerais sobre a carta traço..." style="padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;resize:vertical;width:100%;box-sizing:border-box;"></textarea>
                 </div>
             </div>
-            <div class="btn-wrap">
-                <button class="btn btn-accent" onclick="salvarCartaTracoDosagem()">💾 Salvar Carta Traço</button>
-                <button class="btn-print" onclick="imprimirSecao('sec-dosagem','Carta Traço — Dosagem de Concreto')">🖨️ Imprimir / Salvar PDF</button>
-            </div>
+            <!-- botão Salvar Carta Traço movido para a barra flutuante #dos-fab -->
             <div id="dos-carta-status" style="margin-top:8px;"></div>
         </div>
 
@@ -2074,6 +2080,14 @@
         <button onclick="fecharModalVerCarta()" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:1.6rem;cursor:pointer;color:#888;line-height:1;z-index:1;">✕</button>
         <div id="modal-ver-carta-body"></div>
     </div>
+</div>
+
+<!-- FAB — BARRA DE AÇÕES DOSAGEM (flutuante, visível só em sec-dosagem) -->
+<div id="dos-fab" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:450;background:rgba(26,31,46,0.96);backdrop-filter:blur(8px);padding:10px 20px;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;border-top:2px solid rgba(99,102,241,0.4);box-shadow:0 -4px 24px rgba(0,0,0,0.3);">
+    <button class="btn btn-primary" style="font-size:0.9rem;padding:10px 20px;font-weight:800;" onclick="calcularDosagem()">📐 Calcular Dosagem</button>
+    <button class="btn btn-accent" style="font-size:0.9rem;padding:10px 20px;font-weight:800;" onclick="abrirModalSalvarTraco()">💾 Salvar Traço</button>
+    <button class="btn" style="font-size:0.9rem;padding:10px 20px;font-weight:800;background:#4f46e5;color:#fff;" onclick="salvarCartaTracoDosagem()">📋 Salvar Carta Traço</button>
+    <button class="btn" style="font-size:0.9rem;padding:10px 20px;background:#374151;color:#e5e7eb;" onclick="imprimirSecao('sec-dosagem','Carta Traço — Dosagem de Concreto')">🖨️ Imprimir</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════════ -->
@@ -3459,6 +3473,7 @@
             <thead>
               <tr style="background:#1a1a2e;color:#fff;font-size:.71rem;text-transform:uppercase;letter-spacing:.04em;">
                 <th style="padding:8px 9px;text-align:left;border-radius:7px 0 0 0;min-width:80px;">Material</th>
+                <th style="padding:8px 7px;text-align:left;min-width:100px;">Categoria</th>
                 <th style="padding:8px 7px;text-align:right;min-width:52px;">kg/m³</th>
                 <th style="padding:8px 7px;text-align:left;min-width:115px;">Produto</th>
                 <th style="padding:8px 7px;text-align:left;min-width:115px;">Fornecedor</th>
@@ -3570,6 +3585,7 @@ function showSection(id, btn) {
     }
     if (id === 'sec-dosagem') {
         if (!document.getElementById('arg_modo_manual')?.checked) sincronizarDosagemParaArgamassa();
+        if (typeof dosCarregarSelectCartas === 'function') dosCarregarSelectCartas();
     }
     if (id === 'sec-resumo') {
         syncResumoFieldsFromDosagem();
@@ -10493,13 +10509,18 @@ function mccTracaoRenderTable() {
     const GC = { 'Ligantes':'#e0e7ff', 'Agregados':'#fef9c3', 'Quím./Água':'#dcfce7' };
     const GT = { 'Ligantes':'#3730a3', 'Agregados':'#92400e', 'Quím./Água':'#166534' };
     const groups = ['Ligantes','Agregados','Quím./Água'];
+    const catOpts = groups.map(g => '<option value="' + g + '">' + g + '</option>').join('');
     let totalCusto = 0;
     const gTotals = { 'Ligantes':0, 'Agregados':0, 'Quím./Água':0 };
+    // Build per-group buckets using overrides
+    const matsByGroup = { 'Ligantes':[], 'Agregados':[], 'Quím./Água':[] };
+    MCCTR_MATS.forEach(mat => { const g = mccGetGroup(mat); if (matsByGroup[g]) matsByGroup[g].push(mat); });
     let html = '';
     groups.forEach(grp => {
-        const mats = MCCTR_MATS.filter(m => m.group === grp);
-        html += '<tr><td colspan="6" style="background:' + GC[grp] + ';color:' + GT[grp] + ';font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:5px 12px;">' + grp + '</td></tr>';
+        const mats = matsByGroup[grp];
+        html += '<tr><td colspan="7" style="background:' + GC[grp] + ';color:' + GT[grp] + ';font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:5px 12px;">' + grp + '</td></tr>';
         mats.forEach(({ key, label, massKey }) => {
+            const curGroup = mccGetGroup({ key, group: MCCTR_MATS.find(m=>m.key===key)?.group || grp });
             const kg  = _mccTracaoCurrentData ? (Number(_mccTracaoCurrentData.masses?.[massKey]) || 0) : 0;
             const cfg = _mccTracaoConfig[key] || {};
             const ativos  = mccTracaoProdutosAtivosPorChave(key);
@@ -10515,8 +10536,12 @@ function mccTracaoRenderTable() {
             const custoM3  = kg * custoLiq;
             gTotals[grp] += custoM3;
             totalCusto   += custoM3;
+            const catSel = '<select style="padding:3px 5px;border-radius:6px;border:1.5px solid ' + GT[curGroup] + ';font-size:.72rem;font-weight:700;color:' + GT[curGroup] + ';background:' + GC[curGroup] + ';cursor:pointer;" onchange="mccCatChange(\'' + key + '\',this.value)">'
+                + groups.map(g => '<option value="' + g + '"' + (g === curGroup ? ' selected' : '') + '>' + g + '</option>').join('')
+                + '</select>';
             html += '<tr style="border-bottom:1px solid #eee;">'
                 + '<td style="padding:8px 12px;font-weight:600;">' + label + '</td>'
+                + '<td style="padding:4px 6px;">' + catSel + '</td>'
                 + '<td style="padding:8px 12px;text-align:right;font-variant-numeric:tabular-nums;">' + (kg > 0 ? kg.toFixed(1) + ' kg' : '—') + '</td>'
                 + '<td style="padding:6px 8px;"><select style="width:100%;padding:4px 6px;border-radius:6px;border:1px solid #ddd;font-size:.82rem;" id="mcctr_' + key + '_nome" onchange="mccTracaoNomeChange(\'' + key + '\')">'
                 + nOpts + '</select></td>'
@@ -10527,11 +10552,11 @@ function mccTracaoRenderTable() {
                 + '</tr>';
         });
         html += '<tr style="background:' + GC[grp] + ';border-top:2px solid ' + GC[grp] + ';">';
-        html += '<td colspan="4" style="padding:6px 12px;font-weight:700;color:' + GT[grp] + ';font-size:.82rem;">Subtotal ' + grp + '</td><td></td>';
+        html += '<td colspan="5" style="padding:6px 12px;font-weight:700;color:' + GT[grp] + ';font-size:.82rem;">Subtotal ' + grp + '</td><td></td>';
         html += '<td style="padding:6px 12px;text-align:right;font-weight:800;color:' + GT[grp] + ';">R$\u00a0' + gTotals[grp].toFixed(2).replace('.', ',') + '</td></tr>';
     });
     tbody.innerHTML = html;
-    if (tfoot) tfoot.innerHTML = '<tr style="background:#1a1a2e;color:#fff;"><td colspan="5" style="padding:10px 12px;font-weight:800;font-size:.9rem;">TOTAL GERAL / m³</td><td style="padding:10px 12px;text-align:right;font-weight:900;font-size:1.05rem;">R$\u00a0' + totalCusto.toFixed(2).replace('.', ',') + '</td></tr>';
+    if (tfoot) tfoot.innerHTML = '<tr style="background:#1a1a2e;color:#fff;"><td colspan="6" style="padding:10px 12px;font-weight:800;font-size:.9rem;">TOTAL GERAL / m³</td><td style="padding:10px 12px;text-align:right;font-weight:900;font-size:1.05rem;">R$\u00a0' + totalCusto.toFixed(2).replace('.', ',') + '</td></tr>';
     mccTracaoUpdateResumo(gTotals, totalCusto);
 }
 
@@ -11424,6 +11449,110 @@ function fecharModalVerCarta() {
     const modal = document.getElementById('modal-ver-carta');
     if (modal) modal.style.display = 'none';
     document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════════════════
+// FAB DOSAGEM — visibilidade por seção ativa
+// ═══════════════════════════════════════════════════
+(function() {
+    const _orig = window.showSection;
+    window.showSection = function(id) {
+        const r = _orig.apply(this, arguments);
+        const fab = document.getElementById('dos-fab');
+        if (fab) fab.style.display = (id === 'sec-dosagem') ? 'flex' : 'none';
+        return r;
+    };
+})();
+
+// ═══════════════════════════════════════════════════
+// CARREGAR CARTA TRAÇO NA DOSAGEM
+// ═══════════════════════════════════════════════════
+function dosCarregarSelectCartas() {
+    const sel = document.getElementById('dos-carregar-sel');
+    if (!sel) return;
+    while (sel.options.length > 1) sel.remove(1);
+    const cartas = (function() { try { return JSON.parse(localStorage.getItem('ct_cartas_traco') || '[]'); } catch(e) { return []; } })();
+    if (cartas.length === 0) return;
+    // Group by tracoNome
+    const groups = {};
+    cartas.forEach(c => { if (!groups[c.tracoNome]) groups[c.tracoNome] = []; groups[c.tracoNome].push(c); });
+    Object.entries(groups).sort((a,b) => a[0].localeCompare(b[0])).forEach(([base, list]) => {
+        const og = document.createElement('optgroup');
+        og.label = base;
+        list.sort((a,b) => (b.versao||1) - (a.versao||1)).forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = (c.tracoNome||'—') + (c.versaoStr ? ' v' + c.versaoStr : '') + (c.dataHora ? '  ·  ' + c.dataHora : '');
+            opt.dataset.carta = JSON.stringify(c);
+            og.appendChild(opt);
+        });
+        sel.appendChild(og);
+    });
+}
+
+function dosCarregarCartaSelecionada() {
+    const sel = document.getElementById('dos-carregar-sel');
+    if (!sel || !sel.value) return;
+    const opt = sel.querySelector('option[value="' + sel.value + '"]');
+    if (!opt || !opt.dataset.carta) return;
+    let c;
+    try { c = JSON.parse(opt.dataset.carta); } catch(e) { return; }
+    const set = (id, v) => { const el = document.getElementById(id); if (el && v !== undefined) el.value = v; };
+    set('dos_cim',   c.cim);
+    set('dos_adic',  c.adic);
+    set('dos_an',    c.an);
+    set('dos_ai',    c.ai);
+    set('dos_b0',    c.b0);
+    set('dos_b1',    c.b1);
+    set('dos_agua',  c.agua);
+    set('dos_adit',  c.adit);
+    set('dos_ar',    c.ar);
+    set('dos_flow',  c.flow);
+    if (c.fck) set('dos_fck', c.fck);
+    // Identification
+    set('dos_nome_carta',    c.tracoNome);
+    set('dos_cliente',       c.cliente);
+    set('dos_obra',          c.obra);
+    set('dos_local',         c.local);
+    set('dos_aplicacao',     c.aplicacao);
+    set('dos_engenheiro',    c.engenheiro);
+    set('dos_tecnico_resp',  c.tecnicoResp);
+    set('dos_art',           c.art);
+    set('dos_data_carta',    c.data);
+    set('dos_obs_carta',     c.obs);
+    set('dos_nome_automacao', c.nomeAutomacao);
+    if (c.unidade) { const u = document.getElementById('dos_unidade'); if (u) u.value = c.unidade; }
+    const ac = document.getElementById('dos_ativa_automacao');
+    if (ac) ac.checked = !!c.ativaAutomacao;
+    calcularDosagem();
+    const st = document.getElementById('dos-carregar-status');
+    if (st) {
+        st.innerHTML = '<span style="color:#166534;font-weight:700;">✅ Carta "' + (c.tracoNome||'') + '" carregada.</span>';
+        setTimeout(() => { if (st) st.innerHTML = ''; }, 3500);
+    }
+}
+
+// ═══════════════════════════════════════════════════
+// MCC — OVERRIDE DE CATEGORIA DOS MATERIAIS
+// ═══════════════════════════════════════════════════
+let _mccCatOverrides = {}; // key → 'Ligantes'|'Agregados'|'Quím./Água'
+
+function mccCatChange(key, newGroup) {
+    _mccCatOverrides[key] = newGroup;
+    mccTracaoRenderTable();
+    // Auto-save nova versão da carta MCC
+    if (typeof mccCartaSalvar === 'function') {
+        mccCartaSalvar();
+        const st = document.getElementById('mcctr_status');
+        if (st) {
+            st.innerHTML = '<span style="color:#3730a3;font-weight:700;">🔄 Nova versão da carta salva com categorização atualizada.</span>';
+            setTimeout(() => { if (st) st.innerHTML = ''; }, 3500);
+        }
+    }
+}
+
+function mccGetGroup(mat) {
+    return _mccCatOverrides[mat.key] || mat.group;
 }
 
 </script>
