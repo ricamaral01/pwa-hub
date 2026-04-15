@@ -3738,7 +3738,7 @@ async function confirmarSalvarTraco() {
     const argMassa = (mArg + mAgrGraudo) > 0 ? (mArg / (mArg + mAgrGraudo)) * 100 : 0;
     const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
     const vAgrGraudo = v.b0 + v.b1;
-    const argVol = (vArg + vAgrGraudo) > 0 ? (vArg / (vArg + vAgrGraudo)) * 100 : 0;
+    const argVol = (vArg + vAgrGraudo + vAr) > 0 ? (vArg / (vArg + vAgrGraudo + vAr)) * 100 : 0;
     const consumoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
     const massaEsp = vTotal > 0 ? massaTotal * 1000 / vTotal : 0;
 
@@ -6560,7 +6560,7 @@ function calcularDosagem() {
 
     const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
     const vAgrGraudo = v.b0 + v.b1;
-    const argVol = (vArg / (vArg + vAgrGraudo)) * 100;
+    const argVol = (vArg / (vArg + vAgrGraudo + vAr)) * 100;
 
     const pctAN = (m.an / (m.an + m.ai)) * 100;
     const pctAI = (m.ai / (m.an + m.ai)) * 100;
@@ -6837,7 +6837,7 @@ function verificarVolume() {
     const argMassa = (mArg / mTot) * 100;
 
     const vArgVol = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
-    const argVol = (vArgVol / (vArgVol + v.b0 + v.b1)) * 100;
+    const argVol = (vArgVol / (vArgVol + v.b0 + v.b1 + vAr)) * 100;
 
     const nomes = {
         cim: 'Cimento', adic: 'Adição', an: 'Areia Natural', ai: 'Areia Industrial',
@@ -6943,16 +6943,15 @@ function calcularArgamassa() {
     const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
     const vBrita = v.b0 + v.b1;
     const vTotalSol = vArg + vBrita;
-    const argVol = (vArg / vTotalSol) * 100;
-
     const vAr = arPct * 10;
     const vTotal1m3 = vTotalSol + vAr;
+    const argVol = (vArg / vTotal1m3) * 100;
 
     // Teor de pasta
     const mPasta = m.cim + m.adic + m.agua + m.adit;
     const vPasta = v.cim + v.adic + v.agua + v.adit;
     const pastaMassa = (mPasta / mTotal) * 100;
-    const pastaVol = (vPasta / vTotalSol) * 100;
+    const pastaVol = (vPasta / vTotal1m3) * 100;
 
     // Teor de finos (cimento + adição)
     const mFinos = m.cim + m.adic;
