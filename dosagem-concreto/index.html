@@ -2068,6 +2068,14 @@
     </div>
 </div>
 
+<!-- MODAL VER CARTA TRAÇO COMPLETA -->
+<div id="modal-ver-carta" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:20px 12px;overflow-y:auto;" onclick="if(event.target===this)fecharModalVerCarta()">
+    <div style="background:#fff;border-radius:16px;max-width:900px;width:96%;padding:24px 24px 20px;box-shadow:0 8px 50px rgba(0,0,0,0.28);position:relative;margin:auto;">
+        <button onclick="fecharModalVerCarta()" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:1.6rem;cursor:pointer;color:#888;line-height:1;z-index:1;">✕</button>
+        <div id="modal-ver-carta-body"></div>
+    </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- SEÇÃO — COMPARADOR DE CUSTOS MCC                    -->
 <!-- ═══════════════════════════════════════════════════ -->
@@ -2489,13 +2497,9 @@
             <strong>Para CAA:</strong> normalmente entre 55% e 72%.
         </div>
 
-        <div style="background:#e8f4f8;border:2px solid var(--primary-light);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <strong style="font-size:0.92rem;">📋 Fonte dos dados:</strong>
-            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:6px 14px;border-radius:6px;background:#fff;border:1.5px solid var(--border);">
-                <input type="checkbox" id="arg_modo_manual" onchange="toggleModoArgamassa()" style="width:16px;height:16px;">
-                <span style="font-size:0.88rem;font-weight:600;">Ignorar Dosagem 1 m³ e informar manualmente</span>
-            </label>
-            <button class="btn btn-primary" style="padding:6px 14px;font-size:0.84rem;" onclick="sincronizarDosagemParaArgamassa()">🔄 Sincronizar da Dosagem</button>
+        <div style="background:#e8f4f8;border:2px solid var(--primary-light);border-radius:10px;padding:12px 16px;margin-bottom:16px;">
+            <strong style="font-size:0.92rem;">📋 Dados sincronizados automaticamente da Dosagem 1 m³.</strong>
+            <div style="font-size:0.84rem;color:var(--primary);margin-top:4px;">O Teor de Argamassa e Ar Incorporado são calculados automaticamente junto com a Dosagem 1 m³.</div>
         </div>
 
         <div class="form-grid">
@@ -2535,12 +2539,6 @@
                 <label>Teor de Ar (%)</label>
                 <input type="number" id="arg_ar" step="0.1" min="0" max="10" style="background:#e8eef3;" readonly>
             </div>
-        </div>
-
-        <div class="btn-wrap">
-            <button class="btn btn-primary" onclick="calcularArgamassa()">📊 Calcular Teor de Argamassa</button>
-            <button class="btn-print" onclick="imprimirSecao('sec-argamassa','Relatório — Teor de Argamassa')">🖨️ Imprimir</button>
-            <button class="btn-print" onclick="salvarPDF('sec-argamassa','Teor_Argamassa')">📄 Salvar PDF</button>
         </div>
 
         <div id="res-argamassa"></div>
@@ -3897,6 +3895,7 @@ async function listarTracos() {
             aditivoSP: c.adit,
             ac: c.ac,
             flow: c.flow,
+            cartaCompleta: c,
             loadData: {
                 nomeTraco: c.tracoNome,
                 cimento: c.cim,
@@ -3943,7 +3942,10 @@ async function listarTracos() {
                 <td>${t.aditivoSP || '—'}</td>
                 <td>${t.ac || '—'}</td>
                 <td>${t.flow || '—'}</td>
-                <td><button class="btn btn-primary" style="padding:6px 12px;font-size:0.78rem;" onclick='carregarTraco(${JSON.stringify(t.loadData).replace(/'/g,"&#39;")})'>📥 Carregar</button></td>
+                <td style="white-space:nowrap;display:flex;gap:6px;flex-wrap:wrap;">
+                    ${t.tipo === 'Carta' ? `<button class="btn btn-warning" style="padding:6px 12px;font-size:0.78rem;" onclick='verCartaTracaoSalva(${JSON.stringify(t.cartaCompleta).replace(/'/g,"&#39;")})'>📋 Ver Carta</button>` : ''}
+                    <button class="btn btn-primary" style="padding:6px 12px;font-size:0.78rem;" onclick='carregarTraco(${JSON.stringify(t.loadData).replace(/'/g,"&#39;")})'>📥 Carregar</button>
+                </td>
             </tr>`;
         });
 
@@ -6798,6 +6800,10 @@ function calcularDosagem() {
         const kpiFlowHintEl = document.getElementById('kpi-flow-hint');
         if (kpiFlowHintEl && doFlow) kpiFlowHintEl.textContent = `${doFlow} mm${doFlowClass} (NBR 16889)`;
     }
+
+    // Teor de Argamassa e Ar Incorporado calculados automaticamente após a dosagem
+    sincronizarDosagemParaArgamassa();
+    calcularArgamassa();
 }
 
 // ═══════════════════════════════════════════════════
@@ -11227,6 +11233,198 @@ ${mkRow('Quím./Água (R$/m³)', r => 'R$ ' + fmt2((r.gTotais||{})['Quím./Água
                 width: 1020,
                 height: 880
         });
+}
+
+// ═══════════════════════════════════════════════════
+// TRAÇOS SALVOS — VER CARTA TRAÇO COMPLETA
+// ═══════════════════════════════════════════════════
+function verCartaTracaoSalva(c) {
+    const fmtN  = (v, d=1) => { const n=Number(v); return isFinite(n) ? n.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}) : '—'; };
+    const fmtM  = (v) => { const n=Number(v)||0; return n>0 ? n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) : '—'; };
+    const fmtD  = (v) => { if (!v) return '—'; const m=String(v).match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? `${m[3]}/${m[2]}/${m[1]}` : v; };
+    const s     = (v) => v || '—';
+    const lig   = (Number(c.cim)||0) + (Number(c.adic)||0);
+    const ac    = c.ac ? fmtN(c.ac,3) : (lig>0 ? fmtN((Number(c.agua)||0)/lig,3) : '—');
+
+    // Teor de argamassa
+    const teorArgMassa  = c.teorArgMassa !== undefined ? fmtN(c.teorArgMassa,1) : '—';
+    const teorArgVolume = c.teorArgVolume !== undefined ? fmtN(c.teorArgVolume,1) : '—';
+    const volArgL       = c.volArg !== undefined ? fmtN(c.volArg,1) : '—';
+    const volTotal      = c.volumeTotal !== undefined ? fmtN(c.volumeTotal,1) : '—';
+    const arPct         = c.ar !== undefined ? fmtN(c.ar,1) : '—';
+
+    // MCC Snapshot
+    const mcc = c.mccSnapshot || {};
+    const mccKeys = ['cim','adic','an','ai','b0','b1','agua','adit'];
+    const mccNomes = {cim:'Cimento',adic:'Adição',an:'Areia Natural',ai:'Areia Industrial',b0:'Brita 0',b1:'Brita ½',agua:'Água',adit:'Aditivo SP'};
+    const mccMassas = {cim:c.cim,adic:c.adic,an:c.an,ai:c.ai,b0:c.b0,b1:c.b1,agua:c.agua,adit:c.adit};
+    const hasMCC = Object.keys(mcc).length > 0 && (Number(c.custoTotal)||0) > 0;
+
+    let mccHTML = '';
+    if (hasMCC) {
+        let rows = '';
+        mccKeys.forEach(k => {
+            const item = mcc[k] || {};
+            const kg = Number(mccMassas[k]) || 0;
+            const preco = Number(item.preco) || 0;
+            const subtotal = kg * preco;
+            rows += `<tr>
+                <td>${mccNomes[k]}</td>
+                <td style="text-align:right;">${fmtN(kg,1)}</td>
+                <td>${s(item.nome)}</td>
+                <td>${s(item.forn)}</td>
+                <td style="text-align:right;">${preco>0?'R$ '+fmtN(preco,4):'—'}</td>
+                <td style="text-align:right;font-weight:600;">${subtotal>0?'R$ '+fmtN(subtotal,2):'—'}</td>
+            </tr>`;
+        });
+        mccHTML = `
+        <div style="margin-top:20px;">
+            <h3 style="color:var(--primary);font-size:1rem;margin-bottom:10px;display:flex;align-items:center;gap:8px;">💰 Custo MCC — por m³</h3>
+            <div style="overflow-x:auto;">
+                <table class="result-table">
+                    <thead><tr><th>Material</th><th>Massa (kg)</th><th>Produto</th><th>Fornecedor</th><th>Preço Líq. (R$/kg)</th><th>Custo</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="5"><strong>Custo Total por m³</strong></td>
+                            <td style="text-align:right;"><strong>${fmtM(c.custoTotal)}</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="font-size:0.82rem;color:#555;">Ligantes</td>
+                            <td style="text-align:right;font-size:0.82rem;">${fmtM(c.custoLigantes)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="font-size:0.82rem;color:#555;">Agregados</td>
+                            <td style="text-align:right;font-size:0.82rem;">${fmtM(c.custoAgregados)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="font-size:0.82rem;color:#555;">Quím. / Água</td>
+                            <td style="text-align:right;font-size:0.82rem;">${fmtM(c.custoQuimicos)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>`;
+    }
+
+    const unidadeLabel = {campinas:'Campinas',ribeirao:'Ribeirão Preto',pederneiras:'Pederneiras',noroeste:'Noroeste'}[c.unidade] || c.unidade || '—';
+    const versaoStr = c.versaoStr || (c.versao ? String(c.versao).padStart(2,'0') : '—');
+    const ativaBadge = c.ativaAutomacao
+        ? '<span style="display:inline-block;padding:3px 10px;background:#d5f5e3;color:#1e8449;border-radius:12px;font-size:0.75rem;font-weight:700;">⚙️ Ativa na Automação</span>'
+        : '';
+
+    const content = `
+    <div style="padding:4px 0;">
+        <!-- CABEÇALHO -->
+        <div style="background:linear-gradient(135deg,#1a1f2e,#2c3346);border-radius:12px;padding:16px 20px;color:#fff;margin-bottom:18px;display:flex;align-items:center;gap:14px;">
+            <img src="../assets/img/logo-concretrack.png" style="height:44px;width:44px;object-fit:contain;filter:brightness(1.1);" alt="">
+            <div style="flex:1;">
+                <div style="font-size:0.7rem;letter-spacing:.08em;text-transform:uppercase;opacity:.65;font-weight:700;">CONCRETRACK · Carta Traço</div>
+                <div style="font-size:1.1rem;font-weight:900;line-height:1.2;margin-top:2px;">${s(c.tracoNome)}</div>
+                <div style="font-size:0.78rem;opacity:.75;margin-top:3px;">v${versaoStr} · ${unidadeLabel} · Revisão ${c.revisaoTraco||0} · ${fmtD(c.data||c.dataHora)} ${ativaBadge}</div>
+            </div>
+            <div style="text-align:right;font-size:0.75rem;opacity:.65;">
+                <div>Salvo: ${s(c.dataHora)}</div>
+                <div>ID: ${s(c.id).slice(-12)}</div>
+            </div>
+        </div>
+
+        <!-- IDENTIFICAÇÃO -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+            <div class="result-box ok" style="margin:0;">
+                <h3 style="font-size:0.88rem;margin-bottom:8px;">📋 Identificação</h3>
+                <table class="result-table" style="font-size:0.82rem;"><tbody>
+                    <tr><td>Cliente</td><td><strong>${s(c.cliente)}</strong></td></tr>
+                    <tr><td>Obra / Projeto</td><td>${s(c.obra)}</td></tr>
+                    <tr><td>Local</td><td>${s(c.local)}</td></tr>
+                    <tr><td>Aplicação</td><td>${s(c.aplicacao)}</td></tr>
+                    <tr><td>Engenheiro</td><td>${s(c.engenheiro)}</td></tr>
+                    <tr><td>Técnico</td><td>${s(c.tecnicoResp)}</td></tr>
+                    <tr><td>ART / RRT</td><td>${s(c.art)}</td></tr>
+                    ${c.nomeAutomacao ? `<tr><td>Automação</td><td><code style="font-size:0.78rem;">${c.nomeAutomacao}</code></td></tr>` : ''}
+                </tbody></table>
+            </div>
+            <div class="result-box ok" style="margin:0;">
+                <h3 style="font-size:0.88rem;margin-bottom:8px;">⚙️ Parâmetros Principais</h3>
+                <table class="result-table" style="font-size:0.82rem;"><tbody>
+                    <tr><td>FCK</td><td class="highlight"><strong>${fmtN(c.fck,0)} MPa</strong></td></tr>
+                    <tr><td>Flow</td><td class="highlight"><strong>${fmtN(c.flow,0)} mm</strong></td></tr>
+                    <tr><td>Relação a/c</td><td class="highlight">${ac}</td></tr>
+                    <tr><td>% Aditivo / Lig.</td><td>${c.pctAdit ? fmtN(c.pctAdit,2)+'%' : '—'}</td></tr>
+                    <tr><td>Ar Incorporado</td><td>${arPct}%</td></tr>
+                    <tr><td>Vol. Total</td><td>${volTotal} L</td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- TRAÇO -->
+        <h3 style="color:var(--primary);font-size:0.95rem;margin-bottom:8px;">⚖️ Dosagem para 1 m³</h3>
+        <div style="overflow-x:auto;margin-bottom:18px;">
+            <table class="result-table">
+                <thead><tr><th>Material</th><th>Massa (kg)</th><th>ρ (g/cm³)</th></tr></thead>
+                <tbody>
+                    <tr><td>Cimento</td><td>${fmtN(c.cim,1)}</td><td>${c.rhoCim?fmtN(c.rhoCim,3):'—'}</td></tr>
+                    <tr><td>Adição</td><td>${fmtN(c.adic,1)}</td><td>${c.rhoAdic?fmtN(c.rhoAdic,3):'—'}</td></tr>
+                    <tr><td>Areia Natural</td><td>${fmtN(c.an,1)}</td><td>${c.rhoAn?fmtN(c.rhoAn,3):'—'}</td></tr>
+                    <tr><td>Areia Industrial</td><td>${fmtN(c.ai,1)}</td><td>${c.rhoAi?fmtN(c.rhoAi,3):'—'}</td></tr>
+                    <tr><td>Brita 0</td><td>${fmtN(c.b0,1)}</td><td>${c.rhoB0?fmtN(c.rhoB0,3):'—'}</td></tr>
+                    <tr><td>Brita ½</td><td>${fmtN(c.b1,1)}</td><td>${c.rhoB1?fmtN(c.rhoB1,3):'—'}</td></tr>
+                    <tr><td>Água</td><td>${fmtN(c.agua,1)}</td><td>1.000</td></tr>
+                    <tr><td>Aditivo SP</td><td>${fmtN(c.adit,2)}</td><td>${c.rhoAdit?fmtN(c.rhoAdit,3):'—'}</td></tr>
+                    <tr><td>Ar Incorporado (${arPct}%)</td><td>—</td><td>—</td></tr>
+                    <tr class="total-row">
+                        <td><strong>TOTAL</strong></td>
+                        <td><strong>${fmtN((Number(c.cim)||0)+(Number(c.adic)||0)+(Number(c.an)||0)+(Number(c.ai)||0)+(Number(c.b0)||0)+(Number(c.b1)||0)+(Number(c.agua)||0)+(Number(c.adit)||0),1)}</strong></td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TEOR DE ARGAMASSA E AR -->
+        <h3 style="color:var(--primary);font-size:0.95rem;margin-bottom:8px;">🧱 Teor de Argamassa e Ar Incorporado</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;">
+            <div style="background:#edf9f0;border:1.5px solid #82c99a;border-radius:8px;padding:12px;text-align:center;">
+                <div style="font-size:0.7rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Tx. Arg. Massa</div>
+                <div style="font-size:1.5rem;font-weight:900;color:#1a6635;">${teorArgMassa}%</div>
+                <div style="font-size:0.7rem;color:#777;">em massa</div>
+            </div>
+            <div style="background:#edf9f0;border:1.5px solid #82c99a;border-radius:8px;padding:12px;text-align:center;">
+                <div style="font-size:0.7rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Tx. Arg. Volume</div>
+                <div style="font-size:1.5rem;font-weight:900;color:#1a6635;">${teorArgVolume}%</div>
+                <div style="font-size:0.7rem;color:#777;">em volume</div>
+            </div>
+            <div style="background:#e8f0f8;border:1.5px solid #82a9c9;border-radius:8px;padding:12px;text-align:center;">
+                <div style="font-size:0.7rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Vol. Argamassa</div>
+                <div style="font-size:1.5rem;font-weight:900;color:#1a3a6e;">${volArgL} L</div>
+                <div style="font-size:0.7rem;color:#777;">Ar: ${arPct}% = ${fmtN((Number(c.ar)||0)*10,1)} L</div>
+            </div>
+        </div>
+
+        ${mccHTML}
+
+        ${c.obs ? `<div style="margin-top:18px;padding:12px 16px;background:#fefce8;border:1px solid #fde68a;border-radius:8px;font-size:0.85rem;"><strong>📝 Observações:</strong> ${c.obs}</div>` : ''}
+
+        <!-- AÇÕES -->
+        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;border-top:2px solid #e8edf2;padding-top:16px;">
+            <button class="btn btn-primary" onclick="carregarTraco(${JSON.stringify({nomeTraco:c.tracoNome,cimento:c.cim,adicao:c.adic,areiaNatural:c.an,areiaIndustrial:c.ai,brita0:c.b0,brita1:c.b1,agua:c.agua,aditivoSP:c.adit,arIncorporado:c.ar,flow:c.flow}).replace(/'/g,'&#39;')}); fecharModalVerCarta();">📥 Carregar na Dosagem</button>
+            <button class="btn" style="background:#e0e5ea;" onclick="fecharModalVerCarta()">✕ Fechar</button>
+        </div>
+    </div>`;
+
+    const modal = document.getElementById('modal-ver-carta');
+    const body  = document.getElementById('modal-ver-carta-body');
+    if (modal && body) {
+        body.innerHTML = content;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function fecharModalVerCarta() {
+    const modal = document.getElementById('modal-ver-carta');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
 }
 
 </script>
