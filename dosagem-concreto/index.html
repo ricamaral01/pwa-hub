@@ -3478,7 +3478,8 @@
                 <th style="padding:8px 7px;text-align:left;min-width:115px;">Produto</th>
                 <th style="padding:8px 7px;text-align:left;min-width:115px;">Fornecedor</th>
                 <th style="padding:8px 7px;text-align:right;min-width:66px;white-space:nowrap;">R$/kg líq.</th>
-                <th style="padding:8px 7px;text-align:right;border-radius:0 7px 0 0;min-width:60px;">R$/m³</th>
+                <th style="padding:8px 7px;text-align:right;min-width:60px;">R$/m³</th>
+                <th style="padding:8px 7px;text-align:center;border-radius:0 7px 0 0;min-width:50px;">Ações</th>
               </tr>
             </thead>
             <tbody id="mcctr_tbody"></tbody>
@@ -10139,6 +10140,62 @@ const MCCTR_UNID_LABELS = {
 let _mccTracaoCurrentData = null;
 let _mccTracaoConfig = {};
 let _mccTracaoBancoAll = [];
+let _mccTracaoSlots = {}; // { key: [{kg, nome, forn, custoLiq}, ...] }
+
+function mccSlotsInit(data) {
+    const ns = {};
+    MCCTR_MATS.forEach(({ key, massKey }) => {
+        const kg  = Number(data?.masses?.[massKey]) || 0;
+        const cfg = _mccTracaoConfig[key] || {};
+        ns[key]   = [{ kg, nome: cfg.nome || '', forn: cfg.forn || '', custoLiq: cfg.custoLiq || 0 }];
+    });
+    _mccTracaoSlots = ns;
+}
+
+function mccSlotsReadFromDOM(baseKey) {
+    const slots = _mccTracaoSlots[baseKey];
+    if (!slots) return;
+    slots.forEach((slot, idx) => {
+        const kgEl = document.getElementById('mcctr_' + baseKey + '_' + idx + '_kg');
+        const nEl  = document.getElementById('mcctr_' + baseKey + '_' + idx + '_nome');
+        const fEl  = document.getElementById('mcctr_' + baseKey + '_' + idx + '_forn');
+        if (kgEl) slot.kg   = parseFloat(kgEl.value)  || 0;
+        if (nEl)  slot.nome = nEl.value || '';
+        if (fEl)  slot.forn = fEl.value || '';
+    });
+}
+
+function mccSlotAdd(baseKey) {
+    mccSlotsReadFromDOM(baseKey);
+    if (!_mccTracaoSlots[baseKey]) _mccTracaoSlots[baseKey] = [];
+    _mccTracaoSlots[baseKey].push({ kg: 0, nome: '', forn: '', custoLiq: 0 });
+    mccTracaoRenderTable();
+}
+
+function mccSlotRemove(baseKey, slotIdx) {
+    if ((_mccTracaoSlots[baseKey] || []).length <= 1) return;
+    mccSlotsReadFromDOM(baseKey);
+    _mccTracaoSlots[baseKey].splice(slotIdx, 1);
+    mccTracaoRenderTable();
+}
+
+function mccSlotKgChange(baseKey, slotIdx) {
+    const kgEl = document.getElementById('mcctr_' + baseKey + '_' + slotIdx + '_kg');
+    if (_mccTracaoSlots[baseKey]?.[slotIdx] !== undefined)
+        _mccTracaoSlots[baseKey][slotIdx].kg = parseFloat(kgEl?.value) || 0;
+    // Update kg sum hint
+    const mat = MCCTR_MATS.find(m => m.key === baseKey);
+    const totalKgFromTraco = mat ? (Number(_mccTracaoCurrentData?.masses?.[mat.massKey]) || 0) : 0;
+    const slots = _mccTracaoSlots[baseKey] || [];
+    const slotsSum = slots.reduce((a, s) => a + (Number(s.kg) || 0), 0);
+    const sumOk = Math.abs(slotsSum - totalKgFromTraco) < 0.5 || totalKgFromTraco === 0;
+    const hintEl = document.getElementById('mcctr_' + baseKey + '_kgsum');
+    if (hintEl) {
+        hintEl.textContent = '\u03a3\u00a0' + slotsSum.toFixed(1) + '\u00a0/\u00a0' + totalKgFromTraco.toFixed(1) + '\u00a0kg';
+        hintEl.style.color = sumOk ? '#166534' : '#dc2626';
+    }
+    mccTracaoUpdateRowPrice(baseKey, slotIdx);
+}
 
 function mccUnitNorm(v) {
     return String(v || '')
@@ -10333,6 +10390,7 @@ function mccTracaoCarregar() {
         setT('mcctr_info_aplic',  item.aplicacao || '');
         setT('mcctr_info_source', item._source === 'carta' ? '📋 CartasTraco' : item._source === 'remoto' ? '☁️ Servidor' : '📦 Local');
     }
+    mccSlotsInit(item);
     mccTracaoRenderTable();
 }
 
@@ -10344,15 +10402,15 @@ function mccTracaoSalvarConfig() {
     const traceId = _mccTracaoCurrentData?.id || '_global';
     if (!_mccTracaoConfig[traceId]) _mccTracaoConfig[traceId] = {};
     MCCTR_MATS.forEach(({ key }) => {
-        const nomeEl = document.getElementById('mcctr_' + key + '_nome');
-        const fornEl = document.getElementById('mcctr_' + key + '_forn');
-        const nome = nomeEl?.value || '';
-        const forn = fornEl?.value || '';
-        const prod = mccTracaoFindProduto(key, nome, forn);
-        const custoLiq = prod ? (Number(prod.custoLiq) || 0) : (_mccTracaoConfig[key]?.custoLiq || 0);
+        mccSlotsReadFromDOM(key);
+        const slot0    = _mccTracaoSlots[key]?.[0] || {};
+        const nome     = slot0.nome || '';
+        const forn     = slot0.forn || '';
+        const prod     = mccTracaoFindProduto(key, nome, forn);
+        const custoLiq = prod ? (Number(prod.custoLiq) || 0) : (slot0.custoLiq || 0);
         // save per-traço
         _mccTracaoConfig[traceId][key] = { nome, forn, custoLiq };
-        // save flat (legacy read by mccTracaoRenderTable)
+        // save flat (legacy compat)
         if (!_mccTracaoConfig[key]) _mccTracaoConfig[key] = {};
         _mccTracaoConfig[key].nome     = nome;
         _mccTracaoConfig[key].forn     = forn;
@@ -10432,6 +10490,11 @@ function mccCartaCarregar(cartaId) {
         _mccTracaoConfig[key].forn     = carta.materiais?.[key]?.forn     || '';
         _mccTracaoConfig[key].custoLiq = carta.materiais?.[key]?.custoLiq || 0;
     });
+    if (carta.slots) {
+        _mccTracaoSlots = JSON.parse(JSON.stringify(carta.slots));
+    } else {
+        mccSlotsInit(tracoData);
+    }
     mccTracaoRenderTable();
     const st = document.getElementById('mcctr_status');
     if (st) {
@@ -10442,15 +10505,14 @@ function mccCartaCarregar(cartaId) {
 
 function mccCartaSalvar() {
     if (!_mccTracaoCurrentData) { alert('Selecione um traço antes de salvar a carta.'); return; }
+    // Read current DOM state into slots
+    MCCTR_MATS.forEach(({ key }) => mccSlotsReadFromDOM(key));
     const materiais = {};
     MCCTR_MATS.forEach(({ key }) => {
-        const nomeEl    = document.getElementById('mcctr_' + key + '_nome');
-        const fornEl    = document.getElementById('mcctr_' + key + '_forn');
-        const nome      = nomeEl?.value || '';
-        const forn      = fornEl?.value || '';
-        const prod      = mccTracaoFindProduto(key, nome, forn);
-        const custoLiq  = prod ? (Number(prod.custoLiq) || 0) : (_mccTracaoConfig[key]?.custoLiq || 0);
-        materiais[key]  = { nome, forn, custoLiq };
+        const slot0    = _mccTracaoSlots[key]?.[0] || {};
+        const prod     = mccTracaoFindProduto(key, slot0.nome, slot0.forn);
+        const custoLiq = prod ? (Number(prod.custoLiq) || 0) : (slot0.custoLiq || 0);
+        materiais[key] = { nome: slot0.nome || '', forn: slot0.forn || '', custoLiq };
     });
     const nomeBase  = (_mccTracaoCurrentData.nome || 'Carta').trim();
     const cartas    = mccCartasGetAll();
@@ -10473,7 +10535,8 @@ function mccCartaSalvar() {
         tracoInfo: { nome: _mccTracaoCurrentData.nome, fck: _mccTracaoCurrentData.fck,
                      flow: _mccTracaoCurrentData.flow, ac: _mccTracaoCurrentData.ac,
                      aplicacao: _mccTracaoCurrentData.aplicacao || '' },
-        materiais
+        materiais,
+        slots: JSON.parse(JSON.stringify(_mccTracaoSlots))
     };
     cartas.push(carta);
     mccCartasSetAll(cartas);
@@ -10509,60 +10572,91 @@ function mccTracaoRenderTable() {
     const GC = { 'Ligantes':'#e0e7ff', 'Agregados':'#fef9c3', 'Quím./Água':'#dcfce7' };
     const GT = { 'Ligantes':'#3730a3', 'Agregados':'#92400e', 'Quím./Água':'#166534' };
     const groups = ['Ligantes','Agregados','Quím./Água'];
-    const catOpts = groups.map(g => '<option value="' + g + '">' + g + '</option>').join('');
     let totalCusto = 0;
     const gTotals = { 'Ligantes':0, 'Agregados':0, 'Quím./Água':0 };
-    // Build per-group buckets using overrides
     const matsByGroup = { 'Ligantes':[], 'Agregados':[], 'Quím./Água':[] };
     MCCTR_MATS.forEach(mat => { const g = mccGetGroup(mat); if (matsByGroup[g]) matsByGroup[g].push(mat); });
     let html = '';
     groups.forEach(grp => {
         const mats = matsByGroup[grp];
-        html += '<tr><td colspan="7" style="background:' + GC[grp] + ';color:' + GT[grp] + ';font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:5px 12px;">' + grp + '</td></tr>';
+        if (!mats.length) return;
+        html += '<tr><td colspan="8" style="background:' + GC[grp] + ';color:' + GT[grp] + ';font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:5px 12px;">' + grp + '</td></tr>';
         mats.forEach(({ key, label, massKey }) => {
-            const curGroup = mccGetGroup({ key, group: MCCTR_MATS.find(m=>m.key===key)?.group || grp });
-            const kg  = _mccTracaoCurrentData ? (Number(_mccTracaoCurrentData.masses?.[massKey]) || 0) : 0;
-            const cfg = _mccTracaoConfig[key] || {};
-            const ativos  = mccTracaoProdutosAtivosPorChave(key);
-            const nomesU  = [...new Set(ativos.map(p => p.nomeProduto).filter(Boolean))];
-            let nOpts = '<option value="">— Produto —</option>';
-            nomesU.forEach(n => { nOpts += '<option value="' + n + '"' + (cfg.nome === n ? ' selected' : '') + '>' + n + '</option>'; });
-            const fornsA = cfg.nome ? ativos.filter(p => p.nomeProduto === cfg.nome) : [];
-            const fornsU = [...new Set(fornsA.map(p => p.fornecedor).filter(Boolean))];
-            let fOpts = '<option value="">— Fornecedor —</option>';
-            fornsU.forEach(f => { fOpts += '<option value="' + f + '"' + (cfg.forn === f ? ' selected' : '') + '>' + f + '</option>'; });
-            const produto  = mccTracaoFindProduto(key, cfg.nome, cfg.forn);
-            const custoLiq = produto ? (Number(produto.custoLiq) || 0) : (cfg.custoLiq || 0);
-            const custoM3  = kg * custoLiq;
-            gTotals[grp] += custoM3;
-            totalCusto   += custoM3;
-            const catSel = '<select style="padding:3px 5px;border-radius:6px;border:1.5px solid ' + GT[curGroup] + ';font-size:.72rem;font-weight:700;color:' + GT[curGroup] + ';background:' + GC[curGroup] + ';cursor:pointer;" onchange="mccCatChange(\'' + key + '\',this.value)">'
+            const curGroup = mccGetGroup(MCCTR_MATS.find(m => m.key === key));
+            const totalKgFromTraco = _mccTracaoCurrentData ? (Number(_mccTracaoCurrentData.masses?.[massKey]) || 0) : 0;
+            // Ensure slots initialized
+            if (!_mccTracaoSlots[key] || !_mccTracaoSlots[key].length) {
+                const cfg = _mccTracaoConfig[key] || {};
+                _mccTracaoSlots[key] = [{ kg: totalKgFromTraco, nome: cfg.nome || '', forn: cfg.forn || '', custoLiq: cfg.custoLiq || 0 }];
+            }
+            const slots = _mccTracaoSlots[key];
+            const slotsSum = slots.reduce((a, s) => a + (Number(s.kg) || 0), 0);
+            const sumOk = Math.abs(slotsSum - totalKgFromTraco) < 0.5 || totalKgFromTraco === 0;
+            // Category select (shared for all slots of this material)
+            const catSel = '<select title="Categoria" style="font-size:.72rem;font-weight:700;color:' + GT[curGroup] + ';background:' + GC[curGroup] + ';border:1.5px solid ' + GT[curGroup] + ';border-radius:6px;padding:3px 5px;cursor:pointer;" onchange="mccCatChange(\'' + key + '\',this.value)">'
                 + groups.map(g => '<option value="' + g + '"' + (g === curGroup ? ' selected' : '') + '>' + g + '</option>').join('')
                 + '</select>';
-            html += '<tr style="border-bottom:1px solid #eee;">'
-                + '<td style="padding:8px 12px;font-weight:600;">' + label + '</td>'
-                + '<td style="padding:4px 6px;">' + catSel + '</td>'
-                + '<td style="padding:8px 12px;text-align:right;font-variant-numeric:tabular-nums;">' + (kg > 0 ? kg.toFixed(1) + ' kg' : '—') + '</td>'
-                + '<td style="padding:6px 8px;"><select style="width:100%;padding:4px 6px;border-radius:6px;border:1px solid #ddd;font-size:.82rem;" id="mcctr_' + key + '_nome" onchange="mccTracaoNomeChange(\'' + key + '\')">'
-                + nOpts + '</select></td>'
-                + '<td style="padding:6px 8px;"><select style="width:100%;padding:4px 6px;border-radius:6px;border:1px solid #ddd;font-size:.82rem;" id="mcctr_' + key + '_forn" onchange="mccTracaoFornChange(\'' + key + '\')">'
-                + fOpts + '</select></td>'
-                + '<td style="padding:8px 12px;text-align:right;color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;" id="mcctr_' + key + '_liq">' + (custoLiq > 0 ? 'R$\u00a0' + custoLiq.toFixed(4).replace('.', ',') : '—') + '</td>'
-                + '<td style="padding:8px 12px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums;" id="mcctr_' + key + '_m3">'  + (custoM3  > 0 ? 'R$\u00a0' + custoM3.toFixed(2).replace('.', ',')  : '—') + '</td>'
-                + '</tr>';
+            slots.forEach((slot, slotIdx) => {
+                const isFirst = slotIdx === 0;
+                const isLast  = slotIdx === slots.length - 1;
+                const ativos  = mccTracaoProdutosAtivosPorChave(key);
+                const nomesU  = [...new Set(ativos.map(p => p.nomeProduto).filter(Boolean))];
+                let nOpts = '<option value="">— Produto —</option>';
+                nomesU.forEach(n => { nOpts += '<option value="' + n + '"' + (slot.nome === n ? ' selected' : '') + '>' + n + '</option>'; });
+                const fornsA  = slot.nome ? ativos.filter(p => p.nomeProduto === slot.nome) : [];
+                const fornsU  = [...new Set(fornsA.map(p => p.fornecedor).filter(Boolean))];
+                let fOpts = '<option value="">— Fornecedor —</option>';
+                fornsU.forEach(f => { fOpts += '<option value="' + f + '"' + (slot.forn === f ? ' selected' : '') + '>' + f + '</option>'; });
+                const prod     = mccTracaoFindProduto(key, slot.nome, slot.forn);
+                const custoLiq = prod ? (Number(prod.custoLiq) || 0) : (slot.custoLiq || 0);
+                const custoM3  = (Number(slot.kg) || 0) * custoLiq;
+                if (prod) slot.custoLiq = custoLiq;
+                gTotals[grp] += custoM3;
+                totalCusto   += custoM3;
+                // kg input + sum hint (only on first slot when multiple slots exist)
+                const kgBorder = sumOk ? '#bbb' : '#dc2626';
+                const kgInput  = '<input type="number" id="mcctr_' + key + '_' + slotIdx + '_kg" value="' + (Number(slot.kg) || 0).toFixed(1) + '" step="0.1" min="0" style="width:66px;padding:3px 5px;border:1.5px solid ' + kgBorder + ';border-radius:6px;font-size:.82rem;text-align:right;" oninput="mccSlotKgChange(\'' + key + '\',' + slotIdx + ')">';
+                let kgCell = kgInput;
+                if (isFirst && slots.length > 1) {
+                    kgCell += '<div id="mcctr_' + key + '_kgsum" style="font-size:.62rem;color:' + (sumOk ? '#166534' : '#dc2626') + ';white-space:nowrap;margin-top:2px;">\u03a3\u00a0' + slotsSum.toFixed(1) + '\u00a0/\u00a0' + totalKgFromTraco.toFixed(1) + '\u00a0kg</div>';
+                }
+                // Actions
+                let actions = '';
+                if (isLast) actions += '<button title="Adicionar produto" onclick="mccSlotAdd(\'' + key + '\')" style="background:#e0e7ff;color:#3730a3;border:none;border-radius:5px;padding:3px 8px;font-weight:900;cursor:pointer;font-size:.85rem;">+</button>';
+                if (slots.length > 1) actions += '<button title="Remover" onclick="mccSlotRemove(\'' + key + '\',' + slotIdx + ')" style="background:#fee2e2;color:#dc2626;border:none;border-radius:5px;padding:3px 7px;font-weight:900;cursor:pointer;font-size:.85rem;margin-left:3px;">\u2212</button>';
+                // Material label
+                const matLabel = isFirst
+                    ? '<strong>' + label + '</strong>'
+                    : '<span style="color:#888;font-size:.78rem;">\u21b3\u00a0' + label + '\u00a0' + (slotIdx + 1) + '</span>';
+                // Category cell: only on first slot of each material
+                const catCell = isFirst
+                    ? '<td style="padding:4px 6px;vertical-align:middle;">' + catSel + '</td>'
+                    : '<td style="background:#f9f9fb;"></td>';
+                html += '<tr style="border-bottom:1px solid #eee;">'
+                    + '<td style="padding:8px 10px;font-weight:600;vertical-align:middle;white-space:nowrap;">' + matLabel + '</td>'
+                    + catCell
+                    + '<td style="padding:4px 8px;vertical-align:middle;text-align:right;">' + kgCell + '</td>'
+                    + '<td style="padding:5px 7px;"><select style="width:100%;padding:4px 5px;border-radius:6px;border:1px solid #ddd;font-size:.82rem;" id="mcctr_' + key + '_' + slotIdx + '_nome" onchange="mccTracaoNomeChange(\'' + key + '\',' + slotIdx + ')">' + nOpts + '</select></td>'
+                    + '<td style="padding:5px 7px;"><select style="width:100%;padding:4px 5px;border-radius:6px;border:1px solid #ddd;font-size:.82rem;" id="mcctr_' + key + '_' + slotIdx + '_forn" onchange="mccTracaoFornChange(\'' + key + '\',' + slotIdx + ')">' + fOpts + '</select></td>'
+                    + '<td style="padding:8px 10px;text-align:right;color:var(--accent);font-weight:700;white-space:nowrap;" id="mcctr_' + key + '_' + slotIdx + '_liq">' + (custoLiq > 0 ? 'R$\u00a0' + custoLiq.toFixed(4).replace('.', ',') : '—') + '</td>'
+                    + '<td style="padding:8px 10px;text-align:right;font-weight:700;white-space:nowrap;" id="mcctr_' + key + '_' + slotIdx + '_m3">'  + (custoM3  > 0 ? 'R$\u00a0' + custoM3.toFixed(2).replace('.', ',')  : '—') + '</td>'
+                    + '<td style="padding:4px 6px;text-align:center;white-space:nowrap;">' + actions + '</td>'
+                    + '</tr>';
+            });
         });
-        html += '<tr style="background:' + GC[grp] + ';border-top:2px solid ' + GC[grp] + ';">';
-        html += '<td colspan="5" style="padding:6px 12px;font-weight:700;color:' + GT[grp] + ';font-size:.82rem;">Subtotal ' + grp + '</td><td></td>';
-        html += '<td style="padding:6px 12px;text-align:right;font-weight:800;color:' + GT[grp] + ';">R$\u00a0' + gTotals[grp].toFixed(2).replace('.', ',') + '</td></tr>';
+        html += '<tr style="background:' + GC[grp] + ';border-top:2px solid ' + GC[grp] + ';">'
+            + '<td colspan="6" style="padding:6px 12px;font-weight:700;color:' + GT[grp] + ';font-size:.82rem;">Subtotal ' + grp + '</td>'
+            + '<td style="padding:6px 12px;text-align:right;font-weight:800;color:' + GT[grp] + ';">R$\u00a0' + gTotals[grp].toFixed(2).replace('.', ',') + '</td>'
+            + '<td></td></tr>';
     });
     tbody.innerHTML = html;
-    if (tfoot) tfoot.innerHTML = '<tr style="background:#1a1a2e;color:#fff;"><td colspan="6" style="padding:10px 12px;font-weight:800;font-size:.9rem;">TOTAL GERAL / m³</td><td style="padding:10px 12px;text-align:right;font-weight:900;font-size:1.05rem;">R$\u00a0' + totalCusto.toFixed(2).replace('.', ',') + '</td></tr>';
+    if (tfoot) tfoot.innerHTML = '<tr style="background:#1a1a2e;color:#fff;"><td colspan="6" style="padding:10px 12px;font-weight:800;font-size:.9rem;">TOTAL GERAL / m³</td><td style="padding:10px 12px;text-align:right;font-weight:900;font-size:1.05rem;">R$\u00a0' + totalCusto.toFixed(2).replace('.', ',') + '</td><td></td></tr>';
     mccTracaoUpdateResumo(gTotals, totalCusto);
 }
 
-function mccTracaoNomeChange(key) {
-    const nomeEl = document.getElementById('mcctr_' + key + '_nome');
-    const fornEl = document.getElementById('mcctr_' + key + '_forn');
+function mccTracaoNomeChange(key, slotIdx) {
+    const nomeEl = document.getElementById('mcctr_' + key + '_' + slotIdx + '_nome');
+    const fornEl = document.getElementById('mcctr_' + key + '_' + slotIdx + '_forn');
     if (!nomeEl || !fornEl) return;
     const nome = nomeEl.value;
     const ativos = mccTracaoProdutosAtivosPorChave(key);
@@ -10574,55 +10668,55 @@ function mccTracaoNomeChange(key) {
         if (forns.includes(fornAtual)) fornEl.value = fornAtual;
         else if (forns.length === 1) fornEl.value = forns[0];
     }
-    if (!_mccTracaoConfig[key]) _mccTracaoConfig[key] = {};
-    _mccTracaoConfig[key].nome = nome;
-    _mccTracaoConfig[key].forn = fornEl.value;
-    mccTracaoUpdateRowPrice(key);
+    if (_mccTracaoSlots[key]?.[slotIdx]) {
+        _mccTracaoSlots[key][slotIdx].nome = nome;
+        _mccTracaoSlots[key][slotIdx].forn = fornEl.value;
+    }
+    mccTracaoUpdateRowPrice(key, slotIdx);
 }
 
-function mccTracaoFornChange(key) {
-    const fornEl = document.getElementById('mcctr_' + key + '_forn');
+function mccTracaoFornChange(key, slotIdx) {
+    const fornEl = document.getElementById('mcctr_' + key + '_' + slotIdx + '_forn');
     if (!fornEl) return;
-    if (!_mccTracaoConfig[key]) _mccTracaoConfig[key] = {};
-    _mccTracaoConfig[key].forn = fornEl.value;
-    mccTracaoUpdateRowPrice(key);
+    if (_mccTracaoSlots[key]?.[slotIdx]) {
+        _mccTracaoSlots[key][slotIdx].forn = fornEl.value;
+    }
+    mccTracaoUpdateRowPrice(key, slotIdx);
 }
 
-function mccTracaoUpdateRowPrice(key) {
-    const nomeEl = document.getElementById('mcctr_' + key + '_nome');
-    const fornEl = document.getElementById('mcctr_' + key + '_forn');
-    const nome = nomeEl?.value || '';
-    const forn = fornEl?.value || '';
-    const produto  = mccTracaoFindProduto(key, nome, forn);
-    const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
-    const mat  = MCCTR_MATS.find(m => m.key === key);
-    const kg   = _mccTracaoCurrentData && mat ? (Number(_mccTracaoCurrentData.masses?.[mat.massKey]) || 0) : 0;
-    const custoM3 = kg * custoLiq;
-    const liqEl = document.getElementById('mcctr_' + key + '_liq');
-    const m3El  = document.getElementById('mcctr_' + key + '_m3');
+function mccTracaoUpdateRowPrice(key, slotIdx) {
+    const nomeEl = document.getElementById('mcctr_' + key + '_' + slotIdx + '_nome');
+    const fornEl = document.getElementById('mcctr_' + key + '_' + slotIdx + '_forn');
+    const nome = nomeEl?.value || (_mccTracaoSlots[key]?.[slotIdx]?.nome || '');
+    const forn = fornEl?.value || (_mccTracaoSlots[key]?.[slotIdx]?.forn || '');
+    const prod     = mccTracaoFindProduto(key, nome, forn);
+    const custoLiq = prod ? (Number(prod.custoLiq) || 0) : 0;
+    const kg       = Number(_mccTracaoSlots[key]?.[slotIdx]?.kg) || 0;
+    const custoM3  = kg * custoLiq;
+    if (_mccTracaoSlots[key]?.[slotIdx]) _mccTracaoSlots[key][slotIdx].custoLiq = custoLiq;
+    const liqEl = document.getElementById('mcctr_' + key + '_' + slotIdx + '_liq');
+    const m3El  = document.getElementById('mcctr_' + key + '_' + slotIdx + '_m3');
     if (liqEl) liqEl.textContent = custoLiq > 0 ? 'R$\u00a0' + custoLiq.toFixed(4).replace('.', ',') : '—';
     if (m3El)  m3El.textContent  = custoM3  > 0 ? 'R$\u00a0' + custoM3.toFixed(2).replace('.', ',')  : '—';
     mccTracaoRecalcTotals();
 }
 
 function mccTracaoRecalcTotals() {
-    const groups = ['Ligantes','Agregados','Quím./Água'];
-    const GT = { 'Ligantes':'#3730a3', 'Agregados':'#92400e', 'Quím./Água':'#166534' };
     let totalCusto = 0;
     const gTotals = { 'Ligantes':0, 'Agregados':0, 'Quím./Água':0 };
-    MCCTR_MATS.forEach(({ key, massKey, group }) => {
-        const nomeEl = document.getElementById('mcctr_' + key + '_nome');
-        const fornEl = document.getElementById('mcctr_' + key + '_forn');
-        const nome = nomeEl?.value || '';
-        const forn = fornEl?.value || '';
-        const produto  = mccTracaoFindProduto(key, nome, forn);
-        const custoLiq = produto ? (Number(produto.custoLiq) || 0) : 0;
-        const kg = _mccTracaoCurrentData ? (Number(_mccTracaoCurrentData.masses?.[massKey]) || 0) : 0;
-        gTotals[group] += kg * custoLiq;
-        totalCusto     += kg * custoLiq;
+    MCCTR_MATS.forEach(({ key, group }) => {
+        const grp = mccGetGroup({ key, group });
+        const slots = _mccTracaoSlots[key] || [];
+        slots.forEach(slot => {
+            const prod = mccTracaoFindProduto(key, slot.nome, slot.forn);
+            const liq  = prod ? (Number(prod.custoLiq) || 0) : (slot.custoLiq || 0);
+            const cost = (Number(slot.kg) || 0) * liq;
+            if (gTotals[grp] !== undefined) gTotals[grp] += cost;
+            totalCusto += cost;
+        });
     });
     const tfoot = document.getElementById('mcctr_tfoot');
-    if (tfoot) tfoot.innerHTML = '<tr style="background:#1a1a2e;color:#fff;"><td colspan="5" style="padding:10px 12px;font-weight:800;font-size:.9rem;">TOTAL GERAL / m³</td><td style="padding:10px 12px;text-align:right;font-weight:900;font-size:1.05rem;">R$\u00a0' + totalCusto.toFixed(2).replace('.', ',') + '</td></tr>';
+    if (tfoot) tfoot.innerHTML = '<tr style="background:#1a1a2e;color:#fff;"><td colspan="6" style="padding:10px 12px;font-weight:800;font-size:.9rem;">TOTAL GERAL / m³</td><td style="padding:10px 12px;text-align:right;font-weight:900;font-size:1.05rem;">R$\u00a0' + totalCusto.toFixed(2).replace('.', ',') + '</td><td></td></tr>';
     mccTracaoUpdateResumo(gTotals, totalCusto);
 }
 
@@ -10667,15 +10761,15 @@ function mccTracaoRenderChart() {
     const costPerMat = {};
     let totalCost = 0;
     MCCTR_MATS.forEach(({ key, massKey }) => {
-        const nEl  = document.getElementById('mcctr_' + key + '_nome');
-        const fEl  = document.getElementById('mcctr_' + key + '_forn');
-        const nome = nEl?.value || '';
-        const forn = fEl?.value || '';
-        const prod = mccTracaoFindProduto(key, nome, forn);
-        const liq  = prod ? (Number(prod.custoLiq) || 0) : 0;
-        const kg   = Number(data.masses?.[massKey]) || 0;
-        costPerMat[key] = kg * liq;
-        totalCost += costPerMat[key];
+        const slots = _mccTracaoSlots[key] || [];
+        let slotCost = 0;
+        slots.forEach(slot => {
+            const prod = mccTracaoFindProduto(key, slot.nome, slot.forn);
+            const liq  = prod ? (Number(prod.custoLiq) || 0) : (slot.custoLiq || 0);
+            slotCost  += (Number(slot.kg) || 0) * liq;
+        });
+        costPerMat[key] = slotCost;
+        totalCost      += slotCost;
     });
     // Draw SVG donut
     const cx = 88, cy = 88, R = 80, ri = 46;
@@ -10763,16 +10857,34 @@ function mccTracaoPrint() {
     let totalCusto = 0, totalMassa = 0;
     const gTotals = {'Ligantes':0,'Agregados':0,'Quím./Água':0};
     MCCTR_MATS.forEach(({key, label, massKey, group}) => {
-        const nEl = document.getElementById('mcctr_' + key + '_nome');
-        const fEl = document.getElementById('mcctr_' + key + '_forn');
-        const nome = nEl?.value || (_mccTracaoConfig[key]?.nome || '');
-        const forn = fEl?.value || (_mccTracaoConfig[key]?.forn || '');
-        const prod = mccTracaoFindProduto(key, nome, forn);
-        const custoLiq = prod ? (Number(prod.custoLiq) || 0) : 0;
-        const kg = Number(item.masses?.[massKey]) || 0;
-        const m3 = kg * custoLiq;
-        gTotals[group] += m3; totalCusto += m3; totalMassa += kg;
-        matData.push({key, label, kg, custoLiq, m3, group, color: MAT_CLR[key]||'#999', nomeProd: nome, fornProd: forn});
+        const curGroup = mccGetGroup({ key, group });
+        const slots    = _mccTracaoSlots[key] || [];
+        const totalKgMat = Number(item.masses?.[massKey]) || 0;
+        if (slots.length <= 1) {
+            const slot     = slots[0] || {};
+            const nome     = slot.nome || (_mccTracaoConfig[key]?.nome || '');
+            const forn     = slot.forn || (_mccTracaoConfig[key]?.forn || '');
+            const prod     = mccTracaoFindProduto(key, nome, forn);
+            const custoLiq = prod ? (Number(prod.custoLiq) || 0) : (slot.custoLiq || 0);
+            const kg       = totalKgMat;
+            const m3       = kg * custoLiq;
+            gTotals[curGroup] = (gTotals[curGroup] || 0) + m3;
+            totalCusto += m3; totalMassa += kg;
+            matData.push({key, label, kg, custoLiq, m3, group: curGroup, color: MAT_CLR[key]||'#999', nomeProd: nome, fornProd: forn});
+        } else {
+            slots.forEach((slot, si) => {
+                const nome     = slot.nome || '';
+                const forn     = slot.forn || '';
+                const prod     = mccTracaoFindProduto(key, nome, forn);
+                const custoLiq = prod ? (Number(prod.custoLiq) || 0) : (slot.custoLiq || 0);
+                const kg       = Number(slot.kg) || 0;
+                const m3       = kg * custoLiq;
+                const slotLabel = si === 0 ? label : '\u21b3\u00a0' + label + '\u00a0' + (si + 1);
+                gTotals[curGroup] = (gTotals[curGroup] || 0) + m3;
+                totalCusto += m3; totalMassa += kg;
+                matData.push({key, label: slotLabel, kg, custoLiq, m3, group: curGroup, color: MAT_CLR[key]||'#999', nomeProd: nome, fornProd: forn});
+            });
+        }
     });
 
     function makePie(segs, W, H, cx, cy, r) {
