@@ -1759,7 +1759,7 @@
         <!-- CARREGAR CARTA TRAÇO -->
         <div style="background:#f0f7fb;border:1.5px solid #82a9c9;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
             <span style="font-size:0.82rem;font-weight:800;color:#1a3a6e;white-space:nowrap;">📂 Carregar Carta Traço:</span>
-            <select id="dos-carregar-sel" style="flex:1;min-width:0;padding:7px 10px;border:1.5px solid #82a9c9;border-radius:8px;font-size:0.82rem;background:#fff;" onclick="dosCarregarSelectCartas()" onchange="">
+            <select id="dos-carregar-sel" style="flex:1;min-width:0;padding:7px 10px;border:1.5px solid #82a9c9;border-radius:8px;font-size:0.82rem;background:#fff;" onfocus="dosCarregarSelectCartas()">
                 <option value="">— Selecione uma carta salva —</option>
             </select>
             <button class="btn btn-primary" style="padding:7px 16px;font-size:0.82rem;white-space:nowrap;" onclick="dosCarregarCartaSelecionada()">📥 Carregar</button>
@@ -1807,8 +1807,12 @@
                 <input type="number" id="dos_adic" value="50" step="1">
             </div>
             <div class="form-group">
-                <label>Areia Natural (kg)</label>
+                <label>Areia Natural (kg) <button type="button" id="dos-an2-toggle" onclick="(function(){const w=document.getElementById('dos-an2-wrap');const vis=w.style.display==='none'||!w.style.display;w.style.display=vis?'block':'none';document.getElementById('dos-an2-toggle').textContent=vis?'− 2ª AN':'+ 2ª AN';if(!vis){document.getElementById('dos_an2').value='';calcularDosagem();}})()" style="margin-left:6px;padding:2px 8px;font-size:.75rem;font-weight:700;border:1.5px solid #82a9c9;border-radius:5px;background:#e8f4f8;color:#1a3a6e;cursor:pointer;">+ 2ª AN</button></label>
                 <input type="number" id="dos_an" value="420" step="1">
+                <div id="dos-an2-wrap" style="display:none;margin-top:5px;">
+                    <label style="font-size:.8rem;color:#555;margin-bottom:3px;display:block;">Areia Natural 2 (kg)</label>
+                    <input type="number" id="dos_an2" value="0" step="1" min="0" style="width:100%;">
+                </div>
             </div>
             <div class="form-group">
                 <label>Areia Industrial (kg)</label>
@@ -6544,6 +6548,10 @@ function calcularDosagem() {
         agua: parseFloat(document.getElementById('dos_agua').value) || 0,
         adit: parseFloat(document.getElementById('dos_adit').value) || 0
     };
+    const _an1base = m.an;
+    const _an2raw = parseFloat(document.getElementById('dos_an2')?.value) || 0;
+    const an2 = document.getElementById('dos-an2-wrap')?.style.display !== 'none' ? _an2raw : 0;
+    if (an2 > 0) m.an += an2;
 
     const arPct = parseFloat(document.getElementById('dos_ar').value) || 0;
     const flow  = parseFloat(document.getElementById('dos_flow').value) || 0;
@@ -6607,7 +6615,10 @@ function calcularDosagem() {
             <tbody>
                 <tr><td>Cimento</td><td>${fmt(m.cim,1)}</td><td>${fmt(rho.cim,2)}</td><td>${fmt(v.cim,1)}</td><td>${fmt(v.cim/vTotal*100,1)}</td><td>1.000</td></tr>
                 <tr><td>Adição</td><td>${fmt(m.adic,1)}</td><td>${fmt(rho.adic,2)}</td><td>${fmt(v.adic,1)}</td><td>${fmt(v.adic/vTotal*100,1)}</td><td>${fmt(traco.adic,3)}</td></tr>
-                <tr><td>Areia Natural</td><td>${fmt(m.an,1)}</td><td>${fmt(rho.an,2)}</td><td>${fmt(v.an,1)}</td><td>${fmt(v.an/vTotal*100,1)}</td><td>${fmt(traco.an,3)}</td></tr>
+                ${an2>0
+                    ? `<tr><td>Areia Natural 1</td><td>${fmt(_an1base,1)}</td><td>${fmt(rho.an,2)}</td><td>${fmt(_an1base/rho.an,1)}</td><td>${fmt(_an1base/rho.an/vTotal*100,1)}</td><td>${fmt(m.cim>0?_an1base/m.cim:0,3)}</td></tr>
+                <tr><td>Areia Natural 2</td><td>${fmt(an2,1)}</td><td>${fmt(rho.an,2)}</td><td>${fmt(an2/rho.an,1)}</td><td>${fmt(an2/rho.an/vTotal*100,1)}</td><td>${fmt(m.cim>0?an2/m.cim:0,3)}</td></tr>`
+                    : `<tr><td>Areia Natural</td><td>${fmt(m.an,1)}</td><td>${fmt(rho.an,2)}</td><td>${fmt(v.an,1)}</td><td>${fmt(v.an/vTotal*100,1)}</td><td>${fmt(traco.an,3)}</td></tr>`}
                 <tr><td>Areia Industrial</td><td>${fmt(m.ai,1)}</td><td>${fmt(rho.ai,2)}</td><td>${fmt(v.ai,1)}</td><td>${fmt(v.ai/vTotal*100,1)}</td><td>${fmt(traco.ai,3)}</td></tr>
                 <tr><td>Brita 0</td><td>${fmt(m.b0,1)}</td><td>${fmt(rho.b0,2)}</td><td>${fmt(v.b0,1)}</td><td>${fmt(v.b0/vTotal*100,1)}</td><td>${fmt(traco.b0,3)}</td></tr>
                 <tr><td>Brita ½</td><td>${fmt(m.b1,1)}</td><td>${fmt(rho.b1,2)}</td><td>${fmt(v.b1,1)}</td><td>${fmt(v.b1/vTotal*100,1)}</td><td>${fmt(traco.b1,3)}</td></tr>
@@ -9118,6 +9129,8 @@ function salvarCartaTracoDosagem() {
     const cim  = n('dos_cim');
     const adic = n('dos_adic');
     const an   = n('dos_an');
+    const an2  = (document.getElementById('dos-an2-wrap')?.style.display !== 'none') ? n('dos_an2') : 0;
+    const anTotal = an + an2;
     const ai   = n('dos_ai');
     const b0   = n('dos_b0');
     const b1   = n('dos_b1');
@@ -9129,7 +9142,7 @@ function salvarCartaTracoDosagem() {
     const v = {
         cim: volAbs(cim, rho.cim),
         adic: volAbs(adic, rho.adic),
-        an: volAbs(an, rho.an),
+        an: volAbs(anTotal, rho.an),
         ai: volAbs(ai, rho.ai),
         b0: volAbs(b0, rho.b0),
         b1: volAbs(b1, rho.b1),
@@ -9138,7 +9151,7 @@ function salvarCartaTracoDosagem() {
     };
     const vAr = n('dos_ar') * 10;
     const volumeTotal = Object.values(v).reduce((acc, val) => acc + val, 0) + vAr;
-    const mArg = cim + adic + an + ai + agua + adit;
+    const mArg = cim + adic + anTotal + ai + agua + adit;
     const mBrita = b0 + b1;
     const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
     const vBrita = v.b0 + v.b1;
@@ -9203,7 +9216,8 @@ function salvarCartaTracoDosagem() {
         obs:             g('dos_obs_carta'),
         cim,
         adic,
-        an,
+        an: anTotal,
+        an2,
         ai,
         b0,
         b1,
@@ -11582,6 +11596,7 @@ function fecharModalVerCarta() {
 function dosCarregarSelectCartas() {
     const sel = document.getElementById('dos-carregar-sel');
     if (!sel) return;
+    const prevVal = sel.value;
     while (sel.options.length > 1) sel.remove(1);
     const cartas = (function() { try { return JSON.parse(localStorage.getItem('ct_cartas_traco') || '[]'); } catch(e) { return []; } })();
     if (cartas.length === 0) return;
@@ -11600,19 +11615,37 @@ function dosCarregarSelectCartas() {
         });
         sel.appendChild(og);
     });
+    if (prevVal) sel.value = prevVal;
 }
 
 function dosCarregarCartaSelecionada() {
     const sel = document.getElementById('dos-carregar-sel');
     if (!sel || !sel.value) return;
-    const opt = sel.querySelector('option[value="' + sel.value + '"]');
+    let opt = null;
+    for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === sel.value) { opt = sel.options[i]; break; }
+    }
     if (!opt || !opt.dataset.carta) return;
     let c;
     try { c = JSON.parse(opt.dataset.carta); } catch(e) { return; }
     const set = (id, v) => { const el = document.getElementById(id); if (el && v !== undefined) el.value = v; };
     set('dos_cim',   c.cim);
     set('dos_adic',  c.adic);
-    set('dos_an',    c.an);
+    set('dos_an',    c.an2 > 0 ? (c.an - (c.an2||0)) : c.an);
+    // 2ª Areia Natural
+    if (c.an2 > 0) {
+        const w = document.getElementById('dos-an2-wrap');
+        const tog = document.getElementById('dos-an2-toggle');
+        if (w) w.style.display = 'block';
+        if (tog) tog.textContent = '− 2ª AN';
+        set('dos_an2', c.an2);
+    } else {
+        const w = document.getElementById('dos-an2-wrap');
+        const tog = document.getElementById('dos-an2-toggle');
+        if (w) w.style.display = 'none';
+        if (tog) tog.textContent = '+ 2ª AN';
+        if (document.getElementById('dos_an2')) document.getElementById('dos_an2').value = '0';
+    }
     set('dos_ai',    c.ai);
     set('dos_b0',    c.b0);
     set('dos_b1',    c.b1);
