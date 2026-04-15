@@ -1757,14 +1757,21 @@
         <p class="subtitle">Área técnica para montar o traço base, validar metas de flow, comparar cenários e consolidar a carta final.</p>
 
         <!-- CARREGAR CARTA TRAÇO -->
-        <div style="background:#f0f7fb;border:1.5px solid #82a9c9;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <span style="font-size:0.82rem;font-weight:800;color:#1a3a6e;white-space:nowrap;">📂 Carregar Carta Traço:</span>
-            <select id="dos-carregar-sel" style="flex:1;min-width:0;padding:7px 10px;border:1.5px solid #82a9c9;border-radius:8px;font-size:0.82rem;background:#fff;" onfocus="dosCarregarSelectCartas()">
-                <option value="">— Selecione uma carta salva —</option>
-            </select>
-            <button class="btn btn-primary" style="padding:7px 16px;font-size:0.82rem;white-space:nowrap;" onclick="dosCarregarCartaSelecionada()">📥 Carregar</button>
-            <button class="btn" style="padding:7px 12px;font-size:0.82rem;background:#e8edf2;color:#444;" onclick="dosCarregarSelectCartas()" title="Atualizar lista">🔄</button>
-            <div id="dos-carregar-status" style="width:100%;font-size:0.8rem;margin-top:2px;"></div>
+        <div style="background:linear-gradient(135deg,#e8f4fb 0%,#daeaf7 100%);border:2px solid #5b9bd5;border-radius:12px;padding:16px 18px;margin-bottom:18px;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
+                <span style="font-size:0.95rem;font-weight:800;color:#1a3a6e;">📂 Carregar Carta Traço Salva</span>
+                <button type="button" class="btn" onclick="dosCarregarSelectCartas()" style="padding:4px 12px;font-size:0.78rem;background:#fff;border:1.5px solid #82a9c9;color:#1a3a6e;border-radius:6px;font-weight:700;" title="Atualizar lista">🔄 Atualizar</button>
+                <span id="dos-carregar-count" style="font-size:0.78rem;color:#555;"></span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;">
+                <select id="dos-carregar-sel" onfocus="dosCarregarSelectCartas()" onchange="dosCarregarPreview()" style="flex:1;min-width:200px;padding:9px 12px;border:2px solid #5b9bd5;border-radius:8px;font-size:0.85rem;background:#fff;font-weight:600;color:#1a1f2e;">
+                    <option value="">— Selecione uma carta —</option>
+                </select>
+                <button type="button" class="btn btn-primary" onclick="dosCarregarCartaSelecionada()" style="padding:9px 20px;font-size:0.88rem;font-weight:800;white-space:nowrap;border-radius:8px;">📥 Carregar</button>
+            </div>
+            <!-- Preview da carta selecionada -->
+            <div id="dos-carregar-preview" style="display:none;margin-top:12px;background:#fff;border:1.5px solid #a8c8e8;border-radius:8px;padding:12px 16px;font-size:0.82rem;line-height:1.6;"></div>
+            <div id="dos-carregar-status" style="margin-top:8px;font-size:0.82rem;"></div>
         </div>
 
         <div class="kpi-grid" id="dosagem-kpis">
@@ -11599,6 +11606,8 @@ function dosCarregarSelectCartas() {
     const prevVal = sel.value;
     while (sel.options.length > 1) sel.remove(1);
     const cartas = (function() { try { return JSON.parse(localStorage.getItem('ct_cartas_traco') || '[]'); } catch(e) { return []; } })();
+    const countEl = document.getElementById('dos-carregar-count');
+    if (countEl) countEl.textContent = cartas.length ? '(' + cartas.length + ' carta' + (cartas.length !== 1 ? 's' : '') + ' salva' + (cartas.length !== 1 ? 's' : '') + ')' : '(nenhuma carta salva)';
     if (cartas.length === 0) return;
     // Group by tracoNome
     const groups = {};
@@ -11616,6 +11625,50 @@ function dosCarregarSelectCartas() {
         sel.appendChild(og);
     });
     if (prevVal) sel.value = prevVal;
+}
+
+function dosCarregarPreview() {
+    const sel = document.getElementById('dos-carregar-sel');
+    const pv  = document.getElementById('dos-carregar-preview');
+    if (!sel || !pv) return;
+    if (!sel.value) { pv.style.display = 'none'; return; }
+    let opt = null;
+    for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === sel.value) { opt = sel.options[i]; break; }
+    }
+    if (!opt || !opt.dataset.carta) { pv.style.display = 'none'; return; }
+    let c;
+    try { c = JSON.parse(opt.dataset.carta); } catch(e) { pv.style.display = 'none'; return; }
+    const fmtN = (v, d) => v != null && v !== '' ? Number(v).toFixed(d) : '—';
+    const row = (l, v) => `<span style="color:#555;">${l}:</span> <strong>${v}</strong>`;
+    const anDisp = c.an2 > 0
+        ? `AN1 ${fmtN(c.an-(c.an2||0),1)} kg + AN2 ${fmtN(c.an2,1)} kg`
+        : `${fmtN(c.an,1)} kg`;
+    pv.style.display = 'block';
+    pv.innerHTML = `
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="font-weight:800;color:#1a3a6e;font-size:0.9rem;">${c.tracoNome||'—'}</span>
+            ${c.versaoStr ? `<span style="background:#1a3a6e;color:#fff;font-size:0.72rem;font-weight:800;padding:2px 7px;border-radius:4px;">v${c.versaoStr}</span>` : ''}
+            ${c.dataHora  ? `<span style="color:#888;font-size:0.78rem;">${c.dataHora}</span>` : ''}
+            ${c.unidade   ? `<span style="background:#e0f2fe;color:#0369a1;font-size:0.72rem;font-weight:700;padding:2px 7px;border-radius:4px;">${c.unidade}</span>` : ''}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px 20px;font-size:0.8rem;">
+            ${row('Obra/Projeto', c.obra||c.tracoNome||'—')}
+            ${row('FCK', c.fck ? c.fck + ' MPa' : '—')}
+            ${row('Flow', c.flow ? c.flow + ' mm' : '—')}
+            ${row('Cimento', fmtN(c.cim,1) + ' kg')}
+            ${row('Adição', fmtN(c.adic,1) + ' kg')}
+            ${row('Areia Natural', anDisp)}
+            ${row('Areia Industrial', fmtN(c.ai,1) + ' kg')}
+            ${row('Brita 0', fmtN(c.b0,1) + ' kg')}
+            ${row('Brita ½', fmtN(c.b1,1) + ' kg')}
+            ${row('Água', fmtN(c.agua,1) + ' kg')}
+            ${row('Aditivo SP', fmtN(c.adit,1) + ' kg')}
+            ${row('ρ Cimento', c.rhoCim ? c.rhoCim + ' g/cm³' : '—')}
+            ${row('ρ Areia Nat.', c.rhoAn ? c.rhoAn + ' g/cm³' : '—')}
+            ${row('ρ Areia Ind.', c.rhoAi ? c.rhoAi + ' g/cm³' : '—')}
+            ${c.custoTotal ? row('Custo est.', 'R$ ' + Number(c.custoTotal).toFixed(2).replace('.',',') + '/m³') : ''}
+        </div>`;
 }
 
 function dosCarregarCartaSelecionada() {
@@ -11669,6 +11722,18 @@ function dosCarregarCartaSelecionada() {
     if (c.unidade) { const u = document.getElementById('dos_unidade'); if (u) u.value = c.unidade; }
     const ac = document.getElementById('dos_ativa_automacao');
     if (ac) ac.checked = !!c.ativaAutomacao;
+    // Restaurar massas específicas
+    const setRho = (id, v) => { const el = document.getElementById(id); if (el && v != null && v !== '') el.value = v; };
+    setRho('dos_rho_cim',  c.rhoCim);
+    setRho('dos_rho_adic', c.rhoAdic);
+    setRho('dos_rho_an',   c.rhoAn);
+    setRho('dos_rho_ai',   c.rhoAi);
+    setRho('dos_rho_b0',   c.rhoB0);
+    setRho('dos_rho_b1',   c.rhoB1);
+    setRho('dos_rho_adit', c.rhoAdit);
+    // Ocultar preview após carregar
+    const pv = document.getElementById('dos-carregar-preview');
+    if (pv) pv.style.display = 'none';
     calcularDosagem();
     const st = document.getElementById('dos-carregar-status');
     if (st) {
