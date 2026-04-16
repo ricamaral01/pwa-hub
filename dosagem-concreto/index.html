@@ -2100,8 +2100,7 @@
 <!-- FAB — BARRA DE AÇÕES DOSAGEM (flutuante, visível só em sec-dosagem) -->
 <div id="dos-fab" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:450;background:rgba(26,31,46,0.96);backdrop-filter:blur(8px);padding:10px 20px;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;border-top:2px solid rgba(99,102,241,0.4);box-shadow:0 -4px 24px rgba(0,0,0,0.3);">
     <button class="btn btn-primary" style="font-size:0.9rem;padding:10px 20px;font-weight:800;" onclick="calcularDosagem()">📐 Calcular Dosagem</button>
-    <button class="btn btn-accent" style="font-size:0.9rem;padding:10px 20px;font-weight:800;" onclick="abrirModalSalvarTraco()">💾 Salvar Traço</button>
-    <button class="btn" style="font-size:0.9rem;padding:10px 20px;font-weight:800;background:#4f46e5;color:#fff;" onclick="salvarCartaTracoDosagem()">📋 Salvar Carta Traço</button>
+    <button class="btn btn-accent" style="font-size:0.9rem;padding:10px 20px;font-weight:800;" onclick="salvarTudoAutomatico()">💾 Salvar</button>
     <button class="btn" style="font-size:0.9rem;padding:10px 20px;background:#374151;color:#e5e7eb;" onclick="imprimirSecao('sec-dosagem','Carta Traço — Dosagem de Concreto')">🖨️ Imprimir</button>
     <button class="btn" style="font-size:0.9rem;padding:10px 20px;background:#dc2626;color:#fff;" onclick="limparDosagemForm()">🗑️ Limpar</button>
 </div>
@@ -3766,12 +3765,12 @@ async function confirmarSalvarTraco() {
     const massaTotal = Object.values(m).reduce((a,b)=>a+b,0);
     const ac = m.cim > 0 ? m.agua / m.cim : 0;
     const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
-    const mArg = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
+    const mMiudo = m.an + m.ai;
     const mAgrGraudo = m.b0 + m.b1;
-    const argMassa = (mArg + mAgrGraudo) > 0 ? (mArg / (mArg + mAgrGraudo)) * 100 : 0;
-    const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
+    const argMassa = (mMiudo + mAgrGraudo) > 0 ? (mMiudo / (mMiudo + mAgrGraudo)) * 100 : 0;
+    const vMiudo = v.an + v.ai;
     const vAgrGraudo = v.b0 + v.b1;
-    const argVol = (vArg + vAgrGraudo + vAr) > 0 ? (vArg / (vArg + vAgrGraudo + vAr)) * 100 : 0;
+    const argVol = (vMiudo + vAgrGraudo) > 0 ? (vMiudo / (vMiudo + vAgrGraudo)) * 100 : 0;
     const consumoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
     const massaEsp = vTotal > 0 ? massaTotal * 1000 / vTotal : 0;
 
@@ -4149,9 +4148,9 @@ function calcularExperimental() {
 
     const ac = m.cim > 0 ? m.agua / m.cim : 0;
     const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
-    const mArg = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
+    const mMiudoExp = m.an + m.ai;
     const mAgrG = m.b0 + m.b1;
-    const argMassa = (mArg + mAgrG) > 0 ? (mArg / (mArg + mAgrG)) * 100 : 0;
+    const argMassa = (mMiudoExp + mAgrG) > 0 ? (mMiudoExp / (mMiudoExp + mAgrG)) * 100 : 0;
     const consumoCim = vTotal1m3 > 0 ? m.cim * (1000 / vTotal1m3) : 0;
     const massaEsp = vTotal1m3 > 0 ? massaTotal1m3 * 1000 / vTotal1m3 : 0;
 
@@ -4674,9 +4673,9 @@ function imprimirExpTraco() {
     const vTotal   = Object.values(v).reduce((a,b)=>a+b,0) + arPct * 10;
     const consoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
     const massaEsp = vTotal > 0 ? Object.values(m).reduce((a,b)=>a+b,0) * 1000 / vTotal : 0;
-    const mArg     = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
+    const mMiudoPrt = m.an + m.ai;
     const mAgrG    = m.b0 + m.b1;
-    const argMassa = (mArg + mAgrG) > 0 ? (mArg / (mArg + mAgrG)) * 100 : 0;
+    const argMassa = (mMiudoPrt + mAgrG) > 0 ? (mMiudoPrt / (mMiudoPrt + mAgrG)) * 100 : 0;
     const volume   = parseFloat(document.getElementById('exp_volume').value) || 40;
     const numBet   = parseFloat(document.getElementById('exp_num_betonadas').value) || 1;
     const fator    = volume * numBet / 1000;
@@ -6593,13 +6592,14 @@ function calcularDosagem() {
     const ac = m.agua / m.cim;
     const aAgl = m.agua / (m.cim + m.adic);
 
-    const mArg = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
+    const mMiudo = m.an + m.ai;
     const mAgrGraudo = m.b0 + m.b1;
-    const argMassa = (mArg / (mArg + mAgrGraudo)) * 100;
+    const argMassa = (mMiudo + mAgrGraudo) > 0 ? (mMiudo / (mMiudo + mAgrGraudo)) * 100 : 0;
 
     const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
+    const vMiudo = v.an + v.ai;
     const vAgrGraudo = v.b0 + v.b1;
-    const argVol = (vArg / (vArg + vAgrGraudo + vAr)) * 100;
+    const argVol = (vMiudo + vAgrGraudo) > 0 ? (vMiudo / (vMiudo + vAgrGraudo)) * 100 : 0;
 
     const pctAN = (m.an / (m.an + m.ai)) * 100;
     const pctAI = (m.ai / (m.an + m.ai)) * 100;
@@ -6873,13 +6873,14 @@ function verificarVolume() {
     const diff = vTotal - 1000;
     const cls = Math.abs(diff) <= 5 ? 'ok' : (Math.abs(diff) <= 15 ? 'warn' : 'error');
 
-    // Teor de argamassa em massa e volume
-    const mArg = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
-    const mTot = mArg + m.b0 + m.b1;
-    const argMassa = (mArg / mTot) * 100;
+    // Taxa de argamassa = areia / (areia + brita) — definição IPT/ABNT
+    const mMiudoVol = m.an + m.ai;
+    const mBritaVol = m.b0 + m.b1;
+    const argMassa = (mMiudoVol + mBritaVol) > 0 ? (mMiudoVol / (mMiudoVol + mBritaVol)) * 100 : 0;
 
-    const vArgVol = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
-    const argVol = (vArgVol / (vArgVol + v.b0 + v.b1 + vAr)) * 100;
+    const vMiudoVol = v.an + v.ai;
+    const vBritaVol = v.b0 + v.b1;
+    const argVol = (vMiudoVol + vBritaVol) > 0 ? (vMiudoVol / (vMiudoVol + vBritaVol)) * 100 : 0;
 
     const nomes = {
         cim: 'Cimento', adic: 'Adição', an: 'Areia Natural', ai: 'Areia Industrial',
@@ -6976,24 +6977,26 @@ function calcularArgamassa() {
     const v = {};
     Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
 
-    // Argamassa (tudo menos britas): inclui água — α=(1+a+h)/(1+a+h+p)
+    // Taxa de argamassa = areia / (areia + brita) — definição IPT/ABNT
     const mArg = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
     const mBrita = m.b0 + m.b1;
+    const mMiudo = m.an + m.ai;
     const mTotal = mArg + mBrita;
-    const argMassa = (mArg / mTotal) * 100;
+    const argMassa = (mMiudo + mBrita) > 0 ? (mMiudo / (mMiudo + mBrita)) * 100 : 0;
 
     const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
     const vBrita = v.b0 + v.b1;
+    const vMiudo = v.an + v.ai;
     const vTotalSol = vArg + vBrita;
     const vAr = arPct * 10;
     const vTotal1m3 = vTotalSol + vAr;
-    const argVol = (vArg / vTotal1m3) * 100;
+    const argVol = (vMiudo + vBrita) > 0 ? (vMiudo / (vMiudo + vBrita)) * 100 : 0;
 
     // Teor de pasta
     const mPasta = m.cim + m.adic + m.agua + m.adit;
     const vPasta = v.cim + v.adic + v.agua + v.adit;
-    const pastaMassa = (mPasta / mTotal) * 100;
-    const pastaVol = (vPasta / vTotal1m3) * 100;
+    const pastaMassa = mTotal > 0 ? (mPasta / mTotal) * 100 : 0;
+    const pastaVol = vTotal1m3 > 0 ? (vPasta / vTotal1m3) * 100 : 0;
 
     // Teor de finos (cimento + adição)
     const mFinos = m.cim + m.adic;
@@ -9165,12 +9168,12 @@ function salvarCartaTracoDosagem() {
     };
     const vAr = n('dos_ar') * 10;
     const volumeTotal = Object.values(v).reduce((acc, val) => acc + val, 0) + vAr;
-    const mArg = cim + adic + anTotal + ai + agua + adit;
+    const mMiudo = anTotal + ai;
     const mBrita = b0 + b1;
-    const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
+    const vMiudo = v.an + v.ai;
     const vBrita = v.b0 + v.b1;
-    const teorArgMassa = (mArg + mBrita) > 0 ? (mArg / (mArg + mBrita)) * 100 : 0;
-    const teorArgVolume = (vArg + vBrita) > 0 ? (vArg / (vArg + vBrita)) * 100 : 0;
+    const teorArgMassa = (mMiudo + mBrita) > 0 ? (mMiudo / (mMiudo + mBrita)) * 100 : 0;
+    const teorArgVolume = (vMiudo + vBrita) > 0 ? (vMiudo / (vMiudo + vBrita)) * 100 : 0;
 
     const tracoNome = g('dos_nome_carta') || g('dos_obra') || 'Traço';
     const unidade   = g('dos_unidade');
@@ -9290,6 +9293,78 @@ function salvarCartaTracoDosagem() {
 }
 function imprimirCartaTracoDosagem() {
     imprimirSecao('sec-dosagem', 'Carta Traço — Dosagem de Concreto');
+}
+
+function salvarTudoAutomatico() {
+    const nomeTraco = (document.getElementById('dos_nome_carta')?.value?.trim() || '') ||
+                      (document.getElementById('dos_obra')?.value?.trim() || '');
+    if (!nomeTraco) {
+        alert('Preencha o campo "Nome do Traço" antes de salvar.');
+        document.getElementById('dos_nome_carta')?.focus();
+        return;
+    }
+    // 1. Salva carta traço (localStorage + Google Sheets como salvar_carta_traco)
+    salvarCartaTracoDosagem();
+
+    // 2. Envia também como salvar_traco (sem modal)
+    if (!DOSAGEM_WEBAPP_URL) return;
+    const rho = getDosagemRho();
+    const n = id => parseFloat(document.getElementById(id)?.value) || 0;
+    const m = {
+        cim:  n('dos_cim'),  adic: n('dos_adic'),
+        an:   n('dos_an'),   ai:   n('dos_ai'),
+        b0:   n('dos_b0'),   b1:   n('dos_b1'),
+        agua: n('dos_agua'), adit: n('dos_adit')
+    };
+    const arPct = n('dos_ar');
+    const v = {};
+    Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
+    const vAr        = arPct * 10;
+    const vTotal     = Object.values(v).reduce((a,b)=>a+b,0) + vAr;
+    const massaTotal = Object.values(m).reduce((a,b)=>a+b,0);
+    const ac   = m.cim > 0 ? m.agua / m.cim : 0;
+    const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
+    const mMiudo     = m.an + m.ai;
+    const mAgrGraudo = m.b0 + m.b1;
+    const argMassa   = (mMiudo + mAgrGraudo) > 0 ? (mMiudo / (mMiudo + mAgrGraudo)) * 100 : 0;
+    const vMiudo     = v.an + v.ai;
+    const vAgrGraudo = v.b0 + v.b1;
+    const argVol     = (vMiudo + vAgrGraudo) > 0 ? (vMiudo / (vMiudo + vAgrGraudo)) * 100 : 0;
+    const consumoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
+    const massaEsp   = vTotal > 0 ? massaTotal * 1000 / vTotal : 0;
+    const agora = new Date();
+    const id = 'TRC-' + agora.getFullYear() + String(agora.getMonth()+1).padStart(2,'0') +
+               String(agora.getDate()).padStart(2,'0') + String(agora.getHours()).padStart(2,'0') +
+               String(agora.getMinutes()).padStart(2,'0') + String(agora.getSeconds()).padStart(2,'0') +
+               '-' + Math.floor(Math.random()*9000+1000);
+    const payload = {
+        action: 'salvar_traco',
+        id, dataHora: agora.toLocaleString('pt-BR'),
+        nomeTraco,
+        fck:              n('dos_fck'),
+        cimento:          m.cim,   adicao:          m.adic,
+        areiaNatural:     m.an,    areiaIndustrial: m.ai,
+        brita0:           m.b0,    brita1:          m.b1,
+        agua:             m.agua,  aditivoSP:       m.adit,
+        arIncorporado:    arPct,   flow:            n('dos_flow'),
+        ac:               fmt(ac, 3),
+        aAgl:             fmt(aAgl, 3),
+        consumoCimento:   fmt(consumoCim, 1),
+        massaEspConcreto: fmt(massaEsp, 0),
+        volumeTotal:      fmt(vTotal, 1),
+        teorArgMassa:     fmt(argMassa, 1),
+        teorArgVolume:    fmt(argVol, 1),
+        observacoes:      document.getElementById('dos_obs_carta')?.value?.trim() || '',
+        cliente:          document.getElementById('dos_cliente')?.value?.trim() || '',
+        obra:             document.getElementById('dos_obra')?.value?.trim() || '',
+        engenheiro:       document.getElementById('dos_engenheiro')?.value?.trim() || ''
+    };
+    fetch(DOSAGEM_WEBAPP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        mode: 'no-cors'
+    });
 }
 
 function syncResumoFieldsFromDosagem() {
