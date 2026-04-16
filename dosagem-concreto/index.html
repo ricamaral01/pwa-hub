@@ -2510,80 +2510,7 @@
     </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- SEÇÃO 4 — TEOR DE ARGAMASSA                         -->
-<!-- ═══════════════════════════════════════════════════ -->
-<div id="sec-argamassa" class="section">
-    <div id="argamassa-separada-legacy">
-    <div class="card">
-        <h2><span class="icon">🧱</span> Teor de Argamassa e Ar Incorporado</h2>
-        <p class="subtitle">Calcula o teor de argamassa em <strong>massa</strong> e em <strong>volume</strong>, e analisa o teor de ar incorporado.</p>
-
-        <div class="info-box">
-            <strong>Argamassa</strong> = Cimento + Adição + Areia Natural + Areia Industrial + Água + Aditivo<br>
-            <strong>Agregado Graúdo</strong> = Brita 0 + Brita ½<br><br>
-            <strong>Teor de Argamassa (%)</strong> = Argamassa ÷ (Argamassa + Agregado Graúdo) × 100<br>
-            <strong>Para CAA:</strong> normalmente entre 55% e 72%.
-        </div>
-
-        <div style="background:#e8f4f8;border:2px solid var(--primary-light);border-radius:10px;padding:12px 16px;margin-bottom:16px;">
-            <strong style="font-size:0.92rem;">📋 Dados sincronizados automaticamente da Dosagem 1 m³.</strong>
-            <div style="font-size:0.84rem;color:var(--primary);margin-top:4px;">O Teor de Argamassa e Ar Incorporado são calculados automaticamente junto com a Dosagem 1 m³.</div>
-        </div>
-
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Cimento (kg)</label>
-                <input type="number" id="arg_cim" step="1" style="background:#e8eef3;" readonly>
-            </div>
-            <div class="form-group">
-                <label>Adição (kg)</label>
-                <input type="number" id="arg_adic" step="1" style="background:#e8eef3;" readonly>
-            </div>
-            <div class="form-group">
-                <label>Areia Natural (kg)</label>
-                <input type="number" id="arg_an" step="1" style="background:#e8eef3;" readonly>
-            </div>
-            <div class="form-group">
-                <label>Areia Industrial (kg)</label>
-                <input type="number" id="arg_ai" step="1" style="background:#e8eef3;" readonly>
-            </div>
-            <div class="form-group">
-                <label>Brita 0 (kg)</label>
-                <input type="number" id="arg_b0" step="1" style="background:#e8eef3;" readonly>
-            </div>
-            <div class="form-group">
-                <label>Brita ½ (kg)</label>
-                <input type="number" id="arg_b1" step="1" style="background:#e8eef3;" readonly>
-            </div>
-            <div class="form-group">
-                <label>Água (kg)</label>
-                <input type="number" id="arg_agua" step="1" style="background:#e8eef3;" readonly>
-            </div>
-            <div class="form-group">
-                <label>Aditivo SP (kg)</label>
-                <input type="number" id="arg_adit" step="0.1" style="background:#e8eef3;" readonly>
-            </div>
-            <div class="form-group">
-                <label>Teor de Ar (%)</label>
-                <input type="number" id="arg_ar" step="0.1" min="0" max="10" style="background:#e8eef3;" readonly>
-            </div>
-        </div>
-
-        <div id="res-argamassa"></div>
-        <!-- NAV PASSO 4/7 -->
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:16px;border-top:2px solid #e8edf2;">
-            <div>
-                <button class="btn" style="background:#e0e7ff;color:#3730a3;font-size:.85rem;" onclick="showSection('sec-volume')">← 📏 Volume</button>
-            </div>
-            <span style="font-size:.75rem;color:#94a3b8;font-weight:600;letter-spacing:.04em;">Passo 4 / 7</span>
-            <div>
-                <button class="btn btn-accent" style="font-size:.85rem;" onclick="showSection('sec-empacotamento')">📈 Empacotamento →</button>
-            </div>
-        </div>
-    </div>
-    </div>
-</div>
+<!-- sec-argamassa removido — calculado automaticamente na Dosagem 1 m³ -->
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- SEÇÃO 5 — EMPACOTAMENTO DE PARTÍCULAS               -->
@@ -3765,12 +3692,12 @@ async function confirmarSalvarTraco() {
     const massaTotal = Object.values(m).reduce((a,b)=>a+b,0);
     const ac = m.cim > 0 ? m.agua / m.cim : 0;
     const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
-    const mMiudo = m.an + m.ai;
+    const mArg = m.cim + m.adic + m.an + m.ai;
     const mAgrGraudo = m.b0 + m.b1;
-    const argMassa = (mMiudo + mAgrGraudo) > 0 ? (mMiudo / (mMiudo + mAgrGraudo)) * 100 : 0;
-    const vMiudo = v.an + v.ai;
+    const argMassa = (mArg + mAgrGraudo) > 0 ? (mArg / (mArg + mAgrGraudo)) * 100 : 0;
+    const vArg = v.cim + v.adic + v.an + v.ai;
     const vAgrGraudo = v.b0 + v.b1;
-    const argVol = (vMiudo + vAgrGraudo) > 0 ? (vMiudo / (vMiudo + vAgrGraudo)) * 100 : 0;
+    const argVol = (vArg + vAgrGraudo) > 0 ? (vArg / (vArg + vAgrGraudo)) * 100 : 0;
     const consumoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
     const massaEsp = vTotal > 0 ? massaTotal * 1000 / vTotal : 0;
 
@@ -4148,9 +4075,9 @@ function calcularExperimental() {
 
     const ac = m.cim > 0 ? m.agua / m.cim : 0;
     const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
-    const mMiudoExp = m.an + m.ai;
+    const mArgExp = m.cim + m.adic + m.an + m.ai;
     const mAgrG = m.b0 + m.b1;
-    const argMassa = (mMiudoExp + mAgrG) > 0 ? (mMiudoExp / (mMiudoExp + mAgrG)) * 100 : 0;
+    const argMassa = (mArgExp + mAgrG) > 0 ? (mArgExp / (mArgExp + mAgrG)) * 100 : 0;
     const consumoCim = vTotal1m3 > 0 ? m.cim * (1000 / vTotal1m3) : 0;
     const massaEsp = vTotal1m3 > 0 ? massaTotal1m3 * 1000 / vTotal1m3 : 0;
 
@@ -4673,9 +4600,9 @@ function imprimirExpTraco() {
     const vTotal   = Object.values(v).reduce((a,b)=>a+b,0) + arPct * 10;
     const consoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
     const massaEsp = vTotal > 0 ? Object.values(m).reduce((a,b)=>a+b,0) * 1000 / vTotal : 0;
-    const mMiudoPrt = m.an + m.ai;
+    const mArgPrt  = m.cim + m.adic + m.an + m.ai;
     const mAgrG    = m.b0 + m.b1;
-    const argMassa = (mMiudoPrt + mAgrG) > 0 ? (mMiudoPrt / (mMiudoPrt + mAgrG)) * 100 : 0;
+    const argMassa = (mArgPrt + mAgrG) > 0 ? (mArgPrt / (mArgPrt + mAgrG)) * 100 : 0;
     const volume   = parseFloat(document.getElementById('exp_volume').value) || 40;
     const numBet   = parseFloat(document.getElementById('exp_num_betonadas').value) || 1;
     const fator    = volume * numBet / 1000;
@@ -6592,14 +6519,13 @@ function calcularDosagem() {
     const ac = m.agua / m.cim;
     const aAgl = m.agua / (m.cim + m.adic);
 
-    const mMiudo = m.an + m.ai;
+    const mArg = m.cim + m.adic + m.an + m.ai;
     const mAgrGraudo = m.b0 + m.b1;
-    const argMassa = (mMiudo + mAgrGraudo) > 0 ? (mMiudo / (mMiudo + mAgrGraudo)) * 100 : 0;
+    const argMassa = (mArg + mAgrGraudo) > 0 ? (mArg / (mArg + mAgrGraudo)) * 100 : 0;
 
-    const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
-    const vMiudo = v.an + v.ai;
+    const vArg = v.cim + v.adic + v.an + v.ai;
     const vAgrGraudo = v.b0 + v.b1;
-    const argVol = (vMiudo + vAgrGraudo) > 0 ? (vMiudo / (vMiudo + vAgrGraudo)) * 100 : 0;
+    const argVol = (vArg + vAgrGraudo) > 0 ? (vArg / (vArg + vAgrGraudo)) * 100 : 0;
 
     const pctAN = (m.an / (m.an + m.ai)) * 100;
     const pctAI = (m.ai / (m.an + m.ai)) * 100;
@@ -6873,14 +6799,14 @@ function verificarVolume() {
     const diff = vTotal - 1000;
     const cls = Math.abs(diff) <= 5 ? 'ok' : (Math.abs(diff) <= 15 ? 'warn' : 'error');
 
-    // Taxa de argamassa = areia / (areia + brita) — definição IPT/ABNT
-    const mMiudoVol = m.an + m.ai;
-    const mBritaVol = m.b0 + m.b1;
-    const argMassa = (mMiudoVol + mBritaVol) > 0 ? (mMiudoVol / (mMiudoVol + mBritaVol)) * 100 : 0;
+    // Taxa de argamassa = (cim+adic+areias) / (cim+adic+areias+britas)
+    const mArgV = m.cim + m.adic + m.an + m.ai;
+    const mBritaV = m.b0 + m.b1;
+    const argMassa = (mArgV + mBritaV) > 0 ? (mArgV / (mArgV + mBritaV)) * 100 : 0;
 
-    const vMiudoVol = v.an + v.ai;
-    const vBritaVol = v.b0 + v.b1;
-    const argVol = (vMiudoVol + vBritaVol) > 0 ? (vMiudoVol / (vMiudoVol + vBritaVol)) * 100 : 0;
+    const vArgV = v.cim + v.adic + v.an + v.ai;
+    const vBritaV = v.b0 + v.b1;
+    const argVol = (vArgV + vBritaV) > 0 ? (vArgV / (vArgV + vBritaV)) * 100 : 0;
 
     const nomes = {
         cim: 'Cimento', adic: 'Adição', an: 'Areia Natural', ai: 'Areia Industrial',
@@ -6924,25 +6850,6 @@ function verificarVolume() {
             ${statusBadge(vTotal, 1000, 5)}
         </div>
 
-        <div class="sep"></div>
-
-        <div class="two-col">
-            <div>
-                <h3>🧱 Teor de Argamassa</h3>
-                <table class="result-table">
-                    <tr><td>Em Massa</td><td class="highlight">${fmt(argMassa,1)}%</td><td>${argMassa>=55&&argMassa<=72?'<span class="badge badge-ok">OK p/ CAA</span>':'<span class="badge badge-warn">Verificar</span>'}</td></tr>
-                    <tr><td>Em Volume</td><td class="highlight">${fmt(argVol,1)}%</td><td>${argVol>=55&&argVol<=72?'<span class="badge badge-ok">OK p/ CAA</span>':'<span class="badge badge-warn">Verificar</span>'}</td></tr>
-                </table>
-            </div>
-            <div>
-                <h3>💨 Ar Incorporado</h3>
-                <table class="result-table">
-                    <tr><td>Teor de Ar</td><td class="highlight">${fmt(arPct,1)}%</td><td>${arPct>=1&&arPct<=4?'<span class="badge badge-ok">Típico</span>':'<span class="badge badge-warn">Verificar</span>'}</td></tr>
-                    <tr><td>Volume de Ar</td><td>${fmt(vAr,1)} L</td><td>—</td></tr>
-                </table>
-            </div>
-        </div>
-
         ${Math.abs(diff) > 5 ? `
         <div class="sep"></div>
         <h3>🔧 Sugestão de Ajuste</h3>
@@ -6977,20 +6884,19 @@ function calcularArgamassa() {
     const v = {};
     Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
 
-    // Taxa de argamassa = areia / (areia + brita) — definição IPT/ABNT
-    const mArg = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
+    // Taxa de argamassa = (cim+adic+areias) / (cim+adic+areias+britas)
+    const mArgS = m.cim + m.adic + m.an + m.ai;
     const mBrita = m.b0 + m.b1;
-    const mMiudo = m.an + m.ai;
-    const mTotal = mArg + mBrita;
-    const argMassa = (mMiudo + mBrita) > 0 ? (mMiudo / (mMiudo + mBrita)) * 100 : 0;
+    const mTotal = mArgS + mBrita;
+    const argMassa = (mArgS + mBrita) > 0 ? (mArgS / (mArgS + mBrita)) * 100 : 0;
 
-    const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
+    const vArgS = v.cim + v.adic + v.an + v.ai;
     const vBrita = v.b0 + v.b1;
-    const vMiudo = v.an + v.ai;
+    const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
     const vTotalSol = vArg + vBrita;
     const vAr = arPct * 10;
     const vTotal1m3 = vTotalSol + vAr;
-    const argVol = (vMiudo + vBrita) > 0 ? (vMiudo / (vMiudo + vBrita)) * 100 : 0;
+    const argVol = (vArgS + vBrita) > 0 ? (vArgS / (vArgS + vBrita)) * 100 : 0;
 
     // Teor de pasta
     const mPasta = m.cim + m.adic + m.agua + m.adit;
@@ -9168,12 +9074,12 @@ function salvarCartaTracoDosagem() {
     };
     const vAr = n('dos_ar') * 10;
     const volumeTotal = Object.values(v).reduce((acc, val) => acc + val, 0) + vAr;
-    const mMiudo = anTotal + ai;
+    const mArg = cim + adic + anTotal + ai;
     const mBrita = b0 + b1;
-    const vMiudo = v.an + v.ai;
+    const vArg = v.cim + v.adic + v.an + v.ai;
     const vBrita = v.b0 + v.b1;
-    const teorArgMassa = (mMiudo + mBrita) > 0 ? (mMiudo / (mMiudo + mBrita)) * 100 : 0;
-    const teorArgVolume = (vMiudo + vBrita) > 0 ? (vMiudo / (vMiudo + vBrita)) * 100 : 0;
+    const teorArgMassa = (mArg + mBrita) > 0 ? (mArg / (mArg + mBrita)) * 100 : 0;
+    const teorArgVolume = (vArg + vBrita) > 0 ? (vArg / (vArg + vBrita)) * 100 : 0;
 
     const tracoNome = g('dos_nome_carta') || g('dos_obra') || 'Traço';
     const unidade   = g('dos_unidade');
@@ -9324,12 +9230,12 @@ function salvarTudoAutomatico() {
     const massaTotal = Object.values(m).reduce((a,b)=>a+b,0);
     const ac   = m.cim > 0 ? m.agua / m.cim : 0;
     const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
-    const mMiudo     = m.an + m.ai;
+    const mArgSv     = m.cim + m.adic + m.an + m.ai;
     const mAgrGraudo = m.b0 + m.b1;
-    const argMassa   = (mMiudo + mAgrGraudo) > 0 ? (mMiudo / (mMiudo + mAgrGraudo)) * 100 : 0;
-    const vMiudo     = v.an + v.ai;
+    const argMassa   = (mArgSv + mAgrGraudo) > 0 ? (mArgSv / (mArgSv + mAgrGraudo)) * 100 : 0;
+    const vArgSv     = v.cim + v.adic + v.an + v.ai;
     const vAgrGraudo = v.b0 + v.b1;
-    const argVol     = (vMiudo + vAgrGraudo) > 0 ? (vMiudo / (vMiudo + vAgrGraudo)) * 100 : 0;
+    const argVol     = (vArgSv + vAgrGraudo) > 0 ? (vArgSv / (vArgSv + vAgrGraudo)) * 100 : 0;
     const consumoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
     const massaEsp   = vTotal > 0 ? massaTotal * 1000 / vTotal : 0;
     const agora = new Date();
