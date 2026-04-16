@@ -1814,7 +1814,7 @@
                 <input type="number" id="dos_adic" value="50" step="1">
             </div>
             <div class="form-group">
-                <label>Areia Natural (kg) <button type="button" id="dos-an2-toggle" onclick="(function(){const w=document.getElementById('dos-an2-wrap');const vis=w.style.display==='none'||!w.style.display;w.style.display=vis?'block':'none';document.getElementById('dos-an2-toggle').textContent=vis?'− 2ª AN':'+ 2ª AN';if(!vis){document.getElementById('dos_an2').value='';calcularDosagem();}})()" style="margin-left:6px;padding:2px 8px;font-size:.75rem;font-weight:700;border:1.5px solid #82a9c9;border-radius:5px;background:#e8f4f8;color:#1a3a6e;cursor:pointer;">+ 2ª AN</button></label>
+                <label>Areia Natural (kg) <button type="button" id="dos-an2-toggle" onclick="toggleAn2()"" style="margin-left:6px;padding:2px 8px;font-size:.75rem;font-weight:700;border:1.5px solid #82a9c9;border-radius:5px;background:#e8f4f8;color:#1a3a6e;cursor:pointer;">+ 2ª AN</button></label>
                 <input type="number" id="dos_an" value="420" step="1">
                 <div id="dos-an2-wrap" style="display:none;margin-top:5px;">
                     <label style="font-size:.8rem;color:#555;margin-bottom:3px;display:block;">Areia Natural 2 (kg)</label>
@@ -1897,6 +1897,10 @@
                     <div class="form-group">
                         <label>Areia Natural — ρ (g/cm³)</label>
                         <input type="number" id="dos_rho_an" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.63">
+                    </div>
+                    <div class="form-group" id="dos_rho_an2_wrap" style="display:none;">
+                        <label>Areia Natural 2 — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_an2" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.63">
                     </div>
                     <div class="form-group">
                         <label>Areia Industrial — ρ (g/cm³)</label>
@@ -2099,6 +2103,7 @@
     <button class="btn btn-accent" style="font-size:0.9rem;padding:10px 20px;font-weight:800;" onclick="abrirModalSalvarTraco()">💾 Salvar Traço</button>
     <button class="btn" style="font-size:0.9rem;padding:10px 20px;font-weight:800;background:#4f46e5;color:#fff;" onclick="salvarCartaTracoDosagem()">📋 Salvar Carta Traço</button>
     <button class="btn" style="font-size:0.9rem;padding:10px 20px;background:#374151;color:#e5e7eb;" onclick="imprimirSecao('sec-dosagem','Carta Traço — Dosagem de Concreto')">🖨️ Imprimir</button>
+    <button class="btn" style="font-size:0.9rem;padding:10px 20px;background:#dc2626;color:#fff;" onclick="limparDosagemForm()">🗑️ Limpar</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════════ -->
@@ -6350,10 +6355,12 @@ function getRho() {
 function getDosagemRho() {
     const g = getRho();
     const v = id => parseFloat(document.getElementById(id)?.value) || 0;
+    const rhoAn = v('dos_rho_an') || g.an;
     return {
         cim:  v('dos_rho_cim')  || g.cim,
         adic: v('dos_rho_adic') || g.adic,
-        an:   v('dos_rho_an')   || g.an,
+        an:   rhoAn,
+        an2:  v('dos_rho_an2')  || rhoAn,
         ai:   v('dos_rho_ai')   || g.ai,
         b0:   v('dos_rho_b0')   || g.b0,
         b1:   v('dos_rho_b1')   || g.b1,
@@ -6623,8 +6630,8 @@ function calcularDosagem() {
                 <tr><td>Cimento</td><td>${fmt(m.cim,1)}</td><td>${fmt(rho.cim,2)}</td><td>${fmt(v.cim,1)}</td><td>${fmt(v.cim/vTotal*100,1)}</td><td>1.000</td></tr>
                 <tr><td>Adição</td><td>${fmt(m.adic,1)}</td><td>${fmt(rho.adic,2)}</td><td>${fmt(v.adic,1)}</td><td>${fmt(v.adic/vTotal*100,1)}</td><td>${fmt(traco.adic,3)}</td></tr>
                 ${an2>0
-                    ? `<tr><td>Areia Natural 1</td><td>${fmt(_an1base,1)}</td><td>${fmt(rho.an,2)}</td><td>${fmt(_an1base/rho.an,1)}</td><td>${fmt(_an1base/rho.an/vTotal*100,1)}</td><td>${fmt(m.cim>0?_an1base/m.cim:0,3)}</td></tr>
-                <tr><td>Areia Natural 2</td><td>${fmt(an2,1)}</td><td>${fmt(rho.an,2)}</td><td>${fmt(an2/rho.an,1)}</td><td>${fmt(an2/rho.an/vTotal*100,1)}</td><td>${fmt(m.cim>0?an2/m.cim:0,3)}</td></tr>`
+                    ? `<tr><td>Areia Natural 1</td><td>${fmt(_an1base,1)}</td><td>${fmt(rho.an,2)}</td><td>${fmt(volAbs(_an1base,rho.an),1)}</td><td>${fmt(volAbs(_an1base,rho.an)/vTotal*100,1)}</td><td>${fmt(m.cim>0?_an1base/m.cim:0,3)}</td></tr>
+                <tr><td>Areia Natural 2</td><td>${fmt(an2,1)}</td><td>${fmt(rho.an2,2)}</td><td>${fmt(volAbs(an2,rho.an2),1)}</td><td>${fmt(volAbs(an2,rho.an2)/vTotal*100,1)}</td><td>${fmt(m.cim>0?an2/m.cim:0,3)}</td></tr>`
                     : `<tr><td>Areia Natural</td><td>${fmt(m.an,1)}</td><td>${fmt(rho.an,2)}</td><td>${fmt(v.an,1)}</td><td>${fmt(v.an/vTotal*100,1)}</td><td>${fmt(traco.an,3)}</td></tr>`}
                 <tr><td>Areia Industrial</td><td>${fmt(m.ai,1)}</td><td>${fmt(rho.ai,2)}</td><td>${fmt(v.ai,1)}</td><td>${fmt(v.ai/vTotal*100,1)}</td><td>${fmt(traco.ai,3)}</td></tr>
                 <tr><td>Brita 0</td><td>${fmt(m.b0,1)}</td><td>${fmt(rho.b0,2)}</td><td>${fmt(v.b0,1)}</td><td>${fmt(v.b0/vTotal*100,1)}</td><td>${fmt(traco.b0,3)}</td></tr>
@@ -9241,6 +9248,7 @@ function salvarCartaTracoDosagem() {
         rhoCim:  parseFloat(rho.cim.toFixed(3)),
         rhoAdic: parseFloat(rho.adic.toFixed(3)),
         rhoAn:   parseFloat(rho.an.toFixed(3)),
+        rhoAn2:  an2 > 0 ? parseFloat(rho.an2.toFixed(3)) : null,
         rhoAi:   parseFloat(rho.ai.toFixed(3)),
         rhoB0:   parseFloat(rho.b0.toFixed(3)),
         rhoB1:   parseFloat(rho.b1.toFixed(3)),
@@ -11598,6 +11606,54 @@ function fecharModalVerCarta() {
 })();
 
 // ═══════════════════════════════════════════════════
+// HELPERS DOSAGEM — TOGGLE AN2 / LIMPAR FORM
+// ═══════════════════════════════════════════════════
+function toggleAn2() {
+    const w    = document.getElementById('dos-an2-wrap');
+    const rhoW = document.getElementById('dos_rho_an2_wrap');
+    const tog  = document.getElementById('dos-an2-toggle');
+    const vis  = w.style.display === 'none' || !w.style.display;
+    w.style.display = vis ? 'block' : 'none';
+    if (rhoW) rhoW.style.display = vis ? 'block' : 'none';
+    tog.textContent = vis ? '− 2ª AN' : '+ 2ª AN';
+    if (!vis) {
+        const an2 = document.getElementById('dos_an2');
+        if (an2) an2.value = '';
+        const rhoAn2 = document.getElementById('dos_rho_an2');
+        if (rhoAn2) rhoAn2.value = '';
+        calcularDosagem();
+    }
+}
+
+function limparDosagemForm() {
+    if (!confirm('Limpar todos os dados de dosagem (massas e massas específicas)?')) return;
+    const ids = [
+        'dos_cim','dos_adic','dos_an','dos_an2',
+        'dos_ai','dos_b0','dos_b1','dos_agua','dos_adit',
+        'dos_flow','dos_fck',
+        'dos_rho_cim','dos_rho_adic','dos_rho_an','dos_rho_an2',
+        'dos_rho_ai','dos_rho_b0','dos_rho_b1','dos_rho_adit'
+    ];
+    ids.forEach(id => { const el = document.getElementById(id); if (el && !el.readOnly) el.value = ''; });
+    // Reset ar to default
+    const ar = document.getElementById('dos_ar'); if (ar) ar.value = '2';
+    // Hide AN2
+    const w = document.getElementById('dos-an2-wrap');
+    const rhoW = document.getElementById('dos_rho_an2_wrap');
+    const tog = document.getElementById('dos-an2-toggle');
+    if (w) w.style.display = 'none';
+    if (rhoW) rhoW.style.display = 'none';
+    if (tog) tog.textContent = '+ 2ª AN';
+    // Clear results
+    const res = document.getElementById('res-dosagem');
+    if (res) res.innerHTML = '';
+    const st = document.getElementById('dos-carregar-status');
+    if (st) st.innerHTML = '';
+    const st2 = document.getElementById('dos-carta-status');
+    if (st2) st2.innerHTML = '';
+}
+
+// ═══════════════════════════════════════════════════
 // CARREGAR CARTA TRAÇO NA DOSAGEM
 // ═══════════════════════════════════════════════════
 function dosCarregarSelectCartas() {
@@ -11666,6 +11722,7 @@ function dosCarregarPreview() {
             ${row('Aditivo SP', fmtN(c.adit,1) + ' kg')}
             ${row('ρ Cimento', c.rhoCim ? c.rhoCim + ' g/cm³' : '—')}
             ${row('ρ Areia Nat.', c.rhoAn ? c.rhoAn + ' g/cm³' : '—')}
+            ${c.rhoAn2 ? row('ρ Areia Nat. 2', c.rhoAn2 + ' g/cm³') : ''}
             ${row('ρ Areia Ind.', c.rhoAi ? c.rhoAi + ' g/cm³' : '—')}
             ${c.custoTotal ? row('Custo est.', 'R$ ' + Number(c.custoTotal).toFixed(2).replace('.',',') + '/m³') : ''}
         </div>`;
@@ -11687,16 +11744,20 @@ function dosCarregarCartaSelecionada() {
     set('dos_an',    c.an2 > 0 ? (c.an - (c.an2||0)) : c.an);
     // 2ª Areia Natural
     if (c.an2 > 0) {
-        const w = document.getElementById('dos-an2-wrap');
-        const tog = document.getElementById('dos-an2-toggle');
-        if (w) w.style.display = 'block';
-        if (tog) tog.textContent = '− 2ª AN';
+        const w    = document.getElementById('dos-an2-wrap');
+        const rhoW = document.getElementById('dos_rho_an2_wrap');
+        const tog  = document.getElementById('dos-an2-toggle');
+        if (w)    w.style.display = 'block';
+        if (rhoW) rhoW.style.display = 'block';
+        if (tog)  tog.textContent = '− 2ª AN';
         set('dos_an2', c.an2);
     } else {
-        const w = document.getElementById('dos-an2-wrap');
-        const tog = document.getElementById('dos-an2-toggle');
-        if (w) w.style.display = 'none';
-        if (tog) tog.textContent = '+ 2ª AN';
+        const w    = document.getElementById('dos-an2-wrap');
+        const rhoW = document.getElementById('dos_rho_an2_wrap');
+        const tog  = document.getElementById('dos-an2-toggle');
+        if (w)    w.style.display = 'none';
+        if (rhoW) rhoW.style.display = 'none';
+        if (tog)  tog.textContent = '+ 2ª AN';
         if (document.getElementById('dos_an2')) document.getElementById('dos_an2').value = '0';
     }
     set('dos_ai',    c.ai);
@@ -11727,6 +11788,7 @@ function dosCarregarCartaSelecionada() {
     setRho('dos_rho_cim',  c.rhoCim);
     setRho('dos_rho_adic', c.rhoAdic);
     setRho('dos_rho_an',   c.rhoAn);
+    setRho('dos_rho_an2',  c.rhoAn2);
     setRho('dos_rho_ai',   c.rhoAi);
     setRho('dos_rho_b0',   c.rhoB0);
     setRho('dos_rho_b1',   c.rhoB1);
