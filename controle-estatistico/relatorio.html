@@ -124,20 +124,55 @@
       td, th { color: #000 !important; border-color: #999 !important; background: #f8f8f8 !important; }
       canvas { max-height: 180px !important; }
     }
-    /* ── MOBILE WARNING BANNER ── */
-    .mobile-banner {
-      display: none;
-      background: linear-gradient(135deg, #1a3a5c, #2563a8);
-      color: #fff; text-align: center;
-      padding: 12px 20px; font-size: .82rem; font-weight: 600;
-      gap: 8px; align-items: center; justify-content: center;
+    /* ── TAP-TO-EXPAND (mobile) ── */
+    @media (max-width: 768px) {
+      .chart-box { cursor: pointer; position: relative; }
+      .chart-box::after {
+        content: '⛶ toque para expandir';
+        position: absolute; bottom: 8px; right: 10px;
+        font-size: .58rem; color: var(--muted); opacity: .65; pointer-events: none;
+      }
+      .chart-box.chart-expanded::after { display: none; }
     }
-    @media (max-width: 768px) { .mobile-banner { display: flex; } }
+    .chart-box.chart-expanded {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 9999 !important;
+      border-radius: 0 !important;
+      overflow: auto !important;
+      background: #f0f4f8 !important;
+      padding: 56px 16px 24px !important;
+      margin: 0 !important;
+      width: 100vw !important;
+      height: 100dvh !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .chart-box.chart-expanded canvas {
+      max-height: none !important;
+      flex: 1 !important;
+      width: 100% !important;
+    }
+    .chart-close-btn {
+      display: none;
+      position: fixed;
+      top: 12px; right: 12px;
+      z-index: 10000;
+      background: var(--primary);
+      color: #fff;
+      border: none; border-radius: 50%;
+      width: 40px; height: 40px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      align-items: center; justify-content: center;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.35);
+    }
+    .chart-close-btn.visible { display: flex; }
   </style>
 </head>
 <body>
-<!-- MOBILE BANNER -->
-<div class="mobile-banner">&#128187; Para melhor experiência, acesse pelo desktop</div>
+<!-- CHART EXPAND CLOSE BUTTON -->
+<button class="chart-close-btn" id="chartCloseBtn" aria-label="Fechar gráfico">&#x2715;</button>
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-brand">
@@ -1038,6 +1073,52 @@ document.addEventListener('DOMContentLoaded',function(){
 
 (async function(){
   try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('./sw.js',{scope:'./'}); }catch(e){}
+})();
+
+/* ── CHART TAP-TO-EXPAND (mobile) ── */
+(function(){
+  var closeBtn = document.getElementById('chartCloseBtn');
+  var expandedBox = null;
+
+  function resizeChart(box){
+    var canvas = box.querySelector('canvas');
+    if(!canvas) return;
+    var chart = Chart.getChart(canvas);
+    if(chart) requestAnimationFrame(function(){ chart.resize(); });
+  }
+
+  function expandChart(box){
+    if(expandedBox) collapseChart();
+    expandedBox = box;
+    box.classList.add('chart-expanded');
+    closeBtn.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    resizeChart(box);
+  }
+
+  function collapseChart(){
+    if(!expandedBox) return;
+    expandedBox.classList.remove('chart-expanded');
+    resizeChart(expandedBox);
+    expandedBox = null;
+    closeBtn.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  closeBtn.addEventListener('click', collapseChart);
+
+  document.addEventListener('click', function(e){
+    if(window.innerWidth > 900) return;
+    var box = e.target.closest('.chart-box');
+    if(!box) return;
+    if(box.classList.contains('chart-expanded')) return;
+    expandChart(box);
+  });
+
+  // Fechar com Escape (teclado)
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') collapseChart();
+  });
 })();
 </script>
 </body>
