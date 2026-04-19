@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>CONCRETRACK &#8226; Resultado de Corpos de Prova</title>
-  <link rel="manifest" href="../manifest.json">
+  <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#1a3a5c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 (async function(){
-  try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('../sw.js',{scope:'../'}); }catch(e){}
+  try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('./sw.js',{scope:'./'}); }catch(e){}
 })();
 </script>
 </body>

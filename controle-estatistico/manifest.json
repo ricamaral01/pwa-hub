@@ -1,0 +1,14 @@
+{
+  "name": "Controle Estatístico",
+  "short_name": "Ctrl Est.",
+  "description": "Resultados e análise estatística de corpos de prova — Laboratório Concrefer",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f0f4f8",
+  "theme_color": "#1a3a5c",
+  "icons": [
+    { "src": "../assets/img/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

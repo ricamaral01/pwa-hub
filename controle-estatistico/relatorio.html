@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>CONCRETRACK &#8226; Relat&#243;rio Controle Estat&#237;stico</title>
-  <link rel="manifest" href="../manifest.json">
+  <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#1a3a5c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -124,9 +124,20 @@
       td, th { color: #000 !important; border-color: #999 !important; background: #f8f8f8 !important; }
       canvas { max-height: 180px !important; }
     }
+    /* ── MOBILE WARNING BANNER ── */
+    .mobile-banner {
+      display: none;
+      background: linear-gradient(135deg, #1a3a5c, #2563a8);
+      color: #fff; text-align: center;
+      padding: 12px 20px; font-size: .82rem; font-weight: 600;
+      gap: 8px; align-items: center; justify-content: center;
+    }
+    @media (max-width: 768px) { .mobile-banner { display: flex; } }
   </style>
 </head>
 <body>
+<!-- MOBILE BANNER -->
+<div class="mobile-banner">&#128187; Para melhor experiência, acesse pelo desktop</div>
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-brand">
@@ -1026,7 +1037,7 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 (async function(){
-  try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('../sw.js',{scope:'../'}); }catch(e){}
+  try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('./sw.js',{scope:'./'}); }catch(e){}
 })();
 </script>
 </body>
