@@ -1,6 +1,6 @@
 {
-  "name": "Controle Estatístico",
-  "short_name": "Ctrl Est.",
+  "name": "CEC Concrefer",
+  "short_name": "CEC Concrefer",
   "description": "Resultados e análise estatística de corpos de prova — Laboratório Concrefer",
   "start_url": "./index.html",
   "scope": "./",

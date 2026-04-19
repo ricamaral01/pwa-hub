@@ -1,8 +1,9 @@
-const CACHE = "ct-controle-est-v1";
+const CACHE = "ct-controle-est-v2";
 const ASSETS = [
   "./index.html",
   "./resultado-cp.html",
-  "./manifest.json"
+  "./manifest.json",
+  "./relatorio-icon.svg"
 ];
 
 self.addEventListener("install", (event) => {
