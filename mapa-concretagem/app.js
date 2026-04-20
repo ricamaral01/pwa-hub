@@ -290,10 +290,106 @@ const SETOR_3_RIGHT_FORMS = [
   { forma: "SC52", modelo: "SC" }
 ];
 
+const SETOR_4_COL1_FORMS = [
+  { forma: "L-*1",     label: "*1",      modelo: "12 x 200" },
+  { forma: "L-*2",     label: "*2",      modelo: "12 x 600" },
+  { forma: "L-*3",     label: "*3",      modelo: "12 x 600" },
+  { forma: "L-*4",     label: "*4",      modelo: "12 x 600" },
+  { forma: "L-*6",     label: "*6",      modelo: "12 x 600" },
+  { forma: "L-*7",     label: "*7",      modelo: "12 x 600" },
+  { forma: "L-*8",     label: "*8",      modelo: "12 x 600" },
+  { forma: "L-MD",     label: "MD",      modelo: "200-300-400-600" },
+  { forma: "Lx-*1",   label: "*1",      modelo: "x" },
+  { forma: "Lx-*2",   label: "*2",      modelo: "x" },
+  { forma: "Lx-*3",   label: "*3",      modelo: "x" },
+  { forma: "Lx-*4",   label: "*4",      modelo: "x" },
+  { forma: "Lx-*6",   label: "*6",      modelo: "x" },
+  { forma: "Lx-*7",   label: "*7",      modelo: "x" },
+  { forma: "Lx-*8",   label: "*8",      modelo: "x" },
+  { forma: "Lx-MD",   label: "MD",      modelo: "200-300-400-600" },
+  { forma: "A-CX40",   label: "CX40x40", modelo: "Cx. Passagem 40x40" },
+  { forma: "A-ST100",  label: "ST-100",  modelo: "Placa Stai 1000x200" },
+  { forma: "A-ST140",  label: "ST-140",  modelo: "Placa Stai 1400x200" },
+  { forma: "A-PEDST",  label: "PEDST",   modelo: "Pedestal Cx. Sabesp" },
+  { forma: "A-CH100",  label: "CH-100",  modelo: "Chapeu Sub.100" },
+  { forma: "A-CH200",  label: "CH-200",  modelo: "Chapeu Sub.200" },
+  { forma: "A-CH200TC",label: "CH200TC", modelo: "Chapu Sub.200 C/TC" },
+  { forma: "A-TOTEM",  label: "TOTEM",   modelo: "Totem Med. Indireta" }
+];
+
+const SETOR_4_COL2_FORMS = [
+  { forma: "C-F1-1",   label: "1",  modelo: "6,0 x 90" },
+  { forma: "C-F1-2",   label: "2",  modelo: "6,0 x 90" },
+  { forma: "C-F2-9",   label: "9",  modelo: "7,5 x 200" },
+  { forma: "C-F2-5",   label: "5",  modelo: "7,5 x 200" },
+  { forma: "C-F2-8",   label: "8",  modelo: "7,5 x 200" },
+  { forma: "C-F2-7",   label: "7",  modelo: "7,5 x 200" },
+  { forma: "C-F2-6",   label: "6",  modelo: "7,5 x 200" },
+  { forma: "C-F3-15",  label: "15", modelo: "7,5 x 90" },
+  { forma: "C-F3-14",  label: "14", modelo: "7,5 x 90" },
+  { forma: "C-F3-13",  label: "13", modelo: "7,5 x 90" },
+  { forma: "C-F3-12",  label: "12", modelo: "7,5 x 90" },
+  { forma: "C-F3-11",  label: "11", modelo: "7,5 x 90" },
+  { forma: "C-F3-10",  label: "10", modelo: "7,5 x 90" },
+  { forma: "C-F3-9",   label: "9",  modelo: "7,5 x 90" },
+  { forma: "C-F3-8",   label: "8",  modelo: "7,5 x 90" },
+  { forma: "C-F3-7",   label: "7",  modelo: "7,5 x 90" },
+  { forma: "C-F3-6",   label: "6",  modelo: "7,5 x 90" },
+  { forma: "C-F3-5",   label: "5",  modelo: "7,5 x 90" },
+  { forma: "C-F3-4",   label: "4",  modelo: "7,5 x 90" },
+  { forma: "C-F3-3",   label: "3",  modelo: "7,5 x 90" },
+  { forma: "C-F3-2",   label: "2",  modelo: "7,5 x 90" },
+  { forma: "C-F3-1",   label: "1",  modelo: "7,5 x 90" },
+  { forma: "C-F3-16",  label: "16", modelo: "7,5 x 90" },
+  { forma: "C-T1",     label: "T1", modelo: "13,5x600/300-1000" },
+  { forma: "C-F4-*4",  label: "*4", modelo: "12 x 600" },
+  { forma: "C-F4-*3",  label: "*3", modelo: "12 x 600" },
+  { forma: "C-F4-*2",  label: "*2", modelo: "12 x 600" },
+  { forma: "C-F4-MD",  label: "MD", modelo: "200-300-400-600" },
+  { forma: "C-F5-1a",  label: "1",  modelo: "12 x 1000" },
+  { forma: "C-F5-1b",  label: "1",  modelo: "12 x 200" },
+  { forma: "C-F5-2",   label: "2",  modelo: "12 x 200" },
+  { forma: "C-F6-*4",  label: "*4", modelo: "x" },
+  { forma: "C-F6-*3",  label: "*3", modelo: "x" },
+  { forma: "C-F6-*2",  label: "*2", modelo: "x" },
+  { forma: "C-F6-MD",  label: "MD", modelo: "200-300-400-600" },
+  { forma: "C-F7-*1a", label: "*1", modelo: "x" },
+  { forma: "C-F7-*1b", label: "*1", modelo: "x" },
+  { forma: "C-F7-*2",  label: "*2", modelo: "x" }
+];
+
+const SETOR_4_COL3_FORMS = [
+  { forma: "R-F1-3",  label: "3",   modelo: "6,0 x 90" },
+  { forma: "R-F2-9",  label: "9",   modelo: "* 7,5 x 300" },
+  { forma: "R-F2-8",  label: "8",   modelo: "* 7,5 x 300" },
+  { forma: "R-F2-7",  label: "7",   modelo: "* 7,5 x 300" },
+  { forma: "R-F2-6",  label: "6",   modelo: "* 7,5 x 300" },
+  { forma: "R-F2-5",  label: "5",   modelo: "* 7,5 x 300" },
+  { forma: "R-F3-4",  label: "4",   modelo: "* 7,5 x" },
+  { forma: "R-F3-3",  label: "3",   modelo: "* 7,5 x" },
+  { forma: "R-F3-2",  label: "2",   modelo: "* 7,5 x" },
+  { forma: "R-MD",    label: "MD",  modelo: "300,400,600,700,800" },
+  { forma: "R-E17",   label: "17",  modelo: "7,5 x 90" },
+  { forma: "R-E22",   label: "22",  modelo: "7,5 x 90" },
+  { forma: "R-E21",   label: "21",  modelo: "7,5 x 90" },
+  { forma: "R-E23",   label: "23",  modelo: "7,5 x 90" },
+  { forma: "R-E24",   label: "24",  modelo: "7,5 x 90" },
+  { forma: "R-E20",   label: "20",  modelo: "7,5 x 90" },
+  { forma: "R-E19",   label: "19",  modelo: "7,5 x 90" },
+  { forma: "R-E18",   label: "18",  modelo: "7,5 x 90" },
+  { forma: "R-G6",    label: "6",   modelo: "7,0 x 150" },
+  { forma: "R-G5",    label: "5",   modelo: "7,0 x 150" },
+  { forma: "R-G3",    label: "3",   modelo: "7,0 x 150" },
+  { forma: "R-G4",    label: "4",   modelo: "7,0 x 150" },
+  { forma: "R-G1",    label: "1",   modelo: "7,0 x 150" },
+  { forma: "R-G2",    label: "2",   modelo: "7,0 x 150" }
+];
+
 const SECTOR_FORMS = {
   "Setor 1": { left: SETOR_1_LEFT_FORMS, right: SETOR_1_RIGHT_FORMS },
   "Setor 2": { left: SETOR_2_LEFT_FORMS, right: SETOR_2_RIGHT_FORMS },
-  "Setor 3": { left: SETOR_3_LEFT_FORMS, right: SETOR_3_RIGHT_FORMS }
+  "Setor 3": { left: SETOR_3_LEFT_FORMS, right: SETOR_3_RIGHT_FORMS },
+  "Setor 4": { col1: SETOR_4_COL1_FORMS, col2: SETOR_4_COL2_FORMS, col3: SETOR_4_COL3_FORMS }
 };
 
 function getSectorForms(setor) {
@@ -858,7 +954,7 @@ function createFormaCard(item, setor) {
 
   const numEl = document.createElement("span");
   numEl.className = "fc-number";
-  numEl.textContent = item.forma;
+  numEl.textContent = item.label || item.forma;
 
   const statusEl = document.createElement("span");
   statusEl.className = "fc-status";
@@ -902,7 +998,22 @@ function renderSectorCols(container, leftForms, rightForms, setor) {
   container.appendChild(rightCol);
 }
 
-function renderLiberacaoDual() {
+function renderSector3Cols(container, col1Forms, col2Forms, col3Forms, setor) {
+  if (!container) return;
+  container.innerHTML = "";
+  const col1 = document.createElement("div");
+  col1.className = "lib-forms-col";
+  const col2 = document.createElement("div");
+  col2.className = "lib-forms-col";
+  const col3 = document.createElement("div");
+  col3.className = "lib-forms-col";
+  col1Forms.forEach((item) => col1.appendChild(createFormaCard(item, setor)));
+  col2Forms.forEach((item) => col2.appendChild(createFormaCard(item, setor)));
+  col3Forms.forEach((item) => col3.appendChild(createFormaCard(item, setor)));
+  container.appendChild(col1);
+  container.appendChild(col2);
+  container.appendChild(col3);
+}
   renderSectorCols(
     document.getElementById("libSetor1Cols"),
     SETOR_1_LEFT_FORMS,
@@ -921,6 +1032,13 @@ function renderLiberacaoDual() {
     SETOR_3_RIGHT_FORMS,
     "Setor 3"
   );
+  renderSector3Cols(
+    document.getElementById("libSetor4Cols"),
+    SETOR_4_COL1_FORMS,
+    SETOR_4_COL2_FORMS,
+    SETOR_4_COL3_FORMS,
+    "Setor 4"
+  );
   updateSectorCounters();
 }
 
@@ -931,6 +1049,7 @@ function updateSectorCounters() {
   const s1All = SETOR_1_LEFT_FORMS.concat(SETOR_1_RIGHT_FORMS);
   const s2All = SETOR_2_LEFT_FORMS.concat(SETOR_2_RIGHT_FORMS);
   const s3All = SETOR_3_LEFT_FORMS.concat(SETOR_3_RIGHT_FORMS);
+  const s4All = SETOR_4_COL1_FORMS.concat(SETOR_4_COL2_FORMS).concat(SETOR_4_COL3_FORMS);
 
   let s1Count = 0;
   s1All.forEach((item) => {
@@ -947,9 +1066,15 @@ function updateSectorCounters() {
     if (formas["Setor 3||" + normalizeUpper(item.forma)]) s3Count++;
   });
 
+  let s4Count = 0;
+  s4All.forEach((item) => {
+    if (formas["Setor 4||" + normalizeUpper(item.forma)]) s4Count++;
+  });
+
   const c1 = document.getElementById("libCounterSetor1");
   const c2 = document.getElementById("libCounterSetor2");
   const c3 = document.getElementById("libCounterSetor3");
+  const c4 = document.getElementById("libCounterSetor4");
   if (c1) {
     c1.textContent = s1Count + " / " + s1All.length;
     c1.classList.toggle("counter-done", s1Count === s1All.length && s1All.length > 0);
@@ -961,6 +1086,10 @@ function updateSectorCounters() {
   if (c3) {
     c3.textContent = s3Count + " / " + s3All.length;
     c3.classList.toggle("counter-done", s3Count === s3All.length && s3All.length > 0);
+  }
+  if (c4) {
+    c4.textContent = s4Count + " / " + s4All.length;
+    c4.classList.toggle("counter-done", s4Count === s4All.length && s4All.length > 0);
   }
 }
 
