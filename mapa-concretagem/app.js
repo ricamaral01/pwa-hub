@@ -98,9 +98,10 @@ const SETOR_1_LEFT_FORMS = [
 const SETOR_1_RIGHT_FORMS = [
   { forma: "L-01", modelo: "4 CXS VR" },
   { forma: "L-02", modelo: "4 CXS VR" },
-  { forma: "J-01", modelo: "4 CXS VR" },
+  { forma: "J-01", modelo: "4 CXS VL" },
   { forma: "H-01", modelo: "3 CXS VR" },
   { forma: "H-02", modelo: "3 CXS VR" },
+  { forma: "I-01", modelo: "3 CXS VL" },
   { forma: "P-01", modelo: "Ec. 3 CXS" },
   { forma: "P-02", modelo: "Ec. 3 CXS" },
   { forma: "BE-04", modelo: "1 CX VL" },
@@ -192,14 +193,15 @@ const SETOR_2_RIGHT_FORMS = [
   { forma: "TCL-1", modelo: "600-VL" },
   { forma: "TCL-2", modelo: "600-VL" },
   { forma: "TCR-4", modelo: "600-VR" },
-  { forma: "TCR-3", modelo: "600-VR" },
   { forma: "TCR-2", modelo: "600-VR" },
-  { forma: "TCR-1", modelo: "600-VR" },
+  { forma: "PL - 3", modelo: "7,5x300 c/ Lente" },
+  { forma: "PL - 4", modelo: "7,5x300 c/ Lente" },
   { forma: "A-23", modelo: "1 CX VR" },
   { forma: "A-17", modelo: "1 CX VR" },
   { forma: "A-35", modelo: "1 CX VR" },
   { forma: "A-24", modelo: "1 CX VR" },
   { forma: "A-59", modelo: "1 CX VR" },
+  { forma: "A-34", modelo: "1 CX VR" },
   { forma: "A-33", modelo: "1 CX VR" },
   { forma: "A-07", modelo: "1 CX VR" },
   { forma: "A-05", modelo: "1 CX VR" },
@@ -216,7 +218,7 @@ const SETOR_2_RIGHT_FORMS = [
   { forma: "A-44", modelo: "1 CX VR" },
   { forma: "A-45", modelo: "1 CX VR" },
   { forma: "A-48", modelo: "1 CX VR" },
-  { forma: "C-03", modelo: "2 CXS VR" },
+  { forma: "C-03", modelo: "1 CX VR" },
   { forma: "C-14", modelo: "2 CXS VR" },
   { forma: "C-16", modelo: "2 CXS VR" },
   { forma: "C-18", modelo: "2 CXS VR" },
@@ -230,9 +232,68 @@ const SETOR_2_RIGHT_FORMS = [
   { forma: "C-25", modelo: "2 CXS VR" }
 ];
 
+const SETOR_3_LEFT_FORMS = [
+  { forma: "SC01", modelo: "SC" },
+  { forma: "SC03", modelo: "SC" },
+  { forma: "SC05", modelo: "SC" },
+  { forma: "SC07", modelo: "SC" },
+  { forma: "SC09", modelo: "SC" },
+  { forma: "SC11", modelo: "SC" },
+  { forma: "SC13", modelo: "SC" },
+  { forma: "SC15", modelo: "SC" },
+  { forma: "SC17", modelo: "SC" },
+  { forma: "SC19", modelo: "SC" },
+  { forma: "SC21", modelo: "SC" },
+  { forma: "SC23", modelo: "SC" },
+  { forma: "SC25", modelo: "SC" },
+  { forma: "SC27", modelo: "SC" },
+  { forma: "SC29", modelo: "SC" },
+  { forma: "SC31", modelo: "SC" },
+  { forma: "SC33", modelo: "SC" },
+  { forma: "SC35", modelo: "SC" },
+  { forma: "SC37", modelo: "SC" },
+  { forma: "SC39", modelo: "SC" },
+  { forma: "SC41", modelo: "SC" },
+  { forma: "SC43", modelo: "SC" },
+  { forma: "SC45", modelo: "SC" },
+  { forma: "SC47", modelo: "SC" },
+  { forma: "SC49", modelo: "SC" },
+  { forma: "SC51", modelo: "SC" }
+];
+
+const SETOR_3_RIGHT_FORMS = [
+  { forma: "SC02", modelo: "SC" },
+  { forma: "SC04", modelo: "SC" },
+  { forma: "SC06", modelo: "SC" },
+  { forma: "SC08", modelo: "SC" },
+  { forma: "SC10", modelo: "SC" },
+  { forma: "SC12", modelo: "SC" },
+  { forma: "SC14", modelo: "SC" },
+  { forma: "SC16", modelo: "SC" },
+  { forma: "SC18", modelo: "SC" },
+  { forma: "SC20", modelo: "SC" },
+  { forma: "SC22", modelo: "SC" },
+  { forma: "SC24", modelo: "SC" },
+  { forma: "SC26", modelo: "SC" },
+  { forma: "SC28", modelo: "SC" },
+  { forma: "SC30", modelo: "SC" },
+  { forma: "SC32", modelo: "SC" },
+  { forma: "SC34", modelo: "SC" },
+  { forma: "SC36", modelo: "SC" },
+  { forma: "SC38", modelo: "SC" },
+  { forma: "SC40", modelo: "SC" },
+  { forma: "SC42", modelo: "SC" },
+  { forma: "SC44", modelo: "SC" },
+  { forma: "SC46", modelo: "SC" },
+  { forma: "SC48", modelo: "SC" },
+  { forma: "SC50", modelo: "SC" },
+  { forma: "SC52", modelo: "SC" }
+];
+
 const SECTOR_FORMS = {
   "Setor 1": { left: SETOR_1_LEFT_FORMS, right: SETOR_1_RIGHT_FORMS },
-  "Setor 2": { left: SETOR_2_LEFT_FORMS, right: SETOR_2_RIGHT_FORMS }
+  "Setor 2": { left: SETOR_2_LEFT_FORMS, right: SETOR_2_RIGHT_FORMS },
+  "Setor 3": { left: SETOR_3_LEFT_FORMS, right: SETOR_3_RIGHT_FORMS }
 };
 
 function getSectorForms(setor) {
@@ -854,6 +915,12 @@ function renderLiberacaoDual() {
     SETOR_2_RIGHT_FORMS,
     "Setor 2"
   );
+  renderSectorCols(
+    document.getElementById("libSetor3Cols"),
+    SETOR_3_LEFT_FORMS,
+    SETOR_3_RIGHT_FORMS,
+    "Setor 3"
+  );
   updateSectorCounters();
 }
 
@@ -863,6 +930,7 @@ function updateSectorCounters() {
 
   const s1All = SETOR_1_LEFT_FORMS.concat(SETOR_1_RIGHT_FORMS);
   const s2All = SETOR_2_LEFT_FORMS.concat(SETOR_2_RIGHT_FORMS);
+  const s3All = SETOR_3_LEFT_FORMS.concat(SETOR_3_RIGHT_FORMS);
 
   let s1Count = 0;
   s1All.forEach((item) => {
@@ -874,8 +942,14 @@ function updateSectorCounters() {
     if (formas["Setor 2||" + normalizeUpper(item.forma)]) s2Count++;
   });
 
+  let s3Count = 0;
+  s3All.forEach((item) => {
+    if (formas["Setor 3||" + normalizeUpper(item.forma)]) s3Count++;
+  });
+
   const c1 = document.getElementById("libCounterSetor1");
   const c2 = document.getElementById("libCounterSetor2");
+  const c3 = document.getElementById("libCounterSetor3");
   if (c1) {
     c1.textContent = s1Count + " / " + s1All.length;
     c1.classList.toggle("counter-done", s1Count === s1All.length && s1All.length > 0);
@@ -883,6 +957,10 @@ function updateSectorCounters() {
   if (c2) {
     c2.textContent = s2Count + " / " + s2All.length;
     c2.classList.toggle("counter-done", s2Count === s2All.length && s2All.length > 0);
+  }
+  if (c3) {
+    c3.textContent = s3Count + " / " + s3All.length;
+    c3.classList.toggle("counter-done", s3Count === s3All.length && s3All.length > 0);
   }
 }
 
@@ -1193,7 +1271,7 @@ async function saveInspecao() {
   const observacaoGlobal = el.insObs.value.trim();
 
   if (!colaborador) {
-    alert("Preencha o colaborador da inspeção.");
+    showMsgBox("Preencha o colaborador da inspeção.", "error");
     return;
   }
 
@@ -1204,7 +1282,7 @@ async function saveInspecao() {
   });
 
   if (!selectedRows.length) {
-    alert("Preencha o Status em ao menos uma forma para salvar a inspeção.");
+    showMsgBox("Preencha o Status em ao menos uma forma para salvar a inspeção.", "error");
     return;
   }
 
@@ -1230,7 +1308,7 @@ async function saveInspecao() {
 
   if (state.submitLocks.inspecao && state.submitLocks.inspecao === lockToken) {
     setSyncStatus("warn", "Envio de inspeção já realizado para este mesmo conteúdo. Altere os dados para reenviar.");
-    alert("Este envio de inspeção já foi realizado. Altere os dados para enviar novamente.");
+    showMsgBox("Este envio de inspeção já foi realizado. Altere os dados para enviar novamente.", "warn");
     return;
   }
 
@@ -1259,12 +1337,12 @@ async function saveInspecao() {
       const obsLinha = "";
 
       if (!recordId || !status) {
-        alert("Cada forma selecionada deve ter Status preenchido.");
+        showMsgBox("Cada forma selecionada deve ter Status preenchido.", "error");
         return;
       }
 
       if (status !== "A" && !codigoFinal) {
-        alert("Para status R ou RR, preencha o Código (A-M).");
+        showMsgBox("Para status R ou RR, preencha o Código (A-M).", "error");
         return;
       }
 
@@ -2043,7 +2121,7 @@ async function gerarRelatorioSetor() {
   const encarregado = el.relEncarregado.value.trim();
 
   if (!data || !setor) {
-    alert("Informe data e setor para gerar o relatório.");
+    showMsgBox("Informe data e setor para gerar o relatório.", "error");
     return;
   }
 

@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="stylesheet" href="styles.css?v=9621a75f" />
+  <link rel="stylesheet" href="../assets/msgbox.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -225,6 +226,13 @@
           </div>
           <div class="lib-sector-cols" id="libSetor2Cols"></div>
         </div>
+        <div class="lib-sector-block lib-sector-3">
+          <div class="lib-sector-header">
+            <span class="lib-sector-title">Setor 3</span>
+            <span class="lib-sector-counter" id="libCounterSetor3">0 / 52</span>
+          </div>
+          <div class="lib-sector-cols" id="libSetor3Cols"></div>
+        </div>
       </div>
 
 
@@ -252,6 +260,7 @@
             <option value="">Todos</option>
             <option value="Setor 1">Setor 1</option>
             <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
           </select>
         </label>
         <label>Colaborador
@@ -313,6 +322,7 @@
                   <option value="">Selecione</option>
                   <option value="Setor 1">Setor 1</option>
                   <option value="Setor 2">Setor 2</option>
+                  <option value="Setor 3">Setor 3</option>
                 </select>
               </label>
               <label>Encarregado
@@ -421,6 +431,7 @@
             <option value="">Todos</option>
             <option value="Setor 1">Setor 1</option>
             <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
           </select>
         </label>
         <button id="acmpCarregar" class="btn primary" type="button">📋 Carregar</button>
@@ -467,6 +478,7 @@
     </article>
   </template>
 
+  <script src="../assets/msgbox.js"></script>
   <script src="app.js?v=10d7c81c"></script>
 </body>
 </html>

@@ -1,0 +1,173 @@
+/* ============================================================
+   MsgBox — Componente global de mensagem de sucesso
+   ConcreTrack / PWA-HUB
+   Uso: incluir via <link> ou deixar msgbox.js injetar automaticamente
+   ============================================================ */
+
+:root {
+  --app-color: #1e40af;
+}
+
+/* ── Overlay ── */
+#msgbox-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 15, 30, 0.58);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#msgbox-overlay.msgbox-visible {
+  display: flex;
+}
+
+/* ── Card ── */
+#msgbox-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.16),
+    0 32px 64px rgba(0, 0, 0, 0.20);
+  text-align: center;
+  animation: msgbox-in 0.25s cubic-bezier(0.22, 0.68, 0, 1.18) both;
+  position: relative;
+  overflow: hidden;
+}
+
+#msgbox-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0f1e3c, #f97316);
+}
+
+@keyframes msgbox-in {
+  from { opacity: 0; transform: scale(0.84) translateY(8px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
+}
+
+/* ── Ícone de sucesso ── */
+.msgbox-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #d1fae5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  flex-shrink: 0;
+}
+
+.msgbox-icon svg {
+  width: 34px;
+  height: 34px;
+  color: #16a34a;
+  display: block;
+}
+
+/* ── Variante de erro ── */
+#msgbox-overlay.msgbox-type-error #msgbox-card::before {
+  background: linear-gradient(90deg, #7f1d1d, #f97316);
+}
+
+#msgbox-overlay.msgbox-type-error .msgbox-icon {
+  background: #fee2e2;
+}
+
+#msgbox-overlay.msgbox-type-error .msgbox-icon svg {
+  color: #dc2626;
+}
+
+/* ── Variante de aviso ── */
+#msgbox-overlay.msgbox-type-warn #msgbox-card::before {
+  background: linear-gradient(90deg, #78350f, #f97316);
+}
+
+#msgbox-overlay.msgbox-type-warn .msgbox-icon {
+  background: #fef3c7;
+}
+
+#msgbox-overlay.msgbox-type-warn .msgbox-icon svg {
+  color: #d97706;
+}
+
+/* ── Mensagem ── */
+.msgbox-msg {
+  font-size: 1rem;
+  color: #1e293b;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0 0 24px;
+  word-break: break-word;
+}
+
+/* ── Botão OK ── */
+.msgbox-btn {
+  background: var(--app-color, #1a5276);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 0;
+  width: 100%;
+  max-width: 200px;
+  font-size: 0.97rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.025em;
+  font-family: inherit;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  display: inline-block;
+}
+
+.msgbox-btn:hover  { opacity: 0.85; transform: translateY(-1px); }
+.msgbox-btn:active { opacity: 0.95; transform: translateY(0);    }
+
+.msgbox-btn:focus-visible {
+  outline: 3px solid var(--app-color, #1e40af);
+  outline-offset: 3px;
+}
+
+/* ── Responsivo ── */
+@media (max-width: 480px) {
+  #msgbox-card {
+    padding: 28px 18px 22px;
+    border-radius: 16px;
+  }
+
+  .msgbox-icon {
+    width: 58px;
+    height: 58px;
+  }
+
+  .msgbox-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .msgbox-msg {
+    font-size: 0.93rem;
+  }
+
+  .msgbox-btn {
+    max-width: 100%;
+  }
+}
+
+/* ── Ocultar na impressão ── */
+@media print {
+  #msgbox-overlay { display: none !important; }
+}
