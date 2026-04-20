@@ -120,8 +120,8 @@ body {
 }
 
 /* ── Page content ─────────────────────────────────── */
-.page-content { flex: 1; padding: 20px 24px; background: var(--bg); }
-.container { max-width: 1100px; margin: 0 auto; }
+.page-content { flex: 1; padding: 20px 32px; background: var(--bg); }
+.container { max-width: 1600px; margin: 0 auto; }
 
 /* ── Dashboard hub ────────────────────────────────── */
 .dash-welcome { margin-bottom: 20px; }
