@@ -1014,6 +1014,8 @@ function renderSector3Cols(container, col1Forms, col2Forms, col3Forms, setor) {
   container.appendChild(col2);
   container.appendChild(col3);
 }
+
+function renderLiberacaoDual() {
   renderSectorCols(
     document.getElementById("libSetor1Cols"),
     SETOR_1_LEFT_FORMS,
