@@ -2424,28 +2424,41 @@ function bindEvents() {
     renderPhotoPreview(el.insFotosPreview, state.insPhotos);
   });
 
-  // Sidebar toggle (mobile)
+  // Sidebar toggle
   const appSidebar = document.getElementById("appSidebar");
+  const appShell   = document.querySelector(".app-shell");
   const sidebarOverlay = document.getElementById("sidebarOverlay");
-  const sidebarToggle = document.getElementById("sidebarToggle");
+  const sidebarToggle  = document.getElementById("sidebarToggle");
+
+  // Restaura estado colapsado no desktop
+  if (localStorage.getItem("sidebarCollapsed") === "1") {
+    document.body.classList.add("sidebar-hidden");
+  }
+
+  function closeMobileSidebar() {
+    appSidebar?.classList.remove("sidebar-open");
+    sidebarOverlay?.classList.remove("visible");
+  }
+
   if (sidebarToggle && appSidebar) {
     sidebarToggle.addEventListener("click", () => {
-      appSidebar.classList.toggle("sidebar-open");
-      if (sidebarOverlay) sidebarOverlay.classList.toggle("visible");
+      if (window.innerWidth <= 768) {
+        // Mobile: drawer com overlay
+        appSidebar.classList.toggle("sidebar-open");
+        sidebarOverlay?.classList.toggle("visible");
+      } else {
+        // Desktop/tablet: colapsa sem overlay
+        const hidden = document.body.classList.toggle("sidebar-hidden");
+        localStorage.setItem("sidebarCollapsed", hidden ? "1" : "0");
+      }
     });
   }
   if (sidebarOverlay && appSidebar) {
-    sidebarOverlay.addEventListener("click", () => {
-      appSidebar.classList.remove("sidebar-open");
-      sidebarOverlay.classList.remove("visible");
-    });
+    sidebarOverlay.addEventListener("click", closeMobileSidebar);
   }
   document.querySelectorAll(".nav-item").forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (window.innerWidth <= 768 && appSidebar) {
-        appSidebar.classList.remove("sidebar-open");
-        if (sidebarOverlay) sidebarOverlay.classList.remove("visible");
-      }
+      if (window.innerWidth <= 768) closeMobileSidebar();
     });
   });
   const navInicio = document.getElementById("navInicio");
