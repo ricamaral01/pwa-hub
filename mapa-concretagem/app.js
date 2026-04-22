@@ -954,7 +954,7 @@ function createFormaCard(item, setor) {
 
   const numEl = document.createElement("span");
   numEl.className = "fc-number";
-  numEl.textContent = item.label || item.forma;
+  numEl.textContent = setor === "Setor 4" ? (item.modelo || item.label || item.forma) : (item.label || item.forma);
 
   const statusEl = document.createElement("span");
   statusEl.className = "fc-status";

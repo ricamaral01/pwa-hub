@@ -1463,6 +1463,16 @@ hr {
   line-height: 1.1;
 }
 
+/* Setor 4: modelo como label — texto mais longo, fonte menor */
+.lib-sector-4 .fc-number {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  word-break: break-word;
+  text-align: center;
+}
+
 .fc-status {
   font-size: 0.8rem;
   font-weight: 700;
