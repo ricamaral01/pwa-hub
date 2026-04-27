@@ -79,9 +79,21 @@ function statusResponse_() {
     ok: true,
     status: "online",
     spreadsheetId: ss.getId(),
+    spreadsheetUrl: ss.getUrl(),
     sheet: MAPA_MONTAGEM_POSTE_SHEET,
     actions: ["salvar_montagem_poste"]
   };
+}
+
+/**
+ * Utilitario: retorna a URL da planilha vinculada.
+ * Execute esta funcao manualmente no editor do Apps Script
+ * para obter o link direto da planilha.
+ */
+function getSpreadsheetUrl() {
+  var ss = getSpreadsheet_();
+  Logger.log("URL da planilha: " + ss.getUrl());
+  return ss.getUrl();
 }
 
 function getOrCreateMontagemPosteSheet_(ss) {

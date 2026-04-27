@@ -2206,6 +2206,17 @@ hr {
   justify-content: space-between;
   gap: 8px;
   margin-bottom: 10px;
+  background: #f0f4f8;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-left: -12px;
+  margin-right: -12px;
+  margin-top: -12px;
+}
+
+.mp-checklist-header strong {
+  color: #1e40af;
+  font-size: 0.9rem;
 }
 
 .mp-checklist-flag {

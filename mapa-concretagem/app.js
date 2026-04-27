@@ -1705,15 +1705,17 @@ function showMontagemResumoModal(poste) {
   const dtMontagem = formatDateTime(poste.finalizadoEm || "");
 
   el.mpResumoBody.innerHTML = `
-    <div><strong>Poste Modelo:</strong> ${poste.modelo || "-"}</div>
-    <div><strong>Forma:</strong> ${poste.formaNumero || "-"}</div>
+    <div><strong>Montador:</strong> ${escapeHtml(state.authUser?.name || "-")}</div>
+    <div><strong>Setor:</strong> ${escapeHtml(poste.setor || "-")}</div>
+    <div><strong>Poste Modelo:</strong> ${escapeHtml(poste.modelo || "-")}</div>
+    <div><strong>Forma:</strong> ${escapeHtml(poste.formaNumero || "-")}</div>
     <div><strong>Dt. Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
     <div><strong>Dt. Montagem:</strong> ${dtMontagem}</div>
     <div><strong>Status:</strong> ${statusLabel}</div>
     <div><strong>Motivo da recusa:</strong> ${motivo}</div>
-    <div><strong>Observações:</strong> ${poste.observacoesMontagem || "-"}</div>
-    <div><strong>Registro:</strong> ${poste.key || "-"}</div>
-    <div><strong>Persistência:</strong> ${poste.resumoSync || "-"}</div>
+    <div><strong>Observações:</strong> ${escapeHtml(poste.observacoesMontagem || "-")}</div>
+    <div><strong>Registro:</strong> ${escapeHtml(poste.key || "-")}</div>
+    <div><strong>Persistência:</strong> ${escapeHtml(poste.resumoSync || "-")}</div>
   `;
 
   const close = () => {
