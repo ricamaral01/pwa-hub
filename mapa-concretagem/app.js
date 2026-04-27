@@ -1921,10 +1921,10 @@ async function renderMontagemPostesLiberados() {
     tr.dataset.formaNumero = record.formaNumero;
     tr.dataset.modelo = record.modelo;
     tr.innerHTML = `
-      <td>${record.formaNumero || ""}</td>
-      <td>${record.modelo || ""}</td>
-      <td>${fmtDate(record.dataFabricacao || "")}</td>
-      <td><button type="button" class="btn mp-open-btn">${label}</button></td>
+      <td data-label="N Forma">${record.formaNumero || ""}</td>
+      <td data-label="Modelo">${record.modelo || ""}</td>
+      <td data-label="Data Prod.">${fmtDate(record.dataFabricacao || "")}</td>
+      <td data-label="Ação"><button type="button" class="btn mp-open-btn">${label}</button></td>
     `;
     el.mpLiberadosBody.appendChild(tr);
   });

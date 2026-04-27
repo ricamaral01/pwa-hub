@@ -1773,6 +1773,79 @@ hr {
     font-size: 0.74rem;
   }
 
+  #viewMontagemPostes .sheet-box {
+    overflow-x: visible;
+  }
+
+  #viewMontagemPostes .sheet-table,
+  #viewMontagemPostes .sheet-table thead,
+  #viewMontagemPostes .sheet-table tbody,
+  #viewMontagemPostes .sheet-table tr,
+  #viewMontagemPostes .sheet-table td {
+    display: block;
+    width: 100%;
+  }
+
+  #viewMontagemPostes .sheet-table {
+    min-width: 0;
+    border-collapse: separate;
+  }
+
+  #viewMontagemPostes .sheet-table thead {
+    display: none;
+  }
+
+  #viewMontagemPostes .sheet-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(15, 30, 60, 0.06);
+    padding: 10px;
+  }
+
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] td {
+    border: none;
+    padding: 0;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] td + td {
+    margin-top: 8px;
+  }
+
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] td:first-child {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] td:nth-child(2) {
+    color: #334155;
+    font-weight: 600;
+  }
+
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] td:last-child {
+    margin-top: 12px;
+  }
+
   .mp-detalhe-header {
     grid-template-columns: 1fr;
   }
