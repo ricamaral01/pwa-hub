@@ -3,7 +3,6 @@ const SUBMIT_LOCKS_KEY = "pwa_liberacao_submit_locks_v1";
 const CLICKED_FORMS_KEY = "pwa_formas_clicadas_hoje";
 const MONTAGEM_POSTES_KEY = "pwa_montagem_postes_v1";
 const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
-const USERS_KEY = "pwa_mapa_users_v1";
 
 const ROLE_PERMISSIONS = {
   GERENCIA: {
@@ -444,6 +443,7 @@ const state = {
   authUser: null,
   allowedModes: new Set(["HUB"]),
   hasBootstrapped: false,
+  usersCache: [],
   libPhotos: [],
   insPhotos: [],
   montagemPostesAtual: null,
@@ -2867,47 +2867,29 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;");
 }
 
-function getDefaultUsers() {
-  return [
-    { name: "admin", role: "GERENCIA", password: "admin123" },
-    { name: "Ricardo Do Amaral", role: "GERENCIA", password: "1520" }
-  ];
+async function listUsersFromApi(options = {}) {
+  const result = await postToMontagemApi("listar_usuarios", {});
+  if (result.ok) {
+    state.usersCache = Array.isArray(result.users) ? result.users : [];
+    return { ok: true, users: state.usersCache };
+  }
+
+  if (!options.silent) {
+    setUgFeedback(result.error || "Não foi possível carregar os usuários da planilha.", false);
+  }
+  return { ok: false, error: result.error || "Falha ao carregar usuários.", users: [] };
 }
 
-function readUsers() {
-  const raw = localStorage.getItem(USERS_KEY);
-  if (!raw) {
-    const defaults = getDefaultUsers();
-    localStorage.setItem(USERS_KEY, JSON.stringify(defaults));
-    return defaults;
-  }
-  try {
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length === 0) {
-      const defaults = getDefaultUsers();
-      localStorage.setItem(USERS_KEY, JSON.stringify(defaults));
-      return defaults;
-    }
-
-    const merged = [...parsed];
-    getDefaultUsers().forEach((seedUser) => {
-      const alreadyExists = merged.some(
-        (user) => String(user?.name || "").trim().toLowerCase() === seedUser.name.toLowerCase()
-      );
-      if (!alreadyExists) merged.push(seedUser);
-    });
-
-    localStorage.setItem(USERS_KEY, JSON.stringify(merged));
-    return merged;
-  } catch {
-    const defaults = getDefaultUsers();
-    localStorage.setItem(USERS_KEY, JSON.stringify(defaults));
-    return defaults;
-  }
+async function authenticateUserInApi(name, password) {
+  return postToMontagemApi("autenticar_usuario", { name, password });
 }
 
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+async function createUserInApi(name, role, password) {
+  return postToMontagemApi("criar_usuario", { name, role, password });
+}
+
+async function deleteUserInApi(id) {
+  return postToMontagemApi("excluir_usuario", { id });
 }
 
 function setUgFeedback(message, isOk) {
@@ -2924,36 +2906,41 @@ function setUgFeedback(message, isOk) {
   el.ugFeedback.classList.remove("hidden");
 }
 
-function renderUsuarios() {
+async function renderUsuarios() {
   if (!el.ugListaBody) return;
-  const users = readUsers();
+  el.ugListaBody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#64748b;">Carregando usuários...</td></tr>';
+  const result = await listUsersFromApi({ silent: true });
+  if (!result.ok) {
+    el.ugListaBody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#991b1b;">Falha ao carregar usuários da planilha.</td></tr>';
+    return;
+  }
+
+  const users = result.users;
   if (users.length === 0) {
     el.ugListaBody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#64748b;">Nenhum usuário cadastrado.</td></tr>';
     return;
   }
-  el.ugListaBody.innerHTML = users.map((u, i) => `
+  el.ugListaBody.innerHTML = users.map((u) => `
     <tr>
       <td style="text-align:center">${escapeHtml(u.name)}</td>
       <td style="text-align:center">${escapeHtml(getRoleConfig(u.role).label)}</td>
-      <td style="text-align:center"><button class="ug-del-btn" type="button" data-ug-idx="${i}">Excluir</button></td>
+      <td style="text-align:center"><button class="ug-del-btn" type="button" data-ug-id="${escapeHtml(u.id)}">Excluir</button></td>
     </tr>
   `).join("");
 
-  el.ugListaBody.querySelectorAll(".ug-del-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const idx = parseInt(btn.dataset.ugIdx, 10);
-      const current = readUsers();
-      if (idx < 0 || idx >= current.length) return;
-      const removed = current[idx];
-      // Prevent deleting the last GERENCIA user
-      const remaining = current.filter((_, i) => i !== idx);
-      const hasGerencia = remaining.some(u => u.role === "GERENCIA");
-      if (!hasGerencia && removed.role === "GERENCIA") {
-        setUgFeedback("Não é possível excluir o único usuário com perfil Gerência.", false);
+  el.ugListaBody.querySelectorAll(".ug-del-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const userId = String(btn.dataset.ugId || "").trim();
+      const removed = state.usersCache.find((user) => user.id === userId);
+      if (!userId || !removed) return;
+
+      const resultDelete = await deleteUserInApi(userId);
+      if (!resultDelete.ok) {
+        setUgFeedback(resultDelete.error || "Não foi possível excluir o usuário.", false);
         return;
       }
-      saveUsers(remaining);
-      renderUsuarios();
+
+      await renderUsuarios();
       setUgFeedback(`Usuário "${removed.name}" excluído.`, true);
     });
   });
@@ -3029,7 +3016,7 @@ function ensurePostLoginBootstrap() {
   state.hasBootstrapped = true;
 }
 
-function loginWithRole(name, password) {
+async function loginWithRole(name, password) {
   const cleanName = String(name || "").trim();
   if (!cleanName) {
     setLoginFeedback("Informe seu usuário para entrar.");
@@ -3041,16 +3028,13 @@ function loginWithRole(name, password) {
     return false;
   }
 
-  const users = readUsers();
-  const user = users.find(
-    u => u.name.trim().toLowerCase() === cleanName.toLowerCase() && u.password === password
-  );
-
-  if (!user) {
-    setLoginFeedback("Usuário ou senha incorretos.");
+  const authResult = await authenticateUserInApi(cleanName, password);
+  if (!authResult.ok || !authResult.user) {
+    setLoginFeedback(authResult.error || "Usuário ou senha incorretos.");
     return false;
   }
 
+  const user = authResult.user;
   const role = user.role;
   if (!ROLE_PERMISSIONS[role]) {
     setLoginFeedback("Perfil inválido.");
@@ -3110,7 +3094,9 @@ function setMode(mode) {
   if (mode === "ACMP_CONCRETAGEM") el.viewAcmpConcretagem.classList.remove("hidden");
   if (mode === "USUARIOS") {
     if (el.viewUsuarios) el.viewUsuarios.classList.remove("hidden");
-    renderUsuarios();
+    renderUsuarios().catch(() => {
+      setUgFeedback("Não foi possível carregar os usuários da planilha.", false);
+    });
   }
 
   document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem", "mode-usuarios");
@@ -3179,16 +3165,16 @@ function navigateBack() {
 
 function bindEvents() {
   if (el.loginEntrar) {
-    el.loginEntrar.addEventListener("click", () => {
-      loginWithRole(el.loginNome?.value || "", el.loginSenha?.value || "");
+    el.loginEntrar.addEventListener("click", async () => {
+      await loginWithRole(el.loginNome?.value || "", el.loginSenha?.value || "");
     });
   }
 
   if (el.loginSenha) {
-    el.loginSenha.addEventListener("keydown", (event) => {
+    el.loginSenha.addEventListener("keydown", async (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
-        loginWithRole(el.loginNome?.value || "", el.loginSenha?.value || "");
+        await loginWithRole(el.loginNome?.value || "", el.loginSenha?.value || "");
       }
     });
   }
@@ -3207,7 +3193,7 @@ function bindEvents() {
   }
 
   if (el.ugCriarBtn) {
-    el.ugCriarBtn.addEventListener("click", () => {
+    el.ugCriarBtn.addEventListener("click", async () => {
       const nome = (el.ugNome?.value || "").trim();
       const perfil = el.ugPerfil?.value || "MONTADOR";
       const senha = (el.ugSenha?.value || "").trim();
@@ -3215,17 +3201,15 @@ function bindEvents() {
       if (!nome) { setUgFeedback("Informe o nome do usuário.", false); return; }
       if (!senha) { setUgFeedback("Informe a senha.", false); return; }
 
-      const users = readUsers();
-      if (users.some(u => u.name.trim().toLowerCase() === nome.toLowerCase())) {
-        setUgFeedback("Já existe um usuário com esse nome.", false);
+      const resultCreate = await createUserInApi(nome, perfil, senha);
+      if (!resultCreate.ok) {
+        setUgFeedback(resultCreate.error || "Não foi possível criar o usuário.", false);
         return;
       }
 
-      users.push({ name: nome, role: perfil, password: senha });
-      saveUsers(users);
       if (el.ugNome) el.ugNome.value = "";
       if (el.ugSenha) el.ugSenha.value = "";
-      renderUsuarios();
+      await renderUsuarios();
       setUgFeedback(`Usuário "${nome}" criado com sucesso!`, true);
     });
   }
