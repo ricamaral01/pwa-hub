@@ -23,6 +23,119 @@ body {
   min-height: 100vh;
 }
 
+.login-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(circle at top left, rgba(37, 99, 168, 0.2), transparent 38%),
+              radial-gradient(circle at bottom right, rgba(232, 118, 42, 0.2), transparent 42%),
+              linear-gradient(160deg, #f0f4f8 0%, #ffffff 60%, #eef2f7 100%);
+  z-index: 999;
+}
+
+.login-card {
+  width: min(100%, 420px);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(15, 30, 60, 0.16);
+  padding: 26px 22px;
+}
+
+.login-logo {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.login-card h1 {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+}
+
+.login-card p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.login-card label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.82rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.login-card input,
+.login-card select {
+  width: 100%;
+  margin-top: 6px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.login-card input:focus,
+.login-card select:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(37, 99, 168, 0.12);
+}
+
+.login-card #loginEntrar {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.login-feedback {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 0.82rem;
+}
+
+body.auth-locked {
+  overflow: hidden;
+}
+
+body.auth-locked .app-shell,
+body.auth-locked #insFloatBar {
+  visibility: hidden;
+}
+
+.auth-user-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #334155;
+  background: #e2e8f0;
+  border-radius: 999px;
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+
+.auth-logout-btn {
+  padding: 8px 12px;
+  min-height: auto;
+  font-size: 0.8rem;
+}
+
 /* ── App Shell ────────────────────────────────────── */
 .app-shell { display: flex; min-height: 100vh; }
 
@@ -1969,7 +2082,41 @@ hr {
 }
 
 .mp-open-btn {
-  min-width: 210px;
+  min-width: 140px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  padding: 10px 18px;
+  font-size: 0.88rem;
+}
+
+.mp-open-btn:hover {
+  background: #c55a14;
+}
+
+/* Montagem Postes — table column sizing + alignment */
+#viewMontagemPostes .sheet-table th,
+#viewMontagemPostes .sheet-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#viewMontagemPostes .sheet-table th:nth-child(1),
+#viewMontagemPostes .sheet-table td:nth-child(1),
+#viewMontagemPostes .sheet-table th:nth-child(2),
+#viewMontagemPostes .sheet-table td:nth-child(2),
+#viewMontagemPostes .sheet-table th:nth-child(3),
+#viewMontagemPostes .sheet-table td:nth-child(3) {
+  width: 90px;
+  max-width: 90px;
+  white-space: nowrap;
+}
+
+#viewMontagemPostes .sheet-table th:nth-child(4),
+#viewMontagemPostes .sheet-table td:nth-child(4) {
+  min-width: 160px;
+  width: 160px;
 }
 
 .mp-detalhe-header {
@@ -2126,6 +2273,16 @@ hr {
 
 .mp-finalizar-row {
   margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+#mpFinalizarPoste {
+  width: 100%;
+  max-width: 400px;
+  padding: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
 @media (max-width: 700px) {
@@ -2135,6 +2292,44 @@ hr {
   }
 
   .mp-open-btn {
-    min-width: 160px;
+    min-width: 110px;
+    padding: 8px 10px;
+    font-size: 0.82rem;
   }
+}
+
+/* Gestão de Usuários */
+.ug-form {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.ug-form h3,
+.ug-list-wrap h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+  margin: 0 0 12px;
+}
+
+.ug-list-wrap {
+  margin-top: 4px;
+}
+
+.ug-del-btn {
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ug-del-btn:hover {
+  background: #fecaca;
 }

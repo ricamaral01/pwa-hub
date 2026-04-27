@@ -86,10 +86,13 @@ function statusResponse_() {
 
 function getOrCreateMontagemPosteSheet_(ss) {
   var sh = ss.getSheetByName(MAPA_MONTAGEM_POSTE_SHEET);
-  if (sh) return sh;
+  if (sh) {
+    ensureMontagemSheetColumns_(sh);
+    return sh;
+  }
 
   sh = ss.insertSheet(MAPA_MONTAGEM_POSTE_SHEET);
-  sh.getRange(1, 1, 1, 15).setValues([[
+  sh.getRange(1, 1, 1, 17).setValues([[
     "key",
     "record_id",
     "data_fabricacao",
@@ -104,10 +107,21 @@ function getOrCreateMontagemPosteSheet_(ss) {
     "checklists_json",
     "updated_at",
     "created_at",
-    "banco"
+    "banco",
+    "observacoes_montagem",
+    "montador_nome"
   ]]);
   sh.setFrozenRows(1);
   return sh;
+}
+
+function ensureMontagemSheetColumns_(sheet) {
+  if (sheet.getLastColumn() < 16) {
+    sheet.getRange(1, 16).setValue("observacoes_montagem");
+  }
+  if (sheet.getLastColumn() < 17) {
+    sheet.getRange(1, 17).setValue("montador_nome");
+  }
 }
 
 function normalizeMontagemPayload_(payload) {
@@ -136,7 +150,9 @@ function normalizeMontagemPayload_(payload) {
     inicioInspecaoMontagem: String(payload.inicioInspecaoMontagem || ""),
     finalizadoEm: String(payload.finalizadoEm || ""),
     checklists: payload.checklists || {},
-    banco: String(payload.banco || "montagem_poste")
+    banco: String(payload.banco || "montagem_poste"),
+    observacoesMontagem: String(payload.observacoesMontagem || ""),
+    montadorNome: String(payload.montadorNome || "")
   };
 }
 
@@ -157,7 +173,9 @@ function buildMontagemRow_(payload, createdAt) {
     JSON.stringify(payload.checklists || {}),
     now,
     createdAt || now,
-    payload.banco
+    payload.banco,
+    payload.observacoesMontagem,
+    payload.montadorNome
   ];
 }
 
@@ -191,6 +209,6 @@ function salvarMontagemPoste_(payload) {
   }
 
   var createdAt = sh.getRange(rowIndex, 14).getValue();
-  sh.getRange(rowIndex, 1, 1, 15).setValues([buildMontagemRow_(data, createdAt)]);
+  sh.getRange(rowIndex, 1, 1, 17).setValues([buildMontagemRow_(data, createdAt)]);
   return { ok: true, upsert: "update", key: data.key, row: rowIndex, sheet: MAPA_MONTAGEM_POSTE_SHEET };
 }

@@ -10,7 +10,23 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
-<div class="app-shell">
+<section id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo">MC</div>
+    <h1>Acesso ao Mapa de Concretagem</h1>
+    <p>Entre com seu usuário e senha.</p>
+    <label>Usuário
+      <input id="loginNome" type="text" placeholder="Digite seu usuário" autocomplete="username" />
+    </label>
+    <label>Senha
+      <input id="loginSenha" type="password" placeholder="Digite sua senha" autocomplete="current-password" />
+    </label>
+    <button id="loginEntrar" class="btn primary" type="button">Entrar</button>
+    <div id="loginFeedback" class="login-feedback hidden"></div>
+  </div>
+</section>
+
+<div class="app-shell" id="appShell">
 
   <!-- Sidebar -->
   <aside class="sidebar" id="appSidebar">
@@ -58,6 +74,10 @@
         <span class="nav-icon-wrap">CC</span>
         Acmp. Concretagem
       </button>
+      <button class="nav-item hidden" id="navUsuarios" type="button">
+        <span class="nav-icon-wrap">👤</span>
+        Usuários
+      </button>
     </nav>
     <div class="sidebar-footer">
       <button id="btnBackMain" class="sidebar-back" type="button">↩ Voltar ao Hub</button>
@@ -72,6 +92,8 @@
       <button class="sidebar-toggle-btn" id="sidebarToggle" type="button">☰</button>
       <span class="topbar-title" id="topbarTitle">Início</span>
       <div class="topbar-right">
+        <span id="authUserBadge" class="auth-user-badge hidden"></span>
+        <button id="authLogoutBtn" class="btn auth-logout-btn hidden" type="button">Sair</button>
         <div id="syncStatus" class="sync-status sync-pending">Verificando conexão com a planilha...</div>
       </div>
     </header>
@@ -112,6 +134,10 @@
           <button class="hub-icon-btn" type="button" data-hub-mode="ACMP_CONCRETAGEM">
             <div class="hub-icon-circle" style="background:#be185d">CC</div>
             <span class="hub-icon-lbl">Concretagem</span>
+          </button>
+          <button class="hub-icon-btn hidden" type="button" data-hub-mode="USUARIOS">
+            <div class="hub-icon-circle" style="background:#4f46e5">👤</div>
+            <span class="hub-icon-lbl">Usuários</span>
           </button>
         </div>
       </section>
@@ -383,6 +409,10 @@
 
       <div id="mpChecklistSections" class="mp-checklist-wrap"></div>
 
+      <label>Observações
+        <textarea id="mpObservacoes" rows="3" placeholder="Descreva observações da montagem..."></textarea>
+      </label>
+
       <div class="mp-status-box">
         <div class="mp-status-title">Resultado da montagem</div>
         <div id="mpStatusButtons" class="mp-status-buttons">
@@ -401,6 +431,50 @@
 
       <div class="mp-finalizar-row">
         <button id="mpFinalizarPoste" class="btn primary" type="button">Salvar</button>
+      </div>
+    </section>
+
+    <section id="viewUsuarios" class="card hidden">
+      <div class="section-title-row">
+        <h2>Gerenciar Usuários</h2>
+        <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
+      </div>
+
+      <div class="ug-form">
+        <h3>Novo Usuário</h3>
+        <div class="grid">
+          <label>Nome / Login
+            <input id="ugNome" type="text" placeholder="Nome do usuário" autocomplete="off" />
+          </label>
+          <label>Perfil
+            <select id="ugPerfil">
+              <option value="MONTADOR">Montador</option>
+              <option value="GESTOR">Gestor</option>
+              <option value="GERENCIA">Gerência</option>
+            </select>
+          </label>
+          <label>Senha
+            <input id="ugSenha" type="password" placeholder="Senha" autocomplete="new-password" />
+          </label>
+        </div>
+        <button id="ugCriarBtn" class="btn primary" type="button">Criar usuário</button>
+        <div id="ugFeedback" class="login-feedback hidden"></div>
+      </div>
+
+      <div class="ug-list-wrap">
+        <h3>Usuários cadastrados</h3>
+        <div class="sheet-box">
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th>Nome / Login</th>
+                <th>Perfil</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="ugListaBody"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 

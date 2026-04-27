@@ -2,6 +2,23 @@ const STORAGE_KEY = "pwa_liberacao_inspecao_v1";
 const SUBMIT_LOCKS_KEY = "pwa_liberacao_submit_locks_v1";
 const CLICKED_FORMS_KEY = "pwa_formas_clicadas_hoje";
 const MONTAGEM_POSTES_KEY = "pwa_montagem_postes_v1";
+const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
+const USERS_KEY = "pwa_mapa_users_v1";
+
+const ROLE_PERMISSIONS = {
+  GERENCIA: {
+    label: "Gerência",
+    modes: ["DASHBOARD", "LIBERACAO", "INSPECAO", "MONTAGEM_POSTES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
+  },
+  GESTOR: {
+    label: "Gestor",
+    modes: ["DASHBOARD", "MONTAGEM_POSTES"]
+  },
+  MONTADOR: {
+    label: "Montador",
+    modes: ["LIBERACAO", "MONTAGEM_POSTES"]
+  }
+};
 
 const MONTAGEM_CHECKLIST_SECTIONS = [
   {
@@ -424,6 +441,9 @@ function getSectorForms(setor) {
 
 const state = {
   mode: "HUB",
+  authUser: null,
+  allowedModes: new Set(["HUB"]),
+  hasBootstrapped: false,
   libPhotos: [],
   insPhotos: [],
   montagemPostesAtual: null,
@@ -433,6 +453,14 @@ const state = {
 };
 
 const el = {
+  appShell: document.getElementById("appShell"),
+  loginScreen: document.getElementById("loginScreen"),
+  loginNome: document.getElementById("loginNome"),
+  loginSenha: document.getElementById("loginSenha"),
+  loginEntrar: document.getElementById("loginEntrar"),
+  loginFeedback: document.getElementById("loginFeedback"),
+  authUserBadge: document.getElementById("authUserBadge"),
+  authLogoutBtn: document.getElementById("authLogoutBtn"),
   backMain: document.getElementById("btnBackMain"),
   backButtons: Array.from(document.querySelectorAll("[data-back-btn]")),
   hubView: document.getElementById("viewHub"),
@@ -452,6 +480,14 @@ const el = {
   viewAcompanhamento: document.getElementById("viewAcompanhamento"),
   hubAcmpConcretagem: document.getElementById("hubAcmpConcretagem"),
   viewAcmpConcretagem: document.getElementById("viewAcmpConcretagem"),
+  navUsuarios: document.getElementById("navUsuarios"),
+  viewUsuarios: document.getElementById("viewUsuarios"),
+  ugNome: document.getElementById("ugNome"),
+  ugPerfil: document.getElementById("ugPerfil"),
+  ugSenha: document.getElementById("ugSenha"),
+  ugCriarBtn: document.getElementById("ugCriarBtn"),
+  ugFeedback: document.getElementById("ugFeedback"),
+  ugListaBody: document.getElementById("ugListaBody"),
   syncStatus: document.getElementById("syncStatus"),
 
   libData: document.getElementById("libData"),
@@ -491,6 +527,7 @@ const el = {
   mpStatusRR: document.getElementById("mpStatusRR"),
   mpMotivoWrap: document.getElementById("mpMotivoWrap"),
   mpMotivoSelect: document.getElementById("mpMotivoSelect"),
+  mpObservacoes: document.getElementById("mpObservacoes"),
   mpChecklistSections: document.getElementById("mpChecklistSections"),
   mpFinalizarPoste: document.getElementById("mpFinalizarPoste"),
   mpResumoModal: document.getElementById("mpResumoModal"),
@@ -1540,6 +1577,8 @@ function buildMontagemPostePayload(entry, etapa = "") {
     motivoRecusa: entry.motivoRecusa || "",
     inicioInspecaoMontagem: entry.inicioInspecaoMontagem || "",
     finalizadoEm: entry.finalizadoEm || "",
+    observacoesMontagem: entry.observacoesMontagem || "",
+    montadorNome: state.authUser?.name || "",
     checklists: entry.checklists || {}
   };
 }
@@ -1672,6 +1711,7 @@ function showMontagemResumoModal(poste) {
     <div><strong>Dt. Montagem:</strong> ${dtMontagem}</div>
     <div><strong>Status:</strong> ${statusLabel}</div>
     <div><strong>Motivo da recusa:</strong> ${motivo}</div>
+    <div><strong>Observações:</strong> ${poste.observacoesMontagem || "-"}</div>
     <div><strong>Registro:</strong> ${poste.key || "-"}</div>
     <div><strong>Persistência:</strong> ${poste.resumoSync || "-"}</div>
   `;
@@ -1713,6 +1753,10 @@ function renderMontagemPosteDetalhe() {
   }
 
   renderMontagemChecklistSections();
+  if (el.mpObservacoes) {
+    el.mpObservacoes.value = poste.observacoesMontagem || "";
+    el.mpObservacoes.disabled = !!poste.finalizadoEm;
+  }
   renderMontagemStatusUI();
 
   if (el.mpFinalizarPoste) {
@@ -1737,6 +1781,7 @@ async function openMontagemPosteDetalhe(posteBase) {
     motivoRecusa: atual?.motivoRecusa || "",
     inicioInspecaoMontagem: atual?.inicioInspecaoMontagem || now,
     finalizadoEm: atual?.finalizadoEm || "",
+    observacoesMontagem: atual?.observacoesMontagem || "",
     checklists: atual?.checklists || {}
   };
 
@@ -2771,9 +2816,263 @@ async function gerarRelatorioSetor() {
   renderRelatorioSetor({ data, setor, encarregado, rows });
 }
 
+function getRoleConfig(role) {
+  return ROLE_PERMISSIONS[role] || ROLE_PERMISSIONS.MONTADOR;
+}
+
+function setAccessByRole(role) {
+  const cfg = getRoleConfig(role);
+  const next = new Set(["HUB", ...cfg.modes]);
+  if (next.has("MONTAGEM_POSTES")) next.add("MONTAGEM_POSTES_DETALHE");
+  state.allowedModes = next;
+}
+
+function isModeAllowed(mode) {
+  if (mode === "HUB") return true;
+  if (!state.authUser) return false;
+  return state.allowedModes.has(mode);
+}
+
+function readAuthSession() {
+  const raw = localStorage.getItem(AUTH_SESSION_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.role || !ROLE_PERMISSIONS[parsed.role]) return null;
+    return {
+      name: String(parsed.name || "").trim() || "Usuário",
+      role: parsed.role,
+      roleLabel: getRoleConfig(parsed.role).label
+    };
+  } catch {
+    return null;
+  }
+}
+
+function saveAuthSession(auth) {
+  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ name: auth.name, role: auth.role }));
+}
+
+function clearAuthSession() {
+  localStorage.removeItem(AUTH_SESSION_KEY);
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function getDefaultUsers() {
+  return [{ name: "admin", role: "GERENCIA", password: "admin123" }];
+}
+
+function readUsers() {
+  const raw = localStorage.getItem(USERS_KEY);
+  if (!raw) {
+    const defaults = getDefaultUsers();
+    localStorage.setItem(USERS_KEY, JSON.stringify(defaults));
+    return defaults;
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) return getDefaultUsers();
+    return parsed;
+  } catch {
+    return getDefaultUsers();
+  }
+}
+
+function saveUsers(users) {
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+function setUgFeedback(message, isOk) {
+  if (!el.ugFeedback) return;
+  if (!message) {
+    el.ugFeedback.classList.add("hidden");
+    el.ugFeedback.textContent = "";
+    return;
+  }
+  el.ugFeedback.textContent = message;
+  el.ugFeedback.style.background = isOk ? "#dcfce7" : "#fef2f2";
+  el.ugFeedback.style.borderColor = isOk ? "#86efac" : "#fecaca";
+  el.ugFeedback.style.color = isOk ? "#166534" : "#991b1b";
+  el.ugFeedback.classList.remove("hidden");
+}
+
+function renderUsuarios() {
+  if (!el.ugListaBody) return;
+  const users = readUsers();
+  if (users.length === 0) {
+    el.ugListaBody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#64748b;">Nenhum usuário cadastrado.</td></tr>';
+    return;
+  }
+  el.ugListaBody.innerHTML = users.map((u, i) => `
+    <tr>
+      <td style="text-align:center">${escapeHtml(u.name)}</td>
+      <td style="text-align:center">${escapeHtml(getRoleConfig(u.role).label)}</td>
+      <td style="text-align:center"><button class="ug-del-btn" type="button" data-ug-idx="${i}">Excluir</button></td>
+    </tr>
+  `).join("");
+
+  el.ugListaBody.querySelectorAll(".ug-del-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.dataset.ugIdx, 10);
+      const current = readUsers();
+      if (idx < 0 || idx >= current.length) return;
+      const removed = current[idx];
+      // Prevent deleting the last GERENCIA user
+      const remaining = current.filter((_, i) => i !== idx);
+      const hasGerencia = remaining.some(u => u.role === "GERENCIA");
+      if (!hasGerencia && removed.role === "GERENCIA") {
+        setUgFeedback("Não é possível excluir o único usuário com perfil Gerência.", false);
+        return;
+      }
+      saveUsers(remaining);
+      renderUsuarios();
+      setUgFeedback(`Usuário "${removed.name}" excluído.`, true);
+    });
+  });
+}
+
+function setLoginFeedback(message) {
+  if (!el.loginFeedback) return;
+  if (!message) {
+    el.loginFeedback.classList.add("hidden");
+    el.loginFeedback.textContent = "";
+    return;
+  }
+  el.loginFeedback.textContent = message;
+  el.loginFeedback.classList.remove("hidden");
+}
+
+function lockAppForLogin() {
+  document.body.classList.add("auth-locked");
+  if (el.loginScreen) el.loginScreen.classList.remove("hidden");
+}
+
+function unlockAppAfterLogin() {
+  document.body.classList.remove("auth-locked");
+  if (el.loginScreen) el.loginScreen.classList.add("hidden");
+}
+
+function applyRoleVisibility() {
+  const navByMode = {
+    DASHBOARD: "navDashboard",
+    LIBERACAO: "hubLiberacao",
+    INSPECAO: "hubInspecao",
+    MONTAGEM_POSTES: "hubMontagemPostes",
+    RELATORIO: "hubRelatorio",
+    HISTORICO: "hubHistorico",
+    ACOMPANHAMENTO: "hubAcompanhamento",
+    ACMP_CONCRETAGEM: "hubAcmpConcretagem",
+    USUARIOS: "navUsuarios"
+  };
+
+  Object.entries(navByMode).forEach(([mode, id]) => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.classList.toggle("hidden", !isModeAllowed(mode));
+  });
+
+  document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
+    const mode = btn.dataset.hubMode || "";
+    btn.classList.toggle("hidden", !isModeAllowed(mode));
+  });
+
+  if (el.authUserBadge) {
+    if (state.authUser) {
+      el.authUserBadge.textContent = `${state.authUser.name} · ${state.authUser.roleLabel}`;
+      el.authUserBadge.classList.remove("hidden");
+    } else {
+      el.authUserBadge.classList.add("hidden");
+    }
+  }
+
+  if (el.authLogoutBtn) {
+    el.authLogoutBtn.classList.toggle("hidden", !state.authUser);
+  }
+}
+
+function ensurePostLoginBootstrap() {
+  if (state.hasBootstrapped) return;
+  renderLiberacaoDual();
+  renderInspecaoLiberados();
+  renderMontagemPostesLiberados();
+  renderHistorico();
+  carregarDashboardConcretagem();
+  checkApiStatus();
+  state.hasBootstrapped = true;
+}
+
+function loginWithRole(name, password) {
+  const cleanName = String(name || "").trim();
+  if (!cleanName) {
+    setLoginFeedback("Informe seu usuário para entrar.");
+    return false;
+  }
+
+  if (!password) {
+    setLoginFeedback("Informe a senha para entrar.");
+    return false;
+  }
+
+  const users = readUsers();
+  const user = users.find(
+    u => u.name.trim().toLowerCase() === cleanName.toLowerCase() && u.password === password
+  );
+
+  if (!user) {
+    setLoginFeedback("Usuário ou senha incorretos.");
+    return false;
+  }
+
+  const role = user.role;
+  if (!ROLE_PERMISSIONS[role]) {
+    setLoginFeedback("Perfil inválido.");
+    return false;
+  }
+
+  state.authUser = {
+    name: user.name,
+    role,
+    roleLabel: getRoleConfig(role).label
+  };
+
+  setAccessByRole(role);
+  saveAuthSession(state.authUser);
+  setLoginFeedback("");
+  unlockAppAfterLogin();
+  applyRoleVisibility();
+  ensurePostLoginBootstrap();
+  setMode("HUB");
+  setSyncStatus("ok", `Acesso liberado para ${state.authUser.roleLabel}.`);
+  return true;
+}
+
+function logoutUser() {
+  state.authUser = null;
+  state.allowedModes = new Set(["HUB"]);
+  clearAuthSession();
+  applyRoleVisibility();
+  setMode("HUB");
+  lockAppForLogin();
+  if (el.loginNome) el.loginNome.focus();
+}
+
 function setMode(mode) {
+  if (mode !== "HUB" && !isModeAllowed(mode)) {
+    mode = "HUB";
+    if (state.authUser) {
+      setSyncStatus("warn", "Seu perfil não possui acesso a esta opção.");
+    }
+  }
+
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem, el.viewUsuarios]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -2788,8 +3087,12 @@ function setMode(mode) {
   if (mode === "HISTORICO") el.viewHistorico.classList.remove("hidden");
   if (mode === "ACOMPANHAMENTO") el.viewAcompanhamento.classList.remove("hidden");
   if (mode === "ACMP_CONCRETAGEM") el.viewAcmpConcretagem.classList.remove("hidden");
+  if (mode === "USUARIOS") {
+    if (el.viewUsuarios) el.viewUsuarios.classList.remove("hidden");
+    renderUsuarios();
+  }
 
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem", "mode-usuarios");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO") document.body.classList.add("mode-liberacao");
@@ -2812,6 +3115,7 @@ function setMode(mode) {
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
   if (mode === "ACOMPANHAMENTO") document.body.classList.add("mode-acompanhamento");
   if (mode === "ACMP_CONCRETAGEM") document.body.classList.add("mode-acmp-concretagem");
+  if (mode === "USUARIOS") document.body.classList.add("mode-usuarios");
 
   // Update sidebar nav + topbar title
   const navTitles = {
@@ -2824,7 +3128,8 @@ function setMode(mode) {
     RELATORIO: ["hubRelatorio", "Relatório"],
     HISTORICO: ["hubHistorico", "Histórico"],
     ACOMPANHAMENTO: ["hubAcompanhamento", "Acompanhamento"],
-    ACMP_CONCRETAGEM: ["hubAcmpConcretagem", "Acmp. Concretagem"]
+    ACMP_CONCRETAGEM: ["hubAcmpConcretagem", "Acmp. Concretagem"],
+    USUARIOS: ["navUsuarios", "Gerenciar Usuários"]
   };
   const navInfo = navTitles[mode];
   document.querySelectorAll(".nav-item").forEach((btn) => btn.classList.remove("nav-active"));
@@ -2852,6 +3157,62 @@ function navigateBack() {
 }
 
 function bindEvents() {
+  if (el.loginEntrar) {
+    el.loginEntrar.addEventListener("click", () => {
+      loginWithRole(el.loginNome?.value || "", el.loginSenha?.value || "");
+    });
+  }
+
+  if (el.loginSenha) {
+    el.loginSenha.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        loginWithRole(el.loginNome?.value || "", el.loginSenha?.value || "");
+      }
+    });
+  }
+
+  if (el.loginNome) {
+    el.loginNome.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        el.loginSenha?.focus();
+      }
+    });
+  }
+
+  if (el.authLogoutBtn) {
+    el.authLogoutBtn.addEventListener("click", logoutUser);
+  }
+
+  if (el.ugCriarBtn) {
+    el.ugCriarBtn.addEventListener("click", () => {
+      const nome = (el.ugNome?.value || "").trim();
+      const perfil = el.ugPerfil?.value || "MONTADOR";
+      const senha = (el.ugSenha?.value || "").trim();
+
+      if (!nome) { setUgFeedback("Informe o nome do usuário.", false); return; }
+      if (!senha) { setUgFeedback("Informe a senha.", false); return; }
+
+      const users = readUsers();
+      if (users.some(u => u.name.trim().toLowerCase() === nome.toLowerCase())) {
+        setUgFeedback("Já existe um usuário com esse nome.", false);
+        return;
+      }
+
+      users.push({ name: nome, role: perfil, password: senha });
+      saveUsers(users);
+      if (el.ugNome) el.ugNome.value = "";
+      if (el.ugSenha) el.ugSenha.value = "";
+      renderUsuarios();
+      setUgFeedback(`Usuário "${nome}" criado com sucesso!`, true);
+    });
+  }
+
+  if (el.navUsuarios) {
+    el.navUsuarios.addEventListener("click", () => setMode("USUARIOS"));
+  }
+
   el.hubLiberacao.addEventListener("click", () => {
     setMode("LIBERACAO");
     if (!el.libData.value) el.libData.value = todayYmd();
@@ -2977,6 +3338,17 @@ function bindEvents() {
     });
   }
 
+  if (el.mpObservacoes) {
+    el.mpObservacoes.addEventListener("input", () => {
+      if (!state.montagemPostesAtual || state.montagemPostesAtual.finalizadoEm) return;
+      const current = { ...state.montagemPostesAtual };
+      current.observacoesMontagem = (el.mpObservacoes.value || "").trim();
+      state.montagemPostesAtual = current;
+      upsertMontagemPoste(current);
+      syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+    });
+  }
+
   if (el.mpFinalizarPoste) el.mpFinalizarPoste.addEventListener("click", () => {
     finalizarMontagemPosteAtual();
   });
@@ -3096,12 +3468,19 @@ function init() {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
   }
 
-  renderLiberacaoDual();
-  renderInspecaoLiberados();
-  renderMontagemPostesLiberados();
-  renderHistorico();
-  carregarDashboardConcretagem();
-  checkApiStatus();
+  const session = readAuthSession();
+  if (session) {
+    state.authUser = session;
+    setAccessByRole(session.role);
+    unlockAppAfterLogin();
+    applyRoleVisibility();
+    ensurePostLoginBootstrap();
+    setMode("HUB");
+  } else {
+    lockAppForLogin();
+    applyRoleVisibility();
+    if (el.loginNome) el.loginNome.focus();
+  }
 }
 
 init();
