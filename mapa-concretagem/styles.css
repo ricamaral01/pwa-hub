@@ -1663,20 +1663,130 @@ hr {
 .lib-dummy-table { display: none; }
 
 @media (max-width: 640px) {
-    .hub-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .topbar {
+    height: auto;
+    min-height: 64px;
+    padding: 10px 12px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 
-    .hub-item {
-      min-height: 108px;
-    }
+  .topbar-title {
+    min-width: 0;
+    font-size: 0.96rem;
+  }
+
+  .topbar-right {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .auth-user-badge {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .topbar .sync-status {
+    grid-column: 1 / -1;
+    max-width: none;
+    width: 100%;
+    text-align: center;
+  }
+
+  .page-content {
+    padding: 10px 12px;
+  }
 
   .container {
-    padding: 10px;
+    padding: 0;
   }
 
   .card {
-    padding: 10px;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .section-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .section-title-row .btn-back {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hub-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hub-item {
+    min-height: 108px;
+  }
+
+  .hub-icon-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .hub-icon-btn {
+    min-height: 132px;
+    padding: 16px 10px 14px;
+    gap: 10px;
+  }
+
+  .hub-icon-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+  }
+
+  .hub-icon-lbl {
+    font-size: 0.72rem;
+  }
+
+  .sheet-box,
+  #viewInspecao .sheet-box,
+  #viewMontagemPostes .sheet-box,
+  #viewUsuarios .sheet-box {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sheet-table {
+    min-width: 560px;
+    table-layout: auto;
+  }
+
+  .sheet-table th,
+  .sheet-table td {
+    padding: 6px 7px;
+    font-size: 0.74rem;
+  }
+
+  .mp-detalhe-header {
+    grid-template-columns: 1fr;
+  }
+
+  .mp-status-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .mp-status-btn,
+  .mp-open-btn,
+  #mpFinalizarPoste,
+  .ug-form .btn {
+    width: 100%;
   }
 
   .sheet-topline {
@@ -1756,6 +1866,58 @@ hr {
 
   #viewInspecao .sheet-table input[type="text"] {
     min-width: 120px;
+  }
+}
+
+@media (max-width: 420px) {
+  .sidebar-toggle-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .topbar-title {
+    font-size: 0.9rem;
+  }
+
+  .auth-user-badge,
+  .auth-logout-btn {
+    font-size: 0.74rem;
+  }
+
+  .card h2,
+  .section-title-row h2 {
+    font-size: 1.02rem;
+  }
+
+  .login-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .hub-icon-grid {
+    gap: 8px;
+  }
+
+  .hub-icon-btn {
+    min-height: 120px;
+    padding: 14px 8px 12px;
+  }
+
+  .hub-icon-circle {
+    width: 46px;
+    height: 46px;
+    font-size: 0.78rem;
+  }
+
+  .hub-icon-lbl {
+    font-size: 0.68rem;
+  }
+
+  input,
+  select,
+  textarea,
+  .btn {
+    font-size: 16px;
   }
 }
 
