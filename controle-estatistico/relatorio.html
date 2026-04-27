@@ -262,9 +262,8 @@
     </div>
 
     <!-- ======= Ultimos 5 dias ======= -->
-    <div class="section-card">
-      <div class="section-title"><span>&#128197;</span> &#218;ltimas 5 Datas de Moldagem</div>
-      <div class="tbl-wrap">
+    <div class="section-card" style="padding-top:0;">
+      <div class="tbl-wrap" style="margin-top:0; border-radius:16px;">
         <table id="tblUltimos">
           <thead>
             <tr>
@@ -653,9 +652,33 @@ function makeShewhartChartForAge(groups, age, canvasId){
 }
 
 /* ===================== TABELA ULTIMOS 5 DIAS ===================== */
+function isWeekendStr(dt){
+  var d=toDateObj(dt);
+  if(d) return !isBusinessDay(d);
+  // fallback: tenta dd/mm/yyyy, yyyy-mm-dd, ou Date.parse
+  var s=String(dt||'').trim();
+  var m=s.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if(!m) m=s.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+  if(m){
+    var yr=m[0].indexOf('-')!==-1?parseInt(m[1]):parseInt(m[3]);
+    var mo=m[0].indexOf('-')!==-1?parseInt(m[2])-1:parseInt(m[2])-1;
+    var dy=m[0].indexOf('-')!==-1?parseInt(m[3]):parseInt(m[1]);
+    var wd=new Date(yr,mo,dy).getDay();
+    return wd===0||wd===6;
+  }
+  var ts=Date.parse(s);
+  if(!isNaN(ts)){ var wd2=new Date(ts).getDay(); return wd2===0||wd2===6; }
+  return false;
+}
+
 function renderUltimos(allGroups){
-  // get last 5 unique moldagem dates (descending)
-  var dates=[...new Set(allGroups.map(function(g){return g.data_moldagem;}).filter(Boolean))];
+  // get last 5 unique datas de moldagem (somente dias uteis)
+  var dates=[...new Set(
+    allGroups
+      .map(function(g){return g.data_moldagem;})
+      .filter(Boolean)
+      .filter(function(dt){ return !isWeekendStr(dt); })
+  )];
   dates.sort(function(a,b){return b.localeCompare(a);});
   var last5=dates.slice(0,5);
   // para cada data: get unique traco_id

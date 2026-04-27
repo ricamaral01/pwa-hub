@@ -187,12 +187,6 @@
     .summary-item.obra .summary-value{color:#ef4444}
     .summary-item.total .summary-value{color:var(--ink)}
 
-    .summary-date{
-      font-size:12px;font-weight:600;
-      color:var(--muted);text-align:center;
-      margin-bottom:10px;
-    }
-
     /* ---- Disabled state ---- */
     .sector-btn:disabled{
       opacity:.55;pointer-events:none;
@@ -241,8 +235,6 @@
 
     <!-- Resumo do dia -->
     <div class="card">
-      <div class="card-title">📊 Resumo do Dia</div>
-      <div class="summary-date" id="summaryDate"></div>
       <div class="summary-grid">
         <div class="summary-item s1">
           <div class="summary-label">Setor 1</div>
@@ -332,13 +324,6 @@
 
       const total = Object.values(counts).reduce((a,b) => a + b, 0);
       document.getElementById("countTotal").textContent = total;
-
-      // Data formatada
-      const d = new Date();
-      const dias = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
-      const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-      document.getElementById("summaryDate").textContent =
-        dias[d.getDay()] + ", " + d.getDate() + " de " + meses[d.getMonth()] + " de " + d.getFullYear();
     }
 
     // ---- Toast ----

@@ -1,6 +1,31 @@
 const STORAGE_KEY = "pwa_liberacao_inspecao_v1";
 const SUBMIT_LOCKS_KEY = "pwa_liberacao_submit_locks_v1";
 const CLICKED_FORMS_KEY = "pwa_formas_clicadas_hoje";
+const MONTAGEM_POSTES_KEY = "pwa_montagem_postes_v1";
+
+const MONTAGEM_CHECKLIST_SECTIONS = [
+  {
+    id: "inspecao_visual",
+    titulo: "Inspeção visual",
+    itens: [
+      { id: "falhas_preenchimento", texto: "Falhas de preenchimento" },
+      { id: "excesso_bolhas", texto: "Excesso de bolhas" },
+      { id: "rebarbas", texto: "Rebarbas" },
+      { id: "fissuras", texto: "Fissuras" },
+      { id: "ausencia_buchas", texto: "Ausência de buchas" },
+      { id: "ausencia_prisioneiro", texto: "Ausência de prisioneiro" }
+    ]
+  },
+  {
+    id: "inspecao_tubulacao",
+    titulo: "Checklist Inspeção Tubulação",
+    itens: [
+      { id: "entrada", texto: "Entrada" },
+      { id: "saida_aerea", texto: "Saída aérea" },
+      { id: "saida_subterranea", texto: "Saída subterrânea" }
+    ]
+  }
+];
 
 function getClickedFormsToday() {
   const raw = localStorage.getItem(CLICKED_FORMS_KEY);
@@ -27,7 +52,8 @@ function isFormaClicked(forma, setor) {
   return !!data.formas[key];
 }
 const CONFIG = {
-  API_URL: "https://script.google.com/macros/s/AKfycbx83KmaFs3O3_RqfThs_0SCnaMBc3mb-RP30QKvtfJuEfnqft4eaFQVgYwuHxx3F-RttQ/exec"
+  API_URL: "https://script.google.com/macros/s/AKfycbx83KmaFs3O3_RqfThs_0SCnaMBc3mb-RP30QKvtfJuEfnqft4eaFQVgYwuHxx3F-RttQ/exec",
+  MONTAGEM_API_URL: "https://script.google.com/macros/s/AKfycbxTCj4vOG0TF8SABFqrbAzTcHDtnTI5-lX_vv7pBCXT86pj9B7mnLrR5uZQWOWpj2nnGg/exec"
 };
 
 const CHECKLIST_INSPECAO_CODIGOS = [
@@ -400,6 +426,7 @@ const state = {
   mode: "HUB",
   libPhotos: [],
   insPhotos: [],
+  montagemPostesAtual: null,
   isSendingLiberacao: false,
   isSendingInspecao: false,
   submitLocks: readSubmitLocks()
@@ -412,11 +439,14 @@ const el = {
   viewDashboard: document.getElementById("viewDashboard"),
   hubLiberacao: document.getElementById("hubLiberacao"),
   hubInspecao: document.getElementById("hubInspecao"),
+  hubMontagemPostes: document.getElementById("hubMontagemPostes"),
   hubRelatorio: document.getElementById("hubRelatorio"),
   hubHistorico: document.getElementById("hubHistorico"),
   hubAcompanhamento: document.getElementById("hubAcompanhamento"),
   viewLiberacao: document.getElementById("viewLiberacao"),
   viewInspecao: document.getElementById("viewInspecao"),
+  viewMontagemPostes: document.getElementById("viewMontagemPostes"),
+  viewMontagemPostesDetalhe: document.getElementById("viewMontagemPostesDetalhe"),
   viewRelatorio: document.getElementById("viewRelatorio"),
   viewHistorico: document.getElementById("viewHistorico"),
   viewAcompanhamento: document.getElementById("viewAcompanhamento"),
@@ -446,6 +476,26 @@ const el = {
   salvarInspecao: document.getElementById("salvarInspecao"),
   insFormaFiltro: document.getElementById("insFormaFiltro"),
   salvarInspecaoFloat: document.getElementById("salvarInspecaoFloat"),
+
+  mpFiltroData: document.getElementById("mpFiltroData"),
+  mpModoCarga: document.getElementById("mpModoCarga"),
+  mpSetor: document.getElementById("mpSetor"),
+  mpCarregarLiberados: document.getElementById("mpCarregarLiberados"),
+  mpLiberadosBody: document.getElementById("mpLiberadosBody"),
+  mpQtdItens: document.getElementById("mpQtdItens"),
+  mpFormaFiltro: document.getElementById("mpFormaFiltro"),
+  mpDetalheHeader: document.getElementById("mpDetalheHeader"),
+  mpStatusButtons: document.getElementById("mpStatusButtons"),
+  mpStatusAprovado: document.getElementById("mpStatusAprovado"),
+  mpStatusReprovado: document.getElementById("mpStatusReprovado"),
+  mpStatusRR: document.getElementById("mpStatusRR"),
+  mpMotivoWrap: document.getElementById("mpMotivoWrap"),
+  mpMotivoSelect: document.getElementById("mpMotivoSelect"),
+  mpChecklistSections: document.getElementById("mpChecklistSections"),
+  mpFinalizarPoste: document.getElementById("mpFinalizarPoste"),
+  mpResumoModal: document.getElementById("mpResumoModal"),
+  mpResumoBody: document.getElementById("mpResumoBody"),
+  mpResumoOkBtn: document.getElementById("mpResumoOkBtn"),
 
   histData: document.getElementById("histData"),
   histTipo: document.getElementById("histTipo"),
@@ -593,6 +643,10 @@ function hasApiConfigured() {
   return CONFIG.API_URL && CONFIG.API_URL.startsWith("https://script.google.com/");
 }
 
+function hasMontagemApiConfigured() {
+  return CONFIG.MONTAGEM_API_URL && CONFIG.MONTAGEM_API_URL.startsWith("https://script.google.com/");
+}
+
 function setSyncStatus(kind, message) {
   if (!el.syncStatus) return;
   el.syncStatus.className = "sync-status";
@@ -656,6 +710,32 @@ async function postToApi(action, payload) {
   }
 }
 
+async function postToMontagemApi(action, payload) {
+  if (!hasMontagemApiConfigured()) {
+    return { ok: false, skipped: true, error: "API de montagem não configurada" };
+  }
+
+  const body = new URLSearchParams();
+  body.set("action", action);
+  body.set("payload", JSON.stringify(payload));
+
+  try {
+    const response = await fetch(CONFIG.MONTAGEM_API_URL, {
+      method: "POST",
+      body
+    });
+
+    const text = await response.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      return { ok: false, error: "Resposta inválida do servidor de montagem", raw: text };
+    }
+  } catch (error) {
+    return { ok: false, error: `Falha de rede (montagem): ${String(error)}` };
+  }
+}
+
 function formatDateTime(iso) {
   if (!iso) return "-";
   return new Date(iso).toLocaleString("pt-BR");
@@ -666,6 +746,27 @@ function fmtDate(value) {
   if (!ymd) return "";
   const [y, m, d] = ymd.split("-");
   return `${d}/${m}/${y}`;
+}
+
+function montagemStatusLabel(status) {
+  if (status === "A") return "Aprovado";
+  if (status === "R") return "Reprovado";
+  if (status === "RR") return "Reprovado e Retrabalhado";
+  return "-";
+}
+
+function getMontagemMotivoOptions() {
+  return CHECKLIST_INSPECAO_CODIGOS.map((item) => ({
+    value: item.codigo,
+    label: `${item.codigo} — ${item.descricao}`
+  }));
+}
+
+function getMotivoRecusaLabel(value) {
+  if (!value) return "-";
+  const found = CHECKLIST_INSPECAO_CODIGOS.find((item) => item.codigo === value);
+  if (found) return `${found.codigo} — ${found.descricao}`;
+  return value;
 }
 
 function statusFluxoFromRecord(record) {
@@ -1393,6 +1494,395 @@ async function renderInspecaoLiberados() {
     el.insLiberadosBody.appendChild(tr);
   });
   filtrarFormasTabela();
+}
+
+function readMontagemPostesDb() {
+  const raw = localStorage.getItem(MONTAGEM_POSTES_KEY);
+  if (!raw) return { postes: {} };
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed && parsed.postes && typeof parsed.postes === "object" ? parsed : { postes: {} };
+  } catch {
+    return { postes: {} };
+  }
+}
+
+function writeMontagemPostesDb(db) {
+  localStorage.setItem(MONTAGEM_POSTES_KEY, JSON.stringify(db));
+}
+
+function getMontagemPosteKey({ recordId, dataFabricacao, setor, formaNumero }) {
+  return [recordId || "", dataFabricacao || "", setor || "", formaNumero || ""].join("||");
+}
+
+function getMontagemPosteByKey(key) {
+  const db = readMontagemPostesDb();
+  return db.postes[key] || null;
+}
+
+function upsertMontagemPoste(entry) {
+  const db = readMontagemPostesDb();
+  db.postes[entry.key] = entry;
+  writeMontagemPostesDb(db);
+}
+
+function buildMontagemPostePayload(entry, etapa = "") {
+  return {
+    banco: "montagem_poste",
+    etapa,
+    key: entry.key || "",
+    recordId: entry.recordId || "",
+    dataFabricacao: entry.dataFabricacao || "",
+    setor: entry.setor || "",
+    formaNumero: entry.formaNumero || "",
+    modelo: entry.modelo || "",
+    statusMontagem: entry.statusMontagem || "",
+    motivoRecusa: entry.motivoRecusa || "",
+    inicioInspecaoMontagem: entry.inicioInspecaoMontagem || "",
+    finalizadoEm: entry.finalizadoEm || "",
+    checklists: entry.checklists || {}
+  };
+}
+
+async function syncMontagemPosteToApi(entry, etapa = "", options = {}) {
+  const payload = buildMontagemPostePayload(entry, etapa);
+  const apiResult = await postToMontagemApi("salvar_montagem_poste", payload);
+
+  if (apiResult.ok) {
+    if (!options.silent) setSyncStatus("ok", "Montagem de poste sincronizada com a planilha.");
+    return { ok: true, synced: true };
+  }
+
+  if (apiResult.skipped) {
+    if (!options.silent) setSyncStatus("warn", "API não configurada. Montagem de poste salva localmente.");
+    return { ok: true, synced: false, skipped: true };
+  }
+
+  if (!options.silent) setSyncStatus("warn", "Montagem salva localmente, mas sem sincronização no momento.");
+  return { ok: false, synced: false, error: apiResult.error || "falha de sincronização" };
+}
+
+function isChecklistSectionComplete(sectionId, respostas = {}) {
+  const section = MONTAGEM_CHECKLIST_SECTIONS.find((s) => s.id === sectionId);
+  if (!section) return false;
+  return section.itens.every((item) => respostas[sectionId]?.[item.id] === "sim" || respostas[sectionId]?.[item.id] === "nao");
+}
+
+function renderMontagemChecklistSections() {
+  if (!el.mpChecklistSections || !state.montagemPostesAtual) return;
+  const current = state.montagemPostesAtual;
+  el.mpChecklistSections.innerHTML = "";
+
+  MONTAGEM_CHECKLIST_SECTIONS.forEach((section) => {
+    const article = document.createElement("article");
+    article.className = "mp-checklist-section";
+
+    const isComplete = isChecklistSectionComplete(section.id, current.checklists || {});
+    const rows = section.itens.map((item) => {
+      const selected = current.checklists?.[section.id]?.[item.id] || "";
+      const row = document.createElement("div");
+      row.className = "mp-checklist-item";
+      row.innerHTML = `
+        <span class="mp-checklist-item-text">${item.texto}</span>
+        <div class="mp-yn-group">
+          <button type="button" class="mp-yn-btn ${selected === "sim" ? "active" : ""}" data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="sim">Sim</button>
+          <button type="button" class="mp-yn-btn ${selected === "nao" ? "active" : ""}" data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="nao">Não</button>
+        </div>
+      `;
+      return row;
+    });
+
+    const sectionHeader = document.createElement("div");
+    sectionHeader.className = "mp-checklist-header";
+    sectionHeader.innerHTML = `
+      <strong>${section.titulo}</strong>
+      <span class="mp-checklist-flag ${isComplete ? "ok" : "pendente"}">${isComplete ? "OK" : "Pendente"}</span>
+    `;
+    article.appendChild(sectionHeader);
+    rows.forEach((r) => article.appendChild(r));
+    el.mpChecklistSections.appendChild(article);
+  });
+}
+
+function setMontagemChecklistAnswer(sectionId, itemId, value) {
+  if (!state.montagemPostesAtual) return;
+  const current = { ...state.montagemPostesAtual };
+  if (!current.checklists) current.checklists = {};
+  if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
+  current.checklists[sectionId][itemId] = value;
+  state.montagemPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+  renderMontagemChecklistSections();
+}
+
+function renderMontagemStatusUI() {
+  const poste = state.montagemPostesAtual;
+  if (!poste || !el.mpStatusButtons) return;
+
+  const status = poste.statusMontagem || "";
+  el.mpStatusButtons.querySelectorAll("[data-mp-status]").forEach((btn) => {
+    if (!(btn instanceof HTMLElement)) return;
+    btn.classList.toggle("active", btn.dataset.mpStatus === status);
+  });
+
+  if (el.mpMotivoWrap && el.mpMotivoSelect) {
+    const precisaMotivo = status === "R" || status === "RR";
+    el.mpMotivoWrap.classList.toggle("hidden", !precisaMotivo);
+    el.mpMotivoSelect.value = poste.motivoRecusa || "";
+    el.mpMotivoSelect.disabled = !precisaMotivo || !!poste.finalizadoEm;
+  }
+
+  if (poste.finalizadoEm && el.mpStatusButtons) {
+    el.mpStatusButtons.querySelectorAll("button").forEach((btn) => {
+      btn.disabled = true;
+    });
+  }
+}
+
+function setMontagemStatus(status) {
+  if (!state.montagemPostesAtual) return;
+  const current = { ...state.montagemPostesAtual };
+  current.statusMontagem = status;
+  if (status === "A") current.motivoRecusa = "";
+  state.montagemPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+  renderMontagemStatusUI();
+}
+
+function setMontagemMotivoRecusa(value) {
+  if (!state.montagemPostesAtual) return;
+  const current = { ...state.montagemPostesAtual, motivoRecusa: value || "" };
+  state.montagemPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+}
+
+function showMontagemResumoModal(poste) {
+  if (!el.mpResumoModal || !el.mpResumoBody || !el.mpResumoOkBtn) return;
+  const statusLabel = montagemStatusLabel(poste.statusMontagem || "");
+  const motivo = poste.statusMontagem === "A" ? "-" : getMotivoRecusaLabel(poste.motivoRecusa || "");
+  const dtMontagem = formatDateTime(poste.finalizadoEm || "");
+
+  el.mpResumoBody.innerHTML = `
+    <div><strong>Poste Modelo:</strong> ${poste.modelo || "-"}</div>
+    <div><strong>Forma:</strong> ${poste.formaNumero || "-"}</div>
+    <div><strong>Dt. Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
+    <div><strong>Dt. Montagem:</strong> ${dtMontagem}</div>
+    <div><strong>Status:</strong> ${statusLabel}</div>
+    <div><strong>Motivo da recusa:</strong> ${motivo}</div>
+    <div><strong>Registro:</strong> ${poste.key || "-"}</div>
+    <div><strong>Persistência:</strong> ${poste.resumoSync || "-"}</div>
+  `;
+
+  const close = () => {
+    el.mpResumoModal.classList.remove("modal-visible");
+    el.mpResumoOkBtn.removeEventListener("click", close);
+    el.mpResumoModal.removeEventListener("click", onOverlay);
+  };
+  const onOverlay = (event) => {
+    if (event.target === el.mpResumoModal) close();
+  };
+
+  el.mpResumoModal.classList.add("modal-visible");
+  el.mpResumoOkBtn.addEventListener("click", close);
+  el.mpResumoModal.addEventListener("click", onOverlay);
+}
+
+function renderMontagemPosteDetalhe() {
+  if (!el.mpDetalheHeader || !state.montagemPostesAtual) return;
+  const poste = state.montagemPostesAtual;
+  el.mpDetalheHeader.innerHTML = `
+    <div><strong>Forma:</strong> ${poste.formaNumero || "-"}</div>
+    <div><strong>Modelo:</strong> ${poste.modelo || "-"}</div>
+    <div><strong>Setor:</strong> ${poste.setor || "-"}</div>
+    <div><strong>Data Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
+    <div><strong>Início inspeção/montagem:</strong> ${formatDateTime(poste.inicioInspecaoMontagem || "")}</div>
+    <div><strong>Finalizado em:</strong> ${poste.finalizadoEm ? formatDateTime(poste.finalizadoEm) : "-"}</div>
+  `;
+
+  if (el.mpMotivoSelect) {
+    const options = getMontagemMotivoOptions();
+    const currentValue = poste.motivoRecusa || "";
+    const first = '<option value="">Selecione o motivo</option>';
+    const html = options
+      .map((opt) => `<option value="${opt.value}" ${opt.value === currentValue ? "selected" : ""}>${opt.label}</option>`)
+      .join("");
+    el.mpMotivoSelect.innerHTML = first + html;
+  }
+
+  renderMontagemChecklistSections();
+  renderMontagemStatusUI();
+
+  if (el.mpFinalizarPoste) {
+    el.mpFinalizarPoste.disabled = !!poste.finalizadoEm;
+    el.mpFinalizarPoste.textContent = poste.finalizadoEm ? "Salvo" : "Salvar";
+  }
+}
+
+async function openMontagemPosteDetalhe(posteBase) {
+  const key = getMontagemPosteKey(posteBase);
+  const now = nowIso();
+  const atual = getMontagemPosteByKey(key);
+
+  const merged = {
+    key,
+    recordId: posteBase.recordId || "",
+    dataFabricacao: posteBase.dataFabricacao || "",
+    setor: posteBase.setor || "",
+    formaNumero: posteBase.formaNumero || "",
+    modelo: posteBase.modelo || "",
+    statusMontagem: atual?.statusMontagem || "",
+    motivoRecusa: atual?.motivoRecusa || "",
+    inicioInspecaoMontagem: atual?.inicioInspecaoMontagem || now,
+    finalizadoEm: atual?.finalizadoEm || "",
+    checklists: atual?.checklists || {}
+  };
+
+  upsertMontagemPoste(merged);
+  await syncMontagemPosteToApi(merged, "INICIO", { silent: true });
+  state.montagemPostesAtual = merged;
+  setMode("MONTAGEM_POSTES_DETALHE");
+  renderMontagemPosteDetalhe();
+}
+
+async function finalizarMontagemPosteAtual() {
+  const poste = state.montagemPostesAtual;
+  if (!poste) {
+    showMsgBox("Nenhum poste selecionado.", "error");
+    return;
+  }
+
+  const allSectionsOk = MONTAGEM_CHECKLIST_SECTIONS.every((section) =>
+    isChecklistSectionComplete(section.id, poste.checklists || {})
+  );
+
+  if (!allSectionsOk) {
+    showMsgBox("Responda todos os itens (Sim/Não) de todas as seções antes de finalizar.", "error");
+    return;
+  }
+
+  const status = poste.statusMontagem || "";
+  if (!status) {
+    showMsgBox("Selecione o status da montagem: Aprovado, Reprovado ou Reprovado e Retrabalhado.", "error");
+    return;
+  }
+
+  if ((status === "R" || status === "RR") && !poste.motivoRecusa) {
+    showMsgBox("Selecione o motivo da recusa para continuar.", "error");
+    return;
+  }
+
+  const updated = {
+    ...poste,
+    finalizadoEm: nowIso()
+  };
+  upsertMontagemPoste(updated);
+  state.montagemPostesAtual = updated;
+
+  const syncResult = await syncMontagemPosteToApi(updated, "FINALIZACAO", { silent: false });
+  renderMontagemPosteDetalhe();
+  showMontagemResumoModal({
+    ...updated,
+    resumoSync: syncResult.synced ? "Sincronizado" : "Salvo localmente"
+  });
+}
+
+function filtrarMontagemTabela() {
+  const texto = (el.mpFormaFiltro?.value || "").trim().toUpperCase();
+  Array.from(el.mpLiberadosBody?.querySelectorAll("tr[data-forma-numero]") || []).forEach((tr) => {
+    const forma = (tr.dataset.formaNumero || "").toUpperCase();
+    tr.style.display = !texto || forma.includes(texto) ? "" : "none";
+  });
+}
+
+async function renderMontagemPostesLiberados() {
+  if (!el.mpLiberadosBody || !el.mpQtdItens) return;
+
+  const filtroData = el.mpFiltroData?.value || "";
+  const modoCarga = el.mpModoCarga?.value || "data";
+  const setor = el.mpSetor?.value || "";
+
+  el.mpLiberadosBody.innerHTML = "";
+  if (modoCarga === "data" && !filtroData) {
+    el.mpQtdItens.textContent = "0";
+    el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
+    return;
+  }
+
+  const montagemDb = readMontagemPostesDb();
+  let rows = [];
+  const apiRows = await getInspecaoRowsFromApi(filtroData, modoCarga, setor);
+
+  if (Array.isArray(apiRows) && apiRows.length > 0) {
+    rows = apiRows
+      .filter((record) => String(record.liberacao_status || "") === "1")
+      .filter((record) => !setor || String(record.setor || "") === setor)
+      .filter((record) => (modoCarga === "data" ? dateToYmd(record.data_fabricacao || "") === filtroData : true))
+      .map((record) => ({
+        recordId: String(record.record_id || ""),
+        dataFabricacao: String(record.data_fabricacao || ""),
+        setor: String(record.setor || ""),
+        formaNumero: String(record.forma_numero || ""),
+        modelo: String(record.modelo || "")
+      }))
+      .filter((record) => {
+        if (modoCarga !== "pendentes") return true;
+        const key = getMontagemPosteKey(record);
+        return !montagemDb.postes[key]?.finalizadoEm;
+      })
+      .sort((a, b) => a.formaNumero.localeCompare(b.formaNumero));
+  } else {
+    const db = readDb();
+    rows = db.records
+      .filter((record) => record.liberacao && record.liberacao.status === "1")
+      .filter((record) => (modoCarga === "data" ? record.dataFabricacao === filtroData : true))
+      .filter((record) => !setor || record.setor === setor)
+      .map((record) => ({
+        recordId: record.id || "",
+        dataFabricacao: record.dataFabricacao || "",
+        setor: record.setor || "",
+        formaNumero: record.formaNumero || "",
+        modelo: record.modelo || ""
+      }))
+      .filter((record) => {
+        if (modoCarga !== "pendentes") return true;
+        const key = getMontagemPosteKey(record);
+        return !montagemDb.postes[key]?.finalizadoEm;
+      })
+      .sort((a, b) => a.formaNumero.localeCompare(b.formaNumero));
+  }
+
+  el.mpQtdItens.textContent = String(rows.length);
+
+  if (!rows.length) {
+    el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Nenhum poste liberado para os filtros informados.</td></tr>';
+    return;
+  }
+
+  rows.forEach((record) => {
+    const key = getMontagemPosteKey(record);
+    const controle = montagemDb.postes[key];
+    const isFinalizado = !!controle?.finalizadoEm;
+    const label = isFinalizado ? "Revisar Poste Montado" : "Inspecionar / Montar Poste";
+
+    const tr = document.createElement("tr");
+    tr.dataset.recordId = record.recordId;
+    tr.dataset.dataFabricacao = record.dataFabricacao;
+    tr.dataset.setor = record.setor;
+    tr.dataset.formaNumero = record.formaNumero;
+    tr.dataset.modelo = record.modelo;
+    tr.innerHTML = `
+      <td>${record.formaNumero || ""}</td>
+      <td>${record.modelo || ""}</td>
+      <td>${fmtDate(record.dataFabricacao || "")}</td>
+      <td><button type="button" class="btn mp-open-btn">${label}</button></td>
+    `;
+    el.mpLiberadosBody.appendChild(tr);
+  });
+
+  filtrarMontagemTabela();
 }
 
 async function saveInspecao() {
@@ -2283,7 +2773,7 @@ async function gerarRelatorioSetor() {
 
 function setMode(mode) {
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -2292,12 +2782,14 @@ function setMode(mode) {
   }
   if (mode === "LIBERACAO") el.viewLiberacao.classList.remove("hidden");
   if (mode === "INSPECAO") el.viewInspecao.classList.remove("hidden");
+  if (mode === "MONTAGEM_POSTES") el.viewMontagemPostes.classList.remove("hidden");
+  if (mode === "MONTAGEM_POSTES_DETALHE") el.viewMontagemPostesDetalhe.classList.remove("hidden");
   if (mode === "RELATORIO") el.viewRelatorio.classList.remove("hidden");
   if (mode === "HISTORICO") el.viewHistorico.classList.remove("hidden");
   if (mode === "ACOMPANHAMENTO") el.viewAcompanhamento.classList.remove("hidden");
   if (mode === "ACMP_CONCRETAGEM") el.viewAcmpConcretagem.classList.remove("hidden");
 
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO") document.body.classList.add("mode-liberacao");
@@ -2308,6 +2800,14 @@ function setMode(mode) {
       el.insQtdItens.textContent = "0";
     }
   }
+  if (mode === "MONTAGEM_POSTES") {
+    document.body.classList.add("mode-montagem-postes");
+    if ((el.mpModoCarga?.value || "data") === "data" && !el.mpFiltroData?.value) {
+      el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
+      el.mpQtdItens.textContent = "0";
+    }
+  }
+  if (mode === "MONTAGEM_POSTES_DETALHE") document.body.classList.add("mode-montagem-postes-detalhe");
   if (mode === "RELATORIO") document.body.classList.add("mode-relatorio");
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
   if (mode === "ACOMPANHAMENTO") document.body.classList.add("mode-acompanhamento");
@@ -2319,6 +2819,8 @@ function setMode(mode) {
     DASHBOARD: ["navDashboard", "Dashboard"],
     LIBERACAO: ["hubLiberacao", "Produção / Liberação"],
     INSPECAO: ["hubInspecao", "Montagem / Inspeção"],
+    MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
+    MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
     RELATORIO: ["hubRelatorio", "Relatório"],
     HISTORICO: ["hubHistorico", "Histórico"],
     ACOMPANHAMENTO: ["hubAcompanhamento", "Acompanhamento"],
@@ -2335,6 +2837,12 @@ function setMode(mode) {
 }
 
 function navigateBack() {
+  if (state.mode === "MONTAGEM_POSTES_DETALHE") {
+    setMode("MONTAGEM_POSTES");
+    renderMontagemPostesLiberados();
+    return;
+  }
+
   if (state.mode !== "HUB") {
     setMode("HUB");
     return;
@@ -2353,6 +2861,11 @@ function bindEvents() {
     setMode("INSPECAO");
     if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd();
     renderInspecaoLiberados();
+  });
+  el.hubMontagemPostes?.addEventListener("click", () => {
+    setMode("MONTAGEM_POSTES");
+    if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd();
+    renderMontagemPostesLiberados();
   });
   el.hubRelatorio.addEventListener("click", () => {
     setMode("RELATORIO");
@@ -2405,6 +2918,69 @@ function bindEvents() {
   el.salvarInspecao.addEventListener("click", saveInspecao);
   if (el.salvarInspecaoFloat) el.salvarInspecaoFloat.addEventListener("click", saveInspecao);
   if (el.insFormaFiltro) el.insFormaFiltro.addEventListener("input", filtrarFormasTabela);
+
+  if (el.mpFiltroData) el.mpFiltroData.addEventListener("change", renderMontagemPostesLiberados);
+  if (el.mpModoCarga) el.mpModoCarga.addEventListener("change", renderMontagemPostesLiberados);
+  if (el.mpSetor) el.mpSetor.addEventListener("change", renderMontagemPostesLiberados);
+  if (el.mpCarregarLiberados) el.mpCarregarLiberados.addEventListener("click", renderMontagemPostesLiberados);
+  if (el.mpFormaFiltro) el.mpFormaFiltro.addEventListener("input", filtrarMontagemTabela);
+
+  if (el.mpLiberadosBody) {
+    el.mpLiberadosBody.addEventListener("click", async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const btn = target.closest(".mp-open-btn");
+      if (!btn) return;
+      const tr = btn.closest("tr[data-forma-numero]");
+      if (!tr) return;
+
+      await openMontagemPosteDetalhe({
+        recordId: tr.dataset.recordId || "",
+        dataFabricacao: tr.dataset.dataFabricacao || "",
+        setor: tr.dataset.setor || "",
+        formaNumero: tr.dataset.formaNumero || "",
+        modelo: tr.dataset.modelo || ""
+      });
+    });
+  }
+
+  if (el.mpChecklistSections) {
+    el.mpChecklistSections.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const btn = target.closest("button[data-mp-section][data-mp-item][data-mp-value]");
+      if (!btn) return;
+      const sectionId = btn.dataset.mpSection || "";
+      const itemId = btn.dataset.mpItem || "";
+      const value = btn.dataset.mpValue || "";
+      if (!sectionId || !itemId || !value) return;
+      setMontagemChecklistAnswer(sectionId, itemId, value);
+    });
+  }
+
+  if (el.mpStatusButtons) {
+    el.mpStatusButtons.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const btn = target.closest("button[data-mp-status]");
+      if (!btn || state.montagemPostesAtual?.finalizadoEm) return;
+      const status = btn.dataset.mpStatus || "";
+      if (!status) return;
+      setMontagemStatus(status);
+    });
+  }
+
+  if (el.mpMotivoSelect) {
+    el.mpMotivoSelect.addEventListener("change", () => {
+      if (state.montagemPostesAtual?.finalizadoEm) return;
+      setMontagemMotivoRecusa(el.mpMotivoSelect.value || "");
+    });
+  }
+
+  if (el.mpFinalizarPoste) el.mpFinalizarPoste.addEventListener("click", () => {
+    finalizarMontagemPosteAtual();
+  });
+
   el.atualizarDashboard.addEventListener("click", carregarDashboardConcretagem);
   el.dashData.addEventListener("change", carregarDashboardConcretagem);
   el.filtrarHistorico.addEventListener("click", () => renderHistorico());
@@ -2484,6 +3060,7 @@ function bindEvents() {
       if (mode === "DASHBOARD") { setMode("DASHBOARD"); }
       else if (mode === "LIBERACAO") { setMode("LIBERACAO"); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
       else if (mode === "INSPECAO") { setMode("INSPECAO"); if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd(); renderInspecaoLiberados(); }
+      else if (mode === "MONTAGEM_POSTES") { setMode("MONTAGEM_POSTES"); if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd(); renderMontagemPostesLiberados(); }
       else if (mode === "RELATORIO") { setMode("RELATORIO"); if (!el.relData.value) el.relData.value = todayYmd(); }
       else if (mode === "HISTORICO") { setMode("HISTORICO"); renderHistorico(); }
       else if (mode === "ACOMPANHAMENTO") { setMode("ACOMPANHAMENTO"); carregarDashboardConcretagem(); }
@@ -2503,6 +3080,9 @@ function init() {
   el.insFiltroData.value = now;
   el.insModoCarga.value = "data";
   el.insSetor.value = "Setor 2";
+  if (el.mpFiltroData) el.mpFiltroData.value = now;
+  if (el.mpModoCarga) el.mpModoCarga.value = "data";
+  if (el.mpSetor) el.mpSetor.value = "Setor 2";
   if (el.histTipo) el.histTipo.value = "";
   el.dashData.value = now;
   el.relData.value = now;
@@ -2518,6 +3098,7 @@ function init() {
 
   renderLiberacaoDual();
   renderInspecaoLiberados();
+  renderMontagemPostesLiberados();
   renderHistorico();
   carregarDashboardConcretagem();
   checkApiStatus();

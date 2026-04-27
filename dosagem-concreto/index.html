@@ -357,7 +357,7 @@
                 border-top: 2px solid #1a1f2e !important;
                 border-radius: 0 !important;
                 background: transparent !important;
-                padding: 6px 0 10px !important;
+                padding: 0 !important;
                 margin-bottom: 12px !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
@@ -366,7 +366,7 @@
             .card h3 { font-size: 0.9rem !important; font-weight: 700 !important; color: #333 !important; margin-bottom: 4px !important; margin-top: 8px !important; }
             .card .subtitle { font-size: 0.76rem !important; margin-bottom: 6px !important; color: #555 !important; }
 
-            main { padding: 2px 4px !important; }
+            main { padding: 0 !important; }
 
             /* Tabelas compactas */
             .result-box {
@@ -7520,9 +7520,9 @@ function getDosagemPrintMetrics() {
     const aAgl = lig > 0 ? m.agua / lig : 0;
     const vAr = arPct * 10;
     const vTotal = Object.values(v).reduce((a, b) => a + b, 0) + vAr;
-    const mArg = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
+    const mArg = m.cim + m.adic + m.an + m.ai;
     const mBrita = m.b0 + m.b1;
-    const vArg = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
+    const vArg = v.cim + v.adic + v.an + v.ai;
     const vBrita = v.b0 + v.b1;
     const mPasta = m.cim + m.adic + m.agua + m.adit;
     const vPasta = v.cim + v.adic + v.agua + v.adit;
@@ -7628,7 +7628,36 @@ function imprimirSecao(secId, titulo) {
         sec.querySelector('.card').prepend(reportDiv);
     }
     reportDiv.className = 'print-report print-shell';
-    reportDiv.innerHTML = '';
+    if (secId === 'sec-dosagem') {
+        const nomeCarta   = document.getElementById('dos_nome_carta')?.value?.trim() || '';
+        const clienteVal  = document.getElementById('dos_cliente')?.value?.trim() || '';
+        const obraVal     = document.getElementById('dos_obra')?.value?.trim() || '';
+        const aplicVal    = document.getElementById('dos_aplicacao')?.value?.trim() || '';
+        const artVal      = document.getElementById('dos_art')?.value?.trim() || '';
+        const subtitleParts = [clienteVal, obraVal, aplicVal].filter(Boolean);
+        const fckVal  = document.getElementById('dos_fck')?.value || '';
+        const flowSel = document.getElementById('dos_flow_classe_projeto')?.value || '';
+        const tipoCim = document.getElementById('dos_tipo_cimento')?.options?.[document.getElementById('dos_tipo_cimento').selectedIndex]?.text || '';
+        reportDiv.innerHTML = buildUnifiedPrintHeader({
+            title: nomeCarta || titulo,
+            subtitle: subtitleParts.join(' · ') || 'Carta Traço — Dosagem de Concreto',
+            docNumber: docNum,
+            emission: `${dataCarta} · ${horaStr}`,
+            responsible: engResp || tecResp,
+            unitLabel: unidadeLabel
+        }) + `
+        <table style="width:100%;border-collapse:collapse;font-size:9px;margin-bottom:10px;border:1px solid #d4d4d4;">
+            <tr>
+                <td style="padding:5px 8px;border:1px solid #d4d4d4;"><span style="font-size:8px;text-transform:uppercase;color:#888;display:block;">FCK Projeto</span><strong>${fckVal ? fckVal + ' MPa' : '—'}</strong></td>
+                <td style="padding:5px 8px;border:1px solid #d4d4d4;"><span style="font-size:8px;text-transform:uppercase;color:#888;display:block;">Classe Flow</span><strong>${flowSel || '—'}</strong></td>
+                <td style="padding:5px 8px;border:1px solid #d4d4d4;"><span style="font-size:8px;text-transform:uppercase;color:#888;display:block;">Tipo Cimento</span><strong>${tipoCim || '—'}</strong></td>
+                <td style="padding:5px 8px;border:1px solid #d4d4d4;"><span style="font-size:8px;text-transform:uppercase;color:#888;display:block;">ART / RRT</span><strong>${artVal || '—'}</strong></td>
+                <td style="padding:5px 8px;border:1px solid #d4d4d4;"><span style="font-size:8px;text-transform:uppercase;color:#888;display:block;">Revisão</span><strong>${revisao}</strong></td>
+            </tr>
+        </table>`;
+    } else {
+        reportDiv.innerHTML = '';
+    }
 
     let footerDiv = sec.querySelector('.report-footer-print');
     if (!footerDiv) {
@@ -10943,9 +10972,9 @@ function mccTracaoPrint() {
             const pM=totalMassa>0?(m.kg/totalMassa*100).toFixed(1)+'%':'—';
             const pC=totalCusto>0?(m.m3/totalCusto*100).toFixed(1)+'%':'—';
             matRows+='<tr>'
-                +'<td><span class="dot" style="background:'+m.color+'"></span>'+m.label+'</td>'
-                +'<td>'+(m.nomeProd||'—')+'</td>'
-                +'<td>'+(m.fornProd||'—')+'</td>'
+                +'<td title="'+m.label+'"><span class="dot" style="background:'+m.color+'"></span>'+m.label+'</td>'
+                +'<td title="'+(m.nomeProd||'')+'">'+(m.nomeProd||'—')+'</td>'
+                +'<td title="'+(m.fornProd||'')+'">'+(m.fornProd||'—')+'</td>'
                 +'<td class="n">'+(m.kg>0?fmt1(m.kg)+' kg':'—')+'</td>'
                 +'<td class="n">'+pM+'</td>'
                 +'<td class="n">'+(m.custoLiq>0?'R$ '+fmt4(m.custoLiq):'—')+'</td>'
@@ -10989,10 +11018,11 @@ body{font-family:"Segoe UI",Arial,sans-serif;font-size:11px;color:#1a1f2e;backgr
 /* ── Seção titles ── */
 .sec-title{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#fff;background:#1a1f2e;padding:5px 10px;margin:14px 0 0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 /* ── Tabela materiais ── */
-table.mat{width:100%;border-collapse:collapse;font-size:10.5px;margin-bottom:0}
-table.mat thead th{background:#2d2d5e;color:#fff;padding:7px 10px;font-size:9px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;vertical-align:middle;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+table.mat{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10.5px;margin-bottom:0}
+table.mat thead th{background:#2d2d5e;color:#fff;padding:7px 10px;font-size:9px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;vertical-align:middle;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 table.mat thead th.n{text-align:right}
-table.mat tbody td{padding:6px 10px;border-bottom:1px solid #ececec;vertical-align:middle}
+table.mat tbody td{padding:6px 10px;border-bottom:1px solid #ececec;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.mat tbody td.n{white-space:nowrap}
 table.mat td.n{text-align:right;font-variant-numeric:tabular-nums}
 table.mat td.acc{color:#b35d00;font-weight:700}
 table.mat tr:nth-child(even) td{background:#fafafa}
@@ -11774,6 +11804,15 @@ function dosCarregarCartaSelecionada() {
     setRho('dos_rho_b0',   c.rhoB0);
     setRho('dos_rho_b1',   c.rhoB1);
     setRho('dos_rho_adit', c.rhoAdit);
+    // Sincronizar também para a aba Materiais (sec-massa-esp / rho_*)
+    const setMatRho = (id, v) => { const el = document.getElementById(id); if (el && v != null && v !== '') el.value = v; };
+    setMatRho('rho_cim',  c.rhoCim);
+    setMatRho('rho_adic', c.rhoAdic);
+    setMatRho('rho_an',   c.rhoAn);
+    setMatRho('rho_ai',   c.rhoAi);
+    setMatRho('rho_b0',   c.rhoB0);
+    setMatRho('rho_b1',   c.rhoB1);
+    setMatRho('rho_adit', c.rhoAdit);
     // Ocultar preview após carregar
     const pv = document.getElementById('dos-carregar-preview');
     if (pv) pv.style.display = 'none';

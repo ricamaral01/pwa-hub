@@ -38,6 +38,10 @@
         <span class="nav-icon-wrap">MI</span>
         Montagem / Inspeção
       </button>
+      <button class="nav-item" id="hubMontagemPostes" type="button">
+        <span class="nav-icon-wrap">MP</span>
+        Montagem Postes
+      </button>
       <button class="nav-item" id="hubRelatorio" type="button">
         <span class="nav-icon-wrap">RE</span>
         Relatório
@@ -88,6 +92,10 @@
           <button class="hub-icon-btn" type="button" data-hub-mode="INSPECAO">
             <div class="hub-icon-circle" style="background:#059669">MI</div>
             <span class="hub-icon-lbl">Inspeção</span>
+          </button>
+          <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_POSTES">
+            <div class="hub-icon-circle" style="background:#0b6b6f">MP</div>
+            <span class="hub-icon-lbl">Montagem Postes</span>
           </button>
           <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO">
             <div class="hub-icon-circle" style="background:#7c3aed">RE</div>
@@ -316,6 +324,86 @@
       <button id="salvarInspecao" class="btn primary" type="button">Salvar Inspeções</button>
     </section>
 
+    <section id="viewMontagemPostes" class="card hidden">
+      <div class="section-title-row">
+        <h2>Montagem Postes</h2>
+        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+      <div class="grid">
+        <label>Filtrar data
+          <input id="mpFiltroData" type="date" />
+        </label>
+        <label>Modo de carga
+          <select id="mpModoCarga">
+            <option value="data">Produção da data</option>
+            <option value="pendentes">Produzidos não montados</option>
+          </select>
+        </label>
+        <label>Setor
+          <select id="mpSetor">
+            <option value="">Todos</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
+            <option value="Setor 4">Setor 4</option>
+          </select>
+        </label>
+      </div>
+      <button id="mpCarregarLiberados" class="btn" type="button">Carregar itens liberados</button>
+
+      <div class="sheet-box">
+        <div class="sheet-topline">
+          <div><strong>Montagem de Postes</strong> — Somente formas com Liberação = 1</div>
+          <div><strong>Itens:</strong> <span id="mpQtdItens">0</span></div>
+        </div>
+        <div class="sheet-filter-row">
+          <input id="mpFormaFiltro" type="text" placeholder="🔍 Filtrar por N Forma..." autocomplete="off" />
+        </div>
+        <table class="sheet-table">
+          <thead>
+            <tr>
+              <th>N Forma</th>
+              <th>Modelo</th>
+              <th>Data Prod.</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="mpLiberadosBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="viewMontagemPostesDetalhe" class="card hidden">
+      <div class="section-title-row">
+        <h2>Inspecionar / Montar Poste</h2>
+        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+
+      <div id="mpDetalheHeader" class="mp-detalhe-header"></div>
+
+      <div id="mpChecklistSections" class="mp-checklist-wrap"></div>
+
+      <div class="mp-status-box">
+        <div class="mp-status-title">Resultado da montagem</div>
+        <div id="mpStatusButtons" class="mp-status-buttons">
+          <button id="mpStatusAprovado" class="btn mp-status-btn" type="button" data-mp-status="A">Aprovado</button>
+          <button id="mpStatusReprovado" class="btn mp-status-btn" type="button" data-mp-status="R">Reprovado</button>
+          <button id="mpStatusRR" class="btn mp-status-btn" type="button" data-mp-status="RR">Reprovado e Retrabalhado</button>
+        </div>
+        <div id="mpMotivoWrap" class="mp-motivo-wrap hidden">
+          <label>Motivo da recusa
+            <select id="mpMotivoSelect">
+              <option value="">Selecione o motivo</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="mp-finalizar-row">
+        <button id="mpFinalizarPoste" class="btn primary" type="button">Salvar</button>
+      </div>
+    </section>
+
     <section id="viewRelatorio" class="card hidden">
       <div class="section-title-row">
         <h2>Relatório por Setor</h2>
@@ -481,6 +569,15 @@
       <div class="modal-subtitle" id="modalSubtitle"></div>
       <div class="modal-stats" id="modalStats"></div>
       <button class="btn primary modal-ok" id="modalOkBtn" type="button">OK</button>
+    </div>
+  </div>
+
+  <div id="mpResumoModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mpResumoTitle">
+    <div class="modal-box mp-resumo-box">
+      <div class="modal-icon">📌</div>
+      <h2 class="modal-title" id="mpResumoTitle">Montagem Salva</h2>
+      <div id="mpResumoBody" class="mp-resumo-body"></div>
+      <button class="btn primary modal-ok" id="mpResumoOkBtn" type="button">OK</button>
     </div>
   </div>
 
