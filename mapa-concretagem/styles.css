@@ -1845,15 +1845,6 @@ hr {
     overflow-x: visible;
   }
 
-  #viewMontagemPostes .sheet-table,
-  #viewMontagemPostes .sheet-table thead,
-  #viewMontagemPostes .sheet-table tbody,
-  #viewMontagemPostes .sheet-table tr,
-  #viewMontagemPostes .sheet-table td {
-    display: block;
-    width: 100%;
-  }
-
   #viewMontagemPostes .sheet-table {
     min-width: 0;
     border-collapse: separate;
@@ -1868,7 +1859,12 @@ hr {
     gap: 10px;
   }
 
+  #viewMontagemPostes .sheet-table tr {
+    width: 100%;
+  }
+
   #viewMontagemPostes .sheet-table tr[data-forma-numero] {
+    display: block;
     border: 1px solid var(--line);
     border-radius: 14px;
     background: #fff;
@@ -1877,6 +1873,8 @@ hr {
   }
 
   #viewMontagemPostes .sheet-table tr[data-forma-numero] td {
+    display: block;
+    width: 100%;
     border: none;
     padding: 0;
     white-space: normal;
@@ -1914,13 +1912,29 @@ hr {
     margin-top: 12px;
   }
 
+  #viewMontagemPostes .sheet-table tr:not([data-forma-numero]) td {
+    text-align: center;
+    padding: 10px 8px;
+  }
+
   .mp-detalhe-header {
     grid-template-columns: 1fr;
+  }
+
+  .mp-status-box {
+    text-align: center;
+  }
+
+  .mp-status-title {
+    text-align: center;
   }
 
   .mp-status-buttons {
     display: grid;
     grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: 0 auto;
+    justify-items: center;
   }
 
   .mp-status-btn,
@@ -1928,6 +1942,12 @@ hr {
   #mpFinalizarPoste,
   .ug-form .btn {
     width: 100%;
+  }
+
+  #mpFinalizarPoste {
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .sheet-topline {
