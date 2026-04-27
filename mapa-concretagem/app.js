@@ -2868,7 +2868,10 @@ function escapeHtml(str) {
 }
 
 function getDefaultUsers() {
-  return [{ name: "admin", role: "GERENCIA", password: "admin123" }];
+  return [
+    { name: "admin", role: "GERENCIA", password: "admin123" },
+    { name: "Ricardo Do Amaral", role: "GERENCIA", password: "1520" }
+  ];
 }
 
 function readUsers() {
@@ -2880,10 +2883,26 @@ function readUsers() {
   }
   try {
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length === 0) return getDefaultUsers();
-    return parsed;
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      const defaults = getDefaultUsers();
+      localStorage.setItem(USERS_KEY, JSON.stringify(defaults));
+      return defaults;
+    }
+
+    const merged = [...parsed];
+    getDefaultUsers().forEach((seedUser) => {
+      const alreadyExists = merged.some(
+        (user) => String(user?.name || "").trim().toLowerCase() === seedUser.name.toLowerCase()
+      );
+      if (!alreadyExists) merged.push(seedUser);
+    });
+
+    localStorage.setItem(USERS_KEY, JSON.stringify(merged));
+    return merged;
   } catch {
-    return getDefaultUsers();
+    const defaults = getDefaultUsers();
+    localStorage.setItem(USERS_KEY, JSON.stringify(defaults));
+    return defaults;
   }
 }
 
