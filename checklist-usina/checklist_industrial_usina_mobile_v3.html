@@ -7,36 +7,60 @@
 
   <!-- PWA -->
   <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#1d5fa7">
+  <meta name="theme-color" content="#f0f4f8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <style>
     :root{
-      --bg:#0f1720;
-      --panel:#16202b;
-      --panel-2:#1c2835;
-      --line:#2a3948;
-      --text:#ecf3f9;
-      --muted:#9fb0c0;
-      --blue:#1d5fa7;
-      --magenta:#a72141;
-      --shadow:0 12px 30px rgba(0,0,0,.28);
+      --primary:#1a3a5c;
+      --primary-light:#2563a8;
+      --accent:#e8762a;
+      --bg:#f0f4f8;
+      --panel:#ffffff;
+      --panel-2:#f8fafc;
+      --line:rgba(0,0,0,0.10);
+      --text:#1a2840;
+      --muted:#5a6a7e;
+      --shadow:0 8px 28px rgba(0,0,0,.12);
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
     body{
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top right, rgba(29,95,167,.18), transparent 28%),
-        radial-gradient(circle at top left, rgba(167,33,65,.16), transparent 24%),
-        linear-gradient(180deg, #0d141b 0%, #121b24 100%);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(160deg,#f0f4f8 0%,#ffffff 60%,#eef2f7 100%);
       color:var(--text);
       min-height:100vh;
     }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-brand { display:flex; align-items:center; gap:12px; }
+    .topbar-brand img { height:38px; width:38px; object-fit:contain; border-radius:10px; }
+    .brand-name { font-size:1rem; font-weight:900; letter-spacing:.04em; line-height:1.1; }
+    .brand-name span { color: var(--accent); }
+    .brand-sub { font-size:.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-top:2px; }
+    .btn-back {
+      display:inline-flex; align-items:center; gap:6px;
+      background: rgba(0,0,0,0.07); border: 1px solid rgba(0,0,0,0.18);
+      border-radius:10px; color:var(--text); font-size:.85rem; font-weight:700;
+      padding:8px 14px; text-decoration:none; transition:background .15s, transform .1s;
+    }
+    .btn-back:hover { background:rgba(0,0,0,0.12); transform:translateY(-1px); }
+
     .wrap{width:min(100%, 1200px); margin:0 auto; padding:clamp(12px, 2vw, 20px);}
     .hero{
-      background:linear-gradient(135deg, rgba(20,63,111,.96), rgba(10,24,40,.96));
-      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(135deg, rgba(26,58,92,.96), rgba(37,99,168,.92));
+      border:1px solid rgba(255,255,255,.16);
       border-radius:24px;
       padding:18px;
       box-shadow:var(--shadow);
@@ -48,15 +72,15 @@
       position:absolute;
       inset:auto -40px -40px auto;
       width:180px;height:180px;
-      background:radial-gradient(circle, rgba(167,33,65,.28), transparent 65%);
+      background:radial-gradient(circle, rgba(232,118,42,.30), transparent 65%);
       pointer-events:none;
     }
     h1{margin:0 0 8px 0; font-size:clamp(24px,4vw,34px); line-height:1.05;}
-    .subtitle{margin:0; color:#d1deeb; line-height:1.45; font-size:14px; max-width:780px;}
+    .subtitle{margin:0; color:#e8f0f8; line-height:1.45; font-size:14px; max-width:780px;}
     .top-badges{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
     .badge{
-      padding:8px 12px; border:1px solid rgba(255,255,255,.1); border-radius:999px;
-      font-size:12px; color:#d7e6f5; background:rgba(255,255,255,.05);
+      padding:8px 12px; border:1px solid rgba(255,255,255,.22); border-radius:999px;
+      font-size:12px; color:#f3f7fb; background:rgba(255,255,255,.12);
     }
 
     .meta-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-top:16px;}
@@ -65,23 +89,24 @@
       font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.7px; font-weight:700;
     }
     .field input, .field select, .field textarea{
-      width:100%; border:1px solid var(--line); background:var(--panel-2); color:var(--text);
+      width:100%; border:2px solid var(--line); background:var(--panel-2); color:var(--text);
       border-radius:14px; min-height:48px; padding:12px 14px; font-size:16px; outline:none;
     }
+    .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--accent); background:#fff;}
     .field textarea{min-height:104px; resize:vertical;}
 
     .section{
       margin-top:14px;
-      background:linear-gradient(180deg, rgba(22,32,43,.98), rgba(18,27,36,.98));
-      border:1px solid rgba(255,255,255,.08);
+      background:#fff;
+      border:1px solid var(--line);
       border-radius:22px;
       overflow:hidden;
       box-shadow:var(--shadow);
     }
     .section-head{
       padding:14px 16px;
-      background:linear-gradient(135deg, rgba(29,95,167,.22), rgba(167,33,65,.18));
-      border-bottom:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(135deg, rgba(37,99,168,.13), rgba(232,118,42,.15));
+      border-bottom:1px solid var(--line);
     }
     .section-head h2{margin:0; font-size:18px;}
     .section-head p{margin:6px 0 0 0; color:var(--muted); font-size:13px; line-height:1.4;}
@@ -93,7 +118,7 @@
     .five-grid{grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));}
 
     .check-card{
-      background:var(--panel);
+      background:var(--panel-2);
       border:1px solid var(--line);
       border-radius:18px;
       padding:12px;
@@ -104,11 +129,11 @@
     .option input{position:absolute; opacity:0; pointer-events:none;}
     .option span{
       display:flex; align-items:center; justify-content:center; min-height:46px; border-radius:14px;
-      border:1px solid var(--line); background:#111922; color:#d6e3ee; font-size:14px; font-weight:700;
+      border:1px solid var(--line); background:#fff; color:var(--text); font-size:14px; font-weight:700;
       text-align:center; padding:8px;
     }
     .option input:checked + span{
-      border-color:#4e88c7; box-shadow:inset 0 0 0 1px #4e88c7; background:#13283d;
+      border-color:var(--primary-light); box-shadow:inset 0 0 0 1px var(--primary-light); background:#eef5fc;
     }
 
     .actions{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; margin:16px 0 24px;}
@@ -116,11 +141,11 @@
       border:none; border-radius:14px; min-height:48px; padding:12px 16px; font-size:15px; font-weight:700; cursor:pointer;
       width:100%;
     }
-    .btn-primary{background:linear-gradient(135deg, var(--blue), #2572c4); color:#fff;}
-    .btn-dark{background:#0e151d;color:#dbe8f4;border:1px solid var(--line)}
+    .btn-primary{background:linear-gradient(135deg, var(--accent), #c0602a); color:#fff;}
+    .btn-dark{background:#fff;color:var(--text);border:1px solid var(--line)}
     .btn-warn{background:linear-gradient(135deg, #9a6b16, #c6861a); color:#fff;}
     .footer-box{
-      background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:18px;
+      background:#fff; border:1px solid var(--line); border-radius:18px;
       padding:12px 14px; color:var(--muted); font-size:12px; line-height:1.45; margin-bottom:30px;
     }
 
@@ -147,6 +172,17 @@
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <div class="topbar-brand">
+      <img src="../assets/img/logo-concretrack.png" alt="ConcreTrack">
+      <div>
+        <div class="brand-name">Concre<span>Track</span></div>
+        <div class="brand-sub">Laboratório Concrefer</div>
+      </div>
+    </div>
+    <a class="btn-back" href="../index.html">← Hub</a>
+  </header>
+
   <div class="wrap">
     <div class="hero">
       <h1>Checklist da Usina</h1>
