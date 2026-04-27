@@ -69,7 +69,7 @@ function isFormaClicked(forma, setor) {
 }
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbx83KmaFs3O3_RqfThs_0SCnaMBc3mb-RP30QKvtfJuEfnqft4eaFQVgYwuHxx3F-RttQ/exec",
-  MONTAGEM_API_URL: "https://script.google.com/macros/s/AKfycbyypTF0LHZ7a9D51mBGrlQdHHwwRciBVsz2vHqDdTCd9JdpElNsbojlGu7qIHmRhvVLVw/exec"
+  MONTAGEM_API_URL: "https://script.google.com/macros/s/AKfycbz6m9a2w1aRIGcw9_yZoocwQdcCRLdm4yldeeGSEEb_d6PJBYfJ3utvD0Pyat0STVvgYQ/exec"
 };
 
 const CHECKLIST_INSPECAO_CODIGOS = [
