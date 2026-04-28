@@ -1924,6 +1924,7 @@ async function renderMontagemPostesLiberados() {
     const controle = montagemDb.postes[key];
     const isFinalizado = !!controle?.finalizadoEm;
     const label = isFinalizado ? "Revisar Poste Montado" : "Inspecionar / Montar Poste";
+    const btnClass = isFinalizado ? "btn mp-open-btn mp-open-btn--review" : "btn mp-open-btn";
 
     const tr = document.createElement("tr");
     tr.dataset.recordId = record.recordId;
@@ -1935,7 +1936,7 @@ async function renderMontagemPostesLiberados() {
       <td data-label="N Forma">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
       <td data-label="Data Prod.">${fmtDate(record.dataFabricacao || "")}</td>
-      <td data-label="Ação"><button type="button" class="btn mp-open-btn">${label}</button></td>
+      <td data-label="Ação"><button type="button" class="${btnClass}">${label}</button></td>
     `;
     el.mpLiberadosBody.appendChild(tr);
   });

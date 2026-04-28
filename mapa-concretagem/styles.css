@@ -2466,6 +2466,14 @@ hr {
   background: #c55a14;
 }
 
+.mp-open-btn.mp-open-btn--review {
+  background: #16a34a;
+}
+
+.mp-open-btn.mp-open-btn--review:hover {
+  background: #15803d;
+}
+
 /* Montagem Postes — table column sizing + alignment */
 #viewMontagemPostes .sheet-table th,
 #viewMontagemPostes .sheet-table td {
