@@ -1869,7 +1869,7 @@ hr {
     border-radius: 14px;
     background: #fff;
     box-shadow: 0 4px 18px rgba(15, 30, 60, 0.06);
-    padding: 10px;
+    padding: 12px 14px;
   }
 
   #viewMontagemPostes .sheet-table tr[data-forma-numero] td {
@@ -1877,6 +1877,7 @@ hr {
     width: 100%;
     border: none;
     padding: 0;
+    text-align: center;
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
@@ -1889,16 +1890,17 @@ hr {
   #viewMontagemPostes .sheet-table tr[data-forma-numero] td::before {
     content: attr(data-label);
     display: block;
-    font-size: 0.68rem;
+    font-size: 0.76rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--muted);
-    margin-bottom: 3px;
+    margin-bottom: 4px;
+    text-align: center;
   }
 
   #viewMontagemPostes .sheet-table tr[data-forma-numero] td:first-child {
-    font-size: 1rem;
+    font-size: 1.08rem;
     font-weight: 800;
     color: var(--primary);
   }
@@ -1908,8 +1910,19 @@ hr {
     font-weight: 600;
   }
 
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] td:nth-child(3) {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #1f2937;
+  }
+
   #viewMontagemPostes .sheet-table tr[data-forma-numero] td:last-child {
     margin-top: 12px;
+  }
+
+  #viewMontagemPostes .sheet-table tr[data-forma-numero] td:last-child .mp-open-btn {
+    max-width: 320px;
+    margin: 0 auto;
   }
 
   #viewMontagemPostes .sheet-table tr:not([data-forma-numero]) td {

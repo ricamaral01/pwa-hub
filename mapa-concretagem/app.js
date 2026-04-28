@@ -1698,8 +1698,9 @@ function setMontagemMotivoRecusa(value) {
   syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
 }
 
-function showMontagemResumoModal(poste) {
+function showMontagemResumoModal(poste, options = {}) {
   if (!el.mpResumoModal || !el.mpResumoBody || !el.mpResumoOkBtn) return;
+  const onClose = typeof options.onClose === "function" ? options.onClose : null;
   const statusLabel = montagemStatusLabel(poste.statusMontagem || "");
   const motivo = poste.statusMontagem === "A" ? "-" : getMotivoRecusaLabel(poste.motivoRecusa || "");
   const dtMontagem = formatDateTime(poste.finalizadoEm || "");
@@ -1722,6 +1723,7 @@ function showMontagemResumoModal(poste) {
     el.mpResumoModal.classList.remove("modal-visible");
     el.mpResumoOkBtn.removeEventListener("click", close);
     el.mpResumoModal.removeEventListener("click", onOverlay);
+    if (onClose) onClose();
   };
   const onOverlay = (event) => {
     if (event.target === el.mpResumoModal) close();
@@ -1833,6 +1835,15 @@ async function finalizarMontagemPosteAtual() {
   showMontagemResumoModal({
     ...updated,
     resumoSync: syncResult.synced ? "Sincronizado" : "Salvo localmente"
+  }, {
+    onClose: async () => {
+      setMode("MONTAGEM_POSTES");
+      await renderMontagemPostesLiberados();
+      if (el.mpFormaFiltro) {
+        el.mpFormaFiltro.value = "";
+      }
+      filtrarMontagemTabela();
+    }
   });
 }
 
