@@ -1857,6 +1857,7 @@ hr {
   #viewMontagemPostes .sheet-table tbody {
     display: grid;
     gap: 10px;
+    justify-items: center;
   }
 
   #viewMontagemPostes .sheet-table tr {
@@ -1865,6 +1866,7 @@ hr {
 
   #viewMontagemPostes .sheet-table tr[data-forma-numero] {
     display: block;
+    width: min(100%, 420px);
     border: 1px solid var(--line);
     border-radius: 14px;
     background: #fff;
@@ -1963,9 +1965,19 @@ hr {
     margin-right: auto;
   }
 
-  .sheet-topline {
+  #viewMontagemPostes .sheet-topline {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+
+  #viewMontagemPostes .sheet-filter-row {
+    justify-content: center;
+  }
+
+  #viewMontagemPostes #mpFormaFiltro {
+    text-align: center;
   }
 
   .item {
