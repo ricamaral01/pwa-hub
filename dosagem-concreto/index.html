@@ -3890,9 +3890,11 @@ async function listarTracos() {
         html += '<th>Tipo</th><th>Nome</th><th>Origem</th><th>Data</th><th>FCK</th><th>Cimento</th><th>Adição</th><th>Ar. Nat.</th><th>Ar. Ind.</th><th>Brita 0</th><th>Brita ½</th><th>Água</th><th>Adit.</th><th>a/c</th><th>Flow</th><th>Ações</th>';
         html += '</tr></thead><tbody>';
 
+        const _inativasSet = ctGetInativasSet();
         itens.forEach((t) => {
-            html += `<tr>
-                <td><span class="badge ${t.tipo === 'Carta' ? 'badge-warn' : 'badge-ok'}">${t.tipo}</span></td>
+            const isInativa = t.tipo === 'Carta' && _inativasSet.has(t.id);
+            html += `<tr${isInativa ? ' style="opacity:0.5;"' : ''}>
+                <td><span class="badge ${t.tipo === 'Carta' ? 'badge-warn' : 'badge-ok'}">${t.tipo}</span>${isInativa ? ' <span class="badge badge-err" style="font-size:0.65rem;vertical-align:middle;">INATIVA</span>' : ''}</td>
                 <td>
                     <strong>${t.nomeExibicao || '—'}</strong>
                     ${t.metaExibicao ? `<div style="font-size:0.72rem;color:var(--text-light);margin-top:2px;line-height:1.25;">${t.metaExibicao}</div>` : ''}
@@ -3913,6 +3915,7 @@ async function listarTracos() {
                 <td style="white-space:nowrap;display:flex;gap:6px;flex-wrap:wrap;">
                     ${t.tipo === 'Carta' ? `<button class="btn btn-warning" style="padding:6px 12px;font-size:0.78rem;" onclick='verCartaTracaoSalva(${JSON.stringify(t.cartaCompleta).replace(/'/g,"&#39;")})'>📋 Ver Carta</button>` : ''}
                     <button class="btn btn-primary" style="padding:6px 12px;font-size:0.78rem;" onclick='carregarTraco(${JSON.stringify(t.loadData).replace(/'/g,"&#39;")})'>📥 Carregar</button>
+                    ${t.tipo === 'Carta' ? `<button class="btn" style="padding:6px 12px;font-size:0.78rem;background:${isInativa ? '#16a34a' : '#dc2626'};color:#fff;" onclick="ctToggleAtiva('${t.id}')">${isInativa ? '✅ Reativar' : '🚫 Inativar'}</button>` : ''}
                 </td>
             </tr>`;
         });
@@ -9282,70 +9285,8 @@ function salvarTudoAutomatico() {
         document.getElementById('dos_nome_carta')?.focus();
         return;
     }
-    // 1. Salva carta traço (localStorage + Google Sheets como salvar_carta_traco)
+    // Salva carta traço (localStorage + Google Sheets como salvar_carta_traco)
     salvarCartaTracoDosagem();
-
-    // 2. Envia também como salvar_traco (sem modal)
-    if (!DOSAGEM_WEBAPP_URL) return;
-    const rho = getDosagemRho();
-    const n = id => parseFloat(document.getElementById(id)?.value) || 0;
-    const aditsSv = getDosagemAditivos();
-    const m = {
-        cim:  n('dos_cim'),  adic: n('dos_adic'),
-        an:   n('dos_an'),   ai:   n('dos_ai'),
-        b0:   n('dos_b0'),   b1:   n('dos_b1'),
-        agua: n('dos_agua'), adit: aditsSv.total
-    };
-    const arPct = n('dos_ar');
-    const v = {};
-    Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
-    const vAr        = arPct * 10;
-    const vTotal     = Object.values(v).reduce((a,b)=>a+b,0) + vAr;
-    const massaTotal = Object.values(m).reduce((a,b)=>a+b,0);
-    const ac   = m.cim > 0 ? m.agua / m.cim : 0;
-    const aAgl = (m.cim + m.adic) > 0 ? m.agua / (m.cim + m.adic) : 0;
-    const mArgSv     = m.cim + m.adic + m.an + m.ai;
-    const mAgrGraudo = m.b0 + m.b1;
-    const argMassa   = (mArgSv + mAgrGraudo) > 0 ? (mArgSv / (mArgSv + mAgrGraudo)) * 100 : 0;
-    const vArgSv     = v.cim + v.adic + v.an + v.ai;
-    const vAgrGraudo = v.b0 + v.b1;
-    const argVol     = (vArgSv + vAgrGraudo) > 0 ? (vArgSv / (vArgSv + vAgrGraudo)) * 100 : 0;
-    const consumoCim = vTotal > 0 ? m.cim * (1000 / vTotal) : 0;
-    const massaEsp   = vTotal > 0 ? massaTotal * 1000 / vTotal : 0;
-    const agora = new Date();
-    const id = 'TRC-' + agora.getFullYear() + String(agora.getMonth()+1).padStart(2,'0') +
-               String(agora.getDate()).padStart(2,'0') + String(agora.getHours()).padStart(2,'0') +
-               String(agora.getMinutes()).padStart(2,'0') + String(agora.getSeconds()).padStart(2,'0') +
-               '-' + Math.floor(Math.random()*9000+1000);
-    const payload = {
-        action: 'salvar_traco',
-        id, dataHora: agora.toLocaleString('pt-BR'),
-        nomeTraco,
-        fck:              n('dos_fck'),
-        cimento:          m.cim,   adicao:          m.adic,
-        areiaNatural:     m.an,    areiaIndustrial: m.ai,
-        brita0:           m.b0,    brita1:          m.b1,
-        agua:             m.agua,  aditivoSP:       m.adit,
-        aditivoSP2:       aditsSv.adit2,
-        arIncorporado:    arPct,   flow:            n('dos_flow'),
-        ac:               fmt(ac, 3),
-        aAgl:             fmt(aAgl, 3),
-        consumoCimento:   fmt(consumoCim, 1),
-        massaEspConcreto: fmt(massaEsp, 0),
-        volumeTotal:      fmt(vTotal, 1),
-        teorArgMassa:     fmt(argMassa, 1),
-        teorArgVolume:    fmt(argVol, 1),
-        observacoes:      document.getElementById('dos_obs_carta')?.value?.trim() || '',
-        cliente:          document.getElementById('dos_cliente')?.value?.trim() || '',
-        obra:             document.getElementById('dos_obra')?.value?.trim() || '',
-        engenheiro:       document.getElementById('dos_engenheiro')?.value?.trim() || ''
-    };
-    fetch(DOSAGEM_WEBAPP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload),
-        mode: 'no-cors'
-    });
 }
 
 function syncResumoFieldsFromDosagem() {
@@ -10399,6 +10340,10 @@ async function mccTracaoRefreshBanco() {
     } catch(e2) {}
 
     _mccTracaoBancoAll = [...fromSheets, ...fromLocal];
+
+    // Filtra cartas inativas do seletor MCC
+    const _mccInativasSet = ctGetInativasSet();
+    _mccTracaoBancoAll = _mccTracaoBancoAll.filter(item => !_mccInativasSet.has(item.id));
 
     while (sel.options.length > 1) sel.remove(1);
     const UNID_LABELS = { campinas:'Campinas', ribeirao:'Ribeirão Preto', pederneiras:'Pederneiras', noroeste:'Noroeste' };
@@ -11653,6 +11598,25 @@ function fecharModalVerCarta() {
     const modal = document.getElementById('modal-ver-carta');
     if (modal) modal.style.display = 'none';
     document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════════════════
+// CARTAS — STATUS ATIVA / INATIVA
+// ═══════════════════════════════════════════════════
+function ctGetInativasSet() {
+    try { return new Set(JSON.parse(localStorage.getItem('ct_cartas_inativas') || '[]')); } catch(e) { return new Set(); }
+}
+function ctIsInativa(id) {
+    return ctGetInativasSet().has(id);
+}
+function ctToggleAtiva(id) {
+    try {
+        const list = JSON.parse(localStorage.getItem('ct_cartas_inativas') || '[]');
+        const idx = list.indexOf(id);
+        if (idx >= 0) list.splice(idx, 1); else list.push(id);
+        localStorage.setItem('ct_cartas_inativas', JSON.stringify(list));
+        listarTracos();
+    } catch(e) {}
 }
 
 // ═══════════════════════════════════════════════════
