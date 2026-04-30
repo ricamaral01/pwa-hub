@@ -9125,10 +9125,10 @@ function salvarCartaTracoDosagem() {
     const b1   = n('dos_b1');
     const agua = n('dos_agua');
     const adits = getDosagemAditivos();
-    const adit = adits.total;
+    const adit = adits.adit1;
     const adit2 = adits.adit2;
     const lig  = cim + adic;
-    const pctAdit = lig > 0 ? (adit / lig) * 100 : 0;
+    const pctAdit = lig > 0 ? (adits.total / lig) * 100 : 0;
     const rho = getDosagemRho();
     const v = {
         cim: volAbs(cim, rho.cim),
@@ -9138,7 +9138,7 @@ function salvarCartaTracoDosagem() {
         b0: volAbs(b0, rho.b0),
         b1: volAbs(b1, rho.b1),
         agua: volAbs(agua, rho.agua),
-        adit: volAbs(adit, rho.adit)
+        adit: volAbs(adits.total, rho.adit)
     };
     const vAr = n('dos_ar') * 10;
     const volumeTotal = Object.values(v).reduce((acc, val) => acc + val, 0) + vAr;
