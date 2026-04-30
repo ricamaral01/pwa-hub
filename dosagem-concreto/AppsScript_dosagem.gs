@@ -28,11 +28,11 @@ var HEADERS_CARTAS = [
   "Engenheiro", "Técnico", "ART/RRT", "Data Carta",
   "FCK (MPa)", "Flow (mm)", "a/c",
   "Cimento (kg)", "Adição (kg)", "Areia Nat (kg)", "Areia Ind (kg)",
-  "Brita 0 (kg)", "Brita 1/2 (kg)", "Água (kg)", "Aditivo (kg)",
+  "Brita 0 (kg)", "Brita 1/2 (kg)", "Água (kg)", "Aditivo (kg)", "Aditivo 2 (kg)",
   "% Aditivo/Lig", "Ar (%)", "Observações",
   "Custo Total (R$/m³)", "Custo Ligantes", "Custo Agregados", "Custo Quím./Água", "MCC Snapshot",
   "Volume Total (L)", "Teor Argamassa Massa (%)", "Teor Argamassa Volume (%)", "Vol. Arg. (L)",
-  "ρ Cim (g/cm³)", "ρ Adic (g/cm³)", "ρ An (g/cm³)", "ρ Ai (g/cm³)", "ρ B0 (g/cm³)", "ρ B½ (g/cm³)", "ρ Adit (g/cm³)"
+  "ρ Cim (g/cm³)", "ρ Adic (g/cm³)", "ρ An (g/cm³)", "ρ Ai (g/cm³)", "ρ B0 (g/cm³)", "ρ B½ (g/cm³)", "ρ Adit (g/cm³)", "ρ Adit 2 (g/cm³)"
 ];
 
 function ensureSheetCartasHeaders(sh) {
@@ -64,6 +64,7 @@ var HEADERS_TRACOS = [
   "Brita 1/2 (kg)",
   "Água (kg)",
   "Aditivo SP (kg)",
+  "Aditivo 2 (kg)",
   "Ar Incorporado (%)",
   "Flow (mm)",
   "a/c",
@@ -154,15 +155,16 @@ function getOrCreateSheetTracos() {
     sh.setColumnWidth(4, 90);
     for (var i = 5; i <= 12; i++) sh.setColumnWidth(i, 120);
     sh.setColumnWidth(13, 130);
-    sh.setColumnWidth(14, 100);
-    sh.setColumnWidth(15, 80);
+    sh.setColumnWidth(14, 130);
+    sh.setColumnWidth(15, 100);
     sh.setColumnWidth(16, 80);
-    sh.setColumnWidth(17, 160);
-    sh.setColumnWidth(18, 180);
-    sh.setColumnWidth(19, 120);
-    sh.setColumnWidth(20, 160);
+    sh.setColumnWidth(17, 80);
+    sh.setColumnWidth(18, 160);
+    sh.setColumnWidth(19, 180);
+    sh.setColumnWidth(20, 120);
     sh.setColumnWidth(21, 160);
-    sh.setColumnWidth(22, 300);
+    sh.setColumnWidth(22, 160);
+    sh.setColumnWidth(23, 300);
     sh.setFrozenRows(1);
   }
   return sh;
@@ -228,6 +230,7 @@ function doPost(e) {
         d.b1              || "",
         d.agua            || "",
         d.adit            || "",
+        d.adit2           || "",
         d.pctAdit         || "",
         d.ar              || "",
         d.obs             || "",
@@ -246,7 +249,8 @@ function doPost(e) {
         d.rhoAi           || 0,
         d.rhoB0           || 0,
         d.rhoB1           || 0,
-        d.rhoAdit         || 0
+        d.rhoAdit         || 0,
+        d.rhoAdit2        || 0
       ]);
       return ContentService
         .createTextOutput(JSON.stringify({ ok: true, message: "Carta traço salva!" }))
@@ -268,6 +272,7 @@ function doPost(e) {
         d.brita1        || "",
         d.agua          || "",
         d.aditivoSP     || "",
+        d.aditivoSP2    || "",
         d.arIncorporado || "",
         d.flow          || "",
         d.ac            || "",
@@ -389,25 +394,27 @@ function doGet(e) {
           b1:             data[i][24],
           agua:           data[i][25],
           adit:           data[i][26],
-          pctAdit:        data[i][27],
-          ar:             data[i][28],
-          obs:            data[i][29],
-          custoTotal:     Number(data[i][30]) || 0,
-          custoLigantes:  Number(data[i][31]) || 0,
-          custoAgregados: Number(data[i][32]) || 0,
-          custoQuimicos:  Number(data[i][33]) || 0,
-          mccSnapshot:    (function(v){ try { return v ? JSON.parse(v) : {}; } catch(e) { return {}; } })(data[i][34]),
-          volumeTotal:    Number(data[i][35]) || 0,
-          teorArgMassa:   Number(data[i][36]) || 0,
-          teorArgVolume:  Number(data[i][37]) || 0,
-          volArg:         Number(data[i][38]) || 0,
-          rhoCim:         Number(data[i][39]) || 0,
-          rhoAdic:        Number(data[i][40]) || 0,
-          rhoAn:          Number(data[i][41]) || 0,
-          rhoAi:          Number(data[i][42]) || 0,
-          rhoB0:          Number(data[i][43]) || 0,
-          rhoB1:          Number(data[i][44]) || 0,
-          rhoAdit:        Number(data[i][45]) || 0
+          adit2:          Number(data[i][27]) || 0,
+          pctAdit:        data[i][28],
+          ar:             data[i][29],
+          obs:            data[i][30],
+          custoTotal:     Number(data[i][31]) || 0,
+          custoLigantes:  Number(data[i][32]) || 0,
+          custoAgregados: Number(data[i][33]) || 0,
+          custoQuimicos:  Number(data[i][34]) || 0,
+          mccSnapshot:    (function(v){ try { return v ? JSON.parse(v) : {}; } catch(e) { return {}; } })(data[i][35]),
+          volumeTotal:    Number(data[i][36]) || 0,
+          teorArgMassa:   Number(data[i][37]) || 0,
+          teorArgVolume:  Number(data[i][38]) || 0,
+          volArg:         Number(data[i][39]) || 0,
+          rhoCim:         Number(data[i][40]) || 0,
+          rhoAdic:        Number(data[i][41]) || 0,
+          rhoAn:          Number(data[i][42]) || 0,
+          rhoAi:          Number(data[i][43]) || 0,
+          rhoB0:          Number(data[i][44]) || 0,
+          rhoB1:          Number(data[i][45]) || 0,
+          rhoAdit:        Number(data[i][46]) || 0,
+          rhoAdit2:       Number(data[i][47]) || 0
         });
       }
       return ContentService
@@ -439,16 +446,17 @@ function doGet(e) {
           brita1: data[i][9],
           agua: data[i][10],
           aditivoSP: data[i][11],
-          arIncorporado: data[i][12],
-          flow: data[i][13],
-          ac: data[i][14],
-          aAgl: data[i][15],
-          consumoCimento: data[i][16],
-          massaEspConcreto: data[i][17],
-          volumeTotal: data[i][18],
-          teorArgMassa: data[i][19],
-          teorArgVolume: data[i][20],
-          observacoes: data[i][21]
+          aditivoSP2: data[i][12],
+          arIncorporado: data[i][13],
+          flow: data[i][14],
+          ac: data[i][15],
+          aAgl: data[i][16],
+          consumoCimento: data[i][17],
+          massaEspConcreto: data[i][18],
+          volumeTotal: data[i][19],
+          teorArgMassa: data[i][20],
+          teorArgVolume: data[i][21],
+          observacoes: data[i][22]
         });
       }
       return ContentService

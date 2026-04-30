@@ -1838,8 +1838,12 @@
                 <input type="number" id="dos_agua" value="185" step="1">
             </div>
             <div class="form-group">
-                <label>Aditivo SP (kg)</label>
+                <label>Aditivo SP (kg) <button type="button" id="dos-adit2-toggle" onclick="toggleAdit2()" style="margin-left:6px;padding:2px 8px;font-size:.75rem;font-weight:700;border:1.5px solid #82a9c9;border-radius:5px;background:#e8f4f8;color:#1a3a6e;cursor:pointer;">+ 2º aditivo</button></label>
                 <input type="number" id="dos_adit" value="4.5" step="0.1">
+                <div id="dos-adit2-wrap" style="display:none;margin-top:5px;">
+                    <label style="font-size:.8rem;color:#555;margin-bottom:3px;display:block;">Aditivo 2 (kg)</label>
+                    <input type="number" id="dos_adit2" value="0" step="0.1" min="0" style="width:100%;">
+                </div>
             </div>
             <div class="form-group">
                 <label>Teor de Ar Incorporado (%) <span class="tip" data-tip="Tipicamente 1.5% a 3.5% para CAA">?</span></label>
@@ -3630,11 +3634,11 @@ function calcularCorrecaoUmidade(m, umidades) {
 // ═══════════════════════════════════════════════════
 // IMPORTANTE: Após implantar o AppsScript_dosagem.gs como Web App,
 // cole a URL gerada abaixo:
-const DOSAGEM_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzU_EqrGaNuCVJSZt0bE8-6SG7OB4utAvSa9LRqk-ZlaM-Ao7I36ZRMw9HHsX-ud1oNoA/exec';
+const DOSAGEM_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycby6899mi35PBcmoWdjSLPfA4zZdTBBIi4eSvRNaqNm2ON-vMuGF2jGUjiYhzD8mM1p8Ag/exec';
 
 /* === BANCO DE CUSTOS MCC === */
 // URL do Apps Script fixada — não altere sem atualizar o index.html
-const _MCC_URL_FIXED = 'https://script.google.com/macros/s/AKfycbzRtKTaOofxgEqwFCkOF2IWPw6D2XQBOO10QxAQUBX1PhhCaLl1V902j-A-oW1Z-YIQ3g/exec';
+const _MCC_URL_FIXED = 'https://script.google.com/macros/s/AKfycbzSsy-TgaPQShGcVGJNVTku9m4pzHGGNjJomkY0BJ0AdtBU1e54r5aavl-qEK_ucrJKLw/exec';
 let CUSTO_MCC_WEBAPP_URL = _MCC_URL_FIXED;
 let _mccProdutosTodos = [];
 
@@ -3674,8 +3678,10 @@ async function confirmarSalvarTraco() {
         b0:   parseFloat(document.getElementById('dos_b0').value)   || 0,
         b1:   parseFloat(document.getElementById('dos_b1').value)   || 0,
         agua: parseFloat(document.getElementById('dos_agua').value) || 0,
-        adit: parseFloat(document.getElementById('dos_adit').value) || 0
+        adit: 0
     };
+    const adits = getDosagemAditivos();
+    m.adit = adits.total;
     const arPct = parseFloat(document.getElementById('dos_ar').value) || 0;
     const flow  = parseFloat(document.getElementById('dos_flow').value) || 0;
     const fck   = parseFloat(document.getElementById('traco_fck').value) || 0;
@@ -3719,6 +3725,7 @@ async function confirmarSalvarTraco() {
         brita1: m.b1,
         agua: m.agua,
         aditivoSP: m.adit,
+        aditivoSP2: adits.adit2,
         arIncorporado: arPct,
         flow: flow,
         ac: fmt(ac, 3),
@@ -3826,6 +3833,7 @@ async function listarTracos() {
             brita1: t.brita1,
             agua: t.agua,
             aditivoSP: t.aditivoSP,
+            aditivoSP2: t.aditivoSP2,
             ac: t.ac,
             flow: t.flow,
             loadData: t
@@ -3865,6 +3873,7 @@ async function listarTracos() {
                 brita1: c.b1,
                 agua: c.agua,
                 aditivoSP: c.adit,
+                aditivoSP2: c.adit2,
                 arIncorporado: c.ar,
                 flow: c.flow
             }
@@ -3924,7 +3933,21 @@ function carregarTraco(t) {
     if (t.brita0 !== undefined) document.getElementById('dos_b0').value = t.brita0;
     if (t.brita1 !== undefined) document.getElementById('dos_b1').value = t.brita1;
     if (t.agua !== undefined) document.getElementById('dos_agua').value = t.agua;
-    if (t.aditivoSP !== undefined) document.getElementById('dos_adit').value = t.aditivoSP;
+    if (t.aditivoSP !== undefined) {
+        const adit2 = Number(t.aditivoSP2) || 0;
+        document.getElementById('dos_adit').value = Math.max(0, Number(t.aditivoSP) - adit2);
+        const ad2w = document.getElementById('dos-adit2-wrap');
+        const ad2t = document.getElementById('dos-adit2-toggle');
+        if (adit2 > 0) {
+            if (ad2w) ad2w.style.display = 'block';
+            if (ad2t) ad2t.textContent = '− 2º aditivo';
+            if (document.getElementById('dos_adit2')) document.getElementById('dos_adit2').value = adit2;
+        } else {
+            if (ad2w) ad2w.style.display = 'none';
+            if (ad2t) ad2t.textContent = '+ 2º aditivo';
+            if (document.getElementById('dos_adit2')) document.getElementById('dos_adit2').value = '0';
+        }
+    }
     if (t.arIncorporado !== undefined) document.getElementById('dos_ar').value = t.arIncorporado;
     if (t.flow !== undefined) document.getElementById('dos_flow').value = t.flow;
     showSection('sec-dosagem');
@@ -6421,7 +6444,7 @@ function flowBadge(flow) {
 // ═══════════════════════════════════════════════════
 function toggleModoGran() {
     const usarGran = document.getElementById('dos_usar_gran').checked;
-    const campos = ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit'];
+    const campos = ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_adit2'];
     const statusEl = document.getElementById('dos-modo-status');
 
     campos.forEach(id => {
@@ -6486,8 +6509,10 @@ function calcularDosagem() {
         b0:   parseFloat(document.getElementById('dos_b0').value)   || 0,
         b1:   parseFloat(document.getElementById('dos_b1').value)   || 0,
         agua: parseFloat(document.getElementById('dos_agua').value) || 0,
-        adit: parseFloat(document.getElementById('dos_adit').value) || 0
+        adit: 0
     };
+    const adits = getDosagemAditivos();
+    m.adit = adits.total;
     const _an1base = m.an;
     const _an2raw = parseFloat(document.getElementById('dos_an2')?.value) || 0;
     const an2 = document.getElementById('dos-an2-wrap')?.style.display !== 'none' ? _an2raw : 0;
@@ -6563,7 +6588,11 @@ function calcularDosagem() {
                 <tr><td>Brita 0</td><td>${fmt(m.b0,1)}</td><td>${fmt(rho.b0,2)}</td><td>${fmt(v.b0,1)}</td><td>${fmt(v.b0/vTotal*100,1)}</td><td>${fmt(traco.b0,3)}</td></tr>
                 <tr><td>Brita ½</td><td>${fmt(m.b1,1)}</td><td>${fmt(rho.b1,2)}</td><td>${fmt(v.b1,1)}</td><td>${fmt(v.b1/vTotal*100,1)}</td><td>${fmt(traco.b1,3)}</td></tr>
                 <tr><td>Água</td><td>${fmt(m.agua,1)}</td><td>${fmt(rho.agua,2)}</td><td>${fmt(v.agua,1)}</td><td>${fmt(v.agua/vTotal*100,1)}</td><td>${fmt(traco.agua,3)}</td></tr>
-                <tr><td>Aditivo SP</td><td>${fmt(m.adit,1)}</td><td>${fmt(rho.adit,2)}</td><td>${fmt(v.adit,1)}</td><td>${fmt(v.adit/vTotal*100,1)}</td><td>${fmt(traco.adit,3)}</td></tr>
+                <tr><td>Aditivo SP</td><td>${fmt(adits.adit1,1)}</td><td>${fmt(rho.adit,2)}</td><td>${fmt(volAbs(adits.adit1,rho.adit),1)}</td><td>${fmt(volAbs(adits.adit1,rho.adit)/vTotal*100,1)}</td><td>${fmt(m.cim>0?adits.adit1/m.cim:0,3)}</td></tr>
+                ${adits.adit2 > 0
+                    ? `<tr><td>Aditivo 2</td><td>${fmt(adits.adit2,1)}</td><td>${fmt(rho.adit,2)}</td><td>${fmt(volAbs(adits.adit2,rho.adit),1)}</td><td>${fmt(volAbs(adits.adit2,rho.adit)/vTotal*100,1)}</td><td>${fmt(m.cim>0?adits.adit2/m.cim:0,3)}</td></tr>`
+                    : ''}
+                <tr><td><strong>Aditivos (Total)</strong></td><td><strong>${fmt(m.adit,1)}</strong></td><td>${fmt(rho.adit,2)}</td><td><strong>${fmt(v.adit,1)}</strong></td><td><strong>${fmt(v.adit/vTotal*100,1)}</strong></td><td><strong>${fmt(traco.adit,3)}</strong></td></tr>
                 <tr><td>Ar Incorporado</td><td>—</td><td>—</td><td>${fmt(vAr,1)}</td><td>${fmt(vAr/vTotal*100,1)}</td><td>—</td></tr>
                 <tr class="total-row">
                     <td><strong>TOTAL</strong></td>
@@ -6624,7 +6653,7 @@ function calcularDosagem() {
                     <tr><td>Teor de Argamassa (massa)</td><td class="highlight">${fmt(argMassa,1)}%</td></tr>
                     <tr><td>Teor de Argamassa (volume)</td><td class="highlight">${fmt(argVol,1)}%</td></tr>
                     <tr><td>Teor de Ar Incorporado</td><td class="highlight">${fmt(arPct,1)}%</td></tr>
-                    <tr><td>% Aditivo SP / Cimento</td><td class="highlight">${fmt(m.cim>0?(m.adit/m.cim)*100:0,2)}%</td></tr>
+                    <tr><td>% Aditivos Totais / Cimento</td><td class="highlight">${fmt(m.cim>0?(m.adit/m.cim)*100:0,2)}%</td></tr>
                     <tr><td>Areia Natural / Areia Total</td><td>${fmt(pctAN,1)}%</td></tr>
                     <tr><td>Areia Industrial / Areia Total</td><td>${fmt(pctAI,1)}%</td></tr>
                     <tr><td>Brita 0 / Brita Total</td><td>${fmt(pctB0,1)}%</td></tr>
@@ -6658,7 +6687,9 @@ function calcularDosagem() {
                     <tr><td>Brita 0</td><td>${fmt(m.b0,1)}</td><td>${fmt(umidades.b0,1)}</td><td>${fmt(mc.b0,1)}</td><td class="warn-val">+${fmt(mc.b0 - m.b0,1)}</td></tr>
                     <tr><td>Brita ½</td><td>${fmt(m.b1,1)}</td><td>${fmt(umidades.b1,1)}</td><td>${fmt(mc.b1,1)}</td><td class="warn-val">+${fmt(mc.b1 - m.b1,1)}</td></tr>
                     <tr><td>Água</td><td>${fmt(m.agua,1)}</td><td>—</td><td class="ok-val">${fmt(mc.agua,1)}</td><td class="ok-val">${fmt(mc.agua - m.agua,1)}</td></tr>
-                    <tr><td>Aditivo SP</td><td>${fmt(m.adit,1)}</td><td>—</td><td>${fmt(m.adit,1)}</td><td>—</td></tr>
+                    <tr><td>Aditivo SP</td><td>${fmt(adits.adit1,1)}</td><td>—</td><td>${fmt(adits.adit1,1)}</td><td>—</td></tr>
+                    ${adits.adit2 > 0 ? `<tr><td>Aditivo 2</td><td>${fmt(adits.adit2,1)}</td><td>—</td><td>${fmt(adits.adit2,1)}</td><td>—</td></tr>` : ''}
+                    <tr><td><strong>Aditivos (Total)</strong></td><td><strong>${fmt(m.adit,1)}</strong></td><td>—</td><td><strong>${fmt(m.adit,1)}</strong></td><td>—</td></tr>
                 </tbody>
             </table>
         </div>`;
@@ -9034,6 +9065,9 @@ function sincronizarDosagemParaVolume() {
         const s = document.getElementById(src), d = document.getElementById(dst);
         if (s && d) { d.value = parseFloat(s.value) || ''; count++; }
     });
+    const adits = getDosagemAditivos();
+    const aditVol = document.getElementById('vol_adit');
+    if (aditVol) aditVol.value = adits.total;
     const st = document.getElementById('res-volume');
     if (st) st.innerHTML = '';
 }
@@ -9055,6 +9089,9 @@ function sincronizarDosagemParaArgamassa() {
         const s = document.getElementById(src), d = document.getElementById(dst);
         if (s && d) d.value = parseFloat(s.value) || '';
     });
+    const adits = getDosagemAditivos();
+    const aditArg = document.getElementById('arg_adit');
+    if (aditArg) aditArg.value = adits.total;
     const st = document.getElementById('res-argamassa');
     if (st) st.innerHTML = '';
 }
@@ -9087,7 +9124,9 @@ function salvarCartaTracoDosagem() {
     const b0   = n('dos_b0');
     const b1   = n('dos_b1');
     const agua = n('dos_agua');
-    const adit = n('dos_adit');
+    const adits = getDosagemAditivos();
+    const adit = adits.total;
+    const adit2 = adits.adit2;
     const lig  = cim + adic;
     const pctAdit = lig > 0 ? (adit / lig) * 100 : 0;
     const rho = getDosagemRho();
@@ -9131,11 +9170,15 @@ function salvarCartaTracoDosagem() {
             ['cim',  cim,  'L'], ['adic', adic, 'L'],
             ['an',   an,   'A'], ['ai',   ai,   'A'],
             ['b0',   b0,   'A'], ['b1',   b1,   'A'],
-            ['agua', agua, 'Q'], ['adit', adit, 'Q'],
+            ['agua', agua, 'Q'], ['adit', adit, 'Q'], ['adit2', adit2, 'Q'],
         ].forEach(([k, kg, grp]) => {
-            const liq = Number(mccCfg[k]?.custoLiq) || 0;
+            const liq = Number((mccCfg[k]?.custoLiq) ?? (k === 'adit2' ? mccCfg.adit?.custoLiq : 0)) || 0;
             const m3  = liq > 0 ? parseFloat((kg * liq).toFixed(3)) : 0;
-            mccSnapshot[k] = { preco: liq, nome: mccCfg[k]?.nome || '', forn: mccCfg[k]?.forn || '' };
+            mccSnapshot[k] = {
+                preco: liq,
+                nome: mccCfg[k]?.nome || (k === 'adit2' ? mccCfg.adit?.nome || '' : ''),
+                forn: mccCfg[k]?.forn || (k === 'adit2' ? mccCfg.adit?.forn || '' : '')
+            };
             custoTotal += m3;
             if (grp === 'L') custoLigantes  += m3;
             if (grp === 'A') custoAgregados += m3;
@@ -9175,6 +9218,7 @@ function salvarCartaTracoDosagem() {
         b1,
         agua,
         adit,
+        adit2,
         pctAdit: parseFloat(pctAdit.toFixed(3)),
         fck:  n('dos_fck'),
         flow: n('dos_flow'),
@@ -9245,11 +9289,12 @@ function salvarTudoAutomatico() {
     if (!DOSAGEM_WEBAPP_URL) return;
     const rho = getDosagemRho();
     const n = id => parseFloat(document.getElementById(id)?.value) || 0;
+    const aditsSv = getDosagemAditivos();
     const m = {
         cim:  n('dos_cim'),  adic: n('dos_adic'),
         an:   n('dos_an'),   ai:   n('dos_ai'),
         b0:   n('dos_b0'),   b1:   n('dos_b1'),
-        agua: n('dos_agua'), adit: n('dos_adit')
+        agua: n('dos_agua'), adit: aditsSv.total
     };
     const arPct = n('dos_ar');
     const v = {};
@@ -9281,6 +9326,7 @@ function salvarTudoAutomatico() {
         areiaNatural:     m.an,    areiaIndustrial: m.ai,
         brita0:           m.b0,    brita1:          m.b1,
         agua:             m.agua,  aditivoSP:       m.adit,
+        aditivoSP2:       aditsSv.adit2,
         arIncorporado:    arPct,   flow:            n('dos_flow'),
         ac:               fmt(ac, 3),
         aAgl:             fmt(aAgl, 3),
@@ -9334,7 +9380,8 @@ function updateResumoCockpit() {
 // ═══════════════════════════════════════════════════
 function ev3Num(id) { const el=document.getElementById(id); const v=parseFloat(el&&el.value?String(el.value).replace(',','.'):'0'); return isFinite(v)?v:0; }
 function ev3CurrentSnapshot() {
-    const snap = { cim:ev3Num('dos_cim'), adic:ev3Num('dos_adic'), an:ev3Num('dos_an'), ai:ev3Num('dos_ai'), b0:ev3Num('dos_b0'), b1:ev3Num('dos_b1'), agua:ev3Num('dos_agua'), adit:ev3Num('dos_adit'), flow:ev3Num('dos_flow'), fck:ev3Num('dos_fck'), timestamp:new Date().toISOString(), note:document.getElementById('res_projeto')?.value || 'Traço atual' };
+    const adits = getDosagemAditivos();
+    const snap = { cim:ev3Num('dos_cim'), adic:ev3Num('dos_adic'), an:ev3Num('dos_an'), ai:ev3Num('dos_ai'), b0:ev3Num('dos_b0'), b1:ev3Num('dos_b1'), agua:ev3Num('dos_agua'), adit:adits.total, flow:ev3Num('dos_flow'), fck:ev3Num('dos_fck'), timestamp:new Date().toISOString(), note:document.getElementById('res_projeto')?.value || 'Traço atual' };
     snap.lig = snap.cim + snap.adic; snap.total = snap.cim+snap.adic+snap.an+snap.ai+snap.b0+snap.b1+snap.agua+snap.adit; snap.ac = snap.lig>0 ? snap.agua/snap.lig : 0;
     const c=ev3ComputeCost(snap); snap.costTotal=c.total; snap.costBinders=c.binders; snap.costAggregates=c.aggregates; snap.costChem=c.chem; return snap;
 }
@@ -9440,7 +9487,7 @@ ${buildUnifiedIdTable(`
 function ev3RenderCompare(){ if(typeof mccCompRender==='function') mccCompRender(); }
 function ev3BestSlot(){ const slots=['A','B','C'].map(ev3LoadSlot).filter(Boolean); if(!slots.length) return null; return slots.reduce((b,c)=>(c.costTotal||1e9)<(b.costTotal||1e9)?c:b, slots[0]); }
 function ev3UpdateDashboard(){ const s=ev3CurrentSnapshot(), best=ev3BestSlot(); const set=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;}; set('dash-flow-main', `${ctFmt(s.flow,0)} mm`); set('dash-ac-main', ctFmt(s.ac,3)); set('dash-cost', ctMoney(s.costTotal)); const cartasCount = JSON.parse(localStorage.getItem('ct_cartas_traco')||'[]').length; set('dash-cartas-count', cartasCount); if(best){ set('dash-best-slot', `Traço ${best.slot}`); set('dash-best-hint', `Menor custo salvo: ${ctMoney(best.costTotal||0)} · flow ${ctFmt(best.flow,0)} mm · a/c ${ctFmt(best.ac,3)}.`); } else { set('dash-best-slot','—'); set('dash-best-hint','Salve cenários A/B/C para descobrir a melhor alternativa.'); } set('dash-cost-hint', `Traço atual com ${ctFmt(s.cim,0)} kg de cimento e custo estimado de ${ctMoney(s.costTotal)} por m³.`); }
-function ctAttachListeners(){ ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_ar','dos_flow','dos_fck','res_flow','res_ar','res_classe','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'].forEach(id=>{ const el=document.getElementById(id); if(el && !el.dataset.ctBound){ el.addEventListener('input', updateDosagemCockpit); el.addEventListener('change', updateDosagemCockpit); el.dataset.ctBound='1'; } }); if (!document.getElementById('dos_rho_cim')?.value) sincronizarRhosDosagem(); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); ev3RenderCompare(); }
+function ctAttachListeners(){ ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_adit2','dos_ar','dos_flow','dos_fck','res_flow','res_ar','res_classe','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'].forEach(id=>{ const el=document.getElementById(id); if(el && !el.dataset.ctBound){ el.addEventListener('input', updateDosagemCockpit); el.addEventListener('change', updateDosagemCockpit); el.dataset.ctBound='1'; } }); if (!document.getElementById('dos_rho_cim')?.value) sincronizarRhosDosagem(); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); ev3RenderCompare(); }
 if (typeof calcularDosagem === 'function') { const _origCalcularDosagem = calcularDosagem; calcularDosagem = function(){ const out=_origCalcularDosagem.apply(this, arguments); updateDosagemCockpit(); syncResumoFieldsFromDosagem(); return out; } }
 if (typeof gerarResumo === 'function') { const _origGerarResumo = gerarResumo; gerarResumo = function(){ syncResumoFieldsFromDosagem(); const out=_origGerarResumo.apply(this, arguments); updateResumoCockpit(); return out; } }
 if (typeof gerarCartaTraco === 'function') { const _origGerarCartaTraco = gerarCartaTraco; gerarCartaTraco = function(){ syncResumoFieldsFromDosagem(); const out=_origGerarCartaTraco.apply(this, arguments); updateResumoCockpit(); return out; } }
@@ -9463,9 +9510,10 @@ function ctFmtNum(v, d=1){ return (Number(v)||0).toFixed(d).replace('.', ','); }
 function ctPremiumGetBank(){ try { return JSON.parse(localStorage.getItem(CT_PREMIUM_BANK_KEY) || '[]'); } catch(e){ return []; } }
 function ctPremiumSetBank(list){ localStorage.setItem(CT_PREMIUM_BANK_KEY, JSON.stringify(list)); }
 function ctPremiumCurrentTrace(){
+    const adits = getDosagemAditivos();
     const masses = {
         cimento: ctNum('dos_cim'), adicao: ctNum('dos_adic'), areiaNat: ctNum('dos_an'), areiaInd: ctNum('dos_ai'),
-        brita0: ctNum('dos_b0'), brita1: ctNum('dos_b1'), agua: ctNum('dos_agua'), aditivo: ctNum('dos_adit')
+        brita0: ctNum('dos_b0'), brita1: ctNum('dos_b1'), agua: ctNum('dos_agua'), aditivo: adits.total
     };
     const flow = ctNum('dos_flow');
     const fck = ctNum('dos_fck');
@@ -9636,7 +9684,7 @@ function ctPremiumRefresh(){
 }
 
 (function(){
-    const ids = ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_flow','dos_fck','dos_ar','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'];
+    const ids = ['dos_cim','dos_adic','dos_an','dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_adit2','dos_flow','dos_fck','dos_ar','cost_cim','cost_adic','cost_an','cost_ai','cost_b0','cost_b1','cost_agua','cost_adit'];
     const bind = () => ids.forEach(id => { const el=document.getElementById(id); if(el && !el.dataset.premiumBound){ el.dataset.premiumBound='1'; el.addEventListener('input', () => { try { ctPremiumRenderCurve(ctPremiumGetBank()); } catch(e){} }); }});
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ()=>{ bind(); ctPremiumRefresh(); });
     else { bind(); ctPremiumRefresh(); }
@@ -10168,7 +10216,8 @@ const MCCTR_MATS = [
     { key:'b0',   label:'Brita 0',          massKey:'brita0',   group:'Agregados'  },
     { key:'b1',   label:'Brita 1/2',        massKey:'brita1',   group:'Agregados'  },
     { key:'agua', label:'Água',             massKey:'agua',     group:'Quím./Água' },
-    { key:'adit', label:'Aditivo SP',       massKey:'aditivo',  group:'Quím./Água' }
+    { key:'adit', label:'Aditivo SP',       massKey:'aditivo',  group:'Quím./Água' },
+    { key:'adit2',label:'Aditivo 2',        massKey:'aditivo2', group:'Quím./Água' }
 ];
 const MCCTR_UNID_LABELS = {
     campinas: 'Campinas',
@@ -10256,8 +10305,9 @@ function mccTracaoProdutoDaUnidade(produto, unidadeLabel) {
 
 function mccTracaoProdutosAtivosPorChave(key) {
     const todos = _mccProdutosTodos || [];
+    const keyBase = key === 'adit2' ? 'adit' : key;
     const unidadeLabel = mccTracaoUnidadeAtualLabel();
-    return todos.filter(p => p.chaveMCC === key && p.ativo === 'Sim' && mccTracaoProdutoDaUnidade(p, unidadeLabel));
+    return todos.filter(p => p.chaveMCC === keyBase && p.ativo === 'Sim' && mccTracaoProdutoDaUnidade(p, unidadeLabel));
 }
 
 function mccTracaoFindProduto(key, nome, forn) {
@@ -10302,7 +10352,8 @@ async function mccTracaoRefreshBanco() {
                 brita0:   Number(c.b0)   || 0,
                 brita1:   Number(c.b1)   || 0,
                 agua:     Number(c.agua) || 0,
-                aditivo:  Number(c.adit) || 0
+                aditivo:  Number(c.adit) || 0,
+                aditivo2: Number(c.adit2) || 0
             },
             _source: 'carta'
         }));
@@ -10339,7 +10390,8 @@ async function mccTracaoRefreshBanco() {
                         brita0:   Number(c.b0)   || 0,
                         brita1:   Number(c.b1)   || 0,
                         agua:     Number(c.agua) || 0,
-                        aditivo:  Number(c.adit) || 0
+                        aditivo:  Number(c.adit) || 0,
+                        aditivo2: Number(c.adit2) || 0
                     },
                     _source: 'local'
                 };
@@ -10771,7 +10823,7 @@ function mccTracaoUpdateResumo(gTotals, totalCusto) {
     if (typeof mccTracaoRenderChart === 'function') mccTracaoRenderChart();
 }
 
-const MCCTR_COLORS = {cim:'#3730a3',adic:'#6366f1',an:'#92400e',ai:'#b45309',b0:'#d97706',b1:'#f59e0b',agua:'#0284c7',adit:'#0ea5e9'};
+const MCCTR_COLORS = {cim:'#3730a3',adic:'#6366f1',an:'#92400e',ai:'#b45309',b0:'#d97706',b1:'#f59e0b',agua:'#0284c7',adit:'#0ea5e9',adit2:'#06b6d4'};
 
 function mccTracaoRenderChart() {
     const svg    = document.getElementById('mcctr_pie_svg');
@@ -11636,11 +11688,35 @@ function toggleAn2() {
     }
 }
 
+function toggleAdit2() {
+    const w = document.getElementById('dos-adit2-wrap');
+    const tog = document.getElementById('dos-adit2-toggle');
+    const vis = w.style.display === 'none' || !w.style.display;
+    w.style.display = vis ? 'block' : 'none';
+    tog.textContent = vis ? '− 2º aditivo' : '+ 2º aditivo';
+    if (!vis) {
+        const a2 = document.getElementById('dos_adit2');
+        if (a2) a2.value = '';
+        calcularDosagem();
+    }
+}
+
+function getDosagemAditivos() {
+    const adit1 = parseFloat(document.getElementById('dos_adit')?.value) || 0;
+    const adit2Visivel = document.getElementById('dos-adit2-wrap')?.style.display !== 'none';
+    const adit2 = adit2Visivel ? (parseFloat(document.getElementById('dos_adit2')?.value) || 0) : 0;
+    return {
+        adit1,
+        adit2,
+        total: adit1 + adit2
+    };
+}
+
 function limparDosagemForm() {
     if (!confirm('Limpar todos os dados de dosagem (massas e massas específicas)?')) return;
     const ids = [
         'dos_cim','dos_adic','dos_an','dos_an2',
-        'dos_ai','dos_b0','dos_b1','dos_agua','dos_adit',
+        'dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_adit2',
         'dos_flow','dos_fck',
         'dos_rho_cim','dos_rho_adic','dos_rho_an','dos_rho_an2',
         'dos_rho_ai','dos_rho_b0','dos_rho_b1','dos_rho_adit'
@@ -11655,6 +11731,10 @@ function limparDosagemForm() {
     if (w) w.style.display = 'none';
     if (rhoW) rhoW.style.display = 'none';
     if (tog) tog.textContent = '+ 2ª AN';
+    const ad2w = document.getElementById('dos-adit2-wrap');
+    const ad2t = document.getElementById('dos-adit2-toggle');
+    if (ad2w) ad2w.style.display = 'none';
+    if (ad2t) ad2t.textContent = '+ 2º aditivo';
     // Clear results
     const res = document.getElementById('res-dosagem');
     if (res) res.innerHTML = '';
@@ -11711,6 +11791,9 @@ function dosCarregarPreview() {
     const anDisp = c.an2 > 0
         ? `AN1 ${fmtN(c.an-(c.an2||0),1)} kg + AN2 ${fmtN(c.an2,1)} kg`
         : `${fmtN(c.an,1)} kg`;
+    const adit2Pv = Number(c.adit2) || 0;
+    const aditPvTotal = Number(c.adit) || 0;
+    const aditPv1 = Math.max(0, aditPvTotal - adit2Pv);
     pv.style.display = 'block';
     pv.innerHTML = `
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
@@ -11730,7 +11813,9 @@ function dosCarregarPreview() {
             ${row('Brita 0', fmtN(c.b0,1) + ' kg')}
             ${row('Brita ½', fmtN(c.b1,1) + ' kg')}
             ${row('Água', fmtN(c.agua,1) + ' kg')}
-            ${row('Aditivo SP', fmtN(c.adit,1) + ' kg')}
+            ${row('Aditivo SP', fmtN(aditPv1,1) + ' kg')}
+            ${adit2Pv > 0 ? row('Aditivo 2', fmtN(adit2Pv,1) + ' kg') : ''}
+            ${row('Aditivos (Total)', fmtN(aditPvTotal,1) + ' kg')}
             ${row('ρ Cimento', c.rhoCim ? c.rhoCim + ' g/cm³' : '—')}
             ${row('ρ Areia Nat.', c.rhoAn ? c.rhoAn + ' g/cm³' : '—')}
             ${c.rhoAn2 ? row('ρ Areia Nat. 2', c.rhoAn2 + ' g/cm³') : ''}
@@ -11775,7 +11860,22 @@ function dosCarregarCartaSelecionada() {
     set('dos_b0',    c.b0);
     set('dos_b1',    c.b1);
     set('dos_agua',  c.agua);
-    set('dos_adit',  c.adit);
+    const adit2Loaded = Number(c.adit2) || 0;
+    const aditTotalLoaded = Number(c.adit) || 0;
+    set('dos_adit',  Math.max(0, aditTotalLoaded - adit2Loaded));
+    if (adit2Loaded > 0) {
+        const ad2w = document.getElementById('dos-adit2-wrap');
+        const ad2t = document.getElementById('dos-adit2-toggle');
+        if (ad2w) ad2w.style.display = 'block';
+        if (ad2t) ad2t.textContent = '− 2º aditivo';
+        set('dos_adit2', adit2Loaded);
+    } else {
+        const ad2w = document.getElementById('dos-adit2-wrap');
+        const ad2t = document.getElementById('dos-adit2-toggle');
+        if (ad2w) ad2w.style.display = 'none';
+        if (ad2t) ad2t.textContent = '+ 2º aditivo';
+        if (document.getElementById('dos_adit2')) document.getElementById('dos_adit2').value = '0';
+    }
     set('dos_ar',    c.ar);
     set('dos_flow',  c.flow);
     if (c.fck) set('dos_fck', c.fck);
