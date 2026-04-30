@@ -1019,9 +1019,7 @@
         <button class="sidebar-btn" data-sec="sec-experimental" onclick="showSection('sec-experimental',this)">
             <span class="sb-num">T2</span><span class="sb-icon">🔬</span><span class="sb-label">Traço Experimental</span>
         </button>
-        <button class="sidebar-btn" data-sec="sec-premium-bank" onclick="showSection('sec-premium-bank',this)">
-            <span class="sb-num">T3</span><span class="sb-icon">🏛️</span><span class="sb-label">Banco de Traços</span>
-        </button>
+
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-group">
@@ -1090,7 +1088,7 @@
         <optgroup label="Traços">
         <option value="sec-tracos-salvos">📂 Traços Salvos</option>
         <option value="sec-experimental">🔬 Traço Experimental</option>
-        <option value="sec-premium-bank">🏛️ Banco de Traços</option>
+
         </optgroup>
         <optgroup label="Custos">
         <option value="sec-custo-mcc">💲 Fornecedores / Materiais MCC</option>
@@ -1148,7 +1146,7 @@
             <button class="hub-card" type="button" onclick="showSection('sec-experimental')"><span class="hub-icon">🔬</span><span class="hub-title">Traço Experimental</span><span class="hub-desc">Flow, resistência e validação</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-resumo')"><span class="hub-icon">📄</span><span class="hub-title">Carta do Traço</span><span class="hub-desc">Saída executiva e impressão</span></button>
             <button class="hub-card" type="button" onclick="showSection('sec-compare-cost')"><span class="hub-icon">📊</span><span class="hub-title">Comparador & Custo</span><span class="hub-desc">Comparação de cenários e custo por m³</span></button>
-            <button class="hub-card" type="button" onclick="showSection('sec-premium-bank')"><span class="hub-icon">🏛️</span><span class="hub-title">Banco de Traços</span><span class="hub-desc">Banco de traços, ranking e curva de custo</span></button>
+
         </div>
     </div>
 </div>
@@ -2170,8 +2168,12 @@
         <h2><span class="icon">📂</span> Traços Salvos</h2>
         <p class="subtitle">Consulte os traços tradicionais e as cartas-traço salvas na planilha e no armazenamento local. Clique em um item para carregar seus valores na seção de Dosagem.</p>
 
-        <div class="btn-wrap" style="margin-top:0;margin-bottom:18px;">
+        <div class="btn-wrap" style="margin-top:0;margin-bottom:18px;align-items:center;flex-wrap:wrap;gap:8px;">
             <button class="btn btn-primary" onclick="listarTracos()">🔄 Atualizar Lista</button>
+            <span style="font-size:0.85rem;color:var(--text-light);margin:0 4px;">Filtrar:</span>
+            <button class="btn" id="ts-filter-todos"    style="background:var(--primary);color:#fff;padding:8px 16px;font-size:0.85rem;"  onclick="ctSetFiltroTracos('todos')">Todos</button>
+            <button class="btn" id="ts-filter-carta"    style="background:#e0e5ea;color:var(--text);padding:8px 16px;font-size:0.85rem;" onclick="ctSetFiltroTracos('carta')">📋 Somente Carta</button>
+            <button class="btn" id="ts-filter-traco"    style="background:#e0e5ea;color:var(--text);padding:8px 16px;font-size:0.85rem;" onclick="ctSetFiltroTracos('traco')">📄 Somente Traço</button>
         </div>
 
         <div id="res-tracos-lista">
@@ -3270,7 +3272,7 @@
   </div>
 </div>
 
-<div id="sec-premium-bank" class="section">
+<div id="sec-premium-bank" class="section" style="display:none!important;">
     <div class="card">
         <h2><span class="icon">🏛️</span> Banco de Traços</h2>
         <p class="subtitle">Evolução 4 do CONCRETRACK DOSAGEM: capture o traço atual, monte um banco técnico interno, compare cenários lado a lado e acompanhe a curva de custo do seu portfólio.</p>
@@ -3881,8 +3883,14 @@ async function listarTracos() {
 
         const itens = tracos.concat(cartas).sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0));
 
-        if (itens.length === 0) {
-            container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);"><div style="font-size:2.5rem;margin-bottom:12px;">📭</div><p>Nenhum traço salvo ainda.</p></div>';
+        // Aplica filtro de tipo
+        const filtro = window._tsFiltroTracos || 'todos';
+        const itensFiltrados = filtro === 'carta' ? itens.filter(t => t.tipo === 'Carta')
+                             : filtro === 'traco'  ? itens.filter(t => t.tipo === 'Traço')
+                             : itens;
+
+        if (itensFiltrados.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);"><div style="font-size:2.5rem;margin-bottom:12px;">📭</div><p>Nenhum item encontrado para o filtro selecionado.</p></div>';
             return;
         }
 
@@ -3891,7 +3899,7 @@ async function listarTracos() {
         html += '</tr></thead><tbody>';
 
         const _inativasSet = ctGetInativasSet();
-        itens.forEach((t) => {
+        itensFiltrados.forEach((t) => {
             const isInativa = t.tipo === 'Carta' && _inativasSet.has(t.id);
             html += `<tr${isInativa ? ' style="opacity:0.5;"' : ''}>
                 <td><span class="badge ${t.tipo === 'Carta' ? 'badge-warn' : 'badge-ok'}">${t.tipo}</span>${isInativa ? ' <span class="badge badge-err" style="font-size:0.65rem;vertical-align:middle;">INATIVA</span>' : ''}</td>
@@ -3921,7 +3929,7 @@ async function listarTracos() {
         });
 
         html += '</tbody></table></div>';
-        html += `<div style="margin-top:12px;font-size:0.82rem;color:var(--text-light);">Total: <strong>${itens.length}</strong> item(ns) salvo(s), sendo <strong>${tracos.length}</strong> traço(s) tradicional(is) e <strong>${cartas.length}</strong> carta(s)-traço.</div>`;
+        html += `<div style="margin-top:12px;font-size:0.82rem;color:var(--text-light);">Exibindo: <strong>${itensFiltrados.length}</strong> item(ns) (total: ${itens.length} — <strong>${tracos.length}</strong> traço(s) e <strong>${cartas.length}</strong> carta(s)).</div>`;
         container.innerHTML = html;
     } catch (err) {
         container.innerHTML = '<div class="result-box error"><h3>❌ Erro ao carregar</h3><p>' + err.message + '</p></div>';
@@ -11617,6 +11625,22 @@ function ctToggleAtiva(id) {
         localStorage.setItem('ct_cartas_inativas', JSON.stringify(list));
         listarTracos();
     } catch(e) {}
+}
+
+// ═══════════════════════════════════════════════════
+// TRAÇOS SALVOS — FILTRO TIPO
+// ═══════════════════════════════════════════════════
+window._tsFiltroTracos = 'todos';
+function ctSetFiltroTracos(tipo) {
+    window._tsFiltroTracos = tipo;
+    ['todos','carta','traco'].forEach(t => {
+        const btn = document.getElementById('ts-filter-' + t);
+        if (btn) {
+            btn.style.background = t === tipo ? 'var(--primary)' : '#e0e5ea';
+            btn.style.color      = t === tipo ? '#fff' : 'var(--text)';
+        }
+    });
+    listarTracos();
 }
 
 // ═══════════════════════════════════════════════════
