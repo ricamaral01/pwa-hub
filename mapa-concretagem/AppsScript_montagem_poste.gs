@@ -13,6 +13,7 @@
 var MAPA_MONTAGEM_POSTE_SHEET = "montagem_poste";
 var MAPA_USUARIOS_SHEET = "usuarios_mapa";
 var PROP_SPREADSHEET_ID = "MAPA_CONCRETAGEM_SPREADSHEET_ID";
+var MAPA_TIMEZONE = "America/Sao_Paulo";
 
 function doGet(e) {
   try {
@@ -82,12 +83,30 @@ function getPayloadFromPost_(e) {
 
 function getSpreadsheet_() {
   var ssId = PropertiesService.getScriptProperties().getProperty(PROP_SPREADSHEET_ID);
-  if (ssId) return SpreadsheetApp.openById(ssId);
+  if (ssId) {
+    var ssById = SpreadsheetApp.openById(ssId);
+    ensureSpreadsheetTimezone_(ssById);
+    return ssById;
+  }
 
   var active = SpreadsheetApp.getActiveSpreadsheet();
-  if (active) return active;
+  if (active) {
+    ensureSpreadsheetTimezone_(active);
+    return active;
+  }
 
   throw new Error("Planilha não definida. Configure a propriedade " + PROP_SPREADSHEET_ID + ".");
+}
+
+function ensureSpreadsheetTimezone_(ss) {
+  try {
+    if (ss && ss.getSpreadsheetTimeZone && ss.setSpreadsheetTimeZone) {
+      var current = ss.getSpreadsheetTimeZone();
+      if (current !== MAPA_TIMEZONE) ss.setSpreadsheetTimeZone(MAPA_TIMEZONE);
+    }
+  } catch (err) {
+    // Se não tiver permissão para ajustar o fuso, apenas segue.
+  }
 }
 
 function statusResponse_() {
