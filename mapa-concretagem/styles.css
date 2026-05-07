@@ -1094,6 +1094,31 @@ body.mode-inspecao .container {
   font-size: 1rem;
 }
 
+.concreto-tipo-options {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.concreto-tipo-option {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.concreto-tipo-option:hover,
+.concreto-tipo-option:focus {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
 /* ── Loading modal ───────────────────────────────────── */
 .modal-box-loading {
   padding: 44px 36px;
@@ -1662,6 +1687,18 @@ hr {
   font-weight: 800;
   letter-spacing: 0.01em;
   line-height: 1.1;
+}
+
+.fc-tipo {
+  display: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #059669;
+  background: #dcfce7;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-top: 4px;
+  text-align: center;
 }
 
 /* Setor 4: modelo como label — texto mais longo, fonte menor */

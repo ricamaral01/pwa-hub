@@ -122,6 +122,18 @@ function doPost(e) {
         d.observacoes   || ""
       ]);
     }
+    else if (d.action === "salvar_forma_click") {
+      var sh = getOrCreateSheetTecnica(); // Usando a aba tecnica para salvar forma click
+      sh.appendRow([
+        d.dia + " " + d.hora || "",
+        "Forma " + d.forma || "",
+        "",
+        "Concretagem",
+        "Tipo: " + (d.tipo_concreto || "Padrão") + " - Modelo: " + (d.modelo || ""),
+        d.colaborador || "",
+        "Concluído"
+      ]);
+    }
     else {
       return ContentService
         .createTextOutput(JSON.stringify({ ok: false, error: "action desconhecida: " + (d.action || "vazio") }))
@@ -144,7 +156,7 @@ function doGet(e) {
     .createTextOutput(JSON.stringify({
       status: "online",
       abas: [SHEET_TECNICA, SHEET_MASSADA],
-      actions: ["registrar_parada", "registrar_massada"]
+      actions: ["registrar_parada", "registrar_massada", "salvar_forma_click"]
     }))
     .setMimeType(ContentService.MimeType.JSON);
 }

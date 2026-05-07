@@ -43,6 +43,15 @@ const MONTAGEM_CHECKLIST_SECTIONS = [
   }
 ];
 
+const CONCRETO_TIPOS = ["Padrão", "Vibrado", "Concreto com Variação"];
+
+function getConcreteTypeForForma(forma, setor) {
+  const dataFabricacao = el.libData?.value || todayYmd();
+  const db = readDb();
+  const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
+  return record?.concretoTipo || null;
+}
+
 function getClickedFormsToday() {
   const raw = localStorage.getItem(CLICKED_FORMS_KEY);
   if (!raw) return { dia: "", formas: {} };
@@ -452,6 +461,8 @@ const state = {
   submitLocks: readSubmitLocks()
 };
 
+let pendingFormaSelection = null;
+
 const el = {
   appShell: document.getElementById("appShell"),
   loginScreen: document.getElementById("loginScreen"),
@@ -489,6 +500,10 @@ const el = {
   ugFeedback: document.getElementById("ugFeedback"),
   ugListaBody: document.getElementById("ugListaBody"),
   syncStatus: document.getElementById("syncStatus"),
+  concretoTipoModal: document.getElementById("concretoTipoModal"),
+  concretoTipoSubtitle: document.getElementById("concretoTipoSubtitle"),
+  concretoTipoOptions: document.getElementById("concretoTipoOptions"),
+  concretoTipoCancelBtn: document.getElementById("concretoTipoCancelBtn"),
 
   libData: document.getElementById("libData"),
   libColaborador: document.getElementById("libColaborador"),
@@ -958,21 +973,35 @@ function createFormaButton(item, setor) {
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "lib-btn";
-  const setBtnLabel = (done = false) => {
+  const setBtnLabel = (done = false, tipo = null) => {
     const check = done ? " ✓" : "";
-    btn.innerHTML = `<span class="lib-btn-model">${item.modelo || "-"}</span> <span class="lib-btn-forma">${item.forma}${check}</span>`;
+    const tipoText = tipo ? ` (${tipo})` : "";
+    btn.innerHTML = `<span class="lib-btn-model">${item.modelo || "-"}</span> <span class="lib-btn-forma">${item.forma}${tipoText}${check}</span>`;
   };
   setBtnLabel(false);
   btn.dataset.formaNumero = normalizeUpper(item.forma);
   btn.dataset.modelo = item.modelo;
 
   if (setor && isFormaClicked(item.forma, setor)) {
+    const tipo = getConcreteTypeForForma(item.forma, setor);
     btn.classList.add("active", "btn-liberado");
-    setBtnLabel(true);
+    setBtnLabel(true, tipo);
     btn.disabled = true;
   } else {
     btn.addEventListener("click", () => {
-      salvarFormaClicada(item.forma, setor, btn);
+      const data = el.libData?.value;
+      const colaborador = (el.libColaborador?.value || "").trim();
+      if (!data) {
+        showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
+        el.libData?.focus();
+        return;
+      }
+      if (!colaborador) {
+        showLibFeedback("Preencha o colaborador antes de registrar.", "error");
+        el.libColaborador?.focus();
+        return;
+      }
+      showConcreteTypePopup(item.forma, setor, btn, item.modelo || "");
     });
   }
 
@@ -1094,13 +1123,22 @@ function createFormaCard(item, setor) {
   numEl.className = "fc-number";
   numEl.textContent = setor === "Setor 4" ? (item.modelo || item.label || item.forma) : (item.label || item.forma);
 
+  const tipoEl = document.createElement("span");
+  tipoEl.className = "fc-tipo";
+
   const statusEl = document.createElement("span");
   statusEl.className = "fc-status";
 
   card.appendChild(numEl);
+  card.appendChild(tipoEl);
   card.appendChild(statusEl);
 
   if (isFormaClicked(item.forma, setor)) {
+    const tipo = getConcreteTypeForForma(item.forma, setor);
+    if (tipo) {
+      tipoEl.textContent = tipo;
+      tipoEl.style.display = "block";
+    }
     setCardState(card, "saved");
   } else {
     card.addEventListener("click", () => {
@@ -1116,7 +1154,7 @@ function createFormaCard(item, setor) {
         el.libColaborador?.focus();
         return;
       }
-      salvarFormaClicada(item.forma, setor, card, item.modelo || "");
+      showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
     });
   }
 
@@ -1250,7 +1288,35 @@ function showLibFeedback(message, type) {
   setTimeout(() => el.libFeedback.classList.add("hidden"), 3000);
 }
 
-async function salvarFormaClicada(forma, setor, card, modelo) {
+function closeConcreteTypePopup() {
+  if (!el.concretoTipoModal) return;
+  el.concretoTipoModal.classList.remove("modal-visible");
+  pendingFormaSelection = null;
+}
+
+function showConcreteTypePopup(forma, setor, card, modelo) {
+  if (!el.concretoTipoModal || !el.concretoTipoOptions || !el.concretoTipoSubtitle) return;
+
+  pendingFormaSelection = { forma, setor, card, modelo };
+  el.concretoTipoSubtitle.textContent = `Forma ${forma} · ${setor}`;
+  el.concretoTipoOptions.innerHTML = CONCRETO_TIPOS.map((tipo) =>
+    `<button type="button" class="btn concreto-tipo-option" data-tipo="${escapeHtml(tipo)}">${escapeHtml(tipo)}</button>`
+  ).join("");
+
+  el.concretoTipoOptions.querySelectorAll(".concreto-tipo-option").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const tipo = String(btn.dataset.tipo || "").trim();
+      if (tipo) {
+        closeConcreteTypePopup();
+        salvarFormaClicada(forma, setor, card, modelo, tipo);
+      }
+    });
+  });
+
+  el.concretoTipoModal.classList.add("modal-visible");
+}
+
+async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Padrão") {
   setCardState(card, "saving");
 
   const agora = new Date();
@@ -1267,7 +1333,8 @@ async function salvarFormaClicada(forma, setor, card, modelo) {
     forma,
     dataFabricacao,
     colaborador,
-    modelo: modeloFinal
+    modelo: modeloFinal,
+    tipo_concreto: concretoTipo
   };
 
   const apiResult = await postToApi("salvar_forma_click", payload);
@@ -1282,12 +1349,14 @@ async function salvarFormaClicada(forma, setor, card, modelo) {
         setor,
         formaNumero: normalizeUpper(forma),
         modelo: modeloFinal,
+        concretoTipo,
         createdAt: nowIso(),
         updatedAt: nowIso(),
         liberacao: null,
         inspecoes: []
       };
     }
+    record.concretoTipo = concretoTipo;
     if (!record.liberacao || record.liberacao.status !== "1") {
       record.liberacao = { status: "1", colaborador, observacoes: "", fotos: [], timestamp: nowIso() };
       record.updatedAt = nowIso();
@@ -3202,6 +3271,18 @@ function bindEvents() {
 
   if (el.authLogoutBtn) {
     el.authLogoutBtn.addEventListener("click", logoutUser);
+  }
+
+  if (el.concretoTipoCancelBtn) {
+    el.concretoTipoCancelBtn.addEventListener("click", closeConcreteTypePopup);
+  }
+
+  if (el.concretoTipoModal) {
+    el.concretoTipoModal.addEventListener("click", (event) => {
+      if (event.target === el.concretoTipoModal) {
+        closeConcreteTypePopup();
+      }
+    });
   }
 
   if (el.ugCriarBtn) {
