@@ -2353,7 +2353,7 @@ hr {
 /* ── Acompanhamento KPI cards ─────────────────── */
 .acmp-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
   margin-top: 6px;
 }
@@ -2381,6 +2381,8 @@ hr {
 }
 .acmp-kpi-s1  { background: #eff6ff; color: #1d4ed8; }
 .acmp-kpi-s2  { background: #ecfdf5; color: #065f46; }
+.acmp-kpi-s3  { background: #f5f3ff; color: #5b21b6; }
+.acmp-kpi-s4  { background: #fff7ed; color: #9a3412; }
 .acmp-kpi-tot { background: #fef9c3; color: #854d0e; }
 
 /* ── Layout desktop: Relatórios e Histórico ───────────────── */

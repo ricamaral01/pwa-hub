@@ -556,13 +556,21 @@ const el = {
   atualizarDashboard: document.getElementById("atualizarDashboard"),
   dashSetor1Count: document.getElementById("dashSetor1Count"),
   dashSetor2Count: document.getElementById("dashSetor2Count"),
+  dashSetor3Count: document.getElementById("dashSetor3Count"),
+  dashSetor4Count: document.getElementById("dashSetor4Count"),
   dashTotalCount: document.getElementById("dashTotalCount"),
   dashSetor1Meta: document.getElementById("dashSetor1Meta"),
   dashSetor2Meta: document.getElementById("dashSetor2Meta"),
+  dashSetor3Meta: document.getElementById("dashSetor3Meta"),
+  dashSetor4Meta: document.getElementById("dashSetor4Meta"),
   dashBarSetor1: document.getElementById("dashBarSetor1"),
   dashBarSetor2: document.getElementById("dashBarSetor2"),
+  dashBarSetor3: document.getElementById("dashBarSetor3"),
+  dashBarSetor4: document.getElementById("dashBarSetor4"),
   dashBarSetor1Label: document.getElementById("dashBarSetor1Label"),
   dashBarSetor2Label: document.getElementById("dashBarSetor2Label"),
+  dashBarSetor3Label: document.getElementById("dashBarSetor3Label"),
+  dashBarSetor4Label: document.getElementById("dashBarSetor4Label"),
   dashStatus: document.getElementById("dashStatus"),
   acmpData: document.getElementById("acmpData"),
   acmpModoCarga: document.getElementById("acmpModoCarga"),
@@ -2762,26 +2770,43 @@ async function getRowsForDashboard(data, setor) {
   return { rows: getRowsFromLocalForDashboard(data, setor), source: "local" };
 }
 
-function renderDashboardConcretagem({ setor1, setor2, source, data }) {
-  const concretadasSetor1 = buildReportDataFromRows(setor1).liberado;
-  const concretadasSetor2 = buildReportDataFromRows(setor2).liberado;
-  const totalConcretadas = concretadasSetor1 + concretadasSetor2;
+function renderDashboardConcretagem({ setor1, setor2, setor3, setor4, source, data }) {
+  const r1 = Array.isArray(setor1) ? setor1 : [];
+  const r2 = Array.isArray(setor2) ? setor2 : [];
+  const r3 = Array.isArray(setor3) ? setor3 : [];
+  const r4 = Array.isArray(setor4) ? setor4 : [];
 
-  const max = Math.max(concretadasSetor1, concretadasSetor2, 1);
+  const concretadasSetor1 = buildReportDataFromRows(r1).liberado;
+  const concretadasSetor2 = buildReportDataFromRows(r2).liberado;
+  const concretadasSetor3 = buildReportDataFromRows(r3).liberado;
+  const concretadasSetor4 = buildReportDataFromRows(r4).liberado;
+  const totalConcretadas = concretadasSetor1 + concretadasSetor2 + concretadasSetor3 + concretadasSetor4;
+
+  const max = Math.max(concretadasSetor1, concretadasSetor2, concretadasSetor3, concretadasSetor4, 1);
   const width1 = Math.round((concretadasSetor1 / max) * 100);
   const width2 = Math.round((concretadasSetor2 / max) * 100);
+  const width3 = Math.round((concretadasSetor3 / max) * 100);
+  const width4 = Math.round((concretadasSetor4 / max) * 100);
 
-  el.dashSetor1Count.textContent = String(concretadasSetor1);
-  el.dashSetor2Count.textContent = String(concretadasSetor2);
-  el.dashTotalCount.textContent = String(totalConcretadas);
+  if (el.dashSetor1Count) el.dashSetor1Count.textContent = String(concretadasSetor1);
+  if (el.dashSetor2Count) el.dashSetor2Count.textContent = String(concretadasSetor2);
+  if (el.dashSetor3Count) el.dashSetor3Count.textContent = String(concretadasSetor3);
+  if (el.dashSetor4Count) el.dashSetor4Count.textContent = String(concretadasSetor4);
+  if (el.dashTotalCount) el.dashTotalCount.textContent = String(totalConcretadas);
 
-  el.dashSetor1Meta.textContent = `${concretadasSetor1} de ${setor1.length} leituras concretadas`;
-  el.dashSetor2Meta.textContent = `${concretadasSetor2} de ${setor2.length} leituras concretadas`;
+  if (el.dashSetor1Meta) el.dashSetor1Meta.textContent = `${concretadasSetor1} de ${r1.length} leituras concretadas`;
+  if (el.dashSetor2Meta) el.dashSetor2Meta.textContent = `${concretadasSetor2} de ${r2.length} leituras concretadas`;
+  if (el.dashSetor3Meta) el.dashSetor3Meta.textContent = `${concretadasSetor3} de ${r3.length} leituras concretadas`;
+  if (el.dashSetor4Meta) el.dashSetor4Meta.textContent = `${concretadasSetor4} de ${r4.length} leituras concretadas`;
 
-  el.dashBarSetor1.style.width = `${width1}%`;
-  el.dashBarSetor2.style.width = `${width2}%`;
-  el.dashBarSetor1Label.textContent = String(concretadasSetor1);
-  el.dashBarSetor2Label.textContent = String(concretadasSetor2);
+  if (el.dashBarSetor1) el.dashBarSetor1.style.width = `${width1}%`;
+  if (el.dashBarSetor2) el.dashBarSetor2.style.width = `${width2}%`;
+  if (el.dashBarSetor3) el.dashBarSetor3.style.width = `${width3}%`;
+  if (el.dashBarSetor4) el.dashBarSetor4.style.width = `${width4}%`;
+  if (el.dashBarSetor1Label) el.dashBarSetor1Label.textContent = String(concretadasSetor1);
+  if (el.dashBarSetor2Label) el.dashBarSetor2Label.textContent = String(concretadasSetor2);
+  if (el.dashBarSetor3Label) el.dashBarSetor3Label.textContent = String(concretadasSetor3);
+  if (el.dashBarSetor4Label) el.dashBarSetor4Label.textContent = String(concretadasSetor4);
 
   // Canvas chart for Acompanhamento
   destroyChart("chartAcmp");
@@ -2790,11 +2815,11 @@ function renderDashboardConcretagem({ setor1, setor2, source, data }) {
     chartInstances["chartAcmp"] = new Chart(ctxAcmp, {
       type: "bar",
       data: {
-        labels: ["Setor 1", "Setor 2"],
+        labels: ["Setor 1", "Setor 2", "Setor 3", "Setor 4"],
         datasets: [{
           label: "Produzidos",
-          data: [concretadasSetor1, concretadasSetor2],
-          backgroundColor: ["#1e40af", "#059669"],
+          data: [concretadasSetor1, concretadasSetor2, concretadasSetor3, concretadasSetor4],
+          backgroundColor: ["#1e40af", "#059669", "#7c3aed", "#ea580c"],
           borderRadius: 10
         }]
       },
@@ -2806,7 +2831,9 @@ function renderDashboardConcretagem({ setor1, setor2, source, data }) {
     });
   }
 
-  el.dashStatus.textContent = `Painel atualizado para ${data} (${source === "api" ? "dados da planilha" : "cache local"}).`;
+  if (el.dashStatus) {
+    el.dashStatus.textContent = `Painel atualizado para ${data} (${source === "api" ? "dados da planilha" : "cache local"}).`;
+  }
 }
 
 async function carregarDashboardConcretagem() {
@@ -2818,15 +2845,24 @@ async function carregarDashboardConcretagem() {
   const data = el.dashData.value;
   el.dashStatus.textContent = "Atualizando painel de concretagem...";
 
-  const [setor1Result, setor2Result] = await Promise.all([
+  const [setor1Result, setor2Result, setor3Result, setor4Result] = await Promise.all([
     getRowsForDashboard(data, "Setor 1"),
-    getRowsForDashboard(data, "Setor 2")
+    getRowsForDashboard(data, "Setor 2"),
+    getRowsForDashboard(data, "Setor 3"),
+    getRowsForDashboard(data, "Setor 4")
   ]);
 
-  const source = setor1Result.source === "api" && setor2Result.source === "api" ? "api" : "local";
+  const source = setor1Result.source === "api"
+    && setor2Result.source === "api"
+    && setor3Result.source === "api"
+    && setor4Result.source === "api"
+    ? "api"
+    : "local";
   renderDashboardConcretagem({
     setor1: setor1Result.rows,
     setor2: setor2Result.rows,
+    setor3: setor3Result.rows,
+    setor4: setor4Result.rows,
     source,
     data
   });
