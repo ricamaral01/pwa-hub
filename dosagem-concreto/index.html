@@ -5410,7 +5410,7 @@ function calcularGranMiudo() {
 
     // DMC — menor peneira cujo retido acumulado ≥ 5%
     let DMC = '—';
-    for (let i = 0; i < dados.length; i++) {
+    for (let i = dados.length - 1; i >= 0; i--) {
         if (dados[i].peneira !== 'Fundo' && dados[i].retAcum >= 5) {
             DMC = dados[i].peneira;
             break;
@@ -5490,6 +5490,32 @@ function calcularGranMiudo() {
                     • Pulverulento ≤ 5% (concreto) / ≤ 3% (submetido abrasão)
                 </div>
             </div>
+        </div>
+        
+        <h4 style="margin-top:20px;">📋 Parâmetros das Peneiras</h4>
+        <div class="gran-table-container" style="margin-top:10px;">
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>Peneira (mm)</th>
+                        <th>Massa Retida Média (g)</th>
+                        <th>% Retida (Média)</th>
+                        <th>% Ret. Acumulado</th>
+                        <th>% Passante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${dados.filter(d => d.peneira !== 'Fundo').map(d => `
+                        <tr>
+                            <td>${d.peneira}</td>
+                            <td>${fmt(d.mr, 1)}</td>
+                            <td>${fmt(d.pctRetida, 2)}</td>
+                            <td>${fmt(d.retAcum, 2)}</td>
+                            <td>${fmt(d.passante, 2)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
         </div>
     </div>`;
     document.getElementById('res-gran-miudo').innerHTML = html;
@@ -6224,6 +6250,61 @@ function salvarPDF(secId, nomeArquivo) {
     const agora = new Date();
     const tituloOrig = document.title;
     document.title = nomeArquivo + '_' + agora.toISOString().slice(0, 10);
+    
+    // Adicionar tabela de parâmetros das peneiras para granulometria miúdo
+    if (secId === 'sec-gran-miudo' && window._granMiudoDados) {
+        const dados = window._granMiudoDados.dados;
+        const tabelaPeneiras = `
+            <div class="result-box" style="border-left-color:var(--primary-light); margin-top:20px; page-break-inside:avoid;">
+                <h4>📋 Parâmetros das Peneiras</h4>
+                <div class="gran-table-container" style="margin-top:10px;">
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Peneira (mm)</th>
+                                <th>Massa Retida Média (g)</th>
+                                <th>% Retida (Média)</th>
+                                <th>% Ret. Acumulado</th>
+                                <th>% Passante</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${dados.filter(d => d.peneira !== 'Fundo').map(d => `
+                                <tr>
+                                    <td>${d.peneira}</td>
+                                    <td>${fmt(d.mr, 1)}</td>
+                                    <td>${fmt(d.pctRetida, 2)}</td>
+                                    <td>${fmt(d.retAcum, 2)}</td>
+                                    <td>${fmt(d.passante, 2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        
+        // Adicionar a tabela ao final da seção antes de imprimir
+        const sec = document.getElementById(secId);
+        const resDiv = sec.querySelector('#res-gran-miudo');
+        if (resDiv) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = tabelaPeneiras;
+            tempDiv.style.display = 'block';
+            tempDiv.className = 'pdf-extra-content';
+            resDiv.appendChild(tempDiv);
+            
+            // Imprimir e depois remover o conteúdo extra
+            imprimirSecao(secId, nomeArquivo.replace(/_/g, ' '));
+            
+            setTimeout(() => {
+                tempDiv.remove();
+                document.title = tituloOrig;
+            }, 1000);
+            return;
+        }
+    }
+    
     imprimirSecao(secId, nomeArquivo.replace(/_/g, ' '));
     setTimeout(() => { document.title = tituloOrig; }, 1500);
 }
@@ -7662,6 +7743,56 @@ function imprimirSecao(secId, titulo) {
     const unidadeLabel = document.getElementById('dos_unidade')?.selectedOptions?.[0]?.textContent?.trim() || '';
 
     applyPrintSectionContent(secId);
+
+    // Adicionar tabela de parâmetros das peneiras para granulometria miúdo na impressão
+    if (secId === 'sec-gran-miudo' && window._granMiudoDados) {
+        const dados = window._granMiudoDados.dados;
+        const tabelaPeneiras = `
+            <div class="result-box" style="border-left-color:var(--primary-light); margin-top:20px; page-break-inside:avoid;">
+                <h4>📋 Parâmetros das Peneiras</h4>
+                <div class="gran-table-container" style="margin-top:10px;">
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Peneira (mm)</th>
+                                <th>Massa Retida Média (g)</th>
+                                <th>% Retida (Média)</th>
+                                <th>% Ret. Acumulado</th>
+                                <th>% Passante</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${dados.filter(d => d.peneira !== 'Fundo').map(d => `
+                                <tr>
+                                    <td>${d.peneira}</td>
+                                    <td>${fmt(d.mr, 1)}</td>
+                                    <td>${fmt(d.pctRetida, 2)}</td>
+                                    <td>${fmt(d.retAcum, 2)}</td>
+                                    <td>${fmt(d.passante, 2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        
+        // Adicionar a tabela ao final da seção para impressão
+        const resDiv = sec.querySelector('#res-gran-miudo');
+        if (resDiv) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = tabelaPeneiras;
+            tempDiv.style.display = 'block';
+            tempDiv.className = 'print-extra-content';
+            resDiv.appendChild(tempDiv);
+            
+            // Agendar remoção após impressão
+            setTimeout(() => {
+                const extraContent = sec.querySelector('.print-extra-content');
+                if (extraContent) extraContent.remove();
+            }, 1000);
+        }
+    }
 
     let reportDiv = sec.querySelector('.print-report:not(.report-footer-print)');
     if (!reportDiv) {
