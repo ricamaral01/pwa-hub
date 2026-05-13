@@ -182,18 +182,20 @@ payload=&lt;json-stringificado&gt;</code></pre>
         <li><code>montagem_poste</code>: montagem de postes (upsert por <code>key</code>).</li>
       </ul>
     </div>
-    <div class="card warn">
-      <h3>Apps Script “unificado” (no repo) e compatibilidade</h3>
+    <div class="card ok">
+      <h3>Apps Script unificado (no repo)</h3>
       <div class="small">
-        Arquivo: <code>AppsScript_unificado.gs</code> (referência no repo).
+        Arquivo: <code>mapa-concretagem/AppsScript_unificado_mapa_concretagem.gs</code>
       </div>
       <ul>
-        <li>Ele implementa <code>POST action=salvar_forma_click</code> e grava na aba <code>tecnica</code>.</li>
-        <li>Ele <strong>não</strong> implementa (no arquivo atual do repo): <code>status</code>, <code>relatorio_setor</code>, <code>inspecao_pendentes</code>, <code>salvar_inspecao_lote</code>.</li>
+        <li><strong>Planilha produção:</strong> <code>https://docs.google.com/spreadsheets/d/1uV-H5hGRyqR04xb9wKF8__xl5-XLt68CEKKkM30JF1o</code> aba <code>Pagina1</code></li>
+        <li><strong>Planilha usuários/montagem:</strong> Mesma planilha ou configurável via propriedade</li>
+        <li><strong>URL implantada:</strong> <code>https://script.google.com/macros/s/AKfycbzhygWG5lMginoFtswVUO3CRhQv-xDTbQ2tRQXHYJY-Ul3w6vhJoISgTSPCC9h2JTo2UA/exec</code></li>
+        <li><code>salvar_forma_click</code>: salva liberação com tipo de concreto.</li>
+        <li><code>salvar_inspecao_lote</code>, <code>listar_inspecao_pendentes</code>, <code>relatorio_setor</code>: inspeções e relatórios.</li>
+        <li><code>listar_usuarios</code>, <code>autenticar_usuario</code>, <code>criar_usuario</code>, <code>excluir_usuario</code>: gerenciamento de usuários.</li>
+        <li><code>salvar_montagem_poste</code>: montagem de postes.</li>
       </ul>
-      <div class="small">
-        Se o Web App real apontado por <code>CONFIG.API_URL</code> já responde essas ações, então ele é um Apps Script diferente/mais completo do que o arquivo <code>AppsScript_unificado.gs</code> versionado aqui.
-      </div>
     </div>
   </div>
 
@@ -202,7 +204,9 @@ payload=&lt;json-stringificado&gt;</code></pre>
     <ul>
       <li>O app foi desenhado para funcionar <strong>offline</strong>: sempre salva localmente e tenta sincronizar quando possível.</li>
       <li>A “fonte de verdade” para dashboards e histórico é o DB local (<code>records/events</code>), com sincronização opcional.</li>
-      <li>Para inspeção/relatórios online funcionarem, o Apps Script do <code>CONFIG.API_URL</code> precisa suportar as ações que o front chama.</li>
+      <li>O sistema agora usa <code>AppsScript_unificado_mapa_concretagem.gs</code> que combina todas as funcionalidades necessárias.</li>
+      <li>As liberações agora incluem o tipo de concreto (Padrão/Vibrado/Concreto com Variação) no payload salvo.</li>
+      <li>Para usuários e montagem de postes, usa a mesma planilha ou uma configurável via propriedade do script.</li>
     </ul>
   </div>
 

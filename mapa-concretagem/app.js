@@ -77,7 +77,11 @@ function isFormaClicked(forma, setor) {
   return !!data.formas[key];
 }
 const CONFIG = {
-  API_URL: "https://script.google.com/macros/s/AKfycbx83KmaFs3O3_RqfThs_0SCnaMBc3mb-RP30QKvtfJuEfnqft4eaFQVgYwuHxx3F-RttQ/exec",
+  // URL do AppsScript para Mapa de Concretagem
+  // Planilha destino: https://docs.google.com/spreadsheets/d/1uV-H5hGRyqR04xb9wKF8__xl5-XLt68CEKKkM30JF1o
+  // Aba: Pagina1
+  // ATUALIZADO: Script unificado implantado
+  API_URL: "https://script.google.com/macros/s/AKfycbzhygWG5lMginoFtswVUO3CRhQv-xDTbQ2tRQXHYJY-Ul3w6vhJoISgTSPCC9h2JTo2UA/exec",
   MONTAGEM_API_URL: "https://script.google.com/macros/s/AKfycbz6m9a2w1aRIGcw9_yZoocwQdcCRLdm4yldeeGSEEb_d6PJBYfJ3utvD0Pyat0STVvgYQ/exec"
 };
 
