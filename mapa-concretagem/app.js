@@ -3075,7 +3075,7 @@ function escapeHtml(str) {
 }
 
 async function listUsersFromApi(options = {}) {
-  const result = await postToMontagemApi("listar_usuarios", {});
+  const result = await postToApi("listar_usuarios", {});
   if (result.ok) {
     state.usersCache = Array.isArray(result.users) ? result.users : [];
     return { ok: true, users: state.usersCache };
@@ -3088,15 +3088,15 @@ async function listUsersFromApi(options = {}) {
 }
 
 async function authenticateUserInApi(name, password) {
-  return postToMontagemApi("autenticar_usuario", { name, password });
+  return postToApi("autenticar_usuario", { name, password });
 }
 
 async function createUserInApi(name, role, password) {
-  return postToMontagemApi("criar_usuario", { name, role, password });
+  return postToApi("criar_usuario", { name, role, password });
 }
 
 async function deleteUserInApi(id) {
-  return postToMontagemApi("excluir_usuario", { id });
+  return postToApi("excluir_usuario", { id });
 }
 
 function setUgFeedback(message, isOk) {
