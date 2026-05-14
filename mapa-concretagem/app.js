@@ -743,7 +743,19 @@ async function postToApi(action, payload) {
 
   try {
     if (action === "salvar_forma_click") {
+      let dtStr = new Date().toISOString();
+      if (payload.dia && payload.hora) {
+         try {
+           const [dd, mm, yyyy] = payload.dia.split('/');
+           const [hh, min, ss] = payload.hora.split(':');
+           // Força o horário local do apontamento para o fuso de Brasília (-03:00)
+           const localStr = `${yyyy}-${mm}-${dd}T${hh}:${min}:${ss || '00'}-03:00`;
+           dtStr = new Date(localStr).toISOString();
+         } catch(e) {}
+      }
+
       const { error } = await supabaseClient.from('producao').insert([{
+        data_hora: dtStr,
         setor: payload.setor,
         forma: payload.forma,
         modelo: payload.modelo,
