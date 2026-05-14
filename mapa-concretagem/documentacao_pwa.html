@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação do PWA - Mapa de Concretagem</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        h1, h2, h3 { color: #0f1e3c; }
+        h1 { border-bottom: 2px solid #0f1e3c; padding-bottom: 10px; }
+        h2 { margin-top: 30px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: #fff;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+        th { background-color: #0f1e3c; color: #fff; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        code {
+            background-color: #e9ecef;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mapa de Concretagem - Documentação Técnica</h1>
+    
+    <div class="card">
+        <h2>Visão Geral do PWA</h2>
+        <p>O <strong>Mapa de Concretagem</strong> é um Progressive Web App (PWA) offline-first utilizado para gerenciar o planejamento, liberação de formas, produção (concretagem) e inspeção (montagem de postes). O sistema foi refatorado para deixar de utilizar o Google Sheets (via Google Apps Script) como banco de dados e passar a utilizar o <strong>Supabase (PostgreSQL)</strong>.</p>
+        
+        <h3>Tecnologias Utilizadas</h3>
+        <ul>
+            <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript (Vanilla), Chart.js (Dashboards).</li>
+            <li><strong>Backend / Banco de Dados:</strong> Supabase (PostgreSQL), Supabase JS Client.</li>
+            <li><strong>Estratégia Offline:</strong> Armazenamento via <code>localStorage</code> (cache de dados e fila de sincronização) com Service Worker para PWA.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Fluxo de Arquitetura</h2>
+        <div class="flow-diagram">
+            <div>PWA (Frontend / LocalStorage)</div>
+            <div>&harr;</div>
+            <div>Supabase Client SDK</div>
+            <div>&harr;</div>
+            <div>Supabase (PostgreSQL)</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Modelo Relacional (Tabelas do Supabase)</h2>
+
+        <h3>Tabela: <code>producao</code></h3>
+        <p>Substitui a antiga aba "Pagina1" da planilha. Armazena as formas liberadas e as inspeções realizadas na produção de concreto.</p>
+        <table>
+            <tr><th>Coluna</th><th>Tipo</th><th>Descrição</th></tr>
+            <tr><td><code>id</code></td><td>UUID (PK)</td><td>Identificador único gerado automaticamente</td></tr>
+            <tr><td><code>data_hora</code></td><td>TIMESTAMP</td><td>Data e hora exata do registro</td></tr>
+            <tr><td><code>setor</code></td><td>TEXT</td><td>Setor da fábrica (Ex: "Setor 1", "Setor 2")</td></tr>
+            <tr><td><code>forma</code></td><td>TEXT</td><td>Código da forma (Ex: "IE-01", "A-52")</td></tr>
+            <tr><td><code>modelo</code></td><td>TEXT</td><td>Modelo do poste associado à forma</td></tr>
+            <tr><td><code>tipo_concreto</code></td><td>TEXT</td><td>Tipos: "Padrão", "Vibrado", "INSPECIONADO"</td></tr>
+            <tr><td><code>colaborador</code></td><td>TEXT</td><td>Nome do operador ou inspetor</td></tr>
+            <tr><td><code>data_fabricacao</code></td><td>DATE</td><td>Data de referência da produção</td></tr>
+            <tr><td><code>status</code></td><td>TEXT</td><td>Fluxo atual: "LIBERADO" ou "INSPECIONADO"</td></tr>
+        </table>
+
+        <h3>Tabela: <code>usuarios</code></h3>
+        <p>Substitui a aba "usuarios_mapa". Gerencia os acessos e permissões da aplicação.</p>
+        <table>
+            <tr><th>Coluna</th><th>Tipo</th><th>Descrição</th></tr>
+            <tr><td><code>id</code></td><td>TEXT (PK)</td><td>Identificador gerado do login (Ex: user-nome)</td></tr>
+            <tr><td><code>nome</code></td><td>TEXT</td><td>Nome completo do usuário</td></tr>
+            <tr><td><code>perfil</code></td><td>TEXT</td><td>Níveis de acesso: "GERENCIA", "GESTOR", "MONTADOR"</td></tr>
+            <tr><td><code>senha</code></td><td>TEXT</td><td>Senha do usuário (Texto simples neste escopo legado)</td></tr>
+            <tr><td><code>ativo</code></td><td>BOOLEAN</td><td>Define se o usuário tem acesso ou foi deletado (soft delete)</td></tr>
+            <tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>Data de criação</td></tr>
+            <tr><td><code>updated_at</code></td><td>TIMESTAMP</td><td>Data de alteração</td></tr>
+        </table>
+
+        <h3>Tabela: <code>montagem_poste</code></h3>
+        <p>Substitui a aba "montagem_poste". Controla a montagem estrutural, aprovações, recusas e os checklists que foram executados.</p>
+        <table>
+            <tr><th>Coluna</th><th>Tipo</th><th>Descrição</th></tr>
+            <tr><td><code>id</code></td><td>TEXT (PK)</td><td>Chave composta: recordId||data||setor||forma</td></tr>
+            <tr><td><code>record_id</code></td><td>TEXT</td><td>ID único gerado pelo frontend</td></tr>
+            <tr><td><code>data_fabricacao</code></td><td>DATE</td><td>Data base de quando foi fabricado</td></tr>
+            <tr><td><code>setor</code> / <code>forma_numero</code> / <code>modelo</code></td><td>TEXT</td><td>Identificadores da forma do poste</td></tr>
+            <tr><td><code>status_montagem</code></td><td>TEXT</td><td>Status ("A" = Aprovado, "R" = Reprovado, "RR" = Retrabalho)</td></tr>
+            <tr><td><code>motivo_recusa</code></td><td>TEXT</td><td>Código do motivo caso seja recusado</td></tr>
+            <tr><td><code>etapa</code></td><td>TEXT</td><td>Status do fluxo interno de UI</td></tr>
+            <tr><td><code>checklists</code></td><td>JSONB</td><td>Dados dinâmicos e flexíveis dos checklists de validação</td></tr>
+            <tr><td><code>observacoes_montagem</code></td><td>TEXT</td><td>Notas e comentários do montador</td></tr>
+            <tr><td><code>montador_nome</code></td><td>TEXT</td><td>Quem assinou a montagem</td></tr>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Estratégia de Inicialização do Cliente Supabase</h2>
+        <p>O <code>app.js</code> foi atualizado para carregar o cliente do Supabase e remover as funções de <code>fetch</code> utilizadas com o Apps Script.</p>
+        <pre><code>const SUPABASE_CONFIG = {
+  URL: "https://[ID].supabase.co",
+  KEY: "eyJ..."
+};
+const supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.KEY);</code></pre>
+        <p>O fluxo de offline (salvando payloads nas chaves do <code>localStorage</code>) permanece. O sincronizador em segundo plano agora consome os dados locais e insere as informações diretamente no banco PostgreSQL na nuvem sempre que a conexão (online) é restabelecida.</p>
+    </div>
+
+</body>
+</html>

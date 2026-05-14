@@ -76,14 +76,11 @@ function isFormaClicked(forma, setor) {
   const key = setor + "||" + normalizeUpper(forma);
   return !!data.formas[key];
 }
-const CONFIG = {
-  // URL do AppsScript para Mapa de Concretagem
-  // Planilha destino: https://docs.google.com/spreadsheets/d/1uV-H5hGRyqR04xb9wKF8__xl5-XLt68CEKKkM30JF1o
-  // Aba: Pagina1
-  // ATUALIZADO: Script unificado implantado
-  API_URL: "https://script.google.com/macros/s/AKfycbzhygWG5lMginoFtswVUO3CRhQv-xDTbQ2tRQXHYJY-Ul3w6vhJoISgTSPCC9h2JTo2UA/exec",
-  MONTAGEM_API_URL: "https://script.google.com/macros/s/AKfycbz6m9a2w1aRIGcw9_yZoocwQdcCRLdm4yldeeGSEEb_d6PJBYfJ3utvD0Pyat0STVvgYQ/exec"
+const SUPABASE_CONFIG = {
+  URL: "https://fbvvdyirhtgvycullsqy.supabase.co",
+  KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZidnZkeWlyaHRndnljdWxsc3F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Njc5MTksImV4cCI6MjA5NDM0MzkxOX0.vzudcEhAwdAutU0g-Mra818fd8_DciepjqvU8Z-C4wc"
 };
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.KEY) : null;
 
 const CHECKLIST_INSPECAO_CODIGOS = [
   { codigo: "A", descricao: "Falha na Concretagem" },
@@ -704,11 +701,11 @@ function upsertRecord(db, record) {
 }
 
 function hasApiConfigured() {
-  return CONFIG.API_URL && CONFIG.API_URL.startsWith("https://script.google.com/");
+  return supabaseClient !== null;
 }
 
 function hasMontagemApiConfigured() {
-  return CONFIG.MONTAGEM_API_URL && CONFIG.MONTAGEM_API_URL.startsWith("https://script.google.com/");
+  return supabaseClient !== null;
 }
 
 function setSyncStatus(kind, message) {
@@ -723,28 +720,19 @@ function setSyncStatus(kind, message) {
 
 async function checkApiStatus() {
   if (!hasApiConfigured()) {
-    setSyncStatus("warn", "API não configurada: salvando apenas localmente.");
+    setSyncStatus("warn", "Supabase não configurado: salvando apenas localmente.");
     return;
   }
 
   try {
-    const resp = await fetch(`${CONFIG.API_URL}?action=status`);
-    const text = await resp.text();
-    let data = null;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      setSyncStatus("error", "API respondeu formato inválido.");
-      return;
-    }
-
-    if (data && data.ok) {
-      setSyncStatus("ok", "Conectado com planilha: sincronização online ativa.");
+    const { error } = await supabaseClient.from('usuarios').select('id').limit(1);
+    if (!error) {
+      setSyncStatus("ok", "Conectado ao Supabase: sincronização online ativa.");
     } else {
-      setSyncStatus("error", "Falha ao verificar API da planilha.");
+      setSyncStatus("error", "Falha ao verificar banco Supabase.");
     }
   } catch {
-    setSyncStatus("error", "Sem conexão com API da planilha no momento.");
+    setSyncStatus("error", "Sem conexão com Supabase no momento.");
   }
 }
 
@@ -753,24 +741,111 @@ async function postToApi(action, payload) {
     return { ok: false, skipped: true, error: "API não configurada" };
   }
 
-  const body = new URLSearchParams();
-  body.set("action", action);
-  body.set("payload", JSON.stringify(payload));
-
   try {
-    const response = await fetch(CONFIG.API_URL, {
-      method: "POST",
-      body
-    });
-
-    const text = await response.text();
-    try {
-      return JSON.parse(text);
-    } catch {
-      return { ok: false, error: "Resposta inválida do servidor", raw: text };
+    if (action === "salvar_forma_click") {
+      const { error } = await supabaseClient.from('producao').insert([{
+        setor: payload.setor,
+        forma: payload.forma,
+        modelo: payload.modelo,
+        tipo_concreto: payload.tipo_concreto || 'Padrão',
+        colaborador: payload.colaborador,
+        data_fabricacao: payload.dataFabricacao,
+        status: 'LIBERADO'
+      }]);
+      if (error) throw error;
+      return { ok: true, message: "Forma liberada salva com sucesso" };
     }
+
+    if (action === "salvar_inspecao_lote") {
+      const inserts = (payload.entries || []).map(entry => ({
+        setor: entry.setor,
+        forma: entry.forma,
+        modelo: entry.modelo,
+        colaborador: entry.colaborador,
+        data_fabricacao: entry.dataProducao,
+        tipo_concreto: 'INSPECIONADO',
+        status: 'INSPECIONADO'
+      }));
+      const { error } = await supabaseClient.from('producao').insert(inserts);
+      if (error) throw error;
+      return { ok: true, message: "Inspeções salvas", results: inserts.map(i => ({forma: i.forma, status: 'ok'})) };
+    }
+
+    if (action === "listar_inspecao_pendentes") {
+      let query = supabaseClient.from('producao').select('*').eq('status', 'LIBERADO');
+      if (payload.data) query = query.eq('data_fabricacao', payload.data);
+      if (payload.setor) query = query.eq('setor', payload.setor);
+      const { data, error } = await query;
+      if (error) throw error;
+      
+      const pendentes = data.map(row => ({
+        forma: row.forma,
+        setor: row.setor,
+        modelo: row.modelo,
+        dataProducao: row.data_fabricacao,
+        tipoConcreto: row.tipo_concreto
+      }));
+      return { ok: true, pendentes };
+    }
+
+    if (action === "relatorio_setor") {
+      let query = supabaseClient.from('producao').select('*');
+      if (payload.data) query = query.eq('data_fabricacao', payload.data);
+      if (payload.setor) query = query.eq('setor', payload.setor);
+      const { data, error } = await query;
+      if (error) throw error;
+
+      const relatorio = { liberados: 0, inspecionados: 0, porSetor: {}, porTipo: {} };
+      data.forEach(row => {
+        if (row.status === "LIBERADO") relatorio.liberados++;
+        if (row.status === "INSPECIONADO") relatorio.inspecionados++;
+        
+        if (!relatorio.porSetor[row.setor]) relatorio.porSetor[row.setor] = { liberados: 0, inspecionados: 0 };
+        if (row.status === "LIBERADO") relatorio.porSetor[row.setor].liberados++;
+        if (row.status === "INSPECIONADO") relatorio.porSetor[row.setor].inspecionados++;
+        
+        if (!relatorio.porTipo[row.tipo_concreto]) relatorio.porTipo[row.tipo_concreto] = 0;
+        relatorio.porTipo[row.tipo_concreto]++;
+      });
+      return { ok: true, relatorio };
+    }
+
+    if (action === "listar_usuarios") {
+      const { data, error } = await supabaseClient.from('usuarios').select('*').eq('ativo', true);
+      if (error) throw error;
+      const users = data.map(u => ({ id: u.id, name: u.nome, role: u.perfil, active: u.ativo }));
+      return { ok: true, users };
+    }
+
+    if (action === "autenticar_usuario") {
+      const { data, error } = await supabaseClient.from('usuarios')
+        .select('*').eq('ativo', true).ilike('nome', payload.name).eq('senha', payload.password).limit(1);
+      if (error) throw error;
+      if (data.length === 0) return { ok: false, error: "Usuário ou senha incorretos." };
+      return { ok: true, user: { id: data[0].id, name: data[0].nome, role: data[0].perfil, active: data[0].ativo } };
+    }
+
+    if (action === "criar_usuario") {
+      const userId = "user-" + payload.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const { data, error } = await supabaseClient.from('usuarios').insert([{
+        id: userId,
+        nome: payload.name,
+        perfil: payload.role,
+        senha: payload.password
+      }]).select();
+      if (error) throw error;
+      return { ok: true, user: { id: userId, name: payload.name, role: payload.role, active: true } };
+    }
+
+    if (action === "excluir_usuario") {
+      const { error } = await supabaseClient.from('usuarios').update({ ativo: false }).eq('id', payload.id);
+      if (error) throw error;
+      return { ok: true, deletedId: payload.id };
+    }
+
+    return { ok: false, error: "Ação POST inválida" };
   } catch (error) {
-    return { ok: false, error: `Falha de rede: ${String(error)}` };
+    return { ok: false, error: error.message || String(error) };
   }
 }
 
@@ -779,24 +854,35 @@ async function postToMontagemApi(action, payload) {
     return { ok: false, skipped: true, error: "API de montagem não configurada" };
   }
 
-  const body = new URLSearchParams();
-  body.set("action", action);
-  body.set("payload", JSON.stringify(payload));
-
   try {
-    const response = await fetch(CONFIG.MONTAGEM_API_URL, {
-      method: "POST",
-      body
-    });
+    if (action === "salvar_montagem_poste") {
+      let key = payload.key;
+      if (!key) key = [payload.recordId, payload.dataFabricacao, payload.setor, payload.formaNumero].join("||");
 
-    const text = await response.text();
-    try {
-      return JSON.parse(text);
-    } catch {
-      return { ok: false, error: "Resposta inválida do servidor de montagem", raw: text };
+      const { data, error } = await supabaseClient.from('montagem_poste').upsert({
+        id: key,
+        record_id: payload.recordId,
+        data_fabricacao: payload.dataFabricacao,
+        setor: payload.setor,
+        forma_numero: payload.formaNumero,
+        modelo: payload.modelo,
+        status_montagem: payload.statusMontagem,
+        motivo_recusa: payload.motivoRecusa,
+        etapa: payload.etapa,
+        inicio_inspecao_montagem: payload.inicioInspecaoMontagem || null,
+        finalizado_em: payload.finalizadoEm || null,
+        checklists: payload.checklists || {},
+        banco: payload.banco || 'montagem_poste',
+        observacoes_montagem: payload.observacoesMontagem,
+        montador_nome: payload.montadorNome
+      });
+      if (error) throw error;
+      return { ok: true, upsert: "update", key };
     }
+
+    return { ok: false, error: "Ação POST inválida na montagem" };
   } catch (error) {
-    return { ok: false, error: `Falha de rede (montagem): ${String(error)}` };
+    return { ok: false, error: error.message || String(error) };
   }
 }
 
