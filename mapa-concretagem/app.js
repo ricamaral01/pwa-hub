@@ -1494,23 +1494,26 @@ function getInspecaoCodeOptions(selectedCode) {
 async function getInspecaoRowsFromApi(filtroData, modoCarga, setor) {
   if (!hasApiConfigured()) return null;
 
-  const params = new URLSearchParams();
-  params.set("action", "inspecao_pendentes");
-  // O backend pode estar com datas em formato textual longo; filtramos por data no cliente.
-  if (setor) params.set("setor", setor);
-
   try {
-    const response = await fetch(`${CONFIG.API_URL}?${params.toString()}`);
-    const text = await response.text();
-    const payload = JSON.parse(text);
-    if (payload.ok && Array.isArray(payload.rows)) return payload.rows;
-    console.error("[inspecao_pendentes] resposta inesperada:", payload);
+    let query = supabaseClient.from('producao').select('*');
+    if (setor) query = query.eq('setor', setor);
+
+    const { data, error } = await query;
+    if (error) throw error;
+    
+    return data.map(row => ({
+      record_id: row.id,
+      data_fabricacao: row.data_fabricacao,
+      setor: row.setor,
+      forma_numero: row.forma,
+      modelo: row.modelo,
+      liberacao_status: "1",
+      ins_status: row.status === 'INSPECIONADO' ? "A" : ""
+    }));
   } catch (err) {
-    console.error("[inspecao_pendentes] erro na requisição:", err);
+    console.error("[inspecao_pendentes] erro:", err);
     return null;
   }
-
-  return null;
 }
 
 function filtrarFormasTabela() {
@@ -2750,14 +2753,14 @@ async function renderAcmpConcretagem() {
     let fetched = false;
     if (hasApiConfigured()) {
       try {
-        const params = new URLSearchParams({ action: "relatorio_setor", setor });
-        if (data) params.set("dataFabricacao", data);
-        const response = await fetch(`${CONFIG.API_URL}?${params}`);
-        const payload = JSON.parse(await response.text());
-        if (payload.ok && Array.isArray(payload.rows)) {
-          let rows = payload.rows.filter((r) => String(r.liberacao_status || "") === "1");
-          if (modoCarga === "pendentes") rows = rows.filter((r) => !String(r.ins_status || "").trim());
-          rows.forEach((r) => allRows.push({ ...r, _setor: setor }));
+        let query = supabaseClient.from('producao').select('*').eq('setor', setor);
+        if (data) query = query.eq('data_fabricacao', data);
+        
+        const { data: qData, error } = await query;
+        if (!error && Array.isArray(qData)) {
+          let rows = qData;
+          if (modoCarga === "pendentes") rows = rows.filter((r) => r.status !== 'INSPECIONADO');
+          rows.forEach((r) => allRows.push({ ...r, _setor: setor, forma_numero: r.forma, lib_timestamp: r.data_hora }));
           fetched = true;
         }
       } catch { /* fallback local */ }
@@ -2846,12 +2849,17 @@ async function getRowsForDashboard(data, setor) {
   }
 
   try {
-    const url = `${CONFIG.API_URL}?action=relatorio_setor&dataFabricacao=${encodeURIComponent(data)}&setor=${encodeURIComponent(setor)}`;
-    const response = await fetch(url);
-    const text = await response.text();
-    const payload = JSON.parse(text);
-    if (payload.ok && Array.isArray(payload.rows)) {
-      return { rows: payload.rows, source: "api" };
+    let query = supabaseClient.from('producao').select('*').eq('setor', setor).eq('data_fabricacao', data);
+    const { data: rows, error } = await query;
+    if (!error && Array.isArray(rows)) {
+      return { 
+        rows: rows.map(r => ({
+          forma_numero: r.forma,
+          modelo: r.modelo,
+          liberacao_status: "1"
+        })), 
+        source: "api" 
+      };
     }
   } catch {
     // Fallback local em caso de falha temporária da API.
@@ -3002,17 +3010,21 @@ async function gerarRelatorioSetor() {
 
   if (hasApiConfigured()) {
     try {
-      const url = `${CONFIG.API_URL}?action=relatorio_setor&dataFabricacao=${encodeURIComponent(data)}&setor=${encodeURIComponent(setor)}`;
-      const response = await fetch(url);
-      const text = await response.text();
-      const payload = JSON.parse(text);
-      if (payload.ok && Array.isArray(payload.rows)) {
-        renderRelatorioSetor({ data, setor, encarregado, rows: payload.rows });
-        setSyncStatus("ok", `Relatório do ${setor} em ${data} gerado pela planilha.`);
+      let query = supabaseClient.from('producao').select('*').eq('setor', setor).eq('data_fabricacao', data);
+      const { data: rows, error } = await query;
+      
+      if (!error && Array.isArray(rows)) {
+        const mappedRows = rows.map(r => ({
+          forma_numero: r.forma,
+          modelo: r.modelo,
+          liberacao_status: "1"
+        }));
+        renderRelatorioSetor({ data, setor, encarregado, rows: mappedRows });
+        setSyncStatus("ok", `Relatório do ${setor} em ${data} gerado pela nuvem.`);
         return;
       }
     } catch {
-      setSyncStatus("warn", "Falha ao buscar relatório na planilha. Gerando pelo cache local.");
+      setSyncStatus("warn", "Falha ao buscar relatório. Gerando pelo cache local.");
     }
   }
 
