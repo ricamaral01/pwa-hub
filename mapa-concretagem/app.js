@@ -43,7 +43,7 @@ const MONTAGEM_CHECKLIST_SECTIONS = [
   }
 ];
 
-const CONCRETO_TIPOS = ["Padrão", "Vibrado", "Concreto com Variação"];
+const CONCRETO_TIPOS = ["Padrão Vibrado", "Concreto com Variação"];
 
 function getConcreteTypeForForma(forma, setor) {
   const dataFabricacao = el.libData?.value || todayYmd();
@@ -1205,6 +1205,16 @@ function renderSheetSide(items, container, options = {}) {
 function setCardState(card, state) {
   card.classList.remove("is-idle", "is-saving", "is-saved", "is-error");
   card.classList.add("is-" + state);
+  
+  // Se for uma célula do mapa do Setor 4, atualizar a linha inteira
+  if (card.classList.contains("s4-forma-cell") && state === "saved") {
+    const tr = card.closest("tr");
+    if (tr) {
+      const tdLib = tr.querySelector(".td-lib");
+      if (tdLib) tdLib.textContent = "1";
+    }
+  }
+
   const statusEl = card.querySelector(".fc-status");
   if (!statusEl) return;
   if (state === "saving") {
@@ -1301,6 +1311,179 @@ function renderSector3Cols(container, col1Forms, col2Forms, col3Forms, setor) {
   container.appendChild(col3);
 }
 
+function createS4TableRow(item, setor) {
+  const tr = document.createElement("tr");
+  
+  const tdForma = document.createElement("td");
+  tdForma.className = "s4-forma-cell";
+  tdForma.textContent = item.label || item.forma;
+  tdForma.dataset.formaNumero = normalizeUpper(item.forma);
+  tdForma.dataset.modelo = item.modelo || "";
+  
+  const tdModelo = document.createElement("td");
+  tdModelo.textContent = item.modelo || "";
+  
+  const tdLib = document.createElement("td");
+  tdLib.className = "td-lib";
+  
+  const tdInsStatus = document.createElement("td");
+  tdInsStatus.className = "td-ins-status";
+  
+  const tdInsCod = document.createElement("td");
+  tdInsCod.className = "td-ins-cod";
+
+  const refreshRow = () => {
+    if (isFormaClicked(item.forma, setor)) {
+      tdForma.classList.add("is-saved");
+      tdLib.textContent = "1";
+      const db = readDb();
+      const rec = findRecordByKey(db, el.libData?.value || todayYmd(), setor, normalizeUpper(item.forma));
+      const ins = getInspecaoResumo(rec);
+      tdInsStatus.textContent = ins.status || "";
+      tdInsCod.textContent = ins.cod || "";
+    } else {
+      tdForma.classList.remove("is-saved");
+      tdLib.textContent = "";
+      tdInsStatus.textContent = "";
+      tdInsCod.textContent = "";
+    }
+  };
+
+  tdForma.addEventListener("click", () => {
+    const data = el.libData?.value;
+    const colaborador = (el.libColaborador?.value || "").trim();
+    if (!data) { showLibFeedback("Data!", "error"); return; }
+    if (!colaborador) { showLibFeedback("Colaborador!", "error"); return; }
+    showConcreteTypePopup(item.forma, setor, tdForma, item.modelo || "");
+  });
+
+  tr.appendChild(tdForma);
+  tr.appendChild(tdModelo);
+  tr.appendChild(tdLib);
+  tr.appendChild(tdInsStatus);
+  tr.appendChild(tdInsCod);
+  
+  refreshRow();
+  return tr;
+}
+
+function renderSetor4Mapa(container) {
+  if (!container) return;
+  container.innerHTML = "";
+  container.className = "s4-mapa-container";
+
+  const setor = "Setor 4";
+
+  // Coluna 1
+  const col1 = document.createElement("div");
+  col1.className = "s4-col";
+  
+  // Tabela 1: *1 a MD
+  const wrap1 = document.createElement("div");
+  wrap1.className = "s4-table-wrapper";
+  const table1 = document.createElement("table");
+  table1.className = "s4-table";
+  table1.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção<br><span style="font-size:8px">Status | Cód</span></th></tr></thead><tbody></tbody>`;
+  const body1 = table1.querySelector("tbody");
+  SETOR_4_COL1_FORMS.slice(0, 8).forEach(item => body1.appendChild(createS4TableRow(item, setor)));
+  wrap1.appendChild(table1);
+  col1.appendChild(wrap1);
+
+  // Legenda
+  const legendDiv = document.createElement("div");
+  legendDiv.className = "s4-legend-grid";
+  const legendData = [
+    ["6,0x90", ""], ["7,5x90", ""], ["7,5x200", ""], ["7,5x300", ""],
+    ["7,5x400", ""], ["7,5x600", ""], ["7,5x700", ""], ["7,5x800", ""],
+    ["7,0x150", ""], ["x 200", ""], ["x 300", ""], ["x 400", ""],
+    ["x 600", ""], ["X 1000", ""], ["X 1000", ""], ["X", ""], ["X", ""]
+  ];
+  legendDiv.innerHTML = `<div class="s4-legend-header">Legenda</div><div class="s4-legend-header">Quant.</div><div class="s4-legend-header">Mod.</div><div class="s4-legend-header">Quant.</div>`;
+  legendData.forEach(row => {
+    legendDiv.innerHTML += `<div>${row[0]}</div><div>${row[1]}</div>`;
+  });
+  col1.appendChild(legendDiv);
+
+  // Tabela 2: Lx-*1 a Lx-MD e itens específicos
+  const wrap2 = document.createElement("div");
+  wrap2.className = "s4-table-wrapper";
+  const table2 = document.createElement("table");
+  table2.className = "s4-table";
+  table2.innerHTML = `<thead><tr><th>Modelo</th><th>Quant.</th><th>Status</th><th>Cód.</th></tr></thead><tbody></tbody>`;
+  const body2 = table2.querySelector("tbody");
+  SETOR_4_COL1_FORMS.slice(8).forEach(item => {
+    const tr = document.createElement("tr");
+    const tdLabel = document.createElement("td");
+    tdLabel.textContent = item.modelo || item.label;
+    tdLabel.className = "s4-forma-cell";
+    tdLabel.dataset.formaNumero = normalizeUpper(item.forma);
+    if (isFormaClicked(item.forma, setor)) tdLabel.classList.add("is-saved");
+    tdLabel.addEventListener("click", () => showConcreteTypePopup(item.forma, setor, tdLabel, item.modelo || ""));
+    
+    tr.appendChild(tdLabel);
+    tr.innerHTML += `<td></td><td></td><td></td>`;
+    body2.appendChild(tr);
+  });
+  wrap2.appendChild(table2);
+  col1.appendChild(wrap2);
+  container.appendChild(col1);
+
+  // Coluna 2
+  const col2 = document.createElement("div");
+  col2.className = "s4-col";
+  const wrap3 = document.createElement("div");
+  wrap3.className = "s4-table-wrapper";
+  const table3 = document.createElement("table");
+  table3.className = "s4-table";
+  table3.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção</th></tr></thead><tbody></tbody>`;
+  const body3 = table3.querySelector("tbody");
+  SETOR_4_COL2_FORMS.forEach(item => body3.appendChild(createS4TableRow(item, setor)));
+  wrap3.appendChild(table3);
+  col2.appendChild(wrap3);
+  container.appendChild(col2);
+
+  // Coluna 3
+  const col3 = document.createElement("div");
+  col3.className = "s4-col";
+  
+  const wrap4 = document.createElement("div");
+  wrap4.className = "s4-table-wrapper";
+  const table4 = document.createElement("table");
+  table4.className = "s4-table";
+  table4.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção</th></tr></thead><tbody></tbody>`;
+  const body4 = table4.querySelector("tbody");
+  SETOR_4_COL3_FORMS.slice(0, 10).forEach(item => body4.appendChild(createS4TableRow(item, setor)));
+  wrap4.appendChild(table4);
+  col3.appendChild(wrap4);
+
+  const secEstoque = document.createElement("div");
+  secEstoque.className = "s4-section-title";
+  secEstoque.textContent = "Estoque Provisório de Postes";
+  col3.appendChild(secEstoque);
+
+  const wrap5 = document.createElement("div");
+  wrap5.className = "s4-table-wrapper";
+  const table5 = document.createElement("table");
+  table5.className = "s4-table";
+  table5.innerHTML = `<tbody></tbody>`;
+  const body5 = table5.querySelector("tbody");
+  SETOR_4_COL3_FORMS.slice(10).forEach(item => body5.appendChild(createS4TableRow(item, setor)));
+  wrap5.appendChild(table5);
+  col3.appendChild(wrap5);
+
+  const secMonovia = document.createElement("div");
+  secMonovia.className = "s4-section-title";
+  secMonovia.textContent = "Monovia";
+  col3.appendChild(secMonovia);
+
+  const usinaBox = document.createElement("div");
+  usinaBox.className = "s4-usina-box";
+  usinaBox.textContent = "Usina de Concreto";
+  col3.appendChild(usinaBox);
+
+  container.appendChild(col3);
+}
+
 function renderLiberacaoDual() {
   renderSectorCols(
     document.getElementById("libSetor1Cols"),
@@ -1320,12 +1503,8 @@ function renderLiberacaoDual() {
     SETOR_3_RIGHT_FORMS,
     "Setor 3"
   );
-  renderSector3Cols(
-    document.getElementById("libSetor4Cols"),
-    SETOR_4_COL1_FORMS,
-    SETOR_4_COL2_FORMS,
-    SETOR_4_COL3_FORMS,
-    "Setor 4"
+  renderSetor4Mapa(
+    document.getElementById("libSetor4Cols")
   );
   updateSectorCounters();
 }
@@ -1472,6 +1651,21 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Pa
       record.updatedAt = nowIso();
     }
     upsertRecord(db, record);
+    addEvent(db, {
+      id: uuid(),
+      recordId: record.id,
+      etapa: "LIBERACAO",
+      status: "1",
+      dataFabricacao: record.dataFabricacao,
+      setor: record.setor,
+      formaNumero: record.formaNumero,
+      tipoConcreto: concretoTipo,
+      colaborador,
+      timestamp: record.liberacao?.timestamp || nowIso(),
+      fotosCount: 0,
+      codigos: [],
+      observacoes: ""
+    });
     writeDb(db);
   }
 
@@ -2390,9 +2584,14 @@ function renderDashboardCharts() {
   setTxt("dbKpiRR", kpiRR);
   setTxt("dbKpiRejPct", rejPct + "%");
 
-  // Last 7 dates sorted asc
-  const allDates = [...new Set([...Object.keys(prodByDate), ...Object.keys(insByDate)])]
-    .sort((a, b) => (a < b ? -1 : 1)).slice(-7);
+  // Last 7 days including today
+  const allDates = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    allDates.push(d.toISOString().split("T")[0]);
+  }
+  
   const labels = allDates.map((d) => d.split("-").reverse().join("/"));
   const prodData = allDates.map((d) => prodByDate[d] || 0);
   const insData = allDates.map((d) => (insByDate[d] || {}).total || 0);
@@ -2406,14 +2605,39 @@ function renderDashboardCharts() {
       data: {
         labels,
         datasets: [
-          { label: "Produção", data: prodData, backgroundColor: "#1e40af", borderRadius: 6 },
-          { label: "Inspecionados", data: insData, backgroundColor: "#059669", borderRadius: 6 }
+          { 
+            label: "Produção", 
+            data: prodData, 
+            backgroundColor: "rgba(30, 64, 175, 0.8)", 
+            borderColor: "#1e40af",
+            borderWidth: 1,
+            borderRadius: 4,
+            barPercentage: 0.7,
+            categoryPercentage: 0.6
+          },
+          { 
+            label: "Inspecionados", 
+            data: insData, 
+            backgroundColor: "rgba(5, 150, 105, 0.8)", 
+            borderColor: "#059669",
+            borderWidth: 1,
+            borderRadius: 4,
+            barPercentage: 0.7,
+            categoryPercentage: 0.6
+          }
         ]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { position: "top" } },
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+        interaction: { mode: 'index', intersect: false },
+        plugins: { 
+          legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8 } },
+          tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 12 }
+        },
+        scales: { 
+          x: { grid: { display: false } },
+          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } } 
+        }
       }
     });
   }
@@ -2498,12 +2722,11 @@ function renderDashboardCharts() {
         indexAxis: "y",
         responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false } },
-        scales: { x: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+        scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
       }
     });
   }
 
-  // History rows (last 7 dates sorted desc)
   const histEl = document.getElementById("dbHistory");
   if (!histEl) return;
   const histDates = [...allDates].reverse();
@@ -2522,10 +2745,52 @@ function renderDashboardCharts() {
   <span class="ins-dash-hist-date">${fmt}</span>
   <div class="ins-dash-hist-bar-track"><div class="ins-dash-hist-bar" style="width:${pct}%"></div></div>
   <span class="ins-dash-hist-count">${prod}</span>
-  <span style="color:#065f46;font-size:.78rem;min-width:50px">✔ ${ins}</span>
-  <span style="color:#991b1b;font-size:.78rem;min-width:46px">✘ ${rj}</span>
+  <span style="color:#059669;font-weight:600;font-size:.78rem;min-width:50px">✔ ${ins}</span>
+  <span style="color:#dc2626;font-weight:600;font-size:.78rem;min-width:46px">✘ ${rj}</span>
 </div>`;
   }).join("");
+}
+
+async function carregarDadosGlobaisDashboard() {
+  if (!hasApiConfigured()) return;
+  
+  const dbDataEl = document.getElementById("dbData");
+  const selectedDate = dbDataEl ? dbDataEl.value : todayYmd();
+  
+  setSyncStatus("pending", "Atualizando dados globais do dashboard...");
+  
+  try {
+    const { data: rows, error } = await supabaseClient
+      .from('producao')
+      .select('*')
+      .gte('data_fabricacao', new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]);
+      
+    if (error) throw error;
+    
+    const db = readDb();
+    
+    const apiEvents = rows.map(r => ({
+      etapa: r.status === 'LIBERADO' ? 'LIBERACAO' : 'INSPECAO',
+      status: r.status,
+      dataFabricacao: r.data_fabricacao,
+      setor: r.setor,
+      formaNumero: r.forma,
+      colaborador: r.colaborador,
+      timestamp: r.data_hora || r.updated_at,
+      codigos: r.ins_codigo ? [r.ins_codigo] : [],
+      observacoes: r.ins_observacoes || "",
+      isFromApi: true
+    }));
+    
+    db.events = db.events.filter(ev => !ev.isFromApi).concat(apiEvents);
+    writeDb(db);
+    
+    renderDashboardCharts();
+    setSyncStatus("ok", "Dashboard global atualizado com dados da nuvem.");
+  } catch (err) {
+    console.error("Erro ao carregar dados globais:", err);
+    setSyncStatus("error", "Erro ao carregar dados globais do dashboard.");
+  }
 }
 
 function renderDashboardStats() {
@@ -2607,60 +2872,64 @@ async function renderHistorico() {
       if (tipo === "INSPECAO") return event.etapa === "INSPECAO" || event.etapa === "REINSPECAO";
       return true;
     })
-    .filter((event) => !forma || event.formaNumero === forma)
-    .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+    .filter((event) => !forma || event.formaNumero === forma);
 
-  if (!rows.length && hasApiConfigured() && data) {
-    const [setor1, setor2] = await Promise.all([
-      getRowsForDashboard(data, "Setor 1"),
-      getRowsForDashboard(data, "Setor 2")
-    ]);
-    const apiRows = [...(setor1.rows || []), ...(setor2.rows || [])];
-    const apiEvents = [];
-    apiRows.forEach((row) => {
-      const formaNumero = String(row.forma_numero || "");
-      const setor = String(row.setor || "");
-      const baseTs = row.lib_timestamp || row.updated_at || nowIso();
-      if (String(row.liberacao_status || "") === "1") {
-        apiEvents.push({
-          etapa: "LIBERACAO",
-          status: String(row.liberacao_status || ""),
-          dataFabricacao: String(row.data_fabricacao || data),
-          setor,
-          formaNumero,
-          colaborador: String(row.lib_colaborador || ""),
-          timestamp: baseTs,
-          fotosCount: 0,
-          codigos: [],
-          observacoes: ""
-        });
-      }
-      if (String(row.ins_status || "").trim()) {
-        apiEvents.push({
-          etapa: "INSPECAO",
-          status: String(row.ins_status || ""),
-          dataFabricacao: String(row.data_fabricacao || data),
-          setor,
-          formaNumero,
-          colaborador: String(row.ins_colaborador || ""),
-          timestamp: row.ins_timestamp || baseTs,
-          fotosCount: 0,
-          codigos: row.ins_codigo ? [String(row.ins_codigo)] : [],
-          observacoes: String(row.ins_observacoes || "")
-        });
-      }
-    });
+  if (hasApiConfigured() && data) {
+    try {
+      const [setor1, setor2] = await Promise.all([
+        getRowsForDashboard(data, "Setor 1"),
+        getRowsForDashboard(data, "Setor 2")
+      ]);
+      const apiRows = [...(setor1.rows || []), ...(setor2.rows || [])];
+      const apiEvents = [];
+      apiRows.forEach((row) => {
+        const formaNumero = String(row.forma_numero || "");
+        const setor = String(row.setor || "");
+        const baseTs = row.data_hora || row.updated_at || nowIso();
+        
+        // Evitamos duplicar eventos que já existem localmente (mesma forma, setor e etapa)
+        const existsLocally = (etapa) => rows.some(e => e.etapa === etapa && e.formaNumero === formaNumero && e.setor === setor);
 
-    rows = apiEvents
-      .filter((event) => {
-        if (!tipo) return true;
-        if (tipo === "LIBERACAO") return event.etapa === "LIBERACAO";
-        if (tipo === "INSPECAO") return event.etapa === "INSPECAO" || event.etapa === "REINSPECAO";
-        return true;
-      })
-      .filter((event) => !forma || normalizeUpper(event.formaNumero) === forma)
-      .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+        if (row.status === "LIBERADO" && !existsLocally("LIBERACAO")) {
+          apiEvents.push({
+            etapa: "LIBERACAO",
+            status: "LIBERADO",
+            dataFabricacao: String(row.data_fabricacao || data),
+            setor,
+            formaNumero,
+            colaborador: String(row.colaborador || ""),
+            timestamp: baseTs,
+            fotosCount: 0,
+            codigos: [],
+            observacoes: "",
+            tipoConcreto: row.tipo_concreto || "",
+            isFromApi: true
+          });
+        }
+        if (row.status === "INSPECIONADO" && !existsLocally("INSPECAO")) {
+          apiEvents.push({
+            etapa: "INSPECAO",
+            status: "INSPECIONADO",
+            dataFabricacao: String(row.data_fabricacao || data),
+            setor,
+            formaNumero,
+            colaborador: String(row.colaborador || ""),
+            timestamp: row.updated_at || baseTs,
+            fotosCount: 0,
+            codigos: row.ins_codigo ? [String(row.ins_codigo)] : [],
+            observacoes: String(row.ins_observacoes || ""),
+            tipoConcreto: row.tipo_concreto || "",
+            isFromApi: true
+          });
+        }
+      });
+      rows = [...rows, ...apiEvents];
+    } catch (e) {
+      console.warn("Falha ao buscar histórico da API:", e);
+    }
   }
+
+  rows.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
 
   el.historicoLista.innerHTML = "";
   if (!rows.length) {
@@ -2674,7 +2943,7 @@ async function renderHistorico() {
     item.innerHTML = `
       <div class="item-main">
         <strong>${evt.etapa} • ${evt.status}</strong>
-        <div class="item-meta">${evt.dataFabricacao} • ${evt.setor} • ${evt.formaNumero}</div>
+        <div class="item-meta">${evt.dataFabricacao} • ${evt.setor} • ${evt.formaNumero} ${evt.tipoConcreto ? ` • <span class="tag-concreto">${evt.tipoConcreto}</span>` : ""}</div>
         <div class="item-meta">${evt.colaborador || "-"} • ${formatDateTime(evt.timestamp)} • Fotos: ${evt.fotosCount || 0}</div>
         ${Array.isArray(evt.codigos) && evt.codigos.length ? `<div class="item-meta">Códigos: ${evt.codigos.join(", ")}</div>` : ""}
         ${evt.statusFlags ? `<div class="item-meta">1/0: L=${evt.statusFlags.liberado} D=${evt.statusFlags.naoMontado} M=${evt.statusFlags.manutencao}</div>` : ""}
@@ -2787,7 +3056,8 @@ async function renderAcmpConcretagem() {
           forma_numero: r.formaNumero,
           modelo: r.modelo || "",
           lib_timestamp: r.liberacao.timestamp || "",
-          _setor: setor
+          _setor: setor,
+          tipo_concreto: r.concretoTipo || ""
         }));
     }
   }
@@ -2814,12 +3084,14 @@ async function renderAcmpConcretagem() {
     const linhas = rows.map((r) => {
       const forma = r.forma_numero || "";
       const saved = notes[getAcmpNoteKey(data, setor, forma)] || {};
+      const tipoConcreto = r.tipo_concreto || "";
+      const obsValue = saved.obs || tipoConcreto;
       return `<tr data-acmp-forma="${forma}" data-acmp-setor="${setor}">
         <td>${forma}</td>
         <td>${r.modelo || ""}</td>
         <td>${formatTime(r.lib_timestamp)}</td>
         <td><input type="text" class="acmp-input" data-acmp-traco placeholder="" value="${saved.traco || ""}"></td>
-        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="" value="${saved.obs || ""}"></td>
+        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="" value="${obsValue}"></td>
       </tr>`;
     }).join("");
     html += `
@@ -2866,9 +3138,9 @@ async function getRowsForDashboard(data, setor) {
     if (!error && Array.isArray(rows)) {
       return { 
         rows: rows.map(r => ({
+          ...r,
           forma_numero: r.forma,
-          modelo: r.modelo,
-          liberacao_status: "1"
+          liberacao_status: r.status === 'LIBERADO' ? '1' : '0'
         })), 
         source: "api" 
       };
@@ -3314,6 +3586,7 @@ function setMode(mode) {
   if (mode === "DASHBOARD") {
     if (el.viewDashboard) el.viewDashboard.classList.remove("hidden");
     renderDashboardCharts();
+    carregarDadosGlobaisDashboard();
   }
   if (mode === "LIBERACAO") el.viewLiberacao.classList.remove("hidden");
   if (mode === "INSPECAO") el.viewInspecao.classList.remove("hidden");

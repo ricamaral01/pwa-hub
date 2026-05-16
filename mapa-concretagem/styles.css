@@ -9,6 +9,22 @@
   --primary: #1a3a5c;
   --primary-light: #2563a8;
   --danger: #b91c1c;
+  --tag-bg: #f1f5f9;
+  --tag-text: #475569;
+}
+
+.tag-concreto {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(0,0,0,0.05);
+  margin-left: 4px;
 }
 
 * {
