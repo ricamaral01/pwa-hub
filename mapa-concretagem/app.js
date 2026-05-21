@@ -7,7 +7,7 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "LIBERACAO", "INSPECAO", "MONTAGEM_POSTES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
+    modes: ["DASHBOARD", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
   },
   GESTOR: {
     label: "Gestor",
@@ -15,7 +15,7 @@ const ROLE_PERMISSIONS = {
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["LIBERACAO", "MONTAGEM_POSTES"]
+    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES"]
   }
 };
 
@@ -97,6 +97,46 @@ const CHECKLIST_INSPECAO_CODIGOS = [
   { codigo: "L", descricao: "Buchas das cxs e/ou Buchas fixação abraç. EDP" },
   { codigo: "M", descricao: "Parafuso Lacre da caixa do Medidor" }
 ];
+
+const POSTES_DUPLO_T_CATALOGO = [
+  { codigo: "C", descricao: "Padrao Completo 2 cx VR", setor: "Setor 2", codigoProduto: "943", chaves: ["C"] },
+  { codigo: "D", descricao: "Padrao Completo 2 cx VL", setor: "Setor 1", codigoProduto: "941", chaves: ["D"] },
+  { codigo: "B", descricao: "Padrao Completo 1 cx VL", setor: "Setor 2", codigoProduto: "935", chaves: ["B"] },
+  { codigo: "A", descricao: "Padrao Completo 1 cx VR", setor: "Setor 2", codigoProduto: "938", chaves: ["A"] },
+  { codigo: "BD", descricao: "Padrao Completo 1 cx VL (EDP)", setor: "Setor 1", codigoProduto: "957", chaves: ["BD"] },
+  { codigo: "CE", descricao: "Padrao Completo 2 cx VR Elektro", setor: "Setor 1", codigoProduto: "4032", chaves: ["CE"] },
+  { codigo: "DE", descricao: "Padrao Completo 2 cx VL Elektro", setor: "Setor 1", codigoProduto: "4765", chaves: ["DE"] },
+  { codigo: "AE", descricao: "Padrao Completo 1 cx VR Elektro", setor: "Setor 1", codigoProduto: "4031", chaves: ["AE"] },
+  { codigo: "BE", descricao: "Padrao Completo 1 cx VL Elektro", setor: "Setor 1", codigoProduto: "4764", chaves: ["BE"] },
+  { codigo: "IE", descricao: "Padrao Completo 3cxs VL Elektro", setor: "Setor 1", codigoProduto: "4929", chaves: ["IE"] },
+  { codigo: "L", descricao: "Padrao Completo 4 cx VR", setor: "Setor 1", codigoProduto: "948", chaves: ["L"] },
+  { codigo: "J", descricao: "Padrao Completo 4 cx VL", setor: "Setor 1", codigoProduto: "947", chaves: ["J"] },
+  { codigo: "H", descricao: "Padrao Completo 3 cx VR", setor: "Setor 1", codigoProduto: "946", chaves: ["H"] },
+  { codigo: "I", descricao: "Padrao Completo 3 cx VL", setor: "Setor 1", codigoProduto: "945", chaves: ["I"] },
+  { codigo: "300-VR", descricao: "Poste 2 cx VR (7,5 x 300)", setor: "Setor 2", codigoProduto: "944", chaves: ["300-VR"] },
+  { codigo: "300-VL", descricao: "Poste 2 cx VL (7,5 x 300)", setor: "Setor 2", codigoProduto: "942", chaves: ["300-VL"] },
+  { codigo: "N", descricao: "Poste 7,5 X 600 VL", setor: "Setor 1", codigoProduto: "936", chaves: ["N"] },
+  { codigo: "M", descricao: "Poste 7,5 X 600 VR", setor: "Setor 1", codigoProduto: "939", chaves: ["M"] },
+  { codigo: "TCL", descricao: "Poste 7,5 X 600 VL c/", setor: "Setor 2", codigoProduto: "937", chaves: ["TCL"] },
+  { codigo: "TCR", descricao: "Poste 7,5 X 600 VR c/", setor: "Setor 2", codigoProduto: "940", chaves: ["TCR"] },
+  { codigo: "100", descricao: "Poste Subterraneo 100 A", setor: "Setor 1", codigoProduto: "949", chaves: ["100"] },
+  { codigo: "SB-E1", descricao: "Poste Subterraneo 100 A - Elektro", setor: "Setor 1", codigoProduto: "4848", chaves: ["SB-E1"] },
+  { codigo: "200", descricao: "Poste Subterraneo 200 A - TC", setor: "Setor 1", codigoProduto: "5017", chaves: ["200"] },
+  { codigo: "TOTEM", descricao: "Totem de medicao indireta Elektro", setor: "Setor 4", codigoProduto: "13570", chaves: ["TOTEM", "A-TOTEM"] },
+  { codigo: "PL", descricao: "Poste Visor Aereo 1 cx VL (7,5x300)", setor: "Setor 2", codigoProduto: "934", chaves: ["PL"] },
+  { codigo: "CEMIG-5X150", descricao: "Padrao Cemig 1CX - 5,0 x 150", setor: "Setor 4", codigoProduto: "952", chaves: ["C-F1"] },
+  { codigo: "CEMIG-1VL", descricao: "Padrao Cemig 1 cx VL - 7,0 x150", setor: "Setor 4", codigoProduto: "953", chaves: ["R-G"] },
+  { codigo: "CEMIG-2VL", descricao: "Padrao Cemig 2 cx VL - 7,0 x150", setor: "Setor 4", codigoProduto: "954", chaves: [] },
+  { codigo: "E", descricao: "Poste Economico 1CX VR", setor: "Setor 1", codigoProduto: "931", chaves: ["E"] },
+  { codigo: "F", descricao: "Poste Economico 1CX VL", setor: "Setor 1", codigoProduto: "930", chaves: ["F"] },
+  { codigo: "G", descricao: "Poste Economico 2CX VR", setor: "Setor 1", codigoProduto: "932", chaves: ["G"] },
+  { codigo: "P", descricao: "Poste Economico 3 CXS VR", setor: "Setor 1", codigoProduto: "933", chaves: ["P"] }
+];
+
+const POSTES_DUPLO_T_BY_CHAVE = new Map();
+POSTES_DUPLO_T_CATALOGO.forEach((item) => {
+  (item.chaves || []).forEach((chave) => POSTES_DUPLO_T_BY_CHAVE.set(normalizeUpper(chave), item));
+});
 
 const SETOR_1_LEFT_FORMS = [
   { forma: "IE-01", modelo: "3 CXS VL" },
@@ -445,7 +485,18 @@ const SECTOR_FORMS = {
 };
 
 function getSectorForms(setor) {
-  return SECTOR_FORMS[setor] || SECTOR_FORMS["Setor 2"];
+  const forms = SECTOR_FORMS[setor] || SECTOR_FORMS["Setor 2"];
+  if (forms.left || forms.right) {
+    return {
+      left: (forms.left || []).map((item) => withPosteData(item, setor)),
+      right: (forms.right || []).map((item) => withPosteData(item, setor))
+    };
+  }
+  return {
+    col1: (forms.col1 || []).map((item) => withPosteData(item, setor)),
+    col2: (forms.col2 || []).map((item) => withPosteData(item, setor)),
+    col3: (forms.col3 || []).map((item) => withPosteData(item, setor))
+  };
 }
 
 const state = {
@@ -477,7 +528,10 @@ const el = {
   backButtons: Array.from(document.querySelectorAll("[data-back-btn]")),
   hubView: document.getElementById("viewHub"),
   viewDashboard: document.getElementById("viewDashboard"),
-  hubLiberacao: document.getElementById("hubLiberacao"),
+  hubLiberacaoS1: document.getElementById("hubLiberacaoS1"),
+  hubLiberacaoS2: document.getElementById("hubLiberacaoS2"),
+  hubLiberacaoS3: document.getElementById("hubLiberacaoS3"),
+  hubLiberacaoS4: document.getElementById("hubLiberacaoS4"),
   hubInspecao: document.getElementById("hubInspecao"),
   hubMontagemPostes: document.getElementById("hubMontagemPostes"),
   hubRelatorio: document.getElementById("hubRelatorio"),
@@ -618,6 +672,54 @@ function normalizeUpper(text) {
   return String(text || "").trim().toUpperCase();
 }
 
+function getFormaCatalogKey(forma) {
+  const normalized = normalizeUpper(forma).replace(/\s+/g, "");
+  if (!normalized) return "";
+  if (normalized.startsWith("300-VR")) return "300-VR";
+  if (normalized.startsWith("300-VL")) return "300-VL";
+  if (normalized.startsWith("SB-E1")) return "SB-E1";
+  if (normalized.startsWith("100-")) return "100";
+  if (normalized.startsWith("200-")) return "200";
+  if (normalized.startsWith("A-TOTEM")) return "A-TOTEM";
+  if (normalized.startsWith("C-F1")) return "C-F1";
+  if (normalized.startsWith("R-G")) return "R-G";
+  return normalized.split("-")[0];
+}
+
+function getPosteCatalogForForma(forma) {
+  const key = getFormaCatalogKey(forma);
+  return POSTES_DUPLO_T_BY_CHAVE.get(key) || null;
+}
+
+function withPosteData(item, setor) {
+  const base = item || {};
+  const catalog = getPosteCatalogForForma(base.forma);
+  if (!catalog) {
+    return {
+      ...base,
+      codigoPoste: "",
+      descricaoPoste: "",
+      codigoProduto: ""
+    };
+  }
+  return {
+    ...base,
+    codigoPoste: catalog.codigo || "",
+    descricaoPoste: catalog.descricao || "",
+    codigoProduto: catalog.codigoProduto || "",
+    setorProduto: catalog.setor || setor || ""
+  };
+}
+
+function getPosteFieldsForForma(forma, setor) {
+  const data = withPosteData({ forma }, setor);
+  return {
+    codigoPoste: data.codigoPoste || "",
+    descricaoPoste: data.descricaoPoste || "",
+    codigoProduto: data.codigoProduto || ""
+  };
+}
+
 function dateToYmd(value) {
   if (!value) return "";
   if (/^\d{4}-\d{2}-\d{2}$/.test(String(value).trim())) return String(value).trim();
@@ -718,6 +820,32 @@ function setSyncStatus(kind, message) {
   el.syncStatus.textContent = message;
 }
 
+function isSupabaseMissingColumnError(error) {
+  const message = String(error?.message || error || "").toLowerCase();
+  return (
+    (message.includes("column") && message.includes("does not exist"))
+    || (message.includes("could not find") && message.includes("column"))
+    || (message.includes("schema cache") && message.includes("codigo_"))
+  );
+}
+
+async function insertWithLegacyFallback(tableName, rows, legacyMapper) {
+  const { error } = await supabaseClient.from(tableName).insert(rows);
+  if (!error) return;
+  if (!isSupabaseMissingColumnError(error)) throw error;
+  const legacyRows = rows.map(legacyMapper);
+  const legacyResult = await supabaseClient.from(tableName).insert(legacyRows);
+  if (legacyResult.error) throw legacyResult.error;
+}
+
+async function upsertWithLegacyFallback(tableName, row, legacyMapper) {
+  const { error } = await supabaseClient.from(tableName).upsert(row);
+  if (!error) return;
+  if (!isSupabaseMissingColumnError(error)) throw error;
+  const legacyResult = await supabaseClient.from(tableName).upsert(legacyMapper(row));
+  if (legacyResult.error) throw legacyResult.error;
+}
+
 async function checkApiStatus() {
   if (!hasApiConfigured()) {
     setSyncStatus("warn", "Supabase não configurado: salvando apenas localmente.");
@@ -754,32 +882,36 @@ async function postToApi(action, payload) {
          } catch(e) {}
       }
 
-      const { error } = await supabaseClient.from('producao').insert([{
+      await insertWithLegacyFallback('producao', [{
         data_hora: dtStr,
         setor: payload.setor,
         forma: payload.forma,
         modelo: payload.modelo,
+        codigo_poste: payload.codigo_poste || null,
+        descricao_poste: payload.descricao_poste || null,
+        codigo_produto: payload.codigo_produto || null,
         tipo_concreto: payload.tipo_concreto || 'Padrão',
         colaborador: payload.colaborador,
         data_fabricacao: payload.dataFabricacao,
         status: 'LIBERADO'
-      }]);
-      if (error) throw error;
+      }], ({ codigo_poste, descricao_poste, codigo_produto, ...legacy }) => legacy);
       return { ok: true, message: "Forma liberada salva com sucesso" };
     }
 
     if (action === "salvar_inspecao_lote") {
       const inserts = (payload.entries || []).map(entry => ({
         setor: entry.setor,
-        forma: entry.forma,
+        forma: entry.forma || entry.formaNumero,
         modelo: entry.modelo,
+        codigo_poste: entry.codigoPoste || entry.codigo_poste || null,
+        descricao_poste: entry.descricaoPoste || entry.descricao_poste || null,
+        codigo_produto: entry.codigoProduto || entry.codigo_produto || null,
         colaborador: entry.colaborador,
         data_fabricacao: entry.dataProducao,
         tipo_concreto: 'INSPECIONADO',
         status: 'INSPECIONADO'
       }));
-      const { error } = await supabaseClient.from('producao').insert(inserts);
-      if (error) throw error;
+      await insertWithLegacyFallback('producao', inserts, ({ codigo_poste, descricao_poste, codigo_produto, ...legacy }) => legacy);
       return { ok: true, message: "Inspeções salvas", results: inserts.map(i => ({forma: i.forma, status: 'ok'})) };
     }
 
@@ -794,6 +926,9 @@ async function postToApi(action, payload) {
         forma: row.forma,
         setor: row.setor,
         modelo: row.modelo,
+        codigoPoste: row.codigo_poste || "",
+        descricaoPoste: row.descricao_poste || "",
+        codigoProduto: row.codigo_produto || "",
         dataProducao: row.data_fabricacao,
         tipoConcreto: row.tipo_concreto
       }));
@@ -871,13 +1006,16 @@ async function postToMontagemApi(action, payload) {
       let key = payload.key;
       if (!key) key = [payload.recordId, payload.dataFabricacao, payload.setor, payload.formaNumero].join("||");
 
-      const { data, error } = await supabaseClient.from('montagem_poste').upsert({
+      await upsertWithLegacyFallback('montagem_poste', {
         id: key,
         record_id: payload.recordId,
         data_fabricacao: payload.dataFabricacao,
         setor: payload.setor,
         forma_numero: payload.formaNumero,
         modelo: payload.modelo,
+        codigo_poste: payload.codigoPoste || payload.codigo_poste || null,
+        descricao_poste: payload.descricaoPoste || payload.descricao_poste || null,
+        codigo_produto: payload.codigoProduto || payload.codigo_produto || null,
         status_montagem: payload.statusMontagem,
         motivo_recusa: payload.motivoRecusa,
         etapa: payload.etapa,
@@ -887,8 +1025,7 @@ async function postToMontagemApi(action, payload) {
         banco: payload.banco || 'montagem_poste',
         observacoes_montagem: payload.observacoesMontagem,
         montador_nome: payload.montadorNome
-      });
-      if (error) throw error;
+      }, ({ codigo_poste, descricao_poste, codigo_produto, ...legacy }) => legacy);
       return { ok: true, upsert: "update", key };
     }
 
@@ -1080,6 +1217,7 @@ function buildSetor1RightBlocks(catalog) {
 }
 
 function createFormaButton(item, setor) {
+  item = withPosteData(item, setor);
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "lib-btn";
@@ -1091,6 +1229,12 @@ function createFormaButton(item, setor) {
   setBtnLabel(false);
   btn.dataset.formaNumero = normalizeUpper(item.forma);
   btn.dataset.modelo = item.modelo;
+  btn.dataset.codigoPoste = item.codigoPoste || "";
+  btn.dataset.descricaoPoste = item.descricaoPoste || "";
+  btn.dataset.codigoProduto = item.codigoProduto || "";
+  if (item.descricaoPoste || item.codigoProduto) {
+    btn.title = [item.descricaoPoste, item.codigoProduto ? `Produto ${item.codigoProduto}` : ""].filter(Boolean).join(" - ");
+  }
 
   if (setor && isFormaClicked(item.forma, setor)) {
     const tipo = getConcreteTypeForForma(item.forma, setor);
@@ -1233,11 +1377,18 @@ function setCardState(card, state) {
 }
 
 function createFormaCard(item, setor) {
+  item = withPosteData(item, setor);
   const card = document.createElement("button");
   card.type = "button";
   card.className = "forma-card is-idle";
   card.dataset.formaNumero = normalizeUpper(item.forma);
   card.dataset.modelo = item.modelo || "";
+  card.dataset.codigoPoste = item.codigoPoste || "";
+  card.dataset.descricaoPoste = item.descricaoPoste || "";
+  card.dataset.codigoProduto = item.codigoProduto || "";
+  if (item.descricaoPoste || item.codigoProduto) {
+    card.title = [item.descricaoPoste, item.codigoProduto ? `Produto ${item.codigoProduto}` : ""].filter(Boolean).join(" - ");
+  }
 
   const numEl = document.createElement("span");
   numEl.className = "fc-number";
@@ -1312,6 +1463,7 @@ function renderSector3Cols(container, col1Forms, col2Forms, col3Forms, setor) {
 }
 
 function createS4TableRow(item, setor) {
+  item = withPosteData(item, setor);
   const tr = document.createElement("tr");
   
   const tdForma = document.createElement("td");
@@ -1319,6 +1471,12 @@ function createS4TableRow(item, setor) {
   tdForma.textContent = item.label || item.forma;
   tdForma.dataset.formaNumero = normalizeUpper(item.forma);
   tdForma.dataset.modelo = item.modelo || "";
+  tdForma.dataset.codigoPoste = item.codigoPoste || "";
+  tdForma.dataset.descricaoPoste = item.descricaoPoste || "";
+  tdForma.dataset.codigoProduto = item.codigoProduto || "";
+  if (item.descricaoPoste || item.codigoProduto) {
+    tdForma.title = [item.descricaoPoste, item.codigoProduto ? `Produto ${item.codigoProduto}` : ""].filter(Boolean).join(" - ");
+  }
   
   const tdModelo = document.createElement("td");
   tdModelo.textContent = item.modelo || "";
@@ -1411,12 +1569,20 @@ function renderSetor4Mapa(container) {
   table2.className = "s4-table";
   table2.innerHTML = `<thead><tr><th>Modelo</th><th>Quant.</th><th>Status</th><th>Cód.</th></tr></thead><tbody></tbody>`;
   const body2 = table2.querySelector("tbody");
-  SETOR_4_COL1_FORMS.slice(8).forEach(item => {
+  SETOR_4_COL1_FORMS.slice(8).forEach(rawItem => {
+    const item = withPosteData(rawItem, setor);
     const tr = document.createElement("tr");
     const tdLabel = document.createElement("td");
     tdLabel.textContent = item.modelo || item.label;
     tdLabel.className = "s4-forma-cell";
     tdLabel.dataset.formaNumero = normalizeUpper(item.forma);
+    tdLabel.dataset.modelo = item.modelo || "";
+    tdLabel.dataset.codigoPoste = item.codigoPoste || "";
+    tdLabel.dataset.descricaoPoste = item.descricaoPoste || "";
+    tdLabel.dataset.codigoProduto = item.codigoProduto || "";
+    if (item.descricaoPoste || item.codigoProduto) {
+      tdLabel.title = [item.descricaoPoste, item.codigoProduto ? `Produto ${item.codigoProduto}` : ""].filter(Boolean).join(" - ");
+    }
     if (isFormaClicked(item.forma, setor)) tdLabel.classList.add("is-saved");
     tdLabel.addEventListener("click", () => showConcreteTypePopup(item.forma, setor, tdLabel, item.modelo || ""));
     
@@ -1485,27 +1651,49 @@ function renderSetor4Mapa(container) {
 }
 
 function renderLiberacaoDual() {
-  renderSectorCols(
-    document.getElementById("libSetor1Cols"),
-    SETOR_1_LEFT_FORMS,
-    SETOR_1_RIGHT_FORMS,
-    "Setor 1"
-  );
-  renderSectorCols(
-    document.getElementById("libSetor2Cols"),
-    SETOR_2_LEFT_FORMS,
-    SETOR_2_RIGHT_FORMS,
-    "Setor 2"
-  );
-  renderSectorCols(
-    document.getElementById("libSetor3Cols"),
-    SETOR_3_LEFT_FORMS,
-    SETOR_3_RIGHT_FORMS,
-    "Setor 3"
-  );
-  renderSetor4Mapa(
-    document.getElementById("libSetor4Cols")
-  );
+  const isS1 = state.activeLiberacaoSector === "LIBERACAO_S1";
+  const isS2 = state.activeLiberacaoSector === "LIBERACAO_S2";
+  const isS3 = state.activeLiberacaoSector === "LIBERACAO_S3";
+  const isS4 = state.activeLiberacaoSector === "LIBERACAO_S4";
+
+  const sec1 = document.querySelector(".lib-sector-1");
+  if(sec1) sec1.style.display = isS1 ? "block" : "none";
+  const sec2 = document.querySelector(".lib-sector-2");
+  if(sec2) sec2.style.display = isS2 ? "block" : "none";
+  const sec3 = document.querySelector(".lib-sector-3");
+  if(sec3) sec3.style.display = isS3 ? "block" : "none";
+  const sec4 = document.querySelector(".lib-setor4-panel");
+  if(sec4) sec4.style.display = isS4 ? "block" : "none";
+
+  if (isS1) {
+    renderSectorCols(
+      document.getElementById("libSetor1Cols"),
+      SETOR_1_LEFT_FORMS,
+      SETOR_1_RIGHT_FORMS,
+      "Setor 1"
+    );
+  }
+  if (isS2) {
+    renderSectorCols(
+      document.getElementById("libSetor2Cols"),
+      SETOR_2_LEFT_FORMS,
+      SETOR_2_RIGHT_FORMS,
+      "Setor 2"
+    );
+  }
+  if (isS3) {
+    renderSectorCols(
+      document.getElementById("libSetor3Cols"),
+      SETOR_3_LEFT_FORMS,
+      SETOR_3_RIGHT_FORMS,
+      "Setor 3"
+    );
+  }
+  if (isS4) {
+    renderSetor4Mapa(
+      document.getElementById("libSetor4Cols")
+    );
+  }
   updateSectorCounters();
 }
 
@@ -1614,6 +1802,14 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Pa
   const dataFabricacao = el.libData?.value || todayYmd();
   const colaborador = (el.libColaborador?.value || "").trim();
   const modeloFinal = modelo || card.dataset.modelo || "";
+  const posteFields = {
+    codigoPoste: card.dataset.codigoPoste || "",
+    descricaoPoste: card.dataset.descricaoPoste || "",
+    codigoProduto: card.dataset.codigoProduto || ""
+  };
+  const resolvedPosteFields = posteFields.codigoProduto || posteFields.descricaoPoste
+    ? posteFields
+    : getPosteFieldsForForma(forma, setor);
 
   const payload = {
     dia,
@@ -1623,7 +1819,10 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Pa
     dataFabricacao,
     colaborador,
     modelo: modeloFinal,
-    tipo_concreto: concretoTipo
+    tipo_concreto: concretoTipo,
+    codigo_poste: resolvedPosteFields.codigoPoste,
+    descricao_poste: resolvedPosteFields.descricaoPoste,
+    codigo_produto: resolvedPosteFields.codigoProduto
   };
 
   const apiResult = await postToApi("salvar_forma_click", payload);
@@ -1638,6 +1837,9 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Pa
         setor,
         formaNumero: normalizeUpper(forma),
         modelo: modeloFinal,
+        codigoPoste: resolvedPosteFields.codigoPoste,
+        descricaoPoste: resolvedPosteFields.descricaoPoste,
+        codigoProduto: resolvedPosteFields.codigoProduto,
         concretoTipo,
         createdAt: nowIso(),
         updatedAt: nowIso(),
@@ -1646,6 +1848,9 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Pa
       };
     }
     record.concretoTipo = concretoTipo;
+    record.codigoPoste = resolvedPosteFields.codigoPoste;
+    record.descricaoPoste = resolvedPosteFields.descricaoPoste;
+    record.codigoProduto = resolvedPosteFields.codigoProduto;
     if (!record.liberacao || record.liberacao.status !== "1") {
       record.liberacao = { status: "1", colaborador, observacoes: "", fotos: [], timestamp: nowIso() };
       record.updatedAt = nowIso();
@@ -1659,6 +1864,9 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Pa
       dataFabricacao: record.dataFabricacao,
       setor: record.setor,
       formaNumero: record.formaNumero,
+      codigoPoste: record.codigoPoste || "",
+      descricaoPoste: record.descricaoPoste || "",
+      codigoProduto: record.codigoProduto || "",
       tipoConcreto: concretoTipo,
       colaborador,
       timestamp: record.liberacao?.timestamp || nowIso(),
@@ -1713,6 +1921,9 @@ async function getInspecaoRowsFromApi(filtroData, modoCarga, setor) {
       setor: row.setor,
       forma_numero: row.forma,
       modelo: row.modelo,
+      codigo_poste: row.codigo_poste || "",
+      descricao_poste: row.descricao_poste || "",
+      codigo_produto: row.codigo_produto || "",
       liberacao_status: "1",
       ins_status: row.status === 'INSPECIONADO' ? "A" : ""
     }));
@@ -1813,6 +2024,9 @@ async function renderInspecaoLiberados() {
       tr.dataset.setor = String(record.setor || "");
       tr.dataset.formaNumero = String(record.forma_numero || "");
       tr.dataset.modelo = String(record.modelo || "");
+      tr.dataset.codigoPoste = String(record.codigo_poste || "");
+      tr.dataset.descricaoPoste = String(record.descricao_poste || "");
+      tr.dataset.codigoProduto = String(record.codigo_produto || "");
 
       tr.innerHTML = `
         <td>${record.forma_numero || ""}</td>
@@ -1872,6 +2086,9 @@ async function renderInspecaoLiberados() {
     tr.dataset.setor = record.setor || "";
     tr.dataset.formaNumero = record.formaNumero || "";
     tr.dataset.modelo = record.modelo || "";
+    tr.dataset.codigoPoste = record.codigoPoste || "";
+    tr.dataset.descricaoPoste = record.descricaoPoste || "";
+    tr.dataset.codigoProduto = record.codigoProduto || "";
     tr.innerHTML = `
       <td>${record.formaNumero}</td>
       <td>${record.modelo || ""}</td>
@@ -1949,6 +2166,9 @@ function buildMontagemPostePayload(entry, etapa = "") {
     setor: entry.setor || "",
     formaNumero: entry.formaNumero || "",
     modelo: entry.modelo || "",
+    codigoPoste: entry.codigoPoste || "",
+    descricaoPoste: entry.descricaoPoste || "",
+    codigoProduto: entry.codigoProduto || "",
     statusMontagem: entry.statusMontagem || "",
     motivoRecusa: entry.motivoRecusa || "",
     inicioInspecaoMontagem: entry.inicioInspecaoMontagem || "",
@@ -2085,6 +2305,7 @@ function showMontagemResumoModal(poste, options = {}) {
     <div><strong>Montador:</strong> ${escapeHtml(state.authUser?.name || "-")}</div>
     <div><strong>Setor:</strong> ${escapeHtml(poste.setor || "-")}</div>
     <div><strong>Poste Modelo:</strong> ${escapeHtml(poste.modelo || "-")}</div>
+    <div><strong>Produto:</strong> ${escapeHtml(poste.codigoProduto || "-")} ${poste.descricaoPoste ? "- " + escapeHtml(poste.descricaoPoste) : ""}</div>
     <div><strong>Forma:</strong> ${escapeHtml(poste.formaNumero || "-")}</div>
     <div><strong>Dt. Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
     <div><strong>Dt. Montagem:</strong> ${dtMontagem}</div>
@@ -2116,6 +2337,7 @@ function renderMontagemPosteDetalhe() {
   el.mpDetalheHeader.innerHTML = `
     <div><strong>Forma:</strong> ${poste.formaNumero || "-"}</div>
     <div><strong>Modelo:</strong> ${poste.modelo || "-"}</div>
+    <div><strong>Produto:</strong> ${escapeHtml(poste.codigoProduto || "-")} ${poste.descricaoPoste ? "- " + escapeHtml(poste.descricaoPoste) : ""}</div>
     <div><strong>Setor:</strong> ${poste.setor || "-"}</div>
     <div><strong>Data Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
     <div><strong>Início inspeção/montagem:</strong> ${formatDateTime(poste.inicioInspecaoMontagem || "")}</div>
@@ -2157,6 +2379,9 @@ async function openMontagemPosteDetalhe(posteBase) {
     setor: posteBase.setor || "",
     formaNumero: posteBase.formaNumero || "",
     modelo: posteBase.modelo || "",
+    codigoPoste: posteBase.codigoPoste || atual?.codigoPoste || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).codigoPoste,
+    descricaoPoste: posteBase.descricaoPoste || atual?.descricaoPoste || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).descricaoPoste,
+    codigoProduto: posteBase.codigoProduto || atual?.codigoProduto || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).codigoProduto,
     statusMontagem: atual?.statusMontagem || "",
     motivoRecusa: atual?.motivoRecusa || "",
     inicioInspecaoMontagem: atual?.inicioInspecaoMontagem || now,
@@ -2259,7 +2484,10 @@ async function renderMontagemPostesLiberados() {
         dataFabricacao: String(record.data_fabricacao || ""),
         setor: String(record.setor || ""),
         formaNumero: String(record.forma_numero || ""),
-        modelo: String(record.modelo || "")
+        modelo: String(record.modelo || ""),
+        codigoPoste: String(record.codigo_poste || ""),
+        descricaoPoste: String(record.descricao_poste || ""),
+        codigoProduto: String(record.codigo_produto || "")
       }))
       .filter((record) => {
         if (modoCarga !== "pendentes") return true;
@@ -2278,7 +2506,10 @@ async function renderMontagemPostesLiberados() {
         dataFabricacao: record.dataFabricacao || "",
         setor: record.setor || "",
         formaNumero: record.formaNumero || "",
-        modelo: record.modelo || ""
+        modelo: record.modelo || "",
+        codigoPoste: record.codigoPoste || "",
+        descricaoPoste: record.descricaoPoste || "",
+        codigoProduto: record.codigoProduto || ""
       }))
       .filter((record) => {
         if (modoCarga !== "pendentes") return true;
@@ -2308,6 +2539,9 @@ async function renderMontagemPostesLiberados() {
     tr.dataset.setor = record.setor;
     tr.dataset.formaNumero = record.formaNumero;
     tr.dataset.modelo = record.modelo;
+    tr.dataset.codigoPoste = record.codigoPoste || "";
+    tr.dataset.descricaoPoste = record.descricaoPoste || "";
+    tr.dataset.codigoProduto = record.codigoProduto || "";
     tr.innerHTML = `
       <td data-label="N Forma">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
@@ -2386,6 +2620,14 @@ async function saveInspecao() {
       const setor = tr?.dataset.setor || el.insSetor.value || "";
       const formaNumero = normalizeUpper(tr?.dataset.formaNumero || "");
       const modelo = tr?.dataset.modelo || "";
+      const posteFields = {
+        codigoPoste: tr?.dataset.codigoPoste || "",
+        descricaoPoste: tr?.dataset.descricaoPoste || "",
+        codigoProduto: tr?.dataset.codigoProduto || ""
+      };
+      const resolvedPosteFields = posteFields.codigoProduto || posteFields.descricaoPoste
+        ? posteFields
+        : getPosteFieldsForForma(formaNumero, setor);
       const recordId = tr?.dataset.recordId || uuid();
       const status = tr?.querySelector("select[data-ins-status]")?.value || "";
       const codigo = tr?.querySelector("select[data-ins-code]")?.value || "";
@@ -2413,6 +2655,9 @@ async function saveInspecao() {
           setor,
           formaNumero,
           modelo,
+          codigoPoste: resolvedPosteFields.codigoPoste,
+          descricaoPoste: resolvedPosteFields.descricaoPoste,
+          codigoProduto: resolvedPosteFields.codigoProduto,
           createdAt: nowIso(),
           updatedAt: nowIso(),
           liberacao: {
@@ -2426,6 +2671,9 @@ async function saveInspecao() {
           inspecoes: []
         };
       }
+      record.codigoPoste = record.codigoPoste || resolvedPosteFields.codigoPoste;
+      record.descricaoPoste = record.descricaoPoste || resolvedPosteFields.descricaoPoste;
+      record.codigoProduto = record.codigoProduto || resolvedPosteFields.codigoProduto;
       if (!record.liberacao || record.liberacao.status !== "1") {
         record.liberacao = {
           status: "1",
@@ -2465,6 +2713,9 @@ async function saveInspecao() {
         colaborador,
         setor: record.setor || setor,
         formaNumero: record.formaNumero || formaNumero,
+        codigoPoste: record.codigoPoste || "",
+        descricaoPoste: record.descricaoPoste || "",
+        codigoProduto: record.codigoProduto || "",
         dataFabricacao: record.dataFabricacao || dataFabricacao,
         codigos: [codigoFinal],
         observacoes,
@@ -2477,6 +2728,10 @@ async function saveInspecao() {
         dataFabricacao: record.dataFabricacao || dataFabricacao,
         setor: record.setor || setor,
         formaNumero: record.formaNumero || formaNumero,
+        modelo: record.modelo || modelo,
+        codigoPoste: record.codigoPoste || "",
+        descricaoPoste: record.descricaoPoste || "",
+        codigoProduto: record.codigoProduto || "",
         tipo,
         status,
         codigo: codigoFinal,
@@ -3473,7 +3728,10 @@ function unlockAppAfterLogin() {
 function applyRoleVisibility() {
   const navByMode = {
     DASHBOARD: "navDashboard",
-    LIBERACAO: "hubLiberacao",
+    LIBERACAO_S1: "hubLiberacaoS1",
+      LIBERACAO_S2: "hubLiberacaoS2",
+      LIBERACAO_S3: "hubLiberacaoS3",
+      LIBERACAO_S4: "hubLiberacaoS4",
     INSPECAO: "hubInspecao",
     MONTAGEM_POSTES: "hubMontagemPostes",
     RELATORIO: "hubRelatorio",
@@ -3588,7 +3846,10 @@ function setMode(mode) {
     renderDashboardCharts();
     carregarDadosGlobaisDashboard();
   }
-  if (mode === "LIBERACAO") el.viewLiberacao.classList.remove("hidden");
+  if (mode.startsWith("LIBERACAO_")) {
+    el.viewLiberacao.classList.remove("hidden");
+    state.activeLiberacaoSector = mode;
+  }
   if (mode === "INSPECAO") el.viewInspecao.classList.remove("hidden");
   if (mode === "MONTAGEM_POSTES") el.viewMontagemPostes.classList.remove("hidden");
   if (mode === "MONTAGEM_POSTES_DETALHE") el.viewMontagemPostesDetalhe.classList.remove("hidden");
@@ -3606,7 +3867,7 @@ function setMode(mode) {
   document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem", "mode-usuarios");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
-  if (mode === "LIBERACAO") document.body.classList.add("mode-liberacao");
+  if (mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
     if ((el.insModoCarga?.value || "data") === "data" && !el.insFiltroData.value) {
@@ -3632,7 +3893,10 @@ function setMode(mode) {
   const navTitles = {
     HUB: ["navInicio", "Início"],
     DASHBOARD: ["navDashboard", "Dashboard"],
-    LIBERACAO: ["hubLiberacao", "Produção / Liberação"],
+    LIBERACAO_S1: ["hubLiberacaoS1", "Produção Setor 1"],
+      LIBERACAO_S2: ["hubLiberacaoS2", "Produção Setor 2"],
+      LIBERACAO_S3: ["hubLiberacaoS3", "Produção Setor 3"],
+      LIBERACAO_S4: ["hubLiberacaoS4", "Produção Setor 4"],
     INSPECAO: ["hubInspecao", "Montagem / Inspeção"],
     MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
     MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
@@ -3821,7 +4085,10 @@ function bindEvents() {
         dataFabricacao: tr.dataset.dataFabricacao || "",
         setor: tr.dataset.setor || "",
         formaNumero: tr.dataset.formaNumero || "",
-        modelo: tr.dataset.modelo || ""
+        modelo: tr.dataset.modelo || "",
+        codigoPoste: tr.dataset.codigoPoste || "",
+        descricaoPoste: tr.dataset.descricaoPoste || "",
+        codigoProduto: tr.dataset.codigoProduto || ""
       });
     });
   }
@@ -3951,7 +4218,7 @@ function bindEvents() {
     btn.addEventListener("click", () => {
       const mode = btn.dataset.hubMode;
       if (mode === "DASHBOARD") { setMode("DASHBOARD"); }
-      else if (mode === "LIBERACAO") { setMode("LIBERACAO"); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
+      else if (mode.startsWith("LIBERACAO_")) { setMode(mode); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
       else if (mode === "INSPECAO") { setMode("INSPECAO"); if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd(); renderInspecaoLiberados(); }
       else if (mode === "MONTAGEM_POSTES") { setMode("MONTAGEM_POSTES"); if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd(); renderMontagemPostesLiberados(); }
       else if (mode === "RELATORIO") { setMode("RELATORIO"); if (!el.relData.value) el.relData.value = todayYmd(); }
