@@ -7,7 +7,7 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
+    modes: ["DASHBOARD", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
   },
   GESTOR: {
     label: "Gestor",
@@ -15,7 +15,7 @@ const ROLE_PERMISSIONS = {
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES"]
+    modes: ["LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES"]
   }
 };
 
@@ -528,6 +528,7 @@ const el = {
   backButtons: Array.from(document.querySelectorAll("[data-back-btn]")),
   hubView: document.getElementById("viewHub"),
   viewDashboard: document.getElementById("viewDashboard"),
+  hubLiberacao: document.getElementById("hubLiberacao"),
   hubLiberacaoS1: document.getElementById("hubLiberacaoS1"),
   hubLiberacaoS2: document.getElementById("hubLiberacaoS2"),
   hubLiberacaoS3: document.getElementById("hubLiberacaoS3"),
@@ -1651,10 +1652,11 @@ function renderSetor4Mapa(container) {
 }
 
 function renderLiberacaoDual() {
-  const isS1 = state.activeLiberacaoSector === "LIBERACAO_S1";
-  const isS2 = state.activeLiberacaoSector === "LIBERACAO_S2";
-  const isS3 = state.activeLiberacaoSector === "LIBERACAO_S3";
-  const isS4 = state.activeLiberacaoSector === "LIBERACAO_S4";
+  const isAll = state.activeLiberacaoSector === "LIBERACAO";
+  const isS1 = isAll || state.activeLiberacaoSector === "LIBERACAO_S1";
+  const isS2 = isAll || state.activeLiberacaoSector === "LIBERACAO_S2";
+  const isS3 = isAll || state.activeLiberacaoSector === "LIBERACAO_S3";
+  const isS4 = isAll || state.activeLiberacaoSector === "LIBERACAO_S4";
 
   const sec1 = document.querySelector(".lib-sector-1");
   if(sec1) sec1.style.display = isS1 ? "block" : "none";
@@ -3728,7 +3730,8 @@ function unlockAppAfterLogin() {
 function applyRoleVisibility() {
   const navByMode = {
     DASHBOARD: "navDashboard",
-    LIBERACAO_S1: "hubLiberacaoS1",
+    LIBERACAO: "hubLiberacao",
+      LIBERACAO_S1: "hubLiberacaoS1",
       LIBERACAO_S2: "hubLiberacaoS2",
       LIBERACAO_S3: "hubLiberacaoS3",
       LIBERACAO_S4: "hubLiberacaoS4",
@@ -3893,7 +3896,8 @@ function setMode(mode) {
   const navTitles = {
     HUB: ["navInicio", "Início"],
     DASHBOARD: ["navDashboard", "Dashboard"],
-    LIBERACAO_S1: ["hubLiberacaoS1", "Produção Setor 1"],
+    LIBERACAO: ["hubLiberacao", "Produção / Liberação"],
+      LIBERACAO_S1: ["hubLiberacaoS1", "Produção Setor 1"],
       LIBERACAO_S2: ["hubLiberacaoS2", "Produção Setor 2"],
       LIBERACAO_S3: ["hubLiberacaoS3", "Produção Setor 3"],
       LIBERACAO_S4: ["hubLiberacaoS4", "Produção Setor 4"],
@@ -3998,11 +4002,43 @@ function bindEvents() {
     el.navUsuarios.addEventListener("click", () => setMode("USUARIOS"));
   }
 
-  el.hubLiberacao.addEventListener("click", () => {
-    setMode("LIBERACAO");
-    if (!el.libData.value) el.libData.value = todayYmd();
-    renderLiberacaoDual();
-  });
+  
+    if (el.hubLiberacao) {
+      el.hubLiberacao.addEventListener("click", () => {
+        setMode("LIBERACAO");
+        if (!el.libData.value) el.libData.value = todayYmd();
+        renderLiberacaoDual();
+      });
+    }
+    if (el.hubLiberacaoS1) {
+      el.hubLiberacaoS1.addEventListener("click", () => {
+        setMode("LIBERACAO_S1");
+        if (!el.libData.value) el.libData.value = todayYmd();
+        renderLiberacaoDual();
+      });
+    }
+    if (el.hubLiberacaoS2) {
+      el.hubLiberacaoS2.addEventListener("click", () => {
+        setMode("LIBERACAO_S2");
+        if (!el.libData.value) el.libData.value = todayYmd();
+        renderLiberacaoDual();
+      });
+    }
+    if (el.hubLiberacaoS3) {
+      el.hubLiberacaoS3.addEventListener("click", () => {
+        setMode("LIBERACAO_S3");
+        if (!el.libData.value) el.libData.value = todayYmd();
+        renderLiberacaoDual();
+      });
+    }
+    if (el.hubLiberacaoS4) {
+      el.hubLiberacaoS4.addEventListener("click", () => {
+        setMode("LIBERACAO_S4");
+        if (!el.libData.value) el.libData.value = todayYmd();
+        renderLiberacaoDual();
+      });
+    }
+
   el.hubInspecao.addEventListener("click", () => {
     setMode("INSPECAO");
     if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd();
