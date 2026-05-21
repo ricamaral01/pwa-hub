@@ -3849,7 +3849,7 @@ function setMode(mode) {
     renderDashboardCharts();
     carregarDadosGlobaisDashboard();
   }
-  if (mode.startsWith("LIBERACAO_")) {
+  if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
     el.viewLiberacao.classList.remove("hidden");
     state.activeLiberacaoSector = mode;
   }
@@ -3870,7 +3870,7 @@ function setMode(mode) {
   document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem", "mode-usuarios");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
-  if (mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
+  if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
     if ((el.insModoCarga?.value || "data") === "data" && !el.insFiltroData.value) {
@@ -4254,7 +4254,7 @@ function bindEvents() {
     btn.addEventListener("click", () => {
       const mode = btn.dataset.hubMode;
       if (mode === "DASHBOARD") { setMode("DASHBOARD"); }
-      else if (mode.startsWith("LIBERACAO_")) { setMode(mode); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
+      else if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) { setMode(mode); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
       else if (mode === "INSPECAO") { setMode("INSPECAO"); if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd(); renderInspecaoLiberados(); }
       else if (mode === "MONTAGEM_POSTES") { setMode("MONTAGEM_POSTES"); if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd(); renderMontagemPostesLiberados(); }
       else if (mode === "RELATORIO") { setMode("RELATORIO"); if (!el.relData.value) el.relData.value = todayYmd(); }
