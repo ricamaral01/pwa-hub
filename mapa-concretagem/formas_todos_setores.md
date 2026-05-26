@@ -275,59 +275,12 @@ Total: 26 formas.
 
 ---
 
-## 🧱 SETOR 4 (Postes, Especiais, Barreiras, Copos e Canaletas)
+## 🧱 SETOR 4 (Copos, Canaletas, Barreiras e Especiais)
 
-No Setor 4, as formas estão estruturadas em duas seções organizadas de acordo com as especificações físicas e desenhos industriais das fôrmas.
+No Setor 4, as formas estão estruturadas em três colunas de acordo com as especificações físicas e desenhos industriais das fôrmas enviados nos anexos.
 
-### SEÇÃO 1: Postes, Especiais e Barreiras (`SETOR_4_COL1_FORMS`)
-Total: 39 formas.
-
-| N Forma | Label Exibido | Modelo Cadastrado |
-| :--- | :--- | :--- |
-| L-*1 | *1 | 12 x 200 |
-| L-*2 | *2 | 12 x 600 |
-| L-*3 | *3 | 12 x 600 |
-| L-*4 | *4 | 12 x 600 |
-| L-*6 | *6 | 12 x 600 |
-| L-*7 | *7 | 12 x 600 |
-| L-*8 | *8 | 12 x 600 |
-| L-MD | MD | 200-300-400-600 |
-| Lx-*1 | *1 | x |
-| Lx-*2 | *2 | x |
-| Lx-*3 | *3 | x |
-| Lx-*4 | *4 | x |
-| Lx-*6 | *6 | x |
-| Lx-*7 | *7 | x |
-| Lx-*8 | *8 | x |
-| Lx-MD | MD | 200-300-400-600 |
-| A-CX40 | CX40x40 | Cx. Passagem 40x40 |
-| A-ST100 | ST-100 | Placa Stai 1000x200 |
-| A-ST140 | ST-140 | Placa Stai 1400x200 |
-| A-PEDST | PEDST | Pedestal Cx. Sabesp |
-| A-CH100 | CH-100 | Chapeu Sub.100 |
-| A-CH200 | CH-200 | Chapeu Sub.200 |
-| A-CH200TC | CH200TC | Chapu Sub.200 C/TC |
-| A-TOTEM | TOTEM | Totem Med. Indireta |
-| DTB 01 | DTB 01 | DTB 01 |
-| DTB 02 | DTB 02 | DTB 02 |
-| DTB 03 | DTB 03 | DTB 03 |
-| DTB 04 | DTB 04 | DTB 04 |
-| DTB 05 | DTB 05 | DTB 05 |
-| DTB 06 | DTB 06 | DTB 06 |
-| DTB 07 | DTB 07 | DTB 07 |
-| DTB 08 | DTB 08 | DTB 08 |
-| DTB 09 | DTB 09 | DTB 09 |
-| DTB 10 | DTB 10 | DTB 10 |
-| DTBM 01 | DTBM 01 | DTBM 01 |
-| DTBM 02 | DTBM 02 | DTBM 02 |
-| DTD 01 | DTD 01 | DTD 01 |
-| DTD 02 | DTD 02 | DTD 02 |
-| DTD 03 | DTD 03 | DTD 03 |
-
-### SEÇÃO 2: Copos e Canaletas
-
-#### Coluna 1: Copos (`SETOR_4_COL2_FORMS`)
-Total: 39 formas.
+### Coluna 1: Copos (`SETOR_4_COL2_FORMS`)
+Total: 23 formas.
 
 | N Forma | Label Exibido | Modelo Cadastrado |
 | :--- | :--- | :--- |
@@ -354,24 +307,9 @@ Total: 39 formas.
 | C-F3-2 | 2 | 7,5 x 90 |
 | C-F3-1 | 1 | 7,5 x 90 |
 | C-F3-16 | 16 | 7,5 x 90 |
-| C-T1 | T1 | 13,5x600/300-1000 |
-| C-F4-*4 | *4 | 12 x 600 |
-| C-F4-*3 | *3 | 12 x 600 |
-| C-F4-*2 | *2 | 12 x 600 |
-| C-F4-MD | MD | 200-300-400-600 |
-| C-F5-1a | 1 | 12 x 1000 |
-| C-F5-1b | 1 | 12 x 200 |
-| C-F5-2 | 2 | 12 x 200 |
-| C-F6-*4 | *4 | x |
-| C-F6-*3 | *3 | x |
-| C-F6-*2 | *2 | x |
-| C-F6-MD | MD | 200-300-400-600 |
-| C-F7-*1a | *1 | x |
-| C-F7-*1b | *1 | x |
-| C-F7-*2 | *2 | x |
 
-#### Coluna 2: Canaletas, Reforços e Estoques (`SETOR_4_COL3_FORMS`)
-Total: 24 formas.
+### Coluna 2: Canaletas e Reforços (`SETOR_4_COL3_FORMS`)
+Total: 23 formas.
 
 | N Forma | Label Exibido | Modelo Cadastrado |
 | :--- | :--- | :--- |
@@ -384,7 +322,6 @@ Total: 24 formas.
 | R-F3-4 | 4 | * 7,5 x |
 | R-F3-3 | 3 | * 7,5 x |
 | R-F3-2 | 2 | * 7,5 x |
-| R-MD | MD | 300,400,600,700,800 |
 | R-E17 | 17 | 7,5 x 90 |
 | R-E22 | 22 | 7,5 x 90 |
 | R-E21 | 21 | 7,5 x 90 |
@@ -399,6 +336,27 @@ Total: 24 formas.
 | R-G4 | 4 | 7,0 x 150 |
 | R-G1 | 1 | 7,0 x 150 |
 | R-G2 | 2 | 7,0 x 150 |
+
+### Coluna 3: Barreiras e Especiais (`SETOR_4_COL1_FORMS`)
+Total: 15 formas.
+
+| N Forma | Label Exibido | Modelo Cadastrado |
+| :--- | :--- | :--- |
+| DTB 01 | DTB 01 | DTB 01 |
+| DTB 02 | DTB 02 | DTB 02 |
+| DTB 03 | DTB 03 | DTB 03 |
+| DTB 04 | DTB 04 | DTB 04 |
+| DTB 05 | DTB 05 | DTB 05 |
+| DTB 06 | DTB 06 | DTB 06 |
+| DTB 07 | DTB 07 | DTB 07 |
+| DTB 08 | DTB 08 | DTB 08 |
+| DTB 09 | DTB 09 | DTB 09 |
+| DTB 10 | DTB 10 | DTB 10 |
+| DTBM 01 | DTBM 01 | DTBM 01 |
+| DTBM 02 | DTBM 02 | DTBM 02 |
+| DTD 01 | DTD 01 | DTD 01 |
+| DTD 02 | DTD 02 | DTD 02 |
+| DTD 03 | DTD 03 | DTD 03 |
 
 ---
 

@@ -386,30 +386,6 @@ const SETOR_3_RIGHT_FORMS = [
 ];
 
 const SETOR_4_COL1_FORMS = [
-  { forma: "L-*1",     label: "*1",      modelo: "12 x 200" },
-  { forma: "L-*2",     label: "*2",      modelo: "12 x 600" },
-  { forma: "L-*3",     label: "*3",      modelo: "12 x 600" },
-  { forma: "L-*4",     label: "*4",      modelo: "12 x 600" },
-  { forma: "L-*6",     label: "*6",      modelo: "12 x 600" },
-  { forma: "L-*7",     label: "*7",      modelo: "12 x 600" },
-  { forma: "L-*8",     label: "*8",      modelo: "12 x 600" },
-  { forma: "L-MD",     label: "MD",      modelo: "200-300-400-600" },
-  { forma: "Lx-*1",   label: "*1",      modelo: "x" },
-  { forma: "Lx-*2",   label: "*2",      modelo: "x" },
-  { forma: "Lx-*3",   label: "*3",      modelo: "x" },
-  { forma: "Lx-*4",   label: "*4",      modelo: "x" },
-  { forma: "Lx-*6",   label: "*6",      modelo: "x" },
-  { forma: "Lx-*7",   label: "*7",      modelo: "x" },
-  { forma: "Lx-*8",   label: "*8",      modelo: "x" },
-  { forma: "Lx-MD",   label: "MD",      modelo: "200-300-400-600" },
-  { forma: "A-CX40",   label: "CX40x40", modelo: "Cx. Passagem 40x40" },
-  { forma: "A-ST100",  label: "ST-100",  modelo: "Placa Stai 1000x200" },
-  { forma: "A-ST140",  label: "ST-140",  modelo: "Placa Stai 1400x200" },
-  { forma: "A-PEDST",  label: "PEDST",   modelo: "Pedestal Cx. Sabesp" },
-  { forma: "A-CH100",  label: "CH-100",  modelo: "Chapeu Sub.100" },
-  { forma: "A-CH200",  label: "CH-200",  modelo: "Chapeu Sub.200" },
-  { forma: "A-CH200TC",label: "CH200TC", modelo: "Chapu Sub.200 C/TC" },
-  { forma: "A-TOTEM",  label: "TOTEM",   modelo: "Totem Med. Indireta" },
   { forma: "DTB 01",   label: "DTB 01",  modelo: "DTB 01" },
   { forma: "DTB 02",   label: "DTB 02",  modelo: "DTB 02" },
   { forma: "DTB 03",   label: "DTB 03",  modelo: "DTB 03" },
@@ -450,22 +426,7 @@ const SETOR_4_COL2_FORMS = [
   { forma: "C-F3-3",   label: "3",  modelo: "7,5 x 90" },
   { forma: "C-F3-2",   label: "2",  modelo: "7,5 x 90" },
   { forma: "C-F3-1",   label: "1",  modelo: "7,5 x 90" },
-  { forma: "C-F3-16",  label: "16", modelo: "7,5 x 90" },
-  { forma: "C-T1",     label: "T1", modelo: "13,5x600/300-1000" },
-  { forma: "C-F4-*4",  label: "*4", modelo: "12 x 600" },
-  { forma: "C-F4-*3",  label: "*3", modelo: "12 x 600" },
-  { forma: "C-F4-*2",  label: "*2", modelo: "12 x 600" },
-  { forma: "C-F4-MD",  label: "MD", modelo: "200-300-400-600" },
-  { forma: "C-F5-1a",  label: "1",  modelo: "12 x 1000" },
-  { forma: "C-F5-1b",  label: "1",  modelo: "12 x 200" },
-  { forma: "C-F5-2",   label: "2",  modelo: "12 x 200" },
-  { forma: "C-F6-*4",  label: "*4", modelo: "x" },
-  { forma: "C-F6-*3",  label: "*3", modelo: "x" },
-  { forma: "C-F6-*2",  label: "*2", modelo: "x" },
-  { forma: "C-F6-MD",  label: "MD", modelo: "200-300-400-600" },
-  { forma: "C-F7-*1a", label: "*1", modelo: "x" },
-  { forma: "C-F7-*1b", label: "*1", modelo: "x" },
-  { forma: "C-F7-*2",  label: "*2", modelo: "x" }
+  { forma: "C-F3-16",  label: "16", modelo: "7,5 x 90" }
 ];
 
 const SETOR_4_COL3_FORMS = [
@@ -478,7 +439,6 @@ const SETOR_4_COL3_FORMS = [
   { forma: "R-F3-4",  label: "4",   modelo: "* 7,5 x" },
   { forma: "R-F3-3",  label: "3",   modelo: "* 7,5 x" },
   { forma: "R-F3-2",  label: "2",   modelo: "* 7,5 x" },
-  { forma: "R-MD",    label: "MD",  modelo: "300,400,600,700,800" },
   { forma: "R-E17",   label: "17",  modelo: "7,5 x 90" },
   { forma: "R-E22",   label: "22",  modelo: "7,5 x 90" },
   { forma: "R-E21",   label: "21",  modelo: "7,5 x 90" },
@@ -1588,138 +1548,19 @@ function renderSetor4Mapa(container) {
 
   const setor = "Setor 4";
 
-  // --- SEÇÃO 1: POSTES, ESPECIAIS E BARREIRAS ---
-  const sec1Header = document.createElement("div");
-  sec1Header.className = "s4-section-main-title";
-  sec1Header.textContent = "Postes, Especiais e Barreiras";
-  container.appendChild(sec1Header);
-
-  const grid1 = document.createElement("div");
-  grid1.className = "s4-mapa-container";
-
-  // Coluna 1: Tabelas de Postes, Especiais e Barreiras
-  const col1 = document.createElement("div");
-  col1.className = "s4-col";
-  
-  // Tabela 1: *1 a MD
-  const wrap1 = document.createElement("div");
-  wrap1.className = "s4-table-wrapper";
-  const table1 = document.createElement("table");
-  table1.className = "s4-table";
-  table1.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção<br><span style="font-size:8px">Status | Cód</span></th></tr></thead><tbody></tbody>`;
-  const body1 = table1.querySelector("tbody");
-  SETOR_4_COL1_FORMS.slice(0, 8).forEach(item => body1.appendChild(createS4TableRow(item, setor)));
-  wrap1.appendChild(table1);
-  col1.appendChild(wrap1);
-
-  // Legenda
-  const legendDiv = document.createElement("div");
-  legendDiv.className = "s4-legend-grid";
-  const legendData = [
-    ["6,0x90", ""], ["7,5x90", ""], ["7,5x200", ""], ["7,5x300", ""],
-    ["7,5x400", ""], ["7,5x600", ""], ["7,5x700", ""], ["7,5x800", ""],
-    ["7,0x150", ""], ["x 200", ""], ["x 300", ""], ["x 400", ""],
-    ["x 600", ""], ["X 1000", ""], ["X 1000", ""], ["X", ""], ["X", ""]
-  ];
-  legendDiv.innerHTML = `<div class="s4-legend-header">Legenda</div><div class="s4-legend-header">Quant.</div><div class="s4-legend-header">Mod.</div><div class="s4-legend-header">Quant.</div>`;
-  legendData.forEach(row => {
-    legendDiv.innerHTML += `<div>${row[0]}</div><div>${row[1]}</div>`;
-  });
-  col1.appendChild(legendDiv);
-
-  // Tabela 2: Lx-*1 a Lx-MD e itens específicos
-  const wrap2 = document.createElement("div");
-  wrap2.className = "s4-table-wrapper";
-  const table2 = document.createElement("table");
-  table2.className = "s4-table";
-  table2.innerHTML = `<thead><tr><th>Modelo</th><th>Quant.</th><th>Status</th><th>Cód.</th></tr></thead><tbody></tbody>`;
-  const body2 = table2.querySelector("tbody");
-  SETOR_4_COL1_FORMS.slice(8, 24).forEach(rawItem => {
-    const item = withPosteData(rawItem, setor);
-    const tr = document.createElement("tr");
-    const tdLabel = document.createElement("td");
-    tdLabel.textContent = item.modelo || item.label;
-    tdLabel.className = "s4-forma-cell";
-    tdLabel.dataset.formaNumero = normalizeUpper(item.forma);
-    tdLabel.dataset.modelo = item.modelo || "";
-    tdLabel.dataset.codigoPoste = item.codigoPoste || "";
-    tdLabel.dataset.descricaoPoste = item.descricaoPoste || "";
-    tdLabel.dataset.codigoProduto = item.codigoProduto || "";
-    if (item.descricaoPoste || item.codigoProduto) {
-      tdLabel.title = [item.descricaoPoste, item.codigoProduto ? `Produto ${item.codigoProduto}` : ""].filter(Boolean).join(" - ");
-    }
-    if (isFormaClicked(item.forma, setor)) tdLabel.classList.add("is-saved");
-    tdLabel.addEventListener("click", () => showConcreteTypePopup(item.forma, setor, tdLabel, item.modelo || ""));
-    
-    tr.appendChild(tdLabel);
-    tr.innerHTML += `<td></td><td></td><td></td>`;
-    body2.appendChild(tr);
-  });
-  wrap2.appendChild(table2);
-  col1.appendChild(wrap2);
-
-  // Tabela 3 (NOVA): Formas DTB, DTBM e DTD
-  const wrapNew = document.createElement("div");
-  wrapNew.className = "s4-table-wrapper";
-  const tableNew = document.createElement("table");
-  tableNew.className = "s4-table";
-  tableNew.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção</th></tr></thead><tbody></tbody>`;
-  const bodyNew = tableNew.querySelector("tbody");
-  SETOR_4_COL1_FORMS.slice(24).forEach(item => bodyNew.appendChild(createS4TableRow(item, setor)));
-  wrapNew.appendChild(tableNew);
-  col1.appendChild(wrapNew);
-
-  grid1.appendChild(col1);
-
-  // Coluna 2: Estoque, Monovia e Usina
-  const colRight = document.createElement("div");
-  colRight.className = "s4-col";
-
-  const secEstoque = document.createElement("div");
-  secEstoque.className = "s4-section-title";
-  secEstoque.textContent = "Estoque Provisório de Postes";
-  colRight.appendChild(secEstoque);
-
-  const wrap5 = document.createElement("div");
-  wrap5.className = "s4-table-wrapper";
-  const table5 = document.createElement("table");
-  table5.className = "s4-table";
-  table5.innerHTML = `<tbody></tbody>`;
-  const body5 = table5.querySelector("tbody");
-  SETOR_4_COL3_FORMS.slice(10).forEach(item => body5.appendChild(createS4TableRow(item, setor)));
-  wrap5.appendChild(table5);
-  colRight.appendChild(wrap5);
-
-  const secMonovia = document.createElement("div");
-  secMonovia.className = "s4-section-title";
-  secMonovia.textContent = "Monovia";
-  colRight.appendChild(secMonovia);
-
-  const usinaBox = document.createElement("div");
-  usinaBox.className = "s4-usina-box";
-  usinaBox.textContent = "Usina de Concreto";
-  colRight.appendChild(usinaBox);
-
-  grid1.appendChild(colRight);
-  container.appendChild(grid1);
-
-  // --- SEÇÃO 2 (NOVA): COPOS E CANALETAS ---
-  const sec2Header = document.createElement("div");
-  sec2Header.className = "s4-section-main-title";
-  sec2Header.style.marginTop = "28px";
-  sec2Header.textContent = "Copos e Canaletas";
-  container.appendChild(sec2Header);
-
-  const grid2 = document.createElement("div");
-  grid2.className = "s4-mapa-container s4-mapa-container-2col";
+  // Um único container de grid de 3 colunas
+  const grid = document.createElement("div");
+  grid.className = "s4-mapa-container";
+  grid.style.gridTemplateColumns = "repeat(3, 1fr)";
 
   // Coluna 1: Copos (Print 1)
   const colCopos = document.createElement("div");
   colCopos.className = "s4-col";
-  const secCoposTitle = document.createElement("div");
-  secCoposTitle.className = "s4-section-title";
-  secCoposTitle.textContent = "Copos (F1, F2, F3)";
-  colCopos.appendChild(secCoposTitle);
+  const titleCopos = document.createElement("div");
+  titleCopos.className = "s4-section-main-title";
+  titleCopos.style.margin = "0 0 10px 0";
+  titleCopos.textContent = "Copos";
+  colCopos.appendChild(titleCopos);
 
   const wrapCopos = document.createElement("div");
   wrapCopos.className = "s4-table-wrapper";
@@ -1730,15 +1571,16 @@ function renderSetor4Mapa(container) {
   SETOR_4_COL2_FORMS.forEach(item => bodyCopos.appendChild(createS4TableRow(item, setor)));
   wrapCopos.appendChild(tableCopos);
   colCopos.appendChild(wrapCopos);
-  grid2.appendChild(colCopos);
+  grid.appendChild(colCopos);
 
   // Coluna 2: Canaletas (Print 2 e 3)
   const colCanaletas = document.createElement("div");
   colCanaletas.className = "s4-col";
-  const secCanaletasTitle = document.createElement("div");
-  secCanaletasTitle.className = "s4-section-title";
-  secCanaletasTitle.textContent = "Canaletas e Reforços (F1, F2, F3)";
-  colCanaletas.appendChild(secCanaletasTitle);
+  const titleCanaletas = document.createElement("div");
+  titleCanaletas.className = "s4-section-main-title";
+  titleCanaletas.style.margin = "0 0 10px 0";
+  titleCanaletas.textContent = "Canaletas";
+  colCanaletas.appendChild(titleCanaletas);
 
   const wrapCanaletas = document.createElement("div");
   wrapCanaletas.className = "s4-table-wrapper";
@@ -1746,12 +1588,32 @@ function renderSetor4Mapa(container) {
   tableCanaletas.className = "s4-table";
   tableCanaletas.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção</th></tr></thead><tbody></tbody>`;
   const bodyCanaletas = tableCanaletas.querySelector("tbody");
-  SETOR_4_COL3_FORMS.slice(0, 10).forEach(item => bodyCanaletas.appendChild(createS4TableRow(item, setor)));
+  SETOR_4_COL3_FORMS.forEach(item => bodyCanaletas.appendChild(createS4TableRow(item, setor)));
   wrapCanaletas.appendChild(tableCanaletas);
   colCanaletas.appendChild(wrapCanaletas);
-  grid2.appendChild(colCanaletas);
+  grid.appendChild(colCanaletas);
 
-  container.appendChild(grid2);
+  // Coluna 3: Barreiras (DTB, DTBM, DTD)
+  const colBarreiras = document.createElement("div");
+  colBarreiras.className = "s4-col";
+  const titleBarreiras = document.createElement("div");
+  titleBarreiras.className = "s4-section-main-title";
+  titleBarreiras.style.margin = "0 0 10px 0";
+  titleBarreiras.textContent = "Barreiras e Especiais";
+  colBarreiras.appendChild(titleBarreiras);
+
+  const wrapBarreiras = document.createElement("div");
+  wrapBarreiras.className = "s4-table-wrapper";
+  const tableBarreiras = document.createElement("table");
+  tableBarreiras.className = "s4-table";
+  tableBarreiras.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção</th></tr></thead><tbody></tbody>`;
+  const bodyBarreiras = tableBarreiras.querySelector("tbody");
+  SETOR_4_COL1_FORMS.forEach(item => bodyBarreiras.appendChild(createS4TableRow(item, setor)));
+  wrapBarreiras.appendChild(tableBarreiras);
+  colBarreiras.appendChild(wrapBarreiras);
+  grid.appendChild(colBarreiras);
+
+  container.appendChild(grid);
 }
 
 function updateKioskHeader() {
