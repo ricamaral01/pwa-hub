@@ -1556,11 +1556,6 @@ function renderSetor4Mapa(container) {
   // Coluna 1: Copos (Print 1)
   const colCopos = document.createElement("div");
   colCopos.className = "s4-col";
-  const titleCopos = document.createElement("div");
-  titleCopos.className = "s4-section-main-title";
-  titleCopos.style.margin = "0 0 10px 0";
-  titleCopos.textContent = "Copos";
-  colCopos.appendChild(titleCopos);
 
   const wrapCopos = document.createElement("div");
   wrapCopos.className = "s4-table-wrapper";
@@ -1576,11 +1571,6 @@ function renderSetor4Mapa(container) {
   // Coluna 2: Canaletas (Print 2 e 3)
   const colCanaletas = document.createElement("div");
   colCanaletas.className = "s4-col";
-  const titleCanaletas = document.createElement("div");
-  titleCanaletas.className = "s4-section-main-title";
-  titleCanaletas.style.margin = "0 0 10px 0";
-  titleCanaletas.textContent = "Canaletas";
-  colCanaletas.appendChild(titleCanaletas);
 
   const wrapCanaletas = document.createElement("div");
   wrapCanaletas.className = "s4-table-wrapper";
@@ -1596,11 +1586,6 @@ function renderSetor4Mapa(container) {
   // Coluna 3: Barreiras (DTB, DTBM, DTD)
   const colBarreiras = document.createElement("div");
   colBarreiras.className = "s4-col";
-  const titleBarreiras = document.createElement("div");
-  titleBarreiras.className = "s4-section-main-title";
-  titleBarreiras.style.margin = "0 0 10px 0";
-  titleBarreiras.textContent = "Barreiras e Especiais";
-  colBarreiras.appendChild(titleBarreiras);
 
   const wrapBarreiras = document.createElement("div");
   wrapBarreiras.className = "s4-table-wrapper";
