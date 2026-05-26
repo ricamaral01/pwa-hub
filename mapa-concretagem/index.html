@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
-  <link rel="stylesheet" href="styles.css?v=v2.0_supabase_2" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css?v=v2.1_kiosk" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -267,7 +268,45 @@
         </div>
       </section>
 
-      <section id="viewLiberacao" class="card hidden">
+    <section id="viewLiberacao" class="card hidden">
+      <!-- Cabeçalho de Quiosque Operacional Premium -->
+      <div class="kiosk-header" id="libKioskHeader">
+        <div class="kiosk-header-top">
+          <div class="kiosk-title-group">
+            <span class="kiosk-subtitle" id="kioskSectorSubtitle">Painel de Produção</span>
+            <h1 class="kiosk-title" id="kioskSectorTitle">Produção Setor 1</h1>
+          </div>
+          <div class="kiosk-controls">
+            <div class="kiosk-toggle-field" id="kioskProgToggleField">
+              <label class="kiosk-switch">
+                <input type="checkbox" id="kioskProgCheckbox" />
+                <span class="kiosk-slider"></span>
+              </label>
+              <div class="kiosk-toggle-label">
+                <span class="kiosk-toggle-title">Programar Formas</span>
+                <span class="kiosk-toggle-subtitle">Tocar nas formas para planejar</span>
+              </div>
+            </div>
+            <button class="btn-kiosk" id="btnKioskFullscreen" type="button">🖥️ Tela Cheia</button>
+            <button class="btn-kiosk back" id="btnKioskBack" type="button">↩ Sair Quiosque</button>
+          </div>
+        </div>
+        <div class="kiosk-fields-row">
+          <div class="kiosk-field">
+            <label for="kioskLibData">Data de Fabricação</label>
+            <input id="kioskLibData" type="date" class="kiosk-input" required />
+          </div>
+          <div class="kiosk-field">
+            <label for="kioskLibColaborador">Nome do Operador</label>
+            <input id="kioskLibColaborador" type="text" class="kiosk-input" placeholder="Nome do colaborador" required />
+          </div>
+          <div class="kiosk-field" style="justify-self: end; text-align: right; display: flex; flex-direction: column; justify-content: center;">
+            <div style="font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em;">Progresso</div>
+            <div style="font-size: 1.8rem; font-weight: 900; color: #10b981; line-height: 1.2;" id="kioskProgressoContador">0 / 0</div>
+          </div>
+        </div>
+      </div>
+
       <div class="section-title-row">
         <h2>Produção</h2>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
@@ -729,6 +768,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=v2.0_supabase_2"></script>
+  <script src="app.js?v=v2.1_kiosk"></script>
 </body>
 </html>

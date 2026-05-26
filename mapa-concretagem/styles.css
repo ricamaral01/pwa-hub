@@ -2778,3 +2778,344 @@ hr {
 .ug-del-btn:hover {
   background: #fecaca;
 }
+
+/* ================================================
+   KIOSK MODE PREMIUM FOR SECTORS 1, 2, 3
+   ================================================ */
+body.kiosk-active .sidebar {
+  display: none !important;
+}
+body.kiosk-active .topbar {
+  display: none !important;
+}
+body.kiosk-active .app-main {
+  margin-left: 0 !important;
+}
+body.kiosk-active .page-content {
+  padding: 40px !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+body.kiosk-active .container {
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Kiosk Specific View Header */
+.kiosk-header {
+  display: none;
+  background: linear-gradient(135deg, #0f1e3c 0%, #1e3a8a 100%);
+  color: #ffffff;
+  padding: 24px 32px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 25px rgba(15, 30, 60, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+body.kiosk-active .kiosk-header {
+  display: block;
+}
+
+/* Ocultar título padrão e painel global no modo quiosque */
+body.kiosk-active #viewLiberacao > .section-title-row,
+body.kiosk-active #viewLiberacao > .lib-global-panel,
+body.kiosk-active #viewLiberacao > .btn-limpar {
+  display: none !important;
+}
+
+.kiosk-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.kiosk-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.kiosk-subtitle {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+.kiosk-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 4px 0 0 0;
+  letter-spacing: -0.02em;
+}
+
+.kiosk-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-kiosk {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-kiosk:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-kiosk.primary {
+  background: #2563eb;
+  border-color: #3b82f6;
+}
+
+.btn-kiosk.primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-kiosk.back {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.btn-kiosk.back:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #fee2e2;
+}
+
+/* Kiosk Global Fields */
+.kiosk-fields-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr auto;
+  gap: 24px;
+  align-items: end;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .kiosk-fields-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.kiosk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kiosk-field label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kiosk-input {
+  font-size: 1.5rem !important; /* FONTE AUMENTADA DO OPERADOR E DATA */
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  background: rgba(15, 30, 60, 0.6) !important;
+  border: 2px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 10px !important;
+  padding: 12px 18px !important;
+  height: auto !important;
+  width: 100%;
+}
+
+.kiosk-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4) !important;
+  outline: none;
+}
+
+/* Switch e Toggle Switch de Programação */
+.kiosk-toggle-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 2px dashed rgba(245, 158, 11, 0.25);
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.kiosk-toggle-field:hover {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.kiosk-toggle-field.active {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: rgba(245, 158, 11, 0.6);
+  animation: pulse-border 1.5s infinite;
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+.kiosk-toggle-label {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.kiosk-toggle-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fef3c7;
+}
+
+.kiosk-toggle-subtitle {
+  font-size: 0.76rem;
+  color: #fcd34d;
+  opacity: 0.9;
+}
+
+.kiosk-switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.kiosk-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.kiosk-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255, 255, 255, 0.25);
+  transition: .3s;
+  border-radius: 34px;
+}
+
+.kiosk-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+
+.kiosk-switch input:checked + .kiosk-slider {
+  background-color: #f59e0b;
+}
+
+.kiosk-switch input:checked + .kiosk-slider:before {
+  transform: translateX(24px);
+}
+
+/* Ampliação das colunas e grids no modo quiosque */
+body.kiosk-active .lib-dual-panel {
+  grid-template-columns: 1fr !important;
+  gap: 24px;
+}
+
+body.kiosk-active .lib-sector-block {
+  border-radius: 16px !important;
+  border-width: 3px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.kiosk-active .lib-sector-header {
+  padding: 18px 24px !important;
+}
+
+body.kiosk-active .lib-sector-title {
+  font-size: 1.3rem !important;
+  letter-spacing: 0.1em;
+}
+
+body.kiosk-active .lib-sector-counter {
+  font-size: 1.1rem !important;
+  padding: 5px 14px !important;
+}
+
+body.kiosk-active .lib-sector-cols {
+  grid-template-columns: 1fr 1fr !important;
+  gap: 16px !important;
+  padding: 24px !important;
+  background: #f1f5f9 !important;
+}
+
+/* Card das formas ampliado para o Quiosque */
+body.kiosk-active .forma-card {
+  min-height: 84px !important;
+  border-width: 3px !important;
+  border-radius: 14px !important;
+  padding: 14px 10px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+body.kiosk-active .forma-card .fc-number {
+  font-size: 1.4rem !important;
+  font-weight: 900 !important;
+}
+
+body.kiosk-active .forma-card .fc-tipo {
+  font-size: 0.9rem !important;
+  padding: 4px 10px !important;
+  margin-top: 6px !important;
+  border-radius: 8px !important;
+}
+
+body.kiosk-active .forma-card .fc-status {
+  font-size: 1.1rem !important;
+}
+
+/* Destaque para formas programadas */
+.forma-card.is-programmed:not(.is-saved):not(.is-saving) {
+  border-color: #d97706 !important; /* Cor âmbar premium */
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.18) !important;
+}
+
+.forma-card.is-programmed:not(.is-saved):not(.is-saving):hover {
+  background: #fde68a !important;
+  border-color: #b45309 !important;
+  color: #78350f !important;
+}
+

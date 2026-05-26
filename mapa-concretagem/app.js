@@ -510,7 +510,9 @@ const state = {
   montagemPostesAtual: null,
   isSendingLiberacao: false,
   isSendingInspecao: false,
-  submitLocks: readSubmitLocks()
+  submitLocks: readSubmitLocks(),
+  programmingMode: false,
+  programmedFormas: new Set()
 };
 
 let pendingFormaSelection = null;
@@ -568,6 +570,17 @@ const el = {
   sheetLeftBody: document.getElementById("sheetLeftBody"),
   sheetRightBody: document.getElementById("sheetRightBody"),
   btnLimparFormas: document.getElementById("btnLimparFormas"),
+
+  libKioskHeader: document.getElementById("libKioskHeader"),
+  kioskSectorSubtitle: document.getElementById("kioskSectorSubtitle"),
+  kioskSectorTitle: document.getElementById("kioskSectorTitle"),
+  kioskProgToggleField: document.getElementById("kioskProgToggleField"),
+  kioskProgCheckbox: document.getElementById("kioskProgCheckbox"),
+  btnKioskFullscreen: document.getElementById("btnKioskFullscreen"),
+  btnKioskBack: document.getElementById("btnKioskBack"),
+  kioskLibData: document.getElementById("kioskLibData"),
+  kioskLibColaborador: document.getElementById("kioskLibColaborador"),
+  kioskProgressoContador: document.getElementById("kioskProgressoContador"),
 
   insFiltroData: document.getElementById("insFiltroData"),
   insModoCarga: document.getElementById("insModoCarga"),
@@ -1347,12 +1360,12 @@ function renderSheetSide(items, container, options = {}) {
   });
 }
 
-function setCardState(card, state) {
+function setCardState(card, cardState) {
   card.classList.remove("is-idle", "is-saving", "is-saved", "is-error");
-  card.classList.add("is-" + state);
+  card.classList.add("is-" + cardState);
   
   // Se for uma célula do mapa do Setor 4, atualizar a linha inteira
-  if (card.classList.contains("s4-forma-cell") && state === "saved") {
+  if (card.classList.contains("s4-forma-cell") && cardState === "saved") {
     const tr = card.closest("tr");
     if (tr) {
       const tdLib = tr.querySelector(".td-lib");
@@ -1362,13 +1375,13 @@ function setCardState(card, state) {
 
   const statusEl = card.querySelector(".fc-status");
   if (!statusEl) return;
-  if (state === "saving") {
+  if (cardState === "saving") {
     statusEl.textContent = "⋯";
     card.disabled = true;
-  } else if (state === "saved") {
+  } else if (cardState === "saved") {
     statusEl.textContent = "✓";
-    card.disabled = true;
-  } else if (state === "error") {
+    card.disabled = !state.programmingMode;
+  } else if (cardState === "error") {
     statusEl.textContent = "✗";
     card.disabled = false;
   } else {
@@ -1405,6 +1418,11 @@ function createFormaCard(item, setor) {
   card.appendChild(tipoEl);
   card.appendChild(statusEl);
 
+  // Destacar se estiver programada
+  if (state.programmedFormas && state.programmedFormas.has(normalizeUpper(item.forma))) {
+    card.classList.add("is-programmed");
+  }
+
   if (isFormaClicked(item.forma, setor)) {
     const tipo = getConcreteTypeForForma(item.forma, setor);
     if (tipo) {
@@ -1412,8 +1430,19 @@ function createFormaCard(item, setor) {
       tipoEl.style.display = "block";
     }
     setCardState(card, "saved");
+    
+    // Permitir alternar programação mesmo se concretado no Modo Programação
+    card.addEventListener("click", () => {
+      if (state.programmingMode) {
+        toggleFormaProgramada(item.forma, setor, card);
+      }
+    });
   } else {
     card.addEventListener("click", () => {
+      if (state.programmingMode) {
+        toggleFormaProgramada(item.forma, setor, card);
+        return;
+      }
       const data = el.libData?.value;
       const colaborador = (el.libColaborador?.value || "").trim();
       if (!data) {
@@ -1651,6 +1680,192 @@ function renderSetor4Mapa(container) {
   container.appendChild(col3);
 }
 
+function updateKioskHeader() {
+  if (!el.kioskSectorTitle || !el.kioskSectorSubtitle || !el.kioskLibData || !el.kioskLibColaborador) return;
+
+  let sectorLabel = "";
+  if (state.activeLiberacaoSector === "LIBERACAO_S1") sectorLabel = "Setor 1";
+  else if (state.activeLiberacaoSector === "LIBERACAO_S2") sectorLabel = "Setor 2";
+  else if (state.activeLiberacaoSector === "LIBERACAO_S3") sectorLabel = "Setor 3";
+
+  el.kioskSectorTitle.textContent = "Produção " + sectorLabel;
+  el.kioskSectorSubtitle.textContent = "ÁREA OPERACIONAL QUIOSQUE";
+  
+  el.kioskLibData.value = el.libData?.value || todayYmd();
+  el.kioskLibColaborador.value = el.libColaborador?.value || "";
+  
+  if (el.kioskProgCheckbox) {
+    el.kioskProgCheckbox.checked = state.programmingMode || false;
+    const toggleField = document.getElementById("kioskProgToggleField");
+    if (toggleField) {
+      toggleField.classList.toggle("active", state.programmingMode || false);
+    }
+  }
+
+  updateKioskProgress();
+}
+
+function updateKioskProgress() {
+  if (!el.kioskProgressoContador) return;
+  
+  let sectorLabel = "";
+  let listAll = [];
+  if (state.activeLiberacaoSector === "LIBERACAO_S1") {
+    sectorLabel = "Setor 1";
+    listAll = SETOR_1_LEFT_FORMS.concat(SETOR_1_RIGHT_FORMS);
+  } else if (state.activeLiberacaoSector === "LIBERACAO_S2") {
+    sectorLabel = "Setor 2";
+    listAll = SETOR_2_LEFT_FORMS.concat(SETOR_2_RIGHT_FORMS);
+  } else if (state.activeLiberacaoSector === "LIBERACAO_S3") {
+    sectorLabel = "Setor 3";
+    listAll = SETOR_3_LEFT_FORMS.concat(SETOR_3_RIGHT_FORMS);
+  } else {
+    return;
+  }
+  
+  const clicked = getClickedFormsToday();
+  const formas = clicked.formas || {};
+  
+  let concretados = 0;
+  listAll.forEach((item) => {
+    if (formas[sectorLabel + "||" + normalizeUpper(item.forma)]) {
+      concretados++;
+    }
+  });
+  
+  el.kioskProgressoContador.textContent = `${concretados} / ${listAll.length}`;
+}
+
+function readLocalProgramacao() {
+  const raw = localStorage.getItem("mapa_concretagem_programacao");
+  if (!raw) return [];
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+function writeLocalProgramacao(list) {
+  localStorage.setItem("mapa_concretagem_programacao", JSON.stringify(list));
+}
+
+async function programFormaInApiOrLocal(data, setor, forma) {
+  let synced = false;
+  if (hasApiConfigured()) {
+    try {
+      const { error } = await supabaseClient.from('programacao').insert([{
+        data_fabricacao: data,
+        setor: setor,
+        forma: forma
+      }]);
+      if (!error) synced = true;
+    } catch (err) {
+      console.warn("Falha ao salvar programação no Supabase, usando local:", err);
+    }
+  }
+  
+  const list = readLocalProgramacao();
+  const exists = list.some(item => item.data_fabricacao === data && item.setor === setor && item.forma === forma);
+  if (!exists) {
+    list.push({ data_fabricacao: data, setor, forma });
+    writeLocalProgramacao(list);
+  }
+  
+  if (synced) {
+    setSyncStatus("ok", `Programação da forma ${forma} sincronizada.`);
+  } else {
+    setSyncStatus("warn", "Programação salva localmente.");
+  }
+}
+
+async function unprogramFormaInApiOrLocal(data, setor, forma) {
+  let synced = false;
+  if (hasApiConfigured()) {
+    try {
+      const { error } = await supabaseClient.from('programacao').delete()
+        .eq('data_fabricacao', data)
+        .eq('setor', setor)
+        .eq('forma', forma);
+      if (!error) synced = true;
+    } catch (err) {
+      console.warn("Falha ao excluir programação no Supabase, usando local:", err);
+    }
+  }
+  
+  const list = readLocalProgramacao();
+  const filtered = list.filter(item => !(item.data_fabricacao === data && item.setor === setor && item.forma === forma));
+  writeLocalProgramacao(filtered);
+  
+  if (synced) {
+    setSyncStatus("ok", `Programação da forma ${forma} excluída online.`);
+  } else {
+    setSyncStatus("warn", "Programação excluída localmente.");
+  }
+}
+
+async function toggleFormaProgramada(forma, setor, card) {
+  const data = el.libData?.value || todayYmd();
+  if (!data) {
+    showLibFeedback("Preencha a data antes de programar.", "error");
+    return;
+  }
+
+  const normalized = normalizeUpper(forma);
+  const isCurrentlyProgrammed = state.programmedFormas.has(normalized);
+  
+  if (isCurrentlyProgrammed) {
+    state.programmedFormas.delete(normalized);
+    card.classList.remove("is-programmed");
+    await unprogramFormaInApiOrLocal(data, setor, normalized);
+    showLibFeedback(`Forma ${forma} desprogramada.`, "ok");
+  } else {
+    state.programmedFormas.add(normalized);
+    card.classList.add("is-programmed");
+    await programFormaInApiOrLocal(data, setor, normalized);
+    showLibFeedback(`Forma ${forma} programada!`, "ok");
+  }
+  
+  updateKioskProgress();
+}
+
+async function loadProgrammedFormas() {
+  const data = el.libData?.value || todayYmd();
+  let sectorLabel = "";
+  if (state.activeLiberacaoSector === "LIBERACAO_S1") sectorLabel = "Setor 1";
+  else if (state.activeLiberacaoSector === "LIBERACAO_S2") sectorLabel = "Setor 2";
+  else if (state.activeLiberacaoSector === "LIBERACAO_S3") sectorLabel = "Setor 3";
+  else return;
+  
+  state.programmedFormas = new Set();
+  
+  let loadedFromDb = false;
+  if (hasApiConfigured()) {
+    try {
+      const { data: rows, error } = await supabaseClient.from('programacao')
+        .select('forma')
+        .eq('data_fabricacao', data)
+        .eq('setor', sectorLabel);
+      if (!error && Array.isArray(rows)) {
+        rows.forEach(row => {
+          if (row.forma) state.programmedFormas.add(normalizeUpper(row.forma));
+        });
+        loadedFromDb = true;
+      }
+    } catch (err) {
+      console.warn("Erro ao buscar programação do Supabase, usando local:", err);
+    }
+  }
+  
+  if (!loadedFromDb) {
+    const list = readLocalProgramacao();
+    list.filter(item => item.data_fabricacao === data && item.setor === sectorLabel)
+      .forEach(item => {
+        state.programmedFormas.add(normalizeUpper(item.forma));
+      });
+  }
+}
+
 function renderLiberacaoDual() {
   const isAll = state.activeLiberacaoSector === "LIBERACAO";
   const isS1 = isAll || state.activeLiberacaoSector === "LIBERACAO_S1";
@@ -1748,6 +1963,9 @@ function updateSectorCounters() {
     c4.textContent = s4Count + " / " + s4All.length;
     c4.classList.toggle("counter-done", s4Count === s4All.length && s4All.length > 0);
   }
+  
+  // Atualizar progresso do quiosque também
+  updateKioskProgress();
 }
 
 async function renderSheetGrid() {
@@ -3852,6 +4070,14 @@ function setMode(mode) {
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
     el.viewLiberacao.classList.remove("hidden");
     state.activeLiberacaoSector = mode;
+    
+    const isKioskSector = mode === "LIBERACAO_S1" || mode === "LIBERACAO_S2" || mode === "LIBERACAO_S3";
+    if (isKioskSector) {
+      document.body.classList.add("kiosk-active");
+      updateKioskHeader();
+    } else {
+      document.body.classList.remove("kiosk-active");
+    }
   }
   if (mode === "INSPECAO") el.viewInspecao.classList.remove("hidden");
   if (mode === "MONTAGEM_POSTES") el.viewMontagemPostes.classList.remove("hidden");
@@ -4007,35 +4233,35 @@ function bindEvents() {
       el.hubLiberacao.addEventListener("click", () => {
         setMode("LIBERACAO");
         if (!el.libData.value) el.libData.value = todayYmd();
-        renderLiberacaoDual();
+        loadProgrammedFormas().then(() => renderLiberacaoDual());
       });
     }
     if (el.hubLiberacaoS1) {
       el.hubLiberacaoS1.addEventListener("click", () => {
         setMode("LIBERACAO_S1");
         if (!el.libData.value) el.libData.value = todayYmd();
-        renderLiberacaoDual();
+        loadProgrammedFormas().then(() => renderLiberacaoDual());
       });
     }
     if (el.hubLiberacaoS2) {
       el.hubLiberacaoS2.addEventListener("click", () => {
         setMode("LIBERACAO_S2");
         if (!el.libData.value) el.libData.value = todayYmd();
-        renderLiberacaoDual();
+        loadProgrammedFormas().then(() => renderLiberacaoDual());
       });
     }
     if (el.hubLiberacaoS3) {
       el.hubLiberacaoS3.addEventListener("click", () => {
         setMode("LIBERACAO_S3");
         if (!el.libData.value) el.libData.value = todayYmd();
-        renderLiberacaoDual();
+        loadProgrammedFormas().then(() => renderLiberacaoDual());
       });
     }
     if (el.hubLiberacaoS4) {
       el.hubLiberacaoS4.addEventListener("click", () => {
         setMode("LIBERACAO_S4");
         if (!el.libData.value) el.libData.value = todayYmd();
-        renderLiberacaoDual();
+        loadProgrammedFormas().then(() => renderLiberacaoDual());
       });
     }
 
@@ -4077,7 +4303,84 @@ function bindEvents() {
       }
     });
   }
-  el.libData.addEventListener("change", renderLiberacaoDual);
+  el.libData.addEventListener("change", () => {
+    loadProgrammedFormas().then(() => renderLiberacaoDual());
+  });
+
+  // Sincronização dos campos do Quiosque em tempo real
+  if (el.libData && el.kioskLibData) {
+    el.libData.addEventListener("input", () => {
+      el.kioskLibData.value = el.libData.value;
+      loadProgrammedFormas().then(() => renderLiberacaoDual());
+    });
+    el.kioskLibData.addEventListener("input", () => {
+      el.libData.value = el.kioskLibData.value;
+      loadProgrammedFormas().then(() => renderLiberacaoDual());
+    });
+  }
+  if (el.libColaborador && el.kioskLibColaborador) {
+    el.libColaborador.addEventListener("input", () => {
+      el.kioskLibColaborador.value = el.libColaborador.value;
+    });
+    el.kioskLibColaborador.addEventListener("input", () => {
+      el.libColaborador.value = el.kioskLibColaborador.value;
+    });
+  }
+
+  // Ouvintes de evento de Programação do Quiosque
+  if (el.kioskProgCheckbox) {
+    el.kioskProgCheckbox.addEventListener("change", () => {
+      state.programmingMode = el.kioskProgCheckbox.checked;
+      const toggleField = document.getElementById("kioskProgToggleField");
+      if (toggleField) {
+        toggleField.classList.toggle("active", state.programmingMode);
+      }
+      renderLiberacaoDual();
+    });
+  }
+  if (el.kioskProgToggleField && el.kioskProgCheckbox) {
+    el.kioskProgToggleField.addEventListener("click", (e) => {
+      if (e.target !== el.kioskProgCheckbox && !el.kioskProgCheckbox.contains(e.target)) {
+        el.kioskProgCheckbox.checked = !el.kioskProgCheckbox.checked;
+        el.kioskProgCheckbox.dispatchEvent(new Event("change"));
+      }
+    });
+  }
+
+  // Controle de Tela Cheia no Quiosque
+  if (el.btnKioskFullscreen) {
+    el.btnKioskFullscreen.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error(`Erro ao ativar Tela Cheia: ${err.message}`);
+        });
+        el.btnKioskFullscreen.textContent = "📺 Sair Tela Cheia";
+      } else {
+        document.exitFullscreen().catch(() => {});
+        el.btnKioskFullscreen.textContent = "🖥️ Tela Cheia";
+      }
+    });
+  }
+  document.addEventListener("fullscreenchange", () => {
+    if (el.btnKioskFullscreen) {
+      if (document.fullscreenElement) {
+        el.btnKioskFullscreen.textContent = "📺 Sair Tela Cheia";
+      } else {
+        el.btnKioskFullscreen.textContent = "🖥️ Tela Cheia";
+      }
+    }
+  });
+
+  // Botão Sair Quiosque
+  if (el.btnKioskBack) {
+    el.btnKioskBack.addEventListener("click", () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      document.body.classList.remove("kiosk-active");
+      setMode("HUB");
+    });
+  }
   if (el.btnLimparFormas) {
     el.btnLimparFormas.addEventListener("click", () => {
       if (!confirm("Limpar todas as formas concretadas? (não apaga da planilha)")) return;
