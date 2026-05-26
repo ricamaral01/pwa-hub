@@ -1383,11 +1383,15 @@ function setCardState(card, cardState) {
   card.classList.add("is-" + cardState);
   
   // Se for uma célula do mapa do Setor 4, atualizar a linha inteira
-  if (card.classList.contains("s4-forma-cell") && cardState === "saved") {
-    const tr = card.closest("tr");
-    if (tr) {
-      const tdLib = tr.querySelector(".td-lib");
-      if (tdLib) tdLib.textContent = "1";
+  if (card.classList.contains("s4-forma-cell")) {
+    if (typeof card.refreshRow === "function") {
+      card.refreshRow();
+    } else if (cardState === "saved") {
+      const tr = card.closest("tr");
+      if (tr) {
+        const tdLib = tr.querySelector(".td-lib");
+        if (tdLib) tdLib.textContent = "1";
+      }
     }
   }
 
@@ -1554,6 +1558,7 @@ function createS4TableRow(item, setor) {
       tdInsCod.textContent = "";
     }
   };
+  tdForma.refreshRow = refreshRow;
 
   tdForma.addEventListener("click", () => {
     const data = el.libData?.value;
