@@ -1605,6 +1605,7 @@ function updateKioskHeader() {
   if (state.activeLiberacaoSector === "LIBERACAO_S1") sectorLabel = "Setor 1";
   else if (state.activeLiberacaoSector === "LIBERACAO_S2") sectorLabel = "Setor 2";
   else if (state.activeLiberacaoSector === "LIBERACAO_S3") sectorLabel = "Setor 3";
+  else if (state.activeLiberacaoSector === "LIBERACAO_S4") sectorLabel = "Setor 4";
 
   el.kioskSectorTitle.textContent = "Produção " + sectorLabel;
   el.kioskSectorSubtitle.textContent = "ÁREA OPERACIONAL QUIOSQUE";
@@ -1637,6 +1638,9 @@ function updateKioskProgress() {
   } else if (state.activeLiberacaoSector === "LIBERACAO_S3") {
     sectorLabel = "Setor 3";
     listAll = SETOR_3_LEFT_FORMS.concat(SETOR_3_RIGHT_FORMS);
+  } else if (state.activeLiberacaoSector === "LIBERACAO_S4") {
+    sectorLabel = "Setor 4";
+    listAll = SETOR_4_COL1_FORMS.concat(SETOR_4_COL2_FORMS).concat(SETOR_4_COL3_FORMS);
   } else {
     return;
   }
@@ -3989,7 +3993,7 @@ function setMode(mode) {
     el.viewLiberacao.classList.remove("hidden");
     state.activeLiberacaoSector = mode;
     
-    const isKioskSector = mode === "LIBERACAO_S1" || mode === "LIBERACAO_S2" || mode === "LIBERACAO_S3";
+    const isKioskSector = mode === "LIBERACAO_S1" || mode === "LIBERACAO_S2" || mode === "LIBERACAO_S3" || mode === "LIBERACAO_S4";
     if (isKioskSector) {
       document.body.classList.add("kiosk-active");
       updateKioskHeader();

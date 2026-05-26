@@ -3292,3 +3292,88 @@ body.kiosk-active .forma-card .fc-status {
   }
 }
 
+/* ── Setor 4 Quiosque Premium Layout ── */
+body.kiosk-active .lib-sector-4 {
+  border-color: #b45309 !important;
+}
+
+body.kiosk-active #libSetor4Cols {
+  display: block !important;
+  width: 100% !important;
+  padding: 30px !important;
+  background: #f8fafc !important;
+}
+
+body.kiosk-active .s4-layout-wrapper {
+  gap: 30px !important;
+  width: 100% !important;
+}
+
+body.kiosk-active .s4-mapa-container {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 28px !important;
+  width: 100% !important;
+}
+
+body.kiosk-active .s4-col {
+  gap: 24px !important;
+}
+
+body.kiosk-active .s4-table-wrapper {
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06) !important;
+  border: 2px solid #cbd5e1 !important;
+  background: #ffffff !important;
+}
+
+body.kiosk-active .s4-table {
+  font-size: 1.25rem !important;
+}
+
+body.kiosk-active .s4-table th {
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  color: #1e293b !important;
+  padding: 22px 18px !important;
+  background: #f1f5f9 !important;
+  border-bottom: 3px solid #cbd5e1 !important;
+}
+
+body.kiosk-active .s4-table td {
+  padding: 0 !important;
+  border-bottom: 1.5px solid #e2e8f0 !important;
+}
+
+body.kiosk-active .s4-forma-cell {
+  font-size: 1.6rem !important;
+  font-weight: 900 !important;
+  padding: 26px 18px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  cursor: pointer !important;
+  background: #f8fafc !important;
+  transition: all 0.2s ease !important;
+}
+
+body.kiosk-active .s4-forma-cell:hover {
+  background: #dbeafe !important;
+  color: #1d4ed8 !important;
+}
+
+body.kiosk-active .s4-forma-cell.is-saved {
+  background: #dcfce7 !important;
+  color: #15803d !important;
+}
+
+body.kiosk-active .s4-table td:nth-child(2) {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  padding: 26px 18px !important;
+  background: #ffffff !important;
+}
+
+
