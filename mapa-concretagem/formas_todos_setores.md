@@ -308,21 +308,21 @@ Total: 39 formas.
 | A-CH200 | CH-200 | Chapeu Sub.200 |
 | A-CH200TC | CH200TC | Chapu Sub.200 C/TC |
 | A-TOTEM | TOTEM | Totem Med. Indireta |
-| DTB-01 | DTB-01 | Duplo T Barreiras |
-| DTB-02 | DTB-02 | Duplo T Barreiras |
-| DTB-03 | DTB-03 | Duplo T Barreiras |
-| DTB-04 | DTB-04 | Duplo T Barreiras |
-| DTB-05 | DTB-05 | Duplo T Barreiras |
-| DTB-06 | DTB-06 | Duplo T Barreiras |
-| DTB-07 | DTB-07 | Duplo T Barreiras |
-| DTB-08 | DTB-08 | Duplo T Barreiras |
-| DTB-09 | DTB-09 | Duplo T Barreiras |
-| DTB-10 | DTB-10 | Duplo T Barreiras |
-| DTBM-01 | DTBM-01 | Duplo T Barreiras M. |
-| DTBM-02 | DTBM-02 | Duplo T Barreiras M. |
-| DTD-01 | DTD-01 | Duplo T Especial D |
-| DTD-02 | DTD-02 | Duplo T Especial D |
-| DTD-03 | DTD-03 | Duplo T Especial D |
+| DTB 01 | DTB 01 | DTB 01 |
+| DTB 02 | DTB 02 | DTB 02 |
+| DTB 03 | DTB 03 | DTB 03 |
+| DTB 04 | DTB 04 | DTB 04 |
+| DTB 05 | DTB 05 | DTB 05 |
+| DTB 06 | DTB 06 | DTB 06 |
+| DTB 07 | DTB 07 | DTB 07 |
+| DTB 08 | DTB 08 | DTB 08 |
+| DTB 09 | DTB 09 | DTB 09 |
+| DTB 10 | DTB 10 | DTB 10 |
+| DTBM 01 | DTBM 01 | DTBM 01 |
+| DTBM 02 | DTBM 02 | DTBM 02 |
+| DTD 01 | DTD 01 | DTD 01 |
+| DTD 02 | DTD 02 | DTD 02 |
+| DTD 03 | DTD 03 | DTD 03 |
 
 ### SEÇÃO 2: Copos e Canaletas
 
@@ -423,21 +423,21 @@ Se você precisar colar estas estruturas de dados diretamente em outra aplicaç�
     "postes_especiais_barreiras": [
       { "forma": "L-*1", "label": "*1", "modelo": "12 x 200" },
       // ...
-      { "forma": "DTB-01", "label": "DTB-01", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-02", "label": "DTB-02", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-03", "label": "DTB-03", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-04", "label": "DTB-04", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-05", "label": "DTB-05", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-06", "label": "DTB-06", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-07", "label": "DTB-07", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-08", "label": "DTB-08", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-09", "label": "DTB-09", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTB-10", "label": "DTB-10", "modelo": "Duplo T Barreiras" },
-      { "forma": "DTBM-01", "label": "DTBM-01", "modelo": "Duplo T Barreiras M." },
-      { "forma": "DTBM-02", "label": "DTBM-02", "modelo": "Duplo T Barreiras M." },
-      { "forma": "DTD-01", "label": "DTD-01", "modelo": "Duplo T Especial D" },
-      { "forma": "DTD-02", "label": "DTD-02", "modelo": "Duplo T Especial D" },
-      { "forma": "DTD-03", "label": "DTD-03", "modelo": "Duplo T Especial D" }
+      { "forma": "DTB 01", "label": "DTB 01", "modelo": "DTB 01" },
+      { "forma": "DTB 02", "label": "DTB 02", "modelo": "DTB 02" },
+      { "forma": "DTB 03", "label": "DTB 03", "modelo": "DTB 03" },
+      { "forma": "DTB 04", "label": "DTB 04", "modelo": "DTB 04" },
+      { "forma": "DTB 05", "label": "DTB 05", "modelo": "DTB 05" },
+      { "forma": "DTB 06", "label": "DTB 06", "modelo": "DTB 06" },
+      { "forma": "DTB 07", "label": "DTB 07", "modelo": "DTB 07" },
+      { "forma": "DTB 08", "label": "DTB 08", "modelo": "DTB 08" },
+      { "forma": "DTB 09", "label": "DTB 09", "modelo": "DTB 09" },
+      { "forma": "DTB 10", "label": "DTB 10", "modelo": "DTB 10" },
+      { "forma": "DTBM 01", "label": "DTBM 01", "modelo": "DTBM 01" },
+      { "forma": "DTBM 02", "label": "DTBM 02", "modelo": "DTBM 02" },
+      { "forma": "DTD 01", "label": "DTD 01", "modelo": "DTD 01" },
+      { "forma": "DTD 02", "label": "DTD 02", "modelo": "DTD 02" },
+      { "forma": "DTD 03", "label": "DTD 03", "modelo": "DTD 03" }
     ],
     "copos": [
       { "forma": "C-F1-1", "label": "1", "modelo": "6,0 x 90" }

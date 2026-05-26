@@ -410,21 +410,21 @@ const SETOR_4_COL1_FORMS = [
   { forma: "A-CH200",  label: "CH-200",  modelo: "Chapeu Sub.200" },
   { forma: "A-CH200TC",label: "CH200TC", modelo: "Chapu Sub.200 C/TC" },
   { forma: "A-TOTEM",  label: "TOTEM",   modelo: "Totem Med. Indireta" },
-  { forma: "DTB-01",   label: "DTB-01",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-02",   label: "DTB-02",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-03",   label: "DTB-03",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-04",   label: "DTB-04",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-05",   label: "DTB-05",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-06",   label: "DTB-06",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-07",   label: "DTB-07",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-08",   label: "DTB-08",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-09",   label: "DTB-09",  modelo: "Duplo T Barreiras" },
-  { forma: "DTB-10",   label: "DTB-10",  modelo: "Duplo T Barreiras" },
-  { forma: "DTBM-01",  label: "DTBM-01", modelo: "Duplo T Barreiras M." },
-  { forma: "DTBM-02",  label: "DTBM-02", modelo: "Duplo T Barreiras M." },
-  { forma: "DTD-01",   label: "DTD-01",  modelo: "Duplo T Especial D" },
-  { forma: "DTD-02",   label: "DTD-02",  modelo: "Duplo T Especial D" },
-  { forma: "DTD-03",   label: "DTD-03",  modelo: "Duplo T Especial D" }
+  { forma: "DTB 01",   label: "DTB 01",  modelo: "DTB 01" },
+  { forma: "DTB 02",   label: "DTB 02",  modelo: "DTB 02" },
+  { forma: "DTB 03",   label: "DTB 03",  modelo: "DTB 03" },
+  { forma: "DTB 04",   label: "DTB 04",  modelo: "DTB 04" },
+  { forma: "DTB 05",   label: "DTB 05",  modelo: "DTB 05" },
+  { forma: "DTB 06",   label: "DTB 06",  modelo: "DTB 06" },
+  { forma: "DTB 07",   label: "DTB 07",  modelo: "DTB 07" },
+  { forma: "DTB 08",   label: "DTB 08",  modelo: "DTB 08" },
+  { forma: "DTB 09",   label: "DTB 09",  modelo: "DTB 09" },
+  { forma: "DTB 10",   label: "DTB 10",  modelo: "DTB 10" },
+  { forma: "DTBM 01",  label: "DTBM 01", modelo: "DTBM 01" },
+  { forma: "DTBM 02",  label: "DTBM 02", modelo: "DTBM 02" },
+  { forma: "DTD 01",   label: "DTD 01",  modelo: "DTD 01" },
+  { forma: "DTD 02",   label: "DTD 02",  modelo: "DTD 02" },
+  { forma: "DTD 03",   label: "DTD 03",  modelo: "DTD 03" }
 ];
 
 const SETOR_4_COL2_FORMS = [
@@ -715,6 +715,9 @@ function getFormaCatalogKey(forma) {
   if (normalized.startsWith("A-TOTEM")) return "A-TOTEM";
   if (normalized.startsWith("C-F1")) return "C-F1";
   if (normalized.startsWith("R-G")) return "R-G";
+  if (normalized.startsWith("DTBM")) return "DTBM";
+  if (normalized.startsWith("DTB")) return "DTB";
+  if (normalized.startsWith("DTD")) return "DTD";
   return normalized.split("-")[0];
 }
 
