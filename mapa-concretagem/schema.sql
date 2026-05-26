@@ -105,7 +105,10 @@ INSERT INTO public.postes_duplo_t (codigo, descricao, setor, codigo_produto, cha
     ('E', 'Poste Economico 1CX VR', 'Setor 1', '931', ARRAY['E']),
     ('F', 'Poste Economico 1CX VL', 'Setor 1', '930', ARRAY['F']),
     ('G', 'Poste Economico 2CX VR', 'Setor 1', '932', ARRAY['G']),
-    ('P', 'Poste Economico 3 CXS VR', 'Setor 1', '933', ARRAY['P'])
+    ('P', 'Poste Economico 3 CXS VR', 'Setor 1', '933', ARRAY['P']),
+    ('DTB', 'Poste Duplo T Barreiras', 'Setor 4', '13580', ARRAY['DTB']),
+    ('DTBM', 'Poste Duplo T Barreiras Médio', 'Setor 4', '13581', ARRAY['DTBM']),
+    ('DTD', 'Poste Duplo T Especial D', 'Setor 4', '13582', ARRAY['DTD'])
 ON CONFLICT (codigo) DO UPDATE SET
     descricao = EXCLUDED.descricao,
     setor = EXCLUDED.setor,
