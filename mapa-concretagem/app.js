@@ -1533,9 +1533,6 @@ function createS4TableRow(item, setor) {
 
   tr.appendChild(tdForma);
   tr.appendChild(tdModelo);
-  tr.appendChild(tdLib);
-  tr.appendChild(tdInsStatus);
-  tr.appendChild(tdInsCod);
   
   refreshRow();
   return tr;
@@ -1561,7 +1558,7 @@ function renderSetor4Mapa(container) {
   wrapCopos.className = "s4-table-wrapper";
   const tableCopos = document.createElement("table");
   tableCopos.className = "s4-table";
-  tableCopos.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção</th></tr></thead><tbody></tbody>`;
+  tableCopos.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th></tr></thead><tbody></tbody>`;
   const bodyCopos = tableCopos.querySelector("tbody");
   SETOR_4_COL2_FORMS.forEach(item => bodyCopos.appendChild(createS4TableRow(item, setor)));
   wrapCopos.appendChild(tableCopos);
@@ -1576,7 +1573,7 @@ function renderSetor4Mapa(container) {
   wrapCanaletas.className = "s4-table-wrapper";
   const tableCanaletas = document.createElement("table");
   tableCanaletas.className = "s4-table";
-  tableCanaletas.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção</th></tr></thead><tbody></tbody>`;
+  tableCanaletas.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th></tr></thead><tbody></tbody>`;
   const bodyCanaletas = tableCanaletas.querySelector("tbody");
   SETOR_4_COL3_FORMS.forEach(item => bodyCanaletas.appendChild(createS4TableRow(item, setor)));
   wrapCanaletas.appendChild(tableCanaletas);
@@ -1591,7 +1588,7 @@ function renderSetor4Mapa(container) {
   wrapBarreiras.className = "s4-table-wrapper";
   const tableBarreiras = document.createElement("table");
   tableBarreiras.className = "s4-table";
-  tableBarreiras.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th><th>Liberação</th><th colspan="2">Inspeção</th></tr></thead><tbody></tbody>`;
+  tableBarreiras.innerHTML = `<thead><tr><th>N Forma</th><th>Modelo</th></tr></thead><tbody></tbody>`;
   const bodyBarreiras = tableBarreiras.querySelector("tbody");
   SETOR_4_COL1_FORMS.forEach(item => bodyBarreiras.appendChild(createS4TableRow(item, setor)));
   wrapBarreiras.appendChild(tableBarreiras);
