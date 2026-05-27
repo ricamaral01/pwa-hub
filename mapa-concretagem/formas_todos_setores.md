@@ -120,20 +120,23 @@ Total: 50 formas.
 ## 📊 SETOR 2 (Produção)
 
 ### Coluna Esquerda (`left`)
-Total: 40 formas.
+Total: 43 formas.
 
 | N Forma | Modelo Cadastrado |
 | :--- | :--- |
-| PL - 2 | 7,5x300 c/ Lente |
+| TCR-1 | 600-VR |
 | PL - 1 | 7,5x300 c/ Lente |
-| A-28 | 1 CX VR |
-| A-85 | 1 CX VR |
+| PL - 2 | 7,5x300 c/ Lente |
+| PL - 3 | 7,5x300 c/ Lente |
+| PL - 4 | 7,5x300 c/ Lente |
 | A-10 | 1 CX VR |
 | A-36 | 1 CX VR |
 | A-82 | 1 CX VR |
 | A-22 | 1 CX VR |
 | A-11 | 1 CX VR |
-| ESTOQ | ESTOQUE |
+| A-28 | 1 CX VR |
+| A-85 | 1 CX VR |
+| A-23 | 1 CX VR |
 | A-52 | 1 CX VR |
 | A-70 | 1 CX VR |
 | A-83 | 1 CX VR |
@@ -166,17 +169,17 @@ Total: 40 formas.
 | B-15 | 1 CX VL |
 
 ### Coluna Direita (`right`)
-Total: 38 formas.
+Total: 40 formas.
 
 | N Forma | Modelo Cadastrado |
 | :--- | :--- |
 | TCL-1 | 600-VL |
 | TCL-2 | 600-VL |
 | TCR-4 | 600-VR |
+| TCR-3 | 600-VR |
 | TCR-2 | 600-VR |
-| PL - 3 | 7,5x300 c/ Lente |
-| PL - 4 | 7,5x300 c/ Lente |
-| A-23 | 1 CX VR |
+| PL - 5 | 7,5x300 c/ Lente |
+| PL - 6 | 7,5x300 c/ Lente |
 | A-17 | 1 CX VR |
 | A-35 | 1 CX VR |
 | A-24 | 1 CX VR |
@@ -198,7 +201,7 @@ Total: 38 formas.
 | A-44 | 1 CX VR |
 | A-45 | 1 CX VR |
 | A-48 | 1 CX VR |
-| C-03 | 1 CX VR |
+| C-03 | 2 CXS VR |
 | C-14 | 2 CXS VR |
 | C-16 | 2 CXS VR |
 | C-18 | 2 CXS VR |
