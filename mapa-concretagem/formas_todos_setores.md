@@ -57,9 +57,10 @@ Total: 47 formas.
 | 100-1 | SUB. 100-AMP |
 | 100-2 | SUB. 100-AMP |
 | 100-3 | SUB. 100-AMP |
+| F-01 | Ec. 1 cx VL |
 
 ### Coluna Direita (`right`)
-Total: 43 formas.
+Total: 50 formas.
 
 | N Forma | Modelo Cadastrado |
 | :--- | :--- |
@@ -71,53 +72,58 @@ Total: 43 formas.
 | I-01 | 3 CXS VL |
 | P-01 | Ec. 3 CXS |
 | P-02 | Ec. 3 CXS |
+| I-02 | 3 CXS VL |
 | BE-04 | 1 CX VL |
 | BE-03 | 1 CX VL |
 | BE-02 | 1 CX VL |
 | BE-01 | 1 CX VL |
+| G-01 | Ec. 2CXS VR |
+| G-02 | Ec. 2CXS VR |
+| G-03 | Ec. 2CXS VR |
+| G-04 | Ec. 2CXS VR |
+| G-05 | Ec. 2CXS VR |
+| CM - 01 | 1 CX VL 7,0 x 150 |
+| 300-VL | 2 CXS VL |
+| 300-VR | 2 CXS VR |
+| E-01 | Ec. 1CX VR |
+| E-02 | Ec. 1CX VR |
+| E-03 | Ec. 1CX VR |
+| E-04 | Ec. 1CX VR |
+| E-05 | Ec. 1CX VR |
+| E-06 | Ec. 1CX VR |
+| D-03 | 2 CXS VL |
+| D-04 | 2 CXS VL |
+| D-05 | 2 CXS VL |
+| D-06 | 2 CXS VL |
+| D-07 | 2 CXS VL |
+| M-01 | 1 CX VR - 600 |
+| CE-13 | 2 CXS VR |
+| CE-12 | 2 CXS VR |
+| CE-11 | 2 CXS VR |
+| CE-10 | 2 CXS VR |
+| CE-09 | 2 CXS VR |
+| CE-05 | 2 CXS VR |
+| CE-04 | 2 CXS VR |
+| CE-03 | 2 CXS VR |
+| 100 - 4 | SUB. 100 AMP. |
+| 100 - 5 | SUB. 100 AMP. |
+| 100 - 6 | SUB. 100 AMP. |
+| SBE-1 | SUB. 100-AMP-E |
+| 200 -1 | SUB. 200-AMP C/ TC |
+| 200 -2 | SUB. 200-AMP C/ TC |
+| DE-03 | 2 CXS VL |
 | DE-02 | 2 CXS VL |
 | DE-01 | 2 CXS VL |
-| CE-02 | 2 CXS VR |
-| CE-01 | 2 CXS VR |
-| E-01 | Ec. 1 CX VR |
-| E-02 | Ec. 1 CX VR |
-| E-03 | Ec. 1 CX VR |
-| E-04 | Ec. 1 CX VR |
-| E-05 | Ec. 1 CX VR |
-| E-06 | Ec. 1 CX VR |
-| F-01 | Ec. 1 CX VL |
-| F-02 | Ec. 1 CX VL |
-| F-03 | Ec. 1 CX VL |
-| F-04 | Ec. 1 CX VL |
-| F-05 | Ec. 1 CX VL |
-| F-06 | Ec. 1 CX VL |
-| G-01 | Ec. 2 CX VR |
-| G-02 | Ec. 2 CX VR |
-| G-03 | Ec. 2 CX VR |
-| G-04 | Ec. 2 CX VR |
-| G-05 | Ec. 2 CX VR |
-| G-06 | Ec. 2 CX VR |
-| G-07 | Ec. 2 CX VR |
-| G-08 | Ec. 2 CX VR |
-| G-09 | Ec. 2 CX VR |
-| G-10 | Ec. 2 CX VR |
-| G-11 | Ec. 2 CX VR |
-| G-12 | Ec. 2 CX VR |
-| M-01 | 7,5x600 VR |
-| N-01 | 7,5x600 VL |
-| 200-1 | SUB. 200-AMP |
 
 ---
 
 ## 📊 SETOR 2 (Produção)
 
 ### Coluna Esquerda (`left`)
-Total: 42 formas.
+Total: 40 formas.
 
 | N Forma | Modelo Cadastrado |
 | :--- | :--- |
-| 300-VL | 2 CXS VL |
-| 300-VR | 2 CXS VR |
 | PL - 2 | 7,5x300 c/ Lente |
 | PL - 1 | 7,5x300 c/ Lente |
 | A-28 | 1 CX VR |
