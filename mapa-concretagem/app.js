@@ -43,7 +43,7 @@ const MONTAGEM_CHECKLIST_SECTIONS = [
   }
 ];
 
-const CONCRETO_TIPOS = ["Padrão Vibrado", "Concreto com Variação"];
+const CONCRETO_TIPOS = ["Concreto Padrão", "Concreto Vibrado", "Fora de Padrão"];
 
 function getConcreteTypeForForma(forma, setor) {
   const dataFabricacao = el.libData?.value || todayYmd();
@@ -1939,7 +1939,7 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
   el.concretoTipoModal.classList.add("modal-visible");
 }
 
-async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Padrão") {
+async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Concreto Padrão") {
   setCardState(card, "saving");
 
   const agora = new Date();
