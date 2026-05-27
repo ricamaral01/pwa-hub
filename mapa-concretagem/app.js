@@ -2512,6 +2512,38 @@ function renderMontagemPosteDetalhe() {
 async function openMontagemPosteDetalhe(posteBase) {
   const key = getMontagemPosteKey(posteBase);
   const now = nowIso();
+
+  if (hasMontagemApiConfigured()) {
+    try {
+      const { data, error } = await supabaseClient.from('montagem_poste').select('*').eq('id', key).maybeSingle();
+      if (!error && data) {
+        const db = readMontagemPostesDb();
+        db.postes[key] = {
+          key: data.id,
+          recordId: data.record_id || "",
+          dataFabricacao: data.data_fabricacao || "",
+          setor: data.setor || "",
+          formaNumero: data.forma_numero || "",
+          modelo: data.modelo || "",
+          codigoPoste: data.codigo_poste || "",
+          descricaoPoste: data.descricao_poste || "",
+          codigoProduto: data.codigo_produto || "",
+          statusMontagem: data.status_montagem || "",
+          motivoRecusa: data.motivo_recusa || "",
+          etapa: data.etapa || "",
+          inicioInspecaoMontagem: data.inicio_inspecao_montagem || "",
+          finalizadoEm: data.finalizado_em || "",
+          checklists: data.checklists || {},
+          observacoesMontagem: data.observacoes_montagem || "",
+          montadorNome: data.montador_nome || ""
+        };
+        writeMontagemPostesDb(db);
+      }
+    } catch (err) {
+      console.warn("Erro ao buscar montagem_poste específico do Supabase:", err);
+    }
+  }
+
   const atual = getMontagemPosteByKey(key);
 
   const merged = {
@@ -2598,6 +2630,47 @@ function filtrarMontagemTabela() {
   });
 }
 
+async function syncMontagemPostesFromApi(filtroData, modoCarga, setor) {
+  if (!hasMontagemApiConfigured()) return;
+  try {
+    let query = supabaseClient.from('montagem_poste').select('*');
+    if (setor) query = query.eq('setor', setor);
+    if (modoCarga === "data" && filtroData) query = query.eq('data_fabricacao', filtroData);
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    if (Array.isArray(data) && data.length > 0) {
+      const db = readMontagemPostesDb();
+      data.forEach(row => {
+        const key = row.id;
+        db.postes[key] = {
+          key: row.id,
+          recordId: row.record_id || "",
+          dataFabricacao: row.data_fabricacao || "",
+          setor: row.setor || "",
+          formaNumero: row.forma_numero || "",
+          modelo: row.modelo || "",
+          codigoPoste: row.codigo_poste || "",
+          descricaoPoste: row.descricao_poste || "",
+          codigoProduto: row.codigo_produto || "",
+          statusMontagem: row.status_montagem || "",
+          motivoRecusa: row.motivo_recusa || "",
+          etapa: row.etapa || "",
+          inicioInspecaoMontagem: row.inicio_inspecao_montagem || "",
+          finalizadoEm: row.finalizado_em || "",
+          checklists: row.checklists || {},
+          observacoesMontagem: row.observacoes_montagem || "",
+          montadorNome: row.montador_nome || ""
+        };
+      });
+      writeMontagemPostesDb(db);
+    }
+  } catch (err) {
+    console.warn("Erro ao carregar montagem_poste do Supabase:", err);
+  }
+}
+
 async function renderMontagemPostesLiberados() {
   if (!el.mpLiberadosBody || !el.mpQtdItens) return;
 
@@ -2612,6 +2685,7 @@ async function renderMontagemPostesLiberados() {
     return;
   }
 
+  await syncMontagemPostesFromApi(filtroData, modoCarga, setor);
   const montagemDb = readMontagemPostesDb();
   let rows = [];
   const apiRows = await getInspecaoRowsFromApi(filtroData, modoCarga, setor);
