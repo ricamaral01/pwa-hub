@@ -3265,33 +3265,6 @@ body.kiosk-active .forma-card .fc-status {
   border: 2px dashed #94a3b8;
 }
 
-/* ── Floating Hover Sidebar (Desktop/Tablet) ──
-@media (min-width: 769px) {
-  .sidebar {
-    transform: translateX(-230px);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
-  }
-  .sidebar:hover {
-    transform: translateX(0);
-    box-shadow: 4px 0 24px rgba(15, 30, 60, 0.25);
-  }
-  .sidebar::after {
-    content: '';
-    position: absolute;
-    top: 0; right: -24px; bottom: 0;
-    width: 24px;
-    background: transparent;
-    pointer-events: auto;
-    cursor: pointer;
-  }
-  .app-main {
-    margin-left: 0 !important;
-  }
-  body.mode-inspecao .ins-float-bar {
-    left: 0 !important;
-  }
-}
-*/
 
 /* ── Setor 4 Quiosque Premium Layout ── */
 body.kiosk-active .lib-sector-4 {
