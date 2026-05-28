@@ -3265,7 +3265,7 @@ body.kiosk-active .forma-card .fc-status {
   border: 2px dashed #94a3b8;
 }
 
-/* ── Floating Hover Sidebar (Desktop/Tablet) ── */
+/* ── Floating Hover Sidebar (Desktop/Tablet) ──
 @media (min-width: 769px) {
   .sidebar {
     transform: translateX(-230px);
@@ -3291,6 +3291,7 @@ body.kiosk-active .forma-card .fc-status {
     left: 0 !important;
   }
 }
+*/
 
 /* ── Setor 4 Quiosque Premium Layout ── */
 body.kiosk-active .lib-sector-4 {
