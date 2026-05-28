@@ -2060,6 +2060,13 @@ async function getInspecaoRowsFromApi(filtroData, modoCarga, setor) {
   try {
     let query = supabaseClient.from('producao').select('*');
     if (setor) query = query.eq('setor', setor);
+    
+    if (modoCarga === "data" && filtroData) {
+      query = query.eq('data_fabricacao', filtroData);
+    } else {
+      // Ordena decrescente para trazer os registros mais recentes primeiro (contornando o limite padrão de 1000 linhas do Supabase)
+      query = query.order('data_fabricacao', { ascending: false }).order('data_hora', { ascending: false });
+    }
 
     const { data, error } = await query;
     if (error) throw error;
