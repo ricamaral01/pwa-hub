@@ -1758,13 +1758,79 @@ async function toggleFormaProgramada(forma, setor, card) {
   updateKioskProgress();
 }
 
+async function loadClickedFormsFromSupabase() {
+  const data = el.libData?.value || todayYmd();
+  if (!hasApiConfigured()) return;
+
+  try {
+    // Busca todas as concretagens feitas na data selecionada a partir do Supabase (independente de estar LIBERADO ou INSPECIONADO)
+    const { data: rows, error } = await supabaseClient.from('producao')
+      .select('forma, setor, tipo_concreto')
+      .eq('data_fabricacao', data);
+      
+    if (!error && Array.isArray(rows)) {
+      const clicked = getClickedFormsToday();
+      // Limpa os registros locais de clique para re-popular com os dados atualizados em nuvem
+      clicked.formas = {};
+      clicked.dia = new Date().toLocaleDateString("pt-BR");
+      
+      const db = readDb();
+      let dbUpdated = false;
+
+      rows.forEach(row => {
+        if (row.forma && row.setor) {
+          const key = row.setor + "||" + normalizeUpper(row.forma);
+          clicked.formas[key] = true;
+          
+          // Sincroniza no banco local para que a exibição do tipo de concreto e status seja fiel
+          let record = findRecordByKey(db, data, row.setor, normalizeUpper(row.forma));
+          if (!record) {
+            record = {
+              id: uuid(),
+              dataFabricacao: data,
+              setor: row.setor,
+              formaNumero: normalizeUpper(row.forma),
+              concretoTipo: row.tipo_concreto || 'Padrão',
+              createdAt: nowIso(),
+              updatedAt: nowIso(),
+              liberacao: { status: "1", timestamp: nowIso() },
+              inspecoes: []
+            };
+            upsertRecord(db, record);
+            dbUpdated = true;
+          } else if (!record.liberacao || record.liberacao.status !== "1" || record.concretoTipo !== row.tipo_concreto) {
+            record.concretoTipo = row.tipo_concreto || 'Padrão';
+            record.liberacao = record.liberacao || { status: "1", timestamp: nowIso() };
+            record.liberacao.status = "1";
+            record.updatedAt = nowIso();
+            upsertRecord(db, record);
+            dbUpdated = true;
+          }
+        }
+      });
+      
+      if (dbUpdated) {
+        writeDb(db);
+      }
+      localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
+    }
+  } catch (err) {
+    console.warn("Erro ao buscar concretagens do Supabase:", err);
+  }
+}
+
 async function loadProgrammedFormas() {
   const data = el.libData?.value || todayYmd();
   let sectorLabel = "";
   if (state.activeLiberacaoSector === "LIBERACAO_S1") sectorLabel = "Setor 1";
   else if (state.activeLiberacaoSector === "LIBERACAO_S2") sectorLabel = "Setor 2";
   else if (state.activeLiberacaoSector === "LIBERACAO_S3") sectorLabel = "Setor 3";
-  else return;
+  else if (state.activeLiberacaoSector === "LIBERACAO_S4") sectorLabel = "Setor 4";
+  
+  // Sincroniza as fôrmas concretadas do Supabase antes de renderizar
+  await loadClickedFormsFromSupabase();
+  
+  if (!sectorLabel || sectorLabel === "Setor 4") return; // Setor 4 não possui programação
   
   state.programmedFormas = new Set();
   
