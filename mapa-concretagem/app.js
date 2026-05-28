@@ -72,9 +72,20 @@ function markFormaClicked(forma, setor) {
 }
 
 function isFormaClicked(forma, setor) {
-  const data = getClickedFormsToday();
-  const key = setor + "||" + normalizeUpper(forma);
-  return !!data.formas[key];
+  const dataFabricacao = el.libData?.value || todayYmd();
+  
+  // Se a data selecionada for hoje, verifica primeiro os cliques rápidos locais
+  const hoje = todayYmd();
+  if (dataFabricacao === hoje) {
+    const clicked = getClickedFormsToday();
+    const key = setor + "||" + normalizeUpper(forma);
+    if (clicked.formas[key]) return true;
+  }
+  
+  // Verificação definitiva a partir do banco de dados local (sincronizado dinamicamente do Supabase)
+  const db = readDb();
+  const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
+  return record?.liberacao?.status === "1";
 }
 const SUPABASE_CONFIG = {
   URL: "https://fbvvdyirhtgvycullsqy.supabase.co",
