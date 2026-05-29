@@ -2962,8 +2962,7 @@ async function renderMontagemPostesLiberados() {
 
   rows.forEach((record) => {
     const isFinalizado = !!record.montagem?.finalizado_em;
-    const label = isFinalizado ? "Montado" : "Inspecionar / Montar Poste";
-    const btnClass = isFinalizado ? "btn btn-montado" : "btn mp-open-btn";
+    const status = record.montagem?.status_montagem || "";
     const rowClass = isFinalizado ? "row-montado" : "";
 
     const tr = document.createElement("tr");
@@ -2982,11 +2981,24 @@ async function renderMontagemPostesLiberados() {
     // Armazena o registro de montagem completo serializado em JSON para uso posterior ao clicar
     tr.dataset.montagemRaw = record.montagem ? JSON.stringify(record.montagem) : "";
 
+    let acaoContent = "";
+    if (isFinalizado) {
+      if (status === "A") {
+        acaoContent = `<span class="status-badge status-badge-aprovado">Aprovado</span>`;
+      } else if (status === "RR") {
+        acaoContent = `<span class="status-badge status-badge-reprovado">Reprovado e Retrabalhado</span>`;
+      } else {
+        acaoContent = `<span class="status-badge status-badge-reprovado">Reprovado</span>`;
+      }
+    } else {
+      acaoContent = `<button type="button" class="btn mp-open-btn">Inspecionar / Montar Poste</button>`;
+    }
+
     tr.innerHTML = `
       <td data-label="N Forma">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
       <td data-label="Data Prod.">${fmtDate(record.dataFabricacao || "")}</td>
-      <td data-label="Ação"><button type="button" class="${btnClass}">${label}</button></td>
+      <td data-label="Ação">${acaoContent}</td>
     `;
     el.mpLiberadosBody.appendChild(tr);
   });
