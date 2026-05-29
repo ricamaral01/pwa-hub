@@ -2070,12 +2070,10 @@ hr {
   }
 
   #viewInspecao .sheet-table tr[data-record-id] td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: block;
     width: 100%;
     border: none;
-    padding: 6px 0;
+    padding: 4px 0;
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
@@ -2083,18 +2081,39 @@ hr {
     border-bottom: 1px dashed #f1f5f9;
   }
 
-  #viewInspecao .sheet-table tr[data-record-id] td:last-child {
-    border-bottom: none;
+  #viewInspecao .sheet-table tr[data-record-id] td[data-label="Status"],
+  #viewInspecao .sheet-table tr[data-record-id] td[data-label="Código Recusa"] {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #f1f5f9;
   }
 
   #viewInspecao .sheet-table tr[data-record-id] td::before {
     content: attr(data-label);
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--muted);
     text-align: left;
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] td[data-label="Status"]::before,
+  #viewInspecao .sheet-table tr[data-record-id] td[data-label="Código Recusa"]::before {
+    margin-bottom: 2px;
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] td:not([data-label="Status"]):not([data-label="Código Recusa"]) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] td:last-child {
+    border-bottom: none;
   }
 
   #viewInspecao .sheet-table tr[data-record-id] td:first-child {
@@ -2110,10 +2129,11 @@ hr {
   }
 
   #viewInspecao .sheet-table select {
-    max-width: 180px;
+    width: 100%;
+    max-width: 100%;
     min-height: 38px;
-    padding: 6px;
-    font-size: 0.85rem;
+    padding: 8px;
+    font-size: 0.88rem;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
     background-color: #f8fafc;

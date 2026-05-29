@@ -2418,6 +2418,12 @@ async function renderInspecaoLiberados() {
     return true;
   });
 
+  rows.sort((a, b) => {
+    const valA = String(a.formaNumero || "");
+    const valB = String(b.formaNumero || "");
+    return valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' });
+  });
+
   el.insQtdItens.textContent = String(rows.length);
 
   if (!rows.length) {
