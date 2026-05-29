@@ -1019,11 +1019,12 @@ async function postToApi(action, payload) {
 
     if (action === "criar_usuario") {
       const userId = "user-" + payload.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-      const { data, error } = await supabaseClient.from('usuarios').insert([{
+      const { data, error } = await supabaseClient.from('usuarios').upsert([{
         id: userId,
         nome: payload.name,
         perfil: payload.role,
-        senha: payload.password
+        senha: payload.password,
+        ativo: true
       }]).select();
       if (error) throw error;
       return { ok: true, user: { id: userId, name: payload.name, role: payload.role, active: true } };
