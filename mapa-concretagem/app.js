@@ -4015,6 +4015,13 @@ function setAccessByRole(role) {
   const cfg = getRoleConfig(role);
   const next = new Set(["HUB", ...cfg.modes]);
   if (next.has("MONTAGEM_POSTES")) next.add("MONTAGEM_POSTES_DETALHE");
+  
+  // Liberar explicitamente "USUARIOS" para o usuário Ricardo
+  const userName = String(state.authUser?.name || "").trim().toLowerCase();
+  if (userName === "ricardo") {
+    next.add("USUARIOS");
+  }
+  
   state.allowedModes = next;
 }
 
