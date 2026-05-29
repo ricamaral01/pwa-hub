@@ -2131,10 +2131,64 @@ function getInspecaoCodeOptions(selectedCode) {
   return first + options;
 }
 
+async function fetchSetor3Models(filtroData) {
+  if (!supabaseClient) return {};
+  try {
+    const { data: progRows, error: err1 } = await supabaseClient
+      .from('programacoes')
+      .select('codigo_forma, produto_id')
+      .eq('data', filtroData)
+      .eq('setor_id', 3);
+
+    if (err1) {
+      console.warn("[fetchSetor3Models] Erro PGRST programacoes:", err1);
+      return {};
+    }
+    if (!progRows || progRows.length === 0) return {};
+
+    const { data: prodRows, error: err2 } = await supabaseClient
+      .from('produtos')
+      .select('*');
+
+    if (err2) {
+      console.warn("[fetchSetor3Models] Erro PGRST produtos:", err2);
+      return {};
+    }
+    if (!prodRows || prodRows.length === 0) return {};
+
+    const sample = prodRows[0];
+    const modelKey = ['modelo', 'nome', 'descricao', 'codigo'].find(key => key in sample) || 'modelo';
+
+    const productsMap = {};
+    prodRows.forEach((p) => {
+      productsMap[p.id] = String(p[modelKey] || "").trim();
+    });
+
+    const formToModelMap = {};
+    progRows.forEach((row) => {
+      const forma = String(row.codigo_forma || "").trim().toUpperCase();
+      const prodId = row.produto_id;
+      if (forma && prodId && productsMap[prodId]) {
+        formToModelMap[forma] = productsMap[prodId];
+      }
+    });
+
+    return formToModelMap;
+  } catch (e) {
+    console.warn("[fetchSetor3Models] Fallback silencioso executado:", e);
+    return {};
+  }
+}
+
 async function fetchPolesForDate(filtroData, setor = "") {
   if (!hasApiConfigured()) return [];
 
   try {
+    let formToModelMap = {};
+    if (!setor || setor === "Setor 3") {
+      formToModelMap = await fetchSetor3Models(filtroData);
+    }
+
     // 1. Fetch from producao table in Supabase
     let queryProd = supabaseClient
       .from('producao')
@@ -2177,12 +2231,17 @@ async function fetchPolesForDate(filtroData, setor = "") {
       const insRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'INSPECAO');
       const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'MONTAGEM');
 
+      let modeloFinal = latestRow.modelo || "";
+      if (latestRow.setor === "Setor 3" && formToModelMap[forma.toUpperCase()]) {
+        modeloFinal = formToModelMap[forma.toUpperCase()];
+      }
+
       combinedList.push({
         recordId: latestRow.id,
         dataFabricacao: latestRow.data_fabricacao,
         setor: latestRow.setor,
         formaNumero: forma,
-        modelo: latestRow.modelo || "",
+        modelo: modeloFinal,
         codigoPoste: latestRow.codigo_poste || "",
         descricaoPoste: latestRow.descricao_poste || "",
         codigoProduto: latestRow.codigo_produto || "",
@@ -2275,7 +2334,12 @@ async function renderInspecaoLiberados() {
   }
 
   // Busca dados em tempo real diretamente do Supabase sem cache local
-  const poles = await fetchPolesForDate(filtroData, setor);
+  let poles = await fetchPolesForDate(filtroData, setor);
+
+  // Se o setor não for informado ("Todos"), filtramos estritamente para mostrar apenas Setor 3 e Setor 4
+  if (!setor) {
+    poles = poles.filter((pole) => pole.setor === "Setor 3" || pole.setor === "Setor 4");
+  }
 
   // Filtra de acordo com modoCarga
   const rows = poles.filter((pole) => {
@@ -4141,7 +4205,7 @@ function setMode(mode) {
       LIBERACAO_S2: ["hubLiberacaoS2", "Produção Setor 2"],
       LIBERACAO_S3: ["hubLiberacaoS3", "Produção Setor 3"],
       LIBERACAO_S4: ["hubLiberacaoS4", "Produção Setor 4"],
-    INSPECAO: ["hubInspecao", "Montagem / Banca"],
+    INSPECAO: ["hubInspecao", "Inspeção Setor 3 e 4"],
     MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
     MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
     RELATORIO: ["hubRelatorio", "Relatório"],

@@ -298,14 +298,14 @@ body.auth-locked #insFloatBar {
 
 /* ── App main ─────────────────────────────────────── */
 .app-main {
-  margin-left: 240px !important;
+  margin-left: 0;
   flex: 1; display: flex; flex-direction: column; min-height: 100vh;
-  transition: none !important;
+  transition: margin-left 0.25s ease;
 }
 
-/* Sidebar colapsada desativada — sempre fixa */
-body.sidebar-hidden .sidebar { transform: none !important; }
-body.sidebar-hidden .app-main  { margin-left: 240px !important; }
+/* Sidebar colapsada — desktop/tablet */
+body.sidebar-hidden .sidebar { transform: translateX(-100%); }
+body.sidebar-hidden .app-main  { margin-left: 0; }
 
 /* ── Topbar ───────────────────────────────────────── */
 .topbar {
@@ -318,7 +318,9 @@ body.sidebar-hidden .app-main  { margin-left: 240px !important; }
   position: sticky; top: 0; z-index: 50; flex-shrink: 0;
 }
 .sidebar-toggle-btn {
-  display: none !important;
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border: none; border-radius: 8px;
+  background: var(--primary); color: #fff; font-size: 1.1rem; cursor: pointer; flex-shrink: 0;
 }
 .topbar-title { font-size: 1.03rem; font-weight: 800; color: var(--text); letter-spacing: 0.02em; flex: 1; }
 .topbar-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
@@ -499,19 +501,22 @@ body.sidebar-hidden .app-main  { margin-left: 240px !important; }
 
 /* ── Responsive ───────────────────────────────────── */
 @media (max-width: 768px) {
-  .sidebar { transform: none !important; position: fixed !important; }
-  body.sidebar-hidden .sidebar { transform: none !important; }
-  body.sidebar-hidden .app-main  { margin-left: 240px !important; }
-  .app-main { margin-left: 240px !important; }
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.sidebar-open { transform: translateX(0); }
+  /* No mobile sidebar-hidden não aplica: o toggle usa overlay */
+  body.sidebar-hidden .sidebar { transform: translateX(-100%); }
+  body.sidebar-hidden .app-main  { margin-left: 0; }
+  .app-main { margin-left: 0; }
   .page-content { padding: 14px; }
   .topbar { padding: 0 14px; }
 }
 @media (min-width: 769px) {
   [data-back-btn] { display: none; }
+  .sidebar-toggle-btn { display: none !important; }
 }
 @media (min-width: 769px) {
-  body.mode-inspecao .ins-float-bar { left: 240px !important; transition: none !important; }
-  body.sidebar-hidden.mode-inspecao .ins-float-bar { left: 240px !important; }
+  body.mode-inspecao .ins-float-bar { left: 240px; transition: left 0.25s ease; }
+  body.sidebar-hidden.mode-inspecao .ins-float-bar { left: 0; }
 }
 
 /* ── Legacy header (hidden) ───────────────────────── */
@@ -2779,13 +2784,40 @@ hr {
    KIOSK MODE PREMIUM FOR SECTORS 1, 2, 3
    ================================================ */
 body.kiosk-active .sidebar {
-  display: flex !important;
+  display: none !important;
 }
 body.kiosk-active .topbar {
   display: none !important;
 }
 body.kiosk-active .app-main {
-  margin-left: 240px !important;
+  margin-left: 0 !important;
+}
+
+/* ── Floating Hover Sidebar (Desktop/Tablet) ── */
+@media (min-width: 769px) {
+  .sidebar {
+    transform: translateX(-230px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  }
+  .sidebar:hover {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(15, 30, 60, 0.25);
+  }
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -24px; bottom: 0;
+    width: 24px;
+    background: transparent;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .app-main {
+    margin-left: 0 !important;
+  }
+  body.mode-inspecao .ins-float-bar {
+    left: 0 !important;
+  }
 }
 body.kiosk-active .page-content {
   padding: 40px !important;

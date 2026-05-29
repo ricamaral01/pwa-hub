@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v4.1" />
+  <link rel="stylesheet" href="styles.css?v=v4.2" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -78,7 +78,7 @@
       </button>
       <button class="nav-item" id="hubInspecao" type="button">
         <span class="nav-icon-wrap">MB</span>
-        Montagem / Banca
+        Inspeção Setor 3 e 4
       </button>
       <button class="nav-item" id="hubMontagemPostes" type="button">
         <span class="nav-icon-wrap">MP</span>
@@ -155,7 +155,7 @@
           </button>
           <button class="hub-icon-btn" type="button" data-hub-mode="INSPECAO">
             <div class="hub-icon-circle" style="background:#059669">MI</div>
-            <span class="hub-icon-lbl">Inspeção</span>
+            <span class="hub-icon-lbl">Inspeção Setor 3 e 4</span>
           </button>
           <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_POSTES">
             <div class="hub-icon-circle" style="background:#0b6b6f">MP</div>
@@ -366,7 +366,7 @@
 
     <section id="viewInspecao" class="card hidden">
       <div class="section-title-row">
-        <h2>Montagem / Banca</h2>
+        <h2>Inspeção Setor 3 e 4</h2>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
       </div>
       <div class="grid">
@@ -381,9 +381,7 @@
         </label>
         <label>Setor
           <select id="insSetor">
-            <option value="">Todos</option>
-            <option value="Setor 1">Setor 1</option>
-            <option value="Setor 2">Setor 2</option>
+            <option value="">Todos (3 e 4)</option>
             <option value="Setor 3">Setor 3</option>
             <option value="Setor 4">Setor 4</option>
           </select>
@@ -396,7 +394,7 @@
 
       <div class="sheet-box">
         <div class="sheet-topline">
-          <div><strong>Montagem / Banca</strong> — Somente formas com Liberação = 1</div>
+          <div><strong>Inspeção Setor 3 e 4</strong> — Somente formas com Liberação = 1</div>
           <div><strong>Itens:</strong> <span id="insQtdItens">0</span></div>
         </div>
         <div class="sheet-filter-row">
@@ -768,6 +766,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=v4.1"></script>
+  <script src="app.js?v=v4.2"></script>
 </body>
 </html>
