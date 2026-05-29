@@ -19,29 +19,60 @@ const ROLE_PERMISSIONS = {
   }
 };
 
-const MONTAGEM_CHECKLIST_SECTIONS = [
-  {
-    id: "inspecao_visual",
-    titulo: "Inspeção visual",
-    itens: [
-      { id: "falhas_preenchimento", texto: "Falhas de preenchimento" },
-      { id: "excesso_bolhas", texto: "Excesso de bolhas" },
-      { id: "rebarbas", texto: "Rebarbas" },
-      { id: "fissuras", texto: "Fissuras" },
-      { id: "ausencia_buchas", texto: "Ausência de buchas" },
-      { id: "ausencia_prisioneiro", texto: "Ausência de prisioneiro" }
-    ]
-  },
-  {
-    id: "inspecao_tubulacao",
-    titulo: "Checklist Inspeção Tubulação",
-    itens: [
-      { id: "entrada", texto: "Entrada" },
-      { id: "saida_aerea", texto: "Saída aérea" },
-      { id: "saida_subterranea", texto: "Saída subterrânea" }
-    ]
-  }
-];
+function getMontagemChecklistSections(modelo = "") {
+  const isDuploT = /DT|Duplo T|Barreiras/i.test(modelo);
+  
+  return [
+    {
+      id: "checagem_inicial",
+      titulo: "Checagem Inicial",
+      itens: [
+        { id: "homogeneidade_concreto", texto: "Homogeneidade do Concreto", critico: false },
+        { id: "falhas_preenchimento", texto: "Falhas de Preenchimento", critico: true },
+        { id: "concreto_segregado", texto: "Concreto Segregado", critico: true },
+        { id: "grandes_avarias", texto: "Grandes Avarias", critico: true },
+        { id: "facao_obstruido", texto: "Facão Obstruído", critico: true },
+        { id: "furacao_obstruida", texto: "Furação Obstruída (pinos)", critico: true },
+        { id: "bolhas_excesso", texto: "Bolhas em excesso", critico: false },
+        { id: "bolhas_fora_padrao", texto: "Bolhas fora do padrão", critico: false },
+        { id: "armacao_aparente", texto: "Armação aparente", critico: true },
+        { id: "carimbo_identificacao", texto: "Carimbo de Identificação", critico: false },
+        { id: "fissuras", texto: "Fissuras", critico: false },
+        { id: "trincas", texto: "Trincas", critico: true },
+        { id: "pequenas_avarias", texto: "Pequenas avarias", critico: false },
+        { id: "rebarbas", texto: "Rebarbas", critico: false },
+        { id: "manchas_excessivas", texto: "Manchas excessivas", critico: false },
+        { id: "buchas_fixacao", texto: "Buchas de fixação", critico: false },
+        { id: "prisioneiros_lacre_aterramento", texto: "Prisioneiros (lacre / aterramento)", critico: false },
+        { id: "acabamento_face_exposta", texto: "Acabamento face exposta", critico: false },
+        { id: "acabamento_abas", texto: "Acabamento abas", critico: false },
+        { id: "tubulacao_entupida", texto: "Tubulação Entupida", critico: true }
+      ]
+    },
+    {
+      id: "checagem_materiais",
+      titulo: "Checagem Materiais",
+      itens: isDuploT ? [
+        { id: "alcas_icamento", texto: "Alças de Içamento", critico: false },
+        { id: "armadura_reforco", texto: "Armadura de Reforço", critico: false },
+        { id: "inserts_aco", texto: "Inserts de Aço", critico: false }
+      ] : [
+        { id: "caixa_medidor", texto: "Caixa de Medidor / Disjuntor", critico: false },
+        { id: "fiacao_interna", texto: "Fiação Interna", critico: false },
+        { id: "acabamento_caixa", texto: "Acabamento da Caixa", critico: false }
+      ]
+    },
+    {
+      id: "final",
+      titulo: "Final",
+      itens: [
+        { id: "limpeza_prisioneiros", texto: "Limpeza prisioneiros", critico: false },
+        { id: "aterramento", texto: "Aterramento", critico: false },
+        { id: "lacre", texto: "Lacre", critico: false }
+      ]
+    }
+  ];
+}
 
 const CONCRETO_TIPOS = ["Concreto Padrão", "Concreto Vibrado", "Fora de Padrão"];
 
@@ -508,7 +539,8 @@ const state = {
   isSendingInspecao: false,
   submitLocks: readSubmitLocks(),
   programmingMode: false,
-  programmedFormas: new Set()
+  programmedFormas: new Set(),
+  activeInsSector: ""
 };
 
 let pendingFormaSelection = null;
@@ -580,7 +612,7 @@ const el = {
 
   insFiltroData: document.getElementById("insFiltroData"),
   insModoCarga: document.getElementById("insModoCarga"),
-  insSetor: document.getElementById("insSetor"),
+  insSetorGroup: document.getElementById("insSetorGroup"),
   insColaborador: document.getElementById("insColaborador"),
   insCarregarLiberados: document.getElementById("insCarregarLiberados"),
   insLiberadosBody: document.getElementById("insLiberadosBody"),
@@ -2324,7 +2356,7 @@ function showInspecaoModal(counts, syncStatus) {
 async function renderInspecaoLiberados() {
   const filtroData = el.insFiltroData.value || todayYmd();
   const modoCarga = el.insModoCarga?.value || "data";
-  const setor = el.insSetor?.value || "";
+  const setor = state.activeInsSector || "";
 
   el.insLiberadosBody.innerHTML = "";
   if (!filtroData) {
@@ -2479,7 +2511,9 @@ async function syncMontagemPosteToApi(entry, etapa = "", options = {}) {
 }
 
 function isChecklistSectionComplete(sectionId, respostas = {}) {
-  const section = MONTAGEM_CHECKLIST_SECTIONS.find((s) => s.id === sectionId);
+  const modelo = state.montagemPostesAtual?.modelo || "";
+  const sections = getMontagemChecklistSections(modelo);
+  const section = sections.find((s) => s.id === sectionId);
   if (!section) return false;
   return section.itens.every((item) => respostas[sectionId]?.[item.id] === "sim" || respostas[sectionId]?.[item.id] === "nao");
 }
@@ -2489,25 +2523,14 @@ function renderMontagemChecklistSections() {
   const current = state.montagemPostesAtual;
   el.mpChecklistSections.innerHTML = "";
 
-  MONTAGEM_CHECKLIST_SECTIONS.forEach((section) => {
+  const sections = getMontagemChecklistSections(current.modelo || "");
+
+  sections.forEach((section) => {
     const article = document.createElement("article");
     article.className = "mp-checklist-section";
 
     const isComplete = isChecklistSectionComplete(section.id, current.checklists || {});
-    const rows = section.itens.map((item) => {
-      const selected = current.checklists?.[section.id]?.[item.id] || "";
-      const row = document.createElement("div");
-      row.className = "mp-checklist-item";
-      row.innerHTML = `
-        <span class="mp-checklist-item-text">${item.texto}</span>
-        <div class="mp-yn-group">
-          <button type="button" class="mp-yn-btn ${selected === "sim" ? "active" : ""}" data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="sim">Sim</button>
-          <button type="button" class="mp-yn-btn ${selected === "nao" ? "active" : ""}" data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="nao">Não</button>
-        </div>
-      `;
-      return row;
-    });
-
+    
     const sectionHeader = document.createElement("div");
     sectionHeader.className = "mp-checklist-header";
     sectionHeader.innerHTML = `
@@ -2515,9 +2538,85 @@ function renderMontagemChecklistSections() {
       <span class="mp-checklist-flag ${isComplete ? "ok" : "pendente"}">${isComplete ? "OK" : "Pendente"}</span>
     `;
     article.appendChild(sectionHeader);
-    rows.forEach((r) => article.appendChild(r));
+
+    section.itens.forEach((item) => {
+      const selected = current.checklists?.[section.id]?.[item.id] || "";
+      const photoBase64 = current.checklists?.[section.id]?.[item.id + "_photo"] || "";
+      const isFinalizado = !!current.finalizadoEm;
+
+      const itemWrapper = document.createElement("div");
+      itemWrapper.className = "mp-checklist-item-wrapper";
+
+      let itemHtml = `
+        <div class="mp-checklist-item">
+          <span class="mp-checklist-item-text">
+            ${item.critico ? '<span class="critico-dot" style="color: #ef4444;">🔴</span>' : ''}
+            ${item.texto}
+          </span>
+          <div class="mp-yn-group">
+            <button type="button" class="mp-yn-btn btn-aprovado ${selected === "sim" ? "active" : ""}" 
+                    data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="sim" 
+                    ${isFinalizado ? "disabled" : ""}>Aprovado</button>
+            <button type="button" class="mp-yn-btn btn-reprovado ${selected === "nao" ? "active" : ""}" 
+                    data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="nao" 
+                    ${isFinalizado ? "disabled" : ""}>Reprovado</button>
+          </div>
+        </div>
+      `;
+
+      if (selected === "nao") {
+        let actionsHtml = `<div class="mp-reprovado-actions">`;
+        if (item.critico) {
+          actionsHtml += `<div class="mp-segregar-badge">🚨 Segregar poste</div>`;
+        }
+        if (!isFinalizado) {
+          actionsHtml += `
+            <label class="mp-photo-upload-label">
+              📸 Tirar Foto da Falha
+              <input type="file" accept="image/*" capture="environment" class="mp-item-photo-input" 
+                     data-mp-section="${section.id}" data-mp-item="${item.id}" />
+            </label>
+          `;
+        }
+        if (photoBase64) {
+          actionsHtml += `
+            <div class="mp-item-photo-preview">
+              <img src="${photoBase64}" class="mp-item-photo-thumbnail" alt="Foto da falha" />
+            </div>
+          `;
+        }
+        actionsHtml += `</div>`;
+        itemHtml += actionsHtml;
+      }
+
+      itemWrapper.innerHTML = itemHtml;
+      article.appendChild(itemWrapper);
+    });
+
     el.mpChecklistSections.appendChild(article);
   });
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
+
+function setMontagemChecklistPhoto(sectionId, itemId, photoBase64) {
+  if (!state.montagemPostesAtual) return;
+  const current = { ...state.montagemPostesAtual };
+  if (!current.checklists) current.checklists = {};
+  if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
+  
+  current.checklists[sectionId][itemId + "_photo"] = photoBase64;
+  state.montagemPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+  renderMontagemChecklistSections();
 }
 
 function setMontagemChecklistAnswer(sectionId, itemId, value) {
@@ -2525,10 +2624,25 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
   const current = { ...state.montagemPostesAtual };
   if (!current.checklists) current.checklists = {};
   if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
+  
   current.checklists[sectionId][itemId] = value;
+  
+  if (value === "sim") {
+    delete current.checklists[sectionId][itemId + "_photo"];
+  }
+
   state.montagemPostesAtual = current;
   upsertMontagemPoste(current);
   syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+  
+  // Show segregation alert if critical item is reproved
+  const sections = getMontagemChecklistSections(current.modelo || "");
+  const section = sections.find((s) => s.id === sectionId);
+  const item = section?.itens.find((i) => i.id === itemId);
+  if (value === "nao" && item?.critico) {
+    showMsgBox("segregar poste", "error");
+  }
+  
   renderMontagemChecklistSections();
 }
 
@@ -2718,12 +2832,13 @@ async function finalizarMontagemPosteAtual() {
     return;
   }
 
-  const allSectionsOk = MONTAGEM_CHECKLIST_SECTIONS.every((section) =>
+  const sections = getMontagemChecklistSections(poste.modelo || "");
+  const allSectionsOk = sections.every((section) =>
     isChecklistSectionComplete(section.id, poste.checklists || {})
   );
 
   if (!allSectionsOk) {
-    showMsgBox("Responda todos os itens (Sim/Não) de todas as seções antes de finalizar.", "error");
+    showMsgBox("Responda todos os itens (Aprovado/Reprovado) de todas as seções antes de finalizar.", "error");
     return;
   }
 
@@ -2826,7 +2941,12 @@ async function renderMontagemPostesLiberados() {
   }
 
   // Busca dados em tempo real diretamente do Supabase sem cache local
-  const poles = await fetchPolesForDate(filtroData, setor);
+  let poles = await fetchPolesForDate(filtroData, setor);
+
+  // Se o setor não for informado ("Todos (1 e 2)"), filtramos estritamente para mostrar apenas Setor 1 e Setor 2
+  if (!setor) {
+    poles = poles.filter((pole) => pole.setor === "Setor 1" || pole.setor === "Setor 2");
+  }
 
   // Filtra de acordo com modoCarga
   const rows = poles.filter((record) => {
@@ -2845,10 +2965,14 @@ async function renderMontagemPostesLiberados() {
 
   rows.forEach((record) => {
     const isFinalizado = !!record.montagem?.finalizado_em;
-    const label = isFinalizado ? "Revisar Poste Montado" : "Inspecionar / Montar Poste";
-    const btnClass = isFinalizado ? "btn mp-open-btn mp-open-btn--review" : "btn mp-open-btn";
+    const label = isFinalizado ? "Montado" : "Inspecionar / Montar Poste";
+    const btnClass = isFinalizado ? "btn btn-montado" : "btn mp-open-btn";
+    const rowClass = isFinalizado ? "row-montado" : "";
 
     const tr = document.createElement("tr");
+    if (rowClass) {
+      tr.className = rowClass;
+    }
     tr.dataset.recordId = record.recordId;
     tr.dataset.dataFabricacao = record.dataFabricacao;
     tr.dataset.setor = record.setor;
@@ -2932,7 +3056,7 @@ async function saveInspecao() {
     for (const tr of selectedRows) {
       const recordId = tr?.dataset.recordId;
       const dataFabricacao = tr?.dataset.dataFabricacao || el.insFiltroData.value || todayYmd();
-      const setor = tr?.dataset.setor || el.insSetor.value || "";
+      const setor = tr?.dataset.setor || state.activeInsSector || "";
       const formaNumero = normalizeUpper(tr?.dataset.formaNumero || "");
       const modelo = tr?.dataset.modelo || "";
       const status = tr?.querySelector("select[data-ins-status]")?.value || "";
@@ -4177,6 +4301,9 @@ function setMode(mode) {
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
+    if (state.authUser?.name && el.insColaborador) {
+      el.insColaborador.value = state.authUser.name;
+    }
     if ((el.insModoCarga?.value || "data") === "data" && !el.insFiltroData.value) {
       el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
       el.insQtdItens.textContent = "0";
@@ -4469,7 +4596,19 @@ function bindEvents() {
 
   el.insFiltroData.addEventListener("change", renderInspecaoLiberados);
   el.insModoCarga.addEventListener("change", renderInspecaoLiberados);
-  el.insSetor.addEventListener("change", renderInspecaoLiberados);
+  if (el.insSetorGroup) {
+    el.insSetorGroup.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const btn = target.closest(".sector-filter-btn");
+      if (!btn) return;
+      el.insSetorGroup.querySelectorAll(".sector-filter-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      state.activeInsSector = btn.dataset.sectorVal || "";
+      clearSubmitLock("inspecao");
+      renderInspecaoLiberados();
+    });
+  }
   el.insCarregarLiberados.addEventListener("click", renderInspecaoLiberados);
   el.insFiltroData.addEventListener("change", () => clearSubmitLock("inspecao"));
   el.insColaborador.addEventListener("input", () => clearSubmitLock("inspecao"));
@@ -4519,8 +4658,27 @@ function bindEvents() {
       const sectionId = btn.dataset.mpSection || "";
       const itemId = btn.dataset.mpItem || "";
       const value = btn.dataset.mpValue || "";
-      if (!sectionId || !itemId || !value) return;
       setMontagemChecklistAnswer(sectionId, itemId, value);
+    });
+
+    el.mpChecklistSections.addEventListener("change", async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (!target.classList.contains("mp-item-photo-input")) return;
+      
+      const file = target.files?.[0];
+      if (!file) return;
+
+      const sectionId = target.dataset.mpSection || "";
+      const itemId = target.dataset.mpItem || "";
+
+      try {
+        const base64 = await fileToBase64(file);
+        setMontagemChecklistPhoto(sectionId, itemId, base64);
+      } catch (err) {
+        console.error("Erro ao converter imagem para base64:", err);
+        showMsgBox("Erro ao carregar a foto. Tente novamente.", "error");
+      }
     });
   }
 
@@ -4656,10 +4814,9 @@ function init() {
   el.libData.value = now;
   el.insFiltroData.value = now;
   el.insModoCarga.value = "data";
-  el.insSetor.value = "Setor 2";
   if (el.mpFiltroData) el.mpFiltroData.value = now;
   if (el.mpModoCarga) el.mpModoCarga.value = "data";
-  if (el.mpSetor) el.mpSetor.value = "Setor 2";
+  if (el.mpSetor) el.mpSetor.value = "";
   if (el.histTipo) el.histTipo.value = "";
   el.dashData.value = now;
   el.relData.value = now;
@@ -4676,6 +4833,9 @@ function init() {
   const session = readAuthSession();
   if (session) {
     state.authUser = session;
+    if (el.insColaborador && session.name) {
+      el.insColaborador.value = session.name;
+    }
     setAccessByRole(session.role);
     unlockAppAfterLogin();
     applyRoleVisibility();

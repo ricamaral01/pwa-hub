@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v4.2" />
+  <link rel="stylesheet" href="styles.css?v=v4.3" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -379,13 +379,14 @@
             <option value="pendentes">Produzidos não inspecionados</option>
           </select>
         </label>
-        <label>Setor
-          <select id="insSetor">
-            <option value="">Todos (3 e 4)</option>
-            <option value="Setor 3">Setor 3</option>
-            <option value="Setor 4">Setor 4</option>
-          </select>
-        </label>
+        <div class="kiosk-toggle-field" style="display:flex; flex-direction:column; gap:8px;">
+          <label style="margin-bottom:0px; font-weight:700;">Setor</label>
+          <div class="sector-btn-group" id="insSetorGroup">
+            <button type="button" class="btn sector-filter-btn active" data-sector-val="">Todos (3 e 4)</button>
+            <button type="button" class="btn sector-filter-btn" data-sector-val="Setor 3">Setor 3</button>
+            <button type="button" class="btn sector-filter-btn" data-sector-val="Setor 4">Setor 4</button>
+          </div>
+        </div>
         <label>Colaborador
           <input id="insColaborador" type="text" placeholder="Nome" required />
         </label>
@@ -445,11 +446,9 @@
         </label>
         <label>Setor
           <select id="mpSetor">
-            <option value="">Todos</option>
+            <option value="">Todos (1 e 2)</option>
             <option value="Setor 1">Setor 1</option>
             <option value="Setor 2">Setor 2</option>
-            <option value="Setor 3">Setor 3</option>
-            <option value="Setor 4">Setor 4</option>
           </select>
         </label>
       </div>
@@ -766,6 +765,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=v4.2"></script>
+  <script src="app.js?v=v4.3"></script>
 </body>
 </html>

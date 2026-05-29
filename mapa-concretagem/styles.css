@@ -3384,4 +3384,142 @@ body.kiosk-active .s4-table td:nth-child(2) {
   white-space: nowrap !important;
 }
 
+/* ── Sector filter button group ── */
+.sector-btn-group {
+  display: inline-flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.sector-filter-btn {
+  padding: 8px 16px;
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.sector-filter-btn:hover {
+  background: #e2e8f0;
+}
+.sector-filter-btn.active {
+  background: var(--accent) !important;
+  color: white !important;
+  border-color: var(--accent-dark) !important;
+}
+
+/* ── Mounted post list items (green) ── */
+tr.row-montado {
+  background-color: #ecfdf5 !important;
+}
+.btn-montado {
+  background-color: #10b981 !important;
+  color: white !important;
+  border-color: #059669 !important;
+  pointer-events: none;
+}
+
+/* ── Advanced montagem checklist styles ── */
+.mp-checklist-item-wrapper {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 6px;
+}
+.mp-checklist-item-wrapper:last-child {
+  border-bottom: none;
+}
+.mp-checklist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.critico-dot {
+  font-size: 0.85rem;
+  margin-right: 4px;
+}
+.mp-yn-group {
+  display: flex;
+  gap: 6px;
+}
+.mp-yn-group .mp-yn-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.mp-yn-group .mp-yn-btn:hover {
+  background: #e2e8f0;
+}
+.mp-yn-group .mp-yn-btn.btn-aprovado.active {
+  background: #10b981 !important;
+  color: white !important;
+  border-color: #059669 !important;
+}
+.mp-yn-group .mp-yn-btn.btn-reprovado.active {
+  background: #ef4444 !important;
+  color: white !important;
+  border-color: #b91c1c !important;
+}
+.mp-reprovado-actions {
+  margin-top: 10px;
+  padding: 10px;
+  background: #fef2f2;
+  border-radius: 8px;
+  border: 1px dashed #fca5a5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mp-photo-upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.mp-photo-upload-label:hover {
+  background: #fff5f5;
+}
+.mp-photo-upload-label input[type="file"] {
+  display: none;
+}
+.mp-item-photo-preview {
+  display: flex;
+  align-items: center;
+}
+.mp-item-photo-thumbnail {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+.mp-segregar-badge {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 0.82rem;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  align-self: flex-start;
+}
+
 
