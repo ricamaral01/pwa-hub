@@ -2779,13 +2779,13 @@ hr {
    KIOSK MODE PREMIUM FOR SECTORS 1, 2, 3
    ================================================ */
 body.kiosk-active .sidebar {
-  display: none !important;
+  display: flex !important;
 }
 body.kiosk-active .topbar {
   display: none !important;
 }
 body.kiosk-active .app-main {
-  margin-left: 0 !important;
+  margin-left: 240px !important;
 }
 body.kiosk-active .page-content {
   padding: 40px !important;
