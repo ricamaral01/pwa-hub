@@ -2034,6 +2034,125 @@ hr {
     text-align: center;
   }
 
+  /* ── Responsive Inspeção Setor 3 e 4 ──────────────── */
+  #viewInspecao .sheet-box {
+    overflow-x: visible;
+    padding: 2px;
+  }
+
+  #viewInspecao .sheet-table {
+    min-width: 0;
+    border-collapse: separate;
+  }
+
+  #viewInspecao .sheet-table thead {
+    display: none;
+  }
+
+  #viewInspecao .sheet-table tbody {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+
+  #viewInspecao .sheet-table tr {
+    width: 100%;
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] {
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(15, 30, 60, 0.06);
+    padding: 12px 14px;
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: none;
+    padding: 6px 0;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: 0.88rem;
+    border-bottom: 1px dashed #f1f5f9;
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] td:last-child {
+    border-bottom: none;
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] td::before {
+    content: attr(data-label);
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-align: left;
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] td:first-child {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  #viewInspecao .sheet-table tr[data-record-id] td:first-child::before {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  #viewInspecao .sheet-table select {
+    max-width: 180px;
+    min-height: 38px;
+    padding: 6px;
+    font-size: 0.85rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #f8fafc;
+  }
+
+  #insSetorGroup {
+    display: flex;
+    width: 100%;
+    gap: 6px;
+  }
+
+  #insSetorGroup .sector-filter-btn {
+    flex: 1;
+    padding: 8px 4px;
+    font-size: 0.78rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  #viewInspecao .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  #viewInspecao .grid > label,
+  #viewInspecao .grid > div {
+    grid-column: span 2;
+  }
+
+  #viewInspecao .grid > label:nth-child(1),
+  #viewInspecao .grid > label:nth-child(2) {
+    grid-column: span 1;
+  }
+
+  #viewInspecao #insCarregarLiberados {
+    width: 100%;
+    margin-top: 8px;
+  }
+
   .item {
     flex-direction: column;
   }

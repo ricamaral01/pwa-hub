@@ -2440,9 +2440,9 @@ async function renderInspecaoLiberados() {
     const selectedCode = record.inspecao?.codigo || "";
 
     tr.innerHTML = `
-      <td>${record.formaNumero || ""}</td>
-      <td>${record.modelo || ""}</td>
-      <td>
+      <td data-label="N Forma">${record.formaNumero || ""}</td>
+      <td data-label="Modelo">${record.modelo || ""}</td>
+      <td data-label="Status">
         <select data-ins-status>
           <option value="">Selecione</option>
           <option value="A" ${selectedStatus === "A" ? "selected" : ""}>A - Aprovado</option>
@@ -2450,10 +2450,10 @@ async function renderInspecaoLiberados() {
           <option value="RR" ${selectedStatus === "RR" ? "selected" : ""}>RR - Reprovado e retrabalhado</option>
         </select>
       </td>
-      <td>
+      <td data-label="Código Recusa">
         <select data-ins-code>${getInspecaoCodeOptions(selectedCode)}</select>
       </td>
-      <td>${fmtDate(record.dataFabricacao || "")}</td>
+      <td data-label="Data Prod">${fmtDate(record.dataFabricacao || "")}</td>
     `;
 
     const statusSelect = tr.querySelector("select[data-ins-status]");
