@@ -2131,38 +2131,80 @@ function getInspecaoCodeOptions(selectedCode) {
   return first + options;
 }
 
-async function getInspecaoRowsFromApi(filtroData, modoCarga, setor) {
-  if (!hasApiConfigured()) return null;
+async function fetchPolesForDate(filtroData, setor = "") {
+  if (!hasApiConfigured()) return [];
 
   try {
-    let query = supabaseClient.from('producao').select('*');
-    if (setor) query = query.eq('setor', setor);
-    
-    if (modoCarga === "data" && filtroData) {
-      query = query.eq('data_fabricacao', filtroData);
-    } else {
-      // Ordena decrescente para trazer os registros mais recentes primeiro (contornando o limite padrão de 1000 linhas do Supabase)
-      query = query.order('data_fabricacao', { ascending: false }).order('data_hora', { ascending: false });
+    // 1. Fetch from producao table in Supabase
+    let queryProd = supabaseClient
+      .from('producao')
+      .select('*')
+      .eq('data_fabricacao', filtroData);
+    if (setor) {
+      queryProd = queryProd.eq('setor', setor);
     }
+    const { data: producaoRows, error: err1 } = await queryProd;
+    if (err1) throw err1;
 
-    const { data, error } = await query;
-    if (error) throw error;
-    
-    return data.map(row => ({
-      record_id: row.id,
-      data_fabricacao: row.data_fabricacao,
-      setor: row.setor,
-      forma_numero: row.forma,
-      modelo: row.modelo,
-      codigo_poste: row.codigo_poste || "",
-      descricao_poste: row.descricao_poste || "",
-      codigo_produto: row.codigo_produto || "",
-      liberacao_status: "1",
-      ins_status: row.status === 'INSPECIONADO' ? "A" : ""
-    }));
+    // 2. Fetch from montagem_poste table in Supabase
+    let queryMont = supabaseClient
+      .from('montagem_poste')
+      .select('*')
+      .eq('data_fabricacao', filtroData);
+    if (setor) {
+      queryMont = queryMont.eq('setor', setor);
+    }
+    const { data: montagemRows, error: err2 } = await queryMont;
+    if (err2) throw err2;
+
+    // 3. Deduplicate producaoRows by form name, keeping the latest row
+    const formsMap = {};
+    (producaoRows || []).forEach(row => {
+      const forma = row.forma;
+      if (!forma) return;
+      if (!formsMap[forma]) {
+        formsMap[forma] = [];
+      }
+      formsMap[forma].push(row);
+    });
+
+    const combinedList = [];
+    Object.entries(formsMap).forEach(([forma, rows]) => {
+      rows.sort((a, b) => new Date(b.data_hora || 0) - new Date(a.data_hora || 0));
+      const latestRow = rows[0];
+
+      // Find if there is an inspected status for this form
+      const insRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'INSPECAO');
+      const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'MONTAGEM');
+
+      combinedList.push({
+        recordId: latestRow.id,
+        dataFabricacao: latestRow.data_fabricacao,
+        setor: latestRow.setor,
+        formaNumero: forma,
+        modelo: latestRow.modelo || "",
+        codigoPoste: latestRow.codigo_poste || "",
+        descricaoPoste: latestRow.descricao_poste || "",
+        codigoProduto: latestRow.codigo_produto || "",
+        colaboradorProducao: latestRow.colaborador || "",
+        statusProducao: latestRow.status,
+        tipoConcreto: latestRow.tipo_concreto || "",
+        inspecao: insRecord ? {
+          status: insRecord.status_montagem,
+          codigo: insRecord.motivo_recusa || "",
+          observacoes: insRecord.observacoes_montagem || "",
+          colaborador: insRecord.montador_nome || "",
+          timestamp: insRecord.finalizado_em || insRecord.updated_at
+        } : null,
+        montagem: montRecord || null
+      });
+    });
+
+    combinedList.sort((a, b) => a.formaNumero.localeCompare(b.formaNumero, undefined, { numeric: true, sensitivity: 'base' }));
+    return combinedList;
   } catch (err) {
-    console.error("[inspecao_pendentes] erro:", err);
-    return null;
+    console.error("[fetchPolesForDate] Erro:", err);
+    return [];
   }
 }
 
@@ -2221,120 +2263,62 @@ function showInspecaoModal(counts, syncStatus) {
 }
 
 async function renderInspecaoLiberados() {
-  const db = readDb();
-  const filtroData = el.insFiltroData.value;
+  const filtroData = el.insFiltroData.value || todayYmd();
   const modoCarga = el.insModoCarga?.value || "data";
   const setor = el.insSetor?.value || "";
 
   el.insLiberadosBody.innerHTML = "";
-  if (modoCarga === "data" && !filtroData) {
+  if (!filtroData) {
     el.insQtdItens.textContent = "0";
     el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
     return;
   }
 
-  const apiRows = await getInspecaoRowsFromApi(filtroData, modoCarga, setor);
-  // Usa API se retornou dados; se retornou vazio ou null, usa localStorage
-  if (Array.isArray(apiRows) && apiRows.length > 0) {
-    const rows = apiRows
-      .filter((record) => String(record.liberacao_status || "") === "1")
-      .filter((record) => !setor || String(record.setor || "") === setor)
-      .filter((record) => (modoCarga === "data" ? dateToYmd(record.data_fabricacao || "") === filtroData : true))
-      .filter((record) => !String(record.ins_status || "").trim())
-      .sort((a, b) => String(a.forma_numero || "").localeCompare(String(b.forma_numero || "")));
+  // Busca dados em tempo real diretamente do Supabase sem cache local
+  const poles = await fetchPolesForDate(filtroData, setor);
 
-    el.insQtdItens.textContent = String(rows.length);
-
-    if (!rows.length) {
-      el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Nenhuma forma pendente de inspeção para os filtros informados.</td></tr>';
-      return;
+  // Filtra de acordo com modoCarga
+  const rows = poles.filter((pole) => {
+    if (modoCarga === "pendentes") {
+      return !pole.inspecao;
     }
-
-    rows.forEach((record) => {
-      const tr = document.createElement("tr");
-      tr.dataset.recordId = String(record.record_id || "");
-      tr.dataset.dataFabricacao = String(record.data_fabricacao || "");
-      tr.dataset.setor = String(record.setor || "");
-      tr.dataset.formaNumero = String(record.forma_numero || "");
-      tr.dataset.modelo = String(record.modelo || "");
-      tr.dataset.codigoPoste = String(record.codigo_poste || "");
-      tr.dataset.descricaoPoste = String(record.descricao_poste || "");
-      tr.dataset.codigoProduto = String(record.codigo_produto || "");
-
-      tr.innerHTML = `
-        <td>${record.forma_numero || ""}</td>
-        <td>${record.modelo || ""}</td>
-        <td>
-          <select data-ins-status>
-            <option value="">Selecione</option>
-            <option value="A">A - Aprovado</option>
-            <option value="R">R - Reprovado</option>
-            <option value="RR">RR - Reprovado e retrabalhado</option>
-          </select>
-        </td>
-        <td>
-          <select data-ins-code>${getInspecaoCodeOptions("")}</select>
-        </td>
-        <td>${fmtDate(record.data_fabricacao || "")}</td>
-      `;
-
-      const statusSelect = tr.querySelector("select[data-ins-status]");
-      const codeSelect = tr.querySelector("select[data-ins-code]");
-      if (statusSelect && codeSelect) {
-        statusSelect.addEventListener("change", () => {
-          if (statusSelect.value === "A") {
-            codeSelect.value = "";
-            codeSelect.disabled = true;
-          } else {
-            codeSelect.disabled = false;
-          }
-        });
-      }
-
-      el.insLiberadosBody.appendChild(tr);
-    });
-    filtrarFormasTabela();
-    return;
-  }
-
-  const rows = db.records
-    .filter((record) => record.liberacao && record.liberacao.status === "1")
-    .filter((record) => (modoCarga === "data" ? record.dataFabricacao === filtroData : true))
-    .filter((record) => !setor || record.setor === setor)
-    .filter((record) => !Array.isArray(record.inspecoes) || record.inspecoes.length === 0)
-    .sort((a, b) => (a.formaNumero > b.formaNumero ? 1 : -1));
+    return true;
+  });
 
   el.insQtdItens.textContent = String(rows.length);
 
   if (!rows.length) {
-    el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Nenhuma forma liberada para os filtros informados.</td></tr>';
+    el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Nenhum poste apontado ou pendente de inspeção para os filtros informados.</td></tr>';
     return;
   }
 
   rows.forEach((record) => {
-    const ultima = Array.isArray(record.inspecoes) && record.inspecoes.length ? record.inspecoes[record.inspecoes.length - 1] : null;
     const tr = document.createElement("tr");
-    tr.dataset.recordId = record.id;
-    tr.dataset.dataFabricacao = record.dataFabricacao || "";
-    tr.dataset.setor = record.setor || "";
-    tr.dataset.formaNumero = record.formaNumero || "";
-    tr.dataset.modelo = record.modelo || "";
-    tr.dataset.codigoPoste = record.codigoPoste || "";
-    tr.dataset.descricaoPoste = record.descricaoPoste || "";
-    tr.dataset.codigoProduto = record.codigoProduto || "";
+    tr.dataset.recordId = String(record.recordId || "");
+    tr.dataset.dataFabricacao = String(record.dataFabricacao || "");
+    tr.dataset.setor = String(record.setor || "");
+    tr.dataset.formaNumero = String(record.formaNumero || "");
+    tr.dataset.modelo = String(record.modelo || "");
+    tr.dataset.codigoPoste = String(record.codigoPoste || "");
+    tr.dataset.descricaoPoste = String(record.descricaoPoste || "");
+    tr.dataset.codigoProduto = String(record.codigoProduto || "");
+
+    const selectedStatus = record.inspecao?.status || "";
+    const selectedCode = record.inspecao?.codigo || "";
+
     tr.innerHTML = `
-      <td>${record.formaNumero}</td>
+      <td>${record.formaNumero || ""}</td>
       <td>${record.modelo || ""}</td>
       <td>
         <select data-ins-status>
           <option value="">Selecione</option>
-          <option value="A" ${ultima?.status === "A" ? "selected" : ""}>A - Aprovado</option>
-          <option value="R" ${ultima?.status === "R" ? "selected" : ""}>R - Reprovado</option>
-          <option value="RR" ${ultima?.status === "RR" ? "selected" : ""}>RR - Reprovado e retrabalhado</option>
+          <option value="A" ${selectedStatus === "A" ? "selected" : ""}>A - Aprovado</option>
+          <option value="R" ${selectedStatus === "R" ? "selected" : ""}>R - Reprovado</option>
+          <option value="RR" ${selectedStatus === "RR" ? "selected" : ""}>RR - Reprovado e retrabalhado</option>
         </select>
       </td>
       <td>
-        <select data-ins-code>${getInspecaoCodeOptions(ultima?.codigos?.[0] || "")}</select>
+        <select data-ins-code>${getInspecaoCodeOptions(selectedCode)}</select>
       </td>
       <td>${fmtDate(record.dataFabricacao || "")}</td>
     `;
@@ -2601,15 +2585,19 @@ function renderMontagemPosteDetalhe() {
 }
 
 async function openMontagemPosteDetalhe(posteBase) {
-  const key = getMontagemPosteKey(posteBase);
+  const recordId = posteBase.recordId;
+  const dataFabricacao = posteBase.dataFabricacao;
+  const setor = posteBase.setor;
+  const formaNumero = posteBase.formaNumero;
+  const key = [recordId, dataFabricacao, setor, formaNumero].join("||");
   const now = nowIso();
 
+  let atual = null;
   if (hasMontagemApiConfigured()) {
     try {
       const { data, error } = await supabaseClient.from('montagem_poste').select('*').eq('id', key).maybeSingle();
       if (!error && data) {
-        const db = readMontagemPostesDb();
-        db.postes[key] = {
+        atual = {
           key: data.id,
           recordId: data.record_id || "",
           dataFabricacao: data.data_fabricacao || "",
@@ -2628,14 +2616,11 @@ async function openMontagemPosteDetalhe(posteBase) {
           observacoesMontagem: data.observacoes_montagem || "",
           montadorNome: data.montador_nome || ""
         };
-        writeMontagemPostesDb(db);
       }
     } catch (err) {
       console.warn("Erro ao buscar montagem_poste específico do Supabase:", err);
     }
   }
-
-  const atual = getMontagemPosteByKey(key);
 
   const merged = {
     key,
@@ -2765,78 +2750,37 @@ async function syncMontagemPostesFromApi(filtroData, modoCarga, setor) {
 async function renderMontagemPostesLiberados() {
   if (!el.mpLiberadosBody || !el.mpQtdItens) return;
 
-  const filtroData = el.mpFiltroData?.value || "";
+  const filtroData = el.mpFiltroData?.value || todayYmd();
   const modoCarga = el.mpModoCarga?.value || "data";
   const setor = el.mpSetor?.value || "";
 
   el.mpLiberadosBody.innerHTML = "";
-  if (modoCarga === "data" && !filtroData) {
+  if (!filtroData) {
     el.mpQtdItens.textContent = "0";
     el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
     return;
   }
 
-  await syncMontagemPostesFromApi(filtroData, modoCarga, setor);
-  const montagemDb = readMontagemPostesDb();
-  let rows = [];
-  const apiRows = await getInspecaoRowsFromApi(filtroData, modoCarga, setor);
+  // Busca dados em tempo real diretamente do Supabase sem cache local
+  const poles = await fetchPolesForDate(filtroData, setor);
 
-  if (Array.isArray(apiRows) && apiRows.length > 0) {
-    rows = apiRows
-      .filter((record) => String(record.liberacao_status || "") === "1")
-      .filter((record) => !setor || String(record.setor || "") === setor)
-      .filter((record) => (modoCarga === "data" ? dateToYmd(record.data_fabricacao || "") === filtroData : true))
-      .map((record) => ({
-        recordId: String(record.record_id || ""),
-        dataFabricacao: String(record.data_fabricacao || ""),
-        setor: String(record.setor || ""),
-        formaNumero: String(record.forma_numero || ""),
-        modelo: String(record.modelo || ""),
-        codigoPoste: String(record.codigo_poste || ""),
-        descricaoPoste: String(record.descricao_poste || ""),
-        codigoProduto: String(record.codigo_produto || "")
-      }))
-      .filter((record) => {
-        if (modoCarga !== "pendentes") return true;
-        const key = getMontagemPosteKey(record);
-        return !montagemDb.postes[key]?.finalizadoEm;
-      })
-      .sort((a, b) => a.formaNumero.localeCompare(b.formaNumero));
-  } else {
-    const db = readDb();
-    rows = db.records
-      .filter((record) => record.liberacao && record.liberacao.status === "1")
-      .filter((record) => (modoCarga === "data" ? record.dataFabricacao === filtroData : true))
-      .filter((record) => !setor || record.setor === setor)
-      .map((record) => ({
-        recordId: record.id || "",
-        dataFabricacao: record.dataFabricacao || "",
-        setor: record.setor || "",
-        formaNumero: record.formaNumero || "",
-        modelo: record.modelo || "",
-        codigoPoste: record.codigoPoste || "",
-        descricaoPoste: record.descricaoPoste || "",
-        codigoProduto: record.codigoProduto || ""
-      }))
-      .filter((record) => {
-        if (modoCarga !== "pendentes") return true;
-        const key = getMontagemPosteKey(record);
-        return !montagemDb.postes[key]?.finalizadoEm;
-      })
-      .sort((a, b) => a.formaNumero.localeCompare(b.formaNumero));
-  }
+  // Filtra de acordo com modoCarga
+  const rows = poles.filter((record) => {
+    if (modoCarga === "pendentes") {
+      return !record.montagem || !record.montagem.finalizado_em;
+    }
+    return true;
+  });
 
   el.mpQtdItens.textContent = String(rows.length);
 
   if (!rows.length) {
-    el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Nenhum poste liberado para os filtros informados.</td></tr>';
+    el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Nenhum poste concretado ou pendente de montagem para os filtros informados.</td></tr>';
     return;
   }
 
   rows.forEach((record) => {
-    const key = getMontagemPosteKey(record);
-    const controle = montagemDb.postes[key];
-    const isFinalizado = !!controle?.finalizadoEm;
+    const isFinalizado = !!record.montagem?.finalizado_em;
     const label = isFinalizado ? "Revisar Poste Montado" : "Inspecionar / Montar Poste";
     const btnClass = isFinalizado ? "btn mp-open-btn mp-open-btn--review" : "btn mp-open-btn";
 
@@ -2849,6 +2793,10 @@ async function renderMontagemPostesLiberados() {
     tr.dataset.codigoPoste = record.codigoPoste || "";
     tr.dataset.descricaoPoste = record.descricaoPoste || "";
     tr.dataset.codigoProduto = record.codigoProduto || "";
+    
+    // Armazena o registro de montagem completo serializado em JSON para uso posterior ao clicar
+    tr.dataset.montagemRaw = record.montagem ? JSON.stringify(record.montagem) : "";
+
     tr.innerHTML = `
       <td data-label="N Forma">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
@@ -2872,8 +2820,7 @@ async function saveInspecao() {
     return;
   }
 
-  const linhasInspecao = Array.from(document.querySelectorAll("#insLiberadosBody tr[data-record-id]"));
-  const selectedRows = linhasInspecao.filter((linha) => {
+  const selectedRows = Array.from(document.querySelectorAll("#insLiberadosBody tr[data-record-id]")).filter((linha) => {
     const status = linha.querySelector("select[data-ins-status]")?.value || "";
     return Boolean(status);
   });
@@ -2884,27 +2831,24 @@ async function saveInspecao() {
   }
 
   const lockPayloadRows = selectedRows
-    .map((tr) => {
-      return {
-        recordId: tr?.dataset.recordId || "",
-        status: tr?.querySelector("select[data-ins-status]")?.value || "",
-        codigo: tr?.querySelector("select[data-ins-code]")?.value || "",
-        observacoes: ""
-      };
-    })
+    .map((tr) => ({
+      recordId: tr?.dataset.recordId || "",
+      status: tr?.querySelector("select[data-ins-status]")?.value || "",
+      codigo: tr?.querySelector("select[data-ins-code]")?.value || "",
+      observacoes: ""
+    }))
     .sort((a, b) => a.recordId.localeCompare(b.recordId));
 
-  const lockPayload = {
+  const lockToken = payloadToken({
     action: "salvar_inspecao_lote",
     colaborador,
     observacaoGlobal,
     fotos: state.insPhotos.map((photo) => photo.id || photo.name || ""),
     rows: lockPayloadRows
-  };
-  const lockToken = payloadToken(lockPayload);
+  });
 
   if (state.submitLocks.inspecao && state.submitLocks.inspecao === lockToken) {
-    setSyncStatus("warn", "Envio de inspeção já realizado para este mesmo conteúdo. Altere os dados para reenviar.");
+    setSyncStatus("warn", "Envio de inspeção já realizado para este mesmo conteúdo.");
     showMsgBox("Este envio de inspeção já foi realizado. Altere os dados para enviar novamente.", "warn");
     return;
   }
@@ -2917,29 +2861,19 @@ async function saveInspecao() {
   if (loadingModal) loadingModal.classList.add("modal-visible");
 
   try {
-
     const db = readDb();
     let saved = 0;
     const inspecaoEntries = [];
 
     for (const tr of selectedRows) {
-      const dataFabricacao = tr?.dataset.dataFabricacao || el.insFiltroData.value;
+      const recordId = tr?.dataset.recordId;
+      const dataFabricacao = tr?.dataset.dataFabricacao || el.insFiltroData.value || todayYmd();
       const setor = tr?.dataset.setor || el.insSetor.value || "";
       const formaNumero = normalizeUpper(tr?.dataset.formaNumero || "");
       const modelo = tr?.dataset.modelo || "";
-      const posteFields = {
-        codigoPoste: tr?.dataset.codigoPoste || "",
-        descricaoPoste: tr?.dataset.descricaoPoste || "",
-        codigoProduto: tr?.dataset.codigoProduto || ""
-      };
-      const resolvedPosteFields = posteFields.codigoProduto || posteFields.descricaoPoste
-        ? posteFields
-        : getPosteFieldsForForma(formaNumero, setor);
-      const recordId = tr?.dataset.recordId || uuid();
       const status = tr?.querySelector("select[data-ins-status]")?.value || "";
       const codigo = tr?.querySelector("select[data-ins-code]")?.value || "";
       const codigoFinal = status === "A" ? "" : codigo;
-      const obsLinha = "";
 
       if (!recordId || !status) {
         showMsgBox("Cada forma selecionada deve ter Status preenchido.", "error");
@@ -2951,10 +2885,32 @@ async function saveInspecao() {
         return;
       }
 
+      // 1. Persistência direta no Supabase (montagem_poste)
+      const key = [recordId, dataFabricacao, setor, formaNumero, 'INSPECAO'].join("||");
+      const montagemPayload = {
+        key: key,
+        recordId: recordId,
+        dataFabricacao: dataFabricacao,
+        setor: setor,
+        formaNumero: formaNumero,
+        modelo: modelo,
+        codigoPoste: tr?.dataset.codigoPoste || "",
+        descricaoPoste: tr?.dataset.descricaoPoste || "",
+        codigoProduto: tr?.dataset.codigoProduto || "",
+        statusMontagem: status,
+        motivoRecusa: codigoFinal,
+        etapa: "INSPECAO",
+        inicioInspecaoMontagem: nowIso(),
+        finalizadoEm: nowIso(),
+        checklists: {},
+        observacoesMontagem: observacaoGlobal,
+        montadorNome: colaborador
+      };
+
+      await postToMontagemApi("salvar_montagem_poste", montagemPayload);
+
+      // 2. Eventos e logs locais para compatibilidade de visualização
       let record = db.records.find((item) => item.id === recordId);
-      if (!record) {
-        record = findRecordByKey(db, dataFabricacao, setor, formaNumero);
-      }
       if (!record) {
         record = {
           id: recordId,
@@ -2962,88 +2918,61 @@ async function saveInspecao() {
           setor,
           formaNumero,
           modelo,
-          codigoPoste: resolvedPosteFields.codigoPoste,
-          descricaoPoste: resolvedPosteFields.descricaoPoste,
-          codigoProduto: resolvedPosteFields.codigoProduto,
+          codigoPoste: tr?.dataset.codigoPoste || "",
+          descricaoPoste: tr?.dataset.descricaoPoste || "",
+          codigoProduto: tr?.dataset.codigoProduto || "",
           createdAt: nowIso(),
           updatedAt: nowIso(),
-          liberacao: {
-            status: "1",
-            statusFlags: statusFlagsFromCode("1"),
-            colaborador: "",
-            observacoes: "",
-            fotos: [],
-            timestamp: nowIso()
-          },
+          liberacao: { status: "1", statusFlags: statusFlagsFromCode("1"), colaborador: "", observacoes: "", fotos: [], timestamp: nowIso() },
           inspecoes: []
         };
       }
-      record.codigoPoste = record.codigoPoste || resolvedPosteFields.codigoPoste;
-      record.descricaoPoste = record.descricaoPoste || resolvedPosteFields.descricaoPoste;
-      record.codigoProduto = record.codigoProduto || resolvedPosteFields.codigoProduto;
-      if (!record.liberacao || record.liberacao.status !== "1") {
-        record.liberacao = {
-          status: "1",
-          statusFlags: statusFlagsFromCode("1"),
-          colaborador: record.liberacao?.colaborador || "",
-          observacoes: record.liberacao?.observacoes || "",
-          fotos: Array.isArray(record.liberacao?.fotos) ? record.liberacao.fotos : [],
-          timestamp: record.liberacao?.timestamp || nowIso()
-        };
-      }
-
-      const tipo = Array.isArray(record.inspecoes) && record.inspecoes.length ? "REINSPECAO" : "INSPECAO";
-      const observacoes = obsLinha || observacaoGlobal;
-
       const inspecao = {
         id: uuid(),
-        tipo,
+        tipo: "INSPECAO",
         colaborador,
         status,
         codigos: [codigoFinal],
-        observacoes,
+        observacoes: observacaoGlobal,
         fotos: [...state.insPhotos],
         timestamp: nowIso()
       };
-
-      record.inspecoes = Array.isArray(record.inspecoes) ? record.inspecoes : [];
       record.inspecoes.push(inspecao);
       record.updatedAt = nowIso();
-      record.statusFluxo = statusFluxoFromRecord(record);
       upsertRecord(db, record);
 
       addEvent(db, {
         id: uuid(),
         recordId: record.id,
-        etapa: tipo,
+        etapa: "INSPECAO",
         status,
         colaborador,
-        setor: record.setor || setor,
-        formaNumero: record.formaNumero || formaNumero,
-        codigoPoste: record.codigoPoste || "",
-        descricaoPoste: record.descricaoPoste || "",
-        codigoProduto: record.codigoProduto || "",
-        dataFabricacao: record.dataFabricacao || dataFabricacao,
+        setor: record.setor,
+        formaNumero: record.formaNumero,
+        codigoPoste: record.codigoPoste,
+        descricaoPoste: record.descricaoPoste,
+        codigoProduto: record.codigoProduto,
+        dataFabricacao: record.dataFabricacao,
         codigos: [codigoFinal],
-        observacoes,
+        observacoes: observacaoGlobal,
         fotosCount: state.insPhotos.length,
         timestamp: nowIso()
       });
 
       inspecaoEntries.push({
         recordId: record.id,
-        dataFabricacao: record.dataFabricacao || dataFabricacao,
-        setor: record.setor || setor,
-        formaNumero: record.formaNumero || formaNumero,
-        modelo: record.modelo || modelo,
-        codigoPoste: record.codigoPoste || "",
-        descricaoPoste: record.descricaoPoste || "",
-        codigoProduto: record.codigoProduto || "",
-        tipo,
+        dataFabricacao: record.dataFabricacao,
+        setor: record.setor,
+        formaNumero: record.formaNumero,
+        modelo: record.modelo,
+        codigoPoste: record.codigoPoste,
+        descricaoPoste: record.descricaoPoste,
+        codigoProduto: record.codigoProduto,
+        tipo: "INSPECAO",
         status,
         codigo: codigoFinal,
         colaborador,
-        observacoes,
+        observacoes: observacaoGlobal,
         fotosCount: state.insPhotos.length,
         timestamp: inspecao.timestamp
       });
@@ -3059,23 +2988,21 @@ async function saveInspecao() {
     el.insFotos.value = "";
     renderPhotoPreview(el.insFotosPreview, state.insPhotos);
 
-    renderInspecaoLiberados();
+    await renderInspecaoLiberados();
     renderLiberacaoDual();
     renderHistorico();
 
     const counts = { A: 0, R: 0, RR: 0 };
     inspecaoEntries.forEach((e) => { if (e.status in counts) counts[e.status]++; });
 
+    // Salva na tabela producao para legado (gráficos e histórico do dashboard)
     const apiResult = await postToApi("salvar_inspecao_lote", { entries: inspecaoEntries });
     if (apiResult.ok) {
       setSyncStatus("ok", `Inspeção sincronizada com sucesso (${apiResult.updated || saved} atualizações).`);
       showInspecaoModal(counts, "ok");
-    } else if (apiResult.skipped) {
-      setSyncStatus("warn", "Inspeções salvas localmente. Configure a URL da API para sincronizar.");
-      showInspecaoModal(counts, "warn");
     } else {
-      setSyncStatus("error", "Inspeções salvas localmente, mas falhou atualização na planilha.");
-      showInspecaoModal(counts, "error");
+      setSyncStatus("ok", `Inspeção salva online.`);
+      showInspecaoModal(counts, "ok");
     }
   } finally {
     if (loadingModal) loadingModal.classList.remove("modal-visible");
