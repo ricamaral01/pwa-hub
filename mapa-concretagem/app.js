@@ -1100,7 +1100,7 @@ function montagemStatusLabel(status) {
 }
 
 function getMontagemMotivoOptions() {
-  return CHECKLIST_INSPECAO_CODIGOS.map((item) => ({
+  return CHECKLIST_INSPECAO_CODIGOS.slice(0, 12).map((item) => ({
     value: item.codigo,
     label: `${item.codigo} — ${item.descricao}`
   }));
@@ -2651,22 +2651,19 @@ function renderMontagemStatusUI() {
   if (!poste || !el.mpStatusButtons) return;
 
   const status = poste.statusMontagem || "";
+  const isFinalizado = !!poste.finalizadoEm;
+
   el.mpStatusButtons.querySelectorAll("[data-mp-status]").forEach((btn) => {
     if (!(btn instanceof HTMLElement)) return;
     btn.classList.toggle("active", btn.dataset.mpStatus === status);
+    btn.disabled = isFinalizado;
   });
 
   if (el.mpMotivoWrap && el.mpMotivoSelect) {
     const precisaMotivo = status === "R" || status === "RR";
     el.mpMotivoWrap.classList.toggle("hidden", !precisaMotivo);
     el.mpMotivoSelect.value = poste.motivoRecusa || "";
-    el.mpMotivoSelect.disabled = !precisaMotivo || !!poste.finalizadoEm;
-  }
-
-  if (poste.finalizadoEm && el.mpStatusButtons) {
-    el.mpStatusButtons.querySelectorAll("button").forEach((btn) => {
-      btn.disabled = true;
-    });
+    el.mpMotivoSelect.disabled = !precisaMotivo || isFinalizado;
   }
 }
 
