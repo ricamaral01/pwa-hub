@@ -579,12 +579,19 @@ const el = {
   viewAcmpConcretagem: document.getElementById("viewAcmpConcretagem"),
   navUsuarios: document.getElementById("navUsuarios"),
   viewUsuarios: document.getElementById("viewUsuarios"),
-  ugNome: document.getElementById("ugNome"),
+  ugNomeCompleto: document.getElementById("ugNomeCompleto"),
+  ugLogin: document.getElementById("ugLogin"),
   ugPerfil: document.getElementById("ugPerfil"),
   ugSenha: document.getElementById("ugSenha"),
+  ugSetor: document.getElementById("ugSetor"),
   ugCriarBtn: document.getElementById("ugCriarBtn"),
   ugFeedback: document.getElementById("ugFeedback"),
   ugListaBody: document.getElementById("ugListaBody"),
+  primeiroAcessoModal: document.getElementById("primeiroAcessoModal"),
+  paNovaSenha: document.getElementById("paNovaSenha"),
+  paConfirmarSenha: document.getElementById("paConfirmarSenha"),
+  paSalvarBtn: document.getElementById("paSalvarBtn"),
+  paFeedback: document.getElementById("paFeedback"),
   syncStatus: document.getElementById("syncStatus"),
   concretoTipoModal: document.getElementById("concretoTipoModal"),
   concretoTipoSubtitle: document.getElementById("concretoTipoSubtitle"),
@@ -1005,29 +1012,58 @@ async function postToApi(action, payload) {
     if (action === "listar_usuarios") {
       const { data, error } = await supabaseClient.from('usuarios').select('*').eq('ativo', true);
       if (error) throw error;
-      const users = data.map(u => ({ id: u.id, name: u.nome, role: u.perfil, active: u.ativo }));
+      const users = data.map(u => ({ id: u.id, name: u.nome, role: u.perfil, setor: u.setor || "Todos", active: u.ativo }));
       return { ok: true, users };
     }
 
     if (action === "autenticar_usuario") {
+      // Permite autenticação pelo Nome ou pelo Login (id)
       const { data, error } = await supabaseClient.from('usuarios')
-        .select('*').eq('ativo', true).ilike('nome', payload.name).eq('senha', payload.password).limit(1);
+        .select('*')
+        .eq('ativo', true)
+        .or(`id.ilike.${payload.name},nome.ilike.${payload.name}`)
+        .eq('senha', payload.password)
+        .limit(1);
       if (error) throw error;
       if (data.length === 0) return { ok: false, error: "Usuário ou senha incorretos." };
-      return { ok: true, user: { id: data[0].id, name: data[0].nome, role: data[0].perfil, active: data[0].ativo } };
+      const u = data[0];
+      return { 
+        ok: true, 
+        user: { 
+          id: u.id, 
+          name: u.nome, 
+          role: u.perfil, 
+          active: u.ativo,
+          setor: u.setor || "Todos",
+          primeiro_acesso: u.primeiro_acesso !== false
+        } 
+      };
     }
 
     if (action === "criar_usuario") {
-      const userId = "user-" + payload.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const userId = String(payload.login || "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-");
       const { data, error } = await supabaseClient.from('usuarios').upsert([{
         id: userId,
         nome: payload.name,
         perfil: payload.role,
         senha: payload.password,
-        ativo: true
+        setor: payload.setor || "Todos",
+        primeiro_acesso: true, // Sempre ativo no primeiro cadastro
+        ativo: true,
+        updated_at: nowIso()
       }]).select();
       if (error) throw error;
       return { ok: true, user: { id: userId, name: payload.name, role: payload.role, active: true } };
+    }
+
+    if (action === "alterar_senha_primeiro_acesso") {
+      const { data, error } = await supabaseClient.from('usuarios').update({
+        senha: payload.senha,
+        primeiro_acesso: false,
+        updated_at: nowIso()
+      }).eq('id', payload.id).select();
+      if (error) throw error;
+      return { ok: true };
     }
 
     if (action === "excluir_usuario") {
@@ -4041,7 +4077,8 @@ function readAuthSession() {
     return {
       name: String(parsed.name || "").trim() || "Usuário",
       role: parsed.role,
-      roleLabel: getRoleConfig(parsed.role).label
+      roleLabel: getRoleConfig(parsed.role).label,
+      setor: parsed.setor || "Todos"
     };
   } catch {
     return null;
@@ -4049,7 +4086,7 @@ function readAuthSession() {
 }
 
 function saveAuthSession(auth) {
-  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ name: auth.name, role: auth.role }));
+  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ name: auth.name, role: auth.role, setor: auth.setor || "Todos" }));
 }
 
 function clearAuthSession() {
@@ -4081,8 +4118,8 @@ async function authenticateUserInApi(name, password) {
   return postToApi("autenticar_usuario", { name, password });
 }
 
-async function createUserInApi(name, role, password) {
-  return postToApi("criar_usuario", { name, role, password });
+async function createUserInApi(name, login, role, password, setor) {
+  return postToApi("criar_usuario", { name, login, role, password, setor });
 }
 
 async function deleteUserInApi(id) {
@@ -4105,21 +4142,23 @@ function setUgFeedback(message, isOk) {
 
 async function renderUsuarios() {
   if (!el.ugListaBody) return;
-  el.ugListaBody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#64748b;">Carregando usuários...</td></tr>';
+  el.ugListaBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;">Carregando usuários...</td></tr>';
   const result = await listUsersFromApi({ silent: true });
   if (!result.ok) {
-    el.ugListaBody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#991b1b;">Falha ao carregar usuários da planilha.</td></tr>';
+    el.ugListaBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#991b1b;">Falha ao carregar usuários da planilha.</td></tr>';
     return;
   }
 
   const users = result.users;
   if (users.length === 0) {
-    el.ugListaBody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#64748b;">Nenhum usuário cadastrado.</td></tr>';
+    el.ugListaBody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;">Nenhum usuário cadastrado.</td></tr>';
     return;
   }
   el.ugListaBody.innerHTML = users.map((u) => `
     <tr>
       <td style="text-align:center">${escapeHtml(u.name)}</td>
+      <td style="text-align:center">${escapeHtml(u.id)}</td>
+      <td style="text-align:center">${escapeHtml(u.setor || "Todos")}</td>
       <td style="text-align:center">${escapeHtml(getRoleConfig(u.role).label)}</td>
       <td style="text-align:center"><button class="ug-del-btn" type="button" data-ug-id="${escapeHtml(u.id)}">Excluir</button></td>
     </tr>
@@ -4152,6 +4191,79 @@ function setLoginFeedback(message) {
   }
   el.loginFeedback.textContent = message;
   el.loginFeedback.classList.remove("hidden");
+}
+
+function setPaFeedback(message) {
+  if (!el.paFeedback) return;
+  if (!message) {
+    el.paFeedback.classList.add("hidden");
+    el.paFeedback.textContent = "";
+    return;
+  }
+  el.paFeedback.textContent = message;
+  el.paFeedback.classList.remove("hidden");
+}
+
+async function salvarNovaSenhaPrimeiroAcesso() {
+  const novaSenha = (el.paNovaSenha?.value || "").trim();
+  const confirmarSenha = (el.paConfirmarSenha?.value || "").trim();
+
+  if (!state.paTempUser) {
+    setPaFeedback("Erro: Nenhum usuário em sessão temporária.");
+    return;
+  }
+
+  if (novaSenha.length < 4) {
+    setPaFeedback("A nova senha deve ter pelo menos 4 caracteres.");
+    return;
+  }
+
+  if (novaSenha !== confirmarSenha) {
+    setPaFeedback("As senhas não coincidem.");
+    return;
+  }
+
+  try {
+    setPaFeedback("Salvando nova senha...");
+    const res = await postToApi("alterar_senha_primeiro_acesso", {
+      id: state.paTempUser.id,
+      senha: novaSenha
+    });
+
+    if (!res.ok) {
+      setPaFeedback(res.error || "Erro ao salvar a nova senha.");
+      return;
+    }
+
+    // Ocultar modal de primeiro acesso
+    if (el.primeiroAcessoModal) {
+      el.primeiroAcessoModal.classList.remove("modal-visible");
+    }
+
+    const user = state.paTempUser;
+    state.paTempUser = null;
+
+    // Login definitivo
+    state.authUser = {
+      name: user.name,
+      role: user.role,
+      roleLabel: getRoleConfig(user.role).label,
+      setor: user.setor || "Todos"
+    };
+
+    setAccessByRole(user.role);
+    saveAuthSession(state.authUser);
+    setLoginFeedback("");
+    unlockAppAfterLogin();
+    applyRoleVisibility();
+    ensurePostLoginBootstrap();
+    setMode("HUB");
+    setSyncStatus("ok", `Acesso liberado para ${state.authUser.roleLabel}.`);
+
+  } catch (err) {
+    console.error(err);
+    setPaFeedback("Erro inesperado: " + err.message);
+  }
 }
 
 function lockAppForLogin() {
@@ -4242,10 +4354,23 @@ async function loginWithRole(name, password) {
     return false;
   }
 
+  // Intercepta e requer troca de senha de primeiro acesso!
+  if (user.primeiro_acesso) {
+    state.paTempUser = user;
+    if (el.primeiroAcessoModal) {
+      el.paNovaSenha.value = "";
+      el.paConfirmarSenha.value = "";
+      setPaFeedback("");
+      el.primeiroAcessoModal.classList.add("modal-visible");
+    }
+    return false;
+  }
+
   state.authUser = {
     name: user.name,
     role,
-    roleLabel: getRoleConfig(role).label
+    roleLabel: getRoleConfig(role).label,
+    setor: user.setor || "Todos"
   };
 
   setAccessByRole(role);
@@ -4426,21 +4551,27 @@ function bindEvents() {
 
   if (el.ugCriarBtn) {
     el.ugCriarBtn.addEventListener("click", async () => {
-      const nome = (el.ugNome?.value || "").trim();
+      const nome = (el.ugNomeCompleto?.value || "").trim();
+      const login = (el.ugLogin?.value || "").trim();
       const perfil = el.ugPerfil?.value || "MONTADOR";
       const senha = (el.ugSenha?.value || "").trim();
+      const setor = el.ugSetor?.value || "Todos";
 
-      if (!nome) { setUgFeedback("Informe o nome do usuário.", false); return; }
+      if (!nome) { setUgFeedback("Informe o nome completo do usuário.", false); return; }
+      if (!login) { setUgFeedback("Informe o login / usuário.", false); return; }
       if (!senha) { setUgFeedback("Informe a senha.", false); return; }
 
-      const resultCreate = await createUserInApi(nome, perfil, senha);
+      const resultCreate = await createUserInApi(nome, login, perfil, senha, setor);
       if (!resultCreate.ok) {
         setUgFeedback(resultCreate.error || "Não foi possível criar o usuário.", false);
         return;
       }
 
-      if (el.ugNome) el.ugNome.value = "";
+      if (el.ugNomeCompleto) el.ugNomeCompleto.value = "";
+      if (el.ugLogin) el.ugLogin.value = "";
       if (el.ugSenha) el.ugSenha.value = "";
+      if (el.ugSetor) el.ugSetor.value = "Todos";
+      if (el.ugPerfil) el.ugPerfil.value = "MONTADOR";
       await renderUsuarios();
       setUgFeedback(`Usuário "${nome}" criado com sucesso!`, true);
     });
@@ -4514,6 +4645,10 @@ function bindEvents() {
     if (!el.acmpData.value) el.acmpData.value = todayYmd();
     renderAcmpConcretagem();
   });
+
+  if (el.paSalvarBtn) {
+    el.paSalvarBtn.addEventListener("click", salvarNovaSenhaPrimeiroAcesso);
+  }
 
   el.backButtons.forEach((btn) => btn.addEventListener("click", navigateBack));
   if (el.backMain) {

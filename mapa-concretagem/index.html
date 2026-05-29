@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v4.4" />
+  <link rel="stylesheet" href="styles.css?v=v4.5" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -519,22 +519,34 @@
 
       <div class="ug-form">
         <h3>Novo Usuário</h3>
-        <div class="grid">
-          <label>Nome / Login
-            <input id="ugNome" type="text" placeholder="Nome do usuário" autocomplete="off" />
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px;">
+          <label>Nome Completo
+            <input id="ugNomeCompleto" type="text" placeholder="Nome Completo" autocomplete="off" />
           </label>
-          <label>Perfil
+          <label>Login / Usuário
+            <input id="ugLogin" type="text" placeholder="Login" autocomplete="off" />
+          </label>
+          <label>Senha Temporária
+            <input id="ugSenha" type="password" placeholder="Senha" autocomplete="new-password" />
+          </label>
+          <label>Setor
+            <select id="ugSetor">
+              <option value="Todos">Todos os Setores</option>
+              <option value="Setor 1">Setor 1</option>
+              <option value="Setor 2">Setor 2</option>
+              <option value="Setor 3">Setor 3</option>
+              <option value="Setor 4">Setor 4</option>
+            </select>
+          </label>
+          <label>Alçada / Perfil
             <select id="ugPerfil">
               <option value="MONTADOR">Montador</option>
               <option value="GESTOR">Gestor</option>
               <option value="GERENCIA">Gerência</option>
             </select>
           </label>
-          <label>Senha
-            <input id="ugSenha" type="password" placeholder="Senha" autocomplete="new-password" />
-          </label>
         </div>
-        <button id="ugCriarBtn" class="btn primary" type="button">Criar usuário</button>
+        <button id="ugCriarBtn" class="btn primary" type="button" style="margin-top:14px;">Criar usuário</button>
         <div id="ugFeedback" class="login-feedback hidden"></div>
       </div>
 
@@ -544,8 +556,10 @@
           <table class="sheet-table">
             <thead>
               <tr>
-                <th>Nome / Login</th>
-                <th>Perfil</th>
+                <th>Nome Completo</th>
+                <th>Login</th>
+                <th>Setor</th>
+                <th>Alçada</th>
                 <th>Ação</th>
               </tr>
             </thead>
@@ -753,6 +767,25 @@
       <div class="modal-subtitle" id="concretoTipoSubtitle">Selecione uma opção</div>
       <div id="concretoTipoOptions" class="concreto-tipo-options"></div>
       <button class="btn btn-secondary modal-ok" id="concretoTipoCancelBtn" type="button">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Modal de Troca de Senha de Primeiro Acesso -->
+  <div id="primeiroAcessoModal" class="modal-overlay pa-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="paTitle">
+    <div class="modal-box">
+      <div class="modal-icon">🔑</div>
+      <h2 class="modal-title" id="paTitle">Primeiro Acesso</h2>
+      <div class="modal-subtitle">Para sua segurança, você deve alterar sua senha temporária para continuar.</div>
+      <div class="pa-form" style="display:flex; flex-direction:column; gap:12px; margin-top:14px; text-align:left;">
+        <label style="font-weight:700;">Nova Senha
+          <input id="paNovaSenha" type="password" placeholder="Digite sua nova senha" required style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;" />
+        </label>
+        <label style="font-weight:700;">Confirmar Nova Senha
+          <input id="paConfirmarSenha" type="password" placeholder="Confirme sua nova senha" required style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;" />
+        </label>
+      </div>
+      <div id="paFeedback" class="login-feedback hidden" style="margin-top:10px;"></div>
+      <button class="btn primary modal-ok" id="paSalvarBtn" type="button" style="margin-top:16px; width:100%;">Definir Senha e Entrar</button>
     </div>
   </div>
 
