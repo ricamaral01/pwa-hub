@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v3.9" />
+  <link rel="stylesheet" href="styles.css?v=v4.0" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -77,8 +77,8 @@
         Produção Setor 4
       </button>
       <button class="nav-item" id="hubInspecao" type="button">
-        <span class="nav-icon-wrap">MI</span>
-        Montagem / Inspeção
+        <span class="nav-icon-wrap">MB</span>
+        Montagem / Banca
       </button>
       <button class="nav-item" id="hubMontagemPostes" type="button">
         <span class="nav-icon-wrap">MP</span>
@@ -366,7 +366,7 @@
 
     <section id="viewInspecao" class="card hidden">
       <div class="section-title-row">
-        <h2>Montagem / Inspecao</h2>
+        <h2>Montagem / Banca</h2>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
       </div>
       <div class="grid">
@@ -396,7 +396,7 @@
 
       <div class="sheet-box">
         <div class="sheet-topline">
-          <div><strong>Inspeção</strong> — Somente formas com Liberação = 1</div>
+          <div><strong>Montagem / Banca</strong> — Somente formas com Liberação = 1</div>
           <div><strong>Itens:</strong> <span id="insQtdItens">0</span></div>
         </div>
         <div class="sheet-filter-row">
@@ -768,6 +768,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=v3.9"></script>
+  <script src="app.js?v=v4.0"></script>
 </body>
 </html>

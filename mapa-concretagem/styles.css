@@ -298,14 +298,14 @@ body.auth-locked #insFloatBar {
 
 /* ── App main ─────────────────────────────────────── */
 .app-main {
-  margin-left: 240px;
+  margin-left: 240px !important;
   flex: 1; display: flex; flex-direction: column; min-height: 100vh;
-  transition: margin-left 0.25s ease;
+  transition: none !important;
 }
 
-/* Sidebar colapsada — desktop/tablet */
-body.sidebar-hidden .sidebar { transform: translateX(-100%); }
-body.sidebar-hidden .app-main  { margin-left: 0; }
+/* Sidebar colapsada desativada — sempre fixa */
+body.sidebar-hidden .sidebar { transform: none !important; }
+body.sidebar-hidden .app-main  { margin-left: 240px !important; }
 
 /* ── Topbar ───────────────────────────────────────── */
 .topbar {
@@ -318,9 +318,7 @@ body.sidebar-hidden .app-main  { margin-left: 0; }
   position: sticky; top: 0; z-index: 50; flex-shrink: 0;
 }
 .sidebar-toggle-btn {
-  display: flex; align-items: center; justify-content: center;
-  width: 36px; height: 36px; border: none; border-radius: 8px;
-  background: var(--primary); color: #fff; font-size: 1.1rem; cursor: pointer; flex-shrink: 0;
+  display: none !important;
 }
 .topbar-title { font-size: 1.03rem; font-weight: 800; color: var(--text); letter-spacing: 0.02em; flex: 1; }
 .topbar-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
@@ -501,12 +499,10 @@ body.sidebar-hidden .app-main  { margin-left: 0; }
 
 /* ── Responsive ───────────────────────────────────── */
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.sidebar-open { transform: translateX(0); }
-  /* No mobile sidebar-hidden não aplica: o toggle usa overlay */
-  body.sidebar-hidden .sidebar { transform: translateX(-100%); }
-  body.sidebar-hidden .app-main  { margin-left: 0; }
-  .app-main { margin-left: 0; }
+  .sidebar { transform: none !important; position: fixed !important; }
+  body.sidebar-hidden .sidebar { transform: none !important; }
+  body.sidebar-hidden .app-main  { margin-left: 240px !important; }
+  .app-main { margin-left: 240px !important; }
   .page-content { padding: 14px; }
   .topbar { padding: 0 14px; }
 }
@@ -514,8 +510,8 @@ body.sidebar-hidden .app-main  { margin-left: 0; }
   [data-back-btn] { display: none; }
 }
 @media (min-width: 769px) {
-  body.mode-inspecao .ins-float-bar { left: 240px; transition: left 0.25s ease; }
-  body.sidebar-hidden.mode-inspecao .ins-float-bar { left: 0; }
+  body.mode-inspecao .ins-float-bar { left: 240px !important; transition: none !important; }
+  body.sidebar-hidden.mode-inspecao .ins-float-bar { left: 240px !important; }
 }
 
 /* ── Legacy header (hidden) ───────────────────────── */

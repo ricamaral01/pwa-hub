@@ -4141,7 +4141,7 @@ function setMode(mode) {
       LIBERACAO_S2: ["hubLiberacaoS2", "Produção Setor 2"],
       LIBERACAO_S3: ["hubLiberacaoS3", "Produção Setor 3"],
       LIBERACAO_S4: ["hubLiberacaoS4", "Produção Setor 4"],
-    INSPECAO: ["hubInspecao", "Montagem / Inspeção"],
+    INSPECAO: ["hubInspecao", "Montagem / Banca"],
     MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
     MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
     RELATORIO: ["hubRelatorio", "Relatório"],
