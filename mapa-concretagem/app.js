@@ -2227,28 +2227,30 @@ function normalizeForma(s) {
 }
 
 async function fetchSetor3Models(filtroData) {
-  // 1. Tentar primeiro o backend local (/api/resolver-producao) que resolve os dados a partir do banco PostgreSQL
+  // 1. Tentar primeiro a API oficial do PCP Concrefer
   try {
-    let host = "";
-    if (window.location.protocol === "file:") {
-      host = "http://127.0.0.1:5000";
-    } else if (window.location.port !== "5000") {
-      host = `${window.location.protocol}//${window.location.hostname}:5000`;
-    }
-    const response = await fetch(`${host}/api/resolver-producao?data_inicio=${filtroData}&data_fim=${filtroData}`);
+    const host = "https://pcp.concretrack.com.br";
+    const response = await fetch(`${host}/api/programacao?setor_id=3&data_inicial=${filtroData}&data_final=${filtroData}`);
     if (response.ok) {
       const data = await response.json();
       const formToModelMap = {};
-      (data || []).forEach((item) => {
-        if (item.forma && item.modelo_resolvido) {
-          formToModelMap[normalizeForma(item.forma)] = item.modelo_resolvido;
+      
+      // A API original retorna algo do tipo: [{ "codigo_forma": "SC01", "poste": "12X600" }, ...]
+      const items = Array.isArray(data) ? data : (data.programacoes || data.data || []);
+      
+      items.forEach((item) => {
+        const forma = item.codigo_forma || item.forma;
+        const modelo = item.poste || item.modelo || item.produto_nome || item.nome;
+        
+        if (forma && modelo) {
+          formToModelMap[normalizeForma(forma)] = modelo;
         }
       });
-      console.log("✓ Modelos resolvidos via API Flask (normalizados):", formToModelMap);
+      console.log("✓ Modelos resolvidos via API PCP Concrefer (normalizados):", formToModelMap);
       return formToModelMap;
     }
   } catch (err) {
-    console.warn("[fetchSetor3Models] Erro ao carregar do backend local, tentando Supabase:", err);
+    console.warn("[fetchSetor3Models] Erro ao carregar da API PCP Concrefer, tentando Supabase:", err);
   }
 
   // 2. Fallback antigo: tentar carregar do Supabase (caso a tabela programacoes exista no Supabase no futuro)
