@@ -2240,7 +2240,7 @@ async function fetchSetor3Models(filtroData) {
       
       items.forEach((item) => {
         const forma = item.codigo_forma || item.forma;
-        const modelo = item.poste || item.modelo || item.produto_nome || item.nome;
+        const modelo = item.poste || item.modelo || item.produto_nome || item.nome || item.produto?.nome;
         
         if (forma && modelo) {
           formToModelMap[normalizeForma(forma)] = modelo;
@@ -2263,7 +2263,7 @@ async function fetchSetor3Models(filtroData) {
         const items = Array.isArray(data) ? data : (data.programacoes || data.data || []);
         items.forEach((item) => {
           const forma = item.codigo_forma || item.forma;
-          const modelo = item.poste || item.modelo || item.produto_nome || item.nome;
+          const modelo = item.poste || item.modelo || item.produto_nome || item.nome || item.produto?.nome;
           if (forma && modelo) formToModelMap[normalizeForma(forma)] = modelo;
         });
         console.log("✓ Modelos resolvidos via Fallback API Usina:", formToModelMap);
