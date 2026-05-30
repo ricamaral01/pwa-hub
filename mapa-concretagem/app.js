@@ -2250,11 +2250,30 @@ async function fetchSetor3Models(filtroData) {
       return formToModelMap;
     } else {
       console.warn("API PCP Concrefer retornou erro HTTP:", response.status);
-      alert("Aviso: Falha ao carregar a programação do PCP (Erro HTTP " + response.status + "). Mostrando modelos como SC.");
+      throw new Error(`Erro HTTP ${response.status} na API pcp`);
     }
   } catch (err) {
-    console.warn("[fetchSetor3Models] Erro ao carregar da API PCP Concrefer, tentando Supabase:", err);
-    alert("Aviso: Falha de conexão com a API do PCP Concrefer (" + err.message + "). Mostrando modelos como SC.");
+    console.warn("[fetchSetor3Models] Tentando fallback para usina.concretrack.com.br/api/programacao devido a erro:", err);
+    try {
+      const fallbackHost = "https://usina.concretrack.com.br";
+      const fallbackResponse = await fetch(`${fallbackHost}/api/programacao?setor_id=3&data_inicial=${filtroData}&data_final=${filtroData}`);
+      if (fallbackResponse.ok) {
+        const data = await fallbackResponse.json();
+        const formToModelMap = {};
+        const items = Array.isArray(data) ? data : (data.programacoes || data.data || []);
+        items.forEach((item) => {
+          const forma = item.codigo_forma || item.forma;
+          const modelo = item.poste || item.modelo || item.produto_nome || item.nome;
+          if (forma && modelo) formToModelMap[normalizeForma(forma)] = modelo;
+        });
+        console.log("✓ Modelos resolvidos via Fallback API Usina:", formToModelMap);
+        return formToModelMap;
+      }
+    } catch (fallbackErr) {
+      console.warn("Fallback Usina também falhou:", fallbackErr);
+    }
+    
+    alert("Aviso: Falha de conexão com a API do PCP Concrefer (" + err.message + "). O navegador pode estar bloqueando (CORS) ou a API está fora. Mostrando modelos como SC.");
   }
 
   // 2. Fallback antigo: tentar carregar do Supabase (caso a tabela programacoes exista no Supabase no futuro)
