@@ -2122,7 +2122,8 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
 
   const apiResult = await postToApi("salvar_forma_click", payload);
 
-  if (apiResult.ok || apiResult.skipped) {
+  const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
+  if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
     const db = readDb();
     let record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
     if (!record) {
@@ -2167,7 +2168,8 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
       timestamp: record.liberacao?.timestamp || nowIso(),
       fotosCount: 0,
       codigos: [],
-      observacoes: ""
+      observacoes: "",
+      pendingSync: isNetworkFailure
     });
     writeDb(db);
   }
@@ -2185,9 +2187,12 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     setSyncStatus("warn", "API não configurada. Forma salva localmente.");
     showLibFeedback(`${forma} — salvo localmente.`, "ok");
   } else {
-    setCardState(card, "error");
-    setSyncStatus("error", `Falha ao registrar ${forma}: ${apiResult.error || "erro desconhecido"}`);
-    showLibFeedback(`${forma} — falha no envio!`, "error");
+    // Falha de rede: salva localmente mas marca como pendente de sync
+    markFormaClicked(forma, setor);
+    setCardState(card, "saved");
+    updateSectorCounters();
+    setSyncStatus("warn", `Forma ${forma} salva localmente (sem sinal de rede).`);
+    showLibFeedback(`${forma} — salvo localmente (offline)`, "warn");
   }
 }
 
@@ -2200,14 +2205,60 @@ function getInspecaoCodeOptions(selectedCode) {
   return first + options;
 }
 
+function normalizeForma(s) {
+  if (!s) return "";
+  s = String(s).trim().toUpperCase();
+  s = s.replace(/[\s\-]+/g, '');
+  
+  const match = s.match(/^([A-Z]+)0*([0-9]+)$/);
+  if (match) {
+    const num = match[2];
+    const numStr = num.replace(/^0+/, '');
+    return match[1] + (numStr || '0');
+  }
+  
+  const matchNum = s.match(/^0*([0-9]+)$/);
+  if (matchNum) {
+    const numStr = matchNum[1].replace(/^0+/, '');
+    return numStr || '0';
+  }
+  
+  return s;
+}
+
 async function fetchSetor3Models(filtroData) {
+  // 1. Tentar primeiro o backend local (/api/resolver-producao) que resolve os dados a partir do banco PostgreSQL
+  try {
+    let host = "";
+    if (window.location.protocol === "file:") {
+      host = "http://127.0.0.1:5000";
+    } else if (window.location.port !== "5000") {
+      host = `${window.location.protocol}//${window.location.hostname}:5000`;
+    }
+    const response = await fetch(`${host}/api/resolver-producao?data_inicio=${filtroData}&data_fim=${filtroData}`);
+    if (response.ok) {
+      const data = await response.json();
+      const formToModelMap = {};
+      (data || []).forEach((item) => {
+        if (item.forma && item.modelo_resolvido) {
+          formToModelMap[normalizeForma(item.forma)] = item.modelo_resolvido;
+        }
+      });
+      console.log("✓ Modelos resolvidos via API Flask (normalizados):", formToModelMap);
+      return formToModelMap;
+    }
+  } catch (err) {
+    console.warn("[fetchSetor3Models] Erro ao carregar do backend local, tentando Supabase:", err);
+  }
+
+  // 2. Fallback antigo: tentar carregar do Supabase (caso a tabela programacoes exista no Supabase no futuro)
   if (!supabaseClient) return {};
   try {
     const { data: progRows, error: err1 } = await supabaseClient
       .from('programacoes')
       .select('codigo_forma, produto_id')
       .eq('data', filtroData)
-      .eq('setor_id', 3);
+      .in('setor_id', [3, 4]);
 
     if (err1) {
       console.warn("[fetchSetor3Models] Erro PGRST programacoes:", err1);
@@ -2238,13 +2289,13 @@ async function fetchSetor3Models(filtroData) {
       const forma = String(row.codigo_forma || "").trim().toUpperCase();
       const prodId = row.produto_id;
       if (forma && prodId && productsMap[prodId]) {
-        formToModelMap[forma] = productsMap[prodId];
+        formToModelMap[normalizeForma(forma)] = productsMap[prodId];
       }
     });
 
     return formToModelMap;
   } catch (e) {
-    console.warn("[fetchSetor3Models] Fallback silencioso executado:", e);
+    console.warn("[fetchSetor3Models] Fallback silencioso do Supabase executado:", e);
     return {};
   }
 }
@@ -2254,7 +2305,7 @@ async function fetchPolesForDate(filtroData, setor = "") {
 
   try {
     let formToModelMap = {};
-    if (!setor || setor === "Setor 3") {
+    if (!setor || setor === "Setor 3" || setor === "Setor 4") {
       formToModelMap = await fetchSetor3Models(filtroData);
     }
 
@@ -2301,8 +2352,9 @@ async function fetchPolesForDate(filtroData, setor = "") {
       const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'MONTAGEM');
 
       let modeloFinal = latestRow.modelo || "";
-      if (latestRow.setor === "Setor 3" && formToModelMap[forma.toUpperCase()]) {
-        modeloFinal = formToModelMap[forma.toUpperCase()];
+      const normForma = normalizeForma(forma);
+      if ((latestRow.setor === "Setor 3" || latestRow.setor === "Setor 4") && formToModelMap[normForma]) {
+        modeloFinal = formToModelMap[normForma];
       }
 
       combinedList.push({
@@ -2391,6 +2443,7 @@ function showInspecaoModal(counts, syncStatus) {
 }
 
 async function renderInspecaoLiberados() {
+  state.insInicioLocal = nowIso();
   const filtroData = el.insFiltroData.value || todayYmd();
   const modoCarga = el.insModoCarga?.value || "data";
   const setor = state.activeInsSector || "";
@@ -2541,6 +2594,12 @@ async function syncMontagemPosteToApi(entry, etapa = "", options = {}) {
 
   if (apiResult.ok) {
     if (!options.silent) setSyncStatus("ok", "Montagem de poste sincronizada com a planilha.");
+    // Marcar como sincronizado no local storage
+    const db = readMontagemPostesDb();
+    if (db.postes[entry.key]) {
+      db.postes[entry.key].pendingSync = false;
+      writeMontagemPostesDb(db);
+    }
     return { ok: true, synced: true };
   }
 
@@ -2549,6 +2608,12 @@ async function syncMontagemPosteToApi(entry, etapa = "", options = {}) {
     return { ok: true, synced: false, skipped: true };
   }
 
+  // Falha na rede: marca como pendente de sincronização
+  const db = readMontagemPostesDb();
+  if (db.postes[entry.key]) {
+    db.postes[entry.key].pendingSync = true;
+    writeMontagemPostesDb(db);
+  }
   if (!options.silent) setSyncStatus("warn", "Montagem salva localmente, mas sem sincronização no momento.");
   return { ok: false, synced: false, error: apiResult.error || "falha de sincronização" };
 }
@@ -2736,6 +2801,20 @@ function showMontagemResumoModal(poste, options = {}) {
   const motivo = poste.statusMontagem === "A" ? "-" : getMotivoRecusaLabel(poste.motivoRecusa || "");
   const dtMontagem = formatDateTime(poste.finalizadoEm || "");
 
+  // Calcular o tempo decorrido de inspeção e montagem
+  let tempoGasto = "-";
+  if (poste.inicioInspecaoMontagem && poste.finalizadoEm) {
+    const tInicio = new Date(poste.inicioInspecaoMontagem);
+    const tFim = new Date(poste.finalizadoEm);
+    const diffMs = tFim - tInicio;
+    if (diffMs > 0) {
+      const diffSecs = Math.floor(diffMs / 1000);
+      const mins = Math.floor(diffSecs / 60);
+      const secs = diffSecs % 60;
+      tempoGasto = `${mins}m ${secs}s`;
+    }
+  }
+
   el.mpResumoBody.innerHTML = `
     <div><strong>Montador:</strong> ${escapeHtml(state.authUser?.name || "-")}</div>
     <div><strong>Setor:</strong> ${escapeHtml(poste.setor || "-")}</div>
@@ -2744,6 +2823,7 @@ function showMontagemResumoModal(poste, options = {}) {
     <div><strong>Forma:</strong> ${escapeHtml(poste.formaNumero || "-")}</div>
     <div><strong>Dt. Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
     <div><strong>Dt. Montagem:</strong> ${dtMontagem}</div>
+    <div><strong>Tempo de Inspeção:</strong> <span style="color:#e8762a; font-weight:700;">${tempoGasto}</span></div>
     <div><strong>Status:</strong> ${statusLabel}</div>
     <div><strong>Motivo da recusa:</strong> ${motivo}</div>
     <div><strong>Observações:</strong> ${escapeHtml(poste.observacoesMontagem || "-")}</div>
@@ -2769,6 +2849,20 @@ function showMontagemResumoModal(poste, options = {}) {
 function renderMontagemPosteDetalhe() {
   if (!el.mpDetalheHeader || !state.montagemPostesAtual) return;
   const poste = state.montagemPostesAtual;
+
+  let tempoGasto = "-";
+  if (poste.inicioInspecaoMontagem && poste.finalizadoEm) {
+    const tInicio = new Date(poste.inicioInspecaoMontagem);
+    const tFim = new Date(poste.finalizadoEm);
+    const diffMs = tFim - tInicio;
+    if (diffMs > 0) {
+      const diffSecs = Math.floor(diffMs / 1000);
+      const mins = Math.floor(diffSecs / 60);
+      const secs = diffSecs % 60;
+      tempoGasto = `${mins}m ${secs}s`;
+    }
+  }
+
   el.mpDetalheHeader.innerHTML = `
     <div><strong>Forma:</strong> ${poste.formaNumero || "-"}</div>
     <div><strong>Modelo:</strong> ${poste.modelo || "-"}</div>
@@ -2777,6 +2871,7 @@ function renderMontagemPosteDetalhe() {
     <div><strong>Data Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
     <div><strong>Início inspeção/montagem:</strong> ${formatDateTime(poste.inicioInspecaoMontagem || "")}</div>
     <div><strong>Finalizado em:</strong> ${poste.finalizadoEm ? formatDateTime(poste.finalizadoEm) : "-"}</div>
+    <div><strong>Tempo de Inspeção:</strong> <span style="color:#e8762a; font-weight:700;">${tempoGasto}</span></div>
   `;
 
   if (el.mpMotivoSelect) {
@@ -2897,13 +2992,17 @@ async function finalizarMontagemPosteAtual() {
     ...poste,
     finalizadoEm: nowIso()
   };
-  upsertMontagemPoste(updated);
-  state.montagemPostesAtual = updated;
-
   const syncResult = await syncMontagemPosteToApi(updated, "FINALIZACAO", { silent: false });
+  const finalEntry = {
+    ...updated,
+    pendingSync: !syncResult.synced
+  };
+  upsertMontagemPoste(finalEntry);
+  state.montagemPostesAtual = finalEntry;
+
   renderMontagemPosteDetalhe();
   showMontagemResumoModal({
-    ...updated,
+    ...finalEntry,
     resumoSync: syncResult.synced ? "Sincronizado" : "Salvo localmente"
   }, {
     onClose: async () => {
@@ -3140,14 +3239,15 @@ async function saveInspecao() {
         statusMontagem: status,
         motivoRecusa: codigoFinal,
         etapa: "INSPECAO",
-        inicioInspecaoMontagem: nowIso(),
+        inicioInspecaoMontagem: state.insInicioLocal || nowIso(),
         finalizadoEm: nowIso(),
-        checklists: {},
+        checklists: { global_photos: state.insPhotos.map(p => p.data || p.url || "") },
         observacoesMontagem: observacaoGlobal,
         montadorNome: colaborador
       };
 
-      await postToMontagemApi("salvar_montagem_poste", montagemPayload);
+      const apiResult = await postToMontagemApi("salvar_montagem_poste", montagemPayload);
+      const isSynced = apiResult && apiResult.ok;
 
       // 2. Eventos e logs locais para compatibilidade de visualização
       let record = db.records.find((item) => item.id === recordId);
@@ -3175,7 +3275,8 @@ async function saveInspecao() {
         codigos: [codigoFinal],
         observacoes: observacaoGlobal,
         fotos: [...state.insPhotos],
-        timestamp: nowIso()
+        timestamp: nowIso(),
+        pendingSync: !isSynced
       };
       record.inspecoes.push(inspecao);
       record.updatedAt = nowIso();
@@ -3196,7 +3297,8 @@ async function saveInspecao() {
         codigos: [codigoFinal],
         observacoes: observacaoGlobal,
         fotosCount: state.insPhotos.length,
-        timestamp: nowIso()
+        timestamp: nowIso(),
+        pendingSync: !isSynced
       });
 
       inspecaoEntries.push({
@@ -4911,7 +5013,7 @@ function bindEvents() {
 
   if (sidebarToggle && appSidebar) {
     sidebarToggle.addEventListener("click", () => {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 1024) {
         // Mobile: drawer com overlay
         appSidebar.classList.toggle("sidebar-open");
         sidebarOverlay?.classList.toggle("visible");
@@ -4961,6 +5063,123 @@ function bindEvents() {
     });
   });
 }
+
+async function syncOfflineData() {
+  if (!supabaseClient) return;
+  
+  let syncedCount = 0;
+  
+  // 1. Sincronizar montagem_poste (Etapa MONTAGEM / INSPECAO)
+  try {
+    const mpDb = readMontagemPostesDb();
+    const pendingKeys = Object.keys(mpDb.postes || {}).filter(key => mpDb.postes[key].pendingSync === true);
+    for (const key of pendingKeys) {
+      const entry = mpDb.postes[key];
+      // Tenta re-enviar para o Supabase
+      const payload = buildMontagemPostePayload(entry, entry.etapa || "FINALIZACAO");
+      const apiResult = await postToMontagemApi("salvar_montagem_poste", payload);
+      if (apiResult.ok) {
+        mpDb.postes[key].pendingSync = false;
+        syncedCount++;
+      }
+    }
+    if (pendingKeys.length > 0) {
+      writeMontagemPostesDb(mpDb);
+    }
+  } catch (err) {
+    console.error("[syncOfflineData] Erro ao sincronizar montagem:", err);
+  }
+
+  // 2. Sincronizar apontamentos de concretagem e inspeções locais (LIBERACAO / INSPECAO)
+  try {
+    const db = readDb();
+    let dbChanged = false;
+    
+    // Sincronizar eventos pendentes
+    for (let ev of db.events || []) {
+      if (ev.pendingSync === true) {
+        if (ev.etapa === "LIBERACAO") {
+          const payload = {
+            dia: new Date(ev.timestamp).toLocaleDateString("pt-BR"),
+            hora: new Date(ev.timestamp).toLocaleTimeString("pt-BR"),
+            setor: ev.setor,
+            forma: ev.formaNumero,
+            dataFabricacao: ev.dataFabricacao,
+            colaborador: ev.colaborador,
+            modelo: ev.modelo || "",
+            tipo_concreto: ev.tipoConcreto || "Padrão",
+            codigo_poste: ev.codigoPoste || null,
+            descricao_poste: ev.descricaoPoste || null,
+            codigo_produto: ev.codigoProduto || null
+          };
+          const apiResult = await postToApi("salvar_forma_click", payload);
+          if (apiResult.ok) {
+            ev.pendingSync = false;
+            dbChanged = true;
+            syncedCount++;
+          }
+        } else if (ev.etapa === "INSPECAO") {
+          const record = db.records.find(r => r.id === ev.recordId);
+          const inspecaoLoc = record?.inspecoes?.find(ins => ins.pendingSync === true);
+          
+          if (record && inspecaoLoc) {
+            // Sincronizar registro montagem_poste individual
+            const composedKey = [record.id, record.dataFabricacao, record.setor, record.formaNumero, 'INSPECAO'].join("||");
+            const payload = {
+              key: composedKey,
+              recordId: record.id,
+              dataFabricacao: record.dataFabricacao,
+              setor: record.setor,
+              formaNumero: record.formaNumero,
+              modelo: record.modelo || "",
+              codigoPoste: record.codigoPoste || "",
+              descricaoPoste: record.descricaoPoste || "",
+              codigoProduto: record.codigoProduto || "",
+              statusMontagem: inspecaoLoc.status,
+              motivoRecusa: inspecaoLoc.codigos?.[0] || "",
+              etapa: "INSPECAO",
+              inicioInspecaoMontagem: ev.timestamp,
+              finalizadoEm: ev.timestamp,
+              checklists: {},
+              observacoesMontagem: inspecaoLoc.observacoes || "",
+              montadorNome: inspecaoLoc.colaborador
+            };
+            const apiResult = await postToMontagemApi("salvar_montagem_poste", payload);
+            if (apiResult.ok) {
+              ev.pendingSync = false;
+              inspecaoLoc.pendingSync = false;
+              dbChanged = true;
+              syncedCount++;
+            }
+          }
+        }
+      }
+    }
+    
+    if (dbChanged) {
+      writeDb(db);
+    }
+  } catch (err) {
+    console.error("[syncOfflineData] Erro ao sincronizar apontamentos:", err);
+  }
+  
+  if (syncedCount > 0) {
+    setSyncStatus("ok", `Sincronização offline automática concluída! ${syncedCount} item(ns) enviado(s).`);
+  }
+}
+
+// Sincronização offline automática ao restabelecer sinal de rede
+window.addEventListener("online", () => {
+  setSyncStatus("pending", "Conexão restabelecida. Sincronizando dados offline...");
+  syncOfflineData();
+});
+
+// Sweeper de sincronização rodando periodicamente a cada 30 segundos
+setInterval(() => {
+  if (navigator.onLine) {
+    syncOfflineData();
+  }
+}, 30000);
 
 function init() {
   setMode("HUB");

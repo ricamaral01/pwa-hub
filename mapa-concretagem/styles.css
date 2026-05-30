@@ -500,7 +500,7 @@ body.sidebar-hidden .app-main  { margin-left: 0; }
 }
 
 /* ── Responsive ───────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .sidebar { transform: translateX(-100%); }
   .sidebar.sidebar-open { transform: translateX(0); }
   /* No mobile sidebar-hidden não aplica: o toggle usa overlay */
@@ -512,7 +512,6 @@ body.sidebar-hidden .app-main  { margin-left: 0; }
 }
 @media (min-width: 769px) {
   [data-back-btn] { display: none; }
-  .sidebar-toggle-btn { display: none !important; }
 }
 @media (min-width: 769px) {
   body.mode-inspecao .ins-float-bar { left: 240px; transition: left 0.25s ease; }
@@ -2932,30 +2931,32 @@ body.kiosk-active .app-main {
   margin-left: 0 !important;
 }
 
-/* ── Floating Hover Sidebar (Desktop/Tablet) ── */
+/* ── Fixed Sidebar Desktop / Collapsible via Button ── */
 @media (min-width: 769px) {
   .sidebar {
-    transform: translateX(-230px);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
-  }
-  .sidebar:hover {
-    transform: translateX(0);
-    box-shadow: 4px 0 24px rgba(15, 30, 60, 0.25);
-  }
-  .sidebar::after {
-    content: '';
-    position: absolute;
-    top: 0; right: -24px; bottom: 0;
-    width: 24px;
-    background: transparent;
-    pointer-events: auto;
-    cursor: pointer;
+    transform: none; /* Fixed by default on PC */
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .app-main {
-    margin-left: 0 !important;
+    margin-left: 240px; /* Takes up space by default on PC */
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
+  
+  /* When hidden via toggle button on PC */
+  body.sidebar-hidden .sidebar {
+    transform: translateX(-240px);
+  }
+  body.sidebar-hidden .app-main {
+    margin-left: 0;
+  }
+  
+  /* Inspection float bar adjustment */
   body.mode-inspecao .ins-float-bar {
-    left: 0 !important;
+    left: 240px;
+    transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  body.sidebar-hidden.mode-inspecao .ins-float-bar {
+    left: 0;
   }
 }
 body.kiosk-active .page-content {
