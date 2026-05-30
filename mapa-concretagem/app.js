@@ -2248,9 +2248,13 @@ async function fetchSetor3Models(filtroData) {
       });
       console.log("✓ Modelos resolvidos via API PCP Concrefer (normalizados):", formToModelMap);
       return formToModelMap;
+    } else {
+      console.warn("API PCP Concrefer retornou erro HTTP:", response.status);
+      alert("Aviso: Falha ao carregar a programação do PCP (Erro HTTP " + response.status + "). Mostrando modelos como SC.");
     }
   } catch (err) {
     console.warn("[fetchSetor3Models] Erro ao carregar da API PCP Concrefer, tentando Supabase:", err);
+    alert("Aviso: Falha de conexão com a API do PCP Concrefer (" + err.message + "). Mostrando modelos como SC.");
   }
 
   // 2. Fallback antigo: tentar carregar do Supabase (caso a tabela programacoes exista no Supabase no futuro)
