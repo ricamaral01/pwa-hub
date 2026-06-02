@@ -110,13 +110,28 @@ function isFormaClicked(forma, setor) {
   if (dataFabricacao === hoje) {
     const clicked = getClickedFormsToday();
     const key = setor + "||" + normalizeUpper(forma);
-    if (clicked.formas[key]) return true;
+    if (clicked.formas[key] === true || clicked.formas[key] === "1") return true;
   }
   
   // Verificação definitiva a partir do banco de dados local (sincronizado dinamicamente do Supabase)
   const db = readDb();
   const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
   return record?.liberacao?.status === "1";
+}
+
+function isFormaLiberada(forma, setor) {
+  const dataFabricacao = el.libData?.value || todayYmd();
+  
+  const hoje = todayYmd();
+  if (dataFabricacao === hoje) {
+    const clicked = getClickedFormsToday();
+    const key = setor + "||" + normalizeUpper(forma);
+    if (clicked.formas[key] === "L") return true;
+  }
+  
+  const db = readDb();
+  const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
+  return record?.liberacao?.status === "L";
 }
 const SUPABASE_CONFIG = {
   URL: "https://fbvvdyirhtgvycullsqy.supabase.co",
@@ -540,7 +555,10 @@ const state = {
   isSendingInspecao: false,
   submitLocks: readSubmitLocks(),
   programmingMode: false,
+  liberationMode: false,
   programmedFormas: new Set(),
+  dbDataCache: {},
+  dbDataStatusCache: {},
   activeInsSector: ""
 };
 
@@ -612,6 +630,8 @@ const el = {
   kioskSectorTitle: document.getElementById("kioskSectorTitle"),
   kioskProgToggleField: document.getElementById("kioskProgToggleField"),
   kioskProgCheckbox: document.getElementById("kioskProgCheckbox"),
+  kioskLibToggleField: document.getElementById("kioskLibToggleField"),
+  kioskLibCheckbox: document.getElementById("kioskLibCheckbox"),
   btnKioskFullscreen: document.getElementById("btnKioskFullscreen"),
   btnKioskBack: document.getElementById("btnKioskBack"),
   kioskLibData: document.getElementById("kioskLibData"),
@@ -947,7 +967,7 @@ async function postToApi(action, payload) {
         tipo_concreto: payload.tipo_concreto || 'Padrão',
         colaborador: payload.colaborador,
         data_fabricacao: payload.dataFabricacao,
-        status: 'LIBERADO'
+        status: payload.status || 'LIBERADO'
       }], ({ codigo_poste, descricao_poste, codigo_produto, ...legacy }) => legacy);
       return { ok: true, message: "Forma liberada salva com sucesso" };
     }
@@ -1454,7 +1474,7 @@ function setCardState(card, cardState) {
     card.disabled = true;
   } else if (cardState === "saved") {
     statusEl.textContent = "✓";
-    card.disabled = !state.programmingMode;
+    card.disabled = !state.programmingMode && !state.liberationMode;
   } else if (cardState === "error") {
     statusEl.textContent = "✗";
     card.disabled = false;
@@ -1462,6 +1482,13 @@ function setCardState(card, cardState) {
     statusEl.textContent = "";
     card.disabled = false;
   }
+}
+
+function markFormaLiberada(forma, setor) {
+  const clicked = getClickedFormsToday();
+  const key = setor + "||" + normalizeUpper(forma);
+  clicked.formas[key] = "L";
+  localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
 }
 
 function createFormaCard(item, setor) {
@@ -1511,6 +1538,32 @@ function createFormaCard(item, setor) {
         toggleFormaProgramada(item.forma, setor, card);
       }
     });
+  } else if (isFormaLiberada(item.forma, setor)) {
+    card.classList.add("is-liberada");
+    card.addEventListener("click", () => {
+      if (state.programmingMode) {
+        toggleFormaProgramada(item.forma, setor, card);
+        return;
+      }
+      if (state.liberationMode) {
+        // Já está liberada. Pode reverter ou fazer nada (ignorar por enquanto)
+        return;
+      }
+      // Modo Normal: Concretar
+      const data = el.libData?.value;
+      const colaborador = (el.libColaborador?.value || "").trim();
+      if (!data) {
+        showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
+        el.libData?.focus();
+        return;
+      }
+      if (!colaborador) {
+        showLibFeedback("Preencha o colaborador antes de registrar.", "error");
+        el.libColaborador?.focus();
+        return;
+      }
+      showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+    });
   } else {
     card.addEventListener("click", () => {
       if (state.programmingMode) {
@@ -1529,7 +1582,11 @@ function createFormaCard(item, setor) {
         el.libColaborador?.focus();
         return;
       }
-      showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+      if (state.liberationMode) {
+        liberarFormaClicada(item.forma, setor, card, item.modelo || "");
+      } else {
+        showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+      }
     });
   }
 
@@ -1847,7 +1904,7 @@ async function loadClickedFormsFromSupabase() {
   try {
     // Busca todas as concretagens feitas na data selecionada a partir do Supabase (independente de estar LIBERADO ou INSPECIONADO)
     const { data: rows, error } = await supabaseClient.from('producao')
-      .select('forma, setor, tipo_concreto')
+      .select('forma, setor, tipo_concreto, status')
       .eq('data_fabricacao', data);
       
     if (!error && Array.isArray(rows)) {
@@ -1861,8 +1918,10 @@ async function loadClickedFormsFromSupabase() {
 
       rows.forEach(row => {
         if (row.forma && row.setor) {
+          const isAguardando = row.status === 'AGUARDANDO_CONCRETAGEM';
+          const statusVal = isAguardando ? 'L' : '1';
           const key = row.setor + "||" + normalizeUpper(row.forma);
-          clicked.formas[key] = true;
+          clicked.formas[key] = statusVal;
           
           // Sincroniza no banco local para que a exibição do tipo de concreto e status seja fiel
           let record = findRecordByKey(db, data, row.setor, normalizeUpper(row.forma));
@@ -1875,15 +1934,15 @@ async function loadClickedFormsFromSupabase() {
               concretoTipo: row.tipo_concreto || 'Padrão',
               createdAt: nowIso(),
               updatedAt: nowIso(),
-              liberacao: { status: "1", timestamp: nowIso() },
+              liberacao: { status: statusVal, timestamp: nowIso() },
               inspecoes: []
             };
             upsertRecord(db, record);
             dbUpdated = true;
-          } else if (!record.liberacao || record.liberacao.status !== "1" || record.concretoTipo !== row.tipo_concreto) {
+          } else if (!record.liberacao || record.liberacao.status !== statusVal || record.concretoTipo !== row.tipo_concreto) {
             record.concretoTipo = row.tipo_concreto || 'Padrão';
-            record.liberacao = record.liberacao || { status: "1", timestamp: nowIso() };
-            record.liberacao.status = "1";
+            record.liberacao = record.liberacao || { status: statusVal, timestamp: nowIso() };
+            record.liberacao.status = statusVal;
             record.updatedAt = nowIso();
             upsertRecord(db, record);
             dbUpdated = true;
@@ -2148,6 +2207,118 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
   });
 
   el.concretoTipoModal.classList.add("modal-visible");
+}
+
+async function liberarFormaClicada(forma, setor, card, modelo) {
+  setCardState(card, "saving");
+
+  const agora = new Date();
+  const dia = agora.toLocaleDateString("pt-BR");
+  const hora = agora.toLocaleTimeString("pt-BR");
+  const dataFabricacao = el.libData?.value || todayYmd();
+  const colaborador = (el.libColaborador?.value || "").trim();
+  const modeloFinal = modelo || card.dataset.modelo || "";
+  const posteFields = {
+    codigoPoste: card.dataset.codigoPoste || "",
+    descricaoPoste: card.dataset.descricaoPoste || "",
+    codigoProduto: card.dataset.codigoProduto || ""
+  };
+  const resolvedPosteFields = posteFields.codigoProduto || posteFields.descricaoPoste
+    ? posteFields
+    : getPosteFieldsForForma(forma, setor);
+
+  const payload = {
+    dia,
+    hora,
+    setor,
+    forma,
+    dataFabricacao,
+    colaborador,
+    modelo: modeloFinal,
+    tipo_concreto: "Padrão", // Temporário, até ser concretado de fato
+    codigo_poste: resolvedPosteFields.codigoPoste,
+    descricao_poste: resolvedPosteFields.descricaoPoste,
+    codigo_produto: resolvedPosteFields.codigoProduto,
+    status: "AGUARDANDO_CONCRETAGEM"
+  };
+
+  const apiResult = await postToApi("salvar_forma_click", payload);
+
+  const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
+  if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
+    const db = readDb();
+    let record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
+    if (!record) {
+      record = {
+        id: uuid(),
+        dataFabricacao,
+        setor,
+        formaNumero: normalizeUpper(forma),
+        modelo: modeloFinal,
+        codigoPoste: resolvedPosteFields.codigoPoste,
+        descricaoPoste: resolvedPosteFields.descricaoPoste,
+        codigoProduto: resolvedPosteFields.codigoProduto,
+        concretoTipo: "Padrão",
+        createdAt: nowIso(),
+        updatedAt: nowIso(),
+        liberacao: null,
+        inspecoes: []
+      };
+    }
+    record.codigoPoste = resolvedPosteFields.codigoPoste;
+    record.descricaoPoste = resolvedPosteFields.descricaoPoste;
+    record.codigoProduto = resolvedPosteFields.codigoProduto;
+    if (!record.liberacao || record.liberacao.status !== "1") {
+      record.liberacao = { status: "L", colaborador, observacoes: "", fotos: [], timestamp: nowIso() };
+      record.updatedAt = nowIso();
+    }
+    upsertRecord(db, record);
+    addEvent(db, {
+      id: uuid(),
+      recordId: record.id,
+      etapa: "LIBERACAO",
+      status: "L",
+      dataFabricacao: record.dataFabricacao,
+      setor: record.setor,
+      formaNumero: record.formaNumero,
+      codigoPoste: record.codigoPoste || "",
+      descricaoPoste: record.descricaoPoste || "",
+      codigoProduto: record.codigoProduto || "",
+      tipoConcreto: "Padrão",
+      colaborador,
+      timestamp: record.liberacao?.timestamp || nowIso(),
+      fotosCount: 0,
+      codigos: [],
+      observacoes: "",
+      pendingSync: isNetworkFailure
+    });
+    writeDb(db);
+  }
+
+  if (apiResult.ok) {
+    markFormaLiberada(forma, setor);
+    card.classList.remove("is-saving", "is-idle");
+    card.classList.add("is-liberada");
+    card.disabled = false;
+    const statusEl = card.querySelector(".fc-status");
+    if (statusEl) statusEl.textContent = "";
+    setSyncStatus("ok", `Forma ${forma} liberada com sucesso.`);
+    showLibFeedback(`${forma} — liberada!`, "ok");
+  } else if (apiResult.skipped) {
+    markFormaLiberada(forma, setor);
+    card.classList.remove("is-saving", "is-idle");
+    card.classList.add("is-liberada");
+    card.disabled = false;
+    setSyncStatus("warn", "API não configurada. Forma liberada localmente.");
+    showLibFeedback(`${forma} — liberada (local).`, "ok");
+  } else {
+    markFormaLiberada(forma, setor);
+    card.classList.remove("is-saving", "is-idle");
+    card.classList.add("is-liberada");
+    card.disabled = false;
+    setSyncStatus("warn", `Forma ${forma} liberada localmente (sem sinal de rede).`);
+    showLibFeedback(`${forma} — liberada (offline)`, "warn");
+  }
 }
 
 async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Concreto Padrão") {
@@ -4883,6 +5054,10 @@ function bindEvents() {
   if (el.kioskProgCheckbox) {
     el.kioskProgCheckbox.addEventListener("change", () => {
       state.programmingMode = el.kioskProgCheckbox.checked;
+      if (state.programmingMode && el.kioskLibCheckbox && el.kioskLibCheckbox.checked) {
+        el.kioskLibCheckbox.checked = false;
+        el.kioskLibCheckbox.dispatchEvent(new Event("change"));
+      }
       const toggleField = document.getElementById("kioskProgToggleField");
       if (toggleField) {
         toggleField.classList.toggle("active", state.programmingMode);
@@ -4898,6 +5073,32 @@ function bindEvents() {
       }
     });
   }
+
+  if (el.kioskLibCheckbox) {
+    el.kioskLibCheckbox.addEventListener("change", () => {
+      state.liberationMode = el.kioskLibCheckbox.checked;
+      if (state.liberationMode && el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
+        el.kioskProgCheckbox.checked = false;
+        el.kioskProgCheckbox.dispatchEvent(new Event("change"));
+      }
+      const toggleField = document.getElementById("kioskLibToggleField");
+      if (toggleField) {
+        toggleField.classList.toggle("active", state.liberationMode);
+      }
+      // Re-render forms to handle interaction changes
+      renderLiberacaoDual();
+    });
+  }
+
+  if (el.kioskLibToggleField && el.kioskLibCheckbox) {
+    el.kioskLibToggleField.addEventListener("click", (e) => {
+      if (e.target !== el.kioskLibCheckbox && !el.kioskLibCheckbox.contains(e.target)) {
+        el.kioskLibCheckbox.checked = !el.kioskLibCheckbox.checked;
+        el.kioskLibCheckbox.dispatchEvent(new Event("change"));
+      }
+    });
+  }
+
 
   // Controle de Tela Cheia no Quiosque
   if (el.btnKioskFullscreen) {
@@ -5268,11 +5469,39 @@ setInterval(() => {
   }
 }, 30000);
 
+function subscribeToRealtimeUpdates() {
+  if (!supabaseClient) return;
+  const channel = supabaseClient.channel('custom-producao-channel')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'producao' },
+      async (payload) => {
+        console.log("Realtime event on producao:", payload);
+        const dataAtual = el.libData?.value || todayYmd();
+        // If the change is for the currently viewed date
+        if (payload.new && payload.new.data_fabricacao === dataAtual) {
+          // Re-fetch everything silently and re-render
+          await loadClickedFormsFromSupabase();
+          // Atualiza as interfaces que estão abertas
+          if (["LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4"].includes(state.activeLiberacaoSector)) {
+            renderLiberacaoDual();
+          }
+        }
+      }
+    )
+    .subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        console.log('Realtime subscribed to producao changes');
+      }
+    });
+}
+
 function init() {
   setMode("HUB");
   setSyncStatus("pending", "Verificando conexão com a planilha...");
   renderInspecaoCodigosChecklist();
   bindEvents();
+  subscribeToRealtimeUpdates();
 
   const now = todayYmd();
   el.libData.value = now;
