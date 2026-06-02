@@ -633,6 +633,7 @@ const el = {
   kioskLibToggleField: document.getElementById("kioskLibToggleField"),
   kioskLibCheckbox: document.getElementById("kioskLibCheckbox"),
   btnKioskFullscreen: document.getElementById("btnKioskFullscreen"),
+  btnKioskSync: document.getElementById("btnKioskSync"),
   btnKioskBack: document.getElementById("btnKioskBack"),
   kioskLibData: document.getElementById("kioskLibData"),
   kioskLibColaborador: document.getElementById("kioskLibColaborador"),
@@ -5132,6 +5133,26 @@ function bindEvents() {
       }
       document.body.classList.remove("kiosk-active");
       setMode("HUB");
+    });
+  }
+  
+  if (el.btnKioskSync) {
+    el.btnKioskSync.addEventListener("click", async () => {
+      const btn = el.btnKioskSync;
+      const oldText = btn.textContent;
+      btn.textContent = "Sincronizando...";
+      btn.disabled = true;
+      try {
+        await loadProgrammedFormas();
+        await loadClickedFormsFromSupabase();
+        renderLiberacaoDual();
+        showLibFeedback("Sincronização concluída com sucesso!", "ok");
+      } catch (err) {
+        showLibFeedback("Erro ao sincronizar.", "error");
+      } finally {
+        btn.textContent = oldText;
+        btn.disabled = false;
+      }
     });
   }
   if (el.btnLimparFormas) {
