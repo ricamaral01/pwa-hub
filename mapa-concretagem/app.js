@@ -1451,7 +1451,7 @@ function renderSheetSide(items, container, options = {}) {
 }
 
 function setCardState(card, cardState) {
-  card.classList.remove("is-idle", "is-saving", "is-saved", "is-error");
+  card.classList.remove("is-idle", "is-saving", "is-saved", "is-error", "is-liberada");
   card.classList.add("is-" + cardState);
   
   // Se for uma célula do mapa do Setor 4, atualizar a linha inteira

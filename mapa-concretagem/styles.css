@@ -3289,14 +3289,14 @@ body.kiosk-active .forma-card .fc-status {
 }
 
 /* Destaque para formas programadas */
-.forma-card.is-programmed:not(.is-saved):not(.is-saving) {
+.forma-card.is-programmed:not(.is-saved):not(.is-saving):not(.is-liberada) {
   border-color: #d97706 !important; /* Cor âmbar premium */
   background: #fef3c7 !important;
   color: #92400e !important;
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.18) !important;
 }
 
-.forma-card.is-programmed:not(.is-saved):not(.is-saving):hover {
+.forma-card.is-programmed:not(.is-saved):not(.is-saving):not(.is-liberada):hover {
   background: #fde68a !important;
   border-color: #b45309 !important;
   color: #78350f !important;
