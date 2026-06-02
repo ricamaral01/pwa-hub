@@ -122,6 +122,7 @@ const SUPABASE_CONFIG = {
   URL: "https://fbvvdyirhtgvycullsqy.supabase.co",
   KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZidnZkeWlyaHRndnljdWxsc3F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Njc5MTksImV4cCI6MjA5NDM0MzkxOX0.vzudcEhAwdAutU0g-Mra818fd8_DciepjqvU8Z-C4wc"
 };
+const PCP_PROGRAMACAO_URL = "https://pcp.concretrack.com.br/api/programacao";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.KEY) : null;
 
 const CHECKLIST_INSPECAO_CODIGOS = [
@@ -727,6 +728,7 @@ function getFormaCatalogKey(forma) {
   if (normalized.startsWith("300-VR")) return "300-VR";
   if (normalized.startsWith("300-VL")) return "300-VL";
   if (normalized.startsWith("SB-E1")) return "SB-E1";
+  if (normalized.startsWith("SBE-")) return "SB-E1";
   if (normalized.startsWith("100-")) return "100";
   if (normalized.startsWith("200-")) return "200";
   if (normalized.startsWith("A-TOTEM")) return "A-TOTEM";
@@ -1899,6 +1901,66 @@ async function loadClickedFormsFromSupabase() {
   }
 }
 
+function getOperationalFormsForSector(setor) {
+  const groups = SECTOR_FORMS[setor] || {};
+  return ["left", "right", "col1", "col2", "col3"]
+    .flatMap((key) => Array.isArray(groups[key]) ? groups[key] : []);
+}
+
+function resolveOfficialProgrammedFormas(rows, setor) {
+  const operationalForms = getOperationalFormsForSector(setor);
+  const operationalFormsWithProducts = operationalForms.map((item) => withPosteData(item, setor));
+  const visibleForms = new Set(operationalForms.map((item) => normalizeUpper(item.forma)));
+  const visibleProductCodes = new Set(operationalFormsWithProducts.map((item) => normalizeUpper(item.codigoProduto)).filter(Boolean));
+  const programmed = new Set();
+  const remainingByProduct = new Map();
+
+  (Array.isArray(rows) ? rows : []).forEach((row) => {
+    const quantidade = Math.max(0, Number.parseInt(row.quantidade_programada, 10) || 0);
+    if (!quantidade) return;
+
+    const forma = normalizeUpper(row.codigo_forma || row.forma);
+    if (forma) {
+      if (visibleForms.has(forma)) programmed.add(forma);
+      return;
+    }
+
+    const produtoCodigo = normalizeUpper(row.produto?.codigo || row.produto_codigo || row.codigo);
+    if (!produtoCodigo || !visibleProductCodes.has(produtoCodigo)) return;
+    remainingByProduct.set(produtoCodigo, (remainingByProduct.get(produtoCodigo) || 0) + quantidade);
+  });
+
+  operationalFormsWithProducts.forEach((item) => {
+    const produtoCodigo = normalizeUpper(item.codigoProduto);
+    const restante = remainingByProduct.get(produtoCodigo) || 0;
+    if (!produtoCodigo || restante <= 0) return;
+    programmed.add(normalizeUpper(item.forma));
+    remainingByProduct.set(produtoCodigo, restante - 1);
+  });
+
+  remainingByProduct.forEach((restante, produtoCodigo) => {
+    if (restante > 0) {
+      console.warn(`[programacao PCP] Produto ${produtoCodigo}: ${restante} unidade(s) sem forma operacional disponível no ${setor}.`);
+    }
+  });
+
+  return programmed;
+}
+
+async function loadOfficialProgrammedFormas(data, setor) {
+  if (!data || !setor || setor === "Setor 4") return new Set();
+
+  try {
+    const params = new URLSearchParams({ data_inicio: data, data_fim: data });
+    const response = await fetch(`${PCP_PROGRAMACAO_URL}?${params.toString()}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return resolveOfficialProgrammedFormas(await response.json(), setor);
+  } catch (err) {
+    console.warn("Erro ao buscar programação oficial do PCP:", err);
+    return new Set();
+  }
+}
+
 async function loadProgrammedFormas() {
   const data = el.libData?.value || todayYmd();
   let sectorLabel = "";
@@ -1912,7 +1974,7 @@ async function loadProgrammedFormas() {
   
   if (!sectorLabel || sectorLabel === "Setor 4") return; // Setor 4 não possui programação
   
-  state.programmedFormas = new Set();
+  state.programmedFormas = await loadOfficialProgrammedFormas(data, sectorLabel);
   
   let loadedFromDb = false;
   if (hasApiConfigured()) {
@@ -2230,7 +2292,7 @@ async function fetchSetor3Models(filtroData) {
   // 1. Tentar primeiro a API oficial do PCP Concrefer
   try {
     const host = "https://pcp.concretrack.com.br";
-    const response = await fetch(`${host}/api/programacao?setor_id=3&data_inicial=${filtroData}&data_final=${filtroData}`);
+    const response = await fetch(`${host}/api/programacao?setor_id=3&data_inicio=${filtroData}&data_fim=${filtroData}`);
     if (response.ok) {
       const data = await response.json();
       const formToModelMap = {};
@@ -2256,7 +2318,7 @@ async function fetchSetor3Models(filtroData) {
     console.warn("[fetchSetor3Models] Tentando fallback para usina.concretrack.com.br/api/programacao devido a erro:", err);
     try {
       const fallbackHost = "https://usina.concretrack.com.br";
-      const fallbackResponse = await fetch(`${fallbackHost}/api/programacao?setor_id=3&data_inicial=${filtroData}&data_final=${filtroData}`);
+      const fallbackResponse = await fetch(`${fallbackHost}/api/programacao?setor_id=3&data_inicio=${filtroData}&data_fim=${filtroData}`);
       if (fallbackResponse.ok) {
         const data = await fallbackResponse.json();
         const formToModelMap = {};
