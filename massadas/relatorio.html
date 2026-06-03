@@ -252,11 +252,18 @@ function renderReport(data) {
       grouped[dt.yearMonth] = {
         monthName: dt.monthName.charAt(0).toUpperCase() + dt.monthName.slice(1),
         count: 0,
+        lostCount: 0,
         problemTotals: {},
         days: {}
       };
     }
     grouped[dt.yearMonth].count++;
+    
+    // Contar massadas perdidas (Produção: Não)
+    const isLost = String(item.concretoProducao).trim().toLowerCase() === "não";
+    if (isLost) {
+      grouped[dt.yearMonth].lostCount++;
+    }
     
     const probStr = item.problema ? String(item.problema) : "Sem tipo";
     const probs = probStr.split(",").map(p => p.trim()).filter(Boolean);
@@ -290,6 +297,7 @@ function renderReport(data) {
     sortedProbs.forEach(p => {
       theadHtml += `<th>${p}</th>`;
     });
+    theadHtml += `<th style="color:#dc2626;">Perdidas (Prod: Não)</th>`;
     theadHtml += `<th>Total Geral</th>`;
     
     let tbodyHtml = "";
@@ -299,6 +307,7 @@ function renderReport(data) {
       sortedProbs.forEach(p => {
         rowHtml += `<td>${md.problemTotals[p] || 0}</td>`;
       });
+      rowHtml += `<td style="color:#dc2626; font-weight:800;">${md.lostCount}</td>`;
       rowHtml += `<td><strong>${md.count}</strong></td>`;
       tbodyHtml += `<tr>${rowHtml}</tr>`;
     });
