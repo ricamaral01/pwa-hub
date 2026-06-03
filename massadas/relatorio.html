@@ -258,7 +258,8 @@ function renderReport(data) {
     }
     grouped[dt.yearMonth].count++;
     
-    const probs = (item.problema || "Sem tipo").split(",").map(p => p.trim()).filter(Boolean);
+    const probStr = item.problema ? String(item.problema) : "Sem tipo";
+    const probs = probStr.split(",").map(p => p.trim()).filter(Boolean);
     if (probs.length === 0) probs.push("Sem tipo");
     
     probs.forEach(p => {
@@ -357,8 +358,9 @@ function renderReport(data) {
         const card = document.createElement("div");
         card.className = "card-item";
         
-        const probs = (it.problema || "").split(",").map(p => `<span class="hi-tag tag-prob">${p.trim()}</span>`).join("");
-        const prod = `<span class="hi-tag tag-ok">Produção: ${it.concretoProducao}</span>`;
+        const probStr = it.problema ? String(it.problema) : "Sem tipo";
+        const probs = probStr.split(",").map(p => `<span class="hi-tag tag-prob">${p.trim()}</span>`).join("");
+        const prod = `<span class="hi-tag tag-ok">Produção: ${it.concretoProducao || "-"}</span>`;
         const forma = it.forma ? `<span class="hi-tag tag-forma">${it.forma}</span>` : "";
         const obs = it.observacoes ? `<div class="obs-text">📝 ${it.observacoes}</div>` : "";
         
