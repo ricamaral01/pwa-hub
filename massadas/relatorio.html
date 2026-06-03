@@ -258,6 +258,9 @@ function renderReport(data) {
     const dt = parseDate(item.dataHora);
     if (!dt) return;
     
+    // Ocultar registros de Junho
+    if (dt.yearMonth === "2026-06") return;
+    
     if (!grouped[dt.yearMonth]) {
       grouped[dt.yearMonth] = {
         monthName: dt.monthName.charAt(0).toUpperCase() + dt.monthName.slice(1),
