@@ -186,6 +186,11 @@
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxtX97CQ5izDFHHiKc8Isz5mtJaqBtqed0wCE-tbc0-HOemLUHuM3PW6RiWOfj7faIm/exec";
+const PRODUCAO_MENSAL = {
+  "2026-05": 1226 // Produção de Maio 2026 em m³
+};
+const VOL_POR_MASSADA = 0.39; // m³
+
 const $ = id => document.getElementById(id);
 
 async function loadData() {
@@ -322,6 +327,53 @@ function renderReport(data) {
       </div>
     `;
     container.appendChild(summaryCard);
+
+    // -- Segunda Tabela (Comparativo de Volume) --
+    const volCard = document.createElement("div");
+    volCard.className = "summary-card";
+    
+    let volBody = "";
+    monthKeys.forEach(mKey => {
+      const md = grouped[mKey];
+      const prodTotal = PRODUCAO_MENSAL[mKey] || 0;
+      const volProblema = md.count * VOL_POR_MASSADA;
+      const volPerdido = md.lostCount * VOL_POR_MASSADA;
+      
+      const percProblema = prodTotal > 0 ? ((volProblema / prodTotal) * 100).toFixed(2) + "%" : "-";
+      const percPerdido = prodTotal > 0 ? ((volPerdido / prodTotal) * 100).toFixed(2) + "%" : "-";
+      
+      volBody += `
+        <tr>
+          <td><strong>${md.monthName}</strong></td>
+          <td>${prodTotal > 0 ? prodTotal + " m³" : "-"}</td>
+          <td>${volProblema.toFixed(2)} m³</td>
+          <td style="color:var(--accent); font-weight:700;">${percProblema}</td>
+          <td style="color:#dc2626;">${volPerdido.toFixed(2)} m³</td>
+          <td style="color:#dc2626; font-weight:700;">${percPerdido}</td>
+        </tr>
+      `;
+    });
+    
+    volCard.innerHTML = `
+      <h3 style="margin-bottom: 14px; font-size: 1.1rem; color: var(--text); font-weight: 900;">Comparativo de Volume (m³)</h3>
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:12px;">Considerando <strong>${VOL_POR_MASSADA} m³</strong> por massada.</p>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Mês</th>
+              <th>Produção Declarada</th>
+              <th>Vol. c/ Problema</th>
+              <th>% Problema</th>
+              <th style="color:#dc2626;">Vol. Perdido (Prod: Não)</th>
+              <th style="color:#dc2626;">% Perdido</th>
+            </tr>
+          </thead>
+          <tbody>${volBody}</tbody>
+        </table>
+      </div>
+    `;
+    container.appendChild(volCard);
   }
   
   monthKeys.forEach((mKey, idx) => {
