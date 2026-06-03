@@ -266,7 +266,7 @@ function renderReport(data) {
     }
     
     const probStr = item.problema ? String(item.problema) : "Sem tipo";
-    const probs = probStr.split(",").map(p => p.trim()).filter(Boolean);
+    const probs = probStr.split(",").map(p => p.trim()).filter(p => p && !/^\d+$/.test(p));
     if (probs.length === 0) probs.push("Sem tipo");
     
     probs.forEach(p => {
@@ -368,7 +368,9 @@ function renderReport(data) {
         card.className = "card-item";
         
         const probStr = it.problema ? String(it.problema) : "Sem tipo";
-        const probs = probStr.split(",").map(p => `<span class="hi-tag tag-prob">${p.trim()}</span>`).join("");
+        const probsArr = probStr.split(",").map(p => p.trim()).filter(p => p && !/^\d+$/.test(p));
+        if (probsArr.length === 0) probsArr.push("Sem tipo");
+        const probs = probsArr.map(p => `<span class="hi-tag tag-prob">${p}</span>`).join("");
         const prod = `<span class="hi-tag tag-ok">Produção: ${it.concretoProducao || "-"}</span>`;
         const forma = it.forma ? `<span class="hi-tag tag-forma">${it.forma}</span>` : "";
         const obs = it.observacoes ? `<div class="obs-text">📝 ${it.observacoes}</div>` : "";
