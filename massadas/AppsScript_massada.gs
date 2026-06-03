@@ -194,6 +194,47 @@ function doPost(e) {
 }
 
 function doGet(e) {
+  var action = e && e.parameter ? e.parameter.action : null;
+
+  if (action === "get_data") {
+    try {
+      var sh = getOrCreateSheetMassada();
+      var lastRow = sh.getLastRow();
+      
+      if (lastRow <= 1) {
+        return ContentService
+          .createTextOutput(JSON.stringify({ ok: true, data: [] }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+      
+      var dataRange = sh.getRange(2, 1, lastRow - 1, HEADERS_MASSADA.length);
+      var values = dataRange.getValues();
+      
+      // Convert arrays to objects
+      var data = values.map(function(row) {
+        return {
+          dataHora: row[0] || "",
+          problema: row[1] || "",
+          concretoProducao: row[2] || "",
+          forma: row[3] || "",
+          observacoes: row[4] || ""
+        };
+      });
+      
+      // Return sorted by newest first (optional, or front-end does it)
+      data.reverse();
+      
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: true, data: data }))
+        .setMimeType(ContentService.MimeType.JSON);
+    } catch(err) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ ok: false, error: err.message }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+
+  // Default ping/status
   return ContentService
     .createTextOutput(JSON.stringify({
       status: "online",

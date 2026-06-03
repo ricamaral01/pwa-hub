@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Relatório Massadas — Concrefer</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo-concretrack.png">
+  <link rel="apple-touch-icon" href="../assets/img/logo-concretrack.png">
+
+  <!-- PWA próprio -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#f0f4f8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- anti-cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <style>
+    :root {
+      --primary:       #1a3a5c;
+      --primary-light: #2563a8;
+      --accent:        #e8762a;
+      --bg:            #f0f4f8;
+      --card-bg:       rgba(0,0,0,0.04);
+      --card-border:   rgba(0,0,0,0.10);
+      --text:          #1a2840;
+      --muted:         #5a6a7e;
+      --radius:        18px;
+      --shadow:        0 8px 28px rgba(0,0,0,0.12);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: linear-gradient(160deg,#f0f4f8 0%,#ffffff 60%,#eef2f7 100%);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-brand { display:flex; align-items:center; gap:14px; }
+    .topbar-brand img { height:40px; width:40px; object-fit:contain; border-radius:10px; }
+    .brand-name { font-size:1rem; font-weight:900; letter-spacing:.04em; line-height:1.1; }
+    .brand-name span { color: var(--accent); }
+    .brand-sub { font-size:.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-top:2px; }
+    .btn-back {
+      display:inline-flex; align-items:center; gap:6px;
+      background: rgba(0,0,0,0.07); border: 1px solid rgba(0,0,0,0.18);
+      border-radius:10px; color:var(--text); font-size:.85rem; font-weight:700;
+      padding:8px 16px; text-decoration:none; transition:background .15s, transform .1s;
+    }
+    .btn-back:hover { background:rgba(0,0,0,0.12); transform:translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero { text-align:center; padding:44px 20px 32px; }
+    .hero-icon {
+      font-size:2.5rem; display:inline-flex; align-items:center; justify-content:center;
+      width:70px; height:70px; border-radius:20px;
+      background: linear-gradient(135deg,#1a3a5c 0%,#2563a8 100%);
+      box-shadow: 0 8px 28px rgba(37,99,168,0.38);
+      margin-bottom:18px;
+    }
+    .hero h1 { font-size:1.6rem; font-weight:900; letter-spacing:.02em; margin-bottom:8px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size:.9rem; color:var(--muted); max-width:480px; margin:0 auto; line-height:1.55; }
+    .accent-line { width:60px; height:3px; background:var(--accent); border-radius:2px; margin:16px auto 0; }
+
+    /* ── MAIN ── */
+    main { flex:1; padding:0 20px 60px; max-width:600px; width:100%; margin:0 auto; }
+
+    /* ── ACCORDION ── */
+    .acc-month {
+      margin-top: 20px;
+      background: #fff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .acc-header {
+      padding: 18px 20px;
+      background: rgba(37,99,168,0.05);
+      cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 800; color: var(--primary); font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    .acc-header:hover { background: rgba(37,99,168,0.08); }
+    .acc-header .count-badge {
+      background: var(--primary); color: #fff;
+      font-size: 0.8rem; padding: 4px 10px; border-radius: 20px;
+    }
+    .acc-content {
+      display: none;
+      padding: 0 10px 10px;
+    }
+    .acc-content.open { display: block; }
+
+    .day-block { margin-top: 15px; }
+    .day-title {
+      font-size: 0.9rem; font-weight: 800; color: var(--text);
+      border-bottom: 2px solid rgba(0,0,0,0.05);
+      padding-bottom: 6px; margin: 0 10px 10px;
+    }
+
+    .card-item {
+      background: #fafcfd; border: 1px solid var(--card-border); border-radius: 14px;
+      padding: 14px 16px; margin: 0 10px 10px; font-size: .85rem; line-height: 1.6;
+    }
+    .card-item strong { font-weight: 900; color: var(--text); }
+    
+    .hi-tag {
+      display: inline-block; padding: 2px 10px; border-radius: 20px;
+      font-size: .75rem; font-weight: 700; margin-right: 4px; margin-top: 6px;
+    }
+    .tag-prob { background: rgba(192,57,43,0.12); color: #c0392b; }
+    .tag-ok   { background: rgba(5,150,105,0.12); color: #059669; }
+    .tag-forma{ background: rgba(37,99,168,.1); color: #2563a8; }
+    .obs-text { margin-top: 6px; color: #5a6a7e; font-size: .8rem; }
+
+    /* ── LOADING ── */
+    .loader {
+      text-align: center; padding: 40px; color: var(--muted); font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <img src="../assets/img/logo-concretrack.png" alt="ConcreTrack">
+    <div>
+      <div class="brand-name">Concre<span>Track</span></div>
+      <div class="brand-sub">Laboratório Concrefer</div>
+    </div>
+  </div>
+  <a class="btn-back" href="./index.html">← Voltar</a>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">📊</div>
+  <h1>Relatório de <span>Massadas</span></h1>
+  <p>Histórico de problemas agrupados por mês e dia.</p>
+  <div class="accent-line"></div>
+</div>
+
+<main id="reportContainer">
+  <div class="loader" id="loader">Carregando dados... ⏳</div>
+</main>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbxtX97CQ5izDFHHiKc8Isz5mtJaqBtqed0wCE-tbc0-HOemLUHuM3PW6RiWOfj7faIm/exec";
+const $ = id => document.getElementById(id);
+
+async function loadData() {
+  try {
+    const res = await fetch(API_URL + "?action=get_data&t=" + Date.now());
+    const json = await res.json();
+    
+    if (!json.ok || !json.data) {
+      $("loader").textContent = "Erro ao carregar dados ou planilha vazia.";
+      return;
+    }
+    
+    renderReport(json.data);
+  } catch(e) {
+    $("loader").textContent = "Erro de conexão ao carregar.";
+    console.error(e);
+  }
+}
+
+function parseDate(dtStr) {
+  // Try to parse Google Sheets date format (YYYY-MM-DDTHH:mm:ss.sssZ or similar)
+  // or custom formats like '2024-05-15 14:30'
+  // Let's replace space with T if needed
+  let cleanStr = String(dtStr).trim();
+  if (cleanStr.includes(' ') && !cleanStr.includes('T')) {
+    cleanStr = cleanStr.replace(' ', 'T');
+  }
+  
+  const d = new Date(cleanStr);
+  if (isNaN(d.getTime())) return null;
+  
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  const hh = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  
+  return {
+    yearMonth: `${y}-${m}`, 
+    day: `${dd}/${m}/${y}`, 
+    time: `${hh}:${min}`,
+    monthName: d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+  };
+}
+
+function renderReport(data) {
+  const container = $("reportContainer");
+  container.innerHTML = "";
+  
+  if (data.length === 0) {
+    container.innerHTML = `<div class="loader">Nenhum registro encontrado.</div>`;
+    return;
+  }
+  
+  const grouped = {};
+  
+  data.forEach(item => {
+    if (!item.dataHora) return;
+    const dt = parseDate(item.dataHora);
+    if (!dt) return;
+    
+    if (!grouped[dt.yearMonth]) {
+      grouped[dt.yearMonth] = {
+        monthName: dt.monthName.charAt(0).toUpperCase() + dt.monthName.slice(1),
+        count: 0,
+        days: {}
+      };
+    }
+    grouped[dt.yearMonth].count++;
+    
+    if (!grouped[dt.yearMonth].days[dt.day]) {
+      grouped[dt.yearMonth].days[dt.day] = [];
+    }
+    grouped[dt.yearMonth].days[dt.day].push({ ...item, time: dt.time });
+  });
+  
+  const monthKeys = Object.keys(grouped).sort((a,b) => b.localeCompare(a)); // desc
+  
+  if (monthKeys.length === 0) {
+    container.innerHTML = `<div class="loader">Nenhum registro válido encontrado.</div>`;
+    return;
+  }
+  
+  monthKeys.forEach((mKey, idx) => {
+    const monthData = grouped[mKey];
+    
+    const accMonth = document.createElement("div");
+    accMonth.className = "acc-month";
+    
+    const header = document.createElement("div");
+    header.className = "acc-header";
+    header.innerHTML = `
+      <span>📅 ${monthData.monthName}</span>
+      <span class="count-badge">${monthData.count}</span>
+    `;
+    
+    const content = document.createElement("div");
+    content.className = "acc-content" + (idx === 0 ? " open" : "");
+    
+    header.onclick = () => {
+      content.classList.toggle("open");
+    };
+    
+    const dayKeys = Object.keys(monthData.days).sort((a,b) => {
+      const partsA = a.split("/"); const vA = partsA[2]+partsA[1]+partsA[0];
+      const partsB = b.split("/"); const vB = partsB[2]+partsB[1]+partsB[0];
+      return vB.localeCompare(vA);
+    });
+    
+    dayKeys.forEach(dKey => {
+      const dayBlock = document.createElement("div");
+      dayBlock.className = "day-block";
+      
+      const dayTitle = document.createElement("div");
+      dayTitle.className = "day-title";
+      dayTitle.textContent = "Dia " + dKey;
+      dayBlock.appendChild(dayTitle);
+      
+      const items = monthData.days[dKey];
+      // Sort items by time desc
+      items.sort((a,b) => b.time.localeCompare(a.time));
+
+      items.forEach(it => {
+        const card = document.createElement("div");
+        card.className = "card-item";
+        
+        const probs = (it.problema || "").split(",").map(p => `<span class="hi-tag tag-prob">${p.trim()}</span>`).join("");
+        const prod = `<span class="hi-tag tag-ok">Produção: ${it.concretoProducao}</span>`;
+        const forma = it.forma ? `<span class="hi-tag tag-forma">${it.forma}</span>` : "";
+        const obs = it.observacoes ? `<div class="obs-text">📝 ${it.observacoes}</div>` : "";
+        
+        card.innerHTML = `
+          <div><strong>${it.time}</strong></div>
+          <div>${probs} ${prod} ${forma}</div>
+          ${obs}
+        `;
+        dayBlock.appendChild(card);
+      });
+      
+      content.appendChild(dayBlock);
+    });
+    
+    accMonth.appendChild(header);
+    accMonth.appendChild(content);
+    container.appendChild(accMonth);
+  });
+}
+
+loadData();
+</script>
+</body>
+</html>
