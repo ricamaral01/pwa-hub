@@ -134,6 +134,30 @@
     .loader {
       text-align: center; padding: 40px; color: var(--muted); font-weight: 600;
     }
+
+    /* ── SUMMARY TABLE ── */
+    .summary-card {
+      background: #fff;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .table-wrap { overflow-x: auto; }
+    .summary-table {
+      width: 100%; border-collapse: collapse; text-align: left;
+      font-size: 0.9rem;
+    }
+    .summary-table th, .summary-table td {
+      padding: 12px 10px; border-bottom: 1px solid var(--card-border);
+      white-space: nowrap;
+    }
+    .summary-table th {
+      background: rgba(37,99,168,0.05);
+      color: var(--primary); font-weight: 800;
+    }
+    .summary-table tr:last-child td { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -217,6 +241,7 @@ function renderReport(data) {
   }
   
   const grouped = {};
+  const problemTypes = new Set();
   
   data.forEach(item => {
     if (!item.dataHora) return;
@@ -227,10 +252,19 @@ function renderReport(data) {
       grouped[dt.yearMonth] = {
         monthName: dt.monthName.charAt(0).toUpperCase() + dt.monthName.slice(1),
         count: 0,
+        problemTotals: {},
         days: {}
       };
     }
     grouped[dt.yearMonth].count++;
+    
+    const probs = (item.problema || "Sem tipo").split(",").map(p => p.trim()).filter(Boolean);
+    if (probs.length === 0) probs.push("Sem tipo");
+    
+    probs.forEach(p => {
+      problemTypes.add(p);
+      grouped[dt.yearMonth].problemTotals[p] = (grouped[dt.yearMonth].problemTotals[p] || 0) + 1;
+    });
     
     if (!grouped[dt.yearMonth].days[dt.day]) {
       grouped[dt.yearMonth].days[dt.day] = [];
@@ -243,6 +277,41 @@ function renderReport(data) {
   if (monthKeys.length === 0) {
     container.innerHTML = `<div class="loader">Nenhum registro válido encontrado.</div>`;
     return;
+  }
+
+  // Resumo por Tipo (Tabela)
+  if (problemTypes.size > 0) {
+    const summaryCard = document.createElement("div");
+    summaryCard.className = "summary-card";
+    
+    const sortedProbs = Array.from(problemTypes).sort();
+    let theadHtml = `<th>Mês</th>`;
+    sortedProbs.forEach(p => {
+      theadHtml += `<th>${p}</th>`;
+    });
+    theadHtml += `<th>Total Geral</th>`;
+    
+    let tbodyHtml = "";
+    monthKeys.forEach(mKey => {
+      const md = grouped[mKey];
+      let rowHtml = `<td><strong>${md.monthName}</strong></td>`;
+      sortedProbs.forEach(p => {
+        rowHtml += `<td>${md.problemTotals[p] || 0}</td>`;
+      });
+      rowHtml += `<td><strong>${md.count}</strong></td>`;
+      tbodyHtml += `<tr>${rowHtml}</tr>`;
+    });
+    
+    summaryCard.innerHTML = `
+      <h3 style="margin-bottom: 14px; font-size: 1.1rem; color: var(--text); font-weight: 900;">Resumo por Tipo de Problema</h3>
+      <div class="table-wrap">
+        <table class="summary-table">
+          <thead><tr>${theadHtml}</tr></thead>
+          <tbody>${tbodyHtml}</tbody>
+        </table>
+      </div>
+    `;
+    container.appendChild(summaryCard);
   }
   
   monthKeys.forEach((mKey, idx) => {
