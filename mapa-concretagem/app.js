@@ -25,28 +25,28 @@ function getMontagemChecklistSections(modelo = "") {
   return [
     {
       id: "checagem_inicial",
-      titulo: "Checagem Inicial",
+      titulo: "Inspeção Visual",
       itens: [
-        { id: "homogeneidade_concreto", texto: "Homogeneidade do Concreto", critico: false },
+        { id: "homogeneidade_concreto", texto: "Homogeneidade do Concreto", critico: true },
         { id: "falhas_preenchimento", texto: "Falhas de Preenchimento", critico: true },
         { id: "concreto_segregado", texto: "Concreto Segregado", critico: true },
         { id: "grandes_avarias", texto: "Grandes Avarias", critico: true },
         { id: "facao_obstruido", texto: "Facão Obstruído", critico: true },
         { id: "furacao_obstruida", texto: "Furação Obstruída (pinos)", critico: true },
+        { id: "armacao_aparente", texto: "Armação aparente", critico: true },
+        { id: "trincas", texto: "Trincas", critico: true },
+        { id: "tubulacao_entupida", texto: "Tubulação Entupida", critico: true },
         { id: "bolhas_excesso", texto: "Bolhas em excesso", critico: false },
         { id: "bolhas_fora_padrao", texto: "Bolhas fora do padrão", critico: false },
-        { id: "armacao_aparente", texto: "Armação aparente", critico: true },
         { id: "carimbo_identificacao", texto: "Carimbo de Identificação", critico: false },
         { id: "fissuras", texto: "Fissuras", critico: false },
-        { id: "trincas", texto: "Trincas", critico: true },
         { id: "pequenas_avarias", texto: "Pequenas avarias", critico: false },
         { id: "rebarbas", texto: "Rebarbas", critico: false },
         { id: "manchas_excessivas", texto: "Manchas excessivas", critico: false },
         { id: "buchas_fixacao", texto: "Buchas de fixação", critico: false },
         { id: "prisioneiros_lacre_aterramento", texto: "Prisioneiros (lacre / aterramento)", critico: false },
         { id: "acabamento_face_exposta", texto: "Acabamento face exposta", critico: false },
-        { id: "acabamento_abas", texto: "Acabamento abas", critico: false },
-        { id: "tubulacao_entupida", texto: "Tubulação Entupida", critico: true }
+        { id: "acabamento_abas", texto: "Acabamento abas", critico: false }
       ]
     },
     {
