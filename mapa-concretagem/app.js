@@ -2971,7 +2971,8 @@ function renderMontagemChecklistSections() {
     });
 
     el.mpChecklistSections.appendChild(article);
-    sectionEnabled = isComplete;
+    const hasCriticalReproved = section.itens.some((i) => i.critico && current.checklists?.[section.id]?.[i.id] === "nao");
+    sectionEnabled = isComplete && !hasCriticalReproved;
   });
 }
 
@@ -3025,8 +3026,14 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
     showMsgBox("segregar poste", "error");
   }
   
+  const hasCriticalReproved = section?.itens.some((i) => i.critico && current.checklists[sectionId][i.id] === "nao");
+
   if (!wasComplete && isNowComplete) {
-    showMsgBox(`Inspeção de ${section?.titulo || sectionId} concluída!`, "success");
+    if (hasCriticalReproved) {
+      showMsgBox(`A inspeção de ${section?.titulo || sectionId} contém falhas críticas. Próximas seções bloqueadas.`, "error");
+    } else {
+      showMsgBox(`Inspeção de ${section?.titulo || sectionId} concluída!`, "success");
+    }
   }
 
   renderMontagemChecklistSections();
