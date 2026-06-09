@@ -51,7 +51,7 @@ function getMontagemChecklistSections(modelo = "") {
     },
     {
       id: "checagem_materiais",
-      titulo: "Checagem Materiais",
+      titulo: "Checagem Materiais / Montagem Poste",
       itens: isDuploT ? [
         { id: "alcas_icamento", texto: "Alças de Içamento", critico: false },
         { id: "armadura_reforco", texto: "Armadura de Reforço", critico: false },
@@ -64,8 +64,11 @@ function getMontagemChecklistSections(modelo = "") {
     },
     {
       id: "final",
-      titulo: "Final",
+      titulo: "Inspeção Final",
       itens: [
+        { id: "rebarbas_final", texto: "Rebarbas", critico: false },
+        { id: "liberacao_qualidade", texto: "Liberação Qualidade", critico: false },
+        { id: "codificacao_poste", texto: "Codificação Poste", critico: false },
         { id: "limpeza_prisioneiros", texto: "Limpeza prisioneiros", critico: false },
         { id: "aterramento", texto: "Aterramento", critico: false },
         { id: "lacre", texto: "Lacre", critico: false }
@@ -2891,10 +2894,15 @@ function renderMontagemChecklistSections() {
   el.mpChecklistSections.innerHTML = "";
 
   const sections = getMontagemChecklistSections(current.modelo || "");
+  let sectionEnabled = true;
 
   sections.forEach((section) => {
     const article = document.createElement("article");
     article.className = "mp-checklist-section";
+    if (!sectionEnabled) {
+      article.style.opacity = "0.5";
+      article.style.pointerEvents = "none";
+    }
 
     const isComplete = isChecklistSectionComplete(section.id, current.checklists || {});
     
@@ -2910,6 +2918,8 @@ function renderMontagemChecklistSections() {
       const selected = current.checklists?.[section.id]?.[item.id] || "";
       const photoBase64 = current.checklists?.[section.id]?.[item.id + "_photo"] || "";
       const isFinalizado = !!current.finalizadoEm;
+      
+      const disableItem = isFinalizado || !sectionEnabled;
 
       const itemWrapper = document.createElement("div");
       itemWrapper.className = "mp-checklist-item-wrapper";
@@ -2923,10 +2933,10 @@ function renderMontagemChecklistSections() {
           <div class="mp-yn-group">
             <button type="button" class="mp-yn-btn btn-aprovado ${selected === "sim" ? "active" : ""}" 
                     data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="sim" 
-                    ${isFinalizado ? "disabled" : ""}>Aprovado</button>
+                    ${disableItem ? "disabled" : ""}>Aprovado</button>
             <button type="button" class="mp-yn-btn btn-reprovado ${selected === "nao" ? "active" : ""}" 
                     data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="nao" 
-                    ${isFinalizado ? "disabled" : ""}>Reprovado</button>
+                    ${disableItem ? "disabled" : ""}>Reprovado</button>
           </div>
         </div>
       `;
@@ -2941,7 +2951,7 @@ function renderMontagemChecklistSections() {
             <label class="mp-photo-upload-label">
               📸 Tirar Foto da Falha
               <input type="file" accept="image/*" capture="environment" class="mp-item-photo-input" 
-                     data-mp-section="${section.id}" data-mp-item="${item.id}" />
+                     data-mp-section="${section.id}" data-mp-item="${item.id}" ${disableItem ? "disabled" : ""} />
             </label>
           `;
         }
@@ -2961,6 +2971,7 @@ function renderMontagemChecklistSections() {
     });
 
     el.mpChecklistSections.appendChild(article);
+    sectionEnabled = isComplete;
   });
 }
 
@@ -2992,11 +3003,15 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
   if (!current.checklists) current.checklists = {};
   if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
   
+  const wasComplete = isChecklistSectionComplete(sectionId, current.checklists);
+
   current.checklists[sectionId][itemId] = value;
   
   if (value === "sim") {
     delete current.checklists[sectionId][itemId + "_photo"];
   }
+
+  const isNowComplete = isChecklistSectionComplete(sectionId, current.checklists);
 
   state.montagemPostesAtual = current;
   upsertMontagemPoste(current);
@@ -3010,6 +3025,10 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
     showMsgBox("segregar poste", "error");
   }
   
+  if (!wasComplete && isNowComplete) {
+    showMsgBox(`Inspeção de ${section?.titulo || sectionId} concluída!`, "success");
+  }
+
   renderMontagemChecklistSections();
 }
 
