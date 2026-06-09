@@ -2972,7 +2972,7 @@ function renderMontagemChecklistSections() {
 
     el.mpChecklistSections.appendChild(article);
     const hasCriticalReproved = section.itens.some((i) => i.critico && current.checklists?.[section.id]?.[i.id] === "nao");
-    sectionEnabled = isComplete && !hasCriticalReproved;
+    sectionEnabled = sectionEnabled && isComplete && !hasCriticalReproved;
   });
 }
 
