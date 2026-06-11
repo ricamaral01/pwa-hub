@@ -51,15 +51,9 @@ function getMontagemChecklistSections(modelo = "") {
     },
     {
       id: "checagem_materiais",
-      titulo: "Checagem Materiais / Montagem Poste",
-      itens: isDuploT ? [
-        { id: "alcas_icamento", texto: "Alças de Içamento", critico: false },
-        { id: "armadura_reforco", texto: "Armadura de Reforço", critico: false },
-        { id: "inserts_aco", texto: "Inserts de Aço", critico: false }
-      ] : [
-        { id: "caixa_medidor", texto: "Caixa de Medidor / Disjuntor", critico: false },
-        { id: "fiacao_interna", texto: "Fiação Interna", critico: false },
-        { id: "acabamento_caixa", texto: "Acabamento da Caixa", critico: false }
+      titulo: "Montagem de Postes",
+      itens: [
+        { id: "montagem_do_poste", texto: "Montagem do Poste", critico: false }
       ]
     },
     {
@@ -77,7 +71,7 @@ function getMontagemChecklistSections(modelo = "") {
   ];
 }
 
-const CONCRETO_TIPOS = ["Concreto Padrão", "Concreto Vibrado", "Fora de Padrão"];
+const CONCRETO_TIPOS = ["Concreto Padrão", "Concreto Seco - Vibrado", "Concreto Segregado", "Concreto Exsudado"];
 
 function getConcreteTypeForForma(forma, setor) {
   const dataFabricacao = el.libData?.value || todayYmd();
