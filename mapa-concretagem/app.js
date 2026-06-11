@@ -3143,6 +3143,9 @@ function renderMontagemPosteDetalhe() {
   }
 
   el.mpDetalheHeader.innerHTML = `
+    <div style="margin-bottom: 15px; display: flex;">
+      <button class="btn btn-back" type="button" onclick="navigateBack()" style="flex: 1;">← Voltar para a lista</button>
+    </div>
     <div><strong>Forma:</strong> ${poste.formaNumero || "-"}</div>
     <div><strong>Modelo:</strong> ${poste.modelo || "-"}</div>
     <div><strong>Produto:</strong> ${escapeHtml(poste.codigoProduto || "-")} ${poste.descricaoPoste ? "- " + escapeHtml(poste.descricaoPoste) : ""}</div>
