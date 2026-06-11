@@ -3412,7 +3412,8 @@ async function renderMontagemPostesLiberados() {
         acaoContent = `<span class="status-badge status-badge-reprovado">Reprovado</span>`;
       }
     } else {
-      acaoContent = `<button type="button" class="btn mp-open-btn">Inspecionar / Montar Poste</button>`;
+      const extraClass = record.status === 'INSPECIONADO' ? 'mp-open-btn--inspecionado' : '';
+      acaoContent = `<button type="button" class="btn mp-open-btn ${extraClass}">Inspecionar / Montar Poste</button>`;
     }
 
     tr.innerHTML = `
