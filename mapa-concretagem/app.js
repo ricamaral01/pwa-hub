@@ -4744,6 +4744,14 @@ function applyRoleVisibility() {
     btn.classList.toggle("hidden", !isModeAllowed(mode));
   });
 
+  // Also hide hub icons in the initial menu grid
+  document.querySelectorAll(".hub-icon-btn").forEach((btn) => {
+    const mode = btn.dataset.hubMode;
+    if (mode) {
+      btn.classList.toggle("hidden", !isModeAllowed(mode));
+    }
+  });
+
   document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
     const mode = btn.dataset.hubMode || "";
     btn.classList.toggle("hidden", !isModeAllowed(mode));
