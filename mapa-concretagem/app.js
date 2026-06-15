@@ -27,26 +27,26 @@ function getMontagemChecklistSections(modelo = "") {
       id: "checagem_inicial",
       titulo: "Inspeção Visual",
       itens: [
-        { id: "homogeneidade_concreto", texto: "Homogeneidade do Concreto", critico: true },
-        { id: "falhas_preenchimento", texto: "Falhas de Preenchimento", critico: true },
-        { id: "concreto_segregado", texto: "Concreto Segregado", critico: true },
-        { id: "grandes_avarias", texto: "Grandes Avarias", critico: true },
-        { id: "facao_obstruido", texto: "Facão Obstruído", critico: true },
-        { id: "furacao_obstruida", texto: "Furação Obstruída (pinos)", critico: true },
-        { id: "armacao_aparente", texto: "Armação aparente", critico: true },
-        { id: "trincas", texto: "Trincas", critico: true },
-        { id: "tubulacao_entupida", texto: "Tubulação Entupida", critico: true },
-        { id: "bolhas_excesso", texto: "Bolhas em excesso", critico: false },
-        { id: "bolhas_fora_padrao", texto: "Bolhas fora do padrão", critico: false },
-        { id: "carimbo_identificacao", texto: "Carimbo de Identificação", critico: false },
-        { id: "fissuras", texto: "Fissuras", critico: false },
-        { id: "pequenas_avarias", texto: "Pequenas avarias", critico: false },
-        { id: "rebarbas", texto: "Rebarbas", critico: false },
-        { id: "manchas_excessivas", texto: "Manchas excessivas", critico: false },
-        { id: "buchas_fixacao", texto: "Buchas de fixação", critico: false },
-        { id: "prisioneiros_lacre_aterramento", texto: "Prisioneiros (lacre / aterramento)", critico: false },
-        { id: "acabamento_face_exposta", texto: "Acabamento face exposta", critico: false },
-        { id: "acabamento_abas", texto: "Acabamento abas", critico: false }
+        { id: "homogeneidade_concreto", texto: "Homogeneidade do Concreto", critico: true, codigoFalha: "O" },
+        { id: "falhas_preenchimento", texto: "Falhas de Preenchimento", critico: true, codigoFalha: "A" },
+        { id: "concreto_segregado", texto: "Concreto Segregado", critico: true, codigoFalha: "O" },
+        { id: "grandes_avarias", texto: "Grandes Avarias", critico: true, codigoFalha: "P" },
+        { id: "facao_obstruido", texto: "Facão Obstruído", critico: true, codigoFalha: "E" },
+        { id: "furacao_obstruida", texto: "Furação Obstruída (pinos)", critico: true, codigoFalha: "E" },
+        { id: "armacao_aparente", texto: "Armação aparente", critico: true, codigoFalha: "A" },
+        { id: "trincas", texto: "Trincas", critico: true, codigoFalha: "I" },
+        { id: "tubulacao_entupida", texto: "Tubulação Entupida", critico: true, codigoFalha: "B" },
+        { id: "bolhas_excesso", texto: "Bolhas em excesso", critico: false, codigoFalha: "C" },
+        { id: "bolhas_fora_padrao", texto: "Bolhas fora do padrão", critico: false, codigoFalha: "C" },
+        { id: "carimbo_identificacao", texto: "Carimbo de Identificação", critico: false, codigoFalha: "F" },
+        { id: "fissuras", texto: "Fissuras", critico: false, codigoFalha: "G" },
+        { id: "pequenas_avarias", texto: "Pequenas avarias", critico: false, codigoFalha: "J" },
+        { id: "rebarbas", texto: "Rebarbas", critico: false, codigoFalha: "Q" },
+        { id: "manchas_excessivas", texto: "Manchas excessivas", critico: false, codigoFalha: "K" },
+        { id: "buchas_fixacao", texto: "Buchas de fixação", critico: false, codigoFalha: "L" },
+        { id: "prisioneiros_lacre_aterramento", texto: "Prisioneiros (lacre / aterramento)", critico: false, codigoFalha: "M" },
+        { id: "acabamento_face_exposta", texto: "Acabamento face exposta", critico: false, codigoFalha: "R" },
+        { id: "acabamento_abas", texto: "Acabamento abas", critico: false, codigoFalha: "S" }
       ]
     },
     {
@@ -150,7 +150,12 @@ const CHECKLIST_INSPECAO_CODIGOS = [
   { codigo: "J", descricao: "Pequenas Avarias" },
   { codigo: "K", descricao: "Manchas Brancas Superficiais" },
   { codigo: "L", descricao: "Buchas das cxs e/ou Buchas fixação abraç. EDP" },
-  { codigo: "M", descricao: "Parafuso Lacre da caixa do Medidor" }
+  { codigo: "M", descricao: "Parafuso Lacre da caixa do Medidor" },
+  { codigo: "O", descricao: "Falha no Concreto" },
+  { codigo: "P", descricao: "Grandes Avarias" },
+  { codigo: "Q", descricao: "Rebarbas" },
+  { codigo: "R", descricao: "Rugosidade" },
+  { codigo: "S", descricao: "Acabamento quinas" }
 ];
 
 const POSTES_DUPLO_T_CATALOGO = [
@@ -178,7 +183,7 @@ const POSTES_DUPLO_T_CATALOGO = [
   { codigo: "100", descricao: "Poste Subterraneo 100 A", setor: "Setor 1", codigoProduto: "949", chaves: ["100"] },
   { codigo: "SB-E1", descricao: "Poste Subterraneo 100 A - Elektro", setor: "Setor 1", codigoProduto: "4848", chaves: ["SB-E1"] },
   { codigo: "200", descricao: "Poste Subterraneo 200 A - TC", setor: "Setor 1", codigoProduto: "5017", chaves: ["200"] },
-  { codigo: "TOTEM", descricao: "Totem de medicao indireta Elektro", setor: "Setor 4", codigoProduto: "13570", chaves: ["TOTEM", "A-TOTEM"] },
+  { codigo: "TOTEM", descricao: "Totem de medicao indireta Elektro", setor: "Setor 2", codigoProduto: "13570", chaves: ["TOTEM", "A-TOTEM"] },
   { codigo: "PL", descricao: "Poste Visor Aereo 1 cx VL (7,5x300)", setor: "Setor 2", codigoProduto: "934", chaves: ["PL"] },
   { codigo: "CEMIG-5X150", descricao: "Padrao Cemig 1CX - 5,0 x 150", setor: "Setor 4", codigoProduto: "952", chaves: ["C-F1"] },
   { codigo: "CEMIG-1VL", descricao: "Padrao Cemig 1 cx VL - 7,0 x150", setor: "Setor 4", codigoProduto: "953", chaves: ["R-G"] },
@@ -1157,7 +1162,7 @@ function montagemStatusLabel(status) {
 }
 
 function getMontagemMotivoOptions() {
-  return CHECKLIST_INSPECAO_CODIGOS.slice(0, 12).map((item) => ({
+  return CHECKLIST_INSPECAO_CODIGOS.map((item) => ({
     value: item.codigo,
     label: `${item.codigo} — ${item.descricao}`
   }));
@@ -2189,12 +2194,50 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
   if (!el.concretoTipoModal || !el.concretoTipoOptions || !el.concretoTipoSubtitle) return;
 
   pendingFormaSelection = { forma, setor, card, modelo };
-  el.concretoTipoSubtitle.textContent = `Forma ${forma} · ${setor}`;
-  el.concretoTipoOptions.innerHTML = CONCRETO_TIPOS.map((tipo) =>
-    `<button type="button" class="btn concreto-tipo-option" data-tipo="${escapeHtml(tipo)}">${escapeHtml(tipo)}</button>`
-  ).join("");
+  el.concretoTipoSubtitle.textContent = `Forma ${forma} . ${setor}`;
+  
+  const optionsHtml = [
+    {
+      tipo: "Concreto Padrão",
+      title: "Concreto padrao",
+      desc: "Tudo certo",
+      icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 8 10 14 8 12"></polyline></svg>`,
+      className: "concreto-opt-padrao"
+    },
+    {
+      tipo: "Concreto Seco - Vibrado",
+      title: "Concreto seco - vibrado",
+      desc: "Faltou agua / endureceu",
+      icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.92 2.92l18.16 18.16"></path><path d="M8.21 13.79c-.14-.59-.21-1.19-.21-1.79 0-2 1-3.9 3-5.5s3.5-4 4-6.5c.34 1.71 1.25 3.32 2.12 4.67"></path><path d="M18.8 14.8C18.93 15.2 19 15.6 19 16a7 7 0 0 1-12.28 4.6"></path></svg>`,
+      className: "concreto-opt-seco"
+    },
+    {
+      tipo: "Concreto Segregado",
+      title: "Concreto segregado",
+      desc: "Pedra separou e desceu",
+      icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="1.5"></circle><circle cx="12" cy="8" r="1.5"></circle><circle cx="8" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="8" cy="16" r="1.5"></circle><path d="M16 10v10"></path><polyline points="13 17 16 20 19 17"></polyline></svg>`,
+      className: "concreto-opt-segregado"
+    },
+    {
+      tipo: "Concreto Exsudado",
+      title: "Concreto exsudado",
+      desc: "Agua subiu na superficie",
+      icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C2 11.1 1 13 1 15a7 7 0 0 0 7 7z"></path><path d="M18 16v-6"></path><polyline points="15 13 18 10 21 13"></polyline></svg>`,
+      className: "concreto-opt-exsudado"
+    }
+  ];
 
-  el.concretoTipoOptions.querySelectorAll(".concreto-tipo-option").forEach((btn) => {
+  el.concretoTipoOptions.innerHTML = optionsHtml.map(opt => `
+    <button type="button" class="btn-concreto-rich ${opt.className}" data-tipo="${escapeHtml(opt.tipo)}">
+      <div class="btn-concreto-icon">${opt.icon}</div>
+      <div class="btn-concreto-text">
+        <span class="btn-concreto-title">${opt.title}</span>
+        <span class="btn-concreto-desc">${opt.desc}</span>
+      </div>
+    </button>
+  `).join("");
+
+  el.concretoTipoOptions.querySelectorAll(".btn-concreto-rich").forEach((btn) => {
     btn.addEventListener("click", () => {
       const tipo = String(btn.dataset.tipo || "").trim();
       if (tipo) {
@@ -3006,19 +3049,25 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
     delete current.checklists[sectionId][itemId + "_photo"];
   }
 
+  const sections = getMontagemChecklistSections(current.modelo || "");
+  const section = sections.find((s) => s.id === sectionId);
+  const item = section?.itens.find((i) => i.id === itemId);
+
+  if (value === "nao") {
+    if (item?.critico) {
+      showMsgBox("segregar poste", "error");
+    }
+    if (item?.codigoFalha) {
+      current.statusMontagem = "R";
+      current.motivoRecusa = item.codigoFalha;
+    }
+  }
+
   const isNowComplete = isChecklistSectionComplete(sectionId, current.checklists);
 
   state.montagemPostesAtual = current;
   upsertMontagemPoste(current);
   syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
-  
-  // Show segregation alert if critical item is reproved
-  const sections = getMontagemChecklistSections(current.modelo || "");
-  const section = sections.find((s) => s.id === sectionId);
-  const item = section?.itens.find((i) => i.id === itemId);
-  if (value === "nao" && item?.critico) {
-    showMsgBox("segregar poste", "error");
-  }
   
   const hasCriticalReproved = section?.itens.some((i) => i.critico && current.checklists[sectionId][i.id] === "nao");
 
@@ -3031,6 +3080,7 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
   }
 
   renderMontagemChecklistSections();
+  renderMontagemStatusUI();
 }
 
 function renderMontagemStatusUI() {

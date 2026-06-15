@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Codificação de Defeitos (Completa)</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --text-color: #334155;
+            --primary-color: #2563eb;
+            --table-border: #e2e8f0;
+            --table-header: #f1f5f9;
+            --row-hover: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #0f172a;
+            font-size: 1.875rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        th {
+            background-color: var(--table-header);
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+        }
+
+        tr:hover {
+            background-color: var(--row-hover);
+        }
+
+        .critico {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .critico::before {
+            content: '🔴';
+            font-size: 0.875rem;
+        }
+
+        .nao-critico {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 400;
+        }
+
+        .nao-critico::before {
+            content: '🟡';
+            font-size: 0.875rem;
+        }
+
+        .badge-code {
+            background-color: #eff6ff;
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: 1px solid #bfdbfe;
+            display: inline-block;
+            text-align: center;
+            min-width: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Codificação de Defeitos</h1>
+    <p class="subtitle">Relação completa de todos os itens da Inspeção Visual com os respectivos códigos de recusa no sistema</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item (Inspeção Visual)</th>
+                <th style="text-align: center;">Código</th>
+                <th>Descrição do Código</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="critico">Homogeneidade do Concreto</td>
+                <td style="text-align: center;"><span class="badge-code">O</span></td>
+                <td>Falha no Concreto</td>
+            </tr>
+            <tr>
+                <td class="critico">Falhas de Preenchimento</td>
+                <td style="text-align: center;"><span class="badge-code">A</span></td>
+                <td>Falha na Concretagem</td>
+            </tr>
+            <tr>
+                <td class="critico">Concreto Segregado</td>
+                <td style="text-align: center;"><span class="badge-code">O</span></td>
+                <td>Falha no Concreto</td>
+            </tr>
+            <tr>
+                <td class="critico">Grandes Avarias</td>
+                <td style="text-align: center;"><span class="badge-code">P</span></td>
+                <td>Grandes Avarias</td>
+            </tr>
+            <tr>
+                <td class="critico">Facão Obstruído</td>
+                <td style="text-align: center;"><span class="badge-code">E</span></td>
+                <td>Furos Obstruídos ou Faltando</td>
+            </tr>
+            <tr>
+                <td class="critico">Furação Obstruída (pinos)</td>
+                <td style="text-align: center;"><span class="badge-code">E</span></td>
+                <td>Furos Obstruídos ou Faltando</td>
+            </tr>
+            <tr>
+                <td class="critico">Armação aparente</td>
+                <td style="text-align: center;"><span class="badge-code">A</span></td>
+                <td>Falha na Concretagem</td>
+            </tr>
+            <tr>
+                <td class="critico">Trincas</td>
+                <td style="text-align: center;"><span class="badge-code">I</span></td>
+                <td>Trincas em toda a extensão do Poste</td>
+            </tr>
+            <tr>
+                <td class="critico">Tubulação Entupida</td>
+                <td style="text-align: center;"><span class="badge-code">B</span></td>
+                <td>Cano entupido</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Bolhas em excesso</td>
+                <td style="text-align: center;"><span class="badge-code">C</span></td>
+                <td>Excesso de Bolhas</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Bolhas fora do padrão</td>
+                <td style="text-align: center;"><span class="badge-code">C</span></td>
+                <td>Excesso de Bolhas</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Carimbo de Identificação</td>
+                <td style="text-align: center;"><span class="badge-code">F</span></td>
+                <td>Identificação do poste (Carimbos)</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Fissuras</td>
+                <td style="text-align: center;"><span class="badge-code">G</span></td>
+                <td>Presença de Trincas</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Pequenas avarias</td>
+                <td style="text-align: center;"><span class="badge-code">J</span></td>
+                <td>Pequenas Avarias</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Rebarbas</td>
+                <td style="text-align: center;"><span class="badge-code">Q</span></td>
+                <td>Rebarbas</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Manchas excessivas</td>
+                <td style="text-align: center;"><span class="badge-code">K</span></td>
+                <td>Manchas Brancas Superficiais</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Buchas de fixação</td>
+                <td style="text-align: center;"><span class="badge-code">L</span></td>
+                <td>Buchas das cxs e/ou Buchas fixação abraç. EDP</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Prisioneiros (lacre / aterramento)</td>
+                <td style="text-align: center;"><span class="badge-code">M</span></td>
+                <td>Parafuso Lacre da caixa do Medidor</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Acabamento face exposta</td>
+                <td style="text-align: center;"><span class="badge-code">R</span></td>
+                <td>Rugosidade</td>
+            </tr>
+            <tr>
+                <td class="nao-critico">Acabamento abas</td>
+                <td style="text-align: center;"><span class="badge-code">S</span></td>
+                <td>Acabamento quinas</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

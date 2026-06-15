@@ -3708,4 +3708,72 @@ tr.row-montado {
   border: 1px solid #fecaca !important;
 }
 
+/* ── Botões Ricos: Tipo de Concreto ──────────────────── */
+
+.btn-concreto-rich {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.1s, filter 0.2s;
+  width: 100%;
+}
+
+.btn-concreto-rich:hover {
+  filter: brightness(0.95);
+}
+
+.btn-concreto-rich:active {
+  transform: scale(0.98);
+}
+
+.btn-concreto-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn-concreto-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.btn-concreto-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: inherit;
+}
+
+.btn-concreto-desc {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.concreto-opt-padrao {
+  background-color: #eef5e5;
+  color: #1b4d1b;
+}
+
+.concreto-opt-seco {
+  background-color: #fceceb;
+  color: #5c1816;
+}
+
+.concreto-opt-segregado {
+  background-color: #fcefdc;
+  color: #5c3a12;
+}
+
+.concreto-opt-exsudado {
+  background-color: #eaf3fd;
+  color: #0b345e;
+}
+
 

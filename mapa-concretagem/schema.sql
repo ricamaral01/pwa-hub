@@ -98,7 +98,7 @@ INSERT INTO public.postes_duplo_t (codigo, descricao, setor, codigo_produto, cha
     ('100', 'Poste Subterraneo 100 A', 'Setor 1', '949', ARRAY['100']),
     ('SB-E1', 'Poste Subterraneo 100 A - Elektro', 'Setor 1', '4848', ARRAY['SB-E1']),
     ('200', 'Poste Subterraneo 200 A - TC', 'Setor 1', '5017', ARRAY['200']),
-    ('TOTEM', 'Totem de medicao indireta Elektro', 'Setor 4', '13570', ARRAY['TOTEM','A-TOTEM']),
+    ('TOTEM', 'Totem de medicao indireta Elektro', 'Setor 2', '13570', ARRAY['TOTEM','A-TOTEM']),
     ('PL', 'Poste Visor Aereo 1 cx VL (7,5x300)', 'Setor 2', '934', ARRAY['PL']),
     ('CEMIG-5X150', 'Padrao Cemig 1CX - 5,0 x 150', 'Setor 4', '952', ARRAY['C-F1']),
     ('CEMIG-1VL', 'Padrao Cemig 1 cx VL - 7,0 x150', 'Setor 4', '953', ARRAY['R-G']),
