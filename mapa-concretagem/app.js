@@ -15,7 +15,11 @@ const ROLE_PERMISSIONS = {
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES"]
+    modes: ["INSPECAO", "MONTAGEM_POSTES"]
+  },
+  APONTADOR: {
+    label: "Apontador",
+    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4"]
   }
 };
 
