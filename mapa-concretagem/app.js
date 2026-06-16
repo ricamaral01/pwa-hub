@@ -3780,14 +3780,32 @@ function renderDashboardCharts() {
   });
 
   Object.keys(cadenceBySector).forEach(s => {
-    const times = cadenceBySector[s].sort((a, b) => a - b);
+    const parsedTimes = cadenceBySector[s]
+      .map(ts => new Date(ts).getTime())
+      .filter(t => !isNaN(t))
+      .sort((a, b) => a - b);
+
     let txt = "N/A";
-    if (times.length >= 2) {
-      const diffMs = times[times.length - 1] - times[0];
-      const intervals = times.length - 1;
-      const avgMin = Math.round((diffMs / intervals) / 60000);
-      txt = avgMin > 0 ? avgMin + " min" : "< 1 min";
-    } else if (times.length === 1) {
+    if (parsedTimes.length >= 2) {
+      const validDiffs = [];
+      for (let i = 1; i < parsedTimes.length; i++) {
+        const diffMs = parsedTimes[i] - parsedTimes[i - 1];
+        // Desconsidera intervalos maiores que 1 hora (3600000 ms), por exemplo almoço ou intervalos de turno
+        // E também ignora diffs de 0 ms que ocorrem em cadastros simultâneos/duplicados
+        if (diffMs > 0 && diffMs <= 3600000) {
+          validDiffs.push(diffMs);
+        }
+      }
+
+      if (validDiffs.length > 0) {
+        const sumMs = validDiffs.reduce((sum, d) => sum + d, 0);
+        const avgMs = sumMs / validDiffs.length;
+        const avgMin = Math.round(avgMs / 60000);
+        txt = avgMin > 0 ? avgMin + " min" : "< 1 min";
+      } else {
+        txt = "N/A (>1h int)";
+      }
+    } else if (parsedTimes.length === 1) {
       txt = "N/A (1 item)";
     }
     setTxt("dbCad" + s, txt);
