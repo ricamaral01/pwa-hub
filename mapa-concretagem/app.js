@@ -3696,6 +3696,9 @@ function renderDashboardCharts() {
   const dbDataEl = document.getElementById("dbData");
   const selectedDate = dbDataEl ? dbDataEl.value : "";
 
+  // Considerar APENAS eventos vindos do Supabase API
+  const apiEventsOnly = db.events.filter(ev => ev.isFromApi === true);
+
   // Aggregate events by date
   const prodByDate = {};
   const insByDate = {};
@@ -3708,7 +3711,7 @@ function renderDashboardCharts() {
   const insS2 = { A: 0, R: 0, RR: 0 };
   const ncCount = {};
 
-  db.events.forEach((ev) => {
+  apiEventsOnly.forEach((ev) => {
     const etapa = (ev.etapa || "").toUpperCase();
     const d = ev.dataFabricacao || "";
     const setor = (ev.setor || "").toLowerCase();
@@ -3761,7 +3764,7 @@ function renderDashboardCharts() {
 
   // Cadência de Produção (Tempo Médio por Setor)
   const targetDateForCadence = selectedDate || todayYmd();
-  const cadenceEvents = db.events.filter(ev => 
+  const cadenceEvents = apiEventsOnly.filter(ev => 
     (ev.etapa || "").toUpperCase() === "LIBERACAO" && 
     ev.dataFabricacao === targetDateForCadence && 
     ev.timestamp
@@ -3953,10 +3956,13 @@ function renderDashboardStats() {
   const dataInput = document.getElementById("insDashData");
   const selectedDate = dataInput ? dataInput.value : "";
 
+  // Considerar APENAS eventos vindos do Supabase API
+  const apiEventsOnly = db.events.filter(ev => ev.isFromApi === true);
+
   // Aggregate inspection events from local DB
   // Group by dataFabricacao, count statuses
   const byDate = {};
-  db.events.forEach((ev) => {
+  apiEventsOnly.forEach((ev) => {
     const etapa = (ev.etapa || "").toUpperCase();
     if (etapa !== "INSPECAO" && etapa !== "REINSPECAO") return;
     const d = ev.dataFabricacao || "";
