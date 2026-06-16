@@ -3752,6 +3752,38 @@ function renderDashboardCharts() {
   setTxt("dbKpiRR", kpiRR);
   setTxt("dbKpiRejPct", rejPct + "%");
 
+  // Cadência de Produção (Tempo Médio por Setor)
+  const targetDateForCadence = selectedDate || todayYmd();
+  const cadenceEvents = db.events.filter(ev => 
+    (ev.etapa || "").toUpperCase() === "LIBERACAO" && 
+    ev.dataFabricacao === targetDateForCadence && 
+    ev.timestamp
+  );
+  
+  const cadenceBySector = { "S1": [], "S2": [], "S3": [], "S4": [] };
+  cadenceEvents.forEach(ev => {
+    const s = (ev.setor || "").toLowerCase();
+    if (s.includes("1")) cadenceBySector["S1"].push(ev.timestamp);
+    if (s.includes("2")) cadenceBySector["S2"].push(ev.timestamp);
+    if (s.includes("3")) cadenceBySector["S3"].push(ev.timestamp);
+    if (s.includes("4")) cadenceBySector["S4"].push(ev.timestamp);
+  });
+
+  Object.keys(cadenceBySector).forEach(s => {
+    const times = cadenceBySector[s].sort((a, b) => a - b);
+    let txt = "N/A";
+    if (times.length >= 2) {
+      const diffMs = times[times.length - 1] - times[0];
+      const intervals = times.length - 1;
+      const avgMin = Math.round((diffMs / intervals) / 60000);
+      txt = avgMin > 0 ? avgMin + " min" : "< 1 min";
+    } else if (times.length === 1) {
+      txt = "N/A (1 item)";
+    }
+    setTxt("dbCad" + s, txt);
+  });
+
+
   // Last 7 days including today
   const allDates = [];
   for (let i = 6; i >= 0; i--) {

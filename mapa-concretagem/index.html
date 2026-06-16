@@ -223,7 +223,32 @@
             <span class="db-kpi-val" id="dbKpiRejPct">—</span>
           </div>
         </div>
-        <div class="db-charts-row">
+
+        <!-- Cadência de Produção -->
+        <div class="db-section-hdr" style="margin-top:24px;">
+          <span class="db-section-icon" style="background:#0e7490">⏱</span>
+          <span class="db-section-lbl">Cadência de Produção (Tempo médio por forma)</span>
+        </div>
+        <div class="db-kpi-row" style="margin-top:12px; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
+          <div class="db-kpi-card" style="border-left-color: #0ea5e9;">
+            <span class="db-kpi-label">Setor 1</span>
+            <span class="db-kpi-val" id="dbCadS1" style="color:#0ea5e9">—</span>
+          </div>
+          <div class="db-kpi-card" style="border-left-color: #0ea5e9;">
+            <span class="db-kpi-label">Setor 2</span>
+            <span class="db-kpi-val" id="dbCadS2" style="color:#0ea5e9">—</span>
+          </div>
+          <div class="db-kpi-card" style="border-left-color: #0ea5e9;">
+            <span class="db-kpi-label">Setor 3</span>
+            <span class="db-kpi-val" id="dbCadS3" style="color:#0ea5e9">—</span>
+          </div>
+          <div class="db-kpi-card" style="border-left-color: #0ea5e9;">
+            <span class="db-kpi-label">Setor 4</span>
+            <span class="db-kpi-val" id="dbCadS4" style="color:#0ea5e9">—</span>
+          </div>
+        </div>
+
+        <div class="db-charts-row" style="margin-top:24px;">
           <div class="db-chart-card">
             <div class="db-chart-title">Produção × Inspeção por Dia</div>
             <div class="db-chart-wrap"><canvas id="chartProd"></canvas></div>
@@ -811,6 +836,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=26663177"></script>
+  <script src="app.js?v=7acf19b7"></script>
 </body>
 </html>
