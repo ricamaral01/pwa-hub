@@ -3905,11 +3905,20 @@ async function carregarDadosGlobaisDashboard() {
   
   setSyncStatus("pending", "Atualizando dados globais do dashboard...");
   
+  // Calcula o intervalo de 7 dias correspondente ao que é exibido no Dashboard
+  const baseDate = selectedDate ? new Date(selectedDate + "T12:00:00") : new Date();
+  const startDate = new Date(baseDate);
+  startDate.setDate(baseDate.getDate() - 6);
+  const startDateStr = startDate.toISOString().split("T")[0];
+  const endDateStr = baseDate.toISOString().split("T")[0];
+
   try {
     const { data: rows, error } = await supabaseClient
       .from('producao')
       .select('*')
-      .gte('data_fabricacao', new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]);
+      .gte('data_fabricacao', startDateStr)
+      .lte('data_fabricacao', endDateStr)
+      .limit(10000);
       
     if (error) throw error;
     
