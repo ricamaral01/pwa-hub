@@ -334,7 +334,13 @@
           </div>
           <div class="kiosk-field">
             <label for="kioskLibColaborador">Nome do Operador</label>
-            <input id="kioskLibColaborador" type="text" class="kiosk-input" placeholder="Nome do colaborador" required />
+            <select id="kioskLibColaborador" class="kiosk-input" required>
+              <option value="" disabled selected>Selecione um operador</option>
+              <option value="Jeferson">Jeferson</option>
+              <option value="Elizeu">Elizeu</option>
+              <option value="Mario">Mario</option>
+              <option value="Leonardo">Leonardo</option>
+            </select>
           </div>
           <div class="kiosk-field" style="justify-self: end; text-align: right; display: flex; flex-direction: column; justify-content: center;">
             <div style="font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em;">Progresso</div>
@@ -354,7 +360,13 @@
             <input id="libData" type="date" required />
           </label>
           <label>Colaborador
-            <input id="libColaborador" type="text" placeholder="Nome do operador" required />
+            <select id="libColaborador" required>
+              <option value="" disabled selected>Selecione um operador</option>
+              <option value="Jeferson">Jeferson</option>
+              <option value="Elizeu">Elizeu</option>
+              <option value="Mario">Mario</option>
+              <option value="Leonardo">Leonardo</option>
+            </select>
           </label>
         </div>
       </div>
