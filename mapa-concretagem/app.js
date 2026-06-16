@@ -3916,18 +3916,39 @@ async function carregarDadosGlobaisDashboard() {
   const endDateStr = baseDate.toISOString().split("T")[0];
 
   try {
-    const { data: rows, error } = await supabaseClient
-      .from('producao')
-      .select('*')
-      .gte('data_fabricacao', startDateStr)
-      .lte('data_fabricacao', endDateStr)
-      .limit(10000);
+    let allRows = [];
+    let page = 0;
+    const pageSize = 1000;
+    let keepFetching = true;
+
+    while (keepFetching) {
+      const from = page * pageSize;
+      const to = from + pageSize - 1;
+
+      const { data: rows, error } = await supabaseClient
+        .from('producao')
+        .select('*')
+        .gte('data_fabricacao', startDateStr)
+        .lte('data_fabricacao', endDateStr)
+        .order('data_fabricacao', { ascending: false })
+        .range(from, to);
+        
+      if (error) throw error;
+
+      if (rows && rows.length > 0) {
+        allRows = allRows.concat(rows);
+      }
       
-    if (error) throw error;
+      if (!rows || rows.length < pageSize || page >= 10) {
+        keepFetching = false;
+      } else {
+        page++;
+      }
+    }
     
     const db = readDb();
     
-    const apiEvents = rows.map(r => ({
+    const apiEvents = allRows.map(r => ({
       etapa: r.status === 'LIBERADO' ? 'LIBERACAO' : 'INSPECAO',
       status: r.status,
       dataFabricacao: r.data_fabricacao,
