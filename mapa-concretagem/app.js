@@ -3937,7 +3937,7 @@ async function carregarDadosGlobaisDashboard() {
       isFromApi: true
     }));
     
-    db.events = db.events.filter(ev => !ev.isFromApi).concat(apiEvents);
+    db.events = db.events.filter(ev => !ev.isFromApi && ev.pendingSync === true).concat(apiEvents);
     writeDb(db);
     
     renderDashboardCharts();
