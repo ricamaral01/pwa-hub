@@ -3702,6 +3702,8 @@ function renderDashboardCharts() {
   const insStatusTotal = { A: 0, R: 0, RR: 0 };
   const prodS1ByDate = {};
   const prodS2ByDate = {};
+  const prodS3ByDate = {};
+  const prodS4ByDate = {};
   const insS1 = { A: 0, R: 0, RR: 0 };
   const insS2 = { A: 0, R: 0, RR: 0 };
   const ncCount = {};
@@ -3712,10 +3714,15 @@ function renderDashboardCharts() {
     const setor = (ev.setor || "").toLowerCase();
     const isS1 = setor.includes("1");
     const isS2 = setor.includes("2");
+    const isS3 = setor.includes("3");
+    const isS4 = setor.includes("4");
+
     if (etapa === "LIBERACAO") {
       prodByDate[d] = (prodByDate[d] || 0) + 1;
       if (isS1) prodS1ByDate[d] = (prodS1ByDate[d] || 0) + 1;
-      if (isS2) prodS2ByDate[d] = (prodS2ByDate[d] || 0) + 1;
+      else if (isS2) prodS2ByDate[d] = (prodS2ByDate[d] || 0) + 1;
+      else if (isS3) prodS3ByDate[d] = (prodS3ByDate[d] || 0) + 1;
+      else if (isS4) prodS4ByDate[d] = (prodS4ByDate[d] || 0) + 1;
     } else if (etapa === "INSPECAO" || etapa === "REINSPECAO") {
       if (!insByDate[d]) insByDate[d] = { A: 0, R: 0, RR: 0, total: 0 };
       insByDate[d].total++;
@@ -3783,56 +3790,50 @@ function renderDashboardCharts() {
     setTxt("dbCad" + s, txt);
   });
 
-
-  // Last 7 days including today
+  // Last 7 days relative to baseDate (selectedDate or today)
   const allDates = [];
+  const baseDate = selectedDate ? new Date(selectedDate + "T12:00:00") : new Date();
   for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
+    const d = new Date(baseDate);
+    d.setDate(baseDate.getDate() - i);
     allDates.push(d.toISOString().split("T")[0]);
   }
   
   const labels = allDates.map((d) => d.split("-").reverse().join("/"));
-  const prodData = allDates.map((d) => prodByDate[d] || 0);
-  const insData = allDates.map((d) => (insByDate[d] || {}).total || 0);
 
-  // Bar chart: production vs inspection by day
+  // Destroy old charts to prevent memory leaks and clean references
   destroyChart("chartProd");
-  const ctxProd = document.getElementById("chartProd");
-  if (ctxProd && typeof Chart !== "undefined") {
-    chartInstances["chartProd"] = new Chart(ctxProd, {
+  destroyChart("chartIns");
+  destroyChart("chartProdSetor");
+  destroyChart("chartInsSetor");
+  destroyChart("chartNc");
+
+  // Re-create chartProdTotalDia (Total Production of the Day)
+  destroyChart("chartProdTotalDia");
+  const ctxProdTotal = document.getElementById("chartProdTotalDia");
+  if (ctxProdTotal && typeof Chart !== "undefined") {
+    chartInstances["chartProdTotalDia"] = new Chart(ctxProdTotal, {
       type: "bar",
       data: {
         labels,
         datasets: [
           { 
-            label: "Produção", 
-            data: prodData, 
-            backgroundColor: "rgba(30, 64, 175, 0.8)", 
+            label: "Total Produzido", 
+            data: allDates.map((d) => prodByDate[d] || 0), 
+            backgroundColor: "rgba(30, 64, 175, 0.85)", 
             borderColor: "#1e40af",
-            borderWidth: 1,
-            borderRadius: 4,
-            barPercentage: 0.7,
-            categoryPercentage: 0.6
-          },
-          { 
-            label: "Inspecionados", 
-            data: insData, 
-            backgroundColor: "rgba(5, 150, 105, 0.8)", 
-            borderColor: "#059669",
-            borderWidth: 1,
-            borderRadius: 4,
-            barPercentage: 0.7,
-            categoryPercentage: 0.6
+            borderWidth: 2,
+            borderRadius: 6,
+            barPercentage: 0.65
           }
         ]
       },
       options: {
-        responsive: true, maintainAspectRatio: false,
-        interaction: { mode: 'index', intersect: false },
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: { 
-          legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8 } },
-          tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 12 }
+          legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
+          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
         },
         scales: { 
           x: { grid: { display: false } },
@@ -3842,87 +3843,32 @@ function renderDashboardCharts() {
     });
   }
 
-  // Doughnut: inspection status
-  destroyChart("chartIns");
-  const ctxIns = document.getElementById("chartIns");
-  if (ctxIns && typeof Chart !== "undefined") {
-    chartInstances["chartIns"] = new Chart(ctxIns, {
-      type: "doughnut",
-      data: {
-        labels: ["Aprovados", "Rejeitados", "Retrabalho"],
-        datasets: [{ data: [kpiA, kpiR, kpiRR], backgroundColor: ["#059669", "#dc2626", "#d97706"], borderWidth: 2 }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { position: "bottom" } }
-      }
-    });
-  }
-
-  // Bar: produção por setor por dia (7 dias)
-  destroyChart("chartProdSetor");
-  const ctxProdSetor = document.getElementById("chartProdSetor");
-  if (ctxProdSetor && typeof Chart !== "undefined") {
-    chartInstances["chartProdSetor"] = new Chart(ctxProdSetor, {
+  // Re-create chartProdSetores (Production separated by each sector)
+  destroyChart("chartProdSetores");
+  const ctxProdSetores = document.getElementById("chartProdSetores");
+  if (ctxProdSetores && typeof Chart !== "undefined") {
+    chartInstances["chartProdSetores"] = new Chart(ctxProdSetores, {
       type: "bar",
       data: {
         labels,
         datasets: [
-          { label: "Setor 1", data: allDates.map((d) => prodS1ByDate[d] || 0), backgroundColor: "#1e40af", borderRadius: 6 },
-          { label: "Setor 2", data: allDates.map((d) => prodS2ByDate[d] || 0), backgroundColor: "#059669", borderRadius: 6 }
+          { label: "Setor 1", data: allDates.map((d) => prodS1ByDate[d] || 0), backgroundColor: "rgba(59, 130, 246, 0.85)", borderRadius: 4 },
+          { label: "Setor 2", data: allDates.map((d) => prodS2ByDate[d] || 0), backgroundColor: "rgba(16, 185, 129, 0.85)", borderRadius: 4 },
+          { label: "Setor 3", data: allDates.map((d) => prodS3ByDate[d] || 0), backgroundColor: "rgba(139, 92, 246, 0.85)", borderRadius: 4 },
+          { label: "Setor 4", data: allDates.map((d) => prodS4ByDate[d] || 0), backgroundColor: "rgba(249, 115, 22, 0.85)", borderRadius: 4 }
         ]
       },
       options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { position: "top" } },
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
-      }
-    });
-  }
-
-  // Grouped bar: resultado inspeção por setor
-  destroyChart("chartInsSetor");
-  const ctxInsSetor = document.getElementById("chartInsSetor");
-  if (ctxInsSetor && typeof Chart !== "undefined") {
-    chartInstances["chartInsSetor"] = new Chart(ctxInsSetor, {
-      type: "bar",
-      data: {
-        labels: ["Aprovados", "Rejeitados", "Retrabalho"],
-        datasets: [
-          { label: "Setor 1", data: [insS1.A, insS1.R, insS1.RR], backgroundColor: "#1e40af", borderRadius: 6 },
-          { label: "Setor 2", data: [insS2.A, insS2.R, insS2.RR], backgroundColor: "#059669", borderRadius: 6 }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { position: "top" } },
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
-      }
-    });
-  }
-
-  // Horizontal bar: não conformidades por código
-  destroyChart("chartNc");
-  const ctxNc = document.getElementById("chartNc");
-  if (ctxNc && typeof Chart !== "undefined") {
-    const ncCodes = CHECKLIST_INSPECAO_CODIGOS.filter((item) => ncCount[item.codigo] > 0)
-      .sort((a, b) => (ncCount[b.codigo] || 0) - (ncCount[a.codigo] || 0));
-    const allNcCodes = ncCodes.length
-      ? ncCodes
-      : CHECKLIST_INSPECAO_CODIGOS.slice(0, 5);
-    const ncLabels = allNcCodes.map((item) => `${item.codigo} – ${item.descricao}`);
-    const ncData = allNcCodes.map((item) => ncCount[item.codigo] || 0);
-    chartInstances["chartNc"] = new Chart(ctxNc, {
-      type: "bar",
-      data: {
-        labels: ncLabels,
-        datasets: [{ label: "Ocorrências", data: ncData, backgroundColor: "#7c3aed", borderRadius: 6 }]
-      },
-      options: {
-        indexAxis: "y",
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { 
+          legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
+          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
+        },
+        scales: { 
+          x: { stacked: true, grid: { display: false } },
+          y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } } 
+        }
       }
     });
   }

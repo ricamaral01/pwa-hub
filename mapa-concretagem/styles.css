@@ -2452,6 +2452,15 @@ hr {
 @media (max-width: 700px) {
   .db-charts-row { grid-template-columns: 1fr; }
 }
+.db-charts-row-equal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+@media (max-width: 700px) {
+  .db-charts-row-equal { grid-template-columns: 1fr; }
+}
 .db-chart-card {
   background: #fff;
   border: 1px solid var(--line);
@@ -3142,6 +3151,50 @@ body.kiosk-active #viewLiberacao > .btn-limpar {
   border-color: #3b82f6 !important;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4) !important;
   outline: none;
+}
+
+select.kiosk-input {
+  appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 18px center !important;
+  background-size: 1.4rem !important;
+  padding-right: 46px !important;
+  cursor: pointer;
+}
+
+.kiosk-input option {
+  background-color: #0f1e3c !important; /* Premium dark background */
+  color: #ffffff !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+}
+
+#libColaborador {
+  appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  background-size: 1.1rem !important;
+  padding-right: 40px !important;
+  background-color: #ffffff !important;
+  border: 2px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  color: #1e293b !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+}
+
+#libColaborador:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+  outline: none;
+}
+
+#libColaborador option {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  font-weight: 600 !important;
 }
 
 /* Switch e Toggle Switch de Programação */

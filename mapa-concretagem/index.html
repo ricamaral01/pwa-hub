@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=9e5b9597" />
+  <link rel="stylesheet" href="styles.css?v=7a10a9d7" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -248,42 +248,19 @@
           </div>
         </div>
 
-        <div class="db-charts-row" style="margin-top:24px;">
-          <div class="db-chart-card">
-            <div class="db-chart-title">Produção × Inspeção por Dia</div>
-            <div class="db-chart-wrap"><canvas id="chartProd"></canvas></div>
-          </div>
-          <div class="db-chart-card db-chart-card-sm">
-            <div class="db-chart-title">Status de Inspeção</div>
-            <div class="db-chart-wrap"><canvas id="chartIns"></canvas></div>
-          </div>
-        </div>
-
-        <!-- Gráficos específicos — Produção -->
-        <div class="db-section-hdr">
+        <!-- Seção de Produção -->
+        <div class="db-section-hdr" style="margin-top:24px;">
           <span class="db-section-icon" style="background:#1e40af">📦</span>
-          <span class="db-section-lbl">Produção por Setor</span>
+          <span class="db-section-lbl">Produção</span>
         </div>
-        <div class="db-charts-row db-charts-row-full">
+        <div class="db-charts-row-equal">
           <div class="db-chart-card">
-            <div class="db-chart-title">Produção Setor 1 × Setor 2 por Dia (7 dias)</div>
-            <div class="db-chart-wrap"><canvas id="chartProdSetor"></canvas></div>
-          </div>
-        </div>
-
-        <!-- Gráficos específicos — Inspeção -->
-        <div class="db-section-hdr">
-          <span class="db-section-icon" style="background:#059669">🔍</span>
-          <span class="db-section-lbl">Inspeção por Setor e Não Conformidades</span>
-        </div>
-        <div class="db-charts-row">
-          <div class="db-chart-card">
-            <div class="db-chart-title">Resultado por Setor (A / R / RR)</div>
-            <div class="db-chart-wrap"><canvas id="chartInsSetor"></canvas></div>
+            <div class="db-chart-title">Produção Total por Dia (Últimos 7 dias)</div>
+            <div class="db-chart-wrap"><canvas id="chartProdTotalDia"></canvas></div>
           </div>
           <div class="db-chart-card">
-            <div class="db-chart-title">Não Conformidades por Código</div>
-            <div class="db-chart-wrap db-chart-wrap-nc"><canvas id="chartNc"></canvas></div>
+            <div class="db-chart-title">Produção por Setor (Últimos 7 dias)</div>
+            <div class="db-chart-wrap"><canvas id="chartProdSetores"></canvas></div>
           </div>
         </div>
 
@@ -848,6 +825,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=7acf19b7"></script>
+  <script src="app.js?v=2b8b556a"></script>
 </body>
 </html>
