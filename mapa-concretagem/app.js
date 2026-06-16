@@ -4839,6 +4839,10 @@ function setMode(mode) {
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
     if (el.viewDashboard) el.viewDashboard.classList.remove("hidden");
+    const dbDataEl = document.getElementById("dbData");
+    if (dbDataEl && !dbDataEl.value) {
+      dbDataEl.value = todayYmd();
+    }
     renderDashboardCharts();
     carregarDadosGlobaisDashboard();
   }
@@ -5412,14 +5416,14 @@ function bindEvents() {
 
   // Dashboard charts filter
   const dbData = document.getElementById("dbData");
-  if (dbData) dbData.addEventListener("change", renderDashboardCharts);
+  if (dbData) dbData.addEventListener("change", carregarDadosGlobaisDashboard);
   const dbBtnHoje = document.getElementById("dbBtnHoje");
   if (dbBtnHoje) dbBtnHoje.addEventListener("click", () => {
     if (dbData) dbData.value = todayYmd();
-    renderDashboardCharts();
+    carregarDadosGlobaisDashboard();
   });
   const dbBtnAtualizar = document.getElementById("dbBtnAtualizar");
-  if (dbBtnAtualizar) dbBtnAtualizar.addEventListener("click", renderDashboardCharts);
+  if (dbBtnAtualizar) dbBtnAtualizar.addEventListener("click", carregarDadosGlobaisDashboard);
 
   // Hub icon-cards (data-hub-mode)
   document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
