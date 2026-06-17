@@ -5718,29 +5718,7 @@ function getLocalRowsForPeriod(dStart, dEnd) {
     .sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
 }
 
-function popularFiltroProdutos(rows) {
-  const select = document.getElementById("paFiltroProduto");
-  if (!select) return;
-  const valAnterior = select.value;
-  select.innerHTML = '<option value="">Todos</option>';
 
-  const produtosSet = new Set();
-  rows.forEach(r => {
-    if (r.modelo) produtosSet.add(r.modelo);
-    if (r.codigo_produto) produtosSet.add(String(r.codigo_produto));
-  });
-
-  Array.from(produtosSet).sort().forEach(p => {
-    const opt = document.createElement("option");
-    opt.value = p;
-    opt.textContent = p;
-    select.appendChild(opt);
-  });
-
-  if (Array.from(produtosSet).has(valAnterior)) {
-    select.value = valAnterior;
-  }
-}
 
 
 
@@ -5900,6 +5878,7 @@ function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta
   const capAtuM3Dia = totalVolume / numDias;
 
   return {
+    filteredRows,
     totalFormas,
     totalVolume,
     cicloMedio,
@@ -6348,14 +6327,10 @@ async function carregarProdutividadeConcretagem() {
     allRows = getLocalRowsForPeriod(dStart, dEnd);
   }
 
-  popularFiltroProdutos(allRows);
-
   const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
-  const filterProduto = document.getElementById("paFiltroProduto")?.value || "";
 
   let filteredRows = allRows.filter(r => {
     if (filterSetor && r.setor !== filterSetor) return false;
-    if (filterProduto && r.modelo !== filterProduto && r.codigo_produto !== filterProduto) return false;
     return true;
   });
 
