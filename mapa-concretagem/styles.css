@@ -1,4 +1,4 @@
-:root {
+ï»¿:root {
   --bg: #f0f4f8;
   --card: #ffffff;
   --text: #1a2840;
@@ -106,7 +106,7 @@ body {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  color: #f8fafc;
+  color: #60a5fa;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -2150,7 +2150,7 @@ hr {
     font-size: 0.88rem;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
-    background-color: #f8fafc;
+    background-color: #60a5fa;
   }
 
   #insSetorGroup {
@@ -3924,7 +3924,7 @@ tr.row-montado {
 }
 
 #viewProdAnalise .section-title-row h2 {
-  color: #f8fafc;
+  color: #60a5fa;
 }
 
 #viewProdAnalise .pa-toolbar,
@@ -3940,11 +3940,11 @@ tr.row-montado {
 #viewProdAnalise .db-kpi-label,
 #viewProdAnalise .db-chart-title,
 #viewProdAnalise .db-hist-title {
-  color: #cbd5e1;
+  color: #93c5fd;
 }
 
 #viewProdAnalise .db-kpi-val {
-  color: #f8fafc;
+  color: #60a5fa;
 }
 
 #viewProdAnalise .db-kpi-card {
@@ -3962,12 +3962,12 @@ tr.row-montado {
 #viewProdAnalise select {
   background: rgba(2, 6, 23, 0.72) !important;
   border: 1px solid rgba(148, 163, 184, 0.32) !important;
-  color: #f8fafc !important;
+  color: #93c5fd !important;
 }
 
 #viewProdAnalise .sheet-table th {
   background: rgba(15, 23, 42, 0.94);
-  color: #cbd5e1;
+  color: #93c5fd;
 }
 
 #viewProdAnalise .sheet-table td {
@@ -3991,9 +3991,9 @@ tr.row-montado {
     margin-top: 8px;
   }
 }
-/* --- NOVO LAYOUT PREMIUM DE PRODUTIVIDADE E GLOSSÁRIO --- */
+/* --- NOVO LAYOUT PREMIUM DE PRODUTIVIDADE E GLOSSï¿½RIO --- */
 #viewProdAnalise {
-  background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+  background: linear-gradient(135deg, #262626 0%, #171717 100%);
 }
 
 #viewProdAnalise .pa-toolbar,
@@ -4001,7 +4001,7 @@ tr.row-montado {
 #viewProdAnalise .db-hist-card,
 #viewProdAnalise .db-kpi-card,
 #viewProdAnalise .pa-glossary-panel {
-  background: rgba(15, 23, 42, 0.65) !important;
+  background: rgba(38, 38, 38, 0.65) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -4051,7 +4051,7 @@ tr.row-montado {
 }
 #viewProdAnalise .db-kpi-label {
   font-size: 0.75rem !important;
-  color: #94a3b8 !important;
+  color: #60a5fa !important;
   letter-spacing: 0.08em;
   font-weight: 600;
   margin: 0;
@@ -4059,22 +4059,22 @@ tr.row-montado {
 #viewProdAnalise .db-kpi-val {
   font-size: 1.9rem !important;
   font-weight: 700 !important;
-  color: #f8fafc !important;
+  color: #93c5fd !important;
   margin: 0;
   font-family: 'Inter', system-ui, sans-serif;
   letter-spacing: -0.02em;
 }
 
-/* Glossário */
+/* Glossï¿½rio */
 .pa-glossary-panel {
   padding: 24px;
   margin-top: 32px;
-  color: #e2e8f0;
+  color: #bfdbfe;
 }
 .pa-glossary-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #60a5fa;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
@@ -4094,7 +4094,7 @@ tr.row-montado {
 .pa-glossary-item h4 {
   margin: 0 0 8px 0;
   font-size: 0.95rem;
-  color: #38bdf8;
+  color: #3b82f6;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -4103,14 +4103,15 @@ tr.row-montado {
   margin: 0;
   font-size: 0.85rem;
   line-height: 1.5;
-  color: #cbd5e1;
+  color: #93c5fd;
 }
 
 #viewProdAnalise .db-chart-title {
   font-weight: 600;
-  color: #f1f5f9;
+  color: #60a5fa;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   padding-bottom: 12px;
   margin-bottom: 16px;
   font-size: 0.95rem;
 }
+
