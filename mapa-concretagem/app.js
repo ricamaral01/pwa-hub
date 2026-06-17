@@ -5991,6 +5991,103 @@ function renderizarTabelaJornada(list) {
 function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
   const diasUnicos = Array.from(new Set(metricas.filteredRows.map(r => r.data_fabricacao))).sort();
 
+  // Novos Gráficos de Volume
+  const dataVolDia = [];
+  const dataVolForaPadraoDia = [];
+  diasUnicos.forEach(d => {
+    let vTotal = 0;
+    let vFora = 0;
+    const rowsDia = metricas.filteredRows.filter(r => r.data_fabricacao === d);
+    rowsDia.forEach(r => {
+      const vol = getFormVolume(r.codigo_produto, r.modelo, r.setor);
+      vTotal += vol;
+      const isPadrao = !r.tipo_concreto || r.tipo_concreto === "Padrão" || r.tipo_concreto === "Concreto Padrão";
+      if (!isPadrao) vFora += vol;
+    });
+    dataVolDia.push(vTotal);
+    dataVolForaPadraoDia.push(vFora);
+  });
+
+  const chartLabels = diasUnicos.map(d => d.split("-").reverse().join("/"));
+
+  destroyChart("chartPaVolDia");
+  const ctxVolDia = document.getElementById("chartPaVolDia");
+  if (ctxVolDia && typeof Chart !== "undefined") {
+    chartInstances["chartPaVolDia"] = new Chart(ctxVolDia, {
+      type: "bar",
+      data: {
+        labels: chartLabels,
+        datasets: [{
+          label: 'Volume (m³)',
+          data: dataVolDia,
+          backgroundColor: "rgba(30, 64, 175, 0.85)",
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
+          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 },
+          datalabels: {
+            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
+            color: '#0f172a',
+            anchor: 'end',
+            align: 'top',
+            offset: 2,
+            font: { weight: 'bold', size: 10 },
+            formatter: (v) => v.toFixed(1)
+          }
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, suggestedMax: Math.max(...dataVolDia) * 1.15 }
+        }
+      },
+      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
+    });
+  }
+
+  destroyChart("chartPaVolForaPadrao");
+  const ctxVolForaPadrao = document.getElementById("chartPaVolForaPadrao");
+  if (ctxVolForaPadrao && typeof Chart !== "undefined") {
+    chartInstances["chartPaVolForaPadrao"] = new Chart(ctxVolForaPadrao, {
+      type: "bar",
+      data: {
+        labels: chartLabels,
+        datasets: [{
+          label: 'Vol. Fora Padrão (m³)',
+          data: dataVolForaPadraoDia,
+          backgroundColor: "rgba(220, 38, 38, 0.85)",
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
+          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 },
+          datalabels: {
+            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
+            color: '#0f172a',
+            anchor: 'end',
+            align: 'top',
+            offset: 2,
+            font: { weight: 'bold', size: 10 },
+            formatter: (v) => v.toFixed(1)
+          }
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, suggestedMax: Math.max(...dataVolForaPadraoDia) * 1.15 }
+        }
+      },
+      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
+    });
+  }
+
   // 1. Ciclo Médio por Dia
   destroyChart("chartPaCicloDia");
   const ctxCicloDia = document.getElementById("chartPaCicloDia");
