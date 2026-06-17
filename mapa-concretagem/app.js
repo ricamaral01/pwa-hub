@@ -6010,58 +6010,47 @@ function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
 
   const chartLabels = diasUnicos.map(d => d.split("-").reverse().join("/"));
 
-  destroyChart("chartPaVolDia");
-  const ctxVolDia = document.getElementById("chartPaVolDia");
-  if (ctxVolDia && typeof Chart !== "undefined") {
-    chartInstances["chartPaVolDia"] = new Chart(ctxVolDia, {
-      type: "bar",
-      data: {
-        labels: chartLabels,
-        datasets: [{
-          label: 'Volume (m³)',
-          data: dataVolDia,
-          backgroundColor: "rgba(30, 64, 175, 0.85)",
-          borderRadius: 4
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
-          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 },
-          datalabels: {
-            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
-            color: '#0f172a',
-            anchor: 'end',
-            align: 'top',
-            offset: 2,
-            font: { weight: 'bold', size: 10 },
-            formatter: (v) => v.toFixed(1)
-          }
-        },
-        scales: {
-          x: { grid: { display: false } },
-          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, suggestedMax: Math.max(...dataVolDia) * 1.15 }
-        }
-      },
-      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
+  // O dataVolDia contém o Total. Para o gráfico empilhado, precisamos separar em "Padrão" e "Fora do Padrão"
+  const dataVolPadraoDia = [];
+  const dataVolForaPadraoDiaArr = [];
+  diasUnicos.forEach(d => {
+    let vPadrao = 0;
+    let vFora = 0;
+    const rowsDia = metricas.filteredRows.filter(r => r.data_fabricacao === d);
+    rowsDia.forEach(r => {
+      const vol = getFormVolume(r.codigo_produto, r.modelo, r.setor);
+      const isPadrao = !r.tipo_concreto || r.tipo_concreto === "Padrão" || r.tipo_concreto === "Concreto Padrão";
+      if (isPadrao) {
+        vPadrao += vol;
+      } else {
+        vFora += vol;
+      }
     });
-  }
+    dataVolPadraoDia.push(vPadrao);
+    dataVolForaPadraoDiaArr.push(vFora);
+  });
 
-  destroyChart("chartPaVolForaPadrao");
-  const ctxVolForaPadrao = document.getElementById("chartPaVolForaPadrao");
-  if (ctxVolForaPadrao && typeof Chart !== "undefined") {
-    chartInstances["chartPaVolForaPadrao"] = new Chart(ctxVolForaPadrao, {
+  destroyChart("chartPaVolDiaStacked");
+  const ctxVolDiaStacked = document.getElementById("chartPaVolDiaStacked");
+  if (ctxVolDiaStacked && typeof Chart !== "undefined") {
+    chartInstances["chartPaVolDiaStacked"] = new Chart(ctxVolDiaStacked, {
       type: "bar",
       data: {
         labels: chartLabels,
-        datasets: [{
-          label: 'Vol. Fora Padrão (m³)',
-          data: dataVolForaPadraoDia,
-          backgroundColor: "rgba(220, 38, 38, 0.85)",
-          borderRadius: 4
-        }]
+        datasets: [
+          {
+            label: 'Concreto Padrão (m³)',
+            data: dataVolPadraoDia,
+            backgroundColor: "rgba(30, 64, 175, 0.85)", // Azul
+            borderRadius: 4
+          },
+          {
+            label: 'Fora do Padrão (m³)',
+            data: dataVolForaPadraoDiaArr,
+            backgroundColor: "rgba(220, 38, 38, 0.85)", // Vermelho
+            borderRadius: 4
+          }
+        ]
       },
       options: {
         responsive: true,
@@ -6071,17 +6060,16 @@ function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
           tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 },
           datalabels: {
             display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
-            color: '#0f172a',
-            anchor: 'end',
-            align: 'top',
-            offset: 2,
+            color: '#ffffff',
+            anchor: 'center',
+            align: 'center',
             font: { weight: 'bold', size: 10 },
             formatter: (v) => v.toFixed(1)
           }
         },
         scales: {
-          x: { grid: { display: false } },
-          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, suggestedMax: Math.max(...dataVolForaPadraoDia) * 1.15 }
+          x: { stacked: true, grid: { display: false } },
+          y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' }, suggestedMax: Math.max(...dataVolDia) * 1.15 }
         }
       },
       plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]

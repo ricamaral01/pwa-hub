@@ -381,13 +381,9 @@
 
         <!-- Grid de Gráficos -->
         <div class="db-charts-row-equal" style="margin-top: 24px;">
-          <div class="db-chart-card">
-            <div class="db-chart-title">Volume Total Produzido por Dia (m³)</div>
-            <div class="db-chart-wrap"><canvas id="chartPaVolDia"></canvas></div>
-          </div>
-          <div class="db-chart-card">
-            <div class="db-chart-title">Volume Fora do Padrão por Dia (m³)</div>
-            <div class="db-chart-wrap"><canvas id="chartPaVolForaPadrao"></canvas></div>
+          <div class="db-chart-card" style="flex: 1;">
+            <div class="db-chart-title">Volume Diário (m³) - Padrão vs Fora do Padrão</div>
+            <div class="db-chart-wrap"><canvas id="chartPaVolDiaStacked"></canvas></div>
           </div>
         </div>
 
@@ -1053,6 +1049,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=073973d1"></script>
+  <script src="app.js?v=a5d640d8"></script>
 </body>
 </html>
