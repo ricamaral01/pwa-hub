@@ -3970,3 +3970,72 @@ tr.row-montado {
   line-height: 1.5;
   color: #475569;
 }
+
+/* --- REFINAMENTOS DE UI E MOBILE PARA PRODUTIVIDADE --- */
+.pa-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.pa-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+.pa-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+@media (max-width: 768px) {
+  .pa-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pa-filter-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pa-action-group {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .pa-action-group button {
+    flex: 1;
+    padding: 8px 0;
+  }
+  .db-toolbar-label {
+    width: 100%;
+  }
+  .db-toolbar-label input, .db-toolbar-label select {
+    width: 100% !important;
+    height: 40px;
+  }
+  .db-kpi-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+  }
+  .db-kpi-card {
+    padding: 10px 8px;
+    gap: 4px;
+  }
+  .pa-kpi-header {
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .pa-kpi-icon {
+    font-size: 1.1rem;
+    padding: 6px;
+  }
+  .db-kpi-label {
+    font-size: 0.65rem;
+  }
+  .db-kpi-val {
+    font-size: 1.3rem;
+  }
+}

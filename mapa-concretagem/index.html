@@ -295,7 +295,7 @@
               <input id="paDataFim" type="date" />
             </label>
             <label class="db-toolbar-label">Setor
-              <select id="paFiltroSetor" class="kiosk-input" style="font-size:0.88rem; padding: 6px 12px; height: 38px;">
+              <select id="paFiltroSetor">
                 <option value="">Todos</option>
                 <option value="Setor 1">Setor 1</option>
                 <option value="Setor 2">Setor 2</option>
@@ -306,14 +306,14 @@
 
 
             <label class="db-toolbar-label">Meta (min)
-              <input id="paMetaCiclo" type="number" value="15" min="1" max="120" style="width: 70px; height: 38px;" />
+              <input id="paMetaCiclo" type="number" value="15" min="1" max="120" style="width: 70px;" />
             </label>
           </div>
-          <div class="pa-action-group" style="display:flex; gap:8px; align-items:flex-end;">
-            <button id="paBtnFiltrar" class="btn primary" type="button" style="height:38px;">🔍 Filtrar</button>
-            <button id="paBtnExportarCSV" class="btn" type="button" style="height:38px; padding: 0 10px;">CSV</button>
-            <button id="paBtnExportarExcel" class="btn" type="button" style="height:38px; padding: 0 10px;">Excel</button>
-            <button id="paBtnExportarPDF" class="btn" type="button" style="height:38px; padding: 0 10px;">PDF</button>
+          <div class="pa-action-group">
+            <button id="paBtnFiltrar" class="btn primary" type="button">🔍 Filtrar</button>
+            <button id="paBtnExportarCSV" class="btn" type="button">CSV</button>
+            <button id="paBtnExportarExcel" class="btn" type="button">Excel</button>
+            <button id="paBtnExportarPDF" class="btn" type="button">PDF</button>
           </div>
         </div>
 
@@ -341,7 +341,7 @@
             <span class="db-kpi-val" id="paKpiEficiencia">—</span>
           </div>
           <div class="db-kpi-card db-kpi-r">
-            <div class="pa-kpi-header"><div class="pa-kpi-icon">⏳</div><span class="db-kpi-label">Tempo Perdido</span></div>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">⏳</div><span class="db-kpi-label">Atraso Acumulado</span></div>
             <span class="db-kpi-val" id="paKpiTempoPerdido">—</span>
           </div>
           <div class="db-kpi-card db-kpi-rr">
@@ -349,16 +349,7 @@
             <span class="db-kpi-val" id="paKpiParadas">—</span>
           </div>
         </div>
-
         <div class="db-kpi-row pa-kpi-secondary">
-          <div class="db-kpi-card">
-            <div class="pa-kpi-header"><div class="pa-kpi-icon">⚡</div><span class="db-kpi-label">Menor Ciclo</span></div>
-            <span class="db-kpi-val" id="paKpiCicloMin">—</span>
-          </div>
-          <div class="db-kpi-card">
-            <div class="pa-kpi-header"><div class="pa-kpi-icon">🐢</div><span class="db-kpi-label">Maior Ciclo</span></div>
-            <span class="db-kpi-val" id="paKpiCicloMax">—</span>
-          </div>
           <div class="db-kpi-card">
             <div class="pa-kpi-header"><div class="pa-kpi-icon">📉</div><span class="db-kpi-label">Desvio Padrão</span></div>
             <span class="db-kpi-val" id="paKpiDesvioPadrao">—</span>
@@ -476,8 +467,8 @@
               <p>Mede a "constância" da equipe. Um desvio padrão baixo (ex: < 2 min) significa que a equipe trabalha num ritmo contínuo (como um relógio). Um desvio alto indica ritmo "sanfona" (às vezes muito rápido, às vezes muito lento), revelando instabilidade no processo ou suprimentos.</p>
             </div>
             <div class="pa-glossary-item">
-              <h4>⏳ Tempo Perdido</h4>
-              <p>A soma de todos os minutos excedentes. Se a meta de ciclo era 15 minutos e uma forma demorou 20, foram 5 minutos "perdidos". Representa o potencial de ganho de produção se o gargalo for resolvido.</p>
+              <h4>⏳ Atraso Acumulado (Tempo Ocioso)</h4>
+              <p>Representa a soma total de atrasos da fábrica. <strong>Exemplo:</strong> se a meta de ciclo é 15 minutos e uma forma levou 20 minutos, foram 5 minutos de 'atraso'. Esse indicador soma todos os atrasos do dia, mostrando exatamente o tempo que a fábrica ficou ociosa ou aguardando processo.</p>
             </div>
             <div class="pa-glossary-item">
               <h4>🚦 Paradas (Amarelas / Vermelhas)</h4>
