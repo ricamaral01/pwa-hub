@@ -4757,6 +4757,7 @@ function unlockAppAfterLogin() {
 function applyRoleVisibility() {
   const navByMode = {
     DASHBOARD: "navDashboard",
+    PROD_ANALISE: "navProdAnalise",
     LIBERACAO: "hubLiberacao",
       LIBERACAO_S1: "hubLiberacaoS1",
       LIBERACAO_S2: "hubLiberacaoS2",
@@ -4967,6 +4968,7 @@ function setMode(mode) {
   const navTitles = {
     HUB: ["navInicio", "Início"],
     DASHBOARD: ["navDashboard", "Dashboard"],
+    PROD_ANALISE: ["navProdAnalise", "Produtividade"],
     LIBERACAO: ["hubLiberacao", "Produção / Liberação"],
       LIBERACAO_S1: ["hubLiberacaoS1", "Produção Setor 1"],
       LIBERACAO_S2: ["hubLiberacaoS2", "Produção Setor 2"],
