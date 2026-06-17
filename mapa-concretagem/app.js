@@ -3812,13 +3812,18 @@ function renderDashboardCharts() {
     setTxt("dbCad" + s, txt);
   });
 
-  // Last 7 days relative to baseDate (selectedDate or today)
+  // Last 7 working days (excluding weekends), ordered from newest to oldest
   const allDates = [];
   const baseDate = selectedDate ? new Date(selectedDate + "T12:00:00") : new Date();
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(baseDate);
-    d.setDate(baseDate.getDate() - i);
-    allDates.push(d.toISOString().split("T")[0]);
+  let d = new Date(baseDate);
+  let count = 0;
+  while (count < 7) {
+    const dayOfWeek = d.getDay();
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 0 = Dom, 6 = Sáb
+      allDates.push(d.toISOString().split("T")[0]);
+      count++;
+    }
+    d.setDate(d.getDate() - 1);
   }
 
   const labels = allDates.map((d) => d.split("-").reverse().join("/"));
