@@ -3304,19 +3304,21 @@ async function finalizarMontagemPosteAtual() {
     return;
   }
 
+  const status = poste.statusMontagem || "";
+  if (!status) {
+    showMsgBox("Selecione o status da montagem: Aprovado, Reprovado ou Reprovado e Retrabalhado.", "error");
+    return;
+  }
+
   const sections = getMontagemChecklistSections(poste.modelo || "");
   const allSectionsOk = sections.every((section) =>
     isChecklistSectionComplete(section.id, poste.checklists || {})
   );
 
-  if (!allSectionsOk) {
-    showMsgBox("Responda todos os itens (Aprovado/Reprovado) de todas as seções antes de finalizar.", "error");
-    return;
-  }
+  const temReprovadoPrimeiraSecao = Object.values(poste.checklists?.["checagem_inicial"] || {}).includes("nao");
 
-  const status = poste.statusMontagem || "";
-  if (!status) {
-    showMsgBox("Selecione o status da montagem: Aprovado, Reprovado ou Reprovado e Retrabalhado.", "error");
+  if (!allSectionsOk && !(temReprovadoPrimeiraSecao && (status === "R" || status === "RR"))) {
+    showMsgBox("Responda todos os itens (Aprovado/Reprovado) de todas as seções antes de finalizar.", "error");
     return;
   }
 
