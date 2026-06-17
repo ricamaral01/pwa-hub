@@ -3911,128 +3911,7 @@ tr.row-montado {
   border: 1px solid #fecaca;
 }
 
-#viewProdAnalise {
-  color: #e5edf7;
-}
-
-#viewProdAnalise .section-title-row {
-  padding: 16px 18px;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 14px;
-  background: linear-gradient(135deg, #081225 0%, #102849 58%, #1a3a5c 100%);
-  box-shadow: 0 18px 36px rgba(8, 18, 37, 0.22);
-}
-
-#viewProdAnalise .section-title-row h2 {
-  color: #60a5fa;
-}
-
-#viewProdAnalise .pa-toolbar,
-#viewProdAnalise .db-chart-card,
-#viewProdAnalise .db-hist-card,
-#viewProdAnalise .db-kpi-card {
-  background: linear-gradient(180deg, rgba(15, 30, 60, 0.98), rgba(8, 18, 37, 0.98));
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 14px 30px rgba(8, 18, 37, 0.18);
-}
-
-#viewProdAnalise .db-toolbar-label,
-#viewProdAnalise .db-kpi-label,
-#viewProdAnalise .db-chart-title,
-#viewProdAnalise .db-hist-title {
-  color: #93c5fd;
-}
-
-#viewProdAnalise .db-kpi-val {
-  color: #60a5fa;
-}
-
-#viewProdAnalise .db-kpi-card {
-  border-left-width: 4px;
-  border-left-color: #e8762a;
-  border-radius: 10px;
-}
-
-#viewProdAnalise .pa-kpi-secondary {
-  margin-top: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-}
-
-#viewProdAnalise input,
-#viewProdAnalise select {
-  background: rgba(2, 6, 23, 0.72) !important;
-  border: 1px solid rgba(148, 163, 184, 0.32) !important;
-  color: #93c5fd !important;
-}
-
-#viewProdAnalise .sheet-table th {
-  background: rgba(15, 23, 42, 0.94);
-  color: #93c5fd;
-}
-
-#viewProdAnalise .sheet-table td {
-  background: rgba(2, 6, 23, 0.62);
-  color: #e5edf7;
-  border-color: rgba(148, 163, 184, 0.14);
-}
-
-#viewProdAnalise canvas {
-  filter: saturate(1.08);
-}
-
-/* Ajustes de responsividade para a toolbar */
-@media (max-width: 991px) {
-  .pa-toolbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .pa-action-group {
-    justify-content: flex-end;
-    margin-top: 8px;
-  }
-}
-/* --- NOVO LAYOUT PREMIUM DE PRODUTIVIDADE E GLOSS�RIO --- */
-#viewProdAnalise {
-  background: linear-gradient(135deg, #262626 0%, #171717 100%);
-}
-
-#viewProdAnalise .pa-toolbar,
-#viewProdAnalise .db-chart-card,
-#viewProdAnalise .db-hist-card,
-#viewProdAnalise .db-kpi-card,
-#viewProdAnalise .pa-glossary-panel {
-  background: rgba(38, 38, 38, 0.65) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-  border-radius: 16px !important;
-}
-
-#viewProdAnalise .db-kpi-card {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  padding: 16px 20px !important;
-  border-left-width: 1px !important; /* Reseta a borda colorida grossa antiga */
-  position: relative;
-  overflow: hidden;
-}
-
-#viewProdAnalise .db-kpi-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 3px;
-  background: var(--kpi-color, #3b82f6);
-}
-
-#viewProdAnalise .db-kpi-prod { --kpi-color: #3b82f6; }
-#viewProdAnalise .db-kpi-ins { --kpi-color: #10b981; }
-#viewProdAnalise .db-kpi-ok { --kpi-color: #8b5cf6; }
-#viewProdAnalise .db-kpi-pct { --kpi-color: #f59e0b; }
-#viewProdAnalise .db-kpi-r { --kpi-color: #ef4444; }
-#viewProdAnalise .db-kpi-rr { --kpi-color: #f43f5e; }
-
+/* --- LAYOUT DE PRODUTIVIDADE E GLOSSÁRIO --- */
 .pa-kpi-header {
   display: flex;
   align-items: center;
@@ -4042,39 +3921,24 @@ tr.row-montado {
 }
 .pa-kpi-icon {
   font-size: 1.4rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.03);
   padding: 8px;
   border-radius: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-#viewProdAnalise .db-kpi-label {
-  font-size: 0.75rem !important;
-  color: #60a5fa !important;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  margin: 0;
-}
-#viewProdAnalise .db-kpi-val {
-  font-size: 1.9rem !important;
-  font-weight: 700 !important;
-  color: #93c5fd !important;
-  margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
-  letter-spacing: -0.02em;
-}
 
-/* Gloss�rio */
+/* Glossário */
 .pa-glossary-panel {
   padding: 24px;
   margin-top: 32px;
-  color: #bfdbfe;
+  color: #334155;
 }
 .pa-glossary-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #60a5fa;
+  color: #0f172a;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
@@ -4086,15 +3950,16 @@ tr.row-montado {
   gap: 20px;
 }
 .pa-glossary-item {
-  background: rgba(255,255,255,0.03);
+  background: #ffffff;
   border-radius: 12px;
   padding: 16px;
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 .pa-glossary-item h4 {
   margin: 0 0 8px 0;
   font-size: 0.95rem;
-  color: #3b82f6;
+  color: #2563eb;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -4103,15 +3968,5 @@ tr.row-montado {
   margin: 0;
   font-size: 0.85rem;
   line-height: 1.5;
-  color: #93c5fd;
+  color: #475569;
 }
-
-#viewProdAnalise .db-chart-title {
-  font-weight: 600;
-  color: #60a5fa;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 12px;
-  margin-bottom: 16px;
-  font-size: 0.95rem;
-}
-
