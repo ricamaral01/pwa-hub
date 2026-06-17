@@ -2973,7 +2973,7 @@ body.kiosk-active .app-main {
     margin-left: 240px; /* Takes up space by default on PC */
     transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   /* When hidden via toggle button on PC */
   body.sidebar-hidden .sidebar {
     transform: translateX(-240px);
@@ -2981,7 +2981,7 @@ body.kiosk-active .app-main {
   body.sidebar-hidden .app-main {
     margin-left: 0;
   }
-  
+
   /* Inspection float bar adjustment */
   body.mode-inspecao .ins-float-bar {
     left: 240px;
@@ -3829,4 +3829,165 @@ tr.row-montado {
   color: #0b345e;
 }
 
+/* ── Módulo de Análise de Produtividade ────────────────────────── */
+.pa-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: var(--card);
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  border: 1px solid var(--line);
+  margin-bottom: 24px;
+}
 
+.pa-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1;
+}
+
+.pa-alerts-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.pa-alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.pa-alert-warning {
+  background-color: #fffbeb;
+  border-color: #fef08a;
+  color: #713f12;
+}
+
+.pa-alert-danger {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.badge-parada {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  width: 90px;
+}
+
+.badge-verde {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-amarelo {
+  background-color: #fef9c3;
+  color: #a16207;
+  border: 1px solid #fef08a;
+}
+
+.badge-vermelho {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+#viewProdAnalise {
+  color: #e5edf7;
+}
+
+#viewProdAnalise .section-title-row {
+  padding: 16px 18px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #081225 0%, #102849 58%, #1a3a5c 100%);
+  box-shadow: 0 18px 36px rgba(8, 18, 37, 0.22);
+}
+
+#viewProdAnalise .section-title-row h2 {
+  color: #f8fafc;
+}
+
+#viewProdAnalise .pa-toolbar,
+#viewProdAnalise .db-chart-card,
+#viewProdAnalise .db-hist-card,
+#viewProdAnalise .db-kpi-card {
+  background: linear-gradient(180deg, rgba(15, 30, 60, 0.98), rgba(8, 18, 37, 0.98));
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 14px 30px rgba(8, 18, 37, 0.18);
+}
+
+#viewProdAnalise .db-toolbar-label,
+#viewProdAnalise .db-kpi-label,
+#viewProdAnalise .db-chart-title,
+#viewProdAnalise .db-hist-title {
+  color: #cbd5e1;
+}
+
+#viewProdAnalise .db-kpi-val {
+  color: #f8fafc;
+}
+
+#viewProdAnalise .db-kpi-card {
+  border-left-width: 4px;
+  border-left-color: #e8762a;
+  border-radius: 10px;
+}
+
+#viewProdAnalise .pa-kpi-secondary {
+  margin-top: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+}
+
+#viewProdAnalise input,
+#viewProdAnalise select {
+  background: rgba(2, 6, 23, 0.72) !important;
+  border: 1px solid rgba(148, 163, 184, 0.32) !important;
+  color: #f8fafc !important;
+}
+
+#viewProdAnalise .sheet-table th {
+  background: rgba(15, 23, 42, 0.94);
+  color: #cbd5e1;
+}
+
+#viewProdAnalise .sheet-table td {
+  background: rgba(2, 6, 23, 0.62);
+  color: #e5edf7;
+  border-color: rgba(148, 163, 184, 0.14);
+}
+
+#viewProdAnalise canvas {
+  filter: saturate(1.08);
+}
+
+/* Ajustes de responsividade para a toolbar */
+@media (max-width: 991px) {
+  .pa-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pa-action-group {
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+}

@@ -7,11 +7,11 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "MONTAGEM_POSTES"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "MONTAGEM_POSTES"]
   },
   MONTADOR: {
     label: "Montador",
@@ -25,7 +25,7 @@ const ROLE_PERMISSIONS = {
 
 function getMontagemChecklistSections(modelo = "") {
   const isDuploT = /DT|Duplo T|Barreiras/i.test(modelo);
-  
+
   return [
     {
       id: "checagem_inicial",
@@ -105,7 +105,7 @@ function markFormaClicked(forma, setor) {
 
 function isFormaClicked(forma, setor) {
   const dataFabricacao = el.libData?.value || todayYmd();
-  
+
   // Se a data selecionada for hoje, verifica primeiro os cliques rápidos locais
   const hoje = todayYmd();
   if (dataFabricacao === hoje) {
@@ -113,7 +113,7 @@ function isFormaClicked(forma, setor) {
     const key = setor + "||" + normalizeUpper(forma);
     if (clicked.formas[key] === true || clicked.formas[key] === "1") return true;
   }
-  
+
   // Verificação definitiva a partir do banco de dados local (sincronizado dinamicamente do Supabase)
   const db = readDb();
   const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
@@ -122,14 +122,14 @@ function isFormaClicked(forma, setor) {
 
 function isFormaLiberada(forma, setor) {
   const dataFabricacao = el.libData?.value || todayYmd();
-  
+
   const hoje = todayYmd();
   if (dataFabricacao === hoje) {
     const clicked = getClickedFormsToday();
     const key = setor + "||" + normalizeUpper(forma);
     if (clicked.formas[key] === "L") return true;
   }
-  
+
   const db = readDb();
   const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
   return record?.liberacao?.status === "L";
@@ -718,7 +718,8 @@ const el = {
   relSetor: document.getElementById("relSetor"),
   relEncarregado: document.getElementById("relEncarregado"),
   gerarRelatorioSetor: document.getElementById("gerarRelatorioSetor"),
-  relatorioSetorOutput: document.getElementById("relatorioSetorOutput")
+  relatorioSetorOutput: document.getElementById("relatorioSetorOutput"),
+  viewProdAnalise: document.getElementById("viewProdAnalise")
 };
 
 /* ── Chart.js instance tracker ───────────────────── */
@@ -1002,7 +1003,7 @@ async function postToApi(action, payload) {
       if (payload.setor) query = query.eq('setor', payload.setor);
       const { data, error } = await query;
       if (error) throw error;
-      
+
       const pendentes = data.map(row => ({
         forma: row.forma,
         setor: row.setor,
@@ -1027,11 +1028,11 @@ async function postToApi(action, payload) {
       data.forEach(row => {
         if (row.status === "LIBERADO") relatorio.liberados++;
         if (row.status === "INSPECIONADO") relatorio.inspecionados++;
-        
+
         if (!relatorio.porSetor[row.setor]) relatorio.porSetor[row.setor] = { liberados: 0, inspecionados: 0 };
         if (row.status === "LIBERADO") relatorio.porSetor[row.setor].liberados++;
         if (row.status === "INSPECIONADO") relatorio.porSetor[row.setor].inspecionados++;
-        
+
         if (!relatorio.porTipo[row.tipo_concreto]) relatorio.porTipo[row.tipo_concreto] = 0;
         relatorio.porTipo[row.tipo_concreto]++;
       });
@@ -1056,16 +1057,16 @@ async function postToApi(action, payload) {
       if (error) throw error;
       if (data.length === 0) return { ok: false, error: "Usuário ou senha incorretos." };
       const u = data[0];
-      return { 
-        ok: true, 
-        user: { 
-          id: u.id, 
-          name: u.nome, 
-          role: u.perfil, 
+      return {
+        ok: true,
+        user: {
+          id: u.id,
+          name: u.nome,
+          role: u.perfil,
           active: u.ativo,
           setor: u.setor || "Todos",
           primeiro_acesso: u.primeiro_acesso !== false
-        } 
+        }
       };
     }
 
@@ -1460,7 +1461,7 @@ function renderSheetSide(items, container, options = {}) {
 function setCardState(card, cardState) {
   card.classList.remove("is-idle", "is-saving", "is-saved", "is-error", "is-liberada");
   card.classList.add("is-" + cardState);
-  
+
   // Se for uma célula do mapa do Setor 4, atualizar a linha inteira
   if (card.classList.contains("s4-forma-cell")) {
     if (typeof card.refreshRow === "function") {
@@ -1538,7 +1539,7 @@ function createFormaCard(item, setor) {
       tipoEl.style.display = "block";
     }
     setCardState(card, "saved");
-    
+
     // Permitir alternar programação mesmo se concretado no Modo Programação
     card.addEventListener("click", () => {
       if (state.programmingMode) {
@@ -1633,7 +1634,7 @@ function renderSector3Cols(container, col1Forms, col2Forms, col3Forms, setor) {
 function createS4TableRow(item, setor) {
   item = withPosteData(item, setor);
   const tr = document.createElement("tr");
-  
+
   const tdForma = document.createElement("td");
   tdForma.className = "s4-forma-cell";
   tdForma.textContent = item.label || item.forma;
@@ -1645,16 +1646,16 @@ function createS4TableRow(item, setor) {
   if (item.descricaoPoste || item.codigoProduto) {
     tdForma.title = [item.descricaoPoste, item.codigoProduto ? `Produto ${item.codigoProduto}` : ""].filter(Boolean).join(" - ");
   }
-  
+
   const tdModelo = document.createElement("td");
   tdModelo.textContent = item.modelo || "";
-  
+
   const tdLib = document.createElement("td");
   tdLib.className = "td-lib";
-  
+
   const tdInsStatus = document.createElement("td");
   tdInsStatus.className = "td-ins-status";
-  
+
   const tdInsCod = document.createElement("td");
   tdInsCod.className = "td-ins-cod";
 
@@ -1686,7 +1687,7 @@ function createS4TableRow(item, setor) {
 
   tr.appendChild(tdForma);
   tr.appendChild(tdModelo);
-  
+
   refreshRow();
   return tr;
 }
@@ -1762,10 +1763,10 @@ function updateKioskHeader() {
 
   el.kioskSectorTitle.textContent = "Produção " + sectorLabel;
   el.kioskSectorSubtitle.textContent = "ÁREA OPERACIONAL QUIOSQUE";
-  
+
   el.kioskLibData.value = el.libData?.value || todayYmd();
   el.kioskLibColaborador.value = el.libColaborador?.value || "";
-  
+
   if (el.kioskProgCheckbox) {
     el.kioskProgCheckbox.checked = state.programmingMode || false;
     const toggleField = document.getElementById("kioskProgToggleField");
@@ -1779,7 +1780,7 @@ function updateKioskHeader() {
 
 function updateKioskProgress() {
   if (!el.kioskProgressoContador) return;
-  
+
   let sectorLabel = "";
   let listAll = [];
   if (state.activeLiberacaoSector === "LIBERACAO_S1") {
@@ -1797,17 +1798,17 @@ function updateKioskProgress() {
   } else {
     return;
   }
-  
+
   const clicked = getClickedFormsToday();
   const formas = clicked.formas || {};
-  
+
   let concretados = 0;
   listAll.forEach((item) => {
     if (formas[sectorLabel + "||" + normalizeUpper(item.forma)]) {
       concretados++;
     }
   });
-  
+
   el.kioskProgressoContador.textContent = `${concretados} / ${listAll.length}`;
 }
 
@@ -1839,14 +1840,14 @@ async function programFormaInApiOrLocal(data, setor, forma) {
       console.warn("Falha ao salvar programação no Supabase, usando local:", err);
     }
   }
-  
+
   const list = readLocalProgramacao();
   const exists = list.some(item => item.data_fabricacao === data && item.setor === setor && item.forma === forma);
   if (!exists) {
     list.push({ data_fabricacao: data, setor, forma });
     writeLocalProgramacao(list);
   }
-  
+
   if (synced) {
     setSyncStatus("ok", `Programação da forma ${forma} sincronizada.`);
   } else {
@@ -1867,11 +1868,11 @@ async function unprogramFormaInApiOrLocal(data, setor, forma) {
       console.warn("Falha ao excluir programação no Supabase, usando local:", err);
     }
   }
-  
+
   const list = readLocalProgramacao();
   const filtered = list.filter(item => !(item.data_fabricacao === data && item.setor === setor && item.forma === forma));
   writeLocalProgramacao(filtered);
-  
+
   if (synced) {
     setSyncStatus("ok", `Programação da forma ${forma} excluída online.`);
   } else {
@@ -1888,7 +1889,7 @@ async function toggleFormaProgramada(forma, setor, card) {
 
   const normalized = normalizeUpper(forma);
   const isCurrentlyProgrammed = state.programmedFormas.has(normalized);
-  
+
   if (isCurrentlyProgrammed) {
     state.programmedFormas.delete(normalized);
     card.classList.remove("is-programmed");
@@ -1900,7 +1901,7 @@ async function toggleFormaProgramada(forma, setor, card) {
     await programFormaInApiOrLocal(data, setor, normalized);
     showLibFeedback(`Forma ${forma} programada!`, "ok");
   }
-  
+
   updateKioskProgress();
 }
 
@@ -1913,13 +1914,13 @@ async function loadClickedFormsFromSupabase() {
     const { data: rows, error } = await supabaseClient.from('producao')
       .select('forma, setor, tipo_concreto, status')
       .eq('data_fabricacao', data);
-      
+
     if (!error && Array.isArray(rows)) {
       const clicked = getClickedFormsToday();
       // Limpa os registros locais de clique para re-popular com os dados atualizados em nuvem
       clicked.formas = {};
       clicked.dia = new Date().toLocaleDateString("pt-BR");
-      
+
       const db = readDb();
       let dbUpdated = false;
 
@@ -1929,7 +1930,7 @@ async function loadClickedFormsFromSupabase() {
           const statusVal = isAguardando ? 'L' : '1';
           const key = row.setor + "||" + normalizeUpper(row.forma);
           clicked.formas[key] = statusVal;
-          
+
           // Sincroniza no banco local para que a exibição do tipo de concreto e status seja fiel
           let record = findRecordByKey(db, data, row.setor, normalizeUpper(row.forma));
           if (!record) {
@@ -1956,7 +1957,7 @@ async function loadClickedFormsFromSupabase() {
           }
         }
       });
-      
+
       if (dbUpdated) {
         writeDb(db);
       }
@@ -2034,14 +2035,14 @@ async function loadProgrammedFormas() {
   else if (state.activeLiberacaoSector === "LIBERACAO_S2") sectorLabel = "Setor 2";
   else if (state.activeLiberacaoSector === "LIBERACAO_S3") sectorLabel = "Setor 3";
   else if (state.activeLiberacaoSector === "LIBERACAO_S4") sectorLabel = "Setor 4";
-  
+
   // Sincroniza as fôrmas concretadas do Supabase antes de renderizar
   await loadClickedFormsFromSupabase();
-  
+
   if (!sectorLabel || sectorLabel === "Setor 4") return; // Setor 4 não possui programação
-  
+
   state.programmedFormas = await loadOfficialProgrammedFormas(data, sectorLabel);
-  
+
   let loadedFromDb = false;
   if (hasApiConfigured()) {
     try {
@@ -2059,7 +2060,7 @@ async function loadProgrammedFormas() {
       console.warn("Erro ao buscar programação do Supabase, usando local:", err);
     }
   }
-  
+
   if (!loadedFromDb) {
     const list = readLocalProgramacao();
     list.filter(item => item.data_fabricacao === data && item.setor === sectorLabel)
@@ -2166,7 +2167,7 @@ function updateSectorCounters() {
     c4.textContent = s4Count + " / " + s4All.length;
     c4.classList.toggle("counter-done", s4Count === s4All.length && s4All.length > 0);
   }
-  
+
   // Atualizar progresso do quiosque também
   updateKioskProgress();
 }
@@ -2199,7 +2200,7 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
 
   pendingFormaSelection = { forma, setor, card, modelo };
   el.concretoTipoSubtitle.textContent = `Forma ${forma} . ${setor}`;
-  
+
   const optionsHtml = [
     {
       tipo: "Concreto Padrão",
@@ -2487,20 +2488,20 @@ function normalizeForma(s) {
   if (!s) return "";
   s = String(s).trim().toUpperCase();
   s = s.replace(/[\s\-]+/g, '');
-  
+
   const match = s.match(/^([A-Z]+)0*([0-9]+)$/);
   if (match) {
     const num = match[2];
     const numStr = num.replace(/^0+/, '');
     return match[1] + (numStr || '0');
   }
-  
+
   const matchNum = s.match(/^0*([0-9]+)$/);
   if (matchNum) {
     const numStr = matchNum[1].replace(/^0+/, '');
     return numStr || '0';
   }
-  
+
   return s;
 }
 
@@ -2512,14 +2513,14 @@ async function fetchSetor3Models(filtroData) {
     if (response.ok) {
       const data = await response.json();
       const formToModelMap = {};
-      
+
       // A API original retorna algo do tipo: [{ "codigo_forma": "SC01", "poste": "12X600" }, ...]
       const items = Array.isArray(data) ? data : (data.programacoes || data.data || []);
-      
+
       items.forEach((item) => {
         const forma = item.codigo_forma || item.forma;
         const modelo = item.poste || item.modelo || item.produto_nome || item.nome || item.produto?.nome;
-        
+
         if (forma && modelo) {
           formToModelMap[normalizeForma(forma)] = modelo;
         }
@@ -2550,7 +2551,7 @@ async function fetchSetor3Models(filtroData) {
     } catch (fallbackErr) {
       console.warn("Fallback Usina também falhou:", fallbackErr);
     }
-    
+
     alert("Aviso: Falha de conexão com a API do PCP Concrefer (" + err.message + "). O navegador pode estar bloqueando (CORS) ou a API está fora. Mostrando modelos como SC.");
   }
 
@@ -2946,7 +2947,7 @@ function renderMontagemChecklistSections() {
     }
 
     const isComplete = isChecklistSectionComplete(section.id, current.checklists || {});
-    
+
     const sectionHeader = document.createElement("div");
     sectionHeader.className = "mp-checklist-header";
     sectionHeader.innerHTML = `
@@ -2959,7 +2960,7 @@ function renderMontagemChecklistSections() {
       const selected = current.checklists?.[section.id]?.[item.id] || "";
       const photoBase64 = current.checklists?.[section.id]?.[item.id + "_photo"] || "";
       const isFinalizado = !!current.finalizadoEm;
-      
+
       const disableItem = isFinalizado || !sectionEnabled;
 
       const itemWrapper = document.createElement("div");
@@ -2972,11 +2973,11 @@ function renderMontagemChecklistSections() {
             ${item.texto}
           </span>
           <div class="mp-yn-group">
-            <button type="button" class="mp-yn-btn btn-aprovado ${selected === "sim" ? "active" : ""}" 
-                    data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="sim" 
+            <button type="button" class="mp-yn-btn btn-aprovado ${selected === "sim" ? "active" : ""}"
+                    data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="sim"
                     ${disableItem ? "disabled" : ""}>Aprovado</button>
-            <button type="button" class="mp-yn-btn btn-reprovado ${selected === "nao" ? "active" : ""}" 
-                    data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="nao" 
+            <button type="button" class="mp-yn-btn btn-reprovado ${selected === "nao" ? "active" : ""}"
+                    data-mp-section="${section.id}" data-mp-item="${item.id}" data-mp-value="nao"
                     ${disableItem ? "disabled" : ""}>Reprovado</button>
           </div>
         </div>
@@ -2991,7 +2992,7 @@ function renderMontagemChecklistSections() {
           actionsHtml += `
             <label class="mp-photo-upload-label">
               📸 Tirar Foto da Falha
-              <input type="file" accept="image/*" capture="environment" class="mp-item-photo-input" 
+              <input type="file" accept="image/*" capture="environment" class="mp-item-photo-input"
                      data-mp-section="${section.id}" data-mp-item="${item.id}" ${disableItem ? "disabled" : ""} />
             </label>
           `;
@@ -3031,7 +3032,7 @@ function setMontagemChecklistPhoto(sectionId, itemId, photoBase64) {
   const current = { ...state.montagemPostesAtual };
   if (!current.checklists) current.checklists = {};
   if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
-  
+
   current.checklists[sectionId][itemId + "_photo"] = photoBase64;
   state.montagemPostesAtual = current;
   upsertMontagemPoste(current);
@@ -3044,11 +3045,11 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
   const current = { ...state.montagemPostesAtual };
   if (!current.checklists) current.checklists = {};
   if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
-  
+
   const wasComplete = isChecklistSectionComplete(sectionId, current.checklists);
 
   current.checklists[sectionId][itemId] = value;
-  
+
   if (value === "sim") {
     delete current.checklists[sectionId][itemId + "_photo"];
   }
@@ -3072,7 +3073,7 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
   state.montagemPostesAtual = current;
   upsertMontagemPoste(current);
   syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
-  
+
   const hasCriticalReproved = section?.itens.some((i) => i.critico && current.checklists[sectionId][i.id] === "nao");
 
   if (!wasComplete && isNowComplete) {
@@ -3455,7 +3456,7 @@ async function renderMontagemPostesLiberados() {
     tr.dataset.codigoPoste = record.codigoPoste || "";
     tr.dataset.descricaoPoste = record.descricaoPoste || "";
     tr.dataset.codigoProduto = record.codigoProduto || "";
-    
+
     // Armazena o registro de montagem completo serializado em JSON para uso posterior ao clicar
     tr.dataset.montagemRaw = record.montagem ? JSON.stringify(record.montagem) : "";
 
@@ -3764,12 +3765,12 @@ function renderDashboardCharts() {
 
   // Cadência de Produção (Tempo Médio por Setor)
   const targetDateForCadence = selectedDate || todayYmd();
-  const cadenceEvents = apiEventsOnly.filter(ev => 
-    (ev.etapa || "").toUpperCase() === "LIBERACAO" && 
-    ev.dataFabricacao === targetDateForCadence && 
+  const cadenceEvents = apiEventsOnly.filter(ev =>
+    (ev.etapa || "").toUpperCase() === "LIBERACAO" &&
+    ev.dataFabricacao === targetDateForCadence &&
     ev.timestamp
   );
-  
+
   const cadenceBySector = { "S1": [], "S2": [], "S3": [], "S4": [] };
   cadenceEvents.forEach(ev => {
     const s = (ev.setor || "").toLowerCase();
@@ -3819,7 +3820,7 @@ function renderDashboardCharts() {
     d.setDate(baseDate.getDate() - i);
     allDates.push(d.toISOString().split("T")[0]);
   }
-  
+
   const labels = allDates.map((d) => d.split("-").reverse().join("/"));
 
   // Destroy old charts to prevent memory leaks and clean references
@@ -3838,10 +3839,10 @@ function renderDashboardCharts() {
       data: {
         labels,
         datasets: [
-          { 
-            label: "Total Produzido", 
-            data: allDates.map((d) => prodByDate[d] || 0), 
-            backgroundColor: "rgba(30, 64, 175, 0.85)", 
+          {
+            label: "Total Produzido",
+            data: allDates.map((d) => prodByDate[d] || 0),
+            backgroundColor: "rgba(30, 64, 175, 0.85)",
             borderColor: "#1e40af",
             borderWidth: 2,
             borderRadius: 6,
@@ -3852,13 +3853,13 @@ function renderDashboardCharts() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { 
+        plugins: {
           legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
           tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
         },
-        scales: { 
+        scales: {
           x: { grid: { display: false } },
-          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } } 
+          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } }
         }
       }
     });
@@ -3882,13 +3883,13 @@ function renderDashboardCharts() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { 
+        plugins: {
           legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
           tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
         },
-        scales: { 
+        scales: {
           x: { stacked: true, grid: { display: false } },
-          y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } } 
+          y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } }
         }
       }
     });
@@ -3920,12 +3921,12 @@ function renderDashboardCharts() {
 
 async function carregarDadosGlobaisDashboard() {
   if (!hasApiConfigured()) return;
-  
+
   const dbDataEl = document.getElementById("dbData");
   const selectedDate = dbDataEl ? dbDataEl.value : todayYmd();
-  
+
   setSyncStatus("pending", "Atualizando dados globais do dashboard...");
-  
+
   // Calcula o intervalo de 7 dias correspondente ao que é exibido no Dashboard
   const baseDate = selectedDate ? new Date(selectedDate + "T12:00:00") : new Date();
   const startDate = new Date(baseDate);
@@ -3950,22 +3951,22 @@ async function carregarDadosGlobaisDashboard() {
         .lte('data_fabricacao', endDateStr)
         .order('data_fabricacao', { ascending: false })
         .range(from, to);
-        
+
       if (error) throw error;
 
       if (rows && rows.length > 0) {
         allRows = allRows.concat(rows);
       }
-      
+
       if (!rows || rows.length < pageSize || page >= 10) {
         keepFetching = false;
       } else {
         page++;
       }
     }
-    
+
     const db = readDb();
-    
+
     const apiEvents = allRows.map(r => ({
       etapa: r.status === 'LIBERADO' ? 'LIBERACAO' : 'INSPECAO',
       status: r.status,
@@ -3978,10 +3979,10 @@ async function carregarDadosGlobaisDashboard() {
       observacoes: r.ins_observacoes || "",
       isFromApi: true
     }));
-    
+
     db.events = db.events.filter(ev => !ev.isFromApi && ev.pendingSync === true).concat(apiEvents);
     writeDb(db);
-    
+
     renderDashboardCharts();
     setSyncStatus("ok", "Dashboard global atualizado com dados da nuvem.");
   } catch (err) {
@@ -4086,7 +4087,7 @@ async function renderHistorico() {
         const formaNumero = String(row.forma_numero || "");
         const setor = String(row.setor || "");
         const baseTs = row.data_hora || row.updated_at || nowIso();
-        
+
         // Evitamos duplicar eventos que já existem localmente (mesma forma, setor e etapa)
         const existsLocally = (etapa) => rows.some(e => e.etapa === etapa && e.formaNumero === formaNumero && e.setor === setor);
 
@@ -4236,7 +4237,7 @@ async function renderAcmpConcretagem() {
       try {
         let query = supabaseClient.from('producao').select('*').eq('setor', setor);
         if (data) query = query.eq('data_fabricacao', data);
-        
+
         const { data: qData, error } = await query;
         if (!error && Array.isArray(qData)) {
           let rows = qData;
@@ -4336,13 +4337,13 @@ async function getRowsForDashboard(data, setor) {
     let query = supabaseClient.from('producao').select('*').eq('setor', setor).eq('data_fabricacao', data);
     const { data: rows, error } = await query;
     if (!error && Array.isArray(rows)) {
-      return { 
+      return {
         rows: rows.map(r => ({
           ...r,
           forma_numero: r.forma,
           liberacao_status: r.status === 'LIBERADO' ? '1' : '0'
-        })), 
-        source: "api" 
+        })),
+        source: "api"
       };
     }
   } catch {
@@ -4496,7 +4497,7 @@ async function gerarRelatorioSetor() {
     try {
       let query = supabaseClient.from('producao').select('*').eq('setor', setor).eq('data_fabricacao', data);
       const { data: rows, error } = await query;
-      
+
       if (!error && Array.isArray(rows)) {
         const mappedRows = rows.map(r => ({
           forma_numero: r.forma,
@@ -4529,13 +4530,13 @@ function setAccessByRole(role) {
   const cfg = getRoleConfig(role);
   const next = new Set(["HUB", ...cfg.modes]);
   if (next.has("MONTAGEM_POSTES")) next.add("MONTAGEM_POSTES_DETALHE");
-  
+
   // Liberar explicitamente "USUARIOS" para o usuário Ricardo
   const userName = String(state.authUser?.name || "").trim().toLowerCase();
   if (userName === "ricardo") {
     next.add("USUARIOS");
   }
-  
+
   state.allowedModes = next;
 }
 
@@ -4888,7 +4889,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem, el.viewUsuarios]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -4900,10 +4901,18 @@ function setMode(mode) {
     renderDashboardCharts();
     carregarDadosGlobaisDashboard();
   }
+  if (mode === "PROD_ANALISE") {
+    if (el.viewProdAnalise) el.viewProdAnalise.classList.remove("hidden");
+    const paDataInicio = document.getElementById("paDataInicio");
+    const paDataFim = document.getElementById("paDataFim");
+    if (paDataInicio && !paDataInicio.value) paDataInicio.value = todayYmd();
+    if (paDataFim && !paDataFim.value) paDataFim.value = todayYmd();
+    carregarProdutividadeConcretagem();
+  }
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
     el.viewLiberacao.classList.remove("hidden");
     state.activeLiberacaoSector = mode;
-    
+
     const isKioskSector = mode === "LIBERACAO_S1" || mode === "LIBERACAO_S2" || mode === "LIBERACAO_S3" || mode === "LIBERACAO_S4";
     if (isKioskSector) {
       document.body.classList.add("kiosk-active");
@@ -5070,7 +5079,7 @@ function bindEvents() {
     el.navUsuarios.addEventListener("click", () => setMode("USUARIOS"));
   }
 
-  
+
     if (el.hubLiberacao) {
       el.hubLiberacao.addEventListener("click", () => {
         setMode("LIBERACAO");
@@ -5257,7 +5266,7 @@ function bindEvents() {
       setMode("HUB");
     });
   }
-  
+
   if (el.btnKioskSync) {
     el.btnKioskSync.addEventListener("click", async () => {
       const btn = el.btnKioskSync;
@@ -5356,7 +5365,7 @@ function bindEvents() {
       const target = event.target;
       if (!(target instanceof HTMLInputElement)) return;
       if (!target.classList.contains("mp-item-photo-input")) return;
-      
+
       const file = target.files?.[0];
       if (!file) return;
 
@@ -5467,6 +5476,18 @@ function bindEvents() {
   if (navInicio) navInicio.addEventListener("click", () => setMode("HUB"));
   const navDashboard = document.getElementById("navDashboard");
   if (navDashboard) navDashboard.addEventListener("click", () => setMode("DASHBOARD"));
+  const navProdAnalise = document.getElementById("navProdAnalise");
+  if (navProdAnalise) navProdAnalise.addEventListener("click", () => setMode("PROD_ANALISE"));
+
+  // Productivity filters & actions
+  const paBtnFiltrar = document.getElementById("paBtnFiltrar");
+  if (paBtnFiltrar) paBtnFiltrar.addEventListener("click", carregarProdutividadeConcretagem);
+  const paBtnExportarCSV = document.getElementById("paBtnExportarCSV");
+  if (paBtnExportarCSV) paBtnExportarCSV.addEventListener("click", exportarPaCSV);
+  const paBtnExportarExcel = document.getElementById("paBtnExportarExcel");
+  if (paBtnExportarExcel) paBtnExportarExcel.addEventListener("click", exportarPaExcel);
+  const paBtnExportarPDF = document.getElementById("paBtnExportarPDF");
+  if (paBtnExportarPDF) paBtnExportarPDF.addEventListener("click", exportarPaPDF);
 
   // Dashboard charts filter
   const dbData = document.getElementById("dbData");
@@ -5497,9 +5518,9 @@ function bindEvents() {
 
 async function syncOfflineData() {
   if (!supabaseClient) return;
-  
+
   let syncedCount = 0;
-  
+
   // 1. Sincronizar montagem_poste (Etapa MONTAGEM / INSPECAO)
   try {
     const mpDb = readMontagemPostesDb();
@@ -5525,7 +5546,7 @@ async function syncOfflineData() {
   try {
     const db = readDb();
     let dbChanged = false;
-    
+
     // Sincronizar eventos pendentes
     for (let ev of db.events || []) {
       if (ev.pendingSync === true) {
@@ -5552,7 +5573,7 @@ async function syncOfflineData() {
         } else if (ev.etapa === "INSPECAO") {
           const record = db.records.find(r => r.id === ev.recordId);
           const inspecaoLoc = record?.inspecoes?.find(ins => ins.pendingSync === true);
-          
+
           if (record && inspecaoLoc) {
             // Sincronizar registro montagem_poste individual
             const composedKey = [record.id, record.dataFabricacao, record.setor, record.formaNumero, 'INSPECAO'].join("||");
@@ -5586,14 +5607,14 @@ async function syncOfflineData() {
         }
       }
     }
-    
+
     if (dbChanged) {
       writeDb(db);
     }
   } catch (err) {
     console.error("[syncOfflineData] Erro ao sincronizar apontamentos:", err);
   }
-  
+
   if (syncedCount > 0) {
     setSyncStatus("ok", `Sincronização offline automática concluída! ${syncedCount} item(ns) enviado(s).`);
   }
@@ -5639,6 +5660,809 @@ function subscribeToRealtimeUpdates() {
     });
 }
 
+const VOLUME_PRODUTO_M3 = {
+  "935": 0.18,
+  "938": 0.18,
+  "941": 0.22,
+  "943": 0.22,
+  "936": 0.30,
+  "939": 0.30,
+  "13580": 0.25,
+  "DEFAULT": 0.20,
+  "SETOR_4": 0.08
+};
+
+function getFormVolume(codigo, modelo, setor = "") {
+  const code = String(codigo || "").trim();
+  if (VOLUME_PRODUTO_M3[code]) return VOLUME_PRODUTO_M3[code];
+  if (setor === "Setor 4") return VOLUME_PRODUTO_M3.SETOR_4;
+
+  const m = String(modelo || "").toUpperCase();
+  if (m.includes("1 CX")) return 0.18;
+  if (m.includes("2 CX") || m.includes("2CX")) return 0.22;
+  if (m.includes("3 CX") || m.includes("3CX")) return 0.26;
+  if (m.includes("4 CX") || m.includes("4CX")) return 0.30;
+  if (m.includes("600")) return 0.30;
+  if (m.includes("300")) return 0.22;
+  if (m.includes("SUB.") || m.includes("SUBTERRANEO")) return 0.20;
+  if (m.includes("DTB") || m.includes("DTD")) return 0.25;
+  if (m.includes("CEMIG")) return 0.18;
+  if (m.includes("6,0 X 90") || m.includes("7,5 X 90")) return 0.08;
+  if (m.includes("7,0 X 150") || m.includes("7,5 X 200")) return 0.12;
+
+  return VOLUME_PRODUTO_M3.DEFAULT;
+}
+
+function getLocalRowsForPeriod(dStart, dEnd) {
+  const db = readDb();
+  return db.events
+    .filter(ev => ev.isFromApi === true && ev.etapa === "LIBERACAO" && ev.dataFabricacao >= dStart && ev.dataFabricacao <= dEnd)
+    .map(ev => ({
+      id: ev.id || uuid(),
+      data_fabricacao: ev.dataFabricacao,
+      data_hora: ev.timestamp,
+      setor: ev.setor,
+      forma: ev.formaNumero,
+      modelo: ev.modelo,
+      codigo_produto: ev.codigoProduto || null,
+      colaborador: ev.colaborador,
+      status: "LIBERADO"
+    }))
+    .sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+}
+
+function popularFiltroProdutos(rows) {
+  const select = document.getElementById("paFiltroProduto");
+  if (!select) return;
+  const valAnterior = select.value;
+  select.innerHTML = '<option value="">Todos</option>';
+
+  const produtosSet = new Set();
+  rows.forEach(r => {
+    if (r.modelo) produtosSet.add(r.modelo);
+    if (r.codigo_produto) produtosSet.add(String(r.codigo_produto));
+  });
+
+  Array.from(produtosSet).sort().forEach(p => {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.textContent = p;
+    select.appendChild(opt);
+  });
+
+  if (Array.from(produtosSet).has(valAnterior)) {
+    select.value = valAnterior;
+  }
+}
+
+function popularFiltroOperadores(rows) {
+  const select = document.getElementById("paFiltroOperador");
+  if (!select) return;
+  const valAnterior = select.value;
+  select.innerHTML = '<option value="">Todos</option>';
+
+  const operadores = new Set();
+  rows.forEach(r => {
+    const nome = String(r.colaborador || "").trim();
+    if (nome) operadores.add(nome);
+  });
+
+  Array.from(operadores).sort().forEach(nome => {
+    const opt = document.createElement("option");
+    opt.value = nome;
+    opt.textContent = nome;
+    select.appendChild(opt);
+  });
+
+  if (Array.from(operadores).has(valAnterior)) {
+    select.value = valAnterior;
+  }
+}
+
+function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta) {
+  const totalFormas = filteredRows.length;
+  let totalVolume = 0;
+  filteredRows.forEach(r => {
+    totalVolume += getFormVolume(r.codigo_produto, r.modelo, r.setor);
+  });
+
+  const groups = {};
+  filteredRows.forEach(r => {
+    const key = `${r.data_fabricacao}||${r.setor}`;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(r);
+  });
+
+  const validCycles = [];
+  const allIntervals = [];
+  const paradasList = [];
+  let tempoPerdidoTotal = 0;
+
+  Object.keys(groups).forEach(key => {
+    const [dia, setor] = key.split("||");
+    const list = groups[key].sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+
+    for (let i = 1; i < list.length; i++) {
+      const tPrev = new Date(list[i - 1].data_hora).getTime();
+      const tCurr = new Date(list[i].data_hora).getTime();
+      const diffMin = (tCurr - tPrev) / 60000;
+
+      if (diffMin <= 0) continue;
+
+      allIntervals.push(diffMin);
+
+      if (diffMin > 20) {
+        let classif = "VERDE";
+        if (diffMin > 20 && diffMin <= 30) classif = "AMARELO";
+        if (diffMin > 30) classif = "VERMELHO";
+
+        paradasList.push({
+          inicio: new Date(tPrev).toLocaleTimeString("pt-BR", {hour: '2-digit', minute:'2-digit'}),
+          fim: new Date(tCurr).toLocaleTimeString("pt-BR", {hour: '2-digit', minute:'2-digit'}),
+          duracao: Math.round(diffMin),
+          setor: list[i].setor,
+          produto: list[i].modelo || "N/A",
+          classificacao: classif,
+          data: dia
+        });
+      }
+
+      if (diffMin <= 60) {
+        validCycles.push(diffMin);
+        if (diffMin > meta) {
+          tempoPerdidoTotal += (diffMin - meta);
+        }
+      }
+    }
+  });
+
+  let cicloMedio = 0;
+  let cicloMediana = 0;
+  let cicloMin = 0;
+  let cicloMax = 0;
+  let cicloDesvioPadrao = 0;
+
+  if (validCycles.length > 0) {
+    validCycles.sort((a, b) => a - b);
+    const sum = validCycles.reduce((s, v) => s + v, 0);
+    cicloMedio = sum / validCycles.length;
+
+    const mid = Math.floor(validCycles.length / 2);
+    cicloMediana = validCycles.length % 2 !== 0 ? validCycles[mid] : (validCycles[mid - 1] + validCycles[mid]) / 2;
+
+    cicloMin = validCycles[0];
+    cicloMax = validCycles[validCycles.length - 1];
+
+    const avg = cicloMedio;
+    const sqDiffs = validCycles.map(v => Math.pow(v - avg, 2));
+    const avgSqDiff = sqDiffs.reduce((s, v) => s + v, 0) / validCycles.length;
+    cicloDesvioPadrao = Math.sqrt(avgSqDiff);
+  }
+
+  const numeroParadas = paradasList.filter(p => p.classificacao === "AMARELO" || p.classificacao === "VERMELHO").length;
+  paradasList.sort((a, b) => b.duracao - a.duracao);
+
+  let tempoDisponivelMin = validCycles.reduce((s, v) => s + v, 0);
+  if (tempoDisponivelMin === 0) tempoDisponivelMin = 480;
+
+  const producaoTeorica = tempoDisponivelMin / meta;
+  const eficienciaOperacional = producaoTeorica > 0 ? (totalFormas / producaoTeorica) * 100 : 0;
+
+  const jornadaDiaria = [];
+  const diasUnicos = Array.from(new Set(filteredRows.map(r => r.data_fabricacao))).sort();
+  diasUnicos.forEach(dia => {
+    const listDia = filteredRows.filter(r => r.data_fabricacao === dia).sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+    if (listDia.length > 0) {
+      const tIni = new Date(listDia[0].data_hora);
+      const tFim = new Date(listDia[listDia.length - 1].data_hora);
+      jornadaDiaria.push({
+        data: dia.split("-").reverse().join("/"),
+        inicio: tIni.toLocaleTimeString("pt-BR", {hour:'2-digit', minute:'2-digit'}),
+        fim: tFim.toLocaleTimeString("pt-BR", {hour:'2-digit', minute:'2-digit'}),
+        formas: listDia.length,
+        metaDiaria: Math.round(480 / meta)
+      });
+    }
+  });
+
+  const heatmapFaixas = {};
+  for (let h = 6; h <= 17; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      const key = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+      heatmapFaixas[key] = 0;
+    }
+  }
+
+  filteredRows.forEach(r => {
+    const dt = new Date(r.data_hora);
+    const hour = dt.getHours();
+    const min = dt.getMinutes();
+    if (hour >= 6 && hour <= 17) {
+      const minFaixa = Math.floor(min / 15) * 15;
+      const key = `${String(hour).padStart(2, '0')}:${String(minFaixa).padStart(2, '0')}`;
+      if (heatmapFaixas[key] !== undefined) heatmapFaixas[key]++;
+    }
+  });
+
+  let melhorCicloHistorico = 15;
+  const historicalGroups = {};
+  allRows.forEach(r => {
+    const key = `${r.data_fabricacao}||${r.setor}`;
+    if (!historicalGroups[key]) historicalGroups[key] = [];
+    historicalGroups[key].push(r);
+  });
+  const histCycles = [];
+  Object.keys(historicalGroups).forEach(k => {
+    const list = historicalGroups[k].sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+    for (let i = 1; i < list.length; i++) {
+      const diff = (new Date(list[i].data_hora).getTime() - new Date(list[i-1].data_hora).getTime()) / 60000;
+      if (diff >= 1 && diff <= 60) histCycles.push(diff);
+    }
+  });
+  if (histCycles.length > 0) {
+    histCycles.sort((a, b) => a - b);
+    melhorCicloHistorico = histCycles[0];
+  }
+
+  const capMaxFormsDia = Math.round(480 / melhorCicloHistorico);
+  const capMaxM3Dia = capMaxFormsDia * (totalVolume / Math.max(totalFormas, 1));
+
+  const capMedFormsDia = cicloMedio > 0 ? Math.round(480 / cicloMedio) : 0;
+  const capMedM3Dia = capMedFormsDia * (totalVolume / Math.max(totalFormas, 1));
+
+  const numDias = Math.max(diasUnicos.length, 1);
+  const capAtuFormsDia = Math.round(totalFormas / numDias);
+  const capAtuM3Dia = totalVolume / numDias;
+
+  return {
+    totalFormas,
+    totalVolume,
+    cicloMedio,
+    cicloMediana,
+    cicloMin,
+    cicloMax,
+    cicloDesvioPadrao,
+    numeroParadas,
+    tempoPerdidoTotal,
+    eficienciaOperacional,
+    formasPorHora: cicloMedio > 0 ? 60 / cicloMedio : 0,
+    m3PorHora: tempoDisponivelMin > 0 ? totalVolume / (tempoDisponivelMin / 60) : 0,
+    paradasAmarelas: paradasList.filter(p => p.classificacao === "AMARELO").length,
+    paradasVermelhas: paradasList.filter(p => p.classificacao === "VERMELHO").length,
+    paradasList,
+    jornadaDiaria,
+    heatmapFaixas,
+    capMaxFormsDia,
+    capMaxM3Dia,
+    capMedFormsDia,
+    capMedM3Dia,
+    capAtuFormsDia,
+    capAtuM3Dia,
+    filteredRows
+  };
+}
+
+function renderizarAlertasOperacionais(metricas, meta) {
+  const panel = document.getElementById("paAlertsPanel");
+  if (!panel) return;
+  panel.innerHTML = "";
+
+  const alerts = [];
+  if (metricas.cicloMedio > meta) {
+    alerts.push({
+      type: "warning",
+      text: `⚠️ Ciclo Médio (${Math.round(metricas.cicloMedio)} min) está acima do ciclo meta configurado (${meta} min).`
+    });
+  }
+  if (metricas.eficienciaOperacional > 0 && metricas.eficienciaOperacional < 80) {
+    alerts.push({
+      type: "danger",
+      text: `⚠️ Eficiência Operacional (${Math.round(metricas.eficienciaOperacional)}%) está abaixo da meta aceitável de 80%.`
+    });
+  }
+  const vermelhasHoje = metricas.paradasList.filter(p => p.classificacao === "VERMELHO" && p.data === todayYmd()).length;
+  if (vermelhasHoje >= 3) {
+    alerts.push({
+      type: "danger",
+      text: `🚨 Alerta crítico: Mais de 3 paradas vermelhas (>30 min) identificadas na data de hoje.`
+    });
+  }
+  if (metricas.tempoPerdidoTotal > 60) {
+    alerts.push({
+      type: "warning",
+      text: `⚠️ Tempo Perdido Acumulado (${Math.round(metricas.tempoPerdidoTotal)} min) excede o limite aceitável de 60 minutos.`
+    });
+  }
+
+  if (alerts.length > 0) {
+    alerts.forEach(a => {
+      const div = document.createElement("div");
+      div.className = `pa-alert pa-alert-${a.type}`;
+      div.textContent = a.text;
+      panel.appendChild(div);
+    });
+    panel.classList.remove("hidden");
+  } else {
+    panel.classList.add("hidden");
+  }
+}
+
+function renderizarTabelaParadas(list) {
+  const tbody = document.getElementById("paTbodyParadas");
+  if (!tbody) return;
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#64748b;">Nenhuma parada registrada.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.slice(0, 10).map(p => {
+    let badge = "badge-verde";
+    if (p.classificacao === "AMARELO") badge = "badge-amarelo";
+    if (p.classificacao === "VERMELHO") badge = "badge-vermelho";
+    return `<tr>
+      <td>${p.data.split("-").reverse().join("/")} ${p.inicio}</td>
+      <td>${p.data.split("-").reverse().join("/")} ${p.fim}</td>
+      <td style="font-weight: bold;">${p.duracao} min</td>
+      <td>${p.setor}</td>
+      <td>${p.produto}</td>
+      <td><span class="badge-parada ${badge}">${p.classificacao}</span></td>
+    </tr>`;
+  }).join("");
+}
+
+function renderizarTabelaJornada(list) {
+  const tbody = document.getElementById("paTbodyJornada");
+  if (!tbody) return;
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">Sem dados para o período.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.slice(0, 10).map(j => `
+    <tr>
+      <td>${j.data}</td>
+      <td>${j.inicio}</td>
+      <td>${j.fim}</td>
+      <td style="font-weight: bold;">${j.formas}</td>
+      <td>${j.metaDiaria}</td>
+    </tr>
+  `).join("");
+}
+
+function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
+  const diasUnicos = Array.from(new Set(metricas.filteredRows.map(r => r.data_fabricacao))).sort();
+
+  // 1. Ciclo Médio por Dia
+  destroyChart("chartPaCicloDia");
+  const ctxCicloDia = document.getElementById("chartPaCicloDia");
+  if (ctxCicloDia && typeof Chart !== "undefined") {
+    const mapCicloDia = {};
+    diasUnicos.forEach(d => { mapCicloDia[d] = []; });
+
+    // Agrupar por dia
+    const groups = {};
+    metricas.filteredRows.forEach(r => {
+      const key = `${r.data_fabricacao}||${r.setor}`;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(r);
+    });
+
+    Object.keys(groups).forEach(key => {
+      const [dia, setor] = key.split("||");
+      const list = groups[key].sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+      for (let i = 1; i < list.length; i++) {
+        const diff = (new Date(list[i].data_hora).getTime() - new Date(list[i-1].data_hora).getTime()) / 60000;
+        if (diff > 0 && diff <= 60) {
+          if (mapCicloDia[dia]) mapCicloDia[dia].push(diff);
+        }
+      }
+    });
+
+    const dataCicloDia = diasUnicos.map(d => {
+      const list = mapCicloDia[d] || [];
+      if (list.length === 0) return 0;
+      return list.reduce((s, v) => s + v, 0) / list.length;
+    });
+
+    chartInstances["chartPaCicloDia"] = new Chart(ctxCicloDia, {
+      type: 'line',
+      data: {
+        labels: diasUnicos.map(d => d.split("-").reverse().join("/")),
+        datasets: [{
+          label: 'Ciclo Médio (min)',
+          data: dataCicloDia,
+          borderColor: '#1e40af',
+          backgroundColor: 'rgba(30, 64, 175, 0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  // 2. Histograma de Tempos de Ciclo
+  destroyChart("chartPaHistograma");
+  const ctxHist = document.getElementById("chartPaHistograma");
+  if (ctxHist && typeof Chart !== "undefined") {
+    const buckets = { "<5 min": 0, "5-10 min": 0, "10-15 min": 0, "15-20 min": 0, "20-30 min": 0, ">30 min": 0 };
+
+    const groups = {};
+    metricas.filteredRows.forEach(r => {
+      const key = `${r.data_fabricacao}||${r.setor}`;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(r);
+    });
+
+    Object.keys(groups).forEach(key => {
+      const list = groups[key].sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+      for (let i = 1; i < list.length; i++) {
+        const diff = (new Date(list[i].data_hora).getTime() - new Date(list[i-1].data_hora).getTime()) / 60000;
+        if (diff <= 0) continue;
+        if (diff < 5) buckets["<5 min"]++;
+        else if (diff >= 5 && diff < 10) buckets["5-10 min"]++;
+        else if (diff >= 10 && diff < 15) buckets["10-15 min"]++;
+        else if (diff >= 15 && diff < 20) buckets["15-20 min"]++;
+        else if (diff >= 20 && diff < 30) buckets["20-30 min"]++;
+        else buckets[">30 min"]++;
+      }
+    });
+
+    chartInstances["chartPaHistograma"] = new Chart(ctxHist, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(buckets),
+        datasets: [{
+          label: 'Frequência de Ciclos',
+          data: Object.values(buckets),
+          backgroundColor: '#8b5cf6',
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  // 3. Curva Acumulada de Produção
+  destroyChart("chartPaCurvaAcumulada");
+  const ctxCurva = document.getElementById("chartPaCurvaAcumulada");
+  if (ctxCurva && typeof Chart !== "undefined") {
+    // Ordenar todos os apontamentos cronologicamente por hora (HH:MM)
+    const sortedEvents = [...metricas.filteredRows].sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+    let accum = 0;
+    const labelsCurva = [];
+    const dataCurva = [];
+
+    sortedEvents.forEach(e => {
+      accum++;
+      const timeStr = new Date(e.data_hora).toLocaleTimeString("pt-BR", {hour: '2-digit', minute:'2-digit'});
+      labelsCurva.push(timeStr);
+      dataCurva.push(accum);
+    });
+
+    chartInstances["chartPaCurvaAcumulada"] = new Chart(ctxCurva, {
+      type: 'line',
+      data: {
+        labels: labelsCurva,
+        datasets: [{
+          label: 'Produção Acumulada',
+          data: dataCurva,
+          borderColor: '#10b981',
+          borderWidth: 2.5,
+          pointRadius: 1,
+          fill: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { x: { ticks: { maxTicksLimit: 15 } } }
+      }
+    });
+  }
+
+  // 4. Pareto de Paradas
+  destroyChart("chartPaPareto");
+  const ctxPareto = document.getElementById("chartPaPareto");
+  if (ctxPareto && typeof Chart !== "undefined") {
+    // Agrupar durações de paradas por Produto/Modelo
+    const paradasPorProduto = {};
+    metricas.paradasList.forEach(p => {
+      paradasPorProduto[p.produto] = (paradasPorProduto[p.produto] || 0) + p.duracao;
+    });
+
+    const sortedProds = Object.keys(paradasPorProduto).sort((a, b) => paradasPorProduto[b] - paradasPorProduto[a]);
+    const durations = sortedProds.map(p => paradasPorProduto[p]);
+    const totalDuration = durations.reduce((s, v) => s + v, 0);
+
+    let runningSum = 0;
+    const cumPercentages = durations.map(d => {
+      runningSum += d;
+      return totalDuration > 0 ? (runningSum / totalDuration) * 100 : 0;
+    });
+
+    chartInstances["chartPaPareto"] = new Chart(ctxPareto, {
+      type: 'bar',
+      data: {
+        labels: sortedProds,
+        datasets: [
+          {
+            type: 'bar',
+            label: 'Duração Total (min)',
+            data: durations,
+            backgroundColor: '#ef4444',
+            yAxisID: 'y'
+          },
+          {
+            type: 'line',
+            label: '% Acumulada',
+            data: cumPercentages,
+            borderColor: '#f59e0b',
+            borderWidth: 2,
+            yAxisID: 'yPercent',
+            fill: false
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { type: 'linear', position: 'left' },
+          yPercent: { type: 'linear', position: 'right', min: 0, max: 100, grid: { drawOnChartArea: false } }
+        }
+      }
+    });
+  }
+
+  // 5. Heatmap de Produção
+  destroyChart("chartPaHeatmap");
+  const ctxHeat = document.getElementById("chartPaHeatmap");
+  if (ctxHeat && typeof Chart !== "undefined") {
+    const labelsHeat = Object.keys(metricas.heatmapFaixas);
+    const dataHeat = Object.values(metricas.heatmapFaixas);
+
+    chartInstances["chartPaHeatmap"] = new Chart(ctxHeat, {
+      type: 'bar',
+      data: {
+        labels: labelsHeat,
+        datasets: [{
+          label: 'Formas Concretadas',
+          data: dataHeat,
+          backgroundColor: 'rgba(14, 116, 144, 0.85)',
+          borderRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { x: { ticks: { maxTicksLimit: 12 } } }
+      }
+    });
+  }
+
+  // 6. Eficiência por Setor
+  destroyChart("chartPaEficienciaSetor");
+  const ctxEficSetor = document.getElementById("chartPaEficienciaSetor");
+  if (ctxEficSetor && typeof Chart !== "undefined") {
+    const setores = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
+    const meta = parseFloat(document.getElementById("paMetaCiclo")?.value || "15");
+
+    const dataEfic = setores.map(s => {
+      const listSetor = metricas.filteredRows.filter(r => r.setor === s);
+      const groupsSetor = {};
+      listSetor.forEach(r => {
+        if (!groupsSetor[r.data_fabricacao]) groupsSetor[r.data_fabricacao] = [];
+        groupsSetor[r.data_fabricacao].push(r);
+      });
+
+      const sectorCycles = [];
+      Object.keys(groupsSetor).forEach(d => {
+        const list = groupsSetor[d].sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+        for (let i = 1; i < list.length; i++) {
+          const diff = (new Date(list[i].data_hora).getTime() - new Date(list[i-1].data_hora).getTime()) / 60000;
+          if (diff > 0 && diff <= 60) sectorCycles.push(diff);
+        }
+      });
+
+      let tempoDisponivel = sectorCycles.reduce((sum, v) => sum + v, 0);
+      if (tempoDisponivel === 0) tempoDisponivel = 480;
+      const producaoTeoricaSetor = tempoDisponivel / meta;
+      return producaoTeoricaSetor > 0 ? (listSetor.length / producaoTeoricaSetor) * 100 : 0;
+    });
+
+    chartInstances["chartPaEficienciaSetor"] = new Chart(ctxEficSetor, {
+      type: 'bar',
+      data: {
+        labels: setores,
+        datasets: [{
+          label: 'Eficiência (%)',
+          data: dataEfic,
+          backgroundColor: ['#3b82f6', '#10b981', '#8b5cf6', '#f97316'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { x: { min: 0, max: 100 } }
+      }
+    });
+  }
+
+  // 7. m³ por Hora
+  destroyChart("chartPaM3Hora");
+  const ctxM3Hora = document.getElementById("chartPaM3Hora");
+  if (ctxM3Hora && typeof Chart !== "undefined") {
+    const faixasHoras = ["06h", "07h", "08h", "09h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h"];
+    const volumesHoras = Array(12).fill(0);
+
+    metricas.filteredRows.forEach(r => {
+      const dt = new Date(r.data_hora);
+      const h = dt.getHours();
+      if (h >= 6 && h <= 17) {
+        volumesHoras[h - 6] += getFormVolume(r.codigo_produto, r.modelo, r.setor);
+      }
+    });
+
+    chartInstances["chartPaM3Hora"] = new Chart(ctxM3Hora, {
+      type: 'bar',
+      data: {
+        labels: faixasHoras,
+        datasets: [{
+          label: 'Volume Concretado (m³)',
+          data: volumesHoras,
+          backgroundColor: 'rgba(232, 118, 42, 0.9)',
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+}
+
+async function carregarProdutividadeConcretagem() {
+  const dStart = document.getElementById("paDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("paDataFim")?.value || todayYmd();
+  const meta = parseFloat(document.getElementById("paMetaCiclo")?.value || "15");
+
+  setSyncStatus("pending", "Carregando dados de produtividade...");
+
+  let allRows = [];
+  if (hasApiConfigured()) {
+    try {
+      let page = 0;
+      const pageSize = 1000;
+      let keepFetching = true;
+      while (keepFetching) {
+        const from = page * pageSize;
+        const to = from + pageSize - 1;
+        const { data: rows, error } = await supabaseClient
+          .from('producao')
+          .select('*')
+          .gte('data_fabricacao', dStart)
+          .lte('data_fabricacao', dEnd)
+          .eq('status', 'LIBERADO')
+          .order('data_hora', { ascending: true })
+          .range(from, to);
+
+        if (error) throw error;
+        if (rows && rows.length > 0) {
+          allRows = allRows.concat(rows);
+        }
+        if (!rows || rows.length < pageSize || page >= 10) {
+          keepFetching = false;
+        } else {
+          page++;
+        }
+      }
+    } catch (err) {
+      console.warn("Erro Supabase em produtividade, buscando local:", err);
+      allRows = getLocalRowsForPeriod(dStart, dEnd);
+    }
+  } else {
+    allRows = getLocalRowsForPeriod(dStart, dEnd);
+  }
+
+  popularFiltroProdutos(allRows);
+  popularFiltroOperadores(allRows);
+
+  const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
+  const filterOperador = document.getElementById("paFiltroOperador")?.value || "";
+  const filterProduto = document.getElementById("paFiltroProduto")?.value || "";
+
+  let filteredRows = allRows.filter(r => {
+    if (filterSetor && r.setor !== filterSetor) return false;
+    if (filterOperador && r.colaborador !== filterOperador) return false;
+    if (filterProduto && r.modelo !== filterProduto && r.codigo_produto !== filterProduto) return false;
+    return true;
+  });
+
+  const metricas = calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta);
+
+  document.getElementById("paKpiFormas").textContent = metricas.totalFormas;
+  document.getElementById("paKpiVolume").textContent = metricas.totalVolume.toFixed(2) + " m³";
+  document.getElementById("paKpiCicloMedio").textContent = metricas.cicloMedio > 0 ? Math.round(metricas.cicloMedio) + " min" : "N/A";
+  document.getElementById("paKpiCicloDetalhes").innerHTML = `
+    Mediana: ${metricas.cicloMediana > 0 ? Math.round(metricas.cicloMediana) + "m" : "N/A"} |
+    DP: ${metricas.cicloDesvioPadrao > 0 ? Math.round(metricas.cicloDesvioPadrao) + "m" : "N/A"}<br>
+    Min: ${metricas.cicloMin > 0 ? Math.round(metricas.cicloMin) + "m" : "—"} |
+    Max: ${metricas.cicloMax > 0 ? Math.round(metricas.cicloMax) + "m" : "—"}
+  `;
+  document.getElementById("paKpiEficiencia").textContent = metricas.eficienciaOperacional > 0 ? Math.round(metricas.eficienciaOperacional) + "%" : "N/A";
+  document.getElementById("paKpiTempoPerdido").textContent = metricas.tempoPerdidoTotal > 0 ? Math.round(metricas.tempoPerdidoTotal) + " min" : "0 min";
+  document.getElementById("paKpiParadas").textContent = metricas.numeroParadas;
+  const setKpi = (id, value) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value;
+  };
+  setKpi("paKpiCicloMin", metricas.cicloMin > 0 ? Math.round(metricas.cicloMin) + " min" : "N/A");
+  setKpi("paKpiCicloMax", metricas.cicloMax > 0 ? Math.round(metricas.cicloMax) + " min" : "N/A");
+  setKpi("paKpiDesvioPadrao", metricas.cicloDesvioPadrao > 0 ? metricas.cicloDesvioPadrao.toFixed(1) + " min" : "N/A");
+  setKpi("paKpiFormasHora", metricas.formasPorHora > 0 ? metricas.formasPorHora.toFixed(1) : "N/A");
+  setKpi("paKpiM3Hora", metricas.m3PorHora > 0 ? metricas.m3PorHora.toFixed(2) + " m³/h" : "N/A");
+  setKpi("paKpiParadasAV", `${metricas.paradasAmarelas} / ${metricas.paradasVermelhas}`);
+
+  renderizarAlertasOperacionais(metricas, meta);
+  renderizarGraficosProdutividade(metricas, dStart, dEnd);
+  renderizarTabelaParadas(metricas.paradasList);
+  renderizarTabelaJornada(metricas.jornadaDiaria);
+
+  state.paLastMetricas = metricas;
+  state.paLastRows = filteredRows;
+
+  setSyncStatus("ok", "Análise de produtividade atualizada.");
+}
+
+function exportarPaCSV() {
+  const metricas = state.paLastMetricas;
+  if (!metricas || !metricas.paradasList) {
+    showMsgBox("Gere um filtro antes de exportar.", "error");
+    return;
+  }
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "Data;Horario Inicio;Horario Fim;Duracao (min);Setor;Produto;Classificacao\n";
+
+  metricas.paradasList.forEach(p => {
+    csvContent += `${p.data};${p.inicio};${p.fim};${p.duracao};${p.setor};${p.produto};${p.classificacao}\n`;
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `paradas_concretagem_${todayYmd()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function exportarPaExcel() {
+  const metricas = state.paLastMetricas;
+  if (!metricas || !metricas.paradasList) {
+    showMsgBox("Gere um filtro antes de exportar.", "error");
+    return;
+  }
+
+  let tableHtml = "<table border='1'><tr><th>Data</th><th>Horario Inicio</th><th>Horario Fim</th><th>Duracao (min)</th><th>Setor</th><th>Produto</th><th>Classificacao</th></tr>";
+  metricas.paradasList.forEach(p => {
+    tableHtml += `<tr><td>${p.data}</td><td>${p.inicio}</td><td>${p.fim}</td><td>${p.duracao}</td><td>${p.setor}</td><td>${p.produto}</td><td>${p.classificacao}</td></tr>`;
+  });
+  tableHtml += "</table>";
+
+  const blob = new Blob([tableHtml], { type: "application/vnd.ms-excel" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", `produtividade_concretagem_${todayYmd()}.xls`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function exportarPaPDF() {
+  window.print();
+}
+
 function init() {
   setMode("HUB");
   setSyncStatus("pending", "Verificando conexão com a planilha...");
@@ -5661,6 +6485,10 @@ function init() {
   if (el.acmpSetor) el.acmpSetor.value = "";
   const dbDataEl = document.getElementById("dbData");
   if (dbDataEl) dbDataEl.value = now;
+  const paDataInicio = document.getElementById("paDataInicio");
+  const paDataFim = document.getElementById("paDataFim");
+  if (paDataInicio) paDataInicio.value = now;
+  if (paDataFim) paDataFim.value = now;
 
   if ("serviceWorker" in navigator) {
     let refreshing = false;

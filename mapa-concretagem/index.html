@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=7a10a9d7" />
+  <link rel="stylesheet" href="styles.css?v=a12913c6" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -55,6 +55,10 @@
       <button class="nav-item" id="navDashboard" type="button">
         <span class="nav-icon-wrap">📊</span>
         Dashboard
+      </button>
+      <button class="nav-item" id="navProdAnalise" type="button">
+        <span class="nav-icon-wrap">📈</span>
+        Produtividade
       </button>
       <button class="nav-item" id="hubLiberacao" type="button">
         <span class="nav-icon-wrap">PL</span>
@@ -267,6 +271,199 @@
         <div class="db-hist-card">
           <div class="db-hist-title">Histórico por Data</div>
           <div id="dbHistory" class="ins-dash-history"></div>
+        </div>
+      </section>
+
+      <!-- Análise de Produtividade da Concretagem -->
+      <section id="viewProdAnalise" class="hidden">
+        <div class="section-title-row">
+          <h2>Análise de Produtividade da Concretagem</h2>
+          <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
+        </div>
+
+        <!-- Barra de Filtros Avançados -->
+        <div class="db-toolbar pa-toolbar">
+          <div class="pa-filter-group">
+            <label class="db-toolbar-label">Data Início
+              <input id="paDataInicio" type="date" />
+            </label>
+            <label class="db-toolbar-label">Data Fim
+              <input id="paDataFim" type="date" />
+            </label>
+            <label class="db-toolbar-label">Setor
+              <select id="paFiltroSetor" class="kiosk-input" style="font-size:0.88rem; padding: 6px 12px; height: 38px;">
+                <option value="">Todos</option>
+                <option value="Setor 1">Setor 1</option>
+                <option value="Setor 2">Setor 2</option>
+                <option value="Setor 3">Setor 3</option>
+                <option value="Setor 4">Setor 4</option>
+              </select>
+            </label>
+            <label class="db-toolbar-label">Operador
+              <select id="paFiltroOperador" class="kiosk-input" style="font-size:0.88rem; padding: 6px 12px; height: 38px;">
+                <option value="">Todos</option>
+                <option value="Jeferson">Jeferson</option>
+                <option value="Elizeu">Elizeu</option>
+                <option value="Mario">Mario</option>
+                <option value="Leonardo">Leonardo</option>
+              </select>
+            </label>
+            <label class="db-toolbar-label">Produto
+              <select id="paFiltroProduto" class="kiosk-input" style="font-size:0.88rem; padding: 6px 12px; height: 38px;">
+                <option value="">Todos</option>
+              </select>
+            </label>
+            <label class="db-toolbar-label">Meta (min)
+              <input id="paMetaCiclo" type="number" value="15" min="1" max="120" style="width: 70px; height: 38px;" />
+            </label>
+          </div>
+          <div class="pa-action-group" style="display:flex; gap:8px; align-items:flex-end;">
+            <button id="paBtnFiltrar" class="btn primary" type="button" style="height:38px;">🔍 Filtrar</button>
+            <button id="paBtnExportarCSV" class="btn" type="button" style="height:38px; padding: 0 10px;">CSV</button>
+            <button id="paBtnExportarExcel" class="btn" type="button" style="height:38px; padding: 0 10px;">Excel</button>
+            <button id="paBtnExportarPDF" class="btn" type="button" style="height:38px; padding: 0 10px;">PDF</button>
+          </div>
+        </div>
+
+        <!-- Painel de Alertas Operacionais -->
+        <div id="paAlertsPanel" class="pa-alerts-panel hidden" style="margin-bottom: 20px;"></div>
+
+        <!-- Cards Superiores de KPIs -->
+        <div class="db-kpi-row">
+          <div class="db-kpi-card db-kpi-prod">
+            <span class="db-kpi-label">Formas Concretadas</span>
+            <span class="db-kpi-val" id="paKpiFormas">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-ins">
+            <span class="db-kpi-label">Volume (m³)</span>
+            <span class="db-kpi-val" id="paKpiVolume">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-ok" style="position: relative;">
+            <span class="db-kpi-label">Ciclo Médio</span>
+            <span class="db-kpi-val" id="paKpiCicloMedio">—</span>
+            <span class="db-kpi-sub" id="paKpiCicloDetalhes" style="font-size:0.72rem; color:#64748b; margin-top:2px; display:block;">Mediana: —</span>
+          </div>
+          <div class="db-kpi-card db-kpi-pct">
+            <span class="db-kpi-label">Eficiência Operacional</span>
+            <span class="db-kpi-val" id="paKpiEficiencia">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-r">
+            <span class="db-kpi-label">Tempo Perdido</span>
+            <span class="db-kpi-val" id="paKpiTempoPerdido">—</span>
+          </div>
+          <div class="db-kpi-card db-kpi-rr">
+            <span class="db-kpi-label">Nº de Paradas</span>
+            <span class="db-kpi-val" id="paKpiParadas">—</span>
+          </div>
+        </div>
+
+        <div class="db-kpi-row pa-kpi-secondary">
+          <div class="db-kpi-card">
+            <span class="db-kpi-label">Menor Ciclo</span>
+            <span class="db-kpi-val" id="paKpiCicloMin">—</span>
+          </div>
+          <div class="db-kpi-card">
+            <span class="db-kpi-label">Maior Ciclo</span>
+            <span class="db-kpi-val" id="paKpiCicloMax">—</span>
+          </div>
+          <div class="db-kpi-card">
+            <span class="db-kpi-label">Desvio Padrão</span>
+            <span class="db-kpi-val" id="paKpiDesvioPadrao">—</span>
+          </div>
+          <div class="db-kpi-card">
+            <span class="db-kpi-label">Formas por Hora</span>
+            <span class="db-kpi-val" id="paKpiFormasHora">—</span>
+          </div>
+          <div class="db-kpi-card">
+            <span class="db-kpi-label">m³ por Hora</span>
+            <span class="db-kpi-val" id="paKpiM3Hora">—</span>
+          </div>
+          <div class="db-kpi-card">
+            <span class="db-kpi-label">Amarelas / Vermelhas</span>
+            <span class="db-kpi-val" id="paKpiParadasAV">—</span>
+          </div>
+        </div>
+
+        <!-- Grid de Gráficos -->
+        <div class="db-charts-row-equal" style="margin-top: 24px;">
+          <div class="db-chart-card">
+            <div class="db-chart-title">Ciclo Médio por Dia (minutos)</div>
+            <div class="db-chart-wrap"><canvas id="chartPaCicloDia"></canvas></div>
+          </div>
+          <div class="db-chart-card">
+            <div class="db-chart-title">Distribuição de Tempos de Ciclo (Histograma)</div>
+            <div class="db-chart-wrap"><canvas id="chartPaHistograma"></canvas></div>
+          </div>
+        </div>
+
+        <div class="db-charts-row-equal" style="margin-top: 24px;">
+          <div class="db-chart-card">
+            <div class="db-chart-title">Curva Acumulada de Produção (Formas Concretadas)</div>
+            <div class="db-chart-wrap"><canvas id="chartPaCurvaAcumulada"></canvas></div>
+          </div>
+          <div class="db-chart-card">
+            <div class="db-chart-title">Análise de Gargalos (Pareto de Paradas)</div>
+            <div class="db-chart-wrap"><canvas id="chartPaPareto"></canvas></div>
+          </div>
+        </div>
+
+        <div class="db-charts-row-equal" style="margin-top: 24px;">
+          <div class="db-chart-card">
+            <div class="db-chart-title">Heatmap de Produção por Faixa Horária (06h às 17h)</div>
+            <div class="db-chart-wrap"><canvas id="chartPaHeatmap"></canvas></div>
+          </div>
+          <div class="db-chart-card">
+            <div class="db-chart-title">Eficiência Média por Setor (%)</div>
+            <div class="db-chart-wrap"><canvas id="chartPaEficienciaSetor"></canvas></div>
+          </div>
+        </div>
+
+        <div class="db-hist-card" style="margin-top: 24px;">
+          <div class="db-hist-title">Volume Concretado por Faixa Horária (m³/h)</div>
+          <div class="db-chart-wrap" style="height: 250px;"><canvas id="chartPaM3Hora"></canvas></div>
+        </div>
+
+        <!-- Tabelas de Análise e Rankings -->
+        <div class="db-charts-row-equal" style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 24px;">
+          <div class="db-chart-card" style="flex: 1.3; min-width: 300px;">
+            <div class="db-chart-title">🚨 Ranking das Maiores Paradas Operacionais</div>
+            <div style="overflow-x: auto; margin-top: 10px;">
+              <table class="sheet-table" style="width: 100%; font-size: 0.85rem;">
+                <thead>
+                  <tr>
+                    <th>Início</th>
+                    <th>Fim</th>
+                    <th>Duração</th>
+                    <th>Setor</th>
+                    <th>Último Produto</th>
+                    <th>Classificação</th>
+                  </tr>
+                </thead>
+                <tbody id="paTbodyParadas">
+                  <tr><td colspan="6" style="text-align:center; color:#64748b;">Nenhuma parada registrada.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="db-chart-card" style="flex: 0.9; min-width: 300px;">
+            <div class="db-chart-title">📅 Histórico Diário de Jornada</div>
+            <div style="overflow-x: auto; margin-top: 10px;">
+              <table class="sheet-table" style="width: 100%; font-size: 0.85rem;">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Início</th>
+                    <th>Término</th>
+                    <th>Total Formas</th>
+                    <th>Meta Diária</th>
+                  </tr>
+                </thead>
+                <tbody id="paTbodyJornada">
+                  <tr><td colspan="5" style="text-align:center; color:#64748b;">Sem dados para o período.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -825,6 +1022,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=515ff92f"></script>
+  <script src="app.js?v=f58f17aa"></script>
 </body>
 </html>
