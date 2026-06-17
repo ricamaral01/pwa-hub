@@ -5989,7 +5989,7 @@ function renderizarTabelaJornada(list) {
 }
 
 function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
-  const diasUnicos = Array.from(new Set(metricas.filteredRows.map(r => r.data_fabricacao))).sort();
+  const diasUnicos = Array.from(new Set(metricas.filteredRows.map(r => r.data_fabricacao))).sort().reverse();
 
   // Novos Gráficos de Volume
   const dataVolDia = [];
