@@ -5735,29 +5735,7 @@ function popularFiltroProdutos(rows) {
   }
 }
 
-function popularFiltroOperadores(rows) {
-  const select = document.getElementById("paFiltroOperador");
-  if (!select) return;
-  const valAnterior = select.value;
-  select.innerHTML = '<option value="">Todos</option>';
 
-  const operadores = new Set();
-  rows.forEach(r => {
-    const nome = String(r.colaborador || "").trim();
-    if (nome) operadores.add(nome);
-  });
-
-  Array.from(operadores).sort().forEach(nome => {
-    const opt = document.createElement("option");
-    opt.value = nome;
-    opt.textContent = nome;
-    select.appendChild(opt);
-  });
-
-  if (Array.from(operadores).has(valAnterior)) {
-    select.value = valAnterior;
-  }
-}
 
 function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta) {
   const totalFormas = filteredRows.length;
@@ -6364,15 +6342,12 @@ async function carregarProdutividadeConcretagem() {
   }
 
   popularFiltroProdutos(allRows);
-  popularFiltroOperadores(allRows);
 
   const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
-  const filterOperador = document.getElementById("paFiltroOperador")?.value || "";
   const filterProduto = document.getElementById("paFiltroProduto")?.value || "";
 
   let filteredRows = allRows.filter(r => {
     if (filterSetor && r.setor !== filterSetor) return false;
-    if (filterOperador && r.colaborador !== filterOperador) return false;
     if (filterProduto && r.modelo !== filterProduto && r.codigo_produto !== filterProduto) return false;
     return true;
   });
