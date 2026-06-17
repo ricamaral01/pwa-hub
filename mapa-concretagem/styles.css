@@ -3991,3 +3991,126 @@ tr.row-montado {
     margin-top: 8px;
   }
 }
+/* --- NOVO LAYOUT PREMIUM DE PRODUTIVIDADE E GLOSSÁRIO --- */
+#viewProdAnalise {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+}
+
+#viewProdAnalise .pa-toolbar,
+#viewProdAnalise .db-chart-card,
+#viewProdAnalise .db-hist-card,
+#viewProdAnalise .db-kpi-card,
+#viewProdAnalise .pa-glossary-panel {
+  background: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+  border-radius: 16px !important;
+}
+
+#viewProdAnalise .db-kpi-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  padding: 16px 20px !important;
+  border-left-width: 1px !important; /* Reseta a borda colorida grossa antiga */
+  position: relative;
+  overflow: hidden;
+}
+
+#viewProdAnalise .db-kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--kpi-color, #3b82f6);
+}
+
+#viewProdAnalise .db-kpi-prod { --kpi-color: #3b82f6; }
+#viewProdAnalise .db-kpi-ins { --kpi-color: #10b981; }
+#viewProdAnalise .db-kpi-ok { --kpi-color: #8b5cf6; }
+#viewProdAnalise .db-kpi-pct { --kpi-color: #f59e0b; }
+#viewProdAnalise .db-kpi-r { --kpi-color: #ef4444; }
+#viewProdAnalise .db-kpi-rr { --kpi-color: #f43f5e; }
+
+.pa-kpi-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+.pa-kpi-icon {
+  font-size: 1.4rem;
+  background: rgba(255,255,255,0.05);
+  padding: 8px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+#viewProdAnalise .db-kpi-label {
+  font-size: 0.75rem !important;
+  color: #94a3b8 !important;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin: 0;
+}
+#viewProdAnalise .db-kpi-val {
+  font-size: 1.9rem !important;
+  font-weight: 700 !important;
+  color: #f8fafc !important;
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Glossário */
+.pa-glossary-panel {
+  padding: 24px;
+  margin-top: 32px;
+  color: #e2e8f0;
+}
+.pa-glossary-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pa-glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.pa-glossary-item {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.pa-glossary-item h4 {
+  margin: 0 0 8px 0;
+  font-size: 0.95rem;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pa-glossary-item p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+#viewProdAnalise .db-chart-title {
+  font-weight: 600;
+  color: #f1f5f9;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}

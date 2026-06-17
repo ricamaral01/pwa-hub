@@ -321,57 +321,58 @@
         <div id="paAlertsPanel" class="pa-alerts-panel hidden" style="margin-bottom: 20px;"></div>
 
         <!-- Cards Superiores de KPIs -->
+        <!-- Cards Superiores de KPIs -->
         <div class="db-kpi-row">
           <div class="db-kpi-card db-kpi-prod">
-            <span class="db-kpi-label">Formas Concretadas</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">🏗️</div><span class="db-kpi-label">Formas Concretadas</span></div>
             <span class="db-kpi-val" id="paKpiFormas">—</span>
           </div>
           <div class="db-kpi-card db-kpi-ins">
-            <span class="db-kpi-label">Volume (m³)</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">🧊</div><span class="db-kpi-label">Volume (m³)</span></div>
             <span class="db-kpi-val" id="paKpiVolume">—</span>
           </div>
           <div class="db-kpi-card db-kpi-ok" style="position: relative;">
-            <span class="db-kpi-label">Ciclo Médio</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">⏱️</div><span class="db-kpi-label">Ciclo Médio</span></div>
             <span class="db-kpi-val" id="paKpiCicloMedio">—</span>
-            <span class="db-kpi-sub" id="paKpiCicloDetalhes" style="font-size:0.72rem; color:#64748b; margin-top:2px; display:block;">Mediana: —</span>
+            <span class="db-kpi-sub" id="paKpiCicloDetalhes" style="font-size:0.72rem; color:#94a3b8; margin-top:2px; display:block;">Mediana: —</span>
           </div>
           <div class="db-kpi-card db-kpi-pct">
-            <span class="db-kpi-label">Eficiência Operacional</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">🎯</div><span class="db-kpi-label">Eficiência Operacional</span></div>
             <span class="db-kpi-val" id="paKpiEficiencia">—</span>
           </div>
           <div class="db-kpi-card db-kpi-r">
-            <span class="db-kpi-label">Tempo Perdido</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">⏳</div><span class="db-kpi-label">Tempo Perdido</span></div>
             <span class="db-kpi-val" id="paKpiTempoPerdido">—</span>
           </div>
           <div class="db-kpi-card db-kpi-rr">
-            <span class="db-kpi-label">Nº de Paradas</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">🛑</div><span class="db-kpi-label">Nº de Paradas</span></div>
             <span class="db-kpi-val" id="paKpiParadas">—</span>
           </div>
         </div>
 
         <div class="db-kpi-row pa-kpi-secondary">
           <div class="db-kpi-card">
-            <span class="db-kpi-label">Menor Ciclo</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">⚡</div><span class="db-kpi-label">Menor Ciclo</span></div>
             <span class="db-kpi-val" id="paKpiCicloMin">—</span>
           </div>
           <div class="db-kpi-card">
-            <span class="db-kpi-label">Maior Ciclo</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">🐢</div><span class="db-kpi-label">Maior Ciclo</span></div>
             <span class="db-kpi-val" id="paKpiCicloMax">—</span>
           </div>
           <div class="db-kpi-card">
-            <span class="db-kpi-label">Desvio Padrão</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">📉</div><span class="db-kpi-label">Desvio Padrão</span></div>
             <span class="db-kpi-val" id="paKpiDesvioPadrao">—</span>
           </div>
           <div class="db-kpi-card">
-            <span class="db-kpi-label">Formas por Hora</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">🏭</div><span class="db-kpi-label">Formas por Hora</span></div>
             <span class="db-kpi-val" id="paKpiFormasHora">—</span>
           </div>
           <div class="db-kpi-card">
-            <span class="db-kpi-label">m³ por Hora</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">🌊</div><span class="db-kpi-label">m³ por Hora</span></div>
             <span class="db-kpi-val" id="paKpiM3Hora">—</span>
           </div>
           <div class="db-kpi-card">
-            <span class="db-kpi-label">Amarelas / Vermelhas</span>
+            <div class="pa-kpi-header"><div class="pa-kpi-icon">🚦</div><span class="db-kpi-label">Amarelas / Vermelhas</span></div>
             <span class="db-kpi-val" id="paKpiParadasAV">—</span>
           </div>
         </div>
@@ -457,6 +458,34 @@
             </div>
           </div>
         </div>
+
+        <!-- Seção de Glossário Operacional -->
+        <div class="pa-glossary-panel">
+          <div class="pa-glossary-title">📖 Guia de Indicadores e Análise Operacional</div>
+          <div class="pa-glossary-grid">
+            <div class="pa-glossary-item">
+              <h4>⏱️ Ciclo Médio</h4>
+              <p>O tempo médio <strong>real</strong> que a equipe leva entre a concretagem de uma forma e a próxima. O cálculo já descarta paradas extremas para não distorcer a realidade da sua operação.</p>
+            </div>
+            <div class="pa-glossary-item">
+              <h4>🎯 Eficiência Operacional</h4>
+              <p>Mede quanto da capacidade <em>teórica</em> foi atingida. Se a meta é 15min e entregam a cada 15min, a eficiência é 100%. Quanto maior o ciclo médio ou maior o tempo de paradas, menor a eficiência. É o principal termômetro de saúde do setor.</p>
+            </div>
+            <div class="pa-glossary-item">
+              <h4>📉 Desvio Padrão</h4>
+              <p>Mede a "constância" da equipe. Um desvio padrão baixo (ex: < 2 min) significa que a equipe trabalha num ritmo contínuo (como um relógio). Um desvio alto indica ritmo "sanfona" (às vezes muito rápido, às vezes muito lento), revelando instabilidade no processo ou suprimentos.</p>
+            </div>
+            <div class="pa-glossary-item">
+              <h4>⏳ Tempo Perdido</h4>
+              <p>A soma de todos os minutos excedentes. Se a meta de ciclo era 15 minutos e uma forma demorou 20, foram 5 minutos "perdidos". Representa o potencial de ganho de produção se o gargalo for resolvido.</p>
+            </div>
+            <div class="pa-glossary-item">
+              <h4>🚦 Paradas (Amarelas / Vermelhas)</h4>
+              <p>Classificação de quebras de ritmo. <strong>Amarelas</strong> são intervalos atípicos entre 20 e 30 minutos. <strong>Vermelhas</strong> são paradas maiores que 30 minutos (sinalizando problemas sérios de logística de concreto, quebras ou trocas complexas).</p>
+            </div>
+          </div>
+        </div>
+
       </section>
 
     <section id="viewLiberacao" class="card hidden">
