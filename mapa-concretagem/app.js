@@ -3837,13 +3837,23 @@ function renderDashboardCharts() {
         maintainAspectRatio: false,
         plugins: {
           legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
-          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
+          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 },
+          datalabels: {
+            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
+            color: '#0f172a',
+            anchor: 'end',
+            align: 'top',
+            offset: 2,
+            font: { weight: 'bold', size: 11 },
+            formatter: Math.round
+          }
         },
         scales: {
           x: { grid: { display: false } },
-          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } }
+          y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 }, suggestedMax: Math.max(...allDates.map((d) => prodByDate[d] || 0)) * 1.15 }
         }
-      }
+      },
+      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
     });
   }
 
@@ -3867,13 +3877,22 @@ function renderDashboardCharts() {
         maintainAspectRatio: false,
         plugins: {
           legend: { position: "top", labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } },
-          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
+          tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 },
+          datalabels: {
+            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
+            color: '#ffffff',
+            anchor: 'center',
+            align: 'center',
+            font: { weight: 'bold', size: 10 },
+            formatter: Math.round
+          }
         },
         scales: {
           x: { stacked: true, grid: { display: false } },
-          y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 } }
+          y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { stepSize: 1, precision: 0 }, suggestedMax: Math.max(...allDates.map((d) => prodByDate[d] || 0)) * 1.15 }
         }
-      }
+      },
+      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
     });
   }
 
