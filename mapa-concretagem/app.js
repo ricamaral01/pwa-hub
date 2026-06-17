@@ -5823,6 +5823,7 @@ function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta
       });
     }
   });
+  jornadaDiaria.reverse();
 
   const heatmapFaixas = {};
   for (let h = 6; h <= 17; h++) {
