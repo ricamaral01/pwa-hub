@@ -67,9 +67,8 @@ function getMontagemChecklistSections(modelo = "") {
         { id: "rebarbas_final", texto: "Rebarbas", critico: false },
         { id: "liberacao_qualidade", texto: "Liberação Qualidade", critico: false },
         { id: "codificacao_poste", texto: "Codificação Poste", critico: false },
-        { id: "limpeza_prisioneiros", texto: "Limpeza prisioneiros", critico: false },
-        { id: "aterramento", texto: "Aterramento", critico: false },
-        { id: "lacre", texto: "Lacre", critico: false }
+        { id: "aterramento", texto: "Limpeza Aterramento", critico: false },
+        { id: "lacre", texto: "Limpeza Lacre", critico: false }
       ]
     }
   ];
@@ -672,8 +671,6 @@ const el = {
   mpStatusAprovado: document.getElementById("mpStatusAprovado"),
   mpStatusReprovado: document.getElementById("mpStatusReprovado"),
   mpStatusRR: document.getElementById("mpStatusRR"),
-  mpMotivoWrap: document.getElementById("mpMotivoWrap"),
-  mpMotivoSelect: document.getElementById("mpMotivoSelect"),
   mpObservacoes: document.getElementById("mpObservacoes"),
   mpChecklistSections: document.getElementById("mpChecklistSections"),
   mpFinalizarPoste: document.getElementById("mpFinalizarPoste"),
@@ -3100,13 +3097,6 @@ function renderMontagemStatusUI() {
     btn.classList.toggle("active", btn.dataset.mpStatus === status);
     btn.disabled = isFinalizado;
   });
-
-  if (el.mpMotivoWrap && el.mpMotivoSelect) {
-    const precisaMotivo = status === "R" || status === "RR";
-    el.mpMotivoWrap.classList.toggle("hidden", !precisaMotivo);
-    el.mpMotivoSelect.value = poste.motivoRecusa || "";
-    el.mpMotivoSelect.disabled = !precisaMotivo || isFinalizado;
-  }
 }
 
 function setMontagemStatus(status) {
@@ -3211,16 +3201,6 @@ function renderMontagemPosteDetalhe() {
     <div><strong>Tempo de Inspeção:</strong> <span style="color:#e8762a; font-weight:700;">${tempoGasto}</span></div>
   `;
 
-  if (el.mpMotivoSelect) {
-    const options = getMontagemMotivoOptions();
-    const currentValue = poste.motivoRecusa || "";
-    const first = '<option value="">Selecione o motivo</option>';
-    const html = options
-      .map((opt) => `<option value="${opt.value}" ${opt.value === currentValue ? "selected" : ""}>${opt.label}</option>`)
-      .join("");
-    el.mpMotivoSelect.innerHTML = first + html;
-  }
-
   renderMontagemChecklistSections();
   if (el.mpObservacoes) {
     el.mpObservacoes.value = poste.observacoesMontagem || "";
@@ -3319,11 +3299,6 @@ async function finalizarMontagemPosteAtual() {
 
   if (!allSectionsOk && !(temReprovadoPrimeiraSecao && (status === "R" || status === "RR"))) {
     showMsgBox("Responda todos os itens (Aprovado/Reprovado) de todas as seções antes de finalizar.", "error");
-    return;
-  }
-
-  if ((status === "R" || status === "RR") && !poste.motivoRecusa) {
-    showMsgBox("Selecione o motivo da recusa para continuar.", "error");
     return;
   }
 
