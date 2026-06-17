@@ -6345,6 +6345,80 @@ async function carregarProdutividadeConcretagem() {
   document.getElementById("paKpiEficiencia").textContent = metricas.eficienciaOperacional > 0 ? Math.round(metricas.eficienciaOperacional) + "%" : "N/A";
   document.getElementById("paKpiTempoPerdido").textContent = metricas.tempoPerdidoTotal > 0 ? Math.round(metricas.tempoPerdidoTotal) + " min" : "0 min";
   document.getElementById("paKpiParadas").textContent = metricas.numeroParadas;
+
+  // Novos KPIs de Volume de Concreto e Fora do Padrão
+  const mesStart = dEnd.substring(0, 8) + '01';
+  let allRowsMes = [];
+  if (hasApiConfigured()) {
+    try {
+      let page = 0;
+      const pageSize = 1000;
+      let keepFetching = true;
+      while (keepFetching) {
+        const from = page * pageSize;
+        const to = from + pageSize - 1;
+        const { data: rows, error } = await supabaseClient
+          .from('producao')
+          .select('data_fabricacao, codigo_produto, modelo, setor, tipo_concreto')
+          .gte('data_fabricacao', mesStart)
+          .lte('data_fabricacao', dEnd)
+          .eq('status', 'LIBERADO')
+          .range(from, to);
+
+        if (error) throw error;
+        if (rows && rows.length > 0) {
+          allRowsMes = allRowsMes.concat(rows);
+        }
+        if (!rows || rows.length < pageSize || page >= 10) {
+          keepFetching = false;
+        } else {
+          page++;
+        }
+      }
+    } catch (err) {
+      console.warn("Erro ao buscar dados mensais", err);
+      allRowsMes = getLocalRowsForPeriod(mesStart, dEnd);
+    }
+  } else {
+    allRowsMes = getLocalRowsForPeriod(mesStart, dEnd);
+  }
+
+  if (filterSetor) {
+    allRowsMes = allRowsMes.filter(r => r.setor === filterSetor);
+  }
+
+  const rowsDia = filteredRows.filter(r => r.data_fabricacao === dEnd);
+
+  let volConcretoDia = 0;
+  let volForaPadraoDia = 0;
+  rowsDia.forEach(r => {
+    const vol = getFormVolume(r.codigo_produto, r.modelo, r.setor);
+    volConcretoDia += vol;
+    const isPadrao = !r.tipo_concreto || r.tipo_concreto === "Padrão" || r.tipo_concreto === "Concreto Padrão";
+    if (!isPadrao) volForaPadraoDia += vol;
+  });
+
+  let volConcretoMes = 0;
+  let volForaPadraoMes = 0;
+  allRowsMes.forEach(r => {
+    const vol = getFormVolume(r.codigo_produto, r.modelo, r.setor);
+    volConcretoMes += vol;
+    const isPadrao = !r.tipo_concreto || r.tipo_concreto === "Padrão" || r.tipo_concreto === "Concreto Padrão";
+    if (!isPadrao) volForaPadraoMes += vol;
+  });
+
+  const paKpiVolConcretoDia = document.getElementById("paKpiVolConcretoDia");
+  if (paKpiVolConcretoDia) paKpiVolConcretoDia.textContent = volConcretoDia.toFixed(2) + " m³";
+  
+  const paKpiVolConcretoMes = document.getElementById("paKpiVolConcretoMes");
+  if (paKpiVolConcretoMes) paKpiVolConcretoMes.textContent = `Mês: ${volConcretoMes.toFixed(2)} m³`;
+  
+  const paKpiVolForaPadraoDia = document.getElementById("paKpiVolForaPadraoDia");
+  if (paKpiVolForaPadraoDia) paKpiVolForaPadraoDia.textContent = volForaPadraoDia.toFixed(2) + " m³";
+  
+  const paKpiVolForaPadraoMes = document.getElementById("paKpiVolForaPadraoMes");
+  if (paKpiVolForaPadraoMes) paKpiVolForaPadraoMes.textContent = `Mês: ${volForaPadraoMes.toFixed(2)} m³`;
+
   const setKpi = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
