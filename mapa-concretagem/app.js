@@ -6035,7 +6035,14 @@ function renderizarTabelaDadosConcretagem(filteredRows) {
   const rows = [...filteredRows].sort((a, b) => new Date(b.data_hora || b.updated_at) - new Date(a.data_hora || a.updated_at));
 
   tbody.innerHTML = rows.map(r => {
-    const time = (r.data_hora || r.updated_at || "").split("T")[1]?.substring(0, 5) || "N/A";
+    let time = "N/A";
+    const tsStr = r.data_hora || r.updated_at;
+    if (tsStr) {
+      const d = new Date(tsStr);
+      if (!isNaN(d.getTime())) {
+        time = d.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
+      }
+    }
     const tipo = r.tipo_concreto || r.tipoConcreto || r.concretoTipo || "Padrão";
     return `
       <tr>
@@ -6062,9 +6069,16 @@ function exportarPaDadosCSV() {
   const sortedRows = [...rows].sort((a, b) => new Date(a.data_hora || a.updated_at) - new Date(b.data_hora || b.updated_at));
   
   sortedRows.forEach(r => {
-    const timestamp = r.data_hora || r.updated_at || "";
-    const dateStr = timestamp.split("T")[0] || "";
-    const timeStr = timestamp.split("T")[1]?.substring(0, 5) || "";
+    let dateStr = "";
+    let timeStr = "";
+    const tsStr = r.data_hora || r.updated_at;
+    if (tsStr) {
+      const d = new Date(tsStr);
+      if (!isNaN(d.getTime())) {
+        dateStr = d.toLocaleDateString("pt-BR");
+        timeStr = d.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
+      }
+    }
     const tipo = r.tipo_concreto || r.tipoConcreto || r.concretoTipo || "Padrão";
     
     const fields = [
