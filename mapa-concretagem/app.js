@@ -4007,10 +4007,15 @@ async function carregarDadosGlobaisDashboard() {
 
     let montagemRows = [];
     try {
+      const startOfDayISO = new Date(selectedDate + "T00:00:00-03:00").toISOString();
+      const endOfDayISO = new Date(selectedDate + "T23:59:59-03:00").toISOString();
+      
       const { data: mRows, error: mError } = await supabaseClient
         .from('montagem_poste')
         .select('*')
-        .eq('data_fabricacao', selectedDate);
+        .gte('updated_at', startOfDayISO)
+        .lte('updated_at', endOfDayISO);
+        
       if (!mError && mRows) montagemRows = mRows;
     } catch (e) {
       console.warn("Erro ao buscar montagem_poste no Dashboard global:", e);
