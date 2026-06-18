@@ -6560,8 +6560,11 @@ async function carregarProdutividadeConcretagem() {
     Max: ${metricas.cicloMax > 0 ? Math.round(metricas.cicloMax) + "m" : "—"}
   `;
   document.getElementById("paKpiEficiencia").textContent = metricas.eficienciaOperacional > 0 ? Math.round(metricas.eficienciaOperacional) + "%" : "N/A";
-  document.getElementById("paKpiTempoPerdido").textContent = metricas.tempoPerdidoTotal > 0 ? Math.round(metricas.tempoPerdidoTotal) + " min" : "0 min";
-  document.getElementById("paKpiParadas").textContent = metricas.numeroParadas;
+  
+  // As linhas seguintes foram removidas porque os respectivos cards HTML foram deletados:
+  // document.getElementById("paKpiTempoPerdido").textContent = ...
+  // document.getElementById("paKpiParadas").textContent = ...
+
 
   // Novos KPIs de Volume de Concreto e Fora do Padrão
   const mesStart = dEnd.substring(0, 8) + '01';
