@@ -3789,6 +3789,11 @@ function renderDashboardCharts() {
     setTxt("dbCad" + s, txt);
   });
 
+  setTxt("dbProdS1", cadenceBySector["S1"].length);
+  setTxt("dbProdS2", cadenceBySector["S2"].length);
+  setTxt("dbProdS3", cadenceBySector["S3"].length);
+  setTxt("dbProdS4", cadenceBySector["S4"].length);
+
   // Last 7 working days (excluding weekends), ordered from newest to oldest
   const allDates = [];
   const baseDate = selectedDate ? new Date(selectedDate + "T12:00:00") : new Date();
