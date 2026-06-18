@@ -3740,6 +3740,41 @@ function renderDashboardCharts() {
   setTxt("dbKpiRR", kpiRR);
   setTxt("dbKpiRejPct", rejPct + "%");
 
+  // Qualidade por Setor
+  const qcSetores = {
+    S1: { A:0, R:0, RR:0, total:0 },
+    S2: { A:0, R:0, RR:0, total:0 },
+    S3: { A:0, R:0, RR:0, total:0 },
+    S4: { A:0, R:0, RR:0, total:0 }
+  };
+  apiEventsOnly.forEach(ev => {
+    const etapa = (ev.etapa || "").toUpperCase();
+    if (etapa !== "INSPECAO" && etapa !== "REINSPECAO") return;
+    if (selectedDate && ev.dataFabricacao !== selectedDate) return;
+
+    const setor = (ev.setor || "").toLowerCase();
+    const s = (ev.status || "").toUpperCase();
+    
+    let key = "";
+    if (setor.includes("1")) key = "S1";
+    else if (setor.includes("2")) key = "S2";
+    else if (setor.includes("3")) key = "S3";
+    else if (setor.includes("4")) key = "S4";
+
+    if (key) {
+      qcSetores[key].total++;
+      if (s === "A") qcSetores[key].A++;
+      else if (s === "R") qcSetores[key].R++;
+      else if (s === "RR") qcSetores[key].RR++;
+    }
+  });
+
+  Object.keys(qcSetores).forEach(k => {
+    setTxt("dbQcTot" + k, qcSetores[k].total);
+    setTxt("dbQcOk" + k, qcSetores[k].A);
+    setTxt("dbQcRej" + k, qcSetores[k].R + qcSetores[k].RR);
+  });
+
   // Cadência de Produção (Tempo Médio por Setor)
   const targetDateForCadence = selectedDate || todayYmd();
   const cadenceEvents = apiEventsOnly.filter(ev =>
