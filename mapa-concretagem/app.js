@@ -5538,6 +5538,8 @@ function bindEvents() {
   if (paBtnFiltrar) paBtnFiltrar.addEventListener("click", carregarProdutividadeConcretagem);
   const paBtnExportarCSV = document.getElementById("paBtnExportarCSV");
   if (paBtnExportarCSV) paBtnExportarCSV.addEventListener("click", exportarPaCSV);
+  const paBtnExportarDadosCSV = document.getElementById("paBtnExportarDadosCSV");
+  if (paBtnExportarDadosCSV) paBtnExportarDadosCSV.addEventListener("click", exportarPaDadosCSV);
   const paBtnExportarExcel = document.getElementById("paBtnExportarExcel");
   if (paBtnExportarExcel) paBtnExportarExcel.addEventListener("click", exportarPaExcel);
   const paBtnExportarPDF = document.getElementById("paBtnExportarPDF");
@@ -6019,6 +6021,71 @@ function renderizarTabelaParadas(list) {
       <td><span class="badge-parada ${badge}">${p.classificacao}</span></td>
     </tr>`;
   }).join("");
+}
+
+function renderizarTabelaDadosConcretagem(filteredRows) {
+  const tbody = document.getElementById("paDadosTbody");
+  if (!tbody) return;
+  if (!filteredRows || filteredRows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">Nenhum dado encontrado no período.</td></tr>';
+    return;
+  }
+  
+  // Ordenar por horário (mais recente primeiro)
+  const rows = [...filteredRows].sort((a, b) => new Date(b.data_hora || b.updated_at) - new Date(a.data_hora || a.updated_at));
+
+  tbody.innerHTML = rows.map(r => {
+    const time = (r.data_hora || r.updated_at || "").split("T")[1]?.substring(0, 5) || "N/A";
+    const tipo = r.tipo_concreto || r.tipoConcreto || r.concretoTipo || "Padrão";
+    return `
+      <tr>
+        <td style="font-weight: 600;">${r.forma_numero || r.forma || ""}</td>
+        <td>${r.setor || ""}</td>
+        <td>${tipo}</td>
+        <td style="text-align: center;">${time}</td>
+        <td>${r.colaborador || ""}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function exportarPaDadosCSV() {
+  const rows = state.paLastRows;
+  if (!rows || rows.length === 0) {
+    showMsgBox("Gere um filtro antes de exportar.", "error");
+    return;
+  }
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "Forma;Setor;Tipo de Concreto;Data;Horario;Operador\n";
+
+  const sortedRows = [...rows].sort((a, b) => new Date(a.data_hora || a.updated_at) - new Date(b.data_hora || b.updated_at));
+  
+  sortedRows.forEach(r => {
+    const timestamp = r.data_hora || r.updated_at || "";
+    const dateStr = timestamp.split("T")[0] || "";
+    const timeStr = timestamp.split("T")[1]?.substring(0, 5) || "";
+    const tipo = r.tipo_concreto || r.tipoConcreto || r.concretoTipo || "Padrão";
+    
+    const fields = [
+      r.forma_numero || r.forma || "",
+      r.setor || "",
+      tipo,
+      dateStr,
+      timeStr,
+      r.colaborador || ""
+    ];
+    
+    csvContent += fields.map(f => '"' + String(f).replace(/"/g, '""') + '"').join(";") + "\n";
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `dados_concretagem_${new Date().getTime()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function renderizarTabelaJornada(list) {
@@ -6570,6 +6637,7 @@ async function carregarProdutividadeConcretagem() {
   renderizarGraficosProdutividade(metricas, dStart, dEnd);
   renderizarTabelaParadas(metricas.paradasList);
   renderizarTabelaJornada(metricas.jornadaDiaria);
+  renderizarTabelaDadosConcretagem(filteredRows);
 
   state.paLastMetricas = metricas;
   state.paLastRows = filteredRows;
