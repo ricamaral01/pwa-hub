@@ -3774,6 +3774,41 @@ function renderDashboardCharts() {
     setTxt("dbQcRej" + k, qcSetores[k].R + qcSetores[k].RR);
   });
 
+  // Resumo de Postes Montados
+  const resumoMontagem = {};
+  montagemCache.forEach(ev => {
+    // Só conta se não for apenas o INICIO sem finalizar a montagem
+    if (!ev.status_montagem && ev.etapa === "INICIO") return;
+
+    const mod = ev.modelo || "Desconhecido";
+    const dataFab = ev.data_fabricacao || "N/A";
+    const key = `${mod}||${dataFab}`;
+
+    if (!resumoMontagem[key]) {
+      resumoMontagem[key] = { modelo: mod, data_fabricacao: dataFab, qtd: 0 };
+    }
+    resumoMontagem[key].qtd++;
+  });
+
+  const tbodyResumo = document.getElementById("dbTbodyMontagemResumo");
+  if (tbodyResumo) {
+    const listResumo = Object.values(resumoMontagem).sort((a, b) => b.qtd - a.qtd);
+    if (listResumo.length === 0) {
+      tbodyResumo.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#64748b;">Nenhum poste montado nesta data.</td></tr>`;
+    } else {
+      tbodyResumo.innerHTML = listResumo.map(item => {
+        const dFmt = item.data_fabricacao !== "N/A" ? item.data_fabricacao.split("-").reverse().join("/") : "N/A";
+        return `
+          <tr>
+            <td style="font-weight: 600;">${item.modelo}</td>
+            <td style="text-align: center;">${dFmt}</td>
+            <td style="text-align: center; color: #4f46e5; font-weight: 600;">${item.qtd}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+  }
+
   // Cadência de Produção (Tempo Médio por Setor)
   const targetDateForCadence = selectedDate || todayYmd();
   const cadenceEvents = apiEventsOnly.filter(ev =>
