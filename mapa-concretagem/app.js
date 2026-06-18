@@ -3747,13 +3747,13 @@ function renderDashboardCharts() {
     S3: { A:0, R:0, RR:0, total:0 },
     S4: { A:0, R:0, RR:0, total:0 }
   };
-  apiEventsOnly.forEach(ev => {
-    const etapa = (ev.etapa || "").toUpperCase();
-    if (etapa !== "INSPECAO" && etapa !== "REINSPECAO") return;
-    if (selectedDate && ev.dataFabricacao !== selectedDate) return;
+  const montagemCache = db.montagemDashboardCache || [];
+  montagemCache.forEach(ev => {
+    // Só conta se tiver sido finalizado/inspecionado
+    if (!ev.status_montagem && ev.etapa === "INICIO") return;
 
     const setor = (ev.setor || "").toLowerCase();
-    const s = (ev.status || "").toUpperCase();
+    const s = (ev.status_montagem || "").toUpperCase();
     
     let key = "";
     if (setor.includes("1")) key = "S1";
@@ -3763,9 +3763,8 @@ function renderDashboardCharts() {
 
     if (key) {
       qcSetores[key].total++;
-      if (s === "A") qcSetores[key].A++;
-      else if (s === "R") qcSetores[key].R++;
-      else if (s === "RR") qcSetores[key].RR++;
+      if (s === "APROVADO" || s === "A") qcSetores[key].A++;
+      else if (s === "REPROVADO" || s === "R" || s === "RR") qcSetores[key].R++;
     }
   });
 
@@ -4006,7 +4005,19 @@ async function carregarDadosGlobaisDashboard() {
       }
     }
 
+    let montagemRows = [];
+    try {
+      const { data: mRows, error: mError } = await supabaseClient
+        .from('montagem_poste')
+        .select('*')
+        .eq('data_fabricacao', selectedDate);
+      if (!mError && mRows) montagemRows = mRows;
+    } catch (e) {
+      console.warn("Erro ao buscar montagem_poste no Dashboard global:", e);
+    }
+
     const db = readDb();
+    db.montagemDashboardCache = montagemRows;
 
     const apiEvents = allRows.map(r => ({
       etapa: r.status === 'LIBERADO' ? 'LIBERACAO' : 'INSPECAO',
