@@ -3903,7 +3903,7 @@ function renderDashboardCharts() {
 
   const histEl = document.getElementById("dbHistory");
   if (!histEl) return;
-  const histDates = [...allDates].reverse();
+  const histDates = [...allDates];
   const maxProd = histDates.reduce((m, d) => Math.max(m, prodByDate[d] || 0), 1);
   if (!histDates.length) {
     histEl.innerHTML = '<p class="muted" style="font-size:.82rem;margin:0">Nenhum registro encontrado.</p>';
