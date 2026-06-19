@@ -61,7 +61,7 @@
 <script>
   const SUPABASE_URL = "https://fbvvdyirhtgvycullsqy.supabase.co";
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZidnZkeWlyaHRndnljdWxsc3F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Njc5MTksImV4cCI6MjA5NDM0MzkxOX0.vzudcEhAwdAutU0g-Mra818fd8_DciepjqvU8Z-C4wc";
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   let currentData = [];
 
@@ -69,7 +69,7 @@
     try {
       // Buscar todos os registros. Para bases grandes, o ideal seria paginação, 
       // mas vamos tentar pegar até 5000 registros de uma vez para análise.
-      const { data, error } = await supabase
+      const { data, error } = await supabaseClient
         .from('montagem_poste')
         .select('*')
         .order('finalizado_em', { ascending: false })
