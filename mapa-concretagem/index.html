@@ -834,18 +834,40 @@
         <h2>Dashboard montagem</h2>
       </div>
       
-      <!-- Filtros de Data -->
-      <div class="form-row" style="margin-top: 15px; background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; align-items: center; justify-content: flex-start; gap: 15px;">
-        <div style="display: flex; flex-direction: column;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600;">Data Início</label>
-          <input type="date" id="miDataInicio" class="input-field" style="width: auto;" />
+      <!-- Filtros de Data e Busca -->
+      <div class="form-row" style="margin-top: 15px; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;">
+        <div style="display: flex; flex-direction: column; flex: 1; min-width: 120px;">
+          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Data Início</label>
+          <input type="date" id="miDataInicio" class="input-field" style="width: 100%; box-sizing: border-box;" />
         </div>
-        <div style="display: flex; flex-direction: column;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600;">Data Fim</label>
-          <input type="date" id="miDataFim" class="input-field" style="width: auto;" />
+        <div style="display: flex; flex-direction: column; flex: 1; min-width: 120px;">
+          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Data Fim</label>
+          <input type="date" id="miDataFim" class="input-field" style="width: 100%; box-sizing: border-box;" />
         </div>
-        <div style="display: flex; align-items: flex-end; margin-bottom: 2px;">
-          <button id="miBtnFiltrar" class="btn btn-primary" type="button" style="padding: 10px 16px;">🔍 Filtrar</button>
+        <div style="display: flex; flex-direction: column; flex: 1; min-width: 130px;">
+          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Setor</label>
+          <select id="miFiltroSetor" class="input-field" style="width: 100%; box-sizing: border-box;">
+            <option value="">Todos os Setores</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
+            <option value="Setor 4">Setor 4</option>
+          </select>
+        </div>
+        <div style="display: flex; flex-direction: column; flex: 1; min-width: 130px;">
+          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Status</label>
+          <select id="miFiltroStatus" class="input-field" style="width: 100%; box-sizing: border-box;">
+            <option value="">Todos os Status</option>
+            <option value="A">Aprovado</option>
+            <option value="R">Recusado</option>
+          </select>
+        </div>
+        <div style="display: flex; flex-direction: column; flex: 2; min-width: 180px;">
+          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Pesquisar (Forma, Modelo, Montador)</label>
+          <input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Ex: AE-01, 4 CXS, Rafael..." style="width: 100%; box-sizing: border-box;" />
+        </div>
+        <div style="display: flex; align-items: flex-end; width: auto;">
+          <button id="miBtnFiltrar" class="btn btn-primary" type="button" style="padding: 10px 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; justify-content: center; height: 38px;">🔍 Filtrar</button>
         </div>
       </div>
 
@@ -894,8 +916,40 @@
         </div>
       </div>
 
+      <!-- Estilos Customizados para Responsividade e Tabela -->
+      <style>
+        #viewMontagemIndicadores .btn-primary {
+          background: #2563eb;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        #viewMontagemIndicadores .btn-primary:hover {
+          background: #1d4ed8;
+        }
+        #viewMontagemIndicadores .sheet-table th {
+          background-color: #f1f5f9;
+          color: #475569;
+          font-weight: 600;
+          font-size: 0.85rem;
+          border-bottom: 2px solid #cbd5e1;
+        }
+        #viewMontagemIndicadores .sheet-table td {
+          border-bottom: 1px solid #e2e8f0;
+          font-size: 0.85rem;
+        }
+        @media (max-width: 1024px) {
+          #viewMontagemIndicadores .db-charts-row-equal,
+          #viewMontagemIndicadores .db-charts-row {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      </style>
+
       <!-- Gráficos -->
-      <div class="db-charts-row" style="margin-top: 24px;">
+      <div class="db-charts-row-full" style="margin-top: 24px;">
         <div class="db-chart-card">
           <div class="db-chart-title">Postes Inspecionados por Dia</div>
           <div class="db-chart-wrap"><canvas id="chartMiPorDia"></canvas></div>
@@ -910,6 +964,46 @@
         <div class="db-chart-card">
           <div class="db-chart-title">Ranking por Montador</div>
           <div class="db-chart-wrap"><canvas id="chartMiPorMontador"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Tabela Detalhada de Montagem -->
+      <div style="margin-top: 30px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+          <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: #0f172a;">Listagem de Montagens Realizadas</h3>
+          <span style="font-size: 0.85rem; color: #64748b; background: #f1f5f9; padding: 4px 10px; border-radius: 12px; font-weight: 600;">
+            Total: <span id="miTabelaTotal">0</span> registros
+          </span>
+        </div>
+
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+          <table class="sheet-table" style="width: 100%; border-collapse: collapse; min-width: 750px;">
+            <thead>
+              <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('data_fabricacao')">Data Prod. <span id="sort_icon_data_fabricacao"></span></th>
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th>
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('forma_numero')">Forma <span id="sort_icon_forma_numero"></span></th>
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th>
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('inicio_inspecao_montagem')">Início Inspeção <span id="sort_icon_inicio_inspecao_montagem"></span></th>
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('finalizado_em')">Fim Inspeção <span id="sort_icon_finalizado_em"></span></th>
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th>
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th>
+              </tr>
+            </thead>
+            <tbody id="miTabelaBody">
+              <tr><td colspan="8" style="text-align: center; color: #64748b; padding: 20px;">Carregando dados...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginação -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+          <div style="font-size: 0.85rem; color: #64748b;">
+            Mostrando de <span id="miPaginacaoDe">0</span> a <span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span> registros
+          </div>
+          <div style="display: flex; gap: 5px;" id="miPaginacaoBotoes">
+            <!-- Botões de página renderizados dinamicamente -->
+          </div>
         </div>
       </div>
     </section>
@@ -1232,6 +1326,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=ab152f8a"></script>
+  <script src="app.js?v=7d497fd6"></script>
 </body>
 </html>

@@ -5239,6 +5239,18 @@ function bindEvents() {
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
+  document.getElementById("miFiltroSetor")?.addEventListener("change", () => {
+    miPaginaAtual = 1;
+    aplicarFiltrosEExibirMontagem();
+  });
+  document.getElementById("miFiltroStatus")?.addEventListener("change", () => {
+    miPaginaAtual = 1;
+    aplicarFiltrosEExibirMontagem();
+  });
+  document.getElementById("miFiltroPesquisa")?.addEventListener("input", () => {
+    miPaginaAtual = 1;
+    aplicarFiltrosEExibirMontagem();
+  });
   el.hubRelatorio.addEventListener("click", () => {
     setMode("RELATORIO");
     if (!el.relData.value) el.relData.value = todayYmd();
@@ -6841,6 +6853,14 @@ let chartMiPorDiaInstance = null;
 let chartMiPorSetorInstance = null;
 let chartMiPorMontadorInstance = null;
 
+let miRawMontagemData = [];
+let miRawProducaoData = [];
+let miFilteredMontagemData = [];
+let miPaginaAtual = 1;
+const miLinhasPorPagina = 15;
+let miOrdenacaoColuna = "finalizado_em";
+let miOrdenacaoAsc = false;
+
 async function carregarMontagemIndicadores() {
   if (!supabaseClient) return;
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
@@ -6851,7 +6871,7 @@ async function carregarMontagemIndicadores() {
     const [montagemRes, producaoRes] = await Promise.all([
       supabaseClient
         .from("montagem_poste")
-        .select("setor, finalizado_em, status_montagem, montador_nome")
+        .select("setor, finalizado_em, status_montagem, montador_nome, forma_numero, modelo, data_fabricacao, inicio_inspecao_montagem")
         .order("finalizado_em", { ascending: false })
         .limit(5000),
       supabaseClient
@@ -6865,96 +6885,290 @@ async function carregarMontagemIndicadores() {
     if (montagemRes.error) throw montagemRes.error;
     if (producaoRes.error) throw producaoRes.error;
     
-    const montagemData = montagemRes.data || [];
-    const producaoData = producaoRes.data || [];
-
-    // Processar Produção
-    const prodBySector = { "Setor 1": 0, "Setor 2": 0, "Setor 3": 0, "Setor 4": 0 };
-    let prodGeral = 0;
-    producaoData.forEach(row => {
-      const day = row.data_fabricacao;
-      if (!day || day < dStart || day > dEnd) return;
-      prodGeral++;
-      const sec = row.setor || "Outros";
-      if (sec in prodBySector) {
-        prodBySector[sec]++;
-      }
-    });
-
-    // Processar Montagem (Indicadores KPIs)
-    let totalInspecionado = 0;
-    let totalAprovados = 0;
-    let totalRecusados = 0;
+    miRawMontagemData = montagemRes.data || [];
+    miRawProducaoData = producaoRes.data || [];
     
-    const byDay = {};
-    const bySector = {};
-    const byMontador = {};
+    miPaginaAtual = 1;
+    aplicarFiltrosEExibirMontagem();
     
-    montagemData.forEach(row => {
-      // Consider only finished assemblies (they have finalizado_em and status_montagem)
-      if (!row.status_montagem) return;
-      
-      const day = (row.finalizado_em || "").split("T")[0];
-      if (!day || day < dStart || day > dEnd) return;
-      
-      totalInspecionado++;
-      if (row.status_montagem === "A") totalAprovados++;
-      else if (row.status_montagem === "R" || row.status_montagem === "RR") totalRecusados++;
-      
-      if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
-      byDay[day].total++;
-      if (row.status_montagem === "A") byDay[day].aprovados++;
-      else byDay[day].recusados++;
-      
-      const sec = row.setor || "Desconhecido";
-      bySector[sec] = (bySector[sec] || 0) + 1;
-      
-      const mon = row.montador_nome || "Desconhecido";
-      byMontador[mon] = (byMontador[mon] || 0) + 1;
-    });
-    
-    // Atualizar KPIs
-    document.getElementById("miTotalInspecionado").textContent = totalInspecionado;
-    document.getElementById("miTotalAprovados").textContent = totalAprovados;
-    document.getElementById("miTotalRecusados").textContent = totalRecusados;
-    
-    // Atualizar Comparativo Geral
-    document.getElementById("miProdGeral").textContent = prodGeral;
-    document.getElementById("miMontGeral").textContent = totalInspecionado;
-    const pctGeral = prodGeral > 0 ? Math.round((totalInspecionado / prodGeral) * 100) : 0;
-    document.getElementById("miPctGeral").textContent = pctGeral + "%";
-    const barGeral = document.getElementById("miBarGeral");
-    if (barGeral) barGeral.style.width = Math.min(pctGeral, 100) + "%";
-
-    // Atualizar Comparativo por Setor
-    const sectors = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
-    const sectorsContainer = document.getElementById("miSetoresContainer");
-    if (sectorsContainer) {
-      sectorsContainer.innerHTML = sectors.map(s => {
-        const prod = prodBySector[s] || 0;
-        const mont = bySector[s] || 0;
-        const pct = prod > 0 ? Math.round((mont / prod) * 100) : 0;
-        return `
-          <div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
-              <span style="font-weight: 600; color: #475569;">${s}</span>
-              <span style="color: #64748b;">Produzidos: <strong>${prod}</strong> | Montados: <strong>${mont}</strong> <span style="font-weight: bold; color: #10b981; margin-left: 8px;">${pct}%</span></span>
-            </div>
-            <div style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
-              <div style="background: #10b981; width: ${Math.min(pct, 100)}%; height: 100%; transition: width 0.5s ease-in-out;"></div>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    renderGraficosMontagem(byDay, bySector, byMontador);
-    setSyncStatus("idle", "Indicadores atualizados.");
   } catch(err) {
     console.error("Erro carregarMontagemIndicadores:", err);
     setSyncStatus("error", "Erro ao carregar indicadores.");
   }
 }
+
+function aplicarFiltrosEExibirMontagem() {
+  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  const fSetor = document.getElementById("miFiltroSetor")?.value || "";
+  const fStatus = document.getElementById("miFiltroStatus")?.value || "";
+  const fPesquisa = (document.getElementById("miFiltroPesquisa")?.value || "").trim().toLowerCase();
+
+  // 1. Filtrar dados de Montagem em memória
+  miFilteredMontagemData = miRawMontagemData.filter(row => {
+    // Considerar apenas montagens finalizadas
+    if (!row.status_montagem) return false;
+
+    // Filtro por Data
+    const day = (row.finalizado_em || "").split("T")[0];
+    if (!day || day < dStart || day > dEnd) return false;
+
+    // Filtro por Setor
+    if (fSetor && row.setor !== fSetor) return false;
+
+    // Filtro por Status
+    if (fStatus) {
+      if (fStatus === "A" && row.status_montagem !== "A") return false;
+      if (fStatus === "R" && row.status_montagem !== "R" && row.status_montagem !== "RR") return false;
+    }
+
+    // Filtro por Pesquisa de Texto
+    if (fPesquisa) {
+      const forma = (row.forma_numero || "").toLowerCase();
+      const modelo = (row.modelo || "").toLowerCase();
+      const montador = (row.montador_nome || "").toLowerCase();
+      if (!forma.includes(fPesquisa) && !modelo.includes(fPesquisa) && !montador.includes(fPesquisa)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // 2. Filtrar dados de Produção
+  const filteredProducao = miRawProducaoData.filter(row => {
+    const day = row.data_fabricacao;
+    if (!day || day < dStart || day > dEnd) return false;
+    if (fSetor && row.setor !== fSetor) return false;
+    return true;
+  });
+
+  // 3. Processar Indicadores para Gráficos e KPIs
+  let totalInspecionado = miFilteredMontagemData.length;
+  let totalAprovados = 0;
+  let totalRecusados = 0;
+  
+  const byDay = {};
+  const bySector = {};
+  const byMontador = {};
+  
+  miFilteredMontagemData.forEach(row => {
+    const day = (row.finalizado_em || "").split("T")[0];
+    if (row.status_montagem === "A") totalAprovados++;
+    else if (row.status_montagem === "R" || row.status_montagem === "RR") totalRecusados++;
+    
+    if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
+    byDay[day].total++;
+    if (row.status_montagem === "A") byDay[day].aprovados++;
+    else byDay[day].recusados++;
+    
+    const sec = row.setor || "Desconhecido";
+    bySector[sec] = (bySector[sec] || 0) + 1;
+    
+    const mon = row.montador_nome || "Desconhecido";
+    byMontador[mon] = (byMontador[mon] || 0) + 1;
+  });
+
+  // Atualizar KPIs
+  document.getElementById("miTotalInspecionado").textContent = totalInspecionado;
+  document.getElementById("miTotalAprovados").textContent = totalAprovados;
+  document.getElementById("miTotalRecusados").textContent = totalRecusados;
+
+  // Processar Comparativos (Produzidos vs Montados)
+  const prodBySector = { "Setor 1": 0, "Setor 2": 0, "Setor 3": 0, "Setor 4": 0 };
+  let prodGeral = 0;
+  
+  filteredProducao.forEach(row => {
+    prodGeral++;
+    const sec = row.setor || "Outros";
+    if (sec in prodBySector) {
+      prodBySector[sec]++;
+    }
+  });
+
+  document.getElementById("miProdGeral").textContent = prodGeral;
+  document.getElementById("miMontGeral").textContent = totalInspecionado;
+  const pctGeral = prodGeral > 0 ? Math.round((totalInspecionado / prodGeral) * 100) : 0;
+  document.getElementById("miPctGeral").textContent = pctGeral + "%";
+  const barGeral = document.getElementById("miBarGeral");
+  if (barGeral) barGeral.style.width = Math.min(pctGeral, 100) + "%";
+
+  // Detalhamento por Setor
+  const sectors = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
+  const sectorsContainer = document.getElementById("miSetoresContainer");
+  if (sectorsContainer) {
+    sectorsContainer.innerHTML = sectors.map(s => {
+      if (fSetor && s !== fSetor) return "";
+      const prod = prodBySector[s] || 0;
+      const mont = bySector[s] || 0;
+      const pct = prod > 0 ? Math.round((mont / prod) * 100) : 0;
+      return `
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+            <span style="font-weight: 600; color: #475569;">${s}</span>
+            <span style="color: #64748b;">Produzidos: <strong>${prod}</strong> | Montados: <strong>${mont}</strong> <span style="font-weight: bold; color: #10b981; margin-left: 8px;">${pct}%</span></span>
+          </div>
+          <div style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
+            <div style="background: #10b981; width: ${Math.min(pct, 100)}%; height: 100%; transition: width 0.5s ease-in-out;"></div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  renderGraficosMontagem(byDay, bySector, byMontador);
+  renderizarTabelaMontagemPaginada();
+  setSyncStatus("idle", "Indicadores atualizados.");
+}
+
+function renderizarTabelaMontagemPaginada() {
+  const tbody = document.getElementById("miTabelaBody");
+  if (!tbody) return;
+
+  const totalRegistros = miFilteredMontagemData.length;
+  document.getElementById("miTabelaTotal").textContent = totalRegistros;
+  document.getElementById("miPaginacaoTotal").textContent = totalRegistros;
+
+  if (totalRegistros === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
+    document.getElementById("miPaginacaoDe").textContent = "0";
+    document.getElementById("miPaginacaoA").textContent = "0";
+    document.getElementById("miPaginacaoBotoes").innerHTML = "";
+    return;
+  }
+
+  // Ordenação
+  const col = miOrdenacaoColuna;
+  const asc = miOrdenacaoAsc;
+  
+  const sortedData = [...miFilteredMontagemData].sort((a, b) => {
+    let valA = a[col] || "";
+    let valB = b[col] || "";
+
+    if (col === "finalizado_em" || col === "inicio_inspecao_montagem" || col === "data_fabricacao") {
+      valA = valA ? new Date(valA).getTime() : 0;
+      valB = valB ? new Date(valB).getTime() : 0;
+    } else {
+      valA = String(valA).toLowerCase();
+      valB = String(valB).toLowerCase();
+    }
+
+    if (valA < valB) return asc ? -1 : 1;
+    if (valA > valB) return asc ? 1 : -1;
+    return 0;
+  });
+
+  // Paginação
+  const totalPaginas = Math.ceil(totalRegistros / miLinhasPorPagina);
+  if (miPaginaAtual > totalPaginas) miPaginaAtual = totalPaginas || 1;
+  if (miPaginaAtual < 1) miPaginaAtual = 1;
+
+  const inicioIdx = (miPaginaAtual - 1) * miLinhasPorPagina;
+  const fimIdx = Math.min(inicioIdx + miLinhasPorPagina, totalRegistros);
+  const paginaDados = sortedData.slice(inicioIdx, fimIdx);
+
+  document.getElementById("miPaginacaoDe").textContent = inicioIdx + 1;
+  document.getElementById("miPaginacaoA").textContent = fimIdx;
+
+  // Renderizar Linhas
+  tbody.innerHTML = paginaDados.map(row => {
+    const dataFab = row.data_fabricacao ? row.data_fabricacao.split("-").reverse().join("/") : "N/A";
+    
+    const formatTimeShort = (isoStr) => {
+      if (!isoStr) return "N/A";
+      const d = new Date(isoStr);
+      if (isNaN(d.getTime())) return isoStr;
+      return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + " (" + d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + ")";
+    };
+
+    const inicio = formatTimeShort(row.inicio_inspecao_montagem);
+    const fim = formatTimeShort(row.finalizado_em);
+    
+    let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
+    if (row.status_montagem === "A") {
+      statusHtml = '<span style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem;">Aprovado</span>';
+    } else if (row.status_montagem === "R" || row.status_montagem === "RR") {
+      statusHtml = '<span style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem;">Recusado</span>';
+    }
+
+    return `
+      <tr style="border-bottom: 1px solid #f1f5f9;">
+        <td style="padding: 10px; text-align: center;">${dataFab}</td>
+        <td style="padding: 10px; text-align: center;">${row.setor || ""}</td>
+        <td style="padding: 10px; text-align: center;"><strong>${row.forma_numero || ""}</strong></td>
+        <td style="padding: 10px; text-align: center;">${row.modelo || ""}</td>
+        <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${inicio}</td>
+        <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${fim}</td>
+        <td style="padding: 10px; text-align: center;">${statusHtml}</td>
+        <td style="padding: 10px; text-align: center; font-size: 0.85rem;">${row.montador_nome || ""}</td>
+      </tr>
+    `;
+  }).join("");
+
+  // Atualizar Ícones de Ordenação
+  const colunas = ["data_fabricacao", "setor", "forma_numero", "modelo", "inicio_inspecao_montagem", "finalizado_em", "status_montagem", "montador_nome"];
+  colunas.forEach(c => {
+    const elIcon = document.getElementById("sort_icon_" + c);
+    if (elIcon) {
+      if (miOrdenacaoColuna === c) {
+        elIcon.textContent = miOrdenacaoAsc ? " ▲" : " ▼";
+        elIcon.style.color = "#2563eb";
+      } else {
+        elIcon.textContent = "";
+      }
+    }
+  });
+
+  // Renderizar Botões de Paginação
+  const pagContainer = document.getElementById("miPaginacaoBotoes");
+  if (!pagContainer) return;
+  
+  let buttonsHtml = "";
+  buttonsHtml += `
+    <button class="btn" style="padding: 5px 10px; font-size: 0.8rem;" ${miPaginaAtual === 1 ? "disabled" : ""} onclick="mudarMiPagina(${miPaginaAtual - 1})">
+      Anterior
+    </button>
+  `;
+
+  const maxButtons = 5;
+  let startPage = Math.max(1, miPaginaAtual - Math.floor(maxButtons / 2));
+  let endPage = Math.min(totalPaginas, startPage + maxButtons - 1);
+  if (endPage - startPage + 1 < maxButtons) {
+    startPage = Math.max(1, endPage - maxButtons + 1);
+  }
+
+  for (let p = startPage; p <= endPage; p++) {
+    buttonsHtml += `
+      <button class="btn ${miPaginaAtual === p ? "primary" : ""}" style="padding: 5px 10px; font-size: 0.8rem; min-width: 30px;" onclick="mudarMiPagina(${p})">
+        ${p}
+      </button>
+    `;
+  }
+
+  buttonsHtml += `
+    <button class="btn" style="padding: 5px 10px; font-size: 0.8rem;" ${miPaginaAtual === totalPaginas ? "disabled" : ""} onclick="mudarMiPagina(${miPaginaAtual + 1})">
+      Próximo
+    </button>
+  `;
+
+  pagContainer.innerHTML = buttonsHtml;
+}
+
+window.mudarMiPagina = function(p) {
+  miPaginaAtual = p;
+  renderizarTabelaMontagemPaginada();
+};
+
+window.ordenarMiTabela = function(coluna) {
+  if (miOrdenacaoColuna === coluna) {
+    miOrdenacaoAsc = !miOrdenacaoAsc;
+  } else {
+    miOrdenacaoColuna = coluna;
+    miOrdenacaoAsc = true;
+  }
+  miPaginaAtual = 1;
+  renderizarTabelaMontagemPaginada();
+};
 
 function renderGraficosMontagem(byDay, bySector, byMontador) {
   if (chartMiPorDiaInstance) chartMiPorDiaInstance.destroy();
