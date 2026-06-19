@@ -53,6 +53,10 @@
         <span class="nav-icon-wrap">⊞</span>
         Início
       </button>
+      <button class="nav-item" id="hubMontagemIndicadores" type="button">
+        <span class="nav-icon-wrap">📊</span>
+        Dashboard montagem
+      </button>
       <button class="nav-item" id="navDashboard" type="button">
         <span class="nav-icon-wrap">📊</span>
         Dashboard
@@ -88,10 +92,6 @@
       <button class="nav-item" id="hubMontagemPostes" type="button">
         <span class="nav-icon-wrap">MP</span>
         Montagem Postes
-      </button>
-      <button class="nav-item" id="hubMontagemIndicadores" type="button">
-        <span class="nav-icon-wrap">MI</span>
-        Montagem Indicadores
       </button>
       <button class="nav-item" id="hubRelatorio" type="button">
         <span class="nav-icon-wrap">RE</span>
@@ -141,6 +141,10 @@
           <button class="hub-icon-btn" type="button" data-hub-mode="DASHBOARD">
             <div class="hub-icon-circle" style="background:#0f1e3c">📊</div>
             <span class="hub-icon-lbl">Dashboard</span>
+          </button>
+          <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_INDICADORES">
+            <div class="hub-icon-circle" style="background:#0b6b6f">📊</div>
+            <span class="hub-icon-lbl">Dashboard montagem</span>
           </button>
           <button class="hub-icon-btn" type="button" data-hub-mode="PROD_ANALISE">
             <div class="hub-icon-circle" style="background:#10b981">📈</div>
@@ -827,7 +831,7 @@
     <!-- NOVA ABA: MONTAGEM INDICADORES -->
     <section id="viewMontagemIndicadores" class="card hidden">
       <div class="section-title-row">
-        <h2>Montagem Indicadores</h2>
+        <h2>Dashboard montagem</h2>
       </div>
       
       <!-- Filtros de Data -->
@@ -1199,6 +1203,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=4e13b770"></script>
+  <script src="app.js?v=69c575c1"></script>
 </body>
 </html>

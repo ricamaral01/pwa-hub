@@ -5030,8 +5030,16 @@ function setMode(mode) {
       setUgFeedback("Não foi possível carregar os usuários da planilha.", false);
     });
   }
+  if (mode === "MONTAGEM_INDICADORES") {
+    if (el.viewMontagemIndicadores) el.viewMontagemIndicadores.classList.remove("hidden");
+    const miDataInicio = document.getElementById("miDataInicio");
+    const miDataFim = document.getElementById("miDataFim");
+    if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
+    if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
+    carregarMontagemIndicadores();
+  }
 
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem", "mode-usuarios");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
@@ -5058,6 +5066,7 @@ function setMode(mode) {
   if (mode === "ACOMPANHAMENTO") document.body.classList.add("mode-acompanhamento");
   if (mode === "ACMP_CONCRETAGEM") document.body.classList.add("mode-acmp-concretagem");
   if (mode === "USUARIOS") document.body.classList.add("mode-usuarios");
+  if (mode === "MONTAGEM_INDICADORES") document.body.classList.add("mode-montagem-indicadores");
 
   // Update sidebar nav + topbar title
   const navTitles = {
@@ -5072,7 +5081,7 @@ function setMode(mode) {
     INSPECAO: ["hubInspecao", "Inspeção Setor 3 e 4"],
     MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
     MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
-    MONTAGEM_INDICADORES: ["hubMontagemIndicadores", "Montagem Indicadores"],
+    MONTAGEM_INDICADORES: ["hubMontagemIndicadores", "Dashboard montagem"],
     RELATORIO: ["hubRelatorio", "Relatório"],
     HISTORICO: ["hubHistorico", "Histórico"],
     ACOMPANHAMENTO: ["hubAcompanhamento", "Acompanhamento"],
@@ -5611,6 +5620,8 @@ function bindEvents() {
     btn.addEventListener("click", () => {
       const mode = btn.dataset.hubMode;
       if (mode === "DASHBOARD") { setMode("DASHBOARD"); }
+      else if (mode === "MONTAGEM_INDICADORES") { setMode("MONTAGEM_INDICADORES"); }
+      else if (mode === "PROD_ANALISE") { setMode("PROD_ANALISE"); }
       else if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) { setMode(mode); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
       else if (mode === "INSPECAO") { setMode("INSPECAO"); if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd(); renderInspecaoLiberados(); }
       else if (mode === "MONTAGEM_POSTES") { setMode("MONTAGEM_POSTES"); if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd(); renderMontagemPostesLiberados(); }
