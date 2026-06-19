@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório Completo - Montagem de Postes</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; color: #1e293b; }
+    .container { max-width: 1200px; margin: 0 auto; background: #fff; padding: 20px 30px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    h1 { margin-top: 0; color: #0f172a; }
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
+    .badge { background: #e0e7ff; color: #4338ca; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 0.9rem; }
+    
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { border: 1px solid #cbd5e1; padding: 10px 12px; text-align: left; }
+    th { background-color: #f1f5f9; cursor: pointer; position: relative; user-select: none; }
+    th:hover { background-color: #e2e8f0; }
+    th.sort-asc::after { content: " ▲"; color: #3b82f6; }
+    th.sort-desc::after { content: " ▼"; color: #3b82f6; }
+    
+    .status-A { color: #16a34a; font-weight: bold; }
+    .status-R { color: #dc2626; font-weight: bold; }
+    
+    #loading { text-align: center; padding: 40px; font-size: 1.2rem; color: #64748b; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-info">
+    <div>
+      <h1>Histórico de Montagem de Postes</h1>
+      <p style="margin: 0; color: #475569;">Banco de Dados: <strong style="color: #0f172a;">Supabase (Tabela: montagem_poste)</strong></p>
+    </div>
+    <div>
+      <span class="badge">Total de Registros: <span id="total-registros">Carregando...</span></span>
+    </div>
+  </div>
+
+  <div id="loading">Carregando dados do banco de dados... Aguarde.</div>
+
+  <table id="dataTable" style="display: none;">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0, 'date')">Data Produção</th>
+        <th onclick="sortTable(1, 'str')">Setor</th>
+        <th onclick="sortTable(2, 'str')">Forma</th>
+        <th onclick="sortTable(3, 'str')">Modelo</th>
+        <th onclick="sortTable(4, 'date')">Início da Inspeção</th>
+        <th onclick="sortTable(5, 'date')">Fim da Inspeção</th>
+        <th onclick="sortTable(6, 'str')">Status</th>
+        <th onclick="sortTable(7, 'str')">Montador</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Preenchido via JS -->
+    </tbody>
+  </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://fbvvdyirhtgvycullsqy.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZidnZkeWlyaHRndnljdWxsc3F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Njc5MTksImV4cCI6MjA5NDM0MzkxOX0.vzudcEhAwdAutU0g-Mra818fd8_DciepjqvU8Z-C4wc";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let currentData = [];
+
+  async function loadData() {
+    try {
+      // Buscar todos os registros. Para bases grandes, o ideal seria paginação, 
+      // mas vamos tentar pegar até 5000 registros de uma vez para análise.
+      const { data, error } = await supabase
+        .from('montagem_poste')
+        .select('*')
+        .order('finalizado_em', { ascending: false })
+        .limit(5000);
+
+      if (error) throw error;
+
+      currentData = data;
+      document.getElementById("total-registros").textContent = currentData.length;
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("dataTable").style.display = "table";
+      
+      renderTable();
+    } catch (err) {
+      console.error(err);
+      document.getElementById("loading").innerHTML = "Erro ao carregar dados: " + err.message;
+    }
+  }
+
+  function formatDateTime(isoStr) {
+    if (!isoStr) return "N/A";
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return isoStr;
+    return d.toLocaleString("pt-BR", { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = currentData.map(row => {
+      // Formatação de Datas
+      const dataFab = row.data_fabricacao ? row.data_fabricacao.split("-").reverse().join("/") : "N/A";
+      const inicio = formatDateTime(row.inicio_inspecao_montagem);
+      const fim = formatDateTime(row.finalizado_em);
+      
+      // Formatação do Status
+      let statusHtml = "Em Andamento";
+      if (row.status_montagem === "A") statusHtml = '<span class="status-A">Aprovado</span>';
+      else if (row.status_montagem === "R" || row.status_montagem === "RR") statusHtml = '<span class="status-R">Recusado</span>';
+
+      return `
+        <tr>
+          <td>${dataFab}</td>
+          <td>${row.setor || ""}</td>
+          <td><strong>${row.forma_numero || ""}</strong></td>
+          <td>${row.modelo || ""}</td>
+          <td>${inicio}</td>
+          <td>${fim}</td>
+          <td>${statusHtml}</td>
+          <td>${row.montador_nome || ""}</td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  // --- Lógica de Ordenação de Tabela ---
+  let sortCol = -1;
+  let sortAsc = true;
+
+  function sortTable(columnIndex, type) {
+    const table = document.getElementById("dataTable");
+    const tbody = document.getElementById("tableBody");
+    const rows = Array.from(tbody.rows);
+    const ths = table.querySelectorAll("th");
+
+    if (sortCol === columnIndex) {
+      sortAsc = !sortAsc;
+    } else {
+      sortCol = columnIndex;
+      sortAsc = true;
+    }
+
+    // Reset icons
+    ths.forEach(th => th.classList.remove("sort-asc", "sort-desc"));
+    ths[columnIndex].classList.add(sortAsc ? "sort-asc" : "sort-desc");
+
+    rows.sort((a, b) => {
+      let valA = a.cells[columnIndex].innerText.trim();
+      let valB = b.cells[columnIndex].innerText.trim();
+
+      if (type === 'date') {
+        // Simple conversion for dd/mm/yyyy hh:mm or just dd/mm/yyyy
+        const parseDate = (str) => {
+          if (str === "N/A" || !str) return 0;
+          const parts = str.split(/[\s/:]+/);
+          if (parts.length >= 3) {
+            const y = parseInt(parts[2]);
+            const m = parseInt(parts[1]) - 1;
+            const d = parseInt(parts[0]);
+            const h = parts[3] ? parseInt(parts[3]) : 0;
+            const min = parts[4] ? parseInt(parts[4]) : 0;
+            return new Date(y, m, d, h, min).getTime();
+          }
+          return 0;
+        };
+        valA = parseDate(valA);
+        valB = parseDate(valB);
+      }
+
+      if (valA < valB) return sortAsc ? -1 : 1;
+      if (valA > valB) return sortAsc ? 1 : -1;
+      return 0;
+    });
+
+    tbody.append(...rows);
+  }
+
+  // Inicializar
+  loadData();
+</script>
+
+</body>
+</html>
