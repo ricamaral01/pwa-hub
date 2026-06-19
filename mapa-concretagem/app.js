@@ -6840,8 +6840,8 @@ async function carregarMontagemIndicadores() {
     const { data, error } = await supabaseClient
       .from("montagem_poste")
       .select("setor, finalizado_em, status_montagem, montador_nome")
-      .gte("updated_at", dStart + "T00:00:00Z")
-      .lte("updated_at", dEnd + "T23:59:59Z");
+      .order("finalizado_em", { ascending: false })
+      .limit(5000);
       
     if (error) throw error;
     
@@ -6858,11 +6858,13 @@ async function carregarMontagemIndicadores() {
       // Consider only finished assemblies (they have finalizado_em and status_montagem)
       if (!row.status_montagem) return;
       
+      const day = (row.finalizado_em || "").split("T")[0];
+      if (!day || day < dStart || day > dEnd) return;
+      
       totalInspecionado++;
       if (row.status_montagem === "A") totalAprovados++;
       else if (row.status_montagem === "R" || row.status_montagem === "RR") totalRecusados++;
       
-      const day = (row.finalizado_em || "").split("T")[0] || "Desconhecido";
       if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
       byDay[day].total++;
       if (row.status_montagem === "A") byDay[day].aprovados++;
