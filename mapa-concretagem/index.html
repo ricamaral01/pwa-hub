@@ -865,6 +865,35 @@
         </div>
       </div>
 
+      <!-- Comparativo Produzidos vs Montados -->
+      <div style="margin-top: 24px; font-weight: 700; font-size: 1.1rem; color: #1e293b;">
+        Comparativo: Produzidos vs Montados
+      </div>
+      <div class="db-charts-row-equal" style="margin-top: 12px; gap: 20px;">
+        <!-- Card Geral -->
+        <div class="db-chart-card" style="padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="db-chart-title" style="margin-bottom: 12px;">Geral (Todos os Setores)</div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+              <span>Produzidos: <strong id="miProdGeral">—</strong></span>
+              <span>Montados: <strong id="miMontGeral">—</strong></span>
+            </div>
+            <div style="background: #e2e8f0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px;">
+              <div id="miBarGeral" style="background: #3b82f6; width: 0%; height: 100%; transition: width 0.5s ease-in-out;"></div>
+            </div>
+          </div>
+          <div style="text-align: right; font-size: 1.5rem; font-weight: bold; color: #1e40af;" id="miPctGeral">—%</div>
+        </div>
+
+        <!-- Card por Setor -->
+        <div class="db-chart-card" style="padding: 18px;">
+          <div class="db-chart-title" style="margin-bottom: 12px;">Detalhamento por Setor</div>
+          <div id="miSetoresContainer" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Renderizado via JS -->
+          </div>
+        </div>
+      </div>
+
       <!-- Gráficos -->
       <div class="db-charts-row" style="margin-top: 24px;">
         <div class="db-chart-card">
@@ -1203,6 +1232,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=69c575c1"></script>
+  <script src="app.js?v=ab152f8a"></script>
 </body>
 </html>

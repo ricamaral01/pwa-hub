@@ -6848,15 +6848,40 @@ async function carregarMontagemIndicadores() {
   
   setSyncStatus("pending", "Carregando indicadores de montagem...");
   try {
-    const { data, error } = await supabaseClient
-      .from("montagem_poste")
-      .select("setor, finalizado_em, status_montagem, montador_nome")
-      .order("finalizado_em", { ascending: false })
-      .limit(5000);
+    const [montagemRes, producaoRes] = await Promise.all([
+      supabaseClient
+        .from("montagem_poste")
+        .select("setor, finalizado_em, status_montagem, montador_nome")
+        .order("finalizado_em", { ascending: false })
+        .limit(5000),
+      supabaseClient
+        .from("producao")
+        .select("setor, data_fabricacao, status")
+        .gte("data_fabricacao", dStart)
+        .lte("data_fabricacao", dEnd)
+        .limit(5000)
+    ]);
       
-    if (error) throw error;
+    if (montagemRes.error) throw montagemRes.error;
+    if (producaoRes.error) throw producaoRes.error;
     
-    // Process KPIs
+    const montagemData = montagemRes.data || [];
+    const producaoData = producaoRes.data || [];
+
+    // Processar Produção
+    const prodBySector = { "Setor 1": 0, "Setor 2": 0, "Setor 3": 0, "Setor 4": 0 };
+    let prodGeral = 0;
+    producaoData.forEach(row => {
+      const day = row.data_fabricacao;
+      if (!day || day < dStart || day > dEnd) return;
+      prodGeral++;
+      const sec = row.setor || "Outros";
+      if (sec in prodBySector) {
+        prodBySector[sec]++;
+      }
+    });
+
+    // Processar Montagem (Indicadores KPIs)
     let totalInspecionado = 0;
     let totalAprovados = 0;
     let totalRecusados = 0;
@@ -6865,7 +6890,7 @@ async function carregarMontagemIndicadores() {
     const bySector = {};
     const byMontador = {};
     
-    data.forEach(row => {
+    montagemData.forEach(row => {
       // Consider only finished assemblies (they have finalizado_em and status_montagem)
       if (!row.status_montagem) return;
       
@@ -6888,10 +6913,41 @@ async function carregarMontagemIndicadores() {
       byMontador[mon] = (byMontador[mon] || 0) + 1;
     });
     
+    // Atualizar KPIs
     document.getElementById("miTotalInspecionado").textContent = totalInspecionado;
     document.getElementById("miTotalAprovados").textContent = totalAprovados;
     document.getElementById("miTotalRecusados").textContent = totalRecusados;
     
+    // Atualizar Comparativo Geral
+    document.getElementById("miProdGeral").textContent = prodGeral;
+    document.getElementById("miMontGeral").textContent = totalInspecionado;
+    const pctGeral = prodGeral > 0 ? Math.round((totalInspecionado / prodGeral) * 100) : 0;
+    document.getElementById("miPctGeral").textContent = pctGeral + "%";
+    const barGeral = document.getElementById("miBarGeral");
+    if (barGeral) barGeral.style.width = Math.min(pctGeral, 100) + "%";
+
+    // Atualizar Comparativo por Setor
+    const sectors = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
+    const sectorsContainer = document.getElementById("miSetoresContainer");
+    if (sectorsContainer) {
+      sectorsContainer.innerHTML = sectors.map(s => {
+        const prod = prodBySector[s] || 0;
+        const mont = bySector[s] || 0;
+        const pct = prod > 0 ? Math.round((mont / prod) * 100) : 0;
+        return `
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+              <span style="font-weight: 600; color: #475569;">${s}</span>
+              <span style="color: #64748b;">Produzidos: <strong>${prod}</strong> | Montados: <strong>${mont}</strong> <span style="font-weight: bold; color: #10b981; margin-left: 8px;">${pct}%</span></span>
+            </div>
+            <div style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden;">
+              <div style="background: #10b981; width: ${Math.min(pct, 100)}%; height: 100%; transition: width 0.5s ease-in-out;"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
     renderGraficosMontagem(byDay, bySector, byMontador);
     setSyncStatus("idle", "Indicadores atualizados.");
   } catch(err) {
