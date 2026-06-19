@@ -7,11 +7,11 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "MONTAGEM_POSTES"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES"]
   },
   MONTADOR: {
     label: "Montador",
@@ -589,12 +589,14 @@ const el = {
   hubLiberacaoS4: document.getElementById("hubLiberacaoS4"),
   hubInspecao: document.getElementById("hubInspecao"),
   hubMontagemPostes: document.getElementById("hubMontagemPostes"),
+  hubMontagemIndicadores: document.getElementById("hubMontagemIndicadores"),
   hubRelatorio: document.getElementById("hubRelatorio"),
   hubHistorico: document.getElementById("hubHistorico"),
   hubAcompanhamento: document.getElementById("hubAcompanhamento"),
   viewLiberacao: document.getElementById("viewLiberacao"),
   viewInspecao: document.getElementById("viewInspecao"),
   viewMontagemPostes: document.getElementById("viewMontagemPostes"),
+  viewMontagemIndicadores: document.getElementById("viewMontagemIndicadores"),
   viewMontagemPostesDetalhe: document.getElementById("viewMontagemPostesDetalhe"),
   viewRelatorio: document.getElementById("viewRelatorio"),
   viewHistorico: document.getElementById("viewHistorico"),
@@ -4857,6 +4859,7 @@ function applyRoleVisibility() {
       LIBERACAO_S4: "hubLiberacaoS4",
     INSPECAO: "hubInspecao",
     MONTAGEM_POSTES: "hubMontagemPostes",
+    MONTAGEM_INDICADORES: "hubMontagemIndicadores",
     RELATORIO: "hubRelatorio",
     HISTORICO: "hubHistorico",
     ACOMPANHAMENTO: "hubAcompanhamento",
@@ -4982,7 +4985,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -5069,6 +5072,7 @@ function setMode(mode) {
     INSPECAO: ["hubInspecao", "Inspeção Setor 3 e 4"],
     MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
     MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
+    MONTAGEM_INDICADORES: ["hubMontagemIndicadores", "Montagem Indicadores"],
     RELATORIO: ["hubRelatorio", "Relatório"],
     HISTORICO: ["hubHistorico", "Histórico"],
     ACOMPANHAMENTO: ["hubAcompanhamento", "Acompanhamento"],
@@ -5219,6 +5223,12 @@ function bindEvents() {
     setMode("MONTAGEM_POSTES");
     if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd();
     renderMontagemPostesLiberados();
+  });
+  el.hubMontagemIndicadores?.addEventListener("click", () => {
+    setMode("MONTAGEM_INDICADORES");
+  });
+  document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
+    carregarMontagemIndicadores();
   });
   el.hubRelatorio.addEventListener("click", () => {
     setMode("RELATORIO");
@@ -6812,3 +6822,124 @@ function init() {
 }
 
 init();
+
+// ==========================================
+// ABA: MONTAGEM INDICADORES
+// ==========================================
+let chartMiPorDiaInstance = null;
+let chartMiPorSetorInstance = null;
+let chartMiPorMontadorInstance = null;
+
+async function carregarMontagemIndicadores() {
+  if (!supabaseClient) return;
+  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  
+  setSyncStatus("pending", "Carregando indicadores de montagem...");
+  try {
+    const { data, error } = await supabaseClient
+      .from("montagem_poste")
+      .select("setor, finalizado_em, status_montagem, montador_nome")
+      .gte("updated_at", dStart + "T00:00:00Z")
+      .lte("updated_at", dEnd + "T23:59:59Z");
+      
+    if (error) throw error;
+    
+    // Process KPIs
+    let totalInspecionado = 0;
+    let totalAprovados = 0;
+    let totalRecusados = 0;
+    
+    const byDay = {};
+    const bySector = {};
+    const byMontador = {};
+    
+    data.forEach(row => {
+      // Consider only finished assemblies (they have finalizado_em and status_montagem)
+      if (!row.status_montagem) return;
+      
+      totalInspecionado++;
+      if (row.status_montagem === "A") totalAprovados++;
+      else if (row.status_montagem === "R" || row.status_montagem === "RR") totalRecusados++;
+      
+      const day = (row.finalizado_em || "").split("T")[0] || "Desconhecido";
+      if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
+      byDay[day].total++;
+      if (row.status_montagem === "A") byDay[day].aprovados++;
+      else byDay[day].recusados++;
+      
+      const sec = row.setor || "Desconhecido";
+      bySector[sec] = (bySector[sec] || 0) + 1;
+      
+      const mon = row.montador_nome || "Desconhecido";
+      byMontador[mon] = (byMontador[mon] || 0) + 1;
+    });
+    
+    document.getElementById("miTotalInspecionado").textContent = totalInspecionado;
+    document.getElementById("miTotalAprovados").textContent = totalAprovados;
+    document.getElementById("miTotalRecusados").textContent = totalRecusados;
+    
+    renderGraficosMontagem(byDay, bySector, byMontador);
+    setSyncStatus("idle", "Indicadores atualizados.");
+  } catch(err) {
+    console.error("Erro carregarMontagemIndicadores:", err);
+    setSyncStatus("error", "Erro ao carregar indicadores.");
+  }
+}
+
+function renderGraficosMontagem(byDay, bySector, byMontador) {
+  if (chartMiPorDiaInstance) chartMiPorDiaInstance.destroy();
+  if (chartMiPorSetorInstance) chartMiPorSetorInstance.destroy();
+  if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.destroy();
+
+  // Por Dia
+  const dias = Object.keys(byDay).sort();
+  const dataDiaAprovados = dias.map(d => byDay[d].aprovados);
+  const dataDiaRecusados = dias.map(d => byDay[d].recusados);
+  const diasFormatados = dias.map(d => d !== "Desconhecido" ? d.split("-").reverse().join("/") : d);
+
+  const ctxDia = document.getElementById("chartMiPorDia")?.getContext("2d");
+  if (ctxDia) {
+    chartMiPorDiaInstance = new Chart(ctxDia, {
+      type: "bar",
+      data: {
+        labels: diasFormatados,
+        datasets: [
+          { label: "Aprovados", data: dataDiaAprovados, backgroundColor: "#10b981", stack: "Stack 0" },
+          { label: "Recusados", data: dataDiaRecusados, backgroundColor: "#ef4444", stack: "Stack 0" }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+
+  // Por Setor
+  const setores = Object.keys(bySector).sort();
+  const dataSetor = setores.map(s => bySector[s]);
+  const ctxSetor = document.getElementById("chartMiPorSetor")?.getContext("2d");
+  if (ctxSetor) {
+    chartMiPorSetorInstance = new Chart(ctxSetor, {
+      type: "doughnut",
+      data: {
+        labels: setores,
+        datasets: [{ data: dataSetor, backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#8b5cf6", "#64748b"] }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+    });
+  }
+
+  // Por Montador
+  const montadores = Object.keys(byMontador).sort((a,b) => byMontador[b] - byMontador[a]);
+  const dataMontador = montadores.map(m => byMontador[m]);
+  const ctxMontador = document.getElementById("chartMiPorMontador")?.getContext("2d");
+  if (ctxMontador) {
+    chartMiPorMontadorInstance = new Chart(ctxMontador, {
+      type: "bar",
+      data: {
+        labels: montadores,
+        datasets: [{ label: "Postes Inspecionados", data: dataMontador, backgroundColor: "#6366f1" }]
+      },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+}

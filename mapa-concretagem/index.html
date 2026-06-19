@@ -89,6 +89,10 @@
         <span class="nav-icon-wrap">MP</span>
         Montagem Postes
       </button>
+      <button class="nav-item" id="hubMontagemIndicadores" type="button">
+        <span class="nav-icon-wrap">MI</span>
+        Montagem Indicadores
+      </button>
       <button class="nav-item" id="hubRelatorio" type="button">
         <span class="nav-icon-wrap">RE</span>
         Relatório
@@ -820,6 +824,63 @@
       </div>
     </section>
 
+    <!-- NOVA ABA: MONTAGEM INDICADORES -->
+    <section id="viewMontagemIndicadores" class="card hidden">
+      <div class="section-title-row">
+        <h2>Montagem Indicadores</h2>
+      </div>
+      
+      <!-- Filtros de Data -->
+      <div class="form-row" style="margin-top: 15px; background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; align-items: center; justify-content: flex-start; gap: 15px;">
+        <div style="display: flex; flex-direction: column;">
+          <label style="font-size: 0.8rem; color: #475569; font-weight: 600;">Data Início</label>
+          <input type="date" id="miDataInicio" class="input-field" style="width: auto;" />
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <label style="font-size: 0.8rem; color: #475569; font-weight: 600;">Data Fim</label>
+          <input type="date" id="miDataFim" class="input-field" style="width: auto;" />
+        </div>
+        <div style="display: flex; align-items: flex-end; margin-bottom: 2px;">
+          <button id="miBtnFiltrar" class="btn btn-primary" type="button" style="padding: 10px 16px;">🔍 Filtrar</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="db-kpi-row" style="margin-top:20px;">
+        <div class="db-kpi-card" style="border-left-color: #6366f1;">
+          <span class="db-kpi-label">Total Inspecionado</span>
+          <span class="db-kpi-val" id="miTotalInspecionado" style="color: #6366f1;">—</span>
+        </div>
+        <div class="db-kpi-card" style="border-left-color: #10b981;">
+          <span class="db-kpi-label">Aprovados</span>
+          <span class="db-kpi-val" id="miTotalAprovados" style="color: #10b981;">—</span>
+        </div>
+        <div class="db-kpi-card" style="border-left-color: #ef4444;">
+          <span class="db-kpi-label">Recusados</span>
+          <span class="db-kpi-val" id="miTotalRecusados" style="color: #ef4444;">—</span>
+        </div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="db-charts-row" style="margin-top: 24px;">
+        <div class="db-chart-card">
+          <div class="db-chart-title">Postes Inspecionados por Dia</div>
+          <div class="db-chart-wrap"><canvas id="chartMiPorDia"></canvas></div>
+        </div>
+      </div>
+
+      <div class="db-charts-row-equal" style="margin-top: 24px;">
+        <div class="db-chart-card">
+          <div class="db-chart-title">Inspeções por Setor</div>
+          <div class="db-chart-wrap"><canvas id="chartMiPorSetor"></canvas></div>
+        </div>
+        <div class="db-chart-card">
+          <div class="db-chart-title">Ranking por Montador</div>
+          <div class="db-chart-wrap"><canvas id="chartMiPorMontador"></canvas></div>
+        </div>
+      </div>
+    </section>
+
     <section id="viewMontagemPostesDetalhe" class="card hidden">
       <div class="section-title-row">
         <h2>Inspecionar / Montar Poste</h2>
@@ -1138,6 +1199,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=a1016d9c"></script>
+  <script src="app.js?v=dc82c816"></script>
 </body>
 </html>
