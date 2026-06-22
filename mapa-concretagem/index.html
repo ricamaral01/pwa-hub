@@ -828,237 +828,475 @@
       </div>
     </section>
 
-    <!-- NOVA ABA: MONTAGEM INDICADORES -->
+    <!-- NOVA ABA: MONTAGEM INDICADORES (REFATORAÇÃO MOBILE-FIRST) -->
     <section id="viewMontagemIndicadores" class="card hidden">
-      <div class="section-title-row">
-        <h2>Dashboard montagem</h2>
-      </div>
-      
-      <!-- Filtros de Data e Busca -->
-      <div class="form-row" style="margin-top: 15px; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;">
-        <div style="display: flex; flex-direction: column; flex: 1; min-width: 120px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Data Início</label>
-          <input type="date" id="miDataInicio" class="input-field" style="width: 100%; box-sizing: border-box;" />
-        </div>
-        <div style="display: flex; flex-direction: column; flex: 1; min-width: 120px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Data Fim</label>
-          <input type="date" id="miDataFim" class="input-field" style="width: 100%; box-sizing: border-box;" />
-        </div>
-        <div style="display: flex; flex-direction: column; flex: 1; min-width: 130px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Setor</label>
-          <select id="miFiltroSetor" class="input-field" style="width: 100%; box-sizing: border-box;">
-            <option value="">Todos os Setores</option>
-            <option value="Setor 1">Setor 1</option>
-            <option value="Setor 2">Setor 2</option>
-            <option value="Setor 3">Setor 3</option>
-            <option value="Setor 4">Setor 4</option>
-          </select>
-        </div>
-        <div style="display: flex; flex-direction: column; flex: 1; min-width: 130px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Status</label>
-          <select id="miFiltroStatus" class="input-field" style="width: 100%; box-sizing: border-box;">
-            <option value="">Todos os Status</option>
-            <option value="A">Aprovado</option>
-            <option value="R">Reprovado</option>
-            <option value="RR">Reprovado e Retrabalhado</option>
-          </select>
-        </div>
-        <div style="display: flex; flex-direction: column; flex: 2; min-width: 180px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Pesquisar (Forma, Modelo, Montador)</label>
-          <input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Ex: AE-01, 4 CXS, Rafael..." style="width: 100%; box-sizing: border-box;" />
-        </div>
-        <div style="display: flex; align-items: flex-end; width: auto;">
-          <button id="miBtnFiltrar" class="btn btn-primary" type="button" style="padding: 10px 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; justify-content: center; height: 38px;">🔍 Filtrar</button>
+      <!-- Barra Superior -->
+      <div class="section-title-row" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <h2 style="margin: 0; font-size: 1.4rem; font-weight: 800; color: #0f172a;">Dashboard Montagem</h2>
+        <div style="display: flex; gap: 8px;">
+          <button id="miBtnToggleFiltros" class="btn" type="button" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; font-weight: 600; font-size: 0.85rem; border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+            <span>🔍</span> <span>Filtros</span>
+          </button>
+          <button id="miBtnAtualizar" class="btn" type="button" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; font-weight: 600; font-size: 0.85rem; border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+            <span>🔄</span> <span class="hide-mobile">Atualizar</span>
+          </button>
         </div>
       </div>
 
-      <!-- KPIs -->
-      <div class="db-kpi-row" style="margin-top:20px;">
-        <div class="db-kpi-card" style="border-left-color: #3b82f6;">
-          <span class="db-kpi-label">Total Produzido</span>
-          <span class="db-kpi-val" id="miTotalProduzido" style="color: #3b82f6;">—</span>
-        </div>
-        <div class="db-kpi-card" style="border-left-color: #6366f1;">
-          <span class="db-kpi-label">Total Inspecionado</span>
-          <span class="db-kpi-val" id="miTotalInspecionado" style="color: #6366f1;">—</span>
-        </div>
-        <div class="db-kpi-card" style="border-left-color: #10b981;">
-          <span class="db-kpi-label">Aprovados</span>
-          <span class="db-kpi-val" id="miTotalAprovados" style="color: #10b981;">—</span>
-        </div>
-        <div class="db-kpi-card" style="border-left-color: #ef4444;">
-          <span class="db-kpi-label">Recusados</span>
-          <span class="db-kpi-val" id="miTotalRecusados" style="color: #ef4444;">—</span>
-        </div>
-      </div>
-
-      <!-- Comparativo Produzidos vs Montados -->
-      <div style="margin-top: 24px; font-weight: 700; font-size: 1.1rem; color: #1e293b;">
-        Comparativo: Produzidos vs Montados
-      </div>
-      <div class="db-charts-row-equal" style="margin-top: 12px; gap: 20px;">
-        <!-- Card Geral -->
-        <div class="db-chart-card" style="padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div class="db-chart-title" style="margin-bottom: 12px;">Geral (Todos os Setores)</div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
-              <span>Produzidos: <strong id="miProdGeral">—</strong></span>
-              <span>Montados: <strong id="miMontGeral">—</strong></span>
+      <!-- Drawer de Filtros Lateral (Estilo SaaS Premium) -->
+      <div id="miFiltrosDrawer" class="mi-drawer-overlay hidden">
+        <div class="mi-drawer-content">
+          <div class="mi-drawer-header">
+            <h3 style="margin:0; font-size:1.1rem; font-weight:700; color:#0f172a;">Filtros de Busca</h3>
+            <button id="miBtnFecharFiltros" class="mi-drawer-close-btn" type="button">&times;</button>
+          </div>
+          <div class="mi-drawer-body">
+            <div class="mi-drawer-field">
+              <label>Data Início</label>
+              <input type="date" id="miDataInicio" class="input-field" />
             </div>
-            <div style="background: #e2e8f0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px;">
-              <div id="miBarGeral" style="background: #3b82f6; width: 0%; height: 100%; transition: width 0.5s ease-in-out;"></div>
+            <div class="mi-drawer-field">
+              <label>Data Fim</label>
+              <input type="date" id="miDataFim" class="input-field" />
+            </div>
+            <div class="mi-drawer-field">
+              <label>Setor</label>
+              <select id="miFiltroSetor" class="input-field">
+                <option value="">Todos os Setores</option>
+                <option value="Setor 1">Setor 1</option>
+                <option value="Setor 2">Setor 2</option>
+                <option value="Setor 3">Setor 3</option>
+                <option value="Setor 4">Setor 4</option>
+              </select>
+            </div>
+            <div class="mi-drawer-field">
+              <label>Status</label>
+              <select id="miFiltroStatus" class="input-field">
+                <option value="">Todos os Status</option>
+                <option value="A">Aprovado</option>
+                <option value="R">Reprovado</option>
+                <option value="RR">Reprovado e Retrabalhado</option>
+              </select>
+            </div>
+            <div class="mi-drawer-field">
+              <label>Pesquisar (Forma, Modelo, Montador)</label>
+              <input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Ex: AE-01, 4 CXS, Rafael..." />
             </div>
           </div>
-          <div style="text-align: right; font-size: 1.5rem; font-weight: bold; color: #1e40af;" id="miPctGeral">—%</div>
-        </div>
-
-        <!-- Card por Setor -->
-        <div class="db-chart-card" style="padding: 18px;">
-          <div class="db-chart-title" style="margin-bottom: 12px;">Detalhamento por Setor</div>
-          <div id="miSetoresContainer" style="display: flex; flex-direction: column; gap: 12px;">
-            <!-- Renderizado via JS -->
+          <div class="mi-drawer-footer">
+            <button id="miBtnLimparFiltros" type="button" class="btn" style="background:#e2e8f0; color:#475569; font-weight:600; padding:10px; border-radius:8px; border:none; cursor:pointer;">Limpar</button>
+            <button id="miBtnFiltrar" type="button" class="btn btn-primary" style="font-weight:600; padding:10px; border-radius:8px; flex:1;">Aplicar Filtros</button>
           </div>
         </div>
       </div>
 
-      <!-- Estilos Customizados para Responsividade e Tabela -->
+      <!-- Abas de Navegação (Tabs) -->
+      <div class="mi-tabs-bar">
+        <button class="mi-tab-btn active" data-tab="resumo">Resumo</button>
+        <button class="mi-tab-btn" data-tab="producao">Produção</button>
+        <button class="mi-tab-btn" data-tab="qualidade">Qualidade</button>
+        <button class="mi-tab-btn" data-tab="produtividade">Produtividade</button>
+      </div>
+
+      <!-- SEÇÃO 1: RESUMO -->
+      <div id="miSecaoResumo" class="mi-tab-section active">
+        <!-- KPIs Grid (2 por linha no celular, 4 no desktop) -->
+        <div class="mi-kpis-grid">
+          <div class="mi-kpi-card" style="border-left-color: #3b82f6;">
+            <span class="mi-kpi-label">Programado</span>
+            <span class="mi-kpi-val" id="miTotalProduzido" style="color: #3b82f6;">—</span>
+          </div>
+          <div class="mi-kpi-card" style="border-left-color: #6366f1;">
+            <span class="mi-kpi-label">Realizado</span>
+            <span class="mi-kpi-val" id="miTotalInspecionado" style="color: #6366f1;">—</span>
+          </div>
+          <div class="mi-kpi-card" style="border-left-color: #10b981;">
+            <span class="mi-kpi-label">Atingimento</span>
+            <span class="mi-kpi-val" id="miAtingimentoPct" style="color: #10b981;">—%</span>
+          </div>
+          <div class="mi-kpi-card" style="border-left-color: #f59e0b;">
+            <span class="mi-kpi-label">Prod. do Dia</span>
+            <span class="mi-kpi-val" id="miProducaoDia" style="color: #f59e0b;">—</span>
+          </div>
+        </div>
+
+        <!-- Comparativo Produzidos vs Montados -->
+        <div style="margin-top: 20px; font-weight: 700; font-size: 1rem; color: #1e293b; padding-bottom: 8px;">
+          Comparativo: Produzidos vs Montados
+        </div>
+        <div class="mi-charts-row">
+          <!-- Card Geral -->
+          <div class="mi-chart-card" style="padding: 16px; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px;">
+            <div>
+              <div class="mi-chart-title" style="margin-bottom: 8px;">Geral (Todos os Setores)</div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem;">
+                <span>Produzidos: <strong id="miProdGeral">—</strong></span>
+                <span>Montados: <strong id="miMontGeral">—</strong></span>
+              </div>
+              <div style="background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 8px;">
+                <div id="miBarGeral" style="background: #3b82f6; width: 0%; height: 100%; transition: width 0.5s ease-in-out;"></div>
+              </div>
+            </div>
+            <div style="text-align: right; font-size: 1.3rem; font-weight: bold; color: #1e40af;" id="miPctGeral">—%</div>
+          </div>
+
+          <!-- Card por Setor -->
+          <div class="mi-chart-card" style="padding: 16px;">
+            <div class="mi-chart-title" style="margin-bottom: 8px;">Detalhamento por Setor</div>
+            <div id="miSetoresContainer" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 2: PRODUÇÃO -->
+      <div id="miSecaoProducao" class="mi-tab-section">
+        <div class="mi-charts-row">
+          <div class="mi-chart-card" style="width: 100%;">
+            <div class="mi-chart-title">Postes Inspecionados por Dia</div>
+            <div class="mi-chart-canvas-wrap"><canvas id="chartMiPorDia"></canvas></div>
+          </div>
+        </div>
+
+        <!-- Tabela Detalhada / Cards de Montagem -->
+        <div class="mi-listagem-wrap">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+            <h3 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: #0f172a;">Listagem de Montagens Realizadas</h3>
+            <span style="font-size: 0.75rem; color: #64748b; background: #f1f5f9; padding: 4px 10px; border-radius: 12px; font-weight: 600;">
+              Total: <span id="miTabelaTotal">0</span> registros
+            </span>
+          </div>
+
+          <!-- Versão Desktop (Tabela) -->
+          <div class="mi-table-responsive">
+            <table class="sheet-table" style="width: 100%; border-collapse: collapse; min-width: 750px;">
+              <thead>
+                <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('data_fabricacao')">Data Prod. <span id="sort_icon_data_fabricacao"></span></th>
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th>
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('forma_numero')">Forma <span id="sort_icon_forma_numero"></span></th>
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th>
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('inicio_inspecao_montagem')">Início <span id="sort_icon_inicio_inspecao_montagem"></span></th>
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('finalizado_em')">Fim <span id="sort_icon_finalizado_em"></span></th>
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('tempo_inspecao')">Duração <span id="sort_icon_tempo_inspecao"></span></th>
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th>
+                  <th style="padding: 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th>
+                </tr>
+              </thead>
+              <tbody id="miTabelaBody">
+                <tr><td colspan="9" style="text-align: center; color: #64748b; padding: 20px;">Carregando dados...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Versão Mobile (Cards) -->
+          <div id="miCardsContainer" class="mi-cards-mobile-list">
+            <!-- Inserido dinamicamente no mobile -->
+          </div>
+
+          <!-- Paginação Responsiva -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+            <div style="font-size: 0.8rem; color: #64748b;">
+              Mostrando <span id="miPaginacaoDe">0</span>-<span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span>
+            </div>
+            <div style="display: flex; gap: 4px;" id="miPaginacaoBotoes">
+              <!-- Botões de página -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 3: QUALIDADE -->
+      <div id="miSecaoQualidade" class="mi-tab-section">
+        <div class="mi-charts-row">
+          <div class="mi-chart-card">
+            <div class="mi-chart-title">Inspeções por Setor</div>
+            <div class="mi-chart-canvas-wrap"><canvas id="chartMiPorSetor"></canvas></div>
+          </div>
+          <div class="mi-chart-card">
+            <div class="mi-chart-title">Ranking por Montador</div>
+            <div class="mi-chart-canvas-wrap"><canvas id="chartMiPorMontador"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 4: PRODUTIVIDADE -->
+      <div id="miSecaoProdutividade" class="mi-tab-section">
+        <div class="mi-charts-row">
+          <div class="mi-chart-card">
+            <div class="mi-chart-title">Tempo Médio por Tipo de Poste</div>
+            <div id="miTempoMedioModelo" style="overflow-y: auto; max-height: 300px; margin-top: 10px;">
+              <div class="muted" style="padding: 10px; text-align: center;">Carregando...</div>
+            </div>
+          </div>
+          <div class="mi-chart-card">
+            <div class="mi-chart-title">Tempo Médio por Operador</div>
+            <div id="miTempoMontador" style="overflow-y: auto; max-height: 300px; margin-top: 10px;">
+              <div class="muted" style="padding: 10px; text-align: center;">Carregando...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estilos Customizados Refatorados (Abordagem Mobile-First) -->
       <style>
         #viewMontagemIndicadores {
           width: 100%;
           max-width: 100%;
           overflow-x: hidden;
           box-sizing: border-box;
+          padding: 12px;
+          background: #fafafa;
         }
-        #viewMontagemIndicadores .btn-primary {
-          background: #2563eb;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background 0.2s;
+
+        /* Drawer de Filtros Estilo SaaS Premium */
+        .mi-drawer-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(4px);
+          z-index: 9999;
+          display: flex;
+          justify-content: flex-end;
+          opacity: 1;
+          transition: opacity 0.25s ease-in-out;
         }
-        #viewMontagemIndicadores .btn-primary:hover {
-          background: #1d4ed8;
+        .mi-drawer-overlay.hidden {
+          display: none !important;
+          opacity: 0;
         }
-        #viewMontagemIndicadores .sheet-table th {
-          background-color: #f1f5f9;
-          color: #475569;
-          font-weight: 600;
-          font-size: 0.85rem;
-          border-bottom: 2px solid #cbd5e1;
+        .mi-drawer-content {
+          width: 100%;
+          max-width: 360px;
+          height: 100%;
+          background: #fff;
+          box-shadow: -4px 0 25px rgba(0, 0, 0, 0.15);
+          display: flex;
+          flex-direction: column;
+          transform: translateX(0);
+          transition: transform 0.25s ease-in-out;
         }
-        #viewMontagemIndicadores .sheet-table td {
+        .mi-drawer-overlay.hidden .mi-drawer-content {
+          transform: translateX(100%);
+        }
+        .mi-drawer-header {
+          padding: 16px 20px;
           border-bottom: 1px solid #e2e8f0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .mi-drawer-close-btn {
+          font-size: 1.8rem;
+          background: none;
+          border: none;
+          color: #64748b;
+          cursor: pointer;
+          line-height: 1;
+          padding: 0 4px;
+        }
+        .mi-drawer-body {
+          flex: 1;
+          overflow-y: auto;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .mi-drawer-field {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .mi-drawer-field label {
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: #475569;
+        }
+        .mi-drawer-footer {
+          padding: 16px 20px;
+          border-top: 1px solid #e2e8f0;
+          display: flex;
+          gap: 10px;
+          background: #f8fafc;
+        }
+
+        /* Tabs de Navegação */
+        .mi-tabs-bar {
+          display: flex;
+          gap: 6px;
+          border-bottom: 2px solid #e2e8f0;
+          margin-top: 16px;
+          margin-bottom: 16px;
+          overflow-x: auto;
+          scrollbar-width: none; /* Firefox */
+          -webkit-overflow-scrolling: touch;
+        }
+        .mi-tabs-bar::-webkit-scrollbar {
+          display: none; /* Safari e Chrome */
+        }
+        .mi-tab-btn {
+          padding: 10px 16px;
           font-size: 0.85rem;
+          font-weight: 600;
+          color: #64748b;
+          background: none;
+          border: none;
+          border-bottom: 3px solid transparent;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all 0.2s;
         }
-        /* Correções de Responsividade */
-        #viewMontagemIndicadores .db-chart-card,
-        #viewMontagemIndicadores .db-chart-wrap,
-        #viewMontagemIndicadores .form-row,
-        #viewMontagemIndicadores .db-charts-row-equal,
-        #viewMontagemIndicadores .db-charts-row-full {
-          min-width: 0 !important;
-          max-width: 100% !important;
+        .mi-tab-btn.active {
+          color: #2563eb;
+          border-bottom-color: #2563eb;
         }
-        #miPaginacaoBotoes {
-          flex-wrap: wrap;
+
+        /* Seções de Aba */
+        .mi-tab-section {
+          display: none;
         }
-        @media (max-width: 1024px) {
-          #viewMontagemIndicadores .db-charts-row-equal,
-          #viewMontagemIndicadores .db-charts-row {
-            grid-template-columns: 1fr !important;
+        .mi-tab-section.active {
+          display: block;
+        }
+
+        /* KPIs Grid (2 colunas no mobile) */
+        .mi-kpis-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+        }
+        .mi-kpi-card {
+          background: #fff;
+          border: 1px solid #e2e8f0;
+          border-left: 4px solid #cbd5e1;
+          border-radius: 10px;
+          padding: 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .mi-kpi-label {
+          font-size: 0.75rem;
+          color: #64748b;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .mi-kpi-val {
+          font-size: 1.4rem;
+          font-weight: 800;
+        }
+
+        /* Grid de Gráficos (Empilhado no Mobile por padrão) */
+        .mi-charts-row {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+          margin-top: 12px;
+        }
+        .mi-chart-card {
+          background: #fff;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 14px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+          min-width: 0;
+        }
+        .mi-chart-title {
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: #1e293b;
+          margin-bottom: 12px;
+        }
+        .mi-chart-canvas-wrap {
+          position: relative;
+          height: 240px;
+          width: 100%;
+        }
+
+        /* Listagem de Montagens */
+        .mi-listagem-wrap {
+          margin-top: 20px;
+          background: #fff;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 14px;
+        }
+        .mi-table-responsive {
+          display: none; /* Esconde tabela no mobile por padrão */
+        }
+        
+        /* Mobile Cards List */
+        .mi-cards-mobile-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .mi-mobile-card {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          padding: 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .mi-mobile-card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 0.85rem;
+          border-bottom: 1px solid #e2e8f0;
+          padding-bottom: 6px;
+        }
+        .mi-mobile-card-body {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 6px;
+          font-size: 0.8rem;
+          color: #475569;
+        }
+
+        /* Media Queries para Telas Maiores (Desktop-First Overrides) */
+        @media (min-width: 768px) {
+          #viewMontagemIndicadores {
+            padding: 24px;
+          }
+          .mi-kpis-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+          }
+          .mi-kpi-val {
+            font-size: 1.8rem;
+          }
+          .mi-charts-row {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+          }
+          .mi-chart-canvas-wrap {
+            height: 280px;
+          }
+          .mi-table-responsive {
+            display: block; /* Mostra tabela no Desktop/Tablet */
+            overflow-x: auto;
+          }
+          .mi-cards-mobile-list {
+            display: none; /* Oculta cards no Desktop/Tablet */
           }
         }
-        @media (max-width: 480px) {
-          #viewMontagemIndicadores .form-row {
-            padding: 12px !important;
-          }
-          #viewMontagemIndicadores .db-kpi-card {
-            padding: 10px 8px !important;
-          }
-          #viewMontagemIndicadores .db-kpi-label {
-            font-size: 0.65rem !important;
-          }
-          #viewMontagemIndicadores .db-kpi-val {
-            font-size: 1.4rem !important;
+
+        @media (min-width: 1200px) {
+          .mi-charts-row {
+            gap: 24px;
           }
         }
       </style>
-
-      <!-- Gráficos -->
-      <div class="db-charts-row-full" style="margin-top: 24px;">
-        <div class="db-chart-card">
-          <div class="db-chart-title">Postes Inspecionados por Dia</div>
-          <div class="db-chart-wrap"><canvas id="chartMiPorDia"></canvas></div>
-        </div>
-      </div>
-
-      <div class="db-charts-row-equal" style="margin-top: 24px;">
-        <div class="db-chart-card">
-          <div class="db-chart-title">Inspeções por Setor</div>
-          <div class="db-chart-wrap"><canvas id="chartMiPorSetor"></canvas></div>
-        </div>
-        <div class="db-chart-card">
-          <div class="db-chart-title">Ranking por Montador</div>
-          <div class="db-chart-wrap"><canvas id="chartMiPorMontador"></canvas></div>
-        </div>
-      </div>
-
-      <div class="db-charts-row-equal" style="margin-top: 24px;">
-        <div class="db-chart-card" style="display: flex; flex-direction: column;">
-          <div class="db-chart-title" style="margin-bottom: 12px; font-weight: 700; color: #1e293b;">Tempo Médio por Tipo de Poste</div>
-          <div id="miTempoMedioModelo" style="overflow-y: auto; max-height: 250px;">
-            <div class="muted" style="padding: 10px; text-align: center;">Carregando...</div>
-          </div>
-        </div>
-        <div class="db-chart-card" style="display: flex; flex-direction: column;">
-          <div class="db-chart-title" style="margin-bottom: 12px; font-weight: 700; color: #1e293b;">Tempo Médio por Operador</div>
-          <div id="miTempoMontador" style="overflow-y: auto; max-height: 250px;">
-            <div class="muted" style="padding: 10px; text-align: center;">Carregando...</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tabela Detalhada de Montagem -->
-      <div style="margin-top: 30px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
-          <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: #0f172a;">Listagem de Montagens Realizadas</h3>
-          <span style="font-size: 0.85rem; color: #64748b; background: #f1f5f9; padding: 4px 10px; border-radius: 12px; font-weight: 600;">
-            Total: <span id="miTabelaTotal">0</span> registros
-          </span>
-        </div>
-
-        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-          <table class="sheet-table" style="width: 100%; border-collapse: collapse; min-width: 750px;">
-            <thead>
-              <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 90px;" onclick="ordenarMiTabela('data_fabricacao')">Data Prod. <span id="sort_icon_data_fabricacao"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 80px;" onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 80px;" onclick="ordenarMiTabela('forma_numero')">Forma <span id="sort_icon_forma_numero"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 140px;" onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 90px;" onclick="ordenarMiTabela('inicio_inspecao_montagem')">Início <span id="sort_icon_inicio_inspecao_montagem"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 90px;" onclick="ordenarMiTabela('finalizado_em')">Fim <span id="sort_icon_finalizado_em"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 90px;" onclick="ordenarMiTabela('tempo_inspecao')">Duração <span id="sort_icon_tempo_inspecao"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 120px;" onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer; width: 150px;" onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th>
-              </tr>
-            </thead>
-            <tbody id="miTabelaBody">
-              <tr><td colspan="9" style="text-align: center; color: #64748b; padding: 20px;">Carregando dados...</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Paginação -->
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
-          <div style="font-size: 0.85rem; color: #64748b;">
-            Mostrando de <span id="miPaginacaoDe">0</span> a <span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span> registros
-          </div>
-          <div style="display: flex; gap: 5px;" id="miPaginacaoBotoes">
-            <!-- Botões de página renderizados dinamicamente -->
-          </div>
-        </div>
-      </div>
     </section>
 
     <section id="viewMontagemPostesDetalhe" class="card hidden">

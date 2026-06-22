@@ -5283,7 +5283,36 @@ function bindEvents() {
   el.hubMontagemIndicadores?.addEventListener("click", () => {
     setMode("MONTAGEM_INDICADORES");
   });
+
+  // Configuração do Drawer de Filtros e Abas do Dashboard Montagem
+  const elFiltrosDrawer = document.getElementById("miFiltrosDrawer");
+  document.getElementById("miBtnToggleFiltros")?.addEventListener("click", () => {
+    elFiltrosDrawer?.classList.remove("hidden");
+  });
+  document.getElementById("miBtnFecharFiltros")?.addEventListener("click", () => {
+    elFiltrosDrawer?.classList.add("hidden");
+  });
+  document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
+    const miDataInicio = document.getElementById("miDataInicio");
+    const miDataFim = document.getElementById("miDataFim");
+    if (miDataInicio) miDataInicio.value = todayYmd();
+    if (miDataFim) miDataFim.value = todayYmd();
+    
+    const fSetor = document.getElementById("miFiltroSetor");
+    if (fSetor) fSetor.value = "";
+    const fStatus = document.getElementById("miFiltroStatus");
+    if (fStatus) fStatus.value = "";
+    const fPesquisa = document.getElementById("miFiltroPesquisa");
+    if (fPesquisa) fPesquisa.value = "";
+
+    miPaginaAtual = 1;
+    aplicarFiltrosEExibirMontagem();
+  });
+  document.getElementById("miBtnAtualizar")?.addEventListener("click", () => {
+    carregarMontagemIndicadores();
+  });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
+    elFiltrosDrawer?.classList.add("hidden");
     carregarMontagemIndicadores();
   });
   document.getElementById("miFiltroSetor")?.addEventListener("change", () => {
@@ -5297,6 +5326,29 @@ function bindEvents() {
   document.getElementById("miFiltroPesquisa")?.addEventListener("input", () => {
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
+  });
+
+  // Troca de Abas do Dashboard
+  document.querySelectorAll(".mi-tab-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const targetTab = e.currentTarget.dataset.tab;
+      
+      // Ativar aba
+      document.querySelectorAll(".mi-tab-btn").forEach(b => b.classList.remove("active"));
+      e.currentTarget.classList.add("active");
+      
+      // Ativar seção
+      document.querySelectorAll(".mi-tab-section").forEach(s => s.classList.remove("active"));
+      const sectionId = "miSecao" + targetTab.charAt(0).toUpperCase() + targetTab.slice(1);
+      document.getElementById(sectionId)?.classList.add("active");
+
+      // Forçar atualização do tamanho dos gráficos Chart.js ao exibir a seção
+      setTimeout(() => {
+        if (chartMiPorDiaInstance) chartMiPorDiaInstance.resize();
+        if (chartMiPorSetorInstance) chartMiPorSetorInstance.resize();
+        if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.resize();
+      }, 50);
+    });
   });
 
   // Close listeners for Visualizar Checklist Modal
@@ -7071,10 +7123,6 @@ function aplicarFiltrosEExibirMontagem() {
     }
   });
 
-  // Atualizar KPIs
-  document.getElementById("miTotalInspecionado").textContent = totalInspecionado;
-  document.getElementById("miTotalAprovados").textContent = totalAprovados;
-  document.getElementById("miTotalRecusados").textContent = totalRecusados;
 
   // Renderizar tempos médios
   const elTempoModelo = document.getElementById("miTempoMedioModelo");
@@ -7151,10 +7199,25 @@ function aplicarFiltrosEExibirMontagem() {
   if (elTotalProduzido) elTotalProduzido.textContent = prodGeral;
 
   document.getElementById("miMontGeral").textContent = totalInspecionado;
+  const elTotalInspecionado = document.getElementById("miTotalInspecionado");
+  if (elTotalInspecionado) elTotalInspecionado.textContent = totalInspecionado;
+
   const pctGeral = prodGeral > 0 ? Math.round((totalInspecionado / prodGeral) * 100) : 0;
   document.getElementById("miPctGeral").textContent = pctGeral + "%";
+  const elAtingimentoPct = document.getElementById("miAtingimentoPct");
+  if (elAtingimentoPct) elAtingimentoPct.textContent = pctGeral + "%";
+
   const barGeral = document.getElementById("miBarGeral");
   if (barGeral) barGeral.style.width = Math.min(pctGeral, 100) + "%";
+
+  const elProducaoDia = document.getElementById("miProducaoDia");
+  const todayStr = todayYmd();
+  const prodDia = miRawProducaoData.filter(row => {
+    if (row.data_fabricacao !== todayStr) return false;
+    if (fSetor && row.setor !== fSetor) return false;
+    return true;
+  }).length;
+  if (elProducaoDia) elProducaoDia.textContent = prodDia;
 
   // Detalhamento por Setor
   const sectors = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
@@ -7194,6 +7257,8 @@ function renderizarTabelaMontagemPaginada() {
 
   if (totalRegistros === 0) {
     tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
+    const cardsContainer = document.getElementById("miCardsContainer");
+    if (cardsContainer) cardsContainer.innerHTML = '<div style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</div>';
     document.getElementById("miPaginacaoDe").textContent = "0";
     document.getElementById("miPaginacaoA").textContent = "0";
     document.getElementById("miPaginacaoBotoes").innerHTML = "";
@@ -7236,7 +7301,7 @@ function renderizarTabelaMontagemPaginada() {
   document.getElementById("miPaginacaoDe").textContent = inicioIdx + 1;
   document.getElementById("miPaginacaoA").textContent = fimIdx;
 
-  // Renderizar Linhas
+  // Renderizar Linhas (Tabela - Desktop)
   tbody.innerHTML = paginaDados.map(row => {
     const dataFab = row.data_fabricacao ? row.data_fabricacao.split("T")[0].split("-").reverse().join("/") : "N/A";
     
@@ -7276,6 +7341,51 @@ function renderizarTabelaMontagemPaginada() {
       </tr>
     `;
   }).join("");
+
+  // Renderizar Cards (Mobile)
+  const cardsContainer = document.getElementById("miCardsContainer");
+  if (cardsContainer) {
+    cardsContainer.innerHTML = paginaDados.map(row => {
+      const dataFab = row.data_fabricacao ? row.data_fabricacao.split("T")[0].split("-").reverse().join("/") : "N/A";
+      
+      const formatTimeShort = (isoStr) => {
+        if (!isoStr) return "N/A";
+        const d = new Date(isoStr);
+        if (isNaN(d.getTime())) return isoStr;
+        return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      };
+
+      const inicio = formatTimeShort(row.inicio_inspecao_montagem);
+      const fim = formatTimeShort(row.finalizado_em);
+
+      const durMs = row.finalizado_em && row.inicio_inspecao_montagem ? (new Date(row.finalizado_em) - new Date(row.inicio_inspecao_montagem)) : null;
+      const tempoText = formatarDuracao(durMs);
+      
+      let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
+      if (row.status_montagem === "A") {
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
+      } else if (row.status_montagem === "RR") {
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Retrabalhado</span>`;
+      } else if (row.status_montagem === "R") {
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
+      }
+
+      return `
+        <div class="mi-mobile-card">
+          <div class="mi-mobile-card-header">
+            <div><strong>Forma ${row.forma_numero || ""}</strong> (${row.setor || ""}) - <span style="color:#64748b; font-weight:600;">${row.modelo || ""}</span></div>
+            <div>${statusHtml}</div>
+          </div>
+          <div class="mi-mobile-card-body">
+            <div><strong>Data Prod:</strong> ${dataFab}</div>
+            <div><strong>Duração:</strong> ${tempoText}</div>
+            <div><strong>Período:</strong> ${inicio} - ${fim}</div>
+            <div><strong>Montador:</strong> ${row.montador_nome || ""}</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
 
   // Atualizar Ícones de Ordenação
   const colunas = ["data_fabricacao", "setor", "forma_numero", "modelo", "inicio_inspecao_montagem", "finalizado_em", "tempo_inspecao", "status_montagem", "montador_nome"];
@@ -7347,6 +7457,10 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   if (chartMiPorSetorInstance) chartMiPorSetorInstance.destroy();
   if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.destroy();
 
+  const isMobile = window.innerWidth < 768;
+  const labelFontSize = isMobile ? 9 : 12;
+  const legendBoxWidth = isMobile ? 8 : 12;
+
   // Por Dia
   const unionSet = new Set([
     ...Object.keys(byDay),
@@ -7376,10 +7490,33 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
       options: { 
         responsive: true, 
         maintainAspectRatio: false, 
-        plugins: { legend: { position: 'bottom' } },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
+        plugins: { 
+          legend: { 
+            position: 'bottom',
+            labels: {
+              boxWidth: legendBoxWidth,
+              font: { size: labelFontSize }
+            }
+          } 
+        },
         scales: {
-          x: { stacked: true },
-          y: { stacked: true, beginAtZero: true }
+          x: { 
+            stacked: true,
+            ticks: {
+              font: { size: labelFontSize },
+              maxRotation: isMobile ? 45 : 0,
+              minRotation: isMobile ? 45 : 0
+            }
+          },
+          y: { 
+            stacked: true, 
+            beginAtZero: true,
+            ticks: { font: { size: labelFontSize } }
+          }
         }
       }
     });
@@ -7396,7 +7533,19 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
         labels: setores,
         datasets: [{ data: dataSetor, backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#8b5cf6", "#64748b"] }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { 
+            position: isMobile ? 'bottom' : 'right',
+            labels: {
+              boxWidth: legendBoxWidth,
+              font: { size: labelFontSize }
+            }
+          } 
+        } 
+      }
     });
   }
 
@@ -7411,7 +7560,22 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
         labels: montadores,
         datasets: [{ label: "Postes Inspecionados", data: dataMontador, backgroundColor: "#6366f1" }]
       },
-      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      options: { 
+        indexAxis: 'y', 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        interaction: {
+          intersect: false,
+          mode: 'nearest'
+        },
+        plugins: { 
+          legend: { display: false } 
+        },
+        scales: {
+          x: { ticks: { font: { size: labelFontSize } } },
+          y: { ticks: { font: { size: labelFontSize } } }
+        }
+      }
     });
   }
 }
