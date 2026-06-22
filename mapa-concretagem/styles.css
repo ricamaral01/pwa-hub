@@ -3548,9 +3548,9 @@ hr {
   }
 
   body.print-relatorio .rel-sign-block {
-    min-height: 120px !important;
+    min-height: 40px !important;
     max-width: 420px !important;
-    margin-top: 0 !important;
+    margin-top: 80px !important;
   }
 }
 

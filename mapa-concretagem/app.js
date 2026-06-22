@@ -719,6 +719,7 @@ const el = {
   relEncarregado: document.getElementById("relEncarregado"),
   gerarRelatorioSetor: document.getElementById("gerarRelatorioSetor"),
   relBtnImprimir: document.getElementById("relBtnImprimir"),
+  relBtnWhatsapp: document.getElementById("relBtnWhatsapp"),
   relatorioSetorOutput: document.getElementById("relatorioSetorOutput"),
   viewProdAnalise: document.getElementById("viewProdAnalise")
 };
@@ -4713,7 +4714,6 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
         <div class="rel-sign-block">
           <span>Assinatura do encarregado de produção</span>
         </div>
-        <div class="rel-footer-note">Relatório gerado pelo Mapa de Concretagem</div>
       </footer>
     </article>
   `;
@@ -4727,6 +4727,80 @@ function imprimirRelatorioSetor() {
   document.body.classList.add("print-relatorio");
   window.print();
   setTimeout(() => document.body.classList.remove("print-relatorio"), 500);
+}
+
+function loadHtml2Pdf() {
+  return new Promise((resolve, reject) => {
+    if (window.html2pdf) return resolve(window.html2pdf);
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+    script.onload = () => resolve(window.html2pdf);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+async function enviarRelatorioWhatsapp() {
+  const element = document.getElementById("relPrintDoc");
+  if (!element) {
+    showMsgBox("Gere o relatório antes de enviar.", "error");
+    return;
+  }
+
+  const data = el.relData.value;
+  const setor = el.relSetor.value;
+  const encarregado = el.relEncarregado.value.trim() || "Não informado";
+
+  // Buscar kpis e totais do relatório
+  const totalFormas = element.querySelector(".rel-kpi-grid div:nth-child(1) strong")?.textContent || "0";
+  const tempoTotal = element.querySelector(".rel-kpi-grid div:nth-child(2) strong")?.textContent || "-";
+
+  // Resumo por tipo
+  let resumoTexto = "";
+  const rowsResumo = element.querySelectorAll(".rel-summary-table tbody tr");
+  rowsResumo.forEach(r => {
+    const cols = r.querySelectorAll("td");
+    if (cols.length >= 2) {
+      resumoTexto += `• ${cols[0].textContent}: ${cols[1].textContent}\n`;
+    }
+  });
+
+  const textMsg = `*RELATÓRIO ENCARREGADO DE PRODUÇÃO*\n\n*Setor:* ${setor}\n*Data:* ${fmtDate(data) || data}\n*Encarregado:* ${encarregado}\n*Formas Enchidas:* ${totalFormas}\n*Tempo Total:* ${tempoTotal}\n\n*Resumo por Tipo:*\n${resumoTexto}`;
+
+  setSyncStatus("pending", "Gerando PDF do relatório...");
+  try {
+    const html2pdf = await loadHtml2Pdf();
+    const opt = {
+      margin: 10,
+      filename: `relatorio_${setor.replace(/\s+/g, '_')}_${data}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
+    const file = new File([pdfBlob], opt.filename, { type: 'application/pdf' });
+
+    setSyncStatus("ok", "PDF gerado.");
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: 'Relatório Encarregado',
+        text: textMsg
+      });
+    } else {
+      // Baixar PDF localmente e redirecionar para whatsapp
+      html2pdf().set(opt).from(element).save();
+      const instructionMsg = `${textMsg}\n\n_O PDF foi baixado para o seu aparelho. Envie-o no chat do WhatsApp a seguir._`;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(instructionMsg)}`, '_blank');
+    }
+  } catch (err) {
+    console.error("Erro ao gerar/enviar PDF:", err);
+    setSyncStatus("error", "Erro ao gerar PDF.");
+    // Fallback: abrir whatsapp somente com o texto se falhar
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textMsg)}`, '_blank');
+  }
 }
 
 async function gerarRelatorioSetor() {
@@ -5816,6 +5890,7 @@ function bindEvents() {
   el.histTipo?.addEventListener("change", () => renderHistorico());
   el.gerarRelatorioSetor.addEventListener("click", gerarRelatorioSetor);
   if (el.relBtnImprimir) el.relBtnImprimir.addEventListener("click", imprimirRelatorioSetor);
+  if (el.relBtnWhatsapp) el.relBtnWhatsapp.addEventListener("click", enviarRelatorioWhatsapp);
   if (el.acmpCarregar) el.acmpCarregar.addEventListener("click", renderAcmpConcretagem);
   if (el.acmpData) el.acmpData.addEventListener("change", renderAcmpConcretagem);
   if (el.acmpModoCarga) el.acmpModoCarga.addEventListener("change", renderAcmpConcretagem);
