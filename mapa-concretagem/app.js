@@ -718,6 +718,7 @@ const el = {
   relSetor: document.getElementById("relSetor"),
   relEncarregado: document.getElementById("relEncarregado"),
   gerarRelatorioSetor: document.getElementById("gerarRelatorioSetor"),
+  relBtnImprimir: document.getElementById("relBtnImprimir"),
   relatorioSetorOutput: document.getElementById("relatorioSetorOutput"),
   viewProdAnalise: document.getElementById("viewProdAnalise")
 };
@@ -4592,36 +4593,137 @@ async function carregarDashboardConcretagem() {
   });
 }
 
+function getRelatorioTimestamp(row) {
+  return row.timestamp || row.data_hora || row.dataHora || row.updated_at || row.updatedAt || row.created_at || row.createdAt || "";
+}
+
+function getRelatorioOperador(row) {
+  return row.operador || row.colaborador || row.colaboradorProducao || row.usuario || row.liberacao_colaborador || "";
+}
+
+function getRelatorioTipoConcreto(row) {
+  return row.tipo_concreto || row.tipoConcreto || row.concretoTipo || "Padrão";
+}
+
+function getRelatorioModelo(row) {
+  return row.modelo || row.descricaoPoste || row.descricao_poste || row.codigoProduto || row.codigo_produto || "Sem modelo";
+}
+
+function formatRelatorioDuracao(ms) {
+  if (!Number.isFinite(ms) || ms < 0) return "-";
+  const totalMin = Math.round(ms / 60000);
+  const horas = Math.floor(totalMin / 60);
+  const minutos = totalMin % 60;
+  if (horas <= 0) return `${minutos} min`;
+  return `${horas}h ${String(minutos).padStart(2, "0")}min`;
+}
+
 function renderRelatorioSetor({ data, setor, encarregado, rows }) {
   if (!el.relatorioSetorOutput) return;
-  const resumo = buildReportDataFromRows(rows);
-  const linhas = rows
-    .sort((a, b) => String(a.forma_numero || a.formaNumero || "").localeCompare(String(b.forma_numero || b.formaNumero || "")))
-    .map((r) => {
-      const forma = r.forma_numero || r.formaNumero || "";
-      const modelo = r.modelo || "";
-      const status = statusLabelFromCode(String(r.liberacao_status || r.liberacaoStatus || ""));
-      return `<tr><td>${forma}</td><td>${modelo}</td><td>${status}</td></tr>`;
-    })
+  const normalizedRows = Array.isArray(rows) ? rows.slice() : [];
+  const rowsOrdenadas = normalizedRows.sort((a, b) => {
+    const tsA = new Date(getRelatorioTimestamp(a)).getTime();
+    const tsB = new Date(getRelatorioTimestamp(b)).getTime();
+    if (Number.isFinite(tsA) && Number.isFinite(tsB) && tsA !== tsB) return tsA - tsB;
+    return String(a.forma_numero || a.formaNumero || "").localeCompare(String(b.forma_numero || b.formaNumero || ""), undefined, { numeric: true, sensitivity: "base" });
+  });
+
+  const timestamps = rowsOrdenadas
+    .map((row) => new Date(getRelatorioTimestamp(row)).getTime())
+    .filter((value) => Number.isFinite(value));
+  const tempoTotal = timestamps.length >= 2
+    ? formatRelatorioDuracao(Math.max(...timestamps) - Math.min(...timestamps))
+    : "-";
+  const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
+    const modelo = getRelatorioModelo(row);
+    acc[modelo] = (acc[modelo] || 0) + 1;
+    return acc;
+  }, {});
+  const resumoPostesHtml = Object.entries(resumoPorPoste)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([modelo, total]) => `<tr><td>${escapeHtml(modelo)}</td><td>${total}</td></tr>`)
     .join("");
+  const linhas = rowsOrdenadas.map((r) => {
+    const forma = r.forma_numero || r.formaNumero || "";
+    const modelo = getRelatorioModelo(r);
+    const operador = getRelatorioOperador(r) || "-";
+    const horario = formatTime(getRelatorioTimestamp(r));
+    const tipoConcreto = getRelatorioTipoConcreto(r);
+    return `
+      <tr>
+        <td>${escapeHtml(forma)}</td>
+        <td>${escapeHtml(modelo)}</td>
+        <td>${escapeHtml(operador)}</td>
+        <td>${escapeHtml(horario)}</td>
+        <td>${escapeHtml(tipoConcreto)}</td>
+      </tr>`;
+  }).join("");
+  const emitidoEm = formatDateTime(nowIso());
 
   el.relatorioSetorOutput.innerHTML = `
-    <div class="report-header">
-      <strong>Relatório de Produção</strong><br>
-      Data: ${data} • ${setor}
-    </div>
-    <div class="report-summary">
-      Total: ${resumo.total} • Produzido (Liberado): ${resumo.liberado} • Não Produzido: ${resumo.naoMontado} • Manutenção: ${resumo.manutencao}
-    </div>
-    <table class="sheet-table report-table">
-      <thead>
-        <tr><th>Forma</th><th>Modelo</th><th>Status</th></tr>
-      </thead>
-      <tbody>${linhas || '<tr><td colspan="3">Sem registros</td></tr>'}</tbody>
-    </table>
-    <div class="report-sign">Encarregado: ${encarregado || "____________________________"}</div>
-    <div class="report-sign-line">Assinatura: ___________________________________________</div>
+    <article id="relPrintDoc" class="rel-print-doc">
+      <header class="rel-print-header">
+        <div>
+          <div class="rel-company">Concrefer</div>
+          <h3>Relatório Enc. Produção</h3>
+        </div>
+        <div class="rel-meta">
+          <span>Data: <strong>${escapeHtml(fmtDate(data) || data)}</strong></span>
+          <span>Setor: <strong>${escapeHtml(setor)}</strong></span>
+          <span>Emitido: <strong>${escapeHtml(emitidoEm)}</strong></span>
+        </div>
+      </header>
+
+      <section class="rel-kpi-grid">
+        <div><span>Formas enchidas</span><strong>${rowsOrdenadas.length}</strong></div>
+        <div><span>Tempo total de produção</span><strong>${tempoTotal}</strong></div>
+        <div><span>Encarregado</span><strong>${escapeHtml(encarregado || "-")}</strong></div>
+      </section>
+
+      <section class="rel-section">
+        <h4>Formas enchidas</h4>
+        <div class="rel-table-wrap">
+          <table class="sheet-table report-table rel-full-table">
+            <thead>
+              <tr>
+                <th>Forma</th>
+                <th>Tipo de poste</th>
+                <th>Operador da concretagem</th>
+                <th>Horário</th>
+                <th>Tipo de concreto</th>
+              </tr>
+            </thead>
+            <tbody>${linhas || '<tr><td colspan="5">Sem registros</td></tr>'}</tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="rel-section rel-summary-section">
+        <h4>Resumo por tipo de poste</h4>
+        <table class="sheet-table report-table rel-summary-table">
+          <thead><tr><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+          <tbody>${resumoPostesHtml || '<tr><td colspan="2">Sem registros</td></tr>'}</tbody>
+        </table>
+      </section>
+
+      <footer class="rel-print-footer">
+        <div class="rel-sign-block">
+          <span>Assinatura do encarregado de produção</span>
+        </div>
+        <div class="rel-footer-note">Relatório gerado pelo Mapa de Concretagem</div>
+      </footer>
+    </article>
   `;
+}
+
+function imprimirRelatorioSetor() {
+  if (!document.getElementById("relPrintDoc")) {
+    showMsgBox("Gere o relatório antes de imprimir ou salvar em PDF.", "error");
+    return;
+  }
+  document.body.classList.add("print-relatorio");
+  window.print();
+  setTimeout(() => document.body.classList.remove("print-relatorio"), 500);
 }
 
 async function gerarRelatorioSetor() {
@@ -4641,9 +4743,14 @@ async function gerarRelatorioSetor() {
 
       if (!error && Array.isArray(rows)) {
         const mappedRows = rows.map(r => ({
-          forma_numero: r.forma,
+          forma_numero: r.forma || r.forma_numero,
           modelo: r.modelo,
-          liberacao_status: "1"
+          descricao_poste: r.descricao_poste,
+          codigo_produto: r.codigo_produto,
+          liberacao_status: "1",
+          colaborador: r.colaborador,
+          timestamp: r.data_hora || r.updated_at || r.created_at,
+          tipo_concreto: r.tipo_concreto || r.tipoConcreto || r.concretoTipo
         }));
         renderRelatorioSetor({ data, setor, encarregado, rows: mappedRows });
         setSyncStatus("ok", `Relatório do ${setor} em ${data} gerado pela nuvem.`);
@@ -4658,7 +4765,17 @@ async function gerarRelatorioSetor() {
   const rows = db.records
     .filter((r) => r.dataFabricacao === data)
     .filter((r) => r.setor === setor)
-    .map((r) => ({ forma_numero: r.formaNumero, modelo: r.modelo, liberacao_status: r.liberacao?.status || "" }));
+    .filter((r) => String(r.liberacao?.status || "") === "1")
+    .map((r) => ({
+      forma_numero: r.formaNumero,
+      modelo: r.modelo,
+      descricaoPoste: r.descricaoPoste,
+      codigoProduto: r.codigoProduto,
+      liberacao_status: r.liberacao?.status || "",
+      colaborador: r.liberacao?.colaborador || "",
+      timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
+      tipoConcreto: r.concretoTipo
+    }));
 
   renderRelatorioSetor({ data, setor, encarregado, rows });
 }
@@ -5130,7 +5247,7 @@ function setMode(mode) {
     MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
     MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
     MONTAGEM_INDICADORES: ["hubMontagemIndicadores", "Dashboard montagem"],
-    RELATORIO: ["hubRelatorio", "Relatório"],
+    RELATORIO: ["hubRelatorio", "Relatório Enc. Produção"],
     HISTORICO: ["hubHistorico", "Histórico"],
     ACOMPANHAMENTO: ["hubAcompanhamento", "Acompanhamento"],
     ACMP_CONCRETAGEM: ["hubAcmpConcretagem", "Acmp. Concretagem"],
@@ -5672,6 +5789,7 @@ function bindEvents() {
   el.filtrarHistorico.addEventListener("click", () => renderHistorico());
   el.histTipo?.addEventListener("change", () => renderHistorico());
   el.gerarRelatorioSetor.addEventListener("click", gerarRelatorioSetor);
+  if (el.relBtnImprimir) el.relBtnImprimir.addEventListener("click", imprimirRelatorioSetor);
   if (el.acmpCarregar) el.acmpCarregar.addEventListener("click", renderAcmpConcretagem);
   if (el.acmpData) el.acmpData.addEventListener("change", renderAcmpConcretagem);
   if (el.acmpModoCarga) el.acmpModoCarga.addEventListener("change", renderAcmpConcretagem);

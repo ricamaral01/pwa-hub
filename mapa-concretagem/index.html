@@ -92,7 +92,7 @@
       </button>
       <button class="nav-item" id="hubRelatorio" type="button">
         <span class="nav-icon-wrap">RE</span>
-        Relatório
+        Relatório Enc. Produção
       </button>
       <button class="nav-item" id="hubHistorico" type="button">
         <span class="nav-icon-wrap">HI</span>
@@ -173,7 +173,7 @@
           </button>
           <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO">
             <div class="hub-icon-circle" style="background:#7c3aed">RE</div>
-            <span class="hub-icon-lbl">Relatório</span>
+            <span class="hub-icon-lbl">Relatório Enc. Produção</span>
           </button>
           <button class="hub-icon-btn" type="button" data-hub-mode="HISTORICO">
             <div class="hub-icon-circle" style="background:#b45309">HI</div>
@@ -673,7 +673,7 @@
 
     <section id="viewRelatorio" class="card hidden">
       <div class="section-title-row">
-        <h2>Relatório por Setor</h2>
+        <h2>Relatório Enc. Produção</h2>
         <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
       </div>
       <div class="desktop-split">
@@ -696,7 +696,10 @@
                 <input id="relEncarregado" type="text" placeholder="Nome do encarregado" />
               </label>
             </div>
-            <button id="gerarRelatorioSetor" class="btn primary btn-row-full" type="button">🖨️ Gerar Relatório</button>
+            <div class="rel-actions">
+              <button id="gerarRelatorioSetor" class="btn primary" type="button">Gerar Relatório</button>
+              <button id="relBtnImprimir" class="btn" type="button">PDF / Imprimir</button>
+            </div>
           </div>
         </div>
         <div class="desktop-split-right">
