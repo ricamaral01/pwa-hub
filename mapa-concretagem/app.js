@@ -3559,7 +3559,7 @@ async function saveInspecao() {
         etapa: "INSPECAO",
         inicioInspecaoMontagem: state.insInicioLocal || nowIso(),
         finalizadoEm: nowIso(),
-        checklists: { global_photos: state.insPhotos.map(p => p.data || p.url || "") },
+        checklists: { global_photos: state.insPhotos.map(p => p.dataUrl || p.data || p.url || "") },
         observacoesMontagem: observacaoGlobal,
         montadorNome: colaborador
       };
