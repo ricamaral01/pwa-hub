@@ -6351,22 +6351,27 @@ function exportarPaDadosCSV() {
 }
 
 function renderizarTabelaJornada(list) {
-  const tbody = document.getElementById("paTbodyJornada");
-  if (!tbody) return;
-  if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">Sem dados para o período.</td></tr>';
+  const container = document.getElementById("paJornadaCards");
+  if (!container) return;
+  if (!list || list.length === 0) {
+    container.innerHTML = '<div class="muted" style="padding:12px;text-align:center;">Sem dados para o periodo.</div>';
     return;
   }
-  tbody.innerHTML = list.slice(0, 10).map(j => `
-    <tr>
-      <td>${j.data}</td>
-      <td>${j.inicio}</td>
-      <td>${j.fim}</td>
-      <td style="font-weight: bold;">${j.formas}</td>
-      <td>${j.metaDiaria}</td>
-    </tr>
+  container.innerHTML = list.slice(0, 10).map(j => `
+    <article class="pa-journey-card">
+      <div class="pa-journey-card-head">
+        <strong>${j.data}</strong>
+        <span>${j.formas} formas</span>
+      </div>
+      <div class="pa-journey-card-grid">
+        <div><span>Inicio</span><strong>${j.inicio}</strong></div>
+        <div><span>Termino</span><strong>${j.fim}</strong></div>
+        <div><span>Meta diaria</span><strong>${j.metaDiaria}</strong></div>
+      </div>
+    </article>
   `).join("");
 }
+
 
 function renderizarVolumeTipoPorSetor(rows) {
   const container = document.getElementById("paVolumeTipoSetor");
@@ -6404,6 +6409,105 @@ function renderizarVolumeTipoPorSetor(rows) {
       </div>
     `;
   }).join("");
+}
+
+function renderizarGraficosSetorProdutividade(rows) {
+  const setores = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
+  const formas = setores.map(setor => rows.filter(r => r.setor === setor).length);
+  const volumes = setores.map(setor => rows
+    .filter(r => r.setor === setor)
+    .reduce((sum, r) => sum + getFormVolume(r.codigo_produto, r.modelo, r.setor), 0));
+
+  destroyChart("chartPaFormasSetor");
+  const ctxFormas = document.getElementById("chartPaFormasSetor");
+  if (ctxFormas && typeof Chart !== "undefined") {
+    chartInstances["chartPaFormasSetor"] = new Chart(ctxFormas, {
+      type: "bar",
+      data: {
+        labels: setores,
+        datasets: [{ label: "Formas", data: formas, backgroundColor: "#2563eb", borderRadius: 6 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+    });
+  }
+
+  destroyChart("chartPaVolumeSetor");
+  const ctxVolume = document.getElementById("chartPaVolumeSetor");
+  if (ctxVolume && typeof Chart !== "undefined") {
+    chartInstances["chartPaVolumeSetor"] = new Chart(ctxVolume, {
+      type: "bar",
+      data: {
+        labels: setores,
+        datasets: [{ label: "Volume (m3)", data: volumes, backgroundColor: "#e8762a", borderRadius: 6 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+  }
+}
+
+function renderizarProducaoSetoresUltimos7(rows, selectedDate) {
+  const baseDate = selectedDate ? new Date(selectedDate + "T12:00:00") : new Date();
+  const dates = [];
+  const d = new Date(baseDate);
+  while (dates.length < 7) {
+    const dow = d.getDay();
+    if (dow !== 0 && dow !== 6) dates.push(d.toISOString().split("T")[0]);
+    d.setDate(d.getDate() - 1);
+  }
+  const labels = dates.map(date => date.split("-").reverse().join("/"));
+  const bySetor = {
+    "Setor 1": {},
+    "Setor 2": {},
+    "Setor 3": {},
+    "Setor 4": {}
+  };
+  rows.forEach(r => {
+    const setor = r.setor || "";
+    const dia = r.data_fabricacao || "";
+    if (bySetor[setor] && dates.includes(dia)) bySetor[setor][dia] = (bySetor[setor][dia] || 0) + 1;
+  });
+
+  destroyChart("chartProdSetores");
+  const ctx = document.getElementById("chartProdSetores");
+  if (ctx && typeof Chart !== "undefined") {
+    chartInstances["chartProdSetores"] = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [
+          { label: "Setor 1", data: dates.map(date => bySetor["Setor 1"][date] || 0), backgroundColor: "rgba(59, 130, 246, 0.85)", borderRadius: 4 },
+          { label: "Setor 2", data: dates.map(date => bySetor["Setor 2"][date] || 0), backgroundColor: "rgba(16, 185, 129, 0.85)", borderRadius: 4 },
+          { label: "Setor 3", data: dates.map(date => bySetor["Setor 3"][date] || 0), backgroundColor: "rgba(139, 92, 246, 0.85)", borderRadius: 4 },
+          { label: "Setor 4", data: dates.map(date => bySetor["Setor 4"][date] || 0), backgroundColor: "rgba(249, 115, 22, 0.85)", borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: "bottom", labels: { usePointStyle: true, boxWidth: 8 } } },
+        scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } }
+      }
+    });
+  }
+
+  const histEl = document.getElementById("dbHistory");
+  if (histEl) {
+    const totalByDate = {};
+    rows.forEach(r => {
+      const dia = r.data_fabricacao || "";
+      if (dates.includes(dia)) totalByDate[dia] = (totalByDate[dia] || 0) + 1;
+    });
+    const max = Math.max(...dates.map(date => totalByDate[date] || 0), 1);
+    histEl.innerHTML = dates.map(date => {
+      const total = totalByDate[date] || 0;
+      const pct = Math.round((total / max) * 100);
+      return `<div class="ins-dash-hist-row">
+        <span class="ins-dash-hist-date">${date.split("-").reverse().join("/")}</span>
+        <div class="ins-dash-hist-bar-track"><div class="ins-dash-hist-bar" style="width:${pct}%"></div></div>
+        <span class="ins-dash-hist-count">${total}</span>
+      </div>`;
+    }).join("");
+  }
 }
 
 function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
@@ -6614,55 +6718,7 @@ function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
     });
   }
 
-  // 6. Eficiência por Setor
   destroyChart("chartPaEficienciaSetor");
-  const ctxEficSetor = document.getElementById("chartPaEficienciaSetor");
-  if (ctxEficSetor && typeof Chart !== "undefined") {
-    const setores = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
-    const meta = parseFloat(document.getElementById("paMetaCiclo")?.value || "15");
-
-    const dataEfic = setores.map(s => {
-      const listSetor = metricas.filteredRows.filter(r => r.setor === s);
-      const groupsSetor = {};
-      listSetor.forEach(r => {
-        if (!groupsSetor[r.data_fabricacao]) groupsSetor[r.data_fabricacao] = [];
-        groupsSetor[r.data_fabricacao].push(r);
-      });
-
-      const sectorCycles = [];
-      Object.keys(groupsSetor).forEach(d => {
-        const list = groupsSetor[d].sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
-        for (let i = 1; i < list.length; i++) {
-          const diff = (new Date(list[i].data_hora).getTime() - new Date(list[i-1].data_hora).getTime()) / 60000;
-          if (diff > 0 && diff <= 60) sectorCycles.push(diff);
-        }
-      });
-
-      let tempoDisponivel = sectorCycles.reduce((sum, v) => sum + v, 0);
-      if (tempoDisponivel === 0) tempoDisponivel = 480;
-      const producaoTeoricaSetor = tempoDisponivel / meta;
-      return producaoTeoricaSetor > 0 ? (listSetor.length / producaoTeoricaSetor) * 100 : 0;
-    });
-
-    chartInstances["chartPaEficienciaSetor"] = new Chart(ctxEficSetor, {
-      type: 'bar',
-      data: {
-        labels: setores,
-        datasets: [{
-          label: 'Eficiência (%)',
-          data: dataEfic,
-          backgroundColor: ['#3b82f6', '#10b981', '#8b5cf6', '#f97316'],
-          borderRadius: 6
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: { x: { min: 0, max: 100 } }
-      }
-    });
-  }
 
   // 7. Volume por hora produtiva
   destroyChart("chartPaM3Hora");
@@ -6730,6 +6786,45 @@ async function carregarProdutividadeConcretagem() {
     }
   } else {
     allRows = getLocalRowsForPeriod(dStart, dEnd);
+  }
+
+  const baseDate7 = new Date(dEnd + "T12:00:00");
+  const dates7 = [];
+  const d7 = new Date(baseDate7);
+  while (dates7.length < 7) {
+    const dow = d7.getDay();
+    if (dow !== 0 && dow !== 6) dates7.push(d7.toISOString().split("T")[0]);
+    d7.setDate(d7.getDate() - 1);
+  }
+  const start7 = dates7[dates7.length - 1];
+  let rowsUltimos7 = [];
+  if (hasApiConfigured()) {
+    try {
+      let page = 0;
+      const pageSize = 1000;
+      let keepFetching = true;
+      while (keepFetching) {
+        const from = page * pageSize;
+        const to = from + pageSize - 1;
+        const { data: rows, error } = await supabaseClient
+          .from('producao')
+          .select('*')
+          .gte('data_fabricacao', start7)
+          .lte('data_fabricacao', dEnd)
+          .eq('status', 'LIBERADO')
+          .order('data_hora', { ascending: true })
+          .range(from, to);
+        if (error) throw error;
+        if (rows && rows.length > 0) rowsUltimos7 = rowsUltimos7.concat(rows);
+        if (!rows || rows.length < pageSize || page >= 10) keepFetching = false;
+        else page++;
+      }
+    } catch (err) {
+      console.warn("Erro ao buscar últimos 7 dias de produção:", err);
+      rowsUltimos7 = getLocalRowsForPeriod(start7, dEnd);
+    }
+  } else {
+    rowsUltimos7 = getLocalRowsForPeriod(start7, dEnd);
   }
 
   const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
@@ -6839,8 +6934,9 @@ async function carregarProdutividadeConcretagem() {
 
   renderizarAlertasOperacionais(metricas, meta);
   renderizarVolumeTipoPorSetor(filteredRows);
+  renderizarGraficosSetorProdutividade(filteredRows);
+  renderizarProducaoSetoresUltimos7(rowsUltimos7, dEnd);
   renderizarGraficosProdutividade(metricas, dStart, dEnd);
-  carregarDadosGlobaisDashboard(dEnd);
   renderizarTabelaParadas(metricas.paradasList);
   renderizarTabelaJornada(metricas.jornadaDiaria);
   renderizarTabelaDadosConcretagem(filteredRows);
