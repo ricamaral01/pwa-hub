@@ -5285,12 +5285,14 @@ function bindEvents() {
   });
 
   // Configuração do Drawer de Filtros e Abas do Dashboard Montagem
-  const elFiltrosDrawer = document.getElementById("miFiltrosDrawer");
   document.getElementById("miBtnToggleFiltros")?.addEventListener("click", () => {
-    elFiltrosDrawer?.classList.remove("hidden");
+    setMontagemDrawerOpen(true);
   });
   document.getElementById("miBtnFecharFiltros")?.addEventListener("click", () => {
-    elFiltrosDrawer?.classList.add("hidden");
+    setMontagemDrawerOpen(false);
+  });
+  document.getElementById("miFiltrosDrawer")?.addEventListener("click", (ev) => {
+    if (ev.target?.id === "miFiltrosDrawer") setMontagemDrawerOpen(false);
   });
   document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
     const miDataInicio = document.getElementById("miDataInicio");
@@ -5312,7 +5314,7 @@ function bindEvents() {
     carregarMontagemIndicadores();
   });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
-    elFiltrosDrawer?.classList.add("hidden");
+    setMontagemDrawerOpen(false);
     carregarMontagemIndicadores();
   });
   document.getElementById("miFiltroSetor")?.addEventListener("change", () => {
@@ -5332,22 +5334,23 @@ function bindEvents() {
   document.querySelectorAll(".mi-tab-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const targetTab = e.currentTarget.dataset.tab;
-      
-      // Ativar aba
+      miAbaAtiva = targetTab || "resumo";
+
       document.querySelectorAll(".mi-tab-btn").forEach(b => b.classList.remove("active"));
       e.currentTarget.classList.add("active");
-      
-      // Ativar seção
+
       document.querySelectorAll(".mi-tab-section").forEach(s => s.classList.remove("active"));
       const sectionId = "miSecao" + targetTab.charAt(0).toUpperCase() + targetTab.slice(1);
       document.getElementById(sectionId)?.classList.add("active");
 
-      // Forçar atualização do tamanho dos gráficos Chart.js ao exibir a seção
-      setTimeout(() => {
-        if (chartMiPorDiaInstance) chartMiPorDiaInstance.resize();
-        if (chartMiPorSetorInstance) chartMiPorSetorInstance.resize();
-        if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.resize();
-      }, 50);
+      if (miUltimosGraficos) {
+        renderGraficosMontagem(
+          miUltimosGraficos.byDay,
+          miUltimosGraficos.bySector,
+          miUltimosGraficos.byMontador,
+          miUltimosGraficos.prodByDay
+        );
+      }
     });
   });
 
@@ -6984,6 +6987,8 @@ let miPaginaAtual = 1;
 const miLinhasPorPagina = 15;
 let miOrdenacaoColuna = "finalizado_em";
 let miOrdenacaoAsc = false;
+let miAbaAtiva = "resumo";
+let miUltimosGraficos = null;
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -6992,6 +6997,38 @@ function formatarDuracao(ms) {
   const secs = totalSecs % 60;
   if (mins === 0) return `${secs}s`;
   return `${mins}m ${secs}s`;
+}
+
+function atualizarResumoFiltrosMontagem() {
+  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  const setor = document.getElementById("miFiltroSetor")?.value || "Todos os setores";
+  const status = document.getElementById("miFiltroStatus")?.value || "Todos os status";
+  const resumo = document.getElementById("miFiltroResumo");
+  if (!resumo) return;
+  const fmt = (d) => d ? d.split("-").reverse().join("/") : "-";
+  const periodo = dStart === dEnd ? fmt(dStart) : `${fmt(dStart)} a ${fmt(dEnd)}`;
+  resumo.textContent = `${periodo} - ${setor} - ${status}`;
+}
+
+function setMontagemDrawerOpen(open) {
+  const drawer = document.getElementById("miFiltrosDrawer");
+  if (!drawer) return;
+  drawer.classList.toggle("hidden", !open);
+  drawer.setAttribute("aria-hidden", open ? "false" : "true");
+}
+
+function getMiStatusMeta(status) {
+  if (status === "A") return { label: "Aprovado", className: "mi-status-a" };
+  if (status === "RR") return { label: "Retrabalhado", className: "mi-status-rr" };
+  if (status === "R") return { label: "Reprovado", className: "mi-status-r" };
+  return { label: "Em andamento", className: "mi-status-open" };
+}
+
+function miStatusButton(row) {
+  const meta = getMiStatusMeta(row.status_montagem);
+  const id = escapeHtml(row.id);
+  return `<button type="button" class="mi-status-pill ${meta.className}" onclick="abrirVisualizacaoChecklist('${id}')">${meta.label}</button>`;
 }
 
 async function carregarMontagemIndicadores() {
@@ -7036,6 +7073,7 @@ function aplicarFiltrosEExibirMontagem() {
   const fSetor = document.getElementById("miFiltroSetor")?.value || "";
   const fStatus = document.getElementById("miFiltroStatus")?.value || "";
   const fPesquisa = (document.getElementById("miFiltroPesquisa")?.value || "").trim().toLowerCase();
+  atualizarResumoFiltrosMontagem();
 
   // 1. Filtrar dados de Montagem em memória
   miFilteredMontagemData = miRawMontagemData.filter(row => {
@@ -7453,9 +7491,21 @@ window.ordenarMiTabela = function(coluna) {
 };
 
 function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
-  if (chartMiPorDiaInstance) chartMiPorDiaInstance.destroy();
-  if (chartMiPorSetorInstance) chartMiPorSetorInstance.destroy();
-  if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.destroy();
+  miUltimosGraficos = { byDay, bySector, byMontador, prodByDay };
+  const shouldRenderProducao = miAbaAtiva === "producao";
+  const shouldRenderQualidade = miAbaAtiva === "qualidade";
+  if (!shouldRenderProducao && chartMiPorDiaInstance) {
+    chartMiPorDiaInstance.destroy();
+    chartMiPorDiaInstance = null;
+  }
+  if (!shouldRenderQualidade && chartMiPorSetorInstance) {
+    chartMiPorSetorInstance.destroy();
+    chartMiPorSetorInstance = null;
+  }
+  if (!shouldRenderQualidade && chartMiPorMontadorInstance) {
+    chartMiPorMontadorInstance.destroy();
+    chartMiPorMontadorInstance = null;
+  }
 
   const isMobile = window.innerWidth < 768;
   const labelFontSize = isMobile ? 9 : 12;
@@ -7476,7 +7526,8 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   const diasFormatados = dias.map(d => d.split("-").reverse().join("/"));
 
   const ctxDia = document.getElementById("chartMiPorDia")?.getContext("2d");
-  if (ctxDia) {
+  if (ctxDia && shouldRenderProducao) {
+    if (chartMiPorDiaInstance) chartMiPorDiaInstance.destroy();
     chartMiPorDiaInstance = new Chart(ctxDia, {
       type: "bar",
       data: {
@@ -7508,8 +7559,9 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
             stacked: true,
             ticks: {
               font: { size: labelFontSize },
-              maxRotation: isMobile ? 45 : 0,
-              minRotation: isMobile ? 45 : 0
+              maxRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: isMobile ? 4 : 10
             }
           },
           y: { 
@@ -7526,7 +7578,8 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   const setores = Object.keys(bySector).sort();
   const dataSetor = setores.map(s => bySector[s]);
   const ctxSetor = document.getElementById("chartMiPorSetor")?.getContext("2d");
-  if (ctxSetor) {
+  if (ctxSetor && shouldRenderQualidade) {
+    if (chartMiPorSetorInstance) chartMiPorSetorInstance.destroy();
     chartMiPorSetorInstance = new Chart(ctxSetor, {
       type: "doughnut",
       data: {
@@ -7538,7 +7591,7 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
         maintainAspectRatio: false, 
         plugins: { 
           legend: { 
-            position: isMobile ? 'bottom' : 'right',
+            position: 'bottom',
             labels: {
               boxWidth: legendBoxWidth,
               font: { size: labelFontSize }
@@ -7553,7 +7606,8 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   const montadores = Object.keys(byMontador).sort((a,b) => byMontador[b] - byMontador[a]);
   const dataMontador = montadores.map(m => byMontador[m]);
   const ctxMontador = document.getElementById("chartMiPorMontador")?.getContext("2d");
-  if (ctxMontador) {
+  if (ctxMontador && shouldRenderQualidade) {
+    if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.destroy();
     chartMiPorMontadorInstance = new Chart(ctxMontador, {
       type: "bar",
       data: {
