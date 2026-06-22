@@ -7214,13 +7214,13 @@ function renderizarTabelaMontagemPaginada() {
 
   // Renderizar Linhas
   tbody.innerHTML = paginaDados.map(row => {
-    const dataFab = row.data_fabricacao ? row.data_fabricacao.split("-").reverse().join("/") : "N/A";
+    const dataFab = row.data_fabricacao ? row.data_fabricacao.split("T")[0].split("-").reverse().join("/") : "N/A";
     
     const formatTimeShort = (isoStr) => {
       if (!isoStr) return "N/A";
       const d = new Date(isoStr);
       if (isNaN(d.getTime())) return isoStr;
-      return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + " (" + d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + ")";
+      return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
     };
 
     const inicio = formatTimeShort(row.inicio_inspecao_montagem);
@@ -7408,13 +7408,13 @@ window.abrirVisualizacaoChecklist = function(id) {
   document.getElementById("vcMetaForma").textContent = row.forma_numero || "-";
   document.getElementById("vcMetaModelo").textContent = row.modelo || "-";
   document.getElementById("vcMetaMontador").textContent = row.montador_nome || "-";
-  document.getElementById("vcMetaData").textContent = row.data_fabricacao ? row.data_fabricacao.split("-").reverse().join("/") : "-";
+  document.getElementById("vcMetaData").textContent = row.data_fabricacao ? row.data_fabricacao.split("T")[0].split("-").reverse().join("/") : "-";
 
   const formatTimeShort = (isoStr) => {
     if (!isoStr) return "N/A";
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return isoStr;
-    return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + " (" + d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + ")";
+    return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
   };
 
   document.getElementById("vcMetaInicio").textContent = formatTimeShort(row.inicio_inspecao_montagem);
@@ -7500,6 +7500,29 @@ window.abrirVisualizacaoChecklist = function(id) {
     secDiv.appendChild(listDiv);
     container.appendChild(secDiv);
   });
+
+  // Render global photos (fotos de recusa)
+  if (checklists.global_photos && Array.isArray(checklists.global_photos) && checklists.global_photos.length > 0) {
+    const globalDiv = document.createElement("div");
+    globalDiv.style.marginTop = "20px";
+    globalDiv.style.marginBottom = "20px";
+    globalDiv.innerHTML = `
+      <div style="font-weight: bold; background: #fee2e2; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; color: #dc2626;">
+        Fotos da Inspeção / Recusa
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;">
+        ${checklists.global_photos.map((photo, index) => `
+          <div style="display: flex; flex-direction: column; gap: 8px; padding: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; align-items: center;">
+            <img src="${photo}" style="max-width: 100%; max-height: 150px; border-radius: 6px; cursor: pointer; object-fit: cover;" onclick="abrirFotoVisualizacao('${photo}')" title="Clique para ampliar" />
+            <a href="${photo}" download="foto_inspecao_${index + 1}.png" class="btn" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; justify-content: center; box-sizing: border-box;">
+              📥 Baixar Foto
+            </a>
+          </div>
+        `).join("")}
+      </div>
+    `;
+    container.appendChild(globalDiv);
+  }
 
   // Obs
   const obsContainer = document.getElementById("vcObsContainer");
