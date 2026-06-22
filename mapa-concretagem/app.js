@@ -3559,13 +3559,35 @@ async function saveInspecao() {
         etapa: "INSPECAO",
         inicioInspecaoMontagem: state.insInicioLocal || nowIso(),
         finalizadoEm: nowIso(),
-        checklists: { global_photos: state.insPhotos.map(p => p.dataUrl || p.data || p.url || "") },
+        checklists: { global_photos: [] },
         observacoesMontagem: observacaoGlobal,
         montadorNome: colaborador
       };
 
       const apiResult = await postToMontagemApi("salvar_montagem_poste", montagemPayload);
       const isSynced = apiResult && apiResult.ok;
+
+      // Enviar fotos para a VPS via API Storage
+      const backendUrl = "http://localhost:5000/api";
+      if (state.insPhotosRawFiles && state.insPhotosRawFiles.length > 0) {
+        for (const file of state.insPhotosRawFiles) {
+          const formData = new FormData();
+          formData.append("foto", file);
+          formData.append("usuario", colaborador || "sistema");
+          try {
+            const uploadRes = await fetch(`${backendUrl}/inspecoes/${recordId}/fotos`, {
+              method: "POST",
+              body: formData
+            });
+            if (!uploadRes.ok) {
+              const errData = await uploadRes.json();
+              console.error("Erro ao enviar foto para VPS:", errData.error);
+            }
+          } catch (uploadErr) {
+            console.error("Falha de rede ao conectar à API de Storage:", uploadErr);
+          }
+        }
+      }
 
       // 2. Eventos e logs locais para compatibilidade de visualização
       let record = db.records.find((item) => item.id === recordId);
@@ -3644,6 +3666,7 @@ async function saveInspecao() {
     setSubmitLock("inspecao", lockToken);
 
     state.insPhotos = [];
+    state.insPhotosRawFiles = [];
     el.insObs.value = "";
     el.insFotos.value = "";
     renderPhotoPreview(el.insFotosPreview, state.insPhotos);
@@ -5602,6 +5625,8 @@ function bindEvents() {
 
   el.insFotos.addEventListener("change", async (event) => {
     clearSubmitLock("inspecao");
+    const files = Array.from(event.target.files || []);
+    state.insPhotosRawFiles = (state.insPhotosRawFiles || []).concat(files);
     const photos = await filesToCompressedDataUrls(event.target.files);
     state.insPhotos = state.insPhotos.concat(photos);
     renderPhotoPreview(el.insFotosPreview, state.insPhotos);
@@ -7505,28 +7530,45 @@ window.abrirVisualizacaoChecklist = function(id) {
     container.appendChild(secDiv);
   });
 
-  // Render global photos (fotos de recusa)
-  if (checklists.global_photos && Array.isArray(checklists.global_photos) && checklists.global_photos.length > 0) {
-    const globalDiv = document.createElement("div");
-    globalDiv.style.marginTop = "20px";
-    globalDiv.style.marginBottom = "20px";
-    globalDiv.innerHTML = `
-      <div style="font-weight: bold; background: #fee2e2; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; color: #dc2626;">
-        Fotos da Inspeção / Recusa
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;">
-        ${checklists.global_photos.map((photo, index) => `
-          <div style="display: flex; flex-direction: column; gap: 8px; padding: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; align-items: center;">
-            <img src="${photo}" style="max-width: 100%; max-height: 150px; border-radius: 6px; cursor: pointer; object-fit: cover;" onclick="abrirFotoVisualizacao('${photo}')" title="Clique para ampliar" />
-            <a href="${photo}" download="foto_inspecao_${index + 1}.png" class="btn" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; justify-content: center; box-sizing: border-box;">
-              📥 Baixar Foto
-            </a>
+  // Render global photos (fotos de recusa da VPS Storage)
+  const photosContainer = document.createElement("div");
+  photosContainer.id = "vcVpsPhotosContainer";
+  container.appendChild(photosContainer);
+
+  const backendUrl = "http://localhost:5000/api";
+  fetch(`${backendUrl}/inspecoes/${row.id}/fotos`)
+    .then(res => res.json())
+    .then(resData => {
+      if (resData.success && resData.data && resData.data.length > 0) {
+        const globalDiv = document.createElement("div");
+        globalDiv.style.marginTop = "20px";
+        globalDiv.style.marginBottom = "20px";
+        globalDiv.innerHTML = `
+          <div style="font-weight: bold; background: #fee2e2; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; color: #dc2626;">
+            Fotos da Inspeção / Recusa (VPS Storage)
           </div>
-        `).join("")}
-      </div>
-    `;
-    container.appendChild(globalDiv);
-  }
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;">
+            ${resData.data.map((photo, index) => `
+              <div style="display: flex; flex-direction: column; gap: 8px; padding: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; align-items: center;" id="photo-card-${photo.id}">
+                <img src="${photo.url}" style="max-width: 100%; max-height: 150px; border-radius: 6px; cursor: pointer; object-fit: cover;" onclick="abrirFotoVisualizacao('${photo.url}')" title="Clique para ampliar" />
+                <div style="display: flex; gap: 6px; width: 100%;">
+                  <a href="${photo.url}" download="${photo.arquivo_nome}" class="btn" style="padding: 6px 10px; font-size: 0.75rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; justify-content: center; box-sizing: border-box;">
+                    📥 Baixar
+                  </a>
+                  <button onclick="excluirFotoVps('${photo.id}')" class="btn" style="padding: 6px 10px; font-size: 0.75rem; background: #dc2626; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                    🗑️ Excluir
+                  </button>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        photosContainer.appendChild(globalDiv);
+      }
+    })
+    .catch(err => {
+      console.error("Erro ao carregar fotos do Storage VPS:", err);
+    });
 
   // Obs
   const obsContainer = document.getElementById("vcObsContainer");
@@ -7540,4 +7582,25 @@ window.abrirVisualizacaoChecklist = function(id) {
   }
 
   modal.classList.add("modal-visible");
+};
+
+window.excluirFotoVps = async function(photoId) {
+  if (!confirm("Tem certeza que deseja excluir esta foto da VPS e do banco de dados?")) return;
+  const backendUrl = "http://localhost:5000/api";
+  const user = state.authUser?.name || "sistema";
+  try {
+    const res = await fetch(`${backendUrl}/fotos/${photoId}?usuario=${encodeURIComponent(user)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data.success) {
+      showMsgBox("Foto excluída com sucesso.", "success");
+      const card = document.getElementById(`photo-card-${photoId}`);
+      if (card) card.remove();
+    } else {
+      showMsgBox("Erro ao excluir foto: " + data.error, "error");
+    }
+  } catch (err) {
+    showMsgBox("Falha de rede ao conectar à API de Storage.", "error");
+  }
 };

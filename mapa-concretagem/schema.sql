@@ -147,3 +147,18 @@ ALTER TABLE public.programacao ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Permitir acesso total a programacao" ON public.programacao;
 CREATE POLICY "Permitir acesso total a programacao" ON public.programacao FOR ALL USING (true) WITH CHECK (true);
 
+-- Tabela 6: Fotos de Inspecao (Armazenamento de metadados das fotos na VPS)
+CREATE TABLE IF NOT EXISTS public.fotos_inspecao (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    poste_id TEXT NOT NULL,
+    arquivo_nome TEXT NOT NULL,
+    arquivo_path TEXT NOT NULL,
+    tamanho_bytes INTEGER NOT NULL,
+    data_upload TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    usuario TEXT
+);
+
+ALTER TABLE public.fotos_inspecao ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Permitir acesso total a fotos_inspecao" ON public.fotos_inspecao;
+CREATE POLICY "Permitir acesso total a fotos_inspecao" ON public.fotos_inspecao FOR ALL USING (true) WITH CHECK (true);
+
