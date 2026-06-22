@@ -3454,15 +3454,54 @@ hr {
 
   body.print-relatorio .report-table {
     width: 100% !important;
+    table-layout: fixed !important;
     border-collapse: collapse !important;
-    font-size: 9pt !important;
+    font-size: 8pt !important;
   }
 
   body.print-relatorio .report-table th,
   body.print-relatorio .report-table td {
     border: 1px solid #cbd5e1 !important;
-    padding: 5px 6px !important;
+    padding: 3px 4px !important;
     white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    line-height: 1.18 !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(1),
+  body.print-relatorio .rel-full-table td:nth-child(1) {
+    width: 10% !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(2),
+  body.print-relatorio .rel-full-table td:nth-child(2) {
+    width: 30% !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(3),
+  body.print-relatorio .rel-full-table td:nth-child(3) {
+    width: 25% !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(4),
+  body.print-relatorio .rel-full-table td:nth-child(4) {
+    width: 10% !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(5),
+  body.print-relatorio .rel-full-table td:nth-child(5) {
+    width: 25% !important;
+  }
+
+  body.print-relatorio .rel-summary-table th:nth-child(2),
+  body.print-relatorio .rel-summary-table td:nth-child(2) {
+    width: 80px !important;
+    text-align: center !important;
   }
 
   body.print-relatorio .rel-kpi-grid {
@@ -3496,9 +3535,22 @@ hr {
   }
 
   body.print-relatorio .rel-print-header,
-  body.print-relatorio .rel-summary-section,
-  body.print-relatorio .rel-print-footer {
+  body.print-relatorio .rel-summary-section {
     break-inside: avoid;
+  }
+
+  body.print-relatorio .rel-print-footer {
+    margin-top: 52px !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  body.print-relatorio .rel-sign-block {
+    min-height: 74px !important;
+    max-width: 420px !important;
+    margin-top: 0 !important;
   }
 }
 
