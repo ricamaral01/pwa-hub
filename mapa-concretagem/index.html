@@ -8,6 +8,37 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="styles.css?v=08d590b4" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
+  <style>
+    .nav-group-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      padding: 12px 16px 6px;
+      margin-top: 6px;
+      border-top: 1px solid #1e293b;
+    }
+    .sidebar-nav > .nav-group-title:first-of-type {
+      border-top: none;
+      margin-top: 0;
+      padding-top: 6px;
+    }
+    .hub-group-section {
+      margin-bottom: 24px;
+    }
+    .hub-group-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #38bdf8;
+      border-left: 3px solid #38bdf8;
+      padding-left: 8px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: left;
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 </head>
@@ -62,6 +93,8 @@
         <span class="nav-icon-wrap">📈</span>
         Produtividade
       </button>
+
+      <div class="nav-group-title">Produção</div>
       <button class="nav-item" id="hubLiberacao" type="button">
         <span class="nav-icon-wrap">PL</span>
         Produção / Liberação
@@ -82,6 +115,8 @@
         <span class="nav-icon-wrap">P4</span>
         Produção Setor 4
       </button>
+
+      <div class="nav-group-title">Montagem</div>
       <button class="nav-item" id="hubInspecao" type="button">
         <span class="nav-icon-wrap">MB</span>
         Inspeção Setor 3 e 4
@@ -90,6 +125,8 @@
         <span class="nav-icon-wrap">MP</span>
         Montagem Postes
       </button>
+
+      <div class="nav-group-title">Geral</div>
       <button class="nav-item" id="hubRelatorio" type="button">
         <span class="nav-icon-wrap">RE</span>
         Relatório Enc. Produção
@@ -130,59 +167,77 @@
 
       <!-- Início -->
       <section id="viewHub">
-        <div class="hub-icon-grid">
-          <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_INDICADORES">
-            <div class="hub-icon-circle" style="background:#0b6b6f">📊</div>
-            <span class="hub-icon-lbl">Dashboard montagem</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="PROD_ANALISE">
-            <div class="hub-icon-circle" style="background:#10b981">📈</div>
-            <span class="hub-icon-lbl">Produtividade</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO">
-            <div class="hub-icon-circle" style="background:#1e40af">PL</div>
-            <span class="hub-icon-lbl">Produção</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S1">
-            <div class="hub-icon-circle" style="background:#1e40af">P1</div>
-            <span class="hub-icon-lbl">Produção Setor 1</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S2">
-            <div class="hub-icon-circle" style="background:#1e40af">P2</div>
-            <span class="hub-icon-lbl">Produção Setor 2</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S3">
-            <div class="hub-icon-circle" style="background:#1e40af">P3</div>
-            <span class="hub-icon-lbl">Produção Setor 3</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S4">
-            <div class="hub-icon-circle" style="background:#1e40af">P4</div>
-            <span class="hub-icon-lbl">Produção Setor 4</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="INSPECAO">
-            <div class="hub-icon-circle" style="background:#059669">MI</div>
-            <span class="hub-icon-lbl">Inspeção Setor 3 e 4</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_POSTES">
-            <div class="hub-icon-circle" style="background:#0b6b6f">MP</div>
-            <span class="hub-icon-lbl">Montagem Postes</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO">
-            <div class="hub-icon-circle" style="background:#7c3aed">RE</div>
-            <span class="hub-icon-lbl">Relatório Enc. Produção</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="HISTORICO">
-            <div class="hub-icon-circle" style="background:#b45309">HI</div>
-            <span class="hub-icon-lbl">Histórico</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="ACMP_CONCRETAGEM">
-            <div class="hub-icon-circle" style="background:#be185d">CC</div>
-            <span class="hub-icon-lbl">Concretagem</span>
-          </button>
-          <button class="hub-icon-btn hidden" type="button" data-hub-mode="USUARIOS">
-            <div class="hub-icon-circle" style="background:#4f46e5">👤</div>
-            <span class="hub-icon-lbl">Usuários</span>
-          </button>
+        <!-- Grupo Produção -->
+        <div class="hub-group-section">
+          <h3 class="hub-group-title">Produção</h3>
+          <div class="hub-icon-grid">
+            <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO">
+              <div class="hub-icon-circle" style="background:#1e40af">PL</div>
+              <span class="hub-icon-lbl">Produção / Liberação</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S1">
+              <div class="hub-icon-circle" style="background:#1e40af">P1</div>
+              <span class="hub-icon-lbl">Produção Setor 1</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S2">
+              <div class="hub-icon-circle" style="background:#1e40af">P2</div>
+              <span class="hub-icon-lbl">Produção Setor 2</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S3">
+              <div class="hub-icon-circle" style="background:#1e40af">P3</div>
+              <span class="hub-icon-lbl">Produção Setor 3</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S4">
+              <div class="hub-icon-circle" style="background:#1e40af">P4</div>
+              <span class="hub-icon-lbl">Produção Setor 4</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grupo Montagem -->
+        <div class="hub-group-section">
+          <h3 class="hub-group-title">Montagem</h3>
+          <div class="hub-icon-grid">
+            <button class="hub-icon-btn" type="button" data-hub-mode="INSPECAO">
+              <div class="hub-icon-circle" style="background:#059669">MI</div>
+              <span class="hub-icon-lbl">Inspeção Setor 3 e 4</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_POSTES">
+              <div class="hub-icon-circle" style="background:#0b6b6f">MP</div>
+              <span class="hub-icon-lbl">Montagem Postes</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Outros Recursos / Geral -->
+        <div class="hub-group-section">
+          <h3 class="hub-group-title">Geral</h3>
+          <div class="hub-icon-grid">
+            <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_INDICADORES">
+              <div class="hub-icon-circle" style="background:#0b6b6f">📊</div>
+              <span class="hub-icon-lbl">Dashboard montagem</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="PROD_ANALISE">
+              <div class="hub-icon-circle" style="background:#10b981">📈</div>
+              <span class="hub-icon-lbl">Produtividade</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO">
+              <div class="hub-icon-circle" style="background:#7c3aed">RE</div>
+              <span class="hub-icon-lbl">Relatório Enc. Produção</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="HISTORICO">
+              <div class="hub-icon-circle" style="background:#b45309">HI</div>
+              <span class="hub-icon-lbl">Histórico</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="ACMP_CONCRETAGEM">
+              <div class="hub-icon-circle" style="background:#be185d">CC</div>
+              <span class="hub-icon-lbl">Concretagem</span>
+            </button>
+            <button class="hub-icon-btn hidden" type="button" data-hub-mode="USUARIOS">
+              <div class="hub-icon-circle" style="background:#4f46e5">👤</div>
+              <span class="hub-icon-lbl">Usuários</span>
+            </button>
+          </div>
         </div>
       </section>
 
