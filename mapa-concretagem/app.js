@@ -6974,8 +6974,7 @@ function aplicarFiltrosEExibirMontagem() {
 
     // Filtro por Status
     if (fStatus) {
-      if (fStatus === "A" && row.status_montagem !== "A") return false;
-      if (fStatus === "R" && row.status_montagem !== "R" && row.status_montagem !== "RR") return false;
+      if (row.status_montagem !== fStatus) return false;
     }
 
     // Filtro por Pesquisa de Texto
@@ -7232,8 +7231,10 @@ function renderizarTabelaMontagemPaginada() {
     let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
     if (row.status_montagem === "A") {
       statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
-    } else if (row.status_montagem === "R" || row.status_montagem === "RR") {
-      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Recusado</span>`;
+    } else if (row.status_montagem === "RR") {
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Retrabalhado</span>`;
+    } else if (row.status_montagem === "R") {
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
     }
 
     return `
@@ -7425,8 +7426,11 @@ window.abrirVisualizacaoChecklist = function(id) {
   if (row.status_montagem === "A") {
     statusText = "Aprovado";
     statusColor = "#16a34a";
-  } else if (row.status_montagem === "R" || row.status_montagem === "RR") {
-    statusText = "Recusado";
+  } else if (row.status_montagem === "RR") {
+    statusText = "Reprovado e Retrabalhado";
+    statusColor = "#d97706";
+  } else if (row.status_montagem === "R") {
+    statusText = "Reprovado";
     statusColor = "#dc2626";
   }
   const elStatus = document.getElementById("vcMetaStatus");
