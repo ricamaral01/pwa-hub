@@ -4639,6 +4639,68 @@ function calcularTempoTotalSemAlmoco(timestamps) {
 
 function renderRelatorioSetor({ data, setor, encarregado, rows }) {
   if (!el.relatorioSetorOutput) return;
+
+  const printOrder = [
+    "1 CX VR",
+    "1 CX VL",
+    "2 CX VR",
+    "2 CX VL",
+    "3 CX VR",
+    "3 CX VL",
+    "4 CX VR",
+    "4 CX VL",
+    "2 CX VR - 300 DAN",
+    "2 CX VL - 300 DAN",
+    "POSTE CAIXA LENTE 1 CX VL",
+    "ECON 1 CX VR",
+    "ECON 1 CX VL",
+    "ECON 2 CX VR",
+    "ECON 3 CX VR",
+    "SUB 100",
+    "SUB 200",
+    "SUB 200 TC",
+    "SUB 100 ELEKTRO",
+    "ELEKTRO 1 CX VR",
+    "ELEKTRO 1 CX VL",
+    "ELEKTRO 2 CX VR",
+    "ELEKTRO 2 CX VL",
+    "ELEKTRO 3 CX VL",
+    "EDP 1 CX VL",
+    "7,5X600 TC VR",
+    "7,5X600 TC VL",
+    "7,5X600 BARR VR",
+    "7,5X600 BARR VL",
+    "TOTEM MEDIÇÃO INDIRETA ELEKTRO",
+    "POSTE COLUNA",
+    "CEMIG 7X150 1 CX VL",
+    "CEMIG 7X150 2 CX VL"
+  ];
+  const printOrderNormalized = printOrder.map(m => m.trim().toUpperCase());
+
+  function getModelOrderIndex(modelo) {
+    const idx = printOrderNormalized.indexOf(modelo.trim().toUpperCase());
+    return idx !== -1 ? idx : 999999;
+  }
+
+  function sortSummaryList(list) {
+    return list.sort((a, b) => {
+      if (a.setor === "Setor 3" && b.setor === "Setor 3") {
+        return b.total - a.total || a.modelo.localeCompare(b.modelo);
+      }
+      const idxA = getModelOrderIndex(a.modelo);
+      const idxB = getModelOrderIndex(b.modelo);
+      if (idxA !== 999999 || idxB !== 999999) {
+        if (idxA !== idxB) {
+          return idxA - idxB;
+        }
+      }
+      if (a.setor !== b.setor) {
+        return a.setor.localeCompare(b.setor);
+      }
+      return b.total - a.total || a.modelo.localeCompare(b.modelo);
+    });
+  }
+
   const normalizedRows = Array.isArray(rows) ? rows.slice() : [];
   const rowsOrdenadas = normalizedRows.sort((a, b) => {
     const tsA = new Date(getRelatorioTimestamp(a)).getTime();
@@ -4658,12 +4720,18 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
 
     const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
       const modelo = getRelatorioModelo(row);
-      acc[modelo] = (acc[modelo] || 0) + 1;
+      const s = row.setor || "Todos";
+      const key = `${s}||${modelo}`;
+      acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
-    const resumoPostesHtml = Object.entries(resumoPorPoste)
-      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-      .map(([modelo, total]) => `<tr><td>${escapeHtml(modelo)}</td><td>${total}</td></tr>`)
+    const summaryList = Object.entries(resumoPorPoste).map(([key, total]) => {
+      const [s, modelo] = key.split("||");
+      return { setor: s, modelo, total };
+    });
+    sortSummaryList(summaryList);
+    const resumoPostesHtml = summaryList
+      .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
       .join("");
 
     // Contagem por setor
@@ -4725,8 +4793,8 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
           <section class="rel-section rel-summary-section">
             <h4>Resumo por tipo de poste (Todos os Setores)</h4>
             <table class="sheet-table report-table rel-summary-table">
-              <thead><tr><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
-              <tbody>${resumoPostesHtml || '<tr><td colspan="2">Sem registros</td></tr>'}</tbody>
+              <thead><tr><th>Setor</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+              <tbody>${resumoPostesHtml || '<tr><td colspan="3">Sem registros</td></tr>'}</tbody>
             </table>
           </section>
 
@@ -4749,12 +4817,17 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
 
           const sResumoPorPoste = sRows.reduce((acc, row) => {
             const modelo = getRelatorioModelo(row);
-            acc[modelo] = (acc[modelo] || 0) + 1;
+            const key = `${s}||${modelo}`;
+            acc[key] = (acc[key] || 0) + 1;
             return acc;
           }, {});
-          const sResumoPostesHtml = Object.entries(sResumoPorPoste)
-            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-            .map(([modelo, total]) => `<tr><td>${escapeHtml(modelo)}</td><td>${total}</td></tr>`)
+          const sSummaryList = Object.entries(sResumoPorPoste).map(([key, total]) => {
+            const [sec, modelo] = key.split("||");
+            return { setor: sec, modelo, total };
+          });
+          sortSummaryList(sSummaryList);
+          const sResumoPostesHtml = sSummaryList
+            .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
             .join("");
 
           const sLinhas = sRows.map((r) => {
@@ -4815,8 +4888,8 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
               <section class="rel-section rel-summary-section">
                 <h4>Resumo por tipo de poste - ${escapeHtml(s)}</h4>
                 <table class="sheet-table report-table rel-summary-table">
-                  <thead><tr><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
-                  <tbody>${sResumoPostesHtml || '<tr><td colspan="2">Sem registros</td></tr>'}</tbody>
+                  <thead><tr><th>Setor</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+                  <tbody>${sResumoPostesHtml || '<tr><td colspan="3">Sem registros</td></tr>'}</tbody>
                 </table>
               </section>
 
@@ -4838,12 +4911,18 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
     const tempoTotal = calcularTempoTotalSemAlmoco(timestamps);
     const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
       const modelo = getRelatorioModelo(row);
-      acc[modelo] = (acc[modelo] || 0) + 1;
+      const s = row.setor || setor;
+      const key = `${s}||${modelo}`;
+      acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
-    const resumoPostesHtml = Object.entries(resumoPorPoste)
-      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-      .map(([modelo, total]) => `<tr><td>${escapeHtml(modelo)}</td><td>${total}</td></tr>`)
+    const summaryList = Object.entries(resumoPorPoste).map(([key, total]) => {
+      const [sec, modelo] = key.split("||");
+      return { setor: sec, modelo, total };
+    });
+    sortSummaryList(summaryList);
+    const resumoPostesHtml = summaryList
+      .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
       .join("");
     const linhas = rowsOrdenadas.map((r) => {
       const forma = r.forma_numero || r.formaNumero || "";
@@ -4902,8 +4981,8 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
         <section class="rel-section rel-summary-section">
           <h4>Resumo por tipo de poste</h4>
           <table class="sheet-table report-table rel-summary-table">
-            <thead><tr><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
-            <tbody>${resumoPostesHtml || '<tr><td colspan="2">Sem registros</td></tr>'}</tbody>
+            <thead><tr><th>Setor</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+            <tbody>${resumoPostesHtml || '<tr><td colspan="3">Sem registros</td></tr>'}</tbody>
           </table>
         </section>
 
