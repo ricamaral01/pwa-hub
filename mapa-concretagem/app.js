@@ -4739,22 +4739,38 @@ async function gerarRelatorioSetor() {
     return;
   }
 
+  let formToModelMap = {};
+  if (setor === "Setor 3" || setor === "Setor 4") {
+    try {
+      formToModelMap = await fetchSetor3Models(data);
+    } catch (err) {
+      console.warn("Erro ao carregar modelos reais do pcp para o relatório:", err);
+    }
+  }
+
   if (hasApiConfigured()) {
     try {
       let query = supabaseClient.from('producao').select('*').eq('setor', setor).eq('data_fabricacao', data);
       const { data: rows, error } = await query;
 
       if (!error && Array.isArray(rows)) {
-        const mappedRows = rows.map(r => ({
-          forma_numero: r.forma || r.forma_numero,
-          modelo: r.modelo,
-          descricao_poste: r.descricao_poste,
-          codigo_produto: r.codigo_produto,
-          liberacao_status: "1",
-          colaborador: r.colaborador,
-          timestamp: r.data_hora || r.updated_at || r.created_at,
-          tipo_concreto: r.tipo_concreto || r.tipoConcreto || r.concretoTipo
-        }));
+        const mappedRows = rows.map(r => {
+          const formaNorm = normalizeForma(r.forma || r.forma_numero || "");
+          let modeloFinal = r.modelo;
+          if ((setor === "Setor 3" || setor === "Setor 4") && (modeloFinal === "SC" || !modeloFinal) && formToModelMap[formaNorm]) {
+            modeloFinal = formToModelMap[formaNorm];
+          }
+          return {
+            forma_numero: r.forma || r.forma_numero,
+            modelo: modeloFinal,
+            descricao_poste: r.descricao_poste,
+            codigo_produto: r.codigo_produto,
+            liberacao_status: "1",
+            colaborador: r.colaborador,
+            timestamp: r.data_hora || r.updated_at || r.created_at,
+            tipo_concreto: r.tipo_concreto || r.tipoConcreto || r.concretoTipo
+          };
+        });
         renderRelatorioSetor({ data, setor, encarregado, rows: mappedRows });
         setSyncStatus("ok", `Relatório do ${setor} em ${data} gerado pela nuvem.`);
         return;
@@ -4769,16 +4785,23 @@ async function gerarRelatorioSetor() {
     .filter((r) => r.dataFabricacao === data)
     .filter((r) => r.setor === setor)
     .filter((r) => String(r.liberacao?.status || "") === "1")
-    .map((r) => ({
-      forma_numero: r.formaNumero,
-      modelo: r.modelo,
-      descricaoPoste: r.descricaoPoste,
-      codigoProduto: r.codigoProduto,
-      liberacao_status: r.liberacao?.status || "",
-      colaborador: r.liberacao?.colaborador || "",
-      timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
-      tipoConcreto: r.concretoTipo
-    }));
+    .map((r) => {
+      const formaNorm = normalizeForma(r.formaNumero || "");
+      let modeloFinal = r.modelo;
+      if ((setor === "Setor 3" || setor === "Setor 4") && (modeloFinal === "SC" || !modeloFinal) && formToModelMap[formaNorm]) {
+        modeloFinal = formToModelMap[formaNorm];
+      }
+      return {
+        forma_numero: r.formaNumero,
+        modelo: modeloFinal,
+        descricaoPoste: r.descricaoPoste,
+        codigoProduto: r.codigoProduto,
+        liberacao_status: r.liberacao?.status || "",
+        colaborador: r.liberacao?.colaborador || "",
+        timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
+        tipoConcreto: r.concretoTipo
+      };
+    });
 
   renderRelatorioSetor({ data, setor, encarregado, rows });
 }

@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg: #f0f4f8;
   --card: #ffffff;
   --text: #1a2840;
@@ -3456,7 +3456,7 @@ hr {
     width: 100% !important;
     table-layout: fixed !important;
     border-collapse: collapse !important;
-    font-size: 8pt !important;
+    font-size: 7pt !important;
   }
 
   body.print-relatorio .report-table th,
@@ -3548,7 +3548,7 @@ hr {
   }
 
   body.print-relatorio .rel-sign-block {
-    min-height: 74px !important;
+    min-height: 120px !important;
     max-width: 420px !important;
     margin-top: 0 !important;
   }
