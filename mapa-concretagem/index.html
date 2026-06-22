@@ -98,10 +98,6 @@
         <span class="nav-icon-wrap">HI</span>
         Histórico
       </button>
-      <button class="nav-item" id="hubAcompanhamento" type="button">
-        <span class="nav-icon-wrap">AC</span>
-        Acompanhamento
-      </button>
       <button class="nav-item" id="hubAcmpConcretagem" type="button">
         <span class="nav-icon-wrap">CC</span>
         Acmp. Concretagem
@@ -178,10 +174,6 @@
           <button class="hub-icon-btn" type="button" data-hub-mode="HISTORICO">
             <div class="hub-icon-circle" style="background:#b45309">HI</div>
             <span class="hub-icon-lbl">Histórico</span>
-          </button>
-          <button class="hub-icon-btn" type="button" data-hub-mode="ACOMPANHAMENTO">
-            <div class="hub-icon-circle" style="background:#0e7490">AC</div>
-            <span class="hub-icon-lbl">Acompanhamento</span>
           </button>
           <button class="hub-icon-btn" type="button" data-hub-mode="ACMP_CONCRETAGEM">
             <div class="hub-icon-circle" style="background:#be185d">CC</div>
@@ -491,6 +483,15 @@
             <option value="Setor 2">Setor 2</option>
           </select>
         </label>
+        <label>Status
+          <select id="mpStatusFiltro">
+            <option value="">Todos</option>
+            <option value="A">Aprovado</option>
+            <option value="R">Reprovado</option>
+            <option value="RR">Reprovado e Retrabalhado</option>
+            <option value="PENDENTE">Pendente</option>
+          </select>
+        </label>
       </div>
       <button id="mpCarregarLiberados" class="btn" type="button">Carregar itens liberados</button>
 
@@ -760,60 +761,6 @@
       </div>
     </section>
 
-    <section id="viewAcompanhamento" class="card hidden">
-      <div class="section-title-row">
-        <h2>Acompanhamento de Produção</h2>
-        <button class="btn btn-back" type="button" data-back-btn>← Voltar</button>
-      </div>
-      <div class="page-fc acmp-bar">
-        <label>Data
-          <input id="dashData" type="date" />
-        </label>
-        <button id="atualizarDashboard" class="btn primary" type="button">↻ Atualizar</button>
-      </div>
-      <div class="acmp-kpi-grid">
-        <article class="acmp-kpi acmp-kpi-s1">
-          <div class="acmp-kpi-lbl">Setor 1</div>
-          <div id="dashSetor1Count" class="acmp-kpi-val">0</div>
-          <div id="dashSetor1Meta" class="acmp-kpi-sub">0 concretados</div>
-        </article>
-        <article class="acmp-kpi acmp-kpi-s2">
-          <div class="acmp-kpi-lbl">Setor 2</div>
-          <div id="dashSetor2Count" class="acmp-kpi-val">0</div>
-          <div id="dashSetor2Meta" class="acmp-kpi-sub">0 concretados</div>
-        </article>
-        <article class="acmp-kpi acmp-kpi-s3">
-          <div class="acmp-kpi-lbl">Setor 3</div>
-          <div id="dashSetor3Count" class="acmp-kpi-val">0</div>
-          <div id="dashSetor3Meta" class="acmp-kpi-sub">0 concretados</div>
-        </article>
-        <article class="acmp-kpi acmp-kpi-s4">
-          <div class="acmp-kpi-lbl">Setor 4</div>
-          <div id="dashSetor4Count" class="acmp-kpi-val">0</div>
-          <div id="dashSetor4Meta" class="acmp-kpi-sub">0 concretados</div>
-        </article>
-        <article class="acmp-kpi acmp-kpi-tot">
-          <div class="acmp-kpi-lbl">Total</div>
-          <div id="dashTotalCount" class="acmp-kpi-val">0</div>
-          <div class="acmp-kpi-sub">formas concretadas</div>
-        </article>
-      </div>
-      <div class="db-chart-card" style="margin-top:14px">
-        <div class="db-chart-title">Produção do Dia por Setor</div>
-        <div class="db-chart-wrap"><canvas id="chartAcmp"></canvas></div>
-      </div>
-      <p id="dashStatus" class="muted" style="margin-top:8px;font-size:0.82rem">Aguardando atualização do painel...</p>
-      <div style="display:none">
-        <div id="dashBarSetor1" style="width:0%"></div>
-        <div id="dashBarSetor2" style="width:0%"></div>
-        <div id="dashBarSetor3" style="width:0%"></div>
-        <div id="dashBarSetor4" style="width:0%"></div>
-        <span id="dashBarSetor1Label"></span>
-        <span id="dashBarSetor2Label"></span>
-        <span id="dashBarSetor3Label"></span>
-        <span id="dashBarSetor4Label"></span>
-      </div>
-    </section>
 
     <section id="viewAcmpConcretagem" class="card hidden">
       <div class="section-title-row">

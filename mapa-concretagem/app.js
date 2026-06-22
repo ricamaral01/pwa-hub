@@ -7,7 +7,7 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACOMPANHAMENTO", "ACMP_CONCRETAGEM", "USUARIOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS"]
   },
   GESTOR: {
     label: "Gestor",
@@ -593,7 +593,6 @@ const el = {
   hubMontagemIndicadores: document.getElementById("hubMontagemIndicadores"),
   hubRelatorio: document.getElementById("hubRelatorio"),
   hubHistorico: document.getElementById("hubHistorico"),
-  hubAcompanhamento: document.getElementById("hubAcompanhamento"),
   viewLiberacao: document.getElementById("viewLiberacao"),
   viewInspecao: document.getElementById("viewInspecao"),
   viewMontagemPostes: document.getElementById("viewMontagemPostes"),
@@ -601,7 +600,6 @@ const el = {
   viewMontagemPostesDetalhe: document.getElementById("viewMontagemPostesDetalhe"),
   viewRelatorio: document.getElementById("viewRelatorio"),
   viewHistorico: document.getElementById("viewHistorico"),
-  viewAcompanhamento: document.getElementById("viewAcompanhamento"),
   hubAcmpConcretagem: document.getElementById("hubAcmpConcretagem"),
   viewAcmpConcretagem: document.getElementById("viewAcmpConcretagem"),
   navUsuarios: document.getElementById("navUsuarios"),
@@ -665,6 +663,7 @@ const el = {
   mpFiltroData: document.getElementById("mpFiltroData"),
   mpModoCarga: document.getElementById("mpModoCarga"),
   mpSetor: document.getElementById("mpSetor"),
+  mpStatusFiltro: document.getElementById("mpStatusFiltro"),
   mpCarregarLiberados: document.getElementById("mpCarregarLiberados"),
   mpLiberadosBody: document.getElementById("mpLiberadosBody"),
   mpQtdItens: document.getElementById("mpQtdItens"),
@@ -2658,12 +2657,15 @@ async function fetchPolesForDate(filtroData, setor = "") {
 
       // Find if there is an inspected status for this form
       const insRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'INSPECAO');
-      const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'MONTAGEM');
+      const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa !== 'INSPECAO');
 
       let modeloFinal = latestRow.modelo || "";
       const normForma = normalizeForma(forma);
       if ((latestRow.setor === "Setor 3" || latestRow.setor === "Setor 4") && formToModelMap[normForma]) {
         modeloFinal = formToModelMap[normForma];
+      }
+      if (/^A-?\d+$/i.test(forma)) {
+        modeloFinal = "1 CX VR";
       }
 
       combinedList.push({
@@ -3395,6 +3397,7 @@ async function renderMontagemPostesLiberados() {
   const filtroData = el.mpFiltroData?.value || todayYmd();
   const modoCarga = el.mpModoCarga?.value || "data";
   const setor = el.mpSetor?.value || "";
+  const statusFiltro = el.mpStatusFiltro?.value || "";
 
   el.mpLiberadosBody.innerHTML = "";
   if (el.mpKpiAprovados) el.mpKpiAprovados.textContent = "0";
@@ -3415,26 +3418,19 @@ async function renderMontagemPostesLiberados() {
     poles = poles.filter((pole) => pole.setor === "Setor 1" || pole.setor === "Setor 2");
   }
 
-  // Filtra de acordo com modoCarga
-  const rows = poles.filter((record) => {
+  // Filtra de acordo com modoCarga para fins de cálculo de KPIs
+  const baseRows = poles.filter((record) => {
     if (modoCarga === "pendentes") {
       return !record.montagem || !record.montagem.finalizado_em;
     }
     return true;
   });
 
-  el.mpQtdItens.textContent = String(rows.length);
-
-  if (!rows.length) {
-    el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Nenhum poste concretado ou pendente de montagem para os filtros informados.</td></tr>';
-    return;
-  }
-
   let countAprovados = 0;
   let countRetrabalho = 0;
   let countReprovados = 0;
 
-  rows.forEach((record) => {
+  baseRows.forEach((record) => {
     const isFinalizado = !!record.montagem?.finalizado_em;
     const status = record.montagem?.status_montagem || "";
     if (isFinalizado) {
@@ -3447,6 +3443,27 @@ async function renderMontagemPostesLiberados() {
   if (el.mpKpiAprovados) el.mpKpiAprovados.textContent = String(countAprovados);
   if (el.mpKpiRetrabalho) el.mpKpiRetrabalho.textContent = String(countRetrabalho);
   if (el.mpKpiReprovados) el.mpKpiReprovados.textContent = String(countReprovados);
+
+  // Filtra de acordo com statusFiltro para a exibição na tabela
+  const rows = baseRows.filter((record) => {
+    if (statusFiltro) {
+      const isFinalizado = !!record.montagem?.finalizado_em;
+      const statusVal = record.montagem?.status_montagem || "";
+      if (statusFiltro === "PENDENTE") {
+        if (isFinalizado) return false;
+      } else {
+        if (!isFinalizado || statusVal !== statusFiltro) return false;
+      }
+    }
+    return true;
+  });
+
+  el.mpQtdItens.textContent = String(rows.length);
+
+  if (!rows.length) {
+    el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Nenhum poste concretado ou pendente de montagem para os filtros informados.</td></tr>';
+    return;
+  }
 
   rows.forEach((record) => {
     const isFinalizado = !!record.montagem?.finalizado_em;
@@ -5441,7 +5458,6 @@ function applyRoleVisibility() {
     MONTAGEM_INDICADORES: "hubMontagemIndicadores",
     RELATORIO: "hubRelatorio",
     HISTORICO: "hubHistorico",
-    ACOMPANHAMENTO: "hubAcompanhamento",
     ACMP_CONCRETAGEM: "hubAcmpConcretagem",
     USUARIOS: "navUsuarios"
   };
@@ -5565,7 +5581,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcompanhamento, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -5602,7 +5618,6 @@ function setMode(mode) {
   if (mode === "MONTAGEM_POSTES_DETALHE") el.viewMontagemPostesDetalhe.classList.remove("hidden");
   if (mode === "RELATORIO") el.viewRelatorio.classList.remove("hidden");
   if (mode === "HISTORICO") el.viewHistorico.classList.remove("hidden");
-  if (mode === "ACOMPANHAMENTO") el.viewAcompanhamento.classList.remove("hidden");
   if (mode === "ACMP_CONCRETAGEM") el.viewAcmpConcretagem.classList.remove("hidden");
   if (mode === "USUARIOS") {
     if (el.viewUsuarios) el.viewUsuarios.classList.remove("hidden");
@@ -5619,7 +5634,7 @@ function setMode(mode) {
     carregarMontagemIndicadores();
   }
 
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acompanhamento", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
@@ -5646,7 +5661,6 @@ function setMode(mode) {
   if (mode === "MONTAGEM_POSTES_DETALHE") document.body.classList.add("mode-montagem-postes-detalhe");
   if (mode === "RELATORIO") document.body.classList.add("mode-relatorio");
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
-  if (mode === "ACOMPANHAMENTO") document.body.classList.add("mode-acompanhamento");
   if (mode === "ACMP_CONCRETAGEM") document.body.classList.add("mode-acmp-concretagem");
   if (mode === "USUARIOS") document.body.classList.add("mode-usuarios");
   if (mode === "MONTAGEM_INDICADORES") document.body.classList.add("mode-montagem-indicadores");
@@ -5667,7 +5681,6 @@ function setMode(mode) {
     MONTAGEM_INDICADORES: ["hubMontagemIndicadores", "Dashboard montagem"],
     RELATORIO: ["hubRelatorio", "Relatório Enc. Produção"],
     HISTORICO: ["hubHistorico", "Histórico"],
-    ACOMPANHAMENTO: ["hubAcompanhamento", "Acompanhamento"],
     ACMP_CONCRETAGEM: ["hubAcmpConcretagem", "Acmp. Concretagem"],
     USUARIOS: ["navUsuarios", "Gerenciar Usuários"]
   };
@@ -5920,10 +5933,6 @@ function bindEvents() {
     setMode("HISTORICO");
     renderHistorico();
   });
-  el.hubAcompanhamento.addEventListener("click", () => {
-    setMode("ACOMPANHAMENTO");
-    carregarDashboardConcretagem();
-  });
   el.hubAcmpConcretagem.addEventListener("click", () => {
     setMode("ACMP_CONCRETAGEM");
     if (!el.acmpData.value) el.acmpData.value = todayYmd();
@@ -6110,6 +6119,7 @@ function bindEvents() {
   if (el.mpFiltroData) el.mpFiltroData.addEventListener("change", renderMontagemPostesLiberados);
   if (el.mpModoCarga) el.mpModoCarga.addEventListener("change", renderMontagemPostesLiberados);
   if (el.mpSetor) el.mpSetor.addEventListener("change", renderMontagemPostesLiberados);
+  if (el.mpStatusFiltro) el.mpStatusFiltro.addEventListener("change", renderMontagemPostesLiberados);
   if (el.mpCarregarLiberados) el.mpCarregarLiberados.addEventListener("click", renderMontagemPostesLiberados);
   if (el.mpFormaFiltro) el.mpFormaFiltro.addEventListener("input", filtrarMontagemTabela);
 
@@ -6324,7 +6334,6 @@ function bindEvents() {
       else if (mode === "MONTAGEM_POSTES") { setMode("MONTAGEM_POSTES"); if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd(); renderMontagemPostesLiberados(); }
       else if (mode === "RELATORIO") { setMode("RELATORIO"); if (!el.relData.value) el.relData.value = todayYmd(); }
       else if (mode === "HISTORICO") { setMode("HISTORICO"); renderHistorico(); }
-      else if (mode === "ACOMPANHAMENTO") { setMode("ACOMPANHAMENTO"); carregarDashboardConcretagem(); }
       else if (mode === "ACMP_CONCRETAGEM") { setMode("ACMP_CONCRETAGEM"); if (!el.acmpData.value) el.acmpData.value = todayYmd(); renderAcmpConcretagem(); }
     });
   });
