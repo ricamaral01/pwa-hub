@@ -6197,33 +6197,17 @@ function isConcretePadrao(row) {
 }
 
 function buildProductiveHourBuckets(rows, valueGetter) {
-  const groups = {};
-  rows.forEach(r => {
-    const key = `${r.data_fabricacao || ""}||${r.setor || ""}`;
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(r);
-  });
-
   const buckets = {};
-  Object.values(groups).forEach(groupRows => {
-    const sorted = groupRows
-      .filter(r => r.data_hora || r.updated_at)
-      .sort((a, b) => new Date(a.data_hora || a.updated_at).getTime() - new Date(b.data_hora || b.updated_at).getTime());
-    let activeElapsedMin = 0;
-    sorted.forEach((row, index) => {
-      if (index > 0) {
-        const prev = new Date(sorted[index - 1].data_hora || sorted[index - 1].updated_at).getTime();
-        const curr = new Date(row.data_hora || row.updated_at).getTime();
-        const diffMin = (curr - prev) / 60000;
-        if (diffMin > 0 && diffMin < 60) activeElapsedMin += diffMin;
-      }
-      const hourIndex = Math.floor(activeElapsedMin / 60);
-      const label = `${hourIndex + 1}a hora`;
-      buckets[label] = (buckets[label] || 0) + valueGetter(row);
-    });
+  rows.forEach(row => {
+    const ts = row.data_hora || row.updated_at || row.timestamp;
+    if (!ts) return;
+    const date = new Date(ts);
+    if (isNaN(date.getTime())) return;
+    const label = String(date.getHours()).padStart(2, '0') + 'h';
+    buckets[label] = (buckets[label] || 0) + valueGetter(row);
   });
 
-  const labels = Object.keys(buckets).sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+  const labels = Object.keys(buckets).sort();
   return { labels, values: labels.map(label => buckets[label]) };
 }
 
@@ -6646,7 +6630,22 @@ function renderizarGraficosSetorProdutividade(rows) {
         labels: setores,
         datasets: [{ label: "Formas", data: formas, backgroundColor: "#2563eb", borderRadius: 6 }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { display: false },
+          datalabels: {
+            display: true,
+            color: '#ffffff',
+            anchor: 'center',
+            align: 'center',
+            font: { weight: 'bold', size: 10 }
+          }
+        }, 
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } 
+      },
+      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
     });
   }
 
@@ -6659,7 +6658,23 @@ function renderizarGraficosSetorProdutividade(rows) {
         labels: setores,
         datasets: [{ label: "Volume (m3)", data: volumes, backgroundColor: "#e8762a", borderRadius: 6 }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { display: false },
+          datalabels: {
+            display: true,
+            color: '#ffffff',
+            anchor: 'center',
+            align: 'center',
+            font: { weight: 'bold', size: 10 },
+            formatter: (v) => v.toFixed(1)
+          }
+        }, 
+        scales: { y: { beginAtZero: true } } 
+      },
+      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
     });
   }
 }
@@ -6703,9 +6718,20 @@ function renderizarProducaoSetoresUltimos7(rows, selectedDate) {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { position: "bottom", labels: { usePointStyle: true, boxWidth: 8 } } },
+        plugins: {
+          legend: { position: "bottom", labels: { usePointStyle: true, boxWidth: 8 } },
+          datalabels: {
+            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
+            color: '#ffffff',
+            anchor: 'center',
+            align: 'center',
+            font: { weight: 'bold', size: 10 },
+            formatter: Math.round
+          }
+        },
         scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } }
-      }
+      },
+      plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
     });
   }
 
@@ -7150,6 +7176,20 @@ async function carregarProdutividadeConcretagem() {
   setKpi("paKpiFormasHora", metricas.formasPorHora > 0 ? metricas.formasPorHora.toFixed(1) : "N/A");
   setKpi("paKpiM3Hora", metricas.m3PorHora > 0 ? metricas.m3PorHora.toFixed(2) + " m³/h" : "N/A");
   setKpi("paKpiParadasAV", `${metricas.paradasAmarelas} / ${metricas.paradasVermelhas}`);
+
+  const elPaKpiJornada = document.getElementById("paKpiJornada");
+  if (elPaKpiJornada) {
+    if (metricas.jornadaDiaria && metricas.jornadaDiaria.length > 0) {
+      const list = metricas.jornadaDiaria;
+      if (list.length === 1) {
+        elPaKpiJornada.textContent = `${list[0].inicio} - ${list[0].fim}`;
+      } else {
+        elPaKpiJornada.textContent = `${list[list.length - 1].inicio} - ${list[0].fim}`;
+      }
+    } else {
+      elPaKpiJornada.textContent = "Sem registro";
+    }
+  }
 
   renderizarAlertasOperacionais(metricas, meta);
   renderizarVolumeTipoPorSetor(filteredRows);
