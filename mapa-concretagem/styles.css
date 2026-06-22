@@ -4601,6 +4601,20 @@ tr.row-montado {
 .pa-tab-section.active {
   display: block;
 }
+.pa-tabs-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.pa-tabs-bar::-webkit-scrollbar {
+  display: none;
+}
+.pa-tabs-bar .mi-tab-btn {
+  flex: 0 0 auto;
+  min-width: 86px;
+}
 .pa-kpis-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }

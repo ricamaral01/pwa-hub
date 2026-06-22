@@ -4045,11 +4045,11 @@ function renderDashboardCharts() {
   }).join("");
 }
 
-async function carregarDadosGlobaisDashboard() {
+async function carregarDadosGlobaisDashboard(selectedDateOverride = "") {
   if (!hasApiConfigured()) return;
 
   const dbDataEl = document.getElementById("dbData");
-  const selectedDate = dbDataEl ? dbDataEl.value : todayYmd();
+  const selectedDate = selectedDateOverride || (dbDataEl ? dbDataEl.value : todayYmd());
 
   setSyncStatus("pending", "Atualizando dados globais do dashboard...");
 
@@ -5024,6 +5024,7 @@ function logoutUser() {
 }
 
 function setMode(mode) {
+  if (mode === "DASHBOARD") mode = "PROD_ANALISE";
   if (mode !== "HUB" && !isModeAllowed(mode)) {
     mode = "HUB";
     if (state.authUser) {
@@ -6837,7 +6838,9 @@ async function carregarProdutividadeConcretagem() {
   setKpi("paKpiParadasAV", `${metricas.paradasAmarelas} / ${metricas.paradasVermelhas}`);
 
   renderizarAlertasOperacionais(metricas, meta);
+  renderizarVolumeTipoPorSetor(filteredRows);
   renderizarGraficosProdutividade(metricas, dStart, dEnd);
+  carregarDadosGlobaisDashboard(dEnd);
   renderizarTabelaParadas(metricas.paradasList);
   renderizarTabelaJornada(metricas.jornadaDiaria);
   renderizarTabelaDadosConcretagem(filteredRows);
