@@ -120,7 +120,7 @@ Total: 50 formas.
 ## 📊 SETOR 2 (Produção)
 
 ### Coluna Esquerda (`left`)
-Total: 43 formas.
+Total: 44 formas.
 
 | N Forma | Modelo Cadastrado |
 | :--- | :--- |
@@ -167,6 +167,7 @@ Total: 43 formas.
 | B-05 | 1 CX VL |
 | B-16 | 1 CX VL |
 | B-15 | 1 CX VL |
+| A-TOTEM | Totem Med. Indireta |
 
 ### Coluna Direita (`right`)
 Total: 40 formas.

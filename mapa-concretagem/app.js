@@ -351,7 +351,8 @@ const SETOR_2_LEFT_FORMS = [
   { forma: "B-14", modelo: "1 CX VL" },
   { forma: "B-05", modelo: "1 CX VL" },
   { forma: "B-16", modelo: "1 CX VL" },
-  { forma: "B-15", modelo: "1 CX VL" }
+  { forma: "B-15", modelo: "1 CX VL" },
+  { forma: "A-TOTEM", label: "TOTEM", modelo: "Totem Med. Indireta" }
 ];
 
 const SETOR_2_RIGHT_FORMS = [
@@ -3721,6 +3722,27 @@ function renderDashboardCharts() {
     }
   });
 
+  const montagemCache = db.montagemDashboardCache || [];
+  montagemCache.forEach((row) => {
+    if (!row.status_montagem) return;
+    const d = row.data_fabricacao || "";
+    if (!d) return;
+    const s = (row.status_montagem || "").toUpperCase();
+    if (!insByDate[d]) {
+      insByDate[d] = { A: 0, R: 0, RR: 0, total: 0 };
+    }
+    insByDate[d].total++;
+    if (s in insStatusTotal) {
+      insStatusTotal[s]++;
+      insByDate[d][s]++;
+    }
+    const motivo = row.motivo_recusa;
+    if (motivo) {
+      const code = motivo.toUpperCase();
+      ncCount[code] = (ncCount[code] || 0) + 1;
+    }
+  });
+
   // KPI for selected date or all
   let kpiProd = 0, kpiIns = 0, kpiA = 0, kpiR = 0, kpiRR = 0;
   if (selectedDate) {
@@ -3749,9 +3771,14 @@ function renderDashboardCharts() {
     S3: { A:0, R:0, RR:0, total:0 },
     S4: { A:0, R:0, RR:0, total:0 }
   };
-  const montagemCache = db.montagemDashboardCache || [];
-  montagemCache.forEach(ev => {
-    // Só conta se tiver sido finalizado/inspecionado
+  
+  const targetDate = selectedDate || todayYmd();
+  const montagemCacheFiltered = montagemCache.filter(ev => {
+    const day = (ev.finalizado_em || ev.updated_at || "").split("T")[0];
+    return day === targetDate;
+  });
+
+  montagemCacheFiltered.forEach(ev => {
     if (!ev.status_montagem && ev.etapa === "INICIO") return;
 
     const setor = (ev.setor || "").toLowerCase();
@@ -3778,8 +3805,7 @@ function renderDashboardCharts() {
 
   // Resumo de Postes Montados
   const resumoMontagem = {};
-  montagemCache.forEach(ev => {
-    // Só conta se não for apenas o INICIO sem finalizar a montagem
+  montagemCacheFiltered.forEach(ev => {
     if (!ev.status_montagem && ev.etapa === "INICIO") return;
 
     const mod = ev.modelo || "Desconhecido";
@@ -4044,14 +4070,12 @@ async function carregarDadosGlobaisDashboard() {
 
     let montagemRows = [];
     try {
-      const startOfDayISO = new Date(selectedDate + "T00:00:00-03:00").toISOString();
-      const endOfDayISO = new Date(selectedDate + "T23:59:59-03:00").toISOString();
+      const startOfRangeISO = new Date(startDateStr + "T00:00:00-03:00").toISOString();
       
       const { data: mRows, error: mError } = await supabaseClient
         .from('montagem_poste')
         .select('*')
-        .gte('updated_at', startOfDayISO)
-        .lte('updated_at', endOfDayISO);
+        .or(`data_fabricacao.gte.${startDateStr},updated_at.gte.${startOfRangeISO}`);
         
       if (!mError && mRows) montagemRows = mRows;
     } catch (e) {
@@ -5251,6 +5275,29 @@ function bindEvents() {
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
   });
+
+  // Close listeners for Visualizar Checklist Modal
+  const vcClose = document.getElementById("vcBtnCloseModal");
+  const vcOk = document.getElementById("vcBtnOk");
+  const vcModal = document.getElementById("visualizarChecklistModal");
+  if (vcClose) {
+    vcClose.addEventListener("click", () => {
+      vcModal.classList.remove("modal-visible");
+    });
+  }
+  if (vcOk) {
+    vcOk.addEventListener("click", () => {
+      vcModal.classList.remove("modal-visible");
+    });
+  }
+  if (vcModal) {
+    vcModal.addEventListener("click", (e) => {
+      if (e.target === vcModal) {
+        vcModal.classList.remove("modal-visible");
+      }
+    });
+  }
+
   el.hubRelatorio.addEventListener("click", () => {
     setMode("RELATORIO");
     if (!el.relData.value) el.relData.value = todayYmd();
@@ -6861,6 +6908,15 @@ const miLinhasPorPagina = 15;
 let miOrdenacaoColuna = "finalizado_em";
 let miOrdenacaoAsc = false;
 
+function formatarDuracao(ms) {
+  if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
+  const totalSecs = Math.floor(ms / 1000);
+  const mins = Math.floor(totalSecs / 60);
+  const secs = totalSecs % 60;
+  if (mins === 0) return `${secs}s`;
+  return `${mins}m ${secs}s`;
+}
+
 async function carregarMontagemIndicadores() {
   if (!supabaseClient) return;
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
@@ -6871,7 +6927,7 @@ async function carregarMontagemIndicadores() {
     const [montagemRes, producaoRes] = await Promise.all([
       supabaseClient
         .from("montagem_poste")
-        .select("setor, finalizado_em, status_montagem, montador_nome, forma_numero, modelo, data_fabricacao, inicio_inspecao_montagem")
+        .select("id, setor, finalizado_em, status_montagem, montador_nome, forma_numero, modelo, data_fabricacao, inicio_inspecao_montagem, checklists, observacoes_montagem, motivo_recusa")
         .order("finalizado_em", { ascending: false })
         .limit(5000),
       supabaseClient
@@ -6952,6 +7008,9 @@ function aplicarFiltrosEExibirMontagem() {
   const bySector = {};
   const byMontador = {};
   
+  const temposPorModelo = {}; // { modelo: { totalMs: 0, count: 0 } }
+  const temposPorMontador = {}; // { montador: { totalMs: 0, count: 0 } }
+
   miFilteredMontagemData.forEach(row => {
     const day = (row.finalizado_em || "").split("T")[0];
     if (row.status_montagem === "A") totalAprovados++;
@@ -6967,6 +7026,25 @@ function aplicarFiltrosEExibirMontagem() {
     
     const mon = row.montador_nome || "Desconhecido";
     byMontador[mon] = (byMontador[mon] || 0) + 1;
+
+    // Tempo de inspeção/montagem
+    if (row.finalizado_em && row.inicio_inspecao_montagem) {
+      const start = new Date(row.inicio_inspecao_montagem).getTime();
+      const end = new Date(row.finalizado_em).getTime();
+      const diff = end - start;
+      if (diff >= 0) {
+        // Por Modelo
+        const mod = row.modelo || "Desconhecido";
+        if (!temposPorModelo[mod]) temposPorModelo[mod] = { totalMs: 0, count: 0 };
+        temposPorModelo[mod].totalMs += diff;
+        temposPorModelo[mod].count++;
+
+        // Por Montador
+        if (!temposPorMontador[mon]) temposPorMontador[mon] = { totalMs: 0, count: 0 };
+        temposPorMontador[mon].totalMs += diff;
+        temposPorMontador[mon].count++;
+      }
+    }
   });
 
   // Atualizar KPIs
@@ -6974,9 +7052,63 @@ function aplicarFiltrosEExibirMontagem() {
   document.getElementById("miTotalAprovados").textContent = totalAprovados;
   document.getElementById("miTotalRecusados").textContent = totalRecusados;
 
+  // Renderizar tempos médios
+  const elTempoModelo = document.getElementById("miTempoMedioModelo");
+  if (elTempoModelo) {
+    const listModelos = Object.keys(temposPorModelo).map(key => {
+      const avg = temposPorModelo[key].totalMs / temposPorModelo[key].count;
+      return { key, avg, count: temposPorModelo[key].count };
+    }).sort((a, b) => b.avg - a.avg);
+
+    if (listModelos.length === 0) {
+      elTempoModelo.innerHTML = '<div class="muted" style="padding: 10px; text-align: center;">Nenhum dado de tempo disponível</div>';
+    } else {
+      elTempoModelo.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          ${listModelos.map(item => `
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #f1f5f9; font-size: 0.85rem;">
+              <span style="font-weight: 600; color: #1e293b;">${item.key}</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 0.75rem; color: #64748b;">(${item.count} itens)</span>
+                <span style="font-weight: bold; color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 6px;">${formatarDuracao(item.avg)}</span>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+  }
+
+  const elTempoMontador = document.getElementById("miTempoMontador");
+  if (elTempoMontador) {
+    const listMontadores = Object.keys(temposPorMontador).map(key => {
+      const avg = temposPorMontador[key].totalMs / temposPorMontador[key].count;
+      return { key, avg, count: temposPorMontador[key].count };
+    }).sort((a, b) => b.avg - a.avg);
+
+    if (listMontadores.length === 0) {
+      elTempoMontador.innerHTML = '<div class="muted" style="padding: 10px; text-align: center;">Nenhum dado de tempo disponível</div>';
+    } else {
+      elTempoMontador.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          ${listMontadores.map(item => `
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #f1f5f9; font-size: 0.85rem;">
+              <span style="font-weight: 600; color: #1e293b;">${item.key}</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 0.75rem; color: #64748b;">(${item.count} itens)</span>
+                <span style="font-weight: bold; color: #10b981; background: #ecfdf5; padding: 2px 8px; border-radius: 6px;">${formatarDuracao(item.avg)}</span>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+  }
+
   // Processar Comparativos (Produzidos vs Montados)
   const prodBySector = { "Setor 1": 0, "Setor 2": 0, "Setor 3": 0, "Setor 4": 0 };
   let prodGeral = 0;
+  const prodByDay = {};
   
   filteredProducao.forEach(row => {
     prodGeral++;
@@ -6984,9 +7116,16 @@ function aplicarFiltrosEExibirMontagem() {
     if (sec in prodBySector) {
       prodBySector[sec]++;
     }
+    const day = row.data_fabricacao;
+    if (day) {
+      prodByDay[day] = (prodByDay[day] || 0) + 1;
+    }
   });
 
   document.getElementById("miProdGeral").textContent = prodGeral;
+  const elTotalProduzido = document.getElementById("miTotalProduzido");
+  if (elTotalProduzido) elTotalProduzido.textContent = prodGeral;
+
   document.getElementById("miMontGeral").textContent = totalInspecionado;
   const pctGeral = prodGeral > 0 ? Math.round((totalInspecionado / prodGeral) * 100) : 0;
   document.getElementById("miPctGeral").textContent = pctGeral + "%";
@@ -7016,7 +7155,7 @@ function aplicarFiltrosEExibirMontagem() {
     }).join("");
   }
 
-  renderGraficosMontagem(byDay, bySector, byMontador);
+  renderGraficosMontagem(byDay, bySector, byMontador, prodByDay);
   renderizarTabelaMontagemPaginada();
   setSyncStatus("idle", "Indicadores atualizados.");
 }
@@ -7030,7 +7169,7 @@ function renderizarTabelaMontagemPaginada() {
   document.getElementById("miPaginacaoTotal").textContent = totalRegistros;
 
   if (totalRegistros === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
     document.getElementById("miPaginacaoDe").textContent = "0";
     document.getElementById("miPaginacaoA").textContent = "0";
     document.getElementById("miPaginacaoBotoes").innerHTML = "";
@@ -7048,6 +7187,9 @@ function renderizarTabelaMontagemPaginada() {
     if (col === "finalizado_em" || col === "inicio_inspecao_montagem" || col === "data_fabricacao") {
       valA = valA ? new Date(valA).getTime() : 0;
       valB = valB ? new Date(valB).getTime() : 0;
+    } else if (col === "tempo_inspecao") {
+      valA = a.finalizado_em && a.inicio_inspecao_montagem ? (new Date(a.finalizado_em) - new Date(a.inicio_inspecao_montagem)) : 0;
+      valB = b.finalizado_em && b.inicio_inspecao_montagem ? (new Date(b.finalizado_em) - new Date(b.inicio_inspecao_montagem)) : 0;
     } else {
       valA = String(valA).toLowerCase();
       valB = String(valB).toLowerCase();
@@ -7083,12 +7225,15 @@ function renderizarTabelaMontagemPaginada() {
 
     const inicio = formatTimeShort(row.inicio_inspecao_montagem);
     const fim = formatTimeShort(row.finalizado_em);
+
+    const durMs = row.finalizado_em && row.inicio_inspecao_montagem ? (new Date(row.finalizado_em) - new Date(row.inicio_inspecao_montagem)) : null;
+    const tempoText = formatarDuracao(durMs);
     
     let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
     if (row.status_montagem === "A") {
-      statusHtml = '<span style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem;">Aprovado</span>';
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
     } else if (row.status_montagem === "R" || row.status_montagem === "RR") {
-      statusHtml = '<span style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem;">Recusado</span>';
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Recusado</span>`;
     }
 
     return `
@@ -7099,6 +7244,7 @@ function renderizarTabelaMontagemPaginada() {
         <td style="padding: 10px; text-align: center;">${row.modelo || ""}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${inicio}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${fim}</td>
+        <td style="padding: 10px; text-align: center; font-size: 0.85rem; font-weight: 600;">${tempoText}</td>
         <td style="padding: 10px; text-align: center;">${statusHtml}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem;">${row.montador_nome || ""}</td>
       </tr>
@@ -7106,7 +7252,7 @@ function renderizarTabelaMontagemPaginada() {
   }).join("");
 
   // Atualizar Ícones de Ordenação
-  const colunas = ["data_fabricacao", "setor", "forma_numero", "modelo", "inicio_inspecao_montagem", "finalizado_em", "status_montagem", "montador_nome"];
+  const colunas = ["data_fabricacao", "setor", "forma_numero", "modelo", "inicio_inspecao_montagem", "finalizado_em", "tempo_inspecao", "status_montagem", "montador_nome"];
   colunas.forEach(c => {
     const elIcon = document.getElementById("sort_icon_" + c);
     if (elIcon) {
@@ -7170,16 +7316,24 @@ window.ordenarMiTabela = function(coluna) {
   renderizarTabelaMontagemPaginada();
 };
 
-function renderGraficosMontagem(byDay, bySector, byMontador) {
+function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   if (chartMiPorDiaInstance) chartMiPorDiaInstance.destroy();
   if (chartMiPorSetorInstance) chartMiPorSetorInstance.destroy();
   if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.destroy();
 
   // Por Dia
-  const dias = Object.keys(byDay).sort();
-  const dataDiaAprovados = dias.map(d => byDay[d].aprovados);
-  const dataDiaRecusados = dias.map(d => byDay[d].recusados);
-  const diasFormatados = dias.map(d => d !== "Desconhecido" ? d.split("-").reverse().join("/") : d);
+  const unionSet = new Set([
+    ...Object.keys(byDay),
+    ...Object.keys(prodByDay)
+  ]);
+  unionSet.delete("Desconhecido");
+  unionSet.delete("");
+  const dias = Array.from(unionSet).sort();
+
+  const dataDiaProduzidos = dias.map(d => prodByDay[d] || 0);
+  const dataDiaAprovados = dias.map(d => byDay[d]?.aprovados || 0);
+  const dataDiaRecusados = dias.map(d => byDay[d]?.recusados || 0);
+  const diasFormatados = dias.map(d => d.split("-").reverse().join("/"));
 
   const ctxDia = document.getElementById("chartMiPorDia")?.getContext("2d");
   if (ctxDia) {
@@ -7188,11 +7342,20 @@ function renderGraficosMontagem(byDay, bySector, byMontador) {
       data: {
         labels: diasFormatados,
         datasets: [
-          { label: "Aprovados", data: dataDiaAprovados, backgroundColor: "#10b981", stack: "Stack 0" },
-          { label: "Recusados", data: dataDiaRecusados, backgroundColor: "#ef4444", stack: "Stack 0" }
+          { label: "Produzidos", data: dataDiaProduzidos, backgroundColor: "#3b82f6", stack: "Stack 0" },
+          { label: "Aprovados", data: dataDiaAprovados, backgroundColor: "#10b981", stack: "Stack 1" },
+          { label: "Recusados", data: dataDiaRecusados, backgroundColor: "#ef4444", stack: "Stack 1" }
         ]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          x: { stacked: true },
+          y: { stacked: true, beginAtZero: true }
+        }
+      }
     });
   }
 
@@ -7226,3 +7389,125 @@ function renderGraficosMontagem(byDay, bySector, byMontador) {
     });
   }
 }
+
+window.abrirFotoVisualizacao = function(src) {
+  const w = window.open();
+  if (w) {
+    w.document.write(`<img src="${src}" style="max-width:100%; max-height:100vh; display:block; margin:auto;" />`);
+    w.document.close();
+  }
+};
+
+window.abrirVisualizacaoChecklist = function(id) {
+  const row = miRawMontagemData.find(r => String(r.id) === String(id));
+  if (!row) return;
+
+  const modal = document.getElementById("visualizarChecklistModal");
+  if (!modal) return;
+
+  document.getElementById("vcMetaForma").textContent = row.forma_numero || "-";
+  document.getElementById("vcMetaModelo").textContent = row.modelo || "-";
+  document.getElementById("vcMetaMontador").textContent = row.montador_nome || "-";
+  document.getElementById("vcMetaData").textContent = row.data_fabricacao ? row.data_fabricacao.split("-").reverse().join("/") : "-";
+
+  const formatTimeShort = (isoStr) => {
+    if (!isoStr) return "N/A";
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return isoStr;
+    return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + " (" + d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + ")";
+  };
+
+  document.getElementById("vcMetaInicio").textContent = formatTimeShort(row.inicio_inspecao_montagem);
+  document.getElementById("vcMetaFim").textContent = formatTimeShort(row.finalizado_em);
+
+  let statusText = "Em Andamento";
+  let statusColor = "#64748b";
+  if (row.status_montagem === "A") {
+    statusText = "Aprovado";
+    statusColor = "#16a34a";
+  } else if (row.status_montagem === "R" || row.status_montagem === "RR") {
+    statusText = "Recusado";
+    statusColor = "#dc2626";
+  }
+  const elStatus = document.getElementById("vcMetaStatus");
+  elStatus.textContent = statusText;
+  elStatus.style.color = statusColor;
+
+  // Render content
+  const container = document.getElementById("vcChecklistContent");
+  container.innerHTML = "";
+
+  const checklists = row.checklists || {};
+  const sections = getMontagemChecklistSections(row.modelo || "");
+
+  sections.forEach(section => {
+    const secDiv = document.createElement("div");
+    secDiv.style.marginBottom = "20px";
+    secDiv.innerHTML = `
+      <div style="font-weight: bold; background: #e2e8f0; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; color: #1e293b;">
+        ${section.titulo}
+      </div>
+    `;
+
+    const listDiv = document.createElement("div");
+    listDiv.style.display = "flex";
+    listDiv.style.flexDirection = "column";
+    listDiv.style.gap = "8px";
+
+    section.itens.forEach(item => {
+      const resp = checklists[section.id]?.[item.id] || "";
+      const photoBase64 = checklists[section.id]?.[item.id + "_photo"] || "";
+
+      let badge = '<span style="color: #64748b; font-weight: bold; background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">N/A</span>';
+      if (resp === "sim") {
+        badge = '<span style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">Aprovado</span>';
+      } else if (resp === "nao") {
+        badge = '<span style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem;">Reprovado</span>';
+      }
+
+      let imgHtml = "";
+      if (photoBase64) {
+        imgHtml = `
+          <div style="margin-top: 6px;">
+            <img src="${photoBase64}" style="max-width: 100px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="abrirFotoVisualizacao('${photoBase64}')" />
+          </div>
+        `;
+      }
+
+      const itemDiv = document.createElement("div");
+      itemDiv.style.display = "flex";
+      itemDiv.style.flexDirection = "column";
+      itemDiv.style.padding = "8px";
+      itemDiv.style.background = "#f8fafc";
+      itemDiv.style.borderRadius = "8px";
+      itemDiv.style.border = "1px solid #f1f5f9";
+      itemDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 500; font-size: 0.85rem;">
+            ${item.critico ? '<span style="color: #ef4444; margin-right: 4px;">🔴</span>' : ''}
+            ${item.texto}
+          </span>
+          ${badge}
+        </div>
+        ${imgHtml}
+      `;
+      listDiv.appendChild(itemDiv);
+    });
+
+    secDiv.appendChild(listDiv);
+    container.appendChild(secDiv);
+  });
+
+  // Obs
+  const obsContainer = document.getElementById("vcObsContainer");
+  const elObs = document.getElementById("vcObservacoes");
+  const obsVal = row.observacoes_montagem || row.motivo_recusa || "";
+  if (obsVal) {
+    elObs.textContent = obsVal;
+    obsContainer.style.display = "block";
+  } else {
+    obsContainer.style.display = "none";
+  }
+
+  modal.classList.add("modal-visible");
+};

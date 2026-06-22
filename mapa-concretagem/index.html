@@ -873,6 +873,10 @@
 
       <!-- KPIs -->
       <div class="db-kpi-row" style="margin-top:20px;">
+        <div class="db-kpi-card" style="border-left-color: #3b82f6;">
+          <span class="db-kpi-label">Total Produzido</span>
+          <span class="db-kpi-val" id="miTotalProduzido" style="color: #3b82f6;">—</span>
+        </div>
         <div class="db-kpi-card" style="border-left-color: #6366f1;">
           <span class="db-kpi-label">Total Inspecionado</span>
           <span class="db-kpi-val" id="miTotalInspecionado" style="color: #6366f1;">—</span>
@@ -967,6 +971,21 @@
         </div>
       </div>
 
+      <div class="db-charts-row-equal" style="margin-top: 24px;">
+        <div class="db-chart-card" style="display: flex; flex-direction: column;">
+          <div class="db-chart-title" style="margin-bottom: 12px; font-weight: 700; color: #1e293b;">Tempo Médio por Tipo de Poste</div>
+          <div id="miTempoMedioModelo" style="overflow-y: auto; max-height: 250px;">
+            <div class="muted" style="padding: 10px; text-align: center;">Carregando...</div>
+          </div>
+        </div>
+        <div class="db-chart-card" style="display: flex; flex-direction: column;">
+          <div class="db-chart-title" style="margin-bottom: 12px; font-weight: 700; color: #1e293b;">Tempo Médio por Operador</div>
+          <div id="miTempoMontador" style="overflow-y: auto; max-height: 250px;">
+            <div class="muted" style="padding: 10px; text-align: center;">Carregando...</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Tabela Detalhada de Montagem -->
       <div style="margin-top: 30px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
@@ -986,12 +1005,13 @@
                 <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th>
                 <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('inicio_inspecao_montagem')">Início Inspeção <span id="sort_icon_inicio_inspecao_montagem"></span></th>
                 <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('finalizado_em')">Fim Inspeção <span id="sort_icon_finalizado_em"></span></th>
+                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('tempo_inspecao')">Duração <span id="sort_icon_tempo_inspecao"></span></th>
                 <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th>
                 <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th>
               </tr>
             </thead>
             <tbody id="miTabelaBody">
-              <tr><td colspan="8" style="text-align: center; color: #64748b; padding: 20px;">Carregando dados...</td></tr>
+              <tr><td colspan="9" style="text-align: center; color: #64748b; padding: 20px;">Carregando dados...</td></tr>
             </tbody>
           </table>
         </div>
@@ -1295,6 +1315,41 @@
       <div class="modal-subtitle" id="concretoTipoSubtitle">Selecione uma opção</div>
       <div id="concretoTipoOptions" class="concreto-tipo-options"></div>
       <button class="btn btn-secondary modal-ok" id="concretoTipoCancelBtn" type="button">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Modal para Visualizar Checklist Completo (Read-only) -->
+  <div id="visualizarChecklistModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="vcModalTitle">
+    <div class="modal-box" style="max-width: 600px; max-height: 90vh; display: flex; flex-direction: column; padding: 24px; border-radius: 16px; overflow: hidden; text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0;">
+        <h2 id="vcModalTitle" style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #0f172a;">Detalhes da Inspeção</h2>
+        <button type="button" id="vcBtnCloseModal" style="background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #94a3b8; line-height: 1; padding: 0 4px; transition: color 0.2s;">&times;</button>
+      </div>
+      
+      <!-- Meta info: Forma, Modelo, Operador, Data -->
+      <div style="background: #f8fafc; border-radius: 10px; padding: 14px; margin-bottom: 16px; font-size: 0.85rem; color: #475569; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex-shrink: 0; border: 1px solid #e2e8f0;">
+        <div><strong>Forma:</strong> <span id="vcMetaForma">-</span></div>
+        <div><strong>Modelo:</strong> <span id="vcMetaModelo">-</span></div>
+        <div><strong>Montador:</strong> <span id="vcMetaMontador">-</span></div>
+        <div><strong>Data Prod.:</strong> <span id="vcMetaData">-</span></div>
+        <div><strong>Início:</strong> <span id="vcMetaInicio">-</span></div>
+        <div><strong>Fim:</strong> <span id="vcMetaFim">-</span></div>
+        <div style="grid-column: span 2;"><strong>Status:</strong> <span id="vcMetaStatus" style="font-weight: bold;">-</span></div>
+      </div>
+      
+      <!-- Conteúdo das Seções -->
+      <div id="vcChecklistContent" style="overflow-y: auto; flex-grow: 1; margin-bottom: 16px; padding-right: 4px; font-size: 0.9rem;">
+        <!-- Injetado via JS -->
+      </div>
+      
+      <!-- Observações e Recusa -->
+      <div id="vcObsContainer" style="background: #fef08a; border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 0.85rem; color: #713f12; flex-shrink: 0; border: 1px solid #fef08a; display: none;">
+        <strong>Observações/Motivo:</strong> <span id="vcObservacoes">-</span>
+      </div>
+      
+      <div style="display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; border-top: 1px solid #e2e8f0; padding-top: 12px;">
+        <button class="btn" id="vcBtnOk" type="button" style="padding: 8px 16px; font-weight: 700; width: 100px; background: #cbd5e1;">Fechar</button>
+      </div>
     </div>
   </div>
 
