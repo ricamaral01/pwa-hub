@@ -4622,6 +4622,21 @@ function formatRelatorioDuracao(ms) {
   return `${horas}h ${String(minutos).padStart(2, "0")}min`;
 }
 
+function calcularTempoTotalSemAlmoco(timestamps) {
+  if (timestamps.length < 2) return "-";
+  const sorted = [...timestamps].sort((a, b) => a - b);
+  let totalMs = sorted[sorted.length - 1] - sorted[0];
+
+  // Desconsidera intervalos de almoço/pausas (ex: diffMs >= 40 min (2400000 ms) e <= 2.5 horas (9000000 ms))
+  for (let i = 1; i < sorted.length; i++) {
+    const diffMs = sorted[i] - sorted[i - 1];
+    if (diffMs >= 2400000 && diffMs <= 9000000) {
+      totalMs -= diffMs;
+    }
+  }
+  return formatRelatorioDuracao(totalMs);
+}
+
 function renderRelatorioSetor({ data, setor, encarregado, rows }) {
   if (!el.relatorioSetorOutput) return;
   const normalizedRows = Array.isArray(rows) ? rows.slice() : [];
@@ -4639,9 +4654,7 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
     const timestamps = rowsOrdenadas
       .map((row) => new Date(getRelatorioTimestamp(row)).getTime())
       .filter((value) => Number.isFinite(value));
-    const tempoTotal = timestamps.length >= 2
-      ? formatRelatorioDuracao(Math.max(...timestamps) - Math.min(...timestamps))
-      : "-";
+    const tempoTotal = calcularTempoTotalSemAlmoco(timestamps);
 
     const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
       const modelo = getRelatorioModelo(row);
@@ -4732,9 +4745,7 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
           const sTimestamps = sRows
             .map((row) => new Date(getRelatorioTimestamp(row)).getTime())
             .filter((value) => Number.isFinite(value));
-          const sTempoTotal = sTimestamps.length >= 2
-            ? formatRelatorioDuracao(Math.max(...sTimestamps) - Math.min(...sTimestamps))
-            : "-";
+          const sTempoTotal = calcularTempoTotalSemAlmoco(sTimestamps);
 
           const sResumoPorPoste = sRows.reduce((acc, row) => {
             const modelo = getRelatorioModelo(row);
@@ -4824,9 +4835,7 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
     const timestamps = rowsOrdenadas
       .map((row) => new Date(getRelatorioTimestamp(row)).getTime())
       .filter((value) => Number.isFinite(value));
-    const tempoTotal = timestamps.length >= 2
-      ? formatRelatorioDuracao(Math.max(...timestamps) - Math.min(...timestamps))
-      : "-";
+    const tempoTotal = calcularTempoTotalSemAlmoco(timestamps);
     const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
       const modelo = getRelatorioModelo(row);
       acc[modelo] = (acc[modelo] || 0) + 1;
