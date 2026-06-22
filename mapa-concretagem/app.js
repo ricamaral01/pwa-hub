@@ -3559,13 +3559,35 @@ async function saveInspecao() {
         etapa: "INSPECAO",
         inicioInspecaoMontagem: state.insInicioLocal || nowIso(),
         finalizadoEm: nowIso(),
-        checklists: { global_photos: state.insPhotos.map(p => p.data || p.url || "") },
+        checklists: { global_photos: [] },
         observacoesMontagem: observacaoGlobal,
         montadorNome: colaborador
       };
 
       const apiResult = await postToMontagemApi("salvar_montagem_poste", montagemPayload);
       const isSynced = apiResult && apiResult.ok;
+
+      // Enviar fotos para a VPS via API Storage
+      const backendUrl = "http://localhost:5000/api";
+      if (state.insPhotosRawFiles && state.insPhotosRawFiles.length > 0) {
+        for (const file of state.insPhotosRawFiles) {
+          const formData = new FormData();
+          formData.append("foto", file);
+          formData.append("usuario", colaborador || "sistema");
+          try {
+            const uploadRes = await fetch(`${backendUrl}/inspecoes/${recordId}/fotos`, {
+              method: "POST",
+              body: formData
+            });
+            if (!uploadRes.ok) {
+              const errData = await uploadRes.json();
+              console.error("Erro ao enviar foto para VPS:", errData.error);
+            }
+          } catch (uploadErr) {
+            console.error("Falha de rede ao conectar à API de Storage:", uploadErr);
+          }
+        }
+      }
 
       // 2. Eventos e logs locais para compatibilidade de visualização
       let record = db.records.find((item) => item.id === recordId);
@@ -3644,6 +3666,7 @@ async function saveInspecao() {
     setSubmitLock("inspecao", lockToken);
 
     state.insPhotos = [];
+    state.insPhotosRawFiles = [];
     el.insObs.value = "";
     el.insFotos.value = "";
     renderPhotoPreview(el.insFotosPreview, state.insPhotos);
@@ -5260,7 +5283,38 @@ function bindEvents() {
   el.hubMontagemIndicadores?.addEventListener("click", () => {
     setMode("MONTAGEM_INDICADORES");
   });
+
+  // Configuração do Drawer de Filtros e Abas do Dashboard Montagem
+  document.getElementById("miBtnToggleFiltros")?.addEventListener("click", () => {
+    setMontagemDrawerOpen(true);
+  });
+  document.getElementById("miBtnFecharFiltros")?.addEventListener("click", () => {
+    setMontagemDrawerOpen(false);
+  });
+  document.getElementById("miFiltrosDrawer")?.addEventListener("click", (ev) => {
+    if (ev.target?.id === "miFiltrosDrawer") setMontagemDrawerOpen(false);
+  });
+  document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
+    const miDataInicio = document.getElementById("miDataInicio");
+    const miDataFim = document.getElementById("miDataFim");
+    if (miDataInicio) miDataInicio.value = todayYmd();
+    if (miDataFim) miDataFim.value = todayYmd();
+    
+    const fSetor = document.getElementById("miFiltroSetor");
+    if (fSetor) fSetor.value = "";
+    const fStatus = document.getElementById("miFiltroStatus");
+    if (fStatus) fStatus.value = "";
+    const fPesquisa = document.getElementById("miFiltroPesquisa");
+    if (fPesquisa) fPesquisa.value = "";
+
+    miPaginaAtual = 1;
+    aplicarFiltrosEExibirMontagem();
+  });
+  document.getElementById("miBtnAtualizar")?.addEventListener("click", () => {
+    carregarMontagemIndicadores();
+  });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
+    setMontagemDrawerOpen(false);
     carregarMontagemIndicadores();
   });
   document.getElementById("miFiltroSetor")?.addEventListener("change", () => {
@@ -5274,6 +5328,30 @@ function bindEvents() {
   document.getElementById("miFiltroPesquisa")?.addEventListener("input", () => {
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
+  });
+
+  // Troca de Abas do Dashboard
+  document.querySelectorAll(".mi-tab-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const targetTab = e.currentTarget.dataset.tab;
+      miAbaAtiva = targetTab || "resumo";
+
+      document.querySelectorAll(".mi-tab-btn").forEach(b => b.classList.remove("active"));
+      e.currentTarget.classList.add("active");
+
+      document.querySelectorAll(".mi-tab-section").forEach(s => s.classList.remove("active"));
+      const sectionId = "miSecao" + targetTab.charAt(0).toUpperCase() + targetTab.slice(1);
+      document.getElementById(sectionId)?.classList.add("active");
+
+      if (miUltimosGraficos) {
+        renderGraficosMontagem(
+          miUltimosGraficos.byDay,
+          miUltimosGraficos.bySector,
+          miUltimosGraficos.byMontador,
+          miUltimosGraficos.prodByDay
+        );
+      }
+    });
   });
 
   // Close listeners for Visualizar Checklist Modal
@@ -5602,6 +5680,8 @@ function bindEvents() {
 
   el.insFotos.addEventListener("change", async (event) => {
     clearSubmitLock("inspecao");
+    const files = Array.from(event.target.files || []);
+    state.insPhotosRawFiles = (state.insPhotosRawFiles || []).concat(files);
     const photos = await filesToCompressedDataUrls(event.target.files);
     state.insPhotos = state.insPhotos.concat(photos);
     renderPhotoPreview(el.insFotosPreview, state.insPhotos);
@@ -6907,6 +6987,8 @@ let miPaginaAtual = 1;
 const miLinhasPorPagina = 15;
 let miOrdenacaoColuna = "finalizado_em";
 let miOrdenacaoAsc = false;
+let miAbaAtiva = "resumo";
+let miUltimosGraficos = null;
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -6915,6 +6997,38 @@ function formatarDuracao(ms) {
   const secs = totalSecs % 60;
   if (mins === 0) return `${secs}s`;
   return `${mins}m ${secs}s`;
+}
+
+function atualizarResumoFiltrosMontagem() {
+  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  const setor = document.getElementById("miFiltroSetor")?.value || "Todos os setores";
+  const status = document.getElementById("miFiltroStatus")?.value || "Todos os status";
+  const resumo = document.getElementById("miFiltroResumo");
+  if (!resumo) return;
+  const fmt = (d) => d ? d.split("-").reverse().join("/") : "-";
+  const periodo = dStart === dEnd ? fmt(dStart) : `${fmt(dStart)} a ${fmt(dEnd)}`;
+  resumo.textContent = `${periodo} - ${setor} - ${status}`;
+}
+
+function setMontagemDrawerOpen(open) {
+  const drawer = document.getElementById("miFiltrosDrawer");
+  if (!drawer) return;
+  drawer.classList.toggle("hidden", !open);
+  drawer.setAttribute("aria-hidden", open ? "false" : "true");
+}
+
+function getMiStatusMeta(status) {
+  if (status === "A") return { label: "Aprovado", className: "mi-status-a" };
+  if (status === "RR") return { label: "Retrabalhado", className: "mi-status-rr" };
+  if (status === "R") return { label: "Reprovado", className: "mi-status-r" };
+  return { label: "Em andamento", className: "mi-status-open" };
+}
+
+function miStatusButton(row) {
+  const meta = getMiStatusMeta(row.status_montagem);
+  const id = escapeHtml(row.id);
+  return `<button type="button" class="mi-status-pill ${meta.className}" onclick="abrirVisualizacaoChecklist('${id}')">${meta.label}</button>`;
 }
 
 async function carregarMontagemIndicadores() {
@@ -6959,6 +7073,7 @@ function aplicarFiltrosEExibirMontagem() {
   const fSetor = document.getElementById("miFiltroSetor")?.value || "";
   const fStatus = document.getElementById("miFiltroStatus")?.value || "";
   const fPesquisa = (document.getElementById("miFiltroPesquisa")?.value || "").trim().toLowerCase();
+  atualizarResumoFiltrosMontagem();
 
   // 1. Filtrar dados de Montagem em memória
   miFilteredMontagemData = miRawMontagemData.filter(row => {
@@ -6974,8 +7089,7 @@ function aplicarFiltrosEExibirMontagem() {
 
     // Filtro por Status
     if (fStatus) {
-      if (fStatus === "A" && row.status_montagem !== "A") return false;
-      if (fStatus === "R" && row.status_montagem !== "R" && row.status_montagem !== "RR") return false;
+      if (row.status_montagem !== fStatus) return false;
     }
 
     // Filtro por Pesquisa de Texto
@@ -7047,10 +7161,6 @@ function aplicarFiltrosEExibirMontagem() {
     }
   });
 
-  // Atualizar KPIs
-  document.getElementById("miTotalInspecionado").textContent = totalInspecionado;
-  document.getElementById("miTotalAprovados").textContent = totalAprovados;
-  document.getElementById("miTotalRecusados").textContent = totalRecusados;
 
   // Renderizar tempos médios
   const elTempoModelo = document.getElementById("miTempoMedioModelo");
@@ -7127,10 +7237,25 @@ function aplicarFiltrosEExibirMontagem() {
   if (elTotalProduzido) elTotalProduzido.textContent = prodGeral;
 
   document.getElementById("miMontGeral").textContent = totalInspecionado;
+  const elTotalInspecionado = document.getElementById("miTotalInspecionado");
+  if (elTotalInspecionado) elTotalInspecionado.textContent = totalInspecionado;
+
   const pctGeral = prodGeral > 0 ? Math.round((totalInspecionado / prodGeral) * 100) : 0;
   document.getElementById("miPctGeral").textContent = pctGeral + "%";
+  const elAtingimentoPct = document.getElementById("miAtingimentoPct");
+  if (elAtingimentoPct) elAtingimentoPct.textContent = pctGeral + "%";
+
   const barGeral = document.getElementById("miBarGeral");
   if (barGeral) barGeral.style.width = Math.min(pctGeral, 100) + "%";
+
+  const elProducaoDia = document.getElementById("miProducaoDia");
+  const todayStr = todayYmd();
+  const prodDia = miRawProducaoData.filter(row => {
+    if (row.data_fabricacao !== todayStr) return false;
+    if (fSetor && row.setor !== fSetor) return false;
+    return true;
+  }).length;
+  if (elProducaoDia) elProducaoDia.textContent = prodDia;
 
   // Detalhamento por Setor
   const sectors = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
@@ -7170,6 +7295,8 @@ function renderizarTabelaMontagemPaginada() {
 
   if (totalRegistros === 0) {
     tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
+    const cardsContainer = document.getElementById("miCardsContainer");
+    if (cardsContainer) cardsContainer.innerHTML = '<div style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</div>';
     document.getElementById("miPaginacaoDe").textContent = "0";
     document.getElementById("miPaginacaoA").textContent = "0";
     document.getElementById("miPaginacaoBotoes").innerHTML = "";
@@ -7212,15 +7339,15 @@ function renderizarTabelaMontagemPaginada() {
   document.getElementById("miPaginacaoDe").textContent = inicioIdx + 1;
   document.getElementById("miPaginacaoA").textContent = fimIdx;
 
-  // Renderizar Linhas
+  // Renderizar Linhas (Tabela - Desktop)
   tbody.innerHTML = paginaDados.map(row => {
-    const dataFab = row.data_fabricacao ? row.data_fabricacao.split("-").reverse().join("/") : "N/A";
+    const dataFab = row.data_fabricacao ? row.data_fabricacao.split("T")[0].split("-").reverse().join("/") : "N/A";
     
     const formatTimeShort = (isoStr) => {
       if (!isoStr) return "N/A";
       const d = new Date(isoStr);
       if (isNaN(d.getTime())) return isoStr;
-      return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + " (" + d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + ")";
+      return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
     };
 
     const inicio = formatTimeShort(row.inicio_inspecao_montagem);
@@ -7232,8 +7359,10 @@ function renderizarTabelaMontagemPaginada() {
     let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
     if (row.status_montagem === "A") {
       statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
-    } else if (row.status_montagem === "R" || row.status_montagem === "RR") {
-      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Recusado</span>`;
+    } else if (row.status_montagem === "RR") {
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Retrabalhado</span>`;
+    } else if (row.status_montagem === "R") {
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
     }
 
     return `
@@ -7250,6 +7379,51 @@ function renderizarTabelaMontagemPaginada() {
       </tr>
     `;
   }).join("");
+
+  // Renderizar Cards (Mobile)
+  const cardsContainer = document.getElementById("miCardsContainer");
+  if (cardsContainer) {
+    cardsContainer.innerHTML = paginaDados.map(row => {
+      const dataFab = row.data_fabricacao ? row.data_fabricacao.split("T")[0].split("-").reverse().join("/") : "N/A";
+      
+      const formatTimeShort = (isoStr) => {
+        if (!isoStr) return "N/A";
+        const d = new Date(isoStr);
+        if (isNaN(d.getTime())) return isoStr;
+        return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      };
+
+      const inicio = formatTimeShort(row.inicio_inspecao_montagem);
+      const fim = formatTimeShort(row.finalizado_em);
+
+      const durMs = row.finalizado_em && row.inicio_inspecao_montagem ? (new Date(row.finalizado_em) - new Date(row.inicio_inspecao_montagem)) : null;
+      const tempoText = formatarDuracao(durMs);
+      
+      let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
+      if (row.status_montagem === "A") {
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
+      } else if (row.status_montagem === "RR") {
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Retrabalhado</span>`;
+      } else if (row.status_montagem === "R") {
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
+      }
+
+      return `
+        <div class="mi-mobile-card">
+          <div class="mi-mobile-card-header">
+            <div><strong>Forma ${row.forma_numero || ""}</strong> (${row.setor || ""}) - <span style="color:#64748b; font-weight:600;">${row.modelo || ""}</span></div>
+            <div>${statusHtml}</div>
+          </div>
+          <div class="mi-mobile-card-body">
+            <div><strong>Data Prod:</strong> ${dataFab}</div>
+            <div><strong>Duração:</strong> ${tempoText}</div>
+            <div><strong>Período:</strong> ${inicio} - ${fim}</div>
+            <div><strong>Montador:</strong> ${row.montador_nome || ""}</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
 
   // Atualizar Ícones de Ordenação
   const colunas = ["data_fabricacao", "setor", "forma_numero", "modelo", "inicio_inspecao_montagem", "finalizado_em", "tempo_inspecao", "status_montagem", "montador_nome"];
@@ -7317,9 +7491,25 @@ window.ordenarMiTabela = function(coluna) {
 };
 
 function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
-  if (chartMiPorDiaInstance) chartMiPorDiaInstance.destroy();
-  if (chartMiPorSetorInstance) chartMiPorSetorInstance.destroy();
-  if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.destroy();
+  miUltimosGraficos = { byDay, bySector, byMontador, prodByDay };
+  const shouldRenderProducao = miAbaAtiva === "producao";
+  const shouldRenderQualidade = miAbaAtiva === "qualidade";
+  if (!shouldRenderProducao && chartMiPorDiaInstance) {
+    chartMiPorDiaInstance.destroy();
+    chartMiPorDiaInstance = null;
+  }
+  if (!shouldRenderQualidade && chartMiPorSetorInstance) {
+    chartMiPorSetorInstance.destroy();
+    chartMiPorSetorInstance = null;
+  }
+  if (!shouldRenderQualidade && chartMiPorMontadorInstance) {
+    chartMiPorMontadorInstance.destroy();
+    chartMiPorMontadorInstance = null;
+  }
+
+  const isMobile = window.innerWidth < 768;
+  const labelFontSize = isMobile ? 9 : 12;
+  const legendBoxWidth = isMobile ? 8 : 12;
 
   // Por Dia
   const unionSet = new Set([
@@ -7336,7 +7526,8 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   const diasFormatados = dias.map(d => d.split("-").reverse().join("/"));
 
   const ctxDia = document.getElementById("chartMiPorDia")?.getContext("2d");
-  if (ctxDia) {
+  if (ctxDia && shouldRenderProducao) {
+    if (chartMiPorDiaInstance) chartMiPorDiaInstance.destroy();
     chartMiPorDiaInstance = new Chart(ctxDia, {
       type: "bar",
       data: {
@@ -7350,10 +7541,34 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
       options: { 
         responsive: true, 
         maintainAspectRatio: false, 
-        plugins: { legend: { position: 'bottom' } },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
+        plugins: { 
+          legend: { 
+            position: 'bottom',
+            labels: {
+              boxWidth: legendBoxWidth,
+              font: { size: labelFontSize }
+            }
+          } 
+        },
         scales: {
-          x: { stacked: true },
-          y: { stacked: true, beginAtZero: true }
+          x: { 
+            stacked: true,
+            ticks: {
+              font: { size: labelFontSize },
+              maxRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: isMobile ? 4 : 10
+            }
+          },
+          y: { 
+            stacked: true, 
+            beginAtZero: true,
+            ticks: { font: { size: labelFontSize } }
+          }
         }
       }
     });
@@ -7363,14 +7578,27 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   const setores = Object.keys(bySector).sort();
   const dataSetor = setores.map(s => bySector[s]);
   const ctxSetor = document.getElementById("chartMiPorSetor")?.getContext("2d");
-  if (ctxSetor) {
+  if (ctxSetor && shouldRenderQualidade) {
+    if (chartMiPorSetorInstance) chartMiPorSetorInstance.destroy();
     chartMiPorSetorInstance = new Chart(ctxSetor, {
       type: "doughnut",
       data: {
         labels: setores,
         datasets: [{ data: dataSetor, backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#8b5cf6", "#64748b"] }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { 
+            position: 'bottom',
+            labels: {
+              boxWidth: legendBoxWidth,
+              font: { size: labelFontSize }
+            }
+          } 
+        } 
+      }
     });
   }
 
@@ -7378,14 +7606,30 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   const montadores = Object.keys(byMontador).sort((a,b) => byMontador[b] - byMontador[a]);
   const dataMontador = montadores.map(m => byMontador[m]);
   const ctxMontador = document.getElementById("chartMiPorMontador")?.getContext("2d");
-  if (ctxMontador) {
+  if (ctxMontador && shouldRenderQualidade) {
+    if (chartMiPorMontadorInstance) chartMiPorMontadorInstance.destroy();
     chartMiPorMontadorInstance = new Chart(ctxMontador, {
       type: "bar",
       data: {
         labels: montadores,
         datasets: [{ label: "Postes Inspecionados", data: dataMontador, backgroundColor: "#6366f1" }]
       },
-      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      options: { 
+        indexAxis: 'y', 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        interaction: {
+          intersect: false,
+          mode: 'nearest'
+        },
+        plugins: { 
+          legend: { display: false } 
+        },
+        scales: {
+          x: { ticks: { font: { size: labelFontSize } } },
+          y: { ticks: { font: { size: labelFontSize } } }
+        }
+      }
     });
   }
 }
@@ -7408,13 +7652,13 @@ window.abrirVisualizacaoChecklist = function(id) {
   document.getElementById("vcMetaForma").textContent = row.forma_numero || "-";
   document.getElementById("vcMetaModelo").textContent = row.modelo || "-";
   document.getElementById("vcMetaMontador").textContent = row.montador_nome || "-";
-  document.getElementById("vcMetaData").textContent = row.data_fabricacao ? row.data_fabricacao.split("-").reverse().join("/") : "-";
+  document.getElementById("vcMetaData").textContent = row.data_fabricacao ? row.data_fabricacao.split("T")[0].split("-").reverse().join("/") : "-";
 
   const formatTimeShort = (isoStr) => {
     if (!isoStr) return "N/A";
     const d = new Date(isoStr);
     if (isNaN(d.getTime())) return isoStr;
-    return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + " (" + d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + ")";
+    return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
   };
 
   document.getElementById("vcMetaInicio").textContent = formatTimeShort(row.inicio_inspecao_montagem);
@@ -7425,8 +7669,11 @@ window.abrirVisualizacaoChecklist = function(id) {
   if (row.status_montagem === "A") {
     statusText = "Aprovado";
     statusColor = "#16a34a";
-  } else if (row.status_montagem === "R" || row.status_montagem === "RR") {
-    statusText = "Recusado";
+  } else if (row.status_montagem === "RR") {
+    statusText = "Reprovado e Retrabalhado";
+    statusColor = "#d97706";
+  } else if (row.status_montagem === "R") {
+    statusText = "Reprovado";
     statusColor = "#dc2626";
   }
   const elStatus = document.getElementById("vcMetaStatus");
@@ -7501,6 +7748,46 @@ window.abrirVisualizacaoChecklist = function(id) {
     container.appendChild(secDiv);
   });
 
+  // Render global photos (fotos de recusa da VPS Storage)
+  const photosContainer = document.createElement("div");
+  photosContainer.id = "vcVpsPhotosContainer";
+  container.appendChild(photosContainer);
+
+  const backendUrl = "http://localhost:5000/api";
+  fetch(`${backendUrl}/inspecoes/${row.id}/fotos`)
+    .then(res => res.json())
+    .then(resData => {
+      if (resData.success && resData.data && resData.data.length > 0) {
+        const globalDiv = document.createElement("div");
+        globalDiv.style.marginTop = "20px";
+        globalDiv.style.marginBottom = "20px";
+        globalDiv.innerHTML = `
+          <div style="font-weight: bold; background: #fee2e2; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px; color: #dc2626;">
+            Fotos da Inspeção / Recusa (VPS Storage)
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;">
+            ${resData.data.map((photo, index) => `
+              <div style="display: flex; flex-direction: column; gap: 8px; padding: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; align-items: center;" id="photo-card-${photo.id}">
+                <img src="${photo.url}" style="max-width: 100%; max-height: 150px; border-radius: 6px; cursor: pointer; object-fit: cover;" onclick="abrirFotoVisualizacao('${photo.url}')" title="Clique para ampliar" />
+                <div style="display: flex; gap: 6px; width: 100%;">
+                  <a href="${photo.url}" download="${photo.arquivo_nome}" class="btn" style="padding: 6px 10px; font-size: 0.75rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; justify-content: center; box-sizing: border-box;">
+                    📥 Baixar
+                  </a>
+                  <button onclick="excluirFotoVps('${photo.id}')" class="btn" style="padding: 6px 10px; font-size: 0.75rem; background: #dc2626; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                    🗑️ Excluir
+                  </button>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        photosContainer.appendChild(globalDiv);
+      }
+    })
+    .catch(err => {
+      console.error("Erro ao carregar fotos do Storage VPS:", err);
+    });
+
   // Obs
   const obsContainer = document.getElementById("vcObsContainer");
   const elObs = document.getElementById("vcObservacoes");
@@ -7513,4 +7800,25 @@ window.abrirVisualizacaoChecklist = function(id) {
   }
 
   modal.classList.add("modal-visible");
+};
+
+window.excluirFotoVps = async function(photoId) {
+  if (!confirm("Tem certeza que deseja excluir esta foto da VPS e do banco de dados?")) return;
+  const backendUrl = "http://localhost:5000/api";
+  const user = state.authUser?.name || "sistema";
+  try {
+    const res = await fetch(`${backendUrl}/fotos/${photoId}?usuario=${encodeURIComponent(user)}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data.success) {
+      showMsgBox("Foto excluída com sucesso.", "success");
+      const card = document.getElementById(`photo-card-${photoId}`);
+      if (card) card.remove();
+    } else {
+      showMsgBox("Erro ao excluir foto: " + data.error, "error");
+    }
+  } catch (err) {
+    showMsgBox("Falha de rede ao conectar à API de Storage.", "error");
+  }
 };

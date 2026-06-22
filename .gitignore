@@ -1,2 +1,6 @@
 
 pwa-liberacao-inspecao/
+.env
+node_modules/
+mapa-concretagem/node_modules/
+mapa-concretagem/.env

@@ -828,204 +828,65 @@
       </div>
     </section>
 
-    <!-- NOVA ABA: MONTAGEM INDICADORES -->
+    <!-- Dashboard Montagem -->
     <section id="viewMontagemIndicadores" class="card hidden">
-      <div class="section-title-row">
-        <h2>Dashboard montagem</h2>
-      </div>
-      
-      <!-- Filtros de Data e Busca -->
-      <div class="form-row" style="margin-top: 15px; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end;">
-        <div style="display: flex; flex-direction: column; flex: 1; min-width: 120px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Data Início</label>
-          <input type="date" id="miDataInicio" class="input-field" style="width: 100%; box-sizing: border-box;" />
+      <div class="mi-topbar">
+        <div>
+          <h2>Dashboard Montagem</h2>
+          <p id="miFiltroResumo">Hoje - Todos os setores</p>
         </div>
-        <div style="display: flex; flex-direction: column; flex: 1; min-width: 120px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Data Fim</label>
-          <input type="date" id="miDataFim" class="input-field" style="width: 100%; box-sizing: border-box;" />
-        </div>
-        <div style="display: flex; flex-direction: column; flex: 1; min-width: 130px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Setor</label>
-          <select id="miFiltroSetor" class="input-field" style="width: 100%; box-sizing: border-box;">
-            <option value="">Todos os Setores</option>
-            <option value="Setor 1">Setor 1</option>
-            <option value="Setor 2">Setor 2</option>
-            <option value="Setor 3">Setor 3</option>
-            <option value="Setor 4">Setor 4</option>
-          </select>
-        </div>
-        <div style="display: flex; flex-direction: column; flex: 1; min-width: 130px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Status</label>
-          <select id="miFiltroStatus" class="input-field" style="width: 100%; box-sizing: border-box;">
-            <option value="">Todos os Status</option>
-            <option value="A">Aprovado</option>
-            <option value="R">Recusado</option>
-          </select>
-        </div>
-        <div style="display: flex; flex-direction: column; flex: 2; min-width: 180px;">
-          <label style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">Pesquisar (Forma, Modelo, Montador)</label>
-          <input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Ex: AE-01, 4 CXS, Rafael..." style="width: 100%; box-sizing: border-box;" />
-        </div>
-        <div style="display: flex; align-items: flex-end; width: auto;">
-          <button id="miBtnFiltrar" class="btn btn-primary" type="button" style="padding: 10px 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; justify-content: center; height: 38px;">🔍 Filtrar</button>
+        <div class="mi-topbar-actions">
+          <button id="miBtnToggleFiltros" class="mi-icon-btn" type="button" aria-label="Abrir filtros">Filtros</button>
+          <button id="miBtnAtualizar" class="mi-icon-btn mi-icon-btn-primary" type="button" aria-label="Atualizar dashboard">Atualizar</button>
         </div>
       </div>
 
-      <!-- KPIs -->
-      <div class="db-kpi-row" style="margin-top:20px;">
-        <div class="db-kpi-card" style="border-left-color: #3b82f6;">
-          <span class="db-kpi-label">Total Produzido</span>
-          <span class="db-kpi-val" id="miTotalProduzido" style="color: #3b82f6;">—</span>
-        </div>
-        <div class="db-kpi-card" style="border-left-color: #6366f1;">
-          <span class="db-kpi-label">Total Inspecionado</span>
-          <span class="db-kpi-val" id="miTotalInspecionado" style="color: #6366f1;">—</span>
-        </div>
-        <div class="db-kpi-card" style="border-left-color: #10b981;">
-          <span class="db-kpi-label">Aprovados</span>
-          <span class="db-kpi-val" id="miTotalAprovados" style="color: #10b981;">—</span>
-        </div>
-        <div class="db-kpi-card" style="border-left-color: #ef4444;">
-          <span class="db-kpi-label">Recusados</span>
-          <span class="db-kpi-val" id="miTotalRecusados" style="color: #ef4444;">—</span>
-        </div>
-      </div>
-
-      <!-- Comparativo Produzidos vs Montados -->
-      <div style="margin-top: 24px; font-weight: 700; font-size: 1.1rem; color: #1e293b;">
-        Comparativo: Produzidos vs Montados
-      </div>
-      <div class="db-charts-row-equal" style="margin-top: 12px; gap: 20px;">
-        <!-- Card Geral -->
-        <div class="db-chart-card" style="padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div class="db-chart-title" style="margin-bottom: 12px;">Geral (Todos os Setores)</div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
-              <span>Produzidos: <strong id="miProdGeral">—</strong></span>
-              <span>Montados: <strong id="miMontGeral">—</strong></span>
-            </div>
-            <div style="background: #e2e8f0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 8px;">
-              <div id="miBarGeral" style="background: #3b82f6; width: 0%; height: 100%; transition: width 0.5s ease-in-out;"></div>
-            </div>
+      <div id="miFiltrosDrawer" class="mi-drawer-overlay hidden" aria-hidden="true">
+        <div class="mi-drawer-content" role="dialog" aria-modal="true" aria-labelledby="miDrawerTitle">
+          <div class="mi-drawer-header">
+            <h3 id="miDrawerTitle">Filtros</h3>
+            <button id="miBtnFecharFiltros" class="mi-drawer-close-btn" type="button" aria-label="Fechar filtros">&times;</button>
           </div>
-          <div style="text-align: right; font-size: 1.5rem; font-weight: bold; color: #1e40af;" id="miPctGeral">—%</div>
-        </div>
-
-        <!-- Card por Setor -->
-        <div class="db-chart-card" style="padding: 18px;">
-          <div class="db-chart-title" style="margin-bottom: 12px;">Detalhamento por Setor</div>
-          <div id="miSetoresContainer" style="display: flex; flex-direction: column; gap: 12px;">
-            <!-- Renderizado via JS -->
+          <div class="mi-drawer-body">
+            <div class="mi-drawer-field"><label for="miDataInicio">Data inicio</label><input type="date" id="miDataInicio" class="input-field" /></div>
+            <div class="mi-drawer-field"><label for="miDataFim">Data fim</label><input type="date" id="miDataFim" class="input-field" /></div>
+            <div class="mi-drawer-field"><label for="miFiltroSetor">Setor</label><select id="miFiltroSetor" class="input-field"><option value="">Todos os Setores</option><option value="Setor 1">Setor 1</option><option value="Setor 2">Setor 2</option><option value="Setor 3">Setor 3</option><option value="Setor 4">Setor 4</option></select></div>
+            <div class="mi-drawer-field"><label for="miFiltroStatus">Status</label><select id="miFiltroStatus" class="input-field"><option value="">Todos os Status</option><option value="A">Aprovado</option><option value="R">Reprovado</option><option value="RR">Reprovado e Retrabalhado</option></select></div>
+            <div class="mi-drawer-field"><label for="miFiltroPesquisa">Pesquisar</label><input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Forma, modelo ou montador" /></div>
           </div>
+          <div class="mi-drawer-footer"><button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn">Limpar</button><button id="miBtnFiltrar" type="button" class="mi-primary-btn">Aplicar filtros</button></div>
         </div>
       </div>
 
-      <!-- Estilos Customizados para Responsividade e Tabela -->
-      <style>
-        #viewMontagemIndicadores .btn-primary {
-          background: #2563eb;
-          color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background 0.2s;
-        }
-        #viewMontagemIndicadores .btn-primary:hover {
-          background: #1d4ed8;
-        }
-        #viewMontagemIndicadores .sheet-table th {
-          background-color: #f1f5f9;
-          color: #475569;
-          font-weight: 600;
-          font-size: 0.85rem;
-          border-bottom: 2px solid #cbd5e1;
-        }
-        #viewMontagemIndicadores .sheet-table td {
-          border-bottom: 1px solid #e2e8f0;
-          font-size: 0.85rem;
-        }
-        @media (max-width: 1024px) {
-          #viewMontagemIndicadores .db-charts-row-equal,
-          #viewMontagemIndicadores .db-charts-row {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      </style>
+      <div class="mi-tabs-bar" role="tablist" aria-label="Secoes do dashboard montagem">
+        <button class="mi-tab-btn active" data-tab="resumo" type="button">Resumo</button>
+        <button class="mi-tab-btn" data-tab="producao" type="button">Producao</button>
+        <button class="mi-tab-btn" data-tab="qualidade" type="button">Qualidade</button>
+        <button class="mi-tab-btn" data-tab="produtividade" type="button">Produtividade</button>
+      </div>
 
-      <!-- Gráficos -->
-      <div class="db-charts-row-full" style="margin-top: 24px;">
-        <div class="db-chart-card">
-          <div class="db-chart-title">Postes Inspecionados por Dia</div>
-          <div class="db-chart-wrap"><canvas id="chartMiPorDia"></canvas></div>
+      <div id="miSecaoResumo" class="mi-tab-section active">
+        <div class="mi-kpis-grid">
+          <div class="mi-kpi-card mi-kpi-programado"><span class="mi-kpi-label">Programado</span><span class="mi-kpi-val" id="miTotalProduzido">-</span></div>
+          <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Realizado</span><span class="mi-kpi-val" id="miTotalInspecionado">-</span></div>
+          <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Atingimento</span><span class="mi-kpi-val" id="miAtingimentoPct">-%</span></div>
+          <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Producao do dia</span><span class="mi-kpi-val" id="miProducaoDia">-</span></div>
+        </div>
+        <div class="mi-section-heading">Comparativo: produzidos vs montados</div>
+        <div class="mi-charts-row">
+          <div class="mi-chart-card mi-progress-card"><div><div class="mi-chart-title">Geral</div><div class="mi-progress-meta"><span>Produzidos: <strong id="miProdGeral">-</strong></span><span>Montados: <strong id="miMontGeral">-</strong></span></div><div class="mi-progress-track"><div id="miBarGeral" class="mi-progress-fill"></div></div></div><div class="mi-progress-pct" id="miPctGeral">-%</div></div>
+          <div class="mi-chart-card"><div class="mi-chart-title">Detalhamento por setor</div><div id="miSetoresContainer" class="mi-sector-progress-list"></div></div>
         </div>
       </div>
 
-      <div class="db-charts-row-equal" style="margin-top: 24px;">
-        <div class="db-chart-card">
-          <div class="db-chart-title">Inspeções por Setor</div>
-          <div class="db-chart-wrap"><canvas id="chartMiPorSetor"></canvas></div>
-        </div>
-        <div class="db-chart-card">
-          <div class="db-chart-title">Ranking por Montador</div>
-          <div class="db-chart-wrap"><canvas id="chartMiPorMontador"></canvas></div>
-        </div>
+      <div id="miSecaoProducao" class="mi-tab-section">
+        <div class="mi-charts-row"><div class="mi-chart-card mi-chart-card-wide"><div class="mi-chart-title">Postes inspecionados por dia</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorDia"></canvas></div></div></div>
+        <div class="mi-listagem-wrap"><div class="mi-list-header"><h3>Montagens realizadas</h3><span>Total: <span id="miTabelaTotal">0</span> registros</span></div><div class="mi-table-responsive"><table class="sheet-table mi-table"><thead><tr><th onclick="ordenarMiTabela('data_fabricacao')">Data Prod. <span id="sort_icon_data_fabricacao"></span></th><th onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th><th onclick="ordenarMiTabela('forma_numero')">Forma <span id="sort_icon_forma_numero"></span></th><th onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th><th onclick="ordenarMiTabela('inicio_inspecao_montagem')">Inicio <span id="sort_icon_inicio_inspecao_montagem"></span></th><th onclick="ordenarMiTabela('finalizado_em')">Fim <span id="sort_icon_finalizado_em"></span></th><th onclick="ordenarMiTabela('tempo_inspecao')">Duracao <span id="sort_icon_tempo_inspecao"></span></th><th onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th><th onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th></tr></thead><tbody id="miTabelaBody"><tr><td colspan="9">Carregando dados...</td></tr></tbody></table></div><div id="miCardsContainer" class="mi-cards-mobile-list"></div><div class="mi-pagination"><div class="mi-pagination-info">Mostrando <span id="miPaginacaoDe">0</span>-<span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span></div><div class="mi-pagination-buttons" id="miPaginacaoBotoes"></div></div></div>
       </div>
 
-      <div class="db-charts-row-equal" style="margin-top: 24px;">
-        <div class="db-chart-card" style="display: flex; flex-direction: column;">
-          <div class="db-chart-title" style="margin-bottom: 12px; font-weight: 700; color: #1e293b;">Tempo Médio por Tipo de Poste</div>
-          <div id="miTempoMedioModelo" style="overflow-y: auto; max-height: 250px;">
-            <div class="muted" style="padding: 10px; text-align: center;">Carregando...</div>
-          </div>
-        </div>
-        <div class="db-chart-card" style="display: flex; flex-direction: column;">
-          <div class="db-chart-title" style="margin-bottom: 12px; font-weight: 700; color: #1e293b;">Tempo Médio por Operador</div>
-          <div id="miTempoMontador" style="overflow-y: auto; max-height: 250px;">
-            <div class="muted" style="padding: 10px; text-align: center;">Carregando...</div>
-          </div>
-        </div>
-      </div>
+      <div id="miSecaoQualidade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Inspecoes por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorSetor"></canvas></div></div><div class="mi-chart-card"><div class="mi-chart-title">Ranking por montador</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorMontador"></canvas></div></div></div></div>
 
-      <!-- Tabela Detalhada de Montagem -->
-      <div style="margin-top: 30px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
-          <h3 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: #0f172a;">Listagem de Montagens Realizadas</h3>
-          <span style="font-size: 0.85rem; color: #64748b; background: #f1f5f9; padding: 4px 10px; border-radius: 12px; font-weight: 600;">
-            Total: <span id="miTabelaTotal">0</span> registros
-          </span>
-        </div>
-
-        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-          <table class="sheet-table" style="width: 100%; border-collapse: collapse; min-width: 750px;">
-            <thead>
-              <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('data_fabricacao')">Data Prod. <span id="sort_icon_data_fabricacao"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('forma_numero')">Forma <span id="sort_icon_forma_numero"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('inicio_inspecao_montagem')">Início Inspeção <span id="sort_icon_inicio_inspecao_montagem"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('finalizado_em')">Fim Inspeção <span id="sort_icon_finalizado_em"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('tempo_inspecao')">Duração <span id="sort_icon_tempo_inspecao"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th>
-                <th style="padding: 12px 10px; text-align: center; cursor: pointer;" onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th>
-              </tr>
-            </thead>
-            <tbody id="miTabelaBody">
-              <tr><td colspan="9" style="text-align: center; color: #64748b; padding: 20px;">Carregando dados...</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Paginação -->
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
-          <div style="font-size: 0.85rem; color: #64748b;">
-            Mostrando de <span id="miPaginacaoDe">0</span> a <span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span> registros
-          </div>
-          <div style="display: flex; gap: 5px;" id="miPaginacaoBotoes">
-            <!-- Botões de página renderizados dinamicamente -->
-          </div>
-        </div>
-      </div>
+      <div id="miSecaoProdutividade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div></div>
     </section>
 
     <section id="viewMontagemPostesDetalhe" class="card hidden">
