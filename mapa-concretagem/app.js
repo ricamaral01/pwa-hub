@@ -7468,8 +7468,11 @@ window.abrirVisualizacaoChecklist = function(id) {
       let imgHtml = "";
       if (photoBase64) {
         imgHtml = `
-          <div style="margin-top: 6px;">
-            <img src="${photoBase64}" style="max-width: 100px; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="abrirFotoVisualizacao('${photoBase64}')" />
+          <div style="margin-top: 8px; display: flex; align-items: center; gap: 10px;">
+            <img src="${photoBase64}" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="abrirFotoVisualizacao('${photoBase64}')" title="Clique para ampliar" />
+            <a href="${photoBase64}" download="foto_falha_${item.id || 'falha'}.png" class="btn" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+              📥 Baixar Foto
+            </a>
           </div>
         `;
       }
