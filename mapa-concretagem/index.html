@@ -923,6 +923,12 @@
 
       <!-- Estilos Customizados para Responsividade e Tabela -->
       <style>
+        #viewMontagemIndicadores {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+          box-sizing: border-box;
+        }
         #viewMontagemIndicadores .btn-primary {
           background: #2563eb;
           color: white;
@@ -945,10 +951,36 @@
           border-bottom: 1px solid #e2e8f0;
           font-size: 0.85rem;
         }
+        /* Correções de Responsividade */
+        #viewMontagemIndicadores .db-chart-card,
+        #viewMontagemIndicadores .db-chart-wrap,
+        #viewMontagemIndicadores .form-row,
+        #viewMontagemIndicadores .db-charts-row-equal,
+        #viewMontagemIndicadores .db-charts-row-full {
+          min-width: 0 !important;
+          max-width: 100% !important;
+        }
+        #miPaginacaoBotoes {
+          flex-wrap: wrap;
+        }
         @media (max-width: 1024px) {
           #viewMontagemIndicadores .db-charts-row-equal,
           #viewMontagemIndicadores .db-charts-row {
             grid-template-columns: 1fr !important;
+          }
+        }
+        @media (max-width: 480px) {
+          #viewMontagemIndicadores .form-row {
+            padding: 12px !important;
+          }
+          #viewMontagemIndicadores .db-kpi-card {
+            padding: 10px 8px !important;
+          }
+          #viewMontagemIndicadores .db-kpi-label {
+            font-size: 0.65rem !important;
+          }
+          #viewMontagemIndicadores .db-kpi-val {
+            font-size: 1.4rem !important;
           }
         }
       </style>
