@@ -494,6 +494,22 @@
       </div>
       <button id="mpCarregarLiberados" class="btn" type="button">Carregar itens liberados</button>
 
+      <!-- Indicadores de status da montagem -->
+      <div id="mpStatusSummary" class="db-kpi-row" style="margin-top: 15px; margin-bottom: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+        <div class="mi-kpi-card" style="border-left-color: #10b981; background: #f0fdf4; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
+          <span style="font-size: 0.8rem; color: #15803d; font-weight: bold; display: block;">Aprovados</span>
+          <span id="mpKpiAprovados" style="font-size: 1.4rem; font-weight: bold; color: #166534; display: block; margin-top: 4px;">0</span>
+        </div>
+        <div class="mi-kpi-card" style="border-left-color: #f59e0b; background: #fffbeb; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
+          <span style="font-size: 0.8rem; color: #b45309; font-weight: bold; display: block;">Retrabalho</span>
+          <span id="mpKpiRetrabalho" style="font-size: 1.4rem; font-weight: bold; color: #92400e; display: block; margin-top: 4px;">0</span>
+        </div>
+        <div class="mi-kpi-card" style="border-left-color: #ef4444; background: #fef2f2; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
+          <span style="font-size: 0.8rem; color: #b91c1c; font-weight: bold; display: block;">Reprovados</span>
+          <span id="mpKpiReprovados" style="font-size: 1.4rem; font-weight: bold; color: #991b1b; display: block; margin-top: 4px;">0</span>
+        </div>
+      </div>
+
       <div class="sheet-box">
         <div class="sheet-topline">
           <div><strong>Montagem de Postes</strong> — Somente formas com Liberação = 1</div>

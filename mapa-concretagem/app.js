@@ -668,6 +668,9 @@ const el = {
   mpCarregarLiberados: document.getElementById("mpCarregarLiberados"),
   mpLiberadosBody: document.getElementById("mpLiberadosBody"),
   mpQtdItens: document.getElementById("mpQtdItens"),
+  mpKpiAprovados: document.getElementById("mpKpiAprovados"),
+  mpKpiRetrabalho: document.getElementById("mpKpiRetrabalho"),
+  mpKpiReprovados: document.getElementById("mpKpiReprovados"),
   mpFormaFiltro: document.getElementById("mpFormaFiltro"),
   mpDetalheHeader: document.getElementById("mpDetalheHeader"),
   mpStatusButtons: document.getElementById("mpStatusButtons"),
@@ -3257,6 +3260,8 @@ async function openMontagemPosteDetalhe(posteBase) {
     }
   }
 
+  const isRework = (atual?.statusMontagem === "RR");
+
   const merged = {
     key,
     recordId: posteBase.recordId || "",
@@ -3267,12 +3272,12 @@ async function openMontagemPosteDetalhe(posteBase) {
     codigoPoste: posteBase.codigoPoste || atual?.codigoPoste || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).codigoPoste,
     descricaoPoste: posteBase.descricaoPoste || atual?.descricaoPoste || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).descricaoPoste,
     codigoProduto: posteBase.codigoProduto || atual?.codigoProduto || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).codigoProduto,
-    statusMontagem: atual?.statusMontagem || "",
-    motivoRecusa: atual?.motivoRecusa || "",
-    inicioInspecaoMontagem: atual?.inicioInspecaoMontagem || now,
-    finalizadoEm: atual?.finalizadoEm || "",
-    observacoesMontagem: atual?.observacoesMontagem || "",
-    checklists: atual?.checklists || {}
+    statusMontagem: isRework ? "" : (atual?.statusMontagem || ""),
+    motivoRecusa: isRework ? "" : (atual?.motivoRecusa || ""),
+    inicioInspecaoMontagem: isRework ? now : (atual?.inicioInspecaoMontagem || now),
+    finalizadoEm: isRework ? "" : (atual?.finalizadoEm || ""),
+    observacoesMontagem: isRework ? "" : (atual?.observacoesMontagem || ""),
+    checklists: isRework ? {} : (atual?.checklists || {})
   };
 
   upsertMontagemPoste(merged);
@@ -3392,6 +3397,10 @@ async function renderMontagemPostesLiberados() {
   const setor = el.mpSetor?.value || "";
 
   el.mpLiberadosBody.innerHTML = "";
+  if (el.mpKpiAprovados) el.mpKpiAprovados.textContent = "0";
+  if (el.mpKpiRetrabalho) el.mpKpiRetrabalho.textContent = "0";
+  if (el.mpKpiReprovados) el.mpKpiReprovados.textContent = "0";
+
   if (!filtroData) {
     el.mpQtdItens.textContent = "0";
     el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
@@ -3421,6 +3430,24 @@ async function renderMontagemPostesLiberados() {
     return;
   }
 
+  let countAprovados = 0;
+  let countRetrabalho = 0;
+  let countReprovados = 0;
+
+  rows.forEach((record) => {
+    const isFinalizado = !!record.montagem?.finalizado_em;
+    const status = record.montagem?.status_montagem || "";
+    if (isFinalizado) {
+      if (status === "A") countAprovados++;
+      else if (status === "RR") countRetrabalho++;
+      else if (status === "R") countReprovados++;
+    }
+  });
+
+  if (el.mpKpiAprovados) el.mpKpiAprovados.textContent = String(countAprovados);
+  if (el.mpKpiRetrabalho) el.mpKpiRetrabalho.textContent = String(countRetrabalho);
+  if (el.mpKpiReprovados) el.mpKpiReprovados.textContent = String(countReprovados);
+
   rows.forEach((record) => {
     const isFinalizado = !!record.montagem?.finalizado_em;
     const status = record.montagem?.status_montagem || "";
@@ -3445,11 +3472,11 @@ async function renderMontagemPostesLiberados() {
     let acaoContent = "";
     if (isFinalizado) {
       if (status === "A") {
-        acaoContent = `<span class="status-badge status-badge-aprovado">Aprovado</span>`;
+        acaoContent = `<button type="button" class="btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: default;" disabled>Aprovado</button>`;
       } else if (status === "RR") {
-        acaoContent = `<span class="status-badge status-badge-reprovado">Reprovado e Retrabalhado</span>`;
+        acaoContent = `<button type="button" class="btn mp-open-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Retrabalhar</button>`;
       } else {
-        acaoContent = `<span class="status-badge status-badge-reprovado">Reprovado</span>`;
+        acaoContent = `<button type="button" class="btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: not-allowed;" disabled>Reprovado</button>`;
       }
     } else {
       const extraClass = record.status === 'INSPECIONADO' ? 'mp-open-btn--inspecionado' : '';
@@ -5611,6 +5638,9 @@ function setMode(mode) {
     if ((el.mpModoCarga?.value || "data") === "data" && !el.mpFiltroData?.value) {
       el.mpLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
       el.mpQtdItens.textContent = "0";
+      if (el.mpKpiAprovados) el.mpKpiAprovados.textContent = "0";
+      if (el.mpKpiRetrabalho) el.mpKpiRetrabalho.textContent = "0";
+      if (el.mpKpiReprovados) el.mpKpiReprovados.textContent = "0";
     }
   }
   if (mode === "MONTAGEM_POSTES_DETALHE") document.body.classList.add("mode-montagem-postes-detalhe");
