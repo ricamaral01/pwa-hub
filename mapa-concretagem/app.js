@@ -3489,7 +3489,7 @@ async function renderMontagemPostesLiberados() {
     let acaoContent = "";
     if (isFinalizado) {
       if (status === "A") {
-        acaoContent = `<button type="button" class="btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: default;" disabled>Aprovado</button>`;
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Aprovado (Ver Checklist)</button>`;
       } else if (status === "RR") {
         acaoContent = `<button type="button" class="btn mp-open-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Retrabalhar</button>`;
       } else {
@@ -6127,6 +6127,21 @@ function bindEvents() {
     el.mpLiberadosBody.addEventListener("click", async (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
+
+      const verChecklistBtn = target.closest(".mp-ver-checklist-btn");
+      if (verChecklistBtn) {
+        const tr = verChecklistBtn.closest("tr[data-forma-numero]");
+        if (tr && tr.dataset.montagemRaw) {
+          try {
+            const montRecord = JSON.parse(tr.dataset.montagemRaw);
+            window.abrirVisualizacaoChecklist(montRecord);
+          } catch (e) {
+            console.error("Erro ao abrir visualização do checklist:", e);
+          }
+        }
+        return;
+      }
+
       const btn = target.closest(".mp-open-btn");
       if (!btn) return;
       const tr = btn.closest("tr[data-forma-numero]");
@@ -8341,17 +8356,39 @@ window.abrirFotoVisualizacao = function(src) {
   }
 };
 
-window.abrirVisualizacaoChecklist = function(id) {
-  const row = miRawMontagemData.find(r => String(r.id) === String(id));
+window.abrirVisualizacaoChecklist = function(idOrRow) {
+  let row;
+  if (typeof idOrRow === "object" && idOrRow !== null) {
+    row = idOrRow;
+  } else {
+    row = (typeof miRawMontagemData !== "undefined" && Array.isArray(miRawMontagemData))
+      ? miRawMontagemData.find(r => String(r.id) === String(idOrRow))
+      : null;
+  }
   if (!row) return;
+
+  // Normalizar propriedades para suportar tanto snake_case do Supabase quanto camelCase do frontend local
+  const normRow = {
+    id: row.id || row.key || "",
+    forma_numero: row.forma_numero || row.formaNumero || "",
+    modelo: row.modelo || "",
+    montador_nome: row.montador_nome || row.montadorNome || "",
+    data_fabricacao: row.data_fabricacao || row.dataFabricacao || "",
+    inicio_inspecao_montagem: row.inicio_inspecao_montagem || row.inicioInspecaoMontagem || "",
+    finalizado_em: row.finalizado_em || row.finalizadoEm || "",
+    status_montagem: row.status_montagem || row.statusMontagem || "",
+    checklists: row.checklists || {},
+    observacoes_montagem: row.observacoes_montagem || row.observacoesMontagem || "",
+    motivo_recusa: row.motivo_recusa || row.motivoRecusa || ""
+  };
 
   const modal = document.getElementById("visualizarChecklistModal");
   if (!modal) return;
 
-  document.getElementById("vcMetaForma").textContent = row.forma_numero || "-";
-  document.getElementById("vcMetaModelo").textContent = row.modelo || "-";
-  document.getElementById("vcMetaMontador").textContent = row.montador_nome || "-";
-  document.getElementById("vcMetaData").textContent = row.data_fabricacao ? row.data_fabricacao.split("T")[0].split("-").reverse().join("/") : "-";
+  document.getElementById("vcMetaForma").textContent = normRow.forma_numero || "-";
+  document.getElementById("vcMetaModelo").textContent = normRow.modelo || "-";
+  document.getElementById("vcMetaMontador").textContent = normRow.montador_nome || "-";
+  document.getElementById("vcMetaData").textContent = normRow.data_fabricacao ? String(normRow.data_fabricacao).split("T")[0].split("-").reverse().join("/") : "-";
 
   const formatTimeShort = (isoStr) => {
     if (!isoStr) return "N/A";
@@ -8360,18 +8397,18 @@ window.abrirVisualizacaoChecklist = function(id) {
     return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
   };
 
-  document.getElementById("vcMetaInicio").textContent = formatTimeShort(row.inicio_inspecao_montagem);
-  document.getElementById("vcMetaFim").textContent = formatTimeShort(row.finalizado_em);
+  document.getElementById("vcMetaInicio").textContent = formatTimeShort(normRow.inicio_inspecao_montagem);
+  document.getElementById("vcMetaFim").textContent = formatTimeShort(normRow.finalizado_em);
 
   let statusText = "Em Andamento";
   let statusColor = "#64748b";
-  if (row.status_montagem === "A") {
+  if (normRow.status_montagem === "A") {
     statusText = "Aprovado";
     statusColor = "#16a34a";
-  } else if (row.status_montagem === "RR") {
+  } else if (normRow.status_montagem === "RR") {
     statusText = "Reprovado e Retrabalhado";
     statusColor = "#d97706";
-  } else if (row.status_montagem === "R") {
+  } else if (normRow.status_montagem === "R") {
     statusText = "Reprovado";
     statusColor = "#dc2626";
   }
@@ -8383,8 +8420,8 @@ window.abrirVisualizacaoChecklist = function(id) {
   const container = document.getElementById("vcChecklistContent");
   container.innerHTML = "";
 
-  const checklists = row.checklists || {};
-  const sections = getMontagemChecklistSections(row.modelo || "");
+  const checklists = normRow.checklists || {};
+  const sections = getMontagemChecklistSections(normRow.modelo || "");
 
   sections.forEach(section => {
     const secDiv = document.createElement("div");
@@ -8453,7 +8490,7 @@ window.abrirVisualizacaoChecklist = function(id) {
   container.appendChild(photosContainer);
 
   const backendUrl = "http://localhost:5000/api";
-  fetch(`${backendUrl}/inspecoes/${row.id}/fotos`)
+  fetch(`${backendUrl}/inspecoes/${normRow.id}/fotos`)
     .then(res => res.json())
     .then(resData => {
       if (resData.success && resData.data && resData.data.length > 0) {
@@ -8490,7 +8527,7 @@ window.abrirVisualizacaoChecklist = function(id) {
   // Obs
   const obsContainer = document.getElementById("vcObsContainer");
   const elObs = document.getElementById("vcObservacoes");
-  const obsVal = row.observacoes_montagem || row.motivo_recusa || "";
+  const obsVal = normRow.observacoes_montagem || normRow.motivo_recusa || "";
   if (obsVal) {
     elObs.textContent = obsVal;
     obsContainer.style.display = "block";
