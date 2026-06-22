@@ -5081,3 +5081,14 @@ tr.row-montado {
     font-size: 1.3rem;
   }
 }
+
+@media print {
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+

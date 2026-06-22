@@ -4632,91 +4632,280 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
     return String(a.forma_numero || a.formaNumero || "").localeCompare(String(b.forma_numero || b.formaNumero || ""), undefined, { numeric: true, sensitivity: "base" });
   });
 
-  const timestamps = rowsOrdenadas
-    .map((row) => new Date(getRelatorioTimestamp(row)).getTime())
-    .filter((value) => Number.isFinite(value));
-  const tempoTotal = timestamps.length >= 2
-    ? formatRelatorioDuracao(Math.max(...timestamps) - Math.min(...timestamps))
-    : "-";
-  const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
-    const modelo = getRelatorioModelo(row);
-    acc[modelo] = (acc[modelo] || 0) + 1;
-    return acc;
-  }, {});
-  const resumoPostesHtml = Object.entries(resumoPorPoste)
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .map(([modelo, total]) => `<tr><td>${escapeHtml(modelo)}</td><td>${total}</td></tr>`)
-    .join("");
-  const linhas = rowsOrdenadas.map((r) => {
-    const forma = r.forma_numero || r.formaNumero || "";
-    const modelo = getRelatorioModelo(r);
-    const operador = getRelatorioOperador(r) || "-";
-    const horario = formatTime(getRelatorioTimestamp(r));
-    const tipoConcreto = getRelatorioTipoConcreto(r);
-    return `
-      <tr>
-        <td>${escapeHtml(forma)}</td>
-        <td>${escapeHtml(modelo)}</td>
-        <td>${escapeHtml(operador)}</td>
-        <td>${escapeHtml(horario)}</td>
-        <td>${escapeHtml(tipoConcreto)}</td>
-      </tr>`;
-  }).join("");
   const emitidoEm = formatDateTime(nowIso());
 
-  el.relatorioSetorOutput.innerHTML = `
-    <article id="relPrintDoc" class="rel-print-doc">
-      <header class="rel-print-header">
-        <div>
-          <div class="rel-company">Concrefer</div>
-          <h3>Relatório Enc. Produção</h3>
-        </div>
-        <div class="rel-meta">
-          <span>Data: <strong>${escapeHtml(fmtDate(data) || data)}</strong></span>
-          <span>Setor: <strong>${escapeHtml(setor)}</strong></span>
-          <span>Emitido: <strong>${escapeHtml(emitidoEm)}</strong></span>
-        </div>
-      </header>
+  if (setor === "Todos") {
+    // Calculo geral
+    const timestamps = rowsOrdenadas
+      .map((row) => new Date(getRelatorioTimestamp(row)).getTime())
+      .filter((value) => Number.isFinite(value));
+    const tempoTotal = timestamps.length >= 2
+      ? formatRelatorioDuracao(Math.max(...timestamps) - Math.min(...timestamps))
+      : "-";
 
-      <section class="rel-kpi-grid">
-        <div><span>Formas enchidas</span><strong>${rowsOrdenadas.length}</strong></div>
-        <div><span>Tempo total de produção</span><strong>${tempoTotal}</strong></div>
-        <div><span>Encarregado</span><strong>${escapeHtml(encarregado || "-")}</strong></div>
-      </section>
+    const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
+      const modelo = getRelatorioModelo(row);
+      acc[modelo] = (acc[modelo] || 0) + 1;
+      return acc;
+    }, {});
+    const resumoPostesHtml = Object.entries(resumoPorPoste)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([modelo, total]) => `<tr><td>${escapeHtml(modelo)}</td><td>${total}</td></tr>`)
+      .join("");
 
-      <section class="rel-section">
-        <h4>Formas enchidas</h4>
-        <div class="rel-table-wrap">
-          <table class="sheet-table report-table rel-full-table">
-            <thead>
+    // Contagem por setor
+    const setoresCounts = { "Setor 1": 0, "Setor 2": 0, "Setor 3": 0, "Setor 4": 0 };
+    rowsOrdenadas.forEach(r => {
+      const s = r.setor || "";
+      if (setoresCounts[s] !== undefined) {
+        setoresCounts[s]++;
+      }
+    });
+
+    const setoresDisponiveis = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
+
+    el.relatorioSetorOutput.innerHTML = `
+      <article id="relPrintDoc" class="rel-print-doc">
+        <!-- PRIMEIRA PAGINA: RESUMO GERAL -->
+        <div class="rel-print-page">
+          <header class="rel-print-header">
+            <div>
+              <div class="rel-company">Concrefer</div>
+              <h3>Relatório Enc. Produção - Resumo Geral</h3>
+            </div>
+            <div class="rel-meta">
+              <span>Data: <strong>${escapeHtml(fmtDate(data) || data)}</strong></span>
+              <span>Setor: <strong>Todos os Setores</strong></span>
+              <span>Emitido: <strong>${escapeHtml(emitidoEm)}</strong></span>
+            </div>
+          </header>
+
+          <section class="rel-kpi-grid">
+            <div><span>Total de Formas Enchidas</span><strong>${rowsOrdenadas.length}</strong></div>
+            <div><span>Tempo Total de Produção</span><strong>${tempoTotal}</strong></div>
+            <div><span>Encarregado</span><strong>${escapeHtml(encarregado || "-")}</strong></div>
+          </section>
+
+          <!-- Indicadores Resumidos Coloridos por Setor -->
+          <section class="rel-section">
+            <h4>Indicadores por Setor</h4>
+            <div class="rel-sector-kpis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px;">
+              <div style="border-left: 4px solid #2563eb; background: #eff6ff; padding: 10px; border-radius: 6px;">
+                <span style="font-size: 0.75rem; color: #1e40af; font-weight: bold; display: block;">Setor 1</span>
+                <strong style="font-size: 1.25rem; color: #1e3a8a; display: block; margin-top: 4px;">${setoresCounts["Setor 1"]} formas</strong>
+              </div>
+              <div style="border-left: 4px solid #10b981; background: #ecfdf5; padding: 10px; border-radius: 6px;">
+                <span style="font-size: 0.75rem; color: #065f46; font-weight: bold; display: block;">Setor 2</span>
+                <strong style="font-size: 1.25rem; color: #064e3b; display: block; margin-top: 4px;">${setoresCounts["Setor 2"]} formas</strong>
+              </div>
+              <div style="border-left: 4px solid #8b5cf6; background: #f5f3ff; padding: 10px; border-radius: 6px;">
+                <span style="font-size: 0.75rem; color: #5b21b6; font-weight: bold; display: block;">Setor 3</span>
+                <strong style="font-size: 1.25rem; color: #4c1d95; display: block; margin-top: 4px;">${setoresCounts["Setor 3"]} formas</strong>
+              </div>
+              <div style="border-left: 4px solid #f97316; background: #fff7ed; padding: 10px; border-radius: 6px;">
+                <span style="font-size: 0.75rem; color: #9a3412; font-weight: bold; display: block;">Setor 4</span>
+                <strong style="font-size: 1.25rem; color: #7c2d12; display: block; margin-top: 4px;">${setoresCounts["Setor 4"]} formas</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="rel-section rel-summary-section">
+            <h4>Resumo por tipo de poste (Todos os Setores)</h4>
+            <table class="sheet-table report-table rel-summary-table">
+              <thead><tr><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+              <tbody>${resumoPostesHtml || '<tr><td colspan="2">Sem registros</td></tr>'}</tbody>
+            </table>
+          </section>
+
+          <footer class="rel-print-footer">
+            <div class="rel-sign-block">
+              <span>Assinatura do encarregado de produção</span>
+            </div>
+          </footer>
+        </div>
+
+        <!-- QUEBRAS POR SETOR -->
+        ${setoresDisponiveis.map(s => {
+          const sRows = rowsOrdenadas.filter(r => r.setor === s);
+          if (sRows.length === 0) return "";
+          
+          const sTimestamps = sRows
+            .map((row) => new Date(getRelatorioTimestamp(row)).getTime())
+            .filter((value) => Number.isFinite(value));
+          const sTempoTotal = sTimestamps.length >= 2
+            ? formatRelatorioDuracao(Math.max(...sTimestamps) - Math.min(...sTimestamps))
+            : "-";
+
+          const sResumoPorPoste = sRows.reduce((acc, row) => {
+            const modelo = getRelatorioModelo(row);
+            acc[modelo] = (acc[modelo] || 0) + 1;
+            return acc;
+          }, {});
+          const sResumoPostesHtml = Object.entries(sResumoPorPoste)
+            .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+            .map(([modelo, total]) => `<tr><td>${escapeHtml(modelo)}</td><td>${total}</td></tr>`)
+            .join("");
+
+          const sLinhas = sRows.map((r) => {
+            const forma = r.forma_numero || r.formaNumero || "";
+            const modelo = getRelatorioModelo(r);
+            const operador = getRelatorioOperador(r) || "-";
+            const horario = formatTime(getRelatorioTimestamp(r));
+            const tipoConcreto = getRelatorioTipoConcreto(r);
+            return `
               <tr>
-                <th>Forma</th>
-                <th>Tipo de poste</th>
-                <th>Operador da concretagem</th>
-                <th>Horário</th>
-                <th>Tipo de concreto</th>
-              </tr>
-            </thead>
-            <tbody>${linhas || '<tr><td colspan="5">Sem registros</td></tr>'}</tbody>
+                <td>${escapeHtml(forma)}</td>
+                <td>${escapeHtml(modelo)}</td>
+                <td>${escapeHtml(operador)}</td>
+                <td>${escapeHtml(horario)}</td>
+                <td>${escapeHtml(tipoConcreto)}</td>
+              </tr>`;
+          }).join("");
+
+          return `
+            <div class="page-break" style="page-break-before: always; break-before: page; height: 1px;"></div>
+            <div class="rel-print-page" style="margin-top: 24px;">
+              <header class="rel-print-header">
+                <div>
+                  <div class="rel-company">Concrefer</div>
+                  <h3>Relatório Enc. Produção - ${escapeHtml(s)}</h3>
+                </div>
+                <div class="rel-meta">
+                  <span>Data: <strong>${escapeHtml(fmtDate(data) || data)}</strong></span>
+                  <span>Setor: <strong>${escapeHtml(s)}</strong></span>
+                  <span>Emitido: <strong>${escapeHtml(emitidoEm)}</strong></span>
+                </div>
+              </header>
+
+              <section class="rel-kpi-grid">
+                <div><span>Formas enchidas</span><strong>${sRows.length}</strong></div>
+                <div><span>Tempo total de produção</span><strong>${sTempoTotal}</strong></div>
+                <div><span>Encarregado</span><strong>${escapeHtml(encarregado || "-")}</strong></div>
+              </section>
+
+              <section class="rel-section">
+                <h4>Formas enchidas - ${escapeHtml(s)}</h4>
+                <div class="rel-table-wrap">
+                  <table class="sheet-table report-table rel-full-table">
+                    <thead>
+                      <tr>
+                        <th>Forma</th>
+                        <th>Tipo de poste</th>
+                        <th>Operador da concretagem</th>
+                        <th>Horário</th>
+                        <th>Tipo de concreto</th>
+                      </tr>
+                    </thead>
+                    <tbody>${sLinhas || '<tr><td colspan="5">Sem registros</td></tr>'}</tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section class="rel-section rel-summary-section">
+                <h4>Resumo por tipo de poste - ${escapeHtml(s)}</h4>
+                <table class="sheet-table report-table rel-summary-table">
+                  <thead><tr><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+                  <tbody>${sResumoPostesHtml || '<tr><td colspan="2">Sem registros</td></tr>'}</tbody>
+                </table>
+              </section>
+
+              <footer class="rel-print-footer">
+                <div class="rel-sign-block">
+                  <span>Assinatura do encarregado de produção</span>
+                </div>
+              </footer>
+            </div>
+          `;
+        }).join("")}
+      </article>
+    `;
+  } else {
+    // Modo tradicional (Setor único)
+    const timestamps = rowsOrdenadas
+      .map((row) => new Date(getRelatorioTimestamp(row)).getTime())
+      .filter((value) => Number.isFinite(value));
+    const tempoTotal = timestamps.length >= 2
+      ? formatRelatorioDuracao(Math.max(...timestamps) - Math.min(...timestamps))
+      : "-";
+    const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
+      const modelo = getRelatorioModelo(row);
+      acc[modelo] = (acc[modelo] || 0) + 1;
+      return acc;
+    }, {});
+    const resumoPostesHtml = Object.entries(resumoPorPoste)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([modelo, total]) => `<tr><td>${escapeHtml(modelo)}</td><td>${total}</td></tr>`)
+      .join("");
+    const linhas = rowsOrdenadas.map((r) => {
+      const forma = r.forma_numero || r.formaNumero || "";
+      const modelo = getRelatorioModelo(r);
+      const operador = getRelatorioOperador(r) || "-";
+      const horario = formatTime(getRelatorioTimestamp(r));
+      const tipoConcreto = getRelatorioTipoConcreto(r);
+      return `
+        <tr>
+          <td>${escapeHtml(forma)}</td>
+          <td>${escapeHtml(modelo)}</td>
+          <td>${escapeHtml(operador)}</td>
+          <td>${escapeHtml(horario)}</td>
+          <td>${escapeHtml(tipoConcreto)}</td>
+        </tr>`;
+    }).join("");
+
+    el.relatorioSetorOutput.innerHTML = `
+      <article id="relPrintDoc" class="rel-print-doc">
+        <header class="rel-print-header">
+          <div>
+            <div class="rel-company">Concrefer</div>
+            <h3>Relatório Enc. Produção</h3>
+          </div>
+          <div class="rel-meta">
+            <span>Data: <strong>${escapeHtml(fmtDate(data) || data)}</strong></span>
+            <span>Setor: <strong>${escapeHtml(setor)}</strong></span>
+            <span>Emitido: <strong>${escapeHtml(emitidoEm)}</strong></span>
+          </div>
+        </header>
+
+        <section class="rel-kpi-grid">
+          <div><span>Formas enchidas</span><strong>${rowsOrdenadas.length}</strong></div>
+          <div><span>Tempo total de produção</span><strong>${tempoTotal}</strong></div>
+          <div><span>Encarregado</span><strong>${escapeHtml(encarregado || "-")}</strong></div>
+        </section>
+
+        <section class="rel-section">
+          <h4>Formas enchidas</h4>
+          <div class="rel-table-wrap">
+            <table class="sheet-table report-table rel-full-table">
+              <thead>
+                <tr>
+                  <th>Forma</th>
+                  <th>Tipo de poste</th>
+                  <th>Operador da concretagem</th>
+                  <th>Horário</th>
+                  <th>Tipo de concreto</th>
+                </tr>
+              </thead>
+              <tbody>${linhas || '<tr><td colspan="5">Sem registros</td></tr>'}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="rel-section rel-summary-section">
+          <h4>Resumo por tipo de poste</h4>
+          <table class="sheet-table report-table rel-summary-table">
+            <thead><tr><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+            <tbody>${resumoPostesHtml || '<tr><td colspan="2">Sem registros</td></tr>'}</tbody>
           </table>
-        </div>
-      </section>
+        </section>
 
-      <section class="rel-section rel-summary-section">
-        <h4>Resumo por tipo de poste</h4>
-        <table class="sheet-table report-table rel-summary-table">
-          <thead><tr><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
-          <tbody>${resumoPostesHtml || '<tr><td colspan="2">Sem registros</td></tr>'}</tbody>
-        </table>
-      </section>
-
-      <footer class="rel-print-footer">
-        <div class="rel-sign-block">
-          <span>Assinatura do encarregado de produção</span>
-        </div>
-      </footer>
-    </article>
-  `;
+        <footer class="rel-print-footer">
+          <div class="rel-sign-block">
+            <span>Assinatura do encarregado de produção</span>
+          </div>
+        </footer>
+      </article>
+    `;
+  }
 }
 
 function imprimirRelatorioSetor() {
@@ -4765,14 +4954,15 @@ async function enviarRelatorioWhatsapp() {
     }
   });
 
-  const textMsg = `*RELATÓRIO ENCARREGADO DE PRODUÇÃO*\n\n*Setor:* ${setor}\n*Data:* ${fmtDate(data) || data}\n*Encarregado:* ${encarregado}\n*Formas Enchidas:* ${totalFormas}\n*Tempo Total:* ${tempoTotal}\n\n*Resumo por Tipo:*\n${resumoTexto}`;
+  const standardMsg = `Envio automático de relatório de Produção Setor ${setor}`;
+  const textMsg = `${standardMsg}\n\n*RELATÓRIO ENCARREGADO DE PRODUÇÃO*\n\n*Setor:* ${setor}\n*Data:* ${fmtDate(data) || data}\n*Encarregado:* ${encarregado}\n*Formas Enchidas:* ${totalFormas}\n*Tempo Total:* ${tempoTotal}\n\n*Resumo por Tipo:*\n${resumoTexto}`;
 
   setSyncStatus("pending", "Gerando PDF do relatório...");
   try {
     const html2pdf = await loadHtml2Pdf();
     const opt = {
       margin: 10,
-      filename: `relatorio_${setor.replace(/\s+/g, '_')}_${data}.pdf`,
+      filename: `Envio_automatico_de_relatorio_de_Producao_Setor_${setor.replace(/\s+/g, '_')}_${data}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -4786,7 +4976,7 @@ async function enviarRelatorioWhatsapp() {
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         files: [file],
-        title: 'Relatório Encarregado',
+        title: standardMsg,
         text: textMsg
       });
     } else {
@@ -4814,7 +5004,7 @@ async function gerarRelatorioSetor() {
   }
 
   let formToModelMap = {};
-  if (setor === "Setor 3" || setor === "Setor 4") {
+  if (setor === "Todos" || setor === "Setor 3" || setor === "Setor 4") {
     try {
       formToModelMap = await fetchSetor3Models(data);
     } catch (err) {
@@ -4824,14 +5014,17 @@ async function gerarRelatorioSetor() {
 
   if (hasApiConfigured()) {
     try {
-      let query = supabaseClient.from('producao').select('*').eq('setor', setor).eq('data_fabricacao', data);
+      let query = supabaseClient.from('producao').select('*').eq('data_fabricacao', data);
+      if (setor !== "Todos") {
+        query = query.eq('setor', setor);
+      }
       const { data: rows, error } = await query;
 
       if (!error && Array.isArray(rows)) {
         const mappedRows = rows.map(r => {
           const formaNorm = normalizeForma(r.forma || r.forma_numero || "");
           let modeloFinal = r.modelo;
-          if ((setor === "Setor 3" || setor === "Setor 4") && (modeloFinal === "SC" || !modeloFinal) && formToModelMap[formaNorm]) {
+          if ((r.setor === "Setor 3" || r.setor === "Setor 4") && (modeloFinal === "SC" || !modeloFinal) && formToModelMap[formaNorm]) {
             modeloFinal = formToModelMap[formaNorm];
           }
           return {
@@ -4842,40 +5035,47 @@ async function gerarRelatorioSetor() {
             liberacao_status: "1",
             colaborador: r.colaborador,
             timestamp: r.data_hora || r.updated_at || r.created_at,
-            tipo_concreto: r.tipo_concreto || r.tipoConcreto || r.concretoTipo
+            tipo_concreto: r.tipo_concreto || r.tipoConcreto || r.concretoTipo,
+            setor: r.setor
           };
         });
         renderRelatorioSetor({ data, setor, encarregado, rows: mappedRows });
         setSyncStatus("ok", `Relatório do ${setor} em ${data} gerado pela nuvem.`);
         return;
       }
-    } catch {
+    } catch (e) {
+      console.error(e);
       setSyncStatus("warn", "Falha ao buscar relatório. Gerando pelo cache local.");
     }
   }
 
   const db = readDb();
-  const rows = db.records
+  let baseQuery = db.records
     .filter((r) => r.dataFabricacao === data)
-    .filter((r) => r.setor === setor)
-    .filter((r) => String(r.liberacao?.status || "") === "1")
-    .map((r) => {
-      const formaNorm = normalizeForma(r.formaNumero || "");
-      let modeloFinal = r.modelo;
-      if ((setor === "Setor 3" || setor === "Setor 4") && (modeloFinal === "SC" || !modeloFinal) && formToModelMap[formaNorm]) {
-        modeloFinal = formToModelMap[formaNorm];
-      }
-      return {
-        forma_numero: r.formaNumero,
-        modelo: modeloFinal,
-        descricaoPoste: r.descricaoPoste,
-        codigoProduto: r.codigoProduto,
-        liberacao_status: r.liberacao?.status || "",
-        colaborador: r.liberacao?.colaborador || "",
-        timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
-        tipoConcreto: r.concretoTipo
-      };
-    });
+    .filter((r) => String(r.liberacao?.status || "") === "1");
+
+  if (setor !== "Todos") {
+    baseQuery = baseQuery.filter((r) => r.setor === setor);
+  }
+
+  const rows = baseQuery.map((r) => {
+    const formaNorm = normalizeForma(r.formaNumero || "");
+    let modeloFinal = r.modelo;
+    if ((r.setor === "Setor 3" || r.setor === "Setor 4") && (modeloFinal === "SC" || !modeloFinal) && formToModelMap[formaNorm]) {
+      modeloFinal = formToModelMap[formaNorm];
+    }
+    return {
+      forma_numero: r.formaNumero,
+      modelo: modeloFinal,
+      descricaoPoste: r.descricaoPoste,
+      codigoProduto: r.codigoProduto,
+      liberacao_status: r.liberacao?.status || "",
+      colaborador: r.liberacao?.colaborador || "",
+      timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
+      tipoConcreto: r.concretoTipo,
+      setor: r.setor
+    };
+  });
 
   renderRelatorioSetor({ data, setor, encarregado, rows });
 }
