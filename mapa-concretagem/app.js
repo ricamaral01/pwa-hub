@@ -4607,6 +4607,7 @@ function renderDashboardConcretagem({ setor1, setor2, setor3, setor4, source, da
 }
 
 async function carregarDashboardConcretagem() {
+  if (!el.dashData || !el.dashStatus) return;
   if (!el.dashData?.value) {
     el.dashStatus.textContent = "Selecione uma data para atualizar o painel.";
     return;
@@ -5709,7 +5710,86 @@ function navigateBack() {
   setSyncStatus("warn", "Voce ja esta na tela principal.");
 }
 
+function handleHubModeNavigation(mode) {
+  if (!mode) return;
+  if (mode === "DASHBOARD") {
+    setMode("DASHBOARD");
+  } else if (mode === "MONTAGEM_INDICADORES") {
+    setMode("MONTAGEM_INDICADORES");
+  } else if (mode === "PROD_ANALISE") {
+    setMode("PROD_ANALISE");
+  } else if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
+    setMode(mode);
+    if (el.libData && !el.libData.value) el.libData.value = todayYmd();
+    renderLiberacaoDual();
+  } else if (mode === "INSPECAO") {
+    setMode("INSPECAO");
+    if (el.insFiltroData && !el.insFiltroData.value) el.insFiltroData.value = todayYmd();
+    renderInspecaoLiberados();
+  } else if (mode === "MONTAGEM_POSTES") {
+    setMode("MONTAGEM_POSTES");
+    if (el.mpFiltroData && !el.mpFiltroData.value) el.mpFiltroData.value = todayYmd();
+    renderMontagemPostesLiberados();
+  } else if (mode === "RELATORIO") {
+    setMode("RELATORIO");
+    if (el.relData && !el.relData.value) el.relData.value = todayYmd();
+  } else if (mode === "HISTORICO") {
+    setMode("HISTORICO");
+    renderHistorico();
+  } else if (mode === "ACMP_CONCRETAGEM") {
+    setMode("ACMP_CONCRETAGEM");
+    if (el.acmpData && !el.acmpData.value) el.acmpData.value = todayYmd();
+    renderAcmpConcretagem();
+  } else if (mode === "USUARIOS") {
+    setMode("USUARIOS");
+  }
+}
+
+function bindEssentialNavigation() {
+  if (state.essentialNavigationBound) return;
+  state.essentialNavigationBound = true;
+
+  const appSidebar = document.getElementById("appSidebar");
+  const sidebarOverlay = document.getElementById("sidebarOverlay");
+  const sidebarToggle = document.getElementById("sidebarToggle");
+
+  if (localStorage.getItem("sidebarCollapsed") === "1") {
+    document.body.classList.add("sidebar-hidden");
+  }
+
+  function closeMobileSidebar() {
+    appSidebar?.classList.remove("sidebar-open");
+    sidebarOverlay?.classList.remove("visible");
+  }
+
+  if (sidebarToggle && appSidebar) {
+    sidebarToggle.addEventListener("click", () => {
+      if (window.innerWidth <= 1024) {
+        appSidebar.classList.toggle("sidebar-open");
+        sidebarOverlay?.classList.toggle("visible");
+      } else {
+        const hidden = document.body.classList.toggle("sidebar-hidden");
+        localStorage.setItem("sidebarCollapsed", hidden ? "1" : "0");
+      }
+    });
+  }
+
+  sidebarOverlay?.addEventListener("click", closeMobileSidebar);
+  document.querySelectorAll(".nav-item").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (window.innerWidth <= 768) closeMobileSidebar();
+    });
+  });
+
+  document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
+    btn.dataset.hubNavBound = "1";
+    btn.addEventListener("click", () => handleHubModeNavigation(btn.dataset.hubMode || ""));
+  });
+}
+
 function bindEvents() {
+  bindEssentialNavigation();
+
   if (el.loginEntrar) {
     el.loginEntrar.addEventListener("click", async () => {
       await loginWithRole(el.loginNome?.value || "", el.loginSenha?.value || "");
@@ -6227,11 +6307,11 @@ function bindEvents() {
     finalizarMontagemPosteAtual();
   });
 
-  el.atualizarDashboard.addEventListener("click", carregarDashboardConcretagem);
-  el.dashData.addEventListener("change", carregarDashboardConcretagem);
-  el.filtrarHistorico.addEventListener("click", () => renderHistorico());
+  if (el.atualizarDashboard) el.atualizarDashboard.addEventListener("click", carregarDashboardConcretagem);
+  if (el.dashData) el.dashData.addEventListener("change", carregarDashboardConcretagem);
+  if (el.filtrarHistorico) el.filtrarHistorico.addEventListener("click", () => renderHistorico());
   el.histTipo?.addEventListener("change", () => renderHistorico());
-  el.gerarRelatorioSetor.addEventListener("click", gerarRelatorioSetor);
+  if (el.gerarRelatorioSetor) el.gerarRelatorioSetor.addEventListener("click", gerarRelatorioSetor);
   if (el.relBtnImprimir) el.relBtnImprimir.addEventListener("click", imprimirRelatorioSetor);
   if (el.relBtnWhatsapp) el.relBtnWhatsapp.addEventListener("click", enviarRelatorioWhatsapp);
   if (el.acmpCarregar) el.acmpCarregar.addEventListener("click", renderAcmpConcretagem);
@@ -6241,7 +6321,7 @@ function bindEvents() {
   if (el.acmpSalvar) el.acmpSalvar.addEventListener("click", salvarAcmp);
   if (el.acmpImprimir) el.acmpImprimir.addEventListener("click", imprimirAcmp);
 
-  el.insFotos.addEventListener("change", async (event) => {
+  if (el.insFotos) el.insFotos.addEventListener("change", async (event) => {
     clearSubmitLock("inspecao");
     const files = Array.from(event.target.files || []);
     state.insPhotosRawFiles = (state.insPhotosRawFiles || []).concat(files);
@@ -6266,7 +6346,7 @@ function bindEvents() {
     sidebarOverlay?.classList.remove("visible");
   }
 
-  if (sidebarToggle && appSidebar) {
+  if (!state.essentialNavigationBound && sidebarToggle && appSidebar) {
     sidebarToggle.addEventListener("click", () => {
       if (window.innerWidth <= 1024) {
         // Mobile: drawer com overlay
@@ -6279,14 +6359,16 @@ function bindEvents() {
       }
     });
   }
-  if (sidebarOverlay && appSidebar) {
+  if (!state.essentialNavigationBound && sidebarOverlay && appSidebar) {
     sidebarOverlay.addEventListener("click", closeMobileSidebar);
   }
-  document.querySelectorAll(".nav-item").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      if (window.innerWidth <= 768) closeMobileSidebar();
+  if (!state.essentialNavigationBound) {
+    document.querySelectorAll(".nav-item").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (window.innerWidth <= 768) closeMobileSidebar();
+      });
     });
-  });
+  }
   const navInicio = document.getElementById("navInicio");
   if (navInicio) navInicio.addEventListener("click", () => setMode("HUB"));
   const navDashboard = document.getElementById("navDashboard");
@@ -6339,17 +6421,9 @@ function bindEvents() {
 
   // Hub icon-cards (data-hub-mode)
   document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
+    if (btn.dataset.hubNavBound === "1") return;
     btn.addEventListener("click", () => {
-      const mode = btn.dataset.hubMode;
-      if (mode === "DASHBOARD") { setMode("DASHBOARD"); }
-      else if (mode === "MONTAGEM_INDICADORES") { setMode("MONTAGEM_INDICADORES"); }
-      else if (mode === "PROD_ANALISE") { setMode("PROD_ANALISE"); }
-      else if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) { setMode(mode); if (!el.libData.value) el.libData.value = todayYmd(); renderLiberacaoDual(); }
-      else if (mode === "INSPECAO") { setMode("INSPECAO"); if (!el.insFiltroData.value) el.insFiltroData.value = todayYmd(); renderInspecaoLiberados(); }
-      else if (mode === "MONTAGEM_POSTES") { setMode("MONTAGEM_POSTES"); if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd(); renderMontagemPostesLiberados(); }
-      else if (mode === "RELATORIO") { setMode("RELATORIO"); if (!el.relData.value) el.relData.value = todayYmd(); }
-      else if (mode === "HISTORICO") { setMode("HISTORICO"); renderHistorico(); }
-      else if (mode === "ACMP_CONCRETAGEM") { setMode("ACMP_CONCRETAGEM"); if (!el.acmpData.value) el.acmpData.value = todayYmd(); renderAcmpConcretagem(); }
+      handleHubModeNavigation(btn.dataset.hubMode || "");
     });
   });
 }
@@ -7606,16 +7680,16 @@ function init() {
   subscribeToRealtimeUpdates();
 
   const now = todayYmd();
-  el.libData.value = now;
-  el.insFiltroData.value = now;
-  el.insModoCarga.value = "data";
+  if (el.libData) el.libData.value = now;
+  if (el.insFiltroData) el.insFiltroData.value = now;
+  if (el.insModoCarga) el.insModoCarga.value = "data";
   if (el.mpFiltroData) el.mpFiltroData.value = now;
   if (el.mpModoCarga) el.mpModoCarga.value = "data";
   if (el.mpSetor) el.mpSetor.value = "";
   if (el.histTipo) el.histTipo.value = "";
-  el.dashData.value = now;
-  el.relData.value = now;
-  el.relSetor.value = "Setor 2";
+  if (el.dashData) el.dashData.value = now;
+  if (el.relData) el.relData.value = now;
+  if (el.relSetor) el.relSetor.value = "Setor 2";
   if (el.acmpData) el.acmpData.value = now;
   if (el.acmpSetor) el.acmpSetor.value = "";
   const dbDataEl = document.getElementById("dbData");
@@ -7746,12 +7820,12 @@ async function carregarMontagemIndicadores() {
     const [montagemRes, producaoRes] = await Promise.all([
       supabaseClient
         .from("montagem_poste")
-        .select("id, setor, finalizado_em, status_montagem, montador_nome, forma_numero, modelo, data_fabricacao, inicio_inspecao_montagem, checklists, observacoes_montagem, motivo_recusa")
+        .select("*")
         .order("finalizado_em", { ascending: false })
         .limit(5000),
       supabaseClient
         .from("producao")
-        .select("setor, data_fabricacao, status")
+        .select("*")
         .gte("data_fabricacao", dStart)
         .lte("data_fabricacao", dEnd)
         .limit(5000)
