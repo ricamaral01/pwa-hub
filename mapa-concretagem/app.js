@@ -7089,7 +7089,11 @@ function aplicarFiltrosEExibirMontagem() {
 
     // Filtro por Status
     if (fStatus) {
-      if (row.status_montagem !== fStatus) return false;
+      if (fStatus === "R") {
+        if (row.status_montagem !== "R" && row.status_montagem !== "RR") return false;
+      } else if (row.status_montagem !== fStatus) {
+        return false;
+      }
     }
 
     // Filtro por Pesquisa de Texto
@@ -7163,6 +7167,11 @@ function aplicarFiltrosEExibirMontagem() {
 
 
   // Renderizar tempos médios
+  const elTotalAprovados = document.getElementById("miTotalAprovados");
+  if (elTotalAprovados) elTotalAprovados.textContent = totalAprovados;
+  const elTotalRecusados = document.getElementById("miTotalRecusados");
+  if (elTotalRecusados) elTotalRecusados.textContent = totalRecusados;
+
   const elTempoModelo = document.getElementById("miTempoMedioModelo");
   if (elTempoModelo) {
     const listModelos = Object.keys(temposPorModelo).map(key => {
@@ -7492,8 +7501,8 @@ window.ordenarMiTabela = function(coluna) {
 
 function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   miUltimosGraficos = { byDay, bySector, byMontador, prodByDay };
-  const shouldRenderProducao = miAbaAtiva === "producao";
-  const shouldRenderQualidade = miAbaAtiva === "qualidade";
+  const shouldRenderProducao = miAbaAtiva === "producao" || window.innerWidth >= 768;
+  const shouldRenderQualidade = miAbaAtiva === "qualidade" || window.innerWidth >= 768;
   if (!shouldRenderProducao && chartMiPorDiaInstance) {
     chartMiPorDiaInstance.destroy();
     chartMiPorDiaInstance = null;
