@@ -4584,6 +4584,116 @@ tr.row-montado {
   align-items: flex-end;
 }
 
+#viewProdAnalise {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding: 12px;
+  background: #f6f8fb;
+}
+.pa-topbar {
+  margin: -12px -12px 12px;
+}
+.pa-tab-section {
+  display: none;
+}
+.pa-tab-section.active {
+  display: block;
+}
+.pa-kpis-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.pa-kpis-grid .mi-kpi-card {
+  min-height: 92px;
+}
+.pa-kpis-grid .db-kpi-sub {
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.pa-drawer-footer {
+  flex-wrap: wrap;
+}
+.pa-drawer-footer .mi-primary-btn {
+  flex-basis: 100%;
+}
+.pa-table-responsive {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.pa-table-wrap .mi-table {
+  min-width: 620px;
+}
+.pa-volume-sector-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pa-volume-sector-row {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+.pa-volume-sector-head,
+.pa-volume-sector-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #475569;
+  font-size: 0.82rem;
+}
+.pa-volume-sector-head strong {
+  color: #0f172a;
+}
+.pa-volume-sector-track {
+  display: flex;
+  height: 12px;
+  min-width: 8px;
+  max-width: 100%;
+  overflow: hidden;
+  margin: 8px 0;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+.pa-volume-padrao {
+  background: #2563eb;
+}
+.pa-volume-fora {
+  background: #dc2626;
+}
+
+@media (min-width: 768px) {
+  #viewProdAnalise {
+    padding: 20px;
+  }
+  .pa-topbar {
+    margin: 0 0 16px;
+  }
+  .pa-tabs-bar {
+    display: none;
+  }
+  .pa-tab-section {
+    display: block;
+    margin-top: 18px;
+  }
+  .pa-kpis-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  #viewProdAnalise {
+    padding: 24px;
+  }
+  .pa-kpis-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .pa-toolbar {
     flex-direction: column;
