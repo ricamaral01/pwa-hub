@@ -3466,8 +3466,33 @@ hr {
   }
 
   body.print-relatorio .rel-kpi-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+    display: block !important;
+    margin: 8px 0 12px !important;
+    padding: 6px 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #cbd5e1 !important;
     break-inside: avoid;
+  }
+
+  body.print-relatorio .rel-kpi-grid > div {
+    display: inline !important;
+    margin: 0 18px 0 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  body.print-relatorio .rel-kpi-grid span,
+  body.print-relatorio .rel-kpi-grid strong {
+    display: inline !important;
+    margin: 0 !important;
+    font-size: 9pt !important;
+    color: #0f172a !important;
+  }
+
+  body.print-relatorio .rel-kpi-grid span::after {
+    content: ": ";
   }
 
   body.print-relatorio .rel-print-header,

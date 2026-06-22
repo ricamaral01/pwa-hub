@@ -4606,7 +4606,10 @@ function getRelatorioTipoConcreto(row) {
 }
 
 function getRelatorioModelo(row) {
-  return row.modelo || row.descricaoPoste || row.descricao_poste || row.codigoProduto || row.codigo_produto || "Sem modelo";
+  const forma = String(row.forma_numero || row.formaNumero || row.forma || "").trim().toUpperCase();
+  if (/^A-\d+$/.test(forma)) return "1 CX VR";
+  const catalogo = getPosteFieldsForForma(forma, row.setor || "");
+  return row.modelo || row.descricaoPoste || row.descricao_poste || catalogo.descricaoPoste || row.codigoProduto || row.codigo_produto || catalogo.codigoProduto || "Sem modelo";
 }
 
 function formatRelatorioDuracao(ms) {
