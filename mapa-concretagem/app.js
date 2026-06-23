@@ -178,7 +178,7 @@ const POSTES_DUPLO_T_CATALOGO = [
   { codigo: "I", descricao: "Padrao Completo 3 cx VL", setor: "Setor 1", codigoProduto: "945", chaves: ["I"] },
   { codigo: "300-VR", descricao: "Poste 2 cx VR (7,5 x 300)", setor: "Setor 1", codigoProduto: "944", chaves: ["300-VR"] },
   { codigo: "300-VL", descricao: "Poste 2 cx VL (7,5 x 300)", setor: "Setor 1", codigoProduto: "942", chaves: ["300-VL"] },
-  { codigo: "CM", descricao: "Padrao Cemig 1 cx VL - 7,0 x150", setor: "Setor 1", codigoProduto: "953", chaves: ["CM"] },
+  { codigo: "CM", descricao: "Padrao Cemig 1 cx VL - 7,0 x150", setor: "Setor 1", codigoProduto: "953", chaves: ["CM", "BC"] },
   { codigo: "N", descricao: "Poste 7,5 X 600 VL", setor: "Setor 1", codigoProduto: "936", chaves: ["N"] },
   { codigo: "M", descricao: "Poste 7,5 X 600 VR", setor: "Setor 1", codigoProduto: "939", chaves: ["M"] },
   { codigo: "TCL", descricao: "Poste 7,5 X 600 VL c/", setor: "Setor 2", codigoProduto: "937", chaves: ["TCL"] },
@@ -186,7 +186,7 @@ const POSTES_DUPLO_T_CATALOGO = [
   { codigo: "100", descricao: "Poste Subterraneo 100 A", setor: "Setor 1", codigoProduto: "949", chaves: ["100"] },
   { codigo: "SB-E1", descricao: "Poste Subterraneo 100 A - Elektro", setor: "Setor 1", codigoProduto: "4848", chaves: ["SB-E1"] },
   { codigo: "200", descricao: "Poste Subterraneo 200 A - TC", setor: "Setor 1", codigoProduto: "5017", chaves: ["200"] },
-  { codigo: "TOTEM", descricao: "Totem de medicao indireta Elektro", setor: "Setor 2", codigoProduto: "13570", chaves: ["TOTEM", "A-TOTEM"] },
+  { codigo: "TOTEM", descricao: "Totem de medicao indireta Elektro", setor: "Setor 2", codigoProduto: "13570", chaves: ["TOTEM", "A-TOTEM", "TMIE"] },
   { codigo: "PL", descricao: "Poste Visor Aereo 1 cx VL (7,5x300)", setor: "Setor 2", codigoProduto: "934", chaves: ["PL"] },
   { codigo: "CEMIG-5X150", descricao: "Padrao Cemig 1CX - 5,0 x 150", setor: "Setor 4", codigoProduto: "952", chaves: ["C-F1"] },
   { codigo: "CEMIG-1VL", descricao: "Padrao Cemig 1 cx VL - 7,0 x150", setor: "Setor 4", codigoProduto: "953", chaves: ["R-G"] },
@@ -274,7 +274,7 @@ const SETOR_1_RIGHT_FORMS = [
   { forma: "G-03", modelo: "Ec. 2CXS VR" },
   { forma: "G-04", modelo: "Ec. 2CXS VR" },
   { forma: "G-05", modelo: "Ec. 2CXS VR" },
-  { forma: "CM - 01", modelo: "1 CX VL 7,0 x 150" },
+  { forma: "BC - 01", modelo: "1 CX VL 7,0 x 150" },
   { forma: "300-VL", modelo: "2 CXS VL" },
   { forma: "300-VR", modelo: "2 CXS VR" },
   { forma: "E-01", modelo: "Ec. 1CX VR" },
@@ -299,13 +299,14 @@ const SETOR_1_RIGHT_FORMS = [
   { forma: "CE-03", modelo: "2 CXS VR" },
   { forma: "100 - 4", modelo: "SUB. 100 AMP." },
   { forma: "100 - 5", modelo: "SUB. 100 AMP." },
-  { forma: "100 - 6", modelo: "SUB. 100 AMP." },
   { forma: "SBE-1", modelo: "SUB. 100-AMP-E" },
+  { forma: "SBE-2", modelo: "SUB. 100-AMP-E" },
   { forma: "200 -1", modelo: "SUB. 200-AMP C/ TC" },
   { forma: "200 -2", modelo: "SUB. 200-AMP C/ TC" },
   { forma: "DE-03", modelo: "2 CXS VL" },
   { forma: "DE-02", modelo: "2 CXS VL" },
-  { forma: "DE-01", modelo: "2 CXS VL" }
+  { forma: "DE-01", modelo: "2 CXS VL" },
+  { forma: "N-01", modelo: "1 CX VL - 600" }
 ];
 
 const SETOR_2_LEFT_FORMS = [
@@ -352,7 +353,7 @@ const SETOR_2_LEFT_FORMS = [
   { forma: "B-05", modelo: "1 CX VL" },
   { forma: "B-16", modelo: "1 CX VL" },
   { forma: "B-15", modelo: "1 CX VL" },
-  { forma: "A-TOTEM", label: "TOTEM", modelo: "Totem Med. Indireta" }
+  { forma: "TMIE-1", label: "TMIE-1", modelo: "Totem Med. Ind. Elecktro" }
 ];
 
 const SETOR_2_RIGHT_FORMS = [
@@ -764,6 +765,8 @@ function getFormaCatalogKey(forma) {
   if (normalized.startsWith("100-")) return "100";
   if (normalized.startsWith("200-")) return "200";
   if (normalized.startsWith("A-TOTEM")) return "A-TOTEM";
+  if (normalized.startsWith("TMIE")) return "TMIE";
+  if (normalized.startsWith("BC")) return "BC";
   if (normalized.startsWith("C-F1")) return "C-F1";
   if (normalized.startsWith("R-G")) return "R-G";
   if (normalized.startsWith("DTBM")) return "DTBM";
@@ -5154,7 +5157,8 @@ async function gerarRelatorioSetor() {
       const { data: rows, error } = await query;
 
       if (!error && Array.isArray(rows)) {
-        const mappedRows = rows.map(r => {
+        const uniqueRows = deduplicarLinhasProducao(rows);
+        const mappedRows = uniqueRows.map(r => {
           const formaNorm = normalizeForma(r.forma || r.forma_numero || "");
           let modeloFinal = r.modelo;
           if ((r.setor === "Setor 3" || r.setor === "Setor 4") && (modeloFinal === "SC" || !modeloFinal) && formToModelMap[formaNorm]) {
@@ -5206,11 +5210,16 @@ async function gerarRelatorioSetor() {
       colaborador: r.liberacao?.colaborador || "",
       timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
       tipoConcreto: r.concretoTipo,
-      setor: r.setor
+      setor: r.setor,
+      data_fabricacao: r.dataFabricacao,
+      forma: r.formaNumero,
+      status: r.liberacao?.status === "1" ? "LIBERADO" : r.liberacao?.status,
+      tipo_concreto: r.concretoTipo
     };
   });
 
-  renderRelatorioSetor({ data, setor, encarregado, rows });
+  const uniqueRows = deduplicarLinhasProducao(rows);
+  renderRelatorioSetor({ data, setor, encarregado, rows: uniqueRows });
 }
 
 function getRoleConfig(role) {
@@ -6609,7 +6618,9 @@ function isConcretePadrao(row) {
   const raw = row?.tipo_concreto || row?.tipoConcreto || row?.concretoTipo || "";
   if (!raw) return true;
   const normalized = String(raw).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-  return normalized.includes("PADRAO") || normalized === "P";
+  if (normalized === "INSPECIONADO") return true;
+  const isDefect = normalized.includes("SECO") || normalized.includes("SEGREGAD") || normalized.includes("EXSUDAD");
+  return !isDefect;
 }
 
 function buildProductiveHourBuckets(rows, valueGetter) {
@@ -6625,6 +6636,30 @@ function buildProductiveHourBuckets(rows, valueGetter) {
 
   const labels = Object.keys(buckets).sort();
   return { labels, values: labels.map(label => buckets[label]) };
+}
+
+function deduplicarLinhasProducao(rows) {
+  if (!rows || rows.length === 0) return [];
+  const groups = {};
+  rows.forEach(r => {
+    const key = `${r.data_fabricacao}||${r.forma || r.forma_numero || ""}`;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(r);
+  });
+
+  const uniqueRows = [];
+  Object.keys(groups).forEach(key => {
+    const list = groups[key];
+    let selected = list.find(r => r.status === 'LIBERADO');
+    if (!selected) {
+      selected = list.find(r => r.tipo_concreto !== 'INSPECIONADO');
+    }
+    if (!selected) {
+      selected = list[0];
+    }
+    uniqueRows.push(selected);
+  });
+  return uniqueRows;
 }
 
 function getLocalRowsForPeriod(dStart, dEnd) {
@@ -6645,10 +6680,6 @@ function getLocalRowsForPeriod(dStart, dEnd) {
     .sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
 }
 
-
-
-
-
 function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta) {
   const totalFormas = filteredRows.length;
   let totalVolume = 0;
@@ -6664,6 +6695,7 @@ function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta
   });
 
   const validCycles = [];
+  const cyclesBySector = {};
   const allIntervals = [];
   const paradasList = [];
   let tempoPerdidoTotal = 0;
@@ -6671,6 +6703,10 @@ function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta
   Object.keys(groups).forEach(key => {
     const [dia, setor] = key.split("||");
     const list = groups[key].sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+
+    if (!cyclesBySector[setor]) {
+      cyclesBySector[setor] = [];
+    }
 
     for (let i = 1; i < list.length; i++) {
       const tPrev = new Date(list[i - 1].data_hora).getTime();
@@ -6699,6 +6735,7 @@ function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta
 
       if (diffMin <= 60) {
         validCycles.push(diffMin);
+        cyclesBySector[setor].push(diffMin);
         if (diffMin > meta) {
           tempoPerdidoTotal += (diffMin - meta);
         }
@@ -6741,15 +6778,15 @@ function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta
   const jornadaDiaria = [];
   const diasUnicos = Array.from(new Set(filteredRows.map(r => r.data_fabricacao))).sort();
   diasUnicos.forEach(dia => {
-    const listDia = filteredRows.filter(r => r.data_fabricacao === dia).sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
-    if (listDia.length > 0) {
-      const tIni = new Date(listDia[0].data_hora);
-      const tFim = new Date(listDia[listDia.length - 1].data_hora);
+    const list = filteredRows.filter(r => r.data_fabricacao === dia).sort((a, b) => new Date(a.data_hora).getTime() - new Date(b.data_hora).getTime());
+    if (list.length > 0) {
+      const tIni = new Date(list[0].data_hora);
+      const tFim = new Date(list[list.length - 1].data_hora);
       jornadaDiaria.push({
         data: dia.split("-").reverse().join("/"),
         inicio: tIni.toLocaleTimeString("pt-BR", {hour:'2-digit', minute:'2-digit'}),
         fim: tFim.toLocaleTimeString("pt-BR", {hour:'2-digit', minute:'2-digit'}),
-        formas: listDia.length,
+        formas: list.length,
         metaDiaria: Math.round(480 / meta)
       });
     }
@@ -6793,6 +6830,21 @@ function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta
   const capAtuFormsDia = Math.round(totalFormas / numDias);
   const capAtuM3Dia = totalVolume / numDias;
 
+  let totalFormasPorHora = 0;
+  Object.keys(cyclesBySector).forEach(setor => {
+    const sectorCycles = cyclesBySector[setor];
+    if (sectorCycles.length > 0) {
+      const sectorSum = sectorCycles.reduce((s, v) => s + v, 0);
+      const sectorAvg = sectorSum / sectorCycles.length;
+      if (sectorAvg > 0) {
+        totalFormasPorHora += 60 / sectorAvg;
+      }
+    }
+  });
+
+  const avgVol = totalVolume / Math.max(totalFormas, 1);
+  const m3PorHora = totalFormasPorHora * avgVol;
+
   return {
     filteredRows,
     totalFormas,
@@ -6805,8 +6857,8 @@ function calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta
     numeroParadas,
     tempoPerdidoTotal,
     eficienciaOperacional,
-    formasPorHora: cicloMedio > 0 ? 60 / cicloMedio : 0,
-    m3PorHora: tempoDisponivelMin > 0 ? totalVolume / (tempoDisponivelMin / 60) : 0,
+    formasPorHora: totalFormasPorHora,
+    m3PorHora: m3PorHora,
     paradasAmarelas: paradasList.filter(p => p.classificacao === "AMARELO").length,
     paradasVermelhas: paradasList.filter(p => p.classificacao === "VERMELHO").length,
     paradasList,
@@ -7222,15 +7274,15 @@ function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
         labels: chartLabels,
         datasets: [
           {
-            label: 'Concreto Padrão (m³)',
+            label: 'Concreto Padrão (Bom) (m³)',
             data: dataVolPadraoDia,
-            backgroundColor: "rgba(30, 64, 175, 0.85)", // Azul
+            backgroundColor: "rgba(16, 185, 129, 0.85)", // Verde Esmeralda
             borderRadius: 4
           },
           {
             label: 'Fora do Padrão (m³)',
             data: dataVolForaPadraoDiaArr,
-            backgroundColor: "rgba(220, 38, 38, 0.85)", // Vermelho
+            backgroundColor: "rgba(239, 68, 68, 0.85)", // Vermelho
             borderRadius: 4
           }
         ]
@@ -7243,16 +7295,17 @@ function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
           tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 },
           datalabels: {
             display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
-            color: '#ffffff',
-            anchor: 'center',
-            align: 'center',
-            font: { weight: 'bold', size: 10 },
+            color: '#334155',
+            anchor: 'end',
+            align: 'top',
+            offset: 2,
+            font: { weight: 'bold', size: 9 },
             formatter: (v) => v.toFixed(1)
           }
         },
         scales: {
-          x: { stacked: true, grid: { display: false } },
-          y: { stacked: true, beginAtZero: true, grid: { color: '#f1f5f9' }, suggestedMax: Math.max(...dataVolDia) * 1.15 }
+          x: { stacked: false, grid: { display: false } },
+          y: { stacked: false, beginAtZero: true, grid: { color: '#f1f5f9' }, suggestedMax: Math.max(...dataVolDia) * 1.15 }
         }
       },
       plugins: [typeof ChartDataLabels !== 'undefined' ? ChartDataLabels : {}]
@@ -7427,7 +7480,7 @@ async function carregarProdutividadeConcretagem() {
           .select('*')
           .gte('data_fabricacao', dStart)
           .lte('data_fabricacao', dEnd)
-          .eq('status', 'LIBERADO')
+          .in('status', ['LIBERADO', 'INSPECIONADO'])
           .order('data_hora', { ascending: true })
           .range(from, to);
 
@@ -7448,6 +7501,9 @@ async function carregarProdutividadeConcretagem() {
   } else {
     allRows = getLocalRowsForPeriod(dStart, dEnd);
   }
+
+  allRows = deduplicarLinhasProducao(allRows);
+  allRows.sort((a, b) => new Date(a.data_hora || a.updated_at || 0).getTime() - new Date(b.data_hora || b.updated_at || 0).getTime());
 
   const baseDate7 = new Date(dEnd + "T12:00:00");
   const dates7 = [];
@@ -7472,7 +7528,7 @@ async function carregarProdutividadeConcretagem() {
           .select('*')
           .gte('data_fabricacao', start7)
           .lte('data_fabricacao', dEnd)
-          .eq('status', 'LIBERADO')
+          .in('status', ['LIBERADO', 'INSPECIONADO'])
           .order('data_hora', { ascending: true })
           .range(from, to);
         if (error) throw error;
@@ -7487,6 +7543,9 @@ async function carregarProdutividadeConcretagem() {
   } else {
     rowsUltimos7 = getLocalRowsForPeriod(start7, dEnd);
   }
+
+  rowsUltimos7 = deduplicarLinhasProducao(rowsUltimos7);
+  rowsUltimos7.sort((a, b) => new Date(a.data_hora || a.updated_at || 0).getTime() - new Date(b.data_hora || b.updated_at || 0).getTime());
 
   const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
 
@@ -7528,10 +7587,10 @@ async function carregarProdutividadeConcretagem() {
         const to = from + pageSize - 1;
         const { data: rows, error } = await supabaseClient
           .from('producao')
-          .select('data_fabricacao, codigo_produto, modelo, setor, tipo_concreto')
+          .select('data_fabricacao, codigo_produto, modelo, setor, tipo_concreto, forma, status, data_hora')
           .gte('data_fabricacao', mesStart)
           .lte('data_fabricacao', dEnd)
-          .eq('status', 'LIBERADO')
+          .in('status', ['LIBERADO', 'INSPECIONADO'])
           .range(from, to);
 
         if (error) throw error;
@@ -7551,6 +7610,9 @@ async function carregarProdutividadeConcretagem() {
   } else {
     allRowsMes = getLocalRowsForPeriod(mesStart, dEnd);
   }
+
+  allRowsMes = deduplicarLinhasProducao(allRowsMes);
+  allRowsMes.sort((a, b) => new Date(a.data_hora || a.updated_at || 0).getTime() - new Date(b.data_hora || b.updated_at || 0).getTime());
 
   if (filterSetor) {
     allRowsMes = allRowsMes.filter(r => r.setor === filterSetor);
@@ -7576,11 +7638,28 @@ async function carregarProdutividadeConcretagem() {
     if (!isPadrao) volForaPadraoMes += vol;
   });
 
-  const paKpiVolConcretoDia = document.getElementById("paKpiVolConcretoDia");
-  if (paKpiVolConcretoDia) paKpiVolConcretoDia.textContent = volConcretoDia.toFixed(2) + " m3";
+  const volBomDia = volConcretoDia - volForaPadraoDia;
+  const pctBomDia = volConcretoDia > 0 ? (volBomDia / volConcretoDia) * 100 : 0;
+  const pctForaDia = volConcretoDia > 0 ? (volForaPadraoDia / volConcretoDia) * 100 : 0;
 
-  const paKpiVolConcretoMes = document.getElementById("paKpiVolConcretoMes");
-  if (paKpiVolConcretoMes) paKpiVolConcretoMes.textContent = `Mes: ${volConcretoMes.toFixed(2)} m3`;
+  const volBomMes = volConcretoMes - volForaPadraoMes;
+  const pctBomMes = volConcretoMes > 0 ? (volBomMes / volConcretoMes) * 100 : 0;
+  const pctForaMes = volConcretoMes > 0 ? (volForaPadraoMes / volConcretoMes) * 100 : 0;
+
+  const paKpiVolumeMes = document.getElementById("paKpiVolumeMes");
+  if (paKpiVolumeMes) paKpiVolumeMes.textContent = `Mês: ${volConcretoMes.toFixed(2)} m³`;
+
+  const paKpiVolBomDia = document.getElementById("paKpiVolBomDia");
+  if (paKpiVolBomDia) paKpiVolBomDia.textContent = `${volBomDia.toFixed(2)} m³ (${pctBomDia.toFixed(0)}%)`;
+
+  const paKpiVolBomMes = document.getElementById("paKpiVolBomMes");
+  if (paKpiVolBomMes) paKpiVolBomMes.textContent = `Mês: ${volBomMes.toFixed(2)} m³ (${pctBomMes.toFixed(0)}%)`;
+
+  const paKpiVolForaDia = document.getElementById("paKpiVolForaDia");
+  if (paKpiVolForaDia) paKpiVolForaDia.textContent = `${volForaPadraoDia.toFixed(2)} m³ (${pctForaDia.toFixed(0)}%)`;
+
+  const paKpiVolForaMes = document.getElementById("paKpiVolForaMes");
+  if (paKpiVolForaMes) paKpiVolForaMes.textContent = `Mês: ${volForaPadraoMes.toFixed(2)} m³ (${pctForaMes.toFixed(0)}%)`;
 
   const setKpi = (id, value) => {
     const node = document.getElementById(id);

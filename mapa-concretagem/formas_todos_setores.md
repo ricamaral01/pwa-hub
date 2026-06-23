@@ -82,7 +82,7 @@ Total: 50 formas.
 | G-03 | Ec. 2CXS VR |
 | G-04 | Ec. 2CXS VR |
 | G-05 | Ec. 2CXS VR |
-| CM - 01 | 1 CX VL 7,0 x 150 |
+| BC - 01 | 1 CX VL 7,0 x 150 |
 | 300-VL | 2 CXS VL |
 | 300-VR | 2 CXS VR |
 | E-01 | Ec. 1CX VR |
@@ -107,13 +107,14 @@ Total: 50 formas.
 | CE-03 | 2 CXS VR |
 | 100 - 4 | SUB. 100 AMP. |
 | 100 - 5 | SUB. 100 AMP. |
-| 100 - 6 | SUB. 100 AMP. |
 | SBE-1 | SUB. 100-AMP-E |
+| SBE-2 | SUB. 100-AMP-E |
 | 200 -1 | SUB. 200-AMP C/ TC |
 | 200 -2 | SUB. 200-AMP C/ TC |
 | DE-03 | 2 CXS VL |
 | DE-02 | 2 CXS VL |
 | DE-01 | 2 CXS VL |
+| N-01 | 1 CX VL - 600 |
 
 ---
 
@@ -167,7 +168,7 @@ Total: 44 formas.
 | B-05 | 1 CX VL |
 | B-16 | 1 CX VL |
 | B-15 | 1 CX VL |
-| A-TOTEM | Totem Med. Indireta |
+| TMIE-1 | Totem Med. Ind. Elecktro |
 
 ### Coluna Direita (`right`)
 Total: 40 formas.
