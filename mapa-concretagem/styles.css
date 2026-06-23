@@ -729,40 +729,45 @@ body.sidebar-hidden .app-main  { margin-left: 0; }
   -webkit-overflow-scrolling: touch;
 }
 
-.rel-full-table th,
-.rel-full-table td,
-.rel-summary-table th,
-.rel-summary-table td {
-  white-space: nowrap;
+body:not(.print-relatorio) .rel-full-table th,
+body:not(.print-relatorio) .rel-full-table td,
+body:not(.print-relatorio) .rel-summary-table th,
+body:not(.print-relatorio) .rel-summary-table td {
+  white-space: normal;
   vertical-align: top;
 }
 
 /* Custom screen column widths for the report table (only in display/screen mode) */
 body:not(.print-relatorio) .rel-full-table th:nth-child(1),
 body:not(.print-relatorio) .rel-full-table td:nth-child(1) {
-  width: 6% !important;
+  width: 70px !important;
+  max-width: 70px !important;
   text-align: center !important;
 }
 
 body:not(.print-relatorio) .rel-full-table th:nth-child(2),
 body:not(.print-relatorio) .rel-full-table td:nth-child(2) {
-  width: 56% !important;
+  width: 320px !important;
+  max-width: 320px !important;
 }
 
 body:not(.print-relatorio) .rel-full-table th:nth-child(3),
 body:not(.print-relatorio) .rel-full-table td:nth-child(3) {
-  width: 18% !important;
+  width: 140px !important;
+  max-width: 140px !important;
 }
 
 body:not(.print-relatorio) .rel-full-table th:nth-child(4),
 body:not(.print-relatorio) .rel-full-table td:nth-child(4) {
-  width: 10% !important;
+  width: 80px !important;
+  max-width: 80px !important;
   text-align: center !important;
 }
 
 body:not(.print-relatorio) .rel-full-table th:nth-child(5),
 body:not(.print-relatorio) .rel-full-table td:nth-child(5) {
-  width: 50% !important;
+  width: 220px !important;
+  max-width: 220px !important;
 }
 
 .rel-print-footer {
@@ -1071,9 +1076,9 @@ textarea:focus {
   border: 1px solid #0f172a;
   padding: 4px 5px;
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .sheet-table th:nth-child(1),
@@ -4975,7 +4980,28 @@ tr.row-montado {
   -webkit-overflow-scrolling: touch;
 }
 .pa-table-wrap .mi-table {
-  min-width: 560px;
+  width: 100%;
+  table-layout: fixed;
+}
+.pa-table-wrap .mi-table th:nth-child(1),
+.pa-table-wrap .mi-table td:nth-child(1) {
+  width: 70px;
+}
+.pa-table-wrap .mi-table th:nth-child(2),
+.pa-table-wrap .mi-table td:nth-child(2) {
+  width: 120px;
+}
+.pa-table-wrap .mi-table th:nth-child(3),
+.pa-table-wrap .mi-table td:nth-child(3) {
+  width: 220px;
+}
+.pa-table-wrap .mi-table th:nth-child(4),
+.pa-table-wrap .mi-table td:nth-child(4) {
+  width: 80px;
+}
+.pa-table-wrap .mi-table th:nth-child(5),
+.pa-table-wrap .mi-table td:nth-child(5) {
+  width: 140px;
 }
 .pa-volume-sector-list {
   min-width: 0;

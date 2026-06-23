@@ -3292,6 +3292,37 @@ async function openMontagemPosteDetalhe(posteBase) {
   renderMontagemPosteDetalhe();
 }
 
+function getDeviceGeolocation() {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve({ error: "Não suportado pelo navegador" });
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        resolve({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          accuracy: position.coords.accuracy,
+          timestamp: position.timestamp
+        });
+      },
+      (error) => {
+        let errorMsg = "Erro desconhecido";
+        if (error.code === error.PERMISSION_DENIED) {
+          errorMsg = "Permissão negada";
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          errorMsg = "Posição indisponível";
+        } else if (error.code === error.TIMEOUT) {
+          errorMsg = "Tempo limite atingido";
+        }
+        resolve({ error: errorMsg });
+      },
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+    );
+  });
+}
+
 async function finalizarMontagemPosteAtual() {
   const poste = state.montagemPostesAtual;
   if (!poste) {
@@ -3317,32 +3348,60 @@ async function finalizarMontagemPosteAtual() {
     return;
   }
 
-  const updated = {
-    ...poste,
-    finalizadoEm: nowIso()
-  };
-  const syncResult = await syncMontagemPosteToApi(updated, "FINALIZACAO", { silent: false });
-  const finalEntry = {
-    ...updated,
-    pendingSync: !syncResult.synced
-  };
-  upsertMontagemPoste(finalEntry);
-  state.montagemPostesAtual = finalEntry;
+  const loadingModal = document.getElementById("loadingModal");
+  const loadingMsg = loadingModal ? loadingModal.querySelector(".loading-msg") : null;
+  if (loadingMsg) loadingMsg.textContent = "Obtendo geolocalização...";
+  if (loadingModal) loadingModal.classList.add("modal-visible");
 
-  renderMontagemPosteDetalhe();
-  showMontagemResumoModal({
-    ...finalEntry,
-    resumoSync: syncResult.synced ? "Sincronizado" : "Salvo localmente"
-  }, {
-    onClose: async () => {
-      setMode("MONTAGEM_POSTES");
-      await renderMontagemPostesLiberados();
-      if (el.mpFormaFiltro) {
-        el.mpFormaFiltro.value = "";
+  try {
+    const geoResult = await getDeviceGeolocation();
+    if (loadingMsg) loadingMsg.textContent = "Salvando montagem...";
+
+    const now = new Date();
+    const diaInspecao = now.toLocaleDateString("pt-BR");
+    const horarioDispositivo = now.toLocaleTimeString("pt-BR");
+
+    const updated = {
+      ...poste,
+      checklists: {
+        ...(poste.checklists || {}),
+        dia_inspecao: diaInspecao,
+        horario_dispositivo: horarioDispositivo,
+        geolocation: geoResult
+      },
+      finalizadoEm: nowIso()
+    };
+
+    const syncResult = await syncMontagemPosteToApi(updated, "FINALIZACAO", { silent: false });
+    const finalEntry = {
+      ...updated,
+      pendingSync: !syncResult.synced
+    };
+    upsertMontagemPoste(finalEntry);
+    state.montagemPostesAtual = finalEntry;
+
+    renderMontagemPosteDetalhe();
+    if (loadingModal) loadingModal.classList.remove("modal-visible");
+
+    showMontagemResumoModal({
+      ...finalEntry,
+      resumoSync: syncResult.synced ? "Sincronizado" : "Salvo localmente"
+    }, {
+      onClose: async () => {
+        setMode("MONTAGEM_POSTES");
+        await renderMontagemPostesLiberados();
+        if (el.mpFormaFiltro) {
+          el.mpFormaFiltro.value = "";
+        }
+        filtrarMontagemTabela();
       }
-      filtrarMontagemTabela();
-    }
-  });
+    });
+  } catch (e) {
+    console.error("Erro ao finalizar montagem:", e);
+    showMsgBox("Erro ao finalizar montagem: " + (e.message || String(e)), "error");
+  } finally {
+    if (loadingModal) loadingModal.classList.remove("modal-visible");
+  }
 }
 
 function filtrarMontagemTabela() {
@@ -3496,7 +3555,7 @@ async function renderMontagemPostesLiberados() {
       } else if (status === "RR") {
         acaoContent = `<button type="button" class="btn mp-open-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Retrabalhar</button>`;
       } else {
-        acaoContent = `<button type="button" class="btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: not-allowed;" disabled>Reprovado</button>`;
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Reprovado (Ver Checklist)</button>`;
       }
     } else {
       const extraClass = record.status === 'INSPECIONADO' ? 'mp-open-btn--inspecionado' : '';
@@ -8561,6 +8620,37 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
   document.getElementById("vcMetaInicio").textContent = formatTimeShort(normRow.inicio_inspecao_montagem);
   document.getElementById("vcMetaFim").textContent = formatTimeShort(normRow.finalizado_em);
 
+  const fallbackDia = normRow.finalizado_em ? String(normRow.finalizado_em).split("T")[0].split("-").reverse().join("/") : "-";
+  const fallbackHora = normRow.finalizado_em ? formatTimeShort(normRow.finalizado_em) : "-";
+
+  let checklists = normRow.checklists || {};
+  if (typeof checklists === "string") {
+    try {
+      checklists = JSON.parse(checklists);
+    } catch (e) {
+      checklists = {};
+    }
+  }
+
+  const diaInspecao = checklists.dia_inspecao || fallbackDia;
+  const horaDispositivo = checklists.horario_dispositivo || fallbackHora;
+
+  document.getElementById("vcMetaDiaInspecao").textContent = diaInspecao;
+  document.getElementById("vcMetaHoraDispositivo").textContent = horaDispositivo;
+
+  let geoText = "Não informada";
+  const geo = checklists.geolocation;
+  if (geo) {
+    if (geo.error) {
+      geoText = `<span style="color: #ef4444; font-weight: 500;">Indisponível (${geo.error})</span>`;
+    } else if (geo.latitude !== undefined && geo.longitude !== undefined) {
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${geo.latitude},${geo.longitude}`;
+      const accuracyStr = geo.accuracy ? ` (±${geo.accuracy.toFixed(1)}m)` : "";
+      geoText = `<a href="${mapsUrl}" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">📍 Ver no Mapa (Lat: ${geo.latitude.toFixed(6)}, Lng: ${geo.longitude.toFixed(6)})${accuracyStr}</a>`;
+    }
+  }
+  document.getElementById("vcMetaGeolocalizacao").innerHTML = geoText;
+
   let statusText = "Em Andamento";
   let statusColor = "#64748b";
   if (normRow.status_montagem === "A") {
@@ -8581,7 +8671,6 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
   const container = document.getElementById("vcChecklistContent");
   container.innerHTML = "";
 
-  const checklists = normRow.checklists || {};
   const sections = getMontagemChecklistSections(normRow.modelo || "");
 
   sections.forEach(section => {
