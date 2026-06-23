@@ -23,6 +23,34 @@ const ROLE_PERMISSIONS = {
   }
 };
 
+function getInspecaoChecklistSections(modelo = "") {
+  return [
+    {
+      id: "inspecao_visual",
+      titulo: "Inspeção Visual",
+      itens: [
+        { id: "homogeneidade_concreto", texto: "Homogeneidade do Concreto", critico: true, codigoFalha: "O" },
+        { id: "falhas_preenchimento", texto: "Falhas de Preenchimento", critico: true, codigoFalha: "A" },
+        { id: "concreto_segregado", texto: "Concreto Segregado", critico: true, codigoFalha: "O" },
+        { id: "grandes_avarias", texto: "Grandes Avarias", critico: true, codigoFalha: "P" },
+        { id: "furacao_obstruida", texto: "Furação Obstruída (pinos)", critico: true, codigoFalha: "E" },
+        { id: "armacao_aparente", texto: "Armação aparente", critico: true, codigoFalha: "A" },
+        { id: "trincas", texto: "Trincas", critico: true, codigoFalha: "I" },
+        { id: "tubulacao_entupida", texto: "Tubulação Entupida", critico: true, codigoFalha: "B" },
+        { id: "bolhas_excesso", texto: "Bolhas em excesso", critico: false, codigoFalha: "C" },
+        { id: "bolhas_fora_padrao", texto: "Bolhas fora do padrão", critico: false, codigoFalha: "C" },
+        { id: "carimbo_identificacao", texto: "Carimbo de Identificação", critico: false, codigoFalha: "F" },
+        { id: "fissuras", texto: "Fissuras", critico: false, codigoFalha: "G" },
+        { id: "rebarbas", texto: "Rebarbas", critico: false, codigoFalha: "Q" },
+        { id: "manchas_excessivas", texto: "Manchas excessivas", critico: false, codigoFalha: "K" },
+        { id: "buchas_fixacao", texto: "Buchas de fixação", critico: false, codigoFalha: "L" },
+        { id: "acabamento_face_exposta", texto: "Acabamento face exposta", critico: false, codigoFalha: "R" },
+        { id: "acabamento_abas", texto: "Acabamento abas", critico: false, codigoFalha: "S" }
+      ]
+    }
+  ];
+}
+
 function getMontagemChecklistSections(modelo = "") {
   const isDuploT = /DT|Duplo T|Barreiras/i.test(modelo);
 
@@ -661,6 +689,16 @@ const el = {
   insFormaFiltro: document.getElementById("insFormaFiltro"),
   salvarInspecaoFloat: document.getElementById("salvarInspecaoFloat"),
 
+  viewInspecaoDetalhe: document.getElementById("viewInspecaoDetalhe"),
+  insDetalheHeader: document.getElementById("insDetalheHeader"),
+  insChecklistSections: document.getElementById("insChecklistSections"),
+  insObservacoes: document.getElementById("insObservacoes"),
+  insStatusButtons: document.getElementById("insStatusButtons"),
+  insStatusAprovado: document.getElementById("insStatusAprovado"),
+  insStatusReprovado: document.getElementById("insStatusReprovado"),
+  insStatusRR: document.getElementById("insStatusRR"),
+  insFinalizarPoste: document.getElementById("insFinalizarPoste"),
+
   mpFiltroData: document.getElementById("mpFiltroData"),
   mpModoCarga: document.getElementById("mpModoCarga"),
   mpSetor: document.getElementById("mpSetor"),
@@ -1182,9 +1220,12 @@ function getMontagemMotivoOptions() {
 
 function getMotivoRecusaLabel(value) {
   if (!value) return "-";
-  const found = CHECKLIST_INSPECAO_CODIGOS.find((item) => item.codigo === value);
-  if (found) return `${found.codigo} — ${found.descricao}`;
-  return value;
+  const parts = String(value).split(/,\s*/);
+  const labels = parts.map((part) => {
+    const found = CHECKLIST_INSPECAO_CODIGOS.find((item) => item.codigo === part.trim());
+    return found ? `${found.codigo} — ${found.descricao}` : part;
+  });
+  return labels.join(", ");
 }
 
 function statusFluxoFromRecord(record) {
@@ -2688,7 +2729,8 @@ async function fetchPolesForDate(filtroData, setor = "") {
           codigo: insRecord.motivo_recusa || "",
           observacoes: insRecord.observacoes_montagem || "",
           colaborador: insRecord.montador_nome || "",
-          timestamp: insRecord.finalizado_em || insRecord.updated_at
+          timestamp: insRecord.finalizado_em || insRecord.updated_at,
+          raw: insRecord
         } : null,
         montagem: montRecord || null
       });
@@ -2765,7 +2807,7 @@ async function renderInspecaoLiberados() {
   el.insLiberadosBody.innerHTML = "";
   if (!filtroData) {
     el.insQtdItens.textContent = "0";
-    el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
+    el.insLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
     return;
   }
 
@@ -2780,7 +2822,7 @@ async function renderInspecaoLiberados() {
   // Filtra de acordo com modoCarga
   const rows = poles.filter((pole) => {
     if (modoCarga === "pendentes") {
-      return !pole.inspecao;
+      return !pole.inspecao || !pole.inspecao.timestamp;
     }
     return true;
   });
@@ -2794,56 +2836,50 @@ async function renderInspecaoLiberados() {
   el.insQtdItens.textContent = String(rows.length);
 
   if (!rows.length) {
-    el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Nenhum poste apontado ou pendente de inspeção para os filtros informados.</td></tr>';
+    el.insLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Nenhum poste apontado ou pendente de inspeção para os filtros informados.</td></tr>';
     return;
   }
 
   rows.forEach((record) => {
-    const tr = document.createElement("tr");
-    tr.dataset.recordId = String(record.recordId || "");
-    tr.dataset.dataFabricacao = String(record.dataFabricacao || "");
-    tr.dataset.setor = String(record.setor || "");
-    tr.dataset.formaNumero = String(record.formaNumero || "");
-    tr.dataset.modelo = String(record.modelo || "");
-    tr.dataset.codigoPoste = String(record.codigoPoste || "");
-    tr.dataset.descricaoPoste = String(record.descricaoPoste || "");
-    tr.dataset.codigoProduto = String(record.codigoProduto || "");
+    const isFinalizado = record.inspecao && !!record.inspecao.timestamp;
+    const status = record.inspecao?.status || "";
+    const rowClass = isFinalizado ? "row-montado" : "";
 
-    const selectedStatus = record.inspecao?.status || "";
-    const selectedCode = record.inspecao?.codigo || "";
+    const tr = document.createElement("tr");
+    if (rowClass) {
+      tr.className = rowClass;
+    }
+    tr.dataset.recordId = record.recordId;
+    tr.dataset.dataFabricacao = record.dataFabricacao;
+    tr.dataset.setor = record.setor;
+    tr.dataset.formaNumero = record.formaNumero;
+    tr.dataset.modelo = record.modelo;
+    tr.dataset.codigoPoste = record.codigoPoste || "";
+    tr.dataset.descricaoPoste = record.descricaoPoste || "";
+    tr.dataset.codigoProduto = record.codigoProduto || "";
+
+    // Armazena o registro de inspecao completo serializado em JSON para uso posterior ao clicar
+    tr.dataset.inspecaoRaw = record.inspecao && record.inspecao.raw ? JSON.stringify(record.inspecao.raw) : "";
+
+    let acaoContent = "";
+    if (isFinalizado) {
+      if (status === "A") {
+        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Aprovado (Ver Checklist)</button>`;
+      } else if (status === "RR") {
+        acaoContent = `<button type="button" class="btn ins-open-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Retrabalhar</button>`;
+      } else {
+        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Reprovado (Ver Checklist)</button>`;
+      }
+    } else {
+      acaoContent = `<button type="button" class="btn ins-open-btn primary" style="width: 100%; height: 38px; border-radius: 6px;">Inspecionar</button>`;
+    }
 
     tr.innerHTML = `
       <td data-label="N Forma">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
-      <td data-label="Status">
-        <select data-ins-status>
-          <option value="">Selecione</option>
-          <option value="A" ${selectedStatus === "A" ? "selected" : ""}>A - Aprovado</option>
-          <option value="R" ${selectedStatus === "R" ? "selected" : ""}>R - Reprovado</option>
-          <option value="RR" ${selectedStatus === "RR" ? "selected" : ""}>RR - Reprovado e retrabalhado</option>
-        </select>
-      </td>
-      <td data-label="Código Recusa">
-        <select data-ins-code>${getInspecaoCodeOptions(selectedCode)}</select>
-      </td>
-      <td data-label="Data Prod">${fmtDate(record.dataFabricacao || "")}</td>
+      <td data-label="Data Prod.">${fmtDate(record.dataFabricacao || "")}</td>
+      <td data-label="Ação">${acaoContent}</td>
     `;
-
-    const statusSelect = tr.querySelector("select[data-ins-status]");
-    const codeSelect = tr.querySelector("select[data-ins-code]");
-    if (statusSelect && codeSelect) {
-      const syncCodeState = () => {
-        if (statusSelect.value === "A") {
-          codeSelect.value = "";
-          codeSelect.disabled = true;
-        } else {
-          codeSelect.disabled = false;
-        }
-      };
-      statusSelect.addEventListener("change", syncCodeState);
-      syncCodeState();
-    }
-
     el.insLiberadosBody.appendChild(tr);
   });
   filtrarFormasTabela();
@@ -2932,9 +2968,11 @@ async function syncMontagemPosteToApi(entry, etapa = "", options = {}) {
   return { ok: false, synced: false, error: apiResult.error || "falha de sincronização" };
 }
 
-function isChecklistSectionComplete(sectionId, respostas = {}) {
-  const modelo = state.montagemPostesAtual?.modelo || "";
-  const sections = getMontagemChecklistSections(modelo);
+function isChecklistSectionComplete(sectionId, respostas = {}, mode = "MONTAGEM", modelo = "") {
+  if (!modelo) {
+    modelo = (mode === "INSPECAO" ? state.inspecaoPostesAtual?.modelo : state.montagemPostesAtual?.modelo) || "";
+  }
+  const sections = mode === "INSPECAO" ? getInspecaoChecklistSections(modelo) : getMontagemChecklistSections(modelo);
   const section = sections.find((s) => s.id === sectionId);
   if (!section) return false;
   return section.itens.every((item) => respostas[sectionId]?.[item.id] === "sim" || respostas[sectionId]?.[item.id] === "nao");
@@ -3574,232 +3612,423 @@ async function renderMontagemPostesLiberados() {
   filtrarMontagemTabela();
 }
 
-async function saveInspecao() {
-  if (state.isSendingInspecao) return;
+async function saveInspecao() {}
 
-  const colaborador = el.insColaborador.value.trim();
-  const observacaoGlobal = el.insObs.value.trim();
+async function openInspecaoPosteDetalhe(posteBase) {
+  const recordId = posteBase.recordId;
+  const dataFabricacao = posteBase.dataFabricacao;
+  const setor = posteBase.setor;
+  const formaNumero = posteBase.formaNumero;
+  const key = [recordId, dataFabricacao, setor, formaNumero, 'INSPECAO'].join("||");
+  const now = nowIso();
 
-  if (!colaborador) {
-    showMsgBox("Preencha o colaborador da inspeção.", "error");
+  let atual = null;
+  if (hasMontagemApiConfigured()) {
+    try {
+      const { data, error } = await supabaseClient.from('montagem_poste').select('*').eq('id', key).maybeSingle();
+      if (!error && data) {
+        atual = {
+          key: data.id,
+          recordId: data.record_id || "",
+          dataFabricacao: data.data_fabricacao || "",
+          setor: data.setor || "",
+          formaNumero: data.forma_numero || "",
+          modelo: data.modelo || "",
+          codigoPoste: data.codigo_poste || "",
+          descricaoPoste: data.descricao_poste || "",
+          codigoProduto: data.codigo_produto || "",
+          statusMontagem: data.status_montagem || "",
+          motivoRecusa: data.motivo_recusa || "",
+          etapa: data.etapa || "",
+          inicioInspecaoMontagem: data.inicio_inspecao_montagem || "",
+          finalizadoEm: data.finalizado_em || "",
+          checklists: data.checklists || {},
+          observacoesMontagem: data.observacoes_montagem || "",
+          montadorNome: data.montador_nome || ""
+        };
+      }
+    } catch (err) {
+      console.warn("Erro ao buscar montagem_poste específico do Supabase:", err);
+    }
+  }
+
+  const isRework = (atual?.statusMontagem === "RR");
+
+  const merged = {
+    key,
+    recordId: posteBase.recordId || "",
+    dataFabricacao: posteBase.dataFabricacao || "",
+    setor: posteBase.setor || "",
+    formaNumero: posteBase.formaNumero || "",
+    modelo: posteBase.modelo || "",
+    codigoPoste: posteBase.codigoPoste || atual?.codigoPoste || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).codigoPoste,
+    descricaoPoste: posteBase.descricaoPoste || atual?.descricaoPoste || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).descricaoPoste,
+    codigoProduto: posteBase.codigoProduto || atual?.codigoProduto || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).codigoProduto,
+    statusMontagem: isRework ? "" : (atual?.statusMontagem || ""),
+    motivoRecusa: isRework ? "" : (atual?.motivoRecusa || ""),
+    inicioInspecaoMontagem: isRework ? now : (atual?.inicioInspecaoMontagem || now),
+    finalizadoEm: isRework ? "" : (atual?.finalizadoEm || ""),
+    observacoesMontagem: isRework ? "" : (atual?.observacoesMontagem || ""),
+    checklists: isRework ? {} : (atual?.checklists || {}),
+    etapa: "INSPECAO"
+  };
+
+  upsertMontagemPoste(merged);
+  await syncMontagemPosteToApi(merged, "INSPECAO", { silent: true });
+  state.inspecaoPostesAtual = merged;
+  setMode("INSPECAO_DETALHE");
+  renderInspecaoPosteDetalhe();
+}
+
+function renderInspecaoPosteDetalhe() {
+  if (!el.insDetalheHeader || !state.inspecaoPostesAtual) return;
+  const poste = state.inspecaoPostesAtual;
+
+  let tempoGasto = "-";
+  if (poste.inicioInspecaoMontagem && poste.finalizadoEm) {
+    const tInicio = new Date(poste.inicioInspecaoMontagem);
+    const tFim = new Date(poste.finalizadoEm);
+    const diffMs = tFim - tInicio;
+    if (diffMs > 0) {
+      const diffSecs = Math.floor(diffMs / 1000);
+      const mins = Math.floor(diffSecs / 60);
+      const secs = diffSecs % 60;
+      tempoGasto = `${mins}m ${secs}s`;
+    }
+  }
+
+  el.insDetalheHeader.innerHTML = `
+    <div style="margin-bottom: 15px; display: flex;">
+      <button class="btn btn-back" type="button" onclick="navigateBack()" style="flex: 1;">← Voltar para a lista</button>
+    </div>
+    <div><strong>Forma:</strong> ${poste.formaNumero || "-"}</div>
+    <div><strong>Modelo:</strong> ${poste.modelo || "-"}</div>
+    <div><strong>Produto:</strong> ${escapeHtml(poste.codigoProduto || "-")} ${poste.descricaoPoste ? "- " + escapeHtml(poste.descricaoPoste) : ""}</div>
+    <div><strong>Setor:</strong> ${poste.setor || "-"}</div>
+    <div><strong>Data Produção:</strong> ${fmtDate(poste.dataFabricacao || "") || "-"}</div>
+    <div><strong>Início inspeção:</strong> ${formatDateTime(poste.inicioInspecaoMontagem || "")}</div>
+    <div><strong>Finalizado em:</strong> ${poste.finalizadoEm ? formatDateTime(poste.finalizadoEm) : "-"}</div>
+    <div><strong>Tempo de Inspeção:</strong> <span style="color:#e8762a; font-weight:700;">${tempoGasto}</span></div>
+  `;
+
+  renderInspecaoChecklistSections();
+  if (el.insObservacoes) {
+    el.insObservacoes.value = poste.observacoesMontagem || "";
+    el.insObservacoes.disabled = !!poste.finalizadoEm;
+  }
+  renderInspecaoStatusUI();
+
+  if (el.insFinalizarPoste) {
+    el.insFinalizarPoste.disabled = !!poste.finalizadoEm;
+    el.insFinalizarPoste.textContent = poste.finalizadoEm ? "Salvo" : "Salvar";
+  }
+}
+
+function renderInspecaoChecklistSections() {
+  if (!el.insChecklistSections || !state.inspecaoPostesAtual) return;
+  const current = state.inspecaoPostesAtual;
+  el.insChecklistSections.innerHTML = "";
+
+  const sections = getInspecaoChecklistSections(current.modelo || "");
+  let sectionEnabled = true;
+
+  sections.forEach((section) => {
+    const article = document.createElement("article");
+    article.className = "mp-checklist-section";
+    if (!sectionEnabled) {
+      article.style.opacity = "0.5";
+      article.style.pointerEvents = "none";
+    }
+
+    const isComplete = isChecklistSectionComplete(section.id, current.checklists || {}, "INSPECAO", current.modelo || "");
+
+    const sectionHeader = document.createElement("div");
+    sectionHeader.className = "mp-checklist-header";
+    sectionHeader.innerHTML = `
+      <strong>${section.titulo}</strong>
+      <span class="mp-checklist-flag ${isComplete ? "ok" : "pendente"}">${isComplete ? "OK" : "Pendente"}</span>
+    `;
+    article.appendChild(sectionHeader);
+
+    section.itens.forEach((item) => {
+      const selected = current.checklists?.[section.id]?.[item.id] || "";
+      const photoBase64 = current.checklists?.[section.id]?.[item.id + "_photo"] || "";
+      const isFinalizado = !!current.finalizadoEm;
+
+      const disableItem = isFinalizado || !sectionEnabled;
+
+      const itemWrapper = document.createElement("div");
+      itemWrapper.className = "mp-checklist-item-wrapper";
+
+      let itemHtml = `
+        <div class="mp-checklist-item">
+          <span class="mp-checklist-item-text">
+            ${item.critico ? '<span class="critico-dot" style="color: #ef4444;">🔴</span>' : ''}
+            ${item.texto}
+          </span>
+          <div class="mp-yn-group">
+            <button type="button" class="mp-yn-btn btn-aprovado ${selected === "sim" ? "active" : ""}"
+                    data-ins-section="${section.id}" data-ins-item="${item.id}" data-ins-value="sim"
+                    ${disableItem ? "disabled" : ""}>Aprovado</button>
+            <button type="button" class="mp-yn-btn btn-reprovado ${selected === "nao" ? "active" : ""}"
+                    data-ins-section="${section.id}" data-ins-item="${item.id}" data-ins-value="nao"
+                    ${disableItem ? "disabled" : ""}>Reprovado</button>
+          </div>
+        </div>
+      `;
+
+      if (selected === "nao") {
+        let actionsHtml = `<div class="mp-reprovado-actions">`;
+        if (item.critico) {
+          actionsHtml += `<div class="mp-segregar-badge">🚨 Segregar poste</div>`;
+        }
+        if (!isFinalizado) {
+          actionsHtml += `
+            <label class="mp-photo-upload-label">
+              📸 Tirar Foto da Falha
+              <input type="file" accept="image/*" capture="environment" class="ins-item-photo-input"
+                     data-ins-section="${section.id}" data-ins-item="${item.id}" ${disableItem ? "disabled" : ""} />
+            </label>
+          `;
+        }
+        if (photoBase64) {
+          actionsHtml += `
+            <div class="mp-item-photo-preview">
+              <img src="${photoBase64}" class="mp-item-photo-thumbnail" alt="Foto da falha" />
+            </div>
+          `;
+        }
+        actionsHtml += `</div>`;
+        itemHtml += actionsHtml;
+      }
+
+      itemWrapper.innerHTML = itemHtml;
+      article.appendChild(itemWrapper);
+    });
+
+    el.insChecklistSections.appendChild(article);
+    const hasCriticalReproved = section.itens.some((i) => i.critico && current.checklists?.[section.id]?.[i.id] === "nao");
+    sectionEnabled = sectionEnabled && isComplete && !hasCriticalReproved;
+  });
+}
+
+function renderInspecaoStatusUI() {
+  const poste = state.inspecaoPostesAtual;
+  if (!poste || !el.insStatusButtons) return;
+
+  const status = poste.statusMontagem || "";
+  const isFinalizado = !!poste.finalizadoEm;
+
+  el.insStatusButtons.querySelectorAll("[data-ins-status]").forEach((btn) => {
+    if (!(btn instanceof HTMLElement)) return;
+    btn.classList.toggle("active", btn.dataset.insStatus === status);
+    btn.disabled = isFinalizado;
+  });
+}
+
+function setInspecaoStatus(status) {
+  if (!state.inspecaoPostesAtual) return;
+  const current = { ...state.inspecaoPostesAtual };
+
+  const sections = getInspecaoChecklistSections(current.modelo || "");
+  const hasFailures = sections.some((sec) =>
+    sec.itens.some((it) => current.checklists[sec.id]?.[it.id] === "nao")
+  );
+
+  if (status === "A" && hasFailures) {
+    showMsgBox("Não é possível aprovar um poste que possui itens reprovados no checklist.", "error");
     return;
   }
 
-  const selectedRows = Array.from(document.querySelectorAll("#insLiberadosBody tr[data-record-id]")).filter((linha) => {
-    const status = linha.querySelector("select[data-ins-status]")?.value || "";
-    return Boolean(status);
+  current.statusMontagem = status;
+  if (status === "A") {
+    current.motivoRecusa = "";
+  }
+  state.inspecaoPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "INSPECAO", { silent: true }).catch(() => {});
+  renderInspecaoStatusUI();
+}
+
+function setInspecaoChecklistAnswer(sectionId, itemId, value) {
+  if (!state.inspecaoPostesAtual) return;
+  const current = { ...state.inspecaoPostesAtual };
+  if (!current.checklists) current.checklists = {};
+  if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
+
+  const wasComplete = isChecklistSectionComplete(sectionId, current.checklists, "INSPECAO", current.modelo || "");
+
+  current.checklists[sectionId][itemId] = value;
+
+  if (value === "sim") {
+    delete current.checklists[sectionId][itemId + "_photo"];
+  }
+
+  const sections = getInspecaoChecklistSections(current.modelo || "");
+  const section = sections.find((s) => s.id === sectionId);
+
+  const reprovedCodes = [];
+  sections.forEach((sec) => {
+    sec.itens.forEach((it) => {
+      if (current.checklists[sec.id]?.[it.id] === "nao" && it.codigoFalha) {
+        reprovedCodes.push(it.codigoFalha);
+      }
+    });
   });
 
-  if (!selectedRows.length) {
-    showMsgBox("Preencha o Status em ao menos uma forma para salvar a inspeção.", "error");
+  const uniqueCodes = [...new Set(reprovedCodes)];
+
+  if (uniqueCodes.length > 0) {
+    if (current.statusMontagem !== "R" && current.statusMontagem !== "RR") {
+      current.statusMontagem = "R";
+    }
+    current.motivoRecusa = uniqueCodes.join(", ");
+  } else {
+    current.statusMontagem = "A";
+    current.motivoRecusa = "";
+  }
+
+  const isNowComplete = isChecklistSectionComplete(sectionId, current.checklists, "INSPECAO", current.modelo || "");
+
+  state.inspecaoPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "INSPECAO", { silent: true }).catch(() => {});
+
+  const hasCriticalReproved = section?.itens.some((i) => i.critico && current.checklists[sectionId][i.id] === "nao");
+
+  if (!wasComplete && isNowComplete) {
+    if (hasCriticalReproved) {
+      showMsgBox(`A inspeção visual contém falhas críticas. Poste deve ser reprovado.`, "error");
+    } else {
+      showMsgBox(`Inspeção visual concluída com sucesso!`, "success");
+    }
+  }
+
+  renderInspecaoChecklistSections();
+  renderInspecaoStatusUI();
+}
+
+function setInspecaoChecklistPhoto(sectionId, itemId, photoBase64) {
+  if (!state.inspecaoPostesAtual) return;
+  const current = { ...state.inspecaoPostesAtual };
+  if (!current.checklists) current.checklists = {};
+  if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
+
+  current.checklists[sectionId][itemId + "_photo"] = photoBase64;
+  state.inspecaoPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "INSPECAO", { silent: true }).catch(() => {});
+  renderInspecaoChecklistSections();
+}
+
+async function finalizarInspecaoPosteAtual() {
+  const poste = state.inspecaoPostesAtual;
+  if (!poste) {
+    showMsgBox("Nenhum poste selecionado.", "error");
     return;
   }
 
-  const lockPayloadRows = selectedRows
-    .map((tr) => ({
-      recordId: tr?.dataset.recordId || "",
-      status: tr?.querySelector("select[data-ins-status]")?.value || "",
-      codigo: tr?.querySelector("select[data-ins-code]")?.value || "",
-      observacoes: ""
-    }))
-    .sort((a, b) => a.recordId.localeCompare(b.recordId));
-
-  const lockToken = payloadToken({
-    action: "salvar_inspecao_lote",
-    colaborador,
-    observacaoGlobal,
-    fotos: state.insPhotos.map((photo) => photo.id || photo.name || ""),
-    rows: lockPayloadRows
-  });
-
-  if (state.submitLocks.inspecao && state.submitLocks.inspecao === lockToken) {
-    setSyncStatus("warn", "Envio de inspeção já realizado para este mesmo conteúdo.");
-    showMsgBox("Este envio de inspeção já foi realizado. Altere os dados para enviar novamente.", "warn");
+  const status = poste.statusMontagem || "";
+  if (!status) {
+    showMsgBox("Selecione o status da inspeção: Aprovado, Reprovado ou Reprovado e Retrabalhado.", "error");
     return;
   }
 
-  state.isSendingInspecao = true;
-  setSubmitButtonState(el.salvarInspecao, true);
-  if (el.salvarInspecaoFloat) setSubmitButtonState(el.salvarInspecaoFloat, true);
+  const sections = getInspecaoChecklistSections(poste.modelo || "");
+  const allSectionsOk = sections.every((section) =>
+    isChecklistSectionComplete(section.id, poste.checklists || {}, "INSPECAO", poste.modelo || "")
+  );
+
+  const temReprovadoPrimeiraSecao = Object.values(poste.checklists?.["inspecao_visual"] || {}).includes("nao");
+
+  if (!allSectionsOk && !(temReprovadoPrimeiraSecao && (status === "R" || status === "RR"))) {
+    showMsgBox("Responda todos os itens (Aprovado/Reprovado) antes de finalizar.", "error");
+    return;
+  }
 
   const loadingModal = document.getElementById("loadingModal");
+  const loadingMsg = loadingModal ? loadingModal.querySelector(".loading-msg") : null;
+  if (loadingMsg) loadingMsg.textContent = "Obtendo geolocalização...";
   if (loadingModal) loadingModal.classList.add("modal-visible");
 
   try {
-    const db = readDb();
-    let saved = 0;
-    const inspecaoEntries = [];
+    const geoResult = await getDeviceGeolocation();
+    if (loadingMsg) loadingMsg.textContent = "Salvando inspeção...";
 
-    for (const tr of selectedRows) {
-      const recordId = tr?.dataset.recordId;
-      const dataFabricacao = tr?.dataset.dataFabricacao || el.insFiltroData.value || todayYmd();
-      const setor = tr?.dataset.setor || state.activeInsSector || "";
-      const formaNumero = normalizeUpper(tr?.dataset.formaNumero || "");
-      const modelo = tr?.dataset.modelo || "";
-      const status = tr?.querySelector("select[data-ins-status]")?.value || "";
-      const codigo = tr?.querySelector("select[data-ins-code]")?.value || "";
-      const codigoFinal = status === "A" ? "" : codigo;
+    const now = new Date();
+    const diaInspecao = now.toLocaleDateString("pt-BR");
+    const horarioDispositivo = now.toLocaleTimeString("pt-BR");
 
-      if (!recordId || !status) {
-        showMsgBox("Cada forma selecionada deve ter Status preenchido.", "error");
-        return;
-      }
+    const updated = {
+      ...poste,
+      checklists: {
+        ...(poste.checklists || {}),
+        dia_inspecao: diaInspecao,
+        horario_dispositivo: horarioDispositivo,
+        geolocation: geoResult
+      },
+      finalizadoEm: nowIso()
+    };
 
-      if (status !== "A" && !codigoFinal) {
-        showMsgBox("Para status R ou RR, preencha o Código (A-M).", "error");
-        return;
-      }
+    const syncResult = await syncMontagemPosteToApi(updated, "INSPECAO", { silent: false });
+    const finalEntry = {
+      ...updated,
+      pendingSync: !syncResult.synced
+    };
+    upsertMontagemPoste(finalEntry);
+    state.inspecaoPostesAtual = finalEntry;
 
-      // 1. Persistência direta no Supabase (montagem_poste)
-      const key = [recordId, dataFabricacao, setor, formaNumero, 'INSPECAO'].join("||");
-      const montagemPayload = {
-        key: key,
-        recordId: recordId,
-        dataFabricacao: dataFabricacao,
-        setor: setor,
-        formaNumero: formaNumero,
-        modelo: modelo,
-        codigoPoste: tr?.dataset.codigoPoste || "",
-        descricaoPoste: tr?.dataset.descricaoPoste || "",
-        codigoProduto: tr?.dataset.codigoProduto || "",
-        statusMontagem: status,
-        motivoRecusa: codigoFinal,
-        etapa: "INSPECAO",
-        inicioInspecaoMontagem: state.insInicioLocal || nowIso(),
-        finalizadoEm: nowIso(),
-        checklists: { global_photos: [] },
-        observacoesMontagem: observacaoGlobal,
-        montadorNome: colaborador
-      };
+    renderInspecaoPosteDetalhe();
+    if (loadingModal) loadingModal.classList.remove("modal-visible");
 
-      const apiResult = await postToMontagemApi("salvar_montagem_poste", montagemPayload);
-      const isSynced = apiResult && apiResult.ok;
+    const colaborador = el.insColaborador?.value?.trim() || state.authUser?.name || "Apontador";
+    const observacaoGlobal = el.insObservacoes?.value?.trim() || "";
 
-      // Enviar fotos para a VPS via API Storage
-      const backendUrl = "http://localhost:5000/api";
-      if (state.insPhotosRawFiles && state.insPhotosRawFiles.length > 0) {
-        for (const file of state.insPhotosRawFiles) {
-          const formData = new FormData();
-          formData.append("foto", file);
-          formData.append("usuario", colaborador || "sistema");
-          try {
-            const uploadRes = await fetch(`${backendUrl}/inspecoes/${recordId}/fotos`, {
-              method: "POST",
-              body: formData
-            });
-            if (!uploadRes.ok) {
-              const errData = await uploadRes.json();
-              console.error("Erro ao enviar foto para VPS:", errData.error);
-            }
-          } catch (uploadErr) {
-            console.error("Falha de rede ao conectar à API de Storage:", uploadErr);
-          }
-        }
-      }
+    const legacyEntry = {
+      recordId: finalEntry.recordId,
+      dataFabricacao: finalEntry.dataFabricacao,
+      setor: finalEntry.setor,
+      formaNumero: finalEntry.formaNumero,
+      modelo: finalEntry.modelo,
+      codigoPoste: finalEntry.codigoPoste,
+      descricaoPoste: finalEntry.descricaoPoste,
+      codigoProduto: finalEntry.codigoProduto,
+      tipo: "INSPECAO",
+      status: finalEntry.statusMontagem,
+      codigo: finalEntry.motivoRecusa,
+      colaborador: colaborador,
+      observacoes: observacaoGlobal,
+      fotosCount: 0,
+      timestamp: finalEntry.finalizadoEm
+    };
 
-      // 2. Eventos e logs locais para compatibilidade de visualização
-      let record = db.records.find((item) => item.id === recordId);
-      if (!record) {
-        record = {
-          id: recordId,
-          dataFabricacao,
-          setor,
-          formaNumero,
-          modelo,
-          codigoPoste: tr?.dataset.codigoPoste || "",
-          descricaoPoste: tr?.dataset.descricaoPoste || "",
-          codigoProduto: tr?.dataset.codigoProduto || "",
-          createdAt: nowIso(),
-          updatedAt: nowIso(),
-          liberacao: { status: "1", statusFlags: statusFlagsFromCode("1"), colaborador: "", observacoes: "", fotos: [], timestamp: nowIso() },
-          inspecoes: []
-        };
-      }
-      const inspecao = {
-        id: uuid(),
-        tipo: "INSPECAO",
-        colaborador,
-        status,
-        codigos: [codigoFinal],
-        observacoes: observacaoGlobal,
-        fotos: [...state.insPhotos],
-        timestamp: nowIso(),
-        pendingSync: !isSynced
-      };
-      record.inspecoes.push(inspecao);
-      record.updatedAt = nowIso();
-      upsertRecord(db, record);
-
-      addEvent(db, {
-        id: uuid(),
-        recordId: record.id,
-        etapa: "INSPECAO",
-        status,
-        colaborador,
-        setor: record.setor,
-        formaNumero: record.formaNumero,
-        codigoPoste: record.codigoPoste,
-        descricaoPoste: record.descricaoPoste,
-        codigoProduto: record.codigoProduto,
-        dataFabricacao: record.dataFabricacao,
-        codigos: [codigoFinal],
-        observacoes: observacaoGlobal,
-        fotosCount: state.insPhotos.length,
-        timestamp: nowIso(),
-        pendingSync: !isSynced
-      });
-
-      inspecaoEntries.push({
-        recordId: record.id,
-        dataFabricacao: record.dataFabricacao,
-        setor: record.setor,
-        formaNumero: record.formaNumero,
-        modelo: record.modelo,
-        codigoPoste: record.codigoPoste,
-        descricaoPoste: record.descricaoPoste,
-        codigoProduto: record.codigoProduto,
-        tipo: "INSPECAO",
-        status,
-        codigo: codigoFinal,
-        colaborador,
-        observacoes: observacaoGlobal,
-        fotosCount: state.insPhotos.length,
-        timestamp: inspecao.timestamp
-      });
-
-      saved += 1;
-    }
-
-    writeDb(db);
-    setSubmitLock("inspecao", lockToken);
-
-    state.insPhotos = [];
-    state.insPhotosRawFiles = [];
-    el.insObs.value = "";
-    el.insFotos.value = "";
-    renderPhotoPreview(el.insFotosPreview, state.insPhotos);
-
-    await renderInspecaoLiberados();
-    renderLiberacaoDual();
-    renderHistorico();
-
-    const counts = { A: 0, R: 0, RR: 0 };
-    inspecaoEntries.forEach((e) => { if (e.status in counts) counts[e.status]++; });
-
-    // Salva na tabela producao para legado (gráficos e histórico do dashboard)
-    const apiResult = await postToApi("salvar_inspecao_lote", { entries: inspecaoEntries });
+    const apiResult = await postToApi("salvar_inspecao_lote", { entries: [legacyEntry] });
     if (apiResult.ok) {
-      setSyncStatus("ok", `Inspeção sincronizada com sucesso (${apiResult.updated || saved} atualizações).`);
-      showInspecaoModal(counts, "ok");
+      setSyncStatus("ok", "Inspeção sincronizada com sucesso.");
     } else {
-      setSyncStatus("ok", `Inspeção salva online.`);
-      showInspecaoModal(counts, "ok");
+      setSyncStatus("ok", "Inspeção salva online.");
     }
+
+    showMontagemResumoModal({
+      ...finalEntry,
+      observacoesMontagem: observacaoGlobal,
+      montadorNome: colaborador,
+      resumoSync: syncResult.synced ? "Sincronizado" : "Salvo localmente"
+    }, {
+      onClose: async () => {
+        setMode("INSPECAO");
+        await renderInspecaoLiberados();
+        if (el.insFormaFiltro) {
+          el.insFormaFiltro.value = "";
+        }
+        filtrarFormasTabela();
+      }
+    });
+  } catch (e) {
+    console.error("Erro ao finalizar inspeção:", e);
+    showMsgBox("Erro ao finalizar inspeção: " + (e.message || String(e)), "error");
   } finally {
     if (loadingModal) loadingModal.classList.remove("modal-visible");
-    state.isSendingInspecao = false;
-    setSubmitButtonState(el.salvarInspecao, false);
-    if (el.salvarInspecaoFloat) setSubmitButtonState(el.salvarInspecaoFloat, false);
   }
 }
 
@@ -5297,6 +5526,7 @@ function setAccessByRole(role) {
   const cfg = getRoleConfig(role);
   const next = new Set(["HUB", ...cfg.modes]);
   if (next.has("MONTAGEM_POSTES")) next.add("MONTAGEM_POSTES_DETALHE");
+  if (next.has("INSPECAO")) next.add("INSPECAO_DETALHE");
 
   // Liberar explicitamente "USUARIOS" para o usuário Ricardo
   const userName = String(state.authUser?.name || "").trim().toLowerCase();
@@ -5658,7 +5888,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -5691,6 +5921,9 @@ function setMode(mode) {
     }
   }
   if (mode === "INSPECAO") el.viewInspecao.classList.remove("hidden");
+  if (mode === "INSPECAO_DETALHE") {
+    if (el.viewInspecaoDetalhe) el.viewInspecaoDetalhe.classList.remove("hidden");
+  }
   if (mode === "MONTAGEM_POSTES") el.viewMontagemPostes.classList.remove("hidden");
   if (mode === "MONTAGEM_POSTES_DETALHE") el.viewMontagemPostesDetalhe.classList.remove("hidden");
   if (mode === "RELATORIO") el.viewRelatorio.classList.remove("hidden");
@@ -5711,7 +5944,7 @@ function setMode(mode) {
     carregarMontagemIndicadores();
   }
 
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
@@ -5721,10 +5954,11 @@ function setMode(mode) {
       el.insColaborador.value = state.authUser.name;
     }
     if ((el.insModoCarga?.value || "data") === "data" && !el.insFiltroData.value) {
-      el.insLiberadosBody.innerHTML = '<tr><td colspan="5" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
+      el.insLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Selecione a data de produção para carregar os itens liberados.</td></tr>';
       el.insQtdItens.textContent = "0";
     }
   }
+  if (mode === "INSPECAO_DETALHE") document.body.classList.add("mode-inspecao-detalhe");
   if (mode === "MONTAGEM_POSTES") {
     document.body.classList.add("mode-montagem-postes");
     if ((el.mpModoCarga?.value || "data") === "data" && !el.mpFiltroData?.value) {
@@ -5775,6 +6009,11 @@ function navigateBack() {
   if (state.mode === "MONTAGEM_POSTES_DETALHE") {
     setMode("MONTAGEM_POSTES");
     renderMontagemPostesLiberados();
+    return;
+  }
+  if (state.mode === "INSPECAO_DETALHE") {
+    setMode("INSPECAO");
+    renderInspecaoLiberados();
     return;
   }
 
@@ -6260,17 +6499,120 @@ function bindEvents() {
       renderInspecaoLiberados();
     });
   }
-  el.insCarregarLiberados.addEventListener("click", renderInspecaoLiberados);
-  el.insFiltroData.addEventListener("change", () => clearSubmitLock("inspecao"));
-  el.insColaborador.addEventListener("input", () => clearSubmitLock("inspecao"));
-  el.insObs.addEventListener("input", () => clearSubmitLock("inspecao"));
-  el.insCarregarLiberados.addEventListener("click", () => clearSubmitLock("inspecao"));
-  el.insLiberadosBody.addEventListener("change", () => clearSubmitLock("inspecao"));
-  el.insLiberadosBody.addEventListener("input", () => clearSubmitLock("inspecao"));
+  if (el.insCarregarLiberados) {
+    el.insCarregarLiberados.addEventListener("click", renderInspecaoLiberados);
+    el.insCarregarLiberados.addEventListener("click", () => clearSubmitLock("inspecao"));
+  }
+  if (el.insFiltroData) {
+    el.insFiltroData.addEventListener("change", () => clearSubmitLock("inspecao"));
+  }
+  if (el.insColaborador) {
+    el.insColaborador.addEventListener("input", () => clearSubmitLock("inspecao"));
+  }
+  if (el.insFormaFiltro) {
+    el.insFormaFiltro.addEventListener("input", filtrarFormasTabela);
+  }
 
-  el.salvarInspecao.addEventListener("click", saveInspecao);
-  if (el.salvarInspecaoFloat) el.salvarInspecaoFloat.addEventListener("click", saveInspecao);
-  if (el.insFormaFiltro) el.insFormaFiltro.addEventListener("input", filtrarFormasTabela);
+  if (el.insLiberadosBody) {
+    el.insLiberadosBody.addEventListener("click", async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const tr = target.closest("tr[data-record-id]");
+      if (!tr) return;
+
+      const recordId = tr.dataset.recordId;
+      const dataFabricacao = tr.dataset.dataFabricacao;
+      const setor = tr.dataset.setor;
+      const formaNumero = tr.dataset.formaNumero;
+      const modelo = tr.dataset.modelo;
+      const codigoPoste = tr.dataset.codigoPoste;
+      const descricaoPoste = tr.dataset.descricaoPoste;
+      const codigoProduto = tr.dataset.codigoProduto;
+
+      const posteBase = {
+        recordId,
+        dataFabricacao,
+        setor,
+        formaNumero,
+        modelo,
+        codigoPoste,
+        descricaoPoste,
+        codigoProduto
+      };
+
+      if (target.classList.contains("ins-open-btn")) {
+        await openInspecaoPosteDetalhe(posteBase);
+      } else if (target.classList.contains("ins-ver-checklist-btn")) {
+        const rawJson = tr.dataset.inspecaoRaw;
+        if (rawJson) {
+          try {
+            const rawRow = JSON.parse(rawJson);
+            window.abrirVisualizacaoChecklist(rawRow);
+          } catch (e) {
+            console.error("Erro ao analisar inspecaoRaw:", e);
+          }
+        }
+      }
+    });
+  }
+
+  if (el.insChecklistSections) {
+    el.insChecklistSections.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const btn = target.closest("button[data-ins-section][data-ins-item][data-ins-value]");
+      if (!btn) return;
+      const sectionId = btn.dataset.insSection || "";
+      const itemId = btn.dataset.insItem || "";
+      const value = btn.dataset.insValue || "";
+      setInspecaoChecklistAnswer(sectionId, itemId, value);
+    });
+
+    el.insChecklistSections.addEventListener("change", async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (!target.classList.contains("ins-item-photo-input")) return;
+
+      const file = target.files?.[0];
+      if (!file) return;
+
+      const sectionId = target.dataset.insSection || "";
+      const itemId = target.dataset.insItem || "";
+
+      try {
+        const base64 = await fileToBase64(file);
+        setInspecaoChecklistPhoto(sectionId, itemId, base64);
+      } catch (err) {
+        console.error("Erro ao converter imagem para base64:", err);
+        showMsgBox("Erro ao carregar a foto. Tente novamente.", "error");
+      }
+    });
+  }
+
+  if (el.insStatusButtons) {
+    el.insStatusButtons.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const btn = target.closest("button[data-ins-status]");
+      if (!btn || state.inspecaoPostesAtual?.finalizadoEm) return;
+      const status = btn.dataset.insStatus || "";
+      if (!status) return;
+      setInspecaoStatus(status);
+    });
+  }
+
+  if (el.insObservacoes) {
+    el.insObservacoes.addEventListener("input", () => {
+      if (!state.inspecaoPostesAtual) return;
+      state.inspecaoPostesAtual.observacoesMontagem = el.insObservacoes.value;
+      upsertMontagemPoste(state.inspecaoPostesAtual);
+    });
+  }
+
+  if (el.insFinalizarPoste) {
+    el.insFinalizarPoste.addEventListener("click", finalizarInspecaoPosteAtual);
+  }
 
   if (el.mpFiltroData) el.mpFiltroData.addEventListener("change", renderMontagemPostesLiberados);
   if (el.mpModoCarga) el.mpModoCarga.addEventListener("change", renderMontagemPostesLiberados);
@@ -8599,7 +8941,8 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
     status_montagem: row.status_montagem || row.statusMontagem || "",
     checklists: row.checklists || {},
     observacoes_montagem: row.observacoes_montagem || row.observacoesMontagem || "",
-    motivo_recusa: row.motivo_recusa || row.motivoRecusa || ""
+    motivo_recusa: row.motivo_recusa || row.motivoRecusa || "",
+    etapa: row.etapa || ""
   };
 
   const modal = document.getElementById("visualizarChecklistModal");
@@ -8671,7 +9014,7 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
   const container = document.getElementById("vcChecklistContent");
   container.innerHTML = "";
 
-  const sections = getMontagemChecklistSections(normRow.modelo || "");
+  const sections = normRow.etapa === "INSPECAO" ? getInspecaoChecklistSections(normRow.modelo || "") : getMontagemChecklistSections(normRow.modelo || "");
 
   sections.forEach(section => {
     const secDiv = document.createElement("div");

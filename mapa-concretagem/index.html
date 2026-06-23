@@ -494,27 +494,42 @@
             <tr>
               <th>N Forma</th>
               <th>Modelo</th>
-              <th>Status</th>
-              <th>Código</th>
               <th>Data Prod.</th>
+              <th>Ação</th>
             </tr>
           </thead>
           <tbody id="insLiberadosBody"></tbody>
         </table>
       </div>
+    </section>
 
-      <h3>Legenda Códigos (A-M)</h3>
-      <div id="insChecklistCodigos" class="checklist"></div>
+    <section id="viewInspecaoDetalhe" class="card hidden">
+      <div class="section-title-row">
+        <h2>Inspecionar Poste (Setor 3 e 4)</h2>
+        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+
+      <div id="insDetalheHeader" class="mp-detalhe-header"></div>
+
+      <div id="insChecklistSections" class="mp-checklist-wrap"></div>
 
       <label>Observações
-        <textarea id="insObs" rows="3" placeholder="Observações da inspeção"></textarea>
+        <textarea id="insObservacoes" rows="3" placeholder="Descreva observações da inspeção..."></textarea>
       </label>
-      <label>Fotos da inspeção
-        <input id="insFotos" type="file" accept="image/*" capture="environment" multiple />
-      </label>
-      <div id="insFotosPreview" class="photo-grid"></div>
 
-      <button id="salvarInspecao" class="btn primary" type="button">Salvar Inspeções</button>
+      <div class="mp-status-box">
+        <div class="mp-status-title">Resultado da inspeção</div>
+        <div id="insStatusButtons" class="mp-status-buttons">
+          <button id="insStatusAprovado" class="btn mp-status-btn" type="button" data-ins-status="A">Aprovado</button>
+          <button id="insStatusReprovado" class="btn mp-status-btn" type="button" data-ins-status="R">Reprovado</button>
+          <button id="insStatusRR" class="btn mp-status-btn" type="button" data-ins-status="RR">Reprovado e Retrabalhado</button>
+        </div>
+      </div>
+
+      <div class="mp-finalizar-row" style="display: flex; gap: 12px;">
+        <button class="btn" type="button" data-back-btn>Voltar</button>
+        <button id="insFinalizarPoste" class="btn primary" type="button" style="flex: 1;">Salvar</button>
+      </div>
     </section>
 
     <section id="viewMontagemPostes" class="card hidden">

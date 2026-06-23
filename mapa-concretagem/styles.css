@@ -3673,19 +3673,22 @@ hr {
   font-weight: 700;
 }
 
-.mp-status-btn.active[data-mp-status="A"] {
+.mp-status-btn.active[data-mp-status="A"],
+.mp-status-btn.active[data-ins-status="A"] {
   background: #dcfce7;
   border-color: #22c55e;
   color: #166534;
 }
 
-.mp-status-btn.active[data-mp-status="R"] {
+.mp-status-btn.active[data-mp-status="R"],
+.mp-status-btn.active[data-ins-status="R"] {
   background: #fee2e2;
   border-color: #ef4444;
   color: #991b1b;
 }
 
-.mp-status-btn.active[data-mp-status="RR"] {
+.mp-status-btn.active[data-mp-status="RR"],
+.mp-status-btn.active[data-ins-status="RR"] {
   background: #fef9c3;
   border-color: #eab308;
   color: #854d0e;
