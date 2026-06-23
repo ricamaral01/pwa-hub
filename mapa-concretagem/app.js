@@ -676,6 +676,7 @@ const el = {
 
   insFiltroData: document.getElementById("insFiltroData"),
   insModoCarga: document.getElementById("insModoCarga"),
+  insStatusFiltro: document.getElementById("insStatusFiltro"),
   insSetorGroup: document.getElementById("insSetorGroup"),
   insColaborador: document.getElementById("insColaborador"),
   insCarregarLiberados: document.getElementById("insCarregarLiberados"),
@@ -2730,7 +2731,7 @@ async function fetchPolesForDate(filtroData, setor = "") {
           codigo: insRecord.motivo_recusa || "",
           observacoes: insRecord.observacoes_montagem || "",
           colaborador: insRecord.montador_nome || "",
-          timestamp: insRecord.finalizado_em || insRecord.updated_at,
+          timestamp: insRecord.finalizado_em || null,
           raw: insRecord
         } : null,
         montagem: montRecord || null
@@ -2834,14 +2835,28 @@ async function renderInspecaoLiberados() {
     return valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' });
   });
 
-  el.insQtdItens.textContent = String(rows.length);
+  const statusFiltro = el.insStatusFiltro?.value || "";
+  const displayRows = rows.filter((record) => {
+    if (statusFiltro) {
+      const isFinalizado = record.inspecao && !!record.inspecao.timestamp;
+      const statusVal = record.inspecao?.status || "";
+      if (statusFiltro === "PENDENTE") {
+        if (isFinalizado) return false;
+      } else {
+        if (!isFinalizado || statusVal !== statusFiltro) return false;
+      }
+    }
+    return true;
+  });
 
-  if (!rows.length) {
+  el.insQtdItens.textContent = String(displayRows.length);
+
+  if (!displayRows.length) {
     el.insLiberadosBody.innerHTML = '<tr><td colspan="4" class="muted">Nenhum poste apontado ou pendente de inspeção para os filtros informados.</td></tr>';
     return;
   }
 
-  rows.forEach((record) => {
+  displayRows.forEach((record) => {
     const isFinalizado = record.inspecao && !!record.inspecao.timestamp;
     const status = record.inspecao?.status || "";
     const rowClass = isFinalizado ? "row-montado" : "";
@@ -6487,6 +6502,9 @@ function bindEvents() {
 
   el.insFiltroData.addEventListener("change", renderInspecaoLiberados);
   el.insModoCarga.addEventListener("change", renderInspecaoLiberados);
+  if (el.insStatusFiltro) {
+    el.insStatusFiltro.addEventListener("change", renderInspecaoLiberados);
+  }
   if (el.insSetorGroup) {
     el.insSetorGroup.addEventListener("click", (event) => {
       const target = event.target;
