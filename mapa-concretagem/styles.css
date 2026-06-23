@@ -3471,19 +3471,19 @@ hr {
 
   body.print-relatorio .rel-full-table th:nth-child(1),
   body.print-relatorio .rel-full-table td:nth-child(1) {
-    width: 10% !important;
+    width: 6% !important;
     white-space: nowrap !important;
     text-align: center !important;
   }
 
   body.print-relatorio .rel-full-table th:nth-child(2),
   body.print-relatorio .rel-full-table td:nth-child(2) {
-    width: 30% !important;
+    width: 40% !important;
   }
 
   body.print-relatorio .rel-full-table th:nth-child(3),
   body.print-relatorio .rel-full-table td:nth-child(3) {
-    width: 25% !important;
+    width: 14% !important;
   }
 
   body.print-relatorio .rel-full-table th:nth-child(4),
@@ -3495,7 +3495,7 @@ hr {
 
   body.print-relatorio .rel-full-table th:nth-child(5),
   body.print-relatorio .rel-full-table td:nth-child(5) {
-    width: 25% !important;
+    width: 30% !important;
   }
 
   body.print-relatorio .rel-summary-table th:nth-child(2),
