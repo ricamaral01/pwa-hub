@@ -737,6 +737,34 @@ body.sidebar-hidden .app-main  { margin-left: 0; }
   vertical-align: top;
 }
 
+/* Custom screen column widths for the report table (only in display/screen mode) */
+body:not(.print-relatorio) .rel-full-table th:nth-child(1),
+body:not(.print-relatorio) .rel-full-table td:nth-child(1) {
+  width: 6% !important;
+  text-align: center !important;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(2),
+body:not(.print-relatorio) .rel-full-table td:nth-child(2) {
+  width: 56% !important;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(3),
+body:not(.print-relatorio) .rel-full-table td:nth-child(3) {
+  width: 18% !important;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(4),
+body:not(.print-relatorio) .rel-full-table td:nth-child(4) {
+  width: 10% !important;
+  text-align: center !important;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(5),
+body:not(.print-relatorio) .rel-full-table td:nth-child(5) {
+  width: 50% !important;
+}
+
 .rel-print-footer {
   display: grid;
   gap: 16px;
