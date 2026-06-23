@@ -1271,6 +1271,7 @@ function getLiberacaoSelectOptions(selectedStatus) {
 }
 
 function renderInspecaoCodigosChecklist() {
+  if (!el.insChecklistCodigos) return;
   el.insChecklistCodigos.innerHTML = "";
   CHECKLIST_INSPECAO_CODIGOS.forEach((item) => {
     const row = document.createElement("div");
