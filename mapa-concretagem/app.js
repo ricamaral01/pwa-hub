@@ -4656,9 +4656,8 @@ function getRelatorioTipoConcreto(row) {
 
 function getRelatorioModelo(row) {
   const forma = String(row.forma_numero || row.formaNumero || row.forma || "").trim().toUpperCase();
-  if (/^A-\d+$/.test(forma)) return "1 CX VR";
   const catalogo = getPosteFieldsForForma(forma, row.setor || "");
-  return row.modelo || row.descricaoPoste || row.descricao_poste || catalogo.descricaoPoste || row.codigoProduto || row.codigo_produto || catalogo.codigoProduto || "Sem modelo";
+  return catalogo.descricaoPoste || row.modelo || row.descricaoPoste || row.descricao_poste || "Sem modelo";
 }
 
 function getRelatorioCodigoProduto(row) {
