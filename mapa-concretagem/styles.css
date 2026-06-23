@@ -3504,6 +3504,12 @@ hr {
     text-align: center !important;
   }
 
+  body.print-relatorio .rel-summary-table th:nth-child(4),
+  body.print-relatorio .rel-summary-table td:nth-child(4) {
+    width: 80px !important;
+    text-align: center !important;
+  }
+
   body.print-relatorio .rel-kpi-grid {
     display: block !important;
     margin: 8px 0 12px !important;

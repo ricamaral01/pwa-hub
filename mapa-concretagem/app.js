@@ -4661,6 +4661,12 @@ function getRelatorioModelo(row) {
   return row.modelo || row.descricaoPoste || row.descricao_poste || catalogo.descricaoPoste || row.codigoProduto || row.codigo_produto || catalogo.codigoProduto || "Sem modelo";
 }
 
+function getRelatorioCodigoProduto(row) {
+  const forma = String(row.forma_numero || row.forma || "").trim().toUpperCase();
+  const catalogo = getPosteFieldsForForma(forma, row.setor || "");
+  return row.codigo_produto || row.codigoProduto || catalogo.codigoProduto || "-";
+}
+
 function formatRelatorioDuracao(ms) {
   if (!Number.isFinite(ms) || ms < 0) return "-";
   const totalMin = Math.round(ms / 60000);
@@ -4768,18 +4774,19 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
 
     const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
       const modelo = getRelatorioModelo(row);
+      const cod = getRelatorioCodigoProduto(row);
       const s = row.setor || "Todos";
-      const key = `${s}||${modelo}`;
+      const key = `${s}||${modelo}||${cod}`;
       acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
     const summaryList = Object.entries(resumoPorPoste).map(([key, total]) => {
-      const [s, modelo] = key.split("||");
-      return { setor: s, modelo, total };
+      const [s, modelo, cod] = key.split("||");
+      return { setor: s, modelo, cod, total };
     });
     sortSummaryList(summaryList);
     const resumoPostesHtml = summaryList
-      .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
+      .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.cod)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
       .join("");
 
     // Contagem por setor
@@ -4841,8 +4848,8 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
           <section class="rel-section rel-summary-section">
             <h4>Resumo por tipo de poste (Todos os Setores)</h4>
             <table class="sheet-table report-table rel-summary-table">
-              <thead><tr><th>Setor</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
-              <tbody>${resumoPostesHtml || '<tr><td colspan="3">Sem registros</td></tr>'}</tbody>
+              <thead><tr><th>Setor</th><th>Cód. Prod.</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+              <tbody>${resumoPostesHtml || '<tr><td colspan="4">Sem registros</td></tr>'}</tbody>
             </table>
           </section>
 
@@ -4865,17 +4872,18 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
 
           const sResumoPorPoste = sRows.reduce((acc, row) => {
             const modelo = getRelatorioModelo(row);
-            const key = `${s}||${modelo}`;
+            const cod = getRelatorioCodigoProduto(row);
+            const key = `${s}||${modelo}||${cod}`;
             acc[key] = (acc[key] || 0) + 1;
             return acc;
           }, {});
           const sSummaryList = Object.entries(sResumoPorPoste).map(([key, total]) => {
-            const [sec, modelo] = key.split("||");
-            return { setor: sec, modelo, total };
+            const [sec, modelo, cod] = key.split("||");
+            return { setor: sec, modelo, cod, total };
           });
           sortSummaryList(sSummaryList);
           const sResumoPostesHtml = sSummaryList
-            .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
+            .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.cod)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
             .join("");
 
           const sLinhas = sRows.map((r) => {
@@ -4936,8 +4944,8 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
               <section class="rel-section rel-summary-section">
                 <h4>Resumo por tipo de poste - ${escapeHtml(s)}</h4>
                 <table class="sheet-table report-table rel-summary-table">
-                  <thead><tr><th>Setor</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
-                  <tbody>${sResumoPostesHtml || '<tr><td colspan="3">Sem registros</td></tr>'}</tbody>
+                  <thead><tr><th>Setor</th><th>Cód. Prod.</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+                  <tbody>${sResumoPostesHtml || '<tr><td colspan="4">Sem registros</td></tr>'}</tbody>
                 </table>
               </section>
 
@@ -4959,18 +4967,19 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
     const tempoTotal = calcularTempoTotalSemAlmoco(timestamps);
     const resumoPorPoste = rowsOrdenadas.reduce((acc, row) => {
       const modelo = getRelatorioModelo(row);
+      const cod = getRelatorioCodigoProduto(row);
       const s = row.setor || setor;
-      const key = `${s}||${modelo}`;
+      const key = `${s}||${modelo}||${cod}`;
       acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
     const summaryList = Object.entries(resumoPorPoste).map(([key, total]) => {
-      const [sec, modelo] = key.split("||");
-      return { setor: sec, modelo, total };
+      const [sec, modelo, cod] = key.split("||");
+      return { setor: sec, modelo, cod, total };
     });
     sortSummaryList(summaryList);
     const resumoPostesHtml = summaryList
-      .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
+      .map((item) => `<tr><td>${escapeHtml(item.setor)}</td><td>${escapeHtml(item.cod)}</td><td>${escapeHtml(item.modelo)}</td><td>${item.total}</td></tr>`)
       .join("");
     const linhas = rowsOrdenadas.map((r) => {
       const forma = r.forma_numero || r.formaNumero || "";
@@ -5029,8 +5038,8 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
         <section class="rel-section rel-summary-section">
           <h4>Resumo por tipo de poste</h4>
           <table class="sheet-table report-table rel-summary-table">
-            <thead><tr><th>Setor</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
-            <tbody>${resumoPostesHtml || '<tr><td colspan="3">Sem registros</td></tr>'}</tbody>
+            <thead><tr><th>Setor</th><th>Cód. Prod.</th><th>Tipo de poste</th><th>Quantidade</th></tr></thead>
+            <tbody>${resumoPostesHtml || '<tr><td colspan="4">Sem registros</td></tr>'}</tbody>
           </table>
         </section>
 
