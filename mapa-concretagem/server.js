@@ -23,6 +23,9 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+// Servir arquivos estáticos da pasta raiz do Hub (um nível acima)
+app.use(express.static(path.join(__dirname, "..")));
+
 // Initialize Supabase Client
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;

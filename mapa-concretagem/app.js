@@ -168,6 +168,23 @@ const SUPABASE_CONFIG = {
 const PCP_PROGRAMACAO_URL = "https://pcp.concretrack.com.br/api/programacao";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.KEY) : null;
 
+function getBackendUrl() {
+  const hostname = window.location.hostname;
+  const protocol = window.location.protocol;
+  
+  if (hostname === "localhost" || hostname === "127.0.0.1") {
+    return "http://localhost:5000/api";
+  }
+  
+  // Se for IP da rede local (ex: 192.168.X.X ou 10.X.X.X)
+  if (/^(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(hostname)) {
+    return `${protocol}//${hostname}:5000/api`;
+  }
+  
+  // Produção (VPS)
+  return "http://2.25.163.32:5000/api";
+}
+
 const CHECKLIST_INSPECAO_CODIGOS = [
   { codigo: "A", descricao: "Falha na Concretagem" },
   { codigo: "B", descricao: "Cano entupido" },
@@ -9101,7 +9118,7 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
   photosContainer.id = "vcVpsPhotosContainer";
   container.appendChild(photosContainer);
 
-  const backendUrl = "http://localhost:5000/api";
+  const backendUrl = getBackendUrl();
   fetch(`${backendUrl}/inspecoes/${normRow.id}/fotos`)
     .then(res => res.json())
     .then(resData => {
@@ -9152,7 +9169,7 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
 
 window.excluirFotoVps = async function(photoId) {
   if (!confirm("Tem certeza que deseja excluir esta foto da VPS e do banco de dados?")) return;
-  const backendUrl = "http://localhost:5000/api";
+  const backendUrl = getBackendUrl();
   const user = state.authUser?.name || "sistema";
   try {
     const res = await fetch(`${backendUrl}/fotos/${photoId}?usuario=${encodeURIComponent(user)}`, {
