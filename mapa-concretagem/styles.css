@@ -1105,7 +1105,7 @@ textarea:focus {
 }
 
 #viewInspecao .sheet-box {
-  overflow-x: auto;
+  overflow-x: visible;
 }
 
 #viewInspecao .sheet-table {
@@ -2410,7 +2410,7 @@ hr {
   }
 
   #viewInspecao .sheet-table {
-    min-width: 640px;
+    min-width: 0;
     font-size: 0.82rem;
   }
 
@@ -2420,7 +2420,7 @@ hr {
   }
 
   #viewInspecao .sheet-table input[type="text"] {
-    min-width: 120px;
+    min-width: 0;
   }
 }
 
@@ -5215,5 +5215,95 @@ tr.row-montado {
     margin: 0 !important;
     padding: 0 !important;
   }
+}
+
+/* Inspeção Setor 3 e 4 — layout mobile-first */
+#viewInspecao { width: 100%; min-width: 0; }
+#viewInspecao .section-title-row h2 { font-size: 1.125rem; }
+#viewInspecao .grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+#viewInspecao .grid > label,
+#viewInspecao .grid > div { min-width: 0; grid-column: auto; }
+#viewInspecao .grid label,
+#viewInspecao .kiosk-toggle-field > label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+#viewInspecao .grid input,
+#viewInspecao .grid select { width: 100%; min-width: 0; }
+#viewInspecao .kiosk-toggle-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+#viewInspecao #insSetorGroup {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+#viewInspecao #insSetorGroup .sector-filter-btn {
+  flex: 1 1 100px;
+  min-width: 100px;
+  white-space: normal;
+}
+#viewInspecao .sheet-box {
+  width: 100%;
+  min-width: 0;
+  overflow-x: visible;
+}
+#viewInspecao .sheet-topline,
+#viewInspecao .sheet-filter-row,
+#viewInspecao .sheet-filter-row input { min-width: 0; max-width: 100%; }
+#viewInspecao .sheet-table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: separate;
+}
+#viewInspecao .sheet-table thead { display: none; }
+#viewInspecao .sheet-table tbody {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+#viewInspecao .sheet-table tr,
+#viewInspecao .sheet-table tr[data-record-id],
+#viewInspecao .sheet-table tr[data-record-id] td {
+  min-width: 0;
+  max-width: 100%;
+}
+#viewInspecao .sheet-table tr[data-record-id] { display: block; width: 100%; }
+#viewInspecao .sheet-table tr[data-record-id] td { overflow-wrap: anywhere; }
+#viewInspecao .sheet-table tr[data-record-id] td:last-child .btn {
+  width: 100%;
+  max-width: none;
+}
+.ins-float-bar {
+  padding: 10px max(16px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+body.mode-inspecao .container {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+}
+@media (min-width: 640px) {
+  #viewInspecao .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 768px) {
+  #viewInspecao .sheet-table tbody { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  #viewInspecao .sheet-table tbody { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
