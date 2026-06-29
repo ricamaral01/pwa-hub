@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v31";
+const CACHE = "ct-hub-v32-auth";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -14,6 +14,13 @@ const ASSETS = [
   "./index.html",
   "./styles.css",
   "./manifest.json",
+  "./login.html",
+  "./change-password.html",
+  "./access-denied.html",
+  "./auth/config.js",
+  "./auth/client.js",
+  "./auth/guard.js",
+  "./auth/ui.css",
 
   /* ---- Assets ---- */
   "./assets/img/icon.png",

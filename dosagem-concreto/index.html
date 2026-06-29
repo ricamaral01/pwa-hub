@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="auth-checking">
 <head>
+  <style>html.auth-checking body{visibility:hidden}</style>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="/auth/config.js"></script><script defer src="/auth/client.js"></script><script defer src="/auth/guard.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CONCRETRACK DOSAGEM — Laboratório e Engenharia do Concreto</title>
@@ -940,7 +943,7 @@
     </style>
     <link rel="stylesheet" href="./layout-modern.css?v=6">
 </head>
-<body>
+<body data-app-key="dosagem-concreto">
 
 <header>
     <button class="modern-menu-toggle" id="modernMenuToggle" type="button" aria-label="Abrir navegação" aria-controls="sidebar" aria-expanded="false">☰</button>

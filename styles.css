@@ -364,3 +364,5 @@ textarea{ resize:vertical; min-height:80px; }
   .title{ font-size:24px; }
   .pvGrid{ grid-template-columns:1fr; }
 }
+html.auth-checking body{visibility:hidden}
+.auth-user-bar{position:fixed;z-index:1000;top:10px;right:12px;display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:999px;background:#fff;color:#365464;box-shadow:0 4px 16px rgba(0,0,0,.12);font-size:.7rem}.auth-user-bar button{border:0;border-radius:999px;padding:5px 9px;background:#173d59;color:#fff;font-weight:700}

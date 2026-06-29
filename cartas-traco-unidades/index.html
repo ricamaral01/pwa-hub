@@ -1,6 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="auth-checking">
 <head>
+  <style>html.auth-checking body{visibility:hidden}</style>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="/auth/config.js"></script><script defer src="/auth/client.js"></script><script defer src="/auth/guard.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cartas Traço — Concrefer Unidades</title>
@@ -733,7 +736,7 @@
     .ct-footer { text-align: center; font-size: .65rem; color: var(--muted); opacity: .4; padding: 16px 20px 32px; }
   </style>
 </head>
-<body>
+<body data-app-key="cartas-traco-unidades">
 
 <!-- TOP BAR -->
 <header class="topbar">
