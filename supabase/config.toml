@@ -1,0 +1,8 @@
+[functions.auth-login]
+verify_jwt = false
+
+[functions.admin-users]
+verify_jwt = true
+
+[functions.change-password]
+verify_jwt = true

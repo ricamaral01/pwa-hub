@@ -1,6 +1,9 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-br" class="auth-checking">
 <head>
+  <style>html.auth-checking body{visibility:hidden}</style>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="/auth/config.js"></script><script defer src="/auth/client.js"></script><script defer src="/auth/guard.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>CONCRETRACK • Controle de Agregados</title>
@@ -272,7 +275,7 @@
   </style>
 </head>
 
-<body>
+<body data-app-key="controle-agregados">
 <div class="wrap">
   <a class="back" href="../index.html">← Hub</a>
   <div class="title">🪨 Controle de Agregados</div>
