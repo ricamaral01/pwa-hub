@@ -938,10 +938,12 @@
         }
 
     </style>
+    <link rel="stylesheet" href="./layout-modern.css?v=6">
 </head>
 <body>
 
 <header>
+    <button class="modern-menu-toggle" id="modernMenuToggle" type="button" aria-label="Abrir navegação" aria-controls="sidebar" aria-expanded="false">☰</button>
     <a href="../index.html" class="btn-voltar-hub" title="Voltar ao HUB Principal">⬅ HUB</a>
     <div class="header-brand">
         <img src="../assets/img/logo-concretrack.png" alt="Concretrack Logo">
@@ -950,14 +952,15 @@
             <p>Laboratório &amp; Engenharia do Concreto &middot; Dosagem, Traços e Custo por m³</p>
         </div>
     </div>
+    <div class="modern-header-status" aria-label="Status da aplicação"><span></span>Calculadora operacional</div>
 </header>
 
 <div class="app-layout">
 
 <!-- sidebar removido -->
 
-<div style="width:100%">
-<aside style="display:none" id="sidebar">
+<div class="modern-workspace">
+<aside id="sidebar" aria-label="Navegação da Calculadora de Dosagem">
     <div class="sidebar-group">
         <span class="sidebar-group-label">Início</span>
         <button class="sidebar-btn active" data-sec="sec-hub" onclick="showSection('sec-hub',this)">
@@ -1058,6 +1061,7 @@
         </button>
     </div>
 </aside>
+<div class="modern-sidebar-overlay" id="modernSidebarOverlay" aria-hidden="true"></div>
 
 <main>
 
@@ -1755,9 +1759,16 @@
         <p class="subtitle">Área técnica para montar o traço base, validar metas de flow, comparar cenários e consolidar a carta final.</p>
 
         <!-- CARREGAR CARTA TRAÇO -->
-        <div style="background:linear-gradient(135deg,#e8f4fb 0%,#daeaf7 100%);border:2px solid #5b9bd5;border-radius:12px;padding:16px 18px;margin-bottom:18px;">
+        <div class="dos-load-action">
+            <div><strong>Carregar Carta Traço</strong><span>Use uma composição salva como ponto de partida.</span></div>
+            <button type="button" class="btn btn-primary" id="dosOpenLoadModal">📂 Carregar carta</button>
+        </div>
+        <div class="dos-load-modal" id="dosLoadModal" aria-hidden="true">
+          <div class="dos-load-dialog" role="dialog" aria-modal="true" aria-labelledby="dosLoadTitle">
+            <button type="button" class="dos-load-close" id="dosCloseLoadModal" aria-label="Fechar">×</button>
+            <div style="background:linear-gradient(135deg,#e8f4fb 0%,#daeaf7 100%);border:2px solid #5b9bd5;border-radius:12px;padding:16px 18px;">
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
-                <span style="font-size:0.95rem;font-weight:800;color:#1a3a6e;">📂 Carregar Carta Traço Salva</span>
+                <span id="dosLoadTitle" style="font-size:0.95rem;font-weight:800;color:#1a3a6e;">📂 Carregar Carta Traço Salva</span>
                 <button type="button" class="btn" onclick="dosCarregarSelectCartas()" style="padding:4px 12px;font-size:0.78rem;background:#fff;border:1.5px solid #82a9c9;color:#1a3a6e;border-radius:6px;font-weight:700;" title="Atualizar lista">🔄 Atualizar</button>
                 <span id="dos-carregar-count" style="font-size:0.78rem;color:#555;"></span>
             </div>
@@ -1765,11 +1776,13 @@
                 <select id="dos-carregar-sel" onfocus="dosCarregarSelectCartas()" onchange="dosCarregarPreview()" style="flex:1;min-width:200px;padding:9px 12px;border:2px solid #5b9bd5;border-radius:8px;font-size:0.85rem;background:#fff;font-weight:600;color:#1a1f2e;">
                     <option value="">— Selecione uma carta —</option>
                 </select>
-                <button type="button" class="btn btn-primary" onclick="dosCarregarCartaSelecionada()" style="padding:9px 20px;font-size:0.88rem;font-weight:800;white-space:nowrap;border-radius:8px;">📥 Carregar</button>
+                <button type="button" class="btn btn-primary" id="dosConfirmLoadModal" onclick="dosCarregarCartaSelecionada()" style="padding:9px 20px;font-size:0.88rem;font-weight:800;white-space:nowrap;border-radius:8px;">📥 Carregar</button>
             </div>
             <!-- Preview da carta selecionada -->
             <div id="dos-carregar-preview" style="display:none;margin-top:12px;background:#fff;border:1.5px solid #a8c8e8;border-radius:8px;padding:12px 16px;font-size:0.82rem;line-height:1.6;"></div>
             <div id="dos-carregar-status" style="margin-top:8px;font-size:0.82rem;"></div>
+            </div>
+          </div>
         </div>
 
         <div class="kpi-grid" id="dosagem-kpis">
@@ -1890,31 +1903,31 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Cimento — ρ (g/cm³)</label>
-                        <input type="number" id="dos_rho_cim" step="0.01" min="2.5" max="3.5" placeholder="Ex: 3.12">
+                        <input type="number" id="dos_rho_cim" step="0.01" min="2.5" max="3.5" placeholder="Obrigatório" required>
                     </div>
                     <div class="form-group">
                         <label>Adição — ρ (g/cm³)</label>
-                        <input type="number" id="dos_rho_adic" step="0.01" min="1.5" max="3.5" placeholder="Ex: 2.70">
+                        <input type="number" id="dos_rho_adic" step="0.01" min="1.5" max="3.5" placeholder="Obrigatório" required>
                     </div>
                     <div class="form-group">
                         <label>Areia Natural — ρ (g/cm³)</label>
-                        <input type="number" id="dos_rho_an" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.63">
+                        <input type="number" id="dos_rho_an" step="0.01" min="2.0" max="3.0" placeholder="Obrigatório" required>
                     </div>
                     <div class="form-group" id="dos_rho_an2_wrap" style="display:none;">
                         <label>Areia Natural 2 — ρ (g/cm³)</label>
-                        <input type="number" id="dos_rho_an2" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.63">
+                        <input type="number" id="dos_rho_an2" step="0.01" min="2.0" max="3.0" placeholder="Obrigatório" required>
                     </div>
                     <div class="form-group">
                         <label>Areia Industrial — ρ (g/cm³)</label>
-                        <input type="number" id="dos_rho_ai" step="0.01" min="2.0" max="3.0" placeholder="Ex: 2.66">
+                        <input type="number" id="dos_rho_ai" step="0.01" min="2.0" max="3.0" placeholder="Obrigatório" required>
                     </div>
                     <div class="form-group">
                         <label>Brita 0 — ρ (g/cm³)</label>
-                        <input type="number" id="dos_rho_b0" step="0.01" min="2.0" max="3.5" placeholder="Ex: 2.68">
+                        <input type="number" id="dos_rho_b0" step="0.01" min="2.0" max="3.5" placeholder="Obrigatório" required>
                     </div>
                     <div class="form-group">
                         <label>Brita ½ — ρ (g/cm³)</label>
-                        <input type="number" id="dos_rho_b1" step="0.01" min="2.0" max="3.5" placeholder="Ex: 2.70">
+                        <input type="number" id="dos_rho_b1" step="0.01" min="2.0" max="3.5" placeholder="Obrigatório" required>
                     </div>
                     <div class="form-group">
                         <label>Água — ρ (g/cm³)</label>
@@ -1922,7 +1935,11 @@
                     </div>
                     <div class="form-group">
                         <label>Aditivo SP — ρ (g/cm³)</label>
-                        <input type="number" id="dos_rho_adit" step="0.01" min="0.8" max="1.5" placeholder="Ex: 1.10">
+                        <input type="number" id="dos_rho_adit" step="0.01" min="0.8" max="1.5" placeholder="Obrigatório" required>
+                    </div>
+                    <div class="form-group" id="dos_rho_adit2_wrap" style="display:none;">
+                        <label>Aditivo 2 — ρ (g/cm³)</label>
+                        <input type="number" id="dos_rho_adit2" step="0.01" min="0.8" max="1.5" placeholder="Obrigatório" required>
                     </div>
                 </div>
             </div>
@@ -1964,13 +1981,40 @@
         <!-- botões Calcular / Salvar Traço movidos para a barra flutuante #dos-fab -->
 
         <div id="res-dosagem"></div>
-        <div id="dos-argamassa-slot"></div>
+        <section class="dos-argamassa-card" id="dos-argamassa-slot" aria-labelledby="dos-argamassa-title">
+            <div class="dos-argamassa-head">
+                <div>
+                    <span class="dos-argamassa-eyebrow">Volume absoluto dos materiais</span>
+                    <h3 id="dos-argamassa-title">🧱 Taxa de Argamassa</h3>
+                    <p>Inclui cimento, água, aditivos, adições/filler e agregados miúdos. Britas não entram na argamassa.</p>
+                </div>
+                <span class="dos-argamassa-status" id="dos-argamassa-status">Aguardando densidades</span>
+            </div>
+            <div class="dos-argamassa-metrics">
+                <div><span>Taxa em Massa</span><strong id="arg-taxa-massa">—</strong></div>
+                <div><span>Taxa em Volume</span><strong id="arg-taxa-volume">—</strong></div>
+                <div><span>Massa de Argamassa</span><strong id="arg-massa">—</strong></div>
+                <div><span>Volume de Argamassa</span><strong id="arg-volume">—</strong></div>
+                <div><span>Volume Total</span><strong id="arg-volume-total">—</strong></div>
+            </div>
+            <div class="dos-argamassa-message" id="dos-argamassa-message">Informe manualmente as massas específicas na seção de densidades para calcular.</div>
+            <details class="dos-argamassa-memory">
+                <summary>Ver memória de cálculo</summary>
+                <div id="dos-argamassa-memory"></div>
+            </details>
+        </section>
         <div id="dosagem-print-layout" class="print-only"></div>
         <div id="salvar-traco-status" style="margin-top:12px;"></div>
 
         <!-- CARTA TRAÇO — IDENTIFICAÇÃO INLINE -->
         <div style="margin-top:20px;background:linear-gradient(135deg,#f0f4ff,#e8eaf6);border:2px solid #7986cb;border-radius:12px;padding:16px 20px;" id="dos-carta-box">
-            <h3 style="font-size:1rem;color:#3730a3;margin-bottom:14px;display:flex;align-items:center;gap:8px;">📋 Identificação da Carta Traço</h3>
+            <div class="dos-carta-heading">
+                <h3 style="font-size:1rem;color:#3730a3;margin:0;display:flex;align-items:center;gap:8px;">📋 Identificação da Carta Traço</h3>
+                <label class="dos-automation-toggle" for="dos_ativa_automacao">
+                    <input type="checkbox" id="dos_ativa_automacao">
+                    <span>Carta ativa na automação</span>
+                </label>
+            </div>
             <div class="form-grid">
                 <div class="form-group" style="grid-column:1/-1;">
                     <label style="font-weight:800;color:#3730a3;">Nome da Carta Traço *</label>
@@ -2021,10 +2065,6 @@
                         <option value="pederneiras">Pederneiras</option>
                         <option value="noroeste">Noroeste</option>
                     </select>
-                </div>
-                <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:24px;">
-                    <input type="checkbox" id="dos_ativa_automacao" style="width:18px;height:18px;cursor:pointer;accent-color:#3730a3;">
-                    <label for="dos_ativa_automacao" style="cursor:pointer;font-weight:700;color:#3730a3;">✅ Carta Ativa na Automação</label>
                 </div>
                 <div class="form-group" style="grid-column:1/-1;">
                     <label>Nome Cadastrado na Automação</label>
@@ -6991,6 +7031,8 @@ function verificarVolume() {
 // SEÇÃO 4 — TEOR DE ARGAMASSA
 // ═══════════════════════════════════════════════════
 function calcularArgamassa() {
+    const requiredFields = ['arg_cim','arg_adic','arg_an','arg_ai','arg_b0','arg_b1','arg_agua','arg_adit','arg_ar'];
+    if (requiredFields.some(id => !document.getElementById(id))) return;
     const rho = getRho();
     const m = {
         cim:  parseFloat(document.getElementById('arg_cim').value)  || 0,
@@ -9291,6 +9333,16 @@ function salvarCartaTracoDosagem() {
     const teorArgMassa = (mArg + mBrita) > 0 ? (mArg / (mArg + mBrita)) * 100 : 0;
     const teorArgVolume = (vArg + vBrita) > 0 ? (vArg / (vArg + vBrita)) * 100 : 0;
 
+    let taxaArgamassa;
+    try {
+        taxaArgamassa = window.calcularTaxaArgamassaDaTela();
+    } catch (error) {
+        const status = document.getElementById('dos-carta-status');
+        if (status) status.innerHTML = `<span class="badge badge-err">⚠️ ${error.message}</span>`;
+        document.getElementById('dos-densidades-box')?.setAttribute('open', '');
+        return;
+    }
+
     const tracoNome = g('dos_nome_carta') || g('dos_obra') || 'Traço';
     const unidade   = g('dos_unidade');
     const ativaAutomacao = document.getElementById('dos_ativa_automacao')?.checked || false;
@@ -9366,9 +9418,18 @@ function salvarCartaTracoDosagem() {
         flow: n('dos_flow'),
         ar:   n('dos_ar'),
         volumeTotal: parseFloat(volumeTotal.toFixed(1)),
-        teorArgMassa: parseFloat(teorArgMassa.toFixed(1)),
-        teorArgVolume: parseFloat(teorArgVolume.toFixed(1)),
-        volArg: parseFloat(vArg.toFixed(1)),
+        teorArgMassa: parseFloat(taxaArgamassa.taxa_argamassa_massa_pct.toFixed(1)),
+        teorArgVolume: parseFloat(taxaArgamassa.taxa_argamassa_volume_pct.toFixed(1)),
+        volArg: parseFloat(taxaArgamassa.volume_argamassa_l.toFixed(1)),
+        massaArgamassa: parseFloat(taxaArgamassa.massa_argamassa_kg.toFixed(1)),
+        massaTotal: parseFloat(taxaArgamassa.massa_total_kg.toFixed(1)),
+        taxa_argamassa_massa_pct: parseFloat(taxaArgamassa.taxa_argamassa_massa_pct.toFixed(3)),
+        taxa_argamassa_volume_pct: parseFloat(taxaArgamassa.taxa_argamassa_volume_pct.toFixed(3)),
+        massa_argamassa_kg: parseFloat(taxaArgamassa.massa_argamassa_kg.toFixed(3)),
+        massa_total_kg: parseFloat(taxaArgamassa.massa_total_kg.toFixed(3)),
+        volume_argamassa_l: parseFloat(taxaArgamassa.volume_argamassa_l.toFixed(3)),
+        volume_total_l: parseFloat(taxaArgamassa.volume_total_l.toFixed(3)),
+        memoria_de_calculo_argamassa: taxaArgamassa.memoria_de_calculo,
         rhoCim:  parseFloat(rho.cim.toFixed(3)),
         rhoAdic: parseFloat(rho.adic.toFixed(3)),
         rhoAn:   parseFloat(rho.an.toFixed(3)),
@@ -9377,6 +9438,7 @@ function salvarCartaTracoDosagem() {
         rhoB0:   parseFloat(rho.b0.toFixed(3)),
         rhoB1:   parseFloat(rho.b1.toFixed(3)),
         rhoAdit: parseFloat(rho.adit.toFixed(3)),
+        rhoAdit2: adit2 > 0 ? parseFloat((n('dos_rho_adit2')).toFixed(3)) : null,
         custoTotal,
         custoLigantes,
         custoAgregados,
@@ -11809,13 +11871,17 @@ function toggleAn2() {
 
 function toggleAdit2() {
     const w = document.getElementById('dos-adit2-wrap');
+    const rhoW = document.getElementById('dos_rho_adit2_wrap');
     const tog = document.getElementById('dos-adit2-toggle');
     const vis = w.style.display === 'none' || !w.style.display;
     w.style.display = vis ? 'block' : 'none';
+    if (rhoW) rhoW.style.display = vis ? 'block' : 'none';
     tog.textContent = vis ? '− 2º aditivo' : '+ 2º aditivo';
     if (!vis) {
         const a2 = document.getElementById('dos_adit2');
         if (a2) a2.value = '';
+        const rhoA2 = document.getElementById('dos_rho_adit2');
+        if (rhoA2) rhoA2.value = '';
         calcularDosagem();
     }
 }
@@ -11838,7 +11904,7 @@ function limparDosagemForm() {
         'dos_ai','dos_b0','dos_b1','dos_agua','dos_adit','dos_adit2',
         'dos_flow','dos_fck',
         'dos_rho_cim','dos_rho_adic','dos_rho_an','dos_rho_an2',
-        'dos_rho_ai','dos_rho_b0','dos_rho_b1','dos_rho_adit'
+        'dos_rho_ai','dos_rho_b0','dos_rho_b1','dos_rho_adit','dos_rho_adit2'
     ];
     ids.forEach(id => { const el = document.getElementById(id); if (el && !el.readOnly) el.value = ''; });
     // Reset ar to default
@@ -11851,8 +11917,10 @@ function limparDosagemForm() {
     if (rhoW) rhoW.style.display = 'none';
     if (tog) tog.textContent = '+ 2ª AN';
     const ad2w = document.getElementById('dos-adit2-wrap');
+    const ad2rho = document.getElementById('dos_rho_adit2_wrap');
     const ad2t = document.getElementById('dos-adit2-toggle');
     if (ad2w) ad2w.style.display = 'none';
+    if (ad2rho) ad2rho.style.display = 'none';
     if (ad2t) ad2t.textContent = '+ 2º aditivo';
     // Clear results
     const res = document.getElementById('res-dosagem');
@@ -11984,14 +12052,18 @@ function dosCarregarCartaSelecionada() {
     set('dos_adit',  Math.max(0, aditTotalLoaded - adit2Loaded));
     if (adit2Loaded > 0) {
         const ad2w = document.getElementById('dos-adit2-wrap');
+        const ad2rho = document.getElementById('dos_rho_adit2_wrap');
         const ad2t = document.getElementById('dos-adit2-toggle');
         if (ad2w) ad2w.style.display = 'block';
+        if (ad2rho) ad2rho.style.display = 'block';
         if (ad2t) ad2t.textContent = '− 2º aditivo';
         set('dos_adit2', adit2Loaded);
     } else {
         const ad2w = document.getElementById('dos-adit2-wrap');
+        const ad2rho = document.getElementById('dos_rho_adit2_wrap');
         const ad2t = document.getElementById('dos-adit2-toggle');
         if (ad2w) ad2w.style.display = 'none';
+        if (ad2rho) ad2rho.style.display = 'none';
         if (ad2t) ad2t.textContent = '+ 2º aditivo';
         if (document.getElementById('dos_adit2')) document.getElementById('dos_adit2').value = '0';
     }
@@ -12023,6 +12095,7 @@ function dosCarregarCartaSelecionada() {
     setRho('dos_rho_b0',   c.rhoB0);
     setRho('dos_rho_b1',   c.rhoB1);
     setRho('dos_rho_adit', c.rhoAdit);
+    setRho('dos_rho_adit2', c.rhoAdit2);
     // Sincronizar também para a aba Materiais (sec-massa-esp / rho_*)
     const setMatRho = (id, v) => { const el = document.getElementById(id); if (el && v != null && v !== '') el.value = v; };
     setMatRho('rho_cim',  c.rhoCim);
@@ -12067,6 +12140,8 @@ function mccGetGroup(mat) {
 }
 
 </script>
+<script src="./argamassa-calculo.js?v=1"></script>
+<script src="./layout-modern.js?v=5"></script>
 
 </body>
 </html>
