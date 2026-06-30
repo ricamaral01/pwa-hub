@@ -646,7 +646,7 @@ const el = {
   viewSequenciaS3: document.getElementById("viewSequenciaS3"),
   seqS3Data: document.getElementById("seqS3Data"),
   seqS3Search: document.getElementById("seqS3Search"),
-  seqS3TableBody: document.getElementById("seqS3TableBody"),
+  seqS3List: document.getElementById("seqS3List"),
   seqS3BtnSalvar: document.getElementById("seqS3BtnSalvar"),
   seqS3FloatBar: document.getElementById("seqS3FloatBar"),
   viewMontagemIndicadores: document.getElementById("viewMontagemIndicadores"),
@@ -9292,11 +9292,11 @@ window.getModelosForFormaS3 = function(forma) {
 };
 
 window.renderSequenciaS3 = async function() {
-  const tableBody = el.seqS3TableBody;
-  if (!tableBody) return;
+  const listContainer = el.seqS3List;
+  if (!listContainer) return;
 
   const selectedDate = el.seqS3Data?.value || todayYmd();
-  tableBody.innerHTML = '<tr><td colspan="2" class="muted text-center" style="padding: 20px;">Carregando programações...</td></tr>';
+  listContainer.innerHTML = '<div class="muted text-center" style="padding: 20px; width: 100%;">Carregando programações...</div>';
 
   let localDb = readProgS3S4Db();
   let savedModels = {};
@@ -9342,7 +9342,7 @@ window.renderSequenciaS3 = async function() {
   });
 
   // Renderiza formas SC01 a SC52
-  tableBody.innerHTML = "";
+  listContainer.innerHTML = "";
   const shapesCount = 52;
   
   for (let i = 1; i <= shapesCount; i++) {
@@ -9350,7 +9350,7 @@ window.renderSequenciaS3 = async function() {
     const selectedModel = savedModels[formaName] || "";
     const options = getModelosForFormaS3(formaName);
     
-    let selectHtml = `<select class="seq-s3-select" data-forma="${formaName}" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line, rgba(0,0,0,0.1)); background: var(--bg, #f0f4f8); color: var(--text, #1a2840); font-weight: 600; cursor: pointer; -webkit-appearance: none; appearance: none;">`;
+    let selectHtml = `<select class="seq-s3-select" data-forma="${formaName}">`;
     options.forEach(opt => {
       const label = opt === "" ? "Sem Produção (Vazio)" : opt;
       const isSelected = selectedModel === opt ? "selected" : "";
@@ -9358,17 +9358,17 @@ window.renderSequenciaS3 = async function() {
     });
     selectHtml += `</select>`;
 
-    const tr = document.createElement("tr");
-    tr.className = "seq-s3-row";
-    tr.dataset.forma = formaName;
-    tr.innerHTML = `
-      <td style="font-weight: 700; color: var(--primary-light, #2563a8); vertical-align: middle; padding: 12px 16px; font-size: 1.05rem;">${formaName}</td>
-      <td style="padding: 8px 16px; position: relative;">
+    const div = document.createElement("div");
+    div.className = "seq-s3-item seq-s3-row";
+    div.dataset.forma = formaName;
+    div.innerHTML = `
+      <div class="seq-s3-forma-badge">${formaName}</div>
+      <div class="seq-s3-select-wrapper">
         ${selectHtml}
-        <span style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted, #5a6a7e); font-size: 0.8rem;">▼</span>
-      </td>
+        <span class="seq-s3-arrow">▼</span>
+      </div>
     `;
-    tableBody.appendChild(tr);
+    listContainer.appendChild(div);
   }
 
   updateSeqS3TotalCount();

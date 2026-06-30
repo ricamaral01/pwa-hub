@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=09b41bff" />
+  <link rel="stylesheet" href="styles.css?v=92d0dbc1" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -910,18 +910,8 @@
           <div><strong>Fôrmas do Setor 3</strong></div>
           <div><strong>Itens:</strong> <span id="seqS3TotalCount">52</span></div>
         </div>
-        <div class="table-responsive">
-          <table class="sheet-table">
-            <thead>
-              <tr>
-                <th style="width: 45%;">Nº Fôrma</th>
-                <th style="width: 55%;">Modelo de Poste</th>
-              </tr>
-            </thead>
-            <tbody id="seqS3TableBody">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
+        <div id="seqS3List" class="seq-s3-list">
+          <!-- Dynamically populated rows -->
         </div>
       </div>
     </section>
@@ -1043,6 +1033,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=bc337939"></script>
+  <script src="app.js?v=538ce7e9"></script>
 </body>
 </html>

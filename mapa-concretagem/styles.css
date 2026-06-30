@@ -5336,4 +5336,105 @@ body.mode-sequencia-s3 .container {
   }
 }
 
+#viewSequenciaS3 .section-title-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+#viewSequenciaS3 .section-title-row .btn-back {
+  width: auto;
+  padding: 8px 16px;
+}
+
+.seq-s3-list {
+  display: flex;
+  flex-direction: column;
+  background: var(--card, #fff);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.seq-s3-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line, rgba(0,0,0,0.08));
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.seq-s3-item:last-child {
+  border-bottom: none;
+}
+
+.seq-s3-forma-badge {
+  font-weight: 700;
+  color: var(--primary-light, #2563a8);
+  font-size: 1.05rem;
+  min-width: 60px;
+  text-align: left;
+}
+
+.seq-s3-select-wrapper {
+  flex-grow: 1;
+  position: relative;
+  max-width: calc(100% - 72px);
+}
+
+.seq-s3-select {
+  width: 100%;
+  padding: 10px 32px 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line, rgba(0,0,0,0.15));
+  background: var(--bg, #f0f4f8);
+  color: var(--text, #1a2840);
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.seq-s3-select:focus {
+  outline: none;
+  border-color: var(--primary, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.seq-s3-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--muted, #5a6a7e);
+  font-size: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .seq-s3-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+  }
+  .seq-s3-item {
+    border-bottom: 1px solid var(--line, rgba(0,0,0,0.08));
+  }
+}
+
+@media (min-width: 1024px) {
+  .seq-s3-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+
 
