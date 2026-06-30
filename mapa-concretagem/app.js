@@ -7,15 +7,15 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "SEQUENCIA_S3"]
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["INSPECAO", "MONTAGEM_POSTES"]
+    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3"]
   },
   APONTADOR: {
     label: "Apontador",
@@ -636,12 +636,19 @@ const el = {
   hubLiberacaoS4: document.getElementById("hubLiberacaoS4"),
   hubInspecao: document.getElementById("hubInspecao"),
   hubMontagemPostes: document.getElementById("hubMontagemPostes"),
+  hubSequenciaS3: document.getElementById("hubSequenciaS3"),
   hubMontagemIndicadores: document.getElementById("hubMontagemIndicadores"),
   hubRelatorio: document.getElementById("hubRelatorio"),
   hubHistorico: document.getElementById("hubHistorico"),
   viewLiberacao: document.getElementById("viewLiberacao"),
   viewInspecao: document.getElementById("viewInspecao"),
   viewMontagemPostes: document.getElementById("viewMontagemPostes"),
+  viewSequenciaS3: document.getElementById("viewSequenciaS3"),
+  seqS3Data: document.getElementById("seqS3Data"),
+  seqS3Search: document.getElementById("seqS3Search"),
+  seqS3TableBody: document.getElementById("seqS3TableBody"),
+  seqS3BtnSalvar: document.getElementById("seqS3BtnSalvar"),
+  seqS3FloatBar: document.getElementById("seqS3FloatBar"),
   viewMontagemIndicadores: document.getElementById("viewMontagemIndicadores"),
   viewMontagemPostesDetalhe: document.getElementById("viewMontagemPostesDetalhe"),
   viewRelatorio: document.getElementById("viewRelatorio"),
@@ -5921,7 +5928,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -5976,11 +5983,18 @@ function setMode(mode) {
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
     carregarMontagemIndicadores();
   }
+  if (mode === "SEQUENCIA_S3") {
+    if (el.viewSequenciaS3) el.viewSequenciaS3.classList.remove("hidden");
+    const seqS3Data = document.getElementById("seqS3Data");
+    if (seqS3Data && !seqS3Data.value) seqS3Data.value = todayYmd();
+    renderSequenciaS3();
+  }
 
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3");
   if (mode === "HUB") document.body.classList.add("mode-hub");
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
+  if (mode === "SEQUENCIA_S3") document.body.classList.add("mode-sequencia-s3");
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
     if (state.authUser?.name && el.insColaborador) {
@@ -6256,6 +6270,11 @@ function bindEvents() {
     setMode("MONTAGEM_POSTES");
     if (!el.mpFiltroData.value) el.mpFiltroData.value = todayYmd();
     renderMontagemPostesLiberados();
+  });
+  el.hubSequenciaS3?.addEventListener("click", () => {
+    setMode("SEQUENCIA_S3");
+    if (el.seqS3Data && !el.seqS3Data.value) el.seqS3Data.value = todayYmd();
+    renderSequenciaS3();
   });
   el.hubMontagemIndicadores?.addEventListener("click", () => {
     setMode("MONTAGEM_INDICADORES");
@@ -6873,12 +6892,22 @@ function bindEvents() {
   const dbBtnAtualizar = document.getElementById("dbBtnAtualizar");
   if (dbBtnAtualizar) dbBtnAtualizar.addEventListener("click", carregarDadosGlobaisDashboard);
 
-  // Hub icon-cards (data-hub-mode)
   document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
     if (btn.dataset.hubNavBound === "1") return;
     btn.addEventListener("click", () => {
       handleHubModeNavigation(btn.dataset.hubMode || "");
     });
+  });
+
+  // Sequencia Setor 3 bindings
+  el.seqS3Data?.addEventListener("change", () => {
+    renderSequenciaS3();
+  });
+  el.seqS3Search?.addEventListener("input", () => {
+    filterSequenciaS3();
+  });
+  el.seqS3BtnSalvar?.addEventListener("click", () => {
+    saveSequenciaS3();
   });
 }
 
@@ -6980,6 +7009,36 @@ async function syncOfflineData() {
   } catch (err) {
     console.error("[syncOfflineData] Erro ao sincronizar apontamentos:", err);
   }
+
+  // 3. Sincronizar prog_s3_s4 (Sequencia Setor 3)
+  try {
+    const progDb = readProgS3S4Db();
+    let progChanged = false;
+    const pendingKeys = Object.keys(progDb.programacoes || {}).filter(key => progDb.programacoes[key].pendingSync === true);
+    for (const key of pendingKeys) {
+      const entry = progDb.programacoes[key];
+      const { error } = await supabaseClient
+        .from("prog_s3_s4")
+        .upsert({
+          data: entry.data,
+          forma: entry.forma,
+          setor: entry.setor,
+          modelo: entry.modelo
+        }, { onConflict: "data,forma,setor" });
+      
+      if (!error) {
+        progDb.programacoes[key].pendingSync = false;
+        progChanged = true;
+        syncedCount++;
+      }
+    }
+    if (progChanged) {
+      writeProgS3S4Db(progDb);
+    }
+  } catch (err) {
+    console.error("[syncOfflineData] Erro ao sincronizar prog_s3_s4:", err);
+  }
+
 
   if (syncedCount > 0) {
     setSyncStatus("ok", `Sincronização offline automática concluída! ${syncedCount} item(ns) enviado(s).`);
@@ -9187,3 +9246,241 @@ window.excluirFotoVps = async function(photoId) {
     showMsgBox("Falha de rede ao conectar à API de Storage.", "error");
   }
 };
+
+/* Sequencia Setor 3 (PWA Offline-First Feature) */
+
+window.readProgS3S4Db = function() {
+  try {
+    const raw = localStorage.getItem("pwa_prog_s3_s4_v1");
+    return raw ? JSON.parse(raw) : { programacoes: {} };
+  } catch (err) {
+    return { programacoes: {} };
+  }
+};
+
+window.writeProgS3S4Db = function(db) {
+  localStorage.setItem("pwa_prog_s3_s4_v1", JSON.stringify(db));
+};
+
+window.getModelosForFormaS3 = function(forma) {
+  const num = parseInt(forma.replace("SC", ""), 10);
+  if (num >= 37 && num <= 52) {
+    return [
+      "",
+      "10x400", "10x600", "10x1000", "10,5x1000 CR", 
+      "11x300", "11x400", "11x600", "11x1000", 
+      "12x300", "12x400", "12x600", "12x1000", 
+      "13x400", "13x600", "13x1000", 
+      "14x600", "14x1000", "14x1500", 
+      "15x600", "15x1000", 
+      "16x600", "16x1000", 
+      "16,5x1000", "16,5x2000", 
+      "17,5x1000", 
+      "18x1000", "18x2000", 
+      "19x1000", 
+      "21.5x1000", "21.5x1200"
+    ];
+  } else {
+    return [
+      "",
+      "7x300", "7x400", 
+      "7,5x200", "7,5x300", "7,5x400", "7,5x600", 
+      "9x150", "9x150 EDP", "9x200", "9x300", "9x300 EDP", "9x400", "9x500", "9x600", "9x800 EDP", "9x1000"
+    ];
+  }
+};
+
+window.renderSequenciaS3 = async function() {
+  const tableBody = el.seqS3TableBody;
+  if (!tableBody) return;
+
+  const selectedDate = el.seqS3Data?.value || todayYmd();
+  tableBody.innerHTML = '<tr><td colspan="2" class="muted text-center" style="padding: 20px;">Carregando programações...</td></tr>';
+
+  let localDb = readProgS3S4Db();
+  let savedModels = {};
+
+  // Tenta buscar no Supabase se online
+  if (supabaseClient && navigator.onLine) {
+    try {
+      const { data, error } = await supabaseClient
+        .from("prog_s3_s4")
+        .select("forma, modelo")
+        .eq("data", selectedDate)
+        .eq("setor", "Setor 3");
+      
+      if (!error && data) {
+        data.forEach(item => {
+          savedModels[item.forma] = item.modelo || "";
+          
+          const cacheKey = `${selectedDate}||${item.forma}||Setor 3`;
+          localDb.programacoes[cacheKey] = {
+            data: selectedDate,
+            forma: item.forma,
+            setor: "Setor 3",
+            modelo: item.modelo || "",
+            pendingSync: false
+          };
+        });
+        writeProgS3S4Db(localDb);
+      }
+    } catch (err) {
+      console.error("Erro ao carregar do Supabase:", err);
+    }
+  }
+
+  // Preenche a partir do cache local se offline
+  const prefix = `${selectedDate}||`;
+  Object.keys(localDb.programacoes || {}).forEach(key => {
+    if (key.startsWith(prefix) && key.endsWith("||Setor 3")) {
+      const entry = localDb.programacoes[key];
+      if (savedModels[entry.forma] === undefined) {
+        savedModels[entry.forma] = entry.modelo || "";
+      }
+    }
+  });
+
+  // Renderiza formas SC01 a SC52
+  tableBody.innerHTML = "";
+  const shapesCount = 52;
+  
+  for (let i = 1; i <= shapesCount; i++) {
+    const formaName = "SC" + String(i).padStart(2, "0");
+    const selectedModel = savedModels[formaName] || "";
+    const options = getModelosForFormaS3(formaName);
+    
+    let selectHtml = `<select class="seq-s3-select" data-forma="${formaName}" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line, rgba(0,0,0,0.1)); background: var(--bg, #f0f4f8); color: var(--text, #1a2840); font-weight: 600; cursor: pointer; -webkit-appearance: none; appearance: none;">`;
+    options.forEach(opt => {
+      const label = opt === "" ? "Sem Produção (Vazio)" : opt;
+      const isSelected = selectedModel === opt ? "selected" : "";
+      selectHtml += `<option value="${opt}" ${isSelected}>${label}</option>`;
+    });
+    selectHtml += `</select>`;
+
+    const tr = document.createElement("tr");
+    tr.className = "seq-s3-row";
+    tr.dataset.forma = formaName;
+    tr.innerHTML = `
+      <td style="font-weight: 700; color: var(--primary-light, #2563a8); vertical-align: middle; padding: 12px 16px; font-size: 1.05rem;">${formaName}</td>
+      <td style="padding: 8px 16px; position: relative;">
+        ${selectHtml}
+        <span style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted, #5a6a7e); font-size: 0.8rem;">▼</span>
+      </td>
+    `;
+    tableBody.appendChild(tr);
+  }
+
+  updateSeqS3TotalCount();
+};
+
+window.updateSeqS3TotalCount = function() {
+  const rows = document.querySelectorAll(".seq-s3-row");
+  let activeCount = 0;
+  rows.forEach(row => {
+    if (row.style.display !== "none") {
+      activeCount++;
+    }
+  });
+  const elTotal = document.getElementById("seqS3TotalCount");
+  if (elTotal) elTotal.textContent = activeCount;
+};
+
+window.filterSequenciaS3 = function() {
+  const query = el.seqS3Search?.value?.trim().toUpperCase() || "";
+  const rows = document.querySelectorAll(".seq-s3-row");
+  
+  rows.forEach(row => {
+    const forma = row.dataset.forma || "";
+    if (forma.toUpperCase().includes(query)) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+  
+  updateSeqS3TotalCount();
+};
+
+window.saveSequenciaS3 = async function() {
+  const selectedDate = el.seqS3Data?.value;
+  if (!selectedDate) {
+    showMsgBox("Selecione a data da programação.", "error");
+    return;
+  }
+
+  const selects = document.querySelectorAll(".seq-s3-select");
+  const localDb = readProgS3S4Db();
+  let syncPromises = [];
+  let isNetworkFailure = false;
+  let savedCount = 0;
+
+  // Mostra modal de carregamento
+  const loadingModal = document.getElementById("loadingModal");
+  if (loadingModal) {
+    loadingModal.querySelector(".loading-msg").textContent = "Salvando programação, aguarde...";
+    loadingModal.classList.add("modal-visible");
+  }
+
+  for (const select of selects) {
+    const forma = select.dataset.forma;
+    const modelo = select.value;
+    const cacheKey = `${selectedDate}||${forma}||Setor 3`;
+
+    // Atualiza cache local
+    localDb.programacoes[cacheKey] = {
+      data: selectedDate,
+      forma: forma,
+      setor: "Setor 3",
+      modelo: modelo,
+      pendingSync: false
+    };
+
+    if (supabaseClient && navigator.onLine) {
+      const p = supabaseClient
+        .from("prog_s3_s4")
+        .upsert({
+          data: selectedDate,
+          forma: forma,
+          setor: "Setor 3",
+          modelo: modelo
+        }, { onConflict: "data,forma,setor" })
+        .then(({ error }) => {
+          if (error) {
+            console.error(`Erro ao salvar fôrma ${forma}:`, error.message);
+            localDb.programacoes[cacheKey].pendingSync = true;
+          } else {
+            savedCount++;
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          isNetworkFailure = true;
+          localDb.programacoes[cacheKey].pendingSync = true;
+        });
+      syncPromises.push(p);
+    } else {
+      localDb.programacoes[cacheKey].pendingSync = true;
+    }
+  }
+
+  if (syncPromises.length > 0) {
+    await Promise.all(syncPromises);
+  }
+
+  writeProgS3S4Db(localDb);
+
+  if (loadingModal) {
+    loadingModal.classList.remove("modal-visible");
+  }
+
+  if (isNetworkFailure || !navigator.onLine) {
+    setSyncStatus("warn", "Programação salva localmente (sem sinal de rede). Sincronizando em background.");
+    showMsgBox("Programação salva localmente devido à falta de sinal. O sistema sincronizará assim que retornar online.", "success");
+  } else {
+    setSyncStatus("ok", "Programação Setor 3 salva e sincronizada com sucesso!");
+    showMsgBox("Programação do Setor 3 salva com sucesso no banco de dados!", "success");
+  }
+
+  setMode("HUB");
+};
+

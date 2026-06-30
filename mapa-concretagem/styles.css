@@ -5307,3 +5307,33 @@ body.mode-inspecao .container {
   #viewInspecao .sheet-table tbody { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+/* Sequencia Setor 3 Styles */
+.seq-s3-float-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--card, #fff);
+  border-top: 2px solid var(--line);
+  padding: 10px max(16px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  z-index: 200;
+  box-shadow: 0 -3px 16px rgba(0,0,0,0.13);
+}
+body.mode-sequencia-s3 .seq-s3-float-bar {
+  display: block;
+}
+body.mode-sequencia-s3 .container {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+  body.mode-sequencia-s3 .seq-s3-float-bar {
+    left: 240px;
+    transition: left 0.25s ease;
+  }
+  body.sidebar-hidden.mode-sequencia-s3 .seq-s3-float-bar {
+    left: 0;
+  }
+}
+
+

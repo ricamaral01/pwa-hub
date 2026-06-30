@@ -162,3 +162,20 @@ ALTER TABLE public.fotos_inspecao ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Permitir acesso total a fotos_inspecao" ON public.fotos_inspecao;
 CREATE POLICY "Permitir acesso total a fotos_inspecao" ON public.fotos_inspecao FOR ALL USING (true) WITH CHECK (true);
 
+-- Tabela 7: Programacao Setores 3 e 4 (Sequencia de Produção)
+CREATE TABLE IF NOT EXISTS public.prog_s3_s4 (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    data DATE NOT NULL,
+    forma TEXT NOT NULL,
+    modelo TEXT,
+    setor TEXT NOT NULL DEFAULT 'Setor 3',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    CONSTRAINT unique_data_forma_setor UNIQUE (data, forma, setor)
+);
+
+ALTER TABLE public.prog_s3_s4 ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Permitir acesso total a prog_s3_s4" ON public.prog_s3_s4;
+CREATE POLICY "Permitir acesso total a prog_s3_s4" ON public.prog_s3_s4 FOR ALL USING (true) WITH CHECK (true);
+
+

@@ -128,6 +128,11 @@
         <span class="nav-icon-wrap">MP</span>
         Montagem Postes
       </button>
+      <button class="nav-item" id="hubSequenciaS3" type="button">
+        <span class="nav-icon-wrap">S3</span>
+        Sequência Setor 3
+      </button>
+
 
       <div class="nav-group-title">Geral</div>
       <button class="nav-item" id="hubRelatorio" type="button">
@@ -209,6 +214,11 @@
               <div class="hub-icon-circle" style="background:#0b6b6f">MP</div>
               <span class="hub-icon-lbl">Montagem Postes</span>
             </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="SEQUENCIA_S3">
+              <div class="hub-icon-circle" style="background:#3b82f6">S3</div>
+              <span class="hub-icon-lbl">Sequência Setor 3</span>
+            </button>
+
           </div>
         </div>
 
@@ -879,11 +889,54 @@
       <div id="acmpOutput" class="report-box" style="margin-top:12px"></div>
     </section>
 
+    <!-- Sequência Setor 3 -->
+    <section id="viewSequenciaS3" class="card hidden">
+      <div class="section-title-row">
+        <h2>Sequência Setor 3</h2>
+        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+      
+      <div class="grid" style="grid-template-columns: 1fr; gap: 12px; margin-bottom: 15px;">
+        <label>Data da Programação
+          <input id="seqS3Data" type="date" required style="width: 100%;" />
+        </label>
+        <label>Pesquisar Fôrma
+          <input id="seqS3Search" type="text" placeholder="Filtrar por fôrma (Ex: SC01)..." style="width: 100%;" />
+        </label>
+      </div>
+
+      <div class="sheet-box" style="margin-bottom: 60px;">
+        <div class="sheet-topline">
+          <div><strong>Fôrmas do Setor 3</strong></div>
+          <div><strong>Itens:</strong> <span id="seqS3TotalCount">52</span></div>
+        </div>
+        <div class="table-responsive">
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th style="width: 45%;">Nº Fôrma</th>
+                <th style="width: 55%;">Modelo de Poste</th>
+              </tr>
+            </thead>
+            <tbody id="seqS3TableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     </main>
   </div>
 </div>
 
+  <!-- Barra flutuante de salvar Sequencia Setor 3 -->
+  <div id="seqS3FloatBar" class="seq-s3-float-bar">
+    <button id="seqS3BtnSalvar" class="btn primary ins-float-salvar" type="button">💾 Salvar Programação Setor 3</button>
+  </div>
+
   <div id="insFloatBar" class="ins-float-bar">
+
     <button id="salvarInspecaoFloat" class="btn primary ins-float-salvar" type="button">💾 Salvar Inspeções</button>
   </div>
 

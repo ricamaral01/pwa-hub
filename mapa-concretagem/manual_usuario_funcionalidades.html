@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual do Usuário e Mapeamento de Funcionalidades — Mapa Concretagem</title>
+  
+  <!-- Fontes Premium -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111827;
+      --surface-card: #1f2937;
+      --surface-accent: #374151;
+      --border: rgba(255, 255, 255, 0.08);
+      --primary: #2563eb;
+      --primary-glow: rgba(37, 99, 168, 0.15);
+      --accent: #e8762a; /* Laranja ConcreTrack */
+      --accent-glow: rgba(232, 118, 42, 0.15);
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.15);
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.15);
+      --warning: #f59e0b;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --font-title: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      --sidebar-width: 280px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+
+    /* Layout da Aplicação de Documentação */
+    .doc-shell {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Sidebar de Navegação */
+    .doc-sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1rem;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.25rem;
+    }
+
+    .brand-logo {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-family: var(--font-title);
+      font-weight: 800;
+      font-size: 1.25rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex-grow: 1;
+    }
+
+    .nav-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin: 1rem 0 0.5rem 0.75rem;
+    }
+
+    .nav-label:first-of-type {
+      margin-top: 0;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.75rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-link.active {
+      color: white;
+      background-color: var(--primary-glow);
+      border-left: 3px solid var(--primary);
+      font-weight: 600;
+    }
+
+    .sidebar-footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-print {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), #1d4ed8);
+      color: white;
+      border: none;
+      padding: 0.65rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .btn-print:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* Conteúdo Principal */
+    .doc-main {
+      margin-left: var(--sidebar-width);
+      flex-grow: 1;
+      padding: 2.5rem 3rem;
+      max-width: 1200px;
+    }
+
+    /* Hamburger Menu para Mobile */
+    .mobile-header {
+      display: none;
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.25rem;
+      position: sticky;
+      top: 0;
+      z-index: 110;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Seções de Conteúdo */
+    .doc-section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .doc-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tipografia de Conteúdo */
+    h1.section-title {
+      font-family: var(--font-title);
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, white, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    h2.subsection-title {
+      font-family: var(--font-title);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      margin: 2rem 0 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h3.block-title {
+      font-family: var(--font-title);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: white;
+      margin: 1.25rem 0 0.5rem 0;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    strong {
+      color: white;
+      font-weight: 600;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: var(--accent);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    /* Cards e Containers Estilizados */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .card-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .card-accent::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .card-success::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--success);
+    }
+
+    .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+    }
+
+    /* Alertas e Notas de Destaque */
+    .alert-box {
+      background-color: rgba(255, 255, 255, 0.02);
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+
+    .alert-box.danger {
+      border-left-color: var(--danger);
+      background-color: rgba(239, 68, 68, 0.02);
+    }
+
+    .alert-box.warning {
+      border-left-color: var(--warning);
+      background-color: rgba(245, 158, 11, 0.02);
+    }
+
+    .alert-box.success {
+      border-left-color: var(--success);
+      background-color: rgba(16, 185, 129, 0.02);
+    }
+
+    .alert-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .alert-title.danger { color: var(--danger); }
+    .alert-title.warning { color: var(--warning); }
+    .alert-title.success { color: var(--success); }
+    .alert-title.primary { color: #60a5fa; }
+
+    /* Tabelas */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.03);
+      font-weight: 600;
+      color: white;
+      font-family: var(--font-title);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: rgba(255, 255, 255, 0.01);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-gerencia { background: var(--danger-glow); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-gestor { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(232, 118, 42, 0.3); }
+    .badge-montador { background: var(--primary-glow); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.3); }
+    .badge-apontador { background: var(--success-glow); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    /* Listas Ordenadas/Não Ordenadas Customizadas */
+    ul.custom-list, ol.custom-list {
+      margin: 1rem 0 1.5rem 1.5rem;
+    }
+
+    ul.custom-list li, ol.custom-list li {
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Acordeões (Collapsibles) */
+    .accordion {
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .accordion-item:last-child {
+      border-bottom: none;
+    }
+
+    .accordion-header {
+      background-color: rgba(255, 255, 255, 0.01);
+      padding: 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-family: var(--font-title);
+      transition: background-color 0.2s;
+    }
+
+    .accordion-header:hover {
+      background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .accordion-content {
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    .accordion-item.active .accordion-content {
+      display: block;
+    }
+
+    .accordion-icon {
+      transition: transform 0.2s;
+    }
+
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Buscador Interativo do Mapa de Formas */
+    .search-container {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .search-input {
+      flex-grow: 1;
+      background-color: var(--surface-card);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      color: white;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .search-select {
+      background-color: var(--surface-card);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      color: white;
+      font-family: var(--font-body);
+      cursor: pointer;
+    }
+
+    .search-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-badge {
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .stat-badge strong {
+      color: var(--accent);
+    }
+
+    /* Diagrama de Arquitetura em CSS Puro */
+    .architecture-diagram {
+      background-color: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .diag-layer {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .diag-node {
+      background-color: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      text-align: center;
+      min-width: 160px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .diag-node.client { border-color: var(--primary); }
+    .diag-node.server { border-color: var(--accent); }
+    .diag-node.db { border-color: var(--success); }
+
+    .diag-node-title {
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: white;
+      margin-bottom: 0.25rem;
+    }
+
+    .diag-node-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .diag-arrow-down {
+      width: 2px;
+      height: 20px;
+      background-color: var(--border);
+      position: relative;
+    }
+
+    .diag-arrow-down::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--text-muted);
+    }
+
+    /* Print styling rules */
+    @media print {
+      body {
+        background-color: white;
+        color: #1a202c;
+      }
+      .doc-sidebar, .mobile-header {
+        display: none !important;
+      }
+      .doc-main {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      .doc-section {
+        display: block !important;
+        page-break-after: always;
+      }
+      .doc-section:last-child {
+        page-break-after: avoid;
+      }
+      .card, .alert-box, .table-container, table {
+        border-color: #cbd5e1 !important;
+        box-shadow: none !important;
+        background: white !important;
+        color: #1a202c !important;
+      }
+      .card::before {
+        display: none !important;
+      }
+      h1, h2, h3, h1.section-title, h2.subsection-title, h3.block-title, strong {
+        color: #0f172a !important;
+        background: none !important;
+        -webkit-text-fill-color: initial !important;
+      }
+      p, td, th, li {
+        color: #334155 !important;
+      }
+      code {
+        background-color: #f1f5f9 !important;
+        color: #0f172a !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+      .badge {
+        border: 1px solid #94a3b8 !important;
+        background: #f1f5f9 !important;
+        color: #334155 !important;
+      }
+      .search-container, .stats-row {
+        display: none !important;
+      }
+    }
+
+    /* Responsividade Mobile */
+    @media (max-width: 1024px) {
+      .doc-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      .doc-sidebar.open {
+        transform: translateX(0);
+      }
+      .doc-main {
+        margin-left: 0;
+        padding: 1.5rem;
+      }
+      .mobile-header {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Mobile -->
+  <div class="mobile-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <div class="brand-logo" style="width:32px; height:32px; font-size:1rem;">MC</div>
+      <span style="font-family: var(--font-title); font-weight: 700; font-size: 0.95rem;">Mapa Concretagem</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu">☰</button>
+  </div>
+
+  <div class="doc-shell">
+    
+    <!-- Sidebar de Navegação -->
+    <aside class="doc-sidebar" id="docSidebar">
+      <div class="brand">
+        <div class="brand-logo">MC</div>
+        <div class="brand-text">
+          <span class="brand-name">ConcreTrack</span>
+          <span class="brand-sub">Mapa de Concretagem</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <span class="nav-label">Introdução</span>
+        <a class="nav-link active" data-section="overview">🏡 Visão Geral</a>
+        <a class="nav-link" data-section="roles">👥 Perfis & Acessos</a>
+        
+        <span class="nav-label">Manuais de Operação</span>
+        <a class="nav-link" data-section="guide-apontador">📝 Apontador (Produção)</a>
+        <a class="nav-link" data-section="guide-qualidade">🔍 Inspetor (Qualidade)</a>
+        <a class="nav-link" data-section="guide-montador">🔧 Montador (Postes)</a>
+        <a class="nav-link" data-section="guide-sequencias3">⚡ Sequência Setor 3</a>
+        <a class="nav-link" data-section="guide-gerente">📊 Gestor & Gerência</a>
+
+        <span class="nav-label">Arquitetura Técnica</span>
+        <a class="nav-link" data-section="architecture">💾 Banco & Storage</a>
+        <a class="nav-link" data-section="sync">🔄 Sincronização & Offline</a>
+        
+        <span class="nav-label">Mapeamento Físico</span>
+        <a class="nav-link" data-section="forms-catalog">🗺️ Catálogo de Formas</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-print" onclick="window.print()">🖨️ Exportar PDF / Imprimir</button>
+      </div>
+    </aside>
+
+    <!-- Área de Conteúdo Principal -->
+    <main class="doc-main">
+
+      <!-- ================= SEÇÃO: VISÃO GERAL ================= -->
+      <section id="overview" class="doc-section active">
+        <h1 class="section-title">Visão Geral da Aplicação</h1>
+        <p class="section-subtitle">Mapeamento conceitual e de negócio do PWA Mapa Concretagem</p>
+
+        <div class="card card-primary" style="margin-bottom: 2rem;">
+          <h3 class="block-title" style="margin-top:0;">O que é o Mapa Concretagem?</h3>
+          <p style="margin-top: 0.5rem;">
+            O <strong>Mapa Concretagem</strong> é um Aplicativo Web Progressivo (<strong>PWA</strong>) desenvolvido para otimizar, rastrear e auditar o ciclo produtivo de fabricação de postes e estruturas de concreto pré-moldado no chão de fábrica. 
+          </p>
+          <p>
+            Ele une a facilidade de um layout interativo de formas (representando o pátio real) com a robustez de um controle de qualidade rigoroso e indicadores gerenciais integrados em tempo real, operando sob uma arquitetura <strong>Offline-First</strong> para resistir às oscilações de sinal de rede comuns no ambiente fabril.
+          </p>
+        </div>
+
+        <h2 class="subsection-title">O Ciclo de Vida do Produto</h2>
+        <p>A aplicação rege o produto através de 4 fases sequenciais bem definidas:</p>
+        
+        <div class="grid-2">
+          <div class="card">
+            <span class="card-icon">⚡ Fase 1</span>
+            <h3 class="block-title">Programação e Preparação</h3>
+            <p>Planejamento de quais moldes serão usados. O apontador ou gestor realiza a pré-marcação das formas no dia anterior ou na jornada de trabalho.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🏗️ Fase 2</span>
+            <h3 class="block-title">Produção e Liberação</h3>
+            <p>O apontador registra a limpeza, lubrificação e liberação da forma. Neste momento é registrado o tipo de concreto e iniciada a concretagem.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🔍 Fase 3</span>
+            <h3 class="block-title">Desforma e Inspeção</h3>
+            <p>Para os Setores 3 e 4, realiza-se a inspeção de falhas superficiais após a cura, registrando seções com falhas, notas e relatórios de conformidade.</p>
+          </div>
+          <div class="card">
+            <span class="card-icon">🔧 Fase 4</span>
+            <h3 class="block-title">Montagem e Finalização</h3>
+            <p>Para os Setores 1 e 2, realiza-se a montagem de postes com um checklist em cascata altamente restritivo que bloqueia montagens defeituosas.</p>
+          </div>
+        </div>
+
+        <div class="alert-box success">
+          <div class="alert-title success">💡 Proposta de Valor</div>
+          <p style="margin: 0;">Rastreabilidade absoluta: O sistema vincula cada fôrma ao operador que a liberou, ao inspetor que a auditou, à data de fabricação exata, ao tipo de concreto inserido, aos checklists aplicados e às evidências fotográficas das falhas detectadas.</p>
+        </div>
+      </section>
+
+      <!-- ================= SEÇÃO: PERFIS E ACESSOS ================= -->
+      <section id="roles" class="doc-section">
+        <h1 class="section-title">Perfis de Acesso & Permissões</h1>
+        <p class="section-subtitle">Níveis de segurança e visibilidade por alçada de usuário</p>
+
+        <p>
+          A aplicação Mapa Concretagem restringe as telas e as operações dos usuários de acordo com seu perfil atribuído. A segurança é aplicada tanto visualmente (ocultando abas do menu lateral e botões do HUB) quanto no banco de dados Supabase.
+        </p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Perfil (Role)</th>
+                <th>Nome Comercial</th>
+                <th>Modos de Tela Permitidos</th>
+                <th>Escopo de Acesso</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-gerencia">GERENCIA</span></td>
+                <td><strong>Gerência</strong></td>
+                <td>Todos os modos (Hub, Dashboard, Produtividade, Liberação Setores 1 a 4, Inspeção, Montagem, Relatórios, Histórico, Acompanhamento, Gerenciamento de Usuários)</td>
+                <td>Administração irrestrita do sistema, exclusão/criação de usuários e auditoria de registros.</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-gestor">GESTOR</span></td>
+                <td><strong>Gestor</strong></td>
+                <td><code>DASHBOARD</code>, <code>PROD_ANALISE</code>, <code>MONTAGEM_POSTES</code>, <code>MONTAGEM_INDICADORES</code></td>
+                <td>Visualização de KPIs de produtividade, controle de montagem e tomada de decisão operacional.</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-montador">MONTADOR</span></td>
+                <td><strong>Montador / Operador de Qualidade</strong></td>
+                <td><code>INSPECAO</code>, <code>MONTAGEM_POSTES</code></td>
+                <td>Coleta de dados direta no chão de fábrica: registro de checklists de montagem e inspeção pós-cura.</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-apontador">APONTADOR</span></td>
+                <td><strong>Apontador / Lançador</strong></td>
+                <td><code>LIBERACAO_S1</code>, <code>LIBERACAO_S2</code>, <code>LIBERACAO_S3</code>, <code>LIBERACAO_S4</code></td>
+                <td>Quiosque operacional para liberação rápida de fôrmas nas colunas de produção del pátio.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert-box warning">
+          <div class="alert-title warning">⚠️ Troca de Senha Obrigatória</div>
+          <p style="margin: 0;">Quando um novo usuário é criado pela Gerência, o sistema gera uma senha temporária. Ao primeiro login desse colaborador, a aplicação intercepta o fluxo e exibe o modal de <strong>Primeiro Acesso</strong>, forçando o cadastro de uma nova senha pessoal.</p>
+        </div>
+      </section>
+
+      <!-- ================= SEÇÃO: MANUAL APONTADOR ================= -->
+      <section id="guide-apontador" class="doc-section">
+        <h1 class="section-title">Manual do Apontador (Produção)</h1>
+        <p class="section-subtitle">Operações de chão de fábrica na preparação e liberação de fôrmas</p>
+
+        <div class="card card-accent" style="margin-bottom: 2rem;">
+          <h3 class="block-title" style="margin-top:0;">O Painel Quiosque Operacional Premium</h3>
+          <p style="margin-top: 0.5rem;">
+            A tela de produção foi desenhada para rodar em <strong>tablets fixos nos quiosques físicos</strong> instalados ao lado dos canais de moldagem. Possui botões grandes para evitar toques incorretos com luvas e um modo fullscreen.
+          </p>
+        </div>
+
+        <h2 class="subsection-title">Passo a Passo de Liberação das Fôrmas</h2>
+        <ol class="custom-list">
+          <li><strong>Autenticação:</strong> Faça o login como Apontador. No HUB, selecione o setor correspondente (ex: <code>P1 - Produção Setor 1</code>).</li>
+          <li><strong>Dados do Turno:</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li>Defina a <strong>Data de Fabricação</strong> (sugere sempre o dia corrente).</li>
+              <li>Selecione o seu nome na lista de <strong>Colaboradores</strong> cadastrados.</li>
+            </ul>
+          </li>
+          <li><strong>Escolha do Modo de Operação (Chaves Toggle no cabeçalho):</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li><strong>Modo Programar Formas:</strong> Use para sinalizar quais formas farão parte do ciclo do dia seguinte. Ao tocar em uma fôrma, ela ganha uma marca amarela de programação.</li>
+              <li><strong>Modo Liberação:</strong> Operação oficial de concretagem. Ao tocar na fôrma, ela será liberada para receber o concreto.</li>
+            </ul>
+          </li>
+          <li><strong>Registro da Concretagem:</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li>Ao tocar em uma fôrma no <em>Modo Liberação</em>, o sistema exibe o modal de <strong>Tipo de Concreto</strong>.</li>
+              <li>Escolha entre: <strong>Concreto Padrão (Bom)</strong> ou <strong>Fora do Padrão (Recusado/Problemas na usina)</strong>.</li>
+              <li>Após a seleção, a fôrma passa de cinza (pendente) para <strong>azul brilhante</strong> (liberada).</li>
+            </ul>
+          </li>
+          <li><strong>Monitoramento de Ritmo:</strong> O contador dinâmico no topo exibe o progresso em tempo real (ex: <code>15 / 90</code> fôrmas preenchidas no dia).</li>
+        </ol>
+
+        <div class="alert-box success">
+          <div class="alert-title success">Sincronização Integrada</div>
+          <p style="margin: 0;">Você não precisa salvar manualmente. Cada clique em fôrma salva a transação instantaneamente na memória local e envia para a nuvem. O status da rede será exibido no topo.</p>
+        </div>
+      </section>
+
+      <!-- ================= SEÇÃO: MANUAL INSPEÇÃO ================= -->
+      <section id="guide-qualidade" class="doc-section">
+        <h1 class="section-title">Manual do Inspetor (Qualidade)</h1>
+        <p class="section-subtitle">Controle de defeitos de pós-cura para os Setores 3 e 4</p>
+
+        <p>
+          A inspeção pós-cura ocorre nos <strong>Setores 3 e 4</strong> (postes circulares e especiais). O objetivo é registrar se o concreto consolidou-se sem trincas, vazios ou rebarbas críticas.
+        </p>
+
+        <h2 class="subsection-title">Como realizar a Inspeção:</h2>
+        <ol class="custom-list">
+          <li>Acesse a tela <code>MI - Inspeção Setor 3 e 4</code>.</li>
+          <li>Selecione a data de fabricação do lote que está sendo inspecionado e o seu nome.</li>
+          <li>Selecione o <strong>Modo de Carga</strong>:
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li><em>Produção da data:</em> Exibe todos os postes liberados naquela data específica.</li>
+              <li><em>Produzidos não inspecionados:</em> Busca na fila histórica peças que ainda aguardam avaliação da qualidade.</li>
+            </ul>
+          </li>
+          <li>Clique em <strong>Carregar postes produzidos</strong>. O grid exibirá a listagem de formas com Liberação confirmada.</li>
+          <li>Clique em <strong>Inspecionar</strong> ao lado do número da fôrma para abrir o painel detalhado.</li>
+          <li>Defina o <strong>Resultado da Inspeção</strong>:
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li>🟢 <strong>Aprovado:</strong> Peça conforme. Pronto para estocagem.</li>
+              <li>🔴 <strong>Reprovado:</strong> Peça descartada por falha crítica.</li>
+              <li>🟡 <strong>Reprovado e Retrabalhado:</strong> Peça com defeito passível de reparo no pátio.</li>
+            </ul>
+          </li>
+          <li><strong>Mapeamento de Falhas (Se Reprovado / Retrabalho):</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li>Selecione os códigos de defeito aplicáveis na tabela (ex: <code>A - Falha na Concretagem</code>, <code>C - Excesso de Bolhas</code>).</li>
+              <li>O campo de observações fica disponível para detalhes textuais.</li>
+              <li>O uso da câmera do tablet/celular é recomendado (ou obrigatório, dependendo do perfil) para fotografar o problema.</li>
+            </ul>
+          </li>
+          <li>Role a tela e pressione o botão verde <strong>Salvar</strong>.</li>
+        </ol>
+
+        <h2 class="subsection-title">Tabela de Codificação de Falhas (Inspeção)</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Defeito Mapeado</th>
+                <th>Criticidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>A</code></td><td>Falha na Concretagem</td><td><strong>Crítico</strong></td></tr>
+              <tr><td><code>B</code></td><td>Cano entupido</td><td><strong>Crítico</strong></td></tr>
+              <tr><td><code>C</code></td><td>Excesso de Bolhas</td><td>Tolerável</td></tr>
+              <tr><td><code>D</code></td><td>Problema na caixa do Relógio/Disjuntor</td><td>Tolerável</td></tr>
+              <tr><td><code>E</code></td><td>Furos Obstruídos ou Faltando</td><td><strong>Crítico</strong></td></tr>
+              <tr><td><code>F</code></td><td>Identificação do poste (Carimbos)</td><td>Tolerável</td></tr>
+              <tr><td><code>G</code></td><td>Presença de Trincas</td><td>Tolerável</td></tr>
+              <tr><td><code>H</code></td><td>Bolha nas caixas</td><td>Tolerável</td></tr>
+              <tr><td><code>I</code></td><td>Trincas em toda a extensão do Poste</td><td><strong>Crítico</strong></td></tr>
+              <tr><td><code>J</code></td><td>Pequenas Avarias</td><td>Tolerável</td></tr>
+              <tr><td><code>K</code></td><td>Manchas Brancas Superficiais</td><td>Tolerável</td></tr>
+              <tr><td><code>L</code></td><td>Buchas das caixas / fixação EDP</td><td>Tolerável</td></tr>
+              <tr><td><code>M</code></td><td>Parafuso Lacre da caixa do Medidor</td><td>Tolerável</td></tr>
+              <tr><td><code>O</code></td><td>Falha no Concreto</td><td><strong>Crítico</strong></td></tr>
+              <tr><td><code>P</code></td><td>Grandes Avarias</td><td><strong>Crítico</strong></td></tr>
+              <tr><td><code>Q</code></td><td>Rebarbas</td><td>Tolerável</td></tr>
+              <tr><td><code>R</code></td><td>Rugosidade</td><td>Tolerável</td></tr>
+              <tr><td><code>S</code></td><td>Acabamento quinas</td><td>Tolerável</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= SEÇÃO: MANUAL MONTAGEM ================= -->
+      <section id="guide-montador" class="doc-section">
+        <h1 class="section-title">Manual do Montador (Postes)</h1>
+        <p class="section-subtitle">Procedimentos de check-list e regras de trava para os Setores 1 e 2</p>
+
+        <p>
+          O processo de <strong>Montagem de Postes</strong> (Setor 1 e 2) é extremamente rigoroso. A aplicação guia o montador através de uma trilha em cascata de aprovações que impede a liberação de itens sem validação de etapas.
+        </p>
+
+        <div class="alert-box danger">
+          <div class="alert-title danger">🛑 A Regra de Bloqueio em Cascata (Locking Logic)</div>
+          <p style="margin: 0;">
+            A tela de montagem é dividida em 3 blocos sequenciais: 
+            <strong>1. Inspeção Visual</strong> &rarr; 
+            <strong>2. Montagem de Postes</strong> &rarr; 
+            <strong>3. Inspeção Final</strong>. 
+            Se qualquer item crítico (marcado com a bolinha vermelha 🔴 na tela) for reprovado no bloco 1, o sistema <strong>bloqueia imediatamente</strong> o bloco 2 e 3. O poste é considerado <strong>reprovado por segurança</strong> e deve ser segregado no pátio.
+          </p>
+        </div>
+
+        <h2 class="subsection-title">Execução do Checklist de Montagem</h2>
+        <ol class="custom-list">
+          <li>No Hub, acerte o módulo <code>MP - Montagem Postes</code>.</li>
+          <li>Filtre a data e clique em <strong>Carregar itens liberados</strong>. Apenas fôrmas liberadas na produção serão listadas.</li>
+          <li>Ao lado da fôrma correspondente, clique em <strong>Inspecionar</strong>.</li>
+          <li><strong>Bloco 1 - Inspeção Visual:</strong> 
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li>Valide os aspectos estruturais e estéticos.</li>
+              <li>Se algum item com a marca 🔴 (ex: armação aparente, trinca, tubulação entupida) for reprovado, o sistema exige uma foto do defeito e o poste é retido.</li>
+              <li>Se todos os itens forem aprovados, o sistema exibe "Seção Aprovada" e desbloqueia o bloco seguinte.</li>
+            </ul>
+          </li>
+          <li><strong>Bloco 2 - Montagem de Postes (Checagem de Materiais):</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li>Valide a montagem física e integridade de fiação e canais. Marque como conforme para liberar o último bloco.</li>
+            </ul>
+          </li>
+          <li><strong>Bloco 3 - Inspeção Final:</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li>Verifique rebarbas, codificação legível pintada na peça, aterramento e lacre.</li>
+            </ul>
+          </li>
+          <li><strong>Fechamento:</strong> Defina o resultado final (Aprovado, Reprovado ou Retrabalhado), escreva observações (se houver) e clique no botão azul <strong>Salvar</strong> no rodapé.</li>
+        </ol>
+      </section>
+
+      <!-- ================= SEÇÃO: MANUAL SEQUENCIA SETOR 3 ================= -->
+      <section id="guide-sequencias3" class="doc-section">
+        <h1 class="section-title">Manual da Sequência (Setor 3)</h1>
+        <p class="section-subtitle">Procedimentos de lançamento de programação de postes de seção circular (SC)</p>
+
+        <p>
+          O módulo <strong>Sequência Setor 3</strong> permite aos operadores planejar e salvar quais modelos de poste SC (circular) serão produzidos em cada fôrma do Setor 3 para a data selecionada. Esses dados alimentam diretamente a tabela de programação e planejamento da fábrica.
+        </p>
+
+        <div class="alert-box success">
+          <div class="alert-title success">📱 Mobile First & Usabilidade Chão de Fábrica</div>
+          <p style="margin: 0;">
+            A interface foi desenhada seguindo rigorosamente preceitos de uso em smartphones e tablets no pátio: listagem vertical limpa, seletores dropdown grandes com rolagem otimizada por toque e um **filtro de busca instantânea** para encontrar fôrmas rapidamente.
+          </p>
+        </div>
+
+        <h2 class="subsection-title">Como lançar a Sequência do Setor 3:</h2>
+        <ol class="custom-list">
+          <li>No Hub, acesse o módulo <code>S3 - Sequência Setor 3</code>.</li>
+          <li><strong>Selecione a Data:</strong> Defina o dia da programação. O app buscará automaticamente na base de dados se já existem lançamentos salvos para pré-preenchê-los na tela.</li>
+          <li><strong>Filtrar Fôrmas (Opcional):</strong> Use a barra de busca <code>Pesquisar Fôrma</code> no topo para filtrar instantaneamente (ex: digite <code>SC12</code> para ir direto a ela).</li>
+          <li><strong>Atribuição de Modelos:</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.25rem;">
+              <li>Para cada fôrma (SC01 a SC52), selecione o modelo de poste correspondente.</li>
+              <li>Fôrmas **SC01 a SC36** exibem modelos de menor porte (séries 7x, 7.5x e 9x).</li>
+              <li>Fôrmas **SC37 a SC52** exibem modelos pesados e especiais (séries 10x, 11x, 12x, 13x, 14x, 15x, 16x, 16.5x, 17.5x, 18x, 19x, 21.5x).</li>
+              <li>Deixe como *Sem Produção (Vazio)* caso a fôrma não vá rodar na data selecionada.</li>
+            </ul>
+          </li>
+          <li><strong>Salvar os Lançamentos:</strong> Toque no botão flutuante azul **Salvar Programação Setor 3** fixado no rodapé para sincronizar os dados com a nuvem.</li>
+        </ol>
+
+        <h2 class="subsection-title">Tabela Técnica: <code>public.prog_s3_s4</code></h2>
+        <p>A nova tabela transacional de programação no Supabase possui a seguinte modelagem:</p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coluna</th>
+                <th>Tipo SQL</th>
+                <th>Propriedades</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>UUID</td><td>PRIMARY KEY, DEFAULT uuid_generate_v4()</td><td>Identificador lógico da linha</td></tr>
+              <tr><td><code>data</code></td><td>DATE</td><td>NOT NULL</td><td>Data correspondente ao plano de produção</td></tr>
+              <tr><td><code>forma</code></td><td>TEXT</td><td>NOT NULL</td><td>Código físico da fôrma (ex: SC01 a SC52)</td></tr>
+              <tr><td><code>modelo</code></td><td>TEXT</td><td>NULLABLE</td><td>Modelo de poste atribuído</td></tr>
+              <tr><td><code>setor</code></td><td>TEXT</td><td>NOT NULL, DEFAULT 'Setor 3'</td><td>Setor produtivo mapeado</td></tr>
+              <tr><td><code>created_at</code></td><td>TIMESTAMP</td><td>NOT NULL, DEFAULT now()</td><td>Data de criação da linha</td></tr>
+              <tr><td><code>updated_at</code></td><td>TIMESTAMP</td><td>NOT NULL, DEFAULT now()</td><td>Data de última atualização da linha</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= SEÇÃO: MANUAL GESTOR ================= -->
+      <section id="guide-gerente" class="doc-section">
+        <h1 class="section-title">Manual do Gestor & Gerência</h1>
+        <p class="section-subtitle">Dashboards de controle, análise de produtividade e auditoria</p>
+
+        <div class="grid-2">
+          <div class="card card-primary">
+            <span class="card-icon">📈</span>
+            <h3 class="block-title">Análise de Produtividade</h3>
+            <p>
+              Calcula em tempo real a performance da concretagem: quantidade de formas preenchidas, volume total de concreto injetado (m³), desvio padrão de velocidade e eficiência operacional contra metas estabelecidas.
+            </p>
+          </div>
+          <div class="card card-accent">
+            <span class="card-icon">📋</span>
+            <h3 class="block-title">Dashboard Montagem</h3>
+            <p>
+              Focado nos Setores 1 e 2. Apresenta o indicador comparativo <strong>Produzidos vs Montados</strong>, ranking de velocidade e taxas de retrabalho de montadores e média de tempo de ciclo por modelo de poste.
+            </p>
+          </div>
+        </div>
+
+        <h2 class="subsection-title">Métricas Chave de Produtividade</h2>
+        <ul class="custom-list">
+          <li><strong>Ciclo Médio:</strong> Calcula a média de tempo decorrido entre uma concretagem e outra. Despreza tempos de paradas operacionais superiores a 60 minutos para não distorcer o ritmo de trabalho do pátio.</li>
+          <li><strong>Eficiência Operacional:</strong> Razão entre a produção real versus a capacidade de projeto com base no ritmo ideal parametrizado (ex: ciclo de 15 minutos por fôrma).</li>
+          <li><strong>Paradas Operacionais:</strong> Segmenta interrupções da fábrica entre <em>Amarelas</em> (de 20 a 59 minutos) e <em>Vermelhas</em> (mais de 60 minutos, indicando paradas de usina ou manutenção).</li>
+        </ul>
+
+        <h2 class="subsection-title">Geração de Relatórios e Auditoria</h2>
+        <p>A Gerência dispõe de três ferramentas cruciais de controle:</p>
+        <ol class="custom-list">
+          <li><strong>Relatório Encarregado de Produção:</strong> Consolida a produção diária por encarregado, facilitando a assinatura física ou exportação direta para o <strong>WhatsApp</strong> em formato de mensagem estruturada.</li>
+          <li><strong>Histórico Geral de Lançamentos:</strong> Sistema de auditoria fina. Permite buscar um poste específico pelo número da fôrma (ex: <code>A-52</code>) e rastrear quem o liberou, quem montou, quem realizou a inspeção final e os respectivos timestamps (dia e hora exata de cada etapa).</li>
+          <li><strong>Painel de Usuários (CRUD):</strong> Criação de operadores, definição de alçadas de acesso e acompanhamento do status do cadastro.</li>
+        </ol>
+      </section>
+
+      <!-- ================= SEÇÃO: BANCO E STORAGE ================= -->
+      <section id="architecture" class="doc-section">
+        <h1 class="section-title">Estrutura de Dados & Armazenamento</h1>
+        <p class="section-subtitle">Modelagem do banco Supabase, tabelas locais e armazenamento de mídia</p>
+
+        <p>
+          O ecossistema do Mapa Concretagem é integrado diretamente a um banco remoto <strong>Supabase</strong> e a um servidor de arquivos <strong>SFTP</strong> próprio.
+        </p>
+
+        <!-- Diagrama -->
+        <div class="architecture-diagram">
+          <div class="diag-layer">
+            <div class="diag-node client">
+              <div class="diag-node-title">PWA (Front-end)</div>
+              <div class="diag-node-desc">Index.html / App.js<br>LocalStorage</div>
+            </div>
+          </div>
+          <div class="diag-arrow-down"></div>
+          <div class="diag-layer">
+            <div class="diag-node server">
+              <div class="diag-node-title">VPS Server API</div>
+              <div class="diag-node-desc">Express (server.js)<br>Porta 5000</div>
+            </div>
+            <div class="diag-node db">
+              <div class="diag-node-title">Supabase Client</div>
+              <div class="diag-node-desc">API Direta Web<br>Postgres</div>
+            </div>
+          </div>
+          <div class="diag-arrow-down"></div>
+          <div class="diag-layer">
+            <div class="diag-node server" style="border-color: #f59e0b;">
+              <div class="diag-node-title">VPS SFTP Storage</div>
+              <div class="diag-node-desc">Nginx / Port 22<br>/opt/mapaproducao-storage</div>
+            </div>
+            <div class="diag-node db">
+              <div class="diag-node-title">Supabase DB</div>
+              <div class="diag-node-desc">Tabelas Relacionais</div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="subsection-title">1. Tabelas Remotas (Supabase PostgreSQL)</h2>
+        
+        <h3 class="block-title">Tabela: <code>usuarios</code></h3>
+        <p>Registra as credenciais de autenticação e controle de perfis.</p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>UUID / Serial</td><td>Chave primária do usuário</td></tr>
+              <tr><td><code>nome</code></td><td>TEXT</td><td>Nome exibido na aplicação e nos registros</td></tr>
+              <tr><td><code>perfil</code></td><td>TEXT</td><td>Alçada (GERENCIA, GESTOR, MONTADOR, APONTADOR)</td></tr>
+              <tr><td><code>senha</code></td><td>TEXT</td><td>Hash criptográfico da senha de acesso</td></tr>
+              <tr><td><code>setor</code></td><td>TEXT</td><td>Setor de trabalho padrão vinculado</td></tr>
+              <tr><td><code>primeiro_acesso</code></td><td>BOOLEAN</td><td>Flag que força redefinição de senha</td></tr>
+              <tr><td><code>ativo</code></td><td>BOOLEAN</td><td>Define se o login está ativo ou bloqueado</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="block-title">Tabela: <code>producao</code></h3>
+        <p>Registra os apontamentos diários de concretagem realizados no quiosque.</p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>UUID</td><td>Identificador único do poste produzido</td></tr>
+              <tr><td><code>forma</code></td><td>TEXT</td><td>Número físico da fôrma (ex: A-15, SC05)</td></tr>
+              <tr><td><code>setor</code></td><td>TEXT</td><td>Setor produtivo (Setor 1 a 4)</td></tr>
+              <tr><td><code>data_fabricacao</code></td><td>DATE</td><td>Data de concretagem informada</td></tr>
+              <tr><td><code>tipo_concreto</code></td><td>TEXT</td><td>Qualidade do concreto ("Bom" ou "Fora do Padrão")</td></tr>
+              <tr><td><code>status</code></td><td>TEXT</td><td>Situação do fluxo (ex: "LIBERADO")</td></tr>
+              <tr><td><code>colaborador</code></td><td>TEXT</td><td>Nome do apontador que liberou a peça</td></tr>
+              <tr><td><code>modelo</code></td><td>TEXT</td><td>Modelo do poste catalogado</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="block-title">Tabela: <code>montagem_poste</code></h3>
+        <p>Centraliza os checklists e históricos de montagem dos Setores 1 e 2.</p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>record_id</code></td><td>UUID</td><td>Forte acoplamento com o ID da tabela producao</td></tr>
+              <tr><td><code>status_montagem</code></td><td>TEXT</td><td>Resultado ("A" - Aprovado, "R" - Reprovado, "RR" - Retrabalho)</td></tr>
+              <tr><td><code>motivo_recusa</code></td><td>TEXT</td><td>Texto descritivo de falhas de qualidade</td></tr>
+              <tr><td><code>checklists</code></td><td>JSONB</td><td>Checklist consolidado com respostas e falhas detalhadas</td></tr>
+              <tr><td><code>montador_nome</code></td><td>TEXT</td><td>Colaborador responsável pela montagem</td></tr>
+              <tr><td><code>inicio_inspecao_montagem</code></td><td>TIMESTAMP</td><td>Data/Hora de início do preenchimento da montagem</td></tr>
+              <tr><td><code>finalizado_em</code></td><td>TIMESTAMP</td><td>Data/Hora de fechamento e envio do formulário</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="block-title">Tabela: <code>fotos_inspecao</code></h3>
+        <p>Metadata das imagens enviadas em reprovações e retrabalhos.</p>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Campo</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>SERIAL</td><td>Chave primária física</td></tr>
+              <tr><td><code>poste_id</code></td><td>TEXT / UUID</td><td>Código da peça vinculada</td></tr>
+              <tr><td><code>arquivo_nome</code></td><td>TEXT</td><td>Nome em UUID gerado no storage (ex: <code>8b5f...webp</code>)</td></tr>
+              <tr><td><code>arquivo_path</code></td><td>TEXT</td><td>Diretório físico relativo na VPS (ex: <code>inspecoes/2026/06/...</code>)</td></tr>
+              <tr><td><code>usuario</code></td><td>TEXT</td><td>Responsável pelo upload</td></tr>
+              <tr><td><code>data_upload</code></td><td>TIMESTAMP</td><td>Data em que o envio foi finalizado</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="subsection-title">2. VPS Storage & Compressão de Fotos</h2>
+        <p>
+          O upload de fotos é intermediado pelo backend Express (<code>server.js</code>), rodando na VPS <code>2.25.163.32</code> na porta <code>5000</code>.
+        </p>
+        <ul class="custom-list">
+          <li><strong>Otimização de Fotos:</strong> Para evitar estouro de dados móveis e consumo excessivo de disco, o servidor intercepta a foto da câmera usando a biblioteca <code>sharp</code>. O arquivo é redimensionado para largura máxima de <strong>1600px</strong> (mantendo proporção) e convertido em <strong>JPEG com 80% de qualidade</strong>.</li>
+          <li><strong>Protocolo de Storage:</strong> O backend conecta-se via <strong>SFTP (SSH)</strong> com o disco local da VPS gravando os arquivos em <code>/opt/mapaproducao-storage</code>.</li>
+          <li><strong>Servidor de Arquivos Estáticos:</strong> A leitura e o download das fotos de inspeção são expostos em uma rota web estática Nginx na URL: <code>http://2.25.163.32/storage/</code>.</li>
+        </ul>
+      </section>
+
+      <!-- ================= SEÇÃO: OFFLINE E SINCRONIZAÇÃO ================= -->
+      <section id="sync" class="doc-section">
+        <h1 class="section-title">Mecanismo Offline & Sincronização</h1>
+        <p class="section-subtitle">Funcionamento técnico da arquitetura Offline-First do PWA</p>
+
+        <div class="card card-primary" style="margin-bottom: 2rem;">
+          <h3 class="block-title" style="margin-top:0;">Como o App lida com Quedas de Sinal de Internet?</h3>
+          <p style="margin-top: 0.5rem;">
+            O Mapa Concretagem foi projetado com arquitetura de contingência total. O usuário nunca é bloqueado na tela por falta de rede. Os lançamentos e checklists são armazenados localmente e sobem em segundo plano assim que a conectividade for restabelecida.
+          </p>
+        </div>
+
+        <h2 class="subsection-title">O Fluxo de Sincronização Passo a Passo</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Etapa 1: Escrita Local (Instantânea)</span>
+              <span class="accordion-icon">▼</span>
+            </div>
+            <div class="accordion-content">
+              <p>Ao clicar em liberar uma forma ou salvar um checklist, o app salva a alteração nas chaves locais do navegador (<code>localStorage</code>) e atualiza a interface instantaneamente. A operação leva milissegundos.</p>
+              <p>Chaves utilizadas:</p>
+              <ul>
+                <li><code>pwa_liberacao_inspecao_v1</code>: Histórico local de produções e inspeções.</li>
+                <li><code>pwa_formas_clicadas_hoje</code>: Cache rápido de formas liberadas no turno.</li>
+                <li><code>pwa_montagem_postes_v1</code>: Checklists de montagem em andamento ou retidos.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Etapa 2: Tentativa de Envio Online</span>
+              <span class="accordion-icon">▼</span>
+            </div>
+            <div class="accordion-content">
+              <p>O app tenta enviar a transação via conexões diretas às APIs (Supabase ou Apps Script). Se a requisição HTTP falhar (por timeout, falta de DNS ou sinal 3G/4G inexistente no pátio), a transação ganha a propriedade interna <code>pendingSync: true</code>.</p>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Etapa 3: Sincronização em Background (Fila Sweeper)</span>
+              <span class="accordion-icon">▼</span>
+            </div>
+            <div class="accordion-content">
+              <p>A sincronização das operações pendentes é reativada de duas formas automáticas:</p>
+              <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li><strong>Evento "online" do Navegador:</strong> Um escutador global (<code>window.addEventListener("online")</code>) detecta quando a internet retorna e inicia o reenvio da fila imediatamente.</li>
+                <li><strong>Intervalo Fixo (Sweeper):</strong> Um temporizador em segundo plano (<code>setInterval</code>) roda a cada <strong>30 segundos</strong> verificando se há transações locais marcadas com <code>pendingSync: true</code> e tentando enviá-las.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="subsection-title">O Indicador Visual de Sincronismo</h2>
+        <p>No cabeçalho de todas as telas principais, existe um indicador em tempo real da conexão:</p>
+        <ul class="custom-list">
+          <li>🟢 <strong>Conectado ao Supabase:</strong> Sincronização ativa e sinal estável.</li>
+          <li>🟡 <strong>Sem conexão no momento:</strong> Internet caiu. Lançamentos estão sendo gravados localmente sem perdas.</li>
+          <li>🔴 <strong>Erro ao verificar banco / Não configurado:</strong> Erros de autenticação ou chaves inválidas.</li>
+        </ul>
+      </section>
+
+      <!-- ================= SEÇÃO: CATÁLOGO DE FORMAS ================= -->
+      <section id="forms-catalog" class="doc-section">
+        <h1 class="section-title">Catálogo e Mapeamento de Formas</h1>
+        <p class="section-subtitle">Localização física, setor produtivo e modelos padrão de todas as fôrmas</p>
+
+        <!-- Buscador Interativo -->
+        <div class="card card-accent" style="margin-bottom: 2rem;">
+          <h3 class="block-title" style="margin-top:0; margin-bottom: 1rem;">🔍 Localizador Rápido de Fôrmas</h3>
+          <div class="search-container">
+            <input type="text" id="formaSearchInput" class="search-input" placeholder="Digite a fôrma (Ex: TCR-1, SC05, BD-12, A-52)..." onkeyup="filterForms()">
+            <select id="sectorSelectFilter" class="search-select" onchange="filterForms()">
+              <option value="">Todos os Setores</option>
+              <option value="Setor 1">Setor 1</option>
+              <option value="Setor 2">Setor 2</option>
+              <option value="Setor 3">Setor 3</option>
+              <option value="Setor 4">Setor 4</option>
+            </select>
+          </div>
+          <div class="stats-row">
+            <div class="stat-badge">Setor 1: <strong>97 formas</strong></div>
+            <div class="stat-badge">Setor 2: <strong>80 formas</strong></div>
+            <div class="stat-badge">Setor 3: <strong>52 formas</strong></div>
+            <div class="stat-badge">Setor 4: <strong>61 formas</strong></div>
+            <div class="stat-badge">Total Pátio: <strong>290 formas</strong></div>
+          </div>
+        </div>
+
+        <div class="table-container" style="max-height: 500px; overflow-y: auto;">
+          <table id="formsCatalogTable">
+            <thead>
+              <tr>
+                <th>Nº Fôrma</th>
+                <th>Setor</th>
+                <th>Localização no Pátio</th>
+                <th>Modelo Padrão Cadastrado</th>
+              </tr>
+            </thead>
+            <tbody id="formsCatalogBody">
+              <!-- Preenchido via JavaScript dinâmico -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts Interativos do Guia -->
+  <script>
+    // Tab switching (Visualizador de Seções)
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.doc-section');
+    const docSidebar = document.getElementById('docSidebar');
+    const menuToggle = document.getElementById('menuToggle');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        // Remove active class from links and sections
+        navLinks.forEach(l => l.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+
+        // Add active to current
+        link.classList.add('active');
+        const sectionId = link.getAttribute('data-section');
+        document.getElementById(sectionId).classList.add('active');
+
+        // Close sidebar on mobile after clicking
+        docSidebar.classList.remove('open');
+      });
+    });
+
+    // Mobile menu toggle
+    if(menuToggle) {
+      menuToggle.addEventListener('click', () => {
+        docSidebar.classList.toggle('open');
+      });
+    }
+
+    // Accordion Toggle function
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      item.classList.toggle('active');
+    }
+
+    // Mapeamento Estático de Formas
+    const formasCatalogData = [
+      // SETOR 1 (97 formas)
+      { forma: "IE-01", setor: "Setor 1", local: "Coluna Esquerda", modelo: "3 CXS VL" },
+      ...Array.from({ length: 15 }, (_, i) => ({ forma: `BD-${String(i+1).padStart(2, '0')}`, setor: "Setor 1", local: "Coluna Esquerda", modelo: "1 CX VL" })),
+      ...Array.from({ length: 27 }, (_, i) => ({ forma: `AE-${String(27-i).padStart(2, '0')}`, setor: "Setor 1", local: "Coluna Esquerda", modelo: "1 CX VR" })),
+      { forma: "100-1", setor: "Setor 1", local: "Coluna Esquerda", modelo: "SUB. 100-AMP" },
+      { forma: "100-2", setor: "Setor 1", local: "Coluna Esquerda", modelo: "SUB. 100-AMP" },
+      { forma: "100-3", setor: "Setor 1", local: "Coluna Esquerda", modelo: "SUB. 100-AMP" },
+      { forma: "F-01", setor: "Setor 1", local: "Coluna Esquerda", modelo: "Ec. 1 cx VL" },
+      { forma: "L-01", setor: "Setor 1", local: "Coluna Direita", modelo: "4 CXS VR" },
+      { forma: "L-02", setor: "Setor 1", local: "Coluna Direita", modelo: "4 CXS VR" },
+      { forma: "J-01", setor: "Setor 1", local: "Coluna Direita", modelo: "4 CXS VL" },
+      { forma: "H-01", setor: "Setor 1", local: "Coluna Direita", modelo: "3 CXS VR" },
+      { forma: "H-02", setor: "Setor 1", local: "Coluna Direita", modelo: "3 CXS VR" },
+      { forma: "I-01", setor: "Setor 1", local: "Coluna Direita", modelo: "3 CXS VL" },
+      { forma: "P-01", setor: "Setor 1", local: "Coluna Direita", modelo: "Ec. 3 CXS" },
+      { forma: "P-02", setor: "Setor 1", local: "Coluna Direita", modelo: "Ec. 3 CXS" },
+      { forma: "I-02", setor: "Setor 1", local: "Coluna Direita", modelo: "3 CXS VL" },
+      ...Array.from({ length: 4 }, (_, i) => ({ forma: `BE-${String(4-i).padStart(2, '0')}`, setor: "Setor 1", local: "Coluna Direita", modelo: "1 CX VL" })),
+      ...Array.from({ length: 5 }, (_, i) => ({ forma: `G-${String(i+1).padStart(2, '0')}`, setor: "Setor 1", local: "Coluna Direita", modelo: "Ec. 2CXS VR" })),
+      { forma: "BC-01", setor: "Setor 1", local: "Coluna Direita", modelo: "1 CX VL 7,0 x 150" },
+      { forma: "300-VL", setor: "Setor 1", local: "Coluna Direita", modelo: "2 CXS VL" },
+      { forma: "300-VR", setor: "Setor 1", local: "Coluna Direita", modelo: "2 CXS VR" },
+      ...Array.from({ length: 6 }, (_, i) => ({ forma: `E-${String(i+1).padStart(2, '0')}`, setor: "Setor 1", local: "Coluna Direita", modelo: "Ec. 1CX VR" })),
+      ...Array.from({ length: 5 }, (_, i) => ({ forma: `D-${String(i+3).padStart(2, '0')}`, setor: "Setor 1", local: "Coluna Direita", modelo: "2 CXS VL" })),
+      { forma: "M-01", setor: "Setor 1", local: "Coluna Direita", modelo: "1 CX VR - 600" },
+      ...Array.from({ length: 9 }, (_, i) => ({ forma: `CE-${String(13-i).padStart(2, '0')}`, setor: "Setor 1", local: "Coluna Direita", modelo: "2 CXS VR" })),
+      { forma: "100-4", setor: "Setor 1", local: "Coluna Direita", modelo: "SUB. 100 AMP." },
+      { forma: "100-5", setor: "Setor 1", local: "Coluna Direita", modelo: "SUB. 100 AMP." },
+      { forma: "SBE-1", setor: "Setor 1", local: "Coluna Direita", modelo: "SUB. 100-AMP-E" },
+      { forma: "SBE-2", setor: "Setor 1", local: "Coluna Direita", modelo: "SUB. 100-AMP-E" },
+      { forma: "200-1", setor: "Setor 1", local: "Coluna Direita", modelo: "SUB. 200-AMP C/ TC" },
+      { forma: "200-2", setor: "Setor 1", local: "Coluna Direita", modelo: "SUB. 200-AMP C/ TC" },
+      { forma: "DE-03", setor: "Setor 1", local: "Coluna Direita", modelo: "2 CXS VL" },
+      { forma: "DE-02", setor: "Setor 1", local: "Coluna Direita", modelo: "2 CXS VL" },
+      { forma: "DE-01", setor: "Setor 1", local: "Coluna Direita", modelo: "2 CXS VL" },
+      { forma: "N-01", setor: "Setor 1", local: "Coluna Direita", modelo: "1 CX VL - 600" },
+
+      // SETOR 2 (80 formas)
+      { forma: "TCR-1", setor: "Setor 2", local: "Coluna Esquerda", modelo: "600-VR" },
+      ...Array.from({ length: 4 }, (_, i) => ({ forma: `PL-${i+1}`, setor: "Setor 2", local: "Coluna Esquerda", modelo: "7,5x300 c/ Lente" })),
+      ...Array.from({ length: 38 }, (_, i) => ({ forma: `A-${String(i+1).padStart(2, '0')}`, setor: "Setor 2", local: "Coluna Esquerda", modelo: "1 CX VR" })),
+      ...Array.from({ length: 22 }, (_, i) => ({ forma: `B-${String(i+1).padStart(2, '0')}`, setor: "Setor 2", local: "Coluna Esquerda", modelo: "1 CX VL" })),
+      { forma: "TMIE-1", setor: "Setor 2", local: "Coluna Esquerda", modelo: "Totem Med. Ind. Elektro" },
+      { forma: "TCL-1", setor: "Setor 2", local: "Coluna Direita", modelo: "600-VL" },
+      { forma: "TCL-2", setor: "Setor 2", local: "Coluna Direita", modelo: "600-VL" },
+      { forma: "TCR-4", setor: "Setor 2", local: "Coluna Direita", modelo: "600-VR" },
+      { forma: "TCR-3", setor: "Setor 2", local: "Coluna Direita", modelo: "600-VR" },
+      { forma: "TCR-2", setor: "Setor 2", local: "Coluna Direita", modelo: "600-VR" },
+      { forma: "PL-5", setor: "Setor 2", local: "Coluna Direita", modelo: "7,5x300 c/ Lente" },
+      { forma: "PL-6", setor: "Setor 2", local: "Coluna Direita", modelo: "7,5x300 c/ Lente" },
+      ...Array.from({ length: 10 }, (_, i) => ({ forma: `C-${String(i+11).padStart(2, '0')}`, setor: "Setor 2", local: "Coluna Direita", modelo: "2 CXS VR" })),
+
+      // SETOR 3 (52 formas)
+      ...Array.from({ length: 26 }, (_, i) => ({ forma: `SC${String(2 * i + 1).padStart(2, '0')}`, setor: "Setor 3", local: "Coluna Esquerda", modelo: "SC (Circular)" })),
+      ...Array.from({ length: 26 }, (_, i) => ({ forma: `SC${String(2 * i + 2).padStart(2, '0')}`, setor: "Setor 3", local: "Coluna Direita", modelo: "SC (Circular)" })),
+
+      // SETOR 4 (61 formas)
+      { forma: "C-F1-1", setor: "Setor 4", local: "Coluna 1", modelo: "6,0 x 90" },
+      { forma: "C-F1-2", setor: "Setor 4", local: "Coluna 1", modelo: "6,0 x 90" },
+      { forma: "C-F2-9", setor: "Setor 4", local: "Coluna 1", modelo: "7,5 x 200" },
+      { forma: "C-F2-5", setor: "Setor 4", local: "Coluna 1", modelo: "7,5 x 200" },
+      { forma: "C-F2-8", setor: "Setor 4", local: "Coluna 1", modelo: "7,5 x 200" },
+      { forma: "C-F2-7", setor: "Setor 4", local: "Coluna 1", modelo: "7,5 x 200" },
+      { forma: "C-F2-6", setor: "Setor 4", local: "Coluna 1", modelo: "7,5 x 200" },
+      ...Array.from({ length: 15 }, (_, i) => ({ forma: `C-F3-${15-i}`, setor: "Setor 4", local: "Coluna 1", modelo: "7,5 x 90" })),
+      { forma: "C-F3-16", setor: "Setor 4", local: "Coluna 1", modelo: "7,5 x 90" },
+      { forma: "R-F1-3", setor: "Setor 4", local: "Coluna 2", modelo: "6,0 x 90" },
+      ...Array.from({ length: 5 }, (_, i) => ({ forma: `R-F2-${9-i}`, setor: "Setor 4", local: "Coluna 2", modelo: "* 7,5 x 300" })),
+      ...Array.from({ length: 3 }, (_, i) => ({ forma: `R-F3-${4-i}`, setor: "Setor 4", local: "Coluna 2", modelo: "* 7,5 x" })),
+      { forma: "R-E17", setor: "Setor 4", local: "Coluna 2", modelo: "7,5 x 90" },
+      { forma: "R-E22", setor: "Setor 4", local: "Coluna 2", modelo: "7,5 x 90" },
+      { forma: "R-E21", setor: "Setor 4", local: "Coluna 2", modelo: "7,5 x 90" },
+      { forma: "R-E23", setor: "Setor 4", local: "Coluna 2", modelo: "7,5 x 90" },
+      { forma: "R-E24", setor: "Setor 4", local: "Coluna 2", modelo: "7,5 x 90" },
+      { forma: "R-E20", setor: "Setor 4", local: "Coluna 2", modelo: "7,5 x 90" },
+      { forma: "R-E19", setor: "Setor 4", local: "Coluna 2", modelo: "7,5 x 90" },
+      { forma: "R-E18", setor: "Setor 4", local: "Coluna 2", modelo: "7,5 x 90" },
+      { forma: "R-G6", setor: "Setor 4", local: "Coluna 2", modelo: "7,0 x 150" },
+      { forma: "R-G5", setor: "Setor 4", local: "Coluna 2", modelo: "7,0 x 150" },
+      { forma: "R-G3", setor: "Setor 4", local: "Coluna 2", modelo: "7,0 x 150" },
+      { forma: "R-G4", setor: "Setor 4", local: "Coluna 2", modelo: "7,0 x 150" },
+      { forma: "R-G1", setor: "Setor 4", local: "Coluna 2", modelo: "7,0 x 150" },
+      { forma: "R-G2", setor: "Setor 4", local: "Coluna 2", modelo: "7,0 x 150" },
+      ...Array.from({ length: 10 }, (_, i) => ({ forma: `DTB ${String(i+1).padStart(2, '0')}`, setor: "Setor 4", local: "Coluna 3", modelo: "DTB (Duplo T Barreiras)" })),
+      { forma: "DTBM 01", setor: "Setor 4", local: "Coluna 3", modelo: "DTBM (Duplo T Barreiras Médio)" },
+      { forma: "DTBM 02", setor: "Setor 4", local: "Coluna 3", modelo: "DTBM (Duplo T Barreiras Médio)" },
+      { forma: "DTD 01", setor: "Setor 4", local: "Coluna 3", modelo: "DTD (Duplo T Especial D)" },
+      { forma: "DTD 02", setor: "Setor 4", local: "Coluna 3", modelo: "DTD (Duplo T Especial D)" },
+      { forma: "DTD 03", setor: "Setor 4", local: "Coluna 3", modelo: "DTD (Duplo T Especial D)" }
+    ];
+
+    // Populate catalog table on load
+    const formsCatalogBody = document.getElementById('formsCatalogBody');
+    
+    function populateCatalog(data) {
+      if(!formsCatalogBody) return;
+      formsCatalogBody.innerHTML = '';
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: 700; color: #60a5fa;">${item.forma}</td>
+          <td><span class="badge ${item.setor === 'Setor 1' ? 'badge-montador' : item.setor === 'Setor 2' ? 'badge-gestor' : item.setor === 'Setor 3' ? 'badge-apontador' : 'badge-gerencia'}">${item.setor}</span></td>
+          <td>${item.local}</td>
+          <td><code>${item.modelo}</code></td>
+        `;
+        formsCatalogBody.appendChild(tr);
+      });
+    }
+
+    // Filter catalog table
+    function filterForms() {
+      const searchVal = document.getElementById('formaSearchInput').value.toLowerCase();
+      const sectorVal = document.getElementById('sectorSelectFilter').value;
+      
+      const filtered = formasCatalogData.filter(item => {
+        const matchesSearch = item.forma.toLowerCase().includes(searchVal) || item.modelo.toLowerCase().includes(searchVal);
+        const matchesSector = sectorVal === '' || item.setor === sectorVal;
+        return matchesSearch && matchesSector;
+      });
+      
+      populateCatalog(filtered);
+    }
+
+    // Initial population
+    populateCatalog(formasCatalogData);
+  </script>
+</body>
+</html>
