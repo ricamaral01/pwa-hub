@@ -1,3 +1,6 @@
+if(window.CONCRETRACK_AUTH_CONFIG?.authEnabled===false){
+  document.querySelector('[data-app-key="admin-usuarios"]')?.setAttribute('hidden','');
+}
 document.addEventListener('concretrack:authenticated',function(event){
   const ctx=event.detail,allowed=new Set(ctx.permissions.filter(p=>p.enabled).map(p=>p.app_key));
   document.querySelectorAll('[data-app-key]').forEach(card=>card.hidden=ctx.user.access_level!=='master'&&!allowed.has(card.dataset.appKey));
