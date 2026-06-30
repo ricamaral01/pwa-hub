@@ -5802,6 +5802,7 @@ function applyRoleVisibility() {
       LIBERACAO_S4: "hubLiberacaoS4",
     INSPECAO: "hubInspecao",
     MONTAGEM_POSTES: "hubMontagemPostes",
+    SEQUENCIA_S3: "hubSequenciaS3",
     MONTAGEM_INDICADORES: "hubMontagemIndicadores",
     RELATORIO: "hubRelatorio",
     HISTORICO: "hubHistorico",
