@@ -2,7 +2,7 @@
    MAPA DE CONCRETAGEM — Service Worker Independente
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v4.39";
+const CACHE_NAME = "mapa-concretagem-v4.40";
 const ASSETS = [
   "./",
   "./index.html",

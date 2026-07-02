@@ -11,7 +11,7 @@ const ROLE_PERMISSIONS = {
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "SEQUENCIA_S3"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3"]
   },
   MONTADOR: {
     label: "Montador",
@@ -1613,6 +1613,8 @@ function createFormaCard(item, setor) {
       tipoEl.style.display = "block";
     }
     setCardState(card, "saved");
+    // Concretagem somente é concluída após a liberação; o azul é o estado visual definitivo.
+    card.classList.add("is-liberada");
 
     // Permitir alternar programação mesmo se concretado no Modo Programação
     card.addEventListener("click", () => {
@@ -1986,7 +1988,7 @@ async function loadClickedFormsFromSupabase() {
   try {
     // Busca todas as concretagens feitas na data selecionada a partir do Supabase (independente de estar LIBERADO ou INSPECIONADO)
     const { data: rows, error } = await supabaseClient.from('producao')
-      .select('forma, setor, tipo_concreto, status')
+      .select('forma, setor, tipo_concreto, status, data_hora, colaborador')
       .eq('data_fabricacao', data);
 
     if (!error && Array.isArray(rows)) {
@@ -2016,7 +2018,7 @@ async function loadClickedFormsFromSupabase() {
               concretoTipo: row.tipo_concreto || 'Padrão',
               createdAt: nowIso(),
               updatedAt: nowIso(),
-              liberacao: { status: statusVal, timestamp: nowIso() },
+              liberacao: { status: statusVal, timestamp: row.data_hora || nowIso(), colaborador: row.colaborador || "" },
               inspecoes: []
             };
             upsertRecord(db, record);
@@ -2025,6 +2027,8 @@ async function loadClickedFormsFromSupabase() {
             record.concretoTipo = row.tipo_concreto || 'Padrão';
             record.liberacao = record.liberacao || { status: statusVal, timestamp: nowIso() };
             record.liberacao.status = statusVal;
+            if (row.data_hora) record.liberacao.timestamp = row.data_hora;
+            if (row.colaborador) record.liberacao.colaborador = row.colaborador;
             record.updatedAt = nowIso();
             upsertRecord(db, record);
             dbUpdated = true;
@@ -2359,7 +2363,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
     codigo_poste: resolvedPosteFields.codigoPoste,
     descricao_poste: resolvedPosteFields.descricaoPoste,
     codigo_produto: resolvedPosteFields.codigoProduto,
-    status: "AGUARDANDO_CONCRETAGEM"
+    status: "LIBERADO"
   };
 
   const apiResult = await postToApi("salvar_forma_click", payload);
@@ -2389,7 +2393,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
     record.descricaoPoste = resolvedPosteFields.descricaoPoste;
     record.codigoProduto = resolvedPosteFields.codigoProduto;
     if (!record.liberacao || record.liberacao.status !== "1") {
-      record.liberacao = { status: "L", colaborador, observacoes: "", fotos: [], timestamp: nowIso() };
+      record.liberacao = { status: "1", colaborador, observacoes: "", fotos: [], timestamp: agora.toISOString(), origem: "LIBERACAO_FORMA" };
       record.updatedAt = nowIso();
     }
     upsertRecord(db, record);
@@ -2397,7 +2401,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
       id: uuid(),
       recordId: record.id,
       etapa: "LIBERACAO",
-      status: "L",
+      status: "1",
       dataFabricacao: record.dataFabricacao,
       setor: record.setor,
       formaNumero: record.formaNumero,
@@ -2416,7 +2420,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
   }
 
   if (apiResult.ok) {
-    markFormaLiberada(forma, setor);
+    markFormaClicked(forma, setor);
     card.classList.remove("is-saving", "is-idle");
     card.classList.add("is-liberada");
     card.disabled = false;
@@ -2425,14 +2429,14 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
     setSyncStatus("ok", `Forma ${forma} liberada com sucesso.`);
     showLibFeedback(`${forma} — liberada!`, "ok");
   } else if (apiResult.skipped) {
-    markFormaLiberada(forma, setor);
+    markFormaClicked(forma, setor);
     card.classList.remove("is-saving", "is-idle");
     card.classList.add("is-liberada");
     card.disabled = false;
     setSyncStatus("warn", "API não configurada. Forma liberada localmente.");
     showLibFeedback(`${forma} — liberada (local).`, "ok");
   } else {
-    markFormaLiberada(forma, setor);
+    markFormaClicked(forma, setor);
     card.classList.remove("is-saving", "is-idle");
     card.classList.add("is-liberada");
     card.disabled = false;
@@ -4974,6 +4978,10 @@ function getRelatorioTimestamp(row) {
   return row.timestamp || row.data_hora || row.dataHora || row.updated_at || row.updatedAt || row.created_at || row.createdAt || "";
 }
 
+function getRelatorioLiberacaoTimestamp(row) {
+  return row.liberacao_timestamp || row.liberacaoTimestamp || row.liberacao?.timestamp || getRelatorioTimestamp(row);
+}
+
 function getRelatorioOperador(row) {
   return row.operador || row.colaborador || row.colaboradorProducao || row.usuario || row.liberacao_colaborador || "";
 }
@@ -5219,12 +5227,14 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
             const operador = getRelatorioOperador(r) || "-";
             const horario = formatTime(getRelatorioTimestamp(r));
             const tipoConcreto = getRelatorioTipoConcreto(r);
+            const horarioLiberacao = formatTime(getRelatorioLiberacaoTimestamp(r));
             return `
               <tr>
                 <td>${escapeHtml(forma)}</td>
                 <td>${escapeHtml(modelo)}</td>
                 <td>${escapeHtml(operador)}</td>
                 <td>${escapeHtml(horario)}</td>
+                <td>${escapeHtml(horarioLiberacao)}</td>
                 <td>${escapeHtml(tipoConcreto)}</td>
               </tr>`;
           }).join("");
@@ -5260,10 +5270,11 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
                         <th>Tipo de poste</th>
                         <th>Operador da concretagem</th>
                         <th>Horário</th>
+                        <th>Liberação</th>
                         <th>Tipo de concreto</th>
                       </tr>
                     </thead>
-                    <tbody>${sLinhas || '<tr><td colspan="5">Sem registros</td></tr>'}</tbody>
+                    <tbody>${sLinhas || '<tr><td colspan="6">Sem registros</td></tr>'}</tbody>
                   </table>
                 </div>
               </section>
@@ -5314,12 +5325,14 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
       const operador = getRelatorioOperador(r) || "-";
       const horario = formatTime(getRelatorioTimestamp(r));
       const tipoConcreto = getRelatorioTipoConcreto(r);
+      const horarioLiberacao = formatTime(getRelatorioLiberacaoTimestamp(r));
       return `
         <tr>
           <td>${escapeHtml(forma)}</td>
           <td>${escapeHtml(modelo)}</td>
           <td>${escapeHtml(operador)}</td>
           <td>${escapeHtml(horario)}</td>
+          <td>${escapeHtml(horarioLiberacao)}</td>
           <td>${escapeHtml(tipoConcreto)}</td>
         </tr>`;
     }).join("");
@@ -5354,10 +5367,11 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
                   <th>Tipo de poste</th>
                   <th>Operador da concretagem</th>
                   <th>Horário</th>
+                  <th>Liberação</th>
                   <th>Tipo de concreto</th>
                 </tr>
               </thead>
-              <tbody>${linhas || '<tr><td colspan="5">Sem registros</td></tr>'}</tbody>
+              <tbody>${linhas || '<tr><td colspan="6">Sem registros</td></tr>'}</tbody>
             </table>
           </div>
         </section>
@@ -5493,7 +5507,8 @@ async function gerarRelatorioSetor() {
       const { data: rows, error } = await query;
 
       if (!error && Array.isArray(rows)) {
-        const uniqueRows = deduplicarLinhasProducao(rows);
+        // O relatório de produção considera somente a concretagem confirmada pela liberação.
+        const uniqueRows = deduplicarLinhasProducao(rows.filter((r) => r.status === "LIBERADO"));
         const mappedRows = uniqueRows.map(r => {
           const formaNorm = normalizeForma(r.forma || r.forma_numero || "");
           let modeloFinal = r.modelo;
@@ -5508,6 +5523,7 @@ async function gerarRelatorioSetor() {
             liberacao_status: "1",
             colaborador: r.colaborador,
             timestamp: r.data_hora || r.updated_at || r.created_at,
+            liberacao_timestamp: r.data_hora || r.updated_at || r.created_at,
             tipo_concreto: r.tipo_concreto || r.tipoConcreto || r.concretoTipo,
             setor: r.setor
           };
@@ -5545,6 +5561,7 @@ async function gerarRelatorioSetor() {
       liberacao_status: r.liberacao?.status || "",
       colaborador: r.liberacao?.colaborador || "",
       timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
+      liberacao_timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
       tipoConcreto: r.concretoTipo,
       setor: r.setor,
       data_fabricacao: r.dataFabricacao,
