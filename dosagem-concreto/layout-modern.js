@@ -65,30 +65,66 @@
 
         try {
             const result = window.calcularTaxaArgamassaDaTela();
-            const classificacao = window.ArgamassaCalculo.classificarTaxa(result.taxa_argamassa_massa_pct);
+            const classificacao = window.ArgamassaCalculo.classificarTaxa(result.seco.taxa_argamassa_massa_pct);
             const set = (id, value) => { const element = document.getElementById(id); if (element) element.textContent = value; };
+            
+            // Real / Úmida
             set('arg-taxa-massa', `${formatarNumero(result.taxa_argamassa_massa_pct, 1)}%`);
             set('arg-taxa-volume', `${formatarNumero(result.taxa_argamassa_volume_pct, 1)}%`);
             set('arg-massa', `${formatarNumero(result.massa_argamassa_kg, 1)} kg`);
             set('arg-volume', `${formatarNumero(result.volume_argamassa_l, 1)} L`);
             set('arg-volume-total', `${formatarNumero(result.volume_total_l, 1)} L`);
+
+            // Seco / Tradicional
+            set('arg-taxa-massa-seca', `${formatarNumero(result.seco.taxa_argamassa_massa_pct, 1)}%`);
+            set('arg-taxa-volume-seca', `${formatarNumero(result.seco.taxa_argamassa_volume_pct, 1)}%`);
+            set('arg-massa-seca', `${formatarNumero(result.seco.massa_argamassa_kg, 1)} kg`);
+            set('arg-volume-seca', `${formatarNumero(result.seco.volume_argamassa_l, 1)} L`);
+            set('arg-volume-total-seca', `${formatarNumero(result.seco.volume_total_l, 1)} L`);
+
             status.textContent = classificacao.charAt(0).toUpperCase() + classificacao.slice(1);
             status.className = `dos-argamassa-status is-${classificacao}`;
             message.textContent = classificacao === 'baixo'
-                ? 'Taxa abaixo de 48%: teor de argamassa baixo.'
+                ? 'Taxa Seca abaixo de 48%: teor de argamassa seco baixo.'
                 : classificacao === 'adequado'
-                    ? 'Taxa entre 48% e 55%: teor de argamassa adequado.'
-                    : 'Taxa acima de 55%: teor de argamassa alto.';
+                    ? 'Taxa Seca entre 48% e 55%: teor de argamassa seco adequado.'
+                    : 'Taxa Seca acima de 55%: teor de argamassa seco alto.';
             message.className = `dos-argamassa-message is-${classificacao}`;
+            
             const memory = document.getElementById('dos-argamassa-memory');
             if (memory) {
-                memory.innerHTML = result.memoria_de_calculo.materiais.map(item =>
+                const listItems = result.memoria_de_calculo.materiais.map(item =>
                     `<div><span>${item.nome}</span><strong>${formatarNumero(item.massa_kg,1)} kg ÷ ${item.massa_especifica_kg_l ? formatarNumero(item.massa_especifica_kg_l,3) : '—'} kg/L = ${formatarNumero(item.volume_absoluto_l,1)} L</strong></div>`
-                ).join('') + `<p><strong>Massa:</strong> ${result.memoria_de_calculo.formula_massa}<br><strong>Volume:</strong> ${result.memoria_de_calculo.formula_volume}</p>`;
+                ).join('');
+
+                const dryExclusions = ['agua', 'adit', 'adit2'];
+                const mArgRealList = result.memoria_de_calculo.materiais.filter(i => i.categoria === 'argamassa');
+                const mTotalRealList = result.memoria_de_calculo.materiais;
+                const mArgSecaList = mArgRealList.filter(i => !dryExclusions.includes(i.chave));
+                const mTotalSecaList = mTotalRealList.filter(i => !dryExclusions.includes(i.chave));
+
+                const formulaExplanation = `
+                <div style="border-top:1px dashed #ccc; margin: 12px 0; padding-top: 10px; font-size:0.85rem; line-height: 1.5;">
+                    <strong style="color: #1a5276; display: block; margin-bottom: 4px;">💧 Abordagem Real / Úmida (Inclui Água e Aditivos)</strong>
+                    <strong>Massa da Argamassa:</strong> ${mArgRealList.map(i => `${formatarNumero(i.massa_kg, 1)}kg (${i.nome.split(' ')[0]})`).join(' + ')} = <strong>${formatarNumero(result.massa_argamassa_kg, 1)} kg</strong><br>
+                    <strong>Massa Total Concreto:</strong> ${mTotalRealList.map(i => `${formatarNumero(i.massa_kg, 1)}kg (${i.nome.split(' ')[0]})`).join(' + ')} = <strong>${formatarNumero(result.massa_total_kg, 1)} kg</strong><br>
+                    <strong>Taxa em Massa Real:</strong> ${result.memoria_de_calculo.formula_massa_real} = <strong>${formatarNumero(result.taxa_argamassa_massa_pct, 1)}%</strong><br>
+                    <strong>Taxa em Volume Real:</strong> ${result.memoria_de_calculo.formula_volume_real} = <strong>${formatarNumero(result.taxa_argamassa_volume_pct, 1)}%</strong>
+                    
+                    <div style="border-top:1px dashed #ccc; margin: 12px 0; padding-top: 10px;"></div>
+                    <strong style="color: #7f8c8d; display: block; margin-bottom: 4px;">🪵 Abordagem Seca / Tradicional (Apenas Sólidos — IPT/ABNT)</strong>
+                    <strong>Massa da Argamassa Seca:</strong> ${mArgSecaList.map(i => `${formatarNumero(i.massa_kg, 1)}kg (${i.nome.split(' ')[0]})`).join(' + ')} = <strong>${formatarNumero(result.seco.massa_argamassa_kg, 1)} kg</strong><br>
+                    <strong>Massa Total Seca:</strong> ${mTotalSecaList.map(i => `${formatarNumero(i.massa_kg, 1)}kg (${i.nome.split(' ')[0]})`).join(' + ')} = <strong>${formatarNumero(result.seco.massa_total_kg, 1)} kg</strong><br>
+                    <strong>Taxa em Massa Seca:</strong> ${result.memoria_de_calculo.formula_massa_seca} = <strong>${formatarNumero(result.seco.taxa_argamassa_massa_pct, 1)}%</strong><br>
+                    <strong>Taxa em Volume Seca:</strong> ${result.memoria_de_calculo.formula_volume_seca} = <strong>${formatarNumero(result.seco.taxa_argamassa_volume_pct, 1)}%</strong>
+                </div>`;
+
+                memory.innerHTML = listItems + formulaExplanation;
             }
             return result;
         } catch (error) {
-            ['arg-taxa-massa','arg-taxa-volume','arg-massa','arg-volume','arg-volume-total'].forEach(id => {
+            ['arg-taxa-massa','arg-taxa-volume','arg-massa','arg-volume','arg-volume-total',
+             'arg-taxa-massa-seca','arg-taxa-volume-seca','arg-massa-seca','arg-volume-seca','arg-volume-total-seca'].forEach(id => {
                 const element = document.getElementById(id); if (element) element.textContent = '—';
             });
             status.textContent = 'Dados incompletos';

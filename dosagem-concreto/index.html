@@ -330,7 +330,8 @@
             .sidebar, .sidebar-toggle, .sidebar-overlay, .section-jump, .btn-wrap, .no-print, .btn-print, .form-grid, .form-group,
             .info-box, .tip, footer, .gran-table-container:not(.print-keep),
             .progress-bar-container, #dosagem-modo-box,
-            .btn, .smart-chip, .btn-voltar-hub, button { display: none !important; }
+            .btn, .smart-chip, .btn-voltar-hub, button,
+            .dos-load-action, #dos-densidades-box { display: none !important; }
 
             /* Layout full-width */
             main { width: 100% !important; max-width: 100% !important; }
@@ -434,7 +435,9 @@
             .stepper,
             #dosagem-modo-box,
             #dos-carta-box,
-            #res-dosagem {
+            #res-dosagem,
+            .dos-load-action,
+            #dos-densidades-box {
                 display: none !important;
             }
             .print-report.print-shell {
@@ -1989,20 +1992,32 @@
                 <div>
                     <span class="dos-argamassa-eyebrow">Volume absoluto dos materiais</span>
                     <h3 id="dos-argamassa-title">🧱 Taxa de Argamassa</h3>
-                    <p>Inclui cimento, água, aditivos, adições/filler e agregados miúdos. Britas não entram na argamassa.</p>
+                    <p>Comparativo das duas abordagens de teor de argamassa (Real/Úmida vs Seca/Tradicional).</p>
                 </div>
                 <span class="dos-argamassa-status" id="dos-argamassa-status">Aguardando densidades</span>
             </div>
+            
+            <h4 style="margin: 14px 0 6px 0; font-size: 0.85rem; color: #1a5276; text-transform: uppercase; letter-spacing: 0.05em;">💧 Abordagem Real / Úmida (Inclui Água e Aditivos)</h4>
             <div class="dos-argamassa-metrics">
                 <div><span>Taxa em Massa</span><strong id="arg-taxa-massa">—</strong></div>
                 <div><span>Taxa em Volume</span><strong id="arg-taxa-volume">—</strong></div>
                 <div><span>Massa de Argamassa</span><strong id="arg-massa">—</strong></div>
                 <div><span>Volume de Argamassa</span><strong id="arg-volume">—</strong></div>
-                <div><span>Volume Total</span><strong id="arg-volume-total">—</strong></div>
+                <div><span>Volume Total Real</span><strong id="arg-volume-total">—</strong></div>
             </div>
+
+            <h4 style="margin: 18px 0 6px 0; font-size: 0.85rem; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.05em;">🪵 Abordagem Seca / Tradicional (Apenas Sólidos — IPT/ABNT)</h4>
+            <div class="dos-argamassa-metrics">
+                <div><span>Taxa em Massa (Seca)</span><strong id="arg-taxa-massa-seca">—</strong></div>
+                <div><span>Taxa em Volume (Seca)</span><strong id="arg-taxa-volume-seca">—</strong></div>
+                <div><span>Massa de Argamassa (Seca)</span><strong id="arg-massa-seca">—</strong></div>
+                <div><span>Volume de Argamassa (Seca)</span><strong id="arg-volume-seca">—</strong></div>
+                <div><span>Volume Total Sólidos</span><strong id="arg-volume-total-seca">—</strong></div>
+            </div>
+            
             <div class="dos-argamassa-message" id="dos-argamassa-message">Informe manualmente as massas específicas na seção de densidades para calcular.</div>
             <details class="dos-argamassa-memory">
-                <summary>Ver memória de cálculo</summary>
+                <summary>Ver memória de cálculo detalhada</summary>
                 <div id="dos-argamassa-memory"></div>
             </details>
         </section>
@@ -6683,9 +6698,16 @@ function calcularDosagem() {
     const mAgrGraudo = m.b0 + m.b1;
     const argMassa = (mArg + mAgrGraudo) > 0 ? (mArg / (mArg + mAgrGraudo)) * 100 : 0;
 
+    // Real / Úmido
+    const mArgReal = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
+    const argMassaReal = (mArgReal + mAgrGraudo) > 0 ? (mArgReal / (mArgReal + mAgrGraudo)) * 100 : 0;
+
     const vArg = v.cim + v.adic + v.an + v.ai;
     const vAgrGraudo = v.b0 + v.b1;
     const argVol = (vArg + vAgrGraudo) > 0 ? (vArg / (vArg + vAgrGraudo)) * 100 : 0;
+
+    const vArgReal = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
+    const argVolReal = (vArgReal + vAgrGraudo) > 0 ? (vArgReal / (vArgReal + vAgrGraudo)) * 100 : 0;
 
     const pctAN = (m.an / (m.an + m.ai)) * 100;
     const pctAI = (m.ai / (m.an + m.ai)) * 100;
@@ -6754,13 +6776,23 @@ function calcularDosagem() {
 
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
             <div style="background:#e8f8f0;border:1.5px solid #82c99a;border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;">
-                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">🧱 Tx. Arg.</div>
+                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">🧱 Tx. Arg. Seca</div>
                 <div style="font-size:1.4rem;font-weight:900;color:#1a6635;">${fmt(argMassa,1)}%</div>
-                <div style="font-size:0.70rem;color:#777;">massa</div>
+                <div style="font-size:0.70rem;color:#777;">massa (seco)</div>
             </div>
             <div style="background:#e8f8f0;border:1.5px solid #82c99a;border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;">
-                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Vol. Arg.</div>
+                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">🧱 Tx. Arg. Real</div>
+                <div style="font-size:1.4rem;font-weight:900;color:#1a6635;">${fmt(argMassaReal,1)}%</div>
+                <div style="font-size:0.70rem;color:#777;">massa (real)</div>
+            </div>
+            <div style="background:#e8f8f0;border:1.5px solid #82c99a;border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;">
+                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Vol. Arg. Seca</div>
                 <div style="font-size:1.4rem;font-weight:900;color:#1a6635;">${fmt(vArg,1)} L</div>
+                <div style="font-size:0.70rem;color:#777;">argamassa</div>
+            </div>
+            <div style="background:#e8f8f0;border:1.5px solid #82c99a;border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;">
+                <div style="font-size:0.72rem;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">Vol. Arg. Real</div>
+                <div style="font-size:1.4rem;font-weight:900;color:#1a6635;">${fmt(vArgReal,1)} L</div>
                 <div style="font-size:0.70rem;color:#777;">argamassa</div>
             </div>
             <div style="background:#e8f0f8;border:1.5px solid #82a9c9;border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;">
@@ -6785,8 +6817,10 @@ function calcularDosagem() {
             <div>
                 <h3>📊 Proporções</h3>
                 <table class="result-table">
-                    <tr><td>Teor de Argamassa (massa)</td><td class="highlight">${fmt(argMassa,1)}%</td></tr>
-                    <tr><td>Teor de Argamassa (volume)</td><td class="highlight">${fmt(argVol,1)}%</td></tr>
+                    <tr><td>Teor de Argamassa Seca (massa)</td><td class="highlight">${fmt(argMassa,1)}%</td></tr>
+                    <tr><td>Teor de Argamassa Real (massa)</td><td class="highlight">${fmt(argMassaReal,1)}%</td></tr>
+                    <tr><td>Teor de Argamassa Seca (volume)</td><td class="highlight">${fmt(argVol,1)}%</td></tr>
+                    <tr><td>Teor de Argamassa Real (volume)</td><td class="highlight">${fmt(argVolReal,1)}%</td></tr>
                     <tr><td>Teor de Ar Incorporado</td><td class="highlight">${fmt(arPct,1)}%</td></tr>
                     <tr><td>% Aditivos Totais / Cimento</td><td class="highlight">${fmt(m.cim>0?(m.adit/m.cim)*100:0,2)}%</td></tr>
                     <tr><td>Areia Natural / Areia Total</td><td>${fmt(pctAN,1)}%</td></tr>
@@ -7692,6 +7726,8 @@ function getDosagemPrintMetrics() {
     const mBrita = m.b0 + m.b1;
     const vArg = v.cim + v.adic + v.an + v.ai;
     const vBrita = v.b0 + v.b1;
+    const mArgReal = m.cim + m.adic + m.an + m.ai + m.agua + m.adit;
+    const vArgReal = v.cim + v.adic + v.an + v.ai + v.agua + v.adit;
     const mPasta = m.cim + m.adic + m.agua + m.adit;
     const vPasta = v.cim + v.adic + v.agua + v.adit;
     const massaTotal = Object.values(m).reduce((a, b) => a + b, 0);
@@ -7708,6 +7744,8 @@ function getDosagemPrintMetrics() {
         massaEsp: vTotal > 0 ? massaTotal * 1000 / vTotal : 0,
         argMassa: (mArg + mBrita) > 0 ? (mArg / (mArg + mBrita)) * 100 : 0,
         argVol: (vArg + vBrita) > 0 ? (vArg / (vArg + vBrita)) * 100 : 0,
+        argMassaReal: (mArgReal + mBrita) > 0 ? (mArgReal / (mArgReal + mBrita)) * 100 : 0,
+        argVolReal: (vArgReal + vBrita) > 0 ? (vArgReal / (vArgReal + vBrita)) * 100 : 0,
         pastaMassa: (mPasta + mBrita) > 0 ? (mPasta / (mPasta + mBrita)) * 100 : 0,
         pastaVol: (vPasta + vBrita) > 0 ? (vPasta / (vPasta + vBrita)) * 100 : 0
     };
@@ -7715,6 +7753,23 @@ function getDosagemPrintMetrics() {
 
 function renderDosagemPrintLayout() {
     const data = getDosagemPrintMetrics();
+    const dosTipoCim = document.getElementById('dos_tipo_cimento')?.value || 'cpv';
+    const dosSd = parseFloat(document.getElementById('dos_sd')?.value) || 4.0;
+    const dosFck = parseFloat(document.getElementById('dos_fck')?.value) || 30;
+
+    const K1map = { cpv: 120, cpii: 96, cpiii: 85, cpiv: 78 };
+    const K2map = { cpv: 14, cpii: 12, cpiii: 11, cpiv: 10.5 };
+    const K1 = K1map[dosTipoCim] || 120;
+    const K2 = K2map[dosTipoCim] || 14;
+    const fc28_abrams = K1 / Math.pow(K2, data.ac);
+    const fck_calc = fc28_abrams - 1.65 * dosSd;
+    const fat = getFatoresMaturidade(dosTipoCim);
+    const fc1d  = fc28_abrams * fat.d1;
+    const fc3d  = fc28_abrams * fat.d3;
+    const fc7d  = fc28_abrams * fat.d7;
+    const fc28d = fc28_abrams * fat.d28;
+    const nomeCim = getNomeCimento(dosTipoCim);
+
     return `
         <div class="result-box ok">
             <h3>⚖️ Dosagem para 1 m³</h3>
@@ -7750,15 +7805,57 @@ function renderDosagemPrintLayout() {
             <h3>🧱 Taxas de Argamassa</h3>
             <table class="result-table">
                 <thead>
-                    <tr><th>Indicador</th><th>Valor</th></tr>
+                    <tr><th>Indicador</th><th>Taxa em Massa</th><th>Taxa em Volume</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>Teor de Argamassa (massa)</td><td>${fmt(data.argMassa, 1)}%</td></tr>
-                    <tr><td>Teor de Argamassa (volume)</td><td>${fmt(data.argVol, 1)}%</td></tr>
-                    <tr><td>Teor de Pasta (massa)</td><td>${fmt(data.pastaMassa, 1)}%</td></tr>
-                    <tr><td>Teor de Pasta (volume)</td><td>${fmt(data.pastaVol, 1)}%</td></tr>
+                    <tr><td><strong>Abordagem Seca (ABNT/IPT)</strong></td><td>${fmt(data.argMassa, 1)}%</td><td>${fmt(data.argVol, 1)}%</td></tr>
+                    <tr><td><strong>Abordagem Real/Úmida</strong></td><td>${fmt(data.argMassaReal, 1)}%</td><td>${fmt(data.argVolReal, 1)}%</td></tr>
+                    <tr><td>Teor de Pasta</td><td>${fmt(data.pastaMassa, 1)}%</td><td>${fmt(data.pastaVol, 1)}%</td></tr>
                 </tbody>
             </table>
+        </div>
+        <div class="result-box ok" style="margin-top:10px; page-break-inside: avoid;">
+            <h3>📈 Projeção de Resistência à Compressão</h3>
+            <p style="font-size:0.75rem;color:var(--text-light);margin-bottom:6px;">Baseada na Lei de Abrams (fc₂₈ = ${K1}/${K2}^a/c) e fatores de maturidade para ${nomeCim}</p>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>Idade</th>
+                        <th>Fator</th>
+                        <th>fc estimado (MPa)</th>
+                        <th>Observação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1 dia</td>
+                        <td>${fmt(fat.d1,2)}</td>
+                        <td class="highlight">${fmt(fc1d,1)} MPa</td>
+                        <td>${fc1d>=15?'Desforma possível':'Baixo p/ desforma'}</td>
+                    </tr>
+                    <tr>
+                        <td>3 dias</td>
+                        <td>${fmt(fat.d3,2)}</td>
+                        <td class="highlight">${fmt(fc3d,1)} MPa</td>
+                        <td>${fc3d>=20?'Protensão possível':'Verificar'}</td>
+                    </tr>
+                    <tr>
+                        <td>7 dias</td>
+                        <td>${fmt(fat.d7,2)}</td>
+                        <td class="highlight">${fmt(fc7d,1)} MPa</td>
+                        <td>${fc7d>=0.65*fc28_abrams?'≥ 65% do fc₂₈':'< 65% do fc₂₈'}</td>
+                    </tr>
+                    <tr style="background:#e8f4f8">
+                        <td><strong>28 dias</strong></td>
+                        <td><strong>${fmt(fat.d28,2)}</strong></td>
+                        <td class="highlight" style="color:var(--primary)"><strong>${fmt(fc28d,1)} MPa</strong></td>
+                        <td>fck = ${fmt(fck_calc,1)} MPa ${fck_calc >= dosFck ? '≥ FCK '+dosFck : '< FCK '+dosFck}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top:10px; text-align: center;">
+                <canvas id="chartResistenciaDosPrint" width="550" height="200" style="max-width:100%; height:150px;"></canvas>
+            </div>
         </div>
     `;
 }
@@ -7766,7 +7863,37 @@ function renderDosagemPrintLayout() {
 function applyPrintSectionContent(secId) {
     const dosagemPrintLayout = document.getElementById('dosagem-print-layout');
     if (dosagemPrintLayout) {
-        dosagemPrintLayout.innerHTML = secId === 'sec-dosagem' ? renderDosagemPrintLayout() : '';
+        if (secId === 'sec-dosagem') {
+            dosagemPrintLayout.innerHTML = renderDosagemPrintLayout();
+            
+            // Desenhar gráfico de resistência na versão de impressão
+            const canvasPrint = document.getElementById('chartResistenciaDosPrint');
+            if (canvasPrint) {
+                const dosTipoCim = document.getElementById('dos_tipo_cimento')?.value || 'cpv';
+                const cim = parseFloat(document.getElementById('dos_cim')?.value || 0);
+                const adic = parseFloat(document.getElementById('dos_adic')?.value || 0);
+                const agua = parseFloat(document.getElementById('dos_agua')?.value || 0);
+                const ac = (cim + adic) > 0 ? agua / (cim + adic) : 0;
+                
+                const K1map = { cpv: 120, cpii: 96, cpiii: 85, cpiv: 78 };
+                const K2map = { cpv: 14, cpii: 12, cpiii: 11, cpiv: 10.5 };
+                const K1 = K1map[dosTipoCim] || 120;
+                const K2 = K2map[dosTipoCim] || 14;
+                const fc28_abrams = K1 / Math.pow(K2, ac);
+                const fat = getFatoresMaturidade(dosTipoCim);
+                const fc1d  = fc28_abrams * fat.d1;
+                const fc3d  = fc28_abrams * fat.d3;
+                const fc7d  = fc28_abrams * fat.d7;
+                const fc28d = fc28_abrams * fat.d28;
+                const dosFck = parseFloat(document.getElementById('dos_fck')?.value) || 30;
+                
+                if (typeof _desenharGraficoResistenciaInterno === 'function') {
+                    _desenharGraficoResistenciaInterno(canvasPrint, fc1d, fc3d, fc7d, fc28d, dosFck);
+                }
+            }
+        } else {
+            dosagemPrintLayout.innerHTML = '';
+        }
     }
 }
 

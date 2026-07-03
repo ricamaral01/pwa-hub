@@ -43,6 +43,14 @@
         const volumeArgamassa = soma(argamassa, 'volume_absoluto_l');
         const volumeTotal = soma(memoriaMateriais, 'volume_absoluto_l');
 
+        const dryExclusions = ['agua', 'adit', 'adit2'];
+        const materiaisSeco = memoriaMateriais.filter(item => !dryExclusions.includes(item.chave));
+        const argamassaSeco = materiaisSeco.filter(item => item.categoria === 'argamassa');
+        const massaArgamassaSeco = soma(argamassaSeco, 'massa_kg');
+        const massaTotalSeco = soma(materiaisSeco, 'massa_kg');
+        const volumeArgamassaSeco = soma(argamassaSeco, 'volume_absoluto_l');
+        const volumeTotalSeco = soma(materiaisSeco, 'volume_absoluto_l');
+
         return {
             taxa_argamassa_massa_pct: massaTotal > 0 ? massaArgamassa / massaTotal * 100 : 0,
             taxa_argamassa_volume_pct: volumeTotal > 0 ? volumeArgamassa / volumeTotal * 100 : 0,
@@ -50,11 +58,21 @@
             massa_total_kg: massaTotal,
             volume_argamassa_l: volumeArgamassa,
             volume_total_l: volumeTotal,
+            seco: {
+                taxa_argamassa_massa_pct: massaTotalSeco > 0 ? massaArgamassaSeco / massaTotalSeco * 100 : 0,
+                taxa_argamassa_volume_pct: volumeTotalSeco > 0 ? volumeArgamassaSeco / volumeTotalSeco * 100 : 0,
+                massa_argamassa_kg: massaArgamassaSeco,
+                massa_total_kg: massaTotalSeco,
+                volume_argamassa_l: volumeArgamassaSeco,
+                volume_total_l: volumeTotalSeco
+            },
             memoria_de_calculo: {
-                criterio_argamassa: 'Cimento, água, aditivos, adições/filler, areias, pó de pedra e outros finos.',
-                criterio_graudos: 'Britas e demais agregados graúdos.',
-                formula_massa: 'massa_argamassa / massa_total_concreto × 100',
-                formula_volume: 'volume_argamassa / volume_total_concreto × 100',
+                criterio_real: 'Real/Úmido: Inclui cimento, água, aditivos, adições/filler, areias e pó de pedra.',
+                criterio_seco: 'Seco/Tradicional (ABNT/IPT): Inclui apenas cimento, adições/filler e areias (água e aditivos excluídos).',
+                formula_massa_real: 'massa_argamassa_real / massa_total_real × 100',
+                formula_volume_real: 'volume_argamassa_real / volume_total_real × 100',
+                formula_massa_seca: 'massa_argamassa_seca / massa_total_seca × 100',
+                formula_volume_seca: 'volume_argamassa_seca / volume_total_seca × 100',
                 conversao_volume: 'massa_kg / massa_especifica_kg_l',
                 materiais: memoriaMateriais
             }
