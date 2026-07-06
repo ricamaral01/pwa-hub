@@ -1,0 +1,105 @@
+[2026-07-06 20:26:42,574] INFO - ==================================================================
+[2026-07-06 20:26:42,574] INFO - Iniciando ciclo do Agente PCP x Produção para a data: 2026-07-06
+[2026-07-06 20:26:42,574] INFO - Modo Dry-Run: True
+[2026-07-06 20:26:42,574] INFO - ==================================================================
+[2026-07-06 20:26:42,574] INFO - Buscando produção no Supabase para a data: 2026-07-06...
+[2026-07-06 20:26:44,271] INFO - Encontrados 472 registros brutos de produção no Supabase.
+[2026-07-06 20:26:44,273] INFO - Produção deduplicada contém 243 fôrmas apontadas.
+[2026-07-06 20:26:44,275] INFO - Conectando ao Google Sheets...
+[2026-07-06 20:26:44,346] INFO - Abrindo planilha ID: 1nEqNCdk-LoCq8lNeA5t02W3AJIvyfhtX0IeWSYHYEgY...
+[2026-07-06 20:26:46,440] INFO - Acessando aba 'PCP - DIÁRIO'...
+[2026-07-06 20:26:47,007] ERROR - Falha ao acessar o Google Sheets: PCP - DIÁRIO
+[2026-07-06 20:26:47,007] ERROR - Erro ao acessar planilha do PCP (Google Sheets): PCP - DIÁRIO
+[2026-07-06 20:26:47,007] WARNING - Prosseguindo com comparação parcial (PCP programado = 0)...
+[2026-07-06 20:26:47,010] INFO - Iniciando comparação entre PCP e Produção...
+[2026-07-06 20:26:47,011] INFO - Comparação concluída com sucesso.
+[2026-07-06 20:26:47,011] INFO - Renderizando template HTML do relatório...
+[2026-07-06 20:26:47,031] INFO - Relatório HTML criado com sucesso em: C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-06.html
+[2026-07-06 20:26:47,032] INFO - === [WHATSAPP SIMULATION (DRY-RUN)] ===
+[2026-07-06 20:26:47,032] INFO - Destinatário: Não configurado
+[2026-07-06 20:26:47,032] INFO - Mensagem:\n*Relatório Diário PCP x Produção - ConcreTrack*
+📅 *Data:* 06/07/2026
+
+📊 *Resumo Operacional:*
+• Programado: *0* pçs
+• Produzido: *243* pçs
+• Aderência: *0.0%*
+
+⚠️ *Principais Pendências:*
+Nenhuma pendência crítica! 100% de aderência.
+
+🔗 *Link do Relatório:*
+C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-06.html
+[2026-07-06 20:26:47,032] INFO - =========================================
+[2026-07-06 20:26:47,032] INFO - Ciclo do Agente PCP x Produção finalizado com sucesso.
+[2026-07-06 20:26:47,032] INFO - ==================================================================
+[2026-07-06 20:27:37,609] INFO - ==================================================================
+[2026-07-06 20:27:37,610] INFO - Iniciando ciclo do Agente PCP x Produção para a data: 2026-07-06
+[2026-07-06 20:27:37,610] INFO - Modo Dry-Run: True
+[2026-07-06 20:27:37,610] INFO - ==================================================================
+[2026-07-06 20:27:37,610] INFO - Buscando produção no Supabase para a data: 2026-07-06...
+[2026-07-06 20:27:38,465] INFO - Encontrados 472 registros brutos de produção no Supabase.
+[2026-07-06 20:27:38,466] INFO - Produção deduplicada contém 243 fôrmas apontadas.
+[2026-07-06 20:27:38,468] INFO - Conectando ao Google Sheets...
+[2026-07-06 20:27:38,526] INFO - Abrindo planilha ID: 1nEqNCdk-LoCq8lNeA5t02W3AJIvyfhtX0IeWSYHYEgY...
+[2026-07-06 20:27:40,563] INFO - Acessando aba 'PCP - DIÁRIO'...
+[2026-07-06 20:27:41,378] ERROR - Falha ao acessar o Google Sheets: PCP - DIÁRIO
+[2026-07-06 20:27:41,378] ERROR - Erro ao acessar planilha do PCP (Google Sheets): PCP - DIÁRIO
+[2026-07-06 20:27:41,379] WARNING - Prosseguindo com comparação parcial (PCP programado = 0)...
+[2026-07-06 20:27:41,382] INFO - Iniciando comparação entre PCP e Produção...
+[2026-07-06 20:27:41,382] INFO - Comparação concluída com sucesso.
+[2026-07-06 20:27:41,382] INFO - Renderizando template HTML do relatório...
+[2026-07-06 20:27:41,407] INFO - Relatório HTML criado com sucesso em: C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-06.html
+[2026-07-06 20:27:41,408] INFO - === [WHATSAPP SIMULATION (DRY-RUN)] ===
+[2026-07-06 20:27:41,408] INFO - Destinatário: Não configurado
+[2026-07-06 20:27:41,408] INFO - Mensagem:\n*Relatório Diário PCP x Produção - ConcreTrack*
+📅 *Data:* 06/07/2026
+
+📊 *Resumo Operacional:*
+• Programado: *0* pçs
+• Produzido: *243* pçs
+• Aderência: *0.0%*
+
+⚠️ *Principais Pendências:*
+Nenhuma pendência crítica! 100% de aderência.
+
+🔗 *Link do Relatório:*
+C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-06.html
+[2026-07-06 20:27:41,408] INFO - =========================================
+[2026-07-06 20:27:41,409] INFO - Ciclo do Agente PCP x Produção finalizado com sucesso.
+[2026-07-06 20:27:41,409] INFO - ==================================================================
+[2026-07-06 20:32:52,509] INFO - ==================================================================
+[2026-07-06 20:32:52,509] INFO - Iniciando ciclo do Agente PCP x Produção para a data: 2026-07-06
+[2026-07-06 20:32:52,510] INFO - Modo Dry-Run: True
+[2026-07-06 20:32:52,510] INFO - ==================================================================
+[2026-07-06 20:32:52,510] INFO - Buscando produção no Supabase para a data: 2026-07-06...
+[2026-07-06 20:32:54,072] INFO - Encontrados 472 registros brutos de produção no Supabase.
+[2026-07-06 20:32:54,073] INFO - Produção deduplicada contém 243 fôrmas apontadas.
+[2026-07-06 20:32:54,075] INFO - Conectando ao Google Sheets...
+[2026-07-06 20:32:54,133] INFO - Abrindo planilha ID: 1nEqNCdk-LoCq8lNeA5t02W3AJIvyfhtX0IeWSYHYEgY...
+[2026-07-06 20:32:55,984] INFO - Acessando aba 'PCP - DIÁRIO'...
+[2026-07-06 20:32:57,463] ERROR - Falha ao acessar o Google Sheets: PCP - DIÁRIO
+[2026-07-06 20:32:57,463] ERROR - Erro ao acessar planilha do PCP (Google Sheets): PCP - DIÁRIO
+[2026-07-06 20:32:57,463] WARNING - Prosseguindo com comparação parcial (PCP programado = 0)...
+[2026-07-06 20:32:57,465] INFO - Iniciando comparação pelo Código do Poste...
+[2026-07-06 20:32:57,466] INFO - Comparação por poste concluída com sucesso.
+[2026-07-06 20:32:57,466] INFO - Renderizando template HTML do relatório...
+[2026-07-06 20:32:57,478] INFO - Relatório HTML criado com sucesso em: C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-06.html
+[2026-07-06 20:32:57,478] INFO - === [WHATSAPP SIMULATION (DRY-RUN)] ===
+[2026-07-06 20:32:57,478] INFO - Destinatário: Não configurado
+[2026-07-06 20:32:57,478] INFO - Mensagem:\n*Relatório Diário PCP x Produção - ConcreTrack*
+📅 *Data:* 06/07/2026
+
+📊 *Resumo Operacional:*
+• Programado: *0* pçs
+• Produzido: *243* pçs
+• Aderência: *0.0%*
+
+⚠️ *Principais Pendências:*
+Nenhuma pendência crítica! 100% de aderência.
+
+🔗 *Link do Relatório:*
+C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-06.html
+[2026-07-06 20:32:57,478] INFO - =========================================
+[2026-07-06 20:32:57,478] INFO - Ciclo do Agente PCP x Produção finalizado com sucesso.
+[2026-07-06 20:32:57,478] INFO - ==================================================================

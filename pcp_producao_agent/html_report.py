@@ -310,6 +310,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .text-diff.negative { color: var(--color-nao-produzido); }
         .text-diff.positive { color: var(--color-excedente); }
         .text-diff.zero { color: var(--text-muted); }
+
+        /* Footer totals styling */
+        tfoot tr {
+            background: #f8fafc;
+            border-top: 3px double #cbd5e1;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        tfoot td {
+            padding: 1.15rem 1.25rem;
+            font-size: 0.95rem;
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -407,11 +421,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <table>
                 <thead>
                     <tr>
-                        <th>Produto</th>
                         <th>Modelo</th>
-                        <th style="text-align: center; width: 120px;">Programado (PCP)</th>
-                        <th style="text-align: center; width: 120px;">Produzido (Mapa)</th>
-                        <th style="text-align: center; width: 100px;">Desvio</th>
+                        <th>Código do Poste</th>
+                        <th style="text-align: center; width: 150px;">Programado (Planilha)</th>
+                        <th style="text-align: center; width: 150px;">Produzido (Produção)</th>
+                        <th style="text-align: center; width: 100px;">Diferença</th>
                         <th style="width: 180px;">Status</th>
                     </tr>
                 </thead>
@@ -419,8 +433,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     {% if stats.rows %}
                         {% for row in stats.rows %}
                         <tr class="status-{{ row.status }}">
-                            <td>{{ row.produto }}</td>
                             <td>{{ row.modelo }}</td>
+                            <td><strong>{{ row.codigo }}</strong></td>
                             <td style="text-align: center;">{{ row.programado }}</td>
                             <td style="text-align: center;">{{ row.produzido }}</td>
                             <td style="text-align: center;" class="text-diff {% if row.diferenca > 0 %}positive{% elif row.diferenca < 0 %}negative{% else %}zero{% endif %}">
@@ -439,6 +453,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         </tr>
                     {% endif %}
                 </tbody>
+                {% if stats.rows %}
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
+                        <td style="text-align: center;">{{ stats.programado }}</td>
+                        <td style="text-align: center;">{{ stats.produzido }}</td>
+                        <td style="text-align: center;" class="text-diff {% if stats.diferenca > 0 %}positive{% elif stats.diferenca < 0 %}negative{% else %}zero{% endif %}">
+                            {{ "%+d" | format(stats.diferenca) if stats.diferenca != 0 else "0" }}
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                {% endif %}
             </table>
         </div>
     </section>

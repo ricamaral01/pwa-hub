@@ -67,11 +67,11 @@ class GoogleSheetsClient:
                 
                 row_date = self._normalize_date(r[date_key])
                 if row_date == target_date:
-                    # Tenta capturar colunas comuns
+                    # Identificação robusta de colunas
                     sector_key = next((k for k in r.keys() if 'setor' in k.lower()), 'Setor')
-                    product_key = next((k for k in r.keys() if 'produto' in k.lower() or 'codigo' in k.lower()), 'Produto')
-                    model_key = next((k for k in r.keys() if 'modelo' in k.lower() or 'forma' in k.lower()), 'Modelo')
-                    qty_key = next((k for k in r.keys() if 'quant' in k.lower() or 'prog' in k.lower() or 'volume' in k.lower()), 'Quantidade')
+                    model_key = next((k for k in r.keys() if 'modelo' in k.lower()), 'Modelo')
+                    code_key = next((k for k in r.keys() if 'codigo' in k.lower() or 'código' in k.lower() or 'cod' in k.lower() or 'produto' in k.lower()), 'Código')
+                    qty_key = next((k for k in r.keys() if 'quant' in k.lower() or 'qtd' in k.lower() or 'prog' in k.lower()), 'Quantidade')
                     
                     qty_val = 0
                     try:
@@ -83,11 +83,11 @@ class GoogleSheetsClient:
                             pass
 
                     filtered_rows.append({
-                        "row_num": index + 2, # 1-indexed header + data
+                        "row_num": index + 2,
                         "date": row_date,
                         "setor": str(r.get(sector_key) or "").strip(),
-                        "produto": str(r.get(product_key) or "").strip(),
                         "modelo": str(r.get(model_key) or "").strip(),
+                        "codigo": str(r.get(code_key) or "").strip(),
                         "quantidade_programada": qty_val
                     })
 

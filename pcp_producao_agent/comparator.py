@@ -1,5 +1,4 @@
 import logging
-import pandas as pd
 import config
 
 logger = logging.getLogger("pcp_producao_agent")
@@ -18,112 +17,107 @@ def normalize_sector(sector):
         return "Setor 4"
     return sector.strip()
 
-def normalize_model(model):
-    if not model:
-        return "SEM MODELO"
-    return str(model).strip().upper()
+def normalize_code(code):
+    if not code:
+        return "SEM CODIGO"
+    return str(code).strip().upper()
 
 class Comparator:
     def compare(self, pcp_rows, prod_rows):
         """
-        Compara o planejado (PCP) com o realizado (Produção).
-        Aplica regras de status e gera métricas globais e por setor.
+        Compara o planejado (PCP) com o realizado (Produção) pelo código do poste.
+        Calcula as diferenças e totaliza os setores.
         """
-        logger.info("Iniciando comparação entre PCP e Produção...")
+        logger.info("Iniciando comparação pelo Código do Poste...")
 
-        # 1. Agrupar produção por (Setor, Modelo)
+        # 1. Agrupar produção por (Setor, Código do Poste)
         prod_map = {}
         for r in prod_rows:
             setor = normalize_sector(r.get("setor"))
+            codigo = normalize_code(r.get("codigo_poste") or r.get("codigo_produto"))
             
-            # Tenta pegar modelo, depois produto, depois código do produto
-            modelo = r.get("modelo") or r.get("codigo_produto") or "SEM MODELO"
-            modelo_norm = normalize_model(modelo)
-            
-            key = (setor, modelo_norm)
+            key = (setor, codigo)
             if key not in prod_map:
                 prod_map[key] = []
             prod_map[key].append(r)
 
-        comparison_details = []
-        matched_keys = set()
-
-        # 2. Processar itens programados (PCP)
+        # 2. Agrupar programação por (Setor, Código)
+        pcp_map = {}
         for p in pcp_rows:
-            setor = normalize_sector(p["setor"])
-            modelo = p["modelo"] or p["produto"] or "SEM MODELO"
-            modelo_norm = normalize_model(modelo)
+            setor = normalize_sector(p.get("setor"))
+            codigo = normalize_code(p.get("codigo"))
             
-            key = (setor, modelo_norm)
-            matched_keys.add(key)
+            key = (setor, codigo)
+            qty = p.get("quantidade_programada", 0)
+            modelo = p.get("modelo") or "SEM MODELO"
             
-            qty_prog = p["quantidade_programada"]
-            realized_items = prod_map.get(key, [])
-            qty_real = len(realized_items)
+            if key not in pcp_map:
+                pcp_map[key] = {"modelo": modelo, "qty_prog": 0}
+            
+            pcp_map[key]["qty_prog"] += qty
+            # Se tiver modelo mais detalhado, prefere
+            if modelo != "SEM MODELO":
+                pcp_map[key]["modelo"] = modelo
 
-            # Regras de Status
-            if qty_real == qty_prog:
+        # 3. Cruzar todas as chaves únicas
+        all_keys = set(pcp_map.keys()) | set(prod_map.keys())
+        comparison_details = []
+
+        for key in all_keys:
+            setor, codigo = key
+            
+            # Dados programados
+            pcp_item = pcp_map.get(key)
+            qty_prog = pcp_item["qty_prog"] if pcp_item else 0
+            
+            # Dados produzidos
+            prod_items = prod_map.get(key, [])
+            qty_real = len(prod_items)
+            
+            # Resolve Modelo
+            modelo = "SEM MODELO"
+            if pcp_item and pcp_item["modelo"] != "SEM MODELO":
+                modelo = pcp_item["modelo"]
+            elif prod_items:
+                # Fallback para o modelo salvo na produção
+                modelo = prod_items[0].get("modelo") or "SEM MODELO"
+                
+            diff = qty_real - qty_prog
+
+            # Definição de Status
+            if qty_real == qty_prog and qty_prog > 0:
                 status = "REALIZADO"
             elif qty_real > qty_prog:
-                status = "EXCEDENTE"
-            elif qty_real > 0 and qty_real < qty_prog:
-                status = "PARCIAL"
-            else:
-                status = "NÃO PRODUZIDO"
-
-            diff = qty_real - qty_prog
+                if qty_prog == 0:
+                    status = "NÃO PROGRAMADO"
+                else:
+                    status = "EXCEDENTE"
+            elif qty_real < qty_prog:
+                if qty_real == 0:
+                    status = "NÃO PRODUZIDO"
+                else:
+                    status = "PARCIAL"
 
             comparison_details.append({
                 "setor": setor,
-                "produto": p["produto"] or "Poste",
-                "modelo": p["modelo"] or "SEM MODELO",
+                "codigo": codigo,
+                "modelo": modelo,
                 "programado": qty_prog,
                 "produzido": qty_real,
                 "diferenca": diff,
-                "status": status,
-                "detalhes_producao": realized_items
+                "status": status
             })
 
-        # 3. Processar itens realizados não programados (NÃO PROGRAMADO)
-        for key, realized_items in prod_map.items():
-            if key not in matched_keys:
-                setor, modelo_norm = key
-                qty_real = len(realized_items)
-                
-                # Para itens não programados
-                status = "NÃO PROGRAMADO"
-                diff = qty_real
-
-                # Tenta pegar o nome amigável do produto do primeiro item
-                first_item = realized_items[0]
-                produto_name = first_item.get("codigo_produto") or "Poste"
-
-                comparison_details.append({
-                    "setor": setor,
-                    "produto": produto_name,
-                    "modelo": modelo_norm,
-                    "programado": 0,
-                    "produzido": qty_real,
-                    "diferenca": diff,
-                    "status": status,
-                    "detalhes_producao": realized_items
-                })
-
-        # 4. Calcular métricas resumidas
-        total_prog = sum(c["programado"] for c in comparison_details)
-        total_real = sum(c["produzido"] for c in comparison_details)
-        diferenca_total = total_real - total_prog
-        aderencia_pct = (total_real / total_prog * 100) if total_prog > 0 else 0
-
-        itens_nao_produzidos = sum(1 for c in comparison_details if c["status"] == "NÃO PRODUZIDO")
-        itens_nao_programados = sum(1 for c in comparison_details if c["status"] == "NÃO PROGRAMADO")
-
-        # 5. Análise de aderência por setor
+        # 4. Totalização por Setor
         setores = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"]
         setor_stats = {}
         
         for s in setores:
             rows_s = [c for c in comparison_details if c["setor"] == s]
+            
+            # Ordena por código para visualização limpa
+            rows_s.sort(key=lambda x: x["codigo"])
+            
             s_prog = sum(r["programado"] for r in rows_s)
             s_real = sum(r["produzido"] for r in rows_s)
             s_diff = s_real - s_prog
@@ -137,20 +131,28 @@ class Comparator:
                 "rows": rows_s
             }
 
+        # 5. Calcular métricas resumidas globais
+        total_prog = sum(c["programado"] for c in comparison_details)
+        total_real = sum(c["produzido"] for c in comparison_details)
+        diferenca_total = total_real - total_prog
+        aderencia_pct = (total_real / total_prog * 100) if total_prog > 0 else 0
+
+        itens_nao_produzidos = sum(1 for c in comparison_details if c["status"] == "NÃO PRODUZIDO")
+        itens_nao_programados = sum(1 for c in comparison_details if c["status"] == "NÃO PROGRAMADO")
+
         # 6. Geração do Resumo Executivo e Recomendações
         principais_diferencas = []
         produtos_criticos = []
         
         for c in comparison_details:
             if c["status"] in ("NÃO PRODUZIDO", "PARCIAL"):
-                produtos_criticos.append(f"{c['modelo']} no {c['setor']} (Falta: {abs(c['diferenca'])} pç)")
+                produtos_criticos.append(f"{c['codigo']} ({c['modelo']}) no {c['setor']} (Falta: {abs(c['diferenca'])} pç)")
             if abs(c["diferenca"]) > 0:
                 dir_label = "acima" if c["diferenca"] > 0 else "abaixo"
-                principais_diferencas.append(f"{c['modelo']} no {c['setor']} ({abs(c['diferenca'])} pç {dir_label})")
+                principais_diferencas.append(f"{c['codigo']} ({c['modelo']}) no {c['setor']} ({abs(c['diferenca'])} pç {dir_label})")
 
         # Setores melhor/pior
         setores_validos = {s: stats for s, stats in setor_stats.items() if stats["programado"] > 0}
-        
         if setores_validos:
             setor_melhor = max(setores_validos.keys(), key=lambda x: setores_validos[x]["aderencia_pct"])
             setor_pior = min(setores_validos.keys(), key=lambda x: setores_validos[x]["aderencia_pct"])
@@ -159,12 +161,12 @@ class Comparator:
             setor_pior = "N/A"
 
         recomendacoes = [
-            "Priorizar os moldes dos produtos críticos que ficaram pendentes hoje.",
+            "Priorizar os moldes dos postes críticos que ficaram pendentes hoje.",
             "Readequar a programação de formas no PCP do dia seguinte para evitar gargalos.",
             "Acompanhar os desvios e verificar se houve falta de matéria-prima ou quebra de maquinário nos setores afetados."
         ]
 
-        logger.info("Comparação concluída com sucesso.")
+        logger.info("Comparação por poste concluída com sucesso.")
 
         return {
             "total_programado": total_prog,
