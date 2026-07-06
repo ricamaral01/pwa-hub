@@ -17,6 +17,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root {
@@ -190,6 +191,7 @@
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxtX97CQ5izDFHHiKc8Isz5mtJaqBtqed0wCE-tbc0-HOemLUHuM3PW6RiWOfj7faIm/exec";
 const PRODUCAO_MENSAL = {
+  "2026-06": 1223.25,
   "2026-05": 1226,
   "2026-04": 1121.80,
   "2026-03": 1389
@@ -258,9 +260,7 @@ function renderReport(data) {
     const dt = parseDate(item.dataHora);
     if (!dt) return;
     
-    // Ocultar registros de Junho
-    if (dt.yearMonth === "2026-06") return;
-    
+    // Mostrar todos os registros (incluindo Junho)
     if (!grouped[dt.yearMonth]) {
       grouped[dt.yearMonth] = {
         monthName: dt.monthName.charAt(0).toUpperCase() + dt.monthName.slice(1),
@@ -382,6 +382,137 @@ function renderReport(data) {
       </div>
     `;
     container.appendChild(volCard);
+
+    // -- Gráficos Visuais (Chart.js) --
+    const chartsCard = document.createElement("div");
+    chartsCard.className = "summary-card";
+    chartsCard.style.marginTop = "20px";
+    chartsCard.innerHTML = `
+      <h3 style="margin-bottom: 20px; font-size: 1.1rem; color: var(--text); font-weight: 900; text-align: center;">Gráficos de Acompanhamento Mensal</h3>
+      <div style="display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 15px;">
+        <div>
+          <h4 style="font-size: 0.95rem; color: var(--text); font-weight: 700; margin-bottom: 12px; text-align: center;">Ocorrências por Tipo de Problema</h4>
+          <div style="position: relative; height: 320px; width: 100%;"><canvas id="chartProblems"></canvas></div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid var(--card-border); margin: 10px 0;">
+        <div>
+          <h4 style="font-size: 0.95rem; color: var(--text); font-weight: 700; margin-bottom: 12px; text-align: center;">Comparativo de Perda de Volume (%)</h4>
+          <div style="position: relative; height: 320px; width: 100%;"><canvas id="chartLossPct"></canvas></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(chartsCard);
+
+    // Render Chart 1: Problems by Type (Grouped Bar Chart)
+    const chronologicalKeys = [...monthKeys].reverse(); // oldest to newest
+    const labels = chronologicalKeys.map(k => grouped[k].monthName);
+
+    const ctxProblems = document.getElementById('chartProblems').getContext('2d');
+    new Chart(ctxProblems, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Exsudação',
+            data: chronologicalKeys.map(k => grouped[k].problemTotals['Exsudação'] || 0),
+            backgroundColor: '#ef4444',
+            borderRadius: 6
+          },
+          {
+            label: 'Segregação',
+            data: chronologicalKeys.map(k => grouped[k].problemTotals['Segregação'] || 0),
+            backgroundColor: '#f59e0b',
+            borderRadius: 6
+          },
+          {
+            label: 'Traço Seco',
+            data: chronologicalKeys.map(k => grouped[k].problemTotals['Traço Seco'] || 0),
+            backgroundColor: '#3b82f6',
+            borderRadius: 6
+          },
+          {
+            label: 'Sem tipo',
+            data: chronologicalKeys.map(k => grouped[k].problemTotals['Sem tipo'] || 0),
+            backgroundColor: '#94a3b8',
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } },
+          y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'Inter', size: 10 } } }
+        },
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, font: { family: 'Inter', size: 11 } } }
+        }
+      }
+    });
+
+    // Render Chart 2: Volume Loss and Problem Pct (Line Chart)
+    const pctProblemaData = chronologicalKeys.map(k => {
+      const prodTotal = PRODUCAO_MENSAL[k] || 0;
+      if (prodTotal === 0) return 0;
+      const volProblema = (grouped[k].count || 0) * VOL_POR_MASSADA;
+      return parseFloat(((volProblema / prodTotal) * 100).toFixed(2));
+    });
+
+    const pctPerdidoData = chronologicalKeys.map(k => {
+      const prodTotal = PRODUCAO_MENSAL[k] || 0;
+      if (prodTotal === 0) return 0;
+      const volPerdido = (grouped[k].lostCount || 0) * VOL_POR_MASSADA;
+      return parseFloat(((volPerdido / prodTotal) * 100).toFixed(2));
+    });
+
+    const ctxLoss = document.getElementById('chartLossPct').getContext('2d');
+    new Chart(ctxLoss, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: '% Volume com Problema',
+            data: pctProblemaData,
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.05)',
+            borderWidth: 3,
+            tension: 0.3,
+            fill: true,
+            pointBackgroundColor: '#f59e0b'
+          },
+          {
+            label: '% Volume Perdido',
+            data: pctPerdidoData,
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.05)',
+            borderWidth: 3,
+            tension: 0.3,
+            fill: true,
+            pointBackgroundColor: '#ef4444'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } },
+          y: { 
+            grid: { color: 'rgba(0,0,0,0.04)' }, 
+            ticks: { 
+              font: { family: 'Inter', size: 10 },
+              callback: function(value) { return value + '%'; }
+            } 
+          }
+        },
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 12, font: { family: 'Inter', size: 11 } } }
+        }
+      }
+    });
   }
   
   monthKeys.forEach((mKey, idx) => {

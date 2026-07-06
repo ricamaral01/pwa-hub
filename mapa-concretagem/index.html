@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=liberacao-20260702" />
+  <link rel="stylesheet" href="styles.css?v=2ab3a16e" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -375,6 +375,16 @@
                 <span class="kiosk-toggle-subtitle">Tocar nas formas para liberar (azul)</span>
               </div>
             </div>
+            <div class="kiosk-toggle-field hidden" id="kioskOdinToggleField">
+              <label class="kiosk-switch">
+                <input type="checkbox" id="kioskOdinCheckbox" />
+                <span class="kiosk-slider" style="background-color: var(--kiosk-slider-off, #ccc);"></span>
+              </label>
+              <div class="kiosk-toggle-label">
+                <span class="kiosk-toggle-title" style="color: #ef4444;">Modo ODIN</span>
+                <span class="kiosk-toggle-subtitle">Tocar para cancelar/desprogramar</span>
+              </div>
+            </div>
             <button class="btn-kiosk" id="btnKioskSync" type="button">🔄 Sincronizar</button>
             <button class="btn-kiosk" id="btnKioskFullscreen" type="button">🖥️ Tela Cheia</button>
             <button class="btn-kiosk back" id="btnKioskBack" type="button">↩ Sair Quiosque</button>
@@ -393,6 +403,7 @@
               <option value="Elizeu">Elizeu</option>
               <option value="Mario">Mario</option>
               <option value="Leonardo">Leonardo</option>
+              <option value="Jose Carlos">Jose Carlos</option>
             </select>
           </div>
           <div class="kiosk-field" style="justify-self: end; text-align: right; display: flex; flex-direction: column; justify-content: center;">
@@ -419,6 +430,7 @@
               <option value="Elizeu">Elizeu</option>
               <option value="Mario">Mario</option>
               <option value="Leonardo">Leonardo</option>
+              <option value="Jose Carlos">Jose Carlos</option>
             </select>
           </label>
         </div>
@@ -1033,6 +1045,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=liberacao-20260702"></script>
+  <script src="app.js?v=26c2272a"></script>
 </body>
 </html>

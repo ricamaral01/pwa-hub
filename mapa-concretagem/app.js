@@ -608,6 +608,7 @@ const state = {
   submitLocks: readSubmitLocks(),
   programmingMode: false,
   liberationMode: false,
+  odinMode: false,
   programmedFormas: new Set(),
   dbDataCache: {},
   dbDataStatusCache: {},
@@ -691,6 +692,8 @@ const el = {
   kioskProgCheckbox: document.getElementById("kioskProgCheckbox"),
   kioskLibToggleField: document.getElementById("kioskLibToggleField"),
   kioskLibCheckbox: document.getElementById("kioskLibCheckbox"),
+  kioskOdinToggleField: document.getElementById("kioskOdinToggleField"),
+  kioskOdinCheckbox: document.getElementById("kioskOdinCheckbox"),
   btnKioskFullscreen: document.getElementById("btnKioskFullscreen"),
   btnKioskSync: document.getElementById("btnKioskSync"),
   btnKioskBack: document.getElementById("btnKioskBack"),
@@ -1556,7 +1559,7 @@ function setCardState(card, cardState) {
     card.disabled = true;
   } else if (cardState === "saved") {
     statusEl.textContent = "✓";
-    card.disabled = !state.programmingMode && !state.liberationMode;
+    card.disabled = !state.programmingMode && !state.liberationMode && !state.odinMode;
   } else if (cardState === "error") {
     statusEl.textContent = "✗";
     card.disabled = false;
@@ -1620,6 +1623,11 @@ function createFormaCard(item, setor) {
     card.addEventListener("click", () => {
       if (state.programmingMode) {
         toggleFormaProgramada(item.forma, setor, card);
+        return;
+      }
+      if (state.odinMode) {
+        cancelarOuDesprogramarOdin(item.forma, setor, card);
+        return;
       }
     });
   } else if (isFormaLiberada(item.forma, setor)) {
@@ -1627,6 +1635,10 @@ function createFormaCard(item, setor) {
     card.addEventListener("click", () => {
       if (state.programmingMode) {
         toggleFormaProgramada(item.forma, setor, card);
+        return;
+      }
+      if (state.odinMode) {
+        cancelarOuDesprogramarOdin(item.forma, setor, card);
         return;
       }
       if (state.liberationMode) {
@@ -1652,6 +1664,10 @@ function createFormaCard(item, setor) {
     card.addEventListener("click", () => {
       if (state.programmingMode) {
         toggleFormaProgramada(item.forma, setor, card);
+        return;
+      }
+      if (state.odinMode) {
+        cancelarOuDesprogramarOdin(item.forma, setor, card);
         return;
       }
       const data = el.libData?.value;
@@ -5846,6 +5862,13 @@ function applyRoleVisibility() {
     btn.classList.toggle("hidden", !isModeAllowed(mode));
   });
 
+  const userNameVal = String(state.authUser?.name || "").trim().toLowerCase();
+  const isRicardo = userNameVal === "ricardo" || userNameVal.includes("ricardo");
+  const odinToggle = document.getElementById("kioskOdinToggleField");
+  if (odinToggle) {
+    odinToggle.classList.toggle("hidden", !isRicardo);
+  }
+
   if (el.authUserBadge) {
     if (state.authUser) {
       el.authUserBadge.textContent = `${state.authUser.name} · ${state.authUser.roleLabel}`;
@@ -6446,9 +6469,15 @@ function bindEvents() {
   if (el.kioskProgCheckbox) {
     el.kioskProgCheckbox.addEventListener("change", () => {
       state.programmingMode = el.kioskProgCheckbox.checked;
-      if (state.programmingMode && el.kioskLibCheckbox && el.kioskLibCheckbox.checked) {
-        el.kioskLibCheckbox.checked = false;
-        el.kioskLibCheckbox.dispatchEvent(new Event("change"));
+      if (state.programmingMode) {
+        if (el.kioskLibCheckbox && el.kioskLibCheckbox.checked) {
+          el.kioskLibCheckbox.checked = false;
+          el.kioskLibCheckbox.dispatchEvent(new Event("change"));
+        }
+        if (el.kioskOdinCheckbox && el.kioskOdinCheckbox.checked) {
+          el.kioskOdinCheckbox.checked = false;
+          el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+        }
       }
       const toggleField = document.getElementById("kioskProgToggleField");
       if (toggleField) {
@@ -6469,15 +6498,20 @@ function bindEvents() {
   if (el.kioskLibCheckbox) {
     el.kioskLibCheckbox.addEventListener("change", () => {
       state.liberationMode = el.kioskLibCheckbox.checked;
-      if (state.liberationMode && el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
-        el.kioskProgCheckbox.checked = false;
-        el.kioskProgCheckbox.dispatchEvent(new Event("change"));
+      if (state.liberationMode) {
+        if (el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
+          el.kioskProgCheckbox.checked = false;
+          el.kioskProgCheckbox.dispatchEvent(new Event("change"));
+        }
+        if (el.kioskOdinCheckbox && el.kioskOdinCheckbox.checked) {
+          el.kioskOdinCheckbox.checked = false;
+          el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+        }
       }
       const toggleField = document.getElementById("kioskLibToggleField");
       if (toggleField) {
         toggleField.classList.toggle("active", state.liberationMode);
       }
-      // Re-render forms to handle interaction changes
       renderLiberacaoDual();
     });
   }
@@ -6491,6 +6525,36 @@ function bindEvents() {
     });
   }
 
+
+  if (el.kioskOdinCheckbox) {
+    el.kioskOdinCheckbox.addEventListener("change", () => {
+      state.odinMode = el.kioskOdinCheckbox.checked;
+      if (state.odinMode) {
+        if (el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
+          el.kioskProgCheckbox.checked = false;
+          el.kioskProgCheckbox.dispatchEvent(new Event("change"));
+        }
+        if (el.kioskLibCheckbox && el.kioskLibCheckbox.checked) {
+          el.kioskLibCheckbox.checked = false;
+          el.kioskLibCheckbox.dispatchEvent(new Event("change"));
+        }
+      }
+      const toggleField = document.getElementById("kioskOdinToggleField");
+      if (toggleField) {
+        toggleField.classList.toggle("active", state.odinMode);
+      }
+      renderLiberacaoDual();
+    });
+  }
+
+  if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
+    el.kioskOdinToggleField.addEventListener("click", (e) => {
+      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
+        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
+        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+      }
+    });
+  }
 
   // Controle de Tela Cheia no Quiosque
   if (el.btnKioskFullscreen) {
@@ -7057,7 +7121,6 @@ async function syncOfflineData() {
     console.error("[syncOfflineData] Erro ao sincronizar prog_s3_s4:", err);
   }
 
-
   if (syncedCount > 0) {
     setSyncStatus("ok", `Sincronização offline automática concluída! ${syncedCount} item(ns) enviado(s).`);
   }
@@ -7075,6 +7138,21 @@ setInterval(() => {
     syncOfflineData();
   }
 }, 30000);
+
+// Sincronização automática de dados a cada 3 minutos (pull de novas programações e concretagens)
+setInterval(async () => {
+  if (navigator.onLine) {
+    try {
+      console.log("[Auto-Sync] Iniciando sincronização automática periódica (3 minutos)...");
+      await loadProgrammedFormas();
+      await loadClickedFormsFromSupabase();
+      renderLiberacaoDual();
+      console.log("[Auto-Sync] Sincronização automática periódica concluída com sucesso.");
+    } catch (err) {
+      console.error("[Auto-Sync] Erro na sincronização automática periódica:", err);
+    }
+  }
+}, 180000);
 
 function subscribeToRealtimeUpdates() {
   if (!supabaseClient) return;
@@ -9502,3 +9580,88 @@ window.saveSequenciaS3 = async function() {
   setMode("HUB");
 };
 
+
+// =========================================================
+// MODO ODIN - FUNÇÕES AUXILIARES DE CANCELAMENTO
+// =========================================================
+async function cancelarOuDesprogramarOdin(forma, setor, card) {
+  const isConcretada = isFormaClicked(forma, setor);
+  const isLiberada = isFormaLiberada(forma, setor);
+  const isProgrammed = state.programmedFormas.has(normalizeUpper(forma));
+
+  if (isConcretada || isLiberada) {
+    await cancelarConcretagemOdin(forma, setor, card);
+  } else if (isProgrammed) {
+    await toggleFormaProgramada(forma, setor, card);
+  } else {
+    showLibFeedback(`Forma ${forma} não está programada nem concretada/liberada.`, "warn");
+  }
+}
+
+async function cancelarConcretagemOdin(forma, setor, card) {
+  if (!confirm(`MODO ODIN: Tem certeza que deseja CANCELAR/EXCLUIR a concretagem/liberação da forma ${forma} no Setor ${setor}?`)) return;
+
+  setCardState(card, "saving");
+
+  const dataFabricacao = el.libData?.value || todayYmd();
+  const normalizedForma = normalizeUpper(forma);
+
+  // 1. Deletar do Supabase
+  let apiSuccess = false;
+  if (hasApiConfigured()) {
+    try {
+      const { error } = await supabaseClient.from('producao')
+        .delete()
+        .eq('data_fabricacao', dataFabricacao)
+        .eq('setor', setor)
+        .eq('forma', normalizedForma);
+
+      if (error) {
+        console.error("Erro ao deletar do Supabase:", error);
+      } else {
+        apiSuccess = true;
+      }
+    } catch (err) {
+      console.error("Erro na requisição Supabase:", err);
+    }
+  }
+
+  // 2. Deletar do banco local (pwa_liberacao_inspecao_v1)
+  const db = readDb();
+  let record = findRecordByKey(db, dataFabricacao, setor, normalizedForma);
+  if (record) {
+    db.records = db.records.filter(r => r.id !== record.id);
+    db.events = db.events.filter(e => e.recordId !== record.id);
+    writeDb(db);
+  }
+
+  // 3. Deletar do estado local clickedForms
+  const clicked = getClickedFormsToday();
+  const key = setor + "||" + normalizedForma;
+  delete clicked.formas[key];
+  localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
+
+  // 4. Resetar estados visuais do card
+  card.classList.remove("is-liberada", "is-concretada", "is-vibrada", "is-secovibrado");
+  const tipoEl = card.querySelector(".fc-tipo");
+  if (tipoEl) {
+    tipoEl.textContent = "";
+    tipoEl.style.display = "none";
+  }
+  const statusEl = card.querySelector(".fc-status");
+  if (statusEl) {
+    statusEl.textContent = "";
+  }
+  setCardState(card, "idle");
+
+  // Re-renderiza para limpar e atualizar
+  renderLiberacaoDual();
+
+  if (apiSuccess) {
+    setSyncStatus("ok", `Concretagem da forma ${forma} excluída online.`);
+    showLibFeedback(`Concretagem ${forma} excluída (online).`, "ok");
+  } else {
+    setSyncStatus("warn", `Excluído localmente. Sem sincronia online.`);
+    showLibFeedback(`Concretagem ${forma} excluída (local).`, "ok");
+  }
+}
