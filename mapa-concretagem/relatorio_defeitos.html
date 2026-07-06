@@ -1,863 +1,863 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel de Controle de Qualidade e Defeitos — Concrefer</title>
-  
-  <!-- Fontes e Bibliotecas Externas -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <style>
-    :root {
-      --bg-gradient: linear-gradient(135deg, #fafafa 0%, #f4f4f5 100%); /* Light Zinc background */
-      --card-bg: #ffffff;
-      --card-border: #e4e4e7; /* Zinc 200 */
-      --text-main: #18181b; /* Zinc 900 */
-      --text-muted: #71717a; /* Zinc 500 */
-      
-      --color-primary: #4f46e5; /* Indigo 600 */
-      --color-primary-glow: rgba(79, 70, 229, 0.08);
-      
-      --color-success: #10b981; /* Emerald */
-      --color-warning: #d97706; /* Amber 600 - darker for readability */
-      --color-danger: #e11d48;  /* Rose 600 - darker for readability */
-      
-      --radius-lg: 16px;
-      --radius-md: 12px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-
-    body {
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding: 2rem 1.5rem;
-      line-height: 1.5;
-    }
-
-    .container {
-      max-width: 1300px;
-      margin: 0 auto;
-    }
-
-    /* --- HEADER & CONTROLS --- */
-    header {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 2rem;
-    }
-
-    @media (min-width: 768px) {
-      header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    .brand h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      background: linear-gradient(to right, #4f46e5, #9333ea);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-top: 0.25rem;
-    }
-
-    .controls {
-      display: flex;
-      gap: 0.75rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .input-month {
-      background: #ffffff;
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius-md);
-      font-size: 0.95rem;
-      font-weight: 600;
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .input-month:focus {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px var(--color-primary-glow);
-    }
-
-    .btn-update {
-      background: var(--color-primary);
-      color: #fff;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--radius-md);
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: var(--transition);
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-    }
-
-    .btn-update:hover {
-      background: #4338ca;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
-    }
-
-    .btn-update:active {
-      transform: translateY(1px);
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      background: #ffffff;
-      padding: 0.5rem 0.85rem;
-      border-radius: 9999px;
-      border: 1px solid var(--card-border);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--color-warning);
-    }
-
-    .status-dot.online {
-      background: var(--color-success);
-      box-shadow: 0 0 8px var(--color-success);
-    }
-
-    .status-dot.loading {
-      background: var(--color-primary);
-      animation: pulse 1.5s infinite;
-    }
-
-    /* --- KPIS GRID --- */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .kpi-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: var(--transition);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    }
-
-    .kpi-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(0, 0, 0, 0.12);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-    }
-
-    .kpi-label {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .kpi-value {
-      font-size: 2.25rem;
-      font-weight: 900;
-      margin: 0.5rem 0;
-      letter-spacing: -0.03em;
-    }
-
-    .kpi-sub {
-      font-size: 0.85rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .kpi-sub.success { color: var(--color-success); }
-    .kpi-sub.warning { color: var(--color-warning); }
-    .kpi-sub.danger { color: var(--color-danger); }
-
-    /* --- CHARTS & DETAILS GRID --- */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-    }
-
-    @media (min-width: 1024px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .panel-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    }
-
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid #e4e4e7;
-      padding-bottom: 1rem;
-    }
-
-    .panel-title {
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: -0.01em;
-    }
-
-    .chart-container {
-      position: relative;
-      height: 320px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* --- TABLES STYLE --- */
-    .table-container {
-      overflow-x: auto;
-      margin-top: 0.5rem;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.9rem;
-    }
-
-    th {
-      color: var(--text-muted);
-      font-weight: 700;
-      text-transform: uppercase;
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-      padding: 0.75rem 1rem;
-      border-bottom: 2px solid #e4e4e7;
-    }
-
-    td {
-      padding: 1rem;
-      border-bottom: 1px solid #f4f4f5;
-      font-weight: 500;
-    }
-
-    tr:hover td {
-      background: rgba(0, 0, 0, 0.01);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 0.25rem 0.6rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .badge-danger {
-      background: rgba(225, 29, 72, 0.1);
-      color: #be123c;
-      border: 1px solid rgba(225, 29, 72, 0.15);
-    }
-
-    .badge-warning {
-      background: rgba(217, 119, 6, 0.1);
-      color: #b45309;
-      border: 1px solid rgba(217, 119, 6, 0.15);
-    }
-
-    .badge-success {
-      background: rgba(16, 185, 129, 0.1);
-      color: #047857;
-      border: 1px solid rgba(16, 185, 129, 0.15);
-    }
-
-    /* --- KEYWORDS ANIMATION --- */
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-  </style>
-</head>
-<body>
-
-<div class="container">
-  <header>
-    <div class="brand">
-      <h1>Controle de Qualidade e Defeitos</h1>
-      <p id="viewingPeriod">Visualizando dados de Junho de 2026 (Modo Offline/Pre-carregado)</p>
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-family: monospace;">
-        Arquivo: <a href="file:///c:/Users/Admin/Documents/pwa-hub/mapa-concretagem/relatorio_defeitos.html" style="color: var(--color-primary); text-decoration: none;">relatorio_defeitos.html</a> | Local: c:/Users/Admin/Documents/pwa-hub/mapa-concretagem/relatorio_defeitos.html
-      </p>
-    </div>
-    
-    <div class="controls">
-      <div class="status-badge">
-        <div class="status-dot online" id="statusDot"></div>
-        <span id="statusText">Dados Carregados</span>
-      </div>
-      <input type="month" id="monthSelector" class="input-month" value="2026-06">
-      <button onclick="updateDashboardLive()" class="btn-update">
-        🔄 Atualizar Dados
-      </button>
-    </div>
-  </header>
-
-  <!-- KPIS CARD ROW -->
-  <section class="kpi-grid">
-    <!-- Total Concretado -->
-    <div class="kpi-card">
-      <span class="kpi-label">Concretagem Usina</span>
-      <div class="kpi-value" id="kpiProdTotal">4.893</div>
-      <div class="kpi-sub text-muted" id="kpiProdTotalSub">Volume Total: 1.223,25 m³</div>
-    </div>
-
-    <!-- Defeitos Concretagem -->
-    <div class="kpi-card">
-      <span class="kpi-label">Desvios Concretagem</span>
-      <div class="kpi-value" id="kpiProdDefects" style="color: var(--color-warning);">75</div>
-      <div class="kpi-sub warning" id="kpiProdDefectsPct">⚠️ 1.53% do total fabricado</div>
-    </div>
-
-    <!-- Total Inspecionado -->
-    <div class="kpi-card">
-      <span class="kpi-label">Inspeção de Qualidade</span>
-      <div class="kpi-value" id="kpiInspTotal">1.230</div>
-      <div class="kpi-sub text-muted">Peças avaliadas pós-cura</div>
-    </div>
-
-    <!-- Reprovações Qualidade -->
-    <div class="kpi-card">
-      <span class="kpi-label">Reprovações pós-cura</span>
-      <div class="kpi-value" id="kpiInspRejects" style="color: var(--color-danger);">20</div>
-      <div class="kpi-sub danger" id="kpiInspRejectsPct">❌ 1.63% de taxa de rejeição</div>
-    </div>
-  </section>
-
-  <!-- DASHBOARD GRID PANELS -->
-  <section class="dashboard-grid">
-    <!-- panel 1: Defeitos Producao -->
-    <div class="panel-card">
-      <div class="panel-header">
-        <h2 class="panel-title">Volume e Distribuição de Traços na Concretagem (Usina)</h2>
-      </div>
-      <div class="chart-container">
-        <canvas id="chartProd"></canvas>
-      </div>
-      <div class="table-container">
-        <table id="tableProd">
-          <thead>
-            <tr>
-              <th>Tipo de Concreto</th>
-              <th style="text-align: center;">Quantidade (Lançamentos)</th>
-              <th style="text-align: center;">Volume Estimado</th>
-              <th style="text-align: center;">% s/ Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dynamic rows -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- panel 2: Rejeicoes Qualidade -->
-    <div class="panel-card">
-      <div class="panel-header">
-        <h2 class="panel-title">Traços Envolvidos em Reprovações Pós-Cura</h2>
-      </div>
-      <div class="chart-container">
-        <canvas id="chartRejects"></canvas>
-      </div>
-      <div class="table-container">
-        <table id="tableRejects">
-          <thead>
-            <tr>
-              <th>Traço de Concreto</th>
-              <th style="text-align: center;">Quantidade</th>
-              <th style="text-align: center;">% s/ Rejeições</th>
-              <th style="text-align: center;">% s/ Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dynamic rows -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- PANEL 3: DETAIL DEFECT CODES (FULL WIDTH) -->
-  <section class="dashboard-grid" style="grid-template-columns: 1fr;">
-    <div class="panel-card">
-      <div class="panel-header">
-        <h2 class="panel-title">Distribuição dos Códigos de Defeito na Inspeção de Qualidade</h2>
-      </div>
-      <div class="table-container">
-        <table id="tableDefectCodes">
-          <thead>
-            <tr>
-              <th style="text-align: center; width: 80px;">Código</th>
-              <th>Defeito Mapeado</th>
-              <th style="text-align: center;">Ocorrências</th>
-              <th style="text-align: center;">% s/ Total Falhas</th>
-              <th>Gravidade</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dynamic rows -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-</div>
-
-<script>
-  // SUPABASE CREDENTIALS
-  const SUPABASE_URL = "https://fbvvdyirhtgvycullsqy.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZidnZkeWlyaHRndnljdWxsc3F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Njc5MTksImV4cCI6MjA5NDM0MzkxOX0.vzudcEhAwdAutU0g-Mra818fd8_DciepjqvU8Z-C4wc";
-
-  // DEFECT CODES DESCRIPTION MAP
-  const defectMap = {
-    "A": { desc: "Falha na Concretagem (Armação Aparente/Vazios)", crit: true },
-    "B": { desc: "Cano Entupido / Tubulação", crit: true },
-    "C": { desc: "Excesso de Bolhas", crit: false },
-    "D": { desc: "Problema na caixa do Relógio ou Disjuntor", crit: true },
-    "E": { desc: "Furos Obstruídos ou Faltando", crit: true },
-    "F": { desc: "Identificação do poste (Carimbos ilegíveis/errados)", crit: false },
-    "G": { desc: "Presença de Trincas leves", crit: false },
-    "H": { desc: "Bolha nas caixas", crit: false },
-    "I": { desc: "Trincas em toda a extensão do Poste", crit: true },
-    "J": { desc: "Pequenas Avarias físicas", crit: false },
-    "K": { desc: "Manchas Brancas Superficiais", crit: false },
-    "L": { desc: "Buchas das caixas ou de fixação", crit: false },
-    "M": { desc: "Parafuso Lacre da caixa do Medidor", crit: false },
-    "O": { desc: "Falha no Concreto (Segregação/Homogeneidade)", crit: true },
-    "P": { desc: "Grandes Avarias físicas", crit: true },
-    "Q": { desc: "Rebarbas acentuadas", crit: false },
-    "R": { desc: "Rugosidade (Acabamento face exposta)", crit: false },
-    "S": { desc: "Acabamento de Quinas / Abas", crit: false }
-  };
-
-  // JUNE 2026 STATIC FALLBACK DATA
-  const fallbackData = {
-    prodTotal: 4923,
-    prodTypes: {
-      padrao: 4391,
-      naoPadrao: 532,
-      details: [
-        { name: "Concreto Vibrado", qty: 351, isDefect: false },
-        { name: "Concreto Seco - Vibrado", qty: 104, isDefect: false },
-        { name: "Concreto Exsudado", qty: 67, isDefect: true }, // Merged Fora de Padrão (54) + Exsudado (13)
-        { name: "Concreto Segregado", qty: 10, isDefect: true }
-      ]
-    },
-    inspTotal: 1230,
-    inspRejections: [
-      { name: "Concreto Padrão", qty: 19 },
-      { name: "Concreto Seco - Vibrado", qty: 1 }
-    ],
-    defectCodes: [
-      { code: "O", qty: 4 },
-      { code: "A", qty: 3 },
-      { code: "E", qty: 2 },
-      { code: "L", qty: 2 },
-      { code: "P", qty: 2 },
-      { code: "B", qty: 1 },
-      { code: "C", qty: 1 },
-      { code: "F", qty: 1 },
-      { code: "R", qty: 1 },
-      { code: "S", qty: 1 }
-    ]
-  };
-
-  // Charts references
-  let chartProdInstance = null;
-  let chartRejectsInstance = null;
-
-  // INITIAL LOAD (June 2026 pre-rendered)
-  window.addEventListener('DOMContentLoaded', () => {
-    renderDashboard(fallbackData, "Junho de 2026 (Modo Offline/Pre-carregado)");
-  });
-
-  // RENDER FUNCTION
-  function renderDashboard(data, periodLabel) {
-    document.getElementById('viewingPeriod').textContent = `Visualizando dados de ${periodLabel}`;
-
-    // Compute sums
-    const totalProdDefects = data.prodTypes.details
-      .filter(d => d.isDefect)
-      .reduce((acc, curr) => acc + curr.qty, 0);
-    const totalRejections = data.inspRejections.reduce((acc, curr) => acc + curr.qty, 0);
-    const totalDefectCodes = data.defectCodes.reduce((acc, curr) => acc + curr.qty, 0);
-
-    // Update KPI values
-    document.getElementById('kpiProdTotal').textContent = formatInt(data.prodTotal);
-    const totalVolume = (data.prodTotal * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    document.getElementById('kpiProdTotalSub').textContent = `Volume Total: ${totalVolume} m³`;
-    
-    document.getElementById('kpiProdDefects').textContent = formatInt(totalProdDefects);
-    const prodDefectPct = data.prodTotal > 0 ? ((totalProdDefects / data.prodTotal) * 100).toFixed(2) : "0.00";
-    document.getElementById('kpiProdDefectsPct').innerHTML = `⚠️ ${prodDefectPct}% do total fabricado`;
-
-    document.getElementById('kpiInspTotal').textContent = formatInt(data.inspTotal);
-    document.getElementById('kpiInspRejects').textContent = formatInt(totalRejections);
-    const rejectPct = data.inspTotal > 0 ? ((totalRejections / data.inspTotal) * 100).toFixed(2) : "0.00";
-    document.getElementById('kpiInspRejectsPct').innerHTML = `❌ ${rejectPct}% de taxa de rejeição`;
-
-    // Render Table 1: Production (Grouped by Padrão vs Não Padrão)
-    const tProdBody = document.querySelector('#tableProd tbody');
-    tProdBody.innerHTML = '';
-    
-    // A. Concreto Padrão row
-    const rowPadrao = document.createElement('tr');
-    const volPadrao = (data.prodTypes.padrao * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
-    const pctPadrao = data.prodTotal > 0 ? ((data.prodTypes.padrao / data.prodTotal) * 100).toFixed(2) : "0.00";
-    rowPadrao.innerHTML = `
-      <td><span class="badge badge-success">Concreto Padrão</span></td>
-      <td style="text-align: center; font-weight: 700;">${formatInt(data.prodTypes.padrao)}</td>
-      <td style="text-align: center; font-weight: 700; color: var(--color-success);">${volPadrao}</td>
-      <td style="text-align: center; font-weight: 700; color: var(--color-success); font-size: 1.05rem;">${pctPadrao}%</td>
-    `;
-    tProdBody.appendChild(rowPadrao);
-
-    // B. Não Padrão row
-    const rowNaoPadrao = document.createElement('tr');
-    const volNaoPadrao = (data.prodTypes.naoPadrao * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
-    const pctNaoPadrao = data.prodTotal > 0 ? ((data.prodTypes.naoPadrao / data.prodTotal) * 100).toFixed(2) : "0.00";
-    rowNaoPadrao.innerHTML = `
-      <td><span class="badge badge-danger">Não Padrão</span></td>
-      <td style="text-align: center; font-weight: 700;">${formatInt(data.prodTypes.naoPadrao)}</td>
-      <td style="text-align: center; font-weight: 700; color: var(--color-danger);">${volNaoPadrao}</td>
-      <td style="text-align: center; font-weight: 700; color: var(--color-danger); font-size: 1.05rem;">${pctNaoPadrao}%</td>
-    `;
-    tProdBody.appendChild(rowNaoPadrao);
-
-    // C. Detailed Subcategories under Não Padrão
-    data.prodTypes.details.forEach(d => {
-      const row = document.createElement('tr');
-      const volumeVal = (d.qty * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
-      const pctTot = data.prodTotal > 0 ? ((d.qty / data.prodTotal) * 100).toFixed(2) : "0.00";
-      
-      const badgeHtml = d.isDefect ? ` <span class="badge badge-warning" style="padding: 0.1rem 0.3rem; font-size: 0.6rem; vertical-align: middle;">Defeito</span>` : ``;
-      const nameStyle = d.isDefect ? `color: var(--color-danger);` : `color: var(--text-muted);`;
-      
-      row.innerHTML = `
-        <td style="padding-left: 2.5rem; font-style: italic;"><span style="color: var(--text-muted); margin-right: 0.5rem;">↳</span><span style="${nameStyle}">${d.name}</span>${badgeHtml}</td>
-        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${formatInt(d.qty)}</td>
-        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${volumeVal}</td>
-        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${pctTot}%</td>
-      `;
-      tProdBody.appendChild(row);
-    });
-
-    // Render Table 2: Quality Rejections
-    const tRejBody = document.querySelector('#tableRejects tbody');
-    tRejBody.innerHTML = '';
-    data.inspRejections.forEach(d => {
-      const row = document.createElement('tr');
-      const pctRej = totalRejections > 0 ? ((d.qty / totalRejections) * 100).toFixed(2) : "0.00";
-      const pctTot = data.inspTotal > 0 ? ((d.qty / data.inspTotal) * 100).toFixed(2) : "0.00";
-      row.innerHTML = `
-        <td><strong>${d.name}</strong></td>
-        <td style="text-align: center;">${d.qty}</td>
-        <td style="text-align: center; color: var(--color-danger);">${pctRej}%</td>
-        <td style="text-align: center; color: var(--text-muted);">${pctTot}%</td>
-      `;
-      tRejBody.appendChild(row);
-    });
-
-    // Render Table 3: Defect Codes
-    const tCodesBody = document.querySelector('#tableDefectCodes tbody');
-    tCodesBody.innerHTML = '';
-    data.defectCodes.forEach(d => {
-      const mapped = defectMap[d.code] || { desc: `Código Desconhecido (${d.code})`, crit: false };
-      const pctCode = totalDefectCodes > 0 ? ((d.qty / totalDefectCodes) * 100).toFixed(2) : "0.00";
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td style="text-align: center;"><span style="background: rgba(255,255,255,0.06); padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 700;">${d.code}</span></td>
-        <td><strong>${mapped.desc}</strong></td>
-        <td style="text-align: center;">${d.qty}</td>
-        <td style="text-align: center; color: var(--text-muted);">${pctCode}%</td>
-        <td><span class="badge ${mapped.crit ? 'badge-danger' : 'badge-warning'}">${mapped.crit ? 'Crítico 🔴' : 'Não Crítico 🟡'}</span></td>
-      `;
-      tCodesBody.appendChild(row);
-    });
-
-    // Render Chart 1: Production (Grouped by Padrão vs Não Padrão)
-    if (chartProdInstance) chartProdInstance.destroy();
-    const ctxProd = document.getElementById('chartProd').getContext('2d');
-    chartProdInstance = new Chart(ctxProd, {
-      type: 'doughnut',
-      data: {
-        labels: ['Concreto Padrão', 'Não Padrão'],
-        datasets: [{
-          data: [data.prodTypes.padrao, data.prodTypes.naoPadrao],
-          backgroundColor: ['#10b981', '#ef4444'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: { color: '#71717a', font: { family: 'Inter', size: 11 } }
-          }
-        }
-      }
-    });
-
-    // Render Chart 2: Rejections
-    if (chartRejectsInstance) chartRejectsInstance.destroy();
-    const ctxRejects = document.getElementById('chartRejects').getContext('2d');
-    chartRejectsInstance = new Chart(ctxRejects, {
-      type: 'pie',
-      data: {
-        labels: data.inspRejections.map(d => d.name),
-        datasets: [{
-          data: data.inspRejections.map(d => d.qty),
-          backgroundColor: ['#6366f1', '#3b82f6', '#10b981', '#14b8a6'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: { color: '#71717a', font: { family: 'Inter', size: 11 } }
-          }
-        }
-      }
-    });
-  }
-
-  // PAGINATED FETCH FROM SUPABASE REST
-  async function fetchAllSupabase(table, startDate, endDate) {
-    const headers = {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json'
-    };
-
-    let allData = [];
-    let offset = 0;
-    const limit = 1000;
-    let hasMore = true;
-
-    while (hasMore) {
-      const url = `${SUPABASE_URL}/rest/v1/${table}?data_fabricacao=gte.${startDate}&data_fabricacao=lte.${endDate}&limit=${limit}&offset=${offset}`;
-      const res = await fetch(url, { headers });
-      if (!res.ok) {
-        throw new Error(`Erro ao buscar dados do Supabase na tabela ${table}: ${await res.text()}`);
-      }
-      const data = await res.json();
-      allData = allData.concat(data);
-      if (data.length < limit) {
-        hasMore = false;
-      } else {
-        offset += limit;
-      }
-    }
-    return allData;
-  }
-
-  // DYNAMIC UPDATE FROM DATABASE
-  async function updateDashboardLive() {
-    const selector = document.getElementById('monthSelector');
-    const selectedMonth = selector.value; // YYYY-MM
-    if (!selectedMonth) {
-      alert("Selecione um mês e ano!");
-      return;
-    }
-
-    // Set UI to loading state
-    const dot = document.getElementById('statusDot');
-    const txt = document.getElementById('statusText');
-    dot.className = "status-dot loading";
-    txt.textContent = "Buscando dados no Supabase...";
-
-    const parts = selectedMonth.split('-');
-    const year = parts[0];
-    const month = parts[1];
-    
-    // Get start/end dates
-    const startDate = `${selectedMonth}-01`;
-    const lastDay = new Date(year, month, 0).getDate();
-    const endDate = `${selectedMonth}-${String(lastDay).padStart(2, '0')}`;
-
-    const monthNames = [
-      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-    ];
-    const monthLabel = `${monthNames[parseInt(month) - 1]} de ${year}`;
-
-    try {
-      // Fetch live data
-      const producao = await fetchAllSupabase('producao', startDate, endDate);
-      const montagem = await fetchAllSupabase('montagem_poste', startDate, endDate);
-
-      // 1. Process Producao Concrete Types (Grouped by Concreto Padrão and Não Padrão)
-      let prodTotalCount = producao.length;
-      let padraoCount = 0;
-      
-      const subCategories = {
-        "Concreto Vibrado": 0,
-        "Concreto Seco - Vibrado": 0,
-        "Concreto Exsudado": 0,
-        "Concreto Segregado": 0
-      };
-
-      producao.forEach(p => {
-        let type = p.tipo_concreto || 'Não Informado';
-        if (type === 'Padrão' || type === 'Concreto Padrão') {
-          padraoCount++;
-        } else {
-          // Normalize sub-categories
-          if (type.includes('Vibrado') && !type.includes('Seco')) {
-            subCategories["Concreto Vibrado"]++;
-          } else if (type.includes('Seco')) {
-            subCategories["Concreto Seco - Vibrado"]++;
-          } else if (type.includes('Segregado')) {
-            subCategories["Concreto Segregado"]++;
-          } else {
-            // Group "Fora de Padrão", "Exsudado" and any other unknown concrete mixes as Concreto Exsudado
-            subCategories["Concreto Exsudado"]++;
-          }
-        }
-      });
-
-      const naoPadraoCount = prodTotalCount - padraoCount;
-
-      const prodTypes = {
-        padrao: padraoCount,
-        naoPadrao: naoPadraoCount,
-        details: [
-          { name: "Concreto Vibrado", qty: subCategories["Concreto Vibrado"], isDefect: false },
-          { name: "Concreto Seco - Vibrado", qty: subCategories["Concreto Seco - Vibrado"], isDefect: false },
-          { name: "Concreto Exsudado", qty: subCategories["Concreto Exsudado"], isDefect: true },
-          { name: "Concreto Segregado", qty: subCategories["Concreto Segregado"], isDefect: true }
-        ]
-      };
-
-      // 2. Process Montagem Rejections
-      const producaoLookup = new Map();
-      producao.forEach(p => {
-        producaoLookup.set(p.id, p);
-      });
-
-      const rejectsMap = {};
-      const codesMap = {};
-      let inspTotalCount = montagem.length;
-
-      montagem.forEach(m => {
-        const status = m.status_montagem;
-        if (status === 'R' || status === 'RR') {
-          // Find original concrete mix
-          const prod = producaoLookup.get(m.record_id);
-          const mixName = prod ? (prod.tipo_concreto || 'Não Informado') : 'Sem registro concretagem';
-          rejectsMap[mixName] = (rejectsMap[mixName] || 0) + 1;
-
-          // Process defect codes
-          if (m.motivo_recusa) {
-            codesMap[m.motivo_recusa] = (codesMap[m.motivo_recusa] || 0) + 1;
-          }
-        }
-      });
-
-      const inspRejections = Object.keys(rejectsMap).map(name => ({
-        name: name,
-        qty: rejectsMap[name]
-      })).sort((a, b) => b.qty - a.qty);
-
-      const defectCodes = Object.keys(codesMap).map(code => ({
-        code: code,
-        qty: codesMap[code]
-      })).sort((a, b) => b.qty - a.qty);
-
-      // Build processed data object
-      const processed = {
-        prodTotal: prodTotalCount,
-        prodTypes: prodTypes,
-        inspTotal: inspTotalCount,
-        inspRejections: inspRejections,
-        defectCodes: defectCodes
-      };
-
-      // Render updated dashboard
-      renderDashboard(processed, `${monthLabel} (Conexão Supabase Live)`);
-      
-      // Update Status Badge
-      dot.className = "status-dot online";
-      txt.textContent = "Conectado / Atualizado";
-
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao sincronizar com o banco de dados. Veja os detalhes no console.");
-      dot.className = "status-dot";
-      txt.textContent = "Erro de conexão / Offline";
-    }
-  }
-
-  // HELPERS
-  function formatInt(n) {
-    return n.toLocaleString('pt-BR');
-  }
-</script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Controle de Qualidade e Defeitos — Concrefer</title>
+  
+  <!-- Fontes e Bibliotecas Externas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #fafafa 0%, #f4f4f5 100%); /* Light Zinc background */
+      --card-bg: #ffffff;
+      --card-border: #e4e4e7; /* Zinc 200 */
+      --text-main: #18181b; /* Zinc 900 */
+      --text-muted: #71717a; /* Zinc 500 */
+      
+      --color-primary: #4f46e5; /* Indigo 600 */
+      --color-primary-glow: rgba(79, 70, 229, 0.08);
+      
+      --color-success: #10b981; /* Emerald */
+      --color-warning: #d97706; /* Amber 600 - darker for readability */
+      --color-danger: #e11d48;  /* Rose 600 - darker for readability */
+      
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* --- HEADER & CONTROLS --- */
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .brand h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: linear-gradient(to right, #4f46e5, #9333ea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .input-month {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 600;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .input-month:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-glow);
+    }
+
+    .btn-update {
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    }
+
+    .btn-update:hover {
+      background: #4338ca;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-update:active {
+      transform: translateY(1px);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: #ffffff;
+      padding: 0.5rem 0.85rem;
+      border-radius: 9999px;
+      border: 1px solid var(--card-border);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-warning);
+    }
+
+    .status-dot.online {
+      background: var(--color-success);
+      box-shadow: 0 0 8px var(--color-success);
+    }
+
+    .status-dot.loading {
+      background: var(--color-primary);
+      animation: pulse 1.5s infinite;
+    }
+
+    /* --- KPIS GRID --- */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    }
+
+    .kpi-label {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+      font-size: 2.25rem;
+      font-weight: 900;
+      margin: 0.5rem 0;
+      letter-spacing: -0.03em;
+    }
+
+    .kpi-sub {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .kpi-sub.success { color: var(--color-success); }
+    .kpi-sub.warning { color: var(--color-warning); }
+    .kpi-sub.danger { color: var(--color-danger); }
+
+    /* --- CHARTS & DETAILS GRID --- */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #e4e4e7;
+      padding-bottom: 1rem;
+    }
+
+    .panel-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 320px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* --- TABLES STYLE --- */
+    .table-container {
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      padding: 0.75rem 1rem;
+      border-bottom: 2px solid #e4e4e7;
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #f4f4f5;
+      font-weight: 500;
+    }
+
+    tr:hover td {
+      background: rgba(0, 0, 0, 0.01);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-danger {
+      background: rgba(225, 29, 72, 0.1);
+      color: #be123c;
+      border: 1px solid rgba(225, 29, 72, 0.15);
+    }
+
+    .badge-warning {
+      background: rgba(217, 119, 6, 0.1);
+      color: #b45309;
+      border: 1px solid rgba(217, 119, 6, 0.15);
+    }
+
+    .badge-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: #047857;
+      border: 1px solid rgba(16, 185, 129, 0.15);
+    }
+
+    /* --- KEYWORDS ANIMATION --- */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="brand">
+      <h1>Controle de Qualidade e Defeitos</h1>
+      <p id="viewingPeriod">Visualizando dados de Junho de 2026 (Modo Offline/Pre-carregado)</p>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-family: monospace;">
+        Arquivo: <a href="file:///c:/Users/Admin/Documents/pwa-hub/mapa-concretagem/relatorio_defeitos.html" style="color: var(--color-primary); text-decoration: none;">relatorio_defeitos.html</a> | Local: c:/Users/Admin/Documents/pwa-hub/mapa-concretagem/relatorio_defeitos.html
+      </p>
+    </div>
+    
+    <div class="controls">
+      <div class="status-badge">
+        <div class="status-dot online" id="statusDot"></div>
+        <span id="statusText">Dados Carregados</span>
+      </div>
+      <input type="month" id="monthSelector" class="input-month" value="2026-06">
+      <button onclick="updateDashboardLive()" class="btn-update">
+        🔄 Atualizar Dados
+      </button>
+    </div>
+  </header>
+
+  <!-- KPIS CARD ROW -->
+  <section class="kpi-grid">
+    <!-- Total Concretado -->
+    <div class="kpi-card kpi-blue">
+      <span class="kpi-label">Concretagem Usina</span>
+      <div class="kpi-value" id="kpiProdTotal">4.893</div>
+      <div class="kpi-sub text-muted" id="kpiProdTotalSub">Volume Total: 1.223,25 m³</div>
+    </div>
+
+    <!-- Defeitos Concretagem -->
+    <div class="kpi-card kpi-amber">
+      <span class="kpi-label">Desvios Concretagem</span>
+      <div class="kpi-value" id="kpiProdDefects" style="color: var(--color-warning);">75</div>
+      <div class="kpi-sub warning" id="kpiProdDefectsPct">⚠️ 1.53% do total fabricado</div>
+    </div>
+
+    <!-- Total Inspecionado -->
+    <div class="kpi-card kpi-green">
+      <span class="kpi-label">Inspeção de Qualidade</span>
+      <div class="kpi-value" id="kpiInspTotal">1.230</div>
+      <div class="kpi-sub text-muted">Peças avaliadas pós-cura</div>
+    </div>
+
+    <!-- Reprovações Qualidade -->
+    <div class="kpi-card kpi-red">
+      <span class="kpi-label">Reprovações pós-cura</span>
+      <div class="kpi-value" id="kpiInspRejects" style="color: var(--color-danger);">20</div>
+      <div class="kpi-sub danger" id="kpiInspRejectsPct">❌ 1.63% de taxa de rejeição</div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD GRID PANELS -->
+  <section class="dashboard-grid">
+    <!-- panel 1: Defeitos Producao -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <h2 class="panel-title">Volume e Distribuição de Traços na Concretagem (Usina)</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="chartProd"></canvas>
+      </div>
+      <div class="table-container">
+        <table id="tableProd">
+          <thead>
+            <tr>
+              <th>Tipo de Concreto</th>
+              <th style="text-align: center;">Quantidade (Lançamentos)</th>
+              <th style="text-align: center;">Volume Estimado</th>
+              <th style="text-align: center;">% s/ Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- panel 2: Rejeicoes Qualidade -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <h2 class="panel-title">Traços Envolvidos em Reprovações Pós-Cura</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="chartRejects"></canvas>
+      </div>
+      <div class="table-container">
+        <table id="tableRejects">
+          <thead>
+            <tr>
+              <th>Traço de Concreto</th>
+              <th style="text-align: center;">Quantidade</th>
+              <th style="text-align: center;">% s/ Rejeições</th>
+              <th style="text-align: center;">% s/ Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL 3: DETAIL DEFECT CODES (FULL WIDTH) -->
+  <section class="dashboard-grid" style="grid-template-columns: 1fr;">
+    <div class="panel-card">
+      <div class="panel-header">
+        <h2 class="panel-title">Distribuição dos Códigos de Defeito na Inspeção de Qualidade</h2>
+      </div>
+      <div class="table-container">
+        <table id="tableDefectCodes">
+          <thead>
+            <tr>
+              <th style="text-align: center; width: 80px;">Código</th>
+              <th>Defeito Mapeado</th>
+              <th style="text-align: center;">Ocorrências</th>
+              <th style="text-align: center;">% s/ Total Falhas</th>
+              <th>Gravidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dynamic rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // SUPABASE CREDENTIALS
+  const SUPABASE_URL = "https://fbvvdyirhtgvycullsqy.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZidnZkeWlyaHRndnljdWxsc3F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Njc5MTksImV4cCI6MjA5NDM0MzkxOX0.vzudcEhAwdAutU0g-Mra818fd8_DciepjqvU8Z-C4wc";
+
+  // DEFECT CODES DESCRIPTION MAP
+  const defectMap = {
+    "A": { desc: "Falha na Concretagem (Armação Aparente/Vazios)", crit: true },
+    "B": { desc: "Cano Entupido / Tubulação", crit: true },
+    "C": { desc: "Excesso de Bolhas", crit: false },
+    "D": { desc: "Problema na caixa do Relógio ou Disjuntor", crit: true },
+    "E": { desc: "Furos Obstruídos ou Faltando", crit: true },
+    "F": { desc: "Identificação do poste (Carimbos ilegíveis/errados)", crit: false },
+    "G": { desc: "Presença de Trincas leves", crit: false },
+    "H": { desc: "Bolha nas caixas", crit: false },
+    "I": { desc: "Trincas em toda a extensão do Poste", crit: true },
+    "J": { desc: "Pequenas Avarias físicas", crit: false },
+    "K": { desc: "Manchas Brancas Superficiais", crit: false },
+    "L": { desc: "Buchas das caixas ou de fixação", crit: false },
+    "M": { desc: "Parafuso Lacre da caixa do Medidor", crit: false },
+    "O": { desc: "Falha no Concreto (Segregação/Homogeneidade)", crit: true },
+    "P": { desc: "Grandes Avarias físicas", crit: true },
+    "Q": { desc: "Rebarbas acentuadas", crit: false },
+    "R": { desc: "Rugosidade (Acabamento face exposta)", crit: false },
+    "S": { desc: "Acabamento de Quinas / Abas", crit: false }
+  };
+
+  // JUNE 2026 STATIC FALLBACK DATA
+  const fallbackData = {
+    prodTotal: 4923,
+    prodTypes: {
+      padrao: 4391,
+      naoPadrao: 532,
+      details: [
+        { name: "Concreto Vibrado", qty: 351, isDefect: false },
+        { name: "Concreto Seco - Vibrado", qty: 104, isDefect: false },
+        { name: "Concreto Exsudado", qty: 67, isDefect: true }, // Merged Fora de Padrão (54) + Exsudado (13)
+        { name: "Concreto Segregado", qty: 10, isDefect: true }
+      ]
+    },
+    inspTotal: 1230,
+    inspRejections: [
+      { name: "Concreto Padrão", qty: 19 },
+      { name: "Concreto Seco - Vibrado", qty: 1 }
+    ],
+    defectCodes: [
+      { code: "O", qty: 4 },
+      { code: "A", qty: 3 },
+      { code: "E", qty: 2 },
+      { code: "L", qty: 2 },
+      { code: "P", qty: 2 },
+      { code: "B", qty: 1 },
+      { code: "C", qty: 1 },
+      { code: "F", qty: 1 },
+      { code: "R", qty: 1 },
+      { code: "S", qty: 1 }
+    ]
+  };
+
+  // Charts references
+  let chartProdInstance = null;
+  let chartRejectsInstance = null;
+
+  // INITIAL LOAD (June 2026 pre-rendered)
+  window.addEventListener('DOMContentLoaded', () => {
+    renderDashboard(fallbackData, "Junho de 2026 (Modo Offline/Pre-carregado)");
+  });
+
+  // RENDER FUNCTION
+  function renderDashboard(data, periodLabel) {
+    document.getElementById('viewingPeriod').textContent = `Visualizando dados de ${periodLabel}`;
+
+    // Compute sums
+    const totalProdDefects = data.prodTypes.details
+      .filter(d => d.isDefect)
+      .reduce((acc, curr) => acc + curr.qty, 0);
+    const totalRejections = data.inspRejections.reduce((acc, curr) => acc + curr.qty, 0);
+    const totalDefectCodes = data.defectCodes.reduce((acc, curr) => acc + curr.qty, 0);
+
+    // Update KPI values
+    document.getElementById('kpiProdTotal').textContent = formatInt(data.prodTotal);
+    const totalVolume = (data.prodTotal * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('kpiProdTotalSub').textContent = `Volume Total: ${totalVolume} m³`;
+    
+    document.getElementById('kpiProdDefects').textContent = formatInt(totalProdDefects);
+    const prodDefectPct = data.prodTotal > 0 ? ((totalProdDefects / data.prodTotal) * 100).toFixed(2) : "0.00";
+    document.getElementById('kpiProdDefectsPct').innerHTML = `⚠️ ${prodDefectPct}% do total fabricado`;
+
+    document.getElementById('kpiInspTotal').textContent = formatInt(data.inspTotal);
+    document.getElementById('kpiInspRejects').textContent = formatInt(totalRejections);
+    const rejectPct = data.inspTotal > 0 ? ((totalRejections / data.inspTotal) * 100).toFixed(2) : "0.00";
+    document.getElementById('kpiInspRejectsPct').innerHTML = `❌ ${rejectPct}% de taxa de rejeição`;
+
+    // Render Table 1: Production (Grouped by Padrão vs Não Padrão)
+    const tProdBody = document.querySelector('#tableProd tbody');
+    tProdBody.innerHTML = '';
+    
+    // A. Concreto Padrão row
+    const rowPadrao = document.createElement('tr');
+    const volPadrao = (data.prodTypes.padrao * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
+    const pctPadrao = data.prodTotal > 0 ? ((data.prodTypes.padrao / data.prodTotal) * 100).toFixed(2) : "0.00";
+    rowPadrao.innerHTML = `
+      <td><span class="badge badge-success">Concreto Padrão</span></td>
+      <td style="text-align: center; font-weight: 700;">${formatInt(data.prodTypes.padrao)}</td>
+      <td style="text-align: center; font-weight: 700; color: var(--color-success);">${volPadrao}</td>
+      <td style="text-align: center; font-weight: 700; color: var(--color-success); font-size: 1.05rem;">${pctPadrao}%</td>
+    `;
+    tProdBody.appendChild(rowPadrao);
+
+    // B. Não Padrão row
+    const rowNaoPadrao = document.createElement('tr');
+    const volNaoPadrao = (data.prodTypes.naoPadrao * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
+    const pctNaoPadrao = data.prodTotal > 0 ? ((data.prodTypes.naoPadrao / data.prodTotal) * 100).toFixed(2) : "0.00";
+    rowNaoPadrao.innerHTML = `
+      <td><span class="badge badge-danger">Não Padrão</span></td>
+      <td style="text-align: center; font-weight: 700;">${formatInt(data.prodTypes.naoPadrao)}</td>
+      <td style="text-align: center; font-weight: 700; color: var(--color-danger);">${volNaoPadrao}</td>
+      <td style="text-align: center; font-weight: 700; color: var(--color-danger); font-size: 1.05rem;">${pctNaoPadrao}%</td>
+    `;
+    tProdBody.appendChild(rowNaoPadrao);
+
+    // C. Detailed Subcategories under Não Padrão
+    data.prodTypes.details.forEach(d => {
+      const row = document.createElement('tr');
+      const volumeVal = (d.qty * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
+      const pctTot = data.prodTotal > 0 ? ((d.qty / data.prodTotal) * 100).toFixed(2) : "0.00";
+      
+      const badgeHtml = d.isDefect ? ` <span class="badge badge-warning" style="padding: 0.1rem 0.3rem; font-size: 0.6rem; vertical-align: middle;">Defeito</span>` : ``;
+      const nameStyle = d.isDefect ? `color: var(--color-danger);` : `color: var(--text-muted);`;
+      
+      row.innerHTML = `
+        <td style="padding-left: 2.5rem; font-style: italic;"><span style="color: var(--text-muted); margin-right: 0.5rem;">↳</span><span style="${nameStyle}">${d.name}</span>${badgeHtml}</td>
+        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${formatInt(d.qty)}</td>
+        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${volumeVal}</td>
+        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${pctTot}%</td>
+      `;
+      tProdBody.appendChild(row);
+    });
+
+    // Render Table 2: Quality Rejections
+    const tRejBody = document.querySelector('#tableRejects tbody');
+    tRejBody.innerHTML = '';
+    data.inspRejections.forEach(d => {
+      const row = document.createElement('tr');
+      const pctRej = totalRejections > 0 ? ((d.qty / totalRejections) * 100).toFixed(2) : "0.00";
+      const pctTot = data.inspTotal > 0 ? ((d.qty / data.inspTotal) * 100).toFixed(2) : "0.00";
+      row.innerHTML = `
+        <td><strong>${d.name}</strong></td>
+        <td style="text-align: center;">${d.qty}</td>
+        <td style="text-align: center; color: var(--color-danger);">${pctRej}%</td>
+        <td style="text-align: center; color: var(--text-muted);">${pctTot}%</td>
+      `;
+      tRejBody.appendChild(row);
+    });
+
+    // Render Table 3: Defect Codes
+    const tCodesBody = document.querySelector('#tableDefectCodes tbody');
+    tCodesBody.innerHTML = '';
+    data.defectCodes.forEach(d => {
+      const mapped = defectMap[d.code] || { desc: `Código Desconhecido (${d.code})`, crit: false };
+      const pctCode = totalDefectCodes > 0 ? ((d.qty / totalDefectCodes) * 100).toFixed(2) : "0.00";
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="text-align: center;"><span style="background: rgba(255,255,255,0.06); padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 700;">${d.code}</span></td>
+        <td><strong>${mapped.desc}</strong></td>
+        <td style="text-align: center;">${d.qty}</td>
+        <td style="text-align: center; color: var(--text-muted);">${pctCode}%</td>
+        <td><span class="badge ${mapped.crit ? 'badge-danger' : 'badge-warning'}">${mapped.crit ? 'Crítico 🔴' : 'Não Crítico 🟡'}</span></td>
+      `;
+      tCodesBody.appendChild(row);
+    });
+
+    // Render Chart 1: Production (Grouped by Padrão vs Não Padrão)
+    if (chartProdInstance) chartProdInstance.destroy();
+    const ctxProd = document.getElementById('chartProd').getContext('2d');
+    chartProdInstance = new Chart(ctxProd, {
+      type: 'doughnut',
+      data: {
+        labels: ['Concreto Padrão', 'Não Padrão'],
+        datasets: [{
+          data: [data.prodTypes.padrao, data.prodTypes.naoPadrao],
+          backgroundColor: ['#10b981', '#ef4444'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#71717a', font: { family: 'Inter', size: 11 } }
+          }
+        }
+      }
+    });
+
+    // Render Chart 2: Rejections
+    if (chartRejectsInstance) chartRejectsInstance.destroy();
+    const ctxRejects = document.getElementById('chartRejects').getContext('2d');
+    chartRejectsInstance = new Chart(ctxRejects, {
+      type: 'pie',
+      data: {
+        labels: data.inspRejections.map(d => d.name),
+        datasets: [{
+          data: data.inspRejections.map(d => d.qty),
+          backgroundColor: ['#6366f1', '#3b82f6', '#10b981', '#14b8a6'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#71717a', font: { family: 'Inter', size: 11 } }
+          }
+        }
+      }
+    });
+  }
+
+  // PAGINATED FETCH FROM SUPABASE REST
+  async function fetchAllSupabase(table, startDate, endDate) {
+    const headers = {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json'
+    };
+
+    let allData = [];
+    let offset = 0;
+    const limit = 1000;
+    let hasMore = true;
+
+    while (hasMore) {
+      const url = `${SUPABASE_URL}/rest/v1/${table}?data_fabricacao=gte.${startDate}&data_fabricacao=lte.${endDate}&limit=${limit}&offset=${offset}`;
+      const res = await fetch(url, { headers });
+      if (!res.ok) {
+        throw new Error(`Erro ao buscar dados do Supabase na tabela ${table}: ${await res.text()}`);
+      }
+      const data = await res.json();
+      allData = allData.concat(data);
+      if (data.length < limit) {
+        hasMore = false;
+      } else {
+        offset += limit;
+      }
+    }
+    return allData;
+  }
+
+  // DYNAMIC UPDATE FROM DATABASE
+  async function updateDashboardLive() {
+    const selector = document.getElementById('monthSelector');
+    const selectedMonth = selector.value; // YYYY-MM
+    if (!selectedMonth) {
+      alert("Selecione um mês e ano!");
+      return;
+    }
+
+    // Set UI to loading state
+    const dot = document.getElementById('statusDot');
+    const txt = document.getElementById('statusText');
+    dot.className = "status-dot loading";
+    txt.textContent = "Buscando dados no Supabase...";
+
+    const parts = selectedMonth.split('-');
+    const year = parts[0];
+    const month = parts[1];
+    
+    // Get start/end dates
+    const startDate = `${selectedMonth}-01`;
+    const lastDay = new Date(year, month, 0).getDate();
+    const endDate = `${selectedMonth}-${String(lastDay).padStart(2, '0')}`;
+
+    const monthNames = [
+      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+    const monthLabel = `${monthNames[parseInt(month) - 1]} de ${year}`;
+
+    try {
+      // Fetch live data
+      const producao = await fetchAllSupabase('producao', startDate, endDate);
+      const montagem = await fetchAllSupabase('montagem_poste', startDate, endDate);
+
+      // 1. Process Producao Concrete Types (Grouped by Concreto Padrão and Não Padrão)
+      let prodTotalCount = producao.length;
+      let padraoCount = 0;
+      
+      const subCategories = {
+        "Concreto Vibrado": 0,
+        "Concreto Seco - Vibrado": 0,
+        "Concreto Exsudado": 0,
+        "Concreto Segregado": 0
+      };
+
+      producao.forEach(p => {
+        let type = p.tipo_concreto || 'Não Informado';
+        if (type === 'Padrão' || type === 'Concreto Padrão') {
+          padraoCount++;
+        } else {
+          // Normalize sub-categories
+          if (type.includes('Vibrado') && !type.includes('Seco')) {
+            subCategories["Concreto Vibrado"]++;
+          } else if (type.includes('Seco')) {
+            subCategories["Concreto Seco - Vibrado"]++;
+          } else if (type.includes('Segregado')) {
+            subCategories["Concreto Segregado"]++;
+          } else {
+            // Group "Fora de Padrão", "Exsudado" and any other unknown concrete mixes as Concreto Exsudado
+            subCategories["Concreto Exsudado"]++;
+          }
+        }
+      });
+
+      const naoPadraoCount = prodTotalCount - padraoCount;
+
+      const prodTypes = {
+        padrao: padraoCount,
+        naoPadrao: naoPadraoCount,
+        details: [
+          { name: "Concreto Vibrado", qty: subCategories["Concreto Vibrado"], isDefect: false },
+          { name: "Concreto Seco - Vibrado", qty: subCategories["Concreto Seco - Vibrado"], isDefect: false },
+          { name: "Concreto Exsudado", qty: subCategories["Concreto Exsudado"], isDefect: true },
+          { name: "Concreto Segregado", qty: subCategories["Concreto Segregado"], isDefect: true }
+        ]
+      };
+
+      // 2. Process Montagem Rejections
+      const producaoLookup = new Map();
+      producao.forEach(p => {
+        producaoLookup.set(p.id, p);
+      });
+
+      const rejectsMap = {};
+      const codesMap = {};
+      let inspTotalCount = montagem.length;
+
+      montagem.forEach(m => {
+        const status = m.status_montagem;
+        if (status === 'R' || status === 'RR') {
+          // Find original concrete mix
+          const prod = producaoLookup.get(m.record_id);
+          const mixName = prod ? (prod.tipo_concreto || 'Não Informado') : 'Sem registro concretagem';
+          rejectsMap[mixName] = (rejectsMap[mixName] || 0) + 1;
+
+          // Process defect codes
+          if (m.motivo_recusa) {
+            codesMap[m.motivo_recusa] = (codesMap[m.motivo_recusa] || 0) + 1;
+          }
+        }
+      });
+
+      const inspRejections = Object.keys(rejectsMap).map(name => ({
+        name: name,
+        qty: rejectsMap[name]
+      })).sort((a, b) => b.qty - a.qty);
+
+      const defectCodes = Object.keys(codesMap).map(code => ({
+        code: code,
+        qty: codesMap[code]
+      })).sort((a, b) => b.qty - a.qty);
+
+      // Build processed data object
+      const processed = {
+        prodTotal: prodTotalCount,
+        prodTypes: prodTypes,
+        inspTotal: inspTotalCount,
+        inspRejections: inspRejections,
+        defectCodes: defectCodes
+      };
+
+      // Render updated dashboard
+      renderDashboard(processed, `${monthLabel} (Conexão Supabase Live)`);
+      
+      // Update Status Badge
+      dot.className = "status-dot online";
+      txt.textContent = "Conectado / Atualizado";
+
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao sincronizar com o banco de dados. Veja os detalhes no console.");
+      dot.className = "status-dot";
+      txt.textContent = "Erro de conexão / Offline";
+    }
+  }
+
+  // HELPERS
+  function formatInt(n) {
+    return n.toLocaleString('pt-BR');
+  }
+</script>
+</body>
+</html>
