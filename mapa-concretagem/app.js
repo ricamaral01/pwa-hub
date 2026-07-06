@@ -2090,6 +2090,14 @@ async function loadClickedFormsFromSupabase() {
       if (dbUpdated) {
         writeDb(db);
       }
+      
+      // Re-aplica os cliques pendentes locais que ainda não foram sincronizados para a nuvem
+      const pendingEvents = (db.events || []).filter(ev => ev.pendingSync === true && ev.etapa === "LIBERACAO" && ev.dataFabricacao === data);
+      pendingEvents.forEach(ev => {
+        const key = ev.setor + "||" + normalizeUpper(ev.formaNumero);
+        clicked.formas[key] = (ev.status === "CONCRETADO") ? "1" : ((ev.status === "PROGRAMADA") ? "P" : "L");
+      });
+
       localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
     }
   } catch (err) {
@@ -7201,6 +7209,12 @@ async function syncOfflineData() {
 
   if (syncedCount > 0) {
     setSyncStatus("ok", `Sincronização offline automática concluída! ${syncedCount} item(ns) enviado(s).`);
+    try {
+      await loadClickedFormsFromSupabase();
+      renderLiberacaoDual();
+    } catch (e) {
+      console.error("Erro ao recarregar dados pós sincronização:", e);
+    }
   }
 }
 
