@@ -518,7 +518,7 @@ function salvarFormaClick(data) {
     sheet.getRange(nextRow, 5).setValue(data.tipo_concreto || "Padrão"); // Tipo de Concreto
     sheet.getRange(nextRow, 6).setValue(data.colaborador || ""); // Colaborador
     sheet.getRange(nextRow, 7).setValue(data.dataFabricacao || ""); // Data de Fabricação
-    sheet.getRange(nextRow, 8).setValue("LIBERADO"); // Status
+    sheet.getRange(nextRow, 8).setValue(data.status || "LIBERADO"); // Status
 
     return ContentService
       .createTextOutput(JSON.stringify({ ok: true, message: "Forma liberada salva com sucesso" }))

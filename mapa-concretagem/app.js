@@ -2018,7 +2018,7 @@ async function loadClickedFormsFromSupabase() {
 
       rows.forEach(row => {
         if (row.forma && row.setor) {
-          const isAguardando = row.status === 'AGUARDANDO_CONCRETAGEM';
+          const isAguardando = row.status === 'AGUARDANDO_CONCRETAGEM' || row.status === 'LIBERADO';
           const statusVal = isAguardando ? 'L' : '1';
           const key = row.setor + "||" + normalizeUpper(row.forma);
           clicked.formas[key] = statusVal;
