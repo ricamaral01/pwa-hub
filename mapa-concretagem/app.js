@@ -8431,6 +8431,7 @@ function exportarPaPDF() {
 
 function init() {
   setMode("HUB");
+  updateSwVersionBadge();
   setSyncStatus("pending", "Verificando conexão com a planilha...");
   renderInspecaoCodigosChecklist();
   bindEvents();
@@ -9742,4 +9743,29 @@ async function cancelarConcretagemOdin(forma, setor, card) {
     setSyncStatus("warn", `Excluído localmente. Sem sincronia online.`);
     showLibFeedback(`Concretagem ${forma} excluída (local).`, "ok");
   }
+}
+
+// =========================================================
+// DINAMIC SW VERSION BADGE LOADER
+// =========================================================
+async function updateSwVersionBadge() {
+  const badge = document.getElementById("swVersionBadge");
+  if (!badge) return;
+  try {
+    const response = await fetch("sw.js");
+    if (response.ok) {
+      const text = await response.text();
+      const match = text.match(/CACHE_NAME\s*=\s*["']mapa-concretagem-v([^"']+)["']/);
+      if (match && match[1]) {
+        badge.textContent = `v${match[1]}`;
+        badge.style.display = "inline-block";
+        return;
+      }
+    }
+  } catch (e) {
+    console.warn("Erro ao buscar versão do SW:", e);
+  }
+  // Fallback
+  badge.textContent = "v4.48";
+  badge.style.display = "inline-block";
 }
