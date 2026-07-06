@@ -227,7 +227,7 @@
 
     @media (min-width: 1024px) {
       .dashboard-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
       }
     }
 
@@ -500,8 +500,7 @@
       details: [
         { name: "Concreto Vibrado", qty: 351, isDefect: false },
         { name: "Concreto Seco - Vibrado", qty: 104, isDefect: false },
-        { name: "Fora de Padrão", qty: 54, isDefect: true },
-        { name: "Concreto Exsudado", qty: 13, isDefect: true },
+        { name: "Concreto Exsudado", qty: 67, isDefect: true }, // Merged Fora de Padrão (54) + Exsudado (13)
         { name: "Concreto Segregado", qty: 10, isDefect: true }
       ]
     },
@@ -760,7 +759,6 @@
       const subCategories = {
         "Concreto Vibrado": 0,
         "Concreto Seco - Vibrado": 0,
-        "Fora de Padrão": 0,
         "Concreto Exsudado": 0,
         "Concreto Segregado": 0
       };
@@ -775,12 +773,11 @@
             subCategories["Concreto Vibrado"]++;
           } else if (type.includes('Seco')) {
             subCategories["Concreto Seco - Vibrado"]++;
-          } else if (type.includes('Exsudado')) {
-            subCategories["Concreto Exsudado"]++;
           } else if (type.includes('Segregado')) {
             subCategories["Concreto Segregado"]++;
           } else {
-            subCategories["Fora de Padrão"]++;
+            // Group "Fora de Padrão", "Exsudado" and any other unknown concrete mixes as Concreto Exsudado
+            subCategories["Concreto Exsudado"]++;
           }
         }
       });
@@ -793,7 +790,6 @@
         details: [
           { name: "Concreto Vibrado", qty: subCategories["Concreto Vibrado"], isDefect: false },
           { name: "Concreto Seco - Vibrado", qty: subCategories["Concreto Seco - Vibrado"], isDefect: false },
-          { name: "Fora de Padrão", qty: subCategories["Fora de Padrão"], isDefect: true },
           { name: "Concreto Exsudado", qty: subCategories["Concreto Exsudado"], isDefect: true },
           { name: "Concreto Segregado", qty: subCategories["Concreto Segregado"], isDefect: true }
         ]
