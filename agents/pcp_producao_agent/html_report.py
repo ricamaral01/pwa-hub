@@ -1,0 +1,487 @@
+import logging
+from datetime import datetime
+from pathlib import Path
+from jinja2 import Template
+import config
+
+logger = logging.getLogger("pcp_producao_agent")
+
+HTML_TEMPLATE = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Diário PCP x Produção — ConcreTrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            
+            --color-realizado: #10b981;
+            --color-realizado-bg: #ecfdf5;
+            --color-parcial: #f59e0b;
+            --color-parcial-bg: #fffbeb;
+            --color-nao-produzido: #ef4444;
+            --color-nao-produzido-bg: #fef2f2;
+            --color-excedente: #3b82f6;
+            --color-excedente-bg: #eff6ff;
+            --color-nao-programado: #8b5cf6;
+            --color-nao-programado-bg: #f5f3ff;
+            
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --transition: all 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2.5rem 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .brand h1 {
+            font-size: 2.25rem;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        .timestamp {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* --- KPI CARD ROW --- */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .kpi-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }
+
+        .kpi-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .kpi-value {
+            font-size: 2.25rem;
+            font-weight: 900;
+            margin: 0.5rem 0;
+            letter-spacing: -0.04em;
+            color: var(--text-main);
+        }
+
+        .kpi-sub {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        /* --- EXECUTIVE SUMMARY --- */
+        .summary-card {
+            background: #1e293b;
+            color: #f8fafc;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 25px -5px rgba(30, 41, 59, 0.3);
+        }
+
+        .summary-card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.02em;
+            color: #3b82f6;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .summary-section h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #94a3b8;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.25rem;
+        }
+
+        .summary-list {
+            list-style: none;
+        }
+
+        .summary-list li {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-list li::before {
+            content: "•";
+            color: #3b82f6;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* --- SECTIONS BY SECTOR --- */
+        .sector-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .sector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sector-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .sector-badge {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        /* --- TABLE --- */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            padding: 1rem 1.25rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-weight: 600;
+        }
+
+        /* Status colors mapping */
+        .status-REALIZADO {
+            background: var(--color-realizado-bg);
+            border-left: 5px solid var(--color-realizado);
+            color: #065f46;
+        }
+        .status-PARCIAL {
+            background: var(--color-parcial-bg);
+            border-left: 5px solid var(--color-parcial);
+            color: #92400e;
+        }
+        .status-NÃO\\ PRODUZIDO {
+            background: var(--color-nao-produzido-bg);
+            border-left: 5px solid var(--color-nao-produzido);
+            color: #991b1b;
+        }
+        .status-EXCEDENTE {
+            background: var(--color-excedente-bg);
+            border-left: 5px solid var(--color-excedente);
+            color: #1e40af;
+        }
+        .status-NÃO\\ PROGRAMADO {
+            background: var(--color-nao-programado-bg);
+            border-left: 5px solid var(--color-nao-programado);
+            color: #5b21b6;
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-REALIZADO { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .badge-PARCIAL { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .badge-NÃO\\ PRODUZIDO { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .badge-EXCEDENTE { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .badge-NÃO\\ PROGRAMADO { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
+
+        .text-diff {
+            font-weight: 700;
+        }
+        .text-diff.negative { color: var(--color-nao-produzido); }
+        .text-diff.positive { color: var(--color-excedente); }
+        .text-diff.zero { color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="brand">
+            <h1>Relatório Diário PCP x Produção</h1>
+            <p>Comparativo Executivo — Mapa de Concretagem vs. Planilha PCP - DIÁRIO</p>
+        </div>
+        <div class="timestamp">
+            <div>Data Analisada: <strong>{{ data_analisada }}</strong></div>
+            <div style="margin-top:0.25rem;">Gerado em: <strong>{{ data_geracao }} às {{ hora_geracao }}</strong></div>
+        </div>
+    </header>
+
+    <!-- KPI ROW -->
+    <section class="kpi-grid">
+        <div class="kpi-card">
+            <span class="kpi-label">PCP Programado</span>
+            <div class="kpi-value">{{ total_programado }}</div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Peças planejadas</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">Realizado Mapa</span>
+            <div class="kpi-value">{{ total_produzido }}</div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Peças concretadas</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">Diferença Total</span>
+            <div class="kpi-value" style="color: {% if diferenca_total >= 0 %}var(--color-excedente){% else %}var(--color-nao-produzido){% endif %}">
+                {{ "%+d" | format(diferenca_total) }}
+            </div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Desvio acumulado</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">Aderência Geral</span>
+            <div class="kpi-value" style="color: {% if aderencia_pct >= 95 %}var(--color-realizado){% elif aderencia_pct >= 80 %}var(--color-parcial){% else %}var(--color-nao-produzido){% endif %}">
+                {{ "%.1f" | format(aderencia_pct) }}%
+            </div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Índice de atendimento</span>
+        </div>
+    </section>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <section class="summary-card">
+        <h2>Resumo Executivo & Recomendações</h2>
+        <div class="summary-grid">
+            <div class="summary-section">
+                <h3>Principais Pontos de Aderência</h3>
+                <ul class="summary-list">
+                    <li>Setor com melhor aderência: <strong>{{ analise.setor_melhor }}</strong></li>
+                    <li>Setor com maior desvio: <strong>{{ analise.setor_pior }}</strong></li>
+                    <li>Itens planejados não produzidos: <strong>{{ itens_nao_produzidos }}</strong></li>
+                    <li>Itens produzidos fora do planejamento: <strong>{{ itens_nao_programados }}</strong></li>
+                </ul>
+            </div>
+            <div class="summary-section">
+                <h3>Pendências Críticas (PCP Não Atendido)</h3>
+                <ul class="summary-list">
+                    {% if analise.produtos_criticos %}
+                        {% for item in analise.produtos_criticos %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    {% else %}
+                        <li style="color:var(--color-realizado);">Nenhum desvio crítico pendente. Aderência de 100%!</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="summary-section" style="margin-top: 1.5rem;">
+            <h3 style="color:#3b82f6;">Recomendações Operacionais</h3>
+            <ul class="summary-list">
+                {% for rec in analise.recomendacoes %}
+                    <li>{{ rec }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <!-- TABLES BY SECTOR -->
+    {% for setor_nome, stats in setores.items() %}
+    <section class="sector-section">
+        <div class="sector-header">
+            <h2 class="sector-title">{{ setor_nome }}</h2>
+            <div class="sector-badge">
+                Programado: <strong>{{ stats.programado }}</strong> | 
+                Produzido: <strong>{{ stats.produzido }}</strong> | 
+                Aderência: <strong>{{ "%.1f" | format(stats.aderencia_pct) }}%</strong>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Modelo</th>
+                        <th style="text-align: center; width: 120px;">Programado (PCP)</th>
+                        <th style="text-align: center; width: 120px;">Produzido (Mapa)</th>
+                        <th style="text-align: center; width: 100px;">Desvio</th>
+                        <th style="width: 180px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if stats.rows %}
+                        {% for row in stats.rows %}
+                        <tr class="status-{{ row.status }}">
+                            <td>{{ row.produto }}</td>
+                            <td>{{ row.modelo }}</td>
+                            <td style="text-align: center;">{{ row.programado }}</td>
+                            <td style="text-align: center;">{{ row.produzido }}</td>
+                            <td style="text-align: center;" class="text-diff {% if row.diferenca > 0 %}positive{% elif row.diferenca < 0 %}negative{% else %}zero{% endif %}">
+                                {{ "%+d" | format(row.diferenca) if row.diferenca != 0 else "0" }}
+                            </td>
+                            <td>
+                                <span class="badge-status badge-{{ row.status }}">{{ row.status }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
+                                Nenhuma atividade ou planejamento registrado para este setor nesta data.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    {% endfor %}
+</div>
+
+</body>
+</html>
+"""
+
+class HtmlReportGenerator:
+    def generate(self, data, date_str):
+        """
+        Gera o relatório HTML a partir dos dados consolidados e salva na pasta de relatórios.
+        Retorna o caminho absoluto do arquivo salvo.
+        """
+        now = datetime.now()
+        
+        # Mapeia as variáveis de contexto para renderizar o template
+        context = {
+            "data_analisada": datetime.strptime(date_str, "%Y-%m-%d").strftime("%d/%m/%Y"),
+            "data_geracao": now.strftime("%d/%m/%Y"),
+            "hora_geracao": now.strftime("%H:%M"),
+            "total_programado": data["total_programado"],
+            "total_produzido": data["total_produzido"],
+            "diferenca_total": data["diferenca_total"],
+            "aderencia_pct": data["aderencia_pct"],
+            "itens_nao_produzidos": data["itens_nao_produzidos"],
+            "itens_nao_programados": data["itens_nao_programados"],
+            "setores": data["setores"],
+            "analise": data["analise"]
+        }
+
+        logger.info("Renderizando template HTML do relatório...")
+        template = Template(HTML_TEMPLATE)
+        html_content = template.render(context)
+
+        # Salva o arquivo final
+        filename = f"relatorio_pcp_producao_{date_str}.html"
+        filepath = config.REPORTS_DIR / filename
+        
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(html_content)
+
+        logger.info(f"Relatório HTML criado com sucesso em: {filepath}")
+        return str(filepath)
