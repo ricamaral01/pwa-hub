@@ -5504,29 +5504,3 @@ body.mode-sequencia-s3 .container {
 
 
 
-
-/* Custom styling for the Modo ODIN toggle button when active (Neon Red) */
-#kioskOdinToggleField.active {
-  background: rgba(239, 68, 68, 0.25) !important; /* Neon red tint */
-  border-color: #ef4444 !important; /* Neon red border */
-  animation: pulse-border-red 1.2s infinite !important;
-}
-
-#kioskOdinToggleField.active .kiosk-toggle-title {
-  color: #fca5a5 !important; /* Light neon red title */
-}
-
-#kioskOdinToggleField.active .kiosk-toggle-subtitle {
-  color: #ffffff !important;
-}
-
-#kioskOdinCheckbox:checked + .kiosk-slider {
-  background-color: #ef4444 !important;
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
-}
-
-@keyframes pulse-border-red {
-  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
