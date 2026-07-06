@@ -8,7 +8,7 @@ load_dotenv(dotenv_path=env_path)
 
 # Se não encontrar o .env local do agente, carrega o .env raiz da pasta mapa-concretagem
 if not env_path.exists():
-    root_env_path = Path(__file__).resolve().parents[2] / "mapa-concretagem" / ".env"
+    root_env_path = Path(__file__).resolve().parents[1] / "mapa-concretagem" / ".env"
     load_dotenv(dotenv_path=root_env_path)
 
 # Supabase
@@ -31,5 +31,5 @@ WHATSAPP_PHONE = os.getenv("WHATSAPP_PHONE", "")
 DRY_RUN = os.getenv("DRY_RUN", "true").lower() in ("true", "1", "yes")
 
 # Base directory for reports
-REPORTS_DIR = Path(__file__).resolve().parents[2] / "relatorios" / "pcp-producao"
+REPORTS_DIR = Path(__file__).resolve().parents[1] / "relatorios" / "pcp-producao"
 REPORTS_DIR.mkdir(parents=True, exist_ok=True)

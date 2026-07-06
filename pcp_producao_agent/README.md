@@ -61,7 +61,7 @@ python agent_pcp_producao.py --data ontem --dry-run
 ```
 *(Você também pode definir a data como `hoje` ou passar uma data específica no formato `YYYY-MM-DD`)*.
 
-### 2. Executar Envio Completo (Produção)
+### 2. Executar Envio Completamente (Produção)
 Para rodar de forma definitiva enviando a notificação de WhatsApp, certifique-se de que a variável `DRY_RUN` no `.env` está configurada como `false` (ou não passe o argumento `--dry-run`):
 ```bash
 python agent_pcp_producao.py --data ontem
@@ -72,7 +72,7 @@ python agent_pcp_producao.py --data ontem
 ## Destino dos Relatórios
 
 Os relatórios HTML gerados são salvos automaticamente no diretório:
-`mapa-concretagem/relatorios/pcp-producao/relatorio_pcp_producao_YYYY-MM-DD.html`
+`relatorios/pcp-producao/relatorio_pcp_producao_YYYY-MM-DD.html`
 
 ---
 
@@ -86,14 +86,14 @@ Para rodar o agente automaticamente todos os dias às **07:00 da manhã** analis
    ```
 2. Adicione a seguinte linha (ajustando os caminhos de ambiente):
    ```cron
-   0 7 * * * /usr/bin/python3 /caminho/do/projeto/agents/pcp_producao_agent/agent_pcp_producao.py --data ontem >> /caminho/do/projeto/agents/pcp_producao_agent/cron_execution.log 2>&1
+   0 7 * * * /usr/bin/python3 /caminho/do/projeto/pcp_producao_agent/agent_pcp_producao.py --data ontem >> /caminho/do/projeto/pcp_producao_agent/cron_execution.log 2>&1
    ```
 
 ### Windows (Agendador de Tarefas)
 1. Abra o **Agendador de Tarefas** (Task Scheduler) do Windows.
 2. Crie uma **Nova Tarefa Básica**.
 3. Defina o disparador para **Diário**, às **07:00**.
-4. Em Ação, selecione **Iniciar um programa**:
+4. En Ação, selecione **Iniciar um programa**:
    * **Programa/script:** `python.exe` (ou o caminho completo do seu binário python)
    * **Adicionar argumentos:** `agent_pcp_producao.py --data ontem`
-   * **Iniciar em:** `C:\Users\Admin\Documents\pwa-hub\agents\pcp_producao_agent` (ou caminho correto da pasta)
+   * **Iniciar em:** `C:\Users\Admin\Documents\pwa-hub\pcp_producao_agent` (ou caminho correto da pasta)
