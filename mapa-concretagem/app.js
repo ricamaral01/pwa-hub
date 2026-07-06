@@ -161,6 +161,19 @@ function isFormaLiberada(forma, setor) {
   const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
   return record?.liberacao?.status === "L";
 }
+
+function isFormaProgrammed(forma, setor) {
+  const dataFabricacao = el.libData?.value || todayYmd();
+  const hoje = todayYmd();
+  if (dataFabricacao === hoje) {
+    const clicked = getClickedFormsToday();
+    const key = setor + "||" + normalizeUpper(forma);
+    if (clicked.formas[key] === "P") return true;
+  }
+  const db = readDb();
+  const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
+  return record?.liberacao?.status === "P";
+}
 const SUPABASE_CONFIG = {
   URL: "https://fbvvdyirhtgvycullsqy.supabase.co",
   KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZidnZkeWlyaHRndnljdWxsc3F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3Njc5MTksImV4cCI6MjA5NDM0MzkxOX0.vzudcEhAwdAutU0g-Mra818fd8_DciepjqvU8Z-C4wc"
@@ -1928,6 +1941,20 @@ async function programFormaInApiOrLocal(data, setor, forma) {
         forma: forma
       }]);
       if (!error) synced = true;
+
+      // Also save to producao table with status PROGRAMADA
+      const payload = {
+        dia: new Date().toLocaleDateString("pt-BR"),
+        hora: new Date().toLocaleTimeString("pt-BR"),
+        setor,
+        forma,
+        dataFabricacao: data,
+        colaborador: state.authUser?.name || "Programador",
+        modelo: "",
+        tipo_concreto: "Padrão",
+        status: "PROGRAMADA"
+      };
+      await postToApi("salvar_forma_click", payload);
     } catch (err) {
       console.warn("Falha ao salvar programação no Supabase, usando local:", err);
     }
@@ -1956,6 +1983,13 @@ async function unprogramFormaInApiOrLocal(data, setor, forma) {
         .eq('setor', setor)
         .eq('forma', forma);
       if (!error) synced = true;
+
+      // Also delete from producao table where status = PROGRAMADA
+      await supabaseClient.from('producao').delete()
+        .eq('data_fabricacao', data)
+        .eq('setor', setor)
+        .eq('forma', forma)
+        .eq('status', 'PROGRAMADA');
     } catch (err) {
       console.warn("Falha ao excluir programação no Supabase, usando local:", err);
     }
@@ -2019,7 +2053,8 @@ async function loadClickedFormsFromSupabase() {
       rows.forEach(row => {
         if (row.forma && row.setor) {
           const isAguardando = row.status === 'AGUARDANDO_CONCRETAGEM' || row.status === 'LIBERADO';
-          const statusVal = isAguardando ? 'L' : '1';
+          const isProgramada = row.status === 'PROGRAMADA';
+          const statusVal = isProgramada ? 'P' : (isAguardando ? 'L' : '1');
           const key = row.setor + "||" + normalizeUpper(row.forma);
           clicked.formas[key] = statusVal;
 
@@ -2161,6 +2196,39 @@ async function loadProgrammedFormas() {
       .forEach(item => {
         state.programmedFormas.add(normalizeUpper(item.forma));
       });
+  }
+
+  // Load from local DB / cache records that are marked as status 'P'
+  const db = readDb();
+  if (Array.isArray(db.records)) {
+    db.records.forEach(record => {
+      if (record.dataFabricacao === data && record.setor === sectorLabel && record.liberacao?.status === 'P') {
+        state.programmedFormas.add(normalizeUpper(record.formaNumero));
+      }
+    });
+  }
+
+  // Sync PCP programações to Supabase/Google Sheets in the background if they are not in DB
+  if (hasApiConfigured() && state.programmedFormas.size > 0) {
+    for (const forma of state.programmedFormas) {
+      const isClick = isFormaClicked(forma, sectorLabel);
+      const isLib = isFormaLiberada(forma, sectorLabel);
+      const isProgLocal = isFormaProgrammed(forma, sectorLabel);
+      if (!isClick && !isLib && !isProgLocal) {
+        const payload = {
+          dia: new Date().toLocaleDateString("pt-BR"),
+          hora: new Date().toLocaleTimeString("pt-BR"),
+          setor: sectorLabel,
+          forma,
+          dataFabricacao: data,
+          colaborador: "PCP",
+          modelo: "",
+          tipo_concreto: "Padrão",
+          status: "PROGRAMADA"
+        };
+        postToApi("salvar_forma_click", payload);
+      }
+    }
   }
 }
 
