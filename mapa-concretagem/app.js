@@ -5931,10 +5931,10 @@ function applyRoleVisibility() {
   });
 
   const userNameVal = String(state.authUser?.name || "").trim().toLowerCase();
-  const isRicardo = userNameVal === "ricardo" || userNameVal.includes("ricardo");
+  const isOdinAllowed = userNameVal.includes("ricardo") || userNameVal.includes("philippe");
   const odinToggle = document.getElementById("kioskOdinToggleField");
   if (odinToggle) {
-    odinToggle.classList.toggle("hidden", !isRicardo);
+    odinToggle.classList.toggle("hidden", !isOdinAllowed);
   }
 
   if (el.authUserBadge) {
