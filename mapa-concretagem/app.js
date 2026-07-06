@@ -6498,6 +6498,7 @@ function bindEvents() {
   if (el.kioskLibCheckbox) {
     el.kioskLibCheckbox.addEventListener("change", () => {
       state.liberationMode = el.kioskLibCheckbox.checked;
+      document.body.classList.toggle("liberation-active", state.liberationMode);
       if (state.liberationMode) {
         if (el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
           el.kioskProgCheckbox.checked = false;
@@ -6587,11 +6588,15 @@ function bindEvents() {
       if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
       }
+      if (el.kioskLibCheckbox && el.kioskLibCheckbox.checked) {
+        el.kioskLibCheckbox.checked = false;
+        el.kioskLibCheckbox.dispatchEvent(new Event("change"));
+      }
       if (el.kioskOdinCheckbox && el.kioskOdinCheckbox.checked) {
         el.kioskOdinCheckbox.checked = false;
         el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
       }
-      document.body.classList.remove("kiosk-active", "odin-active");
+      document.body.classList.remove("kiosk-active", "liberation-active", "odin-active");
       setMode("HUB");
     });
   }
