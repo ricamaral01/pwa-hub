@@ -491,38 +491,37 @@
     "S": { desc: "Acabamento de Quinas / Abas", crit: false }
   };
 
-  // JUNE 2026 STATIC FALLBACK DATA
-  const fallbackData = {
-    prodTotal: 4923,
-    prodTypes: {
-      padrao: 4391,
-      naoPadrao: 532,
-      details: [
-        { name: "Concreto Vibrado", qty: 351, isDefect: false },
-        { name: "Concreto Seco - Vibrado", qty: 104, isDefect: false },
-        { name: "Concreto Exsudado", qty: 67, isDefect: true }, // Merged Fora de Padrão (54) + Exsudado (13)
-        { name: "Concreto Segregado", qty: 10, isDefect: true }
-      ]
-    },
-    inspTotal: 1230,
-    inspRejections: [
-      { name: "Concreto Padrão", qty: 19 },
-      { name: "Concreto Seco - Vibrado", qty: 1 }
-    ],
-    defectCodes: [
-      { code: "O", qty: 4 },
-      { code: "A", qty: 3 },
-      { code: "E", qty: 2 },
-      { code: "L", qty: 2 },
-      { code: "P", qty: 2 },
-      { code: "B", qty: 1 },
-      { code: "C", qty: 1 },
-      { code: "F", qty: 1 },
-      { code: "R", qty: 1 },
-      { code: "S", qty: 1 }
-    ]
-  };
-
+  // JUNE 2026 STATIC FALLBACK DATA
+  const fallbackData = {
+    prodTotal: 4923,
+    prodTypes: {
+      padrao: 4391,
+      naoPadrao: 532,
+      details: [
+        { name: "Concreto Vibrado", qty: 455, isDefect: false }, // Merged Concreto Vibrado (351) + Concreto Seco - Vibrado (104)
+        { name: "Concreto Exsudado", qty: 67, isDefect: true }, // Merged Fora de Padrão (54) + Exsudado (13)
+        { name: "Concreto Segregado", qty: 10, isDefect: true }
+      ]
+    },
+    inspTotal: 1230,
+    inspRejections: [
+      { name: "Concreto Padrão", qty: 19 },
+      { name: "Concreto Seco - Vibrado", qty: 1 }
+    ],
+    defectCodes: [
+      { code: "O", qty: 4 },
+      { code: "A", qty: 3 },
+      { code: "E", qty: 2 },
+      { code: "L", qty: 2 },
+      { code: "P", qty: 2 },
+      { code: "B", qty: 1 },
+      { code: "C", qty: 1 },
+      { code: "F", qty: 1 },
+      { code: "R", qty: 1 },
+      { code: "S", qty: 1 }
+    ]
+  };
+
   // Charts references
   let chartProdInstance = null;
   let chartRejectsInstance = null;
