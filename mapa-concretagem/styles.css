@@ -5504,3 +5504,35 @@ body.mode-sequencia-s3 .container {
 
 
 
+
+/* Global styles for active Modo ODIN (Neon Red Theme) */
+body.odin-active .kiosk-header {
+  border: 3px solid #ff0000 !important;
+  box-shadow: 0 0 20px #ff0000, inset 0 0 20px rgba(255, 0, 0, 0.4) !important;
+  background: linear-gradient(135deg, #2d0000 0%, #7f0000 100%) !important;
+}
+
+body.odin-active .kiosk-header .kiosk-title {
+  color: #ff3333 !important;
+  text-shadow: 0 0 8px #ff0000 !important;
+}
+
+body.odin-active .kiosk-header .kiosk-subtitle {
+  color: #ff9999 !important;
+}
+
+body.odin-active .forma-card.is-liberada {
+  border: 2.5px solid #ff0000 !important;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.6) !important;
+}
+
+body.odin-active .forma-card.is-programmed {
+  border: 2.5px solid #ff0000 !important;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.6) !important;
+}
+
+body.odin-active .forma-card:hover {
+  border-color: #ff3333 !important;
+  box-shadow: 0 0 15px #ff0000, inset 0 0 8px rgba(255, 0, 0, 0.5) !important;
+  transform: scale(1.03);
+}

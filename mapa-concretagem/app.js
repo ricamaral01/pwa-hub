@@ -6529,6 +6529,7 @@ function bindEvents() {
   if (el.kioskOdinCheckbox) {
     el.kioskOdinCheckbox.addEventListener("change", () => {
       state.odinMode = el.kioskOdinCheckbox.checked;
+      document.body.classList.toggle("odin-active", state.odinMode);
       if (state.odinMode) {
         if (el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
           el.kioskProgCheckbox.checked = false;
@@ -6586,7 +6587,11 @@ function bindEvents() {
       if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
       }
-      document.body.classList.remove("kiosk-active");
+      if (el.kioskOdinCheckbox && el.kioskOdinCheckbox.checked) {
+        el.kioskOdinCheckbox.checked = false;
+        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+      }
+      document.body.classList.remove("kiosk-active", "odin-active");
       setMode("HUB");
     });
   }
