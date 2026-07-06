@@ -337,6 +337,9 @@
     <div class="brand">
       <h1>Controle de Qualidade e Defeitos</h1>
       <p id="viewingPeriod">Visualizando dados de Junho de 2026 (Modo Offline/Pre-carregado)</p>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-family: monospace;">
+        Arquivo: <a href="file:///c:/Users/Admin/Documents/pwa-hub/mapa-concretagem/relatorio_defeitos.html" style="color: var(--color-primary); text-decoration: none;">relatorio_defeitos.html</a> | Local: c:/Users/Admin/Documents/pwa-hub/mapa-concretagem/relatorio_defeitos.html
+      </p>
     </div>
     
     <div class="controls">
@@ -490,15 +493,18 @@
 
   // JUNE 2026 STATIC FALLBACK DATA
   const fallbackData = {
-    prodTotal: 4893,
-    prodTypes: [
-      { name: "Concreto Padrão", qty: 4363 },
-      { name: "Concreto Vibrado", qty: 351 },
-      { name: "Concreto Seco - Vibrado", qty: 104 },
-      { name: "Fora de Padrão", qty: 54 },
-      { name: "Concreto Exsudado", qty: 11 },
-      { name: "Concreto Segregado", qty: 10 }
-    ],
+    prodTotal: 4923,
+    prodTypes: {
+      padrao: 4391,
+      naoPadrao: 532,
+      details: [
+        { name: "Concreto Vibrado", qty: 351, isDefect: false },
+        { name: "Concreto Seco - Vibrado", qty: 104, isDefect: false },
+        { name: "Fora de Padrão", qty: 54, isDefect: true },
+        { name: "Concreto Exsudado", qty: 13, isDefect: true },
+        { name: "Concreto Segregado", qty: 10, isDefect: true }
+      ]
+    },
     inspTotal: 1230,
     inspRejections: [
       { name: "Concreto Padrão", qty: 19 },
@@ -532,8 +538,8 @@
     document.getElementById('viewingPeriod').textContent = `Visualizando dados de ${periodLabel}`;
 
     // Compute sums
-    const totalProdDefects = data.prodTypes
-      .filter(d => ["Fora de Padrão", "Concreto Exsudado", "Concreto Segregado"].includes(d.name))
+    const totalProdDefects = data.prodTypes.details
+      .filter(d => d.isDefect)
       .reduce((acc, curr) => acc + curr.qty, 0);
     const totalRejections = data.inspRejections.reduce((acc, curr) => acc + curr.qty, 0);
     const totalDefectCodes = data.defectCodes.reduce((acc, curr) => acc + curr.qty, 0);
@@ -552,23 +558,48 @@
     const rejectPct = data.inspTotal > 0 ? ((totalRejections / data.inspTotal) * 100).toFixed(2) : "0.00";
     document.getElementById('kpiInspRejectsPct').innerHTML = `❌ ${rejectPct}% de taxa de rejeição`;
 
-    // Render Table 1: Production (All Types + Volume)
+    // Render Table 1: Production (Grouped by Padrão vs Não Padrão)
     const tProdBody = document.querySelector('#tableProd tbody');
     tProdBody.innerHTML = '';
-    data.prodTypes.forEach(d => {
+    
+    // A. Concreto Padrão row
+    const rowPadrao = document.createElement('tr');
+    const volPadrao = (data.prodTypes.padrao * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
+    const pctPadrao = data.prodTotal > 0 ? ((data.prodTypes.padrao / data.prodTotal) * 100).toFixed(2) : "0.00";
+    rowPadrao.innerHTML = `
+      <td><span class="badge badge-success">Concreto Padrão</span></td>
+      <td style="text-align: center; font-weight: 700;">${formatInt(data.prodTypes.padrao)}</td>
+      <td style="text-align: center; font-weight: 700; color: var(--color-success);">${volPadrao}</td>
+      <td style="text-align: center; font-weight: 700; color: var(--color-success); font-size: 1.05rem;">${pctPadrao}%</td>
+    `;
+    tProdBody.appendChild(rowPadrao);
+
+    // B. Não Padrão row
+    const rowNaoPadrao = document.createElement('tr');
+    const volNaoPadrao = (data.prodTypes.naoPadrao * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
+    const pctNaoPadrao = data.prodTotal > 0 ? ((data.prodTypes.naoPadrao / data.prodTotal) * 100).toFixed(2) : "0.00";
+    rowNaoPadrao.innerHTML = `
+      <td><span class="badge badge-danger">Não Padrão</span></td>
+      <td style="text-align: center; font-weight: 700;">${formatInt(data.prodTypes.naoPadrao)}</td>
+      <td style="text-align: center; font-weight: 700; color: var(--color-danger);">${volNaoPadrao}</td>
+      <td style="text-align: center; font-weight: 700; color: var(--color-danger); font-size: 1.05rem;">${pctNaoPadrao}%</td>
+    `;
+    tProdBody.appendChild(rowNaoPadrao);
+
+    // C. Detailed Subcategories under Não Padrão
+    data.prodTypes.details.forEach(d => {
       const row = document.createElement('tr');
       const volumeVal = (d.qty * 0.25).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m³';
       const pctTot = data.prodTotal > 0 ? ((d.qty / data.prodTotal) * 100).toFixed(2) : "0.00";
       
-      const isDefect = ["Fora de Padrão", "Concreto Exsudado", "Concreto Segregado"].includes(d.name);
-      const nameStyle = isDefect ? `color: var(--color-danger);` : ``;
-      const badgeHtml = isDefect ? ` <span class="badge badge-danger" style="padding: 0.15rem 0.35rem; font-size: 0.65rem; line-height: 1; vertical-align: middle;">Defeito</span>` : ``;
+      const badgeHtml = d.isDefect ? ` <span class="badge badge-warning" style="padding: 0.1rem 0.3rem; font-size: 0.6rem; vertical-align: middle;">Defeito</span>` : ``;
+      const nameStyle = d.isDefect ? `color: var(--color-danger);` : `color: var(--text-muted);`;
       
       row.innerHTML = `
-        <td><strong style="${nameStyle}">${d.name}</strong>${badgeHtml}</td>
-        <td style="text-align: center;">${formatInt(d.qty)}</td>
-        <td style="text-align: center; font-weight: 600;">${volumeVal}</td>
-        <td style="text-align: center; color: var(--text-muted);">${pctTot}%</td>
+        <td style="padding-left: 2.5rem; font-style: italic;"><span style="color: var(--text-muted); margin-right: 0.5rem;">↳</span><span style="${nameStyle}">${d.name}</span>${badgeHtml}</td>
+        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${formatInt(d.qty)}</td>
+        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${volumeVal}</td>
+        <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">${pctTot}%</td>
       `;
       tProdBody.appendChild(row);
     });
@@ -606,16 +637,16 @@
       tCodesBody.appendChild(row);
     });
 
-    // Render Chart 1: Production
+    // Render Chart 1: Production (Grouped by Padrão vs Não Padrão)
     if (chartProdInstance) chartProdInstance.destroy();
     const ctxProd = document.getElementById('chartProd').getContext('2d');
     chartProdInstance = new Chart(ctxProd, {
       type: 'doughnut',
       data: {
-        labels: data.prodTypes.map(d => d.name),
+        labels: ['Concreto Padrão', 'Não Padrão'],
         datasets: [{
-          data: data.prodTypes.map(d => d.qty),
-          backgroundColor: ['#6366f1', '#3b82f6', '#10b981', '#f59e0b', '#84cc16', '#ef4444', '#f43f5e', '#a855f7'],
+          data: [data.prodTypes.padrao, data.prodTypes.naoPadrao],
+          backgroundColor: ['#10b981', '#ef4444'],
           borderWidth: 0
         }]
       },
@@ -722,20 +753,51 @@
       const producao = await fetchAllSupabase('producao', startDate, endDate);
       const montagem = await fetchAllSupabase('montagem_poste', startDate, endDate);
 
-      // 1. Process Producao Concrete Types (ALL)
-      const prodTypesMap = {};
+      // 1. Process Producao Concrete Types (Grouped by Concreto Padrão and Não Padrão)
       let prodTotalCount = producao.length;
+      let padraoCount = 0;
+      
+      const subCategories = {
+        "Concreto Vibrado": 0,
+        "Concreto Seco - Vibrado": 0,
+        "Fora de Padrão": 0,
+        "Concreto Exsudado": 0,
+        "Concreto Segregado": 0
+      };
 
       producao.forEach(p => {
         let type = p.tipo_concreto || 'Não Informado';
-        if (type === 'Padrão') type = 'Concreto Padrão';
-        prodTypesMap[type] = (prodTypesMap[type] || 0) + 1;
+        if (type === 'Padrão' || type === 'Concreto Padrão') {
+          padraoCount++;
+        } else {
+          // Normalize sub-categories
+          if (type.includes('Vibrado') && !type.includes('Seco')) {
+            subCategories["Concreto Vibrado"]++;
+          } else if (type.includes('Seco')) {
+            subCategories["Concreto Seco - Vibrado"]++;
+          } else if (type.includes('Exsudado')) {
+            subCategories["Concreto Exsudado"]++;
+          } else if (type.includes('Segregado')) {
+            subCategories["Concreto Segregado"]++;
+          } else {
+            subCategories["Fora de Padrão"]++;
+          }
+        }
       });
 
-      const prodTypes = Object.keys(prodTypesMap).map(name => ({
-        name: name,
-        qty: prodTypesMap[name]
-      })).sort((a, b) => b.qty - a.qty);
+      const naoPadraoCount = prodTotalCount - padraoCount;
+
+      const prodTypes = {
+        padrao: padraoCount,
+        naoPadrao: naoPadraoCount,
+        details: [
+          { name: "Concreto Vibrado", qty: subCategories["Concreto Vibrado"], isDefect: false },
+          { name: "Concreto Seco - Vibrado", qty: subCategories["Concreto Seco - Vibrado"], isDefect: false },
+          { name: "Fora de Padrão", qty: subCategories["Fora de Padrão"], isDefect: true },
+          { name: "Concreto Exsudado", qty: subCategories["Concreto Exsudado"], isDefect: true },
+          { name: "Concreto Segregado", qty: subCategories["Concreto Segregado"], isDefect: true }
+        ]
+      };
 
       // 2. Process Montagem Rejections
       const producaoLookup = new Map();
