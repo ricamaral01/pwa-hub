@@ -1050,20 +1050,46 @@ async function postToApi(action, payload) {
          } catch(e) {}
       }
 
-      await insertWithLegacyFallback('producao', [{
-        data_hora: dtStr,
-        setor: payload.setor,
-        forma: payload.forma,
-        modelo: payload.modelo,
-        codigo_poste: payload.codigo_poste || null,
-        descricao_poste: payload.descricao_poste || null,
-        codigo_produto: payload.codigo_produto || null,
-        tipo_concreto: payload.tipo_concreto || 'Padrão',
-        colaborador: payload.colaborador,
-        data_fabricacao: payload.dataFabricacao,
-        status: payload.status || 'LIBERADO'
-      }], ({ codigo_poste, descricao_poste, codigo_produto, ...legacy }) => legacy);
-      return { ok: true, message: "Forma liberada salva com sucesso" };
+      if (payload.status === "P" || payload.status === "PROGRAMADA") {
+        const { error } = await supabaseClient.from('programacao_pcp').upsert({
+          data_fabricacao: payload.dataFabricacao,
+          setor: payload.setor,
+          forma: payload.forma,
+          modelo: payload.modelo,
+          codigo_poste: payload.codigo_poste || null,
+          descricao_poste: payload.descricao_poste || null,
+          codigo_produto: payload.codigo_produto || null,
+          quantidade: 1,
+          data_hora: dtStr
+        }, { onConflict: 'data_fabricacao,setor,forma' });
+        if (error) throw error;
+      } else if (payload.status === "L" || (payload.status === "LIBERADO" && payload.tipo_concreto === "Padrão")) {
+        const { error } = await supabaseClient.from('liberacao_formas').upsert({
+          data_fabricacao: payload.dataFabricacao,
+          setor: payload.setor,
+          forma: payload.forma,
+          colaborador: payload.colaborador,
+          data_hora: dtStr
+        }, { onConflict: 'data_fabricacao,setor,forma' });
+        if (error) throw error;
+      } else {
+        const { error } = await supabaseClient.from('producao').upsert({
+          data_fabricacao: payload.dataFabricacao,
+          setor: payload.setor,
+          forma: payload.forma,
+          modelo: payload.modelo,
+          codigo_poste: payload.codigo_poste || null,
+          descricao_poste: payload.descricao_poste || null,
+          codigo_produto: payload.codigo_produto || null,
+          tipo_concreto: payload.tipo_concreto || 'Padrão',
+          colaborador: payload.colaborador,
+          data_hora: dtStr,
+          status: 'LIBERADO'
+        }, { onConflict: 'data_fabricacao,setor,forma' });
+        if (error) throw error;
+      }
+
+      return { ok: true, message: "Forma salva nos novos esquemas com sucesso" };
     }
 
     if (action === "salvar_inspecao_lote") {
@@ -2035,9 +2061,9 @@ async function loadClickedFormsFromSupabase() {
   if (!hasApiConfigured()) return;
 
   try {
-    // Busca todas as concretagens feitas na data selecionada a partir do Supabase (independente de estar LIBERADO ou INSPECIONADO)
-    const { data: rows, error } = await supabaseClient.from('producao')
-      .select('forma, setor, tipo_concreto, status, data_hora, colaborador')
+    // Busca todas as concretagens feitas na data selecionada a partir da View unificada
+    const { data: rows, error } = await supabaseClient.from('vw_formas_status')
+      .select('*')
       .eq('data_fabricacao', data);
 
     if (!error && Array.isArray(rows)) {
@@ -2051,14 +2077,30 @@ async function loadClickedFormsFromSupabase() {
 
       rows.forEach(row => {
         if (row.forma && row.setor) {
-          const isAguardando = row.status === 'AGUARDANDO_CONCRETAGEM' || row.status === 'LIBERADO';
-          const isProgramada = row.status === 'PROGRAMADA';
-          let statusVal = '1';
-          if (isProgramada) {
+          let statusVal = 'L';
+          let tipoConcreto = 'Padrão';
+          let colaborador = row.lib_colaborador || '';
+          let dataHora = row.lib_data_hora || nowIso();
+
+          if (row.prod_id) {
+            statusVal = '1';
+            tipoConcreto = row.prod_tipo_concreto || 'Padrão';
+            colaborador = row.prod_colaborador || '';
+            dataHora = row.prod_data_hora || nowIso();
+          } else if (row.lib_id) {
+            statusVal = 'L';
+            tipoConcreto = 'Padrão';
+            colaborador = row.lib_colaborador || '';
+            dataHora = row.lib_data_hora || nowIso();
+          } else if (row.prog_id) {
             statusVal = 'P';
-          } else if (isAguardando) {
-            statusVal = (row.tipo_concreto === 'Padrão' || !row.tipo_concreto) ? 'L' : '1';
+            tipoConcreto = 'Padrão';
+            colaborador = '';
+            dataHora = row.prog_data_hora || nowIso();
+          } else {
+            return;
           }
+
           const key = row.setor + "||" + normalizeUpper(row.forma);
           clicked.formas[key] = statusVal;
 
@@ -2070,20 +2112,20 @@ async function loadClickedFormsFromSupabase() {
               dataFabricacao: data,
               setor: row.setor,
               formaNumero: normalizeUpper(row.forma),
-              concretoTipo: row.tipo_concreto || 'Padrão',
+              concretoTipo: tipoConcreto,
               createdAt: nowIso(),
               updatedAt: nowIso(),
-              liberacao: { status: statusVal, timestamp: row.data_hora || nowIso(), colaborador: row.colaborador || "" },
+              liberacao: { status: statusVal, timestamp: dataHora, colaborador: colaborador },
               inspecoes: []
             };
             upsertRecord(db, record);
             dbUpdated = true;
-          } else if (!record.liberacao || record.liberacao.status !== statusVal || record.concretoTipo !== row.tipo_concreto) {
-            record.concretoTipo = row.tipo_concreto || 'Padrão';
+          } else if (!record.liberacao || record.liberacao.status !== statusVal || record.concretoTipo !== tipoConcreto) {
+            record.concretoTipo = tipoConcreto;
             record.liberacao = record.liberacao || { status: statusVal, timestamp: nowIso() };
             record.liberacao.status = statusVal;
-            if (row.data_hora) record.liberacao.timestamp = row.data_hora;
-            if (row.colaborador) record.liberacao.colaborador = row.colaborador;
+            record.liberacao.timestamp = dataHora;
+            record.liberacao.colaborador = colaborador;
             record.updatedAt = nowIso();
             upsertRecord(db, record);
             dbUpdated = true;
@@ -9720,18 +9762,19 @@ async function cancelarConcretagemOdin(forma, setor, card) {
   const dataFabricacao = el.libData?.value || todayYmd();
   const normalizedForma = normalizeUpper(forma);
 
-  // 1. Deletar do Supabase
+  // 1. Deletar do Supabase (de todas as 3 tabelas relacionadas)
   let apiSuccess = false;
   if (hasApiConfigured()) {
     try {
-      const { error } = await supabaseClient.from('producao')
-        .delete()
-        .eq('data_fabricacao', dataFabricacao)
-        .eq('setor', setor)
-        .eq('forma', normalizedForma);
+      const res = await Promise.all([
+        supabaseClient.from('producao').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma),
+        supabaseClient.from('liberacao_formas').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma),
+        supabaseClient.from('programacao_pcp').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma)
+      ]);
 
-      if (error) {
-        console.error("Erro ao deletar do Supabase:", error);
+      const anyError = res.some(r => r.error);
+      if (anyError) {
+        console.error("Erro ao deletar do Supabase:", res.map(r => r.error).filter(Boolean));
       } else {
         apiSuccess = true;
       }
