@@ -181,19 +181,48 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             list-style: none;
         }
 
-        .summary-list li {
+        .summary-list > li {
             font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.25rem;
+            list-style-type: none;
         }
 
-        .summary-list li::before {
+        .summary-list > li::before {
             content: "•";
             color: #3b82f6;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        .summary-nested-list {
+            list-style-type: none;
+            padding-left: 0.75rem;
+            margin-top: 0.35rem;
+            border-left: 2px solid #334155;
+        }
+
+        .summary-nested-list li {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 0.25rem;
+            position: relative;
+            padding-left: 1rem;
+            list-style-type: none;
+        }
+
+        .summary-nested-list li::before {
+            content: "◦";
+            color: #94a3b8;
+            font-size: 1rem;
+            position: absolute;
+            left: 0;
+            top: -1px;
+            font-weight: bold;
         }
 
         /* --- SECTIONS BY SECTOR --- */
@@ -434,8 +463,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 <ul class="summary-list">
                     <li>Setor com melhor aderência: <strong>{{ analise.setor_melhor }}</strong></li>
                     <li>Setor com maior desvio: <strong>{{ analise.setor_pior }}</strong></li>
-                    <li>Itens planejados não produzidos: <strong>{{ itens_nao_produzidos }}</strong></li>
-                    <li>Itens produzidos fora do planejamento: <strong>{{ itens_nao_programados }}</strong></li>
+                    <li>
+                        Itens planejados não produzidos: <strong>{{ itens_nao_produzidos }}</strong>
+                        {% if itens_nao_produzidos_detalhes %}
+                            <ul class="summary-nested-list">
+                                {% for item in itens_nao_produzidos_detalhes %}
+                                    <li>Cód. {{ item.codigo }} ({{ item.modelo }}) no {{ item.setor }} - Prog: {{ item.quantidade }} pç</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                    <li>
+                        Itens produzidos fora do planejamento: <strong>{{ itens_nao_programados }}</strong>
+                        {% if itens_nao_programados_detalhes %}
+                            <ul class="summary-nested-list">
+                                {% for item in itens_nao_programados_detalhes %}
+                                    <li>Cód. {{ item.codigo }} ({{ item.modelo }}) no {{ item.setor }} - Real: {{ item.quantidade }} pç</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
                 </ul>
             </div>
             <div class="summary-section">
@@ -576,6 +623,8 @@ class HtmlReportGenerator:
             "aderencia_pct": data["aderencia_pct"],
             "itens_nao_produzidos": data["itens_nao_produzidos"],
             "itens_nao_programados": data["itens_nao_programados"],
+            "itens_nao_produzidos_detalhes": data["itens_nao_produzidos_detalhes"],
+            "itens_nao_programados_detalhes": data["itens_nao_programados_detalhes"],
             "setores": data["setores"],
             "analise": data["analise"]
         }

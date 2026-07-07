@@ -136,7 +136,6 @@ class Comparator:
                 
                 desvio_text = f"<strong>{mod_str} (Cód. {cod_str})</strong>: "
                 
-                # Desvios de produção vs programado
                 if prog_val > 0 and real_val == 0:
                     desvio_text += f"Programado {prog_val} (P), mas nenhuma peça foi concretada."
                 elif prog_val > 0 and real_val < prog_val:
@@ -148,7 +147,6 @@ class Comparator:
                 else:
                     desvio_text += f"Concretado {real_val} peças."
 
-                # Adiciona informação do R da planilha se for diferente do que foi produzido de fato
                 if real_enc_val != real_val:
                     desvio_text += f" <i>(Nota: Encarregado apontou {real_enc_val} como Realizado (R) na planilha).</i>"
                 
@@ -170,15 +168,34 @@ class Comparator:
                 "rows": rows_s
             }
 
-        # 5. Calcular métricas resumidas globais
+        # 5. Calcular métricas resumidas globais e listas detalhadas
         total_prog = sum(c["programado"] for c in comparison_details)
         total_real_enc = sum(c["realizado_encarregado"] for c in comparison_details)
         total_real = sum(c["produzido"] for c in comparison_details)
         diferenca_total = total_real - total_prog
         aderencia_pct = (total_real / total_prog * 100) if total_prog > 0 else 0
 
-        itens_nao_produzidos = sum(1 for c in comparison_details if c["status"] == "NÃO PRODUZIDO")
-        itens_nao_programados = sum(1 for c in comparison_details if c["status"] == "NÃO PROGRAMADO")
+        itens_nao_produzidos_detalhes = []
+        itens_nao_programados_detalhes = []
+        
+        for c in comparison_details:
+            if c["status"] == "NÃO PRODUZIDO":
+                itens_nao_produzidos_detalhes.append({
+                    "codigo": c["codigo"],
+                    "modelo": c["modelo"],
+                    "setor": c["setor"],
+                    "quantidade": c["programado"]
+                })
+            elif c["status"] == "NÃO PROGRAMADO":
+                itens_nao_programados_detalhes.append({
+                    "codigo": c["codigo"],
+                    "modelo": c["modelo"],
+                    "setor": c["setor"],
+                    "quantidade": c["produzido"]
+                })
+
+        itens_nao_produzidos = len(itens_nao_produzidos_detalhes)
+        itens_nao_programados = len(itens_nao_programados_detalhes)
 
         # 6. Geração do Resumo Executivo e Recomendações
         principais_diferencas = []
@@ -216,6 +233,8 @@ class Comparator:
             "aderencia_pct": aderencia_pct,
             "itens_nao_produzidos": itens_nao_produzidos,
             "itens_nao_programados": itens_nao_programados,
+            "itens_nao_produzidos_detalhes": sorted(itens_nao_produzidos_detalhes, key=lambda x: (x["setor"], x["codigo"])),
+            "itens_nao_programados_detalhes": sorted(itens_nao_programados_detalhes, key=lambda x: (x["setor"], x["codigo"])),
             "details": comparison_details,
             "setores": setor_stats,
             "analise": {
