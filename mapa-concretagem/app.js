@@ -9844,6 +9844,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v4.48";
+  badge.textContent = "v4.51";
   badge.style.display = "inline-block";
 }
