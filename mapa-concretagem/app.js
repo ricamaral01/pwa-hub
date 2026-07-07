@@ -9831,6 +9831,27 @@ async function cancelarConcretagemOdin(forma, setor, card) {
 async function updateSwVersionBadge() {
   const badge = document.getElementById("swVersionBadge");
   if (!badge) return;
+
+  // Add click to force reload/update
+  badge.title = "Clique para forçar atualização do app";
+  badge.style.cursor = "pointer";
+  if (!badge.dataset.listenerBound) {
+    badge.dataset.listenerBound = "true";
+    badge.addEventListener("click", async () => {
+      if (confirm("Deseja forçar a atualização deste aplicativo para a versão mais recente?")) {
+        if (navigator.serviceWorker) {
+          try {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (let reg of registrations) {
+              await reg.unregister();
+            }
+          } catch(e) {}
+        }
+        window.location.reload(true);
+      }
+    });
+  }
+
   try {
     const response = await fetch("sw.js");
     if (response.ok) {
@@ -9846,6 +9867,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v4.53";
+  badge.textContent = "v4.54";
   badge.style.display = "inline-block";
 }
