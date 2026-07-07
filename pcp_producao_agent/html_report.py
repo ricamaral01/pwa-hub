@@ -324,6 +324,57 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             font-size: 0.95rem;
             border-bottom: none;
         }
+
+        /* Narrative Summary Box */
+        .sector-narrative {
+            margin-top: 1.5rem;
+            padding: 1.25rem 1.5rem;
+            background: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .sector-narrative h4 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sector-narrative .desc-geral {
+            font-size: 0.9rem;
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .sector-narrative ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .sector-narrative li {
+            font-size: 0.88rem;
+            color: #475569;
+            margin-bottom: 0.4rem;
+            position: relative;
+            padding-left: 1.25rem;
+            font-weight: 500;
+        }
+
+        .sector-narrative li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: 800;
+        }
     </style>
 </head>
 <body>
@@ -361,7 +412,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </div>
         <div class="kpi-card">
             <span class="kpi-label">Aderência Geral</span>
-            <div class="kpi-value" style="color: {% if aderencia_pct >= 95 %}var(--color-realizado){% elif aderencia_pct >= 80 %}var(--color-parcial){% else %}var(--color-nao-produzido){% endif %}">
+            <div class="kpi-value" style="color: {% if status == 'REALIZADO' %}var(--color-realizado){% elif status == 'PARCIAL' %}var(--color-parcial){% else %}var(--color-nao-produzido){% endif %}">
                 {{ "%.1f" | format(aderencia_pct) }}%
             </div>
             <span class="kpi-sub" style="color:var(--text-muted)">Índice de atendimento</span>
@@ -468,6 +519,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 {% endif %}
             </table>
         </div>
+
+        <!-- Local narrative summary -->
+        {% if stats.rows %}
+        <div class="sector-narrative">
+            <h4>📋 Resumo de Desvios — Apontamento vs. Planejamento</h4>
+            <p class="desc-geral">{{ stats.resumo_geral }}</p>
+            {% if stats.desvios_detalhes %}
+                <ul>
+                    {% for desvio in stats.desvios_detalhes %}
+                        <li>{{ desvio }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="color: var(--color-realizado); font-weight: 700; font-size: 0.88rem; margin: 0;">
+                    ✓ Perfeito! 100% de aderência neste setor. Os apontamentos dos operadores no Mapa bateram exatamente com a planilha de PCP do encarregado.
+                </p>
+            {% endif %}
+        </div>
+        {% endif %}
     </section>
     {% endfor %}
 </div>

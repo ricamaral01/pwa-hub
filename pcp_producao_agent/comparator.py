@@ -26,7 +26,7 @@ class Comparator:
     def compare(self, pcp_rows, prod_rows):
         """
         Compara o planejado (PCP) com o realizado (Produção) pelo código do poste.
-        Calcula as diferenças e totaliza os setores.
+        Calcula as diferenças, gera resumos explicativos por setor.
         """
         logger.info("Iniciando comparação pelo Código do Poste...")
 
@@ -55,7 +55,6 @@ class Comparator:
                 pcp_map[key] = {"modelo": modelo, "qty_prog": 0}
             
             pcp_map[key]["qty_prog"] += qty
-            # Se tiver modelo mais detalhado, prefere
             if modelo != "SEM MODELO":
                 pcp_map[key]["modelo"] = modelo
 
@@ -66,20 +65,16 @@ class Comparator:
         for key in all_keys:
             setor, codigo = key
             
-            # Dados programados
             pcp_item = pcp_map.get(key)
             qty_prog = pcp_item["qty_prog"] if pcp_item else 0
             
-            # Dados produzidos
             prod_items = prod_map.get(key, [])
             qty_real = len(prod_items)
             
-            # Resolve Modelo
             modelo = "SEM MODELO"
             if pcp_item and pcp_item["modelo"] != "SEM MODELO":
                 modelo = pcp_item["modelo"]
             elif prod_items:
-                # Fallback para o modelo salvo na produção
                 modelo = prod_items[0].get("modelo_resolved") or "SEM MODELO"
                 
             diff = qty_real - qty_prog
@@ -92,7 +87,7 @@ class Comparator:
                     status = "NÃO PROGRAMADO"
                 else:
                     status = "EXCEDENTE"
-            else: # qty_real < qty_prog
+            else:
                 if qty_real == 0:
                     status = "NÃO PRODUZIDO"
                 else:
@@ -108,14 +103,12 @@ class Comparator:
                 "status": status
             })
 
-        # 4. Totalização por Setor
+        # 4. Totalização e Narrativa de Desvios por Setor
         setores = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"]
         setor_stats = {}
         
         for s in setores:
             rows_s = [c for c in comparison_details if c["setor"] == s]
-            
-            # Ordena por código para visualização limpa
             rows_s.sort(key=lambda x: x["codigo"])
             
             s_prog = sum(r["programado"] for r in rows_s)
@@ -123,11 +116,44 @@ class Comparator:
             s_diff = s_real - s_prog
             s_pct = (s_real / s_prog * 100) if s_prog > 0 else (100 if s_real > 0 else 0)
             
+            # Gera narrativas de desvio
+            desvios_detalhes = []
+            for r in rows_s:
+                if r["diferenca"] == 0:
+                    continue
+                
+                mod_str = r["modelo"]
+                cod_str = r["codigo"]
+                prog_val = r["programado"]
+                real_val = r["produzido"]
+                diff_val = r["diferenca"]
+                
+                if prog_val > 0 and real_val == 0:
+                    desvios_detalhes.append(
+                        f"<strong>{mod_str} (Cód. {cod_str})</strong>: Programado {prog_val} peças pelo encarregado, mas nenhuma foi produzida pelo operador."
+                    )
+                elif prog_val > 0 and real_val < prog_val:
+                    desvios_detalhes.append(
+                        f"<strong>{mod_str} (Cód. {cod_str})</strong>: Ficou abaixo do planejado. Programado {prog_val} pelo encarregado, mas operador apontou apenas {real_val} (falta {abs(diff_val)} pç)."
+                    )
+                elif prog_val > 0 and real_val > prog_val:
+                    desvios_detalhes.append(
+                        f"<strong>{mod_str} (Cód. {cod_str})</strong>: Superou a meta. Programado {prog_val} pelo encarregado, mas operador apontou {real_val} (excesso de {diff_val} pç)."
+                    )
+                elif prog_val == 0 and real_val > 0:
+                    desvios_detalhes.append(
+                        f"<strong>{mod_str} (Cód. {cod_str})</strong>: Não estava planejado na planilha pelo encarregado, mas o operador apontou {real_val} peças."
+                    )
+
+            resumo_geral = f"O encarregado planejou {s_prog} peças na planilha de PCP e o operador apontou {s_real} peças de produção física no Supabase."
+            
             setor_stats[s] = {
                 "programado": s_prog,
                 "produzido": s_real,
                 "diferenca": s_diff,
                 "aderencia_pct": s_pct,
+                "resumo_geral": resumo_geral,
+                "desvios_detalhes": desvios_detalhes,
                 "rows": rows_s
             }
 
