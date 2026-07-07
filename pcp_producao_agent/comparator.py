@@ -85,14 +85,14 @@ class Comparator:
             diff = qty_real - qty_prog
 
             # Definição de Status
-            if qty_real == qty_prog and qty_prog > 0:
+            if qty_real == qty_prog:
                 status = "REALIZADO"
             elif qty_real > qty_prog:
                 if qty_prog == 0:
                     status = "NÃO PROGRAMADO"
                 else:
                     status = "EXCEDENTE"
-            elif qty_real < qty_prog:
+            else: # qty_real < qty_prog
                 if qty_real == 0:
                     status = "NÃO PRODUZIDO"
                 else:
