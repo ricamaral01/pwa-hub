@@ -2301,45 +2301,62 @@ function updateSectorCounters() {
   const s3All = SETOR_3_LEFT_FORMS.concat(SETOR_3_RIGHT_FORMS);
   const s4All = SETOR_4_COL1_FORMS.concat(SETOR_4_COL2_FORMS).concat(SETOR_4_COL3_FORMS);
 
-  let s1Count = 0;
+  // Setor 1
+  let s1P = 0, s1L = 0, s1C = 0;
   s1All.forEach((item) => {
-    if (formas["Setor 1||" + normalizeUpper(item.forma)]) s1Count++;
+    const val = formas["Setor 1||" + normalizeUpper(item.forma)];
+    if (val === "P") s1P++;
+    else if (val === "L") s1L++;
+    else if (val === true || val === "1") s1C++;
   });
 
-  let s2Count = 0;
+  // Setor 2
+  let s2P = 0, s2L = 0, s2C = 0;
   s2All.forEach((item) => {
-    if (formas["Setor 2||" + normalizeUpper(item.forma)]) s2Count++;
+    const val = formas["Setor 2||" + normalizeUpper(item.forma)];
+    if (val === "P") s2P++;
+    else if (val === "L") s2L++;
+    else if (val === true || val === "1") s2C++;
   });
 
-  let s3Count = 0;
+  // Setor 3
+  let s3P = 0, s3L = 0, s3C = 0;
   s3All.forEach((item) => {
-    if (formas["Setor 3||" + normalizeUpper(item.forma)]) s3Count++;
+    const val = formas["Setor 3||" + normalizeUpper(item.forma)];
+    if (val === "P") s3P++;
+    else if (val === "L") s3L++;
+    else if (val === true || val === "1") s3C++;
   });
 
-  let s4Count = 0;
+  // Setor 4
+  let s4P = 0, s4L = 0, s4C = 0;
   s4All.forEach((item) => {
-    if (formas["Setor 4||" + normalizeUpper(item.forma)]) s4Count++;
+    const val = formas["Setor 4||" + normalizeUpper(item.forma)];
+    if (val === "P") s4P++;
+    else if (val === "L") s4L++;
+    else if (val === true || val === "1") s4C++;
   });
 
   const c1 = document.getElementById("libCounterSetor1");
   const c2 = document.getElementById("libCounterSetor2");
   const c3 = document.getElementById("libCounterSetor3");
   const c4 = document.getElementById("libCounterSetor4");
+
   if (c1) {
-    c1.textContent = s1Count + " / " + s1All.length;
-    c1.classList.toggle("counter-done", s1Count === s1All.length && s1All.length > 0);
+    c1.innerHTML = `<span style="color:#fef08a">P: ${s1P}</span> | <span style="color:#93c5fd">L: ${s1L}</span> | <span style="color:#86efac">C: ${s1C}</span> <span style="opacity:0.75">/ ${s1All.length}</span>`;
+    c1.classList.toggle("counter-done", s1C === s1All.length && s1All.length > 0);
   }
   if (c2) {
-    c2.textContent = s2Count + " / " + s2All.length;
-    c2.classList.toggle("counter-done", s2Count === s2All.length && s2All.length > 0);
+    c2.innerHTML = `<span style="color:#fef08a">P: ${s2P}</span> | <span style="color:#93c5fd">L: ${s2L}</span> | <span style="color:#86efac">C: ${s2C}</span> <span style="opacity:0.75">/ ${s2All.length}</span>`;
+    c2.classList.toggle("counter-done", s2C === s2All.length && s2All.length > 0);
   }
   if (c3) {
-    c3.textContent = s3Count + " / " + s3All.length;
-    c3.classList.toggle("counter-done", s3Count === s3All.length && s3All.length > 0);
+    c3.innerHTML = `<span style="color:#fef08a">P: ${s3P}</span> | <span style="color:#93c5fd">L: ${s3L}</span> | <span style="color:#86efac">C: ${s3C}</span> <span style="opacity:0.75">/ ${s3All.length}</span>`;
+    c3.classList.toggle("counter-done", s3C === s3All.length && s3All.length > 0);
   }
   if (c4) {
-    c4.textContent = s4Count + " / " + s4All.length;
-    c4.classList.toggle("counter-done", s4Count === s4All.length && s4All.length > 0);
+    c4.innerHTML = `<span style="color:#fef08a">P: ${s4P}</span> | <span style="color:#93c5fd">L: ${s4L}</span> | <span style="color:#86efac">C: ${s4C}</span> <span style="opacity:0.75">/ ${s4All.length}</span>`;
+    c4.classList.toggle("counter-done", s4C === s4All.length && s4All.length > 0);
   }
 
   // Atualizar progresso do quiosque também
