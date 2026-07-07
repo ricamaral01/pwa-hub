@@ -19,6 +19,7 @@ class GoogleSheetsClient:
     def fetch_pcp_programacao(self, date_str):
         """
         Acessa a planilha e extrai o planejamento da aba 'PCP DIÁRIO - PADRÃO' para a data.
+        Retorna tanto a quantidade programada (P) quanto a realizada apontada (R).
         """
         logger.info("Conectando ao Google Sheets...")
         try:
@@ -83,7 +84,7 @@ class GoogleSheetsClient:
             
             # Os dados reais começam a partir da quarta linha (índice 3)
             for index, row in enumerate(values[3:]):
-                if len(row) <= max(col_cod, col_desc, col_setor, col_idx):
+                if len(row) <= max(col_cod, col_desc, col_setor, col_idx + 1):
                     continue
                     
                 codigo = str(row[col_cod]).strip()
@@ -93,13 +94,23 @@ class GoogleSheetsClient:
                 if not codigo and not modelo:
                     continue
                 
-                # Lê a quantidade programada
+                # Lê a quantidade programada (P)
                 qty_val = 0
                 try:
                     qty_val = int(row[col_idx])
                 except ValueError:
                     try:
                         qty_val = int(float(row[col_idx]))
+                    except Exception:
+                        pass
+
+                # Lê a quantidade realizada pelo encarregado (R)
+                real_enc_val = 0
+                try:
+                    real_enc_val = int(row[col_idx + 1])
+                except ValueError:
+                    try:
+                        real_enc_val = int(float(row[col_idx + 1]))
                     except Exception:
                         pass
                 
@@ -109,10 +120,11 @@ class GoogleSheetsClient:
                     "setor": setor,
                     "modelo": modelo,
                     "codigo": codigo,
-                    "quantidade_programada": qty_val
+                    "quantidade_programada": qty_val,
+                    "realizado_encarregado": real_enc_val
                 })
                 
-            logger.info(f"Fim da leitura. Extraídas {len(filtered_rows)} linhas da planilha.")
+            logger.info(f"Fim da leitura. Extraídas {len(filtered_rows)} linhas da planilha com colunas P e R.")
             return filtered_rows
             
         except Exception as e:

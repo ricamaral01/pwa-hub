@@ -28,7 +28,19 @@ POSTES_DUPLO_T_CATALOGO = [
     { "codigo": "TCR", "descricao": "Poste 7,5 X 600 VR c/", "setor": "Setor 2", "codigoProduto": "940", "chaves": ["TCR"] },
     { "codigo": "100", "descricao": "Poste Subterraneo 100 A", "setor": "Setor 1", "codigoProduto": "949", "chaves": ["100"] },
     { "codigo": "SB-E1", "descricao": "Poste Subterraneo 100 A - Elektro", "setor": "Setor 1", "codigoProduto": "4848", "chaves": ["SB-E1"] },
-    { "codigo": "200", "descricao": "Poste Subterraneo 200 A - TC", "setor": "Setor 1", "codigoProduto": "5017", "chaves": ["200"] }
+    { "codigo": "200", "descricao": "Poste Subterraneo 200 A - TC", "setor": "Setor 1", "codigoProduto": "5017", "chaves": ["200"] },
+    { "codigo": "TOTEM", "descricao": "Totem de medicao indireta Elektro", "setor": "Setor 2", "codigoProduto": "13570", "chaves": ["TOTEM", "A-TOTEM", "TMIE"] },
+    { "codigo": "PL", "descricao": "Poste Visor Aereo 1 cx VL (7,5x300)", "setor": "Setor 2", "codigoProduto": "934", "chaves": ["PL"] },
+    { "codigo": "CEMIG-5X150", "descricao": "Padrao Cemig 1CX - 5,0 x 150", "setor": "Setor 4", "codigoProduto": "952", "chaves": ["C-F1"] },
+    { "codigo": "CEMIG-1VL", "descricao": "Padrao Cemig 1 cx VL - 7,0 x150", "setor": "Setor 4", "codigoProduto": "953", "chaves": ["R-G"] },
+    { "codigo": "CEMIG-2VL", "descricao": "Padrao Cemig 2 cx VL - 7,0 x150", "setor": "Setor 4", "codigoProduto": "954", "chaves": [] },
+    { "codigo": "E", "descricao": "Poste Economico 1CX VR", "setor": "Setor 1", "codigoProduto": "931", "chaves": ["E"] },
+    { "codigo": "F", "descricao": "Poste Economico 1CX VL", "setor": "Setor 1", "codigoProduto": "930", "chaves": ["F"] },
+    { "codigo": "G", "descricao": "Poste Economico 2CX VR", "setor": "Setor 1", "codigoProduto": "932", "chaves": ["G"] },
+    { "codigo": "P", "descricao": "Poste Economico 3 CXS VR", "setor": "Setor 1", "codigoProduto": "933", "chaves": ["P"] },
+    { "codigo": "DTB", "descricao": "Poste Duplo T Barreiras", "setor": "Setor 4", "codigoProduto": "13580", "chaves": ["DTB"] },
+    { "codigo": "DTBM", "descricao": "Poste Duplo T Barreiras Médio", "setor": "Setor 4", "codigoProduto": "13581", "chaves": ["DTBM"] },
+    { "codigo": "DTD", "descricao": "Poste Duplo T Especial D", "setor": "Setor 4", "codigoProduto": "13582", "chaves": ["DTD"] }
 ]
 
 POSTES_DUPLO_T_BY_CHAVE = {}

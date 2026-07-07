@@ -26,7 +26,7 @@ class Comparator:
     def compare(self, pcp_rows, prod_rows):
         """
         Compara o planejado (PCP) com o realizado (Produção) pelo código do poste.
-        Calcula as diferenças, gera resumos explicativos por setor.
+        Calcula as diferenças, gera resumos explicativos por setor, incluindo R da planilha.
         """
         logger.info("Iniciando comparação pelo Código do Poste...")
 
@@ -41,20 +41,22 @@ class Comparator:
                 prod_map[key] = []
             prod_map[key].append(r)
 
-        # 2. Agrupar programação por (Setor, Código)
+        # 2. Agrupar programação e realizado da planilha por (Setor, Código)
         pcp_map = {}
         for p in pcp_rows:
             setor = normalize_sector(p.get("setor"))
             codigo = normalize_code(p.get("codigo"))
             
             key = (setor, codigo)
-            qty = p.get("quantidade_programada", 0)
+            qty_prog = p.get("quantidade_programada", 0)
+            qty_real_enc = p.get("realizado_encarregado", 0)
             modelo = p.get("modelo") or "SEM MODELO"
             
             if key not in pcp_map:
-                pcp_map[key] = {"modelo": modelo, "qty_prog": 0}
+                pcp_map[key] = {"modelo": modelo, "qty_prog": 0, "qty_real_enc": 0}
             
-            pcp_map[key]["qty_prog"] += qty
+            pcp_map[key]["qty_prog"] += qty_prog
+            pcp_map[key]["qty_real_enc"] += qty_real_enc
             if modelo != "SEM MODELO":
                 pcp_map[key]["modelo"] = modelo
 
@@ -67,6 +69,7 @@ class Comparator:
             
             pcp_item = pcp_map.get(key)
             qty_prog = pcp_item["qty_prog"] if pcp_item else 0
+            qty_real_enc = pcp_item["qty_real_enc"] if pcp_item else 0
             
             prod_items = prod_map.get(key, [])
             qty_real = len(prod_items)
@@ -98,6 +101,7 @@ class Comparator:
                 "codigo": codigo,
                 "modelo": modelo,
                 "programado": qty_prog,
+                "realizado_encarregado": qty_real_enc,
                 "produzido": qty_real,
                 "diferenca": diff,
                 "status": status
@@ -112,6 +116,7 @@ class Comparator:
             rows_s.sort(key=lambda x: x["codigo"])
             
             s_prog = sum(r["programado"] for r in rows_s)
+            s_real_enc = sum(r["realizado_encarregado"] for r in rows_s)
             s_real = sum(r["produzido"] for r in rows_s)
             s_diff = s_real - s_prog
             s_pct = (s_real / s_prog * 100) if s_prog > 0 else (100 if s_real > 0 else 0)
@@ -119,36 +124,44 @@ class Comparator:
             # Gera narrativas de desvio
             desvios_detalhes = []
             for r in rows_s:
-                if r["diferenca"] == 0:
+                if r["diferenca"] == 0 and r["realizado_encarregado"] == r["produzido"]:
                     continue
                 
                 mod_str = r["modelo"]
                 cod_str = r["codigo"]
                 prog_val = r["programado"]
+                real_enc_val = r["realizado_encarregado"]
                 real_val = r["produzido"]
                 diff_val = r["diferenca"]
                 
+                desvio_text = f"<strong>{mod_str} (Cód. {cod_str})</strong>: "
+                
+                # Desvios de produção vs programado
                 if prog_val > 0 and real_val == 0:
-                    desvios_detalhes.append(
-                        f"<strong>{mod_str} (Cód. {cod_str})</strong>: Programado {prog_val} peças pelo encarregado, mas nenhuma foi produzida pelo operador."
-                    )
+                    desvio_text += f"Programado {prog_val} (P), mas nenhuma peça foi concretada."
                 elif prog_val > 0 and real_val < prog_val:
-                    desvios_detalhes.append(
-                        f"<strong>{mod_str} (Cód. {cod_str})</strong>: Ficou abaixo do planejado. Programado {prog_val} pelo encarregado, mas operador apontou apenas {real_val} (falta {abs(diff_val)} pç)."
-                    )
+                    desvio_text += f"Programado {prog_val} (P), concretado pelo operador {real_val} (falta {abs(diff_val)} pç)."
                 elif prog_val > 0 and real_val > prog_val:
-                    desvios_detalhes.append(
-                        f"<strong>{mod_str} (Cód. {cod_str})</strong>: Superou a meta. Programado {prog_val} pelo encarregado, mas operador apontou {real_val} (excesso de {diff_val} pç)."
-                    )
+                    desvio_text += f"Programado {prog_val} (P), concretado pelo operador {real_val} (excesso de {diff_val} pç)."
                 elif prog_val == 0 and real_val > 0:
-                    desvios_detalhes.append(
-                        f"<strong>{mod_str} (Cód. {cod_str})</strong>: Não estava planejado na planilha pelo encarregado, mas o operador apontou {real_val} peças."
-                    )
+                    desvio_text += f"Não programado, mas operador concretou {real_val} peças."
+                else:
+                    desvio_text += f"Concretado {real_val} peças."
 
-            resumo_geral = f"O encarregado planejou {s_prog} peças na planilha de PCP e o operador apontou {s_real} peças de produção física no Supabase."
+                # Adiciona informação do R da planilha se for diferente do que foi produzido de fato
+                if real_enc_val != real_val:
+                    desvio_text += f" <i>(Nota: Encarregado apontou {real_enc_val} como Realizado (R) na planilha).</i>"
+                
+                desvios_detalhes.append(desvio_text)
+
+            resumo_geral = (
+                f"O encarregado planejou {s_prog} peças (P) e apontou {s_real_enc} peças como Realizado (R) na planilha. "
+                f"O operador apontou {s_real} peças no sistema Supabase."
+            )
             
             setor_stats[s] = {
                 "programado": s_prog,
+                "realizado_encarregado": s_real_enc,
                 "produzido": s_real,
                 "diferenca": s_diff,
                 "aderencia_pct": s_pct,
@@ -159,6 +172,7 @@ class Comparator:
 
         # 5. Calcular métricas resumidas globais
         total_prog = sum(c["programado"] for c in comparison_details)
+        total_real_enc = sum(c["realizado_encarregado"] for c in comparison_details)
         total_real = sum(c["produzido"] for c in comparison_details)
         diferenca_total = total_real - total_prog
         aderencia_pct = (total_real / total_prog * 100) if total_prog > 0 else 0
@@ -196,6 +210,7 @@ class Comparator:
 
         return {
             "total_programado": total_prog,
+            "total_realizado_encarregado": total_real_enc,
             "total_produzido": total_real,
             "diferenca_total": diferenca_total,
             "aderencia_pct": aderencia_pct,

@@ -19,6 +19,7 @@ class WhatsAppSender:
         fmt_date = "/".join(date_str.split("-")[::-1])
         aderencia = data["aderencia_pct"]
         total_prog = data["total_programado"]
+        total_real_enc = data.get("total_realizado_encarregado", 0)
         total_real = data["total_produzido"]
         
         # Formata principais pendências
@@ -32,9 +33,10 @@ class WhatsAppSender:
             f"*Relatório Diário PCP x Produção - ConcreTrack*\\n"
             f"📅 *Data:* {fmt_date}\\n\\n"
             f"📊 *Resumo Operacional:*\\n"
-            f"• Programado: *{total_prog}* pçs\\n"
-            f"• Produzido: *{total_real}* pçs\\n"
-            f"• Aderência: *{aderencia:.1f}%*\\n\\n"
+            f"• Programado (P): *{total_prog}* pçs\\n"
+            f"• Realizado (R): *{total_real_enc}* pçs\\n"
+            f"• Produzido (Fábrica): *{total_real}* pçs\\n"
+            f"• Aderência Geral: *{aderencia:.1f}%*\\n\\n"
             f"⚠️ *Principais Pendências:*\\n"
             f"{pendencias_str}\\n\\n"
             f"🔗 *Link do Relatório:*\\n"
@@ -51,35 +53,30 @@ class WhatsAppSender:
         if self.dry_run or not self.api_url:
             logger.info("=== [WHATSAPP SIMULATION (DRY-RUN)] ===")
             logger.info(f"Destinatário: {self.phone or 'Não configurado'}")
-            logger.info(f"Mensagem:\\n{message.replace('\\n', '\n')}")
+            logger.info(f"Mensagem:\\n{message}")
             logger.info("=========================================")
             return True
 
-        # Se houver API do WhatsApp configurada (ex: Evolution API ou Webhook próprio)
+        # Prepara chamada de API real
+        payload = {
+            "token": self.token,
+            "to": self.phone,
+            "body": message
+        }
+        
         headers = {
             "Content-Type": "application/json"
         }
-        if self.token:
-            headers["apikey"] = self.token
-            headers["Authorization"] = f"Bearer {self.token}"
-
-        # Payload genérico (adaptável para Evolution API, z-api ou webhook customizado)
-        payload = {
-            "number": self.phone,
-            "message": message.replace("\\n", "\n"),
-            "text": message.replace("\\n", "\n")
-        }
-
-        logger.info(f"Enviando resumo por WhatsApp para {self.phone}...")
+        
+        logger.info(f"Enviando mensagem WhatsApp para {self.phone}...")
         try:
-            # Envia a requisição
-            response = requests.post(self.api_url, headers=headers, json=payload, timeout=10)
+            response = requests.post(self.api_url, headers=headers, data=json.dumps(payload), timeout=15)
             if response.ok:
-                logger.info("WhatsApp enviado com sucesso!")
+                logger.info("Mensagem WhatsApp enviada com sucesso!")
                 return True
             else:
-                logger.error(f"Erro ao enviar WhatsApp: HTTP {response.status_code} - {response.text}")
+                logger.error(f"Falha ao enviar WhatsApp: HTTP {response.status_code}: {response.text}")
                 return False
         except Exception as e:
-            logger.error(f"Falha de rede ao tentar enviar WhatsApp: {e}")
+            logger.error(f"Erro de conexão ao enviar WhatsApp: {e}")
             return False

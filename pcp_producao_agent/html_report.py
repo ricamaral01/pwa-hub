@@ -55,7 +55,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
@@ -96,7 +96,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
+            gap: 1.25rem;
             margin-bottom: 2.5rem;
         }
 
@@ -104,7 +104,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-md);
-            padding: 1.5rem;
+            padding: 1.25rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -119,22 +119,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         .kpi-label {
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }
 
         .kpi-value {
-            font-size: 2.25rem;
+            font-size: 2.1rem;
             font-weight: 900;
-            margin: 0.5rem 0;
+            margin: 0.4rem 0;
             letter-spacing: -0.04em;
             color: var(--text-main);
         }
 
         .kpi-sub {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
         }
 
@@ -226,7 +226,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             color: #475569;
             padding: 0.35rem 0.85rem;
             border-radius: 9999px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 800;
         }
 
@@ -241,7 +241,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
         }
 
         th {
@@ -249,14 +249,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             color: var(--text-muted);
             font-weight: 800;
             text-transform: uppercase;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             letter-spacing: 0.08em;
-            padding: 1rem 1.25rem;
+            padding: 1rem 1.1rem;
             border-bottom: 2px solid #e2e8f0;
         }
 
         td {
-            padding: 1rem 1.25rem;
+            padding: 1rem 1.1rem;
             border-bottom: 1px solid #f1f5f9;
             font-weight: 600;
         }
@@ -292,7 +292,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             display: inline-block;
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -320,8 +320,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
 
         tfoot td {
-            padding: 1.15rem 1.25rem;
-            font-size: 0.95rem;
+            padding: 1.15rem 1.1rem;
+            font-size: 0.92rem;
             border-bottom: none;
         }
 
@@ -366,6 +366,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             position: relative;
             padding-left: 1.25rem;
             font-weight: 500;
+            line-height: 1.5;
         }
 
         .sector-narrative li::before {
@@ -394,28 +395,33 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <!-- KPI ROW -->
     <section class="kpi-grid">
         <div class="kpi-card">
-            <span class="kpi-label">PCP Programado</span>
+            <span class="kpi-label">PCP Programado (P)</span>
             <div class="kpi-value">{{ total_programado }}</div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Peças planejadas</span>
+            <span class="kpi-sub" style="color:var(--text-muted)">Meta planejada (Planilha)</span>
         </div>
         <div class="kpi-card">
-            <span class="kpi-label">Realizado Mapa</span>
+            <span class="kpi-label">PCP Realizado (R)</span>
+            <div class="kpi-value" style="color: #1e3a8a;">{{ total_realizado_encarregado }}</div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Apontado Encarregado</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">Realizado Fábrica</span>
             <div class="kpi-value">{{ total_produzido }}</div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Peças concretadas</span>
+            <span class="kpi-sub" style="color:var(--text-muted)">Concretado (Supabase)</span>
         </div>
         <div class="kpi-card">
-            <span class="kpi-label">Diferença Total</span>
+            <span class="kpi-label">Desvio Fábrica (vs P)</span>
             <div class="kpi-value" style="color: {% if diferenca_total >= 0 %}var(--color-excedente){% else %}var(--color-nao-produzido){% endif %}">
                 {{ "%+d" | format(diferenca_total) }}
             </div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Desvio acumulado</span>
+            <span class="kpi-sub" style="color:var(--text-muted)">Diferença no dia</span>
         </div>
         <div class="kpi-card">
             <span class="kpi-label">Aderência Geral</span>
-            <div class="kpi-value" style="color: {% if status == 'REALIZADO' %}var(--color-realizado){% elif status == 'PARCIAL' %}var(--color-parcial){% else %}var(--color-nao-produzido){% endif %}">
+            <div class="kpi-value" style="color: {% if aderencia_pct >= 95 %}var(--color-realizado){% elif aderencia_pct >= 80 %}var(--color-parcial){% else %}var(--color-nao-produzido){% endif %}">
                 {{ "%.1f" | format(aderencia_pct) }}%
             </div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Índice de atendimento</span>
+            <span class="kpi-sub" style="color:var(--text-muted)">Atendimento real</span>
         </div>
     </section>
 
@@ -462,8 +468,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <div class="sector-header">
             <h2 class="sector-title">{{ setor_nome }}</h2>
             <div class="sector-badge">
-                Programado: <strong>{{ stats.programado }}</strong> | 
-                Produzido: <strong>{{ stats.produzido }}</strong> | 
+                Prog (P): <strong>{{ stats.programado }}</strong> | 
+                Real (R): <strong>{{ stats.realizado_encarregado }}</strong> | 
+                Fábrica: <strong>{{ stats.produzido }}</strong> | 
                 Aderência: <strong>{{ "%.1f" | format(stats.aderencia_pct) }}%</strong>
             </div>
         </div>
@@ -474,10 +481,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     <tr>
                         <th>Modelo</th>
                         <th>Código do Poste</th>
-                        <th style="text-align: center; width: 150px;">Programado (Planilha)</th>
-                        <th style="text-align: center; width: 150px;">Produzido (Produção)</th>
-                        <th style="text-align: center; width: 100px;">Diferença</th>
-                        <th style="width: 180px;">Status</th>
+                        <th style="text-align: center; width: 150px;">Programado (Planilha - P)</th>
+                        <th style="text-align: center; width: 150px;">Realizado (Planilha - R)</th>
+                        <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
+                        <th style="text-align: center; width: 100px;">Desvio</th>
+                        <th style="width: 150px;">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -487,6 +495,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                             <td>{{ row.modelo }}</td>
                             <td><strong>{{ row.codigo }}</strong></td>
                             <td style="text-align: center;">{{ row.programado }}</td>
+                            <td style="text-align: center;">{{ row.realizado_encarregado }}</td>
                             <td style="text-align: center;">{{ row.produzido }}</td>
                             <td style="text-align: center;" class="text-diff {% if row.diferenca > 0 %}positive{% elif row.diferenca < 0 %}negative{% else %}zero{% endif %}">
                                 {{ "%+d" | format(row.diferenca) if row.diferenca != 0 else "0" }}
@@ -498,7 +507,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="6" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
+                            <td colspan="7" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
                                 Nenhuma atividade ou planejamento registrado para este setor nesta data.
                             </td>
                         </tr>
@@ -509,6 +518,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     <tr>
                         <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
                         <td style="text-align: center;">{{ stats.programado }}</td>
+                        <td style="text-align: center;">{{ stats.realizado_encarregado }}</td>
                         <td style="text-align: center;">{{ stats.produzido }}</td>
                         <td style="text-align: center;" class="text-diff {% if stats.diferenca > 0 %}positive{% elif stats.diferenca < 0 %}negative{% else %}zero{% endif %}">
                             {{ "%+d" | format(stats.diferenca) if stats.diferenca != 0 else "0" }}
@@ -560,6 +570,7 @@ class HtmlReportGenerator:
             "data_geracao": now.strftime("%d/%m/%Y"),
             "hora_geracao": now.strftime("%H:%M"),
             "total_programado": data["total_programado"],
+            "total_realizado_encarregado": data["total_realizado_encarregado"],
             "total_produzido": data["total_produzido"],
             "diferenca_total": data["diferenca_total"],
             "aderencia_pct": data["aderencia_pct"],
