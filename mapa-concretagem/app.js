@@ -2082,16 +2082,16 @@ async function loadClickedFormsFromSupabase() {
           let colaborador = row.lib_colaborador || '';
           let dataHora = row.lib_data_hora || nowIso();
 
-          if (row.prod_id) {
+          if (row.prod_id && row.prod_tipo_concreto !== 'Padrão') {
             statusVal = '1';
             tipoConcreto = row.prod_tipo_concreto || 'Padrão';
             colaborador = row.prod_colaborador || '';
             dataHora = row.prod_data_hora || nowIso();
-          } else if (row.lib_id) {
+          } else if (row.lib_id || (row.prod_id && row.prod_tipo_concreto === 'Padrão')) {
             statusVal = 'L';
             tipoConcreto = 'Padrão';
-            colaborador = row.lib_colaborador || '';
-            dataHora = row.lib_data_hora || nowIso();
+            colaborador = row.lib_colaborador || row.prod_colaborador || '';
+            dataHora = row.lib_data_hora || row.prod_data_hora || nowIso();
           } else if (row.prog_id) {
             statusVal = 'P';
             tipoConcreto = 'Padrão';
@@ -9844,6 +9844,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v4.51";
+  badge.textContent = "v4.52";
   badge.style.display = "inline-block";
 }
