@@ -1629,8 +1629,7 @@ function createFormaCard(item, setor) {
       tipoEl.style.display = "block";
     }
     setCardState(card, "saved");
-    // Concretagem somente é concluída após a liberação; o azul é o estado visual definitivo.
-    card.classList.add("is-liberada");
+    // Concreted forms remain green (is-saved) with the concrete type visible.
 
     // Permitir alternar programação mesmo se concretado no Modo Programação
     card.addEventListener("click", () => {
@@ -2054,7 +2053,12 @@ async function loadClickedFormsFromSupabase() {
         if (row.forma && row.setor) {
           const isAguardando = row.status === 'AGUARDANDO_CONCRETAGEM' || row.status === 'LIBERADO';
           const isProgramada = row.status === 'PROGRAMADA';
-          const statusVal = isProgramada ? 'P' : (isAguardando ? 'L' : '1');
+          let statusVal = '1';
+          if (isProgramada) {
+            statusVal = 'P';
+          } else if (isAguardando) {
+            statusVal = (row.tipo_concreto === 'Padrão' || !row.tipo_concreto) ? 'L' : '1';
+          }
           const key = row.setor + "||" + normalizeUpper(row.forma);
           clicked.formas[key] = statusVal;
 
@@ -2095,7 +2099,7 @@ async function loadClickedFormsFromSupabase() {
       const pendingEvents = (db.events || []).filter(ev => ev.pendingSync === true && ev.etapa === "LIBERACAO" && ev.dataFabricacao === data);
       pendingEvents.forEach(ev => {
         const key = ev.setor + "||" + normalizeUpper(ev.formaNumero);
-        clicked.formas[key] = (ev.status === "CONCRETADO") ? "1" : ((ev.status === "PROGRAMADA") ? "P" : "L");
+        clicked.formas[key] = (ev.status === "1" || ev.status === "CONCRETADO") ? "1" : ((ev.status === "PROGRAMADA" || ev.status === "P") ? "P" : "L");
       });
 
       localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
@@ -2484,8 +2488,8 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
     record.codigoPoste = resolvedPosteFields.codigoPoste;
     record.descricaoPoste = resolvedPosteFields.descricaoPoste;
     record.codigoProduto = resolvedPosteFields.codigoProduto;
-    if (!record.liberacao || record.liberacao.status !== "1") {
-      record.liberacao = { status: "1", colaborador, observacoes: "", fotos: [], timestamp: agora.toISOString(), origem: "LIBERACAO_FORMA" };
+    if (!record.liberacao || record.liberacao.status !== "L") {
+      record.liberacao = { status: "L", colaborador, observacoes: "", fotos: [], timestamp: agora.toISOString(), origem: "LIBERACAO_FORMA" };
       record.updatedAt = nowIso();
     }
     upsertRecord(db, record);
@@ -2493,7 +2497,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
       id: uuid(),
       recordId: record.id,
       etapa: "LIBERACAO",
-      status: "1",
+      status: "L",
       dataFabricacao: record.dataFabricacao,
       setor: record.setor,
       formaNumero: record.formaNumero,
@@ -2512,7 +2516,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
   }
 
   if (apiResult.ok) {
-    markFormaClicked(forma, setor);
+    markFormaLiberada(forma, setor);
     card.classList.remove("is-saving", "is-idle");
     card.classList.add("is-liberada");
     card.disabled = false;
@@ -2521,14 +2525,14 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
     setSyncStatus("ok", `Forma ${forma} liberada com sucesso.`);
     showLibFeedback(`${forma} — liberada!`, "ok");
   } else if (apiResult.skipped) {
-    markFormaClicked(forma, setor);
+    markFormaLiberada(forma, setor);
     card.classList.remove("is-saving", "is-idle");
     card.classList.add("is-liberada");
     card.disabled = false;
     setSyncStatus("warn", "API não configurada. Forma liberada localmente.");
     showLibFeedback(`${forma} — liberada (local).`, "ok");
   } else {
-    markFormaClicked(forma, setor);
+    markFormaLiberada(forma, setor);
     card.classList.remove("is-saving", "is-idle");
     card.classList.add("is-liberada");
     card.disabled = false;
