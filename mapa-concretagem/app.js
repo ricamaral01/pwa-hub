@@ -3096,7 +3096,25 @@ function readMontagemPostesDb() {
 }
 
 function writeMontagemPostesDb(db) {
-  localStorage.setItem(MONTAGEM_POSTES_KEY, JSON.stringify(db));
+  try {
+    localStorage.setItem(MONTAGEM_POSTES_KEY, JSON.stringify(db));
+  } catch (err) {
+    if (err?.name !== "QuotaExceededError" && err?.code !== 22 && err?.code !== 1014) throw err;
+
+    // Fotos em Base64 crescem cerca de 33% e podem esgotar rapidamente a cota
+    // do localStorage. Elas continuam no estado atual e são sincronizadas no
+    // Supabase; o cache local guarda apenas os dados operacionais da montagem.
+    const cacheDb = JSON.parse(JSON.stringify(db));
+    Object.values(cacheDb.postes || {}).forEach((poste) => {
+      Object.values(poste?.checklists || {}).forEach((section) => {
+        if (!section || typeof section !== "object" || Array.isArray(section)) return;
+        Object.keys(section).forEach((key) => {
+          if (key.endsWith("_photo")) delete section[key];
+        });
+      });
+    });
+    localStorage.setItem(MONTAGEM_POSTES_KEY, JSON.stringify(cacheDb));
+  }
 }
 
 function getMontagemPosteKey({ recordId, dataFabricacao, setor, formaNumero }) {
