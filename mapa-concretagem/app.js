@@ -6867,10 +6867,11 @@ function bindEvents() {
       const itemId = target.dataset.insItem || "";
 
       try {
-        const base64 = await fileToBase64(file);
+        const dataUrl = await fileToDataUrl(file);
+        const base64 = await compressImage(dataUrl, 1024, 0.7);
         setInspecaoChecklistPhoto(sectionId, itemId, base64);
       } catch (err) {
-        console.error("Erro ao converter imagem para base64:", err);
+        console.error("Erro ao converter e comprimir imagem:", err);
         showMsgBox("Erro ao carregar a foto. Tente novamente.", "error");
       }
     });
@@ -6968,10 +6969,11 @@ function bindEvents() {
       const itemId = target.dataset.mpItem || "";
 
       try {
-        const base64 = await fileToBase64(file);
+        const dataUrl = await fileToDataUrl(file);
+        const base64 = await compressImage(dataUrl, 1024, 0.7);
         setMontagemChecklistPhoto(sectionId, itemId, base64);
       } catch (err) {
-        console.error("Erro ao converter imagem para base64:", err);
+        console.error("Erro ao converter e comprimir imagem:", err);
         showMsgBox("Erro ao carregar a foto. Tente novamente.", "error");
       }
     });
@@ -9844,6 +9846,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v4.52";
+  badge.textContent = "v4.53";
   badge.style.display = "inline-block";
 }
