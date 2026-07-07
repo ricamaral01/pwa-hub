@@ -16,29 +16,9 @@ class GoogleSheetsClient:
             "https://www.googleapis.com/auth/drive"
         ]
 
-    def _normalize_date(self, date_val):
-        """
-        Normaliza datas do tipo DD/MM/YYYY ou YYYY-MM-DD para YYYY-MM-DD.
-        """
-        if not date_val:
-            return ""
-        date_str = str(date_val).strip()
-        
-        # Formato YYYY-MM-DD
-        if re.match(r"^\d{4}-\d{2}-\d{2}", date_str):
-            return date_str[:10]
-        
-        # Formato DD/MM/YYYY
-        match = re.match(r"^(\d{1,2})/(\d{1,2})/(\d{4})", date_str)
-        if match:
-            dd, mm, yyyy = match.groups()
-            return f"{yyyy}-{mm.zfill(2)}-{dd.zfill(2)}"
-        
-        return date_str
-
     def fetch_pcp_programacao(self, date_str):
         """
-        Acessa o Google Sheets e filtra a programação para a data informada.
+        Acessa a planilha e extrai o planejamento da aba 'PCP DIÁRIO - PADRÃO' para a data.
         """
         logger.info("Conectando ao Google Sheets...")
         try:
@@ -48,52 +28,93 @@ class GoogleSheetsClient:
             logger.info(f"Abrindo planilha ID: {self.spreadsheet_id}...")
             spreadsheet = client.open_by_key(self.spreadsheet_id)
             
-            logger.info("Acessando aba 'PCP - DIÁRIO'...")
-            worksheet = spreadsheet.worksheet("PCP - DIÁRIO")
+            # Localiza a aba correta com fallbacks
+            ws_title = "PCP DIÁRIO - PADRÃO"
+            try:
+                worksheet = spreadsheet.worksheet(ws_title)
+            except gspread.WorksheetNotFound:
+                # Procura aba que contenha pcp e diário/diario
+                match_ws = next((w for w in spreadsheet.worksheets() if 'pcp' in w.title.lower() and ('diár' in w.title.lower() or 'diar' in w.title.lower())), None)
+                if match_ws:
+                    worksheet = match_ws
+                    ws_title = match_ws.title
+                else:
+                    # Fallback para a primeira aba
+                    worksheet = spreadsheet.worksheets()[0]
+                    ws_title = worksheet.title
             
-            # Obtém todos os dados
-            rows = worksheet.get_all_records()
-            logger.info(f"Lidas {len(rows)} linhas na aba PCP - DIÁRIO.")
+            logger.info(f"Acessando aba '{ws_title}'...")
+            values = worksheet.get_all_values()
+            
+            # Converte YYYY-MM-DD para o formato da aba (ex: 06/07/26)
+            try:
+                dt = datetime.strptime(date_str, "%Y-%m-%d")
+                target_header = dt.strftime("%d/%m/%y")
+            except Exception:
+                target_header = date_str
+            
+            logger.info(f"Procurando coluna da data: '{target_header}'...")
+            
+            headers = values[0]
+            col_idx = None
+            try:
+                col_idx = headers.index(target_header)
+            except ValueError:
+                # Tenta formato flexível (sem zeros à esquerda: d/m/yy)
+                try:
+                    parts = target_header.split('/')
+                    flex = f"{int(parts[0])}/{int(parts[1])}/{parts[2]}"
+                    col_idx = next((i for i, h in enumerate(headers) if h == flex or target_header in h or flex in h), None)
+                except Exception:
+                    pass
+            
+            if col_idx is None:
+                raise ValueError(f"Cabeçalho da data '{target_header}' não foi encontrado nos cabeçalhos.")
+            
+            logger.info(f"Coluna de data encontrada no índice: {col_idx}")
 
-            # Filtra e normaliza
-            target_date = self._normalize_date(date_str)
+            # Identifica os índices das colunas de dados
+            headers_lower = [str(h).lower() for h in headers]
+            col_cod = next((i for i, h in enumerate(headers_lower) if 'montagem' in h), 1)
+            col_desc = next((i for i, h in enumerate(headers_lower) if 'descri' in h), 2)
+            col_setor = next((i for i, h in enumerate(headers_lower) if 'setor' in h), 5)
+
             filtered_rows = []
             
-            for index, r in enumerate(rows):
-                # Identifica colunas de data (tentativas comuns: 'Data', 'Data de Fabricação', 'Data Fabricação')
-                date_key = next((k for k in r.keys() if 'data' in k.lower()), None)
-                if not date_key:
+            # Os dados reais começam a partir da quarta linha (índice 3)
+            for index, row in enumerate(values[3:]):
+                if len(row) <= max(col_cod, col_desc, col_setor, col_idx):
+                    continue
+                    
+                codigo = str(row[col_cod]).strip()
+                modelo = str(row[col_desc]).strip()
+                setor = str(row[col_setor]).strip()
+                
+                if not codigo and not modelo:
                     continue
                 
-                row_date = self._normalize_date(r[date_key])
-                if row_date == target_date:
-                    # Identificação robusta de colunas
-                    sector_key = next((k for k in r.keys() if 'setor' in k.lower()), 'Setor')
-                    model_key = next((k for k in r.keys() if 'modelo' in k.lower()), 'Modelo')
-                    code_key = next((k for k in r.keys() if 'codigo' in k.lower() or 'código' in k.lower() or 'cod' in k.lower() or 'produto' in k.lower()), 'Código')
-                    qty_key = next((k for k in r.keys() if 'quant' in k.lower() or 'qtd' in k.lower() or 'prog' in k.lower()), 'Quantidade')
-                    
-                    qty_val = 0
+                # Lê a quantidade programada
+                qty_val = 0
+                try:
+                    qty_val = int(row[col_idx])
+                except ValueError:
                     try:
-                        qty_val = int(r.get(qty_key) or 0)
-                    except ValueError:
-                        try:
-                            qty_val = int(float(r.get(qty_key) or 0))
-                        except Exception:
-                            pass
-
-                    filtered_rows.append({
-                        "row_num": index + 2,
-                        "date": row_date,
-                        "setor": str(r.get(sector_key) or "").strip(),
-                        "modelo": str(r.get(model_key) or "").strip(),
-                        "codigo": str(r.get(code_key) or "").strip(),
-                        "quantidade_programada": qty_val
-                    })
-
-            logger.info(f"Filtradas {len(filtered_rows)} linhas programadas para a data {date_str}.")
+                        qty_val = int(float(row[col_idx]))
+                    except Exception:
+                        pass
+                
+                filtered_rows.append({
+                    "row_num": index + 4,
+                    "date": date_str,
+                    "setor": setor,
+                    "modelo": modelo,
+                    "codigo": codigo,
+                    "quantidade_programada": qty_val
+                })
+                
+            logger.info(f"Fim da leitura. Extraídas {len(filtered_rows)} linhas da planilha.")
             return filtered_rows
             
         except Exception as e:
-            logger.error(f"Falha ao acessar o Google Sheets: {e}")
+            logger.error(f"Falha ao processar o Google Sheets: {e}")
             raise e

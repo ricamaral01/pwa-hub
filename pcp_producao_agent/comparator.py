@@ -7,13 +7,13 @@ def normalize_sector(sector):
     if not sector:
         return "Desconhecido"
     sec = str(sector).strip().upper()
-    if sec in ("S1", "SETOR 1", "SETOR1"):
+    if sec in ("S1", "SETOR 1", "SETOR1", "1"):
         return "Setor 1"
-    if sec in ("S2", "SETOR 2", "SETOR2"):
+    if sec in ("S2", "SETOR 2", "SETOR2", "2"):
         return "Setor 2"
-    if sec in ("S3", "SETOR 3", "SETOR3"):
+    if sec in ("S3", "SETOR 3", "SETOR3", "3"):
         return "Setor 3"
-    if sec in ("S4", "SETOR 4", "SETOR4"):
+    if sec in ("S4", "SETOR 4", "SETOR4", "4"):
         return "Setor 4"
     return sector.strip()
 
@@ -34,7 +34,7 @@ class Comparator:
         prod_map = {}
         for r in prod_rows:
             setor = normalize_sector(r.get("setor"))
-            codigo = normalize_code(r.get("codigo_poste") or r.get("codigo_produto"))
+            codigo = normalize_code(r.get("codigo_resolved"))
             
             key = (setor, codigo)
             if key not in prod_map:
@@ -80,7 +80,7 @@ class Comparator:
                 modelo = pcp_item["modelo"]
             elif prod_items:
                 # Fallback para o modelo salvo na produção
-                modelo = prod_items[0].get("modelo") or "SEM MODELO"
+                modelo = prod_items[0].get("modelo_resolved") or "SEM MODELO"
                 
             diff = qty_real - qty_prog
 
