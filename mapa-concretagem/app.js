@@ -5229,7 +5229,15 @@ function getRelatorioTimestamp(row) {
 }
 
 function getRelatorioLiberacaoTimestamp(row) {
-  return row.liberacao_timestamp || row.liberacaoTimestamp || row.liberacao?.timestamp || getRelatorioTimestamp(row);
+  return row.liberacao_timestamp || row.liberacaoTimestamp || row.liberacao?.timestamp || "";
+}
+
+function getRelatorioProgramacaoTimestamp(row) {
+  return row.programacao_timestamp || row.programacaoTimestamp || row.programacao?.timestamp || "";
+}
+
+function getRelatorioConcretagemTimestamp(row) {
+  return row.concretagem_timestamp || row.concretagemTimestamp || getRelatorioTimestamp(row);
 }
 
 function getRelatorioOperador(row) {
@@ -5250,6 +5258,10 @@ function getRelatorioCodigoProduto(row) {
   const forma = String(row.forma_numero || row.forma || "").trim().toUpperCase();
   const catalogo = getPosteFieldsForForma(forma, row.setor || "");
   return row.codigo_produto || row.codigoProduto || catalogo.codigoProduto || "-";
+}
+
+function getFormaStatusKey(dataFabricacao, setor, forma) {
+  return `${dataFabricacao || ""}||${setor || ""}||${normalizeUpper(forma || "")}`;
 }
 
 function formatRelatorioDuracao(ms) {
@@ -5475,16 +5487,18 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
             const forma = r.forma_numero || r.formaNumero || "";
             const modelo = getRelatorioModelo(r);
             const operador = getRelatorioOperador(r) || "-";
-            const horario = formatTime(getRelatorioTimestamp(r));
-            const tipoConcreto = getRelatorioTipoConcreto(r);
+            const horarioProgramacao = formatTime(getRelatorioProgramacaoTimestamp(r));
             const horarioLiberacao = formatTime(getRelatorioLiberacaoTimestamp(r));
+            const horarioConcretagem = formatTime(getRelatorioConcretagemTimestamp(r));
+            const tipoConcreto = getRelatorioTipoConcreto(r);
             return `
               <tr>
                 <td>${escapeHtml(forma)}</td>
                 <td>${escapeHtml(modelo)}</td>
                 <td>${escapeHtml(operador)}</td>
-                <td>${escapeHtml(horario)}</td>
+                <td>${escapeHtml(horarioProgramacao || "-")}</td>
                 <td>${escapeHtml(horarioLiberacao)}</td>
+                <td>${escapeHtml(horarioConcretagem)}</td>
                 <td>${escapeHtml(tipoConcreto)}</td>
               </tr>`;
           }).join("");
@@ -5519,12 +5533,13 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
                         <th>Forma</th>
                         <th>Tipo de poste</th>
                         <th>Operador da concretagem</th>
-                        <th>Horário</th>
-                        <th>Liberação</th>
+                        <th>Programado</th>
+                        <th>Libera��o</th>
+                        <th>Concretagem</th>
                         <th>Tipo de concreto</th>
                       </tr>
                     </thead>
-                    <tbody>${sLinhas || '<tr><td colspan="6">Sem registros</td></tr>'}</tbody>
+                    <tbody>${sLinhas || '<tr><td colspan="7">Sem registros</td></tr>'}</tbody>
                   </table>
                 </div>
               </section>
@@ -5573,16 +5588,18 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
       const forma = r.forma_numero || r.formaNumero || "";
       const modelo = getRelatorioModelo(r);
       const operador = getRelatorioOperador(r) || "-";
-      const horario = formatTime(getRelatorioTimestamp(r));
-      const tipoConcreto = getRelatorioTipoConcreto(r);
+      const horarioProgramacao = formatTime(getRelatorioProgramacaoTimestamp(r));
       const horarioLiberacao = formatTime(getRelatorioLiberacaoTimestamp(r));
+      const horarioConcretagem = formatTime(getRelatorioConcretagemTimestamp(r));
+      const tipoConcreto = getRelatorioTipoConcreto(r);
       return `
         <tr>
           <td>${escapeHtml(forma)}</td>
           <td>${escapeHtml(modelo)}</td>
           <td>${escapeHtml(operador)}</td>
-          <td>${escapeHtml(horario)}</td>
+          <td>${escapeHtml(horarioProgramacao || "-")}</td>
           <td>${escapeHtml(horarioLiberacao)}</td>
+          <td>${escapeHtml(horarioConcretagem)}</td>
           <td>${escapeHtml(tipoConcreto)}</td>
         </tr>`;
     }).join("");
@@ -5616,12 +5633,13 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
                   <th>Forma</th>
                   <th>Tipo de poste</th>
                   <th>Operador da concretagem</th>
-                  <th>Horário</th>
-                  <th>Liberação</th>
+                  <th>Programado</th>
+                  <th>Libera��o</th>
+                  <th>Concretagem</th>
                   <th>Tipo de concreto</th>
                 </tr>
               </thead>
-              <tbody>${linhas || '<tr><td colspan="6">Sem registros</td></tr>'}</tbody>
+              <tbody>${linhas || '<tr><td colspan="7">Sem registros</td></tr>'}</tbody>
             </table>
           </div>
         </section>
@@ -5757,10 +5775,33 @@ async function gerarRelatorioSetor() {
       const { data: rows, error } = await query;
 
       if (!error && Array.isArray(rows)) {
+        let programacaoMap = new Map();
+        let liberacaoMap = new Map();
+        try {
+          let progQuery = supabaseClient.from('programacao_pcp').select('data_fabricacao,setor,forma,data_hora').eq('data_fabricacao', data);
+          let libQuery = supabaseClient.from('liberacao_formas').select('data_fabricacao,setor,forma,data_hora,colaborador').eq('data_fabricacao', data);
+          if (setor !== "Todos") {
+            progQuery = progQuery.eq('setor', setor);
+            libQuery = libQuery.eq('setor', setor);
+          }
+          const [progRes, libRes] = await Promise.all([progQuery, libQuery]);
+          if (!progRes.error && Array.isArray(progRes.data)) {
+            programacaoMap = new Map(progRes.data.map((row) => [getFormaStatusKey(row.data_fabricacao, row.setor, row.forma), row]));
+          }
+          if (!libRes.error && Array.isArray(libRes.data)) {
+            liberacaoMap = new Map(libRes.data.map((row) => [getFormaStatusKey(row.data_fabricacao, row.setor, row.forma), row]));
+          }
+        } catch (lookupErr) {
+          console.warn("Erro ao carregar horarios de programacao/liberacao para o relatorio:", lookupErr);
+        }
+
         // O relatório de produção considera somente a concretagem confirmada pela liberação.
         const uniqueRows = deduplicarLinhasProducao(rows.filter((r) => r.status === "LIBERADO"));
         const mappedRows = uniqueRows.map(r => {
           const formaNorm = normalizeForma(r.forma || r.forma_numero || "");
+          const statusKey = getFormaStatusKey(r.data_fabricacao || data, r.setor, r.forma || r.forma_numero);
+          const programacaoRow = programacaoMap.get(statusKey);
+          const liberacaoRow = liberacaoMap.get(statusKey);
           let modeloFinal = r.modelo;
           if ((r.setor === "Setor 3" || r.setor === "Setor 4") && (modeloFinal === "SC" || !modeloFinal) && formToModelMap[formaNorm]) {
             modeloFinal = formToModelMap[formaNorm];
@@ -5773,7 +5814,10 @@ async function gerarRelatorioSetor() {
             liberacao_status: "1",
             colaborador: r.colaborador,
             timestamp: r.data_hora || r.updated_at || r.created_at,
-            liberacao_timestamp: r.data_hora || r.updated_at || r.created_at,
+            concretagem_timestamp: r.data_hora || r.updated_at || r.created_at,
+            programacao_timestamp: programacaoRow?.data_hora || "",
+            liberacao_timestamp: liberacaoRow?.data_hora || "",
+            liberacao_colaborador: liberacaoRow?.colaborador || "",
             tipo_concreto: r.tipo_concreto || r.tipoConcreto || r.concretoTipo,
             setor: r.setor
           };
@@ -5811,6 +5855,8 @@ async function gerarRelatorioSetor() {
       liberacao_status: r.liberacao?.status || "",
       colaborador: r.liberacao?.colaborador || "",
       timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
+      concretagem_timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
+      programacao_timestamp: "",
       liberacao_timestamp: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
       tipoConcreto: r.concretoTipo,
       setor: r.setor,
@@ -9966,4 +10012,3 @@ async function updateSwVersionBadge() {
   badge.textContent = "v4.54";
   badge.style.display = "inline-block";
 }
-
