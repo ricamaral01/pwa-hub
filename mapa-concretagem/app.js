@@ -1014,6 +1014,38 @@ async function upsertWithLegacyFallback(tableName, row, legacyMapper) {
   if (legacyResult.error) throw legacyResult.error;
 }
 
+async function saveProducaoByNaturalKey(row) {
+  const { data: existingRows, error: selectError } = await supabaseClient
+    .from('producao')
+    .select('id')
+    .eq('data_fabricacao', row.data_fabricacao)
+    .eq('setor', row.setor)
+    .eq('forma', row.forma)
+    .order('data_hora', { ascending: false, nullsFirst: false });
+
+  if (selectError) throw selectError;
+
+  const [current, ...duplicates] = existingRows || [];
+  if (current?.id) {
+    const { error: updateError } = await supabaseClient
+      .from('producao')
+      .update(row)
+      .eq('id', current.id);
+    if (updateError) throw updateError;
+
+    if (duplicates.length) {
+      await supabaseClient
+        .from('producao')
+        .delete()
+        .in('id', duplicates.map((item) => item.id));
+    }
+    return;
+  }
+
+  const { error: insertError } = await supabaseClient.from('producao').insert(row);
+  if (insertError) throw insertError;
+}
+
 async function checkApiStatus() {
   if (!hasApiConfigured()) {
     setSyncStatus("warn", "Supabase não configurado: salvando apenas localmente.");
@@ -1073,7 +1105,7 @@ async function postToApi(action, payload) {
         }, { onConflict: 'data_fabricacao,setor,forma' });
         if (error) throw error;
       } else {
-        const { error } = await supabaseClient.from('producao').upsert({
+        await saveProducaoByNaturalKey({
           data_fabricacao: payload.dataFabricacao,
           setor: payload.setor,
           forma: payload.forma,
@@ -1085,8 +1117,7 @@ async function postToApi(action, payload) {
           colaborador: payload.colaborador,
           data_hora: dtStr,
           status: 'LIBERADO'
-        }, { onConflict: 'data_fabricacao,setor,forma' });
-        if (error) throw error;
+        });
       }
 
       return { ok: true, message: "Forma salva nos novos esquemas com sucesso" };
