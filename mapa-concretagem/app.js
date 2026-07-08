@@ -1960,14 +1960,6 @@ async function programFormaInApiOrLocal(data, setor, forma) {
   let synced = false;
   if (hasApiConfigured()) {
     try {
-      const { error } = await supabaseClient.from('programacao').insert([{
-        data_fabricacao: data,
-        setor: setor,
-        forma: forma
-      }]);
-      if (!error) synced = true;
-
-      // Also save to producao table with status PROGRAMADA
       const payload = {
         dia: new Date().toLocaleDateString("pt-BR"),
         hora: new Date().toLocaleTimeString("pt-BR"),
@@ -1979,7 +1971,8 @@ async function programFormaInApiOrLocal(data, setor, forma) {
         tipo_concreto: "Padrão",
         status: "PROGRAMADA"
       };
-      await postToApi("salvar_forma_click", payload);
+      const result = await postToApi("salvar_forma_click", payload);
+      synced = !!result.ok;
     } catch (err) {
       console.warn("Falha ao salvar programação no Supabase, usando local:", err);
     }
@@ -2003,18 +1996,11 @@ async function unprogramFormaInApiOrLocal(data, setor, forma) {
   let synced = false;
   if (hasApiConfigured()) {
     try {
-      const { error } = await supabaseClient.from('programacao').delete()
+      const { error } = await supabaseClient.from('programacao_pcp').delete()
         .eq('data_fabricacao', data)
         .eq('setor', setor)
         .eq('forma', forma);
       if (!error) synced = true;
-
-      // Also delete from producao table where status = PROGRAMADA
-      await supabaseClient.from('producao').delete()
-        .eq('data_fabricacao', data)
-        .eq('setor', setor)
-        .eq('forma', forma)
-        .eq('status', 'PROGRAMADA');
     } catch (err) {
       console.warn("Falha ao excluir programação no Supabase, usando local:", err);
     }
@@ -2056,17 +2042,69 @@ async function toggleFormaProgramada(forma, setor, card) {
   updateKioskProgress();
 }
 
+async function fetchFormStatusRowsFromTables(data) {
+  const [progRes, libRes, prodRes] = await Promise.all([
+    supabaseClient.from('programacao_pcp').select('*').eq('data_fabricacao', data),
+    supabaseClient.from('liberacao_formas').select('*').eq('data_fabricacao', data),
+    supabaseClient.from('producao').select('*').eq('data_fabricacao', data)
+  ]);
+
+  const firstError = [progRes.error, libRes.error, prodRes.error].find(Boolean);
+  if (firstError) throw firstError;
+
+  const rowsByKey = new Map();
+  const ensureRow = (setor, forma) => {
+    const key = `${setor}||${normalizeUpper(forma)}`;
+    if (!rowsByKey.has(key)) rowsByKey.set(key, { setor, forma: normalizeUpper(forma) });
+    return rowsByKey.get(key);
+  };
+
+  (progRes.data || []).forEach((row) => {
+    if (!row.setor || !row.forma) return;
+    Object.assign(ensureRow(row.setor, row.forma), {
+      prog_id: row.id || true,
+      prog_data_hora: row.data_hora || row.created_at || null
+    });
+  });
+
+  (libRes.data || []).forEach((row) => {
+    if (!row.setor || !row.forma) return;
+    Object.assign(ensureRow(row.setor, row.forma), {
+      lib_id: row.id || true,
+      lib_colaborador: row.colaborador || "",
+      lib_data_hora: row.data_hora || row.created_at || null
+    });
+  });
+
+  (prodRes.data || [])
+    .filter((row) => row.status === "LIBERADO" || row.status === "CONCRETADO" || row.tipo_concreto)
+    .forEach((row) => {
+      if (!row.setor || !row.forma) return;
+      Object.assign(ensureRow(row.setor, row.forma), {
+        prod_id: row.id || true,
+        prod_tipo_concreto: row.tipo_concreto || "Padrão",
+        prod_colaborador: row.colaborador || "",
+        prod_data_hora: row.data_hora || row.created_at || null
+      });
+    });
+
+  return Array.from(rowsByKey.values());
+}
+
 async function loadClickedFormsFromSupabase() {
   const data = el.libData?.value || todayYmd();
   if (!hasApiConfigured()) return;
 
   try {
     // Busca todas as concretagens feitas na data selecionada a partir da View unificada
-    const { data: rows, error } = await supabaseClient.from('vw_formas_status')
+    const { data: statusRows, error } = await supabaseClient.from('vw_formas_status')
       .select('*')
       .eq('data_fabricacao', data);
 
-    if (!error && Array.isArray(rows)) {
+    let rows = error ? await fetchFormStatusRowsFromTables(data) : statusRows;
+    if (!Array.isArray(rows)) rows = [];
+    if (!rows.length) rows = await fetchFormStatusRowsFromTables(data);
+    if (Array.isArray(rows)) {
       const clicked = getClickedFormsToday();
       // Limpa os registros locais de clique para re-popular com os dados atualizados em nuvem
       clicked.formas = {};
@@ -2222,14 +2260,14 @@ async function loadProgrammedFormas() {
   // Sincroniza as fôrmas concretadas do Supabase antes de renderizar
   await loadClickedFormsFromSupabase();
 
-  if (!sectorLabel || sectorLabel === "Setor 4") return; // Setor 4 não possui programação
+  if (!sectorLabel) return;
 
   state.programmedFormas = await loadOfficialProgrammedFormas(data, sectorLabel);
 
   let loadedFromDb = false;
   if (hasApiConfigured()) {
     try {
-      const { data: rows, error } = await supabaseClient.from('programacao')
+      const { data: rows, error } = await supabaseClient.from('programacao_pcp')
         .select('forma')
         .eq('data_fabricacao', data)
         .eq('setor', sectorLabel);
@@ -4772,11 +4810,18 @@ async function renderHistorico() {
 
   if (hasApiConfigured() && data) {
     try {
-      const [setor1, setor2] = await Promise.all([
+      const [setor1, setor2, setor3, setor4] = await Promise.all([
         getRowsForDashboard(data, "Setor 1"),
-        getRowsForDashboard(data, "Setor 2")
+        getRowsForDashboard(data, "Setor 2"),
+        getRowsForDashboard(data, "Setor 3"),
+        getRowsForDashboard(data, "Setor 4")
       ]);
-      const apiRows = [...(setor1.rows || []), ...(setor2.rows || [])];
+      const apiRows = [
+        ...(setor1.rows || []),
+        ...(setor2.rows || []),
+        ...(setor3.rows || []),
+        ...(setor4.rows || [])
+      ];
       const apiEvents = [];
       apiRows.forEach((row) => {
         const formaNumero = String(row.forma_numero || "");
@@ -4923,7 +4968,7 @@ async function renderAcmpConcretagem() {
   output.innerHTML = '<p class="muted">Carregando...</p>';
   const notes = readAcmpNotes();
 
-  const setores = setorFiltro ? [setorFiltro] : ["Setor 1", "Setor 2"];
+  const setores = setorFiltro ? [setorFiltro] : ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
   const allRows = [];
 
   for (const setor of setores) {
@@ -4936,6 +4981,7 @@ async function renderAcmpConcretagem() {
         const { data: qData, error } = await query;
         if (!error && Array.isArray(qData)) {
           let rows = qData;
+          rows = rows.filter((r) => r.status === 'LIBERADO' || r.status === 'CONCRETADO');
           if (modoCarga === "pendentes") rows = rows.filter((r) => r.status !== 'INSPECIONADO');
           rows.forEach((r) => allRows.push({ ...r, _setor: setor, forma_numero: r.forma, lib_timestamp: r.data_hora }));
           fetched = true;
@@ -5036,7 +5082,7 @@ async function getRowsForDashboard(data, setor) {
         rows: rows.map(r => ({
           ...r,
           forma_numero: r.forma,
-          liberacao_status: r.status === 'LIBERADO' ? '1' : '0'
+          liberacao_status: (r.status === 'LIBERADO' || r.status === 'CONCRETADO') ? '1' : '0'
         })),
         source: "api"
       };
@@ -9889,3 +9935,4 @@ async function updateSwVersionBadge() {
   badge.textContent = "v4.54";
   badge.style.display = "inline-block";
 }
+
