@@ -5598,3 +5598,97 @@ body.odin-active .sw-version-badge {
   color: #ff9999 !important;
   box-shadow: 0 0 8px rgba(255, 0, 0, 0.4) !important;
 }
+
+/* Relatorio Enc. Producao: compact 7-column layout */
+body:not(.print-relatorio) .rel-full-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+body:not(.print-relatorio) .rel-full-table th,
+body:not(.print-relatorio) .rel-full-table td {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(1),
+body:not(.print-relatorio) .rel-full-table td:nth-child(1) {
+  width: 8% !important;
+  text-align: center !important;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(2),
+body:not(.print-relatorio) .rel-full-table td:nth-child(2) {
+  width: 34% !important;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(3),
+body:not(.print-relatorio) .rel-full-table td:nth-child(3) {
+  width: 12% !important;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(4),
+body:not(.print-relatorio) .rel-full-table td:nth-child(4),
+body:not(.print-relatorio) .rel-full-table th:nth-child(5),
+body:not(.print-relatorio) .rel-full-table td:nth-child(5),
+body:not(.print-relatorio) .rel-full-table th:nth-child(6),
+body:not(.print-relatorio) .rel-full-table td:nth-child(6) {
+  width: 7% !important;
+  text-align: center !important;
+}
+
+body:not(.print-relatorio) .rel-full-table th:nth-child(7),
+body:not(.print-relatorio) .rel-full-table td:nth-child(7) {
+  width: 18% !important;
+}
+
+@media print {
+  body.print-relatorio .rel-full-table {
+    table-layout: fixed !important;
+    width: 100% !important;
+  }
+
+  body.print-relatorio .rel-full-table th,
+  body.print-relatorio .rel-full-table td {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(1),
+  body.print-relatorio .rel-full-table td:nth-child(1) {
+    width: 8% !important;
+    text-align: center !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(2),
+  body.print-relatorio .rel-full-table td:nth-child(2) {
+    width: 32% !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(3),
+  body.print-relatorio .rel-full-table td:nth-child(3) {
+    width: 12% !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(4),
+  body.print-relatorio .rel-full-table td:nth-child(4),
+  body.print-relatorio .rel-full-table th:nth-child(5),
+  body.print-relatorio .rel-full-table td:nth-child(5),
+  body.print-relatorio .rel-full-table th:nth-child(6),
+  body.print-relatorio .rel-full-table td:nth-child(6) {
+    width: 7% !important;
+    text-align: center !important;
+  }
+
+  body.print-relatorio .rel-full-table th:nth-child(7),
+  body.print-relatorio .rel-full-table td:nth-child(7) {
+    width: 20% !important;
+  }
+}

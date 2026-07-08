@@ -5532,10 +5532,10 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
                       <tr>
                         <th>Forma</th>
                         <th>Tipo de poste</th>
-                        <th>Operador da concretagem</th>
-                        <th>Programado</th>
-                        <th>Liberação</th>
-                        <th>Concretagem</th>
+                        <th>Operador</th>
+                        <th>PCP</th>
+                        <th>Lib.</th>
+                        <th>Concre.</th>
                         <th>Tipo de concreto</th>
                       </tr>
                     </thead>
@@ -5632,10 +5632,10 @@ function renderRelatorioSetor({ data, setor, encarregado, rows }) {
                 <tr>
                   <th>Forma</th>
                   <th>Tipo de poste</th>
-                  <th>Operador da concretagem</th>
-                  <th>Programado</th>
-                  <th>Liberação</th>
-                  <th>Concretagem</th>
+                  <th>Operador</th>
+                  <th>PCP</th>
+                  <th>Lib.</th>
+                  <th>Concre.</th>
                   <th>Tipo de concreto</th>
                 </tr>
               </thead>
