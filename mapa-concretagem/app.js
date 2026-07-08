@@ -1503,7 +1503,7 @@ function createFormaButton(item, setor) {
   } else {
     btn.addEventListener("click", () => {
       const data = el.libData?.value;
-      const colaborador = (el.libColaborador?.value || "").trim();
+      const colaborador = getProductionCollaborator();
       if (!data) {
         showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
         el.libData?.focus();
@@ -1716,7 +1716,7 @@ function createFormaCard(item, setor) {
       }
       // Modo Normal: Concretar
       const data = el.libData?.value;
-      const colaborador = (el.libColaborador?.value || "").trim();
+      const colaborador = getProductionCollaborator();
       if (!data) {
         showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
         el.libData?.focus();
@@ -1740,7 +1740,7 @@ function createFormaCard(item, setor) {
         return;
       }
       const data = el.libData?.value;
-      const colaborador = (el.libColaborador?.value || "").trim();
+      const colaborador = getProductionCollaborator();
       if (!data) {
         showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
         el.libData?.focus();
@@ -1840,7 +1840,7 @@ function createS4TableRow(item, setor) {
 
   tdForma.addEventListener("click", () => {
     const data = el.libData?.value;
-    const colaborador = (el.libColaborador?.value || "").trim();
+    const colaborador = getProductionCollaborator();
     if (!data) { showLibFeedback("Data!", "error"); return; }
     if (!colaborador) { showLibFeedback("Colaborador!", "error"); return; }
     showConcreteTypePopup(item.forma, setor, tdForma, item.modelo || "");
@@ -2564,7 +2564,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
   const dia = agora.toLocaleDateString("pt-BR");
   const hora = agora.toLocaleTimeString("pt-BR");
   const dataFabricacao = el.libData?.value || todayYmd();
-  const colaborador = (el.libColaborador?.value || "").trim();
+  const colaborador = getProductionCollaborator();
   const modeloFinal = modelo || card.dataset.modelo || "";
   const posteFields = {
     codigoPoste: card.dataset.codigoPoste || "",
@@ -2676,7 +2676,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
   const dia = agora.toLocaleDateString("pt-BR");
   const hora = agora.toLocaleTimeString("pt-BR");
   const dataFabricacao = el.libData?.value || todayYmd();
-  const colaborador = (el.libColaborador?.value || "").trim();
+  const colaborador = getProductionCollaborator();
   const modeloFinal = modelo || card.dataset.modelo || "";
   const posteFields = {
     codigoPoste: card.dataset.codigoPoste || "",
@@ -5750,7 +5750,7 @@ async function enviarRelatorioWhatsapp() {
 async function gerarRelatorioSetor() {
   const data = el.relData.value;
   const setor = el.relSetor.value;
-  const encarregado = el.relEncarregado.value.trim();
+  const encarregado = getReportManagerName();
 
   if (!data || !setor) {
     showMsgBox("Informe data e setor para gerar o relatório.", "error");
@@ -6084,6 +6084,7 @@ async function salvarNovaSenhaPrimeiroAcesso() {
     setLoginFeedback("");
     unlockAppAfterLogin();
     applyRoleVisibility();
+    applyAutoResponsibleFields();
     ensurePostLoginBootstrap();
     setMode("HUB");
     setSyncStatus("ok", `Acesso liberado para ${state.authUser.roleLabel}.`);
@@ -6094,6 +6095,49 @@ async function salvarNovaSenhaPrimeiroAcesso() {
   }
 }
 
+function isAutoResponsibleUser() {
+  const name = String(state.authUser?.name || "").trim().toLowerCase();
+  return name.includes("ricardo") || name.includes("philippe");
+}
+
+function getCurrentResponsibleName() {
+  return isAutoResponsibleUser() ? String(state.authUser?.name || "").trim() : "";
+}
+
+function ensureSelectValue(selectEl, value) {
+  if (!selectEl || !value) return;
+  const exists = Array.from(selectEl.options || []).some((option) => option.value === value);
+  if (!exists) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    selectEl.appendChild(option);
+  }
+  selectEl.value = value;
+}
+
+function applyAutoResponsibleFields() {
+  const responsible = getCurrentResponsibleName();
+  const enabled = !!responsible;
+
+  if (enabled) {
+    ensureSelectValue(el.libColaborador, responsible);
+    if (el.kioskLibColaborador) el.kioskLibColaborador.value = responsible;
+    if (el.relEncarregado) el.relEncarregado.value = responsible;
+  }
+
+  if (el.libColaborador) el.libColaborador.disabled = enabled;
+  if (el.kioskLibColaborador) el.kioskLibColaborador.disabled = enabled;
+  if (el.relEncarregado) el.relEncarregado.disabled = enabled;
+}
+
+function getProductionCollaborator() {
+  return getCurrentResponsibleName() || (el.libColaborador?.value || "").trim();
+}
+
+function getReportManagerName() {
+  return getCurrentResponsibleName() || (el.relEncarregado?.value || "").trim();
+}
 function lockAppForLogin() {
   document.body.classList.add("auth-locked");
   if (el.loginScreen) el.loginScreen.classList.remove("hidden");
@@ -6157,6 +6201,8 @@ function applyRoleVisibility() {
       el.authUserBadge.classList.add("hidden");
     }
   }
+
+  applyAutoResponsibleFields();
 
   if (el.authLogoutBtn) {
     el.authLogoutBtn.classList.toggle("hidden", !state.authUser);
@@ -6223,6 +6269,7 @@ async function loginWithRole(name, password) {
   setLoginFeedback("");
   unlockAppAfterLogin();
   applyRoleVisibility();
+  applyAutoResponsibleFields();
   ensurePostLoginBootstrap();
   setMode("HUB");
   setSyncStatus("ok", `Acesso liberado para ${state.authUser.roleLabel}.`);
@@ -6270,6 +6317,7 @@ function setMode(mode) {
     carregarProdutividadeConcretagem();
   }
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
+    applyAutoResponsibleFields();
     el.viewLiberacao.classList.remove("hidden");
     state.activeLiberacaoSector = mode;
 
@@ -6287,7 +6335,10 @@ function setMode(mode) {
   }
   if (mode === "MONTAGEM_POSTES") el.viewMontagemPostes.classList.remove("hidden");
   if (mode === "MONTAGEM_POSTES_DETALHE") el.viewMontagemPostesDetalhe.classList.remove("hidden");
-  if (mode === "RELATORIO") el.viewRelatorio.classList.remove("hidden");
+  if (mode === "RELATORIO") {
+    applyAutoResponsibleFields();
+    el.viewRelatorio.classList.remove("hidden");
+  }
   if (mode === "HISTORICO") el.viewHistorico.classList.remove("hidden");
   if (mode === "ACMP_CONCRETAGEM") el.viewAcmpConcretagem.classList.remove("hidden");
   if (mode === "USUARIOS") {
@@ -6312,9 +6363,15 @@ function setMode(mode) {
   }
 
   document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3");
-  if (mode === "HUB") document.body.classList.add("mode-hub");
+  if (mode === "HUB") {
+    document.body.classList.add("mode-hub");
+    applyAutoResponsibleFields();
+  }
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
-  if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) document.body.classList.add("mode-liberacao");
+  if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
+    document.body.classList.add("mode-liberacao");
+    applyAutoResponsibleFields();
+  }
   if (mode === "SEQUENCIA_S3") document.body.classList.add("mode-sequencia-s3");
   if (mode === "INSPECAO") {
     document.body.classList.add("mode-inspecao");
@@ -6338,7 +6395,10 @@ function setMode(mode) {
     }
   }
   if (mode === "MONTAGEM_POSTES_DETALHE") document.body.classList.add("mode-montagem-postes-detalhe");
-  if (mode === "RELATORIO") document.body.classList.add("mode-relatorio");
+  if (mode === "RELATORIO") {
+    document.body.classList.add("mode-relatorio");
+    applyAutoResponsibleFields();
+  }
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
   if (mode === "ACMP_CONCRETAGEM") document.body.classList.add("mode-acmp-concretagem");
   if (mode === "USUARIOS") document.body.classList.add("mode-usuarios");
@@ -6496,6 +6556,8 @@ function bindEvents() {
       }
     });
   }
+
+  applyAutoResponsibleFields();
 
   if (el.authLogoutBtn) {
     el.authLogoutBtn.addEventListener("click", logoutUser);
@@ -8701,6 +8763,7 @@ function init() {
     setAccessByRole(session.role);
     unlockAppAfterLogin();
     applyRoleVisibility();
+    applyAutoResponsibleFields();
     ensurePostLoginBootstrap();
     setMode("HUB");
   } else {
