@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Diário PCP x Produção — ConcreTrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            
+            --color-realizado: #10b981;
+            --color-realizado-bg: #ecfdf5;
+            --color-parcial: #f59e0b;
+            --color-parcial-bg: #fffbeb;
+            --color-nao-produzido: #ef4444;
+            --color-nao-produzido-bg: #fef2f2;
+            --color-excedente: #3b82f6;
+            --color-excedente-bg: #eff6ff;
+            --color-nao-programado: #8b5cf6;
+            --color-nao-programado-bg: #f5f3ff;
+            
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --transition: all 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2.5rem 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .brand h1 {
+            font-size: 2.25rem;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        .timestamp {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* --- KPI CARD ROW --- */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .kpi-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }
+
+        .kpi-label {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .kpi-value {
+            font-size: 2.1rem;
+            font-weight: 900;
+            margin: 0.4rem 0;
+            letter-spacing: -0.04em;
+            color: var(--text-main);
+        }
+
+        .kpi-sub {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* --- EXECUTIVE SUMMARY --- */
+        .summary-card {
+            background: #1e293b;
+            color: #f8fafc;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 25px -5px rgba(30, 41, 59, 0.3);
+        }
+
+        .summary-card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.02em;
+            color: #3b82f6;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .summary-section h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #94a3b8;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.25rem;
+        }
+
+        .summary-list {
+            list-style: none;
+        }
+
+        .summary-list > li {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.25rem;
+            list-style-type: none;
+        }
+
+        .summary-list > li::before {
+            content: "•";
+            color: #3b82f6;
+            font-weight: bold;
+            font-size: 1.25rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        .summary-nested-list {
+            list-style-type: none;
+            padding-left: 0.75rem;
+            margin-top: 0.35rem;
+            border-left: 2px solid #334155;
+        }
+
+        .summary-nested-list li {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 0.25rem;
+            position: relative;
+            padding-left: 1rem;
+            list-style-type: none;
+        }
+
+        .summary-nested-list li::before {
+            content: "◦";
+            color: #94a3b8;
+            font-size: 1rem;
+            position: absolute;
+            left: 0;
+            top: -1px;
+            font-weight: bold;
+        }
+
+        /* --- SECTIONS BY SECTOR --- */
+        .sector-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .sector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sector-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .sector-badge {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        /* --- TABLE --- */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.92rem;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            padding: 1rem 1.1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 1rem 1.1rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-weight: 600;
+        }
+
+        /* Status colors mapping */
+        .status-REALIZADO {
+            background: var(--color-realizado-bg);
+            border-left: 5px solid var(--color-realizado);
+            color: #065f46;
+        }
+        .status-PARCIAL {
+            background: var(--color-parcial-bg);
+            border-left: 5px solid var(--color-parcial);
+            color: #92400e;
+        }
+        .status-NÃO\ PRODUZIDO {
+            background: var(--color-nao-produzido-bg);
+            border-left: 5px solid var(--color-nao-produzido);
+            color: #991b1b;
+        }
+        .status-EXCEDENTE {
+            background: var(--color-excedente-bg);
+            border-left: 5px solid var(--color-excedente);
+            color: #1e40af;
+        }
+        .status-NÃO\ PROGRAMADO {
+            background: var(--color-nao-programado-bg);
+            border-left: 5px solid var(--color-nao-programado);
+            color: #5b21b6;
+        }
+
+        .badge-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.68rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-REALIZADO { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .badge-PARCIAL { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .badge-NÃO\ PRODUZIDO { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .badge-EXCEDENTE { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .badge-NÃO\ PROGRAMADO { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
+
+        .text-diff {
+            font-weight: 700;
+        }
+        .text-diff.negative { color: var(--color-nao-produzido); }
+        .text-diff.positive { color: var(--color-excedente); }
+        .text-diff.zero { color: var(--text-muted); }
+
+        /* Footer totals styling */
+        tfoot tr {
+            background: #f8fafc;
+            border-top: 3px double #cbd5e1;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        tfoot td {
+            padding: 1.15rem 1.1rem;
+            font-size: 0.92rem;
+            border-bottom: none;
+        }
+
+        /* Narrative Summary Box */
+        .sector-narrative {
+            margin-top: 1.5rem;
+            padding: 1.25rem 1.5rem;
+            background: #f8fafc;
+            border-left: 4px solid #3b82f6;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .sector-narrative h4 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sector-narrative .desc-geral {
+            font-size: 0.9rem;
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .sector-narrative ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .sector-narrative li {
+            font-size: 0.88rem;
+            color: #475569;
+            margin-bottom: 0.4rem;
+            position: relative;
+            padding-left: 1.25rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .sector-narrative li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="brand">
+            <h1>Relatório Diário PCP x Produção</h1>
+            <p>Comparativo Executivo — Mapa de Concretagem vs. Planilha PCP - DIÁRIO</p>
+        </div>
+        <div class="timestamp">
+            <div>Data Analisada: <strong>07/07/2026</strong></div>
+            <div style="margin-top:0.25rem;">Gerado em: <strong>08/07/2026 às 06:32</strong></div>
+        </div>
+    </header>
+
+    <!-- KPI ROW -->
+    <section class="kpi-grid">
+        <div class="kpi-card">
+            <span class="kpi-label">PCP Programado (P)</span>
+            <div class="kpi-value">182</div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Meta planejada (Planilha)</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">PCP Realizado (R)</span>
+            <div class="kpi-value" style="color: #1e3a8a;">163</div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Apontado Encarregado</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">Realizado Fábrica</span>
+            <div class="kpi-value">138</div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Concretado (Supabase)</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">Desvio Fábrica (vs P)</span>
+            <div class="kpi-value" style="color: var(--color-nao-produzido)">
+                -44
+            </div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Diferença no dia</span>
+        </div>
+        <div class="kpi-card">
+            <span class="kpi-label">Aderência Geral</span>
+            <div class="kpi-value" style="color: var(--color-nao-produzido)">
+                75.8%
+            </div>
+            <span class="kpi-sub" style="color:var(--text-muted)">Atendimento real</span>
+        </div>
+    </section>
+
+    <!-- EXECUTIVE SUMMARY -->
+    <section class="summary-card">
+        <h2>Resumo Executivo & Recomendações</h2>
+        <div class="summary-grid">
+            <div class="summary-section">
+                <h3>Principais Pontos de Aderência</h3>
+                <ul class="summary-list">
+                    <li>Setor com melhor aderência: <strong>Setor 1</strong></li>
+                    <li>Setor com maior desvio: <strong>Setor 2</strong></li>
+                    <li>
+                        Itens planejados não produzidos: <strong>17</strong>
+                        
+                            <ul class="summary-nested-list">
+                                
+                                    <li>Cód. 1 (2) no 5 - Prog: 25 pç</li>
+                                
+                                    <li>Cód. 4031 (ELEKTRO 1 CX VR) no Setor 1 - Prog: 27 pç</li>
+                                
+                                    <li>Cód. 4032 (ELEKTRO 2 CX VR) no Setor 1 - Prog: 7 pç</li>
+                                
+                                    <li>Cód. 4764 (ELEKTRO 1 CX VL) no Setor 1 - Prog: 4 pç</li>
+                                
+                                    <li>Cód. 4848 (SUB 100 ELEKTRO) no Setor 1 - Prog: 2 pç</li>
+                                
+                                    <li>Cód. 931 (ECON 1 CX VR) no Setor 1 - Prog: 6 pç</li>
+                                
+                                    <li>Cód. 941 (2 CX VL) no Setor 1 - Prog: 5 pç</li>
+                                
+                                    <li>Cód. 947 (4 CX VL) no Setor 1 - Prog: 1 pç</li>
+                                
+                                    <li>Cód. 948 (4 CX VR) no Setor 1 - Prog: 2 pç</li>
+                                
+                                    <li>Cód. 949 (SUB 100) no Setor 1 - Prog: 5 pç</li>
+                                
+                                    <li>Cód. 957 (EDP 1 CX VL) no Setor 1 - Prog: 15 pç</li>
+                                
+                                    <li>Cód. 934 (POSTE CAIXA LENTE 1 CX VL) no Setor 2 - Prog: 5 pç</li>
+                                
+                                    <li>Cód. 937 (7,5X600 TC VL) no Setor 2 - Prog: 1 pç</li>
+                                
+                                    <li>Cód. 938 (1 CX VR) no Setor 2 - Prog: 47 pç</li>
+                                
+                                    <li>Cód. 940 (7,5X600 TC VR) no Setor 2 - Prog: 4 pç</li>
+                                
+                                    <li>Cód. 942 (2 CX VL - 300 DAN) no Setor 2 - Prog: 1 pç</li>
+                                
+                                    <li>Cód. 944 (2 CX VR - 300 DAN) no Setor 2 - Prog: 1 pç</li>
+                                
+                            </ul>
+                        
+                    </li>
+                    <li>
+                        Itens produzidos fora do planejamento: <strong>11</strong>
+                        
+                            <ul class="summary-nested-list">
+                                
+                                    <li>Cód. 100 (SUB. 100-AMP) no Setor 1 - Real: 5 pç</li>
+                                
+                                    <li>Cód. 300-VL (2 CXS VL) no Setor 1 - Real: 1 pç</li>
+                                
+                                    <li>Cód. 300-VR (2 CXS VR) no Setor 1 - Real: 1 pç</li>
+                                
+                                    <li>Cód. AE (1 CX VR) no Setor 1 - Real: 25 pç</li>
+                                
+                                    <li>Cód. CE (2 CXS VR) no Setor 1 - Real: 7 pç</li>
+                                
+                                    <li>Cód. D (2 CXS VL) no Setor 1 - Real: 5 pç</li>
+                                
+                                    <li>Cód. SB-E1 (SUB. 100-AMP-E) no Setor 1 - Real: 2 pç</li>
+                                
+                                    <li>Cód. A (1 CX VR) no Setor 2 - Real: 20 pç</li>
+                                
+                                    <li>Cód. B (1 CX VL) no Setor 2 - Real: 7 pç</li>
+                                
+                                    <li>Cód. C (2 CXS VR) no Setor 2 - Real: 7 pç</li>
+                                
+                                    <li>Cód. SEM CODIGO (SEM MODELO) no Setor 3 - Real: 48 pç</li>
+                                
+                            </ul>
+                        
+                    </li>
+                </ul>
+            </div>
+            <div class="summary-section">
+                <h3>Pendências Críticas (PCP Não Atendido)</h3>
+                <ul class="summary-list">
+                    
+                        
+                            <li>947 (4 CX VL) no Setor 1 (Falta: 1 pç)</li>
+                        
+                            <li>938 (1 CX VR) no Setor 2 (Falta: 47 pç)</li>
+                        
+                            <li>949 (SUB 100) no Setor 1 (Falta: 5 pç)</li>
+                        
+                            <li>957 (EDP 1 CX VL) no Setor 1 (Falta: 15 pç)</li>
+                        
+                            <li>937 (7,5X600 TC VL) no Setor 2 (Falta: 1 pç)</li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+        
+        <div class="summary-section" style="margin-top: 1.5rem;">
+            <h3 style="color:#3b82f6;">Recomendações Operacionais</h3>
+            <ul class="summary-list">
+                
+                    <li>Priorizar os moldes dos postes críticos que ficaram pendentes hoje.</li>
+                
+                    <li>Readequar a programação de formas no PCP do dia seguinte para evitar gargalos.</li>
+                
+                    <li>Acompanhar os desvios e verificar se houve falta de matéria-prima ou quebra de maquinário nos setores afetados.</li>
+                
+            </ul>
+        </div>
+    </section>
+
+    <!-- TABLES BY SECTOR -->
+    
+    <section class="sector-section">
+        <div class="sector-header">
+            <h2 class="sector-title">Setor 1</h2>
+            <div class="sector-badge">
+                Prog (P): <strong>74</strong> | 
+                Real (R): <strong>66</strong> | 
+                Fábrica: <strong>46</strong> | 
+                Aderência: <strong>62.2%</strong>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Código do Poste</th>
+                        <th style="text-align: center; width: 150px;">Programado (Planilha - P)</th>
+                        <th style="text-align: center; width: 150px;">Realizado (Planilha - R)</th>
+                        <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
+                        <th style="text-align: center; width: 100px;">Desvio</th>
+                        <th style="width: 150px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>SUB. 100-AMP</td>
+                            <td><strong>100</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +5
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>2 CXS VL</td>
+                            <td><strong>300-VL</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +1
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>2 CXS VR</td>
+                            <td><strong>300-VR</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +1
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>ELEKTRO 1 CX VR</td>
+                            <td><strong>4031</strong></td>
+                            <td style="text-align: center;">27</td>
+                            <td style="text-align: center;">26</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -27
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>ELEKTRO 2 CX VR</td>
+                            <td><strong>4032</strong></td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -7
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>ELEKTRO 1 CX VL</td>
+                            <td><strong>4764</strong></td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -4
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>ELEKTRO 2 CX VL</td>
+                            <td><strong>4765</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>SUB 100 ELEKTRO</td>
+                            <td><strong>4848</strong></td>
+                            <td style="text-align: center;">2</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -2
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>ELEKTRO 3 CX VL</td>
+                            <td><strong>4929</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>SUB 200 TC</td>
+                            <td><strong>5017</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>ECON 1 CX VL</td>
+                            <td><strong>930</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>ECON 1 CX VR</td>
+                            <td><strong>931</strong></td>
+                            <td style="text-align: center;">6</td>
+                            <td style="text-align: center;">6</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -6
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>ECON 2 CX VR</td>
+                            <td><strong>932</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>ECON 3 CX VR</td>
+                            <td><strong>933</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>7,5X600 BARR VL</td>
+                            <td><strong>936</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>7,5X600 BARR VR</td>
+                            <td><strong>939</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>2 CX VL</td>
+                            <td><strong>941</strong></td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -5
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>3 CX VL</td>
+                            <td><strong>945</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>3 CX VR</td>
+                            <td><strong>946</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>4 CX VL</td>
+                            <td><strong>947</strong></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -1
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>4 CX VR</td>
+                            <td><strong>948</strong></td>
+                            <td style="text-align: center;">2</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -2
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>SUB 100</td>
+                            <td><strong>949</strong></td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -5
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>SUB 200</td>
+                            <td><strong>950</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>EDP 1 CX VL</td>
+                            <td><strong>957</strong></td>
+                            <td style="text-align: center;">15</td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -15
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>1 CX VR</td>
+                            <td><strong>AE</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">25</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +25
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>2 CXS VR</td>
+                            <td><strong>CE</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +7
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>2 CXS VL</td>
+                            <td><strong>D</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +5
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>SUB. 100-AMP-E</td>
+                            <td><strong>SB-E1</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">2</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +2
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                    
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
+                        <td style="text-align: center;">74</td>
+                        <td style="text-align: center;">66</td>
+                        <td style="text-align: center;">46</td>
+                        <td style="text-align: center;" class="text-diff negative">
+                            -28
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                
+            </table>
+        </div>
+
+        <!-- Local narrative summary -->
+        
+        <div class="sector-narrative">
+            <h4>📋 Resumo de Desvios — Apontamento vs. Planejamento</h4>
+            <p class="desc-geral">O encarregado planejou 74 peças (P) e apontou 66 peças como Realizado (R) na planilha. O operador apontou 46 peças no sistema Supabase.</p>
+            
+                <ul>
+                    
+                        <li><strong>SUB. 100-AMP (Cód. 100)</strong>: Não programado, mas operador concretou 5 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CXS VL (Cód. 300-VL)</strong>: Não programado, mas operador concretou 1 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CXS VR (Cód. 300-VR)</strong>: Não programado, mas operador concretou 1 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>ELEKTRO 1 CX VR (Cód. 4031)</strong>: Programado 27 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 26 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>ELEKTRO 2 CX VR (Cód. 4032)</strong>: Programado 7 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 7 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>ELEKTRO 1 CX VL (Cód. 4764)</strong>: Programado 4 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 4 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>SUB 100 ELEKTRO (Cód. 4848)</strong>: Programado 2 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 1 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>ECON 1 CX VR (Cód. 931)</strong>: Programado 6 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 6 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CX VL (Cód. 941)</strong>: Programado 5 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 5 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>4 CX VL (Cód. 947)</strong>: Programado 1 (P), mas nenhuma peça foi concretada.</li>
+                    
+                        <li><strong>4 CX VR (Cód. 948)</strong>: Programado 2 (P), mas nenhuma peça foi concretada.</li>
+                    
+                        <li><strong>SUB 100 (Cód. 949)</strong>: Programado 5 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 5 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>EDP 1 CX VL (Cód. 957)</strong>: Programado 15 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 12 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>1 CX VR (Cód. AE)</strong>: Não programado, mas operador concretou 25 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CXS VR (Cód. CE)</strong>: Não programado, mas operador concretou 7 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CXS VL (Cód. D)</strong>: Não programado, mas operador concretou 5 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>SUB. 100-AMP-E (Cód. SB-E1)</strong>: Não programado, mas operador concretou 2 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                </ul>
+            
+        </div>
+        
+    </section>
+    
+    <section class="sector-section">
+        <div class="sector-header">
+            <h2 class="sector-title">Setor 2</h2>
+            <div class="sector-badge">
+                Prog (P): <strong>83</strong> | 
+                Real (R): <strong>71</strong> | 
+                Fábrica: <strong>44</strong> | 
+                Aderência: <strong>53.0%</strong>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Código do Poste</th>
+                        <th style="text-align: center; width: 150px;">Programado (Planilha - P)</th>
+                        <th style="text-align: center; width: 150px;">Realizado (Planilha - R)</th>
+                        <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
+                        <th style="text-align: center; width: 100px;">Desvio</th>
+                        <th style="width: 150px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        
+                        <tr class="status-REALIZADO">
+                            <td>TOTEM MEDIÇÃO INDIRETA ELEKTRO</td>
+                            <td><strong>13570</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>POSTE CAIXA LENTE 1 CX VL</td>
+                            <td><strong>934</strong></td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -5
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-PARCIAL">
+                            <td>1 CX VL</td>
+                            <td><strong>935</strong></td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -7
+                            </td>
+                            <td>
+                                <span class="badge-status badge-PARCIAL">PARCIAL</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>7,5X600 TC VL</td>
+                            <td><strong>937</strong></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -1
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>1 CX VR</td>
+                            <td><strong>938</strong></td>
+                            <td style="text-align: center;">47</td>
+                            <td style="text-align: center;">42</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -47
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>7,5X600 TC VR</td>
+                            <td><strong>940</strong></td>
+                            <td style="text-align: center;">4</td>
+                            <td style="text-align: center;">3</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -4
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>2 CX VL - 300 DAN</td>
+                            <td><strong>942</strong></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -1
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-PARCIAL">
+                            <td>2 CX VR</td>
+                            <td><strong>943</strong></td>
+                            <td style="text-align: center;">12</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;">5</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -7
+                            </td>
+                            <td>
+                                <span class="badge-status badge-PARCIAL">PARCIAL</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PRODUZIDO">
+                            <td>2 CX VR - 300 DAN</td>
+                            <td><strong>944</strong></td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff negative">
+                                -1
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>1 CX VR</td>
+                            <td><strong>A</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">20</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +20
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>1 CX VL</td>
+                            <td><strong>B</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +7
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>2 CXS VR</td>
+                            <td><strong>C</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">7</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +7
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                    
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
+                        <td style="text-align: center;">83</td>
+                        <td style="text-align: center;">71</td>
+                        <td style="text-align: center;">44</td>
+                        <td style="text-align: center;" class="text-diff negative">
+                            -39
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                
+            </table>
+        </div>
+
+        <!-- Local narrative summary -->
+        
+        <div class="sector-narrative">
+            <h4>📋 Resumo de Desvios — Apontamento vs. Planejamento</h4>
+            <p class="desc-geral">O encarregado planejou 83 peças (P) e apontou 71 peças como Realizado (R) na planilha. O operador apontou 44 peças no sistema Supabase.</p>
+            
+                <ul>
+                    
+                        <li><strong>POSTE CAIXA LENTE 1 CX VL (Cód. 934)</strong>: Programado 5 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 4 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>1 CX VL (Cód. 935)</strong>: Programado 12 (P), concretado pelo operador 5 (falta 7 pç). <i>(Nota: Encarregado apontou 12 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>7,5X600 TC VL (Cód. 937)</strong>: Programado 1 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 1 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>1 CX VR (Cód. 938)</strong>: Programado 47 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 42 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>7,5X600 TC VR (Cód. 940)</strong>: Programado 4 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 3 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CX VL - 300 DAN (Cód. 942)</strong>: Programado 1 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 1 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CX VR (Cód. 943)</strong>: Programado 12 (P), concretado pelo operador 5 (falta 7 pç). <i>(Nota: Encarregado apontou 7 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CX VR - 300 DAN (Cód. 944)</strong>: Programado 1 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 1 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>1 CX VR (Cód. A)</strong>: Não programado, mas operador concretou 20 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>1 CX VL (Cód. B)</strong>: Não programado, mas operador concretou 7 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>2 CXS VR (Cód. C)</strong>: Não programado, mas operador concretou 7 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                </ul>
+            
+        </div>
+        
+    </section>
+    
+    <section class="sector-section">
+        <div class="sector-header">
+            <h2 class="sector-title">Setor 3</h2>
+            <div class="sector-badge">
+                Prog (P): <strong>0</strong> | 
+                Real (R): <strong>0</strong> | 
+                Fábrica: <strong>48</strong> | 
+                Aderência: <strong>100.0%</strong>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Código do Poste</th>
+                        <th style="text-align: center; width: 150px;">Programado (Planilha - P)</th>
+                        <th style="text-align: center; width: 150px;">Realizado (Planilha - R)</th>
+                        <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
+                        <th style="text-align: center; width: 100px;">Desvio</th>
+                        <th style="width: 150px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        
+                        <tr class="status-NÃO PROGRAMADO">
+                            <td>SEM MODELO</td>
+                            <td><strong>SEM CODIGO</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">48</td>
+                            <td style="text-align: center;" class="text-diff positive">
+                                +48
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                        </tr>
+                        
+                    
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
+                        <td style="text-align: center;">0</td>
+                        <td style="text-align: center;">0</td>
+                        <td style="text-align: center;">48</td>
+                        <td style="text-align: center;" class="text-diff positive">
+                            +48
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                
+            </table>
+        </div>
+
+        <!-- Local narrative summary -->
+        
+        <div class="sector-narrative">
+            <h4>📋 Resumo de Desvios — Apontamento vs. Planejamento</h4>
+            <p class="desc-geral">O encarregado planejou 0 peças (P) e apontou 0 peças como Realizado (R) na planilha. O operador apontou 48 peças no sistema Supabase.</p>
+            
+                <ul>
+                    
+                        <li><strong>SEM MODELO (Cód. SEM CODIGO)</strong>: Não programado, mas operador concretou 48 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                </ul>
+            
+        </div>
+        
+    </section>
+    
+    <section class="sector-section">
+        <div class="sector-header">
+            <h2 class="sector-title">Setor 4</h2>
+            <div class="sector-badge">
+                Prog (P): <strong>0</strong> | 
+                Real (R): <strong>0</strong> | 
+                Fábrica: <strong>0</strong> | 
+                Aderência: <strong>0.0%</strong>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Código do Poste</th>
+                        <th style="text-align: center; width: 150px;">Programado (Planilha - P)</th>
+                        <th style="text-align: center; width: 150px;">Realizado (Planilha - R)</th>
+                        <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
+                        <th style="text-align: center; width: 100px;">Desvio</th>
+                        <th style="width: 150px;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        
+                        <tr class="status-REALIZADO">
+                            <td>POSTE COLUNA</td>
+                            <td><strong>2017</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>CEMIG 7X150 1 CX VL</td>
+                            <td><strong>953</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-REALIZADO">
+                            <td>CEMIG 7X150 2 CX VL</td>
+                            <td><strong>954</strong></td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;">0</td>
+                            <td style="text-align: center;" class="text-diff zero">
+                                0
+                            </td>
+                            <td>
+                                <span class="badge-status badge-REALIZADO">REALIZADO</span>
+                            </td>
+                        </tr>
+                        
+                    
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
+                        <td style="text-align: center;">0</td>
+                        <td style="text-align: center;">0</td>
+                        <td style="text-align: center;">0</td>
+                        <td style="text-align: center;" class="text-diff zero">
+                            0
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                
+            </table>
+        </div>
+
+        <!-- Local narrative summary -->
+        
+        <div class="sector-narrative">
+            <h4>📋 Resumo de Desvios — Apontamento vs. Planejamento</h4>
+            <p class="desc-geral">O encarregado planejou 0 peças (P) e apontou 0 peças como Realizado (R) na planilha. O operador apontou 0 peças no sistema Supabase.</p>
+            
+                <p style="color: var(--color-realizado); font-weight: 700; font-size: 0.88rem; margin: 0;">
+                    ✓ Perfeito! 100% de aderência neste setor. Os apontamentos dos operadores no Mapa bateram exatamente com a planilha de PCP do encarregado.
+                </p>
+            
+        </div>
+        
+    </section>
+    
+</div>
+
+</body>
+</html>

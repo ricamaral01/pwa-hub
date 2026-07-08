@@ -455,3 +455,49 @@ C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_
 [2026-07-07 06:49:09,068] INFO - =========================================
 [2026-07-07 06:49:09,068] INFO - Ciclo do Agente PCP x Produção finalizado com sucesso.
 [2026-07-07 06:49:09,069] INFO - ==================================================================
+[2026-07-07 06:50:40,919] INFO - ==================================================================
+[2026-07-07 06:50:40,919] INFO - Iniciando ciclo do Agente PCP x Produção para a data: 2026-07-06
+[2026-07-07 06:50:40,919] INFO - Modo Dry-Run: True
+[2026-07-07 06:50:40,919] INFO - ==================================================================
+[2026-07-07 06:50:40,919] INFO - Buscando produção no Supabase para a data: 2026-07-06...
+[2026-07-07 06:50:42,320] INFO - Encontrados 472 registros brutos de produção no Supabase.
+[2026-07-07 06:50:42,321] INFO - Produção deduplicada e mapeada contém 243 fôrmas apontadas.
+[2026-07-07 06:50:42,324] INFO - Conectando ao Google Sheets...
+[2026-07-07 06:50:42,410] INFO - Abrindo planilha ID: 1nEqNCdk-LoCq8lNeA5t02W3AJIvyfhtX0IeWSYHYEgY...
+[2026-07-07 06:50:45,081] INFO - Acessando aba 'PCP DIÁRIO - PADRÃO'...
+[2026-07-07 06:50:45,754] INFO - Procurando coluna da data: '06/07/26'...
+[2026-07-07 06:50:45,755] INFO - Coluna de data encontrada no índice: 23
+[2026-07-07 06:50:45,755] INFO - Fim da leitura. Extraídas 34 linhas da planilha com colunas P e R.
+[2026-07-07 06:50:45,760] INFO - Iniciando comparação pelo Código do Poste...
+[2026-07-07 06:50:45,761] INFO - Comparação por poste concluída com sucesso.
+[2026-07-07 06:50:45,762] INFO - Renderizando template HTML do relatório...
+[2026-07-07 06:50:45,810] INFO - Relatório HTML criado com sucesso em: C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-06.html
+[2026-07-07 06:50:45,810] INFO - === [WHATSAPP SIMULATION (DRY-RUN)] ===
+[2026-07-07 06:50:45,810] INFO - Destinatário: Não configurado
+[2026-07-07 06:50:45,810] INFO - Mensagem:\n*Relatório Diário PCP x Produção - ConcreTrack*\n📅 *Data:* 06/07/2026\n\n📊 *Resumo Operacional:*\n• Programado (P): *169* pçs\n• Realizado (R): *174* pçs\n• Produzido (Fábrica): *243* pçs\n• Aderência Geral: *143.8%*\n\n⚠️ *Principais Pendências:*\n• 1 (2) no 5 (Falta: 23 pç)\n• 947 (4 CX VL) no Setor 1 (Falta: 1 pç)\n• 942 (2 CX VL - 300 DAN) no Setor 2 (Falta: 1 pç)\n• 940 (7,5X600 TC VR) no Setor 2 (Falta: 1 pç)\n• 957 (EDP 1 CX VL) no Setor 1 (Falta: 1 pç)\n\n🔗 *Link do Relatório:*\nC:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-06.html
+[2026-07-07 06:50:45,811] INFO - =========================================
+[2026-07-07 06:50:45,811] INFO - Ciclo do Agente PCP x Produção finalizado com sucesso.
+[2026-07-07 06:50:45,811] INFO - ==================================================================
+[2026-07-08 06:32:48,066] INFO - ==================================================================
+[2026-07-08 06:32:48,067] INFO - Iniciando ciclo do Agente PCP x Produção para a data: 2026-07-07
+[2026-07-08 06:32:48,067] INFO - Modo Dry-Run: True
+[2026-07-08 06:32:48,068] INFO - ==================================================================
+[2026-07-08 06:32:48,068] INFO - Buscando produção no Supabase para a data: 2026-07-07...
+[2026-07-08 06:32:50,102] INFO - Encontrados 265 registros brutos de produção no Supabase.
+[2026-07-08 06:32:50,106] INFO - Produção deduplicada e mapeada contém 138 fôrmas apontadas.
+[2026-07-08 06:32:50,119] INFO - Conectando ao Google Sheets...
+[2026-07-08 06:32:50,502] INFO - Abrindo planilha ID: 1nEqNCdk-LoCq8lNeA5t02W3AJIvyfhtX0IeWSYHYEgY...
+[2026-07-08 06:32:57,867] INFO - Acessando aba '5 - PCP DIÁRIO - PADRÃO'...
+[2026-07-08 06:32:58,382] INFO - Procurando coluna da data: '07/07/26'...
+[2026-07-08 06:32:58,383] INFO - Coluna de data encontrada no índice: 25
+[2026-07-08 06:32:58,383] INFO - Fim da leitura. Extraídas 34 linhas da planilha com colunas P e R.
+[2026-07-08 06:32:58,402] INFO - Iniciando comparação pelo Código do Poste...
+[2026-07-08 06:32:58,407] INFO - Comparação por poste concluída com sucesso.
+[2026-07-08 06:32:58,408] INFO - Renderizando template HTML do relatório...
+[2026-07-08 06:32:58,682] INFO - Relatório HTML criado com sucesso em: C:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-07.html
+[2026-07-08 06:32:58,683] INFO - === [WHATSAPP SIMULATION (DRY-RUN)] ===
+[2026-07-08 06:32:58,683] INFO - Destinatário: Não configurado
+[2026-07-08 06:32:58,683] INFO - Mensagem:\n*Relatório Diário PCP x Produção - ConcreTrack*\n📅 *Data:* 07/07/2026\n\n📊 *Resumo Operacional:*\n• Programado (P): *182* pçs\n• Realizado (R): *163* pçs\n• Produzido (Fábrica): *138* pçs\n• Aderência Geral: *75.8%*\n\n⚠️ *Principais Pendências:*\n• 947 (4 CX VL) no Setor 1 (Falta: 1 pç)\n• 938 (1 CX VR) no Setor 2 (Falta: 47 pç)\n• 949 (SUB 100) no Setor 1 (Falta: 5 pç)\n• 957 (EDP 1 CX VL) no Setor 1 (Falta: 15 pç)\n• 937 (7,5X600 TC VL) no Setor 2 (Falta: 1 pç)\n\n🔗 *Link do Relatório:*\nC:\Users\Admin\Documents\pwa-hub\relatorios\pcp-producao\relatorio_pcp_producao_2026-07-07.html
+[2026-07-08 06:32:58,694] INFO - =========================================
+[2026-07-08 06:32:58,694] INFO - Ciclo do Agente PCP x Produção finalizado com sucesso.
+[2026-07-08 06:32:58,695] INFO - ==================================================================
