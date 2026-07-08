@@ -7208,7 +7208,8 @@ async function syncOfflineData() {
             tipo_concreto: ev.tipoConcreto || "Padrão",
             codigo_poste: ev.codigoPoste || null,
             descricao_poste: ev.descricaoPoste || null,
-            codigo_produto: ev.codigoProduto || null
+            codigo_produto: ev.codigoProduto || null,
+            status: ev.status || "LIBERADO"
           };
           const apiResult = await postToApi("salvar_forma_click", payload);
           if (apiResult.ok) {
