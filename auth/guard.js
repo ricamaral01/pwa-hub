@@ -2,7 +2,6 @@
   'use strict';
   const style=document.createElement('style');style.textContent='html.auth-checking body{visibility:hidden}';document.head.appendChild(style);document.documentElement.classList.add('auth-checking');
   if(window.CONCRETRACK_AUTH_CONFIG?.authEnabled===false){
-    if(document.body.dataset.appKey==='admin-usuarios') return location.replace('/');
     document.documentElement.classList.remove('auth-checking');
     document.dispatchEvent(new CustomEvent('concretrack:auth-suspended'));
     return;

@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v33-auth-suspended";
+const CACHE = "ct-hub-v34-auth-suspended";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -40,12 +40,6 @@ const ASSETS = [
   /* ---- Slump / Flow ---- */
   "./slump/index.html",
 
-  /* ---- Parada Usina ---- */
-  "./parada-usina/index.html",
-
-  /* ---- Massadas ---- */
-  "./massadas/index.html",
-
   /* ---- Setor Botões ---- */
   "./setor_botoes/index.html",
 
@@ -67,10 +61,7 @@ const ASSETS = [
   /* ---- Controle Estatístico ---- */
   "./controle-estatistico/index.html",
   "./controle-estatistico/resultado-cp.html",
-  "./controle-estatistico/relatorio.html",
-
-  /* ---- Cartas Traço Unidades ---- */
-  "./cartas-traco-unidades/index.html"
+  "./controle-estatistico/relatorio.html"
 ];
 
 /* ---- INSTALL: cacheia tudo ---- */

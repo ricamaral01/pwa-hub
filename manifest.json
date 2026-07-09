@@ -27,16 +27,6 @@
       "name": "Slump / Flow",
       "short_name": "Slump",
       "url": "./slump/index.html"
-    },
-    {
-      "name": "Parada Usina",
-      "short_name": "Parada",
-      "url": "./parada-usina/index.html"
-    },
-    {
-      "name": "Problema Massadas",
-      "short_name": "Massadas",
-      "url": "./massadas/index.html"
     }
   ]
 }

@@ -1,8 +1,0 @@
-flask
-reportlab
-qrcode[pil]
-pillow
-psycopg2-binary
-gunicorn
-pywebpush
-apscheduler
