@@ -1808,8 +1808,6 @@
                 <thead>
                     <tr>
                         <th>Peneira (mm)</th>
-                        <th>Cimento</th>
-                        <th>Adição</th>
                         <th>Areia Natural</th>
                         <th>Areia Industrial</th>
                         <th>Brita 0</th>
@@ -6547,7 +6545,7 @@ const PENEIRAS = [25, 19, 12.5, 9.5, 6.3, 4.75, 2.36, 1.18, 0.6, 0.3, 0.15, 0.07
 function gerarTabelaGran() {
     const body = document.getElementById('granBody');
     body.innerHTML = '';
-    const materiais = ['cim','adic','an','ai','b0','b1'];
+    const materiais = ['an','ai','b0','b1'];
     PENEIRAS.forEach(p => {
         const tr = document.createElement('tr');
         let tdP = document.createElement('td');
@@ -6751,7 +6749,7 @@ function toggleModoGran() {
 
 // Verifica se a granulometria foi preenchida na aba 1
 function granulometriaPreenchida() {
-    const materiais = ['cim','adic','an','ai','b0','b1'];
+    const materiais = ['an','ai','b0','b1'];
     let preenchidos = 0;
     materiais.forEach(m => {
         PENEIRAS.forEach(p => {
@@ -6766,11 +6764,19 @@ function granulometriaPreenchida() {
 function coletarGranulometria() {
     const materiais = ['cim','adic','an','ai','b0','b1'];
     const dados = {};
+    const defaultCim = [100, 100, 100, 100, 100, 100, 100, 100, 98, 92, 82, 65];
+    const defaultAdic = [100, 100, 100, 100, 100, 100, 100, 100, 100, 98, 95, 85];
     materiais.forEach(m => {
-        dados[m] = PENEIRAS.map(p => {
-            const el = document.getElementById(`gran_${m}_${p}`);
-            return el ? (parseFloat(el.value) || 0) : 0;
-        });
+        if (m === 'cim') {
+            dados[m] = [...defaultCim];
+        } else if (m === 'adic') {
+            dados[m] = [...defaultAdic];
+        } else {
+            dados[m] = PENEIRAS.map(p => {
+                const el = document.getElementById(`gran_${m}_${p}`);
+                return el ? (parseFloat(el.value) || 0) : 0;
+            });
+        }
     });
     return dados;
 }
@@ -7349,11 +7355,19 @@ function calcularEmpacotamento() {
     const materiais = ['cim','adic','an','ai','b0','b1'];
     const nomes = {cim:'Cimento', adic:'Adição', an:'Areia Natural', ai:'Areia Industrial', b0:'Brita 0', b1:'Brita ½'};
     const granData = {};
+    const defaultCim = [100, 100, 100, 100, 100, 100, 100, 100, 98, 92, 82, 65];
+    const defaultAdic = [100, 100, 100, 100, 100, 100, 100, 100, 100, 98, 95, 85];
     materiais.forEach(m => {
-        granData[m] = PENEIRAS.map(p => {
-            const el = document.getElementById(`gran_${m}_${p}`);
-            return el ? (parseFloat(el.value) || 0) : 0;
-        });
+        if (m === 'cim') {
+            granData[m] = [...defaultCim];
+        } else if (m === 'adic') {
+            granData[m] = [...defaultAdic];
+        } else {
+            granData[m] = PENEIRAS.map(p => {
+                const el = document.getElementById(`gran_${m}_${p}`);
+                return el ? (parseFloat(el.value) || 0) : 0;
+            });
+        }
     });
 
     // Curva combinada (passante acumulado)
@@ -9198,7 +9212,7 @@ function gerarMemoriaCalculo() {
 
     if (granOK) {
         const granData = coletarGranulometria();
-        const matNomes = {cim:'Cimento', adic:'Adição', an:'Areia Natural', ai:'Areia Ind.', b0:'Brita 0', b1:'Brita ½'};
+        const matNomes = {an:'Areia Natural', ai:'Areia Ind.', b0:'Brita 0', b1:'Brita ½'};
         secGran += `
     <p style="font-size:0.85rem;">Dados de passante acumulado (%) por peneira ABNT NBR 7211, informados na Aba ① Materiais.</p>
     <table class="result-table">
