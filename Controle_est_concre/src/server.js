@@ -27,6 +27,29 @@ function toNullableNumber(value) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function normalizeCP(cpVal) {
+  if (!cpVal) return null;
+  const cpStr = String(cpVal).trim();
+  if (cpStr === '1' || cpStr === '2') return cpStr;
+  if (cpStr.includes('Feb 01 2026') || cpStr.includes('01/02/2026') || cpStr.startsWith('Sun Feb 01')) {
+    return '1';
+  }
+  if (cpStr.includes('Feb 02 2026') || cpStr.includes('02/02/2026') || cpStr.startsWith('Mon Feb 02')) {
+    return '2';
+  }
+  const clean = cpStr.replace(/\s*\([^)]*\)\s*$/, '');
+  const d = new Date(clean);
+  if (!isNaN(d.getTime())) {
+    if (cpStr.includes('2026') && d.getUTCMonth() === 1) {
+      return String(d.getUTCDate());
+    }
+    if (cpStr.includes('2026') && d.getMonth() === 1) {
+      return String(d.getDate());
+    }
+  }
+  return cpStr;
+}
+
 function normalizeRecord(body) {
   return {
     id: body.id || randomUUID(),
@@ -34,7 +57,7 @@ function normalizeRecord(body) {
     etiqueta_id: body.etiqueta_id || body.qr_raw || null,
     traco_id: body.traco_id || null,
     idade_dias: body.idade_dias === '' || body.idade_dias === undefined ? null : Number(body.idade_dias),
-    cp: body.cp || null,
+    cp: normalizeCP(body.cp),
     data_moldagem: body.data_moldagem || null,
     hora_moldagem: body.hora_moldagem || null,
     data_ruptura: body.data_ruptura || null,
@@ -132,6 +155,22 @@ app.get('/api/v1/rompimentos', async (req, res) => {
       `select id, traco_id, idade_dias, cp, data_moldagem, data_ruptura, mpa, status_meta, responsavel, created_at, updated_at
        from rompimentos
        order by created_at desc
+       limit $1`,
+      [limit]
+    );
+    res.json({ ok: true, rows: result.rows });
+  } catch (error) {
+    res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+app.get('/api/v1/rompimentos-grupos', async (req, res) => {
+  const limit = Math.min(Number(req.query.limit || 100), 1000);
+  try {
+    const result = await pool.query(
+      `select data_moldagem, traco_id, idade_dias, mpa_cp1, mpa_cp2, media_mpa, status, data_ruptura
+       from rompimentos_grupos
+       order by data_moldagem desc, idade_dias asc
        limit $1`,
       [limit]
     );

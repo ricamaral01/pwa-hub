@@ -132,29 +132,18 @@
   </style>
 
   <div class="filter-bar">
-    <label>M&#234;s:
+    <label>Mês:
       <select id="filtroMes">
         <option value="">Todos</option>
         <option value="01">Janeiro</option><option value="02">Fevereiro</option>
-        <option value="03">Mar&#231;o</option><option value="04">Abril</option>
+        <option value="03">Março</option><option value="04">Abril</option>
         <option value="05">Maio</option><option value="06">Junho</option>
         <option value="07">Julho</option><option value="08">Agosto</option>
         <option value="09">Setembro</option><option value="10">Outubro</option>
         <option value="11">Novembro</option><option value="12">Dezembro</option>
       </select>
     </label>
-    <label>Ano: <input type="number" id="filtroAno" min="2020" max="2040" style="width:72px;"></label>
-    <label>Idade:
-      <select id="filtroIdade">
-        <option value="">Todas</option>
-        <option value="1">1 dia</option>
-        <option value="3">3 dias</option>
-        <option value="7">7 dias</option>
-        <option value="28">28 dias</option>
-      </select>
-    </label>
-    <input type="text" id="filtroBusca" placeholder="Tra&#231;o, massada...">
-    <button class="btn-filter" onclick="applyFilters()">&#9660; Filtrar</button>
+    <label>Ano: <input type="number" id="filtroAno" min="2020" max="2040" placeholder="Ex: 2026" style="width:90px;"></label>
   </div>
 
   <div id="stateBox" class="state-box">
@@ -185,23 +174,26 @@
 
 <script>
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbyZkdfk8OwLDGAzc2fznPUFS5cDvDgMVRz1nVBtRG1BSIqthuVjTwEY8XD1oyfOKgB9/exec?action=listar";
-const DB_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos?limit=1000";
+const DB_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos-grupos?limit=1000";
 const META_FAIXA = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
 const CACHE_KEY_RESULTADO_CP = 'ct_resultado_cp_rows_v1';
 const CACHE_MAX_AGE_MS = 5 * 60 * 1000;
 
+function cleanDateStr(v) {
+  return String(v || '').trim().replace(/\s*\([^)]*\)\s*$/, '');
+}
 function fmtDate(v){
   if(!v&&v!==0)return'--';
-  v=String(v).trim();
-  if(!v)return'--';
+  var s=cleanDateStr(v);
+  if(!s)return'--';
 
-  var m=v.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  var m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if(m)return m[3]+'/'+m[2]+'/'+m[1];
 
-  m=v.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  m=s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
   if(m)return m[1]+'/'+m[2]+'/'+m[3];
 
-  var d=new Date(v);
+  var d=new Date(s);
   if(!isNaN(d.getTime())){
     var dd=String(d.getDate()).padStart(2,'0');
     var mm=String(d.getMonth()+1).padStart(2,'0');
@@ -209,22 +201,49 @@ function fmtDate(v){
     return dd+'/'+mm+'/'+yy;
   }
 
-  return v.length>=10?v.substring(0,10):v;
+  return s.length>=10?s.substring(0,10):s;
+}
+function parseToComparable(v) {
+  var s = cleanDateStr(v);
+  if (!s) return 0;
+  var mYmd = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (mYmd) {
+    return new Date(parseInt(mYmd[1]), parseInt(mYmd[2]) - 1, parseInt(mYmd[3])).getTime();
+  }
+  var mDmy = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (mDmy) {
+    return new Date(parseInt(mDmy[3]), parseInt(mDmy[2]) - 1, parseInt(mDmy[1])).getTime();
+  }
+  var d = new Date(s);
+  if (!isNaN(d.getTime())) {
+    return d.getTime();
+  }
+  return 0;
 }
 function mesNum(d){
-  d=String(d||'');
-  var m=d.match(/^(\d{4})-(\d{2})/);
+  var s = cleanDateStr(d);
+  var m=s.match(/^(\d{4})-(\d{2})/);
   if(m)return m[2];
-  m=d.match(/^\d{2}\/(\d{2})\/(\d{4})/);
+  m=s.match(/^\d{2}\/(\d{2})\/(\d{4})/);
   if(m)return m[1];
+  
+  var parsed = new Date(s);
+  if(!isNaN(parsed.getTime())){
+    return String(parsed.getMonth()+1).padStart(2,'0');
+  }
   return'';
 }
 function anoNum(d){
-  d=String(d||'');
-  var m=d.match(/^(\d{4})/);
+  var s = cleanDateStr(d);
+  var m=s.match(/^(\d{4})/);
   if(m)return m[1];
-  m=d.match(/\d{2}\/\d{2}\/(\d{4})/);
+  m=s.match(/\d{2}\/\d{2}\/(\d{4})/);
   if(m)return m[1];
+  
+  var parsed = new Date(s);
+  if(!isNaN(parsed.getTime())){
+    return String(parsed.getFullYear());
+  }
   return'';
 }
 function r1(v){ return(v!==null&&v!==''&&!isNaN(parseFloat(v)))?Math.round(parseFloat(v)*10)/10:null; }
@@ -270,8 +289,9 @@ function groupRows(rawRows){
     map.get(key).cps.push(r);
   });
   return Array.from(map.values()).sort(function(a,b){
-    if(a.data_moldagem>b.data_moldagem)return-1;
-    if(a.data_moldagem<b.data_moldagem)return 1;
+    var tA = parseToComparable(a.data_moldagem);
+    var tB = parseToComparable(b.data_moldagem);
+    if(tA !== tB) return tB - tA;
     return parseInt(a.idade_dias||0)-parseInt(b.idade_dias||0);
   });
 }
@@ -283,13 +303,9 @@ function renderTable(){
   var footer=document.getElementById('tblFooter');
   var mes=document.getElementById('filtroMes').value;
   var ano=String(document.getElementById('filtroAno').value||'');
-  var idade=document.getElementById('filtroIdade').value;
-  var busca=document.getElementById('filtroBusca').value.toLowerCase();
   var filtered=_groups.filter(function(g){
-    if(ano&&anoNum(g.data_moldagem)!==ano)return false;
+    if(ano&&ano.length===4&&anoNum(g.data_moldagem)!==ano)return false;
     if(mes&&mesNum(g.data_moldagem)!==mes)return false;
-    if(idade&&String(g.idade_dias)!==idade)return false;
-    if(busca&&!String(g.traco_id).toLowerCase().includes(busca))return false;
     return true;
   });
   tbody.innerHTML='';
@@ -366,9 +382,8 @@ function applyFilters(){
 }
 
 document.getElementById('filtroMes').addEventListener('change',applyFilters);
+document.getElementById('filtroAno').addEventListener('input',applyFilters);
 document.getElementById('filtroAno').addEventListener('change',applyFilters);
-document.getElementById('filtroIdade').addEventListener('change',applyFilters);
-document.getElementById('filtroBusca').addEventListener('keydown',function(e){if(e.key==='Enter')applyFilters();});
 
 function showState(icon,html){
   document.getElementById('stateBox').innerHTML='<div class="sico">'+icon+'</div>'+html;
@@ -398,17 +413,66 @@ function readRowsCache(){
   }
 }
 
+function normalizeCP(cpVal) {
+  if (!cpVal) return '';
+  var cpStr = String(cpVal).trim();
+  if (cpStr === '1' || cpStr === '2') return cpStr;
+  if (cpStr.indexOf('Feb 01 2026') !== -1 || cpStr.indexOf('01/02/2026') !== -1 || cpStr.indexOf('Sun Feb 01') !== -1) {
+    return '1';
+  }
+  if (cpStr.indexOf('Feb 02 2026') !== -1 || cpStr.indexOf('02/02/2026') !== -1 || cpStr.indexOf('Mon Feb 02') !== -1) {
+    return '2';
+  }
+  var clean = cpStr.replace(/\s*\([^)]*\)\s*$/, '');
+  var d = new Date(clean);
+  if (!isNaN(d.getTime())) {
+    if (cpStr.indexOf('2026') !== -1 && d.getUTCMonth() === 1) {
+      return String(d.getUTCDate());
+    }
+    if (cpStr.indexOf('2026') !== -1 && d.getMonth() === 1) {
+      return String(d.getDate());
+    }
+  }
+  return cpStr;
+}
+
 function mapDbRows(parsed){
-  return (parsed&&parsed.rows?parsed.rows:[]).map(function(r){
-    return {
-      data_moldagem:r.data_moldagem||'',
-      traco_id:r.traco_id||'',
-      cp:r.cp||'',
-      idade_dias:r.idade_dias||'',
-      data_ruptura:r.data_ruptura||'',
-      mpa:r.mpa
-    };
-  }).filter(function(r){ return r.data_moldagem||r.mpa; });
+  var rows = [];
+  var raw = parsed && parsed.rows ? parsed.rows : [];
+  raw.forEach(function(r){
+    if ('mpa_cp1' in r || 'mpa_cp2' in r) {
+      if (r.mpa_cp1 !== null && r.mpa_cp1 !== undefined && r.mpa_cp1 !== '') {
+        rows.push({
+          data_moldagem: r.data_moldagem || '',
+          traco_id: r.traco_id || '',
+          cp: '1',
+          idade_dias: r.idade_dias || '',
+          data_ruptura: r.data_ruptura || '',
+          mpa: r.mpa_cp1
+        });
+      }
+      if (r.mpa_cp2 !== null && r.mpa_cp2 !== undefined && r.mpa_cp2 !== '') {
+        rows.push({
+          data_moldagem: r.data_moldagem || '',
+          traco_id: r.traco_id || '',
+          cp: '2',
+          idade_dias: r.idade_dias || '',
+          data_ruptura: r.data_ruptura || '',
+          mpa: r.mpa_cp2
+        });
+      }
+    } else {
+      rows.push({
+        data_moldagem: r.data_moldagem || '',
+        traco_id: r.traco_id || '',
+        cp: normalizeCP(r.cp),
+        idade_dias: r.idade_dias || '',
+        data_ruptura: r.data_ruptura || '',
+        mpa: r.mpa
+      });
+    }
+  });
+  return rows.filter(function(r){ return r.data_moldagem || r.mpa; });
 }
 
 async function fetchWithTimeout(url, options, timeoutMs){
@@ -426,25 +490,25 @@ async function fetchRowsFromSources(){
   var lastErr = '';
 
   try{
-    var resSheet = await fetchWithTimeout(SHEETS_API_URL+'&t='+Date.now(), { cache:'no-store' }, 12000);
-    if(resSheet.ok){
-      var parsedSheet = await resSheet.json();
-      var rowsSheet = mapDbRows(parsedSheet);
-      if(rowsSheet.length) return rowsSheet;
-      lastErr = 'Planilha sem dados';
+    var resDb = await fetchWithTimeout(DB_API_URL+'&t='+Date.now(), { cache:'no-store' }, 12000);
+    if(resDb.ok){
+      var parsedDb = await resDb.json();
+      var rowsDb = mapDbRows(parsedDb);
+      if(rowsDb.length) return rowsDb;
+      lastErr = 'DB sem dados';
     }else{
-      lastErr = 'Planilha HTTP '+resSheet.status;
+      lastErr = 'DB HTTP '+resDb.status;
     }
-  }catch(errSheet){
-    lastErr = 'Planilha: '+(errSheet && errSheet.message ? errSheet.message : String(errSheet));
+  }catch(errDb){
+    lastErr = 'DB: '+(errDb && errDb.message ? errDb.message : String(errDb));
   }
 
-  var resDb = await fetchWithTimeout(DB_API_URL+'&t='+Date.now(), { cache:'no-store' }, 12000);
-  if(!resDb.ok) throw new Error(lastErr+' | DB HTTP '+resDb.status);
-  var parsedDb = await resDb.json();
-  var rowsDb = mapDbRows(parsedDb);
-  if(!rowsDb.length) throw new Error(lastErr+' | DB sem dados');
-  return rowsDb;
+  var resSheet = await fetchWithTimeout(SHEETS_API_URL+'&t='+Date.now(), { cache:'no-store' }, 12000);
+  if(!resSheet.ok) throw new Error(lastErr+' | Planilha HTTP '+resSheet.status);
+  var parsedSheet = await resSheet.json();
+  var rowsSheet = mapDbRows(parsedSheet);
+  if(!rowsSheet.length) throw new Error(lastErr+' | Planilha sem dados');
+  return rowsSheet;
 }
 
 function renderFromRows(rows){
@@ -484,7 +548,7 @@ async function loadData(){
     }
 
     var shouldRenderFresh = true;
-    if(cache && Math.abs((cache.ts||0)-Date.now()) <= CACHE_MAX_AGE_MS && cache.rows.length === rows.length){
+    if(cache && Math.abs((cache.ts||0)-Date.now()) <= CACHE_MAX_AGE_MS && cache.rows.length === rows.length && JSON.stringify(cache.rows) === JSON.stringify(rows)){
       shouldRenderFresh = false;
     }
 

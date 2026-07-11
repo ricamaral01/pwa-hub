@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8" />
@@ -338,7 +338,7 @@
 <script>
 /* ===================== CONFIG ===================== */
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbyZkdfk8OwLDGAzc2fznPUFS5cDvDgMVRz1nVBtRG1BSIqthuVjTwEY8XD1oyfOKgB9/exec?action=listar";
-const DB_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos?limit=1000";
+const DB_API_URL = "http://31.97.241.84:8086/api/v1/rompimentos-grupos?limit=1000";
 const META_FAIXA = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
 const CACHE_KEY_RELATORIO = 'ct_relatorio_rows_v1';
 const CACHE_MAX_AGE_MS = 5 * 60 * 1000;
@@ -348,18 +348,21 @@ const AGE_COLORS = { 1:'#3b82f6', 3:'#22c55e', 7:'#f97316', 28:'#a855f7' };
 const AGE_FILLS  = { 1:'rgba(59,130,246,.15)', 3:'rgba(34,197,94,.15)', 7:'rgba(249,115,22,.15)', 28:'rgba(168,85,247,.15)' };
 
 /* ===================== UTIL ===================== */
+function cleanDateStr(v) {
+  return String(v || '').trim().replace(/\s*\([^)]*\)\s*$/, '');
+}
 function fmtDate(v){
   if(!v&&v!==0)return'--';
-  v=String(v).trim();
-  if(!v)return'--';
+  var s=cleanDateStr(v);
+  if(!s)return'--';
 
-  var m=v.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  var m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if(m)return m[3]+'/'+m[2]+'/'+m[1];
 
-  m=v.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  m=s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
   if(m)return m[1]+'/'+m[2]+'/'+m[3];
 
-  var d=new Date(v);
+  var d=new Date(s);
   if(!isNaN(d.getTime())){
     var dd=String(d.getDate()).padStart(2,'0');
     var mm=String(d.getMonth()+1).padStart(2,'0');
@@ -367,25 +370,25 @@ function fmtDate(v){
     return dd+'/'+mm+'/'+yy;
   }
 
-  return v.length>=10?v.substring(0,10):v;
+  return s.length>=10?s.substring(0,10):s;
 }
 function mesNum(d){
-  d=String(d||'');
-  var m=d.match(/^(\d{4})-(\d{2})/);
+  var s = cleanDateStr(d);
+  var m=s.match(/^(\d{4})-(\d{2})/);
   if(m)return m[2];
-  m=d.match(/^\d{2}\/(\d{2})\/(\d{4})/);
+  m=s.match(/^\d{2}\/(\d{2})\/(\d{4})/);
   if(m)return m[1];
-  var dt=new Date(d);
+  var dt=new Date(s);
   if(!isNaN(dt.getTime()))return String(dt.getMonth()+1).padStart(2,'0');
   return'';
 }
 function anoNum(d){
-  d=String(d||'');
-  var m=d.match(/^(\d{4})/);
+  var s = cleanDateStr(d);
+  var m=s.match(/^(\d{4})/);
   if(m)return m[1];
-  m=d.match(/\d{2}\/\d{2}\/(\d{4})/);
+  m=s.match(/\d{2}\/\d{2}\/(\d{4})/);
   if(m)return m[1];
-  var dt=new Date(d);
+  var dt=new Date(s);
   if(!isNaN(dt.getTime()))return String(dt.getFullYear());
   return'';
 }
@@ -998,17 +1001,66 @@ function readRowsCache(){
   }
 }
 
+function normalizeCP(cpVal) {
+  if (!cpVal) return '';
+  var cpStr = String(cpVal).trim();
+  if (cpStr === '1' || cpStr === '2') return cpStr;
+  if (cpStr.indexOf('Feb 01 2026') !== -1 || cpStr.indexOf('01/02/2026') !== -1 || cpStr.indexOf('Sun Feb 01') !== -1) {
+    return '1';
+  }
+  if (cpStr.indexOf('Feb 02 2026') !== -1 || cpStr.indexOf('02/02/2026') !== -1 || cpStr.indexOf('Mon Feb 02') !== -1) {
+    return '2';
+  }
+  var clean = cpStr.replace(/\s*\([^)]*\)\s*$/, '');
+  var d = new Date(clean);
+  if (!isNaN(d.getTime())) {
+    if (cpStr.indexOf('2026') !== -1 && d.getUTCMonth() === 1) {
+      return String(d.getUTCDate());
+    }
+    if (cpStr.indexOf('2026') !== -1 && d.getMonth() === 1) {
+      return String(d.getDate());
+    }
+  }
+  return cpStr;
+}
+
 function mapDbRows(dbRows){
-  return dbRows.map(function(r){
-    return{
-      data_moldagem:r.data_moldagem||'',
-      traco_id:r.traco_id||'',
-      cp:r.cp||'',
-      idade_dias:r.idade_dias||'',
-      data_ruptura:r.data_ruptura||'',
-      mpa:r.mpa
-    };
-  }).filter(function(r){ return r.data_moldagem||r.mpa; });
+  var rows = [];
+  var raw = dbRows || [];
+  raw.forEach(function(r){
+    if ('mpa_cp1' in r || 'mpa_cp2' in r) {
+      if (r.mpa_cp1 !== null && r.mpa_cp1 !== undefined && r.mpa_cp1 !== '') {
+        rows.push({
+          data_moldagem: r.data_moldagem || '',
+          traco_id: r.traco_id || '',
+          cp: '1',
+          idade_dias: r.idade_dias || '',
+          data_ruptura: r.data_ruptura || '',
+          mpa: r.mpa_cp1
+        });
+      }
+      if (r.mpa_cp2 !== null && r.mpa_cp2 !== undefined && r.mpa_cp2 !== '') {
+        rows.push({
+          data_moldagem: r.data_moldagem || '',
+          traco_id: r.traco_id || '',
+          cp: '2',
+          idade_dias: r.idade_dias || '',
+          data_ruptura: r.data_ruptura || '',
+          mpa: r.mpa_cp2
+        });
+      }
+    } else {
+      rows.push({
+        data_moldagem: r.data_moldagem || '',
+        traco_id: r.traco_id || '',
+        cp: normalizeCP(r.cp),
+        idade_dias: r.idade_dias || '',
+        data_ruptura: r.data_ruptura || '',
+        mpa: r.mpa
+      });
+    }
+  });
+  return rows.filter(function(r){ return r.data_moldagem || r.mpa; });
 }
 
 async function fetchWithTimeout(url, options, timeoutMs){
@@ -1026,26 +1078,26 @@ async function fetchRowsFromSources(){
   var lastErr='';
 
   try{
-    var resSheet=await fetchWithTimeout(SHEETS_API_URL+'&t='+Date.now(),{cache:'no-store'},12000);
-    if(resSheet.ok){
-      var parsedSheet=await resSheet.json();
-      var rowsSheet=mapDbRows((parsedSheet&&parsedSheet.rows)?parsedSheet.rows:[]);
-      if(rowsSheet.length) return rowsSheet;
-      lastErr='Planilha sem dados';
+    var resDb=await fetchWithTimeout(DB_API_URL+'&t='+Date.now(),{cache:'no-store'},12000);
+    if(resDb.ok){
+      var parsedDb=await resDb.json();
+      var dbRows=(parsedDb&&parsedDb.rows)?parsedDb.rows:[];
+      var rowsDb=mapDbRows(dbRows);
+      if(rowsDb.length) return rowsDb;
+      lastErr='DB sem dados';
     }else{
-      lastErr='Planilha HTTP '+resSheet.status;
+      lastErr='DB HTTP '+resDb.status;
     }
-  }catch(errSheet){
-    lastErr='Planilha: '+(errSheet&&errSheet.message?errSheet.message:String(errSheet));
+  }catch(errDb){
+    lastErr='DB: '+(errDb&&errDb.message?errDb.message:String(errDb));
   }
 
-  var resDb=await fetchWithTimeout(DB_API_URL+'&t='+Date.now(),{cache:'no-store'},12000);
-  if(!resDb.ok) throw new Error(lastErr+' | DB HTTP '+resDb.status);
-  var parsedDb=await resDb.json();
-  var dbRows=(parsedDb&&parsedDb.rows)?parsedDb.rows:[];
-  var rowsDb=mapDbRows(dbRows);
-  if(!rowsDb.length) throw new Error(lastErr+' | DB sem dados');
-  return rowsDb;
+  var resSheet=await fetchWithTimeout(SHEETS_API_URL+'&t='+Date.now(),{cache:'no-store'},12000);
+  if(!resSheet.ok) throw new Error(lastErr+' | Planilha HTTP '+resSheet.status);
+  var parsedSheet=await resSheet.json();
+  var rowsSheet=mapDbRows((parsedSheet&&parsedSheet.rows)?parsedSheet.rows:[]);
+  if(!rowsSheet.length) throw new Error(lastErr+' | Planilha sem dados');
+  return rowsSheet;
 }
 
 function renderFromRows(rows){
@@ -1071,7 +1123,7 @@ async function loadData(){
     }
 
     var shouldRenderFresh = true;
-    if(cache && Math.abs((cache.ts||0)-Date.now()) <= CACHE_MAX_AGE_MS && cache.rows.length === rows.length){
+    if(cache && Math.abs((cache.ts||0)-Date.now()) <= CACHE_MAX_AGE_MS && cache.rows.length === rows.length && JSON.stringify(cache.rows) === JSON.stringify(rows)){
       shouldRenderFresh = false;
     }
 
