@@ -436,6 +436,24 @@ function normalizeCP(cpVal) {
   return cpStr;
 }
 
+function formatDateToYYYYMMDD(v) {
+  if (!v) return '';
+  var s = String(v).trim();
+  var m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return m[1] + '-' + m[2] + '-' + m[3];
+  m = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (m) return m[3] + '-' + m[2] + '-' + m[1];
+  var clean = s.replace(/\s*\([^)]*\)\s*$/, '');
+  var d = new Date(clean);
+  if (!isNaN(d.getTime())) {
+    var yy = d.getFullYear();
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    return yy + '-' + mm + '-' + dd;
+  }
+  return s;
+}
+
 function mapDbRows(parsed){
   var rows = [];
   var raw = parsed && parsed.rows ? parsed.rows : [];
@@ -443,31 +461,31 @@ function mapDbRows(parsed){
     if ('mpa_cp1' in r || 'mpa_cp2' in r) {
       if (r.mpa_cp1 !== null && r.mpa_cp1 !== undefined && r.mpa_cp1 !== '') {
         rows.push({
-          data_moldagem: r.data_moldagem || '',
+          data_moldagem: formatDateToYYYYMMDD(r.data_moldagem),
           traco_id: r.traco_id || '',
           cp: '1',
           idade_dias: r.idade_dias || '',
-          data_ruptura: r.data_ruptura || '',
+          data_ruptura: formatDateToYYYYMMDD(r.data_ruptura),
           mpa: r.mpa_cp1
         });
       }
       if (r.mpa_cp2 !== null && r.mpa_cp2 !== undefined && r.mpa_cp2 !== '') {
         rows.push({
-          data_moldagem: r.data_moldagem || '',
+          data_moldagem: formatDateToYYYYMMDD(r.data_moldagem),
           traco_id: r.traco_id || '',
           cp: '2',
           idade_dias: r.idade_dias || '',
-          data_ruptura: r.data_ruptura || '',
+          data_ruptura: formatDateToYYYYMMDD(r.data_ruptura),
           mpa: r.mpa_cp2
         });
       }
     } else {
       rows.push({
-        data_moldagem: r.data_moldagem || '',
+        data_moldagem: formatDateToYYYYMMDD(r.data_moldagem),
         traco_id: r.traco_id || '',
         cp: normalizeCP(r.cp),
         idade_dias: r.idade_dias || '',
-        data_ruptura: r.data_ruptura || '',
+        data_ruptura: formatDateToYYYYMMDD(r.data_ruptura),
         mpa: r.mpa
       });
     }
