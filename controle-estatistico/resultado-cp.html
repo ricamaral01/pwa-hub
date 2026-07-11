@@ -103,7 +103,7 @@
     <img src="../assets/img/concre.png" alt="Concrefer">
     <div>
       <div class="brand-name">Laboratório <span>Concrefer</span></div>
-      <div class="brand-sub">Controle Estatístico</div>
+      <div class="brand-sub">Controle Estatístico <span id="sw-version-badge" style="display:none; font-size:9px; background:rgba(0,0,0,0.06); border:1px solid rgba(0,0,0,0.12); padding:1px 5px; border-radius:10px; cursor:pointer; color:var(--muted); font-weight:bold; margin-left:4px; vertical-align:middle; transition:background 0.2s;" title="Clique para forçar atualização e limpar cache">loading</span></div>
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
@@ -590,6 +590,56 @@ document.addEventListener('DOMContentLoaded', function(){
 
 (async function(){
   try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('./sw.js',{scope:'./'}); }catch(e){}
+
+  // SW version badge and force update
+  function initSWVersionBadge() {
+    var badge = document.getElementById('sw-version-badge');
+    if (!badge) return;
+    
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(function() {
+        if (navigator.serviceWorker.controller) {
+          var msgChan = new MessageChannel();
+          msgChan.port1.onmessage = function(event) {
+            if (event.data && event.data.version) {
+              badge.textContent = event.data.version;
+              badge.style.display = 'inline-block';
+            }
+          };
+          navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [msgChan.port2]);
+        } else {
+          badge.textContent = 'SW';
+          badge.style.display = 'inline-block';
+        }
+      });
+
+      badge.addEventListener('click', function() {
+        if (confirm('Deseja forçar a atualização do aplicativo? Isso irá limpar o cache local e recarregar a página.')) {
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            var promises = registrations.map(function(registration) {
+              return registration.unregister();
+            });
+            return Promise.all(promises);
+          }).then(function() {
+            if ('caches' in window) {
+              return caches.keys().then(function(keys) {
+                return Promise.all(keys.map(function(key) {
+                  return caches.delete(key);
+                }));
+              });
+            }
+          }).then(function() {
+            localStorage.removeItem('ct_resultado_cp_rows_v1');
+            localStorage.removeItem('ct_relatorio_rows_v1');
+            window.location.reload(true);
+          }).catch(function() {
+            window.location.reload(true);
+          });
+        }
+      });
+    }
+  }
+  initSWVersionBadge();
 })();
 </script>
 </body>

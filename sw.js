@@ -197,3 +197,9 @@ function _storeAlert(title, body, ts) {
     };
   } catch (_) {}
 }
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "GET_VERSION") {
+    event.ports[0].postMessage({ version: CACHE });
+  }
+});
