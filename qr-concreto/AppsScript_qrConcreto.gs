@@ -1,4 +1,4 @@
-﻿/***************************************
+/***************************************
  * QR → SHEETS API (Apps Script Web App)
  * - Aba: "dados"
  * - MPA/Meta como NÚMERO (pt-BR/en-US)
@@ -195,7 +195,7 @@ function doPost(e) {
       body.data_moldagem || "",
       body.hora_moldagem || "",
       idade,
-      body.cp || "",
+      (body.cp ? "'" + body.cp : ""),
       body.data_ruptura || "",
       (mpaNum === null ? "" : mpaNum),
       statusMeta,
