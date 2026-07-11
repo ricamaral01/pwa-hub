@@ -1179,10 +1179,40 @@
         <p class="subtitle">Salva localmente e envia para Google Sheets (aba fornecedor) quando a URL do Web App estiver configurada.</p>
 
         <div class="form-grid">
+            <!-- GRUPO 1: DADOS DO FORNECEDOR -->
+            <div class="form-group full-width" style="margin-top: 10px; border-bottom: 2px solid var(--primary-light); padding-bottom: 6px;">
+                <h3 style="margin: 0; font-size: 1.05rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                    <span>🏢</span> Dados do Fornecedor
+                </h3>
+            </div>
+            
             <div class="form-group">
-                <label>Fornecedor</label>
+                <label>Fornecedor *</label>
                 <input type="text" id="for_nome" placeholder="Nome do fornecedor">
             </div>
+            <div class="form-group">
+                <label>Contato do Fornecedor</label>
+                <input type="text" id="for_contato" placeholder="Ex: João Silva">
+            </div>
+            <div class="form-group">
+                <label>Telefone do Fornecedor</label>
+                <input type="text" id="for_telefone" placeholder="Ex: (19) 99999-9999">
+            </div>
+            <div class="form-group">
+                <label>Contribuinte ICMS</label>
+                <select id="for_icms">
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
+                </select>
+            </div>
+
+            <!-- GRUPO 2: DADOS DO PRODUTO -->
+            <div class="form-group full-width" style="margin-top: 15px; border-bottom: 2px solid var(--primary-light); padding-bottom: 6px;">
+                <h3 style="margin: 0; font-size: 1.05rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                    <span>📦</span> Dados do Produto
+                </h3>
+            </div>
+            
             <div class="form-group">
                 <label>Produto</label>
                 <select id="for_produto_tipo">
@@ -1192,19 +1222,40 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Descrição Produto</label>
+                <label>Descrição Produto *</label>
                 <input type="text" id="for_produto_nome" placeholder="Ex: Areia média lavada">
             </div>
             <div class="form-group">
-                <label>Valor (R$)</label>
-                <input type="number" id="for_valor" step="0.01" placeholder="0,00">
+                <label>Valor Unitário (R$)</label>
+                <input type="number" id="for_valor" step="0.01" placeholder="0,00" oninput="calcularCustosFornecedor()">
             </div>
             <div class="form-group">
-                <label>Contribuinte ICMS</label>
-                <select id="for_icms">
-                    <option value="Sim">Sim</option>
-                    <option value="Não">Não</option>
-                </select>
+                <label>ICMS do Insumo (%)</label>
+                <input type="number" id="for_produto_icms" step="0.1" min="0" max="100" value="0" placeholder="0,0%" oninput="calcularCustosFornecedor()">
+            </div>
+
+            <!-- GRUPO 3: SEÇÃO DE FRETE E TRANSPORTE -->
+            <div class="form-group full-width" style="margin-top: 15px; border-bottom: 2px solid var(--primary-light); padding-bottom: 6px;">
+                <h3 style="margin: 0; font-size: 1.05rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                    <span>🚚</span> Seção de Frete e Transporte
+                </h3>
+            </div>
+            
+            <div class="form-group">
+                <label>Custo do Frete (R$)</label>
+                <input type="number" id="for_frete_custo" step="0.01" min="0" value="0" placeholder="0,00" oninput="calcularCustosFornecedor()">
+            </div>
+            <div class="form-group">
+                <label>ICMS do Frete (%)</label>
+                <input type="number" id="for_frete_icms" step="0.1" min="0" max="100" value="0" placeholder="0,0%" oninput="calcularCustosFornecedor()">
+            </div>
+            <div class="form-group">
+                <label>Contato do Transporte</label>
+                <input type="text" id="for_frete_contato" placeholder="Ex: José Souza">
+            </div>
+            <div class="form-group">
+                <label>Telefone do Transporte</label>
+                <input type="text" id="for_frete_telefone" placeholder="Ex: (19) 88888-8888">
             </div>
             <div class="form-group">
                 <label>Tipo de Frete</label>
@@ -1215,6 +1266,30 @@
                     <option value="Retira no local">Retira no local</option>
                 </select>
             </div>
+
+            <!-- GRUPO 4: RESUMO DE VALORES (CÁLCULO AUTOMÁTICO) -->
+            <div class="form-group full-width" style="margin-top: 15px; border-bottom: 2px solid var(--primary-light); padding-bottom: 6px;">
+                <h3 style="margin: 0; font-size: 1.05rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                    <span>📊</span> Resumo de Custos (Calculado)
+                </h3>
+            </div>
+            
+            <div class="form-group" style="background: #e8f5e9; border: 1px solid #a5d6a7; border-radius: 10px; padding: 10px;">
+                <label style="color: #2e7d32; font-weight: 700;">VALOR FINAL (Produto + Frete)</label>
+                <input type="text" id="for_valor_final" readonly style="background: transparent; border: none; font-size: 1.25rem; font-weight: 900; color: #2e7d32; width:100%; outline:none;" value="R$ 0,00">
+            </div>
+            <div class="form-group" style="background: #e1f5fe; border: 1px solid #90caf9; border-radius: 10px; padding: 10px;">
+                <label style="color: #0288d1; font-weight: 700;">VALOR LÍQUIDO (Descontando ICMS)</label>
+                <input type="text" id="for_valor_liquid" readonly style="background: transparent; border: none; font-size: 1.25rem; font-weight: 900; color: #0288d1; width:100%; outline:none;" value="R$ 0,00">
+            </div>
+
+            <!-- GRUPO 5: OUTRAS INFORMAÇÕES -->
+            <div class="form-group full-width" style="margin-top: 15px; border-bottom: 2px solid var(--primary-light); padding-bottom: 6px;">
+                <h3 style="margin: 0; font-size: 1.05rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                    <span>📝</span> Outras Informações e Avaliação
+                </h3>
+            </div>
+            
             <div class="form-group">
                 <label>Nível de Suporte Técnico</label>
                 <select id="for_suporte">
@@ -1227,6 +1302,7 @@
                 <label>Avaliação do Produto (1 a 5)</label>
                 <input type="number" id="for_avaliacao" min="1" max="5" step="1" value="4">
             </div>
+            
             <div class="form-group full-width">
                 <label>Endereço</label>
                 <input type="text" id="for_endereco" placeholder="Rua, número, bairro, cidade, UF">
@@ -1275,11 +1351,19 @@
                     <tr>
                         <th>ID</th>
                         <th>Fornecedor</th>
+                        <th>Contato Forn.</th>
+                        <th>Telefone Forn.</th>
                         <th>Produto</th>
                         <th>Descrição</th>
                         <th>Valor (R$)</th>
-                        <th>ICMS</th>
-                        <th>Frete</th>
+                        <th>ICMS Prod (%)</th>
+                        <th>Frete (R$)</th>
+                        <th>ICMS Frete (%)</th>
+                        <th>Valor Final (R$)</th>
+                        <th>Valor Líquido (R$)</th>
+                        <th>Contato Transp.</th>
+                        <th>Telefone Transp.</th>
+                        <th>Tipo Frete</th>
                         <th>Suporte</th>
                         <th>Avaliação</th>
                         <th>Endereço</th>
@@ -5076,8 +5160,26 @@ function escaparHtmlFornecedor(valor) {
         .replace(/'/g, '&#39;');
 }
 
+function calcularCustosFornecedor() {
+    const valor = parseFloat(document.getElementById('for_valor')?.value || '0');
+    const icmsPct = parseFloat(document.getElementById('for_produto_icms')?.value || '0');
+    const freteCusto = parseFloat(document.getElementById('for_frete_custo')?.value || '0');
+    const freteIcmsPct = parseFloat(document.getElementById('for_frete_icms')?.value || '0');
+
+    const valorFinal = valor + freteCusto;
+    const valorLiquido = (valor * (1 - icmsPct / 100)) + (freteCusto * (1 - freteIcmsPct / 100));
+
+    const finalEl = document.getElementById('for_valor_final');
+    const liqEl = document.getElementById('for_valor_liquid');
+
+    if (finalEl) finalEl.value = 'R$ ' + valorFinal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (liqEl) liqEl.value = 'R$ ' + valorLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 function limparCadastroFornecedor() {
-    ['for_nome','for_produto_nome','for_valor','for_endereco','for_observacoes'].forEach(id => {
+    ['for_nome','for_contato','for_telefone','for_produto_nome','for_valor','for_produto_icms',
+     'for_frete_custo','for_frete_icms','for_frete_contato','for_frete_telefone',
+     'for_valor_final','for_valor_liquid','for_endereco','for_observacoes'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
     });
@@ -5085,6 +5187,7 @@ function limparCadastroFornecedor() {
     if (avaliacao) avaliacao.value = 4;
     const status = document.getElementById('for_status');
     if (status) status.innerHTML = '';
+    calcularCustosFornecedor();
 }
 
 async function enviarFornecedorGoogleSheets(registro) {
@@ -5137,10 +5240,22 @@ async function enviarFornecedorGoogleSheets(registro) {
 
 async function cadastrarFornecedor() {
     const fornecedor = (document.getElementById('for_nome').value || '').trim();
+    const contato = (document.getElementById('for_contato').value || '').trim();
+    const telefone = (document.getElementById('for_telefone').value || '').trim();
     const produtoTipo = document.getElementById('for_produto_tipo').value;
     const produtoNome = (document.getElementById('for_produto_nome').value || '').trim();
     const valor = parseFloat(document.getElementById('for_valor').value || '0');
+    const produtoIcmsPct = parseFloat(document.getElementById('for_produto_icms').value || '0');
     const icms = document.getElementById('for_icms').value;
+    
+    const freteCusto = parseFloat(document.getElementById('for_frete_custo').value || '0');
+    const freteIcmsPct = parseFloat(document.getElementById('for_frete_icms').value || '0');
+    const freteContato = (document.getElementById('for_frete_contato').value || '').trim();
+    const freteTelefone = (document.getElementById('for_frete_telefone').value || '').trim();
+    
+    const valorFinal = valor + freteCusto;
+    const valorLiquido = (valor * (1 - produtoIcmsPct / 100)) + (freteCusto * (1 - freteIcmsPct / 100));
+
     const endereco = (document.getElementById('for_endereco').value || '').trim();
     const frete = document.getElementById('for_frete').value;
     const suporte = document.getElementById('for_suporte').value;
@@ -5160,10 +5275,19 @@ async function cadastrarFornecedor() {
     const registro = {
         id: gerarFornecedorId(),
         fornecedor,
+        contato,
+        telefone,
         produtoTipo,
         produtoNome,
         valor,
+        produtoIcmsPct,
         contribuinteIcms: icms,
+        freteCusto,
+        freteIcmsPct,
+        freteContato,
+        freteTelefone,
+        valorFinal,
+        valorLiquido,
         endereco,
         tipoFrete: frete,
         suporteTecnico: suporte,
@@ -5217,7 +5341,7 @@ function renderTabelaFornecedores() {
         : fornecedores;
 
     if (!filtrados.length) {
-        body.innerHTML = '<tr><td colspan="12" style="text-align:center;color:var(--text-light);">Nenhum cadastro encontrado.</td></tr>';
+        body.innerHTML = '<tr><td colspan="20" style="text-align:center;color:var(--text-light);">Nenhum cadastro encontrado.</td></tr>';
         if (status) status.innerHTML = '<span class="badge badge-warn">⚠ Sem dados para o filtro selecionado.</span>';
         return;
     }
@@ -5227,10 +5351,18 @@ function renderTabelaFornecedores() {
         return `<tr>
             <td>${escaparHtmlFornecedor(item.id)}</td>
             <td>${escaparHtmlFornecedor(item.fornecedor)}</td>
+            <td>${escaparHtmlFornecedor(item.contato || '—')}</td>
+            <td>${escaparHtmlFornecedor(item.telefone || '—')}</td>
             <td>${escaparHtmlFornecedor(item.produtoTipo)}</td>
             <td>${escaparHtmlFornecedor(item.produtoNome)}</td>
             <td>${Number(item.valor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            <td>${escaparHtmlFornecedor(item.contribuinteIcms)}</td>
+            <td>${Number(item.produtoIcmsPct || 0).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })}%</td>
+            <td>${Number(item.freteCusto || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td>${Number(item.freteIcmsPct || 0).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })}%</td>
+            <td>${Number(item.valorFinal || (item.valor || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td>${Number(item.valorLiquido || (item.valor || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td>${escaparHtmlFornecedor(item.freteContato || '—')}</td>
+            <td>${escaparHtmlFornecedor(item.freteTelefone || '—')}</td>
             <td>${escaparHtmlFornecedor(item.tipoFrete)}</td>
             <td>${escaparHtmlFornecedor(item.suporteTecnico)}</td>
             <td>${escaparHtmlFornecedor(item.avaliacao)}</td>
