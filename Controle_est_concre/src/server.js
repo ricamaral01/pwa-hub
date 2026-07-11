@@ -29,7 +29,10 @@ function toNullableNumber(value) {
 
 function normalizeCP(cpVal) {
   if (!cpVal) return null;
-  const cpStr = String(cpVal).trim();
+  let cpStr = String(cpVal).trim();
+  if (cpStr.startsWith("'")) {
+    cpStr = cpStr.substring(1);
+  }
   if (cpStr === '1' || cpStr === '2') return cpStr;
   if (cpStr.includes('Feb 01 2026') || cpStr.includes('01/02/2026') || cpStr.startsWith('Sun Feb 01')) {
     return '1';
