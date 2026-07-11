@@ -11,7 +11,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <script src="./api-client.js?v=2"></script>
+  <script src="./api-client.js?v=3"></script>
   <style>
     /* ══ LIGHT THEME BASE ══ */
     :root {
@@ -297,14 +297,20 @@ function groupRows(rawRows){
 var _groups=[];
 var _dataStatusHtml='';
 
+function periodoResultado(g){
+  var first = g && g.cps && g.cps[0] ? g.cps[0] : null;
+  return (first && first.data_ruptura) || g.data_ruptura || g.data_moldagem || '';
+}
+
 function renderTable(){
   var tbody=document.getElementById('tblBody');
   var footer=document.getElementById('tblFooter');
   var mes=document.getElementById('filtroMes').value;
   var ano=String(document.getElementById('filtroAno').value||'');
   var filtered=_groups.filter(function(g){
-    if(ano&&ano.length===4&&anoNum(g.data_moldagem)!==ano)return false;
-    if(mes&&mesNum(g.data_moldagem)!==mes)return false;
+    var periodo=periodoResultado(g);
+    if(ano&&ano.length===4&&anoNum(periodo)!==ano)return false;
+    if(mes&&mesNum(periodo)!==mes)return false;
     return true;
   });
   tbody.innerHTML='';

@@ -36,8 +36,13 @@ async function listRompimentos(filters) {
 
   const sql = `
     select data_moldagem, data_ruptura, traco_id, idade_dias, cp, mpa, updated_at, created_at
-    from rompimentos
-    ${built.where}
+    from (
+      select distinct on (data_moldagem, traco_id, idade_dias, cp)
+        data_moldagem, data_ruptura, traco_id, idade_dias, cp, mpa, updated_at, created_at
+      from rompimentos
+      ${built.where}
+      order by data_moldagem, traco_id, idade_dias, cp, updated_at desc, created_at desc
+    ) dedup
     order by data_moldagem desc nulls last, traco_id asc, idade_dias asc, cp asc
     limit ${limitParam}
     offset ${offsetParam}
