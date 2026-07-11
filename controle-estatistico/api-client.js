@@ -1,5 +1,7 @@
 (function(global){
-  var API_URL = '/api/controle-estatistico/rompimentos-grupos';
+  var API_URL = window.location.hostname === 'usina.concretrack.com.br'
+    ? 'https://concretrack.com.br/api/controle-estatistico/rompimentos-grupos'
+    : '/api/controle-estatistico/rompimentos-grupos';
   var DEFAULT_TIMEOUT_MS = 15000;
 
   function buildUrl(filters){
