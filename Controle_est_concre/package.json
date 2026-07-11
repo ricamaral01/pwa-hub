@@ -5,7 +5,8 @@
   "description": "API de sincronizacao do ConcreTrack para QR Concreto",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

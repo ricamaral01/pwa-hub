@@ -1,7 +1,9 @@
-const CACHE = "ct-controle-est-v3";
+const CACHE = "ct-controle-est-v6";
 const ASSETS = [
   "./index.html",
   "./resultado-cp.html",
+  "./relatorio.html",
+  "./api-client.js",
   "./manifest.json",
   "./relatorio-icon.svg"
 ];
@@ -24,13 +26,12 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Passthrough: API, Apps Script, CDN externo e relatorio.html
+  if (url.pathname.startsWith("/api/")) return;
+
+  // Passthrough: recursos externos
   if (
     url.hostname !== self.location.hostname ||
-    url.href.includes("script.google.com/macros") ||
-    url.href.includes("cdn.jsdelivr.net") ||
-    url.pathname.includes("relatorio.html") ||
-    url.port === "8086"
+    url.href.includes("cdn.jsdelivr.net")
   ) return;
 
   event.respondWith(
