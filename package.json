@@ -4,7 +4,7 @@
   "description": "",
   "main": "sw.js",
   "scripts": {
-    "test": "node --test tests/*.test.js && node dosagem-concreto/tests/argamassa-calculo.test.js",
+    "test": "node --test tests/*.test.js && node dosagem-concreto/tests/argamassa-calculo.test.js && node dosagem-concreto/tests/dosagem-cientifica.test.js && node dosagem-concreto/tests/dosagem-por-argamassa.test.js",
     "seed:master": "node --env-file-if-exists=.env scripts/seed-master.mjs",
     "bump": "node mapa-concretagem/bump.js",
     "watch": "node mapa-concretagem/bump.js --watch"

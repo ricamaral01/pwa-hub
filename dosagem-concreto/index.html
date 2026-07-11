@@ -6819,6 +6819,9 @@ function calcularDosagem() {
 
     const v = {};
     Object.keys(m).forEach(k => { v[k] = volAbs(m[k], rho[k]); });
+    if (an2 > 0) {
+        v.an = volAbs(_an1base, rho.an) + volAbs(an2, rho.an2);
+    }
     const vAr = arPct * 10;
     const vSolidos = Object.values(v).reduce((a,b)=>a+b,0);
     const vTotal = vSolidos + vAr;
@@ -12417,6 +12420,10 @@ function mccGetGroup(mat) {
 
 </script>
 <script src="./argamassa-calculo.js?v=1"></script>
+<script src="./dosagem-cientifica.js?v=1"></script>
+<script src="./dosagem-cientifica-ui.js?v=1"></script>
+<script src="./dosagem-por-argamassa.js?v=1"></script>
+<script src="./dosagem-por-argamassa-ui.js?v=1"></script>
 <script src="./layout-modern.js?v=5"></script>
 
 </body>
