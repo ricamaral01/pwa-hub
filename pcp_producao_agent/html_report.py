@@ -405,6 +405,116 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             color: #3b82f6;
             font-weight: 800;
         }
+
+        /* --- FILTERS & ACTIONS FOR TABLES --- */
+        .table-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            background: #f8fafc;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--card-border);
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            font-size: 0.85rem;
+            width: 250px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .status-filters {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: 0.25rem;
+        }
+
+        .filter-btn {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-muted);
+        }
+
+        .filter-btn:hover {
+            border-color: #cbd5e1;
+            color: var(--text-main);
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .btn-restore-hidden {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #b45309;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .btn-restore-hidden:hover {
+            background: #fef3c7;
+        }
+
+        .btn-hide-row {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-hide-row:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .manually-hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -522,6 +632,29 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             </div>
         </div>
 
+        <!-- CONTROLES DE FILTRO -->
+        {% if stats.rows %}
+        <div class="table-controls" data-sector="{{ setor_nome }}">
+            <div class="search-box">
+                <input type="text" placeholder="Filtrar por modelo ou código..." oninput="applyFilters('{{ setor_nome }}')">
+            </div>
+            <div class="status-filters">
+                <span class="filter-label">Filtrar Status:</span>
+                <button class="filter-btn active" data-status="ALL" onclick="toggleFilter(this, 'ALL', '{{ setor_nome }}')">Todos</button>
+                <button class="filter-btn" data-status="REALIZADO" onclick="toggleFilter(this, 'REALIZADO', '{{ setor_nome }}')">Realizado</button>
+                <button class="filter-btn" data-status="PARCIAL" onclick="toggleFilter(this, 'PARCIAL', '{{ setor_nome }}')">Parcial</button>
+                <button class="filter-btn" data-status="NÃO PRODUZIDO" onclick="toggleFilter(this, 'NÃO PRODUZIDO', '{{ setor_nome }}')">Não Produzido</button>
+                <button class="filter-btn" data-status="EXCEDENTE" onclick="toggleFilter(this, 'EXCEDENTE', '{{ setor_nome }}')">Excedente</button>
+                <button class="filter-btn" data-status="NÃO PROGRAMADO" onclick="toggleFilter(this, 'NÃO PROGRAMADO', '{{ setor_nome }}')">Não Programado</button>
+            </div>
+            <div>
+                <button class="btn-restore-hidden" id="restore-{{ setor_nome }}" onclick="restoreHiddenRows('{{ setor_nome }}')" style="display: none;">
+                    Mostrar Ocultados (<span class="hidden-count">0</span>)
+                </button>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="table-container">
             <table>
                 <thead>
@@ -533,28 +666,37 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                         <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
                         <th style="text-align: center; width: 100px;">Desvio</th>
                         <th style="width: 150px;">Status</th>
+                        <th style="width: 60px; text-align: center;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% if stats.rows %}
                         {% for row in stats.rows %}
-                        <tr class="status-{{ row.status }}">
+                        <tr class="status-{{ row.status }}" data-status="{{ row.status }}" data-model="{{ row.modelo | lower }}" data-code="{{ row.codigo | lower }}">
                             <td>{{ row.modelo }}</td>
                             <td><strong>{{ row.codigo }}</strong></td>
-                            <td style="text-align: center;">{{ row.programado }}</td>
-                            <td style="text-align: center;">{{ row.realizado_encarregado }}</td>
-                            <td style="text-align: center;">{{ row.produzido }}</td>
-                            <td style="text-align: center;" class="text-diff {% if row.diferenca > 0 %}positive{% elif row.diferenca < 0 %}negative{% else %}zero{% endif %}">
+                            <td class="cell-prog" style="text-align: center;">{{ row.programado }}</td>
+                            <td class="cell-real-enc" style="text-align: center;">{{ row.realizado_encarregado }}</td>
+                            <td class="cell-prod" style="text-align: center;">{{ row.produzido }}</td>
+                            <td class="cell-diff text-diff {% if row.diferenca > 0 %}positive{% elif row.diferenca < 0 %}negative{% else %}zero{% endif %}" style="text-align: center;">
                                 {{ "%+d" | format(row.diferenca) if row.diferenca != 0 else "0" }}
                             </td>
                             <td>
                                 <span class="badge-status badge-{{ row.status }}">{{ row.status }}</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, '{{ setor_nome }}')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         {% endfor %}
+                        <tr class="no-results-row" style="display: none;">
+                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
+                                Nenhum item corresponde aos filtros selecionados.
+                            </td>
+                        </tr>
                     {% else %}
                         <tr>
-                            <td colspan="7" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
+                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
                                 Nenhuma atividade ou planejamento registrado para este setor nesta data.
                             </td>
                         </tr>
@@ -562,15 +704,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 </tbody>
                 {% if stats.rows %}
                 <tfoot>
-                    <tr>
-                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
-                        <td style="text-align: center;">{{ stats.programado }}</td>
-                        <td style="text-align: center;">{{ stats.realizado_encarregado }}</td>
-                        <td style="text-align: center;">{{ stats.produzido }}</td>
-                        <td style="text-align: center;" class="text-diff {% if stats.diferenca > 0 %}positive{% elif stats.diferenca < 0 %}negative{% else %}zero{% endif %}">
+                    <tr class="table-totals">
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total (Filtrado):</td>
+                        <td class="total-prog" style="text-align: center;">{{ stats.programado }}</td>
+                        <td class="total-real-enc" style="text-align: center;">{{ stats.realizado_encarregado }}</td>
+                        <td class="total-prod" style="text-align: center;">{{ stats.produzido }}</td>
+                        <td class="total-diff text-diff {% if stats.diferenca > 0 %}positive{% elif stats.diferenca < 0 %}negative{% else %}zero{% endif %}" style="text-align: center;">
                             {{ "%+d" | format(stats.diferenca) if stats.diferenca != 0 else "0" }}
                         </td>
-                        <td></td>
+                        <td colspan="2"></td>
                     </tr>
                 </tfoot>
                 {% endif %}
@@ -599,6 +741,194 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     {% endfor %}
 </div>
 
+<script>
+    // Armazena as linhas ocultadas manualmente para cada setor
+    const manuallyHiddenRows = {};
+
+    function toggleFilter(button, status, sector) {
+        const sectorSection = button.closest('.sector-section');
+        const buttons = sectorSection.querySelectorAll('.status-filters .filter-btn');
+        
+        if (status === 'ALL') {
+            // Se clicar em Todos, ativa "Todos" e desativa os outros
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-status') === 'ALL') {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        } else {
+            // Se clicar em qualquer outro, desativa "Todos" e alterna o clicado
+            const allBtn = sectorSection.querySelector('.status-filters .filter-btn[data-status="ALL"]');
+            allBtn.classList.remove('active');
+            
+            button.classList.toggle('active');
+            
+            // Se nenhum botão ficar ativo, reativa o "Todos"
+            const activeButtons = sectorSection.querySelectorAll('.status-filters .filter-btn.active');
+            if (activeButtons.length === 0) {
+                allBtn.classList.add('active');
+            }
+        }
+        
+        applyFilters(sector);
+    }
+
+    function applyFilters(sector) {
+        // Encontra a seção do setor correspondente
+        const sections = document.querySelectorAll('.sector-section');
+        let sectorSection = null;
+        for (let sec of sections) {
+            if (sec.querySelector('.sector-title').textContent.trim() === sector.trim()) {
+                sectorSection = sec;
+                break;
+            }
+        }
+        if (!sectorSection) return;
+
+        const searchInput = sectorSection.querySelector('.search-box input');
+        const query = searchInput.value.toLowerCase().trim();
+        
+        // Obtém status ativos
+        const activeButtons = sectorSection.querySelectorAll('.status-filters .filter-btn.active');
+        const activeStatuses = Array.from(activeButtons).map(btn => btn.getAttribute('data-status'));
+        const isAllActive = activeStatuses.includes('ALL');
+
+        const rows = sectorSection.querySelectorAll('tbody tr:not(.no-results-row)');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const rowStatus = row.getAttribute('data-status');
+            const model = row.getAttribute('data-model') || '';
+            const code = row.getAttribute('data-code') || '';
+            
+            // Verifica se está ocultada manualmente
+            const isManuallyHidden = row.classList.contains('manually-hidden');
+            
+            // Filtro de texto
+            const matchesSearch = query === '' || model.includes(query) || code.includes(query);
+            
+            // Filtro de status
+            const matchesStatus = isAllActive || activeStatuses.includes(rowStatus);
+            
+            if (matchesSearch && matchesStatus && !isManuallyHidden) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Exibe mensagem de "sem resultados" se nenhuma linha estiver visível
+        const noResultsRow = sectorSection.querySelector('.no-results-row');
+        if (noResultsRow) {
+            noResultsRow.style.display = visibleCount === 0 ? '' : 'none';
+        }
+
+        // Atualiza os totais da tabela
+        updateTotals(sectorSection);
+    }
+
+    function hideRow(button, sector) {
+        const row = button.closest('tr');
+        row.classList.add('manually-hidden');
+        row.style.display = 'none';
+
+        if (!manuallyHiddenRows[sector]) {
+            manuallyHiddenRows[sector] = [];
+        }
+        manuallyHiddenRows[sector].push(row);
+
+        updateRestoreButton(sector);
+        applyFilters(sector);
+    }
+
+    function restoreHiddenRows(sector) {
+        const hiddenList = manuallyHiddenRows[sector] || [];
+        hiddenList.forEach(row => {
+            row.classList.remove('manually-hidden');
+        });
+        manuallyHiddenRows[sector] = [];
+
+        updateRestoreButton(sector);
+        applyFilters(sector);
+    }
+
+    function updateRestoreButton(sector) {
+        // Encontra a seção do setor
+        const sections = document.querySelectorAll('.sector-section');
+        let sectorSection = null;
+        for (let sec of sections) {
+            if (sec.querySelector('.sector-title').textContent.trim() === sector.trim()) {
+                sectorSection = sec;
+                break;
+            }
+        }
+        if (!sectorSection) return;
+
+        const restoreBtn = sectorSection.querySelector('.btn-restore-hidden');
+        const countSpan = restoreBtn.querySelector('.hidden-count');
+        const hiddenCount = (manuallyHiddenRows[sector] || []).length;
+
+        if (hiddenCount > 0) {
+            countSpan.textContent = hiddenCount;
+            restoreBtn.style.display = 'inline-flex';
+        } else {
+            restoreBtn.style.display = 'none';
+        }
+    }
+
+    function updateTotals(sectorSection) {
+        const rows = sectorSection.querySelectorAll('tbody tr:not(.no-results-row)');
+        let totalProg = 0;
+        let totalRealEnc = 0;
+        let totalProd = 0;
+
+        rows.forEach(row => {
+            // Apenas soma se a linha estiver visível (style.display !== 'none' e não manualmente oculta)
+            if (row.style.display !== 'none') {
+                const progVal = parseInt(row.querySelector('.cell-prog').textContent) || 0;
+                const realEncVal = parseInt(row.querySelector('.cell-real-enc').textContent) || 0;
+                const prodVal = parseInt(row.querySelector('.cell-prod').textContent) || 0;
+                
+                totalProg += progVal;
+                totalRealEnc += realEncVal;
+                totalProd += prodVal;
+            }
+        });
+
+        const totalDiff = totalProd - totalProg;
+
+        // Atualiza os elementos de total do rodapé
+        const tfoot = sectorSection.querySelector('tfoot');
+        if (tfoot) {
+            const progCell = tfoot.querySelector('.total-prog');
+            const realEncCell = tfoot.querySelector('.total-real-enc');
+            const prodCell = tfoot.querySelector('.total-prod');
+            const diffCell = tfoot.querySelector('.total-diff');
+
+            if (progCell) progCell.textContent = totalProg;
+            if (realEncCell) realEncCell.textContent = totalRealEnc;
+            if (prodCell) prodCell.textContent = totalProd;
+
+            if (diffCell) {
+                const prefix = totalDiff > 0 ? '+' : '';
+                diffCell.textContent = prefix + totalDiff;
+                
+                // Atualiza cores do desvio
+                diffCell.classList.remove('positive', 'negative', 'zero');
+                if (totalDiff > 0) {
+                    diffCell.classList.add('positive');
+                } else if (totalDiff < 0) {
+                    diffCell.classList.add('negative');
+                } else {
+                    diffCell.classList.add('zero');
+                }
+            }
+        }
+    }
+</script>
 </body>
 </html>
 """
