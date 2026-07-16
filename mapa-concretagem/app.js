@@ -653,6 +653,12 @@ const el = {
   mcFiltroData: document.getElementById("mcFiltroData"),
   mcQtdItens: document.getElementById("mcQtdItens"),
   mcTabelaBody: document.getElementById("mcTabelaBody"),
+  mcTabMapa: document.getElementById("mcTabMapa"),
+  mcTabTabela: document.getElementById("mcTabTabela"),
+  mcContainerMapa: document.getElementById("mcContainerMapa"),
+  mcContainerTabela: document.getElementById("mcContainerTabela"),
+  mcMapaEsquerdo: document.getElementById("mcMapaEsquerdo"),
+  mcMapaDireito: document.getElementById("mcMapaDireito"),
   hubInspecao: document.getElementById("hubInspecao"),
   hubMontagemPostes: document.getElementById("hubMontagemPostes"),
   hubSequenciaS3: document.getElementById("hubSequenciaS3"),
@@ -5767,11 +5773,15 @@ async function carregarMandrilCircular() {
   if (!selectedDate) {
     el.mcTabelaBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Selecione uma data para carregar os dados.</td></tr>`;
     el.mcQtdItens.textContent = "0";
+    if (el.mcMapaEsquerdo) el.mcMapaEsquerdo.innerHTML = "<div style='grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);'>Selecione uma data para carregar o mapa.</div>";
+    if (el.mcMapaDireito) el.mcMapaDireito.innerHTML = "<div style='grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);'>Selecione uma data para carregar o mapa.</div>";
     return;
   }
 
   el.mcTabelaBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
   el.mcQtdItens.textContent = "0";
+  if (el.mcMapaEsquerdo) el.mcMapaEsquerdo.innerHTML = "<div style='grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);'>Carregando...</div>";
+  if (el.mcMapaDireito) el.mcMapaDireito.innerHTML = "<div style='grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);'>Carregando...</div>";
 
   // 1. Fetch programmed models from PCP
   let formToModelMap = {};
@@ -5804,7 +5814,6 @@ async function carregarMandrilCircular() {
       }
     } catch (err) {
       console.error("Erro ao buscar no Supabase, tentando local...", err);
-      // fallback to offline
     }
   }
 
@@ -5836,15 +5845,54 @@ async function carregarMandrilCircular() {
     }
   });
 
-  // 5. Sort by time of concretagem
+  // Create lookup maps for quick visual board checking
+  const concretedLookup = {};
+  uniqueRows.forEach(r => {
+    concretedLookup[normalizeForma(r.forma || "")] = r;
+  });
+
+  // 5. Generate list of shapes
+  const leftColForms = [];
+  for (let i = 1; i <= 51; i += 2) {
+    leftColForms.push(`SC${String(i).padStart(2, '0')}`);
+  }
+  const rightColForms = [];
+  for (let i = 2; i <= 52; i += 2) {
+    rightColForms.push(`SC${String(i).padStart(2, '0')}`);
+  }
+
+  // Render Left Side Visual Grid
+  if (el.mcMapaEsquerdo) {
+    let htmlLeft = "";
+    leftColForms.forEach(forma => {
+      const fn = normalizeForma(forma);
+      const concretedRow = concretedLookup[fn];
+      const programmedModel = formToModelMap[fn];
+      htmlLeft += createVisualFormaCard(forma, concretedRow, programmedModel);
+    });
+    el.mcMapaEsquerdo.innerHTML = htmlLeft;
+  }
+
+  // Render Right Side Visual Grid
+  if (el.mcMapaDireito) {
+    let htmlRight = "";
+    rightColForms.forEach(forma => {
+      const fn = normalizeForma(forma);
+      const concretedRow = concretedLookup[fn];
+      const programmedModel = formToModelMap[fn];
+      htmlRight += createVisualFormaCard(forma, concretedRow, programmedModel);
+    });
+    el.mcMapaDireito.innerHTML = htmlRight;
+  }
+
+  // 6. Sort and render tabular rows
   uniqueRows.sort((a, b) => {
     const timeA = a.data_hora || "";
     const timeB = b.data_hora || "";
     return timeA.localeCompare(timeB);
   });
 
-  // 6. Render table rows
-  let html = "";
+  let htmlTable = "";
   uniqueRows.forEach(r => {
     const fn = normalizeForma(r.forma || "");
     const modeloProgramado = formToModelMap[fn] || r.modelo || "SC";
@@ -5860,7 +5908,7 @@ async function carregarMandrilCircular() {
       } catch (e) {}
     }
 
-    html += `
+    htmlTable += `
       <tr>
         <td>${r.forma || "--"}</td>
         <td>${modeloProgramado}</td>
@@ -5869,12 +5917,67 @@ async function carregarMandrilCircular() {
     `;
   });
 
-  if (!html) {
-    html = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Nenhuma forma do Setor 3 concretada nesta data.</td></tr>`;
+  if (!htmlTable) {
+    htmlTable = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Nenhuma forma do Setor 3 concretada nesta data.</td></tr>`;
   }
 
-  el.mcTabelaBody.innerHTML = html;
+  el.mcTabelaBody.innerHTML = htmlTable;
   el.mcQtdItens.textContent = uniqueRows.length;
+}
+
+function createVisualFormaCard(forma, concretedRow, programmedModel) {
+  let bg = "#f1f5f9";
+  let borderColor = "#cbd5e1";
+  let color = "#475569";
+  let modelStr = "--";
+  let timeStr = "--:--";
+  let shadow = "none";
+
+  if (concretedRow) {
+    // Concretado (Green)
+    bg = "#dcfce7";
+    borderColor = "#16a34a";
+    color = "#15803d";
+    modelStr = programmedModel || concretedRow.modelo || "SC";
+    
+    if (concretedRow.data_hora) {
+      try {
+        const d = new Date(concretedRow.data_hora);
+        if (!isNaN(d.getTime())) {
+          timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+      } catch (e) {}
+    }
+  } else if (programmedModel) {
+    // Programado mas não concretado (Yellow/Amber)
+    bg = "#fef3c7";
+    borderColor = "#d97706";
+    color = "#b45309";
+    modelStr = programmedModel;
+    timeStr = "Aguardando";
+    shadow = "0 4px 8px rgba(245, 158, 11, 0.1)";
+  }
+
+  return `
+    <div class="mc-visual-card" style="
+      background: ${bg};
+      border: 2px solid ${borderColor};
+      color: ${color};
+      border-radius: 10px;
+      padding: 8px 6px;
+      text-align: center;
+      box-shadow: ${shadow};
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 85px;
+      box-sizing: border-box;
+    ">
+      <div style="font-size: 0.85rem; font-weight: 800; opacity: 0.95;">${forma}</div>
+      <div style="font-size: 0.8rem; font-weight: 700; margin: 4px 0; word-break: break-all; min-height: 1.6em; display: flex; align-items: center; justify-content: center;">${modelStr}</div>
+      <div style="font-size: 0.7rem; font-weight: bold; opacity: 0.8;">${timeStr}</div>
+    </div>
+  `;
 }
 
 async function gerarRelatorioSetor() {
@@ -7427,6 +7530,36 @@ function bindEvents() {
   if (hubMandrilCircular) hubMandrilCircular.addEventListener("click", () => setMode("MANDRIL_CIRCULAR"));
 
   if (el.mcFiltroData) el.mcFiltroData.addEventListener("change", carregarMandrilCircular);
+
+  if (el.mcTabMapa) {
+    el.mcTabMapa.addEventListener("click", () => {
+      el.mcTabMapa.classList.add("active");
+      el.mcTabMapa.style.color = "var(--text)";
+      el.mcTabMapa.style.borderBottomColor = "var(--primary)";
+      
+      el.mcTabTabela.classList.remove("active");
+      el.mcTabTabela.style.color = "var(--muted)";
+      el.mcTabTabela.style.borderBottomColor = "transparent";
+
+      el.mcContainerMapa.classList.remove("hidden");
+      el.mcContainerTabela.classList.add("hidden");
+    });
+  }
+
+  if (el.mcTabTabela) {
+    el.mcTabTabela.addEventListener("click", () => {
+      el.mcTabTabela.classList.add("active");
+      el.mcTabTabela.style.color = "var(--text)";
+      el.mcTabTabela.style.borderBottomColor = "var(--primary)";
+      
+      el.mcTabMapa.classList.remove("active");
+      el.mcTabMapa.style.color = "var(--muted)";
+      el.mcTabMapa.style.borderBottomColor = "transparent";
+
+      el.mcContainerTabela.classList.remove("hidden");
+      el.mcContainerMapa.classList.add("hidden");
+    });
+  }
 
   // Productivity filters & actions
   document.getElementById("paBtnToggleFiltros")?.addEventListener("click", () => setProdutividadeDrawerOpen(true));

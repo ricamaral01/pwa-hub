@@ -368,24 +368,53 @@
           </label>
         </div>
 
-        <div class="sheet-box">
-          <div class="sheet-topline">
-            <div><strong>Formas Enchidas - Setor 3</strong></div>
-            <div><strong>Total:</strong> <span id="mcQtdItens">0</span></div>
+        <div class="mc-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 10px;">
+          <button id="mcTabMapa" class="tab-btn active" type="button" style="background: none; border: none; padding: 8px 16px; color: var(--text); border-bottom: 2px solid var(--primary); font-weight: bold; cursor: pointer;">Visualização Mapa</button>
+          <button id="mcTabTabela" class="tab-btn" type="button" style="background: none; border: none; padding: 8px 16px; color: var(--muted); border-bottom: 2px solid transparent; font-weight: bold; cursor: pointer;">Tabela de Dados</button>
+        </div>
+
+        <div id="mcContainerMapa" class="mc-tab-content">
+          <!-- Visual grid for Left and Right forms -->
+          <div class="mc-mapa-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            <div class="sheet-box">
+              <div class="sheet-topline" style="background: var(--primary); color: #fff; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                <div><strong>Lado Esquerdo (Ímpares)</strong></div>
+              </div>
+              <div id="mcMapaEsquerdo" class="forms-visual-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; padding: 15px;">
+                <div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);">Selecione uma data para carregar o mapa.</div>
+              </div>
+            </div>
+            <div class="sheet-box">
+              <div class="sheet-topline" style="background: var(--primary); color: #fff; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                <div><strong>Lado Direito (Pares)</strong></div>
+              </div>
+              <div id="mcMapaDireito" class="forms-visual-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; padding: 15px;">
+                <div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);">Selecione uma data para carregar o mapa.</div>
+              </div>
+            </div>
           </div>
-          <div class="mi-table-responsive">
-            <table class="sheet-table mi-table">
-              <thead>
-                <tr>
-                  <th>Nº Forma</th>
-                  <th>Tipo de Poste Programado</th>
-                  <th>Horário Concretagem (Enchimento)</th>
-                </tr>
-              </thead>
-              <tbody id="mcTabelaBody">
-                <tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Selecione uma data para carregar os dados.</td></tr>
-              </tbody>
-            </table>
+        </div>
+
+        <div id="mcContainerTabela" class="mc-tab-content hidden">
+          <div class="sheet-box">
+            <div class="sheet-topline">
+              <div><strong>Formas Enchidas - Setor 3</strong></div>
+              <div><strong>Total:</strong> <span id="mcQtdItens">0</span></div>
+            </div>
+            <div class="mi-table-responsive">
+              <table class="sheet-table mi-table">
+                <thead>
+                  <tr>
+                    <th>Nº Forma</th>
+                    <th>Tipo de Poste Programado</th>
+                    <th>Horário Concretagem (Enchimento)</th>
+                  </tr>
+                </thead>
+                <tbody id="mcTabelaBody">
+                  <tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Selecione uma data para carregar os dados.</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
