@@ -356,66 +356,39 @@
       </section>
       
       <!-- Mandril Circular -->
-      <section id="viewMandrilCircular" class="card hidden">
+      <section id="viewMandrilCircular" class="card hidden" style="padding: 32px !important; max-width: 100% !important; margin: 0 auto; box-sizing: border-box;">
         <div class="section-title-row">
-          <h2>Mandril Circular</h2>
+          <h2>Mandril Circular - Controle de Saque</h2>
           <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
         </div>
         
-        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;">
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px;">
           <label>Filtrar Data
-            <input id="mcFiltroData" type="date" />
+            <input id="mcFiltroData" type="date" style="padding: 10px; border-radius: 8px; border: 1px solid var(--line); font-size: 1rem; width: 100%; box-sizing: border-box;" />
           </label>
         </div>
 
-        <div class="mc-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 10px;">
-          <button id="mcTabMapa" class="tab-btn active" type="button" style="background: none; border: none; padding: 8px 16px; color: var(--text); border-bottom: 2px solid var(--primary); font-weight: bold; cursor: pointer;">Visualização Mapa</button>
-          <button id="mcTabTabela" class="tab-btn" type="button" style="background: none; border: none; padding: 8px 16px; color: var(--muted); border-bottom: 2px solid transparent; font-weight: bold; cursor: pointer;">Tabela de Dados</button>
-        </div>
-
-        <div id="mcContainerMapa" class="mc-tab-content">
-          <!-- Visual grid for Left and Right forms -->
-          <div class="mc-mapa-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-            <div class="sheet-box">
-              <div class="sheet-topline" style="background: var(--primary); color: #fff; border-top-left-radius: 8px; border-top-right-radius: 8px;">
-                <div><strong>Lado Esquerdo (Ímpares)</strong></div>
-              </div>
-              <div id="mcMapaEsquerdo" class="forms-visual-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; padding: 15px;">
-                <div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);">Selecione uma data para carregar o mapa.</div>
-              </div>
-            </div>
-            <div class="sheet-box">
-              <div class="sheet-topline" style="background: var(--primary); color: #fff; border-top-left-radius: 8px; border-top-right-radius: 8px;">
-                <div><strong>Lado Direito (Pares)</strong></div>
-              </div>
-              <div id="mcMapaDireito" class="forms-visual-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; padding: 15px;">
-                <div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);">Selecione uma data para carregar o mapa.</div>
-              </div>
-            </div>
+        <div class="sheet-box" style="padding: 24px; border-radius: 12px; background: #fff; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid var(--line); box-sizing: border-box;">
+          <div class="sheet-topline" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 12px; flex-wrap: wrap; gap: 12px;">
+            <div style="font-size: 1.1rem; color: var(--primary); font-weight: bold;">Relação de Formas e Controle de Saque (Setor 3)</div>
+            <div style="font-size: 1.1rem; color: var(--primary); font-weight: bold;">Total Concretado: <span id="mcQtdItens" style="background: var(--primary); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.95rem;">0</span></div>
           </div>
-        </div>
-
-        <div id="mcContainerTabela" class="mc-tab-content hidden">
-          <div class="sheet-box">
-            <div class="sheet-topline">
-              <div><strong>Formas Enchidas - Setor 3</strong></div>
-              <div><strong>Total:</strong> <span id="mcQtdItens">0</span></div>
-            </div>
-            <div class="mi-table-responsive">
-              <table class="sheet-table mi-table">
-                <thead>
-                  <tr>
-                    <th>Nº Forma</th>
-                    <th>Poste Programado</th>
-                    <th>Tipo de Concreto</th>
-                    <th>Hora Concretado</th>
-                  </tr>
-                </thead>
-                <tbody id="mcTabelaBody">
-                  <tr><td colspan="4" style="text-align:center; padding: 20px; color: var(--muted);">Selecione uma data para carregar os dados.</td></tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="mi-table-responsive" style="overflow-x: auto; width: 100%;">
+            <table class="sheet-table mi-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--line); background: #f8fafc;">
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Nº Forma</th>
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Poste Programado</th>
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Tipo de Concreto</th>
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Hora Concretado</th>
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Previsão Saque (+3h)</th>
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text); text-align: center; width: 220px;">Ação / Saque Realizado</th>
+                </tr>
+              </thead>
+              <tbody id="mcTabelaBody">
+                <tr><td colspan="6" style="text-align:center; padding: 30px; color: var(--muted); font-size: 1.05rem;">Selecione uma data para carregar os dados.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>

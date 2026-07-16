@@ -5771,17 +5771,13 @@ async function enviarRelatorioWhatsapp() {
 async function carregarMandrilCircular() {
   const selectedDate = el.mcFiltroData?.value;
   if (!selectedDate) {
-    el.mcTabelaBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Selecione uma data para carregar os dados.</td></tr>`;
+    el.mcTabelaBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color: var(--muted); font-size: 1.05rem;">Selecione uma data para carregar os dados.</td></tr>`;
     el.mcQtdItens.textContent = "0";
-    if (el.mcMapaEsquerdo) el.mcMapaEsquerdo.innerHTML = "<div style='grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);'>Selecione uma data para carregar o mapa.</div>";
-    if (el.mcMapaDireito) el.mcMapaDireito.innerHTML = "<div style='grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);'>Selecione uma data para carregar o mapa.</div>";
     return;
   }
 
-  el.mcTabelaBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
+  el.mcTabelaBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
   el.mcQtdItens.textContent = "0";
-  if (el.mcMapaEsquerdo) el.mcMapaEsquerdo.innerHTML = "<div style='grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);'>Carregando...</div>";
-  if (el.mcMapaDireito) el.mcMapaDireito.innerHTML = "<div style='grid-column: 1/-1; text-align: center; padding: 20px; color: var(--muted);'>Carregando...</div>";
 
   // 1. Fetch programmed models from PCP
   let formToModelMap = {};
@@ -5809,7 +5805,8 @@ async function carregarMandrilCircular() {
         rows = dbRows.map(r => ({
           forma: r.forma || r.forma_numero,
           modelo: r.modelo,
-          data_hora: r.data_hora || r.updated_at || r.created_at
+          data_hora: r.data_hora || r.updated_at || r.created_at,
+          tipo_concreto: r.tipo_concreto || r.tipoConcreto || r.concretoTipo
         }));
       }
     } catch (err) {
@@ -5829,7 +5826,8 @@ async function carregarMandrilCircular() {
       rows = localRows.map(r => ({
         forma: r.formaNumero,
         modelo: r.modelo,
-        data_hora: r.liberacao?.timestamp || r.updatedAt || r.createdAt
+        data_hora: r.liberacao?.timestamp || r.updatedAt || r.createdAt,
+        tipo_concreto: r.concretoTipo
       }));
     }
   }
@@ -5845,141 +5843,134 @@ async function carregarMandrilCircular() {
     }
   });
 
-  // Create lookup maps for quick visual board checking
+  // Create lookup maps for quick checking
   const concretedLookup = {};
   uniqueRows.forEach(r => {
     concretedLookup[normalizeForma(r.forma || "")] = r;
   });
 
-  // 5. Generate list of shapes
-  const leftColForms = [];
-  for (let i = 1; i <= 51; i += 2) {
-    leftColForms.push(`SC${String(i).padStart(2, '0')}`);
-  }
-  const rightColForms = [];
-  for (let i = 2; i <= 52; i += 2) {
-    rightColForms.push(`SC${String(i).padStart(2, '0')}`);
-  }
-
-  // Render Left Side Visual Grid
-  if (el.mcMapaEsquerdo) {
-    let htmlLeft = "";
-    leftColForms.forEach(forma => {
-      const fn = normalizeForma(forma);
-      const concretedRow = concretedLookup[fn];
-      const programmedModel = formToModelMap[fn];
-      htmlLeft += createVisualFormaCard(forma, concretedRow, programmedModel);
-    });
-    el.mcMapaEsquerdo.innerHTML = htmlLeft;
-  }
-
-  // Render Right Side Visual Grid
-  if (el.mcMapaDireito) {
-    let htmlRight = "";
-    rightColForms.forEach(forma => {
-      const fn = normalizeForma(forma);
-      const concretedRow = concretedLookup[fn];
-      const programmedModel = formToModelMap[fn];
-      htmlRight += createVisualFormaCard(forma, concretedRow, programmedModel);
-    });
-    el.mcMapaDireito.innerHTML = htmlRight;
-  }
-
-  // 6. Render sequential table for ALL 52 forms in order (SC01 to SC52)
+  // 5. Generate list of shapes (SC01 to SC52)
   const allS3Forms = [];
   for (let i = 1; i <= 52; i++) {
     allS3Forms.push(`SC${String(i).padStart(2, '0')}`);
   }
 
+  // Get local draw times from LocalStorage
+  let saqueData = {};
+  const rawSaque = localStorage.getItem("pwa_saque_mandril_v1");
+  if (rawSaque) {
+    try {
+      saqueData = JSON.parse(rawSaque);
+    } catch (e) {}
+  }
+
   let htmlTable = "";
+  let totalConcretados = 0;
+
   allS3Forms.forEach(forma => {
     const fn = normalizeForma(forma);
     const concretedRow = concretedLookup[fn];
     const programmedModel = formToModelMap[fn] || "--";
     
     let tipoConcreto = "--";
-    let timeStr = "--:--";
+    let horaConcretado = "--:--";
+    let previsaoSaque = "--:--";
+    let actionHtml = "";
     
     if (concretedRow) {
+      totalConcretados++;
       tipoConcreto = concretedRow.tipo_concreto || "Concreto Padrão";
       if (concretedRow.data_hora) {
         try {
           const d = new Date(concretedRow.data_hora);
           if (!isNaN(d.getTime())) {
-            timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            horaConcretado = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            // Previsão de Saque = Concretado + 3 horas
+            const dSaque = new Date(d.getTime());
+            dSaque.setHours(dSaque.getHours() + 3);
+            previsaoSaque = dSaque.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
           }
         } catch (e) {}
       }
+
+      // Check if mandrel has been drawn
+      const savedIso = saqueData[`${selectedDate}||${fn}`];
+      if (savedIso) {
+        let timeRealizado = "--:--";
+        try {
+          const d = new Date(savedIso);
+          if (!isNaN(d.getTime())) {
+            timeRealizado = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+          }
+        } catch (e) {}
+        
+        actionHtml = `
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <span style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; border: 1px solid #bbf7d0;">Saque: ${timeRealizado}</span>
+            <button onclick="window.limparSaque('${forma}')" style="background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.1rem; padding: 0;" title="Limpar Saque">❌</button>
+          </div>
+        `;
+      } else {
+        actionHtml = `
+          <button onclick="window.registrarSaque('${forma}')" style="padding: 6px 12px; font-size: 0.8rem; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 6px rgba(232, 118, 42, 0.2);" onmouseover="this.style.background='var(--accent-dark)'" onmouseout="this.style.background='var(--accent)'">Sacar Mandril</button>
+        `;
+      }
+    } else {
+      actionHtml = `<span style="color: var(--muted); font-size: 0.85rem;">Aguardando Concretagem</span>`;
     }
     
     htmlTable += `
-      <tr>
-        <td><strong>${forma}</strong></td>
-        <td>${programmedModel}</td>
-        <td>${tipoConcreto}</td>
-        <td>${timeStr}</td>
+      <tr style="border-bottom: 1px solid var(--line); transition: background 0.2s;">
+        <td style="padding: 12px 16px;"><strong>${forma}</strong></td>
+        <td style="padding: 12px 16px;">${programmedModel}</td>
+        <td style="padding: 12px 16px;">${tipoConcreto}</td>
+        <td style="padding: 12px 16px;">${horaConcretado}</td>
+        <td style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
+        <td style="padding: 12px 16px; text-align: center;">${actionHtml}</td>
       </tr>
     `;
   });
 
   el.mcTabelaBody.innerHTML = htmlTable;
-  el.mcQtdItens.textContent = uniqueRows.length;
+  el.mcQtdItens.textContent = totalConcretados;
 }
 
-function createVisualFormaCard(forma, concretedRow, programmedModel) {
-  let bg = "#f1f5f9";
-  let borderColor = "#cbd5e1";
-  let color = "#475569";
-  let modelStr = "--";
-  let timeStr = "--:--";
-  let shadow = "none";
-
-  if (concretedRow) {
-    // Concretado (Green)
-    bg = "#dcfce7";
-    borderColor = "#16a34a";
-    color = "#15803d";
-    modelStr = programmedModel || concretedRow.modelo || "SC";
-    
-    if (concretedRow.data_hora) {
-      try {
-        const d = new Date(concretedRow.data_hora);
-        if (!isNaN(d.getTime())) {
-          timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-        }
-      } catch (e) {}
-    }
-  } else if (programmedModel) {
-    // Programado mas não concretado (Yellow/Amber)
-    bg = "#fef3c7";
-    borderColor = "#d97706";
-    color = "#b45309";
-    modelStr = programmedModel;
-    timeStr = "Aguardando";
-    shadow = "0 4px 8px rgba(245, 158, 11, 0.1)";
+window.registrarSaque = function(forma) {
+  const selectedDate = el.mcFiltroData?.value;
+  if (!selectedDate) return;
+  
+  let data = {};
+  const raw = localStorage.getItem("pwa_saque_mandril_v1");
+  if (raw) {
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {}
   }
+  
+  data[`${selectedDate}||${normalizeForma(forma)}`] = new Date().toISOString();
+  localStorage.setItem("pwa_saque_mandril_v1", JSON.stringify(data));
+  
+  carregarMandrilCircular();
+};
 
-  return `
-    <div class="mc-visual-card" style="
-      background: ${bg};
-      border: 2px solid ${borderColor};
-      color: ${color};
-      border-radius: 10px;
-      padding: 8px 6px;
-      text-align: center;
-      box-shadow: ${shadow};
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 85px;
-      box-sizing: border-box;
-    ">
-      <div style="font-size: 0.85rem; font-weight: 800; opacity: 0.95;">${forma}</div>
-      <div style="font-size: 0.8rem; font-weight: 700; margin: 4px 0; word-break: break-all; min-height: 1.6em; display: flex; align-items: center; justify-content: center;">${modelStr}</div>
-      <div style="font-size: 0.7rem; font-weight: bold; opacity: 0.8;">${timeStr}</div>
-    </div>
-  `;
-}
+window.limparSaque = function(forma) {
+  const selectedDate = el.mcFiltroData?.value;
+  if (!selectedDate) return;
+  
+  let data = {};
+  const raw = localStorage.getItem("pwa_saque_mandril_v1");
+  if (raw) {
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {}
+  }
+  
+  delete data[`${selectedDate}||${normalizeForma(forma)}`];
+  localStorage.setItem("pwa_saque_mandril_v1", JSON.stringify(data));
+  
+  carregarMandrilCircular();
+};
 
 async function gerarRelatorioSetor() {
   const data = el.relData.value;
@@ -7531,36 +7522,6 @@ function bindEvents() {
   if (hubMandrilCircular) hubMandrilCircular.addEventListener("click", () => setMode("MANDRIL_CIRCULAR"));
 
   if (el.mcFiltroData) el.mcFiltroData.addEventListener("change", carregarMandrilCircular);
-
-  if (el.mcTabMapa) {
-    el.mcTabMapa.addEventListener("click", () => {
-      el.mcTabMapa.classList.add("active");
-      el.mcTabMapa.style.color = "var(--text)";
-      el.mcTabMapa.style.borderBottomColor = "var(--primary)";
-      
-      el.mcTabTabela.classList.remove("active");
-      el.mcTabTabela.style.color = "var(--muted)";
-      el.mcTabTabela.style.borderBottomColor = "transparent";
-
-      el.mcContainerMapa.classList.remove("hidden");
-      el.mcContainerTabela.classList.add("hidden");
-    });
-  }
-
-  if (el.mcTabTabela) {
-    el.mcTabTabela.addEventListener("click", () => {
-      el.mcTabTabela.classList.add("active");
-      el.mcTabTabela.style.color = "var(--text)";
-      el.mcTabTabela.style.borderBottomColor = "var(--primary)";
-      
-      el.mcTabMapa.classList.remove("active");
-      el.mcTabMapa.style.color = "var(--muted)";
-      el.mcTabMapa.style.borderBottomColor = "transparent";
-
-      el.mcContainerTabela.classList.remove("hidden");
-      el.mcContainerMapa.classList.add("hidden");
-    });
-  }
 
   // Productivity filters & actions
   document.getElementById("paBtnToggleFiltros")?.addEventListener("click", () => setProdutividadeDrawerOpen(true));
