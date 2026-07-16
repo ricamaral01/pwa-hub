@@ -40,26 +40,22 @@
   function mapGroupsToLegacyRows(v2Groups) {
     var rows = [];
     v2Groups.forEach(function(g) {
-      if (g.mpa_cp1 !== null && g.mpa_cp1 !== undefined) {
-        rows.push({
-          data_moldagem: g.data_moldagem,
-          data_ruptura: g.data_ruptura,
-          traco_id: g.traco_id,
-          idade_dias: g.idade_dias,
-          cp: '1',
-          mpa: g.mpa_cp1
-        });
-      }
-      if (g.mpa_cp2 !== null && g.mpa_cp2 !== undefined) {
-        rows.push({
-          data_moldagem: g.data_moldagem,
-          data_ruptura: g.data_ruptura,
-          traco_id: g.traco_id,
-          idade_dias: g.idade_dias,
-          cp: '2',
-          mpa: g.mpa_cp2
-        });
-      }
+      rows.push({
+        data_moldagem: g.data_moldagem,
+        data_ruptura: g.data_ruptura,
+        traco_id: g.traco_id,
+        idade_dias: g.idade_dias,
+        cp: '1',
+        mpa: g.mpa_cp1 !== null && g.mpa_cp1 !== undefined ? g.mpa_cp1 : null
+      });
+      rows.push({
+        data_moldagem: g.data_moldagem,
+        data_ruptura: g.data_ruptura,
+        traco_id: g.traco_id,
+        idade_dias: g.idade_dias,
+        cp: '2',
+        mpa: g.mpa_cp2 !== null && g.mpa_cp2 !== undefined ? g.mpa_cp2 : null
+      });
     });
     return rows;
   }
