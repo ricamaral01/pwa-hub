@@ -2133,8 +2133,8 @@ async function fetchFormStatusRowsFromTables(data) {
   return Array.from(rowsByKey.values());
 }
 
-async function loadClickedFormsFromSupabase() {
-  const data = el.libData?.value || todayYmd();
+async function loadClickedFormsFromSupabase(dateOverride) {
+  const data = dateOverride || el.libData?.value || todayYmd();
   if (!hasApiConfigured()) return;
 
   try {
@@ -2875,48 +2875,30 @@ async function fetchSetor3Models(filtroData) {
       console.warn("Fallback Usina também falhou:", fallbackErr);
     }
 
-    alert("Aviso: Falha de conexão com a API do PCP Concrefer (" + err.message + "). O navegador pode estar bloqueando (CORS) ou a API está fora. Mostrando modelos como SC.");
+    console.warn("Aviso: Falha de conexão com a API do PCP Concrefer (" + err.message + "). O navegador pode estar bloqueando (CORS) ou a API está fora. Mostrando modelos como SC.");
   }
 
-  // 2. Fallback antigo: tentar carregar do Supabase (caso a tabela programacoes exista no Supabase no futuro)
+  // 2. Fallback: tentar carregar da tabela programacao_pcp no Supabase
   if (!supabaseClient) return {};
   try {
     const { data: progRows, error: err1 } = await supabaseClient
-      .from('programacoes')
-      .select('codigo_forma, produto_id')
-      .eq('data', filtroData)
-      .in('setor_id', [3, 4]);
+      .from('programacao_pcp')
+      .select('forma, modelo')
+      .eq('data_fabricacao', filtroData)
+      .eq('setor', 'Setor 3');
 
     if (err1) {
-      console.warn("[fetchSetor3Models] Erro PGRST programacoes:", err1);
+      console.warn("[fetchSetor3Models] Erro PGRST programacao_pcp:", err1);
       return {};
     }
     if (!progRows || progRows.length === 0) return {};
 
-    const { data: prodRows, error: err2 } = await supabaseClient
-      .from('produtos')
-      .select('*');
-
-    if (err2) {
-      console.warn("[fetchSetor3Models] Erro PGRST produtos:", err2);
-      return {};
-    }
-    if (!prodRows || prodRows.length === 0) return {};
-
-    const sample = prodRows[0];
-    const modelKey = ['modelo', 'nome', 'descricao', 'codigo'].find(key => key in sample) || 'modelo';
-
-    const productsMap = {};
-    prodRows.forEach((p) => {
-      productsMap[p.id] = String(p[modelKey] || "").trim();
-    });
-
     const formToModelMap = {};
     progRows.forEach((row) => {
-      const forma = String(row.codigo_forma || "").trim().toUpperCase();
-      const prodId = row.produto_id;
-      if (forma && prodId && productsMap[prodId]) {
-        formToModelMap[normalizeForma(forma)] = productsMap[prodId];
+      const forma = String(row.forma || "").trim().toUpperCase();
+      const modelo = String(row.modelo || "").trim();
+      if (forma && modelo) {
+        formToModelMap[normalizeForma(forma)] = modelo;
       }
     });
 
@@ -5778,6 +5760,13 @@ async function carregarMandrilCircular() {
 
   el.mcTabelaBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
   el.mcQtdItens.textContent = "0";
+
+  // Sync Supabase data to local database first
+  try {
+    await loadClickedFormsFromSupabase(selectedDate);
+  } catch (err) {
+    console.warn("Erro ao sincronizar fôrmas do Supabase para Mandril Circular:", err);
+  }
 
   // 1. Fetch programmed models from PCP
   let formToModelMap = {};

@@ -356,7 +356,35 @@
       </section>
       
       <!-- Mandril Circular -->
-      <section id="viewMandrilCircular" class="card hidden" style="padding: 32px !important; max-width: 100% !important; margin: 0 auto; box-sizing: border-box;">
+      <style>
+        #viewMandrilCircular {
+          padding: 32px !important;
+          max-width: 100% !important;
+          margin: 0 auto;
+          box-sizing: border-box;
+        }
+        .mc-table-wrap {
+          overflow-x: auto;
+          width: 100%;
+          -webkit-overflow-scrolling: touch;
+          margin-top: 15px;
+        }
+        .mc-table-custom {
+          min-width: 900px;
+          width: 100%;
+          border-collapse: collapse;
+          text-align: left;
+        }
+        @media (max-width: 768px) {
+          #viewMandrilCircular {
+            padding: 16px !important;
+          }
+          #viewMandrilCircular .sheet-box {
+            padding: 16px 12px !important;
+          }
+        }
+      </style>
+      <section id="viewMandrilCircular" class="card hidden">
         <div class="section-title-row">
           <h2>Mandril Circular - Controle de Saque</h2>
           <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
@@ -373,15 +401,15 @@
             <div style="font-size: 1.1rem; color: var(--primary); font-weight: bold;">Relação de Formas e Controle de Saque (Setor 3)</div>
             <div style="font-size: 1.1rem; color: var(--primary); font-weight: bold;">Total Concretado: <span id="mcQtdItens" style="background: var(--primary); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.95rem;">0</span></div>
           </div>
-          <div class="mi-table-responsive" style="overflow-x: auto; width: 100%;">
-            <table class="sheet-table mi-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+          <div class="mc-table-wrap">
+            <table class="sheet-table mi-table mc-table-custom">
               <thead>
                 <tr style="border-bottom: 2px solid var(--line); background: #f8fafc;">
-                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Nº Forma</th>
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text); width: 110px;">Nº Forma</th>
                   <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Poste Programado</th>
                   <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Tipo de Concreto</th>
-                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Hora Concretado</th>
-                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text);">Previsão Saque (+3h)</th>
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text); width: 150px;">Hora Concretado</th>
+                  <th style="padding: 12px 16px; font-weight: bold; color: var(--text); width: 180px;">Previsão Saque (+3h)</th>
                   <th style="padding: 12px 16px; font-weight: bold; color: var(--text); text-align: center; width: 220px;">Ação / Saque Realizado</th>
                 </tr>
               </thead>
