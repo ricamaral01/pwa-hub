@@ -1,7 +1,7 @@
 (function(global){
   var API_URL = window.location.hostname === 'usina.concretrack.com.br'
-    ? 'https://concretrack.com.br/api/controle-estatistico/rompimentos-grupos'
-    : '/api/controle-estatistico/rompimentos-grupos';
+    ? 'https://concretrack.com.br/api/v2/controle-estatistico/rompimentos-grupos'
+    : '/api/v2/controle-estatistico/rompimentos-grupos';
   var DEFAULT_TIMEOUT_MS = 15000;
 
   function buildUrl(filters){
@@ -37,6 +37,33 @@
     }catch(e){}
   }
 
+  function mapGroupsToLegacyRows(v2Groups) {
+    var rows = [];
+    v2Groups.forEach(function(g) {
+      if (g.mpa_cp1 !== null && g.mpa_cp1 !== undefined) {
+        rows.push({
+          data_moldagem: g.data_moldagem,
+          data_ruptura: g.data_ruptura,
+          traco_id: g.traco_id,
+          idade_dias: g.idade_dias,
+          cp: '1',
+          mpa: g.mpa_cp1
+        });
+      }
+      if (g.mpa_cp2 !== null && g.mpa_cp2 !== undefined) {
+        rows.push({
+          data_moldagem: g.data_moldagem,
+          data_ruptura: g.data_ruptura,
+          traco_id: g.traco_id,
+          idade_dias: g.idade_dias,
+          cp: '2',
+          mpa: g.mpa_cp2
+        });
+      }
+    });
+    return rows;
+  }
+
   async function fetchJson(url, timeoutMs){
     var controller = new AbortController();
     var timer = setTimeout(function(){ controller.abort(); }, timeoutMs || DEFAULT_TIMEOUT_MS);
@@ -66,6 +93,11 @@
     var cacheKey = opts.cacheKey;
     try{
       var payload = await fetchJson(buildUrl(opts.filters), opts.timeoutMs);
+      if (payload && payload.success === true && Array.isArray(payload.rows)) {
+        if (payload.rows.length > 0 && payload.rows[0].mpa_cp1 !== undefined) {
+          payload.rows = mapGroupsToLegacyRows(payload.rows);
+        }
+      }
       writeCache(cacheKey, payload);
       return {
         state: payload.rows && payload.rows.length ? 'SUCCESS' : 'EMPTY',

@@ -2,6 +2,7 @@ const express = require('express');
 const { randomUUID } = require('crypto');
 const database = require('../core/database');
 const { listRompimentosGrupos } = require('../services/controle_estatistico_service');
+const { saveRompimentoTx } = require('../repositories/rompimentos_repository');
 
 const router = express.Router();
 
@@ -49,60 +50,9 @@ router.post('/rompimentos', async (req, res, next) => {
     return;
   }
 
-  const sql = `
-    insert into rompimentos (
-      id, source, etiqueta_id, traco_id, idade_dias, cp,
-      data_moldagem, hora_moldagem, data_ruptura, mpa,
-      status_meta, meta_min, meta_max, responsavel,
-      qr_raw, payload_json, client_created_at
-    ) values (
-      $1, $2, $3, $4, $5, $6,
-      $7, $8, $9, $10,
-      $11, $12, $13, $14,
-      $15, $16::jsonb, $17
-    )
-    on conflict (id) do update set
-      source = excluded.source,
-      etiqueta_id = excluded.etiqueta_id,
-      traco_id = excluded.traco_id,
-      idade_dias = excluded.idade_dias,
-      cp = excluded.cp,
-      data_moldagem = excluded.data_moldagem,
-      hora_moldagem = excluded.hora_moldagem,
-      data_ruptura = excluded.data_ruptura,
-      mpa = excluded.mpa,
-      status_meta = excluded.status_meta,
-      meta_min = excluded.meta_min,
-      meta_max = excluded.meta_max,
-      responsavel = excluded.responsavel,
-      qr_raw = excluded.qr_raw,
-      payload_json = excluded.payload_json,
-      client_created_at = excluded.client_created_at,
-      updated_at = now()
-    returning id, created_at, updated_at
-  `;
-
   try {
-    const result = await database.query(sql, [
-      record.id,
-      record.source,
-      record.etiqueta_id,
-      record.traco_id,
-      record.idade_dias,
-      record.cp,
-      record.data_moldagem,
-      record.hora_moldagem,
-      record.data_ruptura,
-      record.mpa,
-      record.status_meta,
-      record.meta_min,
-      record.meta_max,
-      record.responsavel,
-      record.qr_raw,
-      JSON.stringify(record.payload_json || {}),
-      record.client_created_at,
-    ]);
-    res.json({ ok: true, record: result.rows[0] });
+    const result = await saveRompimentoTx(record);
+    res.json({ ok: true, record: result });
   } catch (error) {
     next(error);
   }

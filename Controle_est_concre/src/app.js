@@ -2,6 +2,7 @@ const express = require('express');
 const { randomUUID } = require('crypto');
 const { router: controleEstatisticoRouter } = require('./api/controle_estatistico');
 const { router: legacyRouter } = require('./api/legacy');
+const controleEstatisticoRouterV2 = require('./api/controle_estatistico_v2');
 const { readyCheck } = require('./core/database');
 const { corsMiddleware, jsonBodyLimit, rateLimit, securityHeaders } = require('./core/security');
 const { requestId, requestLogger, log } = require('./core/logger');
@@ -62,6 +63,7 @@ function createApp() {
 
   app.use('/api/controle-estatistico', controleEstatisticoRouter);
   app.use('/api/v1', legacyRouter);
+  app.use('/api/v2/controle-estatistico', controleEstatisticoRouterV2);
 
   app.use(errorHandler);
   return app;
