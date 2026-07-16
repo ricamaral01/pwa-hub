@@ -118,6 +118,10 @@
         <span class="nav-icon-wrap">P4</span>
         Produção Setor 4
       </button>
+      <button class="nav-item" id="hubMandrilCircular" type="button">
+        <span class="nav-icon-wrap">MC</span>
+        Mandril Circular
+      </button>
 
       <div class="nav-group-title">Montagem</div>
       <button class="nav-item" id="hubInspecao" type="button">
@@ -199,6 +203,10 @@
             <button class="hub-icon-btn" type="button" data-hub-mode="LIBERACAO_S4">
               <div class="hub-icon-circle" style="background:#1e40af">P4</div>
               <span class="hub-icon-lbl">Produção Setor 4</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="MANDRIL_CIRCULAR">
+              <div class="hub-icon-circle" style="background:#d97706">MC</div>
+              <span class="hub-icon-lbl">Mandril Circular</span>
             </button>
           </div>
         </div>
@@ -344,6 +352,41 @@
 
         <div id="paSecaoDados" class="pa-tab-section pa-data-section">
           <div class="mi-listagem-wrap pa-table-wrap"><div class="mi-list-header"><h3>Dados das concretagens</h3><button id="paBtnExportarDadosCSV" class="mi-secondary-btn" type="button">Exportar CSV</button></div><div class="mi-table-responsive pa-table-responsive"><table class="sheet-table mi-table"><thead><tr><th>Forma</th><th>Setor</th><th>Tipo de Concreto</th><th>Horario</th><th>Operador</th></tr></thead><tbody id="paDadosTbody"><tr><td colspan="5">Nenhum dado encontrado no periodo.</td></tr></tbody></table></div></div>
+        </div>
+      </section>
+      
+      <!-- Mandril Circular -->
+      <section id="viewMandrilCircular" class="card hidden">
+        <div class="section-title-row">
+          <h2>Mandril Circular</h2>
+          <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+        </div>
+        
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;">
+          <label>Filtrar Data
+            <input id="mcFiltroData" type="date" />
+          </label>
+        </div>
+
+        <div class="sheet-box">
+          <div class="sheet-topline">
+            <div><strong>Formas Enchidas - Setor 3</strong></div>
+            <div><strong>Total:</strong> <span id="mcQtdItens">0</span></div>
+          </div>
+          <div class="mi-table-responsive">
+            <table class="sheet-table mi-table">
+              <thead>
+                <tr>
+                  <th>Nº Forma</th>
+                  <th>Tipo de Poste Programado</th>
+                  <th>Horário Concretagem (Enchimento)</th>
+                </tr>
+              </thead>
+              <tbody id="mcTabelaBody">
+                <tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Selecione uma data para carregar os dados.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 

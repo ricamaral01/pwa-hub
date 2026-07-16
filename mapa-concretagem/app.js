@@ -7,11 +7,11 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR"]
   },
   MONTADOR: {
     label: "Montador",
@@ -19,7 +19,7 @@ const ROLE_PERMISSIONS = {
   },
   APONTADOR: {
     label: "Apontador",
-    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4"]
+    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR"]
   }
 };
 
@@ -648,6 +648,11 @@ const el = {
   hubLiberacaoS2: document.getElementById("hubLiberacaoS2"),
   hubLiberacaoS3: document.getElementById("hubLiberacaoS3"),
   hubLiberacaoS4: document.getElementById("hubLiberacaoS4"),
+  hubMandrilCircular: document.getElementById("hubMandrilCircular"),
+  viewMandrilCircular: document.getElementById("viewMandrilCircular"),
+  mcFiltroData: document.getElementById("mcFiltroData"),
+  mcQtdItens: document.getElementById("mcQtdItens"),
+  mcTabelaBody: document.getElementById("mcTabelaBody"),
   hubInspecao: document.getElementById("hubInspecao"),
   hubMontagemPostes: document.getElementById("hubMontagemPostes"),
   hubSequenciaS3: document.getElementById("hubSequenciaS3"),
@@ -5757,6 +5762,121 @@ async function enviarRelatorioWhatsapp() {
   }
 }
 
+async function carregarMandrilCircular() {
+  const selectedDate = el.mcFiltroData?.value;
+  if (!selectedDate) {
+    el.mcTabelaBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Selecione uma data para carregar os dados.</td></tr>`;
+    el.mcQtdItens.textContent = "0";
+    return;
+  }
+
+  el.mcTabelaBody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
+  el.mcQtdItens.textContent = "0";
+
+  // 1. Fetch programmed models from PCP
+  let formToModelMap = {};
+  try {
+    formToModelMap = await fetchSetor3Models(selectedDate);
+  } catch (err) {
+    console.warn("Erro ao buscar modelos do PCP para Mandril Circular:", err);
+  }
+
+  let rows = [];
+
+  // 2. Fetch concreted shapes for Sector 3
+  if (hasApiConfigured()) {
+    try {
+      const { data: dbRows, error } = await supabaseClient
+        .from('producao')
+        .select('*')
+        .eq('data_fabricacao', selectedDate)
+        .eq('setor', 'Setor 3')
+        .eq('status', 'LIBERADO');
+
+      if (error) throw error;
+      
+      if (Array.isArray(dbRows)) {
+        rows = dbRows.map(r => ({
+          forma: r.forma || r.forma_numero,
+          modelo: r.modelo,
+          data_hora: r.data_hora || r.updated_at || r.created_at
+        }));
+      }
+    } catch (err) {
+      console.error("Erro ao buscar no Supabase, tentando local...", err);
+      // fallback to offline
+    }
+  }
+
+  // 3. Fallback to offline if online returned empty or failed
+  if (rows.length === 0) {
+    const db = readDb();
+    if (db && Array.isArray(db.records)) {
+      const localRows = db.records
+        .filter(r => r.dataFabricacao === selectedDate)
+        .filter(r => r.setor === 'Setor 3')
+        .filter(r => String(r.status || r.liberacao?.status) === 'LIBERADO' || String(r.liberacao?.status) === '1');
+        
+      rows = localRows.map(r => ({
+        forma: r.formaNumero,
+        modelo: r.modelo,
+        data_hora: r.liberacao?.timestamp || r.updatedAt || r.createdAt
+      }));
+    }
+  }
+
+  // 4. Deduplicate shapes by shape name
+  const seenFormas = new Set();
+  const uniqueRows = [];
+  rows.forEach(r => {
+    const fn = normalizeForma(r.forma || "");
+    if (!seenFormas.has(fn)) {
+      seenFormas.add(fn);
+      uniqueRows.push(r);
+    }
+  });
+
+  // 5. Sort by time of concretagem
+  uniqueRows.sort((a, b) => {
+    const timeA = a.data_hora || "";
+    const timeB = b.data_hora || "";
+    return timeA.localeCompare(timeB);
+  });
+
+  // 6. Render table rows
+  let html = "";
+  uniqueRows.forEach(r => {
+    const fn = normalizeForma(r.forma || "");
+    const modeloProgramado = formToModelMap[fn] || r.modelo || "SC";
+    
+    // Format timestamp
+    let timeStr = "--:--";
+    if (r.data_hora) {
+      try {
+        const d = new Date(r.data_hora);
+        if (!isNaN(d.getTime())) {
+          timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+      } catch (e) {}
+    }
+
+    html += `
+      <tr>
+        <td>${r.forma || "--"}</td>
+        <td>${modeloProgramado}</td>
+        <td>${timeStr}</td>
+      </tr>
+    `;
+  });
+
+  if (!html) {
+    html = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Nenhuma forma do Setor 3 concretada nesta data.</td></tr>`;
+  }
+
+  el.mcTabelaBody.innerHTML = html;
+  el.mcQtdItens.textContent = uniqueRows.length;
+}
+
 async function gerarRelatorioSetor() {
   const data = el.relData.value;
   const setor = el.relSetor.value;
@@ -6174,7 +6294,8 @@ function applyRoleVisibility() {
     RELATORIO: "hubRelatorio",
     HISTORICO: "hubHistorico",
     ACMP_CONCRETAGEM: "hubAcmpConcretagem",
-    USUARIOS: "navUsuarios"
+    USUARIOS: "navUsuarios",
+    MANDRIL_CIRCULAR: "hubMandrilCircular"
   };
 
   Object.entries(navByMode).forEach(([mode, id]) => {
@@ -6306,7 +6427,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -6371,8 +6492,13 @@ function setMode(mode) {
     if (seqS3Data && !seqS3Data.value) seqS3Data.value = todayYmd();
     renderSequenciaS3();
   }
+  if (mode === "MANDRIL_CIRCULAR") {
+    if (el.viewMandrilCircular) el.viewMandrilCircular.classList.remove("hidden");
+    if (el.mcFiltroData && !el.mcFiltroData.value) el.mcFiltroData.value = todayYmd();
+    carregarMandrilCircular();
+  }
 
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular");
   if (mode === "HUB") {
     document.body.classList.add("mode-hub");
     applyAutoResponsibleFields();
@@ -6495,6 +6621,8 @@ function handleHubModeNavigation(mode) {
     renderAcmpConcretagem();
   } else if (mode === "USUARIOS") {
     setMode("USUARIOS");
+  } else if (mode === "MANDRIL_CIRCULAR") {
+    setMode("MANDRIL_CIRCULAR");
   }
 }
 
@@ -7294,6 +7422,11 @@ function bindEvents() {
   if (navDashboard) navDashboard.addEventListener("click", () => setMode("DASHBOARD"));
   const navProdAnalise = document.getElementById("navProdAnalise");
   if (navProdAnalise) navProdAnalise.addEventListener("click", () => setMode("PROD_ANALISE"));
+
+  const hubMandrilCircular = document.getElementById("hubMandrilCircular");
+  if (hubMandrilCircular) hubMandrilCircular.addEventListener("click", () => setMode("MANDRIL_CIRCULAR"));
+
+  if (el.mcFiltroData) el.mcFiltroData.addEventListener("change", carregarMandrilCircular);
 
   // Productivity filters & actions
   document.getElementById("paBtnToggleFiltros")?.addEventListener("click", () => setProdutividadeDrawerOpen(true));
