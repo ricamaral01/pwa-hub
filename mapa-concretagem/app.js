@@ -5885,41 +5885,42 @@ async function carregarMandrilCircular() {
     el.mcMapaDireito.innerHTML = htmlRight;
   }
 
-  // 6. Sort and render tabular rows
-  uniqueRows.sort((a, b) => {
-    const timeA = a.data_hora || "";
-    const timeB = b.data_hora || "";
-    return timeA.localeCompare(timeB);
-  });
+  // 6. Render sequential table for ALL 52 forms in order (SC01 to SC52)
+  const allS3Forms = [];
+  for (let i = 1; i <= 52; i++) {
+    allS3Forms.push(`SC${String(i).padStart(2, '0')}`);
+  }
 
   let htmlTable = "";
-  uniqueRows.forEach(r => {
-    const fn = normalizeForma(r.forma || "");
-    const modeloProgramado = formToModelMap[fn] || r.modelo || "SC";
+  allS3Forms.forEach(forma => {
+    const fn = normalizeForma(forma);
+    const concretedRow = concretedLookup[fn];
+    const programmedModel = formToModelMap[fn] || "--";
     
-    // Format timestamp
+    let tipoConcreto = "--";
     let timeStr = "--:--";
-    if (r.data_hora) {
-      try {
-        const d = new Date(r.data_hora);
-        if (!isNaN(d.getTime())) {
-          timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-        }
-      } catch (e) {}
+    
+    if (concretedRow) {
+      tipoConcreto = concretedRow.tipo_concreto || "Concreto Padrão";
+      if (concretedRow.data_hora) {
+        try {
+          const d = new Date(concretedRow.data_hora);
+          if (!isNaN(d.getTime())) {
+            timeStr = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+          }
+        } catch (e) {}
+      }
     }
-
+    
     htmlTable += `
       <tr>
-        <td>${r.forma || "--"}</td>
-        <td>${modeloProgramado}</td>
+        <td><strong>${forma}</strong></td>
+        <td>${programmedModel}</td>
+        <td>${tipoConcreto}</td>
         <td>${timeStr}</td>
       </tr>
     `;
   });
-
-  if (!htmlTable) {
-    htmlTable = `<tr><td colspan="3" style="text-align:center; padding: 20px; color: var(--muted);">Nenhuma forma do Setor 3 concretada nesta data.</td></tr>`;
-  }
 
   el.mcTabelaBody.innerHTML = htmlTable;
   el.mcQtdItens.textContent = uniqueRows.length;
