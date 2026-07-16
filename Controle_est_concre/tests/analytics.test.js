@@ -66,7 +66,7 @@ test('GET /api/v2/controle-estatistico/rompimentos-grupos retorna dados e usa ca
     };
 
     // First request - MISS
-    const res1 = await fetch(`${baseUrl}/api/v2/controle-estatistico/rompimentos-grupos?ano=2026&mes=07`);
+    const res1 = await fetch(`${baseUrl}/api/controle-estatistico/v2/rompimentos-grupos?ano=2026&mes=07`);
     const json1 = await res1.json();
     assert.equal(res1.status, 200);
     assert.equal(res1.headers.get('X-Cache'), 'MISS');
@@ -75,7 +75,7 @@ test('GET /api/v2/controle-estatistico/rompimentos-grupos retorna dados e usa ca
     assert.equal(queryCount, 1);
 
     // Second request - HIT (no database query should run)
-    const res2 = await fetch(`${baseUrl}/api/v2/controle-estatistico/rompimentos-grupos?ano=2026&mes=07`);
+    const res2 = await fetch(`${baseUrl}/api/controle-estatistico/v2/rompimentos-grupos?ano=2026&mes=07`);
     const json2 = await res2.json();
     assert.equal(res2.status, 200);
     assert.equal(res2.headers.get('X-Cache'), 'HIT');
@@ -84,7 +84,7 @@ test('GET /api/v2/controle-estatistico/rompimentos-grupos retorna dados e usa ca
   });
 });
 
-test('GET /api/v2/controle-estatistico/estatistica-mensal e invalidacao seletiva de cache', async () => {
+test('GET /api/controle-estatistico/v2/estatistica-mensal e invalidacao seletiva de cache', async () => {
   await withServer(async ({ baseUrl }) => {
     let queryCount = 0;
     database.query = async (sql, params) => {
@@ -101,12 +101,12 @@ test('GET /api/v2/controle-estatistico/estatistica-mensal e invalidacao seletiva
     };
 
     // 1. Fetch data - MISS
-    const res1 = await fetch(`${baseUrl}/api/v2/controle-estatistico/estatistica-mensal?ano=2026&mes=07`);
+    const res1 = await fetch(`${baseUrl}/api/controle-estatistico/v2/estatistica-mensal?ano=2026&mes=07`);
     assert.equal(res1.headers.get('X-Cache'), 'MISS');
     assert.equal(queryCount, 1);
 
     // 2. Fetch data again - HIT
-    const res2 = await fetch(`${baseUrl}/api/v2/controle-estatistico/estatistica-mensal?ano=2026&mes=07`);
+    const res2 = await fetch(`${baseUrl}/api/controle-estatistico/v2/estatistica-mensal?ano=2026&mes=07`);
     assert.equal(res2.headers.get('X-Cache'), 'HIT');
     assert.equal(queryCount, 1);
 
@@ -114,7 +114,7 @@ test('GET /api/v2/controle-estatistico/estatistica-mensal e invalidacao seletiva
     analyticsCache.invalidateForMonth('2026-07');
 
     // 4. Fetch data again - MISS (cache was invalidated)
-    const res3 = await fetch(`${baseUrl}/api/v2/controle-estatistico/estatistica-mensal?ano=2026&mes=07`);
+    const res3 = await fetch(`${baseUrl}/api/controle-estatistico/v2/estatistica-mensal?ano=2026&mes=07`);
     assert.equal(res3.headers.get('X-Cache'), 'MISS');
     assert.equal(queryCount, 2);
   });

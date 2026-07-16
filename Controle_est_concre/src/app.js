@@ -63,7 +63,7 @@ function createApp() {
 
   app.use('/api/controle-estatistico', controleEstatisticoRouter);
   app.use('/api/v1', legacyRouter);
-  app.use('/api/v2/controle-estatistico', controleEstatisticoRouterV2);
+  app.use('/api/controle-estatistico/v2', controleEstatisticoRouterV2);
 
   app.use(errorHandler);
   return app;
