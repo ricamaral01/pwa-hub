@@ -6885,16 +6885,7 @@ function bindEvents() {
     setMode("MONTAGEM_INDICADORES");
   });
 
-  // Configuração do Drawer de Filtros e Abas do Dashboard Montagem
-  document.getElementById("miBtnToggleFiltros")?.addEventListener("click", () => {
-    setMontagemDrawerOpen(true);
-  });
-  document.getElementById("miBtnFecharFiltros")?.addEventListener("click", () => {
-    setMontagemDrawerOpen(false);
-  });
-  document.getElementById("miFiltrosDrawer")?.addEventListener("click", (ev) => {
-    if (ev.target?.id === "miFiltrosDrawer") setMontagemDrawerOpen(false);
-  });
+  // Configuração dos Filtros e Abas do Dashboard Montagem
   document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
@@ -6915,7 +6906,14 @@ function bindEvents() {
     carregarMontagemIndicadores();
   });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
-    setMontagemDrawerOpen(false);
+    carregarMontagemIndicadores();
+  });
+  document.getElementById("miDataInicio")?.addEventListener("change", () => {
+    miPaginaAtual = 1;
+    carregarMontagemIndicadores();
+  });
+  document.getElementById("miDataFim")?.addEventListener("change", () => {
+    miPaginaAtual = 1;
     carregarMontagemIndicadores();
   });
   document.getElementById("miFiltroSetor")?.addEventListener("change", () => {

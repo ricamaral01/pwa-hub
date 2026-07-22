@@ -732,25 +732,47 @@
           <p id="miFiltroResumo">Hoje - Todos os setores</p>
         </div>
         <div class="mi-topbar-actions">
-          <button id="miBtnToggleFiltros" class="mi-icon-btn" type="button" aria-label="Abrir filtros">Filtros</button>
           <button id="miBtnAtualizar" class="mi-icon-btn mi-icon-btn-primary" type="button" aria-label="Atualizar dashboard">Atualizar</button>
         </div>
       </div>
 
-      <div id="miFiltrosDrawer" class="mi-drawer-overlay hidden" aria-hidden="true">
-        <div class="mi-drawer-content" role="dialog" aria-modal="true" aria-labelledby="miDrawerTitle">
-          <div class="mi-drawer-header">
-            <h3 id="miDrawerTitle">Filtros</h3>
-            <button id="miBtnFecharFiltros" class="mi-drawer-close-btn" type="button" aria-label="Fechar filtros">&times;</button>
+      <!-- Filtros Fixos no Header -->
+      <div class="mi-fixed-filters-bar">
+        <div class="mi-filter-item">
+          <label for="miDataInicio">Data início</label>
+          <input type="date" id="miDataInicio" class="input-field" />
+        </div>
+        <div class="mi-filter-item">
+          <label for="miDataFim">Data fim</label>
+          <input type="date" id="miDataFim" class="input-field" />
+        </div>
+        <div class="mi-filter-item">
+          <label for="miFiltroSetor">Setor</label>
+          <select id="miFiltroSetor" class="input-field">
+            <option value="">Todos os Setores</option>
+            <option value="Setores 1 e 2">Setores 1 e 2</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
+            <option value="Setor 4">Setor 4</option>
+          </select>
+        </div>
+        <div class="mi-filter-item">
+          <label for="miFiltroStatus">Status</label>
+          <select id="miFiltroStatus" class="input-field">
+            <option value="">Todos os Status</option>
+            <option value="A">Aprovado</option>
+            <option value="R">Reprovado</option>
+            <option value="RR">Reprovado e Retrabalhado</option>
+          </select>
+        </div>
+        <div class="mi-filter-item mi-filter-search">
+          <label for="miFiltroPesquisa">Pesquisar</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Forma, modelo ou montador" />
+            <button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn" style="height: 38px; white-space: nowrap; padding: 0 16px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e1; background: #fff; color: #475569; transition: background 0.2s;">Limpar</button>
+            <button id="miBtnFiltrar" type="button" class="mi-primary-btn" style="height: 38px; white-space: nowrap; padding: 0 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">Aplicar</button>
           </div>
-          <div class="mi-drawer-body">
-            <div class="mi-drawer-field"><label for="miDataInicio">Data inicio</label><input type="date" id="miDataInicio" class="input-field" /></div>
-            <div class="mi-drawer-field"><label for="miDataFim">Data fim</label><input type="date" id="miDataFim" class="input-field" /></div>
-            <div class="mi-drawer-field"><label for="miFiltroSetor">Setor</label><select id="miFiltroSetor" class="input-field"><option value="">Todos os Setores</option><option value="Setores 1 e 2">Setores 1 e 2</option><option value="Setor 1">Setor 1</option><option value="Setor 2">Setor 2</option><option value="Setor 3">Setor 3</option><option value="Setor 4">Setor 4</option></select></div>
-            <div class="mi-drawer-field"><label for="miFiltroStatus">Status</label><select id="miFiltroStatus" class="input-field"><option value="">Todos os Status</option><option value="A">Aprovado</option><option value="R">Reprovado</option><option value="RR">Reprovado e Retrabalhado</option></select></div>
-            <div class="mi-drawer-field"><label for="miFiltroPesquisa">Pesquisar</label><input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Forma, modelo ou montador" /></div>
-          </div>
-          <div class="mi-drawer-footer"><button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn">Limpar</button><button id="miBtnFiltrar" type="button" class="mi-primary-btn">Aplicar filtros</button></div>
         </div>
       </div>
 
