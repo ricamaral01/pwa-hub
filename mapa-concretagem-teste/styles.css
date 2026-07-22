@@ -5762,5 +5762,92 @@ body:not(.print-relatorio) .rel-full-table td:nth-child(7) {
   gap: 6px !important;
 }
 
+/* =========================================================
+   MODO MANUTENÇÃO - PALETA AMARELO NEON (#f1c40f / #ffea00)
+   ========================================================= */
+
+body.manutencao-active .kiosk-header {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%) !important;
+  border-bottom: 3px solid #f1c40f !important;
+  box-shadow: 0 4px 20px rgba(241, 196, 15, 0.3) !important;
+}
+
+body.manutencao-active .kiosk-header .kiosk-title {
+  color: #f1c40f !important;
+  text-shadow: 0 0 10px rgba(241, 196, 15, 0.7) !important;
+}
+
+body.manutencao-active .kiosk-header .kiosk-subtitle {
+  color: #fef08a !important;
+}
+
+body.manutencao-active .sw-version-badge {
+  background: #f1c40f !important;
+  color: #1e293b !important;
+  box-shadow: 0 0 10px rgba(241, 196, 15, 0.8) !important;
+}
+
+.forma-card.is-manutencao {
+  background: #fefce8 !important;
+  border: 2px dashed #f59e0b !important;
+  color: #78350f !important;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4) !important;
+  position: relative;
+}
+
+.forma-card.is-manutencao::after {
+  content: "🛠️ PARADA";
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: #f59e0b;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+body.manutencao-active .forma-card:hover {
+  border-color: #f1c40f !important;
+  box-shadow: 0 0 18px rgba(241, 196, 15, 0.6) !important;
+  cursor: pointer;
+}
+
+/* Impressão do Relatório de Manutenção */
+@media print {
+  body.print-relatorio-manutencao #appSidebar,
+  body.print-relatorio-manutencao .sidebar-overlay,
+  body.print-relatorio-manutencao .mi-topbar-actions,
+  body.print-relatorio-manutencao .mi-list-header h3,
+  body.print-relatorio-manutencao .mi-list-header span {
+    display: none !important;
+  }
+
+  body.print-relatorio-manutencao #viewRelatorioManutencao {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  body.print-relatorio-manutencao table {
+    width: 100% !important;
+    font-size: 8pt !important;
+    border-collapse: collapse !important;
+  }
+
+  body.print-relatorio-manutencao th,
+  body.print-relatorio-manutencao td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 4px 6px !important;
+  }
+}
+
+
 
 

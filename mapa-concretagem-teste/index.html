@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=horizontal-filters-v105" />
+  <link rel="stylesheet" href="styles.css?v=modomanutencao-v107" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -151,6 +151,10 @@
         <span class="nav-icon-wrap">CC</span>
         Acmp. Concretagem
       </button>
+      <button class="nav-item" id="hubRelatorioManutencao" type="button">
+        <span class="nav-icon-wrap" style="background:#f1c40f; color:#1e293b;">🛠️</span>
+        Manutenção Formas
+      </button>
       <button class="nav-item hidden" id="navUsuarios" type="button">
         <span class="nav-icon-wrap">👤</span>
         Usuários
@@ -257,6 +261,10 @@
             <button class="hub-icon-btn" type="button" data-hub-mode="ACMP_CONCRETAGEM">
               <div class="hub-icon-circle" style="background:#be185d">CC</div>
               <span class="hub-icon-lbl">Concretagem</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO_MANUTENCAO">
+              <div class="hub-icon-circle" style="background:#f1c40f; color:#1e293b;">🛠️</div>
+              <span class="hub-icon-lbl">Manutenção Formas</span>
             </button>
             <button class="hub-icon-btn hidden" type="button" data-hub-mode="USUARIOS">
               <div class="hub-icon-circle" style="background:#4f46e5">👤</div>
@@ -466,6 +474,16 @@
               <div class="kiosk-toggle-label">
                 <span class="kiosk-toggle-title" style="color: #ef4444;">Modo ODIN</span>
                 <span class="kiosk-toggle-subtitle">Tocar para cancelar/desprogramar</span>
+              </div>
+            </div>
+            <div class="kiosk-toggle-field hidden" id="kioskManutencaoToggleField">
+              <label class="kiosk-switch">
+                <input type="checkbox" id="kioskManutencaoCheckbox" />
+                <span class="kiosk-slider" style="background-color: var(--kiosk-slider-off, #ccc);"></span>
+              </label>
+              <div class="kiosk-toggle-label">
+                <span class="kiosk-toggle-title" style="color: #f1c40f; text-shadow: 0 0 8px rgba(241,196,15,0.6);">Modo Manutenção</span>
+                <span class="kiosk-toggle-subtitle">Parar ou liberar formas</span>
               </div>
             </div>
             <button class="btn-kiosk" id="btnKioskSync" type="button">🔄 Sincronizar</button>
@@ -723,6 +741,46 @@
       </div>
       <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+    </section>
+
+    <!-- Relatório de Manutenção de Formas -->
+    <section id="viewRelatorioManutencao" class="card hidden">
+      <div class="mi-topbar">
+        <div>
+          <h2>🛠️ Relatório de Manutenção de Formas</h2>
+          <p id="rmFiltroResumo">Histórico e Formas Paradas</p>
+        </div>
+        <div class="mi-topbar-actions">
+          <button id="rmBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" style="background:#d97706; color:#fff;">🖨️ Imprimir PDF Manutenção</button>
+          <button class="mi-icon-btn" type="button" data-back-btn>Voltar</button>
+        </div>
+      </div>
+
+      <div class="mi-listagem-wrap">
+        <div class="mi-list-header">
+          <h3>Formas em Manutenção e Histórico de Paradas</h3>
+          <span>Total: <span id="rmTabelaTotal">0</span> registros</span>
+        </div>
+        <div class="mi-table-responsive">
+          <table class="sheet-table mi-table print-relatorio-table">
+            <thead>
+              <tr>
+                <th style="width: 80px; text-align: center;">Setor</th>
+                <th style="width: 90px; text-align: center;">Forma</th>
+                <th style="width: 110px; text-align: center;">Status</th>
+                <th>Motivo da Parada</th>
+                <th>Ação para Arrumar</th>
+                <th style="width: 140px;">Parada Em / Por</th>
+                <th style="width: 140px;">Liberada Em / Por</th>
+                <th>Obs Liberação</th>
+              </tr>
+            </thead>
+            <tbody id="rmTabelaBody">
+              <tr><td colspan="8">Carregando relatório de manutenção...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -1140,6 +1198,53 @@
       </div>
       <div id="paFeedback" class="login-feedback hidden" style="margin-top:10px;"></div>
       <button class="btn primary modal-ok" id="paSalvarBtn" type="button" style="margin-top:16px; width:100%;">Definir Senha e Entrar</button>
+    </div>
+  <!-- Modal de Parada de Forma (Modo Manutenção) -->
+  <div id="modalManutencaoParada" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mParadaTitle">
+    <div class="modal-box" style="max-width: 480px; text-align: left; border-top: 5px solid #f1c40f;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">🛠️</span>
+        <div>
+          <h2 class="modal-title" id="mParadaTitle" style="margin: 0; font-size: 1.3rem; color: #856404;">Inativar Forma / Manutenção</h2>
+          <div style="font-size: 0.85rem; color: #666;" id="mParadaSub">Registrar parada da forma</div>
+        </div>
+      </div>
+      <div style="margin-bottom: 14px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Motivo da Parada *</label>
+        <textarea id="mParadaMotivo" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Trinca na aba lateral da forma"></textarea>
+      </div>
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">O que precisa ser feito para arrumar *</label>
+        <textarea id="mParadaAcao" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Soldar reforço metálico e alinhar travessa"></textarea>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="mParadaCancelBtn">Cancelar</button>
+        <button type="button" class="btn primary" id="mParadaConfirmBtn" style="background: #d97706; color: #fff; border: none; font-weight: 700;">Confirmar Parada</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Liberação de Forma (Modo Manutenção) -->
+  <div id="modalManutencaoLiberacao" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mLiberacaoTitle">
+    <div class="modal-box" style="max-width: 480px; text-align: left; border-top: 5px solid #10b981;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">✅</span>
+        <div>
+          <h2 class="modal-title" id="mLiberacaoTitle" style="margin: 0; font-size: 1.3rem; color: #065f46;">Liberar Forma de Manutenção</h2>
+          <div style="font-size: 0.85rem; color: #666;" id="mLiberacaoSub">Retornar forma para o estado ativo</div>
+        </div>
+      </div>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; font-size: 0.82rem; margin-bottom: 14px;" id="mLiberacaoInfo">
+        <!-- Detalhes da parada anterior -->
+      </div>
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Serviço Realizado / Observação de Liberação *</label>
+        <textarea id="mLiberacaoObs" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Solda concluída, travessa alinhada e teste efetuado"></textarea>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="mLiberacaoCancelBtn">Cancelar</button>
+        <button type="button" class="btn primary" id="mLiberacaoConfirmBtn" style="background: #059669; color: #fff; border: none; font-weight: 700;">Confirmar Liberação</button>
+      </div>
     </div>
   </div>
 

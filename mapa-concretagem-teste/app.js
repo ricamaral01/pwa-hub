@@ -7,19 +7,19 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO"]
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3"]
+    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3", "RELATORIO_MANUTENCAO"]
   },
   APONTADOR: {
     label: "Apontador",
-    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR"]
+    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO"]
   }
 };
 
@@ -607,6 +607,83 @@ function getSectorForms(setor) {
   };
 }
 
+const MANUTENCAO_FORMAS_KEY = "mapa_formas_manutencao_v1";
+
+function isManutencaoAuthorizedUser() {
+  if (!state.authUser || !state.authUser.name) return false;
+  const name = String(state.authUser.name).trim().toLowerCase();
+  const role = String(state.authUser.role || "").trim().toUpperCase();
+  if (role === "GESTOR" || role === "GERENCIA" || role === "ADMIN") return true;
+  return name.includes("ricardo") || name.includes("philippe") || name.includes("jose carlos") || name.includes("josé carlos");
+}
+
+function getFormasManutencao() {
+  try {
+    const raw = localStorage.getItem(MANUTENCAO_FORMAS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function salvarFormasManutencaoObj(obj) {
+  try {
+    localStorage.setItem(MANUTENCAO_FORMAS_KEY, JSON.stringify(obj));
+  } catch(e) {
+    console.error("Erro ao salvar formas manutencao:", e);
+  }
+}
+
+function isFormaEmManutencao(setor, formaNumero) {
+  const all = getFormasManutencao();
+  const key = `${setor}_${formaNumero}`;
+  const rec = all[key];
+  if (rec && rec.status === "PARADA") {
+    return rec;
+  }
+  return null;
+}
+
+function salvarFormaParadaManutencao(setor, formaNumero, motivo, acao) {
+  const all = getFormasManutencao();
+  const key = `${setor}_${formaNumero}`;
+  const nowStr = new Date().toLocaleString("pt-BR");
+  const userStr = state.authUser?.name || "Usuário";
+  
+  all[key] = {
+    setor,
+    forma_numero: formaNumero,
+    status: "PARADA",
+    motivo_parada: motivo,
+    acao_necessaria: acao,
+    parada_em: nowStr,
+    parada_por: userStr,
+    liberada_em: null,
+    liberada_por: null,
+    obs_liberacao: null,
+    updated_at: new Date().toISOString()
+  };
+  salvarFormasManutencaoObj(all);
+}
+
+function liberarFormaManutencao(setor, formaNumero, obs) {
+  const all = getFormasManutencao();
+  const key = `${setor}_${formaNumero}`;
+  const nowStr = new Date().toLocaleString("pt-BR");
+  const userStr = state.authUser?.name || "Usuário";
+  
+  if (all[key]) {
+    all[key].status = "LIBERADA";
+    all[key].liberada_em = nowStr;
+    all[key].liberada_por = userStr;
+    all[key].obs_liberacao = obs;
+    all[key].updated_at = new Date().toISOString();
+    salvarFormasManutencaoObj(all);
+  }
+}
+
+let pendingManutencaoSelection = null;
+
 const state = {
   mode: "HUB",
   authUser: null,
@@ -622,6 +699,7 @@ const state = {
   programmingMode: false,
   liberationMode: false,
   odinMode: false,
+  manutencaoMode: false,
   programmedFormas: new Set(),
   dbDataCache: {},
   dbDataStatusCache: {},
@@ -678,6 +756,10 @@ const el = {
   viewMontagemPostesDetalhe: document.getElementById("viewMontagemPostesDetalhe"),
   viewRelatorio: document.getElementById("viewRelatorio"),
   viewHistorico: document.getElementById("viewHistorico"),
+  hubRelatorioManutencao: document.getElementById("hubRelatorioManutencao"),
+  viewRelatorioManutencao: document.getElementById("viewRelatorioManutencao"),
+  kioskManutencaoCheckbox: document.getElementById("kioskManutencaoCheckbox"),
+  kioskManutencaoToggleField: document.getElementById("kioskManutencaoToggleField"),
   hubAcmpConcretagem: document.getElementById("hubAcmpConcretagem"),
   viewAcmpConcretagem: document.getElementById("viewAcmpConcretagem"),
   navUsuarios: document.getElementById("navUsuarios"),
@@ -1685,10 +1767,39 @@ function createFormaCard(item, setor) {
   card.appendChild(tipoEl);
   card.appendChild(statusEl);
 
+  // Verificar se a forma está em manutenção (Parada)
+  const manutencaoRec = isFormaEmManutencao(setor, item.forma);
+  if (manutencaoRec) {
+    card.classList.add("is-manutencao");
+    card.title = `🛠️ PARADA / MANUTENÇÃO\nMotivo: ${manutencaoRec.motivo_parada}\nArrumar: ${manutencaoRec.acao_necessaria}`;
+  }
+
   // Destacar se estiver programada
   if (state.programmedFormas && state.programmedFormas.has(normalizeUpper(item.forma))) {
     card.classList.add("is-programmed");
   }
+
+  const handleCardClickWithMaintenance = (normalAction) => {
+    if (state.manutencaoMode) {
+      if (manutencaoRec) {
+        openModalLiberacao(setor, item.forma, manutencaoRec);
+      } else {
+        openModalParada(setor, item.forma);
+      }
+      return;
+    }
+    if (manutencaoRec) {
+      if (typeof msgbox !== "undefined") {
+        msgbox.alert(
+          `🛠️ FORMA EM MANUTENÇÃO!\n\nA forma ${item.forma} (${setor}) está INATIVA para manutenção e não pode ser programada nem liberada.\n\n• Motivo: ${manutencaoRec.motivo_parada}\n• Serviço: ${manutencaoRec.acao_necessaria}\n• Parada em: ${manutencaoRec.parada_em} por ${manutencaoRec.parada_por}`
+        );
+      } else {
+        alert(`🛠️ FORMA EM MANUTENÇÃO!\nForma ${item.forma} está inativa.\nMotivo: ${manutencaoRec.motivo_parada}`);
+      }
+      return;
+    }
+    normalAction();
+  };
 
   if (isFormaClicked(item.forma, setor)) {
     const tipo = getConcreteTypeForForma(item.forma, setor);
@@ -1697,76 +1808,78 @@ function createFormaCard(item, setor) {
       tipoEl.style.display = "block";
     }
     setCardState(card, "saved");
-    // Concreted forms remain green (is-saved) with the concrete type visible.
 
-    // Permitir alternar programação mesmo se concretado no Modo Programação
     card.addEventListener("click", () => {
-      if (state.programmingMode) {
-        toggleFormaProgramada(item.forma, setor, card);
-        return;
-      }
-      if (state.odinMode) {
-        cancelarOuDesprogramarOdin(item.forma, setor, card);
-        return;
-      }
+      handleCardClickWithMaintenance(() => {
+        if (state.programmingMode) {
+          toggleFormaProgramada(item.forma, setor, card);
+          return;
+        }
+        if (state.odinMode) {
+          cancelarOuDesprogramarOdin(item.forma, setor, card);
+          return;
+        }
+      });
     });
   } else if (isFormaLiberada(item.forma, setor)) {
     card.classList.add("is-liberada");
     card.addEventListener("click", () => {
-      if (state.programmingMode) {
-        toggleFormaProgramada(item.forma, setor, card);
-        return;
-      }
-      if (state.odinMode) {
-        cancelarOuDesprogramarOdin(item.forma, setor, card);
-        return;
-      }
-      if (state.liberationMode) {
-        // Já está liberada. Pode reverter ou fazer nada (ignorar por enquanto)
-        return;
-      }
-      // Modo Normal: Concretar
-      const data = el.libData?.value;
-      const colaborador = getProductionCollaborator();
-      if (!data) {
-        showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
-        el.libData?.focus();
-        return;
-      }
-      if (!colaborador) {
-        showLibFeedback("Preencha o colaborador antes de registrar.", "error");
-        el.libColaborador?.focus();
-        return;
-      }
-      showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+      handleCardClickWithMaintenance(() => {
+        if (state.programmingMode) {
+          toggleFormaProgramada(item.forma, setor, card);
+          return;
+        }
+        if (state.odinMode) {
+          cancelarOuDesprogramarOdin(item.forma, setor, card);
+          return;
+        }
+        if (state.liberationMode) {
+          return;
+        }
+        const data = el.libData?.value;
+        const colaborador = getProductionCollaborator();
+        if (!data) {
+          showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
+          el.libData?.focus();
+          return;
+        }
+        if (!colaborador) {
+          showLibFeedback("Preencha o colaborador antes de registrar.", "error");
+          el.libColaborador?.focus();
+          return;
+        }
+        showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+      });
     });
   } else {
     card.addEventListener("click", () => {
-      if (state.programmingMode) {
-        toggleFormaProgramada(item.forma, setor, card);
-        return;
-      }
-      if (state.odinMode) {
-        cancelarOuDesprogramarOdin(item.forma, setor, card);
-        return;
-      }
-      const data = el.libData?.value;
-      const colaborador = getProductionCollaborator();
-      if (!data) {
-        showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
-        el.libData?.focus();
-        return;
-      }
-      if (!colaborador) {
-        showLibFeedback("Preencha o colaborador antes de registrar.", "error");
-        el.libColaborador?.focus();
-        return;
-      }
-      if (state.liberationMode) {
-        liberarFormaClicada(item.forma, setor, card, item.modelo || "");
-      } else {
-        showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
-      }
+      handleCardClickWithMaintenance(() => {
+        if (state.programmingMode) {
+          toggleFormaProgramada(item.forma, setor, card);
+          return;
+        }
+        if (state.odinMode) {
+          cancelarOuDesprogramarOdin(item.forma, setor, card);
+          return;
+        }
+        const data = el.libData?.value;
+        const colaborador = getProductionCollaborator();
+        if (!data) {
+          showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
+          el.libData?.focus();
+          return;
+        }
+        if (!colaborador) {
+          showLibFeedback("Preencha o colaborador antes de registrar.", "error");
+          el.libColaborador?.focus();
+          return;
+        }
+        if (state.liberationMode) {
+          liberarFormaClicada(item.forma, setor, card, item.modelo || "");
+        } else {
+          showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+        }
+      });
     });
   }
 
@@ -1924,6 +2037,74 @@ function renderSetor4Mapa(container) {
   container.appendChild(grid);
 }
 
+function openModalParada(setor, formaNumero) {
+  pendingManutencaoSelection = { setor, formaNumero };
+  const titleEl = document.getElementById("mParadaTitle");
+  const subEl = document.getElementById("mParadaSub");
+  if (titleEl) titleEl.textContent = `Inativar Forma ${formaNumero}`;
+  if (subEl) subEl.textContent = `Setor: ${setor} — Registre o motivo da parada`;
+  const mot = document.getElementById("mParadaMotivo");
+  const aca = document.getElementById("mParadaAcao");
+  if (mot) mot.value = "";
+  if (aca) aca.value = "";
+  document.getElementById("modalManutencaoParada")?.classList.remove("hidden");
+}
+
+function openModalLiberacao(setor, formaNumero, manutencaoRec) {
+  pendingManutencaoSelection = { setor, formaNumero };
+  const titleEl = document.getElementById("mLiberacaoTitle");
+  const subEl = document.getElementById("mLiberacaoSub");
+  const infoEl = document.getElementById("mLiberacaoInfo");
+  if (titleEl) titleEl.textContent = `Liberar Forma ${formaNumero}`;
+  if (subEl) subEl.textContent = `Setor: ${setor} — Retornar para o estado ativo`;
+  if (infoEl) {
+    infoEl.innerHTML = `
+      <div><strong>Parada em:</strong> ${escapeHtml(manutencaoRec.parada_em || "-")} por ${escapeHtml(manutencaoRec.parada_por || "-")}</div>
+      <div style="margin-top:2px;"><strong>Motivo:</strong> ${escapeHtml(manutencaoRec.motivo_parada || "-")}</div>
+      <div style="margin-top:2px;"><strong>Serviço Solicitado:</strong> ${escapeHtml(manutencaoRec.acao_necessaria || "-")}</div>
+    `;
+  }
+  const obs = document.getElementById("mLiberacaoObs");
+  if (obs) obs.value = "";
+  document.getElementById("modalManutencaoLiberacao")?.classList.remove("hidden");
+}
+
+function renderizarRelatorioManutencao() {
+  const tbody = document.getElementById("rmTabelaBody");
+  const totalEl = document.getElementById("rmTabelaTotal");
+  if (!tbody) return;
+  
+  const all = getFormasManutencao();
+  const list = Object.values(all).sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
+  
+  if (totalEl) totalEl.textContent = list.length;
+  
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 20px; color:#64748b;">Nenhuma forma em manutenção registrada até o momento.</td></tr>`;
+    return;
+  }
+  
+  tbody.innerHTML = list.map(item => {
+    const isParada = item.status === "PARADA";
+    const statusBadge = isParada 
+      ? `<span style="background:#fef3c7; color:#b45309; border:1px solid #f59e0b; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.75rem;">🛠️ PARADA</span>`
+      : `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.75rem;">✅ LIBERADA</span>`;
+      
+    return `
+      <tr>
+        <td style="text-align:center; font-weight:700;">${escapeHtml(item.setor || "-")}</td>
+        <td style="text-align:center; font-weight:800; color:#1e293b;">${escapeHtml(item.forma_numero || "-")}</td>
+        <td style="text-align:center;">${statusBadge}</td>
+        <td>${escapeHtml(item.motivo_parada || "-")}</td>
+        <td>${escapeHtml(item.acao_necessaria || "-")}</td>
+        <td style="font-size:0.8rem; color:#475569;">${escapeHtml(item.parada_em || "-")}<br><small style="color:#64748b;">por ${escapeHtml(item.parada_por || "-")}</small></td>
+        <td style="font-size:0.8rem; color:#475569;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small style="color:#64748b;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
+        <td>${escapeHtml(item.obs_liberacao || "-")}</td>
+      </tr>
+    `;
+  }).join("");
+}
+
 function updateKioskHeader() {
   if (!el.kioskSectorTitle || !el.kioskSectorSubtitle || !el.kioskLibData || !el.kioskLibColaborador) return;
 
@@ -1944,6 +2125,18 @@ function updateKioskHeader() {
     const toggleField = document.getElementById("kioskProgToggleField");
     if (toggleField) {
       toggleField.classList.toggle("active", state.programmingMode || false);
+    }
+  }
+
+  const kioskManutencaoToggleField = document.getElementById("kioskManutencaoToggleField");
+  if (kioskManutencaoToggleField) {
+    const isAuth = isManutencaoAuthorizedUser();
+    kioskManutencaoToggleField.classList.toggle("hidden", !isAuth);
+  }
+  if (el.kioskManutencaoCheckbox) {
+    el.kioskManutencaoCheckbox.checked = state.manutencaoMode || false;
+    if (kioskManutencaoToggleField) {
+      kioskManutencaoToggleField.classList.toggle("active", state.manutencaoMode || false);
     }
   }
 
@@ -6511,7 +6704,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -6580,6 +6773,10 @@ function setMode(mode) {
     if (el.viewMandrilCircular) el.viewMandrilCircular.classList.remove("hidden");
     if (el.mcFiltroData && !el.mcFiltroData.value) el.mcFiltroData.value = todayYmd();
     carregarMandrilCircular();
+  }
+  if (mode === "RELATORIO_MANUTENCAO") {
+    if (el.viewRelatorioManutencao) el.viewRelatorioManutencao.classList.remove("hidden");
+    renderizarRelatorioManutencao();
   }
 
   document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular");
@@ -6962,31 +7159,13 @@ function bindEvents() {
       vcModal.classList.remove("modal-visible");
     });
   }
-  if (vcOk) {
-    vcOk.addEventListener("click", () => {
-      vcModal.classList.remove("modal-visible");
-    });
-  }
-  if (vcModal) {
-    vcModal.addEventListener("click", (e) => {
-      if (e.target === vcModal) {
-        vcModal.classList.remove("modal-visible");
-      }
-    });
-  }
-
-  el.hubRelatorio.addEventListener("click", () => {
-    setMode("RELATORIO");
-    if (!el.relData.value) el.relData.value = todayYmd();
-  });
-  el.hubHistorico.addEventListener("click", () => {
-    setMode("HISTORICO");
-    renderHistorico();
-  });
-  el.hubAcmpConcretagem.addEventListener("click", () => {
+  el.hubAcmpConcretagem?.addEventListener("click", () => {
     setMode("ACMP_CONCRETAGEM");
     if (!el.acmpData.value) el.acmpData.value = todayYmd();
     renderAcmpConcretagem();
+  });
+  el.hubRelatorioManutencao?.addEventListener("click", () => {
+    setMode("RELATORIO_MANUTENCAO");
   });
 
   if (el.paSalvarBtn) {
@@ -7040,6 +7219,10 @@ function bindEvents() {
           el.kioskOdinCheckbox.checked = false;
           el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
         }
+        if (el.kioskManutencaoCheckbox && el.kioskManutencaoCheckbox.checked) {
+          el.kioskManutencaoCheckbox.checked = false;
+          el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+        }
       }
       const toggleField = document.getElementById("kioskProgToggleField");
       if (toggleField) {
@@ -7070,6 +7253,10 @@ function bindEvents() {
           el.kioskOdinCheckbox.checked = false;
           el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
         }
+        if (el.kioskManutencaoCheckbox && el.kioskManutencaoCheckbox.checked) {
+          el.kioskManutencaoCheckbox.checked = false;
+          el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+        }
       }
       const toggleField = document.getElementById("kioskLibToggleField");
       if (toggleField) {
@@ -7088,7 +7275,6 @@ function bindEvents() {
     });
   }
 
-
   if (el.kioskOdinCheckbox) {
     el.kioskOdinCheckbox.addEventListener("change", () => {
       state.odinMode = el.kioskOdinCheckbox.checked;
@@ -7102,6 +7288,10 @@ function bindEvents() {
           el.kioskLibCheckbox.checked = false;
           el.kioskLibCheckbox.dispatchEvent(new Event("change"));
         }
+        if (el.kioskManutencaoCheckbox && el.kioskManutencaoCheckbox.checked) {
+          el.kioskManutencaoCheckbox.checked = false;
+          el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+        }
       }
       const toggleField = document.getElementById("kioskOdinToggleField");
       if (toggleField) {
@@ -7110,6 +7300,100 @@ function bindEvents() {
       renderLiberacaoDual();
     });
   }
+
+  if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
+    el.kioskOdinToggleField.addEventListener("click", (e) => {
+      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
+        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
+        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+      }
+    });
+  }
+
+  if (el.kioskManutencaoCheckbox) {
+    el.kioskManutencaoCheckbox.addEventListener("change", () => {
+      state.manutencaoMode = el.kioskManutencaoCheckbox.checked;
+      document.body.classList.toggle("manutencao-active", state.manutencaoMode);
+      if (state.manutencaoMode) {
+        if (el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
+          el.kioskProgCheckbox.checked = false;
+          el.kioskProgCheckbox.dispatchEvent(new Event("change"));
+        }
+        if (el.kioskLibCheckbox && el.kioskLibCheckbox.checked) {
+          el.kioskLibCheckbox.checked = false;
+          el.kioskLibCheckbox.dispatchEvent(new Event("change"));
+        }
+        if (el.kioskOdinCheckbox && el.kioskOdinCheckbox.checked) {
+          el.kioskOdinCheckbox.checked = false;
+          el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+        }
+      }
+      const toggleField = document.getElementById("kioskManutencaoToggleField");
+      if (toggleField) {
+        toggleField.classList.toggle("active", state.manutencaoMode);
+      }
+      renderLiberacaoDual();
+    });
+  }
+
+  const kioskManutencaoToggleField = document.getElementById("kioskManutencaoToggleField");
+  if (kioskManutencaoToggleField && el.kioskManutencaoCheckbox) {
+    kioskManutencaoToggleField.addEventListener("click", (e) => {
+      if (e.target !== el.kioskManutencaoCheckbox && !el.kioskManutencaoCheckbox.contains(e.target)) {
+        el.kioskManutencaoCheckbox.checked = !el.kioskManutencaoCheckbox.checked;
+        el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+      }
+    });
+  }
+
+  // Eventos dos Modais de Manutenção
+  document.getElementById("mParadaCancelBtn")?.addEventListener("click", () => {
+    document.getElementById("modalManutencaoParada")?.classList.add("hidden");
+  });
+
+  document.getElementById("mParadaConfirmBtn")?.addEventListener("click", () => {
+    if (!pendingManutencaoSelection) return;
+    const motivo = document.getElementById("mParadaMotivo")?.value?.trim();
+    const acao = document.getElementById("mParadaAcao")?.value?.trim();
+    if (!motivo) {
+      alert("Por favor, preencha o motivo da parada.");
+      document.getElementById("mParadaMotivo")?.focus();
+      return;
+    }
+    if (!acao) {
+      alert("Por favor, preencha o que precisa ser feito para arrumar.");
+      document.getElementById("mParadaAcao")?.focus();
+      return;
+    }
+    salvarFormaParadaManutencao(pendingManutencaoSelection.setor, pendingManutencaoSelection.formaNumero, motivo, acao);
+    document.getElementById("modalManutencaoParada")?.classList.add("hidden");
+    renderLiberacaoDual();
+    setSyncStatus("ok", `Forma ${pendingManutencaoSelection.formaNumero} inativada por manutenção.`);
+  });
+
+  document.getElementById("mLiberacaoCancelBtn")?.addEventListener("click", () => {
+    document.getElementById("modalManutencaoLiberacao")?.classList.add("hidden");
+  });
+
+  document.getElementById("mLiberacaoConfirmBtn")?.addEventListener("click", () => {
+    if (!pendingManutencaoSelection) return;
+    const obs = document.getElementById("mLiberacaoObs")?.value?.trim();
+    if (!obs) {
+      alert("Por favor, informe a observação/serviço realizado na liberação.");
+      document.getElementById("mLiberacaoObs")?.focus();
+      return;
+    }
+    liberarFormaManutencao(pendingManutencaoSelection.setor, pendingManutencaoSelection.formaNumero, obs);
+    document.getElementById("modalManutencaoLiberacao")?.classList.add("hidden");
+    renderLiberacaoDual();
+    setSyncStatus("ok", `Forma ${pendingManutencaoSelection.formaNumero} liberada da manutenção.`);
+  });
+
+  document.getElementById("rmBtnImprimirPDF")?.addEventListener("click", () => {
+    document.body.classList.add("print-relatorio-manutencao");
+    window.print();
+    document.body.classList.remove("print-relatorio-manutencao");
+  });
 
   if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
     el.kioskOdinToggleField.addEventListener("click", (e) => {
@@ -7158,7 +7442,11 @@ function bindEvents() {
         el.kioskOdinCheckbox.checked = false;
         el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
       }
-      document.body.classList.remove("kiosk-active", "liberation-active", "odin-active");
+      if (el.kioskManutencaoCheckbox && el.kioskManutencaoCheckbox.checked) {
+        el.kioskManutencaoCheckbox.checked = false;
+        el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+      }
+      document.body.classList.remove("kiosk-active", "liberation-active", "odin-active", "manutencao-active");
       setMode("HUB");
     });
   }
