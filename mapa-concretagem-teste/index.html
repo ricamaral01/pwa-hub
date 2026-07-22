@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=3802f568" />
+  <link rel="stylesheet" href="styles.css?v=horizontal-filters-v105" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -739,15 +739,15 @@
       <!-- Filtros Fixos no Header -->
       <div class="mi-fixed-filters-bar">
         <div class="mi-filter-item">
-          <label for="miDataInicio">Data início</label>
+          <label for="miDataInicio">Início:</label>
           <input type="date" id="miDataInicio" class="input-field" />
         </div>
         <div class="mi-filter-item">
-          <label for="miDataFim">Data fim</label>
+          <label for="miDataFim">Fim:</label>
           <input type="date" id="miDataFim" class="input-field" />
         </div>
         <div class="mi-filter-item">
-          <label for="miFiltroSetor">Setor</label>
+          <label for="miFiltroSetor">Setor:</label>
           <select id="miFiltroSetor" class="input-field">
             <option value="">Todos os Setores</option>
             <option value="Setores 1 e 2">Setores 1 e 2</option>
@@ -758,7 +758,7 @@
           </select>
         </div>
         <div class="mi-filter-item">
-          <label for="miFiltroStatus">Status</label>
+          <label for="miFiltroStatus">Status:</label>
           <select id="miFiltroStatus" class="input-field">
             <option value="">Todos os Status</option>
             <option value="A">Aprovado</option>
@@ -767,12 +767,12 @@
           </select>
         </div>
         <div class="mi-filter-item mi-filter-search">
-          <label for="miFiltroPesquisa">Pesquisar</label>
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Forma, modelo ou montador" />
-            <button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn" style="height: 38px; white-space: nowrap; padding: 0 16px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e1; background: #fff; color: #475569; transition: background 0.2s;">Limpar</button>
-            <button id="miBtnFiltrar" type="button" class="mi-primary-btn" style="height: 38px; white-space: nowrap; padding: 0 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">Aplicar</button>
-          </div>
+          <label for="miFiltroPesquisa">Buscar:</label>
+          <input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Forma, modelo ou montador" />
+        </div>
+        <div class="mi-filter-item mi-filter-actions">
+          <button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e1; background: #fff; color: #475569;">Limpar</button>
+          <button id="miBtnFiltrar" type="button" class="mi-primary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; background: #2563eb; color: #fff; border: none;">Aplicar</button>
         </div>
       </div>
 
