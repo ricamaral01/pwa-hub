@@ -8738,7 +8738,13 @@ async function carregarProdutividadeConcretagem() {
   const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
 
   let filteredRows = allRows.filter(r => {
-    if (filterSetor && r.setor !== filterSetor) return false;
+    if (filterSetor) {
+      if (filterSetor === "Setores 1 e 2") {
+        if (r.setor !== "Setor 1" && r.setor !== "Setor 2") return false;
+      } else {
+        if (r.setor !== filterSetor) return false;
+      }
+    }
     return true;
   });
 
@@ -9133,7 +9139,13 @@ function aplicarFiltrosEExibirMontagem() {
     if (!day || day < dStart || day > dEnd) return false;
 
     // Filtro por Setor
-    if (fSetor && row.setor !== fSetor) return false;
+    if (fSetor) {
+      if (fSetor === "Setores 1 e 2") {
+        if (row.setor !== "Setor 1" && row.setor !== "Setor 2") return false;
+      } else {
+        if (row.setor !== fSetor) return false;
+      }
+    }
 
     // Filtro por Status
     if (fStatus) {
