@@ -1,0 +1,19 @@
+{
+  "name": "Mapa de Concretagem",
+  "short_name": "Mapa Concretagem",
+  "description": "Painel de Planejamento, Liberação e Controle de Concretagem",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1e3c",
+  "theme_color": "#0f1e3c",
+  "icons": [
+    {
+      "src": "../assets/img/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

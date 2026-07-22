@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Técnica - Mapa de Concretagem</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #0b0f19;
+      --bg-sidebar: #0f172a;
+      --bg-card: #151c2c;
+      --bg-code: #1e293b;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-dark: #0f172a;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --accent-secondary: #818cf8;
+      --border: #1e293b;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BARRA LATERAL (SIDEBAR) ────────────────────────── */
+    aside {
+      width: 280px;
+      background-color: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dark);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.025em;
+      background: linear-gradient(to right, #ffffff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav-item a:hover {
+      color: var(--text-main);
+      background-color: rgba(56, 189, 248, 0.08);
+      border-color: rgba(56, 189, 248, 0.15);
+    }
+
+    .nav-item.active a {
+      color: var(--accent);
+      background-color: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.25);
+      font-weight: 600;
+    }
+
+    /* ── CONTEÚDO PRINCIPAL ─────────────────────────────── */
+    main {
+      margin-left: 280px;
+      flex: 1;
+      padding: 3rem;
+      max-width: 1200px;
+      width: calc(100% - 280px);
+    }
+
+    header {
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      background-color: rgba(52, 211, 153, 0.1);
+      color: var(--success);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(52, 211, 153, 0.2);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    section {
+      margin-bottom: 4.5rem;
+      scroll-margin-top: 2rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1.25rem;
+      background-color: var(--accent);
+      border-radius: 4px;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── ARQUITETURA VISUAL ────────────────────────────── */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .arch-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .arch-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .arch-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .arch-icon {
+      width: 36px;
+      height: 36px;
+      background-color: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .arch-card-title {
+      font-weight: 600;
+      color: #ffffff;
+      font-size: 1.05rem;
+    }
+
+    .arch-card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* ── TABELAS DE BANCO DE DADOS ──────────────────────── */
+    .table-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .accordion-item {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(21, 28, 44, 0.5);
+      transition: background-color 0.2s ease;
+      user-select: none;
+    }
+
+    .accordion-header:hover {
+      background-color: rgba(56, 189, 248, 0.03);
+    }
+
+    .accordion-title-block {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .table-tag {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .table-type-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background-color: rgba(129, 140, 248, 0.15);
+      color: var(--accent-secondary);
+      border: 1px solid rgba(129, 140, 248, 0.2);
+    }
+
+    .table-type-badge.view {
+      background-color: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .accordion-icon {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+      color: var(--accent);
+    }
+
+    .accordion-content {
+      display: none;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      background-color: rgba(11, 15, 25, 0.4);
+    }
+
+    .accordion-item.active .accordion-content {
+      display: block;
+    }
+
+    .schema-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .schema-table th, .schema-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .schema-table th {
+      background-color: rgba(30, 41, 59, 0.5);
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .schema-table td.col-name {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .schema-table td.col-type {
+      font-family: var(--font-mono);
+      color: var(--accent-secondary);
+    }
+
+    .schema-desc-box {
+      background-color: rgba(30, 41, 59, 0.3);
+      border-left: 3px solid var(--accent-secondary);
+      padding: 1rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    .schema-desc-box p {
+      margin-bottom: 0.5rem;
+    }
+    .schema-desc-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── TABS (ABAS) PARA APIs ────────────────────────── */
+    .tabs-container {
+      margin-bottom: 2.5rem;
+    }
+
+    .tab-headers {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .api-endpoint-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .api-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .api-method {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      background-color: var(--success);
+      color: var(--text-dark);
+    }
+
+    .api-method.post {
+      background-color: var(--accent);
+    }
+
+    .api-method.delete {
+      background-color: var(--danger);
+    }
+
+    .api-path {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    .api-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .api-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* ── CODE BLOCK (REPRODUTOR DE CÓDIGO) ──────────────── */
+    .code-container {
+      background-color: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 0.75rem;
+    }
+
+    .code-header {
+      background-color: rgba(15, 23, 42, 0.8);
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    pre {
+      margin: 0;
+      padding: 1.25rem;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #38bdf8;
+    }
+
+    /* ── SEÇÃO FRONTEND/FUNÇÕES ──────────────────────── */
+    .function-card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .function-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+    }
+
+    .function-name {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .function-name span {
+      font-size: 0.8rem;
+      background-color: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .function-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .function-params {
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .function-params strong {
+      color: var(--accent-secondary);
+    }
+
+    /* ── ALERT BOXES ────────────────────────────────── */
+    .alert-box {
+      padding: 1.25rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .alert-box.info {
+      background-color: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: #e0f2fe;
+    }
+
+    .alert-box.warning {
+      background-color: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      color: #fef3c7;
+    }
+
+    .alert-icon {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    /* ── RESPONSIVIDADE ─────────────────────────────── */
+    @media (max-width: 900px) {
+      aside {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem;
+      }
+      body {
+        flex-direction: column;
+      }
+      main {
+        margin-left: 0;
+        width: 100%;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── BARRA LATERAL (SIDEBAR) ────────────────────────── -->
+  <aside>
+    <div class="brand">
+      <div class="brand-logo">C</div>
+      <div class="brand-title">Concretrack Hub</div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item active"><a href="#visao-geral" onclick="setActiveNav(this)">Visão Geral</a></li>
+      <li class="nav-item"><a href="#arquitetura" onclick="setActiveNav(this)">Arquitetura</a></li>
+      <li class="nav-item"><a href="#banco-de-dados" onclick="setActiveNav(this)">Banco de Dados</a></li>
+      <li class="nav-item"><a href="#apis" onclick="setActiveNav(this)">APIs & Endpoints</a></li>
+      <li class="nav-item"><a href="#frontend" onclick="setActiveNav(this)">Biblioteca Frontend</a></li>
+      <li class="nav-item"><a href="#offline" onclick="setActiveNav(this)">Service Worker & Offline</a></li>
+    </ul>
+  </aside>
+
+  <!-- ── CONTEÚDO PRINCIPAL ─────────────────────────────── -->
+  <main>
+    <header>
+      <div class="badge-status">
+        <span style="display:inline-block; width:8px; height:8px; background-color:var(--success); border-radius:50%"></span>
+        Pronto para Produção (VPS & PWA)
+      </div>
+      <h1>Documentação Técnica Completa</h1>
+      <p class="subtitle">Guia integrado de arquitetura, banco de dados, APIs e biblioteca de funções do Mapa de Concretagem.</p>
+    </header>
+
+    <!-- ── SEÇÃO: VISÃO GERAL ────────────────────────────── -->
+    <section id="visao-geral">
+      <h2>Visão Geral</h2>
+      <p>O <strong>Mapa de Concretagem</strong> é uma aplicação web PWA integrada ao cockpit de controle da fábrica. Sua função é monitorar e gerenciar em tempo real o ciclo de concretagem dos postes de concreto. A ferramenta permite o planejamento diário de moldes (formas), a liberação rápida para preenchimento com concreto, o apontamento de anomalias (defeitos de qualidade) e o controle operacional por setores produtivos.</p>
+      
+      <div class="alert-box info">
+        <div class="alert-icon">i</div>
+        <div>
+          <strong>Simplificação do Workspace:</strong> Todos os scripts temporários, rascunhos de homologação e tabelas legadas redundantes foram removidos da estrutura do projeto. As lógicas de sincronização offline, modelagem de dados e regras de negócio foram centralizadas e consolidadas nos arquivos oficiais (<code>app.js</code>, <code>server.js</code>, <code>sw.js</code>).
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SEÇÃO: ARQUITETURA ────────────────────────────── -->
+    <section id="arquitetura">
+      <h2>Arquitetura & Fluxo de Dados</h2>
+      <p>A aplicação utiliza uma infraestrutura híbrida composta por cliente local offline, banco de dados em nuvem, servidor SFTP de arquivos de imagem e APIs do ecossistema Google Workspace:</p>
+      
+      <div class="arch-grid">
+        <div class="arch-card">
+          <div class="arch-card-header">
+            <div class="arch-icon">P</div>
+            <div class="arch-card-title">PWA (Frontend)</div>
+          </div>
+          <div class="arch-card-desc">Desenvolvido em Vanilla JS, CSS e HTML. Armazena dados de forma resiliente localmente no IndexedDB e LocalStorage. Continua operando mesmo sem conexão com a internet.</div>
+        </div>
+
+        <div class="arch-card">
+          <div class="arch-card-header">
+            <div class="arch-icon">S</div>
+            <div class="arch-card-title">Supabase (DB)</div>
+          </div>
+          <div class="arch-card-desc">Banco de dados relacional PostgreSQL hospedado na nuvem. Oferece consultas em tempo real, sincronização via conexões HTTP REST e segurança integrada baseada em RLS.</div>
+        </div>
+
+        <div class="arch-card">
+          <div class="arch-card-header">
+            <div class="arch-icon">V</div>
+            <div class="arch-card-title">Servidor VPS (API)</div>
+          </div>
+          <div class="arch-card-desc">Serviço Node.js/Express hospedado na VPS. Recebe uploads de fotos da auditoria de postes, processa e comprime as imagens (Sharp) e transfere os arquivos via SFTP para o storage persistente.</div>
+        </div>
+
+        <div class="arch-card">
+          <div class="arch-card-header">
+            <div class="arch-icon">G</div>
+            <div class="arch-card-title">Google Sheets (Macro)</div>
+          </div>
+          <div class="arch-card-desc">Integração secundária via Google Apps Script (GAS) para alimentar planilhas corporativas legadas e obter sincronizações em massa.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SEÇÃO: BANCO DE DADOS ────────────────────────── -->
+    <section id="banco-de-dados">
+      <h2>Estrutura do Banco de Dados (Supabase)</h2>
+      <p>Todas as tabelas possuem <strong>Row Level Security (RLS)</strong> ativado por padrão com políticas de acesso total (ALL) abertas para a chave anônima da API do PWA. Clique sobre as tabelas abaixo para visualizar as colunas e descrições estruturais:</p>
+
+      <div class="table-accordion">
+        
+        <!-- ITEM 1: producao -->
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-block">
+              <span class="table-tag">public.producao</span>
+              <span class="table-type-badge">Tabela</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Registra o histórico de concretagem executado com tipos de concreto específicos (normalmente quando há desvios do padrão ou defeitos).</p>
+            <table class="schema-table">
+              <thead>
+                <tr>
+                  <th>Coluna</th>
+                  <th>Tipo</th>
+                  <th>Atributos</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-name">id</td>
+                  <td class="col-type">UUID</td>
+                  <td>DEFAULT uuid_generate_v4(), PK</td>
+                  <td>Identificador único do apontamento.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">data_hora</td>
+                  <td class="col-type">TIMESTAMP WITH TIME ZONE</td>
+                  <td>NOT NULL</td>
+                  <td>Data/Hora do apontamento de produção.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">setor</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Setor onde a forma foi preenchida (ex: Setor 1, Setor 2).</td>
+                </tr>
+                <tr>
+                  <td class="col-name">forma</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Número identificador da forma física.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">modelo</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Modelo de poste concretado.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">tipo_concreto</td>
+                  <td class="col-type">TEXT</td>
+                  <td>DEFAULT 'Padrao'</td>
+                  <td>Indica o tipo de concreto (Ex: Padrão, Seco, Segregado, Exsudado).</td>
+                </tr>
+                <tr>
+                  <td class="col-name">colaborador</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Nome do colaborador responsável pelo preenchimento.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">data_fabricacao</td>
+                  <td class="col-type">DATE</td>
+                  <td>-</td>
+                  <td>Data da produção associada ao mapa.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">status</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Status operacional (Geralmente 'LIBERADO').</td>
+                </tr>
+                <tr>
+                  <td class="col-name">codigo_poste</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Código identificador do modelo de poste cadastrado.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">descricao_poste</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Descrição textual informativa do poste.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">codigo_produto</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Código do produto interno da fábrica (ERP).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ITEM 2: liberacao_formas -->
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-block">
+              <span class="table-tag">public.liberacao_formas</span>
+              <span class="table-type-badge">Tabela</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Registra liberações de formas de concreto padrão de maneira simplificada, otimizando o volume de escritas no banco de dados.</p>
+            <table class="schema-table">
+              <thead>
+                <tr>
+                  <th>Coluna</th>
+                  <th>Tipo</th>
+                  <th>Atributos</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-name">id</td>
+                  <td class="col-type">UUID</td>
+                  <td>DEFAULT uuid_generate_v4(), PK</td>
+                  <td>ID único da liberação.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">data_fabricacao</td>
+                  <td class="col-type">DATE</td>
+                  <td>NOT NULL</td>
+                  <td>Data de referência da concretagem.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">setor</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Nome do setor produtivo.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">forma</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Número identificador do molde.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">colaborador</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Nome do encarregado de liberação.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">data_hora</td>
+                  <td class="col-type">TIMESTAMP WITH TIME ZONE</td>
+                  <td>-</td>
+                  <td>Carimbo de data/hora do acionamento de liberação.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ITEM 3: programacao_pcp -->
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-block">
+              <span class="table-tag">public.programacao_pcp</span>
+              <span class="table-type-badge">Tabela</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Tabela que registra a fila de postes e modelos planejados para fabricação pelo PCP (Planejamento e Controle de Produção).</p>
+            <table class="schema-table">
+              <thead>
+                <tr>
+                  <th>Coluna</th>
+                  <th>Tipo</th>
+                  <th>Atributos</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-name">id</td>
+                  <td class="col-type">UUID</td>
+                  <td>DEFAULT uuid_generate_v4(), PK</td>
+                  <td>ID único da programação.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">data_fabricacao</td>
+                  <td class="col-type">DATE</td>
+                  <td>NOT NULL</td>
+                  <td>Data agendada para produção.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">setor</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Setor alocado para a fabricação.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">forma</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Número identificador do molde.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">modelo</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Modelo específico do poste programado.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">codigo_poste</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Código estrutural do poste duplo T.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">descricao_poste</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Descritor operacional do tipo do poste.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">codigo_produto</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Código interno do produto da base Concrefer.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">quantidade</td>
+                  <td class="col-type">INTEGER</td>
+                  <td>DEFAULT 1</td>
+                  <td>Quantidade de peças programadas (geralmente 1 por forma/ciclo).</td>
+                </tr>
+                <tr>
+                  <td class="col-name">data_hora</td>
+                  <td class="col-type">TIMESTAMP WITH TIME ZONE</td>
+                  <td>-</td>
+                  <td>Carimbo de data/hora do lançamento.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ITEM 4: montagem_poste -->
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-block">
+              <span class="table-tag">public.montagem_poste</span>
+              <span class="table-type-badge">Tabela</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Registra o processo de montagem e inspeção da qualidade final após a cura do poste. Armazena os dados dos checklists dinâmicos em formato JSONB.</p>
+            <table class="schema-table">
+              <thead>
+                <tr>
+                  <th>Coluna</th>
+                  <th>Tipo</th>
+                  <th>Atributos</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-name">id</td>
+                  <td class="col-type">TEXT</td>
+                  <td>PK</td>
+                  <td>Identificador textual (ex: data_fabricacao_setor_forma).</td>
+                </tr>
+                <tr>
+                  <td class="col-name">record_id</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>ID correspondente do registro de produção.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">data_fabricacao</td>
+                  <td class="col-type">DATE</td>
+                  <td>-</td>
+                  <td>Data em que o poste foi concretado.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">setor</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Setor de origem da forma.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">forma_numero</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Número do molde utilizado.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">modelo</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Modelo estrutural do poste duplo T.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">status_montagem</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Resultado da inspeção (A = Aprovado, R = Recusado, M = Manutenção).</td>
+                </tr>
+                <tr>
+                  <td class="col-name">motivo_recusa</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Código do defeito gerador da reprovação (ex: A, B, C, G, O, P).</td>
+                </tr>
+                <tr>
+                  <td class="col-name">etapa</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Etapa do ciclo (geralmente 'MONTAGEM' ou 'QUALIDADE').</td>
+                </tr>
+                <tr>
+                  <td class="col-name">inicio_inspecao_montagem</td>
+                  <td class="col-type">TIMESTAMP WITH TIME ZONE</td>
+                  <td>-</td>
+                  <td>Horário do início do apontamento de qualidade.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">finalizado_em</td>
+                  <td class="col-type">TIMESTAMP WITH TIME ZONE</td>
+                  <td>-</td>
+                  <td>Horário de conclusão e gravação da inspeção.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">checklists</td>
+                  <td class="col-type">JSONB</td>
+                  <td>DEFAULT '{}'::jsonb</td>
+                  <td>Dados estruturados dos checkboxes avaliados durante a inspeção.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">observacoes_montagem</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Observações gerais digitadas pelo inspetor.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">montador_nome</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Nome do montador ou inspetor de qualidade.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ITEM 5: vw_formas_status -->
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-block">
+              <span class="table-tag">public.vw_formas_status</span>
+              <span class="table-type-badge view">View</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>View lógica que integra a programação do PCP, a liberação e os detalhes de produção/concreto. Facilita o preenchimento consolidado do dashboard visual no frontend.</p>
+            <div class="schema-desc-box">
+              <p><strong>Lógica SQL Interna:</strong> Executa um <code>LEFT JOIN</code> entre as tabelas <code>programacao_pcp</code>, <code>liberacao_formas</code> e <code>producao</code> agrupado por Data, Setor e Número da Forma.</p>
+              <p><strong>Colunas Exportadas:</strong></p>
+              <ul style="margin-left:1.5rem; font-size:0.85rem; font-family:var(--font-mono); color:var(--accent)">
+                <li>data_fabricacao, setor, forma</li>
+                <li>prog_id, prog_modelo, prog_codigo_poste, prog_descricao_poste, prog_codigo_produto, prog_quantidade</li>
+                <li>lib_id, lib_data_hora, lib_colaborador</li>
+                <li>prod_id, prod_data_hora, prod_modelo, prod_codigo_poste, prod_descricao_poste, prod_codigo_produto, prod_tipo_concreto, prod_colaborador</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ITEM 6: fotos_inspecao -->
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="accordion-title-block">
+              <span class="table-tag">public.fotos_inspecao</span>
+              <span class="table-type-badge">Tabela</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="accordion-content">
+            <p>Guarda os metadados dos uploads de fotos de qualidade realizadas no tablet/mobile e armazenadas no servidor VPS físico.</p>
+            <table class="schema-table">
+              <thead>
+                <tr>
+                  <th>Coluna</th>
+                  <th>Tipo</th>
+                  <th>Atributos</th>
+                  <th>Descrição</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-name">id</td>
+                  <td class="col-type">UUID</td>
+                  <td>DEFAULT uuid_generate_v4(), PK</td>
+                  <td>Identificador único do arquivo no banco.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">poste_id</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Identificador do poste correspondente (chave estrangeira lógica para montagem_poste.id).</td>
+                </tr>
+                <tr>
+                  <td class="col-name">arquivo_nome</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Nome físico gerado do arquivo (UUID v4 + .jpg).</td>
+                </tr>
+                <tr>
+                  <td class="col-name">arquivo_path</td>
+                  <td class="col-type">TEXT</td>
+                  <td>NOT NULL</td>
+                  <td>Caminho relativo do arquivo de armazenamento na VPS.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">tamanho_bytes</td>
+                  <td class="col-type">INTEGER</td>
+                  <td>NOT NULL</td>
+                  <td>Tamanho físico final do buffer comprimido.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">data_upload</td>
+                  <td class="col-type">TIMESTAMP WITH TIME ZONE</td>
+                  <td>DEFAULT now()</td>
+                  <td>Data e hora que o upload foi processado.</td>
+                </tr>
+                <tr>
+                  <td class="col-name">usuario</td>
+                  <td class="col-type">TEXT</td>
+                  <td>-</td>
+                  <td>Nome do usuário logado que realizou o upload.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SEÇÃO: APIS E ENDPOINTS ──────────────────────── -->
+    <section id="apis">
+      <h2>Biblioteca de APIs & Endpoints</h2>
+      <p>O ecossistema divide-se entre as APIs executadas na VPS (Node.js/Express) e as integrações via Macros do Google Apps Script:</p>
+
+      <div class="tabs-container">
+        <div class="tab-headers">
+          <button class="tab-btn active" onclick="switchTab(this, 'api-vps')">Servidor de Fotos (Node.js VPS)</button>
+          <button class="tab-btn" onclick="switchTab(this, 'api-gas')">Macros Auxiliares (Google Apps Script)</button>
+        </div>
+
+        <!-- TAB CONTENT: NODE.JS VPS -->
+        <div id="api-vps" class="tab-pane active">
+          
+          <!-- ENDPOINT 1 -->
+          <div class="api-endpoint-card">
+            <div class="api-header">
+              <span class="api-method post">POST</span>
+              <span class="api-path">/api/inspecoes/:poste_id/fotos</span>
+            </div>
+            <div class="api-desc">Comprime a imagem enviada (Sharp, limite de largura de 1600px, 80% qualidade JPEG), realiza a transferência persistente por SFTP para a VPS física, e salva os metadados do upload no Supabase.</div>
+            <div class="api-details">
+              <div><strong>Form Data:</strong> <code>foto</code> (Arquivo binário/Imagem), <code>usuario</code> (String)</div>
+              <div><strong>Retorno (201 Created):</strong> JSON contendo o metadado gravado na tabela <code>fotos_inspecao</code>.</div>
+              <div class="code-container">
+                <div class="code-header"><span>Exemplo de resposta de sucesso</span></div>
+                <pre><code>{
+  "success": true,
+  "data": {
+    "id": "e302521c-a115-46bb-be1f-508b98132924",
+    "poste_id": "2026-06-25_Setor 1_05",
+    "arquivo_nome": "f8a92f03-68d1-419b-abeb-f32742911244.jpg",
+    "arquivo_path": "inspecoes/2026/06/25/2026-06-25_Setor 1_05/f8a92f03-68d1-419b-abeb-f32742911244.jpg",
+    "tamanho_bytes": 142095,
+    "usuario": "inspetor.lima",
+    "data_upload": "2026-06-25T14:23:10.000Z"
+  }
+}</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- ENDPOINT 2 -->
+          <div class="api-endpoint-card">
+            <div class="api-header">
+              <span class="api-method">GET</span>
+              <span class="api-path">/api/inspecoes/:poste_id/fotos</span>
+            </div>
+            <div class="api-desc">Recupera a lista de fotos salvas de determinado poste e monta as URLs completas HTTP apontando para o servidor web da VPS física de storage.</div>
+            <div class="api-details">
+              <div><strong>Parâmetros de URL:</strong> <code>poste_id</code> (String)</div>
+              <div><strong>Retorno (200 OK):</strong> Lista com os metadados e as URLs públicas.</div>
+            </div>
+          </div>
+
+          <!-- ENDPOINT 3 -->
+          <div class="api-endpoint-card">
+            <div class="api-header">
+              <span class="api-method delete">DELETE</span>
+              <span class="api-path">/api/fotos/:id</span>
+            </div>
+            <div class="api-desc">Remove fisicamente a foto armazenada no storage da VPS via SFTP e em seguida apaga o registro de metadados correspondente no Supabase.</div>
+            <div class="api-details">
+              <div><strong>Parâmetros de URL:</strong> <code>id</code> (UUID correspondente ao ID da foto)</div>
+              <div><strong>Retorno (200 OK):</strong> Confirmação de exclusão do arquivo e dos registros.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB CONTENT: GOOGLE APPS SCRIPT -->
+        <div id="api-gas" class="tab-pane">
+          <p style="margin-bottom:1.5rem">Abaixo estão os endpoints utilizados na integração de dados legados do Google Sheets, expostos a partir do Web App unificado do Apps Script corporativo:</p>
+          
+          <div class="api-endpoint-card">
+            <div class="api-header">
+              <span class="api-method post">POST / GET</span>
+              <span class="api-path">https://script.google.com/macros/s/.../exec</span>
+            </div>
+            <div class="api-details">
+              <div><strong>Parâmetro de Ação:</strong> <code>action</code> enviado no corpo ou URL. Valores aceitos:</div>
+              <ul style="margin-left: 2rem; margin-top:0.5rem; font-size:0.9rem; color:var(--text-muted)">
+                <li><code>get_data</code>: Retorna todos os registros agregados de massadas e produção de concretagem salvos na planilha mestra de controle.</li>
+                <li><code>listar_usuarios</code>: Retorna a listagem de usuários válidos cadastrados no painel administrativo do Google Sheets.</li>
+                <li><code>listar_inspecao_pendentes</code>: Retorna formas concretadas e que ainda não passaram pelo crivo da montagem/inspeção de cura.</li>
+                <li><code>salvar_inspecao_lote</code>: Envia um lote de inspeções executadas em lote offline para atualizar a planilha do Google Drive.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SEÇÃO: FRONTEND BIBLIOTECA ───────────────────── -->
+    <section id="frontend">
+      <h2>Biblioteca Frontend (app.js)</h2>
+      <p>O arquivo principal <a href="file:///c:/Users/Admin/Documents/pwa-hub/mapa-concretagem/app.js">app.js</a> foi desenvolvido para ser extremamente modular, resiliente à perda de sinal de rede e integrado com a renderização de telas e sincronização.</p>
+
+      <div class="function-card-list">
+        
+        <!-- CARD FUNÇÃO 1 -->
+        <div class="function-card">
+          <div class="function-name">readDb() <span>IndexedDB / LocalStorage</span></div>
+          <div class="function-desc">Executa a leitura da base local. O PWA tenta ler os dados diretamente do IndexedDB e, caso não haja suporte ou retorne erro, faz o fallback silencioso para o LocalStorage, retornando a estrutura padrão de registros.</div>
+          <div class="function-params"><strong>Retorno:</strong> Objeto JSON com coleções locais estruturadas de <code>records</code>, <code>users</code>, <code>pendingSyncs</code> e <code>metadata</code>.</div>
+        </div>
+
+        <!-- CARD FUNÇÃO 2 -->
+        <div class="function-card">
+          <div class="function-name">saveDb(data) <span>Persistência Local</span></div>
+          <div class="function-desc">Grava a estrutura completa de dados em IndexedDB com fallback automático para LocalStorage. Atualiza a flag interna de modificação para controle de concorrência.</div>
+          <div class="function-params"><strong>Argumentos:</strong> <code>data</code> (Objeto contendo a base inteira a ser persistida localmente).</div>
+        </div>
+
+        <!-- CARD FUNÇÃO 3 -->
+        <div class="function-card">
+          <div class="function-name">getRowsForDashboard(data, setor) <span>Supabase Sync</span></div>
+          <div class="function-desc">Tenta buscar em tempo real os dados consolidados da tabela <code>producao</code> no Supabase para preencher o grid visual do dia correspondente ao setor. Caso o cliente esteja em modo offline, aciona o fallback local <code>getRowsFromLocalForDashboard()</code> sem interromper a interface do usuário.</div>
+          <div class="function-params"><strong>Argumentos:</strong> <code>data</code> (String no formato YYYY-MM-DD), <code>setor</code> (String correspondente ao setor produtivo).</div>
+        </div>
+
+        <!-- CARD FUNÇÃO 4 -->
+        <div class="function-card">
+          <div class="function-name">syncOfflineData() <span>Sincronizador</span></div>
+          <div class="function-desc">Função disparada automaticamente quando a conexão é restabelecida. Lê a fila de operações pendentes salvas em IndexedDB (<code>pendingSyncs</code>) e dispara requisições de gravação (<code>upsert</code> ou <code>insert</code>) para as tabelas correspondentes no Supabase. Remove as tarefas executadas com sucesso da fila.</div>
+        </div>
+
+        <!-- CARD FUNÇÃO 5 -->
+        <div class="function-card">
+          <div class="function-name">renderGrid() <span>Interface Dinâmica</span></div>
+          <div class="function-desc">Redesenha a matriz de formas físicas baseando-se no estado atual da programação do PCP, do tipo de concreto apontado na tabela producao e dos checklists de qualidade preenchidos. Aplica estilos HSL condicionados de forma a alertar anomalias visuais (ex: formas em vermelho indicam concreto exsudado ou segregado).</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── SEÇÃO: OFFLINE & SERVICE WORKER ──────────────── -->
+    <section id="offline">
+      <h2>Service Worker & Comportamento Offline</h2>
+      <p>O arquivo <a href="file:///c:/Users/Admin/Documents/pwa-hub/mapa-concretagem/sw.js">sw.js</a> registra e controla as políticas de caching estático e as exceções operacionais de rede:</p>
+
+      <div class="code-container">
+        <div class="code-header"><span>Políticas de Rede no Service Worker (sw.js)</span></div>
+        <pre><code>// Pular requisições de API e Supabase (devem sempre tentar rede em tempo real)
+if (url.href.includes("script.google.com") || url.href.includes("supabase.co")) {
+  return;
+}
+
+// Para arquivos estáticos (HTML, CSS, JS, manifest), usa cache com fallback para rede
+event.respondWith(
+  caches.match(event.request).then((cachedResponse) => {
+    if (cachedResponse) return cachedResponse;
+    return fetch(event.request);
+  })
+);</code></pre>
+      </div>
+      
+      <p style="margin-top: 1.5rem"><strong>Como os dados são persistidos localmente?</strong></p>
+      <p>O PWA utiliza uma fila do tipo <strong>Log de Gravação (Write-Ahead Log)</strong> armazenada em IndexedDB/LocalStorage sob a chave <code>pendingSyncs</code>. Toda ação de gravação feita offline (como liberar uma forma, salvar uma inspeção ou registrar um novo tipo de concreto) gera um objeto operacional no formato abaixo:</p>
+      
+      <div class="code-container">
+        <div class="code-header"><span>Estrutura de Fila de Sincronização Pendente</span></div>
+        <pre><code>{
+  "id": "sync_1719325410982_941",
+  "action": "salvar_forma_click",
+  "timestamp": "2026-06-25T14:23:30.982Z",
+  "payload": {
+    "dataFabricacao": "2026-06-25",
+    "setor": "Setor 1",
+    "forma": "05",
+    "modelo": "C",
+    "tipo_concreto": "Concreto Segregado",
+    "colaborador": "Supervisor Carlos",
+    "status": "LIBERADO"
+  }
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Função para controlar abertura e fechamento de itens do Accordion
+    function toggleAccordion(headerElement) {
+      const item = headerElement.parentElement;
+      const isActive = item.classList.contains('active');
+      
+      // Fecha todos os accordions
+      document.querySelectorAll('.accordion-item').forEach(i => {
+        i.classList.remove('active');
+      });
+      
+      // Se não estava ativo, abre
+      if (!isActive) {
+        item.classList.add('active');
+      }
+    }
+
+    // Função para controle de Abas (Tabs) das APIs
+    function switchTab(buttonElement, paneId) {
+      // Remove classes ativas dos botões
+      buttonElement.parentElement.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      // Adiciona classe ativa no botão clicado
+      buttonElement.classList.add('active');
+
+      // Esconde todos os painéis
+      const container = buttonElement.closest('.tabs-container');
+      container.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+      });
+      // Mostra o painel correto
+      document.getElementById(paneId).classList.add('active');
+    }
+
+    // Marca item da barra lateral como ativo ao clicar
+    function setActiveNav(linkElement) {
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      linkElement.parentElement.classList.add('active');
+    }
+
+    // Inicializa abrindo o primeiro item do accordion
+    window.addEventListener('DOMContentLoaded', () => {
+      const firstAccordion = document.querySelector('.accordion-item');
+      if (firstAccordion) {
+        firstAccordion.classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>
