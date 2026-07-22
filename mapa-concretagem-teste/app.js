@@ -9173,7 +9173,13 @@ function aplicarFiltrosEExibirMontagem() {
   const filteredProducao = miRawProducaoData.filter(row => {
     const day = row.data_fabricacao;
     if (!day || day < dStart || day > dEnd) return false;
-    if (fSetor && row.setor !== fSetor) return false;
+    if (fSetor) {
+      if (fSetor === "Setores 1 e 2") {
+        if (row.setor !== "Setor 1" && row.setor !== "Setor 2") return false;
+      } else {
+        if (row.setor !== fSetor) return false;
+      }
+    }
     return true;
   });
 
@@ -9321,7 +9327,13 @@ function aplicarFiltrosEExibirMontagem() {
   const todayStr = todayYmd();
   const prodDia = miRawProducaoData.filter(row => {
     if (row.data_fabricacao !== todayStr) return false;
-    if (fSetor && row.setor !== fSetor) return false;
+    if (fSetor) {
+      if (fSetor === "Setores 1 e 2") {
+        if (row.setor !== "Setor 1" && row.setor !== "Setor 2") return false;
+      } else {
+        if (row.setor !== fSetor) return false;
+      }
+    }
     return true;
   }).length;
   if (elProducaoDia) elProducaoDia.textContent = prodDia;
@@ -9331,7 +9343,13 @@ function aplicarFiltrosEExibirMontagem() {
   const sectorsContainer = document.getElementById("miSetoresContainer");
   if (sectorsContainer) {
     sectorsContainer.innerHTML = sectors.map(s => {
-      if (fSetor && s !== fSetor) return "";
+      if (fSetor) {
+        if (fSetor === "Setores 1 e 2") {
+          if (s !== "Setor 1" && s !== "Setor 2") return "";
+        } else {
+          if (s !== fSetor) return "";
+        }
+      }
       const prod = prodBySector[s] || 0;
       const mont = bySector[s] || 0;
       const pct = prod > 0 ? Math.round((mont / prod) * 100) : 0;
