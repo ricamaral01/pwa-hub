@@ -9472,15 +9472,15 @@ function renderizarTabelaMontagemPaginada() {
 
     return `
       <tr style="border-bottom: 1px solid #f1f5f9;">
-        <td style="padding: 10px; text-align: center;">${dataFab}</td>
+        <td style="padding: 10px; text-align: center; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dataFab}</td>
         <td style="padding: 10px; text-align: center;">${row.setor || ""}</td>
-        <td style="padding: 10px; text-align: center;"><strong>${row.forma_numero || ""}</strong></td>
+        <td style="padding: 10px; text-align: center; max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><strong>${row.forma_numero || ""}</strong></td>
         <td style="padding: 10px; text-align: center;">${row.modelo || ""}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${inicio}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${fim}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem; font-weight: 600;">${tempoText}</td>
         <td style="padding: 10px; text-align: center;">${statusHtml}</td>
-        <td style="padding: 10px; text-align: center;">${rejeitadosHtml}</td>
+        <td style="padding: 10px; text-align: center; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${rejeitadosHtml}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem;">${row.montador_nome || ""}</td>
       </tr>
     `;
