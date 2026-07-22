@@ -5766,53 +5766,92 @@ body:not(.print-relatorio) .rel-full-table td:nth-child(7) {
    MODO MANUTENÇÃO - PALETA AMARELO NEON (#f1c40f / #ffea00)
    ========================================================= */
 
+/* =========================================================
+   MODO MANUTENÇÃO - PALETA AMARELO NEON (#facc15 / #ffea00)
+   ========================================================= */
+
 body.manutencao-active .kiosk-header {
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%) !important;
-  border-bottom: 3px solid #f1c40f !important;
-  box-shadow: 0 4px 20px rgba(241, 196, 15, 0.3) !important;
+  background: linear-gradient(135deg, #facc15 0%, #eab308 100%) !important;
+  border-bottom: 4px solid #ca8a04 !important;
+  box-shadow: 0 4px 25px rgba(250, 204, 21, 0.7) !important;
 }
 
 body.manutencao-active .kiosk-header .kiosk-title {
-  color: #f1c40f !important;
-  text-shadow: 0 0 10px rgba(241, 196, 15, 0.7) !important;
+  color: #0f172a !important;
+  text-shadow: none !important;
+  font-weight: 900 !important;
 }
 
 body.manutencao-active .kiosk-header .kiosk-subtitle {
-  color: #fef08a !important;
+  color: #1e293b !important;
+  font-weight: 800 !important;
 }
 
 body.manutencao-active .sw-version-badge {
-  background: #f1c40f !important;
-  color: #1e293b !important;
-  box-shadow: 0 0 10px rgba(241, 196, 15, 0.8) !important;
+  background: #0f172a !important;
+  color: #facc15 !important;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.9) !important;
 }
 
-.forma-card.is-manutencao {
-  background: #fefce8 !important;
-  border: 2px dashed #f59e0b !important;
-  color: #78350f !important;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4) !important;
+/* TODOS OS CARDS E CÉLULAS FICAM AMARELO NEON QUANDO O MODO MANUTENÇÃO ESTÁ ATIVO */
+body.manutencao-active .forma-card,
+body.manutencao-active .s4-forma-cell {
+  background: #fef08a !important;
+  border: 2px solid #eab308 !important;
+  color: #0f172a !important;
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.8) !important;
+}
+
+body.manutencao-active .forma-card .fc-number,
+body.manutencao-active .s4-forma-cell {
+  color: #0f172a !important;
+  font-weight: 900 !important;
+}
+
+body.manutencao-active .forma-card:hover,
+body.manutencao-active .s4-forma-cell:hover {
+  background: #fde047 !important;
+  border-color: #ca8a04 !important;
+  box-shadow: 0 0 22px rgba(234, 179, 8, 0.95) !important;
+  cursor: pointer;
+  transform: translateY(-2px);
+}
+
+/* FORMAS QUE ESTÃO EFETIVAMENTE PARADAS / EM MANUTENÇÃO */
+.forma-card.is-manutencao,
+.s4-forma-cell.is-manutencao {
+  background: #fef08a !important;
+  border: 3px dashed #b45309 !important;
+  color: #0f172a !important;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.85) !important;
   position: relative;
+}
+
+.forma-card.is-manutencao .fc-number {
+  color: #78350f !important;
+  font-weight: 900 !important;
 }
 
 .forma-card.is-manutencao::after {
   content: "🛠️ PARADA";
   position: absolute;
-  top: 4px;
-  right: 6px;
-  background: #f59e0b;
+  top: 3px;
+  right: 4px;
+  background: #b45309;
   color: #ffffff;
   font-size: 0.65rem;
-  font-weight: 800;
-  padding: 2px 6px;
+  font-weight: 900;
+  padding: 2px 5px;
   border-radius: 4px;
   letter-spacing: 0.05em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-body.manutencao-active .forma-card:hover {
-  border-color: #f1c40f !important;
-  box-shadow: 0 0 18px rgba(241, 196, 15, 0.6) !important;
-  cursor: pointer;
+td.s4-forma-cell.is-manutencao::after {
+  content: " 🛠️ PARADA";
+  color: #b45309;
+  font-weight: 900;
+  font-size: 0.72rem;
 }
 
 /* Impressão do Relatório de Manutenção */

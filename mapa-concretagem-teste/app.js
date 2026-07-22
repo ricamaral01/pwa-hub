@@ -1944,6 +1944,13 @@ function createS4TableRow(item, setor) {
   const tdInsCod = document.createElement("td");
   tdInsCod.className = "td-ins-cod";
 
+  // Verificar se a forma está em manutenção (Parada)
+  const manutencaoRec = isFormaEmManutencao(setor, item.forma);
+  if (manutencaoRec) {
+    tdForma.classList.add("is-manutencao");
+    tdForma.title = `🛠️ PARADA / MANUTENÇÃO\nMotivo: ${manutencaoRec.motivo_parada}\nArrumar: ${manutencaoRec.acao_necessaria}`;
+  }
+
   const refreshRow = () => {
     if (isFormaClicked(item.forma, setor)) {
       tdForma.classList.add("is-saved");
@@ -1963,10 +1970,36 @@ function createS4TableRow(item, setor) {
   tdForma.refreshRow = refreshRow;
 
   tdForma.addEventListener("click", () => {
+    if (state.manutencaoMode) {
+      if (manutencaoRec) {
+        openModalLiberacao(setor, item.forma, manutencaoRec);
+      } else {
+        openModalParada(setor, item.forma);
+      }
+      return;
+    }
+    if (manutencaoRec) {
+      if (typeof msgbox !== "undefined") {
+        msgbox.alert(
+          `🛠️ FORMA EM MANUTENÇÃO!\n\nA forma ${item.forma} (${setor}) está INATIVA para manutenção e não pode ser programada nem liberada.\n\n• Motivo: ${manutencaoRec.motivo_parada}\n• Serviço: ${manutencaoRec.acao_necessaria}\n• Parada em: ${manutencaoRec.parada_em} por ${manutencaoRec.parada_por}`
+        );
+      } else {
+        alert(`🛠️ FORMA EM MANUTENÇÃO!\nForma ${item.forma} está inativa.\nMotivo: ${manutencaoRec.motivo_parada}`);
+      }
+      return;
+    }
+    if (state.programmingMode) {
+      toggleFormaProgramada(item.forma, setor, tdForma);
+      return;
+    }
+    if (state.odinMode) {
+      cancelarOuDesprogramarOdin(item.forma, setor, tdForma);
+      return;
+    }
     const data = el.libData?.value;
     const colaborador = getProductionCollaborator();
-    if (!data) { showLibFeedback("Data!", "error"); return; }
-    if (!colaborador) { showLibFeedback("Colaborador!", "error"); return; }
+    if (!data) { showLibFeedback("Preencha a data de fabricação antes de registrar.", "error"); return; }
+    if (!colaborador) { showLibFeedback("Preencha o colaborador antes de registrar.", "error"); return; }
     showConcreteTypePopup(item.forma, setor, tdForma, item.modelo || "");
   });
 
@@ -2047,7 +2080,7 @@ function openModalParada(setor, formaNumero) {
   const aca = document.getElementById("mParadaAcao");
   if (mot) mot.value = "";
   if (aca) aca.value = "";
-  document.getElementById("modalManutencaoParada")?.classList.remove("hidden");
+  document.getElementById("modalManutencaoParada")?.classList.add("modal-visible");
 }
 
 function openModalLiberacao(setor, formaNumero, manutencaoRec) {
@@ -2066,7 +2099,7 @@ function openModalLiberacao(setor, formaNumero, manutencaoRec) {
   }
   const obs = document.getElementById("mLiberacaoObs");
   if (obs) obs.value = "";
-  document.getElementById("modalManutencaoLiberacao")?.classList.remove("hidden");
+  document.getElementById("modalManutencaoLiberacao")?.classList.add("modal-visible");
 }
 
 function renderizarRelatorioManutencao() {
@@ -7347,8 +7380,16 @@ function bindEvents() {
   }
 
   // Eventos dos Modais de Manutenção
+  const modalParada = document.getElementById("modalManutencaoParada");
+  const modalLiberacao = document.getElementById("modalManutencaoLiberacao");
+
   document.getElementById("mParadaCancelBtn")?.addEventListener("click", () => {
-    document.getElementById("modalManutencaoParada")?.classList.add("hidden");
+    modalParada?.classList.remove("modal-visible");
+  });
+  modalParada?.addEventListener("click", (e) => {
+    if (e.target === modalParada) {
+      modalParada.classList.remove("modal-visible");
+    }
   });
 
   document.getElementById("mParadaConfirmBtn")?.addEventListener("click", () => {
@@ -7366,13 +7407,18 @@ function bindEvents() {
       return;
     }
     salvarFormaParadaManutencao(pendingManutencaoSelection.setor, pendingManutencaoSelection.formaNumero, motivo, acao);
-    document.getElementById("modalManutencaoParada")?.classList.add("hidden");
+    modalParada?.classList.remove("modal-visible");
     renderLiberacaoDual();
     setSyncStatus("ok", `Forma ${pendingManutencaoSelection.formaNumero} inativada por manutenção.`);
   });
 
   document.getElementById("mLiberacaoCancelBtn")?.addEventListener("click", () => {
-    document.getElementById("modalManutencaoLiberacao")?.classList.add("hidden");
+    modalLiberacao?.classList.remove("modal-visible");
+  });
+  modalLiberacao?.addEventListener("click", (e) => {
+    if (e.target === modalLiberacao) {
+      modalLiberacao.classList.remove("modal-visible");
+    }
   });
 
   document.getElementById("mLiberacaoConfirmBtn")?.addEventListener("click", () => {
@@ -7384,7 +7430,7 @@ function bindEvents() {
       return;
     }
     liberarFormaManutencao(pendingManutencaoSelection.setor, pendingManutencaoSelection.formaNumero, obs);
-    document.getElementById("modalManutencaoLiberacao")?.classList.add("hidden");
+    modalLiberacao?.classList.remove("modal-visible");
     renderLiberacaoDual();
     setSyncStatus("ok", `Forma ${pendingManutencaoSelection.formaNumero} liberada da manutenção.`);
   });
