@@ -5957,6 +5957,10 @@ td.s4-forma-cell.is-manutencao::after {
     display: none !important;
   }
 
+  body.print-relatorio-manutencao #viewTratativaDefeitos {
+    display: none !important;
+  }
+
   body.print-relatorio-manutencao #viewRelatorioManutencao {
     display: block !important;
     width: 100% !important;
@@ -5984,7 +5988,8 @@ td.s4-forma-cell.is-manutencao::after {
   body.print-relatorio-defeitos .sidebar-overlay,
   body.print-relatorio-defeitos .mi-topbar-actions,
   body.print-relatorio-defeitos .rm-filtros,
-  body.print-relatorio-defeitos .mi-list-header {
+  body.print-relatorio-defeitos .mi-list-header,
+  body.print-relatorio-defeitos #viewRelatorioManutencao {
     display: none !important;
   }
 
