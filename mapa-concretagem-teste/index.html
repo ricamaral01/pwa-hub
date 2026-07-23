@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=modomanutencao-v115" />
+  <link rel="stylesheet" href="styles.css?v=modomanutencao-v116" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -827,6 +827,7 @@
           <p id="tdFiltroResumo">Gestão de Não Conformidades, Ações Corretivas e Responsáveis</p>
         </div>
         <div class="mi-topbar-actions">
+          <button id="tdBtnNovaOcorrencia" class="mi-icon-btn" type="button" style="background:#2563eb; color:#fff;">➕ Nova Ocorrência</button>
           <button id="tdBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" style="background:#d97706; color:#fff;">🖨️ Imprimir PDF Defeitos</button>
           <button class="mi-icon-btn" type="button" data-back-btn>Voltar</button>
         </div>
@@ -876,10 +877,14 @@
           <label>Responsável Designado
             <select id="tdFiltroResponsavel" class="kiosk-input">
               <option value="TODOS">Todos os responsáveis</option>
-              <option value="Osmar / José">Osmar / José</option>
-              <option value="Philippe / Ricardo">Philippe / Ricardo</option>
               <option value="Alex">Alex</option>
-              <option value="Ricardo / Alex">Ricardo / Alex</option>
+              <option value="José Carlos">José Carlos</option>
+              <option value="Osmar">Osmar</option>
+              <option value="Philippe">Philippe</option>
+              <option value="Ricardo">Ricardo</option>
+              <option value="Osmar / José Carlos">Osmar / José Carlos (Combinado)</option>
+              <option value="Philippe / Ricardo">Philippe / Ricardo (Combinado)</option>
+              <option value="Ricardo / Alex">Ricardo / Alex (Combinado)</option>
             </select>
           </label>
           <label>De
@@ -1409,7 +1414,18 @@
       </div>
       <div style="margin-bottom: 12px;">
         <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Responsável que Executou / Confirmou a Ação *</label>
-        <input id="mTratativaExecutadoPor" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: Osmar, José, Alex, Philippe, Ricardo..." />
+        <select id="mTratativaExecutadoPorSelect" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; font-weight: 600;">
+          <option value="Alex">Alex</option>
+          <option value="José Carlos">José Carlos</option>
+          <option value="Osmar">Osmar</option>
+          <option value="Philippe">Philippe</option>
+          <option value="Ricardo">Ricardo</option>
+          <option value="Osmar / José Carlos">Osmar / José Carlos (Combinado)</option>
+          <option value="Philippe / Ricardo">Philippe / Ricardo (Combinado)</option>
+          <option value="Ricardo / Alex">Ricardo / Alex (Combinado)</option>
+          <option value="OUTRO">Outro responsável...</option>
+        </select>
+        <input id="mTratativaExecutadoPor" type="text" class="input-field hidden" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; margin-top: 6px;" placeholder="Digite o nome do responsável..." />
       </div>
       <div style="margin-bottom: 18px;">
         <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Direcionamento e Ação Corretiva Realizada *</label>
@@ -1418,6 +1434,77 @@
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn btn-secondary" id="mTratativaCancelBtn">Cancelar</button>
         <button type="button" class="btn primary" id="mTratativaConfirmBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">Salvar Tratativa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Registrar Nova Ocorrência de Defeito -->
+  <div id="modalNovaOcorrenciaDefeito" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mNovaOcorrenciaTitle">
+    <div class="modal-box" style="max-width: 520px; text-align: left; border-top: 5px solid #2563eb;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">➕</span>
+        <div>
+          <h2 class="modal-title" id="mNovaOcorrenciaTitle" style="margin: 0; font-size: 1.25rem; color: #1e293b;">Registrar Ocorrência de Defeito</h2>
+          <div style="font-size: 0.85rem; color: #64748b;">Lançamento manual de não conformidade no poste</div>
+        </div>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+        <div>
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Setor *</label>
+          <select id="mNovaSetor" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;">
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
+            <option value="Setor 4">Setor 4</option>
+          </select>
+        </div>
+        <div>
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Nº da Forma / Poste *</label>
+          <input id="mNovaForma" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: 01, 05, P-10..." />
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+        <div>
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Data da Ocorrência *</label>
+          <input id="mNovaData" type="date" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" />
+        </div>
+        <div>
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Modelo do Poste</label>
+          <input id="mNovaModelo" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: DT 7,5/300, 2CX VL..." />
+        </div>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Código do Defeito *</label>
+        <select id="mNovaCodigoDefeito" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; font-weight: 700;">
+          <option value="A">A - Falha na Concretagem / Armação Aparente (Osmar / José Carlos)</option>
+          <option value="B">B - Cano Entupido (Osmar / José Carlos)</option>
+          <option value="C">C - Excesso de Bolhas (Philippe / Ricardo)</option>
+          <option value="D">D - Problema na Caixa do Relógio/Disjuntor (Alex)</option>
+          <option value="E">E - Furos Obstruídos ou Faltando (Osmar / José Carlos)</option>
+          <option value="F">F - Identificação do Poste / Carimbos (Osmar / José Carlos)</option>
+          <option value="G">G - Presença de Trincas Superficiais (Philippe / Ricardo)</option>
+          <option value="H">H - Bolha nas Caixas (Philippe / Ricardo)</option>
+          <option value="I">I - Trincas em Toda Extensão do Poste (Philippe / Ricardo)</option>
+          <option value="J">J - Pequenas Avarias (Ricardo / Alex)</option>
+          <option value="K">K - Manchas Brancas Superficiais (Philippe / Ricardo)</option>
+          <option value="L">L - Buchas das Caixas / Buchas EDP (Osmar / José Carlos)</option>
+          <option value="M">M - Parafuso Lacre da Caixa do Medidor (Osmar / José Carlos)</option>
+          <option value="O">O - Falha no Concreto / Segregado (Ricardo / Alex)</option>
+          <option value="P">P - Grandes Avarias (Ricardo / Alex)</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Observações da Inspeção</label>
+        <textarea id="mNovaObservacoes" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Detalhes adicionais observados na peça..."></textarea>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="mNovaCancelBtn">Cancelar</button>
+        <button type="button" class="btn primary" id="mNovaConfirmBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">Salvar Ocorrência</button>
       </div>
     </div>
   </div>
@@ -1431,6 +1518,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=modomanutencao-v115"></script>
+  <script src="app.js?v=modomanutencao-v116"></script>
 </body>
 </html>
