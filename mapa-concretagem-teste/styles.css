@@ -5834,6 +5834,16 @@ td.s4-forma-cell.is-manutencao::after {
   font-size: 0.72rem;
 }
 
+.rm-tabela-row {
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+.rm-tabela-row:hover {
+  background-color: #fef9c3 !important;
+}
+.rm-tabela-row.rm-row-parada:hover {
+  background-color: #fef08a !important;
+}
+
 .manutencao-kpi-panel {
   margin-top: 18px;
   padding: 14px;

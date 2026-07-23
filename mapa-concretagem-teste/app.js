@@ -2205,6 +2205,54 @@ function atualizarIndicadoresManutencaoHub() {
   });
 }
 
+function calcularDiasParada(paradaEmStr, liberadaEmStr, status) {
+  if (!paradaEmStr) return { dias: 0, label: "-" };
+  
+  let dateInicio = null;
+  if (paradaEmStr.includes("/")) {
+    const parts = paradaEmStr.split(",");
+    const dateParts = parts[0].trim().split("/");
+    if (dateParts.length === 3) {
+      dateInicio = new Date(`${dateParts[2]}-${dateParts[1].padStart(2, "0")}-${dateParts[0].padStart(2, "0")}`);
+    }
+  }
+  if (!dateInicio || isNaN(dateInicio.getTime())) {
+    dateInicio = new Date(paradaEmStr);
+  }
+  if (isNaN(dateInicio.getTime())) return { dias: 0, label: "-" };
+  
+  let dateFim = new Date();
+  if (status === "LIBERADA" && liberadaEmStr) {
+    let dateLib = null;
+    if (liberadaEmStr.includes("/")) {
+      const parts = liberadaEmStr.split(",");
+      const dateParts = parts[0].trim().split("/");
+      if (dateParts.length === 3) {
+        dateLib = new Date(`${dateParts[2]}-${dateParts[1].padStart(2, "0")}-${dateParts[0].padStart(2, "0")}`);
+      }
+    }
+    if (!dateLib || isNaN(dateLib.getTime())) {
+      dateLib = new Date(liberadaEmStr);
+    }
+    if (dateLib && !isNaN(dateLib.getTime())) {
+      dateFim = dateLib;
+    }
+  }
+  
+  const diffMs = Math.max(0, dateFim.getTime() - dateInicio.getTime());
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  
+  let label = "";
+  if (diffDays === 0) {
+    label = "Hoje (< 1 dia)";
+  } else if (diffDays === 1) {
+    label = "1 dia";
+  } else {
+    label = `${diffDays} dias`;
+  }
+  return { dias: diffDays, label };
+}
+
 function renderizarRelatorioManutencao() {
   const tbody = document.getElementById("rmTabelaBody");
   const totalEl = document.getElementById("rmTabelaTotal");
@@ -2220,7 +2268,7 @@ function renderizarRelatorioManutencao() {
   atualizarIndicadoresManutencaoHub();
   
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 20px; color:#64748b;">Nenhuma forma em manutenção registrada até o momento.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 20px; color:#64748b;">Nenhuma forma em manutenção registrada até o momento.</td></tr>`;
     return;
   }
   
@@ -2230,19 +2278,46 @@ function renderizarRelatorioManutencao() {
       ? `<span style="background:#fef3c7; color:#b45309; border:1px solid #f59e0b; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.75rem;">🛠️ PARADA</span>`
       : `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.75rem;">✅ LIBERADA</span>`;
       
+    const tempoInfo = calcularDiasParada(item.parada_em, item.liberada_em, item.status);
+    const tempoBadge = isParada
+      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:2px 8px; border-radius:12px; font-weight:800; font-size:0.75rem; white-space:nowrap;">⏱️ ${tempoInfo.label}</span>`
+      : `<span style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:12px; font-weight:700; font-size:0.75rem; white-space:nowrap;">✔️ ${tempoInfo.label}</span>`;
+      
+    const acaoBtn = isParada
+      ? `<button type="button" class="btn btn-sm btn-liberar-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#10b981; color:#fff; border:none; padding:4px 10px; font-size:0.75rem; font-weight:700; border-radius:6px; cursor:pointer;">🔓 Liberar</button>`
+      : `<button type="button" class="btn btn-sm btn-ver-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#e2e8f0; color:#334155; border:none; padding:4px 10px; font-size:0.75rem; font-weight:700; border-radius:6px; cursor:pointer;">🔍 Histórico</button>`;
+
     return `
-      <tr>
+      <tr class="rm-tabela-row ${isParada ? 'rm-row-parada' : 'rm-row-liberada'}" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="cursor:pointer;" title="Clique para ${isParada ? 'liberar esta forma' : 'ver histórico'}">
         <td style="text-align:center; font-weight:700;">${escapeHtml(item.setor || "-")}</td>
         <td style="text-align:center; font-weight:800; color:#1e293b;">${escapeHtml(item.forma_numero || "-")}</td>
         <td style="text-align:center;">${statusBadge}</td>
+        <td style="text-align:center;">${tempoBadge}</td>
         <td>${escapeHtml(item.motivo_parada || "-")}</td>
         <td>${escapeHtml(item.acao_necessaria || "-")}</td>
         <td style="font-size:0.8rem; color:#475569;">${escapeHtml(item.parada_em || "-")}<br><small style="color:#64748b;">por ${escapeHtml(item.parada_por || "-")}</small></td>
         <td style="font-size:0.8rem; color:#475569;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small style="color:#64748b;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
         <td>${escapeHtml(item.obs_liberacao || "-")}</td>
+        <td style="text-align:center;">${acaoBtn}</td>
       </tr>
     `;
   }).join("");
+
+  tbody.querySelectorAll(".rm-tabela-row").forEach(row => {
+    row.addEventListener("click", () => {
+      const setor = row.getAttribute("data-setor");
+      const formaNumero = row.getAttribute("data-forma");
+      if (!setor || !formaNumero) return;
+      
+      const allFormas = getFormasManutencao();
+      const manutencaoRec = allFormas[getManutencaoKey(setor, formaNumero)];
+      if (manutencaoRec && manutencaoRec.status === "PARADA") {
+        openModalLiberacao(setor, formaNumero, manutencaoRec);
+      } else if (manutencaoRec) {
+        alert(`Forma ${formaNumero} (${setor})\nStatus: LIBERADA em ${manutencaoRec.liberada_em || '-'}\nPor: ${manutencaoRec.liberada_por || '-'}\nObservação: ${manutencaoRec.obs_liberacao || '-'}`);
+      }
+    });
+  });
 }
 
 function updateKioskHeader() {
