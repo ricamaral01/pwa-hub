@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=modomanutencao-v118" />
+  <link rel="stylesheet" href="styles.css?v=modomanutencao-v119" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1507,6 +1507,83 @@
         <button type="button" class="btn primary" id="mNovaConfirmBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">Salvar Ocorrência</button>
       </div>
     </div>
+  <!-- Modal para Informar Defeito na Forma durante a Montagem -->
+  <div id="modalDefeitoFormaMontagem" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mDefeitoFormaTitle">
+    <div class="modal-box" style="max-width: 540px; text-align: left; border-top: 5px solid #d97706;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">🛠️</span>
+        <div>
+          <h2 class="modal-title" id="mDefeitoFormaTitle" style="margin: 0; font-size: 1.25rem; color: #1e293b;">Informar Defeito na Forma</h2>
+          <div style="font-size: 0.85rem; color: #64748b;" id="mDefeitoFormaSub">Aparência de avaria ou falha mecânica na estrutura da forma</div>
+        </div>
+      </div>
+      
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 12px;" id="mDefeitoFormaInfo">
+        <!-- Preenchido via JS: Setor e Forma -->
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Tipo de Defeito na Forma *</label>
+        <select id="mDefeitoFormaTipo" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; font-weight: 700;">
+          <option value="Amassado / Deformação no Fuste">Amassado / Deformação no Fuste</option>
+          <option value="Bucha Espanada / Danificada">Bucha Espanada / Danificada</option>
+          <option value="Trava Quebrada / Sem Pressão">Trava Quebrada / Sem Pressão</option>
+          <option value="Desalinhamento / Folga nas Juntas">Desalinhamento / Folga nas Juntas</option>
+          <option value="Vazamento de Nata de Concreto">Vazamento de Nata de Concreto</option>
+          <option value="Pino / Presilha Faltando ou Obstruído">Pino / Presilha Faltando ou Obstruído</option>
+          <option value="Outro Defeito Estrutural">Outro Defeito Estrutural</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Descrição Detalhada do Defeito *</label>
+        <textarea id="mDefeitoFormaDescricao" rows="3" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Descreva onde está localizado o defeito e a gravidade (ex: bucha da caixa VL do lado esquerdo com rosca espanada)..."></textarea>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Ação de Manutenção Solicitada</label>
+        <input id="mDefeitoFormaAcao" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: Substituir bucha, re-alinhar junta com solda, trocar trava..." />
+      </div>
+
+      <div style="margin-bottom: 16px; background: #fffbe0; border: 1px solid #fde047; padding: 10px; border-radius: 6px;">
+        <label style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.85rem; color: #854d0e; cursor: pointer;">
+          <input type="checkbox" id="mDefeitoFormaInativar" checked style="width: 18px; height: 18px; accent-color: #d97706;" />
+          Colocar forma em Manutenção imediatamente (impede nova concretagem)
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
+        <button type="button" class="btn" id="mDefeitoFormaVerRelatorioBtn" style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; font-weight: 700;">📄 Ver Relatório da Forma</button>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn-secondary" id="mDefeitoFormaCancelBtn">Cancelar</button>
+          <button type="button" class="btn primary" id="mDefeitoFormaConfirmBtn" style="background: #d97706; color: #fff; border: none; font-weight: 800;">🔴 Registrar Defeito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Exibir Relatório Detalhado de Defeito da Forma -->
+  <div id="modalRelatorioDefeitoForma" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mRelatorioDefeitoTitle">
+    <div class="modal-box" style="max-width: 560px; text-align: left; border-top: 5px solid #2563eb;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.8rem;">📋</span>
+          <div>
+            <h2 class="modal-title" id="mRelatorioDefeitoTitle" style="margin: 0; font-size: 1.2rem; color: #1e293b;">Relatório de Defeito da Forma</h2>
+            <div style="font-size: 0.85rem; color: #64748b;" id="mRelatorioDefeitoSub">Ficha de Manutenção e Diagnóstico</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="mRelatorioDefeitoCloseBtn" style="padding: 4px 10px;">✕ Fechar</button>
+      </div>
+
+      <div id="mRelatorioDefeitoBody" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 16px;">
+        <!-- Preenchido via JS com os detalhes do defeito, responsável, tempo parada, motivo e observações -->
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn primary" id="mRelatorioDefeitoIrManutencaoBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">🛠️ Ver Todas no Relatório de Manutenção</button>
+      </div>
+    </div>
   </div>
 
   <template id="tplItemRegistro">
@@ -1518,6 +1595,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=modomanutencao-v118"></script>
+  <script src="app.js?v=modomanutencao-v119"></script>
 </body>
 </html>
