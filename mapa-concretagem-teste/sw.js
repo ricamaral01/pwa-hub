@@ -3,7 +3,7 @@
    v1.11: remove caches antigos e desativa o SW no ambiente teste
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.16-reset";
+const CACHE_NAME = "mapa-concretagem-teste-v1.17-reset";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());

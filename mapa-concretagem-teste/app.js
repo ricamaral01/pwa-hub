@@ -2580,16 +2580,16 @@ function renderizarRelatorioTratativaDefeitos() {
   tbody.innerHTML = list.map(item => {
     const isCritico = item.classificacao === "CRÍTICO";
     const gravBadge = isCritico
-      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:3px 8px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🔴 CRÍTICO</span>`
-      : `<span style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; padding:3px 8px; border-radius:6px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🟡 NÃO CRÍTICO</span>`;
+      ? `<span class="td-badge td-badge-critico" style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🔴 CRÍTICO</span>`
+      : `<span class="td-badge td-badge-nao-critico" style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🟡 NÃO CRÍTICO</span>`;
 
     let statusBadge = "";
     if (item.status_tratativa === "CONCLUIDO") {
-      statusBadge = `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:3px 8px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✅ CONCLUÍDO</span>`;
+      statusBadge = `<span class="td-badge td-badge-concluido" style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">✅ CONCLUÍDO</span>`;
     } else if (item.status_tratativa === "EM_ANDAMENTO") {
-      statusBadge = `<span style="background:#dbeafe; color:#1e40af; border:1px solid #3b82f6; padding:3px 8px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🔄 EM ANDAMENTO</span>`;
+      statusBadge = `<span class="td-badge td-badge-andamento" style="background:#dbeafe; color:#1e40af; border:1px solid #3b82f6; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🔄 EM ANDAMENTO</span>`;
     } else {
-      statusBadge = `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:3px 8px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">⏳ PENDENTE</span>`;
+      statusBadge = `<span class="td-badge td-badge-pendente" style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">⏳ PENDENTE</span>`;
     }
 
     return `

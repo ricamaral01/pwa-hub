@@ -6026,4 +6026,29 @@ td.s4-forma-cell.is-manutencao::after {
   }
 }
 
+/* Regras de largura e contenção para a Tabela de Tratativa de Defeitos */
+.print-defeitos-table th:nth-child(5),
+.print-defeitos-table td:nth-child(5) {
+  min-width: 130px;
+  width: 130px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.print-defeitos-table th:nth-child(9),
+.print-defeitos-table td:nth-child(9) {
+  min-width: 140px;
+  width: 140px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.td-badge {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 
