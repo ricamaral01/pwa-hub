@@ -862,6 +862,8 @@ const el = {
   viewRelatorioManutencao: document.getElementById("viewRelatorioManutencao"),
   hubTratativaDefeitos: document.getElementById("hubTratativaDefeitos"),
   viewTratativaDefeitos: document.getElementById("viewTratativaDefeitos"),
+  hubFormasComDefeito: document.getElementById("hubFormasComDefeito"),
+  viewFormasComDefeito: document.getElementById("viewFormasComDefeito"),
   kioskManutencaoCheckbox: document.getElementById("kioskManutencaoCheckbox"),
   kioskManutencaoToggleField: document.getElementById("kioskManutencaoToggleField"),
   hubAcmpConcretagem: document.getElementById("hubAcmpConcretagem"),
@@ -2232,6 +2234,14 @@ function openModalDefeitoForma(setor, formaNumero) {
   document.getElementById("modalDefeitoFormaMontagem")?.classList.add("modal-visible");
 }
 
+window.abrirModalDefeitoForma = function(setor, formaNumero) {
+  openModalDefeitoForma(setor, formaNumero);
+};
+
+window.abrirModalRelatorioDefeitoForma = function(setor, formaNumero) {
+  openModalRelatorioDefeitoForma(setor, formaNumero);
+};
+
 function openModalRelatorioDefeitoForma(setor, formaNumero) {
   const bodyEl = document.getElementById("mRelatorioDefeitoBody");
   const titleEl = document.getElementById("mRelatorioDefeitoTitle");
@@ -2381,6 +2391,84 @@ function calcularDiasParada(paradaEmStr, liberadaEmStr, status) {
     label = `${diffDays} dias`;
   }
   return { dias: diffDays, label };
+}
+
+function renderizarFormasComDefeito() {
+  const tbody = document.getElementById("fdTabelaBody");
+  const totalEl = document.getElementById("fdTabelaTotal");
+  const kTotal = document.getElementById("fdKpiTotal");
+  const kParadas = document.getElementById("fdKpiParadas");
+  const kLiberadas = document.getElementById("fdKpiLiberadas");
+  const mpBadge = document.getElementById("mpBadgeFormasDefeito");
+  if (!tbody) return;
+
+  const allFormas = getFormasManutencao() || {};
+  let list = Object.values(allFormas).filter(item => Boolean(item.motivo_parada || item.status === "PARADA"));
+
+  // Filtros da interface
+  const fStatus = document.getElementById("fdFiltroStatus")?.value || "TODOS";
+  const fSetor = document.getElementById("fdFiltroSetor")?.value || "TODOS";
+  const fPesquisa = (document.getElementById("fdFiltroPesquisa")?.value || "").trim().toLowerCase();
+
+  const totalApontadas = list.length;
+  const paradasCount = list.filter(i => i.status === "PARADA").length;
+  const liberadasCount = list.filter(i => i.status === "LIBERADA").length;
+
+  if (mpBadge) mpBadge.textContent = paradasCount;
+  if (kTotal) kTotal.textContent = totalApontadas;
+  if (kParadas) kParadas.textContent = paradasCount;
+  if (kLiberadas) kLiberadas.textContent = liberadasCount;
+
+  list = list.filter(item => {
+    if (fStatus !== "TODOS" && item.status !== fStatus) return false;
+    if (fSetor !== "TODOS" && item.setor !== fSetor) return false;
+    if (fPesquisa) {
+      const matchForma = String(item.forma_numero || "").toLowerCase().includes(fPesquisa);
+      const matchMotivo = String(item.motivo_parada || "").toLowerCase().includes(fPesquisa);
+      const matchAcao = String(item.acao_necessaria || "").toLowerCase().includes(fPesquisa);
+      if (!matchForma && !matchMotivo && !matchAcao) return false;
+    }
+    return true;
+  });
+
+  list.sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
+
+  if (totalEl) totalEl.textContent = list.length;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#64748b;">Nenhuma forma com defeito encontrada para os filtros selecionados.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(item => {
+    const isParada = item.status === "PARADA";
+    const statusBadge = isParada
+      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🛠️ EM MANUTENÇÃO</span>`
+      : `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✅ LIBERADA</span>`;
+
+    const tempoInfo = calcularDiasParada(item.parada_em, item.liberada_em, item.status);
+    const tempoBadge = isParada
+      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 10px; border-radius:12px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">⏱️ ${tempoInfo.label}</span>`
+      : `<span style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:4px 10px; border-radius:12px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✔️ ${tempoInfo.label}</span>`;
+
+    const acaoBtn = isParada
+      ? `<button type="button" class="btn btn-sm" onclick="event.stopPropagation(); openModalLiberacao('${escapeHtml(item.setor)}', '${escapeHtml(item.forma_numero)}', getFormasManutencao()['${getManutencaoKey(item.setor, item.forma_numero)}'])" style="background:#10b981; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; box-shadow:0 2px 4px rgba(16,185,129,0.25); white-space:nowrap;">🔓 Liberar</button>`
+      : `<button type="button" class="btn btn-sm" onclick="event.stopPropagation(); openModalRelatorioDefeitoForma('${escapeHtml(item.setor)}', '${escapeHtml(item.forma_numero)}')" style="background:#2563eb; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; white-space:nowrap;">🔍 Ver Ficha</button>`;
+
+    return `
+      <tr class="fd-tabela-row" onclick="openModalRelatorioDefeitoForma('${escapeHtml(item.setor)}', '${escapeHtml(item.forma_numero)}')" style="cursor:pointer;" title="Clique para ver a ficha completa de defeito da forma">
+        <td style="text-align:center; font-weight:700; color:#334155;">${escapeHtml(item.setor || "-")}</td>
+        <td style="text-align:center; font-weight:900; color:#0f172a; font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
+        <td style="text-align:center; vertical-align:middle;">${statusBadge}</td>
+        <td style="text-align:center; vertical-align:middle;">${tempoBadge}</td>
+        <td style="font-size:0.85rem; color:#1e293b; font-weight:600;">${escapeHtml(item.motivo_parada || "-")}</td>
+        <td style="font-size:0.85rem; color:#334155;">${escapeHtml(item.acao_necessaria || "-")}</td>
+        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${escapeHtml(item.parada_em || "-")}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.parada_por || "-")}</small></td>
+        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
+        <td style="text-align:center; vertical-align:middle;">${acaoBtn}</td>
+      </tr>
+    `;
+  }).join("");
 }
 
 function renderizarRelatorioManutencao() {
@@ -7372,7 +7460,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao, el.viewTratativaDefeitos]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao, el.viewTratativaDefeitos, el.viewFormasComDefeito]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -7454,10 +7542,15 @@ function setMode(mode) {
     if (el.viewTratativaDefeitos) el.viewTratativaDefeitos.classList.remove("hidden");
     renderizarRelatorioTratativaDefeitos();
   }
+  if (mode === "FORMAS_COM_DEFEITO") {
+    if (el.viewFormasComDefeito) el.viewFormasComDefeito.classList.remove("hidden");
+    renderizarFormasComDefeito();
+  }
 
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos", "mode-formas-com-defeito");
   if (mode === "RELATORIO_MANUTENCAO") document.body.classList.add("mode-relatorio-manutencao");
   if (mode === "TRATATIVA_DEFEITOS") document.body.classList.add("mode-tratativa-defeitos");
+  if (mode === "FORMAS_COM_DEFEITO") document.body.classList.add("mode-formas-com-defeito");
   if (mode === "HUB") {
     document.body.classList.add("mode-hub");
     applyAutoResponsibleFields();
@@ -8447,6 +8540,31 @@ function bindEvents() {
   if (el.mpCarregarLiberados) el.mpCarregarLiberados.addEventListener("click", renderMontagemPostesLiberados);
   if (el.mpFormaFiltro) el.mpFormaFiltro.addEventListener("input", filtrarMontagemTabela);
 
+  document.getElementById("mpBtnIrFormasDefeito")?.addEventListener("click", () => {
+    setMode("FORMAS_COM_DEFEITO");
+  });
+  document.getElementById("fdBtnIrMontagem")?.addEventListener("click", () => {
+    setMode("MONTAGEM_POSTES");
+  });
+  document.getElementById("hubFormasComDefeito")?.addEventListener("click", () => {
+    setMode("FORMAS_COM_DEFEITO");
+  });
+
+  ["fdFiltroStatus", "fdFiltroSetor", "fdFiltroPesquisa"].forEach(id => {
+    document.getElementById(id)?.addEventListener("change", renderizarFormasComDefeito);
+    document.getElementById(id)?.addEventListener("input", renderizarFormasComDefeito);
+  });
+
+  document.getElementById("fdBtnLimparFiltros")?.addEventListener("click", () => {
+    const fStatus = document.getElementById("fdFiltroStatus");
+    const fSetor = document.getElementById("fdFiltroSetor");
+    const fPesquisa = document.getElementById("fdFiltroPesquisa");
+    if (fStatus) fStatus.value = "TODOS";
+    if (fSetor) fSetor.value = "TODOS";
+    if (fPesquisa) fPesquisa.value = "";
+    renderizarFormasComDefeito();
+  });
+
   if (el.mpLiberadosBody) {
     el.mpLiberadosBody.addEventListener("click", async (event) => {
       const target = event.target;
@@ -8528,6 +8646,8 @@ function bindEvents() {
     document.getElementById("modalDefeitoFormaMontagem")?.classList.remove("modal-visible");
     setSyncStatus("ok", `Defeito registrado na Forma ${formaNumero} (${setor}). Forma em manutenção!`);
     
+    renderizarFormasComDefeito();
+
     // Abre automaticamente o relatório detalhado do defeito registrado
     openModalRelatorioDefeitoForma(setor, formaNumero);
   });
