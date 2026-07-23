@@ -5978,6 +5978,52 @@ td.s4-forma-cell.is-manutencao::after {
     border: 1px solid #cbd5e1 !important;
     padding: 4px 6px !important;
   }
+
+  /* Impressão do Relatório de Tratativa de Defeitos */
+  body.print-relatorio-defeitos #appSidebar,
+  body.print-relatorio-defeitos .sidebar-overlay,
+  body.print-relatorio-defeitos .mi-topbar-actions,
+  body.print-relatorio-defeitos .rm-filtros,
+  body.print-relatorio-defeitos .mi-list-header {
+    display: none !important;
+  }
+
+  body.print-relatorio-defeitos #viewTratativaDefeitos {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  body.print-relatorio-defeitos table {
+    width: 100% !important;
+    font-size: 8pt !important;
+    border-collapse: collapse !important;
+  }
+
+  body.print-relatorio-defeitos th,
+  body.print-relatorio-defeitos td {
+    border: 1px solid #64748b !important;
+    padding: 5px 6px !important;
+  }
+
+  body.print-relatorio-defeitos th:last-child,
+  body.print-relatorio-defeitos td:last-child {
+    display: none !important;
+  }
+
+  body.print-relatorio-defeitos::after {
+    content: "\A\A ______________________________________                      ______________________________________\A Assinatura do Responsável de Qualidade                                  Assinatura do Encarregado da Fábrica";
+    white-space: pre-wrap;
+    display: block;
+    margin-top: 35px;
+    font-size: 8.5pt;
+    font-weight: bold;
+    color: #334155;
+  }
 }
 
 

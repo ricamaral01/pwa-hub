@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=modomanutencao-v114" />
+  <link rel="stylesheet" href="styles.css?v=modomanutencao-v115" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -155,6 +155,10 @@
         <span class="nav-icon-wrap" style="background:#f1c40f; color:#1e293b;">🛠️</span>
         Manutenção Formas
       </button>
+      <button class="nav-item" id="hubTratativaDefeitos" type="button">
+        <span class="nav-icon-wrap" style="background:#e11d48; color:#ffffff;">📋</span>
+        Tratativa Defeitos
+      </button>
       <button class="nav-item hidden" id="navUsuarios" type="button">
         <span class="nav-icon-wrap">👤</span>
         Usuários
@@ -265,6 +269,10 @@
             <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO_MANUTENCAO">
               <div class="hub-icon-circle" style="background:#f1c40f; color:#1e293b;">🛠️</div>
               <span class="hub-icon-lbl">Manutenção Formas</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="TRATATIVA_DEFEITOS">
+              <div class="hub-icon-circle" style="background:#e11d48; color:#ffffff;">📋</div>
+              <span class="hub-icon-lbl">Tratativa de Defeitos</span>
             </button>
             <button class="hub-icon-btn hidden" type="button" data-hub-mode="USUARIOS">
               <div class="hub-icon-circle" style="background:#4f46e5">👤</div>
@@ -811,6 +819,107 @@
       </div>
     </section>
 
+    <!-- Relatório de Defeitos e Tratativa de Qualidade -->
+    <section id="viewTratativaDefeitos" class="card hidden">
+      <div class="mi-topbar">
+        <div>
+          <h2>📋 Relatório de Defeitos & Tratativa de Qualidade</h2>
+          <p id="tdFiltroResumo">Gestão de Não Conformidades, Ações Corretivas e Responsáveis</p>
+        </div>
+        <div class="mi-topbar-actions">
+          <button id="tdBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" style="background:#d97706; color:#fff;">🖨️ Imprimir PDF Defeitos</button>
+          <button class="mi-icon-btn" type="button" data-back-btn>Voltar</button>
+        </div>
+      </div>
+
+      <!-- Resumo KPI de Defeitos -->
+      <div class="manutencao-kpi-panel" style="margin-top:0; margin-bottom:16px; background:#f8fafc; border-color:#e2e8f0;">
+        <div class="manutencao-kpi-title" style="color:#1e293b;">Resumo de Ocorrências e Tratativas de Qualidade</div>
+        <div class="manutencao-kpi-grid">
+          <div class="manutencao-kpi-card" style="border-color:#cbd5e1;"><span>Total Ocorrências</span><strong id="tdKpiTotal" style="color:#1e293b;">0</strong></div>
+          <div class="manutencao-kpi-card" style="border-color:#fca5a5;"><span>Pendentes</span><strong id="tdKpiPendentes" style="color:#dc2626;">0</strong></div>
+          <div class="manutencao-kpi-card" style="border-color:#6ee7b7;"><span>Concluídos</span><strong id="tdKpiConcluidos" style="color:#059669;">0</strong></div>
+          <div class="manutencao-kpi-card" style="border-color:#fde047;"><span>Críticos (Reprovações)</span><strong id="tdKpiCriticos" style="color:#d97706;">0</strong></div>
+        </div>
+      </div>
+
+      <div class="mi-listagem-wrap">
+        <div class="rm-filtros">
+          <label>Status Tratativa
+            <select id="tdFiltroStatus" class="kiosk-input">
+              <option value="TODOS">Todos os status</option>
+              <option value="PENDENTE">⏳ Pendentes</option>
+              <option value="EM_ANDAMENTO">🔄 Em Andamento</option>
+              <option value="CONCLUIDO">✅ Concluídos</option>
+            </select>
+          </label>
+          <label>Código Defeito
+            <select id="tdFiltroCodigo" class="kiosk-input">
+              <option value="TODOS">Todos os códigos (A-P)</option>
+              <option value="A">A - Falha na Concretagem / Armação Aparente</option>
+              <option value="B">B - Cano Entupido</option>
+              <option value="C">C - Excesso de Bolhas</option>
+              <option value="D">D - Problema na Caixa do Relógio/Disjuntor</option>
+              <option value="E">E - Furos Obstruídos ou Faltando</option>
+              <option value="F">F - Identificação do Poste (Carimbos)</option>
+              <option value="G">G - Presença de Trincas Superficiais</option>
+              <option value="H">H - Bolha nas Caixas</option>
+              <option value="I">I - Trincas em Toda Extensão do Poste</option>
+              <option value="J">J - Pequenas Avarias</option>
+              <option value="K">K - Manchas Brancas Superficiais</option>
+              <option value="L">L - Buchas das Caixas / Buchas EDP</option>
+              <option value="M">M - Parafuso Lacre da Caixa do Medidor</option>
+              <option value="O">O - Falha no Concreto (Segregado)</option>
+              <option value="P">P - Grandes Avarias</option>
+            </select>
+          </label>
+          <label>Responsável Designado
+            <select id="tdFiltroResponsavel" class="kiosk-input">
+              <option value="TODOS">Todos os responsáveis</option>
+              <option value="Osmar / José">Osmar / José</option>
+              <option value="Philippe / Ricardo">Philippe / Ricardo</option>
+              <option value="Alex">Alex</option>
+              <option value="Ricardo / Alex">Ricardo / Alex</option>
+            </select>
+          </label>
+          <label>De
+            <input id="tdFiltroDataInicio" class="kiosk-input" type="date" />
+          </label>
+          <label>Até
+            <input id="tdFiltroDataFim" class="kiosk-input" type="date" />
+          </label>
+          <button id="tdBtnLimparFiltros" class="mi-icon-btn" type="button">Limpar filtros</button>
+        </div>
+
+        <div class="mi-list-header">
+          <h3>Ocorrências de Defeitos e Tratativas</h3>
+          <span>Total: <span id="tdTabelaTotal">0</span> registros</span>
+        </div>
+
+        <div class="mi-table-responsive">
+          <table class="sheet-table mi-table print-relatorio-table print-defeitos-table">
+            <thead>
+              <tr>
+                <th style="width: 80px; text-align: center;">Data</th>
+                <th style="width: 75px; text-align: center;">Setor</th>
+                <th style="width: 85px; text-align: center;">Forma</th>
+                <th style="width: 140px; text-align: center;">Código / Defeito</th>
+                <th style="width: 110px; text-align: center;">Gravidade</th>
+                <th style="width: 130px;">Responsável Designado</th>
+                <th style="min-width: 170px;">Ação Corretiva Recomendada</th>
+                <th style="min-width: 190px;">Direcionamento / Ação Executada</th>
+                <th style="width: 115px; text-align: center;">Status</th>
+                <th style="width: 100px; text-align: center;">Ação</th>
+              </tr>
+            </thead>
+            <tbody id="tdTabelaBody">
+              <tr><td colspan="10">Carregando relatório de tratativas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <!-- Dashboard Montagem -->
     <section id="viewMontagemIndicadores" class="card hidden">
       <div class="mi-topbar">
@@ -1277,6 +1386,42 @@
     </div>
   </div>
 
+  <!-- Modal de Tratativa / Direcionamento de Defeito -->
+  <div id="modalTratativaDefeito" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mTratativaTitle">
+    <div class="modal-box" style="max-width: 540px; text-align: left; border-top: 5px solid #2563eb;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">📋</span>
+        <div>
+          <h2 class="modal-title" id="mTratativaTitle" style="margin: 0; font-size: 1.25rem; color: #1e293b;">Tratativa de Defeito</h2>
+          <div style="font-size: 0.85rem; color: #64748b;" id="mTratativaSub">Registrar direcionamento e ação corretiva realizada</div>
+        </div>
+      </div>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; font-size: 0.84rem; margin-bottom: 14px;" id="mTratativaInfo">
+        <!-- Preenchido via JS -->
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Status da Tratativa *</label>
+        <select id="mTratativaStatus" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: 700; min-height: 42px;">
+          <option value="PENDENTE">⏳ PENDENTE - Aguardando ação</option>
+          <option value="EM_ANDAMENTO">🔄 EM ANDAMENTO - Em reparo / execução</option>
+          <option value="CONCLUIDO">✅ CONCLUÍDO - Ação corretiva finalizada</option>
+        </select>
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Responsável que Executou / Confirmou a Ação *</label>
+        <input id="mTratativaExecutadoPor" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: Osmar, José, Alex, Philippe, Ricardo..." />
+      </div>
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Direcionamento e Ação Corretiva Realizada *</label>
+        <textarea id="mTratativaAcaoRealizada" rows="3" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Descreva detalhadamente o direcionamento ou a solução aplicada (ex: estucagem concluída, furação desobstruída com martelete, poste encaminhado ao refugo...)"></textarea>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="mTratativaCancelBtn">Cancelar</button>
+        <button type="button" class="btn primary" id="mTratativaConfirmBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">Salvar Tratativa</button>
+      </div>
+    </div>
+  </div>
+
   <template id="tplItemRegistro">
     <article class="item">
       <div class="item-main"></div>
@@ -1286,6 +1431,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=modomanutencao-v114"></script>
+  <script src="app.js?v=modomanutencao-v115"></script>
 </body>
 </html>

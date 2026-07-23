@@ -7,19 +7,19 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3", "RELATORIO_MANUTENCAO"]
+    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   APONTADOR: {
     label: "Apontador",
-    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO"]
+    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   }
 };
 
@@ -218,6 +218,37 @@ const CHECKLIST_INSPECAO_CODIGOS = [
   { codigo: "R", descricao: "Rugosidade" },
   { codigo: "S", descricao: "Acabamento quinas" }
 ];
+
+const MATRIZ_DEFEITOS_RESPONSAVEIS = {
+  A: { codigo: "A", descricao: "Falha na Concretagem / Armação Aparente", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Ferragem exposta sem cobrimento mínimo de concreto ou ninhos de abelha no fuste.", acao: "Refugo / Descarte Imediato (Compromete Durabilidade e Estrutura)", responsavel: "Osmar / José" },
+  B: { codigo: "B", descricao: "Cano Entupido", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Eletroduto/tubulação interna de passagem de cabos totalmente obstruída por concreto.", acao: "Refugo / Descarte (Poste Inutilizado para Rede Elétrica)", responsavel: "Osmar / José" },
+  C: { codigo: "C", descricao: "Excesso de Bolhas", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Presença de bolhas de ar superficiais fora do padrão estético no fuste.", acao: "Encaminhar para Acabamento / Estucagem Superficial", responsavel: "Philippe / Ricardo" },
+  D: { codigo: "D", descricao: "Problema na Caixa do Relógio ou Disjuntor", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Desalinhamento, quebra parcial ou avaria nos nichos das caixas de medição.", acao: "Retrabalho de Ajuste e Reparo na Caixa", responsavel: "Alex" },
+  E: { codigo: "E", descricao: "Furos Obstruídos ou Faltando (Facão / Pinos)", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Furação de fixação de isoladores ou facão do topo obstruídos por concreto.", acao: "Tentativa de Desobstrução / Se Inviável, Reprovação", responsavel: "Osmar / José" },
+  F: { codigo: "F", descricao: "Identificação do Poste (Carimbos)", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Carimbo de identificação ilegível ou marcação incorreta de esforço/comprimento.", acao: "Re-carimbagem e Correção de Identificação", responsavel: "Osmar / José" },
+  G: { codigo: "G", descricao: "Presença de Trincas Superficiais", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Fissuras superficiais capilares decorrentes de tensão na desforma.", acao: "Calafetagem Superficial e Monitoramento", responsavel: "Philippe / Ricardo" },
+  H: { codigo: "H", descricao: "Bolha nas Caixas", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Acúmulo de bolhas de ar nos contornos internos/externos dos nichos.", acao: "Estucagem e Acabamento Manuais", responsavel: "Philippe / Ricardo" },
+  I: { codigo: "I", descricao: "Trincas em Toda a Extensão do Poste", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Trinca estrutural transversal ou longitudinal contínua ao longo do fuste.", acao: "Refugo Imediato (Perda de Capacidade Mecânica)", responsavel: "Philippe / Ricardo" },
+  J: { codigo: "J", descricao: "Pequenas Avarias", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Lascas superficiais de pequena dimensão ou rebarbas de desforma.", acao: "Acabamento e Reparo com Argamassa Estrutural", responsavel: "Ricardo / Alex" },
+  K: { codigo: "K", descricao: "Manchas Brancas Superficiais", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Eflorescência salina ou manchas de nata de cimento na superfície.", acao: "Limpeza Química / Escovação da Superfície", responsavel: "Philippe / Ricardo" },
+  L: { codigo: "L", descricao: "Buchas das Caixas / Buchas EDP", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Buchas de fixação desalinhadas ou obstruídas com nata de concreto.", acao: "Limpeza das Roscas / Re-macho de Rosca", responsavel: "Osmar / José" },
+  M: { codigo: "M", descricao: "Parafuso Lacre da Caixa do Medidor", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Prisioneiros de lacre ou aterramento cobertos de nata.", acao: "Limpeza dos Prisioneiros e Roscas", responsavel: "Osmar / José" },
+  O: { codigo: "O", descricao: "Falha no Concreto (Concreto Segregado)", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Segregação entre brita e argamassa ou falta de homogeneidade do concreto.", acao: "Refugo Imediato (Falta de Resistência Mecânica)", responsavel: "Ricardo / Alex" },
+  P: { codigo: "P", descricao: "Grandes Avarias", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Fraturas, quebras de quinas extensas ou avarias de transporte interno.", acao: "Refugo / Sucata (Dano Estrutural Irreversível)", responsavel: "Ricardo / Alex" }
+};
+
+function getDefeitoInfo(codigo) {
+  const c = String(codigo || "").trim().toUpperCase();
+  return MATRIZ_DEFEITOS_RESPONSAVEIS[c] || {
+    codigo: c || "-",
+    descricao: "Não especificado",
+    classificacao: "NÃO CRÍTICO",
+    status: "Retrabalho (RR)",
+    detalhamento: "Não conformidade técnica registrada.",
+    acao: "Análise técnica de qualidade",
+    responsavel: "Equipe de Qualidade"
+  };
+}
 
 const POSTES_DUPLO_T_CATALOGO = [
   { codigo: "C", descricao: "Padrao Completo 2 cx VR", setor: "Setor 2", codigoProduto: "943", chaves: ["C"] },
@@ -826,6 +857,8 @@ const el = {
   viewHistorico: document.getElementById("viewHistorico"),
   hubRelatorioManutencao: document.getElementById("hubRelatorioManutencao"),
   viewRelatorioManutencao: document.getElementById("viewRelatorioManutencao"),
+  hubTratativaDefeitos: document.getElementById("hubTratativaDefeitos"),
+  viewTratativaDefeitos: document.getElementById("viewTratativaDefeitos"),
   kioskManutencaoCheckbox: document.getElementById("kioskManutencaoCheckbox"),
   kioskManutencaoToggleField: document.getElementById("kioskManutencaoToggleField"),
   hubAcmpConcretagem: document.getElementById("hubAcmpConcretagem"),
@@ -2318,6 +2351,211 @@ function renderizarRelatorioManutencao() {
       }
     });
   });
+}
+
+/* =========================================================
+   RELATÓRIO DE DEFEITOS & TRATATIVA DE QUALIDADE (A-P)
+   ========================================================= */
+const TRATATIVA_DEFEITOS_KEY = "mapa_tratativa_defeitos_v1";
+let pendingTratativaSelection = null;
+
+function getTratativaDefeitos() {
+  try {
+    const raw = localStorage.getItem(TRATATIVA_DEFEITOS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function salvarTratativaDefeitosObj(obj) {
+  try {
+    localStorage.setItem(TRATATIVA_DEFEITOS_KEY, JSON.stringify(obj));
+  } catch (e) {
+    console.error("Erro ao salvar tratativa de defeitos:", e);
+  }
+}
+
+function salvarTratativaDefeitoRegistro(record) {
+  const all = getTratativaDefeitos();
+  const id = record.id || `INC_${record.data_fabricacao || todayYmd()}_${record.setor}_${record.forma_numero}_${record.codigo_defeito}`;
+  record.id = id;
+  record.updated_at = new Date().toISOString();
+  all[id] = record;
+  salvarTratativaDefeitosObj(all);
+  return record;
+}
+
+function renderizarRelatorioTratativaDefeitos() {
+  const tbody = document.getElementById("tdTabelaBody");
+  const totalEl = document.getElementById("tdTabelaTotal");
+  if (!tbody) return;
+
+  const savedTratativas = getTratativaDefeitos();
+  const dbData = readDb() || [];
+
+  const listaOcorrenciasMap = {};
+
+  // 1. Mapear ocorrências dos registros de inspeção/montagem do sistema
+  (dbData || []).forEach(row => {
+    const statusStr = String(row.statusMontagem || row.status_montagem || row.status || "").toUpperCase();
+    const isDefeito = statusStr === "REPROVADO" || statusStr === "RETRABALHO" || statusStr === "R" || statusStr === "RR" || Boolean(row.motivoRecusa || row.motivo_recusa);
+    if (!isDefeito) return;
+
+    const codigo = String(row.motivoRecusa || row.motivo_recusa || row.codigoDefeito || "A").trim().toUpperCase();
+    const dataProd = row.dataFabricacao || row.data_fabricacao || todayYmd();
+    const setor = row.setor || "Geral";
+    const forma = row.formaNumero || row.forma_numero || row.forma || "-";
+    const idKey = `INC_${dataProd}_${setor}_${forma}_${codigo}`;
+
+    const infoDefeito = getDefeitoInfo(codigo);
+    const tratativaSalva = savedTratativas[idKey] || {};
+
+    listaOcorrenciasMap[idKey] = {
+      id: idKey,
+      data_fabricacao: dataProd,
+      setor: setor,
+      forma_numero: forma,
+      modelo: row.modelo || "-",
+      codigo_defeito: codigo,
+      descricao_defeito: infoDefeito.descricao,
+      classificacao: infoDefeito.classificacao,
+      responsavel_designado: infoDefeito.responsavel,
+      acao_recomendada: infoDefeito.acao,
+      status_tratativa: tratativaSalva.status_tratativa || "PENDENTE",
+      executado_por: tratativaSalva.executado_por || "",
+      acao_realizada: tratativaSalva.acao_realizada || "",
+      tratado_em: tratativaSalva.tratado_em || "",
+      observacoes_origem: row.observacoesMontagem || row.observacoes || "",
+      updated_at: tratativaSalva.updated_at || row.updated_at || new Date().toISOString()
+    };
+  });
+
+  // 2. Mapear tratativas manuais salvas diretamente
+  Object.values(savedTratativas).forEach(item => {
+    if (!listaOcorrenciasMap[item.id]) {
+      const infoDefeito = getDefeitoInfo(item.codigo_defeito);
+      listaOcorrenciasMap[item.id] = {
+        ...item,
+        descricao_defeito: item.descricao_defeito || infoDefeito.descricao,
+        classificacao: item.classificacao || infoDefeito.classificacao,
+        responsavel_designado: item.responsavel_designado || infoDefeito.responsavel,
+        acao_recomendada: item.acao_recomendada || infoDefeito.acao
+      };
+    }
+  });
+
+  let list = Object.values(listaOcorrenciasMap);
+
+  // Aplicar filtros da interface
+  const fStatus = document.getElementById("tdFiltroStatus")?.value || "TODOS";
+  const fCodigo = document.getElementById("tdFiltroCodigo")?.value || "TODOS";
+  const fResp = document.getElementById("tdFiltroResponsavel")?.value || "TODOS";
+  const fInicio = document.getElementById("tdFiltroDataInicio")?.value || "";
+  const fFim = document.getElementById("tdFiltroDataFim")?.value || "";
+
+  list = list.filter(item => {
+    if (fStatus !== "TODOS" && item.status_tratativa !== fStatus) return false;
+    if (fCodigo !== "TODOS" && item.codigo_defeito !== fCodigo) return false;
+    if (fResp !== "TODOS" && item.responsavel_designado !== fResp) return false;
+    if (fInicio && item.data_fabricacao < fInicio) return false;
+    if (fFim && item.data_fabricacao > fFim) return false;
+    return true;
+  });
+
+  list.sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
+
+  // KPIs
+  const total = list.length;
+  const pendentes = list.filter(i => i.status_tratativa === "PENDENTE").length;
+  const concluidos = list.filter(i => i.status_tratativa === "CONCLUIDO").length;
+  const criticos = list.filter(i => i.classificacao === "CRÍTICO").length;
+
+  if (totalEl) totalEl.textContent = total;
+  const kTotal = document.getElementById("tdKpiTotal");
+  const kPen = document.getElementById("tdKpiPendentes");
+  const kConc = document.getElementById("tdKpiConcluidos");
+  const kCrit = document.getElementById("tdKpiCriticos");
+  if (kTotal) kTotal.textContent = total;
+  if (kPen) kPen.textContent = pendentes;
+  if (kConc) kConc.textContent = concluidos;
+  if (kCrit) kCrit.textContent = criticos;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#64748b;">Nenhuma ocorrência ou tratativa de defeito encontrada para os filtros selecionados.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(item => {
+    const isCritico = item.classificacao === "CRÍTICO";
+    const gravBadge = isCritico
+      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:3px 8px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🔴 CRÍTICO</span>`
+      : `<span style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; padding:3px 8px; border-radius:6px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🟡 NÃO CRÍTICO</span>`;
+
+    let statusBadge = "";
+    if (item.status_tratativa === "CONCLUIDO") {
+      statusBadge = `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:3px 8px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✅ CONCLUÍDO</span>`;
+    } else if (item.status_tratativa === "EM_ANDAMENTO") {
+      statusBadge = `<span style="background:#dbeafe; color:#1e40af; border:1px solid #3b82f6; padding:3px 8px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🔄 EM ANDAMENTO</span>`;
+    } else {
+      statusBadge = `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:3px 8px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">⏳ PENDENTE</span>`;
+    }
+
+    return `
+      <tr class="td-tabela-row" data-id="${escapeHtml(item.id)}" style="cursor:pointer;" title="Clique para registrar tratativa / direcionamento">
+        <td style="text-align:center; font-weight:600; font-size:0.8rem; color:#475569;">${escapeHtml(item.data_fabricacao || "-")}</td>
+        <td style="text-align:center; font-weight:700; color:#334155;">${escapeHtml(item.setor || "-")}</td>
+        <td style="text-align:center; font-weight:900; color:#0f172a; font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
+        <td style="text-align:center;"><span style="background:#f1f5f9; border:1px solid #cbd5e1; padding:2px 8px; border-radius:4px; font-weight:900; font-size:0.82rem; color:#0f172a;">${escapeHtml(item.codigo_defeito)}</span><br><small style="font-weight:600; color:#475569;">${escapeHtml(item.descricao_defeito)}</small></td>
+        <td style="text-align:center; vertical-align:middle;">${gravBadge}</td>
+        <td style="font-weight:800; color:#1e3a8a;">👤 ${escapeHtml(item.responsavel_designado || "-")}</td>
+        <td style="font-size:0.82rem; color:#334155;">${escapeHtml(item.acao_recomendada || "-")}</td>
+        <td style="font-size:0.84rem; color:#0f172a;">
+          ${item.acao_realizada ? `<strong>${escapeHtml(item.acao_realizada)}</strong><br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.executado_por || 'Técnico')} em ${escapeHtml(item.tratado_em || '')}</small>` : '<em style="color:#94a3b8;">Aguardando direcionamento...</em>'}
+        </td>
+        <td style="text-align:center; vertical-align:middle;">${statusBadge}</td>
+        <td style="text-align:center; vertical-align:middle;">
+          <button type="button" class="btn btn-sm btn-tratar-defeito" data-id="${escapeHtml(item.id)}" style="background:#2563eb; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; box-shadow:0 2px 4px rgba(37,99,235,0.25); white-space:nowrap;">⚙️ Tratar</button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  tbody.querySelectorAll(".td-tabela-row").forEach(row => {
+    row.addEventListener("click", () => {
+      const id = row.getAttribute("data-id");
+      if (!id || !listaOcorrenciasMap[id]) return;
+      openModalTratativaDefeito(listaOcorrenciasMap[id]);
+    });
+  });
+}
+
+function openModalTratativaDefeito(item) {
+  pendingTratativaSelection = item;
+  const titleEl = document.getElementById("mTratativaTitle");
+  const subEl = document.getElementById("mTratativaSub");
+  const infoEl = document.getElementById("mTratativaInfo");
+  if (titleEl) titleEl.textContent = `Tratativa - Defeito ${item.codigo_defeito}`;
+  if (subEl) subEl.textContent = `Forma: ${item.forma_numero} (${item.setor}) — Data: ${item.data_fabricacao}`;
+
+  if (infoEl) {
+    infoEl.innerHTML = `
+      <div><strong>Defeito:</strong> Código ${escapeHtml(item.codigo_defeito)} - ${escapeHtml(item.descricao_defeito)}</div>
+      <div style="margin-top:2px;"><strong>Gravidade:</strong> ${escapeHtml(item.classificacao)}</div>
+      <div style="margin-top:2px;"><strong>Responsável Designado:</strong> <span style="color:#1e3a8a; font-weight:800;">👤 ${escapeHtml(item.responsavel_designado || "-")}</span></div>
+      <div style="margin-top:2px;"><strong>Recomendação Técnica:</strong> ${escapeHtml(item.acao_recomendada || "-")}</div>
+    `;
+  }
+
+  const statusSel = document.getElementById("mTratativaStatus");
+  const execInput = document.getElementById("mTratativaExecutadoPor");
+  const acaoText = document.getElementById("mTratativaAcaoRealizada");
+
+  if (statusSel) statusSel.value = item.status_tratativa || "PENDENTE";
+  if (execInput) execInput.value = item.executado_por || state.authUser?.name || "";
+  if (acaoText) acaoText.value = item.acao_realizada || "";
+
+  document.getElementById("modalTratativaDefeito")?.classList.add("modal-visible");
 }
 
 function updateKioskHeader() {
@@ -6997,6 +7235,11 @@ function setMode(mode) {
       renderLiberacaoDual();
     });
   }
+  if (mode === "TRATATIVA_DEFEITOS") {
+    const viewTd = document.getElementById("viewTratativaDefeitos");
+    if (viewTd) viewTd.classList.remove("hidden");
+    renderizarRelatorioTratativaDefeitos();
+  }
 
   document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular");
   if (mode === "HUB") {
@@ -7386,6 +7629,64 @@ function bindEvents() {
   });
   el.hubRelatorioManutencao?.addEventListener("click", () => {
     setMode("RELATORIO_MANUTENCAO");
+  });
+  el.hubTratativaDefeitos?.addEventListener("click", () => {
+    setMode("TRATATIVA_DEFEITOS");
+  });
+
+  document.getElementById("tdBtnImprimirPDF")?.addEventListener("click", () => {
+    document.body.classList.add("print-relatorio-defeitos");
+    window.print();
+    document.body.classList.remove("print-relatorio-defeitos");
+  });
+
+  document.getElementById("tdBtnLimparFiltros")?.addEventListener("click", () => {
+    const st = document.getElementById("tdFiltroStatus");
+    const cod = document.getElementById("tdFiltroCodigo");
+    const resp = document.getElementById("tdFiltroResponsavel");
+    const ini = document.getElementById("tdFiltroDataInicio");
+    const fim = document.getElementById("tdFiltroDataFim");
+    if (st) st.value = "TODOS";
+    if (cod) cod.value = "TODOS";
+    if (resp) resp.value = "TODOS";
+    if (ini) ini.value = "";
+    if (fim) fim.value = "";
+    renderizarRelatorioTratativaDefeitos();
+  });
+
+  ["tdFiltroStatus", "tdFiltroCodigo", "tdFiltroResponsavel", "tdFiltroDataInicio", "tdFiltroDataFim"].forEach(id => {
+    document.getElementById(id)?.addEventListener("change", renderizarRelatorioTratativaDefeitos);
+    document.getElementById(id)?.addEventListener("input", renderizarRelatorioTratativaDefeitos);
+  });
+
+  document.getElementById("mTratativaCancelBtn")?.addEventListener("click", () => {
+    document.getElementById("modalTratativaDefeito")?.classList.remove("modal-visible");
+  });
+
+  document.getElementById("mTratativaConfirmBtn")?.addEventListener("click", () => {
+    if (!pendingTratativaSelection) return;
+    const status = document.getElementById("mTratativaStatus")?.value || "PENDENTE";
+    const executadoPor = document.getElementById("mTratativaExecutadoPor")?.value?.trim() || "";
+    const acaoRealizada = document.getElementById("mTratativaAcaoRealizada")?.value?.trim() || "";
+
+    if (!acaoRealizada) {
+      alert("Por favor, preencha o direcionamento / ação corretiva realizada.");
+      document.getElementById("mTratativaAcaoRealizada")?.focus();
+      return;
+    }
+
+    const rec = {
+      ...pendingTratativaSelection,
+      status_tratativa: status,
+      executado_por: executadoPor || state.authUser?.name || "Técnico",
+      acao_realizada: acaoRealizada,
+      tratado_em: new Date().toLocaleString("pt-BR")
+    };
+
+    salvarTratativaDefeitoRegistro(rec);
+    document.getElementById("modalTratativaDefeito")?.classList.remove("modal-visible");
+    renderizarRelatorioTratativaDefeitos();
+    setSyncStatus("ok", `Tratativa do defeito ${rec.codigo_defeito} atualizada com sucesso.`);
   });
 
   if (el.paSalvarBtn) {
