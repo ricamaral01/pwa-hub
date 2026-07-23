@@ -7,19 +7,19 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS", "FORMAS_COM_DEFEITO"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS", "FORMAS_COM_DEFEITO"]
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
+    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS", "FORMAS_COM_DEFEITO"]
   },
   APONTADOR: {
     label: "Apontador",
-    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
+    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS", "FORMAS_COM_DEFEITO"]
   }
 };
 
@@ -2217,12 +2217,18 @@ function openModalDefeitoForma(setor, formaNumero) {
   
   if (subEl) subEl.textContent = `Forma ${formaNumero} (${setor}) — Registro de avaria na montagem`;
   if (infoEl) {
-    const isParada = isFormaEmManutencao(setor, formaNumero);
+    let isParada = null;
+    try {
+      isParada = isFormaEmManutencao(setor, formaNumero);
+    } catch (e) {
+      console.warn("Erro ao checar status da forma:", e);
+    }
+    const dt = typeof todayYmd === "function" ? todayYmd() : new Date().toISOString().slice(0,10);
     infoEl.innerHTML = `
       <div><strong>Forma Nº:</strong> <span style="font-weight:900; color:#0f172a;">${escapeHtml(formaNumero)}</span></div>
       <div><strong>Setor:</strong> <span style="font-weight:800; color:#334155;">${escapeHtml(setor)}</span></div>
       <div><strong>Status Atual:</strong> ${isParada ? '<span style="color:#d97706; font-weight:800;">🛠️ EM MANUTENÇÃO</span>' : '<span style="color:#059669; font-weight:800;">✅ LIBERADA</span>'}</div>
-      <div><strong>Data do Registro:</strong> <span>${todayYmd()}</span></div>
+      <div><strong>Data do Registro:</strong> <span>${dt}</span></div>
     `;
   }
   
@@ -2231,7 +2237,12 @@ function openModalDefeitoForma(setor, formaNumero) {
   if (descEl) descEl.value = "";
   if (acaoEl) acaoEl.value = "";
 
-  document.getElementById("modalDefeitoFormaMontagem")?.classList.add("modal-visible");
+  const modal = document.getElementById("modalDefeitoFormaMontagem");
+  if (modal) {
+    modal.classList.add("modal-visible");
+  } else {
+    console.error("Modal #modalDefeitoFormaMontagem não encontrado no DOM!");
+  }
 }
 
 window.abrirModalDefeitoForma = function(setor, formaNumero) {
@@ -4836,13 +4847,20 @@ async function renderMontagemPostesLiberados() {
       acaoContent = `<button type="button" class="btn mp-open-btn ${extraClass}">Inspecionar / Montar Poste</button>`;
     }
 
-    const btnDefeitoHtml = `<button type="button" class="btn btn-defeito-forma-montagem" data-setor="${escapeHtml(record.setor || 'Setor 1')}" data-forma="${escapeHtml(record.formaNumero || '-')}" title="Informar defeito na forma" style="background:#d97706; color:#fff; padding:6px 10px; font-weight:800; border-radius:6px; border:none; cursor:pointer; font-size:0.75rem; white-space:nowrap; height:38px;">🛠️ Defeito Forma</button>`;
+    const setorStr = escapeHtml(record.setor || 'Setor 1');
+    const formaStr = escapeHtml(record.formaNumero || '-');
+    const btnDefeitoHtml = `<button type="button" class="btn btn-defeito-forma-montagem" onclick="event.stopPropagation(); window.abrirModalDefeitoForma('${setorStr}', '${formaStr}')" title="Informar defeito na forma" style="background:#d97706; color:#fff; padding:0 12px; font-weight:800; border-radius:6px; border:none; cursor:pointer; font-size:0.78rem; white-space:nowrap; height:38px; display:inline-flex; align-items:center; justify-content:center; gap:4px; box-shadow: 0 2px 4px rgba(217,119,6,0.25);">🛠️ Defeito Forma</button>`;
 
     tr.innerHTML = `
-      <td data-label="N Forma">${record.formaNumero || ""}</td>
+      <td data-label="N Forma" style="text-align:center; font-weight:900;">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
-      <td data-label="Data Prod.">${fmtDate(record.dataFabricacao || "")}</td>
-      <td data-label="Ação" style="display:flex; gap:6px; align-items:center;">${acaoContent} ${btnDefeitoHtml}</td>
+      <td data-label="Data Prod." style="text-align:center;">${fmtDate(record.dataFabricacao || "")}</td>
+      <td data-label="Ação" style="text-align:center; vertical-align:middle;">
+        <div style="display:inline-flex; gap:8px; align-items:center; justify-content:center; width:100%;">
+          ${acaoContent}
+          ${btnDefeitoHtml}
+        </div>
+      </td>
     `;
     el.mpLiberadosBody.appendChild(tr);
   });
