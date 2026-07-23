@@ -4849,7 +4849,7 @@ async function renderMontagemPostesLiberados() {
 
     const setorStr = escapeHtml(record.setor || 'Setor 1');
     const formaStr = escapeHtml(record.formaNumero || '-');
-    const btnDefeitoHtml = `<button type="button" class="btn btn-defeito-forma-montagem" onclick="event.stopPropagation(); window.abrirModalDefeitoForma('${setorStr}', '${formaStr}')" title="Informar defeito na forma" style="background:#d97706; color:#fff; padding:0 12px; font-weight:800; border-radius:6px; border:none; cursor:pointer; font-size:0.78rem; white-space:nowrap; height:38px; display:inline-flex; align-items:center; justify-content:center; gap:4px; box-shadow: 0 2px 4px rgba(217,119,6,0.25);">🛠️ Defeito Forma</button>`;
+    const btnDefeitoHtml = `<button type="button" class="btn btn-defeito-forma-montagem" data-setor="${setorStr}" data-forma="${formaStr}" title="Informar defeito na forma" style="background:#d97706; color:#fff; padding:0 12px; font-weight:800; border-radius:6px; border:none; cursor:pointer; font-size:0.78rem; white-space:nowrap; height:38px; display:inline-flex; align-items:center; justify-content:center; gap:4px; box-shadow: 0 2px 4px rgba(217,119,6,0.25);">🛠️ Defeito Forma</button>`;
 
     tr.innerHTML = `
       <td data-label="N Forma" style="text-align:center; font-weight:900;">${record.formaNumero || ""}</td>
@@ -8590,9 +8590,11 @@ function bindEvents() {
 
       const defeitoFormaBtn = target.closest(".btn-defeito-forma-montagem");
       if (defeitoFormaBtn) {
+        event.preventDefault();
         event.stopPropagation();
-        const setor = defeitoFormaBtn.getAttribute("data-setor") || "Setor 1";
-        const forma = defeitoFormaBtn.getAttribute("data-forma") || "-";
+        const row = defeitoFormaBtn.closest("tr");
+        const setor = defeitoFormaBtn.getAttribute("data-setor") || row?.dataset?.setor || "Setor 1";
+        const forma = defeitoFormaBtn.getAttribute("data-forma") || row?.dataset?.formaNumero || "-";
         openModalDefeitoForma(setor, forma);
         return;
       }
@@ -10303,7 +10305,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v111");
+        window.location.replace(window.location.pathname + "?cache-reset=v122");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10313,7 +10315,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.11-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.22-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
