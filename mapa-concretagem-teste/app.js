@@ -7,19 +7,19 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS", "FORMAS_COM_DEFEITO"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS", "FORMAS_COM_DEFEITO"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS", "FORMAS_COM_DEFEITO"]
+    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   APONTADOR: {
     label: "Apontador",
-    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS", "FORMAS_COM_DEFEITO"]
+    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   }
 };
 
@@ -862,8 +862,6 @@ const el = {
   viewRelatorioManutencao: document.getElementById("viewRelatorioManutencao"),
   hubTratativaDefeitos: document.getElementById("hubTratativaDefeitos"),
   viewTratativaDefeitos: document.getElementById("viewTratativaDefeitos"),
-  hubFormasComDefeito: document.getElementById("hubFormasComDefeito"),
-  viewFormasComDefeito: document.getElementById("viewFormasComDefeito"),
   kioskManutencaoCheckbox: document.getElementById("kioskManutencaoCheckbox"),
   kioskManutencaoToggleField: document.getElementById("kioskManutencaoToggleField"),
   hubAcmpConcretagem: document.getElementById("hubAcmpConcretagem"),
@@ -2208,119 +2206,6 @@ function openModalLiberacao(setor, formaNumero, manutencaoRec) {
   document.getElementById("modalManutencaoLiberacao")?.classList.add("modal-visible");
 }
 
-let pendingDefeitoFormaSelection = null;
-
-function openModalDefeitoForma(setor, formaNumero) {
-  pendingDefeitoFormaSelection = { setor, formaNumero };
-  const infoEl = document.getElementById("mDefeitoFormaInfo");
-  const subEl = document.getElementById("mDefeitoFormaSub");
-  
-  if (subEl) subEl.textContent = `Forma ${formaNumero} (${setor}) — Registro de avaria na montagem`;
-  if (infoEl) {
-    let isParada = null;
-    try {
-      isParada = isFormaEmManutencao(setor, formaNumero);
-    } catch (e) {
-      console.warn("Erro ao checar status da forma:", e);
-    }
-    const dt = typeof todayYmd === "function" ? todayYmd() : new Date().toISOString().slice(0,10);
-    infoEl.innerHTML = `
-      <div><strong>Forma Nº:</strong> <span style="font-weight:900; color:#0f172a;">${escapeHtml(formaNumero)}</span></div>
-      <div><strong>Setor:</strong> <span style="font-weight:800; color:#334155;">${escapeHtml(setor)}</span></div>
-      <div><strong>Status Atual:</strong> ${isParada ? '<span style="color:#d97706; font-weight:800;">🛠️ EM MANUTENÇÃO</span>' : '<span style="color:#059669; font-weight:800;">✅ LIBERADA</span>'}</div>
-      <div><strong>Data do Registro:</strong> <span>${dt}</span></div>
-    `;
-  }
-  
-  const descEl = document.getElementById("mDefeitoFormaDescricao");
-  const acaoEl = document.getElementById("mDefeitoFormaAcao");
-  if (descEl) descEl.value = "";
-  if (acaoEl) acaoEl.value = "";
-
-  const modal = document.getElementById("modalDefeitoFormaMontagem");
-  if (modal) {
-    modal.classList.add("modal-visible");
-  } else {
-    console.error("Modal #modalDefeitoFormaMontagem não encontrado no DOM!");
-  }
-}
-
-window.abrirModalDefeitoForma = function(setor, formaNumero) {
-  openModalDefeitoForma(setor, formaNumero);
-};
-
-window.abrirModalRelatorioDefeitoForma = function(setor, formaNumero) {
-  openModalRelatorioDefeitoForma(setor, formaNumero);
-};
-
-function openModalRelatorioDefeitoForma(setor, formaNumero) {
-  const bodyEl = document.getElementById("mRelatorioDefeitoBody");
-  const titleEl = document.getElementById("mRelatorioDefeitoTitle");
-  const subEl = document.getElementById("mRelatorioDefeitoSub");
-  
-  if (titleEl) titleEl.textContent = `Relatório de Defeito — Forma ${formaNumero}`;
-  if (subEl) subEl.textContent = `Setor ${setor} — Diagnóstico e Manutenção`;
-
-  const recManutencao = isFormaEmManutencao(setor, formaNumero);
-  const allFormas = getFormasManutencao();
-  const recAny = allFormas[getManutencaoKey(setor, formaNumero)];
-  const rec = recManutencao || recAny;
-
-  if (!rec) {
-    if (bodyEl) {
-      bodyEl.innerHTML = `
-        <div style="text-align:center; padding:20px; color:#64748b;">
-          <p style="font-size:1.1rem; font-weight:700; margin-bottom:6px; color:#1e293b;">Nenhum defeito ativo nesta forma.</p>
-          <p style="font-size:0.85rem;">A Forma ${escapeHtml(formaNumero)} (${escapeHtml(setor)}) está liberada e sem pendências de manutenção cadastradas.</p>
-        </div>
-      `;
-    }
-  } else {
-    const isParada = rec.status === "PARADA";
-    const tempoInfo = calcularDiasParada(rec.parada_em, rec.liberada_em, rec.status);
-    
-    if (bodyEl) {
-      bodyEl.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #cbd5e1; padding-bottom:8px;">
-          <div>
-            <strong style="font-size:1.1rem; color:#0f172a;">Forma Nº ${escapeHtml(rec.forma_numero)}</strong>
-            <span style="color:#64748b; font-size:0.85rem; margin-left:8px;">(${escapeHtml(rec.setor)})</span>
-          </div>
-          <div>
-            ${isParada ? '<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem;">🛠️ EM MANUTENÇÃO</span>' : '<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem;">✅ LIBERADA</span>'}
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; background:#fff; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
-          <div><strong>Parada / Apontada em:</strong><br><span style="color:#334155;">${escapeHtml(rec.parada_em || '-')}</span></div>
-          <div><strong>Apontado por:</strong><br><span style="color:#334155;">${escapeHtml(rec.parada_por || '-')}</span></div>
-          <div><strong>Tempo / Dias Parada:</strong><br><span style="color:#dc2626; font-weight:800;">⏱️ ${escapeHtml(tempoInfo.label)}</span></div>
-          <div><strong>Status Atual:</strong><br><span style="color:#0f172a; font-weight:700;">${escapeHtml(rec.status)}</span></div>
-        </div>
-
-        <div style="margin-bottom:10px; background:#fff; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
-          <strong style="color:#b45309;">⚠️ Motivo / Defeito da Forma:</strong>
-          <div style="margin-top:4px; font-size:0.9rem; color:#1e293b; white-space:pre-wrap;">${escapeHtml(rec.motivo_parada || 'Não especificado')}</div>
-        </div>
-
-        <div style="margin-bottom:10px; background:#fff; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
-          <strong style="color:#1e40af;">🔧 Ação / Serviço Solicitado:</strong>
-          <div style="margin-top:4px; font-size:0.88rem; color:#334155;">${escapeHtml(rec.acao_necessaria || 'Manutenção e Reparo')}</div>
-        </div>
-
-        ${rec.liberada_em ? `
-          <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:10px; border-radius:6px; font-size:0.84rem; color:#166534;">
-            <strong>Liberação da Forma:</strong> Liberada em ${escapeHtml(rec.liberada_em)} por ${escapeHtml(rec.liberada_por || 'Técnico')}.<br>
-            <em>Obs: ${escapeHtml(rec.obs_liberacao || 'Sem observações')}</em>
-          </div>
-        ` : ''}
-      `;
-    }
-  }
-
-  document.getElementById("modalRelatorioDefeitoForma")?.classList.add("modal-visible");
-}
-
 function getRelatorioManutencaoFiltros() {
   return {
     status: document.getElementById("rmFiltroStatus")?.value || "TODOS",
@@ -2402,84 +2287,6 @@ function calcularDiasParada(paradaEmStr, liberadaEmStr, status) {
     label = `${diffDays} dias`;
   }
   return { dias: diffDays, label };
-}
-
-function renderizarFormasComDefeito() {
-  const tbody = document.getElementById("fdTabelaBody");
-  const totalEl = document.getElementById("fdTabelaTotal");
-  const kTotal = document.getElementById("fdKpiTotal");
-  const kParadas = document.getElementById("fdKpiParadas");
-  const kLiberadas = document.getElementById("fdKpiLiberadas");
-  const mpBadge = document.getElementById("mpBadgeFormasDefeito");
-  if (!tbody) return;
-
-  const allFormas = getFormasManutencao() || {};
-  let list = Object.values(allFormas).filter(item => Boolean(item.motivo_parada || item.status === "PARADA"));
-
-  // Filtros da interface
-  const fStatus = document.getElementById("fdFiltroStatus")?.value || "TODOS";
-  const fSetor = document.getElementById("fdFiltroSetor")?.value || "TODOS";
-  const fPesquisa = (document.getElementById("fdFiltroPesquisa")?.value || "").trim().toLowerCase();
-
-  const totalApontadas = list.length;
-  const paradasCount = list.filter(i => i.status === "PARADA").length;
-  const liberadasCount = list.filter(i => i.status === "LIBERADA").length;
-
-  if (mpBadge) mpBadge.textContent = paradasCount;
-  if (kTotal) kTotal.textContent = totalApontadas;
-  if (kParadas) kParadas.textContent = paradasCount;
-  if (kLiberadas) kLiberadas.textContent = liberadasCount;
-
-  list = list.filter(item => {
-    if (fStatus !== "TODOS" && item.status !== fStatus) return false;
-    if (fSetor !== "TODOS" && item.setor !== fSetor) return false;
-    if (fPesquisa) {
-      const matchForma = String(item.forma_numero || "").toLowerCase().includes(fPesquisa);
-      const matchMotivo = String(item.motivo_parada || "").toLowerCase().includes(fPesquisa);
-      const matchAcao = String(item.acao_necessaria || "").toLowerCase().includes(fPesquisa);
-      if (!matchForma && !matchMotivo && !matchAcao) return false;
-    }
-    return true;
-  });
-
-  list.sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
-
-  if (totalEl) totalEl.textContent = list.length;
-
-  if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:24px; color:#64748b;">Nenhuma forma com defeito encontrada para os filtros selecionados.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = list.map(item => {
-    const isParada = item.status === "PARADA";
-    const statusBadge = isParada
-      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🛠️ EM MANUTENÇÃO</span>`
-      : `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✅ LIBERADA</span>`;
-
-    const tempoInfo = calcularDiasParada(item.parada_em, item.liberada_em, item.status);
-    const tempoBadge = isParada
-      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 10px; border-radius:12px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">⏱️ ${tempoInfo.label}</span>`
-      : `<span style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:4px 10px; border-radius:12px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✔️ ${tempoInfo.label}</span>`;
-
-    const acaoBtn = isParada
-      ? `<button type="button" class="btn btn-sm" onclick="event.stopPropagation(); openModalLiberacao('${escapeHtml(item.setor)}', '${escapeHtml(item.forma_numero)}', getFormasManutencao()['${getManutencaoKey(item.setor, item.forma_numero)}'])" style="background:#10b981; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; box-shadow:0 2px 4px rgba(16,185,129,0.25); white-space:nowrap;">🔓 Liberar</button>`
-      : `<button type="button" class="btn btn-sm" onclick="event.stopPropagation(); openModalRelatorioDefeitoForma('${escapeHtml(item.setor)}', '${escapeHtml(item.forma_numero)}')" style="background:#2563eb; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; white-space:nowrap;">🔍 Ver Ficha</button>`;
-
-    return `
-      <tr class="fd-tabela-row" onclick="openModalRelatorioDefeitoForma('${escapeHtml(item.setor)}', '${escapeHtml(item.forma_numero)}')" style="cursor:pointer;" title="Clique para ver a ficha completa de defeito da forma">
-        <td style="text-align:center; font-weight:700; color:#334155;">${escapeHtml(item.setor || "-")}</td>
-        <td style="text-align:center; font-weight:900; color:#0f172a; font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
-        <td style="text-align:center; vertical-align:middle;">${statusBadge}</td>
-        <td style="text-align:center; vertical-align:middle;">${tempoBadge}</td>
-        <td style="font-size:0.85rem; color:#1e293b; font-weight:600;">${escapeHtml(item.motivo_parada || "-")}</td>
-        <td style="font-size:0.85rem; color:#334155;">${escapeHtml(item.acao_necessaria || "-")}</td>
-        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${escapeHtml(item.parada_em || "-")}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.parada_por || "-")}</small></td>
-        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
-        <td style="text-align:center; vertical-align:middle;">${acaoBtn}</td>
-      </tr>
-    `;
-  }).join("");
 }
 
 function renderizarRelatorioManutencao() {
@@ -4484,20 +4291,7 @@ function renderMontagemPosteDetalhe() {
     <div><strong>Início inspeção/montagem:</strong> ${formatDateTime(poste.inicioInspecaoMontagem || "")}</div>
     <div><strong>Finalizado em:</strong> ${poste.finalizadoEm ? formatDateTime(poste.finalizadoEm) : "-"}</div>
     <div><strong>Tempo de Inspeção:</strong> <span style="color:#e8762a; font-weight:700;">${tempoGasto}</span></div>
-    
-    <div style="margin-top: 12px; display: flex; gap: 10px;">
-      <button type="button" id="mpBtnDefeitoForma" class="btn" style="background:#d97706; color:#fff; font-weight:800; padding:8px 14px; border-radius:6px; border:none; cursor:pointer; flex:1; display:inline-flex; align-items:center; justify-content:center; gap:6px;">🛠️ Informar Defeito nesta Forma</button>
-      <button type="button" id="mpBtnVerDefeitoForma" class="btn" style="background:#2563eb; color:#fff; font-weight:700; padding:8px 14px; border-radius:6px; border:none; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px;">📋 Ver Relatório Forma</button>
-    </div>
   `;
-
-  document.getElementById("mpBtnDefeitoForma")?.addEventListener("click", () => {
-    openModalDefeitoForma(poste.setor || "Setor 1", poste.formaNumero || "-");
-  });
-
-  document.getElementById("mpBtnVerDefeitoForma")?.addEventListener("click", () => {
-    openModalRelatorioDefeitoForma(poste.setor || "Setor 1", poste.formaNumero || "-");
-  });
 
   renderMontagemChecklistSections();
   if (el.mpObservacoes) {
@@ -4847,10 +4641,6 @@ async function renderMontagemPostesLiberados() {
       acaoContent = `<button type="button" class="btn mp-open-btn ${extraClass}">Inspecionar / Montar Poste</button>`;
     }
 
-    const setorStr = escapeHtml(record.setor || 'Setor 1');
-    const formaStr = escapeHtml(record.formaNumero || '-');
-    const btnDefeitoHtml = `<button type="button" class="btn btn-defeito-forma-montagem" data-setor="${setorStr}" data-forma="${formaStr}" title="Informar defeito na forma" style="background:#d97706; color:#fff; padding:0 12px; font-weight:800; border-radius:6px; border:none; cursor:pointer; font-size:0.78rem; white-space:nowrap; height:38px; display:inline-flex; align-items:center; justify-content:center; gap:4px; box-shadow: 0 2px 4px rgba(217,119,6,0.25);">🛠️ Defeito Forma</button>`;
-
     tr.innerHTML = `
       <td data-label="N Forma" style="text-align:center; font-weight:900;">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
@@ -4858,7 +4648,6 @@ async function renderMontagemPostesLiberados() {
       <td data-label="Ação" style="text-align:center; vertical-align:middle;">
         <div style="display:inline-flex; gap:8px; align-items:center; justify-content:center; width:100%;">
           ${acaoContent}
-          ${btnDefeitoHtml}
         </div>
       </td>
     `;
@@ -7478,7 +7267,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao, el.viewTratativaDefeitos, el.viewFormasComDefeito]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao, el.viewTratativaDefeitos]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -7560,15 +7349,9 @@ function setMode(mode) {
     if (el.viewTratativaDefeitos) el.viewTratativaDefeitos.classList.remove("hidden");
     renderizarRelatorioTratativaDefeitos();
   }
-  if (mode === "FORMAS_COM_DEFEITO") {
-    if (el.viewFormasComDefeito) el.viewFormasComDefeito.classList.remove("hidden");
-    renderizarFormasComDefeito();
-  }
-
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos", "mode-formas-com-defeito");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
   if (mode === "RELATORIO_MANUTENCAO") document.body.classList.add("mode-relatorio-manutencao");
   if (mode === "TRATATIVA_DEFEITOS") document.body.classList.add("mode-tratativa-defeitos");
-  if (mode === "FORMAS_COM_DEFEITO") document.body.classList.add("mode-formas-com-defeito");
   if (mode === "HUB") {
     document.body.classList.add("mode-hub");
     applyAutoResponsibleFields();
@@ -8558,46 +8341,10 @@ function bindEvents() {
   if (el.mpCarregarLiberados) el.mpCarregarLiberados.addEventListener("click", renderMontagemPostesLiberados);
   if (el.mpFormaFiltro) el.mpFormaFiltro.addEventListener("input", filtrarMontagemTabela);
 
-  document.getElementById("mpBtnIrFormasDefeito")?.addEventListener("click", () => {
-    setMode("FORMAS_COM_DEFEITO");
-  });
-  document.getElementById("fdBtnIrMontagem")?.addEventListener("click", () => {
-    setMode("MONTAGEM_POSTES");
-  });
-  document.getElementById("hubFormasComDefeito")?.addEventListener("click", () => {
-    setMode("FORMAS_COM_DEFEITO");
-  });
-
-  ["fdFiltroStatus", "fdFiltroSetor", "fdFiltroPesquisa"].forEach(id => {
-    document.getElementById(id)?.addEventListener("change", renderizarFormasComDefeito);
-    document.getElementById(id)?.addEventListener("input", renderizarFormasComDefeito);
-  });
-
-  document.getElementById("fdBtnLimparFiltros")?.addEventListener("click", () => {
-    const fStatus = document.getElementById("fdFiltroStatus");
-    const fSetor = document.getElementById("fdFiltroSetor");
-    const fPesquisa = document.getElementById("fdFiltroPesquisa");
-    if (fStatus) fStatus.value = "TODOS";
-    if (fSetor) fSetor.value = "TODOS";
-    if (fPesquisa) fPesquisa.value = "";
-    renderizarFormasComDefeito();
-  });
-
   if (el.mpLiberadosBody) {
     el.mpLiberadosBody.addEventListener("click", async (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
-
-      const defeitoFormaBtn = target.closest(".btn-defeito-forma-montagem");
-      if (defeitoFormaBtn) {
-        event.preventDefault();
-        event.stopPropagation();
-        const row = defeitoFormaBtn.closest("tr");
-        const setor = defeitoFormaBtn.getAttribute("data-setor") || row?.dataset?.setor || "Setor 1";
-        const forma = defeitoFormaBtn.getAttribute("data-forma") || row?.dataset?.formaNumero || "-";
-        openModalDefeitoForma(setor, forma);
-        return;
-      }
 
       const verChecklistBtn = target.closest(".mp-ver-checklist-btn");
       if (verChecklistBtn) {
@@ -8630,56 +8377,6 @@ function bindEvents() {
       });
     });
   }
-
-  // Handlers para os Modais de Defeito na Forma
-  document.getElementById("mDefeitoFormaCancelBtn")?.addEventListener("click", () => {
-    document.getElementById("modalDefeitoFormaMontagem")?.classList.remove("modal-visible");
-  });
-
-  document.getElementById("mDefeitoFormaVerRelatorioBtn")?.addEventListener("click", () => {
-    if (pendingDefeitoFormaSelection) {
-      document.getElementById("modalDefeitoFormaMontagem")?.classList.remove("modal-visible");
-      openModalRelatorioDefeitoForma(pendingDefeitoFormaSelection.setor, pendingDefeitoFormaSelection.formaNumero);
-    }
-  });
-
-  document.getElementById("mDefeitoFormaConfirmBtn")?.addEventListener("click", () => {
-    if (!pendingDefeitoFormaSelection) return;
-    const { setor, formaNumero } = pendingDefeitoFormaSelection;
-    const tipo = document.getElementById("mDefeitoFormaTipo")?.value || "Avaria";
-    const desc = document.getElementById("mDefeitoFormaDescricao")?.value?.trim() || "";
-    const acao = document.getElementById("mDefeitoFormaAcao")?.value?.trim() || "Manutenção e Reparo";
-    const inativar = document.getElementById("mDefeitoFormaInativar")?.checked !== false;
-
-    if (!desc) {
-      alert("Por favor, descreva detalhadamente o defeito ou avaria observada na forma.");
-      document.getElementById("mDefeitoFormaDescricao")?.focus();
-      return;
-    }
-
-    const motivoCompleto = `${tipo}: ${desc}`;
-
-    if (inativar) {
-      salvarFormaParadaManutencao(setor, formaNumero, motivoCompleto, acao);
-    }
-
-    document.getElementById("modalDefeitoFormaMontagem")?.classList.remove("modal-visible");
-    setSyncStatus("ok", `Defeito registrado na Forma ${formaNumero} (${setor}). Forma em manutenção!`);
-    
-    renderizarFormasComDefeito();
-
-    // Abre automaticamente o relatório detalhado do defeito registrado
-    openModalRelatorioDefeitoForma(setor, formaNumero);
-  });
-
-  document.getElementById("mRelatorioDefeitoCloseBtn")?.addEventListener("click", () => {
-    document.getElementById("modalRelatorioDefeitoForma")?.classList.remove("modal-visible");
-  });
-
-  document.getElementById("mRelatorioDefeitoIrManutencaoBtn")?.addEventListener("click", () => {
-    document.getElementById("modalRelatorioDefeitoForma")?.classList.remove("modal-visible");
-    setMode("RELATORIO_MANUTENCAO");
-  });
 
   if (el.mpChecklistSections) {
     el.mpChecklistSections.addEventListener("click", (event) => {
@@ -10305,7 +10002,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v122");
+        window.location.replace(window.location.pathname + "?cache-reset=v123");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10315,7 +10012,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.22-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.23-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
