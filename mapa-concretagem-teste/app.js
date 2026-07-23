@@ -2275,30 +2275,30 @@ function renderizarRelatorioManutencao() {
   tbody.innerHTML = list.map(item => {
     const isParada = item.status === "PARADA";
     const statusBadge = isParada 
-      ? `<span style="background:#fef3c7; color:#b45309; border:1px solid #f59e0b; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.75rem;">🛠️ PARADA</span>`
-      : `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:2px 8px; border-radius:4px; font-weight:800; font-size:0.75rem;">✅ LIBERADA</span>`;
+      ? `<span style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🛠️ PARADA</span>`
+      : `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✅ LIBERADA</span>`;
       
     const tempoInfo = calcularDiasParada(item.parada_em, item.liberada_em, item.status);
     const tempoBadge = isParada
-      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:2px 8px; border-radius:12px; font-weight:800; font-size:0.75rem; white-space:nowrap;">⏱️ ${tempoInfo.label}</span>`
-      : `<span style="background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:12px; font-weight:700; font-size:0.75rem; white-space:nowrap;">✔️ ${tempoInfo.label}</span>`;
+      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 10px; border-radius:12px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">⏱️ ${tempoInfo.label}</span>`
+      : `<span style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:4px 10px; border-radius:12px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✔️ ${tempoInfo.label}</span>`;
       
     const acaoBtn = isParada
-      ? `<button type="button" class="btn btn-sm btn-liberar-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#10b981; color:#fff; border:none; padding:4px 10px; font-size:0.75rem; font-weight:700; border-radius:6px; cursor:pointer;">🔓 Liberar</button>`
-      : `<button type="button" class="btn btn-sm btn-ver-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#e2e8f0; color:#334155; border:none; padding:4px 10px; font-size:0.75rem; font-weight:700; border-radius:6px; cursor:pointer;">🔍 Histórico</button>`;
+      ? `<button type="button" class="btn btn-sm btn-liberar-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#10b981; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; box-shadow:0 2px 4px rgba(16,185,129,0.25); white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">🔓 Liberar</button>`
+      : `<button type="button" class="btn btn-sm btn-ver-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#e2e8f0; color:#334155; border:none; padding:6px 12px; font-size:0.78rem; font-weight:700; border-radius:6px; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">🔍 Histórico</button>`;
 
     return `
       <tr class="rm-tabela-row ${isParada ? 'rm-row-parada' : 'rm-row-liberada'}" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="cursor:pointer;" title="Clique para ${isParada ? 'liberar esta forma' : 'ver histórico'}">
-        <td style="text-align:center; font-weight:700;">${escapeHtml(item.setor || "-")}</td>
-        <td style="text-align:center; font-weight:800; color:#1e293b;">${escapeHtml(item.forma_numero || "-")}</td>
-        <td style="text-align:center;">${statusBadge}</td>
-        <td style="text-align:center;">${tempoBadge}</td>
-        <td>${escapeHtml(item.motivo_parada || "-")}</td>
-        <td>${escapeHtml(item.acao_necessaria || "-")}</td>
-        <td style="font-size:0.8rem; color:#475569;">${escapeHtml(item.parada_em || "-")}<br><small style="color:#64748b;">por ${escapeHtml(item.parada_por || "-")}</small></td>
-        <td style="font-size:0.8rem; color:#475569;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small style="color:#64748b;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
-        <td>${escapeHtml(item.obs_liberacao || "-")}</td>
-        <td style="text-align:center;">${acaoBtn}</td>
+        <td style="text-align:center; font-weight:700; color:#475569;">${escapeHtml(item.setor || "-")}</td>
+        <td style="text-align:center; font-weight:900; color:#0f172a; font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
+        <td style="text-align:center; vertical-align:middle;">${statusBadge}</td>
+        <td style="text-align:center; vertical-align:middle;">${tempoBadge}</td>
+        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.motivo_parada || "-")}</td>
+        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.acao_necessaria || "-")}</td>
+        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${escapeHtml(item.parada_em || "-")}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.parada_por || "-")}</small></td>
+        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
+        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.obs_liberacao || "-")}</td>
+        <td style="text-align:center; vertical-align:middle;">${acaoBtn}</td>
       </tr>
     `;
   }).join("");
