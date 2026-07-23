@@ -683,9 +683,13 @@ async function sincronizarManutencaoLocalPendente() {
   await carregarFormasManutencaoSupabase();
 }
 
+function getManutencaoKey(setor, formaNumero) {
+  return `${String(setor || "").trim()}_${normalizeUpper(formaNumero)}`;
+}
+
 function isFormaEmManutencao(setor, formaNumero) {
   const all = getFormasManutencao();
-  const key = `${setor}_${formaNumero}`;
+  const key = getManutencaoKey(setor, formaNumero);
   const rec = all[key];
   if (rec && rec.status === "PARADA") {
     return rec;
@@ -695,14 +699,14 @@ function isFormaEmManutencao(setor, formaNumero) {
 
 function salvarFormaParadaManutencao(setor, formaNumero, motivo, acao) {
   const all = getFormasManutencao();
-  const key = `${setor}_${formaNumero}`;
+  const key = getManutencaoKey(setor, formaNumero);
   const nowStr = new Date().toLocaleString("pt-BR");
   const userStr = state.authUser?.name || "Usuário";
   
   all[key] = {
     id: key,
-    setor,
-    forma_numero: formaNumero,
+    setor: String(setor || "").trim(),
+    forma_numero: normalizeUpper(formaNumero),
     status: "PARADA",
     motivo_parada: motivo,
     acao_necessaria: acao,
@@ -720,21 +724,30 @@ function salvarFormaParadaManutencao(setor, formaNumero, motivo, acao) {
 
 function liberarFormaManutencao(setor, formaNumero, obs) {
   const all = getFormasManutencao();
-  const key = `${setor}_${formaNumero}`;
+  const key = getManutencaoKey(setor, formaNumero);
   const nowStr = new Date().toLocaleString("pt-BR");
   const userStr = state.authUser?.name || "Usuário";
   
-  if (all[key]) {
-    all[key].id = all[key].id || key;
-    all[key].status = "LIBERADA";
-    all[key].liberada_em = nowStr;
-    all[key].liberada_por = userStr;
-    all[key].obs_liberacao = obs;
-    all[key].updated_at = new Date().toISOString();
-    salvarFormasManutencaoObj(all);
-    sincronizarFormaManutencaoSupabase(all[key]);
-    atualizarIndicadoresManutencaoHub();
+  if (!all[key]) {
+    all[key] = {
+      id: key,
+      setor: String(setor || "").trim(),
+      forma_numero: normalizeUpper(formaNumero),
+      motivo_parada: "Manutenção",
+      acao_necessaria: "Manutenção",
+      parada_em: nowStr,
+      parada_por: userStr
+    };
   }
+  all[key].id = key;
+  all[key].status = "LIBERADA";
+  all[key].liberada_em = nowStr;
+  all[key].liberada_por = userStr;
+  all[key].obs_liberacao = obs;
+  all[key].updated_at = new Date().toISOString();
+  salvarFormasManutencaoObj(all);
+  sincronizarFormaManutencaoSupabase(all[key]);
+  atualizarIndicadoresManutencaoHub();
 }
 
 let pendingManutencaoSelection = null;
