@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=modomanutencao-v108" />
+  <link rel="stylesheet" href="styles.css?v=modomanutencao-v110" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -270,6 +270,15 @@
               <div class="hub-icon-circle" style="background:#4f46e5">👤</div>
               <span class="hub-icon-lbl">Usuários</span>
             </button>
+          </div>
+        </div>
+        <div class="manutencao-kpi-panel" id="manutencaoKpiPanel">
+          <div class="manutencao-kpi-title">Formas atualmente em manutenÃ§Ã£o</div>
+          <div class="manutencao-kpi-grid">
+            <div class="manutencao-kpi-card"><span>Setor 1</span><strong id="manKpiS1">0</strong></div>
+            <div class="manutencao-kpi-card"><span>Setor 2</span><strong id="manKpiS2">0</strong></div>
+            <div class="manutencao-kpi-card"><span>Setor 3</span><strong id="manKpiS3">0</strong></div>
+            <div class="manutencao-kpi-card"><span>Setor 4</span><strong id="manKpiS4">0</strong></div>
           </div>
         </div>
       </section>
@@ -758,6 +767,22 @@
       </div>
 
       <div class="mi-listagem-wrap">
+        <div class="rm-filtros">
+          <label>Status
+            <select id="rmFiltroStatus" class="kiosk-input">
+              <option value="TODOS">Todos</option>
+              <option value="PARADA">Apenas paradas</option>
+              <option value="LIBERADA">Apenas liberadas</option>
+            </select>
+          </label>
+          <label>De
+            <input id="rmFiltroDataInicio" class="kiosk-input" type="date" />
+          </label>
+          <label>AtÃ©
+            <input id="rmFiltroDataFim" class="kiosk-input" type="date" />
+          </label>
+          <button id="rmBtnLimparFiltros" class="mi-icon-btn" type="button">Limpar filtros</button>
+        </div>
         <div class="mi-list-header">
           <h3>Formas em Manutenção e Histórico de Paradas</h3>
           <span>Total: <span id="rmTabelaTotal">0</span> registros</span>
@@ -1257,6 +1282,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=teste-lab-20260710"></script>
+  <script src="app.js?v=modomanutencao-v110"></script>
 </body>
 </html>

@@ -1,75 +1,33 @@
 /* =========================================================
-   MAPA DE CONCRETAGEM — Service Worker Independente
+   MAPA DE CONCRETAGEM TESTE - Service Worker reset
+   v1.11: remove caches antigos e desativa o SW no ambiente teste
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.08";
-const ASSETS = [
-  "./",
-  "./index.html",
-  "./styles.css",
-  "./app.js",
-  "./supabase.js",
-  "./chart.min.js",
-  "./chartjs-plugin-datalabels.min.js",
-  "./manifest.json",
-  "../assets/msgbox.css",
-  "../assets/msgbox.js",
-  "../assets/img/icon.png"
-];
+const CACHE_NAME = "mapa-concretagem-teste-v1.11-reset";
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
-        })
-      )
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys
+          .filter((key) => key.includes("mapa-concretagem"))
+          .map((key) => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
+      .then(() => self.registration.unregister())
+      .then(() => self.clients.matchAll({ type: "window", includeUncontrolled: true }))
+      .then((clients) => {
+        for (const client of clients) {
+          client.postMessage({ type: "SW_RESET_DONE", version: CACHE_NAME });
+        }
+      })
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  const url = new URL(event.request.url);
-
-  // Pular requisições de API e Supabase
-  if (url.href.includes("script.google.com") || url.href.includes("supabase.co")) return;
-
-  // network-first para HTML / navegação
-  if (event.request.mode === "navigate" || url.pathname.endsWith(".html")) {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request).then((cached) => cached || caches.match("./index.html")))
-    );
-    return;
-  }
-
-  // cache-first para recursos estáticos
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (response.ok && event.request.method === "GET") {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return response;
-      });
-    })
-  );
+self.addEventListener("fetch", () => {
+  return;
 });

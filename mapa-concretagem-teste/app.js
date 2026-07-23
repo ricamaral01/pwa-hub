@@ -608,6 +608,7 @@ function getSectorForms(setor) {
 }
 
 const MANUTENCAO_FORMAS_KEY = "mapa_formas_manutencao_v1";
+const MANUTENCAO_FORMAS_TABLE = "formas_manutencao";
 
 function isManutencaoAuthorizedUser() {
   if (!state.authUser || !state.authUser.name) return false;
@@ -634,6 +635,54 @@ function salvarFormasManutencaoObj(obj) {
   }
 }
 
+function mergeFormasManutencao(localObj, remoteRows) {
+  const merged = { ...(localObj || {}) };
+  (remoteRows || []).forEach((row) => {
+    const key = row.id || `${row.setor}_${row.forma_numero}`;
+    const local = merged[key];
+    const localTime = new Date(local?.updated_at || 0).getTime();
+    const remoteTime = new Date(row.updated_at || 0).getTime();
+    if (!local || remoteTime >= localTime) merged[key] = row;
+  });
+  return merged;
+}
+
+async function carregarFormasManutencaoSupabase() {
+  if (!supabaseClient || !navigator.onLine) return getFormasManutencao();
+  try {
+    const { data, error } = await supabaseClient
+      .from(MANUTENCAO_FORMAS_TABLE)
+      .select("*")
+      .order("updated_at", { ascending: false });
+    if (error) throw error;
+    const merged = mergeFormasManutencao(getFormasManutencao(), data || []);
+    salvarFormasManutencaoObj(merged);
+    return merged;
+  } catch (err) {
+    console.warn("Manutencao: usando cache local; falha ao carregar Supabase:", err);
+    return getFormasManutencao();
+  }
+}
+
+async function sincronizarFormaManutencaoSupabase(record) {
+  if (!supabaseClient || !navigator.onLine || !record) return;
+  try {
+    const { error } = await supabaseClient
+      .from(MANUTENCAO_FORMAS_TABLE)
+      .upsert(record, { onConflict: "id" });
+    if (error) throw error;
+  } catch (err) {
+    console.warn("Manutencao: registro mantido offline; falha ao sincronizar:", err);
+  }
+}
+
+async function sincronizarManutencaoLocalPendente() {
+  if (!supabaseClient || !navigator.onLine) return;
+  const all = getFormasManutencao();
+  await Promise.all(Object.entries(all).map(([key, record]) => sincronizarFormaManutencaoSupabase({ id: key, ...record })));
+  await carregarFormasManutencaoSupabase();
+}
+
 function isFormaEmManutencao(setor, formaNumero) {
   const all = getFormasManutencao();
   const key = `${setor}_${formaNumero}`;
@@ -651,6 +700,7 @@ function salvarFormaParadaManutencao(setor, formaNumero, motivo, acao) {
   const userStr = state.authUser?.name || "Usuário";
   
   all[key] = {
+    id: key,
     setor,
     forma_numero: formaNumero,
     status: "PARADA",
@@ -664,6 +714,8 @@ function salvarFormaParadaManutencao(setor, formaNumero, motivo, acao) {
     updated_at: new Date().toISOString()
   };
   salvarFormasManutencaoObj(all);
+  sincronizarFormaManutencaoSupabase(all[key]);
+  atualizarIndicadoresManutencaoHub();
 }
 
 function liberarFormaManutencao(setor, formaNumero, obs) {
@@ -673,12 +725,15 @@ function liberarFormaManutencao(setor, formaNumero, obs) {
   const userStr = state.authUser?.name || "Usuário";
   
   if (all[key]) {
+    all[key].id = all[key].id || key;
     all[key].status = "LIBERADA";
     all[key].liberada_em = nowStr;
     all[key].liberada_por = userStr;
     all[key].obs_liberacao = obs;
     all[key].updated_at = new Date().toISOString();
     salvarFormasManutencaoObj(all);
+    sincronizarFormaManutencaoSupabase(all[key]);
+    atualizarIndicadoresManutencaoHub();
   }
 }
 
@@ -1722,7 +1777,7 @@ function setCardState(card, cardState) {
     card.disabled = true;
   } else if (cardState === "saved") {
     statusEl.textContent = "✓";
-    card.disabled = !state.programmingMode && !state.liberationMode && !state.odinMode;
+    card.disabled = !state.programmingMode && !state.liberationMode && !state.odinMode && !state.manutencaoMode;
   } else if (cardState === "error") {
     statusEl.textContent = "✗";
     card.disabled = false;
@@ -2102,15 +2157,54 @@ function openModalLiberacao(setor, formaNumero, manutencaoRec) {
   document.getElementById("modalManutencaoLiberacao")?.classList.add("modal-visible");
 }
 
+function getRelatorioManutencaoFiltros() {
+  return {
+    status: document.getElementById("rmFiltroStatus")?.value || "TODOS",
+    dataInicio: document.getElementById("rmFiltroDataInicio")?.value || "",
+    dataFim: document.getElementById("rmFiltroDataFim")?.value || ""
+  };
+}
+
+function manutencaoRecordMatchesFiltros(item, filtros) {
+  if (filtros.status !== "TODOS" && item.status !== filtros.status) return false;
+  const updatedAt = item.updated_at ? String(item.updated_at).slice(0, 10) : "";
+  if (filtros.dataInicio && updatedAt && updatedAt < filtros.dataInicio) return false;
+  if (filtros.dataFim && updatedAt && updatedAt > filtros.dataFim) return false;
+  return true;
+}
+
+function atualizarIndicadoresManutencaoHub() {
+  const counts = { "Setor 1": 0, "Setor 2": 0, "Setor 3": 0, "Setor 4": 0 };
+  Object.values(getFormasManutencao()).forEach((item) => {
+    if (item.status === "PARADA" && Object.prototype.hasOwnProperty.call(counts, item.setor)) {
+      counts[item.setor] += 1;
+    }
+  });
+  const map = {
+    manKpiS1: counts["Setor 1"],
+    manKpiS2: counts["Setor 2"],
+    manKpiS3: counts["Setor 3"],
+    manKpiS4: counts["Setor 4"]
+  };
+  Object.entries(map).forEach(([id, value]) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = String(value);
+  });
+}
+
 function renderizarRelatorioManutencao() {
   const tbody = document.getElementById("rmTabelaBody");
   const totalEl = document.getElementById("rmTabelaTotal");
   if (!tbody) return;
   
   const all = getFormasManutencao();
-  const list = Object.values(all).sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
+  const filtros = getRelatorioManutencaoFiltros();
+  const list = Object.values(all)
+    .filter((item) => manutencaoRecordMatchesFiltros(item, filtros))
+    .sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
   
   if (totalEl) totalEl.textContent = list.length;
+  atualizarIndicadoresManutencaoHub();
   
   if (list.length === 0) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 20px; color:#64748b;">Nenhuma forma em manutenção registrada até o momento.</td></tr>`;
@@ -6810,12 +6904,17 @@ function setMode(mode) {
   if (mode === "RELATORIO_MANUTENCAO") {
     if (el.viewRelatorioManutencao) el.viewRelatorioManutencao.classList.remove("hidden");
     renderizarRelatorioManutencao();
+    carregarFormasManutencaoSupabase().then(() => {
+      renderizarRelatorioManutencao();
+      renderLiberacaoDual();
+    });
   }
 
   document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular");
   if (mode === "HUB") {
     document.body.classList.add("mode-hub");
     applyAutoResponsibleFields();
+    atualizarIndicadoresManutencaoHub();
   }
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
@@ -7409,6 +7508,7 @@ function bindEvents() {
     salvarFormaParadaManutencao(pendingManutencaoSelection.setor, pendingManutencaoSelection.formaNumero, motivo, acao);
     modalParada?.classList.remove("modal-visible");
     renderLiberacaoDual();
+    renderizarRelatorioManutencao();
     setSyncStatus("ok", `Forma ${pendingManutencaoSelection.formaNumero} inativada por manutenção.`);
   });
 
@@ -7433,6 +7533,19 @@ function bindEvents() {
     modalLiberacao?.classList.remove("modal-visible");
     renderLiberacaoDual();
     setSyncStatus("ok", `Forma ${pendingManutencaoSelection.formaNumero} liberada da manutenção.`);
+  });
+
+  ["rmFiltroStatus", "rmFiltroDataInicio", "rmFiltroDataFim"].forEach((id) => {
+    document.getElementById(id)?.addEventListener("input", renderizarRelatorioManutencao);
+  });
+  document.getElementById("rmBtnLimparFiltros")?.addEventListener("click", () => {
+    const status = document.getElementById("rmFiltroStatus");
+    const dataInicio = document.getElementById("rmFiltroDataInicio");
+    const dataFim = document.getElementById("rmFiltroDataFim");
+    if (status) status.value = "TODOS";
+    if (dataInicio) dataInicio.value = "";
+    if (dataFim) dataFim.value = "";
+    renderizarRelatorioManutencao();
   });
 
   document.getElementById("rmBtnImprimirPDF")?.addEventListener("click", () => {
@@ -8039,7 +8152,9 @@ async function syncOfflineData() {
     setSyncStatus("ok", `Sincronização offline automática concluída! ${syncedCount} item(ns) enviado(s).`);
     try {
       await loadClickedFormsFromSupabase();
+      await sincronizarManutencaoLocalPendente();
       renderLiberacaoDual();
+      renderizarRelatorioManutencao();
     } catch (e) {
       console.error("Erro ao recarregar dados pós sincronização:", e);
     }
@@ -8092,6 +8207,15 @@ function subscribeToRealtimeUpdates() {
             renderLiberacaoDual();
           }
         }
+      }
+    )
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: MANUTENCAO_FORMAS_TABLE },
+      async () => {
+        await carregarFormasManutencaoSupabase();
+        renderLiberacaoDual();
+        renderizarRelatorioManutencao();
       }
     )
     .subscribe((status) => {
@@ -9284,6 +9408,11 @@ function init() {
   renderInspecaoCodigosChecklist();
   bindEvents();
   subscribeToRealtimeUpdates();
+  atualizarIndicadoresManutencaoHub();
+  carregarFormasManutencaoSupabase().then(() => {
+    atualizarIndicadoresManutencaoHub();
+    renderLiberacaoDual();
+  });
 
   const now = todayYmd();
   if (el.libData) el.libData.value = now;
@@ -9307,6 +9436,12 @@ function init() {
 
   if ("serviceWorker" in navigator) {
     let refreshing = false;
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
+        refreshing = true;
+        window.location.replace(window.location.pathname + "?cache-reset=v111");
+      }
+    });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
@@ -9314,7 +9449,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.11-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10717,7 +10852,7 @@ async function updateSwVersionBadge() {
   }
 
   try {
-    const response = await fetch("sw.js");
+    const response = await fetch("sw.js?v=" + Date.now(), { cache: "no-store" });
     if (response.ok) {
       const text = await response.text();
       const match = text.match(/CACHE_NAME\s*=\s*["']mapa-concretagem(?:-teste)?-v([^"']+)["']/);
