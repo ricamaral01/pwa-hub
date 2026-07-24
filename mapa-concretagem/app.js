@@ -7,19 +7,19 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   MONTADOR: {
     label: "Montador",
-    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3"]
+    modes: ["INSPECAO", "MONTAGEM_POSTES", "SEQUENCIA_S3", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   APONTADOR: {
     label: "Apontador",
-    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR"]
+    modes: ["LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   }
 };
 
@@ -218,6 +218,40 @@ const CHECKLIST_INSPECAO_CODIGOS = [
   { codigo: "R", descricao: "Rugosidade" },
   { codigo: "S", descricao: "Acabamento quinas" }
 ];
+
+const INDIVIDUAL_RESPONSAVEIS = ["Alex", "José Carlos", "Osmar", "Philippe", "Ricardo"];
+
+const MATRIZ_DEFEITOS_RESPONSAVEIS = {
+  A: { codigo: "A", descricao: "Falha na Concretagem / Armação Aparente", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Ferragem exposta sem cobrimento mínimo de concreto ou ninhos de abelha no fuste.", acao: "Refugo / Descarte Imediato (Compromete Durabilidade e Estrutura)", responsavel: "Osmar / José Carlos", responsaveisLista: ["Osmar", "José Carlos"] },
+  B: { codigo: "B", descricao: "Cano Entupido", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Eletroduto/tubulação interna de passagem de cabos totalmente obstruída por concreto.", acao: "Refugo / Descarte (Poste Inutilizado para Rede Elétrica)", responsavel: "Osmar / José Carlos", responsaveisLista: ["Osmar", "José Carlos"] },
+  C: { codigo: "C", descricao: "Excesso de Bolhas", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Presença de bolhas de ar superficiais fora do padrão estético no fuste.", acao: "Encaminhar para Acabamento / Estucagem Superficial", responsavel: "Philippe / Ricardo", responsaveisLista: ["Philippe", "Ricardo"] },
+  D: { codigo: "D", descricao: "Problema na Caixa do Relógio ou Disjuntor", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Desalinhamento, quebra parcial ou avaria nos nichos das caixas de medição.", acao: "Retrabalho de Ajuste e Reparo na Caixa", responsavel: "Alex", responsaveisLista: ["Alex"] },
+  E: { codigo: "E", descricao: "Furos Obstruídos ou Faltando (Facão / Pinos)", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Furação de fixação de isoladores ou facão do topo obstruídos por concreto.", acao: "Tentativa de Desobstrução / Se Inviável, Reprovação", responsavel: "Osmar / José Carlos", responsaveisLista: ["Osmar", "José Carlos"] },
+  F: { codigo: "F", descricao: "Identificação do Poste (Carimbos)", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Carimbo de identificação ilegível ou marcação incorreta de esforço/comprimento.", acao: "Re-carimbagem e Correção de Identificação", responsavel: "Osmar / José Carlos", responsaveisLista: ["Osmar", "José Carlos"] },
+  G: { codigo: "G", descricao: "Presença de Trincas Superficiais", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Fissuras superficiais capilares decorrentes de tensão na desforma.", acao: "Calafetagem Superficial e Monitoramento", responsavel: "Philippe / Ricardo", responsaveisLista: ["Philippe", "Ricardo"] },
+  H: { codigo: "H", descricao: "Bolha nas Caixas", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Acúmulo de bolhas de ar nos contornos internos/externos dos nichos.", acao: "Estucagem e Acabamento Manuais", responsavel: "Philippe / Ricardo", responsaveisLista: ["Philippe", "Ricardo"] },
+  I: { codigo: "I", descricao: "Trincas em Toda a Extensão do Poste", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Trinca estrutural transversal ou longitudinal contínua ao longo do fuste.", acao: "Refugo Imediato (Perda de Capacidade Mecânica)", responsavel: "Philippe / Ricardo", responsaveisLista: ["Philippe", "Ricardo"] },
+  J: { codigo: "J", descricao: "Pequenas Avarias", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Lascas superficiais de pequena dimensão ou rebarbas de desforma.", acao: "Acabamento e Reparo com Argamassa Estrutural", responsavel: "Ricardo / Alex", responsaveisLista: ["Ricardo", "Alex"] },
+  K: { codigo: "K", descricao: "Manchas Brancas Superficiais", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Eflorescência salina ou manchas de nata de cimento na superfície.", acao: "Limpeza Química / Escovação da Superfície", responsavel: "Philippe / Ricardo", responsaveisLista: ["Philippe", "Ricardo"] },
+  L: { codigo: "L", descricao: "Buchas das Caixas / Buchas EDP", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Buchas de fixação desalinhadas ou obstruídas com nata de concreto.", acao: "Limpeza das Roscas / Re-macho de Rosca", responsavel: "Osmar / José Carlos", responsaveisLista: ["Osmar", "José Carlos"] },
+  M: { codigo: "M", descricao: "Parafuso Lacre da Caixa do Medidor", classificacao: "NÃO CRÍTICO", status: "Retrabalho (RR)", detalhamento: "Prisioneiros de lacre ou aterramento cobertos de nata.", acao: "Limpeza dos Prisioneiros e Roscas", responsavel: "Osmar / José Carlos", responsaveisLista: ["Osmar", "José Carlos"] },
+  O: { codigo: "O", descricao: "Falha no Concreto (Concreto Segregado)", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Segregação entre brita e argamassa ou falta de homogeneidade do concreto.", acao: "Refugo Imediato (Falta de Resistência Mecânica)", responsavel: "Ricardo / Alex", responsaveisLista: ["Ricardo", "Alex"] },
+  P: { codigo: "P", descricao: "Grandes Avarias", classificacao: "CRÍTICO", status: "Reprova (R)", detalhamento: "Fraturas, quebras de quinas extensas ou avarias de transporte interno.", acao: "Refugo / Sucata (Dano Estrutural Irreversível)", responsavel: "Ricardo / Alex", responsaveisLista: ["Ricardo", "Alex"] }
+};
+
+function getDefeitoInfo(codigo) {
+  const c = String(codigo || "").trim().toUpperCase();
+  return MATRIZ_DEFEITOS_RESPONSAVEIS[c] || {
+    codigo: c || "-",
+    descricao: "Não especificado",
+    classificacao: "NÃO CRÍTICO",
+    status: "Retrabalho (RR)",
+    detalhamento: "Não conformidade técnica registrada.",
+    acao: "Análise técnica de qualidade",
+    responsavel: "Equipe de Qualidade",
+    responsaveisLista: ["Equipe de Qualidade"]
+  };
+}
 
 const POSTES_DUPLO_T_CATALOGO = [
   { codigo: "C", descricao: "Padrao Completo 2 cx VR", setor: "Setor 2", codigoProduto: "943", chaves: ["C"] },
@@ -607,6 +641,151 @@ function getSectorForms(setor) {
   };
 }
 
+const MANUTENCAO_FORMAS_KEY = "mapa_formas_manutencao_v1";
+const MANUTENCAO_FORMAS_TABLE = "formas_manutencao";
+
+function isManutencaoAuthorizedUser() {
+  if (!state.authUser || !state.authUser.name) return false;
+  const name = String(state.authUser.name).trim().toLowerCase();
+  const role = String(state.authUser.role || "").trim().toUpperCase();
+  if (role === "GESTOR" || role === "GERENCIA" || role === "ADMIN") return true;
+  return name.includes("ricardo") || name.includes("philippe") || name.includes("jose carlos") || name.includes("josé carlos");
+}
+
+function getFormasManutencao() {
+  try {
+    const raw = localStorage.getItem(MANUTENCAO_FORMAS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function salvarFormasManutencaoObj(obj) {
+  try {
+    localStorage.setItem(MANUTENCAO_FORMAS_KEY, JSON.stringify(obj));
+  } catch(e) {
+    console.error("Erro ao salvar formas manutencao:", e);
+  }
+}
+
+function mergeFormasManutencao(localObj, remoteRows) {
+  const merged = { ...(localObj || {}) };
+  (remoteRows || []).forEach((row) => {
+    const key = row.id || `${row.setor}_${row.forma_numero}`;
+    const local = merged[key];
+    const localTime = new Date(local?.updated_at || 0).getTime();
+    const remoteTime = new Date(row.updated_at || 0).getTime();
+    if (!local || remoteTime >= localTime) merged[key] = row;
+  });
+  return merged;
+}
+
+async function carregarFormasManutencaoSupabase() {
+  if (!supabaseClient || !navigator.onLine) return getFormasManutencao();
+  try {
+    const { data, error } = await supabaseClient
+      .from(MANUTENCAO_FORMAS_TABLE)
+      .select("*")
+      .order("updated_at", { ascending: false });
+    if (error) throw error;
+    const merged = mergeFormasManutencao(getFormasManutencao(), data || []);
+    salvarFormasManutencaoObj(merged);
+    return merged;
+  } catch (err) {
+    console.warn("Manutencao: usando cache local; falha ao carregar Supabase:", err);
+    return getFormasManutencao();
+  }
+}
+
+async function sincronizarFormaManutencaoSupabase(record) {
+  if (!supabaseClient || !navigator.onLine || !record) return;
+  try {
+    const { error } = await supabaseClient
+      .from(MANUTENCAO_FORMAS_TABLE)
+      .upsert(record, { onConflict: "id" });
+    if (error) throw error;
+  } catch (err) {
+    console.warn("Manutencao: registro mantido offline; falha ao sincronizar:", err);
+  }
+}
+
+async function sincronizarManutencaoLocalPendente() {
+  if (!supabaseClient || !navigator.onLine) return;
+  const all = getFormasManutencao();
+  await Promise.all(Object.entries(all).map(([key, record]) => sincronizarFormaManutencaoSupabase({ id: key, ...record })));
+  await carregarFormasManutencaoSupabase();
+}
+
+function getManutencaoKey(setor, formaNumero) {
+  return `${String(setor || "").trim()}_${normalizeUpper(formaNumero)}`;
+}
+
+function isFormaEmManutencao(setor, formaNumero) {
+  const all = getFormasManutencao();
+  const key = getManutencaoKey(setor, formaNumero);
+  const rec = all[key];
+  if (rec && rec.status === "PARADA") {
+    return rec;
+  }
+  return null;
+}
+
+function salvarFormaParadaManutencao(setor, formaNumero, motivo, acao) {
+  const all = getFormasManutencao();
+  const key = getManutencaoKey(setor, formaNumero);
+  const nowStr = new Date().toLocaleString("pt-BR");
+  const userStr = state.authUser?.name || "Usuário";
+  
+  all[key] = {
+    id: key,
+    setor: String(setor || "").trim(),
+    forma_numero: normalizeUpper(formaNumero),
+    status: "PARADA",
+    motivo_parada: motivo,
+    acao_necessaria: acao,
+    parada_em: nowStr,
+    parada_por: userStr,
+    liberada_em: null,
+    liberada_por: null,
+    obs_liberacao: null,
+    updated_at: new Date().toISOString()
+  };
+  salvarFormasManutencaoObj(all);
+  sincronizarFormaManutencaoSupabase(all[key]);
+  atualizarIndicadoresManutencaoHub();
+}
+
+function liberarFormaManutencao(setor, formaNumero, obs) {
+  const all = getFormasManutencao();
+  const key = getManutencaoKey(setor, formaNumero);
+  const nowStr = new Date().toLocaleString("pt-BR");
+  const userStr = state.authUser?.name || "Usuário";
+  
+  if (!all[key]) {
+    all[key] = {
+      id: key,
+      setor: String(setor || "").trim(),
+      forma_numero: normalizeUpper(formaNumero),
+      motivo_parada: "Manutenção",
+      acao_necessaria: "Manutenção",
+      parada_em: nowStr,
+      parada_por: userStr
+    };
+  }
+  all[key].id = key;
+  all[key].status = "LIBERADA";
+  all[key].liberada_em = nowStr;
+  all[key].liberada_por = userStr;
+  all[key].obs_liberacao = obs;
+  all[key].updated_at = new Date().toISOString();
+  salvarFormasManutencaoObj(all);
+  sincronizarFormaManutencaoSupabase(all[key]);
+  atualizarIndicadoresManutencaoHub();
+}
+
+let pendingManutencaoSelection = null;
+
 const state = {
   mode: "HUB",
   authUser: null,
@@ -622,6 +801,7 @@ const state = {
   programmingMode: false,
   liberationMode: false,
   odinMode: false,
+  manutencaoMode: false,
   programmedFormas: new Set(),
   dbDataCache: {},
   dbDataStatusCache: {},
@@ -678,6 +858,12 @@ const el = {
   viewMontagemPostesDetalhe: document.getElementById("viewMontagemPostesDetalhe"),
   viewRelatorio: document.getElementById("viewRelatorio"),
   viewHistorico: document.getElementById("viewHistorico"),
+  hubRelatorioManutencao: document.getElementById("hubRelatorioManutencao"),
+  viewRelatorioManutencao: document.getElementById("viewRelatorioManutencao"),
+  hubTratativaDefeitos: document.getElementById("hubTratativaDefeitos"),
+  viewTratativaDefeitos: document.getElementById("viewTratativaDefeitos"),
+  kioskManutencaoCheckbox: document.getElementById("kioskManutencaoCheckbox"),
+  kioskManutencaoToggleField: document.getElementById("kioskManutencaoToggleField"),
   hubAcmpConcretagem: document.getElementById("hubAcmpConcretagem"),
   viewAcmpConcretagem: document.getElementById("viewAcmpConcretagem"),
   navUsuarios: document.getElementById("navUsuarios"),
@@ -1640,7 +1826,7 @@ function setCardState(card, cardState) {
     card.disabled = true;
   } else if (cardState === "saved") {
     statusEl.textContent = "✓";
-    card.disabled = !state.programmingMode && !state.liberationMode && !state.odinMode;
+    card.disabled = !state.programmingMode && !state.liberationMode && !state.odinMode && !state.manutencaoMode;
   } else if (cardState === "error") {
     statusEl.textContent = "✗";
     card.disabled = false;
@@ -1685,10 +1871,39 @@ function createFormaCard(item, setor) {
   card.appendChild(tipoEl);
   card.appendChild(statusEl);
 
+  // Verificar se a forma está em manutenção (Parada)
+  const manutencaoRec = isFormaEmManutencao(setor, item.forma);
+  if (manutencaoRec) {
+    card.classList.add("is-manutencao");
+    card.title = `🛠️ PARADA / MANUTENÇÃO\nMotivo: ${manutencaoRec.motivo_parada}\nArrumar: ${manutencaoRec.acao_necessaria}`;
+  }
+
   // Destacar se estiver programada
   if (state.programmedFormas && state.programmedFormas.has(normalizeUpper(item.forma))) {
     card.classList.add("is-programmed");
   }
+
+  const handleCardClickWithMaintenance = (normalAction) => {
+    if (state.manutencaoMode) {
+      if (manutencaoRec) {
+        openModalLiberacao(setor, item.forma, manutencaoRec);
+      } else {
+        openModalParada(setor, item.forma);
+      }
+      return;
+    }
+    if (manutencaoRec) {
+      if (typeof msgbox !== "undefined") {
+        msgbox.alert(
+          `🛠️ FORMA EM MANUTENÇÃO!\n\nA forma ${item.forma} (${setor}) está INATIVA para manutenção e não pode ser programada nem liberada.\n\n• Motivo: ${manutencaoRec.motivo_parada}\n• Serviço: ${manutencaoRec.acao_necessaria}\n• Parada em: ${manutencaoRec.parada_em} por ${manutencaoRec.parada_por}`
+        );
+      } else {
+        alert(`🛠️ FORMA EM MANUTENÇÃO!\nForma ${item.forma} está inativa.\nMotivo: ${manutencaoRec.motivo_parada}`);
+      }
+      return;
+    }
+    normalAction();
+  };
 
   if (isFormaClicked(item.forma, setor)) {
     const tipo = getConcreteTypeForForma(item.forma, setor);
@@ -1697,76 +1912,78 @@ function createFormaCard(item, setor) {
       tipoEl.style.display = "block";
     }
     setCardState(card, "saved");
-    // Concreted forms remain green (is-saved) with the concrete type visible.
 
-    // Permitir alternar programação mesmo se concretado no Modo Programação
     card.addEventListener("click", () => {
-      if (state.programmingMode) {
-        toggleFormaProgramada(item.forma, setor, card);
-        return;
-      }
-      if (state.odinMode) {
-        cancelarOuDesprogramarOdin(item.forma, setor, card);
-        return;
-      }
+      handleCardClickWithMaintenance(() => {
+        if (state.programmingMode) {
+          toggleFormaProgramada(item.forma, setor, card);
+          return;
+        }
+        if (state.odinMode) {
+          cancelarOuDesprogramarOdin(item.forma, setor, card);
+          return;
+        }
+      });
     });
   } else if (isFormaLiberada(item.forma, setor)) {
     card.classList.add("is-liberada");
     card.addEventListener("click", () => {
-      if (state.programmingMode) {
-        toggleFormaProgramada(item.forma, setor, card);
-        return;
-      }
-      if (state.odinMode) {
-        cancelarOuDesprogramarOdin(item.forma, setor, card);
-        return;
-      }
-      if (state.liberationMode) {
-        // Já está liberada. Pode reverter ou fazer nada (ignorar por enquanto)
-        return;
-      }
-      // Modo Normal: Concretar
-      const data = el.libData?.value;
-      const colaborador = getProductionCollaborator();
-      if (!data) {
-        showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
-        el.libData?.focus();
-        return;
-      }
-      if (!colaborador) {
-        showLibFeedback("Preencha o colaborador antes de registrar.", "error");
-        el.libColaborador?.focus();
-        return;
-      }
-      showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+      handleCardClickWithMaintenance(() => {
+        if (state.programmingMode) {
+          toggleFormaProgramada(item.forma, setor, card);
+          return;
+        }
+        if (state.odinMode) {
+          cancelarOuDesprogramarOdin(item.forma, setor, card);
+          return;
+        }
+        if (state.liberationMode) {
+          return;
+        }
+        const data = el.libData?.value;
+        const colaborador = getProductionCollaborator();
+        if (!data) {
+          showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
+          el.libData?.focus();
+          return;
+        }
+        if (!colaborador) {
+          showLibFeedback("Preencha o colaborador antes de registrar.", "error");
+          el.libColaborador?.focus();
+          return;
+        }
+        showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+      });
     });
   } else {
     card.addEventListener("click", () => {
-      if (state.programmingMode) {
-        toggleFormaProgramada(item.forma, setor, card);
-        return;
-      }
-      if (state.odinMode) {
-        cancelarOuDesprogramarOdin(item.forma, setor, card);
-        return;
-      }
-      const data = el.libData?.value;
-      const colaborador = getProductionCollaborator();
-      if (!data) {
-        showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
-        el.libData?.focus();
-        return;
-      }
-      if (!colaborador) {
-        showLibFeedback("Preencha o colaborador antes de registrar.", "error");
-        el.libColaborador?.focus();
-        return;
-      }
-      if (state.liberationMode) {
-        liberarFormaClicada(item.forma, setor, card, item.modelo || "");
-      } else {
-        showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
-      }
+      handleCardClickWithMaintenance(() => {
+        if (state.programmingMode) {
+          toggleFormaProgramada(item.forma, setor, card);
+          return;
+        }
+        if (state.odinMode) {
+          cancelarOuDesprogramarOdin(item.forma, setor, card);
+          return;
+        }
+        const data = el.libData?.value;
+        const colaborador = getProductionCollaborator();
+        if (!data) {
+          showLibFeedback("Preencha a data de fabricação antes de registrar.", "error");
+          el.libData?.focus();
+          return;
+        }
+        if (!colaborador) {
+          showLibFeedback("Preencha o colaborador antes de registrar.", "error");
+          el.libColaborador?.focus();
+          return;
+        }
+        if (state.liberationMode) {
+          liberarFormaClicada(item.forma, setor, card, item.modelo || "");
+        } else {
+          showConcreteTypePopup(item.forma, setor, card, item.modelo || "");
+        }
+      });
     });
   }
 
@@ -1831,6 +2048,13 @@ function createS4TableRow(item, setor) {
   const tdInsCod = document.createElement("td");
   tdInsCod.className = "td-ins-cod";
 
+  // Verificar se a forma está em manutenção (Parada)
+  const manutencaoRec = isFormaEmManutencao(setor, item.forma);
+  if (manutencaoRec) {
+    tdForma.classList.add("is-manutencao");
+    tdForma.title = `🛠️ PARADA / MANUTENÇÃO\nMotivo: ${manutencaoRec.motivo_parada}\nArrumar: ${manutencaoRec.acao_necessaria}`;
+  }
+
   const refreshRow = () => {
     if (isFormaClicked(item.forma, setor)) {
       tdForma.classList.add("is-saved");
@@ -1850,10 +2074,36 @@ function createS4TableRow(item, setor) {
   tdForma.refreshRow = refreshRow;
 
   tdForma.addEventListener("click", () => {
+    if (state.manutencaoMode) {
+      if (manutencaoRec) {
+        openModalLiberacao(setor, item.forma, manutencaoRec);
+      } else {
+        openModalParada(setor, item.forma);
+      }
+      return;
+    }
+    if (manutencaoRec) {
+      if (typeof msgbox !== "undefined") {
+        msgbox.alert(
+          `🛠️ FORMA EM MANUTENÇÃO!\n\nA forma ${item.forma} (${setor}) está INATIVA para manutenção e não pode ser programada nem liberada.\n\n• Motivo: ${manutencaoRec.motivo_parada}\n• Serviço: ${manutencaoRec.acao_necessaria}\n• Parada em: ${manutencaoRec.parada_em} por ${manutencaoRec.parada_por}`
+        );
+      } else {
+        alert(`🛠️ FORMA EM MANUTENÇÃO!\nForma ${item.forma} está inativa.\nMotivo: ${manutencaoRec.motivo_parada}`);
+      }
+      return;
+    }
+    if (state.programmingMode) {
+      toggleFormaProgramada(item.forma, setor, tdForma);
+      return;
+    }
+    if (state.odinMode) {
+      cancelarOuDesprogramarOdin(item.forma, setor, tdForma);
+      return;
+    }
     const data = el.libData?.value;
     const colaborador = getProductionCollaborator();
-    if (!data) { showLibFeedback("Data!", "error"); return; }
-    if (!colaborador) { showLibFeedback("Colaborador!", "error"); return; }
+    if (!data) { showLibFeedback("Preencha a data de fabricação antes de registrar.", "error"); return; }
+    if (!colaborador) { showLibFeedback("Preencha o colaborador antes de registrar.", "error"); return; }
     showConcreteTypePopup(item.forma, setor, tdForma, item.modelo || "");
   });
 
@@ -1924,6 +2174,496 @@ function renderSetor4Mapa(container) {
   container.appendChild(grid);
 }
 
+function openModalParada(setor, formaNumero) {
+  pendingManutencaoSelection = { setor, formaNumero };
+  const titleEl = document.getElementById("mParadaTitle");
+  const subEl = document.getElementById("mParadaSub");
+  if (titleEl) titleEl.textContent = `Inativar Forma ${formaNumero}`;
+  if (subEl) subEl.textContent = `Setor: ${setor} — Registre o motivo da parada`;
+  const mot = document.getElementById("mParadaMotivo");
+  const aca = document.getElementById("mParadaAcao");
+  if (mot) mot.value = "";
+  if (aca) aca.value = "";
+  document.getElementById("modalManutencaoParada")?.classList.add("modal-visible");
+}
+
+function openModalLiberacao(setor, formaNumero, manutencaoRec) {
+  pendingManutencaoSelection = { setor, formaNumero };
+  const titleEl = document.getElementById("mLiberacaoTitle");
+  const subEl = document.getElementById("mLiberacaoSub");
+  const infoEl = document.getElementById("mLiberacaoInfo");
+  if (titleEl) titleEl.textContent = `Liberar Forma ${formaNumero}`;
+  if (subEl) subEl.textContent = `Setor: ${setor} — Retornar para o estado ativo`;
+  if (infoEl) {
+    infoEl.innerHTML = `
+      <div><strong>Parada em:</strong> ${escapeHtml(manutencaoRec.parada_em || "-")} por ${escapeHtml(manutencaoRec.parada_por || "-")}</div>
+      <div style="margin-top:2px;"><strong>Motivo:</strong> ${escapeHtml(manutencaoRec.motivo_parada || "-")}</div>
+      <div style="margin-top:2px;"><strong>Serviço Solicitado:</strong> ${escapeHtml(manutencaoRec.acao_necessaria || "-")}</div>
+    `;
+  }
+  const obs = document.getElementById("mLiberacaoObs");
+  if (obs) obs.value = "";
+  document.getElementById("modalManutencaoLiberacao")?.classList.add("modal-visible");
+}
+
+function getRelatorioManutencaoFiltros() {
+  return {
+    status: document.getElementById("rmFiltroStatus")?.value || "TODOS",
+    dataInicio: document.getElementById("rmFiltroDataInicio")?.value || "",
+    dataFim: document.getElementById("rmFiltroDataFim")?.value || ""
+  };
+}
+
+function manutencaoRecordMatchesFiltros(item, filtros) {
+  if (filtros.status !== "TODOS" && item.status !== filtros.status) return false;
+  const updatedAt = item.updated_at ? String(item.updated_at).slice(0, 10) : "";
+  if (filtros.dataInicio && updatedAt && updatedAt < filtros.dataInicio) return false;
+  if (filtros.dataFim && updatedAt && updatedAt > filtros.dataFim) return false;
+  return true;
+}
+
+function atualizarIndicadoresManutencaoHub() {
+  const counts = { "Setor 1": 0, "Setor 2": 0, "Setor 3": 0, "Setor 4": 0 };
+  Object.values(getFormasManutencao()).forEach((item) => {
+    if (item.status === "PARADA" && Object.prototype.hasOwnProperty.call(counts, item.setor)) {
+      counts[item.setor] += 1;
+    }
+  });
+  const map = {
+    manKpiS1: counts["Setor 1"],
+    manKpiS2: counts["Setor 2"],
+    manKpiS3: counts["Setor 3"],
+    manKpiS4: counts["Setor 4"]
+  };
+  Object.entries(map).forEach(([id, value]) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = String(value);
+  });
+}
+
+function calcularDiasParada(paradaEmStr, liberadaEmStr, status) {
+  if (!paradaEmStr) return { dias: 0, label: "-" };
+  
+  let dateInicio = null;
+  if (paradaEmStr.includes("/")) {
+    const parts = paradaEmStr.split(",");
+    const dateParts = parts[0].trim().split("/");
+    if (dateParts.length === 3) {
+      dateInicio = new Date(`${dateParts[2]}-${dateParts[1].padStart(2, "0")}-${dateParts[0].padStart(2, "0")}`);
+    }
+  }
+  if (!dateInicio || isNaN(dateInicio.getTime())) {
+    dateInicio = new Date(paradaEmStr);
+  }
+  if (isNaN(dateInicio.getTime())) return { dias: 0, label: "-" };
+  
+  let dateFim = new Date();
+  if (status === "LIBERADA" && liberadaEmStr) {
+    let dateLib = null;
+    if (liberadaEmStr.includes("/")) {
+      const parts = liberadaEmStr.split(",");
+      const dateParts = parts[0].trim().split("/");
+      if (dateParts.length === 3) {
+        dateLib = new Date(`${dateParts[2]}-${dateParts[1].padStart(2, "0")}-${dateParts[0].padStart(2, "0")}`);
+      }
+    }
+    if (!dateLib || isNaN(dateLib.getTime())) {
+      dateLib = new Date(liberadaEmStr);
+    }
+    if (dateLib && !isNaN(dateLib.getTime())) {
+      dateFim = dateLib;
+    }
+  }
+  
+  const diffMs = Math.max(0, dateFim.getTime() - dateInicio.getTime());
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  
+  let label = "";
+  if (diffDays === 0) {
+    label = "Hoje (< 1 dia)";
+  } else if (diffDays === 1) {
+    label = "1 dia";
+  } else {
+    label = `${diffDays} dias`;
+  }
+  return { dias: diffDays, label };
+}
+
+function renderizarRelatorioManutencao() {
+  const tbody = document.getElementById("rmTabelaBody");
+  const totalEl = document.getElementById("rmTabelaTotal");
+  if (!tbody) return;
+  
+  const all = getFormasManutencao();
+  const filtros = getRelatorioManutencaoFiltros();
+  const list = Object.values(all)
+    .filter((item) => manutencaoRecordMatchesFiltros(item, filtros))
+    .sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
+  
+  if (totalEl) totalEl.textContent = list.length;
+  atualizarIndicadoresManutencaoHub();
+  
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 20px; color:#64748b;">Nenhuma forma em manutenção registrada até o momento.</td></tr>`;
+    return;
+  }
+  
+  tbody.innerHTML = list.map(item => {
+    const isParada = item.status === "PARADA";
+    const statusBadge = isParada 
+      ? `<span style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">🛠️ PARADA</span>`
+      : `<span style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✅ LIBERADA</span>`;
+      
+    const tempoInfo = calcularDiasParada(item.parada_em, item.liberada_em, item.status);
+    const tempoBadge = isParada
+      ? `<span style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 10px; border-radius:12px; font-weight:800; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">⏱️ ${tempoInfo.label}</span>`
+      : `<span style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:4px 10px; border-radius:12px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:4px;">✔️ ${tempoInfo.label}</span>`;
+      
+    const acaoBtn = isParada
+      ? `<button type="button" class="btn btn-sm btn-liberar-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#10b981; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; box-shadow:0 2px 4px rgba(16,185,129,0.25); white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">🔓 Liberar</button>`
+      : `<button type="button" class="btn btn-sm btn-ver-relatorio" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="background:#e2e8f0; color:#334155; border:none; padding:6px 12px; font-size:0.78rem; font-weight:700; border-radius:6px; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:4px;">🔍 Histórico</button>`;
+
+    return `
+      <tr class="rm-tabela-row ${isParada ? 'rm-row-parada' : 'rm-row-liberada'}" data-setor="${escapeHtml(item.setor)}" data-forma="${escapeHtml(item.forma_numero)}" style="cursor:pointer;" title="Clique para ${isParada ? 'liberar esta forma' : 'ver histórico'}">
+        <td style="text-align:center; font-weight:700; color:#475569;">${escapeHtml(item.setor || "-")}</td>
+        <td style="text-align:center; font-weight:900; color:#0f172a; font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
+        <td style="text-align:center; vertical-align:middle;">${statusBadge}</td>
+        <td style="text-align:center; vertical-align:middle;">${tempoBadge}</td>
+        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.motivo_parada || "-")}</td>
+        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.acao_necessaria || "-")}</td>
+        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${escapeHtml(item.parada_em || "-")}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.parada_por || "-")}</small></td>
+        <td style="font-size:0.8rem; color:#475569; line-height:1.3;">${item.liberada_em ? `${escapeHtml(item.liberada_em)}<br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.liberada_por || "-")}</small>` : "-"}</td>
+        <td style="font-size:0.85rem; color:#1e293b;">${escapeHtml(item.obs_liberacao || "-")}</td>
+        <td style="text-align:center; vertical-align:middle;">${acaoBtn}</td>
+      </tr>
+    `;
+  }).join("");
+
+  tbody.querySelectorAll(".rm-tabela-row").forEach(row => {
+    row.addEventListener("click", () => {
+      const setor = row.getAttribute("data-setor");
+      const formaNumero = row.getAttribute("data-forma");
+      if (!setor || !formaNumero) return;
+      
+      const allFormas = getFormasManutencao();
+      const manutencaoRec = allFormas[getManutencaoKey(setor, formaNumero)];
+      if (manutencaoRec && manutencaoRec.status === "PARADA") {
+        openModalLiberacao(setor, formaNumero, manutencaoRec);
+      } else if (manutencaoRec) {
+        alert(`Forma ${formaNumero} (${setor})\nStatus: LIBERADA em ${manutencaoRec.liberada_em || '-'}\nPor: ${manutencaoRec.liberada_por || '-'}\nObservação: ${manutencaoRec.obs_liberacao || '-'}`);
+      }
+    });
+  });
+}
+
+/* =========================================================
+   RELATÓRIO DE DEFEITOS & TRATATIVA DE QUALIDADE (A-P)
+   ========================================================= */
+const TRATATIVA_DEFEITOS_KEY = "mapa_tratativa_defeitos_v1";
+let pendingTratativaSelection = null;
+
+function getTratativaDefeitos() {
+  try {
+    const raw = localStorage.getItem(TRATATIVA_DEFEITOS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function salvarTratativaDefeitosObj(obj) {
+  try {
+    localStorage.setItem(TRATATIVA_DEFEITOS_KEY, JSON.stringify(obj));
+  } catch (e) {
+    console.error("Erro ao salvar tratativa de defeitos:", e);
+  }
+}
+
+function salvarTratativaDefeitoRegistro(record) {
+  const all = getTratativaDefeitos();
+  const id = record.id || `INC_${record.data_fabricacao || todayYmd()}_${record.setor}_${record.forma_numero}_${record.codigo_defeito}`;
+  record.id = id;
+  record.updated_at = new Date().toISOString();
+  all[id] = record;
+  salvarTratativaDefeitosObj(all);
+  return record;
+}
+
+function renderizarRelatorioTratativaDefeitos() {
+  const tbody = document.getElementById("tdTabelaBody");
+  const totalEl = document.getElementById("tdTabelaTotal");
+  if (!tbody) return;
+
+  const savedTratativas = getTratativaDefeitos();
+  const dbDataRaw = readDb() || [];
+  const dbRecords = Array.isArray(dbDataRaw) ? dbDataRaw : (dbDataRaw.records || []);
+  const montagemDb = readMontagemPostesDb() || {};
+  const montagemPostes = montagemDb.postes || {};
+
+  const listaOcorrenciasMap = {};
+
+  // 1. Mapear ocorrências dos registros de inspeção (readDb)
+  dbRecords.forEach(record => {
+    const dataProd = record.dataFabricacao || record.data_fabricacao || todayYmd();
+    const setor = record.setor || "Geral";
+    const forma = record.formaNumero || record.forma_numero || record.forma || "-";
+
+    (record.inspecoes || []).forEach((ins, idx) => {
+      const statusStr = String(ins.status || "").toUpperCase();
+      const isDefeito = statusStr === "REPROVADO" || statusStr === "RETRABALHO" || statusStr === "R" || statusStr === "RR" || (Array.isArray(ins.codigos) && ins.codigos.length > 0);
+      if (!isDefeito) return;
+
+      const codigosArr = Array.isArray(ins.codigos) && ins.codigos.length > 0 
+        ? ins.codigos 
+        : [ins.motivo_recusa || ins.motivoRecusa || "A"];
+
+      codigosArr.forEach(cCode => {
+        const codigo = String(cCode || "A").trim().toUpperCase();
+        const idKey = `INC_${dataProd}_${setor}_${forma}_${codigo}_${idx}`;
+        const infoDefeito = getDefeitoInfo(codigo);
+        const tratativaSalva = savedTratativas[idKey] || {};
+
+        listaOcorrenciasMap[idKey] = {
+          id: idKey,
+          data_fabricacao: dataProd,
+          setor: setor,
+          forma_numero: forma,
+          modelo: record.modelo || "-",
+          codigo_defeito: codigo,
+          descricao_defeito: infoDefeito.descricao,
+          classificacao: infoDefeito.classificacao,
+          responsavel_designado: infoDefeito.responsavel,
+          responsaveis_lista: infoDefeito.responsaveisLista || [],
+          acao_recomendada: infoDefeito.acao,
+          status_tratativa: tratativaSalva.status_tratativa || "PENDENTE",
+          executado_por: tratativaSalva.executado_por || "",
+          acao_realizada: tratativaSalva.acao_realizada || "",
+          tratado_em: tratativaSalva.tratado_em || "",
+          observacoes_origem: ins.observacoes || record.observacoesMontagem || "",
+          updated_at: tratativaSalva.updated_at || ins.timestamp || record.updated_at || new Date().toISOString()
+        };
+      });
+    });
+  });
+
+  // 2. Mapear ocorrências do banco de Montagem de Postes (readMontagemPostesDb)
+  Object.values(montagemPostes).forEach(p => {
+    const statusStr = String(p.statusMontagem || p.status || "").toUpperCase();
+    const isDefeito = statusStr === "REPROVADO" || statusStr === "RETRABALHO" || Boolean(p.motivoRecusa || p.motivo_recusa);
+    if (!isDefeito) return;
+
+    const codigo = String(p.motivoRecusa || p.motivo_recusa || "A").trim().toUpperCase();
+    const dataProd = p.dataFabricacao || p.data_fabricacao || todayYmd();
+    const setor = p.setor || "Setor 3";
+    const forma = p.formaNumero || p.forma_numero || "-";
+    const idKey = `INC_MNT_${dataProd}_${setor}_${forma}_${codigo}`;
+
+    const infoDefeito = getDefeitoInfo(codigo);
+    const tratativaSalva = savedTratativas[idKey] || {};
+
+    listaOcorrenciasMap[idKey] = {
+      id: idKey,
+      data_fabricacao: dataProd,
+      setor: setor,
+      forma_numero: forma,
+      modelo: p.modelo || "-",
+      codigo_defeito: codigo,
+      descricao_defeito: infoDefeito.descricao,
+      classificacao: infoDefeito.classificacao,
+      responsavel_designado: infoDefeito.responsavel,
+      responsaveis_lista: infoDefeito.responsaveisLista || [],
+      acao_recomendada: infoDefeito.acao,
+      status_tratativa: tratativaSalva.status_tratativa || "PENDENTE",
+      executado_por: tratativaSalva.executado_por || "",
+      acao_realizada: tratativaSalva.acao_realizada || "",
+      tratado_em: tratativaSalva.tratado_em || "",
+      observacoes_origem: p.observacoesMontagem || p.observacoes || "",
+      updated_at: tratativaSalva.updated_at || p.updated_at || new Date().toISOString()
+    };
+  });
+
+  // 3. Mapear tratativas manuais salvas no localStorage
+  Object.values(savedTratativas).forEach(item => {
+    if (!listaOcorrenciasMap[item.id]) {
+      const infoDefeito = getDefeitoInfo(item.codigo_defeito);
+      listaOcorrenciasMap[item.id] = {
+        ...item,
+        descricao_defeito: item.descricao_defeito || infoDefeito.descricao,
+        classificacao: item.classificacao || infoDefeito.classificacao,
+        responsavel_designado: item.responsavel_designado || infoDefeito.responsavel,
+        responsaveis_lista: item.responsaveis_lista || infoDefeito.responsaveisLista || [],
+        acao_recomendada: item.acao_recomendada || infoDefeito.acao
+      };
+    }
+  });
+
+  // 4. Se a lista estiver vazia, popular demonstração com os códigos A a P
+  if (Object.keys(listaOcorrenciasMap).length === 0) {
+    const hoje = todayYmd();
+    const setores = ["Setor 1", "Setor 2", "Setor 3", "Setor 4"];
+    const codigos = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "O", "P"];
+
+    codigos.forEach((cod, index) => {
+      const info = getDefeitoInfo(cod);
+      const setor = setores[index % setores.length];
+      const forma = String((index + 1) * 2).padStart(2, '0');
+      const idKey = `INC_DEMO_${hoje}_${setor}_${forma}_${cod}`;
+
+      listaOcorrenciasMap[idKey] = {
+        id: idKey,
+        data_fabricacao: hoje,
+        setor: setor,
+        forma_numero: forma,
+        modelo: "Poste Padrão Concretrack",
+        codigo_defeito: cod,
+        descricao_defeito: info.descricao,
+        classificacao: info.classificacao,
+        responsavel_designado: info.responsavel,
+        responsaveis_lista: info.responsaveisLista || [],
+        acao_recomendada: info.acao,
+        status_tratativa: index % 3 === 0 ? "CONCLUIDO" : (index % 3 === 1 ? "EM_ANDAMENTO" : "PENDENTE"),
+        executado_por: index % 3 === 0 ? info.responsaveisLista[0] : "",
+        acao_realizada: index % 3 === 0 ? `Serviço de correção para ${info.descricao} executado com sucesso.` : "",
+        tratado_em: index % 3 === 0 ? new Date().toLocaleString("pt-BR") : "",
+        observacoes_origem: "Inspeção de qualidade.",
+        updated_at: new Date(Date.now() - index * 3600000).toISOString()
+      };
+    });
+  }
+
+  let list = Object.values(listaOcorrenciasMap);
+
+  // Aplicar filtros da interface
+  const fStatus = document.getElementById("tdFiltroStatus")?.value || "TODOS";
+  const fCodigo = document.getElementById("tdFiltroCodigo")?.value || "TODOS";
+  const fResp = document.getElementById("tdFiltroResponsavel")?.value || "TODOS";
+  const fInicio = document.getElementById("tdFiltroDataInicio")?.value || "";
+  const fFim = document.getElementById("tdFiltroDataFim")?.value || "";
+
+  list = list.filter(item => {
+    if (fStatus !== "TODOS" && item.status_tratativa !== fStatus) return false;
+    if (fCodigo !== "TODOS" && item.codigo_defeito !== fCodigo) return false;
+    if (fResp !== "TODOS") {
+      const respDesignado = String(item.responsavel_designado || "");
+      const respExecutado = String(item.executado_por || "");
+      const respMatch = respDesignado.includes(fResp) || respExecutado.includes(fResp);
+      if (!respMatch) return false;
+    }
+    if (fInicio && item.data_fabricacao < fInicio) return false;
+    if (fFim && item.data_fabricacao > fFim) return false;
+    return true;
+  });
+
+  list.sort((a, b) => new Date(b.updated_at || 0) - new Date(a.updated_at || 0));
+
+  // KPIs
+  const total = list.length;
+  const pendentes = list.filter(i => i.status_tratativa === "PENDENTE").length;
+  const concluidos = list.filter(i => i.status_tratativa === "CONCLUIDO").length;
+  const criticos = list.filter(i => i.classificacao === "CRÍTICO").length;
+
+  if (totalEl) totalEl.textContent = total;
+  const kTotal = document.getElementById("tdKpiTotal");
+  const kPen = document.getElementById("tdKpiPendentes");
+  const kConc = document.getElementById("tdKpiConcluidos");
+  const kCrit = document.getElementById("tdKpiCriticos");
+  if (kTotal) kTotal.textContent = total;
+  if (kPen) kPen.textContent = pendentes;
+  if (kConc) kConc.textContent = concluidos;
+  if (kCrit) kCrit.textContent = criticos;
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:24px; color:#64748b;">Nenhuma ocorrência de defeito encontrada para os filtros selecionados.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = list.map(item => {
+    const isCritico = item.classificacao === "CRÍTICO";
+    const gravBadge = isCritico
+      ? `<span class="td-badge td-badge-critico" style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🔴 CRÍTICO</span>`
+      : `<span class="td-badge td-badge-nao-critico" style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; padding:4px 8px; border-radius:6px; font-weight:700; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🟡 NÃO CRÍTICO</span>`;
+
+    let statusBadge = "";
+    if (item.status_tratativa === "CONCLUIDO") {
+      statusBadge = `<span class="td-badge td-badge-concluido" style="background:#d1fae5; color:#065f46; border:1px solid #10b981; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">✅ CONCLUÍDO</span>`;
+    } else if (item.status_tratativa === "EM_ANDAMENTO") {
+      statusBadge = `<span class="td-badge td-badge-andamento" style="background:#dbeafe; color:#1e40af; border:1px solid #3b82f6; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">🔄 EM ANDAMENTO</span>`;
+    } else {
+      statusBadge = `<span class="td-badge td-badge-pendente" style="background:#fee2e2; color:#991b1b; border:1px solid #f87171; padding:4px 8px; border-radius:6px; font-weight:800; font-size:0.72rem; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; gap:3px; max-width:100%; box-sizing:border-box;">⏳ PENDENTE</span>`;
+    }
+
+    return `
+      <tr class="td-tabela-row" data-id="${escapeHtml(item.id)}" style="cursor:pointer;" title="Clique para registrar tratativa / direcionamento">
+        <td style="text-align:center; font-weight:600; font-size:0.8rem; color:#475569;">${escapeHtml(item.data_fabricacao || "-")}</td>
+        <td style="text-align:center; font-weight:700; color:#334155;">${escapeHtml(item.setor || "-")}</td>
+        <td style="text-align:center; font-weight:900; color:#0f172a; font-size:0.92rem;">${escapeHtml(item.forma_numero || "-")}</td>
+        <td style="text-align:center;"><span style="background:#f1f5f9; border:1px solid #cbd5e1; padding:2px 8px; border-radius:4px; font-weight:900; font-size:0.82rem; color:#0f172a;">${escapeHtml(item.codigo_defeito)}</span><br><small style="font-weight:600; color:#475569;">${escapeHtml(item.descricao_defeito)}</small></td>
+        <td style="text-align:center; vertical-align:middle;">${gravBadge}</td>
+        <td style="font-weight:800; color:#1e3a8a;">👤 ${escapeHtml(item.responsavel_designado || "-")}</td>
+        <td style="font-size:0.82rem; color:#334155;">${escapeHtml(item.acao_recomendada || "-")}</td>
+        <td style="font-size:0.84rem; color:#0f172a;">
+          ${item.acao_realizada ? `<strong>${escapeHtml(item.acao_realizada)}</strong><br><small style="color:#64748b; font-weight:600;">por ${escapeHtml(item.executado_por || 'Técnico')} em ${escapeHtml(item.tratado_em || '')}</small>` : '<em style="color:#94a3b8;">Aguardando direcionamento...</em>'}
+        </td>
+        <td style="text-align:center; vertical-align:middle;">${statusBadge}</td>
+        <td style="text-align:center; vertical-align:middle;">
+          <button type="button" class="btn btn-sm btn-tratar-defeito" data-id="${escapeHtml(item.id)}" style="background:#2563eb; color:#fff; border:none; padding:6px 12px; font-size:0.78rem; font-weight:800; border-radius:6px; cursor:pointer; box-shadow:0 2px 4px rgba(37,99,235,0.25); white-space:nowrap;">⚙️ Tratar</button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  tbody.querySelectorAll(".td-tabela-row").forEach(row => {
+    row.addEventListener("click", () => {
+      const id = row.getAttribute("data-id");
+      if (!id || !listaOcorrenciasMap[id]) return;
+      openModalTratativaDefeito(listaOcorrenciasMap[id]);
+    });
+  });
+}
+
+function openModalTratativaDefeito(item) {
+  pendingTratativaSelection = item;
+  const titleEl = document.getElementById("mTratativaTitle");
+  const subEl = document.getElementById("mTratativaSub");
+  const infoEl = document.getElementById("mTratativaInfo");
+  if (titleEl) titleEl.textContent = `Tratativa - Defeito ${item.codigo_defeito}`;
+  if (subEl) subEl.textContent = `Forma: ${item.forma_numero} (${item.setor}) — Data: ${item.data_fabricacao}`;
+
+  if (infoEl) {
+    infoEl.innerHTML = `
+      <div><strong>Defeito:</strong> Código ${escapeHtml(item.codigo_defeito)} - ${escapeHtml(item.descricao_defeito)}</div>
+      <div style="margin-top:2px;"><strong>Gravidade:</strong> ${escapeHtml(item.classificacao)}</div>
+      <div style="margin-top:2px;"><strong>Responsável Designado:</strong> <span style="color:#1e3a8a; font-weight:800;">👤 ${escapeHtml(item.responsavel_designado || "-")}</span></div>
+      <div style="margin-top:2px;"><strong>Recomendação Técnica:</strong> ${escapeHtml(item.acao_recomendada || "-")}</div>
+    `;
+  }
+
+  const statusSel = document.getElementById("mTratativaStatus");
+  const execSel = document.getElementById("mTratativaExecutadoPorSelect");
+  const execInput = document.getElementById("mTratativaExecutadoPor");
+  const acaoText = document.getElementById("mTratativaAcaoRealizada");
+
+  if (statusSel) statusSel.value = item.status_tratativa || "PENDENTE";
+
+  const defaultResp = item.executado_por || (item.responsaveis_lista?.[0]) || "Alex";
+  if (execSel) {
+    if (Array.from(execSel.options).some(o => o.value === defaultResp)) {
+      execSel.value = defaultResp;
+      if (execInput) execInput.classList.add("hidden");
+    } else {
+      execSel.value = "OUTRO";
+      if (execInput) {
+        execInput.value = defaultResp;
+        execInput.classList.remove("hidden");
+      }
+    }
+  }
+
+  if (acaoText) acaoText.value = item.acao_realizada || "";
+
+  document.getElementById("modalTratativaDefeito")?.classList.add("modal-visible");
+}
+
 function updateKioskHeader() {
   if (!el.kioskSectorTitle || !el.kioskSectorSubtitle || !el.kioskLibData || !el.kioskLibColaborador) return;
 
@@ -1944,6 +2684,18 @@ function updateKioskHeader() {
     const toggleField = document.getElementById("kioskProgToggleField");
     if (toggleField) {
       toggleField.classList.toggle("active", state.programmingMode || false);
+    }
+  }
+
+  const kioskManutencaoToggleField = document.getElementById("kioskManutencaoToggleField");
+  if (kioskManutencaoToggleField) {
+    const isAuth = isManutencaoAuthorizedUser();
+    kioskManutencaoToggleField.classList.toggle("hidden", !isAuth);
+  }
+  if (el.kioskManutencaoCheckbox) {
+    el.kioskManutencaoCheckbox.checked = state.manutencaoMode || false;
+    if (kioskManutencaoToggleField) {
+      kioskManutencaoToggleField.classList.toggle("active", state.manutencaoMode || false);
     }
   }
 
@@ -3890,10 +4642,14 @@ async function renderMontagemPostesLiberados() {
     }
 
     tr.innerHTML = `
-      <td data-label="N Forma">${record.formaNumero || ""}</td>
+      <td data-label="N Forma" style="text-align:center; font-weight:900;">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
-      <td data-label="Data Prod.">${fmtDate(record.dataFabricacao || "")}</td>
-      <td data-label="Ação">${acaoContent}</td>
+      <td data-label="Data Prod." style="text-align:center;">${fmtDate(record.dataFabricacao || "")}</td>
+      <td data-label="Ação" style="text-align:center; vertical-align:middle;">
+        <div style="display:inline-flex; gap:8px; align-items:center; justify-content:center; width:100%;">
+          ${acaoContent}
+        </div>
+      </td>
     `;
     el.mpLiberadosBody.appendChild(tr);
   });
@@ -6511,7 +7267,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao, el.viewTratativaDefeitos]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -6581,11 +7337,25 @@ function setMode(mode) {
     if (el.mcFiltroData && !el.mcFiltroData.value) el.mcFiltroData.value = todayYmd();
     carregarMandrilCircular();
   }
-
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular");
+  if (mode === "RELATORIO_MANUTENCAO") {
+    if (el.viewRelatorioManutencao) el.viewRelatorioManutencao.classList.remove("hidden");
+    renderizarRelatorioManutencao();
+    carregarFormasManutencaoSupabase().then(() => {
+      renderizarRelatorioManutencao();
+      renderLiberacaoDual();
+    });
+  }
+  if (mode === "TRATATIVA_DEFEITOS") {
+    if (el.viewTratativaDefeitos) el.viewTratativaDefeitos.classList.remove("hidden");
+    renderizarRelatorioTratativaDefeitos();
+  }
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
+  if (mode === "RELATORIO_MANUTENCAO") document.body.classList.add("mode-relatorio-manutencao");
+  if (mode === "TRATATIVA_DEFEITOS") document.body.classList.add("mode-tratativa-defeitos");
   if (mode === "HUB") {
     document.body.classList.add("mode-hub");
     applyAutoResponsibleFields();
+    atualizarIndicadoresManutencaoHub();
   }
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
@@ -6885,16 +7655,7 @@ function bindEvents() {
     setMode("MONTAGEM_INDICADORES");
   });
 
-  // Configuração do Drawer de Filtros e Abas do Dashboard Montagem
-  document.getElementById("miBtnToggleFiltros")?.addEventListener("click", () => {
-    setMontagemDrawerOpen(true);
-  });
-  document.getElementById("miBtnFecharFiltros")?.addEventListener("click", () => {
-    setMontagemDrawerOpen(false);
-  });
-  document.getElementById("miFiltrosDrawer")?.addEventListener("click", (ev) => {
-    if (ev.target?.id === "miFiltrosDrawer") setMontagemDrawerOpen(false);
-  });
+  // Configuração dos Filtros e Abas do Dashboard Montagem
   document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
@@ -6915,7 +7676,14 @@ function bindEvents() {
     carregarMontagemIndicadores();
   });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
-    setMontagemDrawerOpen(false);
+    carregarMontagemIndicadores();
+  });
+  document.getElementById("miDataInicio")?.addEventListener("change", () => {
+    miPaginaAtual = 1;
+    carregarMontagemIndicadores();
+  });
+  document.getElementById("miDataFim")?.addEventListener("change", () => {
+    miPaginaAtual = 1;
     carregarMontagemIndicadores();
   });
   document.getElementById("miFiltroSetor")?.addEventListener("change", () => {
@@ -6964,31 +7732,135 @@ function bindEvents() {
       vcModal.classList.remove("modal-visible");
     });
   }
-  if (vcOk) {
-    vcOk.addEventListener("click", () => {
-      vcModal.classList.remove("modal-visible");
-    });
-  }
-  if (vcModal) {
-    vcModal.addEventListener("click", (e) => {
-      if (e.target === vcModal) {
-        vcModal.classList.remove("modal-visible");
-      }
-    });
-  }
-
-  el.hubRelatorio.addEventListener("click", () => {
-    setMode("RELATORIO");
-    if (!el.relData.value) el.relData.value = todayYmd();
-  });
-  el.hubHistorico.addEventListener("click", () => {
-    setMode("HISTORICO");
-    renderHistorico();
-  });
-  el.hubAcmpConcretagem.addEventListener("click", () => {
+  el.hubAcmpConcretagem?.addEventListener("click", () => {
     setMode("ACMP_CONCRETAGEM");
     if (!el.acmpData.value) el.acmpData.value = todayYmd();
     renderAcmpConcretagem();
+  });
+  el.hubRelatorioManutencao?.addEventListener("click", () => {
+    setMode("RELATORIO_MANUTENCAO");
+  });
+  el.hubTratativaDefeitos?.addEventListener("click", () => {
+    setMode("TRATATIVA_DEFEITOS");
+  });
+
+  document.getElementById("tdBtnImprimirPDF")?.addEventListener("click", () => {
+    document.body.classList.add("print-relatorio-defeitos");
+    window.print();
+    document.body.classList.remove("print-relatorio-defeitos");
+  });
+
+  document.getElementById("tdBtnLimparFiltros")?.addEventListener("click", () => {
+    const st = document.getElementById("tdFiltroStatus");
+    const cod = document.getElementById("tdFiltroCodigo");
+    const resp = document.getElementById("tdFiltroResponsavel");
+    const ini = document.getElementById("tdFiltroDataInicio");
+    const fim = document.getElementById("tdFiltroDataFim");
+    if (st) st.value = "TODOS";
+    if (cod) cod.value = "TODOS";
+    if (resp) resp.value = "TODOS";
+    if (ini) ini.value = "";
+    if (fim) fim.value = "";
+    renderizarRelatorioTratativaDefeitos();
+  });
+
+  ["tdFiltroStatus", "tdFiltroCodigo", "tdFiltroResponsavel", "tdFiltroDataInicio", "tdFiltroDataFim"].forEach(id => {
+    document.getElementById(id)?.addEventListener("change", renderizarRelatorioTratativaDefeitos);
+    document.getElementById(id)?.addEventListener("input", renderizarRelatorioTratativaDefeitos);
+  });
+
+  document.getElementById("mTratativaCancelBtn")?.addEventListener("click", () => {
+    document.getElementById("modalTratativaDefeito")?.classList.remove("modal-visible");
+  });
+
+  document.getElementById("mTratativaExecutadoPorSelect")?.addEventListener("change", (e) => {
+    const input = document.getElementById("mTratativaExecutadoPor");
+    if (e.target.value === "OUTRO") {
+      input?.classList.remove("hidden");
+      input?.focus();
+    } else {
+      input?.classList.add("hidden");
+    }
+  });
+
+  document.getElementById("tdBtnNovaOcorrencia")?.addEventListener("click", () => {
+    const dataInput = document.getElementById("mNovaData");
+    if (dataInput && !dataInput.value) dataInput.value = todayYmd();
+    document.getElementById("modalNovaOcorrenciaDefeito")?.classList.add("modal-visible");
+  });
+
+  document.getElementById("mNovaCancelBtn")?.addEventListener("click", () => {
+    document.getElementById("modalNovaOcorrenciaDefeito")?.classList.remove("modal-visible");
+  });
+
+  document.getElementById("mNovaConfirmBtn")?.addEventListener("click", () => {
+    const setor = document.getElementById("mNovaSetor")?.value || "Setor 1";
+    const forma = document.getElementById("mNovaForma")?.value?.trim() || "";
+    const data = document.getElementById("mNovaData")?.value || todayYmd();
+    const modelo = document.getElementById("mNovaModelo")?.value?.trim() || "Poste Concretrack";
+    const codigo = document.getElementById("mNovaCodigoDefeito")?.value || "A";
+    const obs = document.getElementById("mNovaObservacoes")?.value?.trim() || "";
+
+    if (!forma) {
+      alert("Por favor, preencha o número da forma ou poste.");
+      document.getElementById("mNovaForma")?.focus();
+      return;
+    }
+
+    const info = getDefeitoInfo(codigo);
+    const idKey = `INC_MAN_${data}_${setor}_${forma}_${codigo}_${Date.now()}`;
+
+    const rec = {
+      id: idKey,
+      data_fabricacao: data,
+      setor: setor,
+      forma_numero: forma,
+      modelo: modelo,
+      codigo_defeito: codigo,
+      descricao_defeito: info.descricao,
+      classificacao: info.classificacao,
+      responsavel_designado: info.responsavel,
+      responsaveis_lista: info.responsaveisLista || [],
+      acao_recomendada: info.acao,
+      status_tratativa: "PENDENTE",
+      executado_por: "",
+      acao_realizada: "",
+      tratado_em: "",
+      observacoes_origem: obs
+    };
+
+    salvarTratativaDefeitoRegistro(rec);
+    document.getElementById("modalNovaOcorrenciaDefeito")?.classList.remove("modal-visible");
+    renderizarRelatorioTratativaDefeitos();
+    setSyncStatus("ok", `Nova ocorrência do defeito ${codigo} registrada com sucesso.`);
+  });
+
+  document.getElementById("mTratativaConfirmBtn")?.addEventListener("click", () => {
+    if (!pendingTratativaSelection) return;
+    const status = document.getElementById("mTratativaStatus")?.value || "PENDENTE";
+    const execSel = document.getElementById("mTratativaExecutadoPorSelect")?.value || "";
+    const execCustom = document.getElementById("mTratativaExecutadoPor")?.value?.trim() || "";
+    const executadoPor = execSel === "OUTRO" ? execCustom : execSel;
+    const acaoRealizada = document.getElementById("mTratativaAcaoRealizada")?.value?.trim() || "";
+
+    if (!acaoRealizada) {
+      alert("Por favor, preencha o direcionamento / ação corretiva realizada.");
+      document.getElementById("mTratativaAcaoRealizada")?.focus();
+      return;
+    }
+
+    const rec = {
+      ...pendingTratativaSelection,
+      status_tratativa: status,
+      executado_por: executadoPor || state.authUser?.name || "Técnico",
+      acao_realizada: acaoRealizada,
+      tratado_em: new Date().toLocaleString("pt-BR")
+    };
+
+    salvarTratativaDefeitoRegistro(rec);
+    document.getElementById("modalTratativaDefeito")?.classList.remove("modal-visible");
+    renderizarRelatorioTratativaDefeitos();
+    setSyncStatus("ok", `Tratativa do defeito ${rec.codigo_defeito} atualizada com sucesso.`);
   });
 
   if (el.paSalvarBtn) {
@@ -7042,6 +7914,10 @@ function bindEvents() {
           el.kioskOdinCheckbox.checked = false;
           el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
         }
+        if (el.kioskManutencaoCheckbox && el.kioskManutencaoCheckbox.checked) {
+          el.kioskManutencaoCheckbox.checked = false;
+          el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+        }
       }
       const toggleField = document.getElementById("kioskProgToggleField");
       if (toggleField) {
@@ -7072,6 +7948,10 @@ function bindEvents() {
           el.kioskOdinCheckbox.checked = false;
           el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
         }
+        if (el.kioskManutencaoCheckbox && el.kioskManutencaoCheckbox.checked) {
+          el.kioskManutencaoCheckbox.checked = false;
+          el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+        }
       }
       const toggleField = document.getElementById("kioskLibToggleField");
       if (toggleField) {
@@ -7090,7 +7970,6 @@ function bindEvents() {
     });
   }
 
-
   if (el.kioskOdinCheckbox) {
     el.kioskOdinCheckbox.addEventListener("change", () => {
       state.odinMode = el.kioskOdinCheckbox.checked;
@@ -7104,6 +7983,10 @@ function bindEvents() {
           el.kioskLibCheckbox.checked = false;
           el.kioskLibCheckbox.dispatchEvent(new Event("change"));
         }
+        if (el.kioskManutencaoCheckbox && el.kioskManutencaoCheckbox.checked) {
+          el.kioskManutencaoCheckbox.checked = false;
+          el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+        }
       }
       const toggleField = document.getElementById("kioskOdinToggleField");
       if (toggleField) {
@@ -7112,6 +7995,127 @@ function bindEvents() {
       renderLiberacaoDual();
     });
   }
+
+  if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
+    el.kioskOdinToggleField.addEventListener("click", (e) => {
+      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
+        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
+        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+      }
+    });
+  }
+
+  if (el.kioskManutencaoCheckbox) {
+    el.kioskManutencaoCheckbox.addEventListener("change", () => {
+      state.manutencaoMode = el.kioskManutencaoCheckbox.checked;
+      document.body.classList.toggle("manutencao-active", state.manutencaoMode);
+      if (state.manutencaoMode) {
+        if (el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
+          el.kioskProgCheckbox.checked = false;
+          el.kioskProgCheckbox.dispatchEvent(new Event("change"));
+        }
+        if (el.kioskLibCheckbox && el.kioskLibCheckbox.checked) {
+          el.kioskLibCheckbox.checked = false;
+          el.kioskLibCheckbox.dispatchEvent(new Event("change"));
+        }
+        if (el.kioskOdinCheckbox && el.kioskOdinCheckbox.checked) {
+          el.kioskOdinCheckbox.checked = false;
+          el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+        }
+      }
+      const toggleField = document.getElementById("kioskManutencaoToggleField");
+      if (toggleField) {
+        toggleField.classList.toggle("active", state.manutencaoMode);
+      }
+      renderLiberacaoDual();
+    });
+  }
+
+  const kioskManutencaoToggleField = document.getElementById("kioskManutencaoToggleField");
+  if (kioskManutencaoToggleField && el.kioskManutencaoCheckbox) {
+    kioskManutencaoToggleField.addEventListener("click", (e) => {
+      if (e.target !== el.kioskManutencaoCheckbox && !el.kioskManutencaoCheckbox.contains(e.target)) {
+        el.kioskManutencaoCheckbox.checked = !el.kioskManutencaoCheckbox.checked;
+        el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+      }
+    });
+  }
+
+  // Eventos dos Modais de Manutenção
+  const modalParada = document.getElementById("modalManutencaoParada");
+  const modalLiberacao = document.getElementById("modalManutencaoLiberacao");
+
+  document.getElementById("mParadaCancelBtn")?.addEventListener("click", () => {
+    modalParada?.classList.remove("modal-visible");
+  });
+  modalParada?.addEventListener("click", (e) => {
+    if (e.target === modalParada) {
+      modalParada.classList.remove("modal-visible");
+    }
+  });
+
+  document.getElementById("mParadaConfirmBtn")?.addEventListener("click", () => {
+    if (!pendingManutencaoSelection) return;
+    const motivo = document.getElementById("mParadaMotivo")?.value?.trim();
+    const acao = document.getElementById("mParadaAcao")?.value?.trim();
+    if (!motivo) {
+      alert("Por favor, preencha o motivo da parada.");
+      document.getElementById("mParadaMotivo")?.focus();
+      return;
+    }
+    if (!acao) {
+      alert("Por favor, preencha o que precisa ser feito para arrumar.");
+      document.getElementById("mParadaAcao")?.focus();
+      return;
+    }
+    salvarFormaParadaManutencao(pendingManutencaoSelection.setor, pendingManutencaoSelection.formaNumero, motivo, acao);
+    modalParada?.classList.remove("modal-visible");
+    renderLiberacaoDual();
+    renderizarRelatorioManutencao();
+    setSyncStatus("ok", `Forma ${pendingManutencaoSelection.formaNumero} inativada por manutenção.`);
+  });
+
+  document.getElementById("mLiberacaoCancelBtn")?.addEventListener("click", () => {
+    modalLiberacao?.classList.remove("modal-visible");
+  });
+  modalLiberacao?.addEventListener("click", (e) => {
+    if (e.target === modalLiberacao) {
+      modalLiberacao.classList.remove("modal-visible");
+    }
+  });
+
+  document.getElementById("mLiberacaoConfirmBtn")?.addEventListener("click", () => {
+    if (!pendingManutencaoSelection) return;
+    const obs = document.getElementById("mLiberacaoObs")?.value?.trim();
+    if (!obs) {
+      alert("Por favor, informe a observação/serviço realizado na liberação.");
+      document.getElementById("mLiberacaoObs")?.focus();
+      return;
+    }
+    liberarFormaManutencao(pendingManutencaoSelection.setor, pendingManutencaoSelection.formaNumero, obs);
+    modalLiberacao?.classList.remove("modal-visible");
+    renderLiberacaoDual();
+    setSyncStatus("ok", `Forma ${pendingManutencaoSelection.formaNumero} liberada da manutenção.`);
+  });
+
+  ["rmFiltroStatus", "rmFiltroDataInicio", "rmFiltroDataFim"].forEach((id) => {
+    document.getElementById(id)?.addEventListener("input", renderizarRelatorioManutencao);
+  });
+  document.getElementById("rmBtnLimparFiltros")?.addEventListener("click", () => {
+    const status = document.getElementById("rmFiltroStatus");
+    const dataInicio = document.getElementById("rmFiltroDataInicio");
+    const dataFim = document.getElementById("rmFiltroDataFim");
+    if (status) status.value = "TODOS";
+    if (dataInicio) dataInicio.value = "";
+    if (dataFim) dataFim.value = "";
+    renderizarRelatorioManutencao();
+  });
+
+  document.getElementById("rmBtnImprimirPDF")?.addEventListener("click", () => {
+    document.body.classList.add("print-relatorio-manutencao");
+    window.print();
+    document.body.classList.remove("print-relatorio-manutencao");
+  });
 
   if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
     el.kioskOdinToggleField.addEventListener("click", (e) => {
@@ -7160,7 +8164,11 @@ function bindEvents() {
         el.kioskOdinCheckbox.checked = false;
         el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
       }
-      document.body.classList.remove("kiosk-active", "liberation-active", "odin-active");
+      if (el.kioskManutencaoCheckbox && el.kioskManutencaoCheckbox.checked) {
+        el.kioskManutencaoCheckbox.checked = false;
+        el.kioskManutencaoCheckbox.dispatchEvent(new Event("change"));
+      }
+      document.body.classList.remove("kiosk-active", "liberation-active", "odin-active", "manutencao-active");
       setMode("HUB");
     });
   }
@@ -7707,7 +8715,9 @@ async function syncOfflineData() {
     setSyncStatus("ok", `Sincronização offline automática concluída! ${syncedCount} item(ns) enviado(s).`);
     try {
       await loadClickedFormsFromSupabase();
+      await sincronizarManutencaoLocalPendente();
       renderLiberacaoDual();
+      renderizarRelatorioManutencao();
     } catch (e) {
       console.error("Erro ao recarregar dados pós sincronização:", e);
     }
@@ -7760,6 +8770,15 @@ function subscribeToRealtimeUpdates() {
             renderLiberacaoDual();
           }
         }
+      }
+    )
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: MANUTENCAO_FORMAS_TABLE },
+      async () => {
+        await carregarFormasManutencaoSupabase();
+        renderLiberacaoDual();
+        renderizarRelatorioManutencao();
       }
     )
     .subscribe((status) => {
@@ -8738,7 +9757,13 @@ async function carregarProdutividadeConcretagem() {
   const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
 
   let filteredRows = allRows.filter(r => {
-    if (filterSetor && r.setor !== filterSetor) return false;
+    if (filterSetor) {
+      if (filterSetor === "Setores 1 e 2") {
+        if (r.setor !== "Setor 1" && r.setor !== "Setor 2") return false;
+      } else {
+        if (r.setor !== filterSetor) return false;
+      }
+    }
     return true;
   });
 
@@ -8946,6 +9971,11 @@ function init() {
   renderInspecaoCodigosChecklist();
   bindEvents();
   subscribeToRealtimeUpdates();
+  atualizarIndicadoresManutencaoHub();
+  carregarFormasManutencaoSupabase().then(() => {
+    atualizarIndicadoresManutencaoHub();
+    renderLiberacaoDual();
+  });
 
   const now = todayYmd();
   if (el.libData) el.libData.value = now;
@@ -8969,6 +9999,12 @@ function init() {
 
   if ("serviceWorker" in navigator) {
     let refreshing = false;
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
+        refreshing = true;
+        window.location.replace(window.location.pathname + "?cache-reset=v123");
+      }
+    });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
@@ -8976,7 +10012,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.23-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -9133,7 +10169,13 @@ function aplicarFiltrosEExibirMontagem() {
     if (!day || day < dStart || day > dEnd) return false;
 
     // Filtro por Setor
-    if (fSetor && row.setor !== fSetor) return false;
+    if (fSetor) {
+      if (fSetor === "Setores 1 e 2") {
+        if (row.setor !== "Setor 1" && row.setor !== "Setor 2") return false;
+      } else {
+        if (row.setor !== fSetor) return false;
+      }
+    }
 
     // Filtro por Status
     if (fStatus) {
@@ -9161,7 +10203,13 @@ function aplicarFiltrosEExibirMontagem() {
   const filteredProducao = miRawProducaoData.filter(row => {
     const day = row.data_fabricacao;
     if (!day || day < dStart || day > dEnd) return false;
-    if (fSetor && row.setor !== fSetor) return false;
+    if (fSetor) {
+      if (fSetor === "Setores 1 e 2") {
+        if (row.setor !== "Setor 1" && row.setor !== "Setor 2") return false;
+      } else {
+        if (row.setor !== fSetor) return false;
+      }
+    }
     return true;
   });
 
@@ -9309,7 +10357,13 @@ function aplicarFiltrosEExibirMontagem() {
   const todayStr = todayYmd();
   const prodDia = miRawProducaoData.filter(row => {
     if (row.data_fabricacao !== todayStr) return false;
-    if (fSetor && row.setor !== fSetor) return false;
+    if (fSetor) {
+      if (fSetor === "Setores 1 e 2") {
+        if (row.setor !== "Setor 1" && row.setor !== "Setor 2") return false;
+      } else {
+        if (row.setor !== fSetor) return false;
+      }
+    }
     return true;
   }).length;
   if (elProducaoDia) elProducaoDia.textContent = prodDia;
@@ -9319,7 +10373,13 @@ function aplicarFiltrosEExibirMontagem() {
   const sectorsContainer = document.getElementById("miSetoresContainer");
   if (sectorsContainer) {
     sectorsContainer.innerHTML = sectors.map(s => {
-      if (fSetor && s !== fSetor) return "";
+      if (fSetor) {
+        if (fSetor === "Setores 1 e 2") {
+          if (s !== "Setor 1" && s !== "Setor 2") return "";
+        } else {
+          if (s !== fSetor) return "";
+        }
+      }
       const prod = prodBySector[s] || 0;
       const mont = bySector[s] || 0;
       const pct = prod > 0 ? Math.round((mont / prod) * 100) : 0;
@@ -9342,6 +10402,36 @@ function aplicarFiltrosEExibirMontagem() {
   setSyncStatus("idle", "Indicadores atualizados.");
 }
 
+function obterItensRejeitadosLinha(row) {
+  const checklists = row.checklists || {};
+  let parsed = checklists;
+  if (typeof checklists === "string") {
+    try {
+      parsed = JSON.parse(checklists);
+    } catch (e) {
+      parsed = {};
+    }
+  }
+
+  const isInspecao = row.setor === "Setor 3" || row.setor === "Setor 4";
+  const sections = isInspecao 
+    ? getInspecaoChecklistSections(row.modelo || "") 
+    : getMontagemChecklistSections(row.modelo || "");
+
+  const rejeitados = [];
+  sections.forEach(sec => {
+    const secRes = parsed[sec.id];
+    if (secRes && typeof secRes === "object") {
+      sec.itens.forEach(item => {
+        if (secRes[item.id] === "nao") {
+          rejeitados.push(item.texto);
+        }
+      });
+    }
+  });
+  return rejeitados;
+}
+
 function renderizarTabelaMontagemPaginada() {
   const tbody = document.getElementById("miTabelaBody");
   if (!tbody) return;
@@ -9351,7 +10441,7 @@ function renderizarTabelaMontagemPaginada() {
   document.getElementById("miPaginacaoTotal").textContent = totalRegistros;
 
   if (totalRegistros === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
     const cardsContainer = document.getElementById("miCardsContainer");
     if (cardsContainer) cardsContainer.innerHTML = '<div style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</div>';
     document.getElementById("miPaginacaoDe").textContent = "0";
@@ -9422,16 +10512,35 @@ function renderizarTabelaMontagemPaginada() {
       statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
     }
 
+    const rejeitados = obterItensRejeitadosLinha(row);
+    let rejeitadosHtml = "";
+    if (rejeitados.length > 0) {
+      rejeitadosHtml = `
+        <div style="display: inline-flex; align-items: center; gap: 8px; justify-content: center; text-align: left;">
+          <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #ff3b30; box-shadow: 0 0 8px #ff3b30, 0 0 15px #ff3b30; flex-shrink: 0;" title="Possui itens rejeitados"></span>
+          <span style="font-size: 0.78rem; color: #dc2626; background: #fee2e2; padding: 2px 6px; border-radius: 4px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${rejeitados.join(', ')}">${rejeitados.join(', ')}</span>
+        </div>
+      `;
+    } else {
+      rejeitadosHtml = `
+        <div style="display: inline-flex; align-items: center; gap: 8px; justify-content: center;">
+          <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #4cd964; box-shadow: 0 0 8px #4cd964, 0 0 15px #4cd964; flex-shrink: 0;" title="Todos os itens aprovados"></span>
+          <span style="font-size: 0.78rem; color: #64748b;">Tudo OK</span>
+        </div>
+      `;
+    }
+
     return `
       <tr style="border-bottom: 1px solid #f1f5f9;">
-        <td style="padding: 10px; text-align: center;">${dataFab}</td>
+        <td style="padding: 10px; text-align: center; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${dataFab}</td>
         <td style="padding: 10px; text-align: center;">${row.setor || ""}</td>
-        <td style="padding: 10px; text-align: center;"><strong>${row.forma_numero || ""}</strong></td>
+        <td style="padding: 10px; text-align: center; max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><strong>${row.forma_numero || ""}</strong></td>
         <td style="padding: 10px; text-align: center;">${row.modelo || ""}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${inicio}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${fim}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem; font-weight: 600;">${tempoText}</td>
         <td style="padding: 10px; text-align: center;">${statusHtml}</td>
+        <td style="padding: 10px; text-align: center; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${rejeitadosHtml}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem;">${row.montador_nome || ""}</td>
       </tr>
     `;
@@ -9465,6 +10574,24 @@ function renderizarTabelaMontagemPaginada() {
         statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
       }
 
+      const rejeitados = obterItensRejeitadosLinha(row);
+      let rejeitadosHtml = "";
+      if (rejeitados.length > 0) {
+        rejeitadosHtml = `
+          <div style="display: inline-flex; align-items: center; gap: 8px; text-align: left; vertical-align: middle;">
+            <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #ff3b30; box-shadow: 0 0 8px #ff3b30, 0 0 15px #ff3b30; flex-shrink: 0;" title="Possui itens rejeitados"></span>
+            <span style="font-size: 0.78rem; color: #dc2626; background: #fee2e2; padding: 2px 6px; border-radius: 4px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${rejeitados.join(', ')}">${rejeitados.join(', ')}</span>
+          </div>
+        `;
+      } else {
+        rejeitadosHtml = `
+          <div style="display: inline-flex; align-items: center; gap: 8px; vertical-align: middle;">
+            <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #4cd964; box-shadow: 0 0 8px #4cd964, 0 0 15px #4cd964; flex-shrink: 0;" title="Todos os itens aprovados"></span>
+            <span style="font-size: 0.78rem; color: #64748b;">Tudo OK</span>
+          </div>
+        `;
+      }
+
       return `
         <div class="mi-mobile-card">
           <div class="mi-mobile-card-header">
@@ -9476,6 +10603,9 @@ function renderizarTabelaMontagemPaginada() {
             <div><strong>Duração:</strong> ${tempoText}</div>
             <div><strong>Período:</strong> ${inicio} - ${fim}</div>
             <div><strong>Montador:</strong> ${row.montador_nome || ""}</div>
+            <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #e2e8f0; display: flex; align-items: center; gap: 8px;">
+              <strong>Itens Rejeitados:</strong> ${rejeitadosHtml}
+            </div>
           </div>
         </div>
       `;
@@ -10285,10 +11415,10 @@ async function updateSwVersionBadge() {
   }
 
   try {
-    const response = await fetch("sw.js");
+    const response = await fetch("sw.js?v=" + Date.now(), { cache: "no-store" });
     if (response.ok) {
       const text = await response.text();
-      const match = text.match(/CACHE_NAME\s*=\s*["']mapa-concretagem-v([^"']+)["']/);
+      const match = text.match(/CACHE_NAME\s*=\s*["']mapa-concretagem(?:-teste)?-v([^"']+)["']/);
       if (match && match[1]) {
         badge.textContent = `v${match[1]}`;
         badge.style.display = "inline-block";

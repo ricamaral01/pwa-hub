@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reset Cache - Mapa Concretagem Teste</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    main {
+      width: min(520px, calc(100vw - 32px));
+      padding: 24px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    }
+    h1 { margin: 0 0 10px; font-size: 1.35rem; }
+    p { line-height: 1.45; }
+    button {
+      width: 100%;
+      min-height: 44px;
+      border: 0;
+      border-radius: 8px;
+      background: #be185d;
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Reset do cache do teste</h1>
+    <p>Use este botão para remover service workers e caches antigos do Mapa de Concretagem Teste.</p>
+    <button id="resetBtn" type="button">Limpar cache e abrir v1.11</button>
+    <pre id="log">Aguardando...</pre>
+  </main>
+  <script>
+    const log = document.getElementById("log");
+    const add = (text) => { log.textContent += "\n" + text; };
+
+    document.getElementById("resetBtn").addEventListener("click", async () => {
+      log.textContent = "Iniciando limpeza...";
+      if ("serviceWorker" in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        add("Service workers encontrados: " + regs.length);
+        for (const reg of regs) {
+          await reg.unregister();
+        }
+      }
+      if ("caches" in window) {
+        const keys = await caches.keys();
+        add("Caches encontrados: " + keys.length);
+        for (const key of keys) {
+          if (key.includes("mapa-concretagem")) {
+            await caches.delete(key);
+            add("Removido: " + key);
+          }
+        }
+      }
+      add("Abrindo app atualizado...");
+      window.location.replace("./index.html?cache-reset=v111");
+    });
+  </script>
+</body>
+</html>

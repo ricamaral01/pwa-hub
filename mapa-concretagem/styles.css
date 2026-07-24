@@ -5692,3 +5692,368 @@ body:not(.print-relatorio) .rel-full-table td:nth-child(7) {
     width: 20% !important;
   }
 }
+
+.mi-fixed-filters-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  gap: 12px !important;
+  padding: 10px 14px !important;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  margin-bottom: 16px !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+.mi-filter-item {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex-shrink: 0 !important;
+}
+
+.mi-filter-item label {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+.mi-filter-item .input-field {
+  width: auto !important;
+  height: 34px !important;
+  padding: 4px 10px !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  font-size: 0.82rem !important;
+  color: #1e293b !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+
+.mi-filter-item .input-field:focus {
+  outline: none !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+.mi-filter-search {
+  flex-grow: 1 !important;
+  min-width: 180px !important;
+}
+
+.mi-filter-search .input-field {
+  width: 100% !important;
+  min-width: 180px !important;
+}
+
+.mi-filter-actions {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  gap: 6px !important;
+}
+
+/* =========================================================
+   MODO MANUTENÇÃO
+   ========================================================= */
+
+body.manutencao-active .kiosk-header {
+  background: #fff7ed !important;
+  border-bottom: 4px solid #f59e0b !important;
+  box-shadow: 0 3px 14px rgba(217, 119, 6, 0.18) !important;
+}
+
+body.manutencao-active .kiosk-header .kiosk-title {
+  color: #78350f !important;
+  text-shadow: none !important;
+  font-weight: 900 !important;
+}
+
+body.manutencao-active .kiosk-header .kiosk-subtitle {
+  color: #92400e !important;
+  font-weight: 800 !important;
+}
+
+body.manutencao-active .sw-version-badge {
+  background: #0f172a !important;
+  color: #facc15 !important;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.9) !important;
+}
+
+body.manutencao-active .forma-card:not(.is-manutencao):hover,
+body.manutencao-active .s4-forma-cell:not(.is-manutencao):hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22) !important;
+  cursor: pointer;
+  transform: translateY(-2px);
+}
+
+/* FORMAS QUE ESTÃO EFETIVAMENTE PARADAS / EM MANUTENÇÃO */
+.forma-card.is-manutencao,
+.s4-forma-cell.is-manutencao {
+  background: #fce7f3 !important;
+  border: 3px dashed #db2777 !important;
+  color: #831843 !important;
+  box-shadow: 0 0 18px rgba(219, 39, 119, 0.28) !important;
+  position: relative;
+}
+
+.forma-card.is-manutencao .fc-number {
+  color: #831843 !important;
+  font-weight: 900 !important;
+}
+
+.forma-card.is-manutencao::after {
+  content: "🛠️ PARADA";
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  background: #be185d;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 2px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+td.s4-forma-cell.is-manutencao::after {
+  content: " 🛠️ PARADA";
+  color: #be185d;
+  font-weight: 900;
+  font-size: 0.72rem;
+}
+
+.rm-tabela-row {
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+.rm-tabela-row:hover {
+  background-color: #fef9c3 !important;
+}
+.rm-tabela-row.rm-row-parada:hover {
+  background-color: #fef08a !important;
+}
+
+.manutencao-kpi-panel {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  background: #fffbeb;
+}
+
+.manutencao-kpi-title {
+  font-weight: 900;
+  color: #78350f;
+  margin-bottom: 10px;
+}
+
+.manutencao-kpi-grid,
+.rm-filtros {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.manutencao-kpi-card {
+  min-height: 72px;
+  padding: 10px;
+  border: 1px solid #facc15;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.manutencao-kpi-card span {
+  font-weight: 800;
+  color: #475569;
+}
+
+.manutencao-kpi-card strong {
+  font-size: 2rem;
+  color: #b45309;
+  line-height: 1;
+}
+
+.rm-filtros {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.rm-filtros label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  min-width: 140px;
+  flex: 1;
+}
+
+.rm-filtros .kiosk-input,
+.rm-filtros select,
+.rm-filtros input[type="date"] {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  min-height: 42px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.rm-filtros button#rmBtnLimparFiltros {
+  height: 42px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.rm-filtros button#rmBtnLimparFiltros:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+/* Impressão do Relatório de Manutenção */
+@media print {
+  body.print-relatorio-manutencao #appSidebar,
+  body.print-relatorio-manutencao .sidebar-overlay,
+  body.print-relatorio-manutencao .mi-topbar-actions,
+  body.print-relatorio-manutencao .mi-list-header h3,
+  body.print-relatorio-manutencao .mi-list-header span {
+    display: none !important;
+  }
+
+  body.print-relatorio-manutencao #viewTratativaDefeitos {
+    display: none !important;
+  }
+
+  body.print-relatorio-manutencao #viewRelatorioManutencao {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  body.print-relatorio-manutencao table {
+    width: 100% !important;
+    font-size: 8pt !important;
+    border-collapse: collapse !important;
+  }
+
+  body.print-relatorio-manutencao th,
+  body.print-relatorio-manutencao td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 4px 6px !important;
+  }
+
+  /* Impressão do Relatório de Tratativa de Defeitos */
+  body.print-relatorio-defeitos #appSidebar,
+  body.print-relatorio-defeitos .sidebar-overlay,
+  body.print-relatorio-defeitos .mi-topbar-actions,
+  body.print-relatorio-defeitos .rm-filtros,
+  body.print-relatorio-defeitos .mi-list-header,
+  body.print-relatorio-defeitos #viewRelatorioManutencao {
+    display: none !important;
+  }
+
+  body.print-relatorio-defeitos #viewTratativaDefeitos {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  body.print-relatorio-defeitos table {
+    width: 100% !important;
+    font-size: 8pt !important;
+    border-collapse: collapse !important;
+  }
+
+  body.print-relatorio-defeitos th,
+  body.print-relatorio-defeitos td {
+    border: 1px solid #64748b !important;
+    padding: 5px 6px !important;
+  }
+
+  body.print-relatorio-defeitos th:last-child,
+  body.print-relatorio-defeitos td:last-child {
+    display: none !important;
+  }
+
+  body.print-relatorio-defeitos::after {
+    content: "\A\A ______________________________________                      ______________________________________\A Assinatura do Responsável de Qualidade                                  Assinatura do Encarregado da Fábrica";
+    white-space: pre-wrap;
+    display: block;
+    margin-top: 35px;
+    font-size: 8.5pt;
+    font-weight: bold;
+    color: #334155;
+  }
+}
+
+/* Regras de largura e contenção para a Tabela de Tratativa de Defeitos */
+.print-defeitos-table th:nth-child(5),
+.print-defeitos-table td:nth-child(5) {
+  min-width: 130px;
+  width: 130px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.print-defeitos-table th:nth-child(9),
+.print-defeitos-table td:nth-child(9) {
+  min-width: 140px;
+  width: 140px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.td-badge {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+

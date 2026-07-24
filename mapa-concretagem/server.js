@@ -23,6 +23,15 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  if (/\.(html|js|css|json)$/.test(req.path) || req.path.endsWith("/sw.js")) {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+  }
+  next();
+});
+
 // Servir arquivos estáticos da pasta raiz do Hub (um nível acima)
 app.use(express.static(path.join(__dirname, "..")));
 

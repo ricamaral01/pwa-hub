@@ -1,8 +1,9 @@
-/* =========================================================
-   MAPA DE CONCRETAGEM — Service Worker Independente
+﻿/* =========================================================
+   MAPA DE CONCRETAGEM — Service Worker v5.0
+   Deploy: 2026-07-24
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v4.69";
+const CACHE_NAME = "mapa-concretagem-v5.0";
 const ASSETS = [
   "./",
   "./index.html",
@@ -40,10 +41,10 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
-  // Pular requisições de API e Supabase
+  // Pular requisicoes de API e Supabase
   if (url.href.includes("script.google.com") || url.href.includes("supabase.co")) return;
 
-  // network-first para HTML / navegação
+  // network-first para HTML / navegacao
   if (event.request.mode === "navigate" || url.pathname.endsWith(".html")) {
     event.respondWith(
       fetch(event.request)
@@ -59,7 +60,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // cache-first para recursos estáticos
+  // cache-first para recursos estaticos
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;

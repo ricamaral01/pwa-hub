@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR" class="auth-checking">
 <head>
   <style>html.auth-checking body{visibility:hidden}</style>
@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>Mapa de Concretagem</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=3802f568" />
+  <link rel="stylesheet" href="styles.css?v=v5.0" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -151,6 +151,14 @@
         <span class="nav-icon-wrap">CC</span>
         Acmp. Concretagem
       </button>
+      <button class="nav-item" id="hubRelatorioManutencao" type="button">
+        <span class="nav-icon-wrap" style="background:#f1c40f; color:#1e293b;">🛠️</span>
+        Manutenção Formas
+      </button>
+      <button class="nav-item" id="hubTratativaDefeitos" type="button">
+        <span class="nav-icon-wrap" style="background:#e11d48; color:#ffffff;">📋</span>
+        Tratativa Defeitos
+      </button>
       <button class="nav-item hidden" id="navUsuarios" type="button">
         <span class="nav-icon-wrap">👤</span>
         Usuários
@@ -165,10 +173,12 @@
 
   <!-- Main -->
   <div class="app-main">
-    <header class="topbar">
+    <header class="topbar" style="border-bottom: 2px solid #f1c40f;">
       <button class="sidebar-toggle-btn" id="sidebarToggle" type="button">☰</button>
       <span class="topbar-title" id="topbarTitle">Início</span>
       <span id="swVersionBadge" class="sw-version-badge" style="display: none;"></span>
+      <div style="background: rgba(241, 196, 15, 0.15); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; margin-left: 12px; display: inline-flex; align-items: center; gap: 4px; vertical-align: middle;">
+        </div>
       <div class="topbar-right">
         <span id="authUserBadge" class="auth-user-badge hidden"></span>
         <button id="authLogoutBtn" class="btn auth-logout-btn hidden" type="button">Sair</button>
@@ -255,10 +265,27 @@
               <div class="hub-icon-circle" style="background:#be185d">CC</div>
               <span class="hub-icon-lbl">Concretagem</span>
             </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO_MANUTENCAO">
+              <div class="hub-icon-circle" style="background:#f1c40f; color:#1e293b;">🛠️</div>
+              <span class="hub-icon-lbl">Manutenção Formas</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="TRATATIVA_DEFEITOS">
+              <div class="hub-icon-circle" style="background:#e11d48; color:#ffffff;">📋</div>
+              <span class="hub-icon-lbl">Tratativa de Defeitos</span>
+            </button>
             <button class="hub-icon-btn hidden" type="button" data-hub-mode="USUARIOS">
               <div class="hub-icon-circle" style="background:#4f46e5">👤</div>
               <span class="hub-icon-lbl">Usuários</span>
             </button>
+          </div>
+        </div>
+        <div class="manutencao-kpi-panel" id="manutencaoKpiPanel">
+          <div class="manutencao-kpi-title">Formas atualmente em manutenÃ§Ã£o</div>
+          <div class="manutencao-kpi-grid">
+            <div class="manutencao-kpi-card"><span>Setor 1</span><strong id="manKpiS1">0</strong></div>
+            <div class="manutencao-kpi-card"><span>Setor 2</span><strong id="manKpiS2">0</strong></div>
+            <div class="manutencao-kpi-card"><span>Setor 3</span><strong id="manKpiS3">0</strong></div>
+            <div class="manutencao-kpi-card"><span>Setor 4</span><strong id="manKpiS4">0</strong></div>
           </div>
         </div>
       </section>
@@ -286,7 +313,7 @@
             <div class="mi-drawer-body">
               <div class="mi-drawer-field"><label for="paDataInicio">Data inicio</label><input id="paDataInicio" type="date" /></div>
               <div class="mi-drawer-field"><label for="paDataFim">Data fim</label><input id="paDataFim" type="date" /></div>
-              <div class="mi-drawer-field"><label for="paFiltroSetor">Setor</label><select id="paFiltroSetor"><option value="">Todos</option><option value="Setor 1">Setor 1</option><option value="Setor 2">Setor 2</option><option value="Setor 3">Setor 3</option><option value="Setor 4">Setor 4</option></select></div>
+              <div class="mi-drawer-field"><label for="paFiltroSetor">Setor</label><select id="paFiltroSetor"><option value="">Todos</option><option value="Setores 1 e 2">Setores 1 e 2</option><option value="Setor 1">Setor 1</option><option value="Setor 2">Setor 2</option><option value="Setor 3">Setor 3</option><option value="Setor 4">Setor 4</option></select></div>
               <div class="mi-drawer-field"><label for="paMetaCiclo">Meta ciclo (min)</label><input id="paMetaCiclo" type="number" value="15" min="1" max="120" /></div>
             </div>
             <div class="mi-drawer-footer pa-drawer-footer">
@@ -465,6 +492,16 @@
                 <span class="kiosk-toggle-subtitle">Tocar para cancelar/desprogramar</span>
               </div>
             </div>
+            <div class="kiosk-toggle-field hidden" id="kioskManutencaoToggleField">
+              <label class="kiosk-switch">
+                <input type="checkbox" id="kioskManutencaoCheckbox" />
+                <span class="kiosk-slider" style="background-color: var(--kiosk-slider-off, #ccc);"></span>
+              </label>
+              <div class="kiosk-toggle-label">
+                <span class="kiosk-toggle-title" style="color: #f1c40f; text-shadow: 0 0 8px rgba(241,196,15,0.6);">Modo Manutenção</span>
+                <span class="kiosk-toggle-subtitle">Parar ou liberar formas</span>
+              </div>
+            </div>
             <button class="btn-kiosk" id="btnKioskSync" type="button">🔄 Sincronizar</button>
             <button class="btn-kiosk" id="btnKioskFullscreen" type="button">🖥️ Tela Cheia</button>
             <button class="btn-kiosk back" id="btnKioskBack" type="button">↩ Sair Quiosque</button>
@@ -484,6 +521,7 @@
               <option value="Mario">Mario</option>
               <option value="Leonardo">Leonardo</option>
               <option value="Jose Carlos">Jose Carlos</option>
+              <option value="Tiago">Tiago</option>
             </select>
           </div>
           <div class="kiosk-field" style="justify-self: end; text-align: right; display: flex; flex-direction: column; justify-content: center;">
@@ -511,6 +549,7 @@
               <option value="Mario">Mario</option>
               <option value="Leonardo">Leonardo</option>
               <option value="Jose Carlos">Jose Carlos</option>
+              <option value="Tiago">Tiago</option>
             </select>
           </label>
         </div>
@@ -649,7 +688,9 @@
     <section id="viewMontagemPostes" class="card hidden">
       <div class="section-title-row">
         <h2>Montagem Postes</h2>
-        <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+        </div>
       </div>
       <div class="grid">
         <label>Filtrar data
@@ -707,10 +748,10 @@
         <table class="sheet-table">
           <thead>
             <tr>
-              <th>N Forma</th>
-              <th>Modelo</th>
-              <th>Data Prod.</th>
-              <th>Ação</th>
+              <th style="width:100px; text-align:center;">N Forma</th>
+              <th style="min-width:140px;">Modelo</th>
+              <th style="width:110px; text-align:center;">Data Prod.</th>
+              <th style="width:310px; text-align:center;">Ações de Montagem & Forma</th>
             </tr>
           </thead>
           <tbody id="mpLiberadosBody"></tbody>
@@ -718,6 +759,170 @@
       </div>
       <div style="margin-top: 15px; display: flex; justify-content: flex-end;">
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
+      </div>
+    </section>
+
+    <!-- Relatório de Manutenção de Formas -->
+    <section id="viewRelatorioManutencao" class="card hidden">
+      <div class="mi-topbar">
+        <div>
+          <h2>🛠️ Relatório de Manutenção de Formas</h2>
+          <p id="rmFiltroResumo">Histórico e Formas Paradas</p>
+        </div>
+        <div class="mi-topbar-actions">
+          <button id="rmBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" style="background:#d97706; color:#fff;">🖨️ Imprimir PDF Manutenção</button>
+          <button class="mi-icon-btn" type="button" data-back-btn>Voltar</button>
+        </div>
+      </div>
+
+      <div class="mi-listagem-wrap">
+        <div class="rm-filtros">
+          <label>Status
+            <select id="rmFiltroStatus" class="kiosk-input">
+              <option value="TODOS">Todos</option>
+              <option value="PARADA">Apenas paradas</option>
+              <option value="LIBERADA">Apenas liberadas</option>
+            </select>
+          </label>
+          <label>De
+            <input id="rmFiltroDataInicio" class="kiosk-input" type="date" />
+          </label>
+          <label>Até
+            <input id="rmFiltroDataFim" class="kiosk-input" type="date" />
+          </label>
+          <button id="rmBtnLimparFiltros" class="mi-icon-btn" type="button">Limpar filtros</button>
+        </div>
+        <div class="mi-list-header">
+          <h3>Formas em Manutenção e Histórico de Paradas</h3>
+          <span>Total: <span id="rmTabelaTotal">0</span> registros</span>
+        </div>
+        <div class="mi-table-responsive">
+          <table class="sheet-table mi-table print-relatorio-table">
+            <thead>
+              <tr>
+                <th style="width: 85px; text-align: center;">Setor</th>
+                <th style="width: 90px; text-align: center;">Forma</th>
+                <th style="width: 125px; text-align: center;">Status</th>
+                <th style="width: 135px; text-align: center;">Dias Parada</th>
+                <th style="min-width: 170px;">Motivo da Parada</th>
+                <th style="min-width: 180px;">Ação para Arrumar</th>
+                <th style="width: 145px; text-align: left;">Parada Em / Por</th>
+                <th style="width: 145px; text-align: left;">Liberada Em / Por</th>
+                <th style="min-width: 150px;">Obs Liberação</th>
+                <th style="width: 105px; text-align: center;">Ação</th>
+              </tr>
+            </thead>
+            <tbody id="rmTabelaBody">
+              <tr><td colspan="10">Carregando relatório de manutenção...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Relatório de Defeitos e Tratativa de Qualidade -->
+    <section id="viewTratativaDefeitos" class="card hidden">
+      <div class="mi-topbar">
+        <div>
+          <h2>📋 Relatório de Defeitos & Tratativa de Qualidade</h2>
+          <p id="tdFiltroResumo">Gestão de Não Conformidades, Ações Corretivas e Responsáveis</p>
+        </div>
+        <div class="mi-topbar-actions">
+          <button id="tdBtnNovaOcorrencia" class="mi-icon-btn" type="button" style="background:#2563eb; color:#fff;">➕ Nova Ocorrência</button>
+          <button id="tdBtnImprimirPDF" class="mi-icon-btn mi-icon-btn-primary" type="button" style="background:#d97706; color:#fff;">🖨️ Imprimir PDF Defeitos</button>
+          <button class="mi-icon-btn" type="button" data-back-btn>Voltar</button>
+        </div>
+      </div>
+
+      <!-- Resumo KPI de Defeitos -->
+      <div class="manutencao-kpi-panel" style="margin-top:0; margin-bottom:16px; background:#f8fafc; border-color:#e2e8f0;">
+        <div class="manutencao-kpi-title" style="color:#1e293b;">Resumo de Ocorrências e Tratativas de Qualidade</div>
+        <div class="manutencao-kpi-grid">
+          <div class="manutencao-kpi-card" style="border-color:#cbd5e1;"><span>Total Ocorrências</span><strong id="tdKpiTotal" style="color:#1e293b;">0</strong></div>
+          <div class="manutencao-kpi-card" style="border-color:#fca5a5;"><span>Pendentes</span><strong id="tdKpiPendentes" style="color:#dc2626;">0</strong></div>
+          <div class="manutencao-kpi-card" style="border-color:#6ee7b7;"><span>Concluídos</span><strong id="tdKpiConcluidos" style="color:#059669;">0</strong></div>
+          <div class="manutencao-kpi-card" style="border-color:#fde047;"><span>Críticos (Reprovações)</span><strong id="tdKpiCriticos" style="color:#d97706;">0</strong></div>
+        </div>
+      </div>
+
+      <div class="mi-listagem-wrap">
+        <div class="rm-filtros">
+          <label>Status Tratativa
+            <select id="tdFiltroStatus" class="kiosk-input">
+              <option value="TODOS">Todos os status</option>
+              <option value="PENDENTE">⏳ Pendentes</option>
+              <option value="EM_ANDAMENTO">🔄 Em Andamento</option>
+              <option value="CONCLUIDO">✅ Concluídos</option>
+            </select>
+          </label>
+          <label>Código Defeito
+            <select id="tdFiltroCodigo" class="kiosk-input">
+              <option value="TODOS">Todos os códigos (A-P)</option>
+              <option value="A">A - Falha na Concretagem / Armação Aparente</option>
+              <option value="B">B - Cano Entupido</option>
+              <option value="C">C - Excesso de Bolhas</option>
+              <option value="D">D - Problema na Caixa do Relógio/Disjuntor</option>
+              <option value="E">E - Furos Obstruídos ou Faltando</option>
+              <option value="F">F - Identificação do Poste (Carimbos)</option>
+              <option value="G">G - Presença de Trincas Superficiais</option>
+              <option value="H">H - Bolha nas Caixas</option>
+              <option value="I">I - Trincas em Toda Extensão do Poste</option>
+              <option value="J">J - Pequenas Avarias</option>
+              <option value="K">K - Manchas Brancas Superficiais</option>
+              <option value="L">L - Buchas das Caixas / Buchas EDP</option>
+              <option value="M">M - Parafuso Lacre da Caixa do Medidor</option>
+              <option value="O">O - Falha no Concreto (Segregado)</option>
+              <option value="P">P - Grandes Avarias</option>
+            </select>
+          </label>
+          <label>Responsável Designado
+            <select id="tdFiltroResponsavel" class="kiosk-input">
+              <option value="TODOS">Todos os responsáveis</option>
+              <option value="Alex">Alex</option>
+              <option value="José Carlos">José Carlos</option>
+              <option value="Osmar">Osmar</option>
+              <option value="Philippe">Philippe</option>
+              <option value="Ricardo">Ricardo</option>
+              <option value="Osmar / José Carlos">Osmar / José Carlos (Combinado)</option>
+              <option value="Philippe / Ricardo">Philippe / Ricardo (Combinado)</option>
+              <option value="Ricardo / Alex">Ricardo / Alex (Combinado)</option>
+            </select>
+          </label>
+          <label>De
+            <input id="tdFiltroDataInicio" class="kiosk-input" type="date" />
+          </label>
+          <label>Até
+            <input id="tdFiltroDataFim" class="kiosk-input" type="date" />
+          </label>
+          <button id="tdBtnLimparFiltros" class="mi-icon-btn" type="button">Limpar filtros</button>
+        </div>
+
+        <div class="mi-list-header">
+          <h3>Ocorrências de Defeitos e Tratativas</h3>
+          <span>Total: <span id="tdTabelaTotal">0</span> registros</span>
+        </div>
+
+        <div class="mi-table-responsive">
+          <table class="sheet-table mi-table print-relatorio-table print-defeitos-table">
+            <thead>
+              <tr>
+                <th style="width: 80px; text-align: center;">Data</th>
+                <th style="width: 75px; text-align: center;">Setor</th>
+                <th style="width: 85px; text-align: center;">Forma</th>
+                <th style="width: 140px; text-align: center;">Código / Defeito</th>
+                <th style="width: 130px; text-align: center;">Gravidade</th>
+                <th style="width: 130px;">Responsável Designado</th>
+                <th style="min-width: 170px;">Ação Corretiva Recomendada</th>
+                <th style="min-width: 190px;">Direcionamento / Ação Executada</th>
+                <th style="width: 140px; text-align: center;">Status</th>
+                <th style="width: 100px; text-align: center;">Ação</th>
+              </tr>
+            </thead>
+            <tbody id="tdTabelaBody">
+              <tr><td colspan="10">Carregando relatório de tratativas...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -729,25 +934,47 @@
           <p id="miFiltroResumo">Hoje - Todos os setores</p>
         </div>
         <div class="mi-topbar-actions">
-          <button id="miBtnToggleFiltros" class="mi-icon-btn" type="button" aria-label="Abrir filtros">Filtros</button>
           <button id="miBtnAtualizar" class="mi-icon-btn mi-icon-btn-primary" type="button" aria-label="Atualizar dashboard">Atualizar</button>
         </div>
       </div>
 
-      <div id="miFiltrosDrawer" class="mi-drawer-overlay hidden" aria-hidden="true">
-        <div class="mi-drawer-content" role="dialog" aria-modal="true" aria-labelledby="miDrawerTitle">
-          <div class="mi-drawer-header">
-            <h3 id="miDrawerTitle">Filtros</h3>
-            <button id="miBtnFecharFiltros" class="mi-drawer-close-btn" type="button" aria-label="Fechar filtros">&times;</button>
-          </div>
-          <div class="mi-drawer-body">
-            <div class="mi-drawer-field"><label for="miDataInicio">Data inicio</label><input type="date" id="miDataInicio" class="input-field" /></div>
-            <div class="mi-drawer-field"><label for="miDataFim">Data fim</label><input type="date" id="miDataFim" class="input-field" /></div>
-            <div class="mi-drawer-field"><label for="miFiltroSetor">Setor</label><select id="miFiltroSetor" class="input-field"><option value="">Todos os Setores</option><option value="Setor 1">Setor 1</option><option value="Setor 2">Setor 2</option><option value="Setor 3">Setor 3</option><option value="Setor 4">Setor 4</option></select></div>
-            <div class="mi-drawer-field"><label for="miFiltroStatus">Status</label><select id="miFiltroStatus" class="input-field"><option value="">Todos os Status</option><option value="A">Aprovado</option><option value="R">Reprovado</option><option value="RR">Reprovado e Retrabalhado</option></select></div>
-            <div class="mi-drawer-field"><label for="miFiltroPesquisa">Pesquisar</label><input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Forma, modelo ou montador" /></div>
-          </div>
-          <div class="mi-drawer-footer"><button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn">Limpar</button><button id="miBtnFiltrar" type="button" class="mi-primary-btn">Aplicar filtros</button></div>
+      <!-- Filtros Fixos no Header -->
+      <div class="mi-fixed-filters-bar">
+        <div class="mi-filter-item">
+          <label for="miDataInicio">Início:</label>
+          <input type="date" id="miDataInicio" class="input-field" />
+        </div>
+        <div class="mi-filter-item">
+          <label for="miDataFim">Fim:</label>
+          <input type="date" id="miDataFim" class="input-field" />
+        </div>
+        <div class="mi-filter-item">
+          <label for="miFiltroSetor">Setor:</label>
+          <select id="miFiltroSetor" class="input-field">
+            <option value="">Todos os Setores</option>
+            <option value="Setores 1 e 2">Setores 1 e 2</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
+            <option value="Setor 4">Setor 4</option>
+          </select>
+        </div>
+        <div class="mi-filter-item">
+          <label for="miFiltroStatus">Status:</label>
+          <select id="miFiltroStatus" class="input-field">
+            <option value="">Todos os Status</option>
+            <option value="A">Aprovado</option>
+            <option value="R">Reprovado</option>
+            <option value="RR">Reprovado e Retrabalhado</option>
+          </select>
+        </div>
+        <div class="mi-filter-item mi-filter-search">
+          <label for="miFiltroPesquisa">Buscar:</label>
+          <input type="text" id="miFiltroPesquisa" class="input-field" placeholder="Forma, modelo ou montador" />
+        </div>
+        <div class="mi-filter-item mi-filter-actions">
+          <button id="miBtnLimparFiltros" type="button" class="mi-secondary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e1; background: #fff; color: #475569;">Limpar</button>
+          <button id="miBtnFiltrar" type="button" class="mi-primary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; background: #2563eb; color: #fff; border: none;">Aplicar</button>
         </div>
       </div>
 
@@ -776,7 +1003,7 @@
 
       <div id="miSecaoProducao" class="mi-tab-section">
         <div class="mi-charts-row"><div class="mi-chart-card mi-chart-card-wide"><div class="mi-chart-title">Postes inspecionados por dia</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorDia"></canvas></div></div></div>
-        <div class="mi-listagem-wrap"><div class="mi-list-header"><h3>Montagens realizadas</h3><span>Total: <span id="miTabelaTotal">0</span> registros</span></div><div class="mi-table-responsive"><table class="sheet-table mi-table"><thead><tr><th onclick="ordenarMiTabela('data_fabricacao')">Data Prod. <span id="sort_icon_data_fabricacao"></span></th><th onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th><th onclick="ordenarMiTabela('forma_numero')">Forma <span id="sort_icon_forma_numero"></span></th><th onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th><th onclick="ordenarMiTabela('inicio_inspecao_montagem')">Inicio <span id="sort_icon_inicio_inspecao_montagem"></span></th><th onclick="ordenarMiTabela('finalizado_em')">Fim <span id="sort_icon_finalizado_em"></span></th><th onclick="ordenarMiTabela('tempo_inspecao')">Duracao <span id="sort_icon_tempo_inspecao"></span></th><th onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th><th onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th></tr></thead><tbody id="miTabelaBody"><tr><td colspan="9">Carregando dados...</td></tr></tbody></table></div><div id="miCardsContainer" class="mi-cards-mobile-list"></div><div class="mi-pagination"><div class="mi-pagination-info">Mostrando <span id="miPaginacaoDe">0</span>-<span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span></div><div class="mi-pagination-buttons" id="miPaginacaoBotoes"></div></div></div>
+        <div class="mi-listagem-wrap"><div class="mi-list-header"><h3>Montagens realizadas</h3><span>Total: <span id="miTabelaTotal">0</span> registros</span></div><div class="mi-table-responsive"><table class="sheet-table mi-table"><thead><tr><th onclick="ordenarMiTabela('data_fabricacao')" style="width: 90px; text-align: center;">Data Prod. <span id="sort_icon_data_fabricacao"></span></th><th onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th><th onclick="ordenarMiTabela('forma_numero')" style="width: 70px; text-align: center;">Forma <span id="sort_icon_forma_numero"></span></th><th onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th><th onclick="ordenarMiTabela('inicio_inspecao_montagem')">Inicio <span id="sort_icon_inicio_inspecao_montagem"></span></th><th onclick="ordenarMiTabela('finalizado_em')">Fim <span id="sort_icon_finalizado_em"></span></th><th onclick="ordenarMiTabela('tempo_inspecao')">Duracao <span id="sort_icon_tempo_inspecao"></span></th><th onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th><th style="width: 180px; text-align: center;">Itens Rej.</th><th onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th></tr></thead><tbody id="miTabelaBody"><tr><td colspan="10">Carregando dados...</td></tr></tbody></table></div><div id="miCardsContainer" class="mi-cards-mobile-list"></div><div class="mi-pagination"><div class="mi-pagination-info">Mostrando <span id="miPaginacaoDe">0</span>-<span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span></div><div class="mi-pagination-buttons" id="miPaginacaoBotoes"></div></div></div>
       </div>
 
       <div id="miSecaoQualidade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Inspecoes por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorSetor"></canvas></div></div><div class="mi-chart-card"><div class="mi-chart-title">Ranking por montador</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorMontador"></canvas></div></div></div></div>
@@ -1116,6 +1343,171 @@
     </div>
   </div>
 
+  <!-- Modal de Parada de Forma (Modo Manutenção) -->
+  <div id="modalManutencaoParada" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mParadaTitle">
+    <div class="modal-box" style="max-width: 480px; text-align: left; border-top: 5px solid #f1c40f;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">🛠️</span>
+        <div>
+          <h2 class="modal-title" id="mParadaTitle" style="margin: 0; font-size: 1.3rem; color: #856404;">Inativar Forma / Manutenção</h2>
+          <div style="font-size: 0.85rem; color: #666;" id="mParadaSub">Registrar parada da forma</div>
+        </div>
+      </div>
+      <div style="margin-bottom: 14px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Motivo da Parada *</label>
+        <textarea id="mParadaMotivo" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Trinca na aba lateral da forma"></textarea>
+      </div>
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">O que precisa ser feito para arrumar *</label>
+        <textarea id="mParadaAcao" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Soldar reforço metálico e alinhar travessa"></textarea>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="mParadaCancelBtn">Cancelar</button>
+        <button type="button" class="btn primary" id="mParadaConfirmBtn" style="background: #d97706; color: #fff; border: none; font-weight: 700;">Confirmar Parada</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Liberação de Forma (Modo Manutenção) -->
+  <div id="modalManutencaoLiberacao" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mLiberacaoTitle">
+    <div class="modal-box" style="max-width: 480px; text-align: left; border-top: 5px solid #10b981;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">✅</span>
+        <div>
+          <h2 class="modal-title" id="mLiberacaoTitle" style="margin: 0; font-size: 1.3rem; color: #065f46;">Liberar Forma de Manutenção</h2>
+          <div style="font-size: 0.85rem; color: #666;" id="mLiberacaoSub">Retornar forma para o estado ativo</div>
+        </div>
+      </div>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; font-size: 0.82rem; margin-bottom: 14px;" id="mLiberacaoInfo">
+        <!-- Detalhes da parada anterior -->
+      </div>
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Serviço Realizado / Observação de Liberação *</label>
+        <textarea id="mLiberacaoObs" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Ex: Solda concluída, travessa alinhada e teste efetuado"></textarea>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="mLiberacaoCancelBtn">Cancelar</button>
+        <button type="button" class="btn primary" id="mLiberacaoConfirmBtn" style="background: #059669; color: #fff; border: none; font-weight: 700;">Confirmar Liberação</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Tratativa / Direcionamento de Defeito -->
+  <div id="modalTratativaDefeito" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mTratativaTitle">
+    <div class="modal-box" style="max-width: 540px; text-align: left; border-top: 5px solid #2563eb;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">📋</span>
+        <div>
+          <h2 class="modal-title" id="mTratativaTitle" style="margin: 0; font-size: 1.25rem; color: #1e293b;">Tratativa de Defeito</h2>
+          <div style="font-size: 0.85rem; color: #64748b;" id="mTratativaSub">Registrar direcionamento e ação corretiva realizada</div>
+        </div>
+      </div>
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; font-size: 0.84rem; margin-bottom: 14px;" id="mTratativaInfo">
+        <!-- Preenchido via JS -->
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Status da Tratativa *</label>
+        <select id="mTratativaStatus" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; font-weight: 700; min-height: 42px;">
+          <option value="PENDENTE">⏳ PENDENTE - Aguardando ação</option>
+          <option value="EM_ANDAMENTO">🔄 EM ANDAMENTO - Em reparo / execução</option>
+          <option value="CONCLUIDO">✅ CONCLUÍDO - Ação corretiva finalizada</option>
+        </select>
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Responsável que Executou / Confirmou a Ação *</label>
+        <select id="mTratativaExecutadoPorSelect" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; font-weight: 600;">
+          <option value="Alex">Alex</option>
+          <option value="José Carlos">José Carlos</option>
+          <option value="Osmar">Osmar</option>
+          <option value="Philippe">Philippe</option>
+          <option value="Ricardo">Ricardo</option>
+          <option value="Osmar / José Carlos">Osmar / José Carlos (Combinado)</option>
+          <option value="Philippe / Ricardo">Philippe / Ricardo (Combinado)</option>
+          <option value="Ricardo / Alex">Ricardo / Alex (Combinado)</option>
+          <option value="OUTRO">Outro responsável...</option>
+        </select>
+        <input id="mTratativaExecutadoPor" type="text" class="input-field hidden" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; margin-top: 6px;" placeholder="Digite o nome do responsável..." />
+      </div>
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Direcionamento e Ação Corretiva Realizada *</label>
+        <textarea id="mTratativaAcaoRealizada" rows="3" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Descreva detalhadamente o direcionamento ou a solução aplicada (ex: estucagem concluída, furação desobstruída com martelete, poste encaminhado ao refugo...)"></textarea>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="mTratativaCancelBtn">Cancelar</button>
+        <button type="button" class="btn primary" id="mTratativaConfirmBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">Salvar Tratativa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Registrar Nova Ocorrência de Defeito -->
+  <div id="modalNovaOcorrenciaDefeito" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mNovaOcorrenciaTitle">
+    <div class="modal-box" style="max-width: 520px; text-align: left; border-top: 5px solid #2563eb;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <span style="font-size: 1.8rem;">➕</span>
+        <div>
+          <h2 class="modal-title" id="mNovaOcorrenciaTitle" style="margin: 0; font-size: 1.25rem; color: #1e293b;">Registrar Ocorrência de Defeito</h2>
+          <div style="font-size: 0.85rem; color: #64748b;">Lançamento manual de não conformidade no poste</div>
+        </div>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+        <div>
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Setor *</label>
+          <select id="mNovaSetor" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;">
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
+            <option value="Setor 4">Setor 4</option>
+          </select>
+        </div>
+        <div>
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Nº da Forma / Poste *</label>
+          <input id="mNovaForma" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: 01, 05, P-10..." />
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+        <div>
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Data da Ocorrência *</label>
+          <input id="mNovaData" type="date" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" />
+        </div>
+        <div>
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Modelo do Poste</label>
+          <input id="mNovaModelo" type="text" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px;" placeholder="Ex: DT 7,5/300, 2CX VL..." />
+        </div>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Código do Defeito *</label>
+        <select id="mNovaCodigoDefeito" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; min-height: 42px; font-weight: 700;">
+          <option value="A">A - Falha na Concretagem / Armação Aparente (Osmar / José Carlos)</option>
+          <option value="B">B - Cano Entupido (Osmar / José Carlos)</option>
+          <option value="C">C - Excesso de Bolhas (Philippe / Ricardo)</option>
+          <option value="D">D - Problema na Caixa do Relógio/Disjuntor (Alex)</option>
+          <option value="E">E - Furos Obstruídos ou Faltando (Osmar / José Carlos)</option>
+          <option value="F">F - Identificação do Poste / Carimbos (Osmar / José Carlos)</option>
+          <option value="G">G - Presença de Trincas Superficiais (Philippe / Ricardo)</option>
+          <option value="H">H - Bolha nas Caixas (Philippe / Ricardo)</option>
+          <option value="I">I - Trincas em Toda Extensão do Poste (Philippe / Ricardo)</option>
+          <option value="J">J - Pequenas Avarias (Ricardo / Alex)</option>
+          <option value="K">K - Manchas Brancas Superficiais (Philippe / Ricardo)</option>
+          <option value="L">L - Buchas das Caixas / Buchas EDP (Osmar / José Carlos)</option>
+          <option value="M">M - Parafuso Lacre da Caixa do Medidor (Osmar / José Carlos)</option>
+          <option value="O">O - Falha no Concreto / Segregado (Ricardo / Alex)</option>
+          <option value="P">P - Grandes Avarias (Ricardo / Alex)</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 18px;">
+        <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #334155;">Observações da Inspeção</label>
+        <textarea id="mNovaObservacoes" rows="2" class="input-field" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1;" placeholder="Detalhes adicionais observados na peça..."></textarea>
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" id="mNovaCancelBtn">Cancelar</button>
+        <button type="button" class="btn primary" id="mNovaConfirmBtn" style="background: #2563eb; color: #fff; border: none; font-weight: 700;">Salvar Ocorrência</button>
+      </div>
+    </div>
   <template id="tplItemRegistro">
     <article class="item">
       <div class="item-main"></div>
@@ -1125,6 +1517,7 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=teste-lab-20260710"></script>
+  <script src="app.js?v=v5.0"></script>
 </body>
 </html>
+
