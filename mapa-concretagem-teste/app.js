@@ -3695,23 +3695,30 @@ async function fetchPolesForDate(filtroData, setor = "") {
     }
 
     // 1. Fetch from producao table in Supabase
+    // 1. Fetch from producao table in Supabase (restrito a Setor 3 e Setor 4)
     let queryProd = supabaseClient
       .from('producao')
       .select('*')
-      .eq('data_fabricacao', filtroData);
+      .eq('data_fabricacao', filtroData)
+      .eq('status', 'LIBERADO');
     if (setor) {
       queryProd = queryProd.eq('setor', setor);
+    } else {
+      queryProd = queryProd.in('setor', ['Setor 3', 'Setor 4']);
     }
     const { data: producaoRows, error: err1 } = await queryProd;
     if (err1) throw err1;
 
     // 2. Fetch from montagem_poste table in Supabase
+    // 2. Fetch from montagem_poste table in Supabase (restrito a Setor 3 e Setor 4)
     let queryMont = supabaseClient
       .from('montagem_poste')
       .select('*')
       .eq('data_fabricacao', filtroData);
     if (setor) {
       queryMont = queryMont.eq('setor', setor);
+    } else {
+      queryMont = queryMont.in('setor', ['Setor 3', 'Setor 4']);
     }
     const { data: montagemRows, error: err2 } = await queryMont;
     if (err2) throw err2;
@@ -3921,10 +3928,32 @@ async function renderInspecaoLiberados() {
       acaoContent = `<button type="button" class="btn ins-open-btn primary" style="width: 100%; height: 38px; border-radius: 6px;">Inspecionar</button>`;
     }
 
+    // Monta o status/defeito com icone para exibir na lista
+    let statusDefeitoHtml = "";
+    if (isFinalizado) {
+      const insCodigo = record.inspecao?.codigo || "";
+      if (status === "A") {
+        statusDefeitoHtml = `<span style="color:#16a34a;font-weight:700;font-size:.85rem">\u2705 Aprovado</span>`;
+      } else if (status === "RR") {
+        const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "\u26a0\ufe0f";
+        const descDefeito = insCodigo ? getMotivoRecusaLabel(insCodigo) : "Retrabalho";
+        statusDefeitoHtml = `<span style="color:#d97706;font-weight:700;font-size:.82rem">\uD83D\uDD27 RR</span> <span style="font-size:.78rem;color:#78350f">${descDefeito}</span>`;
+      } else if (status === "R") {
+        const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "\u274c";
+        const descDefeito = insCodigo ? getMotivoRecusaLabel(insCodigo) : "Reprovado";
+        statusDefeitoHtml = `<span style="color:#dc2626;font-weight:700;font-size:.82rem">\u274c Reprovado</span><br><span style="font-size:.78rem;color:#7f1d1d">${descDefeito}</span>`;
+      } else {
+        statusDefeitoHtml = `<span style="color:#6b7280;font-size:.82rem">${status || "—"}</span>`;
+      }
+    } else {
+      statusDefeitoHtml = `<span style="color:#94a3b8;font-size:.82rem">Pendente</span>`;
+    }
+
     tr.innerHTML = `
       <td data-label="N Forma">${record.formaNumero || ""}</td>
       <td data-label="Modelo">${record.modelo || ""}</td>
       <td data-label="Data Prod.">${fmtDate(record.dataFabricacao || "")}</td>
+      <td data-label="Status / Defeito" style="max-width:220px;line-height:1.4">${statusDefeitoHtml}</td>
       <td data-label="Ação">${acaoContent}</td>
     `;
     el.insLiberadosBody.appendChild(tr);
