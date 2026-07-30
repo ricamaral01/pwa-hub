@@ -6056,4 +6056,23 @@ td.s4-forma-cell.is-manutencao::after {
   white-space: nowrap;
 }
 
-
+/* ── Icones especificos por tipo de defeito no checklist de inspecao S3/S4 ── */
+.item-defeito-icon {
+  font-size: 1.15rem;
+  margin-right: 5px;
+  flex-shrink: 0;
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+}
+.critico-dot {
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #b91c1c !important;
+  margin-right: 4px;
+  background: #fee2e2;
+  border-radius: 3px;
+  padding: 1px 4px;
+  vertical-align: middle;
+  letter-spacing: 0;
+}

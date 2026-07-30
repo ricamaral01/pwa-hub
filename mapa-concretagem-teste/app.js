@@ -1515,24 +1515,24 @@ function getMontagemMotivoOptions() {
 
 // Mapa de icones por codigo de defeito
 const DEFEITO_ICONES = {
-  A: "\uD83D\uDD73\uFE0F",
-  B: "\uD83D\uDEAB",
-  C: "\uD83E\uDEC7",
-  D: "\uD83D\uDCE6",
-  E: "\uD83D\uDD29",
-  F: "\uD83C\uDFF7\uFE0F",
-  G: "\u3030\uFE0F",
-  H: "\uD83E\uDEC7",
-  I: "\u26A1",
-  J: "\u26A0\uFE0F",
-  K: "\uD83D\uDFEB",
-  L: "\uD83D\uDD27",
-  M: "\uD83D\uDD11",
-  O: "\uD83D\uDC94",
-  P: "\uD83D\uDEA8",
-  Q: "\uD83E\uDEB9",
-  R: "\uD83E\uDDF1",
-  S: "\uD83D\uDCD0",
+  A: "\uD83D\uDD73\uFE0F",   // 🕳️  — Falha de Preenchimento / Armação Aparente (vazio/buraco)
+  B: "\uD83D\uDEB1",         // 🚱  — Tubulação Entupida (sem fluxo)
+  C: "\uD83E\uDEB7",         // 🫧  — Bolhas em Excesso / Fora do Padrão
+  D: "\uD83D\uDCE6",         // 📦  — Problema na Caixa do Relógio/Disjuntor
+  E: "\uD83D\uDD29",         // 🔩  — Furação Obstruída (pinos)
+  F: "\uD83C\uDFF7\uFE0F",   // 🏷️  — Carimbo de Identificação
+  G: "\uD83E\uDEB6",         // 🪶  — Fissuras superficiais
+  H: "\uD83E\uDEB7",         // 🫧  — Bolhas nas Caixas
+  I: "\u26A1",               // ⚡  — Trincas em toda extensão
+  J: "\uD83D\uDCA5",         // 💥  — Pequenas Avarias
+  K: "\uD83C\uDFA8",         // 🎨  — Manchas Excessivas
+  L: "\uD83D\uDD27",         // 🔧  — Buchas de Fixação
+  M: "\uD83D\uDD10",         // 🔐  — Parafuso Lacre da Caixa do Medidor
+  O: "\uD83E\uDEA8",         // 🪨  — Concreto Segregado / Homogeneidade
+  P: "\uD83D\uDEA8",         // 🚨  — Grandes Avarias (emergência)
+  Q: "\u2702\uFE0F",         // ✂️  — Rebarbas
+  R: "\uD83E\uDDF1",         // 🧱  — Acabamento Face Exposta
+  S: "\uD83D\uDCD0",         // 📐  — Acabamento Abas
 };
 
 function getMotivoRecusaLabel(value) {
@@ -4858,10 +4858,12 @@ function renderInspecaoChecklistSections() {
       const itemWrapper = document.createElement("div");
       itemWrapper.className = "mp-checklist-item-wrapper";
 
+      const itemIcone = item.codigoFalha ? (DEFEITO_ICONES[item.codigoFalha] || "") : "";
       let itemHtml = `
         <div class="mp-checklist-item">
           <span class="mp-checklist-item-text">
-            ${item.critico ? '<span class="critico-dot" style="color: #ef4444;">🔴</span>' : ''}
+            ${itemIcone ? `<span class="item-defeito-icon" title="Código ${item.codigoFalha}">${itemIcone}</span>` : ""}
+            ${item.critico ? '<span class="critico-dot" title="Item crítico — pode segregar o poste">&#9888;</span>' : ""}
             ${item.texto}
           </span>
           <div class="mp-yn-group">
