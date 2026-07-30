@@ -3937,11 +3937,11 @@ async function renderInspecaoLiberados() {
       } else if (status === "RR") {
         const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "\u26a0\ufe0f";
         const descDefeito = insCodigo ? getMotivoRecusaLabel(insCodigo) : "Retrabalho";
-        statusDefeitoHtml = `<span style="color:#d97706;font-weight:700;font-size:.82rem">\uD83D\uDD27 RR</span> <span style="font-size:.78rem;color:#78350f">${descDefeito}</span>`;
+        statusDefeitoHtml = `<span style="color:#d97706;font-weight:700;font-size:.82rem">${iconeDefeito} RR</span> <span style="font-size:.78rem;color:#78350f">${descDefeito}</span>`;
       } else if (status === "R") {
         const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "\u274c";
         const descDefeito = insCodigo ? getMotivoRecusaLabel(insCodigo) : "Reprovado";
-        statusDefeitoHtml = `<span style="color:#dc2626;font-weight:700;font-size:.82rem">\u274c Reprovado</span><br><span style="font-size:.78rem;color:#7f1d1d">${descDefeito}</span>`;
+        statusDefeitoHtml = `<span style="color:#dc2626;font-weight:700;font-size:.82rem">${iconeDefeito} Reprovado</span><br><span style="font-size:.78rem;color:#7f1d1d">${descDefeito}</span>`;
       } else {
         statusDefeitoHtml = `<span style="color:#6b7280;font-size:.82rem">${status || "—"}</span>`;
       }
