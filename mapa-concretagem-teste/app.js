@@ -1513,14 +1513,38 @@ function getMontagemMotivoOptions() {
   }));
 }
 
+// Mapa de icones por codigo de defeito
+const DEFEITO_ICONES = {
+  A: "\uD83D\uDD73\uFE0F",
+  B: "\uD83D\uDEAB",
+  C: "\uD83E\uDEC7",
+  D: "\uD83D\uDCE6",
+  E: "\uD83D\uDD29",
+  F: "\uD83C\uDFF7\uFE0F",
+  G: "\u3030\uFE0F",
+  H: "\uD83E\uDEC7",
+  I: "\u26A1",
+  J: "\u26A0\uFE0F",
+  K: "\uD83D\uDFEB",
+  L: "\uD83D\uDD27",
+  M: "\uD83D\uDD11",
+  O: "\uD83D\uDC94",
+  P: "\uD83D\uDEA8",
+  Q: "\uD83E\uDEB9",
+  R: "\uD83E\uDDF1",
+  S: "\uD83D\uDCD0",
+};
+
 function getMotivoRecusaLabel(value) {
   if (!value) return "-";
   const parts = String(value).split(/,\s*/);
   const labels = parts.map((part) => {
-    const found = CHECKLIST_INSPECAO_CODIGOS.find((item) => item.codigo === part.trim());
-    return found ? `${found.codigo} — ${found.descricao}` : part;
+    const cod = part.trim().toUpperCase();
+    const found = CHECKLIST_INSPECAO_CODIGOS.find((item) => item.codigo === cod);
+    const icone = DEFEITO_ICONES[cod] || "\uD83D\uDD39";
+    return found ? `${icone} ${found.codigo} \u2014 ${found.descricao}` : `${icone} ${part}`;
   });
-  return labels.join(", ");
+  return labels.join("  |  ");
 }
 
 function statusFluxoFromRecord(record) {
