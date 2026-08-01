@@ -17,7 +17,13 @@
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/database/data-source.ts",
     "migration:run": "typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts",
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/database/data-source.ts",
-    "seed:admin": "ts-node -r tsconfig-paths/register src/database/seeds/seed-admin.ts"
+    "seed:admin": "ts-node -r tsconfig-paths/register src/database/seeds/seed-admin.ts",
+    "seed:import-fixtures": "ts-node -r tsconfig-paths/register src/database/seeds/seed-import-fixtures.ts",
+    "import:analyze": "ts-node -r tsconfig-paths/register src/database/imports-cli.ts analyze",
+    "import:dry-run": "ts-node -r tsconfig-paths/register src/database/imports-cli.ts dry-run",
+    "import:execute": "ts-node -r tsconfig-paths/register src/database/imports-cli.ts execute",
+    "import:reconcile": "ts-node -r tsconfig-paths/register src/database/imports-cli.ts reconcile",
+    "import:rollback": "ts-node -r tsconfig-paths/register src/database/imports-cli.ts rollback"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",
