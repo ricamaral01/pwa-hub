@@ -21,5 +21,10 @@ Fluxo:
 6. executar;
 7. reverter quando necessario.
 
-CSV e processado. XLS/XLSX sao identificados e registrados com aviso ate existirem arquivos reais e dependencia de parser aprovada.
+CSV e XLSX sao processados. XLS legado continua apenas identificado com aviso operacional; arquivos XLS protegidos ou binarios antigos devem ser convertidos para XLSX/CSV antes da importacao.
 
+Fixtures validadas:
+
+- `imports/historico/exemplos/apontamentos-exemplo.csv`
+- `imports/historico/exemplos/apontamentos-uma-aba.xlsx`
+- `imports/historico/exemplos/historico-multiplas-abas.xlsx`

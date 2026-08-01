@@ -1,5 +1,19 @@
 # Handoff
 
+## 2026-08-01 - Codex - Validacao tecnica Fases 5, 6 e 7
+
+Branch: `fix/validacao-fases-5-6-7`, criada a partir de `feature/fases-5-6-7-estoque-oee-migracao`.
+
+Escopo fechado sem Fase 8: guards administrativos granulares aplicados a estoque, blendas, analytics e importacao; OEE corrigido para usar `calendario_turno`; XLSX real adicionado ao pipeline de importacao historica; telas administrativas das fases 5 a 7 verificadas com backend real.
+
+OEE: `PlannedTimeCalculationService` calcula turnos aplicaveis, recortes do periodo, intervalos excluidos e indisponibilidades planejadas. Quando nao ha calendario aplicavel, os indicadores ficam nulos e a memoria registra configuracao ausente, sem usar intervalo bruto/24h.
+
+Importacao: fixtures reais validadas em `imports/historico/exemplos`: CSV, XLSX de uma aba e XLSX de multiplas abas. XLS legado permanece pendente de conversao para XLSX/CSV.
+
+Validacao real executada: backend typecheck/test/build OK; frontend typecheck/Vitest/build OK; lint seletivo dos arquivos alterados OK; Playwright especifico `e2e/fases-5-7-admin.normal.spec.ts` OK; CLI import analyze/dry-run/execute/reconcile/rollback OK com batch `2f1af96a-ebc1-4c8a-84f0-63f5aad2d5af`; API real `/analytics/oee/memory` retornou 1 turno e `tempoPlanejadoS=28800`.
+
+Observacao: o script global de lint ainda falha por regras Prettier/LF em arquivos CRLF preexistentes fora do escopo. Foi usado lint seletivo direto nos arquivos alterados para evitar normalizacao massiva.
+
 ## 2026-08-01 - Codex - Fases 5, 6 e 7
 
 Implementadas as entregas de estoque, blendas, analytics/OEE e framework de importacao historica na branch `feature/fases-5-6-7-estoque-oee-migracao`.

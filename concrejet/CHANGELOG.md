@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.7.1] - 2026-08-01 - Validacao tecnica das Fases 5, 6 e 7
+
+### Corrigido
+- Endpoints de estoque, blendas, analytics e importacao historica passaram a exigir permissoes administrativas granulares alem do JWT administrativo.
+- OEE passou a calcular tempo planejado liquido via `calendario_turno`, com turnos, intervalos excluidos, indisponibilidades planejadas e paradas na memoria de calculo.
+- Ausencia de calendario produtivo deixa OEE sem indicador calculado e retorna inconsistencia controlada, sem assumir periodo bruto ou 24h.
+
+### Adicionado
+- Parser XLSX real para importacao historica, com suporte a multiplas abas, datas, decimais com virgula, valores armazenados de formulas e fixtures locais.
+- Validacao Playwright das rotas administrativas das Fases 5 a 7 contra backend real, sem exposicao de UUID bruto nas telas verificadas.
+
 ## [0.7.0] - 2026-08-01 - Fases 5, 6 e 7
 
 ### Adicionado
