@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.0] - 2026-08-01 - Fases 5, 6 e 7
+
+### Adicionado
+- Modulo de estoque com movimentos append-only, saldo por lote protegido, entrada, ajuste, devolucao, transferencia, estorno e consumo automatico na conclusao do apontamento.
+- Modulo de blendas com componentes, calculo, conclusao transacional e rastreabilidade.
+- Dashboards e relatorios administrativos para producao, perdas, paradas, OEE, estoque e rastreabilidade.
+- Views SQL de analytics e memoria de calculo OEE versionada.
+- Framework de importacao historica com staging, lotes, arquivos, abas, linhas, erros, mapeamentos, reconciliacao, rollback e CLI.
+
+### Observacoes
+- Nao foram implementadas Fases 8 ou 9.
+- Nenhum dado historico real foi importado; apenas fixture CSV local valida o pipeline.
+
 ## [0.6.0] - 2026-08-01 - Fases 3 e 4 operacionais
 
 ### Adicionado

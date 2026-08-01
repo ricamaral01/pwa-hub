@@ -164,3 +164,10 @@ vinculada a empresa, unidade, apontamento, maquina, dispositivo, operador e tipo
 ocorrencia. `tipo_ocorrencia` foi estendida com classificacao/programacao padrao,
 participacao no OEE e flags de acao corretiva/aprovacao. No frontend, o IndexedDB foi
 versionado para v3 com outbox, conflitos, catalogos essenciais e metadados locais.
+
+## Estado implementado em 2026-08-01 - Fases 5, 6 e 7
+
+Adicionadas as tabelas `estoque_movimento`, `blenda`, `blenda_componente`,
+`calendario_turno` e tabelas de staging `import_*`. Foram criadas views SQL para
+producao, perdas, ocorrencias, consumo, rastreabilidade e base OEE. `lote_resina` passa
+a ter reconciliacao inicial de saldo em `estoque_movimento`.

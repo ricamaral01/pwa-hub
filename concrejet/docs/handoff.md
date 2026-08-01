@@ -1,5 +1,17 @@
 # Handoff
 
+## 2026-08-01 - Codex - Fases 5, 6 e 7
+
+Implementadas as entregas de estoque, blendas, analytics/OEE e framework de importacao historica na branch `feature/fases-5-6-7-estoque-oee-migracao`.
+
+Backend: `EstoqueModule`, `AnalyticsModule` e `ImportacaoModule`; migration `1730900000000-Fases5A7EstoqueAnalyticsImportacao`; consumo de lote integrado de forma transacional ao fechamento do apontamento.
+
+Frontend: novas rotas administrativas para movimentos, blendas, dashboards, relatorios, rastreabilidade e importacao, todas sob `AdminGuard`.
+
+Importacao historica: estrutura criada em `../imports/historico`; nenhum arquivo real foi importado. O pipeline registra staging e reconciliacao, e XLS/XLSX permanecem pendentes de parser ate existirem arquivos reais.
+
+Validacao pendente nesta entrada deve ser lida junto ao changelog e aos resultados finais do executor: typecheck, testes, build, migracao, seeds, API real, Playwright e status local.
+
 ## 2026-08-01 - Codex - Fases 2, 3 e 4 operacionais sem Fase 5/6
 
 ### Objetivo executado

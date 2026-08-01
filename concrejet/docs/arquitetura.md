@@ -159,3 +159,10 @@ guard proprio por bearer token operacional em memoria. As rotas especificas de p
 ocorrencias sao registradas antes do controller generico de cadastros. O frontend tablet
 consome catalogo operacional real, registra apontamentos/paradas e mantem outbox offline
 local. Fases 5 e 6 nao foram iniciadas.
+
+## Estado implementado em 2026-08-01 - Fases 5, 6 e 7
+
+O backend agora inclui `EstoqueModule`, `AnalyticsModule` e `ImportacaoModule`. Estoque e
+blendas usam services dedicados e transacionais; analytics usa consultas SQL/views
+reconstruiveis; importacao historica usa staging separado e nao grava dados de dominio
+sem arquivos/mapeamentos reais.
