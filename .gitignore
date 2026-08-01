@@ -3,6 +3,7 @@
 node_modules/
 mapa-concretagem/node_modules/
 mapa-concretagem/.env
+imports/
 
 imports/historico/entrada/*
 !imports/historico/entrada/.gitkeep
@@ -12,3 +13,5 @@ imports/historico/rejeitados/*
 !imports/historico/rejeitados/.gitkeep
 imports/historico/relatorios/*
 !imports/historico/relatorios/.gitkeep
+imports/historico/exemplos/*
+imports/historico/manifesto-arquivos-esperados.json
