@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.2] - 2026-08-01 - Validacao desktop/tablet
+
+### Corrigido
+- Entrada desktop em `localhost`/loopback passa a abrir o fluxo administrativo, enquanto acesso por IP de rede local preserva o fluxo operacional do tablet.
+- Sessao operacional do tablet deixou de ser limpa por bootstrap administrativo `/auth/me` sem sessao.
+- Tela de parada restaura operador/token operacional persistidos na sessao do navegador antes de carregar dados protegidos.
+- Layout desktop e tablet recebeu ajustes de rolagem e largura para evitar overflow horizontal nas viewports validadas.
+- Erros HTTP previsiveis passaram a exibir mensagens por status; falhas 5xx exibem referencia de correlacao sem expor detalhes internos.
+
+### Validado
+- Playwright especifico cobriu entrada desktop e tablet via `http://192.168.0.14:5173` em 1280x800, 1280x720 e 1024x600 sem respostas 5xx.
+
 ## [0.7.1] - 2026-08-01 - Validacao tecnica das Fases 5, 6 e 7
 
 ### Corrigido

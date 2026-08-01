@@ -1,5 +1,19 @@
 # Handoff
 
+## 2026-08-01 - Codex - Validacao desktop/tablet e erro operacional
+
+Branch: `fix/dashboard-scroll-tablet-500`.
+
+Escopo limitado a validacao visual/funcional do ConcreTrack, sem iniciar Fase 8 e sem novas funcionalidades de cadastro, estoque ou apontamento.
+
+Causa raiz diagnosticada no tablet via LAN: o bootstrap administrativo global chamava `/auth/me` em telas operacionais; o 401 esperado dessa sessao administrativa disparava limpeza global de sessao e removia operador/token operacional. Em seguida, telas como `/stop` carregavam endpoints operacionais com bearer ausente/invalido. A API nao reproduziu 500 apos a correcao; erros previsiveis ficaram como 400/409/401 controlados.
+
+Correcoes aplicadas: entrada `/` agora direciona `localhost`/loopback para o dashboard administrativo e IP de LAN para o fluxo tablet; sessao operacional e token persistem em `sessionStorage`; `/stop` aguarda token antes de carregar dados; bootstrap administrativo fica restrito a rotas administrativas/login/troca de senha; `AdminGuard` inicializa `/auth/me` sob demanda; mensagens de erro do client passaram a ser especificas por status com correlacao em 5xx; shell desktop/tablet recebeu ajustes de overflow e responsividade.
+
+Validacao executada: backend typecheck/test/build OK; frontend typecheck/Vitest/build OK; lint seletivo OK; build frontend OK; Playwright especifico `e2e/dashboard-scroll-tablet.normal.spec.ts` OK contra `http://192.168.0.14:5173`; API e frontend locais ativos.
+
+Pendencia real: o banco de desenvolvimento mantem estado operacional aberto para `DEV-TABLET-01`; fluxos completos de conclusao devem ser reexecutados com fixture limpa quando for necessario validar fechamento ponta a ponta. Nenhum 5xx foi observado no fluxo validado.
+
 ## 2026-08-01 - Codex - Validacao tecnica Fases 5, 6 e 7
 
 Branch: `fix/validacao-fases-5-6-7`, criada a partir de `feature/fases-5-6-7-estoque-oee-migracao`.
