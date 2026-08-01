@@ -10,6 +10,7 @@ import { Maquina } from '../modules/producao-base/entities/maquina.entity';
 import { Dispositivo } from '../modules/producao-base/entities/dispositivo.entity';
 import { Auditoria } from '../modules/auditoria/entities/auditoria.entity';
 import { CADASTRO_ENTITIES } from '../modules/cadastros/entities';
+import { Apontamento } from '../modules/producao/entities/apontamento.entity';
 
 config();
 
@@ -31,6 +32,7 @@ export const AppDataSource = new DataSource({
     Dispositivo,
     Auditoria,
     ...CADASTRO_ENTITIES,
+    Apontamento,
   ],
   migrations: ['src/database/migrations/*.ts'],
   synchronize: false,

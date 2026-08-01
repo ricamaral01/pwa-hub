@@ -14,6 +14,7 @@ import { UsuariosModule } from './modules/usuarios/usuarios.module';
 import { ProducaoBaseModule } from './modules/producao-base/producao-base.module';
 import { AuditoriaModule } from './modules/auditoria/auditoria.module';
 import { CadastrosModule } from './modules/cadastros/cadastros.module';
+import { ProducaoModule } from './modules/producao/producao.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { CadastrosModule } from './modules/cadastros/cadastros.module';
     ProducaoBaseModule,
     AuditoriaModule,
     CadastrosModule,
+    ProducaoModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

@@ -9,14 +9,21 @@ import { Usuario } from '../../modules/usuarios/entities/usuario.entity';
 import { Perfil } from '../../modules/usuarios/entities/perfil.entity';
 import { Permissao } from '../../modules/usuarios/entities/permissao.entity';
 import {
+  Colaborador,
+  ConfiguracaoItemMolde,
   Funcao,
   Item,
+  LoteResina,
   Molde,
+  MovimentoEstoqueLote,
   Operacao,
+  OrdemProducao,
   TipoOcorrencia,
   Fornecedor,
   Resina,
 } from '../../modules/cadastros/entities';
+import { Maquina } from '../../modules/producao-base/entities/maquina.entity';
+import { Dispositivo } from '../../modules/producao-base/entities/dispositivo.entity';
 
 const ADMIN_PERFIL_CODIGO = 'ADMIN';
 const ADMIN_PERMISSAO_CHAVE = 'sistema.administrar';
@@ -35,6 +42,13 @@ const FASE1_RECURSOS = [
   'ordens_producao',
 ];
 const FASE1_ACOES = ['consultar', 'criar', 'editar', 'inativar', 'reativar'];
+const FASE2_PERMISSOES = [
+  'apontamentos.consultar',
+  'apontamentos.criar',
+  'apontamentos.editar',
+  'apontamentos.concluir',
+  'apontamentos.cancelar',
+];
 
 function generateRandomPassword(): string {
   return randomBytes(18).toString('base64url');
@@ -114,6 +128,20 @@ async function main(): Promise<void> {
         fase1Permissoes.push(fase1Permissao);
       }
     }
+    const fase2Permissoes: Permissao[] = [];
+    for (const chave of FASE2_PERMISSOES) {
+      let fase2Permissao = await permissaoRepo.findOne({ where: { chave } });
+      if (!fase2Permissao) {
+        fase2Permissao = await permissaoRepo.save(
+          permissaoRepo.create({
+            chave,
+            descricao: `Permite ${chave.replace('.', ' ')}`,
+            modulo: 'producao',
+          }),
+        );
+      }
+      fase2Permissoes.push(fase2Permissao);
+    }
 
     let perfil = await perfilRepo.findOne({
       where: { empresaId: empresa.id, codigo: ADMIN_PERFIL_CODIGO },
@@ -127,12 +155,12 @@ async function main(): Promise<void> {
           nome: 'Administrador',
           descricao: 'Perfil com acesso administrativo completo',
           ativo: true,
-          permissoes: [permissao, ...fase1Permissoes],
+          permissoes: [permissao, ...fase1Permissoes, ...fase2Permissoes],
         }),
       );
     } else {
       const chavesAtuais = new Set((perfil.permissoes ?? []).map((item) => item.chave));
-      const novasPermissoes = [permissao, ...fase1Permissoes].filter(
+      const novasPermissoes = [permissao, ...fase1Permissoes, ...fase2Permissoes].filter(
         (item) => !chavesAtuais.has(item.chave),
       );
       if (novasPermissoes.length) {
@@ -141,7 +169,7 @@ async function main(): Promise<void> {
       }
     }
 
-    await seedFase1Basico(manager, empresa.id);
+    await seedFase1Basico(manager, empresa.id, unidade.id, senhaGerada !== null);
 
     const usuarioExistente = await usuarioRepo.findOne({ where: { empresaId: empresa.id, email } });
     if (usuarioExistente) {
@@ -178,53 +206,189 @@ async function main(): Promise<void> {
   await AppDataSource.destroy();
 }
 
-async function seedFase1Basico(manager: EntityManager, empresaId: string) {
-  await manager
+async function seedFase1Basico(
+  manager: EntityManager,
+  empresaId: string,
+  unidadeId: string,
+  podeImprimirPin: boolean,
+) {
+  const funcao = await manager
     .getRepository(Funcao)
-    .upsert({ empresaId, codigo: 'OP-INJ', descricao: 'Operador de injecao', ativo: true }, [
-      'empresaId',
-      'codigo',
-    ]);
-  await manager
+    .save(
+      await upsertAndReturn(manager, Funcao, { empresaId, codigo: 'OP-INJ' }, {
+        empresaId,
+        codigo: 'OP-INJ',
+        descricao: 'Operador de injecao',
+        ativo: true,
+      }),
+    );
+  const operacao = await manager
     .getRepository(Operacao)
-    .upsert({ empresaId, codigo: 'INJ', descricao: 'Injecao plastica', ativo: true }, [
-      'empresaId',
-      'codigo',
-    ]);
+    .save(
+      await upsertAndReturn(manager, Operacao, { empresaId, codigo: 'INJ' }, {
+        empresaId,
+        codigo: 'INJ',
+        descricao: 'Injecao plastica',
+        ativo: true,
+      }),
+    );
   await manager
     .getRepository(TipoOcorrencia)
     .upsert({ empresaId, codigo: 'PARADA', descricao: 'Parada de maquina', ativo: true }, [
       'empresaId',
       'codigo',
     ]);
-  await manager
+  const fornecedor = await manager
     .getRepository(Fornecedor)
-    .upsert({ empresaId, nome: 'Fornecedor Padrao', documento: '00000000000000', ativo: true }, [
-      'empresaId',
-      'documento',
-    ]);
-  await manager.getRepository(Resina).upsert(
-    {
+    .save(
+      await upsertAndReturn(manager, Fornecedor, { empresaId, documento: '00000000000000' }, {
+        empresaId,
+        nome: 'Fornecedor Padrao',
+        documento: '00000000000000',
+        ativo: true,
+      }),
+    );
+  const resina = await manager.getRepository(Resina).save(
+    await upsertAndReturn(manager, Resina, { empresaId, codigo: 'PP-HOMO' }, {
       empresaId,
       codigo: 'PP-HOMO',
       descricao: 'Polipropileno homopolimero',
       fabricante: 'Padrao',
       ativo: true,
-    },
-    ['empresaId', 'codigo'],
+    }),
   );
-  await manager
+  const item = await manager
     .getRepository(Item)
-    .upsert({ empresaId, codigo: 'ITEM-001', descricao: 'Item de desenvolvimento', ativo: true }, [
-      'empresaId',
-      'codigo',
-    ]);
-  await manager
-    .getRepository(Molde)
-    .upsert(
-      { empresaId, codigo: 'MOLDE-001', descricao: 'Molde de desenvolvimento', ativo: true },
-      ['empresaId', 'codigo'],
+    .save(
+      await upsertAndReturn(manager, Item, { empresaId, codigo: 'ITEM-001' }, {
+        empresaId,
+        codigo: 'ITEM-001',
+        descricao: 'Item de desenvolvimento',
+        ativo: true,
+      }),
     );
+  const molde = await manager
+    .getRepository(Molde)
+    .save(
+      await upsertAndReturn(manager, Molde, { empresaId, codigo: 'MOLDE-001' }, {
+        empresaId,
+        codigo: 'MOLDE-001',
+        descricao: 'Molde de desenvolvimento',
+        ativo: true,
+      }),
+    );
+  await manager.getRepository(Colaborador).save(
+    await upsertAndReturn(manager, Colaborador, { empresaId, matricula: 'OP001' }, {
+      empresaId,
+      matricula: 'OP001',
+      nome: 'Operador Desenvolvimento',
+      funcaoId: funcao.id,
+      pinHash: await argon2.hash(process.env.SEED_OPERATOR_PIN ?? '2468', { type: argon2.argon2id }),
+      ativo: true,
+    }),
+  );
+  const maquina = await manager.getRepository(Maquina).save(
+    await upsertAndReturn(manager, Maquina, { unidadeId, codigo: 'INJ-01' }, {
+      unidadeId,
+      codigo: 'INJ-01',
+      nome: 'Injetora 01',
+      modelo: 'Desenvolvimento',
+      ativo: true,
+    }),
+  );
+  await manager.getRepository(Dispositivo).save(
+    await upsertAndReturn(manager, Dispositivo, { identificador: 'DEV-TABLET-01' }, {
+      identificador: 'DEV-TABLET-01',
+      nome: 'Tablet desenvolvimento',
+      tipo: 'tablet',
+      maquinaId: maquina.id,
+      ativo: true,
+    }),
+  );
+  let configuracao = await manager.getRepository(ConfiguracaoItemMolde).findOne({
+    where: {
+      empresaId,
+      itemId: item.id,
+      moldeId: molde.id,
+      ativo: true,
+    },
+  });
+  if (!configuracao) {
+    configuracao = await manager.getRepository(ConfiguracaoItemMolde).save(
+      manager.getRepository(ConfiguracaoItemMolde).create({
+        empresaId,
+        itemId: item.id,
+        moldeId: molde.id,
+        pesoPecaG: '152.200',
+        cicloPadraoSegundos: 45,
+        cavidades: 1,
+        limitePerdaPercentual: '7.00',
+        vigenciaInicio: new Date(),
+        ativo: true,
+      }),
+    );
+  }
+  let lote = await manager.getRepository(LoteResina).findOne({
+    where: { empresaId, codigo: 'LOTE-DEV-001' },
+  });
+  if (!lote) {
+    lote = await manager.getRepository(LoteResina).save(
+      manager.getRepository(LoteResina).create({
+        empresaId,
+        codigo: 'LOTE-DEV-001',
+        resinaId: resina.id,
+        fornecedorId: fornecedor.id,
+        quantidadeInicialKg: '1000.000',
+        saldoAtualKg: '1000.000',
+        dataRecebimento: new Date().toISOString().slice(0, 10),
+        origem: 'COMPRA',
+        status: 'DISPONIVEL',
+        ativo: true,
+      }),
+    );
+  }
+  const movimentoExistente = await manager.getRepository(MovimentoEstoqueLote).findOne({
+    where: { loteResinaId: lote.id, tipo: 'ENTRADA' },
+  });
+  if (!movimentoExistente) {
+    await manager.getRepository(MovimentoEstoqueLote).save(
+      manager.getRepository(MovimentoEstoqueLote).create({
+        empresaId,
+        loteResinaId: lote.id,
+        tipo: 'ENTRADA',
+        quantidadeKg: '1000.000',
+        observacao: 'Entrada inicial desenvolvimento',
+      }),
+    );
+  }
+  await manager.getRepository(OrdemProducao).save(
+    await upsertAndReturn(manager, OrdemProducao, { empresaId, numero: 'OP-DEV-001' }, {
+      empresaId,
+      unidadeId,
+      numero: 'OP-DEV-001',
+      itemId: item.id,
+      moldeId: molde.id,
+      quantidadePlanejada: 1000,
+      dataInicioPlanejada: new Date().toISOString().slice(0, 10),
+      status: 'ABERTA',
+      ativo: true,
+    }),
+  );
+  if (podeImprimirPin && !process.env.SEED_OPERATOR_PIN) {
+    // eslint-disable-next-line no-console
+    console.log('PIN temporario do operador OP001: 2468');
+  }
+}
+
+async function upsertAndReturn<T extends object>(
+  manager: EntityManager,
+  entity: new () => T,
+  where: Partial<T>,
+  values: Partial<T>,
+): Promise<T> {
+  const repo = manager.getRepository(entity);
+  const current = await repo.findOne({ where: where as never });
+  return repo.create({ ...(current ?? {}), ...values } as never) as T;
 }
 
 main().catch((error) => {

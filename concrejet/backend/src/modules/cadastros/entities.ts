@@ -58,6 +58,18 @@ export class Colaborador extends CadastroEmpresaEntity {
 
   @Column({ type: 'boolean', default: true })
   ativo!: boolean;
+
+  @Column({ name: 'pin_hash', type: 'varchar', length: 255, nullable: true, select: false })
+  pinHash?: string | null;
+
+  @Column({ name: 'tentativas_pin', type: 'integer', default: 0 })
+  tentativasPin!: number;
+
+  @Column({ name: 'bloqueado_ate', type: 'timestamptz', nullable: true })
+  bloqueadoAte?: Date | null;
+
+  @Column({ name: 'ultimo_login_operacional_em', type: 'timestamptz', nullable: true })
+  ultimoLoginOperacionalEm?: Date | null;
 }
 
 @Entity('operacao')
@@ -232,6 +244,12 @@ export class ConfiguracaoItemMolde extends CadastroEmpresaEntity {
   @Column({ name: 'cavidades', type: 'integer' })
   cavidades!: number;
 
+  @Column({ name: 'limite_perda_percentual', type: 'numeric', precision: 5, scale: 2, default: 100 })
+  limitePerdaPercentual!: string;
+
+  @Column({ name: 'ciclo_custo_segundos', type: 'numeric', precision: 8, scale: 2, nullable: true })
+  cicloCustoSegundos?: string | null;
+
   @Column({ name: 'vigencia_inicio', type: 'timestamptz' })
   vigenciaInicio!: Date;
 
@@ -241,7 +259,7 @@ export class ConfiguracaoItemMolde extends CadastroEmpresaEntity {
   @Column({ name: 'motivo_alteracao', type: 'text', nullable: true })
   motivoAlteracao?: string;
 
-  @Column({ type: 'integer', default: 1 })
+  @Column({ name: 'versao_configuracao', type: 'integer', default: 1 })
   versaoConfiguracao!: number;
 
   @Column({ type: 'boolean', default: true })

@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from '../usuarios/entities/usuario.entity';
+import { Colaborador } from '../cadastros/entities';
+import { Dispositivo } from '../producao-base/entities/dispositivo.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PasswordService } from './password.service';
@@ -11,7 +13,7 @@ import { AuditoriaModule } from '../auditoria/auditoria.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Usuario]),
+    TypeOrmModule.forFeature([Usuario, Colaborador, Dispositivo]),
     AuditoriaModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

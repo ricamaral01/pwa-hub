@@ -70,6 +70,7 @@ describe('AuthService', () => {
       jwtService as never,
       configService as never,
       auditoriaService as never,
+      {} as never,
     );
   });
 

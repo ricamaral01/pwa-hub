@@ -4,6 +4,7 @@ import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { OperatorLoginDto, OperatorTokenDto } from './dto/operator-login.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { CurrentUser } from './current-user.decorator';
 import type { AuthenticatedUser } from './jwt.strategy';
@@ -34,6 +35,25 @@ export class AuthController {
     const cookieName = this.configService.get<string>('JWT_COOKIE_NAME', 'concretrack_session');
     res.clearCookie(cookieName);
     return { status: 'ok' };
+  }
+
+  @Post('operator-login')
+  @HttpCode(200)
+  operatorLogin(@Body() dto: OperatorLoginDto, @Req() req: Request) {
+    return this.authService.operatorLogin(dto.matricula, dto.pin, dto.dispositivoId, req.correlationId);
+  }
+
+  @Post('operator-logout')
+  @HttpCode(200)
+  operatorLogout(@Body() dto: OperatorTokenDto): { status: 'ok' } {
+    this.authService.operatorLogout(dto.token);
+    return { status: 'ok' };
+  }
+
+  @Post('operator-session')
+  @HttpCode(200)
+  operatorSession(@Body() dto: OperatorTokenDto) {
+    return this.authService.restoreOperatorSession(dto.token);
   }
 
   @Get('me')
