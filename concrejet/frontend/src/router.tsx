@@ -10,6 +10,10 @@ const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
 const OperationPage = lazy(() => import('@/pages/operation/OperationPage'));
 const StopPage = lazy(() => import('@/pages/operation/StopPage'));
 const SyncConflictsPage = lazy(() => import('@/pages/admin/SyncConflictsPage'));
+const StockPage = lazy(() => import('@/pages/admin/StockPage'));
+const BlendsPage = lazy(() => import('@/pages/admin/BlendsPage'));
+const AnalyticsPage = lazy(() => import('@/pages/admin/AnalyticsPage'));
+const ImportsPage = lazy(() => import('@/pages/admin/ImportsPage'));
 
 export const router = createBrowserRouter([
   {
@@ -78,6 +82,76 @@ export const router = createBrowserRouter([
       <AdminGuard>
         <Suspense fallback={<PageLoader />}>
           <SyncConflictsPage />
+        </Suspense>
+      </AdminGuard>
+    ),
+  },
+  {
+    path: '/admin/stock',
+    element: (
+      <AdminGuard>
+        <Suspense fallback={<PageLoader />}>
+          <StockPage />
+        </Suspense>
+      </AdminGuard>
+    ),
+  },
+  {
+    path: '/admin/blends',
+    element: (
+      <AdminGuard>
+        <Suspense fallback={<PageLoader />}>
+          <BlendsPage />
+        </Suspense>
+      </AdminGuard>
+    ),
+  },
+  ...(
+    [
+      'dashboard',
+      'analytics/production',
+      'analytics/losses',
+      'analytics/stops',
+      'analytics/oee',
+      'analytics/stock',
+      'traceability',
+      'history/production',
+      'history/occurrences',
+      'history/stock',
+      'history/blends',
+    ] as const
+  ).map((path) => ({
+    path: `/admin/${path}`,
+    element: (
+      <AdminGuard>
+        <Suspense fallback={<PageLoader />}>
+          <AnalyticsPage
+            kind={
+              path.includes('losses')
+                ? 'losses'
+                : path.includes('stops')
+                  ? 'stops'
+                  : path.includes('oee')
+                    ? 'oee'
+                    : path.includes('traceability')
+                      ? 'traceability'
+                      : path.includes('stock')
+                        ? 'stock'
+                        : path === 'dashboard'
+                          ? 'overview'
+                          : 'production'
+            }
+          />
+        </Suspense>
+      </AdminGuard>
+    ),
+  })),
+  {
+    path: '/admin/imports/*',
+    element: (
+      <AdminGuard>
+        <Suspense fallback={<PageLoader />}>
+          <ImportsPage />
         </Suspense>
       </AdminGuard>
     ),
