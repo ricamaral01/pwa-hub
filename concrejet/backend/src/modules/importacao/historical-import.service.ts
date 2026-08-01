@@ -3,6 +3,7 @@ import { createHash } from 'crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { basename, extname, join, resolve } from 'path';
 import { DataSource } from 'typeorm';
+import * as XLSX from 'xlsx';
 
 export const IMPORT_VERSION = 'historical-import-v1';
 export const IMPORT_ROOT = resolve(process.cwd(), '..', 'imports', 'historico');
@@ -67,31 +68,43 @@ export class HistoricalImportService {
         [batch.id, file, basename(file), checksum],
       );
       const ext = extname(file).toLowerCase();
-      if (ext === '.csv') {
-        const parsed = parseCsv(readFileSync(file, 'utf8'));
-        const [sheet] = await this.dataSource.query(
-          `insert into import_sheets (file_id, nome, indice, headers) values ($1,'CSV',0,$2) returning *`,
-          [savedFile.id, JSON.stringify(parsed.headers)],
-        );
-        totalSheets += 1;
-        for (const row of parsed.rows) {
-          const lineChecksum = sha(JSON.stringify(row.values));
-          await this.dataSource.query(
-            `insert into import_rows (sheet_id, numero_linha, conteudo_original, checksum_linha, status, chave_origem)
-             values ($1,$2,$3,$4,'pendente',$5) on conflict (sheet_id, checksum_linha) do nothing`,
-            [
-              sheet.id,
-              row.line,
-              JSON.stringify(row.values),
-              lineChecksum,
-              `${checksum}:CSV:${row.line}`,
-            ],
+      if (ext === '.csv' || ext === '.xlsx') {
+        const parsedSheets =
+          ext === '.csv'
+            ? [{ name: 'CSV', index: 0, ...parseCsv(readFileSync(file, 'utf8')) }]
+            : parseXlsx(file);
+        for (const parsed of parsedSheets) {
+          const [sheet] = await this.dataSource.query(
+            `insert into import_sheets (file_id, nome, indice, headers) values ($1,$2,$3,$4) returning *`,
+            [savedFile.id, parsed.name, parsed.index, JSON.stringify(parsed.headers)],
           );
-          totalRows += 1;
+          totalSheets += 1;
+          for (const row of parsed.rows) {
+            const lineChecksum = sha(JSON.stringify(row.values));
+            await this.dataSource.query(
+              `insert into import_rows (sheet_id, numero_linha, conteudo_original, checksum_linha, status, chave_origem)
+               values ($1,$2,$3,$4,'pendente',$5) on conflict (sheet_id, checksum_linha) do nothing`,
+              [
+                sheet.id,
+                row.line,
+                JSON.stringify(row.values),
+                lineChecksum,
+                `${checksum}:${parsed.name}:${row.line}`,
+              ],
+            );
+            for (const warning of row.warnings ?? []) {
+              await this.dataSource.query(
+                `insert into import_errors (codigo, severidade, mensagem, valor_original)
+                 values ('FORMULA_XLSX','aviso',$1,$2)`,
+                [warning, `${file}:${parsed.name}:${row.line}`],
+              );
+            }
+            totalRows += 1;
+          }
         }
       } else {
         await this.dataSource.query(
-          `insert into import_errors (codigo, severidade, mensagem, valor_original) values ('FORMATO_PENDENTE','aviso','Leitura XLS/XLS requer arquivos reais e dependencia de parser habilitada.',$1)`,
+          `insert into import_errors (codigo, severidade, mensagem, valor_original) values ('FORMATO_PENDENTE','aviso','Leitura XLS antigo permanece pendente; use XLSX ou CSV.',$1)`,
           [file],
         );
       }
@@ -191,7 +204,14 @@ export class HistoricalImportService {
   }
 }
 
-function parseCsv(content: string) {
+type ParsedSheet = {
+  name: string;
+  index: number;
+  headers: string[];
+  rows: Array<{ line: number; values: Record<string, unknown>; warnings?: string[] }>;
+};
+
+function parseCsv(content: string): Omit<ParsedSheet, 'name' | 'index'> {
   const lines = content.split(/\r?\n/).filter((line) => line.trim());
   const headers = (lines.shift() ?? '').split(';').map((item) => item.trim());
   return {
@@ -205,6 +225,61 @@ function parseCsv(content: string) {
       ),
     })),
   };
+}
+
+function parseXlsx(file: string): ParsedSheet[] {
+  let workbook: XLSX.WorkBook;
+  try {
+    workbook = XLSX.readFile(file, { cellDates: true, cellFormula: true });
+  } catch (error) {
+    throw new BadRequestException(
+      `Arquivo XLSX invalido ou protegido: ${error instanceof Error ? error.message : 'falha de leitura'}.`,
+    );
+  }
+  return workbook.SheetNames.map((name, index) => {
+    const sheet = workbook.Sheets[name];
+    const matrix = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
+      header: 1,
+      raw: true,
+      defval: null,
+    });
+    const headers = (matrix[0] ?? []).map((item, column) =>
+      normalizeHeader(item, `coluna_${column + 1}`),
+    );
+    const rows = matrix
+      .slice(1)
+      .map((line, rowIndex) => {
+        const warnings: string[] = [];
+        const values = Object.fromEntries(
+          headers.map((header, column) => {
+            const address = XLSX.utils.encode_cell({ r: rowIndex + 1, c: column });
+            const cell = sheet[address];
+            if (cell?.f) {
+              warnings.push(
+                `Formula em ${address}; usado valor calculado armazenado quando disponivel.`,
+              );
+            }
+            return [header, normalizeCell(line[column])];
+          }),
+        );
+        return { line: rowIndex + 2, values, warnings };
+      })
+      .filter((row) => Object.values(row.values).some((value) => value !== null && value !== ''));
+    return { name, index, headers, rows };
+  });
+}
+
+function normalizeHeader(value: unknown, fallback: string): string {
+  const normalized = normalizeCell(value);
+  return typeof normalized === 'string' && normalized ? normalized : fallback;
+}
+
+function normalizeCell(value: unknown): string | number | null {
+  if (value instanceof Date) return value.toISOString();
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string') return normalize(value);
+  if (value === null || value === undefined) return null;
+  return String(value);
 }
 
 function normalize(value: string): string | number | null {
