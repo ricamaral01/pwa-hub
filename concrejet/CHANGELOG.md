@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.4.0] - 2026-08-01 - Planejamento tecnico das Fases 2 a 6
+
+Entrada **somente de documentacao**. Nenhuma funcionalidade nova, nenhum codigo,
+nenhuma migration, nenhuma mudanca de comportamento. Nada em `backend/` ou `frontend/`
+foi tocado.
+
+### Adicionado
+- `docs/plano-fases-2-a-6.md`: plano tecnico mestre da Etapa 1 (Design System) e das
+  Fases 2 (Apontamento), 3 (Ocorrencias/Paradas), 4 (Offline/Sync), 5 (Estoque/Blendas)
+  e 6 (Paineis/OEE), com 16 subsecoes por fase e ordem de execucao global.
+- `docs/design-system-industrial.md`: tokens, estados funcionais, layout tablet
+  1280x800 e desktop 1440x900, catalogo de 24 componentes React e refatoracao visual
+  das telas de cadastro da Fase 1 sem alterar contrato de backend.
+- `docs/maquinas-de-estado.md`: extensao da maquina de estados do posto de 16 para 21
+  estados (sem renomear os existentes) e maquinas de apontamento e ocorrencia no
+  backend, com diagramas e transicoes invalidas.
+- `docs/calculos-oee.md`: formulas de perda com exemplo de conferencia obrigatorio,
+  Disponibilidade/Performance/Qualidade/OEE, views e materialized views propostas,
+  refresh incremental e 18 casos de teste canonicos.
+- `docs/backlog-validacao-fase-6.md`: itens que precisam de confirmacao do processo
+  industrial (com marcacao de bloqueio) e backlog funcional consolidado.
+
+### Alterado
+- `docs/offline-sync.md`: preservado o conteudo da Fase 0/1 e acrescentada a
+  especificacao completa da Fase 4 (Dexie v3, outbox, idempotencia, conflitos, backoff,
+  dependencias, reconexao, service worker, limites do offline, seguranca).
+- `docs/arquitetura.md`, `docs/modelo-dados.md`, `docs/regras-negocio.md`: nova secao
+  "Fases 2 a 6 (planejado, nao implementado)".
+- `docs/handoff.md`: entrada de planejamento no topo do arquivo.
+
+### Observacoes
+- Divergencias entre o plano da Fase 1 e a Fase 1 implementada foram documentadas; as
+  fases novas referenciam os nomes realmente implementados.
+- Formula de perda sem galho fixada como
+  `(perda total - galho) / (injecao util + perda total - galho)`, unica que reproduz os
+  10,56% do mockup aprovado.
+- Fase 7 em diante nao foi iniciada nem especificada.
+
 ## [0.3.1] - 2026-08-01 - Correcao lotes de resina
 
 ### Corrigido
@@ -13,11 +51,11 @@
 - Playwright especifico criou fornecedor, resina e lote usando os seletores reais.
 ## [0.3.0] - 2026-08-01 - Fase 1 Cadastros
 
-- Implementado módulo backend de Cadastros com endpoints administrativos reais para funções, colaboradores, máquinas, operações, tipos de ocorrência, fornecedores, resinas, lotes de resina, itens, moldes, configurações item/molde e ordens de produção.
-- Adicionada migration da Fase 1 com constraints, FKs `RESTRICT`, proteção de saldo de lote, movimentos imutáveis e exclusão de vigência sobreposta em configuração item/molde.
-- Adicionada tela administrativa `/admin/cadastros/:resource` consumindo API real, protegida por `AdminGuard` e sem dependência de `OperatorSession`.
-- Seed administrativo passou a criar permissões `recurso.acao` e dados mínimos de desenvolvimento de forma idempotente.
-- Cobertura adicionada em Jest, Vitest e Playwright para criação administrativa de item com backend real.
+- Implementado mï¿½dulo backend de Cadastros com endpoints administrativos reais para funï¿½ï¿½es, colaboradores, mï¿½quinas, operaï¿½ï¿½es, tipos de ocorrï¿½ncia, fornecedores, resinas, lotes de resina, itens, moldes, configuraï¿½ï¿½es item/molde e ordens de produï¿½ï¿½o.
+- Adicionada migration da Fase 1 com constraints, FKs `RESTRICT`, proteï¿½ï¿½o de saldo de lote, movimentos imutï¿½veis e exclusï¿½o de vigï¿½ncia sobreposta em configuraï¿½ï¿½o item/molde.
+- Adicionada tela administrativa `/admin/cadastros/:resource` consumindo API real, protegida por `AdminGuard` e sem dependï¿½ncia de `OperatorSession`.
+- Seed administrativo passou a criar permissï¿½es `recurso.acao` e dados mï¿½nimos de desenvolvimento de forma idempotente.
+- Cobertura adicionada em Jest, Vitest e Playwright para criaï¿½ï¿½o administrativa de item com backend real.
 ## [0.2.4] - 2026-08-01 - Fase 0 aprovada
 
 ### Corrigido

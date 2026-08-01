@@ -1,5 +1,154 @@
 # Handoff
 
+> Ordem do arquivo: mais recente primeiro. As duas últimas entradas do Codex
+> ("Fase 1 Cadastros implementada" e "Correcao isolada de lotes de resina") foram
+> anexadas ao **final** do arquivo, fora do padrão — elas são cronologicamente as mais
+> recentes antes desta. Quem for editar deste ponto em diante: entrada nova no topo.
+
+## 2026-08-01 — Claude Code (arquiteto de software / engenheiro PostgreSQL) — Planejamento técnico das Fases 2 a 6
+
+### Objetivo executado
+
+Produzir **somente documentação** — o planejamento técnico consolidado da Etapa 1 (Design
+System / refatoração visual) e das Fases 2 (Apontamento), 3 (Ocorrências/Paradas),
+4 (Offline/Sync), 5 (Estoque/Blendas) e 6 (Painéis/OEE). Nenhum código, migration,
+entidade ou tela foi criado ou alterado. Nenhum commit foi feito. A Fase 7 em diante não
+foi iniciada nem especificada, por instrução explícita.
+
+Trabalho na branch `feature/fase-1-cadastros`, a partir do commit `06ab41f`.
+
+Leitura prévia completa: `docs/referencia-ui/` (os 5 mockups HTML, `estilo.css`,
+`index.html`, `README.md` — o layout foi descrito por inspeção do HTML/CSS, não das
+imagens), `README.md`, `CHANGELOG.md`, `docs/arquitetura.md`, `docs/modelo-dados.md`,
+`docs/regras-negocio.md`, `docs/permissoes.md`, `docs/handoff.md`,
+`docs/fase-1-cadastros.md` (1065 linhas, integral), `docs/offline-sync.md`,
+`docs/interface.md`, `docs/fluxo-operador.md`, e a estrutura real de
+`backend/src/modules/**`, `backend/src/database/migrations/*` e `frontend/src/**`
+(incluindo `session.store.ts`, `db/schema.ts`, `hooks/useQueue.ts`,
+`modules/cadastros/entities.ts`, `permissions.service.ts`, `features/cadastros/resources.ts`).
+
+### Arquivos criados
+
+- `docs/plano-fases-2-a-6.md` — documento mestre. Diagnóstico do que existe hoje +
+  as 6 fases (Etapa 1, 2, 3, 4, 5, 6) com exatamente 16 subseções cada (dependências,
+  banco/migrations, backend, frontend, regras críticas, endpoints, permissões, testes
+  unitários, testes de integração, testes Playwright, critérios mínimos, backlog,
+  itens não adiáveis, riscos, rollback, ordem para o Codex) + ordem de execução global.
+- `docs/design-system-industrial.md` — Etapa 1: tokens portados de
+  `referencia-ui/estilo.css`, estados funcionais, layout tablet 1280×800 e desktop
+  1440×900, catálogo dos 24 componentes com props, mapeamento mockup → rota,
+  refatoração das telas da Fase 1 (12 defeitos e correções), acessibilidade,
+  responsividade controlada.
+- `docs/maquinas-de-estado.md` — extensão da máquina do posto de 16 para 21 estados
+  (sem renomear nenhum estado existente), máquina do apontamento (3 status) e da
+  ocorrência (5 status) no backend, diagramas mermaid, transições inválidas e regras do
+  cronômetro persistente.
+- `docs/calculos-oee.md` — fórmulas de perda com o exemplo de conferência obrigatório,
+  Disponibilidade/Performance/Qualidade/OEE, views e materialized views propostas,
+  índices, refresh incremental, endpoints agregados e 18 casos de teste canônicos.
+- `docs/backlog-validacao-fase-6.md` — Parte A (o que precisa ser confirmado pelo processo
+  industrial, com marcação de bloqueio) e Parte B (backlog funcional consolidado das
+  seções 12 de cada fase).
+
+### Arquivos alterados
+
+- `docs/offline-sync.md` — preservado integralmente o conteúdo da Fase 0/1 e acrescentada
+  a seção "Fase 4 — especificação completa" (schema Dexie v3, UUID/idempotência, versão e
+  conflitos, backoff, ordem e dependências, reconexão, recuperação após fechamento,
+  service worker, indicadores, limites do offline, segurança, 25 testes).
+- `docs/arquitetura.md` — nova seção "Fases 2 a 6 (planejado, não implementado)".
+- `docs/modelo-dados.md` — nova seção com as tabelas novas por fase e as extensões de
+  tabelas existentes.
+- `docs/regras-negocio.md` — nova seção com as regras não adiáveis por fase e o que fica
+  explicitamente fora.
+- `docs/handoff.md` (este arquivo).
+- `CHANGELOG.md` — entrada `0.4.0`.
+
+Nenhum arquivo de `backend/` ou `frontend/` foi criado, alterado ou removido. Nenhuma
+migration foi criada.
+
+### Testes executados
+
+**Nenhum.** É uma tarefa exclusivamente de documentação; não há código novo para testar.
+
+### Principais decisões técnicas
+
+1. **Sobreposição de apontamento resolvida no banco**, com o mesmo `EXCLUDE USING gist`
+   sobre `tstzrange` já usado em `configuracao_item_molde` — e com um efeito colateral
+   desejado: como `tstzrange(inicio, NULL)` é aberto, a constraint também garante no
+   máximo um apontamento aberto por máquina, sem índice parcial extra. `btree_gist` já
+   está habilitada desde a Fase 1, então o risco 1 do plano da Fase 1 está encerrado.
+2. **Fórmula de perda sem galho fixada com denominador ajustado**:
+   `(perda total − galho) / (injeção útil + perda total − galho)`, que reproduz os
+   10,56 % do mockup aprovado. A leitura ingênua (denominador = injeção + perdas) daria
+   10,34 % e estaria errada.
+3. **Massas do apontamento como colunas `GENERATED ALWAYS ... STORED`** — o cálculo é do
+   banco, não da aplicação, e não pode ser sobrescrito.
+4. **Congelamento (snapshot) de peso, cavidades, ciclo, limite, `planejada` e
+   `exige_acao_corretiva`** no registro operacional. É o que impede que editar um
+   cadastro hoje mude o OEE e a perda do mês passado.
+5. **Ação corretiva obrigatória vira `CHECK` de banco**, não validação de aplicação.
+6. **A máquina de estados do frontend é estendida, não recriada**: os 16 estados atuais de
+   `session.store.ts` mantêm nome e semântica; 5 novos são acrescentados
+   (`OPERATOR_IDENTIFYING`, `OPENING`, `STOP_CLOSING`, `SYNC_IN_PROGRESS`,
+   `BLOCKED_STALE_SESSION`).
+7. **O `CadastrosModule` genérico não é o padrão para produção** — apontamento,
+   ocorrência e estoque exigem módulo e service dedicados.
+8. **Rotas continuam na raiz do backend** (sem `setGlobalPrefix`), com slug em
+   inglês-kebab, seguindo a convenção realmente implementada na Fase 1.
+9. **Permissões seguem `recurso.acao` com recurso namespaceado**
+   (`producao.apontamento.criar`, `producao.ocorrencia.encerrar`, `estoque.blenda.efetivar`,
+   `indicadores.oee.consultar`), compatível com o `CadastroPermissionsService` existente,
+   que será promovido para `common/` em vez de duplicado.
+10. **Login de operador (matrícula + PIN) entra na Fase 2** — sem ele não existe a
+    primeira tela do fluxo. `colaborador.pin_hash` **não existe** no banco atual (a coluna
+    prevista no plano da Fase 1 não foi implementada) e precisa ser criada.
+11. **Agregado nunca é fonte da verdade** na Fase 6, com endpoint de reconciliação como
+    critério de aceite.
+12. **Etapa 1 antes da Fase 2**: construir a tela de apontamento antes do design system
+    significaria reescrevê-la.
+
+### Divergências encontradas entre o plano da Fase 1 e a Fase 1 implementada
+
+Registradas na seção 0.3 do plano mestre. O implementado usa `descricao` em vez de
+`nome`, `versaoConfiguracao` em vez de `version`, `pesoPecaG` em vez de
+`pesoPecaGramas`, `cavidades` em vez de `numeroCavidades`, e `ordem_producao` tem
+`numero`/`moldeId`/`quantidadePlanejada`/`dataInicioPlanejada`. Além disso, **não** foram
+implementados: `configuracao_item_molde.limite_perda_percentual` e `ciclo_custo_segundos`,
+`tipo_ocorrencia.categoria`/`planejada`/`exige_acao_corretiva`,
+`movimento_estoque_lote.saldo_resultante_kg`, `colaborador.pin_hash`, `codigo_mega`.
+As Fases 2–6 referenciam os nomes **realmente implementados** e tratam o que falta como
+extensão explícita (seção 0.4 do plano), não como bug.
+
+### Pendências
+
+Nenhuma pendência de código — nada foi implementado por instrução explícita. As pendências
+de **processo** (o que precisa ser confirmado por quem opera a fábrica antes de fechar o
+design de cada fase) estão consolidadas em
+[backlog-validacao-fase-6.md](backlog-validacao-fase-6.md), com marcação de quais
+bloqueiam a implementação. Os bloqueios mais duros: turnos reais e definição de "tempo
+planejado" (sem eles não há OEE); taxonomia e classificação planejada/não planejada de
+`tipo_ocorrencia` (sem elas não há Fase 3); política de PIN do operador (sem ela não há
+Fase 2); consumo teórico versus real (sem ele não há Fase 5); perfis operacionais além de
+`ADMIN`.
+
+### Ordem de implementação recomendada para o Codex
+
+Etapa 1 (Design System) → Fase 2 (Apontamento) → Fase 3 (Ocorrências) → Fase 4
+(Offline/Sync) → Fase 5 (Estoque/Blendas) → Fase 6 (Painéis/OEE). As Fases 4 e 5 podem
+ser paralelizadas entre executores diferentes, com um único dono do encerramento de
+apontamento (ponto de encontro das duas). Ordem detalhada por fase na subseção 16 de cada
+fase e na seção final do plano mestre.
+
+### Confirmação de escopo
+
+Nenhum arquivo de código-fonte (`backend/`, `frontend/`) foi criado, alterado ou removido
+nesta sessão. Nenhuma migration foi criada. Nenhum `git add`/`commit`/`push`/`merge` foi
+executado. Apenas os 5 documentos criados e os 6 arquivos alterados listados acima foram
+tocados.
+
+---
+
 ## 2026-08-01 — Claude Code (arquiteto de software / engenheiro PostgreSQL) — Planejamento técnico da Fase 1 — Cadastros
 
 ### Objetivo executado
@@ -1054,12 +1203,12 @@ sem bloquear o início da Fase 1.
 
 ## 2026-08-01 - Fase 1 Cadastros implementada
 
-- Implementa��o realizada no clone isolado `C:\Users\Admin\Documents\pwa-hub-fase1\concrejet`, branch `feature/fase-1-cadastros`.
-- Backend: m�dulo `CadastrosModule`, CRUD administrativo autenticado por cookie/httpOnly via `JwtAuthGuard`, permiss�es `recurso.acao`, auditoria em create/update/inativa��o/reativa��o/cancelamento.
-- Banco: migration `1730500000000-Fase1Cadastros` cria tabelas de cadastros, constraints de unicidade por empresa/unidade, FKs `RESTRICT`, trigger contra edi��o direta de saldo de lote, movimentos imut�veis e exclus�o de vig�ncia sobreposta para configura��o item/molde.
-- Frontend: rota `/admin/cadastros/:resource` sob `AdminGuard`, sem uso de `OperatorData` e sem mocks; formul�rios/tabelas usam endpoints reais.
-- Verifica��o: migration aplicada no Postgres local, seed executado, API Docker rebuildada e saud�vel, Playwright normal aprovado com cria��o real de item.
-- Observa��o: lint completo ainda falha por CRLF pr�-existente em todo o reposit�rio; arquivos alterados foram validados com ESLint seletivo sem warnings.
+- Implementa��o realizada no clone isolado `C:\Users\Admin\Documents\pwa-hub-fase1\concrejet`, branch `feature/fase-1-cadastros`.
+- Backend: m�dulo `CadastrosModule`, CRUD administrativo autenticado por cookie/httpOnly via `JwtAuthGuard`, permiss�es `recurso.acao`, auditoria em create/update/inativa��o/reativa��o/cancelamento.
+- Banco: migration `1730500000000-Fase1Cadastros` cria tabelas de cadastros, constraints de unicidade por empresa/unidade, FKs `RESTRICT`, trigger contra edi��o direta de saldo de lote, movimentos imut�veis e exclus�o de vig�ncia sobreposta para configura��o item/molde.
+- Frontend: rota `/admin/cadastros/:resource` sob `AdminGuard`, sem uso de `OperatorData` e sem mocks; formul�rios/tabelas usam endpoints reais.
+- Verifica��o: migration aplicada no Postgres local, seed executado, API Docker rebuildada e saud�vel, Playwright normal aprovado com cria��o real de item.
+- Observa��o: lint completo ainda falha por CRLF pr�-existente em todo o reposit�rio; arquivos alterados foram validados com ESLint seletivo sem warnings.
 
 ## 2026-08-01 - Correcao isolada de lotes de resina
 

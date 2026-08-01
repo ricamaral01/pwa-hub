@@ -119,6 +119,36 @@ A Fase 1 adiciona as tabelas `funcao`, `colaborador`, `operacao`, `tipo_ocorrenc
 Regras estruturais aplicadas no banco:
 - unicidade por empresa/unidade conforme recurso;
 - FKs com `ON DELETE RESTRICT`;
-- saldo de lote protegido contra atualiza��o direta;
-- movimentos de estoque imut�veis;
-- configura��o item/molde com versionamento por vig�ncia e bloqueio de sobreposi��o.
+- saldo de lote protegido contra atualiza��o direta;
+- movimentos de estoque imut�veis;
+- configura��o item/molde com versionamento por vig�ncia e bloqueio de sobreposi��o.
+
+## Fases 2 a 6 (planejado, não implementado)
+
+Resumo das tabelas novas. Detalhe completo (colunas, constraints, índices) em
+[plano-fases-2-a-6.md](plano-fases-2-a-6.md); cálculos derivados em
+[calculos-oee.md](calculos-oee.md).
+
+| Fase | Tabelas novas | Ponto crítico do modelo |
+|---|---|---|
+| 2 — Apontamento | `turno`, `apontamento`, `apontamento_evento` | `EXCLUDE USING gist (maquina_id WITH =, tstzrange(inicio, fim, '[)') WITH &&) WHERE status <> 'CANCELADO'` — impede apontamentos sobrepostos **e** mais de um aberto por máquina. Peso/cavidades/ciclo/limite são **congelados** no apontamento; massas são colunas `GENERATED ALWAYS ... STORED`. `apontamento_evento` é append-only imutável por trigger |
+| 3 — Ocorrências | `ocorrencia`, `ocorrencia_evento` | Mesmo `EXCLUDE` por máquina. `CHECK` que impede `status = 'ENCERRADA'` sem `acao_corretiva` quando o tipo exige — a regra vive no banco, não só na aplicação. `planejada` e `exige_acao_corretiva` congelados na abertura |
+| 4 — Offline/Sync | `idempotencia_requisicao` (append-only, a única tabela do sistema com expurgo permitido, por não ser dado de negócio); extensão de `dispositivo` | Chave repetida com payload diferente é `409`, nunca devolve resposta antiga |
+| 5 — Estoque/Blendas | `blenda`, `blenda_componente`, `inventario`, `inventario_contagem`; extensão de `movimento_estoque_lote` | Saldo só muda por movimento (trigger já existente da Fase 1); `CHECK (saldo_atual_kg >= 0)`; baixa por apontamento idempotente por `idempotency_key = apontamento_id`; blenda é transação atômica |
+| 6 — Indicadores/OEE | `calendario_producao`, `meta_producao`, views `vw_*` e materialized `mvw_*` | Nenhum agregado é fonte da verdade: tudo reconstruível a partir de `apontamento`, `ocorrencia` e `movimento_estoque_lote`, com endpoint de reconciliação |
+
+### Extensões de tabelas existentes exigidas pelas fases novas
+
+`configuracao_item_molde` (+`limite_perda_percentual`, +`ciclo_custo_segundos`),
+`tipo_ocorrencia` (+`categoria`, +`planejada`, +`exige_acao_corretiva`),
+`colaborador` (+`pin_hash` e controles de bloqueio — a coluna prevista no plano da Fase 1
+não chegou a ser criada), `movimento_estoque_lote` (+`saldo_resultante_kg`,
++`apontamento_id`, +`blenda_id`, +`idempotency_key`), `maquina`
+(+`ciclo_teorico_segundos`), `operacao` (+`consome_resina`).
+
+Todas por `ALTER TABLE ... ADD COLUMN` com default seguro — nenhuma recriação de tabela,
+nenhum `DROP` de coluna existente. Convenções da Fase 0/1 mantidas sem exceção:
+`BaseEntity`, `snake_case` português, FK `ON DELETE RESTRICT`, unicidade escopada por
+empresa, sem exclusão física (`ativo` + `/inativar` + `/reativar`), com a exceção já
+estabelecida das tabelas append-only (`auditoria`, `movimento_estoque_lote`,
+`apontamento_evento`, `ocorrencia_evento`), que não têm `ativo` nem `UPDATE`.

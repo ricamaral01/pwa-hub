@@ -83,6 +83,65 @@ diante — ver pendências em [handoff.md](handoff.md).
 
 ## Fase 1 - Cadastros
 
-Foi adicionado o `CadastrosModule` ao backend. O m�dulo exp�e endpoints administrativos sob o prefixo global da API para os recursos de cadastro da Fase 1, usando cookie httpOnly existente, `JwtAuthGuard`, permiss�es `recurso.acao` e auditoria.
+Foi adicionado o `CadastrosModule` ao backend. O m�dulo exp�e endpoints administrativos sob o prefixo global da API para os recursos de cadastro da Fase 1, usando cookie httpOnly existente, `JwtAuthGuard`, permiss�es `recurso.acao` e auditoria.
 
-No frontend, a �rea `/admin/cadastros/:resource` � uma rota administrativa protegida por `AdminGuard`. Ela n�o usa estado operacional, n�o cria operador simulado e n�o persiste tokens no navegador.
+No frontend, a �rea `/admin/cadastros/:resource` � uma rota administrativa protegida por `AdminGuard`. Ela n�o usa estado operacional, n�o cria operador simulado e n�o persiste tokens no navegador.
+
+## Fases 2 a 6 (planejado, não implementado)
+
+Especificação completa em [plano-fases-2-a-6.md](plano-fases-2-a-6.md). Nada desta seção
+existe no código — é o desenho arquitetural alvo.
+
+### Módulos novos do backend
+
+```
+backend/src/
+  common/
+    guards/permissions.guard.ts     # promoção do CadastroPermissionsService (hoje dentro
+                                    # de modules/cadastros) para uso de todos os módulos
+    interceptors/idempotency.interceptor.ts   # Fase 4
+  modules/
+    producao/            # Fase 2 e 3: apontamento, apontamento_evento, turno,
+                         # ocorrencia, ocorrencia_evento, máquinas de estado no servidor,
+                         # serviço único de cálculo de perdas
+    estoque/             # Fase 5: movimento de estoque como porta única de alteração de
+                         # saldo, blendas, inventário, reconciliação
+    sincronizacao/       # Fase 4: bootstrap, delta, heartbeat, conflitos
+    indicadores/         # Fase 6: OEE, painel, relatórios, exportação, job de refresh
+    auth/                # estendido: login de operador por matrícula + PIN, guard de
+                         # escopo por dispositivo/máquina
+```
+
+Decisões arquiteturais que valem para todos eles:
+
+1. **O `CadastrosModule` genérico dirigido por registry não é o padrão para produção.**
+   Apontamento, ocorrência e estoque têm regra de negócio densa e máquina de estados —
+   exigem módulo, service transacional e DTOs dedicados.
+2. **Regra crítica mora no banco.** Sobreposição de apontamento e de parada por máquina é
+   `EXCLUDE USING gist` sobre `tstzrange`, mesmo mecanismo já usado em
+   `configuracao_item_molde`; ação corretiva obrigatória é `CHECK`; saldo não negativo é
+   `CHECK`; movimento e evento são imutáveis por trigger. A aplicação valida antes, o
+   banco é a última linha de defesa.
+3. **Cálculo derivado é coluna gerada.** As massas do apontamento são
+   `GENERATED ALWAYS ... STORED`, não campos escritos pela aplicação.
+4. **Agregado nunca é fonte da verdade** (Fase 6): toda view/materialized view é
+   reconstruível a partir do bruto, com endpoint de reconciliação.
+5. **Idempotência ponta a ponta**: `Idempotency-Key` nas escritas de produção, resolvida
+   por `idempotencia_requisicao` no servidor e por `outbox` no cliente.
+6. **Rotas continuam na raiz do backend** (sem `setGlobalPrefix`), com o cliente chamando
+   `/api/*` via proxy — introduzir `/api/v1` agora quebraria a Fase 1 sem benefício.
+
+### Mudança de arquitetura do frontend
+
+A Etapa 1 introduz `frontend/src/design-system/` e `frontend/src/styles/tokens.css` como
+camada de apresentação única, substituindo a paleta escura com webfont externa por
+tokens claros ISO 3864 com pilha de fonte do sistema (ver
+[design-system-industrial.md](design-system-industrial.md)). As páginas passam a ser
+composição de componentes do design system; nenhum componente conhece o domínio.
+
+O acesso a dados mantém o padrão de repositório substituível já validado
+(`XxxRepository` + `getXxxRepository()`), estendido para apontamento, ocorrência e
+estoque. A máquina de estados do posto (`session.store.ts`) é **estendida** de 16 para 21
+estados, não recriada — ver [maquinas-de-estado.md](maquinas-de-estado.md). A camada
+offline ganha um `SyncEngine` próprio sobre Dexie v3, substituindo o `processQueue` mock
+atual ([offline-sync.md](offline-sync.md)).

@@ -73,8 +73,89 @@ que essa fase introduz:
 
 ## Fase 1 implementada - Regras de cadastros
 
-- Cadastros administrativos exigem sess�o administrativa real e permiss�o `recurso.acao` ou `sistema.administrar`.
-- Lote de resina cria movimento inicial de entrada e define saldo inicial a partir da quantidade recebida; saldo n�o � edit�vel diretamente.
-- Configura��o item/molde � hist�rica: nova configura��o encerra a vers�o ativa anterior e cria nova vers�o com vig�ncia pr�pria.
-- Ordem de produ��o pode ser cancelada somente quando aberta e exige justificativa.
-- A Fase 1 n�o implementa login de operador, apontamento operacional real ou funcionalidades da Fase 2.
+- Cadastros administrativos exigem sess�o administrativa real e permiss�o `recurso.acao` ou `sistema.administrar`.
+- Lote de resina cria movimento inicial de entrada e define saldo inicial a partir da quantidade recebida; saldo n�o � edit�vel diretamente.
+- Configura��o item/molde � hist�rica: nova configura��o encerra a vers�o ativa anterior e cria nova vers�o com vig�ncia pr�pria.
+- Ordem de produ��o pode ser cancelada somente quando aberta e exige justificativa.
+- A Fase 1 n�o implementa login de operador, apontamento operacional real ou funcionalidades da Fase 2.
+
+## Fases 2 a 6 (planejado, não implementado)
+
+Especificação completa em [plano-fases-2-a-6.md](plano-fases-2-a-6.md). Abaixo somente as
+regras classificadas como **"não podem ser adiadas"** em cada fase — as que, se ficarem
+para depois, corrompem dado histórico de forma irreversível.
+
+### Etapa 1 — Design System
+- Alvo de toque mínimo (56 px no tablet, 34 px no desktop).
+- Nenhum `<select>` nativo, nenhum teclado nativo e nenhum scroll vertical nas telas de
+  posto; nenhuma webfont externa (o tablet opera offline em galpão).
+- Estado nunca comunicado só por cor — sempre cor + ícone + texto.
+- `htmlFor`/`id` em todo par label/controle (regressão já corrigida em 0.2.4).
+
+### Fase 2 — Apontamento
+- **Dois apontamentos não podem se sobrepor na mesma máquina.** `EXCLUDE USING gist` com
+  `tstzrange(inicio, fim)` por `maquina_id` — garantia de banco, não de aplicação. Como
+  `fim` nulo produz intervalo aberto, a mesma constraint garante no máximo um apontamento
+  aberto por máquina.
+- **Peso, cavidades, ciclo padrão e limite de perda são congelados no apontamento.**
+  Alterar a configuração item/molde depois nunca altera apontamento passado.
+- Refugo, borra, galho, falha e outras perdas nunca negativos.
+- **Fórmula de perda sem galho**: `(perda total − galho) / (injeção útil + perda total −
+  galho)`. O exemplo de conferência obrigatório (618 boas, 19 refugo, peso 0,1522 kg,
+  borra 7,085, galho 2,315, falha 1,135 → 94,06 / 13,43 / 107,49 kg e 10,56 %) está em
+  [calculos-oee.md](calculos-oee.md#24-exemplo-de-conferência-obrigatório).
+- `idempotency_key` única — reenvio nunca duplica apontamento.
+- `apontamento_evento` append-only imutável; apontamento encerrado nunca é editado nem
+  apagado.
+- Sessão de operador (matrícula/PIN) é sempre separada da sessão administrativa.
+
+### Fase 3 — Ocorrências e paradas
+- **Duas ocorrências não podem se sobrepor na mesma máquina** (mesmo `EXCLUDE`).
+  Sobreposição parada × apontamento é o caso normal e continua permitida.
+- **Ocorrência que exige ação corretiva não encerra sem ela** — `CHECK` de banco.
+- **Apontamento não encerra com ocorrência vinculada não encerrada.**
+- `planejada` e `exige_acao_corretiva` congelados na abertura (é o que impede o OEE do
+  passado de mudar quando alguém edita o cadastro do tipo).
+- Cronômetro sempre derivado do timestamp absoluto persistido, sobrevivendo a reload,
+  troca de operador e fechamento do app.
+
+### Fase 4 — Offline e sincronização
+- Nada é enviado sem `Idempotency-Key` estável entre tentativas.
+- Ordem e dependência da fila respeitadas (abrir → parada → encerrar); item com
+  dependência falha nunca é enviado.
+- **Conflito nunca é resolvido silenciosamente** — vira registro para o supervisor, com o
+  dado local intacto.
+- **Nunca existe sessão de operador falsa offline**; sem credencial verificável, o app
+  bloqueia.
+- Operação administrativa é bloqueada offline.
+- Saldo de lote lido offline é sempre rotulado como possivelmente desatualizado.
+
+### Fase 5 — Estoque e blendas
+- Estoque nunca negativo (`CHECK` de banco).
+- Saldo só muda por `movimento_estoque_lote`; nenhum `UPDATE` direto (trigger).
+- Movimento é imutável; correção é movimento de `AJUSTE` com justificativa.
+- Baixa por apontamento idempotente (`idempotency_key = apontamento_id`) — reprocessar
+  nunca baixa duas vezes.
+- Efetivação de blenda é atômica: falha em um componente aborta tudo.
+- Ajuste de inventário exige justificativa e permissão própria.
+
+### Fase 6 — Indicadores e OEE
+- **Agregado nunca é fonte da verdade**: toda view é reconstruível a partir do bruto, com
+  endpoint de reconciliação.
+- OEE = Disponibilidade × Performance × Qualidade, com ciclo e limite **congelados no
+  apontamento**, nunca os vigentes hoje.
+- Denominador zero produz `null`, nunca `0`, `NaN` ou `Infinity`.
+- Performance > 100 % é exibida marcada como inconsistente, **nunca truncada**.
+- Perda agregada é ponderada por massa, nunca média simples de percentuais.
+- Relatório que expõe valor financeiro tem permissão separada.
+
+## Regras do briefing explicitamente FORA das Fases 2 a 6
+
+Reforçando o que **não** deve ser assumido como pronto ao fim da Fase 6: integração real
+com o ERP Mega; migração da planilha Excel de ~160 abas (e, por consequência, os
+comparativos históricos por mês dos relatórios); gestão de perfis e permissões por tela
+(continua só por seed); reabertura ou edição de apontamento encerrado; ocorrência
+multi-máquina; reserva de lote e FIFO/FEFO; reaproveitamento de galho como lote de
+moído; OEE por operador; exportação em PDF; notificações ativas por e-mail/push;
+multi-empresa na interface. Lista completa e justificada em
+[backlog-validacao-fase-6.md](backlog-validacao-fase-6.md).

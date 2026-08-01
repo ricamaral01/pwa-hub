@@ -110,8 +110,18 @@ npm run start:dev
 - [docs/adr/](docs/adr/)
 - [CHANGELOG.md](CHANGELOG.md)
 
+### Planejamento das prÃ³ximas fases (documentaÃ§Ã£o, nada implementado)
+
+- [docs/plano-fases-2-a-6.md](docs/plano-fases-2-a-6.md) â€” plano mestre da Etapa 1
+  (Design System) e das Fases 2 a 6.
+- [docs/design-system-industrial.md](docs/design-system-industrial.md)
+- [docs/maquinas-de-estado.md](docs/maquinas-de-estado.md)
+- [docs/offline-sync.md](docs/offline-sync.md)
+- [docs/calculos-oee.md](docs/calculos-oee.md)
+- [docs/backlog-validacao-fase-6.md](docs/backlog-validacao-fase-6.md)
+
 ### Fase 1 - Cadastros
 
-A aplicação agora inclui cadastros administrativos reais em `/admin/cadastros/:resource`. Recursos disponíveis: funções, colaboradores, máquinas, operações, tipos de ocorrência, fornecedores, resinas, lotes de resina, itens, moldes, configurações item/molde e ordens de produção.
+A aplicaï¿½ï¿½o agora inclui cadastros administrativos reais em `/admin/cadastros/:resource`. Recursos disponï¿½veis: funï¿½ï¿½es, colaboradores, mï¿½quinas, operaï¿½ï¿½es, tipos de ocorrï¿½ncia, fornecedores, resinas, lotes de resina, itens, moldes, configuraï¿½ï¿½es item/molde e ordens de produï¿½ï¿½o.
 
 Para ambiente local, execute migrations e seed antes de usar os cadastros administrativos.

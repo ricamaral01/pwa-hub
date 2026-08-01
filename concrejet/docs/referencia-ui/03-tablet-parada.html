@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Tablet · Registro de parada</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<figure class="moldura">
+  <figcaption>Tablet · 1280 × 800 · /posto/parada — máquina já contando parada</figcaption>
+  <div class="tela tela-tablet">
+    <div class="posto">
+
+      <header class="posto-topo">
+        <div class="placa">
+          <span class="placa-num num">05</span>
+          <span class="placa-nome">Sandretto 220 t</span>
+        </div>
+        <span class="lampada l-parada">Parada · 00:07:41</span>
+        <span style="font-size:15px;color:var(--tinta-2)">Iniciada às <b class="num">10:22</b> — o relógio já está correndo</span>
+        <div class="direita">
+          <span class="sinc pendente">▲ 4 pendentes</span>
+          <div class="operador"><b>Edney R.</b><span>injetora 05</span></div>
+        </div>
+      </header>
+
+      <div class="posto-corpo" style="grid-template-columns:300px 1fr">
+
+        <section class="cartao">
+          <p class="cartao-titulo">1 · Tipo</p>
+          <div class="grade" style="grid-auto-rows:1fr;height:calc(100% - 26px)">
+            <div class="bloco" style="justify-content:center">
+              <b>Programada</b>
+              <span>setup, troca de molde, manutenção prevista</span>
+            </div>
+            <div class="bloco marcado" style="justify-content:center">
+              <b>Não programada</b>
+              <span>quebra, falta de material, ajuste corretivo</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="cartao">
+          <p class="cartao-titulo">2 · Onde foi</p>
+          <div class="grade" style="grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;height:calc(100% - 26px)">
+            <div class="bloco" style="justify-content:center;align-items:center"><b>Molde</b></div>
+            <div class="bloco marcado" style="justify-content:center;align-items:center"><b>Desumidificador</b></div>
+            <div class="bloco" style="justify-content:center;align-items:center"><b>Energia</b></div>
+            <div class="bloco" style="justify-content:center;align-items:center"><b>Qualidade</b></div>
+            <div class="bloco" style="justify-content:center;align-items:center"><b>Ajuste de processo</b></div>
+            <div class="bloco" style="justify-content:center;align-items:center"><b>Manutenção</b></div>
+            <div class="bloco" style="justify-content:center;align-items:center"><b>Falta de material</b></div>
+            <div class="bloco" style="justify-content:center;align-items:center"><b>Setup</b></div>
+            <div class="bloco" style="justify-content:center;align-items:center"><b>Outros</b></div>
+          </div>
+        </section>
+
+      </div>
+
+      <section class="resultado" style="grid-template-columns:1fr 1fr">
+        <div class="res-item">
+          <div class="res-rot">3 · O que aconteceu</div>
+          <div style="min-height:44px;border:1px solid var(--linha-forte);border-radius:var(--raio);background:var(--superficie);padding:10px 12px;margin-top:8px;font-size:16px">
+            Desumidificador desarmou e o material voltou a puxar umidade
+          </div>
+        </div>
+        <div class="res-item" style="border-right:none">
+          <div class="res-rot">4 · O que foi feito <span style="color:var(--parada)">— obrigatório para encerrar</span></div>
+          <div style="min-height:44px;border:1px solid var(--parada-linha);border-radius:var(--raio);background:var(--parada-bg);padding:10px 12px;margin-top:8px;font-size:16px;color:var(--tinta-3)">
+            Toque para descrever a ação corretiva
+          </div>
+        </div>
+      </section>
+
+      <div class="aviso aviso-parada">
+        ■ Sem ação corretiva a parada fica pendente e o turno não pode ser encerrado.
+      </div>
+
+      <nav class="acoes" style="grid-template-columns:1fr 1.4fr 1.6fr">
+        <div class="botao">Voltar</div>
+        <div class="botao">Salvar e continuar parada</div>
+        <div class="botao botao-primario">Retomar produção</div>
+      </nav>
+
+    </div>
+  </div>
+</figure>
+</body>
+</html>
