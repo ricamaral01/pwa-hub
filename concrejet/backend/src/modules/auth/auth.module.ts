@@ -10,6 +10,8 @@ import { AuthService } from './auth.service';
 import { PasswordService } from './password.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuditoriaModule } from '../auditoria/auditoria.module';
+import { OperatorSessionGuard } from './operator-session.guard';
+import { OperationalPermissionGuard } from './operational-permission.guard';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { AuditoriaModule } from '../auditoria/auditoria.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, PasswordService, JwtAuthGuard],
-  exports: [JwtAuthGuard, JwtModule],
+  providers: [AuthService, PasswordService, JwtAuthGuard, OperatorSessionGuard, OperationalPermissionGuard],
+  exports: [AuthService, JwtAuthGuard, OperatorSessionGuard, OperationalPermissionGuard, JwtModule],
 })
 export class AuthModule {}

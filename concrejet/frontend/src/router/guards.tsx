@@ -33,10 +33,7 @@ export function OperatorGuard({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   if (isSessionLoading) return <GuardLoader />;
-  if (capabilities.operatorAuthentication !== 'demo') {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  }
-  if (!operator) {
+  if (capabilities.operatorAuthentication === 'demo' && !operator) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 

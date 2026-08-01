@@ -151,3 +151,11 @@ atual ([offline-sync.md](offline-sync.md)).
 Implementado `ProducaoModule` no backend com `Apontamento`, `ProductionRecordsService`, `ProductionCalculationService` e controller `/production-records`. O modulo usa TypeORM, auditoria e validacoes de dispositivo, maquina, operador, lote e configuracao item/molde.
 
 O frontend recebeu uma fundacao visual industrial em `frontend/src/ui`, com shells tablet e desktop. A tela operacional foi refatorada para o fluxo tablet login/abertura/execucao. A autorizacao operacional ainda esta parcial: `/auth/operator-login` cria sessao por PIN, mas os endpoints de apontamento continuam protegidos pelo JWT administrativo.
+
+## Estado implementado em 2026-08-01 - Fases 2, 3 e 4
+
+O backend operacional agora usa sessao de operador separada da sessao administrativa, com
+guard proprio por bearer token operacional em memoria. As rotas especificas de producao e
+ocorrencias sao registradas antes do controller generico de cadastros. O frontend tablet
+consome catalogo operacional real, registra apontamentos/paradas e mantem outbox offline
+local. Fases 5 e 6 nao foram iniciadas.

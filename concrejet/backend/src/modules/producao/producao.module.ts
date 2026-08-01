@@ -11,6 +11,8 @@ import {
 import { Dispositivo } from '../producao-base/entities/dispositivo.entity';
 import { Apontamento } from './entities/apontamento.entity';
 import { ProductionCalculationService } from './production-calculation.service';
+import { ProductionCatalogController } from './production-catalog.controller';
+import { ProductionCatalogService } from './production-catalog.service';
 import { ProductionRecordsController } from './production-records.controller';
 import { ProductionRecordsService } from './production-records.service';
 
@@ -27,8 +29,8 @@ import { ProductionRecordsService } from './production-records.service';
     AuditoriaModule,
     AuthModule,
   ],
-  controllers: [ProductionRecordsController],
-  providers: [ProductionRecordsService, ProductionCalculationService],
+  controllers: [ProductionRecordsController, ProductionCatalogController],
+  providers: [ProductionRecordsService, ProductionCalculationService, ProductionCatalogService],
   exports: [ProductionCalculationService],
 })
 export class ProducaoModule {}

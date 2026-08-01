@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { db } from '@/db/schema';
 import { useSessionStore } from '@/store/session.store';
 import type { QueueItem, QueueItemType } from '@/db/schema';
+import { apiClient } from '@/api/client';
 
 /**
  * Hook de gerenciamento da fila de sincronização offline.
@@ -40,16 +41,28 @@ export function useQueue() {
       const item: Omit<QueueItem, 'id'> = {
         uuid,
         type,
+        entityType: type,
+        operationType: typeof payload === 'object' && payload !== null && 'operation' in payload ? String((payload as { operation: unknown }).operation) : 'create',
         payload: JSON.stringify(payload),
         idempotencyKey: uuid,
+        entityId: null,
+        entityVersion: versao,
+        dependencyIds: [],
         criadoEm: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
         tentativas: 0,
+        attempts: 0,
         ultimaTentativaEm: null,
+        lastAttemptAt: null,
+        nextAttemptAt: null,
         ultimoErro: null,
+        lastError: null,
         state: 'pendente',
+        status: 'pendente',
         versao,
       };
       await db.queue.add(item);
+      await db.syncOutbox.add(item);
       return uuid;
     },
     [],
@@ -73,15 +86,16 @@ export function useQueue() {
       await db.queue.update(item.id, { state: 'enviando' });
 
       try {
-        // TODO: chamar API real aqui
-        // await apontamentosApi.criar(JSON.parse(item.payload));
-
-        // Mock: simula sucesso
-        await new Promise((r) => setTimeout(r, 200));
+        await sendQueueItem(item);
 
         await db.queue.update(item.id, {
           state: 'sincronizado',
           ultimaTentativaEm: new Date().toISOString(),
+        });
+        await db.syncOutbox.where('uuid').equals(item.uuid).modify({
+          status: 'sincronizado',
+          state: 'sincronizado',
+          lastAttemptAt: new Date().toISOString(),
         });
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : String(err);
@@ -107,12 +121,29 @@ export function useQueue() {
             registradoEm: new Date().toISOString(),
             resolvidoEm: null,
           });
+          await db.syncConflicts.add({
+            queueItemUuid: item.uuid,
+            versaoLocal: item.payload,
+            versaoServidor: '{}',
+            camposDiferentes: [],
+            registradoEm: new Date().toISOString(),
+            resolvidoEm: null,
+          });
         } else {
+          const nextAttemptAt = nextBackoff(item.tentativas + 1);
           await db.queue.update(item.id, {
             state: 'erro',
             tentativas: item.tentativas + 1,
             ultimaTentativaEm: new Date().toISOString(),
             ultimoErro: errorMessage,
+          });
+          await db.syncOutbox.where('uuid').equals(item.uuid).modify({
+            status: 'erro',
+            state: 'erro',
+            attempts: item.tentativas + 1,
+            lastAttemptAt: new Date().toISOString(),
+            nextAttemptAt,
+            lastError: errorMessage,
           });
         }
       }
@@ -153,4 +184,33 @@ export function useQueue() {
     cleanSynced,
     checkConnectivity,
   };
+}
+
+async function sendQueueItem(item: QueueItem): Promise<void> {
+  const token = useSessionStore.getState().operatorToken;
+  const data = JSON.parse(item.payload) as { operation?: string; id?: string; payload?: unknown };
+  const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+  if (item.type === 'apontamento') {
+    if (data.operation === 'finish' && data.id) {
+      await apiClient.post(`/production-records/${data.id}/finish`, data.payload, { headers });
+      return;
+    }
+    await apiClient.post('/production-records', data.payload ?? data, { headers });
+    return;
+  }
+
+  if (item.type === 'ocorrencia') {
+    if (data.operation === 'finish' && data.id) {
+      await apiClient.post(`/occurrences/${data.id}/finish`, data.payload, { headers });
+      return;
+    }
+    await apiClient.post('/occurrences', data.payload ?? data, { headers });
+  }
+}
+
+function nextBackoff(attempts: number): string {
+  const schedule = [5, 15, 30, 60, 300];
+  const seconds = schedule[Math.min(attempts - 1, schedule.length - 1)];
+  return new Date(Date.now() + seconds * 1000).toISOString();
 }

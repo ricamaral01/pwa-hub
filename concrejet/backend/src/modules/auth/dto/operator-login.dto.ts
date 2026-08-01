@@ -1,4 +1,4 @@
-import { IsString, IsUUID, Length } from 'class-validator';
+import { IsString, Length } from 'class-validator';
 
 export class OperatorLoginDto {
   @IsString()
@@ -8,7 +8,7 @@ export class OperatorLoginDto {
   @Length(4, 12)
   pin!: string;
 
-  @IsUUID()
+  @IsString()
   dispositivoId!: string;
 }
 

@@ -1,5 +1,32 @@
 # Handoff
 
+## 2026-08-01 - Codex - Fases 2, 3 e 4 operacionais sem Fase 5/6
+
+### Objetivo executado
+
+Fechadas as pendencias bloqueantes da Fase 2 e implementadas as entregas operacionais das Fases 3 e 4: autenticacao operacional real, catalogo real para o tablet, apontamento protegido por sessao de operador, ocorrencias/paradas, outbox offline e acesso local em rede. Nao foram implementados consumo de lote, blenda, estoque avancado, paineis ou OEE.
+
+### Principais mudancas
+
+- Backend: adicionados `OperatorSessionGuard`, `OperationalPermissionGuard`, decorator `RequireOperationalPermission`, `ProductionCatalogController/Service` e `OcorrenciasModule`.
+- Banco: migration `1730800000000-Fase3Ocorrencias.ts` cria `ocorrencia` e estende `tipo_ocorrencia` com classificacao, programacao, OEE, acao corretiva e aprovacao.
+- Frontend tablet: `OperationPage` passou a autenticar operador em `/auth/operator-login`, carregar `/production-catalog` e usar IDs reais internamente; `/stop` registra paradas.
+- Offline: `db/schema.ts` inclui outbox/conflitos/catalogos/metadados v3; `useQueue` envia registros reais quando a conexao volta.
+- Infra local: API e Vite escutam em `0.0.0.0`; CORS permite origens LAN privadas em desenvolvimento.
+
+### Validacao real
+
+- `backend`: `npm run typecheck`, `npm run test`, `npm run build` OK.
+- `frontend`: `npm run typecheck`, `npm run test`, `npm run build` OK.
+- Playwright: `npm run test:e2e -- --project=normal-tablet-landscape-1920` OK, 5 specs.
+- API manual real OK: login `OP001/2468`, catalogo real, apontamento, ocorrencia, bloqueio 409 com ocorrencia aberta, encerramento da ocorrencia, conclusao do apontamento.
+- Lint: executado e falhou por regra Prettier/LF contra arquivos CRLF preexistentes em massa; nao foi normalizado para evitar churn fora do escopo.
+
+### Estado local
+
+- Backend/PostgreSQL via Docker Compose ativos.
+- Frontend dev server ativo em `http://localhost:5174`, exposto para LAN; IP detectado: `http://192.168.0.14:5174`.
+
 > Ordem do arquivo: mais recente primeiro. As duas últimas entradas do Codex
 > ("Fase 1 Cadastros implementada" e "Correcao isolada de lotes de resina") foram
 > anexadas ao **final** do arquivo, fora do padrão — elas são cronologicamente as mais

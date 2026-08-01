@@ -51,7 +51,7 @@ const ActivationPage: React.FC = () => {
     setError('');
     try {
       await activateDevice({ maquinaId, maquinaNome, maquinaCodigo });
-      navigate('/login', { replace: true });
+      navigate('/', { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao ativar o dispositivo.');
     } finally {

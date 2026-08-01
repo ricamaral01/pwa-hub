@@ -9,6 +9,6 @@ describe('OperationPage dependencies', () => {
     expect(source).not.toContain('@/mocks/production');
     expect(source).not.toContain('MOCK_ORDENS');
     expect(source).not.toContain('MOCK_LOTES');
-    expect(source).toContain('getProductionDataRepository');
+    expect(source).toContain('/production-catalog');
   });
 });

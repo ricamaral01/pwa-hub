@@ -412,3 +412,10 @@ contêiner.
 A primeira camada executavel do design system foi criada em `frontend/src/ui/tokens/tokens.css`, `frontend/src/ui/industrial.css`, `frontend/src/ui/tablet/index.tsx`, `frontend/src/ui/desktop/index.tsx` e `frontend/src/ui/feedback/index.tsx`.
 
 Ela cobre shell tablet, cabecalho de maquina, cards touch, seletores industriais, campos numericos, keypad, barra de acoes, shell desktop, sidebar, toolbar, filtros, tabela, paginacao, KPIs e estados de feedback.
+
+## Estado implementado em 2026-08-01
+
+As telas tablet de apontamento e parada usam os componentes industriais existentes
+(`TabletShell`, `MachineHeader`, `StatusLamp`, `TouchSelect`, `NumericKeypad` e
+indicadores de offline/sincronizacao). A tela de conflitos de sync foi adicionada ao
+ambiente administrativo. Nao foram criados paineis de Fase 6.

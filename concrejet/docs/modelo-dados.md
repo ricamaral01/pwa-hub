@@ -156,3 +156,11 @@ estabelecida das tabelas append-only (`auditoria`, `movimento_estoque_lote`,
 # Atualizacao Fase 2 - 2026-08-01
 
 Adicionada a migration `1730700000000-Fase2Apontamento.ts` com colunas operacionais em `colaborador`, campos de limite/performance em `configuracao_item_molde` e tabela `apontamento` com status, snapshots, quantidades, perdas, origem, idempotencia, auditoria e constraint de sobreposicao por maquina via `btree_gist`.
+
+## Estado implementado em 2026-08-01 - Ocorrencias e offline
+
+Adicionada a tabela `ocorrencia` pela migration `1730800000000-Fase3Ocorrencias.ts`,
+vinculada a empresa, unidade, apontamento, maquina, dispositivo, operador e tipo de
+ocorrencia. `tipo_ocorrencia` foi estendida com classificacao/programacao padrao,
+participacao no OEE e flags de acao corretiva/aprovacao. No frontend, o IndexedDB foi
+versionado para v3 com outbox, conflitos, catalogos essenciais e metadados locais.

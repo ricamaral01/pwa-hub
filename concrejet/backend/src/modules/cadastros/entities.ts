@@ -96,6 +96,21 @@ export class TipoOcorrencia extends CadastroEmpresaEntity {
 
   @Column({ type: 'boolean', default: true })
   ativo!: boolean;
+
+  @Column({ name: 'classificacao_padrao', type: 'varchar', length: 20, default: 'nao_produtiva' })
+  classificacaoPadrao!: 'produtiva' | 'nao_produtiva';
+
+  @Column({ name: 'programacao_padrao', type: 'varchar', length: 20, default: 'nao_programada' })
+  programacaoPadrao!: 'programada' | 'nao_programada';
+
+  @Column({ name: 'entra_calculo_oee', type: 'boolean', default: true })
+  entraCalculoOee!: boolean;
+
+  @Column({ name: 'exige_acao_corretiva', type: 'boolean', default: false })
+  exigeAcaoCorretiva!: boolean;
+
+  @Column({ name: 'exige_aprovacao', type: 'boolean', default: false })
+  exigeAprovacao!: boolean;
 }
 
 @Entity('fornecedor')

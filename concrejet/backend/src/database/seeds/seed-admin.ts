@@ -43,11 +43,22 @@ const FASE1_RECURSOS = [
 ];
 const FASE1_ACOES = ['consultar', 'criar', 'editar', 'inativar', 'reativar'];
 const FASE2_PERMISSOES = [
+  'operadores.autenticar',
   'apontamentos.consultar',
   'apontamentos.criar',
-  'apontamentos.editar',
+  'apontamentos.iniciar',
+  'apontamentos.alterar',
   'apontamentos.concluir',
   'apontamentos.cancelar',
+  'apontamentos.consultar_historico',
+  'ocorrencias.consultar',
+  'ocorrencias.criar',
+  'ocorrencias.iniciar',
+  'ocorrencias.alterar',
+  'ocorrencias.encerrar',
+  'ocorrencias.cancelar',
+  'ocorrencias.aprovar',
+  'ocorrencias.consultar_historico',
 ];
 
 function generateRandomPassword(): string {
@@ -169,6 +180,30 @@ async function main(): Promise<void> {
       }
     }
 
+    let perfilOperador = await perfilRepo.findOne({
+      where: { empresaId: empresa.id, codigo: 'OPERADOR' },
+      relations: ['permissoes'],
+    });
+    if (!perfilOperador) {
+      perfilOperador = await perfilRepo.save(
+        perfilRepo.create({
+          empresaId: empresa.id,
+          codigo: 'OPERADOR',
+          nome: 'Operador',
+          descricao: 'Perfil operacional do posto',
+          ativo: true,
+          permissoes: fase2Permissoes,
+        }),
+      );
+    } else {
+      const chavesAtuais = new Set((perfilOperador.permissoes ?? []).map((item) => item.chave));
+      const novasPermissoes = fase2Permissoes.filter((item) => !chavesAtuais.has(item.chave));
+      if (novasPermissoes.length) {
+        perfilOperador.permissoes = [...(perfilOperador.permissoes ?? []), ...novasPermissoes];
+        await perfilRepo.save(perfilOperador);
+      }
+    }
+
     await seedFase1Basico(manager, empresa.id, unidade.id, senhaGerada !== null);
 
     const usuarioExistente = await usuarioRepo.findOne({ where: { empresaId: empresa.id, email } });
@@ -232,12 +267,34 @@ async function seedFase1Basico(
         ativo: true,
       }),
     );
-  await manager
-    .getRepository(TipoOcorrencia)
-    .upsert({ empresaId, codigo: 'PARADA', descricao: 'Parada de maquina', ativo: true }, [
-      'empresaId',
-      'codigo',
-    ]);
+  await manager.getRepository(TipoOcorrencia).upsert(
+    {
+      empresaId,
+      codigo: 'PARADA',
+      descricao: 'Parada de maquina',
+      classificacaoPadrao: 'nao_produtiva',
+      programacaoPadrao: 'nao_programada',
+      entraCalculoOee: true,
+      exigeAcaoCorretiva: false,
+      exigeAprovacao: false,
+      ativo: true,
+    },
+    ['empresaId', 'codigo'],
+  );
+  await manager.getRepository(TipoOcorrencia).upsert(
+    {
+      empresaId,
+      codigo: 'MANUT-ACAO',
+      descricao: 'Manutencao com acao obrigatoria',
+      classificacaoPadrao: 'nao_produtiva',
+      programacaoPadrao: 'nao_programada',
+      entraCalculoOee: true,
+      exigeAcaoCorretiva: true,
+      exigeAprovacao: false,
+      ativo: true,
+    },
+    ['empresaId', 'codigo'],
+  );
   const fornecedor = await manager
     .getRepository(Fornecedor)
     .save(
@@ -277,13 +334,21 @@ async function seedFase1Basico(
         ativo: true,
       }),
     );
-  await manager.getRepository(Colaborador).save(
-    await upsertAndReturn(manager, Colaborador, { empresaId, matricula: 'OP001' }, {
+  const colaboradorRepo = manager.getRepository(Colaborador);
+  const operadorExistente = await colaboradorRepo
+    .createQueryBuilder('colaborador')
+    .addSelect('colaborador.pinHash')
+    .where('colaborador.empresaId = :empresaId', { empresaId })
+    .andWhere('colaborador.matricula = :matricula', { matricula: 'OP001' })
+    .getOne();
+  await colaboradorRepo.save(
+    colaboradorRepo.create({
+      ...(operadorExistente ?? {}),
       empresaId,
       matricula: 'OP001',
       nome: 'Operador Desenvolvimento',
       funcaoId: funcao.id,
-      pinHash: await argon2.hash(process.env.SEED_OPERATOR_PIN ?? '2468', { type: argon2.argon2id }),
+      pinHash: operadorExistente?.pinHash ?? await argon2.hash(process.env.SEED_OPERATOR_PIN ?? '2468', { type: argon2.argon2id }),
       ativo: true,
     }),
   );

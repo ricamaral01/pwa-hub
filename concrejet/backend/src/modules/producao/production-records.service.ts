@@ -4,9 +4,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { DataSource, MoreThan, Not } from 'typeorm';
+import { DataSource, In, MoreThan, Not } from 'typeorm';
 import { AuditoriaService } from '../auditoria/auditoria.service';
-import type { AuthenticatedUser } from '../auth/jwt.strategy';
+import type { OperationalUser } from '../auth/operator-session.guard';
 import {
   Colaborador,
   ConfiguracaoItemMolde,
@@ -14,6 +14,7 @@ import {
   OrdemProducao,
 } from '../cadastros/entities';
 import { Dispositivo } from '../producao-base/entities/dispositivo.entity';
+import { Ocorrencia } from '../ocorrencias/entities/ocorrencia.entity';
 import { Apontamento } from './entities/apontamento.entity';
 import {
   CancelProductionRecordDto,
@@ -29,7 +30,7 @@ export class ProductionRecordsService {
     private readonly auditoria: AuditoriaService,
   ) {}
 
-  async create(dto: CreateProductionRecordDto, user: AuthenticatedUser, correlationId?: string) {
+  async create(dto: CreateProductionRecordDto, user: OperationalUser, correlationId?: string) {
     return this.dataSource.transaction(async (manager) => {
       const existingByKey = await manager
         .getRepository(Apontamento)
@@ -37,14 +38,14 @@ export class ProductionRecordsService {
       if (existingByKey) return existingByKey;
 
       const dispositivo = await manager.getRepository(Dispositivo).findOne({
-        where: { id: dto.dispositivoId, ativo: true },
+        where: { id: user.dispositivoId, ativo: true },
         relations: ['maquina'],
       });
       if (!dispositivo) throw new BadRequestException('Dispositivo invalido ou inativo.');
       if (!dispositivo.maquinaId) throw new BadRequestException('Dispositivo sem maquina vinculada.');
 
       const operador = await manager.getRepository(Colaborador).findOne({
-        where: { id: dto.operadorId, empresaId: user.empresaId, ativo: true },
+        where: { id: user.operadorId, empresaId: user.empresaId, ativo: true },
       });
       if (!operador) throw new BadRequestException('Operador invalido ou inativo.');
 
@@ -100,8 +101,8 @@ export class ProductionRecordsService {
         cicloCustoAplicadoS: configuracao.cicloCustoSegundos ?? null,
         limitePerdaAplicadoPct: configuracao.limitePerdaPercentual ?? '100',
         custoResinaAplicadoKg: lote.custoPorKg ?? null,
-        createdBy: user.sub,
-        updatedBy: user.sub,
+        createdBy: null,
+        updatedBy: null,
       });
       const saved = await manager.getRepository(Apontamento).save(record);
       await this.audit(saved.id, 'CREATE', user, null, saved, correlationId);
@@ -109,7 +110,7 @@ export class ProductionRecordsService {
     });
   }
 
-  async list(user: AuthenticatedUser, query: Record<string, unknown>) {
+  async list(user: OperationalUser, query: Record<string, unknown>) {
     const repo = this.dataSource.getRepository(Apontamento);
     const where: Record<string, unknown> = { empresaId: user.empresaId };
     if (typeof query.status === 'string' && query.status) where.status = query.status;
@@ -125,38 +126,48 @@ export class ProductionRecordsService {
     return { data, meta: { page, limit, total } };
   }
 
-  async get(id: string, user: AuthenticatedUser) {
+  async get(id: string, user: OperationalUser) {
     const record = await this.findOwned(id, user.empresaId);
     return record;
   }
 
-  async update(id: string, dto: UpdateProductionRecordDto, user: AuthenticatedUser, correlationId?: string) {
+  async update(id: string, dto: UpdateProductionRecordDto, user: OperationalUser, correlationId?: string) {
     const repo = this.dataSource.getRepository(Apontamento);
     const record = await this.findOwned(id, user.empresaId);
     this.assertVersion(record, dto.version);
     if (record.status !== 'em_andamento') throw new ConflictException('Somente apontamento em andamento pode ser alterado.');
     const before = { ...record };
-    repo.merge(record, this.quantities(dto, user.sub));
+    repo.merge(record, this.quantities(dto));
     const saved = await repo.save(record);
     await this.audit(id, 'UPDATE', user, before, saved, correlationId);
     return saved;
   }
 
-  async finish(id: string, dto: FinishProductionRecordDto, user: AuthenticatedUser, correlationId?: string) {
+  async finish(id: string, dto: FinishProductionRecordDto, user: OperationalUser, correlationId?: string) {
     const repo = this.dataSource.getRepository(Apontamento);
     const record = await this.findOwned(id, user.empresaId);
     this.assertVersion(record, dto.version);
     if (record.status !== 'em_andamento') throw new ConflictException('Somente apontamento em andamento pode ser concluido.');
+    const openOccurrence = await this.dataSource.getRepository(Ocorrencia).findOne({
+      where: {
+        apontamentoId: id,
+        empresaId: user.empresaId,
+        status: In(['aberta', 'aguardando_acao', 'aguardando_aprovacao']),
+      },
+    });
+    if (openOccurrence) {
+      throw new ConflictException('Nao e possivel concluir apontamento com ocorrencia aberta.');
+    }
     const fimEm = new Date(dto.fimEm);
     if (fimEm <= record.inicioEm) throw new BadRequestException('Fim deve ser maior que inicio.');
     const before = { ...record };
-    repo.merge(record, { ...this.quantities(dto, user.sub), fimEm, status: 'concluido' });
+    repo.merge(record, { ...this.quantities(dto), fimEm, status: 'concluido' });
     const saved = await repo.save(record);
     await this.audit(id, 'UPDATE', user, before, saved, correlationId);
     return saved;
   }
 
-  async cancel(id: string, dto: CancelProductionRecordDto, user: AuthenticatedUser, correlationId?: string) {
+  async cancel(id: string, dto: CancelProductionRecordDto, user: OperationalUser, correlationId?: string) {
     const repo = this.dataSource.getRepository(Apontamento);
     const record = await this.findOwned(id, user.empresaId);
     this.assertVersion(record, dto.version);
@@ -166,16 +177,16 @@ export class ProductionRecordsService {
     repo.merge(record, {
       status: 'cancelado',
       motivoCancelamento: dto.motivoCancelamento.trim(),
-      canceladoPor: user.sub,
+      canceladoPor: null,
       canceladoEm: new Date(),
-      updatedBy: user.sub,
+      updatedBy: null,
     });
     const saved = await repo.save(record);
     await this.audit(id, 'UPDATE', user, before, saved, correlationId);
     return saved;
   }
 
-  async currentByDevice(dispositivoId: string, user: AuthenticatedUser) {
+  async currentByDevice(dispositivoId: string, user: OperationalUser) {
     return this.dataSource.getRepository(Apontamento).findOne({
       where: {
         empresaId: user.empresaId,
@@ -188,7 +199,7 @@ export class ProductionRecordsService {
     });
   }
 
-  private quantities(dto: UpdateProductionRecordDto, userId: string): Partial<Apontamento> {
+  private quantities(dto: UpdateProductionRecordDto): Partial<Apontamento> {
     return {
       pecasBoas: dto.pecasBoas,
       pecasRefugo: dto.pecasRefugo,
@@ -197,7 +208,7 @@ export class ProductionRecordsService {
       galhoKg: dto.galhoKg === undefined ? undefined : String(dto.galhoKg),
       outrasPerdasKg: dto.outrasPerdasKg === undefined ? undefined : String(dto.outrasPerdasKg),
       observacao: dto.observacao,
-      updatedBy: userId,
+      updatedBy: null,
     };
   }
 
@@ -214,7 +225,7 @@ export class ProductionRecordsService {
   private async audit(
     id: string,
     action: 'CREATE' | 'UPDATE',
-    user: AuthenticatedUser,
+    user: OperationalUser,
     before: unknown,
     after: unknown,
     correlationId?: string,
@@ -223,7 +234,7 @@ export class ProductionRecordsService {
       entidade: 'apontamento',
       entidadeId: id,
       acao: action,
-      usuarioId: user.sub,
+      usuarioId: null,
       dadosAntes: before as Record<string, unknown> | null,
       dadosDepois: after as Record<string, unknown> | null,
       correlationId,

@@ -1364,3 +1364,9 @@ Regras de sequenciamento que **não** devem ser violadas:
 6. Cada fase só é considerada concluída quando os critérios da sua subseção 11 estiverem
    verificados **de fato executando** os comandos, nunca apenas escritos — padrão de rigor
    já estabelecido nas entradas de [handoff.md](handoff.md).
+
+## Estado implementado em 2026-08-01
+
+Fase 2 ajustada para uso real do backend operacional, Fase 3 implementada para
+ocorrencias/paradas e Fase 4 implementada no escopo offline/outbox do tablet. Fases 5 e 6
+continuam nao iniciadas.

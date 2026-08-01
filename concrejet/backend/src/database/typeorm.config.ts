@@ -10,6 +10,7 @@ import { Dispositivo } from '../modules/producao-base/entities/dispositivo.entit
 import { Auditoria } from '../modules/auditoria/entities/auditoria.entity';
 import { CADASTRO_ENTITIES } from '../modules/cadastros/entities';
 import { Apontamento } from '../modules/producao/entities/apontamento.entity';
+import { Ocorrencia } from '../modules/ocorrencias/entities/ocorrencia.entity';
 
 export function buildTypeOrmOptions(config: ConfigService): TypeOrmModuleOptions {
   return {
@@ -31,6 +32,7 @@ export function buildTypeOrmOptions(config: ConfigService): TypeOrmModuleOptions
       Auditoria,
       ...CADASTRO_ENTITIES,
       Apontamento,
+      Ocorrencia,
     ],
     migrations: ['dist/database/migrations/*.js'],
     migrationsRun: false,

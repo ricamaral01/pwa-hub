@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
-import { CurrentUser } from '../auth/current-user.decorator';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import type { AuthenticatedUser } from '../auth/jwt.strategy';
+import type { Request } from 'express';
+import { OperationalPermissionGuard } from '../auth/operational-permission.guard';
+import { OperatorSessionGuard, type OperationalRequest } from '../auth/operator-session.guard';
+import { RequireOperationalPermission } from '../auth/require-operational-permission.decorator';
 import {
   CalculateProductionRecordDto,
   CancelProductionRecordDto,
@@ -10,11 +10,12 @@ import {
   FinishProductionRecordDto,
   UpdateProductionRecordDto,
 } from './dto';
+import { CurrentOperationalUser } from './operational-user.decorator';
 import { ProductionCalculationService } from './production-calculation.service';
 import { ProductionRecordsService } from './production-records.service';
 
 @Controller('production-records')
-@UseGuards(JwtAuthGuard)
+@UseGuards(OperatorSessionGuard, OperationalPermissionGuard)
 export class ProductionRecordsController {
   constructor(
     private readonly records: ProductionRecordsService,
@@ -22,22 +23,28 @@ export class ProductionRecordsController {
   ) {}
 
   @Post()
+  @RequireOperationalPermission('apontamentos.criar')
   create(
     @Body() body: CreateProductionRecordDto,
-    @CurrentUser() user: AuthenticatedUser,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
     @Req() req: Request,
   ) {
     return this.records.create(body, user, req.correlationId);
   }
 
   @Get()
-  list(@CurrentUser() user: AuthenticatedUser, @Query() query: Record<string, unknown>) {
+  @RequireOperationalPermission('apontamentos.consultar')
+  list(
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+    @Query() query: Record<string, unknown>,
+  ) {
     return this.records.list(user, query);
   }
 
   @Get('current-by-device')
-  currentByDevice(@CurrentUser() user: AuthenticatedUser, @Query('dispositivoId') dispositivoId: string) {
-    return this.records.currentByDevice(dispositivoId, user);
+  @RequireOperationalPermission('apontamentos.consultar')
+  currentByDevice(@CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>) {
+    return this.records.currentByDevice(user.dispositivoId, user);
   }
 
   @Post('calculate')
@@ -46,40 +53,51 @@ export class ProductionRecordsController {
   }
 
   @Get(':id')
-  get(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  @RequireOperationalPermission('apontamentos.consultar')
+  get(
+    @Param('id') id: string,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+  ) {
     return this.records.get(id, user);
   }
 
   @Patch(':id')
+  @RequireOperationalPermission('apontamentos.alterar')
   update(
     @Param('id') id: string,
     @Body() body: UpdateProductionRecordDto,
-    @CurrentUser() user: AuthenticatedUser,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
     @Req() req: Request,
   ) {
     return this.records.update(id, body, user, req.correlationId);
   }
 
   @Post(':id/start')
-  start(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  @RequireOperationalPermission('apontamentos.iniciar')
+  start(
+    @Param('id') id: string,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+  ) {
     return this.records.get(id, user);
   }
 
   @Post(':id/finish')
+  @RequireOperationalPermission('apontamentos.concluir')
   finish(
     @Param('id') id: string,
     @Body() body: FinishProductionRecordDto,
-    @CurrentUser() user: AuthenticatedUser,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
     @Req() req: Request,
   ) {
     return this.records.finish(id, body, user, req.correlationId);
   }
 
   @Post(':id/cancel')
+  @RequireOperationalPermission('apontamentos.cancelar')
   cancel(
     @Param('id') id: string,
     @Body() body: CancelProductionRecordDto,
-    @CurrentUser() user: AuthenticatedUser,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
     @Req() req: Request,
   ) {
     return this.records.cancel(id, body, user, req.correlationId);

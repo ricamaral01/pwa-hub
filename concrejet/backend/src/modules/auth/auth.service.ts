@@ -24,6 +24,15 @@ export interface OperatorLoginResult {
 }
 
 const operatorSessions = new Map<string, { operadorId: string; dispositivoId: string; expiraEm: Date }>();
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{12}$/i;
+
+export interface ValidOperatorSession {
+  operadorId: string;
+  dispositivoId: string;
+  empresaId: string;
+  unidadeId: string;
+  maquinaId: string;
+}
 
 @Injectable()
 export class AuthService {
@@ -154,7 +163,10 @@ export class AuthService {
     correlationId?: string,
   ): Promise<OperatorLoginResult> {
     const dispositivo = await this.dataSource.getRepository(Dispositivo).findOne({
-      where: { id: dispositivoId, ativo: true },
+      where: UUID_REGEX.test(dispositivoId)
+        ? { id: dispositivoId, ativo: true }
+        : { identificador: dispositivoId, ativo: true },
+      relations: ['maquina'],
     });
     if (!dispositivo) throw new BadRequestException('Dispositivo invalido ou inativo.');
     if (!dispositivo.maquinaId) throw new BadRequestException('Dispositivo sem maquina vinculada.');
@@ -190,7 +202,7 @@ export class AuthService {
 
     const token = randomUUID();
     const expiraEm = new Date(Date.now() + 8 * 60 * 60_000);
-    operatorSessions.set(token, { operadorId: colaborador.id, dispositivoId, expiraEm });
+    operatorSessions.set(token, { operadorId: colaborador.id, dispositivoId: dispositivo.id, expiraEm });
 
     await this.auditoriaService.registrar({
       entidade: 'colaborador',
@@ -224,6 +236,33 @@ export class AuthService {
       expiraEm: session.expiraEm.toISOString(),
       operador: { id: session.operadorId, matricula: '', nome: '' },
       dispositivo: { id: session.dispositivoId, maquinaId: '' },
+    };
+  }
+
+  async validateOperatorSession(token: string): Promise<ValidOperatorSession | null> {
+    const session = operatorSessions.get(token);
+    if (!session || session.expiraEm.getTime() <= Date.now()) {
+      if (session) operatorSessions.delete(token);
+      return null;
+    }
+
+    const colaborador = await this.dataSource.getRepository(Colaborador).findOne({
+      where: { id: session.operadorId, ativo: true },
+    });
+    if (!colaborador) return null;
+
+    const dispositivo = await this.dataSource.getRepository(Dispositivo).findOne({
+      where: { id: session.dispositivoId, ativo: true },
+      relations: ['maquina'],
+    });
+    if (!dispositivo?.maquinaId || !dispositivo.maquina) return null;
+
+    return {
+      operadorId: colaborador.id,
+      dispositivoId: dispositivo.id,
+      empresaId: colaborador.empresaId,
+      unidadeId: dispositivo.maquina.unidadeId,
+      maquinaId: dispositivo.maquinaId,
     };
   }
 }

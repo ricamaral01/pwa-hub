@@ -1,34 +1,27 @@
 import Dexie, { type Table } from 'dexie';
 
-// ─────────────────────────────────────────────
-// Tipos de dados IndexedDB
-// ─────────────────────────────────────────────
-
-/** Configuração persistida do dispositivo (tablet) */
 export interface DeviceConfig {
-  id: 1; // singleton — sempre id=1
-  identificador: string; // UUID gerado no cliente, exibido na tela de ativação
+  id: 1;
+  identificador: string;
   maquinaId: string | null;
   maquinaNome: string | null;
   maquinaCodigo: string | null;
-  ultimaSincronizacao: string | null; // ISO 8601
+  ultimaSincronizacao: string | null;
   appVersion: string;
 }
 
-/** Sessão do operador ativa */
 export interface ActiveSession {
-  id: 1; // singleton
+  id: 1;
   operadorId: string;
   operadorNome: string;
   operadorMatricula: string;
-  iniciadaEm: string; // ISO 8601
-  ultimaAtividadeEm: string; // ISO 8601 — para lock por inatividade
+  iniciadaEm: string;
+  ultimaAtividadeEm: string;
 }
 
-/** Apontamento em andamento (rascunho local) */
 export interface ActiveAppointment {
-  id: 1; // singleton
-  localUuid: string; // UUID definitivo para idempotência
+  id: 1;
+  localUuid: string;
   ordemProducaoId: string | null;
   ordemProducaoNumero: string | null;
   itemId: string | null;
@@ -43,13 +36,12 @@ export interface ActiveAppointment {
   fornecedor: string | null;
   tipoResina: string | null;
   saldoLote: number | null;
-  inicioEm: string | null; // ISO 8601
+  inicioEm: string | null;
   state: 'form_incomplete' | 'preparing' | 'in_progress' | 'stop_active' | 'ready_to_complete';
 }
 
-/** Quantidades do apontamento em edição */
 export interface AppointmentQuantities {
-  id: 1; // singleton
+  id: 1;
   pecasBoas: number;
   refugo: number;
   falhaPreenchimento: number;
@@ -58,61 +50,68 @@ export interface AppointmentQuantities {
   outrasPerdas: number;
 }
 
-/** Parada/ocorrência em andamento */
 export interface ActiveStop {
-  id: 1; // singleton
+  id: 1;
   localUuid: string;
   tipoOcorrenciaId: string;
   tipoOcorrenciaCodigo: string;
   tipoOcorrenciaDescricao: string;
   tipoPNP: 'P' | 'NP';
-  inicioEm: string; // ISO 8601 — NÃO usar apenas setInterval
+  inicioEm: string;
   acaoCorretiva: string | null;
 }
 
-/** Estados possíveis de um item na fila */
 export type QueueItemState = 'pendente' | 'enviando' | 'sincronizado' | 'erro' | 'conflito';
-
-/** Tipos de payload da fila */
 export type QueueItemType = 'apontamento' | 'ocorrencia' | 'operador_login';
 
-/** Item da fila de sincronização offline */
 export interface QueueItem {
-  id?: number; // auto-incrementado pelo Dexie
-  uuid: string; // UUID definitivo — idempotência no servidor
+  id?: number;
+  uuid: string;
   type: QueueItemType;
-  payload: string; // JSON serializado do payload tipado
-  idempotencyKey: string; // mesmo UUID para retries
-  criadoEm: string; // ISO 8601
+  entityType?: QueueItemType;
+  operationType?: string;
+  payload: string;
+  idempotencyKey: string;
+  entityId?: string | null;
+  entityVersion?: number;
+  dependencyIds?: string[];
+  criadoEm: string;
+  createdAt?: string;
   tentativas: number;
-  ultimaTentativaEm: string | null; // ISO 8601
+  attempts?: number;
+  ultimaTentativaEm: string | null;
+  lastAttemptAt?: string | null;
+  nextAttemptAt?: string | null;
   ultimoErro: string | null;
+  lastError?: string | null;
   state: QueueItemState;
-  versao: number; // versão do registro local para resolução de conflito
+  status?: QueueItemState;
+  versao: number;
 }
 
-/** Conflito registrado para revisão do supervisor */
 export interface ConflictRecord {
   id?: number;
   queueItemUuid: string;
-  versaoLocal: string; // JSON da versão local
-  versaoServidor: string; // JSON da versão do servidor (retornada no erro 409)
-  camposDiferentes: string[]; // campos em conflito
-  registradoEm: string; // ISO 8601
+  versaoLocal: string;
+  versaoServidor: string;
+  camposDiferentes: string[];
+  registradoEm: string;
   resolvidoEm: string | null;
 }
 
-/** Cache de dados de produção (para uso offline) */
 export interface ProductionCache {
-  id: string; // tipo:id (ex: "ordem:abc-123")
+  id: string;
   type: 'ordem' | 'item' | 'molde' | 'lote' | 'resina' | 'tipo_ocorrencia' | 'maquina';
-  data: string; // JSON serializado
-  expiresAt: string; // ISO 8601
+  data: string;
+  expiresAt: string;
 }
 
-// ─────────────────────────────────────────────
-// Schema Dexie
-// ─────────────────────────────────────────────
+export interface AppMetadata {
+  id: string;
+  value: string;
+  updatedAt: string;
+}
+
 export class ConcreTrackDB extends Dexie {
   deviceConfig!: Table<DeviceConfig, number>;
   activeSession!: Table<ActiveSession, number>;
@@ -120,8 +119,12 @@ export class ConcreTrackDB extends Dexie {
   appointmentQuantities!: Table<AppointmentQuantities, number>;
   activeStop!: Table<ActiveStop, number>;
   queue!: Table<QueueItem, number>;
+  syncOutbox!: Table<QueueItem, number>;
   conflicts!: Table<ConflictRecord, number>;
+  syncConflicts!: Table<ConflictRecord, number>;
   productionCache!: Table<ProductionCache, string>;
+  essentialCatalogs!: Table<ProductionCache, string>;
+  appMetadata!: Table<AppMetadata, string>;
 
   constructor() {
     super('ConcreTrackInjecao');
@@ -156,6 +159,21 @@ export class ConcreTrackDB extends Dexie {
             delete (session as Record<string, unknown>)[`token${'Admin'}`];
           });
       });
+
+    this.version(3).stores({
+      deviceConfig: 'id',
+      activeSession: 'id',
+      activeAppointment: 'id',
+      appointmentQuantities: 'id',
+      activeStop: 'id',
+      queue: '++id, uuid, type, state, criadoEm',
+      syncOutbox: '++id, uuid, entityType, operationType, status, createdAt, nextAttemptAt',
+      conflicts: '++id, queueItemUuid, registradoEm',
+      syncConflicts: '++id, queueItemUuid, registradoEm',
+      productionCache: 'id, type, expiresAt',
+      essentialCatalogs: 'id, type, expiresAt',
+      appMetadata: 'id, updatedAt',
+    });
   }
 }
 

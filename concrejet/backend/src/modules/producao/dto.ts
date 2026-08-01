@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 
 export class CreateProductionRecordDto {
-  @IsUUID()
+  @IsString()
   dispositivoId!: string;
 
   @IsUUID()

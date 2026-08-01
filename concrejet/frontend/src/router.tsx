@@ -8,6 +8,8 @@ const AdminHomePage = lazy(() => import('@/pages/admin/AdminHomePage'));
 const ChangePasswordPage = lazy(() => import('@/pages/admin/ChangePasswordPage'));
 const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
 const OperationPage = lazy(() => import('@/pages/operation/OperationPage'));
+const StopPage = lazy(() => import('@/pages/operation/StopPage'));
+const SyncConflictsPage = lazy(() => import('@/pages/admin/SyncConflictsPage'));
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +41,18 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: '/stop',
+    element: (
+      <DeviceActivationGuard>
+        <OperatorGuard>
+          <Suspense fallback={<PageLoader />}>
+            <StopPage />
+          </Suspense>
+        </OperatorGuard>
+      </DeviceActivationGuard>
+    ),
+  },
+  {
     path: '/admin',
     element: (
       <AdminGuard>
@@ -54,6 +68,16 @@ export const router = createBrowserRouter([
       <AdminGuard>
         <Suspense fallback={<PageLoader />}>
           <CadastrosPage />
+        </Suspense>
+      </AdminGuard>
+    ),
+  },
+  {
+    path: '/admin/sync-conflicts',
+    element: (
+      <AdminGuard>
+        <Suspense fallback={<PageLoader />}>
+          <SyncConflictsPage />
         </Suspense>
       </AdminGuard>
     ),

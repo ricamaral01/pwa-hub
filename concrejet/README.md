@@ -138,3 +138,11 @@ industrial sem ressalvas.
 A aplica��o agora inclui cadastros administrativos reais em `/admin/cadastros/:resource`. Recursos dispon�veis: fun��es, colaboradores, m�quinas, opera��es, tipos de ocorr�ncia, fornecedores, resinas, lotes de resina, itens, moldes, configura��es item/molde e ordens de produ��o.
 
 Para ambiente local, execute migrations e seed antes de usar os cadastros administrativos.
+
+## Estado local - 2026-08-01
+
+Fases 2, 3 e 4 operacionais foram implementadas no escopo de apontamento, ocorrencias,
+paradas e offline/outbox. Backend e frontend podem rodar na rede local; em desenvolvimento,
+acesse o tablet pelo IP da maquina na porta do Vite exposta na LAN, por exemplo
+`http://192.168.0.14:5174` nesta execucao.
+Fases 5 e 6 ainda nao foram iniciadas.

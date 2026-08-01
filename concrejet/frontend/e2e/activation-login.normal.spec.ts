@@ -16,21 +16,24 @@ test.describe('Fase 0 - modo normal', () => {
     await expect(page.getByRole('heading', { name: /ativacao|ativação/i })).toBeVisible();
   });
 
-  test('dispositivo ativado sem autenticacao redireciona / para /login', async ({ page }) => {
+  test('dispositivo ativado sem operador mostra login operacional real em /', async ({ page }) => {
     await activateDevice(page);
 
-    await expect(page).toHaveURL('/login');
+    await expect(page).toHaveURL('/');
+    await expect(page.getByText(/identificacao do operador/i)).toBeVisible();
     await page.goto('/');
-    await expect(page).toHaveURL('/login');
+    await expect(page).toHaveURL('/');
+    await expect(page.getByText(/identificacao do operador/i)).toBeVisible();
   });
 
-  test('modo normal nao permite login operacional ficticio', async ({ page }) => {
+  test('modo normal usa login operacional do backend', async ({ page }) => {
     await activateDevice(page);
 
-    await expect(page.getByLabel(/matricula do operador|matrícula do operador/i)).toBeDisabled();
-    await expect(page.getByText(/login operacional ainda nao foi implementado/i)).toBeVisible();
-    await expect(page.getByRole('button', { name: '1' })).toBeDisabled();
-    await page.getByRole('button', { name: /entrar/i }).click({ force: true });
-    await expect(page).toHaveURL('/login');
+    for (const digit of ['2', '4', '6', '8']) {
+      await page.getByRole('button', { name: digit }).click();
+    }
+    await page.getByRole('button', { name: /entrar/i }).click();
+    await expect(page.getByText(/operador desenvolvimento/i)).toBeVisible();
+    await expect(page.getByText(/operacao/i)).toBeVisible();
   });
 });

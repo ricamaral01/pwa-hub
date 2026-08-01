@@ -472,3 +472,11 @@ do último erro e o horário da última sincronização bem-sucedida.
 24. Nova versão do service worker com apontamento aberto: atualização bloqueada com
     explicação; após encerrar, atualização liberada.
 25. Operação administrativa offline: bloqueada com mensagem, nunca enfileirada.
+
+## Estado implementado em 2026-08-01
+
+A Fase 4 foi implementada parcialmente no frontend. O Dexie foi estendido para v3 com
+`syncOutbox`, `syncConflicts`, `essentialCatalogs` e `appMetadata`;
+`useQueue.processQueue()` deixou de ser mock e envia apontamentos e ocorrencias para a API
+real com idempotencia, retry/backoff e registro de conflitos. O offline cobre abertura e
+conclusao operacional e parada; nao cobre consumo de estoque, blenda, OEE ou paineis.

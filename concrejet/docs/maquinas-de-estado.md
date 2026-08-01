@@ -356,3 +356,9 @@ Vale para o tempo de apontamento e para o tempo de parada.
 O backend persiste apontamentos nos estados `rascunho`, `em_andamento`, `concluido` e `cancelado`. A tela operacional implementa o fluxo visual basico de login operacional por matricula/PIN, abertura com selecao de contexto e execucao com quantidades, perdas e conclusao.
 
 A maquina visual ainda nao cobre offline/sync, conflitos e ocorrencias; esses pontos permanecem para fases posteriores.
+
+## Estado implementado em 2026-08-01
+
+A maquina de estados do frontend foi preservada e estendida para o fluxo de parada; o
+administrador nao foi inserido na maquina operacional. No backend, apontamento e
+ocorrencia seguem estados separados. Ocorrencia aberta bloqueia conclusao do apontamento.

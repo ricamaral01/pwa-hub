@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.6.0] - 2026-08-01 - Fases 3 e 4 operacionais
+
+### Adicionado
+- Autenticacao operacional real por matricula/PIN com sessao operacional separada da sessao administrativa.
+- Catalogo operacional real em `/production-catalog`, usado pela tela tablet para operacoes, ordens, moldes/configuracoes, lotes e tipos de ocorrencia.
+- Modulo de ocorrencias/paradas com entidade `Ocorrencia`, migration `Fase3Ocorrencias`, endpoints `/occurrences` e permissoes operacionais.
+- Tela tablet `/stop` para iniciar e encerrar parada vinculada ao apontamento em andamento.
+- Outbox offline em Dexie v3 para apontamentos e ocorrencias, com idempotencia, retry/backoff e registro de conflitos para supervisao.
+- Tela administrativa `/admin/sync-conflicts` para consultar conflitos locais de sincronizacao.
+- Backend e frontend preparados para acesso pela rede local (`0.0.0.0`, proxy `/api`, CORS de LAN privada).
+
+### Corrigido
+- Endpoints especificos de producao e ocorrencias passaram a ser registrados antes do controller generico de cadastros.
+- Sessao operacional passa a armazenar o UUID canonico do dispositivo, mesmo quando o login recebe o identificador fisico `DEV-TABLET-01`.
+- `Ocorrencia` foi registrada na configuracao global do TypeORM para eliminar `EntityMetadataNotFoundError`.
+- Seed de desenvolvimento deixou de sobrescrever o PIN do operador `OP001` quando ele ja existe.
+
+### Validado
+- Backend: typecheck, testes Jest e build passaram.
+- Frontend: typecheck, Vitest e build passaram.
+- Playwright `normal-tablet-landscape-1920`: 5 specs passaram.
+- Teste manual na API real: login `OP001`, catalogo, criacao de apontamento, criacao de ocorrencia, bloqueio 409 de conclusao com ocorrencia aberta, encerramento da ocorrencia e conclusao do apontamento.
+
 ## [0.5.0] - 2026-08-01 - Fase 2 Apontamento de Producao
 
 ### Adicionado

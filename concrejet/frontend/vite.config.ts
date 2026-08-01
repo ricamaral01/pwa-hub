@@ -39,7 +39,7 @@ export default defineConfig({
         // NetworkFirst para API — não serve dados velhos como novos
         runtimeCaching: [
           {
-            urlPattern: /^http:\/\/localhost:3000\/api\/.*/i,
+            urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',
@@ -69,6 +69,7 @@ export default defineConfig({
     },
   },
   server: {
+    host: '0.0.0.0',
     port: 5173,
     proxy: {
       '/api': {
