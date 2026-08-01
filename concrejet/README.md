@@ -99,6 +99,19 @@ npm run start:dev
 | Persistencia de apontamento | Nao implementada |
 | Sincronizacao operacional offline | Nao implementada |
 
+### Atualizacao Fase 2 - 2026-08-01
+
+A branch `feature/fase-2-apontamento` contem a primeira implementacao da fundacao visual
+industrial e do modulo de apontamento de producao. Foram adicionados endpoints
+`/production-records`, calculo de perdas, migration da tabela `apontamento`, login
+operacional por PIN e seed de desenvolvimento com maquina, dispositivo, operador,
+item, molde, lote, configuracao e O.P.
+
+Estado real: backend de apontamento, calculo e persistencia basica estao implementados;
+o frontend tablet possui o fluxo visual login/abertura/execucao, mas ainda precisa trocar
+os IDs de desenvolvimento por seletores carregados da API para fechar o ponta a ponta
+industrial sem ressalvas.
+
 ## Documentação
 
 - [docs/arquitetura.md](docs/arquitetura.md)

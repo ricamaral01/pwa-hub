@@ -65,3 +65,9 @@ Formato efetivo: `recurso.acao`.
 Recursos: `funcoes`, `colaboradores`, `maquinas`, `operacoes`, `tipos_ocorrencia`, `fornecedores`, `resinas`, `lotes_resina`, `itens`, `moldes`, `configuracoes_item_molde`, `ordens_producao`.
 
 Ações: `consultar`, `criar`, `editar`, `inativar`, `reativar`. O perfil administrador também mantém `sistema.administrar` como permissão global.
+
+# Atualizacao Fase 2 - 2026-08-01
+
+O seed adiciona ao perfil administrador as permissoes iniciais `apontamentos.consultar`, `apontamentos.criar`, `apontamentos.editar`, `apontamentos.concluir` e `apontamentos.cancelar`.
+
+Ressalva: os endpoints `/production-records` ainda usam `JwtAuthGuard`; a aplicacao dessas permissoes por guard/role ainda precisa ser conectada.

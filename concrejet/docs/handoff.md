@@ -1219,3 +1219,10 @@ sem bloquear o início da Fase 1.
 - Banco: migration `1730600000000-CorrigeLotesResina` adiciona `origem`, `validade`, `custo_por_kg`, `status`, permite fornecedor opcional fora de compra e cria checks de dominio.
 - Verificacao executada: backend typecheck/test/build, frontend typecheck/Vitest/build, migration real, rebuild da API Docker, teste manual HTTP real e Playwright especifico `e2e/resin-lots.normal.spec.ts`.
 - Resultado: lote criado com sucesso via API e UI real, com saldo inicial igual a quantidade inicial; UUID invalido e tentativa de alterar saldo retornaram 400 em vez de 500.
+# Handoff - Atualizacao Fase 2 - 2026-08-01
+
+Implementado nesta branch: fundacao visual industrial em `frontend/src/ui`; refatoracao visual inicial de `/operation` e `/admin/cadastros`; entidade/migration/servicos/controller de apontamento de producao; calculo de perdas com testes unitarios; login operacional por PIN e seed de massa de desenvolvimento.
+
+Validacoes executadas: typecheck backend/frontend, Jest backend, Vitest frontend, builds backend/frontend, migration e seed contra Postgres local, health/ready/version da API.
+
+Pendencias conhecidas: Playwright completo ainda precisa ser revalidado no fluxo real; frontend tablet precisa carregar IDs reais da API; guards/permissoes operacionais ainda nao estao fechados; offline/sync e ocorrencias nao fazem parte desta entrega.

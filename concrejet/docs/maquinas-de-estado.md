@@ -350,3 +350,9 @@ Vale para o tempo de apontamento e para o tempo de parada.
 - Toda transição inválida produz erro de negócio tipado (`409`), nunca exceção genérica.
 - Congelamento: alterar `tipo_ocorrencia.planejada` depois não muda a ocorrência aberta.
 - Encerrar apontamento com ocorrência em `AGUARDANDO_ACAO_CORRETIVA` → `409`.
+
+# Atualizacao Fase 2 - 2026-08-01
+
+O backend persiste apontamentos nos estados `rascunho`, `em_andamento`, `concluido` e `cancelado`. A tela operacional implementa o fluxo visual basico de login operacional por matricula/PIN, abertura com selecao de contexto e execucao com quantidades, perdas e conclusao.
+
+A maquina visual ainda nao cobre offline/sync, conflitos e ocorrencias; esses pontos permanecem para fases posteriores.

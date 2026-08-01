@@ -159,3 +159,9 @@ multi-máquina; reserva de lote e FIFO/FEFO; reaproveitamento de galho como lote
 moído; OEE por operador; exportação em PDF; notificações ativas por e-mail/push;
 multi-empresa na interface. Lista completa e justificada em
 [backlog-validacao-fase-6.md](backlog-validacao-fase-6.md).
+
+# Atualizacao Fase 2 - 2026-08-01
+
+Regras implementadas no backend de apontamento: operador, dispositivo, maquina, lote e configuracao item/molde ativos/validos; lote `DISPONIVEL`; bloqueio de outro apontamento `em_andamento` na mesma maquina; conclusao com `fimEm` posterior a `inicioEm`; cancelamento com motivo; versao otimista; calculo de perdas por peso aplicado, pecas boas, refugos, falha de preenchimento, borra, galho e outras perdas.
+
+Ressalva: o frontend tablet ainda precisa carregar seletores reais da API para aplicar essas regras sem IDs de desenvolvimento.

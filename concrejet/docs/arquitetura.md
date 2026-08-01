@@ -145,3 +145,9 @@ estoque. A máquina de estados do posto (`session.store.ts`) é **estendida** de
 estados, não recriada — ver [maquinas-de-estado.md](maquinas-de-estado.md). A camada
 offline ganha um `SyncEngine` próprio sobre Dexie v3, substituindo o `processQueue` mock
 atual ([offline-sync.md](offline-sync.md)).
+
+# Atualizacao Fase 2 - 2026-08-01
+
+Implementado `ProducaoModule` no backend com `Apontamento`, `ProductionRecordsService`, `ProductionCalculationService` e controller `/production-records`. O modulo usa TypeORM, auditoria e validacoes de dispositivo, maquina, operador, lote e configuracao item/molde.
+
+O frontend recebeu uma fundacao visual industrial em `frontend/src/ui`, com shells tablet e desktop. A tela operacional foi refatorada para o fluxo tablet login/abertura/execucao. A autorizacao operacional ainda esta parcial: `/auth/operator-login` cria sessao por PIN, mas os endpoints de apontamento continuam protegidos pelo JWT administrativo.

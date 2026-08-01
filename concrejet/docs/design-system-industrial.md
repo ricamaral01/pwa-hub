@@ -406,3 +406,9 @@ contêiner.
 4. Nenhum texto de interface em inglês.
 5. Nenhum `useEffect` de layout para forçar altura — o layout é resolvido por grid/flex.
 6. Todo componente novo entra com teste de render dos seus estados no mesmo commit.
+
+# Atualizacao Fase 2 - 2026-08-01
+
+A primeira camada executavel do design system foi criada em `frontend/src/ui/tokens/tokens.css`, `frontend/src/ui/industrial.css`, `frontend/src/ui/tablet/index.tsx`, `frontend/src/ui/desktop/index.tsx` e `frontend/src/ui/feedback/index.tsx`.
+
+Ela cobre shell tablet, cabecalho de maquina, cards touch, seletores industriais, campos numericos, keypad, barra de acoes, shell desktop, sidebar, toolbar, filtros, tabela, paginacao, KPIs e estados de feedback.

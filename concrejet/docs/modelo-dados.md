@@ -152,3 +152,7 @@ nenhum `DROP` de coluna existente. Convenções da Fase 0/1 mantidas sem exceç�
 empresa, sem exclusão física (`ativo` + `/inativar` + `/reativar`), com a exceção já
 estabelecida das tabelas append-only (`auditoria`, `movimento_estoque_lote`,
 `apontamento_evento`, `ocorrencia_evento`), que não têm `ativo` nem `UPDATE`.
+
+# Atualizacao Fase 2 - 2026-08-01
+
+Adicionada a migration `1730700000000-Fase2Apontamento.ts` com colunas operacionais em `colaborador`, campos de limite/performance em `configuracao_item_molde` e tabela `apontamento` com status, snapshots, quantidades, perdas, origem, idempotencia, auditoria e constraint de sobreposicao por maquina via `btree_gist`.

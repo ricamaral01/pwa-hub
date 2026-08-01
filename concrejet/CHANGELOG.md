@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0] - 2026-08-01 - Fase 2 Apontamento de Producao
+
+### Adicionado
+- Fundacao visual industrial no frontend com tokens CSS, shell tablet, cabecalho de maquina, controles touch, keypad numerico, feedback industrial e componentes desktop.
+- Backend `ProducaoModule` com entidade `Apontamento`, migration `Fase2Apontamento`, endpoints `/production-records` e servico de calculo de perdas.
+- Login operacional por PIN em `/auth/operator-login`, sessao operacional em memoria e logout/restauracao basicos.
+- Seed de desenvolvimento com operador `OP001`, dispositivo `DEV-TABLET-01`, maquina `INJ-01`, item, molde, lote, configuracao item/molde e ordem de producao.
+- Permissoes iniciais de apontamento adicionadas ao perfil administrador pelo seed.
+
+### Alterado
+- Tela operacional passou a usar layout tablet industrial e fluxo basico login/abertura/execucao.
+- Tela de cadastros passou a usar shell desktop, sidebar, toolbar, tabela e paginacao industriais.
+
+### Observacoes
+- A API de apontamento usa autenticacao administrativa por JWT para endpoints administrativos; a sessao operacional ainda nao substitui integralmente a autorizacao por guard.
+- O fluxo tablet ainda precisa consumir listas reais de OP/item/molde/lote/configuracao antes de ser considerado ponta a ponta completo.
+
 ## [0.4.0] - 2026-08-01 - Planejamento tecnico das Fases 2 a 6
 
 Entrada **somente de documentacao**. Nenhuma funcionalidade nova, nenhum codigo,
