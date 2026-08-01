@@ -12,6 +12,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { AuditoriaModule } from '../auditoria/auditoria.module';
 import { OperatorSessionGuard } from './operator-session.guard';
 import { OperationalPermissionGuard } from './operational-permission.guard';
+import { AdminPermissionGuard } from './admin-permission.guard';
 
 @Module({
   imports: [
@@ -29,7 +30,21 @@ import { OperationalPermissionGuard } from './operational-permission.guard';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, PasswordService, JwtAuthGuard, OperatorSessionGuard, OperationalPermissionGuard],
-  exports: [AuthService, JwtAuthGuard, OperatorSessionGuard, OperationalPermissionGuard, JwtModule],
+  providers: [
+    AuthService,
+    PasswordService,
+    JwtAuthGuard,
+    OperatorSessionGuard,
+    OperationalPermissionGuard,
+    AdminPermissionGuard,
+  ],
+  exports: [
+    AuthService,
+    JwtAuthGuard,
+    OperatorSessionGuard,
+    OperationalPermissionGuard,
+    AdminPermissionGuard,
+    JwtModule,
+  ],
 })
 export class AuthModule {}
