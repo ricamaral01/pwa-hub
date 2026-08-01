@@ -230,6 +230,19 @@ export class CalendarioTurno extends BaseEntity {
   @Column({ name: 'vigencia_fim', type: 'date', nullable: true })
   vigenciaFim?: string | null;
 
+  @Column({ name: 'intervalos_excluidos', type: 'jsonb', default: () => "'[]'::jsonb" })
+  intervalosExcluidos!: Array<{ inicio: string; fim: string; motivo?: string }>;
+
+  @Column({
+    name: 'indisponibilidades_planejadas',
+    type: 'jsonb',
+    default: () => "'[]'::jsonb",
+  })
+  indisponibilidadesPlanejadas!: Array<{ inicio: string; fim: string; motivo?: string }>;
+
+  @Column({ type: 'text', nullable: true })
+  observacao?: string | null;
+
   @Column({ type: 'boolean', default: true })
   ativo!: boolean;
 }

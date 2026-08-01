@@ -1,12 +1,20 @@
 import { BadRequestException, Injectable, StreamableFile } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import {
+  overlap,
+  PlannedTimeCalculationService,
+  secondsBetween,
+} from './planned-time-calculation.service';
 
 const FORMULA_VERSION = 'oee-v1-2026-08-01';
 const MAX_DAYS = 370;
 
 @Injectable()
 export class AnalyticsService {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly plannedTime: PlannedTimeCalculationService,
+  ) {}
 
   async overview(user: { empresaId: string }, query: Record<string, unknown>) {
     const range = parseRange(query);
@@ -123,6 +131,8 @@ export class AnalyticsService {
 
   async oee(user: { empresaId: string }, query: Record<string, unknown>) {
     const range = parseRange(query);
+    const unidadeId = typeof query.unidadeId === 'string' ? query.unidadeId : null;
+    const maquinaId = typeof query.maquinaId === 'string' ? query.maquinaId : null;
     const [prod] = await this.dataSource.query(
       `
         select
@@ -131,42 +141,80 @@ export class AnalyticsService {
           coalesce(sum(pecas_boas),0)::numeric as pecas_boas,
           coalesce(sum(((pecas_boas + pecas_refugo + falha_preenchimento_qtd) * ciclo_padrao_aplicado_s) / greatest(cavidades_aplicadas,1)),0)::numeric as tempo_ideal_s
         from apontamento
-        where empresa_id = $1 and status = 'concluido' and inicio_em >= $2 and inicio_em < $3 and fim_em is not null
+        where empresa_id = $1
+          and status = 'concluido'
+          and inicio_em >= $2
+          and inicio_em < $3
+          and fim_em is not null
+          and ($4::uuid is null or unidade_id = $4::uuid)
+          and ($5::uuid is null or maquina_id = $5::uuid)
       `,
-      [user.empresaId, range.inicio, range.fim],
+      [user.empresaId, range.inicio, range.fim, unidadeId, maquinaId],
     );
-    const [stops] = await this.dataSource.query(
+    const stops = await this.dataSource.query(
       `
-        select coalesce(sum(extract(epoch from (least(coalesce(o.fim_em, $3::timestamptz), $3::timestamptz) - greatest(o.inicio_em, $2::timestamptz)))) filter (where o.entra_calculo_oee = true and o.programacao = 'nao_programada'),0)::numeric as paradas_oee_s,
-               coalesce(sum(extract(epoch from (least(coalesce(o.fim_em, $3::timestamptz), $3::timestamptz) - greatest(o.inicio_em, $2::timestamptz)))) filter (where o.entra_calculo_oee = false or o.programacao = 'programada'),0)::numeric as paradas_excluidas_s
+        select id, unidade_id, maquina_id, inicio_em, fim_em, entra_calculo_oee, programacao, tipo_ocorrencia_id
         from ocorrencia o
-        where o.empresa_id = $1 and o.inicio_em < $3 and coalesce(o.fim_em, $3::timestamptz) > $2
+        where o.empresa_id = $1
+          and o.inicio_em < $3
+          and coalesce(o.fim_em, $3::timestamptz) > $2
+          and ($4::uuid is null or o.unidade_id = $4::uuid)
+          and ($5::uuid is null or o.maquina_id = $5::uuid)
       `,
-      [user.empresaId, range.inicio, range.fim],
+      [user.empresaId, range.inicio, range.fim, unidadeId, maquinaId],
     );
-    const tempoPlanejado = Math.max(
-      0,
-      (new Date(range.fim).getTime() - new Date(range.inicio).getTime()) / 1000,
-    );
-    const tempoOperacional = Math.max(0, tempoPlanejado - Number(stops.paradas_oee_s ?? 0));
-    const disponibilidade = safeRatio(tempoOperacional, tempoPlanejado);
-    const performance = safeRatio(Number(prod.tempo_ideal_s ?? 0), tempoOperacional);
-    const qualidade = safeRatio(Number(prod.pecas_boas ?? 0), Number(prod.quantidade_total ?? 0));
+    const planned = await this.plannedTime.calculate({
+      empresaId: user.empresaId,
+      inicio: range.inicio,
+      fim: range.fim,
+      unidadeId,
+      maquinaId,
+    });
+    const stopMemory = calculateStopOverlap(stops, planned.turnos, range.fim);
+    const tempoPlanejado = planned.tempoPlanejadoLiquidoS;
+    const tempoOperacional = Math.max(0, tempoPlanejado - stopMemory.paradasIncluidasS);
+    const disponibilidade = planned.inconsistencias.length
+      ? null
+      : safeRatio(tempoOperacional, tempoPlanejado);
+    const performance =
+      disponibilidade === null
+        ? null
+        : safeRatio(Number(prod.tempo_ideal_s ?? 0), tempoOperacional);
+    const qualidade =
+      disponibilidade === null
+        ? null
+        : safeRatio(Number(prod.pecas_boas ?? 0), Number(prod.quantidade_total ?? 0));
     const oee =
       disponibilidade === null || performance === null || qualidade === null
         ? null
         : disponibilidade * performance * qualidade;
     return {
-      resumo: { disponibilidade, performance, qualidade, oee },
+      resumo: {
+        disponibilidade,
+        performance,
+        qualidade,
+        oee,
+        configuracaoAusente: planned.inconsistencias.length > 0,
+      },
       memoria: {
         periodo: range,
+        turnosConsiderados: planned.turnos,
+        intervalosExcluidosS: planned.intervalosExcluidosS,
+        indisponibilidadesPlanejadasS: planned.indisponibilidadesPlanejadasS,
+        inconsistencias: planned.inconsistencias,
         tempoPlanejadoS: tempoPlanejado,
         tempoOperacionalS: tempoOperacional,
-        paradasIncluidasS: Number(stops.paradas_oee_s ?? 0),
-        paradasExcluidasS: Number(stops.paradas_excluidas_s ?? 0),
+        paradasConsideradas: stopMemory.paradasConsideradas,
+        paradasIgnoradas: stopMemory.paradasIgnoradas,
+        paradasIncluidasS: stopMemory.paradasIncluidasS,
+        paradasExcluidasS: stopMemory.paradasExcluidasS,
         quantidadeTotal: Number(prod.quantidade_total ?? 0),
         pecasBoas: Number(prod.pecas_boas ?? 0),
         tempoIdealS: Number(prod.tempo_ideal_s ?? 0),
+        disponibilidade,
+        performance,
+        qualidade,
+        oee,
         formulaVersion: FORMULA_VERSION,
       },
     };
@@ -184,6 +232,55 @@ export class AnalyticsService {
       disposition: 'attachment; filename="relatorio-producao.csv"',
     });
   }
+}
+
+function calculateStopOverlap(
+  stops: Array<{
+    id: string;
+    inicio_em: string;
+    fim_em: string | null;
+    entra_calculo_oee: boolean;
+    programacao: string;
+    tipo_ocorrencia_id: string;
+  }>,
+  shifts: Array<{ inicio: string; fim: string }>,
+  fallbackEnd: string,
+) {
+  const paradasConsideradas: Array<Record<string, unknown>> = [];
+  const paradasIgnoradas: Array<Record<string, unknown>> = [];
+  let paradasIncluidasS = 0;
+  let paradasExcluidasS = 0;
+  for (const stop of stops) {
+    const start = new Date(stop.inicio_em);
+    const end = new Date(stop.fim_em ?? fallbackEnd);
+    const intervals = shifts
+      .map((shift) => overlap(start, end, new Date(shift.inicio), new Date(shift.fim)))
+      .filter((item): item is { inicio: Date; fim: Date } => Boolean(item));
+    const seconds = intervals.reduce((sum, item) => sum + secondsBetween(item.inicio, item.fim), 0);
+    const target = {
+      id: stop.id,
+      tipoOcorrenciaId: stop.tipo_ocorrencia_id,
+      segundos: seconds,
+      intervalos: intervals.map((item) => ({
+        inicio: item.inicio.toISOString(),
+        fim: item.fim.toISOString(),
+      })),
+      entraCalculoOee: stop.entra_calculo_oee,
+      programacao: stop.programacao,
+    };
+    if (!seconds) {
+      paradasIgnoradas.push({ ...target, motivo: 'Fora dos turnos planejados.' });
+      continue;
+    }
+    if (stop.entra_calculo_oee && stop.programacao === 'nao_programada') {
+      paradasIncluidasS += seconds;
+      paradasConsideradas.push(target);
+    } else {
+      paradasExcluidasS += seconds;
+      paradasIgnoradas.push(target);
+    }
+  }
+  return { paradasIncluidasS, paradasExcluidasS, paradasConsideradas, paradasIgnoradas };
 }
 
 function parseRange(query: Record<string, unknown>) {

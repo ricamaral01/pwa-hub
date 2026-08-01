@@ -437,6 +437,32 @@ async function seedFase1Basico(
       },
     ),
   );
+  for (const diaSemana of [1, 2, 3, 4, 5]) {
+    await manager.query(
+      `
+        insert into calendario_turno (
+          empresa_id,
+          unidade_id,
+          maquina_id,
+          dia_semana,
+          inicio_hora,
+          fim_hora,
+          vigencia_inicio,
+          intervalos_excluidos,
+          observacao
+        )
+        values ($1,$2,$3,$4,'08:00:00','17:00:00','2026-01-01',$5::jsonb,'Turno administrativo de desenvolvimento')
+        on conflict do nothing
+      `,
+      [
+        empresaId,
+        unidadeId,
+        maquina.id,
+        diaSemana,
+        JSON.stringify([{ inicio: '12:00:00', fim: '13:00:00', motivo: 'Refeicao' }]),
+      ],
+    );
+  }
   let configuracao = await manager.getRepository(ConfiguracaoItemMolde).findOne({
     where: {
       empresaId,
