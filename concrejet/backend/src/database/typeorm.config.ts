@@ -11,6 +11,12 @@ import { Auditoria } from '../modules/auditoria/entities/auditoria.entity';
 import { CADASTRO_ENTITIES } from '../modules/cadastros/entities';
 import { Apontamento } from '../modules/producao/entities/apontamento.entity';
 import { Ocorrencia } from '../modules/ocorrencias/entities/ocorrencia.entity';
+import {
+  Blenda,
+  BlendaComponente,
+  CalendarioTurno,
+  EstoqueMovimento,
+} from '../modules/estoque/entities';
 
 export function buildTypeOrmOptions(config: ConfigService): TypeOrmModuleOptions {
   return {
@@ -33,6 +39,10 @@ export function buildTypeOrmOptions(config: ConfigService): TypeOrmModuleOptions
       ...CADASTRO_ENTITIES,
       Apontamento,
       Ocorrencia,
+      EstoqueMovimento,
+      Blenda,
+      BlendaComponente,
+      CalendarioTurno,
     ],
     migrations: ['dist/database/migrations/*.js'],
     migrationsRun: false,

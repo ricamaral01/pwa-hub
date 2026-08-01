@@ -59,6 +59,36 @@ const FASE2_PERMISSOES = [
   'ocorrencias.cancelar',
   'ocorrencias.aprovar',
   'ocorrencias.consultar_historico',
+  'estoque.consultar',
+  'estoque.entrada',
+  'estoque.ajustar',
+  'estoque.estornar',
+  'estoque.transferir',
+  'estoque.rastrear',
+  'blendas.consultar',
+  'blendas.criar',
+  'blendas.alterar',
+  'blendas.concluir',
+  'blendas.cancelar',
+  'blendas.rastrear',
+  'dashboard.visualizar',
+  'relatorios.producao',
+  'relatorios.perdas',
+  'relatorios.paradas',
+  'relatorios.oee',
+  'relatorios.estoque',
+  'relatorios.exportar',
+  'rastreabilidade.consultar',
+  'historico.consultar',
+  'analytics.atualizar',
+  'importacao.consultar',
+  'importacao.criar',
+  'importacao.mapear',
+  'importacao.validar',
+  'importacao.executar',
+  'importacao.reprocessar',
+  'importacao.reverter',
+  'importacao.exportar_relatorio',
 ];
 
 function generateRandomPassword(): string {
@@ -247,26 +277,32 @@ async function seedFase1Basico(
   unidadeId: string,
   podeImprimirPin: boolean,
 ) {
-  const funcao = await manager
-    .getRepository(Funcao)
-    .save(
-      await upsertAndReturn(manager, Funcao, { empresaId, codigo: 'OP-INJ' }, {
+  const funcao = await manager.getRepository(Funcao).save(
+    await upsertAndReturn(
+      manager,
+      Funcao,
+      { empresaId, codigo: 'OP-INJ' },
+      {
         empresaId,
         codigo: 'OP-INJ',
         descricao: 'Operador de injecao',
         ativo: true,
-      }),
-    );
-  const operacao = await manager
-    .getRepository(Operacao)
-    .save(
-      await upsertAndReturn(manager, Operacao, { empresaId, codigo: 'INJ' }, {
+      },
+    ),
+  );
+  await manager.getRepository(Operacao).save(
+    await upsertAndReturn(
+      manager,
+      Operacao,
+      { empresaId, codigo: 'INJ' },
+      {
         empresaId,
         codigo: 'INJ',
         descricao: 'Injecao plastica',
         ativo: true,
-      }),
-    );
+      },
+    ),
+  );
   await manager.getRepository(TipoOcorrencia).upsert(
     {
       empresaId,
@@ -295,45 +331,59 @@ async function seedFase1Basico(
     },
     ['empresaId', 'codigo'],
   );
-  const fornecedor = await manager
-    .getRepository(Fornecedor)
-    .save(
-      await upsertAndReturn(manager, Fornecedor, { empresaId, documento: '00000000000000' }, {
+  const fornecedor = await manager.getRepository(Fornecedor).save(
+    await upsertAndReturn(
+      manager,
+      Fornecedor,
+      { empresaId, documento: '00000000000000' },
+      {
         empresaId,
         nome: 'Fornecedor Padrao',
         documento: '00000000000000',
         ativo: true,
-      }),
-    );
-  const resina = await manager.getRepository(Resina).save(
-    await upsertAndReturn(manager, Resina, { empresaId, codigo: 'PP-HOMO' }, {
-      empresaId,
-      codigo: 'PP-HOMO',
-      descricao: 'Polipropileno homopolimero',
-      fabricante: 'Padrao',
-      ativo: true,
-    }),
+      },
+    ),
   );
-  const item = await manager
-    .getRepository(Item)
-    .save(
-      await upsertAndReturn(manager, Item, { empresaId, codigo: 'ITEM-001' }, {
+  const resina = await manager.getRepository(Resina).save(
+    await upsertAndReturn(
+      manager,
+      Resina,
+      { empresaId, codigo: 'PP-HOMO' },
+      {
+        empresaId,
+        codigo: 'PP-HOMO',
+        descricao: 'Polipropileno homopolimero',
+        fabricante: 'Padrao',
+        ativo: true,
+      },
+    ),
+  );
+  const item = await manager.getRepository(Item).save(
+    await upsertAndReturn(
+      manager,
+      Item,
+      { empresaId, codigo: 'ITEM-001' },
+      {
         empresaId,
         codigo: 'ITEM-001',
         descricao: 'Item de desenvolvimento',
         ativo: true,
-      }),
-    );
-  const molde = await manager
-    .getRepository(Molde)
-    .save(
-      await upsertAndReturn(manager, Molde, { empresaId, codigo: 'MOLDE-001' }, {
+      },
+    ),
+  );
+  const molde = await manager.getRepository(Molde).save(
+    await upsertAndReturn(
+      manager,
+      Molde,
+      { empresaId, codigo: 'MOLDE-001' },
+      {
         empresaId,
         codigo: 'MOLDE-001',
         descricao: 'Molde de desenvolvimento',
         ativo: true,
-      }),
-    );
+      },
+    ),
+  );
   const colaboradorRepo = manager.getRepository(Colaborador);
   const operadorExistente = await colaboradorRepo
     .createQueryBuilder('colaborador')
@@ -341,34 +391,51 @@ async function seedFase1Basico(
     .where('colaborador.empresaId = :empresaId', { empresaId })
     .andWhere('colaborador.matricula = :matricula', { matricula: 'OP001' })
     .getOne();
+  const { pinHash: pinHashExistente, ...operadorPersistivel } = operadorExistente ?? {};
   await colaboradorRepo.save(
     colaboradorRepo.create({
-      ...(operadorExistente ?? {}),
+      ...operadorPersistivel,
       empresaId,
       matricula: 'OP001',
       nome: 'Operador Desenvolvimento',
       funcaoId: funcao.id,
-      pinHash: operadorExistente?.pinHash ?? await argon2.hash(process.env.SEED_OPERATOR_PIN ?? '2468', { type: argon2.argon2id }),
+      ...(pinHashExistente
+        ? {}
+        : {
+            pinHash: await argon2.hash(process.env.SEED_OPERATOR_PIN ?? '2468', {
+              type: argon2.argon2id,
+            }),
+          }),
       ativo: true,
     }),
   );
   const maquina = await manager.getRepository(Maquina).save(
-    await upsertAndReturn(manager, Maquina, { unidadeId, codigo: 'INJ-01' }, {
-      unidadeId,
-      codigo: 'INJ-01',
-      nome: 'Injetora 01',
-      modelo: 'Desenvolvimento',
-      ativo: true,
-    }),
+    await upsertAndReturn(
+      manager,
+      Maquina,
+      { unidadeId, codigo: 'INJ-01' },
+      {
+        unidadeId,
+        codigo: 'INJ-01',
+        nome: 'Injetora 01',
+        modelo: 'Desenvolvimento',
+        ativo: true,
+      },
+    ),
   );
   await manager.getRepository(Dispositivo).save(
-    await upsertAndReturn(manager, Dispositivo, { identificador: 'DEV-TABLET-01' }, {
-      identificador: 'DEV-TABLET-01',
-      nome: 'Tablet desenvolvimento',
-      tipo: 'tablet',
-      maquinaId: maquina.id,
-      ativo: true,
-    }),
+    await upsertAndReturn(
+      manager,
+      Dispositivo,
+      { identificador: 'DEV-TABLET-01' },
+      {
+        identificador: 'DEV-TABLET-01',
+        nome: 'Tablet desenvolvimento',
+        tipo: 'tablet',
+        maquinaId: maquina.id,
+        ativo: true,
+      },
+    ),
   );
   let configuracao = await manager.getRepository(ConfiguracaoItemMolde).findOne({
     where: {
@@ -427,17 +494,22 @@ async function seedFase1Basico(
     );
   }
   await manager.getRepository(OrdemProducao).save(
-    await upsertAndReturn(manager, OrdemProducao, { empresaId, numero: 'OP-DEV-001' }, {
-      empresaId,
-      unidadeId,
-      numero: 'OP-DEV-001',
-      itemId: item.id,
-      moldeId: molde.id,
-      quantidadePlanejada: 1000,
-      dataInicioPlanejada: new Date().toISOString().slice(0, 10),
-      status: 'ABERTA',
-      ativo: true,
-    }),
+    await upsertAndReturn(
+      manager,
+      OrdemProducao,
+      { empresaId, numero: 'OP-DEV-001' },
+      {
+        empresaId,
+        unidadeId,
+        numero: 'OP-DEV-001',
+        itemId: item.id,
+        moldeId: molde.id,
+        quantidadePlanejada: 1000,
+        dataInicioPlanejada: new Date().toISOString().slice(0, 10),
+        status: 'ABERTA',
+        ativo: true,
+      },
+    ),
   );
   if (podeImprimirPin && !process.env.SEED_OPERATOR_PIN) {
     // eslint-disable-next-line no-console

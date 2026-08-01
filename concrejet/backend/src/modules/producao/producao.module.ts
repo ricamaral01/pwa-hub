@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuditoriaModule } from '../auditoria/auditoria.module';
 import { AuthModule } from '../auth/auth.module';
+import { EstoqueModule } from '../estoque/estoque.module';
 import {
   Colaborador,
   ConfiguracaoItemMolde,
@@ -28,6 +29,7 @@ import { ProductionRecordsService } from './production-records.service';
     ]),
     AuditoriaModule,
     AuthModule,
+    EstoqueModule,
   ],
   controllers: [ProductionRecordsController, ProductionCatalogController],
   providers: [ProductionRecordsService, ProductionCalculationService, ProductionCatalogService],

@@ -15,6 +15,7 @@ import {
 } from '../cadastros/entities';
 import { Dispositivo } from '../producao-base/entities/dispositivo.entity';
 import { Ocorrencia } from '../ocorrencias/entities/ocorrencia.entity';
+import { StockMovementsService } from '../estoque/stock-movements.service';
 import { Apontamento } from './entities/apontamento.entity';
 import {
   CancelProductionRecordDto,
@@ -28,6 +29,7 @@ export class ProductionRecordsService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly auditoria: AuditoriaService,
+    private readonly stockMovements: StockMovementsService,
   ) {}
 
   async create(dto: CreateProductionRecordDto, user: OperationalUser, correlationId?: string) {
@@ -42,7 +44,8 @@ export class ProductionRecordsService {
         relations: ['maquina'],
       });
       if (!dispositivo) throw new BadRequestException('Dispositivo invalido ou inativo.');
-      if (!dispositivo.maquinaId) throw new BadRequestException('Dispositivo sem maquina vinculada.');
+      if (!dispositivo.maquinaId)
+        throw new BadRequestException('Dispositivo sem maquina vinculada.');
 
       const operador = await manager.getRepository(Colaborador).findOne({
         where: { id: user.operadorId, empresaId: user.empresaId, ativo: true },
@@ -57,7 +60,8 @@ export class ProductionRecordsService {
           ativo: true,
         },
       });
-      if (!configuracao) throw new BadRequestException('Configuracao item-molde vigente nao encontrada.');
+      if (!configuracao)
+        throw new BadRequestException('Configuracao item-molde vigente nao encontrada.');
 
       const lote = await manager.getRepository(LoteResina).findOne({
         where: { id: dto.loteResinaId, empresaId: user.empresaId, ativo: true },
@@ -131,11 +135,17 @@ export class ProductionRecordsService {
     return record;
   }
 
-  async update(id: string, dto: UpdateProductionRecordDto, user: OperationalUser, correlationId?: string) {
+  async update(
+    id: string,
+    dto: UpdateProductionRecordDto,
+    user: OperationalUser,
+    correlationId?: string,
+  ) {
     const repo = this.dataSource.getRepository(Apontamento);
     const record = await this.findOwned(id, user.empresaId);
     this.assertVersion(record, dto.version);
-    if (record.status !== 'em_andamento') throw new ConflictException('Somente apontamento em andamento pode ser alterado.');
+    if (record.status !== 'em_andamento')
+      throw new ConflictException('Somente apontamento em andamento pode ser alterado.');
     const before = { ...record };
     repo.merge(record, this.quantities(dto));
     const saved = await repo.save(record);
@@ -143,36 +153,53 @@ export class ProductionRecordsService {
     return saved;
   }
 
-  async finish(id: string, dto: FinishProductionRecordDto, user: OperationalUser, correlationId?: string) {
-    const repo = this.dataSource.getRepository(Apontamento);
-    const record = await this.findOwned(id, user.empresaId);
-    this.assertVersion(record, dto.version);
-    if (record.status !== 'em_andamento') throw new ConflictException('Somente apontamento em andamento pode ser concluido.');
-    const openOccurrence = await this.dataSource.getRepository(Ocorrencia).findOne({
-      where: {
-        apontamentoId: id,
-        empresaId: user.empresaId,
-        status: In(['aberta', 'aguardando_acao', 'aguardando_aprovacao']),
-      },
+  async finish(
+    id: string,
+    dto: FinishProductionRecordDto,
+    user: OperationalUser,
+    correlationId?: string,
+  ) {
+    return this.dataSource.transaction(async (manager) => {
+      const repo = manager.getRepository(Apontamento);
+      const record = await repo.findOne({ where: { id, empresaId: user.empresaId } });
+      if (!record) throw new NotFoundException('Apontamento nao encontrado.');
+      this.assertVersion(record, dto.version);
+      if (record.status !== 'em_andamento')
+        throw new ConflictException('Somente apontamento em andamento pode ser concluido.');
+      const openOccurrence = await manager.getRepository(Ocorrencia).findOne({
+        where: {
+          apontamentoId: id,
+          empresaId: user.empresaId,
+          status: In(['aberta', 'aguardando_acao', 'aguardando_aprovacao']),
+        },
+      });
+      if (openOccurrence) {
+        throw new ConflictException('Nao e possivel concluir apontamento com ocorrencia aberta.');
+      }
+      const fimEm = new Date(dto.fimEm);
+      if (fimEm <= record.inicioEm) throw new BadRequestException('Fim deve ser maior que inicio.');
+      const before = { ...record };
+      repo.merge(record, { ...this.quantities(dto), fimEm, status: 'concluido' });
+      const saved = await repo.save(record);
+      await this.stockMovements.consumeProductionRecord(manager, saved);
+      await this.audit(id, 'UPDATE', user, before, saved, correlationId);
+      return saved;
     });
-    if (openOccurrence) {
-      throw new ConflictException('Nao e possivel concluir apontamento com ocorrencia aberta.');
-    }
-    const fimEm = new Date(dto.fimEm);
-    if (fimEm <= record.inicioEm) throw new BadRequestException('Fim deve ser maior que inicio.');
-    const before = { ...record };
-    repo.merge(record, { ...this.quantities(dto), fimEm, status: 'concluido' });
-    const saved = await repo.save(record);
-    await this.audit(id, 'UPDATE', user, before, saved, correlationId);
-    return saved;
   }
 
-  async cancel(id: string, dto: CancelProductionRecordDto, user: OperationalUser, correlationId?: string) {
+  async cancel(
+    id: string,
+    dto: CancelProductionRecordDto,
+    user: OperationalUser,
+    correlationId?: string,
+  ) {
     const repo = this.dataSource.getRepository(Apontamento);
     const record = await this.findOwned(id, user.empresaId);
     this.assertVersion(record, dto.version);
-    if (!dto.motivoCancelamento.trim()) throw new BadRequestException('Cancelamento exige justificativa.');
-    if (record.status !== 'em_andamento') throw new ConflictException('Somente apontamento em andamento pode ser cancelado.');
+    if (!dto.motivoCancelamento.trim())
+      throw new BadRequestException('Cancelamento exige justificativa.');
+    if (record.status !== 'em_andamento')
+      throw new ConflictException('Somente apontamento em andamento pode ser cancelado.');
     const before = { ...record };
     repo.merge(record, {
       status: 'cancelado',
@@ -213,13 +240,16 @@ export class ProductionRecordsService {
   }
 
   private async findOwned(id: string, empresaId: string): Promise<Apontamento> {
-    const record = await this.dataSource.getRepository(Apontamento).findOne({ where: { id, empresaId } });
+    const record = await this.dataSource
+      .getRepository(Apontamento)
+      .findOne({ where: { id, empresaId } });
     if (!record) throw new NotFoundException('Apontamento nao encontrado.');
     return record;
   }
 
   private assertVersion(record: Apontamento, version: number): void {
-    if (record.versao !== version) throw new ConflictException('Registro alterado por outra sessao.');
+    if (record.versao !== version)
+      throw new ConflictException('Registro alterado por outra sessao.');
   }
 
   private async audit(
