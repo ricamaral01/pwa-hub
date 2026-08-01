@@ -1,0 +1,1222 @@
+/* ==========================================================================
+   ConcreTrack Injeção — Design System Industrial
+   Paleta: escura, alto contraste, tablet landscape
+   Fonte: Inter (OFL — licença aberta)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens de design
+   -------------------------------------------------------------------------- */
+:root {
+  /* Cores base */
+  --bg-primary:   #1F242C;
+  --bg-surface:   #262C35;
+  --bg-card:      #2F3640;
+  --bg-elevated:  #38404E;
+  --bg-overlay:   rgba(0, 0, 0, 0.72);
+
+  /* Cores de estado */
+  --color-green:       #16A34A;
+  --color-green-dim:   #166534;
+  --color-green-light: #4ADE80;
+  --color-amber:       #F59E0B;
+  --color-amber-dim:   #92400E;
+  --color-amber-light: #FCD34D;
+  --color-red:         #EF4444;
+  --color-red-dim:     #7F1D1D;
+  --color-red-light:   #FCA5A5;
+  --color-blue:        #3B82F6;
+  --color-blue-dim:    #1E3A5F;
+
+  /* Texto */
+  --text-primary:   #FFFFFF;
+  --text-secondary: #CBD5E1;
+  --text-muted:     #94A3B8;
+  --text-disabled:  #4B5563;
+  --text-inverse:   #1F242C;
+
+  /* Bordas */
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-strong:  rgba(255, 255, 255, 0.24);
+  --border-focus:   #3B82F6;
+
+  /* Raios de borda */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  20px;
+  --radius-full: 9999px;
+
+  /* Sombras */
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-glow-green: 0 0 20px rgba(22, 163, 74, 0.35);
+  --shadow-glow-amber: 0 0 20px rgba(245, 158, 11, 0.35);
+  --shadow-glow-red:   0 0 20px rgba(239, 68, 68, 0.40);
+
+  /* Tipografia */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-tight: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', 'Courier New', monospace;
+
+  /* Tamanhos de texto */
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 18px;
+  --text-lg:   20px;
+  --text-xl:   24px;
+  --text-2xl:  30px;
+  --text-3xl:  36px;
+  --text-4xl:  48px;
+
+  /* Alvos de toque (mínimo 52px conforme especificação) */
+  --touch-sm:  44px;
+  --touch-md:  52px;
+  --touch-lg:  56px;
+  --touch-xl:  64px;
+
+  /* Espaçamentos */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Layout da tela operacional */
+  --topbar-height:       56px;
+  --bottombar-height:    64px;
+  --occurrence-height:   68px;
+  --sidebar-width:       340px;
+  --sidebar-width-lg:    380px;
+
+  /* Transições */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 350ms ease;
+  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.demo-mode-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: #7c2d12;
+  color: #fff7ed;
+  border-bottom: 1px solid rgba(255, 247, 237, 0.28);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.demo-mode-banner + * {
+  padding-top: 34px;
+}
+
+.capability-warning {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-md);
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--color-amber-light);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+.capability-warning.demo {
+  border-color: rgba(22, 163, 74, 0.35);
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--color-green-light);
+}
+
+.guard-loader {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+}
+
+.feature-blocker {
+  grid-column: 1 / -1;
+  align-self: start;
+  padding: var(--space-4);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: var(--radius-md);
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--color-amber-light);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset e base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Desabilita zoom por duplo toque — essencial para tablet industrial */
+  touch-action: manipulation;
+}
+
+body {
+  height: 100%;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Desabilita seleção de texto acidental por toque longo */
+  user-select: none;
+  -webkit-user-select: none;
+  /* Desabilita callout em iOS por toque longo */
+  -webkit-touch-callout: none;
+  overflow: hidden; /* Sem scroll global — tela operacional cabe na tela */
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Permite seleção em campos de input e telas administrativas */
+input, textarea, [data-selectable] {
+  user-select: auto;
+  -webkit-user-select: auto;
+  touch-action: auto;
+}
+
+/* Scrollbar customizada para telas admin */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-surface); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   3. Tipografia
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-tight);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+
+p { color: var(--text-secondary); line-height: 1.6; }
+
+/* Números grandes em telas operacionais */
+.display-number {
+  font-family: var(--font-tight);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Rótulos de campo (sempre visíveis, não apenas placeholder) */
+.field-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   4. Foco — acessibilidade
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove outline padrão em dispositivos de toque */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   5. Utilitários de layout
+   -------------------------------------------------------------------------- */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-row { display: flex; flex-direction: row; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+.flex-1 { flex: 1; }
+.min-w-0 { min-width: 0; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+
+/* --------------------------------------------------------------------------
+   6. Layout operacional (landscape, sem scroll)
+   -------------------------------------------------------------------------- */
+.operation-layout {
+  display: grid;
+  grid-template-rows:
+    var(--topbar-height)           /* TopBar */
+    1fr                            /* Área principal */
+    var(--occurrence-height)       /* Faixa de ocorrências */
+    var(--bottombar-height);       /* Faixa de ações */
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.operation-main {
+  display: grid;
+  grid-template-columns:
+    var(--sidebar-width)  /* Coluna esquerda: identificação */
+    1fr                   /* Coluna central: resina + produção */
+    var(--sidebar-width); /* Coluna direita: tempo + resultados */
+  overflow: hidden;
+  gap: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7. TopBar
+   -------------------------------------------------------------------------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0 var(--space-5);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  height: var(--topbar-height);
+  z-index: 100;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.topbar-brand-name {
+  font-family: var(--font-tight);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border-default);
+  flex-shrink: 0;
+}
+
+.topbar-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar-meta-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.topbar-meta-value {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-clock {
+  font-family: var(--font-tight);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   8. Colunas operacionais
+   -------------------------------------------------------------------------- */
+.operation-column {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  border-right: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.operation-column:last-child {
+  border-right: none;
+}
+
+.column-header {
+  padding: var(--space-3) var(--space-5);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.column-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* --------------------------------------------------------------------------
+   9. Cards e seções
+   -------------------------------------------------------------------------- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.card-body {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* --------------------------------------------------------------------------
+   10. Campos de formulário
+   -------------------------------------------------------------------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.field-label-text {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.field-value {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  min-height: var(--touch-sm);
+  display: flex;
+  align-items: center;
+}
+
+.field-source {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.input-base {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 500;
+  min-height: var(--touch-lg);
+  padding: 0 var(--space-4);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  -webkit-appearance: none;
+  appearance: none;
+  touch-action: auto;
+  user-select: auto;
+  -webkit-user-select: auto;
+}
+
+.input-base::placeholder {
+  color: var(--text-disabled);
+  font-weight: 400;
+}
+
+.input-base:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.input-base:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-base.is-error {
+  border-color: var(--color-red);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.field-error {
+  font-size: var(--text-sm);
+  color: var(--color-red-light);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* --------------------------------------------------------------------------
+   11. Botões
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-tight);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  border-radius: var(--radius-md);
+  letter-spacing: 0.02em;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Tamanhos */
+.btn-sm {
+  font-size: var(--text-sm);
+  min-height: var(--touch-sm);
+  padding: 0 var(--space-4);
+}
+
+.btn-md {
+  font-size: var(--text-base);
+  min-height: var(--touch-md);
+  padding: 0 var(--space-5);
+}
+
+.btn-lg {
+  font-size: var(--text-lg);
+  min-height: var(--touch-lg);
+  padding: 0 var(--space-8);
+  border-radius: var(--radius-lg);
+  letter-spacing: 0.03em;
+}
+
+.btn-xl {
+  font-size: var(--text-xl);
+  min-height: 72px;
+  padding: 0 var(--space-10);
+  border-radius: var(--radius-lg);
+  letter-spacing: 0.03em;
+}
+
+/* Variantes */
+.btn-primary {
+  background: var(--color-green);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: #15803D;
+  box-shadow: var(--shadow-glow-green);
+}
+
+.btn-danger {
+  background: var(--color-red);
+  color: #fff;
+}
+.btn-danger:hover:not(:disabled) {
+  background: #DC2626;
+  box-shadow: var(--shadow-glow-red);
+}
+
+.btn-warning {
+  background: var(--color-amber);
+  color: var(--text-inverse);
+}
+.btn-warning:hover:not(:disabled) {
+  background: #D97706;
+  box-shadow: var(--shadow-glow-amber);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border-default);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--bg-card);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.btn-surface {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-subtle);
+}
+.btn-surface:hover:not(:disabled) {
+  background: var(--bg-elevated);
+  border-color: var(--border-default);
+}
+
+.btn-icon {
+  width: var(--touch-md);
+  height: var(--touch-md);
+  padding: 0;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.btn-icon.btn-lg {
+  width: var(--touch-lg);
+  height: var(--touch-lg);
+}
+
+/* --------------------------------------------------------------------------
+   12. Badges e indicadores de status
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.badge-online {
+  background: rgba(22, 163, 74, 0.15);
+  color: var(--color-green-light);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}
+.badge-online .badge-dot { background: var(--color-green); animation: pulse-green 2s infinite; }
+
+.badge-offline {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--color-amber-light);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+.badge-offline .badge-dot { background: var(--color-amber); }
+
+.badge-error {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--color-red-light);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+.badge-error .badge-dot { background: var(--color-red); animation: pulse-red 1.5s infinite; }
+
+.badge-neutral {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+
+/* --------------------------------------------------------------------------
+   13. Indicador de status de perda (ícone + texto + cor + borda)
+   -------------------------------------------------------------------------- */
+.loss-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  transition: all var(--transition-base);
+}
+
+.loss-indicator.status-normal {
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.25);
+  color: var(--color-green-light);
+}
+
+.loss-indicator.status-attention {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.30);
+  color: var(--color-amber-light);
+}
+
+.loss-indicator.status-above-limit {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: var(--color-red-light);
+  box-shadow: var(--shadow-glow-red);
+}
+
+.loss-indicator.status-critical {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: var(--color-red);
+  color: var(--color-red-light);
+  box-shadow: var(--shadow-glow-red);
+  animation: pulse-border-red 1.5s ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   14. Faixa de ocorrências
+   -------------------------------------------------------------------------- */
+.occurrence-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0 var(--space-5);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  height: var(--occurrence-height);
+  flex-shrink: 0;
+  transition: background var(--transition-base), border-color var(--transition-base);
+}
+
+.occurrence-bar.has-active {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.occurrence-bar.has-active-np {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.occurrence-timer {
+  font-family: var(--font-tight);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  min-width: 90px;
+}
+
+/* --------------------------------------------------------------------------
+   15. Faixa de ações
+   -------------------------------------------------------------------------- */
+.action-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-5);
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  height: var(--bottombar-height);
+  flex-shrink: 0;
+}
+
+.action-bar-primary {
+  flex: 1;
+  max-width: 400px;
+}
+
+.action-bar-secondary {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+/* --------------------------------------------------------------------------
+   16. Tela de login
+   -------------------------------------------------------------------------- */
+.login-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-primary);
+  padding: var(--space-6);
+}
+
+.login-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10);
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--shadow-lg);
+}
+
+.login-card-wide {
+  max-width: 760px;
+}
+
+/* PIN numérico — teclas grandes para luvas */
+.pin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.pin-key {
+  height: 72px;
+  font-size: var(--text-2xl);
+  font-family: var(--font-tight);
+  font-weight: 700;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.pin-key:active {
+  background: var(--bg-elevated);
+  transform: scale(0.95);
+}
+
+.pin-display {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-4) 0;
+}
+
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  background: transparent;
+  transition: all var(--transition-fast);
+}
+
+.pin-dot.filled {
+  background: var(--color-green);
+  border-color: var(--color-green);
+  box-shadow: var(--shadow-glow-green);
+}
+
+/* --------------------------------------------------------------------------
+   17. Aviso de rotação (retrato → paisagem)
+   -------------------------------------------------------------------------- */
+.rotate-warning {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary);
+  z-index: 9999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.rotate-icon {
+  width: 80px;
+  height: 80px;
+  color: var(--color-amber);
+  animation: rotate-hint 2s ease-in-out infinite;
+}
+
+@media (orientation: portrait) {
+  .rotate-warning {
+    display: flex;
+  }
+
+  /* Oculta a interface operacional em modo retrato */
+  .operation-layout {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   18. Tela de ativação do dispositivo
+   -------------------------------------------------------------------------- */
+.activation-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-primary);
+  padding: var(--space-6);
+}
+
+.activation-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-10);
+  width: 100%;
+  max-width: 640px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.device-id-display {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  word-break: break-all;
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+   19. Banner de nova versão disponível
+   -------------------------------------------------------------------------- */
+.update-banner {
+  position: fixed;
+  top: var(--topbar-height);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--color-blue-dim);
+  border-bottom: 1px solid var(--color-blue);
+  padding: var(--space-3) var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  animation: slide-down var(--transition-slow) ease;
+}
+
+/* --------------------------------------------------------------------------
+   20. Tela de bloqueio (sessão idle)
+   -------------------------------------------------------------------------- */
+.lock-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(15, 20, 26, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+}
+
+/* --------------------------------------------------------------------------
+   21. Animações
+   -------------------------------------------------------------------------- */
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(22, 163, 74, 0); }
+}
+
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+}
+
+@keyframes pulse-border-red {
+  0%, 100% { border-color: var(--color-red); box-shadow: 0 0 12px rgba(239, 68, 68, 0.3); }
+  50% { border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 0 20px rgba(239, 68, 68, 0.15); }
+}
+
+@keyframes rotate-hint {
+  0% { transform: rotate(0deg); }
+  30% { transform: rotate(90deg); }
+  60% { transform: rotate(90deg); }
+  90% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes slide-down {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in { animation: fade-in var(--transition-base) ease forwards; }
+.animate-fade-scale-in { animation: fade-scale-in var(--transition-base) ease forwards; }
+
+/* --------------------------------------------------------------------------
+   22. Utilitários de texto
+   -------------------------------------------------------------------------- */
+.text-primary   { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted     { color: var(--text-muted); }
+.text-green     { color: var(--color-green-light); }
+.text-amber     { color: var(--color-amber-light); }
+.text-red       { color: var(--color-red-light); }
+.text-xs   { font-size: var(--text-xs); }
+.text-sm   { font-size: var(--text-sm); }
+.text-base { font-size: var(--text-base); }
+.text-lg   { font-size: var(--text-lg); }
+.text-xl   { font-size: var(--text-xl); }
+.text-2xl  { font-size: var(--text-2xl); }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.font-extrabold { font-weight: 800; }
+.uppercase { text-transform: uppercase; letter-spacing: 0.05em; }
+.tabular-nums { font-variant-numeric: tabular-nums; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* --------------------------------------------------------------------------
+   23. Utilitários de espaçamento
+   -------------------------------------------------------------------------- */
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+.px-5 { padding-left: var(--space-5); padding-right: var(--space-5); }
+.py-3 { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+.py-4 { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.ml-auto { margin-left: auto; }
+.mr-auto { margin-right: auto; }
+
+/* --------------------------------------------------------------------------
+   24. Separadores
+   -------------------------------------------------------------------------- */
+.divider {
+  height: 1px;
+  background: var(--border-subtle);
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   25. Spinner de carregamento
+   -------------------------------------------------------------------------- */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-subtle);
+  border-top-color: var(--color-green);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.spinner-lg {
+  width: 36px;
+  height: 36px;
+  border-width: 3px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   26. Toasts / notificações inline
+   -------------------------------------------------------------------------- */
+.toast-container {
+  position: fixed;
+  top: calc(var(--topbar-height) + var(--space-4));
+  right: var(--space-5);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 380px;
+}
+
+.toast {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  animation: slide-down var(--transition-base) ease;
+}
+
+.toast-success { border-left: 3px solid var(--color-green); }
+.toast-error   { border-left: 3px solid var(--color-red); }
+.toast-warning { border-left: 3px solid var(--color-amber); }
+.toast-info    { border-left: 3px solid var(--color-blue); }
+
+/* --------------------------------------------------------------------------
+   27. Drag to confirm (segurança em ações críticas)
+   -------------------------------------------------------------------------- */
+.confirm-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: var(--bg-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fade-in var(--transition-fast) ease;
+}
+
+.confirm-dialog-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--shadow-lg);
+  animation: fade-scale-in var(--transition-base) ease;
+}
+
+/* --------------------------------------------------------------------------
+   28. Modo escuro sempre ativo (aplicação industrial — sem toggle)
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: light) {
+  /* Ignorar preferência de sistema — a aplicação é sempre escura */
+  :root { color-scheme: dark; }
+}
+
+/* --------------------------------------------------------------------------
+   29. Acessibilidade — alto contraste
+   -------------------------------------------------------------------------- */
+@media (prefers-contrast: more) {
+  :root {
+    --border-default: rgba(255, 255, 255, 0.30);
+    --border-strong:  rgba(255, 255, 255, 0.50);
+    --text-muted: #CBD5E1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   30. Redução de movimento (respeita preferência do usuário)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

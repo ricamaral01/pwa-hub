@@ -1,0 +1,75 @@
+name: CI - Backend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'concrejet/backend/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    paths:
+      - 'concrejet/backend/**'
+      - '.github/workflows/ci.yml'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: concrejet/backend
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: concretrack
+          POSTGRES_PASSWORD: concretrack
+          POSTGRES_DB: concretrack_injecao_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U concretrack"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
+      DATABASE_USER: concretrack
+      DATABASE_PASSWORD: concretrack
+      DATABASE_NAME: concretrack_injecao_test
+      DATABASE_SSL: 'false'
+      JWT_SECRET: ci-test-secret-please-override-in-real-envs-123456
+      SEED_ADMIN_EMAIL: admin@example.com
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: concrejet/backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Run migrations
+        run: npm run migration:run
+
+      - name: Unit tests
+        run: npm run test -- --ci
+
+      - name: E2E tests
+        run: npm run test:e2e -- --ci
+
+      - name: Build
+        run: npm run build
