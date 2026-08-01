@@ -128,10 +128,10 @@ export class LoteResina extends CadastroEmpresaEntity {
   @JoinColumn({ name: 'resina_id' })
   resina!: Resina;
 
-  @Column({ name: 'fornecedor_id' })
-  fornecedorId!: string;
+  @Column({ name: 'fornecedor_id', nullable: true })
+  fornecedorId?: string | null;
 
-  @ManyToOne(() => Fornecedor, { onDelete: 'RESTRICT', nullable: false })
+  @ManyToOne(() => Fornecedor, { onDelete: 'RESTRICT', nullable: true })
   @JoinColumn({ name: 'fornecedor_id' })
   fornecedor!: Fornecedor;
 
@@ -143,6 +143,18 @@ export class LoteResina extends CadastroEmpresaEntity {
 
   @Column({ name: 'data_recebimento', type: 'date' })
   dataRecebimento!: string;
+
+  @Column({ type: 'varchar', length: 20, default: 'COMPRA' })
+  origem!: 'COMPRA' | 'INTERNA' | 'AJUSTE';
+
+  @Column({ type: 'date', nullable: true })
+  validade?: string | null;
+
+  @Column({ name: 'custo_por_kg', type: 'numeric', precision: 12, scale: 4, nullable: true })
+  custoPorKg?: string | null;
+
+  @Column({ type: 'varchar', length: 20, default: 'DISPONIVEL' })
+  status!: 'DISPONIVEL' | 'BLOQUEADO' | 'ESGOTADO' | 'INATIVO';
 
   @Column({ type: 'boolean', default: true })
   ativo!: boolean;
@@ -161,7 +173,7 @@ export class MovimentoEstoqueLote extends CadastroEmpresaEntity {
   @Column({ type: 'varchar', length: 20 })
   tipo!: 'ENTRADA' | 'SAIDA' | 'AJUSTE';
 
-  @Column({ type: 'numeric', precision: 12, scale: 3 })
+  @Column({ name: 'quantidade_kg', type: 'numeric', precision: 12, scale: 3 })
   quantidadeKg!: string;
 
   @Column({ type: 'text', nullable: true })

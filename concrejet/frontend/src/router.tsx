@@ -1,10 +1,10 @@
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+import CadastrosPage from '@/pages/admin/CadastrosPage';
 import { AdminGuard, DeviceActivationGuard, OperatorGuard } from './router/guards';
 
 const ActivationPage = lazy(() => import('@/pages/activation/ActivationPage'));
 const AdminHomePage = lazy(() => import('@/pages/admin/AdminHomePage'));
-const CadastrosPage = lazy(() => import('@/pages/admin/CadastrosPage'));
 const ChangePasswordPage = lazy(() => import('@/pages/admin/ChangePasswordPage'));
 const LoginPage = lazy(() => import('@/pages/login/LoginPage'));
 const OperationPage = lazy(() => import('@/pages/operation/OperationPage'));

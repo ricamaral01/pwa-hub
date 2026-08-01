@@ -1060,3 +1060,13 @@ sem bloquear o inÃ­cio da Fase 1.
 - Frontend: rota `/admin/cadastros/:resource` sob `AdminGuard`, sem uso de `OperatorData` e sem mocks; formulários/tabelas usam endpoints reais.
 - Verificação: migration aplicada no Postgres local, seed executado, API Docker rebuildada e saudável, Playwright normal aprovado com criação real de item.
 - Observação: lint completo ainda falha por CRLF pré-existente em todo o repositório; arquivos alterados foram validados com ESLint seletivo sem warnings.
+
+## 2026-08-01 - Correcao isolada de lotes de resina
+
+- Escopo restrito ao modulo `resin-lots` da Fase 1.
+- Causa raiz confirmada em logs reais da API: a tela enviava `resinaId` e `fornecedorId` digitados livremente, como `teste` e `ricardo`, e o backend tentava persistir esses valores em colunas UUID, gerando `invalid input syntax for type uuid`. Durante a validacao real tambem foi corrigido o mapeamento de `MovimentoEstoqueLote.quantidadeKg`, que apontava para `quantidadeKg` em vez de `quantidade_kg`.
+- Frontend: `resinaId` e `fornecedorId` passaram a ser seletores carregados da API real; as opcoes exibem codigo/descricao da resina e documento/nome do fornecedor, mas o POST envia somente os IDs reais. O formulario inclui origem, quantidade inicial, recebimento, validade, custo por kg, status e ativo; saldo atual nao e editavel e aparece apenas na listagem.
+- Backend: criacao de lote valida UUIDs, existencia/atividade de resina e fornecedor, origem/status, duplicidade de codigo e quantidade inicial; `saldoAtualKg` e calculado a partir de `quantidadeInicialKg`; POST/PATCH com saldo direto e rejeitado; erros de PostgreSQL sao convertidos para respostas controladas.
+- Banco: migration `1730600000000-CorrigeLotesResina` adiciona `origem`, `validade`, `custo_por_kg`, `status`, permite fornecedor opcional fora de compra e cria checks de dominio.
+- Verificacao executada: backend typecheck/test/build, frontend typecheck/Vitest/build, migration real, rebuild da API Docker, teste manual HTTP real e Playwright especifico `e2e/resin-lots.normal.spec.ts`.
+- Resultado: lote criado com sucesso via API e UI real, com saldo inicial igual a quantidade inicial; UUID invalido e tentativa de alterar saldo retornaram 400 em vez de 500.

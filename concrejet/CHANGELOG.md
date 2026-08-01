@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.1] - 2026-08-01 - Correcao lotes de resina
+
+### Corrigido
+- Cadastro de lotes de resina agora usa seletores reais de resina e fornecedor, exibindo codigo/descricao ou documento/nome e enviando apenas IDs reais.
+- Backend valida UUIDs, relacionamentos, duplicidade de codigo, quantidade inicial e bloqueia alteracao direta de saldo de lote.
+- Criacao de lote define `saldoAtualKg` a partir de `quantidadeInicialKg` e registra o movimento inicial com o mapeamento correto de `quantidade_kg`.
+- Erros de lote deixam de cair em 500 para IDs invalidos/inexistentes e retornam mensagens controladas.
+
+### Validado
+- Teste manual contra API real criou fornecedor, resina e lote; UUID invalido e edicao direta de saldo retornaram 400.
+- Playwright especifico criou fornecedor, resina e lote usando os seletores reais.
 ## [0.3.0] - 2026-08-01 - Fase 1 Cadastros
 
 - Implementado módulo backend de Cadastros com endpoints administrativos reais para funções, colaboradores, máquinas, operações, tipos de ocorrência, fornecedores, resinas, lotes de resina, itens, moldes, configurações item/molde e ordens de produção.

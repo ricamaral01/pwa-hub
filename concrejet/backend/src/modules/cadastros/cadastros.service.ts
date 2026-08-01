@@ -1,12 +1,27 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DataSource, ILike, Repository } from 'typeorm';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { DataSource, DeepPartial, ILike, QueryFailedError, Repository } from 'typeorm';
 import { AuditoriaService } from '../auditoria/auditoria.service';
 import type { AuthenticatedUser } from '../auth/jwt.strategy';
-import { ConfiguracaoItemMolde, LoteResina, MovimentoEstoqueLote, OrdemProducao } from './entities';
+import {
+  ConfiguracaoItemMolde,
+  Fornecedor,
+  LoteResina,
+  MovimentoEstoqueLote,
+  OrdemProducao,
+  Resina,
+} from './entities';
 import { CadastroPermissionsService } from './permissions.service';
 import { CadastroAction, CADASTRO_RESOURCES, CadastroResource } from './cadastros.registry';
 
 type Body = Record<string, unknown>;
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const RESIN_LOT_ORIGINS = ['COMPRA', 'INTERNA', 'AJUSTE'] as const;
+const RESIN_LOT_STATUSES = ['DISPONIVEL', 'BLOQUEADO', 'ESGOTADO', 'INATIVO'] as const;
 interface CadastroEntity extends Record<string, unknown> {
   id: string;
 }
@@ -84,6 +99,7 @@ export class CadastrosService {
       throw new BadRequestException('Saldo de lote nao pode ser editado diretamente.');
     }
     this.validateBody(resource, body, false);
+    if (slug === 'resin-lots') await this.validateResinLotUpdate(body, user.empresaId);
     const repo = this.repo(resource);
     const current = await this.findOwned(resource, id, user.empresaId);
     const before = { ...current };
@@ -142,31 +158,71 @@ export class CadastrosService {
     user: AuthenticatedUser,
     correlationId?: string,
   ) {
+    this.validateResinLotPayload(body, true);
+
     return this.dataSource.transaction(async (manager) => {
       const lotRepo = manager.getRepository(LoteResina);
+      const resinRepo = manager.getRepository(Resina);
+      const supplierRepo = manager.getRepository(Fornecedor);
       const movementRepo = manager.getRepository(MovimentoEstoqueLote);
+
+      const existing = await lotRepo.findOne({
+        where: { empresaId: user.empresaId, codigo: String(body.codigo).trim() },
+      });
+      if (existing) throw new ConflictException('Ja existe lote de resina com este codigo.');
+
+      const resina = await resinRepo.findOne({
+        where: { id: String(body.resinaId), empresaId: user.empresaId, ativo: true },
+      });
+      if (!resina) throw new BadRequestException('Resina informada nao existe ou esta inativa.');
+
+      const fornecedorId = body.fornecedorId ? String(body.fornecedorId) : null;
+      if (fornecedorId) {
+        const fornecedor = await supplierRepo.findOne({
+          where: { id: fornecedorId, empresaId: user.empresaId, ativo: true },
+        });
+        if (!fornecedor) {
+          throw new BadRequestException('Fornecedor informado nao existe ou esta inativo.');
+        }
+      }
+
       await manager.query(`select set_config('app.allow_lote_saldo_update', 'on', true)`);
-      const lot = lotRepo.create({
-        ...this.pick(resource, body),
+      const payload = this.pick(resource, body);
+      delete payload.saldoAtualKg;
+      const quantidadeInicialKg = String(body.quantidadeInicialKg);
+      const origem = String(body.origem).toUpperCase() as LoteResina['origem'];
+      const status = String(body.status).toUpperCase() as LoteResina['status'];
+      const lotPayload: DeepPartial<LoteResina> = {
+        ...payload,
+        codigo: String(body.codigo).trim(),
+        fornecedorId,
+        origem,
+        status,
         empresaId: user.empresaId,
-        saldoAtualKg: String(body.quantidadeInicialKg),
+        saldoAtualKg: quantidadeInicialKg,
         criadoPorUsuarioId: user.sub,
         atualizadoPorUsuarioId: user.sub,
-      });
-      const saved = await lotRepo.save(lot);
-      await movementRepo.save(
-        movementRepo.create({
-          empresaId: user.empresaId,
-          loteResinaId: saved.id,
-          tipo: 'ENTRADA',
-          quantidadeKg: saved.quantidadeInicialKg,
-          observacao: 'Entrada inicial do lote',
-          criadoPorUsuarioId: user.sub,
-          atualizadoPorUsuarioId: user.sub,
-        }),
-      );
-      await this.audit(resource, saved.id, 'CREATE', user, null, saved, correlationId);
-      return saved;
+      };
+      const lot = lotRepo.create(lotPayload);
+
+      try {
+        const saved = await lotRepo.save(lot);
+        await movementRepo.save(
+          movementRepo.create({
+            empresaId: user.empresaId,
+            loteResinaId: saved.id,
+            tipo: 'ENTRADA',
+            quantidadeKg: String(saved.quantidadeInicialKg),
+            observacao: 'Entrada inicial do lote',
+            criadoPorUsuarioId: user.sub,
+            atualizadoPorUsuarioId: user.sub,
+          }),
+        );
+        await this.audit(resource, saved.id, 'CREATE', user, null, saved, correlationId);
+        return saved;
+      } catch (error) {
+        this.handleResinLotPersistenceError(error);
+      }
     });
   }
 
@@ -213,6 +269,98 @@ export class CadastrosService {
     });
   }
 
+  private async validateResinLotUpdate(body: Body, empresaId: string): Promise<void> {
+    this.validateResinLotPayload(body, false);
+    if (body.resinaId !== undefined) {
+      const resina = await this.dataSource.getRepository(Resina).findOne({
+        where: { id: String(body.resinaId), empresaId, ativo: true },
+      });
+      if (!resina) throw new BadRequestException('Resina informada nao existe ou esta inativa.');
+    }
+    if (body.fornecedorId !== undefined && body.fornecedorId !== '') {
+      const fornecedor = await this.dataSource.getRepository(Fornecedor).findOne({
+        where: { id: String(body.fornecedorId), empresaId, ativo: true },
+      });
+      if (!fornecedor) {
+        throw new BadRequestException('Fornecedor informado nao existe ou esta inativo.');
+      }
+    }
+  }
+
+  private validateResinLotPayload(body: Body, isCreate: boolean): void {
+    if ('saldoAtualKg' in body) {
+      throw new BadRequestException('Saldo atual e calculado pelo sistema e nao pode ser enviado.');
+    }
+
+    if (body.resinaId !== undefined && !this.isUuid(body.resinaId)) {
+      throw new BadRequestException('Resina deve ser selecionada na lista de resinas cadastradas.');
+    }
+
+    if (body.fornecedorId === '') body.fornecedorId = null;
+
+    if (
+      body.fornecedorId !== undefined &&
+      body.fornecedorId !== null &&
+      !this.isUuid(body.fornecedorId)
+    ) {
+      throw new BadRequestException(
+        'Fornecedor deve ser selecionado na lista de fornecedores cadastrados.',
+      );
+    }
+
+    const origem = String(body.origem ?? (isCreate ? '' : 'COMPRA')).toUpperCase();
+    if (body.origem !== undefined) body.origem = origem;
+    if ((isCreate || body.origem !== undefined) && !RESIN_LOT_ORIGINS.includes(origem as never)) {
+      throw new BadRequestException('Origem do lote e invalida.');
+    }
+
+    if (
+      (isCreate || body.fornecedorId !== undefined || body.origem !== undefined) &&
+      origem === 'COMPRA' &&
+      !body.fornecedorId
+    ) {
+      throw new BadRequestException('Fornecedor e obrigatorio para lotes de origem COMPRA.');
+    }
+
+    const status = String(body.status ?? (isCreate ? '' : 'DISPONIVEL')).toUpperCase();
+    if (body.status !== undefined) body.status = status;
+    if ((isCreate || body.status !== undefined) && !RESIN_LOT_STATUSES.includes(status as never)) {
+      throw new BadRequestException('Status do lote e invalido.');
+    }
+
+    if (body.quantidadeInicialKg !== undefined) {
+      const quantidade = Number(body.quantidadeInicialKg);
+      if (!Number.isFinite(quantidade) || quantidade <= 0) {
+        throw new BadRequestException('Quantidade inicial em kg deve ser maior que zero.');
+      }
+    }
+
+    if (body.custoPorKg !== undefined && body.custoPorKg !== '') {
+      const custo = Number(body.custoPorKg);
+      if (!Number.isFinite(custo) || custo < 0) {
+        throw new BadRequestException('Custo por kg nao pode ser negativo.');
+      }
+    }
+  }
+
+  private isUuid(value: unknown): boolean {
+    return typeof value === 'string' && UUID_REGEX.test(value);
+  }
+
+  private handleResinLotPersistenceError(error: unknown): never {
+    if (error instanceof QueryFailedError) {
+      const code = (error as QueryFailedError & { code?: string }).code;
+      if (code === '23505')
+        throw new ConflictException('Ja existe lote de resina com este codigo.');
+      if (code === '23503')
+        throw new BadRequestException('Resina ou fornecedor informado nao existe.');
+      if (code === '23514')
+        throw new BadRequestException('Dados do lote violam uma regra de validacao.');
+      if (code === '22P02')
+        throw new BadRequestException('Resina ou fornecedor deve ser um UUID valido.');
+    }
+    throw error;
+  }
   private async authorize(slug: string, user: AuthenticatedUser, action: CadastroAction) {
     const resource = CADASTRO_RESOURCES[slug];
     if (!resource) throw new NotFoundException('Recurso de cadastro nao encontrado.');

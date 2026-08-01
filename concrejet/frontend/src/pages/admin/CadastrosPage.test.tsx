@@ -51,4 +51,57 @@ describe('CadastrosPage', () => {
       });
     });
   });
+  it('usa seletores reais para criar lote de resina', async () => {
+    vi.mocked(api.listCadastros).mockImplementation((resource) =>
+      Promise.resolve(
+        (() => {
+          if (resource === 'resins') {
+            return {
+              data: [{ id: 'resina-1', codigo: 'PP', descricao: 'Polipropileno', ativo: true }],
+              meta: { page: 1, limit: 50, total: 1 },
+            };
+          }
+          if (resource === 'suppliers') {
+            return {
+              data: [{ id: 'fornecedor-1', documento: '123', nome: 'Fornecedor A', ativo: true }],
+              meta: { page: 1, limit: 50, total: 1 },
+            };
+          }
+          return { data: [], meta: { page: 1, limit: 50, total: 0 } };
+        })(),
+      ),
+    );
+    vi.mocked(api.createCadastro).mockResolvedValue({ id: 'lote-1', codigo: 'LOTE-001' });
+
+    renderPage('/admin/cadastros/resin-lots');
+
+    expect(await screen.findByRole('heading', { name: 'Lotes de resina' })).toBeInTheDocument();
+    expect(await screen.findByRole('option', { name: 'PP - Polipropileno' })).toBeInTheDocument();
+    expect(await screen.findByRole('option', { name: '123 - Fornecedor A' })).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText('Codigo do lote'), { target: { value: 'LOTE-001' } });
+    fireEvent.change(screen.getByLabelText('Resina'), { target: { value: 'resina-1' } });
+    fireEvent.change(screen.getByLabelText('Fornecedor'), { target: { value: 'fornecedor-1' } });
+    fireEvent.change(screen.getByLabelText('Quantidade inicial kg'), { target: { value: '50' } });
+    fireEvent.change(screen.getByLabelText('Data de recebimento'), {
+      target: { value: '2026-08-01' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Criar' }));
+
+    await waitFor(() => {
+      expect(api.createCadastro).toHaveBeenCalledWith(
+        'resin-lots',
+        expect.objectContaining({
+          codigo: 'LOTE-001',
+          resinaId: 'resina-1',
+          fornecedorId: 'fornecedor-1',
+          origem: 'COMPRA',
+          quantidadeInicialKg: 50,
+          dataRecebimento: '2026-08-01',
+          status: 'DISPONIVEL',
+          ativo: true,
+        }),
+      );
+    });
+  });
 });

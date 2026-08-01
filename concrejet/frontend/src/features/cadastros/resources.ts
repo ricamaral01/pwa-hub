@@ -1,4 +1,5 @@
-export type FieldType = 'text' | 'number' | 'date' | 'datetime-local' | 'checkbox' | 'textarea';
+export type FieldType =
+  'text' | 'number' | 'date' | 'datetime-local' | 'checkbox' | 'textarea' | 'select';
 
 export interface CadastroField {
   name: string;
@@ -6,6 +7,8 @@ export interface CadastroField {
   type?: FieldType;
   required?: boolean;
   readonly?: boolean;
+  options?: { value: string; label: string }[];
+  optionsFrom?: 'resins' | 'suppliers';
 }
 
 export interface CadastroResource {
@@ -108,9 +111,25 @@ export const cadastroResources: CadastroResource[] = [
     title: 'Lotes de resina',
     permission: 'lotes_resina',
     fields: [
-      { name: 'codigo', label: 'Codigo', required: true },
-      { name: 'resinaId', label: 'Resina ID', required: true },
-      { name: 'fornecedorId', label: 'Fornecedor ID', required: true },
+      { name: 'codigo', label: 'Codigo do lote', required: true },
+      { name: 'resinaId', label: 'Resina', type: 'select', required: true, optionsFrom: 'resins' },
+      {
+        name: 'fornecedorId',
+        label: 'Fornecedor',
+        type: 'select',
+        optionsFrom: 'suppliers',
+      },
+      {
+        name: 'origem',
+        label: 'Origem',
+        type: 'select',
+        required: true,
+        options: [
+          { value: 'COMPRA', label: 'Compra' },
+          { value: 'INTERNA', label: 'Interna' },
+          { value: 'AJUSTE', label: 'Ajuste' },
+        ],
+      },
       {
         name: 'quantidadeInicialKg',
         label: 'Quantidade inicial kg',
@@ -118,9 +137,34 @@ export const cadastroResources: CadastroResource[] = [
         required: true,
       },
       { name: 'dataRecebimento', label: 'Data de recebimento', type: 'date', required: true },
+      { name: 'validade', label: 'Validade', type: 'date' },
+      { name: 'custoPorKg', label: 'Custo por kg', type: 'number' },
+      {
+        name: 'status',
+        label: 'Status',
+        type: 'select',
+        required: true,
+        options: [
+          { value: 'DISPONIVEL', label: 'Disponivel' },
+          { value: 'BLOQUEADO', label: 'Bloqueado' },
+          { value: 'ESGOTADO', label: 'Esgotado' },
+          { value: 'INATIVO', label: 'Inativo' },
+        ],
+      },
       { name: 'ativo', label: 'Ativo', type: 'checkbox' },
     ],
-    columns: ['codigo', 'resinaId', 'fornecedorId', 'quantidadeInicialKg', 'saldoAtualKg', 'ativo'],
+    columns: [
+      'codigo',
+      'resinaId',
+      'fornecedorId',
+      'origem',
+      'quantidadeInicialKg',
+      'saldoAtualKg',
+      'validade',
+      'custoPorKg',
+      'status',
+      'ativo',
+    ],
   },
   {
     slug: 'items',

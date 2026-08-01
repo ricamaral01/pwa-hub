@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import { Button } from '@/components/Button';
@@ -24,13 +24,31 @@ export default function CadastrosPage() {
   const [q, setQ] = useState('');
   const [ativo, setAtivo] = useState(EMPTY_FILTER);
   const [editing, setEditing] = useState<CadastroRecord | null>(null);
-  const [form, setForm] = useState<Record<string, string | boolean>>({ ativo: true });
+  const [form, setForm] = useState<Record<string, string | boolean>>(getInitialForm(resource.slug));
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const queryKey = useMemo(() => ['cadastros', resource.slug, q, ativo], [resource.slug, q, ativo]);
+  useEffect(() => {
+    setEditing(null);
+    setForm(getInitialForm(resource.slug));
+    setFieldErrors({});
+    setError(null);
+  }, [resource.slug]);
+
   const { data, isFetching } = useQuery({
     queryKey,
     queryFn: () => listCadastros(resource.slug, q, ativo),
+  });
+  const { data: resinsData } = useQuery({
+    queryKey: ['cadastro-options', 'resins'],
+    queryFn: () => listCadastros('resins', '', 'true'),
+    enabled: resource.slug === 'resin-lots',
+  });
+  const { data: suppliersData } = useQuery({
+    queryKey: ['cadastro-options', 'suppliers'],
+    queryFn: () => listCadastros('suppliers', '', 'true'),
+    enabled: resource.slug === 'resin-lots',
   });
 
   const saveMutation = useMutation({
@@ -40,8 +58,9 @@ export default function CadastrosPage() {
         : createCadastro(resource.slug, payload),
     onSuccess: async () => {
       setEditing(null);
-      setForm({ ativo: true });
+      setForm(getInitialForm(resource.slug));
       setError(null);
+      setFieldErrors({});
       await queryClient.invalidateQueries({ queryKey: ['cadastros', resource.slug] });
     },
     onError: (err) => setError(getApiErrorMessage(err)),
@@ -63,9 +82,15 @@ export default function CadastrosPage() {
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const validation = validateForm(resource.slug, form);
+    setFieldErrors(validation);
+    if (Object.keys(validation).length) {
+      setError('Corrija os campos destacados antes de salvar.');
+      return;
+    }
     const payload = resource.fields.reduce<CadastroPayload>((acc, field) => {
       const value = form[field.name];
-      if (value === '' || value === undefined) return acc;
+      if (value === '' || value === undefined || field.readonly) return acc;
       acc[field.name] = field.type === 'number' ? Number(value) : value;
       return acc;
     }, {});
@@ -84,6 +109,16 @@ export default function CadastrosPage() {
   };
 
   const records = data?.data ?? [];
+  const relationOptions = {
+    resins: (resinsData?.data ?? []).map((item) => ({
+      value: String(item.id),
+      label: String(item.codigo ?? '') + ' - ' + String(item.descricao ?? ''),
+    })),
+    suppliers: (suppliersData?.data ?? []).map((item) => ({
+      value: String(item.id),
+      label: String(item.documento ?? '') + ' - ' + String(item.nome ?? ''),
+    })),
+  };
 
   return (
     <main
@@ -186,16 +221,40 @@ export default function CadastrosPage() {
                           setForm((state) => ({ ...state, [field.name]: event.target.checked }))
                         }
                       />
-                    ) : (
-                      <input
-                        type={field.type ?? 'text'}
+                    ) : field.type === 'select' ? (
+                      <select
                         value={String(form[field.name] ?? '')}
                         required={field.required}
                         onChange={(event) =>
                           setForm((state) => ({ ...state, [field.name]: event.target.value }))
                         }
+                      >
+                        <option value="">Selecione</option>
+                        {(field.optionsFrom
+                          ? relationOptions[field.optionsFrom]
+                          : (field.options ?? [])
+                        ).map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type={field.type ?? 'text'}
+                        value={String(form[field.name] ?? '')}
+                        required={field.required}
+                        readOnly={field.readonly}
+                        onChange={(event) =>
+                          setForm((state) => ({ ...state, [field.name]: event.target.value }))
+                        }
                       />
                     )}
+                    {fieldErrors[field.name] ? (
+                      <span style={{ color: 'var(--color-danger)', fontSize: 'var(--text-sm)' }}>
+                        {fieldErrors[field.name]}
+                      </span>
+                    ) : null}
                   </label>
                 ))}
               </div>
@@ -214,7 +273,8 @@ export default function CadastrosPage() {
                     variant="surface"
                     onClick={() => {
                       setEditing(null);
-                      setForm({ ativo: true });
+                      setForm(getInitialForm(resource.slug));
+                      setFieldErrors({});
                     }}
                   >
                     Cancelar
@@ -306,6 +366,38 @@ export default function CadastrosPage() {
   );
 }
 
+function getInitialForm(resourceSlug: string): Record<string, string | boolean> {
+  if (resourceSlug === 'resin-lots') {
+    return { origem: 'COMPRA', status: 'DISPONIVEL', ativo: true };
+  }
+  return { ativo: true };
+}
+
+function validateForm(
+  resourceSlug: string,
+  form: Record<string, string | boolean>,
+): Record<string, string> {
+  if (resourceSlug !== 'resin-lots') return {};
+  const errors: Record<string, string> = {};
+  if (!form.codigo) errors.codigo = 'Informe o codigo do lote.';
+  if (!form.resinaId) errors.resinaId = 'Selecione uma resina cadastrada.';
+  if (!form.origem) errors.origem = 'Selecione a origem.';
+  if (form.origem === 'COMPRA' && !form.fornecedorId) {
+    errors.fornecedorId = 'Selecione um fornecedor para origem Compra.';
+  }
+  const quantidade = Number(form.quantidadeInicialKg);
+  if (!Number.isFinite(quantidade) || quantidade <= 0) {
+    errors.quantidadeInicialKg = 'Informe quantidade inicial maior que zero.';
+  }
+  if (!form.dataRecebimento) errors.dataRecebimento = 'Informe a data de recebimento.';
+  if (!form.status) errors.status = 'Selecione o status.';
+  if (form.custoPorKg !== undefined && form.custoPorKg !== '') {
+    const custo = Number(form.custoPorKg);
+    if (!Number.isFinite(custo) || custo < 0)
+      errors.custoPorKg = 'Custo por kg nao pode ser negativo.';
+  }
+  return errors;
+}
 const cellStyle = {
   padding: '10px 12px',
   borderBottom: '1px solid var(--border-subtle)',
