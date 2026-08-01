@@ -13,7 +13,8 @@ import {
   type CadastroPayload,
   type CadastroRecord,
 } from '@/features/cadastros/api';
-import { cadastroResources, findCadastroResource } from '@/features/cadastros/resources';
+import { findCadastroResource } from '@/features/cadastros/resources';
+import { DataTable, DesktopShell, FilterBar, Pagination } from '@/ui/desktop';
 
 const EMPTY_FILTER = '';
 
@@ -121,50 +122,10 @@ export default function CadastrosPage() {
   };
 
   return (
-    <main
-      style={{ minHeight: '100vh', background: 'var(--bg-primary)', padding: 'var(--space-6)' }}
-    >
+    <DesktopShell title={resource.title} actions={<Link className="btn btn-md btn-surface" to="/admin" style={{ textDecoration: 'none' }}>Voltar</Link>}>
       <div style={{ maxWidth: 1180, margin: '0 auto', display: 'grid', gap: 'var(--space-5)' }}>
-        <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div>
-            <p className="field-label-text">Cadastros</p>
-            <h1>{resource.title}</h1>
-          </div>
-          <Link className="btn btn-md btn-surface" to="/admin" style={{ textDecoration: 'none' }}>
-            Voltar
-          </Link>
-        </header>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', gap: 'var(--space-4)' }}>
-          <nav
-            aria-label="Cadastros disponiveis"
-            style={{
-              display: 'grid',
-              alignContent: 'start',
-              gap: 'var(--space-2)',
-              borderRight: '1px solid var(--border-subtle)',
-              paddingRight: 'var(--space-3)',
-            }}
-          >
-            {cadastroResources.map((item) => (
-              <Link
-                key={item.slug}
-                to={`/admin/cadastros/${item.slug}`}
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: 'var(--radius-sm)',
-                  color: item.slug === resource.slug ? 'var(--text-primary)' : 'var(--text-muted)',
-                  background: item.slug === resource.slug ? 'var(--bg-card)' : 'transparent',
-                  textDecoration: 'none',
-                }}
-              >
-                {item.title}
-              </Link>
-            ))}
-          </nav>
-
           <section style={{ display: 'grid', gap: 'var(--space-4)' }}>
-            <div style={{ display: 'flex', gap: 'var(--space-3)', alignItems: 'end' }}>
+            <FilterBar>
               <label style={{ display: 'grid', gap: 6, flex: 1 }}>
                 <span className="field-label-text">Busca</span>
                 <input value={q} onChange={(event) => setQ(event.target.value)} />
@@ -177,7 +138,7 @@ export default function CadastrosPage() {
                   <option value="false">Inativos</option>
                 </select>
               </label>
-            </div>
+            </FilterBar>
 
             <form
               onSubmit={submit}
@@ -283,16 +244,7 @@ export default function CadastrosPage() {
               </div>
             </form>
 
-            <div
-              style={{
-                overflowX: 'auto',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 'var(--radius-md)',
-              }}
-            >
-              <table
-                style={{ width: '100%', borderCollapse: 'collapse', background: 'var(--bg-card)' }}
-              >
+            <DataTable>
                 <thead>
                   <tr>
                     {resource.columns.map((column) => (
@@ -357,12 +309,11 @@ export default function CadastrosPage() {
                     </tr>
                   ) : null}
                 </tbody>
-              </table>
-            </div>
+            </DataTable>
+            <Pagination total={data?.meta.total ?? 0} />
           </section>
-        </div>
       </div>
-    </main>
+    </DesktopShell>
   );
 }
 

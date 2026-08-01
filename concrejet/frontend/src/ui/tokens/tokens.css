@@ -1,0 +1,31 @@
+:root {
+  --tinta: #14181c;
+  --tinta-2: #4a545c;
+  --tinta-3: #7b8792;
+  --papel: #ffffff;
+  --fundo: #e7ecf0;
+  --superficie: #f4f6f8;
+  --superficie-2: #edf1f4;
+  --linha: #d2dae1;
+  --linha-forte: #a9b5bf;
+  --acao: #0b5fa5;
+  --acao-bg: #e3eef8;
+  --ok: #17703a;
+  --ok-bg: #e1f0e7;
+  --atencao: #8e5300;
+  --atencao-bg: #fbeeda;
+  --parada: #ac2a21;
+  --parada-bg: #f9e5e3;
+  --fonte: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --num: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --esp-1: 4px;
+  --esp-2: 8px;
+  --esp-3: 10px;
+  --esp-4: 12px;
+  --esp-5: 16px;
+  --esp-6: 24px;
+  --raio: 6px;
+  --raio-pilula: 999px;
+  --toque: 56px;
+  --toque-desk: 34px;
+}

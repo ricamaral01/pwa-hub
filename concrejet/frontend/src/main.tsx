@@ -1,6 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
+import './ui/tokens/tokens.css';
+import './ui/industrial.css';
 import './index.css';
 
 // Registrar service worker via vite-plugin-pwa
