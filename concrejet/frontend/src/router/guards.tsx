@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useDevice } from '@/hooks/useDevice';
 import { useSession } from '@/hooks/useSession';
@@ -46,6 +46,12 @@ export function AdminGuard({ children }: { children: ReactNode }) {
   const error = useAdminAuthStore((s) => s.error);
   const bootstrap = useAdminAuthStore((s) => s.bootstrap);
   const location = useLocation();
+
+  useEffect(() => {
+    if (status === 'unknown') {
+      void bootstrap();
+    }
+  }, [bootstrap, status]);
 
   if (status === 'unknown') return <GuardLoader />;
 

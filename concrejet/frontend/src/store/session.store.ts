@@ -197,6 +197,8 @@ export const useSessionStore = create<SessionStore>()(
       // Operator e state são reconstruídos pelo IndexedDB
       partialize: (s) => ({
         device: s.device,
+        operator: s.operator,
+        operatorToken: s.operatorToken,
         queueCount: s.queueCount,
       }),
     },

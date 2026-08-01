@@ -81,14 +81,24 @@ export function useDevice() {
     const existing = await db.deviceConfig.get(1);
     if (!existing) throw new Error('Identificador do dispositivo não encontrado.');
 
-    await db.deviceConfig.put({
+    const activated = {
       ...existing,
       maquinaId: params.maquinaId,
       maquinaNome: params.maquinaNome,
       maquinaCodigo: params.maquinaCodigo,
       ultimaSincronizacao: new Date().toISOString(),
       appVersion: APP_VERSION,
-    } satisfies DeviceConfig);
+    } satisfies DeviceConfig;
+
+    await db.deviceConfig.put(activated);
+    setDevice({
+      identificador: activated.identificador,
+      maquinaId: activated.maquinaId,
+      maquinaNome: activated.maquinaNome ?? '',
+      maquinaCodigo: activated.maquinaCodigo ?? '',
+      ultimaSincronizacao: activated.ultimaSincronizacao,
+      appVersion: activated.appVersion,
+    });
   }
 
   /**
