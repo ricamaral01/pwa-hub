@@ -12,8 +12,11 @@ type Movement = {
   origemTipo: string;
 };
 
+type AvailableLot = { id: string; codigo: string; resina?: { codigo?: string } | null };
+
 export default function StockPage() {
   const [data, setData] = useState<Movement[]>([]);
+  const [lots, setLots] = useState<Record<string, string>>({});
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -22,8 +25,20 @@ export default function StockPage() {
 
   async function load() {
     try {
-      const response = await apiClient.get<{ data: Movement[] }>('/stock-movements?limit=50');
+      const [response, lotsResponse] = await Promise.all([
+        apiClient.get<{ data: Movement[] }>('/stock-movements?limit=50'),
+        apiClient.get<AvailableLot[]>('/resin-lots/available'),
+      ]);
       setData(response.data.data);
+      setLots(
+        Object.fromEntries(
+          lotsResponse.data.map((lot) => [
+            lot.id,
+            lot.resina?.codigo ? `${lot.codigo} - ${lot.resina.codigo}` : lot.codigo,
+          ]),
+        ),
+      );
+      setError('');
     } catch (err) {
       setError(getApiErrorMessage(err));
     }
@@ -63,7 +78,7 @@ export default function StockPage() {
           {data.map((item) => (
             <tr key={item.id}>
               <td>{item.tipoMovimento}</td>
-              <td>{item.loteId}</td>
+              <td>{lots[item.loteId] ?? 'Lote nao disponivel'}</td>
               <td>{item.quantidadeKg}</td>
               <td>{item.saldoAnteriorKg}</td>
               <td>{item.saldoPosteriorKg}</td>

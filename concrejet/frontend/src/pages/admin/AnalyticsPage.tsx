@@ -72,12 +72,19 @@ export default function AnalyticsPage({ kind }: Props) {
 
 function formatCell(value: unknown): string {
   if (value === null || value === undefined) return '';
-  if (typeof value === 'object') return JSON.stringify(value);
-  if (typeof value === 'string') return value;
+  if (typeof value === 'object') return maskUuid(JSON.stringify(value));
+  if (typeof value === 'string') return maskUuid(value);
   if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {
     return value.toString();
   }
   return '';
+}
+
+function maskUuid(value: string): string {
+  return value.replace(
+    /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi,
+    'identificador interno',
+  );
 }
 
 function flatten(value: unknown, prefix = ''): Record<string, unknown> {

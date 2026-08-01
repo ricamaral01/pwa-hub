@@ -37,6 +37,7 @@ test.describe('Fases 5 a 7 - rotas administrativas reais', () => {
   });
 
   test('abre estoque, blendas, analytics e importacao sem erro de console', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
     const consoleErrors: string[] = [];
     page.on('console', (message) => {
       if (message.type() === 'error' && !/status of 401|Unauthorized/.test(message.text())) {
@@ -61,16 +62,31 @@ test.describe('Fases 5 a 7 - rotas administrativas reais', () => {
       '/admin/stock',
       '/admin/blends',
       '/admin/dashboard',
+      '/admin/analytics/production',
+      '/admin/analytics/losses',
+      '/admin/analytics/stops',
       '/admin/analytics/oee',
+      '/admin/analytics/stock',
       '/admin/traceability',
     ]) {
       await page.goto(route);
       await expect(page.getByRole('button', { name: 'Atualizar' })).toBeVisible();
+      await expect(page.locator('body')).not.toContainText(
+        /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i,
+      );
     }
+
+    await page.goto('/admin/analytics/oee');
+    await expect(
+      page.getByRole('columnheader', { name: 'memoria.turnosConsiderados' }),
+    ).toBeVisible();
 
     await page.goto('/admin/imports');
     await expect(page.getByRole('button', { name: 'Analisar fixture' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Atualizar' })).toBeVisible();
+    await expect(page.locator('body')).not.toContainText(
+      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i,
+    );
 
     expect(consoleErrors).toEqual([]);
   });
