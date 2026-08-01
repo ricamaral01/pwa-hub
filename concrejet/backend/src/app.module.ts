@@ -13,6 +13,7 @@ import { OrganizacaoModule } from './modules/organizacao/organizacao.module';
 import { UsuariosModule } from './modules/usuarios/usuarios.module';
 import { ProducaoBaseModule } from './modules/producao-base/producao-base.module';
 import { AuditoriaModule } from './modules/auditoria/auditoria.module';
+import { CadastrosModule } from './modules/cadastros/cadastros.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AuditoriaModule } from './modules/auditoria/auditoria.module';
     UsuariosModule,
     ProducaoBaseModule,
     AuditoriaModule,
+    CadastrosModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

@@ -9,6 +9,7 @@ import { Permissao } from '../modules/usuarios/entities/permissao.entity';
 import { Maquina } from '../modules/producao-base/entities/maquina.entity';
 import { Dispositivo } from '../modules/producao-base/entities/dispositivo.entity';
 import { Auditoria } from '../modules/auditoria/entities/auditoria.entity';
+import { CADASTRO_ENTITIES } from '../modules/cadastros/entities';
 
 config();
 
@@ -20,7 +21,17 @@ export const AppDataSource = new DataSource({
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   ssl: process.env.DATABASE_SSL === 'true',
-  entities: [Empresa, Unidade, Usuario, Perfil, Permissao, Maquina, Dispositivo, Auditoria],
+  entities: [
+    Empresa,
+    Unidade,
+    Usuario,
+    Perfil,
+    Permissao,
+    Maquina,
+    Dispositivo,
+    Auditoria,
+    ...CADASTRO_ENTITIES,
+  ],
   migrations: ['src/database/migrations/*.ts'],
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',

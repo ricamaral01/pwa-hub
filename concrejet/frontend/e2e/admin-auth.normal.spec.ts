@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { execSync } from 'node:child_process';
+import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -8,11 +9,25 @@ const changedPassword = 'SenhaAlterada123!';
 const adminEmail = `e2e-admin-${Date.now()}@concretrack.local`;
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
+function readRootEnv(): NodeJS.ProcessEnv {
+  const envPath = path.resolve(currentDir, '../../.env');
+  if (!fs.existsSync(envPath)) return {};
+  return Object.fromEntries(
+    fs
+      .readFileSync(envPath, 'utf8')
+      .split(/\r?\n/)
+      .map((line) => line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)=(.*)\s*$/))
+      .filter((match): match is RegExpMatchArray => Boolean(match))
+      .map((match) => [match[1], match[2]]),
+  );
+}
+
 test.describe.serial('Fase 0 - autenticacao administrativa real', () => {
   test.beforeAll(() => {
     execSync('npm run seed:admin', {
       cwd: path.resolve(currentDir, '../../backend'),
       env: {
+        ...readRootEnv(),
         ...process.env,
         SEED_ADMIN_EMAIL: adminEmail,
         SEED_ADMIN_PASSWORD: initialPassword,
@@ -81,7 +96,9 @@ test.describe.serial('Fase 0 - autenticacao administrativa real', () => {
       );
 
       const dbs =
-        'databases' in indexedDB ? await indexedDB.databases().then((items) => items.map((i) => i.name)) : [];
+        'databases' in indexedDB
+          ? await indexedDB.databases().then((items) => items.map((i) => i.name))
+          : [];
 
       return { local, dbs };
     });
@@ -89,6 +106,14 @@ test.describe.serial('Fase 0 - autenticacao administrativa real', () => {
     expect(JSON.stringify(storageSnapshot.local)).not.toMatch(/token|jwt|refresh|senha|pin/i);
     expect(JSON.stringify(storageSnapshot.dbs)).not.toMatch(/token|jwt|refresh|senha|pin/i);
 
+    await page.goto('/admin/cadastros/items');
+    await expect(page.getByRole('heading', { name: 'Itens' })).toBeVisible();
+    const itemCode = `E2E-${Date.now()}`;
+    await page.getByLabel('Codigo').fill(itemCode);
+    await page.getByLabel('Descricao').fill('Item criado pelo E2E');
+    await page.getByRole('button', { name: 'Criar' }).click();
+    await expect(page.getByText(itemCode)).toBeVisible();
+    await page.goto('/admin');
     await page.getByRole('button', { name: /^sair$/i }).click();
     await expect(page).toHaveURL('/login');
 

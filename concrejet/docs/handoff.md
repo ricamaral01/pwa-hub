@@ -1,4 +1,139 @@
 # Handoff
+
+## 2026-08-01 — Claude Code (arquiteto de software / engenheiro PostgreSQL) — Planejamento técnico da Fase 1 — Cadastros
+
+### Objetivo executado
+
+Produzir **somente a especificação técnica** da Fase 1 — Cadastros, sem implementar
+código, migrations, entidades ou telas. Escopo: função, colaborador, máquinas
+(extensão), operações, tipos de ocorrência, fornecedores, resinas, lotes de resina
+(cadastro + saldo inicial controlado), itens, moldes, configuração item-molde
+versionada por vigência, ordem de produção, telas administrativas e permissões
+consultar/criar/alterar/inativar. Trabalho realizado na branch
+`feature/fase-1-cadastros`, a partir do commit-base `ce15db2` (Fase 0 aprovada).
+
+Leitura prévia completa: `README.md`, `CHANGELOG.md`, `docs/arquitetura.md`,
+`docs/modelo-dados.md`, `docs/regras-negocio.md`, `docs/permissoes.md`,
+`docs/revisao-frontend-fase-0.md`, `docs/handoff.md`, a migration existente
+(`1730000000000-Fase0Fundacao.ts`), as entidades/módulos atuais do backend
+(`common/entities/base.entity.ts`, `modules/organizacao`, `modules/usuarios`,
+`modules/producao-base`, `modules/auditoria`, `modules/auth`) e a estrutura atual do
+frontend (`frontend/src/pages/admin`, padrão de repositório substituível de
+`features/production`).
+
+### Arquivos criados
+
+- `docs/fase-1-cadastros.md` — especificação técnica completa (23 seções: diagnóstico,
+  modelo de dados, relações/cardinalidades, enums, constraints PostgreSQL, índices,
+  estratégia de vigência, estratégia de auditoria, contratos de endpoint, DTOs,
+  paginação/filtros/ordenação, matriz de permissões, validações, regras de
+  inativação, casos de teste unitário/integração/Playwright, critérios de aceite,
+  ordem de implementação, dependências entre módulos, riscos técnicos, plano de
+  rollback, itens a confirmar com o processo industrial).
+
+### Arquivos alterados
+
+- `docs/modelo-dados.md` — nova seção "Fase 1 — Cadastros (planejado, não
+  implementado)", resumo + link para a especificação completa.
+- `docs/regras-negocio.md` — idem, com destaque para as duas regras centrais
+  (vigência não sobrescrita historicamente; saldo de lote não editável diretamente).
+- `docs/permissoes.md` — idem, com a convenção de chave `cadastros.<recurso>.<acao>`
+  e o que falta construir (`PermissionsGuard`, hoje inexistente).
+- `docs/handoff.md` (este arquivo).
+
+Nenhum arquivo de `backend/` ou `frontend/` foi criado, alterado ou removido. Nenhuma
+migration foi criada. Nenhum comando de teste foi executado (não há código novo para
+testar).
+
+### Principais decisões técnicas
+
+1. **`configuracao_item_molde` é entidade própria versionada por vigência**, não um
+   simples `UPDATE` em `item`/`molde`: `vigencia_inicio`/`vigencia_fim`/`ativo`/
+   `version` + `EXCLUDE USING gist` (extensão `btree_gist`, nova) sobre
+   `tstzrange(vigencia_inicio, vigencia_fim)` por `(item_id, molde_id)`, garantindo no
+   banco — não só na aplicação — que não existem vigências sobrepostas. Nenhum
+   `UPDATE`/`DELETE` de peso/cavidades/ciclo/limite é permitido; toda alteração é
+   `INSERT` de nova linha + encerramento da anterior, na mesma transação.
+2. **`lote_resina.saldo_atual_kg` protegido em duas camadas**: DTO de `PATCH` nunca
+   declara o campo (rejeitado pelo `ValidationPipe` global já existente) e um trigger
+   de banco bloqueia `UPDATE` direto fora do fluxo interno de
+   `movimento_estoque_lote` (tabela append-only nova, preparatória para consumo futuro,
+   sem nenhuma automação de consumo nesta fase).
+3. **`colaborador` é entidade separada de `usuario`** — cadastro de chão de fábrica,
+   sem login nesta fase. Campo `pin_hash` preparado mas não exposto por nenhum DTO;
+   login de operador por matrícula/PIN fica fora do escopo desta Fase 1 (sinalizado
+   como item a confirmar, seção 25 da especificação, porque o handoff da Fase 0
+   mencionava esse endpoint repetidamente como pendência).
+4. **`maquina` é estendida, não recriada** — já existe desde a Fase 0; a Fase 1 só
+   adiciona colunas opcionais (`tipo`, `capacidade_toneladas`) via `ALTER TABLE`.
+5. **Nenhum `DELETE` físico em nenhum dos 12 recursos**, com endpoints `/reativar`
+   novos (não existiam na Fase 0) para reverter inativação.
+6. **`PermissionsGuard` por permissão é pré-requisito de infraestrutura** desta fase —
+   a Fase 0 só tinha autenticação (`JwtAuthGuard`), nunca autorização granular; a
+   especificação define a convenção `cadastros.<recurso>.<acao>` e recomenda resolver
+   permissões efetivas por request (não via nova claim no JWT), para não herdar o
+   problema já documentado de permissão desatualizada até o próximo login.
+7. **Endpoints em `/api/v1/cadastros/...`**, introduzindo versionamento de rota
+   (inexistente até então) sem afetar `/auth`, `/health`, `/ready`, `/version`.
+
+### Dúvidas que precisam de validação (não bloqueiam o início da implementação dos
+cadastros mais simples, mas bloqueiam fechar o design final de alguns itens)
+
+Lista completa e justificada em
+[docs/fase-1-cadastros.md, seção 25](fase-1-cadastros.md#25-itens-que-precisam-ser-confirmados-com-o-processo-industrial):
+taxonomia de `tipo_ocorrencia.categoria`; taxonomia de `resina.tipo`;
+`unidade_medida` real de `item`; fluxo completo de `status` de `ordem_producao`
+(existe estado "programada" separado de "aberta"? pode voltar de `EM_PRODUCAO` para
+`ABERTA`?); formato real de `codigo_mega`; necessidade de endpoint de inativação
+dedicado para `lote_resina` além de `status`; se login de operador por matrícula/PIN
+deveria estar nesta fase ou numa fase própria; se `capacidade_toneladas`/`tipo` de
+`maquina` são realmente necessários agora ou só quando `apontamento` existir; quais
+perfis operacionais reais (além de `ADMIN`) existem hoje na operação.
+
+### Ordem de implementação recomendada para o Codex
+
+Detalhada em
+[docs/fase-1-cadastros.md, seções 21–22](fase-1-cadastros.md#21-ordem-recomendada-de-implementação):
+
+1. `PermissionsGuard` + decorator + seed de permissões (infraestrutura transversal).
+2. Cadastros simples sem dependência entre si: `funcao`, `operacao`,
+   `tipo_ocorrencia`, `fornecedor`, `resina`, `item`, `molde`, extensão de `maquina`
+   (podem ser paralelizados entre agentes/desenvolvedores diferentes).
+3. Cadastros que dependem do grupo 2: `colaborador` (depende de `funcao`, `unidade`),
+   `lote_resina` + `movimento_estoque_lote` (depende de `resina`, `fornecedor`).
+4. `configuracao_item_molde` (o mais arriscado — `EXCLUDE USING gist` novo no
+   projeto; recomenda-se não paralelizar com outra migration ao mesmo tempo).
+5. `ordem_producao` (depende só de `item`, mas é o mais "de borda" desta fase).
+6. Frontend: só depois que os endpoints do grupo correspondente tiverem e2e passando
+   de fato — não construir tela contra contrato ainda instável (lição já registrada
+   nos achados 1–13 da revisão de frontend da Fase 0).
+
+### Riscos conhecidos
+
+Ver [docs/fase-1-cadastros.md, seção 23](fase-1-cadastros.md#23-riscos-técnicos):
+disponibilidade de `btree_gist` em banco gerenciado de produção; robustez do trigger
+de proteção de saldo contra acesso SQL direto (fora do ORM); impacto de latência da
+resolução de permissões por request com ~46 chaves novas; ausência de
+`apontamento`/uso real ainda para `operacao`/`tipo_ocorrencia`/`maquina` (risco de
+redesenho quando a Fase 2 chegar); coordenação entre múltiplos agentes de IA no mesmo
+repositório (risco de processo já materializado na Fase 0).
+
+### Pendências
+
+Nenhuma pendência de código — nada foi implementado nesta tarefa por instrução
+explícita do usuário ("não implemente código", "não crie migrations", "não avance
+para a Fase 2"). A especificação completa está pronta para ser executada pelo Codex
+ou outro agente de implementação. Fase 2 (apontamento, OEE, blendas, sincronização
+offline, integração Mega) não foi iniciada nem especificada.
+
+### Confirmação de escopo
+
+Nenhum arquivo de código-fonte (`backend/`, `frontend/`) foi criado, alterado ou
+removido nesta sessão. Nenhuma migration foi criada. Apenas os 5 arquivos de
+documentação listados acima foram tocados.
+
+---
+
 ## 2026-08-01 - Codex (finalizacao formal da Fase 0 aprovada)
 
 ### Objetivo executado
@@ -916,3 +1051,12 @@ incluindo `EXCLUDE USING gist` com `tstzrange` para impedir apontamentos simult�
 na mesma máquina), conforme já recomendado nas entradas anteriores deste arquivo. Os
 achados de baixa severidade remanescentes do frontend podem ser resolvidos em paralelo,
 sem bloquear o início da Fase 1.
+
+## 2026-08-01 - Fase 1 Cadastros implementada
+
+- Implementa��o realizada no clone isolado `C:\Users\Admin\Documents\pwa-hub-fase1\concrejet`, branch `feature/fase-1-cadastros`.
+- Backend: m�dulo `CadastrosModule`, CRUD administrativo autenticado por cookie/httpOnly via `JwtAuthGuard`, permiss�es `recurso.acao`, auditoria em create/update/inativa��o/reativa��o/cancelamento.
+- Banco: migration `1730500000000-Fase1Cadastros` cria tabelas de cadastros, constraints de unicidade por empresa/unidade, FKs `RESTRICT`, trigger contra edi��o direta de saldo de lote, movimentos imut�veis e exclus�o de vig�ncia sobreposta para configura��o item/molde.
+- Frontend: rota `/admin/cadastros/:resource` sob `AdminGuard`, sem uso de `OperatorData` e sem mocks; formul�rios/tabelas usam endpoints reais.
+- Verifica��o: migration aplicada no Postgres local, seed executado, API Docker rebuildada e saud�vel, Playwright normal aprovado com cria��o real de item.
+- Observa��o: lint completo ainda falha por CRLF pr�-existente em todo o reposit�rio; arquivos alterados foram validados com ESLint seletivo sem warnings.

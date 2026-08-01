@@ -40,3 +40,41 @@ negativo, uso de lote inexistente, sobreposição de apontamentos na mesma máqu
 duplicação por sincronização offline (idempotency keys), duplicação de integração com
 o Mega, cálculos de produção/perdas/OEE, importação da planilha. Nenhuma dessas regras
 tem tabela, constraint ou código associado ainda.
+
+## Fase 1 — Cadastros (planejado, não implementado)
+
+Especificação completa em [fase-1-cadastros.md](fase-1-cadastros.md). Regras centrais
+que essa fase introduz:
+
+- **Peso da peça, número de cavidades, ciclo padrão, ciclo para custo e limite de
+  perda nunca são sobrescritos historicamente.** Toda alteração fecha a vigência
+  anterior de `configuracao_item_molde` (`vigencia_fim`, `ativo = false`) e cria uma
+  nova linha (`version + 1`, motivo obrigatório) — nunca um `UPDATE` desses campos.
+  Vigências sobrepostas para o mesmo item+molde são impedidas por `EXCLUDE USING
+  gist` no banco, não apenas por validação de aplicação — ver
+  [fase-1-cadastros.md, seção 7](fase-1-cadastros.md#7-estratégia-de-vigência-configuracao_item_molde).
+- **Saldo de lote de resina não é editável diretamente após a criação.** O saldo só
+  muda através de um registro em `movimento_estoque_lote` (tabela append-only, sem
+  consumo automático implementado nesta fase); a API nunca aceita `saldoAtualKg` como
+  campo de entrada, e um trigger de banco bloqueia `UPDATE` direto do campo fora desse
+  fluxo — ver [fase-1-cadastros.md, seção 13.4](fase-1-cadastros.md#134-lote_resina).
+- **Sem exclusão física, sem exceção**: os 12 cadastros novos seguem o mesmo padrão já
+  estabelecido na Fase 0 (`ativo: boolean`, nunca `DELETE`), com endpoints de
+  reativação explícitos (novidade desta fase — a Fase 0 não tinha `/reativar`).
+- **Regras explicitamente fora desta Fase 1** (mesmo que o briefing original as
+  mencione): apontamento de produção, baixa automática de estoque, consumo de lote,
+  blendas, registro operacional de ocorrências (só o cadastro do *tipo* existe),
+  cronômetros, OEE, dashboards, sincronização offline, integração real com o Mega,
+  migração histórica da planilha, login de operador por matrícula/PIN (o campo
+  `pin_hash` é preparado em `colaborador`, mas não usado) — ver
+  [fase-1-cadastros.md, seção 25](fase-1-cadastros.md#25-itens-que-precisam-ser-confirmados-com-o-processo-industrial)
+  para os pontos que ainda precisam de confirmação do processo industrial antes da
+  implementação final.
+
+## Fase 1 implementada - Regras de cadastros
+
+- Cadastros administrativos exigem sess�o administrativa real e permiss�o `recurso.acao` ou `sistema.administrar`.
+- Lote de resina cria movimento inicial de entrada e define saldo inicial a partir da quantidade recebida; saldo n�o � edit�vel diretamente.
+- Configura��o item/molde � hist�rica: nova configura��o encerra a vers�o ativa anterior e cria nova vers�o com vig�ncia pr�pria.
+- Ordem de produ��o pode ser cancelada somente quando aberta e exige justificativa.
+- A Fase 1 n�o implementa login de operador, apontamento operacional real ou funcionalidades da Fase 2.

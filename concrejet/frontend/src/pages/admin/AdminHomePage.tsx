@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/Button';
 import { useAdminAuthStore } from '@/store/admin-auth.store';
 
@@ -59,6 +59,13 @@ export default function AdminHomePage() {
             <strong>{user?.perfis.join(', ')}</strong>
           </div>
         </div>
+        <Link
+          className="btn btn-md btn-primary"
+          to="/admin/cadastros/items"
+          style={{ textDecoration: 'none', justifySelf: 'start' }}
+        >
+          Cadastros
+        </Link>
       </section>
     </main>
   );

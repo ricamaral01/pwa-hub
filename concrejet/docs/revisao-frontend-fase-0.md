@@ -462,3 +462,9 @@ alteracao de arquitetura, backend, cadastros ou funcionalidade de Fase 1 foi fei
 **Fase 0 aprovada formalmente.** Nao ha achados criticos, altos, medios ou baixos em
 aberto dentro do escopo avaliado da Fase 0. O que depende de backend operacional real
 permanece fora do escopo e deve aguardar a Fase 1.
+
+## Fase 1 - Cadastros implementada
+
+A Fase 1 foi implementada sem misturar `AdminSession` com `OperatorSession` e sem avançar para apontamento operacional. O frontend de cadastros fica sob `/admin/cadastros/:resource` e consome endpoints reais protegidos por autenticação administrativa.
+
+Validação realizada: typecheck backend/frontend, Jest, Vitest, build backend/frontend, migration local, seed local, Docker API rebuildado e Playwright normal com criação real de item.

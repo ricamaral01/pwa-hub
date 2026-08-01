@@ -94,3 +94,31 @@ fica para quando essas entidades existirem (Fase 1+).
   `ativo = false`. (Não há endpoint de exclusão implementado nesta fase; a única
   garantia atual é o não-uso de `ON DELETE CASCADE` em dados de negócio e a inexistência
   de rotas de exclusão física.)
+
+## Fase 1 — Cadastros (planejado, não implementado)
+
+O modelo de dados completo da Fase 1 (`funcao`, `colaborador`, extensão de `maquina`,
+`operacao`, `tipo_ocorrencia`, `fornecedor`, `resina`, `lote_resina`,
+`movimento_estoque_lote`, `item`, `molde`, `configuracao_item_molde` versionada por
+vigência, `ordem_producao`) está especificado em
+[fase-1-cadastros.md](fase-1-cadastros.md), seções 2–7. Nenhuma dessas tabelas existe
+ainda no banco — este resumo só evita que alguém procure o modelo de dados da Fase 1
+neste arquivo e não encontre nada.
+
+Ponto de maior risco/complexidade do modelo: `configuracao_item_molde` implementa a
+regra "peso, cavidades, ciclos e limite de perda não podem ser sobrescritos
+historicamente" via vigência (`vigencia_inicio`/`vigencia_fim`/`ativo`/`version`) e um
+`EXCLUDE USING gist` (extensão `btree_gist`, ainda não habilitada) que impede
+sobreposição de vigências para o mesmo item+molde no nível do banco, não apenas da
+aplicação — ver [fase-1-cadastros.md, seção 7](fase-1-cadastros.md#7-estratégia-de-vigência-configuracao_item_molde).
+
+## Fase 1 implementada - Cadastros
+
+A Fase 1 adiciona as tabelas `funcao`, `colaborador`, `operacao`, `tipo_ocorrencia`, `fornecedor`, `resina`, `lote_resina`, `movimento_estoque_lote`, `item`, `molde`, `configuracao_item_molde` e `ordem_producao`. A tabela `maquina` foi estendida com `modelo`, `numero_serie`, `setor` e `capacidade`.
+
+Regras estruturais aplicadas no banco:
+- unicidade por empresa/unidade conforme recurso;
+- FKs com `ON DELETE RESTRICT`;
+- saldo de lote protegido contra atualiza��o direta;
+- movimentos de estoque imut�veis;
+- configura��o item/molde com versionamento por vig�ncia e bloqueio de sobreposi��o.

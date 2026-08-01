@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0] - 2026-08-01 - Fase 1 Cadastros
+
+- Implementado módulo backend de Cadastros com endpoints administrativos reais para funções, colaboradores, máquinas, operações, tipos de ocorrência, fornecedores, resinas, lotes de resina, itens, moldes, configurações item/molde e ordens de produção.
+- Adicionada migration da Fase 1 com constraints, FKs `RESTRICT`, proteção de saldo de lote, movimentos imutáveis e exclusão de vigência sobreposta em configuração item/molde.
+- Adicionada tela administrativa `/admin/cadastros/:resource` consumindo API real, protegida por `AdminGuard` e sem dependência de `OperatorSession`.
+- Seed administrativo passou a criar permissões `recurso.acao` e dados mínimos de desenvolvimento de forma idempotente.
+- Cobertura adicionada em Jest, Vitest e Playwright para criação administrativa de item com backend real.
 ## [0.2.4] - 2026-08-01 - Fase 0 aprovada
 
 ### Corrigido
@@ -153,3 +160,4 @@ de operador por API real (backend Fase 1 pendente), telas de conflict resolution
 item, molde, configuraÃ§Ã£o item-molde, ordem de produÃ§Ã£o, apontamento, ocorrÃªncias,
 resinas/lotes/estoque, blendas, OEE/indicadores, importaÃ§Ã£o da planilha Excel,
 integraÃ§Ã£o com o Mega, sincronizaÃ§Ã£o offline, frontend/telas.
+

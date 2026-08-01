@@ -109,3 +109,9 @@ npm run start:dev
 - [docs/handoff.md](docs/handoff.md)
 - [docs/adr/](docs/adr/)
 - [CHANGELOG.md](CHANGELOG.md)
+
+### Fase 1 - Cadastros
+
+A aplicação agora inclui cadastros administrativos reais em `/admin/cadastros/:resource`. Recursos disponíveis: funções, colaboradores, máquinas, operações, tipos de ocorrência, fornecedores, resinas, lotes de resina, itens, moldes, configurações item/molde e ordens de produção.
+
+Para ambiente local, execute migrations e seed antes de usar os cadastros administrativos.

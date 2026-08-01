@@ -80,3 +80,9 @@ resina, movimento de estoque, blenda, indicadores/OEE, importa√ß√£o da planilha 
 integra√ß√£o com o ERP Mega, sincroniza√ß√£o offline, e qualquer tela/frontend. Essas
 entidades e regras est√£o descritas no briefing original e ser√£o tratadas na Fase 1 em
 diante ‚Äî ver pend√™ncias em [handoff.md](handoff.md).
+
+## Fase 1 - Cadastros
+
+Foi adicionado o `CadastrosModule` ao backend. O mÛdulo expıe endpoints administrativos sob o prefixo global da API para os recursos de cadastro da Fase 1, usando cookie httpOnly existente, `JwtAuthGuard`, permissıes `recurso.acao` e auditoria.
+
+No frontend, a ·rea `/admin/cadastros/:resource` È uma rota administrativa protegida por `AdminGuard`. Ela n„o usa estado operacional, n„o cria operador simulado e n„o persiste tokens no navegador.

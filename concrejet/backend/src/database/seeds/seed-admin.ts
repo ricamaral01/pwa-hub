@@ -1,15 +1,40 @@
 import 'reflect-metadata';
 import { randomBytes } from 'crypto';
 import * as argon2 from 'argon2';
+import { EntityManager } from 'typeorm';
 import { AppDataSource } from '../data-source';
 import { Empresa } from '../../modules/organizacao/entities/empresa.entity';
 import { Unidade } from '../../modules/organizacao/entities/unidade.entity';
 import { Usuario } from '../../modules/usuarios/entities/usuario.entity';
 import { Perfil } from '../../modules/usuarios/entities/perfil.entity';
 import { Permissao } from '../../modules/usuarios/entities/permissao.entity';
+import {
+  Funcao,
+  Item,
+  Molde,
+  Operacao,
+  TipoOcorrencia,
+  Fornecedor,
+  Resina,
+} from '../../modules/cadastros/entities';
 
 const ADMIN_PERFIL_CODIGO = 'ADMIN';
 const ADMIN_PERMISSAO_CHAVE = 'sistema.administrar';
+const FASE1_RECURSOS = [
+  'funcoes',
+  'colaboradores',
+  'maquinas',
+  'operacoes',
+  'tipos_ocorrencia',
+  'fornecedores',
+  'resinas',
+  'lotes_resina',
+  'itens',
+  'moldes',
+  'configuracoes_item_molde',
+  'ordens_producao',
+];
+const FASE1_ACOES = ['consultar', 'criar', 'editar', 'inativar', 'reativar'];
 
 function generateRandomPassword(): string {
   return randomBytes(18).toString('base64url');
@@ -72,6 +97,23 @@ async function main(): Promise<void> {
         }),
       );
     }
+    const fase1Permissoes: Permissao[] = [];
+    for (const recurso of FASE1_RECURSOS) {
+      for (const acao of FASE1_ACOES) {
+        const chave = `${recurso}.${acao}`;
+        let fase1Permissao = await permissaoRepo.findOne({ where: { chave } });
+        if (!fase1Permissao) {
+          fase1Permissao = await permissaoRepo.save(
+            permissaoRepo.create({
+              chave,
+              descricao: `Permite ${acao} ${recurso}`,
+              modulo: 'cadastros',
+            }),
+          );
+        }
+        fase1Permissoes.push(fase1Permissao);
+      }
+    }
 
     let perfil = await perfilRepo.findOne({
       where: { empresaId: empresa.id, codigo: ADMIN_PERFIL_CODIGO },
@@ -85,10 +127,21 @@ async function main(): Promise<void> {
           nome: 'Administrador',
           descricao: 'Perfil com acesso administrativo completo',
           ativo: true,
-          permissoes: [permissao],
+          permissoes: [permissao, ...fase1Permissoes],
         }),
       );
+    } else {
+      const chavesAtuais = new Set((perfil.permissoes ?? []).map((item) => item.chave));
+      const novasPermissoes = [permissao, ...fase1Permissoes].filter(
+        (item) => !chavesAtuais.has(item.chave),
+      );
+      if (novasPermissoes.length) {
+        perfil.permissoes = [...(perfil.permissoes ?? []), ...novasPermissoes];
+        await perfilRepo.save(perfil);
+      }
     }
+
+    await seedFase1Basico(manager, empresa.id);
 
     const usuarioExistente = await usuarioRepo.findOne({ where: { empresaId: empresa.id, email } });
     if (usuarioExistente) {
@@ -123,6 +176,55 @@ async function main(): Promise<void> {
   });
 
   await AppDataSource.destroy();
+}
+
+async function seedFase1Basico(manager: EntityManager, empresaId: string) {
+  await manager
+    .getRepository(Funcao)
+    .upsert({ empresaId, codigo: 'OP-INJ', descricao: 'Operador de injecao', ativo: true }, [
+      'empresaId',
+      'codigo',
+    ]);
+  await manager
+    .getRepository(Operacao)
+    .upsert({ empresaId, codigo: 'INJ', descricao: 'Injecao plastica', ativo: true }, [
+      'empresaId',
+      'codigo',
+    ]);
+  await manager
+    .getRepository(TipoOcorrencia)
+    .upsert({ empresaId, codigo: 'PARADA', descricao: 'Parada de maquina', ativo: true }, [
+      'empresaId',
+      'codigo',
+    ]);
+  await manager
+    .getRepository(Fornecedor)
+    .upsert({ empresaId, nome: 'Fornecedor Padrao', documento: '00000000000000', ativo: true }, [
+      'empresaId',
+      'documento',
+    ]);
+  await manager.getRepository(Resina).upsert(
+    {
+      empresaId,
+      codigo: 'PP-HOMO',
+      descricao: 'Polipropileno homopolimero',
+      fabricante: 'Padrao',
+      ativo: true,
+    },
+    ['empresaId', 'codigo'],
+  );
+  await manager
+    .getRepository(Item)
+    .upsert({ empresaId, codigo: 'ITEM-001', descricao: 'Item de desenvolvimento', ativo: true }, [
+      'empresaId',
+      'codigo',
+    ]);
+  await manager
+    .getRepository(Molde)
+    .upsert(
+      { empresaId, codigo: 'MOLDE-001', descricao: 'Molde de desenvolvimento', ativo: true },
+      ['empresaId', 'codigo'],
+    );
 }
 
 main().catch((error) => {
