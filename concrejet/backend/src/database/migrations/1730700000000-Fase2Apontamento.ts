@@ -73,14 +73,18 @@ export class Fase2Apontamento1730700000000 implements MigrationInterface {
       )
       WHERE ("status" <> 'cancelado')
     `);
-    await queryRunner.query(`CREATE INDEX "idx_apontamento_maquina_inicio" ON "apontamento" ("maquina_id", "inicio_em")`);
+    await queryRunner.query(
+      `CREATE INDEX "idx_apontamento_maquina_inicio" ON "apontamento" ("maquina_id", "inicio_em")`,
+    );
     await queryRunner.query(`CREATE INDEX "idx_apontamento_status" ON "apontamento" ("status")`);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP INDEX IF EXISTS "idx_apontamento_status"`);
     await queryRunner.query(`DROP INDEX IF EXISTS "idx_apontamento_maquina_inicio"`);
-    await queryRunner.query(`ALTER TABLE "apontamento" DROP CONSTRAINT IF EXISTS "excl_apontamento_maquina_periodo"`);
+    await queryRunner.query(
+      `ALTER TABLE "apontamento" DROP CONSTRAINT IF EXISTS "excl_apontamento_maquina_periodo"`,
+    );
     await queryRunner.query(`DROP TABLE IF EXISTS "apontamento"`);
     await queryRunner.query(`
       ALTER TABLE "configuracao_item_molde"

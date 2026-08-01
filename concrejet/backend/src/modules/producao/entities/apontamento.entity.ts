@@ -149,13 +149,25 @@ export class Apontamento extends BaseEntity {
   @Column({ name: 'ciclo_padrao_aplicado_s', type: 'numeric', precision: 8, scale: 2 })
   cicloPadraoAplicadoS!: string;
 
-  @Column({ name: 'ciclo_custo_aplicado_s', type: 'numeric', precision: 8, scale: 2, nullable: true })
+  @Column({
+    name: 'ciclo_custo_aplicado_s',
+    type: 'numeric',
+    precision: 8,
+    scale: 2,
+    nullable: true,
+  })
   cicloCustoAplicadoS?: string | null;
 
   @Column({ name: 'limite_perda_aplicado_pct', type: 'numeric', precision: 5, scale: 2 })
   limitePerdaAplicadoPct!: string;
 
-  @Column({ name: 'custo_resina_aplicado_kg', type: 'numeric', precision: 12, scale: 4, nullable: true })
+  @Column({
+    name: 'custo_resina_aplicado_kg',
+    type: 'numeric',
+    precision: 12,
+    scale: 4,
+    nullable: true,
+  })
   custoResinaAplicadoKg?: string | null;
 
   @Column({ name: 'motivo_cancelamento', type: 'text', nullable: true })

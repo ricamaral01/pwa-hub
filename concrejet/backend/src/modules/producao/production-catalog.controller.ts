@@ -34,7 +34,9 @@ export class ProductionCatalogController {
   }
 
   @Get('occurrence-types')
-  occurrenceTypes(@CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>) {
+  occurrenceTypes(
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+  ) {
     return this.catalog.getOccurrenceTypes(user);
   }
 }

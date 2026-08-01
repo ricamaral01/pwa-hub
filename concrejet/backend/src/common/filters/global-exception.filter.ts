@@ -46,7 +46,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (!isHttpException) {
       // Nunca vazar stack trace ou detalhes internos para o cliente.
       this.logger.error(
-        `Erro não tratado: ${(exception as Error)?.message ?? exception}`,
+        `Erro nao tratado [${request.correlationId ?? 'sem-correlation-id'}] ${request.method} ${request.url}: ${(exception as Error)?.message ?? exception}`,
         (exception as Error)?.stack,
       );
     }

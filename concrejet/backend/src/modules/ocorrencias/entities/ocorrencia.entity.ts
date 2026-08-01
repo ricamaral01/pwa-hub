@@ -10,11 +10,7 @@ import { Colaborador, TipoOcorrencia } from '../../cadastros/entities';
 export type OccurrenceClassification = 'produtiva' | 'nao_produtiva';
 export type OccurrenceScheduling = 'programada' | 'nao_programada';
 export type OccurrenceStatus =
-  | 'aberta'
-  | 'aguardando_acao'
-  | 'aguardando_aprovacao'
-  | 'encerrada'
-  | 'cancelada';
+  'aberta' | 'aguardando_acao' | 'aguardando_aprovacao' | 'encerrada' | 'cancelada';
 
 @Entity('ocorrencia')
 @Index('idx_ocorrencia_empresa', ['empresaId'])

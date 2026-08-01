@@ -40,7 +40,8 @@ apiClient.interceptors.response.use(
     if (status === 401) {
       const url = error.config?.url ?? '';
       const isLoginEndpoint = url.includes('/auth/login');
-      if (!isLoginEndpoint) {
+      const isAdminBootstrap = url.includes('/auth/me');
+      if (!isLoginEndpoint && !isAdminBootstrap) {
         // Redireciona para login sem perder estado local (IndexedDB persiste)
         window.dispatchEvent(new CustomEvent('concretrack:session-expired'));
       }
@@ -72,10 +73,24 @@ export function isApiError(error: unknown): error is AxiosError {
 
 export function getApiErrorMessage(error: unknown): string {
   if (isApiError(error)) {
-    const data = error.response?.data as { message?: string } | undefined;
-    if (typeof data?.message === 'string') return data.message;
-    if (error.code === 'ECONNABORTED') return 'Tempo limite de conexão esgotado.';
-    if (!error.response) return 'Sem conexão com o servidor.';
+    const data = error.response?.data as
+      { message?: string | string[]; correlationId?: string } | undefined;
+    const status = error.response?.status;
+    const serverMessage = Array.isArray(data?.message) ? data.message.join(' ') : data?.message;
+    const reference = data?.correlationId ? ` Referencia: ${data.correlationId}.` : '';
+
+    if (status === 400 || status === 422)
+      return serverMessage ?? 'Dados invalidos. Revise os campos informados.';
+    if (status === 401) return serverMessage ?? 'Sessao expirada. Faca login novamente.';
+    if (status === 403) return serverMessage ?? 'Usuario sem permissao para esta operacao.';
+    if (status === 404) return serverMessage ?? 'Recurso ou configuracao nao encontrada.';
+    if (status === 409)
+      return serverMessage ?? 'Conflito de dados. Atualize a tela e tente novamente.';
+    if (status && status >= 500) return `Falha inesperada no servidor.${reference}`;
+
+    if (typeof serverMessage === 'string') return serverMessage;
+    if (error.code === 'ECONNABORTED') return 'Tempo limite de conexao esgotado.';
+    if (!error.response) return 'Sem conexao com o servidor.';
   }
   return 'Erro inesperado. Tente novamente.';
 }

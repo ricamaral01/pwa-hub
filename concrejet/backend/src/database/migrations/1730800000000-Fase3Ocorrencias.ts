@@ -84,8 +84,12 @@ export class Fase3Ocorrencias1730800000000 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP TABLE IF EXISTS "ocorrencia"`);
-    await queryRunner.query(`ALTER TABLE "tipo_ocorrencia" DROP CONSTRAINT IF EXISTS "ck_tipo_ocorrencia_programacao"`);
-    await queryRunner.query(`ALTER TABLE "tipo_ocorrencia" DROP CONSTRAINT IF EXISTS "ck_tipo_ocorrencia_classificacao"`);
+    await queryRunner.query(
+      `ALTER TABLE "tipo_ocorrencia" DROP CONSTRAINT IF EXISTS "ck_tipo_ocorrencia_programacao"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "tipo_ocorrencia" DROP CONSTRAINT IF EXISTS "ck_tipo_ocorrencia_classificacao"`,
+    );
     await queryRunner.query(`
       ALTER TABLE "tipo_ocorrencia"
       DROP COLUMN IF EXISTS "exige_aprovacao",

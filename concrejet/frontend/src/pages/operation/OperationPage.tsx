@@ -29,7 +29,10 @@ type Catalog = {
     item: { id: string; codigo: string; descricao: string };
     molde: { id: string; codigo: string; descricao: string };
   }>;
-  moldsByItem: Record<string, Array<{ id: string; codigo: string; descricao: string; configuracaoId: string }>>;
+  moldsByItem: Record<
+    string,
+    Array<{ id: string; codigo: string; descricao: string; configuracaoId: string }>
+  >;
   lots: Array<{
     id: string;
     codigo: string;
@@ -45,6 +48,17 @@ type CalcResult = {
   perdaSemGalhoKg: number;
   perdaPct: number | null;
 };
+type CurrentAppointment = {
+  id: string;
+  versao: number;
+  ordemProducaoId: string;
+  itemId: string;
+  moldeId: string;
+  configuracaoItemMoldeId: string;
+  loteResinaId: string;
+  operacaoId: string;
+  inicioEm: string;
+} | null;
 
 const fallbackDeviceId = sessionStorage.getItem('concretrack.deviceId') || 'DEV-TABLET-01';
 
@@ -61,6 +75,7 @@ export default function OperationPage() {
   const { enqueue, pendingCount } = useQueue();
   const { isOnline } = useOnlineStatus();
   const setOperatorToken = useSessionStore((state) => state.setOperatorToken);
+  const setOperatorSession = useSessionStore((state) => state.setOperator);
   const [selection, setSelection] = useState({
     operacaoId: '',
     ordemProducaoId: '',
@@ -82,15 +97,46 @@ export default function OperationPage() {
     void restoreLocalState();
   }, []);
 
-  const selectedOrder = catalog?.productionOrders.find((item) => item.id === selection.ordemProducaoId);
+  const selectedOrder = catalog?.productionOrders.find(
+    (item) => item.id === selection.ordemProducaoId,
+  );
   const availableMolds = selection.itemId ? (catalog?.moldsByItem[selection.itemId] ?? []) : [];
   const calc = useMemo<CalcResult>(() => calculateLocal(152.2, quantities), [quantities]);
   const perdaState =
-    calc.perdaPct === null ? 'atencao' : calc.perdaPct >= 12 ? 'parada' : calc.perdaPct >= 7 ? 'atencao' : 'info';
+    calc.perdaPct === null
+      ? 'atencao'
+      : calc.perdaPct >= 12
+        ? 'parada'
+        : calc.perdaPct >= 7
+          ? 'atencao'
+          : 'info';
 
   async function restoreLocalState() {
     const active = await db.activeAppointment.get(1);
     const savedQuantities = await db.appointmentQuantities.get(1);
+    const storedSession = useSessionStore.getState();
+    const storedOperator = storedSession.operator;
+    const storedToken = storedSession.operatorToken;
+    if (storedOperator && storedToken) {
+      const restoredOperator = { ...storedOperator, token: storedToken };
+      setOperator(restoredOperator);
+      try {
+        const catalogResponse = await apiClient.get<Catalog>('/production-catalog', {
+          headers: { Authorization: `Bearer ${storedToken}` },
+        });
+        setCatalog(catalogResponse.data);
+      } catch (err) {
+        storedSession.clearOperator();
+        setOperator(null);
+        setStep('login');
+        setError(getApiErrorMessage(err));
+        return;
+      }
+    } else if (active?.inicioEm) {
+      setStep('login');
+      setError('Sessao operacional expirada. Faca login novamente para recuperar o apontamento.');
+      return;
+    }
     if (active?.inicioEm) {
       setRecordId(active.localUuid);
       setSelection((state) => ({
@@ -101,6 +147,8 @@ export default function OperationPage() {
         loteResinaId: active.loteResinaId ?? '',
       }));
       setStep('running');
+    } else if (storedOperator && storedToken) {
+      setStep('opening');
     }
     if (savedQuantities) {
       setQuantities({
@@ -130,12 +178,20 @@ export default function OperationPage() {
       }>('/auth/operator-login', { matricula, pin, dispositivoId: fallbackDeviceId });
       const logged = { ...response.operador, token: response.token };
       setOperator(logged);
+      setOperatorSession({
+        id: logged.id,
+        nome: logged.nome,
+        matricula: logged.matricula,
+        perfis: [],
+        iniciadaEm: new Date().toISOString(),
+      });
       setOperatorToken(logged.token);
       setPin('');
       const catalogResponse = await apiClient.get<Catalog>('/production-catalog', {
         headers: { Authorization: `Bearer ${logged.token}` },
       });
       setCatalog(catalogResponse.data);
+      await restoreCurrentAppointment(logged.token, catalogResponse.data);
       await db.activeSession.put({
         id: 1,
         operadorId: logged.id,
@@ -144,7 +200,7 @@ export default function OperationPage() {
         iniciadaEm: new Date().toISOString(),
         ultimaAtividadeEm: new Date().toISOString(),
       });
-      setStep('opening');
+      setStep((current) => (current === 'running' ? 'running' : 'opening'));
     } catch (err) {
       setError(getApiErrorMessage(err));
     }
@@ -172,7 +228,10 @@ export default function OperationPage() {
         setError('Salvo neste dispositivo - aguardando sincronizacao.');
         return;
       }
-      const response = await authorizedPost<{ id: string; versao: number }>('/production-records', payload);
+      const response = await authorizedPost<{ id: string; versao: number }>(
+        '/production-records',
+        payload,
+      );
       await persistActiveAppointment(response.id);
       setRecordId(response.id);
       setVersion(response.versao);
@@ -180,6 +239,55 @@ export default function OperationPage() {
     } catch (err) {
       setError(getApiErrorMessage(err));
     }
+  }
+
+  async function restoreCurrentAppointment(token: string, currentCatalog: Catalog) {
+    const response = await apiClient.get<CurrentAppointment>(
+      '/production-records/current-by-device',
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    const current = response.data;
+    if (!current) return;
+    const order = currentCatalog.productionOrders.find(
+      (item) => item.id === current.ordemProducaoId,
+    );
+    const lot = currentCatalog.lots.find((item) => item.id === current.loteResinaId);
+    const mold = currentCatalog.moldsByItem[current.itemId]?.find(
+      (item) => item.id === current.moldeId,
+    );
+    setRecordId(current.id);
+    setVersion(current.versao);
+    setSelection({
+      operacaoId: current.operacaoId,
+      ordemProducaoId: current.ordemProducaoId,
+      itemId: current.itemId,
+      moldeId: current.moldeId,
+      configuracaoItemMoldeId: current.configuracaoItemMoldeId,
+      loteResinaId: current.loteResinaId,
+    });
+    await db.activeAppointment.put({
+      id: 1,
+      localUuid: current.id,
+      ordemProducaoId: current.ordemProducaoId,
+      ordemProducaoNumero: order?.numero ?? null,
+      itemId: current.itemId,
+      itemCodigo: order?.item.codigo ?? null,
+      itemDescricao: order?.item.descricao ?? null,
+      moldeId: current.moldeId,
+      moldeCodigo: mold?.codigo ?? null,
+      cavidades: null,
+      loteResinaId: current.loteResinaId,
+      loteNumero: lot?.codigo ?? null,
+      resinaDescricao: lot?.resina?.descricao ?? null,
+      fornecedor: lot?.fornecedor?.nome ?? null,
+      tipoResina: lot?.resina?.codigo ?? null,
+      saldoLote: lot?.saldoAtualKg ?? null,
+      inicioEm: current.inicioEm,
+      state: 'in_progress',
+    });
+    setStep('running');
   }
 
   async function finish() {
@@ -198,7 +306,10 @@ export default function OperationPage() {
         setStep('opening');
         return;
       }
-      const response = await authorizedPost<{ versao: number }>(`/production-records/${recordId}/finish`, payload);
+      const response = await authorizedPost<{ versao: number }>(
+        `/production-records/${recordId}/finish`,
+        payload,
+      );
       setVersion(response.versao);
       await db.activeAppointment.delete(1);
       setStep('opening');
@@ -222,10 +333,14 @@ export default function OperationPage() {
       cavidades: null,
       loteResinaId: selection.loteResinaId,
       loteNumero: catalog?.lots.find((item) => item.id === selection.loteResinaId)?.codigo ?? null,
-      resinaDescricao: catalog?.lots.find((item) => item.id === selection.loteResinaId)?.resina?.descricao ?? null,
-      fornecedor: catalog?.lots.find((item) => item.id === selection.loteResinaId)?.fornecedor?.nome ?? null,
-      tipoResina: catalog?.lots.find((item) => item.id === selection.loteResinaId)?.resina?.codigo ?? null,
-      saldoLote: catalog?.lots.find((item) => item.id === selection.loteResinaId)?.saldoAtualKg ?? null,
+      resinaDescricao:
+        catalog?.lots.find((item) => item.id === selection.loteResinaId)?.resina?.descricao ?? null,
+      fornecedor:
+        catalog?.lots.find((item) => item.id === selection.loteResinaId)?.fornecedor?.nome ?? null,
+      tipoResina:
+        catalog?.lots.find((item) => item.id === selection.loteResinaId)?.resina?.codigo ?? null,
+      saldoLote:
+        catalog?.lots.find((item) => item.id === selection.loteResinaId)?.saldoAtualKg ?? null,
       inicioEm: new Date().toISOString(),
       state: 'in_progress',
     });
@@ -250,7 +365,8 @@ export default function OperationPage() {
     }
     setQuantities((values) => ({
       ...values,
-      [activeField]: values[activeField] === '0' ? digitValue : `${values[activeField]}${digitValue}`,
+      [activeField]:
+        values[activeField] === '0' ? digitValue : `${values[activeField]}${digitValue}`,
     }));
   }
 
@@ -267,12 +383,23 @@ export default function OperationPage() {
 
   const header = (
     <MachineHeader
-      machine={catalog?.machine ? `${catalog.machine.codigo} - ${catalog.machine.nome}` : 'INJ-01 - Injetora 01'}
-      status={<StatusLamp variant={step === 'running' ? 'ok' : 'ocioso'}>{step === 'running' ? 'Rodando' : 'Aguardando'}</StatusLamp>}
+      machine={
+        catalog?.machine
+          ? `${catalog.machine.codigo} - ${catalog.machine.nome}`
+          : 'INJ-01 - Injetora 01'
+      }
+      status={
+        <StatusLamp variant={step === 'running' ? 'ok' : 'ocioso'}>
+          {step === 'running' ? 'Rodando' : 'Aguardando'}
+        </StatusLamp>
+      }
       right={
         <>
           <OfflineIndicator online={isOnline} pending={pendingCount} />
-          <SyncIndicator state={pendingCount ? 'pendente' : 'sincronizado'} pending={pendingCount} />
+          <SyncIndicator
+            state={pendingCount ? 'pendente' : 'sincronizado'}
+            pending={pendingCount}
+          />
           {operator ? <OperatorHeader name={operator.nome} detail={operator.matricula} /> : null}
         </>
       }
@@ -289,7 +416,7 @@ export default function OperationPage() {
           {error ? <IndustrialAlert variant="parada">{error}</IndustrialAlert> : null}
         </section>
         <section className="tablet-panel">
-          <NumericKeypad onDigit={digit} onBackspace={backspace} onConfirm={login} />
+          <NumericKeypad onDigit={digit} onBackspace={backspace} onConfirm={() => void login()} />
         </section>
       </TabletShell>
     );
@@ -310,10 +437,15 @@ export default function OperationPage() {
       }
       footer={
         <TabletActionBar>
-          <button className="primary" type="button" disabled={step === 'running'} onClick={start}>
+          <button
+            className="primary"
+            type="button"
+            disabled={step === 'running'}
+            onClick={() => void start()}
+          >
             Iniciar
           </button>
-          <button type="button" disabled={step !== 'running'} onClick={finish}>
+          <button type="button" disabled={step !== 'running'} onClick={() => void finish()}>
             Concluir
           </button>
           <button type="button" onClick={() => setStep('opening')}>
@@ -344,8 +476,9 @@ export default function OperationPage() {
               itemId: ordem?.item.id ?? '',
               moldeId: ordem?.molde.id ?? '',
               configuracaoItemMoldeId:
-                catalog?.moldsByItem[ordem?.item.id ?? '']?.find((item) => item.id === ordem?.molde.id)
-                  ?.configuracaoId ?? '',
+                catalog?.moldsByItem[ordem?.item.id ?? '']?.find(
+                  (item) => item.id === ordem?.molde.id,
+                )?.configuracaoId ?? '',
             }));
           }}
           options={(catalog?.productionOrders ?? []).map((item) => ({
@@ -357,7 +490,9 @@ export default function OperationPage() {
         {selectedOrder ? (
           <div className="kpi-card">
             <span>Item</span>
-            <strong>{selectedOrder.item.codigo} - {selectedOrder.item.descricao}</strong>
+            <strong>
+              {selectedOrder.item.codigo} - {selectedOrder.item.descricao}
+            </strong>
           </div>
         ) : null}
         <TouchSelect
@@ -367,7 +502,8 @@ export default function OperationPage() {
             setSelection((state) => ({
               ...state,
               moldeId: id,
-              configuracaoItemMoldeId: availableMolds.find((item) => item.id === id)?.configuracaoId ?? '',
+              configuracaoItemMoldeId:
+                availableMolds.find((item) => item.id === id)?.configuracaoId ?? '',
             }))
           }
           options={availableMolds.map((item) => ({
@@ -395,14 +531,33 @@ export default function OperationPage() {
           galhoKg: 'Galho kg',
           outrasPerdasKg: 'Outras kg',
         }).map(([key, label]) => (
-          <NumericField key={key} label={label} value={quantities[key]} focused={activeField === key} onFocus={() => setActiveField(key)} />
+          <NumericField
+            key={key}
+            label={label}
+            value={quantities[key]}
+            focused={activeField === key}
+            onFocus={() => setActiveField(key)}
+          />
         ))}
       </section>
       <section className="tablet-panel">
-        <NumericKeypad onDigit={digit} onBackspace={backspace} allowDecimal={activeField.endsWith('Kg')} />
-        <div className="kpi-card"><span>Injecao util</span><strong className="num">{calc.injecaoUtilKg.toFixed(2)} kg</strong></div>
-        <div className="kpi-card"><span>Perda total</span><strong className="num">{calc.perdaTotalKg.toFixed(2)} kg</strong></div>
-        <div className="kpi-card"><span>Perda sem galho</span><strong className="num">{calc.perdaSemGalhoKg.toFixed(2)} kg</strong></div>
+        <NumericKeypad
+          onDigit={digit}
+          onBackspace={backspace}
+          allowDecimal={activeField.endsWith('Kg')}
+        />
+        <div className="kpi-card">
+          <span>Injecao util</span>
+          <strong className="num">{calc.injecaoUtilKg.toFixed(2)} kg</strong>
+        </div>
+        <div className="kpi-card">
+          <span>Perda total</span>
+          <strong className="num">{calc.perdaTotalKg.toFixed(2)} kg</strong>
+        </div>
+        <div className="kpi-card">
+          <span>Perda sem galho</span>
+          <strong className="num">{calc.perdaSemGalhoKg.toFixed(2)} kg</strong>
+        </div>
       </section>
     </TabletShell>
   );

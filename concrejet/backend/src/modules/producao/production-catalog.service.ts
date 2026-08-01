@@ -99,7 +99,11 @@ export class ProductionCatalogService {
           ? { id: lote.resina.id, codigo: lote.resina.codigo, descricao: lote.resina.descricao }
           : null,
         fornecedor: lote.fornecedor
-          ? { id: lote.fornecedor.id, nome: lote.fornecedor.nome, documento: lote.fornecedor.documento }
+          ? {
+              id: lote.fornecedor.id,
+              nome: lote.fornecedor.nome,
+              documento: lote.fornecedor.documento,
+            }
           : null,
       })),
       cache: {
@@ -137,8 +141,22 @@ export class ProductionCatalogService {
     const now = new Date();
     const config = await this.dataSource.getRepository(ConfiguracaoItemMolde).findOne({
       where: [
-        { empresaId: user.empresaId, itemId, moldeId, ativo: true, vigenciaInicio: LessThanOrEqual(now), vigenciaFim: IsNull() },
-        { empresaId: user.empresaId, itemId, moldeId, ativo: true, vigenciaInicio: LessThanOrEqual(now), vigenciaFim: MoreThanOrEqual(now) },
+        {
+          empresaId: user.empresaId,
+          itemId,
+          moldeId,
+          ativo: true,
+          vigenciaInicio: LessThanOrEqual(now),
+          vigenciaFim: IsNull(),
+        },
+        {
+          empresaId: user.empresaId,
+          itemId,
+          moldeId,
+          ativo: true,
+          vigenciaInicio: LessThanOrEqual(now),
+          vigenciaFim: MoreThanOrEqual(now),
+        },
       ],
     });
     if (!config) throw new BadRequestException('Item sem configuracao vigente para o molde.');
@@ -149,26 +167,40 @@ export class ProductionCatalogService {
     const now = new Date();
     return this.dataSource.getRepository(ConfiguracaoItemMolde).find({
       where: [
-        { empresaId: user.empresaId, itemId, ativo: true, vigenciaInicio: LessThanOrEqual(now), vigenciaFim: IsNull() },
-        { empresaId: user.empresaId, itemId, ativo: true, vigenciaInicio: LessThanOrEqual(now), vigenciaFim: MoreThan(now) },
+        {
+          empresaId: user.empresaId,
+          itemId,
+          ativo: true,
+          vigenciaInicio: LessThanOrEqual(now),
+          vigenciaFim: IsNull(),
+        },
+        {
+          empresaId: user.empresaId,
+          itemId,
+          ativo: true,
+          vigenciaInicio: LessThanOrEqual(now),
+          vigenciaFim: MoreThan(now),
+        },
       ],
       relations: ['molde'],
     });
   }
 
   private groupMolds(configs: ConfiguracaoItemMolde[]) {
-    return configs.reduce<Record<string, Array<{ id: string; codigo: string; descricao: string; configuracaoId: string }>>>(
-      (acc, config) => {
-        acc[config.itemId] ??= [];
-        acc[config.itemId].push({
-          id: config.moldeId,
-          codigo: config.molde.codigo,
-          descricao: config.molde.descricao,
-          configuracaoId: config.id,
-        });
-        return acc;
-      },
-      {},
-    );
+    return configs.reduce<
+      Record<
+        string,
+        Array<{ id: string; codigo: string; descricao: string; configuracaoId: string }>
+      >
+    >((acc, config) => {
+      acc[config.itemId] ??= [];
+      acc[config.itemId].push({
+        id: config.moldeId,
+        codigo: config.molde.codigo,
+        descricao: config.molde.descricao,
+        configuracaoId: config.id,
+      });
+      return acc;
+    }, {});
   }
 }

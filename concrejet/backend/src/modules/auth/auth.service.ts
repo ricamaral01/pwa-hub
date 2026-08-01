@@ -1,5 +1,10 @@
 import { randomUUID } from 'crypto';
-import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,7 +28,10 @@ export interface OperatorLoginResult {
   dispositivo: { id: string; maquinaId: string };
 }
 
-const operatorSessions = new Map<string, { operadorId: string; dispositivoId: string; expiraEm: Date }>();
+const operatorSessions = new Map<
+  string,
+  { operadorId: string; dispositivoId: string; expiraEm: Date }
+>();
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{12}$/i;
 
 export interface ValidOperatorSession {
@@ -202,7 +210,11 @@ export class AuthService {
 
     const token = randomUUID();
     const expiraEm = new Date(Date.now() + 8 * 60 * 60_000);
-    operatorSessions.set(token, { operadorId: colaborador.id, dispositivoId: dispositivo.id, expiraEm });
+    operatorSessions.set(token, {
+      operadorId: colaborador.id,
+      dispositivoId: dispositivo.id,
+      expiraEm,
+    });
 
     await this.auditoriaService.registrar({
       entidade: 'colaborador',

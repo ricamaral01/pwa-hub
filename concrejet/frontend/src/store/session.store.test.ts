@@ -75,6 +75,23 @@ describe('useSessionStore — máquina de estados', () => {
     expect(result.current.state).toBe('IDLE');
   });
 
+  it('mantem sessao operacional em sessionStorage para reload e rota de parada', () => {
+    const { result } = renderHook(() => useSessionStore());
+    act(() =>
+      result.current.setOperator({
+        id: 'op-001',
+        nome: 'Operador',
+        matricula: 'OP001',
+        perfis: [],
+        iniciadaEm: '2026-08-01T12:00:00.000Z',
+      }),
+    );
+    act(() => result.current.setOperatorToken('token-operacional'));
+
+    expect(sessionStorage.getItem('concretrack-session')).toContain('token-operacional');
+    expect(sessionStorage.getItem('concretrack-session')).toContain('OP001');
+  });
+
   it('clearOperator: limpa operador e volta para NO_OPERATOR se device configurado', () => {
     const { result } = renderHook(() => useSessionStore());
     act(() =>

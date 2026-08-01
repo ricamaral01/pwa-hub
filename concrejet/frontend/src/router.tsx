@@ -34,15 +34,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: (
-      <DeviceActivationGuard>
-        <OperatorGuard>
-          <Suspense fallback={<PageLoader />}>
-            <OperationPage />
-          </Suspense>
-        </OperatorGuard>
-      </DeviceActivationGuard>
-    ),
+    element: <RootEntry />,
   },
   {
     path: '/stop',
@@ -188,5 +180,25 @@ function PageLoader() {
       <div className="spinner spinner-lg" />
       <span style={{ color: 'var(--text-muted)', fontSize: 'var(--text-lg)' }}>Carregando…</span>
     </div>
+  );
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+function RootEntry() {
+  const host = window.location.hostname;
+  const desktopHost = host === 'localhost' || host === '127.0.0.1' || host === '::1';
+
+  if (desktopHost) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
+  return (
+    <DeviceActivationGuard>
+      <OperatorGuard>
+        <Suspense fallback={<PageLoader />}>
+          <OperationPage />
+        </Suspense>
+      </OperatorGuard>
+    </DeviceActivationGuard>
   );
 }

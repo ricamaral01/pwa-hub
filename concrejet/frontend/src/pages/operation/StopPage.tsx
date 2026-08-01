@@ -7,7 +7,14 @@ import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 import { useQueue } from '@/hooks/useQueue';
 import { useSessionStore } from '@/store/session.store';
 import { IndustrialAlert, OfflineIndicator, SyncIndicator } from '@/ui/feedback';
-import { MachineHeader, OperatorHeader, StatusLamp, TabletActionBar, TabletShell, TouchSelect } from '@/ui/tablet';
+import {
+  MachineHeader,
+  OperatorHeader,
+  StatusLamp,
+  TabletActionBar,
+  TabletShell,
+  TouchSelect,
+} from '@/ui/tablet';
 
 type OccurrenceType = {
   id: string;
@@ -30,6 +37,7 @@ type Occurrence = {
 
 export default function StopPage() {
   const token = useSessionStore((state) => state.operatorToken);
+  const operator = useSessionStore((state) => state.operator);
   const [types, setTypes] = useState<OccurrenceType[]>([]);
   const [active, setActive] = useState<Occurrence | null>(null);
   const [apontamentoId, setApontamentoId] = useState('');
@@ -44,9 +52,12 @@ export default function StopPage() {
 
   useEffect(() => {
     const interval = setInterval(() => setNow(Date.now()), 1000);
-    void load();
+    if (token) void load();
+    else setError('Sessao operacional expirada. Faca login novamente para registrar parada.');
     return () => clearInterval(interval);
-  }, []);
+    // load usa o token reidratado desta renderizacao; incluir a funcao causaria recarga a cada render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   const duration = useMemo(() => {
     if (!active?.inicioEm) return '00:00:00';
@@ -62,9 +73,12 @@ export default function StopPage() {
       ]);
       setApontamentoId(localAppointment?.localUuid ?? '');
       setActive(current);
-      const response = await apiClient.get<{ data: OccurrenceType[] }>('/production-catalog/occurrence-types', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await apiClient.get<{ data: OccurrenceType[] }>(
+        '/production-catalog/occurrence-types',
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       setTypes(response.data.data);
     } catch (err) {
       setError(getApiErrorMessage(err));
@@ -72,12 +86,16 @@ export default function StopPage() {
   }
 
   async function authorizedGet<T>(url: string): Promise<T> {
-    const response = await apiClient.get<T>(url, { headers: { Authorization: `Bearer ${token ?? ''}` } });
+    const response = await apiClient.get<T>(url, {
+      headers: { Authorization: `Bearer ${token ?? ''}` },
+    });
     return response.data;
   }
 
   async function authorizedPost<T>(url: string, payload: unknown): Promise<T> {
-    const response = await apiClient.post<T>(url, payload, { headers: { Authorization: `Bearer ${token ?? ''}` } });
+    const response = await apiClient.post<T>(url, payload, {
+      headers: { Authorization: `Bearer ${token ?? ''}` },
+    });
     return response.data;
   }
 
@@ -106,7 +124,15 @@ export default function StopPage() {
         inicioEm,
         acaoCorretiva: acaoCorretiva || null,
       });
-      setActive({ id: localId, versao: 1, inicioEm, status: 'aberta', descricao, causa, acaoCorretiva });
+      setActive({
+        id: localId,
+        versao: 1,
+        inicioEm,
+        status: 'aberta',
+        descricao,
+        causa,
+        acaoCorretiva,
+      });
       setError('Salvo neste dispositivo - aguardando sincronizacao.');
       return;
     }
@@ -116,7 +142,13 @@ export default function StopPage() {
 
   async function finishStop() {
     if (!active) return;
-    const payload = { version: active.versao, fimEm: new Date().toISOString(), causa, acaoCorretiva, idempotencyKey: uuidv4() };
+    const payload = {
+      version: active.versao,
+      fimEm: new Date().toISOString(),
+      causa,
+      acaoCorretiva,
+      idempotencyKey: uuidv4(),
+    };
     if (!isOnline) {
       await enqueue('ocorrencia', { operation: 'finish', id: active.id, payload }, active.versao);
       await db.activeStop.delete(1);
@@ -135,12 +167,22 @@ export default function StopPage() {
       header={
         <MachineHeader
           machine="Posto de injecao"
-          status={<StatusLamp variant={active ? 'parada' : 'ok'}>{active ? `Parada ${duration}` : 'Sem parada'}</StatusLamp>}
+          status={
+            <StatusLamp variant={active ? 'parada' : 'ok'}>
+              {active ? `Parada ${duration}` : 'Sem parada'}
+            </StatusLamp>
+          }
           right={
             <>
               <OfflineIndicator online={isOnline} pending={pendingCount} />
-              <SyncIndicator state={pendingCount ? 'pendente' : 'sincronizado'} pending={pendingCount} />
-              <OperatorHeader name="Operador" detail="posto" />
+              <SyncIndicator
+                state={pendingCount ? 'pendente' : 'sincronizado'}
+                pending={pendingCount}
+              />
+              <OperatorHeader
+                name={operator?.nome ?? 'Operador'}
+                detail={operator?.matricula ?? 'posto'}
+              />
             </>
           }
         />
@@ -148,7 +190,12 @@ export default function StopPage() {
       alert={error ? <IndustrialAlert variant="atencao">{error}</IndustrialAlert> : null}
       footer={
         <TabletActionBar>
-          <button type="button" className="danger" disabled={Boolean(active)} onClick={() => void startStop()}>
+          <button
+            type="button"
+            className="danger"
+            disabled={Boolean(active)}
+            onClick={() => void startStop()}
+          >
             Iniciar parada
           </button>
           <button type="button" disabled={!active} onClick={() => void finishStop()}>
@@ -163,7 +210,10 @@ export default function StopPage() {
           label="Tipo"
           value={tipoOcorrenciaId}
           onChange={setTipoOcorrenciaId}
-          options={types.map((item) => ({ id: item.id, title: `${item.codigo} - ${item.descricao}` }))}
+          options={types.map((item) => ({
+            id: item.id,
+            title: `${item.codigo} - ${item.descricao}`,
+          }))}
         />
       </section>
       <section className="tablet-panel">
@@ -177,7 +227,10 @@ export default function StopPage() {
         </label>
         <label>
           Acao corretiva
-          <textarea value={acaoCorretiva} onChange={(event) => setAcaoCorretiva(event.target.value)} />
+          <textarea
+            value={acaoCorretiva}
+            onChange={(event) => setAcaoCorretiva(event.target.value)}
+          />
         </label>
         <div className="kpi-card">
           <span>Status</span>
