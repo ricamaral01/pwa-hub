@@ -12,3 +12,5 @@ O endpoint `/analytics/oee` retorna os indicadores e a memoria de calculo com pe
 Versao da formula: `oee-v1-2026-08-01`.
 
 Quando nao existe calendario aplicavel para o periodo, o OEE nao assume 24h nem o intervalo bruto da consulta: os indicadores ficam nulos e a memoria retorna `configuracaoAusente`/inconsistencias para ajuste do calendario produtivo.
+
+Validacao 2026-08-01: a pagina `/admin/analytics/oee` consome `/analytics/oee` e `/analytics/oee/memory`, apresenta cards de Disponibilidade, Performance, Qualidade e OEE, comparacao por maquina, evolucao temporal e memoria em interface tabular. O JSON tecnico opcional mascara UUIDs.

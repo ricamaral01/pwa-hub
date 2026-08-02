@@ -11,3 +11,5 @@ A migration `1730900000000-Fases5A7EstoqueAnalyticsImportacao` cria views SQL re
 
 Nenhum agregado e fonte da verdade. Relatorios e dashboards usam essas views ou agregacoes SQL diretas.
 
+Validacao 2026-08-01: os endpoints de analytics agregam no PostgreSQL, aplicam filtros de periodo/relacionamentos no backend, limitam linhas detalhadas e expõem `/analytics/reconciliation` para comparar soma direta e valores apresentados pela API.
+
