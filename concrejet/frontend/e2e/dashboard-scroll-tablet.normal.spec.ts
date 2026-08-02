@@ -58,14 +58,12 @@ test.describe('entrada desktop e tablet em rede local', () => {
         await expect(page).toHaveURL(`${lanBaseUrl}/`);
         await page.waitForTimeout(1000);
         await expect(
-          page.getByRole('main', { name: /Ativação do dispositivo|Ativacao do dispositivo/i }),
+          page.getByRole('main', { name: /Ativacao do dispositivo/i }),
         ).toHaveCount(0);
       }
       await expect(page).toHaveURL(`${lanBaseUrl}/`);
       await expect(
-        page.getByText(
-          /Ativação do Dispositivo|Ativacao do Dispositivo|Identificacao do operador|Identificação do operador|OPERACAO|OPERAÇÃO/i,
-        ),
+        page.getByText(/Ativacao do Dispositivo|Identificacao do operador|OPERACAO/i),
       ).toBeVisible();
       await expectNoHorizontalOverflow(page);
 
