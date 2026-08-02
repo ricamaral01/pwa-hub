@@ -1,5 +1,21 @@
 # Handoff
 
+## 2026-08-01 - Codex - Indicadores, dashboards e relatorios
+
+Branch/worktree: `fix/indicadores-dashboard` em `C:\Users\Admin\Documents\pwa-hub-indicadores\concrejet`.
+
+Escopo focado em Fase 6/analytics, sem Mega ERP, VPS, Fase 8 ou alteracao do fluxo operacional tablet.
+
+Implementado seed analitico manual `npm run seed:analytics`, bloqueado em `NODE_ENV=production`, com dados sinteticos recentes para duas maquinas, dois operadores, itens, OPs, apontamentos concluidos, perdas, ciclos variados, paradas programadas/nao programadas, consumo de lote, estoque, calendario/turnos e blenda.
+
+Backend: `AnalyticsService` passou a retornar contratos estruturados para dashboard, producao, perdas, paradas, estoque, rastreabilidade, OEE, graficos, memoria e reconciliacao. Filtros de periodo e UUID sao validados; periodo maximo segue 370 dias; consultas agregam no PostgreSQL e limitam linhas de tabela. Exportacoes CSV foram ampliadas para producao, perdas, paradas, OEE e estoque.
+
+Frontend: `AnalyticsPage` deixou de exibir JSON/tabela generica e passou a renderizar filtros, cards, graficos CSS responsivos, tabelas por relatorio, estados de loading/erro/vazio, exportacao e memoria OEE em interface propria, com JSON tecnico opcional mascarando UUIDs.
+
+Validacao real executada contra API local: `/analytics/overview`, `production`, `losses`, `stops`, `oee`, `oee/memory`, `stock`, `traceability`, `reconciliation` e exportacao CSV retornaram 200 no periodo de 2026-07-27 a 2026-07-30. Reconciliacao retornou sem divergencias dentro das tolerancias declaradas.
+
+Testes: backend typecheck/test/build OK; frontend typecheck/Vitest/build OK; lint seletivo OK; Playwright relevante OK em rotas administrativas e tablet LAN.
+
 ## 2026-08-01 - Codex - Validacao desktop/tablet e erro operacional
 
 Branch: `fix/dashboard-scroll-tablet-500`.

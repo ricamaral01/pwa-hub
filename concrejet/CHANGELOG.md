@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.3] - 2026-08-01 - Indicadores, dashboards e relatorios
+
+### Adicionado
+- Seed analitico idempotente de desenvolvimento com duas maquinas, dois operadores, itens, ordens, apontamentos concluidos, perdas, paradas, consumo de lote, estoque, calendario e blenda.
+- Dashboard gerencial com cards reais, graficos CSS responsivos, estados de carregamento/erro/vazio e exportacao CSV respeitando filtros.
+- Endpoints agregados para producao, perdas, paradas, estoque, rastreabilidade, OEE, memoria de calculo, graficos e reconciliacao.
+- Testes de reconciliacao backend e renderizacao frontend da memoria OEE.
+
+### Corrigido
+- Relatorios administrativos deixaram de exibir tabela generica de JSON e passaram a usar cards, graficos, tabelas e memoria OEE com mascaramento de UUIDs.
+- Consultas de analytics passaram a validar periodo/filtros e usar agregacoes SQL com limite de periodo.
+
 ## [0.7.2] - 2026-08-01 - Validacao desktop/tablet
 
 ### Corrigido
