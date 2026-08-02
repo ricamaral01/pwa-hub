@@ -259,7 +259,13 @@ export class ConfiguracaoItemMolde extends CadastroEmpresaEntity {
   @Column({ name: 'cavidades', type: 'integer' })
   cavidades!: number;
 
-  @Column({ name: 'limite_perda_percentual', type: 'numeric', precision: 5, scale: 2, default: 100 })
+  @Column({
+    name: 'limite_perda_percentual',
+    type: 'numeric',
+    precision: 5,
+    scale: 2,
+    default: 100,
+  })
   limitePerdaPercentual!: string;
 
   @Column({ name: 'ciclo_custo_segundos', type: 'numeric', precision: 8, scale: 2, nullable: true })

@@ -40,7 +40,12 @@ export class AuthController {
   @Post('operator-login')
   @HttpCode(200)
   operatorLogin(@Body() dto: OperatorLoginDto, @Req() req: Request) {
-    return this.authService.operatorLogin(dto.matricula, dto.pin, dto.dispositivoId, req.correlationId);
+    return this.authService.operatorLogin(
+      dto.matricula,
+      dto.pin,
+      dto.dispositivoId,
+      req.correlationId,
+    );
   }
 
   @Post('operator-logout')

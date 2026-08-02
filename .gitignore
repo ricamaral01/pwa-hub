@@ -1,6 +1,24 @@
 
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+credentials/
+secrets/
+uploads/
+backups/
+dumps/
+*.sql
+!supabase/migrations/*.sql
+!Controle_est_concre/migrations/*.sql
+!Controle_est_concre/schema.sql
+*.dump
 node_modules/
+coverage/
+logs/
+*.log
 mapa-concretagem/node_modules/
 mapa-concretagem/.env
 imports/

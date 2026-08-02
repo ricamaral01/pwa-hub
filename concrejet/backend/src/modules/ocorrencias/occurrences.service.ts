@@ -87,7 +87,16 @@ export class OccurrencesService {
 
   async list(user: OperationalUser, query: Record<string, unknown>) {
     const where: Record<string, unknown> = { empresaId: user.empresaId };
-    for (const field of ['maquinaId', 'dispositivoId', 'operadorId', 'apontamentoId', 'tipoOcorrenciaId', 'status', 'classificacao', 'programacao']) {
+    for (const field of [
+      'maquinaId',
+      'dispositivoId',
+      'operadorId',
+      'apontamentoId',
+      'tipoOcorrenciaId',
+      'status',
+      'classificacao',
+      'programacao',
+    ]) {
       if (typeof query[field] === 'string' && query[field]) where[field] = query[field];
     }
     const page = Math.max(Number(query.page ?? 1), 1);
@@ -103,7 +112,11 @@ export class OccurrencesService {
 
   currentByDevice(user: OperationalUser) {
     return this.dataSource.getRepository(Ocorrencia).findOne({
-      where: { empresaId: user.empresaId, dispositivoId: user.dispositivoId, status: In([...OPEN_STATUSES]) },
+      where: {
+        empresaId: user.empresaId,
+        dispositivoId: user.dispositivoId,
+        status: In([...OPEN_STATUSES]),
+      },
       order: { inicioEm: 'DESC' },
     });
   }
@@ -112,7 +125,12 @@ export class OccurrencesService {
     return this.findOwned(id, user);
   }
 
-  async update(id: string, dto: UpdateOccurrenceDto, user: OperationalUser, correlationId?: string) {
+  async update(
+    id: string,
+    dto: UpdateOccurrenceDto,
+    user: OperationalUser,
+    correlationId?: string,
+  ) {
     const record = await this.findOwned(id, user);
     this.assertVersion(record, dto.version);
     if (!OPEN_STATUSES.includes(record.status as never)) {
@@ -136,10 +154,16 @@ export class OccurrencesService {
     return saved;
   }
 
-  async approve(id: string, dto: ApproveOccurrenceDto, user: OperationalUser, correlationId?: string) {
+  async approve(
+    id: string,
+    dto: ApproveOccurrenceDto,
+    user: OperationalUser,
+    correlationId?: string,
+  ) {
     const record = await this.findOwned(id, user);
     this.assertVersion(record, dto.version);
-    if (!record.exigeAprovacaoAplicado) throw new BadRequestException('Ocorrencia nao exige aprovacao.');
+    if (!record.exigeAprovacaoAplicado)
+      throw new BadRequestException('Ocorrencia nao exige aprovacao.');
     if (record.exigeAcaoCorretivaAplicado && !record.acaoCorretiva?.trim()) {
       throw new ConflictException('Acao corretiva obrigatoria pendente.');
     }
@@ -153,22 +177,33 @@ export class OccurrencesService {
     return saved;
   }
 
-  async finish(id: string, dto: FinishOccurrenceDto, user: OperationalUser, correlationId?: string) {
+  async finish(
+    id: string,
+    dto: FinishOccurrenceDto,
+    user: OperationalUser,
+    correlationId?: string,
+  ) {
     const existing = await this.dataSource.getRepository(Ocorrencia).findOne({
       where: { idempotencyKey: dto.idempotencyKey, empresaId: user.empresaId, status: 'encerrada' },
     });
     if (existing) return existing;
     const record = await this.findOwned(id, user);
     this.assertVersion(record, dto.version);
-    if (record.exigeAcaoCorretivaAplicado && !(dto.acaoCorretiva?.trim() || record.acaoCorretiva?.trim())) {
+    if (
+      record.exigeAcaoCorretivaAplicado &&
+      !(dto.acaoCorretiva?.trim() || record.acaoCorretiva?.trim())
+    ) {
       throw new ConflictException('Acao corretiva obrigatoria pendente.');
     }
     if (record.exigeAprovacaoAplicado && !record.aprovadaEm) {
       throw new ConflictException('Aprovacao obrigatoria pendente.');
     }
     const fimEm = dto.fimEm ? new Date(dto.fimEm) : new Date();
-    if (fimEm <= record.inicioEm) throw new BadRequestException('Fim deve ser posterior ao inicio.');
-    const apontamento = await this.dataSource.getRepository(Apontamento).findOne({ where: { id: record.apontamentoId } });
+    if (fimEm <= record.inicioEm)
+      throw new BadRequestException('Fim deve ser posterior ao inicio.');
+    const apontamento = await this.dataSource
+      .getRepository(Apontamento)
+      .findOne({ where: { id: record.apontamentoId } });
     if (apontamento?.fimEm && fimEm > apontamento.fimEm) {
       throw new BadRequestException('Ocorrencia deve ficar dentro da janela do apontamento.');
     }
@@ -187,10 +222,16 @@ export class OccurrencesService {
     return saved;
   }
 
-  async cancel(id: string, dto: CancelOccurrenceDto, user: OperationalUser, correlationId?: string) {
+  async cancel(
+    id: string,
+    dto: CancelOccurrenceDto,
+    user: OperationalUser,
+    correlationId?: string,
+  ) {
     const record = await this.findOwned(id, user);
     this.assertVersion(record, dto.version);
-    if (!dto.motivoCancelamento.trim()) throw new BadRequestException('Cancelamento exige justificativa.');
+    if (!dto.motivoCancelamento.trim())
+      throw new BadRequestException('Cancelamento exige justificativa.');
     const before = { ...record };
     Object.assign(record, {
       status: 'cancelada',
@@ -208,7 +249,8 @@ export class OccurrencesService {
     const open = await this.dataSource.getRepository(Ocorrencia).findOne({
       where: { apontamentoId, empresaId, status: In([...OPEN_STATUSES]) },
     });
-    if (open) throw new ConflictException('Nao e possivel concluir apontamento com ocorrencia aberta.');
+    if (open)
+      throw new ConflictException('Nao e possivel concluir apontamento com ocorrencia aberta.');
   }
 
   private async findOwned(id: string, user: OperationalUser) {
@@ -220,23 +262,35 @@ export class OccurrencesService {
   }
 
   private assertVersion(record: Ocorrencia, version: number) {
-    if (record.versao !== version) throw new ConflictException('Registro alterado por outra sessao.');
+    if (record.versao !== version)
+      throw new ConflictException('Registro alterado por outra sessao.');
   }
 
   private assertApontamentoOperacional(apontamento: Apontamento, user: OperationalUser) {
-    if (apontamento.maquinaId !== user.maquinaId) throw new BadRequestException('Maquina divergente do apontamento.');
-    if (apontamento.dispositivoId !== user.dispositivoId) throw new BadRequestException('Dispositivo divergente do apontamento.');
-    if (apontamento.unidadeId !== user.unidadeId) throw new BadRequestException('Unidade divergente do apontamento.');
+    if (apontamento.maquinaId !== user.maquinaId)
+      throw new BadRequestException('Maquina divergente do apontamento.');
+    if (apontamento.dispositivoId !== user.dispositivoId)
+      throw new BadRequestException('Dispositivo divergente do apontamento.');
+    if (apontamento.unidadeId !== user.unidadeId)
+      throw new BadRequestException('Unidade divergente do apontamento.');
   }
 
   private assertInsideApontamentoWindow(apontamento: Apontamento, inicioEm: Date) {
-    if (inicioEm < apontamento.inicioEm) throw new BadRequestException('Inicio fora da janela do apontamento.');
+    if (inicioEm < apontamento.inicioEm)
+      throw new BadRequestException('Inicio fora da janela do apontamento.');
     if (apontamento.fimEm && inicioEm > apontamento.fimEm) {
       throw new BadRequestException('Inicio fora da janela do apontamento.');
     }
   }
 
-  private audit(id: string, action: 'CREATE' | 'UPDATE', user: OperationalUser, before: unknown, after: unknown, correlationId?: string) {
+  private audit(
+    id: string,
+    action: 'CREATE' | 'UPDATE',
+    user: OperationalUser,
+    before: unknown,
+    after: unknown,
+    correlationId?: string,
+  ) {
     return this.auditoria.registrar({
       entidade: 'ocorrencia',
       entidadeId: id,

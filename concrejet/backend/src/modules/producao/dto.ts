@@ -1,12 +1,4 @@
-import {
-  IsDateString,
-  IsInt,
-  IsNumber,
-  IsOptional,
-  IsString,
-  IsUUID,
-  Min,
-} from 'class-validator';
+import { IsDateString, IsInt, IsNumber, IsOptional, IsString, IsUUID, Min } from 'class-validator';
 
 export class CreateProductionRecordDto {
   @IsString()

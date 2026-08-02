@@ -63,8 +63,13 @@ export function StatusLamp({
   variant: 'ok' | 'atencao' | 'parada' | 'ocioso';
   children: ReactNode;
 }) {
-  const icon = variant === 'ok' ? '●' : variant === 'parada' ? '■' : variant === 'atencao' ? '▲' : '○';
-  return <span className={`status-lamp ${variant}`}>{icon} {children}</span>;
+  const icon =
+    variant === 'ok' ? '●' : variant === 'parada' ? '■' : variant === 'atencao' ? '▲' : '○';
+  return (
+    <span className={`status-lamp ${variant}`}>
+      {icon} {children}
+    </span>
+  );
 }
 
 export function TouchCard({
@@ -81,7 +86,12 @@ export function TouchCard({
   onClick?: () => void;
 }) {
   return (
-    <button className={`touch-card ${selected ? 'selected' : ''}`} disabled={disabled} onClick={onClick} type="button">
+    <button
+      className={`touch-card ${selected ? 'selected' : ''}`}
+      disabled={disabled}
+      onClick={onClick}
+      type="button"
+    >
       <strong>{title}</strong>
       {description ? <span>{description}</span> : null}
     </button>
@@ -133,7 +143,10 @@ export function NumericField({
   return (
     <button className={`numeric-field ${focused ? 'focused' : ''}`} type="button" onClick={onFocus}>
       <span>{label}</span>
-      <strong className="num">{value || '0'}{unit ? ` ${unit}` : ''}</strong>
+      <strong className="num">
+        {value || '0'}
+        {unit ? ` ${unit}` : ''}
+      </strong>
     </button>
   );
 }
@@ -152,12 +165,25 @@ export function NumericKeypad({
   return (
     <div className="numeric-keypad">
       {'123456789'.split('').map((digit) => (
-        <button key={digit} type="button" onClick={() => onDigit(digit)}>{digit}</button>
+        <button key={digit} type="button" onClick={() => onDigit(digit)}>
+          {digit}
+        </button>
       ))}
-      <button type="button" disabled={!allowDecimal} onClick={() => onDigit('.')}> , </button>
-      <button type="button" onClick={() => onDigit('0')}>0</button>
-      <button type="button" onClick={onBackspace}>Apagar</button>
-      {onConfirm ? <button className="primary" type="button" onClick={onConfirm}>Entrar</button> : null}
+      <button type="button" disabled={!allowDecimal} onClick={() => onDigit('.')}>
+        {' '}
+        ,{' '}
+      </button>
+      <button type="button" onClick={() => onDigit('0')}>
+        0
+      </button>
+      <button type="button" onClick={onBackspace}>
+        Apagar
+      </button>
+      {onConfirm ? (
+        <button className="primary" type="button" onClick={onConfirm}>
+          Entrar
+        </button>
+      ) : null}
     </div>
   );
 }

@@ -20,55 +20,90 @@ export class OccurrencesController {
 
   @Post()
   @RequireOperationalPermission('ocorrencias.criar')
-  create(@Body() body: CreateOccurrenceDto, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>, @Req() req: Request) {
+  create(
+    @Body() body: CreateOccurrenceDto,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+    @Req() req: Request,
+  ) {
     return this.occurrences.create(body, user, req.correlationId);
   }
 
   @Get()
   @RequireOperationalPermission('ocorrencias.consultar')
-  list(@CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>, @Query() query: Record<string, unknown>) {
+  list(
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+    @Query() query: Record<string, unknown>,
+  ) {
     return this.occurrences.list(user, query);
   }
 
   @Get('current-by-device')
   @RequireOperationalPermission('ocorrencias.consultar')
-  currentByDevice(@CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>) {
+  currentByDevice(
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+  ) {
     return this.occurrences.currentByDevice(user);
   }
 
   @Get(':id')
   @RequireOperationalPermission('ocorrencias.consultar')
-  get(@Param('id') id: string, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>) {
+  get(
+    @Param('id') id: string,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+  ) {
     return this.occurrences.get(id, user);
   }
 
   @Patch(':id')
   @RequireOperationalPermission('ocorrencias.alterar')
-  update(@Param('id') id: string, @Body() body: UpdateOccurrenceDto, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>, @Req() req: Request) {
+  update(
+    @Param('id') id: string,
+    @Body() body: UpdateOccurrenceDto,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+    @Req() req: Request,
+  ) {
     return this.occurrences.update(id, body, user, req.correlationId);
   }
 
   @Post(':id/start')
   @RequireOperationalPermission('ocorrencias.iniciar')
-  start(@Param('id') id: string, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>) {
+  start(
+    @Param('id') id: string,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+  ) {
     return this.occurrences.get(id, user);
   }
 
   @Post(':id/finish')
   @RequireOperationalPermission('ocorrencias.encerrar')
-  finish(@Param('id') id: string, @Body() body: FinishOccurrenceDto, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>, @Req() req: Request) {
+  finish(
+    @Param('id') id: string,
+    @Body() body: FinishOccurrenceDto,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+    @Req() req: Request,
+  ) {
     return this.occurrences.finish(id, body, user, req.correlationId);
   }
 
   @Post(':id/cancel')
   @RequireOperationalPermission('ocorrencias.cancelar')
-  cancel(@Param('id') id: string, @Body() body: CancelOccurrenceDto, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>, @Req() req: Request) {
+  cancel(
+    @Param('id') id: string,
+    @Body() body: CancelOccurrenceDto,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+    @Req() req: Request,
+  ) {
     return this.occurrences.cancel(id, body, user, req.correlationId);
   }
 
   @Post(':id/approve')
   @RequireOperationalPermission('ocorrencias.aprovar')
-  approve(@Param('id') id: string, @Body() body: ApproveOccurrenceDto, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>, @Req() req: Request) {
+  approve(
+    @Param('id') id: string,
+    @Body() body: ApproveOccurrenceDto,
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+    @Req() req: Request,
+  ) {
     return this.occurrences.approve(id, body, user, req.correlationId);
   }
 }

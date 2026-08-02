@@ -43,7 +43,9 @@ export class ProductionRecordsController {
 
   @Get('current-by-device')
   @RequireOperationalPermission('apontamentos.consultar')
-  currentByDevice(@CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>) {
+  currentByDevice(
+    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
+  ) {
     return this.records.currentByDevice(user.dispositivoId, user);
   }
 

@@ -42,7 +42,10 @@ export function useQueue() {
         uuid,
         type,
         entityType: type,
-        operationType: typeof payload === 'object' && payload !== null && 'operation' in payload ? String((payload as { operation: unknown }).operation) : 'create',
+        operationType:
+          typeof payload === 'object' && payload !== null && 'operation' in payload
+            ? String(payload.operation)
+            : 'create',
         payload: JSON.stringify(payload),
         idempotencyKey: uuid,
         entityId: null,
@@ -137,14 +140,17 @@ export function useQueue() {
             ultimaTentativaEm: new Date().toISOString(),
             ultimoErro: errorMessage,
           });
-          await db.syncOutbox.where('uuid').equals(item.uuid).modify({
-            status: 'erro',
-            state: 'erro',
-            attempts: item.tentativas + 1,
-            lastAttemptAt: new Date().toISOString(),
-            nextAttemptAt,
-            lastError: errorMessage,
-          });
+          await db.syncOutbox
+            .where('uuid')
+            .equals(item.uuid)
+            .modify({
+              status: 'erro',
+              state: 'erro',
+              attempts: item.tentativas + 1,
+              lastAttemptAt: new Date().toISOString(),
+              nextAttemptAt,
+              lastError: errorMessage,
+            });
         }
       }
     }

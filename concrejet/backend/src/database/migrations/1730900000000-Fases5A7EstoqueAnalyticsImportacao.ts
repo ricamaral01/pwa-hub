@@ -4,8 +4,12 @@ export class Fases5A7EstoqueAnalyticsImportacao1730900000000 implements Migratio
   name = 'Fases5A7EstoqueAnalyticsImportacao1730900000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE "lote_resina" DROP CONSTRAINT IF EXISTS "chk_lote_resina_saldo_nao_negativo"`);
-    await queryRunner.query(`ALTER TABLE "lote_resina" ADD CONSTRAINT "chk_lote_resina_saldo_nao_negativo" CHECK ("saldo_atual_kg" >= 0)`);
+    await queryRunner.query(
+      `ALTER TABLE "lote_resina" DROP CONSTRAINT IF EXISTS "chk_lote_resina_saldo_nao_negativo"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "lote_resina" ADD CONSTRAINT "chk_lote_resina_saldo_nao_negativo" CHECK ("saldo_atual_kg" >= 0)`,
+    );
 
     await queryRunner.query(`
       CREATE TABLE IF NOT EXISTS "estoque_movimento" (
@@ -35,8 +39,12 @@ export class Fases5A7EstoqueAnalyticsImportacao1730900000000 implements Migratio
         CONSTRAINT "uq_estoque_movimento_idempotency" UNIQUE ("idempotency_key")
       )
     `);
-    await queryRunner.query(`CREATE INDEX IF NOT EXISTS "idx_estoque_movimento_lote_data" ON "estoque_movimento" ("lote_id", "criado_em")`);
-    await queryRunner.query(`CREATE INDEX IF NOT EXISTS "idx_estoque_movimento_origem" ON "estoque_movimento" ("origem_tipo", "origem_id")`);
+    await queryRunner.query(
+      `CREATE INDEX IF NOT EXISTS "idx_estoque_movimento_lote_data" ON "estoque_movimento" ("lote_id", "criado_em")`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX IF NOT EXISTS "idx_estoque_movimento_origem" ON "estoque_movimento" ("origem_tipo", "origem_id")`,
+    );
 
     await queryRunner.query(`
       CREATE OR REPLACE FUNCTION block_estoque_movimento_mutation()
@@ -46,7 +54,9 @@ export class Fases5A7EstoqueAnalyticsImportacao1730900000000 implements Migratio
       END;
       $$ LANGUAGE plpgsql
     `);
-    await queryRunner.query(`DROP TRIGGER IF EXISTS trg_block_estoque_movimento_update ON estoque_movimento`);
+    await queryRunner.query(
+      `DROP TRIGGER IF EXISTS trg_block_estoque_movimento_update ON estoque_movimento`,
+    );
     await queryRunner.query(`
       CREATE TRIGGER trg_block_estoque_movimento_update
       BEFORE UPDATE OR DELETE ON estoque_movimento
@@ -122,7 +132,9 @@ export class Fases5A7EstoqueAnalyticsImportacao1730900000000 implements Migratio
         "versao" integer NOT NULL DEFAULT 1
       )
     `);
-    await queryRunner.query(`CREATE INDEX IF NOT EXISTS "idx_blenda_componente_lote" ON "blenda_componente" ("lote_origem_id")`);
+    await queryRunner.query(
+      `CREATE INDEX IF NOT EXISTS "idx_blenda_componente_lote" ON "blenda_componente" ("lote_origem_id")`,
+    );
 
     await queryRunner.query(`
       CREATE TABLE IF NOT EXISTS "calendario_turno" (
@@ -165,7 +177,9 @@ export class Fases5A7EstoqueAnalyticsImportacao1730900000000 implements Migratio
     await queryRunner.query(`DROP TABLE IF EXISTS calendario_turno`);
     await queryRunner.query(`DROP TABLE IF EXISTS blenda_componente`);
     await queryRunner.query(`DROP TABLE IF EXISTS blenda`);
-    await queryRunner.query(`DROP TRIGGER IF EXISTS trg_block_estoque_movimento_update ON estoque_movimento`);
+    await queryRunner.query(
+      `DROP TRIGGER IF EXISTS trg_block_estoque_movimento_update ON estoque_movimento`,
+    );
     await queryRunner.query(`DROP FUNCTION IF EXISTS block_estoque_movimento_mutation`);
     await queryRunner.query(`DROP TABLE IF EXISTS estoque_movimento`);
   }
@@ -242,17 +256,35 @@ export class Fases5A7EstoqueAnalyticsImportacao1730900000000 implements Migratio
         criado_em timestamptz NOT NULL DEFAULT now()
       )
     `);
-    await queryRunner.query(`CREATE TABLE IF NOT EXISTS import_mappings (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), batch_id uuid REFERENCES import_batches(id), nome varchar(120) NOT NULL, definicao jsonb NOT NULL, criado_em timestamptz NOT NULL DEFAULT now())`);
-    await queryRunner.query(`CREATE TABLE IF NOT EXISTS import_reconciliation (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), batch_id uuid REFERENCES import_batches(id), metricas jsonb NOT NULL, criado_em timestamptz NOT NULL DEFAULT now())`);
-    await queryRunner.query(`CREATE TABLE IF NOT EXISTS import_entity_links (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), row_id uuid REFERENCES import_rows(id), entidade varchar(80) NOT NULL, entidade_id uuid NOT NULL, chave_origem varchar(240) NOT NULL, imported_at timestamptz NOT NULL DEFAULT now(), UNIQUE (entidade, chave_origem))`);
+    await queryRunner.query(
+      `CREATE TABLE IF NOT EXISTS import_mappings (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), batch_id uuid REFERENCES import_batches(id), nome varchar(120) NOT NULL, definicao jsonb NOT NULL, criado_em timestamptz NOT NULL DEFAULT now())`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE IF NOT EXISTS import_reconciliation (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), batch_id uuid REFERENCES import_batches(id), metricas jsonb NOT NULL, criado_em timestamptz NOT NULL DEFAULT now())`,
+    );
+    await queryRunner.query(
+      `CREATE TABLE IF NOT EXISTS import_entity_links (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), row_id uuid REFERENCES import_rows(id), entidade varchar(80) NOT NULL, entidade_id uuid NOT NULL, chave_origem varchar(240) NOT NULL, imported_at timestamptz NOT NULL DEFAULT now(), UNIQUE (entidade, chave_origem))`,
+    );
   }
 
   private async createViews(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`CREATE OR REPLACE VIEW vw_producao_diaria AS SELECT empresa_id, unidade_id, maquina_id, data_producao, count(*) FILTER (WHERE status='concluido') apontamentos_concluidos, sum(pecas_boas) pecas_boas, sum(pecas_refugo) pecas_refugo, sum(falha_preenchimento_qtd) falha_preenchimento FROM apontamento GROUP BY empresa_id, unidade_id, maquina_id, data_producao`);
-    await queryRunner.query(`CREATE OR REPLACE VIEW vw_perdas_diarias AS SELECT empresa_id, unidade_id, maquina_id, data_producao, sum(borra_kg + galho_kg + outras_perdas_kg + ((pecas_refugo + falha_preenchimento_qtd) * peso_peca_aplicado_g / 1000)) perda_total_kg, sum(borra_kg + outras_perdas_kg + ((pecas_refugo + falha_preenchimento_qtd) * peso_peca_aplicado_g / 1000)) perda_sem_galho_kg FROM apontamento GROUP BY empresa_id, unidade_id, maquina_id, data_producao`);
-    await queryRunner.query(`CREATE OR REPLACE VIEW vw_ocorrencias_duracao AS SELECT o.*, EXTRACT(EPOCH FROM (COALESCE(o.fim_em, now()) - o.inicio_em))::numeric duracao_segundos FROM ocorrencia o`);
-    await queryRunner.query(`CREATE OR REPLACE VIEW vw_consumo_lotes AS SELECT empresa_id, unidade_id, lote_id, date_trunc('day', criado_em)::date data, sum(quantidade_kg) FILTER (WHERE tipo_movimento IN ('consumo','blenda_consumo')) consumo_kg, sum(quantidade_kg) FILTER (WHERE tipo_movimento IN ('entrada','devolucao','blenda_producao')) entrada_kg FROM estoque_movimento GROUP BY empresa_id, unidade_id, lote_id, date_trunc('day', criado_em)::date`);
-    await queryRunner.query(`CREATE OR REPLACE VIEW vw_rastreabilidade_lotes AS SELECT l.id lote_id, l.codigo lote_codigo, r.codigo resina_codigo, f.nome fornecedor_nome, m.tipo_movimento, m.origem_tipo, m.origem_id, m.quantidade_kg, m.saldo_anterior_kg, m.saldo_posterior_kg, m.criado_em FROM lote_resina l LEFT JOIN resina r ON r.id=l.resina_id LEFT JOIN fornecedor f ON f.id=l.fornecedor_id LEFT JOIN estoque_movimento m ON m.lote_id=l.id`);
-    await queryRunner.query(`CREATE OR REPLACE VIEW vw_oee_base AS SELECT a.empresa_id, a.unidade_id, a.maquina_id, a.data_producao, a.inicio_em, a.fim_em, a.pecas_boas, a.pecas_refugo, a.falha_preenchimento_qtd, a.ciclo_padrao_aplicado_s, a.cavidades_aplicadas FROM apontamento a WHERE a.status='concluido'`);
+    await queryRunner.query(
+      `CREATE OR REPLACE VIEW vw_producao_diaria AS SELECT empresa_id, unidade_id, maquina_id, data_producao, count(*) FILTER (WHERE status='concluido') apontamentos_concluidos, sum(pecas_boas) pecas_boas, sum(pecas_refugo) pecas_refugo, sum(falha_preenchimento_qtd) falha_preenchimento FROM apontamento GROUP BY empresa_id, unidade_id, maquina_id, data_producao`,
+    );
+    await queryRunner.query(
+      `CREATE OR REPLACE VIEW vw_perdas_diarias AS SELECT empresa_id, unidade_id, maquina_id, data_producao, sum(borra_kg + galho_kg + outras_perdas_kg + ((pecas_refugo + falha_preenchimento_qtd) * peso_peca_aplicado_g / 1000)) perda_total_kg, sum(borra_kg + outras_perdas_kg + ((pecas_refugo + falha_preenchimento_qtd) * peso_peca_aplicado_g / 1000)) perda_sem_galho_kg FROM apontamento GROUP BY empresa_id, unidade_id, maquina_id, data_producao`,
+    );
+    await queryRunner.query(
+      `CREATE OR REPLACE VIEW vw_ocorrencias_duracao AS SELECT o.*, EXTRACT(EPOCH FROM (COALESCE(o.fim_em, now()) - o.inicio_em))::numeric duracao_segundos FROM ocorrencia o`,
+    );
+    await queryRunner.query(
+      `CREATE OR REPLACE VIEW vw_consumo_lotes AS SELECT empresa_id, unidade_id, lote_id, date_trunc('day', criado_em)::date data, sum(quantidade_kg) FILTER (WHERE tipo_movimento IN ('consumo','blenda_consumo')) consumo_kg, sum(quantidade_kg) FILTER (WHERE tipo_movimento IN ('entrada','devolucao','blenda_producao')) entrada_kg FROM estoque_movimento GROUP BY empresa_id, unidade_id, lote_id, date_trunc('day', criado_em)::date`,
+    );
+    await queryRunner.query(
+      `CREATE OR REPLACE VIEW vw_rastreabilidade_lotes AS SELECT l.id lote_id, l.codigo lote_codigo, r.codigo resina_codigo, f.nome fornecedor_nome, m.tipo_movimento, m.origem_tipo, m.origem_id, m.quantidade_kg, m.saldo_anterior_kg, m.saldo_posterior_kg, m.criado_em FROM lote_resina l LEFT JOIN resina r ON r.id=l.resina_id LEFT JOIN fornecedor f ON f.id=l.fornecedor_id LEFT JOIN estoque_movimento m ON m.lote_id=l.id`,
+    );
+    await queryRunner.query(
+      `CREATE OR REPLACE VIEW vw_oee_base AS SELECT a.empresa_id, a.unidade_id, a.maquina_id, a.data_producao, a.inicio_em, a.fim_em, a.pecas_boas, a.pecas_refugo, a.falha_preenchimento_qtd, a.ciclo_padrao_aplicado_s, a.cavidades_aplicadas FROM apontamento a WHERE a.status='concluido'`,
+    );
   }
 }
