@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminPermissionGuard } from '../auth/admin-permission.guard';
@@ -65,6 +65,18 @@ export class AnalyticsController {
     return (await this.analytics.oee(user, query)).memoria;
   }
 
+  @Get('charts')
+  @RequireAdminPermission('dashboard.visualizar')
+  charts(@Query() query: Record<string, unknown>, @CurrentUser() user: AuthenticatedUser) {
+    return this.analytics.charts(user, query);
+  }
+
+  @Get('reconciliation')
+  @RequireAdminPermission('relatorios.oee')
+  reconciliation(@Query() query: Record<string, unknown>, @CurrentUser() user: AuthenticatedUser) {
+    return this.analytics.reconciliation(user, query);
+  }
+
   @Get('refresh-status')
   @RequireAdminPermission('analytics.atualizar')
   refreshStatus() {
@@ -77,6 +89,16 @@ export class AnalyticsController {
     @Query() query: Record<string, unknown>,
     @CurrentUser() user: AuthenticatedUser,
   ) {
-    return this.analytics.exportCsv(user, query);
+    return this.analytics.exportCsv(user, query, 'production');
+  }
+
+  @Get(':report/export.csv')
+  @RequireAdminPermission('relatorios.exportar')
+  exportReport(
+    @Param('report') report: string,
+    @Query() query: Record<string, unknown>,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.analytics.exportCsv(user, query, report);
   }
 }

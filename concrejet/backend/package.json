@@ -19,6 +19,7 @@
     "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/database/data-source.ts",
     "seed:admin": "ts-node -r tsconfig-paths/register src/database/seeds/seed-admin.ts",
     "seed:import-fixtures": "ts-node -r tsconfig-paths/register src/database/seeds/seed-import-fixtures.ts",
+    "seed:analytics": "ts-node -r tsconfig-paths/register src/database/seeds/seed-analytics.ts",
     "import:analyze": "ts-node -r tsconfig-paths/register src/database/imports-cli.ts analyze",
     "import:dry-run": "ts-node -r tsconfig-paths/register src/database/imports-cli.ts dry-run",
     "import:execute": "ts-node -r tsconfig-paths/register src/database/imports-cli.ts execute",
