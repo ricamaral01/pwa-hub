@@ -27,6 +27,11 @@ test.describe('Fases 5 a 7 - rotas administrativas reais', () => {
     execSync('npm run seed:admin', {
       cwd: path.resolve(currentDir, '../../backend'),
       env: {
+        DATABASE_HOST: 'localhost',
+        DATABASE_PORT: '5433',
+        DATABASE_USER: 'concretrack',
+        DATABASE_PASSWORD: 'concretrack_dev_pwd',
+        DATABASE_NAME: 'concretrack_injecao',
         ...readRootEnv(),
         ...process.env,
         SEED_ADMIN_EMAIL: adminEmail,
@@ -77,9 +82,9 @@ test.describe('Fases 5 a 7 - rotas administrativas reais', () => {
     }
 
     await page.goto('/admin/analytics/oee');
-    await expect(
-      page.getByRole('columnheader', { name: 'memoria.turnosConsiderados' }),
-    ).toBeVisible();
+    await expect(page.getByText('Disponibilidade', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('OEE por maquina')).toBeVisible();
+    await expect(page.getByText('Memoria de calculo OEE')).toBeVisible();
 
     await page.goto('/admin/imports');
     await expect(page.getByRole('button', { name: 'Analisar fixture' })).toBeVisible();
