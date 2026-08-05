@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/db/schema';
 import { useSessionStore } from '@/store/session.store';
 import { capabilities } from '@/config/runtime';
+import { authApi } from '@/api/services';
 
 const IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutos de inatividade → bloqueia
 
@@ -16,7 +17,8 @@ const IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutos de inatividade → bloqueia
  * - Reset do timer de inatividade em interações do usuário
  */
 export function useSession() {
-  const { state, operator, transitionTo, setOperator, clearOperator } = useSessionStore();
+  const { state, operator, device, transitionTo, setOperator, setOperatorToken, clearOperator } =
+    useSessionStore();
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Sessão persistida no IndexedDB
@@ -73,12 +75,18 @@ export function useSession() {
    * TODO: chamar POST /auth/login-operador quando backend da Fase 1 estiver pronto.
    */
   async function loginOperador(matricula: string, pin: string): Promise<boolean> {
-    if (capabilities.operatorAuthentication !== 'demo') {
-      throw new Error('Login operacional ainda nao foi implementado no backend.');
-    }
-
-    // Demo: qualquer matricula com PIN de 4 digitos e valida somente para simulacao.
     if (!matricula.trim() || pin.length < 4) return false;
+
+    if (capabilities.operatorAuthentication !== 'demo') {
+      if (!device?.identificador) throw new Error('Dispositivo sem identificacao.');
+      const result = await authApi.operatorLogin({
+        matricula,
+        pin,
+        dispositivoId: device.identificador,
+      });
+      await persistOperatorSession(result.operador, result.token);
+      return true;
+    }
 
     const mockOperador = {
       id: `op-mock-${matricula}`,
@@ -88,17 +96,38 @@ export function useSession() {
       iniciadaEm: new Date().toISOString(),
     };
 
+    await persistOperatorSession(mockOperador, null);
+    return true;
+  }
+
+  async function loginOperadorPorFace(result: {
+    token: string;
+    operador: { id: string; matricula: string; nome: string };
+  }): Promise<void> {
+    await persistOperatorSession(result.operador, result.token);
+  }
+
+  async function persistOperatorSession(
+    operadorData: { id: string; nome: string; matricula: string },
+    token: string | null,
+  ): Promise<void> {
+    const sessionOperator = {
+      id: operadorData.id,
+      nome: operadorData.nome,
+      matricula: operadorData.matricula,
+      perfis: ['operador'],
+      iniciadaEm: new Date().toISOString(),
+    };
     await db.activeSession.put({
       id: 1,
-      operadorId: mockOperador.id,
-      operadorNome: mockOperador.nome,
-      operadorMatricula: mockOperador.matricula,
-      iniciadaEm: mockOperador.iniciadaEm,
+      operadorId: sessionOperator.id,
+      operadorNome: sessionOperator.nome,
+      operadorMatricula: sessionOperator.matricula,
+      iniciadaEm: sessionOperator.iniciadaEm,
       ultimaAtividadeEm: new Date().toISOString(),
     });
-
-    setOperator(mockOperador);
-    return true;
+    setOperator(sessionOperator);
+    setOperatorToken(token);
   }
 
   /**
@@ -137,6 +166,7 @@ export function useSession() {
     state,
     isSessionLoading,
     loginOperador,
+    loginOperadorPorFace,
     unlockSession,
     logoutOperador,
     switchOperador,

@@ -15,6 +15,32 @@ export const authApi = {
   me: () => apiGet<MeResponse>('/auth/me'),
   changePassword: (data: ChangePasswordRequest) =>
     apiPost<{ status: 'ok' }>('/auth/change-password', data),
+  operatorLogin: (data: { matricula: string; pin: string; dispositivoId: string }) =>
+    apiPost<{
+      token: string;
+      expiraEm: string;
+      operador: { id: string; matricula: string; nome: string };
+      dispositivo: { id: string; maquinaId: string };
+    }>('/auth/operator-login', data),
+  operatorFaceChallenge: (data: { dispositivoId: string }) =>
+    apiPost<{ challengeId: string; expiresAt: string; sequence: string[] }>(
+      '/auth/operator-face/challenge',
+      data,
+    ),
+  operatorFaceLogin: (data: {
+    challengeId: string;
+    dispositivoId: string;
+    embedding: number[];
+    qualidade: number;
+    liveness: { valid: boolean; steps: string[]; frames: number; faces: number };
+  }) =>
+    apiPost<{
+      resultado: 'confirmado';
+      token: string;
+      expiraEm: string;
+      operador: { id: string; matricula: string; nome: string };
+      dispositivo: { id: string; maquinaId: string };
+    }>('/auth/operator-face-login', data),
 };
 
 // ─── Health / Version ─────────────────────────────────────────────────────

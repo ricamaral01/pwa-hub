@@ -10,6 +10,7 @@ export interface AppCapabilities {
   productionData: CapabilityState;
   productionPersistence: CapabilityState;
   offlineOperationalSync: CapabilityState;
+  facialAuthentication: CapabilityState;
 }
 
 export const capabilities: AppCapabilities = {
@@ -20,7 +21,17 @@ export const capabilities: AppCapabilities = {
   productionData: isDemoMode ? 'demo' : 'real',
   productionPersistence: 'real',
   offlineOperationalSync: 'local',
+  facialAuthentication:
+    import.meta.env.VITE_FACIAL_AUTH_ENABLED === 'true' ? 'real' : 'unavailable',
 };
+
+export function isFacialAuthClientReady(): boolean {
+  return (
+    capabilities.facialAuthentication === 'real' &&
+    window.isSecureContext &&
+    typeof navigator.mediaDevices?.getUserMedia === 'function'
+  );
+}
 
 export function assertCapabilityAvailable(
   capability: keyof AppCapabilities,

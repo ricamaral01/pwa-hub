@@ -1,5 +1,10 @@
 import { randomUUID } from 'crypto';
-import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,7 +28,10 @@ export interface OperatorLoginResult {
   dispositivo: { id: string; maquinaId: string };
 }
 
-const operatorSessions = new Map<string, { operadorId: string; dispositivoId: string; expiraEm: Date }>();
+const operatorSessions = new Map<
+  string,
+  { operadorId: string; dispositivoId: string; expiraEm: Date }
+>();
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{12}$/i;
 
 export interface ValidOperatorSession {
@@ -200,9 +208,7 @@ export class AuthService {
     colaborador.ultimoLoginOperacionalEm = new Date();
     await this.dataSource.getRepository(Colaborador).save(colaborador);
 
-    const token = randomUUID();
-    const expiraEm = new Date(Date.now() + 8 * 60 * 60_000);
-    operatorSessions.set(token, { operadorId: colaborador.id, dispositivoId: dispositivo.id, expiraEm });
+    const session = this.createOperatorSession(colaborador.id, dispositivo.id);
 
     await this.auditoriaService.registrar({
       entidade: 'colaborador',
@@ -214,11 +220,21 @@ export class AuthService {
     });
 
     return {
-      token,
-      expiraEm: expiraEm.toISOString(),
+      token: session.token,
+      expiraEm: session.expiraEm.toISOString(),
       operador: { id: colaborador.id, matricula: colaborador.matricula, nome: colaborador.nome },
       dispositivo: { id: dispositivo.id, maquinaId: dispositivo.maquinaId },
     };
+  }
+
+  createOperatorSession(
+    operadorId: string,
+    dispositivoId: string,
+  ): { token: string; expiraEm: Date } {
+    const token = randomUUID();
+    const expiraEm = new Date(Date.now() + 8 * 60 * 60_000);
+    operatorSessions.set(token, { operadorId, dispositivoId, expiraEm });
+    return { token, expiraEm };
   }
 
   operatorLogout(token: string): void {

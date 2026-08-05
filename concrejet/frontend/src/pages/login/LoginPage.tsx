@@ -5,8 +5,9 @@ import { useSessionStore } from '@/store/session.store';
 import { Button } from '@/components/Button';
 import { Field, Input } from '@/components/Field';
 import { OnlineBadge } from '@/components/Badge';
-import { capabilities, isDemoMode } from '@/config/runtime';
+import { capabilities, isDemoMode, isFacialAuthClientReady } from '@/config/runtime';
 import { useAdminAuthStore } from '@/store/admin-auth.store';
+import { runFaceLogin, type FaceAuthState } from '@/features/face/faceAuth';
 
 /**
  * Tela de Login — ConcreTrack Injeção
@@ -25,10 +26,12 @@ const LoginPage: React.FC = () => {
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [faceState, setFaceState] = useState<FaceAuthState>('idle');
+  const [faceMessage, setFaceMessage] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
 
-  const { loginOperador } = useSession();
+  const { loginOperador, loginOperadorPorFace } = useSession();
   const { device, isOnline, queueCount } = useSessionStore();
 
   // Relógio
@@ -98,6 +101,39 @@ const LoginPage: React.FC = () => {
   }, [pin, matricula, handleOperatorLogin]);
 
   const PIN_KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'DEL', '0', '✓'];
+  const facialVisible =
+    mode === 'operator' &&
+    capabilities.facialAuthentication === 'real' &&
+    isOnline &&
+    isFacialAuthClientReady();
+
+  const handleFaceLogin = useCallback(async () => {
+    if (!device?.identificador) {
+      setFaceState('disabled');
+      setFaceMessage('Dispositivo nao configurado para identificacao facial.');
+      return;
+    }
+    if (!isOnline) {
+      setFaceState('offline');
+      setFaceMessage('Identificacao facial requer conexao. Use matricula e PIN.');
+      return;
+    }
+    try {
+      setFaceState('camera');
+      setFaceMessage('Solicitando camera frontal.');
+      const result = await runFaceLogin(device.identificador);
+      setFaceState('confirmed');
+      setFaceMessage(`Operador confirmado: ${result.operador.nome}.`);
+      await loginOperadorPorFace(result);
+      navigate('/', { replace: true });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Identificacao nao confirmada.';
+      setFaceState(
+        message.includes('409') || message.includes('ambiguo') ? 'ambiguous' : 'not_confirmed',
+      );
+      setFaceMessage(message.includes('Permission') ? 'Permissao da camera negada.' : message);
+    }
+  }, [device?.identificador, isOnline, loginOperadorPorFace, navigate]);
 
   return (
     <main className="login-layout" aria-label="Login do operador">
@@ -209,6 +245,10 @@ const LoginPage: React.FC = () => {
             onPinKey={handlePinKey}
             onSubmit={() => void handleOperatorLogin()}
             pinKeys={PIN_KEYS}
+            facialVisible={facialVisible}
+            faceState={faceState}
+            faceMessage={faceMessage}
+            onFaceLogin={() => void handleFaceLogin()}
           />
         ) : (
           <AdminLoginForm />
@@ -239,6 +279,10 @@ interface OperatorLoginFormProps {
   onPinKey: (key: string) => void;
   onSubmit: () => void;
   pinKeys: string[];
+  facialVisible: boolean;
+  faceState: FaceAuthState;
+  faceMessage: string;
+  onFaceLogin: () => void;
 }
 
 const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
@@ -251,6 +295,10 @@ const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
   onPinKey,
   onSubmit,
   pinKeys,
+  facialVisible,
+  faceState,
+  faceMessage,
+  onFaceLogin,
 }) => (
   <div style={{ display: 'flex', gap: 'var(--space-8)' }}>
     {/* Campo matrícula */}
@@ -268,10 +316,16 @@ const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
         />
       </Field>
 
-      {operatorAuthentication !== 'demo' ? (
+      {facialVisible ? (
+        <div className="face-login-panel">
+          <button type="button" className="face-login-primary" onClick={onFaceLogin}>
+            IDENTIFICACAO FACIAL
+          </button>
+          <p role="status">{faceStatusText(faceState, faceMessage)}</p>
+        </div>
+      ) : operatorAuthentication !== 'demo' ? (
         <p role="alert" className="capability-warning">
-          Entrada operacional por matricula e PIN. Identificacao facial permanece indisponivel neste
-          ambiente.
+          Identificacao facial requer HTTPS, conexao e governanca configurada. Use matricula e PIN.
         </p>
       ) : (
         <p role="status" className="capability-warning demo">
@@ -339,9 +393,31 @@ const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
           </button>
         ))}
       </div>
+      <button type="button" className="supervisor-button">
+        Chamar supervisor
+      </button>
     </div>
   </div>
 );
+
+function faceStatusText(state: FaceAuthState, message: string): string {
+  if (message) return message;
+  const labels: Record<FaceAuthState, string> = {
+    idle: 'Posicione o rosto para iniciar.',
+    camera: 'Solicitando camera.',
+    positioning: 'Posicionando rosto.',
+    liveness: 'Executando desafio.',
+    analyzing: 'Analisando.',
+    confirmed: 'Operador confirmado.',
+    not_confirmed: 'Identificacao nao confirmada.',
+    ambiguous: 'Resultado ambiguo. Use PIN ou supervisor.',
+    camera_denied: 'Permissao da camera negada.',
+    camera_unavailable: 'Camera indisponivel.',
+    offline: 'Identificacao facial requer conexao. Use matricula e PIN.',
+    disabled: 'Identificacao facial indisponivel.',
+  };
+  return labels[state];
+}
 
 // ─────────────────────────────────────────────
 // Formulário de login administrativo
