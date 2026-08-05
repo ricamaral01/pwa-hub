@@ -72,15 +72,6 @@ export class ProductionRecordsController {
     return this.records.update(id, body, user, req.correlationId);
   }
 
-  @Post(':id/start')
-  @RequireOperationalPermission('apontamentos.iniciar')
-  start(
-    @Param('id') id: string,
-    @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>,
-  ) {
-    return this.records.get(id, user);
-  }
-
   @Post(':id/finish')
   @RequireOperationalPermission('apontamentos.concluir')
   finish(

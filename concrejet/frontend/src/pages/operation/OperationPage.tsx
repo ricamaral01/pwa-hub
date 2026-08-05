@@ -16,6 +16,7 @@ import { db } from '@/db/schema';
 import { useQueue } from '@/hooks/useQueue';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 import { useSessionStore } from '@/store/session.store';
+import { isDemoMode } from '@/config/runtime';
 
 type Step = 'login' | 'opening' | 'running';
 type Operator = { id: string; matricula: string; nome: string; token: string } | null;
@@ -31,7 +32,15 @@ type Catalog = {
   }>;
   moldsByItem: Record<
     string,
-    Array<{ id: string; codigo: string; descricao: string; configuracaoId: string }>
+    Array<{
+      id: string;
+      codigo: string;
+      descricao: string;
+      configuracaoId: string;
+      pesoPecaG: number;
+      cavidades: number;
+      cicloPadraoSegundos: number;
+    }>
   >;
   lots: Array<{
     id: string;
@@ -65,7 +74,7 @@ const fallbackDeviceId = sessionStorage.getItem('concretrack.deviceId') || 'DEV-
 export default function OperationPage() {
   const [step, setStep] = useState<Step>('login');
   const [operator, setOperator] = useState<Operator>(null);
-  const [matricula] = useState('OP001');
+  const [matricula, setMatricula] = useState(isDemoMode ? 'OP001' : '');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [catalog, setCatalog] = useState<Catalog | null>(null);
@@ -101,7 +110,11 @@ export default function OperationPage() {
     (item) => item.id === selection.ordemProducaoId,
   );
   const availableMolds = selection.itemId ? (catalog?.moldsByItem[selection.itemId] ?? []) : [];
-  const calc = useMemo<CalcResult>(() => calculateLocal(152.2, quantities), [quantities]);
+  const selectedConfig = availableMolds.find((item) => item.id === selection.moldeId);
+  const calc = useMemo<CalcResult>(
+    () => calculateLocal(selectedConfig?.pesoPecaG ?? null, quantities),
+    [quantities, selectedConfig?.pesoPecaG],
+  );
   const perdaState =
     calc.perdaPct === null
       ? 'atencao'
@@ -411,7 +424,15 @@ export default function OperationPage() {
       <TabletShell header={header} columns="1fr 300px">
         <section className="tablet-panel">
           <span className="section-label">Identificacao do operador</span>
-          <NumericField label="Matricula" value={matricula} onFocus={() => undefined} />
+          <label>
+            Matricula
+            <input
+              value={matricula}
+              autoComplete="username"
+              onChange={(event) => setMatricula(event.target.value.toUpperCase())}
+              placeholder={isDemoMode ? 'OP001' : 'Informe a matricula'}
+            />
+          </label>
           <NumericField label="PIN" value={'*'.repeat(pin.length)} onFocus={() => undefined} />
           {error ? <IndustrialAlert variant="parada">{error}</IndustrialAlert> : null}
         </section>
@@ -548,7 +569,9 @@ export default function OperationPage() {
         />
         <div className="kpi-card">
           <span>Injecao util</span>
-          <strong className="num">{calc.injecaoUtilKg.toFixed(2)} kg</strong>
+          <strong className="num">
+            {selectedConfig ? `${calc.injecaoUtilKg.toFixed(2)} kg` : 'Selecione o molde'}
+          </strong>
         </div>
         <div className="kpi-card">
           <span>Perda total</span>
@@ -567,7 +590,10 @@ function toPayload(values: Record<string, string>) {
   return Object.fromEntries(Object.entries(values).map(([key, value]) => [key, Number(value)]));
 }
 
-function calculateLocal(weightG: number, values: Record<string, string>): CalcResult {
+function calculateLocal(weightG: number | null, values: Record<string, string>): CalcResult {
+  if (!weightG) {
+    return { injecaoUtilKg: 0, perdaTotalKg: 0, perdaSemGalhoKg: 0, perdaPct: null };
+  }
   const weightKg = weightG / 1000;
   const payload = toPayload(values);
   const injecaoUtilKg = (payload.pecasBoas ?? 0) * weightKg;

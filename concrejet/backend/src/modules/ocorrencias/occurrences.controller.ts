@@ -48,12 +48,6 @@ export class OccurrencesController {
     return this.occurrences.update(id, body, user, req.correlationId);
   }
 
-  @Post(':id/start')
-  @RequireOperationalPermission('ocorrencias.iniciar')
-  start(@Param('id') id: string, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>) {
-    return this.occurrences.get(id, user);
-  }
-
   @Post(':id/finish')
   @RequireOperationalPermission('ocorrencias.encerrar')
   finish(@Param('id') id: string, @Body() body: FinishOccurrenceDto, @CurrentOperationalUser() user: NonNullable<OperationalRequest['operationalUser']>, @Req() req: Request) {

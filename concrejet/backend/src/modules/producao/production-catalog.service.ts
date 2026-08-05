@@ -157,7 +157,20 @@ export class ProductionCatalogService {
   }
 
   private groupMolds(configs: ConfiguracaoItemMolde[]) {
-    return configs.reduce<Record<string, Array<{ id: string; codigo: string; descricao: string; configuracaoId: string }>>>(
+    return configs.reduce<
+      Record<
+        string,
+        Array<{
+          id: string;
+          codigo: string;
+          descricao: string;
+          configuracaoId: string;
+          pesoPecaG: number;
+          cavidades: number;
+          cicloPadraoSegundos: number;
+        }>
+      >
+    >(
       (acc, config) => {
         acc[config.itemId] ??= [];
         acc[config.itemId].push({
@@ -165,6 +178,9 @@ export class ProductionCatalogService {
           codigo: config.molde.codigo,
           descricao: config.molde.descricao,
           configuracaoId: config.id,
+          pesoPecaG: Number(config.pesoPecaG),
+          cavidades: config.cavidades,
+          cicloPadraoSegundos: config.cicloPadraoSegundos,
         });
         return acc;
       },
