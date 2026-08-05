@@ -34,7 +34,7 @@ export async function runFaceLogin(dispositivoId: string) {
   }
 }
 
-function syntheticEmbedding(seed: string, challengeId: string): number[] {
+export function syntheticEmbedding(seed: string, challengeId: string): number[] {
   const input = `${seed}:${challengeId}:concretrack-face-dev`;
   return Array.from({ length: 32 }, (_, index) => {
     const code = input.charCodeAt(index % input.length) + index * 17;
