@@ -57,11 +57,25 @@ describe('FaceEnrollmentPage', () => {
       }
       return Promise.resolve({
         ativa: false,
+        situacao: 'nao_cadastrada',
+        compatibilidade: 'sem_cadastro',
+        mensagem: null,
+        dimensaoEmbedding: null,
         modeloNome: null,
         modeloVersao: null,
         qualidade: null,
         ultimaUtilizacaoEm: null,
         emitidaEm: null,
+        colaborador: {
+          nome: 'Ana Silva',
+          matricula: 'OP001',
+          ativo: true,
+          unidadeId: 'unidade-1',
+          unidadeCodigo: 'MATRIZ',
+          unidadeNome: 'Unidade Matriz',
+          unidadeVinculada: true,
+        },
+        auditoria: [],
       });
     });
     vi.mocked(client.apiPost).mockResolvedValue({});
@@ -95,6 +109,14 @@ describe('FaceEnrollmentPage', () => {
   });
 
   it('mostra colaborador sem biometria e inicia cadastro', async () => {
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue({
+          getTracks: () => [{ stop: vi.fn() }],
+        }),
+      },
+    });
     renderPage();
 
     expect(await screen.findByText('Ana Silva')).toBeInTheDocument();
@@ -102,11 +124,14 @@ describe('FaceEnrollmentPage', () => {
     expect(await screen.findAllByText('Nao cadastrada')).not.toHaveLength(0);
 
     fireEvent.click(screen.getByRole('button', { name: /cadastrar biometria/i }));
+    for (let index = 0; index < 7; index += 1) {
+      fireEvent.click(await screen.findByRole('button', { name: 'Avancar' }));
+    }
 
     await waitFor(() => {
       expect(client.apiPost).toHaveBeenCalledWith(
         '/employees/colaborador-1/face-enrollment/complete',
-        expect.objectContaining({ qualidade: 0.86 }),
+        expect.objectContaining({ qualidade: 0.86, unidadeId: 'unidade-1' }),
       );
     });
   });
@@ -124,11 +149,25 @@ describe('FaceEnrollmentPage', () => {
       }
       return Promise.resolve({
         ativa: true,
+        situacao: 'ativa',
+        compatibilidade: 'compativel',
+        mensagem: null,
+        dimensaoEmbedding: 128,
         modeloNome: 'opencv_sface',
         modeloVersao: '2021dec-int8bq',
         qualidade: '0.8600',
         ultimaUtilizacaoEm: null,
         emitidaEm: '2026-08-01T10:00:00.000Z',
+        colaborador: {
+          nome: 'Ana Silva',
+          matricula: 'OP001',
+          ativo: true,
+          unidadeId: 'unidade-1',
+          unidadeCodigo: 'MATRIZ',
+          unidadeNome: 'Unidade Matriz',
+          unidadeVinculada: true,
+        },
+        auditoria: [],
       });
     });
     vi.spyOn(window, 'confirm').mockReturnValue(true);

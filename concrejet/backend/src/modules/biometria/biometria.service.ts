@@ -14,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { randomBytes, randomUUID, createCipheriv, createDecipheriv } from 'crypto';
 import { DataSource, Repository } from 'typeorm';
 import { Colaborador } from '../cadastros/entities';
+import { Unidade } from '../organizacao/entities/unidade.entity';
 import { Dispositivo } from '../producao-base/entities/dispositivo.entity';
 import { AuthService, OperatorLoginResult } from '../auth/auth.service';
 import { BiometriaEvento, BiometriaFacial } from './entities';
@@ -46,6 +47,9 @@ export type FaceEnrollmentPayload = FacePayload & { samples?: number[][] };
 export type FaceLoginPayload = FacePayload & { challengeId: string; ip?: string };
 
 const challenges = new Map<string, ChallengeState>();
+export const FACE_EMBEDDING_DIMENSION = 128;
+export const FACE_MODEL_NAME = 'opencv_sface';
+export const FACE_MODEL_VERSION = '2021dec-int8bq';
 
 @Injectable()
 export class BiometriaService {
@@ -112,6 +116,7 @@ export class BiometriaService {
   async completeEnrollment(colaboradorId: string, body: FaceEnrollmentPayload) {
     this.assertAvailable();
     const colaborador = await this.getColaborador(colaboradorId);
+    const unidade = await this.resolveEnrollmentUnit(colaborador.empresaId, body.unidadeId);
     const samples = body.samples?.length ? body.samples : body.embedding ? [body.embedding] : [];
     this.assertModel(body);
     if (samples.length < 5 || samples.length > 7)
@@ -130,7 +135,7 @@ export class BiometriaService {
     );
     const entity = this.biometriaRepository.create({
       empresaId: colaborador.empresaId,
-      unidadeId: body.unidadeId ?? colaborador.empresaId,
+      unidadeId: unidade.id,
       colaboradorId,
       modeloNome: config.nome,
       modeloVersao: config.versao,
@@ -156,16 +161,49 @@ export class BiometriaService {
   }
 
   async status(colaboradorId: string) {
-    const active = await this.biometriaRepository.findOne({
-      where: { colaboradorId, ativa: true },
+    const colaborador = await this.getColaborador(colaboradorId);
+    const unidade = await this.resolveDefaultUnit(colaborador.empresaId);
+    const latest = await this.biometriaRepository.findOne({
+      where: { colaboradorId },
+      order: { emitidaEm: 'DESC' },
+    });
+    const compatibility = latest ? this.readTemplateCompatibility(latest) : null;
+    const situacao = this.statusSituation(latest, compatibility);
+    const events = await this.eventoRepository.find({
+      where: { colaboradorId },
+      order: { criadoEm: 'DESC' },
+      take: 8,
     });
     return {
-      ativa: Boolean(active),
-      modeloNome: active?.modeloNome ?? null,
-      modeloVersao: active?.modeloVersao ?? null,
-      qualidade: active?.qualidade ?? null,
-      ultimaUtilizacaoEm: active?.ultimaUtilizacaoEm ?? null,
-      emitidaEm: active?.emitidaEm ?? null,
+      ativa: Boolean(latest?.ativa && situacao === 'ativa'),
+      situacao,
+      compatibilidade: compatibility?.compatibilidade ?? 'sem_cadastro',
+      mensagem: compatibility?.mensagem ?? null,
+      dimensaoEmbedding: compatibility?.dimensao ?? null,
+      modeloNome: latest?.modeloNome ?? null,
+      modeloVersao: latest?.modeloVersao ?? null,
+      qualidade: latest?.qualidade ?? null,
+      ultimaUtilizacaoEm: latest?.ultimaUtilizacaoEm ?? null,
+      emitidaEm: latest?.emitidaEm ?? null,
+      revogadaEm: latest?.revogadaEm ?? null,
+      motivoRevogacao: latest?.motivoRevogacao ?? null,
+      colaborador: {
+        id: colaborador.id,
+        nome: colaborador.nome,
+        matricula: colaborador.matricula,
+        ativo: colaborador.ativo,
+        unidadeId: unidade?.id ?? null,
+        unidadeCodigo: unidade?.codigo ?? null,
+        unidadeNome: unidade?.nome ?? null,
+        unidadeVinculada: Boolean(unidade),
+      },
+      auditoria: events.map((event) => ({
+        id: event.id,
+        tipoEvento: event.tipoEvento,
+        resultado: event.resultado,
+        criadoEm: event.criadoEm,
+        similaridade: event.similaridade,
+      })),
     };
   }
 
@@ -386,9 +424,9 @@ export class BiometriaService {
 
   private modelConfig() {
     return {
-      nome: this.configService.get<string>('BIOMETRIC_MODEL_NAME', 'opencv_sface'),
-      versao: this.configService.get<string>('BIOMETRIC_MODEL_VERSION', '2021dec-int8bq'),
-      dimensao: 128,
+      nome: this.configService.get<string>('BIOMETRIC_MODEL_NAME', FACE_MODEL_NAME),
+      versao: this.configService.get<string>('BIOMETRIC_MODEL_VERSION', FACE_MODEL_VERSION),
+      dimensao: FACE_EMBEDDING_DIMENSION,
       metrica: 'cosine',
       threshold: this.configService.get<number>('BIOMETRIC_THRESHOLD', 0.363),
       margemMinima: this.configService.get<number>('BIOMETRIC_MIN_MARGIN', 0.05),
@@ -396,14 +434,71 @@ export class BiometriaService {
     };
   }
 
-  private assertModel(body: FacePayload) {
+  private assertModel(body: FaceEnrollmentPayload) {
     const config = this.modelConfig();
     if (!body.model || body.model.nome !== config.nome || body.model.versao !== config.versao) {
       throw new UnprocessableEntityException('modelo_incompativel');
     }
-    if (body.model.dimensao !== config.dimensao || body.embedding?.length !== config.dimensao) {
+    const embeddingLength = body.embedding?.length ?? body.samples?.[0]?.length;
+    if (body.model.dimensao !== config.dimensao || embeddingLength !== config.dimensao) {
       throw new UnprocessableEntityException('dimensao_incompativel');
     }
+  }
+
+  private async resolveDefaultUnit(empresaId: string) {
+    return this.dataSource
+      .getRepository(Unidade)
+      .findOne({ where: { empresaId, ativo: true }, order: { criadoEm: 'ASC' } });
+  }
+
+  private async resolveEnrollmentUnit(empresaId: string, unidadeId?: string) {
+    if (!unidadeId) throw new BadRequestException('unidade_ausente');
+    const unidade = await this.dataSource
+      .getRepository(Unidade)
+      .findOne({ where: { id: unidadeId, empresaId, ativo: true } });
+    if (!unidade) throw new BadRequestException('unidade_ausente');
+    return unidade;
+  }
+
+  private readTemplateCompatibility(record: BiometriaFacial) {
+    const config = this.modelConfig();
+    const incompatibleMessage =
+      'Esta biometria foi cadastrada com uma versao anterior do modelo facial. Faca um novo cadastro.';
+    if (record.modeloNome !== config.nome || record.modeloVersao !== config.versao) {
+      return {
+        compatibilidade: 'modelo_incompativel',
+        dimensao: null,
+        mensagem: incompatibleMessage,
+      };
+    }
+    try {
+      const payload = JSON.parse(this.decrypt(record)) as { embedding?: number[] };
+      const dimensao = payload.embedding?.length ?? 0;
+      if (dimensao !== config.dimensao) {
+        return {
+          compatibilidade: 'dimensao_incompativel',
+          dimensao,
+          mensagem: incompatibleMessage,
+        };
+      }
+      return { compatibilidade: 'compativel', dimensao, mensagem: null };
+    } catch {
+      return {
+        compatibilidade: 'template_invalido',
+        dimensao: null,
+        mensagem: incompatibleMessage,
+      };
+    }
+  }
+
+  private statusSituation(
+    record: BiometriaFacial | null,
+    compatibility: { compatibilidade: string } | null,
+  ) {
+    if (!record) return 'nao_cadastrada';
+    if (!record.ativa) return record.revogadaEm ? 'revogada' : 'bloqueada';
+    if (compatibility?.compatibilidade !== 'compativel') return 'incompativel';
+    return 'ativa';
   }
 
   private async registerAttempt(challenge: ChallengeState, ip: string) {
