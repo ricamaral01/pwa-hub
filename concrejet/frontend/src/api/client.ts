@@ -67,6 +67,11 @@ export async function apiPatch<T, D = unknown>(url: string, data?: D): Promise<T
   return response.data;
 }
 
+export async function apiDelete<T>(url: string): Promise<T> {
+  const response = await apiClient.delete<T>(url);
+  return response.data;
+}
+
 export function isApiError(error: unknown): error is AxiosError {
   return axios.isAxiosError(error);
 }

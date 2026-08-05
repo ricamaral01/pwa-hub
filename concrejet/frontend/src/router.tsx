@@ -14,8 +14,19 @@ const StockPage = lazy(() => import('@/pages/admin/StockPage'));
 const BlendsPage = lazy(() => import('@/pages/admin/BlendsPage'));
 const AnalyticsPage = lazy(() => import('@/pages/admin/AnalyticsPage'));
 const ImportsPage = lazy(() => import('@/pages/admin/ImportsPage'));
+const FaceEnrollmentPage = lazy(() => import('@/pages/admin/FaceEnrollmentPage'));
 
 export const router = createBrowserRouter([
+  {
+    path: '/admin/cadastros/colaboradores/:id/biometria',
+    element: (
+      <AdminGuard>
+        <Suspense fallback={<PageLoader />}>
+          <FaceEnrollmentPage />
+        </Suspense>
+      </AdminGuard>
+    ),
+  },
   {
     path: '/activate',
     element: (
