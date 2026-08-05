@@ -51,9 +51,7 @@ test.describe('entrada desktop e tablet em rede local', () => {
 
       await page.goto('/');
       if (page.url().includes('/activate')) {
-        await expect(
-          page.getByRole('textbox', { name: /Identificador do dispositivo/i }),
-        ).not.toContainText(/Gerando/i);
+        await expect(page.getByText(/Codigo do tablet/i)).toBeVisible();
         await page.getByRole('button', { name: /ativar/i }).click();
         await expect(page).toHaveURL(`${lanBaseUrl}/`);
         await page.waitForTimeout(1000);
