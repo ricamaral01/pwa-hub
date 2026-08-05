@@ -31,6 +31,10 @@ export const envSchema = z.object({
   AUTH_MAX_LOGIN_ATTEMPTS: z.coerce.number().int().positive().default(5),
   AUTH_LOCKOUT_MINUTES: z.coerce.number().int().positive().default(15),
 
+  FACIAL_AUTH_ENABLED: booleanFromEnv.default(false),
+  BIOMETRIC_ENCRYPTION_KEY: z.union([z.string().min(44), emptyStringToUndefined]).optional(),
+  BIOMETRIC_GOVERNANCE_CONFIGURED: booleanFromEnv.default(false),
+
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 
   SEED_ADMIN_EMAIL: z.union([z.string().email(), emptyStringToUndefined]).optional(),

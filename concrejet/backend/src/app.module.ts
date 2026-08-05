@@ -19,6 +19,7 @@ import { OcorrenciasModule } from './modules/ocorrencias/ocorrencias.module';
 import { EstoqueModule } from './modules/estoque/estoque.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { ImportacaoModule } from './modules/importacao/importacao.module';
+import { BiometriaModule } from './modules/biometria/biometria.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ImportacaoModule } from './modules/importacao/importacao.module';
     EstoqueModule,
     AnalyticsModule,
     ImportacaoModule,
+    BiometriaModule,
     ProducaoModule,
     OcorrenciasModule,
     CadastrosModule,
