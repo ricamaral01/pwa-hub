@@ -1,12 +1,20 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
+import fs from 'fs';
+
+const httpsCert = process.env.VITE_HTTPS_CERT;
+const httpsKey = process.env.VITE_HTTPS_KEY;
+const httpsPfx = process.env.VITE_HTTPS_PFX;
+const httpsPassphrase = process.env.VITE_HTTPS_PASSPHRASE;
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    ...(httpsPfx || (httpsCert && httpsKey) ? [basicSsl()] : []),
     VitePWA({
       registerType: 'prompt', // não atualiza automaticamente durante apontamento
       includeAssets: ['favicon.ico', 'icons/*.png'],
@@ -71,6 +79,14 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
+    https: httpsPfx
+      ? { pfx: fs.readFileSync(httpsPfx), passphrase: httpsPassphrase }
+      : httpsCert && httpsKey
+        ? {
+            cert: fs.readFileSync(httpsCert),
+            key: fs.readFileSync(httpsKey),
+          }
+        : undefined,
     proxy: {
       '/api': {
         target: 'http://localhost:3000',
