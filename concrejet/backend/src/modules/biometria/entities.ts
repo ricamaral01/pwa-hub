@@ -66,14 +66,12 @@ export class BiometriaFacial extends BaseEntity {
   @Column({ name: 'revogada_em', type: 'timestamptz', nullable: true })
   revogadaEm?: Date | null;
 
-  @Column({ name: 'revogada_por', nullable: true })
+  @Column({ name: 'revogada_por', type: 'uuid', nullable: true })
   revogadaPor?: string | null;
 
   @Column({ name: 'motivo_revogacao', type: 'text', nullable: true })
   motivoRevogacao?: string | null;
 
-  @Column({ type: 'integer', default: 1 })
-  version!: number;
 }
 
 @Entity('biometria_evento')
@@ -85,13 +83,13 @@ export class BiometriaEvento extends BaseEntity {
   @Column({ name: 'unidade_id' })
   unidadeId!: string;
 
-  @Column({ name: 'colaborador_id', nullable: true })
+  @Column({ name: 'colaborador_id', type: 'uuid', nullable: true })
   colaboradorId?: string | null;
 
-  @Column({ name: 'dispositivo_id', nullable: true })
+  @Column({ name: 'dispositivo_id', type: 'uuid', nullable: true })
   dispositivoId?: string | null;
 
-  @Column({ name: 'maquina_id', nullable: true })
+  @Column({ name: 'maquina_id', type: 'uuid', nullable: true })
   maquinaId?: string | null;
 
   @Column({ name: 'tipo_evento', length: 40 })
@@ -106,6 +104,6 @@ export class BiometriaEvento extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   motivo?: string | null;
 
-  @Column({ name: 'correlation_id', nullable: true })
+  @Column({ name: 'correlation_id', type: 'uuid', nullable: true })
   correlationId?: string | null;
 }

@@ -28,6 +28,16 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: '/admin/cadastros/collaborators/:id/biometria',
+    element: (
+      <AdminGuard>
+        <Suspense fallback={<PageLoader />}>
+          <FaceEnrollmentPage />
+        </Suspense>
+      </AdminGuard>
+    ),
+  },
+  {
     path: '/activate',
     element: (
       <Suspense fallback={<PageLoader />}>

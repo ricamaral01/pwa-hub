@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
 import { Button } from '@/components/Button';
-import { getApiErrorMessage } from '@/api/client';
+import { apiGet, getApiErrorMessage } from '@/api/client';
 import {
   cancelProductionOrder,
   createCadastro,
@@ -25,6 +25,8 @@ export default function CadastrosPage() {
   const [q, setQ] = useState('');
   const [ativo, setAtivo] = useState(EMPTY_FILTER);
   const [editing, setEditing] = useState<CadastroRecord | null>(null);
+  const [showForm, setShowForm] = useState(resource.slug !== 'collaborators');
+  const [details, setDetails] = useState<CadastroRecord | null>(null);
   const [form, setForm] = useState<Record<string, string | boolean>>(getInitialForm(resource.slug));
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -32,6 +34,8 @@ export default function CadastrosPage() {
   const queryKey = useMemo(() => ['cadastros', resource.slug, q, ativo], [resource.slug, q, ativo]);
   useEffect(() => {
     setEditing(null);
+    setShowForm(resource.slug !== 'collaborators');
+    setDetails(null);
     setForm(getInitialForm(resource.slug));
     setFieldErrors({});
     setError(null);
@@ -51,6 +55,29 @@ export default function CadastrosPage() {
     queryFn: () => listCadastros('suppliers', '', 'true'),
     enabled: resource.slug === 'resin-lots',
   });
+  const { data: functionsData } = useQuery({
+    queryKey: ['cadastro-options', 'functions'],
+    queryFn: () => listCadastros('functions', '', 'true'),
+    enabled: resource.slug === 'collaborators',
+  });
+  const records = data?.data ?? [];
+  const { data: biometricStatuses } = useQuery({
+    queryKey: ['collaborator-biometrics', records.map((record) => record.id).join(',')],
+    queryFn: async () => {
+      const entries = await Promise.all(
+        records.map(async (record) => {
+          try {
+            const response = await fetchStatus(String(record.id));
+            return [String(record.id), response] as const;
+          } catch {
+            return [String(record.id), null] as const;
+          }
+        }),
+      );
+      return Object.fromEntries(entries);
+    },
+    enabled: resource.slug === 'collaborators' && records.length > 0,
+  });
 
   const saveMutation = useMutation({
     mutationFn: (payload: CadastroPayload) =>
@@ -60,6 +87,7 @@ export default function CadastrosPage() {
     onSuccess: async () => {
       setEditing(null);
       setForm(getInitialForm(resource.slug));
+      setShowForm(resource.slug !== 'collaborators');
       setError(null);
       setFieldErrors({});
       await queryClient.invalidateQueries({ queryKey: ['cadastros', resource.slug] });
@@ -100,6 +128,7 @@ export default function CadastrosPage() {
 
   const startEdit = (record: CadastroRecord) => {
     setEditing(record);
+    setShowForm(true);
     setForm(
       resource.fields.reduce<Record<string, string | boolean>>((acc, field) => {
         const value = record[field.name];
@@ -109,7 +138,6 @@ export default function CadastrosPage() {
     );
   };
 
-  const records = data?.data ?? [];
   const relationOptions = {
     resins: (resinsData?.data ?? []).map((item) => ({
       value: String(item.id),
@@ -119,15 +147,34 @@ export default function CadastrosPage() {
       value: String(item.id),
       label: String(item.documento ?? '') + ' - ' + String(item.nome ?? ''),
     })),
+    functions: (functionsData?.data ?? []).map((item) => ({
+      value: String(item.id),
+      label: formatFunctionLabel(item),
+    })),
   };
+  const isCollaborators = resource.slug === 'collaborators';
 
   return (
     <DesktopShell
       title={resource.title}
       actions={
-        <Link className="btn btn-md btn-surface" to="/admin" style={{ textDecoration: 'none' }}>
-          Voltar
-        </Link>
+        <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+          {isCollaborators ? (
+            <Button
+              type="button"
+              onClick={() => {
+                setEditing(null);
+                setForm(getInitialForm(resource.slug));
+                setShowForm(true);
+              }}
+            >
+              Novo colaborador
+            </Button>
+          ) : null}
+          <Link className="btn btn-md btn-surface" to="/admin" style={{ textDecoration: 'none' }}>
+            Voltar
+          </Link>
+        </div>
       }
     >
       <div style={{ maxWidth: 1180, margin: '0 auto', display: 'grid', gap: 'var(--space-5)' }}>
@@ -147,116 +194,153 @@ export default function CadastrosPage() {
             </label>
           </FilterBar>
 
-          <form
-            onSubmit={submit}
-            style={{
-              display: 'grid',
-              gap: 'var(--space-3)',
-              padding: 'var(--space-4)',
-              border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--radius-md)',
-              background: 'var(--bg-card)',
-            }}
-          >
-            {resource.appendOnly && editing ? (
-              <p style={{ color: 'var(--text-muted)', margin: 0 }}>
-                Este cadastro e historico. Crie uma nova versao em vez de editar a anterior.
-              </p>
-            ) : null}
-            <div
+          {showForm ? (
+            <form
+              onSubmit={submit}
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                 gap: 'var(--space-3)',
+                padding: 'var(--space-4)',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-md)',
+                background: isCollaborators ? 'var(--bg-secondary)' : 'var(--bg-card)',
               }}
             >
-              {resource.fields.map((field) => (
-                <label key={field.name} style={{ display: 'grid', gap: 6 }}>
-                  <span className="field-label-text">{field.label}</span>
-                  {field.type === 'textarea' ? (
-                    <textarea
-                      value={String(form[field.name] ?? '')}
-                      required={field.required}
-                      onChange={(event) =>
-                        setForm((state) => ({ ...state, [field.name]: event.target.value }))
-                      }
-                    />
-                  ) : field.type === 'checkbox' ? (
-                    <input
-                      type="checkbox"
-                      checked={Boolean(form[field.name])}
-                      onChange={(event) =>
-                        setForm((state) => ({ ...state, [field.name]: event.target.checked }))
-                      }
-                    />
-                  ) : field.type === 'select' ? (
-                    <select
-                      value={String(form[field.name] ?? '')}
-                      required={field.required}
-                      onChange={(event) =>
-                        setForm((state) => ({ ...state, [field.name]: event.target.value }))
-                      }
-                    >
-                      <option value="">Selecione</option>
-                      {(field.optionsFrom
-                        ? relationOptions[field.optionsFrom]
-                        : (field.options ?? [])
-                      ).map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input
-                      type={field.type ?? 'text'}
-                      value={String(form[field.name] ?? '')}
-                      required={field.required}
-                      readOnly={field.readonly}
-                      onChange={(event) =>
-                        setForm((state) => ({ ...state, [field.name]: event.target.value }))
-                      }
-                    />
-                  )}
-                  {fieldErrors[field.name] ? (
-                    <span style={{ color: 'var(--color-danger)', fontSize: 'var(--text-sm)' }}>
-                      {fieldErrors[field.name]}
-                    </span>
-                  ) : null}
-                </label>
-              ))}
-            </div>
-            {error ? <p style={{ color: 'var(--color-danger)', margin: 0 }}>{error}</p> : null}
-            <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-              <Button
-                type="submit"
-                loading={saveMutation.isPending}
-                disabled={resource.appendOnly && Boolean(editing)}
-              >
-                {editing ? 'Salvar' : 'Criar'}
-              </Button>
-              {editing ? (
-                <Button
-                  type="button"
-                  variant="surface"
-                  onClick={() => {
-                    setEditing(null);
-                    setForm(getInitialForm(resource.slug));
-                    setFieldErrors({});
-                  }}
-                >
-                  Cancelar
-                </Button>
+              {isCollaborators ? (
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
+                  <div>
+                    <h2 style={{ margin: 0, fontSize: 'var(--text-lg)' }}>
+                      {editing ? 'Editar colaborador' : 'Novo colaborador'}
+                    </h2>
+                    <p style={{ margin: '4px 0 0', color: 'var(--text-muted)' }}>
+                      Informe matricula, nome, funcao e PIN operacional quando aplicavel.
+                    </p>
+                  </div>
+                </div>
               ) : null}
-            </div>
-          </form>
+              {resource.appendOnly && editing ? (
+                <p style={{ color: 'var(--text-muted)', margin: 0 }}>
+                  Este cadastro e historico. Crie uma nova versao em vez de editar a anterior.
+                </p>
+              ) : null}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+                  gap: 'var(--space-3)',
+                }}
+              >
+                {resource.fields.map((field) => (
+                  <label key={field.name} style={{ display: 'grid', gap: 6 }}>
+                    <span className="field-label-text">{field.label}</span>
+                    {field.type === 'textarea' ? (
+                      <textarea
+                        value={String(form[field.name] ?? '')}
+                        required={field.required}
+                        onChange={(event) =>
+                          setForm((state) => ({ ...state, [field.name]: event.target.value }))
+                        }
+                      />
+                    ) : field.type === 'checkbox' ? (
+                      <input
+                        type="checkbox"
+                        checked={Boolean(form[field.name])}
+                        onChange={(event) =>
+                          setForm((state) => ({ ...state, [field.name]: event.target.checked }))
+                        }
+                      />
+                    ) : field.type === 'select' ? (
+                      <select
+                        value={String(form[field.name] ?? '')}
+                        required={field.required}
+                        onChange={(event) =>
+                          setForm((state) => ({ ...state, [field.name]: event.target.value }))
+                        }
+                      >
+                        <option value="">Selecione</option>
+                        {(field.optionsFrom
+                          ? relationOptions[field.optionsFrom]
+                          : (field.options ?? [])
+                        ).map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type={field.type ?? 'text'}
+                        value={String(form[field.name] ?? '')}
+                        required={field.required}
+                        readOnly={field.readonly}
+                        onChange={(event) =>
+                          setForm((state) => ({ ...state, [field.name]: event.target.value }))
+                        }
+                      />
+                    )}
+                    {fieldErrors[field.name] ? (
+                      <span style={{ color: 'var(--color-danger)', fontSize: 'var(--text-sm)' }}>
+                        {fieldErrors[field.name]}
+                      </span>
+                    ) : null}
+                  </label>
+                ))}
+              </div>
+              {error ? <p style={{ color: 'var(--color-danger)', margin: 0 }}>{error}</p> : null}
+              <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+                <Button
+                  type="submit"
+                  loading={saveMutation.isPending}
+                  disabled={resource.appendOnly && Boolean(editing)}
+                >
+                  {editing ? 'Salvar' : 'Criar'}
+                </Button>
+                {editing ? (
+                  <Button
+                    type="button"
+                    variant="surface"
+                    onClick={() => {
+                      setEditing(null);
+                      setForm(getInitialForm(resource.slug));
+                      setFieldErrors({});
+                      setShowForm(resource.slug !== 'collaborators');
+                    }}
+                  >
+                    Cancelar
+                  </Button>
+                ) : null}
+              </div>
+            </form>
+          ) : null}
+
+          {details ? (
+            <section
+              aria-label="Detalhes do colaborador"
+              style={{
+                display: 'grid',
+                gap: 8,
+                padding: 'var(--space-4)',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-md)',
+                background: 'var(--bg-card)',
+              }}
+            >
+              <strong>{String(details.nome ?? '-')}</strong>
+              <span>Matricula: {String(details.matricula ?? '-')}</span>
+              <span>Funcao: {formatFunctionName(details, relationOptions.functions)}</span>
+              <span>Status: {details.ativo ? 'Ativo' : 'Inativo'}</span>
+            </section>
+          ) : null}
 
           <DataTable>
             <thead>
               <tr>
-                {resource.columns.map((column) => (
+                {(isCollaborators
+                  ? ['Matricula', 'Nome', 'Funcao', 'Status', 'Biometria']
+                  : resource.columns
+                ).map((column) => (
                   <th key={column} style={cellStyle}>
-                    {column}
+                    {formatHeader(column)}
                   </th>
                 ))}
                 <th style={cellStyle}>Acoes</th>
@@ -265,13 +349,45 @@ export default function CadastrosPage() {
             <tbody>
               {records.map((record) => (
                 <tr key={String(record.id)}>
-                  {resource.columns.map((column) => (
-                    <td key={column} style={cellStyle}>
-                      {formatCellValue(record[column])}
-                    </td>
-                  ))}
+                  {isCollaborators ? (
+                    <>
+                      <td style={cellStyle}>{formatCellValue(record.matricula)}</td>
+                      <td style={cellStyle}>{formatCellValue(record.nome)}</td>
+                      <td style={cellStyle}>
+                        {formatFunctionName(record, relationOptions.functions)}
+                      </td>
+                      <td style={cellStyle}>{record.ativo ? 'Ativo' : 'Inativo'}</td>
+                      <td style={cellStyle}>
+                        <BiometricStatusBadge status={biometricStatuses?.[String(record.id)]} />
+                      </td>
+                    </>
+                  ) : (
+                    resource.columns.map((column) => (
+                      <td key={column} style={cellStyle}>
+                        {formatCellValue(record[column])}
+                      </td>
+                    ))
+                  )}
                   <td style={cellStyle}>
-                    <div style={{ display: 'flex', gap: 8 }}>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      {isCollaborators ? (
+                        <>
+                          <Button
+                            type="button"
+                            variant="surface"
+                            onClick={() => setDetails(record)}
+                          >
+                            Ver detalhes
+                          </Button>
+                          <Link
+                            className="btn btn-md btn-surface"
+                            to={`/admin/cadastros/colaboradores/${String(record.id)}/biometria`}
+                            style={{ textDecoration: 'none' }}
+                          >
+                            Biometria facial
+                          </Link>
+                        </>
+                      ) : null}
                       <Button type="button" variant="surface" onClick={() => startEdit(record)}>
                         Editar
                       </Button>
@@ -308,7 +424,10 @@ export default function CadastrosPage() {
               ))}
               {!records.length ? (
                 <tr>
-                  <td style={cellStyle} colSpan={resource.columns.length + 1}>
+                  <td
+                    style={cellStyle}
+                    colSpan={(isCollaborators ? 5 : resource.columns.length) + 1}
+                  >
                     {isFetching ? 'Carregando...' : 'Nenhum registro encontrado.'}
                   </td>
                 </tr>
@@ -337,6 +456,72 @@ function formatCellValue(value: unknown): string {
   if (typeof value === 'number' || typeof value === 'bigint') return value.toString();
   if (typeof value === 'object') return 'detalhe interno';
   return '-';
+}
+
+type FaceStatus = {
+  ativa?: boolean;
+  modeloNome?: string | null;
+  modeloVersao?: string | null;
+  qualidade?: string | number | null;
+  ultimaUtilizacaoEm?: string | null;
+  emitidaEm?: string | null;
+};
+
+function fetchStatus(id: string): Promise<FaceStatus> {
+  return apiGet<FaceStatus>(`/employees/${id}/face-enrollment/status`);
+}
+
+function formatHeader(column: string): string {
+  const labels: Record<string, string> = {
+    ativo: 'Status',
+    funcaoId: 'Funcao',
+  };
+  return labels[column] ?? column;
+}
+
+function formatFunctionLabel(record: CadastroRecord): string {
+  const codigo = String(record.codigo ?? '').trim();
+  const descricao = String(record.descricao ?? '').trim();
+  return [codigo, descricao].filter(Boolean).join(' - ') || 'Funcao sem nome';
+}
+
+function formatFunctionName(
+  record: CadastroRecord,
+  options: Array<{ value: string; label: string }>,
+): string {
+  const value = String(record.funcaoId ?? '');
+  return options.find((option) => option.value === value)?.label ?? 'Funcao nao encontrada';
+}
+
+function BiometricStatusBadge({ status }: { status: FaceStatus | null | undefined }) {
+  const state = biometricState(status);
+  const styles: Record<string, { color: string; icon: string }> = {
+    'Nao cadastrada': { color: 'var(--text-muted)', icon: '○' },
+    Ativa: { color: 'var(--color-green)', icon: '●' },
+    Bloqueada: { color: 'var(--color-warning)', icon: '!' },
+    Revogada: { color: 'var(--color-danger)', icon: '×' },
+    'Incompativel com o modelo atual': { color: 'var(--color-warning)', icon: '!' },
+  };
+  const style = styles[state];
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: style.color }}>
+      <span aria-hidden="true">{style.icon}</span>
+      {state}
+    </span>
+  );
+}
+
+function biometricState(status: FaceStatus | null | undefined): string {
+  if (!status) return 'Nao cadastrada';
+  if (!status.ativa && status.emitidaEm) return 'Revogada';
+  if (!status.ativa) return 'Nao cadastrada';
+  if (
+    status.modeloNome &&
+    (status.modeloNome !== 'opencv_sface' || status.modeloVersao !== '2021dec-int8bq')
+  ) {
+    return 'Incompativel com o modelo atual';
+  }
+  return 'Ativa';
 }
 
 function isUuid(value: string): boolean {

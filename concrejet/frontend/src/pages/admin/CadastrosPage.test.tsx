@@ -4,8 +4,13 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import CadastrosPage from './CadastrosPage';
 import * as api from '@/features/cadastros/api';
+import * as client from '@/api/client';
 
 vi.mock('@/features/cadastros/api');
+vi.mock('@/api/client', () => ({
+  apiGet: vi.fn(),
+  getApiErrorMessage: vi.fn(() => 'Erro de API'),
+}));
 
 function renderPage(path = '/admin/cadastros/items') {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -14,6 +19,10 @@ function renderPage(path = '/admin/cadastros/items') {
       <MemoryRouter initialEntries={[path]}>
         <Routes>
           <Route path="/admin/cadastros/:resource" element={<CadastrosPage />} />
+          <Route
+            path="/admin/cadastros/colaboradores/:id/biometria"
+            element={<div>Biometria</div>}
+          />
           <Route path="/admin" element={<div>Admin</div>} />
         </Routes>
       </MemoryRouter>
@@ -31,6 +40,12 @@ describe('CadastrosPage', () => {
     vi.mocked(api.updateCadastro).mockResolvedValue({ id: 'item-1' });
     vi.mocked(api.inactivateCadastro).mockResolvedValue({ id: 'item-1', ativo: false });
     vi.mocked(api.reactivateCadastro).mockResolvedValue({ id: 'item-1', ativo: true });
+    vi.mocked(client.apiGet).mockResolvedValue({
+      ativa: true,
+      modeloNome: 'opencv_sface',
+      modeloVersao: '2021dec-int8bq',
+      emitidaEm: '2026-08-01T10:00:00.000Z',
+    });
   });
 
   it('lista e cria cadastro usando o recurso da rota', async () => {
@@ -50,6 +65,60 @@ describe('CadastrosPage', () => {
         ativo: true,
       });
     });
+  });
+
+  it('exibe colaboradores com funcao amigavel e acesso a biometria', async () => {
+    vi.mocked(api.listCadastros).mockImplementation((resource) =>
+      Promise.resolve(
+        resource === 'functions'
+          ? {
+              data: [{ id: 'funcao-1', codigo: 'OP', descricao: 'Operador', ativo: true }],
+              meta: { page: 1, limit: 50, total: 1 },
+            }
+          : {
+              data: [
+                {
+                  id: 'colaborador-1',
+                  matricula: 'OP001',
+                  nome: 'Ana Silva',
+                  funcaoId: 'funcao-1',
+                  ativo: true,
+                },
+              ],
+              meta: { page: 1, limit: 50, total: 1 },
+            },
+      ),
+    );
+
+    renderPage('/admin/cadastros/collaborators');
+
+    expect(await screen.findByText('Ana Silva')).toBeInTheDocument();
+    expect(await screen.findByText('OP - Operador')).toBeInTheDocument();
+    expect(screen.queryByText('funcao-1')).not.toBeInTheDocument();
+    expect(screen.queryByText(/identificador interno/i)).not.toBeInTheDocument();
+    expect(await screen.findByText('Ativa')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('link', { name: /biometria facial/i }));
+    expect(await screen.findByText('Biometria')).toBeInTheDocument();
+  });
+
+  it('usa select de funcoes no cadastro de colaborador', async () => {
+    vi.mocked(api.listCadastros).mockImplementation((resource) =>
+      Promise.resolve(
+        resource === 'functions'
+          ? {
+              data: [{ id: 'funcao-1', codigo: 'OP', descricao: 'Operador', ativo: true }],
+              meta: { page: 1, limit: 50, total: 1 },
+            }
+          : { data: [], meta: { page: 1, limit: 50, total: 0 } },
+      ),
+    );
+
+    renderPage('/admin/cadastros/collaborators');
+
+    fireEvent.click(await screen.findByRole('button', { name: /novo colaborador/i }));
+    expect(await screen.findByRole('option', { name: 'OP - Operador' })).toBeInTheDocument();
+    expect(screen.queryByLabelText(/funcao id/i)).not.toBeInTheDocument();
   });
   it('usa seletores reais para criar lote de resina', async () => {
     vi.mocked(api.listCadastros).mockImplementation((resource) =>

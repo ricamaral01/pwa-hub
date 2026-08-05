@@ -8,7 +8,7 @@ export interface CadastroField {
   required?: boolean;
   readonly?: boolean;
   options?: { value: string; label: string }[];
-  optionsFrom?: 'resins' | 'suppliers';
+  optionsFrom?: 'resins' | 'suppliers' | 'functions';
 }
 
 export interface CadastroResource {
@@ -40,7 +40,13 @@ export const cadastroResources: CadastroResource[] = [
     fields: [
       { name: 'matricula', label: 'Matricula', required: true },
       { name: 'nome', label: 'Nome', required: true },
-      { name: 'funcaoId', label: 'Funcao ID', required: true },
+      {
+        name: 'funcaoId',
+        label: 'Funcao',
+        type: 'select',
+        required: true,
+        optionsFrom: 'functions',
+      },
       { name: 'ativo', label: 'Ativo', type: 'checkbox' },
     ],
     columns: ['matricula', 'nome', 'funcaoId', 'ativo'],

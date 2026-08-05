@@ -17,6 +17,7 @@ import {
   CalendarioTurno,
   EstoqueMovimento,
 } from '../modules/estoque/entities';
+import { BiometriaEvento, BiometriaFacial } from '../modules/biometria/entities';
 
 export function buildTypeOrmOptions(config: ConfigService): TypeOrmModuleOptions {
   return {
@@ -43,6 +44,8 @@ export function buildTypeOrmOptions(config: ConfigService): TypeOrmModuleOptions
       Blenda,
       BlendaComponente,
       CalendarioTurno,
+      BiometriaFacial,
+      BiometriaEvento,
     ],
     migrations: ['dist/database/migrations/*.js'],
     migrationsRun: false,

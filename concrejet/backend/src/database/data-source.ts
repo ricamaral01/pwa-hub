@@ -11,6 +11,7 @@ import { Dispositivo } from '../modules/producao-base/entities/dispositivo.entit
 import { Auditoria } from '../modules/auditoria/entities/auditoria.entity';
 import { CADASTRO_ENTITIES } from '../modules/cadastros/entities';
 import { Apontamento } from '../modules/producao/entities/apontamento.entity';
+import { BiometriaEvento, BiometriaFacial } from '../modules/biometria/entities';
 
 config();
 
@@ -33,6 +34,8 @@ export const AppDataSource = new DataSource({
     Auditoria,
     ...CADASTRO_ENTITIES,
     Apontamento,
+    BiometriaFacial,
+    BiometriaEvento,
   ],
   migrations: ['src/database/migrations/*.ts'],
   synchronize: false,
