@@ -21,10 +21,10 @@ async function bootstrap(): Promise<void> {
       origin: (origin, callback) => {
         if (!origin) return callback(null, true);
         const allowed =
-          /^http:\/\/(localhost|127\.0\.0\.1|\[::1\]):5173$/.test(origin) ||
-          /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}:5173$/.test(origin) ||
-          /^http:\/\/10\.\d{1,3}\.\d{1,3}\.\d{1,3}:5173$/.test(origin) ||
-          /^http:\/\/172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}:5173$/.test(origin);
+          /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\]):517[34]$/.test(origin) ||
+          /^https?:\/\/192\.168\.\d{1,3}\.\d{1,3}:517[34]$/.test(origin) ||
+          /^https?:\/\/10\.\d{1,3}\.\d{1,3}\.\d{1,3}:517[34]$/.test(origin) ||
+          /^https?:\/\/172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}:517[34]$/.test(origin);
         callback(allowed ? null : new Error('Origem CORS nao permitida.'), allowed);
       },
       credentials: true,
