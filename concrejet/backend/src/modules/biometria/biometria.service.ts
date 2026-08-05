@@ -1,8 +1,10 @@
 import {
   BadRequestException,
   ConflictException,
-  ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
+  NotFoundException,
   ServiceUnavailableException,
   UnauthorizedException,
   UnprocessableEntityException,
@@ -31,19 +33,19 @@ interface ChallengeState {
   usado: boolean;
 }
 
-interface FacePayload {
+export interface FacePayload {
   dispositivoId: string;
   unidadeId?: string;
   embedding?: number[];
   qualidade?: number;
   liveness?: { valid: boolean; steps: ChallengeStep[]; frames: number; faces: number };
+  model?: { nome: string; versao: string; dimensao: number };
 }
 
+export type FaceEnrollmentPayload = FacePayload & { samples?: number[][] };
+export type FaceLoginPayload = FacePayload & { challengeId: string; ip?: string };
+
 const challenges = new Map<string, ChallengeState>();
-const attempts = new Map<string, { count: number; resetAt: number }>();
-const MODEL = { nome: 'SyntheticFaceEmbedding', versao: 'dev-1.0' };
-const THRESHOLD = 0.82;
-const MARGIN = 0.04;
 
 @Injectable()
 export class BiometriaService {
@@ -57,7 +59,7 @@ export class BiometriaService {
     private readonly authService: AuthService,
   ) {}
 
-  readiness(): { enabled: boolean; available: boolean; reasons: string[]; model: typeof MODEL } {
+  readiness() {
     const enabled = this.configService.get<boolean>('FACIAL_AUTH_ENABLED', false);
     const reasons: string[] = [];
     if (!enabled) reasons.push('feature_flag_desativada');
@@ -65,7 +67,12 @@ export class BiometriaService {
     if (!this.configService.get<boolean>('BIOMETRIC_GOVERNANCE_CONFIGURED', false)) {
       reasons.push('governanca_incompleta');
     }
-    return { enabled, available: enabled && reasons.length === 0, reasons, model: MODEL };
+    return {
+      enabled,
+      available: enabled && reasons.length === 0,
+      reasons,
+      model: this.modelConfig(),
+    };
   }
 
   async startEnrollment(colaboradorId: string) {
@@ -77,19 +84,25 @@ export class BiometriaService {
       finalidade: 'login_operacional',
       requiredSamples: 5,
       sequence: ['frontal', 'turn_left', 'turn_right', 'blink', 'move_closer'],
-      model: MODEL,
+      model: this.modelConfig(),
     };
   }
 
-  async completeEnrollment(colaboradorId: string, body: FacePayload & { samples?: number[][] }) {
+  async completeEnrollment(colaboradorId: string, body: FaceEnrollmentPayload) {
     this.assertAvailable();
     const colaborador = await this.getColaborador(colaboradorId);
     const samples = body.samples?.length ? body.samples : body.embedding ? [body.embedding] : [];
-    if (samples.length < 1) throw new UnprocessableEntityException('Captura invalida.');
+    this.assertModel(body);
+    if (samples.length < 5 || samples.length > 7)
+      throw new UnprocessableEntityException('amostras_invalidas');
     const qualidade = body.qualidade ?? 0;
-    if (qualidade < 0.55) throw new UnprocessableEntityException('baixa_qualidade');
-    const embedding = average(samples);
-    const encrypted = this.encrypt(JSON.stringify({ embedding }));
+    const config = this.modelConfig();
+    if (qualidade < config.qualidadeMinima)
+      throw new UnprocessableEntityException('baixa_qualidade');
+    const embedding = normalize(average(samples.map(normalize)));
+    if (!consistent(samples.map(normalize), embedding))
+      throw new UnprocessableEntityException('amostras_divergentes');
+    const encrypted = this.encrypt(JSON.stringify({ embedding, model: config }));
     await this.biometriaRepository.update(
       { colaboradorId, ativa: true },
       { ativa: false, revogadaEm: new Date(), motivoRevogacao: 'substituida' },
@@ -98,13 +111,13 @@ export class BiometriaService {
       empresaId: colaborador.empresaId,
       unidadeId: body.unidadeId ?? colaborador.empresaId,
       colaboradorId,
-      modeloNome: MODEL.nome,
-      modeloVersao: MODEL.versao,
+      modeloNome: config.nome,
+      modeloVersao: config.versao,
       templateCriptografado: encrypted.data,
       templateIv: encrypted.iv,
       templateAuthTag: encrypted.authTag,
       qualidade: qualidade.toFixed(4),
-      thresholdAplicado: THRESHOLD.toFixed(4),
+      thresholdAplicado: config.threshold.toFixed(4),
       ativa: true,
       emitidaEm: new Date(),
     });
@@ -176,7 +189,7 @@ export class BiometriaService {
   }
 
   async faceLogin(
-    body: FacePayload & { challengeId: string },
+    body: FaceLoginPayload,
   ): Promise<OperatorLoginResult & { resultado: FaceResult }> {
     this.assertAvailable();
     const challenge = challenges.get(body.challengeId);
@@ -184,22 +197,20 @@ export class BiometriaService {
       throw new UnauthorizedException('challenge_invalido');
     }
     challenge.usado = true;
-    const key = `${challenge.dispositivoId}:${new Date().toISOString().slice(0, 13)}`;
-    const current = attempts.get(key) ?? { count: 0, resetAt: Date.now() + 60 * 60_000 };
-    if (current.count >= 10 && current.resetAt > Date.now())
-      throw new ForbiddenException('excesso_tentativas');
-    attempts.set(key, { count: current.count + 1, resetAt: current.resetAt });
+    await this.registerAttempt(challenge, body.ip ?? '');
+    this.assertModel(body);
     this.validateCapture(body, challenge.steps);
+    const config = this.modelConfig();
     const candidates = await this.loadCandidates(challenge.empresaId, challenge.unidadeId);
     const ranked = candidates
       .map((candidate) => ({
         ...candidate,
-        similarity: cosine(body.embedding ?? [], candidate.embedding),
+        similarity: cosine(normalize(body.embedding ?? []), candidate.embedding),
       }))
       .sort((a, b) => b.similarity - a.similarity);
     const first = ranked[0];
     const second = ranked[1];
-    if (!first || first.similarity < THRESHOLD) {
+    if (!first || first.similarity < config.threshold) {
       await this.log(
         challenge.empresaId,
         challenge.unidadeId,
@@ -211,7 +222,7 @@ export class BiometriaService {
       );
       throw new UnauthorizedException('identificacao_nao_confirmada');
     }
-    if (second && first.similarity - second.similarity < MARGIN) {
+    if (second && first.similarity - second.similarity < config.margemMinima) {
       await this.log(
         challenge.empresaId,
         challenge.unidadeId,
@@ -255,7 +266,8 @@ export class BiometriaService {
 
   private validateCapture(body: FacePayload, steps: ChallengeStep[]) {
     if (!body.embedding?.length) throw new UnprocessableEntityException('captura_invalida');
-    if ((body.qualidade ?? 0) < 0.55) throw new UnprocessableEntityException('baixa_qualidade');
+    if ((body.qualidade ?? 0) < this.modelConfig().qualidadeMinima)
+      throw new UnprocessableEntityException('baixa_qualidade');
     if (!body.liveness?.valid || body.liveness.frames < 3 || body.liveness.faces !== 1)
       throw new BadRequestException('prova_presenca_invalida');
     if (!steps.every((step) => body.liveness?.steps.includes(step)))
@@ -263,8 +275,15 @@ export class BiometriaService {
   }
 
   private async loadCandidates(empresaId: string, unidadeId: string) {
+    const config = this.modelConfig();
     const records = await this.biometriaRepository.find({
-      where: { empresaId, unidadeId, ativa: true },
+      where: {
+        empresaId,
+        unidadeId,
+        ativa: true,
+        modeloNome: config.nome,
+        modeloVersao: config.versao,
+      },
       relations: ['colaborador'],
     });
     return records
@@ -280,7 +299,7 @@ export class BiometriaService {
     const colaborador = await this.dataSource
       .getRepository(Colaborador)
       .findOne({ where: { id, ativo: true } });
-    if (!colaborador) throw new ForbiddenException('colaborador_invalido');
+    if (!colaborador) throw new NotFoundException('colaborador_inacessivel');
     return colaborador;
   }
 
@@ -296,6 +315,70 @@ export class BiometriaService {
   private assertAvailable() {
     if (!this.readiness().available)
       throw new ServiceUnavailableException('biometria_desativada_ou_sem_governanca');
+  }
+
+  private modelConfig() {
+    return {
+      nome: this.configService.get<string>('BIOMETRIC_MODEL_NAME', 'opencv_sface'),
+      versao: this.configService.get<string>('BIOMETRIC_MODEL_VERSION', '2021dec-int8bq'),
+      dimensao: 128,
+      metrica: 'cosine',
+      threshold: this.configService.get<number>('BIOMETRIC_THRESHOLD', 0.363),
+      margemMinima: this.configService.get<number>('BIOMETRIC_MIN_MARGIN', 0.05),
+      qualidadeMinima: this.configService.get<number>('BIOMETRIC_MIN_QUALITY', 0.6),
+    };
+  }
+
+  private assertModel(body: FacePayload) {
+    const config = this.modelConfig();
+    if (!body.model || body.model.nome !== config.nome || body.model.versao !== config.versao) {
+      throw new UnprocessableEntityException('modelo_incompativel');
+    }
+    if (body.model.dimensao !== config.dimensao || body.embedding?.length !== config.dimensao) {
+      throw new UnprocessableEntityException('dimensao_incompativel');
+    }
+  }
+
+  private async registerAttempt(challenge: ChallengeState, ip: string) {
+    const max = this.configService.get<number>('BIOMETRIC_MAX_ATTEMPTS', 10);
+    const lockout = this.configService.get<number>('BIOMETRIC_LOCKOUT_MINUTES', 15);
+    const windowStart = new Date(Math.floor(Date.now() / 3_600_000) * 3_600_000);
+    const rows = await this.dataSource.query(
+      `
+        insert into biometria_tentativa (empresa_id, unidade_id, dispositivo_id, ip, janela_inicio, tentativas)
+        values ($1, $2, $3, $4, $5, 1)
+        on conflict (empresa_id, unidade_id, dispositivo_id, ip, janela_inicio)
+        do update set tentativas = biometria_tentativa.tentativas + 1,
+          atualizado_em = now(),
+          bloqueado_ate = case
+            when biometria_tentativa.tentativas + 1 >= $6 then now() + ($7 || ' minutes')::interval
+            else biometria_tentativa.bloqueado_ate
+          end
+        returning tentativas, bloqueado_ate
+      `,
+      [
+        challenge.empresaId,
+        challenge.unidadeId,
+        challenge.dispositivoId,
+        ip,
+        windowStart,
+        max,
+        lockout,
+      ],
+    );
+    const row = rows[0];
+    if (row?.bloqueado_ate && new Date(row.bloqueado_ate).getTime() > Date.now()) {
+      await this.log(
+        challenge.empresaId,
+        challenge.unidadeId,
+        null,
+        challenge.dispositivoId,
+        challenge.maquinaId,
+        'tentativa',
+        'bloqueado',
+      );
+      throw new HttpException('excesso_tentativas', HttpStatus.TOO_MANY_REQUESTS);
+    }
   }
 
   private getKey(): Buffer | null {
@@ -354,6 +437,15 @@ function average(samples: number[][]): number[] {
   return samples[0].map(
     (_, index) => samples.reduce((sum, sample) => sum + (sample[index] ?? 0), 0) / samples.length,
   );
+}
+
+function normalize(values: number[]): number[] {
+  const magnitude = Math.sqrt(values.reduce((sum, value) => sum + value * value, 0));
+  return magnitude ? values.map((value) => value / magnitude) : values;
+}
+
+function consistent(samples: number[][], centroid: number[]): boolean {
+  return samples.every((sample) => cosine(sample, centroid) >= 0.72);
 }
 
 function cosine(a: number[], b: number[]): number {

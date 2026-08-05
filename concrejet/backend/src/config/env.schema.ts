@@ -34,6 +34,13 @@ export const envSchema = z.object({
   FACIAL_AUTH_ENABLED: booleanFromEnv.default(false),
   BIOMETRIC_ENCRYPTION_KEY: z.union([z.string().min(44), emptyStringToUndefined]).optional(),
   BIOMETRIC_GOVERNANCE_CONFIGURED: booleanFromEnv.default(false),
+  BIOMETRIC_MODEL_NAME: z.string().default('opencv_sface'),
+  BIOMETRIC_MODEL_VERSION: z.string().default('2021dec-int8bq'),
+  BIOMETRIC_THRESHOLD: z.coerce.number().min(0).max(1).default(0.363),
+  BIOMETRIC_MIN_MARGIN: z.coerce.number().min(0).max(1).default(0.05),
+  BIOMETRIC_MIN_QUALITY: z.coerce.number().min(0).max(1).default(0.6),
+  BIOMETRIC_MAX_ATTEMPTS: z.coerce.number().int().positive().default(10),
+  BIOMETRIC_LOCKOUT_MINUTES: z.coerce.number().int().positive().default(15),
 
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 

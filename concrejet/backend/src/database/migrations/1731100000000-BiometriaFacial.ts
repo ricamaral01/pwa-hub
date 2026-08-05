@@ -46,6 +46,22 @@ export class BiometriaFacial1731100000000 implements MigrationInterface {
         versao integer NOT NULL DEFAULT 1
       )
     `);
+    await queryRunner.query(`
+      CREATE TABLE IF NOT EXISTS biometria_tentativa (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        empresa_id uuid NOT NULL,
+        unidade_id uuid NOT NULL,
+        dispositivo_id uuid NOT NULL,
+        ip varchar(80) NOT NULL DEFAULT '',
+        janela_inicio timestamptz NOT NULL,
+        tentativas integer NOT NULL DEFAULT 0,
+        bloqueado_ate timestamptz,
+        criado_em timestamptz NOT NULL DEFAULT now(),
+        atualizado_em timestamptz NOT NULL DEFAULT now(),
+        versao integer NOT NULL DEFAULT 1,
+        CONSTRAINT uq_biometria_tentativa_janela UNIQUE (empresa_id, unidade_id, dispositivo_id, ip, janela_inicio)
+      )
+    `);
     await queryRunner.query(
       `CREATE INDEX IF NOT EXISTS idx_biometria_facial_colaborador_ativa ON biometria_facial (empresa_id, unidade_id, colaborador_id, ativa)`,
     );
@@ -54,6 +70,9 @@ export class BiometriaFacial1731100000000 implements MigrationInterface {
     );
     await queryRunner.query(
       `CREATE UNIQUE INDEX IF NOT EXISTS uq_biometria_facial_ativa ON biometria_facial (colaborador_id) WHERE ativa = true`,
+    );
+    await queryRunner.query(
+      `CREATE INDEX IF NOT EXISTS idx_biometria_tentativa_bloqueio ON biometria_tentativa (empresa_id, unidade_id, dispositivo_id, bloqueado_ate)`,
     );
     await queryRunner.query(`
       INSERT INTO permissao (chave, descricao, modulo)
@@ -71,9 +90,11 @@ export class BiometriaFacial1731100000000 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP INDEX IF EXISTS uq_biometria_facial_ativa`);
+    await queryRunner.query(`DROP INDEX IF EXISTS idx_biometria_tentativa_bloqueio`);
     await queryRunner.query(`DROP INDEX IF EXISTS idx_biometria_evento_busca`);
     await queryRunner.query(`DROP INDEX IF EXISTS idx_biometria_facial_colaborador_ativa`);
     await queryRunner.query(`DROP TABLE IF EXISTS biometria_evento`);
+    await queryRunner.query(`DROP TABLE IF EXISTS biometria_tentativa`);
     await queryRunner.query(`DROP TABLE IF EXISTS biometria_facial`);
   }
 }
