@@ -201,7 +201,6 @@ const LoginPage: React.FC = () => {
             pin={pin}
             error={error}
             loading={loading}
-            demoMode={isDemoMode}
             operatorAuthentication={capabilities.operatorAuthentication}
             onMatriculaChange={(v) => {
               setMatricula(v);
@@ -235,7 +234,6 @@ interface OperatorLoginFormProps {
   pin: string;
   error: string;
   loading: boolean;
-  demoMode: boolean;
   operatorAuthentication: string;
   onMatriculaChange: (v: string) => void;
   onPinKey: (key: string) => void;
@@ -248,7 +246,6 @@ const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
   pin,
   error,
   loading,
-  demoMode,
   operatorAuthentication,
   onMatriculaChange,
   onPinKey,
@@ -266,15 +263,15 @@ const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
           autoComplete="username"
           autoFocus
           aria-label="Matrícula do operador"
-          disabled={operatorAuthentication !== 'demo'}
+          disabled={loading}
           style={{ fontSize: 'var(--text-xl)', fontWeight: 700, letterSpacing: '0.1em' }}
         />
       </Field>
 
       {operatorAuthentication !== 'demo' ? (
         <p role="alert" className="capability-warning">
-          Login operacional ainda nao foi implementado no backend. Use o acesso administrativo real
-          ou habilite VITE_DEMO_MODE=true apenas para demonstracao visual.
+          Entrada operacional por matricula e PIN. Identificacao facial permanece indisponivel neste
+          ambiente.
         </p>
       ) : (
         <p role="status" className="capability-warning demo">
@@ -328,7 +325,7 @@ const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
             key={k}
             className="pin-key"
             onClick={() => (k === '✓' ? onSubmit() : onPinKey(k))}
-            disabled={loading || !demoMode}
+            disabled={loading}
             style={k === '✓' ? { background: 'var(--color-green)', color: 'white' } : undefined}
             aria-label={k === 'DEL' ? 'Apagar' : k === '✓' ? 'Entrar' : k}
           >

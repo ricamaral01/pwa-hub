@@ -12,6 +12,7 @@ import {
   OperatorHeader,
   StatusLamp,
   TabletActionBar,
+  TabletPanel,
   TabletShell,
   TouchSelect,
 } from '@/ui/tablet';
@@ -172,6 +173,7 @@ export default function StopPage() {
               {active ? `Parada ${duration}` : 'Sem parada'}
             </StatusLamp>
           }
+          context={<span>{active ? active.descricao : 'Posto sem parada ativa'}</span>}
           right={
             <>
               <OfflineIndicator online={isOnline} pending={pendingCount} />
@@ -201,11 +203,17 @@ export default function StopPage() {
           <button type="button" disabled={!active} onClick={() => void finishStop()}>
             Encerrar
           </button>
+          <button type="button" disabled={!active}>
+            Registrar causa
+          </button>
+          <button type="button" disabled={!active}>
+            Acao corretiva
+          </button>
           <Link to="/">Voltar ao apontamento</Link>
         </TabletActionBar>
       }
     >
-      <section className="tablet-panel">
+      <TabletPanel title="Tipo de parada">
         <TouchSelect
           label="Tipo"
           value={tipoOcorrenciaId}
@@ -215,8 +223,14 @@ export default function StopPage() {
             title: `${item.codigo} - ${item.descricao}`,
           }))}
         />
-      </section>
-      <section className="tablet-panel">
+        {active ? (
+          <div className="kpi-card parada">
+            <span>Tempo parado</span>
+            <strong className="num">{duration}</strong>
+          </div>
+        ) : null}
+      </TabletPanel>
+      <TabletPanel title="Registro da ocorrencia">
         <label>
           Descricao
           <textarea value={descricao} onChange={(event) => setDescricao(event.target.value)} />
@@ -236,7 +250,7 @@ export default function StopPage() {
           <span>Status</span>
           <strong>{active?.status ?? 'sem parada'}</strong>
         </div>
-      </section>
+      </TabletPanel>
     </TabletShell>
   );
 }

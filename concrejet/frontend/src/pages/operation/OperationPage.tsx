@@ -8,6 +8,7 @@ import {
   OperatorHeader,
   StatusLamp,
   TabletActionBar,
+  TabletPanel,
   TabletShell,
   TouchSelect,
 } from '@/ui/tablet';
@@ -394,6 +395,10 @@ export default function OperationPage() {
     }));
   }
 
+  function clearActiveField() {
+    setQuantities((values) => ({ ...values, [activeField]: '0' }));
+  }
+
   const header = (
     <MachineHeader
       machine={
@@ -405,6 +410,15 @@ export default function OperationPage() {
         <StatusLamp variant={step === 'running' ? 'ok' : 'ocioso'}>
           {step === 'running' ? 'Rodando' : 'Aguardando'}
         </StatusLamp>
+      }
+      context={
+        selectedOrder ? (
+          <span>
+            O.P. <b className="num">{selectedOrder.numero}</b> - {selectedOrder.item.codigo}
+          </span>
+        ) : (
+          <span>Selecione operacao, ordem, molde e lote</span>
+        )
       }
       right={
         <>
@@ -422,7 +436,7 @@ export default function OperationPage() {
   if (step === 'login') {
     return (
       <TabletShell header={header} columns="1fr 300px">
-        <section className="tablet-panel">
+        <TabletPanel title="Identificacao do operador">
           <span className="section-label">Identificacao do operador</span>
           <label>
             Matricula
@@ -434,11 +448,22 @@ export default function OperationPage() {
             />
           </label>
           <NumericField label="PIN" value={'*'.repeat(pin.length)} onFocus={() => undefined} />
+          <button
+            className="touch-button"
+            type="button"
+            disabled
+            title="Preparado para etapa futura"
+          >
+            Identificacao facial indisponivel
+          </button>
+          <button className="touch-button warning" type="button" disabled>
+            Chamar supervisor
+          </button>
           {error ? <IndustrialAlert variant="parada">{error}</IndustrialAlert> : null}
-        </section>
-        <section className="tablet-panel">
+        </TabletPanel>
+        <TabletPanel title="Teclado">
           <NumericKeypad onDigit={digit} onBackspace={backspace} onConfirm={() => void login()} />
-        </section>
+        </TabletPanel>
       </TabletShell>
     );
   }
@@ -469,6 +494,9 @@ export default function OperationPage() {
           <button type="button" disabled={step !== 'running'} onClick={() => void finish()}>
             Concluir
           </button>
+          <button type="button" onClick={() => void persistQuantities()}>
+            Salvar
+          </button>
           <button type="button" onClick={() => setStep('opening')}>
             Voltar
           </button>
@@ -476,7 +504,7 @@ export default function OperationPage() {
         </TabletActionBar>
       }
     >
-      <section className="tablet-panel">
+      <TabletPanel title="Abertura do apontamento">
         <TouchSelect
           label="Operacao"
           value={selection.operacaoId}
@@ -530,6 +558,10 @@ export default function OperationPage() {
           options={availableMolds.map((item) => ({
             id: item.id,
             title: `${item.codigo} - ${item.descricao}`,
+            meta:
+              item.id === selection.moldeId && selectedConfig
+                ? `${selectedConfig.pesoPecaG} g - ${selectedConfig.cavidades} cav. - ${selectedConfig.cicloPadraoSegundos}s`
+                : undefined,
           }))}
         />
         <TouchSelect
@@ -542,8 +574,8 @@ export default function OperationPage() {
             description: `${item.fornecedor?.nome ?? 'sem fornecedor'} - saldo ${item.saldoAtualKg} kg - ${item.status}`,
           }))}
         />
-      </section>
-      <section className="tablet-panel">
+      </TabletPanel>
+      <TabletPanel title="Toque no campo e digite">
         {Object.entries({
           pecasBoas: 'Pecas boas',
           pecasRefugo: 'Refugo',
@@ -560,12 +592,13 @@ export default function OperationPage() {
             onFocus={() => setActiveField(key)}
           />
         ))}
-      </section>
-      <section className="tablet-panel">
+      </TabletPanel>
+      <TabletPanel title="Teclado e resultados">
         <NumericKeypad
           onDigit={digit}
           onBackspace={backspace}
           allowDecimal={activeField.endsWith('Kg')}
+          onClear={clearActiveField}
         />
         <div className="kpi-card">
           <span>Injecao util</span>
@@ -581,7 +614,15 @@ export default function OperationPage() {
           <span>Perda sem galho</span>
           <strong className="num">{calc.perdaSemGalhoKg.toFixed(2)} kg</strong>
         </div>
-      </section>
+        <div className="kpi-card">
+          <span>Configuracao</span>
+          <strong>
+            {selectedConfig
+              ? `${selectedConfig.pesoPecaG} g - ${selectedConfig.cavidades} cav.`
+              : 'Sem configuracao'}
+          </strong>
+        </div>
+      </TabletPanel>
     </TabletShell>
   );
 }
