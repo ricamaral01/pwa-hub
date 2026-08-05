@@ -5,7 +5,7 @@ $certDir = Join-Path $root ".certs"
 New-Item -ItemType Directory -Force -Path $certDir | Out-Null
 
 $lanIp = (Get-NetIPAddress -AddressFamily IPv4 |
-  Where-Object { $_.IPAddress -notlike "127.*" -and $_.PrefixOrigin -ne "WellKnown" } |
+  Where-Object { $_.IPAddress -notlike "127.*" -and $_.IPAddress -notlike "169.254*" -and $_.InterfaceAlias -notlike "vEthernet*" -and $_.PrefixOrigin -ne "WellKnown" } |
   Select-Object -First 1 -ExpandProperty IPAddress)
 
 if (-not $lanIp) { $lanIp = "127.0.0.1" }

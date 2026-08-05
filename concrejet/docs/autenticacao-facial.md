@@ -6,17 +6,20 @@ Uso exclusivo: login operacional do colaborador no tablet. O fluxo exige HTTPS,
 conexao com a API, chave `BIOMETRIC_ENCRYPTION_KEY` e governanca biometrica
 configurada por `BIOMETRIC_GOVERNANCE_CONFIGURED=true`.
 
-Modelo: `SyntheticFaceEmbedding dev-1.0` no ambiente de desenvolvimento e testes,
-sem rostos reais. A arquitetura reserva Face Landmarker para enquadramento,
-landmarks e prova de presenca, e modelo dedicado de embeddings para identidade.
-Landmarks nao sao usados como identidade.
+Modelo real: OpenCV SFace `face_recognition_sface_2021dec_int8bq.onnx`.
+Origem: Hugging Face `opencv/face_recognition_sface`.
+Licenca: Apache 2.0 conforme model card do repositorio.
+Tamanho: 10.667.852 bytes.
+Checksum SHA-256: `fb143eea07838aa532d1c95df5f69899974ea0140e1fba05e94204be13ed74ee`.
+Modelo sintetico permanece somente em testes automatizados sem rostos reais.
 
 Inferencia: cliente captura camera e executa prova de presenca; comparacao 1:N
 ocorre no backend, limitada a empresa, unidade, colaborador ativo, biometria ativa,
 dispositivo ativo e maquina vinculada.
 
-Decisao: threshold `0.82`, margem minima `0.04` entre primeiro e segundo candidato,
-qualidade minima `0.55`, prova de presenca valida e resultado nao ambiguo.
+Decisao provisoria: threshold `0.363`, margem minima `0.05`, qualidade minima
+`0.60`, prova de presenca valida e resultado nao ambiguo. Esses valores exigem
+calibracao fisica antes de piloto.
 
 Endpoints:
 - `POST /employees/:id/face-enrollment/start`
