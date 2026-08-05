@@ -33,6 +33,7 @@ export const authApi = {
     embedding: number[];
     qualidade: number;
     liveness: { valid: boolean; steps: string[]; frames: number; faces: number };
+    model: { nome: string; versao: string; dimensao: number };
   }) =>
     apiPost<{
       resultado: 'confirmado';

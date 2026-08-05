@@ -3,8 +3,9 @@ import { Link, useParams } from 'react-router-dom';
 import { DesktopShell } from '@/ui/desktop';
 import { IndustrialAlert } from '@/ui/feedback';
 import { apiDelete, apiGet, apiPost } from '@/api/client';
+import { FACE_MODEL, syntheticEmbedding } from '@/features/face/faceAuth';
 
-const sampleEmbedding = Array.from({ length: 32 }, (_, index) => (Math.cos(index * 3.1) + 1) / 2);
+const sampleEmbedding = syntheticEmbedding('admin-enrollment-fixture', 'sample');
 
 export default function FaceEnrollmentPage() {
   const { id } = useParams();
@@ -31,7 +32,18 @@ export default function FaceEnrollmentPage() {
       if (kind === 'complete' || kind === 'test') {
         await apiPost(`/employees/${id}/face-enrollment/${kind}`, {
           qualidade: 0.86,
-          samples: [sampleEmbedding, sampleEmbedding],
+          samples: [
+            sampleEmbedding,
+            sampleEmbedding,
+            sampleEmbedding,
+            sampleEmbedding,
+            sampleEmbedding,
+          ],
+          model: {
+            nome: FACE_MODEL.nome,
+            versao: FACE_MODEL.versao,
+            dimensao: FACE_MODEL.dimensao,
+          },
           liveness: { valid: true, steps: ['blink', 'turn_left'], frames: 8, faces: 1 },
         });
         setMessage(kind === 'complete' ? 'Biometria cadastrada.' : 'Biometria testada.');
