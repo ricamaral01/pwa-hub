@@ -16,6 +16,15 @@ export type FaceAuthState =
   | 'offline'
   | 'disabled';
 
+export type FaceClientReadiness = {
+  ready: boolean;
+  httpsReady: boolean;
+  cameraSupported: boolean;
+  modelReady: boolean;
+  mediaPipeReady: boolean;
+  reasons: string[];
+};
+
 export const FACE_MODEL = {
   nome: 'opencv_sface',
   versao: '2021dec-int8bq',
@@ -24,6 +33,10 @@ export const FACE_MODEL = {
   checksum: 'sha256:fb143eea07838aa532d1c95df5f69899974ea0140e1fba05e94204be13ed74ee',
   path: '/models/sface/face_recognition_sface_2021dec_int8bq.onnx',
 };
+
+const MEDIAPIPE_WASM_BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm';
+const MEDIAPIPE_FACE_LANDMARKER =
+  'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task';
 
 let landmarkerPromise: Promise<FaceLandmarker> | null = null;
 let sessionPromise: Promise<ort.InferenceSession> | null = null;
@@ -85,13 +98,10 @@ async function openCamera(): Promise<MediaStream> {
 }
 
 async function getLandmarker() {
-  landmarkerPromise ??= FilesetResolver.forVisionTasks(
-    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm',
-  ).then((vision) =>
+  landmarkerPromise ??= FilesetResolver.forVisionTasks(MEDIAPIPE_WASM_BASE).then((vision) =>
     FaceLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath:
-          'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task',
+        modelAssetPath: MEDIAPIPE_FACE_LANDMARKER,
         delegate: 'GPU',
       },
       runningMode: 'VIDEO',
@@ -101,6 +111,37 @@ async function getLandmarker() {
     }),
   );
   return landmarkerPromise;
+}
+
+export async function checkFaceClientReadiness(): Promise<FaceClientReadiness> {
+  const httpsReady = window.isSecureContext;
+  const cameraSupported = typeof navigator.mediaDevices?.getUserMedia === 'function';
+  const [modelReady, mediaPipeReady] = await Promise.all([
+    assetAvailable(FACE_MODEL.path),
+    assetAvailable(MEDIAPIPE_FACE_LANDMARKER),
+  ]);
+  const reasons: string[] = [];
+  if (!httpsReady) reasons.push('ambiente_inseguro');
+  if (!cameraSupported) reasons.push('camera_indisponivel');
+  if (!modelReady) reasons.push('modelo_sface_indisponivel');
+  if (!mediaPipeReady) reasons.push('modelo_mediapipe_indisponivel');
+  return {
+    ready: reasons.length === 0,
+    httpsReady,
+    cameraSupported,
+    modelReady,
+    mediaPipeReady,
+    reasons,
+  };
+}
+
+async function assetAvailable(url: string): Promise<boolean> {
+  try {
+    const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
 async function getSession() {

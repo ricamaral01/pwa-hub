@@ -14,8 +14,6 @@ export class BiometriaController {
   constructor(private readonly biometriaService: BiometriaService) {}
 
   @Get('biometrics/face/readiness')
-  @UseGuards(JwtAuthGuard, AdminPermissionGuard)
-  @RequireAdminPermission('biometria.consultar')
   readiness() {
     return this.biometriaService.readiness();
   }

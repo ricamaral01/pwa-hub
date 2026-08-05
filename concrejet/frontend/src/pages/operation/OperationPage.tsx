@@ -17,7 +17,9 @@ import { db } from '@/db/schema';
 import { useQueue } from '@/hooks/useQueue';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 import { useSessionStore } from '@/store/session.store';
-import { isDemoMode } from '@/config/runtime';
+import { capabilities, isDemoMode, isFacialAuthClientReady } from '@/config/runtime';
+import { authApi } from '@/api/services';
+import { checkFaceClientReadiness, runFaceLogin } from '@/features/face/faceAuth';
 
 type Step = 'login' | 'opening' | 'running';
 type Operator = { id: string; matricula: string; nome: string; token: string } | null;
@@ -78,6 +80,8 @@ export default function OperationPage() {
   const [matricula, setMatricula] = useState(isDemoMode ? 'OP001' : '');
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
+  const [faceReady, setFaceReady] = useState(false);
+  const [faceMessage, setFaceMessage] = useState('Validando identificacao facial.');
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   const [activeField, setActiveField] = useState('pecasBoas');
   const [recordId, setRecordId] = useState('');
@@ -106,6 +110,40 @@ export default function OperationPage() {
   useEffect(() => {
     void restoreLocalState();
   }, []);
+
+  useEffect(() => {
+    if (step !== 'login' || capabilities.facialAuthentication !== 'real' || !isOnline) {
+      setFaceReady(false);
+      setFaceMessage('Identificacao facial requer conexao. Use matricula e PIN.');
+      return;
+    }
+    let cancelled = false;
+    async function loadFaceReadiness() {
+      try {
+        const [server, client] = await Promise.all([
+          authApi.faceReadiness(),
+          checkFaceClientReadiness(),
+        ]);
+        if (cancelled) return;
+        const ready = server.available && client.ready && isFacialAuthClientReady();
+        setFaceReady(ready);
+        setFaceMessage(
+          ready
+            ? 'Identificacao facial disponivel.'
+            : operationFaceMessage([...server.reasons, ...client.reasons]),
+        );
+      } catch {
+        if (!cancelled) {
+          setFaceReady(false);
+          setFaceMessage('Nao foi possivel validar a identificacao facial. Use matricula e PIN.');
+        }
+      }
+    }
+    void loadFaceReadiness();
+    return () => {
+      cancelled = true;
+    };
+  }, [isOnline, step]);
 
   const selectedOrder = catalog?.productionOrders.find(
     (item) => item.id === selection.ordemProducaoId,
@@ -217,6 +255,31 @@ export default function OperationPage() {
       setStep((current) => (current === 'running' ? 'running' : 'opening'));
     } catch (err) {
       setError(getApiErrorMessage(err));
+    }
+  }
+
+  async function loginByFace() {
+    try {
+      setError('');
+      const response = await runFaceLogin(fallbackDeviceId);
+      const logged = { ...response.operador, token: response.token };
+      setOperator(logged);
+      setOperatorSession({
+        id: logged.id,
+        nome: logged.nome,
+        matricula: logged.matricula,
+        perfis: [],
+        iniciadaEm: new Date().toISOString(),
+      });
+      setOperatorToken(logged.token);
+      const catalogResponse = await apiClient.get<Catalog>('/production-catalog', {
+        headers: { Authorization: `Bearer ${logged.token}` },
+      });
+      setCatalog(catalogResponse.data);
+      await restoreCurrentAppointment(logged.token, catalogResponse.data);
+      setStep((current) => (current === 'running' ? 'running' : 'opening'));
+    } catch (err) {
+      setError(faceLoginMessage(err));
     }
   }
 
@@ -451,10 +514,11 @@ export default function OperationPage() {
           <button
             className="touch-button"
             type="button"
-            disabled
-            title="Preparado para etapa futura"
+            disabled={!faceReady}
+            title={faceMessage}
+            onClick={() => void loginByFace()}
           >
-            Identificacao facial indisponivel
+            {faceReady ? 'Identificacao facial' : faceMessage}
           </button>
           <button className="touch-button warning" type="button" disabled>
             Chamar supervisor
@@ -651,4 +715,31 @@ function calculateLocal(weightG: number | null, values: Record<string, string>):
     perdaSemGalhoKg,
     perdaPct: base > 0 ? (perdaTotalKg / base) * 100 : null,
   };
+}
+
+function operationFaceMessage(reasons: string[]): string {
+  if (reasons.includes('feature_flag_desativada')) return 'Biometria desativada. Use PIN.';
+  if (reasons.includes('ambiente_inseguro')) return 'HTTPS obrigatorio. Use PIN.';
+  if (reasons.includes('camera_indisponivel')) return 'Camera indisponivel. Use PIN.';
+  if (
+    reasons.includes('modelo_sface_indisponivel') ||
+    reasons.includes('modelo_mediapipe_indisponivel')
+  ) {
+    return 'Modelo facial indisponivel. Use PIN.';
+  }
+  if (reasons.includes('chave_criptografia_ausente')) return 'Criptografia ausente. Use PIN.';
+  if (reasons.includes('governanca_incompleta')) return 'Governanca incompleta. Use PIN.';
+  if (reasons.includes('permissoes_biometricas_ausentes'))
+    return 'Permissoes incompletas. Use PIN.';
+  if (reasons.some((reason) => reason.startsWith('tabela_')))
+    return 'Banco nao preparado. Use PIN.';
+  return 'Identificacao facial indisponivel. Use PIN.';
+}
+
+function faceLoginMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : '';
+  if (message.includes('Permission')) return 'Permissao da camera negada. Use PIN.';
+  if (message.includes('camera')) return 'Camera indisponivel. Use PIN.';
+  if (message.includes('ambiguo')) return 'Resultado ambiguo. Use PIN.';
+  return 'Identificacao nao confirmada. Use PIN.';
 }

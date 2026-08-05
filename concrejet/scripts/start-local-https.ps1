@@ -99,7 +99,7 @@ Stop-ProjectListener $httpsPort $root
 Push-Location $frontendDir
 try {
   $env:VITE_FACIAL_AUTH_ENABLED = "true"
-  $env:VITE_API_URL = "https://localhost:$httpsPort/api"
+  $env:VITE_API_URL = "/api"
   $env:VITE_HTTPS_ENABLED = "true"
   $env:VITE_HTTPS_CERT_PATH = $certPath
   $env:VITE_HTTPS_KEY_PATH = $keyPath

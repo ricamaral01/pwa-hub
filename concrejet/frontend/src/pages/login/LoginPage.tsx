@@ -5,9 +5,15 @@ import { useSessionStore } from '@/store/session.store';
 import { Button } from '@/components/Button';
 import { Field, Input } from '@/components/Field';
 import { OnlineBadge } from '@/components/Badge';
+import { getApiErrorMessage } from '@/api/client';
 import { capabilities, isDemoMode, isFacialAuthClientReady } from '@/config/runtime';
 import { useAdminAuthStore } from '@/store/admin-auth.store';
-import { runFaceLogin, type FaceAuthState } from '@/features/face/faceAuth';
+import { authApi } from '@/api/services';
+import {
+  checkFaceClientReadiness,
+  runFaceLogin,
+  type FaceAuthState,
+} from '@/features/face/faceAuth';
 
 /**
  * Tela de Login — ConcreTrack Injeção
@@ -28,6 +34,10 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [faceState, setFaceState] = useState<FaceAuthState>('idle');
   const [faceMessage, setFaceMessage] = useState('');
+  const [facialReady, setFacialReady] = useState(false);
+  const [facialReason, setFacialReason] = useState(
+    'Validando ambiente de identificacao facial. Use matricula e PIN.',
+  );
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
 
@@ -39,6 +49,40 @@ const LoginPage: React.FC = () => {
     const t = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
+
+  useEffect(() => {
+    if (mode !== 'operator' || capabilities.facialAuthentication !== 'real' || !isOnline) {
+      setFacialReady(false);
+      setFacialReason('Identificacao facial requer conexao. Use matricula e PIN.');
+      return;
+    }
+    let cancelled = false;
+    async function loadReadiness() {
+      try {
+        const [server, client] = await Promise.all([
+          authApi.faceReadiness(),
+          checkFaceClientReadiness(),
+        ]);
+        if (cancelled) return;
+        const ready = server.available && client.ready;
+        setFacialReady(ready);
+        setFacialReason(
+          ready
+            ? 'Posicione o rosto para iniciar.'
+            : faceReadinessMessage([...server.reasons, ...client.reasons]),
+        );
+      } catch {
+        if (!cancelled) {
+          setFacialReady(false);
+          setFacialReason('Nao foi possivel validar a identificacao facial. Use matricula e PIN.');
+        }
+      }
+    }
+    void loadReadiness();
+    return () => {
+      cancelled = true;
+    };
+  }, [isOnline, mode]);
 
   const formattedTime = currentTime.toLocaleTimeString('pt-BR', {
     hour: '2-digit',
@@ -105,7 +149,8 @@ const LoginPage: React.FC = () => {
     mode === 'operator' &&
     capabilities.facialAuthentication === 'real' &&
     isOnline &&
-    isFacialAuthClientReady();
+    isFacialAuthClientReady() &&
+    facialReady;
 
   const handleFaceLogin = useCallback(async () => {
     if (!device?.identificador) {
@@ -246,6 +291,7 @@ const LoginPage: React.FC = () => {
             onSubmit={() => void handleOperatorLogin()}
             pinKeys={PIN_KEYS}
             facialVisible={facialVisible}
+            facialReason={facialReason}
             faceState={faceState}
             faceMessage={faceMessage}
             onFaceLogin={() => void handleFaceLogin()}
@@ -280,6 +326,7 @@ interface OperatorLoginFormProps {
   onSubmit: () => void;
   pinKeys: string[];
   facialVisible: boolean;
+  facialReason: string;
   faceState: FaceAuthState;
   faceMessage: string;
   onFaceLogin: () => void;
@@ -296,6 +343,7 @@ const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
   onSubmit,
   pinKeys,
   facialVisible,
+  facialReason,
   faceState,
   faceMessage,
   onFaceLogin,
@@ -325,7 +373,7 @@ const OperatorLoginForm: React.FC<OperatorLoginFormProps> = ({
         </div>
       ) : operatorAuthentication !== 'demo' ? (
         <p role="alert" className="capability-warning">
-          Identificacao facial requer HTTPS, conexao e governanca configurada. Use matricula e PIN.
+          {facialReason}
         </p>
       ) : (
         <p role="status" className="capability-warning demo">
@@ -419,6 +467,37 @@ function faceStatusText(state: FaceAuthState, message: string): string {
   return labels[state];
 }
 
+function faceReadinessMessage(reasons: string[]): string {
+  if (reasons.includes('feature_flag_desativada')) {
+    return 'Identificacao facial desativada neste ambiente. Use matricula e PIN.';
+  }
+  if (reasons.includes('ambiente_inseguro')) {
+    return 'Identificacao facial requer HTTPS confiavel. Use matricula e PIN.';
+  }
+  if (reasons.includes('camera_indisponivel')) {
+    return 'Camera indisponivel neste navegador. Use matricula e PIN.';
+  }
+  if (
+    reasons.includes('modelo_sface_indisponivel') ||
+    reasons.includes('modelo_mediapipe_indisponivel')
+  ) {
+    return 'Modelo facial indisponivel no tablet. Use matricula e PIN.';
+  }
+  if (reasons.includes('chave_criptografia_ausente')) {
+    return 'Identificacao facial sem criptografia configurada. Use matricula e PIN.';
+  }
+  if (reasons.includes('governanca_incompleta')) {
+    return 'Governanca biometrica incompleta. Use matricula e PIN.';
+  }
+  if (reasons.includes('permissoes_biometricas_ausentes')) {
+    return 'Permissoes biometricas incompletas. Use matricula e PIN.';
+  }
+  if (reasons.some((reason) => reason.startsWith('tabela_'))) {
+    return 'Banco de biometria nao preparado. Use matricula e PIN.';
+  }
+  return 'Identificacao facial indisponivel no momento. Use matricula e PIN.';
+}
+
 // ─────────────────────────────────────────────
 // Formulário de login administrativo
 // ─────────────────────────────────────────────
@@ -447,8 +526,8 @@ const AdminLoginForm: React.FC = () => {
     try {
       const result = await login({ email, senha });
       navigate(result.deveTrocarSenha ? '/change-password' : '/admin', { replace: true });
-    } catch {
-      setError('Credenciais invalidas ou servidor indisponivel.');
+    } catch (err) {
+      setError(getAdminLoginMessage(err));
     }
   };
   return (
@@ -492,6 +571,15 @@ const AdminLoginForm: React.FC = () => {
     </form>
   );
 };
+
+function getAdminLoginMessage(error: unknown): string {
+  const status = (error as { response?: { status?: number } }).response?.status;
+  if (status === 401) return 'E-mail ou senha invalidos.';
+  if (status === 403) return 'Usuario inativo, bloqueado ou sem acesso.';
+  if (status === 429) return 'Tentativas excedidas. Aguarde e tente novamente.';
+  if (status && status >= 500) return getApiErrorMessage(error);
+  return getApiErrorMessage(error);
+}
 
 // Ícones
 const ConcreTrackLogo: React.FC = () => (

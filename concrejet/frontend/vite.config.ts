@@ -42,6 +42,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cleanupOutdatedCaches: true,
         // NetworkFirst para API — não serve dados velhos como novos
         runtimeCaching: [
           {

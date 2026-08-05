@@ -61,6 +61,28 @@ export interface VersionResponse {
   version: string;
 }
 
+export interface FaceReadinessResponse {
+  enabled: boolean;
+  available: boolean;
+  httpsReady: boolean | null;
+  encryptionReady: boolean;
+  modelReady: boolean;
+  governanceReady: boolean;
+  databaseReady: boolean;
+  permissionsReady: boolean;
+  cameraSupported: boolean | null;
+  reasons: string[];
+  model: {
+    nome: string;
+    versao: string;
+    dimensao: number;
+    metrica: string;
+    threshold: number;
+    margemMinima: number;
+    qualidadeMinima: number;
+  };
+}
+
 // ─────────────────────────────────────────────
 // Máquina e Dispositivo — entidades existentes (Fase 0)
 // ─────────────────────────────────────────────

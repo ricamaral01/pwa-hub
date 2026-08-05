@@ -59,19 +59,40 @@ export class BiometriaService {
     private readonly authService: AuthService,
   ) {}
 
-  readiness() {
+  async readiness() {
     const enabled = this.configService.get<boolean>('FACIAL_AUTH_ENABLED', false);
     const reasons: string[] = [];
+    const encryptionReady = Boolean(this.getKey());
+    const governanceReady = this.configService.get<boolean>(
+      'BIOMETRIC_GOVERNANCE_CONFIGURED',
+      false,
+    );
+    const database = await this.databaseReadiness();
+    const permissionsReady = await this.permissionsReadiness();
+    const model = this.modelConfig();
+    const modelReady = Boolean(model.nome && model.versao && model.threshold > 0);
+
     if (!enabled) reasons.push('feature_flag_desativada');
-    if (!this.getKey()) reasons.push('chave_criptografia_ausente');
-    if (!this.configService.get<boolean>('BIOMETRIC_GOVERNANCE_CONFIGURED', false)) {
+    if (!encryptionReady) reasons.push('chave_criptografia_ausente');
+    if (!governanceReady) {
       reasons.push('governanca_incompleta');
     }
+    if (!database.ready) reasons.push(...database.reasons);
+    if (!permissionsReady) reasons.push('permissoes_biometricas_ausentes');
+    if (!modelReady) reasons.push('modelo_biometrico_incompleto');
+
     return {
       enabled,
       available: enabled && reasons.length === 0,
+      httpsReady: null,
+      encryptionReady,
+      modelReady,
+      governanceReady,
+      databaseReady: database.ready,
+      permissionsReady,
+      cameraSupported: null,
       reasons,
-      model: this.modelConfig(),
+      model,
     };
   }
 
@@ -313,8 +334,54 @@ export class BiometriaService {
   }
 
   private assertAvailable() {
-    if (!this.readiness().available)
+    const enabled = this.configService.get<boolean>('FACIAL_AUTH_ENABLED', false);
+    if (
+      !enabled ||
+      !this.getKey() ||
+      !this.configService.get<boolean>('BIOMETRIC_GOVERNANCE_CONFIGURED', false)
+    ) {
       throw new ServiceUnavailableException('biometria_desativada_ou_sem_governanca');
+    }
+  }
+
+  private async databaseReadiness(): Promise<{ ready: boolean; reasons: string[] }> {
+    const requiredTables = ['biometria_facial', 'biometria_evento', 'biometria_tentativa'];
+    const rows = (await this.dataSource.query(
+      `
+        select table_name
+        from information_schema.tables
+        where table_schema = 'public'
+          and table_name = any($1)
+      `,
+      [requiredTables],
+    )) as Array<{ table_name: string }>;
+    const found = new Set(rows.map((row) => row.table_name));
+    const missing = requiredTables.filter((table) => !found.has(table));
+    return {
+      ready: missing.length === 0,
+      reasons: missing.map((table) => `tabela_${table}_ausente`),
+    };
+  }
+
+  private async permissionsReadiness(): Promise<boolean> {
+    const requiredPermissions = [
+      'biometria.consultar',
+      'biometria.cadastrar',
+      'biometria.testar',
+      'biometria.revogar',
+      'biometria.excluir',
+      'operadores.autenticar_face',
+    ];
+    const rows = (await this.dataSource.query(
+      `
+        select chave
+        from permissao
+        where chave = any($1)
+      `,
+      [requiredPermissions],
+    )) as Array<{ chave: string }>;
+    const found = new Set(rows.map((row) => row.chave));
+    return requiredPermissions.every((permission) => found.has(permission));
   }
 
   private modelConfig() {

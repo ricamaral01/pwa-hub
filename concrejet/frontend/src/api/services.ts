@@ -6,6 +6,7 @@ import type {
   ChangePasswordRequest,
   HealthResponse,
   VersionResponse,
+  FaceReadinessResponse,
 } from '@/types/api';
 
 // ─── Auth ─────────────────────────────────────────────────────────────────
@@ -42,6 +43,7 @@ export const authApi = {
       operador: { id: string; matricula: string; nome: string };
       dispositivo: { id: string; maquinaId: string };
     }>('/auth/operator-face-login', data),
+  faceReadiness: () => apiGet<FaceReadinessResponse>('/biometrics/face/readiness'),
 };
 
 // ─── Health / Version ─────────────────────────────────────────────────────
