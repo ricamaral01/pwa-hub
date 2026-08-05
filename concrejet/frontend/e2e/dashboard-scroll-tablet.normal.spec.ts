@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const lanBaseUrl = 'http://192.168.0.14:5173';
+const lanBaseUrl = process.env.PLAYWRIGHT_LAN_BASE_URL ?? 'http://192.168.0.14:5173';
 
 async function expectNoHorizontalOverflow(page: import('@playwright/test').Page) {
   const overflow = await page.evaluate(
