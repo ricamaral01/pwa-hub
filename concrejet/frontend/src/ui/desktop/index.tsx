@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 export function DesktopShell({
@@ -15,7 +15,7 @@ export function DesktopShell({
       <DesktopSidebar />
       <section className="desktop-main">
         <DesktopHeader title={title} actions={actions} />
-        {children}
+        <div className="desktop-content">{children}</div>
       </section>
     </main>
   );
@@ -23,96 +23,159 @@ export function DesktopShell({
 
 export function DesktopSidebar() {
   const location = useLocation();
-  const groups = [
-    [
-      'Produção',
+  const [collapsed, setCollapsed] = useState(false);
+  const groups = useMemo(
+    () =>
       [
-        ['Itens', 'items'],
-        ['Moldes', 'molds'],
-        ['Configurações item-molde', 'item-mold-configurations'],
-        ['Ordens de produção', 'production-orders'],
-      ],
-    ],
-    [
-      'Pessoas',
-      [
-        ['Funções', 'functions'],
-        ['Colaboradores', 'collaborators'],
-      ],
-    ],
-    ['Equipamentos', [['Máquinas', 'machines']]],
-    [
-      'Materiais',
-      [
-        ['Resinas', 'resins'],
-        ['Fornecedores', 'suppliers'],
-        ['Lotes de resina', 'resin-lots'],
-      ],
-    ],
-    [
-      'Estoque',
-      [
-        ['Movimentos', '../stock'],
-        ['Blendas', '../blends'],
-        ['Rastreabilidade', '../traceability'],
-      ],
-    ],
-    [
-      'Analytics',
-      [
-        ['Dashboard', '../dashboard'],
-        ['Producao', '../analytics/production'],
-        ['Perdas', '../analytics/losses'],
-        ['Paradas', '../analytics/stops'],
-        ['OEE', '../analytics/oee'],
-        ['Estoque', '../analytics/stock'],
-      ],
-    ],
-    [
-      'Historico',
-      [
-        ['Apontamentos', '../history/production'],
-        ['Ocorrencias', '../history/occurrences'],
-        ['Movimentos', '../history/stock'],
-        ['Blendas', '../history/blends'],
-        ['Importacao', '../imports'],
-      ],
-    ],
-    [
-      'Configurações',
-      [
-        ['Operações', 'operations'],
-        ['Tipos de ocorrência', 'occurrence-types'],
-      ],
-    ],
-  ] as const;
+        ['Visao geral', [['Dashboard', '/admin/dashboard', '▦']]],
+        [
+          'Producao',
+          [
+            ['Apontamentos', '/admin/history/production', '▤'],
+            ['Ordens de producao', '/admin/cadastros/production-orders', '▣'],
+            ['Itens', '/admin/cadastros/items', '◆'],
+            ['Moldes', '/admin/cadastros/molds', '◇'],
+            ['Configuracoes item-molde', '/admin/cadastros/item-mold-configurations', '⚙'],
+          ],
+        ],
+        [
+          'Pessoas',
+          [
+            ['Colaboradores', '/admin/cadastros/collaborators', '●'],
+            ['Funcoes', '/admin/cadastros/functions', '◌'],
+          ],
+        ],
+        ['Equipamentos', [['Maquinas', '/admin/cadastros/machines', '▥']]],
+        [
+          'Materiais',
+          [
+            ['Estoque', '/admin/stock', '▧'],
+            ['Resinas', '/admin/cadastros/resins', '◼'],
+            ['Lotes de resina', '/admin/cadastros/resin-lots', '▨'],
+            ['Fornecedores', '/admin/cadastros/suppliers', '▱'],
+            ['Blendas', '/admin/blends', '◩'],
+          ],
+        ],
+        [
+          'Operacao',
+          [
+            ['Operacoes', '/admin/cadastros/operations', '▶'],
+            ['Tipos de ocorrencia', '/admin/cadastros/occurrence-types', '▲'],
+            ['Paradas e ocorrencias', '/admin/history/occurrences', '■'],
+          ],
+        ],
+        [
+          'Analises',
+          [
+            ['Producao', '/admin/analytics/production', '▤'],
+            ['Perdas', '/admin/analytics/losses', '▥'],
+            ['Paradas', '/admin/analytics/stops', '■'],
+            ['OEE', '/admin/analytics/oee', '◎'],
+            ['Estoque', '/admin/analytics/stock', '▧'],
+            ['Rastreabilidade', '/admin/traceability', '⌕'],
+          ],
+        ],
+        [
+          'Sistema',
+          [
+            ['Importacao historica', '/admin/imports', '⇣'],
+            ['Conflitos de sincronizacao', '/admin/sync-conflicts', '⚠'],
+          ],
+        ],
+      ] as const,
+    [],
+  );
+
   return (
-    <aside className="desktop-sidebar">
-      <strong>ConcreTrack</strong>
-      {groups.map(([group, items]) => (
-        <nav key={group}>
-          <span>{group}</span>
-          {items.map(([label, slug]) => {
-            const to = slug.startsWith('../')
-              ? `/admin/${slug.slice(3)}`
-              : `/admin/cadastros/${slug}`;
-            return (
-              <Link key={slug} className={location.pathname === to ? 'active' : ''} to={to}>
-                {label}
-              </Link>
-            );
-          })}
-        </nav>
-      ))}
+    <aside className={`desktop-sidebar ${collapsed ? 'collapsed' : ''}`}>
+      <div className="desktop-brand">
+        <div>
+          <strong>ConcreTrack</strong>
+          <span>Injecao</span>
+        </div>
+        <button
+          type="button"
+          aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'}
+          onClick={() => setCollapsed((value) => !value)}
+        >
+          {collapsed ? '›' : '‹'}
+        </button>
+      </div>
+      <div className="desktop-sidebar-scroll">
+        {groups.map(([group, items]) => (
+          <SidebarGroup key={group} title={group} collapsed={collapsed}>
+            {items.map(([label, to, icon]) => (
+              <SidebarItem
+                key={to}
+                to={to}
+                label={label}
+                icon={icon}
+                active={location.pathname === to}
+              />
+            ))}
+          </SidebarGroup>
+        ))}
+      </div>
+      <div className="desktop-sidebar-footer">Ambiente local</div>
     </aside>
+  );
+}
+
+export function SidebarGroup({
+  title,
+  children,
+  collapsed,
+}: {
+  title: string;
+  children: ReactNode;
+  collapsed?: boolean;
+}) {
+  const [open, setOpen] = useState(true);
+  return (
+    <nav className="sidebar-group">
+      {!collapsed ? (
+        <button type="button" onClick={() => setOpen((value) => !value)}>
+          <span>{title}</span>
+          <b>{open ? '-' : '+'}</b>
+        </button>
+      ) : null}
+      {open || collapsed ? <div className="sidebar-items">{children}</div> : null}
+    </nav>
+  );
+}
+
+export function SidebarItem({
+  to,
+  label,
+  icon,
+  active,
+}: {
+  to: string;
+  label: string;
+  icon: string;
+  active: boolean;
+}) {
+  return (
+    <Link
+      className={active ? 'active' : ''}
+      to={to}
+      title={label}
+      aria-current={active ? 'page' : undefined}
+    >
+      <span aria-hidden="true">{icon}</span>
+      <strong>{label}</strong>
+    </Link>
   );
 }
 
 export function DesktopHeader({ title, actions }: { title: string; actions?: ReactNode }) {
   return (
     <header className="desktop-header">
-      <h1>{title}</h1>
-      {actions}
+      <div>
+        <span>ConcreTrack Injecao</span>
+        <h1>{title}</h1>
+      </div>
+      <div className="desktop-header-actions">{actions}</div>
     </header>
   );
 }
@@ -143,5 +206,14 @@ export function KpiCard({ label, value }: { label: string; value: string }) {
       <span>{label}</span>
       <strong className="num">{value}</strong>
     </div>
+  );
+}
+
+export function ChartCard({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <article className="chart-panel">
+      <h2>{title}</h2>
+      {children}
+    </article>
   );
 }
