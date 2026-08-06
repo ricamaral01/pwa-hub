@@ -33,7 +33,12 @@ function renderPage() {
 }
 
 describe('FaceEnrollmentPage', () => {
+  let playMock: ReturnType<typeof vi.fn>;
+
   beforeEach(() => {
+    playMock = vi.fn().mockResolvedValue(undefined);
+    vi.spyOn(HTMLMediaElement.prototype, 'play').mockImplementation(playMock);
+    Object.defineProperty(window, 'isSecureContext', { configurable: true, value: true });
     useAdminAuthStore.setState({
       user: {
         id: 'admin-1',
@@ -109,12 +114,15 @@ describe('FaceEnrollmentPage', () => {
   });
 
   it('mostra colaborador sem biometria e inicia cadastro', async () => {
+    const stop = vi.fn();
+    const stream = {
+      getTracks: () => [{ stop }],
+    } as unknown as MediaStream;
+    const getUserMedia = vi.fn().mockResolvedValue(stream);
     Object.defineProperty(navigator, 'mediaDevices', {
       configurable: true,
       value: {
-        getUserMedia: vi.fn().mockResolvedValue({
-          getTracks: () => [{ stop: vi.fn() }],
-        }),
+        getUserMedia,
       },
     });
     renderPage();
@@ -123,7 +131,20 @@ describe('FaceEnrollmentPage', () => {
     expect(await screen.findByText('OP - Operador')).toBeInTheDocument();
     expect(await screen.findAllByText('Nao cadastrada')).not.toHaveLength(0);
 
-    fireEvent.click(screen.getByRole('button', { name: /cadastrar biometria/i }));
+    const enrollButton = screen.getByRole('button', { name: /cadastrar biometria/i });
+    await waitFor(() => expect(enrollButton).not.toBeDisabled());
+    fireEvent.click(enrollButton);
+    await waitFor(() => {
+      expect(getUserMedia).toHaveBeenCalledWith({
+        video: {
+          facingMode: 'user',
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        },
+        audio: false,
+      });
+      expect(playMock).toHaveBeenCalled();
+    });
     for (let index = 0; index < 7; index += 1) {
       fireEvent.click(await screen.findByRole('button', { name: 'Avancar' }));
     }
@@ -134,6 +155,51 @@ describe('FaceEnrollmentPage', () => {
         expect.objectContaining({ qualidade: 0.86, unidadeId: 'unidade-1' }),
       );
     });
+    expect(stop).toHaveBeenCalled();
+  });
+
+  it('mostra erro especifico quando permissao da camera e negada', async () => {
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockRejectedValue(new DOMException('negada', 'NotAllowedError')),
+      },
+    });
+    renderPage();
+
+    const enrollButton = await screen.findByRole('button', { name: /cadastrar biometria/i });
+    await waitFor(() => expect(enrollButton).not.toBeDisabled());
+    fireEvent.click(enrollButton);
+
+    expect(
+      await screen.findAllByText(
+        'Permissao da camera negada. Libere a camera nas configuracoes do navegador.',
+      ),
+    ).not.toHaveLength(0);
+    expect(screen.getByRole('button', { name: 'Tentar novamente' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Usar matricula e PIN' })).toBeInTheDocument();
+  });
+
+  it('cancelar encerra tracks e reabrir chama getUserMedia novamente', async () => {
+    const stop = vi.fn();
+    const stream = {
+      getTracks: () => [{ stop }],
+    };
+    const getUserMedia = vi.fn().mockResolvedValue(stream);
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: { getUserMedia },
+    });
+    renderPage();
+
+    const enrollButton = await screen.findByRole('button', { name: /cadastrar biometria/i });
+    await waitFor(() => expect(enrollButton).not.toBeDisabled());
+    fireEvent.click(enrollButton);
+    await waitFor(() => expect(getUserMedia).toHaveBeenCalledTimes(1));
+    fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }));
+    expect(stop).toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: /cadastrar biometria/i }));
+    await waitFor(() => expect(getUserMedia).toHaveBeenCalledTimes(2));
   });
 
   it('mostra biometria ativa, revoga e exclui com confirmacao', async () => {
