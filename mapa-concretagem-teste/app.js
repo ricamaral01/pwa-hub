@@ -10057,7 +10057,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v129-dashboard-defeitos");
+        window.location.replace(window.location.pathname + "?cache-reset=v130-dashboard-defeitos");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10067,7 +10067,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.29-dashboard-defeitos-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.30-dashboard-defeitos-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10169,13 +10169,31 @@ function contarDefeitosPossiveisLinha(row) {
   }, 0);
 }
 
+function obterDefeitosPossiveisLinha(row) {
+  const itens = [];
+  obterChecklistSectionsLinha(row).forEach(sec => {
+    if (!Array.isArray(sec.itens)) return;
+    sec.itens.forEach(item => {
+      const label = typeof item === "string"
+        ? item
+        : (item.label || item.texto || item.descricao || item.nome || item.codigoFalha || "");
+      const clean = String(label || "").trim();
+      if (clean) itens.push(clean);
+    });
+  });
+  return itens;
+}
+
 function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
   const resumo = {
     postes: rows.length,
     producao: producaoRows.length,
     totalPossivel: 0,
+    potencialPossivel: 0,
     totalErros: 0,
+    postesReprovados: 0,
     retrabalho: 0,
+    listaDefeitos: {},
     porForma: {},
     porTipo: {},
     porSetor: {},
@@ -10197,9 +10215,11 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     const forma = row.forma_numero || row.formaNumero || "Sem forma";
     const setor = row.setor || "Sem setor";
     const key = `${setor}||${forma}`;
-    const possiveis = contarDefeitosPossiveisLinha(row);
+    const defeitosPossiveis = obterDefeitosPossiveisLinha(row);
+    const possiveis = defeitosPossiveis.length;
     const rejeitados = obterItensRejeitadosLinha(row);
-    const isRetrabalho = row.status_montagem === "R" || row.status_montagem === "RR";
+    const isReprovado = rejeitados.length > 0;
+    const isRetrabalho = row.status_montagem === "RR";
 
     if (!resumo.porForma[key]) {
       resumo.porForma[key] = {
@@ -10207,6 +10227,8 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
         setor,
         modelo: row.modelo || "",
         postes: 0,
+        postesReprovados: 0,
+        listaDefeitos: {},
         possiveis: 0,
         potencial: 0,
         erros: 0,
@@ -10214,16 +10236,26 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
       };
     }
 
-    resumo.totalPossivel += possiveis;
+    resumo.potencialPossivel += possiveis;
     resumo.totalErros += rejeitados.length;
     resumo.porForma[key].postes++;
-    resumo.porForma[key].possiveis = Math.max(resumo.porForma[key].possiveis, possiveis);
     resumo.porForma[key].potencial += possiveis;
     resumo.porForma[key].erros += rejeitados.length;
+    if (isReprovado) {
+      resumo.postesReprovados++;
+      resumo.porForma[key].postesReprovados++;
+    }
     if (isRetrabalho) {
       resumo.retrabalho++;
       resumo.porForma[key].retrabalho++;
     }
+
+    defeitosPossiveis.forEach(item => {
+      const norm = normalizarTexto(item);
+      if (!norm) return;
+      resumo.listaDefeitos[norm] = item;
+      resumo.porForma[key].listaDefeitos[norm] = item;
+    });
 
     if (!resumo.porSetor[setor]) resumo.porSetor[setor] = { setor, erros: 0, producao: 0 };
     resumo.porSetor[setor].erros += rejeitados.length;
@@ -10241,6 +10273,11 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     });
   });
 
+  resumo.totalPossivel = Object.keys(resumo.listaDefeitos).length;
+  Object.values(resumo.porForma).forEach(item => {
+    item.possiveis = Object.keys(item.listaDefeitos).length;
+  });
+
   return resumo;
 }
 
@@ -10250,7 +10287,7 @@ function formatPct(value) {
 }
 
 function renderIndicadoresDefeitosMontagem(indicadores) {
-  const taxa = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
+  const taxa = indicadores.potencialPossivel > 0 ? (indicadores.totalErros / indicadores.potencialPossivel) * 100 : 0;
   const taxaProducao = indicadores.producao > 0 ? (indicadores.totalErros / indicadores.producao) * 100 : 0;
   const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
   const setText = (id, value) => {
@@ -10265,6 +10302,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   setText("miDefTaxaProducao", formatPct(taxaProducao));
   setText("miDefTaxaRetrabalho", formatPct(taxaRetrabalho));
   setText("miDefProducaoPeriodo", indicadores.producao);
+  setText("miDefPostesReprovados", indicadores.postesReprovados);
   setText("miDefFissuras", indicadores.fissuras.total);
   setText("miDefFissurasCirculares", indicadores.fissuras.circulares);
 
@@ -10291,7 +10329,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
               <span><strong>${item.erros}</strong> erros</span>
               <span><strong>${item.possiveis}</strong> na lista</span>
               <span><strong>${formatPct(itemTaxa)}</strong> taxa</span>
-              <span><strong>${item.retrabalho}</strong> retrabalho</span>
+              <span><strong>${item.postesReprovados}</strong> reprovados</span>
             </div>
           </div>
         `;
