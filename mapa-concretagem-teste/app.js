@@ -10057,7 +10057,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v131-dashboard-defeitos");
+        window.location.replace(window.location.pathname + "?cache-reset=v132-dashboard-defeitos");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10067,7 +10067,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.31-dashboard-defeitos-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.32-dashboard-defeitos-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10122,6 +10122,15 @@ function formatarDuracao(ms) {
 function getMiDataReferencia(row) {
   const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
   return String(raw).split("T")[0];
+}
+
+function normalizarTexto(valor) {
+  return String(valor || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
 }
 
 function atualizarResumoFiltrosMontagem() {
