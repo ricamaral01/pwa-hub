@@ -7,11 +7,11 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "DASHBOARD_DEFEITOS", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "DASHBOARD_DEFEITOS", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   MONTADOR: {
     label: "Montador",
@@ -843,6 +843,7 @@ const el = {
   hubMontagemPostes: document.getElementById("hubMontagemPostes"),
   hubSequenciaS3: document.getElementById("hubSequenciaS3"),
   hubMontagemIndicadores: document.getElementById("hubMontagemIndicadores"),
+  hubDashboardDefeitos: document.getElementById("hubDashboardDefeitos"),
   hubRelatorio: document.getElementById("hubRelatorio"),
   hubHistorico: document.getElementById("hubHistorico"),
   viewLiberacao: document.getElementById("viewLiberacao"),
@@ -7186,6 +7187,7 @@ function applyRoleVisibility() {
     MONTAGEM_POSTES: "hubMontagemPostes",
     SEQUENCIA_S3: "hubSequenciaS3",
     MONTAGEM_INDICADORES: "hubMontagemIndicadores",
+    DASHBOARD_DEFEITOS: "hubDashboardDefeitos",
     RELATORIO: "hubRelatorio",
     HISTORICO: "hubHistorico",
     ACMP_CONCRETAGEM: "hubAcmpConcretagem",
@@ -7373,12 +7375,15 @@ function setMode(mode) {
       setUgFeedback("Não foi possível carregar os usuários da planilha.", false);
     });
   }
-  if (mode === "MONTAGEM_INDICADORES") {
+  if (mode === "MONTAGEM_INDICADORES" || mode === "DASHBOARD_DEFEITOS") {
     if (el.viewMontagemIndicadores) el.viewMontagemIndicadores.classList.remove("hidden");
+    const dashboardTitle = document.getElementById("miDashboardTitle");
+    if (dashboardTitle) dashboardTitle.textContent = mode === "DASHBOARD_DEFEITOS" ? "Dashboard Defeitos" : "Dashboard Montagem";
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
     if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
+    ativarAbaMontagem(mode === "DASHBOARD_DEFEITOS" ? "defeitos" : "resumo");
     carregarMontagemIndicadores();
   }
   if (mode === "SEQUENCIA_S3") {
@@ -7404,7 +7409,7 @@ function setMode(mode) {
     if (el.viewTratativaDefeitos) el.viewTratativaDefeitos.classList.remove("hidden");
     renderizarRelatorioTratativaDefeitos();
   }
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-dashboard-defeitos", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
   if (mode === "RELATORIO_MANUTENCAO") document.body.classList.add("mode-relatorio-manutencao");
   if (mode === "TRATATIVA_DEFEITOS") document.body.classList.add("mode-tratativa-defeitos");
   if (mode === "HUB") {
@@ -7447,7 +7452,8 @@ function setMode(mode) {
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
   if (mode === "ACMP_CONCRETAGEM") document.body.classList.add("mode-acmp-concretagem");
   if (mode === "USUARIOS") document.body.classList.add("mode-usuarios");
-  if (mode === "MONTAGEM_INDICADORES") document.body.classList.add("mode-montagem-indicadores");
+  if (mode === "MONTAGEM_INDICADORES" || mode === "DASHBOARD_DEFEITOS") document.body.classList.add("mode-montagem-indicadores");
+  if (mode === "DASHBOARD_DEFEITOS") document.body.classList.add("mode-dashboard-defeitos");
 
   // Update sidebar nav + topbar title
   const navTitles = {
@@ -7463,6 +7469,7 @@ function setMode(mode) {
     MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
     MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
     MONTAGEM_INDICADORES: ["hubMontagemIndicadores", "Dashboard montagem"],
+    DASHBOARD_DEFEITOS: ["hubDashboardDefeitos", "Dashboard Defeitos"],
     RELATORIO: ["hubRelatorio", "Relatório Enc. Produção"],
     HISTORICO: ["hubHistorico", "Histórico"],
     ACMP_CONCRETAGEM: ["hubAcmpConcretagem", "Acmp. Concretagem"],
@@ -7502,8 +7509,8 @@ function handleHubModeNavigation(mode) {
   if (!mode) return;
   if (mode === "DASHBOARD") {
     setMode("DASHBOARD");
-  } else if (mode === "MONTAGEM_INDICADORES") {
-    setMode("MONTAGEM_INDICADORES");
+  } else if (mode === "MONTAGEM_INDICADORES" || mode === "DASHBOARD_DEFEITOS") {
+    setMode(mode);
   } else if (mode === "PROD_ANALISE") {
     setMode("PROD_ANALISE");
   } else if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
@@ -7709,6 +7716,9 @@ function bindEvents() {
   el.hubMontagemIndicadores?.addEventListener("click", () => {
     setMode("MONTAGEM_INDICADORES");
   });
+  el.hubDashboardDefeitos?.addEventListener("click", () => {
+    setMode("DASHBOARD_DEFEITOS");
+  });
 
   // Configuração dos Filtros e Abas do Dashboard Montagem
   document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
@@ -7758,23 +7768,7 @@ function bindEvents() {
   document.querySelectorAll(".mi-tab-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const targetTab = e.currentTarget.dataset.tab;
-      miAbaAtiva = targetTab || "resumo";
-
-      document.querySelectorAll(".mi-tab-btn").forEach(b => b.classList.remove("active"));
-      e.currentTarget.classList.add("active");
-
-      document.querySelectorAll(".mi-tab-section").forEach(s => s.classList.remove("active"));
-      const sectionId = "miSecao" + targetTab.charAt(0).toUpperCase() + targetTab.slice(1);
-      document.getElementById(sectionId)?.classList.add("active");
-
-      if (miUltimosGraficos) {
-        renderGraficosMontagem(
-          miUltimosGraficos.byDay,
-          miUltimosGraficos.bySector,
-          miUltimosGraficos.byMontador,
-          miUltimosGraficos.prodByDay
-        );
-      }
+      ativarAbaMontagem(targetTab || "resumo");
     });
   });
 
@@ -10151,6 +10145,124 @@ function miStatusButton(row) {
   return `<button type="button" class="mi-status-pill ${meta.className}" onclick="abrirVisualizacaoChecklist('${id}')">${meta.label}</button>`;
 }
 
+function obterChecklistSectionsLinha(row) {
+  const isInspecao = row.setor === "Setor 3" || row.setor === "Setor 4";
+  return isInspecao
+    ? getInspecaoChecklistSections(row.modelo || "")
+    : getMontagemChecklistSections(row.modelo || "");
+}
+
+function contarDefeitosPossiveisLinha(row) {
+  return obterChecklistSectionsLinha(row).reduce((total, sec) => {
+    return total + (Array.isArray(sec.itens) ? sec.itens.length : 0);
+  }, 0);
+}
+
+function calcularIndicadoresDefeitosMontagem(rows) {
+  const resumo = {
+    postes: rows.length,
+    totalPossivel: 0,
+    totalErros: 0,
+    porForma: {},
+    porTipo: {}
+  };
+
+  rows.forEach(row => {
+    const forma = row.forma_numero || row.formaNumero || "Sem forma";
+    const setor = row.setor || "Sem setor";
+    const key = `${setor}||${forma}`;
+    const possiveis = contarDefeitosPossiveisLinha(row);
+    const rejeitados = obterItensRejeitadosLinha(row);
+
+    if (!resumo.porForma[key]) {
+      resumo.porForma[key] = {
+        forma,
+        setor,
+        postes: 0,
+        possiveis: 0,
+        erros: 0,
+        retrabalho: 0
+      };
+    }
+
+    resumo.totalPossivel += possiveis;
+    resumo.totalErros += rejeitados.length;
+    resumo.porForma[key].postes++;
+    resumo.porForma[key].possiveis += possiveis;
+    resumo.porForma[key].erros += rejeitados.length;
+    if (row.status_montagem === "R" || row.status_montagem === "RR") resumo.porForma[key].retrabalho++;
+
+    rejeitados.forEach(item => {
+      resumo.porTipo[item] = (resumo.porTipo[item] || 0) + 1;
+    });
+  });
+
+  return resumo;
+}
+
+function formatPct(value) {
+  if (!isFinite(value)) return "0,0%";
+  return `${value.toFixed(1).replace(".", ",")}%`;
+}
+
+function renderIndicadoresDefeitosMontagem(indicadores) {
+  const taxa = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
+  const setText = (id, value) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value;
+  };
+
+  setText("miDefTotalErros", indicadores.totalErros);
+  setText("miDefTotalPossivel", indicadores.totalPossivel);
+  setText("miDefTaxa", formatPct(taxa));
+  setText("miDefPostes", indicadores.postes);
+
+  const porFormaEl = document.getElementById("miDefeitosPorForma");
+  if (porFormaEl) {
+    const formas = Object.values(indicadores.porForma).sort((a, b) => {
+      if (b.erros !== a.erros) return b.erros - a.erros;
+      return String(a.forma).localeCompare(String(b.forma), "pt-BR", { numeric: true });
+    });
+
+    if (formas.length === 0) {
+      porFormaEl.innerHTML = '<div class="muted">Nenhuma forma avaliada no periodo.</div>';
+    } else {
+      porFormaEl.innerHTML = formas.map(item => {
+        const itemTaxa = item.possiveis > 0 ? (item.erros / item.possiveis) * 100 : 0;
+        return `
+          <div class="mi-defeitos-row">
+            <div class="mi-defeitos-row-main">
+              <strong>Forma ${escapeHtml(item.forma)}</strong>
+              <span>${escapeHtml(item.setor)} | ${item.postes} poste(s)</span>
+            </div>
+            <div class="mi-defeitos-row-metrics">
+              <span><strong>${item.erros}</strong> erros</span>
+              <span><strong>${item.possiveis}</strong> possiveis</span>
+              <span><strong>${formatPct(itemTaxa)}</strong> taxa</span>
+              <span><strong>${item.retrabalho}</strong> retrabalho</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  }
+
+  const porTipoEl = document.getElementById("miDefeitosPorTipo");
+  if (porTipoEl) {
+    const tipos = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
+    if (tipos.length === 0) {
+      porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
+    } else {
+      porTipoEl.innerHTML = tipos.map(([tipo, total]) => `
+        <div class="mi-defeito-tipo-row">
+          <span>${escapeHtml(tipo)}</span>
+          <strong>${total}</strong>
+        </div>
+      `).join("");
+    }
+  }
+}
+
 function atualizarResumoFiltrosProdutividade() {
   const dStart = document.getElementById("paDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("paDataFim")?.value || todayYmd();
@@ -10168,6 +10280,26 @@ function setProdutividadeDrawerOpen(open) {
   if (!drawer) return;
   drawer.classList.toggle("hidden", !open);
   drawer.setAttribute("aria-hidden", open ? "false" : "true");
+}
+
+function ativarAbaMontagem(tab) {
+  miAbaAtiva = tab || "resumo";
+  document.querySelectorAll(".mi-tab-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.tab === miAbaAtiva);
+  });
+  document.querySelectorAll(".mi-tab-section").forEach(section => {
+    section.classList.remove("active");
+  });
+  const sectionId = "miSecao" + miAbaAtiva.charAt(0).toUpperCase() + miAbaAtiva.slice(1);
+  document.getElementById(sectionId)?.classList.add("active");
+  if (miUltimosGraficos) {
+    renderGraficosMontagem(
+      miUltimosGraficos.byDay,
+      miUltimosGraficos.bySector,
+      miUltimosGraficos.byMontador,
+      miUltimosGraficos.prodByDay
+    );
+  }
 }
 
 async function carregarMontagemIndicadores() {
@@ -10315,6 +10447,8 @@ function aplicarFiltrosEExibirMontagem() {
       }
     }
   });
+
+  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredMontagemData));
 
 
   // Renderizar tempos médios
@@ -10468,10 +10602,7 @@ function obterItensRejeitadosLinha(row) {
     }
   }
 
-  const isInspecao = row.setor === "Setor 3" || row.setor === "Setor 4";
-  const sections = isInspecao 
-    ? getInspecaoChecklistSections(row.modelo || "") 
-    : getMontagemChecklistSections(row.modelo || "");
+  const sections = obterChecklistSectionsLinha(row);
 
   const rejeitados = [];
   sections.forEach(sec => {
