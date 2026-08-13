@@ -10057,7 +10057,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v130-dashboard-defeitos");
+        window.location.replace(window.location.pathname + "?cache-reset=v131-dashboard-defeitos");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10067,7 +10067,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.30-dashboard-defeitos-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.31-dashboard-defeitos-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10189,7 +10189,6 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     postes: rows.length,
     producao: producaoRows.length,
     totalPossivel: 0,
-    potencialPossivel: 0,
     totalErros: 0,
     postesReprovados: 0,
     retrabalho: 0,
@@ -10236,7 +10235,7 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
       };
     }
 
-    resumo.potencialPossivel += possiveis;
+    resumo.totalPossivel += possiveis;
     resumo.totalErros += rejeitados.length;
     resumo.porForma[key].postes++;
     resumo.porForma[key].potencial += possiveis;
@@ -10273,7 +10272,6 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     });
   });
 
-  resumo.totalPossivel = Object.keys(resumo.listaDefeitos).length;
   Object.values(resumo.porForma).forEach(item => {
     item.possiveis = Object.keys(item.listaDefeitos).length;
   });
@@ -10287,7 +10285,7 @@ function formatPct(value) {
 }
 
 function renderIndicadoresDefeitosMontagem(indicadores) {
-  const taxa = indicadores.potencialPossivel > 0 ? (indicadores.totalErros / indicadores.potencialPossivel) * 100 : 0;
+  const taxa = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
   const taxaProducao = indicadores.producao > 0 ? (indicadores.totalErros / indicadores.producao) * 100 : 0;
   const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
   const setText = (id, value) => {
@@ -10539,9 +10537,11 @@ async function carregarMontagemIndicadores() {
 function aplicarFiltrosEExibirMontagem() {
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
-  const fSetor = document.getElementById("miFiltroSetor")?.value || "";
-  const fStatus = document.getElementById("miFiltroStatus")?.value || "";
+  let fSetor = document.getElementById("miFiltroSetor")?.value || "";
+  let fStatus = document.getElementById("miFiltroStatus")?.value || "";
   const fPesquisa = (document.getElementById("miFiltroPesquisa")?.value || "").trim().toLowerCase();
+  if (normalizarTexto(fSetor).startsWith("todos")) fSetor = "";
+  if (normalizarTexto(fStatus).startsWith("todos")) fStatus = "";
   atualizarResumoFiltrosMontagem();
 
   // 1. Filtrar dados de Montagem em memória
@@ -10564,8 +10564,11 @@ function aplicarFiltrosEExibirMontagem() {
 
     // Filtro por Status
     if (fStatus) {
+      const rejeitadosCount = obterItensRejeitadosLinha(row).length;
       if (fStatus === "R") {
-        if (row.status_montagem !== "R" && row.status_montagem !== "RR") return false;
+        if (rejeitadosCount === 0) return false;
+      } else if (fStatus === "A") {
+        if (rejeitadosCount > 0) return false;
       } else if (row.status_montagem !== fStatus) {
         return false;
       }
@@ -10612,13 +10615,14 @@ function aplicarFiltrosEExibirMontagem() {
 
   miFilteredMontagemData.forEach(row => {
     const day = getMiDataReferencia(row);
+    const rejeitadosCount = obterItensRejeitadosLinha(row).length;
     if (row.status_montagem === "A") totalAprovados++;
-    else if (row.status_montagem === "R" || row.status_montagem === "RR") totalRecusados++;
+    if (rejeitadosCount > 0) totalRecusados++;
     
     if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
     byDay[day].total++;
-    if (row.status_montagem === "A") byDay[day].aprovados++;
-    else byDay[day].recusados++;
+    if (rejeitadosCount > 0) byDay[day].recusados++;
+    else byDay[day].aprovados++;
     
     const sec = row.setor || "Desconhecido";
     bySector[sec] = (bySector[sec] || 0) + 1;
