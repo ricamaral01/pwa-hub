@@ -10057,7 +10057,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v128-dashboard-defeitos");
+        window.location.replace(window.location.pathname + "?cache-reset=v129-dashboard-defeitos");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10067,7 +10067,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.28-dashboard-defeitos-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.29-dashboard-defeitos-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10169,14 +10169,29 @@ function contarDefeitosPossiveisLinha(row) {
   }, 0);
 }
 
-function calcularIndicadoresDefeitosMontagem(rows) {
+function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
   const resumo = {
     postes: rows.length,
+    producao: producaoRows.length,
     totalPossivel: 0,
     totalErros: 0,
+    retrabalho: 0,
     porForma: {},
-    porTipo: {}
+    porTipo: {},
+    porSetor: {},
+    matriz: {},
+    fissuras: {
+      total: 0,
+      circulares: 0,
+      outros: 0
+    }
   };
+
+  producaoRows.forEach(row => {
+    const setor = row.setor || "Sem setor";
+    if (!resumo.porSetor[setor]) resumo.porSetor[setor] = { setor, erros: 0, producao: 0 };
+    resumo.porSetor[setor].producao++;
+  });
 
   rows.forEach(row => {
     const forma = row.forma_numero || row.formaNumero || "Sem forma";
@@ -10184,11 +10199,13 @@ function calcularIndicadoresDefeitosMontagem(rows) {
     const key = `${setor}||${forma}`;
     const possiveis = contarDefeitosPossiveisLinha(row);
     const rejeitados = obterItensRejeitadosLinha(row);
+    const isRetrabalho = row.status_montagem === "R" || row.status_montagem === "RR";
 
     if (!resumo.porForma[key]) {
       resumo.porForma[key] = {
         forma,
         setor,
+        modelo: row.modelo || "",
         postes: 0,
         possiveis: 0,
         potencial: 0,
@@ -10203,10 +10220,24 @@ function calcularIndicadoresDefeitosMontagem(rows) {
     resumo.porForma[key].possiveis = Math.max(resumo.porForma[key].possiveis, possiveis);
     resumo.porForma[key].potencial += possiveis;
     resumo.porForma[key].erros += rejeitados.length;
-    if (row.status_montagem === "R" || row.status_montagem === "RR") resumo.porForma[key].retrabalho++;
+    if (isRetrabalho) {
+      resumo.retrabalho++;
+      resumo.porForma[key].retrabalho++;
+    }
+
+    if (!resumo.porSetor[setor]) resumo.porSetor[setor] = { setor, erros: 0, producao: 0 };
+    resumo.porSetor[setor].erros += rejeitados.length;
 
     rejeitados.forEach(item => {
       resumo.porTipo[item] = (resumo.porTipo[item] || 0) + 1;
+      if (!resumo.matriz[item]) resumo.matriz[item] = {};
+      resumo.matriz[item][setor] = (resumo.matriz[item][setor] || 0) + 1;
+      if (normalizarTexto(item).includes("fissura")) {
+        resumo.fissuras.total++;
+        const modelo = normalizarTexto(row.modelo || "");
+        if (modelo.includes("circular") || modelo.includes("circ")) resumo.fissuras.circulares++;
+        else resumo.fissuras.outros++;
+      }
     });
   });
 
@@ -10220,6 +10251,8 @@ function formatPct(value) {
 
 function renderIndicadoresDefeitosMontagem(indicadores) {
   const taxa = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
+  const taxaProducao = indicadores.producao > 0 ? (indicadores.totalErros / indicadores.producao) * 100 : 0;
+  const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
@@ -10229,6 +10262,11 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   setText("miDefTotalPossivel", indicadores.totalPossivel);
   setText("miDefTaxa", formatPct(taxa));
   setText("miDefPostes", indicadores.postes);
+  setText("miDefTaxaProducao", formatPct(taxaProducao));
+  setText("miDefTaxaRetrabalho", formatPct(taxaRetrabalho));
+  setText("miDefProducaoPeriodo", indicadores.producao);
+  setText("miDefFissuras", indicadores.fissuras.total);
+  setText("miDefFissurasCirculares", indicadores.fissuras.circulares);
 
   const porFormaEl = document.getElementById("miDefeitosPorForma");
   if (porFormaEl) {
@@ -10247,6 +10285,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
             <div class="mi-defeitos-row-main">
               <strong>Forma ${escapeHtml(item.forma)}</strong>
               <span>${escapeHtml(item.setor)} | ${item.postes} poste(s)</span>
+              ${item.modelo ? `<span>${escapeHtml(item.modelo)}</span>` : ""}
             </div>
             <div class="mi-defeitos-row-metrics">
               <span><strong>${item.erros}</strong> erros</span>
@@ -10261,17 +10300,111 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   }
 
   const porTipoEl = document.getElementById("miDefeitosPorTipo");
+  const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
   if (porTipoEl) {
-    const tipos = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
-    if (tipos.length === 0) {
+    if (tiposOrdenados.length === 0) {
       porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
     } else {
-      porTipoEl.innerHTML = tipos.map(([tipo, total]) => `
+      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total]) => `
         <div class="mi-defeito-tipo-row">
           <span>${escapeHtml(tipo)}</span>
           <strong>${total}</strong>
         </div>
       `).join("");
+    }
+  }
+
+  const paretoEl = document.getElementById("miDefPareto");
+  let acumulado = 0;
+  const pareto = tiposOrdenados.map(([tipo, total]) => {
+    const pct = indicadores.totalErros > 0 ? (total / indicadores.totalErros) * 100 : 0;
+    acumulado += pct;
+    return { tipo, total, pct, acumulado };
+  });
+  const vitais = pareto.filter(item => item.acumulado <= 80);
+  const tiposVitais = vitais.length || (pareto.length ? 1 : 0);
+  setText("miDefTiposVitais", tiposVitais);
+  if (paretoEl) {
+    if (pareto.length === 0) {
+      paretoEl.innerHTML = '<div class="muted">Sem dados para Pareto no periodo.</div>';
+    } else {
+      paretoEl.innerHTML = pareto.slice(0, 10).map(item => `
+        <div class="mi-def-pareto-row ${item.acumulado <= 80 ? "vital" : ""}">
+          <div>
+            <strong>${escapeHtml(item.tipo)}</strong>
+            <span>${formatPct(item.pct)} do total | ${formatPct(item.acumulado)} acumulado</span>
+          </div>
+          <em>${item.total}</em>
+        </div>
+      `).join("");
+    }
+  }
+
+  const setoresEl = document.getElementById("miDefSetores");
+  if (setoresEl) {
+    const setores = Object.values(indicadores.porSetor).sort((a, b) => b.erros - a.erros);
+    if (setores.length === 0) {
+      setoresEl.innerHTML = '<div class="muted">Sem setores no periodo.</div>';
+    } else {
+      setoresEl.innerHTML = setores.map(item => {
+        const setorTaxa = item.producao > 0 ? (item.erros / item.producao) * 100 : 0;
+        return `
+          <div class="mi-defeitos-row">
+            <div class="mi-defeitos-row-main">
+              <strong>${escapeHtml(item.setor)}</strong>
+              <span>${item.producao} produzido(s)</span>
+            </div>
+            <div class="mi-defeitos-row-metrics">
+              <span><strong>${item.erros}</strong> erros</span>
+              <span><strong>${formatPct(setorTaxa)}</strong> taxa/producao</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  }
+
+  const matrizEl = document.getElementById("miDefMatriz");
+  if (matrizEl) {
+    const setores = Object.keys(indicadores.porSetor).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
+    if (tiposOrdenados.length === 0 || setores.length === 0) {
+      matrizEl.innerHTML = '<div class="muted">Sem dados para matriz no periodo.</div>';
+    } else {
+      matrizEl.innerHTML = `
+        <div class="mi-def-matrix-scroll">
+          <table>
+            <thead><tr><th>Defeito</th>${setores.map(s => `<th>${escapeHtml(s)}</th>`).join("")}<th>Total</th></tr></thead>
+            <tbody>
+              ${tiposOrdenados.slice(0, 12).map(([tipo, total]) => `
+                <tr>
+                  <td>${escapeHtml(tipo)}</td>
+                  ${setores.map(s => `<td>${indicadores.matriz[tipo]?.[s] || 0}</td>`).join("")}
+                  <td><strong>${total}</strong></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+  }
+
+  const planoEl = document.getElementById("miDefPlanoAcao");
+  if (planoEl) {
+    if (pareto.length === 0) {
+      planoEl.innerHTML = '<div class="muted">Sem defeitos para sugerir plano.</div>';
+    } else {
+      planoEl.innerHTML = pareto.slice(0, 2).map(item => {
+        const prioridade = item.pct > 20 ? "Critica" : item.pct > 10 ? "Alta" : item.pct > 5 ? "Media" : "Baixa";
+        const meta = Math.max(1, Math.floor(item.total * 0.5));
+        return `
+          <div class="mi-def-action">
+            <strong>${escapeHtml(item.tipo)}</strong>
+            <span>Prioridade ${prioridade} | ${item.total} ocorrencia(s) | meta 90 dias: ${meta}</span>
+            <p>Estratificar por setor, forma e montador; revisar causa raiz no ponto de maior incidencia e acompanhar semanalmente.</p>
+          </div>
+        `;
+      }).join("");
     }
   }
 }
@@ -10475,7 +10608,7 @@ function aplicarFiltrosEExibirMontagem() {
     }
   });
 
-  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredMontagemData));
+  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredMontagemData, filteredProducao));
 
 
   // Renderizar tempos médios
