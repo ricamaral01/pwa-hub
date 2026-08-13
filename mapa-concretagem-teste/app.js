@@ -10051,7 +10051,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v123");
+        window.location.replace(window.location.pathname + "?cache-reset=v124-dashboard-defeitos");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10061,7 +10061,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.23-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.24-dashboard-defeitos-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
