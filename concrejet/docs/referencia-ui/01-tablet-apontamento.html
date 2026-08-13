@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Tablet · Apontamento de produção</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<figure class="moldura">
+  <figcaption>Tablet · 1280 × 800 · paisagem travada · /posto/apontamento</figcaption>
+  <div class="tela tela-tablet">
+
+    <div class="posto">
+
+      <!-- ================= cabeçalho ================= -->
+      <header class="posto-topo">
+        <div class="placa">
+          <span class="placa-num num">05</span>
+          <span class="placa-nome">Sandretto 220 t</span>
+        </div>
+        <span class="lampada l-ok">Rodando · 3h12</span>
+        <span style="font-size:15px;color:var(--tinta-2)">O.P. <b class="num">53190</b> · Tampa disjuntor ECD</span>
+        <div class="direita">
+          <span class="sinc pendente">▲ 3 pendentes</span>
+          <span class="sinc">◷ 10:22</span>
+          <div class="operador"><b>Edney R.</b><span>desde 07:10</span></div>
+        </div>
+      </header>
+
+      <!-- ================= corpo ================= -->
+      <div class="posto-corpo">
+
+        <!-- contexto, somente leitura -->
+        <section class="cartao">
+          <p class="cartao-titulo">Em produção</p>
+          <div class="ctx">
+            <div class="ctx-linha">
+              <span class="ctx-rot">Item</span>
+              <span class="ctx-val"><span class="num">10495</span> <small>Tampa disjuntor</small></span>
+            </div>
+            <div class="ctx-linha">
+              <span class="ctx-rot">Molde · cavidades</span>
+              <span class="ctx-val">MD-104 <small>· 1 cavidade</small></span>
+            </div>
+            <div class="ctx-linha">
+              <span class="ctx-rot">Peso da peça</span>
+              <span class="ctx-val num">0,1522 <small>kg</small></span>
+            </div>
+            <div class="ctx-linha">
+              <span class="ctx-rot">Lote de resina</span>
+              <span class="ctx-val num">2801/26 <small>PC cinza · STS</small></span>
+            </div>
+            <div class="ctx-linha">
+              <span class="ctx-rot">Ciclo padrão · real</span>
+              <span class="ctx-val num">45 s <small>· 47 s</small></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- campos digitáveis -->
+        <section class="cartao">
+          <p class="cartao-titulo">Toque no campo e digite</p>
+          <div class="campos">
+            <div class="campo foco">
+              <span class="campo-rot">Peças boas</span>
+              <span class="campo-val num">618</span>
+            </div>
+            <div class="campo">
+              <span class="campo-rot">Refugo (peças)</span>
+              <span class="campo-val num">19</span>
+            </div>
+            <div class="campo">
+              <span class="campo-rot">Borra (kg)</span>
+              <span class="campo-val num">7,085</span>
+            </div>
+            <div class="campo">
+              <span class="campo-rot">Galho (kg)</span>
+              <span class="campo-val num">2,315</span>
+            </div>
+            <div class="campo">
+              <span class="campo-rot">Falha de preenchimento (kg)</span>
+              <span class="campo-val num">1,135</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- teclado próprio -->
+        <section class="cartao">
+          <p class="cartao-titulo">Teclado</p>
+          <div class="teclado">
+            <div class="tecla">1</div><div class="tecla">2</div><div class="tecla">3</div>
+            <div class="tecla">4</div><div class="tecla">5</div><div class="tecla">6</div>
+            <div class="tecla">7</div><div class="tecla">8</div><div class="tecla">9</div>
+            <div class="tecla">,</div><div class="tecla">0</div><div class="tecla aux">Apagar</div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ================= resultado calculado ================= -->
+      <section class="resultado">
+        <div class="res-item">
+          <div class="res-rot">Injeção útil</div>
+          <div class="res-val num">94,06 <small>kg</small></div>
+        </div>
+        <div class="res-item">
+          <div class="res-rot">Perda total</div>
+          <div class="res-val num">13,43 <small>kg</small></div>
+        </div>
+        <div class="res-item">
+          <div class="res-rot">Injeção + perdas</div>
+          <div class="res-val num">107,49 <small>kg</small></div>
+        </div>
+        <div class="res-item">
+          <div class="res-rot">Saldo do lote</div>
+          <div class="res-val num">1.132 <small>kg</small></div>
+        </div>
+        <div class="medidor">
+          <div class="medidor-topo">
+            <span class="res-rot">Perda sem galho</span>
+            <span class="res-val num" style="color:var(--atencao)">10,6 <small>%</small></span>
+          </div>
+          <div class="medidor-barra">
+            <span class="medidor-preenchido" style="width:70%;background:var(--atencao)"></span>
+            <span class="medidor-limite" style="left:46%"></span>
+          </div>
+          <div class="medidor-legenda"><span>0%</span><span>limite do item 7,0%</span><span>15%</span></div>
+        </div>
+      </section>
+
+      <div class="aviso aviso-atencao">
+        ▲ Acima do limite de perda do item. Registre a parada antes de encerrar.
+      </div>
+
+      <!-- ================= ações ================= -->
+      <nav class="acoes">
+        <div class="botao">Trocar item</div>
+        <div class="botao botao-parada">■ Registrar parada</div>
+        <div class="botao">Salvar parcial</div>
+        <div class="botao botao-primario">Encerrar apontamento</div>
+      </nav>
+
+    </div>
+
+  </div>
+</figure>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mockups · Controle de Produção de Injeção</title>
+<link rel="stylesheet" href="estilo.css">
+<style>
+  .capa { max-width: 900px; margin: 40px auto; background: var(--papel);
+          border: 1px solid var(--linha); border-radius: 8px; padding: 36px 40px; }
+  .capa h1 { font-size: 26px; margin: 0 0 6px; }
+  .capa .sub { color: var(--tinta-2); font-size: 15px; margin: 0 0 28px; }
+  .capa h2 { font-size: 13px; letter-spacing: .09em; text-transform: uppercase;
+             color: var(--tinta-3); margin: 30px 0 12px; }
+  .lista { display: grid; gap: 8px; }
+  .lista a { display: flex; align-items: center; gap: 14px; padding: 13px 16px;
+             border: 1px solid var(--linha); border-radius: var(--raio);
+             text-decoration: none; color: var(--tinta); background: var(--superficie); }
+  .lista a b { font-size: 15px; }
+  .lista a span { color: var(--tinta-2); font-size: 13px; }
+  .lista a .tipo { margin-left: auto; font-size: 11px; font-weight: 600;
+                   padding: 3px 9px; border-radius: 999px; }
+  .t-tab { background: var(--acao-bg); color: var(--acao); }
+  .t-pc  { background: var(--ok-bg); color: var(--ok); }
+  .capa p, .capa li { font-size: 14px; line-height: 1.65; color: var(--tinta-2); }
+  .capa code { font-family: var(--num); font-size: 12.5px; background: var(--superficie-2);
+               padding: 1px 5px; border-radius: 3px; color: var(--tinta); }
+  .capa ul { padding-left: 20px; }
+</style>
+</head>
+<body>
+<div class="capa">
+
+  <h1>Controle de Produção de Injeção</h1>
+  <p class="sub">Mockups de referência para refatoração. Duas densidades, uma paleta.</p>
+
+  <h2>Chão de fábrica · Galaxy Tab A9+ · 1280 × 800 · paisagem travada</h2>
+  <div class="lista">
+    <a href="01-tablet-apontamento.html">
+      <div><b>Apontamento de produção</b><br><span>A tela principal. Contexto, campos, teclado, resultado.</span></div>
+      <span class="tipo t-tab">tablet</span>
+    </a>
+    <a href="02-tablet-identificacao.html">
+      <div><b>Identificação e abertura</b><br><span>PIN do operador e escolha de operação, O.P. e lote.</span></div>
+      <span class="tipo t-tab">tablet</span>
+    </a>
+    <a href="03-tablet-parada.html">
+      <div><b>Registro de parada</b><br><span>Tipo, local, descrição e ação corretiva obrigatória.</span></div>
+      <span class="tipo t-tab">tablet</span>
+    </a>
+  </div>
+
+  <h2>Escritório · navegador em PC · 1440 × 900</h2>
+  <div class="lista">
+    <a href="04-desktop-painel.html">
+      <div><b>Painel do dia</b><br><span>KPIs, estado das 13 injetoras, apontamentos do turno, alertas.</span></div>
+      <span class="tipo t-pc">desktop</span>
+    </a>
+    <a href="05-desktop-perdas.html">
+      <div><b>Perda % por item</b><br><span>O relatório que hoje é a aba PERDAS %. Padrão dos demais.</span></div>
+      <span class="tipo t-pc">desktop</span>
+    </a>
+  </div>
+
+  <h2>As regras que estes mockups codificam</h2>
+  <ul>
+    <li><b>Uma paleta, duas densidades.</b> Tablet: alvo de 56 px, fonte de 15 px, valores de 26 px. Desktop: alvo de 34 px, fonte de 14 px, tabela de verdade. Os tokens são os mesmos — o que muda é <code>--toque</code> e a escala tipográfica.</li>
+    <li><b>Cor é sinalização, não decoração.</b> Verde, amarelo, vermelho e azul seguem a ISO 3864, a mesma convenção que já está pintada nas máquinas. Nenhuma cor aparece sem significar estado.</li>
+    <li><b>Todo número é tabular.</b> A classe <code>.num</code> usa monoespaçada com <code>tabular-nums</code>, para que a coluna de valores não dance enquanto o operador digita.</li>
+    <li><b>Nenhuma fonte externa.</b> O tablet opera offline em galpão. Webfont é ponto de falha sem contrapartida.</li>
+    <li><b>No tablet não existe</b> <code>&lt;select&gt;</code>, teclado nativo, rolagem vertical ou layout retrato. Lista curta vira grade de blocos.</li>
+    <li><b>Campo calculado nunca é editável.</b> Na faixa de resultado não há caixa de entrada — só leitura, em tipografia maior que a dos campos digitados.</li>
+  </ul>
+
+  <h2>Para o Codex</h2>
+  <p>
+    Estes arquivos são especificação visual, não código de produção. Eles são HTML estático,
+    sem estado e sem interação. O que deve ser preservado na refatoração é a estrutura de
+    layout, a escala de tamanhos, os tokens de <code>estilo.css</code> e os nomes de classe.
+    O que deve ser substituído é tudo que é conteúdo: os valores são de exemplo e existem para
+    provar que o layout aguenta o dado real — inclusive o caso ruim, como
+    <code>23.696</code> peças e perda de <code>24,3%</code>.
+  </p>
+  <p>
+    Os números do apontamento batem com o exemplo de conferência do prompt mestre:
+    618 peças boas, 19 de refugo, peso de 0,1522 kg, borra 7,085, galho 2,315 e falha 1,135
+    resultam em 94,06 kg de injeção útil, 13,43 kg de perda total, 107,49 kg de injeção mais
+    perdas e 10,56% de perda sem galho. Se a implementação não reproduzir esses valores,
+    a fórmula está errada.
+  </p>
+
+</div>
+</body>
+</html>

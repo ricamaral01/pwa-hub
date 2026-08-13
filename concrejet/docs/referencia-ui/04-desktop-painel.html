@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Desktop · Painel do dia</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<figure class="moldura">
+  <figcaption>Desktop · 1440 × 900 · /gestao — painel do dia</figcaption>
+  <div class="tela tela-desktop">
+    <div class="gestao">
+
+      <!-- ============ menu lateral ============ -->
+      <aside class="lateral">
+        <div class="marca">
+          <b>Controle de Injeção</b>
+          <span>Produção</span>
+        </div>
+        <nav class="menu">
+          <a href="#" class="ativo">Painel do dia</a>
+          <a href="#">Apontamentos</a>
+          <a href="#">Ocorrências</a>
+          <span class="menu-grupo">Resina</span>
+          <a href="#">Lotes</a>
+          <a href="#">Blendas</a>
+          <a href="#">Inventário</a>
+          <span class="menu-grupo">Relatórios</span>
+          <a href="#">Perda % por item</a>
+          <a href="#">Perda R$ por item</a>
+          <a href="#">Histórico geral</a>
+          <a href="#">Efetivo</a>
+          <a href="#">Ocupação de máquina</a>
+          <a href="#">Ciclo real × padrão</a>
+          <span class="menu-grupo">Cadastros</span>
+          <a href="#">Itens e moldes</a>
+          <a href="#">Máquinas</a>
+          <a href="#">Colaboradores</a>
+          <a href="#">Resinas e fornecedores</a>
+        </nav>
+        <div class="lateral-rodape">Reinaldo C. · líder de produção</div>
+      </aside>
+
+      <!-- ============ conteúdo ============ -->
+      <div class="conteudo">
+
+        <header class="barra">
+          <h1>Painel do dia</h1>
+          <span class="filtro">31/07/2026 ▾</span>
+          <span class="filtro">Turno: manhã ▾</span>
+          <div class="direita">
+            <span class="filtro" style="border-color:var(--ok-linha);color:var(--ok);background:var(--ok-bg)">13 tablets online</span>
+            <span class="botao-desk">Exportar</span>
+          </div>
+        </header>
+
+        <div class="painel">
+
+          <div class="kpis">
+            <div class="kpi">
+              <div class="kpi-rot">Peças boas</div>
+              <div class="kpi-val num">24.318</div>
+              <div class="kpi-nota">meta do dia 26.000 · 94%</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-rot">Injetado</div>
+              <div class="kpi-val num">742,6 <span style="font-size:16px">kg</span></div>
+              <div class="kpi-nota">consumo baixado de 7 lotes</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-rot">Perda sem galho</div>
+              <div class="kpi-val num" style="color:var(--atencao)">3,8 <span style="font-size:16px">%</span></div>
+              <div class="kpi-nota">média do mês 3,1% · 4 itens acima do limite</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-rot">Parada não programada</div>
+              <div class="kpi-val num" style="color:var(--parada)">4h12</div>
+              <div class="kpi-nota">3 ocorrências · 1 sem ação corretiva</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 400px;gap:16px;flex:1 1 auto;min-height:0">
+
+            <div style="display:flex;flex-direction:column;gap:16px;min-height:0">
+
+              <div class="bloco-desk">
+                <div class="bloco-cab">
+                  <h2>Estado das injetoras</h2>
+                  <div class="direita">5 rodando · 1 setup · 1 parada · 6 ociosas</div>
+                </div>
+                <div class="mosaico">
+                  <div class="maq ok"><b class="num">01</b><span>Romi 130</span></div>
+                  <div class="maq ocioso"><b class="num">02</b><span>Romi 170</span></div>
+                  <div class="maq ok"><b class="num">03</b><span>Oriente 150</span></div>
+                  <div class="maq ok"><b class="num">04</b><span>Tsong Cherng</span></div>
+                  <div class="maq ok"><b class="num">05</b><span>Sandretto 220</span></div>
+                  <div class="maq atencao"><b class="num">06</b><span>Pavan Zanetti</span></div>
+                  <div class="maq ocioso"><b class="num">07</b><span>Romi 90</span></div>
+                  <div class="maq ocioso"><b class="num">08</b><span>Oriente 200</span></div>
+                  <div class="maq ok"><b class="num">09</b><span>Sandretto 150</span></div>
+                  <div class="maq ocioso"><b class="num">10</b><span>Chen Hsong 90</span></div>
+                  <div class="maq ocioso"><b class="num">11</b><span>Romi 60</span></div>
+                  <div class="maq parada"><b class="num">12</b><span>Chen Hsong 60</span></div>
+                  <div class="maq ocioso"><b class="num">13</b><span>Pavan 110</span></div>
+                </div>
+              </div>
+
+              <div class="bloco-desk" style="flex:1 1 auto;min-height:0">
+                <div class="bloco-cab">
+                  <h2>Apontamentos do turno</h2>
+                  <div class="direita">18 registros · 3 abertos</div>
+                </div>
+                <div style="overflow:auto">
+                  <table class="tab">
+                    <thead>
+                      <tr>
+                        <th style="width:70px">Máq.</th>
+                        <th>Item</th>
+                        <th style="width:90px">Operador</th>
+                        <th class="dir" style="width:80px">Boas</th>
+                        <th class="dir" style="width:88px">Injetado</th>
+                        <th style="width:150px">Perda s/ galho</th>
+                        <th style="width:100px">Situação</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="num">05</td>
+                        <td>10495 · Tampa disjuntor ECD</td>
+                        <td>Edney R.</td>
+                        <td class="dir num">618</td>
+                        <td class="dir num">107,5 kg</td>
+                        <td>
+                          <div style="display:flex;align-items:center;gap:8px">
+                            <span class="num" style="width:42px;color:var(--atencao);font-weight:600">10,6%</span>
+                            <div class="barra-mini" style="flex:1"><i style="width:70%;background:var(--atencao)"></i></div>
+                          </div>
+                        </td>
+                        <td><span class="etiqueta" style="background:var(--ok-bg);color:var(--ok)">Aberto</span></td>
+                      </tr>
+                      <tr>
+                        <td class="num">06</td>
+                        <td>10871 · Caixa PC preta poste</td>
+                        <td>Marcos A.</td>
+                        <td class="dir num">687</td>
+                        <td class="dir num">198,3 kg</td>
+                        <td>
+                          <div style="display:flex;align-items:center;gap:8px">
+                            <span class="num" style="width:42px;font-weight:600">2,5%</span>
+                            <div class="barra-mini" style="flex:1"><i style="width:17%;background:var(--ok)"></i></div>
+                          </div>
+                        </td>
+                        <td><span class="etiqueta" style="background:var(--superficie-2);color:var(--tinta-2)">Encerrado</span></td>
+                      </tr>
+                      <tr>
+                        <td class="num">12</td>
+                        <td>10233 · Bucha estrela PP</td>
+                        <td>Wesley D.</td>
+                        <td class="dir num">23.696</td>
+                        <td class="dir num">312,8 kg</td>
+                        <td>
+                          <div style="display:flex;align-items:center;gap:8px">
+                            <span class="num" style="width:42px;color:var(--parada);font-weight:600">24,3%</span>
+                            <div class="barra-mini" style="flex:1"><i style="width:100%;background:var(--parada)"></i></div>
+                          </div>
+                        </td>
+                        <td><span class="etiqueta" style="background:var(--parada-bg);color:var(--parada)">Parada</span></td>
+                      </tr>
+                      <tr>
+                        <td class="num">04</td>
+                        <td>10495 · Tampa disjuntor ECD</td>
+                        <td>Tiago F.</td>
+                        <td class="dir num">1.204</td>
+                        <td class="dir num">191,4 kg</td>
+                        <td>
+                          <div style="display:flex;align-items:center;gap:8px">
+                            <span class="num" style="width:42px;font-weight:600">4,2%</span>
+                            <div class="barra-mini" style="flex:1"><i style="width:28%;background:var(--ok)"></i></div>
+                          </div>
+                        </td>
+                        <td><span class="etiqueta" style="background:var(--ok-bg);color:var(--ok)">Aberto</span></td>
+                      </tr>
+                      <tr>
+                        <td class="num">09</td>
+                        <td>10662 · Base articulada</td>
+                        <td>Juliana P.</td>
+                        <td class="dir num">940</td>
+                        <td class="dir num">88,1 kg</td>
+                        <td>
+                          <div style="display:flex;align-items:center;gap:8px">
+                            <span class="num" style="width:42px;font-weight:600">3,0%</span>
+                            <div class="barra-mini" style="flex:1"><i style="width:20%;background:var(--ok)"></i></div>
+                          </div>
+                        </td>
+                        <td><span class="etiqueta" style="background:var(--superficie-2);color:var(--tinta-2)">Encerrado</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="bloco-desk">
+              <div class="bloco-cab">
+                <h2>Precisa de você</h2>
+                <div class="direita">4 itens</div>
+              </div>
+              <div class="alertas" style="overflow:auto">
+                <div class="alerta">
+                  <span class="alerta-marca" style="background:var(--parada)"></span>
+                  <div>
+                    <b>Injetora 12 parada há 1h04 sem ação corretiva</b>
+                    <span>Bucha estrela PP · Wesley D. · desumidificador</span>
+                  </div>
+                </div>
+                <div class="alerta">
+                  <span class="alerta-marca" style="background:var(--parada)"></span>
+                  <div>
+                    <b>Perda de 24,3% na injetora 12</b>
+                    <span>Limite do item 10233 é 8,0% · 76,1 kg perdidos</span>
+                  </div>
+                </div>
+                <div class="alerta">
+                  <span class="alerta-marca" style="background:var(--atencao)"></span>
+                  <div>
+                    <b>Lote 2794/26 com saldo de 85 kg</b>
+                    <span>Cobre menos de um turno na injetora 05</span>
+                  </div>
+                </div>
+                <div class="alerta">
+                  <span class="alerta-marca" style="background:var(--atencao)"></span>
+                  <div>
+                    <b>Injetora 06 em setup há 48 min</b>
+                    <span>Média de setup deste molde é 25 min</span>
+                  </div>
+                </div>
+                <div class="alerta">
+                  <span class="alerta-marca" style="background:var(--linha-forte)"></span>
+                  <div>
+                    <b>Tudo mais em ordem</b>
+                    <span>Nenhum apontamento pendente de sincronização</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</figure>
+</body>
+</html>

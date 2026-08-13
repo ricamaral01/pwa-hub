@@ -62,12 +62,17 @@ const upload = multer({
 
 // SFTP Configuration
 const sftpConfig = {
-  host: process.env.SFTP_HOST || "2.25.163.32",
+  host: process.env.SFTP_HOST,
   port: parseInt(process.env.SFTP_PORT || "22", 10),
-  username: process.env.SFTP_USER || "root",
-  password: process.env.SFTP_PASSWORD || "Concrefer@2026##VPS",
+  username: process.env.SFTP_USER,
+  password: process.env.SFTP_PASSWORD,
   readyTimeout: 15000
 };
+
+if (!sftpConfig.host || !sftpConfig.username || !sftpConfig.password) {
+  console.error("Erro: SFTP_HOST, SFTP_USER e SFTP_PASSWORD sao obrigatorios no arquivo .env");
+  process.exit(1);
+}
 
 const STORAGE_BASE_PATH = process.env.STORAGE_BASE_PATH || "/opt/mapaproducao-storage";
 

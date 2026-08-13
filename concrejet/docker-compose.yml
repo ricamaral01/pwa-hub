@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-concretrack}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-concretrack}
+      POSTGRES_DB: ${DATABASE_NAME:-concretrack_injecao}
+    ports:
+      - "${DATABASE_HOST_PORT:-5433}:5432"
+    volumes:
+      - concretrack_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-concretrack}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${DATABASE_USER:-concretrack}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-concretrack}
+      DATABASE_NAME: ${DATABASE_NAME:-concretrack_injecao}
+      DATABASE_SSL: "false"
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ACCESS_TOKEN_TTL_SECONDS: 900
+      JWT_COOKIE_NAME: concretrack_session
+      AUTH_MAX_LOGIN_ATTEMPTS: 5
+      AUTH_LOCKOUT_MINUTES: 15
+      LOG_LEVEL: info
+    ports:
+      - "3000:3000"
+
+volumes:
+  concretrack_pg_data:
