@@ -10057,7 +10057,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v132-dashboard-defeitos");
+        window.location.replace(window.location.pathname + "?cache-reset=v133-dashboard-defeitos");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10067,7 +10067,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.32-dashboard-defeitos-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.33-dashboard-defeitos-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10312,37 +10312,6 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   setText("miDefPostesReprovados", indicadores.postesReprovados);
   setText("miDefFissuras", indicadores.fissuras.total);
   setText("miDefFissurasCirculares", indicadores.fissuras.circulares);
-
-  const porFormaEl = document.getElementById("miDefeitosPorForma");
-  if (porFormaEl) {
-    const formas = Object.values(indicadores.porForma).sort((a, b) => {
-      if (b.erros !== a.erros) return b.erros - a.erros;
-      return String(a.forma).localeCompare(String(b.forma), "pt-BR", { numeric: true });
-    });
-
-    if (formas.length === 0) {
-      porFormaEl.innerHTML = '<div class="muted">Nenhuma forma avaliada no periodo.</div>';
-    } else {
-      porFormaEl.innerHTML = formas.map(item => {
-        const itemTaxa = item.potencial > 0 ? (item.erros / item.potencial) * 100 : 0;
-        return `
-          <div class="mi-defeitos-row">
-            <div class="mi-defeitos-row-main">
-              <strong>Forma ${escapeHtml(item.forma)}</strong>
-              <span>${escapeHtml(item.setor)} | ${item.postes} poste(s)</span>
-              ${item.modelo ? `<span>${escapeHtml(item.modelo)}</span>` : ""}
-            </div>
-            <div class="mi-defeitos-row-metrics">
-              <span><strong>${item.erros}</strong> erros</span>
-              <span><strong>${item.possiveis}</strong> na lista</span>
-              <span><strong>${formatPct(itemTaxa)}</strong> taxa</span>
-              <span><strong>${item.postesReprovados}</strong> reprovados</span>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-  }
 
   const porTipoEl = document.getElementById("miDefeitosPorTipo");
   const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
