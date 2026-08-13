@@ -10057,7 +10057,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v127-dashboard-defeitos");
+        window.location.replace(window.location.pathname + "?cache-reset=v128-dashboard-defeitos");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10067,7 +10067,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.27-dashboard-defeitos-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=1.28-dashboard-defeitos-reset").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10117,6 +10117,11 @@ function formatarDuracao(ms) {
   const secs = totalSecs % 60;
   if (mins === 0) return `${secs}s`;
   return `${mins}m ${secs}s`;
+}
+
+function getMiDataReferencia(row) {
+  const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
+  return String(raw).split("T")[0];
 }
 
 function atualizarResumoFiltrosMontagem() {
@@ -10333,7 +10338,9 @@ async function carregarMontagemIndicadores() {
       supabaseClient
         .from("montagem_poste")
         .select("*")
-        .order("finalizado_em", { ascending: false })
+        .gte("data_fabricacao", dStart)
+        .lte("data_fabricacao", dEnd)
+        .order("data_fabricacao", { ascending: false })
         .limit(5000),
       supabaseClient
         .from("producao")
@@ -10372,7 +10379,7 @@ function aplicarFiltrosEExibirMontagem() {
     if (!row.status_montagem) return false;
 
     // Filtro por Data
-    const day = (row.finalizado_em || "").split("T")[0];
+    const day = getMiDataReferencia(row);
     if (!day || day < dStart || day > dEnd) return false;
 
     // Filtro por Setor
@@ -10433,7 +10440,7 @@ function aplicarFiltrosEExibirMontagem() {
   const temposPorMontador = {}; // { montador: { totalMs: 0, count: 0 } }
 
   miFilteredMontagemData.forEach(row => {
-    const day = (row.finalizado_em || "").split("T")[0];
+    const day = getMiDataReferencia(row);
     if (row.status_montagem === "A") totalAprovados++;
     else if (row.status_montagem === "R" || row.status_montagem === "RR") totalRecusados++;
     
