@@ -6140,7 +6140,12 @@ body.mode-dashboard-defeitos #viewMontagemIndicadores .mi-tabs-bar {
   display: none;
 }
 
+body.mode-dashboard-defeitos #viewMontagemIndicadores .mi-tab-section {
+  display: none;
+}
+
 body.mode-dashboard-defeitos #miSecaoDefeitos {
+  display: block;
   margin-top: 16px;
 }
 
