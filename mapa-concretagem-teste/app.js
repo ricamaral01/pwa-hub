@@ -7384,6 +7384,11 @@ function setMode(mode) {
     if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
     ativarAbaMontagem(mode === "DASHBOARD_DEFEITOS" ? "defeitos" : "resumo");
+    if (mode === "DASHBOARD_DEFEITOS") {
+      aplicarLayoutDashboardDefeitos();
+    } else {
+      limparLayoutDashboardDefeitos();
+    }
     carregarMontagemIndicadores();
   }
   if (mode === "SEQUENCIA_S3") {
@@ -7768,6 +7773,7 @@ function bindEvents() {
   document.querySelectorAll(".mi-tab-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const targetTab = e.currentTarget.dataset.tab;
+      limparLayoutDashboardDefeitos();
       ativarAbaMontagem(targetTab || "resumo");
     });
   });
@@ -10300,6 +10306,18 @@ function ativarAbaMontagem(tab) {
       miUltimosGraficos.prodByDay
     );
   }
+}
+
+function aplicarLayoutDashboardDefeitos() {
+  document.querySelectorAll("#viewMontagemIndicadores .mi-tab-section").forEach(section => {
+    section.style.display = section.id === "miSecaoDefeitos" ? "block" : "none";
+  });
+}
+
+function limparLayoutDashboardDefeitos() {
+  document.querySelectorAll("#viewMontagemIndicadores .mi-tab-section").forEach(section => {
+    section.style.display = "";
+  });
 }
 
 async function carregarMontagemIndicadores() {
