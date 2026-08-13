@@ -10186,6 +10186,7 @@ function calcularIndicadoresDefeitosMontagem(rows) {
         setor,
         postes: 0,
         possiveis: 0,
+        potencial: 0,
         erros: 0,
         retrabalho: 0
       };
@@ -10194,7 +10195,8 @@ function calcularIndicadoresDefeitosMontagem(rows) {
     resumo.totalPossivel += possiveis;
     resumo.totalErros += rejeitados.length;
     resumo.porForma[key].postes++;
-    resumo.porForma[key].possiveis += possiveis;
+    resumo.porForma[key].possiveis = Math.max(resumo.porForma[key].possiveis, possiveis);
+    resumo.porForma[key].potencial += possiveis;
     resumo.porForma[key].erros += rejeitados.length;
     if (row.status_montagem === "R" || row.status_montagem === "RR") resumo.porForma[key].retrabalho++;
 
@@ -10234,7 +10236,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
       porFormaEl.innerHTML = '<div class="muted">Nenhuma forma avaliada no periodo.</div>';
     } else {
       porFormaEl.innerHTML = formas.map(item => {
-        const itemTaxa = item.possiveis > 0 ? (item.erros / item.possiveis) * 100 : 0;
+        const itemTaxa = item.potencial > 0 ? (item.erros / item.potencial) * 100 : 0;
         return `
           <div class="mi-defeitos-row">
             <div class="mi-defeitos-row-main">
@@ -10243,7 +10245,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
             </div>
             <div class="mi-defeitos-row-metrics">
               <span><strong>${item.erros}</strong> erros</span>
-              <span><strong>${item.possiveis}</strong> possiveis</span>
+              <span><strong>${item.possiveis}</strong> na lista</span>
               <span><strong>${formatPct(itemTaxa)}</strong> taxa</span>
               <span><strong>${item.retrabalho}</strong> retrabalho</span>
             </div>
