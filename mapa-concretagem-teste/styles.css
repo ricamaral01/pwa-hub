@@ -6083,6 +6083,36 @@ td.s4-forma-cell.is-manutencao::after {
   gap: 8px;
 }
 
+.mi-def-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 0 0 12px;
+}
+
+.mi-def-summary-strip div {
+  border: 1px solid #dbe5f1;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px 12px;
+}
+
+.mi-def-summary-strip span {
+  display: block;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.mi-def-summary-strip strong {
+  display: block;
+  margin-top: 4px;
+  color: #0f172a;
+  font-size: 1.25rem;
+  font-weight: 950;
+}
+
 .mi-defeitos-row,
 .mi-defeito-tipo-row {
   display: flex;
@@ -6134,6 +6164,84 @@ td.s4-forma-cell.is-manutencao::after {
 .mi-defeito-tipo-row span {
   color: #334155;
   font-weight: 700;
+}
+
+.mi-def-pareto-row,
+.mi-def-action {
+  border: 1px solid #dbe5f1;
+  border-left: 4px solid #94a3b8;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px 12px;
+}
+
+.mi-def-pareto-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mi-def-pareto-row.vital {
+  border-left-color: #dc2626;
+  background: #fff7f7;
+}
+
+.mi-def-pareto-row strong,
+.mi-def-action strong {
+  display: block;
+  color: #0f172a;
+  font-size: 0.86rem;
+}
+
+.mi-def-pareto-row span,
+.mi-def-action span,
+.mi-def-action p {
+  display: block;
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.mi-def-pareto-row em {
+  flex: 0 0 auto;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 4px 9px;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.mi-def-matrix-scroll {
+  overflow-x: auto;
+}
+
+.mi-def-matrix table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.mi-def-matrix th,
+.mi-def-matrix td {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.mi-def-matrix th:first-child,
+.mi-def-matrix td:first-child {
+  text-align: left;
+  width: 38%;
+}
+
+.mi-def-matrix th {
+  color: #475569;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 body.mode-dashboard-defeitos #viewMontagemIndicadores .mi-tabs-bar {
