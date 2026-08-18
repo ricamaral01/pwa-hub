@@ -11811,7 +11811,7 @@ async function updateSwVersionBadge() {
     const response = await fetch("sw.js?v=" + Date.now(), { cache: "no-store" });
     if (response.ok) {
       const text = await response.text();
-      const match = text.match(/CACHE_NAME\s*=\s*["']mapa-concretagem(?:-teste)?-v([^"']+)["']/);
+      const match = text.match(/CACHE_NAME\s*=\s*["']mapa-concretagem(?:-teste)?-v(\d+(?:\.\d+)?)/);
       if (match && match[1]) {
         badge.textContent = `v${match[1]}`;
         badge.style.display = "inline-block";
