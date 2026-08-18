@@ -7,11 +7,11 @@ const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
 const ROLE_PERMISSIONS = {
   GERENCIA: {
     label: "Gerência",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "INSPECAO", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "DASHBOARD_DEFEITOS", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "USUARIOS", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   GESTOR: {
     label: "Gestor",
-    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
+    modes: ["DASHBOARD", "PROD_ANALISE", "LIBERACAO", "LIBERACAO_S1", "LIBERACAO_S2", "LIBERACAO_S3", "LIBERACAO_S4", "MONTAGEM_POSTES", "MONTAGEM_INDICADORES", "DASHBOARD_DEFEITOS", "RELATORIO", "HISTORICO", "ACMP_CONCRETAGEM", "SEQUENCIA_S3", "MANDRIL_CIRCULAR", "RELATORIO_MANUTENCAO", "TRATATIVA_DEFEITOS"]
   },
   MONTADOR: {
     label: "Montador",
@@ -843,6 +843,7 @@ const el = {
   hubMontagemPostes: document.getElementById("hubMontagemPostes"),
   hubSequenciaS3: document.getElementById("hubSequenciaS3"),
   hubMontagemIndicadores: document.getElementById("hubMontagemIndicadores"),
+  hubDashboardDefeitos: document.getElementById("hubDashboardDefeitos"),
   hubRelatorio: document.getElementById("hubRelatorio"),
   hubHistorico: document.getElementById("hubHistorico"),
   viewLiberacao: document.getElementById("viewLiberacao"),
@@ -1024,14 +1025,6 @@ function todayYmd() {
   const d = new Date();
   const tzOffset = d.getTimezoneOffset() * 60000;
   const local = new Date(d.getTime() - tzOffset);
-  return local.toISOString().slice(0, 10);
-}
-
-function daysAgoYmd(days) {
-  const d = new Date();
-  const tzOffset = d.getTimezoneOffset() * 60000;
-  const local = new Date(d.getTime() - tzOffset);
-  local.setDate(local.getDate() - days);
   return local.toISOString().slice(0, 10);
 }
 
@@ -7194,6 +7187,7 @@ function applyRoleVisibility() {
     MONTAGEM_POSTES: "hubMontagemPostes",
     SEQUENCIA_S3: "hubSequenciaS3",
     MONTAGEM_INDICADORES: "hubMontagemIndicadores",
+    DASHBOARD_DEFEITOS: "hubDashboardDefeitos",
     RELATORIO: "hubRelatorio",
     HISTORICO: "hubHistorico",
     ACMP_CONCRETAGEM: "hubAcmpConcretagem",
@@ -7381,12 +7375,20 @@ function setMode(mode) {
       setUgFeedback("Não foi possível carregar os usuários da planilha.", false);
     });
   }
-  if (mode === "MONTAGEM_INDICADORES") {
+  if (mode === "MONTAGEM_INDICADORES" || mode === "DASHBOARD_DEFEITOS") {
     if (el.viewMontagemIndicadores) el.viewMontagemIndicadores.classList.remove("hidden");
+    const dashboardTitle = document.getElementById("miDashboardTitle");
+    if (dashboardTitle) dashboardTitle.textContent = mode === "DASHBOARD_DEFEITOS" ? "Dashboard Defeitos" : "Dashboard Montagem";
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
-    if (miDataInicio && !miDataInicio.value) miDataInicio.value = daysAgoYmd(6);
+    if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
+    ativarAbaMontagem(mode === "DASHBOARD_DEFEITOS" ? "defeitos" : "resumo");
+    if (mode === "DASHBOARD_DEFEITOS") {
+      aplicarLayoutDashboardDefeitos();
+    } else {
+      limparLayoutDashboardDefeitos();
+    }
     carregarMontagemIndicadores();
   }
   if (mode === "SEQUENCIA_S3") {
@@ -7412,7 +7414,7 @@ function setMode(mode) {
     if (el.viewTratativaDefeitos) el.viewTratativaDefeitos.classList.remove("hidden");
     renderizarRelatorioTratativaDefeitos();
   }
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-dashboard-defeitos", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
   if (mode === "RELATORIO_MANUTENCAO") document.body.classList.add("mode-relatorio-manutencao");
   if (mode === "TRATATIVA_DEFEITOS") document.body.classList.add("mode-tratativa-defeitos");
   if (mode === "HUB") {
@@ -7455,7 +7457,8 @@ function setMode(mode) {
   if (mode === "HISTORICO") document.body.classList.add("mode-historico");
   if (mode === "ACMP_CONCRETAGEM") document.body.classList.add("mode-acmp-concretagem");
   if (mode === "USUARIOS") document.body.classList.add("mode-usuarios");
-  if (mode === "MONTAGEM_INDICADORES") document.body.classList.add("mode-montagem-indicadores");
+  if (mode === "MONTAGEM_INDICADORES" || mode === "DASHBOARD_DEFEITOS") document.body.classList.add("mode-montagem-indicadores");
+  if (mode === "DASHBOARD_DEFEITOS") document.body.classList.add("mode-dashboard-defeitos");
 
   // Update sidebar nav + topbar title
   const navTitles = {
@@ -7471,6 +7474,7 @@ function setMode(mode) {
     MONTAGEM_POSTES: ["hubMontagemPostes", "Montagem Postes"],
     MONTAGEM_POSTES_DETALHE: ["hubMontagemPostes", "Inspecionar / Montar Poste"],
     MONTAGEM_INDICADORES: ["hubMontagemIndicadores", "Dashboard montagem"],
+    DASHBOARD_DEFEITOS: ["hubDashboardDefeitos", "Dashboard Defeitos"],
     RELATORIO: ["hubRelatorio", "Relatório Enc. Produção"],
     HISTORICO: ["hubHistorico", "Histórico"],
     ACMP_CONCRETAGEM: ["hubAcmpConcretagem", "Acmp. Concretagem"],
@@ -7510,8 +7514,8 @@ function handleHubModeNavigation(mode) {
   if (!mode) return;
   if (mode === "DASHBOARD") {
     setMode("DASHBOARD");
-  } else if (mode === "MONTAGEM_INDICADORES") {
-    setMode("MONTAGEM_INDICADORES");
+  } else if (mode === "MONTAGEM_INDICADORES" || mode === "DASHBOARD_DEFEITOS") {
+    setMode(mode);
   } else if (mode === "PROD_ANALISE") {
     setMode("PROD_ANALISE");
   } else if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
@@ -7717,14 +7721,17 @@ function bindEvents() {
   el.hubMontagemIndicadores?.addEventListener("click", () => {
     setMode("MONTAGEM_INDICADORES");
   });
+  el.hubDashboardDefeitos?.addEventListener("click", () => {
+    setMode("DASHBOARD_DEFEITOS");
+  });
 
   // Configuração dos Filtros e Abas do Dashboard Montagem
   document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
-    if (miDataInicio) miDataInicio.value = daysAgoYmd(6);
+    if (miDataInicio) miDataInicio.value = todayYmd();
     if (miDataFim) miDataFim.value = todayYmd();
-
+    
     const fSetor = document.getElementById("miFiltroSetor");
     if (fSetor) fSetor.value = "";
     const fStatus = document.getElementById("miFiltroStatus");
@@ -7733,7 +7740,7 @@ function bindEvents() {
     if (fPesquisa) fPesquisa.value = "";
 
     miPaginaAtual = 1;
-    carregarMontagemIndicadores();
+    aplicarFiltrosEExibirMontagem();
   });
   document.getElementById("miBtnAtualizar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
@@ -7761,34 +7768,13 @@ function bindEvents() {
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
   });
-  document.getElementById("mtFiltroFaixa")?.addEventListener("change", () => {
-    renderizarTempoMontagem();
-  });
-  document.getElementById("mtOrdenacao")?.addEventListener("change", () => {
-    renderizarTempoMontagem();
-  });
 
   // Troca de Abas do Dashboard
   document.querySelectorAll(".mi-tab-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const targetTab = e.currentTarget.dataset.tab;
-      miAbaAtiva = targetTab || "resumo";
-
-      document.querySelectorAll(".mi-tab-btn").forEach(b => b.classList.remove("active"));
-      e.currentTarget.classList.add("active");
-
-      document.querySelectorAll(".mi-tab-section").forEach(s => s.classList.remove("active"));
-      const sectionId = "miSecao" + targetTab.charAt(0).toUpperCase() + targetTab.slice(1);
-      document.getElementById(sectionId)?.classList.add("active");
-
-      if (miUltimosGraficos) {
-        renderGraficosMontagem(
-          miUltimosGraficos.byDay,
-          miUltimosGraficos.bySector,
-          miUltimosGraficos.byMontador,
-          miUltimosGraficos.prodByDay
-        );
-      }
+      limparLayoutDashboardDefeitos();
+      ativarAbaMontagem(targetTab || "resumo");
     });
   });
 
@@ -10133,6 +10119,20 @@ function formatarDuracao(ms) {
   return `${mins}m ${secs}s`;
 }
 
+function getMiDataReferencia(row) {
+  const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
+  return String(raw).split("T")[0];
+}
+
+function normalizarTexto(valor) {
+  return String(valor || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
 function atualizarResumoFiltrosMontagem() {
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
@@ -10165,6 +10165,264 @@ function miStatusButton(row) {
   return `<button type="button" class="mi-status-pill ${meta.className}" onclick="abrirVisualizacaoChecklist('${id}')">${meta.label}</button>`;
 }
 
+function obterChecklistSectionsLinha(row) {
+  const isInspecao = row.setor === "Setor 3" || row.setor === "Setor 4";
+  return isInspecao
+    ? getInspecaoChecklistSections(row.modelo || "")
+    : getMontagemChecklistSections(row.modelo || "");
+}
+
+function contarDefeitosPossiveisLinha(row) {
+  return obterChecklistSectionsLinha(row).reduce((total, sec) => {
+    return total + (Array.isArray(sec.itens) ? sec.itens.length : 0);
+  }, 0);
+}
+
+function obterDefeitosPossiveisLinha(row) {
+  const itens = [];
+  obterChecklistSectionsLinha(row).forEach(sec => {
+    if (!Array.isArray(sec.itens)) return;
+    sec.itens.forEach(item => {
+      const label = typeof item === "string"
+        ? item
+        : (item.label || item.texto || item.descricao || item.nome || item.codigoFalha || "");
+      const clean = String(label || "").trim();
+      if (clean) itens.push(clean);
+    });
+  });
+  return itens;
+}
+
+function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
+  const resumo = {
+    postes: rows.length,
+    producao: producaoRows.length,
+    totalPossivel: 0,
+    totalErros: 0,
+    postesReprovados: 0,
+    retrabalho: 0,
+    listaDefeitos: {},
+    porForma: {},
+    porTipo: {},
+    porSetor: {},
+    matriz: {},
+    fissuras: {
+      total: 0,
+      circulares: 0,
+      outros: 0
+    }
+  };
+
+  producaoRows.forEach(row => {
+    const setor = row.setor || "Sem setor";
+    if (!resumo.porSetor[setor]) resumo.porSetor[setor] = { setor, erros: 0, producao: 0 };
+    resumo.porSetor[setor].producao++;
+  });
+
+  rows.forEach(row => {
+    const forma = row.forma_numero || row.formaNumero || "Sem forma";
+    const setor = row.setor || "Sem setor";
+    const key = `${setor}||${forma}`;
+    const defeitosPossiveis = obterDefeitosPossiveisLinha(row);
+    const possiveis = defeitosPossiveis.length;
+    const rejeitados = obterItensRejeitadosLinha(row);
+    const isReprovado = rejeitados.length > 0;
+    const isRetrabalho = row.status_montagem === "RR";
+
+    if (!resumo.porForma[key]) {
+      resumo.porForma[key] = {
+        forma,
+        setor,
+        modelo: row.modelo || "",
+        postes: 0,
+        postesReprovados: 0,
+        listaDefeitos: {},
+        possiveis: 0,
+        potencial: 0,
+        erros: 0,
+        retrabalho: 0
+      };
+    }
+
+    resumo.totalPossivel += possiveis;
+    resumo.totalErros += rejeitados.length;
+    resumo.porForma[key].postes++;
+    resumo.porForma[key].potencial += possiveis;
+    resumo.porForma[key].erros += rejeitados.length;
+    if (isReprovado) {
+      resumo.postesReprovados++;
+      resumo.porForma[key].postesReprovados++;
+    }
+    if (isRetrabalho) {
+      resumo.retrabalho++;
+      resumo.porForma[key].retrabalho++;
+    }
+
+    defeitosPossiveis.forEach(item => {
+      const norm = normalizarTexto(item);
+      if (!norm) return;
+      resumo.listaDefeitos[norm] = item;
+      resumo.porForma[key].listaDefeitos[norm] = item;
+    });
+
+    if (!resumo.porSetor[setor]) resumo.porSetor[setor] = { setor, erros: 0, producao: 0 };
+    resumo.porSetor[setor].erros += rejeitados.length;
+
+    rejeitados.forEach(item => {
+      resumo.porTipo[item] = (resumo.porTipo[item] || 0) + 1;
+      if (!resumo.matriz[item]) resumo.matriz[item] = {};
+      resumo.matriz[item][setor] = (resumo.matriz[item][setor] || 0) + 1;
+      if (normalizarTexto(item).includes("fissura")) {
+        resumo.fissuras.total++;
+        const modelo = normalizarTexto(row.modelo || "");
+        if (modelo.includes("circular") || modelo.includes("circ")) resumo.fissuras.circulares++;
+        else resumo.fissuras.outros++;
+      }
+    });
+  });
+
+  Object.values(resumo.porForma).forEach(item => {
+    item.possiveis = Object.keys(item.listaDefeitos).length;
+  });
+
+  return resumo;
+}
+
+function formatPct(value) {
+  if (!isFinite(value)) return "0,0%";
+  return `${value.toFixed(1).replace(".", ",")}%`;
+}
+
+function renderIndicadoresDefeitosMontagem(indicadores) {
+  const taxa = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
+  const taxaProducao = indicadores.producao > 0 ? (indicadores.totalErros / indicadores.producao) * 100 : 0;
+  const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
+  const setText = (id, value) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value;
+  };
+
+  setText("miDefTotalErros", indicadores.totalErros);
+  setText("miDefTotalPossivel", indicadores.totalPossivel);
+  setText("miDefTaxa", formatPct(taxa));
+  setText("miDefPostes", indicadores.postes);
+  setText("miDefTaxaProducao", formatPct(taxaProducao));
+  setText("miDefTaxaRetrabalho", formatPct(taxaRetrabalho));
+  setText("miDefProducaoPeriodo", indicadores.producao);
+  setText("miDefPostesReprovados", indicadores.postesReprovados);
+  setText("miDefFissuras", indicadores.fissuras.total);
+  setText("miDefFissurasCirculares", indicadores.fissuras.circulares);
+
+  const porTipoEl = document.getElementById("miDefeitosPorTipo");
+  const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
+  if (porTipoEl) {
+    if (tiposOrdenados.length === 0) {
+      porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
+    } else {
+      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total]) => `
+        <div class="mi-defeito-tipo-row">
+          <span>${escapeHtml(tipo)}</span>
+          <strong>${total}</strong>
+        </div>
+      `).join("");
+    }
+  }
+
+  const paretoEl = document.getElementById("miDefPareto");
+  let acumulado = 0;
+  const pareto = tiposOrdenados.map(([tipo, total]) => {
+    const pct = indicadores.totalErros > 0 ? (total / indicadores.totalErros) * 100 : 0;
+    acumulado += pct;
+    return { tipo, total, pct, acumulado };
+  });
+  const vitais = pareto.filter(item => item.acumulado <= 80);
+  const tiposVitais = vitais.length || (pareto.length ? 1 : 0);
+  setText("miDefTiposVitais", tiposVitais);
+  if (paretoEl) {
+    if (pareto.length === 0) {
+      paretoEl.innerHTML = '<div class="muted">Sem dados para Pareto no periodo.</div>';
+    } else {
+      paretoEl.innerHTML = pareto.slice(0, 10).map(item => `
+        <div class="mi-def-pareto-row ${item.acumulado <= 80 ? "vital" : ""}">
+          <div>
+            <strong>${escapeHtml(item.tipo)}</strong>
+            <span>${formatPct(item.pct)} do total | ${formatPct(item.acumulado)} acumulado</span>
+          </div>
+          <em>${item.total}</em>
+        </div>
+      `).join("");
+    }
+  }
+
+  const setoresEl = document.getElementById("miDefSetores");
+  if (setoresEl) {
+    const setores = Object.values(indicadores.porSetor).sort((a, b) => b.erros - a.erros);
+    if (setores.length === 0) {
+      setoresEl.innerHTML = '<div class="muted">Sem setores no periodo.</div>';
+    } else {
+      setoresEl.innerHTML = setores.map(item => {
+        const setorTaxa = item.producao > 0 ? (item.erros / item.producao) * 100 : 0;
+        return `
+          <div class="mi-defeitos-row">
+            <div class="mi-defeitos-row-main">
+              <strong>${escapeHtml(item.setor)}</strong>
+              <span>${item.producao} produzido(s)</span>
+            </div>
+            <div class="mi-defeitos-row-metrics">
+              <span><strong>${item.erros}</strong> erros</span>
+              <span><strong>${formatPct(setorTaxa)}</strong> taxa/producao</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  }
+
+  const matrizEl = document.getElementById("miDefMatriz");
+  if (matrizEl) {
+    const setores = Object.keys(indicadores.porSetor).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
+    if (tiposOrdenados.length === 0 || setores.length === 0) {
+      matrizEl.innerHTML = '<div class="muted">Sem dados para matriz no periodo.</div>';
+    } else {
+      matrizEl.innerHTML = `
+        <div class="mi-def-matrix-scroll">
+          <table>
+            <thead><tr><th>Defeito</th>${setores.map(s => `<th>${escapeHtml(s)}</th>`).join("")}<th>Total</th></tr></thead>
+            <tbody>
+              ${tiposOrdenados.slice(0, 12).map(([tipo, total]) => `
+                <tr>
+                  <td>${escapeHtml(tipo)}</td>
+                  ${setores.map(s => `<td>${indicadores.matriz[tipo]?.[s] || 0}</td>`).join("")}
+                  <td><strong>${total}</strong></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+  }
+
+  const planoEl = document.getElementById("miDefPlanoAcao");
+  if (planoEl) {
+    if (pareto.length === 0) {
+      planoEl.innerHTML = '<div class="muted">Sem defeitos para sugerir plano.</div>';
+    } else {
+      planoEl.innerHTML = pareto.slice(0, 2).map(item => {
+        const prioridade = item.pct > 20 ? "Critica" : item.pct > 10 ? "Alta" : item.pct > 5 ? "Media" : "Baixa";
+        const meta = Math.max(1, Math.floor(item.total * 0.5));
+        return `
+          <div class="mi-def-action">
+            <strong>${escapeHtml(item.tipo)}</strong>
+            <span>Prioridade ${prioridade} | ${item.total} ocorrencia(s) | meta 90 dias: ${meta}</span>
+            <p>Estratificar por setor, forma e montador; revisar causa raiz no ponto de maior incidencia e acompanhar semanalmente.</p>
+          </div>
+        `;
+      }).join("");
+    }
+  }
+}
+
 function atualizarResumoFiltrosProdutividade() {
   const dStart = document.getElementById("paDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("paDataFim")?.value || todayYmd();
@@ -10184,6 +10442,38 @@ function setProdutividadeDrawerOpen(open) {
   drawer.setAttribute("aria-hidden", open ? "false" : "true");
 }
 
+function ativarAbaMontagem(tab) {
+  miAbaAtiva = tab || "resumo";
+  document.querySelectorAll(".mi-tab-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.tab === miAbaAtiva);
+  });
+  document.querySelectorAll(".mi-tab-section").forEach(section => {
+    section.classList.remove("active");
+  });
+  const sectionId = "miSecao" + miAbaAtiva.charAt(0).toUpperCase() + miAbaAtiva.slice(1);
+  document.getElementById(sectionId)?.classList.add("active");
+  if (miUltimosGraficos) {
+    renderGraficosMontagem(
+      miUltimosGraficos.byDay,
+      miUltimosGraficos.bySector,
+      miUltimosGraficos.byMontador,
+      miUltimosGraficos.prodByDay
+    );
+  }
+}
+
+function aplicarLayoutDashboardDefeitos() {
+  document.querySelectorAll("#viewMontagemIndicadores .mi-tab-section").forEach(section => {
+    section.style.display = section.id === "miSecaoDefeitos" ? "block" : "none";
+  });
+}
+
+function limparLayoutDashboardDefeitos() {
+  document.querySelectorAll("#viewMontagemIndicadores .mi-tab-section").forEach(section => {
+    section.style.display = "";
+  });
+}
+
 async function carregarMontagemIndicadores() {
   if (!supabaseClient) return;
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
@@ -10195,7 +10485,9 @@ async function carregarMontagemIndicadores() {
       supabaseClient
         .from("montagem_poste")
         .select("*")
-        .order("finalizado_em", { ascending: false })
+        .gte("data_fabricacao", dStart)
+        .lte("data_fabricacao", dEnd)
+        .order("data_fabricacao", { ascending: false })
         .limit(5000),
       supabaseClient
         .from("producao")
@@ -10223,9 +10515,11 @@ async function carregarMontagemIndicadores() {
 function aplicarFiltrosEExibirMontagem() {
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
-  const fSetor = document.getElementById("miFiltroSetor")?.value || "";
-  const fStatus = document.getElementById("miFiltroStatus")?.value || "";
+  let fSetor = document.getElementById("miFiltroSetor")?.value || "";
+  let fStatus = document.getElementById("miFiltroStatus")?.value || "";
   const fPesquisa = (document.getElementById("miFiltroPesquisa")?.value || "").trim().toLowerCase();
+  if (normalizarTexto(fSetor).startsWith("todos")) fSetor = "";
+  if (normalizarTexto(fStatus).startsWith("todos")) fStatus = "";
   atualizarResumoFiltrosMontagem();
 
   // 1. Filtrar dados de Montagem em memória
@@ -10234,7 +10528,7 @@ function aplicarFiltrosEExibirMontagem() {
     if (!row.status_montagem) return false;
 
     // Filtro por Data
-    const day = (row.finalizado_em || "").split("T")[0];
+    const day = getMiDataReferencia(row);
     if (!day || day < dStart || day > dEnd) return false;
 
     // Filtro por Setor
@@ -10248,8 +10542,11 @@ function aplicarFiltrosEExibirMontagem() {
 
     // Filtro por Status
     if (fStatus) {
+      const rejeitadosCount = obterItensRejeitadosLinha(row).length;
       if (fStatus === "R") {
-        if (row.status_montagem !== "R" && row.status_montagem !== "RR") return false;
+        if (rejeitadosCount === 0) return false;
+      } else if (fStatus === "A") {
+        if (rejeitadosCount > 0) return false;
       } else if (row.status_montagem !== fStatus) {
         return false;
       }
@@ -10295,14 +10592,15 @@ function aplicarFiltrosEExibirMontagem() {
   const temposPorMontador = {}; // { montador: { totalMs: 0, count: 0 } }
 
   miFilteredMontagemData.forEach(row => {
-    const day = (row.finalizado_em || "").split("T")[0];
+    const day = getMiDataReferencia(row);
+    const rejeitadosCount = obterItensRejeitadosLinha(row).length;
     if (row.status_montagem === "A") totalAprovados++;
-    else if (row.status_montagem === "R" || row.status_montagem === "RR") totalRecusados++;
+    if (rejeitadosCount > 0) totalRecusados++;
     
     if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
     byDay[day].total++;
-    if (row.status_montagem === "A") byDay[day].aprovados++;
-    else byDay[day].recusados++;
+    if (rejeitadosCount > 0) byDay[day].recusados++;
+    else byDay[day].aprovados++;
     
     const sec = row.setor || "Desconhecido";
     bySector[sec] = (bySector[sec] || 0) + 1;
@@ -10329,6 +10627,8 @@ function aplicarFiltrosEExibirMontagem() {
       }
     }
   });
+
+  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredMontagemData, filteredProducao));
 
 
   // Renderizar tempos médios
@@ -10468,7 +10768,6 @@ function aplicarFiltrosEExibirMontagem() {
 
   renderGraficosMontagem(byDay, bySector, byMontador, prodByDay);
   renderizarTabelaMontagemPaginada();
-  renderizarTempoMontagem();
   setSyncStatus("idle", "Indicadores atualizados.");
 }
 
@@ -10483,10 +10782,7 @@ function obterItensRejeitadosLinha(row) {
     }
   }
 
-  const isInspecao = row.setor === "Setor 3" || row.setor === "Setor 4";
-  const sections = isInspecao 
-    ? getInspecaoChecklistSections(row.modelo || "") 
-    : getMontagemChecklistSections(row.modelo || "");
+  const sections = obterChecklistSectionsLinha(row);
 
   const rejeitados = [];
   sections.forEach(sec => {
@@ -10746,76 +11042,6 @@ window.ordenarMiTabela = function(coluna) {
   miPaginaAtual = 1;
   renderizarTabelaMontagemPaginada();
 };
-
-function renderizarTempoMontagem() {
-  const tbody = document.getElementById("mtTabelaBody");
-  if (!tbody) return;
-
-  const faixa = document.getElementById("mtFiltroFaixa")?.value || "";
-  const ordem = document.getElementById("mtOrdenacao")?.value || "desc";
-
-  let linhas = miFilteredMontagemData
-    .filter(row => row.inicio_inspecao_montagem && row.finalizado_em)
-    .map(row => {
-      const durMs = new Date(row.finalizado_em) - new Date(row.inicio_inspecao_montagem);
-      return { row, durMs };
-    })
-    .filter(item => item.durMs >= 0);
-
-  if (faixa) {
-    const [minStr, maxStr] = faixa.split("-");
-    const minMs = Number(minStr) * 60000;
-    const maxMs = Number(maxStr) * 60000;
-    linhas = linhas.filter(item => item.durMs >= minMs && item.durMs < maxMs);
-  }
-
-  linhas.sort((a, b) => ordem === "asc" ? a.durMs - b.durMs : b.durMs - a.durMs);
-
-  const totalEl = document.getElementById("mtTabelaTotal");
-  if (totalEl) totalEl.textContent = linhas.length;
-
-  if (linhas.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro com tempo de montagem para os filtros selecionados.</td></tr>';
-    const cardsContainer = document.getElementById("mtCardsContainer");
-    if (cardsContainer) cardsContainer.innerHTML = '<div style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</div>';
-    return;
-  }
-
-  const formatTimeShort = (isoStr) => {
-    if (!isoStr) return "N/A";
-    const d = new Date(isoStr);
-    if (isNaN(d.getTime())) return isoStr;
-    return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-  };
-
-  tbody.innerHTML = linhas.map(({ row, durMs }) => `
-    <tr style="border-bottom: 1px solid #f1f5f9;">
-      <td style="padding: 10px; text-align: center;">${row.setor || ""}</td>
-      <td style="padding: 10px; text-align: center;"><strong>${row.forma_numero || ""}</strong></td>
-      <td style="padding: 10px; text-align: center;">${row.modelo || ""}</td>
-      <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${formatTimeShort(row.inicio_inspecao_montagem)}</td>
-      <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${formatTimeShort(row.finalizado_em)}</td>
-      <td style="padding: 10px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #2563eb;">${formatarDuracao(durMs)}</td>
-      <td style="padding: 10px; text-align: center; font-size: 0.85rem;">${row.montador_nome || ""}</td>
-    </tr>
-  `).join("");
-
-  const cardsContainer = document.getElementById("mtCardsContainer");
-  if (cardsContainer) {
-    cardsContainer.innerHTML = linhas.map(({ row, durMs }) => `
-      <div class="mi-mobile-card">
-        <div class="mi-mobile-card-header">
-          <div><strong>Forma ${row.forma_numero || ""}</strong> (${row.setor || ""}) - <span style="color:#64748b; font-weight:600;">${row.modelo || ""}</span></div>
-          <div style="font-weight: 700; color: #2563eb;">${formatarDuracao(durMs)}</div>
-        </div>
-        <div class="mi-mobile-card-body">
-          <div><strong>Período:</strong> ${formatTimeShort(row.inicio_inspecao_montagem)} - ${formatTimeShort(row.finalizado_em)}</div>
-          <div><strong>Montador:</strong> ${row.montador_nome || ""}</div>
-        </div>
-      </div>
-    `).join("");
-  }
-}
 
 function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   miUltimosGraficos = { byDay, bySector, byMontador, prodByDay };
