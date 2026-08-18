@@ -10020,7 +10020,9 @@ function exportarPaPDF() {
 }
 
 function init() {
-  setMode("HUB");
+  const isDashboardDefeitosTv = new URLSearchParams(window.location.search).get("mode") === "tv";
+  document.body.dataset.mode = isDashboardDefeitosTv ? "tv" : "auto";
+  setMode(isDashboardDefeitosTv ? "DASHBOARD_DEFEITOS" : "HUB");
   updateSwVersionBadge();
   setSyncStatus("pending", "Verificando conexão com a planilha...");
   renderInspecaoCodigosChecklist();
@@ -10057,7 +10059,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.36");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.37");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10067,7 +10069,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.36").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.37").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10083,7 +10085,7 @@ function init() {
     applyRoleVisibility();
     applyAutoResponsibleFields();
     ensurePostLoginBootstrap();
-    setMode("HUB");
+    setMode(isDashboardDefeitosTv ? "DASHBOARD_DEFEITOS" : "HUB");
   } else {
     lockAppForLogin();
     applyRoleVisibility();
@@ -10103,6 +10105,7 @@ let chartMiPorMontadorInstance = null;
 let miRawMontagemData = [];
 let miRawProducaoData = [];
 let miFilteredMontagemData = [];
+let miCarregandoMontagemIndicadores = false;
 let miPaginaAtual = 1;
 const miLinhasPorPagina = 15;
 let miOrdenacaoColuna = "finalizado_em";
@@ -10289,138 +10292,284 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
 }
 
 function formatPct(value) {
-  if (!isFinite(value)) return "0,0%";
+  if (!isFinite(value)) return "—";
   return `${value.toFixed(1).replace(".", ",")}%`;
 }
 
-function renderIndicadoresDefeitosMontagem(indicadores) {
-  const taxa = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
-  const taxaProducao = indicadores.producao > 0 ? (indicadores.totalErros / indicadores.producao) * 100 : 0;
-  const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
+function defV4Metric(label, value, sub, tone = "neutral") {
+  return `
+    <div class="def-v4-card def-v4-metric ${tone}">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(sub)}</small>
+    </div>
+  `;
+}
+
+function defV4Mini(label, value) {
+  return `
+    <div class="def-v4-card def-v4-mini">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+    </div>
+  `;
+}
+
+function defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, compact = false) {
+  return `
+    <section class="def-v4-card def-v4-section def-v4-flow-card ${compact ? "compact" : ""}">
+      <div class="def-v4-section-head"><div><strong>Fluxo da inspeção</strong><span>Produção → avaliação → reprovação → retrabalho</span></div></div>
+      <div class="def-v4-flow">
+        <div><span>PRODUZIDOS</span><strong>${indicadores.producao}</strong><small>base do período</small></div>
+        <i>→</i>
+        <div><span>AVALIADOS</span><strong>${indicadores.postes}</strong><small>${formatPct(cobertura)} da produção</small></div>
+        <i>→</i>
+        <div><span>REPROVADOS</span><strong>${indicadores.postesReprovados}</strong><small>${formatPct(indiceReprovacao)} dos avaliados</small></div>
+        <i>→</i>
+        <div><span>RETRABALHO</span><strong>${indicadores.retrabalho}</strong><small>${formatPct(taxaRetrabalho)} dos avaliados</small></div>
+      </div>
+      <div class="def-v4-focus"><span>Fissura circular</span><strong>${escapeHtml(fissuraCircularLabel)}</strong><small>Dias sem fissura circular dependem de histórico agregado.</small></div>
+    </section>
+  `;
+}
+
+function defV4Ranking(rowsHtml) {
+  return `
+    <section class="def-v4-card def-v4-section">
+      <div class="def-v4-section-head"><div><strong>Ranking de setores</strong><span>Ordenado por índice de reprovação</span></div></div>
+      <div class="def-v4-ranking"><table><thead><tr><th>Setor</th><th>Avaliados</th><th>Reprov.</th><th>Índice</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>
+    </section>
+  `;
+}
+
+let defV4TvTimer = null;
+let defV4TvRefreshTimer = null;
+let defV4WakeLock = null;
+let defV4VisibilityBound = false;
+
+async function liberarWakeLockDefeitosTv() {
+  try {
+    if (defV4WakeLock?.release) await defV4WakeLock.release();
+  } catch (e) {
+    // Wake Lock may already be released by the browser.
+  } finally {
+    defV4WakeLock = null;
+  }
+}
+
+function iniciarDashboardDefeitosTv(setores = []) {
+  const isTv = new URLSearchParams(window.location.search).get("mode") === "tv";
+  document.body.dataset.mode = isTv ? "tv" : "auto";
+  if (defV4TvTimer) {
+    clearInterval(defV4TvTimer);
+    defV4TvTimer = null;
+  }
+  if (defV4TvRefreshTimer) {
+    clearInterval(defV4TvRefreshTimer);
+    defV4TvRefreshTimer = null;
+  }
+  if (!isTv) {
+    liberarWakeLockDefeitosTv();
+    return;
+  }
+  let count = 20;
+  let index = 0;
+  const views = setores.length ? setores : [{ setor: "Todos" }];
+  const countdown = document.getElementById("defV4TvCountdown");
+  const sector = document.getElementById("defV4TvSector");
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
   };
-
-  setText("miDefTotalErros", indicadores.totalErros);
-  setText("miDefTotalPossivel", indicadores.totalPossivel);
-  setText("miDefTaxa", formatPct(taxa));
-  setText("miDefPostes", indicadores.postes);
-  setText("miDefTaxaProducao", formatPct(taxaProducao));
-  setText("miDefTaxaRetrabalho", formatPct(taxaRetrabalho));
-  setText("miDefProducaoPeriodo", indicadores.producao);
-  setText("miDefPostesReprovados", indicadores.postesReprovados);
-  setText("miDefFissuras", indicadores.fissuras.total);
-  setText("miDefFissurasCirculares", indicadores.fissuras.circulares);
-
-  const porTipoEl = document.getElementById("miDefeitosPorTipo");
-  const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
-  if (porTipoEl) {
-    if (tiposOrdenados.length === 0) {
-      porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
-    } else {
-      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total]) => `
-        <div class="mi-defeito-tipo-row">
-          <span>${escapeHtml(tipo)}</span>
-          <strong>${total}</strong>
-        </div>
-      `).join("");
+  const renderTvView = () => {
+    const item = views[index] || views[0];
+    if (sector) sector.textContent = item.setor || "Todos";
+    setText("defV4TvReprov", item.indiceReprovacao || "—");
+    setText("defV4TvReprovSub", item.reprovacaoSub || "");
+    setText("defV4TvNc", item.taxaNc || "—");
+    setText("defV4TvNcSub", item.taxaNcSub || "");
+    setText("defV4TvCobertura", item.cobertura || "—");
+    setText("defV4TvCoberturaSub", item.coberturaSub || "");
+    setText("defV4TvNc100", item.nc100 || "—");
+  };
+  renderTvView();
+  defV4TvTimer = setInterval(() => {
+    count -= 1;
+    if (count <= 0) {
+      index = (index + 1) % Math.max(views.length, 1);
+      count = 20;
+      renderTvView();
     }
+    if (countdown) countdown.textContent = `${count} s`;
+  }, 1000);
+  defV4TvRefreshTimer = setInterval(() => carregarMontagemIndicadores(), 30000);
+  if (!defV4VisibilityBound) {
+    defV4VisibilityBound = true;
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden && new URLSearchParams(window.location.search).get("mode") === "tv") {
+        carregarMontagemIndicadores();
+        solicitarWakeLockDefeitosTv();
+      }
+    });
   }
+  solicitarWakeLockDefeitosTv();
+}
 
-  const paretoEl = document.getElementById("miDefPareto");
+async function solicitarWakeLockDefeitosTv() {
+  try {
+    if ("wakeLock" in navigator) defV4WakeLock = await navigator.wakeLock.request("screen");
+  } catch (e) {
+    defV4WakeLock = null;
+  }
+}
+
+function renderIndicadoresDefeitosMontagem(indicadores) {
+  const root = document.getElementById("miDefDashboardV4");
+  if (!root) return;
+  const safePct = (num, den) => den > 0 ? (num / den) * 100 : NaN;
+  const safeNum = (num, den, digits = 2) => den > 0 ? (num / den).toFixed(digits).replace(".", ",") : "—";
+  const fmtNumber = (value) => Number(value || 0).toLocaleString("pt-BR");
+  const metaClass = (value, meta) => {
+    if (!isFinite(value)) return "neutral";
+    if (value <= meta) return "good";
+    if (value <= meta * 1.5) return "att";
+    return "bad";
+  };
+  const riskClass = (value) => {
+    if (!isFinite(value)) return "neutral";
+    if (value > 45) return "high";
+    if (value > 25) return "mid";
+    return "ok";
+  };
+
+  const indiceReprovacao = safePct(indicadores.postesReprovados, indicadores.postes);
+  const taxaNc = safePct(indicadores.totalErros, indicadores.totalPossivel);
+  const cobertura = safePct(indicadores.postes, indicadores.producao);
+  const taxaRetrabalho = safePct(indicadores.retrabalho, indicadores.postes);
+  const dpu = safeNum(indicadores.totalErros, indicadores.postes, 2);
+  const nc100 = indicadores.producao > 0 ? ((indicadores.totalErros / indicadores.producao) * 100).toFixed(1).replace(".", ",") : "—";
+
+  const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
   let acumulado = 0;
   const pareto = tiposOrdenados.map(([tipo, total]) => {
     const pct = indicadores.totalErros > 0 ? (total / indicadores.totalErros) * 100 : 0;
     acumulado += pct;
     return { tipo, total, pct, acumulado };
   });
-  const vitais = pareto.filter(item => item.acumulado <= 80);
-  const tiposVitais = vitais.length || (pareto.length ? 1 : 0);
-  setText("miDefTiposVitais", tiposVitais);
-  if (paretoEl) {
-    if (pareto.length === 0) {
-      paretoEl.innerHTML = '<div class="muted">Sem dados para Pareto no periodo.</div>';
-    } else {
-      paretoEl.innerHTML = pareto.slice(0, 10).map(item => `
-        <div class="mi-def-pareto-row ${item.acumulado <= 80 ? "vital" : ""}">
-          <div>
-            <strong>${escapeHtml(item.tipo)}</strong>
-            <span>${formatPct(item.pct)} do total | ${formatPct(item.acumulado)} acumulado</span>
-          </div>
-          <em>${item.total}</em>
-        </div>
-      `).join("");
-    }
-  }
+  const vitalCount = pareto.findIndex(item => item.acumulado >= 80) + 1 || 0;
+  const vitalPct = vitalCount ? pareto[vitalCount - 1].acumulado : 0;
+  const maxPareto = Math.max(...pareto.map(item => item.total), 1);
+  const setores = Object.values(indicadores.porSetor)
+    .map(item => ({
+      ...item,
+      avaliados: miFilteredMontagemData.filter(row => (row.setor || "Sem setor") === item.setor).length,
+      reprovados: miFilteredMontagemData.filter(row => (row.setor || "Sem setor") === item.setor && obterItensRejeitadosLinha(row).length > 0).length
+    }))
+    .map(item => ({ ...item, indice: safePct(item.reprovados, item.avaliados) }))
+    .sort((a, b) => (isFinite(b.indice) ? b.indice : -1) - (isFinite(a.indice) ? a.indice : -1));
+  const tvSetores = [
+    {
+      setor: "Todos",
+      indiceReprovacao: formatPct(indiceReprovacao),
+      reprovacaoSub: `${indicadores.postesReprovados} de ${indicadores.postes}`,
+      taxaNc: formatPct(taxaNc),
+      taxaNcSub: `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}`,
+      cobertura: formatPct(cobertura),
+      coberturaSub: `${indicadores.postes} de ${indicadores.producao}`,
+      nc100
+    },
+    ...setores.map(item => {
+      const errosSetor = item.erros || 0;
+      const nc100Setor = item.producao > 0 ? ((errosSetor / item.producao) * 100).toFixed(1).replace(".", ",") : "—";
+      return {
+        setor: item.setor,
+        indiceReprovacao: formatPct(item.indice),
+        reprovacaoSub: `${item.reprovados} de ${item.avaliados}`,
+        taxaNc: "—",
+        taxaNcSub: "Base por item não consolidada por setor",
+        cobertura: formatPct(safePct(item.avaliados, item.producao)),
+        coberturaSub: `${item.avaliados} de ${item.producao}`,
+        nc100: nc100Setor
+      };
+    })
+  ];
+  const fissuraCircularLabel = indicadores.fissuras.circulares > 0 ? `${indicadores.fissuras.circulares} no período` : "Sem ocorrência";
+  const periodo = document.getElementById("miFiltroResumo")?.textContent || "";
+  const paretoHtml = (limit = 8) => pareto.length ? pareto.slice(0, limit).map((item, idx) => `
+    <div class="def-v4-pareto-row ${idx < vitalCount ? "vital" : ""}">
+      <div class="def-v4-pareto-name">${escapeHtml(item.tipo)}</div>
+      <div class="def-v4-bar-track"><div class="def-v4-bar" style="width:${Math.max(4, (item.total / maxPareto) * 100).toFixed(1)}%"></div></div>
+      <div class="def-v4-count">${item.total}</div>
+      <div class="def-v4-pct">${formatPct(item.pct)}</div>
+    </div>
+  `).join("") : '<div class="muted">Sem não conformidades no período.</div>';
+  const rankingHtml = setores.length ? setores.map(item => `
+    <tr>
+      <td>${escapeHtml(item.setor)}</td>
+      <td>${item.avaliados}</td>
+      <td>${item.reprovados}</td>
+      <td><span class="def-v4-risk ${riskClass(item.indice)}">${formatPct(item.indice)}</span></td>
+    </tr>
+  `).join("") : '<tr><td colspan="4">Sem setores no período.</td></tr>';
 
-  const setoresEl = document.getElementById("miDefSetores");
-  if (setoresEl) {
-    const setores = Object.values(indicadores.porSetor).sort((a, b) => b.erros - a.erros);
-    if (setores.length === 0) {
-      setoresEl.innerHTML = '<div class="muted">Sem setores no periodo.</div>';
-    } else {
-      setoresEl.innerHTML = setores.map(item => {
-        const setorTaxa = item.producao > 0 ? (item.erros / item.producao) * 100 : 0;
-        return `
-          <div class="mi-defeitos-row">
-            <div class="mi-defeitos-row-main">
-              <strong>${escapeHtml(item.setor)}</strong>
-              <span>${item.producao} produzido(s)</span>
-            </div>
-            <div class="mi-defeitos-row-metrics">
-              <span><strong>${item.erros}</strong> erros</span>
-              <span><strong>${formatPct(setorTaxa)}</strong> taxa/producao</span>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-  }
+  root.innerHTML = `
+    <div class="def-v4-view def-v4-desktop">
+      <div class="def-v4-grid-4">
+        ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesReprovados} de ${indicadores.postes} postes avaliados`, "red")}
+        ${defV4Metric("Taxa de não conformidade", formatPct(taxaNc), `${indicadores.totalErros} NC em ${fmtNumber(indicadores.totalPossivel)} itens · meta <= 2%`, metaClass(taxaNc, 2))}
+        ${defV4Metric("Cobertura de inspeção", formatPct(cobertura), `${indicadores.postes} avaliados de ${indicadores.producao} produzidos`, "orange")}
+        ${defV4Metric("Taxa de retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes} avaliados · meta <= 5%`, metaClass(taxaRetrabalho, 5))}
+      </div>
+      <div class="def-v4-mini-grid">
+        ${defV4Mini("DPU · defeitos/poste", dpu)}
+        ${defV4Mini("NC / 100 postes produzidos", nc100)}
+        ${defV4Mini("Custo estimado retrabalho", "—")}
+        ${defV4Mini("Produção no período", indicadores.producao)}
+      </div>
+      <div class="def-v4-layout">
+        <section class="def-v4-card def-v4-section">
+          <div class="def-v4-section-head"><div><strong>Pareto de não conformidades</strong><span>${vitalCount || 0} causas concentram ${formatPct(vitalPct)} das NC</span></div></div>
+          <div class="def-v4-pareto">${paretoHtml(10)}</div>
+        </section>
+        ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel)}
+      </div>
+      <div class="def-v4-bottom">
+        <section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Evolução da qualidade · 30 dias</strong><span>Série histórica não disponível no frontend atual</span></div></div><div class="def-v4-empty">Sem endpoint histórico agregado. Os dados atuais continuam reais do período filtrado.</div></section>
+        ${defV4Ranking(rankingHtml)}
+      </div>
+    </div>
+    <div class="def-v4-view def-v4-tablet">
+      <div class="def-v4-grid-2">
+        ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesReprovados} de ${indicadores.postes} avaliados`, "red")}
+        ${defV4Metric("Taxa de não conformidade", formatPct(taxaNc), `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)} · meta <= 2%`, metaClass(taxaNc, 2))}
+        ${defV4Metric("Cobertura de inspeção", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao} produzidos`, "orange")}
+        ${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes} · meta <= 5%`, metaClass(taxaRetrabalho, 5))}
+      </div>
+      <div class="def-v4-mini-grid">${defV4Mini("DPU", dpu)}${defV4Mini("NC / 100", nc100)}${defV4Mini("Custo retrabalho", "—")}${defV4Mini("Produção", indicadores.producao)}</div>
+      ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, true)}
+      <div class="def-v4-tablet-panels"><section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(5)}</div></section>${defV4Ranking(rankingHtml)}</div>
+    </div>
+    <div class="def-v4-view def-v4-mobile">
+      ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesReprovados} de ${indicadores.postes} postes avaliados`, "red hero")}
+      <div class="def-v4-grid-2">${defV4Metric("Taxa NC", formatPct(taxaNc), `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}`, metaClass(taxaNc, 2))}${defV4Metric("Cobertura", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao}`, "orange")}${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes}`, metaClass(taxaRetrabalho, 5))}${defV4Metric("DPU", dpu, "defeitos/poste", "neutral")}</div>
+      <div class="def-v4-mini-grid">${defV4Mini("NC / 100 postes produzidos", nc100)}${defV4Mini("Custo retrabalho", "—")}</div>
+      ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, true)}
+      <section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(5)}</div></section>
+    </div>
+    <div class="def-v4-view def-v4-tv">
+      <div class="def-v4-tv-head"><div><strong>ConcreTrack · Qualidade</strong><span id="defV4TvSector">Todos os setores · ${escapeHtml(periodo)}</span></div><div>Próxima rotação em <b id="defV4TvCountdown">20 s</b></div></div>
+      <div class="def-v4-tv-grid">
+        <div class="def-v4-card def-v4-metric red"><span>Índice de reprovação</span><strong id="defV4TvReprov">${formatPct(indiceReprovacao)}</strong><small id="defV4TvReprovSub">${indicadores.postesReprovados} de ${indicadores.postes}</small></div>
+        <div class="def-v4-card def-v4-metric ${metaClass(taxaNc, 2)}"><span>Taxa NC</span><strong id="defV4TvNc">${formatPct(taxaNc)}</strong><small id="defV4TvNcSub">${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}</small></div>
+        <div class="def-v4-card def-v4-metric orange"><span>Cobertura</span><strong id="defV4TvCobertura">${formatPct(cobertura)}</strong><small id="defV4TvCoberturaSub">${indicadores.postes} de ${indicadores.producao}</small></div>
+        ${defV4Metric("Fissura circular", fissuraCircularLabel, "Histórico consolidado indisponível", "green")}
+      </div>
+      <div class="def-v4-tv-mini-line">NC / 100 postes produzidos: <strong id="defV4TvNc100">${nc100}</strong></div>
+      <div class="def-v4-tv-panels"><section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(6)}</div></section>${defV4Ranking(rankingHtml)}</div>
+    </div>
+  `;
 
-  const matrizEl = document.getElementById("miDefMatriz");
-  if (matrizEl) {
-    const setores = Object.keys(indicadores.porSetor).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
-    if (tiposOrdenados.length === 0 || setores.length === 0) {
-      matrizEl.innerHTML = '<div class="muted">Sem dados para matriz no periodo.</div>';
-    } else {
-      matrizEl.innerHTML = `
-        <div class="mi-def-matrix-scroll">
-          <table>
-            <thead><tr><th>Defeito</th>${setores.map(s => `<th>${escapeHtml(s)}</th>`).join("")}<th>Total</th></tr></thead>
-            <tbody>
-              ${tiposOrdenados.slice(0, 12).map(([tipo, total]) => `
-                <tr>
-                  <td>${escapeHtml(tipo)}</td>
-                  ${setores.map(s => `<td>${indicadores.matriz[tipo]?.[s] || 0}</td>`).join("")}
-                  <td><strong>${total}</strong></td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-  }
-
-  const planoEl = document.getElementById("miDefPlanoAcao");
-  if (planoEl) {
-    if (pareto.length === 0) {
-      planoEl.innerHTML = '<div class="muted">Sem defeitos para sugerir plano.</div>';
-    } else {
-      planoEl.innerHTML = pareto.slice(0, 2).map(item => {
-        const prioridade = item.pct > 20 ? "Critica" : item.pct > 10 ? "Alta" : item.pct > 5 ? "Media" : "Baixa";
-        const meta = Math.max(1, Math.floor(item.total * 0.5));
-        return `
-          <div class="mi-def-action">
-            <strong>${escapeHtml(item.tipo)}</strong>
-            <span>Prioridade ${prioridade} | ${item.total} ocorrencia(s) | meta 90 dias: ${meta}</span>
-            <p>Estratificar por setor, forma e montador; revisar causa raiz no ponto de maior incidencia e acompanhar semanalmente.</p>
-          </div>
-        `;
-      }).join("");
-    }
-  }
+  iniciarDashboardDefeitosTv(tvSetores);
 }
 
 function atualizarResumoFiltrosProdutividade() {
@@ -10475,7 +10624,8 @@ function limparLayoutDashboardDefeitos() {
 }
 
 async function carregarMontagemIndicadores() {
-  if (!supabaseClient) return;
+  if (!supabaseClient || miCarregandoMontagemIndicadores) return;
+  miCarregandoMontagemIndicadores = true;
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
   
@@ -10509,6 +10659,8 @@ async function carregarMontagemIndicadores() {
   } catch(err) {
     console.error("Erro carregarMontagemIndicadores:", err);
     setSyncStatus("error", "Erro ao carregar indicadores.");
+  } finally {
+    miCarregandoMontagemIndicadores = false;
   }
 }
 

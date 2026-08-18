@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v1.36" />
+  <link rel="stylesheet" href="styles.css?v=v1.37" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -950,6 +950,11 @@
 
       <!-- Filtros Fixos no Header -->
       <div class="mi-fixed-filters-bar">
+        <div class="mi-filter-quick">
+          <button type="button" class="mi-quick-btn" data-mi-range="today">Hoje</button>
+          <button type="button" class="mi-quick-btn" data-mi-range="7d">7 dias</button>
+          <button type="button" class="mi-quick-btn" data-mi-range="month">Mes</button>
+        </div>
         <div class="mi-filter-item">
           <label for="miDataInicio">Início:</label>
           <input type="date" id="miDataInicio" class="input-field" />
@@ -976,6 +981,14 @@
             <option value="A">Aprovado</option>
             <option value="R">Reprovado</option>
             <option value="RR">Reprovado e Retrabalhado</option>
+          </select>
+        </div>
+        <div class="mi-filter-item mi-filter-compare">
+          <label for="miFiltroComparacao">Comparacao:</label>
+          <select id="miFiltroComparacao" class="input-field">
+            <option value="">Sem comparacao</option>
+            <option value="periodo_anterior">Periodo anterior</option>
+            <option value="mes_anterior">Mes anterior</option>
           </select>
         </div>
         <div class="mi-filter-item mi-filter-search">
@@ -1020,47 +1033,7 @@
       <div id="miSecaoQualidade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Inspecoes por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorSetor"></canvas></div></div><div class="mi-chart-card"><div class="mi-chart-title">Ranking por montador</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorMontador"></canvas></div></div></div></div>
 
       <div id="miSecaoDefeitos" class="mi-tab-section">
-        <div class="mi-kpis-grid">
-          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Erros encontrados</span><span class="mi-kpi-val" id="miDefTotalErros">-</span></div>
-          <div class="mi-kpi-card mi-kpi-programado"><span class="mi-kpi-label">Defeitos possiveis</span><span class="mi-kpi-val" id="miDefTotalPossivel">-</span></div>
-          <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Taxa defeitos</span><span class="mi-kpi-val" id="miDefTaxa">-%</span></div>
-          <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Postes avaliados</span><span class="mi-kpi-val" id="miDefPostes">-</span></div>
-          <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Taxa sobre producao</span><span class="mi-kpi-val" id="miDefTaxaProducao">-%</span></div>
-          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Taxa retrabalho</span><span class="mi-kpi-val" id="miDefTaxaRetrabalho">-%</span></div>
-        </div>
-        <div class="mi-def-summary-strip">
-          <div><span>Producao no periodo</span><strong id="miDefProducaoPeriodo">0</strong></div>
-          <div><span>Postes reprovados</span><strong id="miDefPostesReprovados">0</strong></div>
-          <div><span>Tipos vitais 80/20</span><strong id="miDefTiposVitais">0</strong></div>
-          <div><span>Fissuras</span><strong id="miDefFissuras">0</strong></div>
-          <div><span>Fissuras circulares</span><strong id="miDefFissurasCirculares">0</strong></div>
-        </div>
-        <div class="mi-charts-row">
-          <div class="mi-chart-card mi-chart-card-wide">
-            <div class="mi-chart-title">Defeitos encontrados por tipo</div>
-            <div id="miDefeitosPorTipo" class="mi-ranking-list"><div class="muted">Carregando...</div></div>
-          </div>
-        </div>
-        <div class="mi-charts-row">
-          <div class="mi-chart-card">
-            <div class="mi-chart-title">Pareto de defeitos 80/20</div>
-            <div id="miDefPareto" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
-          </div>
-          <div class="mi-chart-card">
-            <div class="mi-chart-title">Defeitos por setor x producao</div>
-            <div id="miDefSetores" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
-          </div>
-        </div>
-        <div class="mi-charts-row">
-          <div class="mi-chart-card mi-chart-card-wide">
-            <div class="mi-chart-title">Matriz defeito x setor</div>
-            <div id="miDefMatriz" class="mi-def-matrix"><div class="muted">Carregando...</div></div>
-          </div>
-          <div class="mi-chart-card">
-            <div class="mi-chart-title">Plano de acao sugerido</div>
-            <div id="miDefPlanoAcao" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
-          </div>
-        </div>
+        <div id="miDefDashboardV4" class="def-v4"><div class="muted">Carregando dashboard de defeitos...</div></div>
       </div>
 
       <div id="miSecaoProdutividade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div></div>
@@ -1574,6 +1547,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=dashboard-defeitos-v133"></script>
+  <script src="app.js?v=v1.37"></script>
 </body>
 </html>
