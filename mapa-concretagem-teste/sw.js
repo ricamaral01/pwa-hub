@@ -3,7 +3,7 @@
    v1.33-dashboard-defeitos: remove caches antigos e desativa o SW no ambiente teste
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.34";
+const CACHE_NAME = "mapa-concretagem-teste-v1.35";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
