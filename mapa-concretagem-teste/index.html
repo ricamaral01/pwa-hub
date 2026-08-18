@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v1.38" />
+  <link rel="stylesheet" href="styles.css?v=v1.39" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -944,6 +944,7 @@
           <p id="miFiltroResumo">Hoje - Todos os setores</p>
         </div>
         <div class="mi-topbar-actions">
+          <button id="miBtnExportarXlsx" class="mi-icon-btn" type="button" aria-label="Exportar dados do dashboard montagem em XLSX">Exportar XLSX</button>
           <button id="miBtnAtualizar" class="mi-icon-btn mi-icon-btn-primary" type="button" aria-label="Atualizar dashboard">Atualizar</button>
         </div>
       </div>
@@ -953,10 +954,12 @@
         <div class="mi-filter-item">
           <label for="miDataInicio">Início:</label>
           <input type="date" id="miDataInicio" class="input-field" />
+          <small class="mi-filter-help">Data de producao/concretagem</small>
         </div>
         <div class="mi-filter-item">
           <label for="miDataFim">Fim:</label>
           <input type="date" id="miDataFim" class="input-field" />
+          <small class="mi-filter-help">Data de producao/concretagem</small>
         </div>
         <div class="mi-filter-item">
           <label for="miFiltroSetor">Setor:</label>
@@ -1541,7 +1544,8 @@
   </template>
 
   <script src="../assets/msgbox.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v1.38"></script>
+  <script src="app.js?v=v1.39"></script>
 </body>
 </html>

@@ -7745,6 +7745,9 @@ function bindEvents() {
   document.getElementById("miBtnAtualizar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
+  document.getElementById("miBtnExportarXlsx")?.addEventListener("click", () => {
+    exportarMontagemIndicadoresXlsx();
+  });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
@@ -10059,7 +10062,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.38");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.39");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10069,7 +10072,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.38").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.39").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10120,6 +10123,19 @@ function formatarDuracao(ms) {
   const secs = totalSecs % 60;
   if (mins === 0) return `${secs}s`;
   return `${mins}m ${secs}s`;
+}
+
+function formatarDataHoraMontagemXlsx(value) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value);
+  return d.toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
 }
 
 function getMiDataReferencia(row) {
@@ -10921,6 +10937,48 @@ function aplicarFiltrosEExibirMontagem() {
   renderGraficosMontagem(byDay, bySector, byMontador, prodByDay);
   renderizarTabelaMontagemPaginada();
   setSyncStatus("idle", "Indicadores atualizados.");
+}
+
+function exportarMontagemIndicadoresXlsx() {
+  if (!Array.isArray(miFilteredMontagemData) || miFilteredMontagemData.length === 0) {
+    showMsgBox("Nenhum dado encontrado para exportar.", "error");
+    return;
+  }
+
+  if (!window.XLSX?.utils) {
+    showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
+    return;
+  }
+
+  const linhas = miFilteredMontagemData.map(row => {
+    const inicio = row.inicio_inspecao_montagem || row.inicioInspecaoMontagem || "";
+    const fim = row.finalizado_em || row.finalizadoEm || "";
+    const durMs = inicio && fim ? (new Date(fim) - new Date(inicio)) : null;
+    return {
+      "Tempo de montagem": formatarDuracao(durMs),
+      "Montador": row.montador_nome || row.montadorNome || "",
+      "Modelo poste": row.modelo || "",
+      "Data da montagem": formatarDataHoraMontagemXlsx(fim || inicio),
+      "Status poste": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label
+    };
+  });
+
+  const ws = XLSX.utils.json_to_sheet(linhas, {
+    header: ["Tempo de montagem", "Montador", "Modelo poste", "Data da montagem", "Status poste"]
+  });
+  ws["!cols"] = [
+    { wch: 20 },
+    { wch: 28 },
+    { wch: 24 },
+    { wch: 22 },
+    { wch: 24 }
+  ];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Dashboard Montagem");
+  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  XLSX.writeFile(wb, `dashboard_montagem_${dStart}_a_${dEnd}.xlsx`);
 }
 
 function obterItensRejeitadosLinha(row) {

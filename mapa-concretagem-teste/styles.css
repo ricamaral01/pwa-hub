@@ -5827,6 +5827,16 @@ body:not(.print-relatorio) .rel-full-table td:nth-child(7) {
   margin: 0 !important;
 }
 
+.mi-filter-help {
+  display: block !important;
+  max-width: 150px !important;
+  color: #64748b !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+}
+
 .mi-filter-item .input-field {
   width: auto !important;
   height: 34px !important;
