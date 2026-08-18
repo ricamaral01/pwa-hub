@@ -10059,7 +10059,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.37");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.38");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10069,7 +10069,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.37").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.38").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
