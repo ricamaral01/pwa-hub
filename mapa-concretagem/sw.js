@@ -1,9 +1,9 @@
 ﻿/* =========================================================
-   MAPA DE CONCRETAGEM — Service Worker v5.0
+   MAPA DE CONCRETAGEM — Service Worker v5.3-dashboard-defeitos
    Deploy: 2026-07-24
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.0";
+const CACHE_NAME = "mapa-concretagem-v5.3-dashboard-defeitos";
 const ASSETS = [
   "./",
   "./index.html",
@@ -24,6 +24,12 @@ self.addEventListener("install", (event) => {
       .then((cache) => cache.addAll(ASSETS))
       .then(() => self.skipWaiting())
   );
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener("activate", (event) => {

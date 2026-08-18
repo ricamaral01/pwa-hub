@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pt-BR" class="auth-checking">
 <head>
   <style>html.auth-checking body{visibility:hidden}</style>
@@ -7,9 +7,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
-  <title>Mapa de Concretagem</title>
+  <title>CONCRETRACK • Mapa</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v5.0" />
+  <link rel="stylesheet" href="styles.css?v=v5.3-dashboard-defeitos" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -52,7 +52,7 @@
       <div class="login-logo">MC</div>
       <div class="login-card-brand">
         <span class="login-card-eyebrow">ConcreTrack</span>
-        <h1>Acesso ao Mapa de Concretagem</h1>
+        <h1>Acesso ao Mapa</h1>
         <p>Entre com seu usuário e senha para continuar no painel de produção, inspeção e montagem.</p>
       </div>
     </div>
@@ -78,7 +78,7 @@
     <div class="sidebar-logo">
       <div class="sidebar-logo-icon">MC</div>
       <div class="sidebar-logo-name">
-        <span class="sidebar-logo-title">Mapa de Concretagem</span>
+        <span class="sidebar-logo-title">Mapa</span>
         <span class="sidebar-logo-sub">Planejamento e Controle</span>
       </div>
     </div>
@@ -90,6 +90,10 @@
       <button class="nav-item" id="hubMontagemIndicadores" type="button">
         <span class="nav-icon-wrap">📊</span>
         Dashboard montagem
+      </button>
+      <button class="nav-item" id="hubDashboardDefeitos" type="button">
+        <span class="nav-icon-wrap" style="background:#dc2626; color:#ffffff;">DF</span>
+        Dashboard Defeitos
       </button>
 
       <button class="nav-item" id="navProdAnalise" type="button">
@@ -178,7 +182,8 @@
       <span class="topbar-title" id="topbarTitle">Início</span>
       <span id="swVersionBadge" class="sw-version-badge" style="display: none;"></span>
       <div style="background: rgba(241, 196, 15, 0.15); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; margin-left: 12px; display: inline-flex; align-items: center; gap: 4px; vertical-align: middle;">
-        </div>
+        <span>AMBIENTE DE PRODUCAO</span>
+      </div>
       <div class="topbar-right">
         <span id="authUserBadge" class="auth-user-badge hidden"></span>
         <button id="authLogoutBtn" class="btn auth-logout-btn hidden" type="button">Sair</button>
@@ -248,6 +253,10 @@
             <button class="hub-icon-btn" type="button" data-hub-mode="MONTAGEM_INDICADORES">
               <div class="hub-icon-circle" style="background:#0b6b6f">📊</div>
               <span class="hub-icon-lbl">Dashboard montagem</span>
+            </button>
+            <button class="hub-icon-btn" type="button" data-hub-mode="DASHBOARD_DEFEITOS">
+              <div class="hub-icon-circle" style="background:#dc2626; color:#ffffff;">DF</div>
+              <span class="hub-icon-lbl">Dashboard Defeitos</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="PROD_ANALISE">
               <div class="hub-icon-circle" style="background:#10b981">📈</div>
@@ -648,6 +657,7 @@
               <th>N Forma</th>
               <th>Modelo</th>
               <th>Data Prod.</th>
+              <th>Status / Defeito</th>
               <th>Ação</th>
             </tr>
           </thead>
@@ -930,7 +940,7 @@
     <section id="viewMontagemIndicadores" class="card hidden">
       <div class="mi-topbar">
         <div>
-          <h2>Dashboard Montagem</h2>
+          <h2 id="miDashboardTitle">Dashboard Montagem</h2>
           <p id="miFiltroResumo">Hoje - Todos os setores</p>
         </div>
         <div class="mi-topbar-actions">
@@ -982,6 +992,7 @@
         <button class="mi-tab-btn active" data-tab="resumo" type="button">Resumo</button>
         <button class="mi-tab-btn" data-tab="producao" type="button">Producao</button>
         <button class="mi-tab-btn" data-tab="qualidade" type="button">Qualidade</button>
+        <button class="mi-tab-btn" data-tab="defeitos" type="button">Defeitos / Retrabalho</button>
         <button class="mi-tab-btn" data-tab="produtividade" type="button">Produtividade</button>
       </div>
 
@@ -1007,6 +1018,50 @@
       </div>
 
       <div id="miSecaoQualidade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Inspecoes por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorSetor"></canvas></div></div><div class="mi-chart-card"><div class="mi-chart-title">Ranking por montador</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorMontador"></canvas></div></div></div></div>
+
+      <div id="miSecaoDefeitos" class="mi-tab-section">
+        <div class="mi-kpis-grid">
+          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Erros encontrados</span><span class="mi-kpi-val" id="miDefTotalErros">-</span></div>
+          <div class="mi-kpi-card mi-kpi-programado"><span class="mi-kpi-label">Defeitos possiveis</span><span class="mi-kpi-val" id="miDefTotalPossivel">-</span></div>
+          <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Taxa defeitos</span><span class="mi-kpi-val" id="miDefTaxa">-%</span></div>
+          <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Postes avaliados</span><span class="mi-kpi-val" id="miDefPostes">-</span></div>
+          <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Taxa sobre producao</span><span class="mi-kpi-val" id="miDefTaxaProducao">-%</span></div>
+          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Taxa retrabalho</span><span class="mi-kpi-val" id="miDefTaxaRetrabalho">-%</span></div>
+        </div>
+        <div class="mi-def-summary-strip">
+          <div><span>Producao no periodo</span><strong id="miDefProducaoPeriodo">0</strong></div>
+          <div><span>Postes reprovados</span><strong id="miDefPostesReprovados">0</strong></div>
+          <div><span>Tipos vitais 80/20</span><strong id="miDefTiposVitais">0</strong></div>
+          <div><span>Fissuras</span><strong id="miDefFissuras">0</strong></div>
+          <div><span>Fissuras circulares</span><strong id="miDefFissurasCirculares">0</strong></div>
+        </div>
+        <div class="mi-charts-row">
+          <div class="mi-chart-card mi-chart-card-wide">
+            <div class="mi-chart-title">Defeitos encontrados por tipo</div>
+            <div id="miDefeitosPorTipo" class="mi-ranking-list"><div class="muted">Carregando...</div></div>
+          </div>
+        </div>
+        <div class="mi-charts-row">
+          <div class="mi-chart-card">
+            <div class="mi-chart-title">Pareto de defeitos 80/20</div>
+            <div id="miDefPareto" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
+          </div>
+          <div class="mi-chart-card">
+            <div class="mi-chart-title">Defeitos por setor x producao</div>
+            <div id="miDefSetores" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
+          </div>
+        </div>
+        <div class="mi-charts-row">
+          <div class="mi-chart-card mi-chart-card-wide">
+            <div class="mi-chart-title">Matriz defeito x setor</div>
+            <div id="miDefMatriz" class="mi-def-matrix"><div class="muted">Carregando...</div></div>
+          </div>
+          <div class="mi-chart-card">
+            <div class="mi-chart-title">Plano de acao sugerido</div>
+            <div id="miDefPlanoAcao" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
+          </div>
+        </div>
+      </div>
 
       <div id="miSecaoProdutividade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div></div>
     </section>
@@ -1517,7 +1572,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v5.0"></script>
+  <script src="app.js?v=v5.3-dashboard-defeitos"></script>
 </body>
 </html>
-
