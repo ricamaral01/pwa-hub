@@ -10080,11 +10080,11 @@ function init() {
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v5.3-dashboard-defeitos");
+        window.location.replace(window.location.pathname + "?cache-reset=v5.4");
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.3-dashboard-defeitos").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.4").then((reg) => {
       activateWaitingWorker(reg);
       reg.addEventListener("updatefound", () => {
         const worker = reg.installing;
