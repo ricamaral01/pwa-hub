@@ -7763,6 +7763,9 @@ function bindEvents() {
   document.getElementById("miBtnAtualizar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
+  document.getElementById("miBtnExportarXlsx")?.addEventListener("click", () => {
+    exportarMontagemIndicadoresXlsx();
+  });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
@@ -7786,6 +7789,15 @@ function bindEvents() {
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
   });
+  document.getElementById("miBtnCarregarMontagemDia")?.addEventListener("click", () => {
+    carregarVisaoMontagemDia();
+  });
+  document.getElementById("miMontagemDiaData")?.addEventListener("change", () => {
+    carregarVisaoMontagemDia();
+  });
+  document.getElementById("miBtnExportarMontagemDiaDetalhe")?.addEventListener("click", () => {
+    exportarMontagemDiaDetalheXlsx();
+  });
 
   // Troca de Abas do Dashboard
   document.querySelectorAll(".mi-tab-btn").forEach(btn => {
@@ -7793,6 +7805,7 @@ function bindEvents() {
       const targetTab = e.currentTarget.dataset.tab;
       limparLayoutDashboardDefeitos();
       ativarAbaMontagem(targetTab || "resumo");
+      if (targetTab === "montagemDia") carregarVisaoMontagemDia();
     });
   });
 
@@ -10059,6 +10072,8 @@ function init() {
   if (el.mpSetor) el.mpSetor.value = "";
   if (el.histTipo) el.histTipo.value = "";
   if (el.dashData) el.dashData.value = now;
+  const miMontagemDiaData = document.getElementById("miMontagemDiaData");
+  if (miMontagemDiaData && !miMontagemDiaData.value) miMontagemDiaData.value = now;
   if (el.relData) el.relData.value = now;
   if (el.relSetor) el.relSetor.value = "Setor 2";
   if (el.acmpData) el.acmpData.value = now;
@@ -10080,11 +10095,11 @@ function init() {
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v5.4");
+        window.location.replace(window.location.pathname + "?cache-reset=v5.5");
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.4").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.5").then((reg) => {
       activateWaitingWorker(reg);
       reg.addEventListener("updatefound", () => {
         const worker = reg.installing;
@@ -10126,6 +10141,7 @@ init();
 let chartMiPorDiaInstance = null;
 let chartMiPorSetorInstance = null;
 let chartMiPorMontadorInstance = null;
+let chartMiMontagemDiaProducaoInstance = null;
 
 let miRawMontagemData = [];
 let miRawProducaoData = [];
@@ -10136,6 +10152,8 @@ let miOrdenacaoColuna = "finalizado_em";
 let miOrdenacaoAsc = false;
 let miAbaAtiva = "resumo";
 let miUltimosGraficos = null;
+let miCarregandoMontagemDia = false;
+let miMontagemDiaRows = [];
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -10146,9 +10164,27 @@ function formatarDuracao(ms) {
   return `${mins}m ${secs}s`;
 }
 
+function formatarDataHoraMontagemXlsx(value) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value);
+  return d.toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
 function getMiDataReferencia(row) {
   const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
   return String(raw).split("T")[0];
+}
+
+function getMiDataMontagem(row) {
+  const raw = row?.finalizado_em || row?.finalizadoEm || row?.inicio_inspecao_montagem || row?.inicioInspecaoMontagem || "";
+  return dateToYmd(raw);
 }
 
 function normalizarTexto(valor) {
@@ -10170,6 +10206,22 @@ function atualizarResumoFiltrosMontagem() {
   const fmt = (d) => d ? d.split("-").reverse().join("/") : "-";
   const periodo = dStart === dEnd ? fmt(dStart) : `${fmt(dStart)} a ${fmt(dEnd)}`;
   resumo.textContent = `${periodo} - ${setor} - ${status}`;
+}
+
+function formatarDataPtBr(value) {
+  const ymd = dateToYmd(value);
+  if (!ymd) return "-";
+  const parts = ymd.split("-");
+  if (parts.length !== 3) return String(value || "-");
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+function proximoDiaYmd(ymd) {
+  const d = new Date(`${ymd}T12:00:00`);
+  if (Number.isNaN(d.getTime())) return ymd;
+  d.setDate(d.getDate() + 1);
+  const tzOffset = d.getTimezoneOffset() * 60000;
+  return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
 }
 
 function setMontagemDrawerOpen(open) {
@@ -10796,6 +10848,204 @@ function aplicarFiltrosEExibirMontagem() {
   renderGraficosMontagem(byDay, bySector, byMontador, prodByDay);
   renderizarTabelaMontagemPaginada();
   setSyncStatus("idle", "Indicadores atualizados.");
+}
+
+function exportarMontagemIndicadoresXlsx() {
+  if (!Array.isArray(miFilteredMontagemData) || miFilteredMontagemData.length === 0) {
+    showMsgBox("Nenhum dado encontrado para exportar.", "error");
+    return;
+  }
+
+  if (!window.XLSX?.utils) {
+    showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
+    return;
+  }
+
+  const linhas = miFilteredMontagemData.map(row => {
+    const inicio = row.inicio_inspecao_montagem || row.inicioInspecaoMontagem || "";
+    const fim = row.finalizado_em || row.finalizadoEm || "";
+    const durMs = inicio && fim ? (new Date(fim) - new Date(inicio)) : null;
+    return {
+      "Tempo de montagem": formatarDuracao(durMs),
+      "Montador": row.montador_nome || row.montadorNome || "",
+      "Modelo poste": row.modelo || "",
+      "Data da produção": fmtDate(row.data_fabricacao || row.dataFabricacao || ""),
+      "Data da montagem": formatarDataHoraMontagemXlsx(fim || inicio),
+      "Status poste": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label
+    };
+  });
+
+  const ws = XLSX.utils.json_to_sheet(linhas, {
+    header: ["Tempo de montagem", "Montador", "Modelo poste", "Data da produção", "Data da montagem", "Status poste"]
+  });
+  ws["!cols"] = [{ wch: 20 }, { wch: 28 }, { wch: 24 }, { wch: 18 }, { wch: 22 }, { wch: 24 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Dashboard Montagem");
+  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  XLSX.writeFile(wb, `dashboard_montagem_${dStart}_a_${dEnd}.xlsx`);
+}
+
+async function carregarVisaoMontagemDia() {
+  const dataInput = document.getElementById("miMontagemDiaData");
+  const dataMontagem = dataInput?.value || todayYmd();
+  if (dataInput && !dataInput.value) dataInput.value = dataMontagem;
+  if (!supabaseClient || miCarregandoMontagemDia) return;
+
+  miCarregandoMontagemDia = true;
+  const totalEl = document.getElementById("miMontagemDiaTotal");
+  const datasEl = document.getElementById("miMontagemDiaDatas");
+  const resumoEl = document.getElementById("miMontagemDiaResumo");
+  const agrupadoBody = document.getElementById("miMontagemDiaAgrupadoBody");
+  const detalheBody = document.getElementById("miMontagemDiaDetalheBody");
+  miMontagemDiaRows = [];
+  if (totalEl) totalEl.textContent = "...";
+  if (datasEl) datasEl.textContent = "...";
+  if (resumoEl) resumoEl.innerHTML = `<div class="muted">Carregando montagens de ${formatarDataPtBr(dataMontagem)}...</div>`;
+  if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Carregando...</td></tr>';
+  if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Carregando...</td></tr>';
+  renderizarGraficoMontagemDiaProducao([]);
+
+  try {
+    const dataFim = proximoDiaYmd(dataMontagem);
+    const { data, error } = await supabaseClient
+      .from("montagem_poste")
+      .select("*")
+      .gte("finalizado_em", `${dataMontagem}T00:00:00`)
+      .lt("finalizado_em", `${dataFim}T00:00:00`)
+      .not("status_montagem", "is", null)
+      .order("finalizado_em", { ascending: true })
+      .limit(5000);
+
+    if (error) throw error;
+
+    const rows = (data || []).filter(row => getMiDataMontagem(row) === dataMontagem);
+    miMontagemDiaRows = rows;
+    const porProducao = {};
+    rows.forEach(row => {
+      const dataProd = dateToYmd(row.data_fabricacao || row.dataFabricacao || "") || "sem-data";
+      if (!porProducao[dataProd]) porProducao[dataProd] = [];
+      porProducao[dataProd].push(row);
+    });
+
+    const grupos = Object.entries(porProducao)
+      .map(([dataProd, itens]) => ({ dataProd, itens }))
+      .sort((a, b) => a.dataProd.localeCompare(b.dataProd));
+
+    if (totalEl) totalEl.textContent = rows.length;
+    if (datasEl) datasEl.textContent = grupos.length;
+    renderizarGraficoMontagemDiaProducao(grupos);
+
+    if (!rows.length) {
+      if (resumoEl) resumoEl.innerHTML = `<div class="muted">Nenhum poste montado em ${formatarDataPtBr(dataMontagem)}.</div>`;
+      if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Nenhum poste montado nessa data.</td></tr>';
+      if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Nenhum poste montado nessa data.</td></tr>';
+      return;
+    }
+
+    if (resumoEl) {
+      const maiorGrupo = grupos.reduce((max, item) => item.itens.length > max.itens.length ? item : max, grupos[0]);
+      resumoEl.innerHTML = `
+        <div class="mi-montagem-dia-summary">
+          <strong>${rows.length}</strong> postes montados em <strong>${formatarDataPtBr(dataMontagem)}</strong>.
+          A data de producao com maior volume foi <strong>${formatarDataPtBr(maiorGrupo.dataProd)}</strong>, com <strong>${maiorGrupo.itens.length}</strong> postes.
+        </div>
+      `;
+    }
+
+    if (agrupadoBody) {
+      agrupadoBody.innerHTML = grupos.map(grupo => {
+        const formas = grupo.itens.map(row => row.forma_numero || row.formaNumero || "").filter(Boolean).join(", ");
+        return `<tr><td>${escapeHtml(formatarDataPtBr(grupo.dataProd))}</td><td><strong>${grupo.itens.length}</strong></td><td>${escapeHtml(formas || "-")}</td></tr>`;
+      }).join("");
+    }
+
+    if (detalheBody) {
+      detalheBody.innerHTML = rows.map(row => {
+        const status = getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label;
+        return `
+          <tr>
+            <td>${escapeHtml(formatarDataHoraMontagemXlsx(row.finalizado_em || row.finalizadoEm || ""))}</td>
+            <td>${escapeHtml(formatarDataPtBr(row.data_fabricacao || row.dataFabricacao || ""))}</td>
+            <td>${escapeHtml(row.setor || "")}</td>
+            <td><strong>${escapeHtml(row.forma_numero || row.formaNumero || "")}</strong></td>
+            <td>${escapeHtml(row.modelo || "")}</td>
+            <td>${escapeHtml(status)}</td>
+            <td>${escapeHtml(row.montador_nome || row.montadorNome || "")}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+  } catch (err) {
+    console.error("Erro carregarVisaoMontagemDia:", err);
+    if (totalEl) totalEl.textContent = "-";
+    if (datasEl) datasEl.textContent = "-";
+    if (resumoEl) resumoEl.innerHTML = '<div class="muted">Erro ao carregar a visao por data de montagem.</div>';
+    if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Erro ao carregar dados.</td></tr>';
+    if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Erro ao carregar dados.</td></tr>';
+    renderizarGraficoMontagemDiaProducao([]);
+    showMsgBox("Erro ao carregar montagens por dia.", "error");
+  } finally {
+    miCarregandoMontagemDia = false;
+  }
+}
+
+function renderizarGraficoMontagemDiaProducao(grupos) {
+  const ctx = document.getElementById("chartMiMontagemDiaProducao")?.getContext("2d");
+  if (!ctx || typeof Chart === "undefined") return;
+  if (chartMiMontagemDiaProducaoInstance) {
+    chartMiMontagemDiaProducaoInstance.destroy();
+    chartMiMontagemDiaProducaoInstance = null;
+  }
+  const labels = grupos.map(grupo => formatarDataPtBr(grupo.dataProd));
+  const valores = grupos.map(grupo => grupo.itens.length);
+  chartMiMontagemDiaProducaoInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{ label: "Postes montados", data: valores, backgroundColor: "#2563eb", borderColor: "#1d4ed8", borderWidth: 1, borderRadius: 6 }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (context) => `${context.parsed.y || 0} postes montados` } }
+      },
+      scales: {
+        x: { ticks: { font: { size: window.innerWidth < 768 ? 10 : 12 } } },
+        y: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
+  });
+}
+
+function exportarMontagemDiaDetalheXlsx() {
+  if (!Array.isArray(miMontagemDiaRows) || miMontagemDiaRows.length === 0) {
+    showMsgBox("Carregue uma data de montagem antes de exportar.", "error");
+    return;
+  }
+  if (!window.XLSX?.utils) {
+    showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
+    return;
+  }
+  const linhas = miMontagemDiaRows.map(row => ({
+    "Data montagem": formatarDataHoraMontagemXlsx(row.finalizado_em || row.finalizadoEm || ""),
+    "Data producao": formatarDataPtBr(row.data_fabricacao || row.dataFabricacao || ""),
+    "Setor": row.setor || "",
+    "Forma": row.forma_numero || row.formaNumero || "",
+    "Modelo": row.modelo || "",
+    "Status": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label,
+    "Montador": row.montador_nome || row.montadorNome || ""
+  }));
+  const ws = XLSX.utils.json_to_sheet(linhas, {
+    header: ["Data montagem", "Data producao", "Setor", "Forma", "Modelo", "Status", "Montador"]
+  });
+  ws["!cols"] = [{ wch: 22 }, { wch: 16 }, { wch: 14 }, { wch: 12 }, { wch: 24 }, { wch: 18 }, { wch: 28 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Detalhe montagem");
+  const dataMontagem = document.getElementById("miMontagemDiaData")?.value || todayYmd();
+  XLSX.writeFile(wb, `detalhe_montagem_${dataMontagem}.xlsx`);
 }
 
 function obterItensRejeitadosLinha(row) {

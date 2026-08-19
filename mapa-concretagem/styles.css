@@ -3210,12 +3210,90 @@ hr {
   background: #1d4ed8;
   color: #fff;
 }
-.mi-page-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-@media (max-width: 340px) {
+.mi-page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mi-filter-help {
+  display: block !important;
+  max-width: 150px !important;
+  color: #64748b !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  white-space: normal !important;
+}
+
+body.mode-dashboard-defeitos .mi-montagem-only {
+  display: none !important;
+}
+
+.mi-montagem-dia-wrap {
+  display: grid;
+  gap: 14px;
+}
+
+.mi-montagem-dia-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mi-montagem-dia-controls label {
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.mi-montagem-dia-controls .input-field {
+  width: auto;
+  min-height: 36px;
+}
+
+.mi-montagem-dia-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mi-montagem-dia-resumo {
+  padding: 12px 14px;
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.mi-montagem-dia-summary {
+  color: #334155;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.mi-hidden-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mi-montagem-dia-detalhe-hidden {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .mi-montagem-dia-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .mi-montagem-dia-controls,
+  .mi-montagem-dia-controls .input-field,
+  .mi-montagem-dia-controls .mi-primary-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 340px) {
   #viewMontagemIndicadores {
     padding: 10px;
   }
