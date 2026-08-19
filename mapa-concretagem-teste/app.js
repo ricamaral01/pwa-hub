@@ -7777,6 +7777,9 @@ function bindEvents() {
   document.getElementById("miMontagemDiaData")?.addEventListener("change", () => {
     carregarVisaoMontagemDia();
   });
+  document.getElementById("miBtnExportarMontagemDiaDetalhe")?.addEventListener("click", () => {
+    exportarMontagemDiaDetalheXlsx();
+  });
 
   // Troca de Abas do Dashboard
   document.querySelectorAll(".mi-tab-btn").forEach(btn => {
@@ -10071,7 +10074,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.42");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.43");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10081,7 +10084,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.42").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.43").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10113,6 +10116,7 @@ init();
 let chartMiPorDiaInstance = null;
 let chartMiPorSetorInstance = null;
 let chartMiPorMontadorInstance = null;
+let chartMiMontagemDiaProducaoInstance = null;
 
 let miRawMontagemData = [];
 let miRawProducaoData = [];
@@ -10125,6 +10129,7 @@ let miOrdenacaoAsc = false;
 let miAbaAtiva = "resumo";
 let miUltimosGraficos = null;
 let miCarregandoMontagemDia = false;
+let miMontagemDiaRows = [];
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -11026,11 +11031,13 @@ async function carregarVisaoMontagemDia() {
   const resumoEl = document.getElementById("miMontagemDiaResumo");
   const agrupadoBody = document.getElementById("miMontagemDiaAgrupadoBody");
   const detalheBody = document.getElementById("miMontagemDiaDetalheBody");
+  miMontagemDiaRows = [];
   if (totalEl) totalEl.textContent = "...";
   if (datasEl) datasEl.textContent = "...";
   if (resumoEl) resumoEl.innerHTML = `<div class="muted">Carregando montagens de ${formatarDataPtBr(dataMontagem)}...</div>`;
   if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Carregando...</td></tr>';
   if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Carregando...</td></tr>';
+  renderizarGraficoMontagemDiaProducao([]);
 
   try {
     const dataFim = proximoDiaYmd(dataMontagem);
@@ -11046,6 +11053,7 @@ async function carregarVisaoMontagemDia() {
     if (error) throw error;
 
     const rows = (data || []).filter(row => getMiDataMontagem(row) === dataMontagem);
+    miMontagemDiaRows = rows;
     const porProducao = {};
     rows.forEach(row => {
       const dataProd = dateToYmd(row.data_fabricacao || row.dataFabricacao || "") || "sem-data";
@@ -11059,6 +11067,7 @@ async function carregarVisaoMontagemDia() {
 
     if (totalEl) totalEl.textContent = rows.length;
     if (datasEl) datasEl.textContent = grupos.length;
+    renderizarGraficoMontagemDiaProducao(grupos);
 
     if (!rows.length) {
       if (resumoEl) resumoEl.innerHTML = `<div class="muted">Nenhum poste montado em ${formatarDataPtBr(dataMontagem)}.</div>`;
@@ -11116,10 +11125,80 @@ async function carregarVisaoMontagemDia() {
     if (resumoEl) resumoEl.innerHTML = '<div class="muted">Erro ao carregar a visao por data de montagem.</div>';
     if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Erro ao carregar dados.</td></tr>';
     if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Erro ao carregar dados.</td></tr>';
+    renderizarGraficoMontagemDiaProducao([]);
     showMsgBox("Erro ao carregar montagens por dia.", "error");
   } finally {
     miCarregandoMontagemDia = false;
   }
+}
+
+function renderizarGraficoMontagemDiaProducao(grupos) {
+  const ctx = document.getElementById("chartMiMontagemDiaProducao")?.getContext("2d");
+  if (!ctx || typeof Chart === "undefined") return;
+  if (chartMiMontagemDiaProducaoInstance) {
+    chartMiMontagemDiaProducaoInstance.destroy();
+    chartMiMontagemDiaProducaoInstance = null;
+  }
+  const labels = grupos.map(grupo => formatarDataPtBr(grupo.dataProd));
+  const valores = grupos.map(grupo => grupo.itens.length);
+  chartMiMontagemDiaProducaoInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        label: "Postes montados",
+        data: valores,
+        backgroundColor: "#2563eb",
+        borderColor: "#1d4ed8",
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (context) => `${context.parsed.y || 0} postes montados`
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { font: { size: window.innerWidth < 768 ? 10 : 12 } } },
+        y: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
+  });
+}
+
+function exportarMontagemDiaDetalheXlsx() {
+  if (!Array.isArray(miMontagemDiaRows) || miMontagemDiaRows.length === 0) {
+    showMsgBox("Carregue uma data de montagem antes de exportar.", "error");
+    return;
+  }
+  if (!window.XLSX?.utils) {
+    showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
+    return;
+  }
+  const linhas = miMontagemDiaRows.map(row => ({
+    "Data montagem": formatarDataHoraMontagemXlsx(row.finalizado_em || row.finalizadoEm || ""),
+    "Data producao": formatarDataPtBr(row.data_fabricacao || row.dataFabricacao || ""),
+    "Setor": row.setor || "",
+    "Forma": row.forma_numero || row.formaNumero || "",
+    "Modelo": row.modelo || "",
+    "Status": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label,
+    "Montador": row.montador_nome || row.montadorNome || ""
+  }));
+  const ws = XLSX.utils.json_to_sheet(linhas, {
+    header: ["Data montagem", "Data producao", "Setor", "Forma", "Modelo", "Status", "Montador"]
+  });
+  ws["!cols"] = [{ wch: 22 }, { wch: 16 }, { wch: 14 }, { wch: 12 }, { wch: 24 }, { wch: 18 }, { wch: 28 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Detalhe montagem");
+  const dataMontagem = document.getElementById("miMontagemDiaData")?.value || todayYmd();
+  XLSX.writeFile(wb, `detalhe_montagem_${dataMontagem}.xlsx`);
 }
 
 function obterItensRejeitadosLinha(row) {

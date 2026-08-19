@@ -3358,6 +3358,15 @@ hr {
   font-weight: 700;
 }
 
+.mi-hidden-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mi-montagem-dia-detalhe-hidden {
+  display: none !important;
+}
+
 @media (max-width: 640px) {
   .mi-montagem-dia-kpis {
     grid-template-columns: 1fr;
