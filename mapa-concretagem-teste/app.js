@@ -10062,7 +10062,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.39");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.40");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10072,7 +10072,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.39").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.40").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10958,18 +10958,20 @@ function exportarMontagemIndicadoresXlsx() {
       "Tempo de montagem": formatarDuracao(durMs),
       "Montador": row.montador_nome || row.montadorNome || "",
       "Modelo poste": row.modelo || "",
+      "Data da produção": fmtDate(row.data_fabricacao || row.dataFabricacao || ""),
       "Data da montagem": formatarDataHoraMontagemXlsx(fim || inicio),
       "Status poste": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label
     };
   });
 
   const ws = XLSX.utils.json_to_sheet(linhas, {
-    header: ["Tempo de montagem", "Montador", "Modelo poste", "Data da montagem", "Status poste"]
+    header: ["Tempo de montagem", "Montador", "Modelo poste", "Data da produção", "Data da montagem", "Status poste"]
   });
   ws["!cols"] = [
     { wch: 20 },
     { wch: 28 },
     { wch: 24 },
+    { wch: 18 },
     { wch: 22 },
     { wch: 24 }
   ];
