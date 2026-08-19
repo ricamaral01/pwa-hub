@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v1.40" />
+  <link rel="stylesheet" href="styles.css?v=v1.41" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1002,6 +1002,7 @@
       <div class="mi-tabs-bar" role="tablist" aria-label="Secoes do dashboard montagem">
         <button class="mi-tab-btn active" data-tab="resumo" type="button">Resumo</button>
         <button class="mi-tab-btn" data-tab="producao" type="button">Producao</button>
+        <button class="mi-tab-btn" data-tab="montagemDia" type="button">Montagem por dia</button>
         <button class="mi-tab-btn" data-tab="qualidade" type="button">Qualidade</button>
         <button class="mi-tab-btn" data-tab="defeitos" type="button">Defeitos / Retrabalho</button>
         <button class="mi-tab-btn" data-tab="produtividade" type="button">Produtividade</button>
@@ -1026,6 +1027,39 @@
       <div id="miSecaoProducao" class="mi-tab-section">
         <div class="mi-charts-row"><div class="mi-chart-card mi-chart-card-wide"><div class="mi-chart-title">Postes inspecionados por dia</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorDia"></canvas></div></div></div>
         <div class="mi-listagem-wrap"><div class="mi-list-header"><h3>Montagens realizadas</h3><span>Total: <span id="miTabelaTotal">0</span> registros</span></div><div class="mi-table-responsive"><table class="sheet-table mi-table"><thead><tr><th onclick="ordenarMiTabela('data_fabricacao')" style="width: 90px; text-align: center;">Data Prod. <span id="sort_icon_data_fabricacao"></span></th><th onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th><th onclick="ordenarMiTabela('forma_numero')" style="width: 70px; text-align: center;">Forma <span id="sort_icon_forma_numero"></span></th><th onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th><th onclick="ordenarMiTabela('inicio_inspecao_montagem')">Inicio <span id="sort_icon_inicio_inspecao_montagem"></span></th><th onclick="ordenarMiTabela('finalizado_em')">Fim <span id="sort_icon_finalizado_em"></span></th><th onclick="ordenarMiTabela('tempo_inspecao')">Duracao <span id="sort_icon_tempo_inspecao"></span></th><th onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th><th style="width: 180px; text-align: center;">Itens Rej.</th><th onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th></tr></thead><tbody id="miTabelaBody"><tr><td colspan="10">Carregando dados...</td></tr></tbody></table></div><div id="miCardsContainer" class="mi-cards-mobile-list"></div><div class="mi-pagination"><div class="mi-pagination-info">Mostrando <span id="miPaginacaoDe">0</span>-<span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span></div><div class="mi-pagination-buttons" id="miPaginacaoBotoes"></div></div></div>
+      </div>
+
+      <div id="miSecaoMontagemDia" class="mi-tab-section">
+        <div class="mi-listagem-wrap mi-montagem-dia-wrap">
+          <div class="mi-list-header">
+            <div>
+              <h3>Postes montados por data de montagem</h3>
+              <span>Lista os postes finalizados no dia e agrupa pela data de producao.</span>
+            </div>
+            <div class="mi-montagem-dia-controls">
+              <label for="miMontagemDiaData">Data montagem:</label>
+              <input id="miMontagemDiaData" class="input-field" type="date" />
+              <button id="miBtnCarregarMontagemDia" class="mi-primary-btn" type="button">Carregar</button>
+            </div>
+          </div>
+          <div class="mi-montagem-dia-kpis">
+            <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Montados no dia</span><span class="mi-kpi-val" id="miMontagemDiaTotal">-</span></div>
+            <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Datas de producao</span><span class="mi-kpi-val" id="miMontagemDiaDatas">-</span></div>
+          </div>
+          <div id="miMontagemDiaResumo" class="mi-montagem-dia-resumo"><div class="muted">Escolha uma data de montagem e carregue a visao.</div></div>
+          <div class="mi-table-responsive">
+            <table class="sheet-table mi-table">
+              <thead><tr><th>Data producao</th><th>Qtd montada</th><th>Postes / formas</th></tr></thead>
+              <tbody id="miMontagemDiaAgrupadoBody"><tr><td colspan="3">Nenhum dado carregado.</td></tr></tbody>
+            </table>
+          </div>
+          <div class="mi-table-responsive">
+            <table class="sheet-table mi-table">
+              <thead><tr><th>Data montagem</th><th>Data producao</th><th>Setor</th><th>Forma</th><th>Modelo</th><th>Status</th><th>Montador</th></tr></thead>
+              <tbody id="miMontagemDiaDetalheBody"><tr><td colspan="7">Nenhum dado carregado.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       <div id="miSecaoQualidade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Inspecoes por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorSetor"></canvas></div></div><div class="mi-chart-card"><div class="mi-chart-title">Ranking por montador</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorMontador"></canvas></div></div></div></div>
@@ -1546,6 +1580,6 @@
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v1.40"></script>
+  <script src="app.js?v=v1.41"></script>
 </body>
 </html>

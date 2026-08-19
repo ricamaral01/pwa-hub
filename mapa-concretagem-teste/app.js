@@ -7771,6 +7771,12 @@ function bindEvents() {
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
   });
+  document.getElementById("miBtnCarregarMontagemDia")?.addEventListener("click", () => {
+    carregarVisaoMontagemDia();
+  });
+  document.getElementById("miMontagemDiaData")?.addEventListener("change", () => {
+    carregarVisaoMontagemDia();
+  });
 
   // Troca de Abas do Dashboard
   document.querySelectorAll(".mi-tab-btn").forEach(btn => {
@@ -7778,6 +7784,7 @@ function bindEvents() {
       const targetTab = e.currentTarget.dataset.tab;
       limparLayoutDashboardDefeitos();
       ativarAbaMontagem(targetTab || "resumo");
+      if (targetTab === "montagemDia") carregarVisaoMontagemDia();
     });
   });
 
@@ -10046,6 +10053,8 @@ function init() {
   if (el.mpSetor) el.mpSetor.value = "";
   if (el.histTipo) el.histTipo.value = "";
   if (el.dashData) el.dashData.value = now;
+  const miMontagemDiaData = document.getElementById("miMontagemDiaData");
+  if (miMontagemDiaData && !miMontagemDiaData.value) miMontagemDiaData.value = now;
   if (el.relData) el.relData.value = now;
   if (el.relSetor) el.relSetor.value = "Setor 2";
   if (el.acmpData) el.acmpData.value = now;
@@ -10062,7 +10071,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.40");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.41");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10072,7 +10081,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.40").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.41").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10115,6 +10124,7 @@ let miOrdenacaoColuna = "finalizado_em";
 let miOrdenacaoAsc = false;
 let miAbaAtiva = "resumo";
 let miUltimosGraficos = null;
+let miCarregandoMontagemDia = false;
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -10143,6 +10153,11 @@ function getMiDataReferencia(row) {
   return String(raw).split("T")[0];
 }
 
+function getMiDataMontagem(row) {
+  const raw = row?.finalizado_em || row?.finalizadoEm || row?.inicio_inspecao_montagem || row?.inicioInspecaoMontagem || "";
+  return dateToYmd(raw);
+}
+
 function normalizarTexto(valor) {
   return String(valor || "")
     .normalize("NFD")
@@ -10162,6 +10177,22 @@ function atualizarResumoFiltrosMontagem() {
   const fmt = (d) => d ? d.split("-").reverse().join("/") : "-";
   const periodo = dStart === dEnd ? fmt(dStart) : `${fmt(dStart)} a ${fmt(dEnd)}`;
   resumo.textContent = `${periodo} - ${setor} - ${status}`;
+}
+
+function formatarDataPtBr(value) {
+  const ymd = dateToYmd(value);
+  if (!ymd) return "-";
+  const parts = ymd.split("-");
+  if (parts.length !== 3) return String(value || "-");
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+function proximoDiaYmd(ymd) {
+  const d = new Date(`${ymd}T12:00:00`);
+  if (Number.isNaN(d.getTime())) return ymd;
+  d.setDate(d.getDate() + 1);
+  const tzOffset = d.getTimezoneOffset() * 60000;
+  return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
 }
 
 function setMontagemDrawerOpen(open) {
@@ -10981,6 +11012,114 @@ function exportarMontagemIndicadoresXlsx() {
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
   XLSX.writeFile(wb, `dashboard_montagem_${dStart}_a_${dEnd}.xlsx`);
+}
+
+async function carregarVisaoMontagemDia() {
+  const dataInput = document.getElementById("miMontagemDiaData");
+  const dataMontagem = dataInput?.value || todayYmd();
+  if (dataInput && !dataInput.value) dataInput.value = dataMontagem;
+  if (!supabaseClient || miCarregandoMontagemDia) return;
+
+  miCarregandoMontagemDia = true;
+  const totalEl = document.getElementById("miMontagemDiaTotal");
+  const datasEl = document.getElementById("miMontagemDiaDatas");
+  const resumoEl = document.getElementById("miMontagemDiaResumo");
+  const agrupadoBody = document.getElementById("miMontagemDiaAgrupadoBody");
+  const detalheBody = document.getElementById("miMontagemDiaDetalheBody");
+  if (totalEl) totalEl.textContent = "...";
+  if (datasEl) datasEl.textContent = "...";
+  if (resumoEl) resumoEl.innerHTML = `<div class="muted">Carregando montagens de ${formatarDataPtBr(dataMontagem)}...</div>`;
+  if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Carregando...</td></tr>';
+  if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Carregando...</td></tr>';
+
+  try {
+    const dataFim = proximoDiaYmd(dataMontagem);
+    const { data, error } = await supabaseClient
+      .from("montagem_poste")
+      .select("*")
+      .gte("finalizado_em", `${dataMontagem}T00:00:00`)
+      .lt("finalizado_em", `${dataFim}T00:00:00`)
+      .not("status_montagem", "is", null)
+      .order("finalizado_em", { ascending: true })
+      .limit(5000);
+
+    if (error) throw error;
+
+    const rows = (data || []).filter(row => getMiDataMontagem(row) === dataMontagem);
+    const porProducao = {};
+    rows.forEach(row => {
+      const dataProd = dateToYmd(row.data_fabricacao || row.dataFabricacao || "") || "sem-data";
+      if (!porProducao[dataProd]) porProducao[dataProd] = [];
+      porProducao[dataProd].push(row);
+    });
+
+    const grupos = Object.entries(porProducao)
+      .map(([dataProd, itens]) => ({ dataProd, itens }))
+      .sort((a, b) => a.dataProd.localeCompare(b.dataProd));
+
+    if (totalEl) totalEl.textContent = rows.length;
+    if (datasEl) datasEl.textContent = grupos.length;
+
+    if (!rows.length) {
+      if (resumoEl) resumoEl.innerHTML = `<div class="muted">Nenhum poste montado em ${formatarDataPtBr(dataMontagem)}.</div>`;
+      if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Nenhum poste montado nessa data.</td></tr>';
+      if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Nenhum poste montado nessa data.</td></tr>';
+      return;
+    }
+
+    if (resumoEl) {
+      const maiorGrupo = grupos.reduce((max, item) => item.itens.length > max.itens.length ? item : max, grupos[0]);
+      resumoEl.innerHTML = `
+        <div class="mi-montagem-dia-summary">
+          <strong>${rows.length}</strong> postes montados em <strong>${formatarDataPtBr(dataMontagem)}</strong>.
+          A data de producao com maior volume foi <strong>${formatarDataPtBr(maiorGrupo.dataProd)}</strong>, com <strong>${maiorGrupo.itens.length}</strong> postes.
+        </div>
+      `;
+    }
+
+    if (agrupadoBody) {
+      agrupadoBody.innerHTML = grupos.map(grupo => {
+        const formas = grupo.itens
+          .map(row => row.forma_numero || row.formaNumero || "")
+          .filter(Boolean)
+          .join(", ");
+        return `
+          <tr>
+            <td>${escapeHtml(formatarDataPtBr(grupo.dataProd))}</td>
+            <td><strong>${grupo.itens.length}</strong></td>
+            <td>${escapeHtml(formas || "-")}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    if (detalheBody) {
+      detalheBody.innerHTML = rows.map(row => {
+        const status = getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label;
+        return `
+          <tr>
+            <td>${escapeHtml(formatarDataHoraMontagemXlsx(row.finalizado_em || row.finalizadoEm || ""))}</td>
+            <td>${escapeHtml(formatarDataPtBr(row.data_fabricacao || row.dataFabricacao || ""))}</td>
+            <td>${escapeHtml(row.setor || "")}</td>
+            <td><strong>${escapeHtml(row.forma_numero || row.formaNumero || "")}</strong></td>
+            <td>${escapeHtml(row.modelo || "")}</td>
+            <td>${escapeHtml(status)}</td>
+            <td>${escapeHtml(row.montador_nome || row.montadorNome || "")}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+  } catch (err) {
+    console.error("Erro carregarVisaoMontagemDia:", err);
+    if (totalEl) totalEl.textContent = "-";
+    if (datasEl) datasEl.textContent = "-";
+    if (resumoEl) resumoEl.innerHTML = '<div class="muted">Erro ao carregar a visao por data de montagem.</div>';
+    if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Erro ao carregar dados.</td></tr>';
+    if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Erro ao carregar dados.</td></tr>';
+    showMsgBox("Erro ao carregar montagens por dia.", "error");
+  } finally {
+    miCarregandoMontagemDia = false;
+  }
 }
 
 function obterItensRejeitadosLinha(row) {
