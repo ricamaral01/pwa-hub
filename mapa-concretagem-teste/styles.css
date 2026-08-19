@@ -6077,10 +6077,180 @@ td.s4-forma-cell.is-manutencao::after {
   letter-spacing: 0;
 }
 
+/* Ajuste tablet - Dashboard Montagem e Dashboard Defeitos */
+@media (min-width: 769px) and (max-width: 1180px) {
+  body.mode-montagem-indicadores .content,
+  body.mode-dashboard-defeitos .content {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  body.mode-montagem-indicadores #viewMontagemIndicadores,
+  body.mode-dashboard-defeitos #viewMontagemIndicadores {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 14px !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  body.mode-montagem-indicadores .mi-topbar,
+  body.mode-dashboard-defeitos .mi-topbar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 12px !important;
+    align-items: center !important;
+  }
+
+  body.mode-montagem-indicadores .mi-fixed-filters-bar,
+  body.mode-dashboard-defeitos .mi-fixed-filters-bar {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(132px, 1fr)) !important;
+    align-items: end !important;
+    gap: 10px !important;
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-item,
+  body.mode-dashboard-defeitos .mi-filter-item {
+    min-width: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+    flex-shrink: 1 !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-item label,
+  body.mode-dashboard-defeitos .mi-filter-item label {
+    font-size: 0.68rem !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-item .input-field,
+  body.mode-dashboard-defeitos .mi-filter-item .input-field,
+  body.mode-montagem-indicadores .mi-filter-search .input-field,
+  body.mode-dashboard-defeitos .mi-filter-search .input-field {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-search,
+  body.mode-dashboard-defeitos .mi-filter-search {
+    grid-column: span 2 !important;
+    min-width: 0 !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-actions,
+  body.mode-dashboard-defeitos .mi-filter-actions {
+    grid-column: span 2 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-self: end !important;
+  }
+
+  body.mode-montagem-indicadores .mi-tabs-bar,
+  body.mode-dashboard-defeitos .mi-tabs-bar {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-bottom: 4px !important;
+  }
+
+  body.mode-montagem-indicadores .mi-tab-btn,
+  body.mode-dashboard-defeitos .mi-tab-btn {
+    flex: 0 0 auto !important;
+    min-width: 136px !important;
+    padding: 0 12px !important;
+  }
+
+  body.mode-montagem-indicadores .mi-kpis-grid,
+  body.mode-dashboard-defeitos .mi-kpis-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  body.mode-montagem-indicadores .mi-def-summary-strip,
+  body.mode-dashboard-defeitos .mi-def-summary-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  body.mode-montagem-indicadores .mi-charts-row,
+  body.mode-dashboard-defeitos .mi-charts-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  body.mode-montagem-indicadores .mi-table-responsive,
+  body.mode-dashboard-defeitos .mi-table-responsive {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+
+  body.mode-montagem-indicadores .mi-table,
+  body.mode-dashboard-defeitos .mi-table {
+    min-width: 900px !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 920px) {
+  body.mode-montagem-indicadores .mi-fixed-filters-bar,
+  body.mode-dashboard-defeitos .mi-fixed-filters-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-search,
+  body.mode-dashboard-defeitos .mi-filter-search,
+  body.mode-montagem-indicadores .mi-filter-actions,
+  body.mode-dashboard-defeitos .mi-filter-actions {
+    grid-column: span 2 !important;
+  }
+
+  body.mode-montagem-indicadores .mi-kpis-grid,
+  body.mode-dashboard-defeitos .mi-kpis-grid,
+  body.mode-montagem-indicadores .mi-def-summary-strip,
+  body.mode-dashboard-defeitos .mi-def-summary-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
 .mi-defeitos-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.mi-def-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 0 0 12px;
+}
+
+.mi-def-summary-strip div {
+  border: 1px solid #dbe5f1;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px 12px;
+}
+
+.mi-def-summary-strip span {
+  display: block;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.mi-def-summary-strip strong {
+  display: block;
+  margin-top: 4px;
+  color: #0f172a;
+  font-size: 1.25rem;
+  font-weight: 950;
 }
 
 .mi-defeitos-row,
@@ -6136,11 +6306,94 @@ td.s4-forma-cell.is-manutencao::after {
   font-weight: 700;
 }
 
+.mi-def-pareto-row,
+.mi-def-action {
+  border: 1px solid #dbe5f1;
+  border-left: 4px solid #94a3b8;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px 12px;
+}
+
+.mi-def-pareto-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mi-def-pareto-row.vital {
+  border-left-color: #dc2626;
+  background: #fff7f7;
+}
+
+.mi-def-pareto-row strong,
+.mi-def-action strong {
+  display: block;
+  color: #0f172a;
+  font-size: 0.86rem;
+}
+
+.mi-def-pareto-row span,
+.mi-def-action span,
+.mi-def-action p {
+  display: block;
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.mi-def-pareto-row em {
+  flex: 0 0 auto;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 4px 9px;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.mi-def-matrix-scroll {
+  overflow-x: auto;
+}
+
+.mi-def-matrix table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.mi-def-matrix th,
+.mi-def-matrix td {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.mi-def-matrix th:first-child,
+.mi-def-matrix td:first-child {
+  text-align: left;
+  width: 38%;
+}
+
+.mi-def-matrix th {
+  color: #475569;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 body.mode-dashboard-defeitos #viewMontagemIndicadores .mi-tabs-bar {
   display: none;
 }
 
+body.mode-dashboard-defeitos #viewMontagemIndicadores .mi-tab-section {
+  display: none;
+}
+
 body.mode-dashboard-defeitos #miSecaoDefeitos {
+  display: block;
   margin-top: 16px;
 }
 

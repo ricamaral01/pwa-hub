@@ -1176,6 +1176,80 @@ function hasMontagemApiConfigured() {
   return supabaseClient !== null;
 }
 
+const MAPA_REPORT_CACHE_PREFIX = "mapa_concretagem_report_cache_v1";
+const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
+
+function readMapaReportCache(cacheKey) {
+  try {
+    const raw = localStorage.getItem(`${MAPA_REPORT_CACHE_PREFIX}:${cacheKey}`);
+    if (!raw) return null;
+    const payload = JSON.parse(raw);
+    if (!payload || !Array.isArray(payload.rows)) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+function writeMapaReportCache(cacheKey, rows) {
+  try {
+    localStorage.setItem(`${MAPA_REPORT_CACHE_PREFIX}:${cacheKey}`, JSON.stringify({
+      ts: Date.now(),
+      generated_at: new Date().toISOString(),
+      rows: rows || []
+    }));
+  } catch {}
+}
+
+async function carregarLinhasSupabaseComCache(options) {
+  const opts = options || {};
+  const cacheKey = opts.cacheKey;
+  const pageSize = opts.pageSize || 1000;
+  const maxPages = opts.maxPages || 20;
+  const timeoutMs = opts.timeoutMs || MAPA_REPORT_DEFAULT_TIMEOUT_MS;
+
+  if (!supabaseClient) {
+    const cached = cacheKey ? readMapaReportCache(cacheKey) : null;
+    return { rows: cached?.rows || [], state: cached ? "OFFLINE_CACHE" : "ERROR" };
+  }
+
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+
+  try {
+    let allRows = [];
+    for (let page = 0; page < maxPages; page++) {
+      const from = page * pageSize;
+      const to = from + pageSize - 1;
+      let query = supabaseClient
+        .from(opts.table)
+        .select(opts.select || "*")
+        .range(from, to);
+
+      if (typeof opts.applyFilters === "function") query = opts.applyFilters(query);
+      if (opts.orderBy) query = query.order(opts.orderBy, opts.orderOptions || {});
+      if (controller && typeof query.abortSignal === "function") query = query.abortSignal(controller.signal);
+
+      const { data, error } = await query;
+      if (error) throw error;
+      if (Array.isArray(data) && data.length) allRows = allRows.concat(data);
+      if (!data || data.length < pageSize) break;
+    }
+
+    if (cacheKey) writeMapaReportCache(cacheKey, allRows);
+    return { rows: allRows, state: allRows.length ? "SUCCESS" : "EMPTY" };
+  } catch (error) {
+    const cached = cacheKey ? readMapaReportCache(cacheKey) : null;
+    if (cached && cached.rows.length) {
+      console.warn("Relatorio: usando cache local apos falha no Supabase:", error);
+      return { rows: cached.rows, state: "OFFLINE_CACHE", error };
+    }
+    throw error;
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 function setSyncStatus(kind, message) {
   if (!el.syncStatus) return;
   el.syncStatus.className = "sync-status";
@@ -7384,6 +7458,11 @@ function setMode(mode) {
     if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
     ativarAbaMontagem(mode === "DASHBOARD_DEFEITOS" ? "defeitos" : "resumo");
+    if (mode === "DASHBOARD_DEFEITOS") {
+      aplicarLayoutDashboardDefeitos();
+    } else {
+      limparLayoutDashboardDefeitos();
+    }
     carregarMontagemIndicadores();
   }
   if (mode === "SEQUENCIA_S3") {
@@ -7768,6 +7847,7 @@ function bindEvents() {
   document.querySelectorAll(".mi-tab-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const targetTab = e.currentTarget.dataset.tab;
+      limparLayoutDashboardDefeitos();
       ativarAbaMontagem(targetTab || "resumo");
     });
   });
@@ -9725,31 +9805,18 @@ async function carregarProdutividadeConcretagem() {
   let allRows = [];
   if (hasApiConfigured()) {
     try {
-      let page = 0;
-      const pageSize = 1000;
-      let keepFetching = true;
-      while (keepFetching) {
-        const from = page * pageSize;
-        const to = from + pageSize - 1;
-        const { data: rows, error } = await supabaseClient
-          .from('producao')
-          .select('*')
+      const result = await carregarLinhasSupabaseComCache({
+        cacheKey: `produtividade:periodo:${dStart}:${dEnd}`,
+        table: "producao",
+        select: "*",
+        orderBy: "data_hora",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
           .gte('data_fabricacao', dStart)
           .lte('data_fabricacao', dEnd)
           .in('status', ['LIBERADO', 'INSPECIONADO'])
-          .order('data_hora', { ascending: true })
-          .range(from, to);
-
-        if (error) throw error;
-        if (rows && rows.length > 0) {
-          allRows = allRows.concat(rows);
-        }
-        if (!rows || rows.length < pageSize || page >= 10) {
-          keepFetching = false;
-        } else {
-          page++;
-        }
-      }
+      });
+      allRows = result.rows;
     } catch (err) {
       console.warn("Erro Supabase em produtividade, buscando local:", err);
       allRows = getLocalRowsForPeriod(dStart, dEnd);
@@ -9773,25 +9840,18 @@ async function carregarProdutividadeConcretagem() {
   let rowsUltimos7 = [];
   if (hasApiConfigured()) {
     try {
-      let page = 0;
-      const pageSize = 1000;
-      let keepFetching = true;
-      while (keepFetching) {
-        const from = page * pageSize;
-        const to = from + pageSize - 1;
-        const { data: rows, error } = await supabaseClient
-          .from('producao')
-          .select('*')
+      const result = await carregarLinhasSupabaseComCache({
+        cacheKey: `produtividade:ultimos7:${start7}:${dEnd}`,
+        table: "producao",
+        select: "*",
+        orderBy: "data_hora",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
           .gte('data_fabricacao', start7)
           .lte('data_fabricacao', dEnd)
           .in('status', ['LIBERADO', 'INSPECIONADO'])
-          .order('data_hora', { ascending: true })
-          .range(from, to);
-        if (error) throw error;
-        if (rows && rows.length > 0) rowsUltimos7 = rowsUltimos7.concat(rows);
-        if (!rows || rows.length < pageSize || page >= 10) keepFetching = false;
-        else page++;
-      }
+      });
+      rowsUltimos7 = result.rows;
     } catch (err) {
       console.warn("Erro ao buscar últimos 7 dias de produção:", err);
       rowsUltimos7 = getLocalRowsForPeriod(start7, dEnd);
@@ -9841,30 +9901,16 @@ async function carregarProdutividadeConcretagem() {
   let allRowsMes = [];
   if (hasApiConfigured()) {
     try {
-      let page = 0;
-      const pageSize = 1000;
-      let keepFetching = true;
-      while (keepFetching) {
-        const from = page * pageSize;
-        const to = from + pageSize - 1;
-        const { data: rows, error } = await supabaseClient
-          .from('producao')
-          .select('data_fabricacao, codigo_produto, modelo, setor, tipo_concreto, forma, status, data_hora')
+      const result = await carregarLinhasSupabaseComCache({
+        cacheKey: `produtividade:mes:${mesStart}:${dEnd}`,
+        table: "producao",
+        select: "data_fabricacao, codigo_produto, modelo, setor, tipo_concreto, forma, status, data_hora",
+        applyFilters: query => query
           .gte('data_fabricacao', mesStart)
           .lte('data_fabricacao', dEnd)
           .in('status', ['LIBERADO', 'INSPECIONADO'])
-          .range(from, to);
-
-        if (error) throw error;
-        if (rows && rows.length > 0) {
-          allRowsMes = allRowsMes.concat(rows);
-        }
-        if (!rows || rows.length < pageSize || page >= 10) {
-          keepFetching = false;
-        } else {
-          page++;
-        }
-      }
+      });
+      allRowsMes = result.rows;
     } catch (err) {
       console.warn("Erro ao buscar dados mensais", err);
       allRowsMes = getLocalRowsForPeriod(mesStart, dEnd);
@@ -10051,7 +10097,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v124-dashboard-defeitos");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.45");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10061,7 +10107,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=1.24-dashboard-defeitos-reset").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.45").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10113,6 +10159,20 @@ function formatarDuracao(ms) {
   return `${mins}m ${secs}s`;
 }
 
+function getMiDataReferencia(row) {
+  const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
+  return String(raw).split("T")[0];
+}
+
+function normalizarTexto(valor) {
+  return String(valor || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+}
+
 function atualizarResumoFiltrosMontagem() {
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
@@ -10158,28 +10218,67 @@ function contarDefeitosPossiveisLinha(row) {
   }, 0);
 }
 
-function calcularIndicadoresDefeitosMontagem(rows) {
+function obterDefeitosPossiveisLinha(row) {
+  const itens = [];
+  obterChecklistSectionsLinha(row).forEach(sec => {
+    if (!Array.isArray(sec.itens)) return;
+    sec.itens.forEach(item => {
+      const label = typeof item === "string"
+        ? item
+        : (item.label || item.texto || item.descricao || item.nome || item.codigoFalha || "");
+      const clean = String(label || "").trim();
+      if (clean) itens.push(clean);
+    });
+  });
+  return itens;
+}
+
+function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
   const resumo = {
     postes: rows.length,
+    producao: producaoRows.length,
     totalPossivel: 0,
     totalErros: 0,
+    postesReprovados: 0,
+    retrabalho: 0,
+    listaDefeitos: {},
     porForma: {},
-    porTipo: {}
+    porTipo: {},
+    porSetor: {},
+    matriz: {},
+    fissuras: {
+      total: 0,
+      circulares: 0,
+      outros: 0
+    }
   };
+
+  producaoRows.forEach(row => {
+    const setor = row.setor || "Sem setor";
+    if (!resumo.porSetor[setor]) resumo.porSetor[setor] = { setor, erros: 0, producao: 0 };
+    resumo.porSetor[setor].producao++;
+  });
 
   rows.forEach(row => {
     const forma = row.forma_numero || row.formaNumero || "Sem forma";
     const setor = row.setor || "Sem setor";
     const key = `${setor}||${forma}`;
-    const possiveis = contarDefeitosPossiveisLinha(row);
+    const defeitosPossiveis = obterDefeitosPossiveisLinha(row);
+    const possiveis = defeitosPossiveis.length;
     const rejeitados = obterItensRejeitadosLinha(row);
+    const isReprovado = rejeitados.length > 0;
+    const isRetrabalho = row.status_montagem === "RR";
 
     if (!resumo.porForma[key]) {
       resumo.porForma[key] = {
         forma,
         setor,
+        modelo: row.modelo || "",
         postes: 0,
+        postesReprovados: 0,
+        listaDefeitos: {},
         possiveis: 0,
+        potencial: 0,
         erros: 0,
         retrabalho: 0
       };
@@ -10188,13 +10287,42 @@ function calcularIndicadoresDefeitosMontagem(rows) {
     resumo.totalPossivel += possiveis;
     resumo.totalErros += rejeitados.length;
     resumo.porForma[key].postes++;
-    resumo.porForma[key].possiveis += possiveis;
+    resumo.porForma[key].potencial += possiveis;
     resumo.porForma[key].erros += rejeitados.length;
-    if (row.status_montagem === "R" || row.status_montagem === "RR") resumo.porForma[key].retrabalho++;
+    if (isReprovado) {
+      resumo.postesReprovados++;
+      resumo.porForma[key].postesReprovados++;
+    }
+    if (isRetrabalho) {
+      resumo.retrabalho++;
+      resumo.porForma[key].retrabalho++;
+    }
+
+    defeitosPossiveis.forEach(item => {
+      const norm = normalizarTexto(item);
+      if (!norm) return;
+      resumo.listaDefeitos[norm] = item;
+      resumo.porForma[key].listaDefeitos[norm] = item;
+    });
+
+    if (!resumo.porSetor[setor]) resumo.porSetor[setor] = { setor, erros: 0, producao: 0 };
+    resumo.porSetor[setor].erros += rejeitados.length;
 
     rejeitados.forEach(item => {
       resumo.porTipo[item] = (resumo.porTipo[item] || 0) + 1;
+      if (!resumo.matriz[item]) resumo.matriz[item] = {};
+      resumo.matriz[item][setor] = (resumo.matriz[item][setor] || 0) + 1;
+      if (normalizarTexto(item).includes("fissura")) {
+        resumo.fissuras.total++;
+        const modelo = normalizarTexto(row.modelo || "");
+        if (modelo.includes("circular") || modelo.includes("circ")) resumo.fissuras.circulares++;
+        else resumo.fissuras.outros++;
+      }
     });
+  });
+
+  Object.values(resumo.porForma).forEach(item => {
+    item.possiveis = Object.keys(item.listaDefeitos).length;
   });
 
   return resumo;
@@ -10207,6 +10335,8 @@ function formatPct(value) {
 
 function renderIndicadoresDefeitosMontagem(indicadores) {
   const taxa = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
+  const taxaProducao = indicadores.producao > 0 ? (indicadores.totalErros / indicadores.producao) * 100 : 0;
+  const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
@@ -10216,30 +10346,71 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   setText("miDefTotalPossivel", indicadores.totalPossivel);
   setText("miDefTaxa", formatPct(taxa));
   setText("miDefPostes", indicadores.postes);
+  setText("miDefTaxaProducao", formatPct(taxaProducao));
+  setText("miDefTaxaRetrabalho", formatPct(taxaRetrabalho));
+  setText("miDefProducaoPeriodo", indicadores.producao);
+  setText("miDefPostesReprovados", indicadores.postesReprovados);
+  setText("miDefFissuras", indicadores.fissuras.total);
+  setText("miDefFissurasCirculares", indicadores.fissuras.circulares);
 
-  const porFormaEl = document.getElementById("miDefeitosPorForma");
-  if (porFormaEl) {
-    const formas = Object.values(indicadores.porForma).sort((a, b) => {
-      if (b.erros !== a.erros) return b.erros - a.erros;
-      return String(a.forma).localeCompare(String(b.forma), "pt-BR", { numeric: true });
-    });
-
-    if (formas.length === 0) {
-      porFormaEl.innerHTML = '<div class="muted">Nenhuma forma avaliada no periodo.</div>';
+  const porTipoEl = document.getElementById("miDefeitosPorTipo");
+  const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
+  if (porTipoEl) {
+    if (tiposOrdenados.length === 0) {
+      porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
     } else {
-      porFormaEl.innerHTML = formas.map(item => {
-        const itemTaxa = item.possiveis > 0 ? (item.erros / item.possiveis) * 100 : 0;
+      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total]) => `
+        <div class="mi-defeito-tipo-row">
+          <span>${escapeHtml(tipo)}</span>
+          <strong>${total}</strong>
+        </div>
+      `).join("");
+    }
+  }
+
+  const paretoEl = document.getElementById("miDefPareto");
+  let acumulado = 0;
+  const pareto = tiposOrdenados.map(([tipo, total]) => {
+    const pct = indicadores.totalErros > 0 ? (total / indicadores.totalErros) * 100 : 0;
+    acumulado += pct;
+    return { tipo, total, pct, acumulado };
+  });
+  const vitais = pareto.filter(item => item.acumulado <= 80);
+  const tiposVitais = vitais.length || (pareto.length ? 1 : 0);
+  setText("miDefTiposVitais", tiposVitais);
+  if (paretoEl) {
+    if (pareto.length === 0) {
+      paretoEl.innerHTML = '<div class="muted">Sem dados para Pareto no periodo.</div>';
+    } else {
+      paretoEl.innerHTML = pareto.slice(0, 10).map(item => `
+        <div class="mi-def-pareto-row ${item.acumulado <= 80 ? "vital" : ""}">
+          <div>
+            <strong>${escapeHtml(item.tipo)}</strong>
+            <span>${formatPct(item.pct)} do total | ${formatPct(item.acumulado)} acumulado</span>
+          </div>
+          <em>${item.total}</em>
+        </div>
+      `).join("");
+    }
+  }
+
+  const setoresEl = document.getElementById("miDefSetores");
+  if (setoresEl) {
+    const setores = Object.values(indicadores.porSetor).sort((a, b) => b.erros - a.erros);
+    if (setores.length === 0) {
+      setoresEl.innerHTML = '<div class="muted">Sem setores no periodo.</div>';
+    } else {
+      setoresEl.innerHTML = setores.map(item => {
+        const setorTaxa = item.producao > 0 ? (item.erros / item.producao) * 100 : 0;
         return `
           <div class="mi-defeitos-row">
             <div class="mi-defeitos-row-main">
-              <strong>Forma ${escapeHtml(item.forma)}</strong>
-              <span>${escapeHtml(item.setor)} | ${item.postes} poste(s)</span>
+              <strong>${escapeHtml(item.setor)}</strong>
+              <span>${item.producao} produzido(s)</span>
             </div>
             <div class="mi-defeitos-row-metrics">
               <span><strong>${item.erros}</strong> erros</span>
-              <span><strong>${item.possiveis}</strong> possiveis</span>
-              <span><strong>${formatPct(itemTaxa)}</strong> taxa</span>
-              <span><strong>${item.retrabalho}</strong> retrabalho</span>
+              <span><strong>${formatPct(setorTaxa)}</strong> taxa/producao</span>
             </div>
           </div>
         `;
@@ -10247,18 +10418,47 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
     }
   }
 
-  const porTipoEl = document.getElementById("miDefeitosPorTipo");
-  if (porTipoEl) {
-    const tipos = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
-    if (tipos.length === 0) {
-      porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
+  const matrizEl = document.getElementById("miDefMatriz");
+  if (matrizEl) {
+    const setores = Object.keys(indicadores.porSetor).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
+    if (tiposOrdenados.length === 0 || setores.length === 0) {
+      matrizEl.innerHTML = '<div class="muted">Sem dados para matriz no periodo.</div>';
     } else {
-      porTipoEl.innerHTML = tipos.map(([tipo, total]) => `
-        <div class="mi-defeito-tipo-row">
-          <span>${escapeHtml(tipo)}</span>
-          <strong>${total}</strong>
+      matrizEl.innerHTML = `
+        <div class="mi-def-matrix-scroll">
+          <table>
+            <thead><tr><th>Defeito</th>${setores.map(s => `<th>${escapeHtml(s)}</th>`).join("")}<th>Total</th></tr></thead>
+            <tbody>
+              ${tiposOrdenados.slice(0, 12).map(([tipo, total]) => `
+                <tr>
+                  <td>${escapeHtml(tipo)}</td>
+                  ${setores.map(s => `<td>${indicadores.matriz[tipo]?.[s] || 0}</td>`).join("")}
+                  <td><strong>${total}</strong></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
         </div>
-      `).join("");
+      `;
+    }
+  }
+
+  const planoEl = document.getElementById("miDefPlanoAcao");
+  if (planoEl) {
+    if (pareto.length === 0) {
+      planoEl.innerHTML = '<div class="muted">Sem defeitos para sugerir plano.</div>';
+    } else {
+      planoEl.innerHTML = pareto.slice(0, 2).map(item => {
+        const prioridade = item.pct > 20 ? "Critica" : item.pct > 10 ? "Alta" : item.pct > 5 ? "Media" : "Baixa";
+        const meta = Math.max(1, Math.floor(item.total * 0.5));
+        return `
+          <div class="mi-def-action">
+            <strong>${escapeHtml(item.tipo)}</strong>
+            <span>Prioridade ${prioridade} | ${item.total} ocorrencia(s) | meta 90 dias: ${meta}</span>
+            <p>Estratificar por setor, forma e montador; revisar causa raiz no ponto de maior incidencia e acompanhar semanalmente.</p>
+          </div>
+        `;
+      }).join("");
     }
   }
 }
@@ -10302,6 +10502,18 @@ function ativarAbaMontagem(tab) {
   }
 }
 
+function aplicarLayoutDashboardDefeitos() {
+  document.querySelectorAll("#viewMontagemIndicadores .mi-tab-section").forEach(section => {
+    section.style.display = section.id === "miSecaoDefeitos" ? "block" : "none";
+  });
+}
+
+function limparLayoutDashboardDefeitos() {
+  document.querySelectorAll("#viewMontagemIndicadores .mi-tab-section").forEach(section => {
+    section.style.display = "";
+  });
+}
+
 async function carregarMontagemIndicadores() {
   if (!supabaseClient) return;
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
@@ -10310,27 +10522,33 @@ async function carregarMontagemIndicadores() {
   setSyncStatus("pending", "Carregando indicadores de montagem...");
   try {
     const [montagemRes, producaoRes] = await Promise.all([
-      supabaseClient
-        .from("montagem_poste")
-        .select("*")
-        .order("finalizado_em", { ascending: false })
-        .limit(5000),
-      supabaseClient
-        .from("producao")
-        .select("*")
-        .gte("data_fabricacao", dStart)
-        .lte("data_fabricacao", dEnd)
-        .limit(5000)
+      carregarLinhasSupabaseComCache({
+        cacheKey: `montagem:montagem_poste:${dStart}:${dEnd}`,
+        table: "montagem_poste",
+        select: "*",
+        orderBy: "data_fabricacao",
+        orderOptions: { ascending: false },
+        applyFilters: query => query
+          .gte("data_fabricacao", dStart)
+          .lte("data_fabricacao", dEnd)
+      }),
+      carregarLinhasSupabaseComCache({
+        cacheKey: `montagem:producao:${dStart}:${dEnd}`,
+        table: "producao",
+        select: "*",
+        applyFilters: query => query
+          .gte("data_fabricacao", dStart)
+          .lte("data_fabricacao", dEnd)
+      })
     ]);
-      
-    if (montagemRes.error) throw montagemRes.error;
-    if (producaoRes.error) throw producaoRes.error;
     
-    miRawMontagemData = montagemRes.data || [];
-    miRawProducaoData = producaoRes.data || [];
+    miRawMontagemData = montagemRes.rows || [];
+    miRawProducaoData = producaoRes.rows || [];
     
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
+    const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE";
+    if (fromCache) setSyncStatus("warn", "Indicadores carregados do cache local.");
     
   } catch(err) {
     console.error("Erro carregarMontagemIndicadores:", err);
@@ -10341,9 +10559,11 @@ async function carregarMontagemIndicadores() {
 function aplicarFiltrosEExibirMontagem() {
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
-  const fSetor = document.getElementById("miFiltroSetor")?.value || "";
-  const fStatus = document.getElementById("miFiltroStatus")?.value || "";
+  let fSetor = document.getElementById("miFiltroSetor")?.value || "";
+  let fStatus = document.getElementById("miFiltroStatus")?.value || "";
   const fPesquisa = (document.getElementById("miFiltroPesquisa")?.value || "").trim().toLowerCase();
+  if (normalizarTexto(fSetor).startsWith("todos")) fSetor = "";
+  if (normalizarTexto(fStatus).startsWith("todos")) fStatus = "";
   atualizarResumoFiltrosMontagem();
 
   // 1. Filtrar dados de Montagem em memória
@@ -10352,7 +10572,7 @@ function aplicarFiltrosEExibirMontagem() {
     if (!row.status_montagem) return false;
 
     // Filtro por Data
-    const day = (row.finalizado_em || "").split("T")[0];
+    const day = getMiDataReferencia(row);
     if (!day || day < dStart || day > dEnd) return false;
 
     // Filtro por Setor
@@ -10366,8 +10586,11 @@ function aplicarFiltrosEExibirMontagem() {
 
     // Filtro por Status
     if (fStatus) {
+      const rejeitadosCount = obterItensRejeitadosLinha(row).length;
       if (fStatus === "R") {
-        if (row.status_montagem !== "R" && row.status_montagem !== "RR") return false;
+        if (rejeitadosCount === 0) return false;
+      } else if (fStatus === "A") {
+        if (rejeitadosCount > 0) return false;
       } else if (row.status_montagem !== fStatus) {
         return false;
       }
@@ -10413,14 +10636,15 @@ function aplicarFiltrosEExibirMontagem() {
   const temposPorMontador = {}; // { montador: { totalMs: 0, count: 0 } }
 
   miFilteredMontagemData.forEach(row => {
-    const day = (row.finalizado_em || "").split("T")[0];
+    const day = getMiDataReferencia(row);
+    const rejeitadosCount = obterItensRejeitadosLinha(row).length;
     if (row.status_montagem === "A") totalAprovados++;
-    else if (row.status_montagem === "R" || row.status_montagem === "RR") totalRecusados++;
+    if (rejeitadosCount > 0) totalRecusados++;
     
     if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
     byDay[day].total++;
-    if (row.status_montagem === "A") byDay[day].aprovados++;
-    else byDay[day].recusados++;
+    if (rejeitadosCount > 0) byDay[day].recusados++;
+    else byDay[day].aprovados++;
     
     const sec = row.setor || "Desconhecido";
     bySector[sec] = (bySector[sec] || 0) + 1;
@@ -10448,7 +10672,7 @@ function aplicarFiltrosEExibirMontagem() {
     }
   });
 
-  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredMontagemData));
+  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredMontagemData, filteredProducao));
 
 
   // Renderizar tempos médios
@@ -11042,6 +11266,23 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
     etapa: row.etapa || ""
   };
 
+  const findProducaoConcretagem = () => {
+    if (!Array.isArray(miRawProducaoData)) return null;
+    const dataFab = String(normRow.data_fabricacao || "").split("T")[0];
+    const setor = String(row.setor || "").trim();
+    const forma = normalizeForma(normRow.forma_numero || row.forma || row.forma_numero || row.formaNumero || "");
+    return miRawProducaoData.find((prod) => {
+      const prodData = String(prod.data_fabricacao || prod.dataFabricacao || "").split("T")[0];
+      const prodSetor = String(prod.setor || "").trim();
+      const prodForma = normalizeForma(prod.forma || prod.forma_numero || prod.formaNumero || "");
+      return prodData === dataFab && prodSetor === setor && prodForma === forma;
+    }) || null;
+  };
+
+  const producaoConcretagem = findProducaoConcretagem();
+  const dataHoraConcretagem = producaoConcretagem?.data_hora || producaoConcretagem?.dataHora || producaoConcretagem?.created_at || "";
+  const tipoConcreto = producaoConcretagem?.tipo_concreto || producaoConcretagem?.tipoConcreto || producaoConcretagem?.concretoTipo || "";
+
   const modal = document.getElementById("visualizarChecklistModal");
   if (!modal) return;
 
@@ -11049,6 +11290,8 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
   document.getElementById("vcMetaModelo").textContent = normRow.modelo || "-";
   document.getElementById("vcMetaMontador").textContent = normRow.montador_nome || "-";
   document.getElementById("vcMetaData").textContent = normRow.data_fabricacao ? String(normRow.data_fabricacao).split("T")[0].split("-").reverse().join("/") : "-";
+  document.getElementById("vcMetaConcretagem").textContent = dataHoraConcretagem ? formatDateTime(dataHoraConcretagem) : "-";
+  document.getElementById("vcMetaTipoConcreto").textContent = tipoConcreto || "-";
 
   const formatTimeShort = (isoStr) => {
     if (!isoStr) return "N/A";
