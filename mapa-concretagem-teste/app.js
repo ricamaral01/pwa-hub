@@ -1176,6 +1176,80 @@ function hasMontagemApiConfigured() {
   return supabaseClient !== null;
 }
 
+const MAPA_REPORT_CACHE_PREFIX = "mapa_concretagem_report_cache_v1";
+const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
+
+function readMapaReportCache(cacheKey) {
+  try {
+    const raw = localStorage.getItem(`${MAPA_REPORT_CACHE_PREFIX}:${cacheKey}`);
+    if (!raw) return null;
+    const payload = JSON.parse(raw);
+    if (!payload || !Array.isArray(payload.rows)) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+function writeMapaReportCache(cacheKey, rows) {
+  try {
+    localStorage.setItem(`${MAPA_REPORT_CACHE_PREFIX}:${cacheKey}`, JSON.stringify({
+      ts: Date.now(),
+      generated_at: new Date().toISOString(),
+      rows: rows || []
+    }));
+  } catch {}
+}
+
+async function carregarLinhasSupabaseComCache(options) {
+  const opts = options || {};
+  const cacheKey = opts.cacheKey;
+  const pageSize = opts.pageSize || 1000;
+  const maxPages = opts.maxPages || 20;
+  const timeoutMs = opts.timeoutMs || MAPA_REPORT_DEFAULT_TIMEOUT_MS;
+
+  if (!supabaseClient) {
+    const cached = cacheKey ? readMapaReportCache(cacheKey) : null;
+    return { rows: cached?.rows || [], state: cached ? "OFFLINE_CACHE" : "ERROR" };
+  }
+
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+
+  try {
+    let allRows = [];
+    for (let page = 0; page < maxPages; page++) {
+      const from = page * pageSize;
+      const to = from + pageSize - 1;
+      let query = supabaseClient
+        .from(opts.table)
+        .select(opts.select || "*")
+        .range(from, to);
+
+      if (typeof opts.applyFilters === "function") query = opts.applyFilters(query);
+      if (opts.orderBy) query = query.order(opts.orderBy, opts.orderOptions || {});
+      if (controller && typeof query.abortSignal === "function") query = query.abortSignal(controller.signal);
+
+      const { data, error } = await query;
+      if (error) throw error;
+      if (Array.isArray(data) && data.length) allRows = allRows.concat(data);
+      if (!data || data.length < pageSize) break;
+    }
+
+    if (cacheKey) writeMapaReportCache(cacheKey, allRows);
+    return { rows: allRows, state: allRows.length ? "SUCCESS" : "EMPTY" };
+  } catch (error) {
+    const cached = cacheKey ? readMapaReportCache(cacheKey) : null;
+    if (cached && cached.rows.length) {
+      console.warn("Relatorio: usando cache local apos falha no Supabase:", error);
+      return { rows: cached.rows, state: "OFFLINE_CACHE", error };
+    }
+    throw error;
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 function setSyncStatus(kind, message) {
   if (!el.syncStatus) return;
   el.syncStatus.className = "sync-status";
@@ -9744,31 +9818,18 @@ async function carregarProdutividadeConcretagem() {
   let allRows = [];
   if (hasApiConfigured()) {
     try {
-      let page = 0;
-      const pageSize = 1000;
-      let keepFetching = true;
-      while (keepFetching) {
-        const from = page * pageSize;
-        const to = from + pageSize - 1;
-        const { data: rows, error } = await supabaseClient
-          .from('producao')
-          .select('*')
+      const result = await carregarLinhasSupabaseComCache({
+        cacheKey: `produtividade:periodo:${dStart}:${dEnd}`,
+        table: "producao",
+        select: "*",
+        orderBy: "data_hora",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
           .gte('data_fabricacao', dStart)
           .lte('data_fabricacao', dEnd)
           .in('status', ['LIBERADO', 'INSPECIONADO'])
-          .order('data_hora', { ascending: true })
-          .range(from, to);
-
-        if (error) throw error;
-        if (rows && rows.length > 0) {
-          allRows = allRows.concat(rows);
-        }
-        if (!rows || rows.length < pageSize || page >= 10) {
-          keepFetching = false;
-        } else {
-          page++;
-        }
-      }
+      });
+      allRows = result.rows;
     } catch (err) {
       console.warn("Erro Supabase em produtividade, buscando local:", err);
       allRows = getLocalRowsForPeriod(dStart, dEnd);
@@ -9792,25 +9853,18 @@ async function carregarProdutividadeConcretagem() {
   let rowsUltimos7 = [];
   if (hasApiConfigured()) {
     try {
-      let page = 0;
-      const pageSize = 1000;
-      let keepFetching = true;
-      while (keepFetching) {
-        const from = page * pageSize;
-        const to = from + pageSize - 1;
-        const { data: rows, error } = await supabaseClient
-          .from('producao')
-          .select('*')
+      const result = await carregarLinhasSupabaseComCache({
+        cacheKey: `produtividade:ultimos7:${start7}:${dEnd}`,
+        table: "producao",
+        select: "*",
+        orderBy: "data_hora",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
           .gte('data_fabricacao', start7)
           .lte('data_fabricacao', dEnd)
           .in('status', ['LIBERADO', 'INSPECIONADO'])
-          .order('data_hora', { ascending: true })
-          .range(from, to);
-        if (error) throw error;
-        if (rows && rows.length > 0) rowsUltimos7 = rowsUltimos7.concat(rows);
-        if (!rows || rows.length < pageSize || page >= 10) keepFetching = false;
-        else page++;
-      }
+      });
+      rowsUltimos7 = result.rows;
     } catch (err) {
       console.warn("Erro ao buscar últimos 7 dias de produção:", err);
       rowsUltimos7 = getLocalRowsForPeriod(start7, dEnd);
@@ -9860,30 +9914,16 @@ async function carregarProdutividadeConcretagem() {
   let allRowsMes = [];
   if (hasApiConfigured()) {
     try {
-      let page = 0;
-      const pageSize = 1000;
-      let keepFetching = true;
-      while (keepFetching) {
-        const from = page * pageSize;
-        const to = from + pageSize - 1;
-        const { data: rows, error } = await supabaseClient
-          .from('producao')
-          .select('data_fabricacao, codigo_produto, modelo, setor, tipo_concreto, forma, status, data_hora')
+      const result = await carregarLinhasSupabaseComCache({
+        cacheKey: `produtividade:mes:${mesStart}:${dEnd}`,
+        table: "producao",
+        select: "data_fabricacao, codigo_produto, modelo, setor, tipo_concreto, forma, status, data_hora",
+        applyFilters: query => query
           .gte('data_fabricacao', mesStart)
           .lte('data_fabricacao', dEnd)
           .in('status', ['LIBERADO', 'INSPECIONADO'])
-          .range(from, to);
-
-        if (error) throw error;
-        if (rows && rows.length > 0) {
-          allRowsMes = allRowsMes.concat(rows);
-        }
-        if (!rows || rows.length < pageSize || page >= 10) {
-          keepFetching = false;
-        } else {
-          page++;
-        }
-      }
+      });
+      allRowsMes = result.rows;
     } catch (err) {
       console.warn("Erro ao buscar dados mensais", err);
       allRowsMes = getLocalRowsForPeriod(mesStart, dEnd);
@@ -10074,7 +10114,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.44");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.45");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10084,7 +10124,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.44").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.45").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10688,30 +10728,34 @@ async function carregarMontagemIndicadores() {
   setSyncStatus("pending", "Carregando indicadores de montagem...");
   try {
     const [montagemRes, producaoRes] = await Promise.all([
-      supabaseClient
-        .from("montagem_poste")
-        .select("*")
-        .gte("data_fabricacao", dStart)
-        .lte("data_fabricacao", dEnd)
-        .order("data_fabricacao", { ascending: false })
-        .limit(5000),
-      supabaseClient
-        .from("producao")
-        .select("*")
-        .gte("data_fabricacao", dStart)
-        .lte("data_fabricacao", dEnd)
-        .limit(5000)
+      carregarLinhasSupabaseComCache({
+        cacheKey: `montagem:montagem_poste:${dStart}:${dEnd}`,
+        table: "montagem_poste",
+        select: "*",
+        orderBy: "data_fabricacao",
+        orderOptions: { ascending: false },
+        applyFilters: query => query
+          .gte("data_fabricacao", dStart)
+          .lte("data_fabricacao", dEnd)
+      }),
+      carregarLinhasSupabaseComCache({
+        cacheKey: `montagem:producao:${dStart}:${dEnd}`,
+        table: "producao",
+        select: "*",
+        applyFilters: query => query
+          .gte("data_fabricacao", dStart)
+          .lte("data_fabricacao", dEnd)
+      })
     ]);
-      
-    if (montagemRes.error) throw montagemRes.error;
-    if (producaoRes.error) throw producaoRes.error;
-    
-    miRawMontagemData = montagemRes.data || [];
-    miRawProducaoData = producaoRes.data || [];
-    
+
+    miRawMontagemData = montagemRes.rows || [];
+    miRawProducaoData = producaoRes.rows || [];
+
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
-    
+    const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE";
+    if (fromCache) setSyncStatus("warn", "Indicadores carregados do cache local.");
+
   } catch(err) {
     console.error("Erro carregarMontagemIndicadores:", err);
     setSyncStatus("error", "Erro ao carregar indicadores.");
