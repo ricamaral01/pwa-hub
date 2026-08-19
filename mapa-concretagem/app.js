@@ -10095,11 +10095,11 @@ function init() {
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v5.5");
+        window.location.replace(window.location.pathname + "?cache-reset=v5.6");
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.5").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.6").then((reg) => {
       activateWaitingWorker(reg);
       reg.addEventListener("updatefound", () => {
         const worker = reg.installing;
@@ -10305,7 +10305,7 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     const defeitosPossiveis = obterDefeitosPossiveisLinha(row);
     const possiveis = defeitosPossiveis.length;
     const rejeitados = obterItensRejeitadosLinha(row);
-    const isReprovado = rejeitados.length > 0;
+    const isReprovado = rejeitados.length > 0 || row.status_montagem === "R" || row.status_montagem === "RR";
     const isRetrabalho = row.status_montagem === "RR";
 
     if (!resumo.porForma[key]) {
@@ -10374,7 +10374,7 @@ function formatPct(value) {
 
 function renderIndicadoresDefeitosMontagem(indicadores) {
   const taxa = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
-  const taxaProducao = indicadores.producao > 0 ? (indicadores.totalErros / indicadores.producao) * 100 : 0;
+  const taxaProducao = indicadores.producao > 0 ? (indicadores.postesReprovados / indicadores.producao) * 100 : 0;
   const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
   const setText = (id, value) => {
     const node = document.getElementById(id);

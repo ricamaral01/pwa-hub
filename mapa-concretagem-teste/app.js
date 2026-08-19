@@ -10074,7 +10074,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.43");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.44");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10084,7 +10084,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.43").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.44").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10281,7 +10281,7 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     const defeitosPossiveis = obterDefeitosPossiveisLinha(row);
     const possiveis = defeitosPossiveis.length;
     const rejeitados = obterItensRejeitadosLinha(row);
-    const isReprovado = rejeitados.length > 0;
+    const isReprovado = rejeitados.length > 0 || row.status_montagem === "R" || row.status_montagem === "RR";
     const isRetrabalho = row.status_montagem === "RR";
 
     if (!resumo.porForma[key]) {
@@ -10499,7 +10499,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   const cobertura = safePct(indicadores.postes, indicadores.producao);
   const taxaRetrabalho = safePct(indicadores.retrabalho, indicadores.postes);
   const dpu = safeNum(indicadores.totalErros, indicadores.postes, 2);
-  const nc100 = indicadores.producao > 0 ? ((indicadores.totalErros / indicadores.producao) * 100).toFixed(1).replace(".", ",") : "—";
+  const taxaSobreProducao = safePct(indicadores.postesReprovados, indicadores.producao);
 
   const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
   let acumulado = 0;
@@ -10515,7 +10515,12 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
     .map(item => ({
       ...item,
       avaliados: miFilteredMontagemData.filter(row => (row.setor || "Sem setor") === item.setor).length,
-      reprovados: miFilteredMontagemData.filter(row => (row.setor || "Sem setor") === item.setor && obterItensRejeitadosLinha(row).length > 0).length
+      reprovados: miFilteredMontagemData.filter(row => {
+        const rowStatus = row.status_montagem || row.statusMontagem || "";
+        return (row.setor || "Sem setor") === item.setor && (
+          obterItensRejeitadosLinha(row).length > 0 || rowStatus === "R" || rowStatus === "RR"
+        );
+      }).length
     }))
     .map(item => ({ ...item, indice: safePct(item.reprovados, item.avaliados) }))
     .sort((a, b) => (isFinite(b.indice) ? b.indice : -1) - (isFinite(a.indice) ? a.indice : -1));
@@ -10528,11 +10533,10 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
       taxaNcSub: `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}`,
       cobertura: formatPct(cobertura),
       coberturaSub: `${indicadores.postes} de ${indicadores.producao}`,
-      nc100
+      nc100: formatPct(taxaSobreProducao)
     },
     ...setores.map(item => {
-      const errosSetor = item.erros || 0;
-      const nc100Setor = item.producao > 0 ? ((errosSetor / item.producao) * 100).toFixed(1).replace(".", ",") : "—";
+      const taxaSetor = safePct(item.reprovados, item.producao);
       return {
         setor: item.setor,
         indiceReprovacao: formatPct(item.indice),
@@ -10541,7 +10545,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
         taxaNcSub: "Base por item não consolidada por setor",
         cobertura: formatPct(safePct(item.avaliados, item.producao)),
         coberturaSub: `${item.avaliados} de ${item.producao}`,
-        nc100: nc100Setor
+        nc100: formatPct(taxaSetor)
       };
     })
   ];
@@ -10574,7 +10578,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
       </div>
       <div class="def-v4-mini-grid">
         ${defV4Mini("DPU · defeitos/poste", dpu)}
-        ${defV4Mini("NC / 100 postes produzidos", nc100)}
+        ${defV4Mini("Taxa sobre produção", formatPct(taxaSobreProducao))}
         ${defV4Mini("Custo estimado retrabalho", "—")}
         ${defV4Mini("Produção no período", indicadores.producao)}
       </div>
@@ -10597,14 +10601,14 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
         ${defV4Metric("Cobertura de inspeção", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao} produzidos`, "orange")}
         ${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes} · meta <= 5%`, metaClass(taxaRetrabalho, 5))}
       </div>
-      <div class="def-v4-mini-grid">${defV4Mini("DPU", dpu)}${defV4Mini("NC / 100", nc100)}${defV4Mini("Custo retrabalho", "—")}${defV4Mini("Produção", indicadores.producao)}</div>
+      <div class="def-v4-mini-grid">${defV4Mini("DPU", dpu)}${defV4Mini("Taxa sobre produção", formatPct(taxaSobreProducao))}${defV4Mini("Custo retrabalho", "—")}${defV4Mini("Produção", indicadores.producao)}</div>
       ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, true)}
       <div class="def-v4-tablet-panels"><section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(5)}</div></section>${defV4Ranking(rankingHtml)}</div>
     </div>
     <div class="def-v4-view def-v4-mobile">
       ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesReprovados} de ${indicadores.postes} postes avaliados`, "red hero")}
       <div class="def-v4-grid-2">${defV4Metric("Taxa NC", formatPct(taxaNc), `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}`, metaClass(taxaNc, 2))}${defV4Metric("Cobertura", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao}`, "orange")}${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes}`, metaClass(taxaRetrabalho, 5))}${defV4Metric("DPU", dpu, "defeitos/poste", "neutral")}</div>
-      <div class="def-v4-mini-grid">${defV4Mini("NC / 100 postes produzidos", nc100)}${defV4Mini("Custo retrabalho", "—")}</div>
+      <div class="def-v4-mini-grid">${defV4Mini("Taxa sobre produção", formatPct(taxaSobreProducao))}${defV4Mini("Custo retrabalho", "—")}</div>
       ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, true)}
       <section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(5)}</div></section>
     </div>
@@ -10616,7 +10620,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
         <div class="def-v4-card def-v4-metric orange"><span>Cobertura</span><strong id="defV4TvCobertura">${formatPct(cobertura)}</strong><small id="defV4TvCoberturaSub">${indicadores.postes} de ${indicadores.producao}</small></div>
         ${defV4Metric("Fissura circular", fissuraCircularLabel, "Histórico consolidado indisponível", "green")}
       </div>
-      <div class="def-v4-tv-mini-line">NC / 100 postes produzidos: <strong id="defV4TvNc100">${nc100}</strong></div>
+      <div class="def-v4-tv-mini-line">Taxa sobre produção: <strong id="defV4TvNc100">${formatPct(taxaSobreProducao)}</strong></div>
       <div class="def-v4-tv-panels"><section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(6)}</div></section>${defV4Ranking(rankingHtml)}</div>
     </div>
   `;

@@ -1,9 +1,9 @@
-﻿/* =========================================================
-   MAPA DE CONCRETAGEM — Service Worker v5.5
+/* =========================================================
+   MAPA DE CONCRETAGEM � Service Worker v5.6
    Deploy: 2026-07-24
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.5";
+const CACHE_NAME = "mapa-concretagem-v5.6";
 const ASSETS = [
   "./",
   "./index.html",
