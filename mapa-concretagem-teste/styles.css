@@ -5892,6 +5892,10 @@ body:not(.print-relatorio) .rel-full-table td:nth-child(7) {
   white-space: normal !important;
 }
 
+body.mode-dashboard-defeitos .mi-montagem-only {
+  display: none !important;
+}
+
 .mi-filter-item .input-field {
   width: auto !important;
   height: 34px !important;

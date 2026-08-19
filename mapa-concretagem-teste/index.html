@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v1.41" />
+  <link rel="stylesheet" href="styles.css?v=v1.42" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -944,7 +944,7 @@
           <p id="miFiltroResumo">Hoje - Todos os setores</p>
         </div>
         <div class="mi-topbar-actions">
-          <button id="miBtnExportarXlsx" class="mi-icon-btn" type="button" aria-label="Exportar dados do dashboard montagem em XLSX">Exportar XLSX</button>
+          <button id="miBtnExportarXlsx" class="mi-icon-btn mi-montagem-only" type="button" aria-label="Exportar dados do dashboard montagem em XLSX">Exportar XLSX</button>
           <button id="miBtnAtualizar" class="mi-icon-btn mi-icon-btn-primary" type="button" aria-label="Atualizar dashboard">Atualizar</button>
         </div>
       </div>
@@ -954,12 +954,12 @@
         <div class="mi-filter-item">
           <label for="miDataInicio">Início:</label>
           <input type="date" id="miDataInicio" class="input-field" />
-          <small class="mi-filter-help">Data de producao/concretagem</small>
+          <small class="mi-filter-help mi-montagem-only">Filtro por data de producao</small>
         </div>
         <div class="mi-filter-item">
           <label for="miDataFim">Fim:</label>
           <input type="date" id="miDataFim" class="input-field" />
-          <small class="mi-filter-help">Data de producao/concretagem</small>
+          <small class="mi-filter-help mi-montagem-only">Filtro por data de producao</small>
         </div>
         <div class="mi-filter-item">
           <label for="miFiltroSetor">Setor:</label>
@@ -1002,7 +1002,7 @@
       <div class="mi-tabs-bar" role="tablist" aria-label="Secoes do dashboard montagem">
         <button class="mi-tab-btn active" data-tab="resumo" type="button">Resumo</button>
         <button class="mi-tab-btn" data-tab="producao" type="button">Producao</button>
-        <button class="mi-tab-btn" data-tab="montagemDia" type="button">Montagem por dia</button>
+        <button class="mi-tab-btn mi-montagem-only" data-tab="montagemDia" type="button">Visao data montagem</button>
         <button class="mi-tab-btn" data-tab="qualidade" type="button">Qualidade</button>
         <button class="mi-tab-btn" data-tab="defeitos" type="button">Defeitos / Retrabalho</button>
         <button class="mi-tab-btn" data-tab="produtividade" type="button">Produtividade</button>
@@ -1033,8 +1033,8 @@
         <div class="mi-listagem-wrap mi-montagem-dia-wrap">
           <div class="mi-list-header">
             <div>
-              <h3>Postes montados por data de montagem</h3>
-              <span>Lista os postes finalizados no dia e agrupa pela data de producao.</span>
+              <h3>Visao geral por data de montagem</h3>
+              <span>Use uma data de montagem para listar os postes montados no dia e ver de quais datas de producao eles vieram.</span>
             </div>
             <div class="mi-montagem-dia-controls">
               <label for="miMontagemDiaData">Data montagem:</label>
@@ -1580,6 +1580,6 @@
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v1.41"></script>
+  <script src="app.js?v=v1.42"></script>
 </body>
 </html>
