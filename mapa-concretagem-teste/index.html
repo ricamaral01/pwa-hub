@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR" class="auth-checking">
 <head>
   <style>html.auth-checking body{visibility:hidden}</style>
@@ -11,8 +11,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
-  <link rel="manifest" href="manifest.json?v=v1.50" />
-  <link rel="stylesheet" href="styles.css?v=v1.50" />
+  <link rel="manifest" href="manifest.json?v=v1.55" />
+  <link rel="stylesheet" href="styles.css?v=v1.55" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1024,9 +1024,10 @@
         <div class="mi-kpis-grid">
           <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Erros encontrados</span><span class="mi-kpi-val" id="miDefTotalErros">-</span></div>
           <div class="mi-kpi-card mi-kpi-programado"><span class="mi-kpi-label">Defeitos possiveis</span><span class="mi-kpi-val" id="miDefTotalPossivel">-</span></div>
-          <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Taxa defeitos</span><span class="mi-kpi-val" id="miDefTaxa">-%</span></div>
+          <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Taxa de NC</span><span class="mi-kpi-val" id="miDefTaxa">-%</span></div>
           <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Postes avaliados</span><span class="mi-kpi-val" id="miDefPostes">-</span></div>
-          <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Taxa sobre producao</span><span class="mi-kpi-val" id="miDefTaxaProducao">-%</span></div>
+          <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Indice de reprovacao</span><span class="mi-kpi-val" id="miDefTaxaProducao">-%</span></div>
+          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Postes Reprovados</span><span class="mi-kpi-val" id="miDefTaxaPostesReprovados">-%</span></div>
           <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Taxa retrabalho</span><span class="mi-kpi-val" id="miDefTaxaRetrabalho">-%</span></div>
         </div>
         <div class="mi-def-summary-strip">
@@ -1065,6 +1066,57 @@
       </div>
 
       <div id="miSecaoProdutividade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div></div>
+    </section>
+
+    <section id="viewDashboardDefeitos" class="card hidden">
+      <div class="mi-topbar">
+        <div>
+          <h2>Dashboard Defeitos</h2>
+          <p id="dfFiltroResumo">Hoje - Todos os setores</p>
+        </div>
+        <div class="mi-topbar-actions">
+          <button id="dfBtnAtualizar" class="mi-icon-btn mi-icon-btn-primary" type="button" aria-label="Atualizar dashboard de defeitos">Atualizar</button>
+        </div>
+      </div>
+      <div class="mi-fixed-filters-bar">
+        <div class="mi-filter-item">
+          <label for="dfDataInicio">Início:</label>
+          <input type="date" id="dfDataInicio" class="input-field" />
+        </div>
+        <div class="mi-filter-item">
+          <label for="dfDataFim">Fim:</label>
+          <input type="date" id="dfDataFim" class="input-field" />
+        </div>
+        <div class="mi-filter-item">
+          <label for="dfFiltroSetor">Setor:</label>
+          <select id="dfFiltroSetor" class="input-field">
+            <option value="">Todos os Setores</option>
+            <option value="Setores 1 e 2">Setores 1 e 2</option>
+            <option value="Setor 1">Setor 1</option>
+            <option value="Setor 2">Setor 2</option>
+            <option value="Setor 3">Setor 3</option>
+            <option value="Setor 4">Setor 4</option>
+          </select>
+        </div>
+        <div class="mi-filter-item">
+          <label for="dfFiltroStatus">Status:</label>
+          <select id="dfFiltroStatus" class="input-field">
+            <option value="">Todos os Status</option>
+            <option value="A">Aprovado</option>
+            <option value="R">Reprovado</option>
+            <option value="RR">Reprovado e Retrabalhado</option>
+          </select>
+        </div>
+        <div class="mi-filter-item mi-filter-search">
+          <label for="dfFiltroPesquisa">Buscar:</label>
+          <input type="text" id="dfFiltroPesquisa" class="input-field" placeholder="Forma, modelo ou montador" />
+        </div>
+        <div class="mi-filter-item mi-filter-actions">
+          <button id="dfBtnLimparFiltros" type="button" class="mi-secondary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; border: 1px solid #cbd5e1; background: #fff; color: #475569;">Limpar</button>
+          <button id="dfBtnFiltrar" type="button" class="mi-primary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; background: #2563eb; color: #fff; border: none;">Aplicar</button>
+        </div>
+      </div>
+      <div id="dfContent"></div>
     </section>
 
     <section id="viewMontagemPostesDetalhe" class="card hidden">
@@ -1343,6 +1395,28 @@
     </div>
   </div>
 
+  <div id="concretoVibradoModal" class="modal-overlay concrete-vibrado-overlay" role="dialog" aria-modal="true" aria-labelledby="concretoVibradoTitle">
+    <div class="modal-box concrete-vibrado-box">
+      <div class="concrete-vibrado-mark" aria-hidden="true">
+        <span class="concrete-vibrado-pulse"></span>
+        <svg viewBox="0 0 64 64" width="56" height="56" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 46h28"></path>
+          <path d="M22 46V25l10-7 10 7v21"></path>
+          <path d="M28 46V33h8v13"></path>
+          <path d="M16 25h32"></path>
+          <path d="M24 16h16"></path>
+          <path d="M13 14l-5 5 5 5"></path>
+          <path d="M51 14l5 5-5 5"></path>
+        </svg>
+      </div>
+      <h2 class="modal-title concrete-vibrado-title" id="concretoVibradoTitle">CONCRETO VIBRADO</h2>
+      <div class="concrete-vibrado-actions">
+        <button class="btn concrete-vibrado-btn concrete-vibrado-yes" id="concretoVibradoSimBtn" type="button">SIM</button>
+        <button class="btn concrete-vibrado-btn concrete-vibrado-no" id="concretoVibradoNaoBtn" type="button">NÃO</button>
+      </div>
+    </div>
+  </div>
+
   <div id="visualizarChecklistModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="vcModalTitle">
     <div class="modal-box" style="width: 80%; max-width: 80%; max-height: 90vh; display: flex; flex-direction: column; padding: 24px; border-radius: 16px; overflow: hidden; text-align: left;">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px; flex-shrink: 0;">
@@ -1575,6 +1649,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v1.50"></script>
+  <script src="app.js?v=v1.55"></script>
 </body>
 </html>
