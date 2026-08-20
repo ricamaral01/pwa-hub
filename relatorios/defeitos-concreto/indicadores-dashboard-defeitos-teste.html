@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Indicadores do Dashboard Defeitos - Ambiente Teste</title>
+  <style>
+    @page { size: A4; margin: 18mm; }
+    body { font-family: Arial, Helvetica, sans-serif; color: #172033; line-height: 1.45; margin: 0; background: #fff; }
+    h1 { margin: 0 0 6px; font-size: 24px; color: #0f1e3c; }
+    h2 { margin: 24px 0 8px; font-size: 16px; color: #1d4ed8; border-bottom: 1px solid #dbeafe; padding-bottom: 5px; }
+    p, li { font-size: 12px; }
+    .meta { color: #64748b; font-size: 11px; margin-bottom: 18px; }
+    .box { border: 1px solid #d7dee9; border-radius: 8px; padding: 12px 14px; margin: 10px 0; background: #f8fafc; }
+    .formula { font-family: Consolas, monospace; background: #eef6ff; border-left: 4px solid #2563eb; padding: 8px 10px; margin: 8px 0; font-size: 12px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; font-size: 11px; }
+    th, td { border: 1px solid #d7dee9; padding: 7px; vertical-align: top; }
+    th { background: #0f1e3c; color: #fff; text-align: left; }
+    strong { color: #0f1e3c; }
+  </style>
+</head>
+<body>
+  <h1>Indicadores do Dashboard Defeitos</h1>
+  <div class="meta">Ambiente: mapa-concretagem-teste | Atualizacao: v1.55 | Data: 20/08/2026</div>
+
+  <div class="box">
+    <p><strong>Escopo da alteracao:</strong> os indicadores de defeitos do ambiente teste passam a calcular NC somente com os itens da secao <strong>Inspecao Visual</strong>. Itens de montagem ou inspecao final deixam de compor a base da Taxa de NC.</p>
+  </div>
+
+  <h2>Indicadores principais</h2>
+  <table>
+    <thead>
+      <tr><th>Indicador</th><th>Formula</th><th>Interpretacao</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Erros encontrados</td><td>Total de respostas "Reprovado/Nao" nos itens da Inspecao Visual.</td><td>Mostra o volume absoluto de NC visual no periodo filtrado.</td></tr>
+      <tr><td>Defeitos possiveis</td><td>Quantidade de postes inspecionados x quantidade de itens da Inspecao Visual aplicaveis.</td><td>E a nova base reduzida da Taxa de NC.</td></tr>
+      <tr><td>Taxa de NC</td><td>Total de erros encontrados / Total de defeitos possiveis.</td><td>Mede a proporcao de itens visuais nao conformes dentro da checklist visual.</td></tr>
+      <tr><td>Indice de reprovacao</td><td>Postes com ao menos uma NC visual / Postes inspecionados.</td><td>Mede a proporcao de postes avaliados que apresentaram algum defeito visual.</td></tr>
+      <tr><td>Postes Reprovados</td><td>Postes com status final Reprovado / Total de postes produzidos.</td><td>Mede a reprovacao final em relacao ao volume produzido no periodo.</td></tr>
+      <tr><td>Taxa retrabalho</td><td>Postes com status Retrabalhado / Postes inspecionados.</td><td>Mede a participacao de postes retrabalhados entre os avaliados.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Formulas resumidas</h2>
+  <div class="formula">Taxa de NC = erros visuais encontrados / itens visuais possiveis</div>
+  <div class="formula">Indice de reprovacao = postes com pelo menos uma NC visual / postes inspecionados</div>
+  <div class="formula">Postes Reprovados = postes com status final Reprovado / postes produzidos</div>
+
+  <h2>Observacao sobre o banco</h2>
+  <p>Pela configuracao atual do front-end, <strong>mapa-concretagem-teste</strong> e <strong>mapa-concretagem</strong> usam o mesmo projeto Supabase: <strong>fbvvdyirhtgvycullsqy.supabase.co</strong>. Portanto, o ambiente teste esta separado na tela/codigo, mas nao em um banco Supabase diferente.</p>
+</body>
+</html>
