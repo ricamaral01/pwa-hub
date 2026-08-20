@@ -10135,11 +10135,11 @@ function init() {
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v5.8");
+        window.location.replace(window.location.pathname + "?cache-reset=v5.9");
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.8").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.9").then((reg) => {
       activateWaitingWorker(reg);
       reg.addEventListener("updatefound", () => {
         const worker = reg.installing;
@@ -12107,7 +12107,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.8&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.9&ts=${Date.now()}`);
       }
     });
   }
@@ -12127,6 +12127,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.8";
+  badge.textContent = "v5.9";
   badge.style.display = "inline-block";
 }
