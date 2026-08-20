@@ -1,4 +1,4 @@
-const STORAGE_KEY = "pwa_liberacao_inspecao_v1";
+﻿const STORAGE_KEY = "pwa_liberacao_inspecao_v1";
 const SUBMIT_LOCKS_KEY = "pwa_liberacao_submit_locks_v1";
 const CLICKED_FORMS_KEY = "pwa_formas_clicadas_hoje";
 const MONTAGEM_POSTES_KEY = "pwa_montagem_postes_v1";
@@ -109,6 +109,21 @@ function getConcreteTypeForForma(forma, setor) {
   const db = readDb();
   const record = findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
   return record?.concretoTipo || null;
+}
+
+function getProductionRecordForForma(forma, setor) {
+  const dataFabricacao = el.libData?.value || todayYmd();
+  const db = readDb();
+  return findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
+}
+
+function formatFormaConcreteBadge(record) {
+  const parts = [];
+  if (record?.concretoTipo) parts.push(record.concretoTipo);
+  if (typeof record?.vibrado === "boolean") {
+    parts.push(`Vibrado: ${record.vibrado ? "Sim" : "Não"}`);
+  }
+  return parts.join("\n");
 }
 
 function getClickedFormsToday() {
@@ -887,6 +902,9 @@ const el = {
   concretoTipoSubtitle: document.getElementById("concretoTipoSubtitle"),
   concretoTipoOptions: document.getElementById("concretoTipoOptions"),
   concretoTipoCancelBtn: document.getElementById("concretoTipoCancelBtn"),
+  concretoVibradoModal: document.getElementById("concretoVibradoModal"),
+  concretoVibradoSimBtn: document.getElementById("concretoVibradoSimBtn"),
+  concretoVibradoNaoBtn: document.getElementById("concretoVibradoNaoBtn"),
 
   libData: document.getElementById("libData"),
   libColaborador: document.getElementById("libColaborador"),
@@ -1321,7 +1339,15 @@ async function saveProducaoByNaturalKey(row) {
       .from('producao')
       .update(row)
       .eq('id', current.id);
-    if (updateError) throw updateError;
+    if (updateError) {
+      if (!isSupabaseMissingColumnError(updateError)) throw updateError;
+      const { vibrado, ...legacyRow } = row;
+      const { error: legacyUpdateError } = await supabaseClient
+        .from('producao')
+        .update(legacyRow)
+        .eq('id', current.id);
+      if (legacyUpdateError) throw legacyUpdateError;
+    }
 
     if (duplicates.length) {
       await supabaseClient
@@ -1333,7 +1359,12 @@ async function saveProducaoByNaturalKey(row) {
   }
 
   const { error: insertError } = await supabaseClient.from('producao').insert(row);
-  if (insertError) throw insertError;
+  if (insertError) {
+    if (!isSupabaseMissingColumnError(insertError)) throw insertError;
+    const { vibrado, ...legacyRow } = row;
+    const { error: legacyInsertError } = await supabaseClient.from('producao').insert(legacyRow);
+    if (legacyInsertError) throw legacyInsertError;
+  }
 }
 
 async function checkApiStatus() {
@@ -1404,6 +1435,7 @@ async function postToApi(action, payload) {
           descricao_poste: payload.descricao_poste || null,
           codigo_produto: payload.codigo_produto || null,
           tipo_concreto: payload.tipo_concreto || 'Padrão',
+          vibrado: payload.vibrado,
           colaborador: payload.colaborador,
           data_hora: dtStr,
           status: 'LIBERADO'
@@ -2023,9 +2055,9 @@ function createFormaCard(item, setor) {
   };
 
   if (isFormaClicked(item.forma, setor)) {
-    const tipo = getConcreteTypeForForma(item.forma, setor);
-    if (tipo) {
-      tipoEl.textContent = tipo;
+    const badgeText = formatFormaConcreteBadge(getProductionRecordForForma(item.forma, setor));
+    if (badgeText) {
+      tipoEl.textContent = badgeText;
       tipoEl.style.display = "block";
     }
     setCardState(card, "saved");
@@ -2994,6 +3026,7 @@ async function fetchFormStatusRowsFromTables(data) {
       Object.assign(ensureRow(row.setor, row.forma), {
         prod_id: row.id || true,
         prod_tipo_concreto: row.tipo_concreto || "Padrão",
+        prod_vibrado: row.vibrado ?? null,
         prod_colaborador: row.colaborador || "",
         prod_data_hora: row.data_hora || row.created_at || null
       });
@@ -3030,6 +3063,9 @@ async function loadClickedFormsFromSupabase(dateOverride) {
           let tipoConcreto = 'Padrão';
           let colaborador = row.lib_colaborador || '';
           let dataHora = row.lib_data_hora || nowIso();
+          const hasVibradoFromRow = Object.prototype.hasOwnProperty.call(row, "prod_vibrado")
+            || Object.prototype.hasOwnProperty.call(row, "vibrado");
+          let vibrado = hasVibradoFromRow ? (row.prod_vibrado ?? row.vibrado ?? null) : undefined;
 
           if (row.prod_id && row.prod_tipo_concreto !== 'Padrão') {
             statusVal = '1';
@@ -3062,6 +3098,7 @@ async function loadClickedFormsFromSupabase(dateOverride) {
               setor: row.setor,
               formaNumero: normalizeUpper(row.forma),
               concretoTipo: tipoConcreto,
+              vibrado: vibrado ?? null,
               createdAt: nowIso(),
               updatedAt: nowIso(),
               liberacao: { status: statusVal, timestamp: dataHora, colaborador: colaborador },
@@ -3069,8 +3106,9 @@ async function loadClickedFormsFromSupabase(dateOverride) {
             };
             upsertRecord(db, record);
             dbUpdated = true;
-          } else if (!record.liberacao || record.liberacao.status !== statusVal || record.concretoTipo !== tipoConcreto) {
+          } else if (!record.liberacao || record.liberacao.status !== statusVal || record.concretoTipo !== tipoConcreto || (hasVibradoFromRow && record.vibrado !== vibrado)) {
             record.concretoTipo = tipoConcreto;
+            if (hasVibradoFromRow) record.vibrado = vibrado;
             record.liberacao = record.liberacao || { status: statusVal, timestamp: nowIso() };
             record.liberacao.status = statusVal;
             record.liberacao.timestamp = dataHora;
@@ -3435,16 +3473,63 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
   `).join("");
 
   el.concretoTipoOptions.querySelectorAll(".btn-concreto-rich").forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const tipo = String(btn.dataset.tipo || "").trim();
       if (tipo) {
         closeConcreteTypePopup();
-        salvarFormaClicada(forma, setor, card, modelo, tipo);
+        const vibrado = await getVibradoValueForConcreteSelection(setor, tipo);
+        await salvarFormaClicada(forma, setor, card, modelo, tipo, vibrado);
       }
     });
   });
 
   el.concretoTipoModal.classList.add("modal-visible");
+}
+
+function isConcretoPadraoTipo(tipo) {
+  const normalized = String(tipo || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase();
+  return normalized === "CONCRETO PADRAO" || normalized === "PADRAO";
+}
+
+async function getVibradoValueForConcreteSelection(setor, concretoTipo) {
+  if (setor !== "Setor 3" || !isConcretoPadraoTipo(concretoTipo)) return null;
+  return showConcretoVibradoModal();
+}
+
+function showConcretoVibradoModal() {
+  const modal = el.concretoVibradoModal;
+  const simBtn = el.concretoVibradoSimBtn;
+  const naoBtn = el.concretoVibradoNaoBtn;
+  if (!modal || !simBtn || !naoBtn) return Promise.resolve(false);
+
+  return new Promise((resolve) => {
+    const close = (value) => {
+      modal.classList.remove("modal-visible");
+      simBtn.removeEventListener("click", onSim);
+      naoBtn.removeEventListener("click", onNao);
+      modal.removeEventListener("click", onOverlay);
+      document.removeEventListener("keydown", onKeydown);
+      resolve(value);
+    };
+    const onSim = () => close(true);
+    const onNao = () => close(false);
+    const onOverlay = (event) => {
+      if (event.target === modal) close(false);
+    };
+    const onKeydown = (event) => {
+      if (event.key === "Escape") close(false);
+    };
+
+    simBtn.addEventListener("click", onSim);
+    naoBtn.addEventListener("click", onNao);
+    modal.addEventListener("click", onOverlay);
+    document.addEventListener("keydown", onKeydown);
+    modal.classList.add("modal-visible");
+    simBtn.focus();
+  });
 }
 
 async function liberarFormaClicada(forma, setor, card, modelo) {
@@ -3481,6 +3566,14 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
   };
 
   const apiResult = await postToApi("salvar_forma_click", payload);
+
+  const updateCardBadge = () => {
+    const tipoEl = card.querySelector?.(".fc-tipo");
+    if (!tipoEl) return;
+    const badgeText = formatFormaConcreteBadge({ concretoTipo, vibrado });
+    tipoEl.textContent = badgeText;
+    tipoEl.style.display = badgeText ? "block" : "none";
+  };
 
   const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
   if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
@@ -3559,7 +3652,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
   }
 }
 
-async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Concreto Padrão") {
+async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Concreto Padrão", vibrado = null) {
   setCardState(card, "saving");
 
   const agora = new Date();
@@ -3586,12 +3679,21 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     colaborador,
     modelo: modeloFinal,
     tipo_concreto: concretoTipo,
+    vibrado,
     codigo_poste: resolvedPosteFields.codigoPoste,
     descricao_poste: resolvedPosteFields.descricaoPoste,
     codigo_produto: resolvedPosteFields.codigoProduto
   };
 
   const apiResult = await postToApi("salvar_forma_click", payload);
+
+  const updateCardBadge = () => {
+    const tipoEl = card.querySelector?.(".fc-tipo");
+    if (!tipoEl) return;
+    const badgeText = formatFormaConcreteBadge({ concretoTipo, vibrado });
+    tipoEl.textContent = badgeText;
+    tipoEl.style.display = badgeText ? "block" : "none";
+  };
 
   const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
   if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
@@ -3608,6 +3710,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
         descricaoPoste: resolvedPosteFields.descricaoPoste,
         codigoProduto: resolvedPosteFields.codigoProduto,
         concretoTipo,
+        vibrado,
         createdAt: nowIso(),
         updatedAt: nowIso(),
         liberacao: null,
@@ -3615,6 +3718,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
       };
     }
     record.concretoTipo = concretoTipo;
+    record.vibrado = vibrado;
     record.codigoPoste = resolvedPosteFields.codigoPoste;
     record.descricaoPoste = resolvedPosteFields.descricaoPoste;
     record.codigoProduto = resolvedPosteFields.codigoProduto;
@@ -3635,6 +3739,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
       descricaoPoste: record.descricaoPoste || "",
       codigoProduto: record.codigoProduto || "",
       tipoConcreto: concretoTipo,
+      vibrado,
       colaborador,
       timestamp: record.liberacao?.timestamp || nowIso(),
       fotosCount: 0,
@@ -3648,12 +3753,14 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
+    updateCardBadge();
     updateSectorCounters();
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
+    updateCardBadge();
     updateSectorCounters();
     setSyncStatus("warn", "API não configurada. Forma salva localmente.");
     showLibFeedback(`${forma} — salvo localmente.`, "ok");
@@ -3661,6 +3768,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     // Falha de rede: salva localmente mas marca como pendente de sync
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
+    updateCardBadge();
     updateSectorCounters();
     setSyncStatus("warn", `Forma ${forma} salva localmente (sem sinal de rede).`);
     showLibFeedback(`${forma} — salvo localmente (offline)`, "warn");
@@ -8786,6 +8894,7 @@ async function syncOfflineData() {
             colaborador: ev.colaborador,
             modelo: ev.modelo || "",
             tipo_concreto: ev.tipoConcreto || "Padrão",
+            vibrado: ev.vibrado ?? null,
             codigo_poste: ev.codigoPoste || null,
             descricao_poste: ev.descricaoPoste || null,
             codigo_produto: ev.codigoProduto || null,
@@ -10135,11 +10244,11 @@ function init() {
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v5.8");
+        window.location.replace(window.location.pathname + "?cache-reset=v5.9");
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.8").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.9").then((reg) => {
       activateWaitingWorker(reg);
       reg.addEventListener("updatefound", () => {
         const worker = reg.installing;
@@ -12107,7 +12216,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.8&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.9&ts=${Date.now()}`);
       }
     });
   }
@@ -12127,6 +12236,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.8";
+  badge.textContent = "v5.9";
   badge.style.display = "inline-block";
 }

@@ -1248,7 +1248,116 @@ body.mode-inspecao .container {
   color: #64748b;
   margin-bottom: 22px;
 }
-.modal-stats {
+.concrete-vibrado-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(2, 6, 23, 0.74);
+  backdrop-filter: blur(6px);
+}
+
+.concrete-vibrado-overlay.modal-visible {
+  display: flex;
+}
+
+.concrete-vibrado-box {
+  width: min(390px, calc(100vw - 36px));
+  max-width: 390px;
+  padding: 30px 28px 26px;
+  border: 1px solid rgba(148, 163, 184, 0.34);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98), #ffffff),
+    radial-gradient(circle at 50% 0%, rgba(15, 23, 42, 0.08), transparent 42%),
+    #ffffff;
+  box-shadow: 0 28px 80px rgba(2, 6, 23, 0.38);
+  text-align: center;
+  white-space: pre-line;
+  line-height: 1.25;
+}
+
+.concrete-vibrado-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 20px;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #f8fafc, #e2e8f0);
+}
+
+.concrete-vibrado-pulse {
+  position: absolute;
+  inset: 10px;
+  border: 2px solid rgba(239, 68, 68, 0.18);
+  border-radius: 50%;
+}
+
+.concrete-vibrado-title {
+  margin: 0 0 24px;
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  color: #0f172a;
+  line-height: 1.15;
+}
+
+.concrete-vibrado-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.concrete-vibrado-btn {
+  min-height: 54px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14);
+  transition: transform 0.16s ease, filter 0.16s ease, box-shadow 0.16s ease;
+}
+
+.concrete-vibrado-btn:hover,
+.concrete-vibrado-btn:focus {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+  box-shadow: 0 15px 28px rgba(15, 23, 42, 0.18);
+}
+
+.concrete-vibrado-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+}
+
+.concrete-vibrado-yes {
+  background: linear-gradient(180deg, #ef4444, #b91c1c);
+}
+
+.concrete-vibrado-no {
+  background: linear-gradient(180deg, #22c55e, #15803d);
+}
+
+@media (max-width: 420px) {
+  .concrete-vibrado-box {
+    padding: 26px 20px 22px;
+  }
+
+  .concrete-vibrado-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal-stats {
   display: flex;
   flex-direction: column;
   gap: 10px;
