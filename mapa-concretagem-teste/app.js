@@ -3679,6 +3679,16 @@ function normalizeForma(s) {
   return s;
 }
 
+function withTimeout(promise, timeoutMs, fallbackValue) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((resolve) => {
+      timer = setTimeout(() => resolve(fallbackValue), timeoutMs);
+    })
+  ]).finally(() => clearTimeout(timer));
+}
+
 async function fetchSetor3Models(filtroData) {
   // 1. Tentar primeiro a API oficial do PCP Concrefer
   try {
@@ -3764,39 +3774,45 @@ async function fetchPolesForDate(filtroData, setor = "") {
   if (!hasApiConfigured()) return [];
 
   try {
-    let formToModelMap = {};
-    if (!setor || setor === "Setor 3" || setor === "Setor 4") {
-      formToModelMap = await fetchSetor3Models(filtroData);
-    }
+    const setoresFiltro = setor ? [setor] : ['Setor 3', 'Setor 4'];
+    const shouldLoadModels = !setor || setor === "Setor 3" || setor === "Setor 4";
+    const modelsPromise = shouldLoadModels
+      ? withTimeout(fetchSetor3Models(filtroData), 2500, {}).catch((err) => {
+          console.warn("[fetchPolesForDate] Modelos Setor 3 indisponiveis:", err);
+          return {};
+        })
+      : Promise.resolve({});
 
-    // 1. Fetch from producao table in Supabase
-    // 1. Fetch from producao table in Supabase (restrito a Setor 3 e Setor 4)
-    let queryProd = supabaseClient
-      .from('producao')
-      .select('*')
-      .eq('data_fabricacao', filtroData)
-      .eq('status', 'LIBERADO');
-    if (setor) {
-      queryProd = queryProd.eq('setor', setor);
-    } else {
-      queryProd = queryProd.in('setor', ['Setor 3', 'Setor 4']);
-    }
-    const { data: producaoRows, error: err1 } = await queryProd;
-    if (err1) throw err1;
+    const [formToModelMap, producaoRes, montagemRes] = await Promise.all([
+      modelsPromise,
+      carregarLinhasSupabaseComCache({
+        cacheKey: `montagem-postes:producao:${filtroData}:${setoresFiltro.join(",")}`,
+        table: "producao",
+        select: "*",
+        orderBy: "data_hora",
+        orderOptions: { ascending: false },
+        applyFilters: query => query
+          .eq('data_fabricacao', filtroData)
+          .in('setor', setoresFiltro)
+      }),
+      carregarLinhasSupabaseComCache({
+        cacheKey: `montagem-postes:montagem_poste:${filtroData}:${setoresFiltro.join(",")}`,
+        table: "montagem_poste",
+        select: "*",
+        orderBy: "finalizado_em",
+        orderOptions: { ascending: false, nullsFirst: false },
+        applyFilters: query => query
+          .eq('data_fabricacao', filtroData)
+          .in('setor', setoresFiltro)
+      })
+    ]);
 
-    // 2. Fetch from montagem_poste table in Supabase
-    // 2. Fetch from montagem_poste table in Supabase (restrito a Setor 3 e Setor 4)
-    let queryMont = supabaseClient
-      .from('montagem_poste')
-      .select('*')
-      .eq('data_fabricacao', filtroData);
-    if (setor) {
-      queryMont = queryMont.eq('setor', setor);
-    } else {
-      queryMont = queryMont.in('setor', ['Setor 3', 'Setor 4']);
-    }
-    const { data: montagemRows, error: err2 } = await queryMont;
-    if (err2) throw err2;
+    const producaoRows = (producaoRes.rows || []).filter((row) => {
+      const status = String(row.status || "").toUpperCase();
+      const tipoConcreto = String(row.tipo_concreto || "").trim();
+      return status === "LIBERADO" || status === "CONCRETADO" || !!tipoConcreto;
+    });
+    const montagemRows = montagemRes.rows || [];
 
     // 3. Deduplicate producaoRows by form name, keeping the latest row
     const formsMap = {};
@@ -10114,7 +10130,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.45");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.47");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10124,7 +10140,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.45").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.47").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11285,7 +11301,7 @@ function renderizarTabelaMontagemPaginada() {
   document.getElementById("miPaginacaoTotal").textContent = totalRegistros;
 
   if (totalRegistros === 0) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</td></tr>';
     const cardsContainer = document.getElementById("miCardsContainer");
     if (cardsContainer) cardsContainer.innerHTML = '<div style="text-align: center; color: #64748b; padding: 25px;">Nenhum registro encontrado para os filtros selecionados.</div>';
     document.getElementById("miPaginacaoDe").textContent = "0";
@@ -11384,7 +11400,6 @@ function renderizarTabelaMontagemPaginada() {
         <td style="padding: 10px; text-align: center; font-size: 0.8rem; color: #475569;">${fim}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem; font-weight: 600;">${tempoText}</td>
         <td style="padding: 10px; text-align: center;">${statusHtml}</td>
-        <td style="padding: 10px; text-align: center; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${rejeitadosHtml}</td>
         <td style="padding: 10px; text-align: center; font-size: 0.85rem;">${row.montador_nome || ""}</td>
       </tr>
     `;
@@ -11447,9 +11462,6 @@ function renderizarTabelaMontagemPaginada() {
             <div><strong>Duração:</strong> ${tempoText}</div>
             <div><strong>Período:</strong> ${inicio} - ${fim}</div>
             <div><strong>Montador:</strong> ${row.montador_nome || ""}</div>
-            <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #e2e8f0; display: flex; align-items: center; gap: 8px;">
-              <strong>Itens Rejeitados:</strong> ${rejeitadosHtml}
-            </div>
           </div>
         </div>
       `;

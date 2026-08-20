@@ -9,7 +9,7 @@
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=v1.45" />
+  <link rel="stylesheet" href="styles.css?v=v1.47" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1003,7 +1003,6 @@
         <button class="mi-tab-btn active" data-tab="resumo" type="button">Resumo</button>
         <button class="mi-tab-btn" data-tab="producao" type="button">Producao</button>
         <button class="mi-tab-btn" data-tab="qualidade" type="button">Qualidade</button>
-        <button class="mi-tab-btn" data-tab="defeitos" type="button">Defeitos / Retrabalho</button>
         <button class="mi-tab-btn" data-tab="produtividade" type="button">Produtividade</button>
         <button class="mi-tab-btn mi-montagem-only" data-tab="montagemDia" type="button">Visao geral montagem</button>
       </div>
@@ -1015,7 +1014,6 @@
           <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Atingimento</span><span class="mi-kpi-val" id="miAtingimentoPct">-%</span></div>
           <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Producao do dia</span><span class="mi-kpi-val" id="miProducaoDia">-</span></div>
           <div class="mi-kpi-card mi-kpi-aprovados"><span class="mi-kpi-label">Aprovados</span><span class="mi-kpi-val" id="miTotalAprovados">-</span></div>
-          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Recusados</span><span class="mi-kpi-val" id="miTotalRecusados">-</span></div>
         </div>
         <div class="mi-section-heading">Comparativo: produzidos vs montados</div>
         <div class="mi-charts-row">
@@ -1026,7 +1024,7 @@
 
       <div id="miSecaoProducao" class="mi-tab-section">
         <div class="mi-charts-row"><div class="mi-chart-card mi-chart-card-wide"><div class="mi-chart-title">Postes inspecionados por dia</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorDia"></canvas></div></div></div>
-        <div class="mi-listagem-wrap"><div class="mi-list-header"><h3>Montagens realizadas</h3><span>Total: <span id="miTabelaTotal">0</span> registros</span></div><div class="mi-table-responsive"><table class="sheet-table mi-table"><thead><tr><th onclick="ordenarMiTabela('data_fabricacao')" style="width: 90px; text-align: center;">Data Prod. <span id="sort_icon_data_fabricacao"></span></th><th onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th><th onclick="ordenarMiTabela('forma_numero')" style="width: 70px; text-align: center;">Forma <span id="sort_icon_forma_numero"></span></th><th onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th><th onclick="ordenarMiTabela('inicio_inspecao_montagem')">Inicio <span id="sort_icon_inicio_inspecao_montagem"></span></th><th onclick="ordenarMiTabela('finalizado_em')">Fim <span id="sort_icon_finalizado_em"></span></th><th onclick="ordenarMiTabela('tempo_inspecao')">Duracao <span id="sort_icon_tempo_inspecao"></span></th><th onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th><th style="width: 180px; text-align: center;">Itens Rej.</th><th onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th></tr></thead><tbody id="miTabelaBody"><tr><td colspan="10">Carregando dados...</td></tr></tbody></table></div><div id="miCardsContainer" class="mi-cards-mobile-list"></div><div class="mi-pagination"><div class="mi-pagination-info">Mostrando <span id="miPaginacaoDe">0</span>-<span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span></div><div class="mi-pagination-buttons" id="miPaginacaoBotoes"></div></div></div>
+        <div class="mi-listagem-wrap"><div class="mi-list-header"><h3>Montagens realizadas</h3><span>Total: <span id="miTabelaTotal">0</span> registros</span></div><div class="mi-table-responsive"><table class="sheet-table mi-table"><thead><tr><th onclick="ordenarMiTabela('data_fabricacao')" style="width: 90px; text-align: center;">Data Prod. <span id="sort_icon_data_fabricacao"></span></th><th onclick="ordenarMiTabela('setor')">Setor <span id="sort_icon_setor"></span></th><th onclick="ordenarMiTabela('forma_numero')" style="width: 70px; text-align: center;">Forma <span id="sort_icon_forma_numero"></span></th><th onclick="ordenarMiTabela('modelo')">Modelo <span id="sort_icon_modelo"></span></th><th onclick="ordenarMiTabela('inicio_inspecao_montagem')">Inicio <span id="sort_icon_inicio_inspecao_montagem"></span></th><th onclick="ordenarMiTabela('finalizado_em')">Fim <span id="sort_icon_finalizado_em"></span></th><th onclick="ordenarMiTabela('tempo_inspecao')">Duracao <span id="sort_icon_tempo_inspecao"></span></th><th onclick="ordenarMiTabela('status_montagem')">Status <span id="sort_icon_status_montagem"></span></th><th onclick="ordenarMiTabela('montador_nome')">Montador <span id="sort_icon_montador_nome"></span></th></tr></thead><tbody id="miTabelaBody"><tr><td colspan="9">Carregando dados...</td></tr></tbody></table></div><div id="miCardsContainer" class="mi-cards-mobile-list"></div><div class="mi-pagination"><div class="mi-pagination-info">Mostrando <span id="miPaginacaoDe">0</span>-<span id="miPaginacaoA">0</span> de <span id="miPaginacaoTotal">0</span></div><div class="mi-pagination-buttons" id="miPaginacaoBotoes"></div></div></div>
       </div>
 
       <div id="miSecaoQualidade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Inspecoes por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorSetor"></canvas></div></div><div class="mi-chart-card"><div class="mi-chart-title">Ranking por montador</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorMontador"></canvas></div></div></div></div>
@@ -1587,6 +1585,6 @@
   <script src="../assets/msgbox.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v1.45"></script>
+  <script src="app.js?v=v1.47"></script>
 </body>
 </html>
