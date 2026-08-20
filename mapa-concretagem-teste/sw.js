@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.48: separa dashboards de montagem e defeitos
+   v1.49: adiciona vibrado no concreto padrao do Setor 3
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.48";
+const CACHE_NAME = "mapa-concretagem-teste-v1.49";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
