@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v39-auth-suspended";
+const CACHE = "ct-hub-v40-mapa-teste-bypass";
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -97,6 +97,9 @@ self.addEventListener("fetch", (event) => {
 
   // Nunca cachear chamadas externas de CDN (html5-qrcode etc.)
   if (url.origin !== location.origin) return;
+
+  // O mapa de concretagem teste tem service worker proprio e precisa validar versoes sem interferencia do hub.
+  if (url.pathname.includes("/mapa-concretagem-teste/")) return;
 
   // HTML / navegação → network-first (sempre pega a versão mais recente)
   if (event.request.mode === "navigate" || url.pathname.endsWith(".html")) {

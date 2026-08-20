@@ -10152,7 +10152,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.49");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.50");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10162,7 +10162,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.49").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.50").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11922,6 +11922,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v4.54";
+  badge.textContent = "v1.50";
   badge.style.display = "inline-block";
 }
