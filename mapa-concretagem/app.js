@@ -10135,11 +10135,11 @@ function init() {
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v5.7");
+        window.location.replace(window.location.pathname + "?cache-reset=v5.8");
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.7").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.8").then((reg) => {
       activateWaitingWorker(reg);
       reg.addEventListener("updatefound", () => {
         const worker = reg.installing;
@@ -12088,6 +12088,7 @@ async function updateSwVersionBadge() {
     badge.dataset.listenerBound = "true";
     badge.addEventListener("click", async () => {
       if (confirm("Deseja forçar a atualização deste aplicativo para a versão mais recente?")) {
+        badge.textContent = "Atualizando...";
         if (navigator.serviceWorker) {
           try {
             const registrations = await navigator.serviceWorker.getRegistrations();
@@ -12096,7 +12097,17 @@ async function updateSwVersionBadge() {
             }
           } catch(e) {}
         }
-        window.location.reload(true);
+        if ("caches" in window) {
+          try {
+            const keys = await caches.keys();
+            await Promise.all(
+              keys
+                .filter((key) => key.includes("mapa-concretagem"))
+                .map((key) => caches.delete(key))
+            );
+          } catch(e) {}
+        }
+        window.location.replace(`./index.html?cache-reset=v5.8&ts=${Date.now()}`);
       }
     });
   }
@@ -12116,6 +12127,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v4.54";
+  badge.textContent = "v5.8";
   badge.style.display = "inline-block";
 }
