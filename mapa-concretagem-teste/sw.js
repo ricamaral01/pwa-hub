@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.45: remove caches antigos e desativa o SW no ambiente teste
+   v1.47: remove caches antigos e desativa o SW no ambiente teste
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.45";
+const CACHE_NAME = "mapa-concretagem-teste-v1.47";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
