@@ -111,6 +111,21 @@ function getConcreteTypeForForma(forma, setor) {
   return record?.concretoTipo || null;
 }
 
+function getProductionRecordForForma(forma, setor) {
+  const dataFabricacao = el.libData?.value || todayYmd();
+  const db = readDb();
+  return findRecordByKey(db, dataFabricacao, setor, normalizeUpper(forma));
+}
+
+function formatFormaConcreteBadge(record) {
+  const parts = [];
+  if (record?.concretoTipo) parts.push(record.concretoTipo);
+  if (typeof record?.vibrado === "boolean") {
+    parts.push(`Vibrado: ${record.vibrado ? "Sim" : "Não"}`);
+  }
+  return parts.join("\n");
+}
+
 function getClickedFormsToday() {
   const raw = localStorage.getItem(CLICKED_FORMS_KEY);
   if (!raw) return { dia: "", formas: {} };
@@ -2022,9 +2037,9 @@ function createFormaCard(item, setor) {
   };
 
   if (isFormaClicked(item.forma, setor)) {
-    const tipo = getConcreteTypeForForma(item.forma, setor);
-    if (tipo) {
-      tipoEl.textContent = tipo;
+    const badgeText = formatFormaConcreteBadge(getProductionRecordForForma(item.forma, setor));
+    if (badgeText) {
+      tipoEl.textContent = badgeText;
       tipoEl.style.display = "block";
     }
     setCardState(card, "saved");
@@ -3534,6 +3549,14 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
 
   const apiResult = await postToApi("salvar_forma_click", payload);
 
+  const updateCardBadge = () => {
+    const tipoEl = card.querySelector?.(".fc-tipo");
+    if (!tipoEl) return;
+    const badgeText = formatFormaConcreteBadge({ concretoTipo, vibrado });
+    tipoEl.textContent = badgeText;
+    tipoEl.style.display = badgeText ? "block" : "none";
+  };
+
   const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
   if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
     const db = readDb();
@@ -3704,12 +3727,14 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
+    updateCardBadge();
     updateSectorCounters();
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
+    updateCardBadge();
     updateSectorCounters();
     setSyncStatus("warn", "API não configurada. Forma salva localmente.");
     showLibFeedback(`${forma} — salvo localmente.`, "ok");
@@ -3717,6 +3742,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     // Falha de rede: salva localmente mas marca como pendente de sync
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
+    updateCardBadge();
     updateSectorCounters();
     setSyncStatus("warn", `Forma ${forma} salva localmente (sem sinal de rede).`);
     showLibFeedback(`${forma} — salvo localmente (offline)`, "warn");
@@ -10205,7 +10231,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.53");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.54");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10215,7 +10241,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.53").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.54").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12379,6 +12405,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.53";
+  badge.textContent = "v1.54";
   badge.style.display = "inline-block";
 }

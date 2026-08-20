@@ -2,7 +2,7 @@
   "name": "Mapa de Concretagem",
   "short_name": "Mapa Concretagem",
   "description": "Painel de Planejamento, Liberação e Controle de Concretagem",
-  "start_url": "index.html?cache-reset=v1.53",
+  "start_url": "index.html?cache-reset=v1.54",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",

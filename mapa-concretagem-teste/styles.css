@@ -1376,6 +1376,8 @@ body.mode-inspecao .container {
     #ffffff;
   box-shadow: 0 28px 80px rgba(2, 6, 23, 0.38);
   text-align: center;
+  white-space: pre-line;
+  line-height: 1.25;
 }
 
 .concrete-vibrado-mark {

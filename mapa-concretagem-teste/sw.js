@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.53: refatora modal de concreto vibrado
+   v1.54: exibe vibrado no badge da forma concretada
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.53";
+const CACHE_NAME = "mapa-concretagem-teste-v1.54";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
