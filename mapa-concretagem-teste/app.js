@@ -10231,7 +10231,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.55");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.56");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10241,7 +10241,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.55").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.56").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10747,6 +10747,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
         ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesComDefeito} de ${indicadores.postes} postes avaliados`, "red")}
         ${defV4Metric("Taxa de não conformidade", formatPct(taxaNc), `${indicadores.totalErros} NC em ${fmtNumber(indicadores.totalPossivel)} itens · meta <= 2%`, metaClass(taxaNc, 2))}
         ${defV4Metric("Cobertura de inspeção", formatPct(cobertura), `${indicadores.postes} avaliados de ${indicadores.producao} produzidos`, "orange")}
+        ${defV4Metric("Postes reprovados (segregados)", formatPct(taxaPostesReprovados), `${indicadores.postesReprovados} de ${indicadores.producao} produzidos`, "bad")}
         ${defV4Metric("Taxa de retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes} avaliados · meta <= 5%`, metaClass(taxaRetrabalho, 5))}
       </div>
       <div class="def-v4-mini-grid">
@@ -10772,6 +10773,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
         ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesComDefeito} de ${indicadores.postes} avaliados`, "red")}
         ${defV4Metric("Taxa de não conformidade", formatPct(taxaNc), `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)} · meta <= 2%`, metaClass(taxaNc, 2))}
         ${defV4Metric("Cobertura de inspeção", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao} produzidos`, "orange")}
+        ${defV4Metric("Postes reprovados (segregados)", formatPct(taxaPostesReprovados), `${indicadores.postesReprovados} de ${indicadores.producao} produzidos`, "bad")}
         ${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes} · meta <= 5%`, metaClass(taxaRetrabalho, 5))}
       </div>
       <div class="def-v4-mini-grid">${defV4Mini("DPU", dpu)}${defV4Mini("Postes Reprovados", formatPct(taxaPostesReprovados))}${defV4Mini("Custo retrabalho", "—")}${defV4Mini("Produção", indicadores.producao)}</div>
@@ -10780,7 +10782,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
     </div>
     <div class="def-v4-view def-v4-mobile">
       ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesComDefeito} de ${indicadores.postes} postes avaliados`, "red hero")}
-      <div class="def-v4-grid-2">${defV4Metric("Taxa NC", formatPct(taxaNc), `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}`, metaClass(taxaNc, 2))}${defV4Metric("Cobertura", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao}`, "orange")}${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes}`, metaClass(taxaRetrabalho, 5))}${defV4Metric("DPU", dpu, "defeitos/poste", "neutral")}</div>
+      <div class="def-v4-grid-2">${defV4Metric("Taxa NC", formatPct(taxaNc), `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}`, metaClass(taxaNc, 2))}${defV4Metric("Postes reprovados (segregados)", formatPct(taxaPostesReprovados), `${indicadores.postesReprovados} de ${indicadores.producao}`, "bad")}${defV4Metric("Cobertura", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao}`, "orange")}${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes}`, metaClass(taxaRetrabalho, 5))}</div>
       <div class="def-v4-mini-grid">${defV4Mini("Postes Reprovados", formatPct(taxaPostesReprovados))}${defV4Mini("Custo retrabalho", "—")}</div>
       ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, true)}
       <section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(5)}</div></section>
@@ -10791,9 +10793,9 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
         <div class="def-v4-card def-v4-metric red"><span>Índice de reprovação</span><strong id="defV4TvReprov">${formatPct(indiceReprovacao)}</strong><small id="defV4TvReprovSub">${indicadores.postesComDefeito} de ${indicadores.postes}</small></div>
         <div class="def-v4-card def-v4-metric ${metaClass(taxaNc, 2)}"><span>Taxa NC</span><strong id="defV4TvNc">${formatPct(taxaNc)}</strong><small id="defV4TvNcSub">${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}</small></div>
         <div class="def-v4-card def-v4-metric orange"><span>Cobertura</span><strong id="defV4TvCobertura">${formatPct(cobertura)}</strong><small id="defV4TvCoberturaSub">${indicadores.postes} de ${indicadores.producao}</small></div>
-        ${defV4Metric("Fissura circular", fissuraCircularLabel, "Histórico consolidado indisponível", "green")}
+        <div class="def-v4-card def-v4-metric bad"><span>Postes reprovados (segregados)</span><strong id="defV4TvSegregados">${formatPct(taxaPostesReprovados)}</strong><small id="defV4TvSegregadosSub">${indicadores.postesReprovados} de ${indicadores.producao}</small></div>
       </div>
-      <div class="def-v4-tv-mini-line">Postes Reprovados: <strong id="defV4TvNc100">${formatPct(taxaPostesReprovados)}</strong></div>
+      <div class="def-v4-tv-mini-line">Fissura circular: <strong>${escapeHtml(fissuraCircularLabel)}</strong></div>
       <div class="def-v4-tv-panels"><section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(6)}</div></section>${defV4Ranking(rankingHtml)}</div>
     </div>
   `;
@@ -12421,6 +12423,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.55";
+  badge.textContent = "v1.56";
   badge.style.display = "inline-block";
 }

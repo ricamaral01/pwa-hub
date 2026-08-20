@@ -6577,7 +6577,7 @@ body[data-mode="tv"] .def-v4-tv { display: block !important; }
 
 .def-v4-grid-4 {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 11px;
   margin-bottom: 11px;
 }
