@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v42-mapa-bypass";
+const CACHE = "ct-hub-v41-mapa-bypass";
 
 const ASSETS = [
   /* ---- Splash ---- */
