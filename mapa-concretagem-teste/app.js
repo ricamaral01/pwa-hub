@@ -10113,7 +10113,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.47");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.48");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10123,7 +10123,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.47").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.48").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10178,6 +10178,17 @@ function formatarDuracao(ms) {
 function getMiDataReferencia(row) {
   const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
   return String(raw).split("T")[0];
+}
+
+function isLinhaMontagemDashboard(row) {
+  const etapa = String(row?.etapa || "").trim().toUpperCase();
+  if (etapa === "INSPECAO" || etapa === "REINSPECAO") return false;
+  return Boolean(row?.status_montagem || row?.finalizado_em);
+}
+
+function isLinhaDefeitoDashboard(row) {
+  const status = String(row?.status_montagem || "").trim().toUpperCase();
+  return status === "R" || status === "RR" || status === "REPROVADO" || status === "RETRABALHO" || obterItensRejeitadosLinha(row).length > 0;
 }
 
 function normalizarTexto(valor) {
@@ -10585,7 +10596,7 @@ function aplicarFiltrosEExibirMontagem() {
   // 1. Filtrar dados de Montagem em memória
   miFilteredMontagemData = miRawMontagemData.filter(row => {
     // Considerar apenas montagens finalizadas
-    if (!row.status_montagem) return false;
+    if (!isLinhaMontagemDashboard(row)) return false;
 
     // Filtro por Data
     const day = getMiDataReferencia(row);
@@ -10626,6 +10637,8 @@ function aplicarFiltrosEExibirMontagem() {
   });
 
   // 2. Filtrar dados de Produção
+  const miFilteredDefeitosData = miFilteredMontagemData.filter(isLinhaDefeitoDashboard);
+
   const filteredProducao = miRawProducaoData.filter(row => {
     const day = row.data_fabricacao;
     if (!day || day < dStart || day > dEnd) return false;
@@ -10688,7 +10701,7 @@ function aplicarFiltrosEExibirMontagem() {
     }
   });
 
-  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredMontagemData, filteredProducao));
+  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredDefeitosData, filteredProducao));
 
 
   // Renderizar tempos médios
