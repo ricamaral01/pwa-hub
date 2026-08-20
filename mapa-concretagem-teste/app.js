@@ -1303,7 +1303,15 @@ async function saveProducaoByNaturalKey(row) {
       .from('producao')
       .update(row)
       .eq('id', current.id);
-    if (updateError) throw updateError;
+    if (updateError) {
+      if (!isSupabaseMissingColumnError(updateError)) throw updateError;
+      const { vibrado, ...legacyRow } = row;
+      const { error: legacyUpdateError } = await supabaseClient
+        .from('producao')
+        .update(legacyRow)
+        .eq('id', current.id);
+      if (legacyUpdateError) throw legacyUpdateError;
+    }
 
     if (duplicates.length) {
       await supabaseClient
@@ -1315,7 +1323,12 @@ async function saveProducaoByNaturalKey(row) {
   }
 
   const { error: insertError } = await supabaseClient.from('producao').insert(row);
-  if (insertError) throw insertError;
+  if (insertError) {
+    if (!isSupabaseMissingColumnError(insertError)) throw insertError;
+    const { vibrado, ...legacyRow } = row;
+    const { error: legacyInsertError } = await supabaseClient.from('producao').insert(legacyRow);
+    if (legacyInsertError) throw legacyInsertError;
+  }
 }
 
 async function checkApiStatus() {
@@ -1386,6 +1399,7 @@ async function postToApi(action, payload) {
           descricao_poste: payload.descricao_poste || null,
           codigo_produto: payload.codigo_produto || null,
           tipo_concreto: payload.tipo_concreto || 'Padrão',
+          vibrado: payload.vibrado,
           colaborador: payload.colaborador,
           data_hora: dtStr,
           status: 'LIBERADO'
@@ -2976,6 +2990,7 @@ async function fetchFormStatusRowsFromTables(data) {
       Object.assign(ensureRow(row.setor, row.forma), {
         prod_id: row.id || true,
         prod_tipo_concreto: row.tipo_concreto || "Padrão",
+        prod_vibrado: row.vibrado ?? null,
         prod_colaborador: row.colaborador || "",
         prod_data_hora: row.data_hora || row.created_at || null
       });
@@ -3012,6 +3027,9 @@ async function loadClickedFormsFromSupabase(dateOverride) {
           let tipoConcreto = 'Padrão';
           let colaborador = row.lib_colaborador || '';
           let dataHora = row.lib_data_hora || nowIso();
+          const hasVibradoFromRow = Object.prototype.hasOwnProperty.call(row, "prod_vibrado")
+            || Object.prototype.hasOwnProperty.call(row, "vibrado");
+          let vibrado = hasVibradoFromRow ? (row.prod_vibrado ?? row.vibrado ?? null) : undefined;
 
           if (row.prod_id && row.prod_tipo_concreto !== 'Padrão') {
             statusVal = '1';
@@ -3044,6 +3062,7 @@ async function loadClickedFormsFromSupabase(dateOverride) {
               setor: row.setor,
               formaNumero: normalizeUpper(row.forma),
               concretoTipo: tipoConcreto,
+              vibrado: vibrado ?? null,
               createdAt: nowIso(),
               updatedAt: nowIso(),
               liberacao: { status: statusVal, timestamp: dataHora, colaborador: colaborador },
@@ -3051,8 +3070,9 @@ async function loadClickedFormsFromSupabase(dateOverride) {
             };
             upsertRecord(db, record);
             dbUpdated = true;
-          } else if (!record.liberacao || record.liberacao.status !== statusVal || record.concretoTipo !== tipoConcreto) {
+          } else if (!record.liberacao || record.liberacao.status !== statusVal || record.concretoTipo !== tipoConcreto || (hasVibradoFromRow && record.vibrado !== vibrado)) {
             record.concretoTipo = tipoConcreto;
+            if (hasVibradoFromRow) record.vibrado = vibrado;
             record.liberacao = record.liberacao || { status: statusVal, timestamp: nowIso() };
             record.liberacao.status = statusVal;
             record.liberacao.timestamp = dataHora;
@@ -3421,12 +3441,26 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
       const tipo = String(btn.dataset.tipo || "").trim();
       if (tipo) {
         closeConcreteTypePopup();
-        salvarFormaClicada(forma, setor, card, modelo, tipo);
+        const vibrado = getVibradoValueForConcreteSelection(setor, tipo);
+        salvarFormaClicada(forma, setor, card, modelo, tipo, vibrado);
       }
     });
   });
 
   el.concretoTipoModal.classList.add("modal-visible");
+}
+
+function isConcretoPadraoTipo(tipo) {
+  const normalized = String(tipo || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase();
+  return normalized === "CONCRETO PADRAO" || normalized === "PADRAO";
+}
+
+function getVibradoValueForConcreteSelection(setor, concretoTipo) {
+  if (setor !== "Setor 3" || !isConcretoPadraoTipo(concretoTipo)) return null;
+  return confirm("Concreto padrão - Setor 3\n\nA forma foi vibrada?\n\nOK = Sim\nCancelar = Não");
 }
 
 async function liberarFormaClicada(forma, setor, card, modelo) {
@@ -3541,7 +3575,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
   }
 }
 
-async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Concreto Padrão") {
+async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Concreto Padrão", vibrado = null) {
   setCardState(card, "saving");
 
   const agora = new Date();
@@ -3568,6 +3602,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     colaborador,
     modelo: modeloFinal,
     tipo_concreto: concretoTipo,
+    vibrado,
     codigo_poste: resolvedPosteFields.codigoPoste,
     descricao_poste: resolvedPosteFields.descricaoPoste,
     codigo_produto: resolvedPosteFields.codigoProduto
@@ -3590,6 +3625,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
         descricaoPoste: resolvedPosteFields.descricaoPoste,
         codigoProduto: resolvedPosteFields.codigoProduto,
         concretoTipo,
+        vibrado,
         createdAt: nowIso(),
         updatedAt: nowIso(),
         liberacao: null,
@@ -3597,6 +3633,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
       };
     }
     record.concretoTipo = concretoTipo;
+    record.vibrado = vibrado;
     record.codigoPoste = resolvedPosteFields.codigoPoste;
     record.descricaoPoste = resolvedPosteFields.descricaoPoste;
     record.codigoProduto = resolvedPosteFields.codigoProduto;
@@ -3617,6 +3654,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
       descricaoPoste: record.descricaoPoste || "",
       codigoProduto: record.codigoProduto || "",
       tipoConcreto: concretoTipo,
+      vibrado,
       colaborador,
       timestamp: record.liberacao?.timestamp || nowIso(),
       fotosCount: 0,
@@ -8784,6 +8822,7 @@ async function syncOfflineData() {
             colaborador: ev.colaborador,
             modelo: ev.modelo || "",
             tipo_concreto: ev.tipoConcreto || "Padrão",
+            vibrado: ev.vibrado ?? null,
             codigo_poste: ev.codigoPoste || null,
             descricao_poste: ev.descricaoPoste || null,
             codigo_produto: ev.codigoProduto || null,
@@ -10130,7 +10169,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.47");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.50");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10140,7 +10179,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.47").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.50").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12304,6 +12343,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v4.54";
+  badge.textContent = "v1.50";
   badge.style.display = "inline-block";
 }
