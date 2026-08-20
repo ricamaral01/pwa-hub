@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.50: remove caches antigos e desativa o SW no ambiente teste
+   v1.53: refatora modal de concreto vibrado
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.50";
+const CACHE_NAME = "mapa-concretagem-teste-v1.53";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());

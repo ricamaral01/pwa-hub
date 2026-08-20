@@ -887,6 +887,9 @@ const el = {
   concretoTipoSubtitle: document.getElementById("concretoTipoSubtitle"),
   concretoTipoOptions: document.getElementById("concretoTipoOptions"),
   concretoTipoCancelBtn: document.getElementById("concretoTipoCancelBtn"),
+  concretoVibradoModal: document.getElementById("concretoVibradoModal"),
+  concretoVibradoSimBtn: document.getElementById("concretoVibradoSimBtn"),
+  concretoVibradoNaoBtn: document.getElementById("concretoVibradoNaoBtn"),
 
   libData: document.getElementById("libData"),
   libColaborador: document.getElementById("libColaborador"),
@@ -3437,12 +3440,12 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
   `).join("");
 
   el.concretoTipoOptions.querySelectorAll(".btn-concreto-rich").forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const tipo = String(btn.dataset.tipo || "").trim();
       if (tipo) {
         closeConcreteTypePopup();
-        const vibrado = getVibradoValueForConcreteSelection(setor, tipo);
-        salvarFormaClicada(forma, setor, card, modelo, tipo, vibrado);
+        const vibrado = await getVibradoValueForConcreteSelection(setor, tipo);
+        await salvarFormaClicada(forma, setor, card, modelo, tipo, vibrado);
       }
     });
   });
@@ -3458,9 +3461,42 @@ function isConcretoPadraoTipo(tipo) {
   return normalized === "CONCRETO PADRAO" || normalized === "PADRAO";
 }
 
-function getVibradoValueForConcreteSelection(setor, concretoTipo) {
+async function getVibradoValueForConcreteSelection(setor, concretoTipo) {
   if (setor !== "Setor 3" || !isConcretoPadraoTipo(concretoTipo)) return null;
-  return confirm("Concreto padrão - Setor 3\n\nA forma foi vibrada?\n\nOK = Sim\nCancelar = Não");
+  return showConcretoVibradoModal();
+}
+
+function showConcretoVibradoModal() {
+  const modal = el.concretoVibradoModal;
+  const simBtn = el.concretoVibradoSimBtn;
+  const naoBtn = el.concretoVibradoNaoBtn;
+  if (!modal || !simBtn || !naoBtn) return Promise.resolve(false);
+
+  return new Promise((resolve) => {
+    const close = (value) => {
+      modal.classList.remove("modal-visible");
+      simBtn.removeEventListener("click", onSim);
+      naoBtn.removeEventListener("click", onNao);
+      modal.removeEventListener("click", onOverlay);
+      document.removeEventListener("keydown", onKeydown);
+      resolve(value);
+    };
+    const onSim = () => close(true);
+    const onNao = () => close(false);
+    const onOverlay = (event) => {
+      if (event.target === modal) close(false);
+    };
+    const onKeydown = (event) => {
+      if (event.key === "Escape") close(false);
+    };
+
+    simBtn.addEventListener("click", onSim);
+    naoBtn.addEventListener("click", onNao);
+    modal.addEventListener("click", onOverlay);
+    document.addEventListener("keydown", onKeydown);
+    modal.classList.add("modal-visible");
+    simBtn.focus();
+  });
 }
 
 async function liberarFormaClicada(forma, setor, card, modelo) {
@@ -10169,7 +10205,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.50");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.53");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10179,7 +10215,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.50").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.53").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12343,6 +12379,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.50";
+  badge.textContent = "v1.53";
   badge.style.display = "inline-block";
 }
