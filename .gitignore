@@ -19,6 +19,7 @@ node_modules/
 coverage/
 logs/
 *.log
+supabase/.temp/
 mapa-concretagem/node_modules/
 mapa-concretagem/.env
 imports/

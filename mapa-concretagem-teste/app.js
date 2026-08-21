@@ -871,6 +871,7 @@ const el = {
   seqS3BtnSalvar: document.getElementById("seqS3BtnSalvar"),
   seqS3FloatBar: document.getElementById("seqS3FloatBar"),
   viewMontagemIndicadores: document.getElementById("viewMontagemIndicadores"),
+  viewDashboardDefeitos: document.getElementById("viewDashboardDefeitos"),
   viewMontagemPostesDetalhe: document.getElementById("viewMontagemPostesDetalhe"),
   viewRelatorio: document.getElementById("viewRelatorio"),
   viewHistorico: document.getElementById("viewHistorico"),
@@ -1196,6 +1197,23 @@ function hasMontagemApiConfigured() {
 
 const MAPA_REPORT_CACHE_PREFIX = "mapa_concretagem_report_cache_v1";
 const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
+const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_produto";
+const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
+const DASHBOARD_SCOPE_OPTIONS = {
+  "": "TOTAL",
+  "Todos os Setores": "TOTAL",
+  "Setor 1": "S1",
+  "Setor 2": "S2",
+  "Setor 3": "S3",
+  "Setor 4": "S4",
+  "Setores 1 e 2": "S1_S2"
+};
+
+const dashboardRequestSeq = {
+  montagem: 0,
+  defeitos: 0,
+  produtividade: 0
+};
 
 function readMapaReportCache(cacheKey) {
   try {
@@ -1217,6 +1235,64 @@ function writeMapaReportCache(cacheKey, rows) {
       rows: rows || []
     }));
   } catch {}
+}
+
+function getDashboardScopeFromSetor(setorValue) {
+  return DASHBOARD_SCOPE_OPTIONS[setorValue || ""] || "TOTAL";
+}
+
+function getActiveMontagemFilterPrefix() {
+  return state.mode === "DASHBOARD_DEFEITOS" ? "df" : "mi";
+}
+
+function getDashboardFilterValue(name, fallback = "") {
+  const prefix = getActiveMontagemFilterPrefix();
+  const id = `${prefix}${name}`;
+  const prefixed = document.getElementById(id);
+  if (prefixed) return prefixed.value || fallback;
+  const legacy = document.getElementById(`mi${name}`);
+  return legacy ? (legacy.value || fallback) : fallback;
+}
+
+function readMapaReportPayloadCache(cacheKey) {
+  try {
+    const raw = localStorage.getItem(`${MAPA_REPORT_CACHE_PREFIX}:${cacheKey}`);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function writeMapaReportPayloadCache(cacheKey, payload) {
+  try {
+    localStorage.setItem(`${MAPA_REPORT_CACHE_PREFIX}:${cacheKey}`, JSON.stringify({
+      ts: Date.now(),
+      generated_at: new Date().toISOString(),
+      payload
+    }));
+  } catch {}
+}
+
+async function chamarDashboardRpcComCache(rpcName, params, cacheKey) {
+  if (!supabaseClient) {
+    const cached = cacheKey ? readMapaReportPayloadCache(cacheKey) : null;
+    return { payload: cached?.payload || null, state: cached ? "OFFLINE_CACHE" : "ERROR" };
+  }
+
+  try {
+    const { data, error } = await supabaseClient.rpc(rpcName, params);
+    if (error) throw error;
+    if (cacheKey) writeMapaReportPayloadCache(cacheKey, data);
+    return { payload: data, state: data ? "SUCCESS" : "EMPTY" };
+  } catch (error) {
+    const cached = cacheKey ? readMapaReportPayloadCache(cacheKey) : null;
+    if (cached?.payload) {
+      console.warn("Dashboard: usando contrato em cache apos falha no RPC:", error);
+      return { payload: cached.payload, state: "OFFLINE_CACHE", error };
+    }
+    throw error;
+  }
 }
 
 async function carregarLinhasSupabaseComCache(options) {
@@ -1241,7 +1317,7 @@ async function carregarLinhasSupabaseComCache(options) {
       const to = from + pageSize - 1;
       let query = supabaseClient
         .from(opts.table)
-        .select(opts.select || "*")
+        .select(opts.select)
         .range(from, to);
 
       if (typeof opts.applyFilters === "function") query = opts.applyFilters(query);
@@ -3888,7 +3964,7 @@ async function fetchPolesForDate(filtroData, setor = "") {
       carregarLinhasSupabaseComCache({
         cacheKey: `montagem-postes:producao:${filtroData}:${setoresFiltro.join(",")}`,
         table: "producao",
-        select: "*",
+        select: DASHBOARD_PRODUCAO_SELECT,
         orderBy: "data_hora",
         orderOptions: { ascending: false },
         applyFilters: query => query
@@ -3898,7 +3974,7 @@ async function fetchPolesForDate(filtroData, setor = "") {
       carregarLinhasSupabaseComCache({
         cacheKey: `montagem-postes:montagem_poste:${filtroData}:${setoresFiltro.join(",")}`,
         table: "montagem_poste",
-        select: "*",
+        select: DASHBOARD_MONTAGEM_SELECT,
         orderBy: "finalizado_em",
         orderOptions: { ascending: false, nullsFirst: false },
         applyFilters: query => query
@@ -5700,7 +5776,7 @@ async function carregarDadosGlobaisDashboard(selectedDateOverride = "") {
 
       const { data: rows, error } = await supabaseClient
         .from('producao')
-        .select('*')
+        .select(DASHBOARD_PRODUCAO_SELECT)
         .gte('data_fabricacao', startDateStr)
         .lte('data_fabricacao', endDateStr)
         .order('data_fabricacao', { ascending: false })
@@ -5725,7 +5801,7 @@ async function carregarDadosGlobaisDashboard(selectedDateOverride = "") {
       
       const { data: mRows, error: mError } = await supabaseClient
         .from('montagem_poste')
-        .select('*')
+        .select(DASHBOARD_MONTAGEM_SELECT)
         .or(`data_fabricacao.gte.${startDateStr},updated_at.gte.${startOfRangeISO}`);
         
       if (!mError && mRows) montagemRows = mRows;
@@ -6111,7 +6187,7 @@ async function getRowsForDashboard(data, setor) {
   }
 
   try {
-    let query = supabaseClient.from('producao').select('*').eq('setor', setor).eq('data_fabricacao', data);
+    let query = supabaseClient.from('producao').select(DASHBOARD_PRODUCAO_SELECT).eq('setor', setor).eq('data_fabricacao', data);
     const { data: rows, error } = await query;
     if (!error && Array.isArray(rows)) {
       return {
@@ -7514,7 +7590,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
-  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao, el.viewTratativaDefeitos]
+  [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewDashboardDefeitos, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao, el.viewTratativaDefeitos]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
   if (mode === "DASHBOARD") {
@@ -7565,21 +7641,27 @@ function setMode(mode) {
       setUgFeedback("Não foi possível carregar os usuários da planilha.", false);
     });
   }
-  if (mode === "MONTAGEM_INDICADORES" || mode === "DASHBOARD_DEFEITOS") {
+  if (mode === "MONTAGEM_INDICADORES") {
     if (el.viewMontagemIndicadores) el.viewMontagemIndicadores.classList.remove("hidden");
     const dashboardTitle = document.getElementById("miDashboardTitle");
-    if (dashboardTitle) dashboardTitle.textContent = mode === "DASHBOARD_DEFEITOS" ? "Dashboard Defeitos" : "Dashboard Montagem";
+    if (dashboardTitle) dashboardTitle.textContent = "Dashboard Montagem";
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
     if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
-    ativarAbaMontagem(mode === "DASHBOARD_DEFEITOS" ? "defeitos" : "resumo");
-    if (mode === "DASHBOARD_DEFEITOS") {
-      aplicarLayoutDashboardDefeitos();
-    } else {
-      limparLayoutDashboardDefeitos();
-    }
+    limparLayoutDashboardDefeitos();
+    ativarAbaMontagem("resumo");
     carregarMontagemIndicadores();
+  }
+  if (mode === "DASHBOARD_DEFEITOS") {
+    const viewDashboardDefeitos = document.getElementById("viewDashboardDefeitos");
+    if (viewDashboardDefeitos) viewDashboardDefeitos.classList.remove("hidden");
+    const dfDataInicio = document.getElementById("dfDataInicio");
+    const dfDataFim = document.getElementById("dfDataFim");
+    if (dfDataInicio && !dfDataInicio.value) dfDataInicio.value = todayYmd();
+    if (dfDataFim && !dfDataFim.value) dfDataFim.value = todayYmd();
+    aplicarLayoutDashboardDefeitos();
+    carregarDashboardDefeitos();
   }
   if (mode === "SEQUENCIA_S3") {
     if (el.viewSequenciaS3) el.viewSequenciaS3.classList.remove("hidden");
@@ -7935,9 +8017,6 @@ function bindEvents() {
   document.getElementById("miBtnAtualizar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
-  document.getElementById("miBtnExportarXlsx")?.addEventListener("click", () => {
-    exportarMontagemIndicadoresXlsx();
-  });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
@@ -7961,14 +8040,32 @@ function bindEvents() {
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
   });
-  document.getElementById("miBtnCarregarMontagemDia")?.addEventListener("click", () => {
-    carregarVisaoMontagemDia();
+
+  document.getElementById("dfBtnLimparFiltros")?.addEventListener("click", () => {
+    const dfDataInicio = document.getElementById("dfDataInicio");
+    const dfDataFim = document.getElementById("dfDataFim");
+    if (dfDataInicio) dfDataInicio.value = todayYmd();
+    if (dfDataFim) dfDataFim.value = todayYmd();
+    const fSetor = document.getElementById("dfFiltroSetor");
+    if (fSetor) fSetor.value = "";
+    const fStatus = document.getElementById("dfFiltroStatus");
+    if (fStatus) fStatus.value = "";
+    const fPesquisa = document.getElementById("dfFiltroPesquisa");
+    if (fPesquisa) fPesquisa.value = "";
+    miPaginaAtual = 1;
+    carregarDashboardDefeitos();
   });
-  document.getElementById("miMontagemDiaData")?.addEventListener("change", () => {
-    carregarVisaoMontagemDia();
+  document.getElementById("dfBtnAtualizar")?.addEventListener("click", carregarDashboardDefeitos);
+  document.getElementById("dfBtnFiltrar")?.addEventListener("click", carregarDashboardDefeitos);
+  ["dfDataInicio", "dfDataFim", "dfFiltroSetor", "dfFiltroStatus"].forEach(id => {
+    document.getElementById(id)?.addEventListener("change", () => {
+      miPaginaAtual = 1;
+      carregarDashboardDefeitos();
+    });
   });
-  document.getElementById("miBtnExportarMontagemDiaDetalhe")?.addEventListener("click", () => {
-    exportarMontagemDiaDetalheXlsx();
+  document.getElementById("dfFiltroPesquisa")?.addEventListener("input", () => {
+    miPaginaAtual = 1;
+    aplicarFiltrosEExibirMontagem();
   });
 
   // Troca de Abas do Dashboard
@@ -7977,7 +8074,6 @@ function bindEvents() {
       const targetTab = e.currentTarget.dataset.tab;
       limparLayoutDashboardDefeitos();
       ativarAbaMontagem(targetTab || "resumo");
-      if (targetTab === "montagemDia") carregarVisaoMontagemDia();
     });
   });
 
@@ -9925,12 +10021,23 @@ function renderizarGraficosProdutividade(metricas, dStart, dEnd) {
 }
 
 async function carregarProdutividadeConcretagem() {
+  const requestId = ++dashboardRequestSeq.produtividade;
   const dStart = document.getElementById("paDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("paDataFim")?.value || todayYmd();
   const meta = parseFloat(document.getElementById("paMetaCiclo")?.value || "15");
+  const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
+  const scope = getDashboardScopeFromSetor(filterSetor);
   atualizarResumoFiltrosProdutividade();
 
   setSyncStatus("pending", "Carregando dados de produtividade...");
+  const produtividadeRpcPromise = chamarDashboardRpcComCache("rpc_dashboard_produtividade_resumo_v1", {
+    p_data_inicio: dStart,
+    p_data_fim: dEnd,
+    p_scope: scope
+  }, `rpc:produtividade:resumo:${dStart}:${dEnd}:${scope}`).catch((err) => {
+    console.warn("RPC de produtividade indisponivel; mantendo calculo local:", err);
+    return null;
+  });
 
   let allRows = [];
   if (hasApiConfigured()) {
@@ -9938,7 +10045,7 @@ async function carregarProdutividadeConcretagem() {
       const result = await carregarLinhasSupabaseComCache({
         cacheKey: `produtividade:periodo:${dStart}:${dEnd}`,
         table: "producao",
-        select: "*",
+        select: DASHBOARD_PRODUCAO_SELECT,
         orderBy: "data_hora",
         orderOptions: { ascending: true },
         applyFilters: query => query
@@ -9973,7 +10080,7 @@ async function carregarProdutividadeConcretagem() {
       const result = await carregarLinhasSupabaseComCache({
         cacheKey: `produtividade:ultimos7:${start7}:${dEnd}`,
         table: "producao",
-        select: "*",
+        select: DASHBOARD_PRODUCAO_SELECT,
         orderBy: "data_hora",
         orderOptions: { ascending: true },
         applyFilters: query => query
@@ -9993,7 +10100,8 @@ async function carregarProdutividadeConcretagem() {
   rowsUltimos7 = deduplicarLinhasProducao(rowsUltimos7);
   rowsUltimos7.sort((a, b) => new Date(a.data_hora || a.updated_at || 0).getTime() - new Date(b.data_hora || b.updated_at || 0).getTime());
 
-  const filterSetor = document.getElementById("paFiltroSetor")?.value || "";
+  const produtividadeRpc = await produtividadeRpcPromise;
+  if (requestId !== dashboardRequestSeq.produtividade) return;
 
   let filteredRows = allRows.filter(r => {
     if (filterSetor) {
@@ -10008,7 +10116,7 @@ async function carregarProdutividadeConcretagem() {
 
   const metricas = calcularMetricasProdutividade(filteredRows, allRows, dStart, dEnd, meta);
 
-  document.getElementById("paKpiFormas").textContent = metricas.totalFormas;
+  document.getElementById("paKpiFormas").textContent = produtividadeRpc?.payload?.kpis?.total_formas ?? metricas.totalFormas;
   document.getElementById("paKpiVolume").textContent = metricas.totalVolume.toFixed(2) + " m³";
   document.getElementById("paKpiCicloMedio").textContent = metricas.cicloMedio > 0 ? Math.round(metricas.cicloMedio) + " min" : "N/A";
   document.getElementById("paKpiCicloDetalhes").innerHTML = `
@@ -10190,9 +10298,7 @@ function exportarPaPDF() {
 }
 
 function init() {
-  const isDashboardDefeitosTv = new URLSearchParams(window.location.search).get("mode") === "tv";
-  document.body.dataset.mode = isDashboardDefeitosTv ? "tv" : "auto";
-  setMode(isDashboardDefeitosTv ? "DASHBOARD_DEFEITOS" : "HUB");
+  setMode("HUB");
   updateSwVersionBadge();
   setSyncStatus("pending", "Verificando conexão com a planilha...");
   renderInspecaoCodigosChecklist();
@@ -10213,8 +10319,6 @@ function init() {
   if (el.mpSetor) el.mpSetor.value = "";
   if (el.histTipo) el.histTipo.value = "";
   if (el.dashData) el.dashData.value = now;
-  const miMontagemDiaData = document.getElementById("miMontagemDiaData");
-  if (miMontagemDiaData && !miMontagemDiaData.value) miMontagemDiaData.value = now;
   if (el.relData) el.relData.value = now;
   if (el.relSetor) el.relSetor.value = "Setor 2";
   if (el.acmpData) el.acmpData.value = now;
@@ -10231,7 +10335,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.56");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.55");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10241,7 +10345,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.56").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.55").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10257,7 +10361,7 @@ function init() {
     applyRoleVisibility();
     applyAutoResponsibleFields();
     ensurePostLoginBootstrap();
-    setMode(isDashboardDefeitosTv ? "DASHBOARD_DEFEITOS" : "HUB");
+    setMode("HUB");
   } else {
     lockAppForLogin();
     applyRoleVisibility();
@@ -10273,20 +10377,16 @@ init();
 let chartMiPorDiaInstance = null;
 let chartMiPorSetorInstance = null;
 let chartMiPorMontadorInstance = null;
-let chartMiMontagemDiaProducaoInstance = null;
 
 let miRawMontagemData = [];
 let miRawProducaoData = [];
 let miFilteredMontagemData = [];
-let miCarregandoMontagemIndicadores = false;
 let miPaginaAtual = 1;
 const miLinhasPorPagina = 15;
 let miOrdenacaoColuna = "finalizado_em";
 let miOrdenacaoAsc = false;
 let miAbaAtiva = "resumo";
 let miUltimosGraficos = null;
-let miCarregandoMontagemDia = false;
-let miMontagemDiaRows = [];
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -10297,27 +10397,20 @@ function formatarDuracao(ms) {
   return `${mins}m ${secs}s`;
 }
 
-function formatarDataHoraMontagemXlsx(value) {
-  if (!value) return "";
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return String(value);
-  return d.toLocaleString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-}
-
 function getMiDataReferencia(row) {
   const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
   return String(raw).split("T")[0];
 }
 
-function getMiDataMontagem(row) {
-  const raw = row?.finalizado_em || row?.finalizadoEm || row?.inicio_inspecao_montagem || row?.inicioInspecaoMontagem || "";
-  return dateToYmd(raw);
+function isLinhaMontagemDashboard(row) {
+  const etapa = String(row?.etapa || "").trim().toUpperCase();
+  if (etapa === "INSPECAO" || etapa === "REINSPECAO") return false;
+  return Boolean(row?.status_montagem || row?.finalizado_em);
+}
+
+function isLinhaDefeitoDashboard(row) {
+  const status = String(row?.status_montagem || "").trim().toUpperCase();
+  return status === "R" || status === "RR" || status === "REPROVADO" || status === "RETRABALHO" || obterItensRejeitadosLinha(row).length > 0;
 }
 
 function normalizarTexto(valor) {
@@ -10339,22 +10432,6 @@ function atualizarResumoFiltrosMontagem() {
   const fmt = (d) => d ? d.split("-").reverse().join("/") : "-";
   const periodo = dStart === dEnd ? fmt(dStart) : `${fmt(dStart)} a ${fmt(dEnd)}`;
   resumo.textContent = `${periodo} - ${setor} - ${status}`;
-}
-
-function formatarDataPtBr(value) {
-  const ymd = dateToYmd(value);
-  if (!ymd) return "-";
-  const parts = ymd.split("-");
-  if (parts.length !== 3) return String(value || "-");
-  return `${parts[2]}/${parts[1]}/${parts[0]}`;
-}
-
-function proximoDiaYmd(ymd) {
-  const d = new Date(`${ymd}T12:00:00`);
-  if (Number.isNaN(d.getTime())) return ymd;
-  d.setDate(d.getDate() + 1);
-  const tzOffset = d.getTimezoneOffset() * 60000;
-  return new Date(d.getTime() - tzOffset).toISOString().slice(0, 10);
 }
 
 function setMontagemDrawerOpen(open) {
@@ -10517,290 +10594,185 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
 }
 
 function formatPct(value) {
-  if (!isFinite(value)) return "—";
+  if (!isFinite(value)) return "0,0%";
   return `${value.toFixed(1).replace(".", ",")}%`;
 }
 
-function defV4Metric(label, value, sub, tone = "neutral") {
-  return `
-    <div class="def-v4-card def-v4-metric ${tone}">
-      <span>${escapeHtml(label)}</span>
-      <strong>${escapeHtml(value)}</strong>
-      <small>${escapeHtml(sub)}</small>
-    </div>
-  `;
-}
-
-function defV4Mini(label, value) {
-  return `
-    <div class="def-v4-card def-v4-mini">
-      <span>${escapeHtml(label)}</span>
-      <strong>${escapeHtml(value)}</strong>
-    </div>
-  `;
-}
-
-function defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, compact = false) {
-  return `
-    <section class="def-v4-card def-v4-section def-v4-flow-card ${compact ? "compact" : ""}">
-      <div class="def-v4-section-head"><div><strong>Fluxo da inspeção</strong><span>Produção → avaliação → NC visual → retrabalho</span></div></div>
-      <div class="def-v4-flow">
-        <div><span>PRODUZIDOS</span><strong>${indicadores.producao}</strong><small>base do período</small></div>
-        <i>→</i>
-        <div><span>AVALIADOS</span><strong>${indicadores.postes}</strong><small>${formatPct(cobertura)} da produção</small></div>
-        <i>→</i>
-        <div><span>COM NC VISUAL</span><strong>${indicadores.postesComDefeito}</strong><small>${formatPct(indiceReprovacao)} dos avaliados</small></div>
-        <i>→</i>
-        <div><span>RETRABALHO</span><strong>${indicadores.retrabalho}</strong><small>${formatPct(taxaRetrabalho)} dos avaliados</small></div>
-      </div>
-      <div class="def-v4-focus"><span>Fissura circular</span><strong>${escapeHtml(fissuraCircularLabel)}</strong><small>Dias sem fissura circular dependem de histórico agregado.</small></div>
-    </section>
-  `;
-}
-
-function defV4Ranking(rowsHtml) {
-  return `
-    <section class="def-v4-card def-v4-section">
-      <div class="def-v4-section-head"><div><strong>Ranking de setores</strong><span>Ordenado por índice de reprovação</span></div></div>
-      <div class="def-v4-ranking"><table><thead><tr><th>Setor</th><th>Avaliados</th><th>Com NC</th><th>Índice</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>
-    </section>
-  `;
-}
-
-let defV4TvTimer = null;
-let defV4TvRefreshTimer = null;
-let defV4WakeLock = null;
-let defV4VisibilityBound = false;
-
-async function liberarWakeLockDefeitosTv() {
-  try {
-    if (defV4WakeLock?.release) await defV4WakeLock.release();
-  } catch (e) {
-    // Wake Lock may already be released by the browser.
-  } finally {
-    defV4WakeLock = null;
-  }
-}
-
-function iniciarDashboardDefeitosTv(setores = []) {
-  const isTv = new URLSearchParams(window.location.search).get("mode") === "tv";
-  document.body.dataset.mode = isTv ? "tv" : "auto";
-  if (defV4TvTimer) {
-    clearInterval(defV4TvTimer);
-    defV4TvTimer = null;
-  }
-  if (defV4TvRefreshTimer) {
-    clearInterval(defV4TvRefreshTimer);
-    defV4TvRefreshTimer = null;
-  }
-  if (!isTv) {
-    liberarWakeLockDefeitosTv();
-    return;
-  }
-  let count = 20;
-  let index = 0;
-  const views = setores.length ? setores : [{ setor: "Todos" }];
-  const countdown = document.getElementById("defV4TvCountdown");
-  const sector = document.getElementById("defV4TvSector");
+function renderIndicadoresDefeitosMontagem(indicadores) {
+  const taxaNc = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
+  const indiceReprovacao = indicadores.postes > 0 ? (indicadores.postesComDefeito / indicadores.postes) * 100 : 0;
+  const taxaPostesReprovados = indicadores.producao > 0 ? (indicadores.postesReprovados / indicadores.producao) * 100 : 0;
+  const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
   };
-  const renderTvView = () => {
-    const item = views[index] || views[0];
-    if (sector) sector.textContent = item.setor || "Todos";
-    setText("defV4TvReprov", item.indiceReprovacao || "—");
-    setText("defV4TvReprovSub", item.reprovacaoSub || "");
-    setText("defV4TvNc", item.taxaNc || "—");
-    setText("defV4TvNcSub", item.taxaNcSub || "");
-    setText("defV4TvCobertura", item.cobertura || "—");
-    setText("defV4TvCoberturaSub", item.coberturaSub || "");
-    setText("defV4TvNc100", item.nc100 || "—");
-  };
-  renderTvView();
-  defV4TvTimer = setInterval(() => {
-    count -= 1;
-    if (count <= 0) {
-      index = (index + 1) % Math.max(views.length, 1);
-      count = 20;
-      renderTvView();
-    }
-    if (countdown) countdown.textContent = `${count} s`;
-  }, 1000);
-  defV4TvRefreshTimer = setInterval(() => carregarMontagemIndicadores(), 30000);
-  if (!defV4VisibilityBound) {
-    defV4VisibilityBound = true;
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden && new URLSearchParams(window.location.search).get("mode") === "tv") {
-        carregarMontagemIndicadores();
-        solicitarWakeLockDefeitosTv();
-      }
-    });
-  }
-  solicitarWakeLockDefeitosTv();
-}
 
-async function solicitarWakeLockDefeitosTv() {
-  try {
-    if ("wakeLock" in navigator) defV4WakeLock = await navigator.wakeLock.request("screen");
-  } catch (e) {
-    defV4WakeLock = null;
-  }
-}
+  setText("miDefTotalErros", indicadores.totalErros);
+  setText("miDefTotalPossivel", indicadores.totalPossivel);
+  setText("miDefTaxa", formatPct(taxaNc));
+  setText("miDefPostes", indicadores.postes);
+  setText("miDefTaxaProducao", formatPct(indiceReprovacao));
+  setText("miDefTaxaPostesReprovados", formatPct(taxaPostesReprovados));
+  setText("miDefTaxaRetrabalho", formatPct(taxaRetrabalho));
+  setText("miDefProducaoPeriodo", indicadores.producao);
+  setText("miDefPostesReprovados", indicadores.postesReprovados);
+  setText("miDefFissuras", indicadores.fissuras.total);
+  setText("miDefFissurasCirculares", indicadores.fissuras.circulares);
 
-function renderIndicadoresDefeitosMontagem(indicadores) {
-  const root = document.getElementById("miDefDashboardV4");
-  if (!root) return;
-  const safePct = (num, den) => den > 0 ? (num / den) * 100 : NaN;
-  const safeNum = (num, den, digits = 2) => den > 0 ? (num / den).toFixed(digits).replace(".", ",") : "—";
-  const fmtNumber = (value) => Number(value || 0).toLocaleString("pt-BR");
-  const metaClass = (value, meta) => {
-    if (!isFinite(value)) return "neutral";
-    if (value <= meta) return "good";
-    if (value <= meta * 1.5) return "att";
-    return "bad";
-  };
-  const riskClass = (value) => {
-    if (!isFinite(value)) return "neutral";
-    if (value > 45) return "high";
-    if (value > 25) return "mid";
-    return "ok";
-  };
-
-  const indiceReprovacao = safePct(indicadores.postesComDefeito, indicadores.postes);
-  const taxaNc = safePct(indicadores.totalErros, indicadores.totalPossivel);
-  const cobertura = safePct(indicadores.postes, indicadores.producao);
-  const taxaRetrabalho = safePct(indicadores.retrabalho, indicadores.postes);
-  const dpu = safeNum(indicadores.totalErros, indicadores.postes, 2);
-  const taxaPostesReprovados = safePct(indicadores.postesReprovados, indicadores.producao);
-
+  const porTipoEl = document.getElementById("miDefeitosPorTipo");
   const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
+  if (porTipoEl) {
+    if (tiposOrdenados.length === 0) {
+      porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
+    } else {
+      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total]) => `
+        <div class="mi-defeito-tipo-row">
+          <span>${escapeHtml(tipo)}</span>
+          <strong>${total}</strong>
+        </div>
+      `).join("");
+    }
+  }
+
+  const paretoEl = document.getElementById("miDefPareto");
   let acumulado = 0;
   const pareto = tiposOrdenados.map(([tipo, total]) => {
     const pct = indicadores.totalErros > 0 ? (total / indicadores.totalErros) * 100 : 0;
     acumulado += pct;
     return { tipo, total, pct, acumulado };
   });
-  const vitalCount = pareto.findIndex(item => item.acumulado >= 80) + 1 || 0;
-  const vitalPct = vitalCount ? pareto[vitalCount - 1].acumulado : 0;
-  const maxPareto = Math.max(...pareto.map(item => item.total), 1);
-  const setores = Object.values(indicadores.porSetor)
-    .map(item => ({
-      ...item,
-      avaliados: miFilteredMontagemData.filter(row => (row.setor || "Sem setor") === item.setor).length,
-      reprovados: miFilteredMontagemData.filter(row => {
-        return (row.setor || "Sem setor") === item.setor && obterItensRejeitadosLinha(row, { visualOnly: true }).length > 0;
-      }).length
-    }))
-    .map(item => ({ ...item, indice: safePct(item.reprovados, item.avaliados) }))
-    .sort((a, b) => (isFinite(b.indice) ? b.indice : -1) - (isFinite(a.indice) ? a.indice : -1));
-  const tvSetores = [
-    {
-      setor: "Todos",
-      indiceReprovacao: formatPct(indiceReprovacao),
-      reprovacaoSub: `${indicadores.postesComDefeito} de ${indicadores.postes}`,
-      taxaNc: formatPct(taxaNc),
-      taxaNcSub: `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}`,
-      cobertura: formatPct(cobertura),
-      coberturaSub: `${indicadores.postes} de ${indicadores.producao}`,
-      nc100: formatPct(taxaPostesReprovados)
-    },
-    ...setores.map(item => {
-      const taxaSetor = safePct(miFilteredMontagemData.filter(row => {
-        const rowStatus = String(row.status_montagem || row.statusMontagem || "").trim().toUpperCase();
-        return (row.setor || "Sem setor") === item.setor && (rowStatus === "R" || rowStatus === "REPROVADO");
-      }).length, item.producao);
-      return {
-        setor: item.setor,
-        indiceReprovacao: formatPct(item.indice),
-        reprovacaoSub: `${item.reprovados} de ${item.avaliados}`,
-        taxaNc: "—",
-        taxaNcSub: "Base por item não consolidada por setor",
-        cobertura: formatPct(safePct(item.avaliados, item.producao)),
-        coberturaSub: `${item.avaliados} de ${item.producao}`,
-        nc100: formatPct(taxaSetor)
-      };
-    })
-  ];
-  const fissuraCircularLabel = indicadores.fissuras.circulares > 0 ? `${indicadores.fissuras.circulares} no período` : "Sem ocorrência";
-  const periodo = document.getElementById("miFiltroResumo")?.textContent || "";
-  const paretoHtml = (limit = 8) => pareto.length ? pareto.slice(0, limit).map((item, idx) => `
-    <div class="def-v4-pareto-row ${idx < vitalCount ? "vital" : ""}">
-      <div class="def-v4-pareto-name">${escapeHtml(item.tipo)}</div>
-      <div class="def-v4-bar-track"><div class="def-v4-bar" style="width:${Math.max(4, (item.total / maxPareto) * 100).toFixed(1)}%"></div></div>
-      <div class="def-v4-count">${item.total}</div>
-      <div class="def-v4-pct">${formatPct(item.pct)}</div>
-    </div>
-  `).join("") : '<div class="muted">Sem não conformidades no período.</div>';
-  const rankingHtml = setores.length ? setores.map(item => `
-    <tr>
-      <td>${escapeHtml(item.setor)}</td>
-      <td>${item.avaliados}</td>
-      <td>${item.reprovados}</td>
-      <td><span class="def-v4-risk ${riskClass(item.indice)}">${formatPct(item.indice)}</span></td>
-    </tr>
-  `).join("") : '<tr><td colspan="4">Sem setores no período.</td></tr>';
+  const vitais = pareto.filter(item => item.acumulado <= 80);
+  const tiposVitais = vitais.length || (pareto.length ? 1 : 0);
+  setText("miDefTiposVitais", tiposVitais);
+  if (paretoEl) {
+    if (pareto.length === 0) {
+      paretoEl.innerHTML = '<div class="muted">Sem dados para Pareto no periodo.</div>';
+    } else {
+      paretoEl.innerHTML = pareto.slice(0, 10).map(item => `
+        <div class="mi-def-pareto-row ${item.acumulado <= 80 ? "vital" : ""}">
+          <div>
+            <strong>${escapeHtml(item.tipo)}</strong>
+            <span>${formatPct(item.pct)} do total | ${formatPct(item.acumulado)} acumulado</span>
+          </div>
+          <em>${item.total}</em>
+        </div>
+      `).join("");
+    }
+  }
 
-  root.innerHTML = `
-    <div class="def-v4-view def-v4-desktop">
-      <div class="def-v4-grid-4">
-        ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesComDefeito} de ${indicadores.postes} postes avaliados`, "red")}
-        ${defV4Metric("Taxa de não conformidade", formatPct(taxaNc), `${indicadores.totalErros} NC em ${fmtNumber(indicadores.totalPossivel)} itens · meta <= 2%`, metaClass(taxaNc, 2))}
-        ${defV4Metric("Cobertura de inspeção", formatPct(cobertura), `${indicadores.postes} avaliados de ${indicadores.producao} produzidos`, "orange")}
-        ${defV4Metric("Postes reprovados (segregados)", formatPct(taxaPostesReprovados), `${indicadores.postesReprovados} de ${indicadores.producao} produzidos`, "bad")}
-        ${defV4Metric("Taxa de retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes} avaliados · meta <= 5%`, metaClass(taxaRetrabalho, 5))}
-      </div>
-      <div class="def-v4-mini-grid">
-        ${defV4Mini("DPU · defeitos/poste", dpu)}
-        ${defV4Mini("Postes Reprovados", formatPct(taxaPostesReprovados))}
-        ${defV4Mini("Custo estimado retrabalho", "—")}
-        ${defV4Mini("Produção no período", indicadores.producao)}
-      </div>
-      <div class="def-v4-layout">
-        <section class="def-v4-card def-v4-section">
-          <div class="def-v4-section-head"><div><strong>Pareto de não conformidades</strong><span>${vitalCount || 0} causas concentram ${formatPct(vitalPct)} das NC</span></div></div>
-          <div class="def-v4-pareto">${paretoHtml(10)}</div>
-        </section>
-        ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel)}
-      </div>
-      <div class="def-v4-bottom">
-        <section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Evolução da qualidade · 30 dias</strong><span>Série histórica não disponível no frontend atual</span></div></div><div class="def-v4-empty">Sem endpoint histórico agregado. Os dados atuais continuam reais do período filtrado.</div></section>
-        ${defV4Ranking(rankingHtml)}
-      </div>
-    </div>
-    <div class="def-v4-view def-v4-tablet">
-      <div class="def-v4-grid-2">
-        ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesComDefeito} de ${indicadores.postes} avaliados`, "red")}
-        ${defV4Metric("Taxa de não conformidade", formatPct(taxaNc), `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)} · meta <= 2%`, metaClass(taxaNc, 2))}
-        ${defV4Metric("Cobertura de inspeção", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao} produzidos`, "orange")}
-        ${defV4Metric("Postes reprovados (segregados)", formatPct(taxaPostesReprovados), `${indicadores.postesReprovados} de ${indicadores.producao} produzidos`, "bad")}
-        ${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes} · meta <= 5%`, metaClass(taxaRetrabalho, 5))}
-      </div>
-      <div class="def-v4-mini-grid">${defV4Mini("DPU", dpu)}${defV4Mini("Postes Reprovados", formatPct(taxaPostesReprovados))}${defV4Mini("Custo retrabalho", "—")}${defV4Mini("Produção", indicadores.producao)}</div>
-      ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, true)}
-      <div class="def-v4-tablet-panels"><section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(5)}</div></section>${defV4Ranking(rankingHtml)}</div>
-    </div>
-    <div class="def-v4-view def-v4-mobile">
-      ${defV4Metric("Índice de reprovação", formatPct(indiceReprovacao), `${indicadores.postesComDefeito} de ${indicadores.postes} postes avaliados`, "red hero")}
-      <div class="def-v4-grid-2">${defV4Metric("Taxa NC", formatPct(taxaNc), `${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}`, metaClass(taxaNc, 2))}${defV4Metric("Postes reprovados (segregados)", formatPct(taxaPostesReprovados), `${indicadores.postesReprovados} de ${indicadores.producao}`, "bad")}${defV4Metric("Cobertura", formatPct(cobertura), `${indicadores.postes} de ${indicadores.producao}`, "orange")}${defV4Metric("Retrabalho", formatPct(taxaRetrabalho), `${indicadores.retrabalho} de ${indicadores.postes}`, metaClass(taxaRetrabalho, 5))}</div>
-      <div class="def-v4-mini-grid">${defV4Mini("Postes Reprovados", formatPct(taxaPostesReprovados))}${defV4Mini("Custo retrabalho", "—")}</div>
-      ${defV4Flow(indicadores, cobertura, indiceReprovacao, taxaRetrabalho, fissuraCircularLabel, true)}
-      <section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(5)}</div></section>
-    </div>
-    <div class="def-v4-view def-v4-tv">
-      <div class="def-v4-tv-head"><div><strong>ConcreTrack · Qualidade</strong><span id="defV4TvSector">Todos os setores · ${escapeHtml(periodo)}</span></div><div>Próxima rotação em <b id="defV4TvCountdown">20 s</b></div></div>
-      <div class="def-v4-tv-grid">
-        <div class="def-v4-card def-v4-metric red"><span>Índice de reprovação</span><strong id="defV4TvReprov">${formatPct(indiceReprovacao)}</strong><small id="defV4TvReprovSub">${indicadores.postesComDefeito} de ${indicadores.postes}</small></div>
-        <div class="def-v4-card def-v4-metric ${metaClass(taxaNc, 2)}"><span>Taxa NC</span><strong id="defV4TvNc">${formatPct(taxaNc)}</strong><small id="defV4TvNcSub">${indicadores.totalErros} / ${fmtNumber(indicadores.totalPossivel)}</small></div>
-        <div class="def-v4-card def-v4-metric orange"><span>Cobertura</span><strong id="defV4TvCobertura">${formatPct(cobertura)}</strong><small id="defV4TvCoberturaSub">${indicadores.postes} de ${indicadores.producao}</small></div>
-        <div class="def-v4-card def-v4-metric bad"><span>Postes reprovados (segregados)</span><strong id="defV4TvSegregados">${formatPct(taxaPostesReprovados)}</strong><small id="defV4TvSegregadosSub">${indicadores.postesReprovados} de ${indicadores.producao}</small></div>
-      </div>
-      <div class="def-v4-tv-mini-line">Fissura circular: <strong>${escapeHtml(fissuraCircularLabel)}</strong></div>
-      <div class="def-v4-tv-panels"><section class="def-v4-card def-v4-section"><div class="def-v4-section-head"><div><strong>Pareto</strong><span>${vitalCount || 0} causas = ${formatPct(vitalPct)}</span></div></div><div class="def-v4-pareto">${paretoHtml(6)}</div></section>${defV4Ranking(rankingHtml)}</div>
-    </div>
-  `;
+  const setoresEl = document.getElementById("miDefSetores");
+  if (setoresEl) {
+    const setores = Object.values(indicadores.porSetor).sort((a, b) => b.erros - a.erros);
+    if (setores.length === 0) {
+      setoresEl.innerHTML = '<div class="muted">Sem setores no periodo.</div>';
+    } else {
+      setoresEl.innerHTML = setores.map(item => {
+        const setorTaxa = item.producao > 0 ? (item.erros / item.producao) * 100 : 0;
+        return `
+          <div class="mi-defeitos-row">
+            <div class="mi-defeitos-row-main">
+              <strong>${escapeHtml(item.setor)}</strong>
+              <span>${item.producao} produzido(s)</span>
+            </div>
+            <div class="mi-defeitos-row-metrics">
+              <span><strong>${item.erros}</strong> erros</span>
+              <span><strong>${formatPct(setorTaxa)}</strong> taxa/producao</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  }
 
-  iniciarDashboardDefeitosTv(tvSetores);
+  const matrizEl = document.getElementById("miDefMatriz");
+  if (matrizEl) {
+    const setores = Object.keys(indicadores.porSetor).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
+    if (tiposOrdenados.length === 0 || setores.length === 0) {
+      matrizEl.innerHTML = '<div class="muted">Sem dados para matriz no periodo.</div>';
+    } else {
+      matrizEl.innerHTML = `
+        <div class="mi-def-matrix-scroll">
+          <table>
+            <thead><tr><th>Defeito</th>${setores.map(s => `<th>${escapeHtml(s)}</th>`).join("")}<th>Total</th></tr></thead>
+            <tbody>
+              ${tiposOrdenados.slice(0, 12).map(([tipo, total]) => `
+                <tr>
+                  <td>${escapeHtml(tipo)}</td>
+                  ${setores.map(s => `<td>${indicadores.matriz[tipo]?.[s] || 0}</td>`).join("")}
+                  <td><strong>${total}</strong></td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+  }
+
+  const planoEl = document.getElementById("miDefPlanoAcao");
+  if (planoEl) {
+    if (pareto.length === 0) {
+      planoEl.innerHTML = '<div class="muted">Sem defeitos para sugerir plano.</div>';
+    } else {
+      planoEl.innerHTML = pareto.slice(0, 2).map(item => {
+        const prioridade = item.pct > 20 ? "Critica" : item.pct > 10 ? "Alta" : item.pct > 5 ? "Media" : "Baixa";
+        const meta = Math.max(1, Math.floor(item.total * 0.5));
+        return `
+          <div class="mi-def-action">
+            <strong>${escapeHtml(item.tipo)}</strong>
+            <span>Prioridade ${prioridade} | ${item.total} ocorrencia(s) | meta 90 dias: ${meta}</span>
+            <p>Estratificar por setor, forma e montador; revisar causa raiz no ponto de maior incidencia e acompanhar semanalmente.</p>
+          </div>
+        `;
+      }).join("");
+    }
+  }
+}
+
+function renderIndicadoresDefeitosContrato(contract) {
+  const kpis = contract?.kpis || {};
+  const bySector = contract?.by_sector || {};
+  const setText = (id, value) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value;
+  };
+
+  setText("miDefTotalErros", kpis.total_erros ?? 0);
+  setText("miDefTotalPossivel", kpis.total_possivel ?? 0);
+  setText("miDefTaxa", formatPct(Number(kpis.taxa_nc || 0)));
+  setText("miDefPostes", kpis.postes ?? 0);
+  setText("miDefTaxaProducao", formatPct(Number(kpis.indice_reprovacao || 0)));
+  setText("miDefTaxaPostesReprovados", formatPct(Number(kpis.taxa_postes_reprovados || 0)));
+  setText("miDefTaxaRetrabalho", formatPct(Number(kpis.taxa_retrabalho || 0)));
+  setText("miDefProducaoPeriodo", kpis.producao ?? 0);
+  setText("miDefPostesReprovados", kpis.postes_reprovados ?? 0);
+
+  const setoresEl = document.getElementById("miDefSetores");
+  if (setoresEl) {
+    const setores = Object.entries(bySector).sort((a, b) => String(b[1]?.erros || 0).localeCompare(String(a[1]?.erros || 0), "pt-BR", { numeric: true }));
+    if (!setores.length) {
+      setoresEl.innerHTML = '<div class="muted">Sem setores no periodo.</div>';
+    } else {
+      setoresEl.innerHTML = setores.map(([scope, item]) => {
+        const producao = Number(item?.producao || 0);
+        const erros = Number(item?.erros || 0);
+        const setorTaxa = producao > 0 ? (erros / producao) * 100 : 0;
+        return `
+          <div class="mi-defeitos-row">
+            <div class="mi-defeitos-row-main">
+              <strong>${escapeHtml(scope)}</strong>
+              <span>${producao} produzido(s)</span>
+            </div>
+            <div class="mi-defeitos-row-metrics">
+              <span><strong>${erros}</strong> erros</span>
+              <span><strong>${formatPct(setorTaxa)}</strong> taxa/producao</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  }
 }
 
 function atualizarResumoFiltrosProdutividade() {
@@ -10813,6 +10785,17 @@ function atualizarResumoFiltrosProdutividade() {
   const fmt = (d) => d ? d.split("-").reverse().join("/") : "-";
   const periodo = dStart === dEnd ? fmt(dStart) : `${fmt(dStart)} a ${fmt(dEnd)}`;
   resumo.textContent = `${periodo} - ${setor} - Meta ${meta} min`;
+}
+
+function atualizarResumoFiltrosDefeitos() {
+  const dStart = document.getElementById("dfDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("dfDataFim")?.value || todayYmd();
+  const setor = document.getElementById("dfFiltroSetor")?.value || "Todos os setores";
+  const resumo = document.getElementById("dfFiltroResumo");
+  if (!resumo) return;
+  const fmt = (d) => d ? d.split("-").reverse().join("/") : "-";
+  const periodo = dStart === dEnd ? fmt(dStart) : `${fmt(dStart)} a ${fmt(dEnd)}`;
+  resumo.textContent = `${periodo} - ${setor}`;
 }
 
 function setProdutividadeDrawerOpen(open) {
@@ -10843,30 +10826,61 @@ function ativarAbaMontagem(tab) {
 }
 
 function aplicarLayoutDashboardDefeitos() {
-  document.querySelectorAll("#viewMontagemIndicadores .mi-tab-section").forEach(section => {
-    section.style.display = section.id === "miSecaoDefeitos" ? "block" : "none";
-  });
+  const defeitosSection = document.getElementById("miSecaoDefeitos");
+  const target = document.getElementById("dfContent");
+  if (defeitosSection && target && defeitosSection.parentElement !== target) {
+    target.appendChild(defeitosSection);
+  }
+  if (defeitosSection) {
+    defeitosSection.classList.add("active");
+    defeitosSection.style.display = "block";
+  }
 }
 
 function limparLayoutDashboardDefeitos() {
-  document.querySelectorAll("#viewMontagemIndicadores .mi-tab-section").forEach(section => {
-    section.style.display = "";
-  });
+  const defeitosSection = document.getElementById("miSecaoDefeitos");
+  const target = document.getElementById("miSecaoProdutividade");
+  if (defeitosSection && target?.parentElement && defeitosSection.parentElement?.id === "dfContent") {
+    target.parentElement.insertBefore(defeitosSection, target);
+  }
+  if (defeitosSection) defeitosSection.style.display = "";
 }
 
 async function carregarMontagemIndicadores() {
-  if (!supabaseClient || miCarregandoMontagemIndicadores) return;
-  miCarregandoMontagemIndicadores = true;
-  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
-  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  if (!supabaseClient) return;
+  const dashboardKind = state.mode === "DASHBOARD_DEFEITOS" ? "defeitos" : "montagem";
+  const requestId = ++dashboardRequestSeq[dashboardKind];
+  const dStart = getDashboardFilterValue("DataInicio", todayYmd());
+  const dEnd = getDashboardFilterValue("DataFim", todayYmd());
+  const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
+  const scope = getDashboardScopeFromSetor(setorFiltro);
   
-  setSyncStatus("pending", "Carregando indicadores de montagem...");
+  if (dashboardKind === "defeitos") atualizarResumoFiltrosDefeitos();
+  setSyncStatus("pending", dashboardKind === "defeitos" ? "Carregando dashboard de defeitos..." : "Carregando indicadores de montagem...");
   try {
-    const [montagemRes, producaoRes] = await Promise.all([
+    const rpcPromise = dashboardKind === "defeitos"
+      ? chamarDashboardRpcComCache("rpc_dashboard_defeitos_resumo_v1", {
+          p_data_inicio: dStart,
+          p_data_fim: dEnd,
+          p_scope: scope
+        }, `rpc:defeitos:resumo:${dStart}:${dEnd}:${scope}`).catch((err) => {
+          console.warn("RPC de defeitos indisponivel; mantendo calculo local:", err);
+          return null;
+        })
+      : chamarDashboardRpcComCache("rpc_dashboard_montagem_resumo_v1", {
+          p_data_inicio: dStart,
+          p_data_fim: dEnd,
+          p_scope: scope
+        }, `rpc:montagem:resumo:${dStart}:${dEnd}:${scope}`).catch((err) => {
+          console.warn("RPC de montagem indisponivel; mantendo calculo local:", err);
+          return null;
+        });
+
+    const [montagemRes, producaoRes, rpcRes] = await Promise.all([
       carregarLinhasSupabaseComCache({
-        cacheKey: `montagem:montagem_poste:${dStart}:${dEnd}`,
+        cacheKey: `${dashboardKind}:montagem_poste:${dStart}:${dEnd}`,
         table: "montagem_poste",
-        select: "*",
+        select: DASHBOARD_MONTAGEM_SELECT,
         orderBy: "data_fabricacao",
         orderOptions: { ascending: false },
         applyFilters: query => query
@@ -10874,37 +10888,45 @@ async function carregarMontagemIndicadores() {
           .lte("data_fabricacao", dEnd)
       }),
       carregarLinhasSupabaseComCache({
-        cacheKey: `montagem:producao:${dStart}:${dEnd}`,
+        cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
         table: "producao",
-        select: "*",
+        select: DASHBOARD_PRODUCAO_SELECT,
         applyFilters: query => query
           .gte("data_fabricacao", dStart)
           .lte("data_fabricacao", dEnd)
-      })
+      }),
+      rpcPromise
     ]);
 
+    if (requestId !== dashboardRequestSeq[dashboardKind]) return;
+    
     miRawMontagemData = montagemRes.rows || [];
     miRawProducaoData = producaoRes.rows || [];
-
+    
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
-    const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE";
-    if (fromCache) setSyncStatus("warn", "Indicadores carregados do cache local.");
-
+    if (dashboardKind === "defeitos" && rpcRes?.payload) renderIndicadoresDefeitosContrato(rpcRes.payload);
+    const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" || rpcRes?.state === "OFFLINE_CACHE";
+    if (fromCache) setSyncStatus("warn", dashboardKind === "defeitos" ? "Dashboard Defeitos carregado do cache local." : "Indicadores carregados do cache local.");
+    else setSyncStatus("ok", dashboardKind === "defeitos" ? "Dashboard Defeitos atualizado." : "Indicadores de montagem atualizados.");
+    
   } catch(err) {
     console.error("Erro carregarMontagemIndicadores:", err);
     setSyncStatus("error", "Erro ao carregar indicadores.");
-  } finally {
-    miCarregandoMontagemIndicadores = false;
   }
 }
 
+async function carregarDashboardDefeitos() {
+  aplicarLayoutDashboardDefeitos();
+  return carregarMontagemIndicadores();
+}
+
 function aplicarFiltrosEExibirMontagem() {
-  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
-  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
-  let fSetor = document.getElementById("miFiltroSetor")?.value || "";
-  let fStatus = document.getElementById("miFiltroStatus")?.value || "";
-  const fPesquisa = (document.getElementById("miFiltroPesquisa")?.value || "").trim().toLowerCase();
+  const dStart = getDashboardFilterValue("DataInicio", todayYmd());
+  const dEnd = getDashboardFilterValue("DataFim", todayYmd());
+  let fSetor = getDashboardFilterValue("FiltroSetor", "");
+  let fStatus = getDashboardFilterValue("FiltroStatus", "");
+  const fPesquisa = getDashboardFilterValue("FiltroPesquisa", "").trim().toLowerCase();
   if (normalizarTexto(fSetor).startsWith("todos")) fSetor = "";
   if (normalizarTexto(fStatus).startsWith("todos")) fStatus = "";
   atualizarResumoFiltrosMontagem();
@@ -10912,7 +10934,7 @@ function aplicarFiltrosEExibirMontagem() {
   // 1. Filtrar dados de Montagem em memória
   miFilteredMontagemData = miRawMontagemData.filter(row => {
     // Considerar apenas montagens finalizadas
-    if (!row.status_montagem) return false;
+    if (!isLinhaMontagemDashboard(row)) return false;
 
     // Filtro por Data
     const day = getMiDataReferencia(row);
@@ -10953,6 +10975,8 @@ function aplicarFiltrosEExibirMontagem() {
   });
 
   // 2. Filtrar dados de Produção
+  const miFilteredDefeitosData = miFilteredMontagemData.filter(isLinhaDefeitoDashboard);
+
   const filteredProducao = miRawProducaoData.filter(row => {
     const day = row.data_fabricacao;
     if (!day || day < dStart || day > dEnd) return false;
@@ -11015,7 +11039,7 @@ function aplicarFiltrosEExibirMontagem() {
     }
   });
 
-  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredMontagemData, filteredProducao));
+  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredDefeitosData, filteredProducao));
 
 
   // Renderizar tempos médios
@@ -11158,233 +11182,7 @@ function aplicarFiltrosEExibirMontagem() {
   setSyncStatus("idle", "Indicadores atualizados.");
 }
 
-function exportarMontagemIndicadoresXlsx() {
-  if (!Array.isArray(miFilteredMontagemData) || miFilteredMontagemData.length === 0) {
-    showMsgBox("Nenhum dado encontrado para exportar.", "error");
-    return;
-  }
-
-  if (!window.XLSX?.utils) {
-    showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
-    return;
-  }
-
-  const linhas = miFilteredMontagemData.map(row => {
-    const inicio = row.inicio_inspecao_montagem || row.inicioInspecaoMontagem || "";
-    const fim = row.finalizado_em || row.finalizadoEm || "";
-    const durMs = inicio && fim ? (new Date(fim) - new Date(inicio)) : null;
-    return {
-      "Tempo de montagem": formatarDuracao(durMs),
-      "Montador": row.montador_nome || row.montadorNome || "",
-      "Modelo poste": row.modelo || "",
-      "Data da produção": fmtDate(row.data_fabricacao || row.dataFabricacao || ""),
-      "Data da montagem": formatarDataHoraMontagemXlsx(fim || inicio),
-      "Status poste": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label
-    };
-  });
-
-  const ws = XLSX.utils.json_to_sheet(linhas, {
-    header: ["Tempo de montagem", "Montador", "Modelo poste", "Data da produção", "Data da montagem", "Status poste"]
-  });
-  ws["!cols"] = [
-    { wch: 20 },
-    { wch: 28 },
-    { wch: 24 },
-    { wch: 18 },
-    { wch: 22 },
-    { wch: 24 }
-  ];
-
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Dashboard Montagem");
-  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
-  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
-  XLSX.writeFile(wb, `dashboard_montagem_${dStart}_a_${dEnd}.xlsx`);
-}
-
-async function carregarVisaoMontagemDia() {
-  const dataInput = document.getElementById("miMontagemDiaData");
-  const dataMontagem = dataInput?.value || todayYmd();
-  if (dataInput && !dataInput.value) dataInput.value = dataMontagem;
-  if (!supabaseClient || miCarregandoMontagemDia) return;
-
-  miCarregandoMontagemDia = true;
-  const totalEl = document.getElementById("miMontagemDiaTotal");
-  const datasEl = document.getElementById("miMontagemDiaDatas");
-  const resumoEl = document.getElementById("miMontagemDiaResumo");
-  const agrupadoBody = document.getElementById("miMontagemDiaAgrupadoBody");
-  const detalheBody = document.getElementById("miMontagemDiaDetalheBody");
-  miMontagemDiaRows = [];
-  if (totalEl) totalEl.textContent = "...";
-  if (datasEl) datasEl.textContent = "...";
-  if (resumoEl) resumoEl.innerHTML = `<div class="muted">Carregando montagens de ${formatarDataPtBr(dataMontagem)}...</div>`;
-  if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Carregando...</td></tr>';
-  if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Carregando...</td></tr>';
-  renderizarGraficoMontagemDiaProducao([]);
-
-  try {
-    const dataFim = proximoDiaYmd(dataMontagem);
-    const { data, error } = await supabaseClient
-      .from("montagem_poste")
-      .select("*")
-      .gte("finalizado_em", `${dataMontagem}T00:00:00`)
-      .lt("finalizado_em", `${dataFim}T00:00:00`)
-      .not("status_montagem", "is", null)
-      .order("finalizado_em", { ascending: true })
-      .limit(5000);
-
-    if (error) throw error;
-
-    const rows = (data || []).filter(row => getMiDataMontagem(row) === dataMontagem);
-    miMontagemDiaRows = rows;
-    const porProducao = {};
-    rows.forEach(row => {
-      const dataProd = dateToYmd(row.data_fabricacao || row.dataFabricacao || "") || "sem-data";
-      if (!porProducao[dataProd]) porProducao[dataProd] = [];
-      porProducao[dataProd].push(row);
-    });
-
-    const grupos = Object.entries(porProducao)
-      .map(([dataProd, itens]) => ({ dataProd, itens }))
-      .sort((a, b) => a.dataProd.localeCompare(b.dataProd));
-
-    if (totalEl) totalEl.textContent = rows.length;
-    if (datasEl) datasEl.textContent = grupos.length;
-    renderizarGraficoMontagemDiaProducao(grupos);
-
-    if (!rows.length) {
-      if (resumoEl) resumoEl.innerHTML = `<div class="muted">Nenhum poste montado em ${formatarDataPtBr(dataMontagem)}.</div>`;
-      if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Nenhum poste montado nessa data.</td></tr>';
-      if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Nenhum poste montado nessa data.</td></tr>';
-      return;
-    }
-
-    if (resumoEl) {
-      const maiorGrupo = grupos.reduce((max, item) => item.itens.length > max.itens.length ? item : max, grupos[0]);
-      resumoEl.innerHTML = `
-        <div class="mi-montagem-dia-summary">
-          <strong>${rows.length}</strong> postes montados em <strong>${formatarDataPtBr(dataMontagem)}</strong>.
-          A data de producao com maior volume foi <strong>${formatarDataPtBr(maiorGrupo.dataProd)}</strong>, com <strong>${maiorGrupo.itens.length}</strong> postes.
-        </div>
-      `;
-    }
-
-    if (agrupadoBody) {
-      agrupadoBody.innerHTML = grupos.map(grupo => {
-        const formas = grupo.itens
-          .map(row => row.forma_numero || row.formaNumero || "")
-          .filter(Boolean)
-          .join(", ");
-        return `
-          <tr>
-            <td>${escapeHtml(formatarDataPtBr(grupo.dataProd))}</td>
-            <td><strong>${grupo.itens.length}</strong></td>
-            <td>${escapeHtml(formas || "-")}</td>
-          </tr>
-        `;
-      }).join("");
-    }
-
-    if (detalheBody) {
-      detalheBody.innerHTML = rows.map(row => {
-        const status = getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label;
-        return `
-          <tr>
-            <td>${escapeHtml(formatarDataHoraMontagemXlsx(row.finalizado_em || row.finalizadoEm || ""))}</td>
-            <td>${escapeHtml(formatarDataPtBr(row.data_fabricacao || row.dataFabricacao || ""))}</td>
-            <td>${escapeHtml(row.setor || "")}</td>
-            <td><strong>${escapeHtml(row.forma_numero || row.formaNumero || "")}</strong></td>
-            <td>${escapeHtml(row.modelo || "")}</td>
-            <td>${escapeHtml(status)}</td>
-            <td>${escapeHtml(row.montador_nome || row.montadorNome || "")}</td>
-          </tr>
-        `;
-      }).join("");
-    }
-  } catch (err) {
-    console.error("Erro carregarVisaoMontagemDia:", err);
-    if (totalEl) totalEl.textContent = "-";
-    if (datasEl) datasEl.textContent = "-";
-    if (resumoEl) resumoEl.innerHTML = '<div class="muted">Erro ao carregar a visao por data de montagem.</div>';
-    if (agrupadoBody) agrupadoBody.innerHTML = '<tr><td colspan="3">Erro ao carregar dados.</td></tr>';
-    if (detalheBody) detalheBody.innerHTML = '<tr><td colspan="7">Erro ao carregar dados.</td></tr>';
-    renderizarGraficoMontagemDiaProducao([]);
-    showMsgBox("Erro ao carregar montagens por dia.", "error");
-  } finally {
-    miCarregandoMontagemDia = false;
-  }
-}
-
-function renderizarGraficoMontagemDiaProducao(grupos) {
-  const ctx = document.getElementById("chartMiMontagemDiaProducao")?.getContext("2d");
-  if (!ctx || typeof Chart === "undefined") return;
-  if (chartMiMontagemDiaProducaoInstance) {
-    chartMiMontagemDiaProducaoInstance.destroy();
-    chartMiMontagemDiaProducaoInstance = null;
-  }
-  const labels = grupos.map(grupo => formatarDataPtBr(grupo.dataProd));
-  const valores = grupos.map(grupo => grupo.itens.length);
-  chartMiMontagemDiaProducaoInstance = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels,
-      datasets: [{
-        label: "Postes montados",
-        data: valores,
-        backgroundColor: "#2563eb",
-        borderColor: "#1d4ed8",
-        borderWidth: 1,
-        borderRadius: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: (context) => `${context.parsed.y || 0} postes montados`
-          }
-        }
-      },
-      scales: {
-        x: { ticks: { font: { size: window.innerWidth < 768 ? 10 : 12 } } },
-        y: { beginAtZero: true, ticks: { precision: 0 } }
-      }
-    }
-  });
-}
-
-function exportarMontagemDiaDetalheXlsx() {
-  if (!Array.isArray(miMontagemDiaRows) || miMontagemDiaRows.length === 0) {
-    showMsgBox("Carregue uma data de montagem antes de exportar.", "error");
-    return;
-  }
-  if (!window.XLSX?.utils) {
-    showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
-    return;
-  }
-  const linhas = miMontagemDiaRows.map(row => ({
-    "Data montagem": formatarDataHoraMontagemXlsx(row.finalizado_em || row.finalizadoEm || ""),
-    "Data producao": formatarDataPtBr(row.data_fabricacao || row.dataFabricacao || ""),
-    "Setor": row.setor || "",
-    "Forma": row.forma_numero || row.formaNumero || "",
-    "Modelo": row.modelo || "",
-    "Status": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label,
-    "Montador": row.montador_nome || row.montadorNome || ""
-  }));
-  const ws = XLSX.utils.json_to_sheet(linhas, {
-    header: ["Data montagem", "Data producao", "Setor", "Forma", "Modelo", "Status", "Montador"]
-  });
-  ws["!cols"] = [{ wch: 22 }, { wch: 16 }, { wch: 14 }, { wch: 12 }, { wch: 24 }, { wch: 18 }, { wch: 28 }];
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Detalhe montagem");
-  const dataMontagem = document.getElementById("miMontagemDiaData")?.value || todayYmd();
-  XLSX.writeFile(wb, `detalhe_montagem_${dataMontagem}.xlsx`);
-}
-
-function obterItensRejeitadosLinha(row) {
+function obterItensRejeitadosLinha(row, options = {}) {
   const checklists = row.checklists || {};
   let parsed = checklists;
   if (typeof checklists === "string") {
@@ -11395,7 +11193,7 @@ function obterItensRejeitadosLinha(row) {
     }
   }
 
-  const sections = obterChecklistSectionsLinha(row);
+  const sections = options.visualOnly ? obterChecklistVisualSectionsLinha(row) : obterChecklistSectionsLinha(row);
 
   const rejeitados = [];
   sections.forEach(sec => {
@@ -12395,6 +12193,7 @@ async function updateSwVersionBadge() {
     badge.dataset.listenerBound = "true";
     badge.addEventListener("click", async () => {
       if (confirm("Deseja forçar a atualização deste aplicativo para a versão mais recente?")) {
+        badge.textContent = "Atualizando...";
         if (navigator.serviceWorker) {
           try {
             const registrations = await navigator.serviceWorker.getRegistrations();
@@ -12403,7 +12202,17 @@ async function updateSwVersionBadge() {
             }
           } catch(e) {}
         }
-        window.location.reload(true);
+        if ("caches" in window) {
+          try {
+            const keys = await caches.keys();
+            await Promise.all(
+              keys
+                .filter((key) => key.includes("mapa-concretagem"))
+                .map((key) => caches.delete(key))
+            );
+          } catch(e) {}
+        }
+        window.location.replace(`./index.html?cache-reset=v1.55&ts=${Date.now()}`);
       }
     });
   }
@@ -12423,6 +12232,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.56";
+  badge.textContent = "v1.55";
   badge.style.display = "inline-block";
 }

@@ -1,0 +1,92 @@
+{
+  "contract_version": "dataset-ouro-dashboards-v1",
+  "created_at": "2026-08-20",
+  "purpose": "Validar escopos Total, S1, S2, S3, S4 e S1_S2 sem media simples de percentuais.",
+  "rows": [
+    {
+      "case": "Base S1",
+      "scope": "S1",
+      "setor": "Setor 1",
+      "producao": 10,
+      "postes_avaliados": 8,
+      "oportunidades": 80,
+      "ocorrencias": 8,
+      "reprovados": 2,
+      "retrabalho": 1
+    },
+    {
+      "case": "Base S2",
+      "scope": "S2",
+      "setor": "Setor 2",
+      "producao": 5,
+      "postes_avaliados": 5,
+      "oportunidades": 50,
+      "ocorrencias": 10,
+      "reprovados": 1,
+      "retrabalho": 0
+    },
+    {
+      "case": "Base S3",
+      "scope": "S3",
+      "setor": "Setor 3",
+      "producao": 7,
+      "postes_avaliados": 6,
+      "oportunidades": 60,
+      "ocorrencias": 0,
+      "reprovados": 0,
+      "retrabalho": 0
+    },
+    {
+      "case": "Base S4",
+      "scope": "S4",
+      "setor": "Setor 4",
+      "producao": 3,
+      "postes_avaliados": 2,
+      "oportunidades": 20,
+      "ocorrencias": 2,
+      "reprovados": 1,
+      "retrabalho": 1
+    },
+    {
+      "case": "Alias invalido",
+      "scope": "UNCLASSIFIED",
+      "setor": "Setor de Testes",
+      "producao": 1,
+      "postes_avaliados": 1,
+      "oportunidades": 10,
+      "ocorrencias": 1,
+      "reprovados": 0,
+      "retrabalho": 0
+    },
+    {
+      "case": "Setor nulo",
+      "scope": "UNCLASSIFIED",
+      "setor": null,
+      "producao": 1,
+      "postes_avaliados": 1,
+      "oportunidades": 10,
+      "ocorrencias": 1,
+      "reprovados": 0,
+      "retrabalho": 0
+    }
+  ],
+  "expected": {
+    "TOTAL": {
+      "included_scopes": ["S1", "S2", "S3", "S4"],
+      "producao": 25,
+      "postes_avaliados": 21,
+      "oportunidades": 210,
+      "ocorrencias": 20,
+      "taxa_nc": 9.5238
+    },
+    "S1_S2": {
+      "included_scopes": ["S1", "S2"],
+      "producao": 15,
+      "postes_avaliados": 13,
+      "oportunidades": 130,
+      "ocorrencias": 18,
+      "taxa_nc": 13.8462,
+      "rule": "Somar numeradores e denominadores antes de calcular o percentual."
+    }
+  }
+}
