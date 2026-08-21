@@ -10733,20 +10733,47 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
 function renderIndicadoresDefeitosContrato(contract) {
   const kpis = contract?.kpis || {};
   const bySector = contract?.by_sector || {};
+  const byDefect = contract?.by_defect || {};
+  const defectMatrix = contract?.defect_matrix || {};
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
   };
 
-  setText("miDefTotalErros", kpis.total_erros ?? 0);
-  setText("miDefTotalPossivel", kpis.total_possivel ?? 0);
-  setText("miDefTaxa", formatPct(Number(kpis.taxa_nc || 0)));
-  setText("miDefPostes", kpis.postes ?? 0);
-  setText("miDefTaxaProducao", formatPct(Number(kpis.indice_reprovacao || 0)));
-  setText("miDefTaxaPostesReprovados", formatPct(Number(kpis.taxa_postes_reprovados || 0)));
-  setText("miDefTaxaRetrabalho", formatPct(Number(kpis.taxa_retrabalho || 0)));
-  setText("miDefProducaoPeriodo", kpis.producao ?? 0);
-  setText("miDefPostesReprovados", kpis.postes_reprovados ?? 0);
+  const indicadores = {
+    postes: Number(kpis.postes || 0),
+    producao: Number(kpis.producao || 0),
+    totalPossivel: Number(kpis.total_possivel || 0),
+    totalErros: Number(kpis.total_erros || 0),
+    postesComDefeito: Number(kpis.postes_com_defeito || 0),
+    postesReprovados: Number(kpis.postes_reprovados || 0),
+    retrabalho: Number(kpis.retrabalho || 0),
+    porTipo: Object.fromEntries(Object.entries(byDefect).map(([key, value]) => [key, Number(value || 0)])),
+    porSetor: {},
+    matriz: {},
+    fissuras: {
+      total: Number(kpis.fissuras || 0),
+      circulares: Number(kpis.fissuras_circulares || 0),
+      outros: Math.max(0, Number(kpis.fissuras || 0) - Number(kpis.fissuras_circulares || 0))
+    }
+  };
+
+  Object.entries(bySector).forEach(([scope, item]) => {
+    indicadores.porSetor[scope] = {
+      setor: scope,
+      erros: Number(item?.erros || 0),
+      producao: Number(item?.producao || 0)
+    };
+  });
+
+  Object.entries(defectMatrix).forEach(([tipo, setores]) => {
+    indicadores.matriz[tipo] = {};
+    Object.entries(setores || {}).forEach(([scope, total]) => {
+      indicadores.matriz[tipo][scope] = Number(total || 0);
+    });
+  });
+
+  renderIndicadoresDefeitosMontagem(indicadores);
 
   const setoresEl = document.getElementById("miDefSetores");
   if (setoresEl) {
@@ -10918,7 +10945,33 @@ async function carregarMontagemIndicadores() {
 
 async function carregarDashboardDefeitos() {
   aplicarLayoutDashboardDefeitos();
-  return carregarMontagemIndicadores();
+  if (!supabaseClient) return;
+  const dashboardKind = "defeitos";
+  const requestId = ++dashboardRequestSeq[dashboardKind];
+  const dStart = getDashboardFilterValue("DataInicio", todayYmd());
+  const dEnd = getDashboardFilterValue("DataFim", todayYmd());
+  const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
+  const scope = getDashboardScopeFromSetor(setorFiltro);
+
+  atualizarResumoFiltrosDefeitos();
+  setSyncStatus("pending", "Carregando dashboard de defeitos...");
+  try {
+    const rpcRes = await chamarDashboardRpcComCache("rpc_dashboard_defeitos_resumo_v1", {
+      p_data_inicio: dStart,
+      p_data_fim: dEnd,
+      p_scope: scope
+    }, `rpc:defeitos:resumo:${dStart}:${dEnd}:${scope}`);
+
+    if (requestId !== dashboardRequestSeq[dashboardKind]) return;
+    renderIndicadoresDefeitosContrato(rpcRes.payload);
+    setSyncStatus(
+      rpcRes.state === "OFFLINE_CACHE" ? "warn" : "ok",
+      rpcRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
+    );
+  } catch (err) {
+    console.error("Erro carregarDashboardDefeitos:", err);
+    setSyncStatus("error", "Erro ao carregar dashboard de defeitos.");
+  }
 }
 
 function aplicarFiltrosEExibirMontagem() {

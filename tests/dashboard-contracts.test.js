@@ -74,3 +74,17 @@ test('migration das fases 7 8 e 9 versiona custos paginacao e tendencia', () => 
     assert.match(sql, new RegExp(token));
   }
 });
+
+test('correcao do contrato de defeitos inclui pareto e matriz server-side', () => {
+  const sql = read('supabase/migrations/202608200004_dashboard_defeitos_contract_fix_v1.sql');
+
+  for (const token of [
+    'dashboard_jsonb_rejected_labels_v1',
+    'rpc_dashboard_defeitos_resumo_v1',
+    'by_defect',
+    'defect_matrix',
+    'fissuras_circulares',
+  ]) {
+    assert.match(sql, new RegExp(token));
+  }
+});
