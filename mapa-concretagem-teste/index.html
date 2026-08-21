@@ -11,8 +11,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
-  <link rel="manifest" href="manifest.json?v=v1.56" />
-  <link rel="stylesheet" href="styles.css?v=v1.56" />
+  <link rel="manifest" href="manifest.json?v=v1.57" />
+  <link rel="stylesheet" href="styles.css?v=v1.57" />
+  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v1.57" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1020,65 +1021,103 @@
 
       <div id="miSecaoQualidade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Montagens por setor</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorSetor"></canvas></div></div><div class="mi-chart-card"><div class="mi-chart-title">Ranking por montador</div><div class="mi-chart-canvas-wrap"><canvas id="chartMiPorMontador"></canvas></div></div></div></div>
 
-      <div id="miSecaoDefeitos" class="mi-tab-section">
-        <div class="mi-kpis-grid">
-          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Erros encontrados</span><span class="mi-kpi-val" id="miDefTotalErros">-</span></div>
-          <div class="mi-kpi-card mi-kpi-programado"><span class="mi-kpi-label">Defeitos possiveis</span><span class="mi-kpi-val" id="miDefTotalPossivel">-</span></div>
-          <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Taxa de NC</span><span class="mi-kpi-val" id="miDefTaxa">-%</span></div>
-          <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Postes avaliados</span><span class="mi-kpi-val" id="miDefPostes">-</span></div>
-          <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Indice de reprovacao</span><span class="mi-kpi-val" id="miDefTaxaProducao">-%</span></div>
-          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Postes Reprovados</span><span class="mi-kpi-val" id="miDefTaxaPostesReprovados">-%</span></div>
-          <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Taxa retrabalho</span><span class="mi-kpi-val" id="miDefTaxaRetrabalho">-%</span></div>
-        </div>
-        <div class="mi-def-summary-strip">
-          <div><span>Producao no periodo</span><strong id="miDefProducaoPeriodo">0</strong></div>
-          <div><span>Postes reprovados</span><strong id="miDefPostesReprovados">0</strong></div>
-          <div><span>Tipos vitais 80/20</span><strong id="miDefTiposVitais">0</strong></div>
-          <div><span>Fissuras</span><strong id="miDefFissuras">0</strong></div>
-          <div><span>Fissuras circulares</span><strong id="miDefFissurasCirculares">0</strong></div>
-        </div>
-        <div class="mi-charts-row">
-          <div class="mi-chart-card mi-chart-card-wide">
-            <div class="mi-chart-title">Defeitos encontrados por tipo</div>
-            <div id="miDefeitosPorTipo" class="mi-ranking-list"><div class="muted">Carregando...</div></div>
+      <div id="miSecaoDefeitos" class="mi-tab-section df-v4-content">
+        <section class="df-v4-hero-grid" aria-label="Resumo de defeitos">
+          <div class="df-v4-kpi df-v4-kpi-hero">
+            <span class="df-v4-kpi-label">Taxa de defeitos</span>
+            <strong class="df-v4-kpi-value" id="miDefTaxa">-%</strong>
+            <span class="df-v4-kpi-meta"><span id="miDefTotalErros">-</span> ocorrencias / <span id="miDefTotalPossivel">-</span> oportunidades avaliadas</span>
+            <em class="df-v4-chip">Definicao auditavel</em>
           </div>
-        </div>
-        <div class="mi-charts-row">
-          <div class="mi-chart-card">
-            <div class="mi-chart-title">Pareto de defeitos 80/20</div>
-            <div id="miDefPareto" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
+          <div class="df-v4-kpi">
+            <span class="df-v4-kpi-label">Ocorrencias de NC</span>
+            <strong class="df-v4-kpi-value" id="miDefOcorrenciasMirror">-</strong>
+            <span class="df-v4-kpi-meta">Itens reprovados no checklist</span>
           </div>
-          <div class="mi-chart-card">
-            <div class="mi-chart-title">Defeitos por setor x producao</div>
-            <div id="miDefSetores" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
+          <div class="df-v4-kpi">
+            <span class="df-v4-kpi-label">Postes avaliados</span>
+            <strong class="df-v4-kpi-value" id="miDefPostes">-</strong>
+            <span class="df-v4-kpi-meta">Registros com inspecao valida</span>
           </div>
-        </div>
-        <div class="mi-charts-row">
-          <div class="mi-chart-card mi-chart-card-wide">
-            <div class="mi-chart-title">Matriz defeito x setor</div>
+          <div class="df-v4-kpi">
+            <span class="df-v4-kpi-label">Producao</span>
+            <strong class="df-v4-kpi-value" id="miDefProducaoPeriodo">0</strong>
+            <span class="df-v4-kpi-meta">Mesmo periodo e escopo</span>
+          </div>
+        </section>
+
+        <section class="df-v4-mini-grid" aria-label="Indicadores complementares">
+          <div class="df-v4-mini-kpi"><div><strong id="miDefTaxaProducao">-%</strong><span>Postes com NC</span></div><span>NC</span></div>
+          <div class="df-v4-mini-kpi"><div><strong id="miDefTaxaPostesReprovados">-%</strong><span>Postes reprovados</span></div><span>RP</span></div>
+          <div class="df-v4-mini-kpi"><div><strong id="miDefTaxaRetrabalho">-%</strong><span>Taxa retrabalho</span></div><span>RT</span></div>
+          <div class="df-v4-mini-kpi"><div><strong id="miDefTiposVitais">0</strong><span>Tipos vitais 80/20</span></div><span>80</span></div>
+          <div class="df-v4-mini-kpi"><div><strong id="miDefFissuras">0</strong><span>Fissuras</span></div><span>FI</span></div>
+          <div class="df-v4-mini-kpi"><div><strong id="miDefFissurasCirculares">0</strong><span>Fissuras circulares</span></div><span>FC</span></div>
+          <div class="df-v4-mini-kpi"><div><strong id="miDefPostesReprovados">0</strong><span>Qtd. reprovados</span></div><span>QR</span></div>
+        </section>
+
+        <section class="df-v4-layout">
+          <div class="df-v4-panel">
+            <div class="df-v4-panel-head"><div><strong>Taxa de defeitos por setor</strong><small>Comparativo do escopo e setores retornados pelo contrato</small></div><span>S1+S2 recalculado</span></div>
+            <div id="miDefSetores" class="mi-defeitos-list df-v4-sector-list"><div class="muted">Carregando...</div></div>
+          </div>
+          <div class="df-v4-panel">
+            <div class="df-v4-panel-head"><div><strong>Matriz defeito x setor</strong><small>Base para evidencia mensal do SGQ</small></div><span>CSV</span></div>
             <div id="miDefMatriz" class="mi-def-matrix"><div class="muted">Carregando...</div></div>
           </div>
-          <div class="mi-chart-card">
-            <div class="mi-chart-title">Plano de acao sugerido</div>
-            <div id="miDefPlanoAcao" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
+        </section>
+
+        <section class="df-v4-layout">
+          <div class="df-v4-panel">
+            <div class="df-v4-panel-head"><div><strong>Pareto de ocorrencias</strong><small>Ordenacao decrescente e percentual acumulado</small></div><span id="miDefParetoBadge">0 total</span></div>
+            <div id="miDefPareto" class="mi-defeitos-list"><div class="muted">Carregando...</div></div>
           </div>
-        </div>
+          <div class="df-v4-panel">
+            <div class="df-v4-panel-head"><div><strong>Acoes prioritarias</strong><small>Ranking por impacto e recorrencia</small></div><span>Atencao</span></div>
+            <div id="miDefPlanoAcao" class="mi-defeitos-list df-v4-action-list"><div class="muted">Carregando...</div></div>
+          </div>
+        </section>
+
+        <section class="df-v4-panel">
+          <div class="df-v4-panel-head"><div><strong>Defeitos encontrados por tipo</strong><small>Lista detalhada do Pareto ativo</small></div><span>Detalhe</span></div>
+          <div id="miDefeitosPorTipo" class="mi-ranking-list df-v4-type-list"><div class="muted">Carregando...</div></div>
+        </section>
       </div>
 
       <div id="miSecaoProdutividade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div></div>
     </section>
 
-    <section id="viewDashboardDefeitos" class="card hidden">
-      <div class="mi-topbar">
-        <div>
-          <h2>Dashboard Defeitos</h2>
-          <p id="dfFiltroResumo">Hoje - Todos os setores</p>
+    <section id="viewDashboardDefeitos" class="card hidden df-v4-shell">
+      <div class="df-v4-topbar">
+        <div class="df-v4-brand">
+          <div class="df-v4-logo">CT</div>
+          <div><strong>ConcreTrack - Indicadores Industriais</strong><small>Qualidade, montagem e produtividade em uma unica central</small></div>
         </div>
-        <div class="mi-topbar-actions">
-          <button id="dfBtnAtualizar" class="mi-icon-btn mi-icon-btn-primary" type="button" aria-label="Atualizar dashboard de defeitos">Atualizar</button>
-        </div>
+        <div class="df-v4-status"><span></span><em>Online</em><em id="dfAtualizadoLabel">Contrato V1</em></div>
       </div>
-      <div class="mi-fixed-filters-bar">
+      <div class="df-v4-body">
+        <div class="df-v4-title-row">
+          <div>
+            <h2>Dashboard Defeitos</h2>
+            <p id="dfFiltroResumo">Hoje - Todos os setores</p>
+          </div>
+          <button id="dfBtnAtualizar" class="df-v4-refresh" type="button" aria-label="Atualizar dashboard de defeitos">Atualizar dados</button>
+        </div>
+        <div class="df-v4-dash-tabs" role="tablist" aria-label="Dashboards">
+          <button class="active" type="button" data-hub-mode="DASHBOARD_DEFEITOS">Defeitos</button>
+          <button type="button" data-hub-mode="MONTAGEM_INDICADORES">Montagem</button>
+          <button type="button" data-hub-mode="PROD_ANALISE">Produtividade</button>
+        </div>
+        <div class="df-v4-scope-tabs" role="tablist" aria-label="Escopo setorial do dashboard">
+          <button class="active" type="button" data-df-scope="">Total</button>
+          <button type="button" data-df-scope="Setor 1">Setor 1</button>
+          <button type="button" data-df-scope="Setor 2">Setor 2</button>
+          <button type="button" data-df-scope="Setor 3">Setor 3</button>
+          <button type="button" data-df-scope="Setor 4">Setor 4</button>
+          <button class="consolidated" type="button" data-df-scope="Setores 1 e 2">Consolidado S1+S2</button>
+        </div>
+        <div class="df-v4-scope-caption"><strong id="dfScopeCaption">Escopo ativo: Total geral</strong><span>Comparativo completo permanece visivel</span></div>
+      <div class="mi-fixed-filters-bar df-v4-filters">
         <div class="mi-filter-item">
           <label for="dfDataInicio">Início:</label>
           <input type="date" id="dfDataInicio" class="input-field" />
@@ -1116,7 +1155,9 @@
           <button id="dfBtnFiltrar" type="button" class="mi-primary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; background: #2563eb; color: #fff; border: none;">Aplicar</button>
         </div>
       </div>
-      <div id="dfContent"></div>
+        <div class="df-v4-data-banner"><span id="dfFonteResumo"><strong>Fonte:</strong> rpc_dashboard_defeitos_resumo_v1</span><span>Sem calculo oficial por registros brutos no frontend</span></div>
+        <div id="dfContent"></div>
+      </div>
     </section>
 
     <section id="viewMontagemPostesDetalhe" class="card hidden">
@@ -1649,6 +1690,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v1.56"></script>
+  <script src="app.js?v=v1.57"></script>
 </body>
 </html>
