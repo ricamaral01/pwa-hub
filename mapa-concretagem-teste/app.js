@@ -10571,7 +10571,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.60");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.61");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10581,7 +10581,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.60").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.61").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12532,7 +12532,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.60&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.61&ts=${Date.now()}`);
       }
     });
   }
@@ -12552,6 +12552,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.60";
+  badge.textContent = "v1.61";
   badge.style.display = "inline-block";
 }
