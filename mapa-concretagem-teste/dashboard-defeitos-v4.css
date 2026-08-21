@@ -1,6 +1,9 @@
 /* Dashboard Defeitos V4 - mockup aprovado */
 body.mode-dashboard-defeitos .page-content {
-  max-width: 1700px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 24px 28px;
 }
 
 .df-v4-shell {
@@ -12,6 +15,10 @@ body.mode-dashboard-defeitos .page-content {
   border-radius: 18px;
   background: #eef2f6;
   box-shadow: 0 23px 65px rgba(15, 35, 55, .25);
+}
+
+body.mode-dashboard-defeitos .content {
+  align-items: stretch;
 }
 
 body.mode-dashboard-defeitos #viewDashboardDefeitos.df-v4-shell:not(.hidden) {
@@ -436,6 +443,10 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos.df-v4-shell:not(.hidden) {
 }
 
 @container dashboard (max-width: 560px) {
+  body.mode-dashboard-defeitos .page-content {
+    padding: 12px;
+  }
+
   .df-v4-topbar,
   .df-v4-title-row,
   .df-v4-scope-caption,
