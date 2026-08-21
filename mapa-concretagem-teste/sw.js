@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.50: forca atualizacao completa dos assets do teste
+   v1.55: atualiza indicadores do Dashboard Defeitos em teste
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.50";
+const CACHE_NAME = "mapa-concretagem-teste-v1.55";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
