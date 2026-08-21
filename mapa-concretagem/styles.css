@@ -1243,11 +1243,12 @@ body.mode-inspecao .container {
   font-size: 1.25rem;
   color: #0f172a;
 }
-.modal-subtitle {
-  font-size: 0.82rem;
-  color: #64748b;
-  margin-bottom: 22px;
-}
+.modal-subtitle {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-bottom: 22px;
+}
+
 .concrete-vibrado-overlay {
   position: fixed;
   inset: 0;
@@ -1358,10 +1359,10 @@ body.mode-inspecao .container {
 }
 
 .modal-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 26px;
 }
 .stat-row {
   display: flex;
@@ -3319,90 +3320,12 @@ hr {
   background: #1d4ed8;
   color: #fff;
 }
-.mi-page-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.mi-filter-help {
-  display: block !important;
-  max-width: 150px !important;
-  color: #64748b !important;
-  font-size: 0.68rem !important;
-  font-weight: 700 !important;
-  line-height: 1.15 !important;
-  white-space: normal !important;
-}
-
-body.mode-dashboard-defeitos .mi-montagem-only {
-  display: none !important;
-}
-
-.mi-montagem-dia-wrap {
-  display: grid;
-  gap: 14px;
-}
-
-.mi-montagem-dia-controls {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.mi-montagem-dia-controls label {
-  color: #475569;
-  font-size: 0.78rem;
-  font-weight: 850;
-  text-transform: uppercase;
-}
-
-.mi-montagem-dia-controls .input-field {
-  width: auto;
-  min-height: 36px;
-}
-
-.mi-montagem-dia-kpis {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.mi-montagem-dia-resumo {
-  padding: 12px 14px;
-  border: 1px solid #dbe3ee;
-  border-radius: 8px;
-  background: #f8fafc;
-}
-
-.mi-montagem-dia-summary {
-  color: #334155;
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-
-.mi-hidden-detail-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.mi-montagem-dia-detalhe-hidden {
-  display: none !important;
-}
-
-@media (max-width: 640px) {
-  .mi-montagem-dia-kpis {
-    grid-template-columns: 1fr;
-  }
-
-  .mi-montagem-dia-controls,
-  .mi-montagem-dia-controls .input-field,
-  .mi-montagem-dia-controls .mi-primary-btn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 340px) {
+.mi-page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 340px) {
   #viewMontagemIndicadores {
     padding: 10px;
   }
@@ -6262,6 +6185,146 @@ td.s4-forma-cell.is-manutencao::after {
   padding: 1px 4px;
   vertical-align: middle;
   letter-spacing: 0;
+}
+
+/* Ajuste tablet - Dashboard Montagem e Dashboard Defeitos */
+@media (min-width: 769px) and (max-width: 1180px) {
+  body.mode-montagem-indicadores .content,
+  body.mode-dashboard-defeitos .content {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  body.mode-montagem-indicadores #viewMontagemIndicadores,
+  body.mode-dashboard-defeitos #viewMontagemIndicadores {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 14px !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  body.mode-montagem-indicadores .mi-topbar,
+  body.mode-dashboard-defeitos .mi-topbar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 12px !important;
+    align-items: center !important;
+  }
+
+  body.mode-montagem-indicadores .mi-fixed-filters-bar,
+  body.mode-dashboard-defeitos .mi-fixed-filters-bar {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(132px, 1fr)) !important;
+    align-items: end !important;
+    gap: 10px !important;
+    overflow: visible !important;
+    white-space: normal !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-item,
+  body.mode-dashboard-defeitos .mi-filter-item {
+    min-width: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+    flex-shrink: 1 !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-item label,
+  body.mode-dashboard-defeitos .mi-filter-item label {
+    font-size: 0.68rem !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-item .input-field,
+  body.mode-dashboard-defeitos .mi-filter-item .input-field,
+  body.mode-montagem-indicadores .mi-filter-search .input-field,
+  body.mode-dashboard-defeitos .mi-filter-search .input-field {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-search,
+  body.mode-dashboard-defeitos .mi-filter-search {
+    grid-column: span 2 !important;
+    min-width: 0 !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-actions,
+  body.mode-dashboard-defeitos .mi-filter-actions {
+    grid-column: span 2 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-self: end !important;
+  }
+
+  body.mode-montagem-indicadores .mi-tabs-bar,
+  body.mode-dashboard-defeitos .mi-tabs-bar {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-bottom: 4px !important;
+  }
+
+  body.mode-montagem-indicadores .mi-tab-btn,
+  body.mode-dashboard-defeitos .mi-tab-btn {
+    flex: 0 0 auto !important;
+    min-width: 136px !important;
+    padding: 0 12px !important;
+  }
+
+  body.mode-montagem-indicadores .mi-kpis-grid,
+  body.mode-dashboard-defeitos .mi-kpis-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  body.mode-montagem-indicadores .mi-def-summary-strip,
+  body.mode-dashboard-defeitos .mi-def-summary-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  body.mode-montagem-indicadores .mi-charts-row,
+  body.mode-dashboard-defeitos .mi-charts-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  body.mode-montagem-indicadores .mi-table-responsive,
+  body.mode-dashboard-defeitos .mi-table-responsive {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+
+  body.mode-montagem-indicadores .mi-table,
+  body.mode-dashboard-defeitos .mi-table {
+    min-width: 900px !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 920px) {
+  body.mode-montagem-indicadores .mi-fixed-filters-bar,
+  body.mode-dashboard-defeitos .mi-fixed-filters-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body.mode-montagem-indicadores .mi-filter-search,
+  body.mode-dashboard-defeitos .mi-filter-search,
+  body.mode-montagem-indicadores .mi-filter-actions,
+  body.mode-dashboard-defeitos .mi-filter-actions {
+    grid-column: span 2 !important;
+  }
+
+  body.mode-montagem-indicadores .mi-kpis-grid,
+  body.mode-dashboard-defeitos .mi-kpis-grid,
+  body.mode-montagem-indicadores .mi-def-summary-strip,
+  body.mode-dashboard-defeitos .mi-def-summary-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
 }
 
 .mi-defeitos-list {

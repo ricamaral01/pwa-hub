@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard Defeitos - 03/08/2026 a 14/08/2026</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #637083;
+      --line: #dbe2ea;
+      --head: #e8eef6;
+      --accent: #1f6feb;
+      --danger: #c2410c;
+      --ok: #166534;
+      --warn: #92400e;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    main {
+      width: min(1220px, calc(100% - 32px));
+      margin: 32px auto;
+    }
+    header { margin-bottom: 20px; }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.75rem;
+      letter-spacing: 0;
+    }
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .kpi, .note, section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .kpi { padding: 14px; }
+    .kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .kpi strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.55rem;
+    }
+    .note {
+      margin: 16px 0;
+      padding: 12px 14px;
+      color: var(--warn);
+      background: #fffbeb;
+      border-color: #fde68a;
+      font-size: 0.9rem;
+    }
+    section {
+      margin-top: 16px;
+      overflow: hidden;
+    }
+    section h2 {
+      margin: 0;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      font-size: 1rem;
+      background: #fbfcfe;
+    }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 0.92rem;
+    }
+    th {
+      background: var(--head);
+      color: #26364d;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    tbody tr:last-child td { border-bottom: 0; }
+    .poste {
+      font-weight: 800;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .defeito {
+      display: inline-block;
+      margin: 0 6px 6px 0;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: var(--danger);
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+    .totals {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      padding: 14px;
+    }
+    .total-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #fbfcfe;
+    }
+    .total-item strong {
+      display: block;
+      font-size: 1.35rem;
+      color: var(--ok);
+    }
+    .total-item span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    footer {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    @media (max-width: 980px) {
+      .summary, .totals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, 1220px); margin: 20px auto; }
+      .summary, .totals { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; }
+      main { width: 100%; margin: 0; }
+      section, .kpi, .note { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Dashboard Defeitos</h1>
+      <p class="subtitle">Mapa Concretagem Teste - periodo de 03/08/2026 a 14/08/2026</p>
+    </header>
+
+    <div class="summary" aria-label="Resumo do periodo">
+      <div class="kpi"><span>Montagens consultadas</span><strong>1.039</strong></div>
+      <div class="kpi"><span>Producao consultada</span><strong>1.978</strong></div>
+      <div class="kpi"><span>Montagens finalizadas</span><strong>1.028</strong></div>
+      <div class="kpi"><span>Postes com defeito</span><strong>22</strong></div>
+      <div class="kpi"><span>Ocorrencias</span><strong>34</strong></div>
+    </div>
+
+    <div class="note">
+      Observacao sobre a planilha informada: a URL do Google Sheets retornou HTTP 401 na tentativa de exportacao publica e nao havia sessao conectada do Google Sheets. A celula 17 - Estoque!C285 nao foi lida nesta execucao. A analise abaixo usa os dados operacionais do Supabase do mapa-concretagem-teste.
+    </div>
+
+    <section>
+      <h2>Lista de postes, setores e defeitos encontrados</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Setor</th>
+              <th>Poste/Forma</th>
+              <th>Modelo</th>
+              <th>Status</th>
+              <th>Defeitos encontrados</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>04/08/2026</td><td>Setor 1</td><td class="poste">BE-04</td><td>1 CX VL</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>04/08/2026</td><td>Setor 1</td><td class="poste">I-01</td><td>3 CXS VL</td><td>A</td><td><span class="defeito">Q - Rebarbas</span><span class="defeito">L - Buchas de fixacao</span><span class="defeito">J - Pequenas avarias</span></td></tr>
+            <tr><td>05/08/2026</td><td>Setor 1</td><td class="poste">BE-01</td><td>1 CX VL</td><td>A</td><td><span class="defeito">C - Bolhas em excesso</span><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>05/08/2026</td><td>Setor 1</td><td class="poste">L-01</td><td>4 CXS VR</td><td>A</td><td><span class="defeito">C - Bolhas em excesso</span><span class="defeito">L - Buchas de fixacao</span><span class="defeito">J - Pequenas avarias</span></td></tr>
+            <tr><td>05/08/2026</td><td>Setor 1</td><td class="poste">CE-03</td><td>2 CXS VR</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>05/08/2026</td><td>Setor 1</td><td class="poste">CE-04</td><td>2 CXS VR</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>05/08/2026</td><td>Setor 1</td><td class="poste">300-VR</td><td>2 CXS VR</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>05/08/2026</td><td>Setor 1</td><td class="poste">AE-23</td><td>1 CX VR</td><td>A</td><td><span class="defeito">C - Bolhas em excesso</span><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>05/08/2026</td><td>Setor 1</td><td class="poste">AE-24</td><td>1 CX VR</td><td>A</td><td><span class="defeito">C - Bolhas em excesso</span><span class="defeito">J - Pequenas avarias</span></td></tr>
+            <tr><td>05/08/2026</td><td>Setor 1</td><td class="poste">I-01</td><td>3 CXS VL</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>07/08/2026</td><td>Setor 1</td><td class="poste">CE-04</td><td>2 CXS VR</td><td>A</td><td><span class="defeito">C - Bolhas em excesso</span></td></tr>
+            <tr><td>07/08/2026</td><td>Setor 1</td><td class="poste">BD-12</td><td>1 CX VL</td><td>A</td><td><span class="defeito">C - Bolhas em excesso</span></td></tr>
+            <tr><td>07/08/2026</td><td>Setor 1</td><td class="poste">BD-11</td><td>1 CX VL</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>07/08/2026</td><td>Setor 1</td><td class="poste">BE-01</td><td>1 CX VL</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>07/08/2026</td><td>Setor 1</td><td class="poste">BE-02</td><td>1 CX VL</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>07/08/2026</td><td>Setor 1</td><td class="poste">BE-03</td><td>1 CX VL</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>10/08/2026</td><td>Setor 1</td><td class="poste">BD-07</td><td>1 CX VL</td><td>A</td><td><span class="defeito">Q - Rebarbas</span><span class="defeito">J - Pequenas avarias</span></td></tr>
+            <tr><td>10/08/2026</td><td>Setor 1</td><td class="poste">D-07</td><td>2 CXS VL</td><td>A</td><td><span class="defeito">L - Buchas de fixacao</span></td></tr>
+            <tr><td>10/08/2026</td><td>Setor 1</td><td class="poste">BD-11</td><td>1 CX VL</td><td>A</td><td><span class="defeito">Q - Rebarbas</span><span class="defeito">L - Buchas de fixacao</span><span class="defeito">J - Pequenas avarias</span></td></tr>
+            <tr><td>10/08/2026</td><td>Setor 1</td><td class="poste">BD-10</td><td>1 CX VL</td><td>A</td><td><span class="defeito">Q - Rebarbas</span></td></tr>
+            <tr><td>11/08/2026</td><td>Setor 1</td><td class="poste">I-01</td><td>3 CXS VL</td><td>A</td><td><span class="defeito">C - Bolhas em excesso</span><span class="defeito">L - Buchas de fixacao</span><span class="defeito">J - Pequenas avarias</span></td></tr>
+            <tr><td>13/08/2026</td><td>Setor 2</td><td class="poste">A-63</td><td>1 CX VR</td><td>A</td><td><span class="defeito">Liberacao Qualidade</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Totais por defeito</h2>
+      <div class="totals">
+        <div class="total-item"><strong>16</strong><span>L - Buchas de fixacao</span></div>
+        <div class="total-item"><strong>7</strong><span>C - Bolhas em excesso</span></div>
+        <div class="total-item"><strong>6</strong><span>J - Pequenas avarias</span></div>
+        <div class="total-item"><strong>4</strong><span>Q - Rebarbas</span></div>
+        <div class="total-item"><strong>1</strong><span>Liberacao Qualidade</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ocorrencias por setor</h2>
+      <div class="totals">
+        <div class="total-item"><strong>33</strong><span>Setor 1</span></div>
+        <div class="total-item"><strong>1</strong><span>Setor 2</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ocorrencias por data</h2>
+      <div class="totals">
+        <div class="total-item"><strong>4</strong><span>04/08/2026</span></div>
+        <div class="total-item"><strong>13</strong><span>05/08/2026</span></div>
+        <div class="total-item"><strong>6</strong><span>07/08/2026</span></div>
+        <div class="total-item"><strong>7</strong><span>10/08/2026</span></div>
+        <div class="total-item"><strong>3</strong><span>11/08/2026</span></div>
+        <div class="total-item"><strong>1</strong><span>13/08/2026</span></div>
+      </div>
+    </section>
+
+    <footer>
+      Fonte operacional: tabelas montagem_poste e producao do Supabase do ambiente mapa-concretagem-teste. Filtro aplicado: data_fabricacao entre 2026-08-03 e 2026-08-14, registros finalizados com ao menos um item marcado como "nao".
+    </footer>
+  </main>
+</body>
+</html>
