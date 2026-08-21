@@ -4,13 +4,18 @@ body.mode-dashboard-defeitos .page-content {
 }
 
 .df-v4-shell {
-  container: dashboard / inline-size;
-  overflow: hidden;
+  width: 100%;
+  max-width: none;
+  overflow: visible;
   padding: 0;
-  border: 8px solid #152334;
+  border: 0;
   border-radius: 18px;
   background: #eef2f6;
   box-shadow: 0 23px 65px rgba(15, 35, 55, .25);
+}
+
+body.mode-dashboard-defeitos #viewDashboardDefeitos.df-v4-shell:not(.hidden) {
+  display: block !important;
 }
 
 .df-v4-topbar {
@@ -79,6 +84,7 @@ body.mode-dashboard-defeitos .page-content {
 }
 
 .df-v4-body {
+  container: dashboard / inline-size;
   padding: 16px;
 }
 
@@ -430,10 +436,6 @@ body.mode-dashboard-defeitos .page-content {
 }
 
 @container dashboard (max-width: 560px) {
-  .df-v4-shell {
-    border-width: 5px;
-  }
-
   .df-v4-topbar,
   .df-v4-title-row,
   .df-v4-scope-caption,
