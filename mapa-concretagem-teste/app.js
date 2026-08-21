@@ -8053,6 +8053,7 @@ function bindEvents() {
     const fPesquisa = document.getElementById("dfFiltroPesquisa");
     if (fPesquisa) fPesquisa.value = "";
     miPaginaAtual = 1;
+    sincronizarDfScopeTabs();
     carregarDashboardDefeitos();
   });
   document.getElementById("dfBtnAtualizar")?.addEventListener("click", carregarDashboardDefeitos);
@@ -8060,12 +8061,25 @@ function bindEvents() {
   ["dfDataInicio", "dfDataFim", "dfFiltroSetor", "dfFiltroStatus"].forEach(id => {
     document.getElementById(id)?.addEventListener("change", () => {
       miPaginaAtual = 1;
+      if (id === "dfFiltroSetor") sincronizarDfScopeTabs();
       carregarDashboardDefeitos();
     });
   });
+  document.querySelectorAll("[data-df-scope]").forEach(btn => {
+    btn.addEventListener("click", (event) => {
+      const select = document.getElementById("dfFiltroSetor");
+      if (select) select.value = event.currentTarget.dataset.dfScope || "";
+      miPaginaAtual = 1;
+      sincronizarDfScopeTabs();
+      carregarDashboardDefeitos();
+    });
+  });
+  document.querySelectorAll(".df-v4-dash-tabs [data-hub-mode]").forEach(btn => {
+    btn.addEventListener("click", (event) => setMode(event.currentTarget.dataset.hubMode));
+  });
   document.getElementById("dfFiltroPesquisa")?.addEventListener("input", () => {
     miPaginaAtual = 1;
-    aplicarFiltrosEExibirMontagem();
+    if (state.mode !== "DASHBOARD_DEFEITOS") aplicarFiltrosEExibirMontagem();
   });
 
   // Troca de Abas do Dashboard
@@ -10335,7 +10349,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.55");
+        window.location.replace(window.location.pathname + "?cache-reset=v1.57");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10345,7 +10359,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.55").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.57").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10609,6 +10623,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   };
 
   setText("miDefTotalErros", indicadores.totalErros);
+  setText("miDefOcorrenciasMirror", indicadores.totalErros);
   setText("miDefTotalPossivel", indicadores.totalPossivel);
   setText("miDefTaxa", formatPct(taxaNc));
   setText("miDefPostes", indicadores.postes);
@@ -10636,6 +10651,7 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   }
 
   const paretoEl = document.getElementById("miDefPareto");
+  setText("miDefParetoBadge", `${indicadores.totalErros} total`);
   let acumulado = 0;
   const pareto = tiposOrdenados.map(([tipo, total]) => {
     const pct = indicadores.totalErros > 0 ? (total / indicadores.totalErros) * 100 : 0;
@@ -10819,10 +10835,27 @@ function atualizarResumoFiltrosDefeitos() {
   const dEnd = document.getElementById("dfDataFim")?.value || todayYmd();
   const setor = document.getElementById("dfFiltroSetor")?.value || "Todos os setores";
   const resumo = document.getElementById("dfFiltroResumo");
+  const caption = document.getElementById("dfScopeCaption");
   if (!resumo) return;
   const fmt = (d) => d ? d.split("-").reverse().join("/") : "-";
   const periodo = dStart === dEnd ? fmt(dStart) : `${fmt(dStart)} a ${fmt(dEnd)}`;
   resumo.textContent = `${periodo} - ${setor}`;
+  if (caption) {
+    const label = !setor || normalizarTexto(setor).startsWith("todos")
+      ? "Total geral"
+      : setor === "Setores 1 e 2"
+        ? "Consolidado S1+S2"
+        : setor;
+    caption.textContent = `Escopo ativo: ${label}`;
+  }
+}
+
+function sincronizarDfScopeTabs() {
+  const value = document.getElementById("dfFiltroSetor")?.value || "";
+  document.querySelectorAll("[data-df-scope]").forEach(btn => {
+    btn.classList.toggle("active", (btn.dataset.dfScope || "") === value);
+  });
+  atualizarResumoFiltrosDefeitos();
 }
 
 function setProdutividadeDrawerOpen(open) {
@@ -10964,6 +10997,8 @@ async function carregarDashboardDefeitos() {
 
     if (requestId !== dashboardRequestSeq[dashboardKind]) return;
     renderIndicadoresDefeitosContrato(rpcRes.payload);
+    const updated = document.getElementById("dfAtualizadoLabel");
+    if (updated) updated.textContent = `Atualizado ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     setSyncStatus(
       rpcRes.state === "OFFLINE_CACHE" ? "warn" : "ok",
       rpcRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
@@ -12265,7 +12300,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.55&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.57&ts=${Date.now()}`);
       }
     });
   }
@@ -12285,6 +12320,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.55";
+  badge.textContent = "v1.57";
   badge.style.display = "inline-block";
 }
