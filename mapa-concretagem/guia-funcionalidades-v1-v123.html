@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guia Funcional - Mapa Concretagem Teste v1 a v123</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --ink: #172033;
+      --muted: #64748b;
+      --line: #d8e1ee;
+      --blue: #2563eb;
+      --green: #059669;
+      --amber: #d97706;
+      --red: #dc2626;
+      --pink: #f9a8d4;
+      --pink-dark: #be185d;
+      --dark: #0f172a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.45;
+    }
+
+    .page {
+      width: min(100%, 980px);
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .hero {
+      margin: 0 -14px 14px;
+      padding: 22px 14px 18px;
+      background: var(--dark);
+      color: #fff;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .hero .version {
+      display: inline-flex;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(250, 204, 21, 0.55);
+      background: rgba(250, 204, 21, 0.14);
+      color: #fde68a;
+      font-size: 0.74rem;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: 1.5rem;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 6px;
+      font-size: 0.96rem;
+      letter-spacing: 0;
+    }
+
+    p { margin: 0 0 10px; }
+
+    .muted { color: var(--muted); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px;
+      margin: 12px 0;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .feature {
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--blue);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fbfdff;
+    }
+
+    .feature.green { border-left-color: var(--green); }
+    .feature.amber { border-left-color: var(--amber); }
+    .feature.red { border-left-color: var(--red); }
+    .feature.pink { border-left-color: var(--pink-dark); }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+
+    .tag.blue { background: #dbeafe; border-color: #bfdbfe; color: #1d4ed8; }
+    .tag.green { background: #dcfce7; border-color: #bbf7d0; color: #166534; }
+    .tag.amber { background: #fef3c7; border-color: #fde68a; color: #92400e; }
+    .tag.red { background: #fee2e2; border-color: #fecaca; color: #991b1b; }
+    .tag.pink { background: #fce7f3; border-color: #f9a8d4; color: #9d174d; }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+      border-left: 3px solid #cbd5e1;
+      padding-left: 12px;
+      margin-left: 6px;
+    }
+
+    .timeline-item {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -20px;
+      top: 14px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--blue);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 2px #cbd5e1;
+    }
+
+    .steps {
+      display: grid;
+      gap: 8px;
+      counter-reset: step;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.84rem;
+    }
+
+    .phone {
+      width: min(100%, 390px);
+      margin: 12px auto 4px;
+      border: 10px solid #111827;
+      border-radius: 28px;
+      background: #e5e7eb;
+      overflow: hidden;
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.22);
+    }
+
+    .phone-top {
+      height: 22px;
+      background: #111827;
+      display: grid;
+      place-items: center;
+    }
+
+    .speaker {
+      width: 72px;
+      height: 5px;
+      border-radius: 999px;
+      background: #374151;
+    }
+
+    .screen {
+      min-height: 430px;
+      padding: 12px;
+      background: #f8fafc;
+    }
+
+    .appbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-radius: 8px;
+      background: #0f1e3c;
+      color: #fff;
+      font-size: 0.86rem;
+      font-weight: 900;
+    }
+
+    .test-badge {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #facc15;
+      color: #111827;
+      font-size: 0.68rem;
+      font-weight: 900;
+    }
+
+    .mock-card {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #dbe3ef;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .mock-title {
+      font-size: 1rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .menu {
+      display: grid;
+      gap: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      background: #fff;
+      color: #1e293b;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; text-align: center; }
+    .btn.green { background: var(--green); border-color: var(--green); color: #fff; text-align: center; }
+    .btn.amber { background: var(--amber); border-color: var(--amber); color: #fff; text-align: center; }
+    .btn.removed { background: #f1f5f9; color: #94a3b8; border-style: dashed; text-decoration: line-through; }
+
+    .mock-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+    }
+
+    .mock-table th,
+    .mock-table td {
+      padding: 7px 4px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .kpi {
+      border: 1px solid #dbe3ef;
+      border-radius: 8px;
+      padding: 8px;
+      background: #fff;
+    }
+
+    .kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .kpi strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 1.18rem;
+      color: var(--dark);
+    }
+
+    .forma-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .forma {
+      min-height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      font-weight: 900;
+    }
+
+    .forma.yellow { background: #fef08a; border-color: #eab308; }
+    .forma.blue { background: #dbeafe; border-color: #2563eb; color: #1e40af; }
+    .forma.green { background: #dcfce7; border-color: #16a34a; color: #166534; }
+    .forma.pink { background: #fce7f3; border: 2px dashed var(--pink-dark); color: #831843; }
+
+    .note {
+      margin-top: 10px;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      background: #fff7ed;
+      color: #9a3412;
+      padding: 10px;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .linkbox {
+      word-break: break-all;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      background: #eff6ff;
+      color: #1e40af;
+      padding: 10px;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .caption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    @media (min-width: 760px) {
+      .page { padding: 24px; }
+      .hero {
+        margin: 0 0 20px;
+        border-radius: 18px;
+        padding: 28px;
+      }
+      h1 { font-size: 2rem; }
+      .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+      .print-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; align-items: start; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { max-width: none; }
+      .card, .phone, .timeline-item { break-inside: avoid; box-shadow: none; }
+      .hero { background: #111827 !important; color: #fff !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <span class="version">MAPA CONCRETAGEM TESTE • v1 até v123</span>
+      <h1>Guia Funcional das Alterações Grandes</h1>
+      <p>Documento mobile-first com as funcionalidades relevantes adicionadas ou removidas no ambiente de teste. Ajustes apenas visuais foram deixados fora.</p>
+    </section>
+
+    <section class="card">
+      <h2>Acesso Atual</h2>
+      <p>Use a URL abaixo para abrir a versão atual publicada:</p>
+      <div class="linkbox">https://usina.concretrack.com.br/mapa-concretagem-teste/index.html?cache-reset=v123</div>
+      <p class="muted" style="margin-top:10px;">Se algum aparelho insistir em carregar versão antiga, rode primeiro:</p>
+      <div class="linkbox">https://usina.concretrack.com.br/mapa-concretagem-teste/reset-cache.html</div>
+    </section>
+
+    <section class="card">
+      <h2>Linha do Tempo Funcional</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="tag blue">v1</span>
+          <h3>Ambiente de teste e indicadores de rejeição</h3>
+          <p class="muted">Criação do ambiente `mapa-concretagem-teste` e coluna/indicadores de itens rejeitados na área de montagem.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="tag blue">v1.x</span>
+          <h3>Filtros Setores 1 e 2</h3>
+          <p class="muted">Filtro unificado “Setores 1 e 2” para dashboard e análises, além da correção de dados planejados por setor.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="tag green">v1.10 - v1.11</span>
+          <h3>Modo Manutenção de Formas</h3>
+          <p class="muted">Parada/liberação de formas, bloqueio de programação/concretagem, modais obrigatórios e relatório PDF de manutenção.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="tag green">v1.12 - v1.14</span>
+          <h3>Relatório de manutenção aprimorado</h3>
+          <p class="muted">Coluna “Dias Parada”, clique na linha para liberar forma e normalização da chave Setor/Forma.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="tag amber">v1.15 - v1.16</span>
+          <h3>Tratativa de defeitos A-P</h3>
+          <p class="muted">Nova página de relatório de defeitos, responsáveis automáticos por código, nova ocorrência manual, modal de tratativa e impressão A4.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="tag amber">v1.18</span>
+          <h3>Isolamento dos relatórios</h3>
+          <p class="muted">Relatório de Manutenção e Tratativa de Defeitos passaram a funcionar como telas independentes para visualização e impressão.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="tag red">v1.19 - v1.23</span>
+          <h3>Defeito pela Montagem removido</h3>
+          <p class="muted">Foi criado um fluxo de defeito direto na Montagem Postes, mas depois removido por completo na v123.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Resumo por Funcionalidade</h2>
+      <div class="grid cols-2">
+        <div class="feature">
+          <span class="tag blue">Produção</span>
+          <h3>Fluxo Programar, Liberar e Concretar</h3>
+          <p class="muted">Mapa mantém estados por cor: programada, liberada e concretada, com dados sincronizados no Supabase.</p>
+        </div>
+        <div class="feature green">
+          <span class="tag green">Manutenção</span>
+          <h3>Parada e Liberação de Formas</h3>
+          <p class="muted">Usuário autorizado ativa Modo Manutenção, registra motivo/ação e libera com observação de serviço realizado.</p>
+        </div>
+        <div class="feature amber">
+          <span class="tag amber">Qualidade</span>
+          <h3>Tratativa de Defeitos</h3>
+          <p class="muted">Gestão de defeitos A-P, responsáveis, status de tratativa, nova ocorrência manual e PDF.</p>
+        </div>
+        <div class="feature">
+          <span class="tag blue">Montagem</span>
+          <h3>Inspeção e Montagem de Postes</h3>
+          <p class="muted">Checklists de inspeção/montagem, status aprovado/reprovado/retrabalho e indicadores no dashboard de montagem.</p>
+        </div>
+        <div class="feature">
+          <span class="tag blue">Dashboards</span>
+          <h3>Produtividade e Montagem</h3>
+          <p class="muted">KPIs, filtros, gráficos e tabelas para acompanhar produção, qualidade e produtividade.</p>
+        </div>
+        <div class="feature red">
+          <span class="tag red">Removido</span>
+          <h3>Informar Defeito na Montagem</h3>
+          <p class="muted">Botões, tela, modal e handlers foram retirados; defeitos de forma ficam no fluxo de manutenção.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Como Acessar as Funcionalidades</h2>
+      <div class="steps">
+        <div class="step"><div><strong>Produção / Liberação</strong><p class="muted">Menu Produção: PL, P1, P2, P3 ou P4.</p></div></div>
+        <div class="step"><div><strong>Modo Manutenção</strong><p class="muted">Abra um setor de produção e use o alternador Modo Manutenção quando disponível para o perfil.</p></div></div>
+        <div class="step"><div><strong>Relatório de Manutenção</strong><p class="muted">Menu Geral: Manutenção Formas.</p></div></div>
+        <div class="step"><div><strong>Tratativa Defeitos</strong><p class="muted">Menu Geral: Tratativa Defeitos.</p></div></div>
+        <div class="step"><div><strong>Inspeção / Montagem</strong><p class="muted">Menu Montagem: MB Inspeção Setor 3 e 4 ou MP Montagem Postes.</p></div></div>
+        <div class="step"><div><strong>Dashboards</strong><p class="muted">Menu inicial: Dashboard montagem e Produtividade.</p></div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Prints Mobile Ilustrativos</h2>
+      <div class="print-grid">
+        <article>
+          <div class="phone">
+            <div class="phone-top"><div class="speaker"></div></div>
+            <div class="screen">
+              <div class="appbar"><span>Hub Teste</span><span class="test-badge">v123</span></div>
+              <div class="mock-card">
+                <div class="mock-title">Produção</div>
+                <div class="menu">
+                  <button class="btn">PL Produção / Liberação</button>
+                  <button class="btn">P1 Produção Setor 1</button>
+                  <button class="btn">P2 Produção Setor 2</button>
+                  <button class="btn">P3 Produção Setor 3</button>
+                  <button class="btn">P4 Produção Setor 4</button>
+                </div>
+              </div>
+              <div class="mock-card">
+                <div class="mock-title">Estados da Forma</div>
+                <div class="forma-grid">
+                  <div class="forma yellow">Prog.</div>
+                  <div class="forma blue">Lib.</div>
+                  <div class="forma green">Conc.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="caption">Print 1 - Produção e estados por cor.</div>
+        </article>
+
+        <article>
+          <div class="phone">
+            <div class="phone-top"><div class="speaker"></div></div>
+            <div class="screen">
+              <div class="appbar"><span>Produção Setor</span><span class="test-badge">MANUT.</span></div>
+              <div class="mock-card">
+                <div class="mock-title">Modo Manutenção</div>
+                <button class="btn amber">Ativar Modo Manutenção</button>
+                <p class="muted" style="margin-top:8px;">Ao tocar na forma, abre modal de parada ou liberação.</p>
+              </div>
+              <div class="mock-card">
+                <div class="forma-grid">
+                  <div class="forma">10</div>
+                  <div class="forma pink">12<br>PARADA</div>
+                  <div class="forma">14</div>
+                </div>
+              </div>
+              <div class="note">Forma parada fica bloqueada e destacada em rosa.</div>
+            </div>
+          </div>
+          <div class="caption">Print 2 - Modo Manutenção e forma parada.</div>
+        </article>
+
+        <article>
+          <div class="phone">
+            <div class="phone-top"><div class="speaker"></div></div>
+            <div class="screen">
+              <div class="appbar"><span>Relatório Manutenção</span><span>PDF</span></div>
+              <div class="mock-card">
+                <div class="mock-title">Filtros</div>
+                <button class="btn">Status: Todos</button>
+                <button class="btn">Data inicial / final</button>
+              </div>
+              <div class="mock-card">
+                <table class="mock-table">
+                  <thead><tr><th>Forma</th><th>Status</th><th>Dias</th></tr></thead>
+                  <tbody>
+                    <tr><td>12</td><td><span class="tag red">PARADA</span></td><td>2 dias</td></tr>
+                    <tr><td>18</td><td><span class="tag green">LIBERADA</span></td><td>1 dia</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <button class="btn primary">Imprimir PDF Manutenção</button>
+            </div>
+          </div>
+          <div class="caption">Print 3 - Histórico, dias parada e PDF.</div>
+        </article>
+
+        <article>
+          <div class="phone">
+            <div class="phone-top"><div class="speaker"></div></div>
+            <div class="screen">
+              <div class="appbar"><span>Tratativa Defeitos</span><span>A-P</span></div>
+              <div class="mock-card">
+                <div class="mock-title">Resumo</div>
+                <div class="kpis">
+                  <div class="kpi"><span>Total</span><strong>8</strong></div>
+                  <div class="kpi"><span>Pendentes</span><strong>3</strong></div>
+                  <div class="kpi"><span>Concluídos</span><strong>4</strong></div>
+                  <div class="kpi"><span>Críticos</span><strong>1</strong></div>
+                </div>
+              </div>
+              <div class="mock-card">
+                <button class="btn primary">Nova Ocorrência</button>
+                <button class="btn amber" style="margin-top:8px;">Imprimir PDF Defeitos</button>
+              </div>
+            </div>
+          </div>
+          <div class="caption">Print 4 - Tratativa de defeitos e ocorrências.</div>
+        </article>
+
+        <article>
+          <div class="phone">
+            <div class="phone-top"><div class="speaker"></div></div>
+            <div class="screen">
+              <div class="appbar"><span>Montagem Postes</span><span>MP</span></div>
+              <div class="mock-card">
+                <div class="mock-title">Filtros</div>
+                <button class="btn">Data de produção</button>
+                <button class="btn">Setor: Todos (1 e 2)</button>
+                <button class="btn primary">Carregar itens liberados</button>
+              </div>
+              <div class="mock-card">
+                <table class="mock-table">
+                  <thead><tr><th>Forma</th><th>Modelo</th><th>Ação</th></tr></thead>
+                  <tbody>
+                    <tr><td>20</td><td>Poste 9M</td><td><span class="tag blue">Montar</span></td></tr>
+                    <tr><td>21</td><td>Poste 11M</td><td><span class="tag green">Checklist</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="note">Na v123 não existe mais botão de defeito na montagem.</div>
+            </div>
+          </div>
+          <div class="caption">Print 5 - Montagem sem fluxo de defeito.</div>
+        </article>
+
+        <article>
+          <div class="phone">
+            <div class="phone-top"><div class="speaker"></div></div>
+            <div class="screen">
+              <div class="appbar"><span>Dashboard Montagem</span><span>KPI</span></div>
+              <div class="mock-card">
+                <div class="mock-title">Resumo</div>
+                <div class="kpis">
+                  <div class="kpi"><span>Programado</span><strong>42</strong></div>
+                  <div class="kpi"><span>Realizado</span><strong>37</strong></div>
+                  <div class="kpi"><span>Aprovados</span><strong>33</strong></div>
+                  <div class="kpi"><span>Recusados</span><strong>4</strong></div>
+                </div>
+              </div>
+              <div class="mock-card">
+                <div class="mock-title">Filtros</div>
+                <button class="btn">Setores 1 e 2</button>
+                <button class="btn">Status: Todos</button>
+              </div>
+            </div>
+          </div>
+          <div class="caption">Print 6 - Dashboard com filtros e KPIs.</div>
+        </article>
+
+        <article>
+          <div class="phone">
+            <div class="phone-top"><div class="speaker"></div></div>
+            <div class="screen">
+              <div class="appbar"><span>Produtividade</span><span>CSV/PDF</span></div>
+              <div class="mock-card">
+                <div class="mock-title">Filtros</div>
+                <button class="btn">Data início / fim</button>
+                <button class="btn">Setor: Setores 1 e 2</button>
+                <button class="btn primary">Aplicar filtros</button>
+              </div>
+              <div class="mock-card">
+                <div class="kpis">
+                  <div class="kpi"><span>Volume</span><strong>18m³</strong></div>
+                  <div class="kpi"><span>Ciclo</span><strong>31m</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="caption">Print 7 - Produtividade e exportações.</div>
+        </article>
+
+        <article>
+          <div class="phone">
+            <div class="phone-top"><div class="speaker"></div></div>
+            <div class="screen">
+              <div class="appbar"><span>Removido</span><span class="test-badge">v123</span></div>
+              <div class="mock-card">
+                <div class="mock-title">O que não aparece mais</div>
+                <button class="btn removed">Formas com Defeito</button>
+                <button class="btn removed">Defeito Forma</button>
+                <button class="btn removed">Informar Defeito nesta Forma</button>
+                <button class="btn removed">Relatório de Defeito da Forma</button>
+              </div>
+              <div class="note">Fluxo removido por completo da Montagem Postes.</div>
+            </div>
+          </div>
+          <div class="caption">Print 8 - Funcionalidade removida.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Checklist Final de Validação</h2>
+      <div class="steps">
+        <div class="step"><div><strong>Versão</strong><p class="muted">Abrir com `cache-reset=v123` e confirmar que o app atualiza.</p></div></div>
+        <div class="step"><div><strong>Montagem</strong><p class="muted">Confirmar ausência total de “Formas com Defeito” e “Defeito Forma”.</p></div></div>
+        <div class="step"><div><strong>Manutenção</strong><p class="muted">Validar parada/liberação pelo Modo Manutenção e relatório.</p></div></div>
+        <div class="step"><div><strong>Tratativa</strong><p class="muted">Validar abertura da página, filtros, nova ocorrência e PDF.</p></div></div>
+        <div class="step"><div><strong>Dashboards</strong><p class="muted">Conferir filtros Setores 1 e 2 em Dashboard Montagem e Produtividade.</p></div></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Desmoldagem - Mandril Circular</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    :root {
+      --bg-color: #f1f5f9; /* Light gray background */
+      --card-bg: #ffffff; /* White card background */
+      --card-border: rgba(0, 0, 0, 0.08);
+      --text-main: #0f172a; /* Dark slate primary text */
+      --text-muted: #64748b; /* Slate secondary text */
+      
+      --primary: #2563eb; /* Premium Royal Blue */
+      --primary-glow: rgba(37, 99, 235, 0.08);
+      --success: #059669; /* Forest green */
+      --success-glow: rgba(5, 150, 105, 0.08);
+      --warning: #d97706; /* Warm amber */
+      --warning-glow: rgba(217, 119, 6, 0.08);
+      --danger: #dc2626; /* Crimson red */
+      --danger-glow: rgba(220, 38, 38, 0.08);
+      
+      --sidebar-width: 260px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.03) 0%, transparent 40%);
+    }
+    
+    /* Layout Container */
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .logo-icon {
+      font-size: 1.75rem;
+      color: var(--primary);
+    }
+    
+    .logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #0f172a;
+    }
+    
+    .header-logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    
+    /* Main Content */
+    .main-content {
+      width: 100%;
+    }
+    
+    /* Header Area */
+    .header-area {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2.5rem;
+    }
+    
+    .header-title h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #0f172a;
+    }
+    
+    .header-title p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .header-title p span.separator {
+      color: #cbd5e1;
+      margin: 0 0.5rem;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+    
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      color: #334155;
+    }
+    
+    .btn-outline:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+    
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s ease;
+    }
+    
+    .metric-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .metric-icon {
+      position: absolute;
+      right: 1.5rem;
+      top: 1.5rem;
+      font-size: 2.25rem;
+      opacity: 0.1;
+      color: var(--primary);
+    }
+    
+    .metric-card.success .metric-icon { color: var(--success); }
+    .metric-card.warning .metric-icon { color: var(--warning); }
+    .metric-card.danger .metric-icon { color: var(--danger); }
+    
+    .metric-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .metric-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .metric-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    
+    /* Charts Area */
+    .charts-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .chart-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #0f172a;
+    }
+    
+    .chart-body {
+      height: 350px;
+      position: relative;
+    }
+    
+    /* Table / Records Area */
+    .records-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    
+    .table-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+      max-width: 400px;
+    }
+    
+    .search-wrapper i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 0.6rem 1rem 0.6rem 2.5rem;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    
+    .filter-wrapper {
+      display: flex;
+      gap: 0.75rem;
+    }
+    
+    .filter-select {
+      padding: 0.6rem 1.5rem 0.6rem 1rem;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+    }
+    
+    /* Custom Table styling */
+    .table-container {
+      overflow-x: auto;
+      max-height: 500px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    
+    th {
+      background: #f8fafc;
+      padding: 1rem;
+      color: #475569;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      color: var(--text-main);
+      transition: background 0.2s ease;
+    }
+    
+    tr:hover td {
+      background: #f8fafc;
+    }
+    
+    /* Badge styling */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      gap: 0.25rem;
+    }
+    
+    .badge-success { background: var(--success-glow); color: var(--success); }
+    .badge-warning { background: var(--warning-glow); color: var(--warning); }
+    .badge-danger { background: var(--danger-glow); color: var(--danger); }
+    .badge-primary { background: var(--primary-glow); color: var(--primary); }
+    
+    /* Micro-bar in table row */
+    .duration-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .dur-bar-bg {
+      width: 80px;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .dur-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    .dur-bar-fill.warning { background: var(--warning); }
+    .dur-bar-fill.danger { background: var(--danger); }
+    .dur-bar-fill.success { background: var(--success); }
+    
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .charts-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .app-container {
+        padding: 1.5rem 1rem;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header / Logo Area -->
+    <div class="header-logo-row">
+      <div class="logo-container">
+        <i class="fa-solid fa-compass-drafting logo-icon"></i>
+        <span class="logo-text">ConcreTrack</span>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Header -->
+      <div class="header-area">
+        <div class="header-title">
+          <h1>Desmoldagem de Mandril Circular</h1>
+          <p>
+            <span><i class="fa-regular fa-calendar-days"></i> Data de Fabricação: <strong>16/07/2026 (Ontem)</strong></span>
+            <span class="separator">|</span>
+            <span><i class="fa-solid fa-cubes"></i> Setor: <strong>Setor 3 (Circular Mandrel)</strong></span>
+            <span class="separator">|</span>
+            <span><i class="fa-regular fa-clock"></i> Gerado em: <strong>17/07/2026 às 07:07</strong></span>
+          </p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-outline" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir</button>
+          <button class="btn btn-primary" onclick="alert('Exportando dados para CSV...')"><i class="fa-solid fa-file-export"></i> Exportar</button>
+        </div>
+      </div>
+      
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+        
+        <div class="metric-card">
+          <i class="fa-solid fa-clock metric-icon"></i>
+          <div class="metric-label">Tempo Médio de Saque</div>
+          <div class="metric-value" style="color: var(--primary);">6h 03m</div>
+          <div class="metric-desc">Média ponderada de 47 fôrmas</div>
+        </div>
+        
+        <div class="metric-card success">
+          <i class="fa-solid fa-circle-check metric-icon"></i>
+          <div class="metric-label">Fôrmas Concluídas</div>
+          <div class="metric-value" style="color: var(--success);">47 / 50</div>
+          <div class="metric-desc">Fôrmas com dados de concretagem e saque</div>
+        </div>
+        
+        <div class="metric-card warning">
+          <i class="fa-solid fa-gauge-simple-high metric-icon"></i>
+          <div class="metric-label">Desmoldagem Rápida</div>
+          <div class="metric-value" style="color: var(--warning);">2h 46m</div>
+          <div class="metric-desc">Fôrma mais rápida: <strong>SC45</strong></div>
+        </div>
+        
+        <div class="metric-card danger">
+          <i class="fa-solid fa-triangle-exclamation metric-icon"></i>
+          <div class="metric-label">Inconsistências</div>
+          <div class="metric-value" style="color: var(--danger);">3</div>
+          <div class="metric-desc">2 sem concretagem no DB, 1 sem saque</div>
+        </div>
+        
+      </div>
+      
+      <!-- Charts Area -->
+      <div class="charts-container">
+        
+        <!-- Main Duration Bar Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title"><i class="fa-solid fa-chart-bar" style="color: var(--primary);"></i> Tempo por Fôrma (Horas)</div>
+            <span class="badge badge-primary">Média: 6h 03m</span>
+          </div>
+          <div class="chart-body">
+            <canvas id="durationChart"></canvas>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Records Table Card -->
+      <div class="records-card">
+        
+        <div class="table-toolbar">
+          <div class="search-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Buscar por fôrma, operador ou status..." onkeyup="filterTable()">
+          </div>
+          <div class="filter-wrapper">
+            <select id="statusFilter" class="filter-select" onchange="filterTable()">
+              <option value="all">Todos os Status</option>
+              <option value="COMPLETO">Concluídos</option>
+              <option value="ERRO_CONCRETAGEM">Sem Concretagem</option>
+              <option value="ERRO_SAQUE">Sem Saque</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="table-container">
+          <table id="reportTable">
+            <thead>
+              <tr>
+                <th>Fôrma</th>
+                <th>Operador Concret.</th>
+                <th>Concretagem (Local)</th>
+                <th>Saque (Local)</th>
+                <th>Tempo Decorrido</th>
+                <th>Tipo Concreto</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr >
+                <td><strong>SC01</strong></td>
+                <td>Mario</td>
+                <td>14:03</td>
+                <td>19:25</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 22m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 54%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC02</strong></td>
+                <td>Mario</td>
+                <td>14:18</td>
+                <td>19:26</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 08m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 51%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC03</strong></td>
+                <td>Mario</td>
+                <td>14:18</td>
+                <td>19:28</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 10m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 52%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC04</strong></td>
+                <td>Mario</td>
+                <td>14:18</td>
+                <td>19:29</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 11m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 52%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC05</strong></td>
+                <td>Mario</td>
+                <td>14:18</td>
+                <td>19:31</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 13m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 52%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC06</strong></td>
+                <td>Mario</td>
+                <td>14:18</td>
+                <td>19:32</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 14m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 52%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC07</strong></td>
+                <td>Mario</td>
+                <td>14:18</td>
+                <td>19:33</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 15m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 53%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC08</strong></td>
+                <td>Mario</td>
+                <td>14:18</td>
+                <td>19:34</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 16m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 53%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC09</strong></td>
+                <td>Mario</td>
+                <td>14:18</td>
+                <td>20:07</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 49m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 58%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC10</strong></td>
+                <td>Mario</td>
+                <td>14:36</td>
+                <td>21:23</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 47m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 68%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC11</strong></td>
+                <td>Mario</td>
+                <td>14:36</td>
+                <td>21:22</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 46m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 68%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC12</strong></td>
+                <td>Mario</td>
+                <td>14:36</td>
+                <td>21:18</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 42m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 67%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC13</strong></td>
+                <td>Ricardo</td>
+                <td>11:43</td>
+                <td>20:08</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">8h 25m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill primary" style="width: 84%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC14</strong></td>
+                <td>Mario</td>
+                <td>09:33</td>
+                <td>16:17</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 44m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 67%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC15</strong></td>
+                <td>Mario</td>
+                <td>09:37</td>
+                <td>16:17</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 40m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 67%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC16</strong></td>
+                <td>Mario</td>
+                <td>09:45</td>
+                <td>16:19</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 34m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 66%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC17</strong></td>
+                <td>Mario</td>
+                <td>09:45</td>
+                <td>16:19</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 34m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 66%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC18</strong></td>
+                <td>Mario</td>
+                <td>09:45</td>
+                <td>16:20</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 35m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 66%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC19</strong></td>
+                <td>Mario</td>
+                <td>09:45</td>
+                <td>16:22</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 37m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 66%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC20</strong></td>
+                <td>Mario</td>
+                <td>09:52</td>
+                <td>16:23</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 31m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 65%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC21</strong></td>
+                <td>Mario</td>
+                <td>09:52</td>
+                <td>16:25</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 33m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 66%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC22</strong></td>
+                <td>Mario</td>
+                <td>10:00</td>
+                <td>16:26</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 26m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 64%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC23</strong></td>
+                <td>Mario</td>
+                <td>10:00</td>
+                <td>16:28</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 28m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 65%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC24</strong></td>
+                <td>Mario</td>
+                <td>10:16</td>
+                <td>16:30</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 14m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 62%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC25</strong></td>
+                <td>Mario</td>
+                <td>10:20</td>
+                <td>16:33</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 13m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 62%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC26</strong></td>
+                <td>Mario</td>
+                <td>10:11</td>
+                <td>16:33</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 22m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 64%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC27</strong></td>
+                <td>Mario</td>
+                <td>10:26</td>
+                <td>16:51</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 25m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 64%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC28</strong></td>
+                <td>Mario</td>
+                <td>10:26</td>
+                <td>16:52</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 26m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 64%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC29</strong></td>
+                <td>Mario</td>
+                <td>10:42</td>
+                <td>16:53</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 11m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 62%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC30</strong></td>
+                <td>Mario</td>
+                <td>10:42</td>
+                <td>16:53</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 11m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 62%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC31</strong></td>
+                <td>Mario</td>
+                <td>10:42</td>
+                <td>16:54</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 12m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 62%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC32</strong></td>
+                <td>Mario</td>
+                <td>10:49</td>
+                <td>16:56</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 07m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 61%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC33</strong></td>
+                <td>Mario</td>
+                <td>10:50</td>
+                <td>16:57</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 07m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 61%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC34</strong></td>
+                <td>Mario</td>
+                <td>10:57</td>
+                <td>16:58</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 01m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 60%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC35</strong></td>
+                <td>Mario</td>
+                <td>10:57</td>
+                <td>16:50</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 53m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 59%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC36</strong></td>
+                <td>Mario</td>
+                <td>11:05</td>
+                <td>16:51</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 46m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 58%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC37</strong></td>
+                <td>Mario</td>
+                <td>11:05</td>
+                <td>16:49</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 44m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 57%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC38</strong></td>
+                <td>Mario</td>
+                <td>11:21</td>
+                <td>16:44</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 23m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 54%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC39</strong></td>
+                <td>Mario</td>
+                <td>11:21</td>
+                <td>16:38</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 17m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 53%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC40</strong></td>
+                <td>Mario</td>
+                <td>11:21</td>
+                <td>16:42</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 21m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 54%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC41</strong></td>
+                <td>Mario</td>
+                <td>11:41</td>
+                <td>16:42</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 01m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 50%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC42</strong></td>
+                <td>Mario</td>
+                <td>11:41</td>
+                <td>16:43</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">5h 02m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 50%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr style='border-left: 3px solid var(--warning);'>
+                <td><strong>SC43</strong></td>
+                <td>Mario</td>
+                <td>14:45</td>
+                <td>N/A</td>
+                <td>
+                  <span style="color: var(--text-muted); font-style: italic;">N/A</span>
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-warning">Falta Saque</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC44</strong></td>
+                <td>Mario</td>
+                <td>11:56</td>
+                <td>18:01</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 05m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 61%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC45</strong></td>
+                <td>Mario</td>
+                <td>15:17</td>
+                <td>18:03</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">2h 46m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill warning" style="width: 28%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC46</strong></td>
+                <td>Mario</td>
+                <td>15:08</td>
+                <td>22:02</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 54m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 69%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC47</strong></td>
+                <td>Mario</td>
+                <td>15:08</td>
+                <td>22:01</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">6h 53m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill success" style="width: 69%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr style='border-left: 3px solid var(--danger);'>
+                <td><strong>SC48</strong></td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>18:01</td>
+                <td>
+                  <span style="color: var(--text-muted); font-style: italic;">N/A</span>
+                </td>
+                <td><span class="badge badge-danger">N/A</span></td>
+                <td><span class="badge badge-danger">Falta Concret.</span></td>
+              </tr>
+                
+              <tr >
+                <td><strong>SC49</strong></td>
+                <td>Mario</td>
+                <td>13:55</td>
+                <td>22:03</td>
+                <td>
+                  
+                  <div class="duration-bar-container">
+                    <span style="font-weight: 500;">8h 08m</span>
+                    <div class="dur-bar-bg">
+                      <div class="dur-bar-fill primary" style="width: 81%;"></div>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge badge-primary">Concreto Padrão</span></td>
+                <td><span class="badge badge-success">Concluído</span></td>
+              </tr>
+                
+              <tr style='border-left: 3px solid var(--danger);'>
+                <td><strong>SC51</strong></td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>22:07</td>
+                <td>
+                  <span style="color: var(--text-muted); font-style: italic;">N/A</span>
+                </td>
+                <td><span class="badge badge-danger">N/A</span></td>
+                <td><span class="badge badge-danger">Falta Concret.</span></td>
+              </tr>
+                
+            </tbody>
+          </table>
+        </div>
+        
+      </div>
+      
+    </main>
+  </div>
+
+  <script>
+    // Prepare Data for Charts
+    const formsData = [{"forma":"SC01","conc":"14:03","saque":"19:25","durMins":322,"durStr":"5h 22m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC02","conc":"14:18","saque":"19:26","durMins":308,"durStr":"5h 08m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC03","conc":"14:18","saque":"19:28","durMins":310,"durStr":"5h 10m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC04","conc":"14:18","saque":"19:29","durMins":311,"durStr":"5h 11m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC05","conc":"14:18","saque":"19:31","durMins":313,"durStr":"5h 13m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC06","conc":"14:18","saque":"19:32","durMins":314,"durStr":"5h 14m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC07","conc":"14:18","saque":"19:33","durMins":315,"durStr":"5h 15m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC08","conc":"14:18","saque":"19:34","durMins":316,"durStr":"5h 16m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC09","conc":"14:18","saque":"20:07","durMins":349,"durStr":"5h 49m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC10","conc":"14:36","saque":"21:23","durMins":407,"durStr":"6h 47m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC11","conc":"14:36","saque":"21:22","durMins":406,"durStr":"6h 46m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC12","conc":"14:36","saque":"21:18","durMins":402,"durStr":"6h 42m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC13","conc":"11:43","saque":"20:08","durMins":505,"durStr":"8h 25m","colab":"Ricardo","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC14","conc":"09:33","saque":"16:17","durMins":404,"durStr":"6h 44m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC15","conc":"09:37","saque":"16:17","durMins":400,"durStr":"6h 40m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC16","conc":"09:45","saque":"16:19","durMins":394,"durStr":"6h 34m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC17","conc":"09:45","saque":"16:19","durMins":394,"durStr":"6h 34m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC18","conc":"09:45","saque":"16:20","durMins":395,"durStr":"6h 35m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC19","conc":"09:45","saque":"16:22","durMins":397,"durStr":"6h 37m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC20","conc":"09:52","saque":"16:23","durMins":391,"durStr":"6h 31m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC21","conc":"09:52","saque":"16:25","durMins":393,"durStr":"6h 33m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC22","conc":"10:00","saque":"16:26","durMins":386,"durStr":"6h 26m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC23","conc":"10:00","saque":"16:28","durMins":388,"durStr":"6h 28m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC24","conc":"10:16","saque":"16:30","durMins":374,"durStr":"6h 14m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC25","conc":"10:20","saque":"16:33","durMins":373,"durStr":"6h 13m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC26","conc":"10:11","saque":"16:33","durMins":382,"durStr":"6h 22m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC27","conc":"10:26","saque":"16:51","durMins":385,"durStr":"6h 25m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC28","conc":"10:26","saque":"16:52","durMins":386,"durStr":"6h 26m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC29","conc":"10:42","saque":"16:53","durMins":371,"durStr":"6h 11m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC30","conc":"10:42","saque":"16:53","durMins":371,"durStr":"6h 11m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC31","conc":"10:42","saque":"16:54","durMins":372,"durStr":"6h 12m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC32","conc":"10:49","saque":"16:56","durMins":367,"durStr":"6h 07m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC33","conc":"10:50","saque":"16:57","durMins":367,"durStr":"6h 07m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC34","conc":"10:57","saque":"16:58","durMins":361,"durStr":"6h 01m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC35","conc":"10:57","saque":"16:50","durMins":353,"durStr":"5h 53m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC36","conc":"11:05","saque":"16:51","durMins":346,"durStr":"5h 46m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC37","conc":"11:05","saque":"16:49","durMins":344,"durStr":"5h 44m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC38","conc":"11:21","saque":"16:44","durMins":323,"durStr":"5h 23m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC39","conc":"11:21","saque":"16:38","durMins":317,"durStr":"5h 17m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC40","conc":"11:21","saque":"16:42","durMins":321,"durStr":"5h 21m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC41","conc":"11:41","saque":"16:42","durMins":301,"durStr":"5h 01m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC42","conc":"11:41","saque":"16:43","durMins":302,"durStr":"5h 02m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC43","conc":"14:45","saque":"N/A","durMins":null,"durStr":"N/A","colab":"Mario","concreto":"Concreto Padrão","status":"ERRO_SAQUE"},{"forma":"SC44","conc":"11:56","saque":"18:01","durMins":365,"durStr":"6h 05m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC45","conc":"15:17","saque":"18:03","durMins":166,"durStr":"2h 46m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC46","conc":"15:08","saque":"22:02","durMins":414,"durStr":"6h 54m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC47","conc":"15:08","saque":"22:01","durMins":413,"durStr":"6h 53m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC48","conc":"N/A","saque":"18:01","durMins":null,"durStr":"N/A","colab":"N/A","concreto":"N/A","status":"ERRO_CONCRETAGEM"},{"forma":"SC49","conc":"13:55","saque":"22:03","durMins":488,"durStr":"8h 08m","colab":"Mario","concreto":"Concreto Padrão","status":"COMPLETO"},{"forma":"SC51","conc":"N/A","saque":"22:07","durMins":null,"durStr":"N/A","colab":"N/A","concreto":"N/A","status":"ERRO_CONCRETAGEM"}];
+    
+    // 1. Bar Chart: Durations
+    const validForms = formsData.filter(d => d.durMins !== null);
+    const labels = validForms.map(d => d.forma);
+    const durations = validForms.map(d => (d.durMins / 60).toFixed(2)); // hours
+    
+    const ctxDuration = document.getElementById('durationChart').getContext('2d');
+    new Chart(ctxDuration, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Duração da Cura (Horas)',
+          data: durations,
+          backgroundColor: '#2563eb',
+          borderColor: '#1d4ed8',
+          borderWidth: 1,
+          borderRadius: 4,
+          hoverBackgroundColor: '#3b82f6'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const totalMinutes = Math.round(context.raw * 60);
+                const hrs = Math.floor(totalMinutes / 60);
+                const mins = totalMinutes % 60;
+                return 'Duração: ' + hrs + 'h ' + mins + 'm';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+            ticks: { color: '#64748b', font: { size: 9 } }
+          },
+          y: {
+            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+            ticks: { color: '#64748b' },
+            title: { display: true, text: 'Horas', color: '#64748b' }
+          }
+        }
+      }
+    });
+
+
+    // 3. Search and Filtering
+    function filterTable() {
+      const searchVal = document.getElementById('searchInput').value.toLowerCase();
+      const filterVal = document.getElementById('statusFilter').value;
+      const table = document.getElementById('reportTable');
+      const trs = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+      
+      for (let i = 0; i < trs.length; i++) {
+        const tr = trs[i];
+        const forma = tr.cells[0].innerText.toLowerCase();
+        const operador = tr.cells[1].innerText.toLowerCase();
+        
+        let status = 'COMPLETO';
+        if (tr.innerHTML.includes('badge-danger')) {
+          status = 'ERRO_CONCRETAGEM';
+        } else if (tr.innerHTML.includes('badge-warning')) {
+          status = 'ERRO_SAQUE';
+        }
+        
+        const matchesSearch = forma.includes(searchVal) || operador.includes(searchVal) || status.toLowerCase().includes(searchVal);
+        const matchesFilter = filterVal === 'all' || status === filterVal;
+        
+        if (matchesSearch && matchesFilter) {
+          tr.style.display = '';
+        } else {
+          tr.style.display = 'none';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
