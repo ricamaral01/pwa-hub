@@ -728,7 +728,9 @@
             <option value="">Todos</option>
             <option value="A">Aprovado</option>
             <option value="R">Reprovado</option>
-            <option value="RR">Reprovado e Retrabalhado</option>
+            <option value="AR">Aprovado / Retrabalho</option>
+            <option value="PERDA">Perda</option>
+            <option value="RR">Reprovado e Retrabalhado (legado)</option>
             <option value="PENDENTE">Pendente</option>
           </select>
         </label>
@@ -736,7 +738,7 @@
       <button id="mpCarregarLiberados" class="btn" type="button">Carregar itens liberados</button>
 
       <!-- Indicadores de status da montagem -->
-      <div id="mpStatusSummary" class="db-kpi-row" style="margin-top: 15px; margin-bottom: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+      <div id="mpStatusSummary" class="db-kpi-row" style="margin-top: 15px; margin-bottom: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
         <div class="mi-kpi-card" style="border-left-color: #10b981; background: #f0fdf4; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
           <span style="font-size: 0.8rem; color: #15803d; font-weight: bold; display: block;">Aprovados</span>
           <span id="mpKpiAprovados" style="font-size: 1.4rem; font-weight: bold; color: #166534; display: block; margin-top: 4px;">0</span>
@@ -748,6 +750,10 @@
         <div class="mi-kpi-card" style="border-left-color: #ef4444; background: #fef2f2; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
           <span style="font-size: 0.8rem; color: #b91c1c; font-weight: bold; display: block;">Reprovados</span>
           <span id="mpKpiReprovados" style="font-size: 1.4rem; font-weight: bold; color: #991b1b; display: block; margin-top: 4px;">0</span>
+        </div>
+        <div class="mi-kpi-card" style="border-left-color: #7c3aed; background: #f5f3ff; padding: 12px; border-radius: 8px; border-left-width: 4px; border-left-style: solid;">
+          <span style="font-size: 0.8rem; color: #5b21b6; font-weight: bold; display: block;">Perdas</span>
+          <span id="mpKpiPerdas" style="font-size: 1.4rem; font-weight: bold; color: #4c1d95; display: block; margin-top: 4px;">0</span>
         </div>
       </div>
 
@@ -1180,7 +1186,17 @@
         <div id="mpStatusButtons" class="mp-status-buttons">
           <button id="mpStatusAprovado" class="btn mp-status-btn" type="button" data-mp-status="A">Aprovado</button>
           <button id="mpStatusReprovado" class="btn mp-status-btn" type="button" data-mp-status="R">Reprovado</button>
-          <button id="mpStatusRR" class="btn mp-status-btn" type="button" data-mp-status="RR">Reprovado e Retrabalhado</button>
+          <button id="mpStatusAR" class="btn mp-status-btn" type="button" data-mp-status="AR">Aprovado / Retrabalho</button>
+          <button id="mpStatusPerda" class="btn mp-status-btn" type="button" data-mp-status="PERDA">Perda</button>
+        </div>
+        <div id="mpPerdaBox" class="hidden" style="margin-top: 12px; padding: 12px; border: 1px solid #ddd6fe; border-left: 4px solid #7c3aed; border-radius: 8px; background: #f5f3ff;">
+          <label>Descrição da perda
+            <textarea id="mpPerdaDescricao" rows="3" placeholder="Descreva o acontecido e o motivo da baixa como perda..."></textarea>
+          </label>
+          <label style="display:block; margin-top: 8px;">Foto obrigatória da perda
+            <input id="mpPerdaFoto" type="file" accept="image/*" capture="environment" />
+          </label>
+          <div id="mpPerdaFotoPreview" style="margin-top: 8px;"></div>
         </div>
 
       </div>

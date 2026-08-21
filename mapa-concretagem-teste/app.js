@@ -967,12 +967,18 @@ const el = {
   mpKpiAprovados: document.getElementById("mpKpiAprovados"),
   mpKpiRetrabalho: document.getElementById("mpKpiRetrabalho"),
   mpKpiReprovados: document.getElementById("mpKpiReprovados"),
+  mpKpiPerdas: document.getElementById("mpKpiPerdas"),
   mpFormaFiltro: document.getElementById("mpFormaFiltro"),
   mpDetalheHeader: document.getElementById("mpDetalheHeader"),
   mpStatusButtons: document.getElementById("mpStatusButtons"),
   mpStatusAprovado: document.getElementById("mpStatusAprovado"),
   mpStatusReprovado: document.getElementById("mpStatusReprovado"),
-  mpStatusRR: document.getElementById("mpStatusRR"),
+  mpStatusAR: document.getElementById("mpStatusAR"),
+  mpStatusPerda: document.getElementById("mpStatusPerda"),
+  mpPerdaBox: document.getElementById("mpPerdaBox"),
+  mpPerdaDescricao: document.getElementById("mpPerdaDescricao"),
+  mpPerdaFoto: document.getElementById("mpPerdaFoto"),
+  mpPerdaFotoPreview: document.getElementById("mpPerdaFotoPreview"),
   mpObservacoes: document.getElementById("mpObservacoes"),
   mpChecklistSections: document.getElementById("mpChecklistSections"),
   mpFinalizarPoste: document.getElementById("mpFinalizarPoste"),
@@ -1685,8 +1691,59 @@ function fmtDate(value) {
 function montagemStatusLabel(status) {
   if (status === "A") return "Aprovado";
   if (status === "R") return "Reprovado";
+  if (status === "AR") return "Aprovado / Retrabalho";
+  if (status === "PERDA") return "Perda";
   if (status === "RR") return "Reprovado e Retrabalhado";
   return "-";
+}
+
+function isMontagemRetrabalhoStatus(status) {
+  const s = String(status || "").trim().toUpperCase();
+  return s === "RR" || s === "AR";
+}
+
+function isMontagemReprovadoStatus(status) {
+  const s = String(status || "").trim().toUpperCase();
+  return s === "R" || s === "REPROVADO";
+}
+
+function isMontagemPerdaStatus(status) {
+  return String(status || "").trim().toUpperCase() === "PERDA";
+}
+
+function isMontagemSegregatorioItem(item) {
+  return !!item?.critico;
+}
+
+function getMontagemReprovedItems(poste, mode = "MONTAGEM") {
+  const sections = mode === "INSPECAO"
+    ? getInspecaoChecklistSections(poste?.modelo || "")
+    : getMontagemChecklistSections(poste?.modelo || "");
+  const result = [];
+  sections.forEach((section) => {
+    section.itens.forEach((item) => {
+      if (poste?.checklists?.[section.id]?.[item.id] === "nao") {
+        result.push({ section, item });
+      }
+    });
+  });
+  return result;
+}
+
+function getMontagemStatusFromChecklist(poste, mode = "MONTAGEM") {
+  const reproved = getMontagemReprovedItems(poste, mode);
+  if (!reproved.length) return { status: "A", motivo: "" };
+  const hasSegregatorio = reproved.some(({ item }) => isMontagemSegregatorioItem(item));
+  const codigos = [...new Set(reproved.map(({ item }) => item.codigoFalha).filter(Boolean))];
+  return {
+    status: hasSegregatorio ? "R" : "AR",
+    motivo: codigos.join(", ")
+  };
+}
+
+function canBaixarMontagemPerda() {
+  const role = String(state.authUser?.role || "").trim().toUpperCase();
+  return ["ADMIN", "GESTOR", "GERENCIA", "QUALIDADE"].includes(role);
 }
 
 function getMontagemMotivoOptions() {
@@ -4467,14 +4524,12 @@ function setMontagemChecklistAnswer(sectionId, itemId, value) {
   const section = sections.find((s) => s.id === sectionId);
   const item = section?.itens.find((i) => i.id === itemId);
 
-  if (value === "nao") {
-    if (item?.critico) {
-      showMsgBox("segregar poste", "error");
-    }
-    if (item?.codigoFalha) {
-      current.statusMontagem = "R";
-      current.motivoRecusa = item.codigoFalha;
-    }
+  const derived = getMontagemStatusFromChecklist(current, "MONTAGEM");
+  current.statusMontagem = derived.status;
+  current.motivoRecusa = derived.motivo;
+
+  if (value === "nao" && item?.critico) {
+    showMsgBox("Defeito segregatorio: poste reprovado e bloqueado para reinspecao.", "error");
   }
 
   const isNowComplete = isChecklistSectionComplete(sectionId, current.checklists);
@@ -4503,19 +4558,94 @@ function renderMontagemStatusUI() {
 
   const status = poste.statusMontagem || "";
   const isFinalizado = !!poste.finalizadoEm;
+  const podeBaixarPerda = canBaixarMontagemPerda();
+  const isFluxoReinspecao = !!poste.isReinspection || !!poste.checklists?.__inspecao_original;
 
   el.mpStatusButtons.querySelectorAll("[data-mp-status]").forEach((btn) => {
     if (!(btn instanceof HTMLElement)) return;
     btn.classList.toggle("active", btn.dataset.mpStatus === status);
-    btn.disabled = isFinalizado;
+    btn.disabled = isFinalizado || (btn.dataset.mpStatus === "PERDA" && (!podeBaixarPerda || !isFluxoReinspecao));
   });
+
+  if (el.mpPerdaBox) {
+    el.mpPerdaBox.classList.toggle("hidden", status !== "PERDA");
+  }
+  if (el.mpPerdaDescricao) {
+    el.mpPerdaDescricao.value = poste.checklists?.__perda?.descricao || "";
+    el.mpPerdaDescricao.disabled = isFinalizado || !podeBaixarPerda;
+  }
+  if (el.mpPerdaFoto) {
+    el.mpPerdaFoto.disabled = isFinalizado || !podeBaixarPerda;
+  }
+  if (el.mpPerdaFotoPreview) {
+    const foto = poste.checklists?.__perda?.foto || "";
+    el.mpPerdaFotoPreview.innerHTML = foto
+      ? `<img src="${foto}" class="mp-item-photo-thumbnail" alt="Foto da perda" />`
+      : `<span class="muted">Nenhuma foto anexada.</span>`;
+  }
 }
 
 function setMontagemStatus(status) {
   if (!state.montagemPostesAtual) return;
   const current = { ...state.montagemPostesAtual };
-  current.statusMontagem = status;
+  const derived = getMontagemStatusFromChecklist(current, "MONTAGEM");
+  if (status === "PERDA" && !canBaixarMontagemPerda()) {
+    showMsgBox("Seu perfil nao possui permissao para baixar poste como perda.", "error");
+    return;
+  }
+  if (status === "PERDA" && !current.isReinspection && !current.checklists?.__inspecao_original) {
+    showMsgBox("A baixa como perda so pode ser feita no ciclo de reinspecao de um poste reprovado.", "error");
+    return;
+  }
+  if (status === "A" && derived.status !== "A") {
+    showMsgBox("Nao e possivel aprovar diretamente um poste com item reprovado no checklist.", "error");
+    return;
+  }
+  if (status === "AR" && derived.status === "R") {
+    showMsgBox("Defeito segregatorio deve permanecer Reprovado ate a reinspecao.", "error");
+    return;
+  }
+  current.statusMontagem = (status === "A" && current.isReinspection) ? "AR" : status;
   if (status === "A") current.motivoRecusa = "";
+  if (status === "AR") current.motivoRecusa = derived.motivo;
+  if (status === "PERDA") {
+    current.motivoRecusa = derived.motivo || current.motivoRecusa || "PERDA";
+    current.checklists = current.checklists || {};
+    current.checklists.__perda = {
+      ...(current.checklists.__perda || {}),
+      iniciado_em: current.checklists.__perda?.iniciado_em || nowIso(),
+      iniciado_por: state.authUser?.name || ""
+    };
+  }
+  state.montagemPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+  renderMontagemStatusUI();
+}
+
+function setMontagemPerdaDescricao(value) {
+  if (!state.montagemPostesAtual) return;
+  const current = { ...state.montagemPostesAtual };
+  current.checklists = current.checklists || {};
+  current.checklists.__perda = {
+    ...(current.checklists.__perda || {}),
+    descricao: value || ""
+  };
+  state.montagemPostesAtual = current;
+  upsertMontagemPoste(current);
+  syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+}
+
+function setMontagemPerdaFoto(photoBase64) {
+  if (!state.montagemPostesAtual) return;
+  const current = { ...state.montagemPostesAtual };
+  current.checklists = current.checklists || {};
+  current.checklists.__perda = {
+    ...(current.checklists.__perda || {}),
+    foto: photoBase64 || "",
+    foto_anexada_em: nowIso(),
+    foto_anexada_por: state.authUser?.name || ""
+  };
   state.montagemPostesAtual = current;
   upsertMontagemPoste(current);
   syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
@@ -4665,6 +4795,22 @@ async function openMontagemPosteDetalhe(posteBase) {
   }
 
   const isRework = (atual?.statusMontagem === "RR");
+  const isReinspection = isMontagemReprovadoStatus(atual?.statusMontagem) && !!atual?.finalizadoEm;
+  const originalChecklists = atual?.checklists || {};
+  const reinspectionChecklists = isReinspection
+    ? {
+        __inspecao_original: originalChecklists.__inspecao_original || {
+          status_montagem: atual.statusMontagem,
+          motivo_recusa: atual.motivoRecusa || "",
+          finalizado_em: atual.finalizadoEm || "",
+          checklists: originalChecklists
+        },
+        __reinspecao_atual: {
+          iniciada_em: now,
+          iniciado_por: state.authUser?.name || ""
+        }
+      }
+    : (isRework ? {} : originalChecklists);
 
   const merged = {
     key,
@@ -4676,12 +4822,13 @@ async function openMontagemPosteDetalhe(posteBase) {
     codigoPoste: posteBase.codigoPoste || atual?.codigoPoste || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).codigoPoste,
     descricaoPoste: posteBase.descricaoPoste || atual?.descricaoPoste || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).descricaoPoste,
     codigoProduto: posteBase.codigoProduto || atual?.codigoProduto || getPosteFieldsForForma(posteBase.formaNumero, posteBase.setor).codigoProduto,
-    statusMontagem: isRework ? "" : (atual?.statusMontagem || ""),
-    motivoRecusa: isRework ? "" : (atual?.motivoRecusa || ""),
-    inicioInspecaoMontagem: isRework ? now : (atual?.inicioInspecaoMontagem || now),
-    finalizadoEm: isRework ? "" : (atual?.finalizadoEm || ""),
-    observacoesMontagem: isRework ? "" : (atual?.observacoesMontagem || ""),
-    checklists: isRework ? {} : (atual?.checklists || {})
+    statusMontagem: (isRework || isReinspection) ? "" : (atual?.statusMontagem || ""),
+    motivoRecusa: (isRework || isReinspection) ? "" : (atual?.motivoRecusa || ""),
+    inicioInspecaoMontagem: (isRework || isReinspection) ? now : (atual?.inicioInspecaoMontagem || now),
+    finalizadoEm: (isRework || isReinspection) ? "" : (atual?.finalizadoEm || ""),
+    observacoesMontagem: (isRework || isReinspection) ? "" : (atual?.observacoesMontagem || ""),
+    checklists: reinspectionChecklists,
+    isReinspection
   };
 
   upsertMontagemPoste(merged);
@@ -4729,9 +4876,12 @@ async function finalizarMontagemPosteAtual() {
     return;
   }
 
-  const status = poste.statusMontagem || "";
+  const derivedStatus = getMontagemStatusFromChecklist(poste, "MONTAGEM");
+  const selectedStatus = poste.statusMontagem || "";
+  const statusAuto = selectedStatus === "PERDA" ? "PERDA" : (derivedStatus.status || selectedStatus);
+  const status = (poste.isReinspection && statusAuto === "A") ? "AR" : statusAuto;
   if (!status) {
-    showMsgBox("Selecione o status da montagem: Aprovado, Reprovado ou Reprovado e Retrabalhado.", "error");
+    showMsgBox("Selecione o status da montagem: Aprovado, Reprovado ou Aprovado / Retrabalho.", "error");
     return;
   }
 
@@ -4740,11 +4890,30 @@ async function finalizarMontagemPosteAtual() {
     isChecklistSectionComplete(section.id, poste.checklists || {})
   );
 
-  const temReprovadoPrimeiraSecao = Object.values(poste.checklists?.["checagem_inicial"] || {}).includes("nao");
+  const primeiraSecao = sections.find((section) => section.id === "checagem_inicial");
+  const temSegregatorioPrimeiraSecao = primeiraSecao?.itens.some((item) =>
+    isMontagemSegregatorioItem(item) && poste.checklists?.["checagem_inicial"]?.[item.id] === "nao"
+  );
 
-  if (!allSectionsOk && !(temReprovadoPrimeiraSecao && (status === "R" || status === "RR"))) {
+  if (!allSectionsOk && !(temSegregatorioPrimeiraSecao && (status === "R" || status === "PERDA"))) {
     showMsgBox("Responda todos os itens (Aprovado/Reprovado) de todas as seções antes de finalizar.", "error");
     return;
+  }
+
+  if (status === "PERDA") {
+    if (!canBaixarMontagemPerda()) {
+      showMsgBox("Seu perfil nao possui permissao para baixar poste como perda.", "error");
+      return;
+    }
+    const perda = poste.checklists?.__perda || {};
+    if (!String(perda.descricao || "").trim()) {
+      showMsgBox("Informe a descricao da perda antes de finalizar.", "error");
+      return;
+    }
+    if (!perda.foto) {
+      showMsgBox("Anexe uma foto da perda antes de finalizar.", "error");
+      return;
+    }
   }
 
   const loadingModal = document.getElementById("loadingModal");
@@ -4762,8 +4931,28 @@ async function finalizarMontagemPosteAtual() {
 
     const updated = {
       ...poste,
+      statusMontagem: status,
+      motivoRecusa: status === "PERDA" ? (derivedStatus.motivo || poste.motivoRecusa || "PERDA") : derivedStatus.motivo,
       checklists: {
         ...(poste.checklists || {}),
+        ...(status === "PERDA" ? {
+          __perda: {
+            ...(poste.checklists?.__perda || {}),
+            finalizado_em: now.toISOString(),
+            finalizado_por: state.authUser?.name || ""
+          }
+        } : {}),
+        ...(poste.isReinspection ? {
+          __reinspecoes: [
+            ...((poste.checklists || {}).__reinspecoes || []),
+            {
+              finalizado_em: now.toISOString(),
+              finalizado_por: state.authUser?.name || "",
+              status_montagem: status,
+              motivo_recusa: status === "PERDA" ? (derivedStatus.motivo || poste.motivoRecusa || "PERDA") : derivedStatus.motivo
+            }
+          ]
+        } : {}),
         dia_inspecao: diaInspecao,
         horario_dispositivo: horarioDispositivo,
         geolocation: geoResult
@@ -4864,6 +5053,7 @@ async function renderMontagemPostesLiberados() {
   if (el.mpKpiAprovados) el.mpKpiAprovados.textContent = "0";
   if (el.mpKpiRetrabalho) el.mpKpiRetrabalho.textContent = "0";
   if (el.mpKpiReprovados) el.mpKpiReprovados.textContent = "0";
+  if (el.mpKpiPerdas) el.mpKpiPerdas.textContent = "0";
 
   if (!filtroData) {
     el.mpQtdItens.textContent = "0";
@@ -4890,20 +5080,23 @@ async function renderMontagemPostesLiberados() {
   let countAprovados = 0;
   let countRetrabalho = 0;
   let countReprovados = 0;
+  let countPerdas = 0;
 
   baseRows.forEach((record) => {
     const isFinalizado = !!record.montagem?.finalizado_em;
     const status = record.montagem?.status_montagem || "";
     if (isFinalizado) {
       if (status === "A") countAprovados++;
-      else if (status === "RR") countRetrabalho++;
-      else if (status === "R") countReprovados++;
+      else if (isMontagemRetrabalhoStatus(status)) countRetrabalho++;
+      else if (isMontagemReprovadoStatus(status)) countReprovados++;
+      else if (isMontagemPerdaStatus(status)) countPerdas++;
     }
   });
 
   if (el.mpKpiAprovados) el.mpKpiAprovados.textContent = String(countAprovados);
   if (el.mpKpiRetrabalho) el.mpKpiRetrabalho.textContent = String(countRetrabalho);
   if (el.mpKpiReprovados) el.mpKpiReprovados.textContent = String(countReprovados);
+  if (el.mpKpiPerdas) el.mpKpiPerdas.textContent = String(countPerdas);
 
   // Filtra de acordo com statusFiltro para a exibição na tabela
   const rows = baseRows.filter((record) => {
@@ -4951,10 +5144,12 @@ async function renderMontagemPostesLiberados() {
     if (isFinalizado) {
       if (status === "A") {
         acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Aprovado (Ver Checklist)</button>`;
-      } else if (status === "RR") {
-        acaoContent = `<button type="button" class="btn mp-open-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Retrabalhar</button>`;
+      } else if (isMontagemRetrabalhoStatus(status)) {
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Aprovado / Retrabalho</button>`;
+      } else if (isMontagemPerdaStatus(status)) {
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #7c3aed; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Perda (Ver Registro)</button>`;
       } else {
-        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Reprovado (Ver Checklist)</button>`;
+        acaoContent = `<button type="button" class="btn mp-open-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Reinspecionar / Baixar</button>`;
       }
     } else {
       const extraClass = record.status === 'INSPECIONADO' ? 'mp-open-btn--inspecionado' : '';
@@ -5437,7 +5632,8 @@ function renderDashboardCharts() {
     } else if (etapa === "INSPECAO" || etapa === "REINSPECAO") {
       if (!insByDate[d]) insByDate[d] = { A: 0, R: 0, RR: 0, total: 0 };
       insByDate[d].total++;
-      const s = (ev.status || "").toUpperCase();
+      const sRaw = (ev.status || "").toUpperCase();
+      const s = sRaw === "AR" ? "RR" : sRaw;
       if (s in insStatusTotal) {
         insStatusTotal[s]++;
         insByDate[d][s]++;
@@ -5454,7 +5650,8 @@ function renderDashboardCharts() {
     if (!row.status_montagem) return;
     const d = row.data_fabricacao || "";
     if (!d) return;
-    const s = (row.status_montagem || "").toUpperCase();
+    const sRaw = (row.status_montagem || "").toUpperCase();
+    const s = sRaw === "AR" ? "RR" : sRaw;
     if (!insByDate[d]) {
       insByDate[d] = { A: 0, R: 0, RR: 0, total: 0 };
     }
@@ -8810,6 +9007,31 @@ function bindEvents() {
     });
   }
 
+  if (el.mpPerdaDescricao) {
+    el.mpPerdaDescricao.addEventListener("input", () => {
+      if (!state.montagemPostesAtual || state.montagemPostesAtual.finalizadoEm) return;
+      setMontagemPerdaDescricao((el.mpPerdaDescricao.value || "").trim());
+    });
+  }
+
+  if (el.mpPerdaFoto) {
+    el.mpPerdaFoto.addEventListener("change", async (event) => {
+      if (!state.montagemPostesAtual || state.montagemPostesAtual.finalizadoEm) return;
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      const file = target.files?.[0];
+      if (!file) return;
+      try {
+        const dataUrl = await fileToDataUrl(file);
+        const base64 = await compressImage(dataUrl, 1024, 0.7);
+        setMontagemPerdaFoto(base64);
+      } catch (err) {
+        console.error("Erro ao carregar foto da perda:", err);
+        showMsgBox("Erro ao carregar a foto da perda. Tente novamente.", "error");
+      }
+    });
+  }
+
   if (el.mpFinalizarPoste) el.mpFinalizarPoste.addEventListener("click", () => {
     finalizarMontagemPosteAtual();
   });
@@ -10424,7 +10646,7 @@ function isLinhaMontagemDashboard(row) {
 
 function isLinhaDefeitoDashboard(row) {
   const status = String(row?.status_montagem || "").trim().toUpperCase();
-  return status === "R" || status === "RR" || status === "REPROVADO" || status === "RETRABALHO" || obterItensRejeitadosLinha(row).length > 0;
+  return status === "R" || status === "RR" || status === "AR" || status === "PERDA" || status === "REPROVADO" || status === "RETRABALHO" || obterItensRejeitadosLinha(row).length > 0;
 }
 
 function normalizarTexto(valor) {
@@ -10457,6 +10679,8 @@ function setMontagemDrawerOpen(open) {
 
 function getMiStatusMeta(status) {
   if (status === "A") return { label: "Aprovado", className: "mi-status-a" };
+  if (status === "AR") return { label: "Aprovado / Retrabalho", className: "mi-status-rr" };
+  if (status === "PERDA") return { label: "Perda", className: "mi-status-r" };
   if (status === "RR") return { label: "Retrabalhado", className: "mi-status-rr" };
   if (status === "R") return { label: "Reprovado", className: "mi-status-r" };
   return { label: "Em andamento", className: "mi-status-open" };
@@ -10543,7 +10767,7 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     const statusMontagem = String(row.status_montagem || "").trim().toUpperCase();
     const isPosteComDefeito = rejeitados.length > 0;
     const isReprovado = statusMontagem === "R" || statusMontagem === "REPROVADO";
-    const isRetrabalho = row.status_montagem === "RR";
+    const isRetrabalho = isMontagemRetrabalhoStatus(row.status_montagem);
 
     if (!resumo.porForma[key]) {
       resumo.porForma[key] = {
@@ -11372,8 +11596,10 @@ function renderizarTabelaMontagemPaginada() {
     let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
     if (row.status_montagem === "A") {
       statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
-    } else if (row.status_montagem === "RR") {
-      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Retrabalhado</span>`;
+    } else if (isMontagemRetrabalhoStatus(row.status_montagem)) {
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado / Retrabalho</span>`;
+    } else if (isMontagemPerdaStatus(row.status_montagem)) {
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #7c3aed; font-weight: bold; background: #ede9fe; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Perda</span>`;
     } else if (row.status_montagem === "R") {
       statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
     }
@@ -11433,8 +11659,10 @@ function renderizarTabelaMontagemPaginada() {
       let statusHtml = '<span style="color: #64748b; font-weight: bold;">Em Andamento</span>';
       if (row.status_montagem === "A") {
         statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
-      } else if (row.status_montagem === "RR") {
-        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Retrabalhado</span>`;
+      } else if (isMontagemRetrabalhoStatus(row.status_montagem)) {
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado / Retrabalho</span>`;
+      } else if (isMontagemPerdaStatus(row.status_montagem)) {
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #7c3aed; font-weight: bold; background: #ede9fe; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Perda</span>`;
       } else if (row.status_montagem === "R") {
         statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
       }
@@ -11791,9 +12019,12 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
   if (normRow.status_montagem === "A") {
     statusText = "Aprovado";
     statusColor = "#16a34a";
-  } else if (normRow.status_montagem === "RR") {
-    statusText = "Reprovado e Retrabalhado";
+  } else if (isMontagemRetrabalhoStatus(normRow.status_montagem)) {
+    statusText = "Aprovado / Retrabalho";
     statusColor = "#d97706";
+  } else if (isMontagemPerdaStatus(normRow.status_montagem)) {
+    statusText = "Perda";
+    statusColor = "#7c3aed";
   } else if (normRow.status_montagem === "R") {
     statusText = "Reprovado";
     statusColor = "#dc2626";

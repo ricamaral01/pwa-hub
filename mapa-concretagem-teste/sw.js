@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.60: renomeia indice de reprovacao e adiciona total de postes reprovados
+   v1.61: fluxo de reinspecao/perda e Aprovado-Retrabalho na montagem
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.60";
+const CACHE_NAME = "mapa-concretagem-teste-v1.61";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
