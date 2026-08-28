@@ -6022,6 +6022,13 @@ function formatTime(iso) {
 }
 
 const ACMP_NOTES_KEY = "pwa_acmp_notas_v1";
+const ACMP_MASSADAS_URL = "https://dautomacao.com/api/usina/massadas";
+const ACMP_PRODUTO_VOLUMES_URL = "./data/produto-volumes.json";
+const ACMP_MASSADA_VOLUME_PADRAO_M3 = 0.9;
+const ACMP_DELAY_APLICACAO_MS = 60 * 1000;
+const ACMP_TOLERANCIA_ANTES_MS = 4 * 60 * 1000;
+const ACMP_TOLERANCIA_DEPOIS_MS = 60 * 1000;
+let acmpVolumeCache = null;
 
 function getAcmpNoteKey(data, setor, forma) {
   return `${data}||${setor}||${forma}`;
@@ -6062,6 +6069,181 @@ function salvarAcmp() {
 
 function imprimirAcmp() {
   window.print();
+}
+
+function normalizeAcmpText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function normalizeAcmpCode(value) {
+  if (value === null || value === undefined) return "";
+  const raw = String(value).trim();
+  if (!raw) return "";
+  const asNumber = Number(raw);
+  return Number.isFinite(asNumber) ? String(Math.trunc(asNumber)) : raw;
+}
+
+function parseAcmpTimestamp(value, dataRef = "") {
+  if (!value) return null;
+  const raw = String(value);
+  const normalized = /^\d{2}:\d{2}(:\d{2})?$/.test(raw)
+    ? `${dataRef}T${raw.length === 5 ? `${raw}:00` : raw}`
+    : raw;
+  const d = new Date(normalized);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+async function loadAcmpVolumeIndex() {
+  if (acmpVolumeCache) return acmpVolumeCache;
+  const index = { bySetorCodigo: new Map(), byCodigo: new Map(), bySetorProduto: new Map(), byProduto: new Map() };
+  try {
+    const res = await fetch(ACMP_PRODUTO_VOLUMES_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    (payload.registros || []).forEach((item) => {
+      const setor = normalizeAcmpText(item.setor);
+      const codigo = normalizeAcmpCode(item.codigo_produto);
+      const produto = normalizeAcmpText(item.produto);
+      const volume = Number(item.volume_m3);
+      if (!Number.isFinite(volume) || volume <= 0) return;
+      const record = { ...item, volume_m3: volume };
+      if (setor && codigo) index.bySetorCodigo.set(`${setor}||${codigo}`, record);
+      if (codigo && !index.byCodigo.has(codigo)) index.byCodigo.set(codigo, record);
+      if (setor && produto) index.bySetorProduto.set(`${setor}||${produto}`, record);
+      if (produto && !index.byProduto.has(produto)) index.byProduto.set(produto, record);
+    });
+  } catch (err) {
+    console.warn("Nao foi possivel carregar cadastro de volumes:", err);
+  }
+  acmpVolumeCache = index;
+  return index;
+}
+
+function getAcmpRowCodigoProduto(row) {
+  return normalizeAcmpCode(row.codigo_produto || row.codigoProduto || row.codigo_poste || row.codigoPoste);
+}
+
+function getAcmpRowProduto(row) {
+  return normalizeAcmpText(
+    row.descricao_poste ||
+    row.descricaoPoste ||
+    row.produto ||
+    row.nome_produto ||
+    row.nomeProduto ||
+    row.modelo
+  );
+}
+
+function findAcmpVolume(row, volumeIndex) {
+  const setor = normalizeAcmpText(row._setor || row.setor);
+  const codigo = getAcmpRowCodigoProduto(row);
+  const produto = getAcmpRowProduto(row);
+  if (setor && codigo && volumeIndex.bySetorCodigo.has(`${setor}||${codigo}`)) {
+    return { match: volumeIndex.bySetorCodigo.get(`${setor}||${codigo}`), regra: "setor+codigo" };
+  }
+  if (codigo && volumeIndex.byCodigo.has(codigo)) {
+    return { match: volumeIndex.byCodigo.get(codigo), regra: "codigo" };
+  }
+  if (setor && produto && volumeIndex.bySetorProduto.has(`${setor}||${produto}`)) {
+    return { match: volumeIndex.bySetorProduto.get(`${setor}||${produto}`), regra: "setor+produto" };
+  }
+  if (produto && volumeIndex.byProduto.has(produto)) {
+    return { match: volumeIndex.byProduto.get(produto), regra: "produto" };
+  }
+  return { match: null, regra: "" };
+}
+
+async function fetchAcmpMassadas(data) {
+  if (!data) return [];
+  try {
+    const url = `${ACMP_MASSADAS_URL}?data=${encodeURIComponent(data)}&limit=5000`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    return (payload.massadas || [])
+      .map((m) => {
+        const ts = parseAcmpTimestamp(m.data_hora || m.hora, data);
+        const qtd = Number(m.qtd);
+        return {
+          ...m,
+          _ts: ts,
+          _remaining: Number.isFinite(qtd) && qtd > 0 ? qtd : ACMP_MASSADA_VOLUME_PADRAO_M3
+        };
+      })
+      .filter((m) => m._ts)
+      .sort((a, b) => a._ts - b._ts);
+  } catch (err) {
+    console.warn("Nao foi possivel carregar massadas da usina:", err);
+    return [];
+  }
+}
+
+function describeAcmpAllocation(allocation, volume, volumeInfo) {
+  if (!allocation || !allocation.parts.length) return "Massada nao localizada";
+  const ids = allocation.parts.map((part) => part.massada.numero_serie || part.massada.id).filter(Boolean);
+  const formulas = [...new Set(allocation.parts.map((part) => part.massada.formula).filter(Boolean))];
+  const diff = Math.round((allocation.bestDiffMs || 0) / 1000);
+  const volumeTxt = Number.isFinite(volume) ? `${volume.toFixed(3).replace(".", ",")} m³` : "volume indefinido";
+  const regra = volumeInfo?.regra ? ` • volume por ${volumeInfo.regra}` : "";
+  const base = `Massada ${ids.join("/")} • ${volumeTxt} • Δ ${Math.abs(diff)}s${regra}`;
+  if (allocation.parts.length > 1) return `${base} • múltiplas massadas`;
+  if (formulas.length > 1) return `${base} • traços diferentes`;
+  return base;
+}
+
+function allocateAcmpTracos(rows, massadas, volumeIndex, data) {
+  const sorted = rows
+    .map((row, idx) => ({ row, idx, ts: parseAcmpTimestamp(row.lib_timestamp || row.data_hora || row.timestamp, data) }))
+    .filter((item) => item.ts)
+    .sort((a, b) => a.ts - b.ts);
+
+  const suggestions = new Map();
+  sorted.forEach((item) => {
+    const volumeInfo = findAcmpVolume(item.row, volumeIndex);
+    const volume = Number(volumeInfo.match?.volume_m3);
+    if (!Number.isFinite(volume) || volume <= 0) {
+      suggestions.set(item.idx, { traco: "", obs: "Sem volume cadastrado", confidence: "sem_volume" });
+      return;
+    }
+
+    let restante = volume;
+    const parts = [];
+    const expected = item.ts.getTime() - ACMP_DELAY_APLICACAO_MS;
+    const minTs = expected - ACMP_TOLERANCIA_ANTES_MS;
+    const maxTs = item.ts.getTime() + ACMP_TOLERANCIA_DEPOIS_MS;
+    let bestDiffMs = null;
+
+    for (const massada of massadas) {
+      if (restante <= 0.0001) break;
+      const ts = massada._ts.getTime();
+      if (ts < minTs || ts > maxTs || massada._remaining <= 0.0001) continue;
+      const usado = Math.min(restante, massada._remaining);
+      massada._remaining -= usado;
+      restante -= usado;
+      const diff = ts - expected;
+      bestDiffMs = bestDiffMs === null || Math.abs(diff) < Math.abs(bestDiffMs) ? diff : bestDiffMs;
+      parts.push({ massada, volume: usado, diffMs: diff });
+    }
+
+    if (restante > 0.0001 || !parts.length) {
+      suggestions.set(item.idx, { traco: "", obs: "Massada nao localizada", confidence: "sem_massada" });
+      return;
+    }
+
+    const formulas = [...new Set(parts.map((part) => part.massada.formula).filter(Boolean))];
+    const traco = formulas.length === 1 ? formulas[0] : (formulas.length > 1 ? "Misto" : "");
+    suggestions.set(item.idx, {
+      traco,
+      obs: describeAcmpAllocation({ parts, bestDiffMs }, volume, volumeInfo),
+      confidence: formulas.length > 1 ? "misto" : "ok"
+    });
+  });
+  return suggestions;
 }
 
 async function renderAcmpConcretagem() {
@@ -6109,6 +6291,8 @@ async function renderAcmpConcretagem() {
         .forEach((r) => allRows.push({
           forma_numero: r.formaNumero,
           modelo: r.modelo || "",
+          descricaoPoste: r.descricaoPoste || "",
+          codigoProduto: r.codigoProduto || "",
           lib_timestamp: r.liberacao.timestamp || "",
           _setor: setor,
           tipo_concreto: r.concretoTipo || ""
@@ -6119,6 +6303,19 @@ async function renderAcmpConcretagem() {
   if (!allRows.length) {
     output.innerHTML = '<p class="muted">Nenhuma forma concretada para os filtros informados.</p>';
     return;
+  }
+
+  let massadas = [];
+  let volumeIndex = { bySetorCodigo: new Map(), byCodigo: new Map(), bySetorProduto: new Map(), byProduto: new Map() };
+  if (data) {
+    [massadas, volumeIndex] = await Promise.all([
+      fetchAcmpMassadas(data),
+      loadAcmpVolumeIndex()
+    ]);
+    const suggestions = allocateAcmpTracos(allRows, massadas, volumeIndex, data);
+    allRows.forEach((row, idx) => {
+      row._acmpSuggestion = suggestions.get(idx) || null;
+    });
   }
 
   const grouped = {};
@@ -6132,20 +6329,23 @@ async function renderAcmpConcretagem() {
   let html = "";
   Object.keys(grouped).sort().forEach((setor) => {
     const rows = grouped[setor].sort((a, b) =>
-      formatTime(a.lib_timestamp).localeCompare(formatTime(b.lib_timestamp))
+      (parseAcmpTimestamp(a.lib_timestamp || a.data_hora || a.timestamp, data)?.getTime() || 0) -
+      (parseAcmpTimestamp(b.lib_timestamp || b.data_hora || b.timestamp, data)?.getTime() || 0)
     );
     totalCount += rows.length;
     const linhas = rows.map((r) => {
       const forma = r.forma_numero || "";
       const saved = notes[getAcmpNoteKey(data, setor, forma)] || {};
       const tipoConcreto = r.tipo_concreto || "";
-      const obsValue = saved.obs || tipoConcreto;
+      const suggestion = r._acmpSuggestion || {};
+      const tracoValue = saved.traco || suggestion.traco || "";
+      const obsValue = saved.obs || suggestion.obs || tipoConcreto;
       return `<tr data-acmp-forma="${forma}" data-acmp-setor="${setor}">
-        <td>${forma}</td>
-        <td>${r.modelo || ""}</td>
+        <td>${escapeHtml(forma)}</td>
+        <td>${escapeHtml(r.modelo || "")}</td>
         <td>${formatTime(r.lib_timestamp)}</td>
-        <td><input type="text" class="acmp-input" data-acmp-traco placeholder="" value="${saved.traco || ""}"></td>
-        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="" value="${obsValue}"></td>
+        <td><input type="text" class="acmp-input" data-acmp-traco placeholder="" value="${escapeHtml(tracoValue)}"></td>
+        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="" value="${escapeHtml(obsValue)}"></td>
       </tr>`;
     }).join("");
     html += `
@@ -6158,7 +6358,10 @@ async function renderAcmpConcretagem() {
       </div>`;
   });
 
-  output.innerHTML = `<div class="acmp-total">Total: ${totalCount} formas concretadas | Data: ${data}</div>` + html;
+  const massadasInfo = data
+    ? ` | Massadas carregadas: ${massadas.length} | Traços sugeridos: ${allRows.filter((r) => r._acmpSuggestion?.traco).length}`
+    : "";
+  output.innerHTML = `<div class="acmp-total">Total: ${totalCount} formas concretadas | Data: ${data}${massadasInfo}</div>` + html;
 }
 
 function buildReportDataFromRows(rows) {
