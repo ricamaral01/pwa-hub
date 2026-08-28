@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.65: triangulacao por leituras QR no acompanhamento
+   v1.66: corrige consumo de massadas e modelo local S3
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.65";
+const CACHE_NAME = "mapa-concretagem-teste-v1.66";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());

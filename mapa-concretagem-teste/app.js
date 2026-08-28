@@ -6415,6 +6415,13 @@ function findAcmpVolume(row, volumeIndex) {
   return { match: null, regra: "" };
 }
 
+function getAcmpProgS3Model(data, forma) {
+  if (!data || !forma || typeof window.readProgS3S4Db !== "function") return "";
+  const db = window.readProgS3S4Db();
+  const key = `${data}||${forma}||Setor 3`;
+  return db?.programacoes?.[key]?.modelo || "";
+}
+
 async function fetchAcmpMassadas(data) {
   if (!data) return [];
   try {
@@ -6542,7 +6549,6 @@ function allocateAcmpTracos(rows, massadas, volumeIndex, leiturasQr, data) {
       const ts = massada._ts.getTime();
       if (ts < minTs || ts > maxTs || massada._remaining <= 0.0001) continue;
       const usado = Math.min(restante, massada._remaining);
-      massada._remaining -= usado;
       restante -= usado;
       const diff = ts - expected;
       bestDiffMs = bestDiffMs === null || Math.abs(diff) < Math.abs(bestDiffMs) ? diff : bestDiffMs;
@@ -6554,6 +6560,10 @@ function allocateAcmpTracos(rows, massadas, volumeIndex, leiturasQr, data) {
       return;
     }
 
+    parts.forEach((part) => {
+      part.massada._remaining -= part.volume;
+    });
+
     const formulas = [...new Set(parts.map((part) => part.massada.formula).filter(Boolean))];
     const traco = formulas.length === 1 ? formulas[0] : (formulas.length > 1 ? "Misto" : "");
     suggestions.set(item.idx, {
@@ -6563,6 +6573,22 @@ function allocateAcmpTracos(rows, massadas, volumeIndex, leiturasQr, data) {
     });
   });
   return suggestions;
+}
+
+function enrichAcmpRowsFromProgS3(rows, data) {
+  if (!data) return rows;
+  return rows.map((row) => {
+    if (row._setor !== "Setor 3" && row.setor !== "Setor 3") return row;
+    const forma = row.forma_numero || row.forma || "";
+    const modeloProg = getAcmpProgS3Model(data, forma);
+    if (!modeloProg) return row;
+    return {
+      ...row,
+      modelo: modeloProg,
+      descricaoPoste: modeloProg,
+      produto: modeloProg
+    };
+  });
 }
 
 async function renderAcmpConcretagem() {
@@ -6628,6 +6654,9 @@ async function renderAcmpConcretagem() {
   let leiturasQr = [];
   let volumeIndex = { bySetorCodigo: new Map(), byCodigo: new Map(), bySetorProduto: new Map(), byProduto: new Map() };
   if (data) {
+    for (let i = 0; i < allRows.length; i += 1) {
+      allRows[i] = enrichAcmpRowsFromProgS3([allRows[i]], data)[0];
+    }
     [massadas, volumeIndex, leiturasQr] = await Promise.all([
       fetchAcmpMassadas(data),
       loadAcmpVolumeIndex(),
