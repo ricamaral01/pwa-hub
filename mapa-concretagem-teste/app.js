@@ -6027,7 +6027,7 @@ const ACMP_PRODUTO_VOLUMES_URL = "./data/produto-volumes.json";
 const ACMP_MASSADA_VOLUME_PADRAO_M3 = 0.9;
 const ACMP_DELAY_APLICACAO_MS = 60 * 1000;
 const ACMP_TOLERANCIA_ANTES_MS = 4 * 60 * 1000;
-const ACMP_TOLERANCIA_DEPOIS_MS = 4 * 60 * 1000;
+const ACMP_TOLERANCIA_DEPOIS_MS = 6 * 60 * 1000;
 let acmpVolumeCache = null;
 
 function getAcmpNoteKey(data, setor, forma) {
