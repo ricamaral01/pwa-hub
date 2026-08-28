@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.61: fluxo de reinspecao/perda e Aprovado-Retrabalho na montagem
+   v1.62: sugestao de traco no acompanhamento por massada e volume
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.61";
+const CACHE_NAME = "mapa-concretagem-teste-v1.62";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
