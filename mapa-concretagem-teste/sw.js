@@ -1,9 +1,9 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker reset
-   v1.63: range posterior de massadas ampliado para 4 minutos
+   v1.64: range posterior de massadas ampliado para 6 minutos
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.63";
+const CACHE_NAME = "mapa-concretagem-teste-v1.64";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
