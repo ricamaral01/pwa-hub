@@ -6221,6 +6221,7 @@ function formatTime(iso) {
 const ACMP_NOTES_KEY = "pwa_acmp_notas_v1";
 const ACMP_MASSADAS_URL = "https://dautomacao.com/api/usina/massadas";
 const ACMP_PRODUTO_VOLUMES_URL = "./data/produto-volumes.json";
+const ACMP_LEITURAS_QR_CSV_URL = "https://docs.google.com/spreadsheets/d/1CdQhQ0AJ4mWJqAgnP371ez4r-P7ESX5KuTHI96nI0g8/export?format=csv&gid=0";
 const ACMP_MASSADA_VOLUME_PADRAO_M3 = 0.9;
 const ACMP_DELAY_APLICACAO_MS = 60 * 1000;
 const ACMP_TOLERANCIA_ANTES_MS = 4 * 60 * 1000;
@@ -6295,6 +6296,65 @@ function parseAcmpTimestamp(value, dataRef = "") {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+function parseAcmpBrTimestamp(value) {
+  const match = String(value || "").trim().match(/^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})(?::(\d{2}))?$/);
+  if (!match) return null;
+  const [, dd, mm, yyyy, hh, min, ss = "00"] = match;
+  const d = new Date(Number(yyyy), Number(mm) - 1, Number(dd), Number(hh), Number(min), Number(ss));
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function getAcmpLocalDateKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function parseAcmpCsv(text) {
+  const rows = [];
+  let row = [];
+  let value = "";
+  let quoted = false;
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    const next = text[i + 1];
+    if (quoted) {
+      if (ch === '"' && next === '"') {
+        value += '"';
+        i += 1;
+      } else if (ch === '"') {
+        quoted = false;
+      } else {
+        value += ch;
+      }
+      continue;
+    }
+    if (ch === '"') {
+      quoted = true;
+    } else if (ch === ",") {
+      row.push(value);
+      value = "";
+    } else if (ch === "\n") {
+      row.push(value);
+      rows.push(row);
+      row = [];
+      value = "";
+    } else if (ch !== "\r") {
+      value += ch;
+    }
+  }
+  if (value || row.length) {
+    row.push(value);
+    rows.push(row);
+  }
+  if (!rows.length) return [];
+  const headers = rows.shift().map((h) => h.trim());
+  return rows
+    .filter((r) => r.some((v) => String(v || "").trim()))
+    .map((r) => headers.reduce((acc, header, idx) => {
+      acc[header] = r[idx] || "";
+      return acc;
+    }, {}));
+}
+
 async function loadAcmpVolumeIndex() {
   if (acmpVolumeCache) return acmpVolumeCache;
   const index = { bySetorCodigo: new Map(), byCodigo: new Map(), bySetorProduto: new Map(), byProduto: new Map() };
@@ -6364,7 +6424,7 @@ async function fetchAcmpMassadas(data) {
     const payload = await res.json();
     return (payload.massadas || [])
       .map((m) => {
-        const ts = parseAcmpTimestamp(m.data_hora || m.hora, data);
+        const ts = parseAcmpTimestamp(m.data_hora_operacional || m.data_hora || m.hora, data);
         const qtd = Number(m.qtd);
         return {
           ...m,
@@ -6380,6 +6440,64 @@ async function fetchAcmpMassadas(data) {
   }
 }
 
+async function fetchAcmpLeiturasQr(data) {
+  if (!data) return [];
+  try {
+    const res = await fetch(ACMP_LEITURAS_QR_CSV_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = parseAcmpCsv(await res.text());
+    return rows
+      .map((r) => {
+        const ts = parseAcmpBrTimestamp(r.DATAHORA);
+        return {
+          id: Number(r.ID),
+          setor: r.QR_RAW || "",
+          setorKey: normalizeAcmpText(r.QR_RAW),
+          dataHora: r.DATAHORA || "",
+          ts
+        };
+      })
+      .filter((r) => r.ts && getAcmpLocalDateKey(r.ts) === data && r.setorKey)
+      .sort((a, b) => (a.ts - b.ts) || ((a.id || 0) - (b.id || 0)));
+  } catch (err) {
+    console.warn("Nao foi possivel carregar leituras QR:", err);
+    return [];
+  }
+}
+
+function indexAcmpLeiturasBySetor(leituras) {
+  const bySetor = new Map();
+  leituras.forEach((leitura) => {
+    if (!bySetor.has(leitura.setorKey)) bySetor.set(leitura.setorKey, []);
+    bySetor.get(leitura.setorKey).push({ ...leitura, _used: false });
+  });
+  return bySetor;
+}
+
+function matchAcmpLeitura(item, leiturasBySetor) {
+  const setorKey = normalizeAcmpText(item.row._setor || item.row.setor);
+  const queue = leiturasBySetor.get(setorKey) || [];
+  if (!queue.length) return null;
+  const rowTs = item.ts.getTime();
+  const minTs = rowTs - ACMP_TOLERANCIA_ANTES_MS;
+  const maxTs = rowTs + ACMP_TOLERANCIA_DEPOIS_MS;
+  let best = null;
+  for (const leitura of queue) {
+    if (leitura._used) continue;
+    const ts = leitura.ts.getTime();
+    if (ts < minTs) {
+      leitura._used = true;
+      continue;
+    }
+    if (ts > maxTs) break;
+    const diff = Math.abs(ts - rowTs);
+    if (!best || diff < best.diff) best = { leitura, diff };
+  }
+  if (!best) return null;
+  best.leitura._used = true;
+  return best.leitura;
+}
+
 function describeAcmpAllocation(allocation, volume, volumeInfo) {
   if (!allocation || !allocation.parts.length) return "Massada nao localizada";
   const ids = allocation.parts.map((part) => part.massada.numero_serie || part.massada.id).filter(Boolean);
@@ -6387,19 +6505,21 @@ function describeAcmpAllocation(allocation, volume, volumeInfo) {
   const diff = Math.round((allocation.bestDiffMs || 0) / 1000);
   const volumeTxt = Number.isFinite(volume) ? `${volume.toFixed(3).replace(".", ",")} m³` : "volume indefinido";
   const regra = volumeInfo?.regra ? ` • volume por ${volumeInfo.regra}` : "";
-  const base = `Massada ${ids.join("/")} • ${volumeTxt} • Δ ${Math.abs(diff)}s${regra}`;
+  const sequencia = allocation.leitura ? ` • sequência ${allocation.leitura.setor} #${allocation.leitura.id}` : "";
+  const base = `Massada ${ids.join("/")} • ${volumeTxt} • Δ ${Math.abs(diff)}s${regra}${sequencia}`;
   if (allocation.parts.length > 1) return `${base} • múltiplas massadas`;
   if (formulas.length > 1) return `${base} • traços diferentes`;
   return base;
 }
 
-function allocateAcmpTracos(rows, massadas, volumeIndex, data) {
+function allocateAcmpTracos(rows, massadas, volumeIndex, leiturasQr, data) {
   const sorted = rows
     .map((row, idx) => ({ row, idx, ts: parseAcmpTimestamp(row.lib_timestamp || row.data_hora || row.timestamp, data) }))
     .filter((item) => item.ts)
     .sort((a, b) => a.ts - b.ts);
 
   const suggestions = new Map();
+  const leiturasBySetor = indexAcmpLeiturasBySetor(leiturasQr || []);
   sorted.forEach((item) => {
     const volumeInfo = findAcmpVolume(item.row, volumeIndex);
     const volume = Number(volumeInfo.match?.volume_m3);
@@ -6410,9 +6530,11 @@ function allocateAcmpTracos(rows, massadas, volumeIndex, data) {
 
     let restante = volume;
     const parts = [];
-    const expected = item.ts.getTime() - ACMP_DELAY_APLICACAO_MS;
+    const leitura = matchAcmpLeitura(item, leiturasBySetor);
+    const anchorTs = leitura ? leitura.ts.getTime() : item.ts.getTime();
+    const expected = anchorTs - ACMP_DELAY_APLICACAO_MS;
     const minTs = expected - ACMP_TOLERANCIA_ANTES_MS;
-    const maxTs = item.ts.getTime() + ACMP_TOLERANCIA_DEPOIS_MS;
+    const maxTs = anchorTs + ACMP_TOLERANCIA_DEPOIS_MS;
     let bestDiffMs = null;
 
     for (const massada of massadas) {
@@ -6436,8 +6558,8 @@ function allocateAcmpTracos(rows, massadas, volumeIndex, data) {
     const traco = formulas.length === 1 ? formulas[0] : (formulas.length > 1 ? "Misto" : "");
     suggestions.set(item.idx, {
       traco,
-      obs: describeAcmpAllocation({ parts, bestDiffMs }, volume, volumeInfo),
-      confidence: formulas.length > 1 ? "misto" : "ok"
+      obs: describeAcmpAllocation({ parts, bestDiffMs, leitura }, volume, volumeInfo),
+      confidence: formulas.length > 1 ? "misto" : (leitura ? "sequencia" : "ok")
     });
   });
   return suggestions;
@@ -6503,13 +6625,15 @@ async function renderAcmpConcretagem() {
   }
 
   let massadas = [];
+  let leiturasQr = [];
   let volumeIndex = { bySetorCodigo: new Map(), byCodigo: new Map(), bySetorProduto: new Map(), byProduto: new Map() };
   if (data) {
-    [massadas, volumeIndex] = await Promise.all([
+    [massadas, volumeIndex, leiturasQr] = await Promise.all([
       fetchAcmpMassadas(data),
-      loadAcmpVolumeIndex()
+      loadAcmpVolumeIndex(),
+      fetchAcmpLeiturasQr(data)
     ]);
-    const suggestions = allocateAcmpTracos(allRows, massadas, volumeIndex, data);
+    const suggestions = allocateAcmpTracos(allRows, massadas, volumeIndex, leiturasQr, data);
     allRows.forEach((row, idx) => {
       row._acmpSuggestion = suggestions.get(idx) || null;
     });
@@ -6556,7 +6680,7 @@ async function renderAcmpConcretagem() {
   });
 
   const massadasInfo = data
-    ? ` | Massadas carregadas: ${massadas.length} | Traços sugeridos: ${allRows.filter((r) => r._acmpSuggestion?.traco).length}`
+    ? ` | Massadas carregadas: ${massadas.length} | Leituras QR: ${leiturasQr.length} | Traços sugeridos: ${allRows.filter((r) => r._acmpSuggestion?.traco).length}`
     : "";
   output.innerHTML = `<div class="acmp-total">Total: ${totalCount} formas concretadas | Data: ${data}${massadasInfo}</div>` + html;
 }
