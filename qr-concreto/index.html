@@ -55,6 +55,22 @@
 
     /* Header */
     .title{ font-size:24px; font-weight: 900; letter-spacing:.4px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    .sw-badge{
+      border:1px solid var(--line2);
+      border-radius:999px;
+      background:#f8fafc;
+      color:var(--muted);
+      cursor:pointer;
+      font-size:10px;
+      font-weight:800;
+      line-height:1;
+      padding:5px 8px;
+      white-space:nowrap;
+    }
+    .sw-badge:hover{
+      background:#e2e8f0;
+      color:var(--primary);
+    }
     .subtitle{ color:var(--muted); font-size:13px; margin:6px 0 10px; line-height:1.2; font-weight: 500; }
     .accentLine{
       height:4px; width:100%;
@@ -264,7 +280,7 @@
 <body data-app-key="qr-concreto">
 <div class="wrap">
   <a href="../index.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:800;margin-bottom:8px;">← Hub</a>
-  <div class="title"><img src="../assets/img/leitorqr-icon.png" alt="" style="height:28px;vertical-align:middle;margin-right:6px;"> CONCRETRACK • QR Concreto</div>
+  <div class="title"><img src="../assets/img/leitorqr-icon.png" alt="" style="height:28px;vertical-align:middle;margin-right:6px;"> CONCRETRACK • QR Concreto <button class="sw-badge" id="swVersionBadge" type="button" title="Atualizar app">SW</button></div>
   <div class="subtitle">Ler QR → Digitar MPA → Status automático (Min/Max) → Salvar</div>
   <div class="accentLine"></div>
 
@@ -347,6 +363,48 @@
   } catch(e){}
 })();
 
+function initSWVersionBadge(){
+  const badge = $("swVersionBadge");
+  if(!badge || !("serviceWorker" in navigator)) return;
+
+  function setBadge(text){
+    badge.textContent = text || "SW";
+  }
+
+  async function readVersion(){
+    try{
+      const reg = await navigator.serviceWorker.ready;
+      const worker = navigator.serviceWorker.controller || reg.active || reg.waiting || reg.installing;
+      if(!worker) return;
+      const channel = new MessageChannel();
+      channel.port1.onmessage = event => {
+        if(event.data && event.data.version) setBadge(event.data.version);
+      };
+      worker.postMessage({ type:"GET_VERSION" }, [channel.port2]);
+    }catch(e){
+      setBadge("SW");
+    }
+  }
+
+  badge.addEventListener("click", async ()=>{
+    setBadge("atualizando...");
+    try{
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(reg => reg.update()));
+      if("caches" in window){
+        const keys = await caches.keys();
+        await Promise.all(keys.map(key => caches.delete(key)));
+      }
+      window.location.reload();
+    }catch(e){
+      setBadge("erro");
+      setTimeout(readVersion, 1200);
+    }
+  });
+
+  navigator.serviceWorker.ready.then(readVersion).catch(()=>setBadge("SW"));
+}
+
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyZkdfk8OwLDGAzc2fznPUFS5cDvDgMVRz1nVBtRG1BSIqthuVjTwEY8XD1oyfOKgB9/exec";
 const DASH_URL = WEBAPP_URL + "?view=dashboard";
 document.getElementById("btnDash").href = DASH_URL;
@@ -369,6 +427,7 @@ let qr = null;
 
 const $ = id => document.getElementById(id);
 const setStatus = (t,c="") => { $("status").textContent=t; $("status").className="status "+c; };
+initSWVersionBadge();
 
 function fecharModal(){ $("modalSucesso").classList.remove("show"); }
 

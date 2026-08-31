@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v42-qr-apps-script-nocors";
+const CACHE = "ct-hub-v43-qr-sw-badge";
 
 const ASSETS = [
   /* ---- Splash ---- */
