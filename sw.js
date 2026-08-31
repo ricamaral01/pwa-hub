@@ -3,7 +3,8 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const CACHE = "ct-hub-v43-qr-sw-badge";
+const APP_VERSION = "1.0";
+const CACHE = `ct-hub-v${APP_VERSION}`;
 
 const ASSETS = [
   /* ---- Splash ---- */
@@ -198,6 +199,6 @@ function _storeAlert(title, body, ts) {
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "GET_VERSION") {
-    event.ports[0].postMessage({ version: CACHE });
+    event.ports[0].postMessage({ version: `v${APP_VERSION}`, cache: CACHE });
   }
 });
