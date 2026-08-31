@@ -481,6 +481,15 @@ function canSave(mpa){
   return true;
 }
 
+async function postToAppsScript(payload){
+  await fetch(WEBAPP_URL + "?t=" + Date.now(),{
+    method:"POST",
+    mode:"no-cors",
+    headers:{ "Content-Type":"text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  });
+}
+
 async function send(){
   const mpa = mpaNumber();
   if(!canSave(mpa)){ setStatus("verifique QR + MPA + operador","err"); return; }
@@ -500,43 +509,14 @@ async function send(){
   setStatus("salvando...","warn");
   $("btnSave").disabled = true;
 
-  const url = WEBAPP_URL + "?t=" + Date.now();
-
   try{
-    const res = await fetch(url,{
-      method:"POST",
-      headers:{ "Content-Type":"text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    });
-
-    const text = await res.text();
-
-    let data = null;
-    try { data = JSON.parse(text); } catch(e) {}
-
-    if(text.includes("ok") || (data && data.ok)){
-      var vpsOk = !!(data && data.vps_sync && data.vps_sync.ok);
-      var vpsError = data && data.vps_sync && data.vps_sync.error ? data.vps_sync.error : "";
-      setStatus(vpsOk ? "gravado na planilha e no banco ✅" : "gravado na planilha ✅","ok");
-      $("mpaInput").value="";
-      $("btnSave").disabled = true;
-      updateMPAStatus();
-
-      if(data && data.dashboard_path){
-        $("btnDash").href = WEBAPP_URL + data.dashboard_path;
-      } else {
-        $("btnDash").href = DASH_URL;
-      }
-
-      if(data && data.vps_sync && !data.vps_sync.ok){
-        $("helpTxt").textContent = "Planilha salva. Banco VPS falhou: " + vpsError;
-      }
-
-      $("modalSucesso").classList.add("show");
-    }else{
-      setStatus("erro ao gravar","err");
-      $("btnSave").disabled = false;
-    }
+    await postToAppsScript(payload);
+    setStatus("enviado para planilha ✅","ok");
+    $("mpaInput").value="";
+    $("btnSave").disabled = true;
+    updateMPAStatus();
+    $("btnDash").href = DASH_URL;
+    $("modalSucesso").classList.add("show");
   }catch(e){
     setStatus("erro envio: " + (e?.message || e), "err");
     $("btnSave").disabled = false;
