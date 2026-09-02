@@ -1,9 +1,9 @@
 /* =========================================================
    Mapa de Concretagem - Service Worker reset
-   v5.8: renomeia indice de reprovacao e adiciona total de postes reprovados
+   v5.9: timeout de rede no apontamento e atualizacao forcada do cache
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.8";
+const CACHE_NAME = "mapa-concretagem-v5.9";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());

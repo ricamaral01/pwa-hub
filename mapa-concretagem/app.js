@@ -3590,6 +3590,24 @@ function showConcretoVibradoModal() {
   });
 }
 
+async function postToApiWithTimeout(action, payload, timeoutMs = 7000) {
+  let timeoutId;
+  const timeoutResult = new Promise((resolve) => {
+    timeoutId = setTimeout(() => {
+      resolve({ ok: false, timeout: true, error: "Tempo limite de rede excedido" });
+    }, timeoutMs);
+  });
+
+  try {
+    return await Promise.race([
+      postToApi(action, payload),
+      timeoutResult
+    ]);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 async function liberarFormaClicada(forma, setor, card, modelo) {
   setCardState(card, "saving");
 
@@ -3623,7 +3641,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
     status: "LIBERADO"
   };
 
-  const apiResult = await postToApi("salvar_forma_click", payload);
+  const apiResult = await postToApiWithTimeout("salvar_forma_click", payload);
 
   const updateCardBadge = () => {
     const tipoEl = card.querySelector?.(".fc-tipo");
@@ -3743,7 +3761,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     codigo_produto: resolvedPosteFields.codigoProduto
   };
 
-  const apiResult = await postToApi("salvar_forma_click", payload);
+  const apiResult = await postToApiWithTimeout("salvar_forma_click", payload);
 
   const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
   if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
