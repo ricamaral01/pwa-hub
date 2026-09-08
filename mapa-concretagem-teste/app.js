@@ -3,6 +3,7 @@ const SUBMIT_LOCKS_KEY = "pwa_liberacao_submit_locks_v1";
 const CLICKED_FORMS_KEY = "pwa_formas_clicadas_hoje";
 const MONTAGEM_POSTES_KEY = "pwa_montagem_postes_v1";
 const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
+const MANDRIL_MODELOS_PRODUZIDOS_KEY = "pwa_mandril_modelos_produzidos_v1";
 
 const ROLE_PERMISSIONS = {
   GERENCIA: {
@@ -7184,15 +7185,158 @@ async function enviarRelatorioWhatsapp() {
   }
 }
 
+function readMandrilModelosProduzidos() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(MANDRIL_MODELOS_PRODUZIDOS_KEY) || "{}");
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeMandrilModelosProduzidos(data) {
+  localStorage.setItem(MANDRIL_MODELOS_PRODUZIDOS_KEY, JSON.stringify(data));
+}
+
+function getMandrilModeloKey(dataFabricacao, forma) {
+  return `${dataFabricacao}||${normalizeForma(forma)}`;
+}
+
+function getMandrilModeloSalvo(data, dataFabricacao, forma) {
+  const entry = data[getMandrilModeloKey(dataFabricacao, forma)];
+  return typeof entry === "string" ? entry : (entry?.modelo || "");
+}
+
+function getMandrilModelosPermitidos(forma) {
+  const modelos = typeof window.getModelosForFormaS3 === "function"
+    ? window.getModelosForFormaS3(forma)
+    : [];
+  return modelos.filter(Boolean);
+}
+
+function renderMandrilModeloSelect(forma, modeloSelecionado, concretada) {
+  if (!concretada) {
+    return '<span class="mc-modelo-aguardando">Disponível após concretagem</span>';
+  }
+
+  const modelosPermitidos = getMandrilModelosPermitidos(forma);
+  const selecionadoValido = modelosPermitidos.find((modelo) => normalizeUpper(modelo) === normalizeUpper(modeloSelecionado)) || "";
+  const options = modelosPermitidos.map((modelo) => (
+    `<option value="${escapeHtml(modelo)}"${modelo === selecionadoValido ? " selected" : ""}>${escapeHtml(modelo)}</option>`
+  )).join("");
+
+  return `
+    <div class="mc-modelo-field">
+      <select class="mc-modelo-select" data-mc-forma="${escapeHtml(forma)}" aria-label="Modelo produzido na forma ${escapeHtml(forma)}">
+        <option value="" disabled${selecionadoValido ? "" : " selected"}>Selecione o produzido</option>
+        ${options}
+      </select>
+      <span class="mc-modelo-status" aria-live="polite"></span>
+    </div>
+  `;
+}
+
+async function sincronizarMandrilModelosPendentes(selectedDate) {
+  if (!hasApiConfigured() || !navigator.onLine) return;
+
+  const savedData = readMandrilModelosProduzidos();
+  const pendingEntries = Object.entries(savedData).filter(([key, entry]) => (
+    key.startsWith(`${selectedDate}||`) && typeof entry === "object" && entry?.pendingSync && entry?.modelo
+  ));
+  if (!pendingEntries.length) return;
+
+  await Promise.all(pendingEntries.map(async ([key, entry]) => {
+    const forma = key.split("||")[1] || "";
+    if (!getMandrilModelosPermitidos(forma).includes(entry.modelo)) return;
+    try {
+      const { error } = await supabaseClient
+        .from("producao")
+        .update({ modelo: entry.modelo })
+        .eq("data_fabricacao", selectedDate)
+        .eq("setor", "Setor 3")
+        .eq("forma", forma)
+        .eq("status", "LIBERADO");
+      if (error) throw error;
+      entry.pendingSync = false;
+    } catch (err) {
+      console.warn(`Sincronização pendente do modelo da forma ${forma}:`, err);
+    }
+  }));
+  writeMandrilModelosProduzidos(savedData);
+}
+
+async function salvarMandrilModeloProduzido(select) {
+  const selectedDate = el.mcFiltroData?.value;
+  const forma = select?.dataset?.mcForma || "";
+  const modelo = select?.value || "";
+  const status = select?.closest(".mc-modelo-field")?.querySelector(".mc-modelo-status");
+
+  if (!selectedDate || !forma || !modelo) return;
+  if (!getMandrilModelosPermitidos(forma).includes(modelo)) {
+    showMsgBox(`O modelo ${modelo} não é permitido para a forma ${forma}.`, "error");
+    return;
+  }
+
+  select.disabled = true;
+  if (status) {
+    status.textContent = "Salvando...";
+    status.className = "mc-modelo-status is-saving";
+  }
+
+  const savedData = readMandrilModelosProduzidos();
+  const storageKey = getMandrilModeloKey(selectedDate, forma);
+  savedData[storageKey] = { modelo, pendingSync: true, updatedAt: new Date().toISOString() };
+  writeMandrilModelosProduzidos(savedData);
+
+  const db = readDb();
+  let localChanged = false;
+  db.records.forEach((record) => {
+    if (record.dataFabricacao === selectedDate && record.setor === "Setor 3" && normalizeForma(record.formaNumero || "") === normalizeForma(forma)) {
+      record.modelo = modelo;
+      record.updatedAt = new Date().toISOString();
+      localChanged = true;
+    }
+  });
+  if (localChanged) writeDb(db);
+
+  let synced = false;
+  if (hasApiConfigured() && navigator.onLine) {
+    try {
+      const { error } = await supabaseClient
+        .from("producao")
+        .update({ modelo })
+        .eq("data_fabricacao", selectedDate)
+        .eq("setor", "Setor 3")
+        .eq("forma", normalizeForma(forma))
+        .eq("status", "LIBERADO");
+      if (error) throw error;
+      synced = true;
+      savedData[storageKey].pendingSync = false;
+      writeMandrilModelosProduzidos(savedData);
+    } catch (err) {
+      console.error(`Erro ao salvar modelo produzido da forma ${forma}:`, err);
+    }
+  }
+
+  select.disabled = false;
+  if (status) {
+    status.textContent = synced ? "Salvo" : "Salvo neste aparelho";
+    status.className = `mc-modelo-status ${synced ? "is-saved" : "is-local"}`;
+  }
+  setSyncStatus(synced ? "ok" : "warn", synced
+    ? `Modelo produzido da forma ${forma} salvo.`
+    : `Modelo da forma ${forma} salvo localmente; sincronização pendente.`);
+}
+
 async function carregarMandrilCircular() {
   const selectedDate = el.mcFiltroData?.value;
   if (!selectedDate) {
-    el.mcTabelaBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color: var(--muted); font-size: 1.05rem;">Selecione uma data para carregar os dados.</td></tr>`;
+    el.mcTabelaBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 30px; color: var(--muted); font-size: 1.05rem;">Selecione uma data para carregar os dados.</td></tr>`;
     el.mcQtdItens.textContent = "0";
     return;
   }
 
-  el.mcTabelaBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
+  el.mcTabelaBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
   el.mcQtdItens.textContent = "0";
 
   // Sync Supabase data to local database first
@@ -7286,6 +7430,8 @@ async function carregarMandrilCircular() {
       saqueData = JSON.parse(rawSaque);
     } catch (e) {}
   }
+  await sincronizarMandrilModelosPendentes(selectedDate);
+  const modelosProduzidosData = readMandrilModelosProduzidos();
 
   let htmlTable = "";
   let totalConcretados = 0;
@@ -7294,6 +7440,9 @@ async function carregarMandrilCircular() {
     const fn = normalizeForma(forma);
     const concretedRow = concretedLookup[fn];
     const programmedModel = formToModelMap[fn] || "--";
+    const modeloPersistido = getMandrilModeloSalvo(modelosProduzidosData, selectedDate, forma);
+    const modeloDoRegistro = concretedRow?.modelo && concretedRow.modelo !== "SC" ? concretedRow.modelo : "";
+    const modeloSelecionado = modeloPersistido || modeloDoRegistro;
     
     let tipoConcreto = "--";
     let horaConcretado = "--:--";
@@ -7346,7 +7495,8 @@ async function carregarMandrilCircular() {
     htmlTable += `
       <tr style="border-bottom: 1px solid var(--line); transition: background 0.2s;">
         <td style="padding: 12px 16px;"><strong>${forma}</strong></td>
-        <td style="padding: 12px 16px;">${programmedModel}</td>
+        <td style="padding: 12px 16px;">${escapeHtml(programmedModel)}</td>
+        <td style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow))}</td>
         <td style="padding: 12px 16px;">${tipoConcreto}</td>
         <td style="padding: 12px 16px;">${horaConcretado}</td>
         <td style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
@@ -7356,6 +7506,9 @@ async function carregarMandrilCircular() {
   });
 
   el.mcTabelaBody.innerHTML = htmlTable;
+  el.mcTabelaBody.querySelectorAll(".mc-modelo-select").forEach((select) => {
+    select.addEventListener("change", () => salvarMandrilModeloProduzido(select));
+  });
   el.mcQtdItens.textContent = totalConcretados;
 }
 
@@ -10702,12 +10855,6 @@ function init() {
 
   if ("serviceWorker" in navigator) {
     let refreshing = false;
-    navigator.serviceWorker.addEventListener("message", (event) => {
-      if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
-        refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v1.60");
-      }
-    });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
@@ -10715,7 +10862,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.60").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.68").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12657,7 +12804,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.60&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.68&ts=${Date.now()}`);
       }
     });
   }
