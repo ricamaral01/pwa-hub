@@ -1199,7 +1199,7 @@ function hasMontagemApiConfigured() {
 const MAPA_REPORT_CACHE_PREFIX = "mapa_concretagem_report_cache_v1";
 const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
 const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_produto";
-const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
+const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,codigo_poste,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
 const DASHBOARD_SCOPE_OPTIONS = {
   "": "TOTAL",
   "Todos os Setores": "TOTAL",
@@ -10865,7 +10865,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.69", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.70", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11805,10 +11805,13 @@ function exportarMontagemIndicadoresXlsx() {
     const inicio = row.inicio_inspecao_montagem || row.inicioInspecaoMontagem || "";
     const fim = row.finalizado_em || row.finalizadoEm || "";
     const durMs = inicio && fim ? (new Date(fim) - new Date(inicio)) : null;
+    const codigoPoste = row.codigo_poste ?? row.codigoPoste ?? "";
     return {
       "Tempo de montagem": formatarDuracao(durMs),
       "Montador": row.montador_nome || row.montadorNome || "",
       "Modelo poste": row.modelo || "",
+      "Código do poste": codigoPoste === "" ? "" : String(codigoPoste),
+      "Setor": row.setor || "",
       "Data da produção": fmtDate(row.data_fabricacao || row.dataFabricacao || ""),
       "Data da montagem": formatarDataHoraMontagemXlsx(fim || inicio),
       "Status poste": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label
@@ -11816,9 +11819,9 @@ function exportarMontagemIndicadoresXlsx() {
   });
 
   const ws = XLSX.utils.json_to_sheet(linhas, {
-    header: ["Tempo de montagem", "Montador", "Modelo poste", "Data da produção", "Data da montagem", "Status poste"]
+    header: ["Tempo de montagem", "Montador", "Modelo poste", "Código do poste", "Setor", "Data da produção", "Data da montagem", "Status poste"]
   });
-  ws["!cols"] = [{ wch: 20 }, { wch: 28 }, { wch: 24 }, { wch: 18 }, { wch: 22 }, { wch: 24 }];
+  ws["!cols"] = [{ wch: 20 }, { wch: 28 }, { wch: 24 }, { wch: 20 }, { wch: 16 }, { wch: 18 }, { wch: 22 }, { wch: 24 }];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Dashboard Montagem");
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
@@ -12856,7 +12859,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.69&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.70&ts=${Date.now()}`);
       }
     });
   }
