@@ -1220,8 +1220,8 @@ function hasMontagemApiConfigured() {
 
 const MAPA_REPORT_CACHE_PREFIX = "mapa_concretagem_report_cache_v1";
 const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
-const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_produto";
-const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,codigo_poste,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
+const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado";
+const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
 const DASHBOARD_SCOPE_OPTIONS = {
   "": "TOTAL",
   "Todos os Setores": "TOTAL",
@@ -10888,7 +10888,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.73", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.74", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11921,65 +11921,122 @@ function aplicarFiltrosEExibirMontagem() {
 }
 
 async function exportarMontagemIndicadoresXlsx() {
-  if (!Array.isArray(miFilteredMontagemData) || miFilteredMontagemData.length === 0) {
-    const button = document.getElementById("miBtnExportarXlsx");
-    const label = button?.textContent || "Exportar XLSX";
-    if (button) {
-      button.disabled = true;
-      button.textContent = "Buscando dados...";
-    }
-    try {
-      await carregarMontagemIndicadores();
-    } finally {
-      if (button) {
-        button.disabled = false;
-        button.textContent = label;
-      }
-    }
-  }
-
-  if (!Array.isArray(miFilteredMontagemData) || miFilteredMontagemData.length === 0) {
-    showMsgBox("Nenhum dado encontrado para exportar.", "error");
-    return;
-  }
-
   if (!window.XLSX?.utils) {
     showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
     return;
   }
 
-  const linhas = miFilteredMontagemData.map(row => {
-    const inicio = row.inicio_inspecao_montagem || row.inicioInspecaoMontagem || "";
-    const fim = row.finalizado_em || row.finalizadoEm || "";
-    const durMs = inicio && fim ? (new Date(fim) - new Date(inicio)) : null;
-    const codigoPoste = row.codigo_poste ?? row.codigoPoste ?? "";
-    return {
-      "Tempo de montagem": formatarDuracao(durMs),
-      "Montador": row.montador_nome || row.montadorNome || "",
-      "Modelo poste": row.modelo || "",
-      "Código do poste": codigoPoste === "" ? "" : String(codigoPoste),
-      "Setor": row.setor || "",
-      "Data da produção": fmtDate(row.data_fabricacao || row.dataFabricacao || ""),
-      "Data da montagem": formatarDataHoraMontagemXlsx(fim || inicio),
-      "Status poste": getMiStatusMeta(row.status_montagem || row.statusMontagem || "").label
-    };
-  });
-
+  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  const button = document.getElementById("miBtnExportarXlsx");
+  const label = button?.textContent || "Exportar XLSX";
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Exportando base...";
+  }
   try {
-    const xlsx = window.XLSX;
-    const ws = xlsx.utils.json_to_sheet(linhas, {
-      header: ["Tempo de montagem", "Montador", "Modelo poste", "Código do poste", "Setor", "Data da produção", "Data da montagem", "Status poste"]
+    const [montagemRes, producaoRes] = await Promise.all([
+      carregarLinhasSupabaseComCache({
+        cacheKey: `xlsx:montagem-base:${dStart}:${dEnd}`,
+        table: "montagem_poste",
+        select: DASHBOARD_MONTAGEM_SELECT,
+        pageSize: 1000,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "data_fabricacao",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
+          .gte("data_fabricacao", dStart)
+          .lte("data_fabricacao", dEnd)
+      }),
+      carregarLinhasSupabaseComCache({
+        cacheKey: `xlsx:producao-base:${dStart}:${dEnd}`,
+        table: "producao",
+        select: DASHBOARD_PRODUCAO_SELECT,
+        pageSize: 1000,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "data_fabricacao",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
+          .gte("data_fabricacao", dStart)
+          .lte("data_fabricacao", dEnd)
+      })
+    ]);
+
+    const montagemRows = montagemRes.rows || [];
+    const producaoRows = producaoRes.rows || [];
+    if (!montagemRows.length && !producaoRows.length) {
+      showMsgBox("Nenhum registro encontrado no periodo selecionado.", "error");
+      return;
+    }
+
+    const producaoPorId = new Map(producaoRows.map(row => [String(row.id || ""), row]));
+    const linhasMontagem = montagemRows.map(row => {
+      const producao = producaoPorId.get(String(row.record_id || "")) || {};
+      const inicio = row.inicio_inspecao_montagem || "";
+      const fim = row.finalizado_em || "";
+      const durMs = inicio && fim ? (new Date(fim) - new Date(inicio)) : null;
+      const checklist = typeof row.checklists === "string" ? row.checklists : JSON.stringify(row.checklists || {});
+      return {
+        "ID montagem": row.id || "",
+        "ID producao": row.record_id || "",
+        "Data da producao": fmtDate(row.data_fabricacao || ""),
+        "Inicio da montagem": formatarDataHoraMontagemXlsx(inicio),
+        "Fim da montagem": formatarDataHoraMontagemXlsx(fim),
+        "Tempo de montagem": formatarDuracao(durMs),
+        "Setor": row.setor || "",
+        "Forma": row.forma_numero || "",
+        "Modelo": row.modelo || producao.modelo || "",
+        "Codigo do poste": producao.codigo_poste || "",
+        "Descricao do poste": producao.descricao_poste || "",
+        "Codigo do produto": producao.codigo_produto || "",
+        "Status montagem": row.status_montagem || "",
+        "Descricao status": getMiStatusMeta(row.status_montagem || "").label,
+        "Motivo da recusa": row.motivo_recusa || "",
+        "Etapa": row.etapa || "",
+        "Banco": row.banco || "",
+        "Montador": row.montador_nome || "",
+        "Observacoes": row.observacoes_montagem || "",
+        "Checklist JSON": checklist,
+        "Criado em": formatarDataHoraMontagemXlsx(row.created_at || ""),
+        "Atualizado em": formatarDataHoraMontagemXlsx(row.updated_at || "")
+      };
     });
-    ws["!cols"] = [{ wch: 20 }, { wch: 28 }, { wch: 24 }, { wch: 20 }, { wch: 16 }, { wch: 18 }, { wch: 22 }, { wch: 24 }];
+    const linhasProducao = producaoRows.map(row => ({
+      "ID producao": row.id || "",
+      "Data da producao": fmtDate(row.data_fabricacao || ""),
+      "Data/hora registro": formatarDataHoraMontagemXlsx(row.data_hora || ""),
+      "Setor": row.setor || "",
+      "Forma": row.forma || "",
+      "Modelo": row.modelo || "",
+      "Codigo do poste": row.codigo_poste || "",
+      "Descricao do poste": row.descricao_poste || "",
+      "Codigo do produto": row.codigo_produto || "",
+      "Tipo de concreto": row.tipo_concreto || "",
+      "Colaborador": row.colaborador || "",
+      "Status producao": row.status || "",
+      "Vibrado": row.vibrado === true ? "Sim" : row.vibrado === false ? "Nao" : ""
+    }));
+
+    const xlsx = window.XLSX;
     const wb = xlsx.utils.book_new();
-    xlsx.utils.book_append_sheet(wb, ws, "Dashboard Montagem");
-    const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
-    const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
-    xlsx.writeFile(wb, `dashboard_montagem_${dStart}_a_${dEnd}.xlsx`, { compression: true });
-    showMsgBox("Dashboard de montagem exportado em XLSX.", "success");
+    const wsMontagem = xlsx.utils.json_to_sheet(linhasMontagem);
+    wsMontagem["!cols"] = Object.keys(linhasMontagem[0] || {}).map(key => ({ wch: Math.min(55, Math.max(14, key.length + 3)) }));
+    xlsx.utils.book_append_sheet(wb, wsMontagem, "Base Montagem");
+    const wsProducao = xlsx.utils.json_to_sheet(linhasProducao);
+    wsProducao["!cols"] = Object.keys(linhasProducao[0] || {}).map(key => ({ wch: Math.min(40, Math.max(14, key.length + 3)) }));
+    xlsx.utils.book_append_sheet(wb, wsProducao, "Base Producao");
+    xlsx.writeFile(wb, `base_completa_montagem_${dStart}_a_${dEnd}.xlsx`, { compression: true });
+    showMsgBox(`${montagemRows.length} registro(s) de montagem e ${producaoRows.length} registro(s) de producao exportados.`, "success");
   } catch (err) {
-    console.error("Erro ao exportar Dashboard Montagem:", err);
-    showMsgBox("Nao foi possivel gerar o XLSX. Atualize a pagina e tente novamente.", "error");
+    console.error("Erro ao exportar base completa de montagem:", err);
+    showMsgBox(`Nao foi possivel exportar a base: ${escapeHtml(err?.message || "erro desconhecido")}`, "error");
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = label;
+    }
   }
 }
 
@@ -13013,7 +13070,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.73&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.74&ts=${Date.now()}`);
       }
     });
   }

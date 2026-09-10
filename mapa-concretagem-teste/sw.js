@@ -1,16 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker
-   v1.73: filtra o Dashboard Montagem pela data real da montagem
+   v1.74: exporta as bases completas de montagem e producao por periodo
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.73";
+const CACHE_NAME = "mapa-concretagem-teste-v1.74";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v1.73",
-  "./styles.css?v=v1.73",
-  "./dashboard-defeitos-v4.css?v=v1.73",
-  "./app.js?v=v1.73",
-  "./xlsx.full.min.js?v=v1.73",
+  "./manifest.json?v=v1.74",
+  "./styles.css?v=v1.74",
+  "./dashboard-defeitos-v4.css?v=v1.74",
+  "./app.js?v=v1.74",
+  "./xlsx.full.min.js?v=v1.74",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",
