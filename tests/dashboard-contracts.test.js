@@ -3,6 +3,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
@@ -51,9 +52,9 @@ test('exportacoes dos dashboards possuem acionamento e dependencias locais', () 
   assert.match(html, /id="dfBtnExportarCsv"/);
   assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
   assert.match(app, /function exportarDashboardDefeitosCsv/);
-  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.77"/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.78"/);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
-  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.77/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.78/);
   assert.ok(fs.statSync(xlsxPath).size > 100000);
 });
 
@@ -93,7 +94,7 @@ test('XLSX v1.77 exporta montagem completa e usa producao somente como lookup', 
   assert.doesNotMatch(app, /DASHBOARD_MONTAGEM_SELECT = "[^"]*codigo_poste/);
 });
 
-test('arquivos publicos apontam integralmente para v1.77', () => {
+test('arquivos publicos apontam integralmente para v1.78', () => {
   const app = read('mapa-concretagem-teste/app.js');
   const html = read('mapa-concretagem-teste/index.html');
   const manifest = read('mapa-concretagem-teste/manifest.json');
@@ -101,13 +102,29 @@ test('arquivos publicos apontam integralmente para v1.77', () => {
   const sw = read('mapa-concretagem-teste/sw.js');
 
   for (const source of [app, html, manifest, reset, sw]) {
-    assert.doesNotMatch(source, /v1\.76/);
+    assert.doesNotMatch(source, /v1\.77/);
   }
-  assert.match(app, /sw\.js\?v=v1\.77/);
-  assert.match(html, /app\.js\?v=v1\.77/);
-  assert.match(manifest, /cache-reset=v1\.77/);
-  assert.match(reset, /abrir v1\.77/);
-  assert.match(sw, /mapa-concretagem-teste-v1\.77/);
+  assert.match(app, /sw\.js\?v=v1\.78/);
+  assert.match(app, /badge\.textContent = "v1\.78"/);
+  assert.match(html, /app\.js\?v=v1\.78/);
+  assert.match(manifest, /cache-reset=v1\.78/);
+  assert.match(reset, /abrir v1\.78/);
+  assert.match(sw, /mapa-concretagem-teste-v1\.78/);
+});
+
+test('grafico de participacao ordena defeitos e calcula percentual sobre o total', () => {
+  const app = read('mapa-concretagem-teste/app.js');
+  const rankingSource = sliceBetween(app, 'const DASHBOARD_DEFEITOS_BAR_COLORS', 'function renderIndicadoresDefeitosMontagem');
+  const context = {};
+  vm.runInNewContext(`${rankingSource}\nglobalThis.ranking = criarRankingParticipacaoDefeitos({ G: 158, J: 56, C: 15 }, 229);`, context);
+
+  assert.equal(context.ranking.length, 3);
+  assert.equal(context.ranking[0].tipo, 'G');
+  assert.equal(context.ranking[0].total, 158);
+  assert.equal(context.ranking[0].larguraRelativa, 100);
+  assert.ok(Math.abs(context.ranking[0].percentual - ((158 / 229) * 100)) < 0.000001);
+  assert.ok(Math.abs(context.ranking.reduce((soma, item) => soma + item.percentual, 0) - 100) < 0.000001);
+  assert.match(app, /class="df-defect-share-percent">\$\{formatPct\(item\.percentual\)\}/);
 });
 
 test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {

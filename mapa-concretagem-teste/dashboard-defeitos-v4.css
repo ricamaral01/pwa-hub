@@ -423,6 +423,142 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos.df-v4-shell:not(.hidden) {
   background: #0f3459;
 }
 
+.df-v4-panel-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  flex: 0 0 auto;
+}
+
+.df-v4-panel-actions > span,
+.df-v4-panel-actions > button {
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #15416f;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.df-v4-panel-actions > button {
+  cursor: pointer;
+}
+
+.df-v4-panel-actions > button:hover,
+.df-v4-panel-actions > button:focus-visible {
+  background: #0f3459;
+}
+
+.df-defect-share-chart {
+  min-width: 0;
+}
+
+.df-defect-share-caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #718399;
+  font-size: 13px;
+}
+
+.df-defect-share-caption strong {
+  color: #5d718a;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.df-defect-share-list {
+  display: grid;
+  gap: 8px;
+  max-height: 440px;
+  padding-right: 3px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.df-defect-share-row {
+  display: grid;
+  grid-template-columns: minmax(165px, 0.72fr) minmax(230px, 1.28fr);
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.df-defect-share-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  color: #20374e;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.df-defect-share-label i {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  border-radius: 4px;
+  background: var(--df-defect-color);
+  box-shadow: inset 0 0 0 1px rgba(15, 30, 60, 0.12);
+}
+
+.df-defect-share-label span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.df-defect-share-track {
+  position: relative;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #e8eef5;
+  box-shadow: inset 0 0 0 1px rgba(21, 65, 111, 0.03);
+}
+
+.df-defect-share-fill {
+  display: flex;
+  align-items: center;
+  width: var(--df-defect-width);
+  min-width: 46px;
+  height: 100%;
+  padding: 0 10px;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--df-defect-color);
+  transition: width 220ms ease;
+}
+
+.df-defect-share-fill strong {
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.df-defect-share-percent {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  min-width: 56px;
+  padding: 3px 7px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  color: #193651;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 1px 4px rgba(15, 30, 60, 0.14);
+  font-size: 13px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
 .df-v4-content .mi-defeitos-row,
 .df-v4-content .mi-def-pareto-row,
 .df-v4-content .mi-def-action {
@@ -503,6 +639,25 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos.df-v4-shell:not(.hidden) {
 
   .df-v4-kpi-hero .df-v4-kpi-value {
     font-size: 48px;
+  }
+
+  .df-v4-panel-head,
+  .df-defect-share-caption {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .df-v4-panel-actions {
+    justify-content: flex-start;
+  }
+
+  .df-defect-share-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .df-defect-share-label span {
+    white-space: normal;
   }
 }
 

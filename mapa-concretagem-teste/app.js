@@ -10891,7 +10891,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.77", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.78", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11172,6 +11172,41 @@ function formatPct(value) {
   return `${value.toFixed(1).replace(".", ",")}%`;
 }
 
+const DASHBOARD_DEFEITOS_BAR_COLORS = Object.freeze([
+  "#2563eb",
+  "#dc2626",
+  "#16a34a",
+  "#d97706",
+  "#7c3aed",
+  "#0891b2",
+  "#be123c",
+  "#4f46e5",
+  "#65a30d",
+  "#0f766e",
+  "#c2410c",
+  "#9333ea"
+]);
+
+function criarRankingParticipacaoDefeitos(porTipo = {}, totalErros = 0) {
+  const itens = Object.entries(porTipo || {})
+    .map(([tipo, total]) => [String(tipo || "Defeito nao identificado"), Number(total || 0)])
+    .filter(([, total]) => Number.isFinite(total) && total > 0)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "pt-BR"));
+  const totalCalculado = itens.reduce((soma, [, total]) => soma + total, 0);
+  const totalInformado = Number(totalErros || 0);
+  const totalBase = Number.isFinite(totalInformado) && totalInformado > 0 ? totalInformado : totalCalculado;
+  const maiorTotal = itens.reduce((maior, [, total]) => Math.max(maior, total), 0);
+
+  return itens.map(([tipo, total], index) => ({
+    tipo,
+    total,
+    percentual: totalBase > 0 ? (total / totalBase) * 100 : 0,
+    larguraRelativa: maiorTotal > 0 ? (total / maiorTotal) * 100 : 0,
+    cor: DASHBOARD_DEFEITOS_BAR_COLORS[index % DASHBOARD_DEFEITOS_BAR_COLORS.length],
+    totalBase
+  }));
+}
+
 function renderIndicadoresDefeitosMontagem(indicadores) {
   const taxaNc = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
   const indiceReprovacao = indicadores.postes > 0 ? (indicadores.postesComDefeito / indicadores.postes) * 100 : 0;
@@ -11264,24 +11299,32 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
 
   const matrizEl = document.getElementById("miDefMatriz");
   if (matrizEl) {
-    const setores = Object.keys(indicadores.porSetor).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
-    if (tiposOrdenados.length === 0 || setores.length === 0) {
-      matrizEl.innerHTML = '<div class="muted">Sem dados para matriz no periodo.</div>';
+    const rankingDefeitos = criarRankingParticipacaoDefeitos(indicadores.porTipo, indicadores.totalErros);
+    const totalBase = rankingDefeitos[0]?.totalBase || Number(indicadores.totalErros || 0);
+    setText("miDefMatrizTotal", `${totalBase} ocorrencia${totalBase === 1 ? "" : "s"}`);
+    if (rankingDefeitos.length === 0) {
+      matrizEl.innerHTML = '<div class="muted">Sem defeitos no periodo selecionado.</div>';
     } else {
       matrizEl.innerHTML = `
-        <div class="mi-def-matrix-scroll">
-          <table>
-            <thead><tr><th>Defeito</th>${setores.map(s => `<th>${escapeHtml(s)}</th>`).join("")}<th>Total</th></tr></thead>
-            <tbody>
-              ${tiposOrdenados.slice(0, 12).map(([tipo, total]) => `
-                <tr>
-                  <td>${escapeHtml(tipo)}</td>
-                  ${setores.map(s => `<td>${indicadores.matriz[tipo]?.[s] || 0}</td>`).join("")}
-                  <td><strong>${total}</strong></td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
+        <div class="df-defect-share-caption">
+          <strong>${totalBase} ocorrencia${totalBase === 1 ? "" : "s"} no total</strong>
+          <span>A barra compara o volume; o percentual usa o total de defeitos do periodo.</span>
+        </div>
+        <div class="df-defect-share-list">
+          ${rankingDefeitos.map(item => `
+            <div class="df-defect-share-row" title="${escapeHtml(item.tipo)}: ${item.total} (${formatPct(item.percentual)} do total)">
+              <div class="df-defect-share-label">
+                <i style="--df-defect-color: ${item.cor}" aria-hidden="true"></i>
+                <span>${escapeHtml(item.tipo)}</span>
+              </div>
+              <div class="df-defect-share-track" role="meter" aria-label="${escapeHtml(item.tipo)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${item.percentual.toFixed(1)}">
+                <div class="df-defect-share-fill" style="--df-defect-color: ${item.cor}; --df-defect-width: ${item.larguraRelativa.toFixed(2)}%">
+                  <strong>${item.total}</strong>
+                </div>
+                <span class="df-defect-share-percent">${formatPct(item.percentual)}</span>
+              </div>
+            </div>
+          `).join("")}
         </div>
       `;
     }
@@ -13487,7 +13530,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.77&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.78&ts=${Date.now()}`);
       }
     });
   }
@@ -13507,6 +13550,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.60";
+  badge.textContent = "v1.78";
   badge.style.display = "inline-block";
 }
