@@ -10981,6 +10981,12 @@ function isLinhaDefeitoDashboard(row) {
   return status === "R" || status === "RR" || status === "REPROVADO" || status === "RETRABALHO" || obterItensRejeitadosLinha(row).length > 0;
 }
 
+function isMontagemRetrabalhoStatus(status) {
+  const s = String(status || "").trim().toUpperCase();
+  const codigosRetrabalho = new Set(["RR", "RETRABALHO"]);
+  return codigosRetrabalho.has(s);
+}
+
 function normalizarTexto(valor) {
   return String(valor || "")
     .normalize("NFD")

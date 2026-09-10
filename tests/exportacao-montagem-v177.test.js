@@ -75,6 +75,28 @@ function carregarApiTeste(supabaseClient) {
   return { api: context.api, logs, warnings };
 }
 
+function importarResumoExportacaoMontagem() {
+  const helpersStart = appSource.indexOf('function isLinhaMontagemDashboard');
+  const helpersEnd = appSource.indexOf('function normalizarTexto', helpersStart);
+  const resumoStart = appSource.indexOf('function criarResumoExportacaoMontagem');
+  const resumoEnd = appSource.indexOf('async function exportarMontagemIndicadoresXlsx', resumoStart);
+  assert.ok(helpersStart >= 0 && helpersEnd > helpersStart);
+  assert.ok(resumoStart >= 0 && resumoEnd > resumoStart);
+
+  const context = vm.createContext({
+    String,
+    Set,
+    Date,
+    obterItensRejeitadosLinha: row => row?.itensRejeitados || [],
+    fmtDate: value => value
+  });
+  vm.runInContext(
+    `${appSource.slice(helpersStart, helpersEnd)}\n${appSource.slice(resumoStart, resumoEnd)}\nglobalThis.criarResumoExportacaoMontagem = criarResumoExportacaoMontagem;`,
+    context
+  );
+  return context.criarResumoExportacaoMontagem;
+}
+
 test('paginacao usa ranges inclusivos de 500 e consolida todas as linhas', async () => {
   const requests = [];
   const supabase = criarSupabaseMock(state => {
@@ -174,4 +196,24 @@ test('lookup de producao usa lotes sequenciais de no maximo 300 ids', async () =
   assert.ok(requests.every(item => item.select === 'id,codigo_poste,descricao_poste,codigo_produto'));
   assert.equal(lookup.size, 300);
   assert.ok(warnings.some(args => String(args[0]).includes('record_id 301 sem correspondente')));
+});
+
+test('resumo calcula aprovada, nao conforme e retrabalho sem ReferenceError', () => {
+  const criarResumoExportacaoMontagem = importarResumoExportacaoMontagem();
+  const montagens = [
+    { id: 1, etapa: 'MONTAGEM', status_montagem: 'A', finalizado_em: '2026-08-01T10:00:00Z' },
+    { id: 2, etapa: 'MONTAGEM', status_montagem: 'R', finalizado_em: '2026-08-01T11:00:00Z' },
+    { id: 3, etapa: 'MONTAGEM', status_montagem: 'RR', finalizado_em: '2026-08-01T12:00:00Z' }
+  ];
+
+  let resumo;
+  assert.doesNotThrow(() => {
+    resumo = criarResumoExportacaoMontagem(montagens, '2026-08-01', '2026-08-01');
+  });
+  const valor = indicador => resumo.find(row => row[0] === indicador)?.[1];
+  assert.equal(valor('Programado'), 3);
+  assert.equal(valor('Realizado'), 3);
+  assert.equal(valor('Aprovados'), 1);
+  assert.equal(valor('Nao conformes'), 2);
+  assert.equal(valor('Retrabalhos'), 1);
 });
