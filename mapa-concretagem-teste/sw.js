@@ -1,15 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker
-   v1.70: inclui codigo do poste e setor na exportacao XLSX de montagem
+   v1.72: corrige exportacoes CSV/XLSX e inclui XLSX no cache local
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.70";
+const CACHE_NAME = "mapa-concretagem-teste-v1.72";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v1.70",
-  "./styles.css?v=v1.70",
-  "./dashboard-defeitos-v4.css?v=v1.60",
-  "./app.js?v=v1.70",
+  "./manifest.json?v=v1.72",
+  "./styles.css?v=v1.72",
+  "./dashboard-defeitos-v4.css?v=v1.72",
+  "./app.js?v=v1.72",
+  "./xlsx.full.min.js?v=v1.72",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

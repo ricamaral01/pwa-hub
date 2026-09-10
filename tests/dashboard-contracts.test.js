@@ -33,6 +33,21 @@ test('Dashboard Defeitos possui view e filtros proprios', () => {
   assert.match(app, /rpc_dashboard_defeitos_resumo_v1/);
 });
 
+test('exportacoes dos dashboards possuem acionamento e dependencias locais', () => {
+  const html = read('mapa-concretagem-teste/index.html');
+  const app = read('mapa-concretagem-teste/app.js');
+  const sw = read('mapa-concretagem-teste/sw.js');
+  const xlsxPath = path.join(root, 'mapa-concretagem-teste/xlsx.full.min.js');
+
+  assert.match(html, /id="dfBtnExportarCsv"/);
+  assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
+  assert.match(app, /function exportarDashboardDefeitosCsv/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.72"/);
+  assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.72/);
+  assert.ok(fs.statSync(xlsxPath).size > 100000);
+});
+
 test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {
   const app = read('mapa-concretagem-teste/app.js');
 

@@ -1048,6 +1048,28 @@ function todayYmd() {
   return local.toISOString().slice(0, 10);
 }
 
+function baixarArquivoBlob(conteudo, nomeArquivo, mimeType, incluirBom = false) {
+  const partes = incluirBom ? ["\uFEFF", conteudo] : [conteudo];
+  const blob = new Blob(partes, { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = nomeArquivo;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function valorCsv(value) {
+  return `"${String(value ?? "").replace(/"/g, '""')}"`;
+}
+
+function criarCsv(linhas) {
+  return (linhas || []).map(linha => linha.map(valorCsv).join(";")).join("\r\n");
+}
+
 function normalizeUpper(text) {
   return String(text || "").trim().toUpperCase();
 }
@@ -8570,6 +8592,7 @@ function bindEvents() {
   });
   document.getElementById("dfBtnAtualizar")?.addEventListener("click", carregarDashboardDefeitos);
   document.getElementById("dfBtnFiltrar")?.addEventListener("click", carregarDashboardDefeitos);
+  document.getElementById("dfBtnExportarCsv")?.addEventListener("click", exportarDashboardDefeitosCsv);
   ["dfDataInicio", "dfDataFim", "dfFiltroSetor", "dfFiltroStatus"].forEach(id => {
     document.getElementById(id)?.addEventListener("change", () => {
       miPaginaAtual = 1;
@@ -10865,7 +10888,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.70", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.72", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10907,6 +10930,7 @@ let miOrdenacaoColuna = "finalizado_em";
 let miOrdenacaoAsc = false;
 let miAbaAtiva = "resumo";
 let miUltimosGraficos = null;
+let miDefeitosExportData = null;
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -11266,15 +11290,49 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
   }
 }
 
-function renderIndicadoresDefeitosContrato(contract) {
+function renderIndicadoresDefeitosContrato(contract, productionRows = []) {
   const kpis = contract?.kpis || {};
-  const bySector = contract?.by_sector || {};
+  const bySectorContract = contract?.by_sector || {};
   const byDefect = contract?.by_defect || {};
   const defectMatrix = contract?.defect_matrix || {};
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
   };
+
+  const sectorCode = value => {
+    const normalized = normalizarTexto(String(value || "")).replace(/\s+/g, " ").trim();
+    const match = normalized.match(/^(?:setor\s*)?(\d+)$/);
+    return match ? `S${match[1]}` : String(value || "").trim();
+  };
+  const scopeSectors = {
+    S1: ["S1"],
+    S2: ["S2"],
+    S3: ["S3"],
+    S4: ["S4"],
+    S1_S2: ["S1", "S2"],
+    TOTAL: ["S1", "S2", "S3", "S4"]
+  };
+  const includedSectors = Array.isArray(contract?.included_sectors) && contract.included_sectors.length
+    ? contract.included_sectors.map(sectorCode)
+    : (scopeSectors[contract?.scope] || scopeSectors.TOTAL);
+  setText("miDefSetoresBadge", `${includedSectors.join("+")} recalculado`);
+  const productionBySector = {};
+  (productionRows || []).forEach(row => {
+    const status = String(row?.status || "").toUpperCase();
+    const code = sectorCode(row?.setor);
+    if (!includedSectors.includes(code) || !["LIBERADO", "INSPECIONADO", "CONCRETADO"].includes(status)) return;
+    productionBySector[code] = (productionBySector[code] || 0) + 1;
+  });
+  const bySector = {};
+  includedSectors.forEach(code => {
+    const item = bySectorContract[code] || {};
+    bySector[code] = {
+      ...item,
+      producao: productionRows.length ? Number(productionBySector[code] || 0) : Number(item?.producao || 0),
+      erros: Number(item?.erros || 0)
+    };
+  });
 
   const indicadores = {
     postes: Number(kpis.postes || 0),
@@ -11309,11 +11367,20 @@ function renderIndicadoresDefeitosContrato(contract) {
     });
   });
 
+  miDefeitosExportData = {
+    scope: contract?.scope || "TOTAL",
+    includedSectors,
+    kpis,
+    bySector,
+    byDefect,
+    defectMatrix
+  };
+
   renderIndicadoresDefeitosMontagem(indicadores);
 
   const setoresEl = document.getElementById("miDefSetores");
   if (setoresEl) {
-    const setores = Object.entries(bySector).sort((a, b) => String(b[1]?.erros || 0).localeCompare(String(a[1]?.erros || 0), "pt-BR", { numeric: true }));
+    const setores = Object.entries(bySector).sort((a, b) => String(a[0]).localeCompare(String(b[0]), "pt-BR", { numeric: true }));
     if (!setores.length) {
       setoresEl.innerHTML = '<div class="muted">Sem setores no periodo.</div>';
     } else {
@@ -11336,6 +11403,58 @@ function renderIndicadoresDefeitosContrato(contract) {
       }).join("");
     }
   }
+}
+
+function exportarDashboardDefeitosCsv() {
+  const dados = miDefeitosExportData;
+  if (!dados?.includedSectors?.length) {
+    showMsgBox("Atualize o dashboard antes de exportar.", "error");
+    return;
+  }
+
+  const dStart = document.getElementById("dfDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("dfDataFim")?.value || todayYmd();
+  const kpis = dados.kpis || {};
+  const linhas = [
+    ["Dashboard de Defeitos"],
+    ["Periodo", dStart, dEnd],
+    ["Escopo", dados.scope],
+    [],
+    ["Indicador", "Valor"],
+    ["Producao", Number(kpis.producao || 0)],
+    ["Postes avaliados", Number(kpis.postes || 0)],
+    ["Ocorrencias de NC", Number(kpis.total_erros || 0)],
+    ["Oportunidades avaliadas", Number(kpis.total_possivel || 0)],
+    ["Postes reprovados", Number(kpis.postes_reprovados || 0)],
+    ["Retrabalho", Number(kpis.retrabalho || 0)],
+    [],
+    ["Taxa de defeitos por setor"],
+    ["Setor", "Produzidos", "Erros", "Taxa/producao"]
+  ];
+
+  dados.includedSectors.forEach(setor => {
+    const item = dados.bySector?.[setor] || {};
+    const producao = Number(item.producao || 0);
+    const erros = Number(item.erros || 0);
+    linhas.push([setor, producao, erros, formatPct(producao > 0 ? (erros / producao) * 100 : 0)]);
+  });
+
+  linhas.push([], ["Matriz defeito x setor"], ["Defeito", ...dados.includedSectors, "Total"]);
+  Object.entries(dados.byDefect || {})
+    .sort((a, b) => Number(b[1] || 0) - Number(a[1] || 0))
+    .forEach(([tipo, total]) => {
+      const matrizSetores = dados.defectMatrix?.[tipo] || {};
+      linhas.push([tipo, ...dados.includedSectors.map(setor => Number(matrizSetores[setor] || 0)), Number(total || 0)]);
+    });
+
+  const escopoArquivo = String(dados.scope || "TOTAL").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  baixarArquivoBlob(
+    criarCsv(linhas),
+    `dashboard_defeitos_${dStart}_a_${dEnd}_${escopoArquivo}.csv`,
+    "text/csv;charset=utf-8",
+    true
+  );
+  showMsgBox("Dashboard de defeitos exportado em CSV.", "success");
 }
 
 function atualizarResumoFiltrosProdutividade() {
@@ -11485,7 +11604,7 @@ async function carregarMontagemIndicadores() {
     
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
-    if (dashboardKind === "defeitos" && rpcRes?.payload) renderIndicadoresDefeitosContrato(rpcRes.payload);
+    if (dashboardKind === "defeitos" && rpcRes?.payload) renderIndicadoresDefeitosContrato(rpcRes.payload, producaoRes.rows || []);
     const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" || rpcRes?.state === "OFFLINE_CACHE";
     if (fromCache) setSyncStatus("warn", dashboardKind === "defeitos" ? "Dashboard Defeitos carregado do cache local." : "Indicadores carregados do cache local.");
     else setSyncStatus("ok", dashboardKind === "defeitos" ? "Dashboard Defeitos atualizado." : "Indicadores de montagem atualizados.");
@@ -11509,19 +11628,29 @@ async function carregarDashboardDefeitos() {
   atualizarResumoFiltrosDefeitos();
   setSyncStatus("pending", "Carregando dashboard de defeitos...");
   try {
-    const rpcRes = await chamarDashboardRpcComCache("rpc_dashboard_defeitos_resumo_v1", {
-      p_data_inicio: dStart,
-      p_data_fim: dEnd,
-      p_scope: scope
-    }, `rpc:defeitos:resumo:${dStart}:${dEnd}:${scope}`);
+    const [rpcRes, producaoRes] = await Promise.all([
+      chamarDashboardRpcComCache("rpc_dashboard_defeitos_resumo_v1", {
+        p_data_inicio: dStart,
+        p_data_fim: dEnd,
+        p_scope: scope
+      }, `rpc:defeitos:resumo:${dStart}:${dEnd}:${scope}`),
+      carregarLinhasSupabaseComCache({
+        cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
+        table: "producao",
+        select: DASHBOARD_PRODUCAO_SELECT,
+        applyFilters: query => query
+          .gte("data_fabricacao", dStart)
+          .lte("data_fabricacao", dEnd)
+      })
+    ]);
 
     if (requestId !== dashboardRequestSeq[dashboardKind]) return;
-    renderIndicadoresDefeitosContrato(rpcRes.payload);
+    renderIndicadoresDefeitosContrato(rpcRes.payload, producaoRes.rows || []);
     const updated = document.getElementById("dfAtualizadoLabel");
     if (updated) updated.textContent = `Atualizado ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     setSyncStatus(
-      rpcRes.state === "OFFLINE_CACHE" ? "warn" : "ok",
-      rpcRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
+      rpcRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "warn" : "ok",
+      rpcRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
     );
   } catch (err) {
     console.error("Erro carregarDashboardDefeitos:", err);
@@ -11818,15 +11947,22 @@ function exportarMontagemIndicadoresXlsx() {
     };
   });
 
-  const ws = XLSX.utils.json_to_sheet(linhas, {
-    header: ["Tempo de montagem", "Montador", "Modelo poste", "Código do poste", "Setor", "Data da produção", "Data da montagem", "Status poste"]
-  });
-  ws["!cols"] = [{ wch: 20 }, { wch: 28 }, { wch: 24 }, { wch: 20 }, { wch: 16 }, { wch: 18 }, { wch: 22 }, { wch: 24 }];
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Dashboard Montagem");
-  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
-  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
-  XLSX.writeFile(wb, `dashboard_montagem_${dStart}_a_${dEnd}.xlsx`);
+  try {
+    const xlsx = window.XLSX;
+    const ws = xlsx.utils.json_to_sheet(linhas, {
+      header: ["Tempo de montagem", "Montador", "Modelo poste", "Código do poste", "Setor", "Data da produção", "Data da montagem", "Status poste"]
+    });
+    ws["!cols"] = [{ wch: 20 }, { wch: 28 }, { wch: 24 }, { wch: 20 }, { wch: 16 }, { wch: 18 }, { wch: 22 }, { wch: 24 }];
+    const wb = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(wb, ws, "Dashboard Montagem");
+    const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+    const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+    xlsx.writeFile(wb, `dashboard_montagem_${dStart}_a_${dEnd}.xlsx`, { compression: true });
+    showMsgBox("Dashboard de montagem exportado em XLSX.", "success");
+  } catch (err) {
+    console.error("Erro ao exportar Dashboard Montagem:", err);
+    showMsgBox("Nao foi possivel gerar o XLSX. Atualize a pagina e tente novamente.", "error");
+  }
 }
 
 function obterItensRejeitadosLinha(row, options = {}) {
@@ -12859,7 +12995,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.70&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.72&ts=${Date.now()}`);
       }
     });
   }
