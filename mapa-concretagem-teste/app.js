@@ -10888,7 +10888,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.74", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.75", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11920,6 +11920,77 @@ function aplicarFiltrosEExibirMontagem() {
   setSyncStatus("idle", "Indicadores atualizados.");
 }
 
+function somarDiasYmd(value, dias) {
+  const date = new Date(`${value}T12:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + dias);
+  return date.toISOString().slice(0, 10);
+}
+
+function diferencaDiasYmd(inicio, fim) {
+  const start = new Date(`${inicio}T12:00:00Z`).getTime();
+  const end = new Date(`${fim}T12:00:00Z`).getTime();
+  return Math.floor((end - start) / 86400000);
+}
+
+function dividirPeriodoYmd(inicio, fim, diasPorLote = 7) {
+  if (!inicio || !fim || inicio > fim) throw new Error("Periodo selecionado invalido.");
+  const lotes = [];
+  let cursor = inicio;
+  while (cursor <= fim) {
+    const candidatoFim = somarDiasYmd(cursor, Math.max(1, diasPorLote) - 1);
+    const loteFim = candidatoFim < fim ? candidatoFim : fim;
+    lotes.push([cursor, loteFim]);
+    cursor = somarDiasYmd(loteFim, 1);
+  }
+  return lotes;
+}
+
+async function carregarBaseExportacaoPorPeriodo({ table, select, inicio, fim, onProgress }) {
+  const carregarIntervalo = async (loteInicio, loteFim) => {
+    try {
+      const result = await carregarLinhasSupabaseComCache({
+        table,
+        select,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
+          .gte("data_fabricacao", loteInicio)
+          .lte("data_fabricacao", loteFim)
+      });
+      return result.rows || [];
+    } catch (err) {
+      const mensagem = String(err?.message || err || "").toLowerCase();
+      const timeout = mensagem.includes("statement timeout") || mensagem.includes("canceling statement") || mensagem.includes("57014");
+      const totalDias = diferencaDiasYmd(loteInicio, loteFim);
+      if (!timeout || totalDias <= 0) throw err;
+      const meio = somarDiasYmd(loteInicio, Math.floor(totalDias / 2));
+      const [esquerda, direita] = await Promise.all([
+        carregarIntervalo(loteInicio, meio),
+        carregarIntervalo(somarDiasYmd(meio, 1), loteFim)
+      ]);
+      return esquerda.concat(direita);
+    }
+  };
+
+  const rows = [];
+  const lotes = dividirPeriodoYmd(inicio, fim, 7);
+  if (typeof onProgress === "function") onProgress(0, lotes.length);
+  for (let index = 0; index < lotes.length; index++) {
+    const [loteInicio, loteFim] = lotes[index];
+    rows.push(...await carregarIntervalo(loteInicio, loteFim));
+    if (typeof onProgress === "function") onProgress(index + 1, lotes.length);
+  }
+  const unicos = new Map(rows.map(row => [String(row.id || JSON.stringify(row)), row]));
+  return [...unicos.values()].sort((a, b) => {
+    const dataA = `${a.data_fabricacao || ""}|${a.id || ""}`;
+    const dataB = `${b.data_fabricacao || ""}|${b.id || ""}`;
+    return dataA.localeCompare(dataB, "pt-BR", { numeric: true });
+  });
+}
+
 async function exportarMontagemIndicadoresXlsx() {
   if (!window.XLSX?.utils) {
     showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
@@ -11935,37 +12006,30 @@ async function exportarMontagemIndicadoresXlsx() {
     button.textContent = "Exportando base...";
   }
   try {
-    const [montagemRes, producaoRes] = await Promise.all([
-      carregarLinhasSupabaseComCache({
-        cacheKey: `xlsx:montagem-base:${dStart}:${dEnd}`,
+    const progresso = { montagem: [0, 0], producao: [0, 0] };
+    const atualizarProgresso = (tipo, concluidos, total) => {
+      progresso[tipo] = [concluidos, total];
+      const feitos = progresso.montagem[0] + progresso.producao[0];
+      const lotes = progresso.montagem[1] + progresso.producao[1];
+      if (button && lotes > 0) button.textContent = `Exportando ${feitos}/${lotes}...`;
+    };
+    const [montagemRows, producaoRows] = await Promise.all([
+      carregarBaseExportacaoPorPeriodo({
         table: "montagem_poste",
         select: DASHBOARD_MONTAGEM_SELECT,
-        pageSize: 1000,
-        maxPages: 100,
-        timeoutMs: 60000,
-        orderBy: "data_fabricacao",
-        orderOptions: { ascending: true },
-        applyFilters: query => query
-          .gte("data_fabricacao", dStart)
-          .lte("data_fabricacao", dEnd)
+        inicio: dStart,
+        fim: dEnd,
+        onProgress: (concluidos, total) => atualizarProgresso("montagem", concluidos, total)
       }),
-      carregarLinhasSupabaseComCache({
-        cacheKey: `xlsx:producao-base:${dStart}:${dEnd}`,
+      carregarBaseExportacaoPorPeriodo({
         table: "producao",
         select: DASHBOARD_PRODUCAO_SELECT,
-        pageSize: 1000,
-        maxPages: 100,
-        timeoutMs: 60000,
-        orderBy: "data_fabricacao",
-        orderOptions: { ascending: true },
-        applyFilters: query => query
-          .gte("data_fabricacao", dStart)
-          .lte("data_fabricacao", dEnd)
+        inicio: dStart,
+        fim: dEnd,
+        onProgress: (concluidos, total) => atualizarProgresso("producao", concluidos, total)
       })
     ]);
 
-    const montagemRows = montagemRes.rows || [];
-    const producaoRows = producaoRes.rows || [];
     if (!montagemRows.length && !producaoRows.length) {
       showMsgBox("Nenhum registro encontrado no periodo selecionado.", "error");
       return;
@@ -13070,7 +13134,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.74&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.75&ts=${Date.now()}`);
       }
     });
   }
