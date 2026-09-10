@@ -10888,7 +10888,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.72", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.73", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10955,7 +10955,7 @@ function formatarDataHoraMontagemXlsx(value) {
 }
 
 function getMiDataReferencia(row) {
-  const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
+  const raw = row?.finalizado_em || row?.finalizadoEm || row?.inicio_inspecao_montagem || row?.inicioInspecaoMontagem || row?.data_fabricacao || row?.dataFabricacao || "";
   return String(raw).split("T")[0];
 }
 
@@ -11551,6 +11551,8 @@ async function carregarMontagemIndicadores() {
   const requestId = ++dashboardRequestSeq[dashboardKind];
   const dStart = getDashboardFilterValue("DataInicio", todayYmd());
   const dEnd = getDashboardFilterValue("DataFim", todayYmd());
+  const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
+  const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
   const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
   const scope = getDashboardScopeFromSetor(setorFiltro);
   
@@ -11583,8 +11585,7 @@ async function carregarMontagemIndicadores() {
         orderBy: "data_fabricacao",
         orderOptions: { ascending: false },
         applyFilters: query => query
-          .gte("data_fabricacao", dStart)
-          .lte("data_fabricacao", dEnd)
+          .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
       }),
       carregarLinhasSupabaseComCache({
         cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
@@ -11919,7 +11920,24 @@ function aplicarFiltrosEExibirMontagem() {
   setSyncStatus("idle", "Indicadores atualizados.");
 }
 
-function exportarMontagemIndicadoresXlsx() {
+async function exportarMontagemIndicadoresXlsx() {
+  if (!Array.isArray(miFilteredMontagemData) || miFilteredMontagemData.length === 0) {
+    const button = document.getElementById("miBtnExportarXlsx");
+    const label = button?.textContent || "Exportar XLSX";
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Buscando dados...";
+    }
+    try {
+      await carregarMontagemIndicadores();
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = label;
+      }
+    }
+  }
+
   if (!Array.isArray(miFilteredMontagemData) || miFilteredMontagemData.length === 0) {
     showMsgBox("Nenhum dado encontrado para exportar.", "error");
     return;
@@ -12995,7 +13013,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.72&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.73&ts=${Date.now()}`);
       }
     });
   }

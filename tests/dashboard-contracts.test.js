@@ -42,10 +42,19 @@ test('exportacoes dos dashboards possuem acionamento e dependencias locais', () 
   assert.match(html, /id="dfBtnExportarCsv"/);
   assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
   assert.match(app, /function exportarDashboardDefeitosCsv/);
-  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.72"/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.73"/);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
-  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.72/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.73/);
   assert.ok(fs.statSync(xlsxPath).size > 100000);
+});
+
+test('XLSX da montagem usa a data real da montagem e recarrega dados vazios', () => {
+  const app = read('mapa-concretagem-teste/app.js');
+
+  assert.match(app, /row\?\.finalizado_em \|\| row\?\.finalizadoEm \|\| row\?\.inicio_inspecao_montagem/);
+  assert.match(app, /\.or\(`and\(finalizado_em\.gte\.\$\{montagemStartIso\}/);
+  assert.match(app, /async function exportarMontagemIndicadoresXlsx/);
+  assert.match(app, /await carregarMontagemIndicadores\(\)/);
 });
 
 test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {

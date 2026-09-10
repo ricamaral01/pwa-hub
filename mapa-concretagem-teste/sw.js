@@ -1,16 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker
-   v1.72: corrige exportacoes CSV/XLSX e inclui XLSX no cache local
+   v1.73: filtra o Dashboard Montagem pela data real da montagem
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.72";
+const CACHE_NAME = "mapa-concretagem-teste-v1.73";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v1.72",
-  "./styles.css?v=v1.72",
-  "./dashboard-defeitos-v4.css?v=v1.72",
-  "./app.js?v=v1.72",
-  "./xlsx.full.min.js?v=v1.72",
+  "./manifest.json?v=v1.73",
+  "./styles.css?v=v1.73",
+  "./dashboard-defeitos-v4.css?v=v1.73",
+  "./app.js?v=v1.73",
+  "./xlsx.full.min.js?v=v1.73",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",
