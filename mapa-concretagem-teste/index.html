@@ -11,9 +11,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
-  <link rel="manifest" href="manifest.json?v=v1.75" />
-  <link rel="stylesheet" href="styles.css?v=v1.75" />
-  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v1.75" />
+  <link rel="manifest" href="manifest.json?v=v1.76" />
+  <link rel="stylesheet" href="styles.css?v=v1.76" />
+  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v1.76" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1009,6 +1009,37 @@
           <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Producao do dia</span><span class="mi-kpi-val" id="miProducaoDia">-</span></div>
           <div class="mi-kpi-card mi-kpi-aprovados"><span class="mi-kpi-label">Aprovados</span><span class="mi-kpi-val" id="miTotalAprovados">-</span></div>
         </div>
+        <section class="mi-indicator-guide" aria-labelledby="miIndicatorGuideTitle">
+          <div class="mi-indicator-guide-heading">
+            <div>
+              <span class="mi-indicator-guide-eyebrow">Leitura dos resultados</span>
+              <h3 id="miIndicatorGuideTitle">Memoria de calculo dos indicadores</h3>
+            </div>
+            <p>Os numeros respeitam o periodo e o setor selecionados acima.</p>
+          </div>
+          <div class="mi-indicator-guide-grid">
+            <article class="mi-indicator-guide-card mi-indicator-guide-primary">
+              <span class="mi-indicator-level">Principais</span>
+              <h4>Planejamento e execucao</h4>
+              <p><strong>Programado</strong> = postes registrados na Producao.</p>
+              <p><strong>Realizado</strong> = montagens concluidas no periodo.</p>
+              <div class="mi-indicator-formula">Atingimento = Realizado ÷ Programado × 100</div>
+            </article>
+            <article class="mi-indicator-guide-card mi-indicator-guide-secondary">
+              <span class="mi-indicator-level">Secundarios</span>
+              <h4>Ritmo e qualidade</h4>
+              <p><strong>Producao do dia</strong> = postes produzidos na data atual.</p>
+              <p><strong>Aprovados</strong> = montagens finalizadas com status aprovado.</p>
+              <div class="mi-indicator-formula">Aprovacao = Aprovados ÷ Realizado × 100</div>
+            </article>
+            <article class="mi-indicator-guide-card mi-indicator-guide-tertiary">
+              <span class="mi-indicator-level">Terciarios</span>
+              <h4>Diagnostico operacional</h4>
+              <p>Os graficos detalham atingimento por setor, volume por dia e ranking por montador.</p>
+              <div class="mi-indicator-formula">Tempo medio = Σ duracoes validas ÷ montagens cronometradas</div>
+            </article>
+          </div>
+        </section>
         <div class="mi-section-heading">Comparativo: produzidos vs montados</div>
         <div class="mi-charts-row">
           <div class="mi-chart-card mi-progress-card"><div><div class="mi-chart-title">Geral</div><div class="mi-progress-meta"><span>Produzidos: <strong id="miProdGeral">-</strong></span><span>Montados: <strong id="miMontGeral">-</strong></span></div><div class="mi-progress-track"><div id="miBarGeral" class="mi-progress-fill"></div></div></div><div class="mi-progress-pct" id="miPctGeral">-%</div></div>
@@ -1057,6 +1088,33 @@
           <div class="df-v4-mini-kpi"><div><strong id="miDefFissuras">0</strong><span>Fissuras</span></div><span>FI</span></div>
           <div class="df-v4-mini-kpi"><div><strong id="miDefFissurasCirculares">0</strong><span>Fissuras circulares</span></div><span>FC</span></div>
           <div class="df-v4-mini-kpi"><div><strong id="miDefPostesReprovados">0</strong><span>Qtd. reprovados</span></div><span>QR</span></div>
+        </section>
+
+        <section class="df-v4-memory" aria-labelledby="dfMemoryTitle">
+          <div class="df-v4-memory-head">
+            <div><span>Como interpretar</span><strong id="dfMemoryTitle">Memoria de calculo dos indicadores</strong></div>
+            <p>Todos os calculos seguem o periodo, o setor e o status selecionados.</p>
+          </div>
+          <div class="df-v4-memory-grid">
+            <article class="df-v4-memory-card primary">
+              <span>Indicadores principais</span>
+              <strong>Incidencia de nao conformidades</strong>
+              <p><b>Taxa de defeitos</b> = ocorrencias de NC ÷ oportunidades avaliadas × 100.</p>
+              <p>Ocorrencia e cada item marcado como nao conforme; poste avaliado e cada inspecao valida.</p>
+            </article>
+            <article class="df-v4-memory-card secondary">
+              <span>Indicadores secundarios</span>
+              <strong>Impacto nos postes avaliados</strong>
+              <p><b>Indice de reprovacao</b> = postes com defeito ÷ postes avaliados × 100.</p>
+              <p><b>Retrabalho</b> = postes retrabalhados ÷ postes avaliados × 100.</p>
+            </article>
+            <article class="df-v4-memory-card tertiary">
+              <span>Indicadores terciarios</span>
+              <strong>Onde priorizar a acao</strong>
+              <p><b>Taxa por setor</b> = erros do setor ÷ producao do setor × 100.</p>
+              <p>Pareto ordena os defeitos por frequencia; a matriz cruza cada tipo com S1, S2, S3 e S4.</p>
+            </article>
+          </div>
         </section>
 
         <section class="df-v4-layout">
@@ -1158,7 +1216,7 @@
           <button id="dfBtnFiltrar" type="button" class="mi-primary-btn" style="height: 34px; white-space: nowrap; padding: 0 12px; border-radius: 6px; font-weight: 600; cursor: pointer; background: #2563eb; color: #fff; border: none;">Aplicar</button>
         </div>
       </div>
-        <div class="df-v4-data-banner"><span id="dfFonteResumo"><strong>Fonte:</strong> rpc_dashboard_defeitos_resumo_v1</span><span>Sem calculo oficial por registros brutos no frontend</span></div>
+        <div class="df-v4-data-banner"><span id="dfFonteResumo"><strong>Fonte:</strong> montagem_poste + producao</span><span>Calculo paginado com o mesmo periodo e escopo da tela</span></div>
         <div id="dfContent"></div>
       </div>
     </section>
@@ -1692,8 +1750,8 @@
   </template>
 
   <script src="../assets/msgbox.js"></script>
-  <script src="xlsx.full.min.js?v=v1.75"></script>
+  <script src="xlsx.full.min.js?v=v1.76"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v1.75"></script>
+  <script src="app.js?v=v1.76"></script>
 </body>
 </html>

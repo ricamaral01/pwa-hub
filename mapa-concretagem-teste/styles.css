@@ -6570,3 +6570,219 @@ body.mode-dashboard-defeitos #miSecaoDefeitos {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Dashboard Montagem v1.76: leitura ampliada e memoria dos indicadores */
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-topbar h2 {
+  font-size: 1.85rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-topbar p {
+  font-size: 1rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-icon-btn,
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-secondary-btn,
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-primary-btn {
+  min-height: 44px;
+  height: 44px !important;
+  padding-inline: 16px !important;
+  font-size: 0.98rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-filter-item label {
+  font-size: 0.86rem !important;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-filter-item .input-field {
+  height: 42px !important;
+  font-size: 0.98rem !important;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-tab-btn {
+  min-height: 44px;
+  font-size: 0.96rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-kpi-card {
+  min-height: 108px;
+  justify-content: center;
+  padding: 18px;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-kpi-label {
+  font-size: 0.86rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-kpi-val {
+  font-size: 2.35rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-section-heading {
+  font-size: 1.25rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-chart-title,
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-list-header h3 {
+  font-size: 1.12rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-progress-meta,
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-sector-meta,
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-ranking-row,
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-list-header span,
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-pagination-info {
+  font-size: 0.98rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-progress-pct {
+  font-size: 2rem;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-sector-progress-list > div > div:first-child {
+  font-size: 1rem !important;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-table th,
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-table td {
+  font-size: 0.94rem;
+  line-height: 1.35;
+}
+
+body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-page-btn {
+  min-width: 40px;
+  min-height: 40px;
+  font-size: 0.92rem;
+}
+
+.mi-indicator-guide {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #cbd8e8;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f8fbff 0%, #f1f5f9 100%);
+}
+
+.mi-indicator-guide-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.mi-indicator-guide-eyebrow,
+.mi-indicator-level {
+  display: block;
+  color: #2563eb;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.mi-indicator-guide-heading h3 {
+  margin: 3px 0 0;
+  color: #0f2742;
+  font-size: 1.25rem;
+}
+
+.mi-indicator-guide-heading p {
+  margin: 0;
+  color: #52657a;
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.mi-indicator-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mi-indicator-guide-card {
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid #d8e2ed;
+  border-top: 4px solid #2563eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.mi-indicator-guide-secondary {
+  border-top-color: #059669;
+}
+
+.mi-indicator-guide-secondary .mi-indicator-level {
+  color: #047857;
+}
+
+.mi-indicator-guide-tertiary {
+  border-top-color: #7c3aed;
+}
+
+.mi-indicator-guide-tertiary .mi-indicator-level {
+  color: #6d28d9;
+}
+
+.mi-indicator-guide-card h4 {
+  margin: 5px 0 9px;
+  color: #172033;
+  font-size: 1.04rem;
+}
+
+.mi-indicator-guide-card p {
+  margin: 5px 0;
+  color: #475569;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.mi-indicator-formula {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  color: #173c61;
+  background: #eef5ff;
+  font-size: 0.9rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+@media (min-width: 1181px) {
+  body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-kpis-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .mi-indicator-guide-heading {
+    display: block;
+  }
+
+  .mi-indicator-guide-heading p {
+    margin-top: 5px;
+  }
+
+  .mi-indicator-guide-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-topbar-actions {
+    width: 100%;
+  }
+
+  body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-topbar-actions button {
+    flex: 1;
+  }
+
+  body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-kpi-val {
+    font-size: 2rem;
+  }
+}

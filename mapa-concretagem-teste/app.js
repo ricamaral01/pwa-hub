@@ -1050,7 +1050,9 @@ function todayYmd() {
 
 function baixarArquivoBlob(conteudo, nomeArquivo, mimeType, incluirBom = false) {
   const partes = incluirBom ? ["\uFEFF", conteudo] : [conteudo];
-  const blob = new Blob(partes, { type: mimeType });
+  const blob = conteudo instanceof Blob && !incluirBom
+    ? conteudo
+    : new Blob(partes, { type: mimeType });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -1059,7 +1061,7 @@ function baixarArquivoBlob(conteudo, nomeArquivo, mimeType, incluirBom = false) 
   document.body.appendChild(link);
   link.click();
   link.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  window.setTimeout(() => URL.revokeObjectURL(url), 30000);
 }
 
 function valorCsv(value) {
@@ -1222,6 +1224,7 @@ const MAPA_REPORT_CACHE_PREFIX = "mapa_concretagem_report_cache_v1";
 const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
 const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado";
 const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
+const DASHBOARD_MONTAGEM_SCREEN_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome";
 const DASHBOARD_SCOPE_OPTIONS = {
   "": "TOTAL",
   "Todos os Setores": "TOTAL",
@@ -10888,7 +10891,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.75", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.76", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10963,6 +10966,14 @@ function isLinhaMontagemDashboard(row) {
   const etapa = String(row?.etapa || "").trim().toUpperCase();
   if (etapa === "INSPECAO" || etapa === "REINSPECAO") return false;
   return Boolean(row?.status_montagem || row?.finalizado_em);
+}
+
+function isLinhaAvaliacaoDefeitosDashboard(row) {
+  const setor = String(row?.setor || "").trim();
+  if (setor === "Setor 3" || setor === "Setor 4") {
+    return Boolean(row?.status_montagem || row?.finalizado_em);
+  }
+  return isLinhaMontagemDashboard(row);
 }
 
 function isLinhaDefeitoDashboard(row) {
@@ -11547,43 +11558,27 @@ function limparLayoutDashboardDefeitos() {
 
 async function carregarMontagemIndicadores() {
   if (!supabaseClient) return;
-  const dashboardKind = state.mode === "DASHBOARD_DEFEITOS" ? "defeitos" : "montagem";
+  const dashboardKind = "montagem";
   const requestId = ++dashboardRequestSeq[dashboardKind];
   const dStart = getDashboardFilterValue("DataInicio", todayYmd());
   const dEnd = getDashboardFilterValue("DataFim", todayYmd());
   const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
   const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
-  const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
-  const scope = getDashboardScopeFromSetor(setorFiltro);
-  
-  if (dashboardKind === "defeitos") atualizarResumoFiltrosDefeitos();
-  setSyncStatus("pending", dashboardKind === "defeitos" ? "Carregando dashboard de defeitos..." : "Carregando indicadores de montagem...");
-  try {
-    const rpcPromise = dashboardKind === "defeitos"
-      ? chamarDashboardRpcComCache("rpc_dashboard_defeitos_resumo_v1", {
-          p_data_inicio: dStart,
-          p_data_fim: dEnd,
-          p_scope: scope
-        }, `rpc:defeitos:resumo:${dStart}:${dEnd}:${scope}`).catch((err) => {
-          console.warn("RPC de defeitos indisponivel; mantendo calculo local:", err);
-          return null;
-        })
-      : chamarDashboardRpcComCache("rpc_dashboard_montagem_resumo_v1", {
-          p_data_inicio: dStart,
-          p_data_fim: dEnd,
-          p_scope: scope
-        }, `rpc:montagem:resumo:${dStart}:${dEnd}:${scope}`).catch((err) => {
-          console.warn("RPC de montagem indisponivel; mantendo calculo local:", err);
-          return null;
-        });
 
-    const [montagemRes, producaoRes, rpcRes] = await Promise.all([
+  setSyncStatus("pending", "Carregando indicadores de montagem...");
+  try {
+    // O resumo e calculado localmente com a mesma base exibida. O antigo RPC de
+    // montagem era redundante e podia estourar o statement_timeout ao abrir a tela.
+    const [montagemRes, producaoRes] = await Promise.all([
       carregarLinhasSupabaseComCache({
-        cacheKey: `${dashboardKind}:montagem_poste:${dStart}:${dEnd}`,
+        cacheKey: `${dashboardKind}:montagem_poste:screen-v2:${dStart}:${dEnd}`,
         table: "montagem_poste",
-        select: DASHBOARD_MONTAGEM_SELECT,
-        orderBy: "data_fabricacao",
-        orderOptions: { ascending: false },
+        select: DASHBOARD_MONTAGEM_SCREEN_SELECT,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
         applyFilters: query => query
           .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
       }),
@@ -11591,11 +11586,15 @@ async function carregarMontagemIndicadores() {
         cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
         table: "producao",
         select: DASHBOARD_PRODUCAO_SELECT,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
         applyFilters: query => query
           .gte("data_fabricacao", dStart)
           .lte("data_fabricacao", dEnd)
-      }),
-      rpcPromise
+      })
     ]);
 
     if (requestId !== dashboardRequestSeq[dashboardKind]) return;
@@ -11605,10 +11604,9 @@ async function carregarMontagemIndicadores() {
     
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
-    if (dashboardKind === "defeitos" && rpcRes?.payload) renderIndicadoresDefeitosContrato(rpcRes.payload, producaoRes.rows || []);
-    const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" || rpcRes?.state === "OFFLINE_CACHE";
-    if (fromCache) setSyncStatus("warn", dashboardKind === "defeitos" ? "Dashboard Defeitos carregado do cache local." : "Indicadores carregados do cache local.");
-    else setSyncStatus("ok", dashboardKind === "defeitos" ? "Dashboard Defeitos atualizado." : "Indicadores de montagem atualizados.");
+    const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE";
+    if (fromCache) setSyncStatus("warn", "Indicadores carregados do cache local.");
+    else setSyncStatus("ok", "Indicadores de montagem atualizados.");
     
   } catch(err) {
     console.error("Erro carregarMontagemIndicadores:", err);
@@ -11623,22 +11621,40 @@ async function carregarDashboardDefeitos() {
   const requestId = ++dashboardRequestSeq[dashboardKind];
   const dStart = getDashboardFilterValue("DataInicio", todayYmd());
   const dEnd = getDashboardFilterValue("DataFim", todayYmd());
+  const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
+  const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
   const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
+  const statusFiltro = getDashboardFilterValue("FiltroStatus", "");
   const scope = getDashboardScopeFromSetor(setorFiltro);
 
   atualizarResumoFiltrosDefeitos();
   setSyncStatus("pending", "Carregando dashboard de defeitos...");
   try {
-    const [rpcRes, producaoRes] = await Promise.all([
-      chamarDashboardRpcComCache("rpc_dashboard_defeitos_resumo_v1", {
-        p_data_inicio: dStart,
-        p_data_fim: dEnd,
-        p_scope: scope
-      }, `rpc:defeitos:resumo:${dStart}:${dEnd}:${scope}`),
+    // O contrato RPC anterior excedia o statement_timeout em periodos extensos.
+    // A tela agora calcula tudo a partir das bases paginadas e mantem o mesmo
+    // conjunto de dados usado no detalhamento e na exportacao.
+    const [montagemRes, producaoRes] = await Promise.all([
+      carregarLinhasSupabaseComCache({
+        cacheKey: `${dashboardKind}:montagem_poste:local-v2:${dStart}:${dEnd}`,
+        table: "montagem_poste",
+        select: DASHBOARD_MONTAGEM_SELECT,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
+          .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
+      }),
       carregarLinhasSupabaseComCache({
         cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
         table: "producao",
         select: DASHBOARD_PRODUCAO_SELECT,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
         applyFilters: query => query
           .gte("data_fabricacao", dStart)
           .lte("data_fabricacao", dEnd)
@@ -11646,12 +11662,60 @@ async function carregarDashboardDefeitos() {
     ]);
 
     if (requestId !== dashboardRequestSeq[dashboardKind]) return;
-    renderIndicadoresDefeitosContrato(rpcRes.payload, producaoRes.rows || []);
+    const pertenceAoSetor = row => {
+      if (!setorFiltro || normalizarTexto(setorFiltro).startsWith("todos")) return true;
+      if (setorFiltro === "Setores 1 e 2") return row.setor === "Setor 1" || row.setor === "Setor 2";
+      return row.setor === setorFiltro;
+    };
+    const pertenceAoStatus = row => {
+      if (!statusFiltro || normalizarTexto(statusFiltro).startsWith("todos")) return true;
+      if (statusFiltro === "A") return String(row.status_montagem || "").toUpperCase() === "A" && !isLinhaDefeitoDashboard(row);
+      if (statusFiltro === "R") return isLinhaDefeitoDashboard(row);
+      return String(row.status_montagem || "").toUpperCase() === statusFiltro.toUpperCase();
+    };
+    const montagemRows = (montagemRes.rows || []).filter(row => {
+      const day = getMiDataReferencia(row);
+      return isLinhaAvaliacaoDefeitosDashboard(row)
+        && day >= dStart
+        && day <= dEnd
+        && pertenceAoSetor(row)
+        && pertenceAoStatus(row);
+    });
+    const producaoRows = (producaoRes.rows || []).filter(pertenceAoSetor);
+    const indicadores = calcularIndicadoresDefeitosMontagem(montagemRows, producaoRows);
+    renderIndicadoresDefeitosMontagem(indicadores);
+
+    const includedSectorsByScope = {
+      S1: ["Setor 1"],
+      S2: ["Setor 2"],
+      S3: ["Setor 3"],
+      S4: ["Setor 4"],
+      S1_S2: ["Setor 1", "Setor 2"],
+      TOTAL: ["Setor 1", "Setor 2", "Setor 3", "Setor 4"]
+    };
+    const includedSectors = includedSectorsByScope[scope] || includedSectorsByScope.TOTAL;
+    const badge = document.getElementById("miDefSetoresBadge");
+    if (badge) badge.textContent = `${includedSectors.map(item => item.replace("Setor ", "S")).join("+")} recalculado`;
+    miDefeitosExportData = {
+      scope,
+      includedSectors,
+      kpis: {
+        producao: indicadores.producao,
+        postes: indicadores.postes,
+        total_erros: indicadores.totalErros,
+        total_possivel: indicadores.totalPossivel,
+        postes_reprovados: indicadores.postesReprovados,
+        retrabalho: indicadores.retrabalho
+      },
+      bySector: indicadores.porSetor,
+      byDefect: indicadores.porTipo,
+      defectMatrix: indicadores.matriz
+    };
     const updated = document.getElementById("dfAtualizadoLabel");
     if (updated) updated.textContent = `Atualizado ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     setSyncStatus(
-      rpcRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "warn" : "ok",
-      rpcRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
+      montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "warn" : "ok",
+      montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
     );
   } catch (err) {
     console.error("Erro carregarDashboardDefeitos:", err);
@@ -11689,11 +11753,11 @@ function aplicarFiltrosEExibirMontagem() {
 
     // Filtro por Status
     if (fStatus) {
-      const rejeitadosCount = obterItensRejeitadosLinha(row).length;
+      const possuiDefeito = isLinhaDefeitoDashboard(row);
       if (fStatus === "R") {
-        if (rejeitadosCount === 0) return false;
+        if (!possuiDefeito) return false;
       } else if (fStatus === "A") {
-        if (rejeitadosCount > 0) return false;
+        if (possuiDefeito || row.status_montagem !== "A") return false;
       } else if (row.status_montagem !== fStatus) {
         return false;
       }
@@ -11742,13 +11806,13 @@ function aplicarFiltrosEExibirMontagem() {
 
   miFilteredMontagemData.forEach(row => {
     const day = getMiDataReferencia(row);
-    const rejeitadosCount = obterItensRejeitadosLinha(row).length;
+    const possuiDefeito = isLinhaDefeitoDashboard(row);
     if (row.status_montagem === "A") totalAprovados++;
-    if (rejeitadosCount > 0) totalRecusados++;
+    if (possuiDefeito) totalRecusados++;
     
     if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
     byDay[day].total++;
-    if (rejeitadosCount > 0) byDay[day].recusados++;
+    if (possuiDefeito) byDay[day].recusados++;
     else byDay[day].aprovados++;
     
     const sec = row.setor || "Desconhecido";
@@ -11947,48 +12011,149 @@ function dividirPeriodoYmd(inicio, fim, diasPorLote = 7) {
 
 async function carregarBaseExportacaoPorPeriodo({ table, select, inicio, fim, onProgress }) {
   const carregarIntervalo = async (loteInicio, loteFim) => {
-    try {
-      const result = await carregarLinhasSupabaseComCache({
-        table,
-        select,
-        pageSize: 500,
-        maxPages: 100,
-        timeoutMs: 60000,
-        orderBy: "id",
-        orderOptions: { ascending: true },
-        applyFilters: query => query
-          .gte("data_fabricacao", loteInicio)
-          .lte("data_fabricacao", loteFim)
-      });
-      return result.rows || [];
-    } catch (err) {
-      const mensagem = String(err?.message || err || "").toLowerCase();
-      const timeout = mensagem.includes("statement timeout") || mensagem.includes("canceling statement") || mensagem.includes("57014");
-      const totalDias = diferencaDiasYmd(loteInicio, loteFim);
-      if (!timeout || totalDias <= 0) throw err;
-      const meio = somarDiasYmd(loteInicio, Math.floor(totalDias / 2));
-      const [esquerda, direita] = await Promise.all([
-        carregarIntervalo(loteInicio, meio),
-        carregarIntervalo(somarDiasYmd(meio, 1), loteFim)
-      ]);
-      return esquerda.concat(direita);
+    let ultimoErro = null;
+    for (let tentativa = 0; tentativa < 3; tentativa++) {
+      try {
+        const result = await carregarLinhasSupabaseComCache({
+          table,
+          select,
+          pageSize: 500,
+          maxPages: 100,
+          timeoutMs: 60000,
+          orderBy: "id",
+          orderOptions: { ascending: true },
+          applyFilters: query => query
+            .gte("data_fabricacao", loteInicio)
+            .lte("data_fabricacao", loteFim)
+        });
+        return result.rows || [];
+      } catch (err) {
+        ultimoErro = err;
+        const mensagem = String(err?.message || err || "").toLowerCase();
+        const timeoutBanco = mensagem.includes("statement timeout") || mensagem.includes("canceling statement") || mensagem.includes("57014");
+        const erroTransitorio = timeoutBanco
+          || err?.name === "AbortError"
+          || mensagem.includes("failed to fetch")
+          || mensagem.includes("network")
+          || mensagem.includes("timeout")
+          || /\b(502|503|504)\b/.test(mensagem);
+        const totalDias = diferencaDiasYmd(loteInicio, loteFim);
+
+        // Um lote que excede o limite do banco e dividido ate chegar a um unico dia.
+        if (timeoutBanco && totalDias > 0) {
+          const meio = somarDiasYmd(loteInicio, Math.floor(totalDias / 2));
+          const [esquerda, direita] = await Promise.all([
+            carregarIntervalo(loteInicio, meio),
+            carregarIntervalo(somarDiasYmd(meio, 1), loteFim)
+          ]);
+          return esquerda.concat(direita);
+        }
+        if (!erroTransitorio || tentativa === 2) throw err;
+        await new Promise(resolve => window.setTimeout(resolve, 500 * (tentativa + 1)));
+      }
     }
+    throw ultimoErro || new Error("Falha ao carregar lote da exportacao.");
   };
 
-  const rows = [];
   const lotes = dividirPeriodoYmd(inicio, fim, 7);
+  const resultados = new Array(lotes.length);
+  let proximoLote = 0;
+  let concluidos = 0;
   if (typeof onProgress === "function") onProgress(0, lotes.length);
-  for (let index = 0; index < lotes.length; index++) {
-    const [loteInicio, loteFim] = lotes[index];
-    rows.push(...await carregarIntervalo(loteInicio, loteFim));
-    if (typeof onProgress === "function") onProgress(index + 1, lotes.length);
-  }
+
+  // Dois lotes simultaneos reduzem o tempo total sem sobrecarregar o Supabase.
+  const worker = async () => {
+    while (proximoLote < lotes.length) {
+      const index = proximoLote++;
+      const [loteInicio, loteFim] = lotes[index];
+      resultados[index] = await carregarIntervalo(loteInicio, loteFim);
+      concluidos++;
+      if (typeof onProgress === "function") onProgress(concluidos, lotes.length);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(2, lotes.length) }, worker));
+
+  const rows = resultados.flat();
   const unicos = new Map(rows.map(row => [String(row.id || JSON.stringify(row)), row]));
   return [...unicos.values()].sort((a, b) => {
     const dataA = `${a.data_fabricacao || ""}|${a.id || ""}`;
     const dataB = `${b.data_fabricacao || ""}|${b.id || ""}`;
     return dataA.localeCompare(dataB, "pt-BR", { numeric: true });
   });
+}
+
+async function escolherDestinoExportacaoXlsx(nomeArquivo) {
+  if (typeof window.showSaveFilePicker !== "function" || !window.isSecureContext) {
+    return { handle: null, cancelado: false };
+  }
+  try {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: nomeArquivo,
+      types: [{
+        description: "Planilha do Excel",
+        accept: { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"] }
+      }]
+    });
+    return { handle, cancelado: false };
+  } catch (err) {
+    if (err?.name === "AbortError") return { handle: null, cancelado: true };
+    console.warn("Seletor nativo de arquivo indisponivel; usando download do navegador:", err);
+    return { handle: null, cancelado: false };
+  }
+}
+
+async function salvarWorkbookXlsx(workbook, nomeArquivo, fileHandle) {
+  const bytes = window.XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+    compression: true
+  });
+  if (!bytes || !bytes.byteLength) throw new Error("A planilha foi gerada sem conteudo.");
+
+  const mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  const blob = new Blob([bytes], { type: mime });
+  if (fileHandle) {
+    const writable = await fileHandle.createWritable();
+    try {
+      await writable.write(blob);
+    } finally {
+      await writable.close();
+    }
+  } else {
+    baixarArquivoBlob(blob, nomeArquivo, mime);
+  }
+  return blob.size;
+}
+
+function criarResumoExportacaoMontagem(montagemRows, producaoRows, dStart, dEnd) {
+  const realizadas = montagemRows.filter(isLinhaMontagemDashboard);
+  const aprovadas = realizadas.filter(row => String(row.status_montagem || "").trim().toUpperCase() === "A").length;
+  const naoConformes = realizadas.filter(isLinhaDefeitoDashboard).length;
+  const retrabalhos = realizadas.filter(row => isMontagemRetrabalhoStatus(row.status_montagem)).length;
+  const atingimento = producaoRows.length > 0 ? (realizadas.length / producaoRows.length) * 100 : 0;
+  const aprovacao = realizadas.length > 0 ? (aprovadas / realizadas.length) * 100 : 0;
+  const percentual = valor => `${valor.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+
+  return [
+    ["RELATORIO COMPLETO - DASHBOARD MONTAGEM"],
+    ["Periodo", `${fmtDate(dStart)} a ${fmtDate(dEnd)}`],
+    ["Gerado em", new Date().toLocaleString("pt-BR")],
+    [],
+    ["INDICADORES PRINCIPAIS", "VALOR", "MEMORIA DE CALCULO"],
+    ["Programado", producaoRows.length, "Quantidade de registros na base de Producao"],
+    ["Realizado", realizadas.length, "Quantidade de montagens concluidas"],
+    ["Atingimento", percentual(atingimento), "Realizado / Programado x 100"],
+    [],
+    ["INDICADORES SECUNDARIOS", "VALOR", "MEMORIA DE CALCULO"],
+    ["Aprovados", aprovadas, "Montagens concluidas com status Aprovado"],
+    ["Taxa de aprovacao", percentual(aprovacao), "Aprovados / Realizado x 100"],
+    ["Nao conformes", naoConformes, "Status de reprovacao, retrabalho ou checklist com item nao conforme"],
+    ["Retrabalhos", retrabalhos, "Montagens com status de retrabalho"],
+    [],
+    ["BASES EXPORTADAS", "REGISTROS"],
+    ["Base Montagem", montagemRows.length],
+    ["Base Producao", producaoRows.length]
+  ];
 }
 
 async function exportarMontagemIndicadoresXlsx() {
@@ -11999,6 +12164,17 @@ async function exportarMontagemIndicadoresXlsx() {
 
   const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
   const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  if (dStart > dEnd) {
+    showMsgBox("O inicio do periodo nao pode ser posterior ao fim.", "error");
+    return;
+  }
+
+  const nomeArquivo = `base_completa_montagem_${dStart}_a_${dEnd}.xlsx`;
+  // Abre o destino enquanto o clique do usuario ainda esta ativo. Isso evita que
+  // navegadores bloqueiem o download depois de uma consulta longa.
+  const destino = await escolherDestinoExportacaoXlsx(nomeArquivo);
+  if (destino.cancelado) return;
+
   const button = document.getElementById("miBtnExportarXlsx");
   const label = button?.textContent || "Exportar XLSX";
   if (button) {
@@ -12085,13 +12261,18 @@ async function exportarMontagemIndicadoresXlsx() {
 
     const xlsx = window.XLSX;
     const wb = xlsx.utils.book_new();
+    const wsResumo = xlsx.utils.aoa_to_sheet(criarResumoExportacaoMontagem(montagemRows, producaoRows, dStart, dEnd));
+    wsResumo["!cols"] = [{ wch: 30 }, { wch: 22 }, { wch: 62 }];
+    xlsx.utils.book_append_sheet(wb, wsResumo, "Resumo");
     const wsMontagem = xlsx.utils.json_to_sheet(linhasMontagem);
     wsMontagem["!cols"] = Object.keys(linhasMontagem[0] || {}).map(key => ({ wch: Math.min(55, Math.max(14, key.length + 3)) }));
+    if (wsMontagem["!ref"]) wsMontagem["!autofilter"] = { ref: wsMontagem["!ref"] };
     xlsx.utils.book_append_sheet(wb, wsMontagem, "Base Montagem");
     const wsProducao = xlsx.utils.json_to_sheet(linhasProducao);
     wsProducao["!cols"] = Object.keys(linhasProducao[0] || {}).map(key => ({ wch: Math.min(40, Math.max(14, key.length + 3)) }));
+    if (wsProducao["!ref"]) wsProducao["!autofilter"] = { ref: wsProducao["!ref"] };
     xlsx.utils.book_append_sheet(wb, wsProducao, "Base Producao");
-    xlsx.writeFile(wb, `base_completa_montagem_${dStart}_a_${dEnd}.xlsx`, { compression: true });
+    await salvarWorkbookXlsx(wb, nomeArquivo, destino.handle);
     showMsgBox(`${montagemRows.length} registro(s) de montagem e ${producaoRows.length} registro(s) de producao exportados.`, "success");
   } catch (err) {
     console.error("Erro ao exportar base completa de montagem:", err);
@@ -12390,8 +12571,8 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   }
 
   const isMobile = window.innerWidth < 768;
-  const labelFontSize = isMobile ? 9 : 12;
-  const legendBoxWidth = isMobile ? 8 : 12;
+  const labelFontSize = isMobile ? 12 : 16;
+  const legendBoxWidth = isMobile ? 10 : 15;
 
   // Por Dia
   const unionSet = new Set([
@@ -12524,7 +12705,7 @@ window.abrirFotoVisualizacao = function(src) {
   }
 };
 
-window.abrirVisualizacaoChecklist = function(idOrRow) {
+window.abrirVisualizacaoChecklist = async function(idOrRow) {
   let row;
   if (typeof idOrRow === "object" && idOrRow !== null) {
     row = idOrRow;
@@ -12534,6 +12715,24 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
       : null;
   }
   if (!row) return;
+
+  // A tela usa uma consulta leve. Os campos grandes do checklist sao buscados
+  // apenas quando o usuario abre um registro, preservando o detalhe completo.
+  if (!Object.prototype.hasOwnProperty.call(row, "checklists") && supabaseClient && row.id) {
+    try {
+      const { data, error } = await supabaseClient
+        .from("montagem_poste")
+        .select(DASHBOARD_MONTAGEM_SELECT)
+        .eq("id", row.id)
+        .maybeSingle();
+      if (error) throw error;
+      if (data) row = data;
+    } catch (err) {
+      console.warn("Nao foi possivel carregar os detalhes do checklist:", err);
+      showMsgBox("Nao foi possivel abrir os detalhes completos deste checklist.", "error");
+      return;
+    }
+  }
 
   // Normalizar propriedades para suportar tanto snake_case do Supabase quanto camelCase do frontend local
   const normRow = {
@@ -13134,7 +13333,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.75&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.76&ts=${Date.now()}`);
       }
     });
   }

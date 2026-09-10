@@ -30,7 +30,9 @@ test('Dashboard Defeitos possui view e filtros proprios', () => {
   assert.match(html, /id="dfFiltroSetor"/);
   assert.match(html, /id="dfContent"/);
   assert.match(app, /function carregarDashboardDefeitos/);
-  assert.match(app, /rpc_dashboard_defeitos_resumo_v1/);
+  assert.match(app, /function isLinhaAvaliacaoDefeitosDashboard/);
+  assert.match(app, /montagem_poste:local-v2/);
+  assert.doesNotMatch(app, /chamarDashboardRpcComCache\("rpc_dashboard_defeitos_resumo_v1"/);
 });
 
 test('exportacoes dos dashboards possuem acionamento e dependencias locais', () => {
@@ -42,9 +44,9 @@ test('exportacoes dos dashboards possuem acionamento e dependencias locais', () 
   assert.match(html, /id="dfBtnExportarCsv"/);
   assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
   assert.match(app, /function exportarDashboardDefeitosCsv/);
-  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.75"/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.76"/);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
-  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.75/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.76/);
   assert.ok(fs.statSync(xlsxPath).size > 100000);
 });
 
@@ -58,8 +60,13 @@ test('XLSX consulta e exporta as bases completas do periodo', () => {
   assert.match(app, /async function carregarBaseExportacaoPorPeriodo/);
   assert.match(app, /pageSize: 500/);
   assert.match(app, /mensagem\.includes\("statement timeout"\)/);
-  assert.match(app, /onProgress\(index \+ 1, lotes\.length\)/);
+  assert.match(app, /Array\.from\(\{ length: Math\.min\(2, lotes\.length\) \}, worker\)/);
+  assert.match(app, /onProgress\(concluidos, lotes\.length\)/);
   assert.match(app, /`Exportando \$\{feitos\}\/\$\{lotes\}\.\.\.`/);
+  assert.match(app, /showSaveFilePicker/);
+  assert.match(app, /type: "array"/);
+  assert.match(app, /baixarArquivoBlob\(blob, nomeArquivo, mime\)/);
+  assert.match(app, /book_append_sheet\(wb, wsResumo, "Resumo"\)/);
   assert.match(app, /book_append_sheet\(wb, wsMontagem, "Base Montagem"\)/);
   assert.match(app, /book_append_sheet\(wb, wsProducao, "Base Producao"\)/);
   assert.doesNotMatch(app, /DASHBOARD_MONTAGEM_SELECT = "[^"]*codigo_poste/);
@@ -70,6 +77,8 @@ test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {
 
   assert.match(app, /const DASHBOARD_PRODUCAO_SELECT = "/);
   assert.match(app, /const DASHBOARD_MONTAGEM_SELECT = "/);
+  assert.match(app, /const DASHBOARD_MONTAGEM_SCREEN_SELECT = "/);
+  assert.match(app, /O antigo RPC de[\s\S]+statement_timeout/);
   assert.doesNotMatch(app, /select:\s*["']\*["']/);
   assert.doesNotMatch(app, /\.select\(opts\.select \|\| ["']\*["']\)/);
 });
