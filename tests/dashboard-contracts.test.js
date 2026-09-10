@@ -6,6 +6,13 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
+const sliceBetween = (source, start, end) => {
+  const from = source.indexOf(start);
+  const to = source.indexOf(end, from + start.length);
+  assert.ok(from >= 0, `Inicio nao encontrado: ${start}`);
+  assert.ok(to > from, `Fim nao encontrado: ${end}`);
+  return source.slice(from, to);
+};
 
 test('dataset ouro preserva invariantes de Total e S1_S2', () => {
   const dataset = JSON.parse(read('docs/dataset-ouro-dashboards-v1.json'));
@@ -44,32 +51,63 @@ test('exportacoes dos dashboards possuem acionamento e dependencias locais', () 
   assert.match(html, /id="dfBtnExportarCsv"/);
   assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
   assert.match(app, /function exportarDashboardDefeitosCsv/);
-  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.76"/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.77"/);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
-  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.76/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.77/);
   assert.ok(fs.statSync(xlsxPath).size > 100000);
 });
 
-test('XLSX consulta e exporta as bases completas do periodo', () => {
+test('XLSX v1.77 exporta montagem completa e usa producao somente como lookup', () => {
   const app = read('mapa-concretagem-teste/app.js');
+  const loader = sliceBetween(app, 'async function carregarBaseExportacaoPorPeriodo', 'async function carregarLookupProducaoPorRecordIds');
+  const lookup = sliceBetween(app, 'async function carregarLookupProducaoPorRecordIds', 'async function salvarWorkbookXlsx');
+  const exporter = sliceBetween(app, 'async function exportarMontagemIndicadoresXlsx', 'function obterItensRejeitadosLinha');
 
-  assert.match(app, /row\?\.finalizado_em \|\| row\?\.finalizadoEm \|\| row\?\.inicio_inspecao_montagem/);
-  assert.match(app, /\.or\(`and\(finalizado_em\.gte\.\$\{montagemStartIso\}/);
-  assert.match(app, /async function exportarMontagemIndicadoresXlsx/);
   assert.match(app, /function dividirPeriodoYmd\(inicio, fim, diasPorLote = 7\)/);
-  assert.match(app, /async function carregarBaseExportacaoPorPeriodo/);
-  assert.match(app, /pageSize: 500/);
-  assert.match(app, /mensagem\.includes\("statement timeout"\)/);
-  assert.match(app, /Array\.from\(\{ length: Math\.min\(2, lotes\.length\) \}, worker\)/);
-  assert.match(app, /onProgress\(concluidos, lotes\.length\)/);
-  assert.match(app, /`Exportando \$\{feitos\}\/\$\{lotes\}\.\.\.`/);
-  assert.match(app, /showSaveFilePicker/);
-  assert.match(app, /type: "array"/);
-  assert.match(app, /baixarArquivoBlob\(blob, nomeArquivo, mime\)/);
-  assert.match(app, /book_append_sheet\(wb, wsResumo, "Resumo"\)/);
-  assert.match(app, /book_append_sheet\(wb, wsMontagem, "Base Montagem"\)/);
-  assert.match(app, /book_append_sheet\(wb, wsProducao, "Base Producao"\)/);
+  assert.match(app, /const EXPORTACAO_MONTAGEM_PAGE_SIZE = 500/);
+  assert.match(app, /const EXPORTACAO_MONTAGEM_TIMEOUT_MS = 120000/);
+  assert.match(loader, /table !== "montagem_poste"/);
+  assert.match(loader, /\.gte\("data_fabricacao", loteInicio\)/);
+  assert.match(loader, /\.lte\("data_fabricacao", loteFim\)/);
+  assert.match(loader, /const from = pagina \* EXPORTACAO_MONTAGEM_PAGE_SIZE/);
+  assert.match(loader, /const to = pagina \* EXPORTACAO_MONTAGEM_PAGE_SIZE \+ 499/);
+  assert.match(loader, /Intervalo \[\$\{loteInicio\} a \$\{loteFim\}\] excedeu 50\.000 linhas/);
+  assert.match(app, /Lote \[\$\{loteInicio\}\].*carregado/);
+  assert.match(loader, /row\?\.id === null \|\| row\?\.id === undefined/);
+  assert.match(loader, /for \(let index = 0; index < lotes\.length; index\+\+\)/);
+  assert.doesNotMatch(loader, /carregarLinhasSupabaseComCache|localStorage|Promise\.all/);
+
+  assert.match(app, /const EXPORTACAO_PRODUCAO_LOOKUP_SIZE = 300/);
+  assert.match(lookup, /recordIds\.length/);
+  assert.match(lookup, /\.select\("id,codigo_poste,descricao_poste,codigo_produto"\)/);
+  assert.match(lookup, /\.in\("id", lote\)/);
+  assert.doesNotMatch(lookup, /data_fabricacao|localStorage|Promise\.all/);
+
+  assert.match(exporter, /`base_montagem_\$\{dStart\}_a_\$\{dEnd\}\.xlsx`/);
+  assert.match(exporter, /carregarLookupProducaoPorRecordIds\(montagemRows\)/);
+  assert.match(exporter, /book_append_sheet\(wb, wsResumo, "Resumo"\)/);
+  assert.match(exporter, /book_append_sheet\(wb, wsMontagem, "Base Montagem"\)/);
+  assert.match(exporter, /baixarArquivoBlob|salvarWorkbookXlsx/);
+  assert.doesNotMatch(exporter, /Base Producao|showSaveFilePicker|localStorage|Promise\.all/);
+  assert.doesNotMatch(app, /async function escolherDestinoExportacaoXlsx/);
   assert.doesNotMatch(app, /DASHBOARD_MONTAGEM_SELECT = "[^"]*codigo_poste/);
+});
+
+test('arquivos publicos apontam integralmente para v1.77', () => {
+  const app = read('mapa-concretagem-teste/app.js');
+  const html = read('mapa-concretagem-teste/index.html');
+  const manifest = read('mapa-concretagem-teste/manifest.json');
+  const reset = read('mapa-concretagem-teste/reset-cache.html');
+  const sw = read('mapa-concretagem-teste/sw.js');
+
+  for (const source of [app, html, manifest, reset, sw]) {
+    assert.doesNotMatch(source, /v1\.76/);
+  }
+  assert.match(app, /sw\.js\?v=v1\.77/);
+  assert.match(html, /app\.js\?v=v1\.77/);
+  assert.match(manifest, /cache-reset=v1\.77/);
+  assert.match(reset, /abrir v1\.77/);
+  assert.match(sw, /mapa-concretagem-teste-v1\.77/);
 });
 
 test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {

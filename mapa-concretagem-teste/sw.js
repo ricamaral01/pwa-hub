@@ -1,16 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker
-   v1.76: estabiliza dashboard e exportacao XLSX completa
+   v1.77: garante exportacao XLSX completa da base de montagem
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.76";
+const CACHE_NAME = "mapa-concretagem-teste-v1.77";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v1.76",
-  "./styles.css?v=v1.76",
-  "./dashboard-defeitos-v4.css?v=v1.76",
-  "./app.js?v=v1.76",
-  "./xlsx.full.min.js?v=v1.76",
+  "./manifest.json?v=v1.77",
+  "./styles.css?v=v1.77",
+  "./dashboard-defeitos-v4.css?v=v1.77",
+  "./app.js?v=v1.77",
+  "./xlsx.full.min.js?v=v1.77",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

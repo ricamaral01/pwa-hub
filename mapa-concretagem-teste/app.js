@@ -10891,7 +10891,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.76", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.77", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12009,100 +12009,225 @@ function dividirPeriodoYmd(inicio, fim, diasPorLote = 7) {
   return lotes;
 }
 
-async function carregarBaseExportacaoPorPeriodo({ table, select, inicio, fim, onProgress }) {
-  const carregarIntervalo = async (loteInicio, loteFim) => {
-    let ultimoErro = null;
-    for (let tentativa = 0; tentativa < 3; tentativa++) {
-      try {
-        const result = await carregarLinhasSupabaseComCache({
-          table,
-          select,
-          pageSize: 500,
-          maxPages: 100,
-          timeoutMs: 60000,
-          orderBy: "id",
-          orderOptions: { ascending: true },
-          applyFilters: query => query
-            .gte("data_fabricacao", loteInicio)
-            .lte("data_fabricacao", loteFim)
-        });
-        return result.rows || [];
-      } catch (err) {
-        ultimoErro = err;
-        const mensagem = String(err?.message || err || "").toLowerCase();
-        const timeoutBanco = mensagem.includes("statement timeout") || mensagem.includes("canceling statement") || mensagem.includes("57014");
-        const erroTransitorio = timeoutBanco
-          || err?.name === "AbortError"
-          || mensagem.includes("failed to fetch")
-          || mensagem.includes("network")
-          || mensagem.includes("timeout")
-          || /\b(502|503|504)\b/.test(mensagem);
-        const totalDias = diferencaDiasYmd(loteInicio, loteFim);
+const EXPORTACAO_MONTAGEM_PAGE_SIZE = 500;
+const EXPORTACAO_MONTAGEM_MAX_PAGES = 100;
+const EXPORTACAO_MONTAGEM_TIMEOUT_MS = 120000;
+const EXPORTACAO_PRODUCAO_LOOKUP_SIZE = 300;
 
-        // Um lote que excede o limite do banco e dividido ate chegar a um unico dia.
-        if (timeoutBanco && totalDias > 0) {
-          const meio = somarDiasYmd(loteInicio, Math.floor(totalDias / 2));
-          const [esquerda, direita] = await Promise.all([
-            carregarIntervalo(loteInicio, meio),
-            carregarIntervalo(somarDiasYmd(meio, 1), loteFim)
-          ]);
-          return esquerda.concat(direita);
-        }
-        if (!erroTransitorio || tentativa === 2) throw err;
-        await new Promise(resolve => window.setTimeout(resolve, 500 * (tentativa + 1)));
-      }
-    }
-    throw ultimoErro || new Error("Falha ao carregar lote da exportacao.");
-  };
+function isErroExportacaoTransitorio(error) {
+  const mensagem = String(error?.message || error || "").toLowerCase();
+  return error?.name === "AbortError"
+    || mensagem.includes("statement timeout")
+    || mensagem.includes("canceling statement")
+    || mensagem.includes("57014")
+    || mensagem.includes("failed to fetch")
+    || mensagem.includes("network")
+    || mensagem.includes("timeout")
+    || /\b(429|502|503|504)\b/.test(mensagem);
+}
+
+async function executarConsultaExportacaoComTimeout(criarConsulta, timeoutMs = EXPORTACAO_MONTAGEM_TIMEOUT_MS) {
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  let timer = null;
+  const timeoutPromise = new Promise((resolve, reject) => {
+    timer = window.setTimeout(() => {
+      if (controller) controller.abort();
+      const timeoutError = new Error(`Timeout do cliente apos ${Math.round(timeoutMs / 1000)} segundos.`);
+      timeoutError.name = "AbortError";
+      reject(timeoutError);
+    }, timeoutMs);
+  });
+
+  try {
+    const queryPromise = Promise.resolve(criarConsulta(controller?.signal));
+    return await Promise.race([queryPromise, timeoutPromise]);
+  } finally {
+    if (timer) window.clearTimeout(timer);
+  }
+}
+
+function criarErroLoteDiario(loteInicio, ultimoErro) {
+  const error = new Error(`Lote [${loteInicio}] não pôde ser carregado`);
+  error.cause = ultimoErro;
+  return error;
+}
+
+async function carregarBaseExportacaoPorPeriodo({ table, select, inicio, fim, onProgress }) {
+  if (!supabaseClient) throw new Error("Supabase indisponivel para consultar a base de montagem.");
+  if (table !== "montagem_poste") throw new Error("A exportacao por periodo aceita somente a tabela montagem_poste.");
 
   const lotes = dividirPeriodoYmd(inicio, fim, 7);
-  const resultados = new Array(lotes.length);
-  let proximoLote = 0;
-  let concluidos = 0;
+  let totalPaginas = 0;
+  let totalLotesConsolidados = 0;
+  const resultados = [];
   if (typeof onProgress === "function") onProgress(0, lotes.length);
 
-  // Dois lotes simultaneos reduzem o tempo total sem sobrecarregar o Supabase.
-  const worker = async () => {
-    while (proximoLote < lotes.length) {
-      const index = proximoLote++;
-      const [loteInicio, loteFim] = lotes[index];
-      resultados[index] = await carregarIntervalo(loteInicio, loteFim);
-      concluidos++;
-      if (typeof onProgress === "function") onProgress(concluidos, lotes.length);
-    }
-  };
-  await Promise.all(Array.from({ length: Math.min(2, lotes.length) }, worker));
+  const carregarIntervaloUmaVez = async (loteInicio, loteFim, loteNumero, totalLotes) => {
+    const rows = [];
+    let paginas = 0;
 
-  const rows = resultados.flat();
-  const unicos = new Map(rows.map(row => [String(row.id || JSON.stringify(row)), row]));
-  return [...unicos.values()].sort((a, b) => {
+    for (let pagina = 0; pagina < EXPORTACAO_MONTAGEM_MAX_PAGES; pagina++) {
+      const from = pagina * EXPORTACAO_MONTAGEM_PAGE_SIZE;
+      const to = pagina * EXPORTACAO_MONTAGEM_PAGE_SIZE + 499;
+      const { data, error } = await executarConsultaExportacaoComTimeout(signal => {
+        let query = supabaseClient
+          .from(table)
+          .select(select)
+          .gte("data_fabricacao", loteInicio)
+          .lte("data_fabricacao", loteFim)
+          .order("id", { ascending: true })
+          .range(from, to);
+        if (signal && typeof query.abortSignal === "function") query = query.abortSignal(signal);
+        return query;
+      });
+      if (error) throw error;
+
+      const paginaRows = Array.isArray(data) ? data : [];
+      rows.push(...paginaRows);
+      paginas++;
+      console.log(`[export] montagem lote ${loteNumero}/${totalLotes} [${loteInicio}→${loteFim}] página ${pagina + 1}/? — ${paginaRows.length} linhas OK`);
+
+      if (paginaRows.length < EXPORTACAO_MONTAGEM_PAGE_SIZE) return { rows, paginas, lotesConsolidados: 1 };
+      if (pagina === EXPORTACAO_MONTAGEM_MAX_PAGES - 1) {
+        const limiteError = new Error(`Intervalo [${loteInicio} a ${loteFim}] excedeu 50.000 linhas, subdivida o período`);
+        limiteError.code = "EXPORT_INTERVAL_LIMIT";
+        throw limiteError;
+      }
+    }
+
+    throw new Error(`Intervalo [${loteInicio} a ${loteFim}] excedeu 50.000 linhas, subdivida o período`);
+  };
+
+  const carregarIntervalo = async (loteInicio, loteFim, loteNumero, totalLotes) => {
+    let ultimoErro = null;
+    for (let tentativa = 1; tentativa <= 3; tentativa++) {
+      try {
+        return await carregarIntervaloUmaVez(loteInicio, loteFim, loteNumero, totalLotes);
+      } catch (error) {
+        ultimoErro = error;
+        if (error?.code === "EXPORT_INTERVAL_LIMIT") throw error;
+        if (!isErroExportacaoTransitorio(error)) throw error;
+        console.warn(`[export] montagem lote ${loteNumero}/${totalLotes} [${loteInicio}→${loteFim}] tentativa ${tentativa}/3 falhou:`, error);
+        if (tentativa < 3) {
+          await new Promise(resolve => window.setTimeout(resolve, 750 * tentativa));
+        }
+      }
+    }
+
+    const totalDias = diferencaDiasYmd(loteInicio, loteFim);
+    if (totalDias <= 0) throw criarErroLoteDiario(loteInicio, ultimoErro);
+
+    const meio = somarDiasYmd(loteInicio, Math.floor(totalDias / 2));
+    console.warn(`[export] montagem lote ${loteNumero}/${totalLotes} [${loteInicio}→${loteFim}] subdividido após 3 tentativas.`);
+    const esquerda = await carregarIntervalo(loteInicio, meio, loteNumero, totalLotes);
+    const direita = await carregarIntervalo(somarDiasYmd(meio, 1), loteFim, loteNumero, totalLotes);
+    return {
+      rows: esquerda.rows.concat(direita.rows),
+      paginas: esquerda.paginas + direita.paginas,
+      lotesConsolidados: esquerda.lotesConsolidados + direita.lotesConsolidados
+    };
+  };
+
+  // Um unico worker sequencial evita concorrencia entre lotes e torna qualquer
+  // falha imediatamente fatal para a exportacao inteira.
+  for (let index = 0; index < lotes.length; index++) {
+    const [loteInicio, loteFim] = lotes[index];
+    const resultado = await carregarIntervalo(loteInicio, loteFim, index + 1, lotes.length);
+    resultados.push(...resultado.rows);
+    totalPaginas += resultado.paginas;
+    totalLotesConsolidados += resultado.lotesConsolidados;
+    console.log(`[export] montagem lote ${index + 1}/${lotes.length} total consolidado: ${resultado.rows.length} linhas`);
+    if (typeof onProgress === "function") onProgress(index + 1, lotes.length);
+  }
+
+  const rowsComId = [];
+  let totalIdsNulos = 0;
+  resultados.forEach(row => {
+    if (row?.id === null || row?.id === undefined) {
+      totalIdsNulos++;
+      return;
+    }
+    rowsComId.push(row);
+  });
+  if (totalIdsNulos > 0) {
+    console.warn(`[export] montagem: ${totalIdsNulos} linha(s) com id nulo foram descartadas antes da deduplicação.`);
+  }
+
+  const unicos = new Map();
+  rowsComId.forEach(row => unicos.set(String(row.id), row));
+  const rows = [...unicos.values()].sort((a, b) => {
     const dataA = `${a.data_fabricacao || ""}|${a.id || ""}`;
     const dataB = `${b.data_fabricacao || ""}|${b.id || ""}`;
     return dataA.localeCompare(dataB, "pt-BR", { numeric: true });
   });
+
+  console.log(`[export] montagem TOTAL: ${rows.length} linhas em ${totalLotesConsolidados} lotes / ${totalPaginas} páginas`);
+  return rows;
 }
 
-async function escolherDestinoExportacaoXlsx(nomeArquivo) {
-  if (typeof window.showSaveFilePicker !== "function" || !window.isSecureContext) {
-    return { handle: null, cancelado: false };
+async function carregarLookupProducaoPorRecordIds(montagemRows) {
+  const idsDistintos = new Map();
+  montagemRows.forEach(row => {
+    const recordId = row?.record_id;
+    if (recordId === null || recordId === undefined || String(recordId).trim() === "") return;
+    idsDistintos.set(String(recordId), recordId);
+  });
+
+  const recordIds = [...idsDistintos.values()];
+  const lotes = [];
+  for (let index = 0; index < recordIds.length; index += EXPORTACAO_PRODUCAO_LOOKUP_SIZE) {
+    lotes.push(recordIds.slice(index, index + EXPORTACAO_PRODUCAO_LOOKUP_SIZE));
   }
-  try {
-    const handle = await window.showSaveFilePicker({
-      suggestedName: nomeArquivo,
-      types: [{
-        description: "Planilha do Excel",
-        accept: { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"] }
-      }]
+  console.log(`[export] lookup producao: ${recordIds.length} record_ids distintos em ${lotes.length} lotes`);
+
+  const producaoPorId = new Map();
+  for (let index = 0; index < lotes.length; index++) {
+    const lote = lotes[index];
+    let resposta = null;
+    let ultimoErro = null;
+
+    for (let tentativa = 1; tentativa <= 3; tentativa++) {
+      try {
+        resposta = await executarConsultaExportacaoComTimeout(signal => {
+          let query = supabaseClient
+            .from("producao")
+            .select("id,codigo_poste,descricao_poste,codigo_produto")
+            .in("id", lote);
+          if (signal && typeof query.abortSignal === "function") query = query.abortSignal(signal);
+          return query;
+        });
+        if (resposta.error) throw resposta.error;
+        ultimoErro = null;
+        break;
+      } catch (error) {
+        ultimoErro = error;
+        console.warn(`[export] lookup producao lote ${index + 1}/${lotes.length} tentativa ${tentativa}/3 falhou:`, error);
+        if (tentativa < 3) await new Promise(resolve => window.setTimeout(resolve, 750 * tentativa));
+      }
+    }
+
+    if (ultimoErro || !resposta) {
+      const error = new Error(`Lookup de producao lote ${index + 1}/${lotes.length} não pôde ser carregado`);
+      error.cause = ultimoErro;
+      throw error;
+    }
+
+    const encontrados = Array.isArray(resposta.data) ? resposta.data : [];
+    encontrados.forEach(row => {
+      if (row?.id !== null && row?.id !== undefined) producaoPorId.set(String(row.id), row);
     });
-    return { handle, cancelado: false };
-  } catch (err) {
-    if (err?.name === "AbortError") return { handle: null, cancelado: true };
-    console.warn("Seletor nativo de arquivo indisponivel; usando download do navegador:", err);
-    return { handle: null, cancelado: false };
+    console.log(`[export] lookup producao lote ${index + 1}/${lotes.length} — ${lote.length} IDs, ${encontrados.length} encontrados`);
   }
+
+  idsDistintos.forEach((recordId, chave) => {
+    if (!producaoPorId.has(chave)) {
+      console.warn(`[export] lookup producao: record_id ${recordId} sem correspondente em producao.`);
+    }
+  });
+  return producaoPorId;
 }
 
-async function salvarWorkbookXlsx(workbook, nomeArquivo, fileHandle) {
+async function salvarWorkbookXlsx(workbook, nomeArquivo) {
   const bytes = window.XLSX.write(workbook, {
     bookType: "xlsx",
     type: "array",
@@ -12112,25 +12237,16 @@ async function salvarWorkbookXlsx(workbook, nomeArquivo, fileHandle) {
 
   const mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
   const blob = new Blob([bytes], { type: mime });
-  if (fileHandle) {
-    const writable = await fileHandle.createWritable();
-    try {
-      await writable.write(blob);
-    } finally {
-      await writable.close();
-    }
-  } else {
-    baixarArquivoBlob(blob, nomeArquivo, mime);
-  }
+  baixarArquivoBlob(blob, nomeArquivo, mime);
   return blob.size;
 }
 
-function criarResumoExportacaoMontagem(montagemRows, producaoRows, dStart, dEnd) {
+function criarResumoExportacaoMontagem(montagemRows, dStart, dEnd) {
   const realizadas = montagemRows.filter(isLinhaMontagemDashboard);
   const aprovadas = realizadas.filter(row => String(row.status_montagem || "").trim().toUpperCase() === "A").length;
   const naoConformes = realizadas.filter(isLinhaDefeitoDashboard).length;
   const retrabalhos = realizadas.filter(row => isMontagemRetrabalhoStatus(row.status_montagem)).length;
-  const atingimento = producaoRows.length > 0 ? (realizadas.length / producaoRows.length) * 100 : 0;
+  const atingimento = montagemRows.length > 0 ? (realizadas.length / montagemRows.length) * 100 : 0;
   const aprovacao = realizadas.length > 0 ? (aprovadas / realizadas.length) * 100 : 0;
   const percentual = valor => `${valor.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
 
@@ -12140,7 +12256,7 @@ function criarResumoExportacaoMontagem(montagemRows, producaoRows, dStart, dEnd)
     ["Gerado em", new Date().toLocaleString("pt-BR")],
     [],
     ["INDICADORES PRINCIPAIS", "VALOR", "MEMORIA DE CALCULO"],
-    ["Programado", producaoRows.length, "Quantidade de registros na base de Producao"],
+    ["Programado", montagemRows.length, "Quantidade total de montagens no periodo"],
     ["Realizado", realizadas.length, "Quantidade de montagens concluidas"],
     ["Atingimento", percentual(atingimento), "Realizado / Programado x 100"],
     [],
@@ -12151,8 +12267,7 @@ function criarResumoExportacaoMontagem(montagemRows, producaoRows, dStart, dEnd)
     ["Retrabalhos", retrabalhos, "Montagens com status de retrabalho"],
     [],
     ["BASES EXPORTADAS", "REGISTROS"],
-    ["Base Montagem", montagemRows.length],
-    ["Base Producao", producaoRows.length]
+    ["Base Montagem", montagemRows.length]
   ];
 }
 
@@ -12169,11 +12284,7 @@ async function exportarMontagemIndicadoresXlsx() {
     return;
   }
 
-  const nomeArquivo = `base_completa_montagem_${dStart}_a_${dEnd}.xlsx`;
-  // Abre o destino enquanto o clique do usuario ainda esta ativo. Isso evita que
-  // navegadores bloqueiem o download depois de uma consulta longa.
-  const destino = await escolherDestinoExportacaoXlsx(nomeArquivo);
-  if (destino.cancelado) return;
+  const nomeArquivo = `base_montagem_${dStart}_a_${dEnd}.xlsx`;
 
   const button = document.getElementById("miBtnExportarXlsx");
   const label = button?.textContent || "Exportar XLSX";
@@ -12182,36 +12293,19 @@ async function exportarMontagemIndicadoresXlsx() {
     button.textContent = "Exportando base...";
   }
   try {
-    const progresso = { montagem: [0, 0], producao: [0, 0] };
-    const atualizarProgresso = (tipo, concluidos, total) => {
-      progresso[tipo] = [concluidos, total];
-      const feitos = progresso.montagem[0] + progresso.producao[0];
-      const lotes = progresso.montagem[1] + progresso.producao[1];
-      if (button && lotes > 0) button.textContent = `Exportando ${feitos}/${lotes}...`;
-    };
-    const [montagemRows, producaoRows] = await Promise.all([
-      carregarBaseExportacaoPorPeriodo({
-        table: "montagem_poste",
-        select: DASHBOARD_MONTAGEM_SELECT,
-        inicio: dStart,
-        fim: dEnd,
-        onProgress: (concluidos, total) => atualizarProgresso("montagem", concluidos, total)
-      }),
-      carregarBaseExportacaoPorPeriodo({
-        table: "producao",
-        select: DASHBOARD_PRODUCAO_SELECT,
-        inicio: dStart,
-        fim: dEnd,
-        onProgress: (concluidos, total) => atualizarProgresso("producao", concluidos, total)
-      })
-    ]);
+    const montagemRows = await carregarBaseExportacaoPorPeriodo({
+      table: "montagem_poste",
+      select: DASHBOARD_MONTAGEM_SELECT,
+      inicio: dStart,
+      fim: dEnd,
+      onProgress: (concluidos, total) => {
+        if (button && total > 0) button.textContent = `Carregando montagem ${concluidos}/${total}...`;
+      }
+    });
 
-    if (!montagemRows.length && !producaoRows.length) {
-      showMsgBox("Nenhum registro encontrado no periodo selecionado.", "error");
-      return;
-    }
-
-    const producaoPorId = new Map(producaoRows.map(row => [String(row.id || ""), row]));
+    if (!montagemRows.length) throw new Error("Nenhum registro de montagem encontrado no periodo selecionado.");
+    if (button) button.textContent = "Consultando produtos...";
+    const producaoPorId = await carregarLookupProducaoPorRecordIds(montagemRows);
     const linhasMontagem = montagemRows.map(row => {
       const producao = producaoPorId.get(String(row.record_id || "")) || {};
       const inicio = row.inicio_inspecao_montagem || "";
@@ -12243,40 +12337,23 @@ async function exportarMontagemIndicadoresXlsx() {
         "Atualizado em": formatarDataHoraMontagemXlsx(row.updated_at || "")
       };
     });
-    const linhasProducao = producaoRows.map(row => ({
-      "ID producao": row.id || "",
-      "Data da producao": fmtDate(row.data_fabricacao || ""),
-      "Data/hora registro": formatarDataHoraMontagemXlsx(row.data_hora || ""),
-      "Setor": row.setor || "",
-      "Forma": row.forma || "",
-      "Modelo": row.modelo || "",
-      "Codigo do poste": row.codigo_poste || "",
-      "Descricao do poste": row.descricao_poste || "",
-      "Codigo do produto": row.codigo_produto || "",
-      "Tipo de concreto": row.tipo_concreto || "",
-      "Colaborador": row.colaborador || "",
-      "Status producao": row.status || "",
-      "Vibrado": row.vibrado === true ? "Sim" : row.vibrado === false ? "Nao" : ""
-    }));
+    console.log(`[export] TOTAL final: ${linhasMontagem.length} linhas prontas para o workbook`);
 
     const xlsx = window.XLSX;
     const wb = xlsx.utils.book_new();
-    const wsResumo = xlsx.utils.aoa_to_sheet(criarResumoExportacaoMontagem(montagemRows, producaoRows, dStart, dEnd));
+    const wsResumo = xlsx.utils.aoa_to_sheet(criarResumoExportacaoMontagem(montagemRows, dStart, dEnd));
     wsResumo["!cols"] = [{ wch: 30 }, { wch: 22 }, { wch: 62 }];
     xlsx.utils.book_append_sheet(wb, wsResumo, "Resumo");
     const wsMontagem = xlsx.utils.json_to_sheet(linhasMontagem);
     wsMontagem["!cols"] = Object.keys(linhasMontagem[0] || {}).map(key => ({ wch: Math.min(55, Math.max(14, key.length + 3)) }));
     if (wsMontagem["!ref"]) wsMontagem["!autofilter"] = { ref: wsMontagem["!ref"] };
     xlsx.utils.book_append_sheet(wb, wsMontagem, "Base Montagem");
-    const wsProducao = xlsx.utils.json_to_sheet(linhasProducao);
-    wsProducao["!cols"] = Object.keys(linhasProducao[0] || {}).map(key => ({ wch: Math.min(40, Math.max(14, key.length + 3)) }));
-    if (wsProducao["!ref"]) wsProducao["!autofilter"] = { ref: wsProducao["!ref"] };
-    xlsx.utils.book_append_sheet(wb, wsProducao, "Base Producao");
-    await salvarWorkbookXlsx(wb, nomeArquivo, destino.handle);
-    showMsgBox(`${montagemRows.length} registro(s) de montagem e ${producaoRows.length} registro(s) de producao exportados.`, "success");
+    await salvarWorkbookXlsx(wb, nomeArquivo);
+    showMsgBox(`${montagemRows.length} registro(s) de montagem exportados.`, "success");
   } catch (err) {
-    console.error("Erro ao exportar base completa de montagem:", err);
-    showMsgBox(`Nao foi possivel exportar a base: ${escapeHtml(err?.message || "erro desconhecido")}`, "error");
+    const mensagem = String(err?.message || err || "erro desconhecido");
+    console.error("[export] Erro ao exportar base de montagem:", err?.stack || err, err);
+    showMsgBox(`Nao foi possivel exportar a base: ${escapeHtml(mensagem)}`, "error");
   } finally {
     if (button) {
       button.disabled = false;
@@ -13333,7 +13410,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.76&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.77&ts=${Date.now()}`);
       }
     });
   }
