@@ -71,7 +71,7 @@ function carregarApiTeste(supabaseClient) {
       error: (...args) => logs.push(args)
     }
   });
-  vm.runInContext(`${appSource.slice(start, end)}\nglobalThis.api = { carregarBaseExportacaoPorPeriodo, carregarLookupProducaoPorRecordIds };`, context);
+  vm.runInContext(`${appSource.slice(start, end)}\nglobalThis.api = { carregarBaseExportacaoPorPeriodo, carregarLookupProducaoPorRecordIds, normalizarLinhasParaLimiteCelulaXlsx };`, context);
   return { api: context.api, logs, warnings };
 }
 
@@ -216,4 +216,33 @@ test('resumo calcula aprovada, nao conforme e retrabalho sem ReferenceError', ()
   assert.equal(valor('Aprovados'), 1);
   assert.equal(valor('Nao conformes'), 2);
   assert.equal(valor('Retrabalhos'), 1);
+});
+
+test('textos acima de 32767 caracteres sao divididos sem truncar o Checklist JSON', () => {
+  const XLSX = require('xlsx');
+  const supabase = criarSupabaseMock(() => ({ data: [], error: null }));
+  const { api } = carregarApiTeste(supabase);
+  const checklist = JSON.stringify({
+    resposta: 'X'.repeat(40000),
+    evidencia: '🧱'.repeat(17000)
+  });
+  const origem = [{
+    'ID montagem': 'montagem-1',
+    'Checklist JSON': checklist,
+    'Observacoes': 'sem observacoes'
+  }];
+
+  const resultado = api.normalizarLinhasParaLimiteCelulaXlsx(origem);
+  const colunasChecklist = resultado.colunas.filter(coluna => coluna.startsWith('Checklist JSON'));
+  const reconstruido = colunasChecklist.map(coluna => resultado.linhas[0][coluna]).join('');
+
+  assert.ok(colunasChecklist.length > 1);
+  assert.equal(resultado.totalCelulasDivididas, 1);
+  assert.equal(reconstruido, checklist);
+  assert.ok(Object.values(resultado.linhas[0]).every(value => typeof value !== 'string' || value.length <= 32000));
+
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(resultado.linhas);
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Base Montagem');
+  assert.doesNotThrow(() => XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer', compression: true }));
 });

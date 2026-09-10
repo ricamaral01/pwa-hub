@@ -12233,6 +12233,73 @@ async function carregarLookupProducaoPorRecordIds(montagemRows) {
   return producaoPorId;
 }
 
+const XLSX_MAX_CELL_TEXT_LENGTH = 32000;
+
+function dividirTextoCelulaXlsx(value, limite = XLSX_MAX_CELL_TEXT_LENGTH) {
+  if (typeof value !== "string" || value.length <= limite) return [value];
+  const partes = [];
+  let inicio = 0;
+  while (inicio < value.length) {
+    let fim = Math.min(inicio + limite, value.length);
+    // Nao separar um par substituto UTF-16, usado por emojis e outros simbolos.
+    if (fim < value.length) {
+      const anterior = value.charCodeAt(fim - 1);
+      const proximo = value.charCodeAt(fim);
+      if (anterior >= 0xD800 && anterior <= 0xDBFF && proximo >= 0xDC00 && proximo <= 0xDFFF) fim--;
+    }
+    partes.push(value.slice(inicio, fim));
+    inicio = fim;
+  }
+  return partes;
+}
+
+function normalizarLinhasParaLimiteCelulaXlsx(linhas, limite = XLSX_MAX_CELL_TEXT_LENGTH) {
+  const colunasOriginais = [];
+  const colunasVistas = new Set();
+  const maxPartesPorColuna = new Map();
+  let totalCelulasDivididas = 0;
+
+  (linhas || []).forEach(linha => {
+    Object.keys(linha || {}).forEach(coluna => {
+      if (!colunasVistas.has(coluna)) {
+        colunasVistas.add(coluna);
+        colunasOriginais.push(coluna);
+      }
+      const partes = dividirTextoCelulaXlsx(linha[coluna], limite);
+      if (partes.length > 1) totalCelulasDivididas++;
+      maxPartesPorColuna.set(coluna, Math.max(maxPartesPorColuna.get(coluna) || 1, partes.length));
+    });
+  });
+
+  const colunas = [];
+  colunasOriginais.forEach(coluna => {
+    const totalPartes = maxPartesPorColuna.get(coluna) || 1;
+    for (let parte = 1; parte <= totalPartes; parte++) {
+      colunas.push(parte === 1 ? coluna : `${coluna} - parte ${parte}`);
+    }
+  });
+
+  const linhasNormalizadas = (linhas || []).map(linha => {
+    const normalizada = {};
+    colunasOriginais.forEach(coluna => {
+      const partes = dividirTextoCelulaXlsx(linha?.[coluna], limite);
+      const totalPartes = maxPartesPorColuna.get(coluna) || 1;
+      for (let parte = 1; parte <= totalPartes; parte++) {
+        const nomeColuna = parte === 1 ? coluna : `${coluna} - parte ${parte}`;
+        normalizada[nomeColuna] = partes[parte - 1] ?? "";
+      }
+    });
+    return normalizada;
+  });
+
+  return {
+    linhas: linhasNormalizadas,
+    colunas,
+    totalCelulasDivididas,
+    maximoPartes: Math.max(1, ...maxPartesPorColuna.values())
+  };
+}
+
 async function salvarWorkbookXlsx(workbook, nomeArquivo) {
   const bytes = window.XLSX.write(workbook, {
     bookType: "xlsx",
@@ -12344,14 +12411,18 @@ async function exportarMontagemIndicadoresXlsx() {
       };
     });
     console.log(`[export] TOTAL final: ${linhasMontagem.length} linhas prontas para o workbook`);
+    const baseMontagemXlsx = normalizarLinhasParaLimiteCelulaXlsx(linhasMontagem);
+    if (baseMontagemXlsx.totalCelulasDivididas > 0) {
+      console.warn(`[export] XLSX: ${baseMontagemXlsx.totalCelulasDivididas} célula(s) longa(s) divididas em até ${baseMontagemXlsx.maximoPartes} partes, sem truncamento.`);
+    }
 
     const xlsx = window.XLSX;
     const wb = xlsx.utils.book_new();
     const wsResumo = xlsx.utils.aoa_to_sheet(criarResumoExportacaoMontagem(montagemRows, dStart, dEnd));
     wsResumo["!cols"] = [{ wch: 30 }, { wch: 22 }, { wch: 62 }];
     xlsx.utils.book_append_sheet(wb, wsResumo, "Resumo");
-    const wsMontagem = xlsx.utils.json_to_sheet(linhasMontagem);
-    wsMontagem["!cols"] = Object.keys(linhasMontagem[0] || {}).map(key => ({ wch: Math.min(55, Math.max(14, key.length + 3)) }));
+    const wsMontagem = xlsx.utils.json_to_sheet(baseMontagemXlsx.linhas);
+    wsMontagem["!cols"] = baseMontagemXlsx.colunas.map(key => ({ wch: Math.min(55, Math.max(14, key.length + 3)) }));
     if (wsMontagem["!ref"]) wsMontagem["!autofilter"] = { ref: wsMontagem["!ref"] };
     xlsx.utils.book_append_sheet(wb, wsMontagem, "Base Montagem");
     await salvarWorkbookXlsx(wb, nomeArquivo);
