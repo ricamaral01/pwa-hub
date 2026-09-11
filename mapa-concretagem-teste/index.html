@@ -11,9 +11,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa [TESTE]</title>
-  <link rel="manifest" href="manifest.json?v=v1.78" />
-  <link rel="stylesheet" href="styles.css?v=v1.78" />
-  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v1.78" />
+  <link rel="manifest" href="manifest.json?v=v1.79" />
+  <link rel="stylesheet" href="styles.css?v=v1.79" />
+  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v1.79" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1162,7 +1162,10 @@
             <h2>Dashboard Defeitos</h2>
             <p id="dfFiltroResumo">Hoje - Todos os setores</p>
           </div>
-          <button id="dfBtnAtualizar" class="df-v4-refresh" type="button" aria-label="Atualizar dashboard de defeitos">Atualizar dados</button>
+          <div class="df-v4-title-actions">
+            <button id="dfBtnApresentacao" class="df-v4-presentation-btn" type="button" aria-label="Abrir apresentacao 4 por 3 do dashboard de defeitos">Apresentacao 4:3</button>
+            <button id="dfBtnAtualizar" class="df-v4-refresh" type="button" aria-label="Atualizar dashboard de defeitos">Atualizar dados</button>
+          </div>
         </div>
         <div class="df-v4-dash-tabs" role="tablist" aria-label="Dashboards">
           <button class="active" type="button" data-hub-mode="DASHBOARD_DEFEITOS">Defeitos</button>
@@ -1220,6 +1223,29 @@
         <div id="dfContent"></div>
       </div>
     </section>
+
+    <div id="dfPresentationOverlay" class="df-presentation-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="dfPresentationTitle">
+      <div class="df-presentation-toolbar">
+        <div class="df-presentation-toolbar-title">
+          <span>CONCRETRACK</span>
+          <strong id="dfPresentationTitle">Apresentacao de Fechamento - Defeitos</strong>
+          <em>Formato 4:3</em>
+        </div>
+        <div class="df-presentation-toolbar-actions">
+          <button id="dfPresentationPrev" type="button" aria-label="Slide anterior">Anterior</button>
+          <span id="dfPresentationCounter" aria-live="polite">1 / 4</span>
+          <button id="dfPresentationNext" type="button" aria-label="Proximo slide">Proximo</button>
+          <button id="dfPresentationFullscreen" type="button">Tela cheia</button>
+          <button id="dfPresentationPrint" type="button">Imprimir / PDF</button>
+          <button id="dfPresentationClose" class="close" type="button" aria-label="Fechar apresentacao">Fechar</button>
+        </div>
+      </div>
+      <div id="dfPresentationViewport" class="df-presentation-viewport">
+        <div id="dfPresentationFrame" class="df-presentation-frame">
+          <div id="dfPresentationDeck" class="df-presentation-deck"></div>
+        </div>
+      </div>
+    </div>
 
     <section id="viewMontagemPostesDetalhe" class="card hidden">
       <div class="section-title-row">
@@ -1750,8 +1776,8 @@
   </template>
 
   <script src="../assets/msgbox.js"></script>
-  <script src="xlsx.full.min.js?v=v1.78"></script>
+  <script src="xlsx.full.min.js?v=v1.79"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v1.78"></script>
+  <script src="app.js?v=v1.79"></script>
 </body>
 </html>

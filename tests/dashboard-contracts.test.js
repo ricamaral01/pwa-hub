@@ -52,9 +52,9 @@ test('exportacoes dos dashboards possuem acionamento e dependencias locais', () 
   assert.match(html, /id="dfBtnExportarCsv"/);
   assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
   assert.match(app, /function exportarDashboardDefeitosCsv/);
-  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.78"/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.79"/);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
-  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.78/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.79/);
   assert.ok(fs.statSync(xlsxPath).size > 100000);
 });
 
@@ -94,7 +94,7 @@ test('XLSX v1.77 exporta montagem completa e usa producao somente como lookup', 
   assert.doesNotMatch(app, /DASHBOARD_MONTAGEM_SELECT = "[^"]*codigo_poste/);
 });
 
-test('arquivos publicos apontam integralmente para v1.78', () => {
+test('arquivos publicos apontam integralmente para v1.79', () => {
   const app = read('mapa-concretagem-teste/app.js');
   const html = read('mapa-concretagem-teste/index.html');
   const manifest = read('mapa-concretagem-teste/manifest.json');
@@ -102,14 +102,14 @@ test('arquivos publicos apontam integralmente para v1.78', () => {
   const sw = read('mapa-concretagem-teste/sw.js');
 
   for (const source of [app, html, manifest, reset, sw]) {
-    assert.doesNotMatch(source, /v1\.77/);
+    assert.doesNotMatch(source, /v1\.78/);
   }
-  assert.match(app, /sw\.js\?v=v1\.78/);
-  assert.match(app, /badge\.textContent = "v1\.78"/);
-  assert.match(html, /app\.js\?v=v1\.78/);
-  assert.match(manifest, /cache-reset=v1\.78/);
-  assert.match(reset, /abrir v1\.78/);
-  assert.match(sw, /mapa-concretagem-teste-v1\.78/);
+  assert.match(app, /sw\.js\?v=v1\.79/);
+  assert.match(app, /badge\.textContent = "v1\.79"/);
+  assert.match(html, /app\.js\?v=v1\.79/);
+  assert.match(manifest, /cache-reset=v1\.79/);
+  assert.match(reset, /abrir v1\.79/);
+  assert.match(sw, /mapa-concretagem-teste-v1\.79/);
 });
 
 test('grafico de participacao ordena defeitos e calcula percentual sobre o total', () => {
@@ -125,6 +125,84 @@ test('grafico de participacao ordena defeitos e calcula percentual sobre o total
   assert.ok(Math.abs(context.ranking[0].percentual - ((158 / 229) * 100)) < 0.000001);
   assert.ok(Math.abs(context.ranking.reduce((soma, item) => soma + item.percentual, 0) - 100) < 0.000001);
   assert.match(app, /class="df-defect-share-percent">\$\{formatPct\(item\.percentual\)\}/);
+});
+
+test('apresentacao 4:3 preserva o dashboard e recalcula os indicadores dos slides', () => {
+  const app = read('mapa-concretagem-teste/app.js');
+  const html = read('mapa-concretagem-teste/index.html');
+  const css = read('mapa-concretagem-teste/dashboard-defeitos-v4.css');
+  const modelSource = sliceBetween(app, 'const DASHBOARD_DEFEITOS_BAR_COLORS', 'function renderIndicadoresDefeitosMontagem');
+  const context = {};
+  vm.runInNewContext(`${modelSource}\nglobalThis.modelo = criarModeloApresentacaoDefeitos({ totalErros: 4, totalPossivel: 20, postes: 10, producao: 12, postesComDefeito: 3, postesReprovados: 2, retrabalho: 1, porTipo: { Trinca: 3, Bolha: 1 }, porSetor: { S1: { setor: 'S1', erros: 3, producao: 6 } }, matriz: { Trinca: { S1: 3 } } });`, context);
+
+  assert.equal(context.modelo.taxaDefeitos, 20);
+  assert.equal(context.modelo.indiceReprovacao, 30);
+  assert.equal(context.modelo.taxaPostesReprovados, (2 / 12) * 100);
+  assert.equal(context.modelo.taxaRetrabalho, 10);
+  assert.equal(context.modelo.ranking[0].tipo, 'Trinca');
+  assert.equal(context.modelo.setores[0].taxa, 50);
+  assert.match(html, /id="dfBtnApresentacao"/);
+  assert.match(html, /id="dfPresentationOverlay"/);
+  assert.match(html, /id="dfPresentationDeck"/);
+  assert.match(app, /const DF_PRESENTATION_SLIDE_TOTAL = 4/);
+  assert.match(app, /function abrirApresentacaoDefeitos/);
+  assert.match(app, /function imprimirApresentacaoDefeitos/);
+  assert.match(app, /size: 10\.6667in 8in/);
+  assert.match(css, /width: 1024px;/);
+  assert.match(css, /height: 768px;/);
+  assert.match(css, /body\.df-presentation-print/);
+});
+
+test('render da apresentacao gera os quatro slides sem depender de canvas', () => {
+  const app = read('mapa-concretagem-teste/app.js');
+  const presentationSource = sliceBetween(app, 'function formatarDataApresentacaoDefeitos', 'function renderIndicadoresDefeitosContrato');
+  const deck = { innerHTML: '' };
+  const fields = {
+    dfPresentationDeck: deck,
+    dfDataInicio: { value: '2026-08-01' },
+    dfDataFim: { value: '2026-08-31' },
+    dfFiltroSetor: { selectedOptions: [{ textContent: 'Todos os Setores' }] },
+    dfFiltroStatus: { selectedOptions: [{ textContent: 'Todos os Status' }] },
+  };
+  const context = {
+    document: {
+      getElementById: (id) => fields[id] || null,
+      querySelectorAll: () => [],
+    },
+    dfPresentationData: {
+      totalErros: 4,
+      totalPossivel: 20,
+      postes: 10,
+      producao: 12,
+      postesComDefeito: 3,
+      postesReprovados: 2,
+      retrabalho: 1,
+      taxaDefeitos: 20,
+      indiceReprovacao: 30,
+      taxaPostesReprovados: (2 / 12) * 100,
+      taxaRetrabalho: 10,
+      ranking: [
+        { tipo: 'Trinca', total: 3, percentual: 75, larguraRelativa: 100, cor: '#2563eb' },
+        { tipo: 'Bolha', total: 1, percentual: 25, larguraRelativa: 33.33, cor: '#16a34a' },
+      ],
+      setores: [{ setor: 'S1', erros: 4, producao: 12, taxa: 33.333 }],
+      matriz: { Trinca: { S1: 3 }, Bolha: { S1: 1 } },
+    },
+    dfPresentationSlideIndex: 0,
+    DF_PRESENTATION_SLIDE_TOTAL: 4,
+    todayYmd: () => '2026-08-31',
+    normalizarTexto: (value) => String(value || '').toLowerCase(),
+    escapeHtml: (value) => String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'),
+    formatPct: (value) => `${Number(value || 0).toFixed(1).replace('.', ',')}%`,
+  };
+  vm.runInNewContext(`${presentationSource}\nrenderizarApresentacaoDefeitos();`, context);
+
+  assert.equal((deck.innerHTML.match(/data-df-presentation-slide=/g) || []).length, 4);
+  assert.match(deck.innerHTML, /Visao executiva/);
+  assert.match(deck.innerHTML, /Defeitos por participacao/);
+  assert.match(deck.innerHTML, /Comparativo setorial/);
+  assert.match(deck.innerHTML, /Plano de acao/);
+  assert.doesNotMatch(deck.innerHTML, /<canvas/i);
 });
 
 test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {

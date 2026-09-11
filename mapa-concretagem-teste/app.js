@@ -8596,6 +8596,29 @@ function bindEvents() {
   document.getElementById("dfBtnAtualizar")?.addEventListener("click", carregarDashboardDefeitos);
   document.getElementById("dfBtnFiltrar")?.addEventListener("click", carregarDashboardDefeitos);
   document.getElementById("dfBtnExportarCsv")?.addEventListener("click", exportarDashboardDefeitosCsv);
+  document.getElementById("dfBtnApresentacao")?.addEventListener("click", abrirApresentacaoDefeitos);
+  document.getElementById("dfPresentationPrev")?.addEventListener("click", () => exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex - 1));
+  document.getElementById("dfPresentationNext")?.addEventListener("click", () => exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex + 1));
+  document.getElementById("dfPresentationClose")?.addEventListener("click", fecharApresentacaoDefeitos);
+  document.getElementById("dfPresentationFullscreen")?.addEventListener("click", alternarTelaCheiaApresentacaoDefeitos);
+  document.getElementById("dfPresentationPrint")?.addEventListener("click", imprimirApresentacaoDefeitos);
+  window.addEventListener("resize", ajustarEscalaApresentacaoDefeitos);
+  window.addEventListener("afterprint", finalizarImpressaoApresentacaoDefeitos);
+  document.addEventListener("fullscreenchange", () => {
+    const fullscreenBtn = document.getElementById("dfPresentationFullscreen");
+    if (fullscreenBtn) fullscreenBtn.textContent = document.fullscreenElement ? "Sair da tela cheia" : "Tela cheia";
+    ajustarEscalaApresentacaoDefeitos();
+  });
+  document.addEventListener("keydown", event => {
+    const overlay = document.getElementById("dfPresentationOverlay");
+    if (!overlay || overlay.classList.contains("hidden")) return;
+    if (event.key === "Escape") fecharApresentacaoDefeitos();
+    if (event.key === "ArrowLeft") exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex - 1);
+    if (event.key === "ArrowRight" || event.key === " ") {
+      event.preventDefault();
+      exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex + 1);
+    }
+  });
   ["dfDataInicio", "dfDataFim", "dfFiltroSetor", "dfFiltroStatus"].forEach(id => {
     document.getElementById(id)?.addEventListener("change", () => {
       miPaginaAtual = 1;
@@ -10891,7 +10914,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.78", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.79", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10934,6 +10957,10 @@ let miOrdenacaoAsc = false;
 let miAbaAtiva = "resumo";
 let miUltimosGraficos = null;
 let miDefeitosExportData = null;
+let dfPresentationData = null;
+let dfPresentationSlideIndex = 0;
+let dfPresentationReturnFocus = null;
+const DF_PRESENTATION_SLIDE_TOTAL = 4;
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -11207,11 +11234,55 @@ function criarRankingParticipacaoDefeitos(porTipo = {}, totalErros = 0) {
   }));
 }
 
+function criarModeloApresentacaoDefeitos(indicadores = {}) {
+  const numero = value => {
+    const parsed = Number(value || 0);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+  const totalErros = numero(indicadores.totalErros);
+  const totalPossivel = numero(indicadores.totalPossivel);
+  const postes = numero(indicadores.postes);
+  const producao = numero(indicadores.producao);
+  const postesComDefeito = numero(indicadores.postesComDefeito);
+  const postesReprovados = numero(indicadores.postesReprovados);
+  const retrabalho = numero(indicadores.retrabalho);
+  const setores = Object.values(indicadores.porSetor || {})
+    .map(item => {
+      const erros = numero(item?.erros);
+      const producaoSetor = numero(item?.producao);
+      return {
+        setor: String(item?.setor || "Setor nao identificado"),
+        erros,
+        producao: producaoSetor,
+        taxa: producaoSetor > 0 ? (erros / producaoSetor) * 100 : 0
+      };
+    })
+    .sort((a, b) => a.setor.localeCompare(b.setor, "pt-BR", { numeric: true }));
+
+  return {
+    totalErros,
+    totalPossivel,
+    postes,
+    producao,
+    postesComDefeito,
+    postesReprovados,
+    retrabalho,
+    taxaDefeitos: totalPossivel > 0 ? (totalErros / totalPossivel) * 100 : 0,
+    indiceReprovacao: postes > 0 ? (postesComDefeito / postes) * 100 : 0,
+    taxaPostesReprovados: producao > 0 ? (postesReprovados / producao) * 100 : 0,
+    taxaRetrabalho: postes > 0 ? (retrabalho / postes) * 100 : 0,
+    ranking: criarRankingParticipacaoDefeitos(indicadores.porTipo || {}, totalErros),
+    setores,
+    matriz: indicadores.matriz || {}
+  };
+}
+
 function renderIndicadoresDefeitosMontagem(indicadores) {
   const taxaNc = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
   const indiceReprovacao = indicadores.postes > 0 ? (indicadores.postesComDefeito / indicadores.postes) * 100 : 0;
   const taxaPostesReprovados = indicadores.producao > 0 ? (indicadores.postesReprovados / indicadores.producao) * 100 : 0;
   const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
+  dfPresentationData = criarModeloApresentacaoDefeitos(indicadores);
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
@@ -11348,6 +11419,274 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
       }).join("");
     }
   }
+
+  const presentationOverlay = document.getElementById("dfPresentationOverlay");
+  if (presentationOverlay && !presentationOverlay.classList.contains("hidden")) {
+    renderizarApresentacaoDefeitos();
+  }
+}
+
+function formatarDataApresentacaoDefeitos(ymd) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(ymd || ""))) return "-";
+  return new Date(`${ymd}T12:00:00`).toLocaleDateString("pt-BR");
+}
+
+function obterContextoApresentacaoDefeitos() {
+  const inicio = document.getElementById("dfDataInicio")?.value || todayYmd();
+  const fim = document.getElementById("dfDataFim")?.value || todayYmd();
+  const setorSelect = document.getElementById("dfFiltroSetor");
+  const statusSelect = document.getElementById("dfFiltroStatus");
+  const setor = setorSelect?.selectedOptions?.[0]?.textContent?.trim() || "Todos os Setores";
+  const status = statusSelect?.selectedOptions?.[0]?.textContent?.trim() || "Todos os Status";
+  const periodo = inicio === fim
+    ? formatarDataApresentacaoDefeitos(inicio)
+    : `${formatarDataApresentacaoDefeitos(inicio)} a ${formatarDataApresentacaoDefeitos(fim)}`;
+  return { inicio, fim, periodo, setor, status };
+}
+
+function criarCabecalhoSlideDefeitos(titulo, contexto) {
+  const escopo = contexto.status && !normalizarTexto(contexto.status).startsWith("todos")
+    ? `${contexto.setor} | ${contexto.status}`
+    : contexto.setor;
+  return `
+    <header class="df-slide-head">
+      <div class="df-slide-brand">
+        <div class="df-slide-brand-mark">CT</div>
+        <div><span>ConcreTrack | Qualidade</span><strong>${escapeHtml(titulo)}</strong></div>
+      </div>
+      <div class="df-slide-context"><span>${escapeHtml(contexto.periodo)}</span><strong>${escapeHtml(escopo)}</strong></div>
+    </header>
+  `;
+}
+
+function criarRodapeSlideDefeitos(numero) {
+  return `
+    <footer class="df-slide-foot">
+      <span><strong>Fonte:</strong> montagem_poste + producao | dados do periodo e escopo selecionados</span>
+      <span>${String(numero).padStart(2, "0")} / ${String(DF_PRESENTATION_SLIDE_TOTAL).padStart(2, "0")}</span>
+    </footer>
+  `;
+}
+
+function criarSlideDefeitos(numero, titulo, contexto, corpo, classe = "") {
+  return `
+    <section class="df-presentation-slide ${classe}" data-df-presentation-slide="${numero - 1}" aria-label="Slide ${numero}: ${escapeHtml(titulo)}">
+      ${criarCabecalhoSlideDefeitos(titulo, contexto)}
+      <div class="df-slide-body">${corpo}</div>
+      ${criarRodapeSlideDefeitos(numero)}
+    </section>
+  `;
+}
+
+function renderizarApresentacaoDefeitos() {
+  const deck = document.getElementById("dfPresentationDeck");
+  if (!deck || !dfPresentationData) return;
+  const dados = dfPresentationData;
+  const contexto = obterContextoApresentacaoDefeitos();
+  const numero = value => Number(value || 0).toLocaleString("pt-BR");
+  const principal = dados.ranking[0];
+  const rankingSlide = dados.ranking.slice(0, 8);
+  const top3 = dados.ranking.slice(0, 3);
+  const insightPrincipal = principal
+    ? `O defeito de maior incidencia foi <strong>${escapeHtml(principal.tipo)}</strong>, com ${numero(principal.total)} ocorrencia(s), equivalente a ${formatPct(principal.percentual)} do total.`
+    : "Nao foram identificadas ocorrencias de defeito no periodo selecionado.";
+
+  const slideResumo = criarSlideDefeitos(1, "Visao executiva", contexto, `
+    <div class="df-slide-overview-grid">
+      <div class="df-slide-overview-copy">
+        <span class="df-slide-kicker">Fechamento da qualidade</span>
+        <h1 class="df-slide-title">Dashboard de Defeitos</h1>
+        <p>Panorama consolidado das inspecoes de montagem, ocorrencias de nao conformidade e impacto sobre a producao.</p>
+      </div>
+      <div class="df-slide-rate-hero">
+        <span>Taxa de defeitos</span>
+        <strong>${formatPct(dados.taxaDefeitos)}</strong>
+        <small>${numero(dados.totalErros)} ocorrencias em ${numero(dados.totalPossivel)} oportunidades avaliadas</small>
+      </div>
+    </div>
+    <div class="df-slide-kpi-grid">
+      <article class="df-slide-kpi" style="--df-kpi-color:#2563eb"><span>Ocorrencias de NC</span><strong>${numero(dados.totalErros)}</strong><small>Total registrado no checklist</small></article>
+      <article class="df-slide-kpi" style="--df-kpi-color:#7c3aed"><span>Postes avaliados</span><strong>${numero(dados.postes)}</strong><small>Inspecoes validas no periodo</small></article>
+      <article class="df-slide-kpi" style="--df-kpi-color:#dc2626"><span>Postes reprovados</span><strong>${numero(dados.postesReprovados)}</strong><small>${formatPct(dados.taxaPostesReprovados)} sobre a producao</small></article>
+      <article class="df-slide-kpi" style="--df-kpi-color:#d97706"><span>Retrabalho</span><strong>${numero(dados.retrabalho)}</strong><small>${formatPct(dados.taxaRetrabalho)} dos postes avaliados</small></article>
+    </div>
+    <div class="df-slide-insight"><strong>Leitura executiva</strong><span>${insightPrincipal}</span></div>
+  `, "df-slide-overview");
+
+  const rankingHtml = rankingSlide.length
+    ? `<div class="df-slide-ranking">${rankingSlide.map(item => `
+        <div class="df-slide-ranking-row">
+          <div class="df-slide-ranking-label"><i style="--df-defect-color:${item.cor}"></i><span title="${escapeHtml(item.tipo)}">${escapeHtml(item.tipo)}</span></div>
+          <div class="df-slide-ranking-track"><div class="df-slide-ranking-fill" style="--df-defect-color:${item.cor};--df-defect-width:${item.larguraRelativa.toFixed(2)}%">${numero(item.total)}</div></div>
+          <div class="df-slide-ranking-pct">${formatPct(item.percentual)}</div>
+        </div>`).join("")}</div>`
+    : '<div class="df-slide-empty">Sem defeitos no periodo selecionado.</div>';
+  const top3Html = top3.length
+    ? `<div class="df-slide-top3">${top3.map((item, index) => `<article><strong>${index + 1}o | ${escapeHtml(item.tipo)}</strong>${numero(item.total)} ocorrencia(s) | ${formatPct(item.percentual)} do total</article>`).join("")}</div>`
+    : "";
+  const slideRanking = criarSlideDefeitos(2, "Participacao dos defeitos", contexto, `
+    <div class="df-slide-section-head">
+      <div><span class="df-slide-kicker">Distribuicao das ocorrencias</span><h1 class="df-slide-title">Defeitos por participacao</h1></div>
+      <p>Ranking dos ${Math.min(8, dados.ranking.length)} principais tipos. A barra compara o volume e o percentual considera ${numero(dados.totalErros)} ocorrencias.</p>
+    </div>
+    ${rankingHtml}
+    ${top3Html}
+  `, "df-slide-ranking-view");
+
+  const maiorTaxaSetor = dados.setores.reduce((maior, item) => Math.max(maior, item.taxa), 0);
+  const setoresHtml = dados.setores.length
+    ? `<div class="df-slide-sector-grid" style="--df-sector-card-count:${Math.min(4, dados.setores.length)}">${dados.setores.slice(0, 4).map(item => `
+        <article class="df-slide-sector-card">
+          <header><strong>${escapeHtml(item.setor)}</strong><span>${formatPct(item.taxa)}</span></header>
+          <p>${numero(item.erros)} erro(s) | ${numero(item.producao)} produzido(s)</p>
+          <div class="df-slide-sector-track"><i style="--df-sector-width:${maiorTaxaSetor > 0 ? Math.min(100, (item.taxa / maiorTaxaSetor) * 100).toFixed(2) : 0}%"></i></div>
+        </article>`).join("")}</div>`
+    : '<div class="df-slide-empty">Sem dados setoriais no periodo selecionado.</div>';
+  const setoresMatriz = dados.setores.slice(0, 4).map(item => item.setor);
+  const tiposMatriz = dados.ranking.slice(0, 6);
+  const maiorCelula = tiposMatriz.reduce((maior, item) => setoresMatriz.reduce((maxSetor, setor) => Math.max(maxSetor, Number(dados.matriz?.[item.tipo]?.[setor] || 0)), maior), 0);
+  const matrizHtml = setoresMatriz.length && tiposMatriz.length
+    ? `<div class="df-slide-matrix-card">
+        <div class="df-slide-matrix-title"><strong>Matriz dos principais defeitos por setor</strong><span>Cor mais intensa = maior recorrencia</span></div>
+        <div class="df-slide-matrix" style="--df-sector-count:${setoresMatriz.length}">
+          <div class="df-slide-matrix-row head"><strong>Defeito</strong>${setoresMatriz.map(setor => `<span class="df-slide-matrix-cell">${escapeHtml(setor.replace("Setor ", "S"))}</span>`).join("")}</div>
+          ${tiposMatriz.map(item => `<div class="df-slide-matrix-row"><strong title="${escapeHtml(item.tipo)}">${escapeHtml(item.tipo)}</strong>${setoresMatriz.map(setor => {
+            const total = Number(dados.matriz?.[item.tipo]?.[setor] || 0);
+            const intensidade = maiorCelula > 0 ? total / maiorCelula : 0;
+            const bg = total > 0 ? `rgba(37,99,235,${(0.16 + intensidade * 0.78).toFixed(2)})` : "#edf2f7";
+            const textColor = intensidade > 0.45 ? "#fff" : "#173653";
+            return `<span class="df-slide-matrix-cell" style="--df-matrix-bg:${bg};--df-matrix-text:${textColor}">${total}</span>`;
+          }).join("")}</div>`).join("")}
+        </div>
+      </div>`
+    : "";
+  const slideSetores = criarSlideDefeitos(3, "Desempenho por setor", contexto, `
+    <div class="df-slide-section-head">
+      <div><span class="df-slide-kicker">Onde estao as ocorrencias</span><h1 class="df-slide-title">Comparativo setorial</h1></div>
+      <p>Taxa setorial = quantidade de erros do setor dividida pela producao do mesmo setor.</p>
+    </div>
+    ${setoresHtml}
+    ${matrizHtml}
+  `, "df-slide-sector-view");
+
+  const orientacoes = [
+    "Abrir analise de causa no setor e na forma com maior incidencia; definir responsavel e prazo.",
+    "Estratificar por modelo e montador, revisar o padrao operacional e registrar a contramedida.",
+    "Acompanhar semanalmente a recorrencia e validar a eficacia da acao no proximo fechamento."
+  ];
+  const acoesHtml = top3.length
+    ? `<div class="df-slide-action-grid" style="--df-action-count:${top3.length}">${top3.map((item, index) => `
+        <article class="df-slide-action-card" style="--df-defect-color:${item.cor}">
+          <span>Prioridade ${index + 1}</span><strong>${escapeHtml(item.tipo)}</strong><em>${numero(item.total)} | ${formatPct(item.percentual)}</em><p>${orientacoes[index]}</p>
+        </article>`).join("")}</div>`
+    : '<div class="df-slide-empty">Sem ocorrencias para priorizar neste periodo.</div>';
+  const slideAcoes = criarSlideDefeitos(4, "Prioridades e memoria de calculo", contexto, `
+    <div class="df-slide-section-head">
+      <div><span class="df-slide-kicker">Fechamento e proximo passo</span><h1 class="df-slide-title">Plano de acao</h1></div>
+      <p>Prioridades ordenadas por participacao no total de ocorrencias registradas.</p>
+    </div>
+    ${acoesHtml}
+    <div class="df-slide-method-grid">
+      <article class="df-slide-method-card"><span>Indicador principal</span><strong>Taxa de defeitos</strong><p>${numero(dados.totalErros)} ocorrencias ÷ ${numero(dados.totalPossivel)} oportunidades × 100 = <b>${formatPct(dados.taxaDefeitos)}</b>.</p></article>
+      <article class="df-slide-method-card"><span>Indicador secundario</span><strong>Indice de reprovacao</strong><p>${numero(dados.postesComDefeito)} postes com defeito ÷ ${numero(dados.postes)} avaliados × 100 = <b>${formatPct(dados.indiceReprovacao)}</b>.</p></article>
+      <article class="df-slide-method-card"><span>Indicador terciario</span><strong>Taxa de retrabalho</strong><p>${numero(dados.retrabalho)} retrabalhos ÷ ${numero(dados.postes)} avaliados × 100 = <b>${formatPct(dados.taxaRetrabalho)}</b>.</p></article>
+    </div>
+  `, "df-slide-action-view");
+
+  deck.innerHTML = slideResumo + slideRanking + slideSetores + slideAcoes;
+  exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex);
+}
+
+function ajustarEscalaApresentacaoDefeitos() {
+  const overlay = document.getElementById("dfPresentationOverlay");
+  const viewport = document.getElementById("dfPresentationViewport");
+  const frame = document.getElementById("dfPresentationFrame");
+  const deck = document.getElementById("dfPresentationDeck");
+  if (!overlay || overlay.classList.contains("hidden") || !viewport || !frame || !deck) return;
+  const larguraDisponivel = Math.max(240, viewport.clientWidth - 36);
+  const alturaDisponivel = Math.max(180, viewport.clientHeight - 36);
+  const escala = Math.min(1, larguraDisponivel / 1024, alturaDisponivel / 768);
+  frame.style.width = `${Math.round(1024 * escala)}px`;
+  frame.style.height = `${Math.round(768 * escala)}px`;
+  deck.style.transform = `scale(${escala})`;
+}
+
+function exibirSlideApresentacaoDefeitos(index) {
+  const slides = Array.from(document.querySelectorAll("[data-df-presentation-slide]"));
+  if (!slides.length) return;
+  dfPresentationSlideIndex = Math.max(0, Math.min(slides.length - 1, Number(index || 0)));
+  slides.forEach((slide, slideIndex) => {
+    const ativo = slideIndex === dfPresentationSlideIndex;
+    slide.classList.toggle("is-active", ativo);
+    slide.setAttribute("aria-hidden", ativo ? "false" : "true");
+  });
+  const counter = document.getElementById("dfPresentationCounter");
+  if (counter) counter.textContent = `${dfPresentationSlideIndex + 1} / ${slides.length}`;
+  const prev = document.getElementById("dfPresentationPrev");
+  const next = document.getElementById("dfPresentationNext");
+  if (prev) prev.disabled = dfPresentationSlideIndex === 0;
+  if (next) next.disabled = dfPresentationSlideIndex === slides.length - 1;
+}
+
+function abrirApresentacaoDefeitos() {
+  if (!dfPresentationData) {
+    showMsgBox("Atualize o Dashboard Defeitos antes de abrir a apresentacao.", "error");
+    return;
+  }
+  const overlay = document.getElementById("dfPresentationOverlay");
+  if (!overlay) return;
+  dfPresentationReturnFocus = document.activeElement;
+  dfPresentationSlideIndex = 0;
+  renderizarApresentacaoDefeitos();
+  overlay.classList.remove("hidden");
+  document.body.classList.add("df-presentation-open");
+  exibirSlideApresentacaoDefeitos(0);
+  requestAnimationFrame(() => {
+    ajustarEscalaApresentacaoDefeitos();
+    document.getElementById("dfPresentationNext")?.focus();
+  });
+}
+
+function fecharApresentacaoDefeitos() {
+  const overlay = document.getElementById("dfPresentationOverlay");
+  if (!overlay || overlay.classList.contains("hidden")) return;
+  overlay.classList.add("hidden");
+  document.body.classList.remove("df-presentation-open", "df-presentation-print");
+  if (document.fullscreenElement === overlay && document.exitFullscreen) {
+    document.exitFullscreen().catch(() => {});
+  }
+  if (dfPresentationReturnFocus?.focus) dfPresentationReturnFocus.focus();
+}
+
+async function alternarTelaCheiaApresentacaoDefeitos() {
+  const overlay = document.getElementById("dfPresentationOverlay");
+  if (!overlay) return;
+  try {
+    if (document.fullscreenElement === overlay) await document.exitFullscreen();
+    else if (overlay.requestFullscreen) await overlay.requestFullscreen();
+  } catch (error) {
+    console.warn("Nao foi possivel alternar a tela cheia da apresentacao:", error);
+  }
+}
+
+function imprimirApresentacaoDefeitos() {
+  const overlay = document.getElementById("dfPresentationOverlay");
+  if (!overlay || overlay.classList.contains("hidden")) return;
+  document.getElementById("dfPresentationPageStyle")?.remove();
+  const pageStyle = document.createElement("style");
+  pageStyle.id = "dfPresentationPageStyle";
+  pageStyle.textContent = "@page { size: 10.6667in 8in; margin: 0; }";
+  document.head.appendChild(pageStyle);
+  document.body.classList.add("df-presentation-print");
+  requestAnimationFrame(() => {
+    window.print();
+    setTimeout(finalizarImpressaoApresentacaoDefeitos, 0);
+  });
+}
+
+function finalizarImpressaoApresentacaoDefeitos() {
+  document.body.classList.remove("df-presentation-print");
+  document.getElementById("dfPresentationPageStyle")?.remove();
 }
 
 function renderIndicadoresDefeitosContrato(contract, productionRows = []) {
@@ -13530,7 +13869,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.78&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.79&ts=${Date.now()}`);
       }
     });
   }
@@ -13550,6 +13889,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.78";
+  badge.textContent = "v1.79";
   badge.style.display = "inline-block";
 }

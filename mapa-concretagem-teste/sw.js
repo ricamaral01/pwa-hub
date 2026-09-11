@@ -1,16 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM TESTE - Service Worker
-   v1.78: adiciona grafico de participacao percentual dos defeitos
+   v1.79: adiciona apresentacao 4:3 ao Dashboard Defeitos
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.78";
+const CACHE_NAME = "mapa-concretagem-teste-v1.79";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v1.78",
-  "./styles.css?v=v1.78",
-  "./dashboard-defeitos-v4.css?v=v1.78",
-  "./app.js?v=v1.78",
-  "./xlsx.full.min.js?v=v1.78",
+  "./manifest.json?v=v1.79",
+  "./styles.css?v=v1.79",
+  "./dashboard-defeitos-v4.css?v=v1.79",
+  "./app.js?v=v1.79",
+  "./xlsx.full.min.js?v=v1.79",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",
