@@ -1,974 +1,218 @@
+﻿import html
 import logging
 from datetime import datetime
-from pathlib import Path
+
 from jinja2 import Template
+
 import config
 
 logger = logging.getLogger("pcp_producao_agent")
 
+
+def fmt_pct(value):
+    return f"{value * 100:.1f}%".replace(".", ",")
+
+
+def fmt_num(value, digits=0):
+    return f"{value:,.{digits}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def status_badge(status):
+    normalized = str(status or "").upper()
+    if normalized in ("REALIZADO", "CONFERE"):
+        return "realizado"
+    if normalized in ("NÃO PRODUZIDO", "NÃƒO PRODUZIDO", "NAO APONTADO", "NÃO APONTADO", "NÃO REALIZADO"):
+        return "nao-produzido"
+    if normalized == "PARCIAL":
+        return "parcial"
+    if normalized == "EXCEDENTE":
+        return "excedente"
+    if normalized in ("NÃO PROGRAMADO", "NÃƒO PROGRAMADO", "NAO INFORMADO"):
+        return "nao-programado"
+    return "warn"
+
+
+def point_color(point, meta, current_label):
+    if point["label"] == current_label:
+        return "#0f172a"
+    if point["pct"] <= meta:
+        return "#10b981"
+    if point["pct"] <= 0.15:
+        return "#f59e0b"
+    if point["pct"] <= 0.30:
+        return "#ef4444"
+    return "#7f1d1d"
+
+
+def line_chart(points, meta, width, height, current_label):
+    if not points:
+        return ""
+    left, right, top, bottom = 48, 78, 30, 40
+    plot_w = width - left - right
+    plot_h = height - top - bottom
+    max_pct = max(0.40, max(p["pct"] for p in points) * 1.15, meta * 1.4)
+    coords = []
+    for i, p in enumerate(points):
+        x = left + plot_w * i / max(1, len(points) - 1)
+        y = top + plot_h - (p["pct"] / max_pct * plot_h)
+        coords.append((x, y, p))
+
+    poly = " ".join(f"{x:.1f},{y:.1f}" for x, y, _ in coords)
+    area = f"M{poly.replace(' ', ' L')} L{coords[-1][0]:.1f},{top + plot_h:.1f} L{coords[0][0]:.1f},{top + plot_h:.1f} Z"
+    grid = []
+    for mark in (0, 0.10, 0.25, 0.40):
+        y = top + plot_h - (mark / max_pct * plot_h)
+        grid.append(f'<line x1="{left}" y1="{y:.1f}" x2="{width - right}" y2="{y:.1f}" stroke="#e2e8f0" stroke-dasharray="2 2"/>')
+        grid.append(f'<text x="{left - 8}" y="{y + 5:.1f}" text-anchor="end" font-size="12" fill="#94a3b8">{fmt_pct(mark)}</text>')
+    meta_y = top + plot_h - (meta / max_pct * plot_h)
+    circles, labels, dates = [], [], []
+    for x, y, p in coords:
+        color = point_color(p, meta, current_label)
+        radius = 6.5 if p["label"] == current_label else 5.5
+        circles.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{radius}" fill="{color}" stroke="#fff" stroke-width="2"/>')
+        labels.append(f'<text x="{x:.1f}" y="{max(16, y - 12):.1f}" text-anchor="middle" font-size="14" font-weight="600" fill="{color}">{html.escape(fmt_pct(p["pct"]))}</text>')
+        dates.append(f'<text x="{x:.1f}" y="{height - 12}" text-anchor="middle" font-size="13" fill="#64748b">{html.escape(p["label"])}</text>')
+
+    return f"""<svg viewBox="0 0 {width} {height}" style="width:100%;height:auto">
+<defs><linearGradient id="areaFill{width}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ef4444" stop-opacity=".22"/><stop offset="100%" stop-color="#ef4444" stop-opacity=".02"/></linearGradient></defs>
+{''.join(grid)}<line x1="{left}" y1="{meta_y:.1f}" x2="{width - 12}" y2="{meta_y:.1f}" stroke="#10b981" stroke-dasharray="5 3" stroke-width="1.8"/>
+<rect x="{width - 116}" y="8" width="104" height="22" rx="6" fill="#f0fdf4" stroke="#bbf7d0"/>
+<line x1="{width - 106}" y1="19" x2="{width - 82}" y2="19" stroke="#10b981" stroke-dasharray="5 3" stroke-width="1.8"/>
+<text x="{width - 16}" y="23" text-anchor="end" font-size="13" font-weight="600" fill="#15803d">meta {fmt_pct(meta)}</text>
+<path d="{area}" fill="url(#areaFill{width})"/><polyline points="{poly}" fill="none" stroke="#dc2626" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+{''.join(circles)}{''.join(labels)}{''.join(dates)}</svg>"""
+
+
+def stacked_bar_chart(points):
+    if not points:
+        return ""
+    left, base, plot_h, width = 56, 340, 270, 900
+    max_total = max(250, max(p["total"] for p in points))
+    gap = 18
+    bar_w = max(22, (width - left - 28 - gap * (len(points) - 1)) / max(1, len(points)))
+    grid = []
+    for mark in (0, 50, 100, 150, 200, 250):
+        y = base - (mark / max_total * plot_h)
+        grid.append(f'<line x1="{left - 8}" y1="{y:.1f}" x2="880" y2="{y:.1f}" stroke="#e2e8f0" stroke-dasharray="2 2"/><text x="44" y="{y + 5:.1f}" text-anchor="end" font-size="13" fill="#94a3b8">{mark}</text>')
+    groups = []
+    for i, p in enumerate(points):
+        x = left + i * (bar_w + gap)
+        ok = p["total"] - p["fora_padrao"]
+        bad = p["fora_padrao"]
+        ok_h = ok / max_total * plot_h
+        bad_h = bad / max_total * plot_h
+        ok_y = base - ok_h
+        bad_y = ok_y - bad_h
+        bad_label = ""
+        if bad:
+            if bad_h >= 32:
+                bad_label = f'<text x="{x + bar_w / 2:.1f}" y="{bad_y + bad_h / 2 - 5:.1f}" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">{bad}</text><text x="{x + bar_w / 2:.1f}" y="{bad_y + bad_h / 2 + 10:.1f}" text-anchor="middle" font-size="11" fill="#fee2e2">{fmt_pct(p["pct"])}</text>'
+            else:
+                bad_label = f'<text x="{x + bar_w / 2:.1f}" y="{bad_y + min(14, max(10, bad_h)):.1f}" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">{fmt_pct(p["pct"])}</text>'
+        groups.append(f"""<g><rect x="{x:.1f}" y="{ok_y:.1f}" width="{bar_w:.1f}" height="{ok_h:.1f}" fill="#1e40af"/>
+<rect x="{x:.1f}" y="{bad_y:.1f}" width="{bar_w:.1f}" height="{bad_h:.1f}" fill="#be123c" rx="4"/>
+<text x="{x + bar_w / 2:.1f}" y="{max(16, bad_y - 12):.1f}" text-anchor="middle" font-size="14" font-weight="600" fill="#0f172a">{p["total"]}</text>
+<text x="{x + bar_w / 2:.1f}" y="{ok_y + ok_h / 2 - 8:.1f}" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">{ok}</text>
+<text x="{x + bar_w / 2:.1f}" y="{ok_y + ok_h / 2 + 8:.1f}" text-anchor="middle" font-size="12" fill="#dbeafe">{fmt_pct(ok / p["total"]) if p["total"] else "0,0%"}</text>
+{bad_label}<text x="{x + bar_w / 2:.1f}" y="366" text-anchor="middle" font-size="13" fill="#64748b">{html.escape(p["label"])}</text></g>""")
+    return f'<svg viewBox="0 0 900 380" style="width:100%;height:auto">{"".join(grid)}{"".join(groups)}</svg>'
+
+
+def build_divergencias_por_setor(data):
+    divergencias = []
+    for setor_nome, stats in data.get("setores", {}).items():
+        cobrar_pcp, cobrar_encarregado, cobrar_apontador = [], [], []
+        for row in stats.get("rows", []):
+            p = row["programado"]
+            r = row["realizado_encarregado"]
+            produzido = row["produzido"]
+            if p == 0 and produzido > 0:
+                cobrar_pcp.append({**row, "peso": produzido, "motivo": f"Produzido {produzido}, mas PCP programou 0. Verificar programação, código ou cadastro."})
+            if p > 0 and r != p:
+                cobrar_encarregado.append({**row, "peso": abs(r - p), "motivo": f"PCP programou {p}, mas encarregado lançou R {r}. Diferença no R: {r - p:+d}."})
+            if r != produzido:
+                cobrar_apontador.append({**row, "peso": abs(produzido - r), "motivo": f"Encarregado lançou R {r}, mas Supabase tem {produzido}. Conferir apontamento no Mapa de Concretagem."})
+            elif p > 0 and produzido < p:
+                cobrar_apontador.append({**row, "peso": p - produzido, "motivo": f"PCP programou {p}, porém Supabase tem {produzido}. Falta {p - produzido} peça(s)."})
+        if cobrar_pcp or cobrar_encarregado or cobrar_apontador or stats.get("diferenca") != 0:
+            divergencias.append({
+                "setor": setor_nome,
+                "programado": stats["programado"],
+                "realizado_encarregado": stats["realizado_encarregado"],
+                "produzido": stats["produzido"],
+                "diferenca": stats["diferenca"],
+                "cobrar_pcp": sorted(cobrar_pcp, key=lambda r: r["peso"], reverse=True),
+                "cobrar_encarregado": sorted(cobrar_encarregado, key=lambda r: r["peso"], reverse=True),
+                "cobrar_apontador": sorted(cobrar_apontador, key=lambda r: r["peso"], reverse=True)[:12],
+            })
+    return divergencias
+
+
 HTML_TEMPLATE = """<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório Diário PCP x Produção — ConcreTrack</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            --card-bg: #ffffff;
-            --card-border: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            
-            --color-realizado: #10b981;
-            --color-realizado-bg: #ecfdf5;
-            --color-parcial: #f59e0b;
-            --color-parcial-bg: #fffbeb;
-            --color-nao-produzido: #ef4444;
-            --color-nao-produzido-bg: #fef2f2;
-            --color-excedente: #3b82f6;
-            --color-excedente-bg: #eff6ff;
-            --color-nao-programado: #8b5cf6;
-            --color-nao-programado-bg: #f5f3ff;
-            
-            --radius-lg: 20px;
-            --radius-md: 14px;
-            --transition: all 0.25s ease;
-        }
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relatório PCP x Produção e Qualidade - {{ q.data }}</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#ececec;color:#111827;padding:16px;line-height:1.5}.toggle-bar{max-width:1180px;margin:0 auto 16px;background:#fff;border-radius:10px;padding:10px 14px;display:flex;gap:8px;align-items:center}.toggle-btn{border:1px solid #d4d4d4;background:#fff;border-radius:8px;padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}.toggle-btn.active{background:#0f172a;color:#fff;border-color:#0f172a}.view{display:none}.view.active{display:block}.page{background:#fff;border-radius:12px;overflow:hidden;margin:0 auto}.view-whatsapp .page{max-width:560px}.view-desktop .page{max-width:1180px}.header{background:#0f172a;color:#fff;padding:20px}.view-desktop .header{display:flex;justify-content:space-between;align-items:end;padding:28px 40px}.brand{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#94a3b8;margin-bottom:6px}h1{font-size:18px;font-weight:600}.view-desktop h1{font-size:26px}.gen{font-size:12px;color:#94a3b8;margin-top:6px}.section{padding:20px;border-bottom:8px solid #f5f5f5}.view-desktop .section{padding:32px 40px;border-bottom:1px solid #f1f5f9}.tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#64748b;margin-bottom:4px}.title{font-size:17px;font-weight:650;margin-bottom:14px}.view-desktop .title{font-size:20px}.subtitle{font-size:12px;color:#64748b;margin-top:-8px;margin-bottom:14px;font-style:italic}.hero{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}.num{font-size:48px;font-weight:650;line-height:1}.view-desktop .num{font-size:72px}.delta{display:inline-flex;gap:4px;font-size:12px;padding:2px 8px;border-radius:10px;font-weight:600;background:#fef2f2;color:#b91c1c}.meta{font-size:13px;color:#64748b;margin-bottom:12px}.ratio-bar{display:flex;height:24px;border-radius:4px;overflow:hidden;margin:12px 0 6px}.part{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff}.ok-fill{background:#10b981}.bad-fill{background:#ef4444}.labels{display:flex;justify-content:space-between;font-size:11px;color:#64748b}.alert{background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:8px;padding:14px 16px;margin-top:16px}.alert strong{color:#991b1b;font-weight:600}.alert p{font-size:13px;color:#7f1d1d;margin-top:6px}.sector-card{border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-bottom:10px}.sector-card.warn{border-color:#fcd34d;background:#fffbeb}.sector-card.ok{border-color:#a7f3d0;background:#f0fdf4}.sector-head{display:flex;gap:10px;align-items:center}.sector-head .name{font-weight:650;flex:1}.pct{font-weight:650}.forms{margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0}.form{display:flex;gap:10px;padding:6px 0;font-size:12px}.code{background:#fff;border:1px solid #e2e8f0;border-radius:4px;padding:2px 8px;font-family:Consolas,monospace}.desc{flex:1;color:#475569}.type-list{display:grid;gap:8px}.type-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;font-size:13px}.type-row.def{background:#fff7f7;border-color:#fecaca}.type-row.ok{background:#f7fefb;border-color:#bbf7d0}.type-main{display:flex;align-items:center;gap:10px;min-width:0}.type-name{font-weight:650}.type-metrics{display:flex;align-items:baseline;gap:10px;margin-left:auto;font-variant-numeric:tabular-nums}.type-count{min-width:28px;text-align:right;font-weight:700}.type-percent{min-width:48px;text-align:right;color:#475569}.insight{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13px}.badge{display:inline-flex;gap:4px;align-items:center;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:650;white-space:nowrap}.badge.ok{background:#d1fae5;color:#065f46}.badge.def{background:#fee2e2;color:#991b1b}.badge.warn{background:#fef3c7;color:#92400e}.badge.realizado{background:#dcfce7;color:#166534;border:1px solid #86efac}.badge.nao-produzido{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}.badge.parcial{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}.badge.excedente{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe}.badge.nao-programado{background:#ede9fe;color:#5b21b6;border:1px solid #ddd6fe}.empty{margin-top:12px;padding:12px;background:#f0fdf4;color:#15803d;border-radius:8px;text-align:center;font-size:13px}.kpis,.op-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.view-desktop .kpis{grid-template-columns:repeat(4,1fr);gap:12px}.view-desktop .op-grid{grid-template-columns:repeat(5,1fr);gap:10px}.kpi,.op-card{background:#f8fafc;border-radius:8px;padding:12px;border:1px solid #eef2f7}.kpi .lbl,.op-card .lbl{font-size:11px;color:#64748b;text-transform:uppercase;font-weight:650}.kpi .val,.op-card .val{font-size:22px;font-weight:700}.chart{margin-top:12px;background:#fafafa;border-radius:8px;padding:16px 12px 8px;overflow-x:auto}.legend{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px;font-size:11px;color:#64748b}.dot{width:8px;height:8px;border-radius:50%;display:inline-block}.exec-grid,.two-col,.div-grid{display:grid;gap:20px}.view-desktop .exec-grid{grid-template-columns:320px 1fr}.view-desktop .two-col,.view-desktop .div-grid{grid-template-columns:1fr 1fr}.div-card{border:1px solid #e2e8f0;background:#f8fafc;border-radius:8px;padding:14px}.div-card h3{font-size:15px;margin-bottom:4px}.div-card h4{font-size:11px;text-transform:uppercase;color:#64748b;margin:10px 0 4px}.div-card li{font-size:12px;margin-left:16px;margin-bottom:4px;color:#334155}.table-wrap{overflow-x:auto;margin-top:12px}.data-table{width:100%;border-collapse:collapse;font-size:12px}.data-table th{background:#f8fafc;color:#64748b;text-align:left;font-size:10px;text-transform:uppercase;font-weight:700;padding:10px;border-bottom:1px solid #e2e8f0;white-space:nowrap}.data-table td{border-bottom:1px solid #eef2f7;padding:10px}.num-cell{text-align:right;font-variant-numeric:tabular-nums}.status-REALIZADO{background:#fff}.status-PARCIAL{background:#fffbeb}.status-EXCEDENTE{background:#eff6ff}.status-NÃO\\ PRODUZIDO,.status-NÃƒO\\ PRODUZIDO{background:#fff5f5}.status-NÃO\\ PROGRAMADO,.status-NÃƒO\\ PROGRAMADO{background:#faf5ff}.pcp-sector-card{position:relative;background:#fff;border:1px solid #dbe5f1;border-radius:18px;padding:28px 32px 22px;margin:22px 0;box-shadow:0 14px 34px rgba(15,23,42,.08);overflow:hidden}.pcp-sector-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:#2563eb}.pcp-sector-head{display:flex;align-items:center;gap:18px;margin-bottom:14px}.pcp-sector-icon{width:56px;height:56px;border:1px solid #93c5fd;border-radius:12px;display:grid;place-items:center;color:#2563eb;background:#f8fbff;box-shadow:0 6px 18px rgba(37,99,235,.16);font-size:28px}.pcp-sector-title{font-size:30px;font-weight:800;color:#0b2f55;letter-spacing:0}.sector-metrics{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:0 0 20px 74px}.metric-chip{height:44px;display:inline-flex;align-items:center;gap:10px;background:#fff;border:1px solid #dbe5f1;border-radius:11px;padding:0 14px;color:#15416f;box-shadow:0 3px 10px rgba(15,65,111,.04)}.metric-chip .metric-icon{color:#2563eb;font-size:18px}.metric-chip .metric-label{font-size:13px;color:#334155}.metric-chip .metric-value{font-size:20px;font-weight:800;color:#2563eb}.metric-chip.item-count{margin-left:auto;background:#eaf2ff;border-color:#dbeafe}.pcp-table-wrap{border:1px solid #dbe5f1;border-radius:12px;overflow-x:auto;box-shadow:0 8px 22px rgba(15,23,42,.05)}.pcp-table{min-width:980px;table-layout:fixed}.pcp-table th{height:54px;background:linear-gradient(135deg,#15416F 0%,#0d3560 100%);color:#fff;border-bottom:0;font-size:11px;letter-spacing:.02em}.pcp-table th:first-child{border-top-left-radius:10px}.pcp-table th:last-child{border-top-right-radius:10px}.pcp-table td{height:56px;color:#111827;font-size:13px;font-weight:600}.pcp-table tbody tr:nth-child(even):not(.status-NÃO\\ PRODUZIDO):not(.status-NÃƒO\\ PRODUZIDO){background:#fbfdff}.pcp-table tbody tr:hover{background:#f2f7ff}.pcp-table .col-model{width:28%;text-align:left}.pcp-table .col-code{width:12%;text-align:center}.pcp-table .col-num{width:15%;text-align:center}.pcp-table .col-diff{width:10%;text-align:center}.pcp-table .col-status{width:15%;text-align:center}.model-cell{display:flex;align-items:center;gap:12px}.model-icon{width:34px;height:34px;display:grid;place-items:center;border:1px solid #dbeafe;border-radius:9px;color:#2563eb;background:#fff;font-size:17px;flex:0 0 auto}.diff-zero{color:#111827}.diff-neg{color:#dc2626!important;font-weight:800}.diff-pos{color:#2563eb!important;font-weight:800}.badge.realizado:before{content:"✓";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#16a34a;color:#fff;font-size:11px}.badge.nao-produzido:before{content:"×";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#ef4444;color:#fff;font-size:12px}.badge.parcial:before{content:"!";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#f59e0b;color:#fff;font-size:11px}@media(max-width:900px){.pcp-sector-card{padding:22px 18px}.sector-metrics{margin-left:0}.metric-chip.item-count{margin-left:0}.pcp-sector-title{font-size:24px}}.footer{background:#f8fafc;color:#94a3b8;font-size:11px;padding:14px 20px;text-align:center}.view-desktop .footer{display:flex;justify-content:space-between;text-align:left;padding:20px 40px}@media(max-width:760px){.view-desktop .exec-grid,.view-desktop .two-col,.view-desktop .kpis,.view-desktop .op-grid,.view-desktop .div-grid{grid-template-columns:1fr}.toggle-bar{overflow:auto}.form,.type-main{flex-wrap:wrap}.type-row{align-items:flex-start}}
+.pcp-table{min-width:1000px}.pcp-table th,.pcp-table td{padding-left:10px;padding-right:10px}.pcp-table th{white-space:normal;line-height:1.25}.pcp-table .col-model{width:20%}.pcp-table .col-code{width:8%}.pcp-table .col-num{width:10%}.pcp-table .col-diff{width:12%}.pcp-table .col-status{width:15%}
+</style></head><body>
+<div class="toggle-bar"><span class="tag">Visualização:</span><button class="toggle-btn active" data-view="whatsapp">WhatsApp</button><button class="toggle-btn" data-view="desktop">Desktop / Apresentação</button></div>
+{% macro alert_block() %}{% if q.outlier %}<div class="alert"><strong>{{ q.outlier.setor }} concentrou {{ pct(q.outlier.share) }} dos desvios do dia</strong><p>{{ q.outlier.fora_padrao }} de {{ q.day_bad }} desvios vieram de {{ q.outlier.label }}. Investigar se é problema real de processo ou erro de classificação/parametrização.</p></div>{% endif %}{% endmacro %}
+{% macro ratio() %}<div class="ratio-bar"><div class="part ok-fill" style="width:{{ q.ok_width }}%">{{ pct(q.ok_ratio) }} padrão</div><div class="part bad-fill" style="width:{{ q.bad_width }}%">{{ pct(q.day_pct) }}</div></div><div class="labels"><span>{{ q.day_ok }} formas conformes</span><span>{{ q.day_bad }} desvios</span></div>{% endmacro %}
+{% macro operational_kpis() %}<div class="op-grid"><div class="op-card"><div class="lbl">PCP Programado (P)</div><div class="val">{{ total_programado }}</div><div class="meta">Programado pelo PCP</div></div><div class="op-card"><div class="lbl">PCP Realizado (R)</div><div class="val">{{ total_realizado_encarregado }}</div><div class="meta">Lançado na planilha</div></div><div class="op-card"><div class="lbl">Fábrica/Supabase</div><div class="val">{{ total_produzido }}</div><div class="meta">Apontado no mapa</div></div><div class="op-card"><div class="lbl">Diferença Fábrica x R</div><div class="val" style="color:{{ '#2563eb' if diferenca_total >= 0 else '#dc2626' }}">{{ '%+d' | format(diferenca_total) }}</div><div class="meta">Fábrica - Realizado</div></div><div class="op-card"><div class="lbl">Aderência</div><div class="val">{{ num(aderencia_pct, 1) }}%</div><div class="meta">Fábrica / Realizado</div></div></div>{% endmacro %}
+{% macro sector_cards() %}{% if q.outlier %}<div class="subtitle">Incluindo {{ q.outlier.setor }} na análise; alerta mantido acima por concentração de desvios.</div>{% endif %}{% for s in q.visible_sectors %}<div class="sector-card {{ 'warn' if s.fora_padrao else 'ok' }}"><div class="sector-head"><span class="name">{{ s.label }}</span><span class="pct">{{ pct(s.pct) }}</span></div><div class="meta">{{ s.fora_padrao }} desvio(s) em {{ s.total }} formas · {{ num(s.volume_fora_padrao, 2) }} m³ fora do padrão</div>{% if s.formas %}<div class="forms">{% for f in s.formas %}<div class="form"><span class="code">{{ f.codigo }}</span><span class="desc">{{ f.descricao }}</span><span>{{ num(f.volume, 2) }} m³</span></div>{% endfor %}</div>{% endif %}</div>{% endfor %}{% endmacro %}
+{% macro day_types() %}<div class="type-list">{% for t in q.day_types %}<div class="type-row {{ 'def' if t.fora_padrao else 'ok' }}"><div class="type-main"><span class="badge {{ 'def' if t.fora_padrao else 'ok' }}">{{ 'Desvio' if t.fora_padrao else 'Padrão' }}</span><span class="type-name">{{ t.tipo }}</span></div><div class="type-metrics"><span class="type-count">{{ t.total }}</span><span class="type-percent">{{ pct(t.total / q.day_types_total) }}</span></div></div>{% endfor %}</div>{% endmacro %}
+{% macro divergence_cards(limit=None) %}{% set setores_div = divergencias_por_setor[:limit] if limit else divergencias_por_setor %}{% if setores_div %}<div class="div-grid">{% for d in setores_div %}<div class="div-card"><h3>{{ d.setor }}</h3><div class="meta">P {{ d.programado }} · R {{ d.realizado_encarregado }} · Fábrica {{ d.produzido }} · Dif. {{ '%+d' | format(d.diferenca) }}</div>{% if d.cobrar_pcp %}<h4>Cobrar PCP / cadastro</h4><ul>{% for item in d.cobrar_pcp[:6] %}<li>{{ item.codigo }} · {{ item.modelo }}: {{ item.motivo }}</li>{% endfor %}</ul>{% endif %}{% if d.cobrar_encarregado %}<h4>Cobrar encarregado</h4><ul>{% for item in d.cobrar_encarregado[:6] %}<li>{{ item.codigo }} · {{ item.modelo }}: {{ item.motivo }}</li>{% endfor %}</ul>{% endif %}{% if d.cobrar_apontador %}<h4>Conferir apontamento</h4><ul>{% for item in d.cobrar_apontador[:6] %}<li>{{ item.codigo }} · {{ item.modelo }}: {{ item.motivo }}</li>{% endfor %}</ul>{% endif %}</div>{% endfor %}</div>{% else %}<div class="empty">Nenhuma divergência operacional relevante.</div>{% endif %}{% endmacro %}
+{% macro massada_table(limit=None) %}{% set rows = massada_problems[:limit] if limit else massada_problems %}{% if rows %}<div class="table-wrap"><table class="data-table"><thead><tr><th>Hora</th><th>Setor</th><th>Forma</th><th>Modelo</th><th>Tipo concreto</th><th>Apontador</th><th>Problema</th></tr></thead><tbody>{% for r in rows %}<tr><td>{{ r.hora }}</td><td>{{ r.setor }}</td><td>{{ r.forma }}</td><td>{{ r.modelo }}</td><td>{{ r.tipo_concreto }}</td><td>{{ r.apontador }}</td><td>{{ r.problema }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty">Nenhuma forma/massada com problema encontrada por este critério.</div>{% endif %}{% endmacro %}
+{% macro sector_tables() %}{% for setor_nome, stats in setores.items() %}<div class="pcp-sector-card"><div class="pcp-sector-head"><div class="pcp-sector-icon"><i class="ti ti-building-factory-2"></i></div><h2 class="pcp-sector-title">{{ setor_nome }}</h2></div><div class="sector-metrics"><div class="metric-chip"><i class="ti ti-calendar-stats metric-icon"></i><span class="metric-label">Programado</span><span class="metric-value">{{ stats.programado }}</span></div><div class="metric-chip"><i class="ti ti-clipboard-check metric-icon"></i><span class="metric-label">Realizado planilha</span><span class="metric-value">{{ stats.realizado_encarregado }}</span></div><div class="metric-chip"><i class="ti ti-building-factory metric-icon"></i><span class="metric-label">Fábrica</span><span class="metric-value">{{ stats.produzido }}</span></div><div class="metric-chip"><i class="ti ti-target-arrow metric-icon"></i><span class="metric-label">Aderência</span><span class="metric-value">{{ num(stats.aderencia_pct, 1) }}%</span></div><div class="metric-chip item-count"><i class="ti ti-layers-subtract metric-icon"></i><span class="metric-value">{{ stats.rows|length }}</span><span class="metric-label">itens</span></div></div><div class="pcp-table-wrap"><table class="data-table pcp-table"><thead><tr><th class="col-model">Modelo</th><th class="col-code">Código</th><th class="col-num">Programado (P)</th><th class="col-num">Realizado PCP (R)</th><th class="col-num">Fábrica</th><th class="col-diff">Desvio R x Fábrica</th><th class="col-status">Conferência P x R</th><th class="col-status">Conferência R x Fábrica</th></tr></thead><tbody>{% for row in stats.rows %}<tr class="status-{{ row.status_realizado_fabrica }}"><td class="col-model"><div class="model-cell"><span class="model-icon"><i class="ti ti-cube"></i></span><span>{{ row.modelo }}</span></div></td><td class="col-code">{{ row.codigo }}</td><td class="col-num">{{ row.programado }}</td><td class="col-num">{{ row.realizado_encarregado }}</td><td class="col-num">{{ row.produzido }}</td><td class="col-diff {{ 'diff-neg' if row.diferenca < 0 else 'diff-pos' if row.diferenca > 0 else 'diff-zero' }}">{{ '%+d' | format(row.diferenca) if row.diferenca else '0' }}</td><td class="col-status"><span class="badge {{ status_badge(row.status_programado_realizado) }}">{{ row.status_programado_realizado }}</span></td><td class="col-status"><span class="badge {{ status_badge(row.status_realizado_fabrica) }}">{{ row.status_realizado_fabrica }}</span></td></tr>{% else %}<tr><td colspan="8">Nenhuma atividade ou planejamento registrado.</td></tr>{% endfor %}</tbody></table></div>{% if stats.desvios_detalhes %}<div class="alert" style="margin-top:16px"><strong>Resumo:</strong><p>{{ stats.resumo_geral }}</p><ul style="margin-left:18px;margin-top:6px">{% for desvio in stats.desvios_detalhes[:8] %}<li>{{ desvio }}</li>{% endfor %}</ul></div>{% endif %}</div>{% endfor %}{% endmacro %}
+{% macro month_block(desktop=False) %}<div class="kpis"><div class="kpi"><div class="lbl">Total</div><div class="val">{{ q.month_total }}</div><div class="meta">formas · {{ num(q.month_volume, 1) }} m³</div></div><div class="kpi"><div class="lbl">Fora padrão</div><div class="val" style="color:#ef4444">{{ pct(q.month_pct) }}</div><div class="meta">{{ q.month_bad }} formas</div></div><div class="kpi"><div class="lbl">Média/dia</div><div class="val">{{ num(q.avg_day, 0) }}</div><div class="meta">com {{ num(q.avg_bad_day, 0) }} desvios/dia</div></div><div class="kpi"><div class="lbl">Meta</div><div class="val">{{ pct(q.meta) }}</div><div class="meta">{{ q.meta_label }}</div></div></div><div class="chart"><div class="title">Fechamento diário · padrão x fora do padrão</div>{{ stacked_svg }}</div><div class="chart"><div class="title">Evolução diária · % fora do padrão</div>{{ line_svg_desktop if desktop else line_svg_mobile }}<div class="legend"><span><span class="dot" style="background:#7f1d1d"></span> pico crítico</span><span><span class="dot" style="background:#ef4444"></span> acima da meta</span><span><span class="dot" style="background:#f59e0b"></span> melhor dia</span><span><span class="dot" style="background:#0f172a"></span> dia atual</span></div></div><div class="chart"><div class="title">Fechamento diário · incluindo Setor 3</div>{{ stacked_svg_incluindo_setor3 }}</div><div class="chart"><div class="title">Evolução diária · incluindo Setor 3</div>{{ line_svg_desktop_incluindo_setor3 if desktop else line_svg_mobile_incluindo_setor3 }}</div>{% endmacro %}
+<div class="view view-whatsapp active" id="view-whatsapp"><div class="page"><div class="header"><div class="brand">Concrefer · {{ unidade }} · PCP x Produção + Qualidade</div><h1>Relatório do dia {{ q.data }}</h1><div class="gen">Gerado {{ data_geracao }} às {{ hora_geracao }}</div></div><div class="section"><div class="tag">Resumo executivo</div><div class="title">{{ q.titulo }}</div><div class="hero"><span class="num">{{ pct(q.day_pct).replace(',0%', '%') }}</span><span class="delta">{{ q.delta_label }}</span></div><div class="meta">{{ q.day_bad }} formas fora do padrão de {{ q.day_total }} produzidas · {{ num(q.day_volume_bad, 2) }} m³</div>{{ ratio() }}{{ alert_block() }}</div><div class="section"><div class="tag">PCP x Produção</div><div class="title">Resumo operacional</div>{{ operational_kpis() }}</div><div class="section"><div class="tag">Por setor · dia {{ q.data_curta }}</div><div class="title">Concentração de desvios</div>{{ sector_cards() }}</div><div class="section"><div class="tag">Por tipo · dia {{ q.data_curta }}</div><div class="title">Detalhamento dos desvios</div>{{ day_types() }}</div><div class="section"><div class="tag">Divergências</div><div class="title">Responsáveis por conferência</div>{{ divergence_cards(2) }}</div><div class="section"><div class="tag">Massadas</div><div class="title">Formas com problema</div>{{ massada_table(20) }}</div><div class="section"><div class="tag">Mês corrente · {{ q.mes_ano }}</div><div class="title">Consolidado 01 a {{ q.data_curta }}</div>{{ month_block(False) }}</div><div class="footer">Concrefer · Sistema ConcreTrack · Enviado pelo Kartrak Agent<br>Dúvidas: Ricardo (Gerência) · {{ data_geracao }} {{ hora_geracao }}</div></div></div>
+<div class="view view-desktop" id="view-desktop"><div class="page"><div class="header"><div><div class="brand">Concrefer · {{ unidade }} · PCP x Produção + Qualidade</div><h1>Relatório do dia {{ q.data }}</h1></div><div class="gen" style="text-align:right"><div style="font-size:24px;color:#fff;font-weight:650">{{ q.data_curta }}</div>Gerado {{ data_geracao }} às {{ hora_geracao }}</div></div><div class="section"><div class="exec-grid"><div><div class="tag">Resumo executivo</div><div class="title">{{ q.titulo }}</div><div class="hero"><span class="num">{{ pct(q.day_pct).replace(',0%', '%') }}</span></div><span class="delta">{{ q.delta_label }}</span><div class="meta">{{ q.day_bad }} de {{ q.day_total }} formas · {{ num(q.day_volume_bad, 2) }} m³</div>{{ ratio() }}</div><div>{{ alert_block() }}</div></div></div><div class="section"><div class="tag">PCP x Produção</div><div class="title">Resumo operacional</div>{{ operational_kpis() }}</div><div class="section two-col"><div><div class="tag">Por setor · dia {{ q.data_curta }}</div><div class="title">Concentração de desvios</div>{{ sector_cards() }}</div><div><div class="tag">Por tipo · dia {{ q.data_curta }}</div><div class="title">Detalhamento dos desvios</div>{{ day_types() }}</div></div><div class="section"><div class="tag">Divergências operacionais</div><div class="title">Quem precisa conferir o quê</div>{{ divergence_cards() }}</div><div class="section"><div class="tag">Massadas / liberação</div><div class="title">Formas com problema</div>{{ massada_table() }}</div><div class="section"><div class="tag">Mês corrente · {{ q.mes_ano }}</div><div class="title">Consolidado 01 a {{ q.data_curta }}</div>{{ month_block(True) }}<div class="table-wrap"><table class="data-table"><thead><tr><th>Tipo</th><th>Classificação</th><th class="num-cell">Qtd</th><th class="num-cell">% total</th><th class="num-cell">Volume</th><th class="num-cell">Vol %</th><th>Status</th></tr></thead><tbody>{% for t in q.month_types %}<tr><td>{{ t.tipo }}</td><td><span class="badge {{ 'def' if t.fora_padrao else 'ok' }}">{{ 'Desvio' if t.fora_padrao else 'Padrão' }}</span></td><td class="num-cell">{{ t.total }}</td><td class="num-cell">{{ pct(t.total / q.month_total) if q.month_total else '0%' }}</td><td class="num-cell">{{ num(t.volume, 2) }} m³</td><td class="num-cell">{{ pct(t.volume / q.month_volume) if q.month_volume else '0%' }}</td><td class="num-cell"><span class="badge {{ 'def' if t.fora_padrao else 'ok' }}">{{ 'Defeito' if t.fora_padrao else 'Conforme' }}</span></td></tr>{% endfor %}</tbody></table></div></div><div class="section"><div class="tag">Detalhe completo antigo</div><div class="title">Tabelas PCP x Produção por setor</div>{{ sector_tables() }}</div><div class="footer"><div>Concrefer · Sistema ConcreTrack · Enviado pelo Kartrak Agent</div><div>Dúvidas: Ricardo (Gerência) · {{ data_geracao }} {{ hora_geracao }}</div></div></div></div><script>const buttons=document.querySelectorAll(".toggle-btn");const views=document.querySelectorAll(".view");buttons.forEach(btn=>btn.addEventListener("click",()=>{const target=btn.dataset.view;buttons.forEach(b=>b.classList.toggle("active",b===btn));views.forEach(v=>v.classList.toggle("active",v.id==="view-"+target));}));</script></body></html>"""
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            background: var(--bg-gradient);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding: 2.5rem 2rem;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1240px;
-            margin: 0 auto;
-        }
-
-        /* --- HEADER --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 2rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .brand h1 {
-            font-size: 2.25rem;
-            font-weight: 900;
-            letter-spacing: -0.04em;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .brand p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            font-weight: 500;
-            margin-top: 0.25rem;
-        }
-
-        .timestamp {
-            text-align: right;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        /* --- KPI CARD ROW --- */
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .kpi-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-md);
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
-        }
-
-        .kpi-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-        }
-
-        .kpi-label {
-            color: var(--text-muted);
-            font-size: 0.72rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .kpi-value {
-            font-size: 2.1rem;
-            font-weight: 900;
-            margin: 0.4rem 0;
-            letter-spacing: -0.04em;
-            color: var(--text-main);
-        }
-
-        .kpi-sub {
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        /* --- EXECUTIVE SUMMARY --- */
-        .summary-card {
-            background: #1e293b;
-            color: #f8fafc;
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 10px 25px -5px rgba(30, 41, 59, 0.3);
-        }
-
-        .summary-card h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 1.25rem;
-            letter-spacing: -0.02em;
-            color: #3b82f6;
-        }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (min-width: 768px) {
-            .summary-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .summary-section h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            color: #94a3b8;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 0.25rem;
-        }
-
-        .summary-list {
-            list-style: none;
-        }
-
-        .summary-list > li {
-            font-size: 0.95rem;
-            margin-bottom: 0.75rem;
-            position: relative;
-            padding-left: 1.25rem;
-            list-style-type: none;
-        }
-
-        .summary-list > li::before {
-            content: "•";
-            color: #3b82f6;
-            font-weight: bold;
-            font-size: 1.25rem;
-            position: absolute;
-            left: 0;
-            top: -2px;
-        }
-
-        .summary-nested-list {
-            list-style-type: none;
-            padding-left: 0.75rem;
-            margin-top: 0.35rem;
-            border-left: 2px solid #334155;
-        }
-
-        .summary-nested-list li {
-            font-size: 0.85rem;
-            color: #cbd5e1;
-            margin-bottom: 0.25rem;
-            position: relative;
-            padding-left: 1rem;
-            list-style-type: none;
-        }
-
-        .summary-nested-list li::before {
-            content: "◦";
-            color: #94a3b8;
-            font-size: 1rem;
-            position: absolute;
-            left: 0;
-            top: -1px;
-            font-weight: bold;
-        }
-
-        /* --- SECTIONS BY SECTOR --- */
-        .sector-section {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .sector-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .sector-title {
-            font-size: 1.35rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
-        .sector-badge {
-            background: #f1f5f9;
-            color: #475569;
-            padding: 0.35rem 0.85rem;
-            border-radius: 9999px;
-            font-size: 0.78rem;
-            font-weight: 800;
-        }
-
-        /* --- TABLE --- */
-        .table-container {
-            overflow-x: auto;
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-md);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 0.92rem;
-        }
-
-        th {
-            background: #f8fafc;
-            color: var(--text-muted);
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 0.72rem;
-            letter-spacing: 0.08em;
-            padding: 1rem 1.1rem;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        td {
-            padding: 1rem 1.1rem;
-            border-bottom: 1px solid #f1f5f9;
-            font-weight: 600;
-        }
-
-        /* Status colors mapping */
-        .status-REALIZADO {
-            background: var(--color-realizado-bg);
-            border-left: 5px solid var(--color-realizado);
-            color: #065f46;
-        }
-        .status-PARCIAL {
-            background: var(--color-parcial-bg);
-            border-left: 5px solid var(--color-parcial);
-            color: #92400e;
-        }
-        .status-NÃO\\ PRODUZIDO {
-            background: var(--color-nao-produzido-bg);
-            border-left: 5px solid var(--color-nao-produzido);
-            color: #991b1b;
-        }
-        .status-EXCEDENTE {
-            background: var(--color-excedente-bg);
-            border-left: 5px solid var(--color-excedente);
-            color: #1e40af;
-        }
-        .status-NÃO\\ PROGRAMADO {
-            background: var(--color-nao-programado-bg);
-            border-left: 5px solid var(--color-nao-programado);
-            color: #5b21b6;
-        }
-
-        .badge-status {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.68rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .badge-REALIZADO { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-        .badge-PARCIAL { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-        .badge-NÃO\\ PRODUZIDO { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-        .badge-EXCEDENTE { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
-        .badge-NÃO\\ PROGRAMADO { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
-
-        .text-diff {
-            font-weight: 700;
-        }
-        .text-diff.negative { color: var(--color-nao-produzido); }
-        .text-diff.positive { color: var(--color-excedente); }
-        .text-diff.zero { color: var(--text-muted); }
-
-        /* Footer totals styling */
-        tfoot tr {
-            background: #f8fafc;
-            border-top: 3px double #cbd5e1;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-
-        tfoot td {
-            padding: 1.15rem 1.1rem;
-            font-size: 0.92rem;
-            border-bottom: none;
-        }
-
-        /* Narrative Summary Box */
-        .sector-narrative {
-            margin-top: 1.5rem;
-            padding: 1.25rem 1.5rem;
-            background: #f8fafc;
-            border-left: 4px solid #3b82f6;
-            border-radius: 8px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
-        }
-
-        .sector-narrative h4 {
-            font-size: 0.95rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #1e3a8a;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .sector-narrative .desc-geral {
-            font-size: 0.9rem;
-            color: #334155;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .sector-narrative ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .sector-narrative li {
-            font-size: 0.88rem;
-            color: #475569;
-            margin-bottom: 0.4rem;
-            position: relative;
-            padding-left: 1.25rem;
-            font-weight: 500;
-            line-height: 1.5;
-        }
-
-        .sector-narrative li::before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: #3b82f6;
-            font-weight: 800;
-        }
-
-        /* --- FILTERS & ACTIONS FOR TABLES --- */
-        .table-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.25rem;
-            background: #f8fafc;
-            padding: 0.75rem 1.25rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--card-border);
-        }
-
-        .search-box input {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--card-border);
-            font-size: 0.85rem;
-            width: 250px;
-            outline: none;
-            transition: var(--transition);
-        }
-
-        .search-box input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-        }
-
-        .status-filters {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-right: 0.25rem;
-        }
-
-        .filter-btn {
-            background: #ffffff;
-            border: 1px solid var(--card-border);
-            padding: 0.35rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--text-muted);
-        }
-
-        .filter-btn:hover {
-            border-color: #cbd5e1;
-            color: var(--text-main);
-        }
-
-        .filter-btn.active {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            color: #ffffff;
-        }
-
-        .btn-restore-hidden {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            color: #b45309;
-            padding: 0.35rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .btn-restore-hidden:hover {
-            background: #fef3c7;
-        }
-
-        .btn-hide-row {
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            font-size: 1rem;
-            cursor: pointer;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-hide-row:hover {
-            background: #fee2e2;
-            color: #ef4444;
-        }
-
-        .manually-hidden {
-            display: none !important;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <header>
-        <div class="brand">
-            <h1>Relatório Diário PCP x Produção</h1>
-            <p>Comparativo Executivo — Mapa de Concretagem vs. Planilha PCP - DIÁRIO</p>
-        </div>
-        <div class="timestamp">
-            <div>Data Analisada: <strong>{{ data_analisada }}</strong></div>
-            <div style="margin-top:0.25rem;">Gerado em: <strong>{{ data_geracao }} às {{ hora_geracao }}</strong></div>
-        </div>
-    </header>
-
-    <!-- KPI ROW -->
-    <section class="kpi-grid">
-        <div class="kpi-card">
-            <span class="kpi-label">PCP Programado (P)</span>
-            <div class="kpi-value">{{ total_programado }}</div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Meta planejada (Planilha)</span>
-        </div>
-        <div class="kpi-card">
-            <span class="kpi-label">PCP Realizado (R)</span>
-            <div class="kpi-value" style="color: #1e3a8a;">{{ total_realizado_encarregado }}</div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Apontado Encarregado</span>
-        </div>
-        <div class="kpi-card">
-            <span class="kpi-label">Realizado Fábrica</span>
-            <div class="kpi-value">{{ total_produzido }}</div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Concretado (Supabase)</span>
-        </div>
-        <div class="kpi-card">
-            <span class="kpi-label">Desvio Fábrica (vs P)</span>
-            <div class="kpi-value" style="color: {% if diferenca_total >= 0 %}var(--color-excedente){% else %}var(--color-nao-produzido){% endif %}">
-                {{ "%+d" | format(diferenca_total) }}
-            </div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Diferença no dia</span>
-        </div>
-        <div class="kpi-card">
-            <span class="kpi-label">Aderência Geral</span>
-            <div class="kpi-value" style="color: {% if aderencia_pct >= 95 %}var(--color-realizado){% elif aderencia_pct >= 80 %}var(--color-parcial){% else %}var(--color-nao-produzido){% endif %}">
-                {{ "%.1f" | format(aderencia_pct) }}%
-            </div>
-            <span class="kpi-sub" style="color:var(--text-muted)">Atendimento real</span>
-        </div>
-    </section>
-
-    <!-- EXECUTIVE SUMMARY -->
-    <section class="summary-card">
-        <h2>Resumo Executivo & Recomendações</h2>
-        <div class="summary-grid">
-            <div class="summary-section">
-                <h3>Principais Pontos de Aderência</h3>
-                <ul class="summary-list">
-                    <li>Setor com melhor aderência: <strong>{{ analise.setor_melhor }}</strong></li>
-                    <li>Setor com maior desvio: <strong>{{ analise.setor_pior }}</strong></li>
-                    <li>
-                        Itens planejados não produzidos: <strong>{{ itens_nao_produzidos }}</strong>
-                        {% if itens_nao_produzidos_detalhes %}
-                            <ul class="summary-nested-list">
-                                {% for item in itens_nao_produzidos_detalhes %}
-                                    <li>Cód. {{ item.codigo }} ({{ item.modelo }}) no {{ item.setor }} - Prog: {{ item.quantidade }} pç</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </li>
-                    <li>
-                        Itens produzidos fora do planejamento: <strong>{{ itens_nao_programados }}</strong>
-                        {% if itens_nao_programados_detalhes %}
-                            <ul class="summary-nested-list">
-                                {% for item in itens_nao_programados_detalhes %}
-                                    <li>Cód. {{ item.codigo }} ({{ item.modelo }}) no {{ item.setor }} - Real: {{ item.quantidade }} pç</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
-            <div class="summary-section">
-                <h3>Pendências Críticas (PCP Não Atendido)</h3>
-                <ul class="summary-list">
-                    {% if analise.produtos_criticos %}
-                        {% for item in analise.produtos_criticos %}
-                            <li>{{ item }}</li>
-                        {% endfor %}
-                    {% else %}
-                        <li style="color:var(--color-realizado);">Nenhum desvio crítico pendente. Aderência de 100%!</li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-        
-        <div class="summary-section" style="margin-top: 1.5rem;">
-            <h3 style="color:#3b82f6;">Recomendações Operacionais</h3>
-            <ul class="summary-list">
-                {% for rec in analise.recomendacoes %}
-                    <li>{{ rec }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </section>
-
-    <!-- TABLES BY SECTOR -->
-    {% for setor_nome, stats in setores.items() %}
-    <section class="sector-section">
-        <div class="sector-header">
-            <h2 class="sector-title">{{ setor_nome }}</h2>
-            <div class="sector-badge">
-                Prog (P): <strong>{{ stats.programado }}</strong> | 
-                Real (R): <strong>{{ stats.realizado_encarregado }}</strong> | 
-                Fábrica: <strong>{{ stats.produzido }}</strong> | 
-                Aderência: <strong>{{ "%.1f" | format(stats.aderencia_pct) }}%</strong>
-            </div>
-        </div>
-
-        <!-- CONTROLES DE FILTRO -->
-        {% if stats.rows %}
-        <div class="table-controls" data-sector="{{ setor_nome }}">
-            <div class="search-box">
-                <input type="text" placeholder="Filtrar por modelo ou código..." oninput="applyFilters('{{ setor_nome }}')">
-            </div>
-            <div class="status-filters">
-                <span class="filter-label">Filtrar Status:</span>
-                <button class="filter-btn active" data-status="ALL" onclick="toggleFilter(this, 'ALL', '{{ setor_nome }}')">Todos</button>
-                <button class="filter-btn" data-status="REALIZADO" onclick="toggleFilter(this, 'REALIZADO', '{{ setor_nome }}')">Realizado</button>
-                <button class="filter-btn" data-status="PARCIAL" onclick="toggleFilter(this, 'PARCIAL', '{{ setor_nome }}')">Parcial</button>
-                <button class="filter-btn" data-status="NÃO PRODUZIDO" onclick="toggleFilter(this, 'NÃO PRODUZIDO', '{{ setor_nome }}')">Não Produzido</button>
-                <button class="filter-btn" data-status="EXCEDENTE" onclick="toggleFilter(this, 'EXCEDENTE', '{{ setor_nome }}')">Excedente</button>
-                <button class="filter-btn" data-status="NÃO PROGRAMADO" onclick="toggleFilter(this, 'NÃO PROGRAMADO', '{{ setor_nome }}')">Não Programado</button>
-            </div>
-            <div>
-                <button class="btn-restore-hidden" id="restore-{{ setor_nome }}" onclick="restoreHiddenRows('{{ setor_nome }}')" style="display: none;">
-                    Mostrar Ocultados (<span class="hidden-count">0</span>)
-                </button>
-            </div>
-        </div>
-        {% endif %}
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Modelo</th>
-                        <th>Código do Poste</th>
-                        <th style="text-align: center; width: 150px;">Programado (Planilha - P)</th>
-                        <th style="text-align: center; width: 150px;">Realizado (Planilha - R)</th>
-                        <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
-                        <th style="text-align: center; width: 100px;">Desvio</th>
-                        <th style="width: 150px;">Status</th>
-                        <th style="width: 60px; text-align: center;">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if stats.rows %}
-                        {% for row in stats.rows %}
-                        <tr class="status-{{ row.status }}" data-status="{{ row.status }}" data-model="{{ row.modelo | lower }}" data-code="{{ row.codigo | lower }}">
-                            <td>{{ row.modelo }}</td>
-                            <td><strong>{{ row.codigo }}</strong></td>
-                            <td class="cell-prog" style="text-align: center;">{{ row.programado }}</td>
-                            <td class="cell-real-enc" style="text-align: center;">{{ row.realizado_encarregado }}</td>
-                            <td class="cell-prod" style="text-align: center;">{{ row.produzido }}</td>
-                            <td class="cell-diff text-diff {% if row.diferenca > 0 %}positive{% elif row.diferenca < 0 %}negative{% else %}zero{% endif %}" style="text-align: center;">
-                                {{ "%+d" | format(row.diferenca) if row.diferenca != 0 else "0" }}
-                            </td>
-                            <td>
-                                <span class="badge-status badge-{{ row.status }}">{{ row.status }}</span>
-                            </td>
-                            <td style="text-align: center;">
-                                <button class="btn-hide-row" onclick="hideRow(this, '{{ setor_nome }}')" title="Ocultar item">✕</button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        <tr class="no-results-row" style="display: none;">
-                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
-                                Nenhum item corresponde aos filtros selecionados.
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
-                                Nenhuma atividade ou planejamento registrado para este setor nesta data.
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-                {% if stats.rows %}
-                <tfoot>
-                    <tr class="table-totals">
-                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total (Filtrado):</td>
-                        <td class="total-prog" style="text-align: center;">{{ stats.programado }}</td>
-                        <td class="total-real-enc" style="text-align: center;">{{ stats.realizado_encarregado }}</td>
-                        <td class="total-prod" style="text-align: center;">{{ stats.produzido }}</td>
-                        <td class="total-diff text-diff {% if stats.diferenca > 0 %}positive{% elif stats.diferenca < 0 %}negative{% else %}zero{% endif %}" style="text-align: center;">
-                            {{ "%+d" | format(stats.diferenca) if stats.diferenca != 0 else "0" }}
-                        </td>
-                        <td colspan="2"></td>
-                    </tr>
-                </tfoot>
-                {% endif %}
-            </table>
-        </div>
-
-        <!-- Local narrative summary -->
-        {% if stats.rows %}
-        <div class="sector-narrative">
-            <h4>📋 Resumo de Desvios — Apontamento vs. Planejamento</h4>
-            <p class="desc-geral">{{ stats.resumo_geral }}</p>
-            {% if stats.desvios_detalhes %}
-                <ul>
-                    {% for desvio in stats.desvios_detalhes %}
-                        <li>{{ desvio }}</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p style="color: var(--color-realizado); font-weight: 700; font-size: 0.88rem; margin: 0;">
-                    ✓ Perfeito! 100% de aderência neste setor. Os apontamentos dos operadores no Mapa bateram exatamente com a planilha de PCP do encarregado.
-                </p>
-            {% endif %}
-        </div>
-        {% endif %}
-    </section>
-    {% endfor %}
-</div>
-
-<script>
-    // Armazena as linhas ocultadas manualmente para cada setor
-    const manuallyHiddenRows = {};
-
-    function toggleFilter(button, status, sector) {
-        const sectorSection = button.closest('.sector-section');
-        const buttons = sectorSection.querySelectorAll('.status-filters .filter-btn');
-        
-        if (status === 'ALL') {
-            // Se clicar em Todos, ativa "Todos" e desativa os outros
-            buttons.forEach(btn => {
-                if (btn.getAttribute('data-status') === 'ALL') {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-        } else {
-            // Se clicar em qualquer outro, desativa "Todos" e alterna o clicado
-            const allBtn = sectorSection.querySelector('.status-filters .filter-btn[data-status="ALL"]');
-            allBtn.classList.remove('active');
-            
-            button.classList.toggle('active');
-            
-            // Se nenhum botão ficar ativo, reativa o "Todos"
-            const activeButtons = sectorSection.querySelectorAll('.status-filters .filter-btn.active');
-            if (activeButtons.length === 0) {
-                allBtn.classList.add('active');
-            }
-        }
-        
-        applyFilters(sector);
-    }
-
-    function applyFilters(sector) {
-        // Encontra a seção do setor correspondente
-        const sections = document.querySelectorAll('.sector-section');
-        let sectorSection = null;
-        for (let sec of sections) {
-            if (sec.querySelector('.sector-title').textContent.trim() === sector.trim()) {
-                sectorSection = sec;
-                break;
-            }
-        }
-        if (!sectorSection) return;
-
-        const searchInput = sectorSection.querySelector('.search-box input');
-        const query = searchInput.value.toLowerCase().trim();
-        
-        // Obtém status ativos
-        const activeButtons = sectorSection.querySelectorAll('.status-filters .filter-btn.active');
-        const activeStatuses = Array.from(activeButtons).map(btn => btn.getAttribute('data-status'));
-        const isAllActive = activeStatuses.includes('ALL');
-
-        const rows = sectorSection.querySelectorAll('tbody tr:not(.no-results-row)');
-        let visibleCount = 0;
-
-        rows.forEach(row => {
-            const rowStatus = row.getAttribute('data-status');
-            const model = row.getAttribute('data-model') || '';
-            const code = row.getAttribute('data-code') || '';
-            
-            // Verifica se está ocultada manualmente
-            const isManuallyHidden = row.classList.contains('manually-hidden');
-            
-            // Filtro de texto
-            const matchesSearch = query === '' || model.includes(query) || code.includes(query);
-            
-            // Filtro de status
-            const matchesStatus = isAllActive || activeStatuses.includes(rowStatus);
-            
-            if (matchesSearch && matchesStatus && !isManuallyHidden) {
-                row.style.display = '';
-                visibleCount++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-
-        // Exibe mensagem de "sem resultados" se nenhuma linha estiver visível
-        const noResultsRow = sectorSection.querySelector('.no-results-row');
-        if (noResultsRow) {
-            noResultsRow.style.display = visibleCount === 0 ? '' : 'none';
-        }
-
-        // Atualiza os totais da tabela
-        updateTotals(sectorSection);
-    }
-
-    function hideRow(button, sector) {
-        const row = button.closest('tr');
-        row.classList.add('manually-hidden');
-        row.style.display = 'none';
-
-        if (!manuallyHiddenRows[sector]) {
-            manuallyHiddenRows[sector] = [];
-        }
-        manuallyHiddenRows[sector].push(row);
-
-        updateRestoreButton(sector);
-        applyFilters(sector);
-    }
-
-    function restoreHiddenRows(sector) {
-        const hiddenList = manuallyHiddenRows[sector] || [];
-        hiddenList.forEach(row => {
-            row.classList.remove('manually-hidden');
-        });
-        manuallyHiddenRows[sector] = [];
-
-        updateRestoreButton(sector);
-        applyFilters(sector);
-    }
-
-    function updateRestoreButton(sector) {
-        // Encontra a seção do setor
-        const sections = document.querySelectorAll('.sector-section');
-        let sectorSection = null;
-        for (let sec of sections) {
-            if (sec.querySelector('.sector-title').textContent.trim() === sector.trim()) {
-                sectorSection = sec;
-                break;
-            }
-        }
-        if (!sectorSection) return;
-
-        const restoreBtn = sectorSection.querySelector('.btn-restore-hidden');
-        const countSpan = restoreBtn.querySelector('.hidden-count');
-        const hiddenCount = (manuallyHiddenRows[sector] || []).length;
-
-        if (hiddenCount > 0) {
-            countSpan.textContent = hiddenCount;
-            restoreBtn.style.display = 'inline-flex';
-        } else {
-            restoreBtn.style.display = 'none';
-        }
-    }
-
-    function updateTotals(sectorSection) {
-        const rows = sectorSection.querySelectorAll('tbody tr:not(.no-results-row)');
-        let totalProg = 0;
-        let totalRealEnc = 0;
-        let totalProd = 0;
-
-        rows.forEach(row => {
-            // Apenas soma se a linha estiver visível (style.display !== 'none' e não manualmente oculta)
-            if (row.style.display !== 'none') {
-                const progVal = parseInt(row.querySelector('.cell-prog').textContent) || 0;
-                const realEncVal = parseInt(row.querySelector('.cell-real-enc').textContent) || 0;
-                const prodVal = parseInt(row.querySelector('.cell-prod').textContent) || 0;
-                
-                totalProg += progVal;
-                totalRealEnc += realEncVal;
-                totalProd += prodVal;
-            }
-        });
-
-        const totalDiff = totalProd - totalProg;
-
-        // Atualiza os elementos de total do rodapé
-        const tfoot = sectorSection.querySelector('tfoot');
-        if (tfoot) {
-            const progCell = tfoot.querySelector('.total-prog');
-            const realEncCell = tfoot.querySelector('.total-real-enc');
-            const prodCell = tfoot.querySelector('.total-prod');
-            const diffCell = tfoot.querySelector('.total-diff');
-
-            if (progCell) progCell.textContent = totalProg;
-            if (realEncCell) realEncCell.textContent = totalRealEnc;
-            if (prodCell) prodCell.textContent = totalProd;
-
-            if (diffCell) {
-                const prefix = totalDiff > 0 ? '+' : '';
-                diffCell.textContent = prefix + totalDiff;
-                
-                // Atualiza cores do desvio
-                diffCell.classList.remove('positive', 'negative', 'zero');
-                if (totalDiff > 0) {
-                    diffCell.classList.add('positive');
-                } else if (totalDiff < 0) {
-                    diffCell.classList.add('negative');
-                } else {
-                    diffCell.classList.add('zero');
-                }
-            }
-        }
-    }
-</script>
-</body>
-</html>
-"""
 
 class HtmlReportGenerator:
     def generate(self, data, date_str):
-        """
-        Gera o relatório HTML a partir dos dados consolidados e salva na pasta de relatórios.
-        Retorna o caminho absoluto do arquivo salvo.
-        """
         now = datetime.now()
-        
-        # Mapeia as variáveis de contexto para renderizar o template
+        q = data["qualidade"]
+        q["ok_ratio"] = (q["day_ok"] / q["day_total"]) if q["day_total"] else 0
+        q["bad_width"] = max(6, q["day_pct"] * 100) if q["day_bad"] else 0
+        q["ok_width"] = 100 - q["bad_width"]
+        if q["day_pct"] > q["meta"] and q["meta"]:
+            q["delta_label"] = f"{q['day_pct'] / q['meta']:.0f}x acima da meta {fmt_pct(q['meta'])}"
+        else:
+            q["delta_label"] = f"dentro da meta {fmt_pct(q['meta'])}"
+        q["meta_label"] = "nenhum dia atingiu" if q["insights"] and q["insights"][0].startswith("Nenhum") else "há dias dentro da meta"
+        q["day_types_total"] = max(1, sum(t["total"] for t in q["day_types"]))
+        q["day_types_bad"] = sum(t["fora_padrao"] for t in q["day_types"])
+
         context = {
-            "data_analisada": datetime.strptime(date_str, "%Y-%m-%d").strftime("%d/%m/%Y"),
+            "q": q,
+            "unidade": "Ribeirão",
             "data_geracao": now.strftime("%d/%m/%Y"),
             "hora_geracao": now.strftime("%H:%M"),
+            "pct": fmt_pct,
+            "num": fmt_num,
+            "line_svg_mobile": line_chart(q["daily_points"], q["meta"], 480, 200, q["data_curta"]),
+            "line_svg_desktop": line_chart(q["daily_points"], q["meta"], 900, 300, q["data_curta"]),
+            "stacked_svg": stacked_bar_chart(q["daily_points"]),
+            "line_svg_mobile_incluindo_setor3": line_chart(q["daily_points_incluindo_setor3"], q["meta"], 480, 200, q["data_curta"]),
+            "line_svg_desktop_incluindo_setor3": line_chart(q["daily_points_incluindo_setor3"], q["meta"], 900, 300, q["data_curta"]),
+            "stacked_svg_incluindo_setor3": stacked_bar_chart(q["daily_points_incluindo_setor3"]),
             "total_programado": data["total_programado"],
             "total_realizado_encarregado": data["total_realizado_encarregado"],
             "total_produzido": data["total_produzido"],
             "diferenca_total": data["diferenca_total"],
             "aderencia_pct": data["aderencia_pct"],
-            "itens_nao_produzidos": data["itens_nao_produzidos"],
-            "itens_nao_programados": data["itens_nao_programados"],
-            "itens_nao_produzidos_detalhes": data["itens_nao_produzidos_detalhes"],
-            "itens_nao_programados_detalhes": data["itens_nao_programados_detalhes"],
             "setores": data["setores"],
-            "analise": data["analise"]
+            "divergencias_por_setor": build_divergencias_por_setor(data),
+            "massada_problems": data.get("massada_problems", []),
+            "status_badge": status_badge,
         }
 
-        logger.info("Renderizando template HTML do relatório...")
-        template = Template(HTML_TEMPLATE)
-        html_content = template.render(context)
-
-        # Salva o arquivo final
-        filename = f"relatorio_pcp_producao_{date_str}.html"
-        filepath = config.REPORTS_DIR / filename
-        
+        logger.info("Renderizando relatório combinado PCP x Produção + Qualidade...")
+        html_content = Template(HTML_TEMPLATE).render(context)
+        filepath = config.REPORTS_DIR / f"relatorio_pcp_producao_{date_str}.html"
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(html_content)
-
         logger.info(f"Relatório HTML criado com sucesso em: {filepath}")
         return str(filepath)

@@ -1,4 +1,6 @@
 import logging
+from collections import defaultdict
+from datetime import datetime
 import config
 
 logger = logging.getLogger("pcp_producao_agent")
@@ -20,7 +22,67 @@ def normalize_sector(sector):
 def normalize_code(code):
     if not code:
         return "SEM CODIGO"
-    return str(code).strip().upper()
+    text = str(code).strip().upper()
+    compact = text.replace(".", "").replace(",", "")
+    if compact.isdigit():
+        return compact
+    return text
+
+def _row_date(row):
+    return str(row.get("data_fabricacao") or row.get("data") or "")[:10]
+
+def _volume(row):
+    for key in ("volume_m3", "volume", "volume_estimado", "volume_estimado_m3"):
+        try:
+            return float(row.get(key) or 0)
+        except (TypeError, ValueError):
+            continue
+    return 0.0
+
+def _tipo_concreto(row):
+    return str(row.get("tipo_concreto") or row.get("prod_tipo_concreto") or row.get("classificacao") or "Concreto Padrão").strip()
+
+def _is_fora_padrao(row):
+    if normalize_sector(row.get("setor")) == "Setor 3" and "vibrado" in _tipo_concreto(row).lower():
+        return False
+    return _is_fora_padrao_incluindo_setor3(row)
+
+def _is_fora_padrao_incluindo_setor3(row):
+    text = _tipo_concreto(row).lower()
+    cls = str(row.get("classificacao") or "").lower()
+    if cls and "pad" not in cls:
+        return True
+    return any(term in text for term in ("vibrado", "exsudado", "segregado", "defeito", "fora"))
+
+def _sector_label(row):
+    setor = normalize_sector(row.get("setor"))
+    desc = row.get("setor_descricao") or row.get("setor_nome") or row.get("nome_setor")
+    return f"{setor} · {desc}" if desc and str(desc).strip() not in setor else setor
+
+def _forma_code(row):
+    return str(row.get("codigo_forma") or row.get("forma_codigo") or row.get("forma") or row.get("forma_numero") or row.get("codigo_resolved") or "SEM FORMA").strip()
+
+def _forma_desc(row):
+    return str(row.get("descricao_curta") or row.get("forma_descricao") or row.get("descricao_forma") or row.get("modelo_resolved") or row.get("modelo") or "Sem descrição").strip()
+
+
+def comparison_status(
+    expected,
+    actual,
+    missing_expected_label,
+    missing_actual_label,
+    matched_label="CONFERE",
+):
+    """Classifica uma conferência de quantidades sem misturar as duas fontes."""
+    if actual == expected:
+        return matched_label
+    if expected == 0:
+        return missing_expected_label
+    if actual == 0:
+        return missing_actual_label
+    if actual < expected:
+        return "PARCIAL"
+    return "EXCEDENTE"
 
 class Comparator:
     def compare(self, pcp_rows, prod_rows):
@@ -79,22 +141,29 @@ class Comparator:
                 modelo = pcp_item["modelo"]
             elif prod_items:
                 modelo = prod_items[0].get("modelo_resolved") or "SEM MODELO"
-                
-            diff = qty_real - qty_prog
 
-            # Definição de Status
-            if qty_real == qty_prog:
-                status = "REALIZADO"
-            elif qty_real > qty_prog:
-                if qty_prog == 0:
-                    status = "NÃO PROGRAMADO"
-                else:
-                    status = "EXCEDENTE"
-            else:
-                if qty_real == 0:
-                    status = "NÃO PRODUZIDO"
-                else:
-                    status = "PARCIAL"
+            if qty_prog == 0 and qty_real_enc == 0 and qty_real == 0:
+                continue
+                
+            diff_programado_realizado = qty_real_enc - qty_prog
+            diff = qty_real - qty_real_enc
+
+            # Dupla conferência, cada uma preservando claramente suas fontes:
+            # 1) Programado (P) x Realizado informado na planilha (R).
+            # 2) Realizado da planilha (R) x apontamento da Fábrica/Supabase.
+            status_programado_realizado = comparison_status(
+                qty_prog,
+                qty_real_enc,
+                "NÃO PROGRAMADO",
+                "NÃO REALIZADO",
+            )
+            status_realizado_fabrica = comparison_status(
+                qty_real_enc,
+                qty_real,
+                "NAO INFORMADO",
+                "NAO APONTADO",
+                matched_label="REALIZADO",
+            )
 
             comparison_details.append({
                 "setor": setor,
@@ -103,8 +172,12 @@ class Comparator:
                 "programado": qty_prog,
                 "realizado_encarregado": qty_real_enc,
                 "produzido": qty_real,
+                "diferenca_programado_realizado": diff_programado_realizado,
                 "diferenca": diff,
-                "status": status
+                "status_programado_realizado": status_programado_realizado,
+                "status_realizado_fabrica": status_realizado_fabrica,
+                # Mantido para consumidores antigos: representa R x Fábrica.
+                "status": status_realizado_fabrica,
             })
 
         # 4. Totalização e Narrativa de Desvios por Setor
@@ -118,8 +191,8 @@ class Comparator:
             s_prog = sum(r["programado"] for r in rows_s)
             s_real_enc = sum(r["realizado_encarregado"] for r in rows_s)
             s_real = sum(r["produzido"] for r in rows_s)
-            s_diff = s_real - s_prog
-            s_pct = (s_real / s_prog * 100) if s_prog > 0 else (100 if s_real > 0 else 0)
+            s_diff = s_real - s_real_enc
+            s_pct = (s_real / s_real_enc * 100) if s_real_enc > 0 else (100 if s_real > 0 else 0)
             
             # Gera narrativas de desvio
             desvios_detalhes = []
@@ -136,19 +209,19 @@ class Comparator:
                 
                 desvio_text = f"<strong>{mod_str} (Cód. {cod_str})</strong>: "
                 
-                if prog_val > 0 and real_val == 0:
-                    desvio_text += f"Programado {prog_val} (P), mas nenhuma peça foi concretada."
-                elif prog_val > 0 and real_val < prog_val:
-                    desvio_text += f"Programado {prog_val} (P), concretado pelo operador {real_val} (falta {abs(diff_val)} pç)."
-                elif prog_val > 0 and real_val > prog_val:
-                    desvio_text += f"Programado {prog_val} (P), concretado pelo operador {real_val} (excesso de {diff_val} pç)."
-                elif prog_val == 0 and real_val > 0:
-                    desvio_text += f"Não programado, mas operador concretou {real_val} peças."
+                if real_enc_val > 0 and real_val == 0:
+                    desvio_text += f"Encarregado apontou {real_enc_val} (R), mas nenhuma peca aparece na Fabrica."
+                elif real_enc_val > 0 and real_val < real_enc_val:
+                    desvio_text += f"Encarregado apontou {real_enc_val} (R), Fabrica tem {real_val} (falta {abs(diff_val)} pc)."
+                elif real_enc_val > 0 and real_val > real_enc_val:
+                    desvio_text += f"Encarregado apontou {real_enc_val} (R), Fabrica tem {real_val} (excesso de {diff_val} pc)."
+                elif real_enc_val == 0 and real_val > 0:
+                    desvio_text += f"Sem Realizado (R) na planilha, mas Fabrica apontou {real_val} pecas."
                 else:
-                    desvio_text += f"Concretado {real_val} peças."
+                    desvio_text += f"Fabrica apontou {real_val} pecas."
 
-                if real_enc_val != real_val:
-                    desvio_text += f" <i>(Nota: Encarregado apontou {real_enc_val} como Realizado (R) na planilha).</i>"
+                if prog_val != real_enc_val:
+                    desvio_text += f" <i>(PCP programou {prog_val} (P)).</i>"
                 
                 desvios_detalhes.append(desvio_text)
 
@@ -172,8 +245,8 @@ class Comparator:
         total_prog = sum(c["programado"] for c in comparison_details)
         total_real_enc = sum(c["realizado_encarregado"] for c in comparison_details)
         total_real = sum(c["produzido"] for c in comparison_details)
-        diferenca_total = total_real - total_prog
-        aderencia_pct = (total_real / total_prog * 100) if total_prog > 0 else 0
+        diferenca_total = total_real - total_real_enc
+        aderencia_pct = (total_real / total_real_enc * 100) if total_real_enc > 0 else (100 if total_real > 0 else 0)
 
         itens_nao_produzidos_detalhes = []
         itens_nao_programados_detalhes = []
@@ -244,4 +317,164 @@ class Comparator:
                 "setor_pior": setor_pior,
                 "recomendacoes": recomendacoes
             }
+        }
+
+    def build_quality_analysis(self, day_rows, month_rows, date_str):
+        meta = config.META_FORA_PADRAO_DIARIA
+        analyzed = datetime.strptime(date_str, "%Y-%m-%d")
+        day_total = len(day_rows)
+        day_bad_rows = [r for r in day_rows if _is_fora_padrao(r)]
+        day_bad = len(day_bad_rows)
+        day_ok = day_total - day_bad
+        day_pct = (day_bad / day_total) if day_total else 0
+        day_volume_bad = sum(_volume(r) for r in day_bad_rows)
+        day_volume_total = sum(_volume(r) for r in day_rows)
+
+        by_sector = {}
+        for row in day_rows:
+            sector = normalize_sector(row.get("setor"))
+            item = by_sector.setdefault(sector, {
+                "setor": sector,
+                "label": _sector_label(row),
+                "total": 0,
+                "fora_padrao": 0,
+                "volume_fora_padrao": 0.0,
+                "formas": [],
+            })
+            item["total"] += 1
+            if _is_fora_padrao(row):
+                item["fora_padrao"] += 1
+                item["volume_fora_padrao"] += _volume(row)
+                item["formas"].append({
+                    "codigo": _forma_code(row),
+                    "descricao": _forma_desc(row),
+                    "volume": _volume(row),
+                })
+
+        outlier = None
+        if day_bad:
+            candidate = max(by_sector.values(), key=lambda s: s["fora_padrao"])
+            share = candidate["fora_padrao"] / day_bad
+            if share >= 0.90:
+                outlier = {**candidate, "share": share}
+
+        visible_sectors = [
+            {**s, "pct": (s["fora_padrao"] / s["total"]) if s["total"] else 0}
+            for s in by_sector.values()
+        ]
+        visible_sectors.sort(key=lambda s: (s["fora_padrao"], s["pct"]), reverse=True)
+
+        day_type_totals = defaultdict(lambda: {"tipo": "", "total": 0, "fora_padrao": 0, "volume": 0.0, "volume_fora_padrao": 0.0})
+        month_type_totals = defaultdict(lambda: {"tipo": "", "total": 0, "fora_padrao": 0, "volume": 0.0, "volume_fora_padrao": 0.0})
+
+        def add_type(target, row):
+            tipo = _tipo_concreto(row)
+            bucket = target[tipo]
+            bucket["tipo"] = tipo
+            bucket["total"] += 1
+            bucket["volume"] += _volume(row)
+            if _is_fora_padrao(row):
+                bucket["fora_padrao"] += 1
+                bucket["volume_fora_padrao"] += _volume(row)
+
+        for r in day_rows:
+            add_type(day_type_totals, r)
+        for r in month_rows:
+            add_type(month_type_totals, r)
+
+        daily = {}
+        daily_incluindo_setor3 = {}
+        for r in month_rows:
+            d = _row_date(r)
+            if not d or d > date_str:
+                continue
+            parsed_day = datetime.strptime(d, "%Y-%m-%d").date()
+            if parsed_day.weekday() >= 5:
+                continue
+            bucket = daily.setdefault(d, {"date": d, "total": 0, "fora_padrao": 0})
+            bucket["total"] += 1
+            if _is_fora_padrao(r):
+                bucket["fora_padrao"] += 1
+
+            bucket_with_s3 = daily_incluindo_setor3.setdefault(d, {"date": d, "total": 0, "fora_padrao": 0})
+            bucket_with_s3["total"] += 1
+            if _is_fora_padrao_incluindo_setor3(r):
+                bucket_with_s3["fora_padrao"] += 1
+
+        daily_points = []
+        for d in sorted(daily):
+            item = daily[d]
+            pct = (item["fora_padrao"] / item["total"]) if item["total"] else 0
+            daily_points.append({**item, "pct": pct, "label": datetime.strptime(d, "%Y-%m-%d").strftime("%d/%m")})
+        daily_points_incluindo_setor3 = []
+        for d in sorted(daily_incluindo_setor3):
+            item = daily_incluindo_setor3[d]
+            pct = (item["fora_padrao"] / item["total"]) if item["total"] else 0
+            daily_points_incluindo_setor3.append({**item, "pct": pct, "label": datetime.strptime(d, "%Y-%m-%d").strftime("%d/%m")})
+
+        month_total = sum(p["total"] for p in daily_points)
+        month_bad = sum(p["fora_padrao"] for p in daily_points)
+        month_pct = (month_bad / month_total) if month_total else 0
+        first = daily_points[: max(1, len(daily_points) // 2)]
+        second = daily_points[max(1, len(daily_points) // 2):] or first
+        first_pct = sum(p["fora_padrao"] for p in first) / max(1, sum(p["total"] for p in first))
+        second_pct = sum(p["fora_padrao"] for p in second) / max(1, sum(p["total"] for p in second))
+        best = min(daily_points, key=lambda p: p["pct"], default={"pct": 0, "label": analyzed.strftime("%d/%m")})
+        peak = max(daily_points, key=lambda p: p["pct"], default=None)
+        days_on_meta = sum(1 for p in daily_points if p["pct"] <= meta)
+        dominant = max(month_type_totals.values(), key=lambda t: t["fora_padrao"], default={"tipo": "", "fora_padrao": 0})
+        dominant_share = dominant["fora_padrao"] / month_bad if month_bad else 0
+
+        insights = []
+        if days_on_meta:
+            insights.append(f"{days_on_meta} dia(s) dentro da meta de {meta:.0%}.")
+        else:
+            insights.append(f"Nenhum dia atingiu a meta de {meta:.0%}.")
+        insights.append(f"Menor valor foi {best['pct']:.1%} em {best['label']}.")
+        trend_word = "melhora" if second_pct <= first_pct else "piora"
+        insights.append(f"Tendência de {trend_word}: {first_pct:.1%} na 1ª metade → {second_pct:.1%} na 2ª metade.")
+        if peak and peak["pct"] > 0.30:
+            insights.append(f"Pico em {peak['label']} com {peak['pct']:.1%}.")
+        if dominant["fora_padrao"]:
+            insights.append(f"{dominant['tipo']} responde por {dominant_share:.1%} dos desvios do mês.")
+
+        actions = []
+        if outlier:
+            actions.append(f"Auditar {outlier['setor']} e conferir classificação/parametrização dos lançamentos.")
+        if peak and peak["pct"] > 0.30:
+            actions.append(f"Investigar o pico de {peak['label']} cruzando turno, operador, receita e insumos.")
+        if month_pct > meta * 5:
+            actions.append(f"Revisar meta: realizado do mês está em {month_pct:.1%}, acima de 5x a meta diária.")
+
+        title = f"{outlier['setor']} exige ação imediata" if outlier else (
+            "Meta do dia atingida" if day_pct <= meta else "Desvios acima da meta diária"
+        )
+
+        return {
+            "meta": meta,
+            "titulo": title,
+            "data": analyzed.strftime("%d/%m/%Y"),
+            "data_curta": analyzed.strftime("%d/%m"),
+            "mes_ano": analyzed.strftime("%B/%Y"),
+            "day_total": day_total,
+            "day_ok": day_ok,
+            "day_bad": day_bad,
+            "day_pct": day_pct,
+            "day_volume_bad": day_volume_bad,
+            "day_volume_total": day_volume_total,
+            "outlier": outlier,
+            "visible_sectors": visible_sectors,
+            "day_types": sorted(day_type_totals.values(), key=lambda t: t["fora_padrao"], reverse=True),
+            "month_types": sorted(month_type_totals.values(), key=lambda t: t["fora_padrao"], reverse=True),
+            "daily_points": daily_points,
+            "daily_points_incluindo_setor3": daily_points_incluindo_setor3,
+            "month_total": month_total,
+            "month_bad": month_bad,
+            "month_pct": month_pct,
+            "month_volume": sum(_volume(r) for r in month_rows),
+            "productive_days": len(daily_points),
+            "avg_day": month_total / max(1, len(daily_points)),
+            "avg_bad_day": month_bad / max(1, len(daily_points)),
+            "insights": insights,
+            "actions": actions,
         }
