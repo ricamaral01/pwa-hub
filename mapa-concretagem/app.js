@@ -7499,7 +7499,9 @@ function applyRoleVisibility() {
   });
 
   const userNameVal = String(state.authUser?.name || "").trim().toLowerCase();
-  const isOdinAllowed = userNameVal.includes("ricardo") || userNameVal.includes("philippe");
+  const correctionRole = String(state.authUser?.role || "").toUpperCase();
+  const isOdinAllowed = correctionRole === "GERENCIA" || correctionRole === "GESTOR"
+    || userNameVal.includes("ricardo") || userNameVal.includes("philippe");
   const odinToggle = document.getElementById("kioskOdinToggleField");
   if (odinToggle) {
     odinToggle.classList.toggle("hidden", !isOdinAllowed);
@@ -12204,86 +12206,116 @@ window.saveSequenciaS3 = async function() {
 // MODO ODIN - FUNÇÕES AUXILIARES DE CANCELAMENTO
 // =========================================================
 async function cancelarOuDesprogramarOdin(forma, setor, card) {
-  const isConcretada = isFormaClicked(forma, setor);
-  const isLiberada = isFormaLiberada(forma, setor);
-  const isProgrammed = state.programmedFormas.has(normalizeUpper(forma));
-
-  if (isConcretada || isLiberada) {
-    await cancelarConcretagemOdin(forma, setor, card);
-  } else if (isProgrammed) {
-    await toggleFormaProgramada(forma, setor, card);
-  } else {
-    showLibFeedback(`Forma ${forma} não está programada nem concretada/liberada.`, "warn");
-  }
+  await cancelarConcretagemOdin(forma, setor, card);
 }
 
-async function cancelarConcretagemOdin(forma, setor, card) {
-  if (!confirm(`MODO ODIN: Tem certeza que deseja CANCELAR/EXCLUIR a concretagem/liberação da forma ${forma} no Setor ${setor}?`)) return;
+async function cancelarConcretagemOdin(forma, setor) {
+  const role = String(state.authUser?.role || "").toUpperCase();
+  const name = String(state.authUser?.name || "").toLowerCase();
+  if (!(role === "GERENCIA" || role === "GESTOR" || name.includes("ricardo") || name.includes("philippe"))) {
+    showLibFeedback("Sem permissao para corrigir concretagens.", "error");
+    return;
+  }
+  if (!navigator.onLine || !hasApiConfigured()) {
+    showLibFeedback("Conecte-se a internet para corrigir a concretagem.", "error");
+    return;
+  }
 
-  setCardState(card, "saving");
-
-  const dataFabricacao = el.libData?.value || todayYmd();
+  const date = el.libData?.value || todayYmd();
   const normalizedForma = normalizeUpper(forma);
+  const pendingCorrection = readDb().events.some((event) => event.pendingSync === true
+    && event.dataFabricacao === date && event.setor === setor
+    && normalizeUpper(event.formaNumero) === normalizedForma);
+  if (pendingCorrection) {
+    showLibFeedback("Ha um apontamento aguardando sincronizacao. Sincronize antes de corrigir.", "warn");
+    return;
+  }
+  const modal = document.getElementById("correcaoConcretagemModal");
+  const summary = document.getElementById("correcaoConcretagemResumo");
+  const select = document.getElementById("correcaoConcretagemTipo");
+  const save = document.getElementById("correcaoConcretagemSalvar");
+  const cancel = document.getElementById("correcaoConcretagemCancelar");
+  const close = document.getElementById("correcaoConcretagemFechar");
+  if (!modal || !summary || !select || !save || !cancel || !close) return;
 
-  // 1. Deletar do Supabase (de todas as 3 tabelas relacionadas)
-  let apiSuccess = false;
-  if (hasApiConfigured()) {
-    try {
-      const res = await Promise.all([
-        supabaseClient.from('producao').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma),
-        supabaseClient.from('liberacao_formas').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma),
-        supabaseClient.from('programacao_pcp').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma)
-      ]);
+  const result = await supabaseClient.from("producao").select("*")
+    .eq("data_fabricacao", date).eq("setor", setor).eq("forma", normalizedForma);
+  if (result.error) {
+    showLibFeedback(`Falha ao consultar concretagem: ${result.error.message}`, "error");
+    return;
+  }
+  if (result.data.length !== 1) {
+    showLibFeedback(result.data.length ? "Ha registros duplicados. Solicite conferencia antes de corrigir." : "Nao ha concretagem nessa forma e data.", "warn");
+    return;
+  }
 
-      const anyError = res.some(r => r.error);
-      if (anyError) {
-        console.error("Erro ao deletar do Supabase:", res.map(r => r.error).filter(Boolean));
+  const current = result.data[0];
+  summary.textContent = `${date} | ${setor} | ${normalizedForma} | ${current.tipo_concreto || "Sem tipo"}`;
+  select.replaceChildren();
+  CONCRETO_TIPOS.forEach((tipo) => {
+    const option = document.createElement("option");
+    option.value = tipo;
+    option.textContent = tipo;
+    select.appendChild(option);
+  });
+  select.value = current.tipo_concreto || CONCRETO_TIPOS[0];
+  const dismiss = () => { modal.classList.remove("modal-visible"); };
+  close.onclick = dismiss;
+  modal.onclick = (event) => { if (event.target === modal) dismiss(); };
+
+  const refresh = async (removed, nextType) => {
+    const db = readDb();
+    const record = findRecordByKey(db, date, setor, normalizedForma);
+    if (record) {
+      if (removed) {
+        record.concretoTipo = "";
+        record.vibrado = null;
+        if (record.liberacao?.status === "1") record.liberacao = null;
+        db.events = db.events.filter((event) => !(event.recordId === record.id
+          && event.etapa === "LIBERACAO" && event.status === "1"));
       } else {
-        apiSuccess = true;
+        record.concretoTipo = nextType;
+        db.events.filter((event) => event.recordId === record.id).forEach((event) => { event.tipoConcreto = nextType; });
       }
-    } catch (err) {
-      console.error("Erro na requisição Supabase:", err);
+      writeDb(db);
     }
-  }
+    const clicked = getClickedFormsToday();
+    delete clicked.formas[setor + "||" + normalizedForma];
+    localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
+    dismiss();
+    await loadClickedFormsFromSupabase(date);
+    renderLiberacaoDual();
+    if (el.dashData?.value === date) await carregarDashboardConcretagem();
+  };
 
-  // 2. Deletar do banco local (pwa_liberacao_inspecao_v1)
-  const db = readDb();
-  let record = findRecordByKey(db, dataFabricacao, setor, normalizedForma);
-  if (record) {
-    db.records = db.records.filter(r => r.id !== record.id);
-    db.events = db.events.filter(e => e.recordId !== record.id);
-    writeDb(db);
-  }
+  save.onclick = async () => {
+    const nextType = select.value;
+    if (nextType === current.tipo_concreto) { dismiss(); return; }
+    if (!confirm(`Alterar ${normalizedForma} de "${current.tipo_concreto}" para "${nextType}"?`)) return;
+    save.disabled = cancel.disabled = true;
+    try {
+      const response = await supabaseClient.from("producao").update({ tipo_concreto: nextType })
+        .eq("id", current.id).eq("tipo_concreto", current.tipo_concreto).select("id");
+      if (response.error || response.data?.length !== 1) throw new Error(response.error?.message || "O registro mudou; recarregue e tente novamente.");
+      await refresh(false, nextType);
+      showLibFeedback(`${normalizedForma}: tipo de concreto corrigido.`, "ok");
+    } catch (error) { showLibFeedback(error.message, "error"); }
+    finally { save.disabled = cancel.disabled = false; }
+  };
 
-  // 3. Deletar do estado local clickedForms
-  const clicked = getClickedFormsToday();
-  const key = setor + "||" + normalizedForma;
-  delete clicked.formas[key];
-  localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
-
-  // 4. Resetar estados visuais do card
-  card.classList.remove("is-liberada", "is-concretada", "is-vibrada", "is-secovibrado");
-  const tipoEl = card.querySelector(".fc-tipo");
-  if (tipoEl) {
-    tipoEl.textContent = "";
-    tipoEl.style.display = "none";
-  }
-  const statusEl = card.querySelector(".fc-status");
-  if (statusEl) {
-    statusEl.textContent = "";
-  }
-  setCardState(card, "idle");
-
-  // Re-renderiza para limpar e atualizar
-  renderLiberacaoDual();
-
-  if (apiSuccess) {
-    setSyncStatus("ok", `Concretagem da forma ${forma} excluída online.`);
-    showLibFeedback(`Concretagem ${forma} excluída (online).`, "ok");
-  } else {
-    setSyncStatus("warn", `Excluído localmente. Sem sincronia online.`);
-    showLibFeedback(`Concretagem ${forma} excluída (local).`, "ok");
-  }
+  cancel.onclick = async () => {
+    if (!confirm(`Cancelar SOMENTE a concretagem de ${normalizedForma} em ${date}? A programacao e a liberacao serao mantidas.`)) return;
+    save.disabled = cancel.disabled = true;
+    try {
+      const response = await supabaseClient.from("producao").delete()
+        .eq("id", current.id).eq("tipo_concreto", current.tipo_concreto).select("id");
+      if (response.error || response.data?.length !== 1) throw new Error(response.error?.message || "O registro mudou; recarregue e tente novamente.");
+      await refresh(true);
+      showLibFeedback(`${normalizedForma}: concretagem cancelada; programacao e liberacao preservadas.`, "ok");
+    } catch (error) { showLibFeedback(error.message, "error"); }
+    finally { save.disabled = cancel.disabled = false; }
+  };
+  modal.classList.add("modal-visible");
 }
 
 // =========================================================

@@ -1,9 +1,9 @@
 /* =========================================================
    Mapa de Concretagem - Service Worker reset
-   v5.9: timeout de rede no apontamento e atualizacao forcada do cache
+   v5.10: correcao de concretagem com cancelamento isolado
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.9";
+const CACHE_NAME = "mapa-concretagem-v5.10";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());

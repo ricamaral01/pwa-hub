@@ -501,8 +501,8 @@
                 <span class="kiosk-slider" style="background-color: var(--kiosk-slider-off, #ccc);"></span>
               </label>
               <div class="kiosk-toggle-label">
-                <span class="kiosk-toggle-title" style="color: #ef4444;">Modo ODIN</span>
-                <span class="kiosk-toggle-subtitle">Tocar para cancelar/desprogramar</span>
+                <span class="kiosk-toggle-title" style="color: #ef4444;">Modo Correção</span>
+                <span class="kiosk-toggle-subtitle">Toque na forma para corrigir ou cancelar a concretagem</span>
               </div>
             </div>
             <div class="kiosk-toggle-field hidden" id="kioskManutencaoToggleField">
@@ -1437,6 +1437,20 @@
     </div>
   </div>
 
+  <div id="correcaoConcretagemModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="correcaoConcretagemTitle">
+    <div class="modal-box" style="max-width: 440px; text-align: left;">
+      <h2 class="modal-title" id="correcaoConcretagemTitle">Corrigir concretagem</h2>
+      <p id="correcaoConcretagemResumo" class="modal-subtitle"></p>
+      <label for="correcaoConcretagemTipo">Tipo de concreto</label>
+      <select id="correcaoConcretagemTipo" class="input-field" style="width: 100%; margin: 8px 0 16px;"></select>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end;">
+        <button class="btn btn-secondary" id="correcaoConcretagemFechar" type="button">Voltar</button>
+        <button class="btn primary" id="correcaoConcretagemSalvar" type="button">Salvar tipo</button>
+        <button class="btn" id="correcaoConcretagemCancelar" type="button" style="background: #b91c1c; color: #fff;">Cancelar concretagem</button>
+      </div>
+    </div>
+  </div>
+
   <div id="concretoVibradoModal" class="modal-overlay concrete-vibrado-overlay" role="dialog" aria-modal="true" aria-labelledby="concretoVibradoTitle">
     <div class="modal-box concrete-vibrado-box">
       <div class="concrete-vibrado-mark" aria-hidden="true">
@@ -1691,6 +1705,6 @@
 
   <script src="../assets/msgbox.js"></script>
   <script src="supabase.js"></script>
-  <script src="app.js?v=v5.9-offline-timeout-20260902"></script>
+  <script src="app.js?v=v5.10-correcao-20260929"></script>
 </body>
 </html>
