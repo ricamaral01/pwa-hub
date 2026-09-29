@@ -1,9 +1,9 @@
 /* =========================================================
    Mapa de Concretagem - Service Worker reset
-   v5.10: correcao de concretagem com cancelamento isolado
+   v5.11: acesso visivel ao modo correcao e clique unico
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.10";
+const CACHE_NAME = "mapa-concretagem-v5.11";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());

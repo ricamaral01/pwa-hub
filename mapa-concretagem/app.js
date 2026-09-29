@@ -924,6 +924,7 @@ const el = {
   kioskLibCheckbox: document.getElementById("kioskLibCheckbox"),
   kioskOdinToggleField: document.getElementById("kioskOdinToggleField"),
   kioskOdinCheckbox: document.getElementById("kioskOdinCheckbox"),
+  btnCorrecaoConcretagem: document.getElementById("btnCorrecaoConcretagem"),
   btnKioskFullscreen: document.getElementById("btnKioskFullscreen"),
   btnKioskSync: document.getElementById("btnKioskSync"),
   btnKioskBack: document.getElementById("btnKioskBack"),
@@ -7506,6 +7507,9 @@ function applyRoleVisibility() {
   if (odinToggle) {
     odinToggle.classList.toggle("hidden", !isOdinAllowed);
   }
+  if (el.btnCorrecaoConcretagem) {
+    el.btnCorrecaoConcretagem.classList.toggle("hidden", !isOdinAllowed);
+  }
 
   if (el.authUserBadge) {
     if (state.authUser) {
@@ -8362,6 +8366,10 @@ function bindEvents() {
     el.kioskOdinCheckbox.addEventListener("change", () => {
       state.odinMode = el.kioskOdinCheckbox.checked;
       document.body.classList.toggle("odin-active", state.odinMode);
+      if (el.btnCorrecaoConcretagem) {
+        el.btnCorrecaoConcretagem.textContent = state.odinMode ? "Encerrar correção" : "Corrigir concretagem";
+        el.btnCorrecaoConcretagem.classList.toggle("primary", state.odinMode);
+      }
       if (state.odinMode) {
         if (el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
           el.kioskProgCheckbox.checked = false;
@@ -8386,11 +8394,14 @@ function bindEvents() {
 
   if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
     el.kioskOdinToggleField.addEventListener("click", (e) => {
-      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
-        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
-        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
-      }
+      if (e.target.closest?.(".kiosk-switch")) return;
+      el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
+      el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
     });
+  }
+
+  if (el.btnCorrecaoConcretagem && el.kioskOdinCheckbox) {
+    el.btnCorrecaoConcretagem.addEventListener("click", () => el.kioskOdinCheckbox.click());
   }
 
   if (el.kioskManutencaoCheckbox) {
@@ -8504,15 +8515,6 @@ function bindEvents() {
     window.print();
     document.body.classList.remove("print-relatorio-manutencao");
   });
-
-  if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
-    el.kioskOdinToggleField.addEventListener("click", (e) => {
-      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
-        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
-        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
-      }
-    });
-  }
 
   // Controle de Tela Cheia no Quiosque
   if (el.btnKioskFullscreen) {
@@ -10369,7 +10371,7 @@ function init() {
     navigator.serviceWorker.addEventListener("message", (event) => {
       if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
         refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v5.8");
+        window.location.replace(window.location.pathname + "?cache-reset=v5.11");
       }
     });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
@@ -10379,7 +10381,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.8").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.11").then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12351,7 +12353,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.8&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.11&ts=${Date.now()}`);
       }
     });
   }
@@ -12371,6 +12373,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.8";
+  badge.textContent = "v5.11";
   badge.style.display = "inline-block";
 }
