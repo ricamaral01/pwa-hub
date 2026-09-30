@@ -2680,44 +2680,52 @@ function renderizarRelatorioTratativaDefeitos() {
     });
   });
 
-  // 2. Mapear ocorrências do banco de Montagem de Postes (readMontagemPostesDb)
-  Object.values(montagemPostes).forEach(p => {
-    const statusStr = String(p.statusMontagem || p.status || "").toUpperCase();
-    const isDefeito = statusStr === "REPROVADO" || statusStr === "RETRABALHO" || Boolean(p.motivoRecusa || p.motivo_recusa);
-    if (!isDefeito) return;
-
-    const codigo = String(p.motivoRecusa || p.motivo_recusa || "A").trim().toUpperCase();
+  // 2. Mapear cada reprovacao concluida, incluindo as anteriores ao retrabalho.
+  const tratativasMigradas = new Set();
+  removerReprovacoesDuplicadasDashboard(Object.values(montagemPostes)).forEach(p => {
+    if (!p.finalizadoEm && !p.finalizado_em) return;
+    const row = {
+      ...p,
+      status_montagem: p.statusMontagem || p.status_montagem || p.status,
+      motivo_recusa: p.motivoRecusa || p.motivo_recusa || ""
+    };
+    const ocorrencias = obterOcorrenciasDefeitosRegistradosLinha(row);
     const dataProd = p.dataFabricacao || p.data_fabricacao || todayYmd();
     const setor = p.setor || "Setor 3";
     const forma = p.formaNumero || p.forma_numero || "-";
-    const idKey = `INC_MNT_${dataProd}_${setor}_${forma}_${codigo}`;
+    ocorrencias.forEach(({ codigo, descricao }, index) => {
+      const codigoDefeito = String(codigo || "SEM_CODIGO").trim().toUpperCase();
+      const legacyId = `INC_MNT_${dataProd}_${setor}_${forma}_${codigoDefeito}`;
+      const idKey = `INC_MNT_${encodeURIComponent(String(p.key || p.id || legacyId))}_${index}`;
+      const infoDefeito = getDefeitoInfo(codigoDefeito);
+      const tratativaSalva = savedTratativas[idKey] || savedTratativas[legacyId] || {};
+      if (savedTratativas[legacyId]) tratativasMigradas.add(legacyId);
 
-    const infoDefeito = getDefeitoInfo(codigo);
-    const tratativaSalva = savedTratativas[idKey] || {};
-
-    listaOcorrenciasMap[idKey] = {
-      id: idKey,
-      data_fabricacao: dataProd,
-      setor: setor,
-      forma_numero: forma,
-      modelo: p.modelo || "-",
-      codigo_defeito: codigo,
-      descricao_defeito: infoDefeito.descricao,
-      classificacao: infoDefeito.classificacao,
-      responsavel_designado: infoDefeito.responsavel,
-      responsaveis_lista: infoDefeito.responsaveisLista || [],
-      acao_recomendada: infoDefeito.acao,
-      status_tratativa: tratativaSalva.status_tratativa || "PENDENTE",
-      executado_por: tratativaSalva.executado_por || "",
-      acao_realizada: tratativaSalva.acao_realizada || "",
-      tratado_em: tratativaSalva.tratado_em || "",
-      observacoes_origem: p.observacoesMontagem || p.observacoes || "",
-      updated_at: tratativaSalva.updated_at || p.updated_at || new Date().toISOString()
-    };
+      listaOcorrenciasMap[idKey] = {
+        id: idKey,
+        data_fabricacao: dataProd,
+        setor,
+        forma_numero: forma,
+        modelo: p.modelo || "-",
+        codigo_defeito: codigoDefeito,
+        descricao_defeito: descricao || infoDefeito.descricao,
+        classificacao: infoDefeito.classificacao,
+        responsavel_designado: infoDefeito.responsavel,
+        responsaveis_lista: infoDefeito.responsaveisLista || [],
+        acao_recomendada: infoDefeito.acao,
+        status_tratativa: tratativaSalva.status_tratativa || "PENDENTE",
+        executado_por: tratativaSalva.executado_por || "",
+        acao_realizada: tratativaSalva.acao_realizada || "",
+        tratado_em: tratativaSalva.tratado_em || "",
+        observacoes_origem: p.observacoesMontagem || p.observacoes || "",
+        updated_at: tratativaSalva.updated_at || p.updated_at || new Date().toISOString()
+      };
+    });
   });
 
   // 3. Mapear tratativas manuais salvas no localStorage
   Object.values(savedTratativas).forEach(item => {
+    if (tratativasMigradas.has(item.id)) return;
     if (!listaOcorrenciasMap[item.id]) {
       const infoDefeito = getDefeitoInfo(item.codigo_defeito);
       listaOcorrenciasMap[item.id] = {
@@ -4053,7 +4061,7 @@ async function fetchPolesForDate(filtroData, setor = "") {
 
       // Find if there is an inspected status for this form
       const insRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'INSPECAO');
-      const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa !== 'INSPECAO');
+      const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa !== 'INSPECAO' && !isHistoricoReprovacao(m));
 
       let modeloFinal = latestRow.modelo || "";
       const normForma = normalizeForma(forma);
@@ -4313,6 +4321,42 @@ function getMontagemPosteKey({ recordId, dataFabricacao, setor, formaNumero }) {
 function getMontagemPosteByKey(key) {
   const db = readMontagemPostesDb();
   return db.postes[key] || null;
+}
+
+const ETAPA_HISTORICO_REPROVACAO = "HISTORICO_REPROVACAO";
+
+function isHistoricoReprovacao(row) {
+  return String(row?.etapa || "").toUpperCase() === ETAPA_HISTORICO_REPROVACAO;
+}
+
+function getHistoricoReprovacaoKey(key, finalizadoEm) {
+  return `${key}||${ETAPA_HISTORICO_REPROVACAO}||${finalizadoEm}`;
+}
+
+function criarHistoricoReprovacao(poste) {
+  if (!poste?.key || !poste?.finalizadoEm) return null;
+  const status = String(poste.statusMontagem || "").trim().toUpperCase();
+  const checklists = {};
+  Object.entries(poste.checklists || {}).forEach(([sectionId, answers]) => {
+    if (!answers || typeof answers !== "object" || Array.isArray(answers)) return;
+    const rejeitados = Object.fromEntries(Object.entries(answers).filter(([, value]) => value === "nao"));
+    if (Object.keys(rejeitados).length) checklists[sectionId] = rejeitados;
+  });
+  if (!Object.keys(checklists).length && !["R", "RR", "REPROVADO", "RETRABALHO"].includes(status)) return null;
+  return {
+    ...poste,
+    key: getHistoricoReprovacaoKey(poste.key, poste.finalizadoEm),
+    etapa: ETAPA_HISTORICO_REPROVACAO,
+    checklists,
+    pendingSync: true
+  };
+}
+
+async function registrarHistoricoReprovacao(poste) {
+  const historico = criarHistoricoReprovacao(poste);
+  if (!historico) return { synced: true };
+  upsertMontagemPoste(historico);
+  return syncMontagemPosteToApi(historico, ETAPA_HISTORICO_REPROVACAO, { silent: true });
 }
 
 function upsertMontagemPoste(entry) {
@@ -4711,6 +4755,8 @@ async function openMontagemPosteDetalhe(posteBase) {
 
   const isRework = (atual?.statusMontagem === "RR");
 
+  if (isRework) await registrarHistoricoReprovacao(atual);
+
   const merged = {
     key,
     recordId: posteBase.recordId || "",
@@ -4822,6 +4868,7 @@ async function finalizarMontagemPosteAtual() {
       pendingSync: !syncResult.synced
     };
     upsertMontagemPoste(finalEntry);
+    await registrarHistoricoReprovacao(finalEntry);
     state.montagemPostesAtual = finalEntry;
 
     renderMontagemPosteDetalhe();
@@ -5063,6 +5110,8 @@ async function openInspecaoPosteDetalhe(posteBase) {
   }
 
   const isRework = (atual?.statusMontagem === "RR");
+
+  if (isRework) await registrarHistoricoReprovacao(atual);
 
   const merged = {
     key,
@@ -5388,6 +5437,7 @@ async function finalizarInspecaoPosteAtual() {
       pendingSync: !syncResult.synced
     };
     upsertMontagemPoste(finalEntry);
+    await registrarHistoricoReprovacao(finalEntry);
     state.inspecaoPostesAtual = finalEntry;
 
     renderInspecaoPosteDetalhe();
@@ -5494,7 +5544,7 @@ function renderDashboardCharts() {
     }
   });
 
-  const montagemCache = db.montagemDashboardCache || [];
+  const montagemCache = (db.montagemDashboardCache || []).filter(row => !isHistoricoReprovacao(row));
   montagemCache.forEach((row) => {
     if (!row.status_montagem) return;
     const d = row.data_fabricacao || "";
@@ -10946,7 +10996,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.13", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.14", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11023,11 +11073,12 @@ function getMiDataReferencia(row) {
 
 function isLinhaMontagemDashboard(row) {
   const etapa = String(row?.etapa || "").trim().toUpperCase();
-  if (etapa === "INSPECAO" || etapa === "REINSPECAO") return false;
+  if (etapa === "INSPECAO" || etapa === "REINSPECAO" || isHistoricoReprovacao(row)) return false;
   return Boolean(row?.status_montagem || row?.finalizado_em);
 }
 
 function isLinhaAvaliacaoDefeitosDashboard(row) {
+  if (isHistoricoReprovacao(row)) return true;
   const setor = String(row?.setor || "").trim();
   if (setor === "Setor 3" || setor === "Setor 4") {
     return Boolean(row?.status_montagem || row?.finalizado_em);
@@ -11036,8 +11087,13 @@ function isLinhaAvaliacaoDefeitosDashboard(row) {
 }
 
 function isLinhaDefeitoDashboard(row) {
-  const status = String(row?.status_montagem || "").trim().toUpperCase();
-  return status === "R" || status === "RR" || status === "REPROVADO" || status === "RETRABALHO" || obterItensRejeitadosLinha(row).length > 0;
+  return obterDefeitosRegistradosLinha(row).length > 0;
+}
+
+function removerReprovacoesDuplicadasDashboard(rows) {
+  const historicos = new Set(rows.filter(isHistoricoReprovacao).map(row => String(row.id || row.key || "")));
+  return rows.filter(row => isHistoricoReprovacao(row)
+    || !historicos.has(getHistoricoReprovacaoKey(row.id || row.key, row.finalizado_em || row.finalizadoEm)));
 }
 
 function isMontagemRetrabalhoStatus(status) {
@@ -11105,14 +11161,14 @@ function obterChecklistVisualSectionsLinha(row) {
 }
 
 function contarDefeitosPossiveisLinha(row) {
-  return obterChecklistVisualSectionsLinha(row).reduce((total, sec) => {
+  return obterChecklistSectionsLinha(row).reduce((total, sec) => {
     return total + (Array.isArray(sec.itens) ? sec.itens.length : 0);
   }, 0);
 }
 
 function obterDefeitosPossiveisLinha(row) {
   const itens = [];
-  obterChecklistVisualSectionsLinha(row).forEach(sec => {
+  obterChecklistSectionsLinha(row).forEach(sec => {
     if (!Array.isArray(sec.itens)) return;
     sec.itens.forEach(item => {
       const label = typeof item === "string"
@@ -11127,7 +11183,7 @@ function obterDefeitosPossiveisLinha(row) {
 
 function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
   const resumo = {
-    postes: rows.length,
+    postes: 0,
     producao: producaoRows.length,
     totalPossivel: 0,
     totalErros: 0,
@@ -11152,17 +11208,24 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     resumo.porSetor[setor].producao++;
   });
 
+  const postesVistos = new Set();
+  const postesComDefeitoVistos = new Set();
+  const postesReprovadosVistos = new Set();
+  const postesRetrabalhadosVistos = new Set();
+
   rows.forEach(row => {
     const forma = row.forma_numero || row.formaNumero || "Sem forma";
     const setor = row.setor || "Sem setor";
     const key = `${setor}||${forma}`;
+    const idOriginal = String(row.id || row.key || "").split(`||${ETAPA_HISTORICO_REPROVACAO}||`)[0];
+    const posteKey = String(row.record_id || idOriginal || `${row.data_fabricacao || ""}||${key}||${row.modelo || ""}`);
     const defeitosPossiveis = obterDefeitosPossiveisLinha(row);
     const possiveis = defeitosPossiveis.length;
-    const rejeitados = obterItensRejeitadosLinha(row, { visualOnly: true });
+    const rejeitados = obterDefeitosRegistradosLinha(row);
     const statusMontagem = String(row.status_montagem || "").trim().toUpperCase();
     const isPosteComDefeito = rejeitados.length > 0;
-    const isReprovado = statusMontagem === "R" || statusMontagem === "REPROVADO";
-    const isRetrabalho = row.status_montagem === "RR";
+    const isReprovado = ["R", "RR", "REPROVADO", "RETRABALHO"].includes(statusMontagem);
+    const isRetrabalho = isMontagemRetrabalhoStatus(statusMontagem);
 
     if (!resumo.porForma[key]) {
       resumo.porForma[key] = {
@@ -11181,17 +11244,24 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
 
     resumo.totalPossivel += possiveis;
     resumo.totalErros += rejeitados.length;
-    resumo.porForma[key].postes++;
+    if (!postesVistos.has(posteKey)) {
+      postesVistos.add(posteKey);
+      resumo.postes++;
+      resumo.porForma[key].postes++;
+    }
     resumo.porForma[key].potencial += possiveis;
     resumo.porForma[key].erros += rejeitados.length;
-    if (isPosteComDefeito) {
+    if (isPosteComDefeito && !postesComDefeitoVistos.has(posteKey)) {
+      postesComDefeitoVistos.add(posteKey);
       resumo.postesComDefeito++;
       resumo.porForma[key].postesReprovados++;
     }
-    if (isReprovado) {
+    if (isReprovado && !postesReprovadosVistos.has(posteKey)) {
+      postesReprovadosVistos.add(posteKey);
       resumo.postesReprovados++;
     }
-    if (isRetrabalho) {
+    if (isRetrabalho && !postesRetrabalhadosVistos.has(posteKey)) {
+      postesRetrabalhadosVistos.add(posteKey);
       resumo.retrabalho++;
       resumo.porForma[key].retrabalho++;
     }
@@ -12055,7 +12125,7 @@ async function carregarDashboardDefeitos() {
     // conjunto de dados usado no detalhamento e na exportacao.
     const [montagemRes, producaoRes] = await Promise.all([
       carregarLinhasSupabaseComCache({
-        cacheKey: `${dashboardKind}:montagem_poste:local-v2:${dStart}:${dEnd}`,
+        cacheKey: `${dashboardKind}:montagem_poste:historico-v1:${dStart}:${dEnd}`,
         table: "montagem_poste",
         select: DASHBOARD_MONTAGEM_SELECT,
         pageSize: 500,
@@ -12093,7 +12163,7 @@ async function carregarDashboardDefeitos() {
       if (statusFiltro === "R") return isLinhaDefeitoDashboard(row);
       return String(row.status_montagem || "").toUpperCase() === statusFiltro.toUpperCase();
     };
-    const montagemRows = (montagemRes.rows || []).filter(row => {
+    const montagemRows = removerReprovacoesDuplicadasDashboard(montagemRes.rows || []).filter(row => {
       const day = getMiDataReferencia(row);
       return isLinhaAvaliacaoDefeitosDashboard(row)
         && day >= dStart
@@ -12780,7 +12850,7 @@ async function exportarMontagemIndicadoresXlsx() {
     button.textContent = "Exportando base...";
   }
   try {
-    const montagemRows = await carregarBaseExportacaoPorPeriodo({
+    const montagemRows = (await carregarBaseExportacaoPorPeriodo({
       table: "montagem_poste",
       select: DASHBOARD_MONTAGEM_SELECT,
       inicio: dStart,
@@ -12788,7 +12858,7 @@ async function exportarMontagemIndicadoresXlsx() {
       onProgress: (concluidos, total) => {
         if (button && total > 0) button.textContent = `Carregando montagem ${concluidos}/${total}...`;
       }
-    });
+    })).filter(row => !isHistoricoReprovacao(row));
 
     if (!montagemRows.length) throw new Error("Nenhum registro de montagem encontrado no periodo selecionado.");
     if (button) button.textContent = "Consultando produtos...";
@@ -12853,7 +12923,7 @@ async function exportarMontagemIndicadoresXlsx() {
   }
 }
 
-function obterItensRejeitadosLinha(row, options = {}) {
+function obterOcorrenciasDefeitosLinha(row, options = {}) {
   const checklists = row.checklists || {};
   let parsed = checklists;
   if (typeof checklists === "string") {
@@ -12872,12 +12942,34 @@ function obterItensRejeitadosLinha(row, options = {}) {
     if (secRes && typeof secRes === "object") {
       sec.itens.forEach(item => {
         if (secRes[item.id] === "nao") {
-          rejeitados.push(item.texto);
+          rejeitados.push({ codigo: item.codigoFalha || "", descricao: item.texto });
         }
       });
     }
   });
   return rejeitados;
+}
+
+function obterItensRejeitadosLinha(row, options = {}) {
+  return obterOcorrenciasDefeitosLinha(row, options).map(item => item.descricao);
+}
+
+function obterOcorrenciasDefeitosRegistradosLinha(row) {
+  const rejeitados = obterOcorrenciasDefeitosLinha(row);
+  if (rejeitados.length) return rejeitados;
+  const status = String(row?.status_montagem || "").trim().toUpperCase();
+  if (!["R", "RR", "REPROVADO", "RETRABALHO"].includes(status)) return [];
+  const motivo = String(row?.motivo_recusa || "").trim();
+  if (!motivo) return [{ codigo: "", descricao: "Reprovação sem defeito detalhado" }];
+  return motivo.split(",").map(value => {
+    const codigo = value.trim();
+    const descricao = getDefeitoInfo(codigo).descricao;
+    return { codigo, descricao: descricao === "Não especificado" ? codigo : descricao };
+  }).filter(item => item.descricao);
+}
+
+function obterDefeitosRegistradosLinha(row) {
+  return obterOcorrenciasDefeitosRegistradosLinha(row).map(item => item.descricao);
 }
 
 function renderizarTabelaMontagemPaginada() {
@@ -13937,7 +14029,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.13&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.14&ts=${Date.now()}`);
       }
     });
   }
@@ -13957,6 +14049,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.13";
+  badge.textContent = "v5.14";
   badge.style.display = "inline-block";
 }
