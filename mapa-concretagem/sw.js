@@ -1,17 +1,17 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.24: filtros alinhados e consultas paginadas otimizadas
+   v5.25: detalhe dos postes por defeito com dados da concretagem
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.24";
+const CACHE_NAME = "mapa-concretagem-v5.25";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.24",
-  "./styles.css?v=v5.24",
-  "./dashboard-defeitos-v4.css?v=v5.24",
-  "./modelos-formas.js?v=v5.24",
-  "./app.js?v=v5.24",
-  "./xlsx.full.min.js?v=v5.24",
+  "./manifest.json?v=v5.25",
+  "./styles.css?v=v5.25",
+  "./dashboard-defeitos-v4.css?v=v5.25",
+  "./modelos-formas.js?v=v5.25",
+  "./app.js?v=v5.25",
+  "./xlsx.full.min.js?v=v5.25",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

@@ -482,6 +482,154 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos.df-v4-shell:not(.hidden) {
   min-width: 0;
 }
 
+.df-defect-entry {
+  min-width: 0;
+}
+
+.df-defect-toggle {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.df-defect-toggle:hover,
+.df-defect-toggle:focus-visible,
+.df-defect-toggle[aria-expanded="true"] {
+  border-color: #93b9ee;
+  background: #f5f9ff;
+  outline: none;
+}
+
+.df-defect-row-end {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.df-defect-row-end i {
+  color: #47678c;
+  font-size: 22px;
+  font-style: normal;
+  line-height: 1;
+  transition: transform .18s ease;
+}
+
+.df-defect-toggle[aria-expanded="true"] .df-defect-row-end i {
+  transform: rotate(180deg);
+}
+
+.df-defect-detail[hidden] {
+  display: none !important;
+}
+
+.df-defect-detail {
+  min-width: 0;
+  margin-top: 6px;
+  padding: 12px;
+  border: 1px solid #cbdcf0;
+  border-radius: 10px;
+  background: #f8fbff;
+}
+
+.df-defect-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 10px;
+  color: #334e6c;
+  font-size: 13px;
+}
+
+.df-defect-detail-head strong {
+  color: #163657;
+  font-size: 15px;
+}
+
+.df-defect-detail-scroll {
+  max-height: 440px;
+  overflow: auto;
+}
+
+.df-defect-detail-table {
+  width: 100%;
+  min-width: 880px;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 13px;
+}
+
+.df-defect-detail-table th,
+.df-defect-detail-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #e0e8f2;
+  text-align: left;
+  vertical-align: top;
+}
+
+.df-defect-detail-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: #425d79;
+  background: #edf4fc;
+  white-space: nowrap;
+}
+
+.df-defect-detail-table td:first-child,
+.df-defect-detail-table td:nth-child(2) {
+  color: #163657;
+  font-weight: 800;
+}
+
+.df-defect-detail-table tr:hover td {
+  background: #f5f9ff;
+}
+
+@media (max-width: 720px) {
+  .df-defect-detail-table,
+  .df-defect-detail-table tbody,
+  .df-defect-detail-table tr,
+  .df-defect-detail-table td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .df-defect-detail-table thead {
+    display: none;
+  }
+
+  .df-defect-detail-table tr {
+    margin-bottom: 10px;
+    border: 1px solid #dbe5f1;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .df-defect-detail-table td {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 10px;
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+
+  .df-defect-detail-table td::before {
+    content: attr(data-label);
+    flex: 0 0 45%;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: left;
+  }
+}
+
 .df-defect-share-caption {
   display: flex;
   align-items: baseline;

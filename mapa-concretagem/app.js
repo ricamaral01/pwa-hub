@@ -1295,7 +1295,7 @@ const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto
 const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
 const DASHBOARD_MONTAGEM_SCREEN_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome";
 const DASHBOARD_DEFEITOS_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome";
-const DASHBOARD_DEFEITOS_PRODUCAO_SELECT = "data_fabricacao,setor,forma,modelo";
+const DASHBOARD_DEFEITOS_PRODUCAO_SELECT = "data_fabricacao,setor,forma,modelo,tipo_concreto,data_hora,status";
 const DASHBOARD_SCOPE_OPTIONS = {
   "": "TOTAL",
   "Todos os Setores": "TOTAL",
@@ -8953,7 +8953,11 @@ function bindEvents() {
     carregarDashboardDefeitos();
   });
   document.getElementById("dfBtnAtualizar")?.addEventListener("click", () => carregarDashboardDefeitos(true));
-  document.getElementById("dfBtnFiltrar")?.addEventListener("click", carregarDashboardDefeitos);
+  document.getElementById("dfBtnFiltrar")?.addEventListener("click", () => carregarDashboardDefeitos());
+  document.getElementById("miDefeitosPorTipo")?.addEventListener("click", event => {
+    const button = event.target.closest(".df-defect-toggle");
+    if (button) alternarDetalheDefeito(button);
+  });
   document.getElementById("dfBtnExportarCsv")?.addEventListener("click", exportarDashboardDefeitosCsv);
   document.getElementById("dfBtnApresentacao")?.addEventListener("click", abrirApresentacaoDefeitos);
   document.getElementById("dfPresentationPrev")?.addEventListener("click", () => exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex - 1));
@@ -11321,7 +11325,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.24", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.25", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11516,6 +11520,7 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     postesReprovados: 0,
     retrabalho: 0,
     listaDefeitos: {},
+    ocorrenciasPorTipo: {},
     porForma: {},
     porTipo: {},
     porSetor: {},
@@ -11603,6 +11608,8 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
 
     rejeitados.forEach(item => {
       resumo.porTipo[item] = (resumo.porTipo[item] || 0) + 1;
+      if (!resumo.ocorrenciasPorTipo[item]) resumo.ocorrenciasPorTipo[item] = [];
+      resumo.ocorrenciasPorTipo[item].push(row);
       if (!resumo.matriz[item]) resumo.matriz[item] = {};
       resumo.matriz[item][setor] = (resumo.matriz[item][setor] || 0) + 1;
       if (normalizarTexto(item).includes("fissura")) {
@@ -11783,7 +11790,163 @@ function criarModeloApresentacaoDefeitos(indicadores = {}) {
   };
 }
 
-function renderIndicadoresDefeitosMontagem(indicadores) {
+function criarLinhasDetalheDefeito(ocorrencias = [], producaoRows = []) {
+  const concretagemPorForma = new Map();
+  producaoRows.forEach(row => {
+    const status = normalizeUpper(row.status);
+    if (status !== "LIBERADO" && status !== "CONCRETADO") return;
+    const key = `${String(row.data_fabricacao || "").slice(0, 10)}||${normalizeUpper(row.setor)}||${normalizeForma(row.forma || "")}`;
+    const previous = concretagemPorForma.get(key);
+    if (!previous || String(row.data_hora || "") > String(previous.data_hora || "")) {
+      concretagemPorForma.set(key, row);
+    }
+  });
+
+  return ocorrencias.map(row => {
+    const dataProducao = String(row.data_fabricacao || row.dataFabricacao || "").slice(0, 10);
+    const setor = row.setor || "";
+    const forma = row.forma_numero || row.formaNumero || row.forma || "";
+    const key = `${dataProducao}||${normalizeUpper(setor)}||${normalizeForma(forma)}`;
+    const concretagem = concretagemPorForma.get(key);
+    return {
+      posteKey: String(row.record_id || row.id || key).split(`||${ETAPA_HISTORICO_REPROVACAO}||`)[0],
+      modelo: row.modelo || concretagem?.modelo || "-",
+      forma: forma || "-",
+      dataProducao: dataProducao || concretagem?.data_fabricacao || "",
+      dataInspecao: row.finalizado_em || row.finalizadoEm || row.inicio_inspecao_montagem || row.inicioInspecaoMontagem || "",
+      tipoConcreto: concretagem?.tipo_concreto || "-",
+      setor: setor || "-",
+      horaConcretagem: concretagem?.data_hora || ""
+    };
+  });
+}
+
+function formatarDataDetalheDefeito(value) {
+  const raw = String(value || "");
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw.split("-").reverse().join("/");
+  const date = new Date(raw);
+  return Number.isNaN(date.getTime()) ? "-" : date.toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
+}
+
+function formatarDataHoraDetalheDefeito(value) {
+  const date = new Date(value || "");
+  return !value || Number.isNaN(date.getTime()) ? "-" : date.toLocaleString("pt-BR", {
+    timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit"
+  });
+}
+
+function formatarHoraDetalheDefeito(value) {
+  const date = new Date(value || "");
+  return !value || Number.isNaN(date.getTime()) ? "-" : date.toLocaleTimeString("pt-BR", {
+    timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit"
+  });
+}
+
+function renderHtmlDetalheDefeito(tipo, ocorrencias, producaoRows) {
+  const linhas = criarLinhasDetalheDefeito(ocorrencias, producaoRows);
+  const postes = new Set(linhas.map(row => row.posteKey)).size;
+  return `
+    <div class="df-defect-detail-head">
+      <strong>${escapeHtml(tipo)}</strong>
+      <span>${linhas.length} ocorrência${linhas.length === 1 ? "" : "s"} em ${postes} poste${postes === 1 ? "" : "s"}</span>
+    </div>
+    <div class="df-defect-detail-scroll">
+      <table class="df-defect-detail-table">
+        <thead><tr><th>Poste / modelo</th><th>Forma</th><th>Produção</th><th>Inspeção</th><th>Tipo de concreto</th><th>Setor</th><th>Hora concretagem</th></tr></thead>
+        <tbody>${linhas.map(row => `
+          <tr>
+            <td data-label="Poste / modelo">${escapeHtml(row.modelo)}</td>
+            <td data-label="Forma">${escapeHtml(row.forma)}</td>
+            <td data-label="Produção">${escapeHtml(formatarDataDetalheDefeito(row.dataProducao))}</td>
+            <td data-label="Inspeção">${escapeHtml(formatarDataHoraDetalheDefeito(row.dataInspecao))}</td>
+            <td data-label="Tipo de concreto">${escapeHtml(row.tipoConcreto)}</td>
+            <td data-label="Setor">${escapeHtml(row.setor)}</td>
+            <td data-label="Hora concretagem">${escapeHtml(formatarHoraDetalheDefeito(row.horaConcretagem))}</td>
+          </tr>
+        `).join("")}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+let dfDefectDetails = { ocorrenciasPorTipo: {}, producaoRows: [], tiposOrdenados: [], queriedKeys: new Set() };
+
+async function carregarConcretagensDetalheDefeito(ocorrencias, detailData) {
+  const conhecidas = new Set(detailData.producaoRows
+    .filter(row => ["LIBERADO", "CONCRETADO"].includes(normalizeUpper(row.status)))
+    .map(row => `${String(row.data_fabricacao || "").slice(0, 10)}||${normalizeUpper(row.setor)}||${normalizeForma(row.forma || "")}`));
+  const pendentes = new Map();
+  ocorrencias.forEach(row => {
+    const data = String(row.data_fabricacao || row.dataFabricacao || "").slice(0, 10);
+    const setor = row.setor || "";
+    const forma = row.forma_numero || row.formaNumero || row.forma || "";
+    const key = `${data}||${normalizeUpper(setor)}||${normalizeForma(forma)}`;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(data) && setor && forma && !conhecidas.has(key) && !detailData.queriedKeys.has(key)) {
+      pendentes.set(key, { data, setor, forma });
+    }
+  });
+  if (!pendentes.size || !hasApiConfigured() || !navigator.onLine) return;
+
+  const dates = [...new Set([...pendentes.values()].map(item => item.data))];
+  const sectors = [...new Set([...pendentes.values()].map(item => item.setor))];
+  const forms = new Set();
+  pendentes.forEach(item => {
+    forms.add(item.forma);
+    const formaNormalizada = normalizeForma(item.forma);
+    forms.add(formaNormalizada);
+    const numerada = formaNormalizada.match(/^([A-Z]*)(\d+)$/);
+    if (numerada) {
+      forms.add(`${numerada[1]}${numerada[2].padStart(2, "0")}`);
+      forms.add(`${numerada[1]}${numerada[2].padStart(3, "0")}`);
+    }
+  });
+  pendentes.forEach((_, key) => detailData.queriedKeys.add(key));
+  try {
+    const result = await carregarLinhasSupabaseComCache({
+      table: "producao",
+      select: DASHBOARD_DEFEITOS_PRODUCAO_SELECT,
+      pageSize: 1000,
+      maxPages: 10,
+      pageConcurrency: 2,
+      requireComplete: true,
+      timeoutMs: 30000,
+      orderBy: "id",
+      orderOptions: { ascending: true },
+      applyFilters: query => query
+        .in("data_fabricacao", dates)
+        .in("setor", sectors)
+        .in("forma", [...forms])
+        .in("status", ["LIBERADO", "CONCRETADO"])
+    });
+    detailData.producaoRows.push(...result.rows);
+  } catch (error) {
+    pendentes.forEach((_, key) => detailData.queriedKeys.delete(key));
+    console.warn("Concretagem indisponível para parte do detalhe de defeitos:", error);
+  }
+}
+
+async function alternarDetalheDefeito(button) {
+  const container = document.getElementById("miDefeitosPorTipo");
+  const index = Number(button?.dataset?.dfDefectIndex);
+  const detailData = dfDefectDetails;
+  const [tipo] = detailData.tiposOrdenados[index] || [];
+  const panel = button && document.getElementById(button.getAttribute("aria-controls"));
+  if (!container || !tipo || !panel) return;
+  const abrir = panel.hidden;
+  container.querySelectorAll(".df-defect-toggle").forEach(item => item.setAttribute("aria-expanded", "false"));
+  container.querySelectorAll(".df-defect-detail").forEach(item => { item.hidden = true; });
+  if (!abrir) return;
+  panel.hidden = false;
+  button.setAttribute("aria-expanded", "true");
+  panel.innerHTML = '<div class="muted">Carregando postes e dados da concretagem...</div>';
+  const ocorrencias = detailData.ocorrenciasPorTipo[tipo] || [];
+  await carregarConcretagensDetalheDefeito(ocorrencias, detailData);
+  if (detailData !== dfDefectDetails || button.getAttribute("aria-expanded") !== "true") return;
+  panel.innerHTML = renderHtmlDetalheDefeito(tipo, ocorrencias, detailData.producaoRows);
+}
+
+function renderIndicadoresDefeitosMontagem(indicadores, producaoRows = []) {
   const taxaNc = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
   const indiceReprovacao = indicadores.postes > 0 ? (indicadores.postesComDefeito / indicadores.postes) * 100 : 0;
   const taxaPostesReprovados = indicadores.producao > 0 ? (indicadores.postesReprovados / indicadores.producao) * 100 : 0;
@@ -11810,14 +11973,18 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
 
   const porTipoEl = document.getElementById("miDefeitosPorTipo");
   const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
+  dfDefectDetails = { ocorrenciasPorTipo: indicadores.ocorrenciasPorTipo || {}, producaoRows: [...producaoRows], tiposOrdenados, queriedKeys: new Set() };
   if (porTipoEl) {
     if (tiposOrdenados.length === 0) {
       porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
     } else {
-      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total]) => `
-        <div class="mi-defeito-tipo-row">
-          <span>${escapeHtml(tipo)}</span>
-          <strong>${total}</strong>
+      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total], index) => `
+        <div class="df-defect-entry">
+          <button type="button" class="mi-defeito-tipo-row df-defect-toggle" data-df-defect-index="${index}" aria-expanded="false" aria-controls="dfDefectDetail${index}">
+            <span>${escapeHtml(tipo)}</span>
+            <span class="df-defect-row-end"><strong>${total}</strong><i aria-hidden="true">⌄</i></span>
+          </button>
+          <div id="dfDefectDetail${index}" class="df-defect-detail" hidden></div>
         </div>
       `).join("");
     }
@@ -12515,7 +12682,7 @@ async function obterBaseDashboardDefeitos(dStart, dEnd, forceRefresh = false) {
         .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
     }),
     carregarLinhasSupabaseComCache({
-      cacheKey: `defeitos:producao:v2:${dStart}:${dEnd}`,
+      cacheKey: `defeitos:producao:v3:${dStart}:${dEnd}`,
       table: "producao",
       select: DASHBOARD_DEFEITOS_PRODUCAO_SELECT,
       pageSize: 1000,
@@ -12593,7 +12760,7 @@ async function carregarDashboardDefeitos(forceRefresh = false) {
       pertenceAoSetor(row) && (!pesquisa || correspondePesquisa(row) || formasEncontradas.has(chaveForma(row)))
     );
     const indicadores = calcularIndicadoresDefeitosMontagem(montagemRows, producaoRows);
-    renderIndicadoresDefeitosMontagem(indicadores);
+    renderIndicadoresDefeitosMontagem(indicadores, producaoRows);
 
     const includedSectorsByScope = {
       S1: ["Setor 1"],
@@ -12752,7 +12919,7 @@ function aplicarFiltrosEExibirMontagem() {
     }
   });
 
-  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredDefeitosData, filteredProducao));
+  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredDefeitosData, filteredProducao), filteredProducao);
 
 
   // Renderizar tempos médios
@@ -14426,7 +14593,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.24&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.25&ts=${Date.now()}`);
       }
     });
   }
@@ -14446,6 +14613,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.24";
+  badge.textContent = "v5.25";
   badge.style.display = "inline-block";
 }

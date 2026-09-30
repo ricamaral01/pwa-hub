@@ -88,6 +88,7 @@ test('reprovacao historica e aprovacao posterior contam um poste e preservam o d
   assert.equal(resumo.retrabalho, 1);
   assert.equal(resumo.totalErros, 1);
   assert.equal(resumo.porTipo['Falha de preenchimento'], 1);
+  assert.equal(resumo.ocorrenciasPorTipo['Falha de preenchimento'][0].id, historico.id);
   assert.equal(resumo.totalPossivel, 4);
 });
 
