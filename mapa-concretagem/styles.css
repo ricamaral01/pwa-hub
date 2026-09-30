@@ -1228,6 +1228,10 @@ textarea:focus {
   text-overflow: ellipsis;
 }
 
+#viewMandrilCircular .mc-forma-numero {
+  font-variant-numeric: tabular-nums;
+}
+
 #viewMandrilCircular .mc-table-custom td:last-child > div {
   flex-wrap: wrap;
 }
@@ -7152,8 +7156,28 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background: #eff6ff;
+    min-height: 74px;
+    background: linear-gradient(105deg, #eaf3ff, #f6faff);
     color: #1e3a5f;
+    border-left: 4px solid #2563eb;
+  }
+
+  #viewMandrilCircular .mc-table-custom td:first-child .mc-forma-numero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    min-height: 48px;
+    padding: 4px 12px;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    background: #fff;
+    color: #174ea6;
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.12);
+    font-size: clamp(1.6rem, 8vw, 2rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
   }
 
   #viewMandrilCircular .mc-table-custom td:nth-child(5) {

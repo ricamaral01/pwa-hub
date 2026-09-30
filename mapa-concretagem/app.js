@@ -7456,7 +7456,16 @@ async function enviarRelatorioWhatsapp() {
 function readMandrilModelosProduzidos() {
   try {
     const parsed = JSON.parse(localStorage.getItem(MANDRIL_MODELOS_PRODUZIDOS_KEY) || "{}");
-    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    const normalized = {};
+    Object.entries(parsed).forEach(([key, entry]) => {
+      const [date, forma] = key.split("||");
+      const canonicalKey = date && forma ? getMandrilModeloKey(date, forma) : key;
+      if (!normalized[canonicalKey] || String(entry?.updatedAt || "") >= String(normalized[canonicalKey]?.updatedAt || "")) {
+        normalized[canonicalKey] = entry;
+      }
+    });
+    return normalized;
   } catch {
     return {};
   }
@@ -7467,66 +7476,120 @@ function writeMandrilModelosProduzidos(data) {
 }
 
 function getMandrilModeloKey(dataFabricacao, forma) {
-  return `${dataFabricacao}||${normalizeForma(forma)}`;
+  return `${dataFabricacao}||${normalizeMandrilForma(forma)}`;
+}
+
+function normalizeMandrilForma(forma) {
+  const normalized = normalizeUpper(forma).replace(/[\s-]/g, "");
+  const match = normalized.match(/^SC0*(\d+)$/);
+  return match ? `SC${String(Number(match[1])).padStart(2, "0")}` : normalized;
+}
+
+function getMandrilModeloEntry(data, dataFabricacao, forma) {
+  return data[getMandrilModeloKey(dataFabricacao, forma)];
 }
 
 function getMandrilModeloSalvo(data, dataFabricacao, forma) {
-  const entry = data[getMandrilModeloKey(dataFabricacao, forma)];
+  const entry = getMandrilModeloEntry(data, dataFabricacao, forma);
   return typeof entry === "string" ? entry : (entry?.modelo || "");
 }
 
 function getMandrilModelosPermitidos(forma) {
   const modelos = typeof window.getModelosForFormaS3 === "function"
-    ? window.getModelosForFormaS3(forma)
+    ? window.getModelosForFormaS3(normalizeMandrilForma(forma))
     : [];
   return modelos.filter(Boolean);
 }
 
-function renderMandrilModeloSelect(forma, modeloSelecionado, concretada) {
+function renderMandrilModeloSelect(forma, modeloSelecionado, concretada, producaoId = "", pendingSync = false) {
   if (!concretada) {
     return '<span class="mc-modelo-aguardando">Disponível após concretagem</span>';
   }
 
   const modelosPermitidos = getMandrilModelosPermitidos(forma);
-  const selecionadoValido = modelosPermitidos.find((modelo) => normalizeUpper(modelo) === normalizeUpper(modeloSelecionado)) || "";
+  const selecionadoValido = modelosPermitidos.find((modelo) => normalizeProductionModelKey(modelo) === normalizeProductionModelKey(modeloSelecionado)) || "";
   const options = modelosPermitidos.map((modelo) => (
     `<option value="${escapeHtml(modelo)}"${modelo === selecionadoValido ? " selected" : ""}>${escapeHtml(modelo)}</option>`
   )).join("");
 
   return `
     <div class="mc-modelo-field">
-      <select class="mc-modelo-select" data-mc-forma="${escapeHtml(forma)}" aria-label="Modelo produzido na forma ${escapeHtml(forma)}">
+      <select class="mc-modelo-select" data-mc-forma="${escapeHtml(forma)}" data-mc-producao-id="${escapeHtml(producaoId)}" aria-label="Modelo produzido na forma ${escapeHtml(forma)}">
         <option value="" disabled${selecionadoValido ? "" : " selected"}>Selecione o produzido</option>
         ${options}
       </select>
-      <span class="mc-modelo-status" aria-live="polite"></span>
+      <span class="mc-modelo-status${pendingSync ? " is-local" : ""}" aria-live="polite">${pendingSync ? "Pendente de sincronização" : ""}</span>
     </div>
   `;
 }
 
-async function sincronizarMandrilModelosPendentes(selectedDate) {
-  if (!hasApiConfigured() || !navigator.onLine) return;
+async function persistirMandrilModeloNaConcretagem(dataFabricacao, forma, modelo, producaoId = "") {
+  const formaCanonica = normalizeMandrilForma(forma);
+  let id = producaoId;
+  if (!id) {
+    const { data: rows, error } = await supabaseClient.from("producao")
+      .select("id")
+      .eq("data_fabricacao", dataFabricacao)
+      .eq("setor", "Setor 3")
+      .eq("forma", formaCanonica)
+      .eq("status", "LIBERADO")
+      .order("data_hora", { ascending: false, nullsFirst: false })
+      .limit(1);
+    if (error) throw error;
+    id = rows?.[0]?.id;
+  }
+  if (!id) throw new Error(`Concretagem da forma ${formaCanonica} não encontrada no banco.`);
 
+  const product = getProductionPosteFields(formaCanonica, "Setor 3", modelo);
+  const { data: updatedRows, error } = await supabaseClient.from("producao")
+    .update({
+      modelo,
+      descricao_poste: product.descricaoPoste || modelo,
+      codigo_produto: product.codigoProduto || null
+    })
+    .eq("id", id)
+    .eq("data_fabricacao", dataFabricacao)
+    .eq("setor", "Setor 3")
+    .eq("status", "LIBERADO")
+    .select("id,modelo,descricao_poste,codigo_produto");
+  if (error) throw error;
+  const saved = updatedRows?.[0];
+  if (!saved || normalizeProductionModelKey(saved.modelo) !== normalizeProductionModelKey(modelo)) {
+    throw new Error(`O modelo da forma ${formaCanonica} não foi confirmado no banco.`);
+  }
+  return saved;
+}
+
+async function sincronizarMandrilModelosPendentes(selectedDate, rows = []) {
+  if (!hasApiConfigured() || !navigator.onLine) return;
   const savedData = readMandrilModelosProduzidos();
-  const pendingEntries = Object.entries(savedData).filter(([key, entry]) => (
-    key.startsWith(`${selectedDate}||`) && typeof entry === "object" && entry?.pendingSync && entry?.modelo
-  ));
+  const rowsByForma = new Map(rows.map(row => [normalizeMandrilForma(row.forma), row]));
+  const pendingEntries = Object.entries(savedData).filter(([key, entry]) => {
+    if (!key.startsWith(`${selectedDate}||`)) return false;
+    const forma = key.split("||")[1] || "";
+    const modelo = typeof entry === "string" ? entry : entry?.modelo;
+    const row = rowsByForma.get(forma);
+    return modelo && (entry?.pendingSync || (row && (!row.modelo || normalizeUpper(row.modelo) === "SC")));
+  });
   if (!pendingEntries.length) return;
 
   await Promise.all(pendingEntries.map(async ([key, entry]) => {
     const forma = key.split("||")[1] || "";
-    if (!getMandrilModelosPermitidos(forma).includes(entry.modelo)) return;
+    const modelo = typeof entry === "string" ? entry : entry.modelo;
+    const modeloPermitido = getMandrilModelosPermitidos(forma)
+      .find(option => normalizeProductionModelKey(option) === normalizeProductionModelKey(modelo));
+    if (!modeloPermitido) return;
+    const row = rowsByForma.get(forma);
     try {
-      const { error } = await supabaseClient
-        .from("producao")
-        .update({ modelo: entry.modelo })
-        .eq("data_fabricacao", selectedDate)
-        .eq("setor", "Setor 3")
-        .eq("forma", forma)
-        .eq("status", "LIBERADO");
-      if (error) throw error;
-      entry.pendingSync = false;
+      const saved = await persistirMandrilModeloNaConcretagem(selectedDate, forma, modeloPermitido, row?.id || entry?.producaoId || "");
+      savedData[key] = { modelo: modeloPermitido, producaoId: saved.id, pendingSync: false, updatedAt: entry?.updatedAt || new Date().toISOString() };
+      if (row) {
+        row.modelo = saved.modelo;
+        row.codigo_produto = saved.codigo_produto;
+        row.descricao_poste = saved.descricao_poste;
+      }
     } catch (err) {
+      savedData[key] = { modelo, producaoId: row?.id || entry?.producaoId || "", pendingSync: true, updatedAt: entry?.updatedAt || new Date().toISOString() };
       console.warn(`Sincronização pendente do modelo da forma ${forma}:`, err);
     }
   }));
@@ -7535,7 +7598,7 @@ async function sincronizarMandrilModelosPendentes(selectedDate) {
 
 async function salvarMandrilModeloProduzido(select) {
   const selectedDate = el.mcFiltroData?.value;
-  const forma = select?.dataset?.mcForma || "";
+  const forma = normalizeMandrilForma(select?.dataset?.mcForma || "");
   const modelo = select?.value || "";
   const status = select?.closest(".mc-modelo-field")?.querySelector(".mc-modelo-status");
 
@@ -7547,20 +7610,24 @@ async function salvarMandrilModeloProduzido(select) {
 
   select.disabled = true;
   if (status) {
-    status.textContent = "Salvando...";
+    status.textContent = "Salvando no banco...";
     status.className = "mc-modelo-status is-saving";
   }
 
   const savedData = readMandrilModelosProduzidos();
   const storageKey = getMandrilModeloKey(selectedDate, forma);
-  savedData[storageKey] = { modelo, pendingSync: true, updatedAt: new Date().toISOString() };
+  const producaoId = select.dataset.mcProducaoId || "";
+  savedData[storageKey] = { modelo, producaoId, pendingSync: true, updatedAt: new Date().toISOString() };
   writeMandrilModelosProduzidos(savedData);
 
+  const product = getProductionPosteFields(forma, "Setor 3", modelo);
   const db = readDb();
   let localChanged = false;
   db.records.forEach((record) => {
-    if (record.dataFabricacao === selectedDate && record.setor === "Setor 3" && normalizeForma(record.formaNumero || "") === normalizeForma(forma)) {
+    if (record.dataFabricacao === selectedDate && record.setor === "Setor 3" && normalizeMandrilForma(record.formaNumero || "") === forma) {
       record.modelo = modelo;
+      record.descricaoPoste = product.descricaoPoste || modelo;
+      record.codigoProduto = product.codigoProduto || "";
       record.updatedAt = new Date().toISOString();
       localChanged = true;
     }
@@ -7570,17 +7637,11 @@ async function salvarMandrilModeloProduzido(select) {
   let synced = false;
   if (hasApiConfigured() && navigator.onLine) {
     try {
-      const { error } = await supabaseClient
-        .from("producao")
-        .update({ modelo })
-        .eq("data_fabricacao", selectedDate)
-        .eq("setor", "Setor 3")
-        .eq("forma", normalizeForma(forma))
-        .eq("status", "LIBERADO");
-      if (error) throw error;
-      synced = true;
-      savedData[storageKey].pendingSync = false;
+      const saved = await persistirMandrilModeloNaConcretagem(selectedDate, forma, modelo, producaoId);
+      savedData[storageKey] = { ...savedData[storageKey], producaoId: saved.id, pendingSync: false };
       writeMandrilModelosProduzidos(savedData);
+      select.dataset.mcProducaoId = saved.id;
+      synced = true;
     } catch (err) {
       console.error(`Erro ao salvar modelo produzido da forma ${forma}:`, err);
     }
@@ -7588,12 +7649,12 @@ async function salvarMandrilModeloProduzido(select) {
 
   select.disabled = false;
   if (status) {
-    status.textContent = synced ? "Salvo" : "Salvo neste aparelho";
+    status.textContent = synced ? "Salvo no banco" : "Pendente de sincronização";
     status.className = `mc-modelo-status ${synced ? "is-saved" : "is-local"}`;
   }
   setSyncStatus(synced ? "ok" : "warn", synced
-    ? `Modelo produzido da forma ${forma} salvo.`
-    : `Modelo da forma ${forma} salvo localmente; sincronização pendente.`);
+    ? `Modelo produzido da forma ${forma} salvo junto à concretagem.`
+    : `Modelo da forma ${forma} ainda não confirmado no banco; sincronização pendente.`);
 }
 
 async function carregarMandrilCircular() {
@@ -7638,6 +7699,7 @@ async function carregarMandrilCircular() {
       
       if (Array.isArray(dbRows)) {
         rows = dbRows.map(r => ({
+          id: r.id || "",
           forma: r.forma || r.forma_numero,
           modelo: r.modelo,
           data_hora: r.data_hora || r.updated_at || r.created_at,
@@ -7678,6 +7740,8 @@ async function carregarMandrilCircular() {
     }
   });
 
+  await sincronizarMandrilModelosPendentes(selectedDate, uniqueRows);
+
   // Create lookup maps for quick checking
   const concretedLookup = {};
   uniqueRows.forEach(r => {
@@ -7698,7 +7762,6 @@ async function carregarMandrilCircular() {
       saqueData = JSON.parse(rawSaque);
     } catch (e) {}
   }
-  await sincronizarMandrilModelosPendentes(selectedDate);
   const modelosProduzidosData = readMandrilModelosProduzidos();
 
   let htmlTable = "";
@@ -7708,9 +7771,10 @@ async function carregarMandrilCircular() {
     const fn = normalizeForma(forma);
     const concretedRow = concretedLookup[fn];
     const programmedModel = formToModelMap[fn] || "--";
+    const savedEntry = getMandrilModeloEntry(modelosProduzidosData, selectedDate, forma);
     const modeloPersistido = getMandrilModeloSalvo(modelosProduzidosData, selectedDate, forma);
     const modeloDoRegistro = concretedRow?.modelo && concretedRow.modelo !== "SC" ? concretedRow.modelo : "";
-    const modeloSelecionado = modeloPersistido || modeloDoRegistro;
+    const modeloSelecionado = savedEntry?.pendingSync ? modeloPersistido : (modeloDoRegistro || modeloPersistido);
     
     let tipoConcreto = "--";
     let horaConcretado = "--:--";
@@ -7762,9 +7826,9 @@ async function carregarMandrilCircular() {
     
     htmlTable += `
       <tr style="border-bottom: 1px solid var(--line); transition: background 0.2s;">
-        <td data-label="Nº Forma" style="padding: 12px 16px;"><strong>${forma}</strong></td>
+        <td data-label="Nº Forma" style="padding: 12px 16px;"><strong class="mc-forma-numero">${forma}</strong></td>
         <td data-label="Poste Programado" style="padding: 12px 16px;">${escapeHtml(programmedModel)}</td>
-        <td data-label="Modelo Produzido" style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow))}</td>
+        <td data-label="Modelo Produzido" style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow), concretedRow?.id || "", Boolean(savedEntry?.pendingSync || (modeloPersistido && !modeloDoRegistro)))}</td>
         <td data-label="Tipo de Concreto" style="padding: 12px 16px;">${escapeHtml(tipoConcreto)}</td>
         <td data-label="Concretado às" style="padding: 12px 16px;">${horaConcretado}</td>
         <td data-label="Saque previsto (+3h)" style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
@@ -11220,7 +11284,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.21", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.22", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -14266,7 +14330,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.21&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.22&ts=${Date.now()}`);
       }
     });
   }
@@ -14286,6 +14350,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.21";
+  badge.textContent = "v5.22";
   badge.style.display = "inline-block";
 }

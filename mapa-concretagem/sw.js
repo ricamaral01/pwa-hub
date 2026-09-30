@@ -1,17 +1,17 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.21: filtros moveis dos dashboards
+   v5.22: modelo do Mandril salvo na concretagem e forma em destaque no celular
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.21";
+const CACHE_NAME = "mapa-concretagem-v5.22";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.21",
-  "./styles.css?v=v5.21",
-  "./dashboard-defeitos-v4.css?v=v5.21",
-  "./modelos-formas.js?v=v5.21",
-  "./app.js?v=v5.21",
-  "./xlsx.full.min.js?v=v5.21",
+  "./manifest.json?v=v5.22",
+  "./styles.css?v=v5.22",
+  "./dashboard-defeitos-v4.css?v=v5.22",
+  "./modelos-formas.js?v=v5.22",
+  "./app.js?v=v5.22",
+  "./xlsx.full.min.js?v=v5.22",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",
