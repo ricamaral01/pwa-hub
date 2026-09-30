@@ -1,12 +1,32 @@
 /* =========================================================
-   Mapa de Concretagem - Service Worker reset
-   v5.11: acesso visivel ao modo correcao e clique unico
+   MAPA DE CONCRETAGEM - Service Worker
+   v5.12: adiciona apresentacao 4:3 ao Dashboard Defeitos
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.11";
+const CACHE_NAME = "mapa-concretagem-v5.12";
+const APP_SHELL = [
+  "./index.html",
+  "./manifest.json?v=v5.12",
+  "./styles.css?v=v5.12",
+  "./dashboard-defeitos-v4.css?v=v5.12",
+  "./app.js?v=v5.12",
+  "./xlsx.full.min.js?v=v5.12",
+  "./supabase.js",
+  "./chart.min.js",
+  "./chartjs-plugin-datalabels.min.js",
+  "../assets/msgbox.css",
+  "../assets/msgbox.js",
+  "/auth/config.js?v=2",
+  "/auth/client.js",
+  "/auth/guard.js?v=2"
+];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", (event) => {
@@ -14,20 +34,52 @@ self.addEventListener("activate", (event) => {
     caches.keys()
       .then((keys) => Promise.all(
         keys
-          .filter((key) => key.includes("mapa-concretagem"))
+          .filter((key) => key.startsWith("mapa-concretagem-") && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       ))
       .then(() => self.clients.claim())
-      .then(() => self.registration.unregister())
-      .then(() => self.clients.matchAll({ type: "window", includeUncontrolled: true }))
-      .then((clients) => {
-        for (const client of clients) {
-          client.postMessage({ type: "SW_RESET_DONE", version: CACHE_NAME });
-        }
-      })
   );
 });
 
-self.addEventListener("fetch", () => {
-  return;
+function isStaticRequest(request, url) {
+  if (request.destination && ["document", "script", "style", "image", "font", "manifest"].includes(request.destination)) {
+    return true;
+  }
+  return /\.(?:html|css|js|json|png|jpe?g|gif|webp|svg|ico|woff2?|ttf)$/i.test(url.pathname);
+}
+
+async function networkFirst(request, navigation = false) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const response = await fetch(request);
+    if (response && response.ok) {
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    if (navigation) {
+      const fallback = await cache.match("./index.html");
+      if (fallback) return fallback;
+    }
+    throw error;
+  }
+}
+
+self.addEventListener("fetch", (event) => {
+  const request = event.request;
+  if (request.method !== "GET") return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === "navigate") {
+    event.respondWith(networkFirst(request, true));
+    return;
+  }
+
+  if (isStaticRequest(request, url)) {
+    event.respondWith(networkFirst(request));
+  }
 });

@@ -3,6 +3,7 @@ const SUBMIT_LOCKS_KEY = "pwa_liberacao_submit_locks_v1";
 const CLICKED_FORMS_KEY = "pwa_formas_clicadas_hoje";
 const MONTAGEM_POSTES_KEY = "pwa_montagem_postes_v1";
 const AUTH_SESSION_KEY = "pwa_mapa_auth_session_v1";
+const MANDRIL_MODELOS_PRODUZIDOS_KEY = "pwa_mandril_modelos_produzidos_v1";
 
 const ROLE_PERMISSIONS = {
   GERENCIA: {
@@ -1048,6 +1049,30 @@ function todayYmd() {
   return local.toISOString().slice(0, 10);
 }
 
+function baixarArquivoBlob(conteudo, nomeArquivo, mimeType, incluirBom = false) {
+  const partes = incluirBom ? ["\uFEFF", conteudo] : [conteudo];
+  const blob = conteudo instanceof Blob && !incluirBom
+    ? conteudo
+    : new Blob(partes, { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = nomeArquivo;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+
+function valorCsv(value) {
+  return `"${String(value ?? "").replace(/"/g, '""')}"`;
+}
+
+function criarCsv(linhas) {
+  return (linhas || []).map(linha => linha.map(valorCsv).join(";")).join("\r\n");
+}
+
 function normalizeUpper(text) {
   return String(text || "").trim().toUpperCase();
 }
@@ -1198,8 +1223,9 @@ function hasMontagemApiConfigured() {
 
 const MAPA_REPORT_CACHE_PREFIX = "mapa_concretagem_report_cache_v1";
 const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
-const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_produto";
+const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado";
 const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
+const DASHBOARD_MONTAGEM_SCREEN_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome";
 const DASHBOARD_SCOPE_OPTIONS = {
   "": "TOTAL",
   "Todos os Setores": "TOTAL",
@@ -6041,6 +6067,14 @@ function formatTime(iso) {
 }
 
 const ACMP_NOTES_KEY = "pwa_acmp_notas_v1";
+const ACMP_MASSADAS_URL = "https://dautomacao.com/api/usina/massadas";
+const ACMP_PRODUTO_VOLUMES_URL = "./data/produto-volumes.json";
+const ACMP_LEITURAS_QR_CSV_URL = "https://docs.google.com/spreadsheets/d/1CdQhQ0AJ4mWJqAgnP371ez4r-P7ESX5KuTHI96nI0g8/export?format=csv&gid=0";
+const ACMP_MASSADA_VOLUME_PADRAO_M3 = 0.9;
+const ACMP_DELAY_APLICACAO_MS = 60 * 1000;
+const ACMP_TOLERANCIA_ANTES_MS = 4 * 60 * 1000;
+const ACMP_TOLERANCIA_DEPOIS_MS = 6 * 60 * 1000;
+let acmpVolumeCache = null;
 
 function getAcmpNoteKey(data, setor, forma) {
   return `${data}||${setor}||${forma}`;
@@ -6081,6 +6115,328 @@ function salvarAcmp() {
 
 function imprimirAcmp() {
   window.print();
+}
+
+function normalizeAcmpText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+function normalizeAcmpCode(value) {
+  if (value === null || value === undefined) return "";
+  const raw = String(value).trim();
+  if (!raw) return "";
+  const asNumber = Number(raw);
+  return Number.isFinite(asNumber) ? String(Math.trunc(asNumber)) : raw;
+}
+
+function parseAcmpTimestamp(value, dataRef = "") {
+  if (!value) return null;
+  const raw = String(value);
+  const normalized = /^\d{2}:\d{2}(:\d{2})?$/.test(raw)
+    ? `${dataRef}T${raw.length === 5 ? `${raw}:00` : raw}`
+    : raw;
+  const d = new Date(normalized);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function parseAcmpBrTimestamp(value) {
+  const match = String(value || "").trim().match(/^(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})(?::(\d{2}))?$/);
+  if (!match) return null;
+  const [, dd, mm, yyyy, hh, min, ss = "00"] = match;
+  const d = new Date(Number(yyyy), Number(mm) - 1, Number(dd), Number(hh), Number(min), Number(ss));
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function getAcmpLocalDateKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function parseAcmpCsv(text) {
+  const rows = [];
+  let row = [];
+  let value = "";
+  let quoted = false;
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    const next = text[i + 1];
+    if (quoted) {
+      if (ch === '"' && next === '"') {
+        value += '"';
+        i += 1;
+      } else if (ch === '"') {
+        quoted = false;
+      } else {
+        value += ch;
+      }
+      continue;
+    }
+    if (ch === '"') {
+      quoted = true;
+    } else if (ch === ",") {
+      row.push(value);
+      value = "";
+    } else if (ch === "\n") {
+      row.push(value);
+      rows.push(row);
+      row = [];
+      value = "";
+    } else if (ch !== "\r") {
+      value += ch;
+    }
+  }
+  if (value || row.length) {
+    row.push(value);
+    rows.push(row);
+  }
+  if (!rows.length) return [];
+  const headers = rows.shift().map((h) => h.trim());
+  return rows
+    .filter((r) => r.some((v) => String(v || "").trim()))
+    .map((r) => headers.reduce((acc, header, idx) => {
+      acc[header] = r[idx] || "";
+      return acc;
+    }, {}));
+}
+
+async function loadAcmpVolumeIndex() {
+  if (acmpVolumeCache) return acmpVolumeCache;
+  const index = { bySetorCodigo: new Map(), byCodigo: new Map(), bySetorProduto: new Map(), byProduto: new Map() };
+  try {
+    const res = await fetch(ACMP_PRODUTO_VOLUMES_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    (payload.registros || []).forEach((item) => {
+      const setor = normalizeAcmpText(item.setor);
+      const codigo = normalizeAcmpCode(item.codigo_produto);
+      const produto = normalizeAcmpText(item.produto);
+      const volume = Number(item.volume_m3);
+      if (!Number.isFinite(volume) || volume <= 0) return;
+      const record = { ...item, volume_m3: volume };
+      if (setor && codigo) index.bySetorCodigo.set(`${setor}||${codigo}`, record);
+      if (codigo && !index.byCodigo.has(codigo)) index.byCodigo.set(codigo, record);
+      if (setor && produto) index.bySetorProduto.set(`${setor}||${produto}`, record);
+      if (produto && !index.byProduto.has(produto)) index.byProduto.set(produto, record);
+    });
+  } catch (err) {
+    console.warn("Nao foi possivel carregar cadastro de volumes:", err);
+  }
+  acmpVolumeCache = index;
+  return index;
+}
+
+function getAcmpRowCodigoProduto(row) {
+  return normalizeAcmpCode(row.codigo_produto || row.codigoProduto || row.codigo_poste || row.codigoPoste);
+}
+
+function getAcmpRowProduto(row) {
+  return normalizeAcmpText(
+    row.descricao_poste ||
+    row.descricaoPoste ||
+    row.produto ||
+    row.nome_produto ||
+    row.nomeProduto ||
+    row.modelo
+  );
+}
+
+function findAcmpVolume(row, volumeIndex) {
+  const setor = normalizeAcmpText(row._setor || row.setor);
+  const codigo = getAcmpRowCodigoProduto(row);
+  const produto = getAcmpRowProduto(row);
+  if (setor && codigo && volumeIndex.bySetorCodigo.has(`${setor}||${codigo}`)) {
+    return { match: volumeIndex.bySetorCodigo.get(`${setor}||${codigo}`), regra: "setor+codigo" };
+  }
+  if (codigo && volumeIndex.byCodigo.has(codigo)) {
+    return { match: volumeIndex.byCodigo.get(codigo), regra: "codigo" };
+  }
+  if (setor && produto && volumeIndex.bySetorProduto.has(`${setor}||${produto}`)) {
+    return { match: volumeIndex.bySetorProduto.get(`${setor}||${produto}`), regra: "setor+produto" };
+  }
+  if (produto && volumeIndex.byProduto.has(produto)) {
+    return { match: volumeIndex.byProduto.get(produto), regra: "produto" };
+  }
+  return { match: null, regra: "" };
+}
+
+function getAcmpProgS3Model(data, forma) {
+  if (!data || !forma || typeof window.readProgS3S4Db !== "function") return "";
+  const db = window.readProgS3S4Db();
+  const key = `${data}||${forma}||Setor 3`;
+  return db?.programacoes?.[key]?.modelo || "";
+}
+
+async function fetchAcmpMassadas(data) {
+  if (!data) return [];
+  try {
+    const url = `${ACMP_MASSADAS_URL}?data=${encodeURIComponent(data)}&limit=5000`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const payload = await res.json();
+    return (payload.massadas || [])
+      .map((m) => {
+        const ts = parseAcmpTimestamp(m.data_hora_operacional || m.data_hora || m.hora, data);
+        const qtd = Number(m.qtd);
+        return {
+          ...m,
+          _ts: ts,
+          _remaining: Number.isFinite(qtd) && qtd > 0 ? qtd : ACMP_MASSADA_VOLUME_PADRAO_M3
+        };
+      })
+      .filter((m) => m._ts)
+      .sort((a, b) => a._ts - b._ts);
+  } catch (err) {
+    console.warn("Nao foi possivel carregar massadas da usina:", err);
+    return [];
+  }
+}
+
+async function fetchAcmpLeiturasQr(data) {
+  if (!data) return [];
+  try {
+    const res = await fetch(ACMP_LEITURAS_QR_CSV_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rows = parseAcmpCsv(await res.text());
+    return rows
+      .map((r) => {
+        const ts = parseAcmpBrTimestamp(r.DATAHORA);
+        return {
+          id: Number(r.ID),
+          setor: r.QR_RAW || "",
+          setorKey: normalizeAcmpText(r.QR_RAW),
+          dataHora: r.DATAHORA || "",
+          ts
+        };
+      })
+      .filter((r) => r.ts && getAcmpLocalDateKey(r.ts) === data && r.setorKey)
+      .sort((a, b) => (a.ts - b.ts) || ((a.id || 0) - (b.id || 0)));
+  } catch (err) {
+    console.warn("Nao foi possivel carregar leituras QR:", err);
+    return [];
+  }
+}
+
+function indexAcmpLeiturasBySetor(leituras) {
+  const bySetor = new Map();
+  leituras.forEach((leitura) => {
+    if (!bySetor.has(leitura.setorKey)) bySetor.set(leitura.setorKey, []);
+    bySetor.get(leitura.setorKey).push({ ...leitura, _used: false });
+  });
+  return bySetor;
+}
+
+function matchAcmpLeitura(item, leiturasBySetor) {
+  const setorKey = normalizeAcmpText(item.row._setor || item.row.setor);
+  const queue = leiturasBySetor.get(setorKey) || [];
+  if (!queue.length) return null;
+  const rowTs = item.ts.getTime();
+  const minTs = rowTs - ACMP_TOLERANCIA_ANTES_MS;
+  const maxTs = rowTs + ACMP_TOLERANCIA_DEPOIS_MS;
+  let best = null;
+  for (const leitura of queue) {
+    if (leitura._used) continue;
+    const ts = leitura.ts.getTime();
+    if (ts < minTs) {
+      leitura._used = true;
+      continue;
+    }
+    if (ts > maxTs) break;
+    const diff = Math.abs(ts - rowTs);
+    if (!best || diff < best.diff) best = { leitura, diff };
+  }
+  if (!best) return null;
+  best.leitura._used = true;
+  return best.leitura;
+}
+
+function describeAcmpAllocation(allocation, volume, volumeInfo) {
+  if (!allocation || !allocation.parts.length) return "Massada nao localizada";
+  const ids = allocation.parts.map((part) => part.massada.numero_serie || part.massada.id).filter(Boolean);
+  const formulas = [...new Set(allocation.parts.map((part) => part.massada.formula).filter(Boolean))];
+  const diff = Math.round((allocation.bestDiffMs || 0) / 1000);
+  const volumeTxt = Number.isFinite(volume) ? `${volume.toFixed(3).replace(".", ",")} m³` : "volume indefinido";
+  const regra = volumeInfo?.regra ? ` • volume por ${volumeInfo.regra}` : "";
+  const sequencia = allocation.leitura ? ` • sequência ${allocation.leitura.setor} #${allocation.leitura.id}` : "";
+  const base = `Massada ${ids.join("/")} • ${volumeTxt} • Δ ${Math.abs(diff)}s${regra}${sequencia}`;
+  if (allocation.parts.length > 1) return `${base} • múltiplas massadas`;
+  if (formulas.length > 1) return `${base} • traços diferentes`;
+  return base;
+}
+
+function allocateAcmpTracos(rows, massadas, volumeIndex, leiturasQr, data) {
+  const sorted = rows
+    .map((row, idx) => ({ row, idx, ts: parseAcmpTimestamp(row.lib_timestamp || row.data_hora || row.timestamp, data) }))
+    .filter((item) => item.ts)
+    .sort((a, b) => a.ts - b.ts);
+
+  const suggestions = new Map();
+  const leiturasBySetor = indexAcmpLeiturasBySetor(leiturasQr || []);
+  sorted.forEach((item) => {
+    const volumeInfo = findAcmpVolume(item.row, volumeIndex);
+    const volume = Number(volumeInfo.match?.volume_m3);
+    if (!Number.isFinite(volume) || volume <= 0) {
+      suggestions.set(item.idx, { traco: "", obs: "Sem volume cadastrado", confidence: "sem_volume" });
+      return;
+    }
+
+    let restante = volume;
+    const parts = [];
+    const leitura = matchAcmpLeitura(item, leiturasBySetor);
+    const anchorTs = leitura ? leitura.ts.getTime() : item.ts.getTime();
+    const expected = anchorTs - ACMP_DELAY_APLICACAO_MS;
+    const minTs = expected - ACMP_TOLERANCIA_ANTES_MS;
+    const maxTs = anchorTs + ACMP_TOLERANCIA_DEPOIS_MS;
+    let bestDiffMs = null;
+
+    for (const massada of massadas) {
+      if (restante <= 0.0001) break;
+      const ts = massada._ts.getTime();
+      if (ts < minTs || ts > maxTs || massada._remaining <= 0.0001) continue;
+      const usado = Math.min(restante, massada._remaining);
+      restante -= usado;
+      const diff = ts - expected;
+      bestDiffMs = bestDiffMs === null || Math.abs(diff) < Math.abs(bestDiffMs) ? diff : bestDiffMs;
+      parts.push({ massada, volume: usado, diffMs: diff });
+    }
+
+    if (restante > 0.0001 || !parts.length) {
+      suggestions.set(item.idx, { traco: "", obs: "Massada nao localizada", confidence: "sem_massada" });
+      return;
+    }
+
+    parts.forEach((part) => {
+      part.massada._remaining -= part.volume;
+    });
+
+    const formulas = [...new Set(parts.map((part) => part.massada.formula).filter(Boolean))];
+    const traco = formulas.length === 1 ? formulas[0] : (formulas.length > 1 ? "Misto" : "");
+    suggestions.set(item.idx, {
+      traco,
+      obs: describeAcmpAllocation({ parts, bestDiffMs, leitura }, volume, volumeInfo),
+      confidence: formulas.length > 1 ? "misto" : (leitura ? "sequencia" : "ok")
+    });
+  });
+  return suggestions;
+}
+
+function enrichAcmpRowsFromProgS3(rows, data) {
+  if (!data) return rows;
+  return rows.map((row) => {
+    if (row._setor !== "Setor 3" && row.setor !== "Setor 3") return row;
+    const forma = row.forma_numero || row.forma || "";
+    const modeloProg = getAcmpProgS3Model(data, forma);
+    if (!modeloProg) return row;
+    return {
+      ...row,
+      modelo: modeloProg,
+      descricaoPoste: modeloProg,
+      produto: modeloProg
+    };
+  });
 }
 
 async function renderAcmpConcretagem() {
@@ -6128,6 +6484,8 @@ async function renderAcmpConcretagem() {
         .forEach((r) => allRows.push({
           forma_numero: r.formaNumero,
           modelo: r.modelo || "",
+          descricaoPoste: r.descricaoPoste || "",
+          codigoProduto: r.codigoProduto || "",
           lib_timestamp: r.liberacao.timestamp || "",
           _setor: setor,
           tipo_concreto: r.concretoTipo || ""
@@ -6138,6 +6496,24 @@ async function renderAcmpConcretagem() {
   if (!allRows.length) {
     output.innerHTML = '<p class="muted">Nenhuma forma concretada para os filtros informados.</p>';
     return;
+  }
+
+  let massadas = [];
+  let leiturasQr = [];
+  let volumeIndex = { bySetorCodigo: new Map(), byCodigo: new Map(), bySetorProduto: new Map(), byProduto: new Map() };
+  if (data) {
+    for (let i = 0; i < allRows.length; i += 1) {
+      allRows[i] = enrichAcmpRowsFromProgS3([allRows[i]], data)[0];
+    }
+    [massadas, volumeIndex, leiturasQr] = await Promise.all([
+      fetchAcmpMassadas(data),
+      loadAcmpVolumeIndex(),
+      fetchAcmpLeiturasQr(data)
+    ]);
+    const suggestions = allocateAcmpTracos(allRows, massadas, volumeIndex, leiturasQr, data);
+    allRows.forEach((row, idx) => {
+      row._acmpSuggestion = suggestions.get(idx) || null;
+    });
   }
 
   const grouped = {};
@@ -6151,20 +6527,23 @@ async function renderAcmpConcretagem() {
   let html = "";
   Object.keys(grouped).sort().forEach((setor) => {
     const rows = grouped[setor].sort((a, b) =>
-      formatTime(a.lib_timestamp).localeCompare(formatTime(b.lib_timestamp))
+      (parseAcmpTimestamp(a.lib_timestamp || a.data_hora || a.timestamp, data)?.getTime() || 0) -
+      (parseAcmpTimestamp(b.lib_timestamp || b.data_hora || b.timestamp, data)?.getTime() || 0)
     );
     totalCount += rows.length;
     const linhas = rows.map((r) => {
       const forma = r.forma_numero || "";
       const saved = notes[getAcmpNoteKey(data, setor, forma)] || {};
       const tipoConcreto = r.tipo_concreto || "";
-      const obsValue = saved.obs || tipoConcreto;
+      const suggestion = r._acmpSuggestion || {};
+      const tracoValue = saved.traco || suggestion.traco || "";
+      const obsValue = saved.obs || suggestion.obs || tipoConcreto;
       return `<tr data-acmp-forma="${forma}" data-acmp-setor="${setor}">
-        <td>${forma}</td>
-        <td>${r.modelo || ""}</td>
+        <td>${escapeHtml(forma)}</td>
+        <td>${escapeHtml(r.modelo || "")}</td>
         <td>${formatTime(r.lib_timestamp)}</td>
-        <td><input type="text" class="acmp-input" data-acmp-traco placeholder="" value="${saved.traco || ""}"></td>
-        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="" value="${obsValue}"></td>
+        <td><input type="text" class="acmp-input" data-acmp-traco placeholder="" value="${escapeHtml(tracoValue)}"></td>
+        <td><input type="text" class="acmp-input" data-acmp-obs placeholder="" value="${escapeHtml(obsValue)}"></td>
       </tr>`;
     }).join("");
     html += `
@@ -6177,7 +6556,10 @@ async function renderAcmpConcretagem() {
       </div>`;
   });
 
-  output.innerHTML = `<div class="acmp-total">Total: ${totalCount} formas concretadas | Data: ${data}</div>` + html;
+  const massadasInfo = data
+    ? ` | Massadas carregadas: ${massadas.length} | Leituras QR: ${leiturasQr.length} | Traços sugeridos: ${allRows.filter((r) => r._acmpSuggestion?.traco).length}`
+    : "";
+  output.innerHTML = `<div class="acmp-total">Total: ${totalCount} formas concretadas | Data: ${data}${massadasInfo}</div>` + html;
 }
 
 function buildReportDataFromRows(rows) {
@@ -6847,15 +7229,158 @@ async function enviarRelatorioWhatsapp() {
   }
 }
 
+function readMandrilModelosProduzidos() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(MANDRIL_MODELOS_PRODUZIDOS_KEY) || "{}");
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function writeMandrilModelosProduzidos(data) {
+  localStorage.setItem(MANDRIL_MODELOS_PRODUZIDOS_KEY, JSON.stringify(data));
+}
+
+function getMandrilModeloKey(dataFabricacao, forma) {
+  return `${dataFabricacao}||${normalizeForma(forma)}`;
+}
+
+function getMandrilModeloSalvo(data, dataFabricacao, forma) {
+  const entry = data[getMandrilModeloKey(dataFabricacao, forma)];
+  return typeof entry === "string" ? entry : (entry?.modelo || "");
+}
+
+function getMandrilModelosPermitidos(forma) {
+  const modelos = typeof window.getModelosForFormaS3 === "function"
+    ? window.getModelosForFormaS3(forma)
+    : [];
+  return modelos.filter(Boolean);
+}
+
+function renderMandrilModeloSelect(forma, modeloSelecionado, concretada) {
+  if (!concretada) {
+    return '<span class="mc-modelo-aguardando">Disponível após concretagem</span>';
+  }
+
+  const modelosPermitidos = getMandrilModelosPermitidos(forma);
+  const selecionadoValido = modelosPermitidos.find((modelo) => normalizeUpper(modelo) === normalizeUpper(modeloSelecionado)) || "";
+  const options = modelosPermitidos.map((modelo) => (
+    `<option value="${escapeHtml(modelo)}"${modelo === selecionadoValido ? " selected" : ""}>${escapeHtml(modelo)}</option>`
+  )).join("");
+
+  return `
+    <div class="mc-modelo-field">
+      <select class="mc-modelo-select" data-mc-forma="${escapeHtml(forma)}" aria-label="Modelo produzido na forma ${escapeHtml(forma)}">
+        <option value="" disabled${selecionadoValido ? "" : " selected"}>Selecione o produzido</option>
+        ${options}
+      </select>
+      <span class="mc-modelo-status" aria-live="polite"></span>
+    </div>
+  `;
+}
+
+async function sincronizarMandrilModelosPendentes(selectedDate) {
+  if (!hasApiConfigured() || !navigator.onLine) return;
+
+  const savedData = readMandrilModelosProduzidos();
+  const pendingEntries = Object.entries(savedData).filter(([key, entry]) => (
+    key.startsWith(`${selectedDate}||`) && typeof entry === "object" && entry?.pendingSync && entry?.modelo
+  ));
+  if (!pendingEntries.length) return;
+
+  await Promise.all(pendingEntries.map(async ([key, entry]) => {
+    const forma = key.split("||")[1] || "";
+    if (!getMandrilModelosPermitidos(forma).includes(entry.modelo)) return;
+    try {
+      const { error } = await supabaseClient
+        .from("producao")
+        .update({ modelo: entry.modelo })
+        .eq("data_fabricacao", selectedDate)
+        .eq("setor", "Setor 3")
+        .eq("forma", forma)
+        .eq("status", "LIBERADO");
+      if (error) throw error;
+      entry.pendingSync = false;
+    } catch (err) {
+      console.warn(`Sincronização pendente do modelo da forma ${forma}:`, err);
+    }
+  }));
+  writeMandrilModelosProduzidos(savedData);
+}
+
+async function salvarMandrilModeloProduzido(select) {
+  const selectedDate = el.mcFiltroData?.value;
+  const forma = select?.dataset?.mcForma || "";
+  const modelo = select?.value || "";
+  const status = select?.closest(".mc-modelo-field")?.querySelector(".mc-modelo-status");
+
+  if (!selectedDate || !forma || !modelo) return;
+  if (!getMandrilModelosPermitidos(forma).includes(modelo)) {
+    showMsgBox(`O modelo ${modelo} não é permitido para a forma ${forma}.`, "error");
+    return;
+  }
+
+  select.disabled = true;
+  if (status) {
+    status.textContent = "Salvando...";
+    status.className = "mc-modelo-status is-saving";
+  }
+
+  const savedData = readMandrilModelosProduzidos();
+  const storageKey = getMandrilModeloKey(selectedDate, forma);
+  savedData[storageKey] = { modelo, pendingSync: true, updatedAt: new Date().toISOString() };
+  writeMandrilModelosProduzidos(savedData);
+
+  const db = readDb();
+  let localChanged = false;
+  db.records.forEach((record) => {
+    if (record.dataFabricacao === selectedDate && record.setor === "Setor 3" && normalizeForma(record.formaNumero || "") === normalizeForma(forma)) {
+      record.modelo = modelo;
+      record.updatedAt = new Date().toISOString();
+      localChanged = true;
+    }
+  });
+  if (localChanged) writeDb(db);
+
+  let synced = false;
+  if (hasApiConfigured() && navigator.onLine) {
+    try {
+      const { error } = await supabaseClient
+        .from("producao")
+        .update({ modelo })
+        .eq("data_fabricacao", selectedDate)
+        .eq("setor", "Setor 3")
+        .eq("forma", normalizeForma(forma))
+        .eq("status", "LIBERADO");
+      if (error) throw error;
+      synced = true;
+      savedData[storageKey].pendingSync = false;
+      writeMandrilModelosProduzidos(savedData);
+    } catch (err) {
+      console.error(`Erro ao salvar modelo produzido da forma ${forma}:`, err);
+    }
+  }
+
+  select.disabled = false;
+  if (status) {
+    status.textContent = synced ? "Salvo" : "Salvo neste aparelho";
+    status.className = `mc-modelo-status ${synced ? "is-saved" : "is-local"}`;
+  }
+  setSyncStatus(synced ? "ok" : "warn", synced
+    ? `Modelo produzido da forma ${forma} salvo.`
+    : `Modelo da forma ${forma} salvo localmente; sincronização pendente.`);
+}
+
 async function carregarMandrilCircular() {
   const selectedDate = el.mcFiltroData?.value;
   if (!selectedDate) {
-    el.mcTabelaBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color: var(--muted); font-size: 1.05rem;">Selecione uma data para carregar os dados.</td></tr>`;
+    el.mcTabelaBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 30px; color: var(--muted); font-size: 1.05rem;">Selecione uma data para carregar os dados.</td></tr>`;
     el.mcQtdItens.textContent = "0";
     return;
   }
 
-  el.mcTabelaBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
+  el.mcTabelaBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px; color: var(--muted);">Carregando dados...</td></tr>`;
   el.mcQtdItens.textContent = "0";
 
   // Sync Supabase data to local database first
@@ -6949,6 +7474,8 @@ async function carregarMandrilCircular() {
       saqueData = JSON.parse(rawSaque);
     } catch (e) {}
   }
+  await sincronizarMandrilModelosPendentes(selectedDate);
+  const modelosProduzidosData = readMandrilModelosProduzidos();
 
   let htmlTable = "";
   let totalConcretados = 0;
@@ -6957,6 +7484,9 @@ async function carregarMandrilCircular() {
     const fn = normalizeForma(forma);
     const concretedRow = concretedLookup[fn];
     const programmedModel = formToModelMap[fn] || "--";
+    const modeloPersistido = getMandrilModeloSalvo(modelosProduzidosData, selectedDate, forma);
+    const modeloDoRegistro = concretedRow?.modelo && concretedRow.modelo !== "SC" ? concretedRow.modelo : "";
+    const modeloSelecionado = modeloPersistido || modeloDoRegistro;
     
     let tipoConcreto = "--";
     let horaConcretado = "--:--";
@@ -7009,7 +7539,8 @@ async function carregarMandrilCircular() {
     htmlTable += `
       <tr style="border-bottom: 1px solid var(--line); transition: background 0.2s;">
         <td style="padding: 12px 16px;"><strong>${forma}</strong></td>
-        <td style="padding: 12px 16px;">${programmedModel}</td>
+        <td style="padding: 12px 16px;">${escapeHtml(programmedModel)}</td>
+        <td style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow))}</td>
         <td style="padding: 12px 16px;">${tipoConcreto}</td>
         <td style="padding: 12px 16px;">${horaConcretado}</td>
         <td style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
@@ -7019,6 +7550,9 @@ async function carregarMandrilCircular() {
   });
 
   el.mcTabelaBody.innerHTML = htmlTable;
+  el.mcTabelaBody.querySelectorAll(".mc-modelo-select").forEach((select) => {
+    select.addEventListener("change", () => salvarMandrilModeloProduzido(select));
+  });
   el.mcQtdItens.textContent = totalConcretados;
 }
 
@@ -8041,6 +8575,9 @@ function bindEvents() {
   document.getElementById("miBtnAtualizar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
+  document.getElementById("miBtnExportarXlsx")?.addEventListener("click", () => {
+    exportarMontagemIndicadoresXlsx();
+  });
   document.getElementById("miBtnFiltrar")?.addEventListener("click", () => {
     carregarMontagemIndicadores();
   });
@@ -8082,6 +8619,30 @@ function bindEvents() {
   });
   document.getElementById("dfBtnAtualizar")?.addEventListener("click", carregarDashboardDefeitos);
   document.getElementById("dfBtnFiltrar")?.addEventListener("click", carregarDashboardDefeitos);
+  document.getElementById("dfBtnExportarCsv")?.addEventListener("click", exportarDashboardDefeitosCsv);
+  document.getElementById("dfBtnApresentacao")?.addEventListener("click", abrirApresentacaoDefeitos);
+  document.getElementById("dfPresentationPrev")?.addEventListener("click", () => exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex - 1));
+  document.getElementById("dfPresentationNext")?.addEventListener("click", () => exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex + 1));
+  document.getElementById("dfPresentationClose")?.addEventListener("click", fecharApresentacaoDefeitos);
+  document.getElementById("dfPresentationFullscreen")?.addEventListener("click", alternarTelaCheiaApresentacaoDefeitos);
+  document.getElementById("dfPresentationPrint")?.addEventListener("click", imprimirApresentacaoDefeitos);
+  window.addEventListener("resize", ajustarEscalaApresentacaoDefeitos);
+  window.addEventListener("afterprint", finalizarImpressaoApresentacaoDefeitos);
+  document.addEventListener("fullscreenchange", () => {
+    const fullscreenBtn = document.getElementById("dfPresentationFullscreen");
+    if (fullscreenBtn) fullscreenBtn.textContent = document.fullscreenElement ? "Sair da tela cheia" : "Tela cheia";
+    ajustarEscalaApresentacaoDefeitos();
+  });
+  document.addEventListener("keydown", event => {
+    const overlay = document.getElementById("dfPresentationOverlay");
+    if (!overlay || overlay.classList.contains("hidden")) return;
+    if (event.key === "Escape") fecharApresentacaoDefeitos();
+    if (event.key === "ArrowLeft") exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex - 1);
+    if (event.key === "ArrowRight" || event.key === " ") {
+      event.preventDefault();
+      exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex + 1);
+    }
+  });
   ["dfDataInicio", "dfDataFim", "dfFiltroSetor", "dfFiltroStatus"].forEach(id => {
     document.getElementById(id)?.addEventListener("change", () => {
       miPaginaAtual = 1;
@@ -8367,7 +8928,7 @@ function bindEvents() {
       state.odinMode = el.kioskOdinCheckbox.checked;
       document.body.classList.toggle("odin-active", state.odinMode);
       if (el.btnCorrecaoConcretagem) {
-        el.btnCorrecaoConcretagem.textContent = state.odinMode ? "Encerrar correção" : "Corrigir concretagem";
+        el.btnCorrecaoConcretagem.textContent = state.odinMode ? "Encerrar corre??o" : "Corrigir concretagem";
         el.btnCorrecaoConcretagem.classList.toggle("primary", state.odinMode);
       }
       if (state.odinMode) {
@@ -8394,9 +8955,10 @@ function bindEvents() {
 
   if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
     el.kioskOdinToggleField.addEventListener("click", (e) => {
-      if (e.target.closest?.(".kiosk-switch")) return;
-      el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
-      el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
+        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
+        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+      }
     });
   }
 
@@ -8515,6 +9077,15 @@ function bindEvents() {
     window.print();
     document.body.classList.remove("print-relatorio-manutencao");
   });
+
+  if (el.kioskOdinToggleField && el.kioskOdinCheckbox) {
+    el.kioskOdinToggleField.addEventListener("click", (e) => {
+      if (e.target !== el.kioskOdinCheckbox && !el.kioskOdinCheckbox.contains(e.target)) {
+        el.kioskOdinCheckbox.checked = !el.kioskOdinCheckbox.checked;
+        el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
+      }
+    });
+  }
 
   // Controle de Tela Cheia no Quiosque
   if (el.btnKioskFullscreen) {
@@ -10368,12 +10939,6 @@ function init() {
 
   if ("serviceWorker" in navigator) {
     let refreshing = false;
-    navigator.serviceWorker.addEventListener("message", (event) => {
-      if (event.data?.type === "SW_RESET_DONE" && !refreshing) {
-        refreshing = true;
-        window.location.replace(window.location.pathname + "?cache-reset=v5.11");
-      }
-    });
     navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (!refreshing) {
         refreshing = true;
@@ -10381,7 +10946,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.11").then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.12", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -10423,6 +10988,11 @@ let miOrdenacaoColuna = "finalizado_em";
 let miOrdenacaoAsc = false;
 let miAbaAtiva = "resumo";
 let miUltimosGraficos = null;
+let miDefeitosExportData = null;
+let dfPresentationData = null;
+let dfPresentationSlideIndex = 0;
+let dfPresentationReturnFocus = null;
+const DF_PRESENTATION_SLIDE_TOTAL = 4;
 
 function formatarDuracao(ms) {
   if (ms === null || ms === undefined || isNaN(ms) || ms < 0) return "-";
@@ -10433,8 +11003,21 @@ function formatarDuracao(ms) {
   return `${mins}m ${secs}s`;
 }
 
+function formatarDataHoraMontagemXlsx(value) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value);
+  return d.toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
 function getMiDataReferencia(row) {
-  const raw = row?.data_fabricacao || row?.dataFabricacao || row?.finalizado_em || row?.finalizadoEm || "";
+  const raw = row?.finalizado_em || row?.finalizadoEm || row?.inicio_inspecao_montagem || row?.inicioInspecaoMontagem || row?.data_fabricacao || row?.dataFabricacao || "";
   return String(raw).split("T")[0];
 }
 
@@ -10444,9 +11027,23 @@ function isLinhaMontagemDashboard(row) {
   return Boolean(row?.status_montagem || row?.finalizado_em);
 }
 
+function isLinhaAvaliacaoDefeitosDashboard(row) {
+  const setor = String(row?.setor || "").trim();
+  if (setor === "Setor 3" || setor === "Setor 4") {
+    return Boolean(row?.status_montagem || row?.finalizado_em);
+  }
+  return isLinhaMontagemDashboard(row);
+}
+
 function isLinhaDefeitoDashboard(row) {
   const status = String(row?.status_montagem || "").trim().toUpperCase();
   return status === "R" || status === "RR" || status === "REPROVADO" || status === "RETRABALHO" || obterItensRejeitadosLinha(row).length > 0;
+}
+
+function isMontagemRetrabalhoStatus(status) {
+  const s = String(status || "").trim().toUpperCase();
+  const codigosRetrabalho = new Set(["RR", "RETRABALHO"]);
+  return codigosRetrabalho.has(s);
 }
 
 function normalizarTexto(valor) {
@@ -10634,11 +11231,90 @@ function formatPct(value) {
   return `${value.toFixed(1).replace(".", ",")}%`;
 }
 
+const DASHBOARD_DEFEITOS_BAR_COLORS = Object.freeze([
+  "#2563eb",
+  "#dc2626",
+  "#16a34a",
+  "#d97706",
+  "#7c3aed",
+  "#0891b2",
+  "#be123c",
+  "#4f46e5",
+  "#65a30d",
+  "#0f766e",
+  "#c2410c",
+  "#9333ea"
+]);
+
+function criarRankingParticipacaoDefeitos(porTipo = {}, totalErros = 0) {
+  const itens = Object.entries(porTipo || {})
+    .map(([tipo, total]) => [String(tipo || "Defeito nao identificado"), Number(total || 0)])
+    .filter(([, total]) => Number.isFinite(total) && total > 0)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "pt-BR"));
+  const totalCalculado = itens.reduce((soma, [, total]) => soma + total, 0);
+  const totalInformado = Number(totalErros || 0);
+  const totalBase = Number.isFinite(totalInformado) && totalInformado > 0 ? totalInformado : totalCalculado;
+  const maiorTotal = itens.reduce((maior, [, total]) => Math.max(maior, total), 0);
+
+  return itens.map(([tipo, total], index) => ({
+    tipo,
+    total,
+    percentual: totalBase > 0 ? (total / totalBase) * 100 : 0,
+    larguraRelativa: maiorTotal > 0 ? (total / maiorTotal) * 100 : 0,
+    cor: DASHBOARD_DEFEITOS_BAR_COLORS[index % DASHBOARD_DEFEITOS_BAR_COLORS.length],
+    totalBase
+  }));
+}
+
+function criarModeloApresentacaoDefeitos(indicadores = {}) {
+  const numero = value => {
+    const parsed = Number(value || 0);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+  const totalErros = numero(indicadores.totalErros);
+  const totalPossivel = numero(indicadores.totalPossivel);
+  const postes = numero(indicadores.postes);
+  const producao = numero(indicadores.producao);
+  const postesComDefeito = numero(indicadores.postesComDefeito);
+  const postesReprovados = numero(indicadores.postesReprovados);
+  const retrabalho = numero(indicadores.retrabalho);
+  const setores = Object.values(indicadores.porSetor || {})
+    .map(item => {
+      const erros = numero(item?.erros);
+      const producaoSetor = numero(item?.producao);
+      return {
+        setor: String(item?.setor || "Setor nao identificado"),
+        erros,
+        producao: producaoSetor,
+        taxa: producaoSetor > 0 ? (erros / producaoSetor) * 100 : 0
+      };
+    })
+    .sort((a, b) => a.setor.localeCompare(b.setor, "pt-BR", { numeric: true }));
+
+  return {
+    totalErros,
+    totalPossivel,
+    postes,
+    producao,
+    postesComDefeito,
+    postesReprovados,
+    retrabalho,
+    taxaDefeitos: totalPossivel > 0 ? (totalErros / totalPossivel) * 100 : 0,
+    indiceReprovacao: postes > 0 ? (postesComDefeito / postes) * 100 : 0,
+    taxaPostesReprovados: producao > 0 ? (postesReprovados / producao) * 100 : 0,
+    taxaRetrabalho: postes > 0 ? (retrabalho / postes) * 100 : 0,
+    ranking: criarRankingParticipacaoDefeitos(indicadores.porTipo || {}, totalErros),
+    setores,
+    matriz: indicadores.matriz || {}
+  };
+}
+
 function renderIndicadoresDefeitosMontagem(indicadores) {
   const taxaNc = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
   const indiceReprovacao = indicadores.postes > 0 ? (indicadores.postesComDefeito / indicadores.postes) * 100 : 0;
   const taxaPostesReprovados = indicadores.producao > 0 ? (indicadores.postesReprovados / indicadores.producao) * 100 : 0;
   const taxaRetrabalho = indicadores.postes > 0 ? (indicadores.retrabalho / indicadores.postes) * 100 : 0;
+  dfPresentationData = criarModeloApresentacaoDefeitos(indicadores);
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
@@ -10726,24 +11402,32 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
 
   const matrizEl = document.getElementById("miDefMatriz");
   if (matrizEl) {
-    const setores = Object.keys(indicadores.porSetor).sort((a, b) => a.localeCompare(b, "pt-BR", { numeric: true }));
-    if (tiposOrdenados.length === 0 || setores.length === 0) {
-      matrizEl.innerHTML = '<div class="muted">Sem dados para matriz no periodo.</div>';
+    const rankingDefeitos = criarRankingParticipacaoDefeitos(indicadores.porTipo, indicadores.totalErros);
+    const totalBase = rankingDefeitos[0]?.totalBase || Number(indicadores.totalErros || 0);
+    setText("miDefMatrizTotal", `${totalBase} ocorrencia${totalBase === 1 ? "" : "s"}`);
+    if (rankingDefeitos.length === 0) {
+      matrizEl.innerHTML = '<div class="muted">Sem defeitos no periodo selecionado.</div>';
     } else {
       matrizEl.innerHTML = `
-        <div class="mi-def-matrix-scroll">
-          <table>
-            <thead><tr><th>Defeito</th>${setores.map(s => `<th>${escapeHtml(s)}</th>`).join("")}<th>Total</th></tr></thead>
-            <tbody>
-              ${tiposOrdenados.slice(0, 12).map(([tipo, total]) => `
-                <tr>
-                  <td>${escapeHtml(tipo)}</td>
-                  ${setores.map(s => `<td>${indicadores.matriz[tipo]?.[s] || 0}</td>`).join("")}
-                  <td><strong>${total}</strong></td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
+        <div class="df-defect-share-caption">
+          <strong>${totalBase} ocorrencia${totalBase === 1 ? "" : "s"} no total</strong>
+          <span>A barra compara o volume; o percentual usa o total de defeitos do periodo.</span>
+        </div>
+        <div class="df-defect-share-list">
+          ${rankingDefeitos.map(item => `
+            <div class="df-defect-share-row" title="${escapeHtml(item.tipo)}: ${item.total} (${formatPct(item.percentual)} do total)">
+              <div class="df-defect-share-label">
+                <i style="--df-defect-color: ${item.cor}" aria-hidden="true"></i>
+                <span>${escapeHtml(item.tipo)}</span>
+              </div>
+              <div class="df-defect-share-track" role="meter" aria-label="${escapeHtml(item.tipo)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${item.percentual.toFixed(1)}">
+                <div class="df-defect-share-fill" style="--df-defect-color: ${item.cor}; --df-defect-width: ${item.larguraRelativa.toFixed(2)}%">
+                  <strong>${item.total}</strong>
+                </div>
+                <span class="df-defect-share-percent">${formatPct(item.percentual)}</span>
+              </div>
+            </div>
+          `).join("")}
         </div>
       `;
     }
@@ -10767,17 +11451,319 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
       }).join("");
     }
   }
+
+  const presentationOverlay = document.getElementById("dfPresentationOverlay");
+  if (presentationOverlay && !presentationOverlay.classList.contains("hidden")) {
+    renderizarApresentacaoDefeitos();
+  }
 }
 
-function renderIndicadoresDefeitosContrato(contract) {
+function formatarDataApresentacaoDefeitos(ymd) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(ymd || ""))) return "-";
+  return new Date(`${ymd}T12:00:00`).toLocaleDateString("pt-BR");
+}
+
+function obterContextoApresentacaoDefeitos() {
+  const inicio = document.getElementById("dfDataInicio")?.value || todayYmd();
+  const fim = document.getElementById("dfDataFim")?.value || todayYmd();
+  const setorSelect = document.getElementById("dfFiltroSetor");
+  const statusSelect = document.getElementById("dfFiltroStatus");
+  const setor = setorSelect?.selectedOptions?.[0]?.textContent?.trim() || "Todos os Setores";
+  const status = statusSelect?.selectedOptions?.[0]?.textContent?.trim() || "Todos os Status";
+  const periodo = inicio === fim
+    ? formatarDataApresentacaoDefeitos(inicio)
+    : `${formatarDataApresentacaoDefeitos(inicio)} a ${formatarDataApresentacaoDefeitos(fim)}`;
+  return { inicio, fim, periodo, setor, status };
+}
+
+function criarCabecalhoSlideDefeitos(titulo, contexto) {
+  const escopo = contexto.status && !normalizarTexto(contexto.status).startsWith("todos")
+    ? `${contexto.setor} | ${contexto.status}`
+    : contexto.setor;
+  return `
+    <header class="df-slide-head">
+      <div class="df-slide-brand">
+        <div class="df-slide-brand-mark">CT</div>
+        <div><span>ConcreTrack | Qualidade</span><strong>${escapeHtml(titulo)}</strong></div>
+      </div>
+      <div class="df-slide-context"><span>${escapeHtml(contexto.periodo)}</span><strong>${escapeHtml(escopo)}</strong></div>
+    </header>
+  `;
+}
+
+function criarRodapeSlideDefeitos(numero) {
+  return `
+    <footer class="df-slide-foot">
+      <span><strong>Fonte:</strong> montagem_poste + producao | dados do periodo e escopo selecionados</span>
+      <span>${String(numero).padStart(2, "0")} / ${String(DF_PRESENTATION_SLIDE_TOTAL).padStart(2, "0")}</span>
+    </footer>
+  `;
+}
+
+function criarSlideDefeitos(numero, titulo, contexto, corpo, classe = "") {
+  return `
+    <section class="df-presentation-slide ${classe}" data-df-presentation-slide="${numero - 1}" aria-label="Slide ${numero}: ${escapeHtml(titulo)}">
+      ${criarCabecalhoSlideDefeitos(titulo, contexto)}
+      <div class="df-slide-body">${corpo}</div>
+      ${criarRodapeSlideDefeitos(numero)}
+    </section>
+  `;
+}
+
+function renderizarApresentacaoDefeitos() {
+  const deck = document.getElementById("dfPresentationDeck");
+  if (!deck || !dfPresentationData) return;
+  const dados = dfPresentationData;
+  const contexto = obterContextoApresentacaoDefeitos();
+  const numero = value => Number(value || 0).toLocaleString("pt-BR");
+  const principal = dados.ranking[0];
+  const rankingSlide = dados.ranking.slice(0, 8);
+  const top3 = dados.ranking.slice(0, 3);
+  const insightPrincipal = principal
+    ? `O defeito de maior incidencia foi <strong>${escapeHtml(principal.tipo)}</strong>, com ${numero(principal.total)} ocorrencia(s), equivalente a ${formatPct(principal.percentual)} do total.`
+    : "Nao foram identificadas ocorrencias de defeito no periodo selecionado.";
+
+  const slideResumo = criarSlideDefeitos(1, "Visao executiva", contexto, `
+    <div class="df-slide-overview-grid">
+      <div class="df-slide-overview-copy">
+        <span class="df-slide-kicker">Fechamento da qualidade</span>
+        <h1 class="df-slide-title">Dashboard de Defeitos</h1>
+        <p>Panorama consolidado das inspecoes de montagem, ocorrencias de nao conformidade e impacto sobre a producao.</p>
+      </div>
+      <div class="df-slide-rate-hero">
+        <span>Taxa de defeitos</span>
+        <strong>${formatPct(dados.taxaDefeitos)}</strong>
+        <small>${numero(dados.totalErros)} ocorrencias em ${numero(dados.totalPossivel)} oportunidades avaliadas</small>
+      </div>
+    </div>
+    <div class="df-slide-kpi-grid">
+      <article class="df-slide-kpi" style="--df-kpi-color:#2563eb"><span>Ocorrencias de NC</span><strong>${numero(dados.totalErros)}</strong><small>Total registrado no checklist</small></article>
+      <article class="df-slide-kpi" style="--df-kpi-color:#7c3aed"><span>Postes avaliados</span><strong>${numero(dados.postes)}</strong><small>Inspecoes validas no periodo</small></article>
+      <article class="df-slide-kpi" style="--df-kpi-color:#dc2626"><span>Postes reprovados</span><strong>${numero(dados.postesReprovados)}</strong><small>${formatPct(dados.taxaPostesReprovados)} sobre a producao</small></article>
+      <article class="df-slide-kpi" style="--df-kpi-color:#d97706"><span>Retrabalho</span><strong>${numero(dados.retrabalho)}</strong><small>${formatPct(dados.taxaRetrabalho)} dos postes avaliados</small></article>
+    </div>
+    <div class="df-slide-insight"><strong>Leitura executiva</strong><span>${insightPrincipal}</span></div>
+  `, "df-slide-overview");
+
+  const rankingHtml = rankingSlide.length
+    ? `<div class="df-slide-ranking">${rankingSlide.map(item => `
+        <div class="df-slide-ranking-row">
+          <div class="df-slide-ranking-label"><i style="--df-defect-color:${item.cor}"></i><span title="${escapeHtml(item.tipo)}">${escapeHtml(item.tipo)}</span></div>
+          <div class="df-slide-ranking-track"><div class="df-slide-ranking-fill" style="--df-defect-color:${item.cor};--df-defect-width:${item.larguraRelativa.toFixed(2)}%">${numero(item.total)}</div></div>
+          <div class="df-slide-ranking-pct">${formatPct(item.percentual)}</div>
+        </div>`).join("")}</div>`
+    : '<div class="df-slide-empty">Sem defeitos no periodo selecionado.</div>';
+  const top3Html = top3.length
+    ? `<div class="df-slide-top3">${top3.map((item, index) => `<article><strong>${index + 1}o | ${escapeHtml(item.tipo)}</strong>${numero(item.total)} ocorrencia(s) | ${formatPct(item.percentual)} do total</article>`).join("")}</div>`
+    : "";
+  const slideRanking = criarSlideDefeitos(2, "Participacao dos defeitos", contexto, `
+    <div class="df-slide-section-head">
+      <div><span class="df-slide-kicker">Distribuicao das ocorrencias</span><h1 class="df-slide-title">Defeitos por participacao</h1></div>
+      <p>Ranking dos ${Math.min(8, dados.ranking.length)} principais tipos. A barra compara o volume e o percentual considera ${numero(dados.totalErros)} ocorrencias.</p>
+    </div>
+    ${rankingHtml}
+    ${top3Html}
+  `, "df-slide-ranking-view");
+
+  const maiorTaxaSetor = dados.setores.reduce((maior, item) => Math.max(maior, item.taxa), 0);
+  const setoresHtml = dados.setores.length
+    ? `<div class="df-slide-sector-grid" style="--df-sector-card-count:${Math.min(4, dados.setores.length)}">${dados.setores.slice(0, 4).map(item => `
+        <article class="df-slide-sector-card">
+          <header><strong>${escapeHtml(item.setor)}</strong><span>${formatPct(item.taxa)}</span></header>
+          <p>${numero(item.erros)} erro(s) | ${numero(item.producao)} produzido(s)</p>
+          <div class="df-slide-sector-track"><i style="--df-sector-width:${maiorTaxaSetor > 0 ? Math.min(100, (item.taxa / maiorTaxaSetor) * 100).toFixed(2) : 0}%"></i></div>
+        </article>`).join("")}</div>`
+    : '<div class="df-slide-empty">Sem dados setoriais no periodo selecionado.</div>';
+  const setoresMatriz = dados.setores.slice(0, 4).map(item => item.setor);
+  const tiposMatriz = dados.ranking.slice(0, 6);
+  const maiorCelula = tiposMatriz.reduce((maior, item) => setoresMatriz.reduce((maxSetor, setor) => Math.max(maxSetor, Number(dados.matriz?.[item.tipo]?.[setor] || 0)), maior), 0);
+  const matrizHtml = setoresMatriz.length && tiposMatriz.length
+    ? `<div class="df-slide-matrix-card">
+        <div class="df-slide-matrix-title"><strong>Matriz dos principais defeitos por setor</strong><span>Cor mais intensa = maior recorrencia</span></div>
+        <div class="df-slide-matrix" style="--df-sector-count:${setoresMatriz.length}">
+          <div class="df-slide-matrix-row head"><strong>Defeito</strong>${setoresMatriz.map(setor => `<span class="df-slide-matrix-cell">${escapeHtml(setor.replace("Setor ", "S"))}</span>`).join("")}</div>
+          ${tiposMatriz.map(item => `<div class="df-slide-matrix-row"><strong title="${escapeHtml(item.tipo)}">${escapeHtml(item.tipo)}</strong>${setoresMatriz.map(setor => {
+            const total = Number(dados.matriz?.[item.tipo]?.[setor] || 0);
+            const intensidade = maiorCelula > 0 ? total / maiorCelula : 0;
+            const bg = total > 0 ? `rgba(37,99,235,${(0.16 + intensidade * 0.78).toFixed(2)})` : "#edf2f7";
+            const textColor = intensidade > 0.45 ? "#fff" : "#173653";
+            return `<span class="df-slide-matrix-cell" style="--df-matrix-bg:${bg};--df-matrix-text:${textColor}">${total}</span>`;
+          }).join("")}</div>`).join("")}
+        </div>
+      </div>`
+    : "";
+  const slideSetores = criarSlideDefeitos(3, "Desempenho por setor", contexto, `
+    <div class="df-slide-section-head">
+      <div><span class="df-slide-kicker">Onde estao as ocorrencias</span><h1 class="df-slide-title">Comparativo setorial</h1></div>
+      <p>Taxa setorial = quantidade de erros do setor dividida pela producao do mesmo setor.</p>
+    </div>
+    ${setoresHtml}
+    ${matrizHtml}
+  `, "df-slide-sector-view");
+
+  const orientacoes = [
+    "Abrir analise de causa no setor e na forma com maior incidencia; definir responsavel e prazo.",
+    "Estratificar por modelo e montador, revisar o padrao operacional e registrar a contramedida.",
+    "Acompanhar semanalmente a recorrencia e validar a eficacia da acao no proximo fechamento."
+  ];
+  const acoesHtml = top3.length
+    ? `<div class="df-slide-action-grid" style="--df-action-count:${top3.length}">${top3.map((item, index) => `
+        <article class="df-slide-action-card" style="--df-defect-color:${item.cor}">
+          <span>Prioridade ${index + 1}</span><strong>${escapeHtml(item.tipo)}</strong><em>${numero(item.total)} | ${formatPct(item.percentual)}</em><p>${orientacoes[index]}</p>
+        </article>`).join("")}</div>`
+    : '<div class="df-slide-empty">Sem ocorrencias para priorizar neste periodo.</div>';
+  const slideAcoes = criarSlideDefeitos(4, "Prioridades e memoria de calculo", contexto, `
+    <div class="df-slide-section-head">
+      <div><span class="df-slide-kicker">Fechamento e proximo passo</span><h1 class="df-slide-title">Plano de acao</h1></div>
+      <p>Prioridades ordenadas por participacao no total de ocorrencias registradas.</p>
+    </div>
+    ${acoesHtml}
+    <div class="df-slide-method-grid">
+      <article class="df-slide-method-card"><span>Indicador principal</span><strong>Taxa de defeitos</strong><p>${numero(dados.totalErros)} ocorrencias ÷ ${numero(dados.totalPossivel)} oportunidades × 100 = <b>${formatPct(dados.taxaDefeitos)}</b>.</p></article>
+      <article class="df-slide-method-card"><span>Indicador secundario</span><strong>Indice de reprovacao</strong><p>${numero(dados.postesComDefeito)} postes com defeito ÷ ${numero(dados.postes)} avaliados × 100 = <b>${formatPct(dados.indiceReprovacao)}</b>.</p></article>
+      <article class="df-slide-method-card"><span>Indicador terciario</span><strong>Taxa de retrabalho</strong><p>${numero(dados.retrabalho)} retrabalhos ÷ ${numero(dados.postes)} avaliados × 100 = <b>${formatPct(dados.taxaRetrabalho)}</b>.</p></article>
+    </div>
+  `, "df-slide-action-view");
+
+  deck.innerHTML = slideResumo + slideRanking + slideSetores + slideAcoes;
+  exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex);
+}
+
+function ajustarEscalaApresentacaoDefeitos() {
+  const overlay = document.getElementById("dfPresentationOverlay");
+  const viewport = document.getElementById("dfPresentationViewport");
+  const frame = document.getElementById("dfPresentationFrame");
+  const deck = document.getElementById("dfPresentationDeck");
+  if (!overlay || overlay.classList.contains("hidden") || !viewport || !frame || !deck) return;
+  const larguraDisponivel = Math.max(240, viewport.clientWidth - 36);
+  const alturaDisponivel = Math.max(180, viewport.clientHeight - 36);
+  const escala = Math.min(1, larguraDisponivel / 1024, alturaDisponivel / 768);
+  frame.style.width = `${Math.round(1024 * escala)}px`;
+  frame.style.height = `${Math.round(768 * escala)}px`;
+  deck.style.transform = `scale(${escala})`;
+}
+
+function exibirSlideApresentacaoDefeitos(index) {
+  const slides = Array.from(document.querySelectorAll("[data-df-presentation-slide]"));
+  if (!slides.length) return;
+  dfPresentationSlideIndex = Math.max(0, Math.min(slides.length - 1, Number(index || 0)));
+  slides.forEach((slide, slideIndex) => {
+    const ativo = slideIndex === dfPresentationSlideIndex;
+    slide.classList.toggle("is-active", ativo);
+    slide.setAttribute("aria-hidden", ativo ? "false" : "true");
+  });
+  const counter = document.getElementById("dfPresentationCounter");
+  if (counter) counter.textContent = `${dfPresentationSlideIndex + 1} / ${slides.length}`;
+  const prev = document.getElementById("dfPresentationPrev");
+  const next = document.getElementById("dfPresentationNext");
+  if (prev) prev.disabled = dfPresentationSlideIndex === 0;
+  if (next) next.disabled = dfPresentationSlideIndex === slides.length - 1;
+}
+
+function abrirApresentacaoDefeitos() {
+  if (!dfPresentationData) {
+    showMsgBox("Atualize o Dashboard Defeitos antes de abrir a apresentacao.", "error");
+    return;
+  }
+  const overlay = document.getElementById("dfPresentationOverlay");
+  if (!overlay) return;
+  dfPresentationReturnFocus = document.activeElement;
+  dfPresentationSlideIndex = 0;
+  renderizarApresentacaoDefeitos();
+  overlay.classList.remove("hidden");
+  document.body.classList.add("df-presentation-open");
+  exibirSlideApresentacaoDefeitos(0);
+  requestAnimationFrame(() => {
+    ajustarEscalaApresentacaoDefeitos();
+    document.getElementById("dfPresentationNext")?.focus();
+  });
+}
+
+function fecharApresentacaoDefeitos() {
+  const overlay = document.getElementById("dfPresentationOverlay");
+  if (!overlay || overlay.classList.contains("hidden")) return;
+  overlay.classList.add("hidden");
+  document.body.classList.remove("df-presentation-open", "df-presentation-print");
+  if (document.fullscreenElement === overlay && document.exitFullscreen) {
+    document.exitFullscreen().catch(() => {});
+  }
+  if (dfPresentationReturnFocus?.focus) dfPresentationReturnFocus.focus();
+}
+
+async function alternarTelaCheiaApresentacaoDefeitos() {
+  const overlay = document.getElementById("dfPresentationOverlay");
+  if (!overlay) return;
+  try {
+    if (document.fullscreenElement === overlay) await document.exitFullscreen();
+    else if (overlay.requestFullscreen) await overlay.requestFullscreen();
+  } catch (error) {
+    console.warn("Nao foi possivel alternar a tela cheia da apresentacao:", error);
+  }
+}
+
+function imprimirApresentacaoDefeitos() {
+  const overlay = document.getElementById("dfPresentationOverlay");
+  if (!overlay || overlay.classList.contains("hidden")) return;
+  document.getElementById("dfPresentationPageStyle")?.remove();
+  const pageStyle = document.createElement("style");
+  pageStyle.id = "dfPresentationPageStyle";
+  pageStyle.textContent = "@page { size: 10.6667in 8in; margin: 0; }";
+  document.head.appendChild(pageStyle);
+  document.body.classList.add("df-presentation-print");
+  requestAnimationFrame(() => {
+    window.print();
+    setTimeout(finalizarImpressaoApresentacaoDefeitos, 0);
+  });
+}
+
+function finalizarImpressaoApresentacaoDefeitos() {
+  document.body.classList.remove("df-presentation-print");
+  document.getElementById("dfPresentationPageStyle")?.remove();
+}
+
+function renderIndicadoresDefeitosContrato(contract, productionRows = []) {
   const kpis = contract?.kpis || {};
-  const bySector = contract?.by_sector || {};
+  const bySectorContract = contract?.by_sector || {};
   const byDefect = contract?.by_defect || {};
   const defectMatrix = contract?.defect_matrix || {};
   const setText = (id, value) => {
     const node = document.getElementById(id);
     if (node) node.textContent = value;
   };
+
+  const sectorCode = value => {
+    const normalized = normalizarTexto(String(value || "")).replace(/\s+/g, " ").trim();
+    const match = normalized.match(/^(?:setor\s*)?(\d+)$/);
+    return match ? `S${match[1]}` : String(value || "").trim();
+  };
+  const scopeSectors = {
+    S1: ["S1"],
+    S2: ["S2"],
+    S3: ["S3"],
+    S4: ["S4"],
+    S1_S2: ["S1", "S2"],
+    TOTAL: ["S1", "S2", "S3", "S4"]
+  };
+  const includedSectors = Array.isArray(contract?.included_sectors) && contract.included_sectors.length
+    ? contract.included_sectors.map(sectorCode)
+    : (scopeSectors[contract?.scope] || scopeSectors.TOTAL);
+  setText("miDefSetoresBadge", `${includedSectors.join("+")} recalculado`);
+  const productionBySector = {};
+  (productionRows || []).forEach(row => {
+    const status = String(row?.status || "").toUpperCase();
+    const code = sectorCode(row?.setor);
+    if (!includedSectors.includes(code) || !["LIBERADO", "INSPECIONADO", "CONCRETADO"].includes(status)) return;
+    productionBySector[code] = (productionBySector[code] || 0) + 1;
+  });
+  const bySector = {};
+  includedSectors.forEach(code => {
+    const item = bySectorContract[code] || {};
+    bySector[code] = {
+      ...item,
+      producao: productionRows.length ? Number(productionBySector[code] || 0) : Number(item?.producao || 0),
+      erros: Number(item?.erros || 0)
+    };
+  });
 
   const indicadores = {
     postes: Number(kpis.postes || 0),
@@ -10812,11 +11798,20 @@ function renderIndicadoresDefeitosContrato(contract) {
     });
   });
 
+  miDefeitosExportData = {
+    scope: contract?.scope || "TOTAL",
+    includedSectors,
+    kpis,
+    bySector,
+    byDefect,
+    defectMatrix
+  };
+
   renderIndicadoresDefeitosMontagem(indicadores);
 
   const setoresEl = document.getElementById("miDefSetores");
   if (setoresEl) {
-    const setores = Object.entries(bySector).sort((a, b) => String(b[1]?.erros || 0).localeCompare(String(a[1]?.erros || 0), "pt-BR", { numeric: true }));
+    const setores = Object.entries(bySector).sort((a, b) => String(a[0]).localeCompare(String(b[0]), "pt-BR", { numeric: true }));
     if (!setores.length) {
       setoresEl.innerHTML = '<div class="muted">Sem setores no periodo.</div>';
     } else {
@@ -10839,6 +11834,58 @@ function renderIndicadoresDefeitosContrato(contract) {
       }).join("");
     }
   }
+}
+
+function exportarDashboardDefeitosCsv() {
+  const dados = miDefeitosExportData;
+  if (!dados?.includedSectors?.length) {
+    showMsgBox("Atualize o dashboard antes de exportar.", "error");
+    return;
+  }
+
+  const dStart = document.getElementById("dfDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("dfDataFim")?.value || todayYmd();
+  const kpis = dados.kpis || {};
+  const linhas = [
+    ["Dashboard de Defeitos"],
+    ["Periodo", dStart, dEnd],
+    ["Escopo", dados.scope],
+    [],
+    ["Indicador", "Valor"],
+    ["Producao", Number(kpis.producao || 0)],
+    ["Postes avaliados", Number(kpis.postes || 0)],
+    ["Ocorrencias de NC", Number(kpis.total_erros || 0)],
+    ["Oportunidades avaliadas", Number(kpis.total_possivel || 0)],
+    ["Postes reprovados", Number(kpis.postes_reprovados || 0)],
+    ["Retrabalho", Number(kpis.retrabalho || 0)],
+    [],
+    ["Taxa de defeitos por setor"],
+    ["Setor", "Produzidos", "Erros", "Taxa/producao"]
+  ];
+
+  dados.includedSectors.forEach(setor => {
+    const item = dados.bySector?.[setor] || {};
+    const producao = Number(item.producao || 0);
+    const erros = Number(item.erros || 0);
+    linhas.push([setor, producao, erros, formatPct(producao > 0 ? (erros / producao) * 100 : 0)]);
+  });
+
+  linhas.push([], ["Matriz defeito x setor"], ["Defeito", ...dados.includedSectors, "Total"]);
+  Object.entries(dados.byDefect || {})
+    .sort((a, b) => Number(b[1] || 0) - Number(a[1] || 0))
+    .forEach(([tipo, total]) => {
+      const matrizSetores = dados.defectMatrix?.[tipo] || {};
+      linhas.push([tipo, ...dados.includedSectors.map(setor => Number(matrizSetores[setor] || 0)), Number(total || 0)]);
+    });
+
+  const escopoArquivo = String(dados.scope || "TOTAL").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  baixarArquivoBlob(
+    criarCsv(linhas),
+    `dashboard_defeitos_${dStart}_a_${dEnd}_${escopoArquivo}.csv`,
+    "text/csv;charset=utf-8",
+    true
+  );
+  showMsgBox("Dashboard de defeitos exportado em CSV.", "success");
 }
 
 function atualizarResumoFiltrosProdutividade() {
@@ -10931,54 +11978,43 @@ function limparLayoutDashboardDefeitos() {
 
 async function carregarMontagemIndicadores() {
   if (!supabaseClient) return;
-  const dashboardKind = state.mode === "DASHBOARD_DEFEITOS" ? "defeitos" : "montagem";
+  const dashboardKind = "montagem";
   const requestId = ++dashboardRequestSeq[dashboardKind];
   const dStart = getDashboardFilterValue("DataInicio", todayYmd());
   const dEnd = getDashboardFilterValue("DataFim", todayYmd());
-  const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
-  const scope = getDashboardScopeFromSetor(setorFiltro);
-  
-  if (dashboardKind === "defeitos") atualizarResumoFiltrosDefeitos();
-  setSyncStatus("pending", dashboardKind === "defeitos" ? "Carregando dashboard de defeitos..." : "Carregando indicadores de montagem...");
-  try {
-    const rpcPromise = dashboardKind === "defeitos"
-      ? chamarDashboardRpcComCache("rpc_dashboard_defeitos_resumo_v1", {
-          p_data_inicio: dStart,
-          p_data_fim: dEnd,
-          p_scope: scope
-        }, `rpc:defeitos:resumo:${dStart}:${dEnd}:${scope}`).catch((err) => {
-          console.warn("RPC de defeitos indisponivel; mantendo calculo local:", err);
-          return null;
-        })
-      : chamarDashboardRpcComCache("rpc_dashboard_montagem_resumo_v1", {
-          p_data_inicio: dStart,
-          p_data_fim: dEnd,
-          p_scope: scope
-        }, `rpc:montagem:resumo:${dStart}:${dEnd}:${scope}`).catch((err) => {
-          console.warn("RPC de montagem indisponivel; mantendo calculo local:", err);
-          return null;
-        });
+  const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
+  const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
 
-    const [montagemRes, producaoRes, rpcRes] = await Promise.all([
+  setSyncStatus("pending", "Carregando indicadores de montagem...");
+  try {
+    // O resumo e calculado localmente com a mesma base exibida. O antigo RPC de
+    // montagem era redundante e podia estourar o statement_timeout ao abrir a tela.
+    const [montagemRes, producaoRes] = await Promise.all([
       carregarLinhasSupabaseComCache({
-        cacheKey: `${dashboardKind}:montagem_poste:${dStart}:${dEnd}`,
+        cacheKey: `${dashboardKind}:montagem_poste:screen-v2:${dStart}:${dEnd}`,
         table: "montagem_poste",
-        select: DASHBOARD_MONTAGEM_SELECT,
-        orderBy: "data_fabricacao",
-        orderOptions: { ascending: false },
+        select: DASHBOARD_MONTAGEM_SCREEN_SELECT,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
         applyFilters: query => query
-          .gte("data_fabricacao", dStart)
-          .lte("data_fabricacao", dEnd)
+          .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
       }),
       carregarLinhasSupabaseComCache({
         cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
         table: "producao",
         select: DASHBOARD_PRODUCAO_SELECT,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
         applyFilters: query => query
           .gte("data_fabricacao", dStart)
           .lte("data_fabricacao", dEnd)
-      }),
-      rpcPromise
+      })
     ]);
 
     if (requestId !== dashboardRequestSeq[dashboardKind]) return;
@@ -10988,10 +12024,9 @@ async function carregarMontagemIndicadores() {
     
     miPaginaAtual = 1;
     aplicarFiltrosEExibirMontagem();
-    if (dashboardKind === "defeitos" && rpcRes?.payload) renderIndicadoresDefeitosContrato(rpcRes.payload);
-    const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" || rpcRes?.state === "OFFLINE_CACHE";
-    if (fromCache) setSyncStatus("warn", dashboardKind === "defeitos" ? "Dashboard Defeitos carregado do cache local." : "Indicadores carregados do cache local.");
-    else setSyncStatus("ok", dashboardKind === "defeitos" ? "Dashboard Defeitos atualizado." : "Indicadores de montagem atualizados.");
+    const fromCache = montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE";
+    if (fromCache) setSyncStatus("warn", "Indicadores carregados do cache local.");
+    else setSyncStatus("ok", "Indicadores de montagem atualizados.");
     
   } catch(err) {
     console.error("Erro carregarMontagemIndicadores:", err);
@@ -11006,25 +12041,101 @@ async function carregarDashboardDefeitos() {
   const requestId = ++dashboardRequestSeq[dashboardKind];
   const dStart = getDashboardFilterValue("DataInicio", todayYmd());
   const dEnd = getDashboardFilterValue("DataFim", todayYmd());
+  const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
+  const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
   const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
+  const statusFiltro = getDashboardFilterValue("FiltroStatus", "");
   const scope = getDashboardScopeFromSetor(setorFiltro);
 
   atualizarResumoFiltrosDefeitos();
   setSyncStatus("pending", "Carregando dashboard de defeitos...");
   try {
-    const rpcRes = await chamarDashboardRpcComCache("rpc_dashboard_defeitos_resumo_v1", {
-      p_data_inicio: dStart,
-      p_data_fim: dEnd,
-      p_scope: scope
-    }, `rpc:defeitos:resumo:${dStart}:${dEnd}:${scope}`);
+    // O contrato RPC anterior excedia o statement_timeout em periodos extensos.
+    // A tela agora calcula tudo a partir das bases paginadas e mantem o mesmo
+    // conjunto de dados usado no detalhamento e na exportacao.
+    const [montagemRes, producaoRes] = await Promise.all([
+      carregarLinhasSupabaseComCache({
+        cacheKey: `${dashboardKind}:montagem_poste:local-v2:${dStart}:${dEnd}`,
+        table: "montagem_poste",
+        select: DASHBOARD_MONTAGEM_SELECT,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
+          .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
+      }),
+      carregarLinhasSupabaseComCache({
+        cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
+        table: "producao",
+        select: DASHBOARD_PRODUCAO_SELECT,
+        pageSize: 500,
+        maxPages: 100,
+        timeoutMs: 60000,
+        orderBy: "id",
+        orderOptions: { ascending: true },
+        applyFilters: query => query
+          .gte("data_fabricacao", dStart)
+          .lte("data_fabricacao", dEnd)
+      })
+    ]);
 
     if (requestId !== dashboardRequestSeq[dashboardKind]) return;
-    renderIndicadoresDefeitosContrato(rpcRes.payload);
+    const pertenceAoSetor = row => {
+      if (!setorFiltro || normalizarTexto(setorFiltro).startsWith("todos")) return true;
+      if (setorFiltro === "Setores 1 e 2") return row.setor === "Setor 1" || row.setor === "Setor 2";
+      return row.setor === setorFiltro;
+    };
+    const pertenceAoStatus = row => {
+      if (!statusFiltro || normalizarTexto(statusFiltro).startsWith("todos")) return true;
+      if (statusFiltro === "A") return String(row.status_montagem || "").toUpperCase() === "A" && !isLinhaDefeitoDashboard(row);
+      if (statusFiltro === "R") return isLinhaDefeitoDashboard(row);
+      return String(row.status_montagem || "").toUpperCase() === statusFiltro.toUpperCase();
+    };
+    const montagemRows = (montagemRes.rows || []).filter(row => {
+      const day = getMiDataReferencia(row);
+      return isLinhaAvaliacaoDefeitosDashboard(row)
+        && day >= dStart
+        && day <= dEnd
+        && pertenceAoSetor(row)
+        && pertenceAoStatus(row);
+    });
+    const producaoRows = (producaoRes.rows || []).filter(pertenceAoSetor);
+    const indicadores = calcularIndicadoresDefeitosMontagem(montagemRows, producaoRows);
+    renderIndicadoresDefeitosMontagem(indicadores);
+
+    const includedSectorsByScope = {
+      S1: ["Setor 1"],
+      S2: ["Setor 2"],
+      S3: ["Setor 3"],
+      S4: ["Setor 4"],
+      S1_S2: ["Setor 1", "Setor 2"],
+      TOTAL: ["Setor 1", "Setor 2", "Setor 3", "Setor 4"]
+    };
+    const includedSectors = includedSectorsByScope[scope] || includedSectorsByScope.TOTAL;
+    const badge = document.getElementById("miDefSetoresBadge");
+    if (badge) badge.textContent = `${includedSectors.map(item => item.replace("Setor ", "S")).join("+")} recalculado`;
+    miDefeitosExportData = {
+      scope,
+      includedSectors,
+      kpis: {
+        producao: indicadores.producao,
+        postes: indicadores.postes,
+        total_erros: indicadores.totalErros,
+        total_possivel: indicadores.totalPossivel,
+        postes_reprovados: indicadores.postesReprovados,
+        retrabalho: indicadores.retrabalho
+      },
+      bySector: indicadores.porSetor,
+      byDefect: indicadores.porTipo,
+      defectMatrix: indicadores.matriz
+    };
     const updated = document.getElementById("dfAtualizadoLabel");
     if (updated) updated.textContent = `Atualizado ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
     setSyncStatus(
-      rpcRes.state === "OFFLINE_CACHE" ? "warn" : "ok",
-      rpcRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
+      montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "warn" : "ok",
+      montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
     );
   } catch (err) {
     console.error("Erro carregarDashboardDefeitos:", err);
@@ -11062,11 +12173,11 @@ function aplicarFiltrosEExibirMontagem() {
 
     // Filtro por Status
     if (fStatus) {
-      const rejeitadosCount = obterItensRejeitadosLinha(row).length;
+      const possuiDefeito = isLinhaDefeitoDashboard(row);
       if (fStatus === "R") {
-        if (rejeitadosCount === 0) return false;
+        if (!possuiDefeito) return false;
       } else if (fStatus === "A") {
-        if (rejeitadosCount > 0) return false;
+        if (possuiDefeito || row.status_montagem !== "A") return false;
       } else if (row.status_montagem !== fStatus) {
         return false;
       }
@@ -11115,13 +12226,13 @@ function aplicarFiltrosEExibirMontagem() {
 
   miFilteredMontagemData.forEach(row => {
     const day = getMiDataReferencia(row);
-    const rejeitadosCount = obterItensRejeitadosLinha(row).length;
+    const possuiDefeito = isLinhaDefeitoDashboard(row);
     if (row.status_montagem === "A") totalAprovados++;
-    if (rejeitadosCount > 0) totalRecusados++;
+    if (possuiDefeito) totalRecusados++;
     
     if (!byDay[day]) byDay[day] = { total: 0, aprovados: 0, recusados: 0 };
     byDay[day].total++;
-    if (rejeitadosCount > 0) byDay[day].recusados++;
+    if (possuiDefeito) byDay[day].recusados++;
     else byDay[day].aprovados++;
     
     const sec = row.setor || "Desconhecido";
@@ -11291,6 +12402,455 @@ function aplicarFiltrosEExibirMontagem() {
   renderGraficosMontagem(byDay, bySector, byMontador, prodByDay);
   renderizarTabelaMontagemPaginada();
   setSyncStatus("idle", "Indicadores atualizados.");
+}
+
+function somarDiasYmd(value, dias) {
+  const date = new Date(`${value}T12:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + dias);
+  return date.toISOString().slice(0, 10);
+}
+
+function diferencaDiasYmd(inicio, fim) {
+  const start = new Date(`${inicio}T12:00:00Z`).getTime();
+  const end = new Date(`${fim}T12:00:00Z`).getTime();
+  return Math.floor((end - start) / 86400000);
+}
+
+function dividirPeriodoYmd(inicio, fim, diasPorLote = 7) {
+  if (!inicio || !fim || inicio > fim) throw new Error("Periodo selecionado invalido.");
+  const lotes = [];
+  let cursor = inicio;
+  while (cursor <= fim) {
+    const candidatoFim = somarDiasYmd(cursor, Math.max(1, diasPorLote) - 1);
+    const loteFim = candidatoFim < fim ? candidatoFim : fim;
+    lotes.push([cursor, loteFim]);
+    cursor = somarDiasYmd(loteFim, 1);
+  }
+  return lotes;
+}
+
+const EXPORTACAO_MONTAGEM_PAGE_SIZE = 500;
+const EXPORTACAO_MONTAGEM_MAX_PAGES = 100;
+const EXPORTACAO_MONTAGEM_TIMEOUT_MS = 120000;
+const EXPORTACAO_PRODUCAO_LOOKUP_SIZE = 300;
+
+function isErroExportacaoTransitorio(error) {
+  const mensagem = String(error?.message || error || "").toLowerCase();
+  return error?.name === "AbortError"
+    || mensagem.includes("statement timeout")
+    || mensagem.includes("canceling statement")
+    || mensagem.includes("57014")
+    || mensagem.includes("failed to fetch")
+    || mensagem.includes("network")
+    || mensagem.includes("timeout")
+    || /\b(429|502|503|504)\b/.test(mensagem);
+}
+
+async function executarConsultaExportacaoComTimeout(criarConsulta, timeoutMs = EXPORTACAO_MONTAGEM_TIMEOUT_MS) {
+  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+  let timer = null;
+  const timeoutPromise = new Promise((resolve, reject) => {
+    timer = window.setTimeout(() => {
+      if (controller) controller.abort();
+      const timeoutError = new Error(`Timeout do cliente apos ${Math.round(timeoutMs / 1000)} segundos.`);
+      timeoutError.name = "AbortError";
+      reject(timeoutError);
+    }, timeoutMs);
+  });
+
+  try {
+    const queryPromise = Promise.resolve(criarConsulta(controller?.signal));
+    return await Promise.race([queryPromise, timeoutPromise]);
+  } finally {
+    if (timer) window.clearTimeout(timer);
+  }
+}
+
+function criarErroLoteDiario(loteInicio, ultimoErro) {
+  const error = new Error(`Lote [${loteInicio}] não pôde ser carregado`);
+  error.cause = ultimoErro;
+  return error;
+}
+
+async function carregarBaseExportacaoPorPeriodo({ table, select, inicio, fim, onProgress }) {
+  if (!supabaseClient) throw new Error("Supabase indisponivel para consultar a base de montagem.");
+  if (table !== "montagem_poste") throw new Error("A exportacao por periodo aceita somente a tabela montagem_poste.");
+
+  const lotes = dividirPeriodoYmd(inicio, fim, 7);
+  let totalPaginas = 0;
+  let totalLotesConsolidados = 0;
+  const resultados = [];
+  if (typeof onProgress === "function") onProgress(0, lotes.length);
+
+  const carregarIntervaloUmaVez = async (loteInicio, loteFim, loteNumero, totalLotes) => {
+    const rows = [];
+    let paginas = 0;
+
+    for (let pagina = 0; pagina < EXPORTACAO_MONTAGEM_MAX_PAGES; pagina++) {
+      const from = pagina * EXPORTACAO_MONTAGEM_PAGE_SIZE;
+      const to = pagina * EXPORTACAO_MONTAGEM_PAGE_SIZE + 499;
+      const { data, error } = await executarConsultaExportacaoComTimeout(signal => {
+        let query = supabaseClient
+          .from(table)
+          .select(select)
+          .gte("data_fabricacao", loteInicio)
+          .lte("data_fabricacao", loteFim)
+          .order("id", { ascending: true })
+          .range(from, to);
+        if (signal && typeof query.abortSignal === "function") query = query.abortSignal(signal);
+        return query;
+      });
+      if (error) throw error;
+
+      const paginaRows = Array.isArray(data) ? data : [];
+      rows.push(...paginaRows);
+      paginas++;
+      console.log(`[export] montagem lote ${loteNumero}/${totalLotes} [${loteInicio}→${loteFim}] página ${pagina + 1}/? — ${paginaRows.length} linhas OK`);
+
+      if (paginaRows.length < EXPORTACAO_MONTAGEM_PAGE_SIZE) return { rows, paginas, lotesConsolidados: 1 };
+      if (pagina === EXPORTACAO_MONTAGEM_MAX_PAGES - 1) {
+        const limiteError = new Error(`Intervalo [${loteInicio} a ${loteFim}] excedeu 50.000 linhas, subdivida o período`);
+        limiteError.code = "EXPORT_INTERVAL_LIMIT";
+        throw limiteError;
+      }
+    }
+
+    throw new Error(`Intervalo [${loteInicio} a ${loteFim}] excedeu 50.000 linhas, subdivida o período`);
+  };
+
+  const carregarIntervalo = async (loteInicio, loteFim, loteNumero, totalLotes) => {
+    let ultimoErro = null;
+    for (let tentativa = 1; tentativa <= 3; tentativa++) {
+      try {
+        return await carregarIntervaloUmaVez(loteInicio, loteFim, loteNumero, totalLotes);
+      } catch (error) {
+        ultimoErro = error;
+        if (error?.code === "EXPORT_INTERVAL_LIMIT") throw error;
+        if (!isErroExportacaoTransitorio(error)) throw error;
+        console.warn(`[export] montagem lote ${loteNumero}/${totalLotes} [${loteInicio}→${loteFim}] tentativa ${tentativa}/3 falhou:`, error);
+        if (tentativa < 3) {
+          await new Promise(resolve => window.setTimeout(resolve, 750 * tentativa));
+        }
+      }
+    }
+
+    const totalDias = diferencaDiasYmd(loteInicio, loteFim);
+    if (totalDias <= 0) throw criarErroLoteDiario(loteInicio, ultimoErro);
+
+    const meio = somarDiasYmd(loteInicio, Math.floor(totalDias / 2));
+    console.warn(`[export] montagem lote ${loteNumero}/${totalLotes} [${loteInicio}→${loteFim}] subdividido após 3 tentativas.`);
+    const esquerda = await carregarIntervalo(loteInicio, meio, loteNumero, totalLotes);
+    const direita = await carregarIntervalo(somarDiasYmd(meio, 1), loteFim, loteNumero, totalLotes);
+    return {
+      rows: esquerda.rows.concat(direita.rows),
+      paginas: esquerda.paginas + direita.paginas,
+      lotesConsolidados: esquerda.lotesConsolidados + direita.lotesConsolidados
+    };
+  };
+
+  // Um unico worker sequencial evita concorrencia entre lotes e torna qualquer
+  // falha imediatamente fatal para a exportacao inteira.
+  for (let index = 0; index < lotes.length; index++) {
+    const [loteInicio, loteFim] = lotes[index];
+    const resultado = await carregarIntervalo(loteInicio, loteFim, index + 1, lotes.length);
+    resultados.push(...resultado.rows);
+    totalPaginas += resultado.paginas;
+    totalLotesConsolidados += resultado.lotesConsolidados;
+    console.log(`[export] montagem lote ${index + 1}/${lotes.length} total consolidado: ${resultado.rows.length} linhas`);
+    if (typeof onProgress === "function") onProgress(index + 1, lotes.length);
+  }
+
+  const rowsComId = [];
+  let totalIdsNulos = 0;
+  resultados.forEach(row => {
+    if (row?.id === null || row?.id === undefined) {
+      totalIdsNulos++;
+      return;
+    }
+    rowsComId.push(row);
+  });
+  if (totalIdsNulos > 0) {
+    console.warn(`[export] montagem: ${totalIdsNulos} linha(s) com id nulo foram descartadas antes da deduplicação.`);
+  }
+
+  const unicos = new Map();
+  rowsComId.forEach(row => unicos.set(String(row.id), row));
+  const rows = [...unicos.values()].sort((a, b) => {
+    const dataA = `${a.data_fabricacao || ""}|${a.id || ""}`;
+    const dataB = `${b.data_fabricacao || ""}|${b.id || ""}`;
+    return dataA.localeCompare(dataB, "pt-BR", { numeric: true });
+  });
+
+  console.log(`[export] montagem TOTAL: ${rows.length} linhas em ${totalLotesConsolidados} lotes / ${totalPaginas} páginas`);
+  return rows;
+}
+
+async function carregarLookupProducaoPorRecordIds(montagemRows) {
+  const idsDistintos = new Map();
+  montagemRows.forEach(row => {
+    const recordId = row?.record_id;
+    if (recordId === null || recordId === undefined || String(recordId).trim() === "") return;
+    idsDistintos.set(String(recordId), recordId);
+  });
+
+  const recordIds = [...idsDistintos.values()];
+  const lotes = [];
+  for (let index = 0; index < recordIds.length; index += EXPORTACAO_PRODUCAO_LOOKUP_SIZE) {
+    lotes.push(recordIds.slice(index, index + EXPORTACAO_PRODUCAO_LOOKUP_SIZE));
+  }
+  console.log(`[export] lookup producao: ${recordIds.length} record_ids distintos em ${lotes.length} lotes`);
+
+  const producaoPorId = new Map();
+  for (let index = 0; index < lotes.length; index++) {
+    const lote = lotes[index];
+    let resposta = null;
+    let ultimoErro = null;
+
+    for (let tentativa = 1; tentativa <= 3; tentativa++) {
+      try {
+        resposta = await executarConsultaExportacaoComTimeout(signal => {
+          let query = supabaseClient
+            .from("producao")
+            .select("id,codigo_poste,descricao_poste,codigo_produto")
+            .in("id", lote);
+          if (signal && typeof query.abortSignal === "function") query = query.abortSignal(signal);
+          return query;
+        });
+        if (resposta.error) throw resposta.error;
+        ultimoErro = null;
+        break;
+      } catch (error) {
+        ultimoErro = error;
+        console.warn(`[export] lookup producao lote ${index + 1}/${lotes.length} tentativa ${tentativa}/3 falhou:`, error);
+        if (tentativa < 3) await new Promise(resolve => window.setTimeout(resolve, 750 * tentativa));
+      }
+    }
+
+    if (ultimoErro || !resposta) {
+      const error = new Error(`Lookup de producao lote ${index + 1}/${lotes.length} não pôde ser carregado`);
+      error.cause = ultimoErro;
+      throw error;
+    }
+
+    const encontrados = Array.isArray(resposta.data) ? resposta.data : [];
+    encontrados.forEach(row => {
+      if (row?.id !== null && row?.id !== undefined) producaoPorId.set(String(row.id), row);
+    });
+    console.log(`[export] lookup producao lote ${index + 1}/${lotes.length} — ${lote.length} IDs, ${encontrados.length} encontrados`);
+  }
+
+  idsDistintos.forEach((recordId, chave) => {
+    if (!producaoPorId.has(chave)) {
+      console.warn(`[export] lookup producao: record_id ${recordId} sem correspondente em producao.`);
+    }
+  });
+  return producaoPorId;
+}
+
+const XLSX_MAX_CELL_TEXT_LENGTH = 32000;
+
+function dividirTextoCelulaXlsx(value, limite = XLSX_MAX_CELL_TEXT_LENGTH) {
+  if (typeof value !== "string" || value.length <= limite) return [value];
+  const partes = [];
+  let inicio = 0;
+  while (inicio < value.length) {
+    let fim = Math.min(inicio + limite, value.length);
+    // Nao separar um par substituto UTF-16, usado por emojis e outros simbolos.
+    if (fim < value.length) {
+      const anterior = value.charCodeAt(fim - 1);
+      const proximo = value.charCodeAt(fim);
+      if (anterior >= 0xD800 && anterior <= 0xDBFF && proximo >= 0xDC00 && proximo <= 0xDFFF) fim--;
+    }
+    partes.push(value.slice(inicio, fim));
+    inicio = fim;
+  }
+  return partes;
+}
+
+function normalizarLinhasParaLimiteCelulaXlsx(linhas, limite = XLSX_MAX_CELL_TEXT_LENGTH) {
+  const colunasOriginais = [];
+  const colunasVistas = new Set();
+  const maxPartesPorColuna = new Map();
+  let totalCelulasDivididas = 0;
+
+  (linhas || []).forEach(linha => {
+    Object.keys(linha || {}).forEach(coluna => {
+      if (!colunasVistas.has(coluna)) {
+        colunasVistas.add(coluna);
+        colunasOriginais.push(coluna);
+      }
+      const partes = dividirTextoCelulaXlsx(linha[coluna], limite);
+      if (partes.length > 1) totalCelulasDivididas++;
+      maxPartesPorColuna.set(coluna, Math.max(maxPartesPorColuna.get(coluna) || 1, partes.length));
+    });
+  });
+
+  const colunas = [];
+  colunasOriginais.forEach(coluna => {
+    const totalPartes = maxPartesPorColuna.get(coluna) || 1;
+    for (let parte = 1; parte <= totalPartes; parte++) {
+      colunas.push(parte === 1 ? coluna : `${coluna} - parte ${parte}`);
+    }
+  });
+
+  const linhasNormalizadas = (linhas || []).map(linha => {
+    const normalizada = {};
+    colunasOriginais.forEach(coluna => {
+      const partes = dividirTextoCelulaXlsx(linha?.[coluna], limite);
+      const totalPartes = maxPartesPorColuna.get(coluna) || 1;
+      for (let parte = 1; parte <= totalPartes; parte++) {
+        const nomeColuna = parte === 1 ? coluna : `${coluna} - parte ${parte}`;
+        normalizada[nomeColuna] = partes[parte - 1] ?? "";
+      }
+    });
+    return normalizada;
+  });
+
+  return {
+    linhas: linhasNormalizadas,
+    colunas,
+    totalCelulasDivididas,
+    maximoPartes: Math.max(1, ...maxPartesPorColuna.values())
+  };
+}
+
+async function salvarWorkbookXlsx(workbook, nomeArquivo) {
+  const bytes = window.XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+    compression: true
+  });
+  if (!bytes || !bytes.byteLength) throw new Error("A planilha foi gerada sem conteudo.");
+
+  const mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  const blob = new Blob([bytes], { type: mime });
+  baixarArquivoBlob(blob, nomeArquivo, mime);
+  return blob.size;
+}
+
+function criarResumoExportacaoMontagem(montagemRows, dStart, dEnd) {
+  const realizadas = montagemRows.filter(isLinhaMontagemDashboard);
+  const aprovadas = realizadas.filter(row => String(row.status_montagem || "").trim().toUpperCase() === "A").length;
+  const naoConformes = realizadas.filter(isLinhaDefeitoDashboard).length;
+  const retrabalhos = realizadas.filter(row => isMontagemRetrabalhoStatus(row.status_montagem)).length;
+  const atingimento = montagemRows.length > 0 ? (realizadas.length / montagemRows.length) * 100 : 0;
+  const aprovacao = realizadas.length > 0 ? (aprovadas / realizadas.length) * 100 : 0;
+  const percentual = valor => `${valor.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+
+  return [
+    ["RELATORIO COMPLETO - DASHBOARD MONTAGEM"],
+    ["Periodo", `${fmtDate(dStart)} a ${fmtDate(dEnd)}`],
+    ["Gerado em", new Date().toLocaleString("pt-BR")],
+    [],
+    ["INDICADORES PRINCIPAIS", "VALOR", "MEMORIA DE CALCULO"],
+    ["Programado", montagemRows.length, "Quantidade total de montagens no periodo"],
+    ["Realizado", realizadas.length, "Quantidade de montagens concluidas"],
+    ["Atingimento", percentual(atingimento), "Realizado / Programado x 100"],
+    [],
+    ["INDICADORES SECUNDARIOS", "VALOR", "MEMORIA DE CALCULO"],
+    ["Aprovados", aprovadas, "Montagens concluidas com status Aprovado"],
+    ["Taxa de aprovacao", percentual(aprovacao), "Aprovados / Realizado x 100"],
+    ["Nao conformes", naoConformes, "Status de reprovacao, retrabalho ou checklist com item nao conforme"],
+    ["Retrabalhos", retrabalhos, "Montagens com status de retrabalho"],
+    [],
+    ["BASES EXPORTADAS", "REGISTROS"],
+    ["Base Montagem", montagemRows.length]
+  ];
+}
+
+async function exportarMontagemIndicadoresXlsx() {
+  if (!window.XLSX?.utils) {
+    showMsgBox("Biblioteca XLSX indisponivel. Verifique a conexao e tente novamente.", "error");
+    return;
+  }
+
+  const dStart = document.getElementById("miDataInicio")?.value || todayYmd();
+  const dEnd = document.getElementById("miDataFim")?.value || todayYmd();
+  if (dStart > dEnd) {
+    showMsgBox("O inicio do periodo nao pode ser posterior ao fim.", "error");
+    return;
+  }
+
+  const nomeArquivo = `base_montagem_${dStart}_a_${dEnd}.xlsx`;
+
+  const button = document.getElementById("miBtnExportarXlsx");
+  const label = button?.textContent || "Exportar XLSX";
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Exportando base...";
+  }
+  try {
+    const montagemRows = await carregarBaseExportacaoPorPeriodo({
+      table: "montagem_poste",
+      select: DASHBOARD_MONTAGEM_SELECT,
+      inicio: dStart,
+      fim: dEnd,
+      onProgress: (concluidos, total) => {
+        if (button && total > 0) button.textContent = `Carregando montagem ${concluidos}/${total}...`;
+      }
+    });
+
+    if (!montagemRows.length) throw new Error("Nenhum registro de montagem encontrado no periodo selecionado.");
+    if (button) button.textContent = "Consultando produtos...";
+    const producaoPorId = await carregarLookupProducaoPorRecordIds(montagemRows);
+    const linhasMontagem = montagemRows.map(row => {
+      const producao = producaoPorId.get(String(row.record_id || "")) || {};
+      const inicio = row.inicio_inspecao_montagem || "";
+      const fim = row.finalizado_em || "";
+      const durMs = inicio && fim ? (new Date(fim) - new Date(inicio)) : null;
+      const checklist = typeof row.checklists === "string" ? row.checklists : JSON.stringify(row.checklists || {});
+      return {
+        "ID montagem": row.id || "",
+        "ID producao": row.record_id || "",
+        "Data da producao": fmtDate(row.data_fabricacao || ""),
+        "Inicio da montagem": formatarDataHoraMontagemXlsx(inicio),
+        "Fim da montagem": formatarDataHoraMontagemXlsx(fim),
+        "Tempo de montagem": formatarDuracao(durMs),
+        "Setor": row.setor || "",
+        "Forma": row.forma_numero || "",
+        "Modelo": row.modelo || producao.modelo || "",
+        "Codigo do poste": producao.codigo_poste || "",
+        "Descricao do poste": producao.descricao_poste || "",
+        "Codigo do produto": producao.codigo_produto || "",
+        "Status montagem": row.status_montagem || "",
+        "Descricao status": getMiStatusMeta(row.status_montagem || "").label,
+        "Motivo da recusa": row.motivo_recusa || "",
+        "Etapa": row.etapa || "",
+        "Banco": row.banco || "",
+        "Montador": row.montador_nome || "",
+        "Observacoes": row.observacoes_montagem || "",
+        "Checklist JSON": checklist,
+        "Criado em": formatarDataHoraMontagemXlsx(row.created_at || ""),
+        "Atualizado em": formatarDataHoraMontagemXlsx(row.updated_at || "")
+      };
+    });
+    console.log(`[export] TOTAL final: ${linhasMontagem.length} linhas prontas para o workbook`);
+    const baseMontagemXlsx = normalizarLinhasParaLimiteCelulaXlsx(linhasMontagem);
+    if (baseMontagemXlsx.totalCelulasDivididas > 0) {
+      console.warn(`[export] XLSX: ${baseMontagemXlsx.totalCelulasDivididas} célula(s) longa(s) divididas em até ${baseMontagemXlsx.maximoPartes} partes, sem truncamento.`);
+    }
+
+    const xlsx = window.XLSX;
+    const wb = xlsx.utils.book_new();
+    const wsResumo = xlsx.utils.aoa_to_sheet(criarResumoExportacaoMontagem(montagemRows, dStart, dEnd));
+    wsResumo["!cols"] = [{ wch: 30 }, { wch: 22 }, { wch: 62 }];
+    xlsx.utils.book_append_sheet(wb, wsResumo, "Resumo");
+    const wsMontagem = xlsx.utils.json_to_sheet(baseMontagemXlsx.linhas);
+    wsMontagem["!cols"] = baseMontagemXlsx.colunas.map(key => ({ wch: Math.min(55, Math.max(14, key.length + 3)) }));
+    if (wsMontagem["!ref"]) wsMontagem["!autofilter"] = { ref: wsMontagem["!ref"] };
+    xlsx.utils.book_append_sheet(wb, wsMontagem, "Base Montagem");
+    await salvarWorkbookXlsx(wb, nomeArquivo);
+    showMsgBox(`${montagemRows.length} registro(s) de montagem exportados.`, "success");
+  } catch (err) {
+    const mensagem = String(err?.message || err || "erro desconhecido");
+    console.error("[export] Erro ao exportar base de montagem:", err?.stack || err, err);
+    showMsgBox(`Nao foi possivel exportar a base: ${escapeHtml(mensagem)}`, "error");
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = label;
+    }
+  }
 }
 
 function obterItensRejeitadosLinha(row, options = {}) {
@@ -11579,8 +13139,8 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   }
 
   const isMobile = window.innerWidth < 768;
-  const labelFontSize = isMobile ? 9 : 12;
-  const legendBoxWidth = isMobile ? 8 : 12;
+  const labelFontSize = isMobile ? 12 : 16;
+  const legendBoxWidth = isMobile ? 10 : 15;
 
   // Por Dia
   const unionSet = new Set([
@@ -11713,7 +13273,7 @@ window.abrirFotoVisualizacao = function(src) {
   }
 };
 
-window.abrirVisualizacaoChecklist = function(idOrRow) {
+window.abrirVisualizacaoChecklist = async function(idOrRow) {
   let row;
   if (typeof idOrRow === "object" && idOrRow !== null) {
     row = idOrRow;
@@ -11723,6 +13283,24 @@ window.abrirVisualizacaoChecklist = function(idOrRow) {
       : null;
   }
   if (!row) return;
+
+  // A tela usa uma consulta leve. Os campos grandes do checklist sao buscados
+  // apenas quando o usuario abre um registro, preservando o detalhe completo.
+  if (!Object.prototype.hasOwnProperty.call(row, "checklists") && supabaseClient && row.id) {
+    try {
+      const { data, error } = await supabaseClient
+        .from("montagem_poste")
+        .select(DASHBOARD_MONTAGEM_SELECT)
+        .eq("id", row.id)
+        .maybeSingle();
+      if (error) throw error;
+      if (data) row = data;
+    } catch (err) {
+      console.warn("Nao foi possivel carregar os detalhes do checklist:", err);
+      showMsgBox("Nao foi possivel abrir os detalhes completos deste checklist.", "error");
+      return;
+    }
+  }
 
   // Normalizar propriedades para suportar tanto snake_case do Supabase quanto camelCase do frontend local
   const normRow = {
@@ -12208,6 +13786,12 @@ window.saveSequenciaS3 = async function() {
 // MODO ODIN - FUNÇÕES AUXILIARES DE CANCELAMENTO
 // =========================================================
 async function cancelarOuDesprogramarOdin(forma, setor, card) {
+  const normalizedForma = normalizeUpper(forma);
+  if (!isFormaClicked(forma, setor) && !isFormaLiberada(forma, setor)
+      && state.programmedFormas.has(normalizedForma)) {
+    await toggleFormaProgramada(forma, setor, card);
+    return;
+  }
   await cancelarConcretagemOdin(forma, setor, card);
 }
 
@@ -12353,7 +13937,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.11&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.12&ts=${Date.now()}`);
       }
     });
   }
@@ -12373,6 +13957,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.11";
+  badge.textContent = "v5.12";
   badge.style.display = "inline-block";
 }
