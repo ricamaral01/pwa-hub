@@ -1,16 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.16: participacao dos defeitos detalhada por Setor 1 e Setor 2
+   v5.17: acesso do usuario diegobat ao Mandril Circular e Inspecao
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.16";
+const CACHE_NAME = "mapa-concretagem-v5.17";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.16",
-  "./styles.css?v=v5.16",
-  "./dashboard-defeitos-v4.css?v=v5.16",
-  "./app.js?v=v5.16",
-  "./xlsx.full.min.js?v=v5.16",
+  "./manifest.json?v=v5.17",
+  "./styles.css?v=v5.17",
+  "./dashboard-defeitos-v4.css?v=v5.17",
+  "./app.js?v=v5.17",
+  "./xlsx.full.min.js?v=v5.17",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

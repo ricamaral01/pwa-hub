@@ -7773,6 +7773,10 @@ function getRoleConfig(role) {
 function setAccessByRole(role) {
   const cfg = getRoleConfig(role);
   const next = new Set(["HUB", ...cfg.modes]);
+  if (String(state.authUser?.id || "").trim().toLowerCase() === "diegobat") {
+    next.add("MANDRIL_CIRCULAR");
+    next.add("INSPECAO");
+  }
   if (next.has("MONTAGEM_POSTES")) next.add("MONTAGEM_POSTES_DETALHE");
   if (next.has("INSPECAO")) next.add("INSPECAO_DETALHE");
 
@@ -7798,6 +7802,7 @@ function readAuthSession() {
     const parsed = JSON.parse(raw);
     if (!parsed || !parsed.role || !ROLE_PERMISSIONS[parsed.role]) return null;
     return {
+      id: String(parsed.id || "").trim(),
       name: String(parsed.name || "").trim() || "Usuário",
       role: parsed.role,
       roleLabel: getRoleConfig(parsed.role).label,
@@ -7809,7 +7814,7 @@ function readAuthSession() {
 }
 
 function saveAuthSession(auth) {
-  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ name: auth.name, role: auth.role, setor: auth.setor || "Todos" }));
+  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ id: auth.id, name: auth.name, role: auth.role, setor: auth.setor || "Todos" }));
 }
 
 function clearAuthSession() {
@@ -7968,6 +7973,7 @@ async function salvarNovaSenhaPrimeiroAcesso() {
 
     // Login definitivo
     state.authUser = {
+      id: user.id,
       name: user.name,
       role: user.role,
       roleLabel: getRoleConfig(user.role).label,
@@ -8160,6 +8166,7 @@ async function loginWithRole(name, password) {
   }
 
   state.authUser = {
+    id: user.id,
     name: user.name,
     role,
     roleLabel: getRoleConfig(role).label,
@@ -10997,7 +11004,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.16", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.17", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -14058,7 +14065,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.16&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.17&ts=${Date.now()}`);
       }
     });
   }
@@ -14078,6 +14085,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.16";
+  badge.textContent = "v5.17";
   badge.style.display = "inline-block";
 }
