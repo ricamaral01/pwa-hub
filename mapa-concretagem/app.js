@@ -10997,7 +10997,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.15", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.16", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11337,6 +11337,61 @@ function criarRankingParticipacaoDefeitos(porTipo = {}, totalErros = 0) {
   }));
 }
 
+function criarParticipacaoDefeitosPorSetor(matriz = {}, numeroSetor) {
+  const porTipo = {};
+  let total = 0;
+  Object.entries(matriz || {}).forEach(([tipo, setores]) => {
+    const quantidade = Object.entries(setores || {}).reduce((soma, [setor, valor]) => {
+      const codigo = String(setor).trim().toLowerCase().replace(/\s+/g, "");
+      const numero = Number(valor);
+      return (codigo === `s${numeroSetor}` || codigo === `setor${numeroSetor}`) && Number.isFinite(numero) && numero > 0
+        ? soma + numero
+        : soma;
+    }, 0);
+    if (quantidade > 0) {
+      porTipo[tipo] = quantidade;
+      total += quantidade;
+    }
+  });
+  return { porTipo, total };
+}
+
+function renderParticipacaoDefeitos(containerId, badgeId, porTipo, totalErros, numeroSetor = null) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const rankingDefeitos = criarRankingParticipacaoDefeitos(porTipo, totalErros);
+  const totalBase = rankingDefeitos[0]?.totalBase || Number(totalErros || 0);
+  const badge = document.getElementById(badgeId);
+  if (badge) badge.textContent = `${totalBase} ocorrencia${totalBase === 1 ? "" : "s"}`;
+  if (rankingDefeitos.length === 0) {
+    container.innerHTML = '<div class="muted">Sem defeitos no periodo e filtros selecionados.</div>';
+    return;
+  }
+  const referencia = numeroSetor ? `do Setor ${numeroSetor}` : "do total";
+  container.innerHTML = `
+    <div class="df-defect-share-caption">
+      <strong>${totalBase} ocorrencia${totalBase === 1 ? "" : "s"} ${numeroSetor ? `no Setor ${numeroSetor}` : "no total"}</strong>
+      <span>A barra compara o volume; o percentual usa o total de defeitos ${numeroSetor ? `do Setor ${numeroSetor}` : "do periodo"}.</span>
+    </div>
+    <div class="df-defect-share-list">
+      ${rankingDefeitos.map(item => `
+        <div class="df-defect-share-row" title="${escapeHtml(item.tipo)}: ${item.total} (${formatPct(item.percentual)} ${referencia})">
+          <div class="df-defect-share-label">
+            <i style="--df-defect-color: ${item.cor}" aria-hidden="true"></i>
+            <span>${escapeHtml(item.tipo)}</span>
+          </div>
+          <div class="df-defect-share-track" role="meter" aria-label="${escapeHtml(item.tipo)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${item.percentual.toFixed(1)}">
+            <div class="df-defect-share-fill" style="--df-defect-color: ${item.cor}; --df-defect-width: ${item.larguraRelativa.toFixed(2)}%">
+              <strong>${item.total}</strong>
+            </div>
+            <span class="df-defect-share-percent">${formatPct(item.percentual)}</span>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
 function criarModeloApresentacaoDefeitos(indicadores = {}) {
   const numero = value => {
     const parsed = Number(value || 0);
@@ -11471,38 +11526,11 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
     }
   }
 
-  const matrizEl = document.getElementById("miDefMatriz");
-  if (matrizEl) {
-    const rankingDefeitos = criarRankingParticipacaoDefeitos(indicadores.porTipo, indicadores.totalErros);
-    const totalBase = rankingDefeitos[0]?.totalBase || Number(indicadores.totalErros || 0);
-    setText("miDefMatrizTotal", `${totalBase} ocorrencia${totalBase === 1 ? "" : "s"}`);
-    if (rankingDefeitos.length === 0) {
-      matrizEl.innerHTML = '<div class="muted">Sem defeitos no periodo selecionado.</div>';
-    } else {
-      matrizEl.innerHTML = `
-        <div class="df-defect-share-caption">
-          <strong>${totalBase} ocorrencia${totalBase === 1 ? "" : "s"} no total</strong>
-          <span>A barra compara o volume; o percentual usa o total de defeitos do periodo.</span>
-        </div>
-        <div class="df-defect-share-list">
-          ${rankingDefeitos.map(item => `
-            <div class="df-defect-share-row" title="${escapeHtml(item.tipo)}: ${item.total} (${formatPct(item.percentual)} do total)">
-              <div class="df-defect-share-label">
-                <i style="--df-defect-color: ${item.cor}" aria-hidden="true"></i>
-                <span>${escapeHtml(item.tipo)}</span>
-              </div>
-              <div class="df-defect-share-track" role="meter" aria-label="${escapeHtml(item.tipo)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${item.percentual.toFixed(1)}">
-                <div class="df-defect-share-fill" style="--df-defect-color: ${item.cor}; --df-defect-width: ${item.larguraRelativa.toFixed(2)}%">
-                  <strong>${item.total}</strong>
-                </div>
-                <span class="df-defect-share-percent">${formatPct(item.percentual)}</span>
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      `;
-    }
-  }
+  renderParticipacaoDefeitos("miDefMatriz", "miDefMatrizTotal", indicadores.porTipo, indicadores.totalErros);
+  [1, 2].forEach(numeroSetor => {
+    const { porTipo, total } = criarParticipacaoDefeitosPorSetor(indicadores.matriz, numeroSetor);
+    renderParticipacaoDefeitos(`miDefMatrizS${numeroSetor}`, `miDefMatrizS${numeroSetor}Total`, porTipo, total, numeroSetor);
+  });
 
   const planoEl = document.getElementById("miDefPlanoAcao");
   if (planoEl) {
@@ -14030,7 +14058,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.15&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.16&ts=${Date.now()}`);
       }
     });
   }
@@ -14050,6 +14078,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.15";
+  badge.textContent = "v5.16";
   badge.style.display = "inline-block";
 }

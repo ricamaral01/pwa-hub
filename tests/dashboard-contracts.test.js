@@ -127,6 +127,36 @@ test('grafico de participacao ordena defeitos e calcula percentual sobre o total
   assert.match(app, /class="df-defect-share-percent">\$\{formatPct\(item\.percentual\)\}/);
 });
 
+test('participacao por setor usa apenas ocorrencias do proprio setor', () => {
+  const app = read('mapa-concretagem/app.js');
+  const html = read('mapa-concretagem/index.html');
+  const source = sliceBetween(app, 'const DASHBOARD_DEFEITOS_BAR_COLORS', 'function criarModeloApresentacaoDefeitos');
+  const context = {};
+  vm.runInNewContext(`${source}
+    const matriz = {
+      Bolhas: { 'Setor 1': 3, 'Setor 2': 1, 'Setor 3': 5 },
+      Falhas: { S1: 1, S2: 3 },
+      Fissuras: { S2: 2 }
+    };
+    globalThis.s1 = criarParticipacaoDefeitosPorSetor(matriz, 1);
+    globalThis.s2 = criarParticipacaoDefeitosPorSetor(matriz, 2);
+    globalThis.rankingS1 = criarRankingParticipacaoDefeitos(s1.porTipo, s1.total);
+    globalThis.rankingS2 = criarRankingParticipacaoDefeitos(s2.porTipo, s2.total);
+  `, context);
+
+  assert.equal(context.s1.total, 4);
+  assert.equal(context.s2.total, 6);
+  assert.equal(context.rankingS1[0].total, 3);
+  assert.equal(context.rankingS1[0].percentual, 75);
+  assert.equal(context.rankingS2[0].total, 3);
+  assert.equal(context.rankingS2[0].percentual, 50);
+  assert.ok(Math.abs(context.rankingS1.reduce((soma, item) => soma + item.percentual, 0) - 100) < 0.000001);
+  assert.ok(Math.abs(context.rankingS2.reduce((soma, item) => soma + item.percentual, 0) - 100) < 0.000001);
+  for (const id of ['miDefMatrizS1', 'miDefMatrizS1Total', 'miDefMatrizS2', 'miDefMatrizS2Total']) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+});
+
 test('apresentacao 4:3 preserva o dashboard e recalcula os indicadores dos slides', () => {
   const app = read('mapa-concretagem-teste/app.js');
   const html = read('mapa-concretagem-teste/index.html');
