@@ -8921,7 +8921,7 @@ function bindEvents() {
     sincronizarDfScopeTabs();
     carregarDashboardDefeitos();
   });
-  document.getElementById("dfBtnAtualizar")?.addEventListener("click", carregarDashboardDefeitos);
+  document.getElementById("dfBtnAtualizar")?.addEventListener("click", () => carregarDashboardDefeitos(true));
   document.getElementById("dfBtnFiltrar")?.addEventListener("click", carregarDashboardDefeitos);
   document.getElementById("dfBtnExportarCsv")?.addEventListener("click", exportarDashboardDefeitosCsv);
   document.getElementById("dfBtnApresentacao")?.addEventListener("click", abrirApresentacaoDefeitos);
@@ -11284,7 +11284,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.22", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.23", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11589,20 +11589,44 @@ function formatPct(value) {
   return `${value.toFixed(1).replace(".", ",")}%`;
 }
 
-const DASHBOARD_DEFEITOS_BAR_COLORS = Object.freeze([
-  "#2563eb",
-  "#dc2626",
-  "#16a34a",
-  "#d97706",
-  "#7c3aed",
-  "#0891b2",
-  "#be123c",
-  "#4f46e5",
-  "#65a30d",
-  "#0f766e",
-  "#c2410c",
-  "#9333ea"
-]);
+const DASHBOARD_DEFEITOS_COLORS_BY_TYPE = Object.freeze({
+  "bolhas em excesso": "#2563eb",
+  "falhas de preenchimento": "#dc2626",
+  "pequenas avarias": "#16a34a",
+  "buchas de fixacao": "#d97706",
+  "bolhas fora do padrao": "#7c3aed",
+  "falha na concretagem / armacao aparente": "#0891b2",
+  "fissuras": "#be123c",
+  "prisioneiros (lacre / aterramento)": "#4f46e5",
+  "rebarbas": "#65a30d",
+  "reprovacao sem defeito detalhado": "#0f766e",
+  "homogeneidade do concreto": "#c2410c",
+  "concreto segregado": "#9333ea",
+  "grandes avarias": "#0e7490",
+  "facao obstruido": "#b91c1c",
+  "furacao obstruida (pinos)": "#15803d",
+  "armacao aparente": "#a21caf",
+  "trincas": "#b45309",
+  "tubulacao entupida": "#0369a1",
+  "carimbo de identificacao": "#db2777",
+  "manchas excessivas": "#6d28d9",
+  "acabamento face exposta": "#047857",
+  "acabamento abas": "#9a3412",
+  "montagem do poste": "#4338ca",
+  "liberacao qualidade": "#7e22ce",
+  "codificacao poste": "#0d9488",
+  "limpeza aterramento": "#a16207",
+  "limpeza lacre": "#475569"
+});
+
+function getDashboardDefectColor(tipo) {
+  const key = normalizarTexto(tipo);
+  if (DASHBOARD_DEFEITOS_COLORS_BY_TYPE[key]) return DASHBOARD_DEFEITOS_COLORS_BY_TYPE[key];
+  let hash = 2166136261;
+  for (const char of key) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619);
+  const value = hash >>> 0;
+  return `hsl(${value % 360} ${58 + ((value >>> 9) % 20)}% ${35 + ((value >>> 17) % 15)}%)`;
+}
 
 function criarRankingParticipacaoDefeitos(porTipo = {}, totalErros = 0) {
   const itens = Object.entries(porTipo || {})
@@ -11614,12 +11638,12 @@ function criarRankingParticipacaoDefeitos(porTipo = {}, totalErros = 0) {
   const totalBase = Number.isFinite(totalInformado) && totalInformado > 0 ? totalInformado : totalCalculado;
   const maiorTotal = itens.reduce((maior, [, total]) => Math.max(maior, total), 0);
 
-  return itens.map(([tipo, total], index) => ({
+  return itens.map(([tipo, total]) => ({
     tipo,
     total,
     percentual: totalBase > 0 ? (total / totalBase) * 100 : 0,
     larguraRelativa: maiorTotal > 0 ? (total / maiorTotal) * 100 : 0,
-    cor: DASHBOARD_DEFEITOS_BAR_COLORS[index % DASHBOARD_DEFEITOS_BAR_COLORS.length],
+    cor: getDashboardDefectColor(tipo),
     totalBase
   }));
 }
@@ -12420,15 +12444,64 @@ async function carregarMontagemIndicadores() {
   }
 }
 
-async function carregarDashboardDefeitos() {
+let dashboardDefeitosBaseCache = null;
+let dashboardDefeitosBaseRequest = null;
+
+async function obterBaseDashboardDefeitos(dStart, dEnd, forceRefresh = false) {
+  const key = `${dStart}:${dEnd}`;
+  if (!forceRefresh && dashboardDefeitosBaseRequest?.key === key) return dashboardDefeitosBaseRequest.promise;
+  if (!forceRefresh && dashboardDefeitosBaseCache?.key === key) return dashboardDefeitosBaseCache.value;
+
+  const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
+  const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
+  const request = { key, promise: null };
+  dashboardDefeitosBaseRequest = request;
+  request.promise = Promise.all([
+    carregarLinhasSupabaseComCache({
+      cacheKey: `defeitos:montagem_poste:historico-v1:${dStart}:${dEnd}`,
+      table: "montagem_poste",
+      select: DASHBOARD_MONTAGEM_SELECT,
+      pageSize: 1000,
+      maxPages: 50,
+      timeoutMs: 60000,
+      orderBy: "id",
+      orderOptions: { ascending: true },
+      applyFilters: query => query
+        .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
+    }),
+    carregarLinhasSupabaseComCache({
+      cacheKey: `defeitos:producao:${dStart}:${dEnd}`,
+      table: "producao",
+      select: DASHBOARD_PRODUCAO_SELECT,
+      pageSize: 1000,
+      maxPages: 50,
+      timeoutMs: 60000,
+      orderBy: "id",
+      orderOptions: { ascending: true },
+      applyFilters: query => query
+        .gte("data_fabricacao", dStart)
+        .lte("data_fabricacao", dEnd)
+    })
+  ]).then(([montagemRes, producaoRes]) => {
+    const value = { montagemRes, producaoRes };
+    if (dashboardDefeitosBaseRequest === request
+        && montagemRes.state !== "OFFLINE_CACHE" && producaoRes.state !== "OFFLINE_CACHE") {
+      dashboardDefeitosBaseCache = { key, value };
+    }
+    return value;
+  }).finally(() => {
+    if (dashboardDefeitosBaseRequest === request) dashboardDefeitosBaseRequest = null;
+  });
+  return request.promise;
+}
+
+async function carregarDashboardDefeitos(forceRefresh = false) {
   aplicarLayoutDashboardDefeitos();
   if (!supabaseClient) return;
   const dashboardKind = "defeitos";
   const requestId = ++dashboardRequestSeq[dashboardKind];
   const dStart = getDashboardFilterValue("DataInicio", todayYmd());
   const dEnd = getDashboardFilterValue("DataFim", todayYmd());
-  const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
-  const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
   const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
   const statusFiltro = getDashboardFilterValue("FiltroStatus", "");
   const pesquisa = getDashboardFilterValue("FiltroPesquisa", "").trim().toLowerCase();
@@ -12440,33 +12513,7 @@ async function carregarDashboardDefeitos() {
     // O contrato RPC anterior excedia o statement_timeout em periodos extensos.
     // A tela agora calcula tudo a partir das bases paginadas e mantem o mesmo
     // conjunto de dados usado no detalhamento e na exportacao.
-    const [montagemRes, producaoRes] = await Promise.all([
-      carregarLinhasSupabaseComCache({
-        cacheKey: `${dashboardKind}:montagem_poste:historico-v1:${dStart}:${dEnd}`,
-        table: "montagem_poste",
-        select: DASHBOARD_MONTAGEM_SELECT,
-        pageSize: 500,
-        maxPages: 100,
-        timeoutMs: 60000,
-        orderBy: "id",
-        orderOptions: { ascending: true },
-        applyFilters: query => query
-          .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
-      }),
-      carregarLinhasSupabaseComCache({
-        cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
-        table: "producao",
-        select: DASHBOARD_PRODUCAO_SELECT,
-        pageSize: 500,
-        maxPages: 100,
-        timeoutMs: 60000,
-        orderBy: "id",
-        orderOptions: { ascending: true },
-        applyFilters: query => query
-          .gte("data_fabricacao", dStart)
-          .lte("data_fabricacao", dEnd)
-      })
-    ]);
+    const { montagemRes, producaoRes } = await obterBaseDashboardDefeitos(dStart, dEnd, forceRefresh);
 
     if (requestId !== dashboardRequestSeq[dashboardKind]) return;
     const pertenceAoSetor = row => {
@@ -14330,7 +14377,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.22&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.23&ts=${Date.now()}`);
       }
     });
   }
@@ -14350,6 +14397,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.22";
+  badge.textContent = "v5.23";
   badge.style.display = "inline-block";
 }

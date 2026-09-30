@@ -55,7 +55,7 @@ test('busca do dashboard de defeitos mantém produção ligada ao montador encon
     miDefeitosExportData: null,
     console
   };
-  vm.runInNewContext(section('async function carregarDashboardDefeitos()', 'function aplicarFiltrosEExibirMontagem()'), context);
+  vm.runInNewContext(section('let dashboardDefeitosBaseCache = null;', 'function aplicarFiltrosEExibirMontagem()'), context);
   await context.carregarDashboardDefeitos();
   assert.deepEqual(captured.rows.map(row => row.forma_numero), ['SC01']);
   assert.deepEqual(captured.products.map(row => row.forma), ['SC01']);

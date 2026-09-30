@@ -130,8 +130,8 @@ test('grafico de participacao ordena defeitos e calcula percentual sobre o total
 test('participacao por setor usa apenas ocorrencias do proprio setor', () => {
   const app = read('mapa-concretagem/app.js');
   const html = read('mapa-concretagem/index.html');
-  const source = sliceBetween(app, 'const DASHBOARD_DEFEITOS_BAR_COLORS', 'function criarModeloApresentacaoDefeitos');
-  const context = {};
+  const source = sliceBetween(app, 'const DASHBOARD_DEFEITOS_COLORS_BY_TYPE', 'function criarModeloApresentacaoDefeitos');
+  const context = { normalizarTexto: value => String(value || '').toLowerCase() };
   vm.runInNewContext(`${source}
     const matriz = {
       Bolhas: { 'Setor 1': 3, 'Setor 2': 1, 'Setor 3': 5 },
