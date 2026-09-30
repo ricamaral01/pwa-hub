@@ -69,3 +69,14 @@ test('detalhe busca concretagem anterior ao período de inspeção quando falta 
   assert.deepEqual(Array.from(filters.forma), ['F02', 'F2', 'F002']);
   assert.equal(detailData.producaoRows[0].tipo_concreto, 'Concreto Seco');
 });
+
+test('detalhe ordena postes pela produção mais recente, mesmo com inspeções em outra ordem', () => {
+  const context = contextWith();
+  const ocorrencias = [
+    { id: 'antigo', data_fabricacao: '2026-09-01', finalizado_em: '2026-09-30T12:00:00Z', forma_numero: 'F01' },
+    { id: 'novo', data_fabricacao: '2026-09-29', finalizado_em: '2026-09-29T12:00:00Z', forma_numero: 'F02' },
+    { id: 'intermediario', data_fabricacao: '2026-09-15', finalizado_em: '2026-09-20T12:00:00Z', forma_numero: 'F03' }
+  ];
+  const linhas = context.criarLinhasDetalheDefeito(ocorrencias, []);
+  assert.deepEqual(Array.from(linhas, row => row.posteKey), ['novo', 'intermediario', 'antigo']);
+});

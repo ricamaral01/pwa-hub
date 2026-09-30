@@ -11325,7 +11325,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.25", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.26", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11818,7 +11818,11 @@ function criarLinhasDetalheDefeito(ocorrencias = [], producaoRows = []) {
       setor: setor || "-",
       horaConcretagem: concretagem?.data_hora || ""
     };
-  });
+  }).sort((a, b) =>
+    String(b.dataProducao || "").localeCompare(String(a.dataProducao || ""))
+    || String(b.dataInspecao || "").localeCompare(String(a.dataInspecao || ""))
+    || String(a.forma || "").localeCompare(String(b.forma || ""), "pt-BR", { numeric: true })
+  );
 }
 
 function formatarDataDetalheDefeito(value) {
@@ -14593,7 +14597,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.25&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.26&ts=${Date.now()}`);
       }
     });
   }
@@ -14613,6 +14617,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.25";
+  badge.textContent = "v5.26";
   badge.style.display = "inline-block";
 }
