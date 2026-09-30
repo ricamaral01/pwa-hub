@@ -1349,6 +1349,101 @@ function getDashboardFilterValue(name, fallback = "") {
   return legacy ? (legacy.value || fallback) : fallback;
 }
 
+const DASHBOARD_FILTER_FIELDS = {
+  mi: ["DataInicio", "DataFim", "FiltroSetor", "FiltroStatus", "FiltroPesquisa"],
+  df: ["DataInicio", "DataFim", "FiltroSetor", "FiltroStatus", "FiltroPesquisa"],
+  pa: ["DataInicio", "DataFim", "FiltroSetor", "MetaCiclo"]
+};
+const restoredDashboardFilters = new Set();
+
+function getDashboardPresetDates(preset) {
+  const today = new Date(`${todayYmd()}T12:00:00`);
+  const asYmd = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  const start = new Date(today);
+  const end = new Date(today);
+  if (preset === "7" || preset === "30") start.setDate(start.getDate() - Number(preset) + 1);
+  else if (preset === "month") start.setDate(1);
+  else if (preset === "previous") {
+    start.setMonth(start.getMonth() - 1, 1);
+    end.setDate(0);
+  } else if (preset !== "today") return null;
+  return [asYmd(start), asYmd(end)];
+}
+
+function syncDashboardFilterChips(kind) {
+  const start = document.getElementById(`${kind}DataInicio`)?.value;
+  const end = document.getElementById(`${kind}DataFim`)?.value;
+  const activePreset = ["today", "7", "30", "month", "previous"]
+    .find(preset => {
+      const dates = getDashboardPresetDates(preset);
+      return dates[0] === start && dates[1] === end;
+    });
+  document.querySelectorAll(`[data-dashboard-presets="${kind}"] [data-date-preset]`).forEach(button => {
+    const active = button.dataset.datePreset === activePreset;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  const status = document.getElementById(`${kind}FiltroStatus`)?.value;
+  document.querySelectorAll(`[data-dashboard-quick="${kind}"] [data-quick-status]`).forEach(button => {
+    const active = button.dataset.quickStatus === status;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function applyDashboardDatePreset(kind, preset) {
+  const dates = getDashboardPresetDates(preset);
+  if (!dates) return;
+  const start = document.getElementById(`${kind}DataInicio`);
+  const end = document.getElementById(`${kind}DataFim`);
+  if (!start || !end) return;
+  [start.value, end.value] = dates;
+  syncDashboardFilterChips(kind);
+  miPaginaAtual = 1;
+  if (kind === "mi") carregarMontagemIndicadores();
+  if (kind === "df") carregarDashboardDefeitos();
+}
+
+function saveDashboardFilter(kind, button) {
+  const fields = DASHBOARD_FILTER_FIELDS[kind];
+  if (!fields) return;
+  const values = Object.fromEntries(fields.map(field => [field, document.getElementById(`${kind}${field}`)?.value || ""]));
+  try {
+    localStorage.setItem(`mapa_dashboard_filtros_${kind}_v1`, JSON.stringify(values));
+    if (button) {
+      button.textContent = "Filtro salvo";
+      setTimeout(() => { button.textContent = "Salvar filtro"; }, 1800);
+    }
+  } catch (error) {
+    if (button) button.textContent = "Não foi possível salvar";
+  }
+}
+
+function clearSavedDashboardFilter(kind) {
+  try {
+    localStorage.removeItem(`mapa_dashboard_filtros_${kind}_v1`);
+  } catch (error) {
+    console.warn("Não foi possível remover o filtro salvo:", error);
+  }
+}
+
+function restoreDashboardFilter(kind) {
+  if (restoredDashboardFilters.has(kind)) return;
+  restoredDashboardFilters.add(kind);
+  try {
+    const saved = JSON.parse(localStorage.getItem(`mapa_dashboard_filtros_${kind}_v1`) || "null");
+    if (saved && typeof saved === "object") {
+      DASHBOARD_FILTER_FIELDS[kind].forEach(field => {
+        const input = document.getElementById(`${kind}${field}`);
+        if (input && typeof saved[field] === "string") input.value = saved[field];
+      });
+    }
+  } catch (error) {
+    console.warn("Filtro salvo inválido:", error);
+  }
+  syncDashboardFilterChips(kind);
+}
+
 function readMapaReportPayloadCache(cacheKey) {
   try {
     const raw = localStorage.getItem(`${MAPA_REPORT_CACHE_PREFIX}:${cacheKey}`);
@@ -8305,6 +8400,7 @@ function setMode(mode) {
     const paDataFim = document.getElementById("paDataFim");
     if (paDataInicio && !paDataInicio.value) paDataInicio.value = todayYmd();
     if (paDataFim && !paDataFim.value) paDataFim.value = todayYmd();
+    restoreDashboardFilter("pa");
     carregarProdutividadeConcretagem();
   }
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
@@ -8346,6 +8442,7 @@ function setMode(mode) {
     const miDataFim = document.getElementById("miDataFim");
     if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
+    restoreDashboardFilter("mi");
     limparLayoutDashboardDefeitos();
     ativarAbaMontagem("resumo");
     carregarMontagemIndicadores();
@@ -8357,6 +8454,7 @@ function setMode(mode) {
     const dfDataFim = document.getElementById("dfDataFim");
     if (dfDataInicio && !dfDataInicio.value) dfDataInicio.value = todayYmd();
     if (dfDataFim && !dfDataFim.value) dfDataFim.value = todayYmd();
+    restoreDashboardFilter("df");
     aplicarLayoutDashboardDefeitos();
     carregarDashboardDefeitos();
   }
@@ -8697,6 +8795,7 @@ function bindEvents() {
 
   // Configuração dos Filtros e Abas do Dashboard Montagem
   document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
+    clearSavedDashboardFilter("mi");
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
     if (miDataInicio) miDataInicio.value = todayYmd();
@@ -8743,6 +8842,7 @@ function bindEvents() {
   });
 
   document.getElementById("dfBtnLimparFiltros")?.addEventListener("click", () => {
+    clearSavedDashboardFilter("df");
     const dfDataInicio = document.getElementById("dfDataInicio");
     const dfDataFim = document.getElementById("dfDataFim");
     if (dfDataInicio) dfDataInicio.value = todayYmd();
@@ -8805,6 +8905,30 @@ function bindEvents() {
   document.getElementById("dfFiltroPesquisa")?.addEventListener("input", () => {
     miPaginaAtual = 1;
     if (state.mode !== "DASHBOARD_DEFEITOS") aplicarFiltrosEExibirMontagem();
+  });
+
+  document.querySelectorAll("[data-dashboard-presets] [data-date-preset]").forEach(button => {
+    button.addEventListener("click", () => {
+      applyDashboardDatePreset(button.closest("[data-dashboard-presets]")?.dataset.dashboardPresets, button.dataset.datePreset);
+    });
+  });
+  ["mi", "df", "pa"].forEach(kind => {
+    ["DataInicio", "DataFim", "FiltroStatus"].forEach(field => {
+      document.getElementById(`${kind}${field}`)?.addEventListener("change", () => syncDashboardFilterChips(kind));
+    });
+    document.getElementById(`${kind}BtnLimparFiltros`)?.addEventListener("click", () => syncDashboardFilterChips(kind));
+  });
+  document.querySelectorAll("[data-dashboard-quick] [data-quick-status]").forEach(button => {
+    button.addEventListener("click", () => {
+      const kind = button.closest("[data-dashboard-quick]")?.dataset.dashboardQuick;
+      const select = document.getElementById(`${kind}FiltroStatus`);
+      if (!select) return;
+      select.value = select.value === button.dataset.quickStatus ? "" : button.dataset.quickStatus;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  });
+  document.querySelectorAll("[data-save-dashboard-filter]").forEach(button => {
+    button.addEventListener("click", () => saveDashboardFilter(button.dataset.saveDashboardFilter, button));
   });
 
   // Troca de Abas do Dashboard
@@ -9630,6 +9754,16 @@ function bindEvents() {
   document.getElementById("paBtnAtualizar")?.addEventListener("click", carregarProdutividadeConcretagem);
   const paBtnFiltrar = document.getElementById("paBtnFiltrar");
   if (paBtnFiltrar) paBtnFiltrar.addEventListener("click", () => {
+    setProdutividadeDrawerOpen(false);
+    carregarProdutividadeConcretagem();
+  });
+  document.getElementById("paBtnLimparFiltros")?.addEventListener("click", () => {
+    clearSavedDashboardFilter("pa");
+    document.getElementById("paDataInicio").value = todayYmd();
+    document.getElementById("paDataFim").value = todayYmd();
+    document.getElementById("paFiltroSetor").value = "";
+    document.getElementById("paMetaCiclo").value = "15";
+    syncDashboardFilterChips("pa");
     setProdutividadeDrawerOpen(false);
     carregarProdutividadeConcretagem();
   });
@@ -11086,7 +11220,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.20", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.21", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12233,6 +12367,7 @@ async function carregarDashboardDefeitos() {
   const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
   const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
   const statusFiltro = getDashboardFilterValue("FiltroStatus", "");
+  const pesquisa = getDashboardFilterValue("FiltroPesquisa", "").trim().toLowerCase();
   const scope = getDashboardScopeFromSetor(setorFiltro);
 
   atualizarResumoFiltrosDefeitos();
@@ -12281,15 +12416,23 @@ async function carregarDashboardDefeitos() {
       if (statusFiltro === "R") return isLinhaDefeitoDashboard(row);
       return String(row.status_montagem || "").toUpperCase() === statusFiltro.toUpperCase();
     };
+    const correspondePesquisa = row => !pesquisa || [
+      row.forma_numero, row.forma, row.modelo, row.montador_nome
+    ].some(value => String(value || "").toLowerCase().includes(pesquisa));
+    const chaveForma = row => `${row.data_fabricacao || ""}|${row.setor || ""}|${normalizeForma(row.forma_numero || row.forma || "")}`;
     const montagemRows = removerReprovacoesDuplicadasDashboard(montagemRes.rows || []).filter(row => {
       const day = getMiDataReferencia(row);
       return isLinhaAvaliacaoDefeitosDashboard(row)
         && day >= dStart
         && day <= dEnd
         && pertenceAoSetor(row)
-        && pertenceAoStatus(row);
+        && pertenceAoStatus(row)
+        && correspondePesquisa(row);
     });
-    const producaoRows = (producaoRes.rows || []).filter(pertenceAoSetor);
+    const formasEncontradas = new Set(montagemRows.map(chaveForma));
+    const producaoRows = (producaoRes.rows || []).filter(row =>
+      pertenceAoSetor(row) && (!pesquisa || correspondePesquisa(row) || formasEncontradas.has(chaveForma(row)))
+    );
     const indicadores = calcularIndicadoresDefeitosMontagem(montagemRows, producaoRows);
     renderIndicadoresDefeitosMontagem(indicadores);
 
@@ -14123,7 +14266,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.20&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.21&ts=${Date.now()}`);
       }
     });
   }
@@ -14143,6 +14286,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.20";
+  badge.textContent = "v5.21";
   badge.style.display = "inline-block";
 }

@@ -1,17 +1,17 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.20: modelos de poste por forma na producao
+   v5.21: filtros moveis dos dashboards
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.20";
+const CACHE_NAME = "mapa-concretagem-v5.21";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.20",
-  "./styles.css?v=v5.20",
-  "./dashboard-defeitos-v4.css?v=v5.20",
-  "./modelos-formas.js?v=v5.20",
-  "./app.js?v=v5.20",
-  "./xlsx.full.min.js?v=v5.20",
+  "./manifest.json?v=v5.21",
+  "./styles.css?v=v5.21",
+  "./dashboard-defeitos-v4.css?v=v5.21",
+  "./modelos-formas.js?v=v5.21",
+  "./app.js?v=v5.21",
+  "./xlsx.full.min.js?v=v5.21",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

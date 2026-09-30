@@ -6,6 +6,26 @@ body.mode-dashboard-defeitos .page-content {
   padding: 24px 28px;
 }
 
+@media (max-width: 640px) {
+  body.mode-dashboard-defeitos #viewDashboardDefeitos .df-v4-filters.dashboard-filter-panel {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    padding: 14px !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    border: 1px solid #dce5f2 !important;
+    border-radius: 16px !important;
+    background: #f7faff !important;
+    box-shadow: 0 8px 24px rgba(29, 78, 144, 0.07);
+  }
+
+  body.mode-dashboard-defeitos #viewDashboardDefeitos #dfFiltroSetor {
+    display: block !important;
+  }
+}
+
 @media (max-width: 1100px) {
   body.mode-dashboard-defeitos .page-content {
     padding: 14px;

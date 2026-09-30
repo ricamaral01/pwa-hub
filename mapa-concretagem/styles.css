@@ -7262,3 +7262,268 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos {
   font-size: 0.78rem;
   font-weight: 700;
 }
+
+/* Filtros dos dashboards no celular */
+.dashboard-filter-heading,
+.dashboard-filter-group-label,
+.dashboard-filter-presets,
+.dashboard-filter-quick {
+  display: none;
+}
+
+.dashboard-filter-panel .dashboard-filter-period {
+  display: contents;
+}
+
+#paFiltrosDrawer .pa-filter-period {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dashboard-filter-save,
+.dashboard-filter-heading button {
+  border: 1px solid #dbe7f7;
+  border-radius: 8px;
+  background: #f3f7ff;
+  color: #1256ad;
+  padding: 7px 10px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  body.mode-montagem-indicadores #viewMontagemIndicadores .dashboard-filter-panel {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    padding: 14px !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    border: 1px solid #dce5f2 !important;
+    border-radius: 16px !important;
+    background: #f7faff !important;
+    box-shadow: 0 8px 24px rgba(29, 78, 144, 0.07);
+  }
+
+  .dashboard-filter-panel .dashboard-filter-heading {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5edf8;
+  }
+
+  .dashboard-filter-heading strong {
+    color: #142d50;
+    font-size: 0.9rem;
+    font-weight: 850;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-period {
+    display: grid !important;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .dashboard-filter-group-label {
+    display: block;
+    grid-column: 1 / -1;
+    color: #193552;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .dashboard-filter-panel .mi-filter-item {
+    min-width: 0 !important;
+    gap: 5px !important;
+  }
+
+  .dashboard-filter-panel .mi-filter-item label {
+    color: #203855 !important;
+    font-size: 0.73rem !important;
+    font-weight: 750 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  .dashboard-filter-panel .mi-filter-item .input-field {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 44px !important;
+    height: 44px !important;
+    padding: 7px 9px !important;
+    border: 1px solid #cbd9ed !important;
+    border-radius: 9px !important;
+    background: #fff !important;
+    color: #172e4d !important;
+    font-size: 0.83rem !important;
+  }
+
+  .dashboard-filter-presets {
+    display: flex;
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .dashboard-filter-presets button,
+  .dashboard-filter-quick button {
+    min-height: 30px;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: #e8eef8;
+    color: #244260;
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 750;
+    cursor: pointer;
+  }
+
+  .dashboard-filter-presets button.active,
+  .dashboard-filter-presets button[aria-pressed="true"] {
+    background: #1761dc;
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(23, 97, 220, 0.22);
+  }
+
+  .dashboard-filter-panel .mi-filter-search,
+  .dashboard-filter-panel .dashboard-filter-quick,
+  .dashboard-filter-panel .mi-filter-actions {
+    grid-column: 1 / -1 !important;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-quick {
+    display: grid;
+    gap: 8px;
+    padding: 11px;
+    border-radius: 11px;
+    background: #eaf1fb;
+  }
+
+  .dashboard-filter-quick strong {
+    color: #183756;
+    font-size: 0.77rem;
+  }
+
+  .dashboard-filter-quick > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .dashboard-filter-quick button.active[data-quick-status="A"] {
+    background: #d9f8e9;
+    color: #086444;
+  }
+
+  .dashboard-filter-quick button.active[data-quick-status="R"] {
+    background: #ffe0e0;
+    color: #a81d2a;
+  }
+
+  .dashboard-filter-quick button.active[data-quick-status="RR"] {
+    background: #fff0c2;
+    color: #855000;
+  }
+
+  .dashboard-filter-panel .mi-filter-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px !important;
+    margin-top: 3px;
+  }
+
+  .dashboard-filter-panel .mi-filter-actions button {
+    width: 100%;
+    min-height: 44px;
+    height: auto !important;
+    border-radius: 9px !important;
+    font-weight: 800 !important;
+  }
+
+  .dashboard-filter-panel .mi-filter-actions .mi-secondary-btn {
+    border-color: #95b8ef !important;
+    color: #1354af !important;
+  }
+
+  .dashboard-filter-panel .mi-filter-actions .mi-primary-btn {
+    background: #1761dc !important;
+  }
+
+  #paFiltrosDrawer {
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  #paFiltrosDrawer .mi-drawer-content {
+    width: 100%;
+    max-width: 100%;
+    height: min(88dvh, 780px);
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+  }
+
+  #paFiltrosDrawer .mi-drawer-header,
+  #paFiltrosDrawer .mi-drawer-footer {
+    background: #f7faff;
+  }
+
+  #paFiltrosDrawer .mi-drawer-header h3 {
+    flex: 1;
+  }
+
+  #paFiltrosDrawer .mi-drawer-body {
+    background: #f7faff;
+  }
+
+  #paFiltrosDrawer .mi-drawer-field input,
+  #paFiltrosDrawer .mi-drawer-field select {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    border: 1px solid #cbd9ed;
+    border-radius: 9px;
+    background: #fff;
+    color: #172e4d;
+  }
+
+  #paFiltrosDrawer .pa-drawer-footer {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  #paFiltrosDrawer .pa-drawer-footer #paBtnLimparFiltros {
+    grid-column: span 3;
+    grid-row: 1;
+    min-height: 44px;
+    border: 1px solid #95b8ef;
+    border-radius: 9px;
+    color: #1354af;
+    background: #fff;
+  }
+
+  #paFiltrosDrawer .pa-drawer-footer #paBtnFiltrar {
+    grid-column: span 3;
+    grid-row: 1;
+    min-height: 44px;
+    border-radius: 9px;
+    background: #1761dc;
+  }
+
+  #paFiltrosDrawer .pa-drawer-footer #paBtnExportarCSV,
+  #paFiltrosDrawer .pa-drawer-footer #paBtnExportarExcel,
+  #paFiltrosDrawer .pa-drawer-footer #paBtnExportarPDF {
+    grid-column: span 2;
+    grid-row: 2;
+    min-width: 0;
+  }
+}
