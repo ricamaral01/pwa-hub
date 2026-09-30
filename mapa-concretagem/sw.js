@@ -1,16 +1,17 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.18: layout mobile e acesso de cgomes ao Mandril Circular
+   v5.19: modelos de poste por forma na producao
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.18";
+const CACHE_NAME = "mapa-concretagem-v5.19";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.18",
-  "./styles.css?v=v5.18",
-  "./dashboard-defeitos-v4.css?v=v5.18",
-  "./app.js?v=v5.18",
-  "./xlsx.full.min.js?v=v5.18",
+  "./manifest.json?v=v5.19",
+  "./styles.css?v=v5.19",
+  "./dashboard-defeitos-v4.css?v=v5.19",
+  "./modelos-formas.js?v=v5.19",
+  "./app.js?v=v5.19",
+  "./xlsx.full.min.js?v=v5.19",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

@@ -120,11 +120,26 @@ function getProductionRecordForForma(forma, setor) {
 
 function formatFormaConcreteBadge(record) {
   const parts = [];
+  if ((record?.setor === "Setor 3" || record?.setor === "Setor 4")
+    && record?.modelo && !/^(SC|DTB|DTBM|DTD)$/i.test(String(record.modelo).trim())) {
+    parts.push(record.modelo);
+  }
   if (record?.concretoTipo) parts.push(record.concretoTipo);
   if (typeof record?.vibrado === "boolean") {
     parts.push(`Vibrado: ${record.vibrado ? "Sim" : "Não"}`);
   }
   return parts.join("\n");
+}
+
+function updateProductionCardBadge(card, setor, modelo, concretoTipo, vibrado) {
+  card.dataset.modelo = modelo;
+  const modelLabel = card.querySelector?.(".lib-btn-model");
+  if (modelLabel) modelLabel.textContent = modelo;
+  const tipoEl = card.querySelector?.(".fc-tipo");
+  if (!tipoEl) return;
+  const badgeText = formatFormaConcreteBadge({ setor, modelo, concretoTipo, vibrado });
+  tipoEl.textContent = badgeText;
+  tipoEl.style.display = badgeText ? "block" : "none";
 }
 
 function getClickedFormsToday() {
@@ -642,6 +657,39 @@ const SECTOR_FORMS = {
   "Setor 4": { col1: SETOR_4_COL1_FORMS, col2: SETOR_4_COL2_FORMS, col3: SETOR_4_COL3_FORMS }
 };
 
+function getProductionModelOptions(forma, setor, fallbackModel = "") {
+  const forms = SECTOR_FORMS[setor] || {};
+  const item = Object.values(forms).flat().find((entry) => normalizeUpper(entry.forma) === normalizeUpper(forma));
+  const official = window.PRODUCTION_MODELS_BY_FORMA?.[setor]?.[normalizeUpper(forma)];
+  const requiresMatrix = (setor === "Setor 3" && /^SC\d{2}$/.test(normalizeUpper(forma)))
+    || (setor === "Setor 4" && /^DTB(?:M)?\s?\d{2}$|^DTD\s?\d{2}$/.test(normalizeUpper(forma)));
+  const configured = Array.isArray(official) ? official
+    : (requiresMatrix ? [] : (Array.isArray(item?.modelos) ? item.modelos : [item?.modelo || fallbackModel]));
+  const seen = new Set();
+  return configured.map((value) => String(value || "").trim()).filter((value) => {
+    const key = normalizeProductionModelKey(value);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function normalizeProductionModelKey(value) {
+  return normalizeUpper(value).replace(/\s+/g, "").replace(/,/g, ".");
+}
+
+function getProductionProgrammedModel(forma, setor) {
+  if (setor !== "Setor 3") return "";
+  const selectedDate = el.libData?.value || todayYmd();
+  const cacheKey = `${selectedDate}||${normalizeUpper(forma)}||${setor}`;
+  try {
+    const db = JSON.parse(localStorage.getItem("pwa_prog_s3_s4_v1") || "{}");
+    return String(db.programacoes?.[cacheKey]?.modelo || "").trim();
+  } catch {
+    return "";
+  }
+}
+
 function getSectorForms(setor) {
   const forms = SECTOR_FORMS[setor] || SECTOR_FORMS["Setor 2"];
   if (forms.left || forms.right) {
@@ -902,6 +950,8 @@ const el = {
   syncStatus: document.getElementById("syncStatus"),
   concretoTipoModal: document.getElementById("concretoTipoModal"),
   concretoTipoSubtitle: document.getElementById("concretoTipoSubtitle"),
+  concretoModeloSelect: document.getElementById("concretoModeloSelect"),
+  concretoModeloFeedback: document.getElementById("concretoModeloFeedback"),
   concretoTipoOptions: document.getElementById("concretoTipoOptions"),
   concretoTipoCancelBtn: document.getElementById("concretoTipoCancelBtn"),
   concretoVibradoModal: document.getElementById("concretoVibradoModal"),
@@ -1128,6 +1178,24 @@ function getPosteFieldsForForma(forma, setor) {
     codigoPoste: data.codigoPoste || "",
     descricaoPoste: data.descricaoPoste || "",
     codigoProduto: data.codigoProduto || ""
+  };
+}
+
+function getProductionPosteFields(forma, setor, modelo, card) {
+  const cardFields = {
+    codigoPoste: card?.dataset?.codigoPoste || "",
+    descricaoPoste: card?.dataset?.descricaoPoste || "",
+    codigoProduto: card?.dataset?.codigoProduto || ""
+  };
+  const base = cardFields.codigoProduto || cardFields.descricaoPoste
+    ? cardFields : getPosteFieldsForForma(forma, setor);
+  if (!window.PRODUCTION_MODELS_BY_FORMA?.[setor]?.[normalizeUpper(forma)]) return base;
+
+  const product = window.PRODUCTION_PRODUCTS_BY_MODEL?.[setor]?.[normalizeProductionModelKey(modelo)];
+  return {
+    codigoPoste: base.codigoPoste,
+    descricaoPoste: product?.descricaoPoste || `${modelo}${setor === "Setor 4" ? " DT" : ""}`,
+    codigoProduto: product?.codigoProduto || ""
   };
 }
 
@@ -3509,10 +3577,20 @@ function closeConcreteTypePopup() {
 }
 
 function showConcreteTypePopup(forma, setor, card, modelo) {
-  if (!el.concretoTipoModal || !el.concretoTipoOptions || !el.concretoTipoSubtitle) return;
+  if (!el.concretoTipoModal || !el.concretoTipoOptions || !el.concretoTipoSubtitle || !el.concretoModeloSelect) return;
 
   pendingFormaSelection = { forma, setor, card, modelo };
   el.concretoTipoSubtitle.textContent = `Forma ${forma} . ${setor}`;
+  const modelosPermitidos = getProductionModelOptions(forma, setor, modelo);
+  const modeloSalvo = getProductionRecordForForma(forma, setor)?.modelo || "";
+  const candidatos = [modeloSalvo, getProductionProgrammedModel(forma, setor), modelo];
+  const modeloInicial = candidatos.map((value) => modelosPermitidos.find((allowed) => normalizeProductionModelKey(allowed) === normalizeProductionModelKey(value)))
+    .find(Boolean) || (modelosPermitidos.length === 1 ? modelosPermitidos[0] : "");
+  el.concretoModeloSelect.innerHTML = '<option value="" disabled>Selecione o modelo produzido</option>'
+    + modelosPermitidos.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+  el.concretoModeloSelect.value = modeloInicial;
+  el.concretoModeloFeedback.textContent = "";
+  el.concretoModeloSelect.onchange = () => { el.concretoModeloFeedback.textContent = ""; };
 
   const optionsHtml = [
     {
@@ -3569,9 +3647,15 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
     btn.addEventListener("click", async () => {
       const tipo = String(btn.dataset.tipo || "").trim();
       if (tipo) {
+        const modeloProduzido = el.concretoModeloSelect.value;
+        if (!modelosPermitidos.includes(modeloProduzido)) {
+          el.concretoModeloFeedback.textContent = "Selecione um modelo permitido para esta forma.";
+          el.concretoModeloSelect.focus();
+          return;
+        }
         closeConcreteTypePopup();
         const vibrado = await getVibradoValueForConcreteSelection(setor, tipo);
-        await salvarFormaClicada(forma, setor, card, modelo, tipo, vibrado);
+        await salvarFormaClicada(forma, setor, card, modeloProduzido, tipo, vibrado);
       }
     });
   });
@@ -3678,14 +3762,6 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
 
   const apiResult = await postToApiWithTimeout("salvar_forma_click", payload);
 
-  const updateCardBadge = () => {
-    const tipoEl = card.querySelector?.(".fc-tipo");
-    if (!tipoEl) return;
-    const badgeText = formatFormaConcreteBadge({ concretoTipo, vibrado });
-    tipoEl.textContent = badgeText;
-    tipoEl.style.display = badgeText ? "block" : "none";
-  };
-
   const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
   if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
     const db = readDb();
@@ -3772,14 +3848,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
   const dataFabricacao = el.libData?.value || todayYmd();
   const colaborador = getProductionCollaborator();
   const modeloFinal = modelo || card.dataset.modelo || "";
-  const posteFields = {
-    codigoPoste: card.dataset.codigoPoste || "",
-    descricaoPoste: card.dataset.descricaoPoste || "",
-    codigoProduto: card.dataset.codigoProduto || ""
-  };
-  const resolvedPosteFields = posteFields.codigoProduto || posteFields.descricaoPoste
-    ? posteFields
-    : getPosteFieldsForForma(forma, setor);
+  const resolvedPosteFields = getProductionPosteFields(forma, setor, modeloFinal, card);
 
   const payload = {
     dia,
@@ -3822,6 +3891,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     }
     record.concretoTipo = concretoTipo;
     record.vibrado = vibrado;
+    record.modelo = modeloFinal;
     record.codigoPoste = resolvedPosteFields.codigoPoste;
     record.descricaoPoste = resolvedPosteFields.descricaoPoste;
     record.codigoProduto = resolvedPosteFields.codigoProduto;
@@ -3856,14 +3926,14 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
-    updateCardBadge();
+    updateProductionCardBadge(card, setor, modeloFinal, concretoTipo, vibrado);
     updateSectorCounters();
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
-    updateCardBadge();
+    updateProductionCardBadge(card, setor, modeloFinal, concretoTipo, vibrado);
     updateSectorCounters();
     setSyncStatus("warn", "API não configurada. Forma salva localmente.");
     showLibFeedback(`${forma} — salvo localmente.`, "ok");
@@ -3871,7 +3941,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     // Falha de rede: salva localmente mas marca como pendente de sync
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
-    updateCardBadge();
+    updateProductionCardBadge(card, setor, modeloFinal, concretoTipo, vibrado);
     updateSectorCounters();
     setSyncStatus("warn", `Forma ${forma} salva localmente (sem sinal de rede).`);
     showLibFeedback(`${forma} — salvo localmente (offline)`, "warn");
@@ -4065,7 +4135,9 @@ async function fetchPolesForDate(filtroData, setor = "") {
 
       let modeloFinal = latestRow.modelo || "";
       const normForma = normalizeForma(forma);
-      if ((latestRow.setor === "Setor 3" || latestRow.setor === "Setor 4") && formToModelMap[normForma]) {
+      if ((latestRow.setor === "Setor 3" || latestRow.setor === "Setor 4")
+        && (!modeloFinal || /^(SC|DTB|DTBM|DTD)$/i.test(modeloFinal))
+        && formToModelMap[normForma]) {
         modeloFinal = formToModelMap[normForma];
       }
       if (/^A-?\d+$/i.test(forma)) {
@@ -6783,6 +6855,10 @@ function getRelatorioTipoConcreto(row) {
 function getRelatorioModelo(row) {
   const forma = String(row.forma_numero || row.formaNumero || row.forma || "").trim().toUpperCase();
   const catalogo = getPosteFieldsForForma(forma, row.setor || "");
+  if (window.PRODUCTION_MODELS_BY_FORMA?.[row.setor]?.[forma]
+    && row.modelo && !/^(SC|DTB|DTBM|DTD)$/i.test(String(row.modelo).trim())) {
+    return row.modelo;
+  }
   return catalogo.descricaoPoste || row.modelo || row.descricaoPoste || row.descricao_poste || "Sem modelo";
 }
 
@@ -11007,7 +11083,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.18", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.19", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -13691,31 +13767,7 @@ window.writeProgS3S4Db = function(db) {
 };
 
 window.getModelosForFormaS3 = function(forma) {
-  const num = parseInt(forma.replace("SC", ""), 10);
-  if (num >= 37 && num <= 52) {
-    return [
-      "",
-      "10x400", "10x600", "10x1000", "10,5x1000 CR", 
-      "11x300", "11x400", "11x600", "11x1000", 
-      "12x300", "12x400", "12x600", "12x1000", 
-      "13x400", "13x600", "13x1000", 
-      "14x600", "14x1000", "14x1500", 
-      "15x600", "15x1000", 
-      "16x600", "16x1000", 
-      "16,5x1000", "16,5x2000", 
-      "17,5x1000", 
-      "18x1000", "18x2000", 
-      "19x1000", 
-      "21.5x1000", "21.5x1200"
-    ];
-  } else {
-    return [
-      "",
-      "7x300", "7x400", 
-      "7,5x200", "7,5x300", "7,5x400", "7,5x600", 
-      "9x150", "9x150 EDP", "9x200", "9x300", "9x300 EDP", "9x400", "9x500", "9x600", "9x800 EDP", "9x1000"
-    ];
-  }
+  return ["", ...getProductionModelOptions(forma, "Setor 3")];
 };
 
 window.renderSequenciaS3 = async function() {
@@ -14068,7 +14120,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.18&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.19&ts=${Date.now()}`);
       }
     });
   }
@@ -14088,6 +14140,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.18";
+  badge.textContent = "v5.19";
   badge.style.display = "inline-block";
 }

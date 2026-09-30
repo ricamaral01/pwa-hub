@@ -7222,3 +7222,43 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
+
+#concretoTipoModal .modal-box {
+  max-height: min(90dvh, 850px);
+  overflow-y: auto;
+}
+
+.concreto-modelo-field {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0;
+  text-align: left;
+}
+
+.concreto-modelo-field label {
+  color: #334155;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.concreto-modelo-field select {
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f172a;
+  font: inherit;
+}
+
+.concreto-modelo-field select:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.concreto-modelo-feedback {
+  color: #b91c1c;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
