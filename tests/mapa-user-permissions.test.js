@@ -26,6 +26,22 @@ test('diegobat recebe Mandril Circular e Inspecao sem ampliar o perfil Montador'
   assert.equal(context.isModeAllowed('INSPECAO'), true);
 });
 
+test('cgomes recebe acesso ao saque de Mandril Circular sem liberar o perfil Montador inteiro', () => {
+  const code = section('const ROLE_PERMISSIONS =', 'function getInspecaoChecklistSections')
+    + section('function getRoleConfig(role)', 'function readAuthSession()');
+  const context = { state: { authUser: { id: 'cgomes', name: 'Cicero Gomes da Silva' } } };
+  vm.runInNewContext(code, context);
+
+  context.setAccessByRole('MONTADOR');
+  assert.equal(context.isModeAllowed('MANDRIL_CIRCULAR'), true);
+  assert.equal(context.isModeAllowed('USUARIOS'), false);
+  assert.equal(context.isModeAllowed('INSPECAO'), true);
+
+  context.state.authUser = { id: 'caraujo', name: 'Cicero Araujo dos Santos' };
+  context.setAccessByRole('MONTADOR');
+  assert.equal(context.isModeAllowed('MANDRIL_CIRCULAR'), false);
+});
+
 test('sessao do mapa preserva o login usado nas permissoes individuais', () => {
   const values = new Map();
   const context = {

@@ -1,16 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.17: acesso do usuario diegobat ao Mandril Circular e Inspecao
+   v5.18: layout mobile e acesso de cgomes ao Mandril Circular
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.17";
+const CACHE_NAME = "mapa-concretagem-v5.18";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.17",
-  "./styles.css?v=v5.17",
-  "./dashboard-defeitos-v4.css?v=v5.17",
-  "./app.js?v=v5.17",
-  "./xlsx.full.min.js?v=v5.17",
+  "./manifest.json?v=v5.18",
+  "./styles.css?v=v5.18",
+  "./dashboard-defeitos-v4.css?v=v5.18",
+  "./app.js?v=v5.18",
+  "./xlsx.full.min.js?v=v5.18",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

@@ -6955,3 +6955,270 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos {
     display: inline-flex;
   }
 }
+
+/* Telas do Mapa: manter o conteúdo dentro da largura do celular. */
+@media (max-width: 768px) {
+  .app-shell,
+  .app-main,
+  .page-content.container,
+  .page-content > section {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .app-main {
+    margin-left: 0 !important;
+  }
+
+  .page-content > section,
+  .page-content > section > * {
+    min-width: 0;
+  }
+
+  .hub-group-section,
+  .hub-icon-grid,
+  .hub-icon-btn,
+  .sheet-box,
+  .ug-form,
+  .ug-list-wrap {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .hub-icon-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .section-title-row,
+  .mi-topbar,
+  .pa-topbar {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .mi-topbar,
+  .pa-topbar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mi-topbar-actions,
+  .pa-topbar .mi-topbar-actions {
+    width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .mi-topbar-actions > button {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .mi-fixed-filters-bar {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-items: end !important;
+    gap: 10px !important;
+    white-space: normal !important;
+    overflow: visible !important;
+  }
+
+  .mi-fixed-filters-bar .mi-filter-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    flex-shrink: 1 !important;
+  }
+
+  .mi-fixed-filters-bar .mi-filter-item .input-field,
+  .mi-fixed-filters-bar .mi-filter-search .input-field {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .mi-fixed-filters-bar .mi-filter-search,
+  .mi-fixed-filters-bar .mi-filter-actions {
+    grid-column: 1 / -1;
+    min-width: 0 !important;
+  }
+
+  .mi-fixed-filters-bar .mi-filter-actions {
+    display: flex !important;
+    flex-wrap: wrap;
+  }
+
+  .manutencao-kpi-grid,
+  .rm-filtros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #viewUsuarios .ug-form .grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #viewAcmpConcretagem select,
+  #viewAcmpConcretagem input {
+    max-width: 100%;
+  }
+
+  #viewAcmpConcretagem .acmp-bar label {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  #viewAcmpConcretagem .acmp-bar select,
+  #viewAcmpConcretagem .acmp-bar input,
+  #viewAcmpConcretagem .acmp-bar button {
+    width: 100%;
+  }
+
+  .mi-tabs-bar,
+  .pa-tabs-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow-x: visible;
+  }
+
+  .mi-tabs-bar .mi-tab-btn,
+  .pa-tabs-bar .mi-tab-btn {
+    min-width: 0;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 720px) {
+  #viewMandrilCircular .mc-table-wrap {
+    overflow-x: hidden;
+  }
+
+  #viewMandrilCircular .mc-table-custom,
+  #viewMandrilCircular .mc-table-custom tbody {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  #viewMandrilCircular .mc-table-custom thead {
+    display: none;
+  }
+
+  #viewMandrilCircular .mc-table-custom tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 12px;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  #viewMandrilCircular .mc-table-custom tbody tr > td:not([colspan]):nth-child(n) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    width: 100% !important;
+    min-width: 0;
+    padding: 8px 10px !important;
+    border: 0;
+    text-align: left !important;
+    overflow-wrap: anywhere;
+  }
+
+  #viewMandrilCircular .mc-table-custom td:not([colspan])::before {
+    content: attr(data-label);
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  #viewMandrilCircular .mc-table-custom td:first-child,
+  #viewMandrilCircular .mc-table-custom td:nth-child(2),
+  #viewMandrilCircular .mc-table-custom td:nth-child(3),
+  #viewMandrilCircular .mc-table-custom td:nth-child(4),
+  #viewMandrilCircular .mc-table-custom td:last-child {
+    grid-column: 1 / -1;
+  }
+
+  #viewMandrilCircular .mc-table-custom td:first-child:not([colspan]) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: #eff6ff;
+    color: #1e3a5f;
+  }
+
+  #viewMandrilCircular .mc-table-custom td:nth-child(5) {
+    border-right: 1px solid #e2e8f0;
+  }
+
+  #viewMandrilCircular .mc-table-custom td:last-child:not([colspan]) {
+    border-top: 1px solid #e2e8f0;
+  }
+
+  #viewMandrilCircular .mc-table-custom td:last-child button {
+    min-height: 40px;
+    width: 100%;
+  }
+
+  #viewMandrilCircular .mc-table-custom td[colspan] {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  #viewUsuarios .ug-list-wrap .sheet-table,
+  #viewUsuarios .ug-list-wrap .sheet-table tbody {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  #viewUsuarios .ug-list-wrap .sheet-table thead {
+    display: none;
+  }
+
+  #viewUsuarios .ug-list-wrap .sheet-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    margin-bottom: 10px;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  #viewUsuarios .ug-list-wrap .sheet-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    padding: 8px 10px;
+    text-align: right !important;
+    overflow-wrap: anywhere;
+  }
+
+  #viewUsuarios .ug-list-wrap .sheet-table td[data-label]::before {
+    content: attr(data-label);
+    flex: 0 0 40%;
+    color: #64748b;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-align: left;
+    text-transform: uppercase;
+  }
+}
+
+@media (max-width: 380px) {
+  .mi-fixed-filters-bar {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}

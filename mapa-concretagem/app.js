@@ -7588,13 +7588,13 @@ async function carregarMandrilCircular() {
     
     htmlTable += `
       <tr style="border-bottom: 1px solid var(--line); transition: background 0.2s;">
-        <td style="padding: 12px 16px;"><strong>${forma}</strong></td>
-        <td style="padding: 12px 16px;">${escapeHtml(programmedModel)}</td>
-        <td style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow))}</td>
-        <td style="padding: 12px 16px;">${tipoConcreto}</td>
-        <td style="padding: 12px 16px;">${horaConcretado}</td>
-        <td style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
-        <td style="padding: 12px 16px; text-align: center;">${actionHtml}</td>
+        <td data-label="Nº Forma" style="padding: 12px 16px;"><strong>${forma}</strong></td>
+        <td data-label="Poste Programado" style="padding: 12px 16px;">${escapeHtml(programmedModel)}</td>
+        <td data-label="Modelo Produzido" style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow))}</td>
+        <td data-label="Tipo de Concreto" style="padding: 12px 16px;">${escapeHtml(tipoConcreto)}</td>
+        <td data-label="Concretado às" style="padding: 12px 16px;">${horaConcretado}</td>
+        <td data-label="Saque previsto (+3h)" style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
+        <td data-label="Ação / Saque Realizado" style="padding: 12px 16px; text-align: center;">${actionHtml}</td>
       </tr>
     `;
   });
@@ -7777,6 +7777,9 @@ function setAccessByRole(role) {
     next.add("MANDRIL_CIRCULAR");
     next.add("INSPECAO");
   }
+  if (String(state.authUser?.id || "").trim().toLowerCase() === "cgomes") {
+    next.add("MANDRIL_CIRCULAR");
+  }
   if (next.has("MONTAGEM_POSTES")) next.add("MONTAGEM_POSTES_DETALHE");
   if (next.has("INSPECAO")) next.add("INSPECAO_DETALHE");
 
@@ -7884,11 +7887,11 @@ async function renderUsuarios() {
   }
   el.ugListaBody.innerHTML = users.map((u) => `
     <tr>
-      <td style="text-align:center">${escapeHtml(u.name)}</td>
-      <td style="text-align:center">${escapeHtml(u.id)}</td>
-      <td style="text-align:center">${escapeHtml(u.setor || "Todos")}</td>
-      <td style="text-align:center">${escapeHtml(getRoleConfig(u.role).label)}</td>
-      <td style="text-align:center"><button class="ug-del-btn" type="button" data-ug-id="${escapeHtml(u.id)}">Excluir</button></td>
+      <td data-label="Nome completo" style="text-align:center">${escapeHtml(u.name)}</td>
+      <td data-label="Login" style="text-align:center">${escapeHtml(u.id)}</td>
+      <td data-label="Setor" style="text-align:center">${escapeHtml(u.setor || "Todos")}</td>
+      <td data-label="Alçada" style="text-align:center">${escapeHtml(getRoleConfig(u.role).label)}</td>
+      <td data-label="Ação" style="text-align:center"><button class="ug-del-btn" type="button" data-ug-id="${escapeHtml(u.id)}">Excluir</button></td>
     </tr>
   `).join("");
 
@@ -11004,7 +11007,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.17", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.18", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -14065,7 +14068,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.17&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.18&ts=${Date.now()}`);
       }
     });
   }
@@ -14085,6 +14088,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.17";
+  badge.textContent = "v5.18";
   badge.style.display = "inline-block";
 }
