@@ -1,16 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.12: adiciona apresentacao 4:3 ao Dashboard Defeitos
+   v5.13: ajusta Mandril Circular para tablet
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.12";
+const CACHE_NAME = "mapa-concretagem-v5.13";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.12",
-  "./styles.css?v=v5.12",
-  "./dashboard-defeitos-v4.css?v=v5.12",
-  "./app.js?v=v5.12",
-  "./xlsx.full.min.js?v=v5.12",
+  "./manifest.json?v=v5.13",
+  "./styles.css?v=v5.13",
+  "./dashboard-defeitos-v4.css?v=v5.13",
+  "./app.js?v=v5.13",
+  "./xlsx.full.min.js?v=v5.13",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

@@ -8409,7 +8409,7 @@ function bindEssentialNavigation() {
   sidebarOverlay?.addEventListener("click", closeMobileSidebar);
   document.querySelectorAll(".nav-item").forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (window.innerWidth <= 768) closeMobileSidebar();
+      if (window.innerWidth <= 1024) closeMobileSidebar();
     });
   });
 
@@ -9465,7 +9465,7 @@ function bindEvents() {
   if (!state.essentialNavigationBound) {
     document.querySelectorAll(".nav-item").forEach((btn) => {
       btn.addEventListener("click", () => {
-        if (window.innerWidth <= 768) closeMobileSidebar();
+        if (window.innerWidth <= 1024) closeMobileSidebar();
       });
     });
   }
@@ -10946,7 +10946,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.12", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.13", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -13937,7 +13937,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.12&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.13&ts=${Date.now()}`);
       }
     });
   }
@@ -13957,6 +13957,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.12";
+  badge.textContent = "v5.13";
   badge.style.display = "inline-block";
 }
