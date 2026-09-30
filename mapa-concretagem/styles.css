@@ -6507,13 +6507,6 @@ td.s4-forma-cell.is-manutencao::after {
   body.mode-dashboard-defeitos .mi-filter-actions {
     grid-column: span 2 !important;
   }
-
-  body.mode-montagem-indicadores .mi-kpis-grid,
-  body.mode-dashboard-defeitos .mi-kpis-grid,
-  body.mode-montagem-indicadores .mi-def-summary-strip,
-  body.mode-dashboard-defeitos .mi-def-summary-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
 }
 
 .mi-defeitos-list {
@@ -6920,5 +6913,45 @@ body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndica
 
   body.mode-montagem-indicadores:not(.mode-dashboard-defeitos) #viewMontagemIndicadores .mi-kpi-val {
     font-size: 2rem;
+  }
+}
+
+/* Dashboards: ocupar toda a area util, inclusive em monitores largos. */
+body:is(.mode-prod-analise, .mode-montagem-indicadores) .app-main {
+  min-width: 0;
+}
+
+body:is(.mode-prod-analise, .mode-montagem-indicadores) .page-content.container {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+}
+
+body.mode-montagem-indicadores #viewMontagemIndicadores,
+body.mode-prod-analise #viewProdAnalise,
+body.mode-dashboard-defeitos #viewDashboardDefeitos {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin-inline: 0;
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  body:is(.mode-prod-analise, .mode-montagem-indicadores) .app-main {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  body:is(.mode-prod-analise, .mode-montagem-indicadores) .sidebar:not(.sidebar-open) {
+    transform: translateX(-100%) !important;
+  }
+
+  body:is(.mode-prod-analise, .mode-montagem-indicadores) .sidebar.sidebar-open {
+    transform: translateX(0) !important;
+  }
+
+  body.mode-prod-analise #viewProdAnalise [data-back-btn] {
+    display: inline-flex;
   }
 }

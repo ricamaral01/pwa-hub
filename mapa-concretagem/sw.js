@@ -1,16 +1,16 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.14: preserva reprovacoes no historico de defeitos
+   v5.15: dashboards ocupam toda a largura no tablet e desktop
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.14";
+const CACHE_NAME = "mapa-concretagem-v5.15";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.14",
-  "./styles.css?v=v5.14",
-  "./dashboard-defeitos-v4.css?v=v5.14",
-  "./app.js?v=v5.14",
-  "./xlsx.full.min.js?v=v5.14",
+  "./manifest.json?v=v5.15",
+  "./styles.css?v=v5.15",
+  "./dashboard-defeitos-v4.css?v=v5.15",
+  "./app.js?v=v5.15",
+  "./xlsx.full.min.js?v=v5.15",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",
