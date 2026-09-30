@@ -1294,6 +1294,8 @@ const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
 const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado";
 const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
 const DASHBOARD_MONTAGEM_SCREEN_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome";
+const DASHBOARD_DEFEITOS_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome";
+const DASHBOARD_DEFEITOS_PRODUCAO_SELECT = "data_fabricacao,setor,forma,modelo";
 const DASHBOARD_SCOPE_OPTIONS = {
   "": "TOTAL",
   "Todos os Setores": "TOTAL",
@@ -1490,6 +1492,7 @@ async function carregarLinhasSupabaseComCache(options) {
   const cacheKey = opts.cacheKey;
   const pageSize = opts.pageSize || 1000;
   const maxPages = opts.maxPages || 20;
+  const pageConcurrency = Math.max(1, Math.min(3, Number(opts.pageConcurrency) || 1));
   const timeoutMs = opts.timeoutMs || MAPA_REPORT_DEFAULT_TIMEOUT_MS;
 
   if (!supabaseClient) {
@@ -1499,10 +1502,16 @@ async function carregarLinhasSupabaseComCache(options) {
 
   const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
   const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  const externalSignal = opts.signal;
+  const abortFromExternal = () => controller?.abort();
+  if (controller && externalSignal) {
+    if (externalSignal.aborted) controller.abort();
+    else externalSignal.addEventListener("abort", abortFromExternal, { once: true });
+  }
 
   try {
     let allRows = [];
-    for (let page = 0; page < maxPages; page++) {
+    const fetchPage = async page => {
       const from = page * pageSize;
       const to = from + pageSize - 1;
       let query = supabaseClient
@@ -1516,8 +1525,29 @@ async function carregarLinhasSupabaseComCache(options) {
 
       const { data, error } = await query;
       if (error) throw error;
-      if (Array.isArray(data) && data.length) allRows = allRows.concat(data);
-      if (!data || data.length < pageSize) break;
+      return Array.isArray(data) ? data : [];
+    };
+    let page = 0;
+    let complete = false;
+    while (page < maxPages) {
+      const batchSize = page === 0 ? 1 : Math.min(pageConcurrency, maxPages - page);
+      const pages = await Promise.all(Array.from({ length: batchSize }, (_, index) => fetchPage(page + index)));
+      let lastPage = false;
+      for (const rows of pages) {
+        if (rows.length) allRows = allRows.concat(rows);
+        if (rows.length < pageSize) {
+          lastPage = true;
+          break;
+        }
+      }
+      if (lastPage) {
+        complete = true;
+        break;
+      }
+      page += batchSize;
+    }
+    if (opts.requireComplete && !complete) {
+      throw new Error(`Limite de ${maxPages * pageSize} linhas atingido em ${opts.table}; reduza o periodo.`);
     }
 
     if (cacheKey) writeMapaReportCache(cacheKey, allRows);
@@ -1531,6 +1561,7 @@ async function carregarLinhasSupabaseComCache(options) {
     throw error;
   } finally {
     if (timer) clearTimeout(timer);
+    if (controller && externalSignal) externalSignal.removeEventListener("abort", abortFromExternal);
   }
 }
 
@@ -8966,9 +8997,15 @@ function bindEvents() {
   document.querySelectorAll(".df-v4-dash-tabs [data-hub-mode]").forEach(btn => {
     btn.addEventListener("click", (event) => setMode(event.currentTarget.dataset.hubMode));
   });
+  let dfPesquisaTimer = null;
   document.getElementById("dfFiltroPesquisa")?.addEventListener("input", () => {
     miPaginaAtual = 1;
-    if (state.mode !== "DASHBOARD_DEFEITOS") aplicarFiltrosEExibirMontagem();
+    clearTimeout(dfPesquisaTimer);
+    if (state.mode === "DASHBOARD_DEFEITOS") {
+      dfPesquisaTimer = setTimeout(() => carregarDashboardDefeitos(), 200);
+    } else {
+      aplicarFiltrosEExibirMontagem();
+    }
   });
 
   document.querySelectorAll("[data-dashboard-presets] [data-date-preset]").forEach(button => {
@@ -11284,7 +11321,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.23", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.24", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12450,32 +12487,43 @@ let dashboardDefeitosBaseRequest = null;
 async function obterBaseDashboardDefeitos(dStart, dEnd, forceRefresh = false) {
   const key = `${dStart}:${dEnd}`;
   if (!forceRefresh && dashboardDefeitosBaseRequest?.key === key) return dashboardDefeitosBaseRequest.promise;
+  if (dashboardDefeitosBaseRequest) dashboardDefeitosBaseRequest.controller?.abort();
   if (!forceRefresh && dashboardDefeitosBaseCache?.key === key) return dashboardDefeitosBaseCache.value;
 
   const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
   const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
-  const request = { key, promise: null };
+  const request = {
+    key,
+    promise: null,
+    controller: typeof AbortController !== "undefined" ? new AbortController() : null
+  };
   dashboardDefeitosBaseRequest = request;
   request.promise = Promise.all([
     carregarLinhasSupabaseComCache({
-      cacheKey: `defeitos:montagem_poste:historico-v1:${dStart}:${dEnd}`,
+      cacheKey: `defeitos:montagem_poste:historico-v2:${dStart}:${dEnd}`,
       table: "montagem_poste",
-      select: DASHBOARD_MONTAGEM_SELECT,
+      select: DASHBOARD_DEFEITOS_MONTAGEM_SELECT,
       pageSize: 1000,
       maxPages: 50,
+      pageConcurrency: 2,
+      requireComplete: true,
       timeoutMs: 60000,
+      signal: request.controller?.signal,
       orderBy: "id",
       orderOptions: { ascending: true },
       applyFilters: query => query
         .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
     }),
     carregarLinhasSupabaseComCache({
-      cacheKey: `defeitos:producao:${dStart}:${dEnd}`,
+      cacheKey: `defeitos:producao:v2:${dStart}:${dEnd}`,
       table: "producao",
-      select: DASHBOARD_PRODUCAO_SELECT,
+      select: DASHBOARD_DEFEITOS_PRODUCAO_SELECT,
       pageSize: 1000,
       maxPages: 50,
+      pageConcurrency: 2,
+      requireComplete: true,
       timeoutMs: 60000,
+      signal: request.controller?.signal,
       orderBy: "id",
       orderOptions: { ascending: true },
       applyFilters: query => query
@@ -12580,6 +12628,7 @@ async function carregarDashboardDefeitos(forceRefresh = false) {
       montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
     );
   } catch (err) {
+    if (requestId !== dashboardRequestSeq[dashboardKind]) return;
     console.error("Erro carregarDashboardDefeitos:", err);
     setSyncStatus("error", "Erro ao carregar dashboard de defeitos.");
   }
@@ -14377,7 +14426,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.23&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.24&ts=${Date.now()}`);
       }
     });
   }
@@ -14397,6 +14446,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.23";
+  badge.textContent = "v5.24";
   badge.style.display = "inline-block";
 }

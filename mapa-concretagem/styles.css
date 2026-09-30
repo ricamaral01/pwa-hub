@@ -7551,3 +7551,176 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos {
     min-width: 0;
   }
 }
+
+/* Alinhamento dos filtros de Montagem e Defeitos em tablet e desktop. */
+@media (min-width: 641px) {
+  body.mode-montagem-indicadores #viewMontagemIndicadores .dashboard-filter-panel.mi-fixed-filters-bar,
+  body.mode-dashboard-defeitos #viewDashboardDefeitos .dashboard-filter-panel.mi-fixed-filters-bar {
+    display: grid !important;
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    align-items: start !important;
+    gap: 12px !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    padding: 14px !important;
+  }
+
+  .dashboard-filter-panel.mi-fixed-filters-bar > * {
+    min-width: 0;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-heading {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-period {
+    display: grid !important;
+    grid-column: span 6;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    align-self: start;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-period .mi-filter-item {
+    min-width: 0 !important;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-period .dashboard-filter-group-label {
+    display: none;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-presets {
+    display: flex;
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-presets button,
+  .dashboard-filter-panel .dashboard-filter-quick button {
+    min-height: 32px;
+    padding: 6px 10px;
+    border: 1px solid #dbe5f2;
+    border-radius: 999px;
+    background: #edf3fb;
+    color: #244260;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 750;
+    cursor: pointer;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-presets button.active,
+  .dashboard-filter-panel .dashboard-filter-presets button[aria-pressed="true"] {
+    border-color: #1761dc;
+    background: #1761dc;
+    color: #fff;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-quick button.active[data-quick-status="A"] {
+    background: #d9f8e9;
+    color: #086444;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-quick button.active[data-quick-status="R"] {
+    background: #ffe0e0;
+    color: #a81d2a;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-quick button.active[data-quick-status="RR"] {
+    background: #fff0c2;
+    color: #855000;
+  }
+
+  .dashboard-filter-panel.mi-fixed-filters-bar .mi-filter-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 5px !important;
+    flex-shrink: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .dashboard-filter-panel.mi-fixed-filters-bar .mi-filter-item label {
+    margin: 0 !important;
+  }
+
+  .dashboard-filter-panel.mi-fixed-filters-bar .mi-filter-item .input-field {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+  }
+
+  body.mode-dashboard-defeitos #viewDashboardDefeitos #dfFiltroSetor {
+    display: block !important;
+  }
+
+  .dashboard-filter-panel.mi-fixed-filters-bar > .mi-filter-item:not(.mi-filter-search):not(.mi-filter-actions) {
+    grid-column: span 3;
+  }
+
+  body.mode-montagem-indicadores #viewMontagemIndicadores .dashboard-filter-panel > .mi-filter-search,
+  body.mode-dashboard-defeitos #viewDashboardDefeitos .dashboard-filter-panel > .mi-filter-search {
+    grid-column: span 6 !important;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-quick {
+    display: grid;
+    grid-column: span 4;
+    align-content: center;
+    gap: 6px;
+    min-height: 65px;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-quick > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  body.mode-montagem-indicadores #viewMontagemIndicadores .dashboard-filter-panel > .mi-filter-actions,
+  body.mode-dashboard-defeitos #viewDashboardDefeitos .dashboard-filter-panel > .mi-filter-actions {
+    display: grid !important;
+    grid-column: span 2 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    align-self: end !important;
+    gap: 8px !important;
+  }
+
+  .dashboard-filter-panel .mi-filter-actions button {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1180px) {
+  .dashboard-filter-panel .dashboard-filter-period {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard-filter-panel.mi-fixed-filters-bar > .mi-filter-item:not(.mi-filter-search):not(.mi-filter-actions) {
+    grid-column: span 6;
+  }
+
+  body.mode-montagem-indicadores #viewMontagemIndicadores .dashboard-filter-panel > .mi-filter-search,
+  body.mode-dashboard-defeitos #viewDashboardDefeitos .dashboard-filter-panel > .mi-filter-search {
+    grid-column: 1 / -1 !important;
+  }
+
+  .dashboard-filter-panel .dashboard-filter-quick {
+    grid-column: span 8;
+  }
+
+  body.mode-montagem-indicadores #viewMontagemIndicadores .dashboard-filter-panel > .mi-filter-actions,
+  body.mode-dashboard-defeitos #viewDashboardDefeitos .dashboard-filter-panel > .mi-filter-actions {
+    grid-column: span 4 !important;
+  }
+}

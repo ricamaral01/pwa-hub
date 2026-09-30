@@ -39,7 +39,7 @@ test('busca do dashboard de defeitos mantém produção ligada ao montador encon
     aplicarLayoutDashboardDefeitos: () => {}, atualizarResumoFiltrosDefeitos: () => {}, setSyncStatus: () => {},
     getDashboardScopeFromSetor: () => 'TOTAL',
     carregarLinhasSupabaseComCache: async ({ table }) => ({ rows: table === 'montagem_poste' ? montage : production, state: 'ONLINE' }),
-    DASHBOARD_MONTAGEM_SELECT: '', DASHBOARD_PRODUCAO_SELECT: '',
+    DASHBOARD_DEFEITOS_MONTAGEM_SELECT: '', DASHBOARD_DEFEITOS_PRODUCAO_SELECT: '',
     removerReprovacoesDuplicadasDashboard: rows => rows,
     getMiDataReferencia: row => row.data_fabricacao,
     isLinhaAvaliacaoDefeitosDashboard: () => true,
