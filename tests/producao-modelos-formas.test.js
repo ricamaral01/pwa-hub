@@ -66,6 +66,19 @@ test('produto gravado acompanha o modelo dimensional escolhido', () => {
   assert.equal(semCodigo.descricaoPoste, '7x300 DT');
 });
 
+test('relatório não troca o modelo escolhido nem atribui código genérico a outro produto', () => {
+  const reportContext = {
+    window: context.window,
+    getPosteFieldsForForma: () => ({ descricaoPoste: 'SC genérico', codigoProduto: 'SC' })
+  };
+  vm.runInNewContext(section('function getRelatorioModelo(row)', 'function getFormaStatusKey('), reportContext);
+  const produzido = { forma: 'SC01', setor: 'Setor 3', modelo: '9x200', codigo_produto: '' };
+  assert.equal(reportContext.getRelatorioModelo(produzido), '9x200');
+  assert.equal(reportContext.getRelatorioCodigoProduto(produzido), '-');
+  produzido.codigo_produto = '123';
+  assert.equal(reportContext.getRelatorioCodigoProduto(produzido), '123');
+});
+
 test('modelo escolhido substitui SC no apontamento e no registro local já liberado', async () => {
   const record = {
     id: 'registro-1', dataFabricacao: '2026-09-30', setor: 'Setor 3',

@@ -6865,6 +6865,9 @@ function getRelatorioModelo(row) {
 function getRelatorioCodigoProduto(row) {
   const forma = String(row.forma_numero || row.forma || "").trim().toUpperCase();
   const catalogo = getPosteFieldsForForma(forma, row.setor || "");
+  if (window.PRODUCTION_MODELS_BY_FORMA?.[row.setor]?.[forma]) {
+    return row.codigo_produto || row.codigoProduto || "-";
+  }
   return row.codigo_produto || row.codigoProduto || catalogo.codigoProduto || "-";
 }
 
@@ -11083,7 +11086,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.19", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.20", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -14120,7 +14123,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.19&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.20&ts=${Date.now()}`);
       }
     });
   }
@@ -14140,6 +14143,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.19";
+  badge.textContent = "v5.20";
   badge.style.display = "inline-block";
 }
