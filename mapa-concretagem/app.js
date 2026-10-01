@@ -7688,6 +7688,35 @@ async function salvarMandrilModeloProduzido(select) {
     : `Modelo da forma ${forma} ainda não confirmado no banco; sincronização pendente.`);
 }
 
+const SAQUE_MANDRIL_API = "https://pcp.concretrack.com.br/api/saques-mandril";
+const SAQUE_MANDRIL_MIGRATED_KEY = "pwa_saque_mandril_db_migrated_v1";
+
+async function migrarSaquesMandrilLocais() {
+  if (localStorage.getItem(SAQUE_MANDRIL_MIGRATED_KEY) === "1") return;
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem("pwa_saque_mandril_v1") || "{}"); } catch (_) {}
+  const registros = Object.entries(saved).map(([key, timestamp]) => {
+    const [data, codigo_forma] = key.split("||");
+    return { data, codigo_forma, data_hora_saque: timestamp };
+  }).filter(item => /^\d{4}-\d{2}-\d{2}$/.test(item.data) && /^SC\d+$/i.test(item.codigo_forma) && !isNaN(Date.parse(item.data_hora_saque)));
+  if (registros.length) {
+    const response = await fetch(`${SAQUE_MANDRIL_API}/importar`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ registros }),
+    });
+    if (!response.ok) throw new Error(`Falha ao importar saques: HTTP ${response.status}`);
+  }
+  localStorage.setItem(SAQUE_MANDRIL_MIGRATED_KEY, "1");
+}
+
+async function buscarSaquesMandril(data) {
+  await migrarSaquesMandrilLocais();
+  const response = await fetch(`${SAQUE_MANDRIL_API}?data=${encodeURIComponent(data)}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`Falha ao consultar saques: HTTP ${response.status}`);
+  const rows = await response.json();
+  return Object.fromEntries(rows.map(row => [`${row.data}||${normalizeForma(row.codigo_forma)}`, row.data_hora_saque]));
+}
+
 async function carregarMandrilCircular() {
   const selectedDate = el.mcFiltroData?.value;
   if (!selectedDate) {
@@ -7785,7 +7814,7 @@ async function carregarMandrilCircular() {
     allS3Forms.push(`SC${String(i).padStart(2, '0')}`);
   }
 
-  // Get local draw times from LocalStorage
+  // O banco é a fonte da lista de saques; o cache local serve durante falhas de rede.
   let saqueData = {};
   const rawSaque = localStorage.getItem("pwa_saque_mandril_v1");
   if (rawSaque) {
@@ -7793,6 +7822,12 @@ async function carregarMandrilCircular() {
       saqueData = JSON.parse(rawSaque);
     } catch (e) {}
   }
+  try {
+    saqueData = await buscarSaquesMandril(selectedDate);
+  } catch (error) {
+    console.warn("Não foi possível sincronizar o Saque Mandril com o PCP:", error);
+  }
+
   const modelosProduzidosData = readMandrilModelosProduzidos();
 
   let htmlTable = "";
@@ -7875,9 +7910,20 @@ async function carregarMandrilCircular() {
   el.mcQtdItens.textContent = totalConcretados;
 }
 
-window.registrarSaque = function(forma) {
+window.registrarSaque = async function(forma) {
   const selectedDate = el.mcFiltroData?.value;
   if (!selectedDate) return;
+  const timestamp = new Date().toISOString();
+  try {
+    const response = await fetch(SAQUE_MANDRIL_API, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: selectedDate, codigo_forma: forma, data_hora_saque: timestamp }),
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  } catch (error) {
+    showMsgBox("Não foi possível salvar o saque no banco. Tente novamente.", "error");
+    return;
+  }
   
   let data = {};
   const raw = localStorage.getItem("pwa_saque_mandril_v1");
@@ -7887,15 +7933,23 @@ window.registrarSaque = function(forma) {
     } catch (e) {}
   }
   
-  data[`${selectedDate}||${normalizeForma(forma)}`] = new Date().toISOString();
+  data[`${selectedDate}||${normalizeForma(forma)}`] = timestamp;
   localStorage.setItem("pwa_saque_mandril_v1", JSON.stringify(data));
   
   carregarMandrilCircular();
 };
 
-window.limparSaque = function(forma) {
+window.limparSaque = async function(forma) {
   const selectedDate = el.mcFiltroData?.value;
   if (!selectedDate) return;
+  try {
+    const query = new URLSearchParams({ data: selectedDate, codigo_forma: forma });
+    const response = await fetch(`${SAQUE_MANDRIL_API}?${query}`, { method: "DELETE" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  } catch (error) {
+    showMsgBox("Não foi possível remover o saque do banco. Tente novamente.", "error");
+    return;
+  }
   
   let data = {};
   const raw = localStorage.getItem("pwa_saque_mandril_v1");
