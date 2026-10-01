@@ -10950,7 +10950,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.80", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v1.80.1", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -13516,10 +13516,14 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
           const nextStatus = result === "SEGREGADO" ? "R" : "RR";
           try {
             if (!supabaseClient || !normRow.id) throw new Error("Banco de inspeções indisponível.");
-            const { error } = await supabaseClient.from("montagem_poste")
+            const { data: savedRow, error } = await supabaseClient.from("montagem_poste")
               .update({ status_montagem: nextStatus, checklists: nextChecklists })
-              .eq("id", normRow.id);
+              .eq("id", normRow.id)
+              .eq("status_montagem", "R")
+              .select("id,status_montagem,checklists")
+              .maybeSingle();
             if (error) throw error;
+            if (!savedRow) throw new Error("O registro foi alterado por outra sessão; atualize e tente novamente.");
             const localDb = readMontagemPostesDb();
             if (localDb.postes[normRow.id]) {
               localDb.postes[normRow.id].statusMontagem = nextStatus;
@@ -13982,7 +13986,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.80&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v1.80.1&ts=${Date.now()}`);
       }
     });
   }
@@ -14002,6 +14006,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.80";
+  badge.textContent = "v1.80.1";
   badge.style.display = "inline-block";
 }

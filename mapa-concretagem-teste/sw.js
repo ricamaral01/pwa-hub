@@ -3,13 +3,13 @@
    v1.79: adiciona apresentacao 4:3 ao Dashboard Defeitos
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-teste-v1.80";
+const CACHE_NAME = "mapa-concretagem-teste-v1.80.1";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v1.80",
-  "./styles.css?v=v1.80",
+  "./manifest.json?v=v1.80.1",
+  "./styles.css?v=v1.80.1",
   "./dashboard-defeitos-v4.css?v=v1.79",
-  "./app.js?v=v1.80-teste",
+  "./app.js?v=v1.80.1-teste",
   "./xlsx.full.min.js?v=v1.79",
   "./supabase.js",
   "./chart.min.js",
