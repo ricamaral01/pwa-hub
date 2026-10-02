@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concrefer — Prévia unificada</title>
+  <link rel="stylesheet" href="shell.css">
+  <script defer src="menu.config.js"></script>
+  <script defer src="shell.js"></script>
+</head>
+<body>
+  <div class="desktop-only">
+    <nav id="sidebar"></nav>
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="breadcrumb"><strong>Concrefer</strong><span>/</span><span>Início</span></div>
+        <div class="topbar-actions">
+          <span class="sync-pill"><span class="sync-dot"></span>Sincronizado</span>
+          <span class="user-pill"><span class="avatar">R</span><span><strong>Ricardo</strong><small>Administrador</small></span></span>
+          <button class="exit-button" type="button" aria-label="Sair" title="Sair indisponível nesta prévia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M16 16l4-4-4-4M20 12H9"/></svg></button>
+        </div>
+      </header>
+      <div class="content">
+        <div class="welcome"><div><p class="eyebrow">VISÃO GERAL</p><h1>Olá, Ricardo<span class="accent-mark">.</span></h1><p id="today" class="date"></p></div><span class="preview-tag">PRÉVIA DE LAYOUT</span></div>
+        <section aria-labelledby="sectors-title">
+          <div class="section-heading"><div><h2 id="sectors-title">Setores hoje</h2><p>Planejamento e produção, lado a lado.</p></div><span class="sample-note">Dados ilustrativos nesta prévia</span></div>
+          <div id="sector-cards" class="sector-grid"></div>
+        </section>
+        <section class="shortcuts-section" aria-labelledby="shortcuts-title"><div class="section-heading"><div><h2 id="shortcuts-title">Acesso rápido</h2><p>As rotinas mais usadas em um só lugar.</p></div></div><div id="shortcut-grid" class="shortcut-grid"></div></section>
+        <p class="preview-footnote">Esta é uma prévia visual. Os números não representam dados reais. Os links do Mapa abrem a tela Início atual; escolha a tela desejada no menu interno.</p>
+      </div>
+    </main>
+  </div>
+  <div class="mobile-notice">Prévia disponível só no computador</div>
+</body>
+</html>
