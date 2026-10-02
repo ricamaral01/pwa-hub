@@ -2,312 +2,143 @@ require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
 const sharp = require("sharp");
-const SftpClient = require("ssh2-sftp-client");
-const { createClient } = require("@supabase/supabase-js");
 const { v4: uuidv4 } = require("uuid");
+const fs = require("fs/promises");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = Number(process.env.PORT || 5000);
+const STORAGE_DIR = path.resolve(process.env.PHOTO_STORAGE_DIR || "/opt/mapaproducao-storage");
+const INDEX_FILE = path.join(STORAGE_DIR, "fotos-inspecao.json");
+const ALLOWED_ORIGINS = new Set((process.env.ALLOWED_ORIGINS ||
+  "https://usina.concretrack.com.br,https://dautomacao.com,http://localhost:5500,http://127.0.0.1:5500")
+  .split(",").map((value) => value.trim()).filter(Boolean));
 
-// Enable CORS
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+  const origin = req.get("Origin");
+  if (origin && ALLOWED_ORIGINS.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   }
+  if (req.method === "OPTIONS") return res.sendStatus(204);
   next();
 });
 
-app.use(express.json());
-
-app.use((req, res, next) => {
-  if (/\.(html|js|css|json)$/.test(req.path) || req.path.endsWith("/sw.js")) {
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-    res.setHeader("Pragma", "no-cache");
-    res.setHeader("Expires", "0");
-  }
-  next();
-});
-
-// Servir arquivos estáticos da pasta raiz do Hub (um nível acima)
-app.use(express.static(path.join(__dirname, "..")));
-
-// Initialize Supabase Client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-if (!supabaseUrl || !supabaseKey) {
-  console.error("Erro: SUPABASE_URL e SUPABASE_KEY são obrigatórios no arquivo .env");
-  process.exit(1);
-}
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Multer in-memory storage configuration
-const storage = multer.memoryStorage();
 const upload = multer({
-  storage: storage,
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 15 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|webp/;
-    const mimetype = filetypes.test(file.mimetype);
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    if (mimetype && extname) {
-      return cb(null, true);
-    }
-    cb(new Error("Formato inválido. Apenas JPG, PNG e WEBP são aceitos."));
-  },
-  limits: { fileSize: 15 * 1024 * 1024 } // 15MB limit
+    if (/^image\/(?:jpeg|png|webp)$/.test(file.mimetype)) return cb(null, true);
+    cb(new Error("Formato inválido. Use JPG, PNG ou WEBP."));
+  }
 });
 
-// SFTP Configuration
-const sftpConfig = {
-  host: process.env.SFTP_HOST,
-  port: parseInt(process.env.SFTP_PORT || "22", 10),
-  username: process.env.SFTP_USER,
-  password: process.env.SFTP_PASSWORD,
-  readyTimeout: 15000
-};
-
-if (!sftpConfig.host || !sftpConfig.username || !sftpConfig.password) {
-  console.error("Erro: SFTP_HOST, SFTP_USER e SFTP_PASSWORD sao obrigatorios no arquivo .env");
-  process.exit(1);
+let writeQueue = Promise.resolve();
+async function readIndex() {
+  try {
+    const rows = JSON.parse(await fs.readFile(INDEX_FILE, "utf8"));
+    if (!Array.isArray(rows)) throw new Error("Índice de fotos inválido.");
+    return rows;
+  } catch (error) {
+    if (error.code === "ENOENT") return [];
+    throw error;
+  }
 }
 
-const STORAGE_BASE_PATH = process.env.STORAGE_BASE_PATH || "/opt/mapaproducao-storage";
+function changeIndex(change) {
+  const work = writeQueue.then(async () => {
+    await fs.mkdir(STORAGE_DIR, { recursive: true });
+    const rows = await readIndex();
+    const result = await change(rows);
+    const temp = `${INDEX_FILE}.${process.pid}.tmp`;
+    await fs.writeFile(temp, JSON.stringify(rows), { mode: 0o600 });
+    await fs.rename(temp, INDEX_FILE);
+    return result;
+  });
+  writeQueue = work.catch(() => {});
+  return work;
+}
 
-// StorageService helper methods
-const StorageService = {
-  async connect() {
-    const sftp = new SftpClient();
-    try {
-      await sftp.connect(sftpConfig);
-      return sftp;
-    } catch (err) {
-      if (err.message.includes("Authentication failure")) {
-        throw new Error("Erro de autenticação no servidor SFTP.");
-      } else if (err.code === "ETIMEDOUT" || err.message.includes("timed out")) {
-        throw new Error("Timeout ao conectar ao servidor SFTP.");
-      } else {
-        throw new Error(`Falha de conexão com o servidor SFTP: ${err.message}`);
-      }
-    }
-  },
+function publicPhoto(row) {
+  const { file_name, ...metadata } = row;
+  return { ...metadata, url: `/api/fotos/${encodeURIComponent(row.id)}/arquivo` };
+}
 
-  async uploadFile(remotePath, buffer) {
-    const sftp = await this.connect();
-    try {
-      // Create directories recursively
-      const remoteDir = path.dirname(remotePath).replace(/\\/g, "/");
-      await sftp.mkdir(remoteDir, true);
+app.get("/api/health", (req, res) => res.json({ ok: true }));
 
-      // Upload buffer
-      await sftp.put(buffer, remotePath);
-    } catch (err) {
-      if (err.message.includes("ENOSPC") || err.message.toLowerCase().includes("no space")) {
-        throw new Error("Espaço em disco insuficiente na VPS de Storage.");
-      }
-      throw new Error(`Falha ao enviar arquivo via SFTP: ${err.message}`);
-    } finally {
-      await sftp.end().catch(() => {});
-    }
-  },
-
-  async deleteFile(remotePath) {
-    const sftp = await this.connect();
-    try {
-      const exists = await sftp.exists(remotePath);
-      if (exists) {
-        await sftp.delete(remotePath);
-      }
-    } catch (err) {
-      throw new Error(`Falha ao excluir arquivo via SFTP: ${err.message}`);
-    } finally {
-      await sftp.end().catch(() => {});
-    }
-  }
-};
-
-// Endpoints
-
-// 1. POST: Upload photo
-app.post("/api/inspecoes/:poste_id/fotos", upload.single("foto"), async (req, res) => {
-  const startTime = Date.now();
-  const { poste_id } = req.params;
-  const usuario = req.body.usuario || "sistema";
-
-  if (!req.file) {
-    return res.status(400).json({ error: "Nenhum arquivo enviado." });
-  }
-
+app.post("/api/inspecoes/:poste_id/fotos", upload.single("foto"), async (req, res, next) => {
+  if (!req.file) return res.status(400).json({ error: "Nenhuma foto enviada." });
   try {
-    // Compress and resize using sharp
-    let compressedBuffer;
-    let extension = ".jpg";
-    
-    // We convert everything to JPEG for standardizing, with width max 1600px and 80% quality
-    compressedBuffer = await sharp(req.file.buffer)
+    const id = uuidv4();
+    const fileName = `${id}.jpg`;
+    const filePath = path.join(STORAGE_DIR, fileName);
+    const buffer = await sharp(req.file.buffer).rotate()
       .resize({ width: 1600, withoutEnlargement: true })
-      .jpeg({ quality: 80 })
-      .toBuffer();
-
-    const uuidName = `${uuidv4()}${extension}`;
-
-    // Path structure: {STORAGE_BASE_PATH}/inspecoes/{ano}/{mes}/{dia}/{poste_id}/
-    const now = new Date();
-    const ano = now.getFullYear();
-    const mes = String(now.getMonth() + 1).padStart(2, "0");
-    const dia = String(now.getDate()).padStart(2, "0");
-
-    const relativePath = `inspecoes/${ano}/${mes}/${dia}/${poste_id}/${uuidName}`;
-    const remotePath = `${STORAGE_BASE_PATH}/${relativePath}`.replace(/\\/g, "/");
-
-    // Upload via SFTP
-    await StorageService.uploadFile(remotePath, compressedBuffer);
-
-    // Save metadata to Supabase
-    const { data: dbData, error: dbError } = await supabase
-      .from("fotos_inspecao")
-      .insert({
-        poste_id,
-        arquivo_nome: uuidName,
-        arquivo_path: relativePath,
-        tamanho_bytes: compressedBuffer.length,
-        usuario
-      })
-      .select()
-      .single();
-
-    if (dbError) {
-      throw new Error(`Erro ao salvar metadados no Supabase: ${dbError.message}`);
-    }
-
-    const uploadTime = Date.now() - startTime;
-
-    // Log details
-    console.log(JSON.stringify({
-      logType: "UPLOAD_PHOTO",
-      usuario,
-      date: new Date().toISOString(),
-      fileName: uuidName,
-      uploadTimeMs: uploadTime,
-      result: "SUCCESS",
-      posteId: poste_id,
-      sizeBytes: compressedBuffer.length
-    }));
-
-    res.status(201).json({
-      success: true,
-      data: dbData
-    });
-
-  } catch (err) {
-    const uploadTime = Date.now() - startTime;
-    console.error(JSON.stringify({
-      logType: "UPLOAD_PHOTO",
-      usuario,
-      date: new Date().toISOString(),
-      fileName: req.file.originalname,
-      uploadTimeMs: uploadTime,
-      result: "FAILURE",
-      error: err.message
-    }));
-
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// 2. GET: List photos for an inspection
-app.get("/api/inspecoes/:poste_id/fotos", async (req, res) => {
-  const { poste_id } = req.params;
-
-  try {
-    const { data, error } = await supabase
-      .from("fotos_inspecao")
-      .select("*")
-      .eq("poste_id", poste_id)
-      .order("data_upload", { ascending: true });
-
-    if (error) {
+      .jpeg({ quality: 80 }).toBuffer();
+    await fs.mkdir(STORAGE_DIR, { recursive: true });
+    await fs.writeFile(filePath, buffer, { flag: "wx", mode: 0o600 });
+    const row = {
+      id,
+      poste_id: req.params.poste_id,
+      arquivo_nome: fileName,
+      file_name: fileName,
+      tamanho_bytes: buffer.length,
+      usuario: String(req.body.usuario || "sistema").slice(0, 120),
+      data_upload: new Date().toISOString()
+    };
+    try {
+      await changeIndex((rows) => rows.push(row));
+    } catch (error) {
+      await fs.unlink(filePath).catch(() => {});
       throw error;
     }
-
-    // Map each item to include direct download link structure from VPS if requested
-    // (Serving static files is handled by the VPS on the STORAGE_BASE_PATH, e.g. at http://2.25.163.32/storage/)
-    // Assuming the VPS exposes files at http://2.25.163.32:8081/ or standard port:
-    const baseWebUrl = process.env.STORAGE_WEB_URL || "http://2.25.163.32/storage";
-    const mapped = data.map(item => ({
-      ...item,
-      url: `${baseWebUrl}/${item.arquivo_path}`
-    }));
-
-    res.json({ success: true, data: mapped });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    res.status(201).json({ success: true, data: publicPhoto(row) });
+  } catch (error) { next(error); }
 });
 
-// 3. DELETE: Exclude photo
-app.delete("/api/fotos/:id", async (req, res) => {
-  const { id } = req.params;
-  const usuario = req.query.usuario || "sistema";
-
+app.get("/api/inspecoes/:poste_id/fotos", async (req, res, next) => {
   try {
-    // 1. Get metadata from Supabase
-    const { data: photo, error: getError } = await supabase
-      .from("fotos_inspecao")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
-
-    if (getError) throw getError;
-    if (!photo) {
-      return res.status(404).json({ error: "Foto não encontrada no banco de dados." });
-    }
-
-    // 2. Delete file from VPS Storage
-    const remotePath = `${STORAGE_BASE_PATH}/${photo.arquivo_path}`.replace(/\\/g, "/");
-    await StorageService.deleteFile(remotePath);
-
-    // 3. Delete record from Supabase
-    const { error: deleteError } = await supabase
-      .from("fotos_inspecao")
-      .delete()
-      .eq("id", id);
-
-    if (deleteError) throw deleteError;
-
-    console.log(JSON.stringify({
-      logType: "DELETE_PHOTO",
-      usuario,
-      date: new Date().toISOString(),
-      photoId: id,
-      fileName: photo.arquivo_nome,
-      result: "SUCCESS"
-    }));
-
-    res.json({ success: true, message: "Foto excluída com sucesso." });
-
-  } catch (err) {
-    console.error(JSON.stringify({
-      logType: "DELETE_PHOTO",
-      usuario,
-      date: new Date().toISOString(),
-      photoId: id,
-      result: "FAILURE",
-      error: err.message
-    }));
-
-    res.status(500).json({ error: err.message });
-  }
+    await writeQueue;
+    const rows = (await readIndex()).filter((row) => row.poste_id === req.params.poste_id);
+    res.json({ success: true, data: rows.map(publicPhoto) });
+  } catch (error) { next(error); }
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  res.status(500).json({ error: err.message });
+app.get("/api/fotos/:id/arquivo", async (req, res, next) => {
+  try {
+    await writeQueue;
+    const row = (await readIndex()).find((item) => item.id === req.params.id);
+    if (!row) return res.status(404).json({ error: "Foto não encontrada." });
+    const buffer = await fs.readFile(path.join(STORAGE_DIR, row.file_name));
+    res.setHeader("Content-Type", "image/jpeg");
+    res.setHeader("Cache-Control", "private, max-age=3600");
+    res.send(buffer);
+  } catch (error) { next(error); }
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Servidor de Storage ativo na porta ${PORT}`);
+app.delete("/api/fotos/:id", async (req, res, next) => {
+  try {
+    const row = await changeIndex((rows) => {
+      const index = rows.findIndex((item) => item.id === req.params.id);
+      return index < 0 ? null : rows.splice(index, 1)[0];
+    });
+    if (!row) return res.status(404).json({ error: "Foto não encontrada." });
+    await fs.unlink(path.join(STORAGE_DIR, row.file_name)).catch((error) => {
+      if (error.code !== "ENOENT") throw error;
+    });
+    res.json({ success: true });
+  } catch (error) { next(error); }
 });
+
+app.use((error, req, res, next) => {
+  console.error("Photo API error:", error);
+  res.status(error.code === "LIMIT_FILE_SIZE" ? 413 : 500)
+    .json({ error: error.message || "Falha ao processar foto." });
+});
+
+if (require.main === module) {
+  app.listen(PORT, "127.0.0.1", () => console.log(`Photo API listening on ${PORT}`));
+}
+module.exports = app;

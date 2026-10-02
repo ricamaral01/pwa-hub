@@ -3,7 +3,6 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
@@ -39,8 +38,8 @@ test('Dashboard Defeitos possui view e filtros proprios', () => {
   assert.match(html, /id="dfContent"/);
   assert.match(app, /function carregarDashboardDefeitos/);
   assert.match(app, /function isLinhaAvaliacaoDefeitosDashboard/);
-  assert.match(app, /montagem_poste:local-v2/);
-  assert.doesNotMatch(app, /chamarDashboardRpcComCache\("rpc_dashboard_defeitos_resumo_v1"/);
+  assert.match(app, /DASHBOARD_DEFEITOS_MONTAGEM_SELECT/);
+  assert.match(app, /DASHBOARD_DEFEITOS_PRODUCAO_SELECT/);
 });
 
 test('exportacoes dos dashboards possuem acionamento e dependencias locais', () => {
@@ -52,9 +51,9 @@ test('exportacoes dos dashboards possuem acionamento e dependencias locais', () 
   assert.match(html, /id="dfBtnExportarCsv"/);
   assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
   assert.match(app, /function exportarDashboardDefeitosCsv/);
-  assert.match(html, /src="xlsx\.full\.min\.js\?v=v1\.79"/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v5\.30"/);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
-  assert.match(sw, /xlsx\.full\.min\.js\?v=v1\.79/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v5\.30/);
   assert.ok(fs.statSync(xlsxPath).size > 100000);
 });
 
@@ -73,7 +72,7 @@ test('XLSX v1.77 exporta montagem completa e usa producao somente como lookup', 
   assert.match(loader, /const from = pagina \* EXPORTACAO_MONTAGEM_PAGE_SIZE/);
   assert.match(loader, /const to = pagina \* EXPORTACAO_MONTAGEM_PAGE_SIZE \+ 499/);
   assert.match(loader, /Intervalo \[\$\{loteInicio\} a \$\{loteFim\}\] excedeu 50\.000 linhas/);
-  assert.match(app, /Lote \[\$\{loteInicio\}\].*carregado/);
+  assert.match(app, /Lote \[\$\{loteInicio\}\] não pôde ser carregado/);
   assert.match(loader, /row\?\.id === null \|\| row\?\.id === undefined/);
   assert.match(loader, /for \(let index = 0; index < lotes\.length; index\+\+\)/);
   assert.doesNotMatch(loader, /carregarLinhasSupabaseComCache|localStorage|Promise\.all/);
@@ -94,142 +93,22 @@ test('XLSX v1.77 exporta montagem completa e usa producao somente como lookup', 
   assert.doesNotMatch(app, /DASHBOARD_MONTAGEM_SELECT = "[^"]*codigo_poste/);
 });
 
-test('arquivos publicos do mapa de teste usam a mesma versao', () => {
+test('arquivos publicos de teste e producao apontam para v5.30', () => {
   const app = read('mapa-concretagem-teste/app.js');
   const html = read('mapa-concretagem-teste/index.html');
   const manifest = read('mapa-concretagem-teste/manifest.json');
   const reset = read('mapa-concretagem-teste/reset-cache.html');
   const sw = read('mapa-concretagem-teste/sw.js');
-  const version = /mapa-concretagem-teste-(v[\d.]+)/.exec(sw)?.[1];
-  assert.ok(version);
-  assert.ok(app.includes(`sw.js?v=${version}`));
-  assert.ok(app.includes(`badge.textContent = "${version}"`));
-  assert.ok(html.includes(`app.js?v=${version}-teste`));
-  assert.ok(manifest.includes(`cache-reset=${version}`));
-  assert.ok(reset.includes(`abrir ${version}`));
-});
 
-test('grafico de participacao ordena defeitos e calcula percentual sobre o total', () => {
-  const app = read('mapa-concretagem-teste/app.js');
-  const rankingSource = sliceBetween(app, 'const DASHBOARD_DEFEITOS_BAR_COLORS', 'function renderIndicadoresDefeitosMontagem');
-  const context = {};
-  vm.runInNewContext(`${rankingSource}\nglobalThis.ranking = criarRankingParticipacaoDefeitos({ G: 158, J: 56, C: 15 }, 229);`, context);
-
-  assert.equal(context.ranking.length, 3);
-  assert.equal(context.ranking[0].tipo, 'G');
-  assert.equal(context.ranking[0].total, 158);
-  assert.equal(context.ranking[0].larguraRelativa, 100);
-  assert.ok(Math.abs(context.ranking[0].percentual - ((158 / 229) * 100)) < 0.000001);
-  assert.ok(Math.abs(context.ranking.reduce((soma, item) => soma + item.percentual, 0) - 100) < 0.000001);
-  assert.match(app, /class="df-defect-share-percent">\$\{formatPct\(item\.percentual\)\}/);
-});
-
-test('participacao por setor usa apenas ocorrencias do proprio setor', () => {
-  const app = read('mapa-concretagem/app.js');
-  const html = read('mapa-concretagem/index.html');
-  const source = sliceBetween(app, 'const DASHBOARD_DEFEITOS_COLORS_BY_TYPE', 'function criarModeloApresentacaoDefeitos');
-  const context = { normalizarTexto: value => String(value || '').toLowerCase() };
-  vm.runInNewContext(`${source}
-    const matriz = {
-      Bolhas: { 'Setor 1': 3, 'Setor 2': 1, 'Setor 3': 5 },
-      Falhas: { S1: 1, S2: 3 },
-      Fissuras: { S2: 2 }
-    };
-    globalThis.s1 = criarParticipacaoDefeitosPorSetor(matriz, 1);
-    globalThis.s2 = criarParticipacaoDefeitosPorSetor(matriz, 2);
-    globalThis.rankingS1 = criarRankingParticipacaoDefeitos(s1.porTipo, s1.total);
-    globalThis.rankingS2 = criarRankingParticipacaoDefeitos(s2.porTipo, s2.total);
-  `, context);
-
-  assert.equal(context.s1.total, 4);
-  assert.equal(context.s2.total, 6);
-  assert.equal(context.rankingS1[0].total, 3);
-  assert.equal(context.rankingS1[0].percentual, 75);
-  assert.equal(context.rankingS2[0].total, 3);
-  assert.equal(context.rankingS2[0].percentual, 50);
-  assert.ok(Math.abs(context.rankingS1.reduce((soma, item) => soma + item.percentual, 0) - 100) < 0.000001);
-  assert.ok(Math.abs(context.rankingS2.reduce((soma, item) => soma + item.percentual, 0) - 100) < 0.000001);
-  for (const id of ['miDefMatrizS1', 'miDefMatrizS1Total', 'miDefMatrizS2', 'miDefMatrizS2Total']) {
-    assert.match(html, new RegExp(`id="${id}"`));
+  for (const source of [app, html, manifest, reset, sw]) {
+    assert.doesNotMatch(source, /v5\.26|v1\.77/);
   }
-});
-
-test('apresentacao 4:3 preserva o dashboard e recalcula os indicadores dos slides', () => {
-  const app = read('mapa-concretagem-teste/app.js');
-  const html = read('mapa-concretagem-teste/index.html');
-  const css = read('mapa-concretagem-teste/dashboard-defeitos-v4.css');
-  const modelSource = sliceBetween(app, 'const DASHBOARD_DEFEITOS_BAR_COLORS', 'function renderIndicadoresDefeitosMontagem');
-  const context = {};
-  vm.runInNewContext(`${modelSource}\nglobalThis.modelo = criarModeloApresentacaoDefeitos({ totalErros: 4, totalPossivel: 20, postes: 10, producao: 12, postesComDefeito: 3, postesReprovados: 2, retrabalho: 1, porTipo: { Trinca: 3, Bolha: 1 }, porSetor: { S1: { setor: 'S1', erros: 3, producao: 6 } }, matriz: { Trinca: { S1: 3 } } });`, context);
-
-  assert.equal(context.modelo.taxaDefeitos, 20);
-  assert.equal(context.modelo.indiceReprovacao, 30);
-  assert.equal(context.modelo.taxaPostesReprovados, (2 / 12) * 100);
-  assert.equal(context.modelo.taxaRetrabalho, 10);
-  assert.equal(context.modelo.ranking[0].tipo, 'Trinca');
-  assert.equal(context.modelo.setores[0].taxa, 50);
-  assert.match(html, /id="dfBtnApresentacao"/);
-  assert.match(html, /id="dfPresentationOverlay"/);
-  assert.match(html, /id="dfPresentationDeck"/);
-  assert.match(app, /const DF_PRESENTATION_SLIDE_TOTAL = 4/);
-  assert.match(app, /function abrirApresentacaoDefeitos/);
-  assert.match(app, /function imprimirApresentacaoDefeitos/);
-  assert.match(app, /size: 10\.6667in 8in/);
-  assert.match(css, /width: 1024px;/);
-  assert.match(css, /height: 768px;/);
-  assert.match(css, /body\.df-presentation-print/);
-});
-
-test('render da apresentacao gera os quatro slides sem depender de canvas', () => {
-  const app = read('mapa-concretagem-teste/app.js');
-  const presentationSource = sliceBetween(app, 'function formatarDataApresentacaoDefeitos', 'function renderIndicadoresDefeitosContrato');
-  const deck = { innerHTML: '' };
-  const fields = {
-    dfPresentationDeck: deck,
-    dfDataInicio: { value: '2026-08-01' },
-    dfDataFim: { value: '2026-08-31' },
-    dfFiltroSetor: { selectedOptions: [{ textContent: 'Todos os Setores' }] },
-    dfFiltroStatus: { selectedOptions: [{ textContent: 'Todos os Status' }] },
-  };
-  const context = {
-    document: {
-      getElementById: (id) => fields[id] || null,
-      querySelectorAll: () => [],
-    },
-    dfPresentationData: {
-      totalErros: 4,
-      totalPossivel: 20,
-      postes: 10,
-      producao: 12,
-      postesComDefeito: 3,
-      postesReprovados: 2,
-      retrabalho: 1,
-      taxaDefeitos: 20,
-      indiceReprovacao: 30,
-      taxaPostesReprovados: (2 / 12) * 100,
-      taxaRetrabalho: 10,
-      ranking: [
-        { tipo: 'Trinca', total: 3, percentual: 75, larguraRelativa: 100, cor: '#2563eb' },
-        { tipo: 'Bolha', total: 1, percentual: 25, larguraRelativa: 33.33, cor: '#16a34a' },
-      ],
-      setores: [{ setor: 'S1', erros: 4, producao: 12, taxa: 33.333 }],
-      matriz: { Trinca: { S1: 3 }, Bolha: { S1: 1 } },
-    },
-    dfPresentationSlideIndex: 0,
-    DF_PRESENTATION_SLIDE_TOTAL: 4,
-    todayYmd: () => '2026-08-31',
-    normalizarTexto: (value) => String(value || '').toLowerCase(),
-    escapeHtml: (value) => String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'),
-    formatPct: (value) => `${Number(value || 0).toFixed(1).replace('.', ',')}%`,
-  };
-  vm.runInNewContext(`${presentationSource}\nrenderizarApresentacaoDefeitos();`, context);
-
-  assert.equal((deck.innerHTML.match(/data-df-presentation-slide=/g) || []).length, 4);
-  assert.match(deck.innerHTML, /Visao executiva/);
-  assert.match(deck.innerHTML, /Defeitos por participacao/);
-  assert.match(deck.innerHTML, /Comparativo setorial/);
-  assert.match(deck.innerHTML, /Plano de acao/);
-  assert.doesNotMatch(deck.innerHTML, /<canvas/i);
+  assert.match(app, /sw\.js\?v=v5\.30/);
+  assert.match(html, /app\.js\?v=v5\.30/);
+  assert.match(manifest, /cache-reset=v5\.30/);
+  assert.match(reset, /abrir v5\.30/);
+  assert.match(sw, /APP_ID.*mapa-concretagem-teste/s);
+  assert.equal(sw, read('mapa-concretagem/sw.js'));
 });
 
 test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {

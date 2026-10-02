@@ -120,11 +120,26 @@ function getProductionRecordForForma(forma, setor) {
 
 function formatFormaConcreteBadge(record) {
   const parts = [];
+  if ((record?.setor === "Setor 3" || record?.setor === "Setor 4")
+    && record?.modelo && !/^(SC|DTB|DTBM|DTD)$/i.test(String(record.modelo).trim())) {
+    parts.push(record.modelo);
+  }
   if (record?.concretoTipo) parts.push(record.concretoTipo);
   if (typeof record?.vibrado === "boolean") {
     parts.push(`Vibrado: ${record.vibrado ? "Sim" : "Não"}`);
   }
   return parts.join("\n");
+}
+
+function updateProductionCardBadge(card, setor, modelo, concretoTipo, vibrado) {
+  card.dataset.modelo = modelo;
+  const modelLabel = card.querySelector?.(".lib-btn-model");
+  if (modelLabel) modelLabel.textContent = modelo;
+  const tipoEl = card.querySelector?.(".fc-tipo");
+  if (!tipoEl) return;
+  const badgeText = formatFormaConcreteBadge({ setor, modelo, concretoTipo, vibrado });
+  tipoEl.textContent = badgeText;
+  tipoEl.style.display = badgeText ? "block" : "none";
 }
 
 function getClickedFormsToday() {
@@ -199,19 +214,10 @@ const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_C
 
 function getBackendUrl() {
   const hostname = window.location.hostname;
-  const protocol = window.location.protocol;
-  
   if (hostname === "localhost" || hostname === "127.0.0.1") {
     return "http://localhost:5000/api";
   }
-  
-  // Se for IP da rede local (ex: 192.168.X.X ou 10.X.X.X)
-  if (/^(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(hostname)) {
-    return `${protocol}//${hostname}:5000/api`;
-  }
-  
-  // Produção (VPS)
-  return "http://2.25.163.32:5000/api";
+  return "https://dautomacao.com/api";
 }
 
 const CHECKLIST_INSPECAO_CODIGOS = [
@@ -642,6 +648,39 @@ const SECTOR_FORMS = {
   "Setor 4": { col1: SETOR_4_COL1_FORMS, col2: SETOR_4_COL2_FORMS, col3: SETOR_4_COL3_FORMS }
 };
 
+function getProductionModelOptions(forma, setor, fallbackModel = "") {
+  const forms = SECTOR_FORMS[setor] || {};
+  const item = Object.values(forms).flat().find((entry) => normalizeUpper(entry.forma) === normalizeUpper(forma));
+  const official = window.PRODUCTION_MODELS_BY_FORMA?.[setor]?.[normalizeUpper(forma)];
+  const requiresMatrix = (setor === "Setor 3" && /^SC\d{2}$/.test(normalizeUpper(forma)))
+    || (setor === "Setor 4" && /^DTB(?:M)?\s?\d{2}$|^DTD\s?\d{2}$/.test(normalizeUpper(forma)));
+  const configured = Array.isArray(official) ? official
+    : (requiresMatrix ? [] : (Array.isArray(item?.modelos) ? item.modelos : [item?.modelo || fallbackModel]));
+  const seen = new Set();
+  return configured.map((value) => String(value || "").trim()).filter((value) => {
+    const key = normalizeProductionModelKey(value);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function normalizeProductionModelKey(value) {
+  return normalizeUpper(value).replace(/\s+/g, "").replace(/,/g, ".");
+}
+
+function getProductionProgrammedModel(forma, setor) {
+  if (setor !== "Setor 3") return "";
+  const selectedDate = el.libData?.value || todayYmd();
+  const cacheKey = `${selectedDate}||${normalizeUpper(forma)}||${setor}`;
+  try {
+    const db = JSON.parse(localStorage.getItem("pwa_prog_s3_s4_v1") || "{}");
+    return String(db.programacoes?.[cacheKey]?.modelo || "").trim();
+  } catch {
+    return "";
+  }
+}
+
 function getSectorForms(setor) {
   const forms = SECTOR_FORMS[setor] || SECTOR_FORMS["Setor 2"];
   if (forms.left || forms.right) {
@@ -902,6 +941,8 @@ const el = {
   syncStatus: document.getElementById("syncStatus"),
   concretoTipoModal: document.getElementById("concretoTipoModal"),
   concretoTipoSubtitle: document.getElementById("concretoTipoSubtitle"),
+  concretoModeloSelect: document.getElementById("concretoModeloSelect"),
+  concretoModeloFeedback: document.getElementById("concretoModeloFeedback"),
   concretoTipoOptions: document.getElementById("concretoTipoOptions"),
   concretoTipoCancelBtn: document.getElementById("concretoTipoCancelBtn"),
   concretoVibradoModal: document.getElementById("concretoVibradoModal"),
@@ -925,6 +966,7 @@ const el = {
   kioskLibCheckbox: document.getElementById("kioskLibCheckbox"),
   kioskOdinToggleField: document.getElementById("kioskOdinToggleField"),
   kioskOdinCheckbox: document.getElementById("kioskOdinCheckbox"),
+  btnCorrecaoConcretagem: document.getElementById("btnCorrecaoConcretagem"),
   btnKioskFullscreen: document.getElementById("btnKioskFullscreen"),
   btnKioskSync: document.getElementById("btnKioskSync"),
   btnKioskBack: document.getElementById("btnKioskBack"),
@@ -1130,6 +1172,24 @@ function getPosteFieldsForForma(forma, setor) {
   };
 }
 
+function getProductionPosteFields(forma, setor, modelo, card) {
+  const cardFields = {
+    codigoPoste: card?.dataset?.codigoPoste || "",
+    descricaoPoste: card?.dataset?.descricaoPoste || "",
+    codigoProduto: card?.dataset?.codigoProduto || ""
+  };
+  const base = cardFields.codigoProduto || cardFields.descricaoPoste
+    ? cardFields : getPosteFieldsForForma(forma, setor);
+  if (!window.PRODUCTION_MODELS_BY_FORMA?.[setor]?.[normalizeUpper(forma)]) return base;
+
+  const product = window.PRODUCTION_PRODUCTS_BY_MODEL?.[setor]?.[normalizeProductionModelKey(modelo)];
+  return {
+    codigoPoste: base.codigoPoste,
+    descricaoPoste: product?.descricaoPoste || `${modelo}${setor === "Setor 4" ? " DT" : ""}`,
+    codigoProduto: product?.codigoProduto || ""
+  };
+}
+
 function dateToYmd(value) {
   if (!value) return "";
   if (/^\d{4}-\d{2}-\d{2}$/.test(String(value).trim())) return String(value).trim();
@@ -1225,6 +1285,8 @@ const MAPA_REPORT_DEFAULT_TIMEOUT_MS = 15000;
 const DASHBOARD_PRODUCAO_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado";
 const DASHBOARD_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at";
 const DASHBOARD_MONTAGEM_SCREEN_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome";
+const DASHBOARD_DEFEITOS_MONTAGEM_SELECT = "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome";
+const DASHBOARD_DEFEITOS_PRODUCAO_SELECT = "data_fabricacao,setor,forma,modelo,tipo_concreto,data_hora,status";
 const DASHBOARD_SCOPE_OPTIONS = {
   "": "TOTAL",
   "Todos os Setores": "TOTAL",
@@ -1280,6 +1342,101 @@ function getDashboardFilterValue(name, fallback = "") {
   return legacy ? (legacy.value || fallback) : fallback;
 }
 
+const DASHBOARD_FILTER_FIELDS = {
+  mi: ["DataInicio", "DataFim", "FiltroSetor", "FiltroStatus", "FiltroPesquisa"],
+  df: ["DataInicio", "DataFim", "FiltroSetor", "FiltroStatus", "FiltroPesquisa"],
+  pa: ["DataInicio", "DataFim", "FiltroSetor", "MetaCiclo"]
+};
+const restoredDashboardFilters = new Set();
+
+function getDashboardPresetDates(preset) {
+  const today = new Date(`${todayYmd()}T12:00:00`);
+  const asYmd = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  const start = new Date(today);
+  const end = new Date(today);
+  if (preset === "7" || preset === "30") start.setDate(start.getDate() - Number(preset) + 1);
+  else if (preset === "month") start.setDate(1);
+  else if (preset === "previous") {
+    start.setMonth(start.getMonth() - 1, 1);
+    end.setDate(0);
+  } else if (preset !== "today") return null;
+  return [asYmd(start), asYmd(end)];
+}
+
+function syncDashboardFilterChips(kind) {
+  const start = document.getElementById(`${kind}DataInicio`)?.value;
+  const end = document.getElementById(`${kind}DataFim`)?.value;
+  const activePreset = ["today", "7", "30", "month", "previous"]
+    .find(preset => {
+      const dates = getDashboardPresetDates(preset);
+      return dates[0] === start && dates[1] === end;
+    });
+  document.querySelectorAll(`[data-dashboard-presets="${kind}"] [data-date-preset]`).forEach(button => {
+    const active = button.dataset.datePreset === activePreset;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  const status = document.getElementById(`${kind}FiltroStatus`)?.value;
+  document.querySelectorAll(`[data-dashboard-quick="${kind}"] [data-quick-status]`).forEach(button => {
+    const active = button.dataset.quickStatus === status;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
+function applyDashboardDatePreset(kind, preset) {
+  const dates = getDashboardPresetDates(preset);
+  if (!dates) return;
+  const start = document.getElementById(`${kind}DataInicio`);
+  const end = document.getElementById(`${kind}DataFim`);
+  if (!start || !end) return;
+  [start.value, end.value] = dates;
+  syncDashboardFilterChips(kind);
+  miPaginaAtual = 1;
+  if (kind === "mi") carregarMontagemIndicadores();
+  if (kind === "df") carregarDashboardDefeitos();
+}
+
+function saveDashboardFilter(kind, button) {
+  const fields = DASHBOARD_FILTER_FIELDS[kind];
+  if (!fields) return;
+  const values = Object.fromEntries(fields.map(field => [field, document.getElementById(`${kind}${field}`)?.value || ""]));
+  try {
+    localStorage.setItem(`mapa_dashboard_filtros_${kind}_v1`, JSON.stringify(values));
+    if (button) {
+      button.textContent = "Filtro salvo";
+      setTimeout(() => { button.textContent = "Salvar filtro"; }, 1800);
+    }
+  } catch (error) {
+    if (button) button.textContent = "Não foi possível salvar";
+  }
+}
+
+function clearSavedDashboardFilter(kind) {
+  try {
+    localStorage.removeItem(`mapa_dashboard_filtros_${kind}_v1`);
+  } catch (error) {
+    console.warn("Não foi possível remover o filtro salvo:", error);
+  }
+}
+
+function restoreDashboardFilter(kind) {
+  if (restoredDashboardFilters.has(kind)) return;
+  restoredDashboardFilters.add(kind);
+  try {
+    const saved = JSON.parse(localStorage.getItem(`mapa_dashboard_filtros_${kind}_v1`) || "null");
+    if (saved && typeof saved === "object") {
+      DASHBOARD_FILTER_FIELDS[kind].forEach(field => {
+        const input = document.getElementById(`${kind}${field}`);
+        if (input && typeof saved[field] === "string") input.value = saved[field];
+      });
+    }
+  } catch (error) {
+    console.warn("Filtro salvo inválido:", error);
+  }
+  syncDashboardFilterChips(kind);
+}
+
 function readMapaReportPayloadCache(cacheKey) {
   try {
     const raw = localStorage.getItem(`${MAPA_REPORT_CACHE_PREFIX}:${cacheKey}`);
@@ -1326,6 +1483,7 @@ async function carregarLinhasSupabaseComCache(options) {
   const cacheKey = opts.cacheKey;
   const pageSize = opts.pageSize || 1000;
   const maxPages = opts.maxPages || 20;
+  const pageConcurrency = Math.max(1, Math.min(3, Number(opts.pageConcurrency) || 1));
   const timeoutMs = opts.timeoutMs || MAPA_REPORT_DEFAULT_TIMEOUT_MS;
 
   if (!supabaseClient) {
@@ -1335,10 +1493,16 @@ async function carregarLinhasSupabaseComCache(options) {
 
   const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
   const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  const externalSignal = opts.signal;
+  const abortFromExternal = () => controller?.abort();
+  if (controller && externalSignal) {
+    if (externalSignal.aborted) controller.abort();
+    else externalSignal.addEventListener("abort", abortFromExternal, { once: true });
+  }
 
   try {
     let allRows = [];
-    for (let page = 0; page < maxPages; page++) {
+    const fetchPage = async page => {
       const from = page * pageSize;
       const to = from + pageSize - 1;
       let query = supabaseClient
@@ -1352,8 +1516,29 @@ async function carregarLinhasSupabaseComCache(options) {
 
       const { data, error } = await query;
       if (error) throw error;
-      if (Array.isArray(data) && data.length) allRows = allRows.concat(data);
-      if (!data || data.length < pageSize) break;
+      return Array.isArray(data) ? data : [];
+    };
+    let page = 0;
+    let complete = false;
+    while (page < maxPages) {
+      const batchSize = page === 0 ? 1 : Math.min(pageConcurrency, maxPages - page);
+      const pages = await Promise.all(Array.from({ length: batchSize }, (_, index) => fetchPage(page + index)));
+      let lastPage = false;
+      for (const rows of pages) {
+        if (rows.length) allRows = allRows.concat(rows);
+        if (rows.length < pageSize) {
+          lastPage = true;
+          break;
+        }
+      }
+      if (lastPage) {
+        complete = true;
+        break;
+      }
+      page += batchSize;
+    }
+    if (opts.requireComplete && !complete) {
+      throw new Error(`Limite de ${maxPages * pageSize} linhas atingido em ${opts.table}; reduza o periodo.`);
     }
 
     if (cacheKey) writeMapaReportCache(cacheKey, allRows);
@@ -1367,6 +1552,7 @@ async function carregarLinhasSupabaseComCache(options) {
     throw error;
   } finally {
     if (timer) clearTimeout(timer);
+    if (controller && externalSignal) externalSignal.removeEventListener("abort", abortFromExternal);
   }
 }
 
@@ -2679,44 +2865,52 @@ function renderizarRelatorioTratativaDefeitos() {
     });
   });
 
-  // 2. Mapear ocorrências do banco de Montagem de Postes (readMontagemPostesDb)
-  Object.values(montagemPostes).forEach(p => {
-    const statusStr = String(p.statusMontagem || p.status || "").toUpperCase();
-    const isDefeito = statusStr === "REPROVADO" || statusStr === "RETRABALHO" || Boolean(p.motivoRecusa || p.motivo_recusa);
-    if (!isDefeito) return;
-
-    const codigo = String(p.motivoRecusa || p.motivo_recusa || "A").trim().toUpperCase();
+  // 2. Mapear cada reprovacao concluida, incluindo as anteriores ao retrabalho.
+  const tratativasMigradas = new Set();
+  removerReprovacoesDuplicadasDashboard(Object.values(montagemPostes)).forEach(p => {
+    if (!p.finalizadoEm && !p.finalizado_em) return;
+    const row = {
+      ...p,
+      status_montagem: p.statusMontagem || p.status_montagem || p.status,
+      motivo_recusa: p.motivoRecusa || p.motivo_recusa || ""
+    };
+    const ocorrencias = obterOcorrenciasDefeitosRegistradosLinha(row);
     const dataProd = p.dataFabricacao || p.data_fabricacao || todayYmd();
     const setor = p.setor || "Setor 3";
     const forma = p.formaNumero || p.forma_numero || "-";
-    const idKey = `INC_MNT_${dataProd}_${setor}_${forma}_${codigo}`;
+    ocorrencias.forEach(({ codigo, descricao }, index) => {
+      const codigoDefeito = String(codigo || "SEM_CODIGO").trim().toUpperCase();
+      const legacyId = `INC_MNT_${dataProd}_${setor}_${forma}_${codigoDefeito}`;
+      const idKey = `INC_MNT_${encodeURIComponent(String(p.key || p.id || legacyId))}_${index}`;
+      const infoDefeito = getDefeitoInfo(codigoDefeito);
+      const tratativaSalva = savedTratativas[idKey] || savedTratativas[legacyId] || {};
+      if (savedTratativas[legacyId]) tratativasMigradas.add(legacyId);
 
-    const infoDefeito = getDefeitoInfo(codigo);
-    const tratativaSalva = savedTratativas[idKey] || {};
-
-    listaOcorrenciasMap[idKey] = {
-      id: idKey,
-      data_fabricacao: dataProd,
-      setor: setor,
-      forma_numero: forma,
-      modelo: p.modelo || "-",
-      codigo_defeito: codigo,
-      descricao_defeito: infoDefeito.descricao,
-      classificacao: infoDefeito.classificacao,
-      responsavel_designado: infoDefeito.responsavel,
-      responsaveis_lista: infoDefeito.responsaveisLista || [],
-      acao_recomendada: infoDefeito.acao,
-      status_tratativa: tratativaSalva.status_tratativa || "PENDENTE",
-      executado_por: tratativaSalva.executado_por || "",
-      acao_realizada: tratativaSalva.acao_realizada || "",
-      tratado_em: tratativaSalva.tratado_em || "",
-      observacoes_origem: p.observacoesMontagem || p.observacoes || "",
-      updated_at: tratativaSalva.updated_at || p.updated_at || new Date().toISOString()
-    };
+      listaOcorrenciasMap[idKey] = {
+        id: idKey,
+        data_fabricacao: dataProd,
+        setor,
+        forma_numero: forma,
+        modelo: p.modelo || "-",
+        codigo_defeito: codigoDefeito,
+        descricao_defeito: descricao || infoDefeito.descricao,
+        classificacao: infoDefeito.classificacao,
+        responsavel_designado: infoDefeito.responsavel,
+        responsaveis_lista: infoDefeito.responsaveisLista || [],
+        acao_recomendada: infoDefeito.acao,
+        status_tratativa: tratativaSalva.status_tratativa || "PENDENTE",
+        executado_por: tratativaSalva.executado_por || "",
+        acao_realizada: tratativaSalva.acao_realizada || "",
+        tratado_em: tratativaSalva.tratado_em || "",
+        observacoes_origem: p.observacoesMontagem || p.observacoes || "",
+        updated_at: tratativaSalva.updated_at || p.updated_at || new Date().toISOString()
+      };
+    });
   });
 
   // 3. Mapear tratativas manuais salvas no localStorage
   Object.values(savedTratativas).forEach(item => {
+    if (tratativasMigradas.has(item.id)) return;
     if (!listaOcorrenciasMap[item.id]) {
       const infoDefeito = getDefeitoInfo(item.codigo_defeito);
       listaOcorrenciasMap[item.id] = {
@@ -3500,10 +3694,20 @@ function closeConcreteTypePopup() {
 }
 
 function showConcreteTypePopup(forma, setor, card, modelo) {
-  if (!el.concretoTipoModal || !el.concretoTipoOptions || !el.concretoTipoSubtitle) return;
+  if (!el.concretoTipoModal || !el.concretoTipoOptions || !el.concretoTipoSubtitle || !el.concretoModeloSelect) return;
 
   pendingFormaSelection = { forma, setor, card, modelo };
   el.concretoTipoSubtitle.textContent = `Forma ${forma} . ${setor}`;
+  const modelosPermitidos = getProductionModelOptions(forma, setor, modelo);
+  const modeloSalvo = getProductionRecordForForma(forma, setor)?.modelo || "";
+  const candidatos = [modeloSalvo, getProductionProgrammedModel(forma, setor), modelo];
+  const modeloInicial = candidatos.map((value) => modelosPermitidos.find((allowed) => normalizeProductionModelKey(allowed) === normalizeProductionModelKey(value)))
+    .find(Boolean) || (modelosPermitidos.length === 1 ? modelosPermitidos[0] : "");
+  el.concretoModeloSelect.innerHTML = '<option value="" disabled>Selecione o modelo produzido</option>'
+    + modelosPermitidos.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+  el.concretoModeloSelect.value = modeloInicial;
+  el.concretoModeloFeedback.textContent = "";
+  el.concretoModeloSelect.onchange = () => { el.concretoModeloFeedback.textContent = ""; };
 
   const optionsHtml = [
     {
@@ -3560,9 +3764,15 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
     btn.addEventListener("click", async () => {
       const tipo = String(btn.dataset.tipo || "").trim();
       if (tipo) {
+        const modeloProduzido = el.concretoModeloSelect.value;
+        if (!modelosPermitidos.includes(modeloProduzido)) {
+          el.concretoModeloFeedback.textContent = "Selecione um modelo permitido para esta forma.";
+          el.concretoModeloSelect.focus();
+          return;
+        }
         closeConcreteTypePopup();
         const vibrado = await getVibradoValueForConcreteSelection(setor, tipo);
-        await salvarFormaClicada(forma, setor, card, modelo, tipo, vibrado);
+        await salvarFormaClicada(forma, setor, card, modeloProduzido, tipo, vibrado);
       }
     });
   });
@@ -3616,6 +3826,24 @@ function showConcretoVibradoModal() {
   });
 }
 
+async function postToApiWithTimeout(action, payload, timeoutMs = 7000) {
+  let timeoutId;
+  const timeoutResult = new Promise((resolve) => {
+    timeoutId = setTimeout(() => {
+      resolve({ ok: false, timeout: true, error: "Tempo limite de rede excedido" });
+    }, timeoutMs);
+  });
+
+  try {
+    return await Promise.race([
+      postToApi(action, payload),
+      timeoutResult
+    ]);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 async function liberarFormaClicada(forma, setor, card, modelo) {
   setCardState(card, "saving");
 
@@ -3649,15 +3877,7 @@ async function liberarFormaClicada(forma, setor, card, modelo) {
     status: "LIBERADO"
   };
 
-  const apiResult = await postToApi("salvar_forma_click", payload);
-
-  const updateCardBadge = () => {
-    const tipoEl = card.querySelector?.(".fc-tipo");
-    if (!tipoEl) return;
-    const badgeText = formatFormaConcreteBadge({ concretoTipo, vibrado });
-    tipoEl.textContent = badgeText;
-    tipoEl.style.display = badgeText ? "block" : "none";
-  };
+  const apiResult = await postToApiWithTimeout("salvar_forma_click", payload);
 
   const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
   if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
@@ -3745,14 +3965,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
   const dataFabricacao = el.libData?.value || todayYmd();
   const colaborador = getProductionCollaborator();
   const modeloFinal = modelo || card.dataset.modelo || "";
-  const posteFields = {
-    codigoPoste: card.dataset.codigoPoste || "",
-    descricaoPoste: card.dataset.descricaoPoste || "",
-    codigoProduto: card.dataset.codigoProduto || ""
-  };
-  const resolvedPosteFields = posteFields.codigoProduto || posteFields.descricaoPoste
-    ? posteFields
-    : getPosteFieldsForForma(forma, setor);
+  const resolvedPosteFields = getProductionPosteFields(forma, setor, modeloFinal, card);
 
   const payload = {
     dia,
@@ -3769,7 +3982,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     codigo_produto: resolvedPosteFields.codigoProduto
   };
 
-  const apiResult = await postToApi("salvar_forma_click", payload);
+  const apiResult = await postToApiWithTimeout("salvar_forma_click", payload);
 
   const isNetworkFailure = !apiResult.ok && !apiResult.skipped;
   if (apiResult.ok || apiResult.skipped || isNetworkFailure) {
@@ -3795,6 +4008,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     }
     record.concretoTipo = concretoTipo;
     record.vibrado = vibrado;
+    record.modelo = modeloFinal;
     record.codigoPoste = resolvedPosteFields.codigoPoste;
     record.descricaoPoste = resolvedPosteFields.descricaoPoste;
     record.codigoProduto = resolvedPosteFields.codigoProduto;
@@ -3829,14 +4043,14 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
   if (apiResult.ok) {
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
-    updateCardBadge();
+    updateProductionCardBadge(card, setor, modeloFinal, concretoTipo, vibrado);
     updateSectorCounters();
     setSyncStatus("ok", `Forma ${forma} registrada com sucesso.`);
     showLibFeedback(`${forma} — registrado!`, "ok");
   } else if (apiResult.skipped) {
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
-    updateCardBadge();
+    updateProductionCardBadge(card, setor, modeloFinal, concretoTipo, vibrado);
     updateSectorCounters();
     setSyncStatus("warn", "API não configurada. Forma salva localmente.");
     showLibFeedback(`${forma} — salvo localmente.`, "ok");
@@ -3844,7 +4058,7 @@ async function salvarFormaClicada(forma, setor, card, modelo, concretoTipo = "Co
     // Falha de rede: salva localmente mas marca como pendente de sync
     markFormaClicked(forma, setor);
     setCardState(card, "saved");
-    updateCardBadge();
+    updateProductionCardBadge(card, setor, modeloFinal, concretoTipo, vibrado);
     updateSectorCounters();
     setSyncStatus("warn", `Forma ${forma} salva localmente (sem sinal de rede).`);
     showLibFeedback(`${forma} — salvo localmente (offline)`, "warn");
@@ -4034,11 +4248,13 @@ async function fetchPolesForDate(filtroData, setor = "") {
 
       // Find if there is an inspected status for this form
       const insRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa === 'INSPECAO');
-      const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa !== 'INSPECAO');
+      const montRecord = (montagemRows || []).find(m => m.forma_numero === forma && m.setor === latestRow.setor && m.etapa !== 'INSPECAO' && !isHistoricoReprovacao(m));
 
       let modeloFinal = latestRow.modelo || "";
       const normForma = normalizeForma(forma);
-      if ((latestRow.setor === "Setor 3" || latestRow.setor === "Setor 4") && formToModelMap[normForma]) {
+      if ((latestRow.setor === "Setor 3" || latestRow.setor === "Setor 4")
+        && (!modeloFinal || /^(SC|DTB|DTBM|DTD)$/i.test(modeloFinal))
+        && formToModelMap[normForma]) {
         modeloFinal = formToModelMap[normForma];
       }
       if (/^A-?\d+$/i.test(forma)) {
@@ -4297,6 +4513,42 @@ function getMontagemPosteByKey(key) {
   return db.postes[key] || null;
 }
 
+const ETAPA_HISTORICO_REPROVACAO = "HISTORICO_REPROVACAO";
+
+function isHistoricoReprovacao(row) {
+  return String(row?.etapa || "").toUpperCase() === ETAPA_HISTORICO_REPROVACAO;
+}
+
+function getHistoricoReprovacaoKey(key, finalizadoEm) {
+  return `${key}||${ETAPA_HISTORICO_REPROVACAO}||${finalizadoEm}`;
+}
+
+function criarHistoricoReprovacao(poste) {
+  if (!poste?.key || !poste?.finalizadoEm) return null;
+  const status = String(poste.statusMontagem || "").trim().toUpperCase();
+  const checklists = {};
+  Object.entries(poste.checklists || {}).forEach(([sectionId, answers]) => {
+    if (!answers || typeof answers !== "object" || Array.isArray(answers)) return;
+    const rejeitados = Object.fromEntries(Object.entries(answers).filter(([, value]) => value === "nao"));
+    if (Object.keys(rejeitados).length) checklists[sectionId] = rejeitados;
+  });
+  if (!Object.keys(checklists).length && !["R", "RR", "REPROVADO", "RETRABALHO"].includes(status)) return null;
+  return {
+    ...poste,
+    key: getHistoricoReprovacaoKey(poste.key, poste.finalizadoEm),
+    etapa: ETAPA_HISTORICO_REPROVACAO,
+    checklists,
+    pendingSync: true
+  };
+}
+
+async function registrarHistoricoReprovacao(poste) {
+  const historico = criarHistoricoReprovacao(poste);
+  if (!historico) return { synced: true };
+  upsertMontagemPoste(historico);
+  return syncMontagemPosteToApi(historico, ETAPA_HISTORICO_REPROVACAO, { silent: true });
+}
+
 function upsertMontagemPoste(entry) {
   const db = readMontagemPostesDb();
   db.postes[entry.key] = entry;
@@ -4463,16 +4715,35 @@ function fileToBase64(file) {
   });
 }
 
-function setMontagemChecklistPhoto(sectionId, itemId, photoBase64) {
+async function uploadChecklistPhoto(poste, photoBase64) {
+  const response = await fetch(photoBase64);
+  const blob = await response.blob();
+  const form = new FormData();
+  form.append("foto", blob, "inspecao.jpg");
+  form.append("usuario", state.authUser?.name || "sistema");
+  const upload = await fetch(`${getBackendUrl()}/inspecoes/${encodeURIComponent(poste.key)}/fotos`, {
+    method: "POST",
+    body: form
+  });
+  const result = await upload.json();
+  if (!upload.ok || !result.success || !result.data?.url) {
+    throw new Error(result.error || "O servidor não confirmou o salvamento da foto.");
+  }
+  return new URL(result.data.url, getBackendUrl()).href;
+}
+
+async function setMontagemChecklistPhoto(sectionId, itemId, photoBase64) {
   if (!state.montagemPostesAtual) return;
   const current = { ...state.montagemPostesAtual };
+  const photoUrl = await uploadChecklistPhoto(current, photoBase64);
   if (!current.checklists) current.checklists = {};
   if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
 
-  current.checklists[sectionId][itemId + "_photo"] = photoBase64;
+  current.checklists[sectionId][itemId + "_photo"] = photoUrl;
   state.montagemPostesAtual = current;
   upsertMontagemPoste(current);
-  syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+  const sync = await syncMontagemPosteToApi(current, "CHECKLIST", { silent: true });
+  if (!sync.synced) setSyncStatus("warn", "Foto salva; o checklist aguarda sincronização.");
   renderMontagemChecklistSections();
 }
 
@@ -4698,6 +4969,8 @@ async function openMontagemPosteDetalhe(posteBase) {
 
   const isRework = (atual?.statusMontagem === "RR");
 
+  if (isRework) await registrarHistoricoReprovacao(atual);
+
   const merged = {
     key,
     recordId: posteBase.recordId || "",
@@ -4809,6 +5082,7 @@ async function finalizarMontagemPosteAtual() {
       pendingSync: !syncResult.synced
     };
     upsertMontagemPoste(finalEntry);
+    await registrarHistoricoReprovacao(finalEntry);
     state.montagemPostesAtual = finalEntry;
 
     renderMontagemPosteDetalhe();
@@ -5050,6 +5324,8 @@ async function openInspecaoPosteDetalhe(posteBase) {
   }
 
   const isRework = (atual?.statusMontagem === "RR");
+
+  if (isRework) await registrarHistoricoReprovacao(atual);
 
   const merged = {
     key,
@@ -5312,16 +5588,18 @@ function setInspecaoChecklistAnswer(sectionId, itemId, value) {
   renderInspecaoStatusUI();
 }
 
-function setInspecaoChecklistPhoto(sectionId, itemId, photoBase64) {
+async function setInspecaoChecklistPhoto(sectionId, itemId, photoBase64) {
   if (!state.inspecaoPostesAtual) return;
   const current = { ...state.inspecaoPostesAtual };
+  const photoUrl = await uploadChecklistPhoto(current, photoBase64);
   if (!current.checklists) current.checklists = {};
   if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
 
-  current.checklists[sectionId][itemId + "_photo"] = photoBase64;
+  current.checklists[sectionId][itemId + "_photo"] = photoUrl;
   state.inspecaoPostesAtual = current;
   upsertMontagemPoste(current);
-  syncMontagemPosteToApi(current, "INSPECAO", { silent: true }).catch(() => {});
+  const sync = await syncMontagemPosteToApi(current, "INSPECAO", { silent: true });
+  if (!sync.synced) setSyncStatus("warn", "Foto salva; a inspeção aguarda sincronização.");
   renderInspecaoChecklistSections();
 }
 
@@ -5380,6 +5658,7 @@ async function finalizarInspecaoPosteAtual() {
       pendingSync: !syncResult.synced
     };
     upsertMontagemPoste(finalEntry);
+    await registrarHistoricoReprovacao(finalEntry);
     state.inspecaoPostesAtual = finalEntry;
 
     renderInspecaoPosteDetalhe();
@@ -5486,7 +5765,7 @@ function renderDashboardCharts() {
     }
   });
 
-  const montagemCache = db.montagemDashboardCache || [];
+  const montagemCache = (db.montagemDashboardCache || []).filter(row => !isHistoricoReprovacao(row));
   montagemCache.forEach((row) => {
     if (!row.status_montagem) return;
     const d = row.data_fabricacao || "";
@@ -6725,12 +7004,19 @@ function getRelatorioTipoConcreto(row) {
 function getRelatorioModelo(row) {
   const forma = String(row.forma_numero || row.formaNumero || row.forma || "").trim().toUpperCase();
   const catalogo = getPosteFieldsForForma(forma, row.setor || "");
+  if (window.PRODUCTION_MODELS_BY_FORMA?.[row.setor]?.[forma]
+    && row.modelo && !/^(SC|DTB|DTBM|DTD)$/i.test(String(row.modelo).trim())) {
+    return row.modelo;
+  }
   return catalogo.descricaoPoste || row.modelo || row.descricaoPoste || row.descricao_poste || "Sem modelo";
 }
 
 function getRelatorioCodigoProduto(row) {
   const forma = String(row.forma_numero || row.forma || "").trim().toUpperCase();
   const catalogo = getPosteFieldsForForma(forma, row.setor || "");
+  if (window.PRODUCTION_MODELS_BY_FORMA?.[row.setor]?.[forma]) {
+    return row.codigo_produto || row.codigoProduto || "-";
+  }
   return row.codigo_produto || row.codigoProduto || catalogo.codigoProduto || "-";
 }
 
@@ -7224,7 +7510,16 @@ async function enviarRelatorioWhatsapp() {
 function readMandrilModelosProduzidos() {
   try {
     const parsed = JSON.parse(localStorage.getItem(MANDRIL_MODELOS_PRODUZIDOS_KEY) || "{}");
-    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    const normalized = {};
+    Object.entries(parsed).forEach(([key, entry]) => {
+      const [date, forma] = key.split("||");
+      const canonicalKey = date && forma ? getMandrilModeloKey(date, forma) : key;
+      if (!normalized[canonicalKey] || String(entry?.updatedAt || "") >= String(normalized[canonicalKey]?.updatedAt || "")) {
+        normalized[canonicalKey] = entry;
+      }
+    });
+    return normalized;
   } catch {
     return {};
   }
@@ -7235,66 +7530,120 @@ function writeMandrilModelosProduzidos(data) {
 }
 
 function getMandrilModeloKey(dataFabricacao, forma) {
-  return `${dataFabricacao}||${normalizeForma(forma)}`;
+  return `${dataFabricacao}||${normalizeMandrilForma(forma)}`;
+}
+
+function normalizeMandrilForma(forma) {
+  const normalized = normalizeUpper(forma).replace(/[\s-]/g, "");
+  const match = normalized.match(/^SC0*(\d+)$/);
+  return match ? `SC${String(Number(match[1])).padStart(2, "0")}` : normalized;
+}
+
+function getMandrilModeloEntry(data, dataFabricacao, forma) {
+  return data[getMandrilModeloKey(dataFabricacao, forma)];
 }
 
 function getMandrilModeloSalvo(data, dataFabricacao, forma) {
-  const entry = data[getMandrilModeloKey(dataFabricacao, forma)];
+  const entry = getMandrilModeloEntry(data, dataFabricacao, forma);
   return typeof entry === "string" ? entry : (entry?.modelo || "");
 }
 
 function getMandrilModelosPermitidos(forma) {
   const modelos = typeof window.getModelosForFormaS3 === "function"
-    ? window.getModelosForFormaS3(forma)
+    ? window.getModelosForFormaS3(normalizeMandrilForma(forma))
     : [];
   return modelos.filter(Boolean);
 }
 
-function renderMandrilModeloSelect(forma, modeloSelecionado, concretada) {
+function renderMandrilModeloSelect(forma, modeloSelecionado, concretada, producaoId = "", pendingSync = false) {
   if (!concretada) {
     return '<span class="mc-modelo-aguardando">Disponível após concretagem</span>';
   }
 
   const modelosPermitidos = getMandrilModelosPermitidos(forma);
-  const selecionadoValido = modelosPermitidos.find((modelo) => normalizeUpper(modelo) === normalizeUpper(modeloSelecionado)) || "";
+  const selecionadoValido = modelosPermitidos.find((modelo) => normalizeProductionModelKey(modelo) === normalizeProductionModelKey(modeloSelecionado)) || "";
   const options = modelosPermitidos.map((modelo) => (
     `<option value="${escapeHtml(modelo)}"${modelo === selecionadoValido ? " selected" : ""}>${escapeHtml(modelo)}</option>`
   )).join("");
 
   return `
     <div class="mc-modelo-field">
-      <select class="mc-modelo-select" data-mc-forma="${escapeHtml(forma)}" aria-label="Modelo produzido na forma ${escapeHtml(forma)}">
+      <select class="mc-modelo-select" data-mc-forma="${escapeHtml(forma)}" data-mc-producao-id="${escapeHtml(producaoId)}" aria-label="Modelo produzido na forma ${escapeHtml(forma)}">
         <option value="" disabled${selecionadoValido ? "" : " selected"}>Selecione o produzido</option>
         ${options}
       </select>
-      <span class="mc-modelo-status" aria-live="polite"></span>
+      <span class="mc-modelo-status${pendingSync ? " is-local" : ""}" aria-live="polite">${pendingSync ? "Pendente de sincronização" : ""}</span>
     </div>
   `;
 }
 
-async function sincronizarMandrilModelosPendentes(selectedDate) {
-  if (!hasApiConfigured() || !navigator.onLine) return;
+async function persistirMandrilModeloNaConcretagem(dataFabricacao, forma, modelo, producaoId = "") {
+  const formaCanonica = normalizeMandrilForma(forma);
+  let id = producaoId;
+  if (!id) {
+    const { data: rows, error } = await supabaseClient.from("producao")
+      .select("id")
+      .eq("data_fabricacao", dataFabricacao)
+      .eq("setor", "Setor 3")
+      .eq("forma", formaCanonica)
+      .eq("status", "LIBERADO")
+      .order("data_hora", { ascending: false, nullsFirst: false })
+      .limit(1);
+    if (error) throw error;
+    id = rows?.[0]?.id;
+  }
+  if (!id) throw new Error(`Concretagem da forma ${formaCanonica} não encontrada no banco.`);
 
+  const product = getProductionPosteFields(formaCanonica, "Setor 3", modelo);
+  const { data: updatedRows, error } = await supabaseClient.from("producao")
+    .update({
+      modelo,
+      descricao_poste: product.descricaoPoste || modelo,
+      codigo_produto: product.codigoProduto || null
+    })
+    .eq("id", id)
+    .eq("data_fabricacao", dataFabricacao)
+    .eq("setor", "Setor 3")
+    .eq("status", "LIBERADO")
+    .select("id,modelo,descricao_poste,codigo_produto");
+  if (error) throw error;
+  const saved = updatedRows?.[0];
+  if (!saved || normalizeProductionModelKey(saved.modelo) !== normalizeProductionModelKey(modelo)) {
+    throw new Error(`O modelo da forma ${formaCanonica} não foi confirmado no banco.`);
+  }
+  return saved;
+}
+
+async function sincronizarMandrilModelosPendentes(selectedDate, rows = []) {
+  if (!hasApiConfigured() || !navigator.onLine) return;
   const savedData = readMandrilModelosProduzidos();
-  const pendingEntries = Object.entries(savedData).filter(([key, entry]) => (
-    key.startsWith(`${selectedDate}||`) && typeof entry === "object" && entry?.pendingSync && entry?.modelo
-  ));
+  const rowsByForma = new Map(rows.map(row => [normalizeMandrilForma(row.forma), row]));
+  const pendingEntries = Object.entries(savedData).filter(([key, entry]) => {
+    if (!key.startsWith(`${selectedDate}||`)) return false;
+    const forma = key.split("||")[1] || "";
+    const modelo = typeof entry === "string" ? entry : entry?.modelo;
+    const row = rowsByForma.get(forma);
+    return modelo && (entry?.pendingSync || (row && (!row.modelo || normalizeUpper(row.modelo) === "SC")));
+  });
   if (!pendingEntries.length) return;
 
   await Promise.all(pendingEntries.map(async ([key, entry]) => {
     const forma = key.split("||")[1] || "";
-    if (!getMandrilModelosPermitidos(forma).includes(entry.modelo)) return;
+    const modelo = typeof entry === "string" ? entry : entry.modelo;
+    const modeloPermitido = getMandrilModelosPermitidos(forma)
+      .find(option => normalizeProductionModelKey(option) === normalizeProductionModelKey(modelo));
+    if (!modeloPermitido) return;
+    const row = rowsByForma.get(forma);
     try {
-      const { error } = await supabaseClient
-        .from("producao")
-        .update({ modelo: entry.modelo })
-        .eq("data_fabricacao", selectedDate)
-        .eq("setor", "Setor 3")
-        .eq("forma", forma)
-        .eq("status", "LIBERADO");
-      if (error) throw error;
-      entry.pendingSync = false;
+      const saved = await persistirMandrilModeloNaConcretagem(selectedDate, forma, modeloPermitido, row?.id || entry?.producaoId || "");
+      savedData[key] = { modelo: modeloPermitido, producaoId: saved.id, pendingSync: false, updatedAt: entry?.updatedAt || new Date().toISOString() };
+      if (row) {
+        row.modelo = saved.modelo;
+        row.codigo_produto = saved.codigo_produto;
+        row.descricao_poste = saved.descricao_poste;
+      }
     } catch (err) {
+      savedData[key] = { modelo, producaoId: row?.id || entry?.producaoId || "", pendingSync: true, updatedAt: entry?.updatedAt || new Date().toISOString() };
       console.warn(`Sincronização pendente do modelo da forma ${forma}:`, err);
     }
   }));
@@ -7303,7 +7652,7 @@ async function sincronizarMandrilModelosPendentes(selectedDate) {
 
 async function salvarMandrilModeloProduzido(select) {
   const selectedDate = el.mcFiltroData?.value;
-  const forma = select?.dataset?.mcForma || "";
+  const forma = normalizeMandrilForma(select?.dataset?.mcForma || "");
   const modelo = select?.value || "";
   const status = select?.closest(".mc-modelo-field")?.querySelector(".mc-modelo-status");
 
@@ -7315,20 +7664,24 @@ async function salvarMandrilModeloProduzido(select) {
 
   select.disabled = true;
   if (status) {
-    status.textContent = "Salvando...";
+    status.textContent = "Salvando no banco...";
     status.className = "mc-modelo-status is-saving";
   }
 
   const savedData = readMandrilModelosProduzidos();
   const storageKey = getMandrilModeloKey(selectedDate, forma);
-  savedData[storageKey] = { modelo, pendingSync: true, updatedAt: new Date().toISOString() };
+  const producaoId = select.dataset.mcProducaoId || "";
+  savedData[storageKey] = { modelo, producaoId, pendingSync: true, updatedAt: new Date().toISOString() };
   writeMandrilModelosProduzidos(savedData);
 
+  const product = getProductionPosteFields(forma, "Setor 3", modelo);
   const db = readDb();
   let localChanged = false;
   db.records.forEach((record) => {
-    if (record.dataFabricacao === selectedDate && record.setor === "Setor 3" && normalizeForma(record.formaNumero || "") === normalizeForma(forma)) {
+    if (record.dataFabricacao === selectedDate && record.setor === "Setor 3" && normalizeMandrilForma(record.formaNumero || "") === forma) {
       record.modelo = modelo;
+      record.descricaoPoste = product.descricaoPoste || modelo;
+      record.codigoProduto = product.codigoProduto || "";
       record.updatedAt = new Date().toISOString();
       localChanged = true;
     }
@@ -7338,17 +7691,11 @@ async function salvarMandrilModeloProduzido(select) {
   let synced = false;
   if (hasApiConfigured() && navigator.onLine) {
     try {
-      const { error } = await supabaseClient
-        .from("producao")
-        .update({ modelo })
-        .eq("data_fabricacao", selectedDate)
-        .eq("setor", "Setor 3")
-        .eq("forma", normalizeForma(forma))
-        .eq("status", "LIBERADO");
-      if (error) throw error;
-      synced = true;
-      savedData[storageKey].pendingSync = false;
+      const saved = await persistirMandrilModeloNaConcretagem(selectedDate, forma, modelo, producaoId);
+      savedData[storageKey] = { ...savedData[storageKey], producaoId: saved.id, pendingSync: false };
       writeMandrilModelosProduzidos(savedData);
+      select.dataset.mcProducaoId = saved.id;
+      synced = true;
     } catch (err) {
       console.error(`Erro ao salvar modelo produzido da forma ${forma}:`, err);
     }
@@ -7356,12 +7703,12 @@ async function salvarMandrilModeloProduzido(select) {
 
   select.disabled = false;
   if (status) {
-    status.textContent = synced ? "Salvo" : "Salvo neste aparelho";
+    status.textContent = synced ? "Salvo no banco" : "Pendente de sincronização";
     status.className = `mc-modelo-status ${synced ? "is-saved" : "is-local"}`;
   }
   setSyncStatus(synced ? "ok" : "warn", synced
-    ? `Modelo produzido da forma ${forma} salvo.`
-    : `Modelo da forma ${forma} salvo localmente; sincronização pendente.`);
+    ? `Modelo produzido da forma ${forma} salvo junto à concretagem.`
+    : `Modelo da forma ${forma} ainda não confirmado no banco; sincronização pendente.`);
 }
 
 const SAQUE_MANDRIL_API = "https://pcp.concretrack.com.br/api/saques-mandril";
@@ -7392,6 +7739,11 @@ async function sincronizarSaquesMandrilLocais(data, saquesBanco) {
   try { migrados = JSON.parse(localStorage.getItem(SAQUE_MANDRIL_MIGRATED_KEY) || "{}"); }
   catch (_) { migrados = {}; }
   const locais = lerSaquesMandrilLocais();
+  // A versão anterior já importou esses registros; não recriar saques removidos em outro aparelho.
+  if (localStorage.getItem("pwa_saque_mandril_db_migrated_v1") === "1"
+      && !localStorage.getItem(SAQUE_MANDRIL_MIGRATED_KEY)) {
+    Object.entries(locais).forEach(([key, timestamp]) => { migrados[key] = timestamp; });
+  }
   Object.entries(locais).forEach(([key, timestamp]) => {
     const [dia, codigoForma] = key.split("||");
     if (dia === data && saquesBanco[`${dia}||${normalizeForma(codigoForma)}`]) migrados[key] = timestamp;
@@ -7496,6 +7848,7 @@ async function carregarMandrilCircular() {
       
       if (Array.isArray(dbRows)) {
         rows = dbRows.map(r => ({
+          id: r.id || "",
           forma: r.forma || r.forma_numero,
           modelo: r.modelo,
           data_hora: r.data_hora || r.updated_at || r.created_at,
@@ -7536,6 +7889,8 @@ async function carregarMandrilCircular() {
     }
   });
 
+  await sincronizarMandrilModelosPendentes(selectedDate, uniqueRows);
+
   // Create lookup maps for quick checking
   const concretedLookup = {};
   uniqueRows.forEach(r => {
@@ -7562,7 +7917,7 @@ async function carregarMandrilCircular() {
     console.warn("Não foi possível consultar os saques do mandril:", error);
     mostrarEstadoSaquesMandril("Sem conexão com os saques; tente atualizar a página.", true);
   }
-  await sincronizarMandrilModelosPendentes(selectedDate);
+
   const modelosProduzidosData = readMandrilModelosProduzidos();
 
   let htmlTable = "";
@@ -7572,9 +7927,10 @@ async function carregarMandrilCircular() {
     const fn = normalizeForma(forma);
     const concretedRow = concretedLookup[fn];
     const programmedModel = formToModelMap[fn] || "--";
+    const savedEntry = getMandrilModeloEntry(modelosProduzidosData, selectedDate, forma);
     const modeloPersistido = getMandrilModeloSalvo(modelosProduzidosData, selectedDate, forma);
     const modeloDoRegistro = concretedRow?.modelo && concretedRow.modelo !== "SC" ? concretedRow.modelo : "";
-    const modeloSelecionado = modeloPersistido || modeloDoRegistro;
+    const modeloSelecionado = savedEntry?.pendingSync ? modeloPersistido : (modeloDoRegistro || modeloPersistido);
     
     let tipoConcreto = "--";
     let horaConcretado = "--:--";
@@ -7599,7 +7955,6 @@ async function carregarMandrilCircular() {
         } catch (e) {}
       }
 
-      // Check if mandrel has been drawn
       actionHtml = renderAcaoSaqueMandril(forma, savedIso);
     } else if (savedIso) {
       actionHtml = renderAcaoSaqueMandril(forma, savedIso);
@@ -7609,13 +7964,13 @@ async function carregarMandrilCircular() {
     
     htmlTable += `
       <tr style="border-bottom: 1px solid var(--line); transition: background 0.2s;">
-        <td style="padding: 12px 16px;"><strong>${forma}</strong></td>
-        <td style="padding: 12px 16px;">${escapeHtml(programmedModel)}</td>
-        <td style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow))}</td>
-        <td style="padding: 12px 16px;">${tipoConcreto}</td>
-        <td style="padding: 12px 16px;">${horaConcretado}</td>
-        <td style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
-        <td data-mc-saque-forma="${forma}" data-mc-concretado="${concretedRow ? "1" : "0"}" style="padding: 12px 16px; text-align: center;">${actionHtml}</td>
+        <td data-label="Nº Forma" style="padding: 12px 16px;"><strong class="mc-forma-numero">${forma}</strong></td>
+        <td data-label="Poste Programado" style="padding: 12px 16px;">${escapeHtml(programmedModel)}</td>
+        <td data-label="Modelo Produzido" style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow), concretedRow?.id || "", Boolean(savedEntry?.pendingSync || (modeloPersistido && !modeloDoRegistro)))}</td>
+        <td data-label="Tipo de Concreto" style="padding: 12px 16px;">${escapeHtml(tipoConcreto)}</td>
+        <td data-label="Concretado às" style="padding: 12px 16px;">${horaConcretado}</td>
+        <td data-label="Saque previsto (+3h)" style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
+        <td data-label="Ação / Saque Realizado" data-mc-saque-forma="${forma}" data-mc-concretado="${concretedRow ? "1" : "0"}" style="padding: 12px 16px; text-align: center;">${actionHtml}</td>
       </tr>
     `;
   });
@@ -7805,6 +8160,13 @@ function getRoleConfig(role) {
 function setAccessByRole(role) {
   const cfg = getRoleConfig(role);
   const next = new Set(["HUB", ...cfg.modes]);
+  if (String(state.authUser?.id || "").trim().toLowerCase() === "diegobat") {
+    next.add("MANDRIL_CIRCULAR");
+    next.add("INSPECAO");
+  }
+  if (String(state.authUser?.id || "").trim().toLowerCase() === "cgomes") {
+    next.add("MANDRIL_CIRCULAR");
+  }
   if (next.has("MONTAGEM_POSTES")) next.add("MONTAGEM_POSTES_DETALHE");
   if (next.has("INSPECAO")) next.add("INSPECAO_DETALHE");
 
@@ -7830,6 +8192,7 @@ function readAuthSession() {
     const parsed = JSON.parse(raw);
     if (!parsed || !parsed.role || !ROLE_PERMISSIONS[parsed.role]) return null;
     return {
+      id: String(parsed.id || "").trim(),
       name: String(parsed.name || "").trim() || "Usuário",
       role: parsed.role,
       roleLabel: getRoleConfig(parsed.role).label,
@@ -7841,7 +8204,7 @@ function readAuthSession() {
 }
 
 function saveAuthSession(auth) {
-  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ name: auth.name, role: auth.role, setor: auth.setor || "Todos" }));
+  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify({ id: auth.id, name: auth.name, role: auth.role, setor: auth.setor || "Todos" }));
 }
 
 function clearAuthSession() {
@@ -7911,11 +8274,11 @@ async function renderUsuarios() {
   }
   el.ugListaBody.innerHTML = users.map((u) => `
     <tr>
-      <td style="text-align:center">${escapeHtml(u.name)}</td>
-      <td style="text-align:center">${escapeHtml(u.id)}</td>
-      <td style="text-align:center">${escapeHtml(u.setor || "Todos")}</td>
-      <td style="text-align:center">${escapeHtml(getRoleConfig(u.role).label)}</td>
-      <td style="text-align:center"><button class="ug-del-btn" type="button" data-ug-id="${escapeHtml(u.id)}">Excluir</button></td>
+      <td data-label="Nome completo" style="text-align:center">${escapeHtml(u.name)}</td>
+      <td data-label="Login" style="text-align:center">${escapeHtml(u.id)}</td>
+      <td data-label="Setor" style="text-align:center">${escapeHtml(u.setor || "Todos")}</td>
+      <td data-label="Alçada" style="text-align:center">${escapeHtml(getRoleConfig(u.role).label)}</td>
+      <td data-label="Ação" style="text-align:center"><button class="ug-del-btn" type="button" data-ug-id="${escapeHtml(u.id)}">Excluir</button></td>
     </tr>
   `).join("");
 
@@ -8000,6 +8363,7 @@ async function salvarNovaSenhaPrimeiroAcesso() {
 
     // Login definitivo
     state.authUser = {
+      id: user.id,
       name: user.name,
       role: user.role,
       roleLabel: getRoleConfig(user.role).label,
@@ -8116,15 +8480,17 @@ function applyRoleVisibility() {
     const mode = btn.dataset.hubMode || "";
     btn.classList.toggle("hidden", !isModeAllowed(mode));
   });
+
   document.querySelectorAll("#viewHub .hub-group-section").forEach((group) => {
     group.classList.toggle("hidden", !group.querySelector(".hub-icon-btn:not(.hidden)"));
   });
 
   const userNameVal = String(state.authUser?.name || "").trim().toLowerCase();
-  const isOdinAllowed = userNameVal.includes("ricardo") || userNameVal.includes("philippe");
-  const odinToggle = document.getElementById("kioskOdinToggleField");
-  if (odinToggle) {
-    odinToggle.classList.toggle("hidden", !isOdinAllowed);
+  const correctionRole = String(state.authUser?.role || "").toUpperCase();
+  const isOdinAllowed = correctionRole === "GERENCIA" || correctionRole === "GESTOR"
+    || userNameVal.includes("ricardo") || userNameVal.includes("philippe");
+  if (el.btnCorrecaoConcretagem) {
+    el.btnCorrecaoConcretagem.classList.toggle("hidden", !isOdinAllowed);
   }
 
   if (el.authUserBadge) {
@@ -8192,6 +8558,7 @@ async function loginWithRole(name, password) {
   }
 
   state.authUser = {
+    id: user.id,
     name: user.name,
     role,
     roleLabel: getRoleConfig(role).label,
@@ -8249,6 +8616,7 @@ function setMode(mode) {
     const paDataFim = document.getElementById("paDataFim");
     if (paDataInicio && !paDataInicio.value) paDataInicio.value = todayYmd();
     if (paDataFim && !paDataFim.value) paDataFim.value = todayYmd();
+    restoreDashboardFilter("pa");
     carregarProdutividadeConcretagem();
   }
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
@@ -8290,6 +8658,7 @@ function setMode(mode) {
     const miDataFim = document.getElementById("miDataFim");
     if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
+    restoreDashboardFilter("mi");
     limparLayoutDashboardDefeitos();
     ativarAbaMontagem("resumo");
     carregarMontagemIndicadores();
@@ -8301,6 +8670,7 @@ function setMode(mode) {
     const dfDataFim = document.getElementById("dfDataFim");
     if (dfDataInicio && !dfDataInicio.value) dfDataInicio.value = todayYmd();
     if (dfDataFim && !dfDataFim.value) dfDataFim.value = todayYmd();
+    restoreDashboardFilter("df");
     aplicarLayoutDashboardDefeitos();
     carregarDashboardDefeitos();
   }
@@ -8327,7 +8697,7 @@ function setMode(mode) {
     if (el.viewTratativaDefeitos) el.viewTratativaDefeitos.classList.remove("hidden");
     renderizarRelatorioTratativaDefeitos();
   }
-  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-dashboard-defeitos", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
+  document.body.classList.remove("mode-hub", "mode-dashboard", "mode-prod-analise", "mode-liberacao", "mode-inspecao", "mode-inspecao-detalhe", "mode-montagem-postes", "mode-montagem-postes-detalhe", "mode-relatorio", "mode-historico", "mode-acmp-concretagem", "mode-usuarios", "mode-montagem-indicadores", "mode-dashboard-defeitos", "mode-sequencia-s3", "mode-mandril-circular", "mode-relatorio-manutencao", "mode-tratativa-defeitos");
   if (mode === "RELATORIO_MANUTENCAO") document.body.classList.add("mode-relatorio-manutencao");
   if (mode === "TRATATIVA_DEFEITOS") document.body.classList.add("mode-tratativa-defeitos");
   if (mode === "HUB") {
@@ -8336,6 +8706,7 @@ function setMode(mode) {
     atualizarIndicadoresManutencaoHub();
   }
   if (mode === "DASHBOARD") document.body.classList.add("mode-dashboard");
+  if (mode === "PROD_ANALISE") document.body.classList.add("mode-prod-analise");
   if (mode === "LIBERACAO" || mode.startsWith("LIBERACAO_")) {
     document.body.classList.add("mode-liberacao");
     applyAutoResponsibleFields();
@@ -8650,6 +9021,7 @@ function bindEvents() {
 
   // Configuração dos Filtros e Abas do Dashboard Montagem
   document.getElementById("miBtnLimparFiltros")?.addEventListener("click", () => {
+    clearSavedDashboardFilter("mi");
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
     if (miDataInicio) miDataInicio.value = todayYmd();
@@ -8696,6 +9068,7 @@ function bindEvents() {
   });
 
   document.getElementById("dfBtnLimparFiltros")?.addEventListener("click", () => {
+    clearSavedDashboardFilter("df");
     const dfDataInicio = document.getElementById("dfDataInicio");
     const dfDataFim = document.getElementById("dfDataFim");
     if (dfDataInicio) dfDataInicio.value = todayYmd();
@@ -8710,8 +9083,12 @@ function bindEvents() {
     sincronizarDfScopeTabs();
     carregarDashboardDefeitos();
   });
-  document.getElementById("dfBtnAtualizar")?.addEventListener("click", carregarDashboardDefeitos);
-  document.getElementById("dfBtnFiltrar")?.addEventListener("click", carregarDashboardDefeitos);
+  document.getElementById("dfBtnAtualizar")?.addEventListener("click", () => carregarDashboardDefeitos(true));
+  document.getElementById("dfBtnFiltrar")?.addEventListener("click", () => carregarDashboardDefeitos());
+  document.getElementById("miDefeitosPorTipo")?.addEventListener("click", event => {
+    const button = event.target.closest(".df-defect-toggle");
+    if (button) alternarDetalheDefeito(button);
+  });
   document.getElementById("dfBtnExportarCsv")?.addEventListener("click", exportarDashboardDefeitosCsv);
   document.getElementById("dfBtnApresentacao")?.addEventListener("click", abrirApresentacaoDefeitos);
   document.getElementById("dfPresentationPrev")?.addEventListener("click", () => exibirSlideApresentacaoDefeitos(dfPresentationSlideIndex - 1));
@@ -8755,9 +9132,39 @@ function bindEvents() {
   document.querySelectorAll(".df-v4-dash-tabs [data-hub-mode]").forEach(btn => {
     btn.addEventListener("click", (event) => setMode(event.currentTarget.dataset.hubMode));
   });
+  let dfPesquisaTimer = null;
   document.getElementById("dfFiltroPesquisa")?.addEventListener("input", () => {
     miPaginaAtual = 1;
-    if (state.mode !== "DASHBOARD_DEFEITOS") aplicarFiltrosEExibirMontagem();
+    clearTimeout(dfPesquisaTimer);
+    if (state.mode === "DASHBOARD_DEFEITOS") {
+      dfPesquisaTimer = setTimeout(() => carregarDashboardDefeitos(), 200);
+    } else {
+      aplicarFiltrosEExibirMontagem();
+    }
+  });
+
+  document.querySelectorAll("[data-dashboard-presets] [data-date-preset]").forEach(button => {
+    button.addEventListener("click", () => {
+      applyDashboardDatePreset(button.closest("[data-dashboard-presets]")?.dataset.dashboardPresets, button.dataset.datePreset);
+    });
+  });
+  ["mi", "df", "pa"].forEach(kind => {
+    ["DataInicio", "DataFim", "FiltroStatus"].forEach(field => {
+      document.getElementById(`${kind}${field}`)?.addEventListener("change", () => syncDashboardFilterChips(kind));
+    });
+    document.getElementById(`${kind}BtnLimparFiltros`)?.addEventListener("click", () => syncDashboardFilterChips(kind));
+  });
+  document.querySelectorAll("[data-dashboard-quick] [data-quick-status]").forEach(button => {
+    button.addEventListener("click", () => {
+      const kind = button.closest("[data-dashboard-quick]")?.dataset.dashboardQuick;
+      const select = document.getElementById(`${kind}FiltroStatus`);
+      if (!select) return;
+      select.value = select.value === button.dataset.quickStatus ? "" : button.dataset.quickStatus;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  });
+  document.querySelectorAll("[data-save-dashboard-filter]").forEach(button => {
+    button.addEventListener("click", () => saveDashboardFilter(button.dataset.saveDashboardFilter, button));
   });
 
   // Troca de Abas do Dashboard
@@ -9020,6 +9427,10 @@ function bindEvents() {
     el.kioskOdinCheckbox.addEventListener("change", () => {
       state.odinMode = el.kioskOdinCheckbox.checked;
       document.body.classList.toggle("odin-active", state.odinMode);
+      if (el.btnCorrecaoConcretagem) {
+        el.btnCorrecaoConcretagem.textContent = state.odinMode ? "Encerrar correção" : "Refazer apontamento errado";
+        el.btnCorrecaoConcretagem.classList.toggle("primary", state.odinMode);
+      }
       if (state.odinMode) {
         if (el.kioskProgCheckbox && el.kioskProgCheckbox.checked) {
           el.kioskProgCheckbox.checked = false;
@@ -9049,6 +9460,10 @@ function bindEvents() {
         el.kioskOdinCheckbox.dispatchEvent(new Event("change"));
       }
     });
+  }
+
+  if (el.btnCorrecaoConcretagem && el.kioskOdinCheckbox) {
+    el.btnCorrecaoConcretagem.addEventListener("click", () => el.kioskOdinCheckbox.click());
   }
 
   if (el.kioskManutencaoCheckbox) {
@@ -9352,10 +9767,10 @@ function bindEvents() {
       try {
         const dataUrl = await fileToDataUrl(file);
         const base64 = await compressImage(dataUrl, 1024, 0.7);
-        setInspecaoChecklistPhoto(sectionId, itemId, base64);
+        await setInspecaoChecklistPhoto(sectionId, itemId, base64);
       } catch (err) {
-        console.error("Erro ao converter e comprimir imagem:", err);
-        showMsgBox("Erro ao carregar a foto. Tente novamente.", "error");
+        console.error("Erro ao salvar foto da inspeção:", err);
+        showMsgBox(`Foto não salva: ${err.message || "Tente novamente."}`, "error");
       }
     });
   }
@@ -9459,10 +9874,10 @@ function bindEvents() {
       try {
         const dataUrl = await fileToDataUrl(file);
         const base64 = await compressImage(dataUrl, 1024, 0.7);
-        setMontagemChecklistPhoto(sectionId, itemId, base64);
+        await setMontagemChecklistPhoto(sectionId, itemId, base64);
       } catch (err) {
-        console.error("Erro ao converter e comprimir imagem:", err);
-        showMsgBox("Erro ao carregar a foto. Tente novamente.", "error");
+        console.error("Erro ao salvar foto da montagem:", err);
+        showMsgBox(`Foto não salva: ${err.message || "Tente novamente."}`, "error");
       }
     });
   }
@@ -9559,7 +9974,7 @@ function bindEvents() {
   if (!state.essentialNavigationBound) {
     document.querySelectorAll(".nav-item").forEach((btn) => {
       btn.addEventListener("click", () => {
-        if (window.innerWidth <= 768) closeMobileSidebar();
+        if (window.innerWidth <= 1024) closeMobileSidebar();
       });
     });
   }
@@ -9572,6 +9987,8 @@ function bindEvents() {
 
   const hubMandrilCircular = document.getElementById("hubMandrilCircular");
   if (hubMandrilCircular) hubMandrilCircular.addEventListener("click", () => setMode("MANDRIL_CIRCULAR"));
+  document.getElementById("hubRelatorio")?.addEventListener("click", () => handleHubModeNavigation("RELATORIO"));
+  document.getElementById("hubHistorico")?.addEventListener("click", () => handleHubModeNavigation("HISTORICO"));
 
   if (el.mcFiltroData) el.mcFiltroData.addEventListener("change", carregarMandrilCircular);
 
@@ -9584,6 +10001,16 @@ function bindEvents() {
   document.getElementById("paBtnAtualizar")?.addEventListener("click", carregarProdutividadeConcretagem);
   const paBtnFiltrar = document.getElementById("paBtnFiltrar");
   if (paBtnFiltrar) paBtnFiltrar.addEventListener("click", () => {
+    setProdutividadeDrawerOpen(false);
+    carregarProdutividadeConcretagem();
+  });
+  document.getElementById("paBtnLimparFiltros")?.addEventListener("click", () => {
+    clearSavedDashboardFilter("pa");
+    document.getElementById("paDataInicio").value = todayYmd();
+    document.getElementById("paDataFim").value = todayYmd();
+    document.getElementById("paFiltroSetor").value = "";
+    document.getElementById("paMetaCiclo").value = "15";
+    syncDashboardFilterChips("pa");
     setProdutividadeDrawerOpen(false);
     carregarProdutividadeConcretagem();
   });
@@ -11040,7 +11467,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v1.80.2", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.30", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11117,11 +11544,12 @@ function getMiDataReferencia(row) {
 
 function isLinhaMontagemDashboard(row) {
   const etapa = String(row?.etapa || "").trim().toUpperCase();
-  if (etapa === "INSPECAO" || etapa === "REINSPECAO") return false;
+  if (etapa === "INSPECAO" || etapa === "REINSPECAO" || isHistoricoReprovacao(row)) return false;
   return Boolean(row?.status_montagem || row?.finalizado_em);
 }
 
 function isLinhaAvaliacaoDefeitosDashboard(row) {
+  if (isHistoricoReprovacao(row)) return true;
   const setor = String(row?.setor || "").trim();
   if (setor === "Setor 3" || setor === "Setor 4") {
     return Boolean(row?.status_montagem || row?.finalizado_em);
@@ -11130,8 +11558,13 @@ function isLinhaAvaliacaoDefeitosDashboard(row) {
 }
 
 function isLinhaDefeitoDashboard(row) {
-  const status = String(row?.status_montagem || "").trim().toUpperCase();
-  return status === "R" || status === "RR" || status === "REPROVADO" || status === "RETRABALHO" || obterItensRejeitadosLinha(row).length > 0;
+  return obterDefeitosRegistradosLinha(row).length > 0;
+}
+
+function removerReprovacoesDuplicadasDashboard(rows) {
+  const historicos = new Set(rows.filter(isHistoricoReprovacao).map(row => String(row.id || row.key || "")));
+  return rows.filter(row => isHistoricoReprovacao(row)
+    || !historicos.has(getHistoricoReprovacaoKey(row.id || row.key, row.finalizado_em || row.finalizadoEm)));
 }
 
 function isMontagemRetrabalhoStatus(status) {
@@ -11199,14 +11632,14 @@ function obterChecklistVisualSectionsLinha(row) {
 }
 
 function contarDefeitosPossiveisLinha(row) {
-  return obterChecklistVisualSectionsLinha(row).reduce((total, sec) => {
+  return obterChecklistSectionsLinha(row).reduce((total, sec) => {
     return total + (Array.isArray(sec.itens) ? sec.itens.length : 0);
   }, 0);
 }
 
 function obterDefeitosPossiveisLinha(row) {
   const itens = [];
-  obterChecklistVisualSectionsLinha(row).forEach(sec => {
+  obterChecklistSectionsLinha(row).forEach(sec => {
     if (!Array.isArray(sec.itens)) return;
     sec.itens.forEach(item => {
       const label = typeof item === "string"
@@ -11221,7 +11654,7 @@ function obterDefeitosPossiveisLinha(row) {
 
 function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
   const resumo = {
-    postes: rows.length,
+    postes: 0,
     producao: producaoRows.length,
     totalPossivel: 0,
     totalErros: 0,
@@ -11229,6 +11662,7 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     postesReprovados: 0,
     retrabalho: 0,
     listaDefeitos: {},
+    ocorrenciasPorTipo: {},
     porForma: {},
     porTipo: {},
     porSetor: {},
@@ -11246,17 +11680,24 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
     resumo.porSetor[setor].producao++;
   });
 
+  const postesVistos = new Set();
+  const postesComDefeitoVistos = new Set();
+  const postesReprovadosVistos = new Set();
+  const postesRetrabalhadosVistos = new Set();
+
   rows.forEach(row => {
     const forma = row.forma_numero || row.formaNumero || "Sem forma";
     const setor = row.setor || "Sem setor";
     const key = `${setor}||${forma}`;
+    const idOriginal = String(row.id || row.key || "").split(`||${ETAPA_HISTORICO_REPROVACAO}||`)[0];
+    const posteKey = String(row.record_id || idOriginal || `${row.data_fabricacao || ""}||${key}||${row.modelo || ""}`);
     const defeitosPossiveis = obterDefeitosPossiveisLinha(row);
     const possiveis = defeitosPossiveis.length;
-    const rejeitados = obterItensRejeitadosLinha(row, { visualOnly: true });
+    const rejeitados = obterDefeitosRegistradosLinha(row);
     const statusMontagem = String(row.status_montagem || "").trim().toUpperCase();
     const isPosteComDefeito = rejeitados.length > 0;
-    const isReprovado = statusMontagem === "R" || statusMontagem === "REPROVADO";
-    const isRetrabalho = row.status_montagem === "RR";
+    const isReprovado = ["R", "RR", "REPROVADO", "RETRABALHO"].includes(statusMontagem);
+    const isRetrabalho = isMontagemRetrabalhoStatus(statusMontagem);
 
     if (!resumo.porForma[key]) {
       resumo.porForma[key] = {
@@ -11275,17 +11716,24 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
 
     resumo.totalPossivel += possiveis;
     resumo.totalErros += rejeitados.length;
-    resumo.porForma[key].postes++;
+    if (!postesVistos.has(posteKey)) {
+      postesVistos.add(posteKey);
+      resumo.postes++;
+      resumo.porForma[key].postes++;
+    }
     resumo.porForma[key].potencial += possiveis;
     resumo.porForma[key].erros += rejeitados.length;
-    if (isPosteComDefeito) {
+    if (isPosteComDefeito && !postesComDefeitoVistos.has(posteKey)) {
+      postesComDefeitoVistos.add(posteKey);
       resumo.postesComDefeito++;
       resumo.porForma[key].postesReprovados++;
     }
-    if (isReprovado) {
+    if (isReprovado && !postesReprovadosVistos.has(posteKey)) {
+      postesReprovadosVistos.add(posteKey);
       resumo.postesReprovados++;
     }
-    if (isRetrabalho) {
+    if (isRetrabalho && !postesRetrabalhadosVistos.has(posteKey)) {
+      postesRetrabalhadosVistos.add(posteKey);
       resumo.retrabalho++;
       resumo.porForma[key].retrabalho++;
     }
@@ -11302,6 +11750,8 @@ function calcularIndicadoresDefeitosMontagem(rows, producaoRows = []) {
 
     rejeitados.forEach(item => {
       resumo.porTipo[item] = (resumo.porTipo[item] || 0) + 1;
+      if (!resumo.ocorrenciasPorTipo[item]) resumo.ocorrenciasPorTipo[item] = [];
+      resumo.ocorrenciasPorTipo[item].push(row);
       if (!resumo.matriz[item]) resumo.matriz[item] = {};
       resumo.matriz[item][setor] = (resumo.matriz[item][setor] || 0) + 1;
       if (normalizarTexto(item).includes("fissura")) {
@@ -11325,20 +11775,44 @@ function formatPct(value) {
   return `${value.toFixed(1).replace(".", ",")}%`;
 }
 
-const DASHBOARD_DEFEITOS_BAR_COLORS = Object.freeze([
-  "#2563eb",
-  "#dc2626",
-  "#16a34a",
-  "#d97706",
-  "#7c3aed",
-  "#0891b2",
-  "#be123c",
-  "#4f46e5",
-  "#65a30d",
-  "#0f766e",
-  "#c2410c",
-  "#9333ea"
-]);
+const DASHBOARD_DEFEITOS_COLORS_BY_TYPE = Object.freeze({
+  "bolhas em excesso": "#2563eb",
+  "falhas de preenchimento": "#dc2626",
+  "pequenas avarias": "#16a34a",
+  "buchas de fixacao": "#d97706",
+  "bolhas fora do padrao": "#7c3aed",
+  "falha na concretagem / armacao aparente": "#0891b2",
+  "fissuras": "#be123c",
+  "prisioneiros (lacre / aterramento)": "#4f46e5",
+  "rebarbas": "#65a30d",
+  "reprovacao sem defeito detalhado": "#0f766e",
+  "homogeneidade do concreto": "#c2410c",
+  "concreto segregado": "#9333ea",
+  "grandes avarias": "#0e7490",
+  "facao obstruido": "#b91c1c",
+  "furacao obstruida (pinos)": "#15803d",
+  "armacao aparente": "#a21caf",
+  "trincas": "#b45309",
+  "tubulacao entupida": "#0369a1",
+  "carimbo de identificacao": "#db2777",
+  "manchas excessivas": "#6d28d9",
+  "acabamento face exposta": "#047857",
+  "acabamento abas": "#9a3412",
+  "montagem do poste": "#4338ca",
+  "liberacao qualidade": "#7e22ce",
+  "codificacao poste": "#0d9488",
+  "limpeza aterramento": "#a16207",
+  "limpeza lacre": "#475569"
+});
+
+function getDashboardDefectColor(tipo) {
+  const key = normalizarTexto(tipo);
+  if (DASHBOARD_DEFEITOS_COLORS_BY_TYPE[key]) return DASHBOARD_DEFEITOS_COLORS_BY_TYPE[key];
+  let hash = 2166136261;
+  for (const char of key) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619);
+  const value = hash >>> 0;
+  return `hsl(${value % 360} ${58 + ((value >>> 9) % 20)}% ${35 + ((value >>> 17) % 15)}%)`;
+}
 
 function criarRankingParticipacaoDefeitos(porTipo = {}, totalErros = 0) {
   const itens = Object.entries(porTipo || {})
@@ -11350,14 +11824,69 @@ function criarRankingParticipacaoDefeitos(porTipo = {}, totalErros = 0) {
   const totalBase = Number.isFinite(totalInformado) && totalInformado > 0 ? totalInformado : totalCalculado;
   const maiorTotal = itens.reduce((maior, [, total]) => Math.max(maior, total), 0);
 
-  return itens.map(([tipo, total], index) => ({
+  return itens.map(([tipo, total]) => ({
     tipo,
     total,
     percentual: totalBase > 0 ? (total / totalBase) * 100 : 0,
     larguraRelativa: maiorTotal > 0 ? (total / maiorTotal) * 100 : 0,
-    cor: DASHBOARD_DEFEITOS_BAR_COLORS[index % DASHBOARD_DEFEITOS_BAR_COLORS.length],
+    cor: getDashboardDefectColor(tipo),
     totalBase
   }));
+}
+
+function criarParticipacaoDefeitosPorSetor(matriz = {}, numeroSetor) {
+  const porTipo = {};
+  let total = 0;
+  Object.entries(matriz || {}).forEach(([tipo, setores]) => {
+    const quantidade = Object.entries(setores || {}).reduce((soma, [setor, valor]) => {
+      const codigo = String(setor).trim().toLowerCase().replace(/\s+/g, "");
+      const numero = Number(valor);
+      return (codigo === `s${numeroSetor}` || codigo === `setor${numeroSetor}`) && Number.isFinite(numero) && numero > 0
+        ? soma + numero
+        : soma;
+    }, 0);
+    if (quantidade > 0) {
+      porTipo[tipo] = quantidade;
+      total += quantidade;
+    }
+  });
+  return { porTipo, total };
+}
+
+function renderParticipacaoDefeitos(containerId, badgeId, porTipo, totalErros, numeroSetor = null) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const rankingDefeitos = criarRankingParticipacaoDefeitos(porTipo, totalErros);
+  const totalBase = rankingDefeitos[0]?.totalBase || Number(totalErros || 0);
+  const badge = document.getElementById(badgeId);
+  if (badge) badge.textContent = `${totalBase} ocorrencia${totalBase === 1 ? "" : "s"}`;
+  if (rankingDefeitos.length === 0) {
+    container.innerHTML = '<div class="muted">Sem defeitos no periodo e filtros selecionados.</div>';
+    return;
+  }
+  const referencia = numeroSetor ? `do Setor ${numeroSetor}` : "do total";
+  container.innerHTML = `
+    <div class="df-defect-share-caption">
+      <strong>${totalBase} ocorrencia${totalBase === 1 ? "" : "s"} ${numeroSetor ? `no Setor ${numeroSetor}` : "no total"}</strong>
+      <span>A barra compara o volume; o percentual usa o total de defeitos ${numeroSetor ? `do Setor ${numeroSetor}` : "do periodo"}.</span>
+    </div>
+    <div class="df-defect-share-list">
+      ${rankingDefeitos.map(item => `
+        <div class="df-defect-share-row" title="${escapeHtml(item.tipo)}: ${item.total} (${formatPct(item.percentual)} ${referencia})">
+          <div class="df-defect-share-label">
+            <i style="--df-defect-color: ${item.cor}" aria-hidden="true"></i>
+            <span>${escapeHtml(item.tipo)}</span>
+          </div>
+          <div class="df-defect-share-track" role="meter" aria-label="${escapeHtml(item.tipo)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${item.percentual.toFixed(1)}">
+            <div class="df-defect-share-fill" style="--df-defect-color: ${item.cor}; --df-defect-width: ${item.larguraRelativa.toFixed(2)}%">
+              <strong>${item.total}</strong>
+            </div>
+            <span class="df-defect-share-percent">${formatPct(item.percentual)}</span>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
 }
 
 function criarModeloApresentacaoDefeitos(indicadores = {}) {
@@ -11403,7 +11932,167 @@ function criarModeloApresentacaoDefeitos(indicadores = {}) {
   };
 }
 
-function renderIndicadoresDefeitosMontagem(indicadores) {
+function criarLinhasDetalheDefeito(ocorrencias = [], producaoRows = []) {
+  const concretagemPorForma = new Map();
+  producaoRows.forEach(row => {
+    const status = normalizeUpper(row.status);
+    if (status !== "LIBERADO" && status !== "CONCRETADO") return;
+    const key = `${String(row.data_fabricacao || "").slice(0, 10)}||${normalizeUpper(row.setor)}||${normalizeForma(row.forma || "")}`;
+    const previous = concretagemPorForma.get(key);
+    if (!previous || String(row.data_hora || "") > String(previous.data_hora || "")) {
+      concretagemPorForma.set(key, row);
+    }
+  });
+
+  return ocorrencias.map(row => {
+    const dataProducao = String(row.data_fabricacao || row.dataFabricacao || "").slice(0, 10);
+    const setor = row.setor || "";
+    const forma = row.forma_numero || row.formaNumero || row.forma || "";
+    const key = `${dataProducao}||${normalizeUpper(setor)}||${normalizeForma(forma)}`;
+    const concretagem = concretagemPorForma.get(key);
+    return {
+      posteKey: String(row.record_id || row.id || key).split(`||${ETAPA_HISTORICO_REPROVACAO}||`)[0],
+      modelo: row.modelo || concretagem?.modelo || "-",
+      forma: forma || "-",
+      dataProducao: dataProducao || concretagem?.data_fabricacao || "",
+      dataInspecao: row.finalizado_em || row.finalizadoEm || row.inicio_inspecao_montagem || row.inicioInspecaoMontagem || "",
+      tipoConcreto: concretagem?.tipo_concreto || "-",
+      setor: setor || "-",
+      horaConcretagem: concretagem?.data_hora || ""
+    };
+  }).sort((a, b) =>
+    String(b.dataProducao || "").localeCompare(String(a.dataProducao || ""))
+    || String(b.dataInspecao || "").localeCompare(String(a.dataInspecao || ""))
+    || String(a.forma || "").localeCompare(String(b.forma || ""), "pt-BR", { numeric: true })
+  );
+}
+
+function formatarDataDetalheDefeito(value) {
+  const raw = String(value || "");
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw.split("-").reverse().join("/");
+  const date = new Date(raw);
+  return Number.isNaN(date.getTime()) ? "-" : date.toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" });
+}
+
+function formatarDataHoraDetalheDefeito(value) {
+  const date = new Date(value || "");
+  return !value || Number.isNaN(date.getTime()) ? "-" : date.toLocaleString("pt-BR", {
+    timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit"
+  });
+}
+
+function formatarHoraDetalheDefeito(value) {
+  const date = new Date(value || "");
+  return !value || Number.isNaN(date.getTime()) ? "-" : date.toLocaleTimeString("pt-BR", {
+    timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit"
+  });
+}
+
+function renderHtmlDetalheDefeito(tipo, ocorrencias, producaoRows) {
+  const linhas = criarLinhasDetalheDefeito(ocorrencias, producaoRows);
+  const postes = new Set(linhas.map(row => row.posteKey)).size;
+  return `
+    <div class="df-defect-detail-head">
+      <strong>${escapeHtml(tipo)}</strong>
+      <span>${linhas.length} ocorrência${linhas.length === 1 ? "" : "s"} em ${postes} poste${postes === 1 ? "" : "s"}</span>
+    </div>
+    <div class="df-defect-detail-scroll">
+      <table class="df-defect-detail-table">
+        <thead><tr><th>Poste / modelo</th><th>Forma</th><th>Produção</th><th>Inspeção</th><th>Tipo de concreto</th><th>Setor</th><th>Hora concretagem</th></tr></thead>
+        <tbody>${linhas.map(row => `
+          <tr>
+            <td data-label="Poste / modelo">${escapeHtml(row.modelo)}</td>
+            <td data-label="Forma">${escapeHtml(row.forma)}</td>
+            <td data-label="Produção">${escapeHtml(formatarDataDetalheDefeito(row.dataProducao))}</td>
+            <td data-label="Inspeção">${escapeHtml(formatarDataHoraDetalheDefeito(row.dataInspecao))}</td>
+            <td data-label="Tipo de concreto">${escapeHtml(row.tipoConcreto)}</td>
+            <td data-label="Setor">${escapeHtml(row.setor)}</td>
+            <td data-label="Hora concretagem">${escapeHtml(formatarHoraDetalheDefeito(row.horaConcretagem))}</td>
+          </tr>
+        `).join("")}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+let dfDefectDetails = { ocorrenciasPorTipo: {}, producaoRows: [], tiposOrdenados: [], queriedKeys: new Set() };
+
+async function carregarConcretagensDetalheDefeito(ocorrencias, detailData) {
+  const conhecidas = new Set(detailData.producaoRows
+    .filter(row => ["LIBERADO", "CONCRETADO"].includes(normalizeUpper(row.status)))
+    .map(row => `${String(row.data_fabricacao || "").slice(0, 10)}||${normalizeUpper(row.setor)}||${normalizeForma(row.forma || "")}`));
+  const pendentes = new Map();
+  ocorrencias.forEach(row => {
+    const data = String(row.data_fabricacao || row.dataFabricacao || "").slice(0, 10);
+    const setor = row.setor || "";
+    const forma = row.forma_numero || row.formaNumero || row.forma || "";
+    const key = `${data}||${normalizeUpper(setor)}||${normalizeForma(forma)}`;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(data) && setor && forma && !conhecidas.has(key) && !detailData.queriedKeys.has(key)) {
+      pendentes.set(key, { data, setor, forma });
+    }
+  });
+  if (!pendentes.size || !hasApiConfigured() || !navigator.onLine) return;
+
+  const dates = [...new Set([...pendentes.values()].map(item => item.data))];
+  const sectors = [...new Set([...pendentes.values()].map(item => item.setor))];
+  const forms = new Set();
+  pendentes.forEach(item => {
+    forms.add(item.forma);
+    const formaNormalizada = normalizeForma(item.forma);
+    forms.add(formaNormalizada);
+    const numerada = formaNormalizada.match(/^([A-Z]*)(\d+)$/);
+    if (numerada) {
+      forms.add(`${numerada[1]}${numerada[2].padStart(2, "0")}`);
+      forms.add(`${numerada[1]}${numerada[2].padStart(3, "0")}`);
+    }
+  });
+  pendentes.forEach((_, key) => detailData.queriedKeys.add(key));
+  try {
+    const result = await carregarLinhasSupabaseComCache({
+      table: "producao",
+      select: DASHBOARD_DEFEITOS_PRODUCAO_SELECT,
+      pageSize: 1000,
+      maxPages: 10,
+      pageConcurrency: 2,
+      requireComplete: true,
+      timeoutMs: 30000,
+      orderBy: "id",
+      orderOptions: { ascending: true },
+      applyFilters: query => query
+        .in("data_fabricacao", dates)
+        .in("setor", sectors)
+        .in("forma", [...forms])
+        .in("status", ["LIBERADO", "CONCRETADO"])
+    });
+    detailData.producaoRows.push(...result.rows);
+  } catch (error) {
+    pendentes.forEach((_, key) => detailData.queriedKeys.delete(key));
+    console.warn("Concretagem indisponível para parte do detalhe de defeitos:", error);
+  }
+}
+
+async function alternarDetalheDefeito(button) {
+  const container = document.getElementById("miDefeitosPorTipo");
+  const index = Number(button?.dataset?.dfDefectIndex);
+  const detailData = dfDefectDetails;
+  const [tipo] = detailData.tiposOrdenados[index] || [];
+  const panel = button && document.getElementById(button.getAttribute("aria-controls"));
+  if (!container || !tipo || !panel) return;
+  const abrir = panel.hidden;
+  container.querySelectorAll(".df-defect-toggle").forEach(item => item.setAttribute("aria-expanded", "false"));
+  container.querySelectorAll(".df-defect-detail").forEach(item => { item.hidden = true; });
+  if (!abrir) return;
+  panel.hidden = false;
+  button.setAttribute("aria-expanded", "true");
+  panel.innerHTML = '<div class="muted">Carregando postes e dados da concretagem...</div>';
+  const ocorrencias = detailData.ocorrenciasPorTipo[tipo] || [];
+  await carregarConcretagensDetalheDefeito(ocorrencias, detailData);
+  if (detailData !== dfDefectDetails || button.getAttribute("aria-expanded") !== "true") return;
+  panel.innerHTML = renderHtmlDetalheDefeito(tipo, ocorrencias, detailData.producaoRows);
+}
+
+function renderIndicadoresDefeitosMontagem(indicadores, producaoRows = []) {
   const taxaNc = indicadores.totalPossivel > 0 ? (indicadores.totalErros / indicadores.totalPossivel) * 100 : 0;
   const indiceReprovacao = indicadores.postes > 0 ? (indicadores.postesComDefeito / indicadores.postes) * 100 : 0;
   const taxaPostesReprovados = indicadores.producao > 0 ? (indicadores.postesReprovados / indicadores.producao) * 100 : 0;
@@ -11430,14 +12119,18 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
 
   const porTipoEl = document.getElementById("miDefeitosPorTipo");
   const tiposOrdenados = Object.entries(indicadores.porTipo).sort((a, b) => b[1] - a[1]);
+  dfDefectDetails = { ocorrenciasPorTipo: indicadores.ocorrenciasPorTipo || {}, producaoRows: [...producaoRows], tiposOrdenados, queriedKeys: new Set() };
   if (porTipoEl) {
     if (tiposOrdenados.length === 0) {
       porTipoEl.innerHTML = '<div class="muted">Nenhum erro encontrado no periodo.</div>';
     } else {
-      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total]) => `
-        <div class="mi-defeito-tipo-row">
-          <span>${escapeHtml(tipo)}</span>
-          <strong>${total}</strong>
+      porTipoEl.innerHTML = tiposOrdenados.map(([tipo, total], index) => `
+        <div class="df-defect-entry">
+          <button type="button" class="mi-defeito-tipo-row df-defect-toggle" data-df-defect-index="${index}" aria-expanded="false" aria-controls="dfDefectDetail${index}">
+            <span>${escapeHtml(tipo)}</span>
+            <span class="df-defect-row-end"><strong>${total}</strong><i aria-hidden="true">⌄</i></span>
+          </button>
+          <div id="dfDefectDetail${index}" class="df-defect-detail" hidden></div>
         </div>
       `).join("");
     }
@@ -11494,38 +12187,11 @@ function renderIndicadoresDefeitosMontagem(indicadores) {
     }
   }
 
-  const matrizEl = document.getElementById("miDefMatriz");
-  if (matrizEl) {
-    const rankingDefeitos = criarRankingParticipacaoDefeitos(indicadores.porTipo, indicadores.totalErros);
-    const totalBase = rankingDefeitos[0]?.totalBase || Number(indicadores.totalErros || 0);
-    setText("miDefMatrizTotal", `${totalBase} ocorrencia${totalBase === 1 ? "" : "s"}`);
-    if (rankingDefeitos.length === 0) {
-      matrizEl.innerHTML = '<div class="muted">Sem defeitos no periodo selecionado.</div>';
-    } else {
-      matrizEl.innerHTML = `
-        <div class="df-defect-share-caption">
-          <strong>${totalBase} ocorrencia${totalBase === 1 ? "" : "s"} no total</strong>
-          <span>A barra compara o volume; o percentual usa o total de defeitos do periodo.</span>
-        </div>
-        <div class="df-defect-share-list">
-          ${rankingDefeitos.map(item => `
-            <div class="df-defect-share-row" title="${escapeHtml(item.tipo)}: ${item.total} (${formatPct(item.percentual)} do total)">
-              <div class="df-defect-share-label">
-                <i style="--df-defect-color: ${item.cor}" aria-hidden="true"></i>
-                <span>${escapeHtml(item.tipo)}</span>
-              </div>
-              <div class="df-defect-share-track" role="meter" aria-label="${escapeHtml(item.tipo)}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${item.percentual.toFixed(1)}">
-                <div class="df-defect-share-fill" style="--df-defect-color: ${item.cor}; --df-defect-width: ${item.larguraRelativa.toFixed(2)}%">
-                  <strong>${item.total}</strong>
-                </div>
-                <span class="df-defect-share-percent">${formatPct(item.percentual)}</span>
-              </div>
-            </div>
-          `).join("")}
-        </div>
-      `;
-    }
-  }
+  renderParticipacaoDefeitos("miDefMatriz", "miDefMatrizTotal", indicadores.porTipo, indicadores.totalErros);
+  [1, 2].forEach(numeroSetor => {
+    const { porTipo, total } = criarParticipacaoDefeitosPorSetor(indicadores.matriz, numeroSetor);
+    renderParticipacaoDefeitos(`miDefMatrizS${numeroSetor}`, `miDefMatrizS${numeroSetor}Total`, porTipo, total, numeroSetor);
+  });
 
   const planoEl = document.getElementById("miDefPlanoAcao");
   if (planoEl) {
@@ -12128,17 +12794,78 @@ async function carregarMontagemIndicadores() {
   }
 }
 
-async function carregarDashboardDefeitos() {
+let dashboardDefeitosBaseCache = null;
+let dashboardDefeitosBaseRequest = null;
+
+async function obterBaseDashboardDefeitos(dStart, dEnd, forceRefresh = false) {
+  const key = `${dStart}:${dEnd}`;
+  if (!forceRefresh && dashboardDefeitosBaseRequest?.key === key) return dashboardDefeitosBaseRequest.promise;
+  if (dashboardDefeitosBaseRequest) dashboardDefeitosBaseRequest.controller?.abort();
+  if (!forceRefresh && dashboardDefeitosBaseCache?.key === key) return dashboardDefeitosBaseCache.value;
+
+  const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
+  const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
+  const request = {
+    key,
+    promise: null,
+    controller: typeof AbortController !== "undefined" ? new AbortController() : null
+  };
+  dashboardDefeitosBaseRequest = request;
+  request.promise = Promise.all([
+    carregarLinhasSupabaseComCache({
+      cacheKey: `defeitos:montagem_poste:historico-v2:${dStart}:${dEnd}`,
+      table: "montagem_poste",
+      select: DASHBOARD_DEFEITOS_MONTAGEM_SELECT,
+      pageSize: 1000,
+      maxPages: 50,
+      pageConcurrency: 2,
+      requireComplete: true,
+      timeoutMs: 60000,
+      signal: request.controller?.signal,
+      orderBy: "id",
+      orderOptions: { ascending: true },
+      applyFilters: query => query
+        .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
+    }),
+    carregarLinhasSupabaseComCache({
+      cacheKey: `defeitos:producao:v3:${dStart}:${dEnd}`,
+      table: "producao",
+      select: DASHBOARD_DEFEITOS_PRODUCAO_SELECT,
+      pageSize: 1000,
+      maxPages: 50,
+      pageConcurrency: 2,
+      requireComplete: true,
+      timeoutMs: 60000,
+      signal: request.controller?.signal,
+      orderBy: "id",
+      orderOptions: { ascending: true },
+      applyFilters: query => query
+        .gte("data_fabricacao", dStart)
+        .lte("data_fabricacao", dEnd)
+    })
+  ]).then(([montagemRes, producaoRes]) => {
+    const value = { montagemRes, producaoRes };
+    if (dashboardDefeitosBaseRequest === request
+        && montagemRes.state !== "OFFLINE_CACHE" && producaoRes.state !== "OFFLINE_CACHE") {
+      dashboardDefeitosBaseCache = { key, value };
+    }
+    return value;
+  }).finally(() => {
+    if (dashboardDefeitosBaseRequest === request) dashboardDefeitosBaseRequest = null;
+  });
+  return request.promise;
+}
+
+async function carregarDashboardDefeitos(forceRefresh = false) {
   aplicarLayoutDashboardDefeitos();
   if (!supabaseClient) return;
   const dashboardKind = "defeitos";
   const requestId = ++dashboardRequestSeq[dashboardKind];
   const dStart = getDashboardFilterValue("DataInicio", todayYmd());
   const dEnd = getDashboardFilterValue("DataFim", todayYmd());
-  const montagemStartIso = new Date(`${dStart}T00:00:00-03:00`).toISOString();
-  const montagemEndIso = new Date(`${dEnd}T23:59:59.999-03:00`).toISOString();
   const setorFiltro = getDashboardFilterValue("FiltroSetor", "");
   const statusFiltro = getDashboardFilterValue("FiltroStatus", "");
+  const pesquisa = getDashboardFilterValue("FiltroPesquisa", "").trim().toLowerCase();
   const scope = getDashboardScopeFromSetor(setorFiltro);
 
   atualizarResumoFiltrosDefeitos();
@@ -12147,33 +12874,7 @@ async function carregarDashboardDefeitos() {
     // O contrato RPC anterior excedia o statement_timeout em periodos extensos.
     // A tela agora calcula tudo a partir das bases paginadas e mantem o mesmo
     // conjunto de dados usado no detalhamento e na exportacao.
-    const [montagemRes, producaoRes] = await Promise.all([
-      carregarLinhasSupabaseComCache({
-        cacheKey: `${dashboardKind}:montagem_poste:local-v2:${dStart}:${dEnd}`,
-        table: "montagem_poste",
-        select: DASHBOARD_MONTAGEM_SELECT,
-        pageSize: 500,
-        maxPages: 100,
-        timeoutMs: 60000,
-        orderBy: "id",
-        orderOptions: { ascending: true },
-        applyFilters: query => query
-          .or(`and(finalizado_em.gte.${montagemStartIso},finalizado_em.lte.${montagemEndIso}),and(inicio_inspecao_montagem.gte.${montagemStartIso},inicio_inspecao_montagem.lte.${montagemEndIso}),and(data_fabricacao.gte.${dStart},data_fabricacao.lte.${dEnd})`)
-      }),
-      carregarLinhasSupabaseComCache({
-        cacheKey: `${dashboardKind}:producao:${dStart}:${dEnd}`,
-        table: "producao",
-        select: DASHBOARD_PRODUCAO_SELECT,
-        pageSize: 500,
-        maxPages: 100,
-        timeoutMs: 60000,
-        orderBy: "id",
-        orderOptions: { ascending: true },
-        applyFilters: query => query
-          .gte("data_fabricacao", dStart)
-          .lte("data_fabricacao", dEnd)
-      })
-    ]);
+    const { montagemRes, producaoRes } = await obterBaseDashboardDefeitos(dStart, dEnd, forceRefresh);
 
     if (requestId !== dashboardRequestSeq[dashboardKind]) return;
     const pertenceAoSetor = row => {
@@ -12187,17 +12888,25 @@ async function carregarDashboardDefeitos() {
       if (statusFiltro === "R") return isLinhaDefeitoDashboard(row);
       return String(row.status_montagem || "").toUpperCase() === statusFiltro.toUpperCase();
     };
-    const montagemRows = (montagemRes.rows || []).filter(row => {
+    const correspondePesquisa = row => !pesquisa || [
+      row.forma_numero, row.forma, row.modelo, row.montador_nome
+    ].some(value => String(value || "").toLowerCase().includes(pesquisa));
+    const chaveForma = row => `${row.data_fabricacao || ""}|${row.setor || ""}|${normalizeForma(row.forma_numero || row.forma || "")}`;
+    const montagemRows = removerReprovacoesDuplicadasDashboard(montagemRes.rows || []).filter(row => {
       const day = getMiDataReferencia(row);
       return isLinhaAvaliacaoDefeitosDashboard(row)
         && day >= dStart
         && day <= dEnd
         && pertenceAoSetor(row)
-        && pertenceAoStatus(row);
+        && pertenceAoStatus(row)
+        && correspondePesquisa(row);
     });
-    const producaoRows = (producaoRes.rows || []).filter(pertenceAoSetor);
+    const formasEncontradas = new Set(montagemRows.map(chaveForma));
+    const producaoRows = (producaoRes.rows || []).filter(row =>
+      pertenceAoSetor(row) && (!pesquisa || correspondePesquisa(row) || formasEncontradas.has(chaveForma(row)))
+    );
     const indicadores = calcularIndicadoresDefeitosMontagem(montagemRows, producaoRows);
-    renderIndicadoresDefeitosMontagem(indicadores);
+    renderIndicadoresDefeitosMontagem(indicadores, producaoRows);
 
     const includedSectorsByScope = {
       S1: ["Setor 1"],
@@ -12232,6 +12941,7 @@ async function carregarDashboardDefeitos() {
       montagemRes.state === "OFFLINE_CACHE" || producaoRes.state === "OFFLINE_CACHE" ? "Dashboard Defeitos carregado do cache local." : "Dashboard Defeitos atualizado."
     );
   } catch (err) {
+    if (requestId !== dashboardRequestSeq[dashboardKind]) return;
     console.error("Erro carregarDashboardDefeitos:", err);
     setSyncStatus("error", "Erro ao carregar dashboard de defeitos.");
   }
@@ -12355,7 +13065,7 @@ function aplicarFiltrosEExibirMontagem() {
     }
   });
 
-  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredDefeitosData, filteredProducao));
+  renderIndicadoresDefeitosMontagem(calcularIndicadoresDefeitosMontagem(miFilteredDefeitosData, filteredProducao), filteredProducao);
 
 
   // Renderizar tempos médios
@@ -12874,7 +13584,7 @@ async function exportarMontagemIndicadoresXlsx() {
     button.textContent = "Exportando base...";
   }
   try {
-    const montagemRows = await carregarBaseExportacaoPorPeriodo({
+    const montagemRows = (await carregarBaseExportacaoPorPeriodo({
       table: "montagem_poste",
       select: DASHBOARD_MONTAGEM_SELECT,
       inicio: dStart,
@@ -12882,7 +13592,7 @@ async function exportarMontagemIndicadoresXlsx() {
       onProgress: (concluidos, total) => {
         if (button && total > 0) button.textContent = `Carregando montagem ${concluidos}/${total}...`;
       }
-    });
+    })).filter(row => !isHistoricoReprovacao(row));
 
     if (!montagemRows.length) throw new Error("Nenhum registro de montagem encontrado no periodo selecionado.");
     if (button) button.textContent = "Consultando produtos...";
@@ -12947,7 +13657,7 @@ async function exportarMontagemIndicadoresXlsx() {
   }
 }
 
-function obterItensRejeitadosLinha(row, options = {}) {
+function obterOcorrenciasDefeitosLinha(row, options = {}) {
   const checklists = row.checklists || {};
   let parsed = checklists;
   if (typeof checklists === "string") {
@@ -12966,12 +13676,34 @@ function obterItensRejeitadosLinha(row, options = {}) {
     if (secRes && typeof secRes === "object") {
       sec.itens.forEach(item => {
         if (secRes[item.id] === "nao") {
-          rejeitados.push(item.texto);
+          rejeitados.push({ codigo: item.codigoFalha || "", descricao: item.texto });
         }
       });
     }
   });
   return rejeitados;
+}
+
+function obterItensRejeitadosLinha(row, options = {}) {
+  return obterOcorrenciasDefeitosLinha(row, options).map(item => item.descricao);
+}
+
+function obterOcorrenciasDefeitosRegistradosLinha(row) {
+  const rejeitados = obterOcorrenciasDefeitosLinha(row);
+  if (rejeitados.length) return rejeitados;
+  const status = String(row?.status_montagem || "").trim().toUpperCase();
+  if (!["R", "RR", "REPROVADO", "RETRABALHO"].includes(status)) return [];
+  const motivo = String(row?.motivo_recusa || "").trim();
+  if (!motivo) return [{ codigo: "", descricao: "Reprovação sem defeito detalhado" }];
+  return motivo.split(",").map(value => {
+    const codigo = value.trim();
+    const descricao = getDefeitoInfo(codigo).descricao;
+    return { codigo, descricao: descricao === "Não especificado" ? codigo : descricao };
+  }).filter(item => item.descricao);
+}
+
+function obterDefeitosRegistradosLinha(row) {
+  return obterOcorrenciasDefeitosRegistradosLinha(row).map(item => item.descricao);
 }
 
 function renderizarTabelaMontagemPaginada() {
@@ -13646,14 +14378,14 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
   container.appendChild(photosContainer);
 
   const backendUrl = getBackendUrl();
-  if (window.location.protocol === "https:" && backendUrl.startsWith("http:")) {
-    if (!container.querySelector("img[src^='data:image']")) {
-      photosContainer.innerHTML = '<p class="muted">Nenhuma foto está salva no checklist deste poste. Fotos do arquivo externo dependem de um serviço HTTPS.</p>';
-    }
-  } else fetch(`${backendUrl}/inspecoes/${normRow.id}/fotos`)
+  fetch(`${backendUrl}/inspecoes/${encodeURIComponent(normRow.id)}/fotos`)
     .then(res => res.json())
     .then(resData => {
       if (resData.success && resData.data && resData.data.length > 0) {
+        resData.data = resData.data.map((photo) => ({
+          ...photo,
+          url: new URL(photo.url, backendUrl).href
+        }));
         const globalDiv = document.createElement("div");
         globalDiv.style.marginTop = "20px";
         globalDiv.style.marginBottom = "20px";
@@ -13735,31 +14467,7 @@ window.writeProgS3S4Db = function(db) {
 };
 
 window.getModelosForFormaS3 = function(forma) {
-  const num = parseInt(forma.replace("SC", ""), 10);
-  if (num >= 37 && num <= 52) {
-    return [
-      "",
-      "10x400", "10x600", "10x1000", "10,5x1000 CR", 
-      "11x300", "11x400", "11x600", "11x1000", 
-      "12x300", "12x400", "12x600", "12x1000", 
-      "13x400", "13x600", "13x1000", 
-      "14x600", "14x1000", "14x1500", 
-      "15x600", "15x1000", 
-      "16x600", "16x1000", 
-      "16,5x1000", "16,5x2000", 
-      "17,5x1000", 
-      "18x1000", "18x2000", 
-      "19x1000", 
-      "21.5x1000", "21.5x1200"
-    ];
-  } else {
-    return [
-      "",
-      "7x300", "7x400", 
-      "7,5x200", "7,5x300", "7,5x400", "7,5x600", 
-      "9x150", "9x150 EDP", "9x200", "9x300", "9x300 EDP", "9x400", "9x500", "9x600", "9x800 EDP", "9x1000"
-    ];
-  }
+  return ["", ...getProductionModelOptions(forma, "Setor 3")];
 };
 
 window.renderSequenciaS3 = async function() {
@@ -13961,86 +14669,125 @@ window.saveSequenciaS3 = async function() {
 // MODO ODIN - FUNÇÕES AUXILIARES DE CANCELAMENTO
 // =========================================================
 async function cancelarOuDesprogramarOdin(forma, setor, card) {
-  const isConcretada = isFormaClicked(forma, setor);
-  const isLiberada = isFormaLiberada(forma, setor);
-  const isProgrammed = state.programmedFormas.has(normalizeUpper(forma));
-
-  if (isConcretada || isLiberada) {
-    await cancelarConcretagemOdin(forma, setor, card);
-  } else if (isProgrammed) {
-    await toggleFormaProgramada(forma, setor, card);
-  } else {
-    showLibFeedback(`Forma ${forma} não está programada nem concretada/liberada.`, "warn");
-  }
+  await cancelarConcretagemOdin(forma, setor, card);
 }
 
-async function cancelarConcretagemOdin(forma, setor, card) {
-  if (!confirm(`MODO ODIN: Tem certeza que deseja CANCELAR/EXCLUIR a concretagem/liberação da forma ${forma} no Setor ${setor}?`)) return;
+async function cancelarConcretagemOdin(forma, setor) {
+  const role = String(state.authUser?.role || "").toUpperCase();
+  const name = String(state.authUser?.name || "").toLowerCase();
+  if (!(role === "GERENCIA" || role === "GESTOR" || name.includes("ricardo") || name.includes("philippe"))) {
+    showLibFeedback("Sem permissao para corrigir concretagens.", "error");
+    return;
+  }
+  if (!navigator.onLine || !hasApiConfigured()) {
+    showLibFeedback("Conecte-se a internet para corrigir a concretagem.", "error");
+    return;
+  }
 
-  setCardState(card, "saving");
-
-  const dataFabricacao = el.libData?.value || todayYmd();
+  const date = el.libData?.value || todayYmd();
   const normalizedForma = normalizeUpper(forma);
+  const pendingCorrection = readDb().events.some((event) => event.pendingSync === true
+    && event.dataFabricacao === date && event.setor === setor
+    && normalizeUpper(event.formaNumero) === normalizedForma);
+  if (pendingCorrection) {
+    showLibFeedback("Ha um apontamento aguardando sincronizacao. Sincronize antes de corrigir.", "warn");
+    return;
+  }
+  const modal = document.getElementById("correcaoConcretagemModal");
+  const summary = document.getElementById("correcaoConcretagemResumo");
+  const select = document.getElementById("correcaoConcretagemTipo");
+  const save = document.getElementById("correcaoConcretagemSalvar");
+  const cancel = document.getElementById("correcaoConcretagemCancelar");
+  const close = document.getElementById("correcaoConcretagemFechar");
+  if (!modal || !summary || !select || !save || !cancel || !close) return;
 
-  // 1. Deletar do Supabase (de todas as 3 tabelas relacionadas)
-  let apiSuccess = false;
-  if (hasApiConfigured()) {
-    try {
-      const res = await Promise.all([
-        supabaseClient.from('producao').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma),
-        supabaseClient.from('liberacao_formas').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma),
-        supabaseClient.from('programacao_pcp').delete().eq('data_fabricacao', dataFabricacao).eq('setor', setor).eq('forma', normalizedForma)
-      ]);
+  const result = await supabaseClient.from("producao").select("*")
+    .eq("data_fabricacao", date).eq("setor", setor).eq("forma", normalizedForma);
+  if (result.error) {
+    showLibFeedback(`Falha ao consultar concretagem: ${result.error.message}`, "error");
+    return;
+  }
+  if (result.data.length !== 1) {
+    showLibFeedback(result.data.length ? "Ha registros duplicados. Solicite conferencia antes de corrigir." : "Nao ha concretagem nessa forma e data.", "warn");
+    return;
+  }
 
-      const anyError = res.some(r => r.error);
-      if (anyError) {
-        console.error("Erro ao deletar do Supabase:", res.map(r => r.error).filter(Boolean));
+  const current = result.data[0];
+  summary.textContent = `${date} | ${setor} | ${normalizedForma} | ${current.tipo_concreto || "Sem tipo"}`;
+  select.replaceChildren();
+  CONCRETO_TIPOS.forEach((tipo) => {
+    const option = document.createElement("option");
+    option.value = tipo;
+    option.textContent = tipo;
+    select.appendChild(option);
+  });
+  select.value = current.tipo_concreto || CONCRETO_TIPOS[0];
+  const dismiss = () => { modal.classList.remove("modal-visible"); };
+  close.onclick = dismiss;
+  modal.onclick = (event) => { if (event.target === modal) dismiss(); };
+
+  const refresh = async (removed, nextType) => {
+    const db = readDb();
+    const record = findRecordByKey(db, date, setor, normalizedForma);
+    if (record) {
+      if (removed) {
+        record.concretoTipo = "";
+        record.vibrado = null;
+        db.events = db.events.filter((event) => !(event.recordId === record.id
+          && event.etapa === "LIBERACAO" && event.status === "1"));
+        const liberacaoAnterior = db.events.find((event) => event.recordId === record.id
+          && event.etapa === "LIBERACAO" && event.status === "L");
+        record.liberacao = liberacaoAnterior ? {
+          status: "L",
+          colaborador: liberacaoAnterior.colaborador,
+          observacoes: liberacaoAnterior.observacoes || "",
+          fotos: [],
+          timestamp: liberacaoAnterior.timestamp,
+          origem: "LIBERACAO_FORMA"
+        } : null;
       } else {
-        apiSuccess = true;
+        record.concretoTipo = nextType;
+        db.events.filter((event) => event.recordId === record.id).forEach((event) => { event.tipoConcreto = nextType; });
       }
-    } catch (err) {
-      console.error("Erro na requisição Supabase:", err);
+      writeDb(db);
     }
-  }
+    const clicked = getClickedFormsToday();
+    delete clicked.formas[setor + "||" + normalizedForma];
+    localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
+    dismiss();
+    await loadClickedFormsFromSupabase(date);
+    renderLiberacaoDual();
+    if (el.dashData?.value === date) await carregarDashboardConcretagem();
+  };
 
-  // 2. Deletar do banco local (pwa_liberacao_inspecao_v1)
-  const db = readDb();
-  let record = findRecordByKey(db, dataFabricacao, setor, normalizedForma);
-  if (record) {
-    db.records = db.records.filter(r => r.id !== record.id);
-    db.events = db.events.filter(e => e.recordId !== record.id);
-    writeDb(db);
-  }
+  save.onclick = async () => {
+    const nextType = select.value;
+    if (nextType === current.tipo_concreto) { dismiss(); return; }
+    if (!confirm(`Alterar ${normalizedForma} de "${current.tipo_concreto}" para "${nextType}"?`)) return;
+    save.disabled = cancel.disabled = true;
+    try {
+      const response = await supabaseClient.from("producao").update({ tipo_concreto: nextType })
+        .eq("id", current.id).eq("tipo_concreto", current.tipo_concreto).select("id");
+      if (response.error || response.data?.length !== 1) throw new Error(response.error?.message || "O registro mudou; recarregue e tente novamente.");
+      await refresh(false, nextType);
+      showLibFeedback(`${normalizedForma}: tipo de concreto corrigido.`, "ok");
+    } catch (error) { showLibFeedback(error.message, "error"); }
+    finally { save.disabled = cancel.disabled = false; }
+  };
 
-  // 3. Deletar do estado local clickedForms
-  const clicked = getClickedFormsToday();
-  const key = setor + "||" + normalizedForma;
-  delete clicked.formas[key];
-  localStorage.setItem(CLICKED_FORMS_KEY, JSON.stringify(clicked));
-
-  // 4. Resetar estados visuais do card
-  card.classList.remove("is-liberada", "is-concretada", "is-vibrada", "is-secovibrado");
-  const tipoEl = card.querySelector(".fc-tipo");
-  if (tipoEl) {
-    tipoEl.textContent = "";
-    tipoEl.style.display = "none";
-  }
-  const statusEl = card.querySelector(".fc-status");
-  if (statusEl) {
-    statusEl.textContent = "";
-  }
-  setCardState(card, "idle");
-
-  // Re-renderiza para limpar e atualizar
-  renderLiberacaoDual();
-
-  if (apiSuccess) {
-    setSyncStatus("ok", `Concretagem da forma ${forma} excluída online.`);
-    showLibFeedback(`Concretagem ${forma} excluída (online).`, "ok");
-  } else {
-    setSyncStatus("warn", `Excluído localmente. Sem sincronia online.`);
-    showLibFeedback(`Concretagem ${forma} excluída (local).`, "ok");
-  }
+  cancel.onclick = async () => {
+    if (!confirm(`Cancelar SOMENTE a concretagem de ${normalizedForma} em ${date}? A programacao e a liberacao serao mantidas.`)) return;
+    save.disabled = cancel.disabled = true;
+    try {
+      const response = await supabaseClient.from("producao").delete()
+        .eq("id", current.id).eq("tipo_concreto", current.tipo_concreto).select("id");
+      if (response.error || response.data?.length !== 1) throw new Error(response.error?.message || "O registro mudou; recarregue e tente novamente.");
+      await refresh(true);
+      showLibFeedback(`${normalizedForma}: concretagem cancelada; programacao e liberacao preservadas.`, "ok");
+    } catch (error) { showLibFeedback(error.message, "error"); }
+    finally { save.disabled = cancel.disabled = false; }
+  };
+  modal.classList.add("modal-visible");
 }
 
 // =========================================================
@@ -14076,7 +14823,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v1.80.2&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.30&ts=${Date.now()}`);
       }
     });
   }
@@ -14096,6 +14843,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v1.80.2";
+  badge.textContent = "v5.30";
   badge.style.display = "inline-block";
 }

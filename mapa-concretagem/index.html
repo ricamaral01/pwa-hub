@@ -11,9 +11,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa</title>
-  <link rel="manifest" href="manifest.json?v=v5.29" />
-  <link rel="stylesheet" href="styles.css?v=v5.29" />
-  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v5.26" />
+  <link rel="manifest" href="manifest.json?v=v5.30" />
+  <link rel="stylesheet" href="styles.css?v=v5.30" />
+  <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v5.30" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -476,16 +476,7 @@
                 <span class="kiosk-toggle-subtitle">Tocar nas formas para liberar (azul)</span>
               </div>
             </div>
-            <div class="kiosk-toggle-field hidden" id="kioskOdinToggleField">
-              <label class="kiosk-switch">
-                <input type="checkbox" id="kioskOdinCheckbox" />
-                <span class="kiosk-slider" style="background-color: var(--kiosk-slider-off, #ccc);"></span>
-              </label>
-              <div class="kiosk-toggle-label">
-                <span class="kiosk-toggle-title" style="color: #ef4444;">Modo ODIN</span>
-                <span class="kiosk-toggle-subtitle">Tocar para cancelar/desprogramar</span>
-              </div>
-            </div>
+            <input type="checkbox" id="kioskOdinCheckbox" class="hidden" aria-hidden="true" tabindex="-1" />
             <div class="kiosk-toggle-field hidden" id="kioskManutencaoToggleField">
               <label class="kiosk-switch">
                 <input type="checkbox" id="kioskManutencaoCheckbox" />
@@ -527,7 +518,7 @@
 
       <div class="section-title-row">
         <h2>Produção</h2>
-        <button class="btn hidden" id="btnCorrecaoConcretagem" type="button">Corrigir concretagem</button>
+        <button class="btn hidden" id="btnCorrecaoConcretagem" type="button">Refazer apontamento errado</button>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
       </div>
 
@@ -1553,14 +1544,14 @@
 
   <div id="correcaoConcretagemModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="correcaoConcretagemTitle">
     <div class="modal-box" style="max-width: 440px; text-align: left;">
-      <h2 class="modal-title" id="correcaoConcretagemTitle">Corrigir concretagem</h2>
+      <h2 class="modal-title" id="correcaoConcretagemTitle">Refazer apontamento errado</h2>
       <p id="correcaoConcretagemResumo" class="modal-subtitle"></p>
       <label for="correcaoConcretagemTipo">Tipo de concreto</label>
       <select id="correcaoConcretagemTipo" class="input-field" style="width: 100%; margin: 8px 0 16px;"></select>
       <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end;">
         <button class="btn btn-secondary" id="correcaoConcretagemFechar" type="button">Voltar</button>
         <button class="btn primary" id="correcaoConcretagemSalvar" type="button">Salvar tipo</button>
-        <button class="btn" id="correcaoConcretagemCancelar" type="button" style="background: #b91c1c; color: #fff;">Cancelar concretagem</button>
+        <button class="btn" id="correcaoConcretagemCancelar" type="button" style="background: #b91c1c; color: #fff;">Excluir apontamento para refazer</button>
       </div>
     </div>
   </div>
@@ -1818,9 +1809,9 @@
   </template>
 
   <script src="../assets/msgbox.js"></script>
-  <script src="xlsx.full.min.js?v=v5.26"></script>
+  <script src="xlsx.full.min.js?v=v5.30"></script>
   <script src="supabase.js"></script>
-  <script src="modelos-formas.js?v=v5.26"></script>
-  <script src="app.js?v=v5.29"></script>
+  <script src="modelos-formas.js?v=v5.30"></script>
+  <script src="app.js?v=v5.30"></script>
 </body>
 </html>

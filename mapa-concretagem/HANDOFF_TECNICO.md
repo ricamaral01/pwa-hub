@@ -83,11 +83,13 @@ Usos:
 `getBackendUrl()` em `app.js` escolhe:
 
 - `http://localhost:5000/api` quando esta em localhost.
-- `http://2.25.163.32:5000/api` em producao.
+- `https://dautomacao.com/api` nos modos teste e producao publicados no GitHub Pages.
 
 Endpoints usados no app:
 
 - `GET /api/inspecoes/:poste_id/fotos`
+- `POST /api/inspecoes/:poste_id/fotos`
+- `GET /api/fotos/:id/arquivo`
 - `DELETE /api/fotos/:id?usuario=...`
 
 Endpoint implementado no backend tambem:
@@ -519,14 +521,8 @@ Objetivo:
 Variaveis de ambiente:
 
 - `PORT`
-- `SUPABASE_URL`
-- `SUPABASE_KEY`
-- `SFTP_HOST`
-- `SFTP_PORT`
-- `SFTP_USER`
-- `SFTP_PASSWORD`
-- `STORAGE_BASE_PATH`
-- `STORAGE_WEB_URL`
+- `PHOTO_STORAGE_DIR`
+- `ALLOWED_ORIGINS`
 
 Importante: nao versionar credenciais reais. O `.env` local atual contem credenciais sensiveis; recomenda-se rotacionar se foi exposto.
 
@@ -534,15 +530,16 @@ Endpoints:
 
 | Metodo | Rota | Uso |
 |---|---|---|
-| `POST` | `/api/inspecoes/:poste_id/fotos` | Upload de foto, compressao via Sharp, envio SFTP, insert em `fotos_inspecao`. |
-| `GET` | `/api/inspecoes/:poste_id/fotos` | Lista fotos/metadados e monta URL publica. |
-| `DELETE` | `/api/fotos/:id` | Exclui arquivo no SFTP e registro em `fotos_inspecao`. |
+| `POST` | `/api/inspecoes/:poste_id/fotos` | Upload de foto comprimida no armazenamento persistente da VPS. |
+| `GET` | `/api/inspecoes/:poste_id/fotos` | Lista fotos e metadados do poste. |
+| `GET` | `/api/fotos/:id/arquivo` | Abre a imagem por HTTPS. |
+| `DELETE` | `/api/fotos/:id` | Exclui o arquivo e o registro local. |
 
 ## 10. Pontos de atencao para o proximo dev
 
 1. `app.js` concentra muitas responsabilidades. Recomenda-se modularizar por dominio: auth, producao, relatorios, montagem, inspecao, dashboards, storage/local.
 2. Validar RLS/policies no Supabase, pois o frontend acessa tabelas diretamente com anon key.
-3. Tabelas referenciadas e nao encontradas devem ser revisadas: `prog_s3_s4`, `programacoes`, `produtos`, `fotos_inspecao`.
+3. A API de fotos usa armazenamento local na VPS e nao depende da tabela `fotos_inspecao`.
 4. `usuarios.senha` aparenta ser usado diretamente pelo app; revisar seguranca/hashing.
 5. O nome `status = LIBERADO` na tabela `producao` representa concretagem final, o que pode confundir. Uma migracao futura poderia usar `CONCRETADO`.
 6. O relatorio depende de cruzamento por chave natural `data_fabricacao + setor + forma`. Manter esse padrao consistente.
@@ -589,10 +586,11 @@ Deploy:
 Checklist de deploy:
 
 1. Rodar `node --check app.js` e `node --check sw.js`.
-2. Incrementar `CACHE_NAME` em `sw.js`.
+2. Incrementar a versao do SW e dos arquivos publicos dos dois modos.
 3. Commitar mudancas.
 4. `git push origin main`.
 5. Confirmar no dominio:
    - `https://usina.concretrack.com.br/mapa-concretagem/sw.js`
    - `https://usina.concretrack.com.br/mapa-concretagem/app.js`
+6. Confirmar `https://dautomacao.com/api/health` e testar upload, leitura e exclusao de uma foto temporaria.
 

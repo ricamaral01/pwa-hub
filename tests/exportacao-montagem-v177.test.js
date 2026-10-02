@@ -80,18 +80,22 @@ function importarResumoExportacaoMontagem() {
   const helpersEnd = appSource.indexOf('function normalizarTexto', helpersStart);
   const resumoStart = appSource.indexOf('function criarResumoExportacaoMontagem');
   const resumoEnd = appSource.indexOf('async function exportarMontagemIndicadoresXlsx', resumoStart);
+  const historicoStart = appSource.indexOf('const ETAPA_HISTORICO_REPROVACAO');
+  const historicoEnd = appSource.indexOf('function getHistoricoReprovacaoKey', historicoStart);
   assert.ok(helpersStart >= 0 && helpersEnd > helpersStart);
   assert.ok(resumoStart >= 0 && resumoEnd > resumoStart);
+  assert.ok(historicoStart >= 0 && historicoEnd > historicoStart);
 
   const context = vm.createContext({
     String,
     Set,
     Date,
     obterItensRejeitadosLinha: row => row?.itensRejeitados || [],
+    obterDefeitosRegistradosLinha: row => ["R", "RR"].includes(row?.status_montagem) ? ["falha"] : [],
     fmtDate: value => value
   });
   vm.runInContext(
-    `${appSource.slice(helpersStart, helpersEnd)}\n${appSource.slice(resumoStart, resumoEnd)}\nglobalThis.criarResumoExportacaoMontagem = criarResumoExportacaoMontagem;`,
+    `${appSource.slice(historicoStart, historicoEnd)}\n${appSource.slice(helpersStart, helpersEnd)}\n${appSource.slice(resumoStart, resumoEnd)}\nglobalThis.criarResumoExportacaoMontagem = criarResumoExportacaoMontagem;`,
     context
   );
   return context.criarResumoExportacaoMontagem;

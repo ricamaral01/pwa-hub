@@ -1,17 +1,19 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.26: detalhe dos defeitos ordenado pela data de produção
+   v5.30: inspeção, correção e cache sincronizados
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.29";
+const APP_ID = self.location.pathname.includes("mapa-concretagem-teste")
+  ? "mapa-concretagem-teste" : "mapa-concretagem";
+const CACHE_NAME = `${APP_ID}-v5.30`;
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.29",
-  "./styles.css?v=v5.29",
-  "./dashboard-defeitos-v4.css?v=v5.26",
-  "./modelos-formas.js?v=v5.26",
-  "./app.js?v=v5.29",
-  "./xlsx.full.min.js?v=v5.26",
+  "./manifest.json?v=v5.30",
+  "./styles.css?v=v5.30",
+  "./dashboard-defeitos-v4.css?v=v5.30",
+  "./modelos-formas.js?v=v5.30",
+  "./app.js?v=v5.30",
+  "./xlsx.full.min.js?v=v5.30",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",
@@ -35,7 +37,7 @@ self.addEventListener("activate", (event) => {
     caches.keys()
       .then((keys) => Promise.all(
         keys
-          .filter((key) => key.startsWith("mapa-concretagem-") && key !== CACHE_NAME)
+          .filter((key) => key.startsWith(`${APP_ID}-v`) && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       ))
       .then(() => self.clients.claim())
@@ -74,6 +76,7 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/auth/v1/")) return;
 
   if (request.mode === "navigate") {
     event.respondWith(networkFirst(request, true));

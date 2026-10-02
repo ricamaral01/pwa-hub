@@ -214,19 +214,10 @@ const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_C
 
 function getBackendUrl() {
   const hostname = window.location.hostname;
-  const protocol = window.location.protocol;
-  
   if (hostname === "localhost" || hostname === "127.0.0.1") {
     return "http://localhost:5000/api";
   }
-  
-  // Se for IP da rede local (ex: 192.168.X.X ou 10.X.X.X)
-  if (/^(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(hostname)) {
-    return `${protocol}//${hostname}:5000/api`;
-  }
-  
-  // Produção (VPS)
-  return "http://2.25.163.32:5000/api";
+  return "https://dautomacao.com/api";
 }
 
 const CHECKLIST_INSPECAO_CODIGOS = [
@@ -4724,16 +4715,35 @@ function fileToBase64(file) {
   });
 }
 
-function setMontagemChecklistPhoto(sectionId, itemId, photoBase64) {
+async function uploadChecklistPhoto(poste, photoBase64) {
+  const response = await fetch(photoBase64);
+  const blob = await response.blob();
+  const form = new FormData();
+  form.append("foto", blob, "inspecao.jpg");
+  form.append("usuario", state.authUser?.name || "sistema");
+  const upload = await fetch(`${getBackendUrl()}/inspecoes/${encodeURIComponent(poste.key)}/fotos`, {
+    method: "POST",
+    body: form
+  });
+  const result = await upload.json();
+  if (!upload.ok || !result.success || !result.data?.url) {
+    throw new Error(result.error || "O servidor não confirmou o salvamento da foto.");
+  }
+  return new URL(result.data.url, getBackendUrl()).href;
+}
+
+async function setMontagemChecklistPhoto(sectionId, itemId, photoBase64) {
   if (!state.montagemPostesAtual) return;
   const current = { ...state.montagemPostesAtual };
+  const photoUrl = await uploadChecklistPhoto(current, photoBase64);
   if (!current.checklists) current.checklists = {};
   if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
 
-  current.checklists[sectionId][itemId + "_photo"] = photoBase64;
+  current.checklists[sectionId][itemId + "_photo"] = photoUrl;
   state.montagemPostesAtual = current;
   upsertMontagemPoste(current);
-  syncMontagemPosteToApi(current, "CHECKLIST", { silent: true }).catch(() => {});
+  const sync = await syncMontagemPosteToApi(current, "CHECKLIST", { silent: true });
+  if (!sync.synced) setSyncStatus("warn", "Foto salva; o checklist aguarda sincronização.");
   renderMontagemChecklistSections();
 }
 
@@ -5578,16 +5588,18 @@ function setInspecaoChecklistAnswer(sectionId, itemId, value) {
   renderInspecaoStatusUI();
 }
 
-function setInspecaoChecklistPhoto(sectionId, itemId, photoBase64) {
+async function setInspecaoChecklistPhoto(sectionId, itemId, photoBase64) {
   if (!state.inspecaoPostesAtual) return;
   const current = { ...state.inspecaoPostesAtual };
+  const photoUrl = await uploadChecklistPhoto(current, photoBase64);
   if (!current.checklists) current.checklists = {};
   if (!current.checklists[sectionId]) current.checklists[sectionId] = {};
 
-  current.checklists[sectionId][itemId + "_photo"] = photoBase64;
+  current.checklists[sectionId][itemId + "_photo"] = photoUrl;
   state.inspecaoPostesAtual = current;
   upsertMontagemPoste(current);
-  syncMontagemPosteToApi(current, "INSPECAO", { silent: true }).catch(() => {});
+  const sync = await syncMontagemPosteToApi(current, "INSPECAO", { silent: true });
+  if (!sync.synced) setSyncStatus("warn", "Foto salva; a inspeção aguarda sincronização.");
   renderInspecaoChecklistSections();
 }
 
@@ -8477,10 +8489,6 @@ function applyRoleVisibility() {
   const correctionRole = String(state.authUser?.role || "").toUpperCase();
   const isOdinAllowed = correctionRole === "GERENCIA" || correctionRole === "GESTOR"
     || userNameVal.includes("ricardo") || userNameVal.includes("philippe");
-  const odinToggle = document.getElementById("kioskOdinToggleField");
-  if (odinToggle) {
-    odinToggle.classList.toggle("hidden", !isOdinAllowed);
-  }
   if (el.btnCorrecaoConcretagem) {
     el.btnCorrecaoConcretagem.classList.toggle("hidden", !isOdinAllowed);
   }
@@ -9420,7 +9428,7 @@ function bindEvents() {
       state.odinMode = el.kioskOdinCheckbox.checked;
       document.body.classList.toggle("odin-active", state.odinMode);
       if (el.btnCorrecaoConcretagem) {
-        el.btnCorrecaoConcretagem.textContent = state.odinMode ? "Encerrar corre??o" : "Corrigir concretagem";
+        el.btnCorrecaoConcretagem.textContent = state.odinMode ? "Encerrar correção" : "Refazer apontamento errado";
         el.btnCorrecaoConcretagem.classList.toggle("primary", state.odinMode);
       }
       if (state.odinMode) {
@@ -9759,10 +9767,10 @@ function bindEvents() {
       try {
         const dataUrl = await fileToDataUrl(file);
         const base64 = await compressImage(dataUrl, 1024, 0.7);
-        setInspecaoChecklistPhoto(sectionId, itemId, base64);
+        await setInspecaoChecklistPhoto(sectionId, itemId, base64);
       } catch (err) {
-        console.error("Erro ao converter e comprimir imagem:", err);
-        showMsgBox("Erro ao carregar a foto. Tente novamente.", "error");
+        console.error("Erro ao salvar foto da inspeção:", err);
+        showMsgBox(`Foto não salva: ${err.message || "Tente novamente."}`, "error");
       }
     });
   }
@@ -9866,10 +9874,10 @@ function bindEvents() {
       try {
         const dataUrl = await fileToDataUrl(file);
         const base64 = await compressImage(dataUrl, 1024, 0.7);
-        setMontagemChecklistPhoto(sectionId, itemId, base64);
+        await setMontagemChecklistPhoto(sectionId, itemId, base64);
       } catch (err) {
-        console.error("Erro ao converter e comprimir imagem:", err);
-        showMsgBox("Erro ao carregar a foto. Tente novamente.", "error");
+        console.error("Erro ao salvar foto da montagem:", err);
+        showMsgBox(`Foto não salva: ${err.message || "Tente novamente."}`, "error");
       }
     });
   }
@@ -11459,7 +11467,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.29", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.30", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -14370,14 +14378,14 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
   container.appendChild(photosContainer);
 
   const backendUrl = getBackendUrl();
-  if (window.location.protocol === "https:" && backendUrl.startsWith("http:")) {
-    if (!container.querySelector("img[src^='data:image']")) {
-      photosContainer.innerHTML = '<p class="muted">Nenhuma foto está salva no checklist deste poste. Fotos do arquivo externo dependem de um serviço HTTPS.</p>';
-    }
-  } else fetch(`${backendUrl}/inspecoes/${normRow.id}/fotos`)
+  fetch(`${backendUrl}/inspecoes/${encodeURIComponent(normRow.id)}/fotos`)
     .then(res => res.json())
     .then(resData => {
       if (resData.success && resData.data && resData.data.length > 0) {
+        resData.data = resData.data.map((photo) => ({
+          ...photo,
+          url: new URL(photo.url, backendUrl).href
+        }));
         const globalDiv = document.createElement("div");
         globalDiv.style.marginTop = "20px";
         globalDiv.style.marginBottom = "20px";
@@ -14661,12 +14669,6 @@ window.saveSequenciaS3 = async function() {
 // MODO ODIN - FUNÇÕES AUXILIARES DE CANCELAMENTO
 // =========================================================
 async function cancelarOuDesprogramarOdin(forma, setor, card) {
-  const normalizedForma = normalizeUpper(forma);
-  if (!isFormaClicked(forma, setor) && !isFormaLiberada(forma, setor)
-      && state.programmedFormas.has(normalizedForma)) {
-    await toggleFormaProgramada(forma, setor, card);
-    return;
-  }
   await cancelarConcretagemOdin(forma, setor, card);
 }
 
@@ -14731,9 +14733,18 @@ async function cancelarConcretagemOdin(forma, setor) {
       if (removed) {
         record.concretoTipo = "";
         record.vibrado = null;
-        if (record.liberacao?.status === "1") record.liberacao = null;
         db.events = db.events.filter((event) => !(event.recordId === record.id
           && event.etapa === "LIBERACAO" && event.status === "1"));
+        const liberacaoAnterior = db.events.find((event) => event.recordId === record.id
+          && event.etapa === "LIBERACAO" && event.status === "L");
+        record.liberacao = liberacaoAnterior ? {
+          status: "L",
+          colaborador: liberacaoAnterior.colaborador,
+          observacoes: liberacaoAnterior.observacoes || "",
+          fotos: [],
+          timestamp: liberacaoAnterior.timestamp,
+          origem: "LIBERACAO_FORMA"
+        } : null;
       } else {
         record.concretoTipo = nextType;
         db.events.filter((event) => event.recordId === record.id).forEach((event) => { event.tipoConcreto = nextType; });
@@ -14812,7 +14823,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.29&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.30&ts=${Date.now()}`);
       }
     });
   }
@@ -14832,6 +14843,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.29";
+  badge.textContent = "v5.30";
   badge.style.display = "inline-block";
 }
