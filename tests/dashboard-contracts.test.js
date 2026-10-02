@@ -94,22 +94,19 @@ test('XLSX v1.77 exporta montagem completa e usa producao somente como lookup', 
   assert.doesNotMatch(app, /DASHBOARD_MONTAGEM_SELECT = "[^"]*codigo_poste/);
 });
 
-test('arquivos publicos apontam integralmente para v1.79', () => {
+test('arquivos publicos do mapa de teste usam a mesma versao', () => {
   const app = read('mapa-concretagem-teste/app.js');
   const html = read('mapa-concretagem-teste/index.html');
   const manifest = read('mapa-concretagem-teste/manifest.json');
   const reset = read('mapa-concretagem-teste/reset-cache.html');
   const sw = read('mapa-concretagem-teste/sw.js');
-
-  for (const source of [app, html, manifest, reset, sw]) {
-    assert.doesNotMatch(source, /v1\.78/);
-  }
-  assert.match(app, /sw\.js\?v=v1\.79/);
-  assert.match(app, /badge\.textContent = "v1\.79"/);
-  assert.match(html, /app\.js\?v=v1\.79/);
-  assert.match(manifest, /cache-reset=v1\.79/);
-  assert.match(reset, /abrir v1\.79/);
-  assert.match(sw, /mapa-concretagem-teste-v1\.79/);
+  const version = /mapa-concretagem-teste-(v[\d.]+)/.exec(sw)?.[1];
+  assert.ok(version);
+  assert.ok(app.includes(`sw.js?v=${version}`));
+  assert.ok(app.includes(`badge.textContent = "${version}"`));
+  assert.ok(html.includes(`app.js?v=${version}-teste`));
+  assert.ok(manifest.includes(`cache-reset=${version}`));
+  assert.ok(reset.includes(`abrir ${version}`));
 });
 
 test('grafico de participacao ordena defeitos e calcula percentual sobre o total', () => {

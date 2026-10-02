@@ -1906,7 +1906,7 @@ function fmtDate(value) {
 function montagemStatusLabel(status) {
   if (status === "A") return "Aprovado";
   if (status === "R") return "Reprovado";
-  if (status === "RR") return "Reprovado e Retrabalhado";
+  if (status === "RR") return "Aprovado e Retrabalhado";
   return "-";
 }
 
@@ -4438,9 +4438,9 @@ async function renderInspecaoLiberados() {
       if (status === "A") {
         acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Aprovado (Ver Checklist)</button>`;
       } else if (status === "RR") {
-        acaoContent = `<button type="button" class="btn ins-open-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Retrabalhar</button>`;
+        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Aprovado e Retrabalhado · Fotos</button>`;
       } else {
-        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Reprovado (Ver Checklist)</button>`;
+        acaoContent = `<button type="button" class="btn ins-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Fotos e 2ª inspeção</button>`;
       }
     } else {
       acaoContent = `<button type="button" class="btn ins-open-btn primary" style="width: 100%; height: 38px; border-radius: 6px;">Inspecionar</button>`;
@@ -4455,11 +4455,12 @@ async function renderInspecaoLiberados() {
       } else if (status === "RR") {
         const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "\u26a0\ufe0f";
         const descDefeito = insCodigo ? getMotivoRecusaLabel(insCodigo) : "Retrabalho";
-        statusDefeitoHtml = `<span style="color:#d97706;font-weight:700;font-size:.82rem">${iconeDefeito} RR</span> <span style="font-size:.78rem;color:#78350f">${descDefeito}</span>`;
+        statusDefeitoHtml = `<span style="color:#d97706;font-weight:700;font-size:.82rem">${iconeDefeito} Aprovado e Retrabalhado</span> <span style="font-size:.78rem;color:#78350f">${descDefeito}</span>`;
       } else if (status === "R") {
         const iconeDefeito = DEFEITO_ICONES[insCodigo.toUpperCase()] || "\u274c";
         const descDefeito = insCodigo ? getMotivoRecusaLabel(insCodigo) : "Reprovado";
-        statusDefeitoHtml = `<span style="color:#dc2626;font-weight:700;font-size:.82rem">${iconeDefeito} Reprovado</span><br><span style="font-size:.78rem;color:#7f1d1d">${descDefeito}</span>`;
+        const segregado = record.inspecao?.raw?.checklists?.__segunda_inspecao?.resultado === "SEGREGADO";
+        statusDefeitoHtml = `<span style="color:#dc2626;font-weight:700;font-size:.82rem">${iconeDefeito} ${segregado ? "Segregado" : "Reprovado · 2ª inspeção pendente"}</span><br><span style="font-size:.78rem;color:#7f1d1d">${descDefeito}</span>`;
       } else {
         statusDefeitoHtml = `<span style="color:#6b7280;font-size:.82rem">${status || "—"}</span>`;
       }
@@ -4682,7 +4683,7 @@ function renderMontagemChecklistSections() {
       if (selected === "nao") {
         let actionsHtml = `<div class="mp-reprovado-actions">`;
         if (item.critico) {
-          actionsHtml += `<div class="mp-segregar-badge">🚨 Segregar poste</div>`;
+          actionsHtml += `<div class="mp-segregar-badge">🚨 Falha crítica: segunda inspeção</div>`;
         }
         if (!isFinalizado) {
           actionsHtml += `
@@ -4793,6 +4794,7 @@ function renderMontagemStatusUI() {
 
   el.mpStatusButtons.querySelectorAll("[data-mp-status]").forEach((btn) => {
     if (!(btn instanceof HTMLElement)) return;
+    if (btn.dataset.mpStatus === "RR") btn.classList.add("hidden");
     btn.classList.toggle("active", btn.dataset.mpStatus === status);
     btn.disabled = isFinalizado;
   });
@@ -4800,6 +4802,10 @@ function renderMontagemStatusUI() {
 
 function setMontagemStatus(status) {
   if (!state.montagemPostesAtual) return;
+  if (status === "RR") {
+    showMsgBox("Aprovação com retrabalho é uma decisão da segunda inspeção.", "error");
+    return;
+  }
   const current = { ...state.montagemPostesAtual };
   current.statusMontagem = status;
   if (status === "A") current.motivoRecusa = "";
@@ -5020,7 +5026,7 @@ async function finalizarMontagemPosteAtual() {
 
   const status = poste.statusMontagem || "";
   if (!status) {
-    showMsgBox("Selecione o status da montagem: Aprovado, Reprovado ou Reprovado e Retrabalhado.", "error");
+    showMsgBox("Selecione o resultado da primeira avaliação: Aprovado ou Reprovado.", "error");
     return;
   }
 
@@ -5242,9 +5248,9 @@ async function renderMontagemPostesLiberados() {
       if (status === "A") {
         acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #10b981; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Aprovado (Ver Checklist)</button>`;
       } else if (status === "RR") {
-        acaoContent = `<button type="button" class="btn mp-open-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Retrabalhar</button>`;
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #f59e0b; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px;">Aprovado e Retrabalhado · Fotos</button>`;
       } else {
-        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Reprovado (Ver Checklist)</button>`;
+        acaoContent = `<button type="button" class="btn mp-ver-checklist-btn" style="background-color: #ef4444; color: white; border: none; font-weight: bold; width: 100%; height: 38px; border-radius: 6px; cursor: pointer;">Fotos e 2ª inspeção</button>`;
       }
     } else {
       const extraClass = record.status === 'INSPECIONADO' ? 'mp-open-btn--inspecionado' : '';
@@ -5439,7 +5445,7 @@ function renderInspecaoChecklistSections() {
       if (selected === "nao") {
         let actionsHtml = `<div class="mp-reprovado-actions">`;
         if (item.critico) {
-          actionsHtml += `<div class="mp-segregar-badge">🚨 Segregar poste</div>`;
+          actionsHtml += `<div class="mp-segregar-badge">🚨 Falha crítica: segunda inspeção</div>`;
         }
         if (!isFinalizado) {
           actionsHtml += `
@@ -5480,6 +5486,7 @@ function renderInspecaoStatusUI() {
 
   el.insStatusButtons.querySelectorAll("[data-ins-status]").forEach((btn) => {
     if (!(btn instanceof HTMLElement)) return;
+    if (btn.dataset.insStatus === "RR") btn.classList.add("hidden");
     btn.classList.toggle("active", btn.dataset.insStatus === status);
     btn.disabled = isFinalizado;
   });
@@ -5487,6 +5494,10 @@ function renderInspecaoStatusUI() {
 
 function setInspecaoStatus(status) {
   if (!state.inspecaoPostesAtual) return;
+  if (status === "RR") {
+    showMsgBox("Aprovação com retrabalho é uma decisão da segunda inspeção.", "error");
+    return;
+  }
   const current = { ...state.inspecaoPostesAtual };
 
   const sections = getInspecaoChecklistSections(current.modelo || "");
@@ -5589,7 +5600,7 @@ async function finalizarInspecaoPosteAtual() {
 
   const status = poste.statusMontagem || "";
   if (!status) {
-    showMsgBox("Selecione o status da inspeção: Aprovado, Reprovado ou Reprovado e Retrabalhado.", "error");
+    showMsgBox("Selecione o resultado da primeira inspeção: Aprovado ou Reprovado.", "error");
     return;
   }
 
@@ -8434,7 +8445,9 @@ function applyRoleVisibility() {
     HISTORICO: "hubHistorico",
     ACMP_CONCRETAGEM: "hubAcmpConcretagem",
     USUARIOS: "navUsuarios",
-    MANDRIL_CIRCULAR: "hubMandrilCircular"
+    MANDRIL_CIRCULAR: "hubMandrilCircular",
+    RELATORIO_MANUTENCAO: "hubRelatorioManutencao",
+    TRATATIVA_DEFEITOS: "hubTratativaDefeitos"
   };
 
   Object.entries(navByMode).forEach(([mode, id]) => {
@@ -8454,6 +8467,10 @@ function applyRoleVisibility() {
   document.querySelectorAll("[data-hub-mode]").forEach((btn) => {
     const mode = btn.dataset.hubMode || "";
     btn.classList.toggle("hidden", !isModeAllowed(mode));
+  });
+
+  document.querySelectorAll("#viewHub .hub-group-section").forEach((group) => {
+    group.classList.toggle("hidden", !group.querySelector(".hub-icon-btn:not(.hidden)"));
   });
 
   const userNameVal = String(state.authUser?.name || "").trim().toLowerCase();
@@ -8572,6 +8589,7 @@ function setMode(mode) {
   }
 
   state.mode = mode;
+  if (!/^LIBERACAO_S[1-4]$/.test(mode)) document.body.classList.remove("kiosk-active");
   [el.hubView, el.viewDashboard, el.viewLiberacao, el.viewInspecao, el.viewInspecaoDetalhe, el.viewMontagemPostes, el.viewMontagemPostesDetalhe, el.viewRelatorio, el.viewHistorico, el.viewAcmpConcretagem, el.viewUsuarios, el.viewProdAnalise, el.viewMontagemIndicadores, el.viewDashboardDefeitos, el.viewSequenciaS3, el.viewMandrilCircular, el.viewRelatorioManutencao, el.viewTratativaDefeitos]
     .filter(Boolean).forEach((view) => view.classList.add("hidden"));
   if (mode === "HUB") el.hubView.classList.remove("hidden");
@@ -8736,7 +8754,11 @@ function setMode(mode) {
     RELATORIO: ["hubRelatorio", "Relatório Enc. Produção"],
     HISTORICO: ["hubHistorico", "Histórico"],
     ACMP_CONCRETAGEM: ["hubAcmpConcretagem", "Acmp. Concretagem"],
-    USUARIOS: ["navUsuarios", "Gerenciar Usuários"]
+    USUARIOS: ["navUsuarios", "Gerenciar Usuários"],
+    SEQUENCIA_S3: ["hubSequenciaS3", "Sequência Setor 3"],
+    MANDRIL_CIRCULAR: ["hubMandrilCircular", "Saque Mandril Circular"],
+    RELATORIO_MANUTENCAO: ["hubRelatorioManutencao", "Relatório de manutenção"],
+    TRATATIVA_DEFEITOS: ["hubTratativaDefeitos", "Tratativa de defeitos"]
   };
   const navInfo = navTitles[mode];
   document.querySelectorAll(".nav-item").forEach((btn) => btn.classList.remove("nav-active"));
@@ -8802,6 +8824,8 @@ function handleHubModeNavigation(mode) {
     setMode("USUARIOS");
   } else if (mode === "MANDRIL_CIRCULAR") {
     setMode("MANDRIL_CIRCULAR");
+  } else if (mode === "SEQUENCIA_S3" || mode === "RELATORIO_MANUTENCAO" || mode === "TRATATIVA_DEFEITOS") {
+    setMode(mode);
   }
 }
 
@@ -8815,21 +8839,25 @@ function bindEssentialNavigation() {
 
   if (localStorage.getItem("sidebarCollapsed") === "1") {
     document.body.classList.add("sidebar-hidden");
+    sidebarToggle?.setAttribute("aria-expanded", "false");
   }
 
   function closeMobileSidebar() {
     appSidebar?.classList.remove("sidebar-open");
     sidebarOverlay?.classList.remove("visible");
+    sidebarToggle?.setAttribute("aria-expanded", "false");
   }
 
   if (sidebarToggle && appSidebar) {
     sidebarToggle.addEventListener("click", () => {
       if (window.innerWidth <= 1024) {
-        appSidebar.classList.toggle("sidebar-open");
-        sidebarOverlay?.classList.toggle("visible");
+        const open = appSidebar.classList.toggle("sidebar-open");
+        sidebarOverlay?.classList.toggle("visible", open);
+        sidebarToggle.setAttribute("aria-expanded", String(open));
       } else {
         const hidden = document.body.classList.toggle("sidebar-hidden");
         localStorage.setItem("sidebarCollapsed", hidden ? "1" : "0");
+        sidebarToggle.setAttribute("aria-expanded", String(!hidden));
       }
     });
   }
@@ -9685,14 +9713,14 @@ function bindEvents() {
         codigoProduto
       };
 
-      if (target.classList.contains("ins-open-btn")) {
+      if (target.closest(".ins-open-btn")) {
         await openInspecaoPosteDetalhe(posteBase);
-      } else if (target.classList.contains("ins-ver-checklist-btn")) {
+      } else if (target.closest(".ins-ver-checklist-btn") || tr.dataset.inspecaoRaw) {
         const rawJson = tr.dataset.inspecaoRaw;
         if (rawJson) {
           try {
             const rawRow = JSON.parse(rawJson);
-            window.abrirVisualizacaoChecklist(rawRow);
+            await window.abrirVisualizacaoChecklist(rawRow);
           } catch (e) {
             console.error("Erro ao analisar inspecaoRaw:", e);
           }
@@ -9705,6 +9733,10 @@ function bindEvents() {
     el.insChecklistSections.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
+      if (target.matches("img.mp-item-photo-thumbnail")) {
+        window.abrirFotoVisualizacao(target.src);
+        return;
+      }
       const btn = target.closest("button[data-ins-section][data-ins-item][data-ins-value]");
       if (!btn) return;
       const sectionId = btn.dataset.insSection || "";
@@ -9772,8 +9804,9 @@ function bindEvents() {
       if (!(target instanceof HTMLElement)) return;
 
       const verChecklistBtn = target.closest(".mp-ver-checklist-btn");
-      if (verChecklistBtn) {
-        const tr = verChecklistBtn.closest("tr[data-forma-numero]");
+      const finalizadoRow = target.closest("tr[data-forma-numero]");
+      if (verChecklistBtn || (finalizadoRow?.dataset.montagemRaw && !target.closest(".mp-open-btn"))) {
+        const tr = finalizadoRow;
         if (tr && tr.dataset.montagemRaw) {
           try {
             const montRecord = JSON.parse(tr.dataset.montagemRaw);
@@ -9807,6 +9840,10 @@ function bindEvents() {
     el.mpChecklistSections.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
+      if (target.matches("img.mp-item-photo-thumbnail")) {
+        window.abrirFotoVisualizacao(target.src);
+        return;
+      }
       const btn = target.closest("button[data-mp-section][data-mp-item][data-mp-value]");
       if (!btn) return;
       const sectionId = btn.dataset.mpSection || "";
@@ -9942,6 +9979,8 @@ function bindEvents() {
 
   const hubMandrilCircular = document.getElementById("hubMandrilCircular");
   if (hubMandrilCircular) hubMandrilCircular.addEventListener("click", () => setMode("MANDRIL_CIRCULAR"));
+  document.getElementById("hubRelatorio")?.addEventListener("click", () => handleHubModeNavigation("RELATORIO"));
+  document.getElementById("hubHistorico")?.addEventListener("click", () => handleHubModeNavigation("HISTORICO"));
 
   if (el.mcFiltroData) el.mcFiltroData.addEventListener("change", carregarMandrilCircular);
 
@@ -11420,7 +11459,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.28", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.29", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -11556,7 +11595,7 @@ function setMontagemDrawerOpen(open) {
 
 function getMiStatusMeta(status) {
   if (status === "A") return { label: "Aprovado", className: "mi-status-a" };
-  if (status === "RR") return { label: "Retrabalhado", className: "mi-status-rr" };
+  if (status === "RR") return { label: "Aprovado e Retrabalhado", className: "mi-status-rr" };
   if (status === "R") return { label: "Reprovado", className: "mi-status-r" };
   return { label: "Em andamento", className: "mi-status-open" };
 }
@@ -13734,7 +13773,7 @@ function renderizarTabelaMontagemPaginada() {
     if (row.status_montagem === "A") {
       statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
     } else if (row.status_montagem === "RR") {
-      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Retrabalhado</span>`;
+      statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado e Retrabalhado</span>`;
     } else if (row.status_montagem === "R") {
       statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
     }
@@ -13795,7 +13834,7 @@ function renderizarTabelaMontagemPaginada() {
       if (row.status_montagem === "A") {
         statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado</span>`;
       } else if (row.status_montagem === "RR") {
-        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Retrabalhado</span>`;
+        statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Aprovado e Retrabalhado</span>`;
       } else if (row.status_montagem === "R") {
         statusHtml = `<span onclick="abrirVisualizacaoChecklist('${row.id}')" style="color: #dc2626; font-weight: bold; background: #fee2e2; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Reprovado</span>`;
       }
@@ -14045,11 +14084,19 @@ function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
 }
 
 window.abrirFotoVisualizacao = function(src) {
-  const w = window.open();
-  if (w) {
-    w.document.write(`<img src="${src}" style="max-width:100%; max-height:100vh; display:block; margin:auto;" />`);
-    w.document.close();
-  }
+  if (!src) return;
+  document.querySelector(".vc-photo-lightbox")?.remove();
+  const overlay = document.createElement("div");
+  overlay.className = "vc-photo-lightbox";
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = "Foto da inspeção ampliada";
+  const close = document.createElement("button");
+  close.type = "button";
+  close.textContent = "Fechar ×";
+  overlay.append(img, close);
+  overlay.addEventListener("click", (event) => { if (event.target !== img) overlay.remove(); });
+  document.body.appendChild(overlay);
 };
 
 window.abrirVisualizacaoChecklist = async function(idOrRow) {
@@ -14171,10 +14218,10 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
     statusText = "Aprovado";
     statusColor = "#16a34a";
   } else if (normRow.status_montagem === "RR") {
-    statusText = "Reprovado e Retrabalhado";
+    statusText = "Aprovado e Retrabalhado";
     statusColor = "#d97706";
   } else if (normRow.status_montagem === "R") {
-    statusText = "Reprovado";
+    statusText = normRow.checklists?.__segunda_inspecao?.resultado === "SEGREGADO" ? "Segregado" : "Reprovado · 2ª inspeção pendente";
     statusColor = "#dc2626";
   }
   const elStatus = document.getElementById("vcMetaStatus");
@@ -14248,13 +14295,86 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
     container.appendChild(secDiv);
   });
 
+  // Segunda inspeção: o código R permanece para segregação, RR para aprovação após retrabalho.
+  const second = checklists.__segunda_inspecao || null;
+  if ((normRow.status_montagem === "R" || second) && normRow.finalizado_em) {
+    const secondPanel = document.createElement("section");
+    secondPanel.className = "vc-second-inspection";
+    const resultLabel = second?.resultado === "SEGREGADO" ? "Segregado" :
+      second?.resultado === "APROVADO_RETRABALHADO" ? "Aprovado e Retrabalhado" : "Pendente";
+    secondPanel.innerHTML = `<h3>Segunda inspeção</h3><div>Resultado: <strong>${resultLabel}</strong></div>`;
+    if (second?.em) {
+      const meta = document.createElement("div");
+      meta.textContent = `${formatDateTime(second.em)} · ${second.por || ""}`;
+      secondPanel.appendChild(meta);
+    }
+    if (normRow.status_montagem === "R" && isModeAllowed(normRow.etapa === "INSPECAO" ? "INSPECAO" : "MONTAGEM_POSTES")) {
+      const actions = document.createElement("div");
+      actions.className = "vc-second-inspection-actions";
+      [["SEGREGADO", "Segregado"], ["APROVADO_RETRABALHADO", "Aprovado e Retrabalhado"]].forEach(([result, label]) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "btn";
+        button.textContent = label;
+        button.addEventListener("click", async () => {
+          actions.querySelectorAll("button").forEach((item) => item.disabled = true);
+          const nextChecklists = {
+            ...checklists,
+            __segunda_inspecao: {
+              primeira_inspecao: "R",
+              resultado: result,
+              em: nowIso(),
+              por: state.authUser?.name || ""
+            }
+          };
+          const nextStatus = result === "SEGREGADO" ? "R" : "RR";
+          try {
+            if (!supabaseClient || !normRow.id) throw new Error("Banco de inspeções indisponível.");
+            const { data: savedRow, error } = await supabaseClient.from("montagem_poste")
+              .update({ status_montagem: nextStatus, checklists: nextChecklists })
+              .eq("id", normRow.id)
+              .eq("status_montagem", "R")
+              .select("id,status_montagem,checklists")
+              .maybeSingle();
+            if (error) throw error;
+            if (!savedRow) throw new Error("O registro foi alterado por outra sessão; atualize e tente novamente.");
+            const localDb = readMontagemPostesDb();
+            if (localDb.postes[normRow.id]) {
+              localDb.postes[normRow.id].statusMontagem = nextStatus;
+              localDb.postes[normRow.id].checklists = nextChecklists;
+              localDb.postes[normRow.id].pendingSync = false;
+              writeMontagemPostesDb(localDb);
+            }
+            Object.keys(localStorage).filter((key) => key.startsWith(`${MAPA_REPORT_CACHE_PREFIX}:`) && key.includes("montagem_poste"))
+              .forEach((key) => localStorage.removeItem(key));
+            modal.classList.remove("modal-visible");
+            showMsgBox(`Segunda inspeção salva: ${label}.`, "success");
+            if (normRow.etapa === "INSPECAO") await renderInspecaoLiberados();
+            else await renderMontagemPostesLiberados();
+          } catch (error) {
+            console.error("Erro na segunda inspeção:", error);
+            showMsgBox(`Não foi possível salvar a segunda inspeção: ${error.message || error}`, "error");
+            actions.querySelectorAll("button").forEach((item) => item.disabled = false);
+          }
+        });
+        actions.appendChild(button);
+      });
+      secondPanel.appendChild(actions);
+    }
+    container.appendChild(secondPanel);
+  }
+
   // Render global photos (fotos de recusa da VPS Storage)
   const photosContainer = document.createElement("div");
   photosContainer.id = "vcVpsPhotosContainer";
   container.appendChild(photosContainer);
 
   const backendUrl = getBackendUrl();
-  fetch(`${backendUrl}/inspecoes/${normRow.id}/fotos`)
+  if (window.location.protocol === "https:" && backendUrl.startsWith("http:")) {
+    if (!container.querySelector("img[src^='data:image']")) {
+      photosContainer.innerHTML = '<p class="muted">Nenhuma foto está salva no checklist deste poste. Fotos do arquivo externo dependem de um serviço HTTPS.</p>';
+    }
+  } else fetch(`${backendUrl}/inspecoes/${normRow.id}/fotos`)
     .then(res => res.json())
     .then(resData => {
       if (resData.success && resData.data && resData.data.length > 0) {
@@ -14692,7 +14812,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.28&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.29&ts=${Date.now()}`);
       }
     });
   }
@@ -14712,6 +14832,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.28";
+  badge.textContent = "v5.29";
   badge.style.display = "inline-block";
 }

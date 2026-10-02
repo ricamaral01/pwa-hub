@@ -11,8 +11,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1e3c" />
   <title>CONCRETRACK • Mapa</title>
-  <link rel="manifest" href="manifest.json?v=v5.28" />
-  <link rel="stylesheet" href="styles.css?v=v5.26" />
+  <link rel="manifest" href="manifest.json?v=v5.29" />
+  <link rel="stylesheet" href="styles.css?v=v5.29" />
   <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v5.26" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
@@ -182,7 +182,7 @@
   <!-- Main -->
   <div class="app-main">
     <header class="topbar">
-      <button class="sidebar-toggle-btn" id="sidebarToggle" type="button">☰</button>
+      <button class="sidebar-toggle-btn" id="sidebarToggle" type="button" aria-label="Mostrar ou ocultar menu" aria-controls="appSidebar" aria-expanded="true">☰</button>
       <span class="topbar-title" id="topbarTitle">Início</span>
       <span id="swVersionBadge" class="sw-version-badge" style="display: none;"></span>
       <div class="topbar-right">
@@ -612,7 +612,7 @@
             <option value="PENDENTE">Pendentes</option>
             <option value="A">Aprovado</option>
             <option value="R">Reprovado</option>
-            <option value="RR">Reprovado e Retrabalhado</option>
+            <option value="RR">Aprovado e Retrabalhado</option>
           </select>
         </label>
         <div class="kiosk-toggle-field">
@@ -671,7 +671,7 @@
         <div id="insStatusButtons" class="mp-status-buttons">
           <button id="insStatusAprovado" class="btn mp-status-btn" type="button" data-ins-status="A">Aprovado</button>
           <button id="insStatusReprovado" class="btn mp-status-btn" type="button" data-ins-status="R">Reprovado</button>
-          <button id="insStatusRR" class="btn mp-status-btn" type="button" data-ins-status="RR">Reprovado e Retrabalhado</button>
+          <button id="insStatusRR" class="btn mp-status-btn hidden" type="button" data-ins-status="RR">Aprovado e Retrabalhado</button>
         </div>
       </div>
 
@@ -710,7 +710,7 @@
             <option value="">Todos</option>
             <option value="A">Aprovado</option>
             <option value="R">Reprovado</option>
-            <option value="RR">Reprovado e Retrabalhado</option>
+            <option value="RR">Aprovado e Retrabalhado</option>
             <option value="PENDENTE">Pendente</option>
           </select>
         </label>
@@ -973,7 +973,7 @@
             <option value="">Todos os Status</option>
             <option value="A">Aprovado</option>
             <option value="R">Reprovado</option>
-            <option value="RR">Reprovado e Retrabalhado</option>
+            <option value="RR">Aprovado e Retrabalhado</option>
           </select>
         </div>
         <div class="mi-filter-item mi-filter-search">
@@ -1225,7 +1225,7 @@
             <option value="">Todos os Status</option>
             <option value="A">Aprovado</option>
             <option value="R">Reprovado</option>
-            <option value="RR">Reprovado e Retrabalhado</option>
+            <option value="RR">Aprovado e Retrabalhado</option>
           </select>
         </div>
         <div class="mi-filter-item mi-filter-search">
@@ -1289,7 +1289,7 @@
         <div id="mpStatusButtons" class="mp-status-buttons">
           <button id="mpStatusAprovado" class="btn mp-status-btn" type="button" data-mp-status="A">Aprovado</button>
           <button id="mpStatusReprovado" class="btn mp-status-btn" type="button" data-mp-status="R">Reprovado</button>
-          <button id="mpStatusRR" class="btn mp-status-btn" type="button" data-mp-status="RR">Reprovado e Retrabalhado</button>
+          <button id="mpStatusRR" class="btn mp-status-btn hidden" type="button" data-mp-status="RR">Aprovado e Retrabalhado</button>
         </div>
 
       </div>
@@ -1821,6 +1821,6 @@
   <script src="xlsx.full.min.js?v=v5.26"></script>
   <script src="supabase.js"></script>
   <script src="modelos-formas.js?v=v5.26"></script>
-  <script src="app.js?v=v5.28"></script>
+  <script src="app.js?v=v5.29"></script>
 </body>
 </html>

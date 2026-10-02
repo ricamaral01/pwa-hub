@@ -7724,3 +7724,29 @@ body.mode-dashboard-defeitos #viewDashboardDefeitos {
     grid-column: span 4 !important;
   }
 }
+/* Ajustes visuais do mapa em telas de computador. */
+@media (min-width: 1025px) {
+  body:not(.kiosk-active) .sidebar { box-shadow: 8px 0 28px rgba(15, 23, 42, .08); }
+  body:not(.kiosk-active) .sidebar-nav { padding: 16px 8px; }
+  body:not(.kiosk-active) .sidebar-nav .nav-item { border-radius: 10px; margin: 2px 0; transition: background .18s, transform .18s; }
+  body:not(.kiosk-active) .sidebar-nav .nav-item:hover { transform: translateX(3px); }
+  body:not(.kiosk-active) .topbar { box-shadow: 0 1px 0 rgba(15, 23, 42, .07); }
+  body:not(.kiosk-active) .card { border-radius: 16px; box-shadow: 0 12px 32px rgba(15, 23, 42, .06); }
+  body:not(.kiosk-active) .hub-icon-btn { border-radius: 14px; transition: transform .18s, box-shadow .18s; }
+  body:not(.kiosk-active) .hub-icon-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(15, 23, 42, .12); }
+  body:not(.kiosk-active) .sidebar-toggle-btn { border-radius: 10px; }
+  body:not(.kiosk-active) .app-main { background: linear-gradient(160deg, #f8fbff, #edf3fa); }
+  body:not(.kiosk-active) .page-content { padding: 28px clamp(24px, 3vw, 48px); }
+  body:not(.kiosk-active) #viewHub .hub-group-section { background: rgba(255, 255, 255, .92); border: 1px solid #e2eaf3; border-radius: 18px; padding: 22px; margin-bottom: 20px; box-shadow: 0 8px 28px rgba(16, 42, 67, .05); }
+}
+@media (max-width: 1024px) {
+  body.sidebar-hidden .sidebar.sidebar-open { transform: translateX(0); }
+}
+.ins-ver-checklist-btn, .ins-segunda-inspecao-btn { cursor: pointer; }
+.vc-second-inspection { margin: 20px 0; padding: 16px; background: #fff7ed; border: 1px solid #fdba74; border-radius: 12px; }
+.vc-second-inspection h3 { margin: 0 0 8px; font-size: 1rem; }
+.vc-second-inspection-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.vc-second-inspection-actions button { min-height: 42px; }
+.vc-photo-lightbox { position: fixed; inset: 0; z-index: 4000; background: rgba(2, 6, 23, .92); display: grid; place-items: center; padding: 56px 18px 18px; cursor: zoom-out; }
+.vc-photo-lightbox img { max-width: 100%; max-height: calc(100vh - 74px); object-fit: contain; }
+.vc-photo-lightbox button { position: absolute; top: 12px; right: 18px; background: white; color: #111827; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
