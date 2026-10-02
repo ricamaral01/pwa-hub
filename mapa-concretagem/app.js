@@ -7689,33 +7689,99 @@ async function salvarMandrilModeloProduzido(select) {
 }
 
 const SAQUE_MANDRIL_API = "https://pcp.concretrack.com.br/api/saques-mandril";
-const SAQUE_MANDRIL_MIGRATED_KEY = "pwa_saque_mandril_db_migrated_v1";
+const SAQUE_MANDRIL_MIGRATED_KEY = "pwa_saque_mandril_db_migrated_v2";
 
-async function migrarSaquesMandrilLocais() {
-  if (localStorage.getItem(SAQUE_MANDRIL_MIGRATED_KEY) === "1") return;
-  let saved = {};
-  try { saved = JSON.parse(localStorage.getItem("pwa_saque_mandril_v1") || "{}"); } catch (_) {}
-  const registros = Object.entries(saved).map(([key, timestamp]) => {
-    const [data, codigo_forma] = key.split("||");
-    return { data, codigo_forma, data_hora_saque: timestamp };
-  }).filter(item => /^\d{4}-\d{2}-\d{2}$/.test(item.data) && /^SC\d+$/i.test(item.codigo_forma) && !isNaN(Date.parse(item.data_hora_saque)));
-  if (registros.length) {
-    const response = await fetch(`${SAQUE_MANDRIL_API}/importar`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ registros }),
-    });
-    if (!response.ok) throw new Error(`Falha ao importar saques: HTTP ${response.status}`);
-  }
-  localStorage.setItem(SAQUE_MANDRIL_MIGRATED_KEY, "1");
+function lerSaquesMandrilLocais() {
+  try { return JSON.parse(localStorage.getItem("pwa_saque_mandril_v1") || "{}"); }
+  catch (_) { return {}; }
+}
+
+function mostrarEstadoSaquesMandril(mensagem, erro = false) {
+  const status = document.getElementById("mcSaqueStatus");
+  if (!status) return;
+  status.textContent = mensagem;
+  status.style.color = erro ? "#b91c1c" : "#15803d";
 }
 
 async function buscarSaquesMandril(data) {
-  await migrarSaquesMandrilLocais();
   const response = await fetch(`${SAQUE_MANDRIL_API}?data=${encodeURIComponent(data)}`, { cache: "no-store" });
   if (!response.ok) throw new Error(`Falha ao consultar saques: HTTP ${response.status}`);
   const rows = await response.json();
+  if (!Array.isArray(rows)) throw new Error("Resposta inesperada da consulta de saques");
   return Object.fromEntries(rows.map(row => [`${row.data}||${normalizeForma(row.codigo_forma)}`, row.data_hora_saque]));
 }
+
+async function sincronizarSaquesMandrilLocais(data, saquesBanco) {
+  let migrados = {};
+  try { migrados = JSON.parse(localStorage.getItem(SAQUE_MANDRIL_MIGRATED_KEY) || "{}"); }
+  catch (_) { migrados = {}; }
+  const locais = lerSaquesMandrilLocais();
+  // A versão anterior já importou esses registros; não recriar saques removidos em outro aparelho.
+  if (localStorage.getItem("pwa_saque_mandril_db_migrated_v1") === "1"
+      && !localStorage.getItem(SAQUE_MANDRIL_MIGRATED_KEY)) {
+    Object.entries(locais).forEach(([key, timestamp]) => { migrados[key] = timestamp; });
+  }
+  Object.entries(locais).forEach(([key, timestamp]) => {
+    const [dia, codigoForma] = key.split("||");
+    if (dia === data && saquesBanco[`${dia}||${normalizeForma(codigoForma)}`]) migrados[key] = timestamp;
+  });
+  localStorage.setItem(SAQUE_MANDRIL_MIGRATED_KEY, JSON.stringify(migrados));
+  const pendentes = Object.entries(locais).flatMap(([key, timestamp]) => {
+    const [dia, codigoForma] = key.split("||");
+    const forma = normalizeForma(codigoForma || "");
+    if (dia !== data || !/^SC\d{1,2}$/.test(forma) || isNaN(Date.parse(timestamp)) || migrados[key]) return [];
+    return [{ data: dia, codigo_forma: codigoForma, data_hora_saque: timestamp, localKey: key }];
+  });
+  if (!pendentes.length) return saquesBanco;
+  const response = await fetch(`${SAQUE_MANDRIL_API}/importar`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ registros: pendentes.map(({ localKey, ...registro }) => registro) }),
+  });
+  if (!response.ok) throw new Error(`Falha ao sincronizar saques locais: HTTP ${response.status}`);
+  const atualizados = await buscarSaquesMandril(data);
+  pendentes.forEach(({ localKey, data_hora_saque, codigo_forma }) => {
+    if (atualizados[`${data}||${normalizeForma(codigo_forma)}`]) migrados[localKey] = data_hora_saque;
+  });
+  localStorage.setItem(SAQUE_MANDRIL_MIGRATED_KEY, JSON.stringify(migrados));
+  return atualizados;
+}
+
+function renderAcaoSaqueMandril(forma, timestamp) {
+  if (!timestamp) return `<button onclick="window.registrarSaque('${forma}')" style="padding: 6px 12px; font-size: 0.8rem; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 6px rgba(232, 118, 42, 0.2);" onmouseover="this.style.background='var(--accent-dark)'" onmouseout="this.style.background='var(--accent)'">Sacar Mandril</button>`;
+  const hora = new Date(timestamp).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  return `<div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <span style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; border: 1px solid #bbf7d0;">Saque: ${hora}</span>
+    <button onclick="window.limparSaque('${forma}')" style="background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.1rem; padding: 0;" title="Limpar Saque">❌</button>
+  </div>`;
+}
+
+async function atualizarSaquesMandrilVisiveis() {
+  if (document.hidden || el.viewMandrilCircular?.classList.contains("hidden")) return;
+  const data = el.mcFiltroData?.value;
+  if (!data) return;
+  try {
+    let saques = await buscarSaquesMandril(data);
+    let pendencias = false;
+    try { saques = await sincronizarSaquesMandrilLocais(data, saques); }
+    catch (error) { console.warn("Saques locais ainda não sincronizados:", error); pendencias = true; }
+    if (data !== el.mcFiltroData?.value) return;
+    el.mcTabelaBody.querySelectorAll("[data-mc-saque-forma]").forEach(cell => {
+      const forma = cell.dataset.mcSaqueForma;
+      const saque = saques[`${data}||${normalizeForma(forma)}`];
+      cell.innerHTML = cell.dataset.mcConcretado === "1" || saque
+        ? renderAcaoSaqueMandril(forma, saque)
+        : `<span style="color: var(--muted); font-size: 0.85rem;">Aguardando Concretagem</span>`;
+    });
+    mostrarEstadoSaquesMandril(pendencias
+      ? "Saques antigos deste aparelho pendentes de sincronização."
+      : `Saques sincronizados às ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`, pendencias);
+  } catch (error) {
+    console.warn("Não foi possível atualizar os saques do mandril:", error);
+    mostrarEstadoSaquesMandril("Sem conexão com os saques; confira antes de registrar outro saque.", true);
+  }
+}
+
+setInterval(atualizarSaquesMandrilVisiveis, 30000);
 
 async function carregarMandrilCircular() {
   const selectedDate = el.mcFiltroData?.value;
@@ -7814,18 +7880,19 @@ async function carregarMandrilCircular() {
     allS3Forms.push(`SC${String(i).padStart(2, '0')}`);
   }
 
-  // O banco é a fonte da lista de saques; o cache local serve durante falhas de rede.
+  // O banco é a fonte compartilhada; registros antigos locais são enviados quando faltam nele.
   let saqueData = {};
-  const rawSaque = localStorage.getItem("pwa_saque_mandril_v1");
-  if (rawSaque) {
-    try {
-      saqueData = JSON.parse(rawSaque);
-    } catch (e) {}
-  }
   try {
     saqueData = await buscarSaquesMandril(selectedDate);
+    let pendencias = false;
+    try { saqueData = await sincronizarSaquesMandrilLocais(selectedDate, saqueData); }
+    catch (error) { console.warn("Saques locais ainda não sincronizados:", error); pendencias = true; }
+    mostrarEstadoSaquesMandril(pendencias
+      ? "Saques antigos deste aparelho pendentes de sincronização."
+      : `Saques sincronizados às ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`, pendencias);
   } catch (error) {
-    console.warn("Não foi possível sincronizar o Saque Mandril com o PCP:", error);
+    console.warn("Não foi possível consultar os saques do mandril:", error);
+    mostrarEstadoSaquesMandril("Sem conexão com os saques; tente atualizar a página.", true);
   }
 
   const modelosProduzidosData = readMandrilModelosProduzidos();
@@ -7847,6 +7914,7 @@ async function carregarMandrilCircular() {
     let previsaoSaque = "--:--";
     let actionHtml = "";
     
+    const savedIso = saqueData[`${selectedDate}||${fn}`];
     if (concretedRow) {
       totalConcretados++;
       tipoConcreto = concretedRow.tipo_concreto || "Concreto Padrão";
@@ -7864,28 +7932,9 @@ async function carregarMandrilCircular() {
         } catch (e) {}
       }
 
-      // Check if mandrel has been drawn
-      const savedIso = saqueData[`${selectedDate}||${fn}`];
-      if (savedIso) {
-        let timeRealizado = "--:--";
-        try {
-          const d = new Date(savedIso);
-          if (!isNaN(d.getTime())) {
-            timeRealizado = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-          }
-        } catch (e) {}
-        
-        actionHtml = `
-          <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-            <span style="color: #16a34a; font-weight: bold; background: #dcfce7; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; border: 1px solid #bbf7d0;">Saque: ${timeRealizado}</span>
-            <button onclick="window.limparSaque('${forma}')" style="background: none; border: none; color: var(--danger); cursor: pointer; font-size: 1.1rem; padding: 0;" title="Limpar Saque">❌</button>
-          </div>
-        `;
-      } else {
-        actionHtml = `
-          <button onclick="window.registrarSaque('${forma}')" style="padding: 6px 12px; font-size: 0.8rem; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 6px rgba(232, 118, 42, 0.2);" onmouseover="this.style.background='var(--accent-dark)'" onmouseout="this.style.background='var(--accent)'">Sacar Mandril</button>
-        `;
-      }
+      actionHtml = renderAcaoSaqueMandril(forma, savedIso);
+    } else if (savedIso) {
+      actionHtml = renderAcaoSaqueMandril(forma, savedIso);
     } else {
       actionHtml = `<span style="color: var(--muted); font-size: 0.85rem;">Aguardando Concretagem</span>`;
     }
@@ -7898,7 +7947,7 @@ async function carregarMandrilCircular() {
         <td data-label="Tipo de Concreto" style="padding: 12px 16px;">${escapeHtml(tipoConcreto)}</td>
         <td data-label="Concretado às" style="padding: 12px 16px;">${horaConcretado}</td>
         <td data-label="Saque previsto (+3h)" style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
-        <td data-label="Ação / Saque Realizado" style="padding: 12px 16px; text-align: center;">${actionHtml}</td>
+        <td data-label="Ação / Saque Realizado" data-mc-saque-forma="${forma}" data-mc-concretado="${concretedRow ? "1" : "0"}" style="padding: 12px 16px; text-align: center;">${actionHtml}</td>
       </tr>
     `;
   });
@@ -7924,18 +7973,14 @@ window.registrarSaque = async function(forma) {
     showMsgBox("Não foi possível salvar o saque no banco. Tente novamente.", "error");
     return;
   }
-  
-  let data = {};
-  const raw = localStorage.getItem("pwa_saque_mandril_v1");
-  if (raw) {
-    try {
-      data = JSON.parse(raw);
-    } catch (e) {}
-  }
-  
-  data[`${selectedDate}||${normalizeForma(forma)}`] = timestamp;
+  const data = lerSaquesMandrilLocais();
+  const key = `${selectedDate}||${normalizeForma(forma)}`;
+  data[key] = timestamp;
   localStorage.setItem("pwa_saque_mandril_v1", JSON.stringify(data));
-  
+  let migrados = {};
+  try { migrados = JSON.parse(localStorage.getItem(SAQUE_MANDRIL_MIGRATED_KEY) || "{}"); } catch (_) {}
+  migrados[key] = timestamp;
+  localStorage.setItem(SAQUE_MANDRIL_MIGRATED_KEY, JSON.stringify(migrados));
   carregarMandrilCircular();
 };
 
@@ -7950,18 +7995,14 @@ window.limparSaque = async function(forma) {
     showMsgBox("Não foi possível remover o saque do banco. Tente novamente.", "error");
     return;
   }
-  
-  let data = {};
-  const raw = localStorage.getItem("pwa_saque_mandril_v1");
-  if (raw) {
-    try {
-      data = JSON.parse(raw);
-    } catch (e) {}
-  }
-  
-  delete data[`${selectedDate}||${normalizeForma(forma)}`];
+  const data = lerSaquesMandrilLocais();
+  const key = `${selectedDate}||${normalizeForma(forma)}`;
+  delete data[key];
   localStorage.setItem("pwa_saque_mandril_v1", JSON.stringify(data));
-  
+  let migrados = {};
+  try { migrados = JSON.parse(localStorage.getItem(SAQUE_MANDRIL_MIGRATED_KEY) || "{}"); } catch (_) {}
+  delete migrados[key];
+  localStorage.setItem(SAQUE_MANDRIL_MIGRATED_KEY, JSON.stringify(migrados));
   carregarMandrilCircular();
 };
 
@@ -11379,7 +11420,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.26", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.28", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -14651,7 +14692,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.26&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.28&ts=${Date.now()}`);
       }
     });
   }
@@ -14671,6 +14712,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.26";
+  badge.textContent = "v5.28";
   badge.style.display = "inline-block";
 }

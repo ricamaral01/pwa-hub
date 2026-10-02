@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 
-const source = fs.readFileSync(path.join(__dirname, "../mapa-concretagem-teste/app.js"), "utf8");
+const source = fs.readFileSync(path.join(__dirname, process.env.MAPA_MANDRIL_SOURCE || "../mapa-concretagem-teste/app.js"), "utf8");
 const start = source.indexOf('const SAQUE_MANDRIL_API =');
 const end = source.indexOf('async function carregarMandrilCircular()', start);
 const actionsEnd = source.indexOf('async function gerarRelatorioSetor()', end);
@@ -73,3 +73,15 @@ test("falha no banco não confirma um novo saque no aparelho", async () => {
   await vm.runInContext('window.registrarSaque("SC03")', context);
   assert.equal(storage.get("pwa_saque_mandril_v1"), undefined);
 });
+
+if (process.env.MAPA_MANDRIL_SOURCE?.includes("/mapa-concretagem/app.js")) {
+  test("produção não reimporta saques da migração anterior", async () => {
+    const local = { "2026-10-01||SC2": "2026-10-01T21:38:53Z" };
+    const { context, calls } = setup({
+      pwa_saque_mandril_v1: JSON.stringify(local),
+      pwa_saque_mandril_db_migrated_v1: "1",
+    });
+    await vm.runInContext('sincronizarSaquesMandrilLocais("2026-10-01", {})', context);
+    assert.equal(calls.filter(call => call.url.endsWith("/importar")).length, 0);
+  });
+}

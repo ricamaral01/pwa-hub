@@ -3,14 +3,14 @@
    v5.26: detalhe dos defeitos ordenado pela data de produção
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.27-saque-mandril";
+const CACHE_NAME = "mapa-concretagem-v5.28";
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.26",
+  "./manifest.json?v=v5.28",
   "./styles.css?v=v5.26",
   "./dashboard-defeitos-v4.css?v=v5.26",
   "./modelos-formas.js?v=v5.26",
-  "./app.js?v=20261001saque1",
+  "./app.js?v=v5.28",
   "./xlsx.full.min.js?v=v5.26",
   "./supabase.js",
   "./chart.min.js",
