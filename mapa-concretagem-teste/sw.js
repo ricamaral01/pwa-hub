@@ -1,19 +1,19 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.30: inspeção, correção e cache sincronizados
+   v5.31: inspeção, correção e cache sincronizados
    ========================================================= */
 
 const APP_ID = self.location.pathname.includes("mapa-concretagem-teste")
   ? "mapa-concretagem-teste" : "mapa-concretagem";
-const CACHE_NAME = `${APP_ID}-v5.30`;
+const CACHE_NAME = `${APP_ID}-v5.31`;
 const APP_SHELL = [
   "./index.html",
-  "./manifest.json?v=v5.30",
-  "./styles.css?v=v5.30",
-  "./dashboard-defeitos-v4.css?v=v5.30",
-  "./modelos-formas.js?v=v5.30",
-  "./app.js?v=v5.30",
-  "./xlsx.full.min.js?v=v5.30",
+  "./manifest.json?v=v5.31",
+  "./styles.css?v=v5.31",
+  "./dashboard-defeitos-v4.css?v=v5.31",
+  "./modelos-formas.js?v=v5.31",
+  "./app.js?v=v5.31",
+  "./xlsx.full.min.js?v=v5.31",
   "./supabase.js",
   "./chart.min.js",
   "./chartjs-plugin-datalabels.min.js",

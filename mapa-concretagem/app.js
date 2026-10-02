@@ -11467,7 +11467,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.30", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.31", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -14398,7 +14398,7 @@ window.abrirVisualizacaoChecklist = async function(idOrRow) {
               <div style="display: flex; flex-direction: column; gap: 8px; padding: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; align-items: center;" id="photo-card-${photo.id}">
                 <img src="${photo.url}" style="max-width: 100%; max-height: 150px; border-radius: 6px; cursor: pointer; object-fit: cover;" onclick="abrirFotoVisualizacao('${photo.url}')" title="Clique para ampliar" />
                 <div style="display: flex; gap: 6px; width: 100%;">
-                  <a href="${photo.url}" download="${photo.arquivo_nome}" class="btn" style="padding: 6px 10px; font-size: 0.75rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; justify-content: center; box-sizing: border-box;">
+                  <a href="${photo.url}?download=1" download="${photo.arquivo_nome}" class="btn" style="padding: 6px 10px; font-size: 0.75rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; justify-content: center; box-sizing: border-box;">
                     📥 Baixar
                   </a>
                   <button onclick="excluirFotoVps('${photo.id}')" class="btn" style="padding: 6px 10px; font-size: 0.75rem; background: #dc2626; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
@@ -14823,7 +14823,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.30&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.31&ts=${Date.now()}`);
       }
     });
   }
@@ -14843,6 +14843,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.30";
+  badge.textContent = "v5.31";
   badge.style.display = "inline-block";
 }

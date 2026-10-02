@@ -37,6 +37,8 @@ test('foto da inspeção é enviada, listada, aberta e excluída', async () => {
     assert.equal(photo.status, 200);
     assert.equal(photo.headers.get('content-type'), 'image/jpeg');
     assert.ok((await photo.arrayBuffer()).byteLength > 0);
+    const download = await fetch(base + data.url + '?download=1');
+    assert.match(download.headers.get('content-disposition'), /^attachment; filename=/);
 
     const removed = await fetch(`${base}/api/fotos/${data.id}`, { method: 'DELETE' });
     assert.equal(removed.status, 200);

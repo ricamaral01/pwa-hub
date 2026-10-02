@@ -113,6 +113,9 @@ app.get("/api/fotos/:id/arquivo", async (req, res, next) => {
     if (!row) return res.status(404).json({ error: "Foto não encontrada." });
     const buffer = await fs.readFile(path.join(STORAGE_DIR, row.file_name));
     res.setHeader("Content-Type", "image/jpeg");
+    if (req.query.download === "1") {
+      res.setHeader("Content-Disposition", `attachment; filename="${row.arquivo_nome}"`);
+    }
     res.setHeader("Cache-Control", "private, max-age=3600");
     res.send(buffer);
   } catch (error) { next(error); }

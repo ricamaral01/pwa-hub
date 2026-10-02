@@ -51,9 +51,9 @@ test('exportacoes dos dashboards possuem acionamento e dependencias locais', () 
   assert.match(html, /id="dfBtnExportarCsv"/);
   assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
   assert.match(app, /function exportarDashboardDefeitosCsv/);
-  assert.match(html, /src="xlsx\.full\.min\.js\?v=v5\.30"/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v5\.31"/);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
-  assert.match(sw, /xlsx\.full\.min\.js\?v=v5\.30/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v5\.31/);
   assert.ok(fs.statSync(xlsxPath).size > 100000);
 });
 
@@ -93,7 +93,7 @@ test('XLSX v1.77 exporta montagem completa e usa producao somente como lookup', 
   assert.doesNotMatch(app, /DASHBOARD_MONTAGEM_SELECT = "[^"]*codigo_poste/);
 });
 
-test('arquivos publicos de teste e producao apontam para v5.30', () => {
+test('arquivos publicos de teste e producao apontam para v5.31', () => {
   const app = read('mapa-concretagem-teste/app.js');
   const html = read('mapa-concretagem-teste/index.html');
   const manifest = read('mapa-concretagem-teste/manifest.json');
@@ -103,10 +103,10 @@ test('arquivos publicos de teste e producao apontam para v5.30', () => {
   for (const source of [app, html, manifest, reset, sw]) {
     assert.doesNotMatch(source, /v5\.26|v1\.77/);
   }
-  assert.match(app, /sw\.js\?v=v5\.30/);
-  assert.match(html, /app\.js\?v=v5\.30/);
-  assert.match(manifest, /cache-reset=v5\.30/);
-  assert.match(reset, /abrir v5\.30/);
+  assert.match(app, /sw\.js\?v=v5\.31/);
+  assert.match(html, /app\.js\?v=v5\.31/);
+  assert.match(manifest, /cache-reset=v5\.31/);
+  assert.match(reset, /abrir v5\.31/);
   assert.match(sw, /APP_ID.*mapa-concretagem-teste/s);
   assert.equal(sw, read('mapa-concretagem/sw.js'));
 });

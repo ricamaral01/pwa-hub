@@ -13,8 +13,8 @@ test("arquivos de produção compartilham a versão de publicação", () => {
   const sw = fs.readFileSync(path.join(root, "mapa-concretagem/sw.js"), "utf8");
   const manifest = fs.readFileSync(path.join(root, "mapa-concretagem/manifest.json"), "utf8");
   const reset = fs.readFileSync(path.join(root, "mapa-concretagem/reset-cache.html"), "utf8");
-  const version = "v5.30";
-  assert.ok(sw.includes('const CACHE_NAME = `${APP_ID}-v5.30`'));
+  const version = "v5.31";
+  assert.ok(sw.includes('const CACHE_NAME = `${APP_ID}-v5.31`'));
   assert.equal(sw, fs.readFileSync(path.join(root, "mapa-concretagem-teste/sw.js"), "utf8"));
   assert.ok(html.includes(`app.js?v=${version}`));
   assert.ok(html.includes(`styles.css?v=${version}`));
