@@ -45,6 +45,15 @@ def main() -> None:
             browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
             context = browser.new_context(service_workers="block", viewport={"width": 1024, "height": 768})
             context.add_init_script("""
+                window.__codexFetch = [];
+                const nativeFetch = window.fetch.bind(window);
+                window.fetch = (...args) => {
+                    window.__codexFetch.push({
+                        url: String(args[0]?.url || args[0]),
+                        stack: String(new Error().stack || '')
+                    });
+                    return nativeFetch(...args);
+                };
                 localStorage.setItem('pwa_mapa_auth_session_v1', JSON.stringify({
                     id: 'captura-sintetica', name: 'Captura', role: 'GERENCIA', setor: 'Todos'
                 }));
@@ -76,6 +85,11 @@ def main() -> None:
                 captured.append({
                     "flow": current_flow[0], "method": request.method,
                     "host": parsed.hostname, "path_query": parsed.path + ("?" + parsed.query if parsed.query else ""),
+                    "headers": {
+                        "Prefer": request.headers.get("prefer"),
+                        "Range": request.headers.get("range"),
+                        "apikey_present": "apikey" in request.headers,
+                    },
                     "body": body,
                 })
                 if parsed.path.endswith("/rpc/rpc_dashboard_produtividade_resumo_v1"):
@@ -142,12 +156,21 @@ def main() -> None:
                 if (tipo) tipo.click();
                 await new Promise(resolve => setTimeout(resolve, 250));
             }""")
+            fetches = page.evaluate("window.__codexFetch")
+            for item in captured:
+                for candidate in fetches:
+                    source = next((int(match) for match in __import__("re").findall(
+                        r"app\.js(?:\?[^:]+)?:(\d+):\d+", candidate["stack"])), None)
+                    if source and item["path_query"].split("?", 1)[0] in candidate["url"]:
+                        item["app_line"] = source
+                        fetches.remove(candidate)
+                        break
             OUTPUT.parent.mkdir(parents=True, exist_ok=True)
             OUTPUT.write_text(json.dumps({
                 "source": "mapa-concretagem/app.js", "external_requests_blocked": blocked_external[0],
                 "modes": mode_results, "requests": captured,
             }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            print(f"CAPTURA_SEM_REDE_OK modos={len(mode_results)} pedidos_externos_bloqueados={blocked_external[0]}")
+            print(f"CAPTURA_SEM_REDE_OK modos={len(mode_results)} pedidos_externos_bloqueados={blocked_external[0]} linhas_mapeadas={sum('app_line' in item for item in captured)}")
             for item in mode_results:
                 if item.get("actual") != item["requested"]:
                     print(f"MODO_NAO_COBERTO {item}")

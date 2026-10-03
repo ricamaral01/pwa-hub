@@ -126,3 +126,9 @@ O script `scripts/capture_mapa_requests_offline.py` carregou o `app.js` original
 | programar/desprogramar cartão Setor 3 | POST | `/rest/v1/programacao_pcp` | 1 |
 
 A captura inclui navegação, programação e desprogramação por cartão, liberação e concretagem com tipo no Setor 3. Permanecem pendentes capturas de cancelamento Odin, manutenção, mandril, inspeção, montagem, fotos, segunda inspeção, retrabalho, relatórios, exportações e permissões por perfil. Esta matriz ainda não libera a implementação operacional.
+
+## Varredura ampliada e rastreio de origem — 03/10/2026
+
+`scripts/inventory_mapa_all_calls.py` registrou **143 ocorrências** no `app.js` de `.from(` (68), `.rpc(` (1), `.channel(` (1), `fetch(` (16), `localStorage` (54) e `caches` (3); `.storage`, `XMLHttpRequest` e `indexedDB` tiveram zero ocorrências. A lista por linha/coluna está em `tests/mapa/fixtures/static-call-sites.json`. Entre essas ocorrências, **86 são locais de chamada de rede candidatos**; as demais incluem armazenamento local e cache. Essa é a base para provar cobertura, não uma afirmação de que todos os locais já foram executados.
+
+A captura Playwright foi repetida com `page.route('**/*')`: **31 requisições externas foram bloqueadas e respondidas localmente**, e as pilhas de `fetch` permitiram associá-las a **16 linhas de origem** do `app.js`. Cabeçalhos `Prefer` e `Range` foram registrados quando presentes; para `apikey`, ficou somente a indicação de presença, sem valor. Método, caminho, query, corpo e fluxo da captura estão em `tests/mapa/fixtures/captured-offline.json`. As respostas usadas nessa captura ainda são vazias e sintéticas, por isso o arquivo está marcado como **rascunho**, não como fixture de contrato válido. Os demais perfis, setores e fluxos da etapa B ainda exigem roteiros e respostas com formato real do PostgreSQL de testes.

@@ -1,0 +1,1293 @@
+{
+  "source": "mapa-concretagem/app.js",
+  "meaning": "static inventory; no flow coverage asserted",
+  "calls": [
+    {
+      "id": "app.js:146:15:localStorage",
+      "line": 146,
+      "column": 15,
+      "function": "getClickedFormsToday",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:161:3:localStorage",
+      "line": 161,
+      "column": 3,
+      "function": "markFormaClicked",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:677:27:localStorage",
+      "line": 677,
+      "column": 27,
+      "function": "getProductionProgrammedModel",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:712:17:localStorage",
+      "line": 712,
+      "column": 17,
+      "function": "getFormasManutencao",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:721:5:localStorage",
+      "line": 721,
+      "column": 5,
+      "function": "salvarFormasManutencaoObj",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:743:7:supabase.from",
+      "line": 743,
+      "column": 7,
+      "function": "carregarFormasManutencaoSupabase",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:760:7:supabase.from",
+      "line": 760,
+      "column": 7,
+      "function": "sincronizarFormaManutencaoSupabase",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:878:21:supabase.from",
+      "line": 878,
+      "column": 21,
+      "function": "liberarFormaManutencao",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1206:15:localStorage",
+      "line": 1206,
+      "column": 15,
+      "function": "readDb",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1220:15:localStorage",
+      "line": 1220,
+      "column": 15,
+      "function": "readSubmitLocks",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1234:3:localStorage",
+      "line": 1234,
+      "column": 3,
+      "function": "writeSubmitLocks",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1262:3:localStorage",
+      "line": 1262,
+      "column": 3,
+      "function": "writeDb",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1308:17:localStorage",
+      "line": 1308,
+      "column": 17,
+      "function": "readMapaReportCache",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1320:5:localStorage",
+      "line": 1320,
+      "column": 5,
+      "function": "writeMapaReportCache",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1405:5:localStorage",
+      "line": 1405,
+      "column": 5,
+      "function": "saveDashboardFilter",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1417:5:localStorage",
+      "line": 1417,
+      "column": 5,
+      "function": "clearSavedDashboardFilter",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1427:30:localStorage",
+      "line": 1427,
+      "column": 30,
+      "function": "restoreDashboardFilter",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1442:17:localStorage",
+      "line": 1442,
+      "column": 17,
+      "function": "readMapaReportPayloadCache",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1452:5:localStorage",
+      "line": 1452,
+      "column": 5,
+      "function": "writeMapaReportPayloadCache",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1467:49:supabase.rpc",
+      "line": 1467,
+      "column": 49,
+      "function": "chamarDashboardRpcComCache",
+      "kind": "supabase.rpc",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1509:9:supabase.from",
+      "line": 1509,
+      "column": 9,
+      "function": "carregarLinhasSupabaseComCache",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1525:44:supabase.from",
+      "line": 1525,
+      "column": 44,
+      "function": "carregarLinhasSupabaseComCache",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1579:41:supabase.from",
+      "line": 1579,
+      "column": 41,
+      "function": "insertWithLegacyFallback",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1583:44:supabase.from",
+      "line": 1583,
+      "column": 44,
+      "function": "insertWithLegacyFallback",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1588:41:supabase.from",
+      "line": 1588,
+      "column": 41,
+      "function": "upsertWithLegacyFallback",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1591:44:supabase.from",
+      "line": 1591,
+      "column": 44,
+      "function": "upsertWithLegacyFallback",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1597:5:supabase.from",
+      "line": 1597,
+      "column": 5,
+      "function": "saveProducaoByNaturalKey",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1609:7:supabase.from",
+      "line": 1609,
+      "column": 7,
+      "function": "saveProducaoByNaturalKey",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1616:9:supabase.from",
+      "line": 1616,
+      "column": 9,
+      "function": "saveProducaoByNaturalKey",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1624:9:supabase.from",
+      "line": 1624,
+      "column": 9,
+      "function": "saveProducaoByNaturalKey",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1631:54:supabase.from",
+      "line": 1631,
+      "column": 54,
+      "function": "saveProducaoByNaturalKey",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1635:62:supabase.from",
+      "line": 1635,
+      "column": 62,
+      "function": "saveProducaoByNaturalKey",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1647:43:supabase.from",
+      "line": 1647,
+      "column": 43,
+      "function": "checkApiStatus",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1677:47:supabase.from",
+      "line": 1677,
+      "column": 47,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1690:47:supabase.from",
+      "line": 1690,
+      "column": 47,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1736:33:supabase.from",
+      "line": 1736,
+      "column": 33,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1756:33:supabase.from",
+      "line": 1756,
+      "column": 33,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1778:51:supabase.from",
+      "line": 1778,
+      "column": 51,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1786:51:supabase.from",
+      "line": 1786,
+      "column": 51,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1810:51:supabase.from",
+      "line": 1810,
+      "column": 51,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1825:51:supabase.from",
+      "line": 1825,
+      "column": 51,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:1835:45:supabase.from",
+      "line": 1835,
+      "column": 45,
+      "function": "postToApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:2037:22:supabase.from",
+      "line": 2037,
+      "column": 22,
+      "function": "filesToCompressedDataUrls",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:2162:28:fetch",
+      "line": 2162,
+      "column": 28,
+      "function": "getSetorRowsByDate",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:2262:3:localStorage",
+      "line": 2262,
+      "column": 3,
+      "function": "markFormaLiberada",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:2786:17:localStorage",
+      "line": 2786,
+      "column": 17,
+      "function": "getTratativaDefeitos",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:2795:5:localStorage",
+      "line": 2795,
+      "column": 5,
+      "function": "salvarTratativaDefeitosObj",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3077:14:supabase.from",
+      "line": 3077,
+      "column": 14,
+      "function": "openModalTratativaDefeito",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3167:15:localStorage",
+      "line": 3167,
+      "column": 15,
+      "function": "readLocalProgramacao",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3177:3:localStorage",
+      "line": 3177,
+      "column": 3,
+      "function": "writeLocalProgramacao",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3220:45:supabase.from",
+      "line": 3220,
+      "column": 45,
+      "function": "unprogramFormaInApiOrLocal",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3268:19:supabase.from",
+      "line": 3268,
+      "column": 19,
+      "function": "fetchFormStatusRowsFromTables",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3269:19:supabase.from",
+      "line": 3269,
+      "column": 19,
+      "function": "fetchFormStatusRowsFromTables",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3270:19:supabase.from",
+      "line": 3270,
+      "column": 19,
+      "function": "fetchFormStatusRowsFromTables",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3313:15:supabase.from",
+      "line": 3313,
+      "column": 15,
+      "function": "fetchFormStatusRowsFromTables",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3322:61:supabase.from",
+      "line": 3322,
+      "column": 61,
+      "function": "loadClickedFormsFromSupabase",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3412:7:localStorage",
+      "line": 3412,
+      "column": 7,
+      "function": "loadClickedFormsFromSupabase",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3470:28:fetch",
+      "line": 3470,
+      "column": 28,
+      "function": "loadOfficialProgrammedFormas",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:3497:57:supabase.from",
+      "line": 3497,
+      "column": 57,
+      "function": "loadProgrammedFormas",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4112:28:fetch",
+      "line": 4112,
+      "column": 28,
+      "function": "fetchSetor3Models",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4138:38:fetch",
+      "line": 4138,
+      "column": 38,
+      "function": "fetchSetor3Models",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4162:7:supabase.from",
+      "line": 4162,
+      "column": 7,
+      "function": "fetchSetor3Models",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4298:8:supabase.from",
+      "line": 4298,
+      "column": 8,
+      "function": "filtrarFormasTabela",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4475:15:localStorage",
+      "line": 4475,
+      "column": 15,
+      "function": "readMontagemPostesDb",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4487:5:localStorage",
+      "line": 4487,
+      "column": 5,
+      "function": "writeMontagemPostesDb",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4503:5:localStorage",
+      "line": 4503,
+      "column": 5,
+      "function": "writeMontagemPostesDb",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4719:26:fetch",
+      "line": 4719,
+      "column": 26,
+      "function": "uploadChecklistPhoto",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4724:24:fetch",
+      "line": 4724,
+      "column": 24,
+      "function": "uploadChecklistPhoto",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:4943:51:supabase.from",
+      "line": 4943,
+      "column": 51,
+      "function": "openMontagemPosteDetalhe",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:5114:8:supabase.from",
+      "line": 5114,
+      "column": 8,
+      "function": "filtrarMontagemTabela",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:5123:31:supabase.from",
+      "line": 5123,
+      "column": 31,
+      "function": "syncMontagemPostesFromApi",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:5299:51:supabase.from",
+      "line": 5299,
+      "column": 51,
+      "function": "openInspecaoPosteDetalhe",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6094:9:supabase.from",
+      "line": 6094,
+      "column": 9,
+      "function": "carregarDadosGlobaisDashboard",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6119:9:supabase.from",
+      "line": 6119,
+      "column": 9,
+      "function": "carregarDadosGlobaisDashboard",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6355:27:localStorage",
+      "line": 6355,
+      "column": 27,
+      "function": "readAcmpNotes",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6359:3:localStorage",
+      "line": 6359,
+      "column": 3,
+      "function": "writeAcmpNotes",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6481:23:fetch",
+      "line": 6481,
+      "column": 23,
+      "function": "loadAcmpVolumeIndex",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6548:23:fetch",
+      "line": 6548,
+      "column": 23,
+      "function": "fetchAcmpMassadas",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6572:23:fetch",
+      "line": 6572,
+      "column": 23,
+      "function": "fetchAcmpLeiturasQr",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6736:35:supabase.from",
+      "line": 6736,
+      "column": 35,
+      "function": "renderAcmpConcretagem",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:6862:31:supabase.from",
+      "line": 6862,
+      "column": 31,
+      "function": "getRowsForDashboard",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7485:46:supabase.from",
+      "line": 7485,
+      "column": 46,
+      "function": "enviarRelatorioWhatsapp",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7498:26:supabase.from",
+      "line": 7498,
+      "column": 26,
+      "function": "enviarRelatorioWhatsapp",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7512:31:localStorage",
+      "line": 7512,
+      "column": 31,
+      "function": "readMandrilModelosProduzidos",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7529:3:localStorage",
+      "line": 7529,
+      "column": 3,
+      "function": "writeMandrilModelosProduzidos",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7584:55:supabase.from",
+      "line": 7584,
+      "column": 55,
+      "function": "persistirMandrilModeloNaConcretagem",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7598:60:supabase.from",
+      "line": 7598,
+      "column": 60,
+      "function": "persistirMandrilModeloNaConcretagem",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7718:27:localStorage",
+      "line": 7718,
+      "column": 27,
+      "function": "lerSaquesMandrilLocais",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7730:26:fetch",
+      "line": 7730,
+      "column": 26,
+      "function": "buscarSaquesMandril",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7739:31:localStorage",
+      "line": 7739,
+      "column": 31,
+      "function": "sincronizarSaquesMandrilLocais",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7743:7:localStorage",
+      "line": 7743,
+      "column": 7,
+      "function": "sincronizarSaquesMandrilLocais",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7744:11:localStorage",
+      "line": 7744,
+      "column": 11,
+      "function": "sincronizarSaquesMandrilLocais",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7751:3:localStorage",
+      "line": 7751,
+      "column": 3,
+      "function": "sincronizarSaquesMandrilLocais",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7759:26:fetch",
+      "line": 7759,
+      "column": 26,
+      "function": "sincronizarSaquesMandrilLocais",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7768:3:localStorage",
+      "line": 7768,
+      "column": 3,
+      "function": "sincronizarSaquesMandrilLocais",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7841:9:supabase.from",
+      "line": 7841,
+      "column": 9,
+      "function": "carregarMandrilCircular",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:7990:28:fetch",
+      "line": 7990,
+      "column": 28,
+      "function": "registrarSaque",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8002:3:localStorage",
+      "line": 8002,
+      "column": 3,
+      "function": "registrarSaque",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8004:31:localStorage",
+      "line": 8004,
+      "column": 31,
+      "function": "registrarSaque",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8006:3:localStorage",
+      "line": 8006,
+      "column": 3,
+      "function": "registrarSaque",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8015:28:fetch",
+      "line": 8015,
+      "column": 28,
+      "function": "limparSaque",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8024:3:localStorage",
+      "line": 8024,
+      "column": 3,
+      "function": "limparSaque",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8026:31:localStorage",
+      "line": 8026,
+      "column": 31,
+      "function": "limparSaque",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8028:3:localStorage",
+      "line": 8028,
+      "column": 3,
+      "function": "limparSaque",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8053:33:supabase.from",
+      "line": 8053,
+      "column": 33,
+      "function": "gerarRelatorioSetor",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8063:41:supabase.from",
+      "line": 8063,
+      "column": 41,
+      "function": "gerarRelatorioSetor",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8064:40:supabase.from",
+      "line": 8064,
+      "column": 40,
+      "function": "gerarRelatorioSetor",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8189:15:localStorage",
+      "line": 8189,
+      "column": 15,
+      "function": "readAuthSession",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8207:3:localStorage",
+      "line": 8207,
+      "column": 3,
+      "function": "saveAuthSession",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8211:3:localStorage",
+      "line": 8211,
+      "column": 3,
+      "function": "clearAuthSession",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8400:23:supabase.from",
+      "line": 8400,
+      "column": 23,
+      "function": "ensureSelectValue",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8848:7:localStorage",
+      "line": 8848,
+      "column": 7,
+      "function": "bindEssentialNavigation",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:8867:9:localStorage",
+      "line": 8867,
+      "column": 9,
+      "function": "closeMobileSidebar",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:9659:7:localStorage",
+      "line": 9659,
+      "column": 7,
+      "function": "print",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:9935:24:supabase.from",
+      "line": 9935,
+      "column": 24,
+      "function": "abrirFotoVisualizacao",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:9949:7:localStorage",
+      "line": 9949,
+      "column": 7,
+      "function": "abrirFotoVisualizacao",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:9967:9:localStorage",
+      "line": 9967,
+      "column": 9,
+      "function": "closeMobileSidebar",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:10176:9:supabase.from",
+      "line": 10176,
+      "column": 9,
+      "function": "syncOfflineData",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:10240:33:supabase.channel",
+      "line": 10240,
+      "column": 33,
+      "function": "subscribeToRealtimeUpdates",
+      "kind": "supabase.channel",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:10469:27:supabase.from",
+      "line": 10469,
+      "column": 27,
+      "function": "calcularMetricasProdutividade",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:10917:27:supabase.from",
+      "line": 10917,
+      "column": 27,
+      "function": "renderizarGraficosProdutividade",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:12407:23:supabase.from",
+      "line": 12407,
+      "column": 23,
+      "function": "exibirSlideApresentacaoDefeitos",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:13298:11:supabase.from",
+      "line": 13298,
+      "column": 11,
+      "function": "carregarBaseExportacaoPorPeriodo",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:13417:13:supabase.from",
+      "line": 13417,
+      "column": 13,
+      "function": "carregarLookupProducaoPorRecordIds",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:13978:21:supabase.from",
+      "line": 13978,
+      "column": 21,
+      "function": "renderGraficosMontagem",
+      "kind": "supabase.from",
+      "classification": "collection_helper",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14126:9:supabase.from",
+      "line": 14126,
+      "column": 9,
+      "function": "abrirVisualizacaoChecklist",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14341:67:supabase.from",
+      "line": 14341,
+      "column": 67,
+      "function": "abrirVisualizacaoChecklist",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14356:25:localStorage",
+      "line": 14356,
+      "column": 25,
+      "function": "abrirVisualizacaoChecklist",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14357:33:localStorage",
+      "line": 14357,
+      "column": 33,
+      "function": "abrirVisualizacaoChecklist",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14381:3:fetch",
+      "line": 14381,
+      "column": 3,
+      "function": "abrirVisualizacaoChecklist",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14438:23:fetch",
+      "line": 14438,
+      "column": 23,
+      "function": "excluirFotoVps",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14458:17:localStorage",
+      "line": 14458,
+      "column": 17,
+      "function": "readProgS3S4Db",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14466:3:localStorage",
+      "line": 14466,
+      "column": 3,
+      "function": "writeProgS3S4Db",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14487:9:supabase.from",
+      "line": 14487,
+      "column": 9,
+      "function": "renderSequenciaS3",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14620:9:supabase.from",
+      "line": 14620,
+      "column": 9,
+      "function": "saveSequenciaS3",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14704:38:supabase.from",
+      "line": 14704,
+      "column": 38,
+      "function": "cancelarConcretagemOdin",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14756:5:localStorage",
+      "line": 14756,
+      "column": 5,
+      "function": "cancelarConcretagemOdin",
+      "kind": "localStorage",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14769:44:supabase.from",
+      "line": 14769,
+      "column": 44,
+      "function": "cancelarConcretagemOdin",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14782:44:supabase.from",
+      "line": 14782,
+      "column": 44,
+      "function": "cancelarConcretagemOdin",
+      "kind": "supabase.from",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14816:14:caches",
+      "line": 14816,
+      "column": 14,
+      "function": "updateSwVersionBadge",
+      "kind": "caches",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14818:32:caches",
+      "line": 14818,
+      "column": 32,
+      "function": "updateSwVersionBadge",
+      "kind": "caches",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14822:31:caches",
+      "line": 14822,
+      "column": 31,
+      "function": "updateSwVersionBadge",
+      "kind": "caches",
+      "classification": "unclassified",
+      "covered_by": []
+    },
+    {
+      "id": "app.js:14832:28:fetch",
+      "line": 14832,
+      "column": 28,
+      "function": "location",
+      "kind": "fetch",
+      "classification": "unclassified",
+      "covered_by": []
+    }
+  ]
+}

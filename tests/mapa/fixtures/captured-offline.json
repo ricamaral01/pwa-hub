@@ -1,0 +1,943 @@
+{
+  "status": "draft: intercepted with synthetic empty responses; not a contract fixture",
+  "network": "all external requests aborted and locally fulfilled",
+  "requests": [
+    {
+      "id": "offline-001",
+      "flow": "inicialização",
+      "source_line_stack": 4112,
+      "method": "GET",
+      "path": "/api/programacao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": false
+      },
+      "query": {
+        "setor_id": [
+          "3"
+        ],
+        "data_inicio": [
+          "2026-10-03"
+        ],
+        "data_fim": [
+          "2026-10-03"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-002",
+      "flow": "inicialização",
+      "source_line_stack": 4112,
+      "method": "GET",
+      "path": "/api/programacao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": false
+      },
+      "query": {
+        "setor_id": [
+          "3"
+        ],
+        "data_inicio": [
+          "2026-10-03"
+        ],
+        "data_fim": [
+          "2026-10-03"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-003",
+      "flow": "inicialização",
+      "source_line_stack": 742,
+      "method": "GET",
+      "path": "/rest/v1/formas_manutencao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "order": [
+          "updated_at.desc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-004",
+      "flow": "inicialização",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "in.(Setor 3,Setor 4)"
+        ],
+        "order": [
+          "data_hora.desc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-005",
+      "flow": "inicialização",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "in.(Setor 3,Setor 4)"
+        ],
+        "order": [
+          "finalizado_em.desc.nullslast"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-006",
+      "flow": "inicialização",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "in.(Setor 3,Setor 4)"
+        ],
+        "order": [
+          "data_hora.desc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-007",
+      "flow": "inicialização",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,banco,observacoes_montagem,montador_nome,created_at,updated_at"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "in.(Setor 3,Setor 4)"
+        ],
+        "order": [
+          "finalizado_em.desc.nullslast"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-008",
+      "flow": "inicialização",
+      "source_line_stack": 1647,
+      "method": "GET",
+      "path": "/rest/v1/usuarios",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id"
+        ],
+        "limit": [
+          "1"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-009",
+      "flow": "MANDRIL_CIRCULAR",
+      "source_line_stack": 3322,
+      "method": "GET",
+      "path": "/rest/v1/vw_formas_status",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-010",
+      "flow": "MANDRIL_CIRCULAR",
+      "source_line_stack": 3267,
+      "method": "GET",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-011",
+      "flow": "MANDRIL_CIRCULAR",
+      "source_line_stack": 3267,
+      "method": "GET",
+      "path": "/rest/v1/liberacao_formas",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-012",
+      "flow": "MANDRIL_CIRCULAR",
+      "source_line_stack": 3267,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-013",
+      "flow": "MANDRIL_CIRCULAR",
+      "source_line_stack": 4112,
+      "method": "GET",
+      "path": "/api/programacao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": false
+      },
+      "query": {
+        "setor_id": [
+          "3"
+        ],
+        "data_inicio": [
+          "2026-10-03"
+        ],
+        "data_fim": [
+          "2026-10-03"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-014",
+      "flow": "MANDRIL_CIRCULAR",
+      "source_line_stack": 7840,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 3"
+        ],
+        "status": [
+          "eq.LIBERADO"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-015",
+      "flow": "MANDRIL_CIRCULAR",
+      "source_line_stack": 7730,
+      "method": "GET",
+      "path": "/api/saques-mandril",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": false
+      },
+      "query": {
+        "data": [
+          "2026-10-03"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-016",
+      "flow": "SEQUENCIA_S3",
+      "source_line_stack": 14486,
+      "method": "GET",
+      "path": "/rest/v1/prog_s3_s4",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "forma,modelo"
+        ],
+        "data": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 3"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-017",
+      "flow": "MONTAGEM_INDICADORES",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-018",
+      "flow": "MONTAGEM_INDICADORES",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "500"
+        ],
+        "data_fabricacao": [
+          "gte.2026-10-03",
+          "lte.2026-10-03"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-019",
+      "flow": "DASHBOARD_DEFEITOS",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-020",
+      "flow": "DASHBOARD_DEFEITOS",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "data_fabricacao,setor,forma,modelo,tipo_concreto,data_hora,status"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "gte.2026-10-03",
+          "lte.2026-10-03"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-021",
+      "flow": "PROD_ANALISE",
+      "source_line_stack": 1467,
+      "method": "POST",
+      "path": "/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {},
+      "body": {
+        "p_data_inicio": "2026-10-03",
+        "p_data_fim": "2026-10-03",
+        "p_scope": "TOTAL"
+      },
+      "stub_response": {
+        "status": 200,
+        "shape": "object"
+      }
+    },
+    {
+      "id": "offline-022",
+      "flow": "PROD_ANALISE",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "gte.2026-10-03",
+          "lte.2026-10-03"
+        ],
+        "status": [
+          "in.(LIBERADO,INSPECIONADO)"
+        ],
+        "order": [
+          "data_hora.asc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-023",
+      "flow": "PROD_ANALISE",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "gte.2026-09-24",
+          "lte.2026-10-03"
+        ],
+        "status": [
+          "in.(LIBERADO,INSPECIONADO)"
+        ],
+        "order": [
+          "data_hora.asc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-024",
+      "flow": "PROD_ANALISE",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "data_fabricacao,codigo_produto,modelo,setor,tipo_concreto,forma,status,data_hora"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "gte.2026-10-01",
+          "lte.2026-10-03"
+        ],
+        "status": [
+          "in.(LIBERADO,INSPECIONADO)"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-025",
+      "flow": "USUARIOS",
+      "source_line_stack": 1778,
+      "method": "GET",
+      "path": "/rest/v1/usuarios",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "ativo": [
+          "eq.true"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-026",
+      "flow": "RELATORIO_MANUTENCAO",
+      "source_line_stack": 742,
+      "method": "GET",
+      "path": "/rest/v1/formas_manutencao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "order": [
+          "updated_at.desc"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-027",
+      "flow": "programar/desprogramar cartão Setor 3",
+      "source_line_stack": 1677,
+      "method": "POST",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": "resolution=merge-duplicates",
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "on_conflict": [
+          "data_fabricacao,setor,forma"
+        ]
+      },
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 3",
+        "forma": "SC01",
+        "modelo": "",
+        "codigo_poste": null,
+        "descricao_poste": null,
+        "codigo_produto": null,
+        "quantidade": 1,
+        "data_hora": "2026-10-03T18:29:36.000Z"
+      },
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-028",
+      "flow": "programar/desprogramar cartão Setor 3",
+      "source_line_stack": 3220,
+      "method": "DELETE",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 3"
+        ],
+        "forma": [
+          "eq.SC01"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-029",
+      "flow": "liberar cartão Setor 3",
+      "source_line_stack": 1690,
+      "method": "POST",
+      "path": "/rest/v1/liberacao_formas",
+      "headers": {
+        "Prefer": "resolution=merge-duplicates",
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "on_conflict": [
+          "data_fabricacao,setor,forma"
+        ]
+      },
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 3",
+        "forma": "SC01",
+        "colaborador": "Jeferson",
+        "data_hora": "2026-10-03T18:29:36.000Z"
+      },
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-030",
+      "flow": "concretar cartão Setor 3 com tipo",
+      "source_line_stack": 1596,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 3"
+        ],
+        "forma": [
+          "eq.SC01"
+        ],
+        "order": [
+          "data_hora.desc.nullslast"
+        ]
+      },
+      "body": null,
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-031",
+      "flow": "concretar cartão Setor 3 com tipo",
+      "source_line_stack": 1631,
+      "method": "POST",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {},
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 3",
+        "forma": "SC01",
+        "modelo": "9x200",
+        "codigo_poste": null,
+        "descricao_poste": "9x200",
+        "codigo_produto": "678",
+        "tipo_concreto": "Concreto Seco - Vibrado",
+        "vibrado": null,
+        "colaborador": "Jeferson",
+        "data_hora": "2026-10-03T18:29:37.000Z",
+        "status": "LIBERADO"
+      },
+      "stub_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    }
+  ]
+}
