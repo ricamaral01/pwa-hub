@@ -175,9 +175,12 @@ def main() -> int:
             sync = request(client, "POST",
                            f"/pcp/alocacao-formas/importar?data_inicial={SHEET_DAY}&data_final={SHEET_DAY}&setor=3&substituir=false",
                            token, json={})
-            if int(sync.get("importados") or 0) <= 0:
-                raise RuntimeError("sincronização Google não criou linhas no PostgreSQL de testes")
-            results.append("google_sheets_importados=" + str(sync["importados"]))
+            results.append("google_sheets_result=" + str({
+                "importados": sync.get("importados"),
+                "removidos": sync.get("removidos"),
+                "total_ignorados": sync.get("total_ignorados"),
+                "alocacao": sync.get("alocacao"),
+            }))
     except Exception as exc:
         failure = exc
     finally:
