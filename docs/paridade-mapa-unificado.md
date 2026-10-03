@@ -22,7 +22,42 @@ Os modos de toque e a sequência de telas têm prioridade sobre qualquer reorgan
 3. Migrar o armazenamento e a consulta das fotos para o ambiente isolado e manter os mesmos botões e prévias.
 4. Comparar o fluxo completo no tablet com o Mapa atual, incluindo cores dos cartões, cliques, respostas offline e sincronização; liberar escrita somente após essa conferência.
 
-O serviço publicado em `/unificado/mapa/` permite apenas consulta histórica. Nenhum fluxo de apontamento está aprovado para uso operacional no PostgreSQL neste momento.
+O serviço publicado em `/unificado/mapa/` permite apenas consulta histórica. A rota separada `/unificado/mapa/operacao/` está aberta somente no PostgreSQL de testes, com faixa fixa de ambiente de teste. O roteiro completo de 24 fluxos ainda não foi certificado para uso de produção.
+
+## E2E na rota operacional de testes — 03/10/2026
+
+`tests/mapa/e2e/live_navigation.py` confirmou 288/288 combinações de quatro perfis, quatro setores e 18 modos contra a captura original, sem host externo. `live_captured_flows.py` executou 30 roteiros de funções no site publicado, sem exceção e sem host externo na rodada limpa; o PDF dependente de biblioteca simulada não foi executado. Estes números mostram alcance de código, não conferem sozinhos os três critérios por ação (requisição, linha gravada, cartão). `first_writes.py` comparou programação/desprogramação do Setor 1; `card_actions.py` comparou liberação e concretagem em Setores 1–3 com GERENCIA. Depois de cada rodada de escrita, a fotografia dos bancos de testes foi restaurada.
+
+Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os perfis/setores previstos; **não executado** também abrange fluxos parcialmente exercitados, com a limitação descrita.
+
+| Nº | Fluxo | Estado E2E completo | Evidência / trabalho restante |
+|---:|---|---|---|
+| 1 | Login por perfil e setor | igual | Quatro perfis × quatro setores; navegação 288/288 conforme captura original. |
+| 2 | Primeiro acesso | não executado | Falta comparação da troca de senha na rota operacional. |
+| 3 | Programar/desprogramar | não executado | Setor 1 com GERENCIA teve POST/DELETE, linha e classe iguais; faltam setores/perfis. |
+| 4 | Modo Liberação | não executado | Setores 1–3 com GERENCIA tiveram linha e cartão; Setor 4 preserva abertura de escolha de concreto; faltam perfis. |
+| 5 | Concretar por tipo | não executado | Um tipo em Setores 1–4 com GERENCIA; faltam demais tipos/perfis. |
+| 6 | Concreto vibrado | não executado | Tipo “Concreto Seco - Vibrado” no teste de cartão; falta matriz completa. |
+| 7 | ODIN e refazer apontamento | não executado | Funções executadas; falta comparar linha e cartão com fixture. |
+| 8 | Modo Manutenção | não executado | Funções executadas; falta comparar linha e cartão com fixture. |
+| 9 | Mandril Circular | não executado | Ponte PCP passou criação/leitura/remoção sintética; falta E2E completo. |
+| 10 | Inspeção, checklist e fotos | não executado | Funções e upload em rota real passaram com PNG válido; faltam fixture/linha/cartão por perfil. |
+| 11 | Segunda inspeção | não executado | Abertura exercitada; falta conclusão E2E. |
+| 12 | Retrabalho RR | não executado | Ramo de checklist exercitado; falta linha/cartão final. |
+| 13 | Montagem Postes | não executado | Funções exercitadas; falta comparação de escrita e cartão. |
+| 14 | Sequência S3 | não executado | Funções exercitadas; falta resultado final por perfil. |
+| 15 | Relatório, PDF e WhatsApp | não executado | Texto do relatório conferido na diferença de ordem; PDF/WhatsApp pendentes. |
+| 16 | Histórico | não executado | Apenas navegação conferida. |
+| 17 | Acompanhamento, salvar/imprimir | não executado | Leitura/renderização exercitadas; escrita e impressão pendentes. |
+| 18 | Manutenção Formas | não executado | Apenas navegação e leitura conferidas. |
+| 19 | Tratativa de Defeitos | não executado | Apenas navegação conferida. |
+| 20 | Três dashboards e filtros | não executado | Leitura e partes da renderização conferidas; todos os filtros pendentes. |
+| 21 | Exportação XLSX | não executado | Base/lookup exercitados; arquivo final pendente. |
+| 22 | Cadastro/edição de usuários | não executado | API em contrato anterior; ações da tela pendentes. |
+| 23 | Sincronizar | não executado | Navegação e consulta exercitadas; sincronização final pendente. |
+| 24 | Fila offline e reenvio | não executado | Funções exercitadas online; desconexão/reenvio com linha final pendentes. |
+
+O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080 sem rolagem horizontal. Falta comparação de pixels tablet/quiosque com o original e falta a casca desktop nova. A rota operacional continua sendo ambiente de teste.
 
 ## Preparação já feita
 

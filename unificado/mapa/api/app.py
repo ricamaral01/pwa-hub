@@ -261,6 +261,19 @@ def rest_read(resource):
     body = upstream.read()
     status = upstream.status
     upstream.close()
+    if (resource == "montagem_poste" and request.method == "GET" and status == 200
+            and "order" not in request.args and "Range" not in request.headers
+            and "offset" not in request.args and "limit" not in request.args):
+        try:
+            rows = json.loads(body)
+            rank_path = Path("/opt/mapa-unificado-api/montagem-order.json")
+            if isinstance(rows, list) and rank_path.exists():
+                order = json.loads(rank_path.read_text(encoding="utf-8"))["ids"]
+                ranks = {row_id: rank for rank, row_id in enumerate(order)}
+                rows.sort(key=lambda row: ranks.get(row.get("id"), len(ranks)))
+                body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()
+        except (OSError, ValueError, TypeError, KeyError):
+            pass
     return Response(body, status=status, headers=response_headers)
 
 
@@ -453,7 +466,10 @@ def photo_proxy(path):
                 if isinstance(records, list):
                     for record in records:
                         if isinstance(record, dict) and str(record.get("url", "")).startswith("/api/fotos/"):
-                            record["url"] = "/unificado/mapa" + record["url"]
+                            record["url"] = (
+                                "https://concrefer.concretrack.com.br/unificado/mapa"
+                                + record["url"]
+                            )
                     body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode()
         except (ValueError, UnicodeDecodeError):
             pass
@@ -473,6 +489,86 @@ def delete_photo(photo_id):
 @app.route("/fotos/<photo_id>/arquivo", methods=["GET"])
 def download_photo(photo_id):
     return photo_proxy("fotos/" + urllib.parse.quote(photo_id, safe="") + "/arquivo")
+
+
+@app.route("/pcp/<path:resource>", methods=["GET", "POST", "DELETE"])
+def pcp_for_mapa(resource):
+    """Use only the cloned PCP database for Mapa's existing cross-app calls."""
+    if not authenticated_user():
+        return jsonify(ok=False), 401
+    allowed = {
+        ("GET", "programacao"), ("GET", "saques-mandril"),
+        ("POST", "saques-mandril"), ("DELETE", "saques-mandril"),
+        ("POST", "saques-mandril/importar"),
+    }
+    if (request.method, resource) not in allowed:
+        return jsonify(ok=False), 405
+    writing = request.method != "GET"
+    if writing and request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
+        return jsonify(ok=False), 403
+    url = "http://127.0.0.1:13054/api/" + resource
+    if request.query_string:
+        url += "?" + request.query_string.decode("ascii", errors="strict")
+    headers = {"Accept": request.headers.get("Accept", "application/json")}
+    if writing:
+        headers["Origin"] = "https://usina.concretrack.com.br"
+    if "Content-Type" in request.headers:
+        headers["Content-Type"] = request.headers["Content-Type"]
+    outbound = urllib.request.Request(
+        url, headers=headers, method=request.method,
+        data=request.get_data() if request.method == "POST" else None,
+    )
+    try:
+        upstream = urllib.request.urlopen(outbound, timeout=20)
+    except urllib.error.HTTPError as error:
+        upstream = error
+    except (urllib.error.URLError, TimeoutError):
+        return jsonify(error="PCP de testes temporariamente indisponível."), 503
+    body, status = upstream.read(), upstream.status
+    content_type = upstream.headers.get("Content-Type", "application/json")
+    upstream.close()
+    return Response(body, status=status, content_type=content_type)
+
+
+@app.get("/usina/massadas")
+def usina_massadas_read():
+    """Preserve the current read-only Usina source through the test origin."""
+    if not authenticated_user():
+        return jsonify(ok=False), 401
+    url = "https://dautomacao.com/api/usina/massadas"
+    if request.query_string:
+        url += "?" + request.query_string.decode("ascii", errors="strict")
+    outbound = urllib.request.Request(url, headers={"Accept": "application/json"})
+    try:
+        upstream = urllib.request.urlopen(outbound, timeout=15)
+    except urllib.error.HTTPError as error:
+        upstream = error
+    except (urllib.error.URLError, TimeoutError):
+        return jsonify(error="Usina temporariamente indisponível."), 503
+    body, status = upstream.read(), upstream.status
+    content_type = upstream.headers.get("Content-Type", "application/json")
+    upstream.close()
+    return Response(body, status=status, content_type=content_type)
+
+
+@app.get("/usina/leituras-qr.csv")
+def leituras_qr_csv_read():
+    """Read the exact public CSV selected by the original Mapa, without storing it."""
+    if not authenticated_user():
+        return jsonify(ok=False), 401
+    url = ("https://docs.google.com/spreadsheets/d/"
+           "1CdQhQ0AJ4mWJqAgnP371ez4r-P7ESX5KuTHI96nI0g8/export?format=csv&gid=0")
+    try:
+        upstream = urllib.request.urlopen(urllib.request.Request(url), timeout=20)
+    except urllib.error.HTTPError as error:
+        upstream = error
+    except (urllib.error.URLError, TimeoutError):
+        return jsonify(error="Leituras QR temporariamente indisponíveis."), 503
+    body, status = upstream.read(), upstream.status
+    content_type = upstream.headers.get("Content-Type", "text/csv; charset=utf-8")
+    upstream.close()
+    return Response(body, status=status, content_type=content_type,
+                    headers={"Cache-Control": "no-store"})
 
 
 @app.route("/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1", methods=["GET", "POST"])

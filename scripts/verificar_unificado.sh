@@ -19,6 +19,7 @@ check_http inicio "$base/" 200
 check_http login "$base/login.html" 200
 check_http mapa_historico "$base/mapa/" 200
 check_http mapa_consulta "$base/mapa/consulta/" 200
+check_http mapa_operacao_teste "$base/mapa/operacao/" 200
 check_http mapa_api_saude "$base/mapa/api/health" 200
 check_http mapa_rpc_protegida "$base/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1" 401
 check_http mapa_foto_protegida "$base/mapa/api/fotos/verificacao/arquivo" 401
@@ -51,6 +52,17 @@ for file in sorted(root.rglob("*")):
         continue  # bibliotecas genéricas; os destinos reais são definidos nos arquivos do aplicativo
     checked += 1
     text = file.read_text(encoding="utf-8", errors="replace")
+    if file.relative_to(root).as_posix() == "mapa/operacao/app.js":
+        operation = file.parent
+        html = (operation / "index.html").read_text(encoding="utf-8")
+        bridge = (operation / "bridge.js").read_text(encoding="utf-8")
+        if (html.find('src="bridge.js"') < 0 or
+                html.find('src="bridge.js"') > html.find('src="app.js') or
+                "AMBIENTE DE TESTE" not in html or
+                not all(value in bridge for value in
+                        (".supabase.co", "pcp.concretrack.com.br", "dautomacao.com", "docs.google.com"))):
+            bad.append("mapa/operacao: bridge ou faixa de testes ausente")
+        continue  # endpoints originais do app.js são reescritos pelo bridge carregado antes dele
     for line_number, line in enumerate(text.splitlines(), 1):
         if domains.search(line) and calls.search(line):
             bad.append(f"{file.relative_to(root)}:{line_number}")

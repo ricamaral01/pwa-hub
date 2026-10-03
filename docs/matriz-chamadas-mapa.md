@@ -163,3 +163,36 @@ O cruzamento entre pilhas capturadas e ocorrências estáticas comprova **18 de 
 O aplicativo original permaneceu intacto. `scripts/capture_mapa_requests_offline.py` executou programação/desprogramação e concretagem nos quatro setores; liberação nos Setores 1–3; ODIN com alteração de tipo e cancelamento; manutenção; inspeção com checklist, foto e retrabalho; montagem com checklist e conclusão; Saque Mandril; sequência S3 e reenvio offline; usuários; dashboards, acompanhamento, relatórios e exportação. Os ramos de compatibilidade antiga receberam erros de coluna **simulados pelo servidor local**, seguidos do fallback do próprio aplicativo. O recorder interceptou **228 pedidos externos** e registrou três leituras locais de assets: **231 entradas**, todas sem acesso externo do navegador. Também registrou quatro invocações sem HTTP (`fetch` de data URL, canal Realtime e duas chamadas à biblioteca PDF). O PDF usou biblioteca simulada apenas para alcançar os pontos de chamada; seu conteúdo não foi validado.
 
 O cruzamento atual comprova **72 de 73 locais estáticos exercitados**; todos os pedidos de dados capturados foram ligados a um local do código. O único local restante é `app.js:2162` em `getSetorRowsByDate`: `CONFIG` não é definido no Mapa original, então o `ReferenceError` capturado impede que o `fetch` aconteça. A evidência está em `docs/comportamentos-atuais-suspeitos.md`. A matriz continua rascunho de contrato: as respostas do servidor local são sintéticas e não foram comparadas integralmente ao oficial por método, campo e erro.
+
+## Decisão sobre a chamada 73
+
+**73/73 ocorrências estão cobertas pelo comportamento original.** A ocorrência `app.js:2162` foi exercitada por invocação direta de `getSetorRowsByDate` e confirmou retorno `[]` após `ReferenceError` de `CONFIG.API_URL`, sem pedido HTTP. Nenhum botão ou tela chama essa função no `app.js` atual; a busca de referências encontrou somente a definição e o roteiro de captura. Não houve alteração no aplicativo para produzir um `fetch` inexistente. Esta cobertura de comportamento não equivale a um fixture HTTP.
+
+## Classificação individual das diferenças de ordem — 03/10/2026
+
+Os 12 casos abaixo usam GETs oficiais e respostas da rota de testes na mesma fotografia. Os pares completos ficam fora do Git em `.work-mapa-unificado/order-pairs-private.json`; `tests/mapa/analyze_order_diffs.py` registra somente as formas das diferenças. `tests/mapa/e2e/compare_order_render.py` injetou cada lado no **mesmo `app.js`** e comparou texto final e classes de cartão. A hora dinâmica “Emitido” do relatório foi normalizada. `a` significa que o consumo reordena ou agrega; `b` significa que a posição/página pode influenciar o resultado.
+
+| Caso | GET e uso | Classe | Resultado final com os dados reais |
+|---:|---|:---:|---|
+| 1 | `producao`, `order=data_hora.asc`, página 1000–1444; produtividade | b | Mesmas 445 linhas, ordem diferente entre horários empatados; indicadores do dashboard iguais. |
+| 2 | `producao`, 01–03/10, 415 linhas sem `order`; relatórios | a | Mesmas linhas e contagens; texto final do relatório igual. |
+| 3 | `vw_formas_status`, 02/10, 209 formas | a | 209 chaves `(data,setor,forma)` distintas; classes e textos dos cartões iguais. |
+| 4 | `producao`, `order=data_fabricacao.desc`, página 0–999 | b | 39 IDs mudam de página por empate de data; conjunto final e indicadores iguais. |
+| 5 | `producao`, mesma consulta, página 1000–1055 | b | Complemento dos mesmos 1.056 IDs, sem falta ou repetição; indicadores iguais. |
+| 6 | `producao` Setor 1, 02/10, 67 linhas; acompanhamento | a | O app ordena pelo horário; 67 horários distintos e linhas exibidas iguais. |
+| 7 | `producao` Setor 2, 02/10, 76 linhas; acompanhamento | a | O app ordena pelo horário; 76 horários distintos e linhas exibidas iguais. |
+| 8 | `producao` Setor 3, 02/10, 46 linhas; acompanhamento | a | Mesmos 46 IDs da consulta equivalente do caso 9; acompanhamento exibido igual. |
+| 9 | `producao` Setor 3, filtros em ordem inversa; relatório | a | Deduplicação/ordenação do app; texto final do relatório igual. |
+| 10 | `producao` Setor 3, colunas do dashboard | a | 46 formas distintas; totais e estados derivados iguais. |
+| 11 | `producao` `LIBERADO`, Setor 3, 02/10; helper de pendências | a | 46 registros iguais; o helper só é chamado pelo roteiro direto, sem tela chamadora no código atual. |
+| 12 | Mesma consulta com filtros em ordem inversa | a | Mesmo conjunto e contagem do caso 11; sem tela chamadora. |
+
+Uma diferença **com efeito visível** foi encontrada antes da correção: `montagem_poste` sem `order` retornava os mesmos 665 registros em outra sequência. O resumo do dashboard exibia modelos com a mesma contagem em posições diferentes. `scripts/sync_mapa_montagem_source_order.py` captura por GET apenas a ordem da consulta oficial; o proxy de testes a aplica somente a leituras sem ordenação/paginação, sem tocar no `app.js`. Depois do ajuste, esse GET teve status e corpo em ordem iguais na auditoria. O total das leituras exatas ficou em **66/78**; os 12 casos da tabela são diferenças brutas de ordem sem diferença nos resultados finais verificados.
+
+`tests/mapa/contract_producao_pagination.py` percorreu as duas páginas do destino até a página curta: **1.056 linhas, 1.056 IDs únicos**, mesmos 1.056 registros e SHA-256 canônico da origem (`89a5bb6388d9279a34fc366a979c3b79ca3a0255a30a14073888c92b0c58b913`).
+
+## Rota operacional aberta e contratos adicionais — 03/10/2026
+
+`/unificado/mapa/operacao/` está publicada com faixa de ambiente de teste e escreve somente no PostgreSQL de testes. O `app.js` original foi preservado; o build substitui apenas o bloco de conexão com a API. Uma ponte local redireciona leituras e escritas do cliente para a origem de testes. `tests/mapa/e2e/live_navigation.py` confirmou 288/288 navegações por perfil/setor. `live_captured_flows.py` executou 30 roteiros na rota real, após correção de URL absoluta de fotos no **servidor novo**, sem exceções e sem pedidos a hosts externos; o roteiro de PDF ainda não foi executado. Isso não certifica sozinho os 24 fluxos E2E completos, documentados em `docs/paridade-mapa-unificado.md`.
+
+O contrato de programação PCP usa a API PCP de testes. O contrato Mandril fez criação, leitura, remoção e conferiu ausência final de registro sintético, apenas no PCP de testes. A leitura de massadas é GET no serviço existente, passada pelo proxy autenticado; `tests/mapa/contract_massadas.py` obteve HTTP 200 em ambos os lados e SHA-256 idêntico `0fdd0e084369ed5c71b41d8cb9b90a2e4de2b2c5f7159ebbd50814e2b997b109`. O CSV fixo de leituras QR (`gid=0`) também foi servido por GET no proxy, sem cópia: HTTP 200 e SHA-256 idêntico `123804dd614daf3d40a1bdc9377218287cdc72f3d3517f1428ed09fdc6d4dffa`. Fila offline/reenvio e efeito de tempo real ainda requerem contrato e E2E completos; exportações CSV geradas pelo app seguem pendentes. `scripts/refresh_unificado_snapshots.py --apply` restaura as duas fotografias, recria contas sintéticas e atualiza a ordem de montagem da fonte para o dashboard.

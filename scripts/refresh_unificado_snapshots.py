@@ -99,6 +99,14 @@ def main() -> None:
             run(["ssh", "vps-staging", "rm", "-f", remote_dump])
     result = run(["ssh", "vps-staging", MAPA_PYTHON, MAPA_SCRIPT]).decode()
     print(result.strip().splitlines()[-1])
+    # A refreshed snapshot removes synthetic users; restore only test identities.
+    test_python = "/opt/mapa-unificado-api/.venv/bin/python"
+    for script in ("create_mapa_operacao_test_account.py", "create_mapa_operacao_profiles.py"):
+        run(["ssh", "vps-staging", test_python,
+             "/root/mapa-unificado-migration/" + script])
+    # Source order matters for tied model counts in the original dashboard.
+    run(["ssh", "vps-staging", "python3",
+         "/root/mapa-unificado-migration/sync_mapa_montagem_source_order.py"])
     print("both_snapshots=ok")
 
 

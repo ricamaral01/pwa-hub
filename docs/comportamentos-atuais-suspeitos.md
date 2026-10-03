@@ -10,11 +10,11 @@
 
 ## Mapa — consulta antiga por `CONFIG.API_URL` não executa o `fetch`
 
-**O que acontece:** `getSetorRowsByDate('Setor 3', '2026-10-02')` retorna `[]`. A função chega à referência a `CONFIG.API_URL`, recebe `ReferenceError` e cai no `catch`, antes do `fetch`. A chamada da linha 2162 é a única das 73 ocorrências estáticas sem requisição ou invocação registrada na captura isolada.
+**O que acontece:** `getSetorRowsByDate('Setor 3', '2026-10-02')` retorna `[]`. A função chega à referência a `CONFIG.API_URL`, recebe `ReferenceError` e cai no `catch`, antes do `fetch`. **Nenhum botão ou tela chama essa função no `app.js` atual**: a busca de referências encontrou apenas sua definição e a invocação direta no roteiro de captura. Ela é código antigo sem caminho de interface. Por decisão do Ricardo, esta 73ª ocorrência conta como coberta pelo teste do comportamento original, sem fabricar uma requisição.
 
 **Onde:** `mapa-concretagem/app.js`, função `getSetorRowsByDate`, por volta das linhas 2157–2168. A busca por `CONFIG` em `mapa-concretagem/` encontrou somente essa referência, sem definição ou importação.
 
-**Evidência:** o roteiro `liberação: linhas por setor e data` retornou zero e não gerou requisição; `tests/mapa/fixtures/coverage-summary.json` mantém `app.js:2162:28:fetch` descoberto. O código original foi preservado. Essa rota antiga não deve ser considerada coberta por uma configuração inventada no teste.
+**Evidência:** o roteiro `liberação: linhas por setor e data` invocou a função diretamente, retornou zero e não gerou requisição; `tests/mapa/fixtures/coverage-summary.json` mantém `app.js:2162:28:fetch` sem HTTP. O código original foi preservado. A cobertura dessa ocorrência é a verificação do ramo de erro, não a execução do `fetch` inacessível.
 
 ## PCP — outubro seleciona a planilha de agosto
 
