@@ -1,12 +1,35 @@
 /* =========================================================
-   Mapa de Concretagem - Service Worker reset
-   v5.8: renomeia indice de reprovacao e adiciona total de postes reprovados
+   MAPA DE CONCRETAGEM - Service Worker
+   v5.31: inspeção, correção e cache sincronizados
    ========================================================= */
 
-const CACHE_NAME = "mapa-concretagem-v5.8";
+const APP_ID = self.location.pathname.includes("mapa-concretagem-teste")
+  ? "mapa-concretagem-teste" : "mapa-concretagem";
+const CACHE_NAME = `${APP_ID}-v5.31`;
+const APP_SHELL = [
+  "./index.html",
+  "./manifest.json?v=v5.31",
+  "./styles.css?v=v5.31",
+  "./dashboard-defeitos-v4.css?v=v5.31",
+  "./modelos-formas.js?v=v5.31",
+  "./app.js?v=v5.31",
+  "./xlsx.full.min.js?v=v5.31",
+  "./supabase.js",
+  "./chart.min.js",
+  "./chartjs-plugin-datalabels.min.js",
+  "../assets/msgbox.css",
+  "../assets/msgbox.js",
+  "/auth/config.js?v=2",
+  "/auth/client.js",
+  "/auth/guard.js?v=2"
+];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", (event) => {
@@ -14,20 +37,53 @@ self.addEventListener("activate", (event) => {
     caches.keys()
       .then((keys) => Promise.all(
         keys
-          .filter((key) => key.includes("mapa-concretagem"))
+          .filter((key) => key.startsWith(`${APP_ID}-v`) && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       ))
       .then(() => self.clients.claim())
-      .then(() => self.registration.unregister())
-      .then(() => self.clients.matchAll({ type: "window", includeUncontrolled: true }))
-      .then((clients) => {
-        for (const client of clients) {
-          client.postMessage({ type: "SW_RESET_DONE", version: CACHE_NAME });
-        }
-      })
   );
 });
 
-self.addEventListener("fetch", () => {
-  return;
+function isStaticRequest(request, url) {
+  if (request.destination && ["document", "script", "style", "image", "font", "manifest"].includes(request.destination)) {
+    return true;
+  }
+  return /\.(?:html|css|js|json|png|jpe?g|gif|webp|svg|ico|woff2?|ttf)$/i.test(url.pathname);
+}
+
+async function networkFirst(request, navigation = false) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const response = await fetch(request);
+    if (response && response.ok) {
+      await cache.put(request, response.clone());
+    }
+    return response;
+  } catch (error) {
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    if (navigation) {
+      const fallback = await cache.match("./index.html");
+      if (fallback) return fallback;
+    }
+    throw error;
+  }
+}
+
+self.addEventListener("fetch", (event) => {
+  const request = event.request;
+  if (request.method !== "GET") return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/auth/v1/")) return;
+
+  if (request.mode === "navigate") {
+    event.respondWith(networkFirst(request, true));
+    return;
+  }
+
+  if (isStaticRequest(request, url)) {
+    event.respondWith(networkFirst(request));
+  }
 });
