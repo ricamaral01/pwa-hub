@@ -6,6 +6,13 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
+const sliceBetween = (source, start, end) => {
+  const from = source.indexOf(start);
+  const to = source.indexOf(end, from + start.length);
+  assert.ok(from >= 0, `Inicio nao encontrado: ${start}`);
+  assert.ok(to > from, `Fim nao encontrado: ${end}`);
+  return source.slice(from, to);
+};
 
 test('dataset ouro preserva invariantes de Total e S1_S2', () => {
   const dataset = JSON.parse(read('docs/dataset-ouro-dashboards-v1.json'));
@@ -30,7 +37,78 @@ test('Dashboard Defeitos possui view e filtros proprios', () => {
   assert.match(html, /id="dfFiltroSetor"/);
   assert.match(html, /id="dfContent"/);
   assert.match(app, /function carregarDashboardDefeitos/);
-  assert.match(app, /rpc_dashboard_defeitos_resumo_v1/);
+  assert.match(app, /function isLinhaAvaliacaoDefeitosDashboard/);
+  assert.match(app, /DASHBOARD_DEFEITOS_MONTAGEM_SELECT/);
+  assert.match(app, /DASHBOARD_DEFEITOS_PRODUCAO_SELECT/);
+});
+
+test('exportacoes dos dashboards possuem acionamento e dependencias locais', () => {
+  const html = read('mapa-concretagem-teste/index.html');
+  const app = read('mapa-concretagem-teste/app.js');
+  const sw = read('mapa-concretagem-teste/sw.js');
+  const xlsxPath = path.join(root, 'mapa-concretagem-teste/xlsx.full.min.js');
+
+  assert.match(html, /id="dfBtnExportarCsv"/);
+  assert.match(app, /dfBtnExportarCsv[^\n]+exportarDashboardDefeitosCsv/);
+  assert.match(app, /function exportarDashboardDefeitosCsv/);
+  assert.match(html, /src="xlsx\.full\.min\.js\?v=v5\.31"/);
+  assert.doesNotMatch(html, /cdn\.jsdelivr\.net\/npm\/xlsx/);
+  assert.match(sw, /xlsx\.full\.min\.js\?v=v5\.31/);
+  assert.ok(fs.statSync(xlsxPath).size > 100000);
+});
+
+test('XLSX v1.77 exporta montagem completa e usa producao somente como lookup', () => {
+  const app = read('mapa-concretagem-teste/app.js');
+  const loader = sliceBetween(app, 'async function carregarBaseExportacaoPorPeriodo', 'async function carregarLookupProducaoPorRecordIds');
+  const lookup = sliceBetween(app, 'async function carregarLookupProducaoPorRecordIds', 'async function salvarWorkbookXlsx');
+  const exporter = sliceBetween(app, 'async function exportarMontagemIndicadoresXlsx', 'function obterItensRejeitadosLinha');
+
+  assert.match(app, /function dividirPeriodoYmd\(inicio, fim, diasPorLote = 7\)/);
+  assert.match(app, /const EXPORTACAO_MONTAGEM_PAGE_SIZE = 500/);
+  assert.match(app, /const EXPORTACAO_MONTAGEM_TIMEOUT_MS = 120000/);
+  assert.match(loader, /table !== "montagem_poste"/);
+  assert.match(loader, /\.gte\("data_fabricacao", loteInicio\)/);
+  assert.match(loader, /\.lte\("data_fabricacao", loteFim\)/);
+  assert.match(loader, /const from = pagina \* EXPORTACAO_MONTAGEM_PAGE_SIZE/);
+  assert.match(loader, /const to = pagina \* EXPORTACAO_MONTAGEM_PAGE_SIZE \+ 499/);
+  assert.match(loader, /Intervalo \[\$\{loteInicio\} a \$\{loteFim\}\] excedeu 50\.000 linhas/);
+  assert.match(app, /Lote \[\$\{loteInicio\}\] não pôde ser carregado/);
+  assert.match(loader, /row\?\.id === null \|\| row\?\.id === undefined/);
+  assert.match(loader, /for \(let index = 0; index < lotes\.length; index\+\+\)/);
+  assert.doesNotMatch(loader, /carregarLinhasSupabaseComCache|localStorage|Promise\.all/);
+
+  assert.match(app, /const EXPORTACAO_PRODUCAO_LOOKUP_SIZE = 300/);
+  assert.match(lookup, /recordIds\.length/);
+  assert.match(lookup, /\.select\("id,codigo_poste,descricao_poste,codigo_produto"\)/);
+  assert.match(lookup, /\.in\("id", lote\)/);
+  assert.doesNotMatch(lookup, /data_fabricacao|localStorage|Promise\.all/);
+
+  assert.match(exporter, /`base_montagem_\$\{dStart\}_a_\$\{dEnd\}\.xlsx`/);
+  assert.match(exporter, /carregarLookupProducaoPorRecordIds\(montagemRows\)/);
+  assert.match(exporter, /book_append_sheet\(wb, wsResumo, "Resumo"\)/);
+  assert.match(exporter, /book_append_sheet\(wb, wsMontagem, "Base Montagem"\)/);
+  assert.match(exporter, /baixarArquivoBlob|salvarWorkbookXlsx/);
+  assert.doesNotMatch(exporter, /Base Producao|showSaveFilePicker|localStorage|Promise\.all/);
+  assert.doesNotMatch(app, /async function escolherDestinoExportacaoXlsx/);
+  assert.doesNotMatch(app, /DASHBOARD_MONTAGEM_SELECT = "[^"]*codigo_poste/);
+});
+
+test('arquivos publicos de teste e producao apontam para v5.31', () => {
+  const app = read('mapa-concretagem-teste/app.js');
+  const html = read('mapa-concretagem-teste/index.html');
+  const manifest = read('mapa-concretagem-teste/manifest.json');
+  const reset = read('mapa-concretagem-teste/reset-cache.html');
+  const sw = read('mapa-concretagem-teste/sw.js');
+
+  for (const source of [app, html, manifest, reset, sw]) {
+    assert.doesNotMatch(source, /v5\.26|v1\.77/);
+  }
+  assert.match(app, /sw\.js\?v=v5\.31/);
+  assert.match(html, /app\.js\?v=v5\.31/);
+  assert.match(manifest, /cache-reset=v5\.31/);
+  assert.match(reset, /abrir v5\.31/);
+  assert.match(sw, /APP_ID.*mapa-concretagem-teste/s);
+  assert.equal(sw, read('mapa-concretagem/sw.js'));
 });
 
 test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {
@@ -38,6 +116,8 @@ test('carregamentos refatorados dos dashboards usam colunas explicitas', () => {
 
   assert.match(app, /const DASHBOARD_PRODUCAO_SELECT = "/);
   assert.match(app, /const DASHBOARD_MONTAGEM_SELECT = "/);
+  assert.match(app, /const DASHBOARD_MONTAGEM_SCREEN_SELECT = "/);
+  assert.match(app, /O antigo RPC de[\s\S]+statement_timeout/);
   assert.doesNotMatch(app, /select:\s*["']\*["']/);
   assert.doesNotMatch(app, /\.select\(opts\.select \|\| ["']\*["']\)/);
 });

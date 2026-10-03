@@ -348,6 +348,7 @@
 })();
 
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyZkdfk8OwLDGAzc2fznPUFS5cDvDgMVRz1nVBtRG1BSIqthuVjTwEY8XD1oyfOKgB9/exec";
+const API_ROMPIMENTOS_URL = "/api/controle-estatistico/rompimentos";
 const DASH_URL = WEBAPP_URL + "?view=dashboard";
 document.getElementById("btnDash").href = DASH_URL;
 
@@ -481,6 +482,30 @@ function canSave(mpa){
   return true;
 }
 
+async function postToApi(payload){
+  const res = await fetch(API_ROMPIMENTOS_URL,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json;charset=utf-8" },
+    body: JSON.stringify(payload)
+  });
+  const text = await res.text();
+  let data = null;
+  try { data = JSON.parse(text); } catch(e) {}
+  if(res.ok && data && data.ok) return data;
+  const msg = (data && data.error && (data.error.message || data.error)) || text || ("HTTP " + res.status);
+  throw new Error(msg);
+}
+
+async function postToAppsScript(payload){
+  await fetch(WEBAPP_URL + "?t=" + Date.now(),{
+    method:"POST",
+    mode:"no-cors",
+    headers:{ "Content-Type":"text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  });
+  return { ok:true, opaque:true };
+}
+
 async function send(){
   const mpa = mpaNumber();
   if(!canSave(mpa)){ setStatus("verifique QR + MPA + operador","err"); return; }
@@ -500,43 +525,21 @@ async function send(){
   setStatus("salvando...","warn");
   $("btnSave").disabled = true;
 
-  const url = WEBAPP_URL + "?t=" + Date.now();
-
   try{
-    const res = await fetch(url,{
-      method:"POST",
-      headers:{ "Content-Type":"text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    });
-
-    const text = await res.text();
-
-    let data = null;
-    try { data = JSON.parse(text); } catch(e) {}
-
-    if(text.includes("ok") || (data && data.ok)){
-      var vpsOk = !!(data && data.vps_sync && data.vps_sync.ok);
-      var vpsError = data && data.vps_sync && data.vps_sync.error ? data.vps_sync.error : "";
-      setStatus(vpsOk ? "gravado na planilha e no banco ✅" : "gravado na planilha ✅","ok");
-      $("mpaInput").value="";
-      $("btnSave").disabled = true;
-      updateMPAStatus();
-
-      if(data && data.dashboard_path){
-        $("btnDash").href = WEBAPP_URL + data.dashboard_path;
-      } else {
-        $("btnDash").href = DASH_URL;
-      }
-
-      if(data && data.vps_sync && !data.vps_sync.ok){
-        $("helpTxt").textContent = "Planilha salva. Banco VPS falhou: " + vpsError;
-      }
-
-      $("modalSucesso").classList.add("show");
-    }else{
-      setStatus("erro ao gravar","err");
-      $("btnSave").disabled = false;
+    let savedBy = "banco";
+    try{
+      await postToApi(payload);
+    }catch(apiError){
+      await postToAppsScript(payload);
+      savedBy = "planilha";
     }
+
+    setStatus(savedBy === "banco" ? "gravado no banco ✅" : "enviado para planilha ✅","ok");
+    $("mpaInput").value="";
+    $("btnSave").disabled = true;
+    updateMPAStatus();
+    $("btnDash").href = DASH_URL;
+    $("modalSucesso").classList.add("show");
   }catch(e){
     setStatus("erro envio: " + (e?.message || e), "err");
     $("btnSave").disabled = false;
