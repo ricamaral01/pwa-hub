@@ -54,7 +54,10 @@
       "function": "carregarFormasManutencaoSupabase",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inicialização",
+        "RELATORIO_MANUTENCAO"
+      ]
     },
     {
       "id": "app.js:760:7:supabase.from",
@@ -180,7 +183,9 @@
       "function": "chamarDashboardRpcComCache",
       "kind": "supabase.rpc",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "PROD_ANALISE"
+      ]
     },
     {
       "id": "app.js:1509:9:supabase.from",
@@ -189,7 +194,16 @@
       "function": "carregarLinhasSupabaseComCache",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inicialização",
+        "MONTAGEM_INDICADORES",
+        "DASHBOARD_DEFEITOS",
+        "PROD_ANALISE",
+        "USUARIOS",
+        "RELATORIO_MANUTENCAO",
+        "programar/desprogramar cartão Setor 3",
+        "liberar cartão Setor 3"
+      ]
     },
     {
       "id": "app.js:1525:44:supabase.from",
@@ -243,7 +257,12 @@
       "function": "saveProducaoByNaturalKey",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "concretar cartão Setor 3 com tipo",
+        "concretar cartão Setor 1 com tipo",
+        "concretar cartão Setor 2 com tipo",
+        "concretar cartão Setor 4 com tipo"
+      ]
     },
     {
       "id": "app.js:1609:7:supabase.from",
@@ -279,7 +298,12 @@
       "function": "saveProducaoByNaturalKey",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "concretar cartão Setor 3 com tipo",
+        "concretar cartão Setor 1 com tipo",
+        "concretar cartão Setor 2 com tipo",
+        "concretar cartão Setor 4 com tipo"
+      ]
     },
     {
       "id": "app.js:1635:62:supabase.from",
@@ -297,7 +321,9 @@
       "function": "checkApiStatus",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inicialização"
+      ]
     },
     {
       "id": "app.js:1677:47:supabase.from",
@@ -306,7 +332,12 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "liberar cartão Setor 3",
+        "programar/desprogramar cartão Setor 1",
+        "programar/desprogramar cartão Setor 2",
+        "programar/desprogramar cartão Setor 4"
+      ]
     },
     {
       "id": "app.js:1690:47:supabase.from",
@@ -315,7 +346,11 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "liberar cartão Setor 3",
+        "liberar cartão Setor 1",
+        "liberar cartão Setor 2"
+      ]
     },
     {
       "id": "app.js:1736:33:supabase.from",
@@ -342,7 +377,9 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "USUARIOS"
+      ]
     },
     {
       "id": "app.js:1786:51:supabase.from",
@@ -459,7 +496,12 @@
       "function": "unprogramFormaInApiOrLocal",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "liberar cartão Setor 3",
+        "programar/desprogramar cartão Setor 1",
+        "programar/desprogramar cartão Setor 2",
+        "programar/desprogramar cartão Setor 4"
+      ]
     },
     {
       "id": "app.js:3268:19:supabase.from",
@@ -468,7 +510,9 @@
       "function": "fetchFormStatusRowsFromTables",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "MANDRIL_CIRCULAR"
+      ]
     },
     {
       "id": "app.js:3269:19:supabase.from",
@@ -477,7 +521,9 @@
       "function": "fetchFormStatusRowsFromTables",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "MANDRIL_CIRCULAR"
+      ]
     },
     {
       "id": "app.js:3270:19:supabase.from",
@@ -486,7 +532,9 @@
       "function": "fetchFormStatusRowsFromTables",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "MANDRIL_CIRCULAR"
+      ]
     },
     {
       "id": "app.js:3313:15:supabase.from",
@@ -504,7 +552,9 @@
       "function": "loadClickedFormsFromSupabase",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "MANDRIL_CIRCULAR"
+      ]
     },
     {
       "id": "app.js:3412:7:localStorage",
@@ -540,7 +590,10 @@
       "function": "fetchSetor3Models",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inicialização",
+        "MANDRIL_CIRCULAR"
+      ]
     },
     {
       "id": "app.js:4138:38:fetch",
@@ -801,7 +854,9 @@
       "function": "buscarSaquesMandril",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "MANDRIL_CIRCULAR"
+      ]
     },
     {
       "id": "app.js:7739:31:localStorage",
@@ -864,7 +919,9 @@
       "function": "carregarMandrilCircular",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "MANDRIL_CIRCULAR"
+      ]
     },
     {
       "id": "app.js:7990:28:fetch",
@@ -1206,7 +1263,9 @@
       "function": "renderSequenciaS3",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "SEQUENCIA_S3"
+      ]
     },
     {
       "id": "app.js:14620:9:supabase.from",
