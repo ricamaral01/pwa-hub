@@ -56,7 +56,7 @@ O Mapa de produção e o PCP atual continuam sendo os sistemas operacionais. Nen
 - As senhas das 38 contas migradas foram armazenadas no destino com **Argon2id**. O login usa uma conta SQL restrita; as visões de leitura não expõem o hash da senha.
 - Foram preparados PostgREST de leitura, API Flask de autenticação/proxy e serviço `mapa-unificado-auth.service`. Os serviços internos escutam apenas em `127.0.0.1` na VPS; o acesso público passa por HTTPS e Nginx.
 - O backup da configuração anterior do Nginx foi guardado antes da publicação. Também foram criados backups privados da base de testes antes dos experimentos de escrita.
-- A migração é uma **fotografia de 02/10/2026**. Não há sincronização automática das alterações posteriores feitas na produção.
+- A fotografia foi refeita em **03/10/2026 às 15:36:45 UTC**; a data de fabricação mais recente nela continua **02/10/2026**. Não há sincronização automática das alterações posteriores feitas na produção.
 
 ### 4. Publicação do login e do histórico
 
@@ -114,6 +114,16 @@ Mapa e PCP originais → continuam disponíveis para a operação atual
 | Sincronização contínua da produção com o banco de testes | **Inexistente** |
 
 O repositório contém alterações locais ainda não consolidadas e outros arquivos de trabalho não relacionados. Este relatório descreve o estado observado, não afirma que toda a implementação esteja em um commit único.
+
+### Continuação em 03/10/2026
+
+- O trabalho do unificado foi consolidado nos commits `6db01c4d` e `d4232964`, com a tag de retorno `unificado-leitura-ok-20261003`. Arquivos de outros projetos ficaram fora.
+- A atualização da fotografia passou a ser reproduzível por `scripts/refresh_mapa_snapshot.py`. A execução de 03/10 exportou a origem somente em leitura, conferiu as sete tabelas em estágio, criou um backup privado e trocou a fotografia do banco de testes em uma transação. Os 40.140 registros e as senhas já alteradas no login de testes foram preservados.
+- O inventário inicial encontrou 84 referências a chamadas de dados no `app.js` original. Uma captura isolada abriu 18 modos e interceptou 31 pedidos externos sem deixar nenhuma chamada chegar ao Supabase ou ao PCP oficial. As capturas de todas as ações e a matriz completa de contratos continuam pendentes.
+- A leitura da VPS oficial confirmou que o PCP usa PostgreSQL 14.24, mas o FastAPI também consulta `producao_diaria` no Supabase e planilhas Google. Foi solicitada uma decisão sobre os equivalentes dessas fontes no ambiente de testes antes de copiar e publicar o backend PCP.
+- As quatro rotas existentes do unificado continuaram em HTTP 200 após a atualização do banco. Nenhuma rota operacional nova foi publicada.
+
+Comandos, conferências e pendências dessa continuação estão em `docs/registro-etapas-unificacao-2026-10-03.md`.
 
 ## Próximas etapas para concluir a unificação
 

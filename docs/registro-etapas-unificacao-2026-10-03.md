@@ -18,11 +18,15 @@
 - Comando remoto de leitura: `find /opt/concrefer-unificado /var/www/concretrack-unificado-tests-root /root/mapa-unificado-migration -maxdepth 2 -type d`.
 - Nenhuma pasta foi movida. Foi solicitado ao usuário escolher entre manter os caminhos atuais e planejar uma migração de pasta.
 
-### A3 — script preparado; execução pendente
+### A3 — fotografia repetível executada
 
 - `scripts/refresh_mapa_snapshot.py` prepara exportação somente leitura do Supabase, conferência de contagens/hashes, importação em tabelas de estágio, backup privado `pg_dump` e troca transacional da fotografia no banco `mapa_unificado_teste`.
 - O script preserva o hash de senha e o estado de primeiro acesso das contas que já existem no ambiente de testes, para que a atualização não desfaça senhas trocadas nesse ambiente.
-- Comando local executado: `python -m py_compile scripts/refresh_mapa_snapshot.py`. A exportação **não foi executada**: o arquivo privado `/root/mapa-unificado-migration/supabase-source.env` ainda não estava disponível na VPS na última conferência. Nenhuma chave foi colocada no Git, nos comandos registrados ou neste relatório.
+- Comando local executado: `python -m py_compile scripts/refresh_mapa_snapshot.py`. O usuário autorizou criar o arquivo privado; ele foi criado na VPS com proprietário `root` e modo `600`, e os nomes/formato das duas variáveis foram validados sem exibir os valores.
+- Os scripts `export_mapa_supabase.py` e `refresh_mapa_snapshot.py` foram transferidos para `/root/mapa-unificado-migration/`, conferidos por SHA-256 e compilados na VPS. Foi criado o ambiente Python privado `refresh-venv` com `requests==2.32.5` e `argon2-cffi==25.1.0`.
+- Comandos na VPS de testes: `python3 -m venv /root/mapa-unificado-migration/refresh-venv`, `/root/mapa-unificado-migration/refresh-venv/bin/python -m pip install --disable-pip-version-check requests==2.32.5 argon2-cffi==25.1.0`, `/root/mapa-unificado-migration/refresh-venv/bin/python /root/mapa-unificado-migration/refresh_mapa_snapshot.py --dry-run` e, após a checagem, o mesmo comando sem `--dry-run`. Os comandos são mostrados aqui sem segredos; o script lê as variáveis diretamente do arquivo privado.
+- A exportação de **03/10/2026 15:36:45 UTC** foi importada em tabelas de estágio, com hash dos arquivos e IDs e contagem conferidos antes da troca. O backup anterior à troca ficou em `/root/mapa-unificado-migration/snapshots/20261003T153645Z/before-refresh.dump` (`root`, modo `600`, 113.594.716 bytes). O manifesto ficou na mesma pasta privada.
+- A auditoria final registrou `usuarios` 38, `programacao_pcp` 3.280, `liberacao_formas` 5.307, `producao` 22.523, `montagem_poste` 8.990, `formas_manutencao` 2 e `prog_s3_s4` 0: **40.140 registros**. A última `data_fabricacao` em `producao` continua **02/10/2026**. As senhas já trocadas no ambiente de testes foram preservadas pela operação de estágio antes da transação.
 
 ## Etapa B — chamadas do Mapa
 
@@ -48,7 +52,6 @@ Comando local: `curl.exe --head --silent --show-error --max-time 12` para cada e
 ## Pendências que dependem do usuário
 
 1. Escolher o destino de pasta na VPS de testes, pois a publicação atual difere de `/opt/concrefer-unificado/`.
-2. Criar o arquivo privado de origem Supabase na VPS para executar A3 sem expor a chave em comandos ou logs.
-3. Definir o equivalente de testes para `producao_diaria` e planilhas Google do PCP. A autorização para eventos em tempo real do Mapa já foi recebida.
+2. Definir o equivalente de testes para `producao_diaria` e planilhas Google do PCP. A autorização para eventos em tempo real do Mapa já foi recebida.
 
-Nenhum backup ou recarga de Nginx foi necessário nesta continuação porque não houve publicação nova. Antes de qualquer publicação, serão feitos os três backups e `nginx -t` exigidos pela tarefa.
+Após A3, as quatro rotas existentes do unificado foram reconferidas e responderam HTTP 200. O Mapa oficial respondeu HTTP 200 e a entrada do PCP oficial permaneceu em HTTP 302. Nenhuma recarga de Nginx foi necessária porque não houve publicação nova. Antes de qualquer publicação, serão feitos os três backups e `nginx -t` exigidos pela tarefa.
