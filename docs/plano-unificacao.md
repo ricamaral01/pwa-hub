@@ -180,4 +180,22 @@ Não fazem parte desta tarefa a virada dos domínios antigos, o uso de dados de 
 | Nenhum usuário, senha, perfil ou produção alterado | **OK** — leitura de código, páginas públicas e pré-voo CORS; sem login ou gravação |
 | Sistemas antigos preservados | **OK quanto aos arquivos locais**; nenhum teste de login real foi feito pela regra R5 |
 
-**Ponto de parada:** não iniciar a Fase 1 enquanto I1 e I3 não estiverem resolvidos. A autorização geral para avançar não elimina a proibição de gravar em produção nem a exigência de preservar a função de login do Mapa. Não há publicação ou push nesta fase.
+**Ponto de parada da Fase 0:** não ativar módulos operacionais ou login antes de resolver I1 e I3. A autorização geral para avançar permite construir a estrutura local sem operações, mas não elimina a proibição de gravar em produção nem a exigência de preservar a função de login do Mapa. Não há publicação ou push nesta fase.
+
+## 10. Relatório da Fase 1 — estrutura local sem operações
+
+Após o pedido de avançar, foi construída somente a parte da Fase 1 que não depende de I1/I3: `unificado/index.html`, `login.html` visual, `shell/` derivada da prévia, fontes locais, `vendor/` com versões fixas e licenças, `VERSION` e `scripts/bump_unificado.py`. O menu único gera rotas internas propostas, mas todos os destinos operacionais têm `aria-disabled="true"` e a navegação é bloqueada. `shell/auth.js` declara autenticação inativa e não recebe credenciais. Não há cópia do PCP nem do Mapa nesta fase.
+
+| Critério | Estado / evidência |
+|---|---|
+| Mudanças da fase só em `unificado/`, `scripts/bump_unificado.py`, `docs/` | **OK** para o diff da fase; sujeira preexistente fora dessas pastas permanece |
+| Abre sem internet/CDN/API | **OK**: teste em navegador capturou zero requisições externas ao servidor local |
+| Console sem erros | **OK** em Início e login visual |
+| Menu único, item ativo e módulo persistente | **OK** na casca; telas operacionais ainda indisponíveis |
+| 800px, 1000px e quiosque iguais ao Mapa atual | **Não aplicável**: a cópia do Mapa ainda não existe; a casca mostra somente o aviso abaixo de 1025px |
+| Etiquetas e FL-PRO-15 idênticas | **Não aplicável**: as cópias do PCP ainda não existem |
+| Nenhum usuário/perfil/senha alterado | **OK**: formulário desativado, sem envio |
+| Nenhum dado de produção gravado | **OK**: nenhuma chamada a API/Supabase |
+| Sistemas antigos operacionais | Arquivos originais intactos; não foi feito login real por R5 |
+
+**Pendências:** I1 (ambiente Mapa isolado), I2 (frontend PCP completo), I3 (ponte da função de login) e I4 (efeito do logout sobre a sessão antiga do PCP). A Fase 2 não deve ativar formulários PCP contra a API produtiva durante o desenvolvimento. A Fase 3 não deve copiar a configuração atual de `mapa-concretagem-teste/` como se fosse isolada.

@@ -1,0 +1,1 @@
+A cópia do Mapa não foi instalada na Fase 1. A configuração local chamada “teste” ainda aponta para o mesmo projeto Supabase e a mesma API da produção; veja `docs/plano-unificacao.md` antes de ativar este módulo.
