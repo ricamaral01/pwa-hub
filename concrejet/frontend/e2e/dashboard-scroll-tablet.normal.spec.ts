@@ -1,6 +1,16 @@
 import { expect, test } from '@playwright/test';
+import os from 'node:os';
 
-const lanBaseUrl = 'http://192.168.0.14:5173';
+function lanBaseUrl(): string {
+  for (const interfaces of Object.values(os.networkInterfaces())) {
+    for (const item of interfaces ?? []) {
+      if (item.family === 'IPv4' && !item.internal && item.address.startsWith('192.168.')) {
+        return `http://${item.address}:5173`;
+      }
+    }
+  }
+  return 'http://localhost:5173';
+}
 
 async function expectNoHorizontalOverflow(page: import('@playwright/test').Page) {
   const overflow = await page.evaluate(
@@ -40,7 +50,8 @@ test.describe('entrada desktop e tablet em rede local', () => {
     test(`tablet via IP sem 500 e sem rolagem horizontal ${viewport.width}x${viewport.height}`, async ({
       browser,
     }) => {
-      const context = await browser.newContext({ baseURL: lanBaseUrl, viewport });
+      const baseURL = lanBaseUrl();
+      const context = await browser.newContext({ baseURL, viewport });
       const page = await context.newPage();
       const serverErrors: string[] = [];
       page.on('response', (response) => {
@@ -55,15 +66,17 @@ test.describe('entrada desktop e tablet em rede local', () => {
           page.getByRole('textbox', { name: /Identificador do dispositivo/i }),
         ).not.toContainText(/Gerando/i);
         await page.getByRole('button', { name: /ativar/i }).click();
-        await expect(page).toHaveURL(`${lanBaseUrl}/`);
+        await expect(page).toHaveURL(`${baseURL}/`);
         await page.waitForTimeout(1000);
         await expect(
           page.getByRole('main', { name: /Ativacao do dispositivo/i }),
         ).toHaveCount(0);
       }
-      await expect(page).toHaveURL(`${lanBaseUrl}/`);
+      await expect(page).toHaveURL(`${baseURL}/`);
       await expect(
-        page.getByText(/Ativacao do Dispositivo|Identificacao do operador|OPERACAO/i),
+        page.getByText(
+          /Ativacao do Dispositivo|Ativação do Dispositivo|Identificacao do operador|Identificação do Operador|OPERACAO|Operacao/i,
+        ),
       ).toBeVisible();
       await expectNoHorizontalOverflow(page);
 

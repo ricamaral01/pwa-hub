@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { DataSource, In, MoreThan, Not } from 'typeorm';
+import { DataSource, In } from 'typeorm';
 import { AuditoriaService } from '../auditoria/auditoria.service';
 import type { OperationalUser } from '../auth/operator-session.guard';
 import {
@@ -218,9 +218,7 @@ export class ProductionRecordsService {
       where: {
         empresaId: user.empresaId,
         dispositivoId,
-        status: Not('cancelado'),
-        fimEm: undefined,
-        inicioEm: MoreThan(new Date(0)),
+        status: 'em_andamento',
       },
       order: { inicioEm: 'DESC' },
     });

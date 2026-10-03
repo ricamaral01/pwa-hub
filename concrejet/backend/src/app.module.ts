@@ -24,7 +24,16 @@ import { ImportacaoModule } from './modules/importacao/importacao.module';
   imports: [
     AppConfigModule,
     LoggerModule,
-    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 100 }]),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => [
+        {
+          ttl: configService.get<number>('THROTTLE_TTL_MS', 60_000),
+          limit: configService.get<number>('THROTTLE_LIMIT', 1_000),
+        },
+      ],
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

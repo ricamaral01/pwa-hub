@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.7.4] - 2026-08-27 - Validacao final local e app funcional
+
+### Corrigido
+- Throttle global da API ficou configuravel por ambiente (`THROTTLE_TTL_MS`, `THROTTLE_LIMIT`) e o padrao de desenvolvimento subiu para 1000 req/min para nao bloquear suites E2E reais.
+- Testes Playwright de tablet deixaram de depender de IP LAN fixo e passam a detectar o IP `192.168.*` atual.
+- Testes de ativacao/login foram alinhados ao roteamento atual: desktop em `localhost` entra no fluxo administrativo e tablet via LAN entra no fluxo operacional.
+- `/production-records/current-by-device` passa a retornar somente apontamento `em_andamento`, evitando reabrir/mostrar registro ja concluido.
+
+### Validado
+- Backend: typecheck, Jest e build Docker passaram.
+- Frontend: typecheck, Vitest e build passaram.
+- Playwright normal `normal-tablet-landscape-1920`: 13/13 passou contra API real.
+- Playwright demo `demo-tablet-landscape-1280`: 2/2 passou.
+- API local `/ready` OK com PostgreSQL e API Docker saudaveis.
+- Fluxo operacional real via API: login `OP001`, catalogo, conclusao de apontamento antigo, criacao e conclusao de novo apontamento.
+
+## [0.7.3] - 2026-08-24 - Login operacional real na rota dedicada
+
+### Corrigido
+- Rota `/login` deixa de bloquear o login operacional real quando `VITE_DEMO_MODE=false`.
+- `useSession.loginOperador()` passa a chamar `/auth/operator-login`, persistir a sessao operacional local e armazenar o bearer token operacional no store.
+- Teclado de PIN da rota dedicada fica habilitado para autenticacao real e usa estado de carregamento para evitar envio duplicado.
+
+### Validado
+- Frontend: typecheck, Vitest e build passaram.
+- Backend: typecheck, Jest e build passaram.
+
 ## [0.7.2] - 2026-08-01 - Validacao desktop/tablet
 
 ### Corrigido

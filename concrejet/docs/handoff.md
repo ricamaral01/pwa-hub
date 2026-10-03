@@ -1,5 +1,44 @@
 # Handoff
 
+# Fase 1.5 - Extracao de design system (sessao 2026-08-29)
+
+## Estado inicial
+- commit/release: `62ae37e`
+- fonte analisada: `./legacy-reference/erp-concretrack/`
+
+## Alteracoes realizadas
+- Criado `docs/design-system-extracted.md`
+- Baixada da VPS a referencia visual de `/var/www/erp-concre` para `legacy-reference/erp-concretrack`, sem `.env`, `venv`, `.venv` ou `__pycache__`.
+
+## Testes
+- N/A (so documentacao)
+
+## Pendencias
+- REVISAO HUMANA obrigatoria do `design-system-extracted.md` antes de codificar. Aguardando Ricardo marcar [MANTER]/[AJUSTAR]/[DESCARTAR] em cada secao.
+- `docs/plano-mestre-v2.md` citado no briefing nao existe neste workspace; revisar se o documento foi renomeado ou esta fora do repositorio.
+
+## 2026-08-27 - Codex - Validacao final local e aplicacao ativa
+
+Aplicacao deixada ativa localmente em ambiente de desenvolvimento: PostgreSQL e API via Docker Compose saudaveis; frontend Vite respondendo em `http://localhost:5173/` e na LAN atual `http://192.168.0.132:5173/`; API em `http://localhost:3000/ready` com `database=up`.
+
+Correcoes aplicadas nesta rodada: throttle da API configuravel por `THROTTLE_TTL_MS`/`THROTTLE_LIMIT` com padrao dev de 1000 req/min; testes Playwright usam IP LAN detectado dinamicamente; specs de ativacao/login refletem desktop em `localhost` como fluxo administrativo e tablet via LAN como fluxo operacional; `current-by-device` agora retorna apenas apontamento `em_andamento`, nao o ultimo apontamento concluido.
+
+Validacao executada: backend `npm run typecheck` OK, `npm run test -- --runInBand` OK (7 suites/26 testes), build Docker da API OK; frontend `npm run typecheck` OK, `npm run test` OK (13 arquivos/53 testes), `npm run build` OK; Playwright normal `npm run test:e2e -- --project=normal-tablet-landscape-1920 --workers=1` OK (13/13); Playwright demo `npm run test:e2e -- --project=demo-tablet-landscape-1280 --workers=1` OK (2/2). O navegador integrado do Codex nao estava disponivel (`agent.browsers.list()` vazio), entao a verificacao de UI foi feita por Playwright.
+
+Validacao operacional real via API: login do operador `OP001` com PIN `2468` OK; catalogo operacional retornou 1 operacao, 3 ordens e 17 lotes; apontamento antigo aberto do dispositivo `DEV-TABLET-01` foi concluido para liberar o tablet; novo apontamento foi criado e concluido com sucesso; apos rebuild, `current-by-device` retornou sem apontamento em andamento.
+
+Pendencias fora desta entrega: Fase 8/9 continuam sem especificacao implementavel no repositorio; importacao historica real ainda depende dos arquivos e mapeamentos definitivos; integracao Mega permanece fora do escopo local implementado.
+
+## 2026-08-24 - Codex - Retomada da implantacao e login operacional
+
+Leitura inicial dos Markdown do projeto confirmou que o estado mais recente registrado era `0.7.2`: Fases 5, 6 e 7 ja implementadas/validadas, sem Fase 8/9 iniciada. A pendencia funcional encontrada para seguir a implantacao foi a rota dedicada `/login`, que ainda bloqueava o login operacional real apesar do backend ja expor `/auth/operator-login`.
+
+Correcao aplicada: `useSession.loginOperador()` agora usa `/auth/operator-login` no modo normal, persiste a sessao operacional em IndexedDB, grava o operador no Zustand e armazena o token operacional no store. A tela `/login` habilita matricula/PIN para autenticacao real, mostra mensagem condizente com sessao real e liga o estado de carregamento antes da chamada.
+
+Validacao executada: frontend `npm run typecheck`, `npm run test` e `npm run build` OK; backend `npm run typecheck`, `npm run test` e `npm run build` OK.
+
+Pendencias que continuam fora desta correcao: Fase 8/9 ainda nao estao especificadas; importacao historica real depende dos arquivos/mapeamentos da planilha; integracao Mega continua fora do escopo implementado.
+
 ## 2026-08-01 - Codex - Validacao desktop/tablet e erro operacional
 
 Branch: `fix/dashboard-scroll-tablet-500`.
