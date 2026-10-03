@@ -1,0 +1,11 @@
+[Unit]
+Description=Agenda backup diario dos bancos isolados do unificado
+
+[Timer]
+OnCalendar=*-*-* 03:10:00
+RandomizedDelaySec=10m
+Persistent=true
+Unit=backup-unificado-testes.service
+
+[Install]
+WantedBy=timers.target
