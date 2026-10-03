@@ -56,7 +56,8 @@
       "classification": "unclassified",
       "covered_by": [
         "inicialização",
-        "RELATORIO_MANUTENCAO"
+        "RELATORIO_MANUTENCAO",
+        "sequência S3: salvar e reenviar"
       ]
     },
     {
@@ -66,7 +67,10 @@
       "function": "sincronizarFormaManutencaoSupabase",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "manutenção: inativar e liberar forma",
+        "sequência S3: salvar e reenviar"
+      ]
     },
     {
       "id": "app.js:878:21:supabase.from",
@@ -184,7 +188,8 @@
       "kind": "supabase.rpc",
       "classification": "unclassified",
       "covered_by": [
-        "PROD_ANALISE"
+        "PROD_ANALISE",
+        "dashboard produtividade global"
       ]
     },
     {
@@ -202,7 +207,10 @@
         "USUARIOS",
         "RELATORIO_MANUTENCAO",
         "programar/desprogramar cartão Setor 3",
-        "liberar cartão Setor 3"
+        "liberar cartão Setor 3",
+        "inspeção: abrir checklist",
+        "montagem: abrir poste",
+        "dashboard produtividade global"
       ]
     },
     {
@@ -221,7 +229,10 @@
       "function": "insertWithLegacyFallback",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: checklist, foto e retrabalho",
+        "compatibilidade legado: inserção inspeção"
+      ]
     },
     {
       "id": "app.js:1583:44:supabase.from",
@@ -230,7 +241,9 @@
       "function": "insertWithLegacyFallback",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "compatibilidade legado: inserção inspeção"
+      ]
     },
     {
       "id": "app.js:1588:41:supabase.from",
@@ -239,7 +252,13 @@
       "function": "upsertWithLegacyFallback",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: abrir checklist",
+        "montagem: abrir poste",
+        "inspeção: checklist, foto e retrabalho",
+        "montagem: checklist e conclusão",
+        "compatibilidade legado: upsert montagem"
+      ]
     },
     {
       "id": "app.js:1591:44:supabase.from",
@@ -248,7 +267,9 @@
       "function": "upsertWithLegacyFallback",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "compatibilidade legado: upsert montagem"
+      ]
     },
     {
       "id": "app.js:1597:5:supabase.from",
@@ -261,7 +282,10 @@
         "concretar cartão Setor 3 com tipo",
         "concretar cartão Setor 1 com tipo",
         "concretar cartão Setor 2 com tipo",
-        "concretar cartão Setor 4 com tipo"
+        "concretar cartão Setor 4 com tipo",
+        "concretagem: atualizar e remover duplicidade",
+        "compatibilidade legado: atualização produção",
+        "compatibilidade legado: inserção produção"
       ]
     },
     {
@@ -271,7 +295,10 @@
       "function": "saveProducaoByNaturalKey",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "concretagem: atualizar e remover duplicidade",
+        "compatibilidade legado: atualização produção"
+      ]
     },
     {
       "id": "app.js:1616:9:supabase.from",
@@ -280,7 +307,9 @@
       "function": "saveProducaoByNaturalKey",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "compatibilidade legado: atualização produção"
+      ]
     },
     {
       "id": "app.js:1624:9:supabase.from",
@@ -289,7 +318,9 @@
       "function": "saveProducaoByNaturalKey",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "concretagem: atualizar e remover duplicidade"
+      ]
     },
     {
       "id": "app.js:1631:54:supabase.from",
@@ -302,7 +333,8 @@
         "concretar cartão Setor 3 com tipo",
         "concretar cartão Setor 1 com tipo",
         "concretar cartão Setor 2 com tipo",
-        "concretar cartão Setor 4 com tipo"
+        "concretar cartão Setor 4 com tipo",
+        "compatibilidade legado: inserção produção"
       ]
     },
     {
@@ -312,7 +344,9 @@
       "function": "saveProducaoByNaturalKey",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "compatibilidade legado: inserção produção"
+      ]
     },
     {
       "id": "app.js:1647:43:supabase.from",
@@ -359,7 +393,9 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "usuários e inspeção: ações de API"
+      ]
     },
     {
       "id": "app.js:1756:33:supabase.from",
@@ -368,7 +404,9 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "usuários e inspeção: ações de API"
+      ]
     },
     {
       "id": "app.js:1778:51:supabase.from",
@@ -378,7 +416,8 @@
       "kind": "supabase.from",
       "classification": "unclassified",
       "covered_by": [
-        "USUARIOS"
+        "USUARIOS",
+        "usuários e inspeção: ações de API"
       ]
     },
     {
@@ -388,7 +427,9 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "usuários e inspeção: ações de API"
+      ]
     },
     {
       "id": "app.js:1810:51:supabase.from",
@@ -397,7 +438,9 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "usuários e inspeção: ações de API"
+      ]
     },
     {
       "id": "app.js:1825:51:supabase.from",
@@ -406,7 +449,9 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "usuários e inspeção: ações de API"
+      ]
     },
     {
       "id": "app.js:1835:45:supabase.from",
@@ -415,7 +460,9 @@
       "function": "postToApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "usuários e inspeção: ações de API"
+      ]
     },
     {
       "id": "app.js:2037:22:supabase.from",
@@ -511,7 +558,8 @@
       "kind": "supabase.from",
       "classification": "unclassified",
       "covered_by": [
-        "MANDRIL_CIRCULAR"
+        "MANDRIL_CIRCULAR",
+        "sequência S3: salvar e reenviar"
       ]
     },
     {
@@ -522,7 +570,8 @@
       "kind": "supabase.from",
       "classification": "unclassified",
       "covered_by": [
-        "MANDRIL_CIRCULAR"
+        "MANDRIL_CIRCULAR",
+        "sequência S3: salvar e reenviar"
       ]
     },
     {
@@ -533,7 +582,8 @@
       "kind": "supabase.from",
       "classification": "unclassified",
       "covered_by": [
-        "MANDRIL_CIRCULAR"
+        "MANDRIL_CIRCULAR",
+        "sequência S3: salvar e reenviar"
       ]
     },
     {
@@ -553,7 +603,11 @@
       "kind": "supabase.from",
       "classification": "unclassified",
       "covered_by": [
-        "MANDRIL_CIRCULAR"
+        "MANDRIL_CIRCULAR",
+        "ODIN: alterar tipo e cancelar concretagem",
+        "programação: consultar fonte oficial e local",
+        "mandril: saque e remoção",
+        "sequência S3: salvar e reenviar"
       ]
     },
     {
@@ -572,7 +626,9 @@
       "function": "loadOfficialProgrammedFormas",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "programação: consultar fonte oficial e local"
+      ]
     },
     {
       "id": "app.js:3497:57:supabase.from",
@@ -581,7 +637,9 @@
       "function": "loadProgrammedFormas",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "programação: consultar fonte oficial e local"
+      ]
     },
     {
       "id": "app.js:4112:28:fetch",
@@ -592,7 +650,12 @@
       "classification": "unclassified",
       "covered_by": [
         "inicialização",
-        "MANDRIL_CIRCULAR"
+        "MANDRIL_CIRCULAR",
+        "inspeção: abrir checklist",
+        "montagem: abrir poste",
+        "relatório por setor",
+        "modelos S3: fallback PCP e Usina",
+        "sequência S3: salvar e reenviar"
       ]
     },
     {
@@ -602,7 +665,9 @@
       "function": "fetchSetor3Models",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "modelos S3: fallback PCP e Usina"
+      ]
     },
     {
       "id": "app.js:4162:7:supabase.from",
@@ -611,7 +676,9 @@
       "function": "fetchSetor3Models",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "modelos S3: fallback PCP e Usina"
+      ]
     },
     {
       "id": "app.js:4298:8:supabase.from",
@@ -656,7 +723,9 @@
       "function": "uploadChecklistPhoto",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: checklist, foto e retrabalho"
+      ]
     },
     {
       "id": "app.js:4724:24:fetch",
@@ -665,7 +734,9 @@
       "function": "uploadChecklistPhoto",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: checklist, foto e retrabalho"
+      ]
     },
     {
       "id": "app.js:4943:51:supabase.from",
@@ -674,7 +745,9 @@
       "function": "openMontagemPosteDetalhe",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "montagem: abrir poste"
+      ]
     },
     {
       "id": "app.js:5114:8:supabase.from",
@@ -692,7 +765,9 @@
       "function": "syncMontagemPostesFromApi",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "montagem: sincronizar tabela"
+      ]
     },
     {
       "id": "app.js:5299:51:supabase.from",
@@ -701,7 +776,9 @@
       "function": "openInspecaoPosteDetalhe",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: abrir checklist"
+      ]
     },
     {
       "id": "app.js:6094:9:supabase.from",
@@ -710,7 +787,9 @@
       "function": "carregarDadosGlobaisDashboard",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "dashboard produtividade global"
+      ]
     },
     {
       "id": "app.js:6119:9:supabase.from",
@@ -719,7 +798,9 @@
       "function": "carregarDadosGlobaisDashboard",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "dashboard produtividade global"
+      ]
     },
     {
       "id": "app.js:6355:27:localStorage",
@@ -746,7 +827,9 @@
       "function": "loadAcmpVolumeIndex",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "acompanhamento concretagem"
+      ]
     },
     {
       "id": "app.js:6548:23:fetch",
@@ -755,7 +838,9 @@
       "function": "fetchAcmpMassadas",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "acompanhamento concretagem"
+      ]
     },
     {
       "id": "app.js:6572:23:fetch",
@@ -764,7 +849,9 @@
       "function": "fetchAcmpLeiturasQr",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "acompanhamento concretagem"
+      ]
     },
     {
       "id": "app.js:6736:35:supabase.from",
@@ -773,7 +860,9 @@
       "function": "renderAcmpConcretagem",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "acompanhamento concretagem"
+      ]
     },
     {
       "id": "app.js:6862:31:supabase.from",
@@ -782,7 +871,9 @@
       "function": "getRowsForDashboard",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "dashboard: linhas do setor"
+      ]
     },
     {
       "id": "app.js:7485:46:supabase.from",
@@ -791,7 +882,9 @@
       "function": "enviarRelatorioWhatsapp",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "relatório WhatsApp: gerar PDF"
+      ]
     },
     {
       "id": "app.js:7498:26:supabase.from",
@@ -800,7 +893,9 @@
       "function": "enviarRelatorioWhatsapp",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "relatório WhatsApp: gerar PDF"
+      ]
     },
     {
       "id": "app.js:7512:31:localStorage",
@@ -827,7 +922,9 @@
       "function": "persistirMandrilModeloNaConcretagem",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "mandril: modelo produzido"
+      ]
     },
     {
       "id": "app.js:7598:60:supabase.from",
@@ -836,7 +933,9 @@
       "function": "persistirMandrilModeloNaConcretagem",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "mandril: modelo produzido"
+      ]
     },
     {
       "id": "app.js:7718:27:localStorage",
@@ -855,7 +954,9 @@
       "kind": "fetch",
       "classification": "unclassified",
       "covered_by": [
-        "MANDRIL_CIRCULAR"
+        "MANDRIL_CIRCULAR",
+        "sequência S3: salvar e reenviar",
+        "mandril: reenviar saques locais"
       ]
     },
     {
@@ -901,7 +1002,9 @@
       "function": "sincronizarSaquesMandrilLocais",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "mandril: reenviar saques locais"
+      ]
     },
     {
       "id": "app.js:7768:3:localStorage",
@@ -920,7 +1023,8 @@
       "kind": "supabase.from",
       "classification": "unclassified",
       "covered_by": [
-        "MANDRIL_CIRCULAR"
+        "MANDRIL_CIRCULAR",
+        "sequência S3: salvar e reenviar"
       ]
     },
     {
@@ -930,7 +1034,9 @@
       "function": "registrarSaque",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "mandril: saque e remoção"
+      ]
     },
     {
       "id": "app.js:8002:3:localStorage",
@@ -966,7 +1072,9 @@
       "function": "limparSaque",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "mandril: saque e remoção"
+      ]
     },
     {
       "id": "app.js:8024:3:localStorage",
@@ -1002,7 +1110,9 @@
       "function": "gerarRelatorioSetor",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "relatório por setor"
+      ]
     },
     {
       "id": "app.js:8063:41:supabase.from",
@@ -1011,7 +1121,9 @@
       "function": "gerarRelatorioSetor",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "relatório por setor"
+      ]
     },
     {
       "id": "app.js:8064:40:supabase.from",
@@ -1020,7 +1132,9 @@
       "function": "gerarRelatorioSetor",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "relatório por setor"
+      ]
     },
     {
       "id": "app.js:8189:15:localStorage",
@@ -1119,7 +1233,9 @@
       "function": "syncOfflineData",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "sequência S3: salvar e reenviar"
+      ]
     },
     {
       "id": "app.js:10240:33:supabase.channel",
@@ -1128,7 +1244,9 @@
       "function": "subscribeToRealtimeUpdates",
       "kind": "supabase.channel",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "tempo real: subscrever canal"
+      ]
     },
     {
       "id": "app.js:10469:27:supabase.from",
@@ -1164,7 +1282,9 @@
       "function": "carregarBaseExportacaoPorPeriodo",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "exportação XLSX: base e lookup"
+      ]
     },
     {
       "id": "app.js:13417:13:supabase.from",
@@ -1173,7 +1293,9 @@
       "function": "carregarLookupProducaoPorRecordIds",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "exportação XLSX: base e lookup"
+      ]
     },
     {
       "id": "app.js:13978:21:supabase.from",
@@ -1191,7 +1313,9 @@
       "function": "abrirVisualizacaoChecklist",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: visualizar checklist e fotos"
+      ]
     },
     {
       "id": "app.js:14341:67:supabase.from",
@@ -1200,7 +1324,9 @@
       "function": "abrirVisualizacaoChecklist",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: visualizar checklist e fotos"
+      ]
     },
     {
       "id": "app.js:14356:25:localStorage",
@@ -1227,7 +1353,9 @@
       "function": "abrirVisualizacaoChecklist",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: visualizar checklist e fotos"
+      ]
     },
     {
       "id": "app.js:14438:23:fetch",
@@ -1236,7 +1364,9 @@
       "function": "excluirFotoVps",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inspeção: visualizar checklist e fotos"
+      ]
     },
     {
       "id": "app.js:14458:17:localStorage",
@@ -1264,7 +1394,8 @@
       "kind": "supabase.from",
       "classification": "unclassified",
       "covered_by": [
-        "SEQUENCIA_S3"
+        "SEQUENCIA_S3",
+        "sequência S3: salvar e reenviar"
       ]
     },
     {
@@ -1274,7 +1405,9 @@
       "function": "saveSequenciaS3",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "sequência S3: salvar e reenviar"
+      ]
     },
     {
       "id": "app.js:14704:38:supabase.from",
@@ -1283,7 +1416,10 @@
       "function": "cancelarConcretagemOdin",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "ODIN: corrigir concretagem",
+        "ODIN: alterar tipo e cancelar concretagem"
+      ]
     },
     {
       "id": "app.js:14756:5:localStorage",
@@ -1301,7 +1437,9 @@
       "function": "cancelarConcretagemOdin",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "ODIN: alterar tipo e cancelar concretagem"
+      ]
     },
     {
       "id": "app.js:14782:44:supabase.from",
@@ -1310,7 +1448,9 @@
       "function": "cancelarConcretagemOdin",
       "kind": "supabase.from",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "ODIN: alterar tipo e cancelar concretagem"
+      ]
     },
     {
       "id": "app.js:14816:14:caches",
@@ -1346,7 +1486,10 @@
       "function": "location",
       "kind": "fetch",
       "classification": "unclassified",
-      "covered_by": []
+      "covered_by": [
+        "inicialização",
+        "versão: buscar service worker local"
+      ]
     }
   ]
 }

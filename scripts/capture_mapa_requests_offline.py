@@ -10,12 +10,12 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
 from threading import Thread
-from urllib.parse import urlsplit
+from urllib.parse import urljoin, urlsplit
 import urllib.error
 import urllib.request
 
 from playwright.sync_api import sync_playwright
-from mapa_snapshot_server import serve as serve_snapshot
+from mapa_snapshot_server import TABLES, serve as serve_snapshot
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,8 +44,10 @@ def main() -> None:
     Thread(target=snapshot_server.serve_forever, daemon=True).start()
     snapshot_origin = f"http://127.0.0.1:{snapshot_server.server_port}"
     captured: list[dict] = []
+    local_invocations: list[dict] = []
     current_flow = ["inicialização"]
     blocked_external = [0]
+    forced_legacy_errors: set[str] = set()
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
@@ -82,10 +84,22 @@ def main() -> None:
                     if parsed.path.startswith("/auth/"):
                         route.fulfill(status=200, content_type="application/javascript", body="")
                     else:
+                        if request.resource_type == "fetch":
+                            captured.append({
+                                "flow": current_flow[0], "method": request.method,
+                                "host": parsed.hostname,
+                                "path_query": parsed.path + ("?" + parsed.query if parsed.query else ""),
+                                "headers": {"Prefer": None, "Range": None, "apikey_present": False},
+                                "body": "", "local_asset": True,
+                            })
                         route.continue_()
                     return
                 blocked_external[0] += 1
-                body = request.post_data or ""
+                raw_body = request.post_data_buffer or b""
+                try:
+                    body = raw_body.decode("utf-8")
+                except UnicodeDecodeError:
+                    body = f"<binary body: {len(raw_body)} bytes>"
                 if len(body) > 10000:
                     body = body[:10000] + "…"
                 captured.append({
@@ -98,6 +112,22 @@ def main() -> None:
                     },
                     "body": body,
                 })
+                if current_flow[0] == "modelos S3: fallback PCP e Usina" and parsed.path == "/api/programacao":
+                    captured[-1]["response_status"] = 503
+                    captured[-1]["response_shape"] = "dict"
+                    route.fulfill(status=503, content_type="application/json", body='{"error":"simulated offline"}')
+                    return
+                if (current_flow[0].startswith("compatibilidade legado:")
+                    and request.method in {"POST", "PATCH"}
+                    and current_flow[0] not in forced_legacy_errors):
+                    forced_legacy_errors.add(current_flow[0])
+                    captured[-1]["response_status"] = 400
+                    captured[-1]["response_shape"] = "dict"
+                    route.fulfill(status=400, content_type="application/json", body=json.dumps({
+                        "code": "PGRST204",
+                        "message": "Could not find the 'codigo_poste' column in the schema cache",
+                    }))
+                    return
                 if parsed.path.startswith("/rest/v1/") and "/rpc/" not in parsed.path:
                     target = snapshot_origin + parsed.path + ("?" + parsed.query if parsed.query else "")
                     forwarded_headers = {name: request.headers[name] for name in ("prefer", "range", "content-type")
@@ -126,6 +156,12 @@ def main() -> None:
                     captured[-1]["response_status"] = 200
                     captured[-1]["response_shape"] = "dict"
                     route.fulfill(status=200, content_type="application/json", body="{}")
+                elif "/inspecoes/" in parsed.path and parsed.path.endswith("/fotos"):
+                    captured[-1]["response_status"] = 200
+                    captured[-1]["response_shape"] = "dict"
+                    payload = ({"success": True, "data": {"url": "/captura-local/foto-sintetica.png"}}
+                               if request.method == "POST" else {"success": True, "data": []})
+                    route.fulfill(status=200, content_type="application/json", body=json.dumps(payload))
                 elif parsed.path.endswith(".csv"):
                     captured[-1]["response_status"] = 200
                     captured[-1]["response_shape"] = "csv"
@@ -236,24 +272,300 @@ def main() -> None:
                     if (type) type.click();
                     await new Promise(resolve => setTimeout(resolve, 180));
                 }""", sector)
+            extra_results = []
+
+            def exercise(flow: str, expression: str):
+                current_flow[0] = flow
+                try:
+                    result = page.evaluate(expression)
+                    extra_results.append({"flow": flow, "result": result})
+                    return result
+                except Exception as error:
+                    extra_results.append({"flow": flow, "error": str(error)[:300]})
+                    return None
+
+            exercise("manutenção: inativar e liberar forma", """async () => {
+                salvarFormaParadaManutencao('Setor 3', 'SC29', 'Captura sintética', 'Verificar');
+                await new Promise(resolve => setTimeout(resolve, 120));
+                liberarFormaManutencao('Setor 3', 'SC29', 'Captura sintética');
+                await new Promise(resolve => setTimeout(resolve, 120));
+                return isFormaEmManutencao('Setor 3', 'SC29') === null;
+            }""")
+            page.on("dialog", lambda dialog: dialog.accept())
+            exercise("ODIN: corrigir concretagem", """async () => {
+                setMode('LIBERACAO_S3');
+                el.libData.value = '2026-10-02';
+                await cancelarConcretagemOdin('SC29', 'Setor 3');
+                return document.getElementById('correcaoConcretagemModal')?.classList.contains('modal-visible');
+            }""")
+            exercise("ODIN: alterar tipo e cancelar concretagem", """async () => {
+                const modal = document.getElementById('correcaoConcretagemModal');
+                if (!modal?.classList.contains('modal-visible')) return 'sem modal';
+                const select = document.getElementById('correcaoConcretagemTipo');
+                const next = [...select.options].find(o => o.value !== select.value);
+                if (!next) return 'sem outro tipo';
+                select.value = next.value;
+                await document.getElementById('correcaoConcretagemSalvar').onclick();
+                await cancelarConcretagemOdin('SC29', 'Setor 3');
+                if (!modal.classList.contains('modal-visible')) return 'sem segundo modal';
+                await document.getElementById('correcaoConcretagemCancelar').onclick();
+                return 'alterado e cancelado';
+            }""")
+            exercise("inspeção: abrir checklist", """async () => {
+                setMode('INSPECAO');
+                el.insFiltroData.value = '2026-10-02';
+                await renderInspecaoLiberados();
+                const rows = await fetchPolesForDate('2026-10-02', 'Setor 3');
+                if (!rows.length) return 'sem postes';
+                await openInspecaoPosteDetalhe(rows[0]);
+                return rows.length;
+            }""")
+            exercise("montagem: abrir poste", """async () => {
+                setMode('MONTAGEM_POSTES');
+                el.mpFiltroData.value = '2026-10-02';
+                await renderMontagemPostesLiberados();
+                const rows = await fetchPolesForDate('2026-10-02', 'Setor 1');
+                if (!rows.length) return 'sem postes';
+                await openMontagemPosteDetalhe(rows[0]);
+                return rows.length;
+            }""")
+            exercise("inspeção: checklist, foto e retrabalho", """async () => {
+                if (!state.inspecaoPostesAtual) return 'sem poste';
+                const sections = getInspecaoChecklistSections(state.inspecaoPostesAtual.modelo || '');
+                if (!sections.length || !sections[0].itens.length) return 'sem checklist';
+                const first = sections[0].itens[0];
+                setInspecaoChecklistAnswer(sections[0].id, first.id, 'nao');
+                await setInspecaoChecklistPhoto(sections[0].id, first.id,
+                  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Dr9sAAAAASUVORK5CYII=');
+                for (const section of sections) for (const item of section.itens) {
+                  if (section.id !== sections[0].id || item.id !== first.id)
+                    setInspecaoChecklistAnswer(section.id, item.id, 'sim');
+                }
+                await finalizarInspecaoPosteAtual();
+                return state.inspecaoPostesAtual?.statusMontagem;
+            }""")
+            exercise("montagem: checklist e conclusão", """async () => {
+                if (!state.montagemPostesAtual) return 'sem poste';
+                const sections = getMontagemChecklistSections(state.montagemPostesAtual.modelo || '');
+                for (const section of sections) for (const item of section.itens)
+                  setMontagemChecklistAnswer(section.id, item.id, 'sim');
+                setMontagemStatus('A');
+                await finalizarMontagemPosteAtual();
+                return state.montagemPostesAtual?.statusMontagem;
+            }""")
+            exercise("dashboard produtividade global", """async () => {
+                setMode('PROD_ANALISE');
+                await carregarDadosGlobaisDashboard('2026-10-02');
+                return 'carregado';
+            }""")
+            exercise("acompanhamento concretagem", """async () => {
+                setMode('ACMP_CONCRETAGEM');
+                el.acmpData.value = '2026-10-02';
+                await renderAcmpConcretagem();
+                return 'carregado';
+            }""")
+            exercise("relatório por setor", """async () => {
+                setMode('RELATORIO');
+                el.relData.value = '2026-10-02';
+                el.relSetor.value = 'Setor 3';
+                await gerarRelatorioSetor();
+                return 'gerado';
+            }""")
+            exercise("programação: consultar fonte oficial e local", """async () => {
+                setMode('LIBERACAO_S3');
+                el.libData.value = '2026-10-02';
+                await loadProgrammedFormas();
+                return state.programmedFormas.size;
+            }""")
+            exercise("liberação: linhas por setor e data", """async () => {
+                return (await getSetorRowsByDate('Setor 3', '2026-10-02')).length;
+            }""")
+            exercise("modelos S3: fallback PCP e Usina", """async () => {
+                return Object.keys(await fetchSetor3Models('2026-10-02')).length;
+            }""")
+            exercise("montagem: sincronizar tabela", """async () => {
+                return await syncMontagemPostesFromApi('2026-10-02', 'data', 'Setor 1');
+            }""")
+            exercise("acompanhamento: índice de volumes", """async () => {
+                const index = await loadAcmpVolumeIndex();
+                return !!index;
+            }""")
+            exercise("dashboard: linhas do setor", """async () => {
+                const result = await getRowsForDashboard('2026-10-02', 'Setor 3');
+                return result.source;
+            }""")
+            exercise("exportação XLSX: base e lookup", """async () => {
+                const result = await carregarBaseExportacaoPorPeriodo({
+                  table: 'montagem_poste', select: 'id,record_id,data_fabricacao,setor,forma_numero',
+                  inicio: '2026-10-02', fim: '2026-10-02'
+                });
+                const row = result?.rows?.[0] || result?.[0] || {record_id: '03340639-ce03-40b1-8fbb-767bb940030a'};
+                await carregarLookupProducaoPorRecordIds([row]);
+                return Array.isArray(result) ? result.length : Object.keys(result || {});
+            }""")
+            exercise("inspeção: visualizar checklist e fotos", """async () => {
+                const id = state.inspecaoPostesAtual?.key;
+                if (!id) return 'sem inspeção';
+                await window.abrirVisualizacaoChecklist({id});
+                await window.abrirVisualizacaoChecklist({
+                  id, status_montagem: 'R', etapa: 'INSPECAO',
+                  finalizado_em: new Date().toISOString(),
+                  checklists: state.inspecaoPostesAtual?.checklists || {}
+                });
+                await new Promise(resolve => setTimeout(resolve, 150));
+                const button = document.querySelector('.vc-second-inspection-actions button');
+                if (button) { button.click(); await new Promise(resolve => setTimeout(resolve, 120)); }
+                await window.excluirFotoVps('foto-sintetica');
+                return !!button;
+            }""")
+            exercise("usuários e inspeção: ações de API", """async () => {
+                const reports = [];
+                reports.push(await postToApi('listar_inspecao_pendentes', {data:'2026-10-02',setor:'Setor 3'}));
+                reports.push(await postToApi('relatorio_setor', {data:'2026-10-02',setor:'Setor 3'}));
+                reports.push(await postToApi('listar_usuarios', {}));
+                reports.push(await postToApi('autenticar_usuario', {name:'captura-inexistente',password:'inválida'}));
+                reports.push(await postToApi('criar_usuario', {login:'captura-sintetica',name:'Captura',role:'APONTADOR',password:'sintetica'}));
+                reports.push(await postToApi('alterar_senha_primeiro_acesso', {id:'captura-sintetica',senha:'alterada'}));
+                reports.push(await postToApi('excluir_usuario', {id:'captura-sintetica'}));
+                return reports.map(r => r.ok);
+            }""")
+            exercise("mandril: modelo produzido", """async () => {
+                try { await persistirMandrilModeloNaConcretagem('2026-10-02','SC23','12X600'); }
+                catch (error) { return error.message; }
+                return 'persistido';
+            }""")
+            exercise("mandril: saque e remoção", """async () => {
+                setMode('MANDRIL_CIRCULAR');
+                el.mcFiltroData.value = '2026-10-02';
+                await window.registrarSaque('SC23');
+                await window.limparSaque('SC23');
+                return 'concluído';
+            }""")
+            exercise("sequência S3: salvar e reenviar", """async () => {
+                setMode('SEQUENCIA_S3');
+                el.seqS3Data.value = '2026-10-02';
+                if (!document.querySelector('.seq-s3-select')) {
+                  const select = document.createElement('select');
+                  select.className = 'seq-s3-select';
+                  select.dataset.forma = 'SC23';
+                  select.innerHTML = '<option value="12X600">12X600</option>';
+                  document.body.appendChild(select);
+                }
+                await window.saveSequenciaS3();
+                const db = readProgS3S4Db();
+                db.programacoes['2026-10-02||SC23||Setor 3'] = {
+                  data:'2026-10-02',forma:'SC23',setor:'Setor 3',modelo:'12X600',pendingSync:true
+                };
+                writeProgS3S4Db(db);
+                await syncOfflineData();
+                return 'reenviado';
+            }""")
+            exercise("mandril: reenviar saques locais", """async () => {
+                localStorage.setItem('pwa_saque_mandril_v1', JSON.stringify({
+                  '2026-10-02||SC23': new Date().toISOString()
+                }));
+                localStorage.removeItem(SAQUE_MANDRIL_MIGRATED_KEY);
+                return await sincronizarSaquesMandrilLocais('2026-10-02', {});
+            }""")
+            channel_called = exercise("tempo real: subscrever canal", """async () => {
+                if (!supabaseClient) return false;
+                const native = supabaseClient.channel;
+                let called = false;
+                supabaseClient.channel = function(...args) {
+                  called = true;
+                  return native.apply(this, args);
+                };
+                try { subscribeToRealtimeUpdates(); }
+                finally { supabaseClient.channel = native; }
+                return called;
+            }""")
+            if channel_called:
+                local_invocations.append({"flow": "tempo real: subscrever canal", "app_line": 10240,
+                                          "kind": "supabase.channel; no HTTP request"})
+            source = next(row for row in TABLES["producao"] if row.get("data_fabricacao") == "2026-10-02"
+                          and row.get("setor") == "Setor 3" and row.get("forma") == "SC23")
+            TABLES["producao"].append({**source, "id": "captura-duplicidade-local"})
+            exercise("concretagem: atualizar e remover duplicidade", """async () => {
+                await saveProducaoByNaturalKey({data_fabricacao:'2026-10-02',setor:'Setor 3',
+                  forma:'SC23',modelo:'SC',tipo_concreto:'Concreto Padrão',status:'LIBERADO'});
+                return 'atualizada';
+            }""")
+            exercise("compatibilidade legado: atualização produção", """async () => {
+                await saveProducaoByNaturalKey({data_fabricacao:'2026-10-02',setor:'Setor 3',
+                  forma:'SC23',modelo:'SC',tipo_concreto:'Concreto Padrão',status:'LIBERADO',vibrado:null});
+                return 'fallback aplicado';
+            }""")
+            exercise("compatibilidade legado: inserção produção", """async () => {
+                await saveProducaoByNaturalKey({data_fabricacao:'2099-01-17',setor:'Setor 3',
+                  forma:'SC99',modelo:'SC',tipo_concreto:'Concreto Padrão',status:'LIBERADO',vibrado:null});
+                return 'fallback aplicado';
+            }""")
+            exercise("compatibilidade legado: inserção inspeção", """async () => {
+                await insertWithLegacyFallback('producao', [{id:'captura-inspecao',data_fabricacao:'2099-01-17',
+                  setor:'Setor 3',forma:'SC98',status:'INSPECIONADO',codigo_poste:'X'}],
+                  ({codigo_poste,...row}) => row);
+                return 'fallback aplicado';
+            }""")
+            exercise("compatibilidade legado: upsert montagem", """async () => {
+                await upsertWithLegacyFallback('montagem_poste', {id:'captura-montagem',
+                  data_fabricacao:'2099-01-17',setor:'Setor 1',forma_numero:'AE-06',codigo_poste:'X'},
+                  ({codigo_poste,...row}) => row);
+                return 'fallback aplicado';
+            }""")
+            exercise("versão: buscar service worker local", """async () => {
+                await updateSwVersionBadge();
+                return document.getElementById('swVersionBadge')?.textContent;
+            }""")
+            pdf_calls = exercise("relatório WhatsApp: gerar PDF", """async () => {
+                if (!document.getElementById('relPrintDoc')) return 0;
+                window.__codexPdfFrom = 0;
+                window.html2pdf = () => ({
+                  set() { return this; },
+                  from() { window.__codexPdfFrom++; return this; },
+                  async output() { return new Blob(['captura sintética'], {type:'application/pdf'}); },
+                  save() { return Promise.resolve(); }
+                });
+                Object.defineProperty(navigator, 'canShare', {configurable:true, value:() => false});
+                window.open = () => null;
+                await enviarRelatorioWhatsapp();
+                return window.__codexPdfFrom;
+            }""")
+            if isinstance(pdf_calls, int) and pdf_calls >= 1:
+                local_invocations.append(
+                    {"flow": "relatório WhatsApp: gerar PDF", "app_line": 7485,
+                     "kind": "html2pdf.from; library mocked, PDF content not validated"})
+            if isinstance(pdf_calls, int) and pdf_calls >= 2:
+                local_invocations.append(
+                    {"flow": "relatório WhatsApp: gerar PDF", "app_line": 7498,
+                     "kind": "html2pdf.from; library mocked, PDF content not validated"})
             fetches = page.evaluate("window.__codexFetch")
+            for candidate in fetches:
+                if candidate["url"].startswith("data:") and __import__("re").search(
+                    r"app\.js(?:\?[^:]+)?:4719:\d+", candidate["stack"]
+                ):
+                    local_invocations.append({"flow": "inspeção: checklist, foto e retrabalho",
+                                              "app_line": 4719, "kind": "fetch of inline data URL"})
             for item in captured:
                 for candidate in fetches:
                     source = next((int(match) for match in __import__("re").findall(
                         r"app\.js(?:\?[^:]+)?:(\d+):\d+", candidate["stack"])), None)
-                    if source and item["path_query"].split("?", 1)[0] in candidate["url"]:
+                    full_url = urljoin(f"{local_origin}/mapa-concretagem/index.html", candidate["url"])
+                    if source and item["path_query"].split("?", 1)[0] in full_url:
                         item["app_line"] = source
                         fetches.remove(candidate)
                         break
             OUTPUT.parent.mkdir(parents=True, exist_ok=True)
             OUTPUT.write_text(json.dumps({
                 "source": "mapa-concretagem/app.js", "external_requests_blocked": blocked_external[0],
-                "modes": mode_results, "requests": captured,
+                "modes": mode_results, "extra_flows": extra_results,
+                "local_invocations": local_invocations, "requests": captured,
             }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             print(f"CAPTURA_SEM_REDE_OK modos={len(mode_results)} pedidos_externos_bloqueados={blocked_external[0]} linhas_mapeadas={sum('app_line' in item for item in captured)}")
             for item in mode_results:
                 if item.get("actual") != item["requested"]:
                     print(f"MODO_NAO_COBERTO {item}")
+            for item in extra_results:
+                print("FLUXO " + json.dumps(item, ensure_ascii=False))
             browser.close()
     finally:
         server.shutdown()

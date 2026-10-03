@@ -35,6 +35,7 @@ def main():
     TARGET.write_text(json.dumps({
         "status": "draft: snapshot-backed local responses; not yet a full contract fixture",
         "network": "all browser requests to external hosts aborted and locally fulfilled",
+        "local_invocations": raw.get("local_invocations", []),
         "requests": rows,
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"requests={len(rows)} unique_source_stack_lines={len({row['source_line_stack'] for row in rows})} output={TARGET.relative_to(ROOT)}")
