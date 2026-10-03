@@ -10,6 +10,7 @@ import re
 import secrets
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import uuid
 from zoneinfo import ZoneInfo
@@ -217,10 +218,12 @@ def rest_read(resource):
         return jsonify(ok=False), 403
     writing = request.method not in {"GET", "HEAD"}
     if writing:
-        if resource not in WRITE_TABLES:
+        if resource not in WRITE_TABLES and resource != "usuarios":
             return jsonify(ok=False), 405
         if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
             return jsonify(ok=False, error="Origem da requisição inválida."), 403
+        if resource == "usuarios":
+            return rest_users_write()
     url = f"http://127.0.0.1:{13058 if writing else 13051}/{resource}"
     if request.query_string:
         url += "?" + request.query_string.decode("ascii", errors="strict")
@@ -246,6 +249,166 @@ def rest_read(resource):
     status = upstream.status
     upstream.close()
     return Response(body, status=status, headers=response_headers)
+
+
+def rest_user_object(row):
+    """The REST view never exposes the Argon2 password hash."""
+    return {
+        "id": row["id"], "nome": row["nome"], "perfil": row["perfil"],
+        "ativo": row["ativo"], "setor": row["setor"],
+        "primeiro_acesso": row["primeiro_acesso"],
+        "created_at": row["created_at"].isoformat(),
+        "updated_at": row["updated_at"].isoformat(),
+    }
+
+
+def rest_users_write():
+    """Preserve Mapa user CRUD shape while hashing passwords in the auth service."""
+    body = request.get_json(silent=True)
+    minimal = "return=minimal" in request.headers.get("Prefer", "")
+    returning = """RETURNING id,nome,perfil,ativo,setor,primeiro_acesso,created_at,updated_at"""
+    try:
+        with connect() as conn, conn.cursor() as cur:
+            if request.method == "POST":
+                records = body if isinstance(body, list) else [body]
+                if not records or any(not isinstance(record, dict) for record in records):
+                    return jsonify(code="PGRST102", message="Invalid JSON body"), 400
+                if len(records) != 1:
+                    return jsonify(code="PGRST102", message="One user per request"), 400
+                output = []
+                for record in records:
+                    user_id = str(record.get("id") or "").strip()
+                    name = str(record.get("nome") or "").strip()
+                    role = str(record.get("perfil") or "").strip().upper()
+                    password = record.get("senha")
+                    if (not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", user_id)
+                            or not name or len(name) > 200
+                            or role not in {"GERENCIA", "GESTOR", "MONTADOR", "APONTADOR"}
+                            or (password is not None and (not isinstance(password, str) or not 1 <= len(password) <= 128))):
+                        return jsonify(code="PGRST102", message="Invalid user fields"), 400
+                    active = record.get("ativo", True)
+                    first = record.get("primeiro_acesso", True)
+                    sector = record.get("setor") or "Todos"
+                    if not isinstance(active, bool) or not isinstance(first, bool) or not isinstance(sector, str):
+                        return jsonify(code="PGRST102", message="Invalid user fields"), 400
+                    cur.execute("SELECT id FROM public.usuarios WHERE id=%s FOR UPDATE", (user_id,))
+                    existing = cur.fetchone()
+                    if existing:
+                        fields = {"nome": name, "perfil": role, "ativo": active,
+                                  "setor": sector, "primeiro_acesso": first}
+                        if password is not None:
+                            fields["senha_hash"] = hasher.hash(password)
+                        assignments = sql.SQL(", ").join(
+                            sql.SQL("{}=%s").format(sql.Identifier(key)) for key in fields)
+                        cur.execute(sql.SQL("UPDATE public.usuarios SET {},updated_at=now() WHERE id=%s " + returning)
+                                    .format(assignments), (*fields.values(), user_id))
+                    else:
+                        if password is None:
+                            return jsonify(code="PGRST102", message="Password required for new user"), 400
+                        cur.execute("""INSERT INTO public.usuarios
+                            (id,nome,perfil,senha_hash,ativo,setor,primeiro_acesso)
+                            VALUES (%s,%s,%s,%s,%s,%s,%s) """ + returning,
+                            (user_id, name, role, hasher.hash(password), active, sector, first))
+                    output.append(rest_user_object(cur.fetchone()))
+                return ("", 201) if minimal else (jsonify(output), 201)
+            user_filter = request.args.get("id", "")
+            if not user_filter.startswith("eq.") or not user_filter[3:]:
+                return jsonify(code="PGRST100", message="id=eq.<user> required"), 400
+            user_id = user_filter[3:]
+            if request.method == "DELETE":
+                cur.execute("DELETE FROM public.usuarios WHERE id=%s " + returning, (user_id,))
+            elif request.method == "PATCH":
+                if not isinstance(body, dict):
+                    return jsonify(code="PGRST102", message="Invalid JSON body"), 400
+                fields = {}
+                for key in ("nome", "perfil", "ativo", "setor", "primeiro_acesso"):
+                    if key in body:
+                        fields[key] = body[key]
+                if ("nome" in fields and (not isinstance(fields["nome"], str) or not fields["nome"].strip())):
+                    return jsonify(code="PGRST102", message="Invalid name"), 400
+                if ("perfil" in fields and fields["perfil"] not in
+                        {"GERENCIA", "GESTOR", "MONTADOR", "APONTADOR"}):
+                    return jsonify(code="PGRST102", message="Invalid profile"), 400
+                if ("ativo" in fields and not isinstance(fields["ativo"], bool)) or (
+                    "primeiro_acesso" in fields and not isinstance(fields["primeiro_acesso"], bool)
+                ):
+                    return jsonify(code="PGRST102", message="Invalid boolean"), 400
+                if "senha" in body:
+                    password = body["senha"]
+                    if not isinstance(password, str) or not 1 <= len(password) <= 128:
+                        return jsonify(code="PGRST102", message="Invalid password"), 400
+                    fields["senha_hash"] = hasher.hash(password)
+                if not fields:
+                    return jsonify(code="PGRST102", message="No updatable fields"), 400
+                assignments = sql.SQL(", ").join(
+                    sql.SQL("{}=%s").format(sql.Identifier(key)) for key in fields)
+                cur.execute(sql.SQL("UPDATE public.usuarios SET {},updated_at=now() WHERE id=%s " + returning)
+                            .format(assignments), (*fields.values(), user_id))
+            else:
+                return jsonify(ok=False), 405
+            output = [rest_user_object(row) for row in cur.fetchall()]
+            return ("", 204) if minimal else jsonify(output)
+    except psycopg.Error:
+        return jsonify(code="PGRST102", message="User operation failed"), 400
+
+
+def photo_proxy(path):
+    if not authenticated_user():
+        return jsonify(ok=False), 401
+    writing = request.method in {"POST", "DELETE"}
+    if writing and request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
+        return jsonify(ok=False, error="Origem da requisição inválida."), 403
+    url = "http://127.0.0.1:13059/api/" + path
+    if request.query_string:
+        url += "?" + request.query_string.decode("ascii", errors="strict")
+    headers = {name: request.headers[name] for name in ("Content-Type", "Accept")
+               if name in request.headers}
+    outbound = urllib.request.Request(
+        url, data=request.get_data() if writing and request.method == "POST" else None,
+        headers=headers, method=request.method,
+    )
+    try:
+        upstream = urllib.request.urlopen(outbound, timeout=30)
+    except urllib.error.HTTPError as error:
+        upstream = error
+    except (urllib.error.URLError, TimeoutError):
+        return jsonify(error="Serviço de fotos temporariamente indisponível."), 503
+    body = upstream.read()
+    status = upstream.status
+    response_headers = {name: upstream.headers[name] for name in
+                        ("Content-Type", "Content-Disposition", "Cache-Control")
+                        if name in upstream.headers}
+    upstream.close()
+    if response_headers.get("Content-Type", "").startswith("application/json") and body:
+        try:
+            payload = json.loads(body)
+            if isinstance(payload, dict) and payload.get("success"):
+                records = payload.get("data")
+                if isinstance(records, dict):
+                    records = [records]
+                if isinstance(records, list):
+                    for record in records:
+                        if isinstance(record, dict) and str(record.get("url", "")).startswith("/api/fotos/"):
+                            record["url"] = "/unificado/mapa" + record["url"]
+                    body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode()
+        except (ValueError, UnicodeDecodeError):
+            pass
+    return Response(body, status=status, headers=response_headers)
+
+
+@app.route("/inspecoes/<path:poste_id>/fotos", methods=["GET", "POST"])
+def inspection_photos(poste_id):
+    return photo_proxy("inspecoes/" + urllib.parse.quote(poste_id, safe="") + "/fotos")
+
+
+@app.route("/fotos/<photo_id>", methods=["DELETE"])
+def delete_photo(photo_id):
+    return photo_proxy("fotos/" + urllib.parse.quote(photo_id, safe=""))
+
+
+@app.route("/fotos/<photo_id>/arquivo", methods=["GET"])
+def download_photo(photo_id):
+    return photo_proxy("fotos/" + urllib.parse.quote(photo_id, safe="") + "/arquivo")
 
 
 @app.route("/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1", methods=["GET", "POST"])
