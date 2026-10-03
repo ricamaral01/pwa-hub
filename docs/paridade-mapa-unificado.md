@@ -59,6 +59,8 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 
 O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080 sem rolagem horizontal. Falta comparação de pixels tablet/quiosque com o original e falta a casca desktop nova. A rota operacional continua sendo ambiente de teste.
 
+Em teste separado de exportação, os botões CSV da análise de produtividade baixaram arquivos com os cabeçalhos esperados e 191 registros de concretagem/8 de paradas para 02–03/10/2026. O teste conferiu a contagem com as listas renderizadas pelo próprio aplicativo. A comparação byte a byte com os arquivos do oficial segue pendente.
+
 ## Preparação já feita
 
 `scripts/build_unificado_mapa_tablet.py` monta uma cópia de trabalho em `.work-mapa-unificado/tablet/`, fora da árvore publicada. Ela parte da interface atual, preserva os modos e os eventos dos cartões, usa a sessão unificada para entrada e saída, aceita o parâmetro `?tela=` dos atalhos e substitui os endereços operacionais externos por rotas do ambiente de testes. O service worker da origem fica desativado nessa cópia para não misturar caches. As rotas de escrita, fotos, RPCs e integrações PCP ainda precisam ser implementadas antes de publicar a cópia.
