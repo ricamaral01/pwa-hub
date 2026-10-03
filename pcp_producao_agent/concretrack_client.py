@@ -1,5 +1,6 @@
 import logging
 import requests
+from datetime import datetime, timezone, timedelta
 import config
 
 logger = logging.getLogger("pcp_producao_agent")
@@ -70,26 +71,38 @@ def get_forma_catalog_key(forma):
 
 def resolve_poste_data(r):
     """
-    Usa a mesma regra do PWA (forma -> codigoProduto) para resolver o Código de Montagem correto
-    e a Descrição oficial dos postes no Setor 1 e Setor 2.
+    Resolve o codigo usado na comparacao com o PCP.
+    O PCP usa codigo de produto numerico; o Supabase pode trazer a chave curta
+    da forma em codigo_poste (A, B, AE, TCL...), entao codigo_produto tem prioridade.
     """
-    codigo_poste = r.get("codigo_poste") or r.get("codigo_produto")
+    codigo_poste = r.get("codigo_poste")
+    codigo_produto = r.get("codigo_produto")
     forma = r.get("forma") or r.get("forma_numero")
-    
-    # Se já tem código de produto vindo do Supabase (geralmente Setores 3 e 4)
-    if codigo_poste and str(codigo_poste).strip():
-        cod_str = str(codigo_poste).strip()
+
+    if codigo_produto and str(codigo_produto).strip():
+        cod_str = str(codigo_produto).strip()
         for item in POSTES_DUPLO_T_CATALOGO:
             if item["codigoProduto"] == cod_str:
                 return item["codigoProduto"], item["descricao"]
         return cod_str, r.get("modelo") or "SEM MODELO"
-        
-    # Senão tenta resolver a partir do nome da fôrma
+
+    if codigo_poste and str(codigo_poste).strip():
+        cod_str = str(codigo_poste).strip().upper()
+        for item in POSTES_DUPLO_T_CATALOGO:
+            if item["codigoProduto"] == cod_str:
+                return item["codigoProduto"], item["descricao"]
+
+        catalog = POSTES_DUPLO_T_BY_CHAVE.get(cod_str)
+        if catalog:
+            return catalog["codigoProduto"], catalog["descricao"]
+
+        return cod_str, r.get("modelo") or "SEM MODELO"
+
     catalog_key = get_forma_catalog_key(forma)
     catalog = POSTES_DUPLO_T_BY_CHAVE.get(catalog_key)
     if catalog:
         return catalog["codigoProduto"], catalog["descricao"]
-        
+
     return "SEM CODIGO", r.get("modelo") or "SEM MODELO"
 
 class ConcretrackClient:
@@ -159,3 +172,122 @@ class ConcretrackClient:
         except Exception as e:
             logger.error(f"Erro ao buscar produção no ConcreTrack: {e}")
             raise e
+
+    def fetch_production_month(self, date_str):
+        """
+        Busca os apontamentos do mês corrente até a data analisada.
+        Usa a mesma regra de deduplicação da consulta diária.
+        """
+        if not self.url or not self.key:
+            raise ValueError("Credenciais do Supabase nÃ£o configuradas no ambiente.")
+
+        end_date = datetime.strptime(date_str, "%Y-%m-%d")
+        start_str = end_date.replace(day=1).strftime("%Y-%m-%d")
+        endpoint = f"{self.url}/rest/v1/producao"
+        params = {
+            "and": f"(data_fabricacao.gte.{start_str},data_fabricacao.lte.{date_str})",
+            "select": "*",
+            "order": "data_fabricacao.asc",
+        }
+
+        logger.info(f"Buscando produÃ§Ã£o mensal no Supabase de {start_str} a {date_str}...")
+        try:
+            rows = []
+            offset = 0
+            page_size = 1000
+            while True:
+                response = requests.get(
+                    endpoint,
+                    headers={**self.headers, "Range": f"{offset}-{offset + page_size - 1}"},
+                    params=params,
+                    timeout=20,
+                )
+                if not response.ok:
+                    raise ValueError(f"HTTP {response.status_code}: {response.text}")
+
+                page = response.json()
+                rows.extend(page)
+                if len(page) < page_size:
+                    break
+                offset += page_size
+
+            unique_records = {}
+            for r in rows:
+                setor = r.get("setor")
+                forma = r.get("forma") or r.get("forma_numero")
+                data_fabricacao = str(r.get("data_fabricacao") or "")[:10]
+                if not setor or not forma or not data_fabricacao:
+                    continue
+
+                key = (data_fabricacao, str(setor).strip(), str(forma).strip().upper())
+                status = str(r.get("status") or "").upper()
+                if key not in unique_records:
+                    unique_records[key] = r
+                else:
+                    curr_status = str(unique_records[key].get("status") or "").upper()
+                    if status == "CONCRETADO" or (status == "LIBERADO" and curr_status != "CONCRETADO"):
+                        unique_records[key] = r
+
+            result = []
+            for r in unique_records.values():
+                codigo_res, modelo_res = resolve_poste_data(r)
+                r["codigo_resolved"] = codigo_res
+                r["modelo_resolved"] = modelo_res
+                result.append(r)
+
+            logger.info(f"ProduÃ§Ã£o mensal deduplicada contÃ©m {len(result)} fÃ´rmas apontadas.")
+            return result
+        except Exception as e:
+            logger.warning(f"Erro ao buscar produÃ§Ã£o mensal; usando apenas o dia analisado: {e}")
+            return self.fetch_production(date_str)
+
+    def fetch_massada_problems(self, date_str):
+        """
+        Busca formas/massadas produzidas sem liberação correspondente na view vw_formas_status.
+        Problema considerado: existe produção apontada (prod_id), mas não existe liberação registrada (lib_id).
+        """
+        endpoint = f"{self.url}/rest/v1/vw_formas_status"
+        params = {
+            "data_fabricacao": f"eq.{date_str}",
+            "select": "*",
+            "order": "prod_data_hora.asc",
+        }
+
+        logger.info(f"Buscando formas/massadas com problemas para a data: {date_str}...")
+        try:
+            response = requests.get(endpoint, headers=self.headers, params=params, timeout=15)
+            if not response.ok:
+                logger.warning(f"Não foi possível consultar vw_formas_status: HTTP {response.status_code}: {response.text}")
+                return []
+
+            problems = []
+            for r in response.json():
+                if not r.get("prod_id") or r.get("lib_id"):
+                    continue
+
+                prod_dt = r.get("prod_data_hora")
+                hora = ""
+                if prod_dt:
+                    try:
+                        dt = datetime.fromisoformat(prod_dt.replace("Z", "+00:00"))
+                        hora = dt.astimezone(timezone(timedelta(hours=-3))).strftime("%H:%M")
+                    except Exception:
+                        hora = str(prod_dt)
+
+                problems.append(
+                    {
+                        "hora": hora,
+                        "setor": r.get("setor") or "",
+                        "forma": r.get("forma") or "",
+                        "modelo": r.get("prod_modelo") or "",
+                        "tipo_concreto": r.get("prod_tipo_concreto") or "",
+                        "apontador": r.get("prod_colaborador") or "",
+                        "problema": "Produzida sem liberação registrada",
+                    }
+                )
+
+            logger.info(f"Encontradas {len(problems)} formas/massadas com problema.")
+            return problems
+        except Exception as e:
+            logger.warning(f"Erro ao buscar formas/massadas com problemas: {e}")
+            return []

@@ -16,6 +16,15 @@ Após a consolidação, o agente gera um relatório HTML executivo de alta fidel
 * `whatsapp_sender.py`: Módulo de envio de mensagens para o WhatsApp.
 * `config.py`: Carregador de configurações locais e do arquivo `.env`.
 
+### Dupla conferência do status
+
+No detalhamento por setor, cada item possui duas conferências independentes:
+
+* **Conferência P x R:** compara o Programado (P) com o Realizado lançado na planilha (R).
+* **Conferência R x Fábrica:** compara o Realizado da planilha (R) com o apontamento do Mapa de Concretagem no Supabase.
+
+Assim, uma divergência no preenchimento da planilha não fica misturada com uma divergência no apontamento da fábrica.
+
 ---
 
 ## Requisitos e Instalação
