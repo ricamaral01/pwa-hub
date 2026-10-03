@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timezone
+import base64
+import hashlib
+import html
 import json
 import os
 from pathlib import Path
@@ -17,17 +20,24 @@ from zoneinfo import ZoneInfo
 
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerifyMismatchError
-from flask import Flask, Response, jsonify, request
+from flask import Flask, Response, jsonify, make_response, request
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 import psycopg
 from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
+from unified_auth import (check_link_password, link_for, linked_users,
+                          mapa_user_by_login, mark_existing_shared_password,
+                          mirror_mapa_password, mirror_pcp_password,
+                          PCP_HASHER, pcp_connect, pcp_user_by_login,
+                          set_unified_password, verify_map,
+                          verify_pcp)
 
 
 app = Flask(__name__)
 hasher = PasswordHasher()
 COOKIE_NAME = "mapa_unificado_session"
+TEST_PAGE_COOKIE_NAME = "unificado_test_session"
 SESSION_SECONDS = 12 * 60 * 60
 READ_TABLES = frozenset({
     "usuarios", "programacao_pcp", "liberacao_formas", "producao",
@@ -81,6 +91,10 @@ def session_response(row):
         COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
         secure=True, samesite="Strict", path="/unificado/mapa/api",
     )
+    response.set_cookie(
+        TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
+        secure=True, samesite="Strict", path="/unificado/testar/",
+    )
     return response
 
 
@@ -93,6 +107,177 @@ def health():
         return jsonify(ok=True)
     except psycopg.Error:
         return jsonify(ok=False), 503
+
+
+@app.get("/testar/")
+def test_landing():
+    """Password-free status page, visible only with a Mapa test session."""
+    authorized = bool(authenticated_user())
+    if not authorized:
+        token = request.cookies.get(TEST_PAGE_COOKIE_NAME)
+        try:
+            claim = signer().loads(token, max_age=SESSION_SECONDS) if token else None
+            if claim and claim.get("scope") == "pcp_test_session":
+                with pcp_connect() as conn, conn.cursor() as cur:
+                    cur.execute("SELECT ativo FROM public.usuarios WHERE id=%s", (claim["id"],))
+                    row = cur.fetchone()
+                    authorized = bool(row and row["ativo"])
+        except (BadSignature, SignatureExpired, KeyError, psycopg.Error):
+            pass
+    if not authorized:
+        return Response(
+            '<!doctype html><html lang="pt-BR"><meta charset="utf-8">'
+            '<title>Entrar no ambiente de testes</title><body>'
+            '<p>Entre no sistema unificado de testes para abrir esta página.</p>'
+            '<a href="/unificado/login.html?next=testar/">Entrar</a></body></html>',
+            status=401, content_type="text/html; charset=utf-8",
+        )
+    template = (Path(__file__).parent / "testar-index.html").read_text(encoding="utf-8")
+    info_path = Path(__file__).parent / "snapshot-info.json"
+    info = json.loads(info_path.read_text()) if info_path.exists() else {}
+    snapshot_at = html.escape(str(info.get("snapshot_at", "a confirmar")))
+    return Response(template.replace("{{SNAPSHOT_AT}}", snapshot_at),
+                    content_type="text/html; charset=utf-8",
+                    headers={"Cache-Control": "no-store"})
+
+
+def pcp_token_for(username, password):
+    outbound = urllib.request.Request(
+        "http://127.0.0.1:13054/api/login",
+        data=json.dumps({"username": username, "senha": password}).encode(),
+        headers={"Content-Type": "application/json"}, method="POST",
+    )
+    with urllib.request.urlopen(outbound, timeout=10) as upstream:
+        return json.load(upstream)
+
+
+def unified_login_response(pcp, mapa, password):
+    payload = {"ok": True, "modules": []}
+    if pcp and pcp["ativo"]:
+        token_data = pcp_token_for(pcp["username"], password)
+        payload["pcp"] = token_data
+        payload["modules"].append("pcp")
+    if mapa and mapa["ativo"]:
+        payload["mapa"] = public_user(mapa)
+        payload["modules"].append("mapa")
+    response = jsonify(payload)
+    if mapa and mapa["ativo"]:
+        token = signer().dumps({"scope": "session", "id": mapa["id"],
+                                "updated_at": mapa["updated_at"].isoformat()})
+        response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                            httponly=True, secure=True, samesite="Strict",
+                            path="/unificado/mapa/api")
+        response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                            httponly=True, secure=True, samesite="Strict",
+                            path="/unificado/testar/")
+    elif pcp and pcp["ativo"]:
+        token = signer().dumps({"scope": "pcp_test_session", "id": pcp["id"]})
+        response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                            httponly=True, secure=True, samesite="Strict",
+                            path="/unificado/testar/")
+    return response
+
+
+@app.post("/unified/login")
+def unified_login():
+    body = request.get_json(silent=True) or {}
+    name = str(body.get("username") or "").strip()
+    password = body.get("password")
+    if not name or len(name) > 200 or not isinstance(password, str) or not password or len(password) > 1024:
+        return jsonify(ok=False, error="Usuário ou senha incorretos."), 401
+    try:
+        pcp = pcp_user_by_login(name)
+        mapa = mapa_user_by_login(name)
+        link = link_for(pcp_id=pcp["id"] if pcp else None,
+                        mapa_login=mapa["id"] if mapa else None)
+        if link:
+            linked_pcp, linked_mapa = linked_users(link)
+            if not linked_pcp or not linked_mapa:
+                return jsonify(ok=False, error="Conta temporariamente indisponível."), 503
+            matches = check_link_password(link, password)
+            if not any(matches):
+                raise ValueError("invalid password")
+            if ((not all(matches) and not link["unified_password_set"])
+                    or linked_pcp["trocar_senha_primeiro_acesso"]
+                    or linked_mapa["primeiro_acesso"]):
+                reset_token = signer().dumps({"scope": "unified_reset", "link": link["id"],
+                                               "updated_at": link["updated_at"].isoformat()})
+                return jsonify(ok=True, reset_required=True, reset_token=reset_token)
+            if not link["unified_password_set"]:
+                mark_existing_shared_password(link["id"])
+            return unified_login_response(linked_pcp, linked_mapa, password)
+        if pcp and pcp["ativo"] and verify_pcp(password, pcp["senha_hash"]):
+            if pcp["trocar_senha_primeiro_acesso"]:
+                fingerprint = hashlib.sha256(pcp["senha_hash"].encode()).hexdigest()
+                token = signer().dumps({"scope": "pcp_first_access", "id": pcp["id"],
+                                        "fingerprint": fingerprint})
+                return jsonify(ok=True, modules=["pcp"], first_access_token=token,
+                               first_access_module="pcp")
+            return unified_login_response(pcp, None, password)
+        if mapa and mapa["ativo"] and verify_map(password, mapa["senha_hash"]):
+            if mapa["primeiro_acesso"]:
+                token = signer().dumps({"scope": "first_access", "id": mapa["id"],
+                                        "updated_at": mapa["updated_at"].isoformat()})
+                return jsonify(ok=True, modules=["mapa"], first_access_token=token)
+            return unified_login_response(None, mapa, password)
+    except (ValueError, psycopg.Error, urllib.error.URLError, TimeoutError):
+        pass
+    time.sleep(0.25 + secrets.randbelow(100) / 1000)
+    return jsonify(ok=False, error="Usuário ou senha incorretos."), 401
+
+
+@app.post("/unified/pcp-first-access")
+def unified_pcp_first_access():
+    body = request.get_json(silent=True) or {}
+    token, password = body.get("token"), body.get("password")
+    if not isinstance(token, str) or not isinstance(password, str) or not 6 <= len(password) <= 128:
+        return jsonify(ok=False, error="Use uma senha nova de 6 a 128 caracteres."), 400
+    try:
+        claim = signer().loads(token, max_age=15 * 60)
+        if claim.get("scope") != "pcp_first_access":
+            return jsonify(ok=False), 401
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,username,senha_hash FROM public.usuarios
+                           WHERE id=%s AND ativo AND trocar_senha_primeiro_acesso
+                           FOR UPDATE""", (claim["id"],))
+            user = cur.fetchone()
+            if not user or hashlib.sha256(user["senha_hash"].encode()).hexdigest() != claim["fingerprint"]:
+                return jsonify(ok=False), 401
+            if verify_pcp(password, user["senha_hash"]):
+                return jsonify(ok=False, error="Escolha uma senha diferente da atual."), 400
+            cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
+                           trocar_senha_primeiro_acesso=false WHERE id=%s""",
+                        (PCP_HASHER.hash(password), user["id"]))
+        current = pcp_user_by_login(user["username"])
+        return unified_login_response(current, None, password)
+    except (BadSignature, SignatureExpired, KeyError, ValueError, psycopg.Error,
+            urllib.error.URLError, TimeoutError):
+        return jsonify(ok=False), 401
+
+
+@app.post("/unified/reset")
+def unified_reset():
+    body = request.get_json(silent=True) or {}
+    token = body.get("token")
+    password = body.get("password")
+    if not isinstance(token, str) or not isinstance(password, str) or not 6 <= len(password) <= 128:
+        return jsonify(ok=False, error="Use uma senha nova de 6 a 128 caracteres."), 400
+    try:
+        claim = signer().loads(token, max_age=15 * 60)
+        if claim.get("scope") != "unified_reset":
+            return jsonify(ok=False), 401
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("SELECT * FROM unificado_auth.identity_links WHERE id=%s",
+                        (claim["link"],))
+            link = cur.fetchone()
+        if not link or link["updated_at"].isoformat() != claim["updated_at"]:
+            return jsonify(ok=False), 401
+        set_unified_password(link["id"], password)
+        pcp, mapa = linked_users(link)
+        return unified_login_response(pcp, mapa, password)
+    except (BadSignature, SignatureExpired, KeyError, ValueError, psycopg.Error,
+            urllib.error.URLError, TimeoutError):
+        return jsonify(ok=False), 401
 
 
 @app.post("/login")
@@ -139,8 +324,8 @@ def first_access():
     body = request.get_json(silent=True) or {}
     token = body.get("token")
     password = body.get("password")
-    if not isinstance(token, str) or not isinstance(password, str) or not 10 <= len(password) <= 128:
-        return jsonify(ok=False, error="Use uma senha nova de 10 a 128 caracteres."), 400
+    if not isinstance(token, str) or not isinstance(password, str) or not 6 <= len(password) <= 128:
+        return jsonify(ok=False, error="Use uma senha nova de 6 a 128 caracteres."), 400
     try:
         claim = signer().loads(token, max_age=15 * 60)
         if claim.get("scope") != "first_access":
@@ -178,7 +363,7 @@ def first_access():
 
 
 def authenticated_user():
-    token = request.cookies.get(COOKIE_NAME)
+    token = request.cookies.get(COOKIE_NAME) or request.cookies.get(TEST_PAGE_COOKIE_NAME)
     if not token:
         return None
     try:
@@ -236,7 +421,7 @@ def rest_read(resource):
         if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
             return jsonify(ok=False, error="Origem da requisição inválida."), 403
         if resource == "usuarios":
-            return rest_users_write(user)
+            return rest_users_write_with_unified_mirror(user)
     url = f"http://127.0.0.1:{13058 if writing else 13051}/{resource}"
     if request.query_string:
         url += "?" + request.query_string.decode("ascii", errors="strict")
@@ -324,6 +509,46 @@ def rest_legacy_login():
     })
     response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
                         secure=True, samesite="Strict", path="/unificado/mapa/api")
+    response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                        httponly=True, secure=True, samesite="Strict",
+                        path="/unificado/testar/")
+    return response
+
+
+def rest_users_write_with_unified_mirror(user):
+    """Keep a confirmed PCP counterpart in sync with Mapa Users screen writes."""
+    body = request.get_json(silent=True)
+    record = body[0] if isinstance(body, list) and len(body) == 1 else body
+    if request.method == "POST" and isinstance(record, dict):
+        target = str(record.get("id") or "")
+    else:
+        user_filter = request.args.get("id", "")
+        target = user_filter[3:] if user_filter.startswith("eq.") else ""
+    password = record.get("senha") if isinstance(record, dict) else None
+    link = link_for(mapa_login=target) if target else None
+    before = None
+    if link and password is not None:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT senha_hash,primeiro_acesso FROM public.usuarios
+                           WHERE id=%s""", (target,))
+            before = cur.fetchone()
+    response = make_response(rest_users_write(user))
+    if response.status_code >= 300 or not link:
+        return response
+    if request.method == "DELETE":
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("DELETE FROM unificado_auth.identity_links WHERE id=%s", (link["id"],))
+        return response
+    if password is not None:
+        try:
+            mirror_mapa_password(target, password)
+        except (ValueError, psycopg.Error):
+            if before:
+                with connect() as conn, conn.cursor() as cur:
+                    cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
+                                   primeiro_acesso=%s,updated_at=now() WHERE id=%s""",
+                                (before["senha_hash"], before["primeiro_acesso"], target))
+            return jsonify(code="PGRST102", message="Password synchronization failed"), 503
     return response
 
 
@@ -349,7 +574,7 @@ def rest_users_write(user):
                     if (not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", user_id)
                             or not name or len(name) > 200
                             or role not in {"GERENCIA", "GESTOR", "MONTADOR", "APONTADOR"}
-                            or (password is not None and (not isinstance(password, str) or not 1 <= len(password) <= 128))):
+                            or (password is not None and (not isinstance(password, str) or not 6 <= len(password) <= 128))):
                         return jsonify(code="PGRST102", message="Invalid user fields"), 400
                     active = record.get("ativo", True)
                     first = record.get("primeiro_acesso", True)
@@ -400,7 +625,7 @@ def rest_users_write(user):
                     return jsonify(code="PGRST102", message="Invalid boolean"), 400
                 if "senha" in body:
                     password = body["senha"]
-                    if not isinstance(password, str) or not 1 <= len(password) <= 128:
+                    if not isinstance(password, str) or not 6 <= len(password) <= 128:
                         return jsonify(code="PGRST102", message="Invalid password"), 400
                     fields["senha_hash"] = hasher.hash(password)
                 if not fields:
@@ -424,6 +649,9 @@ def rest_users_write(user):
                 response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS,
                                     httponly=True, secure=True, samesite="Strict",
                                     path="/unificado/mapa/api")
+                response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                                    httponly=True, secure=True, samesite="Strict",
+                                    path="/unificado/testar/")
             return response
     except psycopg.Error:
         return jsonify(code="PGRST102", message="User operation failed"), 400
@@ -489,6 +717,77 @@ def delete_photo(photo_id):
 @app.route("/fotos/<photo_id>/arquivo", methods=["GET"])
 def download_photo(photo_id):
     return photo_proxy("fotos/" + urllib.parse.quote(photo_id, safe="") + "/arquivo")
+
+
+def pcp_bearer_user_id() -> int | None:
+    """Read an ID only for compensation; the PCP backend validates the JWT."""
+    bearer = request.headers.get("Authorization", "")
+    if not bearer.startswith("Bearer "):
+        return None
+    try:
+        encoded = bearer[7:].split(".")[1]
+        payload = json.loads(base64.urlsafe_b64decode(encoded + "=" * (-len(encoded) % 4)))
+        return int(payload["sub"])
+    except (IndexError, ValueError, KeyError, TypeError):
+        return None
+
+
+@app.route("/unified/pcp/usuarios", defaults={"tail": ""},
+           methods=["GET", "POST", "PATCH", "DELETE"])
+@app.route("/unified/pcp/usuarios/<path:tail>", methods=["GET", "POST", "PATCH", "DELETE"])
+def unified_pcp_users(tail):
+    """Only test-origin entrypoint for the unchanged PCP Users API."""
+    body = request.get_json(silent=True) if request.method in {"POST", "PATCH"} else None
+    password = None
+    if isinstance(body, dict):
+        password = body.get("nova_senha", body.get("senha"))
+    if password is not None and (not isinstance(password, str) or not 6 <= len(password) <= 128):
+        return jsonify(detail="Senha deve ter ao menos 6 caracteres"), 422
+    match = re.fullmatch(r"(\d+)/redefinir-senha", tail)
+    target_id = int(match.group(1)) if match else (
+        pcp_bearer_user_id() if tail == "trocar-senha-primeiro-acesso" else None)
+    old = None
+    if target_id and password is not None:
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT senha_hash,trocar_senha_primeiro_acesso
+                           FROM public.usuarios WHERE id=%s""", (target_id,))
+            old = cur.fetchone()
+    url = "http://127.0.0.1:13054/api/usuarios" + ("/" + tail if tail else "")
+    if request.query_string:
+        url += "?" + request.query_string.decode("ascii", errors="strict")
+    headers = {name: request.headers[name] for name in ("Authorization", "Content-Type", "Accept")
+               if name in request.headers}
+    outbound = urllib.request.Request(
+        url, method=request.method, headers=headers,
+        data=request.get_data() if request.method in {"POST", "PATCH"} else None,
+    )
+    try:
+        upstream = urllib.request.urlopen(outbound, timeout=20)
+    except urllib.error.HTTPError as error:
+        upstream = error
+    except (urllib.error.URLError, TimeoutError):
+        return jsonify(detail="Serviço PCP de testes indisponível"), 503
+    raw, status = upstream.read(), upstream.status
+    content_type = upstream.headers.get("Content-Type", "application/json")
+    upstream.close()
+    if status < 300 and password is not None:
+        if target_id is None:
+            try:
+                output = json.loads(raw)
+                target_id = int(output["id"])
+            except (ValueError, KeyError, TypeError):
+                target_id = None
+        if target_id and link_for(pcp_id=target_id):
+            try:
+                mirror_pcp_password(target_id, password)
+            except (ValueError, psycopg.Error):
+                if old:
+                    with pcp_connect() as conn, conn.cursor() as cur:
+                        cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
+                                       trocar_senha_primeiro_acesso=%s WHERE id=%s""",
+                                    (old["senha_hash"], old["trocar_senha_primeiro_acesso"], target_id))
+                return jsonify(detail="Sincronização de senha indisponível"), 503
+    return Response(raw, status=status, content_type=content_type)
 
 
 @app.route("/pcp/<path:resource>", methods=["GET", "POST", "DELETE"])
@@ -853,6 +1152,7 @@ def operate_montagem():
 def logout():
     response = jsonify(ok=True)
     response.delete_cookie(COOKIE_NAME, path="/unificado/mapa/api")
+    response.delete_cookie(TEST_PAGE_COOKIE_NAME, path="/unificado/testar/")
     return response
 
 

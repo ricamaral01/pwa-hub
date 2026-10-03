@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 
 from playwright.sync_api import sync_playwright
 
-from operacao_smoke import CHROME, OUT, URL, credentials
+from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -47,13 +47,7 @@ def main() -> None:
                     route.continue_()
             context.route("**/*", restrict)
             page = context.new_page()
-            page.goto(URL, wait_until="domcontentloaded", timeout=30000)
-            page.wait_for_function("typeof loginWithRole === 'function'", timeout=15000)
-            page.wait_for_timeout(800)
-            page.locator("#loginNome").fill(user)
-            page.locator("#loginSenha").fill(password)
-            page.locator("#loginEntrar").click()
-            page.wait_for_function("state.authUser?.role === " + json.dumps(role), timeout=15000)
+            login_operacao(page, user, password, role)
             for sector in range(1, 5):
                 actual = page.evaluate("""({sector,modes}) => {
                     state.authUser.setor = 'Setor ' + sector;

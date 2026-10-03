@@ -2,17 +2,21 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 
 from playwright.sync_api import sync_playwright
 
-from operacao_smoke import CHROME, OUT, URL, credentials
+from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 
 
 DATE = "2026-10-03"
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--sector", type=int, choices=range(1, 5))
+    args = parser.parse_args()
     account = credentials()
     OUT.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as playwright:
@@ -27,15 +31,9 @@ def main() -> None:
                                "body": json.loads(request.post_data) if request.post_data else None,
                                "prefer": request.headers.get("prefer")})
         page.on("request", capture)
-        page.goto(URL, wait_until="domcontentloaded", timeout=30000)
-        page.wait_for_function("typeof loginWithRole === 'function'", timeout=15000)
-        page.wait_for_timeout(900)
-        page.locator("#loginNome").fill(account["MAPA_TEST_USER"])
-        page.locator("#loginSenha").fill(account["MAPA_TEST_PASSWORD"])
-        page.locator("#loginEntrar").click()
-        page.wait_for_function("state.authUser?.role === 'GERENCIA'", timeout=15000)
+        login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
         results = []
-        for sector in range(1, 4):
+        for sector in ([args.sector] if args.sector else range(1, 4)):
             start = len(writes)
             try:
                 value = page.evaluate("""async ({sector,date}) => {

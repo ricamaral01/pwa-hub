@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Testar o sistema unificado</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#14232f;background:#f5f7f9}
+    *{box-sizing:border-box}body{margin:0}main{max-width:960px;margin:auto;padding:32px 20px 56px}
+    h1{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 12px}p{line-height:1.5}
+    .notice{background:#fff4d7;border:2px solid #d18a00;border-radius:10px;padding:14px 18px;font-weight:700}
+    .meta{color:#405363;margin:18px 0 26px}.grid{display:grid;gap:12px}
+    .row{background:#fff;border:1px solid #ccd7df;border-radius:10px;padding:18px;display:grid;grid-template-columns:minmax(170px,1fr) minmax(140px,2fr);gap:10px}
+    .row a{color:#075b8a;font-weight:700}.row span{display:block}.status{font-weight:700}
+    .ready{color:#17633b}.partial{color:#8a5700}.later{color:#5c6670}
+    @media(max-width:650px){.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<main>
+  <h1>Testar o sistema unificado</h1>
+  <p class="notice">Ambiente de teste. Nada lançado aqui vale como produção.</p>
+  <p class="meta">Fotografia dos dados: <strong>{{SNAPSHOT_AT}}</strong>. Use sua conta do Mapa de testes para acessar esta página.</p>
+  <div class="grid">
+    <div class="row"><a href="/unificado/">Início</a><span><span class="status partial">parcial</span>Login único funciona; menu e indicadores com dados reais ainda faltam.</span></div>
+    <div class="row"><a href="/unificado/mapa/operacao/">Mapa em operação</a><span><span class="status partial">parcial</span>Rota aberta no banco de testes; E2E completo dos fluxos ainda falta.</span></div>
+    <div class="row"><a href="/unificado/mapa/">Histórico do Mapa</a><span><span class="status ready">pronto para testar</span>Consulta histórica somente leitura.</span></div>
+    <div class="row"><a href="/unificado/mapa/operacao/?tela=LIBERACAO_S1">Prévia do tablet</a><span><span class="status partial">parcial</span>A tela abre; a comparação visual com o original ainda falta.</span></div>
+    <div class="row"><span>PCP — 24 telas e impressão</span><span><span class="status later">ainda não</span>O frontend será publicado após concluir E2E e visual do Mapa.</span></div>
+  </div>
+</main>
+</body>
+</html>

@@ -1,17 +1,43 @@
 const UNIFICADO_ROOT = new URL('../', document.currentScript.src);
 const MAPA_API = new URL('mapa/api/', UNIFICADO_ROOT);
 const requestedNext = new URLSearchParams(location.search).get('next');
-const afterLogin = requestedNext === 'mapa/consulta/'
-  ? new URL(requestedNext, UNIFICADO_ROOT)
-  : new URL('mapa/', UNIFICADO_ROOT);
+
+function destination(modules) {
+  const allowed = new Set(['mapa/consulta/', 'mapa/operacao/', 'testar/']);
+  if (allowed.has(requestedNext)) return new URL(requestedNext, UNIFICADO_ROOT);
+  if (/^mapa\/operacao\/\?tela=[A-Z0-9_]+$/.test(requestedNext || '')) {
+    return new URL(requestedNext, UNIFICADO_ROOT);
+  }
+  return new URL(modules.includes('mapa') ? 'mapa/' : 'testar/', UNIFICADO_ROOT);
+}
+
+function storeModuleSessions(result) {
+  if (result.pcp?.access_token && result.pcp?.usuario) {
+    localStorage.setItem('pcp_token', result.pcp.access_token);
+    localStorage.setItem('pcp_user', JSON.stringify(result.pcp.usuario));
+  }
+  if (result.mapa?.id && result.mapa?.role) {
+    localStorage.setItem('pwa_mapa_auth_session_v1', JSON.stringify({
+      id: result.mapa.id, name: result.mapa.name, role: result.mapa.role,
+      setor: result.mapa.setor || 'Todos'
+    }));
+  }
+}
 
 window.UnificadoAuth = Object.freeze({
   async me() {
-    const response = await fetch(new URL('me', MAPA_API), { credentials: 'same-origin', cache: 'no-store' });
+    const response = await fetch(new URL('me', MAPA_API), {
+      credentials: 'same-origin', cache: 'no-store'
+    });
     return response.ok ? response.json() : null;
   },
   async logout() {
-    await fetch(new URL('logout', MAPA_API), { method: 'POST', credentials: 'same-origin' });
+    localStorage.removeItem('pcp_token');
+    localStorage.removeItem('pcp_user');
+    localStorage.removeItem('pwa_mapa_auth_session_v1');
+    await fetch(new URL('logout', MAPA_API), {
+      method: 'POST', credentials: 'same-origin'
+    });
     location.assign(new URL('login.html', UNIFICADO_ROOT));
   }
 });
@@ -22,30 +48,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const feedback = document.getElementById('login-feedback');
   const button = form.querySelector('button[type="submit"]');
   const firstAccessForm = document.getElementById('first-access-form');
-  let firstAccessToken = null;
+  let passwordToken = null;
+  let passwordMode = null;
+  let modulesAfterChange = [];
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     button.disabled = true;
     feedback.textContent = 'Verificando acesso…';
     try {
-      const response = await fetch(new URL('login', MAPA_API), {
+      const response = await fetch(new URL('unified/login', MAPA_API), {
         method: 'POST', credentials: 'same-origin', cache: 'no-store',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: form.elements.username.value.trim(),
+          username: form.elements.username.value.trim(),
           password: form.elements.password.value
         })
       });
       const result = await response.json();
-      if (!response.ok || !result.ok) throw new Error(result.error || 'Não foi possível entrar.');
-      if (result.user.primeiro_acesso) {
-        firstAccessToken = result.first_access_token;
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || 'Não foi possível entrar.');
+      }
+      if (result.reset_required || result.first_access_token) {
+        passwordToken = result.reset_token || result.first_access_token;
+        passwordMode = result.reset_required ? 'pair' :
+          (result.first_access_module === 'pcp' ? 'pcp' : 'mapa');
+        modulesAfterChange = result.modules || (passwordMode === 'pcp' ? ['pcp'] : ['mapa']);
         form.hidden = true;
         firstAccessForm.hidden = false;
-        feedback.textContent = 'Defina uma senha nova para o primeiro acesso.';
+        feedback.textContent = result.reset_required
+          ? 'Defina uma senha única para os dois módulos.'
+          : 'Defina uma senha nova para o primeiro acesso.';
         return;
       }
-      location.assign(afterLogin);
+      storeModuleSessions(result);
+      location.assign(destination(result.modules || []));
     } catch (error) {
       feedback.textContent = error.message || 'Falha de conexão.';
     } finally {
@@ -53,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
       button.disabled = false;
     }
   });
+
   firstAccessForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const password = firstAccessForm.elements.newPassword.value;
@@ -63,14 +101,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const submit = firstAccessForm.querySelector('button[type="submit"]');
     submit.disabled = true;
     try {
-      const response = await fetch(new URL('first-access', MAPA_API), {
+      const endpoint = passwordMode === 'pair' ? 'unified/reset' :
+        passwordMode === 'pcp' ? 'unified/pcp-first-access' : 'first-access';
+      const response = await fetch(new URL(endpoint, MAPA_API), {
         method: 'POST', credentials: 'same-origin', cache: 'no-store',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: firstAccessToken, password })
+        body: JSON.stringify({ token: passwordToken, password })
       });
       const result = await response.json();
-      if (!response.ok || !result.ok) throw new Error(result.error || 'Não foi possível atualizar a senha.');
-      location.assign(afterLogin);
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || 'Não foi possível atualizar a senha.');
+      }
+      if (passwordMode === 'mapa' && result.user) result.mapa = result.user;
+      storeModuleSessions(result);
+      location.assign(destination(result.modules || modulesAfterChange));
     } catch (error) {
       feedback.textContent = error.message || 'Falha de conexão.';
     } finally {

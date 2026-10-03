@@ -17,6 +17,7 @@ check_http() {
 
 check_http inicio "$base/" 200
 check_http login "$base/login.html" 200
+check_http testar_sem_sessao "$base/testar/" 401
 check_http mapa_historico "$base/mapa/" 200
 check_http mapa_consulta "$base/mapa/consulta/" 200
 check_http mapa_operacao_teste "$base/mapa/operacao/" 200
@@ -30,6 +31,7 @@ if [[ "$mapa_write_status" != 401 ]]; then
 fi
 printf 'OK mapa_escrita_sem_sessao HTTP %s\n' "$mapa_write_status"
 check_http pcp_api_protegida "$base/pcp/api/dashboard" 403
+check_http pcp_usuarios_protegidos "$base/pcp/api/usuarios" 403
 check_http mapa_oficial 'https://usina.concretrack.com.br/mapa-concretagem/' 200
 check_http pcp_oficial 'https://pcp.concretrack.com.br/' 200
 

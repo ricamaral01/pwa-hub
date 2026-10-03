@@ -99,11 +99,15 @@ def main() -> None:
             run(["ssh", "vps-staging", "rm", "-f", remote_dump])
     result = run(["ssh", "vps-staging", MAPA_PYTHON, MAPA_SCRIPT]).decode()
     print(result.strip().splitlines()[-1])
-    # A refreshed snapshot removes synthetic users; restore only test identities.
-    test_python = "/opt/mapa-unificado-api/.venv/bin/python"
-    for script in ("create_mapa_operacao_test_account.py", "create_mapa_operacao_profiles.py"):
-        run(["ssh", "vps-staging", test_python,
-             "/root/mapa-unificado-migration/" + script])
+    match = re.search(r"Fotografia atualizada em ([^;\n]+)", result)
+    if not match:
+        raise RuntimeError("Mapa refresh did not report the snapshot timestamp")
+    snapshot_info = json.dumps({"snapshot_at": match.group(1).strip()}, ensure_ascii=False).encode()
+    run(["ssh", "vps-staging", "tee", "/opt/mapa-unificado-api/snapshot-info.json"],
+        input_bytes=snapshot_info)
+    run(["ssh", "vps-staging", "/opt/mapa-unificado-api/.venv/bin/python",
+         "/root/mapa-unificado-migration/reapply_unified_auth.py"])
+    # Synthetic identities are created only inside their test rounds and removed.
     # Source order matters for tied model counts in the original dashboard.
     run(["ssh", "vps-staging", "python3",
          "/root/mapa-unificado-migration/sync_mapa_montagem_source_order.py"])

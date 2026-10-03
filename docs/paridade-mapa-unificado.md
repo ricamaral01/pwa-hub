@@ -38,8 +38,8 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 | 4 | Modo Liberação | não executado | Setores 1–3 com GERENCIA tiveram linha e cartão; Setor 4 preserva abertura de escolha de concreto; faltam perfis. |
 | 5 | Concretar por tipo | não executado | Um tipo em Setores 1–4 com GERENCIA; faltam demais tipos/perfis. |
 | 6 | Concreto vibrado | não executado | Tipo “Concreto Seco - Vibrado” no teste de cartão; falta matriz completa. |
-| 7 | ODIN e refazer apontamento | não executado | Funções executadas; falta comparar linha e cartão com fixture. |
-| 8 | Modo Manutenção | não executado | Funções executadas; falta comparar linha e cartão com fixture. |
+| 7 | ODIN e refazer apontamento | não executado | Setor 3 com GERENCIA passou PATCH/DELETE com corpo de fixture, linha e cartão; faltam perfis e demais setores. |
+| 8 | Modo Manutenção | não executado | Setor 3 com GERENCIA passou gravação, remoção e cartão de manutenção; faltam perfis e demais setores. |
 | 9 | Mandril Circular | não executado | Ponte PCP passou criação/leitura/remoção sintética; falta E2E completo. |
 | 10 | Inspeção, checklist e fotos | não executado | Funções e upload em rota real passaram com PNG válido; faltam fixture/linha/cartão por perfil. |
 | 11 | Segunda inspeção | não executado | Abertura exercitada; falta conclusão E2E. |
@@ -55,7 +55,7 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 | 21 | Exportação XLSX | não executado | Base/lookup exercitados; arquivo final pendente. |
 | 22 | Cadastro/edição de usuários | não executado | API em contrato anterior; ações da tela pendentes. |
 | 23 | Sincronizar | não executado | Navegação e consulta exercitadas; sincronização final pendente. |
-| 24 | Fila offline e reenvio | não executado | Funções exercitadas online; desconexão/reenvio com linha final pendentes. |
+| 24 | Fila offline e reenvio | não executado | Funções exercitadas online; desconexão/reenvio com linha final pendentes. Atualização de segundo tablet após gravação em `producao` passou em teste separado. |
 
 O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080 sem rolagem horizontal. Falta comparação de pixels tablet/quiosque com o original e falta a casca desktop nova. A rota operacional continua sendo ambiente de teste.
 

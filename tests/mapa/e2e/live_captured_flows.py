@@ -12,7 +12,7 @@ import sys
 
 from playwright.sync_api import sync_playwright
 
-from operacao_smoke import CHROME, OUT, URL, credentials
+from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -63,13 +63,7 @@ def main() -> None:
                 calls[current[0]].append((request.method,
                     url.path.replace("/unificado/mapa/api", "", 1)))
         page.on("request", capture)
-        page.goto(URL, wait_until="domcontentloaded", timeout=30000)
-        page.wait_for_function("typeof loginWithRole === 'function'", timeout=15000)
-        page.wait_for_timeout(900)
-        page.locator("#loginNome").fill(account["MAPA_TEST_USER"])
-        page.locator("#loginSenha").fill(account["MAPA_TEST_PASSWORD"])
-        page.locator("#loginEntrar").click()
-        page.wait_for_function("state.authUser?.role === 'GERENCIA'", timeout=15000)
+        login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
         page.on("dialog", lambda dialog: dialog.accept())
         for name, expression in expressions():
             current[0] = name

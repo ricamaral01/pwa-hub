@@ -17,10 +17,20 @@ OUT = Path(__file__).resolve().parents[3] / ".work-mapa-unificado" / "e2e"
 
 def credentials() -> dict[str, str]:
     raw = subprocess.check_output(
-        ["ssh", "vps-staging", "cat", "/etc/mapa-unificado/operacao-test-login.env"],
+        ["ssh", "vps-staging", "cat", "/etc/mapa-unificado/auth-probe.env"],
         text=True,
     )
     return dict(line.split("=", 1) for line in raw.splitlines() if "=" in line)
+
+
+def login_operacao(page, user: str, password: str, role: str = "GERENCIA") -> None:
+    page.goto(URL, wait_until="domcontentloaded", timeout=30000)
+    page.wait_for_url("**/unificado/login.html?next=*", timeout=15000)
+    page.locator('#unificado-login-form [name="username"]').fill(user)
+    page.locator('#unificado-login-form [name="password"]').fill(password)
+    page.locator('#unificado-login-form button[type="submit"]').click()
+    page.wait_for_url(URL, timeout=15000)
+    page.wait_for_function("state.authUser?.role === " + json.dumps(role), timeout=15000)
 
 
 def main() -> None:
@@ -44,13 +54,8 @@ def main() -> None:
         page.on("request", lambda request: requests.append({"method": request.method, "url": safe_url(request.url)}))
         page.on("response", lambda response: responses.append({"status": response.status,
                                                                "url": safe_url(response.url)}))
-        page.goto(URL, wait_until="domcontentloaded", timeout=30000)
+        login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
         page.locator("#ambiente-teste").wait_for(timeout=15000)
-        page.wait_for_function("typeof loginWithRole === 'function'", timeout=15000)
-        page.wait_for_timeout(1000)
-        page.locator("#loginNome").fill(account["MAPA_TEST_USER"])
-        page.locator("#loginSenha").fill(account["MAPA_TEST_PASSWORD"])
-        page.locator("#loginEntrar").click()
         page.wait_for_timeout(3500)
         result = {
             "banner": page.locator("#ambiente-teste").inner_text(),

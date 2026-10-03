@@ -6,7 +6,7 @@ import json
 
 from playwright.sync_api import sync_playwright
 
-from operacao_smoke import CHROME, OUT, URL, credentials
+from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 
 
 SIZES = ((1024, 768, False), (768, 1024, False), (1024, 768, True),
@@ -23,13 +23,7 @@ def main() -> None:
             context = browser.new_context(viewport={"width": width, "height": height},
                                           service_workers="block")
             page = context.new_page()
-            page.goto(URL, wait_until="domcontentloaded", timeout=30000)
-            page.wait_for_function("typeof loginWithRole === 'function'", timeout=15000)
-            page.wait_for_timeout(800)
-            page.locator("#loginNome").fill(account["MAPA_TEST_USER"])
-            page.locator("#loginSenha").fill(account["MAPA_TEST_PASSWORD"])
-            page.locator("#loginEntrar").click()
-            page.wait_for_function("state.authUser?.role === 'GERENCIA'", timeout=15000)
+            login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
             page.evaluate("""({kiosk,desktop}) => {
                 setMode(desktop ? 'PROD_ANALISE' : 'LIBERACAO_S1'); el.libData.value='2026-10-02';
                 if (kiosk) document.body.classList.add('kiosk-active');

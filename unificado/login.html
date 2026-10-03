@@ -6,7 +6,7 @@
   <link rel="icon" href="data:,">
   <title>Entrar — Concrefer</title>
   <link rel="stylesheet" href="shell/shell.css?v=0.2.0">
-  <script defer src="shell/auth.js?v=0.2.0"></script>
+  <script defer src="shell/auth.js?v=0.4.0"></script>
 </head>
 <body>
   <main class="login-layout">
@@ -19,17 +19,17 @@
       <h1 id="login-title">Bem-vindo de volta</h1>
       <p>Entre com seu usuário e senha para acessar o sistema.</p>
       <form id="unificado-login-form">
-        <label class="login-field"><span>Usuário do Mapa</span><input type="text" name="username" autocomplete="username" required></label>
+        <label class="login-field"><span>Usuário</span><input type="text" name="username" autocomplete="username" required></label>
         <label class="login-field"><span>Senha</span><input type="password" name="password" autocomplete="current-password" required></label>
         <button class="button button-primary login-submit" type="submit">Entrar</button>
       </form>
       <form id="first-access-form" hidden>
-        <label class="login-field"><span>Nova senha</span><input type="password" name="newPassword" autocomplete="new-password" minlength="10" required></label>
-        <label class="login-field"><span>Confirmar nova senha</span><input type="password" name="confirmPassword" autocomplete="new-password" minlength="10" required></label>
+        <label class="login-field"><span>Nova senha</span><input type="password" name="newPassword" autocomplete="new-password" minlength="6" required></label>
+        <label class="login-field"><span>Confirmar nova senha</span><input type="password" name="confirmPassword" autocomplete="new-password" minlength="6" required></label>
         <button class="button button-primary login-submit" type="submit">Definir senha e entrar</button>
       </form>
       <p id="login-feedback" role="status" aria-live="polite"></p>
-      <small class="login-note">Ambiente de testes. Consulta ao Mapa com dados migrados até 02/10/2026; apontamentos desativados.</small>
+      <small class="login-note">Ambiente de teste. Nada lançado aqui vale como produção.</small>
     </section>
   </main>
 </body>

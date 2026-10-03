@@ -9,7 +9,7 @@ from urllib.parse import parse_qsl, urlsplit
 
 from playwright.sync_api import sync_playwright
 
-from operacao_smoke import CHROME, OUT, URL, credentials
+from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 
 
 PAIRS = OUT.parent / "order-pairs-private.json"
@@ -43,13 +43,7 @@ def main() -> None:
                     request_route.continue_()
             context.route("**/*", route)
             page = context.new_page()
-            page.goto(URL, wait_until="domcontentloaded", timeout=30000)
-            page.wait_for_function("typeof loginWithRole === 'function'", timeout=15000)
-            page.wait_for_timeout(1000)
-            page.locator("#loginNome").fill(account["MAPA_TEST_USER"])
-            page.locator("#loginSenha").fill(account["MAPA_TEST_PASSWORD"])
-            page.locator("#loginEntrar").click()
-            page.wait_for_function("state.authUser?.role === 'GERENCIA'", timeout=15000)
+            login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
             result = {}
             result["status_cards"] = page.evaluate("""async () => {
                 setMode('LIBERACAO_S3'); el.libData.value='2026-10-02';

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-from operacao_smoke import CHROME, OUT, URL, credentials
+from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 
 
 DATE = "2026-10-03"
@@ -27,12 +27,7 @@ def main() -> None:
                                "body": json.loads(request.post_data) if request.post_data else None,
                                "prefer": request.headers.get("prefer")})
         page.on("request", capture)
-        page.goto(URL, wait_until="domcontentloaded", timeout=30000)
-        page.wait_for_function("typeof loginWithRole === 'function'", timeout=15000)
-        page.wait_for_timeout(1000)
-        page.locator("#loginNome").fill(account["MAPA_TEST_USER"])
-        page.locator("#loginSenha").fill(account["MAPA_TEST_PASSWORD"])
-        page.locator("#loginEntrar").click()
+        login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
         page.locator("#viewHub").wait_for(state="visible", timeout=15000)
         page.wait_for_function("typeof setMode === 'function'", timeout=15000)
         page.wait_for_function("state.authUser?.role === 'GERENCIA'", timeout=15000)
