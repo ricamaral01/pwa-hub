@@ -55,7 +55,7 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 | 21 | Exportação XLSX | não executado | Base/lookup exercitados; arquivo final pendente. |
 | 22 | Cadastro/edição de usuários | não executado | API em contrato anterior; ações da tela pendentes. |
 | 23 | Sincronizar | não executado | Navegação e consulta exercitadas; sincronização final pendente. |
-| 24 | Fila offline e reenvio | não executado | Funções exercitadas online; desconexão/reenvio com linha final pendentes. Atualização de segundo tablet após gravação em `producao` passou em teste separado. |
+| 24 | Fila offline e reenvio | não executado | Um item S3 passou: fila local, reenvio conforme fixture `offline-199`, linha gravada e pendência removida; faltam montagem, liberação e inspeção, além dos perfis. Atualização de segundo tablet passou em teste separado. |
 
 O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080 sem rolagem horizontal. Falta comparação de pixels tablet/quiosque com o original e falta a casca desktop nova. A rota operacional continua sendo ambiente de teste.
 
