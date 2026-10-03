@@ -1,0 +1,741 @@
+{
+  "source": "official Supabase RPC via GET only",
+  "normalization": "generated_at removed after ISO timestamp validation",
+  "cases": [
+    {
+      "params": {
+        "p_data_inicio": "2026-10-01",
+        "p_data_fim": "2026-10-02",
+        "p_scope": "TOTAL"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 2,
+          "fora_padrao": 31,
+          "total_formas": 415,
+          "media_formas_dia": 207.5
+        },
+        "scope": "TOTAL",
+        "by_sector": {
+          "S1": 144,
+          "S2": 151,
+          "S3": 93,
+          "S4": 27
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2",
+          "Setor 3",
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-10-01",
+        "p_data_fim": "2026-10-02",
+        "p_scope": "S1"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 2,
+          "fora_padrao": 9,
+          "total_formas": 144,
+          "media_formas_dia": 72.0
+        },
+        "scope": "S1",
+        "by_sector": {
+          "S1": 144
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-10-01",
+        "p_data_fim": "2026-10-02",
+        "p_scope": "S2"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 2,
+          "fora_padrao": 15,
+          "total_formas": 151,
+          "media_formas_dia": 75.5
+        },
+        "scope": "S2",
+        "by_sector": {
+          "S2": 151
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 2"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-10-01",
+        "p_data_fim": "2026-10-02",
+        "p_scope": "S3"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 2,
+          "fora_padrao": 7,
+          "total_formas": 93,
+          "media_formas_dia": 46.5
+        },
+        "scope": "S3",
+        "by_sector": {
+          "S3": 93
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 3"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-10-01",
+        "p_data_fim": "2026-10-02",
+        "p_scope": "S4"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 2,
+          "fora_padrao": 0,
+          "total_formas": 27,
+          "media_formas_dia": 13.5
+        },
+        "scope": "S4",
+        "by_sector": {
+          "S4": 27
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-10-01",
+        "p_data_fim": "2026-10-02",
+        "p_scope": "S1_S2"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 2,
+          "fora_padrao": 24,
+          "total_formas": 295,
+          "media_formas_dia": 147.5
+        },
+        "scope": "S1_S2",
+        "by_sector": {
+          "S1": 144,
+          "S2": 151
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-10-01",
+        "p_data_fim": "2026-10-02",
+        "p_scope": "UNKNOWN"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 2,
+          "fora_padrao": 31,
+          "total_formas": 415,
+          "media_formas_dia": 207.5
+        },
+        "scope": "UNKNOWN",
+        "by_sector": {
+          "S1": 144,
+          "S2": 151,
+          "S3": 93,
+          "S4": 27
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2",
+          "Setor 3",
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-09-01",
+        "p_data_fim": "2026-09-30",
+        "p_scope": "TOTAL"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 21,
+          "fora_padrao": 328,
+          "total_formas": 3956,
+          "media_formas_dia": 188.38
+        },
+        "scope": "TOTAL",
+        "by_sector": {
+          "S1": 1138,
+          "S2": 1381,
+          "S3": 883,
+          "S4": 554
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2",
+          "Setor 3",
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-09-01",
+        "p_data_fim": "2026-09-30",
+        "p_scope": "S1"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 21,
+          "fora_padrao": 87,
+          "total_formas": 1138,
+          "media_formas_dia": 54.19
+        },
+        "scope": "S1",
+        "by_sector": {
+          "S1": 1138
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-09-01",
+        "p_data_fim": "2026-09-30",
+        "p_scope": "S2"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 21,
+          "fora_padrao": 81,
+          "total_formas": 1381,
+          "media_formas_dia": 65.76
+        },
+        "scope": "S2",
+        "by_sector": {
+          "S2": 1381
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 2"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-09-01",
+        "p_data_fim": "2026-09-30",
+        "p_scope": "S3"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 21,
+          "fora_padrao": 154,
+          "total_formas": 883,
+          "media_formas_dia": 42.05
+        },
+        "scope": "S3",
+        "by_sector": {
+          "S3": 883
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 3"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-09-01",
+        "p_data_fim": "2026-09-30",
+        "p_scope": "S4"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 19,
+          "fora_padrao": 6,
+          "total_formas": 554,
+          "media_formas_dia": 29.16
+        },
+        "scope": "S4",
+        "by_sector": {
+          "S4": 554
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-09-01",
+        "p_data_fim": "2026-09-30",
+        "p_scope": "S1_S2"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 21,
+          "fora_padrao": 168,
+          "total_formas": 2519,
+          "media_formas_dia": 119.95
+        },
+        "scope": "S1_S2",
+        "by_sector": {
+          "S1": 1138,
+          "S2": 1381
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2026-09-01",
+        "p_data_fim": "2026-09-30",
+        "p_scope": "UNKNOWN"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 21,
+          "fora_padrao": 328,
+          "total_formas": 3956,
+          "media_formas_dia": 188.38
+        },
+        "scope": "UNKNOWN",
+        "by_sector": {
+          "S1": 1138,
+          "S2": 1381,
+          "S3": 883,
+          "S4": 554
+        },
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2",
+          "Setor 3",
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2099-01-01",
+        "p_data_fim": "2099-01-03",
+        "p_scope": "TOTAL"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 0,
+          "fora_padrao": 0,
+          "total_formas": 0,
+          "media_formas_dia": 0
+        },
+        "scope": "TOTAL",
+        "by_sector": {},
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2",
+          "Setor 3",
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2099-01-01",
+        "p_data_fim": "2099-01-03",
+        "p_scope": "S1"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 0,
+          "fora_padrao": 0,
+          "total_formas": 0,
+          "media_formas_dia": 0
+        },
+        "scope": "S1",
+        "by_sector": {},
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2099-01-01",
+        "p_data_fim": "2099-01-03",
+        "p_scope": "S2"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 0,
+          "fora_padrao": 0,
+          "total_formas": 0,
+          "media_formas_dia": 0
+        },
+        "scope": "S2",
+        "by_sector": {},
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 2"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2099-01-01",
+        "p_data_fim": "2099-01-03",
+        "p_scope": "S3"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 0,
+          "fora_padrao": 0,
+          "total_formas": 0,
+          "media_formas_dia": 0
+        },
+        "scope": "S3",
+        "by_sector": {},
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 3"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2099-01-01",
+        "p_data_fim": "2099-01-03",
+        "p_scope": "S4"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 0,
+          "fora_padrao": 0,
+          "total_formas": 0,
+          "media_formas_dia": 0
+        },
+        "scope": "S4",
+        "by_sector": {},
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2099-01-01",
+        "p_data_fim": "2099-01-03",
+        "p_scope": "S1_S2"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 0,
+          "fora_padrao": 0,
+          "total_formas": 0,
+          "media_formas_dia": 0
+        },
+        "scope": "S1_S2",
+        "by_sector": {},
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    },
+    {
+      "params": {
+        "p_data_inicio": "2099-01-01",
+        "p_data_fim": "2099-01-03",
+        "p_scope": "UNKNOWN"
+      },
+      "expected_status": 200,
+      "expected": {
+        "kpis": {
+          "dias": 0,
+          "fora_padrao": 0,
+          "total_formas": 0,
+          "media_formas_dia": 0
+        },
+        "scope": "UNKNOWN",
+        "by_sector": {},
+        "contract_version": "dashboard-produtividade-v1",
+        "included_sectors": [
+          "Setor 1",
+          "Setor 2",
+          "Setor 3",
+          "Setor 4"
+        ]
+      },
+      "test": {
+        "GET": {
+          "status": 200,
+          "matches": true
+        },
+        "POST": {
+          "status": 200,
+          "matches": true
+        }
+      }
+    }
+  ]
+}

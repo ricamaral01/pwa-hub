@@ -233,6 +233,34 @@ def rest_read(resource):
     return Response(body, status=status, headers=response_headers)
 
 
+@app.route("/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1", methods=["GET", "POST"])
+def produtividade_rpc_read():
+    """Forward the original read-only dashboard RPC with the Mapa session."""
+    if not authenticated_user():
+        return jsonify(ok=False), 401
+    url = "http://127.0.0.1:13051/rpc/rpc_dashboard_produtividade_resumo_v1"
+    if request.query_string:
+        url += "?" + request.query_string.decode("ascii", errors="strict")
+    headers = {name: request.headers[name] for name in ("Accept", "Prefer", "Content-Type")
+               if name in request.headers}
+    outbound = urllib.request.Request(
+        url, data=request.get_data() if request.method == "POST" else None,
+        headers=headers, method=request.method,
+    )
+    try:
+        upstream = urllib.request.urlopen(outbound, timeout=15)
+    except urllib.error.HTTPError as error:
+        upstream = error
+    except (urllib.error.URLError, TimeoutError):
+        return jsonify(ok=False, error="Banco temporariamente indisponível."), 503
+    response_headers = {name: upstream.headers[name] for name in ("Content-Type", "Content-Range", "Range-Unit")
+                        if name in upstream.headers}
+    body = upstream.read()
+    status = upstream.status
+    upstream.close()
+    return Response(body, status=status, headers=response_headers)
+
+
 def clean_text(value, label, *, required=False, max_length=200):
     if value is None and not required:
         return None
