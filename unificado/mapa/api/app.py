@@ -183,7 +183,8 @@ def authenticated_user():
         return None
     try:
         session = signer().loads(token, max_age=SESSION_SECONDS)
-        if not isinstance(session, dict) or session.get("scope") != "session" or not isinstance(session.get("id"), str):
+        if (not isinstance(session, dict) or session.get("scope") not in {"session", "legacy_session"}
+                or not isinstance(session.get("id"), str)):
             return None
         with connect() as conn, conn.cursor() as cur:
             cur.execute(
@@ -194,7 +195,8 @@ def authenticated_user():
             row = cur.fetchone()
     except (BadSignature, SignatureExpired, KeyError, psycopg.Error):
         return None
-    if not row or row["primeiro_acesso"] or row["updated_at"].isoformat() != session.get("updated_at"):
+    if (not row or (row["primeiro_acesso"] and session.get("scope") != "legacy_session")
+            or row["updated_at"].isoformat() != session.get("updated_at")):
         return None
     return row
 
@@ -209,12 +211,23 @@ def me():
 
 @app.route("/rest/v1/<resource>", methods=["GET", "HEAD", "POST", "PATCH", "DELETE"])
 def rest_read(resource):
+    if resource == "usuarios" and request.method == "GET" and "senha" in request.args:
+        return rest_legacy_login()
     user = authenticated_user()
     if not user:
         return jsonify(ok=False), 401
     if resource not in READ_TABLES:
         return jsonify(ok=False), 404
-    if resource == "usuarios" and user["perfil"] != "GERENCIA":
+    first_access_password_change = (
+        resource == "usuarios" and request.method == "PATCH"
+        and user["primeiro_acesso"] and request.args.get("id") == "eq." + user["id"]
+        and isinstance(request.get_json(silent=True), dict)
+        and set(request.get_json(silent=True)) <= {"senha", "primeiro_acesso", "updated_at"}
+        and request.get_json(silent=True).get("primeiro_acesso") is False
+    )
+    if resource == "usuarios" and user["perfil"] != "GERENCIA" and not first_access_password_change:
+        return jsonify(ok=False), 403
+    if user["primeiro_acesso"] and not first_access_password_change:
         return jsonify(ok=False), 403
     writing = request.method not in {"GET", "HEAD"}
     if writing:
@@ -223,7 +236,7 @@ def rest_read(resource):
         if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
             return jsonify(ok=False, error="Origem da requisição inválida."), 403
         if resource == "usuarios":
-            return rest_users_write()
+            return rest_users_write(user)
     url = f"http://127.0.0.1:{13058 if writing else 13051}/{resource}"
     if request.query_string:
         url += "?" + request.query_string.decode("ascii", errors="strict")
@@ -262,7 +275,46 @@ def rest_user_object(row):
     }
 
 
-def rest_users_write():
+def rest_legacy_login():
+    """Match the original table-filter login without exposing stored password hashes."""
+    password_filter = request.args.get("senha", "")
+    user_filter = request.args.get("or", "")
+    match = re.fullmatch(r"\(id\.ilike\.([^,]*),nome\.ilike\.([^)]*)\)", user_filter)
+    if (not password_filter.startswith("eq.") or not match
+            or not password_filter[3:] or len(password_filter) > 1027
+            or match.group(1).casefold() != match.group(2).casefold()
+            or request.args.get("ativo") != "eq.true"):
+        return jsonify(code="PGRST100", message="Invalid login filter"), 400
+    name, password = match.group(1), password_filter[3:]
+    try:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,nome,perfil,ativo,setor,primeiro_acesso,
+                                 senha_hash,created_at,updated_at
+                          FROM public.usuarios
+                          WHERE ativo AND (lower(id)=lower(%s) OR lower(nome)=lower(%s))
+                          ORDER BY CASE WHEN lower(id)=lower(%s) THEN 0 ELSE 1 END LIMIT 1""",
+                        (name, name, name))
+            row = cur.fetchone()
+    except psycopg.Error:
+        return jsonify(code="PGRST000", message="Database temporarily unavailable"), 503
+    try:
+        valid = bool(row) and hasher.verify(row["senha_hash"], password)
+    except (VerifyMismatchError, InvalidHashError):
+        valid = False
+    if not valid:
+        time.sleep(0.25 + secrets.randbelow(100) / 1000)
+        return jsonify([])
+    response = jsonify([rest_user_object(row)])
+    token = signer().dumps({
+        "scope": "legacy_session" if row["primeiro_acesso"] else "session",
+        "id": row["id"], "updated_at": row["updated_at"].isoformat(),
+    })
+    response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
+                        secure=True, samesite="Strict", path="/unificado/mapa/api")
+    return response
+
+
+def rest_users_write(user):
     """Preserve Mapa user CRUD shape while hashing passwords in the auth service."""
     body = request.get_json(silent=True)
     minimal = "return=minimal" in request.headers.get("Prefer", "")
@@ -346,8 +398,20 @@ def rest_users_write():
                             .format(assignments), (*fields.values(), user_id))
             else:
                 return jsonify(ok=False), 405
-            output = [rest_user_object(row) for row in cur.fetchall()]
-            return ("", 204) if minimal else jsonify(output)
+            rows = cur.fetchall()
+            output = [rest_user_object(row) for row in rows]
+            response = Response("", status=204) if minimal else jsonify(output)
+            if (request.method == "PATCH" and user_id == user["id"] and rows
+                    and isinstance(body, dict) and "senha" in body
+                    and body.get("primeiro_acesso") is False):
+                token = signer().dumps({
+                    "scope": "session", "id": user_id,
+                    "updated_at": rows[0]["updated_at"].isoformat(),
+                })
+                response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                                    httponly=True, secure=True, samesite="Strict",
+                                    path="/unificado/mapa/api")
+            return response
     except psycopg.Error:
         return jsonify(code="PGRST102", message="User operation failed"), 400
 

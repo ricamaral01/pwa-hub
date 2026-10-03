@@ -68,6 +68,38 @@ def main() -> None:
         status, body = call("GET", "?id=eq." + user_id + "&select=*")
         results.append(("read_without_hash", status == 200 and isinstance(body, list)
                         and len(body) == 1 and "senha_hash" not in body[0] and "senha" not in body[0]))
+        login_query = "?select=*&ativo=eq.true&or=" + urllib.parse.quote(
+            f"(id.ilike.{user_id},nome.ilike.{user_id})") + "&senha=eq."
+        bad_request = urllib.request.Request(base + login_query + "wrong")
+        with urllib.request.urlopen(bad_request, timeout=20) as response:
+            results.append(("legacy_wrong_password", response.status == 200
+                            and json.loads(response.read()) == []))
+        login_request = urllib.request.Request(base + login_query + urllib.parse.quote(initial_password))
+        with urllib.request.urlopen(login_request, timeout=20) as response:
+            legacy_user = json.loads(response.read())
+            legacy_cookie = response.headers.get("Set-Cookie", "").split(";", 1)[0]
+            results.append(("legacy_first_access_login", response.status == 200
+                            and len(legacy_user) == 1 and legacy_user[0]["id"] == user_id
+                            and legacy_user[0]["primeiro_acesso"] is True
+                            and legacy_cookie.startswith(COOKIE_NAME + "=")))
+        first_access_request = urllib.request.Request(
+            base + "?id=eq." + user_id,
+            headers={"Cookie": legacy_cookie, "Origin": "https://concrefer.concretrack.com.br",
+                     "Content-Type": "application/json", "Prefer": "return=representation"},
+            data=json.dumps({"senha": next_password, "primeiro_acesso": False}).encode(),
+            method="PATCH",
+        )
+        with urllib.request.urlopen(first_access_request, timeout=20) as response:
+            changed = json.loads(response.read())
+            next_cookie = response.headers.get("Set-Cookie", "").split(";", 1)[0]
+            results.append(("legacy_first_access_change", response.status == 200
+                            and changed[0]["primeiro_acesso"] is False
+                            and next_cookie.startswith(COOKIE_NAME + "=")))
+        session_request = urllib.request.Request(
+            "http://127.0.0.1:13052/me", headers={"Cookie": next_cookie})
+        with urllib.request.urlopen(session_request, timeout=20) as response:
+            results.append(("legacy_session_after_change", response.status == 200
+                            and json.loads(response.read()).get("ok") is True))
         status, body = call("PATCH", "?id=eq." + user_id,
                             {"nome": "Captura Editada", "senha": next_password, "primeiro_acesso": False})
         results.append(("update", status == 200 and isinstance(body, list)
