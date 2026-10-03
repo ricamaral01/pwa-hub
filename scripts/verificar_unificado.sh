@@ -21,6 +21,12 @@ check_http mapa_historico "$base/mapa/" 200
 check_http mapa_consulta "$base/mapa/consulta/" 200
 check_http mapa_api_saude "$base/mapa/api/health" 200
 check_http mapa_rpc_protegida "$base/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1" 401
+mapa_write_status="$(curl --silent --show-error --max-time 15 --request POST --header 'Content-Type: application/json' --data '{}' --output /dev/null --write-out '%{http_code}' "$base/mapa/api/rest/v1/programacao_pcp")"
+if [[ "$mapa_write_status" != 401 ]]; then
+  printf 'FALHA mapa_escrita_sem_sessao HTTP %s (esperado 401)\n' "$mapa_write_status" >&2
+  exit 1
+fi
+printf 'OK mapa_escrita_sem_sessao HTTP %s\n' "$mapa_write_status"
 check_http pcp_api_protegida "$base/pcp/api/dashboard" 403
 check_http mapa_oficial 'https://usina.concretrack.com.br/mapa-concretagem/' 200
 check_http pcp_oficial 'https://pcp.concretrack.com.br/' 200

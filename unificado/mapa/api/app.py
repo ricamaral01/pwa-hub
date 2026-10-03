@@ -32,6 +32,10 @@ READ_TABLES = frozenset({
     "usuarios", "programacao_pcp", "liberacao_formas", "producao",
     "montagem_poste", "formas_manutencao", "prog_s3_s4", "vw_formas_status",
 })
+WRITE_TABLES = frozenset({
+    "programacao_pcp", "liberacao_formas", "producao",
+    "montagem_poste", "formas_manutencao", "prog_s3_s4",
+})
 OPERATION_TABLES = {
     "programada": "programacao_pcp",
     "liberada": "liberacao_formas",
@@ -202,7 +206,7 @@ def me():
     return jsonify(ok=True, user=public_user(row))
 
 
-@app.route("/rest/v1/<resource>", methods=["GET", "HEAD"])
+@app.route("/rest/v1/<resource>", methods=["GET", "HEAD", "POST", "PATCH", "DELETE"])
 def rest_read(resource):
     user = authenticated_user()
     if not user:
@@ -211,12 +215,22 @@ def rest_read(resource):
         return jsonify(ok=False), 404
     if resource == "usuarios" and user["perfil"] != "GERENCIA":
         return jsonify(ok=False), 403
-    url = f"http://127.0.0.1:13051/{resource}"
+    writing = request.method not in {"GET", "HEAD"}
+    if writing:
+        if resource not in WRITE_TABLES:
+            return jsonify(ok=False), 405
+        if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
+            return jsonify(ok=False, error="Origem da requisição inválida."), 403
+    url = f"http://127.0.0.1:{13058 if writing else 13051}/{resource}"
     if request.query_string:
         url += "?" + request.query_string.decode("ascii", errors="strict")
-    headers = {name: request.headers[name] for name in ("Accept", "Range", "Prefer")
+    headers = {name: request.headers[name] for name in
+               ("Accept", "Range", "Prefer", "Content-Type", "Content-Range")
                if name in request.headers}
-    outbound = urllib.request.Request(url, headers=headers, method=request.method)
+    outbound = urllib.request.Request(
+        url, headers=headers, method=request.method,
+        data=request.get_data() if writing else None,
+    )
     try:
         upstream = urllib.request.urlopen(outbound, timeout=15)
     except urllib.error.HTTPError as error:
@@ -224,7 +238,8 @@ def rest_read(resource):
     except (urllib.error.URLError, TimeoutError):
         return jsonify(ok=False, error="Banco temporariamente indisponível."), 503
     response_headers = {}
-    for name in ("Content-Type", "Content-Range", "Range-Unit"):
+    for name in ("Content-Type", "Content-Range", "Range-Unit", "Preference-Applied",
+                 "Location", "Content-Location"):
         if name in upstream.headers:
             response_headers[name] = upstream.headers[name]
     body = upstream.read()

@@ -32,5 +32,9 @@ A troca intencional de `usuarios.senha` por `usuarios.senha_hash` preserva a sen
 
 A OpenAPI e o catálogo PostgreSQL podem escrever padrões equivalentes de maneiras diferentes; os valores abaixo ainda precisam de comparação semântica.
 
+## Restrições de conflito para escrita
+
+A auditoria de 03/10/2026 encontrou **zero grupos duplicados** nas combinações `programacao_pcp(data_fabricacao,setor,forma)`, `liberacao_formas(data_fabricacao,setor,forma)` e `prog_s3_s4(data,forma,setor)`. O destino tinha apenas índices não únicos nessas combinações. O teste sintético do `POST` com `Prefer: resolution=merge-duplicates` e `on_conflict=data_fabricacao,setor,forma` falhou com `42P10` no destino. Foram criados índices únicos **somente no Mapa de testes** por `api_write_conflicts.sql`; o mesmo teste passou depois, com limpeza confirmada. O `app.js` original usa essas combinações em seus upserts, mas a OpenAPI de origem não expõe seus índices; ainda não há prova direta de equivalência dos índices com o oficial.
+
 | Coluna | Origem: obrigatória / padrão | Destino: obrigatória / padrão |
 |---|---|---|
