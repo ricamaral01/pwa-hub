@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usuários — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.2.0" />
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <!-- Concrefer Logo: Σ (Sigma - concrete/construction symbol) -->
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Cadastro de Usuários</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="section-card mb-4">
+      <div class="section-title"><i class="bi bi-person-plus me-2"></i>Novo Usuário</div>
+      <form id="form-user">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label">Nome</label>
+            <input id="u-nome" class="form-control form-control-sm" required />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Usuário</label>
+            <input id="u-username" class="form-control form-control-sm" required />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Senha</label>
+            <input id="u-senha" type="password" class="form-control form-control-sm" minlength="6" required />
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Setor</label>
+            <select id="u-setor" class="form-select form-select-sm" required></select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Nível de Acesso</label>
+            <select id="u-nivel" class="form-select form-select-sm" required>
+              <option value="CONSULTA">CONSULTA</option>
+              <option value="PRODUCAO">PRODUCAO</option>
+              <option value="PCP">PCP</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+          </div>
+          <div class="col-md-1 d-flex align-items-end">
+            <button class="btn btn-accent btn-sm w-100" type="submit">Criar</button>
+          </div>
+        </div>
+      </form>
+      <div class="small text-muted mt-2">Todo usuário novo é criado com troca obrigatória de senha no primeiro acesso.</div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">Usuários Cadastrados</div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Usuário</th>
+              <th>Setor</th>
+              <th>Nível</th>
+              <th>Ativo</th>
+              <th>1º acesso</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-users">
+            <tr><td colspan="7" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.2.0"></script>
+<script>
+const user = requireAuth();
+if (!user) throw new Error('Sem sessão');
+if (user.nivel_acesso !== 'ADMIN') {
+  showToast('Acesso restrito ao ADMIN', 'error');
+  window.location.href = '/unificado/pcp/dashboard/';
+}
+document.getElementById('user-nome-top').textContent = user.nome;
+initSidebar('usuarios');
+
+async function loadSetores() {
+  const setores = await API.get('/api/setores');
+  const sel = document.getElementById('u-setor');
+  sel.innerHTML = '<option value="">Selecione...</option>';
+  setores.forEach(s => {
+    sel.innerHTML += `<option value="${s.id}">${s.nome}</option>`;
+  });
+}
+
+async function loadUsers() {
+  const rows = await API.get('/api/usuarios');
+  const setores = await API.get('/api/setores');
+  const setMap = Object.fromEntries(setores.map(s => [s.id, s.nome]));
+  const tb = document.getElementById('tbody-users');
+  if (!rows.length) {
+    tb.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">Nenhum usuário</td></tr>';
+    return;
+  }
+  tb.innerHTML = rows.map(r => `
+    <tr>
+      <td>${r.nome}</td>
+      <td>${r.username}</td>
+      <td>${setMap[r.setor_id] || '—'}</td>
+      <td>${r.nivel_acesso}</td>
+      <td>${r.ativo ? 'Sim' : 'Não'}</td>
+      <td>${r.trocar_senha_primeiro_acesso ? 'Pendente' : 'OK'}</td>
+      <td class="text-end"><button type="button" class="btn btn-outline-secondary btn-sm" onclick="redefinirSenha(${r.id}, ${JSON.stringify(r.nome)})"><i class="bi bi-key"></i> Redefinir senha</button></td>
+    </tr>
+  `).join('');
+}
+
+async function redefinirSenha(userId, nome) {
+  const novaSenha = window.prompt(`Digite a senha temporária para ${nome}:`);
+  if (novaSenha === null) return;
+  if (novaSenha.length < 6) {
+    showToast('A senha deve ter ao menos 6 caracteres', 'error');
+    return;
+  }
+  if (!window.confirm(`Redefinir a senha de ${nome}? O usuário deverá trocá-la no próximo acesso.`)) return;
+  try {
+    await API.post(`/api/usuarios/${userId}/redefinir-senha`, { nova_senha: novaSenha });
+    showToast('Senha redefinida. Troca obrigatória ativada.', 'success');
+    loadUsers();
+  } catch (e) {
+    showToast(e.message, 'error');
+  }
+}
+
+document.getElementById('form-user').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const payload = {
+    nome: document.getElementById('u-nome').value.trim(),
+    username: document.getElementById('u-username').value.trim(),
+    senha: document.getElementById('u-senha').value,
+    setor_id: parseInt(document.getElementById('u-setor').value),
+    nivel_acesso: document.getElementById('u-nivel').value,
+  };
+  try {
+    await API.post('/api/usuarios', payload);
+    showToast('Usuário criado com sucesso', 'success');
+    document.getElementById('form-user').reset();
+    loadUsers();
+  } catch (e2) {
+    showToast(e2.message, 'error');
+  }
+});
+
+loadSetores().then(loadUsers).catch(e => showToast(e.message, 'error'));
+</script>
+</body>
+</html>

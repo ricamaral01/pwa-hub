@@ -5,21 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <title>Entrar — Concrefer</title>
-  <link rel="stylesheet" href="shell/shell.css?v=0.1.0">
-  <script defer src="shell/auth.js?v=0.1.0"></script>
+  <link rel="stylesheet" href="shell/shell.css?v=0.2.0">
+  <script defer src="shell/auth.js?v=0.2.0"></script>
 </head>
 <body>
   <main class="login-layout">
     <section class="login-card" aria-labelledby="login-title">
-      <div class="login-brand"><span class="brand-icon">C</span><span><strong>Concrefer</strong><small>Planejamento e produção</small></span></div>
+      <div class="login-brand" aria-label="Concrefer e ConcreTrack">
+        <img class="login-logo-concrefer" src="assets/img/logo-concrefer.png" alt="Concrefer" width="190" height="50">
+        <span class="login-brand-divider" aria-hidden="true"></span>
+        <img class="login-logo-concretrack" src="assets/img/logo-concretrack.png" alt="ConcreTrack" width="76" height="76">
+      </div>
       <h1 id="login-title">Bem-vindo de volta</h1>
       <p>Entre com seu usuário e senha para acessar o sistema.</p>
-      <form>
-        <label class="login-field"><span>Usuário</span><input type="text" name="username" autocomplete="username" disabled></label>
-        <label class="login-field"><span>Senha</span><input type="password" name="password" autocomplete="current-password" disabled></label>
-        <button class="button button-primary login-submit" type="button" disabled>Entrar</button>
+      <form id="unificado-login-form">
+        <label class="login-field"><span>Usuário do Mapa</span><input type="text" name="username" autocomplete="username" required></label>
+        <label class="login-field"><span>Senha</span><input type="password" name="password" autocomplete="current-password" required></label>
+        <button class="button button-primary login-submit" type="submit">Entrar</button>
       </form>
-      <small class="login-note">Estrutura local da Fase 1. O login será ativado depois da validação do ambiente de teste e da integração das sessões.</small>
+      <form id="first-access-form" hidden>
+        <label class="login-field"><span>Nova senha</span><input type="password" name="newPassword" autocomplete="new-password" minlength="10" required></label>
+        <label class="login-field"><span>Confirmar nova senha</span><input type="password" name="confirmPassword" autocomplete="new-password" minlength="10" required></label>
+        <button class="button button-primary login-submit" type="submit">Definir senha e entrar</button>
+      </form>
+      <p id="login-feedback" role="status" aria-live="polite"></p>
+      <small class="login-note">Ambiente de testes. Consulta ao Mapa com dados migrados até 02/10/2026; apontamentos desativados.</small>
     </section>
   </main>
 </body>

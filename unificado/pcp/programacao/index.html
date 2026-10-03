@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programação Setor 3 e 4 — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.2.0" />
+  <style>
+    .prog-formas-table {
+      table-layout: fixed;
+      min-width: 920px;
+    }
+    .prog-formas-table th,
+    .prog-formas-table td {
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .prog-formas-table .col-forma { width: 120px; }
+    .prog-formas-table .col-produto { width: 360px; }
+    .prog-formas-table .col-codigo { width: 120px; }
+    .prog-formas-table .col-vol { width: 120px; text-align: right; }
+    .prog-formas-table .col-qtd { width: 120px; text-align: right; }
+    .prog-formas-table .col-status { width: 180px; }
+    .prog-formas-table .forma-produto-select { min-width: 300px; }
+    .import-help {
+      color: #64748b;
+      font-size: .78rem;
+      line-height: 1.35;
+    }
+    .prog-bulk-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #64748b;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+    .prog-select-cell {
+      width: 42px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .prog-select-check {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <!-- Concrefer Logo: Σ (Sigma - concrete/construction symbol) -->
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Programação Setor 3 e 4</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- Formulário nova programação -->
+    <div class="section-card mb-4" id="card-form" data-require="PCP">
+      <div class="section-title">Nova Programação Setor 3 e 4</div>
+      <form id="form-prog" novalidate>
+        <div class="row g-3">
+          <div class="col-sm-6 col-md-3">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Data</label>
+            <input type="date" id="prog-data" class="form-control form-control-sm" required />
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Setor</label>
+            <select id="prog-setor" class="form-select form-select-sm" required>
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Produto / Tipo Poste</label>
+            <select id="prog-produto" class="form-select form-select-sm" required>
+              <option value="">Selecione o setor primeiro</option>
+            </select>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Qtd Programada</label>
+            <input type="number" id="prog-qtd" class="form-control form-control-sm" min="1" value="1" required />
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">
+              Volume m³ <small class="text-muted fw-normal">(calculado)</small>
+            </label>
+            <input type="number" id="prog-vol" class="form-control form-control-sm bg-light" min="0" step="0.001" value="0.000" readonly />
+          </div>
+          <div class="col-sm-6 col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary-pcp btn-sm w-100">
+              <i class="bi bi-plus-circle me-1"></i>Adicionar
+            </button>
+          </div>
+        </div>
+	      </form>
+        <div class="border-top mt-3 pt-3">
+          <div class="section-title mb-2">Programação do Setor 3</div>
+          <div class="d-flex flex-wrap gap-2 align-items-end">
+            <div>
+              <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Início</label>
+              <input type="date" id="f-inicio" class="form-control form-control-sm" style="width:150px" />
+            </div>
+            <div>
+              <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Fim</label>
+              <input type="date" id="f-fim" class="form-control form-control-sm" style="width:150px" />
+            </div>
+            <button type="button" class="btn btn-primary-pcp btn-sm" id="btn-sync-google-sheets">
+              <i class="bi bi-cloud-arrow-down me-1"></i>Sincronizar Google Sheets
+            </button>
+          </div>
+          <div class="import-help mt-2">O período acima filtra os registros e também define a janela da sincronização da planilha.</div>
+        </div>
+	    </div>
+
+    <div class="section-card mb-4" id="card-sync-setor4" data-require="PCP">
+      <div class="section-title mb-2">Programação do Setor 4</div>
+      <div class="d-flex flex-wrap gap-2 align-items-end">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Início</label>
+          <input type="date" id="f4-inicio" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Fim</label>
+          <input type="date" id="f4-fim" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <button type="button" class="btn btn-primary-pcp btn-sm" id="btn-sync-google-sheets-s4">
+          <i class="bi bi-cloud-arrow-down me-1"></i>Sincronizar Google Sheets
+        </button>
+      </div>
+      <div class="import-help mt-2">Sincroniza a aba Prog DT Rede mensal no range A4:AH69 para a programação oficial do Setor 4.</div>
+    </div>
+
+    <div class="section-card mb-4 d-none" id="card-importar-programacao" data-require="PCP">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <div>
+          <div class="section-title mb-1">Importar Programação Setor 3 e 4</div>
+          <div class="import-help">Use CSV ou JSON com data, setor, código do produto e quantidade. O volume é calculado pelo cadastro do produto.</div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-modelo-importacao">
+            <i class="bi bi-download me-1"></i>Modelo CSV
+          </button>
+        </div>
+      </div>
+      <form id="form-importar-programacao" novalidate>
+        <div class="row g-3 align-items-end">
+          <div class="col-md-6">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Arquivo CSV ou JSON</label>
+            <input type="file" id="arquivo-importacao" class="form-control form-control-sm" accept=".csv,.json,text/csv,application/json" required />
+          </div>
+          <div class="col-md-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="importar-substituir" checked />
+              <label class="form-check-label" for="importar-substituir" style="font-size:.82rem;font-weight:600">
+                Substituir data/setor do arquivo
+              </label>
+            </div>
+            <div class="import-help">Marcado: apaga a programação existente das mesmas datas e setores antes de importar/sincronizar.</div>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" class="btn btn-primary-pcp btn-sm w-100" id="btn-importar-programacao">
+              <i class="bi bi-upload me-1"></i>Importar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+	    <div class="section-card mb-4 d-none" id="card-formas-programacao" data-require="PCP">
+	      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+	        <div class="section-title mb-0" id="formas-title">Programação por Forma</div>
+	        <div class="d-flex gap-2">
+	          <div class="input-group input-group-sm" style="width:220px">
+	            <span class="input-group-text">Duplicar</span>
+	            <input type="number" id="duplicar-dias" class="form-control text-end" min="1" max="31" value="1" />
+	            <button type="button" class="btn btn-outline-primary" id="btn-duplicar-prog" title="Duplicar programação para os próximos dias">
+	              <i class="bi bi-copy"></i>
+	            </button>
+	          </div>
+	          <button type="button" class="btn btn-sm btn-primary-pcp" id="btn-formas-save">
+	            <i class="bi bi-check-circle me-1"></i>Salvar tabela
+	          </button>
+	        </div>
+	      </div>
+	      <div class="table-responsive">
+	        <table class="table table-sm table-hover mb-0 prog-formas-table">
+	          <thead>
+	            <tr id="formas-head-row">
+	              <th class="col-forma">Forma</th>
+		              <th class="col-produto">Poste / Produto</th>
+		              <th class="col-codigo">Cód</th>
+		              <th class="col-vol">Vol. unit. (m³)</th>
+		              <th class="col-qtd">Qtd</th>
+		              <th class="col-qtd">Total formas</th>
+		              <th class="col-status">Status</th>
+		            </tr>
+		          </thead>
+		          <tbody id="tbody-formas-programacao">
+		            <tr><td colspan="7" class="text-center text-muted py-3">Selecione um setor</td></tr>
+		          </tbody>
+	        </table>
+	      </div>
+	    </div>
+
+	    <!-- Filtro listagem -->
+    <div class="section-card mb-3">
+      <div class="d-flex flex-wrap gap-2 align-items-end">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Setor</label>
+          <select id="f-setor" class="form-select form-select-sm" style="width:170px">
+            <option value="">Setor 3 e 4</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-buscar">
+          <i class="bi bi-search me-1"></i>Buscar
+        </button>
+      </div>
+    </div>
+
+    <div class="section-card mb-3 d-none" id="card-sync-ignorados">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <div>
+          <div class="section-title mb-1">Postes não alocados automaticamente</div>
+          <div class="import-help">Itens que vieram da planilha, mas não entraram na programação oficial. Veja o motivo e as formas envolvidas.</div>
+        </div>
+        <span class="badge text-bg-warning" id="sync-ignorados-count">0 itens</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Poste</th>
+              <th class="text-end">Qtd não alocada</th>
+              <th>Motivo</th>
+              <th>Detalhes</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-sync-ignorados"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tabela -->
+    <div class="section-card">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <div class="section-title mb-0">Registros de Programação</div>
+        <div class="prog-bulk-toolbar" data-require="PCP">
+          <span id="prog-selected-count">0 selecionados</span>
+          <button type="button" class="btn btn-sm btn-outline-danger" id="btn-delete-selected-prog" disabled>
+            <i class="bi bi-trash3 me-1"></i>Apagar selecionados
+          </button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th class="prog-select-cell" data-require="PCP">
+                <input type="checkbox" class="form-check-input prog-select-check" id="check-all-prog" title="Selecionar todos" aria-label="Selecionar todos os registros" />
+              </th>
+              <th>Data Programada</th>
+              <th>Setor</th>
+              <th>Forma</th>
+              <th>Produto</th>
+              <th>Cód</th>
+              <th class="text-end">Qtd</th>
+              <th class="text-end">Vol. (m³)</th>
+              <th class="text-center desktop-only" data-require="PCP">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-prog">
+            <tr><td colspan="9" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.2.0"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  initSidebar('programacao');
+  if (!['ADMIN','PCP'].includes(user.nivel_acesso)) {
+    document.getElementById('card-form').style.display = 'none';
+  }
+}
+
+const hoje = todayISO();
+document.getElementById('prog-data').value = hoje;
+document.getElementById('f-inicio').value = hoje;
+document.getElementById('f-fim').value = hoje;
+document.getElementById('f4-inicio').value = hoje;
+document.getElementById('f4-fim').value = hoje;
+
+// Volume unitário do produto selecionado
+let volUnitario = 0;
+let formasProgramacaoCache = {};
+let formaRowSeq = 0;
+
+// ─── Carregar setores ─────────────────────────────────────────────────────────
+async function loadSetores() {
+  try {
+    const setores = (await API.get('/api/setores')).filter(s => ['3', '4'].includes(String(s.id)));
+    const selProg = document.getElementById('prog-setor');
+    const selFil  = document.getElementById('f-setor');
+    setores.forEach(s => {
+      selProg.innerHTML += `<option value="${s.id}">${s.nome}</option>`;
+      selFil.innerHTML  += `<option value="${s.id}">${s.nome}</option>`;
+    });
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+// ─── Produtos por setor ───────────────────────────────────────────────────────
+document.getElementById('prog-setor').addEventListener('change', async function() {
+  const setor_id = this.value;
+  const selProd = document.getElementById('prog-produto');
+  const cardFormas = document.getElementById('card-formas-programacao');
+  cardFormas.classList.toggle('d-none', !setor_id);
+  selProd.innerHTML = '<option value="">Carregando...</option>';
+  volUnitario = 0;
+  recalcVol();
+  if (!setor_id) {
+    selProd.innerHTML = '<option value="">Selecione o setor primeiro</option>';
+    renderFormasProgramacao([]);
+    return;
+  }
+  try {
+    await loadFormasProgramacao(setor_id);
+    const produtos = await API.get(`/api/produtos?setor_id=${setor_id}`);
+    selProd.innerHTML = '<option value="">Selecione o produto...</option>';
+    produtos
+      .sort((a, b) => (a.codigo || '').localeCompare(b.codigo || '', 'pt-BR', { numeric: true }))
+      .forEach(p => {
+        const label = p.codigo ? `[${p.codigo}] ${p.nome}` : p.nome;
+        const vol = p.volume != null ? p.volume : 0;
+        selProd.innerHTML += `<option value="${p.id}" data-vol="${vol}">${label}</option>`;
+      });
+  } catch(e) { showToast(e.message, 'error'); }
+});
+
+async function loadFormasProgramacao(setorId) {
+  const tbody = document.getElementById('tbody-formas-programacao');
+  const label = ['1', '2'].includes(String(setorId)) ? 'Programação por Poste' : 'Programação por Forma';
+  document.getElementById('formas-title').textContent = `${label} - Setor ${setorId}`;
+  if (formasProgramacaoCache[setorId]) {
+    renderFormasProgramacao(formasProgramacaoCache[setorId]);
+    return;
+  }
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+  const rows = await API.get(`/api/programacao/opcoes-formas?setor_id=${setorId}`);
+  formasProgramacaoCache[setorId] = rows;
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-3">Nenhuma forma mapeada para o Setor ${setorId}</td></tr>`;
+    return;
+  }
+  renderFormasProgramacao(rows);
+}
+
+function renderFormasProgramacao(rows) {
+  const tbody = document.getElementById('tbody-formas-programacao');
+  const head = document.getElementById('formas-head-row');
+  if (!rows.length) {
+    head.innerHTML = `
+      <th class="col-forma">Forma</th>
+      <th class="col-produto">Poste / Produto</th>
+      <th class="col-codigo">Cód</th>
+      <th class="col-vol">Vol. unit. (m³)</th>
+      <th class="col-qtd">Qtd</th>
+      <th class="col-qtd">Total formas</th>
+      <th class="col-status">Status</th>
+    `;
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">Selecione um setor</td></tr>';
+    return;
+  }
+  const modos = new Set(rows.map(row => row.modo || 'forma'));
+  const modo = modos.size > 1 ? 'misto' : (rows[0]?.modo || 'forma');
+  if (modo === 'poste') {
+    head.innerHTML = `
+      <th class="col-forma">Forma</th>
+      <th class="col-produto">Tipo de Poste</th>
+      <th class="col-codigo">Cód</th>
+      <th class="col-vol">Vol. unit. (m³)</th>
+      <th class="col-qtd">Qtd a produzir</th>
+      <th class="col-qtd">Total de formas</th>
+      <th class="col-status">Status</th>
+    `;
+  } else {
+    head.innerHTML = `
+      <th class="col-forma">Forma</th>
+      <th class="col-produto">Poste a produzir</th>
+      <th class="col-codigo">Cód</th>
+      <th class="col-vol">Vol. unit. (m³)</th>
+      <th class="col-qtd">Qtd</th>
+      <th class="col-qtd">Total formas</th>
+      <th class="col-status">Status</th>
+    `;
+  }
+  tbody.innerHTML = rows.map(row => {
+    const produtos = row.produtos || [];
+    const produtoOk = !!row.produto_id || produtos.some(p => p.produto_id);
+    const nome = row.produto_nome || row.poste || 'Produto não encontrado';
+    const codigo = row.produto_codigo || '—';
+    const volume = parseFloat(row.volume || 0) || 0;
+    const status = produtoOk ? 'Pronto para informar quantidade' : 'Produto não cadastrado';
+    const produtoSelect = produtos.length ? `
+      <select class="form-select form-select-sm forma-produto-select" ${produtoOk ? '' : 'disabled'}>
+        <option value="">Selecione...</option>
+        ${produtos.map(p => {
+          const pVolume = parseFloat(p.volume || 0) || 0;
+          const pCodigo = p.produto_codigo || '';
+          const label = pCodigo ? `[${pCodigo}] ${p.produto_nome || p.poste}` : (p.produto_nome || p.poste || 'Produto não cadastrado');
+          return `<option value="${p.produto_id || ''}" data-volume="${pVolume}" data-codigo="${pCodigo}" ${p.produto_id === row.produto_id ? 'selected' : ''}>${label}</option>`;
+        }).join('')}
+      </select>
+    ` : '';
+    if ((row.modo || modo) === 'poste') {
+      return `
+    <tr data-row="${++formaRowSeq}" data-modo="poste" data-forma="${row.poste || ''}" data-produto-id="${row.produto_id || ''}" data-volume="${volume}">
+      <td class="col-forma">
+        <strong>${row.forma || row.poste || '—'}</strong>
+        ${row.tipo_forma ? `<small class="d-block text-muted">${row.tipo_forma}</small>` : ''}
+      </td>
+      <td class="col-produto">
+        <div class="fw-semibold">${nome}</div>
+      </td>
+      <td class="col-codigo"><small class="text-muted">${codigo}</small></td>
+      <td class="col-vol">${volume.toFixed(3)}</td>
+      <td class="col-qtd">
+        <input type="number" class="form-control form-control-sm text-end forma-qtd" min="0" value="0" ${produtoOk ? '' : 'disabled'} />
+      </td>
+      <td class="col-qtd text-end"><strong>${fmtN(row.quantidade_formas || 0)}</strong></td>
+      <td class="col-status"><span class="badge ${produtoOk ? 'text-bg-light' : 'text-bg-warning'}">${status}</span></td>
+    </tr>
+  `;
+    }
+    return `
+    <tr data-row="${++formaRowSeq}" data-modo="forma" data-forma="${row.forma}" data-produto-id="${row.produto_id || ''}" data-volume="${volume}">
+      <td class="col-forma"><strong>${row.forma}</strong></td>
+      <td class="col-produto">
+        ${produtoSelect || `<div class="fw-semibold">${nome}</div>`}
+      </td>
+      <td class="col-codigo"><small class="text-muted">${codigo}</small></td>
+      <td class="col-vol">${volume.toFixed(3)}</td>
+      <td class="col-qtd">
+        <input type="number" class="form-control form-control-sm text-end forma-qtd" min="0" value="0" ${produtoOk ? '' : 'disabled'} />
+      </td>
+      <td class="col-qtd text-end">${row.quantidade_formas ? `<strong>${fmtN(row.quantidade_formas)}</strong>` : '<span class="text-muted">—</span>'}</td>
+      <td class="col-status"><span class="badge ${produtoOk ? 'text-bg-light' : 'text-bg-warning'}">${status}</span></td>
+    </tr>
+  `;
+  }).join('');
+  document.querySelectorAll('.forma-produto-select').forEach(sel => {
+    sel.addEventListener('change', () => {
+      const tr = sel.closest('tr');
+      const opt = sel.options[sel.selectedIndex];
+      const volume = parseFloat(opt?.dataset?.volume || 0) || 0;
+      tr.dataset.produtoId = sel.value || '';
+      tr.dataset.volume = String(volume);
+      tr.querySelector('.col-codigo small').textContent = opt?.dataset?.codigo || '—';
+      tr.querySelector('.col-vol').textContent = volume.toFixed(3);
+    });
+  });
+}
+
+async function saveFormasTable() {
+  const setor_id = parseInt(document.getElementById('prog-setor').value);
+  const data = document.getElementById('prog-data').value;
+  if (!setor_id) { showToast('Selecione um setor', 'warning'); return; }
+  const rows = [...document.querySelectorAll('#tbody-formas-programacao tr[data-row]')];
+  const payloads = [];
+  const formasUsadas = new Set();
+  for (const tr of rows) {
+    const forma = tr.dataset.forma;
+    const select = tr.querySelector('.forma-produto-select');
+    const produto_id = parseInt(select ? select.value : tr.dataset.produtoId);
+    const qtd = parseInt(tr.querySelector('.forma-qtd').value || 0);
+    const volumeUnit = parseFloat(tr.dataset.volume || 0) || 0;
+    if (qtd <= 0) continue;
+    if (!produto_id) { showToast(`Produto não cadastrado para a forma ${forma}`, 'warning'); return; }
+    if (formasUsadas.has(forma)) { showToast(`A forma ${forma} foi informada mais de uma vez`, 'warning'); return; }
+    formasUsadas.add(forma);
+    payloads.push({
+      data,
+      setor_id,
+      produto_id,
+      codigo_forma: tr.dataset.modo === 'forma' ? forma : null,
+      quantidade_programada: qtd,
+      volume_m3_programado: volumeUnit * qtd
+    });
+  }
+  if (!payloads.length) { showToast('Informe ao menos uma quantidade', 'warning'); return; }
+  try {
+    for (const payload of payloads) await API.post('/api/programacao', payload);
+    showToast(`Programação do Setor ${setor_id} salva!`, 'success');
+    renderFormasProgramacao(formasProgramacaoCache[setor_id] || []);
+    loadProg();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function duplicarProgramacao() {
+  const data = document.getElementById('prog-data').value;
+  const setor_id = parseInt(document.getElementById('prog-setor').value);
+  const dias = parseInt(document.getElementById('duplicar-dias').value || 1);
+  if (!data) { showToast('Informe a data de origem', 'warning'); return; }
+  if (!setor_id) { showToast('Selecione um setor para duplicar', 'warning'); return; }
+  if (dias < 1 || dias > 31) { showToast('Informe de 1 a 31 dias', 'warning'); return; }
+  try {
+    const res = await API.post('/api/programacao/duplicar', { data_origem: data, setor_id, dias });
+    showToast(`${res.criados} registro(s) duplicado(s) para ${dias} dia(s)`, 'success');
+    loadProg();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+function baixarModeloImportacao() {
+  const csv = [
+    'data;setor_id;forma;produto_codigo;quantidade',
+    '2026-05-26;3;SC01;929;1',
+    '2026-05-26;3;SC02;928;1',
+    '2026-05-26;4;;13570;1',
+    '2026-05-27;4;;952;6',
+  ].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'modelo_importacao_programacao_setor_3_4.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+async function importarProgramacaoArquivo(ev) {
+  ev.preventDefault();
+  const input = document.getElementById('arquivo-importacao');
+  const file = input.files?.[0];
+  if (!file) { showToast('Selecione um arquivo CSV ou JSON', 'warning'); return; }
+
+  const btn = document.getElementById('btn-importar-programacao');
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('substituir', document.getElementById('importar-substituir').checked ? 'true' : 'false');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Importando';
+  try {
+    const headers = {};
+    const token = API.getToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const res = await fetch('/api/programacao/importar', {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    if (res.status === 401) {
+      API.clearSession();
+      window.location.href = '/unificado/login.html';
+      return;
+    }
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.detail || `Erro ${res.status}`);
+    showToast(`${data.importados} registro(s) importado(s). ${data.removidos || 0} substituído(s).`, 'success', 5000);
+    input.value = '';
+    loadProg();
+  } catch (e) {
+    showToast(e.message, 'error', 6000);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-upload me-1"></i>Importar';
+  }
+}
+
+async function sincronizarGoogleSheetsSetor3() {
+  await sincronizarGoogleSheetsSetor({
+    setor: 3,
+    inicioId: 'f-inicio',
+    fimId: 'f-fim',
+    buttonId: 'btn-sync-google-sheets',
+  });
+}
+
+async function sincronizarGoogleSheetsSetor4() {
+  await sincronizarGoogleSheetsSetor({
+    setor: 4,
+    inicioId: 'f4-inicio',
+    fimId: 'f4-fim',
+    buttonId: 'btn-sync-google-sheets-s4',
+  });
+}
+
+async function sincronizarGoogleSheetsSetor({ setor, inicioId, fimId, buttonId }) {
+  const dataInicial = document.getElementById(inicioId).value || document.getElementById('prog-data').value;
+  const dataFinal = document.getElementById(fimId).value || dataInicial;
+  const substituir = document.getElementById('importar-substituir').checked;
+  if (!dataInicial || !dataFinal) {
+    showToast('Informe o período antes de sincronizar', 'warning');
+    return;
+  }
+  if (!confirm(`Sincronizar a programação do Setor ${setor} da planilha Google de ${fmtDate(dataInicial)} a ${fmtDate(dataFinal)}?`)) return;
+
+  const btn = document.getElementById(buttonId);
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Sincronizando';
+  renderItensIgnoradosSync([]);
+  try {
+    const qs = new URLSearchParams({
+      data_inicial: dataInicial,
+      data_final: dataFinal,
+      setor: String(setor),
+      substituir: substituir ? 'true' : 'false',
+    });
+    const out = await API.post(`/api/pcp/alocacao-formas/importar?${qs}`, {});
+    const ignorados = out.ignorados || [];
+    renderItensIgnoradosSync(ignorados);
+    showToast(`${out.importados || 0} registro(s) importado(s). ${out.removidos || 0} removido(s). ${ignorados.length} item(ns) não alocado(s).`, ignorados.length ? 'warning' : 'success', 7000);
+    loadProg();
+  } catch(e) {
+    showToast(e.message, 'error', 8000);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-cloud-arrow-down me-1"></i>Sincronizar Google Sheets';
+  }
+}
+
+function renderItensIgnoradosSync(rows) {
+  const card = document.getElementById('card-sync-ignorados');
+  const tbody = document.getElementById('tbody-sync-ignorados');
+  const count = document.getElementById('sync-ignorados-count');
+  if (!rows.length) {
+    card.classList.add('d-none');
+    tbody.innerHTML = '';
+    count.textContent = '0 itens';
+    return;
+  }
+
+  const motivoLabel = {
+    forma_indisponivel: 'Faltou forma disponível',
+    sem_forma_mapeada: 'Sem forma mapeada',
+    formas_insuficientes: 'Formas insuficientes',
+    produto_nao_cadastrado: 'Produto não cadastrado',
+  };
+  rows.sort((a, b) =>
+    String(a.data || '').localeCompare(String(b.data || '')) ||
+    String(a.poste || '').localeCompare(String(b.poste || ''), 'pt-BR', { numeric: true }) ||
+    String(a.forma || '').localeCompare(String(b.forma || ''), 'pt-BR', { numeric: true })
+  );
+  count.textContent = `${rows.length} item${rows.length === 1 ? '' : 's'}`;
+  tbody.innerHTML = rows.map(row => `
+    <tr>
+      <td>${fmtDate(row.data)}</td>
+      <td>${escapeHtml(row.poste || '—')}</td>
+      <td class="text-end">${fmtN(row.quantidade || 0)}</td>
+      <td><span class="badge text-bg-warning">${escapeHtml(motivoLabel[row.motivo] || row.motivo || 'Não importado')}</span></td>
+      <td>${renderDetalhesIgnoradoSync(row)}</td>
+    </tr>
+  `).join('');
+  card.classList.remove('d-none');
+}
+
+function renderDetalhesIgnoradoSync(row) {
+  const detalhes = row?.detalhes || {};
+  if (row?.motivo === 'sem_forma_mapeada') {
+    return '<small class="text-muted">Nenhuma forma ativa está cadastrada para este poste no setor sincronizado.</small>';
+  }
+  if (row?.motivo === 'formas_insuficientes' || row?.motivo === 'forma_indisponivel') {
+    const solicitada = Number(detalhes.quantidade_solicitada || 0);
+    const alocada = Number(detalhes.quantidade_alocada || 0);
+    const totalFormas = Number(detalhes.total_formas_capazes || 0);
+    const ocupadas = Array.isArray(detalhes.formas_capazes_ocupadas) ? detalhes.formas_capazes_ocupadas : [];
+    const alocadas = Array.isArray(detalhes.formas_alocadas_para_poste) ? detalhes.formas_alocadas_para_poste : [];
+    const resumo = [
+      solicitada ? `Solicitado: ${fmtN(solicitada)}` : '',
+      `Alocado: ${fmtN(alocada)}`,
+      `Formas compatíveis: ${fmtN(totalFormas)}`,
+    ].filter(Boolean).join(' · ');
+    const linhas = [escapeHtml(resumo)];
+    if (alocadas.length) linhas.push(`<span class="text-muted">Usadas neste poste: ${escapeHtml(alocadas.join(', '))}</span>`);
+    if (ocupadas.length) linhas.push(`<span class="text-muted">Já ocupadas no dia: ${escapeHtml(ocupadas.join(', '))}</span>`);
+    return `<small>${linhas.join('<br>')}</small>`;
+  }
+  if (row?.motivo === 'produto_nao_cadastrado') {
+    return `<small class="text-muted">Forma ${escapeHtml(row.forma || '—')} encontrada, mas o produto/poste não existe no cadastro do setor.</small>`;
+  }
+  return '<small class="text-muted">Não importado pela regra de sincronização.</small>';
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[ch]));
+}
+
+// ─── Auto-calcula volume quando muda produto ou quantidade ───────────────────
+document.getElementById('prog-produto').addEventListener('change', function() {
+  const opt = this.options[this.selectedIndex];
+  volUnitario = parseFloat(opt?.dataset?.vol || 0) || 0;
+  recalcVol();
+});
+
+document.getElementById('prog-qtd').addEventListener('input', recalcVol);
+
+function recalcVol() {
+  const qtd = parseInt(document.getElementById('prog-qtd').value) || 0;
+  document.getElementById('prog-vol').value = (volUnitario * qtd).toFixed(3);
+}
+
+// ─── Listar programações ──────────────────────────────────────────────────────
+async function loadProg() {
+  const di = document.getElementById('f-inicio').value;
+  const df = document.getElementById('f-fim').value;
+  const si = document.getElementById('f-setor').value;
+
+  const tbody = document.getElementById('tbody-prog');
+  tbody.innerHTML = '<tr><td colspan="9" class="text-center"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+  updateProgSelectionState();
+
+  try {
+    const buildQuery = (setorId) => {
+      const qs = new URLSearchParams();
+      if (di) qs.set('data_inicio', di);
+      if (df) qs.set('data_fim', df);
+      if (setorId) qs.set('setor_id', setorId);
+      return qs.toString();
+    };
+    const rows = si
+      ? await API.get(`/api/programacao?${buildQuery(si)}`)
+      : (await Promise.all(['3', '4'].map(setorId => API.get(`/api/programacao?${buildQuery(setorId)}`)))).flat();
+    rows.sort(compareProgramacaoPorForma);
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted py-3">Nenhum registro encontrado</td></tr>';
+      updateProgSelectionState();
+      return;
+    }
+    const canDel = ['ADMIN','PCP'].includes(user?.nivel_acesso);
+    const totalPostes = rows.reduce((acc, r) => acc + (Number(r.quantidade_programada) || 0), 0);
+    const totalVolume = rows.reduce((acc, r) => acc + (Number(r.volume_m3_programado) || 0), 0);
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td class="prog-select-cell" data-require="PCP">
+          ${canDel ? `<input type="checkbox" class="form-check-input prog-select-check prog-row-check" value="${r.id}" aria-label="Selecionar programação de ${fmtDate(r.data)}" />` : ''}
+        </td>
+        <td>${fmtDate(r.data)}</td>
+        <td>${r.setor?.nome || '—'}</td>
+        <td><strong>${r.codigo_forma || '—'}</strong></td>
+        <td>${r.produto?.nome || '—'}</td>
+        <td><small class="text-muted">${r.produto?.codigo || '—'}</small></td>
+        <td class="text-end">${fmtN(r.quantidade_programada)}</td>
+        <td class="text-end">${fmtM3(r.volume_m3_programado)}</td>
+        <td class="text-center desktop-only">
+          ${canDel ? `<button class="btn btn-outline-danger btn-sm py-0" onclick="deleteProg(${r.id})">
+            <i class="bi bi-trash"></i>
+          </button>` : '—'}
+        </td>
+      </tr>
+    `).join('') + `
+      <tr class="table-light fw-bold">
+        <td class="prog-select-cell" data-require="PCP"></td>
+        <td colspan="5" class="text-end">Total de postes programados</td>
+        <td class="text-end">${fmtN(totalPostes)}</td>
+        <td class="text-end">${fmtM3(totalVolume)}</td>
+        <td class="text-center desktop-only">—</td>
+      </tr>
+    `;
+    tbody.querySelectorAll('.prog-row-check').forEach(input => input.addEventListener('change', updateProgSelectionState));
+    updateProgSelectionState();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+function formaSortValue(value) {
+  const text = String(value || '').trim().toUpperCase();
+  if (!text || text === '—') return { prefix: 'ZZZ', num: 999999, raw: text };
+  const match = text.match(/^([A-Z]+)[\s-]*(\d+)/);
+  if (match) return { prefix: match[1], num: parseInt(match[2], 10), raw: text };
+  return { prefix: text.replace(/\d+/g, ''), num: 999999, raw: text };
+}
+
+function compareProgramacaoPorForma(a, b) {
+  const fa = formaSortValue(a.codigo_forma);
+  const fb = formaSortValue(b.codigo_forma);
+  return fa.prefix.localeCompare(fb.prefix, 'pt-BR', { numeric: true })
+    || fa.num - fb.num
+    || fa.raw.localeCompare(fb.raw, 'pt-BR', { numeric: true })
+    || String(a.data || '').localeCompare(String(b.data || ''))
+    || Number(a.setor_id || 0) - Number(b.setor_id || 0);
+}
+
+// ─── Criar programação ────────────────────────────────────────────────────────
+document.getElementById('form-prog').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const produto_id = parseInt(document.getElementById('prog-produto').value);
+  const setor_id   = parseInt(document.getElementById('prog-setor').value);
+  if (!setor_id || !produto_id) { showToast('Selecione setor e produto', 'warning'); return; }
+  const payload = {
+    data: document.getElementById('prog-data').value,
+    setor_id,
+    produto_id,
+    quantidade_programada: parseInt(document.getElementById('prog-qtd').value),
+    volume_m3_programado: parseFloat(document.getElementById('prog-vol').value),
+  };
+  try {
+    await API.post('/api/programacao', payload);
+    showToast('Programação adicionada!', 'success');
+    document.getElementById('prog-setor').value = '';
+    document.getElementById('prog-produto').innerHTML = '<option value="">Selecione o setor primeiro</option>';
+    document.getElementById('prog-qtd').value = 1;
+    document.getElementById('prog-data').value = hoje;
+    volUnitario = 0;
+    document.getElementById('prog-vol').value = '0.000';
+    loadProg();
+  } catch(err) { showToast(err.message, 'error'); }
+});
+
+// ─── Excluir ──────────────────────────────────────────────────────────────────
+async function deleteProg(id) {
+  if (!confirm('Excluir este registro?')) return;
+  try {
+    await API.delete(`/api/programacao/${id}`);
+    showToast('Excluído', 'success');
+    loadProg();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+function getSelectedProgIds() {
+  return [...document.querySelectorAll('#tbody-prog .prog-row-check:checked')].map(input => input.value);
+}
+
+function updateProgSelectionState() {
+  const checks = [...document.querySelectorAll('#tbody-prog .prog-row-check')];
+  const selected = checks.filter(input => input.checked);
+  const countEl = document.getElementById('prog-selected-count');
+  const btn = document.getElementById('btn-delete-selected-prog');
+  const all = document.getElementById('check-all-prog');
+  if (countEl) countEl.textContent = `${selected.length} selecionado${selected.length === 1 ? '' : 's'}`;
+  if (btn) btn.disabled = selected.length === 0;
+  if (all) {
+    all.checked = checks.length > 0 && selected.length === checks.length;
+    all.indeterminate = selected.length > 0 && selected.length < checks.length;
+    all.disabled = checks.length === 0;
+  }
+}
+
+async function deleteSelectedProg() {
+  const ids = getSelectedProgIds();
+  if (!ids.length) {
+    showToast('Selecione ao menos um registro', 'warning');
+    return;
+  }
+  if (!confirm(`Apagar ${ids.length} registro(s) de programação selecionado(s)?`)) return;
+  const btn = document.getElementById('btn-delete-selected-prog');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Apagando';
+  try {
+    const out = await API.post('/api/programacao/excluir-lote', { ids });
+    showToast(`${out.removidos || 0} registro(s) apagado(s)`, 'success');
+    loadProg();
+  } catch(e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.innerHTML = '<i class="bi bi-trash3 me-1"></i>Apagar selecionados';
+    updateProgSelectionState();
+  }
+}
+
+document.getElementById('btn-buscar').addEventListener('click', loadProg);
+document.getElementById('btn-formas-save').addEventListener('click', saveFormasTable);
+document.getElementById('btn-duplicar-prog').addEventListener('click', duplicarProgramacao);
+document.getElementById('btn-modelo-importacao').addEventListener('click', baixarModeloImportacao);
+document.getElementById('form-importar-programacao').addEventListener('submit', importarProgramacaoArquivo);
+document.getElementById('btn-sync-google-sheets').addEventListener('click', sincronizarGoogleSheetsSetor3);
+document.getElementById('btn-sync-google-sheets-s4').addEventListener('click', sincronizarGoogleSheetsSetor4);
+document.getElementById('btn-delete-selected-prog').addEventListener('click', deleteSelectedProg);
+document.getElementById('check-all-prog').addEventListener('change', (event) => {
+  document.querySelectorAll('#tbody-prog .prog-row-check').forEach(input => {
+    input.checked = event.target.checked;
+  });
+  updateProgSelectionState();
+});
+
+loadSetores();
+loadProd();
+
+function loadProd() { loadProg(); }
+</script>
+</body>
+</html>

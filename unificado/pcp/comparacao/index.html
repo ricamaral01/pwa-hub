@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programado vs Realizado — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.2.0" />
+  <script src="/unificado/vendor/chart.js/chart.umd.js"></script>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <!-- Concrefer Logo: Σ (Sigma - concrete/construction symbol) -->
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Programado vs Realizado</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- Filtros -->
+    <div class="section-card mb-4">
+      <div class="d-flex flex-wrap gap-2 align-items-end">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Data início</label>
+          <input type="date" id="dt-inicio" class="form-control form-control-sm" style="width:155px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Data fim</label>
+          <input type="date" id="dt-fim" class="form-control form-control-sm" style="width:155px" />
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-filtrar">
+          <i class="bi bi-funnel me-1"></i>Atualizar
+        </button>
+      </div>
+    </div>
+
+    <!-- KPIs gerais -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-4">
+        <div class="kpi-card">
+          <div class="kpi-label">Programado Geral</div>
+          <div class="kpi-value" id="kpi-prog-geral">—</div>
+          <div class="kpi-sub">m³ no período</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="kpi-card">
+          <div class="kpi-label">Realizado Geral</div>
+          <div class="kpi-value" id="kpi-real-geral">—</div>
+          <div class="kpi-sub">m³ no período</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4">
+        <div class="kpi-card" id="kpi-ef-card">
+          <div class="kpi-label">Eficiência Geral</div>
+          <div class="kpi-value" id="kpi-ef-geral">—</div>
+          <div class="kpi-sub">% de aproveitamento</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs de postes por grupo de setores -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="kpi-card">
+          <div class="kpi-label">Postes Programados</div>
+          <div class="kpi-value" id="kpi-postes-prog-12">—</div>
+          <div class="kpi-sub">Setor 1 + Setor 2</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kpi-card">
+          <div class="kpi-label">Postes Realizados</div>
+          <div class="kpi-value" id="kpi-postes-real-12">—</div>
+          <div class="kpi-sub">Setor 1 + Setor 2</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kpi-card">
+          <div class="kpi-label">Postes Programados</div>
+          <div class="kpi-value" id="kpi-postes-prog-34">—</div>
+          <div class="kpi-sub">Setor 3 + Setor 4</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="kpi-card">
+          <div class="kpi-label">Postes Realizados</div>
+          <div class="kpi-value" id="kpi-postes-real-34">—</div>
+          <div class="kpi-sub">Setor 3 + Setor 4</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico geral -->
+    <div class="section-card mb-4">
+      <div class="section-title">Programado vs Realizado — Geral (m³)</div>
+      <div style="max-height:280px">
+        <canvas id="chart-geral"></canvas>
+      </div>
+    </div>
+
+    <!-- Programado vs Realizado por setor -->
+    <div class="section-card mb-4">
+      <div class="section-title">Programado vs Realizado por Setor</div>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Setor</th>
+              <th class="text-end">Prog. (qtd)</th>
+              <th class="text-end">Real. (qtd)</th>
+              <th class="text-end">Prog. (m³)</th>
+              <th class="text-end">Real. (m³)</th>
+              <th class="text-center">Eficiência</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-setor"></tbody>
+        </table>
+      </div>
+      <div style="max-height:260px">
+        <canvas id="chart-setor"></canvas>
+      </div>
+    </div>
+
+    <!-- Programado vs Realizado por tipo de poste -->
+    <div class="section-card">
+      <div class="section-title">Programado vs Realizado por Tipo de Poste</div>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th class="text-end">Prog. (qtd)</th>
+              <th class="text-end">Real. (qtd)</th>
+              <th class="text-end">Prog. (m³)</th>
+              <th class="text-end">Real. (m³)</th>
+              <th class="text-center">Eficiência</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-poste"></tbody>
+        </table>
+      </div>
+      <div style="max-height:200px">
+        <canvas id="chart-poste"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.2.0"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  initSidebar('comparacao');
+}
+
+// Padrao: dia atual, alinhado ao Dashboard e Producao
+const hoje = todayISO();
+document.getElementById('dt-inicio').value = hoje;
+document.getElementById('dt-fim').value    = hoje;
+
+let chartGeral = null, chartSetor = null, chartPoste = null;
+
+async function load() {
+  const di = document.getElementById('dt-inicio').value;
+  const df = document.getElementById('dt-fim').value;
+  const qs = new URLSearchParams();
+  if (di) qs.set('data_inicio', di);
+  if (df) qs.set('data_fim', df);
+
+  try {
+    const data = await API.get(`/api/dashboard?${qs}`);
+    const setoresComparaveis = (data.por_setor || []).filter(item =>
+      parseFloat(item.vol_programado_m3 || 0) > 0 || parseFloat(item.vol_realizado_m3 || 0) > 0
+    );
+    const postesComparaveis = (data.por_poste || []).filter(item =>
+      parseFloat(item.vol_programado_m3 || 0) > 0 || parseFloat(item.vol_realizado_m3 || 0) > 0
+    );
+    renderKPIsGerais(data);
+    renderChartGeral(data);
+    renderTabelaSetor(setoresComparaveis);
+    renderChartSetor(setoresComparaveis);
+    renderTabelaPoste(postesComparaveis);
+    renderChartPoste(postesComparaveis);
+  } catch(err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function renderKPIsGerais(data) {
+  const ef = data.eficiencia_geral_pct;
+  const cls = efClass(ef);
+  const prog = parseFloat(data.total_programado_m3);
+  const real = parseFloat(data.total_realizado_m3);
+  const grupos = Object.fromEntries((data.por_grupo || []).map(grupo => [String(grupo.grupo_id), grupo]));
+  const grupo12 = grupos['12'] || {};
+  const grupo34 = grupos['34'] || {};
+
+  document.getElementById('kpi-prog-geral').textContent = fmtM3UmaCasa(prog);
+  document.getElementById('kpi-real-geral').textContent = fmtM3UmaCasa(real);
+  document.getElementById('kpi-ef-geral').textContent   = ef.toFixed(1) + '%';
+  document.getElementById('kpi-postes-prog-12').textContent = fmtN(grupo12.qtd_programada);
+  document.getElementById('kpi-postes-real-12').textContent = fmtN(grupo12.qtd_realizada);
+  document.getElementById('kpi-postes-prog-34').textContent = fmtN(grupo34.qtd_programada);
+  document.getElementById('kpi-postes-real-34').textContent = fmtN(grupo34.qtd_realizada);
+  document.getElementById('kpi-ef-card').className      = `kpi-card kpi-${cls}`;
+}
+
+function fmtM3UmaCasa(value) {
+  return parseFloat(value || 0).toFixed(1).replace('.', ',') + ' m³';
+}
+
+function renderChartGeral(data) {
+  const ctx = document.getElementById('chart-geral').getContext('2d');
+  if (chartGeral) chartGeral.destroy();
+  chartGeral = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Realizado', 'Em Aberto'],
+      datasets: [{
+        data: [
+          parseFloat(data.total_realizado_m3),
+          Math.max(0, parseFloat(data.total_programado_m3) - parseFloat(data.total_realizado_m3)),
+        ],
+        backgroundColor: ['rgba(249,115,22,.85)', 'rgba(203,213,225,.6)'],
+        borderWidth: 2,
+        borderColor: '#fff',
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.label}: ${fmtM3UmaCasa(ctx.raw)}`,
+          },
+        },
+      },
+    },
+  });
+}
+
+function renderTabelaSetor(setores) {
+  const tbody = document.getElementById('tbody-setor');
+  if (!setores.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-muted text-center">Sem dados</td></tr>'; return; }
+  tbody.innerHTML = setores.map(s => `
+    <tr>
+      <td><strong>${s.setor_nome}</strong></td>
+      <td class="text-end">${fmtN(s.qtd_programada)}</td>
+      <td class="text-end">${fmtN(s.qtd_realizada)}</td>
+      <td class="text-end">${fmtM3(s.vol_programado_m3)}</td>
+      <td class="text-end">${fmtM3(s.vol_realizado_m3)}</td>
+      <td class="text-center">
+        ${efBadge(s.eficiencia_pct)}
+        <div class="mt-1">${efBar(s.eficiencia_pct)}</div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderChartSetor(setores) {
+  const ctx = document.getElementById('chart-setor').getContext('2d');
+  if (chartSetor) chartSetor.destroy();
+  chartSetor = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: setores.map(s => s.setor_nome),
+      datasets: [
+        { label: 'Programado (m³)', data: setores.map(s => parseFloat(s.vol_programado_m3)), backgroundColor: 'rgba(26,58,92,.7)', borderRadius: 4 },
+        { label: 'Realizado (m³)',  data: setores.map(s => parseFloat(s.vol_realizado_m3)),  backgroundColor: 'rgba(249,115,22,.8)', borderRadius: 4 },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } },
+      scales: { y: { beginAtZero: true, grid: { color: '#e2e8f0' } }, x: { grid: { display: false } } },
+    },
+  });
+}
+
+function renderTabelaPoste(postes) {
+  const tbody = document.getElementById('tbody-poste');
+  if (!postes.length) { tbody.innerHTML = '<tr><td colspan="6" class="text-muted text-center">Sem dados</td></tr>'; return; }
+  tbody.innerHTML = postes.map(p => `
+    <tr>
+      <td><strong>${p.tipo_poste}</strong></td>
+      <td class="text-end">${fmtN(p.qtd_programada)}</td>
+      <td class="text-end">${fmtN(p.qtd_realizada)}</td>
+      <td class="text-end">${fmtM3(p.vol_programado_m3)}</td>
+      <td class="text-end">${fmtM3(p.vol_realizado_m3)}</td>
+      <td class="text-center">${efBadge(p.eficiencia_pct)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderChartPoste(postes) {
+  const ctx = document.getElementById('chart-poste').getContext('2d');
+  if (chartPoste) chartPoste.destroy();
+  chartPoste = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: postes.map(p => p.tipo_poste),
+      datasets: [
+        { label: 'Programado (qtd)', data: postes.map(p => p.qtd_programada), backgroundColor: 'rgba(26,58,92,.7)', borderRadius: 4 },
+        { label: 'Realizado (qtd)',  data: postes.map(p => p.qtd_realizada),  backgroundColor: 'rgba(22,163,74,.8)', borderRadius: 4 },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } },
+      scales: { y: { beginAtZero: true, grid: { color: '#e2e8f0' } }, x: { grid: { display: false } } },
+    },
+  });
+}
+
+document.getElementById('btn-filtrar').addEventListener('click', load);
+load();
+</script>
+</body>
+</html>

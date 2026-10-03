@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rateio de MOI — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.2.0" />
+  <style>
+    .rateio-table { margin-top: 1.5rem; }
+    .rateio-table th { background: #f8f9fa; font-size: 0.85rem; }
+    .rateio-input { font-size: 1rem; }
+    .total-row { background: #e8f4f8; font-weight: 600; }
+    .badge-ok { background: #10b981; }
+    .badge-erro { background: #ef4444; }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <!-- Concrefer Logo: Σ (Sigma - concrete/construction symbol) -->
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra-rateio/" data-page="maodeobra-rateio" data-require="PRODUCAO"><i class="bi bi-distribute-horizontal"></i> Rateio MOI</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Rateio de MOI (Mão de Obra Indireta)</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- Seleção de grupo e data -->
+    <div class="section-card mb-4">
+      <div class="section-title"><i class="bi bi-distribute-horizontal me-2"></i>Registrar Rateio de MOI</div>
+      <form id="form-rateio" novalidate>
+        <div class="row g-3">
+          <div class="col-6 col-md-4">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Data</label>
+            <input type="date" id="rateio-data" class="form-control form-control-sm" required />
+          </div>
+          <div class="col-6 col-md-4">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Grupo de Setores</label>
+            <select id="rateio-grupo" class="form-select form-select-sm" required>
+              <option value="">Selecione...</option>
+              <option value="12">Setor 1 + 2</option>
+              <option value="34">Setor 3 + 4</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-4">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Atividade</label>
+            <select id="rateio-atividade" class="form-select form-select-sm" required>
+              <option value="">Selecione grupo...</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tabela de rateio -->
+    <div class="section-card">
+      <div class="section-title"><i class="bi bi-table me-2"></i>Distribuir Pessoas por Setor</div>
+      
+      <div class="row mb-3">
+        <div class="col-12 col-md-6">
+          <label class="form-label" style="font-size:.8rem;font-weight:600">Total de Pessoas</label>
+          <input type="number" id="total-pessoas" class="form-control form-control-lg" min="0" value="0" placeholder="Digite o total" />
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" style="font-size:.8rem;font-weight:600" style="visibility:hidden">Status</label>
+          <div class="alert mb-0" id="status-teste" style="display:none">
+            <i class="bi me-2"></i><span id="status-texto"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm rateio-table">
+          <thead>
+            <tr>
+              <th>Setor</th>
+              <th class="text-end" style="width:30%">Pessoas</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-rateio">
+            <tr><td colspan="2" class="text-center text-muted py-4">Selecione o grupo primeiro</td></tr>
+          </tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td>TOTAL</td>
+              <td class="text-end"><span id="total-rateado">0</span> / <span id="total-esperado">0</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="mt-3 d-flex gap-2">
+        <button type="button" class="btn btn-accent" id="btn-salvar-rateio" disabled>
+          <i class="bi bi-check-circle me-1"></i>Salvar Rateio
+        </button>
+        <button type="button" class="btn btn-outline-secondary" id="btn-limpar-rateio">
+          <i class="bi bi-arrow-counterclockwise me-1"></i>Limpar
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.2.0"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  initSidebar('maodeobra-rateio');
+}
+
+const hoje = todayISO();
+document.getElementById('rateio-data').value = hoje;
+
+// Dados globais
+let atividadesPorGrupo = { '12': [], '34': [] };
+let setoresPorGrupo = { '12': [1, 2], '34': [3, 4] };
+let nomeSetores = {};
+
+// Carregar setores
+async function loadSetores() {
+  try {
+    const setores = await API.get('/api/setores');
+    setores.forEach(s => nomeSetores[s.id] = s.nome);
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+// Carregar atividades MOI por grupo
+async function loadAtividadesPorGrupo() {
+  try {
+    const resp = await API.get('/api/atividades-maodeobra?tipo=MOI');
+    resp.forEach(a => {
+      if (a.grupo_setor === '12') atividadesPorGrupo['12'].push(a);
+      else if (a.grupo_setor === '34') atividadesPorGrupo['34'].push(a);
+    });
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+// Atualizar seletor de atividades
+document.getElementById('rateio-grupo').addEventListener('change', (e) => {
+  const grupo = e.target.value;
+  const selAtiv = document.getElementById('rateio-atividade');
+  const tbodyRateio = document.getElementById('tbody-rateio');
+  
+  selAtiv.innerHTML = '<option value="">Selecione atividade...</option>';
+  tbodyRateio.innerHTML = '<tr><td colspan="2" class="text-center text-muted py-4">Selecione uma atividade</td></tr>';
+  
+  if (grupo) {
+    atividadesPorGrupo[grupo].forEach(a => {
+      selAtiv.innerHTML += `<option value="${a.id}">${a.descricao}</option>`;
+    });
+    // Mostrar setores do grupo
+    renderSetoresRateio(grupo);
+  }
+});
+
+// Quando seleciona atividade
+document.getElementById('rateio-atividade').addEventListener('change', () => {
+  limparRateio();
+});
+
+// Renderizar linhas de rateio
+function renderSetoresRateio(grupo) {
+  const tbody = document.getElementById('tbody-rateio');
+  const setores = setoresPorGrupo[grupo];
+  
+  tbody.innerHTML = setores.map(sid => `
+    <tr>
+      <td>${nomeSetores[sid]}</td>
+      <td class="text-end">
+        <input type="number" class="form-control form-control-sm rateio-input" 
+               data-setor="${sid}" min="0" value="0" 
+               onchange="validarRateio()" />
+      </td>
+    </tr>
+  `).join('');
+  
+  // Atualizar total esperado
+  document.getElementById('total-esperado').textContent = document.getElementById('total-pessoas').value || '0';
+}
+
+// Calcular total rateado
+function calcularTotalRateado() {
+  let total = 0;
+  document.querySelectorAll('.rateio-input').forEach(input => {
+    total += parseInt(input.value) || 0;
+  });
+  return total;
+}
+
+// Validar rateio
+function validarRateio() {
+  const totalPessoas = parseInt(document.getElementById('total-pessoas').value) || 0;
+  const totalRateado = calcularTotalRateado();
+  const statusEl = document.getElementById('status-teste');
+  const statusTexto = document.getElementById('status-texto');
+  const btnSalvar = document.getElementById('btn-salvar-rateio');
+  
+  document.getElementById('total-rateado').textContent = totalRateado;
+  
+  if (totalPessoas === 0) {
+    statusEl.style.display = 'none';
+    btnSalvar.disabled = true;
+    return false;
+  }
+  
+  statusEl.style.display = 'block';
+  if (totalRateado === totalPessoas) {
+    statusEl.classList.remove('alert-danger');
+    statusEl.classList.add('alert-success');
+    statusEl.innerHTML = '<i class="bi bi-check-circle"></i><span> Rateio correto!</span>';
+    btnSalvar.disabled = false;
+    return true;
+  } else {
+    statusEl.classList.remove('alert-success');
+    statusEl.classList.add('alert-danger');
+    const diff = totalPessoas - totalRateado;
+    statusEl.innerHTML = `<i class="bi bi-exclamation-circle"></i><span> Faltam ${Math.abs(diff)} pessoas</span>`;
+    btnSalvar.disabled = true;
+    return false;
+  }
+}
+
+// Total de pessoas mudou
+document.getElementById('total-pessoas').addEventListener('change', validarRateio);
+
+// Limpar rateio
+function limparRateio() {
+  document.getElementById('total-pessoas').value = '0';
+  document.querySelectorAll('.rateio-input').forEach(input => input.value = '0');
+  validarRateio();
+}
+
+document.getElementById('btn-limpar-rateio').addEventListener('click', limparRateio);
+
+// Salvar rateio
+document.getElementById('btn-salvar-rateio').addEventListener('click', async () => {
+  const data = document.getElementById('rateio-data').value;
+  const atividade_id = parseInt(document.getElementById('rateio-atividade').value);
+  const quantidade_pessoas = parseInt(document.getElementById('total-pessoas').value);
+  
+  if (!data || !atividade_id || !quantidade_pessoas) {
+    showToast('Preencha todos os campos','warning');
+    return;
+  }
+  
+  const rateio = [];
+  document.querySelectorAll('.rateio-input').forEach(input => {
+    const qtd = parseInt(input.value);
+    if (qtd > 0) {
+      rateio.push({
+        setor_id: parseInt(input.dataset.setor),
+        quantidade_rateada: qtd
+      });
+    }
+  });
+  
+  const payload = { data, atividade_id, quantidade_pessoas, rateio };
+  
+  try {
+    await API.post('/api/maodeobra-com-rateio', payload);
+    showToast('Rateio de MOI registrado com sucesso!','success');
+    document.getElementById('form-rateio').reset();
+    document.getElementById('rateio-data').value = hoje;
+    limparRateio();
+  } catch(err) {
+    showToast(err.message,'error');
+  }
+});
+
+// Inicializar
+loadSetores();
+loadAtividadesPorGrupo();
+</script>
+</body>
+</html>

@@ -199,3 +199,187 @@ Após o pedido de avançar, foi construída somente a parte da Fase 1 que não d
 | Sistemas antigos operacionais | Arquivos originais intactos; não foi feito login real por R5 |
 
 **Pendências:** I1 (ambiente Mapa isolado), I2 (frontend PCP completo), I3 (ponte da função de login) e I4 (efeito do logout sobre a sessão antiga do PCP). A Fase 2 não deve ativar formulários PCP contra a API produtiva durante o desenvolvimento. A Fase 3 não deve copiar a configuração atual de `mapa-concretagem-teste/` como se fosse isolada.
+
+## 11. Avanço local após a Fase 1 — 02/10/2026
+
+O frontend PCP completo foi obtido da VPS por acesso **somente leitura**: 24 pastas em
+`frontend/pages/` e os assets de `frontend/static/`. A cópia de trabalho está em
+`.work-unificado-pcp-source/`; o importador `scripts/import_unificado_pcp.py` gerou
+as rotas em `unificado/pcp/`. O importador exclui backups e `msgbox.*`, redireciona
+o login para a casca nova, ajusta `/pages/` e `/static/` e usa bibliotecas locais.
+Cada página carrega `readonly-guard.js` antes dos demais scripts. As 24 rotas e os
+26 assets referenciados por HTML responderam HTTP 200 no servidor local; seis arquivos
+JS passaram em `node --check`. Uma requisição `POST` simulada no navegador foi
+bloqueada antes de chegar à rede. Isso valida a **preparação local da cópia**, não
+homologa conteúdo, impressão, autenticação ou operações.
+
+O usuário informou que **ainda não possui ambiente Supabase de teste isolado** e
+indicou uma VPS separada para a API de testes (`2.25.163.32`). O acesso somente
+leitura confirmou Ubuntu 24.04, Docker instalado e espaço livre; nenhum serviço foi
+alterado. As chaves fornecidas depois pertencem ao **mesmo projeto Supabase de
+produção** usado pelo Mapa, portanto não satisfazem I1 e não devem ser usadas na
+cópia. É necessário acesso de gerenciamento para criar um projeto separado; as
+chaves de API do projeto existente não concedem essa capacidade. O Mapa não foi
+copiado nem ativado; login e menu operacional permanecem desativados. A Fase 2 segue
+parcial até integrar a casca nas telas, comparar impressão e verificar os fluxos
+com sessão de teste. Fases 3 a 6 não foram executadas. Há um trecho Nginx de
+revisão em `docs/unificado-nginx-draft.conf`, ainda não aplicado.
+
+## 12. Migração Supabase → PostgreSQL isolado — 02/10/2026
+
+O pedido posterior do usuário ampliou o escopo para incluir os dados históricos de
+produção. Foi criada a base `mapa_unificado_teste` na VPS de testes `2.25.163.32`.
+A exportação leu o Supabase de produção sem alterá-lo, converteu as senhas dos 38
+usuários para Argon2id e importou as sete tabelas operacionais. O importador conferiu
+SHA-256 de cada CSV, contagem de linhas e hash ordenado dos IDs em origem/destino.
+
+| Tabela | Linhas importadas |
+|---|---:|
+| `usuarios` | 38 |
+| `programacao_pcp` | 3.280 |
+| `liberacao_formas` | 5.307 |
+| `producao` | 22.523 |
+| `montagem_poste` | 8.990 |
+| `formas_manutencao` | 2 |
+| `prog_s3_s4` | 0 |
+
+O PostgREST de leitura usa o schema `api`, com uma visão de usuários que exclui
+`senha_hash`. O serviço de login verifica Argon2 com conta SQL limitada às colunas
+necessárias e oferece proxy de leitura autenticado para as sete tabelas. Ambos
+escutam somente em `127.0.0.1` na VPS, portas 13051 e 13052.
+O serviço de login está em `mapa-unificado-auth.service`, habilitado para reiniciar.
+Teste de integração: login válido de usuário sintético retornou 200, senha errada
+retornou 401, a sessão assinada permitiu `/me` (200) e leitura (200), a ausência
+de cookie gerou 401, a seleção de `senha_hash` recebeu 400, o usuário sintético
+foi removido e a contagem
+final de usuários voltou a 38. O POST ao PostgREST de leitura retorna 401.
+
+Essa base é uma fotografia da origem; não há sincronização de mudanças feitas após
+a exportação. O Mapa operacional ainda usa Supabase e APIs externas no código fonte.
+Faltam autorização de gravações por perfil, adaptação dos RPCs e
+interfaces, teste de fotos e dashboard, e publicação HTTPS antes da virada. Nenhuma
+rota pública do Mapa foi alterada nesta etapa.
+
+## 13. Serviço histórico disponível — 02/10/2026
+
+O usuário autorizou avançar até o serviço ficar disponível. Foi publicado um caminho
+separado no domínio já configurado na VPS de testes:
+`https://concrefer.concretrack.com.br/unificado/`. A página de login tem as marcas
+Concrefer e ConcreTrack e autentica contas do Mapa contra a cópia PostgreSQL.
+`/unificado/mapa/` apresenta resumo, filtros por data/setor e paginação para seis
+tabelas operacionais. A interface usa apenas GET/HEAD; o proxy de leitura exige
+cookie de sessão assinado, e a coluna `senha_hash` não é exposta. Primeiro acesso
+permite definir nova senha no banco de testes.
+
+Nginx foi alterado apenas para as novas rotas `/unificado/`, com backup da configuração
+anterior em `/root/mapa-unificado-migration/concrefer.nginx.before-unificado.conf`.
+`nginx -t` passou antes/depois e foi feito reload. Testes externos: início, login,
+Mapa e assets HTTP 200; `/me` e a tabela `producao` sem sessão HTTP 401; fluxo
+externo com usuário temporário confirmou login, primeiro acesso, troca de senha,
+leitura, rejeição da senha antiga e remoção da conta de teste (38 usuários ao final).
+O domínio principal e `/api/health` continuaram respondendo 200.
+
+Este serviço é um **visualizador histórico de testes**, não a versão operacional
+integral do Mapa. As gravações, fotos e RPCs da interface original ainda não estão
+conectados ao PostgreSQL. PCP continua preparado localmente com bloqueio de escrita,
+sem publicação no caminho novo. Nenhum domínio antigo foi redirecionado.
+
+## 14. Primeira escrita operacional isolada — 03/10/2026
+
+Antes de permitir escrita, foi criado um backup completo da base de testes em
+`/root/mapa-unificado-migration/before-operational-writes.dump` (arquivo privado,
+formato `pg_dump -Fc`, listagem validada). A nova conta `mapa_api_writer` só pode
+selecionar, inserir e atualizar `programacao_pcp`, `liberacao_formas` e `producao`;
+não pode alterar `usuarios` nem excluir registros. A tabela
+`mapa_operation_audit` registra ator, perfil, fase, resultado e identificação da
+forma em cada gravação.
+
+`/unificado/mapa/operacoes.html` oferece três ações de teste: programar forma,
+liberar forma e registrar concretagem. A API aceita apenas sessão assinada,
+origem HTTPS do domínio de testes e perfis `GERENCIA`, `GESTOR` ou `APONTADOR`.
+Apontadores ficam limitados ao próprio setor. A forma é localizada por data,
+setor e número; se houver mais de um registro correspondente, a API recusa a
+atualização. A tela pede confirmação antes de criar ou atualizar.
+
+O teste externo criou três registros sintéticos, atualizou um, verificou quatro
+eventos de auditoria, recebeu 403 ao tentar outro setor e origem inválida e
+removeu os dados sintéticos. As contagens das tabelas voltaram aos valores de
+antes do teste. A conta de escrita não tem privilégio de `UPDATE` em `usuarios`
+nem `DELETE` em `producao`.
+
+A interface operacional original do Mapa, montagem, inspeção, fotos, RPCs e
+sincronização com a produção ainda não foram migrados. Esta tela deve ser usada
+somente para validar o fluxo na base isolada.
+
+## 15. Montagem e inspeção no banco isolado — 03/10/2026
+
+Foi salvo o backup privado `before-montagem-writes.dump` da base de testes antes
+de ampliar o privilégio da conta de escrita para `montagem_poste`. A tela
+`/unificado/mapa/montagem.html` permite buscar uma forma de produção liberada ou
+inspecionada por data e setor, iniciar inspeção visual ou montagem final e
+finalizar como aprovada ou reprovada. Os 43 itens de checklist foram extraídos
+do código do Mapa atual e publicados em `checklists.json`.
+
+A API confere sessão, origem, perfil, setor, estado do registro de produção,
+respostas e motivo de reprovação. Ela impede nova finalização do mesmo checklist
+e registra início e fim na auditoria. O teste externo confirmou inspeção
+aprovada, montagem reprovada por falha crítica, rejeição de aprovação com falha
+crítica, bloqueio de outro setor e de origem ausente, e quatro eventos de
+auditoria. Todos os registros e o usuário sintéticos foram removidos; as
+contagens das tabelas retornaram ao ponto inicial. HTML e checklist responderam
+HTTP 200 no domínio de testes; a API sem sessão respondeu 401.
+
+Fotos, retrabalho e a interface operacional completa do Mapa ainda precisam de
+adaptação e validação. A fotografia histórica do banco não sincroniza mudanças
+posteriores da produção.
+
+## 16. Correção de escopo: paridade do Mapa — 03/10/2026
+
+O usuário definiu que a unificação altera somente o layout e o backend. Todas
+as funções e a forma de operar do Mapa devem permanecer. Em particular,
+programação, liberação e apontamento das formas usam cartões e modos de toque
+em tablets na produção; não devem ser trocados por formulários. Inspeção,
+montagem, fotos e retrabalho também devem conservar o fluxo existente.
+
+Os protótipos de formulários das seções 14 e 15 foram retirados do site de
+testes. As páginas diretas respondem 404 e as rotas de escrita do protótipo
+foram desativadas. Login e consulta histórica continuam disponíveis. A fonte
+funcional atual é `mapa-concretagem/`, que inclui modos de quiosque, cartões de
+formas, relatórios, usuários, inspeção, montagem, fotos, retrabalho e API de
+fotos. `current-mapa/` é uma cópia anterior. A adaptação deve preservar os
+eventos e estados dessa fonte, substituindo as chamadas ao Supabase pelo
+PostgreSQL isolado antes de publicar novamente qualquer operação.
+
+## 17. Base para portar os cartões atuais — 03/10/2026
+
+A visão `api.vw_formas_status` foi criada no PostgreSQL de testes com os campos
+que a interface atual usa para reconstruir os estados dos cartões por data,
+setor e forma. Ela reúne programação, liberação e produção, selecionando o
+registro mais recente de cada origem quando há duplicatas. A API autenticada
+expõe a visão em modo somente leitura. No teste externo, login, troca de senha,
+consulta da visão e bloqueio sem sessão passaram; o usuário temporário foi
+removido (38 contas ao final).
+
+O script `scripts/build_unificado_mapa_tablet.py` prepara uma cópia local da
+interface atual fora da árvore publicada. O código mantém o fluxo dos cartões,
+usa a sessão unificada, reconhece `?tela=` para os atalhos e não contém os
+endereços dos serviços operacionais de produção. A página inicial do unificado
+não foi alterada nesta etapa. A cópia ainda não foi publicada porque as
+escritas, fotos, RPCs e integrações do PCP precisam ter equivalentes no backend
+de testes e passar por comparação funcional no tablet.
+
+## 18. Prévia de consulta no tablet — 03/10/2026
+
+Foi publicada a rota separada `/unificado/mapa/consulta/`, gerada a partir do
+Mapa atual. Ela usa a sessão unificada, não contém os endereços operacionais de
+produção e lê a cópia PostgreSQL de testes. A data inicial é 02/10/2026,
+última data de produção na fotografia importada. Um aviso explica o alcance
+da prévia; a captura de cliques nos cartões e o guard de rede bloqueiam
+apontamentos. Login pela rota da prévia retorna à mesma rota após autenticação.
+
+O navegador foi verificado nos tamanhos 1024×768 e 768×1024: 52 cartões do
+Setor 3 apareceram, clique em cartão não enviou gravação e o fluxo de login
+retornou à prévia. As respostas da API no teste visual foram simuladas; o
+acesso autenticado à visão de estados do PostgreSQL já havia sido validado
+separadamente. A publicação é somente para consulta e não substitui o Mapa
+operacional existente. A página inicial do unificado não foi alterada.

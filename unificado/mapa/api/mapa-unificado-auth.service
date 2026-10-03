@@ -1,0 +1,23 @@
+[Unit]
+Description=Mapa unificado - login PostgreSQL de testes
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/mapa-unificado-api
+EnvironmentFile=/etc/mapa-unificado/auth.env
+EnvironmentFile=/etc/mapa-unificado/writer.env
+ExecStart=/opt/mapa-unificado-api/.venv/bin/gunicorn --workers 2 --bind 127.0.0.1:13052 app:app
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/tmp
+
+[Install]
+WantedBy=multi-user.target

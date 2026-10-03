@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teste Programação — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.2.0" />
+  <script src="/unificado/vendor/xlsx/xlsx.full.min.js"></script>
+  <style>
+    .kpi-box { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px; text-align: center; }
+    .kpi-label { font-size: 0.85rem; color: #6c757d; font-weight: 600; }
+    .kpi-value { font-size: 1.8rem; font-weight: 700; color: #15416F; margin-top: 4px; }
+    .kpi-unit { font-size: 0.75rem; color: #6c757d; }
+    .badge-ok { background: #10b981 !important; }
+    .badge-warn { background: #f59e0b !important; }
+    .badge-danger { background: #ef4444 !important; }
+    .memo-section { background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 0.8rem; max-height: 400px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word; }
+    .plano-item-vazio { color: #cbd5e1; text-align: center; font-style: italic; }
+    .table-small { font-size: 0.8rem; }
+    .loading-spinner { text-align: center; padding: 20px; }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <!-- Concrefer Logo: Σ -->
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link active" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Teste de Programação Automática</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    
+    <!-- SEÇÃO: PARÂMETROS -->
+    <div class="section-card mb-4">
+      <div class="section-title">Parâmetros de Programação</div>
+      <form id="form-params" novalidate>
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Data de Início (seg)</label>
+            <input type="date" id="param-data" class="form-control form-control-sm" required />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Setor</label>
+            <select id="param-setor" class="form-select form-select-sm" required>
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label" style="font-size:.8rem;font-weight:600">Importar Demanda</label>
+            <div class="btn-group w-100" role="group">
+              <button type="button" class="btn btn-outline-primary btn-sm" id="btn-importar-excel">
+                <i class="bi bi-file-earmark-excel"></i> Excel
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-manual">
+                <i class="bi bi-pencil"></i> Manual
+              </button>
+            </div>
+            <input type="file" id="file-demanda" accept=".xlsx,.xls" style="display:none" />
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button type="button" class="btn btn-primary-pcp btn-sm w-100" id="btn-programar">
+              <i class="bi bi-play-circle me-1"></i>Programar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- SEÇÃO: DEMANDA -->
+    <div class="section-card mb-4" id="card-demanda" style="display:none">
+      <div class="section-title">Demanda Semanal</div>
+      <div style="max-height:300px; overflow-y:auto">
+        <table class="table table-sm table-hover mb-0">
+          <thead style="position:sticky; top:0">
+            <tr>
+              <th>Poste</th>
+              <th class="text-end">Qtd/Semana</th>
+              <th style="width:80px;text-align:center">Urgente</th>
+              <th style="width:40px"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-demanda">
+            <tr><td colspan="4" class="text-center py-2"><small class="text-muted">Adicione itens acima</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: RESULTADO -->
+    <div id="card-resultado" style="display:none">
+      
+      <!-- KPIs -->
+      <div class="section-card mb-4">
+        <div class="section-title">Indicadores</div>
+        <div class="row g-3">
+          <div class="col-md-3">
+            <div class="kpi-box">
+              <div class="kpi-label">Capacidade Semanal</div>
+              <div class="kpi-value" id="kpi-cap">—</div>
+              <div class="kpi-unit">formas × 5 dias</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-box">
+              <div class="kpi-label">Demanda Total</div>
+              <div class="kpi-value" id="kpi-dem">—</div>
+              <div class="kpi-unit">postes</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-box">
+              <div class="kpi-label">Alocado</div>
+              <div class="kpi-value" id="kpi-aloc">—</div>
+              <div class="kpi-unit">postes planejados</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-box">
+              <div class="kpi-label">Taxa de Atendimento</div>
+              <div class="kpi-value" id="kpi-taxa">—%</div>
+              <div class="kpi-unit">da demanda</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLANO SEMANAL -->
+      <div class="section-card mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="section-title" style="margin:0">Plano Semanal (Forma × Dia)</div>
+          <div>
+            <button class="btn btn-sm btn-outline-secondary" id="btn-print"><i class="bi bi-printer me-1"></i>Imprimir</button>
+            <button class="btn btn-sm btn-outline-success" id="btn-export-csv"><i class="bi bi-download me-1"></i>CSV</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="table table-sm table-bordered mb-0 table-small" id="table-plano">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RESUMO DIÁRIO -->
+      <div class="section-card mb-4">
+        <div class="section-title">Resumo Diário (Poste → Qtd)</div>
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Poste</th>
+              <th style="text-align:center">Seg</th>
+              <th style="text-align:center">Ter</th>
+              <th style="text-align:center">Qua</th>
+              <th style="text-align:center">Qui</th>
+              <th style="text-align:center">Sex</th>
+              <th class="text-end">Total</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-resumo"></tbody>
+        </table>
+      </div>
+
+      <!-- ITENS NÃO ALOCADOS -->
+      <div class="section-card mb-4">
+        <div class="section-title">Itens Não Alocados</div>
+        <div id="div-nao-alocados">
+          <small class="text-muted">Carregando...</small>
+        </div>
+      </div>
+
+      <!-- MEMÓRIA DE CÁLCULO -->
+      <div class="section-card">
+        <div class="section-title">Memória de Cálculo</div>
+        <pre class="memo-section" id="memo-texto">Aguarde...</pre>
+      </div>
+
+    </div>
+
+    <!-- ESTADO: VAZIO -->
+    <div id="card-vazio" class="section-card">
+      <div class="text-center py-5">
+        <i class="bi bi-inbox" style="font-size:3rem;color:#ccc"></i>
+        <p class="text-muted mt-3">Selecione os parâmetros e clique em <strong>Programar</strong> para gerar uma automática</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.2.0"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  document.getElementById('user-nome').textContent = user.nome;
+  initSidebar('teste-programacao');
+  
+  // Verificar que é ADMIN
+  if (user.nivel_acesso !== 'ADMIN') {
+    location.href = '/unificado/pcp/dashboard/';
+  }
+}
+
+// --- ESTADO GLOBAL ---
+let estadoAtual = {
+  demanda: [],  // Array de {poste, quantidade, urgente}
+  resultado: null,
+};
+
+// --- FUNÇÕES DE INICIALIZAÇÃO ---
+async function inicializar() {
+  await carregarSetores();
+  setarDataHoje();
+}
+
+async function carregarSetores() {
+  try {
+    const res = await API.get('/api/setores');
+    const select = document.getElementById('param-setor');
+    select.innerHTML = '<option value="">Selecione...</option>';
+    for (const setor of res) {
+      const opt = document.createElement('option');
+      opt.value = setor.id;
+      opt.textContent = setor.nome;
+      select.appendChild(opt);
+    }
+  } catch (err) {
+    mostrarErro('Erro ao carregar setores');
+  }
+}
+
+function setarDataHoje() {
+  const hoje = new Date();
+  const seg = new Date(hoje);
+  const dia = seg.getDay();
+  const diff = (dia === 1) ? 0 : ((8 - dia) % 7);
+  seg.setDate(seg.getDate() + diff);
+  
+  const yyyy = seg.getFullYear();
+  const mm = String(seg.getMonth() + 1).padStart(2, '0');
+  const dd = String(seg.getDate()).padStart(2, '0');
+  document.getElementById('param-data').value = `${yyyy}-${mm}-${dd}`;
+}
+
+// --- DEMANDA ---
+function atualizarTabelaDemanda() {
+  const tbody = document.getElementById('tbody-demanda');
+  
+  if (estadoAtual.demanda.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="text-center py-2"><small class="text-muted">Nenhum item adicionado</small></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = estadoAtual.demanda.map((item, idx) => `
+    <tr>
+      <td><strong>${item.poste}</strong></td>
+      <td class="text-end"><strong>${item.quantidade}</strong></td>
+      <td style="text-align:center">
+        <input type="checkbox" class="form-check-input" ${item.urgente ? 'checked' : ''} 
+               onchange="alternarUrgente(${idx})">
+      </td>
+      <td style="text-align:center">
+        <button class="btn btn-sm btn-outline-danger" onclick="removerDemanda(${idx})">
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function adicionarDemanda(poste, quantidade, urgente = false) {
+  const item = { poste: poste.toUpperCase(), quantidade: parseInt(quantidade), urgente };
+  // Verificar duplicata
+  const existe = estadoAtual.demanda.find(d => d.poste === item.poste);
+  if (existe) {
+    existe.quantidade += item.quantidade;
+  } else {
+    estadoAtual.demanda.push(item);
+  }
+  atualizarTabelaDemanda();
+  document.getElementById('card-demanda').style.display = 'block';
+}
+
+function removerDemanda(idx) {
+  estadoAtual.demanda.splice(idx, 1);
+  atualizarTabelaDemanda();
+}
+
+function alternarUrgente(idx) {
+  estadoAtual.demanda[idx].urgente = !estadoAtual.demanda[idx].urgente;
+}
+
+// --- IMPORTAR ---
+document.getElementById('btn-importar-excel').addEventListener('click', () => {
+  document.getElementById('file-demanda').click();
+});
+
+document.getElementById('file-demanda').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const data = new Uint8Array(event.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      
+      let adicionados = 0;
+      for (let i = 1; i < rows.length; i++) {
+        const [poste, qtd] = rows[i];
+        if (poste && qtd > 0) {
+          adicionarDemanda(poste, qtd, false);
+          adicionados++;
+        }
+      }
+      
+      mostrarSucesso(`Importados ${adicionados} item(ns)`);
+    } catch (err) {
+      mostrarErro('Erro ao processar Excel');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+});
+
+document.getElementById('btn-manual').addEventListener('click', () => {
+  const poste = prompt('Nome do poste (ex: 5X400):');
+  if (!poste) return;
+  const qtd = prompt('Quantidade semanal:');
+  if (!qtd || qtd <= 0) return;
+  adicionarDemanda(poste, qtd, false);
+});
+
+// --- PROGRAMAÇÃO ---
+document.getElementById('btn-programar').addEventListener('click', async () => {
+  const dataInicio = document.getElementById('param-data').value;
+  const setorId = parseInt(document.getElementById('param-setor').value);
+  
+  if (!dataInicio || !setorId || estadoAtual.demanda.length === 0) {
+    mostrarErro('Preencha todos os campos e adicione demanda');
+    return;
+  }
+  
+  document.getElementById('card-resultado').innerHTML = '<div class="loading-spinner"><div class="spinner-border"></div><p class="mt-2">Programando...</p></div>';
+  document.getElementById('card-resultado').style.display = 'block';
+  document.getElementById('card-vazio').style.display = 'none';
+  
+  try {
+    const payload = {
+      data_inicio: dataInicio,
+      setor_id: setorId,
+      demanda: estadoAtual.demanda,
+    };
+    
+    const res = await API.post('/api/teste-prog/programar', payload);
+    estadoAtual.resultado = res;
+    renderizarResultado(res);
+    mostrarSucesso('Programação gerada com sucesso!');
+  } catch (err) {
+    document.getElementById('card-resultado').style.display = 'none';
+    mostrarErro(err.detail || 'Erro ao programar');
+  }
+});
+
+function renderizarResultado(res) {
+  const cardResultado = document.getElementById('card-resultado');
+  cardResultado.innerHTML = '';
+
+  // KPIs
+  document.getElementById('kpi-cap').textContent = res.capacidade_semanal;
+  document.getElementById('kpi-dem').textContent = res.demanda_total;
+  document.getElementById('kpi-aloc').textContent = res.alocado_total;
+  document.getElementById('kpi-taxa').textContent = res.taxa_atendimento.toFixed(0);
+
+  // Plano Semanal
+  const dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
+  const formas = Object.keys(res.plano_semanal[dias[0]] || {}).sort();
+  
+  const thead = document.querySelector('#table-plano thead');
+  thead.innerHTML = `
+    <tr>
+      <th>Forma</th>
+      ${dias.map(d => `<th style="text-align:center;min-width:60px">${d}</th>`).join('')}
+    </tr>
+  `;
+  
+  const tbody = document.querySelector('#table-plano tbody');
+  tbody.innerHTML = formas.map(forma => `
+    <tr>
+      <td><strong>${forma}</strong></td>
+      ${dias.map(dia => {
+        const poste = res.plano_semanal[dia]?.[forma];
+        return `<td style="text-align:center">${poste ? `<strong>${poste}</strong>` : '<span class="plano-item-vazio">—</span>'}</td>`;
+      }).join('')}
+    </tr>
+  `).join('');
+
+  // Resumo Diário
+  const tbodyResumo = document.getElementById('tbody-resumo');
+  const postesUnicos = new Set();
+  res.resumo_diario.forEach(r => Object.keys(r.postes).forEach(p => postesUnicos.add(p)));
+  const postesOrdenados = Array.from(postesUnicos).sort();
+  
+  tbodyResumo.innerHTML = postesOrdenados.map(poste => `
+    <tr>
+      <td><strong>${poste}</strong></td>
+      ${dias.map(dia => {
+        const resumoDia = res.resumo_diario.find(r => r.dia === dia);
+        const qtd = resumoDia?.postes[poste] || 0;
+        return `<td style="text-align:center">${qtd > 0 ? qtd : '—'}</td>`;
+      }).join('')}
+      <td class="text-end"><strong>${postesOrdenados.reduce((sum, p) => sum + (res.resumo_diario.reduce((s, r) => s + (r.postes[p] || 0), 0)), 0)}</strong></td>
+    </tr>
+  `).join('');
+
+  // Itens Não Alocados
+  const divNaoAloc = document.getElementById('div-nao-alocados');
+  if (res.nao_alocados.length === 0) {
+    divNaoAloc.innerHTML = '<div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>Toda a demanda foi alocada!</div>';
+  } else {
+    divNaoAloc.innerHTML = `
+      <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        ${res.nao_alocados.length} item(ns) com alocação parcial
+      </div>
+      <table class="table table-sm">
+        <thead>
+          <tr><th>Poste</th><th class="text-end">Demandado</th><th class="text-end">Alocado</th><th class="text-end">Faltante</th></tr>
+        </thead>
+        <tbody>
+          ${res.nao_alocados.map(n => `
+            <tr>
+              <td><strong>${n.poste}</strong></td>
+              <td class="text-end">${n.demandado}</td>
+              <td class="text-end">${n.alocado}</td>
+              <td class="text-end text-danger"><strong>${n.nao_alocado}</strong></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  // Memória
+  document.getElementById('memo-texto').textContent = res.memo_calculo || '';
+
+  cardResultado.style.display = 'block';
+}
+
+// --- EXPORTAR ---
+document.getElementById('btn-print').addEventListener('click', () => {
+  window.print();
+});
+
+document.getElementById('btn-export-csv').addEventListener('click', () => {
+  if (!estadoAtual.resultado) return;
+  
+  const res = estadoAtual.resultado;
+  const dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'];
+  const formas = Object.keys(res.plano_semanal[dias[0]] || {}).sort();
+  
+  const rows = [['Forma'].concat(dias)];
+  formas.forEach(forma => {
+    const row = [forma];
+    dias.forEach(dia => {
+      row.push(res.plano_semanal[dia]?.[forma] || '');
+    });
+    rows.push(row);
+  });
+  
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `plano_semanal_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+});
+
+// --- MENSAGENS ---
+function mostrarSucesso(msg) {
+  showNotification(msg, 'success');
+}
+
+function mostrarErro(msg) {
+  showNotification(msg, 'danger');
+}
+
+// --- INICIAR ---
+inicializar();
+</script>
+</body>
+</html>

@@ -14,8 +14,13 @@ dumps/
 !supabase/migrations/*.sql
 !Controle_est_concre/migrations/*.sql
 !Controle_est_concre/schema.sql
+!unificado/mapa/database/*.sql
 *.dump
+.work-mapa-migration/
+.work-unificado-pcp-source/
+.work-mapa-unificado/
 node_modules/
+__pycache__/
 coverage/
 logs/
 *.log

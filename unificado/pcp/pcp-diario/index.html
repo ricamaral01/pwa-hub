@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PCP Diário - PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.2.0" />
+  <style>
+    .pcp-controls {
+      display: grid;
+      grid-template-columns: 170px 120px 150px minmax(190px, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+    }
+    .daily-shell {
+      border: 2px solid #111;
+      overflow: auto;
+      max-height: calc(100vh - 210px);
+      background: #fff;
+    }
+    .daily-table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      width: max-content;
+      min-width: 1120px;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #000;
+    }
+    .daily-table th,
+    .daily-table td {
+      border: 1px solid #111;
+      padding: 2px 4px;
+      height: 16px;
+      line-height: 1.05;
+      text-align: center;
+      vertical-align: middle;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .daily-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      background: #073b63;
+      color: #fff;
+      font-weight: 800;
+    }
+    .daily-table thead tr:nth-child(2) th { top: 20px; }
+    .daily-table thead tr:nth-child(3) th { top: 38px; }
+    .daily-table .sep-left { border-left-width: 2px; }
+    .daily-table .sep-right { border-right-width: 2px; }
+    .daily-table .desc {
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .daily-table .num { text-align: right; }
+    .daily-table .neg { color: #f00; }
+    .daily-table .ok { background: #00b050; color: #000; font-weight: 700; }
+    .daily-table .bad { background: #f00; color: #000; font-weight: 700; }
+    .daily-table .planned { background: #fff; }
+    .daily-table .total-label {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+      background: #fff;
+    }
+    .daily-table tfoot td {
+      height: 22px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #fff;
+    }
+    .daily-table .sticky-col {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      background: #fff;
+    }
+    .daily-table thead .sticky-col { z-index: 5; background: #073b63; }
+    .daily-table .col-prod { width: 74px; left: 0; }
+    .daily-table .col-mont { width: 78px; left: 74px; }
+    .daily-table .col-desc { width: 155px; left: 152px; }
+    .daily-table .day-col { width: 40px; }
+    .small-note {
+      color: #64748b;
+      font-size: .76rem;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .pcp-controls { grid-template-columns: 1fr 1fr; }
+      .pcp-controls .wide { grid-column: 1 / -1; }
+      .pcp-controls button { grid-column: 1 / -1; }
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">PCP Diário</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="section-card mb-3">
+      <div class="pcp-controls">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Data inicial</label>
+          <input type="date" id="data-inicio" class="form-control form-control-sm" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Dias</label>
+          <select id="dias" class="form-select form-select-sm">
+            <option value="5">5 dias</option>
+            <option value="7">7 dias</option>
+            <option value="10">10 dias</option>
+            <option value="14">14 dias</option>
+            <option value="mes">Mês todo</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Setor</label>
+          <select id="setor" class="form-select form-select-sm">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="wide">
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Buscar</label>
+          <input type="search" id="busca" class="form-control form-control-sm" placeholder="Código ou descrição" />
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-carregar">
+          <i class="bi bi-arrow-clockwise me-1"></i>Carregar
+        </button>
+      </div>
+      <div class="small-note mt-2" id="resumo">Aguardando carregamento</div>
+    </div>
+
+    <div class="daily-shell">
+      <table class="daily-table" id="pcp-table">
+        <colgroup id="colgroup"></colgroup>
+        <thead id="thead"></thead>
+        <tbody id="tbody">
+          <tr><td class="text-center py-3" colspan="18">Carregando</td></tr>
+        </tbody>
+        <tfoot id="tfoot"></tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.2.0"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  initSidebar('pcp-diario');
+  const topName = document.getElementById('user-nome-top');
+  if (topName) topName.textContent = user.nome;
+}
+
+const state = { payload: null };
+const fmtInt = v => Number(v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+const fmtNum = (v, casas = 2) => Number(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
+const clean = v => (v === null || v === undefined || v === '') ? '' : v;
+
+const DESCRICAO_POR_CODIGO = {
+  '938': '1 CX VR',
+  '935': '1 CX VL',
+  '943': '2 CX VR',
+  '941': '2 CX VL',
+  '946': '3 CX VR',
+  '945': '3 CX VL',
+  '948': '4 CX VR',
+  '947': '4 CX VL',
+  '944': '2 CX VR - 300 DAN',
+  '942': '2 CX VL - 300 DAN',
+  '934': 'POSTE CAIXA LENTE 1 CX VL',
+  '931': 'ECON 1 CX VR',
+  '930': 'ECON 1 CX VL',
+  '932': 'ECON 2 CX VR',
+  '933': 'ECON 3 CX VR',
+  '949': 'SUB 100',
+  '950': 'SUB 200',
+  '5017': 'SUB 200 TC',
+  '4848': 'SUB 100 ELEKTRO',
+  '4031': 'ELEKTRO 1 CX VR',
+  '4764': 'ELEKTRO 1 CX VL',
+  '4032': 'ELEKTRO 2 CX VR',
+  '4765': 'ELEKTRO 2 CX VL',
+  '4929': 'ELEKTRO 3 CX VL',
+  '957': 'EDP 1 CX VL',
+  '940': '7,5X600 TC VR',
+  '937': '7,5X600 TC VL',
+  '939': '7,5X600 BARR VR',
+  '936': '7,5X600 BARR VL',
+  '2017': 'POSTE COLUNA',
+  '953': 'CEMIG 7X150 1 CX VL',
+  '954': 'CEMIG 7X150 2 CX VL',
+};
+
+function descricaoDisplay(row) {
+  const codigos = [row.codigo_montagem, row.codigo_producao].map(v => String(v || '').trim());
+  return codigos.map(codigo => DESCRICAO_POR_CODIGO[codigo]).find(Boolean) || row.descricao || '-';
+}
+
+function diasDoMes(isoDate) {
+  const [ano, mes] = isoDate.split('-').map(Number);
+  return new Date(ano, mes, 0).getDate();
+}
+
+function primeiroDiaMes(isoDate) {
+  return `${isoDate.slice(0, 8)}01`;
+}
+
+function mondayISO(date = new Date()) {
+  const d = new Date(date);
+  const day = d.getDay() || 7;
+  d.setDate(d.getDate() - day + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function renderHeader(dias) {
+  document.getElementById('colgroup').innerHTML = [
+    74, 78, 155, 52, 44, 60, 48, 60,
+    ...dias.flatMap(() => [40, 40]),
+  ].map(w => `<col style="width:${w}px">`).join('');
+
+  const thead = document.getElementById('thead');
+    const base = [
+    ['CÓDIGO<br>PRODUÇÃO', 'col-prod sticky-col', 3],
+    ['CÓDIGO<br>MONTAGEM', 'col-mont sticky-col', 3],
+    ['DESCRIÇÃO', 'col-desc sticky-col', 3],
+    ['PESO', '', 3],
+    ['SETOR', '', 3],
+    ['ESTOQUE<br>ATUAL', '', 3],
+    ['SALDO', '', 3],
+    ['QTDE<br>FORMAS', 'sep-right', 3],
+  ];
+  const top = base.map(([label, cls, rows]) => `<th class="${cls}" rowspan="${rows}">${label}</th>`).join('') +
+    dias.map(d => `<th class="sep-left" colspan="2">${d.rotulo}</th>`).join('');
+  const week = dias.map(d => `<th class="sep-left" colspan="2">${d.dia_semana}</th>`).join('');
+  const pr = dias.map(() => '<th class="day-col sep-left">P</th><th class="day-col">R</th>').join('');
+  thead.innerHTML = `<tr>${top}</tr><tr>${week}</tr><tr>${pr}</tr>`;
+}
+
+function cellClass(programado, realizado, tipo) {
+  if (tipo === 'p') return programado ? 'planned' : '';
+  if (!programado && !realizado) return '';
+  if (realizado >= programado && realizado > 0) return 'ok';
+  return 'bad';
+}
+
+function renderRows() {
+  if (!state.payload) return;
+  const setor = document.getElementById('setor').value;
+  const busca = document.getElementById('busca').value.trim().toLowerCase();
+  const dias = state.payload.dias;
+  let rows = state.payload.linhas || [];
+  if (setor) rows = rows.filter(r => String(r.setor || '') === setor);
+  if (busca) {
+    rows = rows.filter(r => [
+      r.codigo_producao, r.codigo_montagem, r.descricao, descricaoDisplay(r),
+    ].join(' ').toLowerCase().includes(busca));
+  }
+
+  document.getElementById('tbody').innerHTML = rows.length ? rows.map(r => {
+    const saldo = Number(r.saldo || 0);
+    const dayCells = dias.map(d => {
+      const c = r.dias[d.data] || {};
+      const p = Number(c.programado || 0);
+      const real = Number(c.realizado || 0);
+      return `<td class="${cellClass(p, real, 'p')} sep-left">${p ? fmtInt(p) : ''}</td>` +
+        `<td class="${cellClass(p, real, 'r')}">${real ? fmtInt(real) : (p ? '' : '')}</td>`;
+    }).join('');
+    return `<tr>
+      <td class="sticky-col col-prod">${clean(r.codigo_producao)}</td>
+      <td class="sticky-col col-mont">${clean(r.codigo_montagem)}</td>
+      <td class="sticky-col col-desc desc" title="${clean(r.descricao)}">${clean(descricaoDisplay(r))}</td>
+      <td class="num">${r.peso ? fmtInt(r.peso) : ''}</td>
+      <td>${clean(r.setor)}</td>
+      <td class="num">${fmtInt(r.estoque_atual)}</td>
+      <td class="num ${saldo < 0 ? 'neg' : ''}">${fmtInt(saldo)}</td>
+      <td class="num sep-right">${fmtInt(r.qtde_formas)}</td>
+      ${dayCells}
+    </tr>`;
+  }).join('') : `<tr><td colspan="${8 + dias.length * 2}" class="text-center py-3">Nenhuma linha encontrada</td></tr>`;
+
+  document.getElementById('resumo').textContent = `${rows.length} linhas exibidas de ${state.payload.linhas.length} no período ${state.payload.data_inicio} a ${state.payload.data_fim}`;
+}
+
+function renderFooter() {
+  const dias = state.payload.dias;
+  const colSpan = 8;
+  const totals = state.payload.totais || {};
+  const row = (label, getter, clsGetter = () => '') => {
+    const cells = dias.map(d => {
+      const t = totals[d.data] || {};
+      return `<td class="sep-left">${getter(t, 'p')}</td><td class="${clsGetter(t, 'r')}">${getter(t, 'r')}</td>`;
+    }).join('');
+    return `<tr><td class="total-label" colspan="${colSpan}">${label}</td>${cells}</tr>`;
+  };
+  document.getElementById('tfoot').innerHTML =
+    row('TOTAL PEÇAS', (t, side) => fmtInt(side === 'p' ? t.programado : t.realizado), (t, side) => side === 'r' ? (t.realizado >= t.programado && t.realizado > 0 ? 'ok' : 'bad') : '') +
+    row('TOTAL CONCRETO (M³)', (t, side) => fmtNum(side === 'p' ? t.volume_programado : t.volume_realizado), (t, side) => side === 'r' ? (t.volume_realizado >= t.volume_programado && t.volume_realizado > 0 ? 'ok' : 'bad') : '') +
+    row('EFICIÊNCIA (%)', (t, side) => side === 'p' ? fmtNum(t.eficiencia) + '%' : '') +
+    row('EFETIVO', (t, side) => side === 'p' ? fmtInt(t.efetivo) : '');
+}
+
+function preencherSetores(rows) {
+  const select = document.getElementById('setor');
+  const atual = select.value;
+  const setores = [...new Set(rows.map(r => r.setor).filter(v => v !== null && v !== undefined && v !== ''))].sort((a, b) => Number(a) - Number(b));
+  select.innerHTML = '<option value="">Todos</option>' + setores.map(s => `<option value="${s}">Setor ${s}</option>`).join('');
+  select.value = setores.includes(Number(atual)) || setores.includes(atual) ? atual : '';
+}
+
+async function carregar() {
+  const inicio = document.getElementById('data-inicio').value;
+  const periodo = document.getElementById('dias').value;
+  if (!inicio) {
+    showToast('Informe a data inicial', 'warning');
+    return;
+  }
+  const inicioConsulta = periodo === 'mes' ? primeiroDiaMes(inicio) : inicio;
+  const dias = periodo === 'mes' ? diasDoMes(inicio) : periodo;
+  document.getElementById('tbody').innerHTML = '<tr><td colspan="18" class="text-center py-3">Carregando</td></tr>';
+  try {
+    const payload = await API.get(`/api/pcp-diario?data_inicio=${inicioConsulta}&dias=${dias}`);
+    state.payload = payload;
+    renderHeader(payload.dias);
+    preencherSetores(payload.linhas || []);
+    renderRows();
+    renderFooter();
+  } catch (err) {
+    showToast(err.message || 'Erro ao carregar PCP Diário', 'error');
+  }
+}
+
+document.getElementById('data-inicio').value = mondayISO();
+document.getElementById('btn-carregar').addEventListener('click', carregar);
+document.getElementById('setor').addEventListener('change', renderRows);
+document.getElementById('busca').addEventListener('input', renderRows);
+document.getElementById('dias').addEventListener('change', carregar);
+carregar();
+</script>
+</body>
+</html>
