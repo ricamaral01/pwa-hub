@@ -29,12 +29,12 @@ def main():
             "headers": item.get("headers", {}),
             "query": parse_qs(url.query, keep_blank_values=True),
             "body": body,
-            "stub_response": {"status": 200, "shape": "object" if url.path.endswith("/rpc/rpc_dashboard_produtividade_resumo_v1") else "list"},
+            "local_response": {"status": item.get("response_status"), "shape": item.get("response_shape")},
         })
     TARGET.parent.mkdir(parents=True, exist_ok=True)
     TARGET.write_text(json.dumps({
-        "status": "draft: intercepted with synthetic empty responses; not a contract fixture",
-        "network": "all external requests aborted and locally fulfilled",
+        "status": "draft: snapshot-backed local responses; not yet a full contract fixture",
+        "network": "all browser requests to external hosts aborted and locally fulfilled",
         "requests": rows,
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"requests={len(rows)} unique_source_stack_lines={len({row['source_line_stack'] for row in rows})} output={TARGET.relative_to(ROOT)}")

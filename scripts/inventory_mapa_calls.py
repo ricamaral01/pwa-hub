@@ -101,7 +101,7 @@ Este é o **índice estático inicial**. Cada linha aponta para uma chamada iden
         content += (
             "\n## Captura de navegador sem rede externa\n\n"
             "O script `scripts/capture_mapa_requests_offline.py` carregou o `app.js` original, "
-            "bloqueou todas as solicitações externas e respondeu com dados sintéticos. "
+            "interceptou todas as solicitações externas e respondeu localmente com a fotografia do PostgreSQL de testes quando havia tabela correspondente. "
             f"Foram testados {len(capture['modes'])} modos e interceptados "
             f"{capture['external_requests_blocked']} pedidos externos. "
             "O arquivo completo da captura fica fora do Git em `.work-mapa-unificado/requests-original.json`.\n\n"
@@ -110,8 +110,8 @@ Este é o **índice estático inicial**. Cada linha aponta para uma chamada iden
         content += "".join(f"| {escape(flow)} | {method} | `{escape(path)}` | {count} |\n"
                            for (flow, method, path), count in sorted(counts.items()))
         content += (
-            "\nA captura inclui navegação, programação e desprogramação por cartão, liberação "
-            "e concretagem com tipo no Setor 3. Permanecem pendentes capturas de cancelamento "
+            "\nA captura inclui navegação, programação e desprogramação por cartão nos quatro setores, "
+            "liberação nos Setores 1 a 3 e concretagem com tipo nos quatro setores. Permanecem pendentes capturas de cancelamento "
             "Odin, manutenção, mandril, inspeção, montagem, fotos, segunda inspeção, retrabalho, "
             "relatórios, exportações e permissões por perfil. Esta matriz ainda não libera a "
             "implementação operacional.\n"

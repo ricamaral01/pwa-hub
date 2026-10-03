@@ -1,0 +1,2022 @@
+{
+  "scope": "navigation only; synthetic sessions; snapshot-backed reads",
+  "browser_external_requests_intercepted": 299,
+  "cases": [
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "LIBERACAO",
+      "allowed": true,
+      "actual": "LIBERACAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "INSPECAO",
+      "allowed": true,
+      "actual": "INSPECAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "RELATORIO",
+      "allowed": true,
+      "actual": "RELATORIO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "HISTORICO",
+      "allowed": true,
+      "actual": "HISTORICO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": true,
+      "actual": "ACMP_CONCRETAGEM"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": true,
+      "actual": "MONTAGEM_INDICADORES"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": true,
+      "actual": "DASHBOARD_DEFEITOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "PROD_ANALISE",
+      "allowed": true,
+      "actual": "PROD_ANALISE"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "USUARIOS",
+      "allowed": true,
+      "actual": "USUARIOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 1,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "LIBERACAO",
+      "allowed": true,
+      "actual": "LIBERACAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "INSPECAO",
+      "allowed": true,
+      "actual": "INSPECAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "RELATORIO",
+      "allowed": true,
+      "actual": "RELATORIO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "HISTORICO",
+      "allowed": true,
+      "actual": "HISTORICO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": true,
+      "actual": "ACMP_CONCRETAGEM"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": true,
+      "actual": "MONTAGEM_INDICADORES"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": true,
+      "actual": "DASHBOARD_DEFEITOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "PROD_ANALISE",
+      "allowed": true,
+      "actual": "PROD_ANALISE"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "USUARIOS",
+      "allowed": true,
+      "actual": "USUARIOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 2,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "LIBERACAO",
+      "allowed": true,
+      "actual": "LIBERACAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "INSPECAO",
+      "allowed": true,
+      "actual": "INSPECAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "RELATORIO",
+      "allowed": true,
+      "actual": "RELATORIO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "HISTORICO",
+      "allowed": true,
+      "actual": "HISTORICO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": true,
+      "actual": "ACMP_CONCRETAGEM"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": true,
+      "actual": "MONTAGEM_INDICADORES"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": true,
+      "actual": "DASHBOARD_DEFEITOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "PROD_ANALISE",
+      "allowed": true,
+      "actual": "PROD_ANALISE"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "USUARIOS",
+      "allowed": true,
+      "actual": "USUARIOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 3,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "LIBERACAO",
+      "allowed": true,
+      "actual": "LIBERACAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "INSPECAO",
+      "allowed": true,
+      "actual": "INSPECAO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "RELATORIO",
+      "allowed": true,
+      "actual": "RELATORIO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "HISTORICO",
+      "allowed": true,
+      "actual": "HISTORICO"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": true,
+      "actual": "ACMP_CONCRETAGEM"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": true,
+      "actual": "MONTAGEM_INDICADORES"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": true,
+      "actual": "DASHBOARD_DEFEITOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "PROD_ANALISE",
+      "allowed": true,
+      "actual": "PROD_ANALISE"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "USUARIOS",
+      "allowed": true,
+      "actual": "USUARIOS"
+    },
+    {
+      "role": "GERENCIA",
+      "sector": 4,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "LIBERACAO",
+      "allowed": true,
+      "actual": "LIBERACAO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "INSPECAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "RELATORIO",
+      "allowed": true,
+      "actual": "RELATORIO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "HISTORICO",
+      "allowed": true,
+      "actual": "HISTORICO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": true,
+      "actual": "ACMP_CONCRETAGEM"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": true,
+      "actual": "MONTAGEM_INDICADORES"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": true,
+      "actual": "DASHBOARD_DEFEITOS"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "PROD_ANALISE",
+      "allowed": true,
+      "actual": "PROD_ANALISE"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 1,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "LIBERACAO",
+      "allowed": true,
+      "actual": "LIBERACAO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "INSPECAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "RELATORIO",
+      "allowed": true,
+      "actual": "RELATORIO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "HISTORICO",
+      "allowed": true,
+      "actual": "HISTORICO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": true,
+      "actual": "ACMP_CONCRETAGEM"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": true,
+      "actual": "MONTAGEM_INDICADORES"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": true,
+      "actual": "DASHBOARD_DEFEITOS"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "PROD_ANALISE",
+      "allowed": true,
+      "actual": "PROD_ANALISE"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 2,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "LIBERACAO",
+      "allowed": true,
+      "actual": "LIBERACAO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "INSPECAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "RELATORIO",
+      "allowed": true,
+      "actual": "RELATORIO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "HISTORICO",
+      "allowed": true,
+      "actual": "HISTORICO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": true,
+      "actual": "ACMP_CONCRETAGEM"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": true,
+      "actual": "MONTAGEM_INDICADORES"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": true,
+      "actual": "DASHBOARD_DEFEITOS"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "PROD_ANALISE",
+      "allowed": true,
+      "actual": "PROD_ANALISE"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 3,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "LIBERACAO",
+      "allowed": true,
+      "actual": "LIBERACAO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "INSPECAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "RELATORIO",
+      "allowed": true,
+      "actual": "RELATORIO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "HISTORICO",
+      "allowed": true,
+      "actual": "HISTORICO"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": true,
+      "actual": "ACMP_CONCRETAGEM"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": true,
+      "actual": "MONTAGEM_INDICADORES"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": true,
+      "actual": "DASHBOARD_DEFEITOS"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "PROD_ANALISE",
+      "allowed": true,
+      "actual": "PROD_ANALISE"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "GESTOR",
+      "sector": 4,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S1",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S2",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S3",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S4",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "INSPECAO",
+      "allowed": true,
+      "actual": "INSPECAO"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "RELATORIO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "HISTORICO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "PROD_ANALISE",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 1,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S1",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S2",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S3",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S4",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "INSPECAO",
+      "allowed": true,
+      "actual": "INSPECAO"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "RELATORIO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "HISTORICO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "PROD_ANALISE",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 2,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S1",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S2",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S3",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S4",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "INSPECAO",
+      "allowed": true,
+      "actual": "INSPECAO"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "RELATORIO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "HISTORICO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "PROD_ANALISE",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 3,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S1",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S2",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S3",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S4",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "INSPECAO",
+      "allowed": true,
+      "actual": "INSPECAO"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": true,
+      "actual": "MONTAGEM_POSTES"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "SEQUENCIA_S3",
+      "allowed": true,
+      "actual": "SEQUENCIA_S3"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "RELATORIO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "HISTORICO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "PROD_ANALISE",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "MONTADOR",
+      "sector": 4,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "INSPECAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "SEQUENCIA_S3",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "RELATORIO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "HISTORICO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "PROD_ANALISE",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 1,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "INSPECAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "SEQUENCIA_S3",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "RELATORIO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "HISTORICO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "PROD_ANALISE",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 2,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "INSPECAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "SEQUENCIA_S3",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "RELATORIO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "HISTORICO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "PROD_ANALISE",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 3,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S1",
+      "allowed": true,
+      "actual": "LIBERACAO_S1"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S2",
+      "allowed": true,
+      "actual": "LIBERACAO_S2"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S3",
+      "allowed": true,
+      "actual": "LIBERACAO_S3"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "LIBERACAO_S4",
+      "allowed": true,
+      "actual": "LIBERACAO_S4"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "MANDRIL_CIRCULAR",
+      "allowed": true,
+      "actual": "MANDRIL_CIRCULAR"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "INSPECAO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "MONTAGEM_POSTES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "SEQUENCIA_S3",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "RELATORIO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "HISTORICO",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "ACMP_CONCRETAGEM",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "TRATATIVA_DEFEITOS",
+      "allowed": true,
+      "actual": "TRATATIVA_DEFEITOS"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "MONTAGEM_INDICADORES",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "DASHBOARD_DEFEITOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "PROD_ANALISE",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "USUARIOS",
+      "allowed": false,
+      "actual": "HUB"
+    },
+    {
+      "role": "APONTADOR",
+      "sector": 4,
+      "mode": "RELATORIO_MANUTENCAO",
+      "allowed": true,
+      "actual": "RELATORIO_MANUTENCAO"
+    }
+  ]
+}

@@ -11,8 +11,11 @@ import json
 from pathlib import Path
 from threading import Thread
 from urllib.parse import urlsplit
+import urllib.error
+import urllib.request
 
 from playwright.sync_api import sync_playwright
+from mapa_snapshot_server import serve as serve_snapshot
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,6 +40,9 @@ def main() -> None:
     )
     Thread(target=server.serve_forever, daemon=True).start()
     local_origin = f"http://127.0.0.1:{server.server_port}"
+    snapshot_server = serve_snapshot()
+    Thread(target=snapshot_server.serve_forever, daemon=True).start()
+    snapshot_origin = f"http://127.0.0.1:{snapshot_server.server_port}"
     captured: list[dict] = []
     current_flow = ["inicialização"]
     blocked_external = [0]
@@ -92,11 +98,41 @@ def main() -> None:
                     },
                     "body": body,
                 })
-                if parsed.path.endswith("/rpc/rpc_dashboard_produtividade_resumo_v1"):
+                if parsed.path.startswith("/rest/v1/") and "/rpc/" not in parsed.path:
+                    target = snapshot_origin + parsed.path + ("?" + parsed.query if parsed.query else "")
+                    forwarded_headers = {name: request.headers[name] for name in ("prefer", "range", "content-type")
+                                         if name in request.headers}
+                    forwarded = urllib.request.Request(
+                        target,
+                        data=request.post_data_buffer if request.method not in {"GET", "HEAD"} else None,
+                        headers=forwarded_headers, method=request.method,
+                    )
+                    try:
+                        upstream = urllib.request.urlopen(forwarded, timeout=10)
+                    except urllib.error.HTTPError as error:
+                        upstream = error
+                    response_body = upstream.read()
+                    headers = {name: upstream.headers[name] for name in ("Content-Type", "Content-Range", "Range-Unit")
+                               if name in upstream.headers}
+                    captured[-1]["response_status"] = upstream.status
+                    try:
+                        parsed_body = json.loads(response_body) if response_body else None
+                        captured[-1]["response_shape"] = type(parsed_body).__name__
+                    except (json.JSONDecodeError, UnicodeDecodeError):
+                        captured[-1]["response_shape"] = "binary"
+                    route.fulfill(status=upstream.status, headers=headers, body=response_body)
+                    upstream.close()
+                elif parsed.path.endswith("/rpc/rpc_dashboard_produtividade_resumo_v1"):
+                    captured[-1]["response_status"] = 200
+                    captured[-1]["response_shape"] = "dict"
                     route.fulfill(status=200, content_type="application/json", body="{}")
                 elif parsed.path.endswith(".csv"):
+                    captured[-1]["response_status"] = 200
+                    captured[-1]["response_shape"] = "csv"
                     route.fulfill(status=200, content_type="text/csv", body="")
                 else:
+                    captured[-1]["response_status"] = 200
+                    captured[-1]["response_shape"] = "list"
                     route.fulfill(status=200, content_type="application/json", body="[]")
 
             context.route("**/*", intercept)
@@ -156,6 +192,50 @@ def main() -> None:
                 if (tipo) tipo.click();
                 await new Promise(resolve => setTimeout(resolve, 250));
             }""")
+            for sector in (1, 2, 4):
+                current_flow[0] = f"programar/desprogramar cartão Setor {sector}"
+                page.evaluate("""async sector => {
+                    setMode(`LIBERACAO_S${sector}`);
+                    const program = document.getElementById('kioskProgCheckbox');
+                    if (!program.checked) program.click();
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    const selector = sector === 4 ? '#libSetor4Cols .s4-forma-cell' : `#libSetor${sector}Cols .forma-card`;
+                    if (!document.querySelector(selector)) throw new Error(`Cartões do Setor ${sector} ausentes`);
+                    document.querySelector(selector).click();
+                    await new Promise(resolve => setTimeout(resolve, 120));
+                    document.querySelector(selector).click();
+                    await new Promise(resolve => setTimeout(resolve, 120));
+                }""", sector)
+                current_flow[0] = f"liberar cartão Setor {sector}"
+                page.evaluate("""async sector => {
+                    const program = document.getElementById('kioskProgCheckbox');
+                    if (program.checked) program.click();
+                    const release = document.getElementById('kioskLibCheckbox');
+                    if (!release.checked) release.click();
+                    const person = document.getElementById('kioskLibColaborador');
+                    if (person) person.value = 'Jeferson';
+                    const regular = document.getElementById('libColaborador');
+                    if (regular) regular.value = 'Jeferson';
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    const selector = sector === 4 ? '#libSetor4Cols .s4-forma-cell' : `#libSetor${sector}Cols .forma-card`;
+                    document.querySelector(selector).click();
+                    await new Promise(resolve => setTimeout(resolve, 160));
+                }""", sector)
+                current_flow[0] = f"concretar cartão Setor {sector} com tipo"
+                page.evaluate("""async sector => {
+                    const release = document.getElementById('kioskLibCheckbox');
+                    if (release.checked) release.click();
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    const selector = sector === 4 ? '#libSetor4Cols .s4-forma-cell' : `#libSetor${sector}Cols .forma-card`;
+                    document.querySelector(selector).click();
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    const select = document.getElementById('concretoModeloSelect');
+                    const model = select && [...select.options].find(option => option.value)?.value;
+                    if (model) select.value = model;
+                    const type = document.querySelector('.btn-concreto-rich[data-tipo="Concreto Seco - Vibrado"]');
+                    if (type) type.click();
+                    await new Promise(resolve => setTimeout(resolve, 180));
+                }""", sector)
             fetches = page.evaluate("window.__codexFetch")
             for item in captured:
                 for candidate in fetches:
@@ -177,6 +257,7 @@ def main() -> None:
             browser.close()
     finally:
         server.shutdown()
+        snapshot_server.shutdown()
 
 
 if __name__ == "__main__":

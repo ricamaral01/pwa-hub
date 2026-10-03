@@ -95,11 +95,11 @@ Este é o **índice estático inicial**. Cada linha aponta para uma chamada iden
 
 ## Captura de navegador sem rede externa
 
-O script `scripts/capture_mapa_requests_offline.py` carregou o `app.js` original, bloqueou todas as solicitações externas e respondeu com dados sintéticos. Foram testados 18 modos e interceptados 31 pedidos externos. O arquivo completo da captura fica fora do Git em `.work-mapa-unificado/requests-original.json`.
+O script `scripts/capture_mapa_requests_offline.py` carregou o `app.js` original, interceptou todas as solicitações externas e respondeu localmente com a fotografia do PostgreSQL de testes quando havia tabela correspondente. Foram testados 18 modos e interceptados 71 pedidos externos. O arquivo completo da captura fica fora do Git em `.work-mapa-unificado/requests-original.json`.
 
 | Fluxo | Método | Caminho | Pedidos |
 |---|---|---|---:|
-| DASHBOARD_DEFEITOS | GET | `/rest/v1/montagem_poste` | 1 |
+| DASHBOARD_DEFEITOS | GET | `/rest/v1/montagem_poste` | 2 |
 | DASHBOARD_DEFEITOS | GET | `/rest/v1/producao` | 1 |
 | MANDRIL_CIRCULAR | GET | `/api/programacao` | 1 |
 | MANDRIL_CIRCULAR | GET | `/api/saques-mandril` | 1 |
@@ -107,28 +107,51 @@ O script `scripts/capture_mapa_requests_offline.py` carregou o `app.js` original
 | MANDRIL_CIRCULAR | GET | `/rest/v1/producao` | 2 |
 | MANDRIL_CIRCULAR | GET | `/rest/v1/programacao_pcp` | 1 |
 | MANDRIL_CIRCULAR | GET | `/rest/v1/vw_formas_status` | 1 |
-| MONTAGEM_INDICADORES | GET | `/rest/v1/montagem_poste` | 1 |
+| MONTAGEM_INDICADORES | GET | `/rest/v1/montagem_poste` | 6 |
 | MONTAGEM_INDICADORES | GET | `/rest/v1/producao` | 1 |
-| PROD_ANALISE | GET | `/rest/v1/producao` | 3 |
+| PROD_ANALISE | GET | `/rest/v1/montagem_poste` | 3 |
+| PROD_ANALISE | GET | `/rest/v1/producao` | 2 |
 | PROD_ANALISE | POST | `/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1` | 1 |
 | RELATORIO_MANUTENCAO | GET | `/rest/v1/formas_manutencao` | 1 |
+| RELATORIO_MANUTENCAO | GET | `/rest/v1/montagem_poste` | 3 |
+| RELATORIO_MANUTENCAO | GET | `/rest/v1/producao` | 1 |
 | SEQUENCIA_S3 | GET | `/rest/v1/prog_s3_s4` | 1 |
+| USUARIOS | GET | `/rest/v1/montagem_poste` | 3 |
+| USUARIOS | GET | `/rest/v1/producao` | 1 |
 | USUARIOS | GET | `/rest/v1/usuarios` | 1 |
+| concretar cartão Setor 1 com tipo | GET | `/rest/v1/producao` | 1 |
+| concretar cartão Setor 1 com tipo | POST | `/rest/v1/producao` | 1 |
+| concretar cartão Setor 2 com tipo | GET | `/rest/v1/producao` | 1 |
+| concretar cartão Setor 2 com tipo | POST | `/rest/v1/producao` | 1 |
 | concretar cartão Setor 3 com tipo | GET | `/rest/v1/producao` | 1 |
 | concretar cartão Setor 3 com tipo | POST | `/rest/v1/producao` | 1 |
+| concretar cartão Setor 4 com tipo | GET | `/rest/v1/producao` | 1 |
+| concretar cartão Setor 4 com tipo | POST | `/rest/v1/producao` | 1 |
 | inicialização | GET | `/api/programacao` | 2 |
 | inicialização | GET | `/rest/v1/formas_manutencao` | 1 |
 | inicialização | GET | `/rest/v1/montagem_poste` | 2 |
 | inicialização | GET | `/rest/v1/producao` | 2 |
 | inicialização | GET | `/rest/v1/usuarios` | 1 |
+| liberar cartão Setor 1 | POST | `/rest/v1/liberacao_formas` | 1 |
+| liberar cartão Setor 2 | POST | `/rest/v1/liberacao_formas` | 1 |
+| liberar cartão Setor 3 | DELETE | `/rest/v1/programacao_pcp` | 1 |
+| liberar cartão Setor 3 | GET | `/rest/v1/montagem_poste` | 7 |
 | liberar cartão Setor 3 | POST | `/rest/v1/liberacao_formas` | 1 |
-| programar/desprogramar cartão Setor 3 | DELETE | `/rest/v1/programacao_pcp` | 1 |
-| programar/desprogramar cartão Setor 3 | POST | `/rest/v1/programacao_pcp` | 1 |
+| liberar cartão Setor 3 | POST | `/rest/v1/programacao_pcp` | 1 |
+| programar/desprogramar cartão Setor 1 | DELETE | `/rest/v1/programacao_pcp` | 1 |
+| programar/desprogramar cartão Setor 1 | POST | `/rest/v1/programacao_pcp` | 1 |
+| programar/desprogramar cartão Setor 2 | DELETE | `/rest/v1/programacao_pcp` | 1 |
+| programar/desprogramar cartão Setor 2 | POST | `/rest/v1/programacao_pcp` | 1 |
+| programar/desprogramar cartão Setor 3 | GET | `/rest/v1/montagem_poste` | 3 |
+| programar/desprogramar cartão Setor 4 | DELETE | `/rest/v1/programacao_pcp` | 1 |
+| programar/desprogramar cartão Setor 4 | POST | `/rest/v1/programacao_pcp` | 1 |
 
-A captura inclui navegação, programação e desprogramação por cartão, liberação e concretagem com tipo no Setor 3. Permanecem pendentes capturas de cancelamento Odin, manutenção, mandril, inspeção, montagem, fotos, segunda inspeção, retrabalho, relatórios, exportações e permissões por perfil. Esta matriz ainda não libera a implementação operacional.
+A captura inclui navegação, programação e desprogramação por cartão nos quatro setores, liberação nos Setores 1 a 3 e concretagem com tipo nos quatro setores. Permanecem pendentes capturas de cancelamento Odin, manutenção, mandril, inspeção, montagem, fotos, segunda inspeção, retrabalho, relatórios, exportações e permissões por perfil. Esta matriz ainda não libera a implementação operacional.
 
 ## Varredura ampliada e rastreio de origem — 03/10/2026
 
-`scripts/inventory_mapa_all_calls.py` registrou **143 ocorrências** no `app.js` de `.from(` (68), `.rpc(` (1), `.channel(` (1), `fetch(` (16), `localStorage` (54) e `caches` (3); `.storage`, `XMLHttpRequest` e `indexedDB` tiveram zero ocorrências. A lista por linha/coluna está em `tests/mapa/fixtures/static-call-sites.json`. Entre essas ocorrências, **86 são locais de chamada de rede candidatos**; as demais incluem armazenamento local e cache. Essa é a base para provar cobertura, não uma afirmação de que todos os locais já foram executados.
+`scripts/inventory_mapa_all_calls.py` registrou **143 ocorrências** no `app.js` de `.from(` (68), `.rpc(` (1), `.channel(` (1), `fetch(` (16), `localStorage` (54) e `caches` (3); `.storage`, `XMLHttpRequest` e `indexedDB` tiveram zero ocorrências. A lista por linha/coluna está em `tests/mapa/fixtures/static-call-sites.json`. Entre essas ocorrências, **86 são locais candidatos a chamada de rede**; as demais incluem armazenamento local e cache. Essa é a base para provar cobertura, não uma afirmação de que todos os locais já foram executados.
 
-A captura Playwright foi repetida com `page.route('**/*')`: **31 requisições externas foram bloqueadas e respondidas localmente**, e as pilhas de `fetch` permitiram associá-las a **16 linhas de origem** do `app.js`. Cabeçalhos `Prefer` e `Range` foram registrados quando presentes; para `apikey`, ficou somente a indicação de presença, sem valor. Método, caminho, query, corpo e fluxo da captura estão em `tests/mapa/fixtures/captured-offline.json`. As respostas usadas nessa captura ainda são vazias e sintéticas, por isso o arquivo está marcado como **rascunho**, não como fixture de contrato válido. Os demais perfis, setores e fluxos da etapa B ainda exigem roteiros e respostas com formato real do PostgreSQL de testes.
+A captura Playwright foi repetida com `page.route('**/*')` e servidor local alimentado por **62.178 linhas** das visões `api` do PostgreSQL de testes, exportadas para `.work-mapa-unificado/snapshot/` (ignorada pelo Git). Nenhum pedido do navegador alcançou host externo: **71 requisições foram interceptadas e respondidas localmente**, com 55 GET e 16 escritas simuladas em memória. As pilhas de `fetch` associaram as requisições a **16 linhas de origem** do `app.js`. Os GETs recebem listas com formato e campos da fotografia; o recorder altera apenas cópias em memória. Cabeçalhos `Prefer` e `Range` foram registrados quando presentes; para `apikey`, ficou somente a indicação de presença, sem valor. Método, caminho, query, corpo, forma da resposta e fluxo estão em `tests/mapa/fixtures/captured-offline.json`. O arquivo ainda é **rascunho**, pois não demonstra todas as respostas, erros e fluxos do oficial. Programar/desprogramar e concretar por cartão foram exercitados nos quatro setores sob GERENCIA; liberação produziu escrita nos Setores 1, 2 e 3, mas não no 4 nesse roteiro. Os demais fluxos e perfis exigem ações completas.
+
+`scripts/capture_mapa_role_sector_navigation.py` abriu os 18 modos originais nas 16 combinações de quatro perfis e quatro setores, em navegador isolado: **288 casos de navegação**, com 184 modos permitidos abertos e 104 negados sem abrir. Foram interceptados 299 pedidos externos. O resultado em `tests/mapa/fixtures/role-sector-navigation.json` **não comprova as ações dentro das telas** e não conta para a cobertura integral da etapa B.

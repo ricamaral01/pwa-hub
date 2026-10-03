@@ -1,6 +1,6 @@
 {
-  "status": "draft: intercepted with synthetic empty responses; not a contract fixture",
-  "network": "all external requests aborted and locally fulfilled",
+  "status": "draft: snapshot-backed local responses; not yet a full contract fixture",
+  "network": "all browser requests to external hosts aborted and locally fulfilled",
   "requests": [
     {
       "id": "offline-001",
@@ -25,7 +25,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -53,7 +53,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -78,7 +78,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -115,7 +115,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -152,7 +152,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -189,7 +189,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -226,7 +226,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -251,7 +251,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -276,7 +276,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -301,7 +301,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -326,7 +326,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -351,7 +351,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -379,7 +379,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -410,7 +410,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -432,7 +432,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -460,7 +460,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -494,7 +494,7 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
@@ -529,13 +529,183 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
       "id": "offline-019",
+      "flow": "MONTAGEM_INDICADORES",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-020",
+      "flow": "MONTAGEM_INDICADORES",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "1000"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-021",
+      "flow": "MONTAGEM_INDICADORES",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "1500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-022",
+      "flow": "MONTAGEM_INDICADORES",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "2000"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-023",
+      "flow": "MONTAGEM_INDICADORES",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "2500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-024",
       "flow": "DASHBOARD_DEFEITOS",
       "source_line_stack": 1517,
       "method": "GET",
@@ -563,13 +733,13 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-020",
+      "id": "offline-025",
       "flow": "DASHBOARD_DEFEITOS",
       "source_line_stack": 1517,
       "method": "GET",
@@ -598,13 +768,47 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-021",
+      "id": "offline-026",
+      "flow": "DASHBOARD_DEFEITOS",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "3000"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-027",
       "flow": "PROD_ANALISE",
       "source_line_stack": 1467,
       "method": "POST",
@@ -620,13 +824,13 @@
         "p_data_fim": "2026-10-03",
         "p_scope": "TOTAL"
       },
-      "stub_response": {
+      "local_response": {
         "status": 200,
-        "shape": "object"
+        "shape": "dict"
       }
     },
     {
-      "id": "offline-022",
+      "id": "offline-028",
       "flow": "PROD_ANALISE",
       "source_line_stack": 1517,
       "method": "GET",
@@ -658,13 +862,115 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-023",
+      "id": "offline-029",
+      "flow": "PROD_ANALISE",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
+        ],
+        "offset": [
+          "1000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-030",
+      "flow": "PROD_ANALISE",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
+        ],
+        "offset": [
+          "2000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-031",
+      "flow": "PROD_ANALISE",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "3500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-032",
       "flow": "PROD_ANALISE",
       "source_line_stack": 1517,
       "method": "GET",
@@ -696,14 +1002,306 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-024",
-      "flow": "PROD_ANALISE",
+      "id": "offline-033",
+      "flow": "USUARIOS",
+      "source_line_stack": 1778,
+      "method": "GET",
+      "path": "/rest/v1/usuarios",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "ativo": [
+          "eq.true"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-034",
+      "flow": "USUARIOS",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
+        ],
+        "offset": [
+          "3000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-035",
+      "flow": "USUARIOS",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
+        ],
+        "offset": [
+          "4000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-036",
+      "flow": "USUARIOS",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "4000"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-037",
+      "flow": "USUARIOS",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado"
+        ],
+        "offset": [
+          "1000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "data_fabricacao": [
+          "gte.2026-09-24",
+          "lte.2026-10-03"
+        ],
+        "status": [
+          "in.(LIBERADO,INSPECIONADO)"
+        ],
+        "order": [
+          "data_hora.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-038",
+      "flow": "RELATORIO_MANUTENCAO",
+      "source_line_stack": 742,
+      "method": "GET",
+      "path": "/rest/v1/formas_manutencao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "*"
+        ],
+        "order": [
+          "updated_at.desc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-039",
+      "flow": "RELATORIO_MANUTENCAO",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
+        ],
+        "offset": [
+          "5000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-040",
+      "flow": "RELATORIO_MANUTENCAO",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
+        ],
+        "offset": [
+          "6000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-041",
+      "flow": "RELATORIO_MANUTENCAO",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "4500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-042",
+      "flow": "RELATORIO_MANUTENCAO",
       "source_line_stack": 1517,
       "method": "GET",
       "path": "/rest/v1/producao",
@@ -731,17 +1329,17 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-025",
-      "flow": "USUARIOS",
-      "source_line_stack": 1778,
+      "id": "offline-043",
+      "flow": "programar/desprogramar cartão Setor 3",
+      "source_line_stack": 1517,
       "method": "GET",
-      "path": "/rest/v1/usuarios",
+      "path": "/rest/v1/montagem_poste",
       "headers": {
         "Prefer": null,
         "Range": null,
@@ -749,46 +1347,98 @@
       },
       "query": {
         "select": [
-          "*"
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
         ],
-        "ativo": [
-          "eq.true"
-        ]
-      },
-      "body": null,
-      "stub_response": {
-        "status": 200,
-        "shape": "list"
-      }
-    },
-    {
-      "id": "offline-026",
-      "flow": "RELATORIO_MANUTENCAO",
-      "source_line_stack": 742,
-      "method": "GET",
-      "path": "/rest/v1/formas_manutencao",
-      "headers": {
-        "Prefer": null,
-        "Range": null,
-        "apikey_present": true
-      },
-      "query": {
-        "select": [
-          "*"
+        "offset": [
+          "7000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
         ],
         "order": [
-          "updated_at.desc"
+          "id.asc"
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-027",
+      "id": "offline-044",
       "flow": "programar/desprogramar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,motivo_recusa,etapa,inicio_inspecao_montagem,finalizado_em,checklists,montador_nome"
+        ],
+        "offset": [
+          "8000"
+        ],
+        "limit": [
+          "1000"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-045",
+      "flow": "programar/desprogramar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "5000"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-046",
+      "flow": "liberar cartão Setor 3",
       "source_line_stack": 1677,
       "method": "POST",
       "path": "/rest/v1/programacao_pcp",
@@ -811,16 +1461,16 @@
         "descricao_poste": null,
         "codigo_produto": null,
         "quantidade": 1,
-        "data_hora": "2026-10-03T18:29:36.000Z"
+        "data_hora": "2026-10-03T19:03:31.000Z"
       },
-      "stub_response": {
-        "status": 200,
-        "shape": "list"
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
       }
     },
     {
-      "id": "offline-028",
-      "flow": "programar/desprogramar cartão Setor 3",
+      "id": "offline-047",
+      "flow": "liberar cartão Setor 3",
       "source_line_stack": 3220,
       "method": "DELETE",
       "path": "/rest/v1/programacao_pcp",
@@ -841,13 +1491,47 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
+        "status": 204,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-048",
+      "flow": "liberar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "5500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-029",
+      "id": "offline-049",
       "flow": "liberar cartão Setor 3",
       "source_line_stack": 1690,
       "method": "POST",
@@ -867,15 +1551,219 @@
         "setor": "Setor 3",
         "forma": "SC01",
         "colaborador": "Jeferson",
-        "data_hora": "2026-10-03T18:29:36.000Z"
+        "data_hora": "2026-10-03T19:03:32.000Z"
       },
-      "stub_response": {
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-050",
+      "flow": "liberar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "6000"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-030",
+      "id": "offline-051",
+      "flow": "liberar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "6500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-052",
+      "flow": "liberar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "7000"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-053",
+      "flow": "liberar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "7500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-054",
+      "flow": "liberar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "8000"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-055",
+      "flow": "liberar cartão Setor 3",
+      "source_line_stack": 1517,
+      "method": "GET",
+      "path": "/rest/v1/montagem_poste",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id,record_id,data_fabricacao,setor,forma_numero,modelo,status_montagem,etapa,inicio_inspecao_montagem,finalizado_em,montador_nome"
+        ],
+        "offset": [
+          "8500"
+        ],
+        "limit": [
+          "500"
+        ],
+        "or": [
+          "(and(finalizado_em.gte.2026-10-03T03:00:00.000Z,finalizado_em.lte.2026-10-04T02:59:59.999Z),and(inicio_inspecao_montagem.gte.2026-10-03T03:00:00.000Z,inicio_inspecao_montagem.lte.2026-10-04T02:59:59.999Z),and(data_fabricacao.gte.2026-10-03,data_fabricacao.lte.2026-10-03))"
+        ],
+        "order": [
+          "id.asc"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-056",
       "flow": "concretar cartão Setor 3 com tipo",
       "source_line_stack": 1596,
       "method": "GET",
@@ -903,13 +1791,13 @@
         ]
       },
       "body": null,
-      "stub_response": {
+      "local_response": {
         "status": 200,
         "shape": "list"
       }
     },
     {
-      "id": "offline-031",
+      "id": "offline-057",
       "flow": "concretar cartão Setor 3 com tipo",
       "source_line_stack": 1631,
       "method": "POST",
@@ -931,12 +1819,443 @@
         "tipo_concreto": "Concreto Seco - Vibrado",
         "vibrado": null,
         "colaborador": "Jeferson",
-        "data_hora": "2026-10-03T18:29:37.000Z",
+        "data_hora": "2026-10-03T19:03:32.000Z",
         "status": "LIBERADO"
       },
-      "stub_response": {
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-058",
+      "flow": "programar/desprogramar cartão Setor 1",
+      "source_line_stack": 1677,
+      "method": "POST",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": "resolution=merge-duplicates",
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "on_conflict": [
+          "data_fabricacao,setor,forma"
+        ]
+      },
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 1",
+        "forma": "IE-01",
+        "modelo": "",
+        "codigo_poste": null,
+        "descricao_poste": null,
+        "codigo_produto": null,
+        "quantidade": 1,
+        "data_hora": "2026-10-03T19:03:33.000Z"
+      },
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-059",
+      "flow": "programar/desprogramar cartão Setor 1",
+      "source_line_stack": 3220,
+      "method": "DELETE",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 1"
+        ],
+        "forma": [
+          "eq.IE-01"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 204,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-060",
+      "flow": "liberar cartão Setor 1",
+      "source_line_stack": 1690,
+      "method": "POST",
+      "path": "/rest/v1/liberacao_formas",
+      "headers": {
+        "Prefer": "resolution=merge-duplicates",
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "on_conflict": [
+          "data_fabricacao,setor,forma"
+        ]
+      },
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 1",
+        "forma": "IE-01",
+        "colaborador": "Jeferson",
+        "data_hora": "2026-10-03T19:03:33.000Z"
+      },
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-061",
+      "flow": "concretar cartão Setor 1 com tipo",
+      "source_line_stack": 1596,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 1"
+        ],
+        "forma": [
+          "eq.IE-01"
+        ],
+        "order": [
+          "data_hora.desc.nullslast"
+        ]
+      },
+      "body": null,
+      "local_response": {
         "status": 200,
         "shape": "list"
+      }
+    },
+    {
+      "id": "offline-062",
+      "flow": "concretar cartão Setor 1 com tipo",
+      "source_line_stack": 1631,
+      "method": "POST",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {},
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 1",
+        "forma": "IE-01",
+        "modelo": "3 CXS VL",
+        "codigo_poste": "IE",
+        "descricao_poste": "Padrao Completo 3cxs VL Elektro",
+        "codigo_produto": "4929",
+        "tipo_concreto": "Concreto Seco - Vibrado",
+        "vibrado": null,
+        "colaborador": "Jeferson",
+        "data_hora": "2026-10-03T19:03:33.000Z",
+        "status": "LIBERADO"
+      },
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-063",
+      "flow": "programar/desprogramar cartão Setor 2",
+      "source_line_stack": 1677,
+      "method": "POST",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": "resolution=merge-duplicates",
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "on_conflict": [
+          "data_fabricacao,setor,forma"
+        ]
+      },
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 2",
+        "forma": "TCR-1",
+        "modelo": "",
+        "codigo_poste": null,
+        "descricao_poste": null,
+        "codigo_produto": null,
+        "quantidade": 1,
+        "data_hora": "2026-10-03T19:03:34.000Z"
+      },
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-064",
+      "flow": "programar/desprogramar cartão Setor 2",
+      "source_line_stack": 3220,
+      "method": "DELETE",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 2"
+        ],
+        "forma": [
+          "eq.TCR-1"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 204,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-065",
+      "flow": "liberar cartão Setor 2",
+      "source_line_stack": 1690,
+      "method": "POST",
+      "path": "/rest/v1/liberacao_formas",
+      "headers": {
+        "Prefer": "resolution=merge-duplicates",
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "on_conflict": [
+          "data_fabricacao,setor,forma"
+        ]
+      },
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 2",
+        "forma": "TCR-1",
+        "colaborador": "Jeferson",
+        "data_hora": "2026-10-03T19:03:34.000Z"
+      },
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-066",
+      "flow": "concretar cartão Setor 2 com tipo",
+      "source_line_stack": 1596,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 2"
+        ],
+        "forma": [
+          "eq.TCR-1"
+        ],
+        "order": [
+          "data_hora.desc.nullslast"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-067",
+      "flow": "concretar cartão Setor 2 com tipo",
+      "source_line_stack": 1631,
+      "method": "POST",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {},
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 2",
+        "forma": "TCR-1",
+        "modelo": "600-VR",
+        "codigo_poste": "TCR",
+        "descricao_poste": "Poste 7,5 X 600 VR c/",
+        "codigo_produto": "940",
+        "tipo_concreto": "Concreto Seco - Vibrado",
+        "vibrado": null,
+        "colaborador": "Jeferson",
+        "data_hora": "2026-10-03T19:03:34.000Z",
+        "status": "LIBERADO"
+      },
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-068",
+      "flow": "programar/desprogramar cartão Setor 4",
+      "source_line_stack": 1677,
+      "method": "POST",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": "resolution=merge-duplicates",
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "on_conflict": [
+          "data_fabricacao,setor,forma"
+        ]
+      },
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 4",
+        "forma": "C-F1-1",
+        "modelo": "",
+        "codigo_poste": null,
+        "descricao_poste": null,
+        "codigo_produto": null,
+        "quantidade": 1,
+        "data_hora": "2026-10-03T19:03:35.000Z"
+      },
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-069",
+      "flow": "programar/desprogramar cartão Setor 4",
+      "source_line_stack": 3220,
+      "method": "DELETE",
+      "path": "/rest/v1/programacao_pcp",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 4"
+        ],
+        "forma": [
+          "eq.C-F1-1"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 204,
+        "shape": "NoneType"
+      }
+    },
+    {
+      "id": "offline-070",
+      "flow": "concretar cartão Setor 4 com tipo",
+      "source_line_stack": 1596,
+      "method": "GET",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {
+        "select": [
+          "id"
+        ],
+        "data_fabricacao": [
+          "eq.2026-10-03"
+        ],
+        "setor": [
+          "eq.Setor 4"
+        ],
+        "forma": [
+          "eq.C-F1-1"
+        ],
+        "order": [
+          "data_hora.desc.nullslast"
+        ]
+      },
+      "body": null,
+      "local_response": {
+        "status": 200,
+        "shape": "list"
+      }
+    },
+    {
+      "id": "offline-071",
+      "flow": "concretar cartão Setor 4 com tipo",
+      "source_line_stack": 1631,
+      "method": "POST",
+      "path": "/rest/v1/producao",
+      "headers": {
+        "Prefer": null,
+        "Range": null,
+        "apikey_present": true
+      },
+      "query": {},
+      "body": {
+        "data_fabricacao": "2026-10-03",
+        "setor": "Setor 4",
+        "forma": "C-F1-1",
+        "modelo": "6,0 x 90",
+        "codigo_poste": "CEMIG-5X150",
+        "descricao_poste": "Padrao Cemig 1CX - 5,0 x 150",
+        "codigo_produto": "952",
+        "tipo_concreto": "Concreto Seco - Vibrado",
+        "vibrado": null,
+        "colaborador": "Jeferson",
+        "data_hora": "2026-10-03T19:03:35.000Z",
+        "status": "LIBERADO"
+      },
+      "local_response": {
+        "status": 201,
+        "shape": "NoneType"
       }
     }
   ]
