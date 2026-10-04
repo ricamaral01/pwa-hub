@@ -1,6 +1,10 @@
 {
   "network_sites": 73,
   "covered_sites": 72,
+  "behavior_covered_sites": 73,
+  "preserved_before_fetch": [
+    "app.js:2162:28:fetch"
+  ],
   "uncovered_sites": [
     "app.js:2162:28:fetch"
   ],
@@ -10,5 +14,5 @@
     "offline-118",
     "offline-179"
   ],
-  "interpretation": "A covered site has at least one intercepted request. Full flow and response parity are not proven."
+  "interpretation": "Intercepted requests cover covered_sites. The original CONFIG.API_URL failure before fetch counts only toward behavior_covered_sites. Full flow and response parity are not proven."
 }

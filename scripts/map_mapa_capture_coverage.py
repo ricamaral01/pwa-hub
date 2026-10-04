@@ -31,6 +31,7 @@ STACK_TO_CALL = {
     14125: (14126,), 14647: (14620,),
 }
 SECTOR_STATUS = {"programacao_pcp": 3268, "liberacao_formas": 3269, "producao": 3270}
+PRESERVED_BEFORE_FETCH = {"app.js:2162:28:fetch"}
 
 
 def main():
@@ -69,12 +70,18 @@ def main():
             by_line[line]["covered_by"].append(invocation["flow"])
     eligible = [row for row in inventory["calls"] if row["kind"] in NETWORK and row["classification"] != "collection_helper"]
     covered = [row for row in eligible if row["covered_by"]]
+    unreachable = [row["id"] for row in eligible
+                   if row["id"] in PRESERVED_BEFORE_FETCH and not row["covered_by"]]
+    if set(unreachable) != PRESERVED_BEFORE_FETCH:
+        raise RuntimeError("Known pre-fetch behavior changed; review app.js:2162")
     INVENTORY.write_text(json.dumps(inventory, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     summary = {"network_sites": len(eligible), "covered_sites": len(covered),
+               "behavior_covered_sites": len(covered) + len(unreachable),
+               "preserved_before_fetch": unreachable,
                "uncovered_sites": [row["id"] for row in eligible if not row["covered_by"]],
                "unmapped_requests": unmapped,
                "asset_requests_without_fetch_stack": asset_requests,
-               "interpretation": "A covered site has at least one intercepted request. Full flow and response parity are not proven."}
+               "interpretation": "Intercepted requests cover covered_sites. The original CONFIG.API_URL failure before fetch counts only toward behavior_covered_sites. Full flow and response parity are not proven."}
     SUMMARY.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"covered={len(covered)}/{len(eligible)} unmapped_requests={len(unmapped)}")
     if unmapped:
