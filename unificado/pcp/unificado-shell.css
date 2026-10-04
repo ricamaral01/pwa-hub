@@ -92,3 +92,11 @@ body.unificado-pcp-standalone #main-content{display:contents}
  body.unificado-menu-collapsed .unificado-pcp-test-link{font-size:0;padding:12px 5px}
  body.unificado-menu-collapsed .unificado-pcp-test-link::after{content:'ⓘ';font-size:20px}
 }
+@media print{
+ #unificado-version,.unificado-pcp-version{display:none!important}
+}
+@media screen and (min-width:1025px){
+ #main-content .section-card,#main-content .modal-content,#main-content .offcanvas,#main-content .alert{border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05)}
+ #main-content .btn-accent{background:#E8762A;border-color:#E8762A;color:#0B1730;border-radius:10px;font-weight:600}
+ #sidebar .nav-group-items .nav-link.active,#sidebar .nav-group.open>.nav-group-toggle{border:0;background:#ffffff1a;color:#fff}
+}

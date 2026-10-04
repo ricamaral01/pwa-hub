@@ -33,7 +33,7 @@ def main() -> None:
         menu_script = ('  <script src="/unificado/shell/menu.config.js"></script>\n'
                        if page == "formas-por-setor" else "")
         html, heads = re.subn(
-            r"<head>", '<head>\n  <style>html{background:#0B1730}@media(min-width:1025px){body{background:#0B1730!important}}</style>\n'
+            r"<head>", '<head>\n  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>\n'
             + f'  <script src="/unificado/pcp/unificado-bridge.js?v={version}"></script>\n'
             + menu_script + f'  <script src="/unificado/pcp/unificado-shell.js?v={version}"></script>',
             html, count=1, flags=re.I)

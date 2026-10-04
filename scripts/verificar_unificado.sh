@@ -58,8 +58,9 @@ for file in sorted(root.rglob("*")):
         operation = file.parent
         html = (operation / "index.html").read_text(encoding="utf-8")
         bridge = (operation / "bridge.js").read_text(encoding="utf-8")
-        if (html.find('src="bridge.js"') < 0 or
-                html.find('src="bridge.js"') > html.find('src="app.js') or
+        bridge_pos = html.find('src="bridge.js')
+        app_pos = html.find('src="app.js')
+        if (bridge_pos < 0 or app_pos < 0 or bridge_pos > app_pos or
                 "AMBIENTE DE TESTE" not in html or
                 not all(value in bridge for value in
                         (".supabase.co", "pcp.concretrack.com.br", "dautomacao.com", "docs.google.com"))):

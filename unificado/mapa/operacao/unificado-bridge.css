@@ -82,6 +82,7 @@
 }
 @media print{
  .unificado-sidebar,.unificado-topbar,#ambiente-teste,#unificado-version{display:none!important}
+ body.print-relatorio::after{content:"";display:block;break-before:page;height:1px}
 }
 @media screen and (max-width:1024px){
  #unificado-version{display:none!important}
@@ -106,4 +107,10 @@
  body.unificado-desktop.unificado-menu-collapsed .unificado-nav-link{justify-content:center;padding:6px 0;font-size:0}
  body.unificado-desktop.unificado-menu-collapsed .unificado-mono{font-size:11px}
  body.unificado-desktop.unificado-menu-collapsed .unificado-group-title,body.unificado-desktop.unificado-menu-collapsed .unificado-nav-foot{display:none}
+}
+@media screen and (min-width:1025px){
+ body.unificado-desktop .modal-box,body.unificado-desktop .mi-drawer-content{border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05);font-family:Geist,system-ui,sans-serif}
+ body.unificado-desktop .mi-drawer-content{border-radius:16px 0 0 16px}
+ body.unificado-desktop .modal-box input:not([type=checkbox]):not([type=radio]),body.unificado-desktop .modal-box select,body.unificado-desktop .mi-drawer-content input:not([type=checkbox]):not([type=radio]),body.unificado-desktop .mi-drawer-content select{background:#F1F3F6;border-color:#E9ECF1;border-radius:10px}
+ body.unificado-desktop .modal-box .btn.primary,body.unificado-desktop .mi-drawer-content .btn.primary{background:#E8762A;border-color:#E8762A;color:#0B1730;border-radius:10px;font-weight:600}
 }

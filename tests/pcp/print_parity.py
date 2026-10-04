@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import argparse
 import json
 from pathlib import Path
 import sys
@@ -35,6 +36,15 @@ def pages_digest(pdf: bytes) -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--report-start', default='2026-10-02')
+    parser.add_argument('--report-days', default='1')
+    parser.add_argument('--label-date', default='2026-10-02')
+    parser.add_argument('--label-count', type=int, default=2)
+    parser.add_argument('--arm-start', default='2026-10-05')
+    parser.add_argument('--arm-days', default='1')
+    parser.add_argument('--print-css', default='')
+    args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     tokens = {key: token(*settings[:4]) for key, settings in APIS.items()}
     results = []
@@ -80,32 +90,34 @@ def main() -> None:
                 if case in {"relatorio-producao", "relatorio-programacao-s3",
                             "relatorio-programacao-s4"}:
                     page.wait_for_function("() => !document.querySelector('#report-status')?.textContent.includes('Carregando')", timeout=15000)
-                    page.evaluate("""() => {
-                      document.querySelector('#report-start').value = '2026-10-02';
-                      document.querySelector('#report-days').value = '1';
+                    page.evaluate("""([start, days]) => {
+                      document.querySelector('#report-start').value = start;
+                      document.querySelector('#report-days').value = days;
                       return loadReport();
-                    }""")
-                    page.wait_for_function("() => document.querySelectorAll('#report-pages .report-paper').length === 1", timeout=15000)
+                    }""", [args.report_start, args.report_days])
+                    page.wait_for_function("() => document.querySelectorAll('#report-pages .report-paper').length >= 1", timeout=15000)
                 elif case == "pcp-diario":
                     page.wait_for_function("() => document.querySelector('#resumo')?.textContent.includes('linhas exibidas')", timeout=20000)
                 elif case in {"etiquetas", "etiquetas-sc"}:
-                    page.locator("#f-data").fill("2026-10-01" if case == "etiquetas-sc" else "2026-10-02")
+                    page.locator("#f-data").fill("2026-10-01" if case == "etiquetas-sc" else args.label_date)
                     page.evaluate("loadPostesProgramados()")
                     count = page.locator(".poste-check").count()
                     assert count > 0, f"No {case} items available for print comparison"
                     page.locator(".poste-check").first.check()
                     page.evaluate("gerarEtiquetasSelecionadas()")
-                    page.evaluate("""() => document.querySelectorAll('.label-print-check').forEach(
-                          (input,index) => {input.checked=index<2;
-                           input.closest('.label-pair').classList.toggle('print-selected',index<2)})""")
+                    page.evaluate("""count => document.querySelectorAll('.label-print-check').forEach(
+                          (input,index) => {input.checked=index<count;
+                           input.closest('.label-pair').classList.toggle('print-selected',index<count)})""", args.label_count)
                 elif case == "etiquetas-armaduras":
-                    page.locator("#arm-start").fill("2026-10-05")
-                    page.locator("#arm-days").fill("1")
+                    page.locator("#arm-start").fill(args.arm_start)
+                    page.locator("#arm-days").fill(args.arm_days)
                     page.locator("#arm-load").click()
                     page.wait_for_function("() => !document.querySelector('#arm-status')?.textContent.includes('Carregando')", timeout=20000)
                     page.locator(".arm-template").evaluate_all("els => els.forEach(el => {if (!el.value) el.selectedIndex=1})")
                     page.evaluate("generateArmaduras()")
                     assert page.locator(".arm-label").count() > 0, "No armadura labels generated"
+                if side == 'copia' and args.print_css:
+                    page.add_style_tag(content='@media print{' + args.print_css + '}')
                 pdf = page.pdf(print_background=True, prefer_css_page_size=True)
                 info = pages_digest(pdf)
                 info.update({"http": response.status if response else None,
@@ -121,7 +133,8 @@ def main() -> None:
             results.append({"case": case, "same_pages": pair["oficial"]["pages"] == pair["copia"]["pages"],
                             "oficial": pair["oficial"], "copia": pair["copia"]})
         browser.close()
-    (OUT / "report.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+    suffix = f"{args.report_start}-{args.report_days}-{args.label_date}-{args.label_count}-{args.arm_start}-{args.arm_days}"
+    (OUT / f"report-{suffix}.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     for result in results:
         print(json.dumps({"case": result["case"], "same_pages": result["same_pages"],
                           "page_count": [result[side]["page_count"] for side in ("oficial", "copia")],

@@ -36,6 +36,7 @@ def workbook_data(path: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--role", choices=("GERENCIA", "GESTOR"), default="GERENCIA")
+    parser.add_argument("--date", help="Montage date to export; default picks the latest")
     args = parser.parse_args()
     DEST.mkdir(parents=True, exist_ok=True)
     source = SOURCE.read_text(encoding="utf-8")
@@ -43,7 +44,7 @@ def main() -> None:
     external = []
     writes = []
     summaries = {}
-    selected_day = None
+    selected_day = args.date
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
         context = browser.new_context(viewport={"width": 1366, "height": 768},
@@ -142,7 +143,7 @@ def main() -> None:
     assert summaries["original"]["data"] == summaries["copia"]["data"]
     for value in summaries.values():
         value.pop("data")
-    (DEST / f"report-{args.role.lower()}.json").write_text(
+    (DEST / f"report-{args.role.lower()}-{selected_day}.json").write_text(
         json.dumps(summaries, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"xlsx_export": "equal", "role": args.role, "date": selected_day,
                       "original": summaries["original"],

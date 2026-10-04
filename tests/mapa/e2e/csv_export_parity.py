@@ -21,6 +21,8 @@ BUTTONS = ("paBtnExportarDadosCSV", "paBtnExportarCSV")
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--role", choices=("GERENCIA", "GESTOR"), default="GERENCIA")
+    parser.add_argument("--start", default="2026-10-02")
+    parser.add_argument("--end", default="2026-10-03")
     args = parser.parse_args()
     DEST.mkdir(parents=True, exist_ok=True)
     source = SOURCE.read_text(encoding="utf-8")
@@ -57,12 +59,12 @@ def main() -> None:
             else:
                 page.goto(URL, wait_until="domcontentloaded")
             page.wait_for_function("role => state.authUser?.role === role", arg=args.role, timeout=15000)
-            page.evaluate("""async () => {
+            page.evaluate("""async ([start,end]) => {
               setMode('PROD_ANALISE');
-              document.getElementById('paDataInicio').value='2026-10-02';
-              document.getElementById('paDataFim').value='2026-10-03';
+              document.getElementById('paDataInicio').value=start;
+              document.getElementById('paDataFim').value=end;
               await carregarProdutividadeConcretagem();
-            }""")
+            }""", [args.start,args.end])
             files[variant] = {}
             for button in BUTTONS:
                 if button == "paBtnExportarCSV":
@@ -88,7 +90,7 @@ def main() -> None:
             assert right["filename"].startswith("dados_concretagem_")
         else:
             assert left["filename"] == right["filename"]
-    (DEST / f"report-{args.role.lower()}.json").write_text(
+    (DEST / f"report-{args.role.lower()}-{args.start}-{args.end}.json").write_text(
         json.dumps(files, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"csv_exports": "byte_equal", "role": args.role,
                       "files": files["copia"],

@@ -36,6 +36,7 @@ def main() -> None:
     parser.add_argument("--role", choices=("GERENCIA", "GESTOR"), default="GERENCIA")
     parser.add_argument("--sector", type=int, choices=(1, 2, 3, 4), default=1)
     parser.add_argument("--share", action="store_true")
+    parser.add_argument("--print-css", default="")
     args = parser.parse_args()
     account = credentials()
     results = []
@@ -72,6 +73,8 @@ def main() -> None:
                 kpis:[...doc.querySelectorAll('.rel-kpi-grid strong')].map(n=>n.innerText)};
             }""", {"date": DATE, "sector": args.sector})
             page.evaluate("document.body.classList.add('print-relatorio')")
+            if variant != "original" and args.print_css:
+                page.add_style_tag(content="@media print{" + args.print_css + "}")
             pdf_bytes = page.pdf(print_background=True, prefer_css_page_size=True)
             OUT.mkdir(parents=True, exist_ok=True)
             (OUT / f"report-{args.role.lower()}-s{args.sector}-{variant}.pdf").write_bytes(pdf_bytes)
