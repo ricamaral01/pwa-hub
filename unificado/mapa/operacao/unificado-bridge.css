@@ -74,12 +74,32 @@
  body.unificado-desktop .unificado-date-heading:first-child{margin-top:3px}
 }
 @media screen and (min-width:1025px) and (max-width:1450px){
- body.unificado-desktop .unificado-sidebar{width:210px;min-width:210px}
- body.unificado-desktop .app-main{width:calc(100% - 210px)}
+ body.unificado-desktop .unificado-sidebar{width:228px;min-width:228px}
+ body.unificado-desktop .app-main{width:calc(100% - 228px)}
  body.unificado-desktop #viewRelatorio .page-fc,body.unificado-desktop #viewHistorico .page-fc{flex-wrap:wrap}
  body.unificado-desktop #viewRelatorio .page-fc-grid,body.unificado-desktop #viewHistorico .page-fc-grid{flex-basis:100%}
  body.unificado-desktop .page-content.container{padding:25px!important}
 }
 @media print{
  .unificado-sidebar,.unificado-topbar{display:none!important}
+}
+@media screen and (min-width:1025px){
+ body.unificado-desktop .unificado-brand-logos,body.unificado-desktop .unificado-pcp-brand-logos{display:flex;align-items:center;gap:7px;min-width:0}
+ body.unificado-desktop .unificado-brand-logos img:first-child{width:112px;max-height:43px;object-fit:contain}
+ body.unificado-desktop .unificado-brand-logos img:last-child{width:34px;height:34px;object-fit:contain}
+ body.unificado-desktop .unificado-collapse{width:36px;height:30px;margin:0 0 12px 10px;border:1px solid #ffffff33;border-radius:8px;background:#ffffff16;color:#fff;cursor:pointer}
+ body.unificado-desktop .unificado-sidebar,body.unificado-desktop .app-main{transition:width .2s ease,min-width .2s ease}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-sidebar{width:64px!important;min-width:64px!important;padding-right:4px}
+ body.unificado-desktop.unificado-menu-collapsed .app-main{width:calc(100% - 64px)!important}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-brand{padding:3px 5px 18px}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-brand-logos{gap:2px}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-brand-logos img:first-child{width:24px;max-height:24px}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-brand-logos img:last-child{width:24px;height:24px}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-collapse{margin-left:5px}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-switch{display:grid;padding:2px;margin-bottom:10px}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-switch-btn{font-size:0;min-height:31px}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-switch-btn::after{content:attr(data-icon);font:600 12px 'Geist Mono',monospace}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-nav-link{justify-content:center;padding:6px 0;font-size:0}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-mono{font-size:11px}
+ body.unificado-desktop.unificado-menu-collapsed .unificado-group-title,body.unificado-desktop.unificado-menu-collapsed .unificado-nav-foot{display:none}
 }

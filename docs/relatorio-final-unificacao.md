@@ -2,6 +2,8 @@
 
 Atualizado em 04/10/2026 (fotografia dos dados: 04/10/2026 09:44:18 UTC). **A certificação final ainda não foi alcançada.** Este documento registra o que está publicado e os critérios que ainda faltam, sem autorizar a virada.
 
+O retorno do Ricardo sobre Defeitos, navegação entre módulos, logos e menu recolhível está documentado em `docs/retorno-ricardo-2026-10-04.md`. O Dashboard Defeitos preserva a contagem duplicada do original; Montagem, Produtividade e Histórico foram comparados com o HTML original alimentado por respostas da origem. Uma diferença de ordem de Produtividade com horários empatados alterava linhas exibidas e foi corrigida apenas no proxy de testes. A troca Planejamento/Produção abre a tela final diretamente. As capturas dos dois estados do menu nas duas larguras estão em `docs/capturas-retorno-ricardo/`.
+
 ## Publicado
 
 VPS de testes: `2.25.163.32`. As rotas abaixo são exclusivas do ambiente de testes; a virada não foi executada.

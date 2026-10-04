@@ -28,17 +28,32 @@
     const nav = element("aside", "unificado-sidebar");
     nav.id = "unificadoSidebar";
     const brand = element("div", "unificado-brand");
-    brand.innerHTML = '<span class="unificado-brand-icon">C</span><span><strong>Concrefer</strong><small>Planejamento e produção</small></span>';
+    brand.innerHTML = '<span class="unificado-brand-logos"><img src="/unificado/pcp/static/img/concrefer-logo.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></span>';
     nav.append(brand);
+    const collapse = element("button", "unificado-collapse", "☰");
+    collapse.type = "button";
+    collapse.title = "Recolher ou expandir menu";
+    collapse.setAttribute("aria-label", "Recolher ou expandir menu");
+    collapse.addEventListener("click", () => {
+      const collapsed = !document.body.classList.contains("unificado-menu-collapsed");
+      localStorage.setItem("unificado_menu_collapsed", collapsed ? "1" : "0");
+      document.body.classList.toggle("unificado-menu-collapsed", collapsed);
+      collapse.setAttribute("aria-expanded", String(!collapsed));
+    });
+    nav.append(collapse);
     const switcher = element("div", "unificado-switch");
     const planning = element("button", "unificado-switch-btn", "Planejamento");
     planning.type = "button";
-    planning.addEventListener("click", () => {
-      location.assign("/unificado/pcp/");
-    });
+    planning.title = "Planejamento";
+    planning.setAttribute("aria-label", "Planejamento");
+    planning.dataset.icon = "PL";
+    planning.addEventListener("click", () => location.assign("/unificado/pcp/dashboard/"));
     const production = element("button", "unificado-switch-btn is-active", "Produção");
     production.type = "button";
     production.setAttribute("aria-current", "page");
+    production.title = "Produção";
+    production.setAttribute("aria-label", "Produção");
+    production.dataset.icon = "PR";
     switcher.append(planning, production);
     nav.append(switcher);
     const scroll = element("nav", "unificado-nav");
@@ -46,6 +61,8 @@
     const home = element("button", "unificado-nav-link", "Início");
     home.type = "button";
     home.dataset.mode = "HUB";
+    home.title = "Início";
+    home.setAttribute("aria-label", "Início");
     home.prepend(element("span", "unificado-mono", "IN"));
     home.addEventListener("click", () => setMode("HUB"));
     scroll.append(home);
@@ -56,6 +73,8 @@
         const button = element("button", "unificado-nav-link", label);
         button.type = "button";
         button.dataset.mode = mode;
+        button.title = label;
+        button.setAttribute("aria-label", label);
         button.prepend(element("span", "unificado-mono", mono));
         button.addEventListener("click", () => setMode(mode));
         group.append(button);
@@ -153,6 +172,7 @@
     placeHistoryFilters();
   }
   document.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.toggle("unificado-menu-collapsed", localStorage.getItem("unificado_menu_collapsed") === "1");
     const shell = document.querySelector("#appShell");
     const main = shell?.querySelector(".app-main");
     if (!shell || !main) return;

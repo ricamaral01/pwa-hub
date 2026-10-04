@@ -51,7 +51,7 @@
     document.body.classList.add("unificado-pcp-standalone");
   }
   function restoreOriginalLayout() {
-    document.querySelectorAll(".unificado-pcp-brand,.unificado-pcp-switch,.unificado-pcp-crumb,.unificado-pcp-top-actions,.unificado-pcp-test-link,.unificado-pcp-mono")
+    document.querySelectorAll(".unificado-pcp-brand,.unificado-pcp-collapse,.unificado-pcp-switch,.unificado-pcp-crumb,.unificado-pcp-top-actions,.unificado-pcp-test-link,.unificado-pcp-mono")
       .forEach(node => node.remove());
     if (!document.body.classList.contains("unificado-pcp-standalone")) return;
     const wrapper = document.querySelector("#main-content");
@@ -73,22 +73,60 @@
     if (!sidebar || !topbar) return;
     for (const link of sidebar.querySelectorAll("nav a.nav-link")) {
       if (link.querySelector(".unificado-pcp-mono")) continue;
-      const code = (link.dataset.page || "PC").replace(/[^a-z0-9]/gi, "").slice(0, 2).toUpperCase();
-      link.prepend(make("span", "unificado-pcp-mono", code));
+      link.title = link.textContent.trim();
+      link.setAttribute("aria-label", link.title);
+      if (!link.querySelector("i.bi")) {
+        const icon = make("span", "unificado-pcp-mono", (link.dataset.page || "PC").slice(0, 2).toUpperCase());
+        link.prepend(icon);
+      }
     }
     if (sidebar.querySelector(".unificado-pcp-brand")) return;
     const brand = make("div", "unificado-pcp-brand", "");
-    brand.innerHTML = '<span class="unificado-pcp-brand-icon">C</span><span><strong>Concrefer</strong><small>Planejamento e produção</small></span>';
+    brand.innerHTML = '<span class="unificado-pcp-brand-logos"><img src="/unificado/pcp/static/img/concrefer-logo.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></span>';
     sidebar.prepend(brand);
+    const collapse = make("button", "unificado-pcp-collapse", "☰");
+    collapse.type = "button";
+    collapse.title = "Recolher ou expandir menu";
+    collapse.setAttribute("aria-label", collapse.title);
+    collapse.addEventListener("click", () => {
+      const collapsed = !document.body.classList.contains("unificado-menu-collapsed");
+      localStorage.setItem("unificado_menu_collapsed", collapsed ? "1" : "0");
+      document.body.classList.toggle("unificado-menu-collapsed", collapsed);
+      collapse.setAttribute("aria-expanded", String(!collapsed));
+    });
+    brand.after(collapse);
     const switcher = make("div", "unificado-pcp-switch", "");
     const planning = make("button", "unificado-pcp-switch-button is-active", "Planejamento");
     planning.type = "button";
     planning.setAttribute("aria-current", "page");
+    planning.title = "Planejamento";
+    planning.setAttribute("aria-label", "Planejamento");
+    planning.dataset.icon = "PL";
     const production = make("button", "unificado-pcp-switch-button", "Produção");
     production.type = "button";
+    production.title = "Produção";
+    production.setAttribute("aria-label", "Produção");
+    production.dataset.icon = "PR";
     production.addEventListener("click", () => location.assign("/unificado/mapa/operacao/"));
     switcher.append(planning, production);
     sidebar.querySelector("nav")?.before(switcher);
+    for (const group of sidebar.querySelectorAll(".nav-group")) {
+      const toggle = group.querySelector(".nav-group-toggle");
+      if (!toggle) continue;
+      toggle.title = toggle.textContent.trim();
+      toggle.setAttribute("aria-label", toggle.title);
+      toggle.setAttribute("tabindex", "0");
+      toggle.addEventListener("click", event => {
+        if (!document.body.classList.contains("unificado-menu-collapsed")) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        sidebar.querySelectorAll(".nav-group.flyout-open").forEach(node => { if (node !== group) node.classList.remove("flyout-open"); });
+        group.classList.toggle("flyout-open");
+      }, true);
+      toggle.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggle.click(); }
+      });
+    }
     const title = topbar.querySelector(".page-title")?.textContent.trim() || document.title.split("—")[0].trim();
     const user = typeof API !== "undefined" ? API.getUser() : (() => {
       try { return JSON.parse(localStorage.getItem("pcp_user") || "null"); }
@@ -112,6 +150,7 @@
     sidebar.append(foot);
   }
   document.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.toggle("unificado-menu-collapsed", localStorage.getItem("unificado_menu_collapsed") === "1");
     apply();
     new MutationObserver(apply).observe(document.body, {childList: true, subtree: true});
     window.matchMedia("(min-width: 1025px)").addEventListener("change", apply);

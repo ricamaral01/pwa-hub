@@ -1,0 +1,32 @@
+[
+  {
+    "module": "producao",
+    "viewport": "1366x768",
+    "collapsed": true
+  },
+  {
+    "module": "planejamento",
+    "viewport": "1366x768",
+    "collapsed": true
+  },
+  {
+    "viewport": "1366x768",
+    "old_route_ms": 1085,
+    "direct_route_ms": 780
+  },
+  {
+    "module": "producao",
+    "viewport": "1920x1080",
+    "collapsed": true
+  },
+  {
+    "module": "planejamento",
+    "viewport": "1920x1080",
+    "collapsed": true
+  },
+  {
+    "viewport": "1920x1080",
+    "old_route_ms": 1208,
+    "direct_route_ms": 899
+  }
+]

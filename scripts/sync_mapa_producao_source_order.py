@@ -7,11 +7,16 @@ import os
 from pathlib import Path
 import urllib.parse
 import urllib.request
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 
 SOURCE_ENV = Path("/opt/concrefer-unificado/migration/supabase-source.env")
 TARGET = Path("/opt/concrefer-unificado/mapa-api/producao-order.json")
+PRODUCTIVITY_TARGET = Path("/opt/concrefer-unificado/mapa-api/producao-productivity-order.json")
 SINCE_DATE = "2026-09-26"
+PRODUCTIVITY_SINCE_DATE = "2026-09-01"
+PRODUCTIVITY_SELECT = "id,data_hora,setor,forma,modelo,tipo_concreto,colaborador,data_fabricacao,status,codigo_poste,descricao_poste,codigo_produto,vibrado"
 
 
 def main() -> None:
@@ -19,12 +24,23 @@ def main() -> None:
                   if line.strip() and not line.lstrip().startswith("#") and "=" in line)
     base = values["SUPABASE_URL"].strip('"').rstrip("/")
     key = values["SUPABASE_SECRET_KEY"].strip('"')
-    query = urllib.parse.urlencode({
-        "select": "id,data_hora",
-        "data_fabricacao": f"gte.{SINCE_DATE}",
+    for since_date, target in ((SINCE_DATE, TARGET),
+                               (PRODUCTIVITY_SINCE_DATE, PRODUCTIVITY_TARGET)):
+        sync_order(base, key, since_date, target)
+
+
+def sync_order(base: str, key: str, since_date: str, target: Path) -> None:
+    params = {
+        "select": PRODUCTIVITY_SELECT if target == PRODUCTIVITY_TARGET else "id,data_hora",
+        "data_fabricacao": f"gte.{since_date}",
         "status": "in.(LIBERADO,INSPECIONADO)",
         "order": "data_hora.asc",
-    })
+    }
+    if target == PRODUCTIVITY_TARGET:
+        params["data_fabricacao_lte"] = datetime.now(ZoneInfo("America/Sao_Paulo")).date().isoformat()
+    query = urllib.parse.urlencode([(name if name != "data_fabricacao_lte" else "data_fabricacao",
+                                     f"lte.{value}" if name == "data_fabricacao_lte" else value)
+                                    for name, value in params.items()])
     ids: list[str] = []
     while True:
         start = len(ids)
@@ -42,14 +58,14 @@ def main() -> None:
             raise RuntimeError("unexpected production source row count")
     if not ids or len(set(ids)) != len(ids):
         raise RuntimeError(f"unexpected production source order: {len(ids)}")
-    payload = {"since": SINCE_DATE, "ids": ids}
-    temporary = TARGET.with_suffix(".tmp")
+    payload = {"since": since_date, "ids": ids}
+    temporary = target.with_suffix(".tmp")
     fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o640)
     with os.fdopen(fd, "w", encoding="utf-8") as file:
         json.dump(payload, file, separators=(",", ":"))
     os.chown(temporary, 0, 33)
     os.chmod(temporary, 0o640)
-    temporary.replace(TARGET)
+    temporary.replace(target)
     print(f"source_producao_order_ids={len(ids)} path=private")
 
 

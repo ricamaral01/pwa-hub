@@ -54,7 +54,7 @@ def main() -> None:
                         '<body data-app-key="mapa-concretagem"><div id="ambiente-teste" role="status">AMBIENTE DE TESTE — lançamentos aqui não valem como produção</div>', 1)
     html = html.replace('<script src="app.js?v=v5.31"></script>',
                         '<script src="bridge.js"></script><script src="app.js?v=unificado-operacao-1"></script><script src="unificado-bridge.js"></script>', 1)
-    html = html.replace('</head>', '<style>#ambiente-teste{position:sticky;top:0;z-index:100000;background:#ffdc6e;color:#3b2700;padding:11px 16px;text-align:center;font:800 16px/1.3 system-ui,sans-serif;box-shadow:0 2px 8px #0003}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)
+    html = html.replace('</head>', '<style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}#ambiente-teste{position:sticky;top:0;z-index:100000;background:#ffdc6e;color:#3b2700;padding:11px 16px;text-align:center;font:800 16px/1.3 system-ui,sans-serif;box-shadow:0 2px 8px #0003}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)
     (TARGET / "index.html").write_text(html, encoding="utf-8", newline="\n")
     print("source_app_sha256=" + hashlib.sha256((SOURCE / "app.js").read_bytes()).hexdigest())
     print("built=" + str(TARGET))

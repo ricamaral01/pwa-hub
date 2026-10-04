@@ -58,4 +58,37 @@ body.unificado-pcp-standalone #main-content{display:contents}
  body.unificado-pcp-standalone .db-panel,body.unificado-pcp-standalone .summary-card,body.unificado-pcp-standalone .tools,body.unificado-pcp-standalone .sector{border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05)}
  body.unificado-pcp-standalone input{background:#F1F3F6;border-color:#E9ECF1;border-radius:10px}
 }
-@media screen and (min-width:1025px) and (max-width:1300px){#sidebar{width:210px}#main-content,body.sidebar-force-hidden #main-content{margin-left:210px}#main-content .content-area{padding:25px}}
+@media screen and (min-width:1025px) and (max-width:1300px){#sidebar{width:228px}#main-content,body.sidebar-force-hidden #main-content{margin-left:228px}#main-content .content-area{padding:25px}}
+@media screen and (min-width:1025px){
+ .unificado-pcp-brand-logos{display:flex;align-items:center;gap:7px}
+ .unificado-pcp-brand-logos img:first-child{width:112px;max-height:43px;object-fit:contain}
+ .unificado-pcp-brand-logos img:last-child{width:34px;height:34px;object-fit:contain}
+ .unificado-pcp-collapse{width:36px;height:30px;margin:0 0 12px 10px;border:1px solid #ffffff33;border-radius:8px;background:#ffffff16;color:#fff;cursor:pointer}
+ #sidebar,#main-content{transition:width .2s ease,margin-left .2s ease}
+ #sidebar .nav-link i.bi{display:inline-block;flex:none;width:24px;text-align:center;font-size:18px}
+ body.unificado-menu-collapsed #sidebar{width:64px!important;padding-right:4px;overflow:visible}
+ body.unificado-menu-collapsed #main-content,body.unificado-menu-collapsed.sidebar-force-hidden #main-content{margin-left:64px!important}
+ body.unificado-menu-collapsed .unificado-pcp-brand{padding:3px 5px 18px}
+ body.unificado-menu-collapsed .unificado-pcp-brand-logos{gap:2px}
+ body.unificado-menu-collapsed .unificado-pcp-brand-logos img:first-child{width:24px;max-height:24px}
+ body.unificado-menu-collapsed .unificado-pcp-brand-logos img:last-child{width:24px;height:24px}
+ body.unificado-menu-collapsed .unificado-pcp-collapse{margin-left:5px}
+ body.unificado-menu-collapsed .unificado-pcp-switch{display:grid;padding:2px;margin-bottom:10px}
+ body.unificado-menu-collapsed .unificado-pcp-switch-button{font-size:0;min-height:31px}
+ body.unificado-menu-collapsed .unificado-pcp-switch-button::after{content:attr(data-icon);font:600 12px 'Geist Mono',monospace}
+ body.unificado-menu-collapsed #sidebar nav{overflow:visible}
+ body.unificado-menu-collapsed #sidebar .nav-link{justify-content:center;padding:6px 0;font-size:0;white-space:nowrap}
+ body.unificado-menu-collapsed #sidebar .nav-link i.bi{font-size:18px}
+ body.unificado-menu-collapsed #sidebar .nav-group{position:relative;margin-top:8px}
+ body.unificado-menu-collapsed #sidebar .nav-group-toggle{font-size:0;width:44px;min-height:36px;padding:5px;text-align:center;cursor:pointer}
+ body.unificado-menu-collapsed #sidebar .nav-group-toggle i.bi{display:inline-block!important;font-size:18px}
+ body.unificado-menu-collapsed #sidebar .nav-group-toggle:not(:has(i.bi))::before{content:'▦';font-size:18px}
+ body.unificado-menu-collapsed #sidebar .nav-group .nav-link{display:none}
+ body.unificado-menu-collapsed #sidebar .nav-group.flyout-open .nav-link{display:flex;justify-content:flex-start;padding:8px 12px;font-size:12.5px}
+ body.unificado-menu-collapsed #sidebar .nav-group.flyout-open .nav-link i.bi{margin-right:8px}
+ body.unificado-menu-collapsed #sidebar .nav-group.flyout-open{background:#132342;border-radius:10px}
+ body.unificado-menu-collapsed #sidebar .nav-group.flyout-open .nav-group-items{display:block!important;position:absolute;left:55px;top:0;width:220px;max-height:none!important;overflow:visible!important;visibility:visible!important;padding:7px;background:#132342;border-radius:10px;box-shadow:0 12px 32px #0005;z-index:100}
+ body.unificado-menu-collapsed #sidebar .nav-group.flyout-open .nav-link{position:relative;width:100%;background:#132342}
+ body.unificado-menu-collapsed .unificado-pcp-test-link{font-size:0;padding:12px 5px}
+ body.unificado-menu-collapsed .unificado-pcp-test-link::after{content:'ⓘ';font-size:20px}
+}

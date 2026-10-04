@@ -32,7 +32,8 @@ def main() -> None:
         menu_script = ('  <script src="/unificado/shell/menu.config.js"></script>\n'
                        if page == "formas-por-setor" else "")
         html, heads = re.subn(
-            r"<head>", '<head>\n  <script src="/unificado/pcp/unificado-bridge.js"></script>\n'
+            r"<head>", '<head>\n  <style>html{background:#0B1730}@media(min-width:1025px){body{background:#0B1730!important}}</style>\n'
+            + '  <script src="/unificado/pcp/unificado-bridge.js"></script>\n'
             + menu_script + '  <script src="/unificado/pcp/unificado-shell.js"></script>',
             html, count=1, flags=re.I)
         inter_link = ('  <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">\n'
@@ -58,8 +59,8 @@ def main() -> None:
         shutil.copy2(SOURCE / name, TARGET / name)
     (TARGET / "index.html").write_text(
         '<!doctype html><html lang="pt-BR"><meta charset="utf-8">'
-        '<meta http-equiv="refresh" content="0;url=/unificado/pcp/dashboard/">'
-        '<title>Planejamento</title><a href="/unificado/pcp/dashboard/">Abrir Planejamento</a></html>',
+        '<style>html{background:#0B1730}</style>'
+        '<script>location.replace("/unificado/pcp/dashboard/")</script></html>',
         encoding="utf-8", newline="\n")
     print(f"pcp_pages_prepared={len(PAGES)} target={TARGET}")
 

@@ -463,11 +463,14 @@ def rest_read(resource):
                 body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()
         except (OSError, ValueError, TypeError, KeyError):
             pass
-    if (resource == "producao" and request.method == "GET" and status == 200
+    if (resource == "producao" and request.method == "GET" and status in (200, 206)
             and request.args.get("order") == "data_hora.asc"):
         try:
             rows = json.loads(body)
-            rank_path = Path("/opt/concrefer-unificado/mapa-api/producao-order.json")
+            rank_name = ("producao-productivity-order.json"
+                         if request.args.get("status") == "in.(LIBERADO,INSPECIONADO)"
+                         else "producao-order.json")
+            rank_path = Path("/opt/concrefer-unificado/mapa-api") / rank_name
             if (isinstance(rows, list) and rank_path.exists()
                     and all(isinstance(row, dict) and "id" in row for row in rows)):
                 order = json.loads(rank_path.read_text(encoding="utf-8"))["ids"]
