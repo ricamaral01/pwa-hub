@@ -31,7 +31,8 @@ def main() -> None:
     test_headers = {'Cookie': cookie}
     results = []
     fixtures = {}
-    for start, end in (('2026-10-01', '2026-10-04'), ('2026-09-01', '2026-10-04')):
+    for start, end in (('2026-10-01', '2026-10-04'), ('2026-09-01', '2026-10-04'),
+                       ('2026-09-24', '2026-10-03')):
         begin = datetime.fromisoformat(start + 'T00:00:00-03:00').astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
         finish = datetime.fromisoformat(end + 'T23:59:59.999-03:00').astimezone(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
         cases = [

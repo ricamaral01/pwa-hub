@@ -15,7 +15,8 @@ FIXTURE = ROOT / '.work-mapa-unificado/other-dashboards-source-fixtures.json'
 OUT = ROOT / '.work-mapa-unificado/e2e/dashboard-other-source-parity.json'
 CASES = [('2026-10-01', '2026-10-04', ''), ('2026-10-01', '2026-10-04', 'Setor 1'),
          ('2026-10-01', '2026-10-04', 'Setor 2'), ('2026-10-01', '2026-10-04', 'Setor 3'),
-         ('2026-10-01', '2026-10-04', 'Setor 4'), ('2026-09-01', '2026-10-04', '')]
+         ('2026-10-01', '2026-10-04', 'Setor 4'), ('2026-09-01', '2026-10-04', ''),
+         ('2026-09-24', '2026-10-03', '')]
 MODES = [('MONTAGEM_INDICADORES', 'mi', 'carregarMontagemIndicadores'),
          ('PROD_ANALISE', 'pa', 'carregarProdutividadeConcretagem')]
 
@@ -54,7 +55,7 @@ def main():
                         start, end = next(((a, b) for a, b, _ in CASES if a in clause and b in clause), (None, None))
                         name = 'montagem'
                     elif params.get('order', [''])[0].startswith('data_hora'):
-                        name = 'produtividade-ultimos7' if start == '2026-09-24' else 'produtividade'
+                        name = 'produtividade-ultimos7' if start == '2026-09-24' and end == '2026-10-04' else 'produtividade'
                         if name == 'produtividade-ultimos7': start = '2026-10-01'
                     else:
                         name = 'montagem-producao'

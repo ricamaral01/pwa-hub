@@ -471,9 +471,19 @@ def rest_read(resource):
                          if request.args.get("status") == "in.(LIBERADO,INSPECIONADO)"
                          else "producao-order.json")
             rank_path = Path("/opt/concrefer-unificado/mapa-api") / rank_name
+            context_path = Path("/opt/concrefer-unificado/mapa-api/producao-order-contexts.json")
+            context_key = json.dumps({
+                "select": request.args.get("select", ""),
+                "dates": request.args.getlist("data_fabricacao"),
+                "status": request.args.get("status", ""),
+            }, sort_keys=True, separators=(",", ":"))
+            contexts = (json.loads(context_path.read_text(encoding="utf-8"))["contexts"]
+                        if context_path.exists() else {})
             if (isinstance(rows, list) and rank_path.exists()
                     and all(isinstance(row, dict) and "id" in row for row in rows)):
-                order = json.loads(rank_path.read_text(encoding="utf-8"))["ids"]
+                order = contexts.get(context_key)
+                if order is None:
+                    order = json.loads(rank_path.read_text(encoding="utf-8"))["ids"]
                 ranks = {row_id: rank for rank, row_id in enumerate(order)}
                 start = 0
                 while start < len(rows):
