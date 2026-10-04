@@ -20,6 +20,11 @@
     .row a{color:#15416F;font-weight:600;text-decoration:none}.row a:hover{text-decoration:underline}
     .row span{display:block}.status{font-weight:600;margin-bottom:4px}
     .ready{color:#16794A}.partial{color:#8a5700}.later{color:#5B677A}
+    .tablet-tools{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:20px 0 28px}
+    .tablet-tools img{width:112px;height:112px;background:white;padding:7px;border-radius:12px}
+    .tablet-tools a,.tablet-tools button{border:0;border-radius:10px;background:#E8762A;color:#0B1730;font:600 15px Geist,system-ui;padding:13px 16px;cursor:pointer;text-decoration:none}
+    .tablet-tools .primary{font-size:18px;padding:18px 22px}
+    .version{position:fixed;right:12px;bottom:9px;color:#67758e;font:500 11px 'Geist Mono',monospace}
     @media(max-width:650px){main{padding:24px 18px 40px}.row{grid-template-columns:1fr}}
   </style>
 </head>
@@ -29,13 +34,25 @@
   <h1>Testar o sistema unificado</h1>
   <p class="notice">Ambiente de teste. Nada lançado aqui vale como produção.</p>
   <p class="meta">Fotografia dos dados: <strong>{{SNAPSHOT_AT}}</strong>. Use sua conta do ambiente unificado de testes para acessar esta página.</p>
+  <div class="tablet-tools">
+    <img src="/unificado/testar/qr-testar.png" alt="QR code para abrir esta pagina no tablet">
+    <a class="primary" href="/unificado/mapa/operacao/">Abrir o Mapa em operacao</a>
+    <button type="button" data-size="1024,768">Abrir como tablet (1024x768)</button>
+    <button type="button" data-size="768,1024">Tablet em pe (768x1024)</button>
+    <button type="button" data-size="390,844">Celular (390x844)</button>
+  </div>
   <div class="grid">
     <div class="row"><a href="/unificado/">Início</a><span><span class="status partial">parcial</span>Menu e indicadores por setor usam os bancos de testes. Login só-PCP, só-Mapa e par Mapa-base passaram no navegador; faltam os E2E completos dos destinos dos atalhos.</span></div>
-    <div class="row"><a href="/unificado/mapa/operacao/">Mapa em operação</a><span><span class="status partial">parcial</span>Rota aberta no banco de testes; 24 dos 24 fluxos passaram a matriz E2E. Dashboards e Histórico foram comparados com a fotografia de origem, incluindo totais e linhas. O Dashboard Defeitos reproduz a contagem duplicada do original. O fechamento dos fixtures individuais das 73 chamadas ainda está pendente.</span></div>
+    <div class="row"><a href="/unificado/mapa/operacao/">Mapa em operação</a><span><span class="status partial">parcial</span>Rota aberta no banco de testes; 24 dos 24 fluxos passaram a matriz E2E. Dashboards e Histórico foram comparados com a fotografia de origem, incluindo totais e linhas. O Dashboard Defeitos conta cada defeito uma vez por inspeção na cópia; de 01 a 04/10 são 14 ocorrências, ante 28 no original. O fechamento dos fixtures individuais das 73 chamadas ainda está pendente.</span></div>
     <div class="row"><a href="/unificado/mapa/">Histórico do Mapa</a><span><span class="status ready">pronto para testar</span>Consulta histórica somente leitura.</span></div>
     <div class="row"><a href="/unificado/mapa/operacao/?tela=LIBERACAO_S1">Prévia do tablet</a><span><span class="status ready">pronto para testar</span>Os 18 modos tiveram 54/54 capturas idênticas em tablet e quiosque, além de 18/18 em celular 390×844. Os 24 fluxos operacionais passaram por perfil e setor aplicáveis.</span></div>
     <div class="row"><a href="/unificado/pcp/dashboard/">PCP — 24 telas e impressão</a><span><span class="status partial">parcial</span>A troca de módulo abre diretamente o Dashboard; o menu desktop pode ser recolhido nos dois módulos. As 24 rotas abriram com quatro perfis; a API de leitura teve 63/63 respostas iguais. Sete tipos de PDF passaram contra o oficial, incluindo 49 etiquetas de armadura; as 24 telas foram idênticas ao original em tablet e celular. Falta fechar o E2E funcional de todas as telas e permissões.</span></div>
   </div>
 </main>
+<div class="version" id="unificado-version">Versao {{VERSION}}</div>
+<script>document.querySelectorAll('[data-size]').forEach(button => button.addEventListener('click', () => {
+  const [width,height] = button.dataset.size.split(',').map(Number);
+  window.open('/unificado/mapa/operacao/', '_blank', `width=${width},height=${height},resizable=yes,scrollbars=yes`);
+}));</script>
 </body>
 </html>

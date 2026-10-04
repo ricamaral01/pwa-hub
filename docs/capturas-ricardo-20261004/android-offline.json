@@ -1,0 +1,13 @@
+{
+  "device": "Galaxy Tab S9 landscape",
+  "version": "0.5.4",
+  "offline_reload": true,
+  "queued": true,
+  "resent": true,
+  "row_fields": {
+    "rows": 1,
+    "model": "12X600",
+    "cleanup": 204
+  },
+  "cleanup_residue": 0
+}

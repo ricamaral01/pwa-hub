@@ -1,0 +1,130 @@
+[
+  {
+    "engine": "android-chrome",
+    "device": "Galaxy Tab S9",
+    "viewport": [
+      640,
+      1024
+    ],
+    "logins": true,
+    "mode_results": [
+      {
+        "mode": "HUB",
+        "actual": "HUB"
+      },
+      {
+        "mode": "LIBERACAO_S1",
+        "actual": "LIBERACAO_S1"
+      },
+      {
+        "mode": "INSPECAO",
+        "actual": "INSPECAO"
+      },
+      {
+        "mode": "RELATORIO_MANUTENCAO",
+        "actual": "RELATORIO_MANUTENCAO"
+      }
+    ],
+    "test_icon": true,
+    "test_name": true,
+    "desktop_shell_hidden": true,
+    "external_hosts": [],
+    "capture": "android-chrome-galaxy-tab-s9.png"
+  },
+  {
+    "engine": "android-chrome",
+    "device": "Galaxy Tab S9 landscape",
+    "viewport": [
+      1024,
+      640
+    ],
+    "logins": true,
+    "mode_results": [
+      {
+        "mode": "HUB",
+        "actual": "HUB"
+      },
+      {
+        "mode": "LIBERACAO_S1",
+        "actual": "LIBERACAO_S1"
+      },
+      {
+        "mode": "INSPECAO",
+        "actual": "INSPECAO"
+      },
+      {
+        "mode": "RELATORIO_MANUTENCAO",
+        "actual": "RELATORIO_MANUTENCAO"
+      }
+    ],
+    "test_icon": true,
+    "test_name": true,
+    "desktop_shell_hidden": true,
+    "external_hosts": [],
+    "capture": "android-chrome-galaxy-tab-s9-landscape.png"
+  },
+  {
+    "engine": "ipad-webkit",
+    "device": "iPad (gen 6)",
+    "viewport": [
+      768,
+      1024
+    ],
+    "logins": true,
+    "mode_results": [
+      {
+        "mode": "HUB",
+        "actual": "HUB"
+      },
+      {
+        "mode": "LIBERACAO_S1",
+        "actual": "LIBERACAO_S1"
+      },
+      {
+        "mode": "INSPECAO",
+        "actual": "INSPECAO"
+      },
+      {
+        "mode": "RELATORIO_MANUTENCAO",
+        "actual": "RELATORIO_MANUTENCAO"
+      }
+    ],
+    "test_icon": true,
+    "test_name": true,
+    "desktop_shell_hidden": true,
+    "external_hosts": [],
+    "capture": "ipad-webkit-ipad-gen-6.png"
+  },
+  {
+    "engine": "ipad-webkit",
+    "device": "iPad (gen 6) landscape",
+    "viewport": [
+      1024,
+      768
+    ],
+    "logins": true,
+    "mode_results": [
+      {
+        "mode": "HUB",
+        "actual": "HUB"
+      },
+      {
+        "mode": "LIBERACAO_S1",
+        "actual": "LIBERACAO_S1"
+      },
+      {
+        "mode": "INSPECAO",
+        "actual": "INSPECAO"
+      },
+      {
+        "mode": "RELATORIO_MANUTENCAO",
+        "actual": "RELATORIO_MANUTENCAO"
+      }
+    ],
+    "test_icon": true,
+    "test_name": true,
+    "desktop_shell_hidden": true,
+    "external_hosts": [],
+    "capture": "ipad-webkit-ipad-gen-6-landscape.png"
+  }
+]

@@ -26,7 +26,8 @@ import psycopg
 from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
-from unified_auth import (adopt_mapa_password, check_link_password, link_for, linked_users,
+from unified_auth import (adopt_mapa_password, check_link_password, component_links,
+                          link_for, linked_users,
                           mapa_user_by_login, mark_existing_shared_password,
                           mirror_mapa_password, mirror_pcp_password,
                           PCP_HASHER, pcp_connect, pcp_user_by_login,
@@ -38,7 +39,7 @@ app = Flask(__name__)
 hasher = PasswordHasher()
 COOKIE_NAME = "mapa_unificado_session"
 TEST_PAGE_COOKIE_NAME = "unificado_test_session"
-SESSION_SECONDS = 12 * 60 * 60
+SESSION_SECONDS = 36 * 60 * 60
 READ_TABLES = frozenset({
     "usuarios", "programacao_pcp", "liberacao_formas", "producao",
     "montagem_poste", "formas_manutencao", "prog_s3_s4", "vw_formas_status",
@@ -136,7 +137,9 @@ def test_landing():
     info_path = Path(__file__).parent / "snapshot-info.json"
     info = json.loads(info_path.read_text()) if info_path.exists() else {}
     snapshot_at = html.escape(str(info.get("snapshot_at", "a confirmar")))
-    return Response(template.replace("{{SNAPSHOT_AT}}", snapshot_at),
+    version_path = Path(__file__).parent / "VERSION"
+    version = html.escape(version_path.read_text(encoding="utf-8").strip()) if version_path.exists() else "a confirmar"
+    return Response(template.replace("{{SNAPSHOT_AT}}", snapshot_at).replace("{{VERSION}}", version),
                     content_type="text/html; charset=utf-8",
                     headers={"Cache-Control": "no-store"})
 
@@ -154,12 +157,17 @@ def pcp_token_for(username, password):
 def unified_login_response(pcp, mapa, password):
     payload = {"ok": True, "modules": []}
     if pcp and pcp["ativo"]:
-        token_data = pcp_token_for(pcp["username"], password)
-        payload["pcp"] = token_data
-        payload["modules"].append("pcp")
+        try:
+            token_data = pcp_token_for(pcp["username"], password)
+            payload["pcp"] = token_data
+            payload["modules"].append("pcp")
+        except (urllib.error.URLError, TimeoutError, ValueError):
+            payload["pcp_unavailable"] = True
     if mapa and mapa["ativo"]:
         payload["mapa"] = public_user(mapa)
         payload["modules"].append("mapa")
+    if not payload["modules"]:
+        return jsonify(ok=False, error="Módulo temporariamente indisponível."), 503
     response = jsonify(payload)
     if mapa and mapa["ativo"]:
         token = signer().dumps({"scope": "session", "id": mapa["id"],
@@ -171,6 +179,7 @@ def unified_login_response(pcp, mapa, password):
                             httponly=True, secure=True, samesite="Strict",
                             path="/unificado/testar/")
     elif pcp and pcp["ativo"]:
+        response.delete_cookie(COOKIE_NAME, path="/unificado/mapa/api")
         token = signer().dumps({"scope": "pcp_test_session", "id": pcp["id"]})
         response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
                             httponly=True, secure=True, samesite="Strict",
@@ -194,6 +203,16 @@ def unified_login():
             linked_pcp, linked_mapa = linked_users(link)
             if not linked_pcp or not linked_mapa:
                 return jsonify(ok=False, error="Conta temporariamente indisponível."), 503
+            if mapa and not mapa["ativo"]:
+                component = component_links(link["id"])
+                other_ids = [item["mapa_login"] for item in component
+                             if item["mapa_login"] != mapa["id"]]
+                if other_ids:
+                    with connect() as conn, conn.cursor() as cur:
+                        cur.execute("SELECT 1 FROM public.usuarios WHERE id=ANY(%s) AND ativo LIMIT 1",
+                                    (other_ids,))
+                        if cur.fetchone():
+                            raise ValueError("inactive Mapa alias")
             if not link["unified_password_set"] and not link["requires_reset"]:
                 adopt_mapa_password(link["id"], password)
                 link = link_for(mapa_login=link["mapa_login"])
@@ -201,9 +220,9 @@ def unified_login():
             matches = check_link_password(link, password)
             if not any(matches):
                 raise ValueError("invalid password")
-            if ((not all(matches) and not link["unified_password_set"])
-                    or linked_pcp["trocar_senha_primeiro_acesso"]
-                    or linked_mapa["primeiro_acesso"]):
+            if ((not all(matches) and not link["unified_password_set"] and link["requires_reset"])
+                    or (linked_pcp["ativo"] and linked_pcp["trocar_senha_primeiro_acesso"])
+                    or (linked_mapa["ativo"] and linked_mapa["primeiro_acesso"])):
                 reset_token = signer().dumps({"scope": "unified_reset", "link": link["id"],
                                                "updated_at": link["updated_at"].isoformat()})
                 return jsonify(ok=True, reset_required=True, reset_token=reset_token)
@@ -395,7 +414,9 @@ def me():
     row = authenticated_user()
     if not row:
         return jsonify(ok=False), 401
-    return jsonify(ok=True, user=public_user(row))
+    # Renew the tablet session while the app is being used. Keep the same
+    # updated_at claim so a password change or deactivation still revokes it.
+    return session_response(row)
 
 
 @app.route("/rest/v1/<resource>", methods=["GET", "HEAD", "POST", "PATCH", "DELETE"])

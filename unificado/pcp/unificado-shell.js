@@ -151,6 +151,12 @@
     sidebar.append(foot);
   }
   document.addEventListener("DOMContentLoaded", () => {
+    const version = make("small", "unificado-pcp-version", "");
+    Object.assign(version.style, {position:"fixed",right:"6px",bottom:"5px",zIndex:"99999",
+      background:"#0B1730",color:"white",padding:"3px 7px",borderRadius:"6px",font:"11px monospace"});
+    document.body.append(version);
+    fetch("/unificado/VERSION", {cache:"no-store"}).then(r => r.ok ? r.text() : "")
+      .then(value => {version.textContent = "TESTE " + value.trim();}).catch(() => {});
     document.body.classList.toggle("unificado-menu-collapsed", localStorage.getItem("unificado_menu_collapsed") === "1");
     apply();
     new MutationObserver(apply).observe(document.body, {childList: true, subtree: true});

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <title>Entrar — Concrefer</title>
-  <link rel="stylesheet" href="shell/shell.css?v=0.2.0">
-  <script defer src="shell/auth.js?v=0.4.0"></script>
+  <link rel="stylesheet" href="shell/shell.css?v=0.5.4">
+  <script defer src="shell/auth.js?v=0.5.4"></script>
 </head>
 <body>
   <main class="login-layout">
@@ -32,5 +32,9 @@
       <small class="login-note">Ambiente de teste. Nada lançado aqui vale como produção.</small>
     </section>
   </main>
+  <small id="unificado-version" style="position:fixed;right:10px;bottom:8px;color:#acb8ca;font:11px monospace"></small>
+  <script>fetch('/unificado/VERSION',{cache:'no-store'}).then(r=>r.ok?r.text():'').then(v=>{
+    document.getElementById('unificado-version').textContent='TESTE '+v.trim();
+  }).catch(()=>{});</script>
 </body>
 </html>

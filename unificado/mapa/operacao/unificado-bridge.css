@@ -81,7 +81,11 @@
  body.unificado-desktop .page-content.container{padding:25px!important}
 }
 @media print{
- .unificado-sidebar,.unificado-topbar{display:none!important}
+ .unificado-sidebar,.unificado-topbar,#ambiente-teste,#unificado-version{display:none!important}
+}
+@media screen and (max-width:1024px){
+ #unificado-version{display:none!important}
+ #ambiente-teste::after{content:" TESTE " attr(data-version);font:700 11px monospace;white-space:nowrap;margin-left:8px}
 }
 @media screen and (min-width:1025px){
  body.unificado-desktop .unificado-brand-logos,body.unificado-desktop .unificado-pcp-brand-logos{display:flex;align-items:center;gap:7px;min-width:0}

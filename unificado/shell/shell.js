@@ -9,6 +9,13 @@ const ICONS = {
 };
 
 const sidebar = document.getElementById('sidebar');
+const unificadoVersion = document.createElement('small');
+unificadoVersion.id = 'unificado-version';
+Object.assign(unificadoVersion.style, {position:'fixed',right:'6px',bottom:'5px',zIndex:'99999',
+  background:'#0B1730',color:'white',padding:'3px 7px',borderRadius:'6px',font:'11px monospace'});
+document.body.append(unificadoVersion);
+fetch('/unificado/VERSION',{cache:'no-store'}).then(r=>r.ok?r.text():'')
+  .then(value=>{unificadoVersion.textContent='TESTE '+value.trim();}).catch(()=>{});
 const pcpUser = (() => { try { return JSON.parse(localStorage.getItem('pcp_user') || 'null'); } catch { return null; } })();
 const mapaUser = (() => { try { return JSON.parse(localStorage.getItem('pwa_mapa_auth_session_v1') || 'null'); } catch { return null; } })();
 const hasPcp = Boolean(localStorage.getItem('pcp_token') && pcpUser);
@@ -66,7 +73,7 @@ function renderSidebar() {
   sidebar.replaceChildren();
   const brand = document.createElement('div');
   brand.className = 'brand';
-  brand.innerHTML = '<span class="brand-icon">C</span><span><span class="brand-name">Concrefer</span><span class="brand-subtitle">Planejamento e produção</span></span>';
+  brand.innerHTML = '<img src="/unificado/pcp/static/img/concrefer-logo.png" alt="Concrefer" width="112"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack" width="34" height="34">';
   sidebar.append(brand);
 
   const switcher = document.createElement('div');

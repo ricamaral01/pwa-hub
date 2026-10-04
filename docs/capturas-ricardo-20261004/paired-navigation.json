@@ -1,0 +1,901 @@
+{
+  "version": "0.5.4",
+  "total": 149,
+  "ok": 149,
+  "items": [
+    {
+      "area": "inicio-1366",
+      "item": "Início",
+      "ok": true,
+      "destination": "/unificado/index.html"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Dashboard",
+      "ok": true,
+      "destination": "/unificado/pcp/dashboard/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Programado vs Realizado",
+      "ok": true,
+      "destination": "/unificado/pcp/comparacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Setor 1 e 2",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-alex/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Circular Setor 3",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-circular-s3/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "DT Setor 4",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-circular-s4/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Programação Final",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-final/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Setor 1 e 2",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-producao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Setor 3",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-programacao-s3/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Setor 4",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-programacao-s4/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Padrão",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "SC-Prod.",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas-sc/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Armaduras",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas-armaduras/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "PCP Diário",
+      "ok": true,
+      "destination": "/unificado/pcp/pcp-diario/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Acompanhamento Mensal",
+      "ok": true,
+      "destination": "/unificado/pcp/acompanhamento-mensal/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Acompanhamento Mensal Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/pcp/acompanhamento-mensal-setor-34/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Apontamento Mega",
+      "ok": true,
+      "destination": "/unificado/pcp/apontamento-mega/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Produção PCP",
+      "ok": true,
+      "destination": "/unificado/pcp/producao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Mão de Obra",
+      "ok": true,
+      "destination": "/unificado/pcp/maodeobra/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Formas por Setor",
+      "ok": true,
+      "destination": "/unificado/pcp/formas-por-setor/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Teste Programação",
+      "ok": true,
+      "destination": "/unificado/pcp/teste-programacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Usuários",
+      "ok": true,
+      "destination": "/unificado/pcp/usuarios/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Programação",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-alex/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Relatórios de Programação",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-producao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Etiquetas",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Produção / Liberação",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Mandril Circular",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Inspeção Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Montagem Postes",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Manutenção Formas",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Dashboard Montagem",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Dashboard Defeitos",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Produtividade",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1366",
+      "item": "Histórico",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Dashboard",
+      "ok": true,
+      "destination": "/unificado/pcp/dashboard/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Programado vs Realizado",
+      "ok": true,
+      "destination": "/unificado/pcp/comparacao/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Programação Setor 1 e 2",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-alex/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Programação Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Programação Circular Setor 3",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-circular-s3/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Programação DT Setor 4",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-circular-s4/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Programação Final",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-final/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Mão de Obra",
+      "ok": true,
+      "destination": "/unificado/pcp/maodeobra/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Teste Programação",
+      "ok": true,
+      "destination": "/unificado/pcp/teste-programacao/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Relatório de Produção - Setores 1 e 2",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-producao/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Relatório de Produção - Setor 3",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-programacao-s3/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Relatório de Produção - Setor 4",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-programacao-s4/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Etiquetas Padrão",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Etiquetas SC / Prod.",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas-sc/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Etiquetas Armaduras",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas-armaduras/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Produção",
+      "ok": true,
+      "destination": "/unificado/pcp/producao/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "PCP Diário",
+      "ok": true,
+      "destination": "/unificado/pcp/pcp-diario/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Apontamento Mega",
+      "ok": true,
+      "destination": "/unificado/pcp/apontamento-mega/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Acompanhamento Mensal",
+      "ok": true,
+      "destination": "/unificado/pcp/acompanhamento-mensal/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Acompanhamento Mensal Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/pcp/acompanhamento-mensal-setor-34/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Mapa de Produção",
+      "ok": true,
+      "destination": "/unificado/pcp/dashboard/"
+    },
+    {
+      "area": "pcp-menu-1366",
+      "item": "Usuários",
+      "ok": true,
+      "destination": "/unificado/pcp/usuarios/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Início",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Produção / Liberação",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Setor 1",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Setor 2",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Setor 3",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Setor 4",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Mandril Circular",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Inspeção Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Montagem Postes",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Sequência Setor 3",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Relatório Enc. Produção",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Histórico",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Acmp. Concretagem",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Manutenção Formas",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Tratativa Defeitos",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Dashboard Montagem",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Dashboard Defeitos",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Produtividade",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-menu-1366",
+      "item": "Usuários",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Início",
+      "ok": true,
+      "destination": "/unificado/index.html"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Dashboard",
+      "ok": true,
+      "destination": "/unificado/pcp/dashboard/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Programado vs Realizado",
+      "ok": true,
+      "destination": "/unificado/pcp/comparacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Setor 1 e 2",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-alex/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Circular Setor 3",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-circular-s3/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "DT Setor 4",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-circular-s4/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Programação Final",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-final/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Setor 1 e 2",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-producao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Setor 3",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-programacao-s3/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Setor 4",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-programacao-s4/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Padrão",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "SC-Prod.",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas-sc/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Armaduras",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas-armaduras/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "PCP Diário",
+      "ok": true,
+      "destination": "/unificado/pcp/pcp-diario/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Acompanhamento Mensal",
+      "ok": true,
+      "destination": "/unificado/pcp/acompanhamento-mensal/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Acompanhamento Mensal Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/pcp/acompanhamento-mensal-setor-34/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Apontamento Mega",
+      "ok": true,
+      "destination": "/unificado/pcp/apontamento-mega/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Produção PCP",
+      "ok": true,
+      "destination": "/unificado/pcp/producao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Mão de Obra",
+      "ok": true,
+      "destination": "/unificado/pcp/maodeobra/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Formas por Setor",
+      "ok": true,
+      "destination": "/unificado/pcp/formas-por-setor/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Teste Programação",
+      "ok": true,
+      "destination": "/unificado/pcp/teste-programacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "",
+      "ok": true,
+      "destination": "/unificado/pcp/usuarios/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Programação",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-alex/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Relatórios de Programação",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-producao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Etiquetas",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Produção / Liberação",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Mandril Circular",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Inspeção Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Montagem Postes",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Manutenção Formas",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Dashboard Montagem",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Dashboard Defeitos",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Produtividade",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "inicio-1024",
+      "item": "Histórico",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Dashboard",
+      "ok": true,
+      "destination": "/unificado/pcp/dashboard/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Programado vs Realizado",
+      "ok": true,
+      "destination": "/unificado/pcp/comparacao/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Programação Setor 1 e 2",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-alex/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Programação Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Programação Circular Setor 3",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-circular-s3/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Programação DT Setor 4",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-circular-s4/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Programação Final",
+      "ok": true,
+      "destination": "/unificado/pcp/programacao-final/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Mão de Obra",
+      "ok": true,
+      "destination": "/unificado/pcp/maodeobra/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Teste Programação",
+      "ok": true,
+      "destination": "/unificado/pcp/teste-programacao/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Relatório de Produção - Setores 1 e 2",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-producao/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Relatório de Produção - Setor 3",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-programacao-s3/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Relatório de Produção - Setor 4",
+      "ok": true,
+      "destination": "/unificado/pcp/relatorio-programacao-s4/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Etiquetas Padrão",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Etiquetas SC / Prod.",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas-sc/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Etiquetas Armaduras",
+      "ok": true,
+      "destination": "/unificado/pcp/etiquetas-armaduras/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Produção",
+      "ok": true,
+      "destination": "/unificado/pcp/producao/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "PCP Diário",
+      "ok": true,
+      "destination": "/unificado/pcp/pcp-diario/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Apontamento Mega",
+      "ok": true,
+      "destination": "/unificado/pcp/apontamento-mega/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Acompanhamento Mensal",
+      "ok": true,
+      "destination": "/unificado/pcp/acompanhamento-mensal/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Acompanhamento Mensal Setor 3 e 4",
+      "ok": true,
+      "destination": "/unificado/pcp/acompanhamento-mensal-setor-34/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Mapa de Produção",
+      "ok": true,
+      "destination": "/unificado/pcp/dashboard/"
+    },
+    {
+      "area": "pcp-menu-1024",
+      "item": "Usuários",
+      "ok": true,
+      "destination": "/unificado/pcp/usuarios/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubLiberacao",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubLiberacaoS1",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubLiberacaoS2",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubLiberacaoS3",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubLiberacaoS4",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubInspecao",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubMontagemPostes",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubMontagemIndicadores",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubDashboardDefeitos",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubRelatorio",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubHistorico",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubAcmpConcretagem",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubSequenciaS3",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubMandrilCircular",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubRelatorioManutencao",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    },
+    {
+      "area": "mapa-tablet-1024",
+      "item": "hubTratativaDefeitos",
+      "ok": true,
+      "destination": "/unificado/mapa/operacao/"
+    }
+  ]
+}

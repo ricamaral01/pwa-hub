@@ -11,8 +11,8 @@
   },
   {
     "viewport": "1366x768",
-    "root_redirect_ms": 1049,
-    "direct_route_ms": 1384,
+    "root_redirect_ms": 1160,
+    "direct_route_ms": 1259,
     "both_directions_direct": true,
     "collapsed_preference_shared": true
   },
@@ -28,8 +28,8 @@
   },
   {
     "viewport": "1920x1080",
-    "root_redirect_ms": 734,
-    "direct_route_ms": 1141,
+    "root_redirect_ms": 1261,
+    "direct_route_ms": 1447,
     "both_directions_direct": true,
     "collapsed_preference_shared": true
   }

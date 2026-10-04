@@ -40,10 +40,12 @@ def main() -> None:
                 page.goto(BASE + "/unificado/login.html")
                 page.wait_for_function("Array.from(document.querySelectorAll('.login-brand img')).every(img => img.complete && img.naturalWidth > 0)")
                 page.screenshot(path=str(OUT / "login-1366x768.png"))
-            login(page, "/etc/mapa-unificado/pcp-auth-probe.env", "PCP_TEST_USER", "PCP_TEST_PASSWORD", "pcp/dashboard/")
             login(page, "/etc/mapa-unificado/auth-probe.env", "MAPA_TEST_USER", "MAPA_TEST_PASSWORD", "mapa/operacao/")
             page.goto(BASE + "/unificado/testar/")
-            assert "Dashboard Defeitos reproduz" in page.locator("main").inner_text()
+            assert "Dashboard Defeitos conta cada defeito" in page.locator("main").inner_text()
+            expected_version = Path("unificado/VERSION").read_text(encoding="utf-8").strip()
+            assert page.locator("#unificado-version").inner_text().strip() == "Versao " + expected_version
+            assert page.locator('img[src*="qr-testar"]').evaluate("img => img.complete && img.naturalWidth > 0")
             for module, url, selector in (
                 ("producao", "/unificado/mapa/operacao/", ".unificado-sidebar"),
                 ("planejamento", "/unificado/pcp/dashboard/", ".unificado-pcp-brand"),

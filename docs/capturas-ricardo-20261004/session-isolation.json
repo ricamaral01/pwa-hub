@@ -1,0 +1,12 @@
+[
+  {
+    "failed_module": "Produção",
+    "other_module_available": "Planejamento",
+    "returned_to_login": false
+  },
+  {
+    "failed_module": "Planejamento",
+    "other_module_available": "Produção",
+    "returned_to_login": false
+  }
+]

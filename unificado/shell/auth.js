@@ -15,7 +15,7 @@ function destination(modules) {
   if (requestedNext === 'index.html') return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('mapa') && allowed.has(requestedNext)) return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('pcp') && (requestedNext === 'pcp/' ||
-      pcpPages.has((requestedNext || '').match(/^pcp\/([^/?]+)\/$/)?.[1]))) {
+      pcpPages.has((requestedNext || '').match(/^pcp\/([^/?]+)\/(?:\?[^#]*)?$/)?.[1]))) {
     return new URL(requestedNext, UNIFICADO_ROOT);
   }
   if (modules.includes('mapa') && /^mapa\/operacao\/\?tela=[A-Z0-9_]+$/.test(requestedNext || '')) {
@@ -25,6 +25,9 @@ function destination(modules) {
 }
 
 function storeModuleSessions(result) {
+  localStorage.removeItem('pcp_token');
+  localStorage.removeItem('pcp_user');
+  localStorage.removeItem('pwa_mapa_auth_session_v1');
   if (result.pcp?.access_token && result.pcp?.usuario) {
     localStorage.setItem('pcp_token', result.pcp.access_token);
     localStorage.setItem('pcp_user', JSON.stringify(result.pcp.usuario));

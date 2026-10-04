@@ -11,6 +11,7 @@ from operacao_smoke import CHROME, URL, credentials, login_operacao
 
 ROOT = Path(__file__).resolve().parents[3]
 BEFORE = ROOT / '.work-mapa-unificado/operacao/index-before-desktop.html'
+ORIGINAL_APP = ROOT / 'mapa-concretagem/app.js'
 FIXTURE = ROOT / '.work-mapa-unificado/other-dashboards-source-fixtures.json'
 OUT = ROOT / '.work-mapa-unificado/e2e/dashboard-other-source-parity.json'
 CASES = [('2026-10-01', '2026-10-04', ''), ('2026-10-01', '2026-10-04', 'Setor 1'),
@@ -37,6 +38,9 @@ def main():
             fulfilled = []
             login_operacao(page, account['MAPA_TEST_USER'], account['MAPA_TEST_PASSWORD'])
             if variant == 'original-source':
+                page.route('**/unificado/mapa/operacao/app.js*', lambda route: route.fulfill(
+                    status=200, content_type='application/javascript; charset=utf-8',
+                    body=ORIGINAL_APP.read_text(encoding='utf-8')))
                 page.route(URL, lambda route: route.fulfill(status=200, content_type='text/html; charset=utf-8', body=BEFORE.read_text(encoding='utf-8')))
 
                 def serve_source(route):
@@ -89,7 +93,7 @@ def main():
                       await window[fun]();
                       const root=document.getElementById(prefix==='mi'?'viewMontagemIndicadores':'viewProdAnalise');
                       const ids=prefix==='mi'?
-                        ['miTotalProduzido','miTotalInspecionado','miAtingimentoPct','miProducaoDia','miTotalAprovados','miProdGeral','miMontGeral','miPctGeral','miTabelaTotal']:
+                        ['miTotalProduzido','miTotalInspecionado','miAtingimentoPct','miProducaoDia','miTotalAprovados','miProdGeral','miMontGeral','miPctGeral','miTabelaTotal','miDefTotalErros']:
                         ['paKpiFormas','paKpiVolume','paKpiVolBomDia','paKpiVolForaDia','paKpiCicloMedio','paKpiEficiencia','paKpiParadas','paKpiDesvioPadrao','paKpiFormasHora','paKpiM3Hora','paKpiJornada'];
                       const rows=[...root.querySelectorAll(prefix==='mi'?'#miTabelaBody tr':'#paDadosTbody tr')].map(e=>e.innerText);
                       return {kpis:Object.fromEntries(ids.map(id=>[id,document.getElementById(id)?.innerText||''])),rows,visibleText:root.innerText};

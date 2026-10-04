@@ -78,10 +78,14 @@ def mapa_user_by_login(login: str) -> dict | None:
 
 def link_for(*, pcp_id: int | None = None, mapa_login: str | None = None) -> dict | None:
     with map_connect() as conn, conn.cursor() as cur:
-        cur.execute("""SELECT * FROM unificado_auth.identity_links
-                       WHERE (%s::integer IS NOT NULL AND pcp_user_id=%s)
-                          OR (%s::text IS NOT NULL AND mapa_login=%s)
-                       LIMIT 1""", (pcp_id, pcp_id, mapa_login, mapa_login))
+        cur.execute("""SELECT link.* FROM unificado_auth.identity_links link
+                       JOIN public.usuarios mapa ON mapa.id=link.mapa_login
+                       WHERE (%s::integer IS NOT NULL AND link.pcp_user_id=%s)
+                          OR (%s::text IS NOT NULL AND link.mapa_login=%s)
+                       ORDER BY (link.pcp_user_id=%s AND link.mapa_login=%s) DESC,
+                                mapa.ativo DESC, mapa.primeiro_acesso ASC,
+                                link.pcp_user_id DESC, link.id ASC LIMIT 1""",
+                    (pcp_id, pcp_id, mapa_login, mapa_login, pcp_id, mapa_login))
         return cur.fetchone()
 
 
@@ -96,6 +100,69 @@ def linked_users(link: dict) -> tuple[dict | None, dict | None]:
                        FROM public.usuarios WHERE id=%s""", (link["mapa_login"],))
         mapa = cur.fetchone()
     return pcp, mapa
+
+
+def component_links(link_id: int) -> list[dict]:
+    """All confirmed relations connected through a shared source account."""
+    with map_connect() as conn, conn.cursor() as cur:
+        cur.execute("SELECT * FROM unificado_auth.identity_links ORDER BY id")
+        all_links = cur.fetchall()
+    selected = {link_id}
+    changed = True
+    while changed:
+        chosen = [link for link in all_links if link["id"] in selected]
+        pcp_ids = {link["pcp_user_id"] for link in chosen}
+        mapa_ids = {link["mapa_login"] for link in chosen}
+        new = {link["id"] for link in all_links
+               if link["pcp_user_id"] in pcp_ids or link["mapa_login"] in mapa_ids}
+        changed = not new.issubset(selected)
+        selected.update(new)
+    return [link for link in all_links if link["id"] in selected]
+
+
+def sync_component_password(link_id: int, password: str, *, first_access: bool = False) -> None:
+    """Set one password across every confirmed account in a person's component."""
+    links = component_links(link_id)
+    if not links:
+        raise ValueError("Identity link not found")
+    pcp_ids = sorted({link["pcp_user_id"] for link in links})
+    mapa_ids = sorted({link["mapa_login"] for link in links})
+    pcp_digest = PCP_HASHER.hash(password)
+    mapa_digest = MAPA_HASHER.hash(password)
+    with map_connect() as map_conn, map_conn.cursor() as map_cur:
+        map_cur.execute("""SELECT id,senha_hash,primeiro_acesso,updated_at FROM public.usuarios
+                           WHERE id=ANY(%s) FOR UPDATE""", (mapa_ids,))
+        old_mapa = map_cur.fetchall()
+        if len(old_mapa) != len(mapa_ids):
+            raise ValueError("Linked Mapa account missing")
+        with pcp_connect() as pcp_conn, pcp_conn.cursor() as pcp_cur:
+            pcp_cur.execute("""SELECT id,senha_hash,trocar_senha_primeiro_acesso
+                               FROM public.usuarios WHERE id=ANY(%s) FOR UPDATE""", (pcp_ids,))
+            old_pcp = pcp_cur.fetchall()
+            if len(old_pcp) != len(pcp_ids):
+                raise ValueError("Linked PCP account missing")
+            pcp_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
+                               trocar_senha_primeiro_acesso=%s WHERE id=ANY(%s)""",
+                            (pcp_digest, first_access, pcp_ids))
+            map_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
+                               primeiro_acesso=%s,updated_at=now() WHERE id=ANY(%s)""",
+                            (mapa_digest, first_access, mapa_ids))
+            map_cur.execute("""UPDATE unificado_auth.identity_links
+                               SET pcp_hash=%s,mapa_hash=%s,unified_password_set=true,
+                                   requires_reset=%s,updated_at=now()
+                               WHERE id=ANY(%s)""",
+                            (pcp_digest, mapa_digest, first_access,
+                             [link["id"] for link in links]))
+            pcp_conn.commit()
+            try:
+                map_conn.commit()
+            except Exception:
+                with pcp_connect() as undo, undo.cursor() as cur:
+                    for row in old_pcp:
+                        cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
+                                       trocar_senha_primeiro_acesso=%s WHERE id=%s""",
+                                    (row["senha_hash"], row["trocar_senha_primeiro_acesso"], row["id"]))
+                raise
 
 
 def confirm_link(pcp_id: int, mapa_login: str, *, mapa_base: bool = False) -> int:
@@ -116,39 +183,15 @@ def confirm_link(pcp_id: int, mapa_login: str, *, mapa_base: bool = False) -> in
 
 def adopt_mapa_password(link_id: int, password: str) -> None:
     """On first linked login, hash the verified Mapa password for PCP without a reset."""
-    with map_connect() as map_conn, map_conn.cursor() as map_cur:
-        map_cur.execute("SELECT * FROM unificado_auth.identity_links WHERE id=%s FOR UPDATE",
-                        (link_id,))
-        link = map_cur.fetchone()
-        if not link or link["unified_password_set"] or link["requires_reset"]:
-            raise ValueError("Identity is not awaiting Mapa adoption")
-        pcp, mapa = linked_users(link)
-        if not pcp or not mapa or not mapa["ativo"] or not verify_map(password, mapa["senha_hash"]):
-            raise ValueError("Mapa credential invalid")
-        pcp_digest = PCP_HASHER.hash(password)
-        with pcp_connect() as pcp_conn, pcp_conn.cursor() as pcp_cur:
-            pcp_cur.execute("""SELECT senha_hash,trocar_senha_primeiro_acesso FROM public.usuarios
-                             WHERE id=%s FOR UPDATE""", (link["pcp_user_id"],))
-            old = pcp_cur.fetchone()
-            if not old:
-                raise ValueError("Linked PCP account missing")
-            pcp_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
-                             trocar_senha_primeiro_acesso=%s WHERE id=%s""",
-                            (pcp_digest, mapa["primeiro_acesso"], link["pcp_user_id"]))
-            map_cur.execute("""UPDATE unificado_auth.identity_links SET pcp_hash=%s,
-                             mapa_hash=%s,unified_password_set=true,requires_reset=false,
-                             updated_at=now() WHERE id=%s""",
-                            (pcp_digest, mapa["senha_hash"], link_id))
-            pcp_conn.commit()
-            try:
-                map_conn.commit()
-            except Exception:
-                with pcp_connect() as undo, undo.cursor() as undo_cur:
-                    undo_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
-                                      trocar_senha_primeiro_acesso=%s WHERE id=%s""",
-                                     (old["senha_hash"], old["trocar_senha_primeiro_acesso"],
-                                      link["pcp_user_id"]))
-                raise
+    with map_connect() as conn, conn.cursor() as cur:
+        cur.execute("SELECT * FROM unificado_auth.identity_links WHERE id=%s", (link_id,))
+        link = cur.fetchone()
+    if not link or link["unified_password_set"] or link["requires_reset"]:
+        raise ValueError("Identity is not awaiting Mapa adoption")
+    pcp, mapa = linked_users(link)
+    if not pcp or not mapa or not pcp["ativo"] or not verify_map(password, mapa["senha_hash"]):
+        raise ValueError("Mapa credential invalid")
+    sync_component_password(link_id, password)
 
 
 def check_link_password(link: dict, password: str) -> tuple[bool, bool]:
@@ -178,44 +221,7 @@ def set_unified_password(link_id: int, password: str) -> None:
     """Set fresh hashes in both test DBs, with compensation if the second write fails."""
     if not isinstance(password, str) or not 6 <= len(password) <= 128:
         raise ValueError("New password must have 6–128 characters")
-    pcp_digest = PCP_HASHER.hash(password)
-    mapa_digest = MAPA_HASHER.hash(password)
-    with map_connect() as map_conn, map_conn.cursor() as map_cur:
-        map_cur.execute("SELECT * FROM unificado_auth.identity_links WHERE id=%s FOR UPDATE",
-                        (link_id,))
-        link = map_cur.fetchone()
-        if not link:
-            raise ValueError("Identity link not found")
-        with pcp_connect() as pcp_conn, pcp_conn.cursor() as pcp_cur:
-            pcp_cur.execute("SELECT senha_hash FROM public.usuarios WHERE id=%s FOR UPDATE",
-                            (link["pcp_user_id"],))
-            old = pcp_cur.fetchone()
-            if not old:
-                raise ValueError("PCP account missing")
-            map_cur.execute("SELECT id FROM public.usuarios WHERE id=%s FOR UPDATE",
-                            (link["mapa_login"],))
-            if not map_cur.fetchone():
-                raise ValueError("Mapa account missing")
-            pcp_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
-                             trocar_senha_primeiro_acesso=false WHERE id=%s""",
-                            (pcp_digest, link["pcp_user_id"]))
-            map_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
-                             primeiro_acesso=false,updated_at=now() WHERE id=%s""",
-                            (mapa_digest, link["mapa_login"]))
-            map_cur.execute("""UPDATE unificado_auth.identity_links
-                             SET pcp_hash=%s,mapa_hash=%s,unified_password_set=true,
-                                 requires_reset=false,updated_at=now() WHERE id=%s""",
-                            (pcp_digest, mapa_digest, link_id))
-            # Commit PCP first. If Mapa cannot commit, restore the old PCP hash.
-            pcp_conn.commit()
-            try:
-                map_conn.commit()
-            except Exception:
-                with pcp_connect() as undo, undo.cursor() as undo_cur:
-                    undo_cur.execute("UPDATE public.usuarios SET senha_hash=%s WHERE id=%s",
-                                     (old["senha_hash"], link["pcp_user_id"]))
-                raise
-
+    return sync_component_password(link_id, password)
 
 def reapply_unified_hashes() -> int:
     """Reapply confirmed test hashes after the official snapshots are restored."""
@@ -246,37 +252,13 @@ def mirror_mapa_password(mapa_login: str, password: str) -> bool:
         return False
     if not 6 <= len(password) <= 128:
         raise ValueError("New password must have 6–128 characters")
-    pcp_digest = PCP_HASHER.hash(password)
-    with map_connect() as map_conn, map_conn.cursor() as map_cur:
-        map_cur.execute("SELECT * FROM public.usuarios WHERE id=%s FOR UPDATE", (mapa_login,))
-        mapa = map_cur.fetchone()
-        if not mapa:
-            raise ValueError("Linked Mapa account missing")
-        with pcp_connect() as pcp_conn, pcp_conn.cursor() as pcp_cur:
-            pcp_cur.execute("SELECT senha_hash,trocar_senha_primeiro_acesso FROM public.usuarios WHERE id=%s FOR UPDATE",
-                            (link["pcp_user_id"],))
-            old = pcp_cur.fetchone()
-            if not old:
-                raise ValueError("Linked PCP account missing")
-            pcp_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
-                             trocar_senha_primeiro_acesso=%s WHERE id=%s""",
-                            (pcp_digest, mapa["primeiro_acesso"], link["pcp_user_id"]))
-            map_cur.execute("""UPDATE unificado_auth.identity_links
-                             SET pcp_hash=%s,mapa_hash=%s,unified_password_set=true,
-                                 requires_reset=%s,updated_at=now() WHERE id=%s""",
-                            (pcp_digest, mapa["senha_hash"], mapa["primeiro_acesso"], link["id"]))
-            pcp_conn.commit()
-            try:
-                map_conn.commit()
-            except Exception:
-                with pcp_connect() as undo, undo.cursor() as undo_cur:
-                    undo_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
-                                      trocar_senha_primeiro_acesso=%s WHERE id=%s""",
-                                     (old["senha_hash"], old["trocar_senha_primeiro_acesso"],
-                                      link["pcp_user_id"]))
-                raise
+    with map_connect() as conn, conn.cursor() as cur:
+        cur.execute("SELECT primeiro_acesso FROM public.usuarios WHERE id=%s", (mapa_login,))
+        source = cur.fetchone()
+    if not source:
+        raise ValueError("Linked Mapa account missing")
+    sync_component_password(link["id"], password, first_access=source["primeiro_acesso"])
     return True
-
 
 def mirror_pcp_password(pcp_id: int, password: str) -> bool:
     """After a PCP Users screen write, mirror its current hash to linked Mapa."""
@@ -285,24 +267,11 @@ def mirror_pcp_password(pcp_id: int, password: str) -> bool:
         return False
     if not 6 <= len(password) <= 128:
         raise ValueError("New password must have 6–128 characters")
-    mapa_digest = MAPA_HASHER.hash(password)
-    with pcp_connect() as pcp_conn, pcp_conn.cursor() as pcp_cur:
-        pcp_cur.execute("""SELECT senha_hash,trocar_senha_primeiro_acesso
-                         FROM public.usuarios WHERE id=%s""", (pcp_id,))
-        pcp = pcp_cur.fetchone()
-        if not pcp:
-            raise ValueError("Linked PCP account missing")
-    with map_connect() as map_conn, map_conn.cursor() as map_cur:
-        map_cur.execute("SELECT id FROM public.usuarios WHERE id=%s FOR UPDATE",
-                        (link["mapa_login"],))
-        if not map_cur.fetchone():
-            raise ValueError("Linked Mapa account missing")
-        map_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
-                         primeiro_acesso=%s,updated_at=now() WHERE id=%s""",
-                        (mapa_digest, pcp["trocar_senha_primeiro_acesso"], link["mapa_login"]))
-        map_cur.execute("""UPDATE unificado_auth.identity_links
-                         SET pcp_hash=%s,mapa_hash=%s,unified_password_set=true,
-                             requires_reset=%s,updated_at=now() WHERE id=%s""",
-                        (pcp["senha_hash"], mapa_digest,
-                         pcp["trocar_senha_primeiro_acesso"], link["id"]))
+    with pcp_connect() as conn, conn.cursor() as cur:
+        cur.execute("SELECT trocar_senha_primeiro_acesso FROM public.usuarios WHERE id=%s", (pcp_id,))
+        source = cur.fetchone()
+    if not source:
+        raise ValueError("Linked PCP account missing")
+    sync_component_password(link["id"], password,
+                            first_access=source["trocar_senha_primeiro_acesso"])
     return True

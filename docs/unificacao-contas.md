@@ -1,3 +1,36 @@
+# Estado atual das contas — decisão de 04/10/2026
+
+Ricardo confirmou os dez vínculos candidatos. Todos estão registrados no banco
+Mapa de testes em `unificado_auth.identity_links`; os cadastros de origem, seus
+perfis e seus estados ativo/inativo foram preservados. A conta do Mapa é a base
+da senha; na primeira autenticação válida, o serviço atualiza os hashes dos
+cadastros ligados, sem exigir troca. Um vínculo com conta Mapa inativa não
+habilita a Produção, mas mantém o perfil PCP da conta ativa.
+
+Há sete grupos de pessoas entre os dez vínculos. Alex tem duas contas PCP para
+`user-alex`; Marcos tem duas contas PCP para `user-marcos`; Ricardo tem duas
+contas Mapa para a conta PCP `Ricardo`. Essas sobreposições continuam como
+cadastros separados em seus módulos, cada qual com o perfil original. O login
+com a conta Mapa escolhe uma conta PCP principal quando há mais de uma: a de
+maior ID; o login de cada conta PCP continua associado ao respectivo perfil.
+
+| PCP | Perfil PCP | Mapa | Perfil Mapa | Situação |
+|---|---|---|---|---|
+| Alex | ADMIN | user-alex | GERENCIA | ambos ativos |
+| Alex51 | ADMIN | user-alex | GERENCIA | ambos ativos |
+| Marcelo | ADMIN | marcelo | GERENCIA | ambos ativos |
+| Marcos | ADMIN | user-marcos | GESTOR | Mapa inativo |
+| marcos | PCP | user-marcos | GESTOR | Mapa inativo |
+| Philippe | ADMIN | philippe | GERENCIA | ambos ativos |
+| Ricardo | ADMIN | user-ricardo | GERENCIA | ambos ativos |
+| Ricardo | ADMIN | user-ricardo-do-amaral | GERENCIA | Mapa inativo |
+| admin | ADMIN | user-admin | GERENCIA | Mapa inativo |
+| jgaby | ADMIN | jgabriel | GERENCIA | ambos ativos |
+
+A seção abaixo registra o inventário histórico anterior à decisão do Ricardo.
+
+---
+
 # Unificação de contas — revisão de identidades
 
 Inventário dos bancos de testes em 03/10/2026 21:31 Hora oficial do Brasil. Nenhuma senha ou hash foi consultado para gerar este documento.

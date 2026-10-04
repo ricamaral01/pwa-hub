@@ -172,6 +172,8 @@
     placeHistoryFilters();
   }
   document.addEventListener("DOMContentLoaded", () => {
+    const version = document.getElementById("unificado-version");
+    if (version) document.body.append(version);
     document.body.classList.toggle("unificado-menu-collapsed", localStorage.getItem("unificado_menu_collapsed") === "1");
     const shell = document.querySelector("#appShell");
     const main = shell?.querySelector(".app-main");

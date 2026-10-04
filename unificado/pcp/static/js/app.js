@@ -36,7 +36,7 @@ const API = (() => {
 
     if (res.status === 401) {
       clearSession();
-      window.location.href = '/unificado/login.html';
+      unificadoUnavailableOrLogin();
       return;
     }
 
@@ -64,7 +64,7 @@ const API = (() => {
 /* ─── Auth guard ─────────────────────────────────────────────── */
 function requireAuth() {
   if (!API.getToken()) {
-    window.location.href = '/unificado/login.html';
+    unificadoUnavailableOrLogin();
     return null;
   }
   const user = API.getUser();
@@ -74,6 +74,26 @@ function requireAuth() {
     return null;
   }
   return user;
+}
+
+let unificadoAuthRecoveryStarted = false;
+function unificadoUnavailableOrLogin() {
+  if (unificadoAuthRecoveryStarted) return;
+  unificadoAuthRecoveryStarted = true;
+  const next = location.pathname.replace(/^\/unificado\//, '') + location.search;
+  const login = () => location.replace('/unificado/login.html?next=' + encodeURIComponent(next));
+  if (!localStorage.getItem('pwa_mapa_auth_session_v1')) return login();
+  fetch('/unificado/mapa/api/me', {credentials:'same-origin',cache:'no-store'})
+    .then(response => {
+      if (!response.ok) return login();
+      if (document.getElementById('unificado-module-unavailable')) return;
+      const notice = document.createElement('div');
+      notice.id = 'unificado-module-unavailable';
+      notice.setAttribute('role','status');
+      notice.style.cssText = 'position:fixed;inset:0;z-index:1000000;display:grid;place-items:center;background:#0B1730;color:white;font:600 22px system-ui;text-align:center;padding:24px';
+      notice.innerHTML = '<div>Planejamento indispon\u00edvel para esta conta.<br><a style="color:#E8762A;font-size:16px" href="/unificado/">Voltar ao In\u00edcio</a></div>';
+      document.body.append(notice);
+    }).catch(() => {});
 }
 
 function checkRole(allowedRoles) {

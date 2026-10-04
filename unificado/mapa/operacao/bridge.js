@@ -27,17 +27,43 @@
     return originalFetch(new Request(local, input), init);
   };
   document.addEventListener("DOMContentLoaded", () => {
-    originalFetch("/unificado/mapa/api/me", { credentials: "same-origin", cache: "no-store" })
+    const renewSession = () => originalFetch("/unificado/mapa/api/me", {
+      credentials: "same-origin", cache: "no-store"
+    });
+    let handlingAccess = false;
+    const unavailableOrLogin = async () => {
+      if (handlingAccess) return;
+      handlingAccess = true;
+      const other = await originalFetch("/unificado/testar/", {
+        credentials: "same-origin", cache: "no-store"
+      }).catch(() => null);
+      const pcpToken = localStorage.getItem("pcp_token");
+      const pcp = !other?.ok && pcpToken ? await originalFetch("/unificado/pcp/api/dashboard", {
+        headers: {Authorization: `Bearer ${pcpToken}`}, cache: "no-store"
+      }).catch(() => null) : null;
+      if (other?.ok || pcp?.ok) {
+        const notice = document.createElement("div");
+        notice.setAttribute("role", "status");
+        notice.style.cssText = "position:fixed;inset:0;z-index:1000000;display:grid;place-items:center;background:#0B1730;color:white;font:600 22px system-ui;text-align:center;padding:24px";
+        notice.innerHTML = '<div>Produ\u00e7\u00e3o indispon\u00edvel para esta conta.<br><a style="color:#E8762A;font-size:16px" href="/unificado/">Voltar ao In\u00edcio</a></div>';
+        document.body.append(notice);
+        return;
+      }
+      const next = "mapa/operacao/" + (location.search || "");
+      location.replace("/unificado/login.html?next=" + encodeURIComponent(next));
+    };
+    renewSession()
       .then(response => {
-        if (!response.ok) {
-          const next = "mapa/operacao/" + (location.search || "");
-          location.replace("/unificado/login.html?next=" + encodeURIComponent(next));
+        if (response.status === 401) {
+          unavailableOrLogin();
         }
       })
-      .catch(() => {
-        const next = "mapa/operacao/" + (location.search || "");
-        location.replace("/unificado/login.html?next=" + encodeURIComponent(next));
-      });
+      .catch(() => {});
+    setInterval(() => {
+      if (!document.hidden) renewSession().then(response => {
+        if (response.status === 401) unavailableOrLogin();
+      }).catch(() => {});
+    }, 5 * 60 * 1000);
     document.getElementById("authLogoutBtn")?.addEventListener("click", () => {
       localStorage.removeItem("pcp_token");
       localStorage.removeItem("pcp_user");

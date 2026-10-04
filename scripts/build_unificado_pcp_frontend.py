@@ -22,6 +22,7 @@ PAGES = (
 
 def main() -> None:
     TARGET.mkdir(parents=True, exist_ok=True)
+    version = (ROOT / "unificado" / "VERSION").read_text(encoding="utf-8").strip()
     for page in PAGES:
         source = SOURCE / page / "index.html"
         html = source.read_text(encoding="utf-8")
@@ -33,14 +34,14 @@ def main() -> None:
                        if page == "formas-por-setor" else "")
         html, heads = re.subn(
             r"<head>", '<head>\n  <style>html{background:#0B1730}@media(min-width:1025px){body{background:#0B1730!important}}</style>\n'
-            + '  <script src="/unificado/pcp/unificado-bridge.js"></script>\n'
-            + menu_script + '  <script src="/unificado/pcp/unificado-shell.js"></script>',
+            + f'  <script src="/unificado/pcp/unificado-bridge.js?v={version}"></script>\n'
+            + menu_script + f'  <script src="/unificado/pcp/unificado-shell.js?v={version}"></script>',
             html, count=1, flags=re.I)
         inter_link = ('  <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">\n'
                       if page != "formas-por-setor" else "")
         html, tails = re.subn(
             r"</head>", inter_link
-            + '  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css">\n</head>',
+            + f'  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v={version}">\n</head>',
             html, count=1, flags=re.I)
         if heads != 1 or tails != 1:
             raise ValueError(f"HTML head changed in {page}")
