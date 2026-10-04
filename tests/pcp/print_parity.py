@@ -44,6 +44,7 @@ def main() -> None:
     parser.add_argument('--arm-start', default='2026-10-05')
     parser.add_argument('--arm-days', default='1')
     parser.add_argument('--print-css', default='')
+    parser.add_argument('--all-postes', action='store_true')
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     tokens = {key: token(*settings[:4]) for key, settings in APIS.items()}
@@ -103,7 +104,10 @@ def main() -> None:
                     page.evaluate("loadPostesProgramados()")
                     count = page.locator(".poste-check").count()
                     assert count > 0, f"No {case} items available for print comparison"
-                    page.locator(".poste-check").first.check()
+                    if args.all_postes:
+                        page.evaluate("document.querySelectorAll('.poste-check').forEach(input => input.checked = true)")
+                    else:
+                        page.locator(".poste-check").first.check()
                     page.evaluate("gerarEtiquetasSelecionadas()")
                     page.evaluate("""count => document.querySelectorAll('.label-print-check').forEach(
                           (input,index) => {input.checked=index<count;
@@ -133,7 +137,7 @@ def main() -> None:
             results.append({"case": case, "same_pages": pair["oficial"]["pages"] == pair["copia"]["pages"],
                             "oficial": pair["oficial"], "copia": pair["copia"]})
         browser.close()
-    suffix = f"{args.report_start}-{args.report_days}-{args.label_date}-{args.label_count}-{args.arm_start}-{args.arm_days}"
+    suffix = f"{args.report_start}-{args.report_days}-{args.label_date}-{args.label_count}-{args.arm_start}-{args.arm_days}-all{int(args.all_postes)}"
     (OUT / f"report-{suffix}.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     for result in results:
         print(json.dumps({"case": result["case"], "same_pages": result["same_pages"],

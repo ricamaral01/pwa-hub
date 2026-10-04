@@ -36,7 +36,14 @@ def main():
         page.locator("#paBtnToggleFiltros").click()
         mapa_styles = {"drawer": style(page, "#paFiltrosDrawer .mi-drawer-content"),
                        "modal": style(page, ".modal-box")}
-        page.screenshot(path=str(OUT / "mapa-drawer-057.png"), animations="disabled")
+        page.screenshot(path=str(OUT / "mapa-drawer-current.png"), animations="disabled")
+        page.evaluate("setMode('TRATATIVA_DEFEITOS')")
+        table = page.locator("#viewTratativaDefeitos .mi-table-responsive").first
+        mapa_styles["long_table"] = table.evaluate("""node => ({
+          clientWidth:node.clientWidth,scrollWidth:node.scrollWidth,
+          overflowX:getComputedStyle(node).overflowX})""")
+        mapa_styles["new_occurrence"] = style(page, "#tdBtnNovaOcorrencia")
+        page.screenshot(path=str(OUT / "mapa-defects-table-current.png"), animations="disabled")
         page.goto(BASE + "/unificado/login.html?next=pcp/usuarios/")
         page.locator('#unificado-login-form [name="username"]').fill(pcp["PCP_TEST_USER"])
         page.locator('#unificado-login-form [name="password"]').fill(pcp["PCP_TEST_PASSWORD"])
@@ -45,11 +52,14 @@ def main():
         pcp_styles = {"card": style(page, ".section-card"),
                       "button": style(page, ".btn-accent"),
                       "table": style(page, ".table-responsive")}
-        page.screenshot(path=str(OUT / "pcp-usuarios-057.png"), animations="disabled")
+        page.evaluate("showToast('Mensagem de prova', 'success', 4000)")
+        page.wait_for_timeout(350)
+        pcp_styles["message"] = style(page, ".pcp-toast")
+        page.screenshot(path=str(OUT / "pcp-usuarios-current.png"), animations="disabled")
         context.close()
         browser.close()
-    report = {"version": "0.5.7", "mapa": mapa_styles, "pcp": pcp_styles}
-    (OUT / "styles-057.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    report = {"version": "0.5.9", "mapa": mapa_styles, "pcp": pcp_styles}
+    (OUT / "styles-059.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report))
 
 

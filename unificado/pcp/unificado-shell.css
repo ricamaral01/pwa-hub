@@ -99,4 +99,5 @@ body.unificado-pcp-standalone #main-content{display:contents}
  #main-content .section-card,#main-content .modal-content,#main-content .offcanvas,#main-content .alert{border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05)}
  #main-content .btn-accent{background:#E8762A;border-color:#E8762A;color:#0B1730;border-radius:10px;font-weight:600}
  #sidebar .nav-group-items .nav-link.active,#sidebar .nav-group.open>.nav-group-toggle{border:0;background:#ffffff1a;color:#fff}
+ #toast-container .pcp-toast{background:#fff;color:#0B1730;border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05);font-family:Geist,system-ui,sans-serif}
 }

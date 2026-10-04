@@ -113,4 +113,8 @@
  body.unificado-desktop .mi-drawer-content{border-radius:16px 0 0 16px}
  body.unificado-desktop .modal-box input:not([type=checkbox]):not([type=radio]),body.unificado-desktop .modal-box select,body.unificado-desktop .mi-drawer-content input:not([type=checkbox]):not([type=radio]),body.unificado-desktop .mi-drawer-content select{background:#F1F3F6;border-color:#E9ECF1;border-radius:10px}
  body.unificado-desktop .modal-box .btn.primary,body.unificado-desktop .mi-drawer-content .btn.primary{background:#E8762A;border-color:#E8762A;color:#0B1730;border-radius:10px;font-weight:600}
+ body.unificado-desktop #viewTratativaDefeitos .mi-table-responsive{max-width:100%;overflow-x:auto;border-radius:16px;background:#fff;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05)}
+ body.unificado-desktop #viewTratativaDefeitos .mi-table{min-width:1380px}
+ body.unificado-desktop #tdBtnNovaOcorrencia{background:#E8762A!important;border-color:#E8762A!important;color:#0B1730!important;border-radius:10px}
+ body.unificado-desktop #tdBtnImprimirPDF{background:#fff!important;border:1px solid #E9ECF1!important;color:#0B1730!important;border-radius:10px}
 }

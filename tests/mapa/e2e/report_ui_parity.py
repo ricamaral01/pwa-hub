@@ -37,6 +37,7 @@ def main() -> None:
     parser.add_argument("--sector", type=int, choices=(1, 2, 3, 4), default=1)
     parser.add_argument("--share", action="store_true")
     parser.add_argument("--print-css", default="")
+    parser.add_argument("--date", default=DATE)
     args = parser.parse_args()
     account = credentials()
     results = []
@@ -71,7 +72,7 @@ def main() -> None:
               if(!doc) throw new Error('Report not generated');
               return {text:doc.innerText,html:doc.innerHTML,
                 kpis:[...doc.querySelectorAll('.rel-kpi-grid strong')].map(n=>n.innerText)};
-            }""", {"date": DATE, "sector": args.sector})
+            }""", {"date": args.date, "sector": args.sector})
             page.evaluate("document.body.classList.add('print-relatorio')")
             if variant != "original" and args.print_css:
                 page.add_style_tag(content="@media print{" + args.print_css + "}")
@@ -95,7 +96,7 @@ def main() -> None:
             context.close()
         browser.close()
     OUT.mkdir(parents=True, exist_ok=True)
-    path = OUT / f"report-{args.role.lower()}-s{args.sector}.json"
+    path = OUT / f"report-{args.role.lower()}-s{args.sector}-{args.date}.json"
     path.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     assert results[0] == results[1], str(path)
     print(json.dumps({"report": "equal", "role": args.role,
