@@ -26,7 +26,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--role", choices=("GERENCIA", "GESTOR", "APONTADOR"),
                         default="GERENCIA")
+    parser.add_argument("--type", choices=("Concreto Padrão", "Concreto Seco - Vibrado",
+                                          "Concreto Segregado", "Concreto Exsudado",
+                                          "Teste Lab."),
+                        default="Concreto Seco - Vibrado")
+    parser.add_argument("--sector", type=int, choices=(1, 2, 3, 4))
+    parser.add_argument("--vibrado-no", action="store_true")
     args = parser.parse_args()
+    if args.vibrado_no and args.type != "Concreto Padrão":
+        parser.error("--vibrado-no applies only to Concreto Padrão")
     account = credentials()
     original = BEFORE.read_text(encoding="utf-8")
     requests = json.loads(FIXTURE.read_text(encoding="utf-8"))["requests"]
@@ -40,6 +48,8 @@ def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
         for sector, form in FORMS.items():
+            if args.sector and sector != args.sector:
+                continue
             query = ("/unificado/mapa/api/rest/v1/producao?select=*"
                      f"&data_fabricacao=eq.{DATE}&setor=eq.Setor%20{sector}&forma=eq.{form}")
             variants = []
@@ -85,15 +95,19 @@ def main() -> None:
                     }""", {"sector": sector, "date": DATE, "selector": selector})
                     page.evaluate("selector => document.querySelector(selector).click()", selector)
                     page.wait_for_timeout(200)
-                    selected = page.evaluate("""() => {
+                    selected = page.evaluate("""type => {
                       const select=document.getElementById('concretoModeloSelect');
                       const model=select && [...select.options].find(option=>option.value)?.value;
                       if (model) select.value=model;
-                      const button=document.querySelector('.btn-concreto-rich[data-tipo="Concreto Seco - Vibrado"]');
+                      const button=[...document.querySelectorAll('.btn-concreto-rich')]
+                        .find(item=>item.dataset.tipo===type);
                       if (!button) throw new Error('Concrete type button missing');
                       button.click();
                       return model||null;
-                    }""")
+                    }""", args.type)
+                    if sector == 3 and args.type == "Concreto Padrão":
+                        page.locator("#concretoVibradoNaoBtn" if args.vibrado_no
+                                     else "#concretoVibradoSimBtn").click()
                     page.wait_for_timeout(1300)
                     rows = page.evaluate("async url => await (await fetch(url)).json()", query)
                     after = page.evaluate("""selector => {
@@ -101,13 +115,16 @@ def main() -> None:
                       return {classes:card.className,text:card.innerText};
                     }""", selector)
                     assert len(writes) == 1 and len(rows) == 1, (sector, variant, writes, rows)
-                    assert static(writes[0]["body"]) == static(expected[sector]["body"]), (sector, writes)
-                    assert writes[0]["prefer"] == expected[sector]["headers"]["Prefer"]
+                    if args.type == "Concreto Seco - Vibrado":
+                        assert static(writes[0]["body"]) == static(expected[sector]["body"]), (sector, writes)
+                        assert writes[0]["prefer"] == expected[sector]["headers"]["Prefer"]
+                    else:
+                        assert writes[0]["body"]["tipo_concreto"] == args.type
                     assert all(rows[0].get(field) == value for field, value in
                                static(writes[0]["body"]).items())
                     variants.append({"variant": variant, "before": before, "after": after,
                                      "row": static(rows[0]), "write": static(writes[0]["body"]),
-                                     "model": selected})
+                                     "model": selected, "prefer": writes[0]["prefer"]})
                 finally:
                     if safe_to_clean:
                         page.evaluate("""async url => {
@@ -115,15 +132,17 @@ def main() -> None:
                           if (!response.ok) throw new Error('Cleanup HTTP '+response.status);
                         }""", query)
                     context.close()
-            for key in ("before", "after", "row", "write", "model"):
+            for key in ("before", "after", "row", "write", "model", "prefer"):
                 assert variants[0][key] == variants[1][key], (sector, key)
             results.append({"sector": sector, "form": form, "request": "equal",
                             "row": "equal", "card": "equal", "cleaned": True})
         browser.close()
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / f"concrete-sector-parity-{args.role.lower()}.json").write_text(
+    (OUT / f"concrete-sector-parity-{args.role.lower()}-{args.type.lower().replace(' ', '_')}"
+           f"{'-vibrado-no' if args.vibrado_no else ''}.json").write_text(
         json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"role": args.role, "cases": len(results), "results": results},
+    print(json.dumps({"role": args.role, "type": args.type,
+                      "cases": len(results), "results": results},
                      ensure_ascii=False))
 
 

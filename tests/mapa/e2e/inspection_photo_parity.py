@@ -36,6 +36,8 @@ def normalize(row: dict) -> dict:
                        for key, value in values.items()} if isinstance(values, dict) else values)
             for section, values in checklists.items()
             if section not in {"dia_inspecao", "horario_dispositivo", "geolocation"}}
+        if "__segunda_inspecao" in result["checklists"]:
+            result["checklists"]["__segunda_inspecao"].pop("em", None)
     return result
 
 
@@ -43,7 +45,7 @@ UUID = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
 DYNAMIC_FIELDS = {"id", "record_id", "recordId", "key", "inicio_inspecao_montagem",
                   "inicioInspecaoMontagem", "finalizado_em", "finalizadoEm", "created_at",
                   "updated_at", "timestamp", "data_hora", "dia_inspecao", "horario_dispositivo",
-                  "geolocation"}
+                  "geolocation", "em"}
 
 
 def canonical(value, key=""):
@@ -64,7 +66,10 @@ def main() -> None:
     parser.add_argument("--role", choices=("MONTADOR", "GERENCIA"), default="MONTADOR")
     parser.add_argument("--sector", type=int, choices=(3, 4), default=3)
     parser.add_argument("--approved", action="store_true")
+    parser.add_argument("--second", choices=("SEGREGADO", "APROVADO_RETRABALHADO"))
     args = parser.parse_args()
+    if args.approved and args.second:
+        parser.error("second inspection requires a rejected first inspection")
     sector = f"Setor {args.sector}"
     form = FORMS[args.sector]
     account = credentials()
@@ -190,11 +195,47 @@ def main() -> None:
                   return {classes:row.className,text:row.innerText,
                           buttonColor:button?getComputedStyle(button).backgroundColor:null};
                 }""", {"date": DATE, "form": form})
+                second_result = None
+                if args.second:
+                    page.evaluate("""async ({date,form}) => {
+                      setMode('INSPECAO');
+                      el.insFiltroData.value=date;
+                      await renderInspecaoLiberados();
+                      const row=[...document.querySelectorAll('#insLiberadosBody tr')]
+                        .find(item=>item.dataset.formaNumero===form);
+                      if(!row?.dataset.inspecaoRaw) throw new Error('Rejected inspection missing');
+                      await window.abrirVisualizacaoChecklist(JSON.parse(row.dataset.inspecaoRaw));
+                    }""", {"date": DATE, "form": form})
+                    label = "Segregado" if args.second == "SEGREGADO" else "Aprovado e Retrabalhado"
+                    button = page.locator(".vc-second-inspection-actions button", has_text=label)
+                    button.wait_for(state="visible")
+                    page.locator("#msgbox-overlay.msgbox-visible .msgbox-btn").click()
+                    button.click()
+                    page.wait_for_timeout(750)
+                    final_rows = page.evaluate("async url => await (await fetch(url)).json()", mount_query)
+                    final_ins = [row for row in final_rows if row.get("etapa") == "INSPECAO"]
+                    assert len(final_ins) == 1
+                    expected_final = "R" if args.second == "SEGREGADO" else "RR"
+                    assert final_ins[0]["status_montagem"] == expected_final, final_ins
+                    second = final_ins[0]["checklists"]["__segunda_inspecao"]
+                    assert second["resultado"] == args.second
+                    final_card = page.evaluate("""async ({date,form}) => {
+                      setMode('INSPECAO'); el.insFiltroData.value=date;
+                      await renderInspecaoLiberados();
+                      const row=[...document.querySelectorAll('#insLiberadosBody tr')]
+                        .find(item=>item.dataset.formaNumero===form);
+                      if(!row) throw new Error('Final inspection row missing');
+                      const button=row.querySelector('button');
+                      return {classes:row.className,text:row.innerText,
+                        buttonColor:button?getComputedStyle(button).backgroundColor:null};
+                    }""", {"date": DATE, "form": form})
+                    second_result = {"inspection": normalize(final_ins[0]), "card": final_card}
                 variants.append({"status": summary["status"], "reason": summary["reason"],
                                  "photo_count": len(photos), "photo_sha256": photo_sha,
                                  "inspection": normalize(ins_rows[0]),
                                  "history": normalize(history_rows[0]) if history_rows else None,
                                  "list_row": list_row,
+                                 "second_result": second_result,
                                  "request_hashes": sorted(writes)})
                 catalogs.append(write_items)
             finally:
@@ -228,9 +269,10 @@ def main() -> None:
             "original_only": sum((left-right).values()),
             "unified_only": sum((right-left).values()),
             "diff_file": str(OUT / "inspection-request-diff-private.json")}
-    (OUT / f"inspection-{'approved' if args.approved else 'photo'}-{args.role.lower()}-s{args.sector}.json").write_text(
+    suffix = ('approved' if args.approved else 'photo') + (('-' + args.second.lower()) if args.second else '')
+    (OUT / f"inspection-{suffix}-{args.role.lower()}-s{args.sector}.json").write_text(
         json.dumps(variants, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"inspection": "approved_equal" if args.approved else "photo_equal",
+    print(json.dumps({"inspection": args.second or ("approved_equal" if args.approved else "photo_equal"),
                       "role": args.role, "sector": args.sector,
                       "rows": 1 if args.approved else 2,
                       "photo": 0 if args.approved else 1, "cleaned": True},
