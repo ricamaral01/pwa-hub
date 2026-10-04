@@ -91,6 +91,8 @@ A tela de login existente envia a credencial ao serviço do unificado. Contas s�
 
 O teste sintético de ambos os bancos passou para: só-PCP, só-Mapa, par com senhas iguais, par com senhas diferentes, mesma grafia de login sem vínculo, senha incorreta, troca dos dois hashes, mínimo de seis, inativação de um lado e reaplicação após simular uma fotografia. O login e primeiro acesso também passaram no navegador para contas temporárias dos dois módulos; todas foram removidas.
 
+Em 04/10/2026, `tests/unificado/pair_browser_smoke.py` confirmou o par sintético Mapa-base pelo navegador na rota publicada: uma credencial abriu as duas sessões, Início leu as APIs PCP e Mapa com HTTP 200, as duas páginas abriram sem novo login e Sair removeu o token PCP e bloqueou a página protegida (HTTP 401). O vínculo e as duas contas sintéticas foram removidos; restou apenas o par real exato já confirmado.
+
 As duas rotas públicas de Usuários passam pelo serviço unificado. O fluxo PCP é encaminhado ao backend PCP original e, se o cadastro estiver vinculado, a nova senha é refletida no Mapa; o fluxo Mapa já é atendido pelo serviço e reflete a alteração no PCP. Um par sintético confirmou as duas direções pela URL pública. O backend PCP original permanece idêntico (47 arquivos). A tela de login, primeiro acesso e logout foram testados em navegador com contas removidas ao final.
 
 **Limite:** as telas completas de administração de usuários ainda não tiveram comparação visual e de permissões por perfil. O par exato está confirmado, mas sua senha Mapa somente será adotada no primeiro login válido. Os hashes são reaplicados após a fotografia; a rotina passou no teste sintético de restauração de hashes e flags, mas ainda não houve uma fotografia integral após esse primeiro login.
