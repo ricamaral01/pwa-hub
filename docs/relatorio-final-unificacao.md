@@ -34,7 +34,7 @@ Os sistemas oficiais `https://pcp.concretrack.com.br/` e `https://usina.concretr
 
 ## Pendências de execução
 
-1. Certificar os 23 fluxos do Mapa restantes por perfil e setor, incluindo inspeção/fotos, montagem, RR, offline, tempo real, CSV e XLSX. Corrigir somente o servidor de testes quando o resultado final diferir.
+1. Certificar os 23 fluxos do Mapa restantes por perfil e setor, incluindo inspeção/fotos, montagem, RR, offline, tempo real, CSV e XLSX. Uma sessão recebeu evento `producao` via WebSocket e atualizou o cartão do segundo tablet em 0,39 s; a matriz completa de eventos/perfis continua pendente. Corrigir somente o servidor de testes quando o resultado final diferir.
 2. Concluir a matriz de telas PCP por perfil e todas as impressões/exportações restantes. A tela Usuários tem o defeito original do botão Redefinir senha documentado.
 3. Confirmar ou rejeitar individualmente os nove pares de contas ainda candidatos; só um par de login e nome iguais foi confirmado automaticamente. Repetir E2E de par no navegador.
 4. Completar a revisão visual de todas as telas e tamanhos pedidos.

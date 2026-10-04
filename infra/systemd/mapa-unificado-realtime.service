@@ -1,0 +1,21 @@
+[Unit]
+Description=Mapa unificado - eventos PostgreSQL de testes
+After=network-online.target postgresql.service mapa-unificado-auth.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/mapa-unificado-api
+EnvironmentFile=/etc/mapa-unificado/auth.env
+ExecStart=/opt/mapa-unificado-api/.venv/bin/python /opt/mapa-unificado-api/realtime_bridge.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

@@ -52,10 +52,10 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 | 18 | Manutenção Formas | não executado | Apenas navegação e leitura conferidas. |
 | 19 | Tratativa de Defeitos | não executado | Apenas navegação conferida. |
 | 20 | Três dashboards e filtros | não executado | Leitura e partes da renderização conferidas; todos os filtros pendentes. |
-| 21 | Exportação XLSX | não executado | Base/lookup exercitados; arquivo final pendente. |
+| 21 | Exportação XLSX | não executado | Arquivo final com 133 linhas de base e 17 de resumo igual ao HTML original na mesma fotografia, exceto horário de geração; faltam perfis e comparação direta com domínio oficial. |
 | 22 | Cadastro/edição de usuários | não executado | API em contrato anterior; ações da tela pendentes. |
 | 23 | Sincronizar | não executado | Navegação e consulta exercitadas; sincronização final pendente. |
-| 24 | Fila offline e reenvio | não executado | Um item S3 passou: fila local, reenvio conforme fixture `offline-199`, linha gravada e pendência removida; faltam montagem, liberação e inspeção, além dos perfis. Atualização de segundo tablet passou em teste separado. |
+| 24 | Fila offline e reenvio | não executado | Um item S3 passou: fila local, reenvio conforme fixture `offline-199`, linha gravada e pendência removida; faltam montagem, liberação e inspeção, além dos perfis. Em teste separado, duas sessões trocaram um evento `producao` por WebSocket e o cartão do segundo tablet atualizou em 0,39 s. |
 
 O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080 sem rolagem horizontal. A rota operacional continua sendo ambiente de teste.
 
@@ -64,6 +64,8 @@ Atualização da casca desktop: `unificado/mapa/operacao/unificado-bridge.css` e
 Matriz visual adicional: `tests/mapa/e2e/tablet_matrix_parity.py` comparou os 18 modos em 1024×768, 768×1024 e quiosque (54 pares de capturas). **53/54** foram idênticos pixel a pixel na rodada contínua. A diferença única, no Mandril em 1024×768 após atravessar cinco modos de Liberação, ficou restrita à topbar (4.393 pixels); a repetição isolada do Mandril nas três condições deu **3/3 com zero diferença**. O teste não prova ainda que a sequência de 54 capturas seja determinística. As imagens dessa ocorrência e o manifesto de trabalho estão em `.work-mapa-unificado/e2e/tablet-matrix/`. Nenhuma alteração no `app.js` ou no CSS original foi feita.
 
 Em teste separado de exportação, os botões CSV da análise de produtividade baixaram arquivos com os cabeçalhos esperados e 191 registros de concretagem/8 de paradas para 02–03/10/2026. Os dois conteúdos foram iguais byte a byte entre o HTML original e a rota com a casca, usando a mesma fotografia de testes. O XLSX de montagem também teve 133 linhas de base e 17 de resumo com conteúdo igual, desconsiderando o horário de geração. A falha inicial do XLSX por limites de linha/cabeçalho HTTP foi corrigida exclusivamente na infraestrutura de testes. Detalhes e hashes em `docs/auditoria-exportacoes-mapa-2026-10-03.md`. A comparação direta de arquivos baixados do domínio oficial continua pendente.
+
+Tempo real na rota de testes: `realtime_bridge.py` aceita a assinatura Phoenix 2.0.0 que o `app.js` original emite, apenas com sessão Mapa válida, e acompanha `producao` e `formas_manutencao` do PostgreSQL de testes via `LISTEN/NOTIFY`. `tests/mapa/e2e/realtime_event.py` confirmou `phx_join` aceito, evento `INSERT` de `producao` entregue e o cartão do segundo tablet mudando para `is-saved` em 0,39 s. A linha sintética foi removida. Ainda faltam eventos de manutenção, reconexão, demais setores e perfis para certificar o fluxo completo. Não houve alteração no `app.js`.
 
 ## Preparação já feita
 
