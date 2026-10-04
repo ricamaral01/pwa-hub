@@ -28,6 +28,7 @@ PAGES = (
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--role", default="ADMIN")
+    parser.add_argument("--only", choices=PAGES)
     args = parser.parse_args()
     raw = subprocess.check_output(
         ["ssh", "vps-staging", "cat", "/etc/mapa-unificado/pcp-auth-probe.env"],
@@ -69,7 +70,7 @@ def main() -> None:
         page.locator('#unificado-login-form [name="password"]').fill(account["PCP_TEST_PASSWORD"])
         page.locator('#unificado-login-form button[type="submit"]').click()
         page.wait_for_url("**/unificado/pcp/dashboard/", timeout=20000)
-        for name in PAGES:
+        for name in (PAGES if not args.only else (args.only,)):
             current_errors.clear()
             response = page.goto(BASE + "/unificado/pcp/" + name + "/",
                                  wait_until="domcontentloaded", timeout=30000)
@@ -81,12 +82,15 @@ def main() -> None:
             results.append(result)
             if name == "dashboard":
                 page.screenshot(path=str(OUT / "dashboard-1366x768.png"), full_page=True)
+            if name == "formas-por-setor":
+                page.screenshot(path=str(OUT / "formas-por-setor-1366x768.png"), full_page=False)
         context.close()
         browser.close()
     report = {"results": results, "external": external, "wrong_api": wrong_api,
               "api_responses": api_responses,
               "unexpected_writes": writes}
-    (OUT / f"pages-{args.role.lower()}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2),
+    suffix = "-" + args.only if args.only else ""
+    (OUT / f"pages-{args.role.lower()}{suffix}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2),
                                            encoding="utf-8")
     summary = {"role": args.role, "pages": len(results),
                "http_200": sum(item["http"] == 200 for item in results),

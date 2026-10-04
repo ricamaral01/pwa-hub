@@ -6,7 +6,52 @@
     node.textContent = text;
     return node;
   }
+  function makeStandaloneShell() {
+    if (document.querySelector("#sidebar") || !location.pathname.includes("/formas-por-setor/")) return;
+    const hero = document.querySelector("body>.hero");
+    const content = document.querySelector("body>main.wrap");
+    if (!hero || !content || typeof MENU_CONFIG === "undefined") return;
+    const user = (() => {
+      try { return JSON.parse(localStorage.getItem("pcp_user") || "null"); }
+      catch { return null; }
+    })();
+    const role = user?.nivel_acesso || "CONSULTA";
+    const sidebar = make("aside", "", "");
+    sidebar.id = "sidebar";
+    const nav = document.createElement("nav");
+    const home = make("a", "nav-link", "Início");
+    home.href = "/unificado/";
+    home.dataset.page = "IN";
+    nav.append(home);
+    for (const group of MENU_CONFIG.planejamento.groups) {
+      const section = make("div", "nav-group", "");
+      if (group.label) section.append(make("div", "nav-group-toggle", group.label));
+      for (const item of group.items) {
+        const config = MENU_ITEMS[item.id];
+        const allowed = role === "ADMIN" || !config.require
+          || (role === "PCP" && config.require !== "ADMIN")
+          || (role === "PRODUCAO" && config.require === "PRODUCAO");
+        if (!allowed) continue;
+        const link = make("a", "nav-link" + (item.id === "formasPorSetor" ? " active" : ""), item.label);
+        link.href = config.url;
+        link.dataset.page = item.id;
+        section.append(link);
+      }
+      if (section.querySelector("a")) nav.append(section);
+    }
+    sidebar.append(nav);
+    const logout = make("button", "unificado-pcp-hidden-logout", "");
+    logout.id = "btn-logout";
+    logout.type = "button";
+    sidebar.append(logout);
+    const wrapper = make("div", "", "");
+    wrapper.id = "main-content";
+    wrapper.append(make("header", "topbar", ""), hero, content);
+    document.body.append(sidebar, wrapper);
+    document.body.classList.add("unificado-pcp-standalone");
+  }
   function apply() {
+    makeStandaloneShell();
     const sidebar = document.querySelector("#sidebar");
     const topbar = document.querySelector("#main-content>.topbar");
     if (!sidebar || !topbar) return;
@@ -29,7 +74,10 @@
     switcher.append(planning, production);
     sidebar.querySelector("nav")?.before(switcher);
     const title = topbar.querySelector(".page-title")?.textContent.trim() || document.title.split("—")[0].trim();
-    const user = typeof API !== "undefined" ? API.getUser() : null;
+    const user = typeof API !== "undefined" ? API.getUser() : (() => {
+      try { return JSON.parse(localStorage.getItem("pcp_user") || "null"); }
+      catch { return null; }
+    })();
     const crumb = make("div", "unificado-pcp-crumb", "");
     crumb.innerHTML = '<span>Planejamento</span><span aria-hidden="true">/</span><strong></strong>';
     crumb.querySelector("strong").textContent = title;

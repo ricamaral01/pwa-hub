@@ -4,6 +4,8 @@
 @font-face{font-family:'Geist Mono';src:url('/unificado/shell/fonts/GeistMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
 @font-face{font-family:'Geist Mono';src:url('/unificado/shell/fonts/GeistMono-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
 .unificado-pcp-brand,.unificado-pcp-switch,.unificado-pcp-crumb,.unificado-pcp-top-actions,.unificado-pcp-test-link,.unificado-pcp-mono{display:none}
+.unificado-pcp-hidden-logout,body.unificado-pcp-standalone #sidebar,body.unificado-pcp-standalone #main-content>.topbar{display:none}
+body.unificado-pcp-standalone #main-content{display:contents}
 @media screen and (min-width:1025px){
  body{--pcp-primary:#15416F;--pcp-accent:#E8762A;--pcp-bg:#F5F6F8;--pcp-sidebar:#0B1730;--pcp-text:#0E1A2F;--pcp-muted:#5B677A;--pcp-border:#E9ECF1;background:#0B1730;color:#0E1A2F;font-family:Geist,system-ui,sans-serif;padding:10px}
  #sidebar{top:10px;left:10px;width:228px;min-height:0;height:calc(100vh - 20px);padding:21px 13px 17px 5px;background:#0B1730;box-shadow:none}
@@ -43,5 +45,17 @@
  #main-content .card,#main-content .grouped-card,#main-content .table-responsive{border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05);background:#fff}
  #main-content input:not([type=checkbox]):not([type=radio]),#main-content select,#main-content textarea{background:#F1F3F6;border-color:#E9ECF1;border-radius:10px;font-family:Geist,system-ui,sans-serif}
  #main-content .btn-primary,#main-content .btn-primary-pcp{background:#E8762A;border-color:#E8762A;color:#0B1730;border-radius:10px;font-weight:600}
+ body.unificado-pcp-standalone #sidebar{display:flex;flex-direction:column;position:fixed;z-index:20;overflow:hidden;color:#fff}
+ body.unificado-pcp-standalone #sidebar nav{display:block;flex:1;overflow:auto;min-height:0}
+ body.unificado-pcp-standalone #sidebar nav a{text-decoration:none}
+ body.unificado-pcp-standalone #sidebar .nav-link{display:flex;align-items:center}
+ body.unificado-pcp-standalone #main-content{display:block}
+ body.unificado-pcp-standalone #main-content>.topbar{display:flex;align-items:center}
+ body.unificado-pcp-standalone #main-content>.hero{background:#F5F6F8;color:#0E1A2F;border:0;padding:28px 32px 76px}
+ body.unificado-pcp-standalone #main-content>.hero p{color:#E8762A}
+ body.unificado-pcp-standalone #main-content>.hero small{color:#5B677A}
+ body.unificado-pcp-standalone #main-content>.wrap{max-width:1530px;margin:-52px auto 0;padding:0 32px 52px}
+ body.unificado-pcp-standalone .db-panel,body.unificado-pcp-standalone .summary-card,body.unificado-pcp-standalone .tools,body.unificado-pcp-standalone .sector{border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05)}
+ body.unificado-pcp-standalone input{background:#F1F3F6;border-color:#E9ECF1;border-radius:10px}
 }
 @media screen and (min-width:1025px) and (max-width:1300px){#sidebar{width:210px}#main-content,body.sidebar-force-hidden #main-content{margin-left:210px}#main-content .content-area{padding:25px}}
