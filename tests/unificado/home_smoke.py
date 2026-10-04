@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 from urllib.parse import urlsplit
@@ -20,6 +21,9 @@ def credentials(filename: str) -> dict[str, str]:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--snapshot", default="")
+    args = parser.parse_args()
     accounts = {
         "so_pcp": (credentials("/etc/mapa-unificado/pcp-auth-probe.env"), "PCP"),
         "so_mapa": (credentials("/etc/mapa-unificado/auth-probe.env"), "MAPA"),
@@ -70,6 +74,10 @@ def main() -> None:
                             "links": len(linked), "official_links": [path for path in linked
                             if path.startswith("/pages/") or path.startswith("/mapa-concretagem/")],
                             "responses": responses, "external": wrong_hosts, "errors": errors})
+            if args.snapshot:
+                response = page.goto(BASE + "/unificado/testar/", wait_until="domcontentloaded")
+                assert response and response.status == 200
+                assert args.snapshot in page.locator(".meta").inner_text()
             context.close()
         browser.close()
     for result in results:

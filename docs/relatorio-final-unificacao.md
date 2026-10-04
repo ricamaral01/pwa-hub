@@ -1,6 +1,6 @@
 # Relatório da unificação no ambiente de testes
 
-Atualizado em 04/10/2026 (fotografia dos dados: 04/10/2026 08:26:30 UTC). **A certificação final ainda não foi alcançada.** Este documento registra o que está publicado e os critérios que ainda faltam, sem autorizar a virada.
+Atualizado em 04/10/2026 (fotografia dos dados: 04/10/2026 08:48:37 UTC). **A certificação final ainda não foi alcançada.** Este documento registra o que está publicado e os critérios que ainda faltam, sem autorizar a virada.
 
 ## Publicado
 
@@ -16,7 +16,7 @@ VPS de testes: `2.25.163.32`. As rotas abaixo são exclusivas do ambiente de tes
 
 Os sistemas oficiais `https://pcp.concretrack.com.br/` e `https://usina.concretrack.com.br/mapa-concretagem/` responderam HTTP 200 após as publicações. Nenhum teste de gravação usou os sistemas oficiais. A cópia do backend PCP mantém os 47 arquivos de código iguais ao oficial; o `app.js` do Mapa e os conteúdos das planilhas não foram alterados.
 
-Após a fotografia de 08:26:30 UTC, o PCP de testes manteve **19 tabelas e 25.198 linhas**, com contagens iguais à origem. A paginação da produção do Mapa voltou a entregar **1.056 linhas e 1.056 IDs únicos**, sem falta nem repetição e com o mesmo hash canônico da origem. `scripts/verificar_unificado.sh` passou na VPS de testes: 14 verificações de HTTP/autorização e 54 arquivos publicados sem chamada de dados a Supabase ou domínios oficiais. Os quatro serviços do unificado estavam ativos com usuários `www-data` ou `pcp-unificado`; o teste de restauração dos dois bancos passou antes da nova fotografia. A página `/unificado/testar/` exibiu o novo carimbo depois de login sintético e negou acesso sem sessão.
+Após a fotografia de 08:48:37 UTC, o PCP de testes manteve **19 tabelas e 25.198 linhas**, com contagens iguais à origem. A paginação da produção do Mapa voltou a entregar **1.056 linhas e 1.056 IDs únicos**, sem falta nem repetição e com o mesmo hash canônico da origem: `89a5bb6388d9279a34fc366a979c3b79ca3a0255a30a14073888c92b0c58b913`. `scripts/verificar_unificado.sh` passou na VPS de testes: 14 verificações de HTTP/autorização e 54 arquivos publicados sem chamada de dados a Supabase ou domínios oficiais. Os quatro serviços do unificado estavam ativos com usuários `www-data` ou `pcp-unificado`; o teste de restauração dos dois bancos passou antes da nova fotografia. A página `/unificado/testar/` negou acesso sem sessão e exibiu o novo carimbo para contas sintéticas só-PCP e só-Mapa. Ambas foram removidas ao fim da prova.
 
 ## Definição de pronto
 
@@ -38,7 +38,7 @@ Após a fotografia de 08:26:30 UTC, o PCP de testes manteve **19 tabelas e 25.19
 
 ## Pendências de execução
 
-1. Fechar os fixtures individuais do contrato das 73 chamadas do Mapa, incluindo as diferenças brutas de ordem que não mudaram o resultado final. Os 24 fluxos E2E passaram, inclusive 21 pares offline com fila, reenvio, linha e cartão. Os dois CSVs e o XLSX de montagem passaram contra o HTML original na mesma fotografia em GERENCIA e GESTOR; a comparação direta dos downloads com o domínio oficial continua pendente. Eventos `producao` e `formas_manutencao` chegaram por WebSocket e atualizaram o cartão do segundo tablet em 0,39 s e 0,38 s, respectivamente; a matriz completa de eventos/perfis continua pendente.
+1. Fechar os fixtures individuais do contrato das 73 chamadas do Mapa, incluindo as diferenças brutas de ordem que não mudaram o resultado final. Em 04/10, o contrato de escrita repetiu **24/24 operações** de insert, update, upsert e delete nas seis tabelas de testes, com resíduo zero. O contrato de leitura repetiu **66/78 respostas exatas** e **76/78 com as mesmas linhas**; as duas páginas com datas empatadas distribuem 39 IDs em páginas diferentes, mas a paginação completa entregou 1.056/1.056 linhas e hash canônico igual. Os 24 fluxos E2E passaram, inclusive 21 pares offline com fila, reenvio, linha e cartão. Os dois CSVs e o XLSX de montagem passaram contra o HTML original na mesma fotografia em GERENCIA e GESTOR; a comparação direta dos downloads com o domínio oficial continua pendente. Eventos `producao` e `formas_manutencao` chegaram por WebSocket e atualizaram o cartão do segundo tablet em 0,39 s e 0,38 s, respectivamente; a matriz completa de eventos/perfis continua pendente.
 2. Concluir a matriz de telas PCP por perfil e todas as impressões/exportações restantes. A tela Usuários tem o defeito original do botão Redefinir senha documentado.
 3. Confirmar ou rejeitar individualmente os nove pares de contas ainda candidatos; só um par de login e nome iguais foi confirmado automaticamente. O fluxo de par Mapa-base passou no navegador com conta sintética, sem expor credenciais.
 4. Completar a revisão visual de todas as telas e tamanhos pedidos.
