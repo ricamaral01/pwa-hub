@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import argparse
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -22,6 +23,10 @@ def comparable(body: dict) -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--role", choices=("GERENCIA", "GESTOR", "APONTADOR"),
+                        default="GERENCIA")
+    args = parser.parse_args()
     account = credentials()
     original = BEFORE.read_text(encoding="utf-8")
     requests = json.loads(FIXTURE.read_text(encoding="utf-8"))["requests"]
@@ -50,12 +55,13 @@ def main() -> None:
                 query = ("/unificado/mapa/api/rest/v1/programacao_pcp?select=*"
                          f"&data_fabricacao=eq.{DATE}&setor=eq.Setor%20{sector}&forma=eq.{form}")
                 try:
-                    login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
+                    login_operacao(page, account["MAPA_TEST_USER"],
+                                   account["MAPA_TEST_PASSWORD"], args.role)
                     if variant == "original":
                         page.route(URL, lambda route: route.fulfill(status=200,
                             content_type="text/html; charset=utf-8", body=original))
                         page.goto(URL, wait_until="domcontentloaded")
-                        page.wait_for_function("state.authUser?.role === 'GERENCIA'")
+                        page.wait_for_function(f"state.authUser?.role === '{args.role}'")
                     before_rows = page.evaluate("async url => await (await fetch(url)).json()", query)
                     assert before_rows == [], (sector, variant, "existing data")
                     safe_to_clean = True
@@ -113,9 +119,10 @@ def main() -> None:
                             "row": "equal", "card": "equal", "cleaned": True})
         browser.close()
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "programming-sector-parity.json").write_text(
+    (OUT / f"programming-sector-parity-{args.role.lower()}.json").write_text(
         json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"cases": len(results), "results": results}, ensure_ascii=False))
+    print(json.dumps({"role": args.role, "cases": len(results), "results": results},
+                     ensure_ascii=False))
 
 
 if __name__ == "__main__":
