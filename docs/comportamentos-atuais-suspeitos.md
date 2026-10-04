@@ -1,5 +1,13 @@
 # Comportamentos atuais suspeitos preservados
 
+## Mapa — envio de relatório pelo WhatsApp cai no texto sem PDF no navegador de teste
+
+**O que acontece:** ao executar o botão de WhatsApp com o HTML original no navegador automatizado de testes, a geração do PDF pela biblioteca externa falha, o indicador mostra “Erro ao gerar PDF.” e a função abre o texto de fallback. A rota unificada produz o mesmo resultado. Isto foi observado no navegador de teste; não há evidência de que a biblioteca falhe em todos os navegadores do sistema oficial. A impressão pelo botão Imprimir, que usa `window.print`, gerou PDF idêntico nas duas variantes.
+
+**Onde:** `mapa-concretagem/app.js`, `loadHtml2Pdf` e `enviarRelatorioWhatsapp`, por volta das linhas 7433–7507. A biblioteca é carregada de `cdnjs.cloudflare.com`; o `catch` abre `api.whatsapp.com/send` somente com o texto do relatório. O código original foi preservado.
+
+**Evidência:** `tests/mapa/e2e/report_share_matrix.py` executou os quatro setores em GERENCIA e GESTOR com HTML original e rota unificada. Nos 16 casos, o texto preparado para compartilhar e a mensagem de erro foram iguais. As navegações para WhatsApp foram interceptadas e abortadas antes de qualquer envio externo. `tests/mapa/e2e/report_ui_parity.py` comparou os PDFs de impressão em oito pares: duas páginas com hashes de texto e pixels iguais. As evidências privadas estão em `.work-mapa-unificado/e2e/report-share-*.json` e `report-*-s*.json`.
+
 ## Mapa — respostas muito rápidas do checklist podem renderizar estado anterior
 
 **O que acontece:** em um roteiro acelerado que respondeu todos os itens do checklist sem intervalo, a primeira inspeção gravou `R` no PostgreSQL de testes, mas uma renderização imediata da lista mostrou temporariamente “Pendente”. Após aguardar as gravações disparadas por cada resposta, a mesma ação mostrou “Reprovado · 2ª inspeção pendente” nas duas variantes. Isto foi observado somente no roteiro acelerado; não houve alteração do aplicativo para mascarar a diferença.
