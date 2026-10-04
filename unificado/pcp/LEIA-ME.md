@@ -6,10 +6,13 @@ de `/opt/pcp-concrefer/frontend/` em 02/10/2026. A importação reproduzível es
 `/unificado/login.html`. Arquivos de backup e `msgbox.*` também foram excluídos.
 
 Os caminhos `/pages/` e `/static/` foram adaptados para esta cópia. Bibliotecas de CDN
-foram substituídas por arquivos locais em `unificado/vendor/`. O arquivo
-`readonly-guard.js` é carregado antes dos scripts das páginas e bloqueia requisições
-HTTP de escrita durante a validação. Não remover esse bloqueio antes de homologar
-o conjunto completo, inclusive autenticação e permissões.
+foram substituídas por arquivos locais em `unificado/vendor/`. Na rota publicada de
+testes, `scripts/build_unificado_pcp_frontend.py` mantém os manipuladores das 24 páginas,
+substitui o bloqueio temporário de escrita por `unificado-bridge.js` e carrega a casca
+`unificado-shell.css/.js`. A ponte envia `/api/` para `/unificado/pcp/api/` e rejeita
+pedidos de dados a domínios oficiais. As gravações chegam apenas ao PostgreSQL PCP de
+testes. O arquivo `readonly-guard.js` permanece na cópia local histórica, mas não é
+servido nessas páginas.
 
 O backend PCP copiado está publicado apenas como API de testes em
 `https://concrefer.concretrack.com.br/unificado/pcp/api/`. Sem autenticação,
@@ -24,7 +27,11 @@ A seleção temporária da planilha de outubro usada no teste foi revertida; par
 outubro, a regra original ainda escolhe agosto. O runtime de testes usa Python
 3.10 como o oficial, sem editar consultas ou regras do backend.
 
-Para abrir a cópia local do frontend, sirva a **raiz do repositório** e acesse
-`http://127.0.0.1:8091/unificado/pcp/dashboard/`. As páginas exigem a sessão PCP;
-o login unificado do PCP ainda está desativado. O frontend PCP não foi publicado
-na VPS e a API publicada não libera operação pelas páginas neste estado.
+O frontend está publicado em `https://concrefer.concretrack.com.br/unificado/pcp/`.
+O login unificado abre a sessão PCP e encaminha para as páginas. Com contas sintéticas
+ADMIN, PCP, PRODUCAO e CONSULTA, as 24 URLs responderam HTTP 200; 23 telas normais
+receberam a casca e `primeiro-acesso` redirecionou quando a conta já tinha acesso
+normal. As permissões existentes redirecionaram `teste-programacao` e `usuarios` para
+os três perfis sem ADMIN. Foram 49/47/47/47 respostas de API 2xx, sem chamadas
+externas, erros de página ou pedidos para `/api/` fora da ponte. A comparação de
+impressões e os testes de gravação por tela ainda faltam.

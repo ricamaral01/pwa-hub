@@ -18,6 +18,8 @@ def main() -> None:
     parser.add_argument("action", choices=("create", "cleanup"))
     parser.add_argument("--first-access", action="store_true")
     parser.add_argument("--short-existing", action="store_true")
+    parser.add_argument("--role", choices=("ADMIN", "PCP", "PRODUCAO", "CONSULTA"),
+                        default="CONSULTA")
     args = parser.parse_args()
     action = args.action
     for path in ("/etc/mapa-unificado/auth.env", "/etc/mapa-unificado/unified-auth.env"):
@@ -35,13 +37,13 @@ def main() -> None:
         with pcp_connect() as conn, conn.cursor() as cursor:
             cursor.execute("""INSERT INTO public.usuarios
               (nome,username,email,senha_hash,nivel_acesso,ativo,trocar_senha_primeiro_acesso)
-              VALUES (%s,%s,%s,%s,'CONSULTA',true,%s)""",
+              VALUES (%s,%s,%s,%s,%s,true,%s)""",
               ("Conta Sintética PCP", LOGIN, LOGIN + "@local.invalid",
-               PCP_HASHER.hash(password), args.first_access))
+               PCP_HASHER.hash(password), args.role, args.first_access))
         fd = os.open(FILE, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
         with os.fdopen(fd, "w") as stream:
             stream.write(f"PCP_TEST_USER={LOGIN}\nPCP_TEST_PASSWORD={password}\n")
-        print("pcp_auth_probe=created role=CONSULTA")
+        print(f"pcp_auth_probe=created role={args.role}")
     else:
         with pcp_connect() as conn, conn.cursor() as cursor:
             cursor.execute("DELETE FROM public.usuarios WHERE username=%s", (LOGIN,))

@@ -4,11 +4,23 @@ const requestedNext = new URLSearchParams(location.search).get('next');
 
 function destination(modules) {
   const allowed = new Set(['mapa/consulta/', 'mapa/operacao/', 'testar/']);
-  if (allowed.has(requestedNext)) return new URL(requestedNext, UNIFICADO_ROOT);
-  if (/^mapa\/operacao\/\?tela=[A-Z0-9_]+$/.test(requestedNext || '')) {
+  const pcpPages = new Set(['acompanhamento-mensal','acompanhamento-mensal-setor-34',
+    'apontamento-mega','comparacao','dashboard','etiquetas','etiquetas-armaduras',
+    'etiquetas-sc','formas-por-setor','maodeobra','maodeobra-rateio','pcp-diario',
+    'primeiro-acesso','producao','programacao','programacao-alex',
+    'programacao-circular-s3','programacao-circular-s4','programacao-final',
+    'relatorio-producao','relatorio-programacao-s3','relatorio-programacao-s4',
+    'teste-programacao','usuarios']);
+  if (requestedNext === 'testar/') return new URL(requestedNext, UNIFICADO_ROOT);
+  if (modules.includes('mapa') && allowed.has(requestedNext)) return new URL(requestedNext, UNIFICADO_ROOT);
+  if (modules.includes('pcp') && (requestedNext === 'pcp/' ||
+      pcpPages.has((requestedNext || '').match(/^pcp\/([^/?]+)\/$/)?.[1]))) {
     return new URL(requestedNext, UNIFICADO_ROOT);
   }
-  return new URL(modules.includes('mapa') ? 'mapa/' : 'testar/', UNIFICADO_ROOT);
+  if (modules.includes('mapa') && /^mapa\/operacao\/\?tela=[A-Z0-9_]+$/.test(requestedNext || '')) {
+    return new URL(requestedNext, UNIFICADO_ROOT);
+  }
+  return new URL(modules.includes('pcp') ? 'pcp/' : 'mapa/', UNIFICADO_ROOT);
 }
 
 function storeModuleSessions(result) {
