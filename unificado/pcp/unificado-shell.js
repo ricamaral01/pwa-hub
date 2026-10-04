@@ -122,6 +122,7 @@
         event.stopImmediatePropagation();
         sidebar.querySelectorAll(".nav-group.flyout-open").forEach(node => { if (node !== group) node.classList.remove("flyout-open"); });
         group.classList.toggle("flyout-open");
+        toggle.setAttribute("aria-expanded", String(group.classList.contains("flyout-open")));
       }, true);
       toggle.addEventListener("keydown", event => {
         if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggle.click(); }
