@@ -1,0 +1,1945 @@
+{
+  "pairs": [
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-01"
+      ],
+      "sector": "Todos",
+      "totals_equal": false,
+      "by_defect_equal": false,
+      "by_sector_equal": false,
+      "visible_rows_equal": false,
+      "visible_text_equal": false,
+      "original_kpis": {
+        "producao": 224,
+        "postes": 135,
+        "total_erros": 14,
+        "total_possivel": 3718,
+        "postes_reprovados": 5,
+        "retrabalho": 4
+      },
+      "test_kpis": {
+        "producao": 224,
+        "postes": 135,
+        "total_erros": 7,
+        "total_possivel": 3562,
+        "postes_reprovados": 5,
+        "retrabalho": 4
+      },
+      "original_visible_rows": 22,
+      "test_visible_rows": 22,
+      "original_by_defect_hash": "c2ed2ee5bc53fa52fed0ed1e7cc58ef650946d89ccdf7dc62e3433072efc94b2",
+      "test_by_defect_hash": "14d77a0ec9e83eb00a460ff72d3f7b7e4c5afcf135e7904375797caa3b6d8851",
+      "original_by_sector_hash": "add028e3e87749654cebe877cf7c549f3a89c7f30afc4edc023c6ce1b66ad3df",
+      "test_by_sector_hash": "c26bbe651b9325b76fa760515891f8178c7655de7e74def6873a39ca2c41eed4",
+      "original_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 4,
+        "Acabamento abas": 2,
+        "Reprovação sem defeito detalhado": 2,
+        "Falhas de Preenchimento": 6
+      },
+      "test_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 2,
+        "Acabamento abas": 1,
+        "Reprovação sem defeito detalhado": 1,
+        "Falhas de Preenchimento": 3
+      },
+      "original_by_sector": {
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 47
+        },
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 6,
+          "producao": 75
+        },
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 8,
+          "producao": 77
+        },
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 25
+        }
+      },
+      "test_by_sector": {
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 47
+        },
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 3,
+          "producao": 75
+        },
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 4,
+          "producao": 77
+        },
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 25
+        }
+      },
+      "original_csv_total": "14",
+      "test_csv_total": "7",
+      "original_csv_preview": "\"Dashboard de Defeitos\"\r\n\"Periodo\";\"2026-10-01\";\"2026-10-01\"\r\n\"Escopo\";\"TOTAL\"\r\n\r\n\"Indicador\";\"Valor\"\r\n\"Producao\";\"224\"\r\n\"Postes avaliados\";\"135\"\r\n\"Ocorrencias de NC\";\"14\"\r\n\"Oportunidades avaliadas\";\"3718\"\r\n\"Postes reprovados\";\"5\"\r\n\"Retrabalho\";\"4\"\r\n\r\n\"Taxa de defeitos por setor\"\r\n\"Setor\";\"Produzido",
+      "test_csv_preview": "\"Dashboard de Defeitos\"\r\n\"Periodo\";\"2026-10-01\";\"2026-10-01\"\r\n\"Escopo\";\"TOTAL\"\r\n\r\n\"Indicador\";\"Valor\"\r\n\"Producao\";\"224\"\r\n\"Postes avaliados\";\"135\"\r\n\"Ocorrencias de NC\";\"7\"\r\n\"Oportunidades avaliadas\";\"3562\"\r\n\"Postes reprovados\";\"5\"\r\n\"Retrabalho\";\"4\"\r\n\r\n\"Taxa de defeitos por setor\"\r\n\"Setor\";\"Produzidos",
+      "original_displayed_lines": [
+        "Setor 1\n77 produzido(s)\n8 erros\n10,4% taxa/producao",
+        "Setor 2\n75 produzido(s)\n6 erros\n8,0% taxa/producao",
+        "Setor 3\n47 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Setor 4\n25 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Falhas de Preenchimento\n6\n42,9%",
+        "Prisioneiros (lacre / aterramento)\n4\n28,6%",
+        "Acabamento abas\n2\n14,3%",
+        "Reprovação sem defeito detalhado\n2\n14,3%",
+        "Acabamento abas\n2\n25,0%",
+        "Falhas de Preenchimento\n2\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n25,0%",
+        "Reprovação sem defeito detalhado\n2\n25,0%",
+        "Falhas de Preenchimento\n4\n66,7%",
+        "Prisioneiros (lacre / aterramento)\n2\n33,3%",
+        "Falhas de Preenchimento\n6\n⌄",
+        "Falhas de Preenchimento\n6\n⌄",
+        "Prisioneiros (lacre / aterramento)\n4\n⌄",
+        "Prisioneiros (lacre / aterramento)\n4\n⌄",
+        "Acabamento abas\n2\n⌄",
+        "Acabamento abas\n2\n⌄",
+        "Reprovação sem defeito detalhado\n2\n⌄",
+        "Reprovação sem defeito detalhado\n2\n⌄"
+      ],
+      "test_displayed_lines": [
+        "Setor 1\n77 produzido(s)\n4 erros\n5,2% taxa/producao",
+        "Setor 2\n75 produzido(s)\n3 erros\n4,0% taxa/producao",
+        "Setor 3\n47 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Setor 4\n25 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Falhas de Preenchimento\n3\n42,9%",
+        "Prisioneiros (lacre / aterramento)\n2\n28,6%",
+        "Acabamento abas\n1\n14,3%",
+        "Reprovação sem defeito detalhado\n1\n14,3%",
+        "Acabamento abas\n1\n25,0%",
+        "Falhas de Preenchimento\n1\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n25,0%",
+        "Reprovação sem defeito detalhado\n1\n25,0%",
+        "Falhas de Preenchimento\n2\n66,7%",
+        "Prisioneiros (lacre / aterramento)\n1\n33,3%",
+        "Falhas de Preenchimento\n3\n⌄",
+        "Falhas de Preenchimento\n3\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Acabamento abas\n1\n⌄",
+        "Acabamento abas\n1\n⌄",
+        "Reprovação sem defeito detalhado\n1\n⌄",
+        "Reprovação sem defeito detalhado\n1\n⌄"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 143,
+        "events": 14,
+        "uniqueInspectionDefects": 7,
+        "uniquePosteDefects": 7,
+        "duplicatePosteDefects": 7,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {
+          "FINALIZACAO/A/regular + HISTORICO_REPROVACAO/A/history": 1,
+          "FINALIZACAO/R/regular + HISTORICO_REPROVACAO/R/history": 2,
+          "HISTORICO_REPROVACAO/RR/history + HISTORICO_REPROVACAO/RR/history": 4
+        }
+      },
+      "test_event_audit": {
+        "evaluationRows": 137,
+        "events": 7,
+        "uniqueInspectionDefects": 7,
+        "uniquePosteDefects": 7,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "content_classes": [
+        "mi-tab-section df-v4-content active",
+        "df-v4-hero-grid",
+        "df-v4-kpi df-v4-kpi-hero",
+        "df-v4-kpi-label",
+        "df-v4-kpi-value",
+        "df-v4-kpi-meta",
+        "df-v4-chip",
+        "df-v4-kpi",
+        "df-v4-mini-grid",
+        "df-v4-mini-kpi",
+        "df-v4-memory",
+        "df-v4-memory-head",
+        "df-v4-memory-grid",
+        "df-v4-memory-card primary",
+        "df-v4-memory-card secondary",
+        "df-v4-memory-card tertiary",
+        "df-v4-layout",
+        "df-v4-panel",
+        "df-v4-panel-head",
+        "mi-defeitos-list df-v4-sector-list",
+        "mi-defeitos-row",
+        "mi-defeitos-row-main",
+        "mi-defeitos-row-metrics",
+        "df-v4-panel-actions",
+        "df-defect-share-chart",
+        "df-defect-share-caption",
+        "df-defect-share-list",
+        "df-defect-share-row",
+        "df-defect-share-label",
+        "df-defect-share-track",
+        "df-defect-share-fill",
+        "df-defect-share-percent",
+        "mi-defeitos-list",
+        "mi-def-pareto-row vital",
+        "mi-def-pareto-row ",
+        "mi-defeitos-list df-v4-action-list",
+        "mi-def-action",
+        "mi-ranking-list df-v4-type-list",
+        "df-defect-entry",
+        "mi-defeito-tipo-row df-defect-toggle"
+      ]
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-01"
+      ],
+      "sector": "Setor 1",
+      "totals_equal": false,
+      "by_defect_equal": false,
+      "by_sector_equal": false,
+      "visible_rows_equal": false,
+      "visible_text_equal": false,
+      "original_kpis": {
+        "producao": 77,
+        "postes": 63,
+        "total_erros": 8,
+        "total_possivel": 1768,
+        "postes_reprovados": 3,
+        "retrabalho": 2
+      },
+      "test_kpis": {
+        "producao": 77,
+        "postes": 63,
+        "total_erros": 4,
+        "total_possivel": 1690,
+        "postes_reprovados": 3,
+        "retrabalho": 2
+      },
+      "original_visible_rows": 17,
+      "test_visible_rows": 17,
+      "original_by_defect_hash": "30e786fa548bfce81e2b3cc919d9acf949a4a3fc7a36ac83cd05c5091c676652",
+      "test_by_defect_hash": "3d8fb22a674b7743f4a56b020af8c2ab60faded73ce2505d66d6f6c0f7fa605b",
+      "original_by_sector_hash": "a062d16693826bdcfcd7b9bb36ce92610100acf5306664a63a16abd26f7f0791",
+      "test_by_sector_hash": "6fd98d4f367c7a1eb74501bb5a326aa3592bc0fbde732b26137813c936919896",
+      "original_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 2,
+        "Acabamento abas": 2,
+        "Reprovação sem defeito detalhado": 2,
+        "Falhas de Preenchimento": 2
+      },
+      "test_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 1,
+        "Acabamento abas": 1,
+        "Reprovação sem defeito detalhado": 1,
+        "Falhas de Preenchimento": 1
+      },
+      "original_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 8,
+          "producao": 77
+        }
+      },
+      "test_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 4,
+          "producao": 77
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 1\n77 produzido(s)\n8 erros\n10,4% taxa/producao",
+        "Acabamento abas\n2\n25,0%",
+        "Falhas de Preenchimento\n2\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n25,0%",
+        "Reprovação sem defeito detalhado\n2\n25,0%",
+        "Acabamento abas\n2\n25,0%",
+        "Falhas de Preenchimento\n2\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n25,0%",
+        "Reprovação sem defeito detalhado\n2\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Acabamento abas\n2\n⌄",
+        "Acabamento abas\n2\n⌄",
+        "Reprovação sem defeito detalhado\n2\n⌄",
+        "Reprovação sem defeito detalhado\n2\n⌄",
+        "Falhas de Preenchimento\n2\n⌄",
+        "Falhas de Preenchimento\n2\n⌄"
+      ],
+      "test_displayed_lines": [
+        "Setor 1\n77 produzido(s)\n4 erros\n5,2% taxa/producao",
+        "Acabamento abas\n1\n25,0%",
+        "Falhas de Preenchimento\n1\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n25,0%",
+        "Reprovação sem defeito detalhado\n1\n25,0%",
+        "Acabamento abas\n1\n25,0%",
+        "Falhas de Preenchimento\n1\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n25,0%",
+        "Reprovação sem defeito detalhado\n1\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n⌄",
+        "Prisioneiros (lacre / aterramento)\n1\n⌄",
+        "Acabamento abas\n1\n⌄",
+        "Acabamento abas\n1\n⌄",
+        "Reprovação sem defeito detalhado\n1\n⌄",
+        "Reprovação sem defeito detalhado\n1\n⌄",
+        "Falhas de Preenchimento\n1\n⌄",
+        "Falhas de Preenchimento\n1\n⌄"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 68,
+        "events": 8,
+        "uniqueInspectionDefects": 4,
+        "uniquePosteDefects": 4,
+        "duplicatePosteDefects": 4,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {
+          "FINALIZACAO/R/regular + HISTORICO_REPROVACAO/R/history": 2,
+          "HISTORICO_REPROVACAO/RR/history + HISTORICO_REPROVACAO/RR/history": 2
+        }
+      },
+      "test_event_audit": {
+        "evaluationRows": 65,
+        "events": 4,
+        "uniqueInspectionDefects": 4,
+        "uniquePosteDefects": 4,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-01"
+      ],
+      "sector": "Setor 2",
+      "totals_equal": false,
+      "by_defect_equal": false,
+      "by_sector_equal": false,
+      "visible_rows_equal": false,
+      "visible_text_equal": false,
+      "original_kpis": {
+        "producao": 75,
+        "postes": 72,
+        "total_erros": 6,
+        "total_possivel": 1950,
+        "postes_reprovados": 2,
+        "retrabalho": 2
+      },
+      "test_kpis": {
+        "producao": 75,
+        "postes": 72,
+        "total_erros": 3,
+        "total_possivel": 1872,
+        "postes_reprovados": 2,
+        "retrabalho": 2
+      },
+      "original_visible_rows": 9,
+      "test_visible_rows": 9,
+      "original_by_defect_hash": "09056ce05c1f64ae021f0e474b020e5e0d9249324c6ab5e74abb72bca43133fc",
+      "test_by_defect_hash": "df4687f6a802a11df760a5afc3887a3317e8f2d129cdf8e870256758084fe1b3",
+      "original_by_sector_hash": "692f4d26d348518a98474cc78511a73689e2c01a3b9a4799d22033d3b83fa438",
+      "test_by_sector_hash": "43ee3192b553805e7e444ecf5889adcccbc724f840d3b6221bda0e2680d639ba",
+      "original_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 2,
+        "Falhas de Preenchimento": 4
+      },
+      "test_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 1,
+        "Falhas de Preenchimento": 2
+      },
+      "original_by_sector": {
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 6,
+          "producao": 75
+        }
+      },
+      "test_by_sector": {
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 3,
+          "producao": 75
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 2\n75 produzido(s)\n6 erros\n8,0% taxa/producao",
+        "Falhas de Preenchimento\n4\n66,7%",
+        "Prisioneiros (lacre / aterramento)\n2\n33,3%",
+        "Falhas de Preenchimento\n4\n66,7%",
+        "Prisioneiros (lacre / aterramento)\n2\n33,3%",
+        "Falhas de Preenchimento\n4\n⌄",
+        "Falhas de Preenchimento\n4\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄"
+      ],
+      "test_displayed_lines": [
+        "Setor 2\n75 produzido(s)\n3 erros\n4,0% taxa/producao",
+        "Falhas de Preenchimento\n2\n66,7%",
+        "Prisioneiros (lacre / aterramento)\n1\n33,3%",
+        "Falhas de Preenchimento\n2\n66,7%",
+        "Prisioneiros (lacre / aterramento)\n1\n33,3%",
+        "Falhas de Preenchimento\n2\n⌄",
+        "Falhas de Preenchimento\n2\n⌄",
+        "Prisioneiros (lacre / aterramento)\n1\n⌄",
+        "Prisioneiros (lacre / aterramento)\n1\n⌄"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 75,
+        "events": 6,
+        "uniqueInspectionDefects": 3,
+        "uniquePosteDefects": 3,
+        "duplicatePosteDefects": 3,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {
+          "FINALIZACAO/A/regular + HISTORICO_REPROVACAO/A/history": 1,
+          "HISTORICO_REPROVACAO/RR/history + HISTORICO_REPROVACAO/RR/history": 2
+        }
+      },
+      "test_event_audit": {
+        "evaluationRows": 72,
+        "events": 3,
+        "uniqueInspectionDefects": 3,
+        "uniquePosteDefects": 3,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-01"
+      ],
+      "sector": "Setor 3",
+      "totals_equal": true,
+      "by_defect_equal": true,
+      "by_sector_equal": true,
+      "visible_rows_equal": true,
+      "visible_text_equal": true,
+      "original_kpis": {
+        "producao": 47,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "test_kpis": {
+        "producao": 47,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "original_visible_rows": 1,
+      "test_visible_rows": 1,
+      "original_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "test_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "original_by_sector_hash": "e2dc872244a2baa7fc2d6c5868d978571df85cfbb591b74c22d7ee14d6586b71",
+      "test_by_sector_hash": "e2dc872244a2baa7fc2d6c5868d978571df85cfbb591b74c22d7ee14d6586b71",
+      "original_by_defect": {},
+      "test_by_defect": {},
+      "original_by_sector": {
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 47
+        }
+      },
+      "test_by_sector": {
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 47
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 3\n47 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "test_displayed_lines": [
+        "Setor 3\n47 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "test_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-01"
+      ],
+      "sector": "Setor 4",
+      "totals_equal": true,
+      "by_defect_equal": true,
+      "by_sector_equal": true,
+      "visible_rows_equal": true,
+      "visible_text_equal": true,
+      "original_kpis": {
+        "producao": 25,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "test_kpis": {
+        "producao": 25,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "original_visible_rows": 1,
+      "test_visible_rows": 1,
+      "original_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "test_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "original_by_sector_hash": "08401dd875b471e1130a2180783e7406d451243e2a4b50baf5a63c67e073c182",
+      "test_by_sector_hash": "08401dd875b471e1130a2180783e7406d451243e2a4b50baf5a63c67e073c182",
+      "original_by_defect": {},
+      "test_by_defect": {},
+      "original_by_sector": {
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 25
+        }
+      },
+      "test_by_sector": {
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 25
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 4\n25 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "test_displayed_lines": [
+        "Setor 4\n25 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "test_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-02",
+        "2026-10-02"
+      ],
+      "sector": "Todos",
+      "totals_equal": false,
+      "by_defect_equal": false,
+      "by_sector_equal": false,
+      "visible_rows_equal": false,
+      "visible_text_equal": false,
+      "original_kpis": {
+        "producao": 191,
+        "postes": 137,
+        "total_erros": 14,
+        "total_possivel": 3744,
+        "postes_reprovados": 5,
+        "retrabalho": 3
+      },
+      "test_kpis": {
+        "producao": 191,
+        "postes": 137,
+        "total_erros": 7,
+        "total_possivel": 3562,
+        "postes_reprovados": 5,
+        "retrabalho": 3
+      },
+      "original_visible_rows": 16,
+      "test_visible_rows": 16,
+      "original_by_defect_hash": "9b0138a5a2478fd3ece783c913b08642fadb4aaa2eb17bbd404934d26c1d984f",
+      "test_by_defect_hash": "ad546c5a3c1417c4e0e2ebcbcc07a7f0f489b22e70e052c7e2e55386aaf7c42e",
+      "original_by_sector_hash": "2a1872261ca18656f6c4b9bbb2abb48df37c3b6c1b6340ea289ebdfee0e3eb95",
+      "test_by_sector_hash": "ba91ada0a78c660480fbd49663cc0c6e7be07d8a1a3a75ad739170f1a374ade1",
+      "original_by_defect": {
+        "Falhas de Preenchimento": 8,
+        "Bolhas em excesso": 4,
+        "Grandes Avarias": 2
+      },
+      "test_by_defect": {
+        "Falhas de Preenchimento": 4,
+        "Bolhas em excesso": 2,
+        "Grandes Avarias": 1
+      },
+      "original_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 0,
+          "producao": 67
+        },
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 46
+        },
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 14,
+          "producao": 76
+        },
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 2
+        }
+      },
+      "test_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 0,
+          "producao": 67
+        },
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 46
+        },
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 7,
+          "producao": 76
+        },
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 2
+        }
+      },
+      "original_csv_total": "14",
+      "test_csv_total": "7",
+      "original_csv_preview": "\"Dashboard de Defeitos\"\r\n\"Periodo\";\"2026-10-02\";\"2026-10-02\"\r\n\"Escopo\";\"TOTAL\"\r\n\r\n\"Indicador\";\"Valor\"\r\n\"Producao\";\"191\"\r\n\"Postes avaliados\";\"137\"\r\n\"Ocorrencias de NC\";\"14\"\r\n\"Oportunidades avaliadas\";\"3744\"\r\n\"Postes reprovados\";\"5\"\r\n\"Retrabalho\";\"3\"\r\n\r\n\"Taxa de defeitos por setor\"\r\n\"Setor\";\"Produzido",
+      "test_csv_preview": "\"Dashboard de Defeitos\"\r\n\"Periodo\";\"2026-10-02\";\"2026-10-02\"\r\n\"Escopo\";\"TOTAL\"\r\n\r\n\"Indicador\";\"Valor\"\r\n\"Producao\";\"191\"\r\n\"Postes avaliados\";\"137\"\r\n\"Ocorrencias de NC\";\"7\"\r\n\"Oportunidades avaliadas\";\"3562\"\r\n\"Postes reprovados\";\"5\"\r\n\"Retrabalho\";\"3\"\r\n\r\n\"Taxa de defeitos por setor\"\r\n\"Setor\";\"Produzidos",
+      "original_displayed_lines": [
+        "Setor 2\n76 produzido(s)\n14 erros\n18,4% taxa/producao",
+        "Setor 1\n67 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Setor 3\n46 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Setor 4\n2 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Falhas de Preenchimento\n8\n57,1%",
+        "Bolhas em excesso\n4\n28,6%",
+        "Grandes Avarias\n2\n14,3%",
+        "Falhas de Preenchimento\n8\n57,1%",
+        "Bolhas em excesso\n4\n28,6%",
+        "Grandes Avarias\n2\n14,3%",
+        "Falhas de Preenchimento\n8\n⌄",
+        "Falhas de Preenchimento\n8\n⌄",
+        "Bolhas em excesso\n4\n⌄",
+        "Bolhas em excesso\n4\n⌄",
+        "Grandes Avarias\n2\n⌄",
+        "Grandes Avarias\n2\n⌄"
+      ],
+      "test_displayed_lines": [
+        "Setor 2\n76 produzido(s)\n7 erros\n9,2% taxa/producao",
+        "Setor 1\n67 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Setor 3\n46 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Setor 4\n2 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Falhas de Preenchimento\n4\n57,1%",
+        "Bolhas em excesso\n2\n28,6%",
+        "Grandes Avarias\n1\n14,3%",
+        "Falhas de Preenchimento\n4\n57,1%",
+        "Bolhas em excesso\n2\n28,6%",
+        "Grandes Avarias\n1\n14,3%",
+        "Falhas de Preenchimento\n4\n⌄",
+        "Falhas de Preenchimento\n4\n⌄",
+        "Bolhas em excesso\n2\n⌄",
+        "Bolhas em excesso\n2\n⌄",
+        "Grandes Avarias\n1\n⌄",
+        "Grandes Avarias\n1\n⌄"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 144,
+        "events": 14,
+        "uniqueInspectionDefects": 7,
+        "uniquePosteDefects": 7,
+        "duplicatePosteDefects": 7,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {
+          "FINALIZACAO/RR/regular + HISTORICO_REPROVACAO/RR/history": 3,
+          "FINALIZACAO/R/regular + HISTORICO_REPROVACAO/R/history": 2,
+          "FINALIZACAO/A/regular + HISTORICO_REPROVACAO/A/history": 2
+        }
+      },
+      "test_event_audit": {
+        "evaluationRows": 137,
+        "events": 7,
+        "uniqueInspectionDefects": 7,
+        "uniquePosteDefects": 7,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "content_classes": [
+        "mi-tab-section df-v4-content active",
+        "df-v4-hero-grid",
+        "df-v4-kpi df-v4-kpi-hero",
+        "df-v4-kpi-label",
+        "df-v4-kpi-value",
+        "df-v4-kpi-meta",
+        "df-v4-chip",
+        "df-v4-kpi",
+        "df-v4-mini-grid",
+        "df-v4-mini-kpi",
+        "df-v4-memory",
+        "df-v4-memory-head",
+        "df-v4-memory-grid",
+        "df-v4-memory-card primary",
+        "df-v4-memory-card secondary",
+        "df-v4-memory-card tertiary",
+        "df-v4-layout",
+        "df-v4-panel",
+        "df-v4-panel-head",
+        "mi-defeitos-list df-v4-sector-list",
+        "mi-defeitos-row",
+        "mi-defeitos-row-main",
+        "mi-defeitos-row-metrics",
+        "df-v4-panel-actions",
+        "df-defect-share-chart",
+        "df-defect-share-caption",
+        "df-defect-share-list",
+        "df-defect-share-row",
+        "df-defect-share-label",
+        "df-defect-share-track",
+        "df-defect-share-fill",
+        "df-defect-share-percent",
+        "muted",
+        "mi-defeitos-list",
+        "mi-def-pareto-row vital",
+        "mi-def-pareto-row ",
+        "mi-defeitos-list df-v4-action-list",
+        "mi-def-action",
+        "mi-ranking-list df-v4-type-list",
+        "df-defect-entry"
+      ]
+    },
+    {
+      "period": [
+        "2026-10-02",
+        "2026-10-02"
+      ],
+      "sector": "Setor 1",
+      "totals_equal": true,
+      "by_defect_equal": true,
+      "by_sector_equal": true,
+      "visible_rows_equal": true,
+      "visible_text_equal": true,
+      "original_kpis": {
+        "producao": 67,
+        "postes": 62,
+        "total_erros": 0,
+        "total_possivel": 1612,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "test_kpis": {
+        "producao": 67,
+        "postes": 62,
+        "total_erros": 0,
+        "total_possivel": 1612,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "original_visible_rows": 1,
+      "test_visible_rows": 1,
+      "original_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "test_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "original_by_sector_hash": "2aa03640b834b7d2c2243bcfb7e923ed1d9313bd00c6e42610afbda185f5cbd3",
+      "test_by_sector_hash": "2aa03640b834b7d2c2243bcfb7e923ed1d9313bd00c6e42610afbda185f5cbd3",
+      "original_by_defect": {},
+      "test_by_defect": {},
+      "original_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 0,
+          "producao": 67
+        }
+      },
+      "test_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 0,
+          "producao": 67
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 1\n67 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "test_displayed_lines": [
+        "Setor 1\n67 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 62,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "test_event_audit": {
+        "evaluationRows": 62,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-02",
+        "2026-10-02"
+      ],
+      "sector": "Setor 2",
+      "totals_equal": false,
+      "by_defect_equal": false,
+      "by_sector_equal": false,
+      "visible_rows_equal": false,
+      "visible_text_equal": false,
+      "original_kpis": {
+        "producao": 76,
+        "postes": 75,
+        "total_erros": 14,
+        "total_possivel": 2132,
+        "postes_reprovados": 5,
+        "retrabalho": 3
+      },
+      "test_kpis": {
+        "producao": 76,
+        "postes": 75,
+        "total_erros": 7,
+        "total_possivel": 1950,
+        "postes_reprovados": 5,
+        "retrabalho": 3
+      },
+      "original_visible_rows": 13,
+      "test_visible_rows": 13,
+      "original_by_defect_hash": "9b0138a5a2478fd3ece783c913b08642fadb4aaa2eb17bbd404934d26c1d984f",
+      "test_by_defect_hash": "ad546c5a3c1417c4e0e2ebcbcc07a7f0f489b22e70e052c7e2e55386aaf7c42e",
+      "original_by_sector_hash": "5250b74396a3be64bdc8320e6d397f0618de0288cbeb0d1effb0c586fec3f4ab",
+      "test_by_sector_hash": "29f6bfb66595c4ac56f0dc467bce8a5f0b0a9c20a210f33ff45ac6ddf23ca885",
+      "original_by_defect": {
+        "Falhas de Preenchimento": 8,
+        "Bolhas em excesso": 4,
+        "Grandes Avarias": 2
+      },
+      "test_by_defect": {
+        "Falhas de Preenchimento": 4,
+        "Bolhas em excesso": 2,
+        "Grandes Avarias": 1
+      },
+      "original_by_sector": {
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 14,
+          "producao": 76
+        }
+      },
+      "test_by_sector": {
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 7,
+          "producao": 76
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 2\n76 produzido(s)\n14 erros\n18,4% taxa/producao",
+        "Falhas de Preenchimento\n8\n57,1%",
+        "Bolhas em excesso\n4\n28,6%",
+        "Grandes Avarias\n2\n14,3%",
+        "Falhas de Preenchimento\n8\n57,1%",
+        "Bolhas em excesso\n4\n28,6%",
+        "Grandes Avarias\n2\n14,3%",
+        "Falhas de Preenchimento\n8\n⌄",
+        "Falhas de Preenchimento\n8\n⌄",
+        "Bolhas em excesso\n4\n⌄",
+        "Bolhas em excesso\n4\n⌄",
+        "Grandes Avarias\n2\n⌄",
+        "Grandes Avarias\n2\n⌄"
+      ],
+      "test_displayed_lines": [
+        "Setor 2\n76 produzido(s)\n7 erros\n9,2% taxa/producao",
+        "Falhas de Preenchimento\n4\n57,1%",
+        "Bolhas em excesso\n2\n28,6%",
+        "Grandes Avarias\n1\n14,3%",
+        "Falhas de Preenchimento\n4\n57,1%",
+        "Bolhas em excesso\n2\n28,6%",
+        "Grandes Avarias\n1\n14,3%",
+        "Falhas de Preenchimento\n4\n⌄",
+        "Falhas de Preenchimento\n4\n⌄",
+        "Bolhas em excesso\n2\n⌄",
+        "Bolhas em excesso\n2\n⌄",
+        "Grandes Avarias\n1\n⌄",
+        "Grandes Avarias\n1\n⌄"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 82,
+        "events": 14,
+        "uniqueInspectionDefects": 7,
+        "uniquePosteDefects": 7,
+        "duplicatePosteDefects": 7,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {
+          "FINALIZACAO/RR/regular + HISTORICO_REPROVACAO/RR/history": 3,
+          "FINALIZACAO/R/regular + HISTORICO_REPROVACAO/R/history": 2,
+          "FINALIZACAO/A/regular + HISTORICO_REPROVACAO/A/history": 2
+        }
+      },
+      "test_event_audit": {
+        "evaluationRows": 75,
+        "events": 7,
+        "uniqueInspectionDefects": 7,
+        "uniquePosteDefects": 7,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-02",
+        "2026-10-02"
+      ],
+      "sector": "Setor 3",
+      "totals_equal": true,
+      "by_defect_equal": true,
+      "by_sector_equal": true,
+      "visible_rows_equal": true,
+      "visible_text_equal": true,
+      "original_kpis": {
+        "producao": 46,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "test_kpis": {
+        "producao": 46,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "original_visible_rows": 1,
+      "test_visible_rows": 1,
+      "original_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "test_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "original_by_sector_hash": "f750e964262d5159ae17845b5cd7fd438c52fdadd459c92c6dceee322a8ee330",
+      "test_by_sector_hash": "f750e964262d5159ae17845b5cd7fd438c52fdadd459c92c6dceee322a8ee330",
+      "original_by_defect": {},
+      "test_by_defect": {},
+      "original_by_sector": {
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 46
+        }
+      },
+      "test_by_sector": {
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 46
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 3\n46 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "test_displayed_lines": [
+        "Setor 3\n46 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "test_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-02",
+        "2026-10-02"
+      ],
+      "sector": "Setor 4",
+      "totals_equal": true,
+      "by_defect_equal": true,
+      "by_sector_equal": true,
+      "visible_rows_equal": true,
+      "visible_text_equal": true,
+      "original_kpis": {
+        "producao": 2,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "test_kpis": {
+        "producao": 2,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "original_visible_rows": 1,
+      "test_visible_rows": 1,
+      "original_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "test_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "original_by_sector_hash": "d20c385939851f8cad26eae6216a589a716dec9bc8cf8610125d1f723159a4ac",
+      "test_by_sector_hash": "d20c385939851f8cad26eae6216a589a716dec9bc8cf8610125d1f723159a4ac",
+      "original_by_defect": {},
+      "test_by_defect": {},
+      "original_by_sector": {
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 2
+        }
+      },
+      "test_by_sector": {
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 2
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 4\n2 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "test_displayed_lines": [
+        "Setor 4\n2 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "test_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-04"
+      ],
+      "sector": "Todos",
+      "totals_equal": false,
+      "by_defect_equal": false,
+      "by_sector_equal": false,
+      "visible_rows_equal": false,
+      "visible_text_equal": false,
+      "original_kpis": {
+        "producao": 415,
+        "postes": 270,
+        "total_erros": 28,
+        "total_possivel": 7462,
+        "postes_reprovados": 10,
+        "retrabalho": 7
+      },
+      "test_kpis": {
+        "producao": 415,
+        "postes": 270,
+        "total_erros": 14,
+        "total_possivel": 7124,
+        "postes_reprovados": 10,
+        "retrabalho": 7
+      },
+      "original_visible_rows": 30,
+      "test_visible_rows": 30,
+      "original_by_defect_hash": "f1d3cbe2f737f5a2e8f220e1849f128c3e6b5096a60700e311218e31526c4768",
+      "test_by_defect_hash": "132b2b06f7423eb28b1a40ecb92894282a835b2d8a3fb28f09fbc68de6bb876b",
+      "original_by_sector_hash": "0411fce25c981c5d9bed7c5f820128e0c2344ab4943856523a5c328b21399544",
+      "test_by_sector_hash": "e03ab366e120d124b25bcf4234e1ca3f38145d541bbb34ad6791e18e2f369d69",
+      "original_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 4,
+        "Falhas de Preenchimento": 14,
+        "Acabamento abas": 2,
+        "Bolhas em excesso": 4,
+        "Reprovação sem defeito detalhado": 2,
+        "Grandes Avarias": 2
+      },
+      "test_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 2,
+        "Falhas de Preenchimento": 7,
+        "Acabamento abas": 1,
+        "Bolhas em excesso": 2,
+        "Reprovação sem defeito detalhado": 1,
+        "Grandes Avarias": 1
+      },
+      "original_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 8,
+          "producao": 144
+        },
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 93
+        },
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 20,
+          "producao": 151
+        },
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 27
+        }
+      },
+      "test_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 4,
+          "producao": 144
+        },
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 93
+        },
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 10,
+          "producao": 151
+        },
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 27
+        }
+      },
+      "original_csv_total": "28",
+      "test_csv_total": "14",
+      "original_csv_preview": "\"Dashboard de Defeitos\"\r\n\"Periodo\";\"2026-10-01\";\"2026-10-04\"\r\n\"Escopo\";\"TOTAL\"\r\n\r\n\"Indicador\";\"Valor\"\r\n\"Producao\";\"415\"\r\n\"Postes avaliados\";\"270\"\r\n\"Ocorrencias de NC\";\"28\"\r\n\"Oportunidades avaliadas\";\"7462\"\r\n\"Postes reprovados\";\"10\"\r\n\"Retrabalho\";\"7\"\r\n\r\n\"Taxa de defeitos por setor\"\r\n\"Setor\";\"Produzid",
+      "test_csv_preview": "\"Dashboard de Defeitos\"\r\n\"Periodo\";\"2026-10-01\";\"2026-10-04\"\r\n\"Escopo\";\"TOTAL\"\r\n\r\n\"Indicador\";\"Valor\"\r\n\"Producao\";\"415\"\r\n\"Postes avaliados\";\"270\"\r\n\"Ocorrencias de NC\";\"14\"\r\n\"Oportunidades avaliadas\";\"7124\"\r\n\"Postes reprovados\";\"10\"\r\n\"Retrabalho\";\"7\"\r\n\r\n\"Taxa de defeitos por setor\"\r\n\"Setor\";\"Produzid",
+      "original_displayed_lines": [
+        "Setor 2\n151 produzido(s)\n20 erros\n13,2% taxa/producao",
+        "Setor 1\n144 produzido(s)\n8 erros\n5,6% taxa/producao",
+        "Setor 3\n93 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Setor 4\n27 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Falhas de Preenchimento\n14\n50,0%",
+        "Bolhas em excesso\n4\n14,3%",
+        "Prisioneiros (lacre / aterramento)\n4\n14,3%",
+        "Acabamento abas\n2\n7,1%",
+        "Grandes Avarias\n2\n7,1%",
+        "Reprovação sem defeito detalhado\n2\n7,1%",
+        "Acabamento abas\n2\n25,0%",
+        "Falhas de Preenchimento\n2\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n25,0%",
+        "Reprovação sem defeito detalhado\n2\n25,0%",
+        "Falhas de Preenchimento\n12\n60,0%",
+        "Bolhas em excesso\n4\n20,0%",
+        "Grandes Avarias\n2\n10,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n10,0%",
+        "Falhas de Preenchimento\n14\n⌄",
+        "Falhas de Preenchimento\n14\n⌄",
+        "Prisioneiros (lacre / aterramento)\n4\n⌄",
+        "Prisioneiros (lacre / aterramento)\n4\n⌄",
+        "Bolhas em excesso\n4\n⌄",
+        "Bolhas em excesso\n4\n⌄",
+        "Acabamento abas\n2\n⌄",
+        "Acabamento abas\n2\n⌄",
+        "Reprovação sem defeito detalhado\n2\n⌄",
+        "Reprovação sem defeito detalhado\n2\n⌄",
+        "Grandes Avarias\n2\n⌄",
+        "Grandes Avarias\n2\n⌄"
+      ],
+      "test_displayed_lines": [
+        "Setor 2\n151 produzido(s)\n10 erros\n6,6% taxa/producao",
+        "Setor 1\n144 produzido(s)\n4 erros\n2,8% taxa/producao",
+        "Setor 3\n93 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Setor 4\n27 produzido(s)\n0 erros\n0,0% taxa/producao",
+        "Falhas de Preenchimento\n7\n50,0%",
+        "Bolhas em excesso\n2\n14,3%",
+        "Prisioneiros (lacre / aterramento)\n2\n14,3%",
+        "Acabamento abas\n1\n7,1%",
+        "Grandes Avarias\n1\n7,1%",
+        "Reprovação sem defeito detalhado\n1\n7,1%",
+        "Acabamento abas\n1\n25,0%",
+        "Falhas de Preenchimento\n1\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n25,0%",
+        "Reprovação sem defeito detalhado\n1\n25,0%",
+        "Falhas de Preenchimento\n6\n60,0%",
+        "Bolhas em excesso\n2\n20,0%",
+        "Grandes Avarias\n1\n10,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n10,0%",
+        "Falhas de Preenchimento\n7\n⌄",
+        "Falhas de Preenchimento\n7\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Bolhas em excesso\n2\n⌄",
+        "Bolhas em excesso\n2\n⌄",
+        "Acabamento abas\n1\n⌄",
+        "Acabamento abas\n1\n⌄",
+        "Reprovação sem defeito detalhado\n1\n⌄",
+        "Reprovação sem defeito detalhado\n1\n⌄",
+        "Grandes Avarias\n1\n⌄",
+        "Grandes Avarias\n1\n⌄"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 287,
+        "events": 28,
+        "uniqueInspectionDefects": 14,
+        "uniquePosteDefects": 14,
+        "duplicatePosteDefects": 14,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {
+          "FINALIZACAO/A/regular + HISTORICO_REPROVACAO/A/history": 3,
+          "FINALIZACAO/RR/regular + HISTORICO_REPROVACAO/RR/history": 3,
+          "FINALIZACAO/R/regular + HISTORICO_REPROVACAO/R/history": 4,
+          "HISTORICO_REPROVACAO/RR/history + HISTORICO_REPROVACAO/RR/history": 4
+        }
+      },
+      "test_event_audit": {
+        "evaluationRows": 274,
+        "events": 14,
+        "uniqueInspectionDefects": 14,
+        "uniquePosteDefects": 14,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "content_classes": [
+        "mi-tab-section df-v4-content active",
+        "df-v4-hero-grid",
+        "df-v4-kpi df-v4-kpi-hero",
+        "df-v4-kpi-label",
+        "df-v4-kpi-value",
+        "df-v4-kpi-meta",
+        "df-v4-chip",
+        "df-v4-kpi",
+        "df-v4-mini-grid",
+        "df-v4-mini-kpi",
+        "df-v4-memory",
+        "df-v4-memory-head",
+        "df-v4-memory-grid",
+        "df-v4-memory-card primary",
+        "df-v4-memory-card secondary",
+        "df-v4-memory-card tertiary",
+        "df-v4-layout",
+        "df-v4-panel",
+        "df-v4-panel-head",
+        "mi-defeitos-list df-v4-sector-list",
+        "mi-defeitos-row",
+        "mi-defeitos-row-main",
+        "mi-defeitos-row-metrics",
+        "df-v4-panel-actions",
+        "df-defect-share-chart",
+        "df-defect-share-caption",
+        "df-defect-share-list",
+        "df-defect-share-row",
+        "df-defect-share-label",
+        "df-defect-share-track",
+        "df-defect-share-fill",
+        "df-defect-share-percent",
+        "mi-defeitos-list",
+        "mi-def-pareto-row vital",
+        "mi-def-pareto-row ",
+        "mi-defeitos-list df-v4-action-list",
+        "mi-def-action",
+        "mi-ranking-list df-v4-type-list",
+        "df-defect-entry",
+        "mi-defeito-tipo-row df-defect-toggle"
+      ]
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-04"
+      ],
+      "sector": "Setor 1",
+      "totals_equal": false,
+      "by_defect_equal": false,
+      "by_sector_equal": false,
+      "visible_rows_equal": false,
+      "visible_text_equal": false,
+      "original_kpis": {
+        "producao": 144,
+        "postes": 125,
+        "total_erros": 8,
+        "total_possivel": 3380,
+        "postes_reprovados": 3,
+        "retrabalho": 2
+      },
+      "test_kpis": {
+        "producao": 144,
+        "postes": 125,
+        "total_erros": 4,
+        "total_possivel": 3302,
+        "postes_reprovados": 3,
+        "retrabalho": 2
+      },
+      "original_visible_rows": 17,
+      "test_visible_rows": 17,
+      "original_by_defect_hash": "30e786fa548bfce81e2b3cc919d9acf949a4a3fc7a36ac83cd05c5091c676652",
+      "test_by_defect_hash": "3d8fb22a674b7743f4a56b020af8c2ab60faded73ce2505d66d6f6c0f7fa605b",
+      "original_by_sector_hash": "921546bc59465f755bcbc74682652f85e122dc9bc10efccd655832ccecaddd0b",
+      "test_by_sector_hash": "c158217c9256e595d8a42935680f95f64499ee5546e696a564925f727cb379a5",
+      "original_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 2,
+        "Acabamento abas": 2,
+        "Reprovação sem defeito detalhado": 2,
+        "Falhas de Preenchimento": 2
+      },
+      "test_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 1,
+        "Acabamento abas": 1,
+        "Reprovação sem defeito detalhado": 1,
+        "Falhas de Preenchimento": 1
+      },
+      "original_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 8,
+          "producao": 144
+        }
+      },
+      "test_by_sector": {
+        "Setor 1": {
+          "setor": "Setor 1",
+          "erros": 4,
+          "producao": 144
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 1\n144 produzido(s)\n8 erros\n5,6% taxa/producao",
+        "Acabamento abas\n2\n25,0%",
+        "Falhas de Preenchimento\n2\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n25,0%",
+        "Reprovação sem defeito detalhado\n2\n25,0%",
+        "Acabamento abas\n2\n25,0%",
+        "Falhas de Preenchimento\n2\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n25,0%",
+        "Reprovação sem defeito detalhado\n2\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Acabamento abas\n2\n⌄",
+        "Acabamento abas\n2\n⌄",
+        "Reprovação sem defeito detalhado\n2\n⌄",
+        "Reprovação sem defeito detalhado\n2\n⌄",
+        "Falhas de Preenchimento\n2\n⌄",
+        "Falhas de Preenchimento\n2\n⌄"
+      ],
+      "test_displayed_lines": [
+        "Setor 1\n144 produzido(s)\n4 erros\n2,8% taxa/producao",
+        "Acabamento abas\n1\n25,0%",
+        "Falhas de Preenchimento\n1\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n25,0%",
+        "Reprovação sem defeito detalhado\n1\n25,0%",
+        "Acabamento abas\n1\n25,0%",
+        "Falhas de Preenchimento\n1\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n25,0%",
+        "Reprovação sem defeito detalhado\n1\n25,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n⌄",
+        "Prisioneiros (lacre / aterramento)\n1\n⌄",
+        "Acabamento abas\n1\n⌄",
+        "Acabamento abas\n1\n⌄",
+        "Reprovação sem defeito detalhado\n1\n⌄",
+        "Reprovação sem defeito detalhado\n1\n⌄",
+        "Falhas de Preenchimento\n1\n⌄",
+        "Falhas de Preenchimento\n1\n⌄"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 130,
+        "events": 8,
+        "uniqueInspectionDefects": 4,
+        "uniquePosteDefects": 4,
+        "duplicatePosteDefects": 4,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {
+          "FINALIZACAO/R/regular + HISTORICO_REPROVACAO/R/history": 2,
+          "HISTORICO_REPROVACAO/RR/history + HISTORICO_REPROVACAO/RR/history": 2
+        }
+      },
+      "test_event_audit": {
+        "evaluationRows": 127,
+        "events": 4,
+        "uniqueInspectionDefects": 4,
+        "uniquePosteDefects": 4,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-04"
+      ],
+      "sector": "Setor 2",
+      "totals_equal": false,
+      "by_defect_equal": false,
+      "by_sector_equal": false,
+      "visible_rows_equal": false,
+      "visible_text_equal": false,
+      "original_kpis": {
+        "producao": 151,
+        "postes": 145,
+        "total_erros": 20,
+        "total_possivel": 4082,
+        "postes_reprovados": 7,
+        "retrabalho": 5
+      },
+      "test_kpis": {
+        "producao": 151,
+        "postes": 145,
+        "total_erros": 10,
+        "total_possivel": 3822,
+        "postes_reprovados": 7,
+        "retrabalho": 5
+      },
+      "original_visible_rows": 17,
+      "test_visible_rows": 17,
+      "original_by_defect_hash": "e401f3f0b37927ea6b7c73a457ae9919cd90d2b42c713eedf5bbc8b243279fa1",
+      "test_by_defect_hash": "eae7e5aa4d6ee869b1ae8e494662a08f745cb9c0ed61e93120125a41213a6bee",
+      "original_by_sector_hash": "07b8d0dd1ba9b6c3da87b1839a59da57ec899d1820dc2992c5f4f0bc4fe408f6",
+      "test_by_sector_hash": "4c6ed6602051b3d5ff167aea824f56f8510f94033afe3e937b3a431d62c13d82",
+      "original_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 2,
+        "Falhas de Preenchimento": 12,
+        "Bolhas em excesso": 4,
+        "Grandes Avarias": 2
+      },
+      "test_by_defect": {
+        "Prisioneiros (lacre / aterramento)": 1,
+        "Falhas de Preenchimento": 6,
+        "Bolhas em excesso": 2,
+        "Grandes Avarias": 1
+      },
+      "original_by_sector": {
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 20,
+          "producao": 151
+        }
+      },
+      "test_by_sector": {
+        "Setor 2": {
+          "setor": "Setor 2",
+          "erros": 10,
+          "producao": 151
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 2\n151 produzido(s)\n20 erros\n13,2% taxa/producao",
+        "Falhas de Preenchimento\n12\n60,0%",
+        "Bolhas em excesso\n4\n20,0%",
+        "Grandes Avarias\n2\n10,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n10,0%",
+        "Falhas de Preenchimento\n12\n60,0%",
+        "Bolhas em excesso\n4\n20,0%",
+        "Grandes Avarias\n2\n10,0%",
+        "Prisioneiros (lacre / aterramento)\n2\n10,0%",
+        "Falhas de Preenchimento\n12\n⌄",
+        "Falhas de Preenchimento\n12\n⌄",
+        "Bolhas em excesso\n4\n⌄",
+        "Bolhas em excesso\n4\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Prisioneiros (lacre / aterramento)\n2\n⌄",
+        "Grandes Avarias\n2\n⌄",
+        "Grandes Avarias\n2\n⌄"
+      ],
+      "test_displayed_lines": [
+        "Setor 2\n151 produzido(s)\n10 erros\n6,6% taxa/producao",
+        "Falhas de Preenchimento\n6\n60,0%",
+        "Bolhas em excesso\n2\n20,0%",
+        "Grandes Avarias\n1\n10,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n10,0%",
+        "Falhas de Preenchimento\n6\n60,0%",
+        "Bolhas em excesso\n2\n20,0%",
+        "Grandes Avarias\n1\n10,0%",
+        "Prisioneiros (lacre / aterramento)\n1\n10,0%",
+        "Falhas de Preenchimento\n6\n⌄",
+        "Falhas de Preenchimento\n6\n⌄",
+        "Bolhas em excesso\n2\n⌄",
+        "Bolhas em excesso\n2\n⌄",
+        "Prisioneiros (lacre / aterramento)\n1\n⌄",
+        "Prisioneiros (lacre / aterramento)\n1\n⌄",
+        "Grandes Avarias\n1\n⌄",
+        "Grandes Avarias\n1\n⌄"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 157,
+        "events": 20,
+        "uniqueInspectionDefects": 10,
+        "uniquePosteDefects": 10,
+        "duplicatePosteDefects": 10,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {
+          "FINALIZACAO/A/regular + HISTORICO_REPROVACAO/A/history": 3,
+          "FINALIZACAO/RR/regular + HISTORICO_REPROVACAO/RR/history": 3,
+          "FINALIZACAO/R/regular + HISTORICO_REPROVACAO/R/history": 2,
+          "HISTORICO_REPROVACAO/RR/history + HISTORICO_REPROVACAO/RR/history": 2
+        }
+      },
+      "test_event_audit": {
+        "evaluationRows": 147,
+        "events": 10,
+        "uniqueInspectionDefects": 10,
+        "uniquePosteDefects": 10,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-04"
+      ],
+      "sector": "Setor 3",
+      "totals_equal": true,
+      "by_defect_equal": true,
+      "by_sector_equal": true,
+      "visible_rows_equal": true,
+      "visible_text_equal": true,
+      "original_kpis": {
+        "producao": 93,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "test_kpis": {
+        "producao": 93,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "original_visible_rows": 1,
+      "test_visible_rows": 1,
+      "original_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "test_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "original_by_sector_hash": "fb144ac34ff0ecb2d8ca56fe879a72bcbf178fa3215d487c1183add2612612f9",
+      "test_by_sector_hash": "fb144ac34ff0ecb2d8ca56fe879a72bcbf178fa3215d487c1183add2612612f9",
+      "original_by_defect": {},
+      "test_by_defect": {},
+      "original_by_sector": {
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 93
+        }
+      },
+      "test_by_sector": {
+        "Setor 3": {
+          "setor": "Setor 3",
+          "erros": 0,
+          "producao": 93
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 3\n93 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "test_displayed_lines": [
+        "Setor 3\n93 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "test_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    },
+    {
+      "period": [
+        "2026-10-01",
+        "2026-10-04"
+      ],
+      "sector": "Setor 4",
+      "totals_equal": true,
+      "by_defect_equal": true,
+      "by_sector_equal": true,
+      "visible_rows_equal": true,
+      "visible_text_equal": true,
+      "original_kpis": {
+        "producao": 27,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "test_kpis": {
+        "producao": 27,
+        "postes": 0,
+        "total_erros": 0,
+        "total_possivel": 0,
+        "postes_reprovados": 0,
+        "retrabalho": 0
+      },
+      "original_visible_rows": 1,
+      "test_visible_rows": 1,
+      "original_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "test_by_defect_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "original_by_sector_hash": "c03fb4182a500eb529b4f7f6ddf1384dffe59b9d1675beb3cec247316c0cb9ea",
+      "test_by_sector_hash": "c03fb4182a500eb529b4f7f6ddf1384dffe59b9d1675beb3cec247316c0cb9ea",
+      "original_by_defect": {},
+      "test_by_defect": {},
+      "original_by_sector": {
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 27
+        }
+      },
+      "test_by_sector": {
+        "Setor 4": {
+          "setor": "Setor 4",
+          "erros": 0,
+          "producao": 27
+        }
+      },
+      "original_csv_total": null,
+      "test_csv_total": null,
+      "original_csv_preview": null,
+      "test_csv_preview": null,
+      "original_displayed_lines": [
+        "Setor 4\n27 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "test_displayed_lines": [
+        "Setor 4\n27 produzido(s)\n0 erros\n0,0% taxa/producao"
+      ],
+      "original_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "test_api_reads": [
+        "montagem_poste",
+        "producao"
+      ],
+      "original_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      },
+      "test_event_audit": {
+        "evaluationRows": 0,
+        "events": 0,
+        "uniqueInspectionDefects": 0,
+        "uniquePosteDefects": 0,
+        "duplicatePosteDefects": 0,
+        "duplicateWithinRow": 0,
+        "repeatedPatterns": {}
+      }
+    }
+  ],
+  "source_fixture_requests": [
+    {
+      "table": "montagem_poste",
+      "range": "0-999",
+      "rows": 289
+    },
+    {
+      "table": "producao",
+      "range": "0-999",
+      "rows": 415
+    },
+    {
+      "table": "montagem_poste",
+      "range": "0-999",
+      "rows": 289
+    },
+    {
+      "table": "producao",
+      "range": "0-999",
+      "rows": 415
+    },
+    {
+      "table": "montagem_poste",
+      "range": "0-999",
+      "rows": 289
+    },
+    {
+      "table": "producao",
+      "range": "0-999",
+      "rows": 415
+    },
+    {
+      "table": "montagem_poste",
+      "range": "0-999",
+      "rows": 289
+    },
+    {
+      "table": "producao",
+      "range": "0-999",
+      "rows": 415
+    },
+    {
+      "table": "montagem_poste",
+      "range": "0-999",
+      "rows": 289
+    },
+    {
+      "table": "producao",
+      "range": "0-999",
+      "rows": 415
+    },
+    {
+      "table": "montagem_poste",
+      "range": "0-999",
+      "rows": 289
+    },
+    {
+      "table": "producao",
+      "range": "0-999",
+      "rows": 415
+    }
+  ]
+}

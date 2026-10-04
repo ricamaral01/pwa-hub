@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import subprocess
+import sys
 from urllib.parse import urljoin, urlsplit
 
 from playwright.sync_api import sync_playwright
@@ -48,13 +49,25 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     account = credentials()
     results: list[dict] = []
+    old_cache = "--old-cache" in sys.argv
+    suffix = "-old-cache" if old_cache else ""
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
+        if old_cache:
+            context = playwright.chromium.launch_persistent_context(
+                ".work-mapa-unificado/browser-old-cache", headless=True,
+                executable_path=CHROME, viewport={"width": 1366, "height": 768})
+            browser = None
+        else:
+            browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
         for width, height in ((1366, 768), (1024, 768), (768, 1024), (390, 844)):
-            context = browser.new_context(viewport={"width": width, "height": height})
-            page = context.new_page()
+            if old_cache:
+                page = context.pages[0] if context.pages else context.new_page()
+                page.set_viewport_size({"width": width, "height": height})
+            else:
+                context = browser.new_context(viewport={"width": width, "height": height})
+                page = context.new_page()
             login(page, account)
-            page.screenshot(path=str(OUT / f"inicio-{width}x{height}.png"))
+            page.screenshot(path=str(OUT / f"inicio-{width}x{height}{suffix}.png"))
             if width in (1366, 1024):
                 page.goto(BASE + "/unificado/index.html")
                 links = page.locator('#sidebar a[href]:not([aria-disabled="true"]), .shortcut-link:not([aria-disabled="true"])')
@@ -91,7 +104,7 @@ def main() -> None:
             page.wait_for_function("navigator.serviceWorker.controller !== null", timeout=20000)
             page.wait_for_timeout(1200)
             page.wait_for_function("typeof state!=='undefined' && state.authUser?.role==='GERENCIA'", timeout=20000)
-            page.screenshot(path=str(OUT / f"mapa-{width}x{height}.png"))
+            page.screenshot(path=str(OUT / f"mapa-{width}x{height}{suffix}.png"))
             if width == 1366:
                 modes = page.locator('.unificado-nav-link:visible').evaluate_all(
                     "els => els.map(el => [el.dataset.mode,el.getAttribute('aria-label')])")
@@ -114,16 +127,20 @@ def main() -> None:
                         page.evaluate("setMode('HUB')")
                         page.locator("#" + item_id).click(timeout=5000)
                     checked(page, "mapa-tablet-1024", item_id, visit_tablet, results)
+            if not old_cache:
+                context.close()
+        if old_cache:
             context.close()
-        browser.close()
+        else:
+            browser.close()
     report = {"version": Path("unificado/VERSION").read_text(encoding="utf-8").strip(),
               "total": len(results), "ok": sum(item["ok"] for item in results),
               "items": results}
-    (OUT / "paired-navigation.json").write_text(
+    (OUT / f"paired-navigation{suffix}.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"total": report["total"], "ok": report["ok"],
                       "failed": [item for item in results if not item["ok"]],
-                      "evidence": str(OUT / "paired-navigation.json")}, ensure_ascii=True))
+                      "evidence": str(OUT / f"paired-navigation{suffix}.json")}, ensure_ascii=True))
 
 
 if __name__ == "__main__":

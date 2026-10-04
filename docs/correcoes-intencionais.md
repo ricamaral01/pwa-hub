@@ -18,7 +18,7 @@ exportações CSV/XLSX correspondentes. O build falha se a função original mud
 Comparação em navegador real na URL publicada, com o `app.js` original servido
 offline para o lado oficial e as mesmas respostas congeladas da fotografia para
 ambos os lados. Evidência detalhada:
-`.work-mapa-unificado/e2e/dashboard-defects-source-parity.json`.
+`docs/capturas-ricardo-20261004/dashboard-defects-source-parity.json`.
 O ensaio baixa o CSV em cada período e verifica que o campo
 `Ocorrencias de NC` coincide com o total exibido. Os totais e linhas por
 defeito e por setor também são comparados no JSON de evidência.
