@@ -88,6 +88,14 @@
 
 **Evidência:** `scripts/verify_pcp_backend_identity.py` confirmou os 47 arquivos idênticos ao oficial antes do teste; `scripts/test_pcp_backend_writes.py` chamou apenas a API de testes com conta sintética, imprimiu o resultado acima e `cleanup_deltas={}`. Os escopos da credencial Google são somente leitura. Ricardo decidiu preservar a regra em 03/10/2026. Nenhum arquivo do backend ou configuração temporária de outubro foi alterado.
 
+## PCP — Sincronizar Google Sheets usa a opção Substituir escondida
+
+**O que acontece:** os botões de Sincronizar Google Sheets nos Setores 3 e 4 enviam `substituir=true` porque leem a caixa `#importar-substituir`, marcada por padrão dentro de um painel oculto. O operador não vê essa opção nessa tela. Para 09/10/2026, os dois botões retornaram HTTP 200, `importados=0` e `removidos=0`; a programação do banco de testes permaneceu vazia nessa data. A regra de outubro continuou escolhendo a planilha de agosto.
+
+**Onde:** `unificado/pcp/programacao/index.html`, `#card-importar-programacao` tem `d-none`; `sincronizarGoogleSheetsSetor` lê `#importar-substituir.checked` e envia o valor no POST `/api/pcp/alocacao-formas/importar`. O código original foi mantido.
+
+**Evidência:** `tests/pcp/google_sync_ui.py` acionou os dois botões pela interface publicada com conta sintética PCP, confirmou o parâmetro `substituir=true`, o resultado e as linhas inalteradas no PostgreSQL PCP de testes. A data foi escolhida após confirmar zero registros no período; não houve risco de remover dados existentes. A conta sintética foi removida.
+
 ## PCP — excluir mão de obra com rateio retorna erro
 
 **O que acontece:** depois de criar um registro de Mão de Obra Indireta com rateio por dois setores, `DELETE /api/maodeobra/{id}` retorna HTTP 500 e deixa o registro no banco. A criação e a leitura funcionam. A interface de rateio não oferece botão de exclusão, mas a rota de exclusão é usada para outros registros de mão de obra.
