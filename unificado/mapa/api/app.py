@@ -463,6 +463,30 @@ def rest_read(resource):
                 body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()
         except (OSError, ValueError, TypeError, KeyError):
             pass
+    if (resource == "producao" and request.method == "GET" and status == 200
+            and request.args.get("order") == "data_hora.asc"):
+        try:
+            rows = json.loads(body)
+            rank_path = Path("/opt/concrefer-unificado/mapa-api/producao-order.json")
+            if (isinstance(rows, list) and rank_path.exists()
+                    and all(isinstance(row, dict) and "id" in row for row in rows)):
+                order = json.loads(rank_path.read_text(encoding="utf-8"))["ids"]
+                ranks = {row_id: rank for rank, row_id in enumerate(order)}
+                start = 0
+                while start < len(rows):
+                    end = start + 1
+                    while (end < len(rows)
+                           and rows[end].get("data_hora") == rows[start].get("data_hora")):
+                        end += 1
+                    if end - start > 1:
+                        rows[start:end] = sorted(
+                            rows[start:end],
+                            key=lambda row: ranks.get(row["id"], len(ranks)),
+                        )
+                    start = end
+                body = json.dumps(rows, ensure_ascii=False, separators=(",", ":")).encode()
+        except (OSError, ValueError, TypeError, KeyError):
+            pass
     return Response(body, status=status, headers=response_headers)
 
 

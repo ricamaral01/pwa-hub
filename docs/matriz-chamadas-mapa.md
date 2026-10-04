@@ -174,7 +174,7 @@ Os 12 casos abaixo usam GETs oficiais e respostas da rota de testes na mesma fot
 
 | Caso | GET e uso | Classe | Resultado final com os dados reais |
 |---:|---|:---:|---|
-| 1 | `producao`, `order=data_hora.asc`, página 1000–1444; produtividade | b | Mesmas 445 linhas, ordem diferente entre horários empatados; indicadores do dashboard iguais. |
+| 1 | `producao`, `order=data_hora.asc`, página 1000–1444; produtividade | b | Mesmas 445 linhas. Indicadores iguais, mas a ordem final da tabela podia trocar `A-36` e `DTB 03`, ambas com horário 01/10/2026 19:15:17 UTC. A rota de testes passou a desempatar pelo ranking de IDs lido da origem; após isso, linha exibida, indicadores e gráficos foram iguais em 36 casos de dashboard. |
 | 2 | `producao`, 01–03/10, 415 linhas sem `order`; relatórios | a | Mesmas linhas e contagens; texto final do relatório igual. |
 | 3 | `vw_formas_status`, 02/10, 209 formas | a | 209 chaves `(data,setor,forma)` distintas; classes e textos dos cartões iguais. |
 | 4 | `producao`, `order=data_fabricacao.desc`, página 0–999 | b | 39 IDs mudam de página por empate de data; conjunto final e indicadores iguais. |
@@ -188,6 +188,8 @@ Os 12 casos abaixo usam GETs oficiais e respostas da rota de testes na mesma fot
 | 12 | Mesma consulta com filtros em ordem inversa | a | Mesmo conjunto e contagem do caso 11; sem tela chamadora. |
 
 Uma diferença **com efeito visível** foi encontrada antes da correção: `montagem_poste` sem `order` retornava os mesmos 665 registros em outra sequência. O resumo do dashboard exibia modelos com a mesma contagem em posições diferentes. `scripts/sync_mapa_montagem_source_order.py` captura por GET apenas a ordem da consulta oficial; o proxy de testes a aplica somente a leituras sem ordenação/paginação, sem tocar no `app.js`. Depois do ajuste, esse GET teve status e corpo em ordem iguais na auditoria. O total das leituras exatas ficou em **66/78**; os 12 casos da tabela são diferenças brutas de ordem sem diferença nos resultados finais verificados.
+
+Em 04/10/2026, a conferência de todos os filtros do dashboard de produtividade encontrou também a troca visível entre `A-36` e `DTB 03` no empate de `data_hora`, apesar dos indicadores iguais. `scripts/sync_mapa_producao_source_order.py` lê por GET a ordem de IDs da origem, e o proxy de testes usa esse ranking somente para desempatar leituras `producao?order=data_hora.asc` que incluem `id`. Após a correção, 36 combinações entre GERENCIA e GESTOR, três dashboards e seis filtros deram linha, KPI, gráfico e hash das requisições iguais ao HTML original. A posição em empate agora é estável na rota de testes, sem alterar o `app.js`.
 
 `tests/mapa/contract_producao_pagination.py` percorreu as duas páginas do destino até a página curta: **1.056 linhas, 1.056 IDs únicos**, mesmos 1.056 registros e SHA-256 canônico da origem (`89a5bb6388d9279a34fc366a979c3b79ca3a0255a30a14073888c92b0c58b913`).
 

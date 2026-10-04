@@ -111,6 +111,8 @@ def main() -> None:
     # Source order matters for tied model counts in the original dashboard.
     run(["ssh", "vps-staging", "python3",
          "/opt/concrefer-unificado/migration/sync_mapa_montagem_source_order.py"])
+    run(["ssh", "vps-staging", "python3",
+         "/opt/concrefer-unificado/migration/sync_mapa_producao_source_order.py"])
     print("both_snapshots=ok")
 
 
