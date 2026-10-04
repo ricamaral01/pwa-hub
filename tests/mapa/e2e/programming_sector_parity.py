@@ -1,4 +1,4 @@
-"""Compare card programming in sectors 1, 2 and 4 on one test snapshot."""
+"""Compare card programming in all four sectors on one test snapshot."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[3]
 BEFORE = ROOT / ".work-mapa-unificado" / "operacao" / "index-before-desktop.html"
 FIXTURE = ROOT / "tests" / "mapa" / "fixtures" / "captured-offline.json"
 DATE = "2026-10-03"
-FORMS = {1: "IE-01", 2: "TCR-1", 4: "C-F1-1"}
+FORMS = {1: "IE-01", 2: "TCR-1", 3: "SC01", 4: "C-F1-1"}
 
 
 def comparable(body: dict) -> dict:
@@ -88,14 +88,16 @@ def main() -> None:
                     }""", selector)
                     assert len(programmed_rows) == 1 and after_rows == []
                     assert [write["method"] for write in writes] == ["POST", "DELETE"]
-                    assert comparable(writes[0]["body"]) == comparable(expected[sector]["body"])
-                    assert writes[0]["prefer"] == expected[sector]["headers"]["Prefer"]
+                    if sector in expected:
+                        assert comparable(writes[0]["body"]) == comparable(expected[sector]["body"])
+                        assert writes[0]["prefer"] == expected[sector]["headers"]["Prefer"]
                     assert all(programmed_rows[0].get(field) == value for field, value in
                                comparable(writes[0]["body"]).items())
                     variants.append({"variant": variant, "before": before,
                                      "programmed": programmed, "after": after,
                                      "row": comparable(programmed_rows[0]),
-                                     "write": comparable(writes[0]["body"])})
+                                     "write": comparable(writes[0]["body"]),
+                                     "prefer": writes[0]["prefer"]})
                 finally:
                     if safe_to_clean:
                         page.evaluate("""async url => {
@@ -103,6 +105,7 @@ def main() -> None:
                         }""", query)
                     context.close()
             assert variants[0]["write"] == variants[1]["write"], (sector, "request")
+            assert variants[0]["prefer"] == variants[1]["prefer"], (sector, "prefer")
             assert variants[0]["row"] == variants[1]["row"], (sector, "database")
             for state in ("before", "programmed", "after"):
                 assert variants[0][state] == variants[1][state], (sector, state)
