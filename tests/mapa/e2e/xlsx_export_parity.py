@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import argparse
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 import uuid
@@ -33,6 +34,9 @@ def workbook_data(path: Path) -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--role", choices=("GERENCIA", "GESTOR"), default="GERENCIA")
+    args = parser.parse_args()
     DEST.mkdir(parents=True, exist_ok=True)
     source = SOURCE.read_text(encoding="utf-8")
     account = credentials()
@@ -75,13 +79,15 @@ def main() -> None:
             page.on('response', lambda response: failed_responses.append(response)
                     if '/rest/v1/' in response.url and response.status >= 400 else None)
             if variant == "original":
-                login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
+                login_operacao(page, account["MAPA_TEST_USER"],
+                               account["MAPA_TEST_PASSWORD"], args.role)
                 page.route(URL, lambda route: route.fulfill(status=200,
                     content_type="text/html; charset=utf-8", body=source))
                 page.goto(URL, wait_until="domcontentloaded")
             else:
                 page.goto(URL, wait_until="domcontentloaded")
-            page.wait_for_function("state.authUser?.role === 'GERENCIA'", timeout=15000)
+            page.wait_for_function("role => state.authUser?.role === role", arg=args.role,
+                                   timeout=15000)
             if selected_day is None:
                 selected_day = page.evaluate("""async () => {
                   const response=await fetch('/unificado/mapa/api/rest/v1/montagem_poste?select=data_fabricacao,etapa&data_fabricacao=not.is.null&order=data_fabricacao.desc&limit=1000');
@@ -120,7 +126,7 @@ def main() -> None:
                                   "upstream_error": failed.text()[:400] if failed else None}, ensure_ascii=False))
                 raise
             download = event.value
-            path = DEST / f"montagem-{variant}.xlsx"
+            path = DEST / f"montagem-{variant}-{args.role.lower()}.xlsx"
             download.save_as(path)
             data = workbook_data(path)
             encoded = json.dumps(data, sort_keys=True, ensure_ascii=False, default=str).encode()
@@ -136,8 +142,9 @@ def main() -> None:
     assert summaries["original"]["data"] == summaries["copia"]["data"]
     for value in summaries.values():
         value.pop("data")
-    (DEST / "report.json").write_text(json.dumps(summaries, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"xlsx_export": "equal", "date": selected_day,
+    (DEST / f"report-{args.role.lower()}.json").write_text(
+        json.dumps(summaries, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps({"xlsx_export": "equal", "role": args.role, "date": selected_day,
                       "original": summaries["original"],
                       "copia": summaries["copia"], "external": external,
                       "official_writes": 0}, ensure_ascii=False))

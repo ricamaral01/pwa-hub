@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import argparse
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -18,6 +19,9 @@ BUTTONS = ("paBtnExportarDadosCSV", "paBtnExportarCSV")
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--role", choices=("GERENCIA", "GESTOR"), default="GERENCIA")
+    args = parser.parse_args()
     DEST.mkdir(parents=True, exist_ok=True)
     source = SOURCE.read_text(encoding="utf-8")
     account = credentials()
@@ -45,13 +49,14 @@ def main() -> None:
         for variant in ("original", "copia"):
             page = context.new_page()
             if variant == "original":
-                login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
+                login_operacao(page, account["MAPA_TEST_USER"],
+                               account["MAPA_TEST_PASSWORD"], args.role)
                 page.route(URL, lambda route: route.fulfill(status=200,
                     content_type="text/html; charset=utf-8", body=source))
                 page.goto(URL, wait_until="domcontentloaded")
             else:
                 page.goto(URL, wait_until="domcontentloaded")
-            page.wait_for_function("state.authUser?.role === 'GERENCIA'", timeout=15000)
+            page.wait_for_function("role => state.authUser?.role === role", arg=args.role, timeout=15000)
             page.evaluate("""async () => {
               setMode('PROD_ANALISE');
               document.getElementById('paDataInicio').value='2026-10-02';
@@ -65,7 +70,7 @@ def main() -> None:
                 with page.expect_download(timeout=30000) as event:
                     page.locator("#" + button).click()
                 download = event.value
-                path = DEST / (variant + "-" + button + ".csv")
+                path = DEST / (variant + "-" + args.role.lower() + "-" + button + ".csv")
                 download.save_as(path)
                 data = path.read_bytes()
                 files[variant][button] = {"filename": download.suggested_filename,
@@ -83,8 +88,10 @@ def main() -> None:
             assert right["filename"].startswith("dados_concretagem_")
         else:
             assert left["filename"] == right["filename"]
-    (DEST / "report.json").write_text(json.dumps(files, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"csv_exports": "byte_equal", "files": files["copia"],
+    (DEST / f"report-{args.role.lower()}.json").write_text(
+        json.dumps(files, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps({"csv_exports": "byte_equal", "role": args.role,
+                      "files": files["copia"],
                       "external": 0, "writes": 0}, ensure_ascii=False))
 
 
