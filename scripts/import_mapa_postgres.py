@@ -1,6 +1,6 @@
 """Importa CSV do Mapa no banco PostgreSQL isolado da VPS de testes.
 
-Executar como root na VPS: python3 import_mapa_postgres.py /root/mapa-unificado-migration/export-20261002
+Executar como root na VPS: python3 import_mapa_postgres.py /opt/concrefer-unificado/migration/export-20261002
 Usa psql como usuário postgres. Recusa banco com tabelas já preenchidas.
 """
 

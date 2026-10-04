@@ -8,7 +8,7 @@ import secrets
 import subprocess
 
 
-DEST = Path("/root/mapa-unificado-migration/auth.env")
+DEST = Path("/opt/concrefer-unificado/migration/auth.env")
 
 
 def main() -> None:

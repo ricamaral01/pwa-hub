@@ -8,7 +8,7 @@ import subprocess
 
 
 CONFIG = Path("/etc/nginx/sites-enabled/concrefer.concretrack.com.br")
-BACKUP = Path("/root/mapa-unificado-migration/concrefer.nginx.before-testar.conf")
+BACKUP = Path("/opt/concrefer-unificado/migration/concrefer.nginx.before-testar.conf")
 ANCHOR = "    location = /unificado/mapa/api/login {"
 BLOCK = """    location = /unificado/testar {
         return 301 /unificado/testar/;

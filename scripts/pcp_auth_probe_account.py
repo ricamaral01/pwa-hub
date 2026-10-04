@@ -27,7 +27,7 @@ def main() -> None:
             if line.strip() and not line.lstrip().startswith("#") and "=" in line:
                 key, value = line.strip().split("=", 1)
                 os.environ[key] = value.strip().strip('"').strip("'")
-    sys.path.insert(0, "/opt/mapa-unificado-api")
+    sys.path.insert(0, "/opt/concrefer-unificado/mapa-api")
     from unified_auth import PCP_HASHER, pcp_connect
 
     if action == "create":

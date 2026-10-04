@@ -26,7 +26,7 @@ def remote(alias: str, root: str) -> dict[str, str]:
 def main() -> None:
     local = {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in FILES}
     official = remote("vps-rh", "/opt/pcp-concrefer")
-    test = remote("vps-staging", "/opt/pcp-unificado-test")
+    test = remote("vps-staging", "/opt/concrefer-unificado/pcp-api")
     mismatch = [p for p in FILES if not (local[p] == official[p] == test[p])]
     combined = hashlib.sha256(json.dumps(local, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
     print(f"files={len(FILES)} identical={len(FILES)-len(mismatch)} manifest_sha256={combined}")

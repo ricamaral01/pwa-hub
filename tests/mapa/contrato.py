@@ -15,11 +15,11 @@ REMOTE = r'''
 import os,sys,json,hashlib,urllib.parse,urllib.request,urllib.error
 from datetime import datetime
 from pathlib import Path
-for path in ('/etc/mapa-unificado/auth.env','/root/mapa-unificado-migration/supabase-source.env'):
+for path in ('/etc/mapa-unificado/auth.env','/opt/concrefer-unificado/migration/supabase-source.env'):
     for line in Path(path).read_text().splitlines():
         if line.strip() and not line.lstrip().startswith('#') and '=' in line:
             key,value=line.strip().split('=',1);os.environ[key]=value.strip().strip('"').strip("'")
-os.chdir('/opt/mapa-unificado-api');sys.path.insert(0,os.getcwd())
+os.chdir('/opt/concrefer-unificado/mapa-api');sys.path.insert(0,os.getcwd())
 from app import connect,signer,COOKIE_NAME
 with connect() as conn,conn.cursor() as cur:
     cur.execute("SELECT id,updated_at FROM public.usuarios WHERE perfil='GERENCIA' AND ativo AND NOT primeiro_acesso ORDER BY id LIMIT 1")
@@ -61,7 +61,7 @@ print(json.dumps(cases,ensure_ascii=False))
 
 
 def main() -> None:
-    result = subprocess.run(["ssh", "vps-staging", "/opt/mapa-unificado-api/.venv/bin/python", "-"],
+    result = subprocess.run(["ssh", "vps-staging", "/opt/concrefer-unificado/mapa-api/.venv/bin/python", "-"],
                             input=REMOTE, text=True, capture_output=True, check=True)
     cases = json.loads(result.stdout)
     OUT.write_text(json.dumps({"source": "official Supabase RPC via GET only",

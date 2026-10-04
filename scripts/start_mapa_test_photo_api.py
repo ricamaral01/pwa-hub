@@ -8,8 +8,8 @@ import socket
 import subprocess
 
 
-SOURCE = Path("/opt/mapa-unificado-photo-api")
-STORAGE = Path("/opt/mapa-unificado-photo-storage")
+SOURCE = Path("/opt/concrefer-unificado/photo-api")
+STORAGE = Path("/opt/concrefer-unificado/photo-storage")
 IMAGE = "mapa-unificado-photo-test:20261003"
 CONTAINER = "mapa-unificado-photo-test"
 

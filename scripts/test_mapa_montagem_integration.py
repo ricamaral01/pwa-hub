@@ -17,7 +17,7 @@ import psycopg
 BASE = "https://concrefer.concretrack.com.br/unificado/mapa/api"
 ORIGIN = "https://concrefer.concretrack.com.br"
 DB = "dbname=mapa_unificado_teste user=postgres"
-CHECKLISTS = json.loads(Path("/opt/mapa-unificado-api/checklists.json").read_text())
+CHECKLISTS = json.loads(Path("/opt/concrefer-unificado/mapa-api/checklists.json").read_text())
 
 
 def post(path, body, cookie="", origin=True):

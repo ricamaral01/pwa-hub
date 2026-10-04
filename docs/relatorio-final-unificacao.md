@@ -1,8 +1,10 @@
 # Relatório da unificação no ambiente de testes
 
-Atualizado em 03/10/2026 (fotografia dos dados: 04/10/2026 02:32:39 UTC). **A certificação final ainda não foi alcançada.** Este documento registra o que está publicado e os critérios que ainda faltam, sem autorizar a virada.
+Atualizado em 04/10/2026 (fotografia dos dados: 04/10/2026 03:02:17 UTC). **A certificação final ainda não foi alcançada.** Este documento registra o que está publicado e os critérios que ainda faltam, sem autorizar a virada.
 
 ## Publicado
+
+VPS de testes: `2.25.163.32`. As rotas abaixo são exclusivas do ambiente de testes; a virada não foi executada.
 
 | Parte | Endereço | Situação |
 |---|---|---|
@@ -24,7 +26,7 @@ Os sistemas oficiais `https://pcp.concretrack.com.br/` e `https://usina.concretr
 | Desktop novo em todas as telas; tablet, celular e quiosque idênticos por imagem | **não** | Início, Relatório Enc. Produção e Histórico do Mapa capturados antes/depois em 1366×768 e 1920×1080; demais telas recebem a casca geral, sem revisão individual. A página PCP Formas por Setor também recebeu a casca desktop; sua imagem em celular 390×844 foi idêntica ao HTML original. Na repetição da matriz Mapa de 18 modos × 3 condições, **54/54** capturas foram idênticas pixel a pixel. Faltam celular do Mapa e revisão individual das demais telas. |
 | Login único para só-PCP, só-Mapa e par | **não** | Só-PCP e só-Mapa passaram no navegador; par exato Mapa-base passou com conta sintética no serviço, sem troca forçada. Falta conferir o par no fluxo completo do navegador e aguardar decisão do Ricardo sobre nove pares candidatos. |
 | Nenhuma página do unificado chama Supabase ou domínios oficiais para dados | **não** | Navegação Mapa 288/288, PCP 24 rotas e Início das duas contas não geraram requisição externa. Falta varredura dinâmica de todas as ações. O backend PCP lê as mesmas planilhas Google, somente leitura, como o oficial. |
-| Nenhum serviço como root; nada em `/root/` | **não** | Os três serviços HTTP/WebSocket do teste já usam `www-data` e o backup diário usa `postgres`. Código, estáticos, scripts de fotografia e credenciais ainda estão distribuídos entre `/opt/`, `/var/www/`, `/root/` e `/etc/`. A consolidação em `/opt/concrefer-unificado/` precisa ocorrer com backup e conferência de rotas. |
+| Nenhum serviço como root; nada em `/root/` | **sim** | Mapa API, tempo real e hub usam `www-data`; PCP API usa `pcp-unificado`; contêiner de fotos usa UID 33 e PostgREST usa UID 1000. Código, frontend, fotos e scripts de fotografia ativos estão em `/opt/concrefer-unificado/`. Os antigos caminhos do unificado em `/root/`, `/var/www/` e `/opt/` não existem mais; cópias de retorno permanecem dentro de `/opt/concrefer-unificado/`. Credenciais 600 ficam em `/etc/` e arquivos de backup em `/var/backups/`. Backups diários dos dois bancos e das fotos tiveram restauração de prova; ambos os timers estão ativos. |
 | Sistemas oficiais respondendo e logando como antes | **não** | Ambos responderam HTTP 200 após as alterações de testes; login oficial ainda não foi conferido sem usar credencial real ou escrita. |
 | Tudo em commits; nenhum segredo no repositório | **não** | Alterações desta sessão commitadas; arquivos de credenciais ficam em `/etc/` com permissão privada. Falta auditoria final do repositório e dos serviços após a consolidação. |
 
@@ -38,7 +40,7 @@ Os sistemas oficiais `https://pcp.concretrack.com.br/` e `https://usina.concretr
 2. Concluir a matriz de telas PCP por perfil e todas as impressões/exportações restantes. A tela Usuários tem o defeito original do botão Redefinir senha documentado.
 3. Confirmar ou rejeitar individualmente os nove pares de contas ainda candidatos; só um par de login e nome iguais foi confirmado automaticamente. Repetir E2E de par no navegador.
 4. Completar a revisão visual de todas as telas e tamanhos pedidos.
-5. Migrar a infraestrutura de testes para `/opt/concrefer-unificado/`, rodar serviços sem root, validar backup diário com restauração e atualizar a página de testes para “pronto para testar” somente depois da certificação.
+5. Atualizar a página de testes para “pronto para testar” somente depois da certificação funcional e visual. A infraestrutura de testes já foi consolidada em `/opt/concrefer-unificado/`, com serviços sem root, backups diários e restauração de prova de PostgreSQL e fotos.
 
 ## Refazer a fotografia
 

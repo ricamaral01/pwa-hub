@@ -17,7 +17,7 @@ def load(path: Path) -> None:
 def main() -> None:
     load(Path("/etc/mapa-unificado/auth.env"))
     load(Path("/etc/mapa-unificado/unified-auth.env"))
-    sys.path.insert(0, "/opt/mapa-unificado-api")
+    sys.path.insert(0, "/opt/concrefer-unificado/mapa-api")
     from unified_auth import reapply_unified_hashes
     print(f"confirmed_unified_hashes_reapplied={reapply_unified_hashes()}")
 

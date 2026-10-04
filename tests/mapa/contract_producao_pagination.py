@@ -14,7 +14,7 @@ from contract_read_tables import AUTH_ENV, OUT, SOURCE_ENV, call, digest, load_e
 def main() -> None:
     load_env(SOURCE_ENV)
     load_env(AUTH_ENV)
-    os.chdir("/opt/mapa-unificado-api")
+    os.chdir("/opt/concrefer-unificado/mapa-api")
     import sys
 
     sys.path.insert(0, os.getcwd())
@@ -67,7 +67,7 @@ def main() -> None:
         "test_only_rows": sum((right - left).values()),
         "same_rows": left == right,
     }
-    target = Path("/root/mapa-unificado-migration/contract-producao-pagination.json")
+    target = Path("/opt/concrefer-unificado/migration/contract-producao-pagination.json")
     target.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report))
     if not report["same_rows"]:

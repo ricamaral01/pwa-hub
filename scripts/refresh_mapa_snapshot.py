@@ -1,7 +1,7 @@
 """Refaz a fotografia do Mapa no PostgreSQL isolado da VPS de testes.
 
 Executar como root na VPS de testes, com SUPABASE_URL e SUPABASE_SECRET_KEY em
-/root/mapa-unificado-migration/supabase-source.env (proprietário root, modo 600).
+/opt/concrefer-unificado/migration/supabase-source.env (proprietário root, modo 600).
 Requer requests e argon2-cffi no Python usado para executar este arquivo.
 
 A origem recebe somente HEAD/GET. O destino é atualizado numa transação após
@@ -22,7 +22,7 @@ import sys
 
 
 DATABASE = "mapa_unificado_teste"
-BASE = Path("/root/mapa-unificado-migration")
+BASE = Path("/opt/concrefer-unificado/migration")
 ENV_FILE = BASE / "supabase-source.env"
 TABLES = (
     "usuarios", "programacao_pcp", "liberacao_formas", "producao",

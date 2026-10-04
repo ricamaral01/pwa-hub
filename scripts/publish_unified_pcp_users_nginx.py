@@ -8,7 +8,7 @@ import subprocess
 
 
 CONFIG = Path("/etc/nginx/sites-enabled/concrefer.concretrack.com.br")
-BACKUP = Path("/root/mapa-unificado-migration/concrefer.nginx.before-unified-users.conf")
+BACKUP = Path("/opt/concrefer-unificado/migration/concrefer.nginx.before-unified-users.conf")
 ANCHOR = "    location ^~ /unificado/pcp/api/ {"
 BLOCK = """    location = /unificado/pcp/api/usuarios {
         proxy_pass http://127.0.0.1:13052/unified/pcp/usuarios;

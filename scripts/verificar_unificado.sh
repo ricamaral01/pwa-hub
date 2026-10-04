@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Run on the test VPS. Only GET/HEAD requests are sent to the official systems.
-web_root="${UNIFICADO_WEB_ROOT:-/var/www/concretrack-unificado-tests-root/unificado}"
+web_root="${UNIFICADO_WEB_ROOT:-/opt/concrefer-unificado/public/unificado}"
 base="https://concrefer.concretrack.com.br/unificado"
 
 check_http() {

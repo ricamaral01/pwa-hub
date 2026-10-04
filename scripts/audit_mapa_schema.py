@@ -23,7 +23,7 @@ import json,subprocess
 from pathlib import Path
 import requests
 values={}
-for line in Path('/root/mapa-unificado-migration/supabase-source.env').read_text().splitlines():
+for line in Path('/opt/concrefer-unificado/migration/supabase-source.env').read_text().splitlines():
     if '=' in line:
         key,value=line.split('=',1);values[key]=value.strip().strip('"').strip("'")
 key=values['SUPABASE_SECRET_KEY']
@@ -49,7 +49,7 @@ print(json.dumps({'source':source,'destination':dest,'destination_pk':dest_pk},e
 
 
 def main():
-    result = subprocess.run(["ssh", "vps-staging", "/root/mapa-unificado-migration/refresh-venv/bin/python", "-"],
+    result = subprocess.run(["ssh", "vps-staging", "/opt/concrefer-unificado/migration/refresh-venv/bin/python", "-"],
                             input=REMOTE, text=True, encoding="utf-8", capture_output=True, check=True)
     data = json.loads(result.stdout)
     lines = ["# Diferenças de estrutura do Mapa — 03/10/2026", "",

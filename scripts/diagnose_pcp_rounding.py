@@ -46,7 +46,7 @@ def remote(alias, python, root, env=None):
 def main():
     for name, args in {
         'oficial': ('vps-rh','/opt/pcp-concrefer/venv/bin/python','/opt/pcp-concrefer'),
-        'copia': ('vps-staging','/opt/pcp-unificado-test/.venv/bin/python','/opt/pcp-unificado-test','/etc/pcp-unificado/pcp.env'),
+        'copia': ('vps-staging','/opt/concrefer-unificado/pcp-api/.venv-py310/bin/python','/opt/concrefer-unificado/pcp-api','/etc/pcp-unificado/pcp.env'),
     }.items():
         print(name, json.dumps(remote(*args),ensure_ascii=False))
 

@@ -19,9 +19,9 @@ import tempfile
 
 
 PCP = "pcp_unificado_teste"
-MAPA_SCRIPT = "/root/mapa-unificado-migration/refresh_mapa_snapshot.py"
-MAPA_PYTHON = "/root/mapa-unificado-migration/refresh-venv/bin/python"
-BACKUP_SCRIPT = "/usr/local/libexec/backup_unificado_testes.py"
+MAPA_SCRIPT = "/opt/concrefer-unificado/migration/refresh_mapa_snapshot.py"
+MAPA_PYTHON = "/opt/concrefer-unificado/migration/refresh-venv/bin/python"
+BACKUP_SCRIPT = "/opt/concrefer-unificado/infra/backup_unificado_testes.py"
 
 
 def run(args: list[str], *, input_bytes: bytes | None = None) -> bytes:
@@ -103,14 +103,14 @@ def main() -> None:
     if not match:
         raise RuntimeError("Mapa refresh did not report the snapshot timestamp")
     snapshot_info = json.dumps({"snapshot_at": match.group(1).strip()}, ensure_ascii=False).encode()
-    run(["ssh", "vps-staging", "tee", "/opt/mapa-unificado-api/snapshot-info.json"],
+    run(["ssh", "vps-staging", "tee", "/opt/concrefer-unificado/mapa-api/snapshot-info.json"],
         input_bytes=snapshot_info)
-    run(["ssh", "vps-staging", "/opt/mapa-unificado-api/.venv/bin/python",
-         "/root/mapa-unificado-migration/reapply_unified_auth.py"])
+    run(["ssh", "vps-staging", "/opt/concrefer-unificado/mapa-api/.venv/bin/python",
+         "/opt/concrefer-unificado/migration/reapply_unified_auth.py"])
     # Synthetic identities are created only inside their test rounds and removed.
     # Source order matters for tied model counts in the original dashboard.
     run(["ssh", "vps-staging", "python3",
-         "/root/mapa-unificado-migration/sync_mapa_montagem_source_order.py"])
+         "/opt/concrefer-unificado/migration/sync_mapa_montagem_source_order.py"])
     print("both_snapshots=ok")
 
 

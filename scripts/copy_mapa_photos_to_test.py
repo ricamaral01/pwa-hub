@@ -13,7 +13,7 @@ import subprocess
 
 
 SOURCE = "/opt/mapaproducao-storage"
-TARGET = "/opt/mapa-unificado-photo-storage"
+TARGET = "/opt/concrefer-unificado/photo-storage"
 REMOTE_MANIFEST = r'''
 import hashlib,json,os,pathlib,sys
 root=pathlib.Path(sys.argv[1]).resolve()
@@ -70,7 +70,7 @@ def main() -> None:
         adjust = r'''
 import os,pathlib,sys
 root=pathlib.Path(sys.argv[1]).resolve()
-expected=pathlib.Path('/opt/mapa-unificado-photo-storage').resolve()
+expected=pathlib.Path('/opt/concrefer-unificado/photo-storage').resolve()
 if root!=expected: raise SystemExit('wrong destination')
 for name in sys.argv[2:]:
     p=(root/name).resolve()

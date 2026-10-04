@@ -12,7 +12,7 @@ from contract_read_tables import AUTH_ENV, OUT, SOURCE_ENV, call, load_env
 def main() -> None:
     load_env(SOURCE_ENV)
     load_env(AUTH_ENV)
-    os.chdir("/opt/mapa-unificado-api")
+    os.chdir("/opt/concrefer-unificado/mapa-api")
     import sys
     sys.path.insert(0, os.getcwd())
     from app import COOKIE_NAME, connect, signer
@@ -40,7 +40,7 @@ def main() -> None:
         results.append({"path": path, "source_status": source_status,
                         "test_status": test_status,
                         "source": json.loads(source_body), "test": json.loads(test_body)})
-    target = Path("/root/mapa-unificado-migration/order-pairs-private.json")
+    target = Path("/opt/concrefer-unificado/migration/order-pairs-private.json")
     target.write_text(json.dumps(results, ensure_ascii=False), encoding="utf-8")
     print(f"order_pairs={len(results)} private={target}")
 

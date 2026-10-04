@@ -33,7 +33,7 @@ def mapa_rows() -> list[dict]:
         if line.strip() and not line.lstrip().startswith("#") and "=" in line:
             key, value = line.strip().split("=", 1)
             os.environ[key] = value.strip().strip('"').strip("'")
-    sys.path.insert(0, "/opt/mapa-unificado-api")
+    sys.path.insert(0, "/opt/concrefer-unificado/mapa-api")
     from app import connect
     with connect() as conn, conn.cursor() as cursor:
         cursor.execute("""SELECT id AS login,nome AS name,perfil AS role,
@@ -43,7 +43,7 @@ def mapa_rows() -> list[dict]:
 
 
 def confirmed_links() -> list[dict]:
-    sys.path.insert(0, "/opt/mapa-unificado-api")
+    sys.path.insert(0, "/opt/concrefer-unificado/mapa-api")
     from app import connect
     with connect() as conn, conn.cursor() as cursor:
         cursor.execute("""SELECT pcp_user_id,mapa_login,unified_password_set,requires_reset

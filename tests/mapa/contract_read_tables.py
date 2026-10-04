@@ -14,10 +14,10 @@ import urllib.error
 import urllib.request
 
 
-SOURCE_ENV = Path("/root/mapa-unificado-migration/supabase-source.env")
+SOURCE_ENV = Path("/opt/concrefer-unificado/migration/supabase-source.env")
 AUTH_ENV = Path("/etc/mapa-unificado/auth.env")
-FIXTURE = Path("/root/mapa-unificado-migration/captured-offline.json")
-OUT = Path("/root/mapa-unificado-migration/contract-read-tables.json")
+FIXTURE = Path("/opt/concrefer-unificado/migration/captured-offline.json")
+OUT = Path("/opt/concrefer-unificado/migration/contract-read-tables.json")
 TABLES = {
     "programacao_pcp", "liberacao_formas", "producao", "montagem_poste",
     "formas_manutencao", "prog_s3_s4", "vw_formas_status",
@@ -84,7 +84,7 @@ def row_multiset_equal(left: bytes, right: bytes) -> bool:
 def main() -> None:
     load_env(SOURCE_ENV)
     load_env(AUTH_ENV)
-    os.chdir("/opt/mapa-unificado-api")
+    os.chdir("/opt/concrefer-unificado/mapa-api")
     import sys
     sys.path.insert(0, os.getcwd())
     from app import COOKIE_NAME, connect, signer

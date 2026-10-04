@@ -30,7 +30,7 @@ def main() -> None:
         if line.strip() and not line.lstrip().startswith("#") and "=" in line:
             key, value = line.strip().split("=", 1)
             os.environ[key] = value.strip().strip('"').strip("'")
-    os.chdir("/opt/mapa-unificado-api")
+    os.chdir("/opt/concrefer-unificado/mapa-api")
     import sys
     sys.path.insert(0, os.getcwd())
     from app import COOKIE_NAME, connect, signer
@@ -73,7 +73,7 @@ def main() -> None:
         status, raw, _ = call("POST", path, multipart, "multipart/form-data; boundary=" + boundary)
         payload = json.loads(raw)
         assert status == 201 and payload["success"] and payload["data"]["url"].startswith(
-            "/unificado/mapa/api/fotos/"
+            "https://concrefer.concretrack.com.br/unificado/mapa/api/fotos/"
         ), (status, payload)
         photo_id = payload["data"]["id"]
         status, raw, _ = call("GET", path)
@@ -92,8 +92,9 @@ def main() -> None:
         print("photo_contract=upload:201,list:200,file:200,download:200,delete:200,unauth:401")
     finally:
         if photo_id:
-            call("DELETE", "/fotos/" + photo_id + "?usuario=Captura")
-        index = json.loads(Path("/opt/mapa-unificado-photo-storage/fotos-inspecao.json").read_text())
+            cleanup_status, _, _ = call("DELETE", "/fotos/" + photo_id + "?usuario=Captura")
+            assert cleanup_status == 200
+        index = json.loads(Path("/opt/concrefer-unificado/photo-storage/fotos-inspecao.json").read_text())
         assert not any(row.get("poste_id") == poste for row in index)
         print("photo_cleanup=0")
 

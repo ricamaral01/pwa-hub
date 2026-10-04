@@ -20,7 +20,7 @@ def load_env(path: str) -> None:
 
 def main() -> None:
     load_env("/etc/mapa-unificado/auth.env")
-    os.chdir("/opt/mapa-unificado-api")
+    os.chdir("/opt/concrefer-unificado/mapa-api")
     import sys
     sys.path.insert(0, os.getcwd())
     from app import COOKIE_NAME, connect, signer

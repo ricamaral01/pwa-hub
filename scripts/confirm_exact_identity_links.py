@@ -23,7 +23,7 @@ def load(path: Path) -> None:
 def main() -> None:
     load(Path("/etc/mapa-unificado/auth.env"))
     load(Path("/etc/mapa-unificado/unified-auth.env"))
-    sys.path.insert(0, "/opt/mapa-unificado-api")
+    sys.path.insert(0, "/opt/concrefer-unificado/mapa-api")
     from unified_auth import confirm_link, link_for, map_connect, pcp_connect
 
     with pcp_connect() as conn, conn.cursor() as cur:

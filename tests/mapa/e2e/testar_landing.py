@@ -25,7 +25,7 @@ def main() -> None:
     )
     account = dict(line.split("=", 1) for line in raw.splitlines() if "=" in line)
     snapshot = json.loads(subprocess.check_output(
-        ["ssh", "vps-staging", "cat", "/opt/mapa-unificado-api/snapshot-info.json"],
+        ["ssh", "vps-staging", "cat", "/opt/concrefer-unificado/mapa-api/snapshot-info.json"],
         text=True, encoding="utf-8"))["snapshot_at"]
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, executable_path=CHROME)

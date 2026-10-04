@@ -17,7 +17,7 @@ def main() -> None:
             if line.strip() and not line.lstrip().startswith("#") and "=" in line:
                 key, value = line.strip().split("=", 1)
                 os.environ[key] = value.strip().strip('"').strip("'")
-    sys.path.insert(0, "/opt/mapa-unificado-api")
+    sys.path.insert(0, "/opt/concrefer-unificado/mapa-api")
     from unified_auth import pcp_connect
     with pcp_connect() as conn, conn.cursor() as cur:
         cur.execute("DELETE FROM public.usuarios WHERE username=%s", (username,))

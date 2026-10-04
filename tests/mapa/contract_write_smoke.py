@@ -25,7 +25,7 @@ def main() -> None:
     load_env("/etc/mapa-unificado/writer.env")
     parsed = urllib.parse.urlparse(os.environ["MAPA_WRITER_DATABASE_URL"])
     assert parsed.hostname == "127.0.0.1" and parsed.path == "/mapa_unificado_teste"
-    os.chdir("/opt/mapa-unificado-api")
+    os.chdir("/opt/concrefer-unificado/mapa-api")
     import sys
     sys.path.insert(0, os.getcwd())
     from app import COOKIE_NAME, connect, signer

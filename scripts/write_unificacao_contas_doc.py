@@ -30,8 +30,8 @@ def table(rows: list[dict], side: str) -> list[str]:
 
 def main() -> None:
     raw = subprocess.check_output(
-        ["ssh", "vps-staging", "/opt/mapa-unificado-api/.venv/bin/python",
-         "/root/mapa-unificado-migration/audit_unificado_accounts.py"],
+        ["ssh", "vps-staging", "/opt/concrefer-unificado/mapa-api/.venv/bin/python",
+         "/opt/concrefer-unificado/migration/audit_unificado_accounts.py"],
         text=True, encoding="utf-8")
     report = json.loads(raw)
     confirmed = {(item["pcp_user_id"], item["mapa_login"])

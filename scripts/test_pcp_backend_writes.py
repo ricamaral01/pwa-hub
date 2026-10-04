@@ -17,7 +17,7 @@ import httpx
 import psycopg2
 
 ENV_FILE = Path("/etc/pcp-unificado/pcp.env")
-APP_ROOT = Path("/opt/pcp-unificado-test")
+APP_ROOT = Path("/opt/concrefer-unificado/pcp-api")
 API = "https://concrefer.concretrack.com.br/unificado/pcp/api"
 FUTURE_DAY = date(2099, 1, 17)
 SHEET_DAY = date(2026, 10, 9)

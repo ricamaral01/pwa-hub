@@ -48,7 +48,14 @@ def main() -> None:
             page.locator('#unificado-login-form [name="username"]').fill(account[prefix + "_TEST_USER"])
             page.locator('#unificado-login-form [name="password"]').fill(account[prefix + "_TEST_PASSWORD"])
             page.locator('#unificado-login-form button[type="submit"]').click()
-            page.wait_for_url("**/unificado/index.html", timeout=20000)
+            try:
+                page.wait_for_url("**/unificado/index.html", timeout=20000)
+            except Exception:
+                print(json.dumps({"login_kind": kind, "location": urlsplit(page.url).path,
+                                  "feedback": page.locator('#unificado-login-feedback').inner_text()
+                                  if page.locator('#unificado-login-feedback').count() else "",
+                                  "api_responses": responses[-8:], "page_errors": errors}, ensure_ascii=False))
+                raise
             page.wait_for_function("() => document.querySelector('.sample-note')?.textContent.includes('Dados de')",
                                    timeout=20000)
             values = page.locator(".sector-card").evaluate_all("""cards => cards.map(card => ({

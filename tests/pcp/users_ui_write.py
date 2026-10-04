@@ -85,8 +85,8 @@ def main() -> None:
             browser.close()
     finally:
         result = subprocess.check_output(
-            ["ssh", "vps-staging", "/opt/mapa-unificado-api/.venv/bin/python",
-             "/root/mapa-unificado-migration/cleanup_pcp_ui_synthetic.py", username],
+            ["ssh", "vps-staging", "/opt/concrefer-unificado/mapa-api/.venv/bin/python",
+             "/opt/concrefer-unificado/migration/cleanup_pcp_ui_synthetic.py", username],
             text=True, encoding="utf-8")
         print(result.strip())
 

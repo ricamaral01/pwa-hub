@@ -455,7 +455,7 @@ def rest_read(resource):
             and "offset" not in request.args and "limit" not in request.args):
         try:
             rows = json.loads(body)
-            rank_path = Path("/opt/mapa-unificado-api/montagem-order.json")
+            rank_path = Path("/opt/concrefer-unificado/mapa-api/montagem-order.json")
             if isinstance(rows, list) and rank_path.exists():
                 order = json.loads(rank_path.read_text(encoding="utf-8"))["ids"]
                 ranks = {row_id: rank for rank, row_id in enumerate(order)}

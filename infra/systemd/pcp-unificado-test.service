@@ -1,0 +1,22 @@
+[Unit]
+Description=PCP unificado - API isolada de testes
+After=network-online.target postgresql.service nginx.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pcp-unificado
+Group=pcp-unificado
+WorkingDirectory=/opt/concrefer-unificado/pcp-api
+EnvironmentFile=/etc/pcp-unificado/pcp.env
+ExecStart=/opt/concrefer-unificado/pcp-api/.venv-py310/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 13054
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/tmp
+
+[Install]
+WantedBy=multi-user.target

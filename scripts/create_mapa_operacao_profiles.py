@@ -16,7 +16,7 @@ def main() -> None:
         if line.strip() and not line.lstrip().startswith("#") and "=" in line:
             key, value = line.strip().split("=", 1)
             os.environ[key] = value.strip().strip('"').strip("'")
-    os.chdir("/opt/mapa-unificado-api")
+    os.chdir("/opt/concrefer-unificado/mapa-api")
     import sys
     sys.path.insert(0, os.getcwd())
     from app import connect, hasher

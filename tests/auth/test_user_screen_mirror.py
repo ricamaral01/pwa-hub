@@ -34,7 +34,7 @@ def call(path: str, body: dict, *, method: str = "POST", token: str = "", cookie
 def main() -> None:
     load("/etc/mapa-unificado/auth.env")
     load("/etc/mapa-unificado/unified-auth.env")
-    sys.path.insert(0, "/opt/mapa-unificado-api")
+    sys.path.insert(0, "/opt/concrefer-unificado/mapa-api")
     from app import COOKIE_NAME, signer
     from unified_auth import (MAPA_HASHER, PCP_HASHER, check_link_password,
                               confirm_link, link_for, map_connect, pcp_connect)

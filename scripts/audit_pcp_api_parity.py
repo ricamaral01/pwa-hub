@@ -36,7 +36,7 @@ with SessionLocal() as db:
 
 APIS = {
     "oficial": ("vps-rh", "/opt/pcp-concrefer/venv/bin/python", "/opt/pcp-concrefer", None, "https://pcp.concretrack.com.br/api"),
-    "copia": ("vps-staging", "/opt/pcp-unificado-test/.venv-py310/bin/python", "/opt/pcp-unificado-test", "/etc/pcp-unificado/pcp.env", "https://concrefer.concretrack.com.br/unificado/pcp/api"),
+    "copia": ("vps-staging", "/opt/concrefer-unificado/pcp-api/.venv-py310/bin/python", "/opt/concrefer-unificado/pcp-api", "/etc/pcp-unificado/pcp.env", "https://concrefer.concretrack.com.br/unificado/pcp/api"),
 }
 DATES = ["2026-07-31", "2026-08-01", "2026-08-03", "2026-08-31", "2026-09-01", "2026-09-07", "2026-09-13", "2026-09-14", "2026-09-30", "2026-10-01", "2026-10-02", "2026-10-03"]
 OUT = Path("docs/auditoria-paridade-pcp-2026-10-03.md")

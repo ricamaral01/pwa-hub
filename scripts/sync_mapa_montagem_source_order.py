@@ -9,8 +9,8 @@ import urllib.parse
 import urllib.request
 
 
-SOURCE_ENV = Path("/root/mapa-unificado-migration/supabase-source.env")
-TARGET = Path("/opt/mapa-unificado-api/montagem-order.json")
+SOURCE_ENV = Path("/opt/concrefer-unificado/migration/supabase-source.env")
+TARGET = Path("/opt/concrefer-unificado/mapa-api/montagem-order.json")
 SINCE_DATE = "2026-09-26"
 SINCE_UTC = "2026-09-26T03:00:00.000Z"
 
