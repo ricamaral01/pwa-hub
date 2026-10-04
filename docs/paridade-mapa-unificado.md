@@ -34,7 +34,7 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 |---:|---|---|---|
 | 1 | Login por perfil e setor | igual | Quatro perfis × quatro setores; navegação 288/288 conforme captura original. |
 | 2 | Primeiro acesso | não executado | Falta comparação da troca de senha na rota operacional. |
-| 3 | Programar/desprogramar | não executado | Setor 1 com GERENCIA teve POST/DELETE, linha e classe iguais; faltam setores/perfis. |
+| 3 | Programar/desprogramar | não executado | Setores 1, 2 e 4 com GERENCIA tiveram POST/DELETE, linha, classe e texto iguais entre HTML original e cópia na mesma fotografia; faltam Setor 3 e demais perfis. |
 | 4 | Modo Liberação | não executado | Setores 1–3 com GERENCIA tiveram linha e cartão; Setor 4 preserva abertura de escolha de concreto; faltam perfis. |
 | 5 | Concretar por tipo | não executado | Um tipo em Setores 1–4 com GERENCIA; faltam demais tipos/perfis. |
 | 6 | Concreto vibrado | não executado | Tipo “Concreto Seco - Vibrado” no teste de cartão; falta matriz completa. |
@@ -60,6 +60,8 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080 sem rolagem horizontal. A rota operacional continua sendo ambiente de teste.
 
 Em 04/10/2026, `tests/mapa/e2e/desktop_shell.py --all-modes` percorreu os 18 modos da matriz de navegação nos dois tamanhos de desktop e produziu 72 capturas antes/depois em `.work-mapa-unificado/e2e/desktop-layout/all-modes/`. Nas 36 telas posteriores, houve zero rolagem horizontal. Em 28 telas a casca nova apareceu, com sidebar e topbar originais ocultas. Nos modos `LIBERACAO_S1` a `LIBERACAO_S4`, o próprio `setMode` ativa quiosque mesmo em largura de desktop; nas oito capturas correspondentes a casca ficou oculta, como exige a regra do quiosque. As 15 telas além das três repaginadas individualmente têm a casca genérica verificada, mas sua revisão detalhada ainda falta. A conta sintética da rodada foi removida.
+
+`tests/mapa/e2e/programming_sector_parity.py` executou programação e desprogramação reais nos Setores 1, 2 e 4 no banco de testes, uma vez com o HTML original e outra na rota unificada, restaurando a ausência da linha antes de cada variante. Os três pares tiveram corpo de POST e cabeçalho `Prefer` iguais ao fixture, POST/DELETE na mesma ordem, mesmos campos da linha e texto/classe do cartão iguais antes, durante e depois. Não houve linha residual; a conta sintética foi removida. O Setor 3 usa outro contrato e continua pendente neste roteiro.
 
 Atualização da casca desktop: `unificado/mapa/operacao/unificado-bridge.css` e `.js` são carregados após o visual e o aplicativo originais. Início, Relatório Enc. Produção e Histórico foram repaginados em 1366×768 e 1920×1080; as 12 capturas antes/depois estão em `docs/capturas-layout-mapa/`. Os demais modos recebem menu, topbar, cartões e campos da casca; sua revisão visual individual ainda falta. O teste de pixels com o mesmo HTML anterior à casca deu **zero pixels diferentes** em 1024×768, 768×1024 e quiosque no modo Liberação S1. A navegação por quatro perfis, quatro setores e 18 modos continuou 288/288 após a publicação da casca.
 
