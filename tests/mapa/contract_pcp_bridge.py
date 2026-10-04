@@ -17,7 +17,7 @@ BASE = "http://127.0.0.1:13052"
 
 def main() -> None:
     account = dict(line.split("=", 1) for line in
-                   Path("/etc/mapa-unificado/operacao-test-login.env").read_text().splitlines()
+                   Path("/etc/mapa-unificado/auth-probe.env").read_text().splitlines()
                    if "=" in line)
     login = urllib.request.Request(BASE + "/login", method="POST",
                                   headers={"Content-Type": "application/json"},

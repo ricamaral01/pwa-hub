@@ -16,7 +16,7 @@ def get(url: str, *, cookie: str | None = None) -> tuple[int, bytes]:
 
 def main() -> None:
     account = dict(line.split("=", 1) for line in
-                   Path("/etc/mapa-unificado/operacao-test-login.env").read_text().splitlines()
+                   Path("/etc/mapa-unificado/auth-probe.env").read_text().splitlines()
                    if "=" in line)
     data = json.dumps({"name": account["MAPA_TEST_USER"],
                        "password": account["MAPA_TEST_PASSWORD"]}).encode()
