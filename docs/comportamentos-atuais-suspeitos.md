@@ -95,3 +95,11 @@
 **Onde:** `unificado/pcp/backend/app/models/producao.py`, relacionamento `MaoDeObra.rateios` sem exclusão em cascata; `app/api/routers/pcp.py`, exclusão do pai sem remover os itens de `maodeobra_rateio`. Os 47 arquivos do backend permanecem idênticos aos do oficial.
 
 **Evidência:** teste isolado de 04/10/2026 no PostgreSQL PCP de testes criou um registro com dois itens; a chamada DELETE respondeu HTTP 500. `tests/pcp/rateio_ui_write.py` confirmou as criações e leituras da tela nos grupos 1/2 e 3/4, com ADMIN e PRODUCAO. `scripts/cleanup_pcp_rateio_probe.py` removeu os itens e o pai diretamente do banco de testes após cada rodada; nenhuma linha sintética restou. O backend original não foi alterado.
+
+## PCP — Teste Programação retorna erro ao consultar compatibilidade
+
+**O que acontece:** na tela Teste Programação, uma demanda manual de um poste para o Setor 3 enviou `POST /api/teste-prog/programar` com os campos esperados. A cópia respondeu HTTP 500 e a tela ocultou o resultado. Nenhuma linha foi gravada. O resultado HTTP do oficial não foi testado porque a regra permite somente leitura nele; este caso permanece como comportamento suspeito do código original, não como paridade de resposta comprovada.
+
+**Onde:** `unificado/pcp/backend/app/api/routers/teste_programacao.py`, `_get_compatibilidade`, compara `MapeamentoFormaPoste.codigo_forma` (texto) a `forma.id` (inteiro). PostgreSQL de testes não possui operador `varchar = integer` e a consulta falha antes do cálculo. Os 47 arquivos do backend são idênticos aos oficiais.
+
+**Evidência:** `tests/pcp/teste_programacao_ui.py` reproduziu HTTP 500 com conta sintética ADMIN em 04/10/2026; log de `pcp-unificado-test.service` mostrou `psycopg2.errors.UndefinedFunction: operator does not exist: character varying = integer`, com parâmetro inteiro `9`. A conta sintética foi removida. Não houve ajuste no backend ou no esquema para mudar esse comportamento.
