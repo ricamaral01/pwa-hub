@@ -50,7 +50,23 @@
     document.body.append(sidebar, wrapper);
     document.body.classList.add("unificado-pcp-standalone");
   }
+  function restoreOriginalLayout() {
+    document.querySelectorAll(".unificado-pcp-brand,.unificado-pcp-switch,.unificado-pcp-crumb,.unificado-pcp-top-actions,.unificado-pcp-test-link,.unificado-pcp-mono")
+      .forEach(node => node.remove());
+    if (!document.body.classList.contains("unificado-pcp-standalone")) return;
+    const wrapper = document.querySelector("#main-content");
+    const hero = wrapper?.querySelector(":scope>.hero");
+    const content = wrapper?.querySelector(":scope>main.wrap");
+    if (hero && content) document.body.append(hero, content);
+    wrapper?.remove();
+    document.querySelector("#sidebar")?.remove();
+    document.body.classList.remove("unificado-pcp-standalone");
+  }
   function apply() {
+    if (!window.matchMedia("(min-width: 1025px)").matches) {
+      restoreOriginalLayout();
+      return;
+    }
     makeStandaloneShell();
     const sidebar = document.querySelector("#sidebar");
     const topbar = document.querySelector("#main-content>.topbar");
@@ -98,6 +114,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     apply();
     new MutationObserver(apply).observe(document.body, {childList: true, subtree: true});
+    window.matchMedia("(min-width: 1025px)").addEventListener("change", apply);
     window.addEventListener("unificado-pcp-sync", event => {
       const pill = document.querySelector(".unificado-pcp-sync");
       if (!pill) return;
