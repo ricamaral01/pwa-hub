@@ -34,6 +34,12 @@ const MENU_CONFIG = {
         { id: 'acompMensal', label: 'Acompanhamento Mensal', path: '/pages/acompanhamento-mensal/' },
         { id: 'acompMensal34', label: 'Acompanhamento Mensal Setor 3 e 4', path: '/pages/acompanhamento-mensal-setor-34/' },
         { id: 'apontamentoMega', label: 'Apontamento Mega', path: '/pages/apontamento-mega/' }
+      ] },
+      { label: 'Produção e apoio', items: [
+        { id: 'producaoPcp', label: 'Produção PCP', path: '/pages/producao/' },
+        { id: 'maodeobra', label: 'Mão de Obra', path: '/pages/maodeobra/' },
+        { id: 'formasPorSetor', label: 'Formas por Setor', path: '/pages/formas-por-setor/' },
+        { id: 'testeProgramacao', label: 'Teste Programação', path: '/pages/teste-programacao/' }
       ] }
     ]
   },
@@ -73,10 +79,15 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
   value.groups.flatMap(group => group.items.map(item => [item.id, {
     ...item,
     module,
+    require: module === 'planejamento' ? (
+      ['programacao12','programacao34','circular3','dt4','programacaoFinal',
+       'relatorio12','relatorio3','relatorio4','etiquetas','etiquetasSc',
+       'etiquetasArmaduras','acompMensal','acompMensal34','formasPorSetor'].includes(item.id) ? 'PCP' :
+      ['pcpDiario','apontamentoMega','producaoPcp','maodeobra'].includes(item.id) ? 'PRODUCAO' :
+      item.id === 'testeProgramacao' ? 'ADMIN' : null) : null,
     url: module === 'planejamento'
       ? new URL(item.path.replace(/^\/pages\//, ''), PCP_BASE).href
-      : new URL(`?tela=${encodeURIComponent(item.screen)}`, MAPA_BASE).href,
-    // Fase 1: todos os destinos de módulo aguardam integração e validação.
-    available: false
+      : new URL(`operacao/?tela=${encodeURIComponent(item.screen)}`, MAPA_BASE).href,
+    available: true
   }]))
 ));

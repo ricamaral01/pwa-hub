@@ -3,7 +3,7 @@ const MAPA_API = new URL('mapa/api/', UNIFICADO_ROOT);
 const requestedNext = new URLSearchParams(location.search).get('next');
 
 function destination(modules) {
-  const allowed = new Set(['mapa/consulta/', 'mapa/operacao/', 'testar/']);
+  const allowed = new Set(['index.html', 'mapa/consulta/', 'mapa/operacao/', 'testar/']);
   const pcpPages = new Set(['acompanhamento-mensal','acompanhamento-mensal-setor-34',
     'apontamento-mega','comparacao','dashboard','etiquetas','etiquetas-armaduras',
     'etiquetas-sc','formas-por-setor','maodeobra','maodeobra-rateio','pcp-diario',
@@ -12,6 +12,7 @@ function destination(modules) {
     'relatorio-producao','relatorio-programacao-s3','relatorio-programacao-s4',
     'teste-programacao','usuarios']);
   if (requestedNext === 'testar/') return new URL(requestedNext, UNIFICADO_ROOT);
+  if (requestedNext === 'index.html') return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('mapa') && allowed.has(requestedNext)) return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('pcp') && (requestedNext === 'pcp/' ||
       pcpPages.has((requestedNext || '').match(/^pcp\/([^/?]+)\/$/)?.[1]))) {
@@ -20,7 +21,7 @@ function destination(modules) {
   if (modules.includes('mapa') && /^mapa\/operacao\/\?tela=[A-Z0-9_]+$/.test(requestedNext || '')) {
     return new URL(requestedNext, UNIFICADO_ROOT);
   }
-  return new URL(modules.includes('pcp') ? 'pcp/' : 'mapa/', UNIFICADO_ROOT);
+  return new URL('index.html', UNIFICADO_ROOT);
 }
 
 function storeModuleSessions(result) {

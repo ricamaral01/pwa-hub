@@ -9,18 +9,35 @@ const ICONS = {
 };
 
 const sidebar = document.getElementById('sidebar');
+const pcpUser = (() => { try { return JSON.parse(localStorage.getItem('pcp_user') || 'null'); } catch { return null; } })();
+const mapaUser = (() => { try { return JSON.parse(localStorage.getItem('pwa_mapa_auth_session_v1') || 'null'); } catch { return null; } })();
+const hasPcp = Boolean(localStorage.getItem('pcp_token') && pcpUser);
+const hasMapa = Boolean(mapaUser?.id && mapaUser?.role);
+if (!hasPcp && !hasMapa) location.replace(new URL('login.html', UNIFICADO_BASE));
 const storedModule = localStorage.getItem('unificado_modulo');
-let currentModule = MENU_CONFIG[storedModule] ? storedModule : 'planejamento';
+let currentModule = MENU_CONFIG[storedModule] && (storedModule === 'planejamento' ? hasPcp : hasMapa)
+  ? storedModule : (hasPcp ? 'planejamento' : 'producao');
 let activeItem = null;
+
+function canUse(item) {
+  const route = MENU_ITEMS[item.id] || item;
+  if (route.module === 'producao') return hasMapa;
+  if (!hasPcp) return false;
+  const role = pcpUser?.nivel_acesso;
+  if (route.require === 'ADMIN') return role === 'ADMIN';
+  if (route.require === 'PCP') return role === 'ADMIN' || role === 'PCP';
+  if (route.require === 'PRODUCAO') return role !== 'CONSULTA';
+  return true;
+}
 
 function makeLink(item, className = 'nav-link') {
   const a = document.createElement('a');
   a.className = className;
   a.href = MENU_ITEMS[item.id].url;
-  a.setAttribute('aria-disabled', String(!item.available));
-  if (!item.available) a.classList.add('is-unavailable');
+  a.setAttribute('aria-disabled', String(!canUse(item)));
+  if (!canUse(item)) a.classList.add('is-unavailable');
   a.dataset.item = item.id;
-  if (!item.available) a.title = 'Disponível após integrar e validar este módulo';
+  if (!canUse(item)) a.title = 'Sem acesso a este módulo';
   if (item.mono) {
     const mono = document.createElement('span');
     mono.className = 'mono';
@@ -32,7 +49,7 @@ function makeLink(item, className = 'nav-link') {
   label.textContent = item.label;
   a.append(label);
   a.addEventListener('click', (event) => {
-    if (!item.available) {
+    if (!canUse(item)) {
       event.preventDefault();
       return;
     }
@@ -57,6 +74,7 @@ function renderSidebar() {
   switcher.setAttribute('role', 'group');
   switcher.setAttribute('aria-label', 'Módulo');
   for (const [key, config] of Object.entries(MENU_CONFIG)) {
+    if (key === 'planejamento' && !hasPcp || key === 'producao' && !hasMapa) continue;
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `module-button${key === currentModule ? ' is-active' : ''}`;
@@ -109,23 +127,22 @@ function renderSidebar() {
       }
     }
     const container = group.label ? wrapper.querySelector('.group-items') : wrapper;
-    group.items.forEach(item => {
+    group.items.filter(canUse).forEach(item => {
       const link = makeLink(item);
       if (activeItem === item.id) link.classList.add('is-active');
       container.append(link);
     });
     if (!group.label && index === 0) wrapper.classList.add('ungrouped');
-    scroll.append(wrapper);
+    if (container.children.length) scroll.append(wrapper);
   });
   sidebar.append(scroll);
   const users = document.createElement('a');
   users.className = 'nav-footer';
-  users.href = new URL('usuarios/', PCP_BASE).href;
-  users.setAttribute('aria-disabled', 'true');
-  users.classList.add('is-unavailable');
-  users.addEventListener('click', (event) => event.preventDefault());
+  users.href = hasPcp && pcpUser?.nivel_acesso === 'ADMIN'
+    ? new URL('usuarios/', PCP_BASE).href
+    : new URL('operacao/?tela=USUARIOS', MAPA_BASE).href;
   users.innerHTML = `${ICONS.users}<span>Usuários</span>`;
-  sidebar.append(users);
+  if (pcpUser?.nivel_acesso === 'ADMIN' || hasMapa && mapaUser?.role === 'GERENCIA') sidebar.append(users);
 }
 
 function shortcutLink(id, label) {
@@ -141,11 +158,11 @@ function shortcutLink(id, label) {
 
 function renderSectors() {
   const target = document.getElementById('sector-cards');
-  [90, 80, 52, 86].forEach((capacity, index) => {
-    const sector = index + 1;
+  [1, 2, 3, 4].forEach((sector) => {
     const card = document.createElement('article');
     card.className = 'sector-card';
-    card.innerHTML = `<div class="sector-top"><span class="sector-number">S0${sector}</span><span class="capacity">${capacity} formas</span></div><h3>Setor ${sector}</h3><div class="sector-stats"><div><span class="stat-label">Programado</span><span class="stat-value">—</span></div><div><span class="stat-label">Realizado</span><span class="stat-value">—</span></div></div><div class="progress-track" aria-label="Progresso sem dados"></div><div class="sector-actions"></div>`;
+    card.dataset.sector = String(sector);
+    card.innerHTML = `<div class="sector-top"><span class="sector-number">S0${sector}</span><span class="capacity">Hoje</span></div><h3>Setor ${sector}</h3><div class="sector-stats"><div><span class="stat-label">Programado (PCP)</span><span class="stat-value" data-stat="programado">—</span></div><div><span class="stat-label">Realizado (Mapa)</span><span class="stat-value" data-stat="realizado">—</span></div></div><div class="progress-track" aria-label="Dados em carregamento"></div><div class="sector-actions"></div>`;
     const actions = card.querySelector('.sector-actions');
     const plan = MENU_ITEMS[sector <= 2 ? 'programacao12' : 'programacao34'];
     const production = MENU_ITEMS[`setor${sector}`];
@@ -153,13 +170,8 @@ function renderSectors() {
       const a = document.createElement('a');
       a.className = `button ${className}`;
       a.href = item.url;
-      a.setAttribute('aria-disabled', String(!item.available));
-      if (!item.available) {
-        a.classList.add('is-unavailable');
-        a.addEventListener('click', (event) => event.preventDefault());
-      }
+      if (!canUse(item)) continue;
       a.textContent = label;
-      if (!item.available) a.title = 'Disponível após integrar e validar este módulo';
       actions.append(a);
     }
     target.append(card);
@@ -178,12 +190,62 @@ function renderShortcuts() {
     card.className = 'shortcut-card';
     card.innerHTML = `<div class="shortcut-card-header"><span class="shortcut-icon">${group.icon}</span><h3>${group.title}</h3></div><div class="shortcut-list"></div>`;
     const list = card.querySelector('.shortcut-list');
-    group.items.forEach(([id, label]) => list.append(shortcutLink(id, label)));
-    target.append(card);
+    group.items.filter(([id]) => canUse(MENU_ITEMS[id]))
+      .forEach(([id, label]) => list.append(shortcutLink(id, label)));
+    if (list.children.length) target.append(card);
   });
 }
 
-document.getElementById('today').textContent = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
+const today = new Date();
+const dateISO = new Intl.DateTimeFormat('sv-SE', {timeZone:'America/Sao_Paulo',
+  year:'numeric', month:'2-digit', day:'2-digit'}).format(today);
+document.getElementById('today').textContent = new Intl.DateTimeFormat('pt-BR', {
+  timeZone:'America/Sao_Paulo', weekday:'long', day:'numeric', month:'long', year:'numeric'
+}).format(today);
+const displayUser = hasPcp ? pcpUser : mapaUser;
+document.querySelector('.user-pill strong').textContent = displayUser?.nome || displayUser?.name || 'Usuário';
+document.querySelector('.user-pill small').textContent = hasPcp && hasMapa ?
+  `${pcpUser.nivel_acesso} / ${mapaUser.role}` : (hasPcp ? pcpUser.nivel_acesso : mapaUser?.role);
+document.querySelector('.user-pill .avatar').textContent = (displayUser?.nome || displayUser?.name || 'U').slice(0,1).toUpperCase();
+const exit = document.querySelector('.exit-button');
+exit.disabled = false;
+exit.title = 'Sair';
+exit.addEventListener('click', () => UnificadoAuth.logout());
 renderSidebar();
 renderSectors();
 renderShortcuts();
+
+async function loadSectorData() {
+  const requests = [];
+  if (hasPcp) requests.push(fetch(`/unificado/pcp/api/dashboard?data_inicio=${dateISO}&data_fim=${dateISO}`, {
+    headers: {Authorization: `Bearer ${localStorage.getItem('pcp_token')}`}, cache:'no-store'
+  }).then(async response => { if (!response.ok) throw new Error(`PCP HTTP ${response.status}`); return response.json(); }));
+  else requests.push(Promise.resolve(null));
+  if (hasMapa) requests.push(fetch(`/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1?p_data_inicio=${dateISO}&p_data_fim=${dateISO}&p_scope=ALL`, {
+    credentials:'same-origin', cache:'no-store'
+  }).then(async response => { if (!response.ok) throw new Error(`Mapa HTTP ${response.status}`); return response.json(); }));
+  else requests.push(Promise.resolve(null));
+  const [pcpResult, mapaResult] = await Promise.allSettled(requests);
+  const pcpData = pcpResult.status === 'fulfilled' ? pcpResult.value : null;
+  const mapaData = mapaResult.status === 'fulfilled' ? mapaResult.value : null;
+  for (const card of document.querySelectorAll('.sector-card')) {
+    const sector = Number(card.dataset.sector);
+    const programmed = pcpData?.por_setor?.find(row => Number(row.setor_id) === sector)?.qtd_programada;
+    const produced = mapaData?.by_sector?.[`S${sector}`] ?? (mapaData ? 0 : null);
+    card.querySelector('[data-stat="programado"]').textContent = programmed == null ? '—' :
+      Number(programmed).toLocaleString('pt-BR');
+    card.querySelector('[data-stat="realizado"]').textContent = produced == null ? '—' :
+      Number(produced).toLocaleString('pt-BR');
+    const ratio = Number(programmed) > 0 ? Math.min(100, 100 * Number(produced || 0) / Number(programmed)) : 0;
+    card.querySelector('.progress-track').style.background =
+      `linear-gradient(90deg, #E8762A ${ratio}%, #F1F3F6 ${ratio}%)`;
+    card.querySelector('.progress-track').setAttribute('aria-label',
+      programmed == null || produced == null ? 'Um módulo sem acesso ou sem resposta' :
+      `${Math.round(ratio)}% do programado`);
+  }
+  const note = document.querySelector('.sample-note');
+  note.textContent = `Dados de ${dateISO.split('-').reverse().join('/')}` +
+    (pcpResult.status === 'rejected' || mapaResult.status === 'rejected' ?
+     ' · Uma fonte não respondeu' : '');
+}
+loadSectorData();
