@@ -1,6 +1,6 @@
 # Relatório da unificação no ambiente de testes
 
-Atualizado em 03/10/2026 (fotografia dos dados: 04/10/2026 01:27:09 UTC). **A certificação final ainda não foi alcançada.** Este documento registra o que está publicado e os critérios que ainda faltam, sem autorizar a virada.
+Atualizado em 03/10/2026 (fotografia dos dados: 04/10/2026 02:32:39 UTC). **A certificação final ainda não foi alcançada.** Este documento registra o que está publicado e os critérios que ainda faltam, sem autorizar a virada.
 
 ## Publicado
 
