@@ -1,5 +1,13 @@
 # Comportamentos atuais suspeitos preservados
 
+## Mapa — Salvar do Acompanhamento guarda notas no navegador
+
+**O que acontece:** o botão Salvar do Acompanhamento Concretagem grava os campos de traço e observação no `localStorage` da sessão do navegador. Ele não envia escrita à API nem ao PostgreSQL. A releitura no mesmo navegador restaura as notas; a função depende do armazenamento local desse dispositivo, como no app original.
+
+**Onde:** `mapa-concretagem/app.js`, `readAcmpNotes`, `writeAcmpNotes` e `salvarAcmp`, por volta das linhas 6354–6385.
+
+**Evidência:** `tests/mapa/e2e/acompanhamento_ui_parity.py` percorreu GERENCIA/GESTOR, os modos data/pendentes e os Setores 1/3. Após Salvar e recarregar, os campos reapareceram com os mesmos valores no HTML original e na cópia; zero requisição de escrita foi enviada. Os PDFs de 2–3 páginas deram hashes de texto e pixels iguais.
+
 ## Mapa — formulário de criar usuário atualiza login existente
 
 **O que acontece:** a tela Usuários não tem botão separado de edição. Se a gerência informa no formulário Criar usuário um login já cadastrado, o código faz upsert: muda nome, perfil, setor e senha e volta a marcar primeiro acesso. Excluir apenas inativa o cadastro. O teste preserva esse fluxo, sem acrescentar outra ação à tela.
