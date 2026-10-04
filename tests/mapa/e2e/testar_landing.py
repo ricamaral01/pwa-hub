@@ -50,7 +50,7 @@ def main() -> None:
         assert authorized and authorized.status == 200
         assert "Ambiente de teste. Nada lançado aqui vale como produção." in page.locator("body").inner_text()
         assert snapshot in page.locator("body").inner_text()
-        assert "18 dos 24 fluxos" in page.locator("body").inner_text()
+        assert "19 dos 24 fluxos" in page.locator("body").inner_text()
         print("testar_unauth=401 synthetic_gerencia_login=ok first_access="
               + ("ok" if args.first_access else "not_requested")
               + " testar_auth=200 synthetic_password_displayed=false")

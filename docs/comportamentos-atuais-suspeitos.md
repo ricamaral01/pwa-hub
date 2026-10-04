@@ -1,5 +1,13 @@
 # Comportamentos atuais suspeitos preservados
 
+## Mapa — formulário de criar usuário atualiza login existente
+
+**O que acontece:** a tela Usuários não tem botão separado de edição. Se a gerência informa no formulário Criar usuário um login já cadastrado, o código faz upsert: muda nome, perfil, setor e senha e volta a marcar primeiro acesso. Excluir apenas inativa o cadastro. O teste preserva esse fluxo, sem acrescentar outra ação à tela.
+
+**Onde:** `mapa-concretagem/app.js`, `postToApi("criar_usuario")` e `postToApi("excluir_usuario")` por volta das linhas 1808–1842; botões da tela por volta das linhas 8275–8297 e 8931–8955.
+
+**Evidência:** `tests/mapa/e2e/users_ui_parity.py` executou criação, upsert com o mesmo login e inativação em conta sintética no HTML original e na rota unificada. Requisições normalizadas, campos da linha e texto da tabela coincidiram. O cadastro sintético foi excluído fisicamente após cada variante, com zero resíduo; nenhuma senha foi exibida ou salva na evidência.
+
 ## Mapa — envio de relatório pelo WhatsApp cai no texto sem PDF no navegador de teste
 
 **O que acontece:** ao executar o botão de WhatsApp com o HTML original no navegador automatizado de testes, a geração do PDF pela biblioteca externa falha, o indicador mostra “Erro ao gerar PDF.” e a função abre o texto de fallback. A rota unificada produz o mesmo resultado. Isto foi observado no navegador de teste; não há evidência de que a biblioteca falhe em todos os navegadores do sistema oficial. A impressão pelo botão Imprimir, que usa `window.print`, gerou PDF idêntico nas duas variantes.
