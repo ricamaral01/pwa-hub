@@ -61,6 +61,8 @@ O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080
 
 Atualização da casca desktop: `unificado/mapa/operacao/unificado-bridge.css` e `.js` são carregados após o visual e o aplicativo originais. Início, Relatório Enc. Produção e Histórico foram repaginados em 1366×768 e 1920×1080; as 12 capturas antes/depois estão em `docs/capturas-layout-mapa/`. Os demais modos recebem menu, topbar, cartões e campos da casca; sua revisão visual individual ainda falta. O teste de pixels com o mesmo HTML anterior à casca deu **zero pixels diferentes** em 1024×768, 768×1024 e quiosque no modo Liberação S1. A navegação por quatro perfis, quatro setores e 18 modos continuou 288/288 após a publicação da casca.
 
+Matriz visual adicional: `tests/mapa/e2e/tablet_matrix_parity.py` comparou os 18 modos em 1024×768, 768×1024 e quiosque (54 pares de capturas). **53/54** foram idênticos pixel a pixel na rodada contínua. A diferença única, no Mandril em 1024×768 após atravessar cinco modos de Liberação, ficou restrita à topbar (4.393 pixels); a repetição isolada do Mandril nas três condições deu **3/3 com zero diferença**. O teste não prova ainda que a sequência de 54 capturas seja determinística. As imagens dessa ocorrência e o manifesto de trabalho estão em `.work-mapa-unificado/e2e/tablet-matrix/`. Nenhuma alteração no `app.js` ou no CSS original foi feita.
+
 Em teste separado de exportação, os botões CSV da análise de produtividade baixaram arquivos com os cabeçalhos esperados e 191 registros de concretagem/8 de paradas para 02–03/10/2026. O teste conferiu a contagem com as listas renderizadas pelo próprio aplicativo. A comparação byte a byte com os arquivos do oficial segue pendente.
 
 ## Preparação já feita
