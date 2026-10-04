@@ -13,7 +13,7 @@ from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 
 ROOT = Path(__file__).resolve().parents[3]
 BEFORE = ROOT / ".work-mapa-unificado/operacao/index-before-desktop.html"
-DATE = "2099-02-01"  # no production rows; the sync must remain read-only
+EMPTY_DATE = "2099-02-01"  # no production rows; the sync must remain read-only
 
 
 def digest(value):
@@ -21,7 +21,7 @@ def digest(value):
                                      sort_keys=True).encode()).hexdigest()
 
 
-def run_variant(browser, variant, role, account):
+def run_variant(browser, variant, role, account, date, sectors):
     context = browser.new_context(viewport={"width": 1024, "height": 768},
                                   service_workers="block")
     page = context.new_page()
@@ -47,12 +47,12 @@ def run_variant(browser, variant, role, account):
         page.goto(URL, wait_until="domcontentloaded")
         page.wait_for_function(f"state.authUser?.role === '{role}'")
     output = []
-    for sector in range(1, 5):
+    for sector in sectors:
         page.evaluate("""({sector,date}) => {
           el.libData.value=date;
           el.kioskLibData.value=date;
           setMode('LIBERACAO_S'+sector);
-        }""", {"sector": sector, "date": DATE})
+        }""", {"sector": sector, "date": date})
         page.wait_for_timeout(300)
         reads.clear()
         page.locator("#btnKioskSync").click()
@@ -78,15 +78,21 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--role", choices=("GERENCIA", "GESTOR", "APONTADOR"),
                         default="GERENCIA")
+    parser.add_argument("--date", default=EMPTY_DATE)
+    parser.add_argument("--sectors", type=int, nargs="+", default=[1, 2, 3, 4])
     args = parser.parse_args()
+    if any(sector not in (1, 2, 3, 4) for sector in args.sectors):
+        parser.error("sectors must be 1..4")
     account = credentials()
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True, executable_path=CHROME)
-        original = run_variant(browser, "original", args.role, account)
-        unified = run_variant(browser, "unificado", args.role, account)
+        original = run_variant(browser, "original", args.role, account,
+                               args.date, args.sectors)
+        unified = run_variant(browser, "unificado", args.role, account,
+                              args.date, args.sectors)
         browser.close()
     OUT.mkdir(parents=True, exist_ok=True)
-    path = OUT / f"kiosk-sync-{args.role.lower()}.json"
+    path = OUT / f"kiosk-sync-{args.role.lower()}-{args.date}.json"
     path.write_text(json.dumps({"original": original, "unificado": unified},
                                ensure_ascii=False, indent=2), encoding="utf-8")
     differences = [{"sector": a["sector"],
