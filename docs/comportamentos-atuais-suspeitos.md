@@ -1,5 +1,13 @@
 # Comportamentos atuais suspeitos preservados
 
+## Mapa — reenvio offline reaplica manutenções locais
+
+**O que acontece:** quando a fila offline sincroniza algum item, o código chama `sincronizarManutencaoLocalPendente`. Essa função percorre todas as manutenções guardadas localmente, sem filtrar por uma marca de pendência, e pode reenviar linhas que já existem. O servidor de testes aplica o mesmo upsert do original; os pedidos extras apareceram iguais nas duas interfaces.
+
+**Onde:** `mapa-concretagem/app.js`, `sincronizarManutencaoLocalPendente` por volta das linhas 768–771 e chamada de `syncOfflineData` por volta da linha 10204.
+
+**Evidência:** `tests/mapa/e2e/offline_queue_parity.py` capturou, além do item offline, dois POSTs de `formas_manutencao` para registros locais preexistentes após o reenvio. Os mesmos corpos e a mesma ordem ocorreram com o HTML original e a rota unificada. A fotografia dos bancos de teste será refeita ao concluir as rodadas.
+
 ## Mapa — ocorrências e tratativas de defeitos ficam no navegador
 
 **O que acontece:** Nova Ocorrência e Salvar Tratativa gravam `mapa_tratativa_defeitos_v1` em `localStorage`; não enviam escrita ao servidor. A ocorrência manual aparece no relatório e na impressão do mesmo navegador, com o mesmo comportamento do original. Isso limita o compartilhamento de uma tratativa manual entre dispositivos.

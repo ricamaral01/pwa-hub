@@ -18,6 +18,8 @@ TESTAR = "https://concrefer.concretrack.com.br/unificado/testar/"
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--first-access", action="store_true")
+    parser.add_argument("--role", choices=("GERENCIA", "GESTOR", "MONTADOR", "APONTADOR"),
+                        default="GERENCIA")
     args = parser.parse_args()
     raw = subprocess.check_output(
         ["ssh", "vps-staging", "cat", "/etc/mapa-unificado/auth-probe.env"],
@@ -41,6 +43,10 @@ def main() -> None:
         page.locator('#unificado-login-form button[type="submit"]').click()
         if args.first_access:
             page.locator("#first-access-form").wait_for(state="visible", timeout=15000)
+            page.locator('#first-access-form [name="newPassword"]').fill("abcde")
+            page.locator('#first-access-form [name="confirmPassword"]').fill("abcde")
+            page.locator('#first-access-form button[type="submit"]').click()
+            assert page.locator("#first-access-form").is_visible()
             new_password = secrets.token_urlsafe(12)
             page.locator('#first-access-form [name="newPassword"]').fill(new_password)
             page.locator('#first-access-form [name="confirmPassword"]').fill(new_password)
@@ -50,8 +56,31 @@ def main() -> None:
         assert authorized and authorized.status == 200
         assert "Ambiente de teste. Nada lançado aqui vale como produção." in page.locator("body").inner_text()
         assert snapshot in page.locator("body").inner_text()
-        assert "22 dos 24 fluxos" in page.locator("body").inner_text()
-        print("testar_unauth=401 synthetic_gerencia_login=ok first_access="
+        assert "24 dos 24 fluxos" in page.locator("body").inner_text()
+        if args.first_access:
+            state = page.evaluate("""async () => {
+              const response=await fetch('/unificado/mapa/api/me');
+              if(!response.ok) throw Error('user state '+response.status);
+              return await response.json();
+            }""")
+            assert state["user"]["id"] == account["MAPA_TEST_USER"]
+            assert state["user"]["primeiro_acesso"] is False
+            page.evaluate("""async () => {
+              await fetch('/unificado/mapa/api/logout',{method:'POST'});
+              localStorage.removeItem('pwa_mapa_auth_session_v1');
+            }""")
+            page.goto("https://concrefer.concretrack.com.br/unificado/login.html?next=testar/",
+                      wait_until="domcontentloaded")
+            page.locator('#unificado-login-form [name="username"]').fill(account["MAPA_TEST_USER"])
+            page.locator('#unificado-login-form [name="password"]').fill(new_password)
+            page.locator('#unificado-login-form button[type="submit"]').click()
+            page.wait_for_url(TESTAR, timeout=15000)
+            assert page.locator("body").inner_text().find("24 dos 24 fluxos") >= 0
+            page.goto("https://concrefer.concretrack.com.br/unificado/mapa/operacao/",
+                      wait_until="domcontentloaded")
+            page.wait_for_function("role => state.authUser?.role === role",
+                                   arg=args.role, timeout=15000)
+        print("testar_unauth=401 synthetic_login=ok role=" + args.role + " first_access="
               + ("ok" if args.first_access else "not_requested")
               + " testar_auth=200 synthetic_password_displayed=false")
         context.close()
