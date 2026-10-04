@@ -1,5 +1,13 @@
 # Comportamentos atuais suspeitos preservados
 
+## Mapa — ocorrências e tratativas de defeitos ficam no navegador
+
+**O que acontece:** Nova Ocorrência e Salvar Tratativa gravam `mapa_tratativa_defeitos_v1` em `localStorage`; não enviam escrita ao servidor. A ocorrência manual aparece no relatório e na impressão do mesmo navegador, com o mesmo comportamento do original. Isso limita o compartilhamento de uma tratativa manual entre dispositivos.
+
+**Onde:** `mapa-concretagem/app.js`, `getTratativaDefeitos`, `salvarTratativaDefeitosObj` e os handlers dos modais, por volta das linhas 2784–2807 e 9239–9315.
+
+**Evidência:** `tests/mapa/e2e/defects_treatment_parity.py` criou e concluiu uma ocorrência manual sintética em GERENCIA, GESTOR, MONTADOR e APONTADOR. Original e cópia mostraram os mesmos campos, KPIs, filtros e PDF de duas páginas com hashes iguais de texto e pixels. Não houve escrita HTTP; o dado local desapareceu com o contexto descartável do teste.
+
 ## Mapa — Salvar do Acompanhamento guarda notas no navegador
 
 **O que acontece:** o botão Salvar do Acompanhamento Concretagem grava os campos de traço e observação no `localStorage` da sessão do navegador. Ele não envia escrita à API nem ao PostgreSQL. A releitura no mesmo navegador restaura as notas; a função depende do armazenamento local desse dispositivo, como no app original.
