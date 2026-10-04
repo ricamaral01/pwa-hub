@@ -1,0 +1,26 @@
+{
+  "original": {
+    "paBtnExportarDadosCSV": {
+      "filename": "dados_concretagem_1791134143704.csv",
+      "sha256": "4ac9c7f9d001ed01382049b2cbe37a199b5036974dd47f58161f267187b8c576",
+      "rows": 191
+    },
+    "paBtnExportarCSV": {
+      "filename": "paradas_concretagem_2026-10-04.csv",
+      "sha256": "119d24740048c6388e570606e80d54038c37c9cea4a64ff862d9f3a0cbbef6c5",
+      "rows": 8
+    }
+  },
+  "copia": {
+    "paBtnExportarDadosCSV": {
+      "filename": "dados_concretagem_1791134147778.csv",
+      "sha256": "4ac9c7f9d001ed01382049b2cbe37a199b5036974dd47f58161f267187b8c576",
+      "rows": 191
+    },
+    "paBtnExportarCSV": {
+      "filename": "paradas_concretagem_2026-10-04.csv",
+      "sha256": "119d24740048c6388e570606e80d54038c37c9cea4a64ff862d9f3a0cbbef6c5",
+      "rows": 8
+    }
+  }
+}

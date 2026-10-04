@@ -1,0 +1,82 @@
+{
+  "original": {
+    "created": {
+      "text": "2099-02-01\tSetor 3\tE2E-RR\tA\nFalha na Concretagem / Armação Aparente\t🔴 CRÍTICO\t👤 Osmar / José Carlos\tRefugo / Descarte Imediato (Compromete Durabilidade e Estrutura)\tAguardando direcionamento...\t⏳ PENDENTE\t⚙️ Tratar",
+      "class": "td-tabela-row",
+      "count": "1"
+    },
+    "treated": {
+      "text": "2099-02-01\tSetor 3\tE2E-RR\tA\nFalha na Concretagem / Armação Aparente\t🔴 CRÍTICO\t👤 Osmar / José Carlos\tRefugo / Descarte Imediato (Compromete Durabilidade e Estrutura)\tTratativa sintética concluída\npor Técnico E2E em 04/10/2026, 03:00:00\t✅ CONCLUÍDO\t⚙️ Tratar",
+      "class": "td-tabela-row",
+      "count": "1",
+      "kpis": [
+        "1",
+        "0",
+        "1",
+        "1"
+      ]
+    },
+    "stored": [
+      {
+        "data": "2099-02-01",
+        "setor": "Setor 3",
+        "forma": "E2E-RR",
+        "codigo": "A",
+        "status": "CONCLUIDO",
+        "executado": "Técnico E2E",
+        "acao": "Tratativa sintética concluída",
+        "observacoes": "Ocorrência sintética"
+      }
+    ],
+    "pdf": [
+      {
+        "text": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "pixels": "079323843804af9e7bb1f46ae8941a2241d02a55cde5879c395210497d928bee"
+      },
+      {
+        "text": "10e4fb32f62a09709aa68e712d43b24a68c6947f49af1bb0fbc48624f703c08e",
+        "pixels": "6c379a1660f599d67202e6544b37233dacb0fff211e8db01948626c8d7e8cf88"
+      }
+    ]
+  },
+  "unificado": {
+    "created": {
+      "text": "2099-02-01\tSetor 3\tE2E-RR\tA\nFalha na Concretagem / Armação Aparente\t🔴 CRÍTICO\t👤 Osmar / José Carlos\tRefugo / Descarte Imediato (Compromete Durabilidade e Estrutura)\tAguardando direcionamento...\t⏳ PENDENTE\t⚙️ Tratar",
+      "class": "td-tabela-row",
+      "count": "1"
+    },
+    "treated": {
+      "text": "2099-02-01\tSetor 3\tE2E-RR\tA\nFalha na Concretagem / Armação Aparente\t🔴 CRÍTICO\t👤 Osmar / José Carlos\tRefugo / Descarte Imediato (Compromete Durabilidade e Estrutura)\tTratativa sintética concluída\npor Técnico E2E em 04/10/2026, 03:00:00\t✅ CONCLUÍDO\t⚙️ Tratar",
+      "class": "td-tabela-row",
+      "count": "1",
+      "kpis": [
+        "1",
+        "0",
+        "1",
+        "1"
+      ]
+    },
+    "stored": [
+      {
+        "data": "2099-02-01",
+        "setor": "Setor 3",
+        "forma": "E2E-RR",
+        "codigo": "A",
+        "status": "CONCLUIDO",
+        "executado": "Técnico E2E",
+        "acao": "Tratativa sintética concluída",
+        "observacoes": "Ocorrência sintética"
+      }
+    ],
+    "pdf": [
+      {
+        "text": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "pixels": "f0ddaaeee816e366d77c197bb6c39c4f3d3fc82868d2160301bde4020540e524"
+      },
+      {
+        "text": "10e4fb32f62a09709aa68e712d43b24a68c6947f49af1bb0fbc48624f703c08e",
+        "pixels": "53a5eb9a657b175d2311919e832cf9bc45182f1b98d2f2e2fbe483a2fb9d28e4"
+      }
+    ]
+  }
+}

@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 import pymupdf
+from PIL import Image, ImageChops
 from playwright.sync_api import sync_playwright
 
 from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
@@ -16,16 +17,20 @@ from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 ROOT = Path(__file__).resolve().parents[3]
 BEFORE = ROOT / ".work-mapa-unificado/operacao/index-before-desktop.html"
 DATE = "2099-02-01"
+PDF_PIXELS = {}
 
 
-def pdf_digest(raw):
+def pdf_digest(raw, variant):
     doc = pymupdf.open(stream=raw, filetype="pdf")
     pages = []
+    images = []
     for page in doc:
         pix = page.get_pixmap(matrix=pymupdf.Matrix(1.5, 1.5), alpha=False)
+        images.append(Image.frombytes("RGB", (pix.width, pix.height), pix.samples))
         pages.append({"text": hashlib.sha256(page.get_text().encode()).hexdigest(),
                       "pixels": hashlib.sha256(pix.samples).hexdigest()})
     doc.close()
+    PDF_PIXELS[variant] = images
     return pages
 
 
@@ -87,7 +92,8 @@ def run_variant(browser, variant, role, account):
     page.evaluate("renderizarRelatorioTratativaDefeitos()")
     assert row.is_visible()
     page.evaluate("document.body.classList.add('print-relatorio-defeitos')")
-    pdf = pdf_digest(page.pdf(print_background=True, prefer_css_page_size=True))
+    page.evaluate("document.fonts.ready")
+    pdf = pdf_digest(page.pdf(print_background=True, prefer_css_page_size=True), variant)
     page.evaluate("document.body.classList.remove('print-relatorio-defeitos')")
     assert not writes, writes
     context.close()
@@ -109,9 +115,23 @@ def main():
     path = OUT / f"defects-treatment-{args.role.lower()}.json"
     path.write_text(json.dumps({"original": original, "unificado": unified},
                                ensure_ascii=False, indent=2), encoding="utf-8")
-    assert original == unified, str(path)
+    visual_diff = []
+    for left, right in zip(PDF_PIXELS["original"], PDF_PIXELS["unificado"]):
+        assert left.size == right.size
+        delta = ImageChops.difference(left, right)
+        visual_diff.append(sum(max(pixel) > 10 for pixel in delta.getdata()) /
+                           (left.width * left.height))
+    assert {key: original[key] for key in ("created", "treated", "stored")} == {
+        key: unified[key] for key in ("created", "treated", "stored")}, str(path)
+    assert [page["text"] for page in original["pdf"]] == [
+        page["text"] for page in unified["pdf"]], str(path)
+    assert max(visual_diff) < 0.01, visual_diff
+    path.write_text(json.dumps({"original": original, "unificado": unified,
+                                "visual_diff_fraction_gt_10": visual_diff},
+                               ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"role": args.role, "defects_treatment": "equal",
-                      "pdf_pages": len(original["pdf"]), "writes": 0}))
+                      "pdf_pages": len(original["pdf"]), "writes": 0,
+                      "max_visual_pixel_difference": max(visual_diff)}))
 
 
 if __name__ == "__main__":

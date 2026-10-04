@@ -1,0 +1,18 @@
+{
+  "original": {
+    "filename": "base_montagem_2026-10-01_a_2026-10-01.xlsx",
+    "sheets": {
+      "Resumo": 17,
+      "Base Montagem": 133
+    },
+    "logical_sha256": "15920604ddbf5db1dc8e487babad47ce833f9eb181717195c6568178dfa8bb7e"
+  },
+  "copia": {
+    "filename": "base_montagem_2026-10-01_a_2026-10-01.xlsx",
+    "sheets": {
+      "Resumo": 17,
+      "Base Montagem": 133
+    },
+    "logical_sha256": "15920604ddbf5db1dc8e487babad47ce833f9eb181717195c6568178dfa8bb7e"
+  }
+}
