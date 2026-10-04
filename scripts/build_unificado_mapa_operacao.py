@@ -26,8 +26,9 @@ def main() -> None:
         shutil.copy2(ROOT / "assets" / name, assets / name)
     (assets / "img").mkdir(exist_ok=True)
     shutil.copy2(ROOT / "assets" / "img" / "icon.png", assets / "img" / "icon.png")
-    for name in ("bridge.js", "sw.js"):
+    for name in ("bridge.js", "sw.js", "unificado-bridge.css", "unificado-bridge.js"):
         shutil.copy2(BRIDGE / name, TARGET / name)
+    shutil.copytree(ROOT / "unificado" / "shell" / "fonts", TARGET / "fonts", dirs_exist_ok=True)
     if (SOURCE / "data").is_dir():
         shutil.copytree(SOURCE / "data", TARGET / "data", dirs_exist_ok=True)
     manifest = (TARGET / "manifest.json").read_text(encoding="utf-8")
@@ -52,8 +53,8 @@ def main() -> None:
     html = html.replace('<body data-app-key="mapa-concretagem">',
                         '<body data-app-key="mapa-concretagem"><div id="ambiente-teste" role="status">AMBIENTE DE TESTE — lançamentos aqui não valem como produção</div>', 1)
     html = html.replace('<script src="app.js?v=v5.31"></script>',
-                        '<script src="bridge.js"></script><script src="app.js?v=unificado-operacao-1"></script>', 1)
-    html = html.replace('</head>', '<style>#ambiente-teste{position:sticky;top:0;z-index:100000;background:#ffdc6e;color:#3b2700;padding:11px 16px;text-align:center;font:800 16px/1.3 system-ui,sans-serif;box-shadow:0 2px 8px #0003}</style></head>', 1)
+                        '<script src="bridge.js"></script><script src="app.js?v=unificado-operacao-1"></script><script src="unificado-bridge.js"></script>', 1)
+    html = html.replace('</head>', '<style>#ambiente-teste{position:sticky;top:0;z-index:100000;background:#ffdc6e;color:#3b2700;padding:11px 16px;text-align:center;font:800 16px/1.3 system-ui,sans-serif;box-shadow:0 2px 8px #0003}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)
     (TARGET / "index.html").write_text(html, encoding="utf-8", newline="\n")
     print("source_app_sha256=" + hashlib.sha256((SOURCE / "app.js").read_bytes()).hexdigest())
     print("built=" + str(TARGET))

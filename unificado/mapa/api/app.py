@@ -26,7 +26,7 @@ import psycopg
 from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
-from unified_auth import (check_link_password, link_for, linked_users,
+from unified_auth import (adopt_mapa_password, check_link_password, link_for, linked_users,
                           mapa_user_by_login, mark_existing_shared_password,
                           mirror_mapa_password, mirror_pcp_password,
                           PCP_HASHER, pcp_connect, pcp_user_by_login,
@@ -194,6 +194,10 @@ def unified_login():
             linked_pcp, linked_mapa = linked_users(link)
             if not linked_pcp or not linked_mapa:
                 return jsonify(ok=False, error="Conta temporariamente indisponível."), 503
+            if not link["unified_password_set"] and not link["requires_reset"]:
+                adopt_mapa_password(link["id"], password)
+                link = link_for(mapa_login=link["mapa_login"])
+                linked_pcp, linked_mapa = linked_users(link)
             matches = check_link_password(link, password)
             if not any(matches):
                 raise ValueError("invalid password")

@@ -98,8 +98,8 @@ def linked_users(link: dict) -> tuple[dict | None, dict | None]:
     return pcp, mapa
 
 
-def confirm_link(pcp_id: int, mapa_login: str) -> int:
-    """Called only with a specific pair approved by Ricardo."""
+def confirm_link(pcp_id: int, mapa_login: str, *, mapa_base: bool = False) -> int:
+    """Link one verified pair; mapa_base is reserved for exact login/name matches."""
     with pcp_connect() as conn, conn.cursor() as cur:
         cur.execute("SELECT id FROM public.usuarios WHERE id=%s", (pcp_id,))
         if not cur.fetchone():
@@ -109,9 +109,46 @@ def confirm_link(pcp_id: int, mapa_login: str) -> int:
         if not cur.fetchone():
             raise ValueError("Mapa account does not exist")
         cur.execute("""INSERT INTO unificado_auth.identity_links
-                       (pcp_user_id,mapa_login) VALUES (%s,%s) RETURNING id""",
-                    (pcp_id, mapa_login))
+                       (pcp_user_id,mapa_login,requires_reset) VALUES (%s,%s,%s) RETURNING id""",
+                    (pcp_id, mapa_login, not mapa_base))
         return cur.fetchone()["id"]
+
+
+def adopt_mapa_password(link_id: int, password: str) -> None:
+    """On first linked login, hash the verified Mapa password for PCP without a reset."""
+    with map_connect() as map_conn, map_conn.cursor() as map_cur:
+        map_cur.execute("SELECT * FROM unificado_auth.identity_links WHERE id=%s FOR UPDATE",
+                        (link_id,))
+        link = map_cur.fetchone()
+        if not link or link["unified_password_set"] or link["requires_reset"]:
+            raise ValueError("Identity is not awaiting Mapa adoption")
+        pcp, mapa = linked_users(link)
+        if not pcp or not mapa or not mapa["ativo"] or not verify_map(password, mapa["senha_hash"]):
+            raise ValueError("Mapa credential invalid")
+        pcp_digest = PCP_HASHER.hash(password)
+        with pcp_connect() as pcp_conn, pcp_conn.cursor() as pcp_cur:
+            pcp_cur.execute("""SELECT senha_hash,trocar_senha_primeiro_acesso FROM public.usuarios
+                             WHERE id=%s FOR UPDATE""", (link["pcp_user_id"],))
+            old = pcp_cur.fetchone()
+            if not old:
+                raise ValueError("Linked PCP account missing")
+            pcp_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
+                             trocar_senha_primeiro_acesso=%s WHERE id=%s""",
+                            (pcp_digest, mapa["primeiro_acesso"], link["pcp_user_id"]))
+            map_cur.execute("""UPDATE unificado_auth.identity_links SET pcp_hash=%s,
+                             mapa_hash=%s,unified_password_set=true,requires_reset=false,
+                             updated_at=now() WHERE id=%s""",
+                            (pcp_digest, mapa["senha_hash"], link_id))
+            pcp_conn.commit()
+            try:
+                map_conn.commit()
+            except Exception:
+                with pcp_connect() as undo, undo.cursor() as undo_cur:
+                    undo_cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
+                                      trocar_senha_primeiro_acesso=%s WHERE id=%s""",
+                                     (old["senha_hash"], old["trocar_senha_primeiro_acesso"],
+                                      link["pcp_user_id"]))
+                raise
 
 
 def check_link_password(link: dict, password: str) -> tuple[bool, bool]:

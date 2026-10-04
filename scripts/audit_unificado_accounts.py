@@ -42,6 +42,15 @@ def mapa_rows() -> list[dict]:
         return [dict(row) for row in cursor.fetchall()]
 
 
+def confirmed_links() -> list[dict]:
+    sys.path.insert(0, "/opt/mapa-unificado-api")
+    from app import connect
+    with connect() as conn, conn.cursor() as cursor:
+        cursor.execute("""SELECT pcp_user_id,mapa_login,unified_password_set,requires_reset
+                          FROM unificado_auth.identity_links ORDER BY pcp_user_id""")
+        return [dict(row) for row in cursor.fetchall()]
+
+
 def main() -> None:
     pcp, mapa = pcp_rows(), mapa_rows()
     assert not any(normalized(row["login"]) == "ricardo-operacao-teste" for row in mapa)
@@ -64,6 +73,7 @@ def main() -> None:
     paired_pcp = {item["pcp"]["id"] for item in candidates}
     paired_mapa = {item["mapa"]["login"] for item in candidates}
     report = {
+        "confirmed_links": confirmed_links(),
         "pcp_only": [row for row in pcp if row["id"] not in paired_pcp],
         "mapa_only": [row for row in mapa if row["login"] not in paired_mapa],
         "candidate_pairs": candidates,

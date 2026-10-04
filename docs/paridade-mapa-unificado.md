@@ -57,7 +57,9 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 | 23 | Sincronizar | não executado | Navegação e consulta exercitadas; sincronização final pendente. |
 | 24 | Fila offline e reenvio | não executado | Um item S3 passou: fila local, reenvio conforme fixture `offline-199`, linha gravada e pendência removida; faltam montagem, liberação e inspeção, além dos perfis. Atualização de segundo tablet passou em teste separado. |
 
-O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080 sem rolagem horizontal. Falta comparação de pixels tablet/quiosque com o original e falta a casca desktop nova. A rota operacional continua sendo ambiente de teste.
+O visual foi capturado em 1024×768, 768×1024, quiosque, 1366×768 e 1920×1080 sem rolagem horizontal. A rota operacional continua sendo ambiente de teste.
+
+Atualização da casca desktop: `unificado/mapa/operacao/unificado-bridge.css` e `.js` são carregados após o visual e o aplicativo originais. Início, Relatório Enc. Produção e Histórico foram repaginados em 1366×768 e 1920×1080; as 12 capturas antes/depois estão em `docs/capturas-layout-mapa/`. Os demais modos recebem menu, topbar, cartões e campos da casca; sua revisão visual individual ainda falta. O teste de pixels com o mesmo HTML anterior à casca deu **zero pixels diferentes** em 1024×768, 768×1024 e quiosque no modo Liberação S1. A navegação por quatro perfis, quatro setores e 18 modos continuou 288/288 após a publicação da casca.
 
 Em teste separado de exportação, os botões CSV da análise de produtividade baixaram arquivos com os cabeçalhos esperados e 191 registros de concretagem/8 de paradas para 02–03/10/2026. O teste conferiu a contagem com as listas renderizadas pelo próprio aplicativo. A comparação byte a byte com os arquivos do oficial segue pendente.
 

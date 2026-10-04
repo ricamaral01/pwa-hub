@@ -1,0 +1,20 @@
+[
+  {
+    "viewport": "1024x768",
+    "changed_pixels": 0,
+    "total_pixels": 6117376,
+    "ratio": 0.0
+  },
+  {
+    "viewport": "768x1024",
+    "changed_pixels": 0,
+    "total_pixels": 4788480,
+    "ratio": 0.0
+  },
+  {
+    "viewport": "1024x768-quiosque",
+    "changed_pixels": 0,
+    "total_pixels": 6117376,
+    "ratio": 0.0
+  }
+]

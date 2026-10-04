@@ -5,19 +5,27 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Testar o sistema unificado</title>
   <style>
-    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#14232f;background:#f5f7f9}
-    *{box-sizing:border-box}body{margin:0}main{max-width:960px;margin:auto;padding:32px 20px 56px}
-    h1{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 12px}p{line-height:1.5}
-    .notice{background:#fff4d7;border:2px solid #d18a00;border-radius:10px;padding:14px 18px;font-weight:700}
-    .meta{color:#405363;margin:18px 0 26px}.grid{display:grid;gap:12px}
-    .row{background:#fff;border:1px solid #ccd7df;border-radius:10px;padding:18px;display:grid;grid-template-columns:minmax(170px,1fr) minmax(140px,2fr);gap:10px}
-    .row a{color:#075b8a;font-weight:700}.row span{display:block}.status{font-weight:700}
-    .ready{color:#17633b}.partial{color:#8a5700}.later{color:#5c6670}
-    @media(max-width:650px){.row{grid-template-columns:1fr}}
+    @font-face{font-family:Geist;src:url('/unificado/shell/fonts/Geist-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+    @font-face{font-family:Geist;src:url('/unificado/shell/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+    @font-face{font-family:'Geist Mono';src:url('/unificado/shell/fonts/GeistMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+    :root{font-family:Geist,system-ui,sans-serif;color:#0E1A2F;background:#0B1730}
+    *{box-sizing:border-box}body{margin:0;padding:10px}main{max-width:1040px;min-height:calc(100vh - 20px);margin:auto;padding:34px 40px 56px;background:#F5F6F8;border-radius:20px}
+    .brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;font-weight:600;color:#0B1730}
+    .brand b{display:grid;place-items:center;width:30px;height:30px;background:#E8762A;border-radius:10px}
+    h1{font-size:clamp(1.7rem,4vw,2.3rem);letter-spacing:-.04em;margin:0 0 12px}p{line-height:1.5}
+    .notice{background:#fff4d7;border:1px solid #e8cc8e;border-radius:10px;padding:14px 18px;font-weight:600}
+    .meta{color:#5B677A;margin:18px 0 26px}.meta strong{font-family:'Geist Mono',monospace;color:#0E1A2F}
+    .grid{display:grid;gap:12px}
+    .row{background:#fff;border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05);padding:20px;display:grid;grid-template-columns:minmax(190px,1fr) minmax(180px,2fr);gap:14px}
+    .row a{color:#15416F;font-weight:600;text-decoration:none}.row a:hover{text-decoration:underline}
+    .row span{display:block}.status{font-weight:600;margin-bottom:4px}
+    .ready{color:#16794A}.partial{color:#8a5700}.later{color:#5B677A}
+    @media(max-width:650px){main{padding:24px 18px 40px}.row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 <main>
+  <div class="brand"><b>C</b>Concrefer <span aria-hidden="true">/</span> Ambiente de teste</div>
   <h1>Testar o sistema unificado</h1>
   <p class="notice">Ambiente de teste. Nada lançado aqui vale como produção.</p>
   <p class="meta">Fotografia dos dados: <strong>{{SNAPSHOT_AT}}</strong>. Use sua conta do Mapa de testes para acessar esta página.</p>
@@ -25,7 +33,7 @@
     <div class="row"><a href="/unificado/">Início</a><span><span class="status partial">parcial</span>Login único funciona; menu e indicadores com dados reais ainda faltam.</span></div>
     <div class="row"><a href="/unificado/mapa/operacao/">Mapa em operação</a><span><span class="status partial">parcial</span>Rota aberta no banco de testes; E2E completo dos fluxos ainda falta.</span></div>
     <div class="row"><a href="/unificado/mapa/">Histórico do Mapa</a><span><span class="status ready">pronto para testar</span>Consulta histórica somente leitura.</span></div>
-    <div class="row"><a href="/unificado/mapa/operacao/?tela=LIBERACAO_S1">Prévia do tablet</a><span><span class="status partial">parcial</span>A tela abre; a comparação visual com o original ainda falta.</span></div>
+    <div class="row"><a href="/unificado/mapa/operacao/?tela=LIBERACAO_S1">Prévia do tablet</a><span><span class="status partial">parcial</span>Liberação S1 teve zero pixels diferentes em 1024×768, 768×1024 e quiosque; faltam os demais fluxos.</span></div>
     <div class="row"><span>PCP — 24 telas e impressão</span><span><span class="status later">ainda não</span>O frontend será publicado após concluir E2E e visual do Mapa.</span></div>
   </div>
 </main>

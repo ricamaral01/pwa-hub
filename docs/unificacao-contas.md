@@ -1,10 +1,10 @@
 # Unificação de contas — revisão de identidades
 
-Inventário dos bancos de testes em 03/10/2026 20:28 Hora oficial do Brasil. Nenhuma senha ou hash foi consultado para gerar este documento.
+Inventário dos bancos de testes em 03/10/2026 21:31 Hora oficial do Brasil. Nenhuma senha ou hash foi consultado para gerar este documento.
 
-**Nenhum par está confirmado.** Mesmo nome ou login é só indício; as contas permanecem separadas até confirmação individual do Ricardo.
+**Pares confirmados: 1.** Somente o par com login e nome iguais foi vinculado automaticamente. Os demais permanecem separados até confirmação individual do Ricardo.
 
-PCP: 15 contas; Mapa: 38 contas. Só PCP: 6; só Mapa: 30; pares candidatos: 10; logins iguais com nomes diferentes: 1.
+PCP: 15 contas; Mapa: 38 contas. Só PCP: 6; só Mapa: 30; pares candidatos pendentes: 9; logins iguais com nomes diferentes: 1.
 
 ## Contas só do PCP (sem par candidato)
 
@@ -58,7 +58,7 @@ PCP: 15 contas; Mapa: 38 contas. Só PCP: 6; só Mapa: 30; pares candidatos: 10;
 |---:|---|---|---|---|
 | 1 | `Alex`<br>Alex<br>ADMIN<br>ativa, primeiro acesso | `user-alex`<br>Alex<br>GERENCIA<br>ativa, acesso normal | same full name | pendente |
 | 2 | `Alex51`<br>Alex<br>ADMIN<br>ativa, acesso normal | `user-alex`<br>Alex<br>GERENCIA<br>ativa, acesso normal | same full name | pendente |
-| 3 | `Marcelo`<br>Marcelo<br>ADMIN<br>ativa, acesso normal | `marcelo`<br>Marcelo<br>GERENCIA<br>ativa, acesso normal | same full name and login | pendente |
+| 3 | `Marcelo`<br>Marcelo<br>ADMIN<br>ativa, acesso normal | `marcelo`<br>Marcelo<br>GERENCIA<br>ativa, acesso normal | same full name and login | confirmado automaticamente; Mapa é a base |
 | 4 | `Marcos`<br>Marcos<br>ADMIN<br>ativa, acesso normal | `user-marcos`<br>Marcos<br>GESTOR<br>inativa, primeiro acesso | same full name | pendente |
 | 5 | `Philippe`<br>Philippe Augusto<br>ADMIN<br>ativa, acesso normal | `philippe`<br>Philippe<br>GERENCIA<br>ativa, acesso normal | PCP login matches Mapa display name | pendente |
 | 6 | `Ricardo`<br>Ricardo Do Amaral<br>ADMIN<br>ativa, acesso normal | `user-ricardo`<br>Ricardo<br>GERENCIA<br>ativa, acesso normal | PCP login matches Mapa display name | pendente |
@@ -80,17 +80,17 @@ O login literal `Ricardo` existe no PCP de testes com perfil ADMIN, ativo e fora
 ## Regras até confirmação
 
 - Cada conta mantém seu próprio login, senha, perfil e situação.
-- Não unir automaticamente nomes ou logins parecidos.
+- Vincular automaticamente somente login e nome iguais, únicos dos dois lados; nos demais, não unir sem confirmação.
 - Após confirmação, registrar a identidade no serviço de autenticação de testes e preservar os perfis específicos de cada módulo.
 
 ## Implementação no ambiente de testes
 
 A tela de login existente envia a credencial ao serviço do unificado. Contas só do PCP recebem sessão PCP; contas só do Mapa recebem sessão Mapa; o logout encerra as duas. A página `/unificado/testar/` exige uma dessas sessões. Primeiro acesso de cada sistema usa o mesmo formulário visual, com senha nova de no mínimo seis caracteres; senhas antigas mais curtas continuam aceitas até a troca.
 
-`unificado_auth.identity_links` no PostgreSQL Mapa de testes guarda somente pares confirmados e hashes, sem texto de senha. A tabela está vazia para pessoas reais. `unificado/mapa/api/unified_auth.py` valida senhas atuais dos dois lados: se ambas forem iguais, registra os hashes atuais sem forçar troca; se forem diferentes, aceita qualquer uma e exige definição da senha única antes de abrir sessões. A nova senha gera bcrypt para o PCP e Argon2id para o Mapa. `scripts/refresh_unificado_snapshots.py` chama `scripts/reapply_unified_auth.py` depois de restaurar as fotografias.
+`unificado_auth.identity_links` no PostgreSQL Mapa de testes guarda somente pares confirmados e hashes, sem texto de senha. O par exato Marcelo foi vinculado; no primeiro login válido com a credencial do Mapa, o serviço gravará o hash compatível no PCP e abrirá ambos os módulos sem troca forçada. Os demais pares seguem pendentes. A nova senha gera bcrypt para o PCP e Argon2id para o Mapa. `scripts/refresh_unificado_snapshots.py` chama `scripts/reapply_unified_auth.py` depois de restaurar as fotografias.
 
 O teste sintético de ambos os bancos passou para: só-PCP, só-Mapa, par com senhas iguais, par com senhas diferentes, mesma grafia de login sem vínculo, senha incorreta, troca dos dois hashes, mínimo de seis, inativação de um lado e reaplicação após simular uma fotografia. O login e primeiro acesso também passaram no navegador para contas temporárias dos dois módulos; todas foram removidas.
 
 As duas rotas públicas de Usuários passam pelo serviço unificado. O fluxo PCP é encaminhado ao backend PCP original e, se o cadastro estiver vinculado, a nova senha é refletida no Mapa; o fluxo Mapa já é atendido pelo serviço e reflete a alteração no PCP. Um par sintético confirmou as duas direções pela URL pública. O backend PCP original permanece idêntico (47 arquivos). A tela de login, primeiro acesso e logout foram testados em navegador com contas removidas ao final.
 
-**Limite antes de ativar pares reais:** as telas completas de administração de usuários ainda não tiveram comparação visual e de permissões por perfil. Nenhum par real foi confirmado ou unido. Os hashes são reaplicados após a fotografia; a rotina passou no teste sintético de restauração de hashes e flags, mas ainda não houve uma fotografia integral com par real confirmado.
+**Limite:** as telas completas de administração de usuários ainda não tiveram comparação visual e de permissões por perfil. O par exato está confirmado, mas sua senha Mapa somente será adotada no primeiro login válido. Os hashes são reaplicados após a fotografia; a rotina passou no teste sintético de restauração de hashes e flags, mas ainda não houve uma fotografia integral após esse primeiro login.
