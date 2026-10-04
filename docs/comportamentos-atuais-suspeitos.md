@@ -87,3 +87,11 @@
 **Onde:** `unificado/pcp/backend/app/repositories/google_sheets_repository.py`, `_spreadsheet_id_para_periodo`: só setembro seleciona uma ID própria; os demais meses usam `settings.SPREADSHEET_ID`, configurado para agosto. O endpoint é `POST /api/pcp/alocacao-formas/importar` em `app/api/routers/alocacao_formas.py`.
 
 **Evidência:** `scripts/verify_pcp_backend_identity.py` confirmou os 47 arquivos idênticos ao oficial antes do teste; `scripts/test_pcp_backend_writes.py` chamou apenas a API de testes com conta sintética, imprimiu o resultado acima e `cleanup_deltas={}`. Os escopos da credencial Google são somente leitura. Ricardo decidiu preservar a regra em 03/10/2026. Nenhum arquivo do backend ou configuração temporária de outubro foi alterado.
+
+## PCP — excluir mão de obra com rateio retorna erro
+
+**O que acontece:** depois de criar um registro de Mão de Obra Indireta com rateio por dois setores, `DELETE /api/maodeobra/{id}` retorna HTTP 500 e deixa o registro no banco. A criação e a leitura funcionam. A interface de rateio não oferece botão de exclusão, mas a rota de exclusão é usada para outros registros de mão de obra.
+
+**Onde:** `unificado/pcp/backend/app/models/producao.py`, relacionamento `MaoDeObra.rateios` sem exclusão em cascata; `app/api/routers/pcp.py`, exclusão do pai sem remover os itens de `maodeobra_rateio`. Os 47 arquivos do backend permanecem idênticos aos do oficial.
+
+**Evidência:** teste isolado de 04/10/2026 no PostgreSQL PCP de testes criou um registro com dois itens; a chamada DELETE respondeu HTTP 500. `tests/pcp/rateio_ui_write.py` confirmou as criações e leituras da tela nos grupos 1/2 e 3/4, com ADMIN e PRODUCAO. `scripts/cleanup_pcp_rateio_probe.py` removeu os itens e o pai diretamente do banco de testes após cada rodada; nenhuma linha sintética restou. O backend original não foi alterado.
