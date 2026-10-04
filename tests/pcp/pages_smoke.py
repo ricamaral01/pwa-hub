@@ -29,6 +29,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--role", default="ADMIN")
     parser.add_argument("--only", choices=PAGES)
+    parser.add_argument("--width", type=int, default=1366)
+    parser.add_argument("--height", type=int, default=768)
+    parser.add_argument("--screenshots", action="store_true")
     args = parser.parse_args()
     raw = subprocess.check_output(
         ["ssh", "vps-staging", "cat", "/etc/mapa-unificado/pcp-auth-probe.env"],
@@ -42,7 +45,7 @@ def main() -> None:
     api_responses = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
-        context = browser.new_context(viewport={"width": 1366, "height": 768},
+        context = browser.new_context(viewport={"width": args.width, "height": args.height},
                                       service_workers="block")
         def restrict(route):
             request = route.request
@@ -78,8 +81,14 @@ def main() -> None:
             result = {"page": name, "http": response.status if response else None,
                       "location": urlsplit(page.url).path,
                       "shell": page.locator(".unificado-pcp-brand").count() > 0,
+                      "visible_shell": page.locator(".unificado-pcp-brand").is_visible()
+                      if page.locator(".unificado-pcp-brand").count() else False,
+                      "outer_horizontal_scroll": page.evaluate("() => document.documentElement.scrollWidth > innerWidth + 1"),
                       "errors": current_errors[:3]}
             results.append(result)
+            if args.screenshots:
+                page.screenshot(path=str(OUT / f"{name}-{args.width}x{args.height}.png"),
+                                full_page=False, animations="disabled")
             if name == "dashboard":
                 page.screenshot(path=str(OUT / "dashboard-1366x768.png"), full_page=True)
             if name == "formas-por-setor":
@@ -90,11 +99,15 @@ def main() -> None:
               "api_responses": api_responses,
               "unexpected_writes": writes}
     suffix = "-" + args.only if args.only else ""
-    (OUT / f"pages-{args.role.lower()}{suffix}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2),
+    (OUT / f"pages-{args.role.lower()}{suffix}-{args.width}x{args.height}.json").write_text(json.dumps(report, ensure_ascii=False, indent=2),
                                            encoding="utf-8")
     summary = {"role": args.role, "pages": len(results),
+               "viewport": f"{args.width}x{args.height}",
                "http_200": sum(item["http"] == 200 for item in results),
                "shell": sum(item["shell"] for item in results),
+               "visible_shell": sum(item["visible_shell"] for item in results),
+               "outer_horizontal_scroll": [item["page"] for item in results
+                                          if item["outer_horizontal_scroll"]],
                "redirected": [item["page"] for item in results
                               if item["location"] != "/unificado/pcp/" + item["page"] + "/"],
                "page_errors": sum(len(item["errors"]) for item in results),
