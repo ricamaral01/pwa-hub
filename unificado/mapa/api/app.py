@@ -90,11 +90,11 @@ def session_response(row):
     })
     response.set_cookie(
         COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
-        secure=True, samesite="Strict", path="/unificado/mapa/api",
+        secure=True, samesite="Lax", path="/unificado/mapa/api",
     )
     response.set_cookie(
         TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
-        secure=True, samesite="Strict", path="/unificado/testar/",
+        secure=True, samesite="Lax", path="/unificado/testar/",
     )
     return response
 
@@ -173,16 +173,16 @@ def unified_login_response(pcp, mapa, password):
         token = signer().dumps({"scope": "session", "id": mapa["id"],
                                 "updated_at": mapa["updated_at"].isoformat()})
         response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS,
-                            httponly=True, secure=True, samesite="Strict",
+                            httponly=True, secure=True, samesite="Lax",
                             path="/unificado/mapa/api")
         response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
-                            httponly=True, secure=True, samesite="Strict",
+                            httponly=True, secure=True, samesite="Lax",
                             path="/unificado/testar/")
     elif pcp and pcp["ativo"]:
         response.delete_cookie(COOKIE_NAME, path="/unificado/mapa/api")
         token = signer().dumps({"scope": "pcp_test_session", "id": pcp["id"]})
         response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
-                            httponly=True, secure=True, samesite="Strict",
+                            httponly=True, secure=True, samesite="Lax",
                             path="/unificado/testar/")
     return response
 
@@ -570,9 +570,9 @@ def rest_legacy_login():
         "id": row["id"], "updated_at": row["updated_at"].isoformat(),
     })
     response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
-                        secure=True, samesite="Strict", path="/unificado/mapa/api")
+                        secure=True, samesite="Lax", path="/unificado/mapa/api")
     response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
-                        httponly=True, secure=True, samesite="Strict",
+                        httponly=True, secure=True, samesite="Lax",
                         path="/unificado/testar/")
     return response
 
@@ -709,10 +709,10 @@ def rest_users_write(user):
                     "updated_at": rows[0]["updated_at"].isoformat(),
                 })
                 response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS,
-                                    httponly=True, secure=True, samesite="Strict",
+                                    httponly=True, secure=True, samesite="Lax",
                                     path="/unificado/mapa/api")
                 response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
-                                    httponly=True, secure=True, samesite="Strict",
+                                    httponly=True, secure=True, samesite="Lax",
                                     path="/unificado/testar/")
             return response
     except psycopg.Error:

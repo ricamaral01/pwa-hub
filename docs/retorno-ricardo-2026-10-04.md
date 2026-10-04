@@ -26,3 +26,56 @@ Menu desktop: 228 px expandido, 64 px recolhido, preferência `localStorage` com
 Uma segunda rodada navegou Produção → Planejamento → Produção em ambas as resoluções, sem rota intermediária, e confirmou que o menu permaneceu recolhido após cada troca. A medição dessa rodada, já com o redirecionamento HTTP na rota raiz, variou: 1.049/1.384 ms em 1366×768 e 734/1.141 ms em 1920×1080 (raiz redirecionada/rota direta). Isso reforça que tempos isolados não medem ganho de desempenho com precisão; a mudança comprovada é a eliminação da página intermediária e do clique extra.
 
 Capturas em `docs/capturas-retorno-ricardo/`: Produção e Planejamento expandidos e recolhidos em 1366×768 e 1920×1080, mais o painel de grupo recolhido do Planejamento nas duas larguras e o login em 1366×768. A página `/unificado/testar/` foi aberta com a conta sintética e mostrou a atualização; as partes ainda não certificadas continuam marcadas como parciais. As contas sintéticas de prova foram removidas dos dois bancos após as capturas.
+
+## Retorno no tablet e revisão do Mapa — versão 0.5.11
+
+O retorno repetido ao login foi reproduzido no Chrome Android ao navegar para a
+página de testes a partir de uma origem externa. Com o cookie `SameSite=Strict`,
+a sequência terminava em `GET /unificado/testar/ 401`, mesmo depois de
+`POST /unificado/mapa/api/unified/login 200`. Os cookies de sessão do Mapa e da
+página de testes passaram para `SameSite=Lax`, mantendo `HttpOnly` e `Secure`.
+O service worker usa rede primeiro nas navegações, não armazena respostas de
+login e tem `start_url` e `scope` dentro de `/unificado/mapa/operacao/`.
+
+Depois da correção, Chrome Android e Safari iPad tiveram a mesma sequência:
+login 200, página de testes 200, entrada externa/QR 200 e abertura pelo início
+do PWA com operação 200 e `/me` 200. Não houve nova requisição à tela de login.
+Um perfil que já tinha o cache anterior atualizou para o cache
+`concrefer-unificado-mapa-operacao-v0.5.11`, descartando a versão anterior.
+
+A revisão desktop foi feita no endereço publicado em 1366×768 e 1920×1080. A
+captura automatizada percorreu as 18 telas operacionais abaixo, além do Início,
+e confirmou a casca nova, a ausência da barra/topo antigos e largura sem
+estouro. Os modos de setor que ativam quiosque continuam intencionalmente com o
+visual original.
+
+| Tela do Mapa | Situação em desktop |
+|---|---|
+| Início | Layout novo: casca, cartões de setor, atalhos e indicadores |
+| Produção / Liberação | Layout novo: casca, painel, campos e botão principal |
+| Produção Setor 1 | Visual original quando em quiosque; regra preservada |
+| Produção Setor 2 | Visual original quando em quiosque; regra preservada |
+| Produção Setor 3 | Visual original quando em quiosque; regra preservada |
+| Produção Setor 4 | Visual original quando em quiosque; regra preservada |
+| Mandril Circular | Layout novo: casca, filtros, tabela e ações |
+| Inspeção Setor 3 e 4 | Layout novo: casca, filtros, tabela, checklist e diálogo de segunda inspeção |
+| Montagem Postes | Layout novo: casca, filtros, indicadores, tabela e checklist |
+| Sequência Setor 3 | Layout novo: casca, campos, cartões e mensagens |
+| Relatório Enc. Produção | Layout novo: parâmetros horizontais, setor segmentado e folha de prévia |
+| Histórico | Layout novo: filtros no título, cartões e agrupamento por dia |
+| Acompanhamento Concretagem | Layout novo: casca, filtros, ações e área de resultado |
+| Tratativa de Defeitos | Layout novo: casca, indicadores, tabela longa, modal e impressão |
+| Dashboard Montagem | Layout novo: casca, filtros, cartões, gráficos, gaveta e estados vazios |
+| Dashboard Defeitos | Layout novo: casca, filtros, cartões, gráficos, gaveta e apresentação |
+| Produtividade | Layout novo: casca, filtros, cartões, gráficos, tabelas e gaveta |
+| Usuários | Layout novo: casca, campos, tabela, mensagens e modal |
+| Relatório Manutenção | Layout novo: casca, filtros, tabela longa, estados vazios e impressão |
+
+O futuro visual do Início e do menu em tablet ficou preparado e desligado pela
+única chave `ENABLE_TABLET_HUB_SHELL=false` em
+`unificado/mapa/operacao/unificado-bridge.js`. A matriz de 54 capturas mostrou
+as telas operacionais iguais ao original fora do texto obrigatório de versão na
+faixa de teste; a chave não altera tablet, celular nem quiosque enquanto estiver
+desligada. As capturas do Início 0.5.11 estão em
+`docs/capturas-retorno-ricardo-v0511/`; a folha de contato das 18 telas desktop
+está em `docs/capturas-retorno-ricardo-v0511-desktop-contact.png`.

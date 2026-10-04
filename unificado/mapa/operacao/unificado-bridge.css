@@ -87,6 +87,12 @@
 @media screen and (max-width:1024px){
  #unificado-version{display:none!important}
  #ambiente-teste::after{content:" TESTE " attr(data-version);font:700 11px monospace;white-space:nowrap;margin-left:8px}
+ /* Preparado para ENABLE_TABLET_HUB_SHELL; a classe não é aplicada enquanto a chave estiver false. */
+ body.unificado-tablet-hub{background:#0B1730;font-family:Geist,system-ui,sans-serif}
+ body.unificado-tablet-hub #appSidebar,body.unificado-tablet-hub .app-main>.topbar{display:none!important}
+ body.unificado-tablet-hub .unificado-sidebar{display:flex;position:relative;width:100%;height:auto;padding:12px;background:#0B1730;color:#fff}
+ body.unificado-tablet-hub .unificado-topbar{display:flex;background:#fff;border-radius:16px 16px 0 0}
+ body.unificado-tablet-hub #viewHub .hub-group-section,body.unificado-tablet-hub #viewHub .hub-icon-btn{border-radius:16px;background:#fff}
 }
 @media screen and (min-width:1025px){
  body.unificado-desktop .unificado-brand-logos,body.unificado-desktop .unificado-pcp-brand-logos{display:flex;align-items:center;gap:7px;min-width:0}
@@ -118,3 +124,12 @@
  body.unificado-desktop #tdBtnNovaOcorrencia{background:#E8762A!important;border-color:#E8762A!important;color:#0B1730!important;border-radius:10px}
  body.unificado-desktop #tdBtnImprimirPDF{background:#fff!important;border:1px solid #E9ECF1!important;color:#0B1730!important;border-radius:10px}
 }
+/* Correção intencional 2: escolha explícita para poste reprovado. */
+#unificado-second-choice{position:fixed;inset:0;z-index:1000002;display:grid;place-items:center;padding:20px;background:rgba(11,23,48,.72)}
+.unificado-second-choice-card{width:min(440px,100%);padding:24px;background:#fff;color:#0B1730;border-radius:16px;box-shadow:0 22px 70px rgba(0,0,0,.32)}
+.unificado-second-choice-card h2{margin:0 0 8px;font:700 24px/1.2 Geist,system-ui,sans-serif}
+.unificado-second-choice-card p{margin:0 0 20px}
+.unificado-second-choice-actions{display:grid;gap:10px}
+.unificado-second-choice-actions button{min-height:48px;border:0;border-radius:10px;padding:11px 14px;background:#E8762A;color:#0B1730;font:700 15px/1.2 Geist,system-ui,sans-serif;cursor:pointer}
+.unificado-second-choice-actions button.secondary{background:#F1F3F6}
+.vc-second-inspection-actions{display:none!important}

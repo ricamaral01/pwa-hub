@@ -37,3 +37,28 @@ O teste anterior comparava os dois lados carregando o `app.js` da cópia
 publicada. Por isso reproduziu a mesma contagem nos dois lados e não detectou
 o desvio. `tests/mapa/e2e/dashboard_defects_source_parity.py` agora entrega o
 arquivo original para o lado oficial e exige a contagem por inspeção na cópia.
+
+## Segunda inspeção de poste reprovado (04/10/2026)
+
+No Mapa original, tocar em um poste reprovado abre diretamente o relatório. Os
+comandos antigos de resultado da segunda inspeção ficam no fim desse relatório,
+abaixo da primeira área visível, e gravam o resultado sem repetir o checklist.
+Isso foi reproduzido com a mesma conta de gerência, o mesmo registro `SC31` de
+29/06/2026 e a mesma fotografia tanto no HTML original quanto no unificado.
+
+Na cópia unificada, o toque passa a mostrar duas escolhas explícitas:
+`Segunda inspeção (retrabalho)` e `Ver relatório`. A segunda inspeção abre o
+checklist já existente, preserva a primeira inspeção em
+`HISTORICO_REPROVACAO`, exige novamente as respostas e fotos aplicáveis e grava
+na mesma linha de `montagem_poste`. Nenhuma tabela, coluna ou enumeração foi
+criada. O resultado aprovado usa o status existente `RR` e aparece como
+`Retrabalhado e aprovado`; o resultado reprovado continua usando `R`, com o
+marcador já existente `__segunda_inspecao.resultado=SEGREGADO`, e aparece como
+`Perda do poste`.
+
+O patch isolado está em
+`scripts/patch_mapa_second_inspection_unificado.py` e é aplicado somente pelo
+build da cópia. O `app.js` original permanece intacto. O teste anterior dos
+fluxos 11 e 12 chamou `abrirVisualizacaoChecklist` diretamente e acionou os
+botões no fim do relatório; por isso validou banco e resultado final, mas não
+exercitou o toque real na linha nem a posição visível dos comandos.

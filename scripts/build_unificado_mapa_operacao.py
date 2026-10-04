@@ -10,6 +10,7 @@ import shutil
 from patch_mapa_defects_unificado import OLD as ORIGINAL_DEFECT_FUNCTION
 from patch_mapa_defects_unificado import NEW as PATCHED_DEFECT_FUNCTION
 from patch_mapa_defects_unificado import apply as patch_defects
+from patch_mapa_second_inspection_unificado import apply as patch_second_inspection
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +58,7 @@ def main() -> None:
     assert output_app.replace(replacement, matches[0], 1).replace(
         PATCHED_DEFECT_FUNCTION, ORIGINAL_DEFECT_FUNCTION, 1
     ).replace(f'"./sw.js?v={version}"', '"./sw.js?v=v5.31"', 1) == source_app
+    output_app = patch_second_inspection(output_app)
     (TARGET / "app.js").write_text(output_app, encoding="utf-8", newline="\n")
 
     html = (SOURCE / "index.html").read_text(encoding="utf-8")

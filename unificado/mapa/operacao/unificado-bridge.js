@@ -1,5 +1,8 @@
 /* Desktop presentation only. Original Mapa handlers remain responsible for every action. */
 (() => {
+  // Única chave para a futura casca de Início/menu em tablet. Deve permanecer false
+  // até a autorização do Ricardo; as telas operacionais em tablet nunca recebem a classe.
+  const ENABLE_TABLET_HUB_SHELL = false;
   const groups = [
     ["Produção", [["PL","Produção / Liberação","LIBERACAO"],["P1","Setor 1","LIBERACAO_S1"],
       ["P2","Setor 2","LIBERACAO_S2"],["P3","Setor 3","LIBERACAO_S3"],
@@ -169,6 +172,11 @@
     document.querySelectorAll(".unificado-segment").forEach(button =>
       button.classList.toggle("is-active", button.dataset.value === select?.value));
     document.body.classList.toggle("unificado-desktop", desktop());
+    const tabletHub = ENABLE_TABLET_HUB_SHELL
+      && matchMedia("(max-width: 1024px)").matches
+      && !document.body.classList.contains("kiosk-active")
+      && mode === "HUB";
+    document.body.classList.toggle("unificado-tablet-hub", tabletHub);
     placeHistoryFilters();
   }
   document.addEventListener("DOMContentLoaded", () => {
