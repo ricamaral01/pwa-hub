@@ -96,6 +96,14 @@
 
 **Evidência:** `tests/pcp/google_sync_ui.py` acionou os dois botões pela interface publicada com conta sintética PCP, confirmou o parâmetro `substituir=true`, o resultado e as linhas inalteradas no PostgreSQL PCP de testes. A data foi escolhida após confirmar zero registros no período; não houve risco de remover dados existentes. A conta sintética foi removida.
 
+## PCP — importação Mega sem setor não é removida por “Limpar programação”
+
+**O que acontece:** a tela Programação Setor 1 e 2 importa um CSV Mega válido e grava a linha em `programacao_alex` com `setor_id=NULL`. A tabela “Base Mega Setor 1 e 2”, onde a linha tem botão Excluir, está oculta por `d-none`. O botão visível “Limpar programação” envia `setor_ids=[1,2]`; o backend filtra por esses setores e responde `removidos=0`, deixando a linha importada. O quadro de formas, porém, mostra os dados importados. O botão e a regra foram preservados.
+
+**Onde:** `unificado/pcp/programacao-alex/index.html`, painel `.section-card.d-none`, `importarMegaAlex` e `limparProgramacaoAlex`; `unificado/pcp/backend/app/api/routers/pcp.py`, `importar_programacao_alex_mega` sem `setor_id` no formulário e `limpar_programacao_alex` com filtro de setores. Os 47 arquivos do backend continuam idênticos ao oficial.
+
+**Evidência:** `tests/pcp/alex_mega_import_ui.py` enviou um CSV sintético de uma linha por `input[type=file]` no ambiente de testes, conferiu os campos gravados e a linha no quadro, clicou “Limpar programação” e recebeu HTTP 200 com `removidos=0`. A linha sintética foi excluída pela API de testes no bloco de limpeza, restando zero registros nessa data. Nenhum arquivo real do Mega ou planilha oficial foi modificado.
+
 ## PCP — excluir mão de obra com rateio retorna erro
 
 **O que acontece:** depois de criar um registro de Mão de Obra Indireta com rateio por dois setores, `DELETE /api/maodeobra/{id}` retorna HTTP 500 e deixa o registro no banco. A criação e a leitura funcionam. A interface de rateio não oferece botão de exclusão, mas a rota de exclusão é usada para outros registros de mão de obra.
