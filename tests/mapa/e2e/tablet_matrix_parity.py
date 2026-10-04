@@ -16,14 +16,15 @@ from operacao_smoke import CHROME, OUT, URL, credentials, login_operacao
 ROOT = Path(__file__).resolve().parents[3]
 BEFORE = ROOT / ".work-mapa-unificado" / "operacao" / "index-before-desktop.html"
 FIXTURE = ROOT / "tests" / "mapa" / "fixtures" / "role-sector-navigation.json"
-DEST = OUT / "tablet-matrix"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--limit', type=int, default=0)
     parser.add_argument('--mode', default='')
+    parser.add_argument('--mobile', action='store_true')
     args = parser.parse_args()
+    dest = OUT / ('mobile-matrix' if args.mobile else 'tablet-matrix')
     source = BEFORE.read_text(encoding="utf-8")
     modes = list(dict.fromkeys(item["mode"] for item in
                                json.loads(FIXTURE.read_text(encoding="utf-8"))["cases"]))
@@ -34,11 +35,13 @@ def main() -> None:
         if not modes:
             raise ValueError('Unknown mode')
     account = credentials()
-    DEST.mkdir(parents=True, exist_ok=True)
+    dest.mkdir(parents=True, exist_ok=True)
     rows = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True, executable_path=CHROME)
-        for width, height, kiosk in ((1024, 768, False), (768, 1024, False), (1024, 768, True)):
+        viewports = ((390, 844, False),) if args.mobile else (
+            (1024, 768, False), (768, 1024, False), (1024, 768, True))
+        for width, height, kiosk in viewports:
             context = browser.new_context(viewport={"width": width, "height": height},
                                           service_workers="block")
             pages = {}
@@ -85,11 +88,11 @@ def main() -> None:
                 rows.append(row)
                 if changed:
                     label = row["viewport"] + "-" + mode.lower()
-                    (DEST / (label + "-antes.png")).write_bytes(before)
-                    (DEST / (label + "-depois.png")).write_bytes(after)
+                    (dest / (label + "-antes.png")).write_bytes(before)
+                    (dest / (label + "-depois.png")).write_bytes(after)
             context.close()
         browser.close()
-    (DEST / "manifest.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    (dest / "manifest.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"cases": len(rows), "equal": sum(row["changed_pixels"] == 0 for row in rows),
                       "different": [row for row in rows if row["changed_pixels"] != 0]}, ensure_ascii=False))
 
