@@ -20,6 +20,8 @@ Uma nova conferência com `systemctl show` confirmou os quatro serviços de apli
 
 As 48 capturas das 24 rotas PCP em 1366×768 e 1920×1080 foram reunidas em duas folhas de contato locais e revisadas visualmente. A casca nova aparece em todas, sem corte evidente do painel principal. A inspeção de cada estado e interação, incluindo rolagem interna e modais, permanece pendente; as folhas de contato são artefatos locais de teste, não arquivos publicados.
 
+A matriz desktop do Mapa foi repetida nos 18 modos em 1366×768 e 1920×1080: 72 capturas antes/depois, 28 casos com a casca nova e oito quiosques preservados, sem rolagem horizontal em nenhum caso. As folhas de contato das duas larguras foram revisadas visualmente. A conta sintética de gerência usada para capturar foi removida do PostgreSQL de testes e seu arquivo privado de prova deixou de existir.
+
 Após a fotografia de 09:44:18 UTC, o PCP de testes manteve **19 tabelas e 25.198 linhas**, com contagens iguais à origem. A paginação da produção do Mapa voltou a entregar **1.056 linhas e 1.056 IDs únicos**, sem falta nem repetição e com o mesmo hash canônico da origem: `89a5bb6388d9279a34fc366a979c3b79ca3a0255a30a14073888c92b0c58b913`. `scripts/verificar_unificado.sh` passou na VPS de testes: 14 verificações de HTTP/autorização e 54 arquivos publicados sem chamada de dados a Supabase ou domínios oficiais. Os quatro serviços do unificado estavam ativos com usuários `www-data` ou `pcp-unificado`; o teste de restauração dos dois bancos passou antes da nova fotografia. A página `/unificado/testar/` negou acesso sem sessão e exibiu o novo carimbo para contas sintéticas só-PCP e só-Mapa. Ambas foram removidas ao fim da prova.
 
 ## Definição de pronto
