@@ -1,5 +1,13 @@
 # Comportamentos atuais suspeitos preservados
 
+## Mapa — indicador ainda menciona Supabase na cópia
+
+**O que acontece:** a topbar mostra “Conectado ao Supabase: sincronização online ativa.” mesmo na operação de testes, cuja conexão de dados passa pelo proxy local e pelo PostgreSQL de testes. É um texto fixado pelo aplicativo original e foi preservado conforme a regra de não alterar textos e `app.js`.
+
+**Onde:** `mapa-concretagem/app.js`, chamada de `setSyncStatus` na linha 1649. A casca desktop apresenta o estado recebido nessa pílula, sem trocar sua mensagem.
+
+**Evidência:** captura `mapa-mandril_circular-1920x1080-depois.png` da matriz desktop em `.work-mapa-unificado/e2e/desktop-layout/all-modes/`; o teste de 18 modos confirmou a casca em 28 telas fora do quiosque. A rota publicada usa `/unificado/mapa/api/` para dados.
+
 ## PCP — botão “Redefinir senha” na tela Usuários
 
 **O que acontece:** o botão de cada linha não envia a redefinição. O navegador interpreta o atributo `onclick` como JavaScript inválido porque o nome, serializado com aspas duplas, é inserido dentro de outro atributo delimitado por aspas duplas. A função `redefinirSenha` existente funciona quando invocada diretamente e grava apenas no banco PCP de testes; o botão permaneceu com o comportamento do oficial.
