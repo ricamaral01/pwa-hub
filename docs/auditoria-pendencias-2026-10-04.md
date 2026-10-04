@@ -20,6 +20,35 @@ A API PCP respondeu com JSON idêntico em **63/63** consultas, em datas distribu
 
 Permissões negativas no endereço publicado: PRODUCAO recebeu **403** ao tentar gravar Programação; CONSULTA recebeu **403** em Programação e Produção. Nenhuma dessas tentativas criou linha. As contas sintéticas foram removidas antes da fotografia final.
 
+Matriz individual das 24 páginas: `A/P/R/C` significa abertura e leitura com ADMIN, PCP, PRODUCAO e CONSULTA. Uma tela que só consulta não precisa de gravação; as ações indicadas são as que foram de fato exercitadas. `parcial` mantém o item fora da definição de pronto.
+
+| Página | Leitura/perfil | Ação funcional verificada | Situação |
+|---|---|---|---|
+| acompanhamento-mensal | A/P/R/C | GET e renderização | parcial: filtros não esgotados |
+| acompanhamento-mensal-setor-34 | A/P/R/C | GET e renderização | parcial: filtros não esgotados |
+| apontamento-mega | A/P/R/C | Criação, releitura e limpeza sintética | igual no caso exercitado |
+| comparacao | A/P/R/C | GET do Dashboard e renderização | parcial: filtros não esgotados |
+| dashboard | A/P/R/C | GET e renderização | parcial: filtros não esgotados |
+| etiquetas | A/P/R/C | PDF de 268 páginas com todos os postes disponíveis na data | igual no caso exercitado |
+| etiquetas-armaduras | A/P/R/C | PDF de 49 etiquetas | igual no caso exercitado |
+| etiquetas-sc | A/P/R/C | PDF de 90 páginas com todos os postes disponíveis na data | igual no caso exercitado |
+| formas-por-setor | A/P/R/C | Abertura e GET | parcial: interações internas não esgotadas |
+| maodeobra | A/P/R/C | MOI/MOD S1/2 e S3/4, criação, releitura e limpeza | igual nos casos exercitados |
+| maodeobra-rateio | A/P/R/C | Rateio S1/2 e S3/4, pai e filhos conferidos | igual nos casos exercitados; exclusão original com rateio falha |
+| pcp-diario | A/P/R/C | GET e PDF idêntico | igual nos períodos exercitados |
+| primeiro-acesso | A/P/R/C redirecionado em sessão comum | Troca de senha sintética em rodada anterior | parcial: nem todos os perfis repetidos nesta versão |
+| producao | A/P/R/C | Criação/releitura/remoção ADMIN e PRODUCAO; CONSULTA 403 | igual nos casos exercitados |
+| programacao | A/P/R/C | Criação/releitura/exclusão ADMIN e PCP; PRODUCAO/CONSULTA 403 | igual nos casos exercitados |
+| programacao-alex | A/P/R/C | Edição/exclusão S1/2 e Sincronizar Sheets S3/4 | igual nos casos exercitados |
+| programacao-circular-s3 | A/P/R/C | POST, releitura e DELETE ADMIN e PCP | igual nos casos exercitados |
+| programacao-circular-s4 | A/P/R/C | POST, releitura e DELETE ADMIN e PCP | igual nos casos exercitados |
+| programacao-final | A/P/R/C | GET e renderização | parcial: combinações de filtros não esgotadas |
+| relatorio-producao | A/P/R/C | FL-PRO-15 igual em PDF | igual nos períodos exercitados |
+| relatorio-programacao-s3 | A/P/R/C | PDF igual | igual nos períodos exercitados |
+| relatorio-programacao-s4 | A/P/R/C | PDF igual | igual nos períodos exercitados |
+| teste-programacao | ADMIN abre; outros perfis redirecionam | Pedido chega ao backend, que retorna HTTP 500 sem gravar | **bloqueado pelo comportamento original** |
+| usuarios | ADMIN abre; outros perfis redirecionam | Criação/releitura/remoção sintética | parcial: Redefinir senha não dispara no código original |
+
 ## Impressões e arquivos
 
 Na 0.5.7/0.5.8, as sete famílias PCP — FL-PRO-15 S1/S2, S3 e S4, PCP Diário, etiquetas de postes, etiquetas SC e etiquetas de armaduras — tiveram texto, tamanho de página e imagem rasterizada iguais página a página ao oficial em três configurações: 02/10 por um dia com duas etiquetas; 30/09 por dois dias com uma etiqueta; 01/10 por três dias com três etiquetas. Uma rodada adicional selecionou **todos os postes disponíveis** nas datas de prova e comparou **268 páginas de etiquetas comuns, 90 SC e 49 de armaduras**, todas idênticas. O desvio anterior vinha do selo TESTE e do fundo navy aplicados à mídia de impressão pela casca; foram retirados apenas da impressão. A regra de seleção da planilha ficou intacta.
