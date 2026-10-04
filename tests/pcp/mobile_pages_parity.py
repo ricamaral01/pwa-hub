@@ -22,7 +22,10 @@ OUT = ROOT / ".work-mapa-unificado/pcp-e2e/mobile-parity"
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--only", choices=PAGES)
+    parser.add_argument("--width", type=int, default=390)
+    parser.add_argument("--height", type=int, default=844)
     args = parser.parse_args()
+    assert 320 <= args.width <= 1024 and 500 <= args.height <= 1200
     raw = subprocess.check_output(
         ["ssh", "vps-staging", "cat", "/etc/mapa-unificado/pcp-auth-probe.env"],
         text=True, encoding="utf-8")
@@ -31,7 +34,7 @@ def main() -> None:
     results = []
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True, executable_path=CHROME)
-        context = browser.new_context(viewport={"width": 390, "height": 844},
+        context = browser.new_context(viewport={"width": args.width, "height": args.height},
                                       service_workers="block")
         entry = context.new_page()
         entry.goto(BASE + "/unificado/login.html?next=pcp/dashboard/")
@@ -64,8 +67,8 @@ def main() -> None:
                 changed = sum(pixel != (0, 0, 0)
                               for pixel in ImageChops.difference(left, right).getdata())
                 if changed:
-                    left.save(OUT / f"{name}-before.png")
-                    right.save(OUT / f"{name}-after.png")
+                    left.save(OUT / f"{name}-{args.width}x{args.height}-before.png")
+                    right.save(OUT / f"{name}-{args.width}x{args.height}-after.png")
                 results.append({"page": name, "changed_pixels": changed,
                                 "before_path": before.url.split(BASE)[-1],
                                 "after_path": after.url.split(BASE)[-1]})
@@ -73,9 +76,10 @@ def main() -> None:
                 before.close()
                 after.close()
         browser.close()
-    (OUT / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2),
-                                      encoding="utf-8")
-    print(json.dumps({"pages": len(results), "pixel_equal": sum(item["changed_pixels"] == 0
+    (OUT / f"results-{args.width}x{args.height}.json").write_text(
+        json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(json.dumps({"viewport": f"{args.width}x{args.height}",
+                      "pages": len(results), "pixel_equal": sum(item["changed_pixels"] == 0
                        for item in results), "different": [item for item in results
                        if item["changed_pixels"]]}, ensure_ascii=False))
 
