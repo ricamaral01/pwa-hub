@@ -56,6 +56,8 @@ def main() -> None:
                 pages[variant] = page
             for mode in modes:
                 for page in pages.values():
+                    page.evaluate("setMode('HUB')")
+                    page.wait_for_timeout(250)
                     page.evaluate("""({mode,kiosk}) => {
                       setMode(mode);
                       if (el.libData) {
