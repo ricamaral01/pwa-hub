@@ -11,8 +11,10 @@
   },
   {
     "viewport": "1366x768",
-    "old_route_ms": 1085,
-    "direct_route_ms": 780
+    "root_redirect_ms": 1049,
+    "direct_route_ms": 1384,
+    "both_directions_direct": true,
+    "collapsed_preference_shared": true
   },
   {
     "module": "producao",
@@ -26,7 +28,9 @@
   },
   {
     "viewport": "1920x1080",
-    "old_route_ms": 1208,
-    "direct_route_ms": 899
+    "root_redirect_ms": 734,
+    "direct_route_ms": 1141,
+    "both_directions_direct": true,
+    "collapsed_preference_shared": true
   }
 ]

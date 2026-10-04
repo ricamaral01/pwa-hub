@@ -77,7 +77,7 @@ def main() -> None:
             page.evaluate("location.assign('/unificado/pcp/')")
             page.wait_for_url("**/unificado/pcp/dashboard/", timeout=20000)
             page.locator(".unificado-pcp-brand").wait_for(timeout=20000)
-            old_ms = round((time.perf_counter() - start) * 1000)
+            redirect_ms = round((time.perf_counter() - start) * 1000)
             page.goto(BASE + "/unificado/mapa/operacao/", wait_until="domcontentloaded")
             page.locator(".unificado-sidebar").wait_for()
             start = time.perf_counter()
@@ -85,7 +85,14 @@ def main() -> None:
             page.wait_for_url("**/unificado/pcp/dashboard/", timeout=20000)
             page.locator(".unificado-pcp-brand").wait_for(timeout=20000)
             new_ms = round((time.perf_counter() - start) * 1000)
-            results.append({"viewport": f"{width}x{height}", "old_route_ms": old_ms, "direct_route_ms": new_ms})
+            assert page.locator("body.unificado-menu-collapsed").count() == 1
+            page.locator(".unificado-pcp-switch-button", has_text="Produção").click()
+            page.wait_for_url("**/unificado/mapa/operacao/", timeout=20000)
+            page.locator(".unificado-sidebar").wait_for(timeout=20000)
+            assert page.locator("body.unificado-menu-collapsed").count() == 1
+            results.append({"viewport": f"{width}x{height}", "root_redirect_ms": redirect_ms,
+                            "direct_route_ms": new_ms, "both_directions_direct": True,
+                            "collapsed_preference_shared": True})
             context.close()
         browser.close()
     (OUT / "medidas.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
