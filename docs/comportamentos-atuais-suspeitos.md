@@ -1,5 +1,13 @@
 # Comportamentos atuais suspeitos preservados
 
+## Mapa — respostas muito rápidas do checklist podem renderizar estado anterior
+
+**O que acontece:** em um roteiro acelerado que respondeu todos os itens do checklist sem intervalo, a primeira inspeção gravou `R` no PostgreSQL de testes, mas uma renderização imediata da lista mostrou temporariamente “Pendente”. Após aguardar as gravações disparadas por cada resposta, a mesma ação mostrou “Reprovado · 2ª inspeção pendente” nas duas variantes. Isto foi observado somente no roteiro acelerado; não houve alteração do aplicativo para mascarar a diferença.
+
+**Onde:** `mapa-concretagem/app.js`, `setInspecaoChecklistAnswer` por volta da linha 5533 chama `syncMontagemPosteToApi(...).catch(...)` sem aguardar cada gravação. `finalizarInspecaoPosteAtual`, por volta da linha 5606, faz a gravação final, e `renderInspecaoLiberados`, por volta da linha 4350, consulta o resultado da lista.
+
+**Evidência:** primeira rodada de `tests/mapa/e2e/inspection_photo_parity.py` sob MONTADOR no Setor 3: linha de inspeção capturada com status `R`, porém lista original renderizada como “Pendente”; a cópia mostrou “Reprovado”. O roteiro passou a aguardar as escritas assíncronas antes da finalização e da releitura. Em nova rodada, requisições, linha, foto e lista tiveram o mesmo resultado nas duas variantes. As linhas e fotos sintéticas foram removidas.
+
 ## Mapa — indicador ainda menciona Supabase na cópia
 
 **O que acontece:** a topbar mostra “Conectado ao Supabase: sincronização online ativa.” mesmo na operação de testes, cuja conexão de dados passa pelo proxy local e pelo PostgreSQL de testes. É um texto fixado pelo aplicativo original e foi preservado conforme a regra de não alterar textos e `app.js`.
