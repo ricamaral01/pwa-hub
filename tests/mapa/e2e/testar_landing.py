@@ -36,8 +36,7 @@ def main() -> None:
         assert unauth and unauth.status == 401
         page.goto("https://concrefer.concretrack.com.br/unificado/login.html?next=testar/",
                   wait_until="domcontentloaded")
-        # Ricardo also enters by display name; exercise that lookup branch.
-        page.locator('#unificado-login-form [name="username"]').fill("Conta Sintética Gerência")
+        page.locator('#unificado-login-form [name="username"]').fill(account["MAPA_TEST_USER"])
         page.locator('#unificado-login-form [name="password"]').fill(account["MAPA_TEST_PASSWORD"])
         page.locator('#unificado-login-form button[type="submit"]').click()
         if args.first_access:
@@ -51,6 +50,7 @@ def main() -> None:
         assert authorized and authorized.status == 200
         assert "Ambiente de teste. Nada lançado aqui vale como produção." in page.locator("body").inner_text()
         assert snapshot in page.locator("body").inner_text()
+        assert "15 dos 24 fluxos" in page.locator("body").inner_text()
         print("testar_unauth=401 synthetic_gerencia_login=ok first_access="
               + ("ok" if args.first_access else "not_requested")
               + " testar_auth=200 synthetic_password_displayed=false")
