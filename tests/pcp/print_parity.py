@@ -17,7 +17,9 @@ from audit_pcp_api_parity import APIS, token
 
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 OUT = ROOT / ".work-mapa-unificado" / "pcp-print"
-CASES = ("relatorio-producao", "pcp-diario", "etiquetas")
+CASES = ("relatorio-producao", "relatorio-programacao-s3",
+         "relatorio-programacao-s4", "pcp-diario", "etiquetas",
+         "etiquetas-sc", "etiquetas-armaduras")
 
 
 def pages_digest(pdf: bytes) -> dict:
@@ -75,31 +77,43 @@ def main() -> None:
                 response = page.goto(base + case + "/", wait_until="domcontentloaded",
                                      timeout=30000)
                 page.wait_for_timeout(1800)
-                if case == "relatorio-producao":
+                if case in {"relatorio-producao", "relatorio-programacao-s3",
+                            "relatorio-programacao-s4"}:
                     page.wait_for_function("() => !document.querySelector('#report-status')?.textContent.includes('Carregando')", timeout=15000)
-                    page.locator("#report-start").fill("2026-10-02")
-                    page.locator("#report-days").fill("1")
-                    page.evaluate("loadReport()")
-                    page.wait_for_function("() => document.querySelector('#report-status')?.textContent.includes('28/09/26 a 28/09/26')", timeout=15000)
+                    page.evaluate("""() => {
+                      document.querySelector('#report-start').value = '2026-10-02';
+                      document.querySelector('#report-days').value = '1';
+                      return loadReport();
+                    }""")
+                    page.wait_for_function("() => document.querySelectorAll('#report-pages .report-paper').length === 1", timeout=15000)
                 elif case == "pcp-diario":
                     page.wait_for_function("() => document.querySelector('#resumo')?.textContent.includes('linhas exibidas')", timeout=20000)
-                elif case == "etiquetas":
-                    page.locator("#f-data").fill("2026-10-02")
+                elif case in {"etiquetas", "etiquetas-sc"}:
+                    page.locator("#f-data").fill("2026-10-01" if case == "etiquetas-sc" else "2026-10-02")
                     page.evaluate("loadPostesProgramados()")
                     count = page.locator(".poste-check").count()
-                    if count:
-                        page.locator(".poste-check").first.check()
-                        page.evaluate("gerarEtiquetasSelecionadas()")
-                        page.evaluate("""() => document.querySelectorAll('.label-print-check').forEach(
+                    assert count > 0, f"No {case} items available for print comparison"
+                    page.locator(".poste-check").first.check()
+                    page.evaluate("gerarEtiquetasSelecionadas()")
+                    page.evaluate("""() => document.querySelectorAll('.label-print-check').forEach(
                           (input,index) => {input.checked=index<2;
                            input.closest('.label-pair').classList.toggle('print-selected',index<2)})""")
+                elif case == "etiquetas-armaduras":
+                    page.locator("#arm-start").fill("2026-10-05")
+                    page.locator("#arm-days").fill("1")
+                    page.locator("#arm-load").click()
+                    page.wait_for_function("() => !document.querySelector('#arm-status')?.textContent.includes('Carregando')", timeout=20000)
+                    page.locator(".arm-template").evaluate_all("els => els.forEach(el => {if (!el.value) el.selectedIndex=1})")
+                    page.evaluate("generateArmaduras()")
+                    assert page.locator(".arm-label").count() > 0, "No armadura labels generated"
                 pdf = page.pdf(print_background=True, prefer_css_page_size=True)
                 info = pages_digest(pdf)
                 info.update({"http": response.status if response else None,
                              "location": urlsplit(page.url).path,
                              "blocked": blocked, "errors": errors,
                              "api_responses": api_responses,
-                             "label_options": count if case == "etiquetas" else None,
+                             "label_options": count if case in {"etiquetas", "etiquetas-sc"} else None,
+                             "armadura_labels": page.locator(".arm-label").count() if case == "etiquetas-armaduras" else None,
                              "body_excerpt": page.locator("body").inner_text()[:160]})
                 (OUT / f"{case}-{side}.pdf").write_bytes(pdf)
                 pair[side] = info
