@@ -33,7 +33,8 @@ def main() -> None:
             r"<head>", '<head>\n  <script src="/unificado/pcp/unificado-bridge.js"></script>\n'
             '  <script src="/unificado/pcp/unificado-shell.js"></script>', html, count=1, flags=re.I)
         html, tails = re.subn(
-            r"</head>", '  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css">\n</head>',
+            r"</head>", '  <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">\n'
+            '  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css">\n</head>',
             html, count=1, flags=re.I)
         if heads != 1 or tails != 1:
             raise ValueError(f"HTML head changed in {page}")

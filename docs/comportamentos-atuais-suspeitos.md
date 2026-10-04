@@ -1,5 +1,13 @@
 # Comportamentos atuais suspeitos preservados
 
+## PCP — botão “Redefinir senha” na tela Usuários
+
+**O que acontece:** o botão de cada linha não envia a redefinição. O navegador interpreta o atributo `onclick` como JavaScript inválido porque o nome, serializado com aspas duplas, é inserido dentro de outro atributo delimitado por aspas duplas. A função `redefinirSenha` existente funciona quando invocada diretamente e grava apenas no banco PCP de testes; o botão permaneceu com o comportamento do oficial.
+
+**Onde:** `unificado/pcp/usuarios/index.html`, construção das linhas de `loadUsers`, por volta da linha 161 do arquivo oficial. O trecho é `onclick="redefinirSenha(${r.id}, ${JSON.stringify(r.nome)})"`.
+
+**Evidência:** consulta somente leitura ao arquivo oficial `/opt/pcp-concrefer/frontend/pages/usuarios/index.html` confirmou o mesmo trecho. `tests/pcp/users_ui_write.py` criou um usuário sintético pela tela publicada (HTTP 201 e linha visível); o clique em “Redefinir senha” gerou erro no navegador e nenhum segundo POST. Invocar a função original diretamente no navegador produziu POST e confirmou a mensagem de sucesso. O usuário sintético foi removido. Nenhum arquivo do backend PCP foi alterado.
+
 ## Mapa — modo Liberação no Setor 4
 
 **O que acontece:** ao clicar em uma forma do Setor 4 com o modo Liberação ativo, o aplicativo original abre a escolha do tipo de concreto; não envia POST para `liberacao_formas`. Nos Setores 1–3, o mesmo modo chama a liberação.
