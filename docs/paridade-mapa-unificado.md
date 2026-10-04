@@ -33,7 +33,7 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 | Nº | Fluxo | Estado E2E completo | Evidência / trabalho restante |
 |---:|---|---|---|
 | 1 | Login por perfil e setor | igual | Quatro perfis × quatro setores; navegação 288/288 conforme captura original. |
-| 2 | Primeiro acesso | não executado | Falta comparação da troca de senha na rota operacional. |
+| 2 | Primeiro acesso | não executado | Conta sintética com primeiro acesso trocou a senha pela tela única e abriu `/unificado/testar/` com HTTP 200; falta comparação visual e de fluxo com o primeiro acesso do app original na rota operacional. |
 | 3 | Programar/desprogramar | igual | GERENCIA, GESTOR e APONTADOR × Setores 1–4: POST/DELETE, linha, classe e texto iguais entre HTML original e cópia. MONTADOR não acessa esses modos no original. |
 | 4 | Modo Liberação | igual | GERENCIA, GESTOR e APONTADOR × Setores 1–3: fixture, linha, classe e texto iguais. No Setor 4, os três perfis abriram a escolha de concreto sem POST, como o original. MONTADOR não acessa esses modos. |
 | 5 | Concretar por tipo | igual | GERENCIA, GESTOR e APONTADOR × Setores 1–4: Padrão, Seco - Vibrado, Segregado, Exsudado e Teste Lab. quando o nome autoriza deram requisição, linha e cartão iguais. No Padrão do Setor 3, ambas as escolhas de vibração foram conferidas. |
@@ -49,7 +49,7 @@ Para esta tabela, **igual** exige todos os critérios aplicáveis e todos os per
 | 15 | Relatório, PDF e WhatsApp | não executado | Texto do relatório conferido na diferença de ordem; PDF/WhatsApp pendentes. |
 | 16 | Histórico | igual | GERENCIA e GESTOR: oito combinações de duas datas com filtros de tipo e forma deram as mesmas leituras e os mesmos lançamentos exibidos; zero escrita. Outros perfis não acessam o modo no original. |
 | 17 | Acompanhamento, salvar/imprimir | não executado | Leitura/renderização exercitadas; escrita e impressão pendentes. |
-| 18 | Manutenção Formas | não executado | Apenas navegação e leitura conferidas. |
+| 18 | Manutenção Formas | igual | GERENCIA, GESTOR, MONTADOR e APONTADOR: quatro filtros do relatório deram linhas/KPIs iguais; impressão de duas páginas com hashes de texto e pixels iguais ao original. Parada/liberação de forma já certificada no fluxo 8. |
 | 19 | Tratativa de Defeitos | não executado | Apenas navegação conferida. |
 | 20 | Três dashboards e filtros | não executado | Leitura e partes da renderização conferidas; todos os filtros pendentes. |
 | 21 | Exportação XLSX | igual | GERENCIA e GESTOR: arquivo com 133 linhas de base e 17 de resumo, nome igual e hash lógico igual ao HTML original na mesma fotografia; só o horário de geração foi normalizado. Comparação direta de download com o domínio oficial permanece pendente por diferença de fotografia. |
@@ -86,6 +86,8 @@ O mesmo roteiro percorreu a segunda inspeção após a reprovação, com os resu
 `tests/mapa/e2e/csv_export_parity.py` e `xlsx_export_parity.py` passaram para GERENCIA e GESTOR. Os dois CSVs de Produtividade tiveram bytes iguais ao HTML original sobre o mesmo banco: em GESTOR, dados de concretagem com 191 linhas e SHA-256 `4ac9c7f9d001ed01382049b2cbe37a199b5036974dd47f58161f267187b8c576`, e paradas com oito linhas e SHA-256 `119d24740048c6388e570606e80d54038c37c9cea4a64ff862d9f3a0cbbef6c5`. O XLSX de GESTOR teve hash lógico `15920604ddbf5db1dc8e487babad47ce833f9eb181717195c6568178dfa8bb7e`, igual nas duas variantes, com 133 linhas de base e 17 de resumo. Ambos os testes bloquearam pedidos a domínios externos e escritas. O domínio oficial não foi usado para gerar os downloads; a comparação é do HTML original contra a cópia na mesma fotografia de testes.
 
 `tests/mapa/e2e/historico_ui_parity.py` percorreu GERENCIA e GESTOR em duas datas e quatro filtros cada: todos, Liberação, Inspeção e forma SC01. As rotas de leitura por hash e a lista final de lançamentos (texto e classe) coincidiram entre o HTML original e a rota unificada nas 16 combinações; nenhuma escrita foi enviada. MONTADOR e APONTADOR não têm esse modo no original.
+
+`tests/mapa/e2e/maintenance_report_parity.py` percorreu os quatro perfis e os filtros Todos, Parada, Liberada e período de 01 a 04/10/2026. Linhas e KPIs coincidiram entre original e rota unificada em todos os casos. O PDF de duas páginas teve hash idêntico de texto e de imagem rasterizada página a página. O roteiro não enviou escritas; as ações de parar/liberar forma com banco e cartão foram certificadas separadamente no fluxo 8.
 
 Atualização da casca desktop: `unificado/mapa/operacao/unificado-bridge.css` e `.js` são carregados após o visual e o aplicativo originais. Início, Relatório Enc. Produção e Histórico foram repaginados em 1366×768 e 1920×1080; as 12 capturas antes/depois estão em `docs/capturas-layout-mapa/`. Os demais modos recebem menu, topbar, cartões e campos da casca; sua revisão visual individual ainda falta. O teste de pixels com o mesmo HTML anterior à casca deu **zero pixels diferentes** em 1024×768, 768×1024 e quiosque no modo Liberação S1. A navegação por quatro perfis, quatro setores e 18 modos continuou 288/288 após a publicação da casca.
 
