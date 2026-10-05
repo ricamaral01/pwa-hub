@@ -25,8 +25,8 @@
         "actual": "RELATORIO_MANUTENCAO"
       }
     ],
-    "test_icon": true,
-    "test_name": true,
+    "operational_icon": true,
+    "operational_name": true,
     "desktop_shell_hidden": true,
     "external_hosts": [],
     "capture": "android-chrome-galaxy-tab-s9.png"
@@ -57,8 +57,8 @@
         "actual": "RELATORIO_MANUTENCAO"
       }
     ],
-    "test_icon": true,
-    "test_name": true,
+    "operational_icon": true,
+    "operational_name": true,
     "desktop_shell_hidden": true,
     "external_hosts": [],
     "capture": "android-chrome-galaxy-tab-s9-landscape.png"
@@ -89,8 +89,8 @@
         "actual": "RELATORIO_MANUTENCAO"
       }
     ],
-    "test_icon": true,
-    "test_name": true,
+    "operational_icon": true,
+    "operational_name": true,
     "desktop_shell_hidden": true,
     "external_hosts": [],
     "capture": "ipad-webkit-ipad-gen-6.png"
@@ -121,8 +121,8 @@
         "actual": "RELATORIO_MANUTENCAO"
       }
     ],
-    "test_icon": true,
-    "test_name": true,
+    "operational_icon": true,
+    "operational_name": true,
     "desktop_shell_hidden": true,
     "external_hosts": [],
     "capture": "ipad-webkit-ipad-gen-6-landscape.png"

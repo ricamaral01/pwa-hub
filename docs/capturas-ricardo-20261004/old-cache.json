@@ -1,11 +1,11 @@
 {
-  "version": "TESTE 0.5.4",
+  "version": "v0.6.0",
   "caches": [
-    "concrefer-unificado-mapa-operacao-v0.5.4"
+    "concrefer-unificado-mapa-operacao-v0.6.0"
   ],
   "logos": [
     {
-      "src": "https://concrefer.concretrack.com.br/unificado/pcp/static/img/concrefer-logo.png",
+      "src": "https://concrefer.concretrack.com.br/unificado/assets/img/logo-concrefer.png",
       "loaded": true
     },
     {

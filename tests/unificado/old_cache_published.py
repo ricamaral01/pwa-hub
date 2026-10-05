@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import Error as PlaywrightError, sync_playwright
 
 
 BASE = "https://concrefer.concretrack.com.br"
@@ -41,7 +41,13 @@ def main() -> None:
         if page.locator("body.kiosk-active").count():
             page.locator("#btnKioskBack:visible").click(timeout=5000)
         page.wait_for_timeout(1500)
-        page.reload(wait_until="domcontentloaded")
+        try:
+            page.reload(wait_until="domcontentloaded")
+        except PlaywrightError as error:
+            # A newly activated worker can replace the document while reload is
+            # waiting; the following readiness checks validate the final page.
+            if "ERR_ABORTED" not in str(error):
+                raise
         page.wait_for_function("version => document.querySelector('#unificado-version')?.textContent.includes(version)",
                                arg=expected, timeout=20000)
         page.wait_for_function("typeof state !== 'undefined' && state.authUser?.role === 'GERENCIA'", timeout=20000)
