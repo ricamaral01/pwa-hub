@@ -62,3 +62,38 @@ build da cópia. O `app.js` original permanece intacto. O teste anterior dos
 fluxos 11 e 12 chamou `abrirVisualizacaoChecklist` diretamente e acionou os
 botões no fim do relatório; por isso validou banco e resultado final, mas não
 exercitou o toque real na linha nem a posição visível dos comandos.
+# Mensagens neutras de banco de dados e UTF-8 (05/10/2026)
+
+O `app.js` original continua intacto. O build da cópia troca somente mensagens
+visíveis e de diagnóstico que citavam o fornecedor anterior por termos neutros:
+`Falha ao verificar o banco de dados`, `Conectado`, `servidor` e
+`Erro ao sincronizar com o servidor`. A ponte repete a neutralização em texto,
+tooltip e rótulo criado dinamicamente. A configuração continua apontando o SDK
+para `/unificado/mapa/api`, que usa o PostgreSQL novo.
+
+O erro de APONTADOR vinha da sondagem `usuarios?select=id&limit=1`: a API tratava
+essa leitura mínima como abertura da administração de usuários e devolvia 403.
+A rota permite agora somente essa combinação de leitura para qualquer conta
+Mapa ativa. Consultas adicionais e gravações de usuários continuam exigindo
+GERENCIA. Nenhum filtro por setor foi adicionado.
+
+`scripts/utf8_guard_unificado.py` corrige automaticamente dupla conversão de
+UTF-8 e reprova o preparo de uma publicação se encontrar nova ocorrência ou uma
+página sem `meta charset="utf-8"`. A biblioteca XLSX é excluída apenas dessa
+heurística porque contém tabelas literais de páginas de código; seu conteúdo não
+é texto de interface. O primeiro saneamento encontrou 158 ocorrências em
+arquivos próprios e terminou com zero.
+
+
+## Compatibilidade de inspe??o e r?tulo local (05/10/2026)
+
+A matriz por toque real encontrou que o PostgreSQL novo n?o tinha os campos
+`codigo_poste`, `descricao_poste` e `codigo_produto` j? enviados pelos fluxos
+originais de inspe??o e montagem. A migra??o idempotente em
+`unificado/mapa/database/schema.sql` adiciona esses campos; o PostgREST foi
+recarregado e a inspe??o passou a persistir sem o erro `PGRST204`.
+
+No frontend do PCP, o build troca o t?tulo vis?vel `Producao Realizada --
+Supabase` por `Producao Realizada -- banco local`. A rota interna mant?m o nome
+legado porque os 47 arquivos do backend PCP devem continuar id?nticos, mas ela
+aponta para o adaptador PostgreSQL local e n?o faz chamada ao fornecedor.

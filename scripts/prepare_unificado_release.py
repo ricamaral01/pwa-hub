@@ -3,6 +3,8 @@
 from pathlib import Path
 import shutil
 
+from utf8_guard_unificado import scan
+
 ROOT = Path(__file__).resolve().parents[1]
 STAGE = ROOT / ".work-mapa-unificado" / "release"
 PUBLIC = STAGE / "public" / "unificado"
@@ -10,6 +12,11 @@ API = STAGE / "mapa-api"
 
 
 def main() -> None:
+    source_occurrences, _ = scan(ROOT / "unificado", False)
+    if source_occurrences:
+        raise RuntimeError(f"Publicação recusada: {source_occurrences} ocorrências de acento corrompido")
+    if STAGE.exists():
+        shutil.rmtree(STAGE)
     PUBLIC.mkdir(parents=True, exist_ok=True)
     API.mkdir(parents=True, exist_ok=True)
     src = ROOT / "unificado"
@@ -27,6 +34,9 @@ def main() -> None:
         shutil.copy2(src / "mapa" / "api" / name, API / name)
     shutil.copy2(src / "testar" / "index.html", API / "testar-index.html")
     shutil.copy2(src / "VERSION", API / "VERSION")
+    public_occurrences, _ = scan(PUBLIC, False)
+    if public_occurrences:
+        raise RuntimeError(f"Release recusada: {public_occurrences} ocorrências de acento corrompido")
     print(STAGE)
 
 

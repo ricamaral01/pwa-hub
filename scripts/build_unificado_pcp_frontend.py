@@ -21,11 +21,18 @@ PAGES = (
 
 
 def main() -> None:
+    if TARGET.exists():
+        shutil.rmtree(TARGET)
     TARGET.mkdir(parents=True, exist_ok=True)
     version = (ROOT / "unificado" / "VERSION").read_text(encoding="utf-8").strip()
     for page in PAGES:
         source = SOURCE / page / "index.html"
         html = source.read_text(encoding="utf-8")
+        if page == "producao":
+            visible_label = "          Producao Realizada -- Supabase"
+            if html.count(visible_label) != 1:
+                raise ValueError("PCP production source label changed")
+            html = html.replace(visible_label, "          Producao Realizada -- banco local")
         html, guards = re.subn(
             r'<script src="/unificado/pcp/readonly-guard\.js"></script>\s*', "", html)
         if guards != 1:

@@ -71,6 +71,9 @@ CREATE TABLE IF NOT EXISTS montagem_poste (
     setor text,
     forma_numero text,
     modelo text,
+    codigo_poste text,
+    descricao_poste text,
+    codigo_produto text,
     status_montagem text,
     motivo_recusa text,
     etapa text,
@@ -85,6 +88,12 @@ CREATE TABLE IF NOT EXISTS montagem_poste (
 );
 CREATE INDEX IF NOT EXISTS montagem_poste_data_setor_idx
     ON montagem_poste (data_fabricacao, setor);
+
+-- Databases created before 0.6.6 did not have the three product identity fields
+-- already sent by the original Mapa inspection and assembly flows.
+ALTER TABLE montagem_poste ADD COLUMN IF NOT EXISTS codigo_poste text;
+ALTER TABLE montagem_poste ADD COLUMN IF NOT EXISTS descricao_poste text;
+ALTER TABLE montagem_poste ADD COLUMN IF NOT EXISTS codigo_produto text;
 
 CREATE TABLE IF NOT EXISTS formas_manutencao (
     id text PRIMARY KEY,

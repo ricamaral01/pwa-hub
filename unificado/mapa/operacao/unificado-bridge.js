@@ -29,6 +29,28 @@
     if (text !== undefined) node.textContent = text;
     return node;
   };
+  const neutralDatabaseText = value => String(value || "")
+    .replace(/Falha ao verificar banco Supabase\./gi, "Falha ao verificar o banco de dados.")
+    .replace(/Conectado ao Supabase:/gi, "Conectado:")
+    .replace(/(?:Erro|Falha) ao sincronizar(?: com o)? Supabase/gi, "Erro ao sincronizar com o servidor")
+    .replace(/\bSupabase\b/gi, "servidor");
+  function neutralizeVisibleDatabaseText(root = document.body) {
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      const updated = neutralDatabaseText(node.nodeValue);
+      if (updated !== node.nodeValue) node.nodeValue = updated;
+    });
+    root.querySelectorAll?.("[title],[aria-label],[placeholder]").forEach(node => {
+      ["title", "aria-label", "placeholder"].forEach(attribute => {
+        if (node.hasAttribute(attribute)) {
+          node.setAttribute(attribute, neutralDatabaseText(node.getAttribute(attribute)));
+        }
+      });
+    });
+  }
   function makeNav() {
     const nav = element("aside", "unificado-sidebar");
     nav.id = "unificadoSidebar";
@@ -236,6 +258,22 @@
     addSegments();
     groupHistory();
     update();
+    neutralizeVisibleDatabaseText();
+    new MutationObserver(records => records.forEach(record => {
+      if (record.type === "characterData") {
+        const updated = neutralDatabaseText(record.target.nodeValue);
+        if (updated !== record.target.nodeValue) record.target.nodeValue = updated;
+      } else {
+        record.addedNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const updated = neutralDatabaseText(node.nodeValue);
+            if (updated !== node.nodeValue) node.nodeValue = updated;
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            neutralizeVisibleDatabaseText(node);
+          }
+        });
+      }
+    })).observe(document.body, {subtree: true, childList: true, characterData: true});
     applyRequestedMode();
     const requestedModeTimer = setInterval(() => {
       applyRequestedMode();
