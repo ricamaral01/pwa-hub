@@ -33,6 +33,8 @@ Os índices adicionais citados são **não únicos** e não recusam gravações.
 
 Todas as 8 RPCs abaixo existem com a assinatura da origem. Respostas de origem e destino foram comparadas via POST somente leitura na origem e SELECT no destino em **01–07/07/2026** e **01–07/09/2026**. Após omitir `generated_at`, que é a hora de cada execução, as 16 comparações foram iguais. Os testes cobrem parâmetros padrão, escopo `TOTAL`; não demonstram todos os parâmetros/opções possíveis.
 
+As três visões também foram comparadas linha a linha, como multiconjuntos completos, nesses dois períodos: **6/6 iguais**. Em julho: produção 1.438 linhas, montagem 593, formas 1.456. Em setembro: produção 727, montagem 386, formas 832. A primeira paginação de `vw_formas_status` sem `order` pareceu divergir em 87 linhas por repetição entre páginas; a leitura repetida com ordenação estável pelos campos de chave fechou 1.456/1.456 sem diferença. Nenhum dado ou definição foi alterado por esse falso positivo.
+
 | Objeto | Corpo × catálogo ao vivo | Resultado | Uso direto no `app.js` |
 |---|---|---|---|
 | `rpc_dashboard_defeitos_resumo_v1` | Igual | 2/2 igual | Não encontrado |
