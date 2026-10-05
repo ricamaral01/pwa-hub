@@ -44,7 +44,14 @@ def main() -> None:
                 page.wait_for_function("() => !!document.querySelector('#libSetor3Cols [data-forma-numero=\"SC29\"]')")
             before = writer.evaluate("""async id => {
               const response=await fetch('/unificado/mapa/api/rest/v1/formas_manutencao?id=eq.'+id+'&select=*');
-              return (await response.json()).length;
+              const rows=await response.json();
+              if(rows.length && rows.every(row=>row.acao_necessaria==='Verificar'
+                    && String(row.parada_por||'').startsWith('Conta Sint'))){
+                localStorage.removeItem('mapa_formas_manutencao_v1');
+                await fetch('/unificado/mapa/api/rest/v1/formas_manutencao?id=eq.'+id,{method:'DELETE'});
+                return 0;
+              }
+              return rows.length;
             }""", ROW_ID)
             assert before == 0, f"Fixture target already exists: {before}"
             cleanup_allowed = True
@@ -57,7 +64,8 @@ def main() -> None:
             latency = round(time.monotonic() - start, 2)
             events = [frame for frame in frames if isinstance(frame, list) and len(frame) == 5
                       and frame[3] == "postgres_changes"
-                      and frame[4].get("data", {}).get("table") == "formas_manutencao"]
+                      and frame[4].get("data", {}).get("table") == "formas_manutencao"
+                      and frame[4].get("data", {}).get("record", {}).get("id") == ROW_ID]
             assert events and events[0][4]["data"]["record"]["id"] == ROW_ID
             assert writes and writes[0].post_data_json["id"] == ROW_ID
             assert "is-manutencao" in (card.get_attribute("class") or "")
@@ -67,6 +75,7 @@ def main() -> None:
                              ensure_ascii=False))
         finally:
             if cleanup_allowed:
+                observer.evaluate("localStorage.removeItem('mapa_formas_manutencao_v1')")
                 cleanup = observer.evaluate("""async id => {
                   const response=await fetch('/unificado/mapa/api/rest/v1/formas_manutencao?id=eq.'+id,
                     {method:'DELETE'});

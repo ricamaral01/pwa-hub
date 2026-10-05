@@ -64,6 +64,12 @@ def main() -> None:
                     url.path.replace("/unificado/mapa/api", "", 1)))
         page.on("request", capture)
         login_operacao(page, account["MAPA_TEST_USER"], account["MAPA_TEST_PASSWORD"])
+        cleanup_urls = [
+            "/unificado/mapa/api/rest/v1/producao?data_fabricacao=eq.2099-01-17&setor=eq.Setor%203&forma=in.(SC98,SC99)",
+            "/unificado/mapa/api/rest/v1/producao?id=eq.38d897c2-1530-4ae6-8de0-eb6e2b7317c4",
+            "/unificado/mapa/api/rest/v1/montagem_poste?id=eq.captura-montagem",
+        ]
+        page.evaluate("""async urls => { for (const url of urls) await fetch(url,{method:'DELETE'}); }""", cleanup_urls)
         page.on("dialog", lambda dialog: dialog.accept())
         for name, expression in expressions():
             current[0] = name
@@ -100,6 +106,7 @@ def main() -> None:
                 results.append({"flow": name, "status": "error",
                                 "error": str(error)[:250],
                                 "actual_request_count": len(calls[name])})
+        page.evaluate("""async urls => { for (const url of urls) await fetch(url,{method:'DELETE'}); }""", cleanup_urls)
         context.close()
         browser.close()
     OUT.mkdir(parents=True, exist_ok=True)

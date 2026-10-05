@@ -62,6 +62,37 @@
     document.querySelector("#sidebar")?.remove();
     document.body.classList.remove("unificado-pcp-standalone");
   }
+  function completeExistingMenu(sidebar) {
+    if (sidebar.querySelector(".unificado-pcp-extra-pages")) return;
+    const user = typeof API !== "undefined" ? API.getUser() : (() => {
+      try { return JSON.parse(localStorage.getItem("pcp_user") || "null"); }
+      catch { return null; }
+    })();
+    const role = user?.nivel_acesso || "CONSULTA";
+    const allowed = config => role === "ADMIN" || !config.require
+      || (role === "PCP" && config.require !== "ADMIN")
+      || (role === "PRODUCAO" && config.require === "PRODUCAO");
+    const items = {
+      formasPorSetor: {label: "Formas por Setor", require: "PCP", url: "/unificado/pcp/formas-por-setor/"},
+      maodeobraRateio: {label: "Rateio de Mão de Obra", require: "PRODUCAO", url: "/unificado/pcp/maodeobra-rateio/"}
+    };
+    const missing = Object.entries(items)
+      .filter(([, config]) => config && allowed(config)
+        && !Array.from(sidebar.querySelectorAll("a.nav-link")).some(link => {
+          try { return new URL(link.href, location.href).pathname === new URL(config.url).pathname; }
+          catch { return false; }
+        }));
+    if (!missing.length) return;
+    const section = make("div", "nav-group unificado-pcp-extra-pages", "");
+    section.append(make("div", "nav-group-toggle", "Produção e apoio"));
+    for (const [id, config] of missing) {
+      const link = make("a", "nav-link", config.label);
+      link.href = config.url;
+      link.dataset.page = id;
+      section.append(link);
+    }
+    sidebar.querySelector("nav")?.append(section);
+  }
   function apply() {
     if (!window.matchMedia("(min-width: 1025px)").matches) {
       restoreOriginalLayout();
@@ -71,6 +102,7 @@
     const sidebar = document.querySelector("#sidebar");
     const topbar = document.querySelector("#main-content>.topbar");
     if (!sidebar || !topbar) return;
+    completeExistingMenu(sidebar);
     for (const link of sidebar.querySelectorAll("nav a.nav-link")) {
       if (link.querySelector(".unificado-pcp-mono")) continue;
       link.title = link.textContent.trim();

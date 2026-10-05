@@ -49,8 +49,17 @@ def main() -> None:
             if result.status == 500:
                 assert result.text() == "Internal Server Error"
                 page.wait_for_function("() => document.querySelector('#card-resultado').style.display === 'none'")
-                print(json.dumps({"teste_programacao_ui": "original_error_preserved",
-                                  "http": 500, "database_writes": 0}))
+                page.locator("#toast-container").wait_for(state="attached", timeout=5000)
+                # Read the rendered page once. A CSS union becomes a strict-mode
+                # violation when both the toast container and body are present.
+                feedback = page.locator("body").inner_text()
+                assert page.locator("#toast-container").evaluate(
+                    "el => { const value = el.textContent.toLowerCase(); "
+                    "return value.includes('nenhuma programa') && value.includes('foi gravada'); }"
+                ), feedback
+                print(json.dumps({"teste_programacao_ui": "friendly_error_visible",
+                                  "http": 500, "database_writes": 0,
+                                  "raw_error_hidden": True}))
                 return
             assert result.status == 200
             page.wait_for_function("() => estadoAtual.resultado !== null", timeout=15000)

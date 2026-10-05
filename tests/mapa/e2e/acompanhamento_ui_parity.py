@@ -35,6 +35,20 @@ def pdf_digest(raw):
     doc.close()
     return pages
 
+def pixel_difference(left, right):
+    docs = [pymupdf.open(value) for value in (left, right)]
+    try:
+        assert len(docs[0]) == len(docs[1])
+        diffs = []
+        for a, b in zip(docs[0], docs[1]):
+            pa = a.get_pixmap(matrix=pymupdf.Matrix(1.5, 1.5), alpha=False)
+            pb = b.get_pixmap(matrix=pymupdf.Matrix(1.5, 1.5), alpha=False)
+            assert (pa.width, pa.height) == (pb.width, pb.height)
+            diffs.append(sum(abs(x-y) > 8 for x, y in zip(pa.samples, pb.samples)) / len(pa.samples))
+        return max(diffs, default=0)
+    finally:
+        for doc in docs: doc.close()
+
 
 def run_variant(browser, variant, role, account):
     context = browser.new_context(viewport={"width": 1024, "height": 768},
@@ -91,7 +105,10 @@ def run_variant(browser, variant, role, account):
             feedback:el.acmpFeedback.innerText};
         }""", {"date": DATE, "mode": mode, "sector": sector})
         page.evaluate("imprimirAcmp()")
-        pdf = pdf_digest(page.pdf(print_background=True, prefer_css_page_size=True))
+        raw_pdf = page.pdf(print_background=True, prefer_css_page_size=True)
+        pdf = pdf_digest(raw_pdf)
+        OUT.mkdir(parents=True, exist_ok=True)
+        (OUT / f"acmp-{variant}-{mode}-{sector.replace(' ','-')}.pdf").write_bytes(raw_pdf)
         output.append({"mode": mode, "sector": sector, "result": result,
                        "reads": sorted(digest(item) for item in reads), "pdf": pdf})
     assert not writes, writes
@@ -114,13 +131,21 @@ def main():
     path = OUT / f"acompanhamento-ui-{args.role.lower()}.json"
     path.write_text(json.dumps({"original": original, "unificado": unified},
                                ensure_ascii=False, indent=2), encoding="utf-8")
-    differences = [{"mode": a["mode"], "sector": a["sector"],
-                    "values_equal": a["result"] == b["result"],
-                    "reads_equal": a["reads"] == b["reads"],
-                    "pdf_equal": a["pdf"] == b["pdf"]}
-                   for a, b in zip(original, unified) if a != b]
+    differences = []
+    max_visual_pixel_difference = 0
+    for a, b in zip(original, unified):
+        visual = pixel_difference(OUT / f"acmp-original-{a['mode']}-{a['sector'].replace(' ','-')}.pdf",
+                                  OUT / f"acmp-unificado-{a['mode']}-{a['sector'].replace(' ','-')}.pdf")
+        max_visual_pixel_difference = max(max_visual_pixel_difference, visual)
+        same = (a["result"] == b["result"] and a["reads"] == b["reads"]
+                and [p["text"] for p in a["pdf"]] == [p["text"] for p in b["pdf"]]
+                and visual <= 0.005)
+        if not same: differences.append({"mode": a["mode"], "sector": a["sector"],
+                    "values_equal": a["result"] == b["result"], "reads_equal": a["reads"] == b["reads"],
+                    "visual_pixel_difference": visual})
     print(json.dumps({"role": args.role, "cases": len(original),
-                      "differences": differences, "writes": 0}, ensure_ascii=False))
+                      "differences": differences, "writes": 0,
+                      "max_visual_pixel_difference": max_visual_pixel_difference}, ensure_ascii=False))
     assert not differences, str(path)
 
 

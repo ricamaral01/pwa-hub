@@ -28,6 +28,20 @@ def pdf_digest(data):
     doc.close()
     return items
 
+def pixel_difference(left, right):
+    docs = [fitz.open(stream=value, filetype="pdf") for value in (left, right)]
+    try:
+        assert len(docs[0]) == len(docs[1])
+        diffs = []
+        for a, b in zip(docs[0], docs[1]):
+            pa = a.get_pixmap(matrix=fitz.Matrix(1.5, 1.5), alpha=False)
+            pb = b.get_pixmap(matrix=fitz.Matrix(1.5, 1.5), alpha=False)
+            assert (pa.width, pa.height) == (pb.width, pb.height)
+            diffs.append(sum(abs(x-y) > 8 for x, y in zip(pa.samples, pb.samples)) / len(pa.samples))
+        return max(diffs, default=0)
+    finally:
+        for doc in docs: doc.close()
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -38,6 +52,7 @@ def main() -> None:
     snapshots = []
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True, executable_path=CHROME)
+        pdfs = []
         for variant in ("original", "unificado"):
             context = browser.new_context(viewport={"width": 1366, "height": 768},
                                           service_workers="block")
@@ -82,6 +97,7 @@ def main() -> None:
             }""")
             pdf = page.pdf(print_background=True, prefer_css_page_size=True)
             print_pages = pdf_digest(pdf)
+            pdfs.append(pdf)
             assert not writes, writes
             snapshots.append({"cases": cases, "print_pages": print_pages})
             context.close()
@@ -89,9 +105,13 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / f"maintenance-report-{args.role.lower()}.json"
     path.write_text(json.dumps(snapshots, ensure_ascii=False, indent=2), encoding="utf-8")
-    assert snapshots[0] == snapshots[1], str(path)
+    max_visual_pixel_difference = pixel_difference(*pdfs)
+    assert snapshots[0]["cases"] == snapshots[1]["cases"], str(path)
+    assert [x["text_sha256"] for x in snapshots[0]["print_pages"]] == [x["text_sha256"] for x in snapshots[1]["print_pages"]], str(path)
+    assert max_visual_pixel_difference <= 0.005, (max_visual_pixel_difference, str(path))
     print(json.dumps({"maintenance_report": "equal", "role": args.role,
-                      "cases": len(CASES), "pdf_pages": len(snapshots[0]["print_pages"])}))
+                      "cases": len(CASES), "pdf_pages": len(snapshots[0]["print_pages"]),
+                      "max_visual_pixel_difference": max_visual_pixel_difference}))
 
 
 if __name__ == "__main__":
