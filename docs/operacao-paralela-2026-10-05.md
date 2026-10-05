@@ -3,14 +3,14 @@
 ## Publicação
 
 - URL: `https://concrefer.concretrack.com.br/unificado/`
-- Versão: `0.6.3`
+- Versão: `0.6.4`
 - Sistemas antigos continuam oficiais; não houve DNS, redirecionamento ou escrita neles.
 - O ambiente novo não exibe faixa ou aviso de teste. `/unificado/testar/` permanece como área autenticada de suporte e relatos, fora do fluxo de entrada.
 
 ## Proteção dos dados
 
 - Backup anterior às mudanças: bancos em `/var/backups/concrefer-unificado/20261005T005252Z`, fotos em `/var/backups/concrefer-unificado-fotos/20261005T005252Z` e versão em `/var/backups/concrefer-unificado/releases/0.5.12-before-parallel-20261005T005312Z`.
-- Backup final, depois da limpeza sintética: bancos em `/var/backups/concrefer-unificado/20261005T120230Z` e fotos em `/var/backups/concrefer-unificado-fotos/20261005T120242Z`.
+- Backup final, incluindo a correção da conta administrativa: bancos em `/var/backups/concrefer-unificado/20261005T130155Z` e fotos em `/var/backups/concrefer-unificado-fotos/20261005T120242Z`.
 - Todos os dumps foram restaurados em base temporária e tiveram contagens conferidas; o arquivo de fotos foi extraído e teve hashes conferidos.
 - Bancos: agenda horária, retenção integral por 48 horas e um diário por 30 dias. Fotos: agenda diária e retenção por 30 dias.
 - Os backups continuam somente na VPS `2.25.163.32`; uma falha total dessa VPS também pode atingir os backups.

@@ -63,7 +63,8 @@ def pcp_user_by_login(login: str) -> dict | None:
     with pcp_connect() as conn, conn.cursor() as cur:
         cur.execute("""SELECT id,username,nome,nivel_acesso,ativo,
                        trocar_senha_primeiro_acesso,senha_hash
-                       FROM public.usuarios WHERE username=%s""", (login,))
+                       FROM public.usuarios WHERE lower(username)=lower(%s)
+                       ORDER BY id LIMIT 1""", (login,))
         return cur.fetchone()
 
 
