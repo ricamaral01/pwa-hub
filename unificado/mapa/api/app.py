@@ -34,6 +34,7 @@ from unified_auth import (adopt_mapa_password, check_link_password, component_li
                           PCP_HASHER, pcp_connect, pcp_user_by_login,
                           set_unified_password, verify_map,
                           verify_pcp)
+from formas_por_setor import load_catalog as load_formas_por_setor
 
 
 app = Flask(__name__)
@@ -957,6 +958,44 @@ def unified_pcp_users(tail):
                                     (old["senha_hash"], old["trocar_senha_primeiro_acesso"], target_id))
                 return jsonify(detail="Sincronização de senha indisponível"), 503
     return Response(raw, status=status, content_type=content_type)
+
+
+@app.get("/pcp/formas-por-setor")
+def pcp_formas_por_setor():
+    """Read-only current PCP catalog plus existing Mapa maintenance states."""
+    bearer = request.headers.get("Authorization", "")
+    user_id = pcp_bearer_user_id()
+    if not bearer.startswith("Bearer ") or user_id is None:
+        return jsonify(detail="Entre no Planejamento para consultar as formas."), 401
+    validation = urllib.request.Request(
+        "http://127.0.0.1:13054/api/setores",
+        headers={"Authorization": bearer}, method="GET",
+    )
+    try:
+        with urllib.request.urlopen(validation, timeout=10) as upstream:
+            if upstream.status != 200:
+                return jsonify(detail="Sessão do Planejamento inválida."), 401
+    except urllib.error.HTTPError as error:
+        return jsonify(detail="Sessão do Planejamento inválida."), 401 if error.code in {401, 403} else 503
+    except (urllib.error.URLError, TimeoutError):
+        return jsonify(detail="Não foi possível conferir a sessão do Planejamento."), 503
+    try:
+        with pcp_connect() as pcp_conn, pcp_conn.cursor() as cursor:
+            cursor.execute("""SELECT ativo,nivel_acesso,trocar_senha_primeiro_acesso
+                              FROM public.usuarios WHERE id=%s""", (user_id,))
+            user = cursor.fetchone()
+            if not user or not user["ativo"] or user["trocar_senha_primeiro_acesso"]:
+                return jsonify(detail="Conta do Planejamento indisponível."), 403
+            if user["nivel_acesso"] not in {"ADMIN", "PCP"}:
+                return jsonify(detail="Seu perfil não permite consultar Formas por Setor."), 403
+            with connect() as mapa_conn:
+                formas = load_formas_por_setor(pcp_conn, mapa_conn)
+    except psycopg.Error:
+        app.logger.exception("formas_por_setor_catalog_error")
+        return jsonify(detail="Catálogo de formas temporariamente indisponível."), 503
+    response = jsonify(formas=formas)
+    response.headers["Cache-Control"] = "no-store"
+    return response
 
 
 @app.route("/pcp/<path:resource>", methods=["GET", "POST", "DELETE"])

@@ -33,6 +33,12 @@ def main() -> None:
             if html.count(visible_label) != 1:
                 raise ValueError("PCP production source label changed")
             html = html.replace(visible_label, "          Producao Realizada -- banco local")
+        if page == "formas-por-setor":
+            for asset in ("css/formas-por-setor.css", "js/formas-por-setor.js"):
+                original = f"/unificado/pcp/static/{asset}"
+                if html.count(original + '"') != 1:
+                    raise ValueError(f"Formas por Setor asset changed: {asset}")
+                html = html.replace(original + '"', f'{original}?v={version}"')
         html, guards = re.subn(
             r'<script src="/unificado/pcp/readonly-guard\.js"></script>\s*', "", html)
         if guards != 1:

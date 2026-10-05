@@ -187,7 +187,7 @@ function renderSectors() {
 
 function renderShortcuts() {
   const groups = [
-    { title: 'Planejamento', icon: ICONS.plan, items: [['programacao12', 'Programação'], ['relatorio12', 'Relatórios de Programação'], ['etiquetas', 'Etiquetas'], ['acompMensal'], ['apontamentoMega']] },
+    { title: 'Planejamento', icon: ICONS.plan, items: [['programacao12', 'Programação'], ['relatorio12', 'Relatórios de Programação'], ['etiquetas', 'Etiquetas'], ['acompMensal'], ['formasPorSetor'], ['apontamentoMega']] },
     { title: 'Produção e montagem', icon: ICONS.production, items: [['liberacao'], ['mandril'], ['inspecao'], ['montagem'], ['manutencao']] },
     { title: 'Indicadores', icon: ICONS.chart, items: [['comparacao'], ['dashMontagem'], ['dashDefeitos'], ['produtividade'], ['historico']] }
   ];
