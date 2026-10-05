@@ -1,14 +1,17 @@
--- Chaves usadas por `on_conflict` no app.js original; somente Mapa de testes.
--- Auditoria prévia: zero grupos duplicados nas três combinações.
-BEGIN;
-
-CREATE UNIQUE INDEX IF NOT EXISTS programacao_pcp_data_setor_forma_unificado_uidx
-  ON public.programacao_pcp (data_fabricacao, setor, forma);
-CREATE UNIQUE INDEX IF NOT EXISTS liberacao_formas_data_setor_forma_unificado_uidx
-  ON public.liberacao_formas (data_fabricacao, setor, forma);
-CREATE UNIQUE INDEX IF NOT EXISTS prog_s3_s4_data_forma_setor_unificado_uidx
-  ON public.prog_s3_s4 (data, forma, setor);
-
-COMMIT;
-
+﻿-- Chaves de negocio confirmadas no catalogo ao vivo da origem, 05/10/2026.
+-- Evita recriar os antigos indices *_unificado_uidx depois da reconciliacao.
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='programacao_pcp_data_fabricacao_setor_forma_key') THEN
+    ALTER TABLE public.programacao_pcp ADD CONSTRAINT programacao_pcp_data_fabricacao_setor_forma_key
+      UNIQUE (data_fabricacao, setor, forma);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='liberacao_formas_data_fabricacao_setor_forma_key') THEN
+    ALTER TABLE public.liberacao_formas ADD CONSTRAINT liberacao_formas_data_fabricacao_setor_forma_key
+      UNIQUE (data_fabricacao, setor, forma);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname='prog_s3_s4_unique') THEN
+    ALTER TABLE public.prog_s3_s4 ADD CONSTRAINT prog_s3_s4_unique
+      UNIQUE (data, forma, setor);
+  END IF;
+END $$;
 NOTIFY pgrst, 'reload schema';

@@ -1,5 +1,7 @@
 # Auditoria estrutural do Mapa — 05/10/2026
 
+**Atualização:** o catálogo ao vivo chegou depois desta auditoria preliminar. Para o estado atual, usar [auditoria-catalogo-mapa-ao-vivo-20261005.md](auditoria-catalogo-mapa-ao-vivo-20261005.md). As pendências descritas abaixo foram reavaliadas nesse documento.
+
 Fontes aceitas da origem: `supabase/migrations/*.sql`, `mapa-concretagem/supabase-formas-manutencao.sql` e apenas contagens/colunas lidas ao vivo em `export-estrutura-mapa/estrutura-atual.json`. `estrutura-atual.sql` e `unificado-mapa-database/` foram excluídos da comparação. O catálogo ao vivo da origem ainda depende da exportação do SQL Editor.
 
 Backup do destino antes das mudanças: `/var/backups/concrefer-unificado/20261005T204225Z`; restauração dos dois bancos conferida.
