@@ -58,8 +58,8 @@ def main() -> None:
             result = {"engine": engine_name, "device": device_name,
                       "viewport": page.evaluate("[innerWidth,innerHeight]"),
                       "logins": all(logos), "mode_results": mode_results,
-                      "test_icon": manifest.get("icons", [{}])[0].get("src") == "test-icon.png",
-                      "test_name": "TESTE" in manifest.get("name", ""),
+                      "operational_icon": manifest.get("icons", [{}])[0].get("src") == "unificado-icon.png",
+                      "operational_name": manifest.get("name") == "Concrefer Produção",
                       "desktop_shell_hidden": page.locator(".unificado-sidebar:visible").count() == 0,
                       "external_hosts": sorted(set(external)), "capture": filename}
             results.append(result)
@@ -68,7 +68,7 @@ def main() -> None:
     (OUT / "tablet-engines.json").write_text(
         json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(results, ensure_ascii=True))
-    assert all(item["logins"] and item["test_icon"] and item["test_name"]
+    assert all(item["logins"] and item["operational_icon"] and item["operational_name"]
                and item["desktop_shell_hidden"] and not item["external_hosts"]
                and all(mode["mode"] == mode["actual"] for mode in item["mode_results"])
                for item in results)

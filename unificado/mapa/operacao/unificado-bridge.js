@@ -85,9 +85,9 @@
       scroll.append(group);
     }
     nav.append(scroll);
-    const test = element("a", "unificado-nav-foot", "Ambiente de teste");
-    test.href = "/unificado/testar/";
-    nav.append(test);
+    const report = element("a", "unificado-nav-foot", "Relatar problema");
+    report.href = "/unificado/testar/#relatar";
+    nav.append(report);
     return nav;
   }
   function makeTopbar() {
@@ -158,11 +158,11 @@
       event.preventDefault();
       promptEvent = event;
       if (document.querySelector(".unificado-install-button")) return;
-      const button = element("button", "unificado-install-button", "Instalar Mapa TESTE");
+      const button = element("button", "unificado-install-button", "Instalar Produção Concrefer");
       button.type = "button";
       button.addEventListener("click", () => {
         const dialog = element("div", "unificado-install-dialog");
-        dialog.innerHTML = '<section class="unificado-install-card"><div class="unificado-install-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div><h2>Instalar Mapa TESTE</h2><p>Este aplicativo usa somente o ambiente de testes.</p><button type="button" data-install>Instalar</button><button type="button" class="secondary" data-close>Cancelar</button></section>';
+        dialog.innerHTML = '<section class="unificado-install-card"><div class="unificado-install-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div><h2>Instalar Produção Concrefer</h2><p>Este aplicativo abre o módulo Produção do sistema unificado.</p><button type="button" data-install>Instalar</button><button type="button" class="secondary" data-close>Cancelar</button></section>';
         dialog.querySelector("[data-close]").addEventListener("click", () => dialog.remove());
         dialog.querySelector("[data-install]").addEventListener("click", async () => { dialog.remove(); await promptEvent.prompt(); promptEvent = null; button.remove(); });
         document.body.append(dialog);
@@ -205,6 +205,10 @@
   }
   document.addEventListener("DOMContentLoaded", () => {
     prepareInstall();
+    const problem = element("a", "unificado-problem-fab", "Relatar problema");
+    problem.href = "/unificado/testar/#relatar";
+    problem.setAttribute("aria-label", "Relatar problema");
+    document.body.append(problem);
     addEventListener("error", event => recordClientError("window.error", event.message));
     addEventListener("unhandledrejection", event => recordClientError("unhandledrejection", event.reason?.message || event.reason));
     const version = document.getElementById("unificado-version");

@@ -30,6 +30,7 @@ TABLES = (
 )
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 IDENTIFIER = re.compile(r"[a-z][a-z0-9_]*\Z")
+RICARDO_CONFIRMATION = "RICARDO AUTORIZOU REFAZER A FOTOGRAFIA"
 
 
 def psql(sql: str, *, input_file: Path | None = None) -> str:
@@ -91,6 +92,8 @@ def dump_before_change(path: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true", help="Confere requisitos sem exportar ou alterar o banco")
+    parser.add_argument("--confirmacao-ricardo", default="",
+                        help="Frase de autorização recebida por escrito do Ricardo")
     args = parser.parse_args()
     if os.name != "posix" or os.geteuid() != 0:
         parser.error("Este script deve ser executado como root na VPS Linux de testes")
@@ -102,6 +105,8 @@ def main() -> None:
     if args.dry_run:
         print("Requisitos locais conferidos; nenhum dado exportado ou alterado.")
         return
+    if args.confirmacao_ricardo != RICARDO_CONFIRMATION:
+        parser.error("Fotografia travada: requer autorização escrita do Ricardo e a frase de confirmação exata")
 
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     work = BASE / "snapshots" / stamp

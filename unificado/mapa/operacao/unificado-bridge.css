@@ -4,17 +4,14 @@
 @font-face{font-family:'Geist Mono';src:url('fonts/GeistMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
 @font-face{font-family:'Geist Mono';src:url('fonts/GeistMono-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
 .unificado-sidebar,.unificado-topbar,.unificado-segments,.unificado-date-heading{display:none}
-.unificado-test-logos{display:inline-flex;align-items:center;gap:6px;margin-right:10px;vertical-align:middle}
-.unificado-test-logos img:first-child{width:82px;height:22px;object-fit:contain}
-.unificado-test-logos img:last-child{width:25px;height:25px;object-fit:contain}
 .unificado-loading-logos,.unificado-install-logos{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px}.unificado-loading-logos img:first-child,.unificado-install-logos img:first-child{width:128px;height:36px;object-fit:contain}.unificado-loading-logos img:last-child,.unificado-install-logos img:last-child{width:40px;height:40px;object-fit:contain}
 .unificado-install-button{position:fixed;right:12px;bottom:42px;z-index:99998;border:0;border-radius:10px;padding:11px 14px;background:#E8762A;color:#0B1730;font:700 14px Geist,system-ui,sans-serif;box-shadow:0 6px 20px #0003}.unificado-install-dialog{position:fixed;inset:0;z-index:1000003;display:grid;place-items:center;padding:20px;background:rgba(11,23,48,.72)}.unificado-install-card{width:min(420px,100%);padding:24px;background:#fff;color:#0B1730;border-radius:16px;text-align:center}.unificado-install-card button{min-height:46px;margin:6px;border:0;border-radius:10px;padding:10px 16px;background:#E8762A;color:#0B1730;font-weight:700}.unificado-install-card button.secondary{background:#F1F3F6}
+.unificado-problem-fab{position:fixed;left:8px;bottom:8px;z-index:99997;min-height:32px;padding:7px 10px;border-radius:9px;background:#0B1730;color:#fff!important;text-decoration:none;font:600 11px Geist,system-ui,sans-serif;box-shadow:0 3px 12px #0003}
 @media screen and (min-width:1025px){
  body.unificado-desktop{--unificado-navy:#0B1730;--unificado-panel:#F5F6F8;--unificado-field:#F1F3F6;--unificado-line:#E9ECF1;--unificado-ink:#0E1A2F;--unificado-orange:#E8762A;--unificado-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05);background:var(--unificado-navy);color:var(--unificado-ink);font-family:Geist,system-ui,sans-serif}
- body.unificado-desktop #ambiente-teste{position:relative;box-shadow:none;padding:6px 16px;font:600 12px Geist,system-ui,sans-serif}
- body.unificado-desktop .app-shell{display:flex;min-height:calc(100vh - 31px);padding:10px;background:var(--unificado-navy)}
+ body.unificado-desktop .app-shell{display:flex;min-height:100vh;padding:10px;background:var(--unificado-navy)}
  body.unificado-desktop #appSidebar,body.unificado-desktop #sidebarOverlay,body.unificado-desktop .app-main>.topbar{display:none!important}
- body.unificado-desktop .unificado-sidebar{display:flex;flex-direction:column;width:228px;min-width:228px;position:sticky;top:10px;height:calc(100vh - 51px);padding:21px 13px 17px 5px;color:#fff;background:var(--unificado-navy);z-index:10}
+ body.unificado-desktop .unificado-sidebar{display:flex;flex-direction:column;width:228px;min-width:228px;position:sticky;top:10px;height:calc(100vh - 20px);padding:21px 13px 17px 5px;color:#fff;background:var(--unificado-navy);z-index:10}
  body.unificado-desktop .unificado-brand{display:flex;align-items:center;gap:10px;padding:3px 11px 26px}
  body.unificado-desktop .unificado-brand-icon{display:grid;place-items:center;width:30px;height:30px;flex:none;border-radius:10px;background:var(--unificado-orange);color:var(--unificado-navy);font-size:18px;font-weight:600}
  body.unificado-desktop .unificado-brand strong,body.unificado-desktop .unificado-brand small{display:block;line-height:1.15}
@@ -32,7 +29,7 @@
  body.unificado-desktop .unificado-nav-link.is-active{font-weight:600}
  body.unificado-desktop .unificado-mono{display:grid;place-items:center;flex:none;width:24px;height:23px;border:1px solid #ffffff2b;border-radius:6px;color:#ffffffba;font:600 12px 'Geist Mono',monospace}
  body.unificado-desktop .unificado-nav-foot{display:block;margin-top:12px;padding:18px 11px 0;border-top:1px solid #ffffff25;color:#ffffffb3;font-size:12.5px;text-decoration:none}
- body.unificado-desktop .app-main{margin:0!important;display:flex;flex-direction:column;min-width:0;min-height:calc(100vh - 51px);width:calc(100% - 228px);max-width:none!important;background:var(--unificado-panel)!important;border-radius:20px;overflow:hidden}
+ body.unificado-desktop .app-main{margin:0!important;display:flex;flex-direction:column;min-width:0;min-height:calc(100vh - 20px);width:calc(100% - 228px);max-width:none!important;background:var(--unificado-panel)!important;border-radius:20px;overflow:hidden}
  body.unificado-desktop .unificado-topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;min-height:70px;padding:0 30px;border-bottom:1px solid var(--unificado-line);background:#fff}
  body.unificado-desktop .unificado-crumb,body.unificado-desktop .unificado-top-actions{display:flex;align-items:center;gap:9px}
  body.unificado-desktop .unificado-crumb{color:#5B677A;font-size:14px;white-space:nowrap}
@@ -86,12 +83,12 @@
  body.unificado-desktop .page-content.container{padding:25px!important}
 }
 @media print{
- .unificado-sidebar,.unificado-topbar,#ambiente-teste,#unificado-version,.unificado-test-logos,.unificado-loading-logos,.unificado-install-button,.unificado-install-dialog{display:none!important}
+ .unificado-sidebar,.unificado-topbar,#unificado-version,.unificado-loading-logos,.unificado-install-button,.unificado-install-dialog,.unificado-problem-fab{display:none!important}
  body.print-relatorio::after{content:"";display:block;break-before:page;height:1px}
 }
 @media screen and (max-width:1024px){
  #unificado-version{display:none!important}
- #ambiente-teste::after{content:" TESTE " attr(data-version);font:700 11px monospace;white-space:nowrap;margin-left:8px}
+ .unificado-problem-fab{font-size:0;width:34px;height:34px;padding:0;display:grid;place-items:center}.unificado-problem-fab::before{content:"!";font:800 16px Geist,system-ui,sans-serif}
  /* Preparado para ENABLE_TABLET_HUB_SHELL; a classe não é aplicada enquanto a chave estiver false. */
  body.unificado-tablet-hub{background:#0B1730;font-family:Geist,system-ui,sans-serif}
  body.unificado-tablet-hub #appSidebar,body.unificado-tablet-hub .app-main>.topbar{display:none!important}

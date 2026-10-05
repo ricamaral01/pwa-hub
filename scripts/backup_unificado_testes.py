@@ -1,4 +1,4 @@
-"""Back up both isolated PostgreSQL test databases with 14-day retention.
+"""Back up both unificado PostgreSQL databases with hourly/daily retention.
 
 Run as the local postgres OS user. --restore-check restores each new dump into
 a temporary database, compares all public base-table counts, then drops it.
@@ -53,13 +53,22 @@ def restore_check(database: str, dump: Path) -> dict[str, int]:
 
 
 def prune(now: datetime) -> int:
+    """Keep every backup for 48 h and the newest backup per UTC day for 30 days."""
     removed = 0
-    threshold = now - timedelta(days=14)
+    folders: list[tuple[datetime, Path]] = []
     for folder in ROOT.iterdir():
-        if not folder.is_dir() or not STAMP.fullmatch(folder.name):
-            continue
-        created = datetime.strptime(folder.name, "%Y%m%dT%H%M%SZ").replace(tzinfo=timezone.utc)
-        if created >= threshold:
+        if folder.is_dir() and STAMP.fullmatch(folder.name):
+            created = datetime.strptime(folder.name, "%Y%m%dT%H%M%SZ").replace(tzinfo=timezone.utc)
+            folders.append((created, folder))
+    daily: dict[str, tuple[datetime, Path]] = {}
+    for created, folder in folders:
+        if now - timedelta(days=30) <= created < now - timedelta(hours=48):
+            key = created.strftime("%Y-%m-%d")
+            if key not in daily or created > daily[key][0]:
+                daily[key] = (created, folder)
+    keep = {folder for _, folder in daily.values()}
+    for created, folder in folders:
+        if created >= now - timedelta(hours=48) or folder in keep:
             continue
         if folder.resolve().parent != ROOT.resolve():
             raise RuntimeError(f"Unexpected backup path: {folder}")
@@ -97,7 +106,7 @@ def main() -> None:
         manifest["databases"][database] = record
         print(f"OK {database} bytes={record['size']} restored={args.restore_check}")
     (folder / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
-    print(f"backup={folder} pruned={prune(now)}")
+    print(f"backup={folder} retention=48h-hourly+30d-daily pruned={prune(now)}")
 
 
 if __name__ == "__main__":

@@ -146,22 +146,26 @@
     controls.querySelector(".unificado-pcp-exit").addEventListener("click", () =>
       document.querySelector("#btn-logout")?.click());
     topbar.append(crumb, controls);
-    const foot = make("a", "unificado-pcp-test-link", "Ambiente de teste");
-    foot.href = "/unificado/testar/";
+    const foot = make("a", "unificado-pcp-test-link", "Relatar problema");
+    foot.href = "/unificado/testar/#relatar";
     sidebar.append(foot);
   }
   document.addEventListener("DOMContentLoaded", () => {
+    const problem = make("a", "unificado-pcp-problem-fab", "Relatar problema");
+    problem.href = "/unificado/testar/#relatar";
+    problem.setAttribute("aria-label", "Relatar problema");
+    document.body.append(problem);
     const testBrand = make("a", "unificado-pcp-test-brand", "");
-    testBrand.href = "/unificado/testar/";
-    testBrand.setAttribute("aria-label", "Concrefer e ConcreTrack — ambiente de teste");
-    testBrand.innerHTML = '<img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"><span>AMBIENTE DE TESTE — lançamentos aqui não valem como produção</span>';
+    testBrand.href = "/unificado/";
+    testBrand.setAttribute("aria-label", "Concrefer e ConcreTrack");
+    testBrand.innerHTML = '<img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack">';
     document.body.prepend(testBrand);
     const version = make("small", "unificado-pcp-version", "");
     Object.assign(version.style, {position:"fixed",right:"6px",bottom:"5px",zIndex:"99999",
       background:"#0B1730",color:"white",padding:"3px 7px",borderRadius:"6px",font:"11px monospace"});
     document.body.append(version);
     fetch("/unificado/VERSION", {cache:"no-store"}).then(r => r.ok ? r.text() : "")
-      .then(value => {version.textContent = "TESTE " + value.trim();}).catch(() => {});
+      .then(value => {version.textContent = "v" + value.trim();}).catch(() => {});
     document.body.classList.toggle("unificado-menu-collapsed", localStorage.getItem("unificado_menu_collapsed") === "1");
     apply();
     new MutationObserver(apply).observe(document.body, {childList: true, subtree: true});

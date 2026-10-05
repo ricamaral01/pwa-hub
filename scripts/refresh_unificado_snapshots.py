@@ -22,6 +22,7 @@ PCP = "pcp_unificado_teste"
 MAPA_SCRIPT = "/opt/concrefer-unificado/migration/refresh_mapa_snapshot.py"
 MAPA_PYTHON = "/opt/concrefer-unificado/migration/refresh-venv/bin/python"
 BACKUP_SCRIPT = "/opt/concrefer-unificado/infra/backup_unificado_testes.py"
+RICARDO_CONFIRMATION = "RICARDO AUTORIZOU REFAZER A FOTOGRAFIA"
 
 
 def run(args: list[str], *, input_bytes: bytes | None = None) -> bytes:
@@ -46,6 +47,8 @@ print(json.dumps({{name:int(query('SELECT count(*) FROM public.'+name)) for name
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true", help="Refresh test DBs; default is preflight only")
+    parser.add_argument("--confirmacao-ricardo", default="",
+                        help="Frase de autorização recebida por escrito do Ricardo")
     args = parser.parse_args()
     official = remote_counts("vps-rh", "pcp_concrefer")
     current = remote_counts("vps-staging", PCP)
@@ -55,6 +58,8 @@ def main() -> None:
     print(f"preflight=ok pcp_tables={len(official)} pcp_source_rows={sum(official.values())}")
     if not args.apply:
         return
+    if args.confirmacao_ricardo != RICARDO_CONFIRMATION:
+        parser.error("Fotografia travada: requer autorização escrita do Ricardo e a frase de confirmação exata")
 
     # This backup also proves that both existing test DBs can be restored.
     run(["ssh", "vps-staging", "sudo", "-u", "postgres", "python3", BACKUP_SCRIPT, "--restore-check"])
@@ -97,7 +102,8 @@ def main() -> None:
                 run(["ssh", "vps-staging", "sudo", "-u", "postgres", "dropdb", "--if-exists", stage])
         finally:
             run(["ssh", "vps-staging", "rm", "-f", remote_dump])
-    result = run(["ssh", "vps-staging", MAPA_PYTHON, MAPA_SCRIPT]).decode()
+    result = run(["ssh", "vps-staging", MAPA_PYTHON, MAPA_SCRIPT,
+                  "--confirmacao-ricardo", RICARDO_CONFIRMATION]).decode()
     print(result.strip().splitlines()[-1])
     match = re.search(r"Fotografia atualizada em ([^;\n]+)", result)
     if not match:

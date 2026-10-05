@@ -69,7 +69,7 @@ def main() -> None:
     manifest = {"created_utc": now.isoformat(), "files": expected,
                 "archive_sha256": digest(archive), "restore_checked": args.restore_check}
     (folder / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
-    threshold = now - timedelta(days=14)
+    threshold = now - timedelta(days=30)
     pruned = 0
     for old in ROOT.iterdir():
         if not old.is_dir() or not STAMP.fullmatch(old.name):

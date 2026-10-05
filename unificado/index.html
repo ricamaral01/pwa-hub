@@ -5,33 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <title>Concrefer — Sistema unificado</title>
-  <link rel="stylesheet" href="shell/shell.css?v=0.5.12">
-  <script defer src="shell/menu.config.js?v=0.5.12"></script>
-  <script defer src="shell/auth.js?v=0.5.12"></script>
-  <script defer src="shell/shell.js?v=0.5.12"></script>
+  <link rel="stylesheet" href="shell/shell.css?v=0.6.0">
+  <script defer src="shell/menu.config.js?v=0.6.0"></script>
+  <script defer src="shell/auth.js?v=0.6.0"></script>
+  <script defer src="shell/shell.js?v=0.6.0"></script>
 </head>
 <body>
-  <div class="test-environment-bar">AMBIENTE DE TESTE — lançamentos aqui não valem como produção</div>
   <div class="desktop-only">
     <nav id="sidebar"></nav>
     <main class="main-panel">
       <header class="topbar">
         <div class="breadcrumb"><strong>Concrefer</strong><span>/</span><span>Início</span></div>
         <div class="topbar-actions">
-          <span class="sync-pill"><span class="sync-dot"></span>Ambiente de testes</span>
-          <span class="user-pill"><span class="avatar">T</span><span><strong>Concrefer</strong><small>Teste</small></span></span>
+          <span class="sync-pill"><span class="sync-dot"></span>Sincronizado</span>
+          <span class="user-pill"><span class="avatar">C</span><span><strong>Concrefer</strong><small>Sistema unificado</small></span></span>
           <button class="exit-button" type="button" aria-label="Sair" title="Sair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M16 16l4-4-4-4M20 12H9"/></svg></button>
         </div>
       </header>
       <div class="content">
-        <div class="welcome"><div><p class="eyebrow">VISÃO GERAL</p><h1>Sistema unificado<span class="accent-mark">.</span></h1><p id="today" class="date"></p></div><span class="preview-tag">AMBIENTE DE TESTES</span></div>
-        <p class="preview-footnote"><a class="button button-secondary" href="testar/">Ver página de testes</a></p>
+        <div class="welcome"><div><p class="eyebrow">VISÃO GERAL</p><h1>Sistema unificado<span class="accent-mark">.</span></h1><p id="today" class="date"></p></div></div>
         <section aria-labelledby="sectors-title">
           <div class="section-heading"><div><h2 id="sectors-title">Setores hoje</h2><p>Programado no PCP e realizado no Mapa.</p></div><span class="sample-note">Carregando dados…</span></div>
           <div id="sector-cards" class="sector-grid"></div>
         </section>
         <section class="shortcuts-section" aria-labelledby="shortcuts-title"><div class="section-heading"><div><h2 id="shortcuts-title">Acesso rápido</h2><p>As rotinas mais usadas em um só lugar.</p></div></div><div id="shortcut-grid" class="shortcut-grid"></div></section>
-        <p class="preview-footnote">Ambiente de teste. Nada lançado aqui vale como produção.</p>
+        <p class="preview-footnote"><a class="button button-secondary" href="testar/#relatar">Relatar problema</a></p>
       </div>
     </main>
   </div>

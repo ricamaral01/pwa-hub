@@ -127,3 +127,8 @@
 **Onde:** `unificado/pcp/backend/app/api/routers/teste_programacao.py`, `_get_compatibilidade`, compara `MapeamentoFormaPoste.codigo_forma` (texto) a `forma.id` (inteiro). PostgreSQL de testes nÃ£o possui operador `varchar = integer` e a consulta falha antes do cÃ¡lculo. Os 47 arquivos do backend sÃ£o idÃªnticos aos oficiais.
 
 **EvidÃªncia:** `tests/pcp/teste_programacao_ui.py` reproduziu HTTP 500 com conta sintÃ©tica ADMIN em 04/10/2026; log de `pcp-unificado-test.service` mostrou `psycopg2.errors.UndefinedFunction: operator does not exist: character varying = integer`, com parÃ¢metro inteiro `9`. `scripts/check_pcp_simulator_schema.py` consultou somente o catÃ¡logo dos dois bancos: `formas.id` Ã© `integer`, `mapeamento_forma_postes.codigo_forma` Ã© `character varying`, e nenhum dos dois tem operador de igualdade texto/inteiro. Isso sustenta a inferÃªncia de que a mesma chamada falharia no oficial, mas nÃ£o substitui uma resposta HTTP oficial. A conta sintÃ©tica foi removida. NÃ£o houve ajuste no backend ou no esquema para mudar esse comportamento.
+
+## PCP — mensagem amigável na tela Teste Programação
+
+O endpoint original de Teste Programação retorna HTTP 500 ao comparar o código textual da forma com o identificador inteiro. O backend foi preservado. No unificado, a tela captura essa resposta e informa claramente que a programação automática está indisponível e que nenhum lançamento foi gravado, sem mostrar o erro cru.
+

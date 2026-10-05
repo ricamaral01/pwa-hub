@@ -15,7 +15,7 @@ Object.assign(unificadoVersion.style, {position:'fixed',right:'6px',bottom:'5px'
   background:'#0B1730',color:'white',padding:'3px 7px',borderRadius:'6px',font:'11px monospace'});
 document.body.append(unificadoVersion);
 fetch('/unificado/VERSION',{cache:'no-store'}).then(r=>r.ok?r.text():'')
-  .then(value=>{unificadoVersion.textContent='TESTE '+value.trim();}).catch(()=>{});
+  .then(value=>{unificadoVersion.textContent='v'+value.trim();}).catch(()=>{});
 const pcpUser = (() => { try { return JSON.parse(localStorage.getItem('pcp_user') || 'null'); } catch { return null; } })();
 const mapaUser = (() => { try { return JSON.parse(localStorage.getItem('pwa_mapa_auth_session_v1') || 'null'); } catch { return null; } })();
 const hasPcp = Boolean(localStorage.getItem('pcp_token') && pcpUser);

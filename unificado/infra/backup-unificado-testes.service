@@ -1,5 +1,5 @@
 [Unit]
-Description=Backup diario dos bancos isolados do unificado
+Description=Backup horario dos bancos do unificado
 After=postgresql.service
 
 [Service]
@@ -7,7 +7,7 @@ Type=oneshot
 User=postgres
 Group=postgres
 WorkingDirectory=/var/lib/postgresql
-ExecStart=/usr/bin/python3 /usr/local/libexec/backup_unificado_testes.py
+ExecStart=/usr/bin/python3 /opt/concrefer-unificado/infra/backup_unificado_testes.py --restore-check
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectHome=true

@@ -130,8 +130,8 @@ def test_landing():
     if not authorized:
         return Response(
             '<!doctype html><html lang="pt-BR"><meta charset="utf-8">'
-            '<title>Entrar no ambiente de testes</title><body>'
-            '<p>Entre no sistema unificado de testes para abrir esta página.</p>'
+            '<title>Entrar no sistema unificado</title><body>'
+            '<p>Entre no sistema unificado de testes para abrir esta pÃ¡gina.</p>'
             '<a href="/unificado/login.html?next=testar/">Entrar</a></body></html>',
             status=401, content_type="text/html; charset=utf-8",
         )
@@ -169,7 +169,7 @@ def unified_login_response(pcp, mapa, password):
         payload["mapa"] = public_user(mapa)
         payload["modules"].append("mapa")
     if not payload["modules"]:
-        return jsonify(ok=False, error="Módulo temporariamente indisponível."), 503
+        return jsonify(ok=False, error="MÃ³dulo temporariamente indisponÃ­vel."), 503
     response = jsonify(payload)
     if mapa and mapa["ativo"]:
         token = signer().dumps({"scope": "session", "id": mapa["id"],
@@ -195,7 +195,7 @@ def unified_login():
     name = str(body.get("username") or "").strip()
     password = body.get("password")
     if not name or len(name) > 200 or not isinstance(password, str) or not password or len(password) > 1024:
-        return jsonify(ok=False, error="Usuário ou senha incorretos."), 401
+        return jsonify(ok=False, error="UsuÃ¡rio ou senha incorretos."), 401
     try:
         pcp = pcp_user_by_login(name)
         mapa = mapa_user_by_login(name)
@@ -204,7 +204,7 @@ def unified_login():
         if link:
             linked_pcp, linked_mapa = linked_users(link)
             if not linked_pcp or not linked_mapa:
-                return jsonify(ok=False, error="Conta temporariamente indisponível."), 503
+                return jsonify(ok=False, error="Conta temporariamente indisponÃ­vel."), 503
             if mapa and not mapa["ativo"]:
                 component = component_links(link["id"])
                 other_ids = [item["mapa_login"] for item in component
@@ -248,7 +248,7 @@ def unified_login():
     except (ValueError, psycopg.Error, urllib.error.URLError, TimeoutError):
         pass
     time.sleep(0.25 + secrets.randbelow(100) / 1000)
-    return jsonify(ok=False, error="Usuário ou senha incorretos."), 401
+    return jsonify(ok=False, error="UsuÃ¡rio ou senha incorretos."), 401
 
 
 @app.post("/unified/pcp-first-access")
@@ -311,7 +311,7 @@ def login():
     name = str(body.get("name") or "").strip()
     password = str(body.get("password") or "")
     if not name or not password or len(name) > 200 or len(password) > 1024:
-        return jsonify(ok=False, error="Usuário ou senha incorretos."), 401
+        return jsonify(ok=False, error="UsuÃ¡rio ou senha incorretos."), 401
 
     try:
         with connect() as conn, conn.cursor() as cur:
@@ -325,7 +325,7 @@ def login():
             )
             row = cur.fetchone()
     except psycopg.Error:
-        return jsonify(ok=False, error="Serviço temporariamente indisponível."), 503
+        return jsonify(ok=False, error="ServiÃ§o temporariamente indisponÃ­vel."), 503
 
     # Uma resposta uniforme evita revelar quais nomes existem no banco.
     try:
@@ -334,7 +334,7 @@ def login():
         valid = False
     if not valid:
         time.sleep(0.25 + secrets.randbelow(100) / 1000)
-        return jsonify(ok=False, error="Usuário ou senha incorretos."), 401
+        return jsonify(ok=False, error="UsuÃ¡rio ou senha incorretos."), 401
     if row["primeiro_acesso"]:
         token = signer().dumps({
             "scope": "first_access", "id": row["id"],
@@ -383,7 +383,7 @@ def first_access():
             if not row:
                 return jsonify(ok=False), 409
     except (KeyError, psycopg.Error):
-        return jsonify(ok=False, error="Não foi possível atualizar a senha."), 503
+        return jsonify(ok=False, error="NÃ£o foi possÃ­vel atualizar a senha."), 503
     return session_response(row)
 
 
@@ -443,15 +443,15 @@ def validation_origin_ok():
 def test_problem_reports():
     actor = test_actor()
     if not actor:
-        return jsonify(error="Sessão de teste expirada. Entre novamente."), 401
+        return jsonify(error="SessÃ£o de teste expirada. Entre novamente."), 401
     if request.method == "POST":
         if not validation_origin_ok():
-            return jsonify(error="Origem da requisição inválida."), 403
+            return jsonify(error="Origem da requisiÃ§Ã£o invÃ¡lida."), 403
         payload = request.get_json(silent=True) or {}
         report_text = str(payload.get("text") or "").strip()
         screen = str(payload.get("screen") or "/unificado/testar/")[:500]
         if not report_text or len(report_text) > 4000:
-            return jsonify(error="Descreva o problema em até 4.000 caracteres."), 400
+            return jsonify(error="Descreva o problema em atÃ© 4.000 caracteres."), 400
         with connect() as conn, conn.cursor() as cur:
             cur.execute("""INSERT INTO unificado_auth.problem_reports
                            (actor,screen,version,report_text) VALUES (%s,%s,%s,%s) RETURNING id""",
@@ -534,7 +534,7 @@ def rest_read(resource):
         if resource not in WRITE_TABLES and resource != "usuarios":
             return jsonify(ok=False), 405
         if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
-            return jsonify(ok=False, error="Origem da requisição inválida."), 403
+            return jsonify(ok=False, error="Origem da requisiÃ§Ã£o invÃ¡lida."), 403
         if resource == "usuarios":
             return rest_users_write_with_unified_mirror(user)
     url = f"http://127.0.0.1:{13058 if writing else 13051}/{resource}"
@@ -552,7 +552,7 @@ def rest_read(resource):
     except urllib.error.HTTPError as error:
         upstream = error
     except (urllib.error.URLError, TimeoutError):
-        return jsonify(ok=False, error="Banco temporariamente indisponível."), 503
+        return jsonify(ok=False, error="Banco temporariamente indisponÃ­vel."), 503
     response_headers = {}
     for name in ("Content-Type", "Content-Range", "Range-Unit", "Preference-Applied",
                  "Location", "Content-Location"):
@@ -814,7 +814,7 @@ def photo_proxy(path):
         return jsonify(ok=False), 401
     writing = request.method in {"POST", "DELETE"}
     if writing and request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
-        return jsonify(ok=False, error="Origem da requisição inválida."), 403
+        return jsonify(ok=False, error="Origem da requisiÃ§Ã£o invÃ¡lida."), 403
     url = "http://127.0.0.1:13059/api/" + path
     if request.query_string:
         url += "?" + request.query_string.decode("ascii", errors="strict")
@@ -829,7 +829,7 @@ def photo_proxy(path):
     except urllib.error.HTTPError as error:
         upstream = error
     except (urllib.error.URLError, TimeoutError):
-        return jsonify(error="Serviço de fotos temporariamente indisponível."), 503
+        return jsonify(error="ServiÃ§o de fotos temporariamente indisponÃ­vel."), 503
     body = upstream.read()
     status = upstream.status
     response_headers = {name: upstream.headers[name] for name in
@@ -918,7 +918,7 @@ def unified_pcp_users(tail):
     except urllib.error.HTTPError as error:
         upstream = error
     except (urllib.error.URLError, TimeoutError):
-        return jsonify(detail="Serviço PCP de testes indisponível"), 503
+        return jsonify(detail="ServiÃ§o PCP de testes indisponÃ­vel"), 503
     raw, status = upstream.read(), upstream.status
     content_type = upstream.headers.get("Content-Type", "application/json")
     upstream.close()
@@ -938,7 +938,7 @@ def unified_pcp_users(tail):
                         cur.execute("""UPDATE public.usuarios SET senha_hash=%s,
                                        trocar_senha_primeiro_acesso=%s WHERE id=%s""",
                                     (old["senha_hash"], old["trocar_senha_primeiro_acesso"], target_id))
-                return jsonify(detail="Sincronização de senha indisponível"), 503
+                return jsonify(detail="SincronizaÃ§Ã£o de senha indisponÃ­vel"), 503
     return Response(raw, status=status, content_type=content_type)
 
 
@@ -974,7 +974,7 @@ def pcp_for_mapa(resource):
     except urllib.error.HTTPError as error:
         upstream = error
     except (urllib.error.URLError, TimeoutError):
-        return jsonify(error="PCP de testes temporariamente indisponível."), 503
+        return jsonify(error="PCP de testes temporariamente indisponÃ­vel."), 503
     body, status = upstream.read(), upstream.status
     content_type = upstream.headers.get("Content-Type", "application/json")
     upstream.close()
@@ -995,7 +995,7 @@ def usina_massadas_read():
     except urllib.error.HTTPError as error:
         upstream = error
     except (urllib.error.URLError, TimeoutError):
-        return jsonify(error="Usina temporariamente indisponível."), 503
+        return jsonify(error="Usina temporariamente indisponÃ­vel."), 503
     body, status = upstream.read(), upstream.status
     content_type = upstream.headers.get("Content-Type", "application/json")
     upstream.close()
@@ -1014,7 +1014,7 @@ def leituras_qr_csv_read():
     except urllib.error.HTTPError as error:
         upstream = error
     except (urllib.error.URLError, TimeoutError):
-        return jsonify(error="Leituras QR temporariamente indisponíveis."), 503
+        return jsonify(error="Leituras QR temporariamente indisponÃ­veis."), 503
     body, status = upstream.read(), upstream.status
     content_type = upstream.headers.get("Content-Type", "text/csv; charset=utf-8")
     upstream.close()
@@ -1041,7 +1041,7 @@ def produtividade_rpc_read():
     except urllib.error.HTTPError as error:
         upstream = error
     except (urllib.error.URLError, TimeoutError):
-        return jsonify(ok=False, error="Banco temporariamente indisponível."), 503
+        return jsonify(ok=False, error="Banco temporariamente indisponÃ­vel."), 503
     response_headers = {name: upstream.headers[name] for name in ("Content-Type", "Content-Range", "Range-Unit")
                         if name in upstream.headers}
     body = upstream.read()
@@ -1054,7 +1054,7 @@ def clean_text(value, label, *, required=False, max_length=200):
     if value is None and not required:
         return None
     if not isinstance(value, str):
-        raise ValueError(f"{label} inválido.")
+        raise ValueError(f"{label} invÃ¡lido.")
     value = value.strip()
     if required and not value:
         raise ValueError(f"Informe {label}.")
@@ -1068,9 +1068,9 @@ def operate_form():
     user = authenticated_user()
     if not user:
         return jsonify(ok=False), 401
-    return jsonify(ok=False, error="Fluxo em adaptação para preservar o apontamento por toque do Mapa atual."), 410
+    return jsonify(ok=False, error="Fluxo em adaptaÃ§Ã£o para preservar o apontamento por toque do Mapa atual."), 410
     if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
-        return jsonify(ok=False, error="Origem da requisição inválida."), 403
+        return jsonify(ok=False, error="Origem da requisiÃ§Ã£o invÃ¡lida."), 403
     if not request.is_json or not isinstance(request.get_json(silent=True), dict):
         return jsonify(ok=False, error="Envie um objeto JSON."), 400
     if user["perfil"] not in {"GERENCIA", "GESTOR", "APONTADOR"}:
@@ -1078,22 +1078,22 @@ def operate_form():
     body = request.get_json()
     phase = body.get("phase")
     if phase not in OPERATION_TABLES:
-        return jsonify(ok=False, error="Etapa inválida."), 400
+        return jsonify(ok=False, error="Etapa invÃ¡lida."), 400
     try:
         date_string = clean_text(body.get("data_fabricacao"), "a data", required=True, max_length=10)
         if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_string):
-            raise ValueError("Data inválida.")
+            raise ValueError("Data invÃ¡lida.")
         production_date = date.fromisoformat(date_string)
         sector = clean_text(body.get("setor"), "o setor", required=True, max_length=20)
         if sector not in SECTORS:
-            raise ValueError("Setor inválido.")
+            raise ValueError("Setor invÃ¡lido.")
         if user["perfil"] == "APONTADOR" and user["setor"] != sector:
-            return jsonify(ok=False, error="Seu perfil não permite operar neste setor."), 403
+            return jsonify(ok=False, error="Seu perfil nÃ£o permite operar neste setor."), 403
         form = clean_text(body.get("forma"), "a forma", required=True, max_length=100).upper()
         model = clean_text(body.get("modelo"), "o modelo", max_length=200)
-        code = clean_text(body.get("codigo_poste"), "o código do poste", max_length=100)
-        description = clean_text(body.get("descricao_poste"), "a descrição", max_length=300)
-        product_code = clean_text(body.get("codigo_produto"), "o código do produto", max_length=100)
+        code = clean_text(body.get("codigo_poste"), "o cÃ³digo do poste", max_length=100)
+        description = clean_text(body.get("descricao_poste"), "a descriÃ§Ã£o", max_length=300)
+        product_code = clean_text(body.get("codigo_produto"), "o cÃ³digo do produto", max_length=100)
         now = datetime.now(timezone.utc)
         values = {
             "modelo": model, "codigo_poste": code, "descricao_poste": description,
@@ -1110,7 +1110,7 @@ def operate_form():
             concrete_type = clean_text(body.get("tipo_concreto"), "o tipo de concreto", required=True, max_length=100)
             vibrated = body.get("vibrado")
             if vibrated is not None and not isinstance(vibrated, bool):
-                raise ValueError("Vibrado deve ser sim ou não.")
+                raise ValueError("Vibrado deve ser sim ou nÃ£o.")
             values.update({
                 "tipo_concreto": concrete_type, "vibrado": vibrated,
                 "colaborador": user["nome"], "status": "LIBERADO",
@@ -1132,7 +1132,7 @@ def operate_form():
             )
             existing = cur.fetchall()
             if len(existing) > 1:
-                return jsonify(ok=False, error="Há registros duplicados para esta forma; solicite conferência."), 409
+                return jsonify(ok=False, error="HÃ¡ registros duplicados para esta forma; solicite conferÃªncia."), 409
             if existing:
                 assignments = sql.SQL(", ").join(
                     sql.SQL("{} = %s").format(sql.Identifier(key)) for key in values
@@ -1163,42 +1163,42 @@ def operate_form():
                 (user["id"], user["perfil"], phase, result, record_id, production_date, sector, form),
             )
     except psycopg.Error:
-        return jsonify(ok=False, error="Não foi possível salvar no banco de testes."), 503
+        return jsonify(ok=False, error="NÃ£o foi possÃ­vel salvar no banco de testes."), 503
     return jsonify(ok=True, id=record_id, phase=phase, result=result, test_environment=True)
 
 
 def validate_checklist(kind, answers, status):
     if not isinstance(answers, dict):
-        raise ValueError("Checklist inválido.")
+        raise ValueError("Checklist invÃ¡lido.")
     sections = CHECKLISTS[kind]
     expected_sections = {section["id"] for section in sections}
     if set(answers) != expected_sections:
-        raise ValueError("O checklist deve conter todas as seções.")
+        raise ValueError("O checklist deve conter todas as seÃ§Ãµes.")
     has_failure = False
     critical_failure = False
     complete = True
     for section in sections:
         section_answers = answers.get(section["id"])
         if not isinstance(section_answers, dict):
-            raise ValueError("Seção do checklist inválida.")
+            raise ValueError("SeÃ§Ã£o do checklist invÃ¡lida.")
         expected_items = {item["id"] for item in section["items"]}
         if not set(section_answers).issubset(expected_items):
-            raise ValueError("O checklist contém itens desconhecidos.")
+            raise ValueError("O checklist contÃ©m itens desconhecidos.")
         for item in section["items"]:
             value = section_answers.get(item["id"])
             if value is None:
                 complete = False
                 continue
             if not isinstance(value, str) or value not in {"sim", "nao"}:
-                raise ValueError("Responda cada item com sim ou não.")
+                raise ValueError("Responda cada item com sim ou nÃ£o.")
             if value == "nao":
                 has_failure = True
                 if item["critical"]:
                     critical_failure = True
     if status == "A" and (not complete or critical_failure):
-        raise ValueError("Aprovação exige checklist completo e nenhum item crítico reprovado.")
+        raise ValueError("AprovaÃ§Ã£o exige checklist completo e nenhum item crÃ­tico reprovado.")
     if status == "R" and (not has_failure or (not complete and not critical_failure)):
-        raise ValueError("Reprovação exige falha registrada; finalize os demais itens se não houver falha crítica.")
+        raise ValueError("ReprovaÃ§Ã£o exige falha registrada; finalize os demais itens se nÃ£o houver falha crÃ­tica.")
     return answers
 
 
@@ -1207,32 +1207,32 @@ def operate_montagem():
     user = authenticated_user()
     if not user:
         return jsonify(ok=False), 401
-    return jsonify(ok=False, error="Fluxo em adaptação para preservar o checklist e retrabalho do Mapa atual."), 410
+    return jsonify(ok=False, error="Fluxo em adaptaÃ§Ã£o para preservar o checklist e retrabalho do Mapa atual."), 410
     if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
-        return jsonify(ok=False, error="Origem da requisição inválida."), 403
+        return jsonify(ok=False, error="Origem da requisiÃ§Ã£o invÃ¡lida."), 403
     body = request.get_json(silent=True) if request.is_json else None
     if not isinstance(body, dict):
         return jsonify(ok=False, error="Envie um objeto JSON."), 400
     kind = body.get("kind")
     action = body.get("action")
     if not isinstance(kind, str) or not isinstance(action, str) or kind not in {"INSPECAO", "MONTAGEM"} or action not in {"start", "finish"}:
-        return jsonify(ok=False, error="Operação inválida."), 400
+        return jsonify(ok=False, error="OperaÃ§Ã£o invÃ¡lida."), 400
     allowed = {"GERENCIA", "MONTADOR"} if kind == "INSPECAO" else {"GERENCIA", "GESTOR", "MONTADOR"}
     if user["perfil"] not in allowed:
         return jsonify(ok=False), 403
     try:
-        record_id = str(uuid.UUID(clean_text(body.get("record_id"), "o registro de produção", required=True, max_length=36)))
+        record_id = str(uuid.UUID(clean_text(body.get("record_id"), "o registro de produÃ§Ã£o", required=True, max_length=36)))
         status = None
         if action == "finish":
             status = body.get("status")
             if not isinstance(status, str) or status not in {"A", "R"}:
                 raise ValueError("Selecione aprovado ou reprovado.")
-            reason = clean_text(body.get("motivo_recusa"), "o motivo da reprovação", max_length=300)
+            reason = clean_text(body.get("motivo_recusa"), "o motivo da reprovaÃ§Ã£o", max_length=300)
             if status == "R" and not reason:
-                raise ValueError("Informe o motivo da reprovação.")
+                raise ValueError("Informe o motivo da reprovaÃ§Ã£o.")
             if status == "A" and reason:
-                raise ValueError("Aprovação não deve ter motivo de reprovação.")
-            notes = clean_text(body.get("observacoes_montagem"), "as observações", max_length=2000)
+                raise ValueError("AprovaÃ§Ã£o nÃ£o deve ter motivo de reprovaÃ§Ã£o.")
+            notes = clean_text(body.get("observacoes_montagem"), "as observaÃ§Ãµes", max_length=2000)
             answers = validate_checklist(kind, body.get("checklists"), status)
     except ValueError as error:
         return jsonify(ok=False, error=str(error)), 400
@@ -1246,21 +1246,21 @@ def operate_montagem():
             )
             production = cur.fetchone()
             if not production or production["status"] not in {"LIBERADO", "INSPECIONADO"}:
-                return jsonify(ok=False, error="Registro de produção não encontrado ou indisponível."), 404
+                return jsonify(ok=False, error="Registro de produÃ§Ã£o nÃ£o encontrado ou indisponÃ­vel."), 404
             sector = production["setor"]
             if user["perfil"] == "MONTADOR" and user["setor"] not in {None, "Todos", sector}:
-                return jsonify(ok=False, error="Seu perfil não permite operar neste setor."), 403
+                return jsonify(ok=False, error="Seu perfil nÃ£o permite operar neste setor."), 403
             production_date = production["data_fabricacao"]
             form = production["forma"]
             if not production_date or not form:
-                return jsonify(ok=False, error="Registro de produção incompleto."), 409
+                return jsonify(ok=False, error="Registro de produÃ§Ã£o incompleto."), 409
             key = f"{record_id}||{production_date}||{sector}||{form}"
             if kind == "INSPECAO":
                 key += "||INSPECAO"
             cur.execute("SELECT id, finalizado_em, inicio_inspecao_montagem FROM public.montagem_poste WHERE id = %s FOR UPDATE", (key,))
             existing = cur.fetchone()
             if existing and existing["finalizado_em"]:
-                return jsonify(ok=False, error="Este registro já foi finalizado na base de testes."), 409
+                return jsonify(ok=False, error="Este registro jÃ¡ foi finalizado na base de testes."), 409
             if action == "start":
                 if existing:
                     return jsonify(ok=True, id=key, result="already_started", test_environment=True)
@@ -1296,7 +1296,7 @@ def operate_montagem():
                 (user["id"], user["perfil"], kind.lower(), result, key, production_date, sector, form),
             )
     except psycopg.Error:
-        return jsonify(ok=False, error="Não foi possível salvar no banco de testes."), 503
+        return jsonify(ok=False, error="NÃ£o foi possÃ­vel salvar no banco de testes."), 503
     return jsonify(ok=True, id=key, result=result, test_environment=True)
 
 

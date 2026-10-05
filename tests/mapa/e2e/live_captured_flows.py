@@ -73,7 +73,19 @@ def main() -> None:
                 results.append({"flow": name, "status": "not_executed", "reason": "PDF library mock required"})
                 continue
             try:
-                result = page.evaluate(expression)
+                # The published app subscribes during startup. Calling the original
+                # helper again is an invalid Supabase client operation, so inspect
+                # the already active channel instead of creating a duplicate one.
+                if name == "tempo real: subscrever canal":
+                    result = page.evaluate("""() => {
+                      const channels = typeof supabaseClient !== 'undefined' ? supabaseClient.getChannels() : [];
+                      const channel = channels.find(item => item.topic === 'realtime:custom-producao-channel');
+                      return {topic: channel?.topic || null, state: channel?.state || null};
+                    }""")
+                    if not result.get("topic"):
+                        raise RuntimeError("canal realtime inicial nao esta conectado")
+                else:
+                    result = page.evaluate(expression)
                 page.wait_for_timeout(120)
                 exp = collections.Counter(expected.get(name, []))
                 actual = collections.Counter(calls[name])

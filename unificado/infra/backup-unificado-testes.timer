@@ -1,9 +1,9 @@
 [Unit]
-Description=Agenda backup diario dos bancos isolados do unificado
+Description=Agenda backup horario dos bancos do unificado
 
 [Timer]
-OnCalendar=*-*-* 03:10:00
-RandomizedDelaySec=10m
+OnCalendar=hourly
+RandomizedDelaySec=5m
 Persistent=true
 Unit=backup-unificado-testes.service
 

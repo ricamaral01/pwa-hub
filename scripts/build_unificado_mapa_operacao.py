@@ -31,7 +31,7 @@ def main() -> None:
         shutil.copy2(ROOT / "assets" / name, assets / name)
     (assets / "img").mkdir(exist_ok=True)
     shutil.copy2(ROOT / "assets" / "img" / "icon.png", assets / "img" / "icon.png")
-    for name in ("bridge.js", "sw.js", "unificado-bridge.css", "unificado-bridge.js", "test-icon.png"):
+    for name in ("bridge.js", "sw.js", "unificado-bridge.css", "unificado-bridge.js", "unificado-icon.png"):
         shutil.copy2(BRIDGE / name, TARGET / name)
     version = (ROOT / "unificado" / "VERSION").read_text(encoding="utf-8").strip()
     sw = (TARGET / "sw.js").read_text(encoding="utf-8")
@@ -41,9 +41,10 @@ def main() -> None:
         shutil.copytree(SOURCE / "data", TARGET / "data", dirs_exist_ok=True)
     manifest = (TARGET / "manifest.json").read_text(encoding="utf-8")
     (TARGET / "manifest.json").write_text(
-        manifest.replace("../assets/img/icon.png", "test-icon.png")
-                .replace('"Mapa de Concretagem"', '"Mapa de Concretagem TESTE"')
-                .replace('"Mapa Concretagem"', '"Mapa TESTE"')
+        manifest.replace("../assets/img/icon.png", "unificado-icon.png")
+                .replace('"sizes": "512x512"', '"sizes": "1536x1536"')
+                .replace('"Mapa de Concretagem"', '"Concrefer Produção"')
+                .replace('"Mapa Concretagem"', '"Produção Concrefer"')
                 .replace('"index.html?cache-reset=v5.31"', '"index.html"'),
         encoding="utf-8", newline="\n",
     )
@@ -65,8 +66,6 @@ def main() -> None:
     html = html.replace('class="auth-checking"', "", 1)
     html = html.replace('  <script defer src="/auth/config.js?v=2"></script><script defer src="/auth/client.js"></script><script defer src="/auth/guard.js?v=2"></script>\n', "", 1)
     html = html.replace('../assets/msgbox.', 'assets/msgbox.')
-    html = html.replace('<body data-app-key="mapa-concretagem">',
-                        '<body data-app-key="mapa-concretagem"><div id="ambiente-teste" role="status"><span class="unificado-test-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></span><span>AMBIENTE DE TESTE — lançamentos aqui não valem como produção</span></div>', 1)
     html = html.replace('<script src="app.js?v=v5.31"></script>',
                         '<script src="bridge.js"></script><script src="app.js?v=unificado-operacao-1"></script><script src="unificado-bridge.js"></script>', 1)
     html = html.replace('?v=v5.31', f'?v={version}')
@@ -74,13 +73,11 @@ def main() -> None:
     html = html.replace('src="app.js?v=unificado-operacao-1"', f'src="app.js?v={version}"')
     html = html.replace('src="unificado-bridge.js"', f'src="unificado-bridge.js?v={version}"')
     html = html.replace('src="unificado-bridge.css"', f'src="unificado-bridge.css?v={version}"')
-    html = html.replace('id="ambiente-teste"',
-                        f'id="ambiente-teste" data-version="{version}"', 1)
     html = html.replace('<div class="modal-box modal-box-loading">',
                         '<div class="modal-box modal-box-loading"><div class="unificado-loading-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div>', 1)
     html = html.replace('</body>',
-                        f'<small id="unificado-version" style="position:fixed;right:6px;bottom:5px;z-index:99999;background:#0B1730;color:white;padding:3px 7px;border-radius:6px;font:11px monospace">TESTE {version}</small></body>', 1)
-    html = html.replace('</head>', '<style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}#ambiente-teste{position:sticky;top:0;z-index:100000;background:#ffdc6e;color:#3b2700;padding:11px 16px;text-align:center;font:800 16px/1.3 system-ui,sans-serif;box-shadow:0 2px 8px #0003}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)
+                        f'<small id="unificado-version" style="position:fixed;right:6px;bottom:5px;z-index:99999;background:#0B1730;color:white;padding:3px 7px;border-radius:6px;font:11px monospace">v{version}</small></body>', 1)
+    html = html.replace('</head>', '<style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)
     html = html.replace('href="unificado-bridge.css"', f'href="unificado-bridge.css?v={version}"')
     (TARGET / "index.html").write_text(html, encoding="utf-8", newline="\n")
     print("source_app_sha256=" + hashlib.sha256((SOURCE / "app.js").read_bytes()).hexdigest())

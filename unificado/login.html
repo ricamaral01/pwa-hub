@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <title>Entrar — Concrefer</title>
-  <link rel="stylesheet" href="shell/shell.css?v=0.5.12">
-  <script defer src="shell/auth.js?v=0.5.12"></script>
+  <link rel="stylesheet" href="shell/shell.css?v=0.6.0">
+  <script defer src="shell/auth.js?v=0.6.0"></script>
 </head>
 <body>
-  <div class="test-environment-bar">AMBIENTE DE TESTE — lançamentos aqui não valem como produção</div>
   <main class="login-layout">
     <section class="login-card" aria-labelledby="login-title">
       <div class="login-brand" aria-label="Concrefer e ConcreTrack">
@@ -30,12 +29,12 @@
         <button class="button button-primary login-submit" type="submit">Definir senha e entrar</button>
       </form>
       <p id="login-feedback" role="status" aria-live="polite"></p>
-      <small class="login-note">Ambiente de teste. Nada lançado aqui vale como produção.</small>
+      <small class="login-note">Planejamento e Produção em um só acesso.</small>
     </section>
   </main>
   <small id="unificado-version" style="position:fixed;right:10px;bottom:8px;color:#acb8ca;font:11px monospace"></small>
   <script>fetch('/unificado/VERSION',{cache:'no-store'}).then(r=>r.ok?r.text():'').then(v=>{
-    document.getElementById('unificado-version').textContent='TESTE '+v.trim();
+    document.getElementById('unificado-version').textContent='v'+v.trim();
   }).catch(()=>{});</script>
 </body>
 </html>
