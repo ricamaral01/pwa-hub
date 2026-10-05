@@ -163,3 +163,5 @@ O patch da página, CSS e JS está isolado em
 `unificado/mapa/api/dashboard_defects_indicators.py`. O `app.js` original e os
 sistemas oficiais não foram alterados. A segunda parte mantém os blocos,
 colunas e interações; seus totais de defeitos passam a somar apenas `nao`.
+O CSV e o XLSX incluem os indicadores novos, a matriz original e uma seção
+identificada com os indicadores legados preservados.

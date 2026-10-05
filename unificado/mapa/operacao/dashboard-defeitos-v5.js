@@ -181,7 +181,8 @@
         ['Inspecionados', fmt(all.inspected), 'Primeira inspeção'],
         ['FPY', percent(all.inspected - all.nonconforming, all.inspected), `${fmt(all.inspected - all.nonconforming)} de ${fmt(all.inspected)}`],
         ['Defeitos encontrados', fmt(all.defects), `${ratio(100 * all.defects, all.inspected)} por 100 postes`],
-        ['Retrabalhados', `${fmt(all.reworked)} · ${percent(all.reworked, all.inspected)}`, `Perdas: ${fmt(all.lost)} · ${percent(all.lost, all.inspected)}`],
+        ['Retrabalhados', `${fmt(all.reworked)} · ${percent(all.reworked, all.inspected)}`,
+          `Perdas: ${fmt(all.lost)} · ${percent(all.lost, all.inspected)} · Reprovados (legado): ${fmt(dfPresentationData?.postesReprovados)}`],
       ];
       grid.replaceChildren();
       for (const [label, value, note] of items) {
@@ -282,6 +283,13 @@
       ['Retrabalhados', percent(all.reworked, all.inspected), all.reworked, all.inspected],
       ['Perda do poste', percent(all.lost, all.inspected), all.lost, all.inspected],
       ['Taxa de nao conformidade por oportunidade', percent(all.defects, all.opportunities), all.defects, all.opportunities],
+      [], ['Indicadores legados preservados'],
+      ['Producao (legado)', number(data.kpis?.producao)],
+      ['Postes avaliados (legado)', number(data.kpis?.postes)],
+      ['Ocorrencias de NC (checklist concluido)', number(data.kpis?.total_erros)],
+      ['Oportunidades avaliadas (legado)', number(data.kpis?.total_possivel)],
+      ['Postes reprovados (legado)', number(data.kpis?.postes_reprovados)],
+      ['Retrabalho (legado)', number(data.kpis?.retrabalho)],
       [], ['Indicadores por setor'],
       ['Setor', 'Produzidos', 'Inspecionados', 'Nao conformes (n)', 'Nao conformes (%)',
         'Aprovados de primeira (n)', 'FPY (%)', 'Defeitos (n)', 'Defeitos por 100',
