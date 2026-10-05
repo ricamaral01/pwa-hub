@@ -11,6 +11,7 @@ from patch_mapa_defects_unificado import OLD as ORIGINAL_DEFECT_FUNCTION
 from patch_mapa_defects_unificado import NEW as PATCHED_DEFECT_FUNCTION
 from patch_mapa_defects_unificado import apply as patch_defects
 from patch_mapa_second_inspection_unificado import apply as patch_second_inspection
+from patch_mapa_dashboard_defects_kpis_unificado import apply as patch_dashboard_header
 from utf8_guard_unificado import repair
 
 
@@ -73,6 +74,8 @@ def main() -> None:
     shutil.copy2(ROOT / "assets" / "img" / "icon.png", assets / "img" / "icon.png")
     for name in ("bridge.js", "sw.js", "unificado-bridge.css", "unificado-bridge.js", "unificado-icon.png"):
         shutil.copy2(BRIDGE / name, TARGET / name)
+    for name in ("dashboard-defeitos-v5.css", "dashboard-defeitos-v5.js"):
+        shutil.copy2(BRIDGE / name, TARGET / name)
     version = (ROOT / "unificado" / "VERSION").read_text(encoding="utf-8").strip()
     sw = (TARGET / "sw.js").read_text(encoding="utf-8")
     (TARGET / "sw.js").write_text(sw.replace("__UNIFICADO_VERSION__", version), encoding="utf-8", newline="\n")
@@ -111,6 +114,7 @@ def main() -> None:
     (TARGET / "app.js").write_text(repair(output_app), encoding="utf-8", newline="\n")
 
     html = (SOURCE / "index.html").read_text(encoding="utf-8")
+    html = patch_dashboard_header(html)
     html = html.replace('class="auth-checking"', "", 1)
     html = html.replace('  <script defer src="/auth/config.js?v=2"></script><script defer src="/auth/client.js"></script><script defer src="/auth/guard.js?v=2"></script>\n', "", 1)
     html = html.replace('../assets/msgbox.', 'assets/msgbox.')
@@ -121,6 +125,9 @@ def main() -> None:
     html = html.replace('src="app.js?v=unificado-operacao-1"', f'src="app.js?v={version}"')
     html = html.replace('src="unificado-bridge.js"', f'src="unificado-bridge.js?v={version}"')
     html = html.replace('src="unificado-bridge.css"', f'src="unificado-bridge.css?v={version}"')
+    html = html.replace('</head>', f'<link rel="stylesheet" href="dashboard-defeitos-v5.css?v={version}"></head>', 1)
+    html = html.replace('<script src="unificado-bridge.js?v=' + version + '"></script>',
+                        '<script src="unificado-bridge.js?v=' + version + '"></script><script src="dashboard-defeitos-v5.js?v=' + version + '"></script>', 1)
     html = html.replace('<div class="modal-box modal-box-loading">',
                         '<div class="modal-box modal-box-loading"><div class="unificado-loading-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div>', 1)
     html = html.replace('</body>',

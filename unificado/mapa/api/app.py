@@ -35,6 +35,7 @@ from unified_auth import (adopt_mapa_password, check_link_password, component_li
                           set_unified_password, verify_map,
                           verify_pcp)
 from formas_por_setor import load_catalog as load_formas_por_setor
+from dashboard_defects_indicators import load_indicators as load_dashboard_defects_indicators
 
 
 app = Flask(__name__)
@@ -994,6 +995,39 @@ def pcp_formas_por_setor():
         app.logger.exception("formas_por_setor_catalog_error")
         return jsonify(detail="Catálogo de formas temporariamente indisponível."), 503
     response = jsonify(formas=formas)
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+@app.get("/dashboard/defeitos/indicadores")
+def dashboard_defeitos_indicadores():
+    """Aggregate existing inspection rows without returning personal or photo data."""
+    user = authenticated_user()
+    if not user:
+        return jsonify(detail="Entre na Produção para consultar os indicadores."), 401
+    if user["perfil"] not in {"GERENCIA", "GESTOR"}:
+        return jsonify(detail="Seu perfil não permite consultar o Dashboard Defeitos."), 403
+    try:
+        start = date.fromisoformat(request.args.get("inicio", ""))
+        end = date.fromisoformat(request.args.get("fim", ""))
+    except ValueError:
+        return jsonify(detail="Período inválido."), 400
+    if start > end or (end - start).days > 370:
+        return jsonify(detail="Período inválido."), 400
+    sector = request.args.get("setor", "")
+    status = request.args.get("status", "")
+    search = request.args.get("busca", "").strip()[:100]
+    if sector not in {"", "Setor 1", "Setor 2", "Setor 3", "Setor 4", "Setores 1 e 2"}:
+        return jsonify(detail="Setor inválido."), 400
+    if status not in {"", "A", "R", "RR"}:
+        return jsonify(detail="Situação inválida."), 400
+    try:
+        with connect() as connection:
+            result = load_dashboard_defects_indicators(connection, start, end, sector, status, search)
+    except psycopg.Error:
+        app.logger.exception("dashboard_defeitos_indicadores_error")
+        return jsonify(detail="Indicadores temporariamente indisponíveis."), 503
+    response = jsonify(result)
     response.headers["Cache-Control"] = "no-store"
     return response
 

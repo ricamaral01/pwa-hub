@@ -118,3 +118,48 @@ nas chaves comuns após essa exclusão. As linhas exclusivas permanecem
 identificadas para análise do uso paralelo e não são copiadas ou corrigidas
 pelo comparador. O Mapa oficial e
 seu `app.js` permanecem intactos.
+
+## Diferença intencional nº 4 — indicadores do Dashboard Defeitos (05/10/2026)
+
+Somente o unificado muda o topo do Dashboard Defeitos. O principal passa a ser
+postes com ao menos um `nao` na primeira inspeção / postes com primeira inspeção.
+FPY usa o complemento. Defeitos por 100, por poste não conforme, retrabalho,
+perda e a antiga taxa por oportunidade aparecem com numerador e denominador.
+S1/S2 têm 26 itens de checklist; S3/S4 têm 17. O código original não varia
+essa quantidade por modelo. A primeira inspeção é identificada pelo primeiro
+evento de cada `record_id`; histórico e linha final com o mesmo evento contam
+uma vez. Reinspeções com eventos distintos permanecem na contagem de `nao`.
+
+Tabela diagnóstica dos dados do banco novo, antes da mudança. O período de
+inspeção usa `finalizado_em`, depois início, depois data de fabricação; o
+produzido usa a data de fabricação. Colunas: P=produzidos, I=primeiras
+inspeções, NC=postes com `nao` na primeira, D=total de `nao`, RR=aprovados após
+retrabalho, L=perdas. Taxas usam I, salvo Oport=D/oportunidades avaliadas.
+
+| Período | Setor | P | I | NC | D | RR | L | NC% | FPY% | D/100 | D/NC | RR% | L% | Oport% |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 09/2026 | S1 | 1138 | 1077 | 7 | 10 | 0 | 0 | 0,65 | 99,35 | 0,93 | 1,43 | 0 | 0 | 0,04 |
+| 09/2026 | S2 | 1381 | 1329 | 42 | 45 | 10 | 0 | 3,16 | 96,84 | 3,39 | 1,07 | 0,75 | 0 | 0,13 |
+| 09/2026 | S3 | 883 | 0 | 0 | 0 | 0 | 0 | — | — | — | — | — | — | — |
+| 09/2026 | S4 | 554 | 0 | 0 | 0 | 0 | 0 | — | — | — | — | — | — | — |
+| **09/2026** | **Total** | **3956** | **2406** | **49** | **55** | **10** | **0** | **2,04** | **97,96** | **2,29** | **1,12** | **0,42** | **0** | **0,09** |
+| 01–04/10 | S1 | 144 | 124 | 2 | 3 | 0 | 0 | 1,61 | 98,39 | 2,42 | 1,50 | 0 | 0 | 0,09 |
+| 01–04/10 | S2 | 151 | 144 | 10 | 10 | 3 | 0 | 6,94 | 93,06 | 6,94 | 1,00 | 2,08 | 0 | 0,26 |
+| 01–04/10 | S3 | 92 | 1 | 1 | 3 | 0 | 0 | 100 | 0 | 300 | 3,00 | 0 | 0 | 5,88 |
+| 01–04/10 | S4 | 27 | 0 | 0 | 0 | 0 | 0 | — | — | — | — | — | — | — |
+| **01–04/10** | **Total** | **414** | **269** | **13** | **16** | **3** | **0** | **4,83** | **95,17** | **5,95** | **1,23** | **1,12** | **0** | **0,22** |
+
+O dashboard anterior mostrava 2.416 avaliados e 58 ocorrências em setembro,
+e 271 avaliados e 17 ocorrências em 01–04/10. Ele incluía registros ainda em
+CHECKLIST/INICIO como avaliados e reprovações sem item `nao` como defeito. O
+novo topo só conta primeiras inspeções concluídas e itens `nao`. Reprovações
+sem item e registros ainda em checklist continuam no detalhe com nota de
+exclusão do total. Uma perda
+`SEGREGADO` foi registrada em 05/10, fora de 01–04/10.
+
+O patch da página, CSS e JS está isolado em
+`scripts/patch_mapa_dashboard_defects_kpis_unificado.py` e
+`unificado/mapa/operacao/dashboard-defeitos-v5.*`; a consulta agregada está em
+`unificado/mapa/api/dashboard_defects_indicators.py`. O `app.js` original e os
+sistemas oficiais não foram alterados. A segunda parte mantém os blocos,
+colunas e interações; seus totais de defeitos passam a somar apenas `nao`.
