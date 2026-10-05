@@ -3,7 +3,7 @@
 ## Publicação
 
 - URL: `https://concrefer.concretrack.com.br/unificado/`
-- Versão: `0.6.4`
+- Versão: `0.6.5`
 - Sistemas antigos continuam oficiais; não houve DNS, redirecionamento ou escrita neles.
 - O ambiente novo não exibe faixa ou aviso de teste. `/unificado/testar/` permanece como área autenticada de suporte e relatos, fora do fluxo de entrada.
 
@@ -42,6 +42,12 @@ Prova final: 01/10/2026, Setores 1 e 2, retornou somente chaves `igual_nos_dois`
 - Tempo real: produção e manutenção atualizaram um segundo navegador em aproximadamente 0,4 segundo. Seis sessões simultâneas gravaram e enxergaram seis linhas, com máximo de 226 ms e zero erro.
 - Segunda inspeção: toque real mostrou as opções e encerrou como RR (reaprovado) ou R (perda), preservando a primeira inspeção. Dashboards (18 casos), Tratativa e Histórico passaram na mesma fotografia.
 - Contas e dados sintéticos foram removidos ao fim.
+
+## Acesso temporário solicitado pelo Ricardo
+
+- A conta `ricardo.teste` foi criada somente nos bancos novos, ativa e fora de primeiro acesso, com `GERENCIA` no Mapa, `ADMIN` no PCP e identidade ligada.
+- A autenticação foi comprovada por toque real no endereço publicado, sem registrar a senha em arquivo, commit, log ou documento.
+- Pendência obrigatória: remover `ricardo.teste` dos dois bancos e a ligação de identidade quando o Ricardo mandar.
 
 ## Limitações restantes
 

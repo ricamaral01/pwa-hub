@@ -20,6 +20,8 @@
   ];
   const labels = Object.fromEntries(groups.flatMap(([, items]) => items.map(([, label, mode]) => [mode, label])));
   labels.HUB = "Início";
+  const requestedMode = new URLSearchParams(location.search).get("tela");
+  let requestedModeApplied = false;
   const desktop = () => matchMedia("(min-width: 1025px)").matches && !document.body.classList.contains("kiosk-active");
   const element = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -203,6 +205,18 @@
     document.body.classList.toggle("unificado-tablet-hub", tabletHub);
     placeHistoryFilters();
   }
+  function applyRequestedMode() {
+    if (requestedModeApplied || !requestedMode
+        || !Object.prototype.hasOwnProperty.call(labels, requestedMode)) return;
+    if (typeof state === "undefined" || !state.authUser || typeof setMode !== "function") return;
+    if (typeof isModeAllowed === "function" && !isModeAllowed(requestedMode)) {
+      requestedModeApplied = true;
+      return;
+    }
+    requestedModeApplied = true;
+    setMode(requestedMode);
+    update();
+  }
   document.addEventListener("DOMContentLoaded", () => {
     prepareInstall();
     const problem = element("a", "unificado-problem-fab", "Relatar problema");
@@ -222,6 +236,12 @@
     addSegments();
     groupHistory();
     update();
+    applyRequestedMode();
+    const requestedModeTimer = setInterval(() => {
+      applyRequestedMode();
+      if (requestedModeApplied) clearInterval(requestedModeTimer);
+    }, 100);
+    setTimeout(() => clearInterval(requestedModeTimer), 20000);
     new MutationObserver(update).observe(document.querySelector("#topbarTitle"), {childList: true, subtree: true});
     new MutationObserver(update).observe(document.querySelector("#syncStatus"), {childList: true, subtree: true, attributes: true});
     matchMedia("(min-width: 1025px)").addEventListener("change", update);
