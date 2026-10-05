@@ -97,3 +97,24 @@ No frontend do PCP, o build troca o t?tulo vis?vel `Producao Realizada --
 Supabase` por `Producao Realizada -- banco local`. A rota interna mant?m o nome
 legado porque os 47 arquivos do backend PCP devem continuar id?nticos, mas ela
 aponta para o adaptador PostgreSQL local e n?o faz chamada ao fornecedor.
+
+## Diferença intencional nº 3 — identificação do poste na Montagem (05/10/2026)
+
+O Mapa oficial não possui as colunas `codigo_poste`, `descricao_poste` e
+`codigo_produto` em `montagem_poste`. Embora o `app.js` oficial envie esses
+campos, `upsertWithLegacyFallback` repete a gravação sem eles após o erro de
+coluna ausente. O PostgreSQL novo possui as três colunas e preserva os valores
+informados pela inspeção/montagem. A visão `api.montagem_poste` foi recriada
+somente no banco novo para também expô-los. Na conferência de 05/10, duas das
+9.000 linhas do banco novo tinham os três campos; nenhuma linha foi preenchida
+por cópia da origem, onde as colunas não existem.
+
+O comparador `scripts/compare_old_new_business.py` agora inclui
+`montagem_poste` e ignora **somente nessa tabela** os três campos ao comparar
+antigo × novo. Ele continua comparando todos os demais campos e classificando
+linhas exclusivas de cada lado. Em 01/10, Setores 1 e 2, houve 138 chaves de
+Montagem iguais, 11 só no antigo e uma só no novo; nenhuma diferença de campos
+nas chaves comuns após essa exclusão. As linhas exclusivas permanecem
+identificadas para análise do uso paralelo e não são copiadas ou corrigidas
+pelo comparador. O Mapa oficial e
+seu `app.js` permanecem intactos.

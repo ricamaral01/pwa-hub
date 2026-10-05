@@ -132,3 +132,18 @@
 
 O endpoint original de Teste Programação retorna HTTP 500 ao comparar o código textual da forma com o identificador inteiro. O backend foi preservado. No unificado, a tela captura essa resposta e informa claramente que a programação automática está indisponível e que nenhum lançamento foi gravado, sem mostrar o erro cru.
 
+## Mapa oficial descarta trÃªs campos da Montagem
+
+**O que acontece:** o `app.js` envia `codigo_poste`, `descricao_poste` e
+`codigo_produto` ao gravar `montagem_poste`, mas a tabela oficial nÃ£o possui
+essas colunas. A primeira tentativa falha e o prÃ³prio aplicativo repete o
+upsert sem os trÃªs campos. Assim, o oficial descarta esses valores.
+
+**Onde:** `mapa-concretagem/app.js`, `postToMontagemApi("salvar_montagem_poste")`
+por volta da linha 1853 e `upsertWithLegacyFallback` por volta da linha 1590.
+
+**EvidÃªncia:** a OpenAPI da origem mostra 17 colunas em `montagem_poste`, sem
+esses trÃªs nomes; cada `GET` somente leitura selecionando uma das colunas
+respondeu HTTP 400, cÃ³digo PostgreSQL `42703`. O novo banco tem 20 colunas e
+preserva os valores em duas linhas. Essa diferenÃ§a intencional nÂº 3 estÃ¡ em
+`docs/correcoes-intencionais.md`.

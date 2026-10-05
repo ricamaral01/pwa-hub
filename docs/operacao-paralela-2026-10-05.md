@@ -3,7 +3,7 @@
 ## Publicação
 
 - URL: `https://concrefer.concretrack.com.br/unificado/`
-- Versão: `0.6.5`
+- Versão publicada atualmente: `0.6.9` (os testes e backups de etapas anteriores abaixo mantêm suas datas originais).
 - Sistemas antigos continuam oficiais; não houve DNS, redirecionamento ou escrita neles.
 - O ambiente novo não exibe faixa ou aviso de teste. `/unificado/testar/` permanece como área autenticada de suporte e relatos, fora do fluxo de entrada.
 
@@ -52,3 +52,9 @@ Prova final: 01/10/2026, Setores 1 e 2, retornou somente chaves `igual_nos_dois`
 ## Limitações restantes
 
 A navegação por toque real alcançou 19 modos com GERENCIA, 17 com GESTOR, 8 com APONTADOR e 6 com MONTADOR. Inspeção e segunda inspeção executam o gesto real completo. As suítes funcionais dos demais fluxos conferem requisição, linha e cartão, mas parte delas ainda usa JavaScript de teste para preparar ou disparar ações. O varredor dinâmico executou 30 ações sem host externo; WhatsApp foi conferido separadamente, bloqueando o destino externo. A fumaça em Android/iPad também cobre um subconjunto representativo, não todos os lançamentos. Por isso o critério estrito de toque físico em toda ação e em toda plataforma ainda não está integralmente provado.
+
+## Situação após a auditoria estrutural de 05/10
+
+O SQL somente leitura para o catálogo do Supabase está em `scripts/auditar_estrutura_mapa_supabase.sql`, com instruções para o Ricardo em `docs/auditoria-catalogo-supabase-ricardo.md`. A comparação de índices, sequências, gatilhos, funções e RLS da origem aguarda o arquivo exportado. Os cinco locais de `on_conflict` explícito do `app.js` já têm as quatro chaves únicas necessárias no PostgreSQL novo. O comparador antigo × novo agora inclui Montagem e ignora nela somente os três campos que o oficial descarta.
+
+**100% OPERACIONAL: não.** Ainda faltam, em ordem de impacto na certificação: catálogo estrutural da origem e correção segura das diferenças que ele revelar; fechamento dos fixtures individuais das 73 chamadas; comprovação por toque real de todas as ações das 24 páginas PCP e dos 24 fluxos Mapa em todos os perfis/setores aplicáveis; conclusão das opções/períodos de impressão e exportação; varredura dinâmica integral de chamadas externas e revisão visual de todos os estados internos. A versão 0.6.9 permanece publicada; esta rodada não mudou a aplicação no ar.

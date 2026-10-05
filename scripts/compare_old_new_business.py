@@ -14,27 +14,38 @@ day=sys.argv[1]; sectors=json.loads(base64.b64decode(sys.argv[2]))
 for line in open('/opt/concrefer-unificado/migration/supabase-source.env',encoding='utf-8'):
  if line.strip() and not line.lstrip().startswith('#') and '=' in line:
   k,v=line.strip().split('=',1); os.environ[k]=v.strip().strip(chr(34)).strip(chr(39))
-params=urllib.parse.urlencode([('select','*'),('data_fabricacao','eq.'+day),('setor','in.('+','.join(chr(34)+s+chr(34) for s in sectors)+')')])
 base=os.environ['SUPABASE_URL'].rstrip('/'); key=os.environ['SUPABASE_SECRET_KEY']
-req=urllib.request.Request(base+'/rest/v1/producao?'+params,headers={'apikey':key,'Authorization':'Bearer '+key})
-with urllib.request.urlopen(req,timeout=60) as response: old=json.load(response)
 assert re.fullmatch(r'\d{4}-\d{2}-\d{2}',day)
 assert all(re.fullmatch(r'Setor [1-4]',s) for s in sectors)
 values=','.join(chr(39)+s+chr(39) for s in sectors)
-sql="\\copy (SELECT COALESCE(json_agg(row_to_json(p) ORDER BY id),'[]'::json) FROM public.producao p WHERE data_fabricacao='"+day+"' AND setor IN ("+values+")) to stdout"
-raw=subprocess.check_output(['sudo','-u','postgres','psql','-X','-At','-d','mapa_unificado_teste','-c',sql],text=True)
-new=json.loads(raw)
-print(json.dumps({'old':old,'new':new},ensure_ascii=False,default=str))'''
+def source_rows(table):
+ rows=[]; last_id=None
+ while True:
+  params=[('select','*'),('data_fabricacao','eq.'+day),('setor','in.('+','.join(chr(34)+s+chr(34) for s in sectors)+')'),('order','id.asc'),('limit','500')]
+  if last_id is not None: params.append(('id','gt.'+str(last_id)))
+  req=urllib.request.Request(base+'/rest/v1/'+table+'?'+urllib.parse.urlencode(params),headers={'apikey':key,'Authorization':'Bearer '+key})
+  with urllib.request.urlopen(req,timeout=60) as response: page=json.load(response)
+  rows.extend(page)
+  if len(page)<500: return rows
+  if str(page[-1]['id'])==str(last_id): raise RuntimeError('Source pagination did not advance')
+  last_id=page[-1]['id']
+def destination_rows(table):
+ sql="\\copy (SELECT COALESCE(json_agg(row_to_json(p) ORDER BY id),'[]'::json) FROM public."+table+" p WHERE data_fabricacao='"+day+"' AND setor IN ("+values+")) to stdout"
+ raw=subprocess.check_output(['sudo','-u','postgres','psql','-X','-At','-d','mapa_unificado_teste','-c',sql],text=True)
+ return json.loads(raw)
+print(json.dumps({table:{'old':source_rows(table),'new':destination_rows(table)} for table in ('producao','montagem_poste')},ensure_ascii=False,default=str))'''
 
-def clean(row):
- return {k:v for k,v in row.items() if k not in {'id','created_at','updated_at','data_hora'} }
-def bucket(rows,key):
+MONTAGEM_IGNORED = frozenset({'codigo_poste', 'descricao_poste', 'codigo_produto'})
+
+def clean(row, ignored_fields=frozenset()):
+ return {k:v for k,v in row.items() if k not in {'id','created_at','updated_at','data_hora'} | ignored_fields }
+def bucket(rows,key,ignored_fields=frozenset()):
  out=collections.defaultdict(list)
- for row in rows: out['|'.join(str(row.get(k,'')) for k in key)].append(clean(row))
+ for row in rows: out['|'.join(str(row.get(k,'')) for k in key)].append(clean(row,ignored_fields))
  for values in out.values(): values.sort(key=lambda v:json.dumps(v,sort_keys=True,ensure_ascii=False,default=str))
  return out
-def compare(left,right,key):
- a,b=bucket(left,key),bucket(right,key); result=[]
+def compare(left,right,key,ignored_fields=frozenset()):
+ a,b=bucket(left,key,ignored_fields),bucket(right,key,ignored_fields); result=[]
  for k in sorted(set(a)|set(b)):
   if k not in a: status='so_no_novo'
   elif k not in b: status='so_no_antigo'
@@ -58,7 +69,9 @@ def main():
   for name,settings in APIS.items():
    response=client.get(settings[4]+path,headers={'Authorization':'Bearer '+toks[name]}); response.raise_for_status(); pcp[name]=[r for r in response.json() if r.get('setor_nome') in sectors]
  report={'data':args.data,'setores':sectors,'somente_leitura_nos_antigos':True,'observacao_defeitos':'O novo conta uma ocorrencia por peca e inspecao; o antigo pode exibir a mesma ocorrencia duas vezes. Nenhum dado e importado ou corrigido.',
- 'mapa_producao':compare(mapa['old'],mapa['new'],('data_fabricacao','setor','forma','tipo_concreto')),
+ 'mapa_producao':compare(mapa['producao']['old'],mapa['producao']['new'],('data_fabricacao','setor','forma','tipo_concreto')),
+ 'mapa_montagem':compare(mapa['montagem_poste']['old'],mapa['montagem_poste']['new'],('data_fabricacao','setor','forma_numero','record_id','etapa','finalizado_em'),MONTAGEM_IGNORED),
+ 'mapa_montagem_campos_ignorados':sorted(MONTAGEM_IGNORED),
  'pcp_producao':compare(pcp['oficial'],pcp['copia'],('data','setor_nome','produto_nome','codigo_forma'))}
  raw=json.dumps(report,ensure_ascii=False,indent=2,default=str); print(raw)
  if args.saida: args.saida.write_text(raw+'\n',encoding='utf-8')
