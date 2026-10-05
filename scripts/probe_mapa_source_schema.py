@@ -16,6 +16,10 @@ response.raise_for_status()
 spec = response.json()
 result = {
     'definitions': {name: sorted(definition.get('properties', {})) for name, definition in spec.get('definitions', {}).items()},
+    'mapa_column_types': {name: {column: {'type': prop.get('type'), 'format': prop.get('format')}
+                                 for column, prop in spec['definitions'][name]['properties'].items()}
+                          for name in ('usuarios','programacao_pcp','liberacao_formas','producao',
+                                       'montagem_poste','formas_manutencao','prog_s3_s4','vw_formas_status')},
     'rpc_paths': sorted(path for path in spec.get('paths', {}) if path.startswith('/rpc/')),
     'productivity_rpc': {method: {'parameters': [item.get('name') for item in operation.get('parameters', [])],
                                  'response_types': sorted(operation.get('responses', {}))}

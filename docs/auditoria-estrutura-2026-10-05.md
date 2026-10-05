@@ -12,7 +12,7 @@ Os 180 objetos de esquema identificados por nome e tipo tiveram definições SQL
 
 ## Mapa
 
-As sete tabelas usadas pelo `app.js` são `usuarios`, `programacao_pcp`, `liberacao_formas`, `producao`, `montagem_poste`, `formas_manutencao` e `prog_s3_s4`. Nas colunas comuns, tipos expostos, obrigatoriedade, defaults e marcações de chave primária coincidem na comparação OpenAPI × PostgreSQL. A view `vw_formas_status` tem as mesmas 20 colunas expostas nos dois lados. A RPC efetivamente chamada pelo `app.js`, `rpc_dashboard_produtividade_resumo_v1`, expõe na origem os argumentos `p_data_inicio`, `p_data_fim`, `p_scope`, que constam da função de destino; o corpo da função de origem não está disponível para comparação estrutural.
+As sete tabelas usadas pelo `app.js` são `usuarios`, `programacao_pcp`, `liberacao_formas`, `producao`, `montagem_poste`, `formas_manutencao` e `prog_s3_s4`. Nas 94 colunas comuns das tabelas e da view, os tipos expostos coincidem com os tipos PostgreSQL: 61 `text`, 14 `timestamptz`, 7 `uuid`, 6 `date`, 3 `boolean`, 2 `integer` e 1 `jsonb`. Obrigatoriedade, defaults e marcações de chave primária também coincidem na comparação OpenAPI × PostgreSQL. A view `vw_formas_status` tem as mesmas 20 colunas expostas nos dois lados. A RPC efetivamente chamada pelo `app.js`, `rpc_dashboard_produtividade_resumo_v1`, expõe na origem os argumentos `p_data_inicio`, `p_data_fim`, `p_scope`, que constam da função de destino; o corpo da função de origem não está disponível para comparação estrutural.
 
 | Objeto | Origem | Destino | Diferença |
 |---|---:|---:|---|
