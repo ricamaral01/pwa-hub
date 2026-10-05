@@ -1,9 +1,10 @@
 const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__";
-const SHELL = ["./index.html", "./manifest.json", "./test-icon.png",
+const SHELL = ["./index.html", "./manifest.json", "./unificado-icon.png",
   "./styles.css", "./dashboard-defeitos-v4.css", "./assets/msgbox.css",
   "./supabase.js", "./chart.min.js", "./chartjs-plugin-datalabels.min.js",
   "./assets/msgbox.js", "./xlsx.full.min.js", "./modelos-formas.js",
-  "./bridge.js", "./app.js", "./unificado-bridge.css", "./unificado-bridge.js"];
+  "./bridge.js", "./app.js", "./unificado-bridge.css", "./unificado-bridge.js",
+  "/unificado/vendor/html2pdf/html2pdf.bundle.min.js"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
 });
@@ -15,7 +16,8 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const url = new URL(event.request.url);
   if (event.request.method !== "GET" || url.origin !== self.location.origin
-      || !url.pathname.startsWith("/unificado/mapa/operacao/")) return;
+      || !(url.pathname.startsWith("/unificado/mapa/operacao/")
+        || url.pathname === "/unificado/vendor/html2pdf/html2pdf.bundle.min.js")) return;
   if (/\.(?:js|css|html|png|svg|woff2?)$/.test(url.pathname) || event.request.mode === "navigate") {
     event.respondWith(fetch(event.request).catch(async () => {
       const cache = await caches.open(CACHE_NAME);

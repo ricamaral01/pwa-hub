@@ -537,7 +537,11 @@ def rest_read(resource):
         and request.args.get("limit") == "1"
         and set(request.args) <= {"select", "limit"}
     )
-    if (resource == "usuarios" and user["perfil"] != "GERENCIA"
+    # The original app grants the Users screen to management and to the
+    # account whose displayed name is exactly Ricardo (case insensitive).
+    users_screen_allowed = (user["perfil"] == "GERENCIA"
+                            or str(user.get("nome") or "").strip().casefold() == "ricardo")
+    if (resource == "usuarios" and not users_screen_allowed
             and not first_access_password_change and not database_probe):
         return jsonify(ok=False), 403
     if user["primeiro_acesso"] and not first_access_password_change:

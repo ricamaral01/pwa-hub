@@ -80,6 +80,22 @@ def verified_manifest(directory: Path) -> dict:
     return manifest
 
 
+def require_complete_destination_schema(manifest: dict) -> None:
+    """Refuse a refresh before any TRUNCATE if the source gained a column."""
+    for row in manifest["tables"]:
+        table = row["table"]
+        found = set(psql(
+            "SELECT column_name FROM information_schema.columns "
+            f"WHERE table_schema='public' AND table_name='{table}'"
+        ).splitlines())
+        missing = set(row["columns"]) - found
+        if missing:
+            raise RuntimeError(
+                f"{table}: colunas novas na origem sem migração estrutural no destino: "
+                + ", ".join(sorted(missing))
+            )
+
+
 def dump_before_change(path: Path) -> None:
     descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(descriptor, "wb") as output:
@@ -116,6 +132,7 @@ def main() -> None:
     subprocess.run([sys.executable, str(exporter), str(export)], check=True,
                    env=source_env)
     manifest = verified_manifest(export)
+    require_complete_destination_schema(manifest)
     stage = f"snapshot_stage_{stamp.lower()}"
     psql(f"CREATE SCHEMA {stage}")
     try:

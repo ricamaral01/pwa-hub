@@ -104,6 +104,10 @@ def main() -> None:
             raise RuntimeError(f"Texto de banco mudou na origem: {original}")
         output_app = output_app.replace(original, neutral)
     output_app = patch_second_inspection(output_app)
+    external_pdf = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    if output_app.count(external_pdf) != 1:
+        raise RuntimeError("Mapa original mudou a carga da biblioteca de PDF")
+    output_app = output_app.replace(external_pdf, "/unificado/vendor/html2pdf/html2pdf.bundle.min.js")
     (TARGET / "app.js").write_text(repair(output_app), encoding="utf-8", newline="\n")
 
     html = (SOURCE / "index.html").read_text(encoding="utf-8")

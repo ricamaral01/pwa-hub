@@ -37,6 +37,14 @@ def get_count(session: requests.Session, base: str, table: str) -> int:
     return int(match.group(1))
 
 
+def source_columns(session: requests.Session, base: str) -> dict[str, list[str]]:
+    """Read the live REST schema; an empty table must retain its columns."""
+    response = session.get(base + "/", headers={"Accept": "application/openapi+json"}, timeout=TIMEOUT)
+    response.raise_for_status()
+    definitions = response.json()["definitions"]
+    return {table: list(definitions[table]["properties"]) for table in TABLES}
+
+
 def rows_for(session: requests.Session, base: str, table: str):
     last_id = None
     while True:
@@ -69,11 +77,13 @@ def csv_value(value):
 
 
 def export_table(session: requests.Session, base: str, table: str, output: Path,
-                 hasher: PasswordHasher) -> dict:
+                 hasher: PasswordHasher, source_column_names: list[str]) -> dict:
     source_before = get_count(session, base, table)
     rows = rows_for(session, base, table)
     first = next(rows, None)
-    columns = list(first) if first else []
+    columns = list(source_column_names)
+    if first is not None and set(first) != set(columns):
+        raise RuntimeError(f"{table}: primeira linha diverge do esquema da origem")
     if table == "usuarios":
         if "senha" not in columns:
             raise RuntimeError("Coluna de senha ausente em usuarios")
@@ -105,6 +115,12 @@ def export_table(session: requests.Session, base: str, table: str, output: Path,
 
 def write_row(writer: csv.DictWriter, row: dict, table: str,
               hasher: PasswordHasher, seen_ids: set, digest) -> int:
+    expected = set(writer.fieldnames or [])
+    received = set(row)
+    if table == "usuarios":
+        expected = (expected - {"senha_hash"}) | {"senha"}
+    if received != expected:
+        raise RuntimeError(f"{table}: colunas da linha divergentes da OpenAPI")
     row_id = str(row["id"])
     if row_id in seen_ids:
         raise RuntimeError(f"ID repetido em {table}")
@@ -130,10 +146,12 @@ def main():
     session = requests.Session()
     session.headers.update({"apikey": key, "Accept": "application/json"})
     hasher = PasswordHasher()
+    live_columns = source_columns(session, f"{url}/rest/v1")
     started = datetime.now(timezone.utc).isoformat()
     results = []
     for table in TABLES:
-        result = export_table(session, f"{url}/rest/v1", table, output, hasher)
+        result = export_table(session, f"{url}/rest/v1", table, output, hasher,
+                              live_columns[table])
         results.append(result)
         print(f"{table}: {result['exported_count']} registros")
     manifest = {"source_url": url, "exported_at": started, "tables": results}
