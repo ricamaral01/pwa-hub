@@ -85,13 +85,13 @@ body.sidebar-force-hidden #main-content {
   content: "";
   width: 52px;
   height: 52px;
-  background: url('/unificado/pcp/static/img/concrefer-logo.png') center / contain no-repeat;
+  background: url('/unificado/assets/img/logo-concrefer.png') center / contain no-repeat;
 }
 #sidebar > .sidebar-brand:first-child::after {
   content: "";
   width: 92px;
   height: 52px;
-  background: url('/unificado/pcp/static/img/concrefer-logo-alt.png') center / contain no-repeat;
+  background: url('/unificado/assets/img/logo-concretrack.png') center / contain no-repeat;
 }
 #sidebar .sidebar-brand span {
   font-weight: 700;

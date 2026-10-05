@@ -73,7 +73,7 @@ function renderSidebar() {
   sidebar.replaceChildren();
   const brand = document.createElement('div');
   brand.className = 'brand';
-  brand.innerHTML = '<img src="/unificado/pcp/static/img/concrefer-logo.png" alt="Concrefer" width="112"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack" width="34" height="34">';
+  brand.innerHTML = '<img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer" width="112"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack" width="34" height="34">';
   sidebar.append(brand);
 
   const switcher = document.createElement('div');

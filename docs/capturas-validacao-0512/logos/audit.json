@@ -1,0 +1,62 @@
+[
+  {
+    "place": "login",
+    "size": "1366x768",
+    "pair": true
+  },
+  {
+    "place": "testar",
+    "size": "1366x768",
+    "pair": true
+  },
+  {
+    "place": "mapa",
+    "size": "1366x768",
+    "pair": true
+  },
+  {
+    "place": "instalacao-pwa",
+    "size": "1366x768",
+    "pair": true
+  },
+  {
+    "place": "mapa-menu-recolhido",
+    "size": "1366x768",
+    "pair": true
+  },
+  {
+    "place": "mapa-carregamento",
+    "size": "1366x768",
+    "pair": true
+  },
+  {
+    "place": "login",
+    "size": "390x844",
+    "pair": true
+  },
+  {
+    "place": "testar",
+    "size": "390x844",
+    "pair": true
+  },
+  {
+    "place": "mapa",
+    "size": "390x844",
+    "pair": true
+  },
+  {
+    "place": "pcp",
+    "size": "1366x768",
+    "pair": true
+  },
+  {
+    "place": "pcp-menu-recolhido",
+    "size": "1366x768",
+    "pair": true
+  },
+  {
+    "place": "pcp",
+    "size": "390x844",
+    "pair": true
+  }
+]

@@ -31,7 +31,7 @@
     const nav = element("aside", "unificado-sidebar");
     nav.id = "unificadoSidebar";
     const brand = element("div", "unificado-brand");
-    brand.innerHTML = '<span class="unificado-brand-logos"><img src="/unificado/pcp/static/img/concrefer-logo.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></span>';
+    brand.innerHTML = '<span class="unificado-brand-logos"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></span>';
     nav.append(brand);
     const collapse = element("button", "unificado-collapse", "☰");
     collapse.type = "button";
@@ -146,6 +146,30 @@
     if (desktop() && controls.parentElement !== title) title.append(controls);
     if (!desktop() && controls.parentElement !== left) left.append(controls);
   }
+  function recordClientError(code, message) {
+    fetch("/unificado/mapa/api/unified/client-errors", {
+      method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({screen: location.pathname + location.search, code, message: String(message || "").slice(0, 500)})
+    }).catch(() => {});
+  }
+  function prepareInstall() {
+    let promptEvent = null;
+    addEventListener("beforeinstallprompt", event => {
+      event.preventDefault();
+      promptEvent = event;
+      if (document.querySelector(".unificado-install-button")) return;
+      const button = element("button", "unificado-install-button", "Instalar Mapa TESTE");
+      button.type = "button";
+      button.addEventListener("click", () => {
+        const dialog = element("div", "unificado-install-dialog");
+        dialog.innerHTML = '<section class="unificado-install-card"><div class="unificado-install-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div><h2>Instalar Mapa TESTE</h2><p>Este aplicativo usa somente o ambiente de testes.</p><button type="button" data-install>Instalar</button><button type="button" class="secondary" data-close>Cancelar</button></section>';
+        dialog.querySelector("[data-close]").addEventListener("click", () => dialog.remove());
+        dialog.querySelector("[data-install]").addEventListener("click", async () => { dialog.remove(); await promptEvent.prompt(); promptEvent = null; button.remove(); });
+        document.body.append(dialog);
+      });
+      document.body.append(button);
+    });
+  }
   function update() {
     if (typeof state === "undefined") return;
     const mode = state.mode || "HUB";
@@ -180,6 +204,9 @@
     placeHistoryFilters();
   }
   document.addEventListener("DOMContentLoaded", () => {
+    prepareInstall();
+    addEventListener("error", event => recordClientError("window.error", event.message));
+    addEventListener("unhandledrejection", event => recordClientError("unhandledrejection", event.reason?.message || event.reason));
     const version = document.getElementById("unificado-version");
     if (version) document.body.append(version);
     document.body.classList.toggle("unificado-menu-collapsed", localStorage.getItem("unificado_menu_collapsed") === "1");

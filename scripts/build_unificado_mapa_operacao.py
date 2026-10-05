@@ -66,7 +66,7 @@ def main() -> None:
     html = html.replace('  <script defer src="/auth/config.js?v=2"></script><script defer src="/auth/client.js"></script><script defer src="/auth/guard.js?v=2"></script>\n', "", 1)
     html = html.replace('../assets/msgbox.', 'assets/msgbox.')
     html = html.replace('<body data-app-key="mapa-concretagem">',
-                        '<body data-app-key="mapa-concretagem"><div id="ambiente-teste" role="status">AMBIENTE DE TESTE — lançamentos aqui não valem como produção</div>', 1)
+                        '<body data-app-key="mapa-concretagem"><div id="ambiente-teste" role="status"><span class="unificado-test-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></span><span>AMBIENTE DE TESTE — lançamentos aqui não valem como produção</span></div>', 1)
     html = html.replace('<script src="app.js?v=v5.31"></script>',
                         '<script src="bridge.js"></script><script src="app.js?v=unificado-operacao-1"></script><script src="unificado-bridge.js"></script>', 1)
     html = html.replace('?v=v5.31', f'?v={version}')
@@ -76,6 +76,8 @@ def main() -> None:
     html = html.replace('src="unificado-bridge.css"', f'src="unificado-bridge.css?v={version}"')
     html = html.replace('id="ambiente-teste"',
                         f'id="ambiente-teste" data-version="{version}"', 1)
+    html = html.replace('<div class="modal-box modal-box-loading">',
+                        '<div class="modal-box modal-box-loading"><div class="unificado-loading-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div>', 1)
     html = html.replace('</body>',
                         f'<small id="unificado-version" style="position:fixed;right:6px;bottom:5px;z-index:99999;background:#0B1730;color:white;padding:3px 7px;border-radius:6px;font:11px monospace">TESTE {version}</small></body>', 1)
     html = html.replace('</head>', '<style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}#ambiente-teste{position:sticky;top:0;z-index:100000;background:#ffdc6e;color:#3b2700;padding:11px 16px;text-align:center;font:800 16px/1.3 system-ui,sans-serif;box-shadow:0 2px 8px #0003}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)

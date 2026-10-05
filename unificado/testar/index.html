@@ -10,8 +10,8 @@
     @font-face{font-family:'Geist Mono';src:url('/unificado/shell/fonts/GeistMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
     :root{font-family:Geist,system-ui,sans-serif;color:#0E1A2F;background:#0B1730}
     *{box-sizing:border-box}body{margin:0;padding:10px}main{max-width:1040px;min-height:calc(100vh - 20px);margin:auto;padding:34px 40px 56px;background:#F5F6F8;border-radius:20px}
-    .brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;font-weight:600;color:#0B1730}
-    .brand b{display:grid;place-items:center;width:30px;height:30px;background:#E8762A;border-radius:10px}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:28px;font-weight:600;color:#0B1730}
+    .brand img:first-child{width:156px;height:42px;object-fit:contain}.brand img:nth-child(2){width:50px;height:50px;object-fit:contain}
     h1{font-size:clamp(1.7rem,4vw,2.3rem);letter-spacing:-.04em;margin:0 0 12px}p{line-height:1.5}
     .notice{background:#fff4d7;border:1px solid #e8cc8e;border-radius:10px;padding:14px 18px;font-weight:600}
     .meta{color:#5B677A;margin:18px 0 26px}.meta strong{font-family:'Geist Mono',monospace;color:#0E1A2F}
@@ -25,14 +25,16 @@
     .tablet-tools a,.tablet-tools button{border:0;border-radius:10px;background:#E8762A;color:#0B1730;font:600 15px Geist,system-ui;padding:13px 16px;cursor:pointer;text-decoration:none}
     .tablet-tools .primary{font-size:18px;padding:18px 22px}
     .version{position:fixed;right:12px;bottom:9px;color:#67758e;font:500 11px 'Geist Mono',monospace}
+    .problem-panel{margin-top:28px;padding:22px;background:#fff;border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05)}
+    .problem-panel h2{margin:0 0 8px}.problem-panel label{display:block;font-weight:600;margin:14px 0 7px}.problem-panel textarea{width:100%;min-height:100px;resize:vertical;border:1px solid #E9ECF1;border-radius:10px;background:#F1F3F6;padding:12px;font:inherit;color:#0E1A2F}.problem-panel button{border:0;border-radius:10px;background:#E8762A;color:#0B1730;font:600 15px Geist,system-ui;padding:13px 16px;cursor:pointer}.problem-list{display:grid;gap:9px;margin-top:16px}.problem-item{padding:12px 14px;border-radius:10px;background:#F5F6F8}.problem-item small{display:block;color:#5B677A;margin-bottom:4px}.problem-feedback{min-height:22px;color:#16794A}
     @media(max-width:650px){main{padding:24px 18px 40px}.row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 <main>
-  <div class="brand"><b>C</b>Concrefer <span aria-hidden="true">/</span> Ambiente de teste</div>
+  <div class="brand" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"><span>Ambiente de teste</span></div>
   <h1>Testar o sistema unificado</h1>
-  <p class="notice">Ambiente de teste. Nada lançado aqui vale como produção.</p>
+  <p class="notice">AMBIENTE DE TESTE — lançamentos aqui não valem como produção</p>
   <p class="meta">Fotografia dos dados: <strong>{{SNAPSHOT_AT}}</strong>. Use sua conta do ambiente unificado de testes para acessar esta página.</p>
   <div class="tablet-tools">
     <img src="/unificado/testar/qr-testar.png" alt="QR code para abrir esta pagina no tablet">
@@ -42,17 +44,32 @@
     <button type="button" data-size="390,844">Celular (390x844)</button>
   </div>
   <div class="grid">
-    <div class="row"><a href="/unificado/">Início</a><span><span class="status partial">parcial</span>Menu e indicadores por setor usam os bancos de testes. Login só-PCP, só-Mapa e par Mapa-base passaram no navegador; faltam os E2E completos dos destinos dos atalhos.</span></div>
-    <div class="row"><a href="/unificado/mapa/operacao/">Mapa em operação</a><span><span class="status partial">parcial</span>Rota aberta no banco de testes; 24 dos 24 fluxos passaram a matriz E2E. Dashboards e Histórico foram comparados com a fotografia de origem, incluindo totais e linhas. O Dashboard Defeitos conta cada defeito uma vez por inspeção na cópia; de 01 a 04/10 são 14 ocorrências, ante 28 no original. O fechamento dos fixtures individuais das 73 chamadas ainda está pendente.</span></div>
+    <div class="row"><a href="/unificado/">Início</a><span><span class="status ready">pronto para testar</span>Menu, atalhos e indicadores por setor usam somente os bancos de testes. Login só-PCP, só-Mapa e par Mapa-base estão habilitados.</span></div>
+    <div class="row"><a href="/unificado/mapa/operacao/">Mapa em operação</a><span><span class="status ready">pronto para testar</span>Os 24 fluxos operacionais e as 73 chamadas estão cobertos. As 11 diferenças de ordem das 78 leituras brutas têm resultado final conferido; a paginação completa entrega todas as linhas sem repetição. A segunda inspeção oferece retrabalho ou relatório e registra o estado final sem duplicar defeitos.</span></div>
     <div class="row"><a href="/unificado/mapa/">Histórico do Mapa</a><span><span class="status ready">pronto para testar</span>Consulta histórica somente leitura.</span></div>
     <div class="row"><a href="/unificado/mapa/operacao/?tela=LIBERACAO_S1">Prévia do tablet</a><span><span class="status ready">pronto para testar</span>Os 18 modos tiveram 54/54 capturas idênticas em tablet e quiosque, além de 18/18 em celular 390×844. Os 24 fluxos operacionais passaram por perfil e setor aplicáveis.</span></div>
-    <div class="row"><a href="/unificado/pcp/dashboard/">PCP — 24 telas e impressão</a><span><span class="status partial">parcial</span>A troca de módulo abre diretamente o Dashboard; o menu desktop pode ser recolhido nos dois módulos. As 24 rotas abriram com quatro perfis; a API de leitura teve 63/63 respostas iguais. Sete tipos de PDF passaram contra o oficial, incluindo 49 etiquetas de armadura; as 24 telas foram idênticas ao original em tablet e celular. Falta fechar o E2E funcional de todas as telas e permissões.</span></div>
+    <div class="row"><a href="/unificado/pcp/dashboard/">PCP — 24 telas e impressão</a><span><span class="status ready">pronto para testar</span>As 24 páginas, quatro perfis, leituras 63/63, gravações autorizadas e sete famílias de PDF estão disponíveis no banco de testes. A tela Teste Programação preserva a falha de tipos do sistema oficial, registrada na documentação.</span></div>
   </div>
+  <section class="problem-panel" aria-labelledby="problem-title">
+    <h2 id="problem-title">Problemas encontrados</h2>
+    <p>Informe o que aconteceu. A tela, o usuário, a hora e a versão são registrados automaticamente no banco de testes.</p>
+    <form id="problem-form"><label for="problem-text">Descrição</label><textarea id="problem-text" maxlength="4000" required></textarea><button type="submit">Relatar problema</button></form>
+    <p id="problem-feedback" class="problem-feedback" role="status" aria-live="polite"></p>
+    <h3>Relatos recentes</h3><div id="problem-list" class="problem-list"><span>Carregando…</span></div>
+  </section>
 </main>
 <div class="version" id="unificado-version">Versao {{VERSION}}</div>
 <script>document.querySelectorAll('[data-size]').forEach(button => button.addEventListener('click', () => {
   const [width,height] = button.dataset.size.split(',').map(Number);
   window.open('/unificado/mapa/operacao/', '_blank', `width=${width},height=${height},resizable=yes,scrollbars=yes`);
 }));</script>
+<script>
+const problemList=document.getElementById('problem-list'),problemFeedback=document.getElementById('problem-feedback');
+function escapeText(value){const node=document.createElement('span');node.textContent=value??'';return node.innerHTML}
+async function loadProblems(){const response=await fetch('/unificado/testar/api/problems',{credentials:'same-origin',cache:'no-store'});if(!response.ok)throw new Error('Não foi possível carregar os relatos.');const rows=await response.json();problemList.innerHTML=rows.length?rows.map(row=>`<article class="problem-item"><small>${escapeText(row.created_at)} · ${escapeText(row.actor)} · ${escapeText(row.screen)} · versão ${escapeText(row.version)}</small><span>${escapeText(row.text)}</span></article>`).join(''):'<span>Nenhum problema relatado.</span>'}
+document.getElementById('problem-form').addEventListener('submit',async event=>{event.preventDefault();const text=document.getElementById('problem-text').value.trim();if(!text)return;problemFeedback.textContent='Enviando…';const response=await fetch('/unificado/testar/api/problems',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({screen:location.pathname,text})});const result=await response.json().catch(()=>({}));if(!response.ok){problemFeedback.textContent=result.error||'Não foi possível registrar.';return}document.getElementById('problem-text').value='';problemFeedback.textContent='Problema registrado.';await loadProblems()});
+window.addEventListener('error',event=>fetch('/unificado/testar/api/client-errors',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({screen:location.pathname,code:'window.error',message:String(event.message||'').slice(0,500)})}).catch(()=>{}));
+loadProblems().catch(error=>{problemList.textContent=error.message});
+</script>
 </body>
 </html>

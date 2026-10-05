@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Primeiro Acesso — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
-  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.5.11" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.5.12" />
   <script src="/unificado/pcp/readonly-guard.js"></script>
 </head>
 <body>
 <div class="login-wrapper">
   <div class="login-card">
-    <div class="login-logo">
+    <div class="login-logo unificado-first-access-logos" aria-label="Concrefer e ConcreTrack">
+      <img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer">
+      <img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack">
       <div class="brand-name">Primeiro Acesso</div>
       <div class="brand-sub">Troque sua senha para continuar</div>
     </div>
@@ -37,7 +39,7 @@
   </div>
 </div>
 
-<script src="/unificado/pcp/static/js/app.js?v=0.5.11"></script>
+<script src="/unificado/pcp/static/js/app.js?v=0.5.12"></script>
 <script>
 const user = API.getUser();
 if (!API.getToken() || !user) {

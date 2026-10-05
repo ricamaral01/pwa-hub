@@ -15,6 +15,12 @@
     return value;
   }
   const originalFetch = window.fetch.bind(window);
+  function recordClientError(code, message) {
+    originalFetch("/unificado/testar/api/client-errors", {
+      method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({screen: location.pathname + location.search, code, message: String(message || "").slice(0, 500)})
+    }).catch(() => {});
+  }
   window.fetch = (input, init) => {
     try {
       const value = localUrl(typeof input === "string" ? input : input.url);
@@ -38,6 +44,8 @@
       .forEach(link => { link.href = "/unificado/mapa/operacao/"; link.removeAttribute("target"); });
   }
   document.addEventListener("DOMContentLoaded", () => {
+    addEventListener("error", event => recordClientError("window.error", event.message));
+    addEventListener("unhandledrejection", event => recordClientError("unhandledrejection", event.reason?.message || event.reason));
     rewriteMapaLink();
     const nav = document.querySelector("#sidebar nav");
     if (nav) new MutationObserver(rewriteMapaLink).observe(nav, {childList: true, subtree: true});

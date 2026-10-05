@@ -54,9 +54,14 @@ def main() -> None:
         page.wait_for_url(TESTAR, timeout=15000)
         authorized = page.reload(wait_until="domcontentloaded")
         assert authorized and authorized.status == 200
-        assert "Ambiente de teste. Nada lançado aqui vale como produção." in page.locator("body").inner_text()
+        assert "AMBIENTE DE TESTE — lançamentos aqui não valem como produção" in page.locator("body").inner_text()
         assert snapshot in page.locator("body").inner_text()
-        assert "24 dos 24 fluxos" in page.locator("body").inner_text()
+        assert "24 fluxos operacionais" in page.locator("body").inner_text()
+        marker = "Relato sintético do teste automatizado"
+        page.locator("#problem-text").fill(marker)
+        page.locator('#problem-form button[type="submit"]').click()
+        page.locator("#problem-feedback").filter(has_text="Problema registrado.").wait_for(timeout=15000)
+        page.locator("#problem-list").filter(has_text=marker).wait_for(timeout=15000)
         if args.first_access:
             state = page.evaluate("""async () => {
               const response=await fetch('/unificado/mapa/api/me');
@@ -75,7 +80,7 @@ def main() -> None:
             page.locator('#unificado-login-form [name="password"]').fill(new_password)
             page.locator('#unificado-login-form button[type="submit"]').click()
             page.wait_for_url(TESTAR, timeout=15000)
-            assert page.locator("body").inner_text().find("24 dos 24 fluxos") >= 0
+            assert page.locator("body").inner_text().find("24 fluxos operacionais") >= 0
             page.goto("https://concrefer.concretrack.com.br/unificado/mapa/operacao/",
                       wait_until="domcontentloaded")
             page.wait_for_function("role => state.authUser?.role === role",

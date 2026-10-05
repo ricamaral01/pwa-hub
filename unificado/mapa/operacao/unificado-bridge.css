@@ -4,6 +4,11 @@
 @font-face{font-family:'Geist Mono';src:url('fonts/GeistMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
 @font-face{font-family:'Geist Mono';src:url('fonts/GeistMono-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
 .unificado-sidebar,.unificado-topbar,.unificado-segments,.unificado-date-heading{display:none}
+.unificado-test-logos{display:inline-flex;align-items:center;gap:6px;margin-right:10px;vertical-align:middle}
+.unificado-test-logos img:first-child{width:82px;height:22px;object-fit:contain}
+.unificado-test-logos img:last-child{width:25px;height:25px;object-fit:contain}
+.unificado-loading-logos,.unificado-install-logos{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:15px}.unificado-loading-logos img:first-child,.unificado-install-logos img:first-child{width:128px;height:36px;object-fit:contain}.unificado-loading-logos img:last-child,.unificado-install-logos img:last-child{width:40px;height:40px;object-fit:contain}
+.unificado-install-button{position:fixed;right:12px;bottom:42px;z-index:99998;border:0;border-radius:10px;padding:11px 14px;background:#E8762A;color:#0B1730;font:700 14px Geist,system-ui,sans-serif;box-shadow:0 6px 20px #0003}.unificado-install-dialog{position:fixed;inset:0;z-index:1000003;display:grid;place-items:center;padding:20px;background:rgba(11,23,48,.72)}.unificado-install-card{width:min(420px,100%);padding:24px;background:#fff;color:#0B1730;border-radius:16px;text-align:center}.unificado-install-card button{min-height:46px;margin:6px;border:0;border-radius:10px;padding:10px 16px;background:#E8762A;color:#0B1730;font-weight:700}.unificado-install-card button.secondary{background:#F1F3F6}
 @media screen and (min-width:1025px){
  body.unificado-desktop{--unificado-navy:#0B1730;--unificado-panel:#F5F6F8;--unificado-field:#F1F3F6;--unificado-line:#E9ECF1;--unificado-ink:#0E1A2F;--unificado-orange:#E8762A;--unificado-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05);background:var(--unificado-navy);color:var(--unificado-ink);font-family:Geist,system-ui,sans-serif}
  body.unificado-desktop #ambiente-teste{position:relative;box-shadow:none;padding:6px 16px;font:600 12px Geist,system-ui,sans-serif}
@@ -81,7 +86,7 @@
  body.unificado-desktop .page-content.container{padding:25px!important}
 }
 @media print{
- .unificado-sidebar,.unificado-topbar,#ambiente-teste,#unificado-version{display:none!important}
+ .unificado-sidebar,.unificado-topbar,#ambiente-teste,#unificado-version,.unificado-test-logos,.unificado-loading-logos,.unificado-install-button,.unificado-install-dialog{display:none!important}
  body.print-relatorio::after{content:"";display:block;break-before:page;height:1px}
 }
 @media screen and (max-width:1024px){

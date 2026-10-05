@@ -7,6 +7,7 @@ import base64
 import hashlib
 import html
 import json
+import logging
 import os
 from pathlib import Path
 import re
@@ -36,6 +37,7 @@ from unified_auth import (adopt_mapa_password, check_link_password, component_li
 
 
 app = Flask(__name__)
+validation_logger = logging.getLogger("unificado.validation")
 hasher = PasswordHasher()
 COOKIE_NAME = "mapa_unificado_session"
 TEST_PAGE_COOKIE_NAME = "unificado_test_session"
@@ -407,6 +409,94 @@ def authenticated_user():
             or row["updated_at"].isoformat() != session.get("updated_at")):
         return None
     return row
+
+
+def test_actor():
+    """Return a minimal active test identity without exposing password material."""
+    mapa = authenticated_user()
+    if mapa:
+        return {"actor": "mapa:" + mapa["id"], "fingerprint": mapa["id"]}
+    token = request.cookies.get(TEST_PAGE_COOKIE_NAME)
+    try:
+        claim = signer().loads(token, max_age=SESSION_SECONDS) if token else None
+        if claim and claim.get("scope") == "pcp_test_session":
+            with pcp_connect() as conn, conn.cursor() as cur:
+                cur.execute("SELECT username,ativo FROM public.usuarios WHERE id=%s", (claim["id"],))
+                row = cur.fetchone()
+            if row and row["ativo"]:
+                return {"actor": "pcp:" + row["username"], "fingerprint": "pcp:" + str(claim["id"])}
+    except (BadSignature, SignatureExpired, KeyError, psycopg.Error):
+        return None
+    return None
+
+
+def current_version():
+    path = Path(__file__).parent / "VERSION"
+    return path.read_text(encoding="utf-8").strip() if path.exists() else "unknown"
+
+
+def validation_origin_ok():
+    return request.headers.get("Origin") == "https://concrefer.concretrack.com.br"
+
+
+@app.route("/testar/api/problems", methods=["GET", "POST"])
+def test_problem_reports():
+    actor = test_actor()
+    if not actor:
+        return jsonify(error="Sessão de teste expirada. Entre novamente."), 401
+    if request.method == "POST":
+        if not validation_origin_ok():
+            return jsonify(error="Origem da requisição inválida."), 403
+        payload = request.get_json(silent=True) or {}
+        report_text = str(payload.get("text") or "").strip()
+        screen = str(payload.get("screen") or "/unificado/testar/")[:500]
+        if not report_text or len(report_text) > 4000:
+            return jsonify(error="Descreva o problema em até 4.000 caracteres."), 400
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("""INSERT INTO unificado_auth.problem_reports
+                           (actor,screen,version,report_text) VALUES (%s,%s,%s,%s) RETURNING id""",
+                        (actor["actor"], screen, current_version(), report_text))
+            report_id = cur.fetchone()["id"]
+        return jsonify(ok=True, id=report_id), 201
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT created_at,actor,screen,version,report_text
+                       FROM unificado_auth.problem_reports ORDER BY created_at DESC LIMIT 100""")
+        rows = cur.fetchall()
+    return jsonify([{"created_at": row["created_at"].astimezone(ZoneInfo("America/Sao_Paulo")).isoformat(timespec="seconds"),
+                     "actor": row["actor"], "screen": row["screen"], "version": row["version"],
+                     "text": row["report_text"]} for row in rows])
+
+
+@app.post("/testar/api/client-errors")
+@app.post("/unified/client-errors")
+def record_client_error():
+    actor = test_actor()
+    if not actor:
+        return jsonify(ok=False), 401
+    if not validation_origin_ok():
+        return jsonify(ok=False), 403
+    payload = request.get_json(silent=True) or {}
+    route = str(payload.get("screen") or "unknown")[:500]
+    code = str(payload.get("code") or "client.error")[:120]
+    message = str(payload.get("message") or "")[:500]
+    actor_hash = hashlib.sha256(actor["fingerprint"].encode()).hexdigest()[:16]
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""INSERT INTO unificado_auth.client_errors
+                       (actor_hash,route,error_code,version,message) VALUES (%s,%s,%s,%s,%s)""",
+                    (actor_hash, route, code, current_version(), message))
+    return jsonify(ok=True), 201
+
+
+@app.after_request
+def log_validation_http_error(response):
+    if response.status_code >= 400:
+        token = request.cookies.get(COOKIE_NAME) or request.cookies.get(TEST_PAGE_COOKIE_NAME) or "anonymous"
+        validation_logger.warning(json.dumps({
+            "event": "http_error", "at": datetime.now(timezone.utc).isoformat(),
+            "route": request.path, "method": request.method, "status": response.status_code,
+            "actor_hash": hashlib.sha256(token.encode()).hexdigest()[:16],
+        }, separators=(",", ":")))
+    return response
 
 
 @app.get("/me")

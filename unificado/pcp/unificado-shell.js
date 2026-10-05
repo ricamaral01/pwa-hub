@@ -82,7 +82,7 @@
     }
     if (sidebar.querySelector(".unificado-pcp-brand")) return;
     const brand = make("div", "unificado-pcp-brand", "");
-    brand.innerHTML = '<span class="unificado-pcp-brand-logos"><img src="/unificado/pcp/static/img/concrefer-logo.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></span>';
+    brand.innerHTML = '<span class="unificado-pcp-brand-logos"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></span>';
     sidebar.prepend(brand);
     const collapse = make("button", "unificado-pcp-collapse", "☰");
     collapse.type = "button";
@@ -151,6 +151,11 @@
     sidebar.append(foot);
   }
   document.addEventListener("DOMContentLoaded", () => {
+    const testBrand = make("a", "unificado-pcp-test-brand", "");
+    testBrand.href = "/unificado/testar/";
+    testBrand.setAttribute("aria-label", "Concrefer e ConcreTrack — ambiente de teste");
+    testBrand.innerHTML = '<img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"><span>AMBIENTE DE TESTE — lançamentos aqui não valem como produção</span>';
+    document.body.prepend(testBrand);
     const version = make("small", "unificado-pcp-version", "");
     Object.assign(version.style, {position:"fixed",right:"6px",bottom:"5px",zIndex:"99999",
       background:"#0B1730",color:"white",padding:"3px 7px",borderRadius:"6px",font:"11px monospace"});
