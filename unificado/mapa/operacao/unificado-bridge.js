@@ -91,7 +91,7 @@
         }
         localStorage.setItem("pcp_token", result.access_token);
         localStorage.setItem("pcp_user", JSON.stringify(result.usuario));
-        location.assign("/unificado/pcp/dashboard/");
+        location.assign("/unificado/?view=pcp%2Fdashboard%2F");
       } catch (error) {
         alert(error.message || "Não foi possível abrir o Planejamento.");
         planning.disabled = false;
@@ -269,8 +269,6 @@
     document.body.append(problem);
     addEventListener("error", event => recordClientError("window.error", event.message));
     addEventListener("unhandledrejection", event => recordClientError("unhandledrejection", event.reason?.message || event.reason));
-    const version = document.getElementById("unificado-version");
-    if (version) document.body.append(version);
     document.body.classList.toggle("unificado-menu-collapsed", localStorage.getItem("unificado_menu_collapsed") === "1");
     const shell = document.querySelector("#appShell");
     const main = shell?.querySelector(".app-main");

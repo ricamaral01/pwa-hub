@@ -13,13 +13,15 @@ function destination(modules) {
     'teste-programacao','usuarios']);
   if (requestedNext === 'testar/') return new URL(requestedNext, UNIFICADO_ROOT);
   if (requestedNext === 'index.html') return new URL(requestedNext, UNIFICADO_ROOT);
+  if (modules.includes('mapa') && requestedNext === 'mapa/operacao/')
+    return new URL('?view=' + encodeURIComponent(requestedNext), UNIFICADO_ROOT);
   if (modules.includes('mapa') && allowed.has(requestedNext)) return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('pcp') && (requestedNext === 'pcp/' ||
       pcpPages.has((requestedNext || '').match(/^pcp\/([^/?]+)\/(?:\?[^#]*)?$/)?.[1]))) {
-    return new URL(requestedNext, UNIFICADO_ROOT);
+    return new URL('?view=' + encodeURIComponent(requestedNext === 'pcp/' ? 'pcp/dashboard/' : requestedNext), UNIFICADO_ROOT);
   }
   if (modules.includes('mapa') && /^mapa\/operacao\/\?tela=[A-Z0-9_]+$/.test(requestedNext || '')) {
-    return new URL(requestedNext, UNIFICADO_ROOT);
+    return new URL('?view=' + encodeURIComponent(requestedNext), UNIFICADO_ROOT);
   }
   return new URL('index.html', UNIFICADO_ROOT);
 }

@@ -8,14 +8,15 @@ const ICONS = {
   chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V12m5 8V5m5 15v-9m5 9V8M2 21h20"/></svg>'
 };
 
+const PCP_ICONS = {dashboard:'bi-speedometer2',comparacao:'bi-bar-chart',programacao12:'bi-calendar3',
+  programacao34:'bi-calendar3',circular3:'bi-circle',dt4:'bi-circle',programacaoFinal:'bi-calendar-check',
+  relatorio12:'bi-file-earmark-text',relatorio3:'bi-file-earmark-text',relatorio4:'bi-file-earmark-text',
+  etiquetas:'bi-upc',etiquetasSc:'bi-upc',etiquetasArmaduras:'bi-upc',pcpDiario:'bi-journal-text',
+  acompMensal:'bi-graph-up',acompMensal34:'bi-graph-up',apontamentoMega:'bi-clipboard-data',
+  producaoPcp:'bi-gear',maodeobra:'bi-people',maodeobraRateio:'bi-people',
+  formasPorSetor:'bi-grid-3x3-gap',testeProgramacao:'bi-wrench'};
 const sidebar = document.getElementById('sidebar');
-const unificadoVersion = document.createElement('small');
-unificadoVersion.id = 'unificado-version';
-Object.assign(unificadoVersion.style, {position:'fixed',right:'6px',bottom:'5px',zIndex:'99999',
-  background:'#0B1730',color:'white',padding:'3px 7px',borderRadius:'6px',font:'11px monospace'});
-document.body.append(unificadoVersion);
-fetch('/unificado/VERSION',{cache:'no-store'}).then(r=>r.ok?r.text():'')
-  .then(value=>{unificadoVersion.textContent='v'+value.trim();}).catch(()=>{});
+document.body.classList.toggle('unificado-menu-collapsed', localStorage.getItem('unificado_menu_collapsed') === '1');
 const pcpUser = (() => { try { return JSON.parse(localStorage.getItem('pcp_user') || 'null'); } catch { return null; } })();
 const mapaUser = (() => { try { return JSON.parse(localStorage.getItem('pwa_mapa_auth_session_v1') || 'null'); } catch { return null; } })();
 const hasPcp = Boolean(localStorage.getItem('pcp_token') && pcpUser);
@@ -44,12 +45,19 @@ function makeLink(item, className = 'nav-link') {
   a.setAttribute('aria-disabled', String(!canUse(item)));
   if (!canUse(item)) a.classList.add('is-unavailable');
   a.dataset.item = item.id;
+  a.title = item.label;
+  a.setAttribute('aria-label', item.label);
   if (!canUse(item)) a.title = 'Sem acesso a este módulo';
   if (item.mono) {
     const mono = document.createElement('span');
     mono.className = 'mono';
     mono.textContent = item.mono;
     a.append(mono);
+  } else if (item.module === 'planejamento') {
+    const icon = document.createElement('i');
+    icon.className = `bi ${PCP_ICONS[item.id] || 'bi-grid-3x3-gap'} pcp-nav-icon`;
+    icon.setAttribute('aria-hidden', 'true');
+    a.append(icon);
   }
   const label = document.createElement('span');
   label.className = 'nav-link-label';
@@ -58,6 +66,11 @@ function makeLink(item, className = 'nav-link') {
   a.addEventListener('click', (event) => {
     if (!canUse(item)) {
       event.preventDefault();
+      return;
+    }
+    if (window.UnificadoRouter) {
+      event.preventDefault();
+      window.UnificadoRouter.open(a.href, item.id);
       return;
     }
     activeItem = item.id;
@@ -70,11 +83,31 @@ function makeLink(item, className = 'nav-link') {
 }
 
 function renderSidebar() {
+  const existingBrand = sidebar.querySelector(':scope > .brand');
+  const existingCollapse = sidebar.querySelector(':scope > .nav-collapse');
   sidebar.replaceChildren();
-  const brand = document.createElement('div');
-  brand.className = 'brand';
-  brand.innerHTML = '<img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer" width="112"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack" width="34" height="34">';
+  const brand = existingBrand || document.createElement('div');
+  if (!existingBrand) {
+    brand.className = 'brand';
+    brand.innerHTML = '<img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer" width="112"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack" width="34" height="34">';
+  }
   sidebar.append(brand);
+  const collapse = existingCollapse || document.createElement('button');
+  if (!existingCollapse) {
+  collapse.type = 'button';
+  collapse.className = 'nav-collapse';
+  collapse.textContent = '☰';
+  collapse.title = 'Recolher ou expandir menu';
+  collapse.setAttribute('aria-label', collapse.title);
+  collapse.setAttribute('aria-expanded', String(!document.body.classList.contains('unificado-menu-collapsed')));
+  collapse.addEventListener('click', () => {
+    const collapsed = !document.body.classList.contains('unificado-menu-collapsed');
+    document.body.classList.toggle('unificado-menu-collapsed', collapsed);
+    localStorage.setItem('unificado_menu_collapsed', collapsed ? '1' : '0');
+    collapse.setAttribute('aria-expanded', String(!collapsed));
+  });
+  }
+  sidebar.append(collapse);
 
   const switcher = document.createElement('div');
   switcher.className = 'module-switch';
@@ -86,8 +119,15 @@ function renderSidebar() {
     button.type = 'button';
     button.className = `module-button${key === currentModule ? ' is-active' : ''}`;
     button.textContent = config.label;
+    button.dataset.short = key === 'planejamento' ? 'PL' : 'PR';
+    button.title = config.label;
+    button.setAttribute('aria-label', config.label);
     button.setAttribute('aria-pressed', key === currentModule ? 'true' : 'false');
     button.addEventListener('click', () => {
+      if (window.UnificadoRouter) {
+        window.UnificadoRouter.openModule(key);
+        return;
+      }
       currentModule = key;
       localStorage.setItem('unificado_modulo', key);
       renderSidebar();
@@ -102,7 +142,12 @@ function renderSidebar() {
   home.href = new URL('index.html', UNIFICADO_BASE).href;
   home.className = `nav-home${activeItem ? '' : ' is-active'}`;
   home.innerHTML = `${ICONS.home}<span>Início</span>`;
-  home.addEventListener('click', () => { activeItem = null; });
+  home.title = 'Início';
+  home.setAttribute('aria-label', 'Início');
+  home.addEventListener('click', event => {
+    activeItem = null;
+    if (window.UnificadoRouter) { event.preventDefault(); window.UnificadoRouter.home(); }
+  });
   scroll.append(home);
 
   MENU_CONFIG[currentModule].groups.forEach((group, index) => {
@@ -115,9 +160,20 @@ function renderSidebar() {
         toggle.className = 'group-title';
         toggle.innerHTML = `<span>${group.label}</span>${ICONS.chevron}`;
         toggle.setAttribute('aria-expanded', 'true');
+        toggle.dataset.short = group.label.slice(0, 2).toUpperCase();
+        toggle.title = group.label;
+        toggle.setAttribute('aria-label', group.label);
         const items = document.createElement('div');
         items.className = 'group-items';
         toggle.addEventListener('click', () => {
+          if (document.body.classList.contains('unificado-menu-collapsed') && matchMedia('(min-width:1025px)').matches) {
+            sidebar.querySelectorAll('.nav-group.flyout-open').forEach(node => { if (node !== wrapper) node.classList.remove('flyout-open'); });
+            const open = !wrapper.classList.contains('flyout-open');
+            wrapper.classList.toggle('flyout-open', open);
+            toggle.setAttribute('aria-expanded', String(open));
+            items.hidden = !open;
+            return;
+          }
           const open = toggle.getAttribute('aria-expanded') !== 'true';
           toggle.setAttribute('aria-expanded', String(open));
           items.hidden = !open;
@@ -149,6 +205,9 @@ function renderSidebar() {
     ? new URL('usuarios/', PCP_BASE).href
     : new URL('operacao/?tela=USUARIOS', MAPA_BASE).href;
   users.innerHTML = `${ICONS.users}<span>Usuários</span>`;
+  users.addEventListener('click', event => {
+    if (window.UnificadoRouter) { event.preventDefault(); window.UnificadoRouter.open(users.href); }
+  });
   if (pcpUser?.nivel_acesso === 'ADMIN' || hasMapa && mapaUser?.role === 'GERENCIA') sidebar.append(users);
 }
 
@@ -179,6 +238,9 @@ function renderSectors() {
       a.href = item.url;
       if (!canUse(item)) continue;
       a.textContent = label;
+      a.addEventListener('click', event => {
+        if (window.UnificadoRouter) { event.preventDefault(); window.UnificadoRouter.open(a.href, item.id); }
+      });
       actions.append(a);
     }
     target.append(card);

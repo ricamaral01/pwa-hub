@@ -130,8 +130,7 @@ def main() -> None:
                         '<script src="unificado-bridge.js?v=' + version + '"></script><script src="dashboard-defeitos-v5.js?v=' + version + '"></script>', 1)
     html = html.replace('<div class="modal-box modal-box-loading">',
                         '<div class="modal-box modal-box-loading"><div class="unificado-loading-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div>', 1)
-    html = html.replace('</body>',
-                        f'<small id="unificado-version" style="position:fixed;right:6px;bottom:5px;z-index:99999;background:#0B1730;color:white;padding:3px 7px;border-radius:6px;font:11px monospace">v{version}</small></body>', 1)
+    html = html.replace('<head>', '<head><script>if(top===self&&matchMedia("(min-width:1025px)").matches){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length)+location.search))}</script>', 1)
     html = html.replace('</head>', '<style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)
     html = html.replace('href="unificado-bridge.css"', f'href="unificado-bridge.css?v={version}"')
     (TARGET / "index.html").write_text(repair(html), encoding="utf-8", newline="\n")
