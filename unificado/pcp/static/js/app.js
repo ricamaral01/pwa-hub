@@ -77,9 +77,19 @@ function requireAuth() {
 }
 
 let unificadoAuthRecoveryStarted = false;
-function unificadoUnavailableOrLogin() {
+function unificadoUnavailableOrLogin(skipRecovery = false) {
   if (unificadoAuthRecoveryStarted) return;
   unificadoAuthRecoveryStarted = true;
+  if (!skipRecovery && window.unificadoRecoverPcpSession) {
+    window.unificadoRecoverPcpSession().then(recovered => {
+      if (recovered) location.reload();
+      else {
+        unificadoAuthRecoveryStarted = false;
+        unificadoUnavailableOrLogin(true);
+      }
+    });
+    return;
+  }
   const next = location.pathname.replace(/^\/unificado\//, '') + location.search;
   const login = () => location.replace('/unificado/login.html?next=' + encodeURIComponent(next));
   if (!localStorage.getItem('pwa_mapa_auth_session_v1')) return login();

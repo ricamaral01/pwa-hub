@@ -74,7 +74,29 @@
     planning.title = "Planejamento";
     planning.setAttribute("aria-label", "Planejamento");
     planning.dataset.icon = "PL";
-    planning.addEventListener("click", () => location.assign("/unificado/pcp/dashboard/"));
+    planning.addEventListener("click", async () => {
+      if (planning.disabled) return;
+      planning.disabled = true;
+      try {
+        const response = await fetch("/unificado/mapa/api/unified/pcp-session", {
+          credentials: "same-origin", cache: "no-store"
+        });
+        if (response.status === 401) {
+          location.assign("/unificado/login.html?next=pcp%2Fdashboard%2F");
+          return;
+        }
+        const result = await response.json();
+        if (!response.ok || !result.access_token || !result.usuario) {
+          throw new Error(result.error || "Planejamento indisponível no momento.");
+        }
+        localStorage.setItem("pcp_token", result.access_token);
+        localStorage.setItem("pcp_user", JSON.stringify(result.usuario));
+        location.assign("/unificado/pcp/dashboard/");
+      } catch (error) {
+        alert(error.message || "Não foi possível abrir o Planejamento.");
+        planning.disabled = false;
+      }
+    });
     const production = element("button", "unificado-switch-btn is-active", "Produção");
     production.type = "button";
     production.setAttribute("aria-current", "page");

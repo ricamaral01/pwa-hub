@@ -15,6 +15,22 @@
     return value;
   }
   const originalFetch = window.fetch.bind(window);
+  let sessionRecovery = null;
+  function recoverPcpSession() {
+    if (sessionRecovery) return sessionRecovery;
+    sessionRecovery = originalFetch("/unificado/mapa/api/unified/pcp-session", {
+      credentials: "same-origin", cache: "no-store"
+    }).then(async response => {
+      if (!response.ok) return false;
+      const result = await response.json();
+      if (!result.access_token || !result.usuario) return false;
+      localStorage.setItem("pcp_token", result.access_token);
+      localStorage.setItem("pcp_user", JSON.stringify(result.usuario));
+      return true;
+    }).catch(() => false).finally(() => { sessionRecovery = null; });
+    return sessionRecovery;
+  }
+  window.unificadoRecoverPcpSession = recoverPcpSession;
   function recordClientError(code, message) {
     originalFetch("/unificado/testar/api/client-errors", {
       method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"},
@@ -24,8 +40,17 @@
   window.fetch = (input, init) => {
     try {
       const value = localUrl(typeof input === "string" ? input : input.url);
-      return originalFetch(typeof input === "string" ? value : new Request(value, input), init)
-        .then(response => {
+      const request = new Request(typeof input === "string" ? value : new Request(value, input), init);
+      const retry = request.clone();
+      return originalFetch(request)
+        .then(async response => {
+          const path = new URL(value, location.href).pathname;
+          if (response.status === 401 && path.startsWith("/unificado/pcp/api/")
+              && path !== "/unificado/pcp/api/login" && await recoverPcpSession()) {
+            const headers = new Headers(retry.headers);
+            headers.set("Authorization", "Bearer " + localStorage.getItem("pcp_token"));
+            response = await originalFetch(new Request(retry, {headers}));
+          }
           if (new URL(value, location.href).pathname.startsWith("/unificado/pcp/api/")) {
             dispatchEvent(new CustomEvent("unificado-pcp-sync", {detail: response.ok}));
           }

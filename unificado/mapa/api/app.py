@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 import base64
 import hashlib
+import hmac
 import html
 import json
 import logging
@@ -156,6 +157,44 @@ def pcp_token_for(username, password):
     )
     with urllib.request.urlopen(outbound, timeout=10) as upstream:
         return json.load(upstream)
+
+
+def pcp_session_token(user):
+    """Issue the PCP test API's existing HS256 token for an active linked account."""
+    secret = os.environ["UNIFICADO_PCP_JWT_SECRET_KEY"]
+    encode = lambda value: base64.urlsafe_b64encode(value).rstrip(b"=").decode("ascii")
+    header = encode(b'{"alg":"HS256","typ":"JWT"}')
+    claims = {"sub": str(user["id"]), "nivel": user["nivel_acesso"],
+              "exp": int(time.time()) + 8 * 60 * 60}
+    payload = encode(json.dumps(claims, separators=(",", ":")).encode())
+    signed = f"{header}.{payload}"
+    signature = encode(hmac.new(secret.encode(), signed.encode(), hashlib.sha256).digest())
+    return signed + "." + signature
+
+
+@app.get("/unified/pcp-session")
+def unified_pcp_session():
+    """Restore Planning access from the valid Production session, without a password."""
+    mapa = authenticated_user()
+    if not mapa:
+        return jsonify(ok=False, error="Sessão expirada. Entre novamente."), 401
+    try:
+        link = link_for(mapa_login=mapa["id"])
+        if not link:
+            return jsonify(ok=False, error="Esta conta não tem acesso ao Planejamento."), 403
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,nome,username,email,nivel_acesso,setor_id,ativo,
+                          trocar_senha_primeiro_acesso FROM public.usuarios WHERE id=%s""",
+                        (link["pcp_user_id"],))
+            pcp = cur.fetchone()
+        if not pcp or not pcp["ativo"] or pcp["trocar_senha_primeiro_acesso"]:
+            return jsonify(ok=False, error="Planejamento indisponível para esta conta."), 403
+        user = dict(pcp)
+        return jsonify(ok=True, access_token=pcp_session_token(user), usuario=user), 200, {
+            "Cache-Control": "no-store"
+        }
+    except (KeyError, psycopg.Error):
+        return jsonify(ok=False, error="Não foi possível renovar o acesso ao Planejamento."), 503
 
 
 def unified_login_response(pcp, mapa, password):

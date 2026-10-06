@@ -14,13 +14,15 @@ ANCHOR = "EnvironmentFile=/etc/mapa-unificado/writer.env"
 
 
 def main() -> None:
-    values = [line.partition("=")[2] for line in SOURCE.read_text().splitlines()
-              if line.startswith("DATABASE_URL=")]
-    if len(values) != 1 or not values[0].strip():
-        raise RuntimeError("PCP test database DSN not found exactly once")
+    lines = SOURCE.read_text().splitlines()
+    values = [line.partition("=")[2] for line in lines if line.startswith("DATABASE_URL=")]
+    secrets = [line.partition("=")[2] for line in lines if line.startswith("SECRET_KEY=")]
+    if len(values) != 1 or not values[0].strip() or len(secrets) != 1 or not secrets[0].strip():
+        raise RuntimeError("PCP test database DSN or JWT secret not found exactly once")
     fd = os.open(TARGET, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w") as stream:
         stream.write("UNIFICADO_PCP_DATABASE_URL=" + values[0] + "\n")
+        stream.write("UNIFICADO_PCP_JWT_SECRET_KEY=" + secrets[0] + "\n")
     os.chmod(TARGET, 0o600)
     original = UNIT.read_text()
     additional = "EnvironmentFile=/etc/mapa-unificado/unified-auth.env"
