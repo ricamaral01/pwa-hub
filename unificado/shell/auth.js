@@ -27,6 +27,8 @@ function destination(modules) {
 }
 
 function storeModuleSessions(result) {
+  localStorage.removeItem('unificado_last_planejamento');
+  localStorage.removeItem('unificado_last_producao');
   localStorage.removeItem('pcp_token');
   localStorage.removeItem('pcp_user');
   localStorage.removeItem('pwa_mapa_auth_session_v1');
@@ -50,6 +52,8 @@ window.UnificadoAuth = Object.freeze({
     return response.ok ? response.json() : null;
   },
   async logout() {
+    localStorage.removeItem('unificado_last_planejamento');
+    localStorage.removeItem('unificado_last_producao');
     localStorage.removeItem('pcp_token');
     localStorage.removeItem('pcp_user');
     localStorage.removeItem('pwa_mapa_auth_session_v1');

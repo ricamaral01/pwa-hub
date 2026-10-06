@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 import re
 import shutil
@@ -83,12 +84,20 @@ def main() -> None:
     if (SOURCE / "data").is_dir():
         shutil.copytree(SOURCE / "data", TARGET / "data", dirs_exist_ok=True)
     manifest = (TARGET / "manifest.json").read_text(encoding="utf-8")
+    manifest_data = json.loads(manifest)
+    manifest_data.update({
+        "id": "/unificado/mapa/operacao/index.html",
+        "name": "Concrefer Unificado",
+        "short_name": "Concrefer",
+        "start_url": "/unificado/",
+        "scope": "/unificado/",
+    })
+    for icon in manifest_data.get("icons", []):
+        icon["src"] = "/unificado/mapa/operacao/unificado-icon.png"
+        if icon.get("sizes") == "512x512":
+            icon["sizes"] = "1536x1536"
     (TARGET / "manifest.json").write_text(
-        manifest.replace("../assets/img/icon.png", "unificado-icon.png")
-                .replace('"sizes": "512x512"', '"sizes": "1536x1536"')
-                .replace('"Mapa de Concretagem"', '"Concrefer Produção"')
-                .replace('"Mapa Concretagem"', '"Produção Concrefer"')
-                .replace('"index.html?cache-reset=v5.31"', '"index.html"'),
+        json.dumps(manifest_data, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8", newline="\n",
     )
     source_app = (SOURCE / "app.js").read_text(encoding="utf-8")
@@ -130,7 +139,7 @@ def main() -> None:
                         '<script src="unificado-bridge.js?v=' + version + '"></script><script src="dashboard-defeitos-v5.js?v=' + version + '"></script>', 1)
     html = html.replace('<div class="modal-box modal-box-loading">',
                         '<div class="modal-box modal-box-loading"><div class="unificado-loading-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div>', 1)
-    html = html.replace('<head>', '<head><script>if(top===self&&matchMedia("(min-width:1025px)").matches){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length)+location.search))}</script>', 1)
+    html = html.replace('<head>', '<head><script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\\.html$/,"")+location.search))}</script>', 1)
     html = html.replace('</head>', '<style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)
     html = html.replace('href="unificado-bridge.css"', f'href="unificado-bridge.css?v={version}"')
     (TARGET / "index.html").write_text(repair(html), encoding="utf-8", newline="\n")

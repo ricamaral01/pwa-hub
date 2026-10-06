@@ -47,7 +47,7 @@ def main() -> None:
             raise ValueError(f"Read-only guard count changed in {page}: {guards}")
         menu_script = ('  <script src="/unificado/shell/menu.config.js"></script>\n'
                        if page == "formas-por-setor" else "")
-        redirect = ('  <script>if(top===self&&matchMedia("(min-width:1025px)").matches){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length)+location.search))}</script>\n'
+        redirect = ('  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\\.html$/,"")+location.search))}</script>\n'
                     if page != "primeiro-acesso" else "")
         html, heads = re.subn(
             r"<head>", '<head>\n  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>\n'

@@ -12,7 +12,8 @@
     let url;
     try { url = new URL(value, location.href); } catch { return null; }
     if (url.origin !== location.origin || !url.pathname.startsWith(root)) return null;
-    const path = url.pathname.slice(root.length);
+    const path = url.pathname.slice(root.length).replace(/index\.html$/, '');
+    if (path !== url.pathname.slice(root.length)) url.pathname = root + path;
     if (/^pcp\/[a-z0-9-]+\/$/.test(path)) return {url, module:'planejamento', path};
     if (path === 'mapa/operacao/') return {url, module:'producao', path};
     return null;
@@ -33,6 +34,7 @@
     activeItem = itemId || Object.entries(MENU_ITEMS).find(([,item]) => item.url === route.url.href)?.[0] || null;
     localStorage.setItem('unificado_modulo', currentModule);
     lastRoute.set(currentModule, route.url.href);
+    localStorage.setItem('unificado_last_' + currentModule, route.url.href);
     if (moduleChanged) renderSidebar();
     else {
       document.querySelector('#sidebar .nav-home')?.classList.toggle('is-active', !activeItem);
@@ -89,7 +91,7 @@
         style = doc.createElement('link');
         style.id = 'unificado-embedded-style';
         style.rel = 'stylesheet';
-        style.href = root + 'shell/embedded.css?v=0.6.19';
+        style.href = root + 'shell/embedded.css?v=0.6.21';
         doc.head.append(style);
       }
       doc.addEventListener('click', event => {
@@ -152,7 +154,8 @@
 
   function openModule(module) {
     if (module === 'planejamento' && !hasPcp || module === 'producao' && !hasMapa) return;
-    open(lastRoute.get(module) || (module === 'planejamento'
+    const stored = resolve(localStorage.getItem('unificado_last_' + module));
+    open(lastRoute.get(module) || (stored?.module === module && stored.url.href) || (module === 'planejamento'
       ? root + 'pcp/dashboard/' : root + 'mapa/operacao/?tela=LIBERACAO'));
   }
 
@@ -173,9 +176,19 @@
   window.UnificadoRouter = Object.freeze({open, openModule, home});
   addEventListener('popstate', () => {
     const view = new URLSearchParams(location.search).get('view');
-    if (view) open(root + view, null, false);
+    if (view && resolve(root + view)) open(root + view, null, false);
     else home(false);
   });
   const view = new URLSearchParams(location.search).get('view');
-  if (view) open(root + view, null, false);
+  const initialRoute = view && resolve(root + view);
+  if (initialRoute) {
+    const canonical = initialRoute.path + initialRoute.url.search;
+    if (canonical !== view) history.replaceState({view:canonical}, '', root + '?view=' + encodeURIComponent(canonical));
+    open(initialRoute.url.href, null, false);
+  }
+  else if (view) {
+    history.replaceState({}, '', root);
+    document.documentElement.classList.remove('unificado-routing');
+    home(false);
+  }
 })();

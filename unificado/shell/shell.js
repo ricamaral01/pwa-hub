@@ -318,3 +318,6 @@ async function loadSectorData() {
      ' · Uma fonte não respondeu' : '');
 }
 loadSectorData();
+if ('serviceWorker' in navigator) {
+  addEventListener('load', () => navigator.serviceWorker.register('/unificado/sw.js', {scope:'/unificado/'}).catch(() => {}));
+}
