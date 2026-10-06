@@ -32,6 +32,18 @@ def apply(source: str) -> str:
     )
     source = replace_once(
         source,
+        '  const isRework = (atual?.statusMontagem === "RR");',
+        '  const isRework = (atual?.statusMontagem === "RR" || Boolean(posteBase?.segundaInspecao));',
+        "montagem rework entry",
+    )
+    source = replace_once(
+        source,
+        '    checklists: isRework ? {} : (atual?.checklists || {})\n  };',
+        '    checklists: isRework ? {} : (atual?.checklists || {}),\n    segundaInspecao: Boolean(posteBase?.segundaInspecao)\n  };',
+        "montagem second-inspection state",
+    )
+    source = replace_once(
+        source,
         '    etapa: "INSPECAO"\n  };',
         '    etapa: "INSPECAO",\n    segundaInspecao: Boolean(posteBase?.segundaInspecao)\n  };',
         "second-inspection state",
@@ -41,7 +53,7 @@ def apply(source: str) -> str:
         'async function saveInspecao() {}\n\nasync function openInspecaoPosteDetalhe(posteBase) {',
         '''async function saveInspecao() {}
 
-function abrirEscolhaPosteReprovado(rawRow, posteBase) {
+function abrirEscolhaPosteReprovado(rawRow, posteBase, modo = "INSPECAO") {
   document.getElementById("unificado-second-choice")?.remove();
   const overlay = document.createElement("div");
   overlay.id = "unificado-second-choice";
@@ -67,7 +79,11 @@ function abrirEscolhaPosteReprovado(rawRow, posteBase) {
     }
     if (event.target.closest('[data-action="second"]')) {
       close();
-      await openInspecaoPosteDetalhe({ ...posteBase, segundaInspecao: true });
+      if (modo === "MONTAGEM_POSTES") {
+        await openMontagemPosteDetalhe({ ...posteBase, segundaInspecao: true });
+      } else {
+        await openInspecaoPosteDetalhe({ ...posteBase, segundaInspecao: true });
+      }
     }
   });
   document.body.appendChild(overlay);
@@ -107,6 +123,46 @@ async function openInspecaoPosteDetalhe(posteBase) {''',
         }
       }''',
         "rejected-row click",
+    )
+    source = replace_once(
+        source,
+        '''            const montRecord = JSON.parse(tr.dataset.montagemRaw);
+            window.abrirVisualizacaoChecklist(montRecord);''',
+        '''            const montRecord = JSON.parse(tr.dataset.montagemRaw);
+            if (String(montRecord.status_montagem || "").toUpperCase() === "R"
+                && !montRecord.checklists?.__segunda_inspecao
+                && isModeAllowed("MONTAGEM_POSTES")) {
+              abrirEscolhaPosteReprovado(montRecord, {
+                recordId: tr.dataset.recordId || "",
+                dataFabricacao: tr.dataset.dataFabricacao || "",
+                setor: tr.dataset.setor || "",
+                formaNumero: tr.dataset.formaNumero || "",
+                modelo: tr.dataset.modelo || "",
+                codigoPoste: tr.dataset.codigoPoste || "",
+                descricaoPoste: tr.dataset.descricaoPoste || "",
+                codigoProduto: tr.dataset.codigoProduto || ""
+              }, "MONTAGEM_POSTES");
+            } else {
+              window.abrirVisualizacaoChecklist(montRecord);
+            }''',
+        "montagem rejected-row click",
+    )
+    source = replace_once(
+        source,
+        '''    const syncResult = await syncMontagemPosteToApi(updated, "FINALIZACAO", { silent: false });''',
+        '''    if (poste.segundaInspecao) {
+      const approvedAfterRework = updated.statusMontagem === "A";
+      updated.statusMontagem = approvedAfterRework ? "RR" : "R";
+      updated.checklists.__segunda_inspecao = {
+        primeira_inspecao: "R",
+        resultado: approvedAfterRework ? "APROVADO_RETRABALHADO" : "SEGREGADO",
+        em: updated.finalizadoEm,
+        por: state.authUser?.name || ""
+      };
+    }
+
+    const syncResult = await syncMontagemPosteToApi(updated, "FINALIZACAO", { silent: false });''',
+        "montagem final status",
     )
     source = replace_once(
         source,

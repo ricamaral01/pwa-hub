@@ -62,6 +62,13 @@ build da cópia. O `app.js` original permanece intacto. O teste anterior dos
 fluxos 11 e 12 chamou `abrirVisualizacaoChecklist` diretamente e acionou os
 botões no fim do relatório; por isso validou banco e resultado final, mas não
 exercitou o toque real na linha nem a posição visível dos comandos.
+
+Em 06/10/2026 foi corrigida a aplicação incompleta desse mesmo fluxo: a escolha
+estava ligada apenas à tela **Inspeção** (setores 3/4). Em **Montagem de Postes**
+(setores 1/2), o clique em `Fotos e 2ª inspeção` ainda abria só o relatório.
+Agora a mesma escolha abre o checklist da montagem para o retrabalho, preserva
+a primeira reprovação no histórico e grava `RR` ou `R` com o marcador
+`__segunda_inspecao` já usado na Inspeção. Nenhuma tabela ou campo foi criado.
 # Mensagens neutras de banco de dados e UTF-8 (05/10/2026)
 
 O `app.js` original continua intacto. O build da cópia troca somente mensagens

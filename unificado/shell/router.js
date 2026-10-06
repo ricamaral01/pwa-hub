@@ -100,7 +100,7 @@
         style = doc.createElement('link');
         style.id = 'unificado-embedded-style';
         style.rel = 'stylesheet';
-        style.href = root + 'shell/embedded.css?v=0.6.23';
+        style.href = root + 'shell/embedded.css?v=0.6.24';
         doc.head.append(style);
       }
       doc.addEventListener('click', event => {

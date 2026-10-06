@@ -107,10 +107,10 @@ def main() -> None:
         raise RuntimeError("Mapa original config changed")
     replacement = 'const SUPABASE_CONFIG = {\n  URL: location.origin + "/unificado/mapa/api",\n  KEY: "unificado-test-only"\n};'
     output_app = patch_defects(config.sub(replacement, source_app))
-    output_app = output_app.replace('"./sw.js?v=v5.31"', f'"./sw.js?v={version}"', 1)
+    output_app = re.sub(r'"\./sw\.js\?v=[^"?]+"', f'"./sw.js?v={version}"', output_app, count=1)
     assert output_app.replace(replacement, matches[0], 1).replace(
         PATCHED_DEFECT_FUNCTION, ORIGINAL_DEFECT_FUNCTION, 1
-    ).replace(f'"./sw.js?v={version}"', '"./sw.js?v=v5.31"', 1) == source_app
+    ).replace(f'"./sw.js?v={version}"', re.search(r'"\./sw\.js\?v=[^"?]+"', source_app).group(), 1) == source_app
     for original, neutral in DATABASE_TEXT_REPLACEMENTS.items():
         if original not in output_app:
             raise RuntimeError(f"Texto de banco mudou na origem: {original}")
