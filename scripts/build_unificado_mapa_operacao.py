@@ -123,6 +123,12 @@ def main() -> None:
     (TARGET / "app.js").write_text(repair(output_app), encoding="utf-8", newline="\n")
 
     html = (SOURCE / "index.html").read_text(encoding="utf-8")
+    # The legacy Mapa invites users to the unified app; its own copy must not
+    # display an invitation back to itself or request this legacy-only asset.
+    legacy_invite = '<script src="unificado-invite.js?v=1"></script>'
+    if html.count(legacy_invite) != 1:
+        raise RuntimeError("Convite do Mapa original mudou")
+    html = html.replace(legacy_invite, "", 1)
     html = patch_dashboard_header(html)
     html = html.replace('class="auth-checking"', "", 1)
     html = html.replace('  <script defer src="/auth/config.js?v=2"></script><script defer src="/auth/client.js"></script><script defer src="/auth/guard.js?v=2"></script>\n', "", 1)
