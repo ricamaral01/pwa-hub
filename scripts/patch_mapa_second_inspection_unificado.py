@@ -202,6 +202,53 @@ async function openInspecaoPosteDetalhe(posteBase) {''',
     const syncResult = await syncMontagemPosteToApi(updated, "INSPECAO", { silent: false });''',
         "final status",
     )
+    source = replace_once(
+        source,
+        '''  elStatus.textContent = statusText;
+  elStatus.style.color = statusColor;
+
+  // Render content''',
+        '''  elStatus.textContent = statusText;
+  elStatus.style.color = statusColor;
+  modal.querySelector("#unificado-report-second")?.remove();
+  const secondMode = normRow.etapa === "INSPECAO" ? "INSPECAO" : "MONTAGEM_POSTES";
+  if (normRow.status_montagem === "R" && normRow.finalizado_em
+      && !normRow.checklists?.__segunda_inspecao
+      && normRow.etapa !== ETAPA_HISTORICO_REPROVACAO
+      && row.record_id && row.setor && isModeAllowed(secondMode)) {
+    const button = document.createElement("button");
+    button.id = "unificado-report-second";
+    button.type = "button";
+    button.textContent = "Iniciar segunda inspeção (retrabalho)";
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      const posteBase = {
+        recordId: row.record_id,
+        dataFabricacao: normRow.data_fabricacao,
+        setor: row.setor,
+        formaNumero: normRow.forma_numero,
+        modelo: normRow.modelo,
+        codigoPoste: row.codigo_poste || producaoConcretagem?.codigo_poste || "",
+        descricaoPoste: row.descricao_poste || producaoConcretagem?.descricao_poste || "",
+        codigoProduto: row.codigo_produto || producaoConcretagem?.codigo_produto || "",
+        segundaInspecao: true
+      };
+      modal.classList.remove("modal-visible");
+      try {
+        if (secondMode === "INSPECAO") await openInspecaoPosteDetalhe(posteBase);
+        else await openMontagemPosteDetalhe(posteBase);
+      } catch (error) {
+        modal.classList.add("modal-visible");
+        button.disabled = false;
+        showMsgBox("Não foi possível abrir a segunda inspeção. Tente novamente.", "error");
+      }
+    });
+    elStatus.parentElement.appendChild(button);
+  }
+
+  // Render content''',
+        "report entry to second inspection",
+    )
     source = source.replace('"Segregado" : "Reprovado · 2ª inspeção pendente"',
                             '"Perda do poste" : "Reprovado · 2ª inspeção pendente"')
     source = source.replace('"Aprovado e Retrabalhado"', '"Retrabalhado e aprovado"')

@@ -90,7 +90,14 @@ def main() -> None:
                     row.locator(".mp-ver-checklist-btn").click()
                     choice = frame.locator('#unificado-second-choice [data-action="second"]:visible')
                     choice.wait_for(state="visible", timeout=10000)
-                    choice.click()
+                    report_entry = result == "loss"
+                    if report_entry:
+                        frame.locator('#unificado-second-choice [data-action="report"]:visible').click()
+                        report = frame.locator('#visualizarChecklistModal.modal-visible')
+                        report.wait_for(state="visible", timeout=15000)
+                        frame.locator('#unificado-report-second:visible').click()
+                    else:
+                        choice.click()
                     frame.locator("#viewMontagemPostesDetalhe").wait_for(state="visible", timeout=15000)
                     for _ in range(40):
                         dismiss_message(frame)
@@ -124,6 +131,7 @@ def main() -> None:
                     assert int(first_preserved) >= 1, first_preserved
                     results.append({"viewport": f"{width}x{height}", "result": result,
                                     "choice_visible": True, "saved": rows,
+                                    "entry": "report" if report_entry else "list",
                                     "first_inspection_preserved": True})
                     frame.locator("#mpCarregarLiberados").click()
                 context.close()

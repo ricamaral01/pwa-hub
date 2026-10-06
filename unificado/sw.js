@@ -1,9 +1,9 @@
-const CACHE = 'concrefer-unificado-shell-v0.6.24';
+const CACHE = 'concrefer-unificado-shell-v0.6.25';
 const ROOT = '/unificado/';
-const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=0.6.24',
-  ROOT + 'shell/menu.config.js?v=0.6.7', ROOT + 'shell/auth.js?v=0.6.24',
-  ROOT + 'shell/shell.js?v=0.6.24', ROOT + 'shell/router.js?v=0.6.24',
-  ROOT + 'shell/embedded.css?v=0.6.24'];
+const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=0.6.25',
+  ROOT + 'shell/menu.config.js?v=0.6.7', ROOT + 'shell/auth.js?v=0.6.25',
+  ROOT + 'shell/shell.js?v=0.6.25', ROOT + 'shell/router.js?v=0.6.25',
+  ROOT + 'shell/embedded.css?v=0.6.25'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });

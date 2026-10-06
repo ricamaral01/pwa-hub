@@ -135,3 +135,5 @@
 .unificado-second-choice-actions button{min-height:48px;border:0;border-radius:10px;padding:11px 14px;background:#E8762A;color:#0B1730;font:700 15px/1.2 Geist,system-ui,sans-serif;cursor:pointer}
 .unificado-second-choice-actions button.secondary{background:#F1F3F6}
 .vc-second-inspection-actions{display:none!important}
+#unificado-report-second{display:inline-flex;align-items:center;justify-content:center;margin:8px 0 0 12px;min-height:42px;padding:8px 14px;border:0;border-radius:10px;background:#E8762A;color:#0B1730;font:700 14px/1.2 Geist,system-ui,sans-serif;cursor:pointer}
+#unificado-report-second:disabled{opacity:.65;cursor:wait}

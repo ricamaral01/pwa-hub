@@ -69,6 +69,14 @@ estava ligada apenas à tela **Inspeção** (setores 3/4). Em **Montagem de Post
 Agora a mesma escolha abre o checklist da montagem para o retrabalho, preserva
 a primeira reprovação no histórico e grava `RR` ou `R` com o marcador
 `__segunda_inspecao` já usado na Inspeção. Nenhuma tabela ou campo foi criado.
+
+Em 06/10/2026, a confirmação sobre um poste real mostrou outra entrada sem
+continuação: relatórios abertos pelo Histórico ou pelos indicadores exibiam
+"2ª inspeção pendente", mas a ponte escondia os comandos antigos ao fim do
+relatório e não colocava a ação nova nesse caminho. A versão 0.6.25 acrescenta
+"Iniciar segunda inspeção (retrabalho)" junto ao status do relatório para
+registros `R` ainda pendentes e perfis já autorizados a inspecionar. A ação
+abre o checklist correspondente à etapa, preservando a primeira inspeção.
 # Mensagens neutras de banco de dados e UTF-8 (05/10/2026)
 
 O `app.js` original continua intacto. O build da cópia troca somente mensagens
