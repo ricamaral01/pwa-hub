@@ -1,9 +1,9 @@
-const CACHE = 'concrefer-unificado-shell-v0.6.21';
+const CACHE = 'concrefer-unificado-shell-v0.6.23';
 const ROOT = '/unificado/';
-const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=0.6.21',
-  ROOT + 'shell/menu.config.js?v=0.6.7', ROOT + 'shell/auth.js?v=0.6.21',
-  ROOT + 'shell/shell.js?v=0.6.21', ROOT + 'shell/router.js?v=0.6.21',
-  ROOT + 'shell/embedded.css?v=0.6.21'];
+const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=0.6.23',
+  ROOT + 'shell/menu.config.js?v=0.6.7', ROOT + 'shell/auth.js?v=0.6.23',
+  ROOT + 'shell/shell.js?v=0.6.23', ROOT + 'shell/router.js?v=0.6.23',
+  ROOT + 'shell/embedded.css?v=0.6.23'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
@@ -26,5 +26,11 @@ self.addEventListener('fetch', event => {
     return;
   }
   if (!url.pathname.startsWith(ROOT + 'shell/')) return;
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request, {ignoreSearch:true})));
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
+    if (response.ok) {
+      const copy = response.clone();
+      caches.open(CACHE).then(cache => cache.put(event.request, copy));
+    }
+    return response;
+  })));
 });

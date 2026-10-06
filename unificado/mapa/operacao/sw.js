@@ -18,11 +18,22 @@ self.addEventListener("fetch", event => {
   if (event.request.method !== "GET" || url.origin !== self.location.origin
       || !(url.pathname.startsWith("/unificado/mapa/operacao/")
         || url.pathname === "/unificado/vendor/html2pdf/html2pdf.bundle.min.js")) return;
-  if (/\.(?:js|css|html|png|svg|woff2?)$/.test(url.pathname) || event.request.mode === "navigate") {
+  if (event.request.mode === "navigate") {
     event.respondWith(fetch(event.request).catch(async () => {
       const cache = await caches.open(CACHE_NAME);
-      if (event.request.mode === "navigate") return cache.match("./index.html");
-      return (await cache.match(event.request, {ignoreSearch: true})) || Response.error();
+      return cache.match("./index.html");
+    }));
+    return;
+  }
+  if (/\.(?:js|css|png|svg|woff2?)$/.test(url.pathname)) {
+    const version = CACHE_NAME.slice("concrefer-unificado-mapa-operacao-v".length);
+    event.respondWith(caches.open(CACHE_NAME).then(async cache => {
+      const cached = url.searchParams.get("v") && url.searchParams.get("v") !== version
+        ? null : await cache.match(event.request, {ignoreSearch:true});
+      return cached || fetch(event.request).then(response => {
+        if (response.ok && !url.searchParams.get("v")) cache.put(event.request, response.clone());
+        return response;
+      });
     }));
   }
 });

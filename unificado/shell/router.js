@@ -56,12 +56,21 @@
   function show(record) {
     for (const other of frames.values()) other.frame.classList.toggle('is-active', other === record);
     hideHome();
+    host.classList.remove('is-loading');
+    host.removeAttribute('aria-busy');
     current = record;
     record.frame.focus({preventScroll:true});
   }
 
   async function ensurePcpSession() {
     if (!hasMapa) return Boolean(localStorage.getItem('pcp_token'));
+    const currentToken = localStorage.getItem('pcp_token');
+    if (currentToken) {
+      try {
+        const payload = JSON.parse(atob(currentToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+        if (Number(payload.exp) * 1000 > Date.now() + 5 * 60 * 1000) return true;
+      } catch { /* Refresh malformed or opaque tokens through the session endpoint. */ }
+    }
     const response = await fetch(root + 'mapa/api/unified/pcp-session', {
       credentials:'same-origin', cache:'no-store'
     });
@@ -91,7 +100,7 @@
         style = doc.createElement('link');
         style.id = 'unificado-embedded-style';
         style.rel = 'stylesheet';
-        style.href = root + 'shell/embedded.css?v=0.6.21';
+        style.href = root + 'shell/embedded.css?v=0.6.23';
         doc.head.append(style);
       }
       doc.addEventListener('click', event => {
@@ -118,6 +127,10 @@
     if (route.module === 'planejamento' && !hasPcp) return;
     if (route.module === 'producao' && !hasMapa) return;
     const ticket = ++pending;
+    host.hidden = false;
+    homeContent.hidden = true;
+    host.classList.add('is-loading');
+    host.setAttribute('aria-busy', 'true');
     if (route.module === 'planejamento' && !(await ensurePcpSession())) {
       if (ticket === pending) location.assign(root + 'login.html?next=' + encodeURIComponent(route.path));
       return;
@@ -161,6 +174,8 @@
 
   function home(push = true) {
     ++pending;
+    host.classList.remove('is-loading');
+    host.removeAttribute('aria-busy');
     for (const record of frames.values()) record.frame.classList.remove('is-active');
     current = null;
     host.hidden = true;
