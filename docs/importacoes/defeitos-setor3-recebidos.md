@@ -62,3 +62,5 @@ Setor 3, mostrou 214 ocorrências informadas, 18 categorias de modelo
 em zero nesse escopo, como exigem os dados identificados. O CSV continha a
 linha `"Ocorrencias recebidas";"214"`. Executar a importação uma segunda vez
 manteve 214 linhas, sem duplicação.
+O XLSX publicado também foi aberto e sua linha “Ocorrencias recebidas”
+continha o valor numérico 214.
