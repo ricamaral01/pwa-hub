@@ -19,6 +19,34 @@
     return all;
   }, blank());
 
+  function renderReported() {
+    const reported = latest?.metrics?.reported || {};
+    const panel = $('dfReportedPanel');
+    if (!panel) return;
+    panel.hidden = !number(reported.total);
+    if (panel.hidden) return;
+    $('dfReportedTotal').textContent = fmt(reported.total);
+    $('dfReportedTypes').textContent = (reported.by_type || [])
+      .map(item => `${item.type}: ${fmt(item.count)}.`).join(' ');
+    for (const [target, entries, key] of [
+      ['dfReportedModels', reported.by_model || [], 'model'],
+      ['dfReportedDays', reported.by_day || [], 'day']
+    ]) {
+      const body = $(target);
+      if (!body) continue;
+      body.replaceChildren();
+      for (const entry of entries) {
+        const row = document.createElement('tr');
+        for (const value of [entry[key], fmt(entry.count)]) {
+          const cell = document.createElement('td');
+          cell.textContent = value;
+          row.append(cell);
+        }
+        body.append(row);
+      }
+    }
+  }
+
   function strictChecklist(indicators) {
     const strict = {
       ...indicators, totalErros: 0, porTipo: {}, ocorrenciasPorTipo: {}, matriz: {},
@@ -93,6 +121,7 @@
 
   function renderTop() {
     if (!latest) return;
+    renderReported();
     const all = sum(sectorNames);
     const produced = sectorNames.reduce((total, name) => total + number(latest.production?.[name]?.producao), 0);
     const set = (id, text) => { if ($(id)) $(id).textContent = text; };
@@ -184,6 +213,10 @@
         ['Retrabalhados', `${fmt(all.reworked)} · ${percent(all.reworked, all.inspected)}`,
           `Perdas: ${fmt(all.lost)} · ${percent(all.lost, all.inspected)} · Reprovados (legado): ${fmt(dfPresentationData?.postesReprovados)}`],
       ];
+      if (number(latest.metrics.reported?.total)) items.push([
+        'Defeitos informados sem vínculo', fmt(latest.metrics.reported.total),
+        'Ocorrências recebidas, fora dos índices por poste'
+      ]);
       grid.replaceChildren();
       for (const [label, value, note] of items) {
         const card = document.createElement('article'); card.className = 'df-slide-kpi';
@@ -283,6 +316,15 @@
       ['Retrabalhados', percent(all.reworked, all.inspected), all.reworked, all.inspected],
       ['Perda do poste', percent(all.lost, all.inspected), all.lost, all.inspected],
       ['Taxa de nao conformidade por oportunidade', percent(all.defects, all.opportunities), all.defects, all.opportunities],
+      [], ['Defeitos informados sem vinculo com inspecao'],
+      ['Ocorrencias recebidas', number(latest.metrics.reported?.total)],
+      ['Nao incluidos em FPY, postes nao conformes ou taxas por poste'],
+      ['Tipo de defeito', 'Ocorrencias'],
+      ...(latest.metrics.reported?.by_type || []).map(item => [item.type, item.count]),
+      [], ['Por modelo'], ['Modelo', 'Ocorrencias'],
+      ...(latest.metrics.reported?.by_model || []).map(item => [item.model, item.count]),
+      [], ['Por dia'], ['Data', 'Ocorrencias'],
+      ...(latest.metrics.reported?.by_day || []).map(item => [item.day, item.count]),
       [], ['Indicadores legados preservados'],
       ['Producao (legado)', number(data.kpis?.producao)],
       ['Postes avaliados (legado)', number(data.kpis?.postes)],

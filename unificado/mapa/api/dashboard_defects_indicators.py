@@ -117,4 +117,30 @@ def load_indicators(connection, start: date, end: date, sector: str, status: str
             months.append({"month": row["month"].strftime("%Y-%m"),
                            "inspected": row["inspected"],
                            "nonconforming": row["nonconforming"]})
-    return {"sectors": sectors, "months": months}
+    reported = {"total": 0, "by_model": [], "by_day": [], "by_type": []}
+    if not status and sector in {"", "Setor 3"}:
+        with connection.cursor() as cursor:
+            cursor.execute("""SELECT event_date,model,defect_code,defect_name,count(*)::integer AS total
+                              FROM unificado_auth.reported_defects
+                              WHERE event_date BETWEEN %s AND %s AND sector='Setor 3'
+                                AND (%s='' OR coalesce(model,'') ILIKE '%%'||%s||'%%'
+                                     OR defect_name ILIKE '%%'||%s||'%%')
+                              GROUP BY event_date,model,defect_code,defect_name
+                              ORDER BY event_date,model NULLS LAST""",
+                           (start, end, search, search, search))
+            entries = cursor.fetchall()
+        models, days, types = {}, {}, {}
+        for row in entries:
+            amount = row["total"]
+            model = row["model"] or "Modelo não informado"
+            day = row["event_date"].isoformat()
+            defect = f'{row["defect_code"]} - {row["defect_name"]}'
+            reported["total"] += amount
+            models[model] = models.get(model, 0) + amount
+            days[day] = days.get(day, 0) + amount
+            types[defect] = types.get(defect, 0) + amount
+        reported["by_model"] = [{"model": key, "count": value} for key, value in
+                                sorted(models.items(), key=lambda item: (-item[1], item[0]))]
+        reported["by_day"] = [{"day": key, "count": value} for key, value in sorted(days.items())]
+        reported["by_type"] = [{"type": key, "count": value} for key, value in sorted(types.items())]
+    return {"sectors": sectors, "months": months, "reported": reported}

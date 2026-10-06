@@ -30,7 +30,7 @@ def main() -> None:
     shutil.copy2(src / "mapa" / "index.html", PUBLIC / "mapa" / "index.html")
     shutil.copytree(ROOT / ".work-mapa-unificado" / "operacao",
                     PUBLIC / "mapa" / "operacao", dirs_exist_ok=True)
-    for name in ("app.py", "unified_auth.py"):
+    for name in ("app.py", "unified_auth.py", "dashboard_defects_indicators.py"):
         shutil.copy2(src / "mapa" / "api" / name, API / name)
     shutil.copy2(src / "testar" / "index.html", API / "testar-index.html")
     shutil.copy2(src / "VERSION", API / "VERSION")

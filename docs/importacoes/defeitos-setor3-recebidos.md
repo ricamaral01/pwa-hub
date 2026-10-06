@@ -45,7 +45,20 @@ ou setembro; `producao` tem 948 linhas em agosto e 883 em setembro para o
 setor. Assim, as ocorrências recebidas ainda não estão nos indicadores de
 inspeção do dashboard.
 
-**Pendência para lançamento operacional:** confirmar se o período pretendido é
-agosto, como escrito na mensagem, ou setembro, como consta em todas as linhas;
-confirmar se cada linha repetida representa uma ocorrência distinta. Até lá,
-não atribuir mês artificialmente nem somar as linhas aos indicadores por poste.
+Ricardo confirmou que o período é **setembro, conforme as datas do arquivo**, e
+que **cada linha repetida é uma ocorrência distinta**. As 214 linhas foram
+importadas em `unificado_auth.reported_defects` no PostgreSQL do sistema novo,
+com a chave `(source_key, source_line)` para impedir duplicação ao repetir o
+script `scripts/import_defeitos_setor3.py`. A importação conferiu o total,
+as 21 contagens diárias e o único modelo ausente. O dashboard mostra essas
+ocorrências em bloco próprio, filtrável por período, setor e busca, com
+detalhamento por modelo e dia. Elas não entram em FPY, postes não conformes,
+defeitos por 100 postes ou taxa por oportunidade, pois falta o identificador
+do poste e da inspeção. O Mapa oficial não foi alterado.
+
+Conferência da versão **0.6.16** no endereço publicado: filtro 01–30/09/2026,
+Setor 3, mostrou 214 ocorrências informadas, 18 categorias de modelo
+(incluindo “Modelo não informado”) e 21 dias. Os cartões de inspeção ficaram
+em zero nesse escopo, como exigem os dados identificados. O CSV continha a
+linha `"Ocorrencias recebidas";"214"`. Executar a importação uma segunda vez
+manteve 214 linhas, sem duplicação.

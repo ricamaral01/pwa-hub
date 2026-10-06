@@ -15,6 +15,15 @@ HEADER = '''        <section class="df-new-head" aria-label="Indicadores de qual
             <article><span>Defeitos por poste não conforme</span><strong id="dfNewPerAffected">—</strong><small id="dfNewPerAffectedMeta"></small><details><summary>Como é calculado</summary><p>Total de “NÃO” ÷ postes com “NÃO” na primeira inspeção.</p></details></article>
             <article><span>Taxa de não conformidade por oportunidade</span><strong id="dfNewOpportunity">—</strong><small id="dfNewOpportunityMeta"></small><details><summary>Como é calculado</summary><p>Total de “NÃO” ÷ oportunidades avaliadas. Cada avaliação tem 26 itens em S1/S2 ou 17 em S3/S4.</p></details></article>
           </div>
+          <section class="df-new-panel df-reported" id="dfReportedPanel" hidden>
+            <h3>Defeitos informados sem vínculo com inspeção</h3>
+            <p><strong id="dfReportedTotal">0</strong> ocorrências no período e nos filtros selecionados. <span id="dfReportedTypes"></span> Cada linha recebida conta uma vez.</p>
+            <small>Sem identificação do poste, estas ocorrências não entram em FPY, postes não conformes ou taxas por poste. O filtro de situação não se aplica a elas.</small>
+            <div class="df-reported-details">
+              <details><summary>Por modelo</summary><div class="df-new-table-scroll"><table><thead><tr><th>Modelo</th><th>Ocorrências</th></tr></thead><tbody id="dfReportedModels"></tbody></table></div></details>
+              <details><summary>Por dia</summary><div class="df-new-table-scroll"><table><thead><tr><th>Data</th><th>Ocorrências</th></tr></thead><tbody id="dfReportedDays"></tbody></table></div></details>
+            </div>
+          </section>
           <div class="df-new-panels">
             <section class="df-new-panel"><h3>Indicadores por setor</h3><div class="df-new-table-scroll"><table><thead><tr><th>Escopo</th><th>Produzidos</th><th>Inspecionados</th><th>Cobertura</th><th>Não conformes</th><th>FPY</th><th>Defeitos / 100</th><th>Retrabalho</th><th>Perda</th></tr></thead><tbody id="dfNewSectorRows"></tbody></table></div><small>Percentuais de qualidade usam os inspecionados do mesmo escopo como denominador.</small></section>
             <section class="df-new-panel"><h3>Tendência mensal</h3><p>% de postes não conformes e FPY, pela primeira inspeção.</p><div id="dfNewTrend"></div></section>
