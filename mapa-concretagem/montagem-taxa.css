@@ -1,0 +1,7 @@
+.mi-taxa-card{margin:0 0 16px;padding:18px}
+.mi-taxa-card p{margin:6px 0 16px;color:#64748b;font-size:12px}
+.mi-taxa-table-wrap{max-height:320px;overflow:auto}
+.mi-taxa-table-wrap table{width:100%;border-collapse:collapse}
+.mi-taxa-table-wrap th,.mi-taxa-table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid #e5eaf1}
+.mi-taxa-table-wrap th{position:sticky;top:0;background:#f8fafc;color:#475569;font-size:12px}
+.mi-taxa-table-wrap td:last-child{font-weight:700;color:#16614a}

@@ -13203,6 +13203,7 @@ function aplicarFiltrosEExibirMontagem() {
     }).join("");
   }
 
+  window.renderTaxaMontagem?.(miFilteredMontagemData);
   renderGraficosMontagem(byDay, bySector, byMontador, prodByDay);
   renderizarTabelaMontagemPaginada();
   setSyncStatus("idle", "Indicadores atualizados.");

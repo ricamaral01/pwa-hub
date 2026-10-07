@@ -14,6 +14,7 @@
   <link rel="manifest" href="manifest.json?v=v5.31" />
   <link rel="stylesheet" href="styles.css?v=v5.31" />
   <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v5.31" />
+  <link rel="stylesheet" href="montagem-taxa.css?v=v5.31-taxa1" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1143,7 +1144,14 @@
         </section>
       </div>
 
-      <div id="miSecaoProdutividade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div></div>
+      <div id="miSecaoProdutividade" class="mi-tab-section">
+        <div class="mi-chart-card mi-taxa-card">
+          <div class="mi-chart-title">Postes inspecionados por montador, por dia</div>
+          <p>Montadores do dia: pessoas identificadas em pelo menos uma inspeção concluída naquele dia.</p>
+          <div class="mi-taxa-table-wrap"><table class="sheet-table"><thead><tr><th>Dia</th><th>Postes inspecionados</th><th>Montadores</th><th>Postes por montador</th></tr></thead><tbody id="miTaxaMontagemBody"></tbody></table></div>
+        </div>
+        <div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div>
+      </div>
     </section>
 
     <section id="viewDashboardDefeitos" class="card hidden df-v4-shell">
@@ -1812,6 +1820,7 @@
   <script src="xlsx.full.min.js?v=v5.31"></script>
   <script src="supabase.js"></script>
   <script src="modelos-formas.js?v=v5.31"></script>
+  <script src="montagem-taxa.js?v=v5.31-taxa1"></script>
   <script src="app.js?v=v5.31"></script>
   <script src="unificado-invite.js?v=1"></script>
 </body>
