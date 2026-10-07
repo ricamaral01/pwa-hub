@@ -9173,6 +9173,9 @@ function bindEvents() {
       const targetTab = e.currentTarget.dataset.tab;
       limparLayoutDashboardDefeitos();
       ativarAbaMontagem(targetTab || "resumo");
+      if (targetTab === "produtividade" && e.currentTarget.closest("#viewMontagemIndicadores")) {
+        requestAnimationFrame(() => document.querySelector("#miSecaoProdutividade .mi-taxa-card")?.scrollIntoView({ block: "start", behavior: "smooth" }));
+      }
     });
   });
 
@@ -11467,7 +11470,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.31-taxa3", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.31-taxa4", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -13000,6 +13003,8 @@ function aplicarFiltrosEExibirMontagem() {
     return true;
   });
 
+  window.renderTaxaMontagem?.(miFilteredMontagemData);
+
   // 2. Filtrar dados de Produção
   const miFilteredDefeitosData = miFilteredMontagemData.filter(isLinhaDefeitoDashboard);
 
@@ -13203,7 +13208,6 @@ function aplicarFiltrosEExibirMontagem() {
     }).join("");
   }
 
-  window.renderTaxaMontagem?.(miFilteredMontagemData);
   renderGraficosMontagem(byDay, bySector, byMontador, prodByDay);
   renderizarTabelaMontagemPaginada();
   setSyncStatus("idle", "Indicadores atualizados.");

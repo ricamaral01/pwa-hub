@@ -7,7 +7,7 @@
     if (!body) return;
     const days = new Map();
     for (const record of records || []) {
-      const day = String(record.finalizado_em || record.finalizadoEm || '').slice(0, 10);
+      const day = String(record.finalizado_em || record.finalizadoEm || record.inicio_inspecao_montagem || record.data_fabricacao || '').slice(0, 10);
       if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) continue;
       if (!days.has(day)) days.set(day, {posts: 0, assemblers: new Set()});
       const entry = days.get(day);

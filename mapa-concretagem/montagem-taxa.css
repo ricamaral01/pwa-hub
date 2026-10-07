@@ -1,4 +1,4 @@
-.mi-taxa-card{margin:0 0 16px;padding:18px}
+.mi-taxa-card{margin:0 0 16px;padding:18px;scroll-margin-top:96px}
 .mi-taxa-card p{margin:6px 0 16px;color:#64748b;font-size:12px}
 .mi-taxa-table-wrap{max-height:320px;overflow:auto}
 .mi-taxa-table-wrap table{width:100%;border-collapse:collapse}
@@ -7,3 +7,8 @@
 .mi-taxa-table-wrap td{text-align:right;font-weight:700;color:#16614a}
 .mi-taxa-table-wrap .mi-taxa-day th{padding-top:15px;background:#f1f5f9;color:#1e293b;font-weight:700}
 .mi-taxa-table-wrap .mi-taxa-result th,.mi-taxa-table-wrap .mi-taxa-result td{background:#ecfdf5;color:#16614a;font-weight:700}
+@media (min-width:768px){
+  body.mode-montagem-indicadores #viewMontagemIndicadores .mi-tabs-bar{display:grid}
+  body.mode-montagem-indicadores #viewMontagemIndicadores .mi-tab-section{display:none}
+  body.mode-montagem-indicadores #viewMontagemIndicadores .mi-tab-section.active{display:block}
+}
