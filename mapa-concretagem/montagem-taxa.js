@@ -17,20 +17,35 @@
     }
     body.replaceChildren();
     for (const [day, entry] of [...days].sort(([a], [b]) => b.localeCompare(a))) {
-      const row = document.createElement('tr');
       const count = entry.assemblers.size;
-      for (const value of [dateFormatter.format(new Date(day + 'T12:00:00Z')),
-                           entry.posts, count || '—', count ? rateFormatter.format(entry.posts / count) : '—']) {
+      const dayRow = document.createElement('tr');
+      dayRow.className = 'mi-taxa-day';
+      const dayCell = document.createElement('th');
+      dayCell.colSpan = 2;
+      dayCell.scope = 'rowgroup';
+      dayCell.textContent = dateFormatter.format(new Date(day + 'T12:00:00Z'));
+      dayRow.append(dayCell);
+      body.append(dayRow);
+      for (const [label, value, className] of [
+        ['Postes inspecionados', entry.posts, ''],
+        ['Montadores', count || '—', ''],
+        ['%', count ? rateFormatter.format(entry.posts / count * 100) + '%' : '—', 'mi-taxa-result']
+      ]) {
+        const row = document.createElement('tr');
+        if (className) row.className = className;
+        const heading = document.createElement('th');
+        heading.scope = 'row';
+        heading.textContent = label;
         const cell = document.createElement('td');
         cell.textContent = String(value);
-        row.append(cell);
+        row.append(heading, cell);
+        body.append(row);
       }
-      body.append(row);
     }
     if (!body.childElementCount) {
       const row = document.createElement('tr');
       const cell = document.createElement('td');
-      cell.colSpan = 4;
+      cell.colSpan = 2;
       cell.textContent = 'Nenhuma inspeção concluída no período.';
       row.append(cell);
       body.append(row);
