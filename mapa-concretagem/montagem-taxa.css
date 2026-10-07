@@ -1,12 +1,17 @@
 .mi-taxa-card{margin:0 0 16px;padding:18px;scroll-margin-top:96px}
 .mi-taxa-card p{margin:6px 0 16px;color:#64748b;font-size:12px}
-.mi-taxa-table-wrap{max-height:320px;overflow:auto}
-.mi-taxa-table-wrap table{width:100%;border-collapse:collapse}
-.mi-taxa-table-wrap th,.mi-taxa-table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid #e5eaf1}
-.mi-taxa-table-wrap th{color:#475569;font-size:12px;font-weight:500}
-.mi-taxa-table-wrap td{text-align:right;font-weight:700;color:#16614a}
-.mi-taxa-table-wrap .mi-taxa-day th{padding-top:15px;background:#f1f5f9;color:#1e293b;font-weight:700}
-.mi-taxa-table-wrap .mi-taxa-result th,.mi-taxa-table-wrap .mi-taxa-result td{background:#ecfdf5;color:#16614a;font-weight:700}
+.mi-taxa-table-wrap{max-width:100%;overflow-x:auto;border:1px solid #dbe5f1;border-radius:12px}
+.mi-taxa-table-wrap table{width:max-content;min-width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.mi-taxa-table-wrap th,.mi-taxa-table-wrap td{min-width:104px;padding:11px 13px;border-right:1px solid #dbe5f1;border-bottom:1px solid #dbe5f1;text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+.mi-taxa-table-wrap thead th{background:#1e3a8a;color:#fff;font-size:12px;font-weight:700}
+.mi-taxa-table-wrap thead th:first-child,.mi-taxa-table-wrap tbody th{position:sticky;left:0;z-index:2;min-width:178px;text-align:left}
+.mi-taxa-table-wrap thead th:first-child{z-index:3}
+.mi-taxa-table-wrap tbody th{background:#e8f0fb;color:#1e3a5f;font-size:13px;font-weight:700}
+.mi-taxa-table-wrap tbody td{background:#f8fbff;color:#183153;font-size:14px;font-weight:600}
+.mi-taxa-table-wrap .mi-taxa-result th{background:#d7eee9;color:#075e55}
+.mi-taxa-table-wrap .mi-taxa-result td{background:#e5f6f1;color:#075e55;font-weight:800}
+.mi-taxa-table-wrap tr>*:last-child{border-right:0}
+.mi-taxa-table-wrap tbody tr:last-child>*{border-bottom:0}
 @media (min-width:768px){
   body.mode-montagem-indicadores #viewMontagemIndicadores .mi-tabs-bar{display:grid}
   body.mode-montagem-indicadores #viewMontagemIndicadores .mi-tab-section{display:none}

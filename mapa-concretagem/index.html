@@ -14,7 +14,7 @@
   <link rel="manifest" href="manifest.json?v=v5.31" />
   <link rel="stylesheet" href="styles.css?v=v5.31" />
   <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v5.31" />
-  <link rel="stylesheet" href="montagem-taxa.css?v=v5.31-taxa4" />
+  <link rel="stylesheet" href="montagem-taxa.css?v=v5.31-taxa5" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -1146,9 +1146,9 @@
 
       <div id="miSecaoProdutividade" class="mi-tab-section">
         <div class="mi-chart-card mi-taxa-card">
-          <div class="mi-chart-title">Postes inspecionados por montador, por dia</div>
-          <p>Montadores do dia: pessoas identificadas em pelo menos uma inspeção concluída naquele dia. % = postes inspecionados ÷ montadores × 100.</p>
-          <div class="mi-taxa-table-wrap"><table class="sheet-table" aria-label="Indicador diário de postes inspecionados por montador"><tbody id="miTaxaMontagemBody"></tbody></table></div>
+          <div class="mi-chart-title">Indicadores diários da montagem</div>
+          <p>Montadores: pessoas identificadas em inspeções concluídas no dia. Postes/montador/dia = postes inspecionados ÷ montadores.</p>
+          <div class="mi-taxa-table-wrap"><table class="sheet-table" aria-label="Postes inspecionados e montadores por dia"><tbody id="miTaxaMontagemBody"><tr><td>Carregando indicadores...</td></tr></tbody></table></div>
         </div>
         <div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div>
       </div>
@@ -1820,8 +1820,8 @@
   <script src="xlsx.full.min.js?v=v5.31"></script>
   <script src="supabase.js"></script>
   <script src="modelos-formas.js?v=v5.31"></script>
-  <script src="montagem-taxa.js?v=v5.31-taxa4"></script>
-  <script src="app.js?v=v5.31-taxa4"></script>
+  <script src="montagem-taxa.js?v=v5.31-taxa5"></script>
+  <script src="app.js?v=v5.31-taxa5"></script>
   <script src="unificado-invite.js?v=1"></script>
 </body>
 </html>

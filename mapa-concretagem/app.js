@@ -11470,7 +11470,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.31-taxa4", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.31-taxa5", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
