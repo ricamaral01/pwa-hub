@@ -3698,6 +3698,9 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
 
   pendingFormaSelection = { forma, setor, card, modelo };
   el.concretoTipoSubtitle.textContent = `Forma ${forma} . ${setor}`;
+  const modeloAutomatico = setor === "Setor 3" || setor === "Setor 4";
+  document.getElementById("concretoModeloField")?.classList.toggle("hidden", modeloAutomatico);
+  el.concretoModeloSelect.required = !modeloAutomatico;
   const modelosPermitidos = getProductionModelOptions(forma, setor, modelo);
   const modeloSalvo = getProductionRecordForForma(forma, setor)?.modelo || "";
   const candidatos = [modeloSalvo, getProductionProgrammedModel(forma, setor), modelo];
@@ -3765,7 +3768,7 @@ function showConcreteTypePopup(forma, setor, card, modelo) {
       const tipo = String(btn.dataset.tipo || "").trim();
       if (tipo) {
         const modeloProduzido = el.concretoModeloSelect.value;
-        if (!modelosPermitidos.includes(modeloProduzido)) {
+        if (!modeloAutomatico && !modelosPermitidos.includes(modeloProduzido)) {
           el.concretoModeloFeedback.textContent = "Selecione um modelo permitido para esta forma.";
           el.concretoModeloSelect.focus();
           return;
@@ -7918,8 +7921,6 @@ async function carregarMandrilCircular() {
     mostrarEstadoSaquesMandril("Sem conexão com os saques; tente atualizar a página.", true);
   }
 
-  const modelosProduzidosData = readMandrilModelosProduzidos();
-
   let htmlTable = "";
   let totalConcretados = 0;
 
@@ -7927,10 +7928,6 @@ async function carregarMandrilCircular() {
     const fn = normalizeForma(forma);
     const concretedRow = concretedLookup[fn];
     const programmedModel = formToModelMap[fn] || "--";
-    const savedEntry = getMandrilModeloEntry(modelosProduzidosData, selectedDate, forma);
-    const modeloPersistido = getMandrilModeloSalvo(modelosProduzidosData, selectedDate, forma);
-    const modeloDoRegistro = concretedRow?.modelo && concretedRow.modelo !== "SC" ? concretedRow.modelo : "";
-    const modeloSelecionado = savedEntry?.pendingSync ? modeloPersistido : (modeloDoRegistro || modeloPersistido);
     
     let tipoConcreto = "--";
     let horaConcretado = "--:--";
@@ -7966,7 +7963,6 @@ async function carregarMandrilCircular() {
       <tr style="border-bottom: 1px solid var(--line); transition: background 0.2s;">
         <td data-label="Nº Forma" style="padding: 12px 16px;"><strong class="mc-forma-numero">${forma}</strong></td>
         <td data-label="Poste Programado" style="padding: 12px 16px;">${escapeHtml(programmedModel)}</td>
-        <td data-label="Modelo Produzido" style="padding: 12px 16px;">${renderMandrilModeloSelect(forma, modeloSelecionado, Boolean(concretedRow), concretedRow?.id || "", Boolean(savedEntry?.pendingSync || (modeloPersistido && !modeloDoRegistro)))}</td>
         <td data-label="Tipo de Concreto" style="padding: 12px 16px;">${escapeHtml(tipoConcreto)}</td>
         <td data-label="Concretado às" style="padding: 12px 16px;">${horaConcretado}</td>
         <td data-label="Saque previsto (+3h)" style="padding: 12px 16px; color: #b45309; font-weight: bold;">${previsaoSaque}</td>
@@ -7976,9 +7972,6 @@ async function carregarMandrilCircular() {
   });
 
   el.mcTabelaBody.innerHTML = htmlTable;
-  el.mcTabelaBody.querySelectorAll(".mc-modelo-select").forEach((select) => {
-    select.addEventListener("change", () => salvarMandrilModeloProduzido(select));
-  });
   el.mcQtdItens.textContent = totalConcretados;
 }
 
@@ -11470,7 +11463,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.31-taxa5", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.31-prod-s34-1", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -14828,7 +14821,7 @@ async function updateSwVersionBadge() {
             );
           } catch(e) {}
         }
-        window.location.replace(`./index.html?cache-reset=v5.31&ts=${Date.now()}`);
+        window.location.replace(`./index.html?cache-reset=v5.31-prod-s34-1&ts=${Date.now()}`);
       }
     });
   }
@@ -14837,7 +14830,7 @@ async function updateSwVersionBadge() {
     const response = await fetch("sw.js?v=" + Date.now(), { cache: "no-store" });
     if (response.ok) {
       const text = await response.text();
-      const match = text.match(/CACHE_NAME\s*=\s*["']mapa-concretagem(?:-teste)?-v([^"']+)["']/);
+      const match = text.match(/CACHE_NAME\s*=\s*`\$\{APP_ID\}-v([^`]+)`/);
       if (match && match[1]) {
         badge.textContent = `v${match[1]}`;
         badge.style.display = "inline-block";
@@ -14848,6 +14841,6 @@ async function updateSwVersionBadge() {
     console.warn("Erro ao buscar versão do SW:", e);
   }
   // Fallback
-  badge.textContent = "v5.31";
+  badge.textContent = "v5.31-prod-s34-1";
   badge.style.display = "inline-block";
 }

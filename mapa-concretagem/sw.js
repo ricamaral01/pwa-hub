@@ -1,20 +1,20 @@
 /* =========================================================
    MAPA DE CONCRETAGEM - Service Worker
-   v5.31: inspeção, correção e cache sincronizados
+   v5.31-prod-s34-1: seleção de modelo retirada dos setores 3 e 4
    ========================================================= */
 
 const APP_ID = self.location.pathname.includes("mapa-concretagem-teste")
   ? "mapa-concretagem-teste" : "mapa-concretagem";
-const CACHE_NAME = `${APP_ID}-v5.31-taxa5`;
+const CACHE_NAME = `${APP_ID}-v5.31-prod-s34-1`;
 const APP_SHELL = [
   "./index.html",
   "./manifest.json?v=v5.31",
   "./styles.css?v=v5.31",
   "./dashboard-defeitos-v4.css?v=v5.31",
-  "./montagem-taxa.css?v=v5.31-taxa5",
+  "./montagem-taxa.css?v=v5.31-prod-s34-1",
   "./modelos-formas.js?v=v5.31",
-  "./app.js?v=v5.31-taxa5",
-  "./montagem-taxa.js?v=v5.31-taxa5",
+  "./app.js?v=v5.31-prod-s34-1",
+  "./montagem-taxa.js?v=v5.31-prod-s34-1",
   "./unificado-invite.js?v=1",
   "./xlsx.full.min.js?v=v5.31",
   "./supabase.js",
