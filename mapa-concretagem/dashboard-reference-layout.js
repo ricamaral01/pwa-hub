@@ -62,6 +62,14 @@
   }
 
   function defects() {
+    const dashboard = document.getElementById('viewDashboardDefeitos');
+    const filters = $(dashboard, '.df-v4-filters');
+    const scope = $(dashboard, '.df-v4-scope-tabs');
+    const caption = $(dashboard, '.df-v4-scope-caption');
+    if (filters && scope && scope.parentElement !== filters) {
+      filters.prepend(scope);
+      if (caption) filters.append(caption);
+    }
     const section = document.getElementById('miSecaoDefeitos');
     if (!section || $(section, '.ref-defect-tabs')) return;
     const unified = Boolean($(section, '.df-new-head'));

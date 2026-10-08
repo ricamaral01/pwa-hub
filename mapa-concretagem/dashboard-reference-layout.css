@@ -16,6 +16,8 @@
   margin: 12px 0 18px;
 }
 .ref-overview, .ref-defect-overview {display: grid; gap: 16px; margin-bottom: 16px;}
+#viewDashboardDefeitos .df-v4-filters > .df-v4-scope-tabs,
+#viewDashboardDefeitos .df-v4-filters > .df-v4-scope-caption {grid-column: 1 / -1; width: 100%;}
 .ref-section-heading {font-size: 1.06rem; line-height: 1.3; margin: 5px 0 0; color: #19314d;}
 #viewMontagemIndicadores .ref-overview > .mi-kpis-grid,
 #viewProdAnalise .ref-five-kpis,
