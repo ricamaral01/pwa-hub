@@ -1,0 +1,90 @@
+/* Shared visual structure for Montagem, Defeitos and Concretagem dashboards. */
+#viewMontagemIndicadores, #viewDashboardDefeitos, #viewProdAnalise {
+  --ref-ink: #19314d;
+  --ref-border: #dce5ed;
+  --ref-surface: #fff;
+  background: #f4f7fa;
+  color: var(--ref-ink);
+}
+#viewMontagemIndicadores .mi-fixed-filters-bar,
+#viewDashboardDefeitos .df-v4-filters,
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters {
+  background: var(--ref-surface);
+  border: 1px solid var(--ref-border);
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgb(25 49 77 / 5%);
+  margin: 12px 0 18px;
+}
+.ref-overview, .ref-defect-overview {display: grid; gap: 16px; margin-bottom: 16px;}
+.ref-section-heading {font-size: 1.06rem; line-height: 1.3; margin: 5px 0 0; color: #19314d;}
+#viewMontagemIndicadores .ref-overview > .mi-kpis-grid,
+#viewProdAnalise .ref-five-kpis,
+#viewDashboardDefeitos .df-v4-hero-grid,
+#viewDashboardDefeitos .df-new-cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+#viewDashboardDefeitos .df-v4-hero-grid > .df-v4-mini-kpi {
+  min-width: 0;
+  background: #fff;
+  border: 1px solid var(--ref-border);
+  border-radius: 12px;
+  padding: 15px;
+}
+#viewDashboardDefeitos .df-v4-hero-grid > .df-v4-mini-kpi > span {display: none;}
+#viewDashboardDefeitos .df-v4-hero-grid > .df-v4-mini-kpi > div {display: flex; flex-direction: column-reverse; gap: 7px;}
+.ref-analysis-grid {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;}
+.ref-analysis-grid > .mi-chart-card {min-width: 0; width: auto; margin: 0;}
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters {
+  display: block !important;
+  position: static !important;
+  inset: auto !important;
+  padding: 0;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  z-index: auto;
+}
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-content {
+  position: static !important;
+  width: 100%;
+  max-width: none;
+  height: auto !important;
+  max-height: none;
+  transform: none !important;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-body,
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-footer {
+  display: flex; flex-direction: row !important; flex-wrap: wrap; align-items: end; gap: 10px;
+  flex: none; overflow: visible;
+}
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .pa-filter-period {display: flex; flex-wrap: wrap; align-items: end; gap: 10px; width: auto;}
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-header {display: flex; align-items: center; gap: 12px;}
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-header,
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-body,
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-footer {padding: 10px 16px;}
+#viewProdAnalise #paFiltrosDrawer.ref-inline-filters .mi-drawer-footer > button {width: auto !important; flex: 0 0 auto; min-width: 74px;}
+#viewProdAnalise #paBtnToggleFiltros, #viewProdAnalise #paBtnFecharFiltros {display: none;}
+.ref-defect-tabs {display: flex; gap: 8px; border-bottom: 1px solid var(--ref-border); margin: 0 0 14px;}
+.ref-defect-tabs button {border: 0; background: transparent; color: #53677a; padding: 11px 15px; cursor: pointer; font: inherit; font-weight: 650;}
+.ref-defect-tabs button.active {color: #145cb4; border-bottom: 3px solid #145cb4;}
+.ref-defect-overview[hidden], .ref-defect-details[hidden] {display: none !important;}
+#viewProdAnalise #paSecaoResumo .pa-kpis-grid {grid-template-columns: repeat(3, minmax(0, 1fr));}
+@media (max-width: 1100px) {
+  #viewMontagemIndicadores .ref-overview > .mi-kpis-grid,
+  #viewProdAnalise .ref-five-kpis,
+  #viewDashboardDefeitos .df-v4-hero-grid,
+  #viewDashboardDefeitos .df-new-cards {grid-template-columns: repeat(2, minmax(0, 1fr));}
+  .ref-analysis-grid {grid-template-columns: 1fr;}
+}
+@media (max-width: 640px) {
+  #viewMontagemIndicadores .ref-overview > .mi-kpis-grid,
+  #viewProdAnalise .ref-five-kpis,
+  #viewDashboardDefeitos .df-v4-hero-grid,
+  #viewDashboardDefeitos .df-new-cards,
+  #viewProdAnalise #paSecaoResumo .pa-kpis-grid {grid-template-columns: 1fr;}
+}
