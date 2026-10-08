@@ -78,6 +78,10 @@
     if (unified) {
       const newHead = $(section, '.df-new-head');
       if (newHead) overview.append(newHead);
+      for (const selector of ['.df-new-secondary', '#dfReportedPanel', '#dfNewUnspecified']) {
+        const extra = $(newHead, selector);
+        if (extra) details.append(extra);
+      }
       for (const child of children) if (child !== newHead) details.append(child);
     } else {
       const hero = $(section, '.df-v4-hero-grid');
