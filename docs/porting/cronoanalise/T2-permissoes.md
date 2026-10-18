@@ -16,4 +16,4 @@
 - Migração aplicada duas vezes em banco descartável `cronoanalise_test_permissions_20261018`; ação preexistente da Qualidade permaneceu e ação Cronoanálise foi aceita. Banco descartável removido.
 - Testes de API para sessão ausente e ação ausente: 401 e 403, respectivamente.
 
-O print do cadastro fica para T6a, após a publicação em homologação. Os arquivos de integração preexistentes e não rastreados, assim como alterações preexistentes em `unificado/mapa/api/app.py`, permanecem fora deste commit por decisão expressa do usuário.
+O cadastro em homologação foi verificado na T6a: [print com as sete telas e três ações](capturas-T6a/cronoanalise-permissoes.png). Os arquivos de integração preexistentes e não rastreados, assim como alterações preexistentes em `unificado/mapa/api/app.py`, permanecem fora dos commits por decisão expressa do usuário.

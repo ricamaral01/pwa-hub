@@ -1,0 +1,254 @@
+=== Unificado · inventário 2026-10-18T20:09:45+00:00 · srv1725681 ===
+
+## Sistema
+Linux srv1725681 6.8.0-147-generic #147-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep 24 11:33:16 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+ 20:09:45 up 1 day, 11:02,  4 users,  load average: 0.32, 0.32, 0.33
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1       387G   40G  347G  11% /
+/dev/sda1       387G   40G  347G  11% /
+               total        used        free      shared  buff/cache   available
+Mem:            31Gi       3.7Gi        20Gi       237Mi       7.9Gi        27Gi
+Swap:             0B          0B          0B
+
+## Portas em escuta
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      4096         0.0.0.0:9000       0.0.0.0:*    users:(("docker-proxy",pid=3070,fd=8))
+LISTEN 0      4096       127.0.0.1:13001      0.0.0.0:*    users:(("docker-proxy",pid=3434,fd=8))
+LISTEN 0      2048       127.0.0.1:13054      0.0.0.0:*    users:(("python",pid=1884295,fd=13))
+LISTEN 0      2048       127.0.0.1:13052      0.0.0.0:*    users:(("python",pid=1497,fd=5),("python",pid=1490,fd=5),("python",pid=1442,fd=5))
+LISTEN 0      511        127.0.0.1:13053      0.0.0.0:*    users:(("nginx",pid=1884382,fd=7),("nginx",pid=1884381,fd=7),("nginx",pid=1884380,fd=7),("nginx",pid=1884379,fd=7),("nginx",pid=1884378,fd=7),("nginx",pid=1884377,fd=7),("nginx",pid=1884376,fd=7),("nginx",pid=1884375,fd=7),("nginx",pid=848,fd=7))
+LISTEN 0      2048       127.0.0.1:13051      0.0.0.0:*    users:(("postgrest",pid=2445,fd=43))
+LISTEN 0      100        127.0.0.1:13060      0.0.0.0:*    users:(("python",pid=1444,fd=6))
+LISTEN 0      2048       127.0.0.1:13058      0.0.0.0:*    users:(("postgrest",pid=1855,fd=43))
+LISTEN 0      511        127.0.0.1:13059      0.0.0.0:*    users:(("node",pid=2860,fd=18))
+LISTEN 0      4096       127.0.0.1:13070      0.0.0.0:*    users:(("docker-proxy",pid=2561,fd=8))
+LISTEN 0      4096       127.0.0.1:13071      0.0.0.0:*    users:(("docker-proxy",pid=3335,fd=8))
+LISTEN 0      2048       127.0.0.1:13066      0.0.0.0:*    users:(("uvicorn",pid=1449,fd=6))
+LISTEN 0      2048       127.0.0.1:13065      0.0.0.0:*    users:(("python",pid=319118,fd=6))
+LISTEN 0      2048       127.0.0.1:13115      0.0.0.0:*    users:(("python",pid=728912,fd=13))
+LISTEN 0      2048       127.0.0.1:13151      0.0.0.0:*    users:(("postgrest",pid=1892,fd=41))
+LISTEN 0      4096       127.0.0.1:13170      0.0.0.0:*    users:(("docker-proxy",pid=3589,fd=8))
+LISTEN 0      4096       127.0.0.1:13171      0.0.0.0:*    users:(("docker-proxy",pid=3685,fd=8))
+LISTEN 0      2048       127.0.0.1:13180      0.0.0.0:*    users:(("python",pid=1498,fd=5),("python",pid=1495,fd=5),("python",pid=1465,fd=5))
+LISTEN 0      2048       127.0.0.1:13181      0.0.0.0:*    users:(("python",pid=1511,fd=5),("python",pid=1503,fd=5),("python",pid=1466,fd=5))
+LISTEN 0      2048       127.0.0.1:13158      0.0.0.0:*    users:(("postgrest",pid=2057,fd=43))
+LISTEN 0      511        127.0.0.1:13159      0.0.0.0:*    users:(("node",pid=2355,fd=18))
+LISTEN 0      2048       127.0.0.1:13154      0.0.0.0:*    users:(("python",pid=1817654,fd=13))
+LISTEN 0      2048       127.0.0.1:13152      0.0.0.0:*    users:(("python",pid=319165,fd=5),("python",pid=319164,fd=5),("python",pid=319140,fd=5))
+LISTEN 0      511        127.0.0.1:13153      0.0.0.0:*    users:(("nginx",pid=1884382,fd=6),("nginx",pid=1884381,fd=6),("nginx",pid=1884380,fd=6),("nginx",pid=1884379,fd=6),("nginx",pid=1884378,fd=6),("nginx",pid=1884377,fd=6),("nginx",pid=1884376,fd=6),("nginx",pid=1884375,fd=6),("nginx",pid=848,fd=6))
+LISTEN 0      2048       127.0.0.1:13166      0.0.0.0:*    users:(("python",pid=728915,fd=6))
+LISTEN 0      100        127.0.0.1:13160      0.0.0.0:*    users:(("python",pid=728916,fd=6))
+LISTEN 0      4096       127.0.0.1:65529      0.0.0.0:*    users:(("monarx-agent",pid=781,fd=10))
+LISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*    users:(("systemd-resolve",pid=684,fd=15))
+LISTEN 0      4096         0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=75269,fd=3),("systemd",pid=1,fd=288))
+LISTEN 0      511          0.0.0.0:80         0.0.0.0:*    users:(("nginx",pid=1884382,fd=8),("nginx",pid=1884381,fd=8),("nginx",pid=1884380,fd=8),("nginx",pid=1884379,fd=8),("nginx",pid=1884378,fd=8),("nginx",pid=1884377,fd=8),("nginx",pid=1884376,fd=8),("nginx",pid=1884375,fd=8),("nginx",pid=848,fd=8))
+LISTEN 0      511          0.0.0.0:443        0.0.0.0:*    users:(("nginx",pid=1884382,fd=9),("nginx",pid=1884381,fd=9),("nginx",pid=1884380,fd=9),("nginx",pid=1884379,fd=9),("nginx",pid=1884378,fd=9),("nginx",pid=1884377,fd=9),("nginx",pid=1884376,fd=9),("nginx",pid=1884375,fd=9),("nginx",pid=848,fd=9))
+LISTEN 0      200        127.0.0.1:5432       0.0.0.0:*    users:(("postgres",pid=894,fd=7))
+LISTEN 0      511          0.0.0.0:18080      0.0.0.0:*    users:(("nginx",pid=1884382,fd=21),("nginx",pid=1884381,fd=21),("nginx",pid=1884380,fd=21),("nginx",pid=1884379,fd=21),("nginx",pid=1884378,fd=21),("nginx",pid=1884377,fd=21),("nginx",pid=1884376,fd=21),("nginx",pid=1884375,fd=21),("nginx",pid=848,fd=21))
+LISTEN 0      2048         0.0.0.0:18110      0.0.0.0:*    users:(("uvicorn",pid=1420,fd=15))
+LISTEN 0      5            0.0.0.0:18180      0.0.0.0:*    users:(("python3",pid=758,fd=3))
+LISTEN 0      2048       127.0.0.1:8088       0.0.0.0:*    users:(("python",pid=764,fd=8))
+LISTEN 0      511          0.0.0.0:19444      0.0.0.0:*    users:(("nginx",pid=1884382,fd=18),("nginx",pid=1884381,fd=18),("nginx",pid=1884380,fd=18),("nginx",pid=1884379,fd=18),("nginx",pid=1884378,fd=18),("nginx",pid=1884377,fd=18),("nginx",pid=1884376,fd=18),("nginx",pid=1884375,fd=18),("nginx",pid=848,fd=18))
+LISTEN 0      511          0.0.0.0:19443      0.0.0.0:*    users:(("nginx",pid=1884382,fd=14),("nginx",pid=1884381,fd=14),("nginx",pid=1884380,fd=14),("nginx",pid=1884379,fd=14),("nginx",pid=1884378,fd=14),("nginx",pid=1884377,fd=14),("nginx",pid=1884376,fd=14),("nginx",pid=1884375,fd=14),("nginx",pid=848,fd=14))
+LISTEN 0      2048       127.0.0.1:8002       0.0.0.0:*    users:(("gunicorn",pid=1493,fd=5),("gunicorn",pid=1486,fd=5),("gunicorn",pid=1424,fd=5))
+LISTEN 0      2048       127.0.0.1:8003       0.0.0.0:*    users:(("gunicorn",pid=1488,fd=3),("gunicorn",pid=1483,fd=3),("gunicorn",pid=1435,fd=3))
+LISTEN 0      2048       127.0.0.1:8001       0.0.0.0:*    users:(("gunicorn",pid=1485,fd=5),("gunicorn",pid=1484,fd=5),("gunicorn",pid=1433,fd=5))
+LISTEN 0      2048       127.0.0.1:8015       0.0.0.0:*    users:(("python",pid=1422,fd=13))
+LISTEN 0      2048       127.0.0.1:8012       0.0.0.0:*    users:(("uvicorn",pid=1453,fd=13))
+LISTEN 0      2048       127.0.0.1:8010       0.0.0.0:*    users:(("uvicorn",pid=1463,fd=13))
+LISTEN 0      2048       127.0.0.1:8011       0.0.0.0:*    users:(("uvicorn",pid=1414,fd=13))
+LISTEN 0      511          0.0.0.0:18446      0.0.0.0:*    users:(("nginx",pid=1884382,fd=22),("nginx",pid=1884381,fd=22),("nginx",pid=1884380,fd=22),("nginx",pid=1884379,fd=22),("nginx",pid=1884378,fd=22),("nginx",pid=1884377,fd=22),("nginx",pid=1884376,fd=22),("nginx",pid=1884375,fd=22),("nginx",pid=848,fd=22))
+LISTEN 0      511          0.0.0.0:18445      0.0.0.0:*    users:(("nginx",pid=1884382,fd=20),("nginx",pid=1884381,fd=20),("nginx",pid=1884380,fd=20),("nginx",pid=1884379,fd=20),("nginx",pid=1884378,fd=20),("nginx",pid=1884377,fd=20),("nginx",pid=1884376,fd=20),("nginx",pid=1884375,fd=20),("nginx",pid=848,fd=20))
+LISTEN 0      511          0.0.0.0:18444      0.0.0.0:*    users:(("nginx",pid=1884382,fd=16),("nginx",pid=1884381,fd=16),("nginx",pid=1884380,fd=16),("nginx",pid=1884379,fd=16),("nginx",pid=1884378,fd=16),("nginx",pid=1884377,fd=16),("nginx",pid=1884376,fd=16),("nginx",pid=1884375,fd=16),("nginx",pid=848,fd=16))
+LISTEN 0      511          0.0.0.0:18443      0.0.0.0:*    users:(("nginx",pid=1884382,fd=12),("nginx",pid=1884381,fd=12),("nginx",pid=1884380,fd=12),("nginx",pid=1884379,fd=12),("nginx",pid=1884378,fd=12),("nginx",pid=1884377,fd=12),("nginx",pid=1884376,fd=12),("nginx",pid=1884375,fd=12),("nginx",pid=848,fd=12))
+LISTEN 0      4096      127.0.0.54:53         0.0.0.0:*    users:(("systemd-resolve",pid=684,fd=17))
+LISTEN 0      4096       127.0.0.1:18090      0.0.0.0:*    users:(("docker-proxy",pid=3265,fd=8))
+LISTEN 0      4096       127.0.0.1:18091      0.0.0.0:*    users:(("docker-proxy",pid=3510,fd=8))
+LISTEN 0      2048       127.0.0.1:18010      0.0.0.0:*    users:(("uvicorn",pid=1417,fd=15))
+LISTEN 0      4096         0.0.0.0:5001       0.0.0.0:*    users:(("docker-proxy",pid=3009,fd=8))
+LISTEN 0      512          0.0.0.0:5150       0.0.0.0:*    users:(("dotnet",pid=755,fd=240))
+LISTEN 0      4096       127.0.0.1:19000      0.0.0.0:*    users:(("docker-proxy",pid=3636,fd=8))
+LISTEN 0      4096       127.0.0.1:19010      0.0.0.0:*    users:(("docker-proxy",pid=3741,fd=8))
+LISTEN 0      4096            [::]:9000          [::]:*    users:(("docker-proxy",pid=3088,fd=8))
+LISTEN 0      200            [::1]:5432          [::]:*    users:(("postgres",pid=894,fd=6))
+LISTEN 0      4096            [::]:22            [::]:*    users:(("sshd",pid=75269,fd=4),("systemd",pid=1,fd=289))
+LISTEN 0      511             [::]:80            [::]:*    users:(("nginx",pid=1884382,fd=10),("nginx",pid=1884381,fd=10),("nginx",pid=1884380,fd=10),("nginx",pid=1884379,fd=10),("nginx",pid=1884378,fd=10),("nginx",pid=1884377,fd=10),("nginx",pid=1884376,fd=10),("nginx",pid=1884375,fd=10),("nginx",pid=848,fd=10))
+LISTEN 0      511             [::]:443           [::]:*    users:(("nginx",pid=1884382,fd=11),("nginx",pid=1884381,fd=11),("nginx",pid=1884380,fd=11),("nginx",pid=1884379,fd=11),("nginx",pid=1884378,fd=11),("nginx",pid=1884377,fd=11),("nginx",pid=1884376,fd=11),("nginx",pid=1884375,fd=11),("nginx",pid=848,fd=11))
+LISTEN 0      511             [::]:19444         [::]:*    users:(("nginx",pid=1884382,fd=19),("nginx",pid=1884381,fd=19),("nginx",pid=1884380,fd=19),("nginx",pid=1884379,fd=19),("nginx",pid=1884378,fd=19),("nginx",pid=1884377,fd=19),("nginx",pid=1884376,fd=19),("nginx",pid=1884375,fd=19),("nginx",pid=848,fd=19))
+LISTEN 0      511             [::]:19443         [::]:*    users:(("nginx",pid=1884382,fd=15),("nginx",pid=1884381,fd=15),("nginx",pid=1884380,fd=15),("nginx",pid=1884379,fd=15),("nginx",pid=1884378,fd=15),("nginx",pid=1884377,fd=15),("nginx",pid=1884376,fd=15),("nginx",pid=1884375,fd=15),("nginx",pid=848,fd=15))
+LISTEN 0      511             [::]:18444         [::]:*    users:(("nginx",pid=1884382,fd=17),("nginx",pid=1884381,fd=17),("nginx",pid=1884380,fd=17),("nginx",pid=1884379,fd=17),("nginx",pid=1884378,fd=17),("nginx",pid=1884377,fd=17),("nginx",pid=1884376,fd=17),("nginx",pid=1884375,fd=17),("nginx",pid=848,fd=17))
+LISTEN 0      511             [::]:18443         [::]:*    users:(("nginx",pid=1884382,fd=13),("nginx",pid=1884381,fd=13),("nginx",pid=1884380,fd=13),("nginx",pid=1884379,fd=13),("nginx",pid=1884378,fd=13),("nginx",pid=1884377,fd=13),("nginx",pid=1884376,fd=13),("nginx",pid=1884375,fd=13),("nginx",pid=848,fd=13))
+LISTEN 0      4096            [::]:5001          [::]:*    users:(("docker-proxy",pid=3017,fd=8))
+
+## Serviços ativos
+  apiempresa.service                         loaded active running ApiEmpresa
+  concretrack-pederneiras.service            loaded active running ConcreTrack Pederneiras API (FastAPI/Uvicorn)
+  concretrack-staging-api.service            loaded active running ConcreTrack Staging API
+  concretrack-staging-final-api.service      loaded active running ConcreTrack Staging Final API
+  concretrack-staging-final-frontend.service loaded active running ConcreTrack Staging Final Frontend
+  concretrack-unificado.service              loaded active running ConcreTrack Unified API (FastAPI/Uvicorn)
+  containerd.service                         loaded active running containerd container runtime
+  cron.service                               loaded active running Regular background program processing daemon
+  dashboard-noroeste.service                 loaded active running Dashboard Usina Noroeste (Gunicorn)
+  dashboard-pederneiras.service              loaded active running Dashboard Pederneiras (Gunicorn)
+  dashboard-ribeirao.service                 loaded active running Dashboard Usina Ribeirao (Gunicorn)
+  dbus.service                               loaded active running D-Bus System Message Bus
+  docker.service                             loaded active running Docker Application Container Engine
+  getty@tty1.service                         loaded active running Getty on tty1
+  laboratorio-homolog.service                loaded active running Laboratorio do Concrefer Unificado (homologacao isolada)
+  mapa-unificado-auth.service                loaded active running Mapa unificado - login PostgreSQL de testes
+  mapa-unificado-realtime.service            loaded active running Mapa unificado - eventos PostgreSQL de testes
+  ModemManager.service                       loaded active running Modem Manager
+  monarx-agent.service                       loaded active running Monarx Agent - Security Scanner
+  monitor-concreto.service                   loaded active running Concretrack Temperatura API
+  nginx.service                              loaded active running A high performance web server and a reverse proxy server
+  pcp-unificado-test.service                 loaded active running PCP unificado - API isolada de testes
+  polkit.service                             loaded active running Authorization Manager
+  postgresql@16-main.service                 loaded active running PostgreSQL Cluster 16-main
+  qemu-guest-agent.service                   loaded active running QEMU Guest Agent
+  qualidade-api.service                      loaded active running Qualidade do Unificado (API isolada)
+  rsyslog.service                            loaded active running System Logging Service
+  serial-getty@ttyS0.service                 loaded active running Serial Getty on ttyS0
+  ssh.service                                loaded active running OpenBSD Secure Shell server
+  supervisorio-ribeirao.service              loaded active running ConcreTrack Supervisorio Ribeirao API
+  supervisorio_noro.service                  loaded active running ConcreTrack Supervisorio Noro API
+  systemd-journald.service                   loaded active running Journal Service
+  systemd-logind.service                     loaded active running User Login Management
+  systemd-networkd.service                   loaded active running Network Configuration
+  systemd-resolved.service                   loaded active running Network Name Resolution
+  systemd-timesyncd.service                  loaded active running Network Time Synchronization
+  systemd-udevd.service                      loaded active running Rule-based Manager for Device Events and Files
+  udisks2.service                            loaded active running Disk Manager
+  unattended-upgrades.service                loaded active running Unattended Upgrades Shutdown
+  unificado-homolog-hub.service              loaded active running Unificado homolog Hub isolated API
+  unificado-homolog-mapa-realtime.service    loaded active running Unificado homolog Mapa isolated realtime
+  unificado-homolog-mapa.service             loaded active running Unificado homolog Mapa isolated API
+  unificado-homolog-pcp.service              loaded active running Unificado homolog PCP isolated API
+  unificado-homolog-qualidade.service        loaded active running Unificado homolog Qualidade isolated API
+  unificado-homolog-tv.service               loaded active running Unificado homolog TV production summary, read only
+  unificado-tv.service                       loaded active running Unificado production TV summary, read only
+  user@0.service                             loaded active running User Manager for UID 0
+
+## NGINX
+2026/10/18 20:09:45 [warn] 353045#353045: protocol options redefined for 0.0.0.0:443 in /etc/nginx/sites-enabled/faleaqui:9
+2026/10/18 20:09:45 [warn] 353045#353045: conflicting server name "concrefer.concretrack.com.br" on 0.0.0.0:80, ignored
+2026/10/18 20:09:45 [warn] 353045#353045: conflicting server name "concrefer.concretrack.com.br" on 0.0.0.0:443, ignored
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+total 8
+lrwxrwxrwx 1 root root   55 Jul 24 18:13 concrefer.concretrack.com.br -> /etc/nginx/sites-available/concrefer.concretrack.com.br
+-rw-r--r-- 1 root root 4970 Oct  4 23:15 concrefer.concretrack.com.br.before-validation-api-20261004
+lrwxrwxrwx 1 root root   35 Sep 18 10:06 faleaqui -> /etc/nginx/sites-available/faleaqui
+lrwxrwxrwx 1 root root   40 Sep 22 10:13 faleaqui-test -> /etc/nginx/sites-available/faleaqui-test
+lrwxrwxrwx 1 root root   43 Sep 30 19:08 monitor-concreto -> /etc/nginx/sites-available/monitor-concreto
+lrwxrwxrwx 1 root root   50 Jul  7 21:01 noro.concretrack.com.br -> /etc/nginx/sites-available/noro.concretrack.com.br
+lrwxrwxrwx 1 root root   57 Jun 18 17:12 pederneiras.concretrack.com.br -> /etc/nginx/sites-available/pederneiras.concretrack.com.br
+lrwxrwxrwx 1 root root   54 Jul  7 23:07 ribeirao.concretrack.com.br -> /etc/nginx/sites-available/ribeirao.concretrack.com.br
+lrwxrwxrwx 1 root root   54 Aug 29 22:24 staging.concretrack.interno -> /etc/nginx/sites-available/staging.concretrack.interno
+lrwxrwxrwx 1 root root   49 Oct  9 01:06 unificado-homolog.conf -> /etc/nginx/sites-available/unificado-homolog.conf
+
+## Status HTTP local do Unificado
+porta 18110: 404
+porta 18180: 200
+{"detail":"Not Found"}
+
+## Bancos e schemas
+postgres
+pcp_mo_scratch_20261016
+supervisorio_db_pede
+supervisorio_db_noro
+supervisorio_db_ribe
+concretrack_auth
+qualidade_freeze_rehearsal_20261015
+qualidade_freeze_restore_20261015
+concretrack_staging_final
+concretrack_postes
+qualidade_c1_campinas_ensaio
+mapa_unificado_homolog_20261016
+pcp_unificado_homolog_20261016
+qualidade_phase4_ensaio_20261015
+qualidade_phase4_restore_20261015
+mapa_unificado_teste
+pcp_unificado_teste
+concretrack_staging
+mapa_ged_sso_20261016
+concretrack_postes_unificado
+concretrack_postes_homolog
+qualidade
+qualidade_b5_restore_20261015
+qualidade_c1_ensaio
+concretrack_auth_homolog_20261016
+supervisorio_db_pede_homolog_20261016
+supervisorio_db_ribe_homolog_20261016
+supervisorio_db_noro_homolog_20261016
+qualidade_homolog_20261016
+-- concretrack_auth
+public
+-- concretrack_staging_final
+analytics
+audit
+catalog
+core
+estoque
+ged
+iam
+injecao
+integration
+laboratorio
+manutencao
+mapa
+materiais
+ops
+pcp
+producao
+public
+qualidade
+rh
+tecnologia
+20260830_0007
+-- concretrack_postes
+ensaio_postes
+public
+-- concretrack_staging
+analytics
+audit
+catalog
+core
+ged
+iam
+injecao
+integration
+laboratorio
+mapa
+ops
+pcp
+producao
+public
+rh
+20260829_0001
+-- concretrack_postes_unificado
+ensaio_postes
+public
+-- concretrack_postes_homolog
+cronoanalise
+ensaio_postes
+public
+-- concretrack_auth_homolog_20261016
+public
+
+## Releases e backups
+total 52
+drwxr-xr-x 13 root        root        4096 Oct 15 12:58 .
+drwxr-xr-x 23 root        root        4096 Oct 18 19:35 ..
+drwxrwxrwx 25 root        root        4096 Oct 16 23:02 concrefer-unificado
+drwxr-xr-x  5 root        concretrack 4096 Aug 29 22:24 concretrack-staging
+drwxr-xr-x  5 concretrack concretrack 4096 Aug 31 01:25 concretrack-staging-final
+drwxr-xr-x  5 root        root        4096 Oct 17 09:07 concretrack-watchdog
+drwx--x--x  4 root        root        4096 Jun  2 13:33 containerd
+drwxr-xr-x  5 root        root        4096 Oct 15 21:51 faleaqui
+drwxr-xr-x  6 root        root        4096 Oct 15 21:48 faleaqui-test
+drwxr-xr-x  6 root        root        4096 Oct 16 01:01 ged_concrefer
+drwxrwxrwx  4 root        root        4096 Oct 15 12:52 ged_concrefer-a3-build
+drwxr-xr-x 12 root        root        4096 Oct  4 14:31 monitor_concreto
+drwxr-xr-x  5 root        root        4096 Oct 15 13:06 qualidade
+=== fim ===
