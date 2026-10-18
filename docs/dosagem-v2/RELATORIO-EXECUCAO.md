@@ -30,6 +30,7 @@ O legado roda como aplicação estática em `dosagem-concreto/index.html`, no me
 7. A interface dos métodos científico e por teor de argamassa exibe aviso explícito: os módulos estão portados, mas a edição ainda usa massas manuais. Isso evita afirmar uma paridade inexistente.
 8. A única mudança fora das três pastas novas é o bloco de três linhas em `sw.js`: `if (url.pathname.startsWith("/dosagem-concreto/v2/")) return;`. Ele impede que o cache do Hub intercepte a PWA v2.
 9. O repositório já tinha muitos arquivos alterados antes desta tarefa. O verificador `npm run deploy:check` lista essas mudanças externas e por isso falha nesta árvore suja; não foram incorporadas à v2 nem revertidas.
+10. A PWA pré-carrega o build e usa network-first nas páginas sob `/dosagem-concreto/v2/`. A API usa `POST` autenticado; esse tráfego não é armazenado pelo service worker. A outbox do cliente faz o reenvio. O requisito literal de cache network-first para a API ficou pendente de uma política que não armazene tokens nem respostas privadas.
 
 ## Verificação executada
 
