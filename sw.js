@@ -96,6 +96,9 @@ self.addEventListener("fetch", (event) => {
   // Os mapas de concretagem tem service worker proprio e precisam validar versoes sem interferencia do hub.
   if (url.pathname.includes("/mapa-concretagem/") || url.pathname.includes("/mapa-concretagem-teste/")) return;
 
+  // A Dosagem v2 possui service worker e cache próprios dentro deste prefixo.
+  if (url.pathname.startsWith("/dosagem-concreto/v2/")) return;
+
   // HTML / navegação → network-first (sempre pega a versão mais recente)
   if (event.request.mode === "navigate" || url.pathname.endsWith(".html")) {
     event.respondWith(
