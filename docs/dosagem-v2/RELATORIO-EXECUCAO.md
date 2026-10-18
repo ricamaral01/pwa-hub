@@ -90,7 +90,7 @@ Esta seção substitui, para a rodada 2, as referências acima a Apps Script com
 | Núcleo C40 | Teste golden com entradas e indicadores dos mockups aprovados. O Apêndice A recebido não contém a tabela completa; a origem do fixture está identificada no teste. CA III configurada conforme mockup: a/c máximo 0,55 e cimento mínimo 320 kg/m³, ainda sujeita à conferência normativa. |
 | Granulometria | Fixture de 500 g das peneiras do mockup: MF 2,714, Dmáx 4,75 mm, zona ótima, perda zero. Apêndice B isolado informa só resultados, sem massas. |
 | Legado | Testes dos três módulos portados para Vitest, valores esperados preservados. Casos de massas inválidas, divisões por zero e resultados não finitos ampliados. |
-| Conversão | Navegador lê JSON, localStorage e .xlsx/.csv via SheetJS; preserva segunda areia e segundo aditivo com massas específicas independentes; rejeita densidade ausente com aviso. Prévia e simulação antes de efetivar. Os formatos sem conversor validado recebem aviso e não são importados. A interface ainda envia um único lote; arquivos acima de 500 registros precisam ser separados. |
+| Conversão | Navegador lê JSON, localStorage e .xlsx/.csv via SheetJS; preserva segunda areia e segundo aditivo com massas específicas independentes; rejeita densidade ausente com aviso. Inclui fornecedores e ensaios granulométricos de planilha/localStorage. Prévia e simulação antes de efetivar; lotes de até 500 registros. Página1, Experimental e demais formatos sem densidades ou conversor validado recebem aviso e não são importados. |
 | API | FastAPI/Python 3.12, SQLAlchemy 2, Alembic, PostgreSQL JSONB, autenticação Supabase/JWT, papéis, unidade, transações, auditoria, idempotência, revisão otimista, importação. Contrato em `API.md`. |
 | Interface | Bearer, JSON e Idempotency-Key nos headers; `VITE_API_URL` de produção configurada para o novo RPC. E2E mock atualizado. |
 | Infraestrutura preparada | Templates nginx/systemd e scripts de provisionamento, deploy Windows/Linux, rollback e backup em `deploy/`. Nenhum foi executado na VPS. |
@@ -99,7 +99,7 @@ Esta seção substitui, para a rodada 2, as referências acima a Apps Script com
 
 | Comando / ensaio | Resultado |
 |---|---|
-| `npm test -- --run` | 20 passaram, 1 falhou intencionalmente (golden C40, abaixo), 8 arquivos |
+| `npm test -- --run` | 21 passaram, 1 falhou intencionalmente (golden C40, abaixo), 8 arquivos |
 | `npm run build` | Passou; arquivos gerados em `dosagem-concreto/v2/`, com SheetJS carregado em chunk separado |
 | `npm audit --audit-level=high` | 0 vulnerabilidades informadas |
 | `npm run test:e2e` | 12/12 passaram em desktop, tablet retrato/paisagem e celular contra o contrato novo simulado |
@@ -136,7 +136,7 @@ O script usa somente `vps-antiga` e reprova testes locais falhos. Para TLS e bac
 ### Checklist manual atualizado
 
 - [ ] Resolver o golden C40 com fonte de engenharia e conferir os limites normativos.
-- [ ] Conferir mapeamento e amostras dos três arquivos reais antes da importação; separar lotes de até 500 e tratar formatos ainda não validados.
+- [ ] Conferir mapeamento e amostras dos três arquivos reais antes da importação; a interface divide em lotes de até 500 e formatos ainda não validados precisam de tratamento.
 - [ ] Configurar SSH por chave, DNS e `.env` privado; preencher o reconhecimento da VPS e registrar códigos HTTP de outros sites.
 - [ ] Provisionar somente recursos da Dosagem, implantar, verificar saúde local e pública, TLS e que outros sites mantêm seus códigos HTTP.
 - [ ] Ativar e verificar timer diário; executar backup manual e restauração em banco temporário.

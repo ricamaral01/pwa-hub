@@ -69,6 +69,40 @@ function fornecedorPlanilha(row: unknown[], antigo: string, unidade: string): Re
   } };
 }
 
+function ensaioLegado(raw: Record<string, unknown>, origem: string, antigo: string, unidade: string): RegistroLegado {
+  const tipoOriginal = String(raw.tipo || '');
+  const tipo = tipoOriginal.includes('graudo') ? 'granulometria_graudo' : tipoOriginal.includes('miudo') ? 'granulometria_miudo' :
+    tipoOriginal.includes('massa') ? 'massa_especifica_miudo' : '';
+  if (!tipo) throw new Error(`Tipo de ensaio não reconhecido: ${tipoOriginal || '(vazio)'}.`);
+  return { tipo: 'ensaios', origem, id_antigo: antigo, documento: {
+    id: crypto.randomUUID(), unidade, tipo, materialId: String(raw.material || ''),
+    materialNomeLegado: String(raw.material || ''), fornecedorLegado: String(raw.fornecedor || ''),
+    data: String(raw.data_ensaio || raw.data || raw.timestamp || agora()), responsavel: String(raw.responsavel || ''),
+    dados: raw, resultado: raw.resultados || {}, status: 'concluido', auditoria: auditoria()
+  } };
+}
+
+function ensaioPlanilha(row: unknown[], antigo: string, unidade: string): RegistroLegado {
+  let payload: Record<string, unknown> = {};
+  if (presente(row[7])) {
+    const valor: unknown = typeof row[7] === 'string' ? JSON.parse(row[7]) : row[7];
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor)) throw new Error('payload_json inválido.');
+    payload = valor as Record<string, unknown>;
+  }
+  return ensaioLegado({ ...payload, tipo: row[1] || payload.tipo, material: row[2] || payload.material,
+    fornecedor: row[3] || payload.fornecedor, data_ensaio: row[4] || payload.data_ensaio,
+    responsavel: row[5] || payload.responsavel, timestamp: row[6] || payload.timestamp }, 'planilha:ensaios_granulometria', antigo, unidade);
+}
+
+function fornecedorLocal(raw: Record<string, unknown>, origem: string, antigo: string, unidade: string): RegistroLegado {
+  const nome = String(raw.fornecedor || raw.nome || '').trim();
+  if (!nome) throw new Error('Nome do fornecedor ausente.');
+  return { tipo: 'fornecedores', origem, id_antigo: antigo, documento: {
+    id: crypto.randomUUID(), unidade, nome, contato: String(raw.contato || ''),
+    telefone: String(raw.telefone || ''), materiais: [], ativo: true, auditoria: auditoria(), dadosOriginais: raw
+  } };
+}
+
 function adicionar(preview: PreviaLegado, rotulo: string, criar: () => RegistroLegado) {
   preview.lidos++;
   try { preview.convertidos.push(criar()); }
@@ -97,6 +131,21 @@ export function converterLocalStorage(unidade: string): PreviaLegado {
       tudo.lidos += parte.lidos; tudo.convertidos.push(...parte.convertidos); tudo.avisos.push(...parte.avisos);
     } catch { tudo.avisos.push(`${chave}: JSON inválido.`); }
   }
+  for (const chave of ['cadastroFornecedoresV1', 'ensaiosME', 'ensaiosGranMiudo', 'ensaiosGranGraudo']) {
+    const raw = localStorage.getItem(chave);
+    if (!raw) continue;
+    try {
+      const valores: unknown = JSON.parse(raw);
+      if (!Array.isArray(valores)) throw new Error('array esperado');
+      valores.forEach((valor, index) => {
+        const d = valor && typeof valor === 'object' ? valor as Record<string, unknown> : {};
+        const antigo = String(d.id || d.timestamp || `${chave}:${index + 1}`);
+        adicionar(tudo, `${chave}/${antigo}`, () => chave === 'cadastroFornecedoresV1' ?
+          fornecedorLocal(d, `localStorage:${chave}`, antigo, unidade) :
+          ensaioLegado({ ...d, tipo: d.tipo || (chave === 'ensaiosGranMiudo' ? 'gran_miudo' : chave === 'ensaiosGranGraudo' ? 'gran_graudo' : 'massa_especifica') }, `localStorage:${chave}`, antigo, unidade));
+      });
+    } catch { tudo.avisos.push(`${chave}: formato inválido.`); }
+  }
   return tudo;
 }
 
@@ -120,6 +169,7 @@ export async function converterArquivoLegado(file: File, unidade: string): Promi
       if (aba === 'cartastraco' || (nome.endsWith('.csv') && nome.includes('cartas'))) adicionar(preview, rotulo, () => cartaPlanilha(row, antigo, unidade));
       else if (aba === 'custo' || (nome.endsWith('.csv') && nome.includes('custo'))) adicionar(preview, rotulo, () => custoPlanilha(row, antigo, unidade));
       else if (aba === 'fornecedor' || (nome.endsWith('.csv') && nome.includes('fornecedor'))) adicionar(preview, rotulo, () => fornecedorPlanilha(row, antigo, unidade));
+      else if (aba === 'ensaios_granulometria' || (nome.endsWith('.csv') && nome.includes('ensaios_granulometria'))) adicionar(preview, rotulo, () => ensaioPlanilha(row, antigo, unidade));
       else { preview.lidos++; preview.avisos.push(`${rotulo}: aba sem conversor validado; não será importada.`); }
     });
   }

@@ -31,14 +31,25 @@ export function Importacao() {
   const enviar = async (efetivar: boolean) => {
     setBusy(true); setMensagem('');
     try {
-      const dados = { simulacao: !efetivar, registros: previa.convertidos, unidadePadrao: unidade };
+      const lotes: typeof previa.convertidos[] = [];
+      for (let i = 0; i < previa.convertidos.length; i += 500) lotes.push(previa.convertidos.slice(i, i + 500));
       if (efetivar) {
         if (!simulacao) throw new Error('Faça a simulação antes de importar.');
-        const resposta = await salvarNaFila('importacao.legado', dados);
-        setMensagem(resposta ? 'Importação confirmada pelo servidor. Consulte a lista de traços e cadastros.' : 'Importação na fila, aguardando servidor.');
+        let pendentes = 0;
+        for (const registros of lotes) {
+          const resposta = await salvarNaFila('importacao.legado', { simulacao: false, registros, unidadePadrao: unidade });
+          if (!resposta) pendentes++;
+        }
+        setMensagem(pendentes ? `${pendentes} lote(s) na fila, aguardando servidor.` : `${lotes.length} lote(s) confirmados pelo servidor. Consulte as listas.`);
       } else {
-        const resposta = await chamarApi<RespostaImportacao>('importacao.legado', dados);
-        setSimulacao(resposta); setMensagem('Simulação concluída; nenhuma linha foi gravada.');
+        const total: RespostaImportacao = { simulacao: true, lidos: 0, convertidos: 0, duplicados: 0, gravados: 0, avisos: [], amostras: [] };
+        for (const registros of lotes) {
+          const resposta = await chamarApi<RespostaImportacao>('importacao.legado', { simulacao: true, registros, unidadePadrao: unidade });
+          total.lidos += resposta.lidos; total.convertidos += resposta.convertidos;
+          total.duplicados += resposta.duplicados; total.gravados += resposta.gravados;
+          total.avisos.push(...resposta.avisos); total.amostras.push(...resposta.amostras.slice(0, 5 - total.amostras.length));
+        }
+        setSimulacao(total); setMensagem(`Simulação de ${lotes.length} lote(s) concluída; nenhuma linha foi gravada.`);
       }
     } catch (error) { setMensagem((error as Error).message); }
     finally { setBusy(false); }
@@ -47,7 +58,7 @@ export function Importacao() {
   return <Card title="Importação do legado">
     <p>Exporte as planilhas antigas como .xlsx ou .csv, ou selecione o JSON exportado. A conversão ocorre neste navegador; as planilhas originais não são alteradas.</p>
     <div className="ct-grid ct-grid--2">
-      <Input id="import-unidade" label="Unidade padrão" value={unidade} onChange={e => { setUnidade(e.target.value); setSimulacao(null); }}/>
+      <Input id="import-unidade" label="Unidade padrão" value={unidade} onChange={e => { setUnidade(e.target.value); definir(vazio(), ''); }}/>
       <div className="ct-field"><label htmlFor="import-arquivos">Planilhas ou JSON</label><input id="import-arquivos" type="file" accept=".xlsx,.csv,.json" multiple onChange={e => void arquivos(e)} /></div>
     </div>
     <div className="ct-row"><Button variant="secondary" onClick={() => definir(converterLocalStorage(unidade), 'Dados deste navegador')}>Ler localStorage legado</Button></div>
