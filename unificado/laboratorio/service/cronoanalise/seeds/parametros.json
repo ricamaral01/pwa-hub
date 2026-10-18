@@ -1,0 +1,40 @@
+{
+  "dimensionamento": {
+    "turno": 588,
+    "intervalos": 60,
+    "demanda": 292,
+    "disponiveis": 26,
+    "tolPes": 5,
+    "tolFad": 5,
+    "tolEsp": 3,
+    "eta": 90,
+    "conf": "1.96",
+    "erro": 5,
+    "outl": "2",
+    "over": {}
+  },
+  "simulacao_base": {
+    "layV": 4,
+    "pinosH": 4,
+    "vCarr": 30,
+    "vVazia": 45,
+    "vMono": 50,
+    "pol": "alternado|perto",
+    "hDesforma": "06:30",
+    "hConcIni": "08:30",
+    "hMontIni": "08:30",
+    "hExtraIni": "09:00",
+    "hFim": "16:18",
+    "hPinosIni": "11:00",
+    "hPinosFim": "21:00",
+    "nMont": 4,
+    "nPinos": 2,
+    "corredor": 25,
+    "curaH": 16,
+    "probReprov": 8,
+    "retrabalho": 8,
+    "dias": 3,
+    "capCacamba": 0.9,
+    "volume": 0.3
+  }
+}
