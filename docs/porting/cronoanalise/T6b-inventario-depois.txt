@@ -1,0 +1,136 @@
+T6b final postdeploy UTC 2026-10-18T23:24:09.079780+00:00
+HOST exit=0 srv1725681
+REVISION_SOURCE f4417660 + master patch 468e1409 + XLSX 9a64e285
+SERVICE concretrack-unificado.service active:exit=0 active enabled:exit=0 enabled
+SERVICE laboratorio-unificado.service active:exit=0 active enabled:exit=0 enabled
+SERVICE mapa-unificado-auth.service active:exit=0 active enabled:exit=0 enabled
+SERVICE laboratorio-homolog.service active:exit=0 active enabled:exit=0 enabled
+SERVICE unificado-homolog-mapa.service active:exit=0 active enabled:exit=1 disabled
+PORTS_BEGIN
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      4096         0.0.0.0:9000       0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:13001      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13054      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13052      0.0.0.0:*
+LISTEN 0      511        127.0.0.1:13053      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13051      0.0.0.0:*
+LISTEN 0      100        127.0.0.1:13060      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13058      0.0.0.0:*
+LISTEN 0      511        127.0.0.1:13059      0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:13070      0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:13071      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13066      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13064      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13065      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13115      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13151      0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:13170      0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:13171      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13180      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13181      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13158      0.0.0.0:*
+LISTEN 0      511        127.0.0.1:13159      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13154      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13152      0.0.0.0:*
+LISTEN 0      511        127.0.0.1:13153      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:13166      0.0.0.0:*
+LISTEN 0      100        127.0.0.1:13160      0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:65529      0.0.0.0:*
+LISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*
+LISTEN 0      4096         0.0.0.0:22         0.0.0.0:*
+LISTEN 0      511          0.0.0.0:80         0.0.0.0:*
+LISTEN 0      511          0.0.0.0:443        0.0.0.0:*
+LISTEN 0      200        127.0.0.1:5432       0.0.0.0:*
+LISTEN 0      511          0.0.0.0:18080      0.0.0.0:*
+LISTEN 0      2048         0.0.0.0:18110      0.0.0.0:*
+LISTEN 0      5            0.0.0.0:18180      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:8088       0.0.0.0:*
+LISTEN 0      511          0.0.0.0:19444      0.0.0.0:*
+LISTEN 0      511          0.0.0.0:19443      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:8002       0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:8003       0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:8001       0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:8015       0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:8012       0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:8010       0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:8011       0.0.0.0:*
+LISTEN 0      511          0.0.0.0:18446      0.0.0.0:*
+LISTEN 0      511          0.0.0.0:18445      0.0.0.0:*
+LISTEN 0      511          0.0.0.0:18444      0.0.0.0:*
+LISTEN 0      511          0.0.0.0:18443      0.0.0.0:*
+LISTEN 0      4096      127.0.0.54:53         0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:18090      0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:18091      0.0.0.0:*
+LISTEN 0      2048       127.0.0.1:18010      0.0.0.0:*
+LISTEN 0      4096         0.0.0.0:5001       0.0.0.0:*
+LISTEN 0      512          0.0.0.0:5150       0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:19000      0.0.0.0:*
+LISTEN 0      4096       127.0.0.1:19010      0.0.0.0:*
+LISTEN 0      4096            [::]:9000          [::]:*
+LISTEN 0      200            [::1]:5432          [::]:*
+LISTEN 0      4096            [::]:22            [::]:*
+LISTEN 0      511             [::]:80            [::]:*
+LISTEN 0      511             [::]:443           [::]:*
+LISTEN 0      511             [::]:19444         [::]:*
+LISTEN 0      511             [::]:19443         [::]:*
+LISTEN 0      511             [::]:18444         [::]:*
+LISTEN 0      511             [::]:18443         [::]:*
+LISTEN 0      4096            [::]:5001          [::]:*
+PORTS_END
+CONFIG_DB /etc/concrefer-unificado/hub.env AUTH_DATABASE_URL concretrack_auth host=127.0.0.1 port=5432
+CONFIG_DB /etc/concrefer-unificado/laboratorio.env DATABASE_URL concretrack_postes host=127.0.0.1 port=5432
+CONFIG_DB /etc/mapa-unificado/auth.env MAPA_AUTH_DATABASE_URL mapa_unificado_teste host=127.0.0.1 port=5432
+SCHEMAS mapa_unificado_teste exit=0 unificado_auth
+SCHEMAS concretrack_postes exit=0 cronoanalise
+SCHEMAS concretrack_postes_unificado exit=0
+NGINX exit=0 2026/10/18 23:24:09 [warn] 784855#784855: protocol options redefined for 0.0.0.0:443 in /etc/nginx/sites-enabled/faleaqui:9 | 2026/10/18 23:24:09 [warn] 784855#784855: conflicting server name "concrefer.concretrack.com.br" on 0.0.0.0:80, ignored | 2026/10/18 23:24:09 [warn] 784855#784855: conflicting server name "concrefer.concretrack.com.br" on 0.0.0.0:443, ignored | nginx: the configuration file /etc/nginx/nginx.conf syntax is ok | nginx: configuration file /etc/nginx/nginx.conf test is successful
+SERVICES_ALL_BEGIN
+apiempresa.service                         loaded active running ApiEmpresa
+  concretrack-pederneiras.service            loaded active running ConcreTrack Pederneiras API (FastAPI/Uvicorn)
+  concretrack-staging-api.service            loaded active running ConcreTrack Staging API
+  concretrack-staging-final-api.service      loaded active running ConcreTrack Staging Final API
+  concretrack-staging-final-frontend.service loaded active running ConcreTrack Staging Final Frontend
+  concretrack-unificado.service              loaded active running ConcreTrack Unified API (FastAPI/Uvicorn)
+  containerd.service                         loaded active running containerd container runtime
+  cron.service                               loaded active running Regular background program processing daemon
+  dashboard-noroeste.service                 loaded active running Dashboard Usina Noroeste (Gunicorn)
+  dashboard-pederneiras.service              loaded active running Dashboard Pederneiras (Gunicorn)
+  dashboard-ribeirao.service                 loaded active running Dashboard Usina Ribeirao (Gunicorn)
+  dbus.service                               loaded active running D-Bus System Message Bus
+  docker.service                             loaded active running Docker Application Container Engine
+  getty@tty1.service                         loaded active running Getty on tty1
+  laboratorio-homolog.service                loaded active running Laboratorio do Concrefer Unificado (homologacao isolada)
+  laboratorio-unificado.service              loaded active running Laboratorio do Concrefer Unificado (copia isolada)
+  mapa-unificado-auth.service                loaded active running Mapa unificado - login PostgreSQL de testes
+  mapa-unificado-realtime.service            loaded active running Mapa unificado - eventos PostgreSQL de testes
+  ModemManager.service                       loaded active running Modem Manager
+  monarx-agent.service                       loaded active running Monarx Agent - Security Scanner
+  monitor-concreto.service                   loaded active running Concretrack Temperatura API
+  nginx.service                              loaded active running A high performance web server and a reverse proxy server
+  pcp-unificado-test.service                 loaded active running PCP unificado - API isolada de testes
+  polkit.service                             loaded active running Authorization Manager
+  postgresql@16-main.service                 loaded active running PostgreSQL Cluster 16-main
+  qemu-guest-agent.service                   loaded active running QEMU Guest Agent
+  qualidade-api.service                      loaded active running Qualidade do Unificado (API isolada)
+  rsyslog.service                            loaded active running System Logging Service
+  serial-getty@ttyS0.service                 loaded active running Serial Getty on ttyS0
+  ssh.service                                loaded active running OpenBSD Secure Shell server
+  supervisorio-ribeirao.service              loaded active running ConcreTrack Supervisorio Ribeirao API
+  supervisorio_noro.service                  loaded active running ConcreTrack Supervisorio Noro API
+  systemd-journald.service                   loaded active running Journal Service
+  systemd-logind.service                     loaded active running User Login Management
+  systemd-networkd.service                   loaded active running Network Configuration
+  systemd-resolved.service                   loaded active running Network Name Resolution
+  systemd-timesyncd.service                  loaded active running Network Time Synchronization
+  systemd-udevd.service                      loaded active running Rule-based Manager for Device Events and Files
+  udisks2.service                            loaded active running Disk Manager
+  unattended-upgrades.service                loaded active running Unattended Upgrades Shutdown
+  unificado-homolog-hub.service              loaded active running Unificado homolog Hub isolated API
+  unificado-homolog-mapa-realtime.service    loaded active running Unificado homolog Mapa isolated realtime
+  unificado-homolog-mapa.service             loaded active running Unificado homolog Mapa isolated API
+  unificado-homolog-pcp.service              loaded active running Unificado homolog PCP isolated API
+  unificado-homolog-qualidade.service        loaded active running Unificado homolog Qualidade isolated API
+  unificado-homolog-tv.service               loaded active running Unificado homolog TV production summary, read only
+  unificado-tv.service                       loaded active running Unificado production TV summary, read only
+  user@0.service                             loaded active running User Manager for UID 0
+SERVICES_ALL_END
