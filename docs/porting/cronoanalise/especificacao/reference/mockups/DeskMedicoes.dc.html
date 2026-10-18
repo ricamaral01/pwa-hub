@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Medições · desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#C8102E}a:hover{color:#A50D26}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:#C9D3E3;text-decoration:none;font-weight:600;font-size:14px}
+.nav a.on{background:#C8102E;color:#fff}
+.card{background:#fff;border:1px solid #DCE3EC;border-radius:14px}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+th{font-size:12px;color:#5B6779;font-weight:700;text-align:left;padding:10px 14px;background:#F5F7FA;white-space:nowrap}
+td{font-size:13px;padding:11px 14px;border-top:1px solid #E6EBF1;color:#101828;white-space:nowrap}
+.chip{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700}
+.pill{border:1.5px solid #F2B300;background:#fff;border-radius:999px;padding:8px 16px;font:700 13px Manrope,sans-serif;color:#101828}
+.pill.on{background:#0E1B33;border-color:#0E1B33;color:#fff}
+.lbl{font-size:12px;font-weight:700;color:#5B6779}
+.sel{border:1px solid #DCE3EC;border-radius:10px;padding:10px 12px;background:#fff;font:600 14px Manrope,sans-serif;color:#101828;width:100%}
+</style>
+</helmet>
+<div style="width:1440px;height:900px;display:flex;font-family:Manrope,system-ui,sans-serif;background:#EDF1F6;color:#101828;overflow:hidden">
+  <aside style="width:248px;background:#0E1B33;padding:22px 16px;display:flex;flex-direction:column;gap:26px;box-sizing:border-box">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 6px">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="16" r="11" fill="none" stroke="#C8102E" stroke-width="3.5"/><path d="M15 16 L15 9" stroke="#F2B300" stroke-width="3" stroke-linecap="round"/><rect x="12" y="1" width="6" height="4" rx="1.5" fill="#C8102E"/></svg>
+      <div style="font-weight:800;font-size:19px;letter-spacing:.02em;color:#fff">CRONO<span style="color:#C8102E">TRACK</span></div>
+    </div>
+    <nav class="nav" style="display:flex;flex-direction:column;gap:4px" aria-label="Menu principal">
+      <a href="#">Início</a><a href="#">Coletar</a><a class="on" href="#">Medições</a><a href="#">Catálogo</a><a href="#">Dimensionar</a><a href="#">Simular</a><a href="#">Metodologia</a>
+    </nav>
+    <nav class="nav" style="display:flex;flex-direction:column;gap:4px;margin-top:auto;border-top:1px solid #22345A;padding-top:16px" aria-label="Administração"><a href="#">Usuários</a><a href="#">Configurações</a></nav>
+  </aside>
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0;position:relative">
+    <header style="height:74px;background:#fff;border-bottom:1px solid #DCE3EC;display:flex;align-items:center;gap:18px;padding:0 32px">
+      <div style="font-size:14px;color:#5B6779">Início › <span style="color:#C8102E;font-weight:700">Medições</span></div>
+      <label style="margin-left:auto;display:flex;align-items:center;gap:8px;border:1px solid #DCE3EC;border-radius:10px;padding:9px 14px;width:300px;color:#8A95A6;font-size:14px">Buscar forma, atividade…<input type="search" aria-label="Buscar" style="border:0;outline:0;width:0;padding:0"></label>
+      <div style="display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:#16264A;color:#F2B300;display:flex;align-items:center;justify-content:center;font-weight:800">RC</div><div style="font-size:13px;line-height:1.25"><b>Ricardo</b><br><span style="color:#5B6779">Administrador</span></div></div>
+    </header>
+    <div style="display:flex;flex:1;min-height:0">
+      <section style="flex:1;padding:26px 28px;display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div style="display:flex;align-items:center;justify-content:space-between"><h1 style="margin:0;font-size:28px;font-weight:800">Medições</h1>
+          <div style="display:flex;gap:10px"><button style="border:1px solid #DCE3EC;background:#fff;border-radius:10px;padding:11px 16px;font:700 14px Manrope,sans-serif">Exportar CSV</button><button style="border:0;background:#C8102E;color:#fff;border-radius:10px;padding:11px 16px;font:700 14px Manrope,sans-serif">Exportar XLSX</button></div></div>
+        <div style="display:flex;gap:8px"><button class="pill on">Todas</button><button class="pill">Desforma e retirada</button><button class="pill">Montagem</button><button class="pill">Usina e monovia</button><button class="pill">Concretagem</button></div>
+        <div class="card" style="overflow:hidden;flex:1">
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:14px">
+            <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Atividade</span><select class="sel"><option>Todas</option></select></label>
+            <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Setor</span><select class="sel"><option>Todos</option></select></label>
+            <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Dia</span><select class="sel"><option>Hoje · 17/10</option></select></label>
+            <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Situação</span><select class="sel"><option>Válidas</option></select></label>
+          </div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr><th>Início</th><th>Atividade</th><th>Setor</th><th>Forma · tipo</th><th>Pessoas</th><th>Duração</th><th>Pausas</th><th>Cronometrista</th><th>Situação</th></tr></thead>
+            <tbody>
+              <tr style="background:#FFF9E8"><td class="num">10:42</td><td><b class="num" style="color:#C8102E">C03</b> Lançamento em uma forma</td><td class="num">3</td><td>F-45 · DT 12/600</td><td class="num">2</td><td class="num">03:12</td><td>—</td><td>Marcos</td><td><span class="chip" style="background:#E3F4EA;color:#1F7A44">válida</span></td></tr>
+              <tr><td class="num">10:31</td><td><b class="num" style="color:#C8102E">P08</b> Colocar armação na forma</td><td class="num">1</td><td>F-12 · DT 11/400</td><td class="num">2</td><td class="num">01:24</td><td class="num">1 · 00:20</td><td>Ana</td><td><span class="chip" style="background:#E3F4EA;color:#1F7A44">válida</span></td></tr>
+              <tr><td class="num">10:27</td><td><b class="num" style="color:#C8102E">U02</b> Tempo de batida</td><td>—</td><td>B-102</td><td class="num">1</td><td class="num">01:31</td><td>—</td><td>Ricardo</td><td><span class="chip" style="background:#E3F4EA;color:#1F7A44">válida</span></td></tr>
+              <tr><td class="num">10:14</td><td><b class="num" style="color:#C8102E">R03</b> Ponte 1: içar e retirar poste</td><td class="num">2</td><td>F-38 · DT 11/300</td><td class="num">1</td><td class="num">00:49</td><td>—</td><td>Marcos</td><td><span class="chip" style="background:#E3F4EA;color:#1F7A44">válida</span></td></tr>
+              <tr style="opacity:.55"><td class="num">09:58</td><td><b class="num" style="color:#C8102E">P03</b> Raspar e limpar a forma</td><td class="num">1</td><td>F-09 · DT 11/400</td><td class="num">1</td><td class="num">17:40</td><td>—</td><td>Ana</td><td><span class="chip" style="background:#FDE4E8;color:#A50D26">invalidada</span></td></tr>
+              <tr><td class="num">09:51</td><td><b class="num" style="color:#C8102E">P16</b> Acabamento 4ª fase</td><td class="num">4</td><td>F-71 · DT 11/600</td><td class="num">1</td><td class="num">02:56</td><td>—</td><td>Marcos</td><td><span class="chip" style="background:#E3F4EA;color:#1F7A44">válida</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <aside class="card" style="width:340px;border-radius:0;border-width:0 0 0 1px;padding:22px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:17px;font-weight:800">Detalhes da medição</h2><button aria-label="Fechar" style="border:0;background:none;font-size:20px;color:#5B6779">×</button></div>
+        <div><div style="font-weight:800;font-size:18px">C03 · Lançamento em uma forma</div><div style="color:#5B6779;font-size:13px">Concretagem e acabamento · setor 3</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+          <div><div class="lbl">Início</div><div class="num">10:42:05</div></div><div><div class="lbl">Fim</div><div class="num">10:45:17</div></div>
+          <div><div class="lbl">Duração efetiva</div><div class="num" style="font-size:20px;font-weight:600">03:12</div></div><div><div class="lbl">Pessoas</div><div class="num" style="font-size:20px;font-weight:600">2</div></div>
+          <div><div class="lbl">Forma</div><div>F-45</div></div><div><div class="lbl">Tipo de poste</div><div>DT 12/600</div></div>
+        </div>
+        <div style="background:#F5F7FA;border-radius:10px;padding:12px;font-size:12.5px;color:#5B6779">Começa: concreto começa a cair na forma · Termina: forma cheia</div>
+        <div style="font-size:13px"><div class="lbl" style="margin-bottom:6px">Histórico</div>Criada por Marcos às 10:45 · sincronizada às 10:45</div>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Motivo para invalidar</span><select class="sel"><option>Erro de apontamento</option></select></label>
+          <button style="border:1.5px solid #C8102E;background:#fff;color:#C8102E;border-radius:10px;padding:12px;font:700 14px Manrope,sans-serif">Invalidar medição</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

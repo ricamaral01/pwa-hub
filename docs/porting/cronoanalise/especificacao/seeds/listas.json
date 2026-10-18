@@ -1,0 +1,17 @@
+{
+  "motivos_pausa": [
+    "Falta de material",
+    "Espera de ponte ou equipamento",
+    "Interrupção pessoal",
+    "Orientação / supervisão",
+    "Quebra ou ajuste de equipamento",
+    "Outro"
+  ],
+  "motivos_invalidacao": [
+    "Erro de apontamento",
+    "Cronômetro esquecido ligado",
+    "Atividade fora do padrão",
+    "Duplicada",
+    "Outro"
+  ]
+}

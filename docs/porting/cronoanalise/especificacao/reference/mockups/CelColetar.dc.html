@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Coletar · celular</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#C8102E}a:hover{color:#A50D26}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.row{background:#fff;border:1px solid #DCE3EC;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.go{border:0;background:#1F8A4C;color:#fff;border-radius:10px;height:46px;padding:0 18px;font:800 15px Manrope,sans-serif}
+.step{display:flex;align-items:center;border:1px solid #DCE3EC;border-radius:10px;height:46px}
+.step button{width:42px;height:44px;border:0;background:none;font:800 18px Manrope,sans-serif;color:#101828}
+.tab a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#5B6779;text-decoration:none;padding-top:8px}
+.tab a.on{color:#C8102E}
+.seg{flex:0 0 auto;border:1.5px solid #F2B300;background:#fff;border-radius:999px;padding:8px 14px;font:700 13px Manrope,sans-serif;color:#101828}
+.seg.on{background:#0E1B33;border-color:#0E1B33;color:#fff}
+</style>
+</helmet>
+<div style="width:390px;height:844px;display:flex;flex-direction:column;font-family:Manrope,system-ui,sans-serif;background:#EDF1F6;color:#101828;overflow:hidden">
+  <header style="background:#0E1B33;color:#fff;padding:18px 18px 16px;display:flex;flex-direction:column;gap:12px;border-radius:0 0 20px 20px">
+    <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-weight:800;font-size:18px">CRONO<span style="color:#C8102E">TRACK</span></div><span class="chip" style="background:#1D3A2B;color:#7FD6A1">sincronizado</span></div>
+    <button style="display:flex;justify-content:space-between;align-items:center;background:#16264A;border:0;border-radius:12px;padding:12px 14px;color:#fff;font:700 14px Manrope,sans-serif;text-align:left"><span>Setor 1 · F-12 · DT 11/400</span><span style="color:#F2B300">Alterar</span></button>
+  </header>
+  <div style="display:flex;gap:8px;padding:14px 16px 6px;overflow:hidden"><button class="seg">Desforma</button><button class="seg on">Montagem</button><button class="seg">Usina</button><button class="seg">Concretagem</button></div>
+  <div style="flex:1;padding:8px 16px;display:flex;flex-direction:column;gap:10px;overflow:hidden">
+    <a href="CelCronometro.dc.html" style="text-decoration:none;color:#101828;background:#fff;border:1px solid #DCE3EC;border-left:6px solid #1F8A4C;border-radius:14px;padding:12px;display:flex;justify-content:space-between;align-items:center"><span><b>P08 · Colocar armação</b><br><span style="font-size:12px;color:#5B6779">F-12 · 2 pessoas</span></span><span class="num" style="font-size:24px;font-weight:600">01:12</span></a>
+    <div class="row"><div><b class="num" style="color:#C8102E">P03</b> <b>Raspar e limpar a forma</b> <span class="chip" style="background:#E3F4EA;color:#1F7A44">22/24</span></div><div style="font-size:12px;color:#5B6779">Começa: espátula toca a forma vazia</div><div style="display:flex;gap:8px"><div class="step"><button aria-label="Menos">−</button><span class="num" style="width:26px;text-align:center;font-weight:600">1</span><button aria-label="Mais">+</button></div><button class="go" style="flex:1">Iniciar</button></div></div>
+    <div class="row"><div><b class="num" style="color:#C8102E">P05</b> <b>Desmoldante</b> <span class="chip" style="background:#FDE4E8;color:#A50D26">6/20</span></div><div style="font-size:12px;color:#5B6779">Começa: primeiro jato de desmoldante</div><div style="display:flex;gap:8px"><div class="step"><button aria-label="Menos">−</button><span class="num" style="width:26px;text-align:center;font-weight:600">1</span><button aria-label="Mais">+</button></div><button class="go" style="flex:1">Iniciar</button></div></div>
+    <div class="row"><div><b class="num" style="color:#C8102E">P09</b> <b>Pré-fechamento da forma</b> <span class="chip" style="background:#FFF4D1;color:#8A6300">11/14</span></div><div style="font-size:12px;color:#5B6779">Começa: primeiro fecho tocado</div><div style="display:flex;gap:8px"><div class="step"><button aria-label="Menos">−</button><span class="num" style="width:26px;text-align:center;font-weight:600">2</span><button aria-label="Mais">+</button></div><button class="go" style="flex:1">Iniciar</button></div></div>
+  </div>
+  <nav class="tab" aria-label="Menu" style="height:74px;background:#fff;border-top:1px solid #DCE3EC;display:flex;position:relative">
+    <a href="#" aria-label="Início"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"/></svg>Início</a>
+    <a href="#" class="on" aria-label="Coletar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>Coletar</a>
+    <a href="#" aria-label="Medições"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Medições</a>
+    <a href="#" aria-label="Simular"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>Simular</a>
+    <a href="#" aria-label="Mais"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Perfil</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

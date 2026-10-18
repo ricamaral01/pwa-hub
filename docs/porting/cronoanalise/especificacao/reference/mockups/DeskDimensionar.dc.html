@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Dimensionar · desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#C8102E}a:hover{color:#A50D26}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:#C9D3E3;text-decoration:none;font-weight:600;font-size:14px}
+.nav a.on{background:#C8102E;color:#fff}
+.card{background:#fff;border:1px solid #DCE3EC;border-radius:14px}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+th{font-size:12px;color:#5B6779;font-weight:700;text-align:right;padding:9px 12px;background:#F5F7FA;white-space:nowrap}
+th.l,td.l{text-align:left}
+td{font-size:13px;padding:9px 12px;border-top:1px solid #E6EBF1;color:#101828;white-space:nowrap;text-align:right;font-family:'IBM Plex Mono',monospace}
+td.l{font-family:Manrope,sans-serif}
+.chip{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:700;font-family:Manrope,sans-serif}
+.lbl{font-size:12px;font-weight:700;color:#5B6779}
+.inp{border:1px solid #DCE3EC;border-radius:10px;padding:10px 12px;background:#fff;font:600 14px 'IBM Plex Mono',monospace;color:#101828;width:100%;box-sizing:border-box}
+</style>
+</helmet>
+<div style="width:1440px;height:900px;display:flex;font-family:Manrope,system-ui,sans-serif;background:#EDF1F6;color:#101828;overflow:hidden">
+  <aside style="width:248px;background:#0E1B33;padding:22px 16px;display:flex;flex-direction:column;gap:26px;box-sizing:border-box">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 6px">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="16" r="11" fill="none" stroke="#C8102E" stroke-width="3.5"/><path d="M15 16 L15 9" stroke="#F2B300" stroke-width="3" stroke-linecap="round"/><rect x="12" y="1" width="6" height="4" rx="1.5" fill="#C8102E"/></svg>
+      <div style="font-weight:800;font-size:19px;letter-spacing:.02em;color:#fff">CRONO<span style="color:#C8102E">TRACK</span></div>
+    </div>
+    <nav class="nav" style="display:flex;flex-direction:column;gap:4px" aria-label="Menu principal">
+      <a href="#">Início</a><a href="#">Coletar</a><a href="#">Medições</a><a href="#">Catálogo</a><a class="on" href="#">Dimensionar</a><a href="#">Simular</a><a href="#">Metodologia</a>
+    </nav>
+    <nav class="nav" style="display:flex;flex-direction:column;gap:4px;margin-top:auto;border-top:1px solid #22345A;padding-top:16px" aria-label="Administração"><a href="#">Usuários</a><a href="#">Configurações</a></nav>
+  </aside>
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:74px;background:#fff;border-bottom:1px solid #DCE3EC;display:flex;align-items:center;gap:18px;padding:0 32px">
+      <div style="font-size:14px;color:#5B6779">Início › <span style="color:#C8102E;font-weight:700">Dimensionar</span></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:10px"><div style="width:38px;height:38px;border-radius:50%;background:#16264A;color:#F2B300;display:flex;align-items:center;justify-content:center;font-weight:800">RC</div><div style="font-size:13px;line-height:1.25"><b>Ricardo</b><br><span style="color:#5B6779">Administrador</span></div></div>
+    </header>
+    <section style="padding:24px 28px;display:grid;grid-template-columns:320px minmax(0,1fr);gap:18px;min-height:0">
+      <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:12px">
+        <h2 style="margin:0;font-size:17px;font-weight:800">Parâmetros</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Expediente</span><input class="inp" value="06:30–16:18"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Intervalos (min)</span><input class="inp" value="60"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Demanda (formas/dia)</span><input class="inp" value="292"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Pessoas hoje</span><input class="inp" value="26"></label>
+        </div>
+        <div class="lbl" style="margin-top:4px">Tolerâncias (%)</div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Pessoais</span><input class="inp" value="5"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Fadiga</span><input class="inp" value="5"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Esperas</span><input class="inp" value="3"></label>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Eficiência de balanceamento (%)</span><input class="inp" value="90"></label>
+        <div style="background:#FFF4D1;border-radius:10px;padding:12px;font-size:12.5px;color:#5A4300">FT = 1 / (1 − 0,13) = <b class="num">1,149</b></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div style="display:grid;grid-template-columns:1.1fr repeat(3,minmax(0,1fr));gap:14px">
+          <div class="card" style="padding:18px;background:#0E1B33;border-color:#0E1B33;color:#fff"><div style="font-size:13px;color:#C9D3E3;font-weight:600">Pessoas necessárias</div><div class="num" style="font-size:52px;font-weight:600;color:#F2B300;line-height:1.1">27</div><div style="font-size:12.5px;color:#C9D3E3">26,4 calculado · disponíveis 26</div></div>
+          <div class="card" style="padding:18px"><div class="lbl">Takt time</div><div class="num" style="font-size:26px;font-weight:600;margin-top:6px">1,81 <span style="font-size:13px;color:#5B6779">min/forma</span></div></div>
+          <div class="card" style="padding:18px"><div class="lbl">Conteúdo de trabalho</div><div class="num" style="font-size:26px;font-weight:600;margin-top:6px">42,9 <span style="font-size:13px;color:#5B6779">h·min/forma</span></div></div>
+          <div class="card" style="padding:18px"><div class="lbl">Capacidade com 26</div><div class="num" style="font-size:26px;font-weight:600;margin-top:6px">288 <span style="font-size:13px;color:#5B6779">formas/dia</span></div></div>
+        </div>
+        <div class="card" style="overflow:hidden">
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr><th class="l">Usar</th><th class="l">Atividade</th><th>n</th><th>TO (min)</th><th>CV</th><th class="l">Amostra</th><th>Pessoas</th><th>Ritmo</th><th>TP (min)</th><th>Freq.</th><th>H·min/forma</th></tr></thead>
+            <tbody>
+              <tr><td class="l" colspan="11" style="background:#F5F7FA;font-weight:800;font-family:Manrope">Preparação e montagem</td></tr>
+              <tr><td class="l"><input type="checkbox" checked aria-label="Usar P03"></td><td class="l"><b style="color:#C8102E">P03</b> Raspar e limpar a forma</td><td>22</td><td>2,04</td><td>28%</td><td class="l"><span class="chip" style="background:#E3F4EA;color:#1F7A44">ok</span></td><td>1,0</td><td>100%</td><td>2,34</td><td>1</td><td>2,34</td></tr>
+              <tr><td class="l"><input type="checkbox" checked aria-label="Usar P08"></td><td class="l"><b style="color:#C8102E">P08</b> Colocar armação na forma</td><td>9</td><td>1,31</td><td>34%</td><td class="l"><span class="chip" style="background:#FDE4E8;color:#A50D26">faltam 22</span></td><td>2,0</td><td>100%</td><td>1,51</td><td>1</td><td>3,01</td></tr>
+              <tr><td class="l" colspan="11" style="background:#F5F7FA;font-weight:800;font-family:Manrope">Usina e monovia · por caçamba</td></tr>
+              <tr><td class="l"><input type="checkbox" checked aria-label="Usar U02"></td><td class="l"><b style="color:#C8102E">U02</b> Tempo de batida</td><td>14</td><td>1,52</td><td>11%</td><td class="l"><span class="chip" style="background:#FFF4D1;color:#8A6300">faltam 4</span></td><td>1,0</td><td>100%</td><td>1,74</td><td>0,44</td><td>0,77</td></tr>
+              <tr><td class="l" colspan="11" style="background:#F5F7FA;font-weight:800;font-family:Manrope">Concretagem e acabamento</td></tr>
+              <tr><td class="l"><input type="checkbox" checked aria-label="Usar C03"></td><td class="l"><b style="color:#C8102E">C03</b> Lançamento em uma forma</td><td>41</td><td>2,08</td><td>19%</td><td class="l"><span class="chip" style="background:#E3F4EA;color:#1F7A44">ok</span></td><td>2,0</td><td>100%</td><td>2,39</td><td>1</td><td>4,78</td></tr>
+              <tr style="opacity:.5"><td class="l"><input type="checkbox" aria-label="Usar C07"></td><td class="l"><b style="color:#C8102E">C07</b> Espera: forma pronta sem caçamba</td><td>6</td><td>2,90</td><td>71%</td><td class="l"><span class="chip" style="background:#EEF1F5;color:#5B6779">perda</span></td><td>2,0</td><td>100%</td><td>3,33</td><td>0,44</td><td>–</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

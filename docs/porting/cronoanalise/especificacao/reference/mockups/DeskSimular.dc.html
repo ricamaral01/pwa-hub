@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Simular dia de produção · desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#C8102E}a:hover{color:#A50D26}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;color:#C9D3E3;text-decoration:none;font-weight:600;font-size:14px}
+.nav a.on{background:#C8102E;color:#fff}
+.card{background:#fff;border:1px solid #DCE3EC;border-radius:14px}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.lbl{font-size:12px;font-weight:700;color:#5B6779}
+.sel{border:1px solid #DCE3EC;border-radius:10px;padding:10px 12px;background:#fff;font:600 13.5px Manrope,sans-serif;color:#101828;width:100%;box-sizing:border-box}
+.lane{display:grid;grid-template-columns:96px 1fr;align-items:center;gap:10px;font-size:12.5px;font-weight:700}
+.track{position:relative;height:30px;background:#F5F7FA;border-radius:6px}
+.bar{position:absolute;top:4px;height:22px;border-radius:5px}
+.u{display:grid;grid-template-columns:200px 1fr 46px;align-items:center;gap:10px;font-size:12.5px}
+.ub{height:10px;background:#EDF1F6;border-radius:3px;overflow:hidden}
+</style>
+</helmet>
+<div style="width:1440px;height:900px;display:flex;font-family:Manrope,system-ui,sans-serif;background:#EDF1F6;color:#101828;overflow:hidden">
+  <aside style="width:248px;background:#0E1B33;padding:22px 16px;display:flex;flex-direction:column;gap:26px;box-sizing:border-box">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 6px">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="16" r="11" fill="none" stroke="#C8102E" stroke-width="3.5"/><path d="M15 16 L15 9" stroke="#F2B300" stroke-width="3" stroke-linecap="round"/><rect x="12" y="1" width="6" height="4" rx="1.5" fill="#C8102E"/></svg>
+      <div style="font-weight:800;font-size:19px;letter-spacing:.02em;color:#fff">CRONO<span style="color:#C8102E">TRACK</span></div>
+    </div>
+    <nav class="nav" style="display:flex;flex-direction:column;gap:4px" aria-label="Menu principal">
+      <a href="#">Início</a><a href="#">Coletar</a><a href="#">Medições</a><a href="#">Catálogo</a><a href="#">Dimensionar</a><a class="on" href="#">Simular</a><a href="#">Metodologia</a>
+    </nav>
+    <nav class="nav" style="display:flex;flex-direction:column;gap:4px;margin-top:auto;border-top:1px solid #22345A;padding-top:16px" aria-label="Administração"><a href="#">Usuários</a><a href="#">Configurações</a></nav>
+  </aside>
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0">
+    <header style="height:74px;background:#fff;border-bottom:1px solid #DCE3EC;display:flex;align-items:center;gap:18px;padding:0 32px">
+      <div style="font-size:14px;color:#5B6779">Simular › <span style="color:#C8102E;font-weight:700">Dia de produção</span></div>
+      <div style="margin-left:auto;display:flex;gap:10px"><button style="border:1px solid #DCE3EC;background:#fff;border-radius:10px;padding:11px 16px;font:700 14px Manrope,sans-serif">Comparar as 6 sequências</button><button style="border:0;background:#C8102E;color:#fff;border-radius:10px;padding:11px 18px;font:700 14px Manrope,sans-serif">Rodar base × cenário</button></div>
+    </header>
+    <section style="padding:22px 28px;display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;min-height:0">
+      <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:12px">
+        <h2 style="margin:0;font-size:17px;font-weight:800">Cenário</h2>
+        <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Sequência de concretagem</span><select class="sel"><option>Alternando setores · perto → longe</option></select></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Desforma</span><input class="sel num" value="06:30"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Concretagem</span><input class="sel num" value="08:30"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Fim do expediente</span><input class="sel num" value="16:18"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Pinos até</span><input class="sel num" value="21:00"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Montagem/setor</span><input class="sel num" value="6" style="border-color:#C8102E;background:#FDE4E8"></label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="lbl">Corredor</span><input class="sel num" value="25"></label>
+        </div>
+        <div style="background:#F5F7FA;border-radius:10px;padding:12px;font-size:12.5px;color:#5B6779">Campo em vermelho difere da base (4 pessoas na montagem).</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div style="display:grid;grid-template-columns:1.2fr repeat(3,minmax(0,1fr));gap:14px">
+          <div class="card" style="padding:18px;background:#0E1B33;border-color:#0E1B33;color:#fff"><div style="font-size:13px;color:#C9D3E3;font-weight:600">Fim da concretagem · cenário</div><div class="num" style="font-size:46px;font-weight:600;color:#F2B300;line-height:1.1">16:07</div><div style="font-size:12.5px;color:#C9D3E3">82 min antes da base · diferença significativa</div></div>
+          <div class="card" style="padding:16px"><div class="lbl">Base</div><div class="num" style="font-size:24px;font-weight:600;margin-top:6px">17:29</div></div>
+          <div class="card" style="padding:16px"><div class="lbl">Hora extra</div><div class="num" style="font-size:24px;font-weight:600;margin-top:6px">0 <span style="font-size:13px;color:#5B6779">min/dia</span></div></div>
+          <div class="card" style="padding:16px"><div class="lbl">Formas concretadas</div><div class="num" style="font-size:24px;font-weight:600;margin-top:6px">292<span style="font-size:13px;color:#5B6779"> / 292</span></div></div>
+        </div>
+        <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-size:17px;font-weight:800">Linha do tempo do setor 1</h2><span style="font-size:12px;color:#5B6779">06:30 · 08:30 · 10:30 · 12:30 · 14:30 · 16:30 · 18:30</span></div>
+          <div class="lane"><span>Desforma</span><div class="track"><div class="bar" style="left:0%;width:47%;background:#16264A"></div></div></div>
+          <div class="lane"><span>Montagem</span><div class="track"><div class="bar" style="left:16%;width:66%;background:#F2B300"></div></div></div>
+          <div class="lane"><span>Concretagem</span><div class="track"><div class="bar" style="left:18%;width:63%;background:#C8102E"></div><div style="position:absolute;left:82%;top:-4px;bottom:-4px;border-left:2px dashed #101828"></div></div></div>
+          <div class="lane"><span>Pinos</span><div class="track"><div class="bar" style="left:37%;width:61%;background:#8A95A6"></div></div></div>
+          <div style="font-size:12px;color:#5B6779">Tracejado: fim do expediente 16:18.</div>
+        </div>
+        <div class="card" style="padding:18px;display:flex;flex-direction:column;gap:9px">
+          <h2 style="margin:0 0 4px;font-size:17px;font-weight:800">Ocupação no expediente</h2>
+          <div class="u"><span>Montagem S1 (3 duplas)</span><div class="ub"><div style="width:78%;height:10px;background:#F2B300"></div></div><b class="num">78%</b></div>
+          <div class="u"><span>Usina</span><div class="ub"><div style="width:88%;height:10px;background:#C8102E"></div></div><b class="num">88%</b></div>
+          <div class="u"><span>Ponte de concretagem S3</span><div class="ub"><div style="width:72%;height:10px;background:#F2B300"></div></div><b class="num">72%</b></div>
+          <div class="u"><span>Dupla de carimbo e pinos</span><div class="ub"><div style="width:73%;height:10px;background:#F2B300"></div></div><b class="num">73%</b></div>
+          <div class="u"><span>Carrinho 1 · bloqueado</span><div class="ub"><div style="width:6%;height:10px;background:#8A95A6"></div></div><b class="num">1,8</b></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

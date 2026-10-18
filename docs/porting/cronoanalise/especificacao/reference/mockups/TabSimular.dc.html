@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Sequência de concretagem · tablet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+body{margin:0}
+a{color:#C8102E}a:hover{color:#A50D26}
+.rail a{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#C9D3E3}
+.rail a.on{background:#C8102E;color:#fff}
+.card{background:#fff;border:1px solid #DCE3EC;border-radius:14px}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+th{font-size:11.5px;color:#5B6779;font-weight:700;text-align:right;padding:10px 12px;background:#F5F7FA}
+th.l,td.l{text-align:left}
+td{font-size:13px;padding:11px 12px;border-top:1px solid #E6EBF1;text-align:right;font-family:'IBM Plex Mono',monospace}
+td.l{font-family:Manrope,sans-serif}
+.chip{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:700;font-family:Manrope,sans-serif}
+</style>
+</helmet>
+<div style="width:1194px;height:834px;display:flex;font-family:Manrope,system-ui,sans-serif;background:#EDF1F6;color:#101828;overflow:hidden">
+  <nav class="rail" aria-label="Menu" style="width:76px;background:#0E1B33;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0">
+    <svg width="34" height="34" viewBox="0 0 30 30" aria-hidden="true" style="margin-bottom:10px"><circle cx="15" cy="16" r="11" fill="none" stroke="#C8102E" stroke-width="3.5"/><path d="M15 16 L15 9" stroke="#F2B300" stroke-width="3" stroke-linecap="round"/><rect x="12" y="1" width="6" height="4" rx="1.5" fill="#C8102E"/></svg>
+    <a href="#" aria-label="Início"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"/></svg></a>
+    <a href="#" aria-label="Coletar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg></a>
+    <a href="#" aria-label="Medições"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg></a>
+    <a href="#" aria-label="Dimensionar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20h16M7 16V9M12 16V5M17 16v-4"/></svg></a>
+    <a href="#" class="on" aria-label="Simular"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></a>
+    <a href="#" aria-label="Metodologia"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h11l3 3v13H5zM9 10h6M9 14h6"/></svg></a>
+  </nav>
+  <div style="flex:1;padding:20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0">
+    <div style="display:flex;align-items:center;gap:12px"><h1 style="margin:0;font-size:24px;font-weight:800">Sequência de concretagem</h1><button style="margin-left:auto;border:0;background:#C8102E;color:#fff;border-radius:10px;padding:12px 18px;font:800 14px Manrope,sans-serif;min-height:46px">Comparar as 6 sequências</button></div>
+    <div style="background:#0E1B33;color:#fff;border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:center">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F2B300" stroke-width="2.2" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>
+      <div style="font-size:15px;line-height:1.4"><b style="color:#F2B300">Recomendação: alternar setores, da forma mais perto para a mais longe.</b><br>Termina por volta das 17:29 e segue a desforma e a montagem, que avançam do carrinho para o fundo.</div>
+    </div>
+    <div class="card" style="overflow:hidden">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr><th class="l">Sequência</th><th>Formas/dia</th><th>Fim concretagem</th><th>Hora extra</th><th>Interferência</th><th>Passagens</th><th class="l">Resultado</th></tr></thead>
+        <tbody>
+          <tr style="background:#FFF9E8"><td class="l"><b>Alternando setores</b><br><span style="color:#5B6779;font-size:12px">perto → longe</span></td><td>292</td><td>17:29</td><td>71</td><td>2</td><td>87</td><td class="l"><span class="chip" style="background:#E3F4EA;color:#1F7A44">menor hora extra</span></td></tr>
+          <tr><td class="l"><b>Alternando setores</b><br><span style="color:#5B6779;font-size:12px">longe → perto</span></td><td>292</td><td>19:46</td><td>208</td><td>210</td><td>107</td><td class="l"><span class="chip" style="background:#FFF4D1;color:#8A6300">+137 min</span></td></tr>
+          <tr><td class="l"><b>Setor mais distante</b><br><span style="color:#5B6779;font-size:12px">perto → longe</span></td><td>292</td><td>19:53</td><td>215</td><td>1</td><td>246</td><td class="l"><span class="chip" style="background:#FFF4D1;color:#8A6300">+144 min</span></td></tr>
+          <tr><td class="l"><b>Setor mais próximo</b><br><span style="color:#5B6779;font-size:12px">perto → longe</span></td><td>292</td><td>21:58</td><td>340</td><td>0</td><td>375</td><td class="l"><span class="chip" style="background:#FFF4D1;color:#8A6300">+269 min</span></td></tr>
+          <tr><td class="l"><b>Setor mais distante</b><br><span style="color:#5B6779;font-size:12px">longe → perto</span></td><td>292</td><td>20:31</td><td>253</td><td>16</td><td>58</td><td class="l"><span class="chip" style="background:#FFF4D1;color:#8A6300">+182 min</span></td></tr>
+          <tr><td class="l"><b>Setor mais próximo</b><br><span style="color:#5B6779;font-size:12px">longe → perto</span></td><td>292</td><td>22:45</td><td>387</td><td>3</td><td>40</td><td class="l"><span class="chip" style="background:#FDE4E8;color:#A50D26">+316 min</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin:0;font-size:12.5px;color:#5B6779">Hora extra e interferência em minutos por dia, somando os setores. Passagens: viagens da caçamba cheia sobre forma recém-concretada. Valores com tempos estimados.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1194,"height":834}}'>
+class Component extends DCLogic {
+renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

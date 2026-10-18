@@ -1,0 +1,3567 @@
+{
+ "gerado_em": "2026-10-18T01:13:18.439Z",
+ "entradas": {
+  "seeds": [
+   101,
+   102,
+   103
+  ],
+  "politicas": [
+   {
+    "setor": "longe",
+    "dentro": "longe"
+   },
+   {
+    "setor": "longe",
+    "dentro": "perto"
+   },
+   {
+    "setor": "perto",
+    "dentro": "longe"
+   },
+   {
+    "setor": "perto",
+    "dentro": "perto"
+   },
+   {
+    "setor": "alternado",
+    "dentro": "longe"
+   },
+   {
+    "setor": "alternado",
+    "dentro": "perto"
+   }
+  ]
+ },
+ "casos": [
+  {
+   "politica": {
+    "setor": "longe",
+    "dentro": "longe"
+   },
+   "seed": 101,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1210.451861727493,
+   "fimMont": 993.8151070426015,
+   "fimLivre": 931.6314476459484,
+   "extra": 232.451861727493,
+   "acab": 8.998373087430934,
+   "car": 24.5916572653489,
+   "pinosLate": 33.5,
+   "inter": 40.26418349519213,
+   "bloq": 0,
+   "pass": 56.5,
+   "idade": 8.61492728989932,
+   "esperaPronta": 36.62212028350905,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.3940864128078947,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7437570914294925,
+     "espera": 17.560540152385705
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5768922909652542,
+     "espera": 79.01669675736942
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.39707412836367334,
+     "espera": 1.5407594898167887
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.5958278064406933,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.526679524439102,
+     "espera": 0.7125192874746905
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3443122208424062,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6930205433655444,
+     "espera": 3.467294351187836
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9621250279062756,
+     "espera": 146.36107922998318
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.03949518618736844,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5613867328224255,
+     "espera": 74.66395922606945
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.40104395710715496,
+     "espera": 4.141337379757493
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6287505852166961,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5380437356158774,
+     "espera": 0.6578518793105559
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.3455422689886926,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6845407099471795,
+     "espera": 2.7782893186295197
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9241324419565559,
+     "espera": 148.1171229782275
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.07188852199106321,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.30056892817238795,
+     "espera": 37.0570699922875
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.3080642258196968,
+     "espera": 11.993383310984722
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.39398993343223127,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8294332447382377,
+     "espera": 2.113608275100058
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.33861126271350356,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.43906304218659237,
+     "espera": 0.3768287257207419
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.628701315345985,
+     "espera": 125.57495852641759
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.03969530143470477,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.705157954663785,
+     "espera": 88.81789617507522
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.4141142061246812,
+     "espera": 0.2802309467116828
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6485502783590545,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5669928680518187,
+     "espera": 6.406128093395864
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.344108024244162,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6880505863774224,
+     "espera": 26.353539427587076
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.961550244664483,
+     "espera": 30.110667815968014
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.02006029398535071,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "longe",
+    "dentro": "longe"
+   },
+   "seed": 102,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1191.8128355655417,
+   "fimMont": 993.4477317740054,
+   "fimLivre": 918.4477261571076,
+   "extra": 213.81283556554172,
+   "acab": 11.475082779371514,
+   "car": 23.39616753283395,
+   "pinosLate": 31.5,
+   "inter": 62.9321690290177,
+   "bloq": 0,
+   "pass": 62.5,
+   "idade": 8.642738758621212,
+   "esperaPronta": 34.303783196185805,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.3607204933702879,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7397922929726618,
+     "espera": 13.815423478475683
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5713397923244712,
+     "espera": 77.80446142426135
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3894122783919576,
+     "espera": 2.106736453028455
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6393766967940155,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5413033297964029,
+     "espera": 0.64009936606204
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3462552387700934,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6856283796770233,
+     "espera": 2.6738329383917674
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9446238349604787,
+     "espera": 151.28482785002063
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.0671434094500089,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5917679621662991,
+     "espera": 80.34190106960446
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.40306347155579453,
+     "espera": 3.1790720420682548
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6445519439977706,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5414492404125066,
+     "espera": 0.5952678037240612
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.34285348919988756,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6926337789242116,
+     "espera": 3.3065889919098765
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9484258088141301,
+     "espera": 146.33335033552885
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.05013046356982302,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.328090315315546,
+     "espera": 42.98461518940861
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.30955111438252614,
+     "espera": 7.576976078303097
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.4018036273619882,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8231554616284819,
+     "espera": 1.9688650666070207
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.32892782836138107,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.43419629983947594,
+     "espera": 0.32602581424752397
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.5920872435714919,
+     "espera": 117.03555202743843
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.03200576688010667,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.6967791978008285,
+     "espera": 86.47964198085761
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.4186880888263412,
+     "espera": 0.19924240331868787
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6372652506485638,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5773791686240668,
+     "espera": 7.0642018607205435
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.3359641810032478,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.7049057674469761,
+     "espera": 35.691713435143484
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.981091571195785,
+     "espera": 35.870152489806685
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.01533759202657891,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "longe",
+    "dentro": "longe"
+   },
+   "seed": 103,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1208.5365221704901,
+   "fimMont": 996.44219282228,
+   "fimLivre": 929.7617855913886,
+   "extra": 230.53652217049012,
+   "acab": 9.302010172057898,
+   "car": 24.270919137550372,
+   "pinosLate": 35.5,
+   "inter": 66.11267971483198,
+   "bloq": 0,
+   "pass": 58,
+   "idade": 8.68113570288716,
+   "esperaPronta": 32.421145750172286,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.4014009215657284,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7497313967922611,
+     "espera": 17.89368102210343
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5605931834795974,
+     "espera": 75.21394902859788
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3897317874070162,
+     "espera": 2.004713439001087
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6280005586513692,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5359049155697516,
+     "espera": 0.45294527712338906
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3424645386531159,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6861228496817844,
+     "espera": 2.579611602079288
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9289285581347662,
+     "espera": 146.52426627938962
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.0619312285210362,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5816092044490077,
+     "espera": 80.20019378868389
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.3962315315406936,
+     "espera": 1.9018883016128911
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6048770006506741,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5130027431421619,
+     "espera": 0.7442225636072669
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.3323501545007628,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.7054830590655263,
+     "espera": 3.7475746452144834
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9672939725249928,
+     "espera": 147.87667887072226
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.042276451395945686,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.2988857588214206,
+     "espera": 38.9911896482523
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.3036713608733902,
+     "espera": 9.79729689771018
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.3966171062072027,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8248090678221653,
+     "espera": 2.202193809447382
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.3312941774155543,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.4444424634137645,
+     "espera": 0.3593082361165351
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.617314054050541,
+     "espera": 124.52333715496883
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.03993390502686033,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.7090823336210748,
+     "espera": 73.93590372753903
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.4267335164161559,
+     "espera": 0.4005424120292275
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6419000407493362,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.6015466866173564,
+     "espera": 6.107950425433113
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.3385244070486767,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6753680455371779,
+     "espera": 27.39160052724181
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9667586615908375,
+     "espera": 27.03444360674327
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.01827040361512301,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "longe",
+    "dentro": "perto"
+   },
+   "seed": 101,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1174.204315702236,
+   "fimMont": 969.3212204507804,
+   "fimLivre": 848.3834698000048,
+   "extra": 196.20431570223604,
+   "acab": 8.8860319328415,
+   "car": 28.738949751411504,
+   "pinosLate": 26,
+   "inter": 0,
+   "bloq": 0,
+   "pass": 250.5,
+   "idade": 7.59246693908284,
+   "esperaPronta": 29.11440635227632,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.324430749237022,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7521621379060754,
+     "espera": 16.807012127183036
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.575006090574271,
+     "espera": 79.10166128046697
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3953530062187316,
+     "espera": 0.6793830745142145
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6070842266205033,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.513125594971695,
+     "espera": 0.2073013763526298
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3333934453227778,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.7006904984189852,
+     "espera": 2.65122264252975
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9701609603651415,
+     "espera": 147.72127576199347
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.04509161216822316,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5565608654172985,
+     "espera": 77.21635574085126
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.3937419651574506,
+     "espera": 1.7413414164347956
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.5895470359123173,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5297327885446841,
+     "espera": 0.7353378124515378
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.3511297478817253,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6655561060440482,
+     "espera": 2.3297431738041183
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9493239484457043,
+     "espera": 150.65924396129972
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.038109367956030725,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.3194944359294226,
+     "espera": 50.035114648770396
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.3063888745089731,
+     "espera": 12.2992827034297
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.40696899972382317,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8137273908851856,
+     "espera": 1.7373804371624217
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.3241125645956095,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.44336479500707837,
+     "espera": 0.3712963833429709
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6678733903872824,
+     "espera": 134.78301866855685
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.03622283576681654,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.6418974809407063,
+     "espera": 60.12060412240159
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.3915199029074097,
+     "espera": 0.6585241080243961
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6088580970227425,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5210200097675495,
+     "espera": 5.334122508494597
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.33885670715307936,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.7132972327325805,
+     "espera": 27.211708089364674
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9617502169781112,
+     "espera": 74.85111630378466
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.0120593934547026,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "longe",
+    "dentro": "perto"
+   },
+   "seed": 102,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1195.1751149730992,
+   "fimMont": 969.3300270091675,
+   "fimLivre": 860.7067672752405,
+   "extra": 217.1751149730992,
+   "acab": 7.975185043520021,
+   "car": 28.214276157925553,
+   "pinosLate": 28,
+   "inter": 6.798300872977734,
+   "bloq": 0,
+   "pass": 237.5,
+   "idade": 8.018095654334504,
+   "esperaPronta": 37.54359998592065,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.3472706570834554,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7290033406658232,
+     "espera": 13.949764536280606
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5806691903732827,
+     "espera": 78.76775290757193
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3913384939526363,
+     "espera": 1.0367045171210307
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.5917352699275336,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5277430439874138,
+     "espera": 0.3675044955905546
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.34507158421654194,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6508841211803849,
+     "espera": 2.4199951116704383
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.966963776508306,
+     "espera": 148.57192385044647
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.04042030132046829,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.598914462041749,
+     "espera": 82.5131979147732
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.4062462749593766,
+     "espera": 1.5243542167530961
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6318876669377415,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5280640057643284,
+     "espera": 0.6352743064662549
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.33855333500489176,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6665188031377428,
+     "espera": 2.441628058280237
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9220334987087492,
+     "espera": 136.98846064862855
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.0410253876905844,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.3268118209555933,
+     "espera": 51.72599961913212
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.3105179048726954,
+     "espera": 8.009142080352557
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.3981017744369756,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8221173383206458,
+     "espera": 2.160853760085255
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.3318538834081522,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.43058301219255374,
+     "espera": 0.37265086312290063
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6348970706552486,
+     "espera": 129.37587910500784
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.034362372387349155,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.6659116421639746,
+     "espera": 73.60890091663599
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.40240938903610735,
+     "espera": 0.6907017887546602
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6161336250394793,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5238428340170789,
+     "espera": 5.654115004047357
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.3434034010523324,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6688469305457421,
+     "espera": 24.005579177867514
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9768331701022279,
+     "espera": 72.77284348098416
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.00876877000400926,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "longe",
+    "dentro": "perto"
+   },
+   "seed": 103,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1187.1106626315343,
+   "fimMont": 963.8199940197583,
+   "fimLivre": 850.9225044605753,
+   "extra": 209.1106626315343,
+   "acab": 7.6318143561118035,
+   "car": 28.860623731044214,
+   "pinosLate": 26.5,
+   "inter": 3.011787969733632,
+   "bloq": 0,
+   "pass": 237,
+   "idade": 8.096810591168046,
+   "esperaPronta": 33.671515224259,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.3422556538860395,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.731828837498983,
+     "espera": 15.731599518681584
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5731362765569039,
+     "espera": 77.97507077119485
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3892002564026768,
+     "espera": 2.073360042532573
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.5929223772545239,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5275400189486988,
+     "espera": 0.7403148091704124
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.34627712335297656,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.7026302467811165,
+     "espera": 2.8395344800444975
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9370523148832511,
+     "espera": 151.20504941281155
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.04774810633017518,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5662287027808643,
+     "espera": 78.33399266537108
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.40137604184321324,
+     "espera": 2.5543947242759373
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6237476154988235,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5296080677083875,
+     "espera": 0.6400898409686272
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.3448504032772188,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.7033726137843013,
+     "espera": 3.1053806755384032
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.93957463457168,
+     "espera": 145.78989214864654
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.05750480353760304,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.3228910678481538,
+     "espera": 53.67436964168466
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.29726478971065706,
+     "espera": 8.486954416472535
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.4039395419482945,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8270605205964767,
+     "espera": 2.12534686145419
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.3326119113089152,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.43649866097656564,
+     "espera": 0.22778101098861306
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6518264682200462,
+     "espera": 130.61662011704337
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.04115443432740067,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.6436900588826139,
+     "espera": 57.7663815119368
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.3943628076242379,
+     "espera": 1.6262301506848416
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6073071775109566,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.517289011959186,
+     "espera": 5.592612807676809
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.33767158367589756,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6834966290081149,
+     "espera": 21.763149587082584
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9361249894089487,
+     "espera": 72.54027588392162
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.008415641820609969,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "perto",
+    "dentro": "longe"
+   },
+   "seed": 101,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1352.5244599614368,
+   "fimMont": 1108.9233752518796,
+   "fimLivre": 1063.8537103760539,
+   "extra": 374.52445996143683,
+   "acab": 16.042517063544228,
+   "car": 77.86343156749234,
+   "pinosLate": 57.5,
+   "inter": 3.8345075762485976,
+   "bloq": 0,
+   "pass": 36.5,
+   "idade": 10.909838046831398,
+   "esperaPronta": 48.57047659070395,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.675004450611533,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7281298645290136,
+     "espera": 36.3419022557999
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.7333511090683873,
+     "espera": 74.94788113312612
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3945759692771891,
+     "espera": 0.06547180209783221
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6104529941633415,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.518606207741724,
+     "espera": 4.875220638934572
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.34090959424160594,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.7108912792711162,
+     "espera": 35.28930701391363
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9403130929810599,
+     "espera": 22.9965868713047
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.005187622286453221,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5868157626273238,
+     "espera": 43.98963767538489
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.40033498151972713,
+     "espera": 1.4269223599311942
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6140045350853162,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.521339351862765,
+     "espera": 4.339449710761553
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.3418666060890409,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6828907514051884,
+     "espera": 16.002222622399145
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9512449941917787,
+     "espera": 137.0788706315828
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.025236945034776647,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.32125351841760225,
+     "espera": 47.073541535616556
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.30890013374682224,
+     "espera": 9.382971648733273
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.39186952547468673,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8083638727622509,
+     "espera": 3.875373311362741
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.3271756148752309,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.42679395472215187,
+     "espera": 0.47179998273152207
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6399537691272674,
+     "espera": 122.66625797612082
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.031854670865530635,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.5878821753910616,
+     "espera": 80.81968500443705
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.40046513302674086,
+     "espera": 0.9507918370998766
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6114304736869106,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.517941491377643,
+     "espera": 0.7560049972279372
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.34004450603782477,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6859114830318646,
+     "espera": 2.38355503329842
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9676373044479639,
+     "espera": 151.8866662002541
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.0456669557158532,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "perto",
+    "dentro": "longe"
+   },
+   "seed": 102,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1364.3594286220477,
+   "fimMont": 1103.0197763256,
+   "fimLivre": 1034.7232991493413,
+   "extra": 386.35942862204774,
+   "acab": 16.529559106066866,
+   "car": 75.66513355628476,
+   "pinosLate": 58.5,
+   "inter": 10.916865309485047,
+   "bloq": 0,
+   "pass": 48,
+   "idade": 11.228788141854153,
+   "esperaPronta": 43.40241367141664,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.7128886592471722,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7278644886513753,
+     "espera": 37.3186503111526
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.6994933971901588,
+     "espera": 71.47806024061435
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3946179296946884,
+     "espera": 0.020670224851843954
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6189198209642813,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5222036488488385,
+     "espera": 4.8619275274544025
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.34048517949286977,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6808048487888294,
+     "espera": 30.856173673349492
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9583615910101195,
+     "espera": 26.306697128906592
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.006598589987533198,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5850780082188213,
+     "espera": 42.62454348191962
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.39389620435403727,
+     "espera": 1.3781120281400632
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6226877853395599,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5251924298596882,
+     "espera": 4.336163343418851
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.3349682752899387,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6908187893191805,
+     "espera": 18.868383998455975
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9454688101326534,
+     "espera": 134.54056631819753
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.03389380565514911,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.3314932329080032,
+     "espera": 47.90279817817949
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.3136508590275109,
+     "espera": 8.097692755849597
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.40311443604752184,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8228966048834689,
+     "espera": 4.183227994122238
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.32185597040663544,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.44240621231131705,
+     "espera": 0.3966534023569903
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6237125990774522,
+     "espera": 123.79839728623577
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.034103814152729145,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.5550699830326907,
+     "espera": 75.84526466015168
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.3969913652149823,
+     "espera": 2.6694212605366388
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6279719345323931,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5335061605821585,
+     "espera": 0.5712407576178841
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.345848331828256,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6853342622251135,
+     "espera": 3.1196148587147206
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9572969353708498,
+     "espera": 153.3046399242637
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.05949992923321272,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "perto",
+    "dentro": "longe"
+   },
+   "seed": 103,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1363.7033308769398,
+   "fimMont": 1113.01276135629,
+   "fimLivre": 1041.817885912033,
+   "extra": 385.70333087693984,
+   "acab": 14.562185256536033,
+   "car": 79.50342855064984,
+   "pinosLate": 58,
+   "inter": 2.6696375422238816,
+   "bloq": 0,
+   "pass": 47,
+   "idade": 11.070677564340718,
+   "esperaPronta": 49.54770294864238,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.6948586010622693,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7405319349048924,
+     "espera": 39.82352653749857
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.6985055760965436,
+     "espera": 64.52257709943943
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.39392293681691115,
+     "espera": 0.01473838180490077
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6243786735639658,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5273124892477972,
+     "espera": 5.013921245071346
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3486018017863599,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6798221985951844,
+     "espera": 29.418781013507346
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9627033338134132,
+     "espera": 30.830098117209037
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.008447246506789624,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5865189158980284,
+     "espera": 46.04593676208774
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.39197047187560313,
+     "espera": 1.699600214907092
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6130226561611718,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5271492918543658,
+     "espera": 4.250379531691402
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.34452268703836497,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6941309405574597,
+     "espera": 17.066757436063178
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9631741353185581,
+     "espera": 129.2193536260435
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.027381560822941083,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.32549495301727666,
+     "espera": 45.50324251427317
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.30758751436617104,
+     "espera": 8.101853091953569
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.3956895806091773,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8256027940670468,
+     "espera": 4.073021987057788
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.33983666046364014,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.44011517700951247,
+     "espera": 0.5739253825207086
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6237569042008497,
+     "espera": 123.65457240015513
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.035501876415719495,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.5610502632864923,
+     "espera": 75.23610374877136
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.3863430098716059,
+     "espera": 1.6956530997958652
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6293047120579899,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5244168017027241,
+     "espera": 0.467224004269644
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.3394391862460203,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6675407012364128,
+     "espera": 2.463717225747685
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9251001789861306,
+     "espera": 149.50642045237268
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.06670763416593033,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "perto",
+    "dentro": "perto"
+   },
+   "seed": 101,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1330.7178882762105,
+   "fimMont": 994.9472346306111,
+   "fimLivre": 957.3963871748992,
+   "extra": 352.7178882762105,
+   "acab": 12.879866673158217,
+   "car": 56.73292201846677,
+   "pinosLate": 48.5,
+   "inter": 1.5136188638593921,
+   "bloq": 0,
+   "pass": 366.5,
+   "idade": 10.774031837932,
+   "esperaPronta": 38.86060431460851,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.6379219088746493,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7244846499831963,
+     "espera": 30.262944774258937
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.6510648963761676,
+     "espera": 49.89484722105851
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3918468364220601,
+     "espera": 0.7167365386261025
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6184197254301452,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5260025070800582,
+     "espera": 4.085760469507064
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.34357974853237905,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.7092362581274875,
+     "espera": 24.915399612923856
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.927095479108679,
+     "espera": 22.36483310073309
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.009478077394923207,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5827150591472047,
+     "espera": 42.2434854188849
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.39572460927640346,
+     "espera": 1.6246251445745314
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.618901278190059,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5249886697625048,
+     "espera": 4.394153473336398
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.34485867985115937,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.699652070935766,
+     "espera": 19.461309276811946
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9708955184349521,
+     "espera": 149.0929277997242
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.03918410702794863,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.3136752275128569,
+     "espera": 51.76575019428572
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.3095679454492253,
+     "espera": 9.894947947219103
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.4030410517151866,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8219854428212175,
+     "espera": 4.108530714300817
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.33261612638393606,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.4595782611817948,
+     "espera": 0.2947347516364009
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6570248618737974,
+     "espera": 136.8160808160255
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.037411576618207966,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.5698792139687544,
+     "espera": 78.91399334441014
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.3980537859626709,
+     "espera": 1.8665947973655321
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6277432808664463,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5213649383906606,
+     "espera": 0.8022759768065818
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.3410933338114974,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6863274826076177,
+     "espera": 2.443226878728025
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9831389392188393,
+     "espera": 151.56612824181417
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.05413566635427642,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "perto",
+    "dentro": "perto"
+   },
+   "seed": 102,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1327.7006261278968,
+   "fimMont": 1005.6988230001364,
+   "fimLivre": 959.7928496306843,
+   "extra": 349.70062612789684,
+   "acab": 12.186951925846763,
+   "car": 54.49915844538488,
+   "pinosLate": 47,
+   "inter": 0.956625859550968,
+   "bloq": 0,
+   "pass": 373.5,
+   "idade": 10.870130350791094,
+   "esperaPronta": 29.44623971288206,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.6496319079083297,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7126740840116872,
+     "espera": 29.20823937805636
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.6600407933530719,
+     "espera": 53.70354601093213
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3960089771388087,
+     "espera": 1.1951555398892608
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6016047469036474,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5267269950757829,
+     "espera": 4.014183528592378
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3460147522038472,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6401928407848085,
+     "espera": 17.267784907351523
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.972229582276176,
+     "espera": 28.438704606144903
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.007725565598255031,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5864476280799856,
+     "espera": 44.90405260426745
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.3947603371825184,
+     "espera": 1.3683717657482588
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6249062362734134,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5189656298096138,
+     "espera": 4.416889903637344
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.33524545929091004,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6991855653463865,
+     "espera": 24.692233629590984
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9455451006941888,
+     "espera": 140.81531640554982
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.047957607257493616,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.32696581283603665,
+     "espera": 50.74152620458287
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.30027869519338213,
+     "espera": 9.497635042365761
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.3945532180494638,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8268359897671019,
+     "espera": 4.097796297894391
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.32940196954077655,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.4602355611097536,
+     "espera": 0.2638037640687794
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.629666780090561,
+     "espera": 127.45893648505155
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.03268521653783459,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.5762109633637061,
+     "espera": 76.43850809055967
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.39253897348586725,
+     "espera": 1.7006646342936051
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6125987347890535,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5302839221118896,
+     "espera": 0.965173133763722
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.3495086315571646,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6725111523490481,
+     "espera": 2.3508835457534745
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9571931018875008,
+     "espera": 147.965198060472
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.05161006073319869,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "perto",
+    "dentro": "perto"
+   },
+   "seed": 103,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1316.5897875899116,
+   "fimMont": 1014.4803465851815,
+   "fimLivre": 950.1902522182991,
+   "extra": 338.58978758991157,
+   "acab": 12.41520976547388,
+   "car": 59.80121406482445,
+   "pinosLate": 47,
+   "inter": 8.471161722055967,
+   "bloq": 0,
+   "pass": 362.5,
+   "idade": 10.761920162620495,
+   "esperaPronta": 22.12845346184031,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.643539941432758,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7323116631099974,
+     "espera": 31.18499088763615
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.6326233214908091,
+     "espera": 48.449022642598365
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3878539131733568,
+     "espera": 0.6895156025274332
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6049794447949631,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5277609492934653,
+     "espera": 4.107164390751656
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3470115819728889,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6688644037627662,
+     "espera": 21.980314553331294
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9629964456863268,
+     "espera": 29.317800175012373
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.008561257474787542,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.574822449507887,
+     "espera": 41.90528501650387
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.3902607595413257,
+     "espera": 1.2263302076481963
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6034583517030307,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5303929042981309,
+     "espera": 4.3330733228753395
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.34839398766792506,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6846547841463994,
+     "espera": 20.61788676211091
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9406171303085679,
+     "espera": 137.47017060896925
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.03821321003757811,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.3349094600945384,
+     "espera": 52.206057962918685
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.3107463229641591,
+     "espera": 8.888180061582261
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.38567705624610793,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8278594605881532,
+     "espera": 3.917257067948455
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.33526870806341347,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.41332130353743163,
+     "espera": 0.2116619075092475
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6041815294703823,
+     "espera": 119.78191266864431
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.028160296116262383,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.590007159761568,
+     "espera": 78.90892656347607
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.39314258657183104,
+     "espera": 1.924551884923504
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6238897035387633,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5421468125631629,
+     "espera": 1.0810960667556544
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.351614609953588,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6879277736525671,
+     "espera": 2.5797340886564415
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9322410733190238,
+     "espera": 142.45684481918556
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.04468637601399339,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "alternado",
+    "dentro": "longe"
+   },
+   "seed": 101,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1228.2113316085606,
+   "fimMont": 974.24183196442,
+   "fimLivre": 797.2147682395364,
+   "extra": 250.2113316085606,
+   "acab": 9.905871060802756,
+   "car": 7.629914276505197,
+   "pinosLate": 44.5,
+   "inter": 235.01354900050796,
+   "bloq": 0,
+   "pass": 82.5,
+   "idade": 11.284708947325386,
+   "esperaPronta": 12.87032668643485,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.4775101742576047,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7537014667171653,
+     "espera": 9.266279130611455
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5551818942787636,
+     "espera": 55.093407142542745
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3984615962861503,
+     "espera": 0.3275254744705606
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6387951638802867,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5938983559411783,
+     "espera": 2.891457228707951
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.33849789836541777,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.7065587317081702,
+     "espera": 14.957067226092999
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9676670366851723,
+     "espera": 151.85236661254388
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.06706215101262969,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5660531337455795,
+     "espera": 62.11902156991518
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.40573733629669667,
+     "espera": 0.4931520278118867
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6261977154915828,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.515654061606819,
+     "espera": 1.0619410655624337
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.33410556131954045,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6690537601009356,
+     "espera": 8.012973716460767
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.943717091631116,
+     "espera": 150.33094459284652
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.0667537237312216,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.38990707417672893,
+     "espera": 8.344282651986038
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.38494030619263425,
+     "espera": 1.930289999300398
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.5302440724294044,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 1.0421872624144983,
+     "espera": 5.44037992065702
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.3316284037077034,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.45221898888679785,
+     "espera": 0.747049124119708
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6230163050866734,
+     "espera": 20.03083279907593
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.014974763581349798,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.583676537559844,
+     "espera": 64.45414448432666
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.4150523296428408,
+     "espera": 0.5328097455707137
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6425242073673717,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5843044027671531,
+     "espera": 1.9428214888129147
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.346165751443536,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6709626699403686,
+     "espera": 12.700806498698487
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.94153023328521,
+     "espera": 143.0250323482706
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.0507861859841669,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "alternado",
+    "dentro": "longe"
+   },
+   "seed": 102,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1240.3639614864983,
+   "fimMont": 974.5154512080717,
+   "fimLivre": 796.8042882447589,
+   "extra": 262.3639614864983,
+   "acab": 7.537555857048547,
+   "car": 5.7624371869415665,
+   "pinosLate": 42.5,
+   "inter": 186.60608761866422,
+   "bloq": 0,
+   "pass": 73,
+   "idade": 11.056513280067263,
+   "esperaPronta": 14.106532055556386,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.5023148640266073,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7445972981790144,
+     "espera": 7.515169288178362
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5698467968218484,
+     "espera": 67.59253932771415
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.40034401259671804,
+     "espera": 0.39123750538850005
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6234818855056662,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5331103581018234,
+     "espera": 2.066804743546215
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3489257825044488,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6806964245743388,
+     "espera": 12.913716101905795
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9324225461978554,
+     "espera": 149.41759732569255
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.05978530649194661,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5596299804912463,
+     "espera": 64.96195496535076
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.4091142841363287,
+     "espera": 0.39773210641150314
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6642687882432142,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5465067225318414,
+     "espera": 1.3938109719616747
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.34086219698169246,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6937473699977581,
+     "espera": 7.332028145234654
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9389314426379173,
+     "espera": 147.8717604417702
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.05696109546864467,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.4137471981279525,
+     "espera": 9.086160847123299
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.4072370232140823,
+     "espera": 2.298082946188165
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.5502542624472887,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 1.0477516874477044,
+     "espera": 5.511118197784029
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.34928402246534296,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.4390652742600851,
+     "espera": 0.7963145689217387
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6197116730892764,
+     "espera": 16.788681700161536
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.017237058677510134,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.5826521673890408,
+     "espera": 65.94643760378446
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.39722987160069995,
+     "espera": 0.3490257367752605
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.621601437564697,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5400043326548447,
+     "espera": 1.7025044579145372
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.34177912495860935,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6954450927614304,
+     "espera": 6.74873016128762
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9698997698847845,
+     "espera": 149.49548775593456
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.04903608867177822,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "alternado",
+    "dentro": "longe"
+   },
+   "seed": 103,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1244.294440133888,
+   "fimMont": 977.78925543332,
+   "fimLivre": 789.9012770206662,
+   "extra": 266.294440133888,
+   "acab": 8.644456405680147,
+   "car": 6.454116599359531,
+   "pinosLate": 38.5,
+   "inter": 210.6182091142541,
+   "bloq": 0,
+   "pass": 84.5,
+   "idade": 11.458976762274297,
+   "esperaPronta": 12.98073631191562,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.5144030842162282,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7237968081447419,
+     "espera": 9.247368808509693
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5783022247613024,
+     "espera": 66.63406557762036
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.4069017513588901,
+     "espera": 0.38825328776968604
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6128054542398537,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5317470120753287,
+     "espera": 1.0919139692766326
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.34784005994487505,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6876244828095204,
+     "espera": 11.923928185363215
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9718145810442789,
+     "espera": 153.07390804767755
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.05527969762152832,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.56048842712787,
+     "espera": 61.1899634032432
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.3917383229853895,
+     "espera": 0.2862487352120894
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.5935130605047201,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5177162213736148,
+     "espera": 1.482186357412443
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.33862426708481563,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6688950337666075,
+     "espera": 9.305575279422856
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9845854055979799,
+     "espera": 164.00715320146645
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.056094868771728625,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.4004327802796232,
+     "espera": 9.659731701426136
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.38318162634811,
+     "espera": 1.9489353435385686
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.5147253848166098,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 1.1190352916747115,
+     "espera": 6.407792721244952
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.33699868303410335,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.43571129479971954,
+     "espera": 0.5820163867744773
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6236888790508278,
+     "espera": 20.780828799327814
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.011789092603178317,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.559968851619524,
+     "espera": 60.54633763853485
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.39661579316184503,
+     "espera": 0.5078453481703746
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6473396004859314,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5468763273069248,
+     "espera": 1.7479511744532592
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.3395043218607601,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6973574227376729,
+     "espera": 9.944451764543057
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9350685189854245,
+     "espera": 143.88264286384538
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.06506016439792443,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "alternado",
+    "dentro": "perto"
+   },
+   "seed": 101,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1034.4600625596254,
+   "fimMont": 986.5100723955222,
+   "fimLivre": 751.9839318960792,
+   "extra": 56.460062559625385,
+   "acab": 2.2884344087061965,
+   "car": 30.098217798969824,
+   "pinosLate": 1.5,
+   "inter": 6.003617305922489,
+   "bloq": 0,
+   "pass": 82,
+   "idade": 5.896941673348538,
+   "esperaPronta": 31.67057822570814,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.0279076555593547,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.7343531608220951,
+     "espera": 6.0119167844749555
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5800075072694504,
+     "espera": 79.46024336674606
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3943982816809521,
+     "espera": 1.3015030189231864
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6186388548863021,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5259692190900247,
+     "espera": 0.22000249472030528
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.3349623262992236,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6932411476198469,
+     "espera": 2.505428292281273
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9254585139744197,
+     "espera": 142.0292437619417
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.04856629863229283,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5883266818099605,
+     "espera": 79.10397204765268
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.3922572540963248,
+     "espera": 2.3707599662701737
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6116409685154856,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5194578702254956,
+     "espera": 0.37829803981595367
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.33581138701998775,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6769479342730704,
+     "espera": 2.7702855415247285
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 1.0026389866380632,
+     "espera": 159.91590872350034
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.05691925111256809,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.32873550255363815,
+     "espera": 50.36966776695189
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.30597040145788634,
+     "espera": 7.4956307456982865
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.3913909288551428,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8298799619905604,
+     "espera": 2.224254578385905
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.3337469626078801,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.4490189957586516,
+     "espera": 0.2875895155287826
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6203330717119598,
+     "espera": 123.09274777468487
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.029753627465012908,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.5827753013684763,
+     "espera": 78.96744794767088
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.38505389939479984,
+     "espera": 2.138827372258741
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.6169315657944041,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.53260980327635,
+     "espera": 0.3341853644735693
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.34747275092572644,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6950244703916794,
+     "espera": 2.8901385728779063
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9859361241918868,
+     "espera": 157.7367290015536
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.05581744662098548,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "alternado",
+    "dentro": "perto"
+   },
+   "seed": 102,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1049.1625995535862,
+   "fimMont": 979.2827434354292,
+   "fimLivre": 757.7755282094467,
+   "extra": 71.16259955358623,
+   "acab": 2.2863168537597653,
+   "car": 30.097937266450593,
+   "pinosLate": 1,
+   "inter": 4.207125228412906,
+   "bloq": 0,
+   "pass": 81,
+   "idade": 6.058262159233612,
+   "esperaPronta": 26.65237565192581,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.0540804283602474,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.727693405731647,
+     "espera": 6.3219880023675685
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.5933843862178616,
+     "espera": 81.21607547354287
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3915342389050967,
+     "espera": 1.1813302620478907
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6199964412967345,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5183365910548082,
+     "espera": 0.3336163190281325
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.33461555833379697,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6934317782396463,
+     "espera": 2.5929763300176476
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 1.0017137506226745,
+     "espera": 161.17328756299776
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.04791585503015533,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5792384297692982,
+     "espera": 77.9116517339211
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.39748253187214666,
+     "espera": 2.253279370479055
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6535004633068904,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5255307651002723,
+     "espera": 0.38674872982873815
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.335790108456994,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.7037773929642288,
+     "espera": 2.6863168859647475
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9653923738796093,
+     "espera": 152.9193853342453
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.07653780473189181,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.3123614230325397,
+     "espera": 51.13940767069175
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.3079600004204009,
+     "espera": 9.56599350942754
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.3932343929974701,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8304086726735559,
+     "espera": 2.2175344062255107
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.3378197608937014,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.4485979319412793,
+     "espera": 0.32647525910189973
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6101423234101393,
+     "espera": 121.36967559873725
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.03590492633669742,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.572283681637411,
+     "espera": 78.5206900754101
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.4069754290661883,
+     "espera": 2.486990105575637
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.591959909762671,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5298692126479351,
+     "espera": 0.7880215302001893
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.3467859566981592,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6542743563801207,
+     "espera": 2.8535543818245133
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9394583386800626,
+     "espera": 146.002210688326
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.04265450625068287,
+     "espera": 0
+    }
+   ]
+  },
+  {
+   "politica": {
+    "setor": "alternado",
+    "dentro": "perto"
+   },
+   "seed": 103,
+   "total": 292,
+   "nConc": 292,
+   "fimConc": 1067.2554691855987,
+   "fimMont": 970.0005822849357,
+   "fimLivre": 741.5547139989308,
+   "extra": 89.25546918559871,
+   "acab": 2.5884648309669585,
+   "car": 30.379658949160174,
+   "pinosLate": 2.5,
+   "inter": 1.7342858719682681,
+   "bloq": 0,
+   "pass": 96.5,
+   "idade": 6.400796039351469,
+   "esperaPronta": 34.48283839514659,
+   "recursos": [
+    {
+     "nome": "Usina",
+     "ocupacao": 1.0793171278366218,
+     "espera": 0
+    },
+    {
+     "nome": "Dupla de carimbo e pinos",
+     "ocupacao": 0.724816207924099,
+     "espera": 6.816390748806128
+    },
+    {
+     "nome": "Desforma S1",
+     "ocupacao": 0.562822690676429,
+     "espera": 77.25214921819887
+    },
+    {
+     "nome": "Ponte de retirada S1",
+     "ocupacao": 0.3995111313938434,
+     "espera": 2.062473018769772
+    },
+    {
+     "nome": "Ponte corredor → montagem S1",
+     "ocupacao": 0.6181189187620066,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S1",
+     "ocupacao": 0.5323339511987578,
+     "espera": 0.31511186270134844
+    },
+    {
+     "nome": "Lançador S1",
+     "ocupacao": 0.34659088427592194,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S1",
+     "ocupacao": 0.6930570190301428,
+     "espera": 2.997811969249946
+    },
+    {
+     "nome": "Montagem S1",
+     "ocupacao": 0.9464469108928517,
+     "espera": 149.84421038738884
+    },
+    {
+     "nome": "Corredor S1",
+     "ocupacao": 0.05660497542657684,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S2",
+     "ocupacao": 0.5636797052683543,
+     "espera": 75.56928897702616
+    },
+    {
+     "nome": "Ponte de retirada S2",
+     "ocupacao": 0.3973220133133181,
+     "espera": 2.8567465164391663
+    },
+    {
+     "nome": "Ponte corredor → montagem S2",
+     "ocupacao": 0.6149981513280572,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S2",
+     "ocupacao": 0.5148786706216891,
+     "espera": 0.3500391068099294
+    },
+    {
+     "nome": "Lançador S2",
+     "ocupacao": 0.33646565265674483,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S2",
+     "ocupacao": 0.6555217590638289,
+     "espera": 2.6195359883154863
+    },
+    {
+     "nome": "Montagem S2",
+     "ocupacao": 0.9784428456248214,
+     "espera": 161.30388087911808
+    },
+    {
+     "nome": "Corredor S2",
+     "ocupacao": 0.06737087555341432,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S3",
+     "ocupacao": 0.2863251221924964,
+     "espera": 48.481501163046126
+    },
+    {
+     "nome": "Ponte de retirada S3",
+     "ocupacao": 0.2997400491953894,
+     "espera": 12.2459891184434
+    },
+    {
+     "nome": "Ponte corredor → montagem S3",
+     "ocupacao": 0.3992693729674825,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S3",
+     "ocupacao": 0.8292709520973929,
+     "espera": 2.748812297713613
+    },
+    {
+     "nome": "Lançador S3",
+     "ocupacao": 0.33242234109801544,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S3",
+     "ocupacao": 0.4552158911155558,
+     "espera": 0.4498157359498538
+    },
+    {
+     "nome": "Montagem S3",
+     "ocupacao": 0.6063563153183852,
+     "espera": 127.09310829532927
+    },
+    {
+     "nome": "Corredor S3",
+     "ocupacao": 0.041074240912843764,
+     "espera": 0
+    },
+    {
+     "nome": "Desforma S4",
+     "ocupacao": 0.5701601355493137,
+     "espera": 77.37411735679834
+    },
+    {
+     "nome": "Ponte de retirada S4",
+     "ocupacao": 0.3860519160100238,
+     "espera": 1.6102384354195807
+    },
+    {
+     "nome": "Ponte corredor → montagem S4",
+     "ocupacao": 0.5987951759283519,
+     "espera": 0
+    },
+    {
+     "nome": "Ponte de concretagem S4",
+     "ocupacao": 0.5240005195118737,
+     "espera": 1.2773093374244715
+    },
+    {
+     "nome": "Lançador S4",
+     "ocupacao": 0.34613964295372235,
+     "espera": 0
+    },
+    {
+     "nome": "Acabador S4",
+     "ocupacao": 0.6727397088901292,
+     "espera": 3.5381684470965595
+    },
+    {
+     "nome": "Montagem S4",
+     "ocupacao": 0.9447142733891765,
+     "espera": 148.80055725158093
+    },
+    {
+     "nome": "Corredor S4",
+     "ocupacao": 0.05389724804883736,
+     "espera": 0
+    }
+   ]
+  }
+ ],
+ "estatistica": {
+  "amostra_P08": [
+   1.2,
+   1.45,
+   1.1,
+   1.62,
+   1.3,
+   1.28,
+   1.55,
+   1.18,
+   1.4,
+   1.35
+  ],
+  "esperado": {
+   "media": 1.343,
+   "desvio": 0.1653985,
+   "cv": 0.123156,
+   "n_necessario_95_5": 24,
+   "faixa_2s": [
+    1.012203,
+    1.673797
+   ]
+  },
+  "tempo_padrao": {
+   "ritmo": 105,
+   "tolerancias_pct": 13,
+   "FT": 1.1494253,
+   "TN": 1.41015,
+   "TP": 1.6208621
+  },
+  "dimensionamento": {
+   "HM": 42.9,
+   "demanda": 292,
+   "T_disp": 528,
+   "eta": 0.9,
+   "takt": 1.8082192,
+   "N_teorico": 23.725,
+   "N": 26.361111,
+   "N_arred": 27,
+   "capacidade_26": 288
+  },
+  "velocidade": {
+   "d": [
+    52,
+    48,
+    60
+   ],
+   "t": [
+    1.8,
+    1.5,
+    2.1
+   ],
+   "v": 29.6296296
+  }
+ }
+}

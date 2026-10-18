@@ -1,0 +1,50 @@
+[
+  {
+    "setor": 1,
+    "distancia_monovia_m": 60,
+    "filas": 2,
+    "formas_por_fila": 40,
+    "primeira_forma_m": 4,
+    "ultima_forma_m": 60,
+    "lancamento_min_por_forma": 2,
+    "regra_cacambas": "1/3",
+    "corredor_m": null,
+    "setor_montagem_m": null
+  },
+  {
+    "setor": 2,
+    "distancia_monovia_m": 25,
+    "filas": 2,
+    "formas_por_fila": 40,
+    "primeira_forma_m": 4,
+    "ultima_forma_m": 60,
+    "lancamento_min_por_forma": 2,
+    "regra_cacambas": "1/3",
+    "corredor_m": null,
+    "setor_montagem_m": null
+  },
+  {
+    "setor": 3,
+    "distancia_monovia_m": 20,
+    "filas": 1,
+    "formas_por_fila": 52,
+    "primeira_forma_m": 3,
+    "ultima_forma_m": 100,
+    "lancamento_min_por_forma": 3,
+    "regra_cacambas": "1-20: 1/2; 21-40: 1; 41-52: 1,5",
+    "corredor_m": null,
+    "setor_montagem_m": null
+  },
+  {
+    "setor": 4,
+    "distancia_monovia_m": 2,
+    "filas": 2,
+    "formas_por_fila": 40,
+    "primeira_forma_m": 4,
+    "ultima_forma_m": 60,
+    "lancamento_min_por_forma": 2,
+    "regra_cacambas": "1/3",
+    "corredor_m": null,
+    "setor_montagem_m": null
+  }
+]
