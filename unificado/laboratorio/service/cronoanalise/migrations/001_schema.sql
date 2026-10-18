@@ -145,5 +145,10 @@ CREATE TABLE IF NOT EXISTS cronoanalise.simulacoes (
 );
 CREATE INDEX IF NOT EXISTS simulacoes_data_idx ON cronoanalise.simulacoes(unidade_codigo,criado_em DESC);
 
+-- The unified Laboratório runtime connects as postes_app; the migration runs as postgres.
+GRANT USAGE ON SCHEMA cronoanalise TO postes_app;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA cronoanalise TO postes_app;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA cronoanalise TO postes_app;
+
 INSERT INTO cronoanalise.schema_migrations(versao) VALUES ('001_schema') ON CONFLICT DO NOTHING;
 COMMIT;

@@ -6,6 +6,8 @@ Foi criada a migração SQL aditiva `001_schema.sql` no pacote do Laboratório. 
 
 As referências de usuário são `text` sem FK, pois `public.usuarios` está em outro banco. Todas as tabelas da unidade usam `unidade_codigo text` com padrão `concrefer`. A API terá de validar o usuário autenticado. Nenhuma tabela ou revisão Alembic de `ensaio_postes` foi alterada. A revisão existente, tanto em `concretrack_postes_homolog` como em `concretrack_postes`, é `0005_conicidade_circular`.
 
+Antes de T6a, a migração recebeu `GRANT` idempotente ao papel `postes_app`, observado nas conexões do serviço de homologação. O SQL é executado por `postgres`, mas a API do Laboratório precisa ler e gravar o schema novo com seu papel de runtime.
+
 `seed.py` gerou `migrations/002_seeds.sql` em UTF-8 a partir dos quatro JSON copiados para o pacote. Cada `INSERT` usa `ON CONFLICT DO NOTHING`, preservando edições de usuários quando o seed for reaplicado. O schema e os seeds começam sem medições, cenários ou simulações.
 
 ## Arquivos criados
