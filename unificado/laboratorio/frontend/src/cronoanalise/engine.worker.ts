@@ -1,7 +1,7 @@
 import {diaProducao, lognormal, meanCI, POL_LIST, polOf} from './engine';
 import type {DayResult, Policy, Summary, TimeCatalog, WorkerInput} from './engine-types';
 
-const numeric: Array<Exclude<keyof DayResult, 'res'>> = [
+const numeric: Array<Exclude<keyof DayResult, 'res' | 'timeline'>> = [
   'total', 'nConc', 'fimConc', 'fimMont', 'fimLivre', 'extra', 'acab', 'acabMax',
   'car', 'carMax', 'pinosLate', 'pinosFim', 'inter', 'bloq', 'pass', 'idade', 'esperaPronta'
 ];
@@ -26,6 +26,9 @@ function summarize(days: DayResult[]): Summary {
     util: meanCI(days.map(day => day.res[index].util)),
     wait: meanCI(days.map(day => day.res[index].wait))
   }));
+  result.timeline = Object.fromEntries([1, 2, 3, 4].map(sector => [String(sector),
+    Object.fromEntries(['desforma', 'montagem', 'concretagem', 'pinos'].map(step => [step,
+      meanCI(days.map(day => day.timeline?.[String(sector)]?.[step]).filter(Number.isFinite) as number[])]))]));
   return result;
 }
 

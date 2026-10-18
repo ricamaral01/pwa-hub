@@ -31,11 +31,13 @@ export interface DayResult {
   extra: number; acab: number; acabMax: number; car: number; carMax: number;
   pinosLate: number; pinosFim: number; inter: number; bloq: number;
   pass: number; idade: number; esperaPronta: number; res: ResourceResult[];
+  timeline: Record<string, Record<string, number>>;
 }
 
 export interface Interval { m: number; h: number }
-export type Summary = Record<Exclude<keyof DayResult, 'res'>, Interval> & {
+export type Summary = Record<Exclude<keyof DayResult, 'res' | 'timeline'>, Interval> & {
   recursos: Array<{name: string; util: Interval; wait: Interval}>;
+  timeline: Record<string, Record<string, Interval>>;
 };
 
 export interface WorkerInput {

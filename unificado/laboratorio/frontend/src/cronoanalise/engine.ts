@@ -144,7 +144,8 @@ function diaProducao(cfg: any,lay: any,pol: any,T: any,seed: any){
       pConc:R('Ponte de concretagem S'+s,1,[[hConc,END]]),lan:R('Lançador S'+s,1,[[hConc,END]]),aca:R('Acabador S'+s,1,[[hConc,END]]),
       mont:R('Montagem S'+s,Math.max(1,Math.floor((+cfg.nMont||4)/2)),[[hMont,END]]),slots:R('Corredor S'+s,+cfg.corredor||25,null)}}
   const day=(x: any)=>Math.floor(x/1440);
-  const st: Record<string, any>={};const DS=(d: any)=>st[d]??=({fimConc:-Infinity,nConc:0,fimMont:-Infinity,fimLivre:-Infinity,acab:[],car:[],pinosLate:0,pinosFim:-Infinity,intConc:0,intRet:0,bloq:0,pass:0,idade:[],esperaPronta:0});
+  const st: Record<string, any>={};const DS=(d: any)=>st[d]??=({fimConc:-Infinity,nConc:0,fimMont:-Infinity,fimLivre:-Infinity,acab:[],car:[],pinosLate:0,pinosFim:-Infinity,intConc:0,intRet:0,bloq:0,pass:0,idade:[],esperaPronta:0,timeline:{}});
+  const mark=(d: any,s: any,step: string,time: number)=>{const sector=DS(d).timeline[s]??={};sector[step]=Math.max(sector[step]??-Infinity,time)};
   const readyW: any[]=[];const wakeReady=()=>{const w=readyW.splice(0);for(const cb of w)env.at(env.now,cb)};
   const rail=makeRail(env,cfg,lay,mov,0);rail.start();
   // ontem: concretagem distribuída das hConc às 16:00 na ordem da política
@@ -156,7 +157,7 @@ function diaProducao(cfg: any,lay: any,pol: any,T: any,seed: any){
     for(;;){
       yield['t',Math.max(0,f.conc+cura-env.now)];
       // desforma: abrir, raspar, frisar, varrer (2 da concretagem até o início da concretagem; depois 1 colaborador)
-      yield['req',S.desf,-f.d];const fac=mod(env.now)<hConc?1:P01p;yield['t',t('P01',s)*fac+t('P02',s)];S.desf.release();
+      yield['req',S.desf,-f.d];const fac=mod(env.now)<hConc?1:P01p;yield['t',t('P01',s)*fac+t('P02',s)];S.desf.release();mark(day(env.now),s,'desforma',mod(env.now));
       // ponte de retirada: forma → corredor
       yield['req',S.pRet,-f.d];
       const lo=Math.min(f.d,S.c),hi=Math.max(f.d,S.c);let t0=env.now;yield['call',(cb: any)=>S.track.acquire('ret',lo,hi,cb)];DS(day(env.now)).intRet+=env.now-t0;
@@ -168,7 +169,7 @@ function diaProducao(cfg: any,lay: any,pol: any,T: any,seed: any){
       yield['req',S.mont];
       for(const id of ['P03','P04','P05','P06','P08','P09','P10','P11','P12','P13'])yield['t',t(id,s)];
       for(;;){yield['t',t('P14',s)];if(rnd()>=(+cfg.probReprov||0)/100)break;yield['t',lognormal(rnd,+cfg.retrabalho||8,0.5)]}
-      S.mont.release();f.state='pronta';const dm=DS(day(env.now));dm.fimMont=Math.max(dm.fimMont,env.now);wakeReady();
+      S.mont.release();f.state='pronta';const dm=DS(day(env.now));dm.fimMont=Math.max(dm.fimMont,env.now);mark(day(env.now),s,'montagem',mod(env.now));wakeReady();
       yield['get',f.concSig]}}
   function* transf(S: any): Generator<any, void, any>{for(;;){yield['get',S.corrQ];yield['req',S.pTra];
       const dd=Math.abs(S.dest-S.c);yield['call',(cb: any)=>S.track.acquire('tra',Math.min(S.c,S.dest),Math.max(S.c,S.dest),cb)];
@@ -177,7 +178,7 @@ function diaProducao(cfg: any,lay: any,pol: any,T: any,seed: any){
   function* posConc(f: any){const s=f.s,S=sec[s],tc=f.conc;
     env.proc((function*(){yield['req',S.aca];DS(day(tc)).acab.push(env.now-tc);yield['t',t('P16',s)];S.aca.release();f.acabFim=env.now})());
     env.proc((function*(){yield['req',dupla,2];DS(day(tc)).car.push(env.now-tc);yield['t',t('P17',s)];dupla.release()})());
-    yield['t',pinosD];yield['req',dupla,1];yield['t',t('P18',s)];dupla.release();const d=DS(day(tc));d.pinosFim=Math.max(d.pinosFim,env.now);if(mod(env.now)>hPinF||day(env.now)>day(tc))d.pinosLate++}
+    yield['t',pinosD];yield['req',dupla,1];yield['t',t('P18',s)];dupla.release();const d=DS(day(tc));d.pinosFim=Math.max(d.pinosFim,env.now);mark(day(tc),s,'pinos',mod(env.now));if(mod(env.now)>hPinF||day(env.now)>day(tc))d.pinosLate++}
   function* despacho(dIdx: any){
     yield['t',Math.max(0,dIdx*1440+hConc-env.now)];
     const seq=planoViagens(fsBy,lay,pol);const done=new Set();
@@ -196,7 +197,7 @@ function diaProducao(cfg: any,lay: any,pol: any,T: any,seed: any){
         for(const l of tr.legs){yield['t',mov(Math.abs(l.f.d-pos),vC)];pos=l.f.d;
           yield['req',S.lan];if(first){DS(dIdx).idade.push(env.now-tb);first=false}yield['t',lanc(s)*l.q/l.f.need];S.lan.release();
           l.f.poured=(l.f.poured||0)+l.q;
-          if(l.f.poured>=l.f.need-1e-6){l.f.poured=0;l.f.conc=env.now;l.f.acabFim=null;l.f.state='cheia';const dd=DS(dIdx);dd.nConc++;dd.fimConc=Math.max(dd.fimConc,env.now);env.proc(posConc(l.f));l.f.concSig.put(1)}}
+          if(l.f.poured>=l.f.need-1e-6){l.f.poured=0;l.f.conc=env.now;l.f.acabFim=null;l.f.state='cheia';const dd=DS(dIdx);dd.nConc++;dd.fimConc=Math.max(dd.fimConc,env.now);mark(dIdx,s,'concretagem',mod(env.now));env.proc(posConc(l.f));l.f.concSig.put(1)}}
         yield['t',mov(pos,vV)];S.track.release('conc');S.pConc.release()};
       yield['req',usina];rail.assign(s,job);yield['t',t('U01',s)+t('U02',s)];tb=env.now;
       yield['get',job.atU];yield['t',t('U03',s)];usina.release();job.filled.put(1)}}
@@ -211,7 +212,9 @@ function diaProducao(cfg: any,lay: any,pol: any,T: any,seed: any){
   return{total,nConc:per((d: any)=>d.nConc),fimConc:per((d: any)=>mod(d.fimConc)),fimMont:per((d: any)=>mod(d.fimMont)),fimLivre:per((d: any)=>mod(d.fimLivre)),
     extra:per((d: any)=>Math.max(0,Math.max(mod(d.fimConc),mod(d.fimMont))-hFim)),acab:per((d: any)=>avg(d.acab)),acabMax:per((d: any)=>mx(d.acab)),car:per((d: any)=>avg(d.car)),carMax:per((d: any)=>mx(d.car)),
     pinosLate:per((d: any)=>d.pinosLate),pinosFim:per((d: any)=>mod(d.pinosFim)),inter:per((d: any)=>d.intConc+d.intRet),bloq:per((d: any)=>d.bloq),pass:per((d: any)=>d.pass),idade:per((d: any)=>avg(d.idade)),esperaPronta:per((d: any)=>d.esperaPronta),
-    res:res.map((r: any)=>({name:r.name,util:r.util?r.util(T1):0,wait:r.wait?r.wait():0}))}
+    res:res.map((r: any)=>({name:r.name,util:r.util?r.util(T1):0,wait:r.wait?r.wait():0})),
+    timeline:Object.fromEntries([1,2,3,4].map(s=>[s,Object.fromEntries(['desforma','montagem','concretagem','pinos'].map(step=>
+      [step,per((d: any)=>d.timeline[s]?.[step]??NaN)]))]))}
 }
 
 
