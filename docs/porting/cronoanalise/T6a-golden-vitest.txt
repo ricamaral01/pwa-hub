@@ -1,0 +1,28 @@
+
+ RUN  v2.1.9 C:/Users/Admin/Documents/pwa-hub-fase1/unificado/laboratorio/frontend
+
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 1/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 2/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 3/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 4/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 5/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 6/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 7/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 8/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 9/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 10/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 11/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 12/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 13/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 14/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 15/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 16/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 17/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > golden 18/18
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > interpreta a regra escalonada do setor 3
+ ✓ src/cronoanalise/engine.test.ts > paridade 1:1 com o motor de referência > gera 292 formas e 129 viagens de caçamba no layout padrão
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  19:23:32
+   Duration  1.98s (transform 223ms, setup 0ms, collect 275ms, tests 725ms, environment 0ms, prepare 322ms)

@@ -56,6 +56,10 @@ def main():
                     route.fulfill(status=404, json={'mensagem': f'Rota mock não definida: {path}'})
 
             page.route('**/api/laboratorio/cronoanalise/**', respond)
+            page.route('**/unified/screen-access/me', lambda route: route.fulfill(json={
+                'screens': [f'cronoanalise.{name}' for name in (
+                    'inicio', 'coletar', 'medicoes', 'catalogo', 'dimensionar', 'simular', 'metodologia')]
+            }))
             page.goto(URL + 'cronoanalise.html')
             page.get_by_role('heading', name='Cronoanálise').wait_for()
             page.screenshot(path=str(OUTPUT / f'inicio-{label}.png'), full_page=True)

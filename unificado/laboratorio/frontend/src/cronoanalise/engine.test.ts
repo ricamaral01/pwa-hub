@@ -34,7 +34,7 @@ const layout = Object.fromEntries(layoutRows.map(item => [item.setor, {
 const cfg = {...params.simulacao_base, vCarr: 30, vVazia: 45, vMono: 50};
 
 describe('paridade 1:1 com o motor de referência', () => {
-  it.each(golden.casos)('%j', expected => {
+  it.each(golden.casos.map((expected, index) => ({numero: index + 1, expected})))('golden $numero/18', ({expected}) => {
     const result = diaProducao(cfg, layout, expected.politica, T, expected.seed);
     const mapped = {
       politica: expected.politica, seed: expected.seed,

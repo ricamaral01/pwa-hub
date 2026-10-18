@@ -1,5 +1,7 @@
 # T6a · Homologação do Laboratório › Cronoanálise — 18/10/2026
 
+As verificações funcionais adicionais e a limpeza dos dados de teste estão em [T6a-complemento.md](T6a-complemento.md).
+
 ## Destino e execução
 
 - Casca e gateway isolados: `/opt/concrefer-unificado/homolog-next/public` e `homolog-next/mapa-api`, serviço `unificado-homolog-mapa.service` na porta interna 13152.
