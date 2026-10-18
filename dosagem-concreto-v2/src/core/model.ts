@@ -1,0 +1,19 @@
+export type Id = string;
+export type Iso = string;
+export type StatusTraco = 'rascunho' | 'em_teste' | 'aprovado' | 'inativo';
+export type Categoria = 'cimento' | 'adicao' | 'areia' | 'brita' | 'agua' | 'aditivo' | 'fibra' | 'outro';
+export type ClasseAgressividade = 'I' | 'II' | 'III' | 'IV';
+export type TipoEstrutura = 'armado' | 'protendido' | 'simples';
+export type Metodo = 'manual' | 'cientifica' | 'teor_argamassa';
+export interface Auditoria { criadoPor: string; criadoEm: Iso; alteradoPor: string; alteradoEm: Iso }
+export interface Fornecedor { id: Id; nome: string; cnpj?: string; cidade?: string; contato?: string; materiais: Categoria[]; ativo: boolean; unidade: string; auditoria: Auditoria }
+export interface Material { id: Id; nome: string; categoria: Categoria; fornecedorId?: Id; origem?: string; massaEspecificaKgDm3?: number; absorcaoPct?: number; moduloFinura?: number; dmaxMm?: number; custoRsKg?: number; custoAtualizadoEm?: Iso; curvaAbrams?: { A: number; B: number; fonte: string; atualizadaEm: Iso }; ensaioVigente?: { massaEspecificaId?: Id; granulometriaId?: Id }; status: 'ativo' | 'em_teste' | 'inativo'; unidade: string; auditoria: Auditoria }
+export interface ItemTraco { id: Id; materialId?: Id; nome: string; categoria: Categoria; massaKgM3?: number; dosagemPct?: number; basePct?: 'cimento' | 'aglomerante'; massaEspecificaKgDm3: number; umidadeLivrePct?: number; custoRsKg?: number; ensaioRefs?: { tipo: 'granulometria' | 'massa_especifica' | 'umidade'; ensaioId: Id; data: Iso }[] }
+export interface Objetivo { fckMPa: number; sdMPa: number; classe: ClasseAgressividade; estrutura: TipoEstrutura; abatimentoMm: number; toleranciaMm: number; dmaxMm?: number; aplicacao?: string }
+export interface ResultadoExperimental { id: Id; data: Iso; volumeBetonadaL?: number; abatimentoMm?: number; massaEspecificaFrescaKgM3?: number; temperaturaC?: number; arPct?: number; observacao?: string; rupturas: { idadeDias: number; previstaEm: Iso; resultadosMPa: number[] }[] }
+export interface Traco { id: Id; codigo: string; nome: string; unidade: string; versao: number; revisao: number; status: StatusTraco; baseVersaoId?: Id; metodo: Metodo; parametrosMetodo?: Record<string, number>; objetivo: Objetivo; itens: ItemTraco[]; arIncorporadoPct: number; normalizarPara1m3: boolean; experimentais: ResultadoExperimental[]; notasVersao?: string; aprovacao?: { por: string; em: Iso; parecer?: string }; auditoria: Auditoria }
+export interface Ensaio { id: Id; tipo: 'granulometria_miudo' | 'granulometria_graudo' | 'massa_especifica_miudo' | 'massa_especifica_graudo' | 'umidade' | 'resistencia_cimento'; materialId: Id; data: Iso; responsavel: string; dados: unknown; resultado: unknown; status: 'rascunho' | 'concluido'; unidade: string; auditoria: Auditoria }
+export interface CustoMCC { id: Id; dataCadastro: Iso; nomeProduto: string; tipoMaterial: string; chaveMCC: string; fornecedor: string; unidadeMCC: string; versao: number; unidadeMedida: 'kg' | 't'; preco: number; icmsPct: number; deduzICMS: boolean; frete: number; unidFrete: 'kg' | 't'; icmsFreteP: number; deduzICMSFrete: boolean; custoLiq: number; ativo: boolean; observacoes?: string }
+export interface Pendencia { campo: string; nivel: 'erro' | 'aviso'; mensagem: string }
+export interface ItemCalculado extends ItemTraco { massaResolvidaKgM3: number; volumeL: number; custoRsM3: number }
+export interface ResultadoTraco { itens: ItemCalculado[]; volumeArL: number; volumeTotalL: number; desvioL: number; fatorNormalizacao: number; massaTotalKgM3: number; relacaoAguaCimento: number; relacaoAguaAglomerante: number; teorArgamassaSecoPct: number; consumoCimentoKgM3: number; consumoAglomeranteKgM3: number; massaEspecificaTeoricaKgM3: number; custoRsM3: number; fcjMPa: number; tracoUnitario: { base: number; areia: number; brita: number; agua: number }; pendencias: Pendencia[] }
