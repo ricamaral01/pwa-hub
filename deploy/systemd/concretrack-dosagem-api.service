@@ -1,0 +1,21 @@
+[Unit]
+Description=API ConcreTrack Dosagem v2
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ctdosagem
+Group=ctdosagem
+WorkingDirectory=/opt/concretrack-dosagem/current/api
+EnvironmentFile=/opt/concretrack-dosagem/shared/.env
+ExecStart=/opt/concretrack-dosagem/current/api/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port ${PORTA} --workers 2
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+ReadWritePaths=/opt/concretrack-dosagem
+
+[Install]
+WantedBy=multi-user.target

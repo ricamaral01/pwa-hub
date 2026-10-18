@@ -1,0 +1,10 @@
+[Unit]
+Description=Backup diário da Dosagem v2 às 03:15
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+Persistent=true
+Unit=concretrack-dosagem-backup.service
+
+[Install]
+WantedBy=timers.target

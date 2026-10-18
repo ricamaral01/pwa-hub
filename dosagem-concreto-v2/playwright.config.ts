@@ -8,5 +8,5 @@ export default defineConfig({
     { name: 'tablet-paisagem', use: { ...devices['Desktop Chrome'], viewport: { width: 1180, height: 820 } } },
     { name: 'celular', use: { ...devices['Desktop Chrome'], viewport: { width: 390, height: 844 }, isMobile: true } }
   ],
-  webServer: { command: 'npm run dev -- --host 127.0.0.1 --port 4173', url: 'http://127.0.0.1:4173/dosagem-concreto/v2/', reuseExistingServer: true, env: { VITE_API_URL: 'http://127.0.0.1:4173/api', VITE_APP_VERSION: '2.0.0-test' } }
+  webServer: { command: 'npm run dev -- --host 127.0.0.1 --port 4173', url: 'http://127.0.0.1:4173/dosagem-concreto/v2/', reuseExistingServer: true, env: { VITE_API_URL: 'http://127.0.0.1:4173/api/v1/rpc', VITE_APP_VERSION: '2.0.0-test' } }
 });

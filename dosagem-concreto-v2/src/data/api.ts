@@ -8,12 +8,12 @@ export async function chamarApi<T>(acao: string, dados: unknown, requestId: stri
   if (!apiUrl) throw new ApiErro('LIMITE', 'API v2 ainda não configurada. O rascunho permanece local.');
   const token = await getToken();
   if (!token) throw new ApiErro('NAO_AUTENTICADO', 'Faça login no Hub para enviar ao servidor.');
-  const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ acao, token, requestId, dados }), redirect: 'follow' });
-  if (!response.ok) throw new ApiErro('INTERNO', `Falha HTTP ${response.status}.`);
+  const response = await fetch(apiUrl, { method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Idempotency-Key': requestId }, body: JSON.stringify({ acao, requestId, dados }), redirect: 'follow' });
   const body = await response.json() as Resposta<T>;
   if (!body.ok || !body.dados) {
     if (body.erro?.codigo === 'NAO_AUTENTICADO' && retry) { const refreshed = await onExpirada(); if (refreshed) return chamarApi<T>(acao, dados, requestId, false); }
     throw new ApiErro(body.erro?.codigo || 'INTERNO', body.erro?.mensagem || 'Falha na API.', body.erro?.detalhe);
   }
+  if (!response.ok) throw new ApiErro('INTERNO', `Falha HTTP ${response.status}.`);
   return body.dados;
 }

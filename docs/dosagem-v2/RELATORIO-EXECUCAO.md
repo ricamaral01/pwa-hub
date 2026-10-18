@@ -78,3 +78,66 @@ Em **cada modo** — desktop 1440×900, tablet retrato 820×1180, tablet paisage
 | Custos, Referência e Configurações | MCC, manual, layout forçado, versão, sincronização, usuários e importação simulada |
 
 Teste também com rede desligada, reconexão, segunda sessão alterando a mesma revisão, usuário sem papel, engenheiro aprovando e impressão real. **Não importe dados antigos em modo efetivo antes de conferir a simulação.**
+
+## Rodada 2 — complemento FastAPI/PostgreSQL (17/10/2026)
+
+Esta seção substitui, para a rodada 2, as referências acima a Apps Script como backend vigente. O código Apps Script foi movido sem exclusão para `docs/dosagem-v2/arquivado/apps-script/`. O frontend continua em `dosagem-concreto-v2/`, com build estático em `dosagem-concreto/v2/`; o backend novo está em `dosagem-concreto-v2/api/`. **Estado: pronto para avaliação local; não implantado.**
+
+### Feito e decisões
+
+| Entrega | Resultado |
+|---|---|
+| Núcleo C40 | Teste golden com entradas e indicadores dos mockups aprovados. O Apêndice A recebido não contém a tabela completa; a origem do fixture está identificada no teste. CA III configurada conforme mockup: a/c máximo 0,55 e cimento mínimo 320 kg/m³, ainda sujeita à conferência normativa. |
+| Granulometria | Fixture de 500 g das peneiras do mockup: MF 2,714, Dmáx 4,75 mm, zona ótima, perda zero. Apêndice B isolado informa só resultados, sem massas. |
+| Legado | Testes dos três módulos portados para Vitest, valores esperados preservados. Casos de massas inválidas, divisões por zero e resultados não finitos ampliados. |
+| Conversão | Navegador lê JSON, localStorage e .xlsx/.csv via SheetJS; preserva segunda areia e segundo aditivo com massas específicas independentes; rejeita densidade ausente com aviso. Prévia e simulação antes de efetivar. Os formatos sem conversor validado recebem aviso e não são importados. A interface ainda envia um único lote; arquivos acima de 500 registros precisam ser separados. |
+| API | FastAPI/Python 3.12, SQLAlchemy 2, Alembic, PostgreSQL JSONB, autenticação Supabase/JWT, papéis, unidade, transações, auditoria, idempotência, revisão otimista, importação. Contrato em `API.md`. |
+| Interface | Bearer, JSON e Idempotency-Key nos headers; `VITE_API_URL` de produção configurada para o novo RPC. E2E mock atualizado. |
+| Infraestrutura preparada | Templates nginx/systemd e scripts de provisionamento, deploy Windows/Linux, rollback e backup em `deploy/`. Nenhum foi executado na VPS. |
+
+### Verificação da rodada 2
+
+| Comando / ensaio | Resultado |
+|---|---|
+| `npm test -- --run` | 20 passaram, 1 falhou intencionalmente (golden C40, abaixo), 8 arquivos |
+| `npm run build` | Passou; arquivos gerados em `dosagem-concreto/v2/`, com SheetJS carregado em chunk separado |
+| `npm audit --audit-level=high` | 0 vulnerabilidades informadas |
+| `npm run test:e2e` | 12/12 passaram em desktop, tablet retrato/paisagem e celular contra o contrato novo simulado |
+| `api/.venv/Scripts/python -m pytest -q` | 7/7 passaram em PostgreSQL 16 temporário via `testing.postgresql`; Docker CLI presente mas daemon indisponível e cluster local acessível sem credenciais de teste |
+| `git diff --check` | Sem erros de whitespace nos caminhos da Dosagem |
+| VPS | `ssh -o BatchMode=yes -o ConnectTimeout=8 vps-antiga true` falhou: alias não resolvido. Nada foi instalado, reiniciado ou alterado remotamente |
+
+### Divergência a decidir
+
+O mockup do C40 apresenta `V_total = 1000,0 L`. Aplicando a fórmula especificada aos valores exibidos no próprio mockup, o núcleo calcula `1000,0520387687917 L`. A tolerância exigida é ±0,05 L; a diferença excede a faixa por `0,0020387687917 L`. O teste em `tests/golden/c40.test.ts` permanece falhando, como solicitado. É preciso esclarecer se o mockup usa densidades ou massas internas com mais casas, arredondamento intermediário diferente, ou outro valor de referência. Não houve alteração do esperado nem correção artificial da fórmula. A liberação do cálculo C40 fica pendente desta decisão.
+
+### Deploy e reconhecimento pendentes
+
+O alias `vps-antiga` deve ser configurado e o acesso por chave testado. Não se tentou senha nem IP direto, conforme o complemento. O inventário requisitado de SO, CPU, memória, disco, portas, serviços, nginx, PostgreSQL, Docker e certbot está em `VPS-RECONHECIMENTO.md`, com campos marcados como não observados. Também faltam DNS, `.env` privado, TLS, backup ativo e teste de restauração. Não é possível confirmar os códigos HTTP dos demais sites antes/depois ou declarar que o novo serviço escuta em produção. O template restringe Uvicorn a `127.0.0.1`.
+
+Comandos exatos, da raiz do repositório, **depois de configurar SSH por chave e resolver a divergência C40**:
+
+```powershell
+ssh -o BatchMode=yes vps-antiga true
+ssh -o BatchMode=yes vps-antiga 'cat /etc/os-release; nproc; free -m; df -h /opt; ss -ltnp; systemctl list-units --type=service --state=running --no-pager; nginx -T 2>/dev/null | grep -E "server_name|listen"; psql --version || true; pg_lsclusters || true; docker --version || true; certbot --version || true'
+```
+
+Após conferir os recursos e o servidor web, criar `/opt/concretrack-dosagem/shared/.env` com permissão 600, usando `dosagem-concreto-v2/api/.env.example` como modelo. Da raiz local, transferir apenas os arquivos desta aplicação:
+
+```powershell
+tar --exclude=.venv --exclude=__pycache__ --exclude=.env -czf dosagem-provisionamento.tar.gz dosagem-concreto-v2/api deploy
+scp -o BatchMode=yes dosagem-provisionamento.tar.gz vps-antiga:/tmp/
+ssh -o BatchMode=yes vps-antiga 'mkdir -p /tmp/dosagem-provisionamento && tar -xzf /tmp/dosagem-provisionamento.tar.gz -C /tmp/dosagem-provisionamento && bash /tmp/dosagem-provisionamento/deploy/scripts/provisionar.sh /tmp/dosagem-provisionamento'
+powershell -ExecutionPolicy Bypass -File .\deploy\scripts\deploy.ps1
+```
+
+O script usa somente `vps-antiga` e reprova testes locais falhos. Para TLS e backup, seguir `deploy/README.md`.
+
+### Checklist manual atualizado
+
+- [ ] Resolver o golden C40 com fonte de engenharia e conferir os limites normativos.
+- [ ] Conferir mapeamento e amostras dos três arquivos reais antes da importação; separar lotes de até 500 e tratar formatos ainda não validados.
+- [ ] Configurar SSH por chave, DNS e `.env` privado; preencher o reconhecimento da VPS e registrar códigos HTTP de outros sites.
+- [ ] Provisionar somente recursos da Dosagem, implantar, verificar saúde local e pública, TLS e que outros sites mantêm seus códigos HTTP.
+- [ ] Ativar e verificar timer diário; executar backup manual e restauração em banco temporário.
+- [ ] Publicar o build estático no GitHub Pages depois dos gates; testar token real, usuários, papéis, importação, conflito, offline e carta em quatro tamanhos de tela.

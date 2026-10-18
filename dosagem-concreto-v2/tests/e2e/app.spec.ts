@@ -5,8 +5,11 @@ test.beforeEach(async ({ page }) => {
   await page.route('**/auth/config.js*', r => r.fulfill({ contentType: 'application/javascript', body: 'window.CONCRETRACK_AUTH_CONFIG={authEnabled:false};' }));
   await page.route('**/auth/client.js*', r => r.fulfill({ contentType: 'application/javascript', body: 'window.ConcretrackAuth={session:async()=>({access_token:"test-token",user:{email:"teste@example.com"}}),client:{auth:{refreshSession:async()=>({data:{session:null}})}}};' }));
   await page.route('**/auth/guard.js*', r => r.fulfill({ contentType: 'application/javascript', body: "document.documentElement.classList.remove('auth-checking');" }));
-  await page.route('**/api', async r => {
-    const body = r.request().postDataJSON() as { acao: string; dados: Record<string, unknown> };
+  await page.route('**/api/v1/rpc', async r => {
+    const body = r.request().postDataJSON() as { acao: string; requestId: string; dados: Record<string, unknown> };
+    expect(r.request().headers()['authorization']).toBe('Bearer test-token');
+    expect(r.request().headers()['idempotency-key']).toBe(body.requestId);
+    expect(r.request().headers()['content-type']).toContain('application/json');
     const dados = body.acao === 'tracos.listar' ? [] : body.acao === 'tracos.salvarVersao' ? { id: body.dados.id, versao: 1, revisao: 1, documento: { ...body.dados, codigo: 'TR-0001', versao: 1, revisao: 1 } } : [];
     await r.fulfill({ contentType: 'application/json', body: JSON.stringify({ ok: true, dados, servidorEm: new Date().toISOString() }) });
   });

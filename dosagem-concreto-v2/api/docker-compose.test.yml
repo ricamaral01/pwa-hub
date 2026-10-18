@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: dosagem_test
+      POSTGRES_PASSWORD: dosagem_test_local
+      POSTGRES_DB: concretrack_dosagem_test
+    ports:
+      - "127.0.0.1:15432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dosagem_test -d concretrack_dosagem_test"]
+      interval: 2s
+      timeout: 2s
+      retries: 20

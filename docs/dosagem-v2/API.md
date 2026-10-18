@@ -1,40 +1,61 @@
-# API da Dosagem v2
+# API da Dosagem v2 — rodada 2
 
-## Transporte
+Base prevista: `https://api-dosagem.concretrack.com.br`. O serviço FastAPI fica em `127.0.0.1:18300` ou na primeira porta livre até 18399; o nginx publica apenas o domínio da API. Nesta rodada, a API foi testada localmente, sem deploy na VPS.
 
-O Web App do Apps Script recebe `POST` com `Content-Type: text/plain;charset=utf-8`. O corpo é JSON e inclui `acao`, `token` da sessão do Hub, `requestId` UUID e `dados`. O token nunca é salvo em planilhas. `GET` é apenas verificação de saúde: `{ "ok": true, "versao": "2.0.0" }`.
+## Saúde
+
+`GET /api/v1/saude` não exige autenticação. Retorna HTTP 200 com `{"ok":true,"versao":"2.0.0","banco":"ok"}` ou HTTP 503 com `banco:"erro"`. Não inclui dados privados.
+
+## RPC
+
+`POST /api/v1/rpc`, `Content-Type: application/json`, `Authorization: Bearer <access_token do Hub>`, `Idempotency-Key: <requestId UUID>`.
 
 ```json
-{ "acao": "tracos.salvarVersao", "token": "<access_token>", "requestId": "f1fa4ec6-f101-4d15-9c96-3bb2daf04d55", "dados": { "id": "<uuid>", "unidade": "campinas", "revisao": 0, "nome": "C40", "objetivo": { "fckMPa": 40, "sdMPa": 4 }, "arIncorporadoPct": 1.5, "itens": [{ "id": "<uuid>", "nome": "Cimento", "categoria": "cimento", "massaKgM3": 350, "massaEspecificaKgDm3": 3.1 }] } }
+{
+  "acao": "tracos.salvarVersao",
+  "requestId": "f1fa4ec6-f101-4d15-9c96-3bb2daf04d55",
+  "dados": {
+    "id": "af38bd52-7e85-4c9a-8796-c72125f35358",
+    "nome": "C40",
+    "unidade": "campinas",
+    "versao": 0,
+    "revisao": 0,
+    "status": "rascunho",
+    "metodo": "manual",
+    "objetivo": {"fckMPa": 40, "sdMPa": 4, "classe": "III", "estrutura": "armado", "abatimentoMm": 100, "toleranciaMm": 20},
+    "arIncorporadoPct": 1.5,
+    "normalizarPara1m3": false,
+    "experimentais": [],
+    "itens": [
+      {"id": "c", "nome": "Cimento", "categoria": "cimento", "massaKgM3": 350, "massaEspecificaKgDm3": 3.12},
+      {"id": "a", "nome": "Areia", "categoria": "areia", "massaKgM3": 400, "massaEspecificaKgDm3": 2.6},
+      {"id": "w", "nome": "Água", "categoria": "agua", "massaKgM3": 175, "massaEspecificaKgDm3": 1}
+    ]
+  }
+}
 ```
 
-O exemplo ilustra o envelope. Um traço completo segue `src/core/model.ts` e precisa incluir os demais campos do modelo. A resposta de sucesso inclui confirmação do servidor:
+O exemplo demonstra o envelope. As regras completas do documento estão em `dosagem-concreto-v2/src/core/model.ts` e na validação da API. O token fica somente no header. `Idempotency-Key` deve coincidir com `requestId`; repetir ambos com os mesmos dados devolve a resposta original sem nova gravação.
 
-```json
-{ "ok": true, "dados": { "id": "<uuid>", "codigo": "TR-0001", "versao": 1, "revisao": 1, "documento": {} }, "servidorEm": "2026-10-17T23:41:00.000Z" }
-```
+Sucesso: `{"ok":true,"dados":{"id":"...","codigo":"TR-0001","versao":1,"revisao":1,"documento":{}},"servidorEm":"2026-10-17T00:00:00Z"}`. Erro: `{"ok":false,"erro":{"codigo":"CONFLITO_REVISAO","mensagem":"...","detalhe":{"atual":{}}},"servidorEm":"..."}`. Códigos: `NAO_AUTENTICADO` (401), `SEM_PERMISSAO` (403), `VALIDACAO` (422), `CONFLITO_REVISAO` (409), `NAO_ENCONTRADO` (404), `LIMITE` (429), `INTERNO` (500).
 
-Uma falha devolve `{ "ok": false, "erro": { "codigo": "CONFLITO_REVISAO", "mensagem": "Este traço foi alterado por outra pessoa.", "detalhe": { "atual": {} } }, "servidorEm": "..." }`. Códigos possíveis: `NAO_AUTENTICADO`, `SEM_PERMISSAO`, `VALIDACAO`, `CONFLITO_REVISAO`, `NAO_ENCONTRADO`, `LIMITE`, `INTERNO`.
+| Ação | Dados | Papel mínimo |
+|---|---|---|
+| `usuarios.listar` | `{}` | usuário ativo |
+| `usuarios.salvar` | usuário com e-mail, nome, papel, unidades e ativo | admin |
+| `tracos.listar` / `.obter` | filtro de unidade; ID e versão | usuário ativo, limitado à unidade |
+| `tracos.salvarVersao` | traço completo | laboratório |
+| `tracos.enviarAprovacao` | ID, versão, revisão | laboratório |
+| `tracos.aprovar` | ID, versão, revisão, parecer | engenheiro |
+| `materiais`, `fornecedores`, `ensaios`, `custos`: `.listar` / `.obter` | filtros ou ID | usuário ativo, limitado à unidade |
+| Os mesmos: `.salvar` | documento com ID e unidade | laboratório |
+| `custos.excluir` | ID e confirmação | admin |
+| `importacao.legado` | `simulacao`, `registros`, `unidadePadrao` | admin |
 
-## Ações existentes
+Importação recebe documentos **já convertidos no navegador**; não lê planilhas no servidor. Cada registro usa `{tipo, origem, id_antigo, documento}`. O lote comporta até 500 registros. A simulação é padrão e informa `lidos`, `convertidos`, `duplicados`, `gravados`, `avisos`, `amostras`; a efetivação usa `simulacao:false`. A chave `(origem,id_antigo)` evita duplicação. A interface exige simulação antes da efetivação.
 
-| Ação | Dados principais | Papel mínimo | Resultado |
-|---|---|---|---|
-| `usuarios.listar` | `{}` | usuário ativo | Seu próprio perfil; admin vê todos |
-| `usuarios.salvar` | e-mail, nome, papel, unidades, ativo | admin | confirmação |
-| `tracos.listar` | unidade opcional | usuário ativo | versões acessíveis |
-| `tracos.obter` | id, versao opcional | usuário ativo | documento |
-| `tracos.salvarVersao` | `Traco` completo | laboratório, engenheiro ou admin | id, código, versão, revisão, documento |
-| `tracos.enviarAprovacao` | id, versao, revisao | laboratório, engenheiro ou admin | documento em teste |
-| `tracos.aprovar` | id, versao, revisao, parecer | engenheiro ou admin | documento aprovado |
-| `materiais`, `fornecedores`, `ensaios`, `custos` + `.listar` / `.obter` | filtros ou id | usuário ativo | documentos |
-| `materiais`, `fornecedores`, `ensaios`, `custos` + `.salvar` | documento com id e unidade | laboratório, engenheiro ou admin | confirmação |
-| `custos.excluir` | id, confirmação com nome do produto | admin | confirmação |
-| `importacao.legado` | `simulacao` (padrão true) | admin | contagens e amostras ou documentos importados |
-| `importacao.documentos` | documentos convertidos | admin | contagens |
+CORS permite apenas `https://usina.concretrack.com.br` e, em `AMBIENTE=dev`, `http://localhost:5173`. Métodos `GET` e `POST`, headers `Authorization`, `Content-Type` e `Idempotency-Key`.
 
-Todas as listas e mutações filtram por unidade. Admin pode acessar todas. A primeira execução reconhece `ADMIN_EMAIL` quando a aba de usuários está vazia; a criação do cadastro ocorre na primeira gravação autenticada. Mutações usam `LockService` e deduplicação por `requestId` na aba `requisicoes`.
+## Identidade e persistência
 
-## Observações de implantação
-
-O navegador só pode chamar a API depois de configurar `VITE_API_URL` e autenticar no Hub. O build entregue sem URL serve para exploração local e rascunhos, mas não confirma gravações. O Web App e as planilhas ainda precisam ser criados e testados com contas reais; as validações de papel e conflito foram inspecionadas no código, sem teste em Apps Script implantado.
+O token do Hub é conferido em `{SUPABASE_URL}/auth/v1/user` com timeout de 5 segundos e cache pelo hash SHA-256 por 5 minutos. Se configurado, JWT HS256 valida assinatura, expiração e audiência. Depois a API procura o e-mail em `usuarios`. Usuário desconhecido ou inativo recebe `SEM_PERMISSAO`. Com a tabela vazia, `ADMIN_EMAIL` cria o primeiro admin. Cada mutação roda em transação, audita e verifica revisão. Os filtros principais são colunas SQL e o documento integral fica em JSONB. Migrações Alembic versionam o esquema.
