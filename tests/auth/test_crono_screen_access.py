@@ -27,3 +27,11 @@ def test_rota_da_coleta_identificada_sem_reaproveitar_tela_antiga():
     api = screen_for_uri("/unificado/laboratorio/api/laboratorio/cronoanalise/medicoes/lote")
     assert page["id"] == "cronoanalise.coletar"
     assert api is None
+
+
+def test_apenas_ricardo_master_recebe_cronoanalise_implicitamente():
+    for user_id, expected in (("user-ricardo", 7), ("marcelo", 0), ("alex", 0)):
+        user = {"id": user_id, "nome": user_id, "perfil": "GERENCIA"}
+        allowed = allowed_screens(user, None, {}, DEFAULT_LAB_USERS)
+        assert len([item for item in allowed if item.startswith("cronoanalise.")]) == expected
+        assert "labMonitor" in allowed

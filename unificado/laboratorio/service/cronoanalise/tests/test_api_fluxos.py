@@ -4,12 +4,15 @@ from __future__ import annotations
 import sys
 from contextlib import nullcontext
 from datetime import datetime, timezone
+from decimal import Decimal
+from io import BytesIO
 from pathlib import Path
 from types import SimpleNamespace
 from uuid import uuid4
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from openpyxl import load_workbook
 
 SERVICE = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(SERVICE))
@@ -94,3 +97,20 @@ def test_importacao_csv_prototipo_decimais_duplicata_e_linha_ruim(monkeypatch):
     assert any('SET valido=false' in sql and values['reason'] == 'Amostra de teste'
                for sql, values in db.commands)
     assert db.commits == 1
+
+
+def test_exportacao_xlsx_com_uuid_data_e_decimal(monkeypatch):
+    identifier = uuid4()
+    started = datetime(2026, 10, 18, 12, 0, tzinfo=timezone.utc)
+    monkeypatch.setattr(api, 'export_rows', lambda db, request: [{
+        'id': identifier, 'inicio': started, 'fim': started,
+        'atividade_codigo': 'P01', 'duracao_s': Decimal('1.25'),
+    }])
+    response = client(monkeypatch, FakeDB(), actions=('analisar',)).get(
+        '/api/laboratorio/cronoanalise/medicoes/exportar.xlsx')
+    assert response.status_code == 200
+    values = list(load_workbook(BytesIO(response.content), read_only=True).active.values)
+    assert len(values) == 2
+    assert values[1][0] == str(identifier)
+    assert values[1][1] == started.isoformat()
+    assert values[1][api.EXPORT_FIELDS.index('duracao_s')] == 1.25

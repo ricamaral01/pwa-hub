@@ -347,8 +347,10 @@ def export_xlsx(request: Request, user=Depends(require("analisar")), db=Depends(
     sheet = book.create_sheet("Medições")
     sheet.append(EXPORT_FIELDS)
     for row in export_rows(db, request):
-        sheet.append([float(value) if isinstance(value := row.get(key), Decimal) else value
-                      for key in EXPORT_FIELDS])
+        sheet.append([float(value) if isinstance(value := row.get(key), Decimal)
+                      else value.isoformat() if isinstance(value, datetime)
+                      else str(value) if isinstance(value, UUID)
+                      else value for key in EXPORT_FIELDS])
     stream = io.BytesIO()
     book.save(stream)
     stream.seek(0)
