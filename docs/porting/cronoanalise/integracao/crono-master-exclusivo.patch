@@ -1,0 +1,31 @@
+--- a/unificado/mapa/api/screen_access.py
++++ b/unificado/mapa/api/screen_access.py
+@@ -59,5 +59,6 @@
+ def allowed_screens(user, planning_role, overrides, lab_users):
+     if user['id'] in MASTER_USER_IDS:
+-        return [row['id'] for row in CATALOG]
++        return [row['id'] for row in CATALOG
++                if not row['id'].startswith('cronoanalise.') or user['id'] == MASTER_USER_ID]
+     if user['perfil'] == 'CONVIDADO':
+         return [row['id'] for row in CATALOG if row['id'] not in GUEST_FORBIDDEN_SCREENS
+--- a/unificado/mapa/api/app.py
++++ b/unificado/mapa/api/app.py
+@@ -705,7 +705,7 @@
+ 
+ 
+ def crono_actions(user_id):
+-    if user_id in MASTER_USER_IDS:
++    if user_id == MASTER_USER_ID:
+         return sorted(CRONO_ACTION_IDS)
+     with connect() as conn, conn.cursor() as cur:
+         cur.execute("""SELECT action_id FROM unificado_auth.user_action_permissions
+@@ -1887,7 +1887,7 @@
+     if not actor or request.headers.get("Origin") not in {
+             "https://concrefer.concretrack.com.br",
+             "https://concrefer.concretrack.com.br:18446"}:
+         return jsonify(ok=False), 403
+-    if user_id in MASTER_USER_IDS:
++    if user_id == MASTER_USER_ID:
+         return jsonify(ok=False, error="A conta master tem acesso implícito."), 409
+     data = request.get_json(silent=True)
+     selected = data.get("actions") if isinstance(data, dict) and set(data) == {"actions"} else None
