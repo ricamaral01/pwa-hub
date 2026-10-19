@@ -24,7 +24,7 @@ function escapeHtml(value) {
 }
 
 function inferCodigoForma(row) {
-  if (etiquetasSC) return `SC ${String(row.modelo_sc || '').trim()}`;
+  if (etiquetasSC) return String(row.modelo_sc || '').trim().replace(/^SC(?=[\s-]|\d)[\s-]*/i, '').trim();
   const produto = row.produto || {};
   const codigo = String(produto.codigo || '').trim().toUpperCase();
   const nome = String(produto.nome || produto.nome_poste || '').trim().toUpperCase();
@@ -107,7 +107,7 @@ async function buscarProgramacao(data, setor) {
       const productionRow = produced.get(form);
       const fromProduction = String(productionRow?.tipo_realizado || '').trim();
       const model = fromProduction && !/^SC$/i.test(fromProduction) ? fromProduction : (byForm.get(form) || productionRow?.tipo_programado || '');
-      const cleanModel = model.replace(/^SC\s+/i, '').trim().replace(/×/g, 'X').toUpperCase();
+      const cleanModel = model.replace(/^SC(?=[\s-]|\d)[\s-]*/i, '').trim().replace(/×/g, 'X').toUpperCase();
       return {
         quantidade_programada: 1,
         codigo_forma: form,
