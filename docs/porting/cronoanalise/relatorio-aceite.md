@@ -39,3 +39,5 @@ Playwright conferiu a casca e o aplicativo com `scrollWidth - clientWidth <= 1` 
 - O [roteiro de rollback](T6b-producao.md#roteiro-de-rollback--documentado-não-executado) cobre frontend, router, gateway, permissões e schema. Não foi executado. Após os testes finais, tanto produção quanto homologação tinham **0 medições, 0 simulações e 0 eventos de auditoria** da Cronoanálise.
 
 **Aceite técnico:** os fluxos solicitados e as correções encontradas na validação passaram. Permanecem explícitas as três falhas de linha de base preexistentes, a diferença de inventário autorizada pela ativação do Laboratório e a limitação de desempenho medida em viewport celular sem dispositivo físico.
+
+**Ajuste posterior, 19/10/2026:** após relato de que o menu do Laboratório não mostrava a Cronoanálise em um navegador já atualizado, foi [corrigida a versão de cache da casca](T6b-correcao-cache.md). Um smoke com service worker ativo confirmou os sete links em duas aberturas.
