@@ -1194,6 +1194,7 @@ def listar_programacao_opcoes_formas(
     """
     produtos = db.query(Produto).filter(Produto.setor_id == setor_id).all()
     produtos_por_nome = {_norm_text(p.nome): p for p in produtos}
+    produtos_por_codigo = {str(p.codigo): p for p in produtos if p.codigo}
     todos_produtos_por_nome = {_norm_text(p.nome): p for p in db.query(Produto).all()}
 
     def encontrar_produto(*nomes: Optional[str]):
@@ -1225,7 +1226,9 @@ def listar_programacao_opcoes_formas(
             MapeamentoForma.setor_id == setor_id,
             MapeamentoForma.ativo == True,
         ).order_by(MapeamentoForma.codigo_forma).all():
-            produto = encontrar_produto(item.poste, item.tipo_forma)
+            codigo_forma = str(item.codigo_forma or "").strip().upper()
+            produto_pl = produtos_por_codigo.get("934") if setor_id == 2 and re.match(r"^PL\s*[- ]\s*[1-6]$", codigo_forma) else None
+            produto = produto_pl or encontrar_produto(item.poste, item.tipo_forma)
             payload = produto_payload(produto, item.poste, item.volume_m3)
             key = payload["produto_id"] or _norm_text(item.poste)
             current = agrupados.setdefault(key, {
@@ -1237,6 +1240,19 @@ def listar_programacao_opcoes_formas(
                 **payload,
             })
             current["quantidade_formas"] += 1
+        if setor_id == 2:
+            # As seis formas PL atendem aos dois produtos; a programação distingue o destino.
+            cpfl = next((row for row in agrupados.values() if row.get("produto_codigo") == "934"), None)
+            elektro = produtos_por_codigo.get("15351")
+            if cpfl and elektro and elektro.id not in agrupados:
+                agrupados[elektro.id] = {
+                    "modo": "poste",
+                    "forma": elektro.nome,
+                    "tipo_forma": cpfl["tipo_forma"],
+                    "poste": elektro.nome,
+                    "quantidade_formas": cpfl["quantidade_formas"],
+                    **produto_payload(elektro, elektro.nome, elektro.volume),
+                }
         if setor_id == 1:
             for produto in produtos:
                 key = produto.id
@@ -1458,6 +1474,7 @@ def processar_programacao_alex(
             volume_unit = float(produto.get("volume") or opcao.get("volume") or 0)
             qtd_formas = int(opcao.get("quantidade_formas") or produto.get("quantidade_formas") or 0)
             qtd_mega = int(mega.get("producao_diaria") or 0)
+            qtd_inicial = 0 if opcao.get("setor_id") == 2 and codigo == "15351" and "934" in mega_por_codigo else qtd_formas
             formas.append({
                 "setor_id": opcao.get("setor_id"),
                 "setor_nome": opcao.get("setor_nome"),
@@ -1469,11 +1486,11 @@ def processar_programacao_alex(
                 "qtde_estoque": mega.get("qtde_estoque"),
                 "qtde_carteira": mega.get("qtde_carteira"),
                 "saldo": float(mega.get("qtde_estoque") or 0) - float(mega.get("qtde_carteira") or 0),
-                "quantidade_produzir": qtd_formas,
-                "programacao": qtd_formas,
+                "quantidade_produzir": qtd_inicial,
+                "programacao": qtd_inicial,
                 "producao_diaria_mega": qtd_mega,
                 "volume_unitario": volume_unit,
-                "volume_total": round(volume_unit * qtd_formas, 3),
+                "volume_total": round(volume_unit * qtd_inicial, 3),
                 "descricao_mega": mega.get("descricao"),
                 "unidade": mega.get("unidade"),
                 "dias_prev_prod": mega.get("dias_prev_prod"),

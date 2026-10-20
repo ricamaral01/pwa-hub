@@ -157,6 +157,8 @@ MODELO_PRODUTO_LEGADO: Dict[tuple, str] = {
     ("setor 2", "600-vl"):              "937",
     ("setor 2", "600-vr"):              "940",
     ("setor 2", "7,5x300 c/ lente"):    "934",
+    ("setor 2", "pl cpfl"):             "934",
+    ("setor 2", "ple elektro"):         "15351",
 }
 
 

@@ -319,6 +319,11 @@ POSTES_DUPLO_T_CATALOGO.forEach((item) => {
   (item.chaves || []).forEach((chave) => POSTES_DUPLO_T_BY_CHAVE.set(normalizeUpper(chave), item));
 });
 
+const PL_PRODUCTS = {
+  "934": { modelo: "PL CPFL", codigoPoste: "PL", descricaoPoste: "PL CPFL", codigoProduto: "934" },
+  "15351": { modelo: "PLE ELEKTRO", codigoPoste: "PLE", descricaoPoste: "PLE ELEKTRO", codigoProduto: "15351" }
+};
+
 const SETOR_1_LEFT_FORMS = [
   { forma: "IE-01", modelo: "3 CXS VL" },
   { forma: "BD-01", modelo: "1 CX VL" },
@@ -649,6 +654,10 @@ const SECTOR_FORMS = {
 };
 
 function getProductionModelOptions(forma, setor, fallbackModel = "") {
+  if (setor === "Setor 2" && getFormaCatalogKey(forma) === "PL") {
+    const programmed = state.programmedProductsByForma.get(normalizeUpper(forma));
+    return programmed ? [PL_PRODUCTS[programmed].modelo] : Object.values(PL_PRODUCTS).map((product) => product.modelo);
+  }
   const forms = SECTOR_FORMS[setor] || {};
   const item = Object.values(forms).flat().find((entry) => normalizeUpper(entry.forma) === normalizeUpper(forma));
   const official = window.PRODUCTION_MODELS_BY_FORMA?.[setor]?.[normalizeUpper(forma)];
@@ -858,6 +867,7 @@ const state = {
   odinMode: false,
   manutencaoMode: false,
   programmedFormas: new Set(),
+  programmedProductsByForma: new Map(),
   dbDataCache: {},
   dbDataStatusCache: {},
   activeInsSector: ""
@@ -1145,6 +1155,9 @@ function getPosteCatalogForForma(forma) {
 
 function withPosteData(item, setor) {
   const base = item || {};
+  const plProduct = setor === "Setor 2" && getFormaCatalogKey(base.forma) === "PL"
+    ? PL_PRODUCTS[state.programmedProductsByForma.get(normalizeUpper(base.forma))] : null;
+  if (plProduct) return { ...base, ...plProduct, setorProduto: setor };
   const catalog = getPosteCatalogForForma(base.forma);
   if (!catalog) {
     return {
@@ -1173,6 +1186,10 @@ function getPosteFieldsForForma(forma, setor) {
 }
 
 function getProductionPosteFields(forma, setor, modelo, card) {
+  if (setor === "Setor 2" && getFormaCatalogKey(forma) === "PL") {
+    const product = Object.values(PL_PRODUCTS).find((item) => normalizeProductionModelKey(item.modelo) === normalizeProductionModelKey(modelo));
+    if (product) return product;
+  }
   const cardFields = {
     codigoPoste: card?.dataset?.codigoPoste || "",
     descricaoPoste: card?.dataset?.descricaoPoste || "",
@@ -2282,6 +2299,11 @@ function createFormaCard(item, setor) {
 
   const tipoEl = document.createElement("span");
   tipoEl.className = "fc-tipo";
+  if (setor === "Setor 2" && getFormaCatalogKey(item.forma) === "PL"
+      && state.programmedProductsByForma.has(normalizeUpper(item.forma))) {
+    tipoEl.textContent = `${item.modelo} · ${item.codigoProduto}`;
+    tipoEl.style.display = "block";
+  }
 
   const statusEl = document.createElement("span");
   statusEl.className = "fc-status";
@@ -3427,8 +3449,10 @@ function resolveOfficialProgrammedFormas(rows, setor) {
   const operationalFormsWithProducts = operationalForms.map((item) => withPosteData(item, setor));
   const visibleForms = new Set(operationalForms.map((item) => normalizeUpper(item.forma)));
   const visibleProductCodes = new Set(operationalFormsWithProducts.map((item) => normalizeUpper(item.codigoProduto)).filter(Boolean));
+  if (setor === "Setor 2") visibleProductCodes.add("15351");
   const programmed = new Set();
   const remainingByProduct = new Map();
+  const productsByForma = new Map();
 
   (Array.isArray(rows) ? rows : []).forEach((row) => {
     const quantidade = Math.max(0, Number.parseInt(row.quantidade_programada, 10) || 0);
@@ -3436,7 +3460,11 @@ function resolveOfficialProgrammedFormas(rows, setor) {
 
     const forma = normalizeUpper(row.codigo_forma || row.forma);
     if (forma) {
-      if (visibleForms.has(forma)) programmed.add(forma);
+      if (visibleForms.has(forma)) {
+        programmed.add(forma);
+        const code = normalizeUpper(row.produto?.codigo || row.produto_codigo || row.codigo);
+        if (getFormaCatalogKey(forma) === "PL" && PL_PRODUCTS[code]) productsByForma.set(forma, code);
+      }
       return;
     }
 
@@ -3446,6 +3474,7 @@ function resolveOfficialProgrammedFormas(rows, setor) {
   });
 
   operationalFormsWithProducts.forEach((item) => {
+    if (setor === "Setor 2" && getFormaCatalogKey(item.forma) === "PL") return;
     const produtoCodigo = normalizeUpper(item.codigoProduto);
     const restante = remainingByProduct.get(produtoCodigo) || 0;
     if (!produtoCodigo || restante <= 0) return;
@@ -3453,12 +3482,28 @@ function resolveOfficialProgrammedFormas(rows, setor) {
     remainingByProduct.set(produtoCodigo, restante - 1);
   });
 
+  if (setor === "Setor 2") {
+    const plForms = operationalFormsWithProducts.filter((item) => getFormaCatalogKey(item.forma) === "PL");
+    for (const code of ["934", "15351"]) {
+      let remaining = remainingByProduct.get(code) || 0;
+      for (const item of plForms) {
+        const forma = normalizeUpper(item.forma);
+        if (!remaining || productsByForma.has(forma)) continue;
+        productsByForma.set(forma, code);
+        programmed.add(forma);
+        remaining--;
+      }
+      remainingByProduct.set(code, remaining);
+    }
+  }
+
   remainingByProduct.forEach((restante, produtoCodigo) => {
     if (restante > 0) {
       console.warn(`[programacao PCP] Produto ${produtoCodigo}: ${restante} unidade(s) sem forma operacional disponível no ${setor}.`);
     }
   });
 
+  state.programmedProductsByForma = productsByForma;
   return programmed;
 }
 
@@ -3489,6 +3534,7 @@ async function loadProgrammedFormas() {
 
   if (!sectorLabel) return;
 
+  state.programmedProductsByForma = new Map();
   state.programmedFormas = await loadOfficialProgrammedFormas(data, sectorLabel);
 
   let loadedFromDb = false;
