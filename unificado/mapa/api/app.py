@@ -47,11 +47,11 @@ TEST_PAGE_COOKIE_NAME = "unificado_test_session"
 SESSION_SECONDS = 36 * 60 * 60
 READ_TABLES = frozenset({
     "usuarios", "programacao_pcp", "liberacao_formas", "producao",
-    "montagem_poste", "formas_manutencao", "prog_s3_s4", "vw_formas_status",
+    "montagem_poste", "inspecao_defeitos", "formas_manutencao", "prog_s3_s4", "vw_formas_status",
 })
 WRITE_TABLES = frozenset({
     "programacao_pcp", "liberacao_formas", "producao",
-    "montagem_poste", "formas_manutencao", "prog_s3_s4",
+    "montagem_poste", "inspecao_defeitos", "formas_manutencao", "prog_s3_s4",
 })
 OPERATION_TABLES = {
     "programada": "programacao_pcp",
@@ -565,6 +565,11 @@ def rest_read(resource):
         return jsonify(ok=False), 401
     if resource not in READ_TABLES:
         return jsonify(ok=False), 404
+    if (resource == "inspecao_defeitos" and
+            (user["perfil"] not in {"GERENCIA", "MONTADOR"} or
+             request.headers.get("X-Unificado-Screen", "") not in
+             {"INSPECAO", "INSPECAO_DETALHE", "inspecao"})):
+        return jsonify(error="Você não tem acesso a esta tela"), 403
     first_access_password_change = (
         resource == "usuarios" and request.method == "PATCH"
         and user["primeiro_acesso"] and request.args.get("id") == "eq." + user["id"]

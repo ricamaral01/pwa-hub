@@ -13,6 +13,7 @@
   <title>CONCRETRACK • Mapa</title>
   <link rel="manifest" href="manifest.json?v=v5.31" />
   <link rel="stylesheet" href="styles.css?v=v5.31" />
+  <link rel="stylesheet" href="inspecao-defeitos.css?v=20261021" />
   <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v5.31" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
@@ -587,6 +588,53 @@
         <h2>Inspeção Setor 3 e 4</h2>
         <button class="btn btn-back" type="button" data-back-btn>Voltar</button>
       </div>
+      <div id="insDefApp" class="ins-def-app">
+        <div class="ins-def-tabs" role="tablist" aria-label="Inspeção de defeitos">
+          <button type="button" data-ins-tab="registrar" class="active">Registrar</button>
+          <button type="button" data-ins-tab="analise">Análise</button>
+          <button type="button" data-ins-tab="postes">Postes</button>
+          <button type="button" data-ins-tab="producao">Produção</button>
+        </div>
+        <p id="insDefGlobalStatus" class="ins-def-message error" role="status" aria-live="polite"></p>
+        <div id="insDefRegistrar" class="ins-def-panel">
+          <div class="ins-def-intro"><strong>Levantamento de defeitos</strong><span>Setores 3 e 4 · Base, meio e topo</span></div>
+          <form id="insDefForm">
+            <div class="ins-def-fields">
+              <label>Setor<select name="setor" required><option value="Setor 3">Setor 3</option><option value="Setor 4">Setor 4</option></select></label>
+              <label>Nº de série<input name="serie" type="text" maxlength="80" required autocomplete="off" /></label>
+              <label>Data da desforma<input name="data_desforma" type="date" required /></label>
+              <label>Turno<select name="turno" required><option value="">Selecione</option><option>1</option><option>2</option><option>3</option></select></label>
+              <label>Tipo / modelo<input name="tipo" type="text" maxlength="120" required /></label>
+              <label>Nº da forma<input name="forma_numero" type="text" maxlength="80" required /></label>
+            </div>
+            <p id="insDefVinculo" class="ins-def-vinculo" hidden></p>
+            <div class="ins-def-matrix-heading"><h3>Defeitos por região</h3><span>Toque em + para registrar cada ocorrência</span></div>
+            <div id="insDefMatrix" class="ins-def-matrix"></div>
+            <div class="ins-def-bottom">
+              <fieldset id="insDefClasses"><legend>Classificação</legend>
+                <label><input type="radio" name="classe" value="A" checked /> A · Conforme / estoque</label>
+                <label><input type="radio" name="classe" value="B" /> B · Reparo padrão</label>
+                <label><input type="radio" name="classe" value="C" /> C · Crítico / NC</label>
+              </fieldset>
+              <label>Observações<textarea name="observacoes" rows="3" maxlength="2000" placeholder="Descreva detalhes do defeito ou do reparo"></textarea></label>
+            </div>
+            <div class="ins-def-actions"><button type="button" id="insDefLimpar" class="btn">Limpar</button><button type="submit" id="insDefSalvar" class="btn primary">Salvar inspeção</button></div>
+            <p id="insDefMessage" class="ins-def-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div id="insDefAnalise" class="ins-def-panel" hidden>
+          <div class="ins-def-fields ins-def-filters"><label>De<input id="insDefDe" type="date" /></label><label>Até<input id="insDefAte" type="date" /></label><label>Setor<select id="insDefSetorFiltro"><option value="">Todos</option><option>Setor 3</option><option>Setor 4</option></select></label><label>Turno<select id="insDefTurnoFiltro"><option value="">Todos</option><option>1</option><option>2</option><option>3</option></select></label></div>
+          <div id="insDefKpis" class="ins-def-kpis"></div>
+          <h3>Pareto de defeitos</h3><div id="insDefParetoChart" class="ins-def-scroll"></div><div id="insDefPareto" class="ins-def-scroll"></div>
+          <h3>Região do defeito</h3><div id="insDefHeat" class="ins-def-scroll"></div>
+          <h3>Por forma</h3><div id="insDefForma" class="ins-def-scroll"></div>
+          <h3>Por grupo de causa</h3><div id="insDefGrupo" class="ins-def-scroll"></div>
+          <h3>Por dia</h3><div id="insDefDia" class="ins-def-scroll"></div>
+          <button type="button" id="insDefCsv" class="btn">Exportar CSV</button>
+        </div>
+        <div id="insDefPostes" class="ins-def-panel" hidden><label>Buscar poste<input id="insDefBusca" type="search" placeholder="Série, forma, tipo ou defeito" /></label><div id="insDefLista"></div></div>
+      </div>
+      <div id="insDefProducao" hidden>
       <div class="grid">
         <label>Filtrar data
           <input id="insFiltroData" type="date" />
@@ -640,6 +688,7 @@
           </thead>
           <tbody id="insLiberadosBody"></tbody>
         </table>
+      </div>
       </div>
     </section>
 
@@ -1813,6 +1862,7 @@
   <script src="supabase.js"></script>
   <script src="modelos-formas.js?v=v5.31"></script>
   <script src="app.js?v=v5.31"></script>
+  <script src="inspecao-defeitos.js?v=20261021c"></script>
   <script src="unificado-invite.js?v=1"></script>
 </body>
 </html>

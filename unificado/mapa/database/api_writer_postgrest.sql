@@ -8,12 +8,12 @@ GRANT SELECT ON api.vw_formas_status TO mapa_api_writer;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON
   api.programacao_pcp, api.liberacao_formas, api.producao,
-  api.montagem_poste, api.formas_manutencao, api.prog_s3_s4
+  api.montagem_poste, api.inspecao_defeitos, api.formas_manutencao, api.prog_s3_s4
 TO mapa_api_writer;
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON
   public.programacao_pcp, public.liberacao_formas, public.producao,
-  public.montagem_poste, public.formas_manutencao, public.prog_s3_s4
+  public.montagem_poste, public.inspecao_defeitos, public.formas_manutencao, public.prog_s3_s4
 TO mapa_api_writer;
 
 COMMIT;

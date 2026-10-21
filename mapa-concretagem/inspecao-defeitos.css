@@ -1,0 +1,56 @@
+.ins-def-app { color: var(--text); max-width: 100%; }
+.ins-def-tabs { display:flex; gap:6px; overflow-x:auto; padding:4px 0 14px; scrollbar-width:thin; }
+.ins-def-tabs button { flex:1 0 auto; min-height:44px; border:1px solid var(--line); border-radius:10px; background:var(--card); color:var(--primary); font:inherit; font-weight:700; padding:8px 14px; cursor:pointer; }
+.ins-def-tabs button.active { background:var(--primary); color:white; border-color:var(--primary); }
+.ins-def-panel[hidden], #insDefProducao[hidden] { display:none !important; }
+.ins-def-intro { display:flex; justify-content:space-between; gap:8px; align-items:baseline; background:var(--primary); color:white; border-radius:12px; padding:15px; margin-bottom:16px; }
+.ins-def-intro span { font-size:.82rem; opacity:.86; }
+.ins-def-fields { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
+.ins-def-fields label, .ins-def-bottom > label, #insDefPostes > label { display:flex; flex-direction:column; gap:5px; min-width:0; font-weight:650; }
+.ins-def-fields input, .ins-def-fields select, .ins-def-bottom textarea, #insDefBusca { width:100%; min-width:0; min-height:44px; font:inherit; border:1px solid var(--line); border-radius:8px; padding:8px 10px; background:white; color:var(--text); }
+.ins-def-vinculo { padding:10px 12px; background:var(--tag-bg); border-left:4px solid var(--accent); border-radius:6px; }
+.ins-def-matrix-heading { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px; margin-top:14px; }
+.ins-def-matrix-heading h3 { margin:0; }
+.ins-def-matrix-heading span { color:var(--muted); font-size:.82rem; }
+.ins-def-matrix { margin:10px 0 16px; }
+.ins-def-group { border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:10px; background:white; }
+.ins-def-group-title { padding:10px 12px; background:var(--tag-bg); color:var(--primary); font-weight:750; }
+.ins-def-row { display:grid; grid-template-columns:minmax(180px,1fr) repeat(3,minmax(92px,120px)); border-top:1px solid var(--line); }
+.ins-def-row > * { padding:8px; min-width:0; }
+.ins-def-row-head { background:#f8fafc; color:var(--muted); font-weight:750; text-align:center; }
+.ins-def-row-head > :first-child { text-align:left; }
+.ins-def-name { display:flex; gap:8px; align-items:center; line-height:1.25; }
+.ins-def-icon { font-size:1.8rem; line-height:1; width:2rem; flex:none; text-align:center; }
+.ins-def-code { font-size:.72rem; font-weight:750; color:var(--primary-light); }
+.ins-def-stepper { display:flex; align-items:center; justify-content:center; gap:2px; }
+.ins-def-stepper button { width:36px; height:38px; border:1px solid var(--line); border-radius:7px; background:var(--tag-bg); color:var(--primary); font-size:1.2rem; font-weight:750; touch-action:manipulation; }
+.ins-def-stepper output { min-width:24px; text-align:center; font-weight:750; }
+.ins-def-bottom { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+#insDefClasses { border:1px solid var(--line); border-radius:10px; display:grid; gap:7px; min-width:0; }
+#insDefClasses legend { font-weight:750; }
+#insDefClasses label { display:flex; gap:6px; align-items:center; min-height:34px; }
+.ins-def-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:16px; }
+.ins-def-actions button { min-height:44px; }
+.ins-def-message { min-height:1.4em; font-weight:650; color:var(--primary); }
+.ins-def-message:empty { display:none; }
+.ins-def-message.error { color:var(--danger); }
+.ins-def-kpis { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; margin:15px 0; }
+.ins-def-kpi { border:1px solid var(--line); border-radius:10px; padding:12px; background:var(--card); }
+.ins-def-kpi span { display:block; color:var(--muted); font-size:.8rem; }
+.ins-def-kpi strong { font-size:1.4rem; color:var(--primary); }
+.ins-def-scroll { overflow-x:auto; margin-bottom:18px; }
+.ins-def-scroll table { width:100%; border-collapse:collapse; min-width:450px; }
+.ins-def-scroll th, .ins-def-scroll td { border-bottom:1px solid var(--line); padding:8px; text-align:left; }
+.ins-def-scroll th { background:var(--tag-bg); color:var(--primary); }
+.ins-def-chart { display:block; width:100%; min-width:440px; max-height:310px; background:white; border:1px solid var(--line); border-radius:10px; }
+.ins-def-heat { display:block; min-width:45px; padding:4px 8px; border-radius:5px; text-align:center; }
+.ins-def-list-item { display:grid; grid-template-columns:50px minmax(0,1fr) auto; gap:10px; border:1px solid var(--line); border-radius:10px; padding:12px; margin:10px 0; background:white; }
+.ins-def-list-item p { margin:4px 0; color:var(--muted); overflow-wrap:anywhere; }
+.ins-def-badge { display:grid; place-items:center; font-size:1.3rem; font-weight:800; border-radius:9px; background:#e7f5ee; color:#116d3c; }
+.ins-def-badge.B { background:#fff0db; color:#9b5700; }
+.ins-def-badge.C { background:#fce8e8; color:#a01818; }
+.ins-def-list-actions { display:flex; gap:6px; align-items:start; }
+.ins-def-list-actions button { min-height:40px; }
+@media (max-width:820px) { .ins-def-fields { grid-template-columns:repeat(2,minmax(0,1fr)); } .ins-def-kpis { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (max-width:600px) { .ins-def-intro { display:block; } .ins-def-intro span { display:block; margin-top:4px; } .ins-def-fields, .ins-def-bottom { grid-template-columns:1fr; } .ins-def-kpis { grid-template-columns:repeat(2,minmax(0,1fr)); } .ins-def-row { grid-template-columns:repeat(3,minmax(0,1fr)); padding:5px 8px; } .ins-def-row-head { padding:3px 8px; } .ins-def-row-head > :first-child { display:none; } .ins-def-row > * { padding:4px 2px; } .ins-def-name { grid-column:1 / -1; gap:7px; font-size:.86rem; overflow-wrap:anywhere; } .ins-def-icon { width:1.9rem; font-size:1.65rem; } .ins-def-stepper { gap:2px; } .ins-def-stepper button { flex:0 0 36px; width:36px; height:42px; } .ins-def-stepper output { min-width:20px; font-size:.9rem; } .ins-def-list-item { grid-template-columns:42px minmax(0,1fr); } .ins-def-list-actions { grid-column:2; } }
+@media (max-width:360px) { .ins-def-stepper button { flex-basis:32px; width:32px; } .ins-def-row { padding-left:4px; padding-right:4px; } }

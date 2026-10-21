@@ -4510,7 +4510,7 @@ async function renderInspecaoLiberados() {
       <td data-label="Modelo">${record.modelo || ""}</td>
       <td data-label="Data Prod.">${fmtDate(record.dataFabricacao || "")}</td>
       <td data-label="Status / Defeito" style="max-width:220px;line-height:1.4">${statusDefeitoHtml}</td>
-      <td data-label="Ação">${acaoContent}</td>
+      <td data-label="Ação">${acaoContent}<button type="button" class="btn ins-def-select-btn" style="width:100%;margin-top:6px">Registrar defeitos</button></td>
     `;
     el.insLiberadosBody.appendChild(tr);
   });
@@ -9767,6 +9767,10 @@ function bindEvents() {
         codigoProduto
       };
 
+      if (target.closest(".ins-def-select-btn")) {
+        window.insDefeitosSelecionarPoste?.(posteBase);
+        return;
+      }
       if (target.closest(".ins-open-btn")) {
         await openInspecaoPosteDetalhe(posteBase);
       } else if (target.closest(".ins-ver-checklist-btn") || tr.dataset.inspecaoRaw) {

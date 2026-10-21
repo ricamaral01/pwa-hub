@@ -63,7 +63,7 @@ def main() -> None:
     if TARGET.exists():
         shutil.rmtree(TARGET)
     TARGET.mkdir(parents=True, exist_ok=True)
-    for name in ("styles.css", "dashboard-defeitos-v4.css", "chart.min.js",
+    for name in ("styles.css", "inspecao-defeitos.css", "inspecao-defeitos.js", "dashboard-defeitos-v4.css", "chart.min.js",
                  "chartjs-plugin-datalabels.min.js", "xlsx.full.min.js",
                  "modelos-formas.js", "supabase.js", "manifest.json"):
         shutil.copy2(SOURCE / name, TARGET / name)

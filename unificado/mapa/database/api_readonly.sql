@@ -26,6 +26,7 @@ CREATE OR REPLACE VIEW api.programacao_pcp AS SELECT * FROM public.programacao_p
 CREATE OR REPLACE VIEW api.liberacao_formas AS SELECT * FROM public.liberacao_formas;
 CREATE OR REPLACE VIEW api.producao AS SELECT * FROM public.producao;
 CREATE OR REPLACE VIEW api.montagem_poste AS SELECT * FROM public.montagem_poste;
+CREATE OR REPLACE VIEW api.inspecao_defeitos AS SELECT * FROM public.inspecao_defeitos;
 CREATE OR REPLACE VIEW api.formas_manutencao AS SELECT * FROM public.formas_manutencao;
 CREATE OR REPLACE VIEW api.prog_s3_s4 AS SELECT * FROM public.prog_s3_s4;
 
