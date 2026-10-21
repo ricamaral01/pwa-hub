@@ -1,4 +1,4 @@
-const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__-insdef3";
+const CACHE_NAME = "concrefer-unificado-mapa-operacao-v__UNIFICADO_VERSION__-insdef4";
 const SHELL = ["./index.html", "./manifest.json", "./unificado-icon.png",
   "./styles.css", "./inspecao-defeitos.css", "./inspecao-defeitos.js", "./dashboard-defeitos-v4.css", "./dashboard-defeitos-v5.css", "./assets/msgbox.css",
   "./supabase.js", "./chart.min.js", "./chartjs-plugin-datalabels.min.js",

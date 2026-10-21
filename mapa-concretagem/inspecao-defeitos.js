@@ -35,7 +35,28 @@
   const dec = (a, b) => b ? (a / b).toFixed(2).replace('.', ',') : '—';
   const nfmt = n => new Intl.NumberFormat('pt-BR').format(n);
   const key = (code, region) => `${code}|${region}`;
-  const icon = d => (typeof DEFEITO_ICONES !== 'undefined' && DEFEITO_ICONES[d[4]]) || '⚠️';
+  // Desenhos vetoriais do mockup original de levantamento de defeitos.
+  const pole = '<path class="p" d="M3 10 L29 11.5 L29 20.5 L3 22 Z"/>';
+  const defectDrawings = {
+    D01:pole+'<circle class="mf" cx="11" cy="14" r="1.1"/><circle class="mf" cx="14" cy="17.5" r="1.1"/><circle class="mf" cx="16.5" cy="14.5" r="1.1"/><circle class="mf" cx="12" cy="19" r="0.9"/><circle class="mf" cx="19" cy="17" r="0.9"/>',
+    D02:pole+'<path class="mf" d="M12 13.5q4-2.5 7 0.5q2.5 3-1 5.5q-4 2-6.5-1q-2-3 0.5-5z"/>',
+    D03:pole+'<circle class="m" cx="9" cy="15" r="1.4"/><circle class="m" cx="14" cy="18.5" r="1.4"/><circle class="m" cx="19" cy="14.5" r="1.4"/><circle class="m" cx="24" cy="18" r="1.4"/>',
+    D04:'<path class="p" d="M3 10 L29 11.5 L29 15.5 L24.5 20.7 L3 22 Z"/><path class="m" d="M29 15.5 L29 20.5 L24.5 20.7" stroke-dasharray="1.6 1.6"/>',
+    D05:pole+'<path class="m" d="M16.5 10.5l-1.8 3l2.6 2.2l-2.2 3l1.6 3.3"/>',
+    D06:pole+'<path class="m" d="M5 16.5l4-1.6l3 2l4-1.8l3 1.7l4-1.4l3 1"/>',
+    D07:pole+'<ellipse class="m" cx="16" cy="16" rx="6.5" ry="3.6"/><path class="m" d="M7 16H25" stroke-width="2.6"/>',
+    F01:pole+'<path class="m" d="M5 10.1l1-3.2l1.8 3.3l1.2-2.8l1.8 2.9l1.2-3.3l1.9 3.5"/>',
+    F02:'<path class="p" d="M3 10 L16 10.75 L16 8.6 L29 9.4 L29 20.5 L3 22 Z"/><path class="m" d="M16 11.2V8.2"/><path class="m" d="M16 11.2V21" stroke-dasharray="1.6 1.6"/>',
+    F03:pole+'<path class="m" d="M4 16H9M24 16H28"/><path class="mf" d="M10 16q2-1.8 4 0q2 1.6 4-0.2q2-1.5 5 0.2q-3 2.3-5 0.8q-2 1.6-4 0.1q-2 1.4-4-0.9z"/>',
+    F04:pole+'<path class="m" d="M10 12.5q6 6.5 12 0"/><path class="m" d="M12.5 14.5q3.5 2.6 7 0" opacity=".55"/>',
+    F05:'<circle cx="16" cy="16" r="9" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="2 2"/><ellipse class="m" cx="16" cy="16" rx="11.5" ry="7"/>',
+    D08:'<path class="p" d="M3 17 Q16 7 29 17 L29 22 Q16 12 3 22 Z"/><path class="m" d="M3 25H29" stroke-dasharray="2 2"/>',
+    D09:'<path class="p" d="M3 7 L29 8.5 L29 17.5 L3 19 Z"/><path class="m" d="M4 25H28M3 22.5V27.5M29 22.5V27.5M6 23.2L4 25L6 26.8M26 23.2L28 25L26 26.8"/>',
+    D10:pole+'<circle cx="16" cy="16" r="3.6" fill="var(--card)" stroke="var(--muted)" stroke-width="1.2"/><path class="m" d="M13.4 13.4l5.2 5.2M18.6 13.4l-5.2 5.2"/>',
+    D11:pole+'<rect x="10.5" y="12.8" width="11" height="6.4" rx="1" fill="var(--card)" stroke="var(--muted)" stroke-width="1.2"/><path class="m" d="M12 16.2q1.2-2.2 2.4 0t2.4 0t2.4 0"/>',
+    D99:pole+'<text x="16" y="20" text-anchor="middle" font-size="10" font-weight="700" class="t">?</text>'
+  };
+  const icon = (code, size = 36) => `<svg class="ins-def-drawing ${byCode[code]?.[2] === 'C' ? 'critical' : 'standard'}" viewBox="0 0 32 32" width="${size}" height="${size}" aria-hidden="true">${defectDrawings[code] || defectDrawings.D99}</svg>`;
   const source = () => typeof supabaseClient !== 'undefined' ? supabaseClient : null;
   const message = (value, error = false) => { $('insDefMessage').textContent = value; $('insDefMessage').classList.toggle('error', error); $('insDefGlobalStatus').textContent = error ? value : ''; };
   const defects = () => DEF.flatMap(d => REG.map(r => ({codigo:d[0], regiao:r, quantidade:counts[key(d[0],r)] || 0}))).filter(d => d.quantidade);
@@ -44,7 +65,7 @@
     const groups = [...new Set(DEF.map(d => d[3]))];
     $('insDefMatrix').innerHTML = groups.map(group => `<section class="ins-def-group"><div class="ins-def-group-title">${escape(group)}</div>
       <div class="ins-def-row ins-def-row-head"><span>Defeito</span>${REG.map(r => `<span>${r}</span>`).join('')}</div>
-      ${DEF.filter(d => d[3] === group).map(d => `<div class="ins-def-row"><div class="ins-def-name"><span class="ins-def-icon" aria-hidden="true">${icon(d)}</span><span><span class="ins-def-code">${d[0]} · ${d[2]}</span><br>${escape(d[1])}</span></div>
+      ${DEF.filter(d => d[3] === group).map(d => `<div class="ins-def-row"><div class="ins-def-name"><span class="ins-def-icon">${icon(d[0])}</span><span><span class="ins-def-code">${d[0]} · ${d[2]}</span><br>${escape(d[1])}</span></div>
       ${REG.map(r => `<div class="ins-def-stepper" aria-label="${escape(d[1])}, ${r}"><button type="button" data-code="${d[0]}" data-region="${r}" data-step="-1" aria-label="Diminuir ${escape(d[1])} em ${r}">−</button><output>${counts[key(d[0],r)] || 0}</output><button type="button" data-code="${d[0]}" data-region="${r}" data-step="1" aria-label="Adicionar ${escape(d[1])} em ${r}">+</button></div>`).join('')}</div>`).join('')}</section>`).join('');
   }
   function refreshClass() {
@@ -154,9 +175,9 @@
     let cumulative = 0;
     const pareto = count(allDef,d => d.codigo);
     $('insDefParetoChart').innerHTML = paretoChart(pareto,total);
-    $('insDefPareto').innerHTML = table(['Código','Defeito','Ocorrências','% acumulado'], pareto.map(([code,q]) => { cumulative += q; return [code,escape(byCode[code]?.[1] || code),nfmt(q),pct(cumulative,total)]; }));
+    $('insDefPareto').innerHTML = table(['Código','Defeito','Ocorrências','% acumulado'], pareto.map(([code,q]) => { cumulative += q; return [`<span class="ins-def-inline-code">${icon(code,28)}${escape(code)}</span>`,escape(byCode[code]?.[1] || code),nfmt(q),pct(cumulative,total)]; }));
     const heatMax = Math.max(1,...pareto.map(([code]) => Math.max(...REG.map(reg => allDef.filter(d => d.codigo === code && d.regiao === reg).reduce((s,d) => s+d.quantidade,0)))));
-    $('insDefHeat').innerHTML = table(['Defeito','Base','Meio','Topo'], pareto.map(([code]) => [code,...REG.map(reg => { const value=allDef.filter(d => d.codigo === code && d.regiao === reg).reduce((s,d) => s+d.quantidade,0); return `<span class="ins-def-heat" style="background:rgba(232,118,42,${(value/heatMax*.5).toFixed(2)})">${nfmt(value)}</span>`; })]));
+    $('insDefHeat').innerHTML = table(['Defeito','Base','Meio','Topo'], pareto.map(([code]) => [`<span class="ins-def-inline-code">${icon(code,28)}${escape(code)}</span>`,...REG.map(reg => { const value=allDef.filter(d => d.codigo === code && d.regiao === reg).reduce((s,d) => s+d.quantidade,0); return `<span class="ins-def-heat" style="background:rgba(232,118,42,${(value/heatMax*.5).toFixed(2)})">${nfmt(value)}</span>`; })]));
     const groupRows = (field) => { const groups = {};
       rows.forEach(r => { const name = r[field] || '—'; (groups[name] ||= []).push(r); });
       return Object.entries(groups).map(([name,rs]) => [escape(name),rs.length,pct(rs.filter(r => r.classe === 'A').length,rs.length),dec(rs.flatMap(r => r.defeitos || []).reduce((s,d) => s+d.quantidade,0),rs.length),rs.filter(r => r.classe === 'B').length,rs.filter(r => r.classe === 'C').length]).sort((a,b) => b[1]-a[1]); };
@@ -168,7 +189,7 @@
     if (!loaded) return;
     const q = $('insDefBusca').value.trim().toLocaleLowerCase('pt-BR');
     const rows = records.filter(r => !q || [r.serie,r.forma_numero,r.tipo,...(r.defeitos || []).map(d => `${d.codigo} ${byCode[d.codigo]?.[1] || ''}`)].join(' ').toLocaleLowerCase('pt-BR').includes(q));
-    $('insDefLista').innerHTML = rows.length ? rows.map(r => `<article class="ins-def-list-item"><div class="ins-def-badge ${r.classe}">${escape(r.classe)}</div><div><strong>${escape(r.serie)}</strong><p>${escape(r.setor)} · ${escape(r.data_desforma)} · turno ${escape(r.turno)} · ${escape(r.tipo)} · forma ${escape(r.forma_numero)}</p><p>${(r.defeitos || []).map(d => `${escape(d.codigo)} ${escape(d.regiao)} ×${d.quantidade}`).join(' · ') || 'Sem defeito'}</p></div><div class="ins-def-list-actions"><button type="button" class="btn" data-edit="${escape(r.id)}">Editar</button><button type="button" class="btn" data-delete="${escape(r.id)}">Apagar</button></div></article>`).join('') : '<p>Nenhum poste encontrado.</p>';
+    $('insDefLista').innerHTML = rows.length ? rows.map(r => `<article class="ins-def-list-item"><div class="ins-def-badge ${r.classe}">${escape(r.classe)}</div><div><strong>${escape(r.serie)}</strong><p>${escape(r.setor)} · ${escape(r.data_desforma)} · turno ${escape(r.turno)} · ${escape(r.tipo)} · forma ${escape(r.forma_numero)}</p><p class="ins-def-list-drawings">${(r.defeitos || []).map(d => `<span>${icon(d.codigo,22)}${escape(d.codigo)} ${escape(d.regiao)} ×${d.quantidade}</span>`).join('') || 'Sem defeito'}</p></div><div class="ins-def-list-actions"><button type="button" class="btn" data-edit="${escape(r.id)}">Editar</button><button type="button" class="btn" data-delete="${escape(r.id)}">Apagar</button></div></article>`).join('') : '<p>Nenhum poste encontrado.</p>';
   }
   function exportCsv() {
     const header = ['Setor','Série','Data da desforma','Turno','Tipo','Forma','Classe','Código','Região','Quantidade','Observações'];
