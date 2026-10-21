@@ -65,7 +65,7 @@ try:
             assert page.locator('[data-ins-tab]').count() == 3
             menu = page.locator('.pwa-menu-link')
             expect(menu).to_be_visible()
-            assert menu.get_attribute('href') == '/unificado/'
+            assert menu.get_attribute('href') == './menu.html'
             assert page.evaluate('''() => Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pwa-header-height')) - document.querySelector('.pwa-header').getBoundingClientRect().height) <= 1''')
             if width in (390, 768):
                 out = ROOT / '.work-mapa-unificado/e2e' / f'inspecao-pwa-{width}.png'
@@ -92,7 +92,8 @@ try:
             assert not errors, errors
             if width == 768:
                 menu.click()
-                page.wait_for_url(f'http://127.0.0.1:{server.server_port}/unificado/')
+                page.wait_for_url(f'http://127.0.0.1:{server.server_port}/unificado/m/inspecao/menu.html')
+                expect(page.locator('#pwa-menu-frame')).to_have_attribute('src', '/unificado/')
             context.close()
         browser.close()
 finally:
