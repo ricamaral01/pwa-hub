@@ -24,7 +24,8 @@
   const $ = id => document.getElementById(id);
   const form = $('insDefForm');
   if (!form) return;
-  if (!location.pathname.startsWith('/unificado/mapa/operacao') && !window.__insDefTest) {
+  if (!location.pathname.startsWith('/unificado/mapa/operacao') &&
+      !location.pathname.startsWith('/unificado/m/inspecao/') && !window.__insDefTest) {
     $('insDefApp').hidden = true;
     $('insDefProducao').hidden = false;
     return;

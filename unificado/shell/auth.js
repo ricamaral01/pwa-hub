@@ -20,6 +20,8 @@ function destination(modules) {
       pcpPages.has((requestedNext || '').match(/^pcp\/([^/?]+)\/(?:\?[^#]*)?$/)?.[1]))) {
     return new URL('?view=' + encodeURIComponent(requestedNext === 'pcp/' ? 'pcp/dashboard/' : requestedNext), UNIFICADO_ROOT);
   }
+  if (modules.includes('mapa') && requestedNext === 'm/inspecao/')
+    return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('mapa') && /^mapa\/operacao\/\?tela=[A-Z0-9_]+$/.test(requestedNext || '')) {
     return new URL('?view=' + encodeURIComponent(requestedNext), UNIFICADO_ROOT);
   }

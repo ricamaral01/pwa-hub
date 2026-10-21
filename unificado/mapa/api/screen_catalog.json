@@ -1,0 +1,502 @@
+[
+  {
+    "id": "dashboard",
+    "module": "planejamento",
+    "label": "Dashboard",
+    "path": "/unificado/pcp/dashboard/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "comparacao",
+    "module": "planejamento",
+    "label": "Programado vs Realizado",
+    "path": "/unificado/pcp/comparacao/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "programacao12",
+    "module": "planejamento",
+    "label": "Setor 1 e 2",
+    "path": "/unificado/pcp/programacao-alex/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "programacao34",
+    "module": "planejamento",
+    "label": "Setor 3 e 4",
+    "path": "/unificado/pcp/programacao/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "circular3",
+    "module": "planejamento",
+    "label": "Circular Setor 3",
+    "path": "/unificado/pcp/programacao-circular-s3/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "dt4",
+    "module": "planejamento",
+    "label": "DT Setor 4",
+    "path": "/unificado/pcp/programacao-circular-s4/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "programacaoFinal",
+    "module": "planejamento",
+    "label": "Programação Final",
+    "path": "/unificado/pcp/programacao-final/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "relatorio12",
+    "module": "planejamento",
+    "label": "Setor 1 e 2",
+    "path": "/unificado/pcp/relatorio-producao/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "relatorio3",
+    "module": "planejamento",
+    "label": "Setor 3",
+    "path": "/unificado/pcp/relatorio-programacao-s3/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "relatorio4",
+    "module": "planejamento",
+    "label": "Setor 4",
+    "path": "/unificado/pcp/relatorio-programacao-s4/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "etiquetas",
+    "module": "planejamento",
+    "label": "Padrão",
+    "path": "/unificado/pcp/etiquetas/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "etiquetasSc",
+    "module": "planejamento",
+    "label": "SC-Prod.",
+    "path": "/unificado/pcp/etiquetas-sc/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "etiquetasArmaduras",
+    "module": "planejamento",
+    "label": "Armaduras",
+    "path": "/unificado/pcp/etiquetas-armaduras/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "pcpDiario",
+    "module": "planejamento",
+    "label": "PCP Diário",
+    "path": "/unificado/pcp/pcp-diario/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "acompMensal",
+    "module": "planejamento",
+    "label": "Acompanhamento Mensal",
+    "path": "/unificado/pcp/acompanhamento-mensal/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "acompMensal34",
+    "module": "planejamento",
+    "label": "Acompanhamento Mensal Setor 3 e 4",
+    "path": "/unificado/pcp/acompanhamento-mensal-setor-34/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "apontamentoMega",
+    "module": "planejamento",
+    "label": "Apontamento Mega",
+    "path": "/unificado/pcp/apontamento-mega/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "producaoPcp",
+    "module": "planejamento",
+    "label": "Produção PCP",
+    "path": "/unificado/pcp/producao/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "maodeobra",
+    "module": "planejamento",
+    "label": "Mão de Obra",
+    "path": "/unificado/pcp/maodeobra/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "maodeobraRateio",
+    "module": "planejamento",
+    "label": "Rateio de Mão de Obra",
+    "path": "/unificado/pcp/maodeobra-rateio/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
+  },
+  {
+    "id": "formasPorSetor",
+    "module": "planejamento",
+    "label": "Formas por Setor",
+    "path": "/unificado/pcp/formas-por-setor/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "testeProgramacao",
+    "module": "planejamento",
+    "label": "Teste Programação",
+    "path": "/unificado/pcp/teste-programacao/",
+    "query": "",
+    "screen": null,
+    "require": "ADMIN"
+  },
+  {
+    "id": "liberacao",
+    "module": "producao",
+    "label": "Produção / Liberação",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO",
+    "screen": "LIBERACAO",
+    "require": null
+  },
+  {
+    "id": "setor1",
+    "module": "producao",
+    "label": "Setor 1",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S1",
+    "screen": "LIBERACAO_S1",
+    "require": null
+  },
+  {
+    "id": "setor2",
+    "module": "producao",
+    "label": "Setor 2",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S2",
+    "screen": "LIBERACAO_S2",
+    "require": null
+  },
+  {
+    "id": "setor3",
+    "module": "producao",
+    "label": "Setor 3",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S3",
+    "screen": "LIBERACAO_S3",
+    "require": null
+  },
+  {
+    "id": "setor4",
+    "module": "producao",
+    "label": "Setor 4",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=LIBERACAO_S4",
+    "screen": "LIBERACAO_S4",
+    "require": null
+  },
+  {
+    "id": "mandril",
+    "module": "producao",
+    "label": "Mandril Circular",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MANDRIL_CIRCULAR",
+    "screen": "MANDRIL_CIRCULAR",
+    "require": null
+  },
+  {
+    "id": "inspecao",
+    "module": "producao",
+    "label": "Inspeção Setor 3 e 4",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=INSPECAO",
+    "screen": "INSPECAO",
+    "require": null
+  },
+  {
+    "id": "montagem",
+    "module": "producao",
+    "label": "Montagem Postes",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MONTAGEM_POSTES",
+    "screen": "MONTAGEM_POSTES",
+    "require": null
+  },
+  {
+    "id": "sequencia",
+    "module": "producao",
+    "label": "Sequência Setor 3",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=SEQUENCIA_S3",
+    "screen": "SEQUENCIA_S3",
+    "require": null
+  },
+  {
+    "id": "relatorioMapa",
+    "module": "producao",
+    "label": "Relatório Enc. Produção",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=RELATORIO",
+    "screen": "RELATORIO",
+    "require": null
+  },
+  {
+    "id": "historico",
+    "module": "producao",
+    "label": "Histórico",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=HISTORICO",
+    "screen": "HISTORICO",
+    "require": null
+  },
+  {
+    "id": "acmpConcretagem",
+    "module": "producao",
+    "label": "Acmp. Concretagem",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=ACMP_CONCRETAGEM",
+    "screen": "ACMP_CONCRETAGEM",
+    "require": null
+  },
+  {
+    "id": "manutencao",
+    "module": "producao",
+    "label": "Manutenção Formas",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=RELATORIO_MANUTENCAO",
+    "screen": "RELATORIO_MANUTENCAO",
+    "require": null
+  },
+  {
+    "id": "tratativa",
+    "module": "producao",
+    "label": "Tratativa Defeitos",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=TRATATIVA_DEFEITOS",
+    "screen": "TRATATIVA_DEFEITOS",
+    "require": null
+  },
+  {
+    "id": "dashMontagem",
+    "module": "producao",
+    "label": "Dashboard Montagem",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=MONTAGEM_INDICADORES",
+    "screen": "MONTAGEM_INDICADORES",
+    "require": null
+  },
+  {
+    "id": "dashDefeitos",
+    "module": "producao",
+    "label": "Dashboard Defeitos",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=DASHBOARD_DEFEITOS",
+    "screen": "DASHBOARD_DEFEITOS",
+    "require": null
+  },
+  {
+    "id": "produtividade",
+    "module": "producao",
+    "label": "Produtividade",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=PROD_ANALISE",
+    "screen": "PROD_ANALISE",
+    "require": null
+  },
+  {
+    "id": "labMonitor",
+    "module": "laboratorio",
+    "label": "Monitoramento",
+    "path": "/unificado/laboratorio/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labHistory",
+    "module": "laboratorio",
+    "label": "Histórico de medições",
+    "path": "/unificado/laboratorio/",
+    "query": "?view=history",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labDevice",
+    "module": "laboratorio",
+    "label": "Dispositivo",
+    "path": "/unificado/laboratorio/",
+    "query": "?view=settings",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labPole",
+    "module": "laboratorio",
+    "label": "Ensaio de postes",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labAbsorption",
+    "module": "laboratorio",
+    "label": "Absorção",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=absorcao",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labTests",
+    "module": "laboratorio",
+    "label": "Histórico de ensaios",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=historico",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labRegisters",
+    "module": "laboratorio",
+    "label": "Cadastros",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=cadastros",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labCriteria",
+    "module": "laboratorio",
+    "label": "Critérios",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=criterios",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labHelp",
+    "module": "laboratorio",
+    "label": "Como funciona",
+    "path": "/unificado/laboratorio/",
+    "query": "?view=help",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "prodUsuarios",
+    "module": "producao",
+    "label": "Usuários",
+    "path": "/unificado/mapa/operacao/",
+    "query": "?tela=USUARIOS",
+    "screen": "USUARIOS",
+    "require": "GERENCIA"
+  },
+  {
+    "id": "pcpUsuarios",
+    "module": "planejamento",
+    "label": "Usuários",
+    "path": "/unificado/pcp/usuarios/",
+    "query": "",
+    "screen": null,
+    "require": "ADMIN"
+  },
+  {
+    "id": "formasPorSetor",
+    "module": "planejamento",
+    "label": "Formas por Setor",
+    "path": "/unificado/pcp/formas-por-setor/",
+    "query": "",
+    "screen": null,
+    "require": "PCP"
+  },
+  {
+    "id": "labUsuarios",
+    "module": "laboratorio",
+    "label": "Usuários",
+    "path": "/unificado/laboratorio/novo/postes",
+    "query": "?tab=usuarios",
+    "screen": null,
+    "require": "admin"
+  },
+  {
+    "id": "tvFormas",
+    "module": "producao",
+    "label": "Painel TV — Formas",
+    "path": "/unificado/tv/formas/",
+    "query": "",
+    "screen": "TV_FORMAS",
+    "require": null
+  },
+  {
+    "id": "qualidadePainel", "module": "qualidade", "label": "Painel",
+    "path": "/unificado/qualidade/", "query": "", "screen": null, "require": null
+  },
+  {
+    "id": "qualidadeAbertura", "module": "qualidade", "label": "Abrir NC",
+    "path": "/unificado/qualidade/abrir", "query": "", "screen": null, "require": null
+  },
+  {
+    "id": "qualidadeTratativa", "module": "qualidade", "label": "Tratativa",
+    "path": "/unificado/qualidade/nc/:id", "query": "", "screen": null, "require": null
+  },
+  {
+    "id": "qualidadeCadastros", "module": "qualidade", "label": "Cadastros",
+    "path": "/unificado/qualidade/cadastros", "query": "", "screen": null, "require": null
+  },
+  {"id":"cronoanalise.inicio","module":"laboratorio","label":"Cronoanálise: Início","path":"/unificado/laboratorio/cronoanalise","query":"","screen":null,"require":null},
+  {"id":"cronoanalise.coletar","module":"laboratorio","label":"Cronoanálise: Coletar","path":"/unificado/laboratorio/cronoanalise/coletar","query":"","screen":null,"require":null},
+  {"id":"cronoanalise.medicoes","module":"laboratorio","label":"Cronoanálise: Medições","path":"/unificado/laboratorio/cronoanalise/medicoes","query":"","screen":null,"require":null},
+  {"id":"cronoanalise.catalogo","module":"laboratorio","label":"Cronoanálise: Catálogo","path":"/unificado/laboratorio/cronoanalise/catalogo","query":"","screen":null,"require":null},
+  {"id":"cronoanalise.dimensionar","module":"laboratorio","label":"Cronoanálise: Dimensionar","path":"/unificado/laboratorio/cronoanalise/dimensionar","query":"","screen":null,"require":null},
+  {"id":"cronoanalise.simular","module":"laboratorio","label":"Cronoanálise: Simular","path":"/unificado/laboratorio/cronoanalise/simular","query":"","screen":null,"require":null},
+  {"id":"cronoanalise.metodologia","module":"laboratorio","label":"Cronoanálise: Metodologia","path":"/unificado/laboratorio/cronoanalise/metodologia","query":"","screen":null,"require":null}
+]
