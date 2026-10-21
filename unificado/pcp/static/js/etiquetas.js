@@ -51,13 +51,7 @@ function escalaTexto() {
 function aplicarEscalaTexto() {
   const {largura, altura} = escalaTexto();
   document.getElementById('label-text-size').textContent = `${Math.round(largura * 100)}% x ${Math.round(altura * 100)}%`;
-  const fonteData = Math.min(Number(document.getElementById('f-fonte-data').value || 20.16), 36);
   const fonteTipo = Number(document.getElementById('f-fonte-tipo').value || 29.7);
-  document.querySelectorAll('.label-date').forEach(label => {
-    label.style.fontSize = `${fonteData}mm`;
-    const span = label.querySelector('span');
-    if (span) span.style.transform = `scale(${Number(escalaHorizontal(span.textContent, fonteData, 89)) * largura}, ${altura})`;
-  });
   document.querySelectorAll('.label-type > span').forEach(span => {
     span.style.fontSize = `${calcularFonteForma(span.textContent, fonteTipo)}mm`;
     span.style.transform = etiquetasSC ? `scale(${largura}, ${altura})` : `scale(${largura}, ${altura}) rotate(-90deg)`;
@@ -223,7 +217,7 @@ function gerarEtiquetasSelecionadas() {
   const {largura, altura} = escalaTexto();
   const fonteData = Math.min(Number(document.getElementById('f-fonte-data').value || 20.16), 36);
   const fonteTipo = Number(document.getElementById('f-fonte-tipo').value || 29.7);
-  const escalaData = Number(escalaHorizontal(dateLabel, fonteData, 89)) * largura;
+  const escalaData = escalaHorizontal(dateLabel, fonteData, 89);
   const labels = [];
 
   selected.forEach(row => {
@@ -238,7 +232,7 @@ function gerarEtiquetasSelecionadas() {
               <label><input type="checkbox" class="form-check-input label-print-check" checked> Imprimir data</label>
               <span>${escapeHtml(row.setor?.nome || `Setor ${row.setor_id}`)} • ${i}/${qtd}</span>
             </div>
-            <div class="label-preview label-date" style="font-size:${fonteData}mm"><span style="display:block;white-space:nowrap;transform:scale(${escalaData}, ${altura});transform-origin:center">${escapeHtml(dateLabel)}</span></div>
+            <div class="label-preview label-date" style="font-size:${fonteData}mm"><span style="display:block;white-space:nowrap;transform:scaleX(${escalaData});transform-origin:center">${escapeHtml(dateLabel)}</span></div>
           </div>
           <div class="label-pair print-selected">
             <div class="label-print-control">
