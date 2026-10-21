@@ -10,8 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('user-nivel').textContent = user.nivel_acesso || '';
   const hoje = new Date();
   document.getElementById('f-data').value = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
-  ['f-largura', 'f-altura'].forEach(id => document.getElementById(id).addEventListener('change', aplicarDimensoesEtiqueta));
-  aplicarDimensoesEtiqueta();
+  ['f-largura-texto', 'f-altura-texto'].forEach(id => {
+    document.getElementById(id).addEventListener('input', aplicarEscalaTexto);
+    document.getElementById(id).addEventListener('change', aplicarEscalaTexto);
+  });
+  aplicarEscalaTexto();
   loadPostesProgramados();
 });
 
@@ -37,37 +40,27 @@ function inferCodigoForma(row) {
   return setor === 2 || setor === 4 ? codigo.replace(/^(?:DT|SC)(?=[\s-]|\d)[\s-]*/i, '').trim() : codigo;
 }
 
-function dimensoesEtiqueta() {
-  const valor = (id, padrao, minimo, maximo) => {
+function escalaTexto() {
+  const valor = id => {
     const numero = Number(document.getElementById(id)?.value);
-    return Number.isFinite(numero) && numero >= minimo && numero <= maximo ? numero : padrao;
+    return Number.isFinite(numero) && numero >= 50 && numero <= 200 ? numero : 100;
   };
-  return {largura: valor('f-largura', 95, 40, 200), altura: valor('f-altura', 40, 20, 150)};
+  return {largura: valor('f-largura-texto') / 100, altura: valor('f-altura-texto') / 100};
 }
 
-function aplicarDimensoesEtiqueta() {
-  const {largura, altura} = dimensoesEtiqueta();
-  document.getElementById('f-largura').value = largura;
-  document.getElementById('f-altura').value = altura;
-  document.documentElement.style.setProperty('--label-width', `${largura}mm`);
-  document.documentElement.style.setProperty('--label-height', `${altura}mm`);
-  document.getElementById('label-paper-size').textContent = `${largura} x ${altura} mm`;
-  let pageStyle = document.getElementById('label-print-page-size');
-  if (!pageStyle) {
-    pageStyle = document.createElement('style');
-    pageStyle.id = 'label-print-page-size';
-    document.head.append(pageStyle);
-  }
-  pageStyle.textContent = `@page { size: ${largura}mm ${altura}mm; margin: 0; }`;
-  const fonteData = Math.min(Number(document.getElementById('f-fonte-data').value || 20.16), altura - 4);
+function aplicarEscalaTexto() {
+  const {largura, altura} = escalaTexto();
+  document.getElementById('label-text-size').textContent = `${Math.round(largura * 100)}% x ${Math.round(altura * 100)}%`;
+  const fonteData = Math.min(Number(document.getElementById('f-fonte-data').value || 20.16), 36);
   const fonteTipo = Number(document.getElementById('f-fonte-tipo').value || 29.7);
   document.querySelectorAll('.label-date').forEach(label => {
     label.style.fontSize = `${fonteData}mm`;
     const span = label.querySelector('span');
-    if (span) span.style.transform = `scaleX(${escalaHorizontal(span.textContent, fonteData, largura - 6)})`;
+    if (span) span.style.transform = `scale(${Number(escalaHorizontal(span.textContent, fonteData, 89)) * largura}, ${altura})`;
   });
   document.querySelectorAll('.label-type > span').forEach(span => {
     span.style.fontSize = `${calcularFonteForma(span.textContent, fonteTipo)}mm`;
+    span.style.transform = etiquetasSC ? `scale(${largura}, ${altura})` : `scale(${largura}, ${altura}) rotate(-90deg)`;
   });
 }
 
@@ -78,8 +71,7 @@ function calcularFonteForma(codigo, fontePadrao) {
   const pxPerMm = 96 / 25.4;
   context.font = `900 ${size * pxPerMm}px Arial`;
   const textWidth = context.measureText(texto).width;
-  const {largura, altura} = dimensoesEtiqueta();
-  const maxWidth = (etiquetasSC ? largura - 6 : altura - 4) * pxPerMm;
+  const maxWidth = (etiquetasSC ? 89 : 36) * pxPerMm;
   if (textWidth > maxWidth) size *= maxWidth / textWidth;
   return Number(size.toFixed(2));
 }
@@ -228,10 +220,10 @@ function gerarEtiquetasSelecionadas() {
   document.getElementById('sum-etiquetas').textContent = (totalPostes * 2).toLocaleString('pt-BR');
 
   const dateLabel = fmtDateBR(data);
-  const {largura, altura} = dimensoesEtiqueta();
-  const fonteData = Math.min(Number(document.getElementById('f-fonte-data').value || 20.16), altura - 4);
+  const {largura, altura} = escalaTexto();
+  const fonteData = Math.min(Number(document.getElementById('f-fonte-data').value || 20.16), 36);
   const fonteTipo = Number(document.getElementById('f-fonte-tipo').value || 29.7);
-  const escalaData = escalaHorizontal(dateLabel, fonteData, largura - 6);
+  const escalaData = Number(escalaHorizontal(dateLabel, fonteData, 89)) * largura;
   const labels = [];
 
   selected.forEach(row => {
@@ -246,14 +238,14 @@ function gerarEtiquetasSelecionadas() {
               <label><input type="checkbox" class="form-check-input label-print-check" checked> Imprimir data</label>
               <span>${escapeHtml(row.setor?.nome || `Setor ${row.setor_id}`)} • ${i}/${qtd}</span>
             </div>
-            <div class="label-preview label-date" style="font-size:${fonteData}mm"><span style="display:block;white-space:nowrap;transform:scaleX(${escalaData});transform-origin:center">${escapeHtml(dateLabel)}</span></div>
+            <div class="label-preview label-date" style="font-size:${fonteData}mm"><span style="display:block;white-space:nowrap;transform:scale(${escalaData}, ${altura});transform-origin:center">${escapeHtml(dateLabel)}</span></div>
           </div>
           <div class="label-pair print-selected">
             <div class="label-print-control">
               <label><input type="checkbox" class="form-check-input label-print-check" checked> Imprimir Cód. tipo</label>
               <span>${escapeHtml(tipo)} • ${i}/${qtd}</span>
             </div>
-            <div class="label-preview label-type"><span style="font-size:${fonteForma}mm">${escapeHtml(tipo)}</span></div>
+            <div class="label-preview label-type"><span style="font-size:${fonteForma}mm;transform:${etiquetasSC ? `scale(${largura}, ${altura})` : `scale(${largura}, ${altura}) rotate(-90deg)`}">${escapeHtml(tipo)}</span></div>
             <div class="label-meta">
               <span>${escapeHtml(row.setor?.nome || `Setor ${row.setor_id}`)}</span>
               <span>${escapeHtml(nome)}</span>
@@ -272,7 +264,7 @@ function gerarEtiquetasSelecionadas() {
 }
 
 function imprimirEtiquetasMarcadas() {
-  aplicarDimensoesEtiqueta();
+  aplicarEscalaTexto();
   const geradas = document.querySelectorAll('.label-print-check').length;
   if (!geradas) {
     const ok = gerarEtiquetasSelecionadas();
