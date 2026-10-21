@@ -3,6 +3,14 @@
   const status = document.getElementById('pwa-connection');
   const main = document.getElementById('insDefApp');
   main.hidden = true;
+  const header = document.querySelector('.pwa-header');
+  const syncHeaderHeight = () => document.documentElement.style.setProperty('--pwa-header-height', `${Math.ceil(header.getBoundingClientRect().height)}px`);
+  syncHeaderHeight();
+  if ('ResizeObserver' in window) new ResizeObserver(syncHeaderHeight).observe(header);
+  else addEventListener('resize', syncHeaderHeight);
+  document.querySelector('.pwa-menu-link').addEventListener('click', () => {
+    try { localStorage.setItem('ct.sidebar.collapsed', '0'); } catch (_) {}
+  });
   document.getElementById('pwa-logout').addEventListener('click', async () => {
     await fetch('/unificado/mapa/api/logout',{method:'POST',credentials:'same-origin',cache:'no-store'}).catch(() => {});
     location.replace(base + 'login.html');

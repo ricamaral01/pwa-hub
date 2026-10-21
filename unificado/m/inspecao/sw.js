@@ -1,11 +1,11 @@
 /* Dedicated shell cache. API, sessions and inspection records stay on the network. */
-const CACHE = 'inspecao-s34-shell-20261021b';
+const CACHE = 'inspecao-s34-shell-20261021d';
 const SHELL = [
   '/unificado/m/inspecao/', '/unificado/m/inspecao/index.html',
   '/unificado/m/inspecao/login.html', '/unificado/m/inspecao/manifest.webmanifest',
   '/unificado/m/inspecao/api.js?v=20261021a',
-  '/unificado/m/inspecao/app.js?v=20261021a',
-  '/unificado/m/inspecao/app.css?v=20261021a',
+  '/unificado/m/inspecao/app.js?v=20261021c',
+  '/unificado/m/inspecao/app.css?v=20261021b',
   '/unificado/m/inspecao/icons/icon-192.png',
   '/unificado/m/inspecao/icons/icon-512.png',
   '/unificado/m/inspecao/icons/icon-maskable-512.png',

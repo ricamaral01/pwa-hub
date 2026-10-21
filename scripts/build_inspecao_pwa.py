@@ -25,12 +25,12 @@ page = '''<!doctype html>
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
   <link rel="icon" href="./icons/icon-192.png">
   <link rel="stylesheet" href="/unificado/mapa/operacao/inspecao-defeitos.css?v=20261021e">
-  <link rel="stylesheet" href="./app.css?v=20261021a">
+  <link rel="stylesheet" href="./app.css?v=20261021b">
 </head>
 <body>
   <header class="pwa-header">
     <div class="pwa-heading"><img src="./icons/icon-192.png" alt="" width="46" height="46"><div><span>Concrefer · Qualidade</span><h1>Inspeção S3/4</h1></div></div>
-    <button id="pwa-logout" type="button" class="pwa-logout">Sair</button>
+    <nav class="pwa-header-actions" aria-label="Navegação principal"><a class="pwa-menu-link" href="/unificado/">← Menu principal</a><button id="pwa-logout" type="button" class="pwa-logout">Sair</button></nav>
   </header>
   <main id="pwa-main" class="pwa-main">
     <div id="pwa-connection" class="pwa-connection" role="status" aria-live="polite">Conectando…</div>
@@ -39,7 +39,7 @@ page = '''<!doctype html>
   </main>
   <script src="./api.js?v=20261021a"></script>
   <script src="/unificado/mapa/operacao/inspecao-defeitos.js?v=20261021f"></script>
-  <script src="./app.js?v=20261021a"></script>
+  <script src="./app.js?v=20261021c"></script>
 </body>
 </html>
 '''

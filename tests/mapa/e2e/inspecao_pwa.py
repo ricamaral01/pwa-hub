@@ -63,6 +63,10 @@ try:
             assert page.locator('[name="turno"]').count() == 0
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
             assert page.locator('[data-ins-tab]').count() == 3
+            menu = page.locator('.pwa-menu-link')
+            expect(menu).to_be_visible()
+            assert menu.get_attribute('href') == '/unificado/'
+            assert page.evaluate('''() => Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--pwa-header-height')) - document.querySelector('.pwa-header').getBoundingClientRect().height) <= 1''')
             if width in (390, 768):
                 out = ROOT / '.work-mapa-unificado/e2e' / f'inspecao-pwa-{width}.png'
                 out.parent.mkdir(parents=True, exist_ok=True)
@@ -86,6 +90,9 @@ try:
             expect(page.locator('.ins-def-list-item')).to_have_count(0)
             assert not records
             assert not errors, errors
+            if width == 768:
+                menu.click()
+                page.wait_for_url(f'http://127.0.0.1:{server.server_port}/unificado/')
             context.close()
         browser.close()
 finally:

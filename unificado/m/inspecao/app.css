@@ -10,6 +10,9 @@ button { cursor:pointer; }
 .pwa-heading img { border-radius:12px; flex:none; }
 .pwa-heading span { display:block; font-size:.73rem; opacity:.8; }
 .pwa-heading h1 { margin:0; font-size:1.15rem; line-height:1.15; }
+.pwa-header-actions { display:flex; align-items:center; gap:8px; flex:none; }
+.pwa-menu-link { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:7px 14px; border:1px solid #ffffffa6; border-radius:9px; background:#fff; color:var(--primary); font-weight:750; text-decoration:none; white-space:nowrap; }
+.pwa-menu-link:focus-visible, .pwa-logout:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
 .pwa-logout { min-height:44px; padding:6px 15px; border:1px solid #ffffff80; border-radius:9px; color:#fff; background:transparent; font-weight:700; }
 .pwa-main { max-width:1000px; margin:auto; padding:14px max(12px,env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left)); }
 .pwa-connection { min-height:1.3em; margin:0 0 8px; color:var(--muted); font-size:.85rem; }
@@ -18,7 +21,7 @@ button { cursor:pointer; }
 .pwa-install button { border:0; border-radius:8px; background:var(--primary); color:#fff; min-height:38px; padding:6px 12px; font-weight:700; }
 .pwa-install #pwa-install-dismiss { margin-left:auto; background:transparent; color:var(--text); font-size:1.2rem; }
 .ins-def-app { padding:0; }
-.ins-def-tabs { position:sticky; top:calc(66px + env(safe-area-inset-top)); z-index:9; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; padding:8px 0; margin:0 0 8px; background:#f1f5f8; overflow:visible; }
+.ins-def-tabs { position:sticky; top:var(--pwa-header-height,66px); z-index:9; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; padding:8px 0; margin:0 0 8px; background:#f1f5f8; overflow:visible; }
 .ins-def-tabs button { min-width:0; padding:10px 4px; font-size:.9rem; }
 .ins-def-panel { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px; box-shadow:0 1px 5px #1831480b; }
 .ins-def-intro { margin-bottom:16px; }
@@ -55,3 +58,4 @@ button { cursor:pointer; }
   .ins-def-actions button:last-child { flex:1; }
 }
 @media (max-width:360px) { .ins-def-fields { grid-template-columns:1fr; } .ins-def-stepper button { flex-basis:32px; width:32px; } }
+@media (max-width:600px) { .pwa-header { flex-wrap:wrap; } .pwa-header-actions { width:100%; justify-content:space-between; } .pwa-menu-link { flex:1; } }
