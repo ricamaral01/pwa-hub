@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initSidebar(etiquetasSC ? 'etiquetas-sc' : 'etiquetas');
   document.getElementById('user-nome-top').textContent = user.nome || '';
   document.getElementById('user-nivel').textContent = user.nivel_acesso || '';
-  document.getElementById('f-data').value = new Date().toISOString().slice(0, 10);
+  const hoje = new Date();
+  document.getElementById('f-data').value = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
+  ['f-largura', 'f-altura'].forEach(id => document.getElementById(id).addEventListener('change', aplicarDimensoesEtiqueta));
+  aplicarDimensoesEtiqueta();
   loadPostesProgramados();
 });
 
@@ -24,53 +27,48 @@ function escapeHtml(value) {
 }
 
 function inferCodigoForma(row) {
-  if (etiquetasSC) return `SC ${String(row.modelo_sc || '').trim()}`;
-  const produto = row.produto || {};
-  const codigo = String(produto.codigo || '').trim().toUpperCase();
-  const nome = String(produto.nome || produto.nome_poste || '').trim().toUpperCase();
-  const forma = String(row.codigo_forma || '').trim().toUpperCase();
-  const codigoProdutoParaForma = {
-    '4031': 'AE',
-    '4032': 'CE',
-    '957': 'BD',
-    '948': 'L',
-    '946': 'H',
-    '944': 'C',
-    '943': 'C',
-    '938': 'A',
-    '931': 'EC',
-    '932': 'EC',
-    '933': 'EC'
-  };
+  if (etiquetasSC) return String(row.modelo_sc || '').trim().replace(/^SC(?=[\s-]|\d)[\s-]*/i, '').trim();
+  const setor = Number(row.setor_id) || Number(String(row.setor?.nome || '').match(/Setor\s+(\d+)/i)?.[1]);
+  if (setor === 4) {
+    const modelo = String(row.produto?.nome || row.produto?.nome_poste || '').trim().match(/^(\d+(?:[,.]\d+)?\s*[x×]\s*\d+)\s+DT$/i);
+    if (modelo) return modelo[1].replace(/\s*[x×]\s*/i, 'X').toUpperCase();
+  }
+  const codigo = String(row.codigo_tipo_forma || '').trim();
+  return setor === 2 || setor === 4 ? codigo.replace(/^(?:DT|SC)(?=[\s-]|\d)[\s-]*/i, '').trim() : codigo;
+}
 
-  if (forma && /[A-Z]/.test(forma) && !/^S\d+-\d+/i.test(forma)) {
-    const compact = forma.replace(/\s+/g, '');
-    const prefix = compact.match(/^[A-Z]+/);
-    return prefix ? prefix[0].slice(0, 8) : compact.slice(0, 10);
+function dimensoesEtiqueta() {
+  const valor = (id, padrao, minimo, maximo) => {
+    const numero = Number(document.getElementById(id)?.value);
+    return Number.isFinite(numero) && numero >= minimo && numero <= maximo ? numero : padrao;
+  };
+  return {largura: valor('f-largura', 95, 40, 200), altura: valor('f-altura', 40, 20, 150)};
+}
+
+function aplicarDimensoesEtiqueta() {
+  const {largura, altura} = dimensoesEtiqueta();
+  document.getElementById('f-largura').value = largura;
+  document.getElementById('f-altura').value = altura;
+  document.documentElement.style.setProperty('--label-width', `${largura}mm`);
+  document.documentElement.style.setProperty('--label-height', `${altura}mm`);
+  document.getElementById('label-paper-size').textContent = `${largura} x ${altura} mm`;
+  let pageStyle = document.getElementById('label-print-page-size');
+  if (!pageStyle) {
+    pageStyle = document.createElement('style');
+    pageStyle.id = 'label-print-page-size';
+    document.head.append(pageStyle);
   }
-  if (codigoProdutoParaForma[codigo]) {
-    return codigoProdutoParaForma[codigo];
-  }
-  if (/ECON|EC\./.test(nome)) return 'EC';
-  if (/ELEKTRO.*1\s*CX\s*VR|1\s*CX\s*VR.*ELEKTRO/.test(nome)) return 'AE';
-  if (/ELEKTRO.*2\s*CX\s*VR|2\s*CX\s*VR.*ELEKTRO/.test(nome)) return 'CE';
-  if (/EDP.*1\s*CX\s*VL|1\s*CX\s*VL.*EDP/.test(nome)) return 'BD';
-  if (/4\s*CXS?\s*VR|4\s*CX\s*VR/.test(nome)) return 'L';
-  if (/1\s*CX\s*VR/.test(nome)) return 'A';
-  if (/2\s*CXS?\s*VR|2\s*CX\s*VR/.test(nome)) return 'C';
-  if (/3\s*CXS?\s*VR|3\s*CX\s*VR/.test(nome)) return 'H';
-  if (forma) {
-    const compact = forma.replace(/[^A-Z0-9-]/g, '');
-    return compact.slice(0, 10) || forma;
-  }
-  const fonte = codigo || nome;
-  if (!fonte) return '—';
-  return fonte
-    .replace(/^POSTE\s+/, '')
-    .replace(/^PADRAO\s+/, '')
-    .split(/\s+/)[0]
-    .replace(/[^A-Z0-9-]/g, '')
-    .slice(0, 8) || '—';
+  pageStyle.textContent = `@page { size: ${largura}mm ${altura}mm; margin: 0; }`;
+  const fonteData = Math.min(Number(document.getElementById('f-fonte-data').value || 20.16), altura - 4);
+  const fonteTipo = Number(document.getElementById('f-fonte-tipo').value || 29.7);
+  document.querySelectorAll('.label-date').forEach(label => {
+    label.style.fontSize = `${fonteData}mm`;
+    const span = label.querySelector('span');
+    if (span) span.style.transform = `scaleX(${escalaHorizontal(span.textContent, fonteData, largura - 6)})`;
+  });
+  document.querySelectorAll('.label-type > span').forEach(span => {
+    span.style.fontSize = `${calcularFonteForma(span.textContent, fonteTipo)}mm`;
+  });
 }
 
 function calcularFonteForma(codigo, fontePadrao) {
@@ -80,7 +78,8 @@ function calcularFonteForma(codigo, fontePadrao) {
   const pxPerMm = 96 / 25.4;
   context.font = `900 ${size * pxPerMm}px Arial`;
   const textWidth = context.measureText(texto).width;
-  const maxWidth = (etiquetasSC ? 89 : 36) * pxPerMm;
+  const {largura, altura} = dimensoesEtiqueta();
+  const maxWidth = (etiquetasSC ? largura - 6 : altura - 4) * pxPerMm;
   if (textWidth > maxWidth) size *= maxWidth / textWidth;
   return Number(size.toFixed(2));
 }
@@ -107,7 +106,7 @@ async function buscarProgramacao(data, setor) {
       const productionRow = produced.get(form);
       const fromProduction = String(productionRow?.tipo_realizado || '').trim();
       const model = fromProduction && !/^SC$/i.test(fromProduction) ? fromProduction : (byForm.get(form) || productionRow?.tipo_programado || '');
-      const cleanModel = model.replace(/^SC\s+/i, '').trim().replace(/×/g, 'X').toUpperCase();
+      const cleanModel = model.replace(/^SC(?=[\s-]|\d)[\s-]*/i, '').trim().replace(/×/g, 'X').toUpperCase();
       return {
         quantidade_programada: 1,
         codigo_forma: form,
@@ -120,15 +119,9 @@ async function buscarProgramacao(data, setor) {
     if (rows.length < saques.length) showToast(`${saques.length - rows.length} forma(s) com saque sem modelo identificado.`, 'warning');
     return rows;
   }
-  const buildQuery = (setorId) => {
-    const qs = new URLSearchParams();
-    qs.set('data_inicio', data);
-    qs.set('data_fim', data);
-    if (setorId) qs.set('setor_id', setorId);
-    return qs.toString();
-  };
-  if (setor) return API.get(`/api/programacao?${buildQuery(setor)}`);
-  return (await Promise.all(['1', '2', '3', '4'].map(s => API.get(`/api/programacao?${buildQuery(s)}`)))).flat();
+  const qs = new URLSearchParams({data});
+  if (setor) qs.set('setor_id', setor);
+  return API.get(`/api/etiquetas-padrao/programacao?${qs}`);
 }
 
 function resetResumo() {
@@ -157,9 +150,9 @@ function renderPostesProgramados(rows) {
     const qtd = Number(row.quantidade_programada || 0);
     return `
       <label class="poste-select-item">
-        <input type="checkbox" class="form-check-input poste-check" value="${idx}">
+        <input type="checkbox" class="form-check-input poste-check" value="${idx}" ${tipo ? '' : 'disabled'}>
         <span>
-          <strong>${escapeHtml(tipo)} <small>• ${escapeHtml(nome)}</small></strong>
+          <strong>${escapeHtml(tipo || 'Sem Cód. tipo cadastrado')} <small>• ${escapeHtml(nome)}</small></strong>
           <small>${escapeHtml(setor)}</small>
         </span>
         <span class="poste-select-qtd">${qtd.toLocaleString('pt-BR')}x</span>
@@ -189,7 +182,7 @@ async function loadPostesProgramados() {
 
 function toggleTodosPostes(checked) {
   document.querySelectorAll('.poste-check').forEach(input => {
-    input.checked = checked;
+    input.checked = checked && !input.disabled;
   });
 }
 
@@ -220,10 +213,10 @@ function gerarEtiquetasSelecionadas() {
   const output = document.getElementById('labels-output');
   const selected = [...document.querySelectorAll('.poste-check:checked')]
     .map(input => programacaoDisponivel[Number(input.value)])
-    .filter(Boolean);
+    .filter(row => row && inferCodigoForma(row));
 
   if (!selected.length) {
-    showToast('Selecione pelo menos um poste.', 'warning');
+    showToast('Selecione pelo menos um poste com Cód. tipo cadastrado.', 'warning');
     output.innerHTML = '<div class="empty-label-state">Nenhum poste selecionado.</div>';
     resetResumo();
     return false;
@@ -235,20 +228,18 @@ function gerarEtiquetasSelecionadas() {
   document.getElementById('sum-etiquetas').textContent = (totalPostes * 2).toLocaleString('pt-BR');
 
   const dateLabel = fmtDateBR(data);
-  const fonteData = Number(document.getElementById('f-fonte-data').value || 20.16);
+  const {largura, altura} = dimensoesEtiqueta();
+  const fonteData = Math.min(Number(document.getElementById('f-fonte-data').value || 20.16), altura - 4);
   const fonteTipo = Number(document.getElementById('f-fonte-tipo').value || 29.7);
-  const escalaData = escalaHorizontal(dateLabel, fonteData, 89);
+  const escalaData = escalaHorizontal(dateLabel, fonteData, largura - 6);
   const labels = [];
 
-  let labelIndex = 0;
   selected.forEach(row => {
       const tipo = inferCodigoForma(row);
       const fonteForma = calcularFonteForma(tipo, fonteTipo);
       const qtd = Number(row.quantidade_programada || 0);
       const nome = row.produto?.nome || row.produto?.nome_poste || '';
       for (let i = 1; i <= qtd; i++) {
-        const dataId = `lbl-${++labelIndex}`;
-        const formaId = `lbl-${++labelIndex}`;
         labels.push(`
           <div class="label-pair print-selected">
             <div class="label-print-control">
@@ -259,7 +250,7 @@ function gerarEtiquetasSelecionadas() {
           </div>
           <div class="label-pair print-selected">
             <div class="label-print-control">
-              <label><input type="checkbox" class="form-check-input label-print-check" checked> Imprimir forma</label>
+              <label><input type="checkbox" class="form-check-input label-print-check" checked> Imprimir Cód. tipo</label>
               <span>${escapeHtml(tipo)} • ${i}/${qtd}</span>
             </div>
             <div class="label-preview label-type"><span style="font-size:${fonteForma}mm">${escapeHtml(tipo)}</span></div>
@@ -281,6 +272,7 @@ function gerarEtiquetasSelecionadas() {
 }
 
 function imprimirEtiquetasMarcadas() {
+  aplicarDimensoesEtiqueta();
   const geradas = document.querySelectorAll('.label-print-check').length;
   if (!geradas) {
     const ok = gerarEtiquetasSelecionadas();

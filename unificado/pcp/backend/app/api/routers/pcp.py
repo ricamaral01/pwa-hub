@@ -11,7 +11,7 @@ from decimal import Decimal, InvalidOperation
 from html.parser import HTMLParser
 
 from fastapi import APIRouter, Body, Depends, File, Form, HTTPException, Query, UploadFile
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, text
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -287,6 +287,61 @@ def listar_programacao(
     if setor_id:
         q = q.filter(Programacao.setor_id == setor_id)
     return q.order_by(Programacao.data.desc()).all()
+
+
+@router.get('/etiquetas-padrao/programacao')
+def programacao_etiquetas_padrao(
+    data: date = Query(...),
+    setor_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db),
+    _=Depends(require_roles(*_LEITURA)),
+):
+    """Provide the registered form type code for each standard label."""
+    query = db.query(Programacao).filter(Programacao.data == data)
+    if setor_id is not None:
+        query = query.filter(Programacao.setor_id == setor_id)
+    rows = query.order_by(Programacao.setor_id, Programacao.id).all()
+    if not rows:
+        return []
+
+    product_ids = {row.produto_id for row in rows if row.produto_id is not None}
+    sector_ids = {row.setor_id for row in rows}
+    products = {item.id: item for item in db.query(Produto).filter(Produto.id.in_(product_ids)).all()}
+    sectors = {item.id: item for item in db.query(Setor).filter(Setor.id.in_(sector_ids)).all()}
+    catalog = {}
+    for item in db.execute(text('''SELECT produto_id,codigo_tipo_forma
+                                   FROM public.catalogo_tipos_forma
+                                   WHERE produto_id IS NOT NULL''')).mappings():
+        catalog.setdefault(item['produto_id'], set()).add(item['codigo_tipo_forma'])
+    by_form = {}
+    by_product_name = {}
+    for item in db.query(MapeamentoForma).filter(MapeamentoForma.setor_id.in_(sector_ids)).all():
+        if not item.codigo_tipo_forma:
+            continue
+        by_form.setdefault((item.setor_id, _norm_text(item.codigo_forma)), set()).add(item.codigo_tipo_forma)
+        by_product_name.setdefault((item.setor_id, _norm_text(item.poste)), set()).add(item.codigo_tipo_forma)
+
+    def unique_code(values):
+        return next(iter(values)) if len(values) == 1 else None
+
+    result = []
+    for row in rows:
+        product = products.get(row.produto_id)
+        type_code = None
+        if row.codigo_forma:
+            type_code = unique_code(by_form.get((row.setor_id, _norm_text(row.codigo_forma)), set()))
+        if not type_code and product:
+            type_code = unique_code(catalog.get(product.id, set()))
+        if not type_code and product:
+            type_code = unique_code(by_product_name.get((row.setor_id, _norm_text(product.nome)), set()))
+        result.append({
+            'id': row.id, 'data': row.data.isoformat(), 'setor_id': row.setor_id,
+            'codigo_forma': row.codigo_forma, 'quantidade_programada': row.quantidade_programada,
+            'codigo_tipo_forma': type_code,
+            'setor': {'nome': sectors[row.setor_id].nome} if row.setor_id in sectors else None,
+            'produto': {'nome': product.nome, 'codigo': product.codigo} if product else None,
+        })
+    return result
 
 
 @router.post("/programacao", response_model=ProgramacaoOut, status_code=201)

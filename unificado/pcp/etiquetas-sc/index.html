@@ -21,7 +21,11 @@
     .label-print-control{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:.78rem;font-weight:850;color:var(--pcp-primary)}
     .label-print-control label{display:inline-flex;align-items:center;gap:7px;cursor:pointer}
     .label-meta{display:flex;justify-content:space-between;gap:8px;margin-top:8px;font-size:.72rem;color:var(--pcp-muted);font-weight:800}
-    .label-preview{width:95mm;height:40mm;max-width:100%;border:1px solid #0f172a;border-radius:3mm;background:#fff;color:#000;overflow:hidden;position:relative;margin:0 auto 8px;page-break-inside:avoid}
+    .label-size-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .label-size-controls label{min-width:145px;font-size:.78rem;font-weight:700}
+    .label-size-controls input{margin-top:4px}
+    .label-pair{overflow-x:auto}
+    .label-preview{width:var(--label-width,95mm);height:var(--label-height,40mm);max-width:none;border:1px solid #0f172a;border-radius:3mm;background:#fff;color:#000;overflow:hidden;position:relative;margin:0 auto 8px;page-break-inside:avoid}
     .label-date{display:flex;align-items:center;justify-content:center;font-family:Arial,Helvetica,sans-serif;font-size:20.16mm;font-weight:900;letter-spacing:0;line-height:1}
     .label-type{display:flex;align-items:center;justify-content:center;font-family:Arial,Helvetica,sans-serif}
     .label-type span{display:block;font-size:15.4mm;font-weight:900;line-height:1;letter-spacing:0;white-space:nowrap;text-align:center}
@@ -37,7 +41,8 @@
       .label-sheet{display:block}
       .label-pair{display:block;border:0;box-shadow:none;padding:0;page-break-inside:auto}
       .label-pair:not(.print-selected){display:none!important}
-      .label-preview{width:95mm!important;height:40mm!important;max-width:none!important;border:0;border-radius:0;margin:0;page-break-after:always;break-after:page}
+      .label-pair{overflow:visible}
+      .label-preview{width:var(--label-width,95mm)!important;height:var(--label-height,40mm)!important;max-width:none!important;border:0;border-radius:0;margin:0;page-break-after:always;break-after:page}
     }
   </style>
   <script src="/unificado/pcp/readonly-guard.js"></script>
@@ -95,11 +100,16 @@
       <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
         <div>
           <div class="section-title mb-1">Impressão de Etiquetas SC / Prod.</div>
-          <div class="text-muted" style="font-size:.84rem">Modelo 95 x 40 mm para Zebra / Argox. Lista as formas com Saque Mandril registrado no Mapa de Produção e gera uma etiqueta de data e outra com SC e o modelo na horizontal.</div>
+          <div class="text-muted" style="font-size:.84rem">Formato inicial 95 x 40 mm para Zebra / Argox. Lista as formas com Saque Mandril registrado no Mapa de Produção e gera uma etiqueta de data e outra somente com o modelo na horizontal.</div>
         </div>
         <button class="btn btn-primary-pcp btn-sm" onclick="imprimirEtiquetasMarcadas()">
           <i class="bi bi-printer-fill me-1"></i>Imprimir etiquetas marcadas
         </button>
+      </div>
+      <div class="label-size-controls">
+        <label>Largura da etiqueta (mm)<input type="number" id="f-largura" class="form-control form-control-sm" value="95" min="40" max="200" step="1" /></label>
+        <label>Altura da etiqueta (mm)<input type="number" id="f-altura" class="form-control form-control-sm" value="40" min="20" max="150" step="1" /></label>
+        <small class="text-muted">Ajustes independentes para a prévia e a impressão.</small>
       </div>
     </div>
 
@@ -150,7 +160,7 @@
       <div class="label-pill">Itens: <span id="sum-itens">0</span></div>
       <div class="label-pill">Postes: <span id="sum-postes">0</span></div>
       <div class="label-pill">Etiquetas: <span id="sum-etiquetas">0</span></div>
-      <div class="label-pill">Papel: 95 x 40 mm</div>
+      <div class="label-pill">Papel: <span id="label-paper-size">95 x 40 mm</span></div>
     </div>
 
     <div class="section-card">
@@ -173,6 +183,6 @@
 
 <script src="/unificado/vendor/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
-<script src="/unificado/pcp/static/js/etiquetas.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/etiquetas.js?v=0.6.7-tipo2-dims1"></script>
 </body>
 </html>
