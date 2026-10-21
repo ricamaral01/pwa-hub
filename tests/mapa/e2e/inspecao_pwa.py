@@ -21,6 +21,16 @@ def api(route):
         return route.fulfill(json={'ok': True})
     if path == 'unified/screen-access/me':
         return route.fulfill(json={'ok': True, 'screens': ['inspecao']})
+    if path.startswith('rest/v1/producao'):
+        sector = 'Setor 4' if 'Setor+4' in path or 'Setor%204' in path else 'Setor 3'
+        row = ({'id': 'prod-4', 'data_fabricacao': '2026-10-20', 'setor': sector,
+                'forma': 'F12', 'modelo': '11/300', 'status': 'LIBERADO'} if sector == 'Setor 4'
+               else {'id': 'prod-3', 'data_fabricacao': '2026-10-20', 'setor': sector,
+                     'forma': 'SC05', 'modelo': '9x200', 'status': 'LIBERADO'})
+        return route.fulfill(json=[row])
+    if path.startswith('pcp/saques-mandril'):
+        return route.fulfill(json=[{'data':'2026-10-20','codigo_forma':'SC05'}]
+                             if '2026-10-20' in path else [])
     if path.startswith('rest/v1/inspecao_defeitos'):
         if req.method == 'GET':
             return route.fulfill(json=records)
@@ -50,6 +60,7 @@ try:
             page.goto(url)
             page.locator('#insDefApp').wait_for(state='visible')
             assert page.locator('.ins-def-drawing').count() == 17
+            assert page.locator('[name="turno"]').count() == 0
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
             assert page.locator('[data-ins-tab]').count() == 3
             if width in (390, 768):
@@ -57,14 +68,19 @@ try:
                 out.parent.mkdir(parents=True, exist_ok=True)
                 page.screenshot(path=str(out), full_page=True)
             page.locator('[name="serie"]').fill(f'S3-PWA-{width}')
-            page.locator('[name="turno"]').select_option('1')
-            page.locator('[name="tipo"]').fill('Poste teste')
-            page.locator('[name="forma_numero"]').fill('F01')
+            if width == 768:
+                page.locator('[name="setor"]').select_option('Setor 4')
+            form_code = 'F12' if width == 768 else 'SC05'
+            model = '11/300' if width == 768 else '9x200'
+            page.locator('[name="forma_numero"]').select_option(form_code)
+            assert page.locator('[name="tipo"]').input_value() == model
             page.locator('[data-code="D01"][data-region="Base"][data-step="1"]').click()
             page.locator('#insDefSalvar').click()
             expect(page.locator('#insDefMessage')).to_contain_text('salva no banco')
             page.locator('[data-ins-tab="postes"]').click()
             expect(page.locator('.ins-def-list-item')).to_have_count(1)
+            assert records[0]['tipo'] == model
+            assert 'turno' not in records[0]
             page.locator('[data-delete]').click()
             page.locator('[data-delete]').click()
             expect(page.locator('.ins-def-list-item')).to_have_count(0)

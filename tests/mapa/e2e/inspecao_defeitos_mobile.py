@@ -13,6 +13,16 @@ STUB = """
 const DEFEITO_ICONES = {A:'🕳️',C:'🫧',I:'⚡',O:'🪨',J:'💥',Q:'✂️',S:'📐',R:'🧱',E:'🔩',F:'🏷️',P:'🚨'};
 window.__insDefTest = true;
 const todayYmd = () => '2026-10-21';
+window.fetch = async url => {
+  const path = String(url);
+  const rows = [
+    {id:42,data_fabricacao:'2026-10-20',setor:'Setor 3',forma:'SC05',modelo:'9x200',status:'LIBERADO'},
+    {id:43,data_fabricacao:'2026-10-20',setor:'Setor 4',forma:'F12',modelo:'11/300',status:'LIBERADO'}
+  ];
+  if (path.includes('/rest/v1/producao')) return {ok:true,json:async()=>rows.filter(r=>path.includes(encodeURIComponent(r.setor)) || path.includes(r.setor.replace(' ','+')))};
+  if (path.includes('/pcp/saques-mandril')) return {ok:true,json:async()=>path.includes('2026-10-20')?[{data:'2026-10-20',codigo_forma:'SC05'}]:[]};
+  throw Error(path);
+};
 let saved = [];
 const supabaseClient = {from(table) {
   if(table !== 'inspecao_defeitos') throw Error(table);
@@ -41,11 +51,11 @@ with sync_playwright() as pw:
             out.parent.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(out), full_page=True)
         assert page.locator('.ins-def-row .ins-def-icon').count() == 17
+        assert page.locator('[name="turno"]').count() == 0
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), f'overflow at {width}px'
         page.locator('[name="serie"]').fill(f'S3-{width}')
-        page.locator('[name="turno"]').select_option('1')
-        page.locator('[name="tipo"]').fill('Poste teste')
-        page.locator('[name="forma_numero"]').fill('12')
+        page.locator('[name="forma_numero"]').select_option('SC05')
+        assert page.locator('[name="tipo"]').input_value() == '9x200'
         page.locator('[data-code="D01"][data-region="Base"][data-step="1"]').click()
         assert page.locator('[name="classe"]:checked').input_value() == 'B'
         page.locator('#insDefSalvar').click()
@@ -64,6 +74,8 @@ with sync_playwright() as pw:
         page.locator('[data-ins-tab="postes"]').click()
         assert page.evaluate('saved.length') == 1
         assert page.evaluate('saved[0].observacoes') == 'Reparo registrado'
+        assert page.evaluate('saved[0].producao_record_id') == '42'
+        assert page.evaluate('saved[0].turno === undefined')
         page.locator('[data-delete]').click()
         page.locator('[data-delete]').click()
         assert page.evaluate('saved.length') == 0

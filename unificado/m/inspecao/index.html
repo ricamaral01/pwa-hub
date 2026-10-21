@@ -11,7 +11,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
   <link rel="icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="/unificado/mapa/operacao/inspecao-defeitos.css?v=20261021d">
+  <link rel="stylesheet" href="/unificado/mapa/operacao/inspecao-defeitos.css?v=20261021e">
   <link rel="stylesheet" href="./app.css?v=20261021a">
 </head>
 <body>
@@ -37,10 +37,10 @@
               <label>Setor<select name="setor" required><option value="Setor 3">Setor 3</option><option value="Setor 4">Setor 4</option></select></label>
               <label>Nº de série<input name="serie" type="text" maxlength="80" required autocomplete="off" /></label>
               <label>Data da desforma<input name="data_desforma" type="date" required /></label>
-              <label>Turno<select name="turno" required><option value="">Selecione</option><option>1</option><option>2</option><option>3</option></select></label>
-              <label>Tipo / modelo<input name="tipo" type="text" maxlength="120" required /></label>
-              <label>Nº da forma<input name="forma_numero" type="text" maxlength="80" required /></label>
+              <label>Nº da forma<select name="forma_numero" required disabled><option value="">Escolha o setor e a data</option></select></label>
+              <label>Tipo / modelo<input name="tipo" type="text" maxlength="120" required readonly placeholder="Preenchido pela forma escolhida" /></label>
             </div>
+            <p id="insDefFormaStatus" class="ins-def-forma-status" role="status" aria-live="polite"></p>
             <p id="insDefVinculo" class="ins-def-vinculo" hidden></p>
             <div class="ins-def-matrix-heading"><h3>Defeitos por região</h3><span>Toque em + para registrar cada ocorrência</span></div>
             <div id="insDefMatrix" class="ins-def-matrix"></div>
@@ -57,7 +57,7 @@
           </form>
         </div>
         <div id="insDefAnalise" class="ins-def-panel" hidden>
-          <div class="ins-def-fields ins-def-filters"><label>De<input id="insDefDe" type="date" /></label><label>Até<input id="insDefAte" type="date" /></label><label>Setor<select id="insDefSetorFiltro"><option value="">Todos</option><option>Setor 3</option><option>Setor 4</option></select></label><label>Turno<select id="insDefTurnoFiltro"><option value="">Todos</option><option>1</option><option>2</option><option>3</option></select></label></div>
+          <div class="ins-def-fields ins-def-filters"><label>De<input id="insDefDe" type="date" /></label><label>Até<input id="insDefAte" type="date" /></label><label>Setor<select id="insDefSetorFiltro"><option value="">Todos</option><option>Setor 3</option><option>Setor 4</option></select></label></div>
           <div id="insDefKpis" class="ins-def-kpis"></div>
           <h3>Pareto de defeitos</h3><div id="insDefParetoChart" class="ins-def-scroll"></div><div id="insDefPareto" class="ins-def-scroll"></div>
           <h3>Região do defeito</h3><div id="insDefHeat" class="ins-def-scroll"></div>
@@ -70,7 +70,7 @@
       </div>
   </main>
   <script src="./api.js?v=20261021a"></script>
-  <script src="/unificado/mapa/operacao/inspecao-defeitos.js?v=20261021e"></script>
+  <script src="/unificado/mapa/operacao/inspecao-defeitos.js?v=20261021f"></script>
   <script src="./app.js?v=20261021a"></script>
 </body>
 </html>

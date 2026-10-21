@@ -24,7 +24,7 @@ page = '''<!doctype html>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
   <link rel="icon" href="./icons/icon-192.png">
-  <link rel="stylesheet" href="/unificado/mapa/operacao/inspecao-defeitos.css?v=20261021d">
+  <link rel="stylesheet" href="/unificado/mapa/operacao/inspecao-defeitos.css?v=20261021e">
   <link rel="stylesheet" href="./app.css?v=20261021a">
 </head>
 <body>
@@ -38,7 +38,7 @@ page = '''<!doctype html>
 ''' + form + '''
   </main>
   <script src="./api.js?v=20261021a"></script>
-  <script src="/unificado/mapa/operacao/inspecao-defeitos.js?v=20261021e"></script>
+  <script src="/unificado/mapa/operacao/inspecao-defeitos.js?v=20261021f"></script>
   <script src="./app.js?v=20261021a"></script>
 </body>
 </html>

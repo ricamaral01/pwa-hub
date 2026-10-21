@@ -31,6 +31,7 @@
     return;
   }
   let records = [], counts = {}, editing = null, production = null, classManual = false, loaded = false, deleting = false;
+  let formsByCode = new Map(), formsRequest = 0;
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const pct = (a, b) => b ? `${(a * 100 / b).toFixed(1).replace('.', ',')}%` : '—';
   const dec = (a, b) => b ? (a / b).toFixed(2).replace('.', ',') : '—';
@@ -60,6 +61,76 @@
   const icon = (code, size = 36) => `<svg class="ins-def-drawing ${byCode[code]?.[2] === 'C' ? 'critical' : 'standard'}" viewBox="0 0 32 32" width="${size}" height="${size}" aria-hidden="true">${defectDrawings[code] || defectDrawings.D99}</svg>`;
   const source = () => typeof supabaseClient !== 'undefined' ? supabaseClient : null;
   const message = (value, error = false) => { $('insDefMessage').textContent = value; $('insDefMessage').classList.toggle('error', error); $('insDefGlobalStatus').textContent = error ? value : ''; };
+  const normalizeForm = value => {
+    const code = String(value || '').trim().toUpperCase().replace(/[\s-]/g,'');
+    const circular = code.match(/^SC0*(\d+)$/);
+    return circular ? `SC${String(Number(circular[1])).padStart(2,'0')}` : code;
+  };
+  const previousDays = (date, days = 7) => Array.from({length:days},(_,index) => {
+    const day = new Date(`${date}T12:00:00Z`);
+    day.setUTCDate(day.getUTCDate() - index);
+    return day.toISOString().slice(0,10);
+  });
+  async function fetchInspectionData(path) {
+    const response = await fetch(`/unificado/mapa/api/${path}`, {
+      credentials:'same-origin', cache:'no-store', headers:{'X-Unificado-Screen':'inspecao'}
+    });
+    if (!response.ok) throw new Error(`Falha ao consultar formas e saques (HTTP ${response.status}).`);
+    const data = await response.json();
+    if (!Array.isArray(data)) throw new Error('Resposta inválida da consulta de formas.');
+    return data;
+  }
+  function selectForm() {
+    const row = formsByCode.get(form.elements.forma_numero.value);
+    form.elements.tipo.value = row?.modelo?.trim() || '';
+    production = row ? {recordId:row.id, setor:row.setor, formaNumero:normalizeForm(row.forma), modelo:row.modelo} : null;
+    $('insDefVinculo').hidden = !row;
+    $('insDefVinculo').textContent = row ? `Modelo confirmado na produção de ${row.data_fabricacao}, forma ${normalizeForm(row.forma)}.` : '';
+  }
+  async function loadForms(preferredForm = '') {
+    const ticket = ++formsRequest;
+    const select = form.elements.forma_numero;
+    const status = $('insDefFormaStatus');
+    const setor = form.elements.setor.value, date = form.elements.data_desforma.value;
+    formsByCode = new Map(); select.disabled = true;
+    select.innerHTML = '<option value="">Carregando formas...</option>';
+    form.elements.tipo.value = '';
+    production = null;
+    status.textContent = date ? 'Consultando saques e modelos da produção...' : 'Informe a data da desforma para consultar as formas.';
+    status.classList.remove('error');
+    if (!date || !['Setor 3','Setor 4'].includes(setor)) return;
+    try {
+      const days = previousDays(date);
+      const params = new URLSearchParams({select:'id,data_fabricacao,setor,forma,modelo,status,data_hora',
+        setor:`eq.${setor}`, data_fabricacao:`gte.${days[days.length-1]}`, order:'data_fabricacao.desc,data_hora.desc', limit:'1000'});
+      params.append('data_fabricacao',`lte.${date}`);
+      const productionRows = await fetchInspectionData(`rest/v1/producao?${params}`);
+      const saques = setor === 'Setor 3' ? (await Promise.all(days.map(day =>
+        fetchInspectionData(`pcp/saques-mandril?data=${day}`)))).flat() : [];
+      if (ticket !== formsRequest) return;
+      const saquesByDay = new Set(saques.map(row => `${row.data}|${normalizeForm(row.codigo_forma)}`));
+      for (const row of productionRows) {
+        const forma = normalizeForm(row.forma);
+        if (!forma || !row.modelo?.trim() || row.status !== 'LIBERADO' || row.data_fabricacao > date ||
+            (setor === 'Setor 3' && !saquesByDay.has(`${row.data_fabricacao}|${forma}`))) continue;
+        if (!formsByCode.has(forma)) formsByCode.set(forma,row);
+      }
+      const options = [...formsByCode.entries()].sort(([a],[b]) => a.localeCompare(b,'pt-BR',{numeric:true}));
+      select.innerHTML = '<option value="">Selecione a forma</option>' + options.map(([code,row]) =>
+        `<option value="${escape(code)}">${escape(code)} · ${escape(row.data_fabricacao)}</option>`).join('');
+      select.disabled = !options.length;
+      if (preferredForm && formsByCode.has(normalizeForm(preferredForm))) select.value = normalizeForm(preferredForm);
+      selectForm();
+      status.textContent = options.length ? `${options.length} forma(s) com modelo confirmado ${setor === 'Setor 3' ? 'no saque do mandril' : 'na produção'}.` :
+        `Nenhuma forma com modelo confirmado ${setor === 'Setor 3' ? 'no saque do mandril' : 'na produção'} nos últimos 7 dias.`;
+      status.classList.toggle('error',!options.length);
+    } catch (error) {
+      if (ticket !== formsRequest) return;
+      select.innerHTML = '<option value="">Consulta indisponível</option>';
+      status.textContent = error.message || 'Não foi possível consultar as formas.';
+      status.classList.add('error');
+    }
+  }
   const defects = () => DEF.flatMap(d => REG.map(r => ({codigo:d[0], regiao:r, quantidade:counts[key(d[0],r)] || 0}))).filter(d => d.quantidade);
   const suggested = () => defects().some(d => byCode[d.codigo][2] === 'C') ? 'C' : defects().length ? 'B' : 'A';
   function renderMatrix() {
@@ -77,7 +148,7 @@
     form.reset(); counts = {}; editing = null; production = null; classManual = false;
     form.elements.data_desforma.value = typeof todayYmd === 'function' ? todayYmd() : new Date().toLocaleDateString('en-CA');
     $('insDefVinculo').hidden = true; $('insDefSalvar').textContent = 'Salvar inspeção';
-    renderMatrix(); refreshClass(); message('');
+    renderMatrix(); refreshClass(); message(''); loadForms();
   }
   function tab(name) {
     $('insDefApp').querySelectorAll('[data-ins-tab]').forEach(b => b.classList.toggle('active', b.dataset.insTab === name));
@@ -105,17 +176,18 @@
     if (!db) { message('Banco de inspeção indisponível.', true); return; }
     const setor = form.elements.setor.value;
     const serie = form.elements.serie.value.trim();
-    const tipo = form.elements.tipo.value.trim();
     const forma = form.elements.forma_numero.value.trim();
-    if (!serie || !tipo || !forma || !['Setor 3','Setor 4'].includes(setor)) { message('Preencha setor, série, tipo e forma.', true); return; }
+    const chosen = formsByCode.get(forma);
+    const tipo = chosen?.modelo?.trim() || '';
+    if (!serie || !tipo || !forma || !['Setor 3','Setor 4'].includes(setor)) { message('Escolha uma forma com modelo confirmado e preencha a série.', true); return; }
     const classe = form.elements.classe.value;
     if ('ABC'.indexOf(classe) < 0) { message('Selecione uma classificação.', true); return; }
     if (classe === 'A' && defects().length) { message('Classe A exige ausência de defeitos. Se o poste for aprovado após reparo, use classe B.', true); return; }
     if (classe === 'B' && suggested() === 'C') { message('Há defeito crítico. Classifique como C.', true); return; }
     if (defects().some(d => d.codigo === 'D99') && !form.elements.observacoes.value.trim()) { message('Descreva o defeito D99 nas observações.', true); return; }
-    const payload = {setor, serie, data_desforma:form.elements.data_desforma.value, turno:form.elements.turno.value,
+    const payload = {setor, serie, data_desforma:form.elements.data_desforma.value,
       tipo, forma_numero:forma, classe, observacoes:form.elements.observacoes.value.trim(), defeitos:defects(),
-      producao_record_id:production?.recordId || editing?.producao_record_id || null,
+      producao_record_id:String(chosen.id),
       atualizado_em:new Date().toISOString()};
     $('insDefSalvar').disabled = true; message('Salvando...');
     try {
@@ -129,7 +201,9 @@
   }
   function edit(row) {
     editing = row; production = null; form.reset();
-    for (const field of ['setor','serie','data_desforma','turno','tipo','forma_numero','classe','observacoes']) form.elements[field].value = row[field] || '';
+    for (const field of ['setor','serie','data_desforma','classe','observacoes']) form.elements[field].value = row[field] || '';
+    form.elements.tipo.value = row.tipo || '';
+    loadForms(row.forma_numero);
     counts = Object.fromEntries((row.defeitos || []).map(d => [key(d.codigo,d.regiao), d.quantidade]));
     classManual = true; renderMatrix(); refreshClass();
     $('insDefVinculo').hidden = !row.producao_record_id;
@@ -140,16 +214,12 @@
   window.insDefeitosSelecionarPoste = poste => {
     reset(); production = poste;
     form.elements.setor.value = poste.setor;
-    form.elements.tipo.value = poste.modelo || poste.descricaoPoste || '';
-    form.elements.forma_numero.value = poste.formaNumero || '';
-    $('insDefVinculo').hidden = false;
-    $('insDefVinculo').textContent = `Produção vinculada: ${poste.setor} · forma ${poste.formaNumero} · ${poste.modelo || ''}. Informe o nº de série e confira a data da desforma.`;
+    loadForms(poste.formaNumero);
     tab('registrar'); form.elements.serie.focus();
   };
   const filtered = () => records.filter(r => (! $('insDefDe').value || r.data_desforma >= $('insDefDe').value) &&
     (! $('insDefAte').value || r.data_desforma <= $('insDefAte').value) &&
-    (! $('insDefSetorFiltro').value || r.setor === $('insDefSetorFiltro').value) &&
-    (! $('insDefTurnoFiltro').value || r.turno === $('insDefTurnoFiltro').value));
+    (! $('insDefSetorFiltro').value || r.setor === $('insDefSetorFiltro').value));
   const table = (heads, rows) => rows.length ? `<table><thead><tr>${heads.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>` : '<p>Nenhum registro para os filtros selecionados.</p>';
   function paretoChart(list, total) {
     if (!list.length) return '<p>Nenhum defeito no período.</p>';
@@ -190,11 +260,11 @@
     if (!loaded) return;
     const q = $('insDefBusca').value.trim().toLocaleLowerCase('pt-BR');
     const rows = records.filter(r => !q || [r.serie,r.forma_numero,r.tipo,...(r.defeitos || []).map(d => `${d.codigo} ${byCode[d.codigo]?.[1] || ''}`)].join(' ').toLocaleLowerCase('pt-BR').includes(q));
-    $('insDefLista').innerHTML = rows.length ? rows.map(r => `<article class="ins-def-list-item"><div class="ins-def-badge ${r.classe}">${escape(r.classe)}</div><div><strong>${escape(r.serie)}</strong><p>${escape(r.setor)} · ${escape(r.data_desforma)} · turno ${escape(r.turno)} · ${escape(r.tipo)} · forma ${escape(r.forma_numero)}</p><p class="ins-def-list-drawings">${(r.defeitos || []).map(d => `<span>${icon(d.codigo,22)}${escape(d.codigo)} ${escape(d.regiao)} ×${d.quantidade}</span>`).join('') || 'Sem defeito'}</p></div><div class="ins-def-list-actions"><button type="button" class="btn" data-edit="${escape(r.id)}">Editar</button><button type="button" class="btn" data-delete="${escape(r.id)}">Apagar</button></div></article>`).join('') : '<p>Nenhum poste encontrado.</p>';
+    $('insDefLista').innerHTML = rows.length ? rows.map(r => `<article class="ins-def-list-item"><div class="ins-def-badge ${r.classe}">${escape(r.classe)}</div><div><strong>${escape(r.serie)}</strong><p>${escape(r.setor)} · ${escape(r.data_desforma)} · ${escape(r.tipo)} · forma ${escape(r.forma_numero)}</p><p class="ins-def-list-drawings">${(r.defeitos || []).map(d => `<span>${icon(d.codigo,22)}${escape(d.codigo)} ${escape(d.regiao)} ×${d.quantidade}</span>`).join('') || 'Sem defeito'}</p></div><div class="ins-def-list-actions"><button type="button" class="btn" data-edit="${escape(r.id)}">Editar</button><button type="button" class="btn" data-delete="${escape(r.id)}">Apagar</button></div></article>`).join('') : '<p>Nenhum poste encontrado.</p>';
   }
   function exportCsv() {
-    const header = ['Setor','Série','Data da desforma','Turno','Tipo','Forma','Classe','Código','Região','Quantidade','Observações'];
-    const lines = [header, ...filtered().flatMap(r => (r.defeitos?.length ? r.defeitos : [{codigo:'',regiao:'',quantidade:0}]).map(d => [r.setor,r.serie,r.data_desforma,r.turno,r.tipo,r.forma_numero,r.classe,d.codigo,d.regiao,d.quantidade,r.observacoes]))];
+    const header = ['Setor','Série','Data da desforma','Tipo','Forma','Classe','Código','Região','Quantidade','Observações'];
+    const lines = [header, ...filtered().flatMap(r => (r.defeitos?.length ? r.defeitos : [{codigo:'',regiao:'',quantidade:0}]).map(d => [r.setor,r.serie,r.data_desforma,r.tipo,r.forma_numero,r.classe,d.codigo,d.regiao,d.quantidade,r.observacoes]))];
     const csv = '\ufeff' + lines.map(row => row.map(value => `"${String(value ?? '').replace(/"/g,'""')}"`).join(';')).join('\r\n');
     const link = document.createElement('a'); link.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); link.download = 'inspecao-defeitos-s3-s4.csv'; link.click(); setTimeout(() => URL.revokeObjectURL(link.href),1000);
   }
@@ -208,7 +278,9 @@
   $('insDefClasses').addEventListener('change', () => { classManual = true; });
   $('insDefLimpar').addEventListener('click',reset);
   form.addEventListener('submit',save);
-  ['insDefDe','insDefAte','insDefSetorFiltro','insDefTurnoFiltro'].forEach(id => $(id).addEventListener('change',renderAnalysis));
+  ['insDefDe','insDefAte','insDefSetorFiltro'].forEach(id => $(id).addEventListener('change',renderAnalysis));
+  ['setor','data_desforma'].forEach(name => form.elements[name].addEventListener('change',() => loadForms()));
+  form.elements.forma_numero.addEventListener('change',selectForm);
   $('insDefBusca').addEventListener('input',renderList);
   $('insDefCsv').addEventListener('click',exportCsv);
   $('insDefLista').addEventListener('click',async event => {

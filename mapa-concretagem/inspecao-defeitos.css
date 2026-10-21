@@ -9,6 +9,9 @@
 .ins-def-fields label, .ins-def-bottom > label, #insDefPostes > label { display:flex; flex-direction:column; gap:5px; min-width:0; font-weight:650; }
 .ins-def-fields input, .ins-def-fields select, .ins-def-bottom textarea, #insDefBusca { width:100%; min-width:0; min-height:44px; font:inherit; border:1px solid var(--line); border-radius:8px; padding:8px 10px; background:white; color:var(--text); }
 .ins-def-vinculo { padding:10px 12px; background:var(--tag-bg); border-left:4px solid var(--accent); border-radius:6px; }
+.ins-def-forma-status { margin:-6px 0 12px; min-height:1.25em; color:var(--muted); font-size:.85rem; }
+.ins-def-forma-status.error { color:var(--danger); }
+.ins-def-fields input[readonly] { background:var(--tag-bg); font-weight:700; }
 .ins-def-matrix-heading { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px; margin-top:14px; }
 .ins-def-matrix-heading h3 { margin:0; }
 .ins-def-matrix-heading span { color:var(--muted); font-size:.82rem; }

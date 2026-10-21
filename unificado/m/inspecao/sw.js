@@ -1,5 +1,5 @@
 /* Dedicated shell cache. API, sessions and inspection records stay on the network. */
-const CACHE = 'inspecao-s34-shell-20261021a';
+const CACHE = 'inspecao-s34-shell-20261021b';
 const SHELL = [
   '/unificado/m/inspecao/', '/unificado/m/inspecao/index.html',
   '/unificado/m/inspecao/login.html', '/unificado/m/inspecao/manifest.webmanifest',
@@ -10,8 +10,8 @@ const SHELL = [
   '/unificado/m/inspecao/icons/icon-512.png',
   '/unificado/m/inspecao/icons/icon-maskable-512.png',
   '/unificado/m/inspecao/icons/apple-touch-icon.png',
-  '/unificado/mapa/operacao/inspecao-defeitos.js?v=20261021e',
-  '/unificado/mapa/operacao/inspecao-defeitos.css?v=20261021d',
+  '/unificado/mapa/operacao/inspecao-defeitos.js?v=20261021f',
+  '/unificado/mapa/operacao/inspecao-defeitos.css?v=20261021e',
   '/unificado/shell/auth.js?v=20261021-inspecao1',
   '/unificado/shell/shell.css?v=1.0',
   '/unificado/shell/password-visibility.js?v=2',
