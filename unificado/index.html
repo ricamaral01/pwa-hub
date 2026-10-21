@@ -4,19 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0B1730">
-  <link rel="manifest" href="manifest.webmanifest?v=0.6.25">
+  <link rel="manifest" href="manifest.webmanifest?v=1.0">
   <link rel="icon" href="data:,">
   <title>Concrefer — Sistema unificado</title>
   <script>if(new URLSearchParams(location.search).has('view'))document.documentElement.classList.add('unificado-routing')</script>
-  <link rel="stylesheet" href="shell/shell.css?v=0.6.25">
+  <link rel="stylesheet" href="shell/shell.css?v=1.0.17-abertura">
+  <link rel="stylesheet" href="shell/shared-menu.css?v=1.0.15">
+  <link rel="stylesheet" href="shell/modelo-a/menu.css?v=1.0.15">
+  <link rel="stylesheet" href="shell/modelo-a-host.css?v=1.0.15">
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
-  <script defer src="shell/menu.config.js?v=0.6.7"></script>
-  <script defer src="shell/auth.js?v=0.6.25"></script>
-  <script defer src="shell/shell.js?v=0.6.25"></script>
-  <script defer src="shell/router.js?v=0.6.25"></script>
+  <script defer src="shell/menu.config.js?v=1.0.19-fechamento-acompanhamento"></script>
+  <script defer src="shell/auth.js?v=1.0.18-fechamento-menu"></script>
+  <script defer src="shell/shell.js?v=1.0.17-abertura"></script>
+  <script defer src="shell/router.js?v=1.0.17-fechamento"></script>
+  <script defer src="shell/modelo-a-loader.js?v=1.0.20-fechamento-nav"></script>
 </head>
 <body>
   <div class="desktop-only">
+    <div id="sidebar-model-a"></div>
     <nav id="sidebar"></nav>
     <main class="main-panel">
       <header class="topbar">
@@ -29,7 +34,25 @@
         </div>
       </header>
       <div class="content">
-        <div class="welcome"><div><p class="eyebrow">VISÃO GERAL</p><h1>Sistema unificado<span class="accent-mark">.</span></h1><p id="today" class="date"></p></div></div>
+        <div class="welcome opening-hero">
+          <div class="opening-identity">
+            <img class="opening-logo" src="assets/img/logo-concrefer.png" alt="Concrefer">
+            <p class="eyebrow">PLATAFORMA CONCREFER</p>
+            <h1>Bem-vindo ao Unificado<span class="accent-mark">.</span></h1>
+            <p class="opening-description">Acesse seus módulos e acompanhe as operações em um só lugar.</p>
+            <p id="today" class="date"></p>
+          </div>
+          <div class="opening-update" aria-labelledby="platform-update-title">
+            <span class="opening-update-icon" aria-hidden="true">↻</span>
+            <h2 id="platform-update-title">Atualização da plataforma</h2>
+            <p id="platform-update-status" role="status">Verificando se há uma versão nova…</p>
+            <button id="platform-update" class="platform-update-button" type="button" disabled>Verificando versão…</button>
+          </div>
+        </div>
+        <section class="opening-modules" aria-labelledby="opening-modules-title">
+          <div class="section-heading"><div><h2 id="opening-modules-title">Módulos</h2><p>Escolha onde deseja trabalhar.</p></div></div>
+          <div id="opening-module-grid" class="opening-module-grid"></div>
+        </section>
         <section aria-labelledby="sectors-title">
           <div class="section-heading"><div><h2 id="sectors-title">Setores hoje</h2><p>Programado no PCP e realizado no Mapa.</p></div><span class="sample-note">Carregando dados…</span></div>
           <div id="sector-cards" class="sector-grid"></div>

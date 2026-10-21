@@ -1,11 +1,21 @@
-const CACHE = 'concrefer-unificado-shell-v0.6.25';
+const CACHE = 'concrefer-unificado-shell-v1.0.17-abertura';
+const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
-const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=0.6.25',
-  ROOT + 'shell/menu.config.js?v=0.6.7', ROOT + 'shell/auth.js?v=0.6.25',
-  ROOT + 'shell/shell.js?v=0.6.25', ROOT + 'shell/router.js?v=0.6.25',
-  ROOT + 'shell/embedded.css?v=0.6.25'];
+const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.17-abertura',
+  ROOT + 'shell/shared-menu.css?v=1.0.15',
+  ROOT + 'shell/modelo-a/menu.css?v=1.0.15', ROOT + 'shell/modelo-a-host.css?v=1.0.15',
+  ROOT + 'shell/modelo-a/menu.js?v=1.0.16-cronoanalise',
+  ROOT + 'shell/modelo-a-loader.js?v=1.0.16-cronoanalise',
+  ROOT + 'shell/menu.config.js?v=1.0.16-cronoanalise', ROOT + 'shell/auth.js?v=1.0.15',
+  ROOT + 'shell/shell.js?v=1.0.17-abertura', ROOT + 'shell/router.js?v=1.0.16-cronoanalise',
+  ROOT + 'shell/embedded.css?v=1.0'];
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(CACHE).then(cache =>
+    cache.addAll(CORE.map(asset => new Request(asset, {cache:'reload'}))))
+    .then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys
@@ -23,6 +33,27 @@ self.addEventListener('fetch', event => {
       }
       return response;
     }).catch(() => caches.match(ROOT + 'index.html')));
+    return;
+  }
+  if (url.pathname.startsWith(ROOT + 'laboratorio/cronoanalise') &&
+      !url.pathname.includes('/api/')) {
+    const page = !/\.(?:js|css|html|png|jpg|svg|woff2?)$/i.test(url.pathname) ||
+      url.pathname.endsWith('metodologia-conteudo.html');
+    event.respondWith(caches.open(CRONO_CACHE).then(async cache => {
+      const fallback = page && !url.pathname.endsWith('metodologia-conteudo.html')
+        ? await cache.match(ROOT + 'laboratorio/cronoanalise') : null;
+      try {
+        const response = await fetch(event.request, {cache:'no-store'});
+        if (response.ok && !response.redirected && response.type === 'basic') {
+          await cache.put(event.request, response.clone());
+          if (page && !url.pathname.endsWith('metodologia-conteudo.html'))
+            await cache.put(ROOT + 'laboratorio/cronoanalise', response.clone());
+        }
+        return response;
+      } catch {
+        return await cache.match(event.request) || fallback || Response.error();
+      }
+    }));
     return;
   }
   if (!url.pathname.startsWith(ROOT + 'shell/')) return;
