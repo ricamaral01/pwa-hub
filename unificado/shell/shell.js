@@ -114,6 +114,7 @@ const storedModule = localStorage.getItem('unificado_modulo');
 let currentModule = MENU_CONFIG[storedModule] && (storedModule === 'planejamento' ? hasPcp : storedModule === 'laboratorio' ? hasLab : hasMapa)
   ? storedModule : (hasPcp ? 'planejamento' : 'producao');
 let activeItem = null;
+let menuModuleOverride = null;
 
 function canUse(item) {
   const route = MENU_ITEMS[item.id] || item;
@@ -237,7 +238,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.19';
+const APP_VERSION = '1.0.20';
 let platformUpdateAvailable = false;
 async function checkPlatformUpdate() {
   const button = document.getElementById('platform-update');
@@ -364,9 +365,16 @@ function renderSharedSidebar() {
 
   const brandRow = document.createElement('div');
   brandRow.className = 'shared-brand-row';
-  const plaque = document.createElement('div');
+  const plaque = document.createElement('a');
   plaque.className = 'shared-brand-plaque';
+  plaque.href = UNIFICADO_BASE.href;
+  plaque.setAttribute('aria-label', 'Ir ao menu principal');
   plaque.innerHTML = '<img class="shared-logo-concrefer" src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><span class="shared-brand-divider" aria-hidden="true"></span><span class="shared-logo-concretrack" role="img" aria-label="ConcreTrack"></span>';
+  plaque.addEventListener('click', event => {
+    if (!window.UnificadoRouter) return;
+    event.preventDefault();
+    window.UnificadoSidebarModelA.navigate(UNIFICADO_BASE.href);
+  });
   const toggle = document.createElement('button');
   toggle.type = 'button';
   toggle.className = 'shared-menu-toggle';
@@ -415,7 +423,7 @@ function renderSharedSidebar() {
     button.setAttribute('aria-pressed', key === currentModule ? 'true' : 'false');
     button.addEventListener('click', () => {
       closeTabletMenu();
-      if (window.UnificadoRouter) { window.UnificadoRouter.openModule(key); return; }
+      if (window.UnificadoSidebarModelA) { window.UnificadoSidebarModelA.selectModule(key); return; }
       currentModule = key;
       localStorage.setItem('unificado_modulo', key);
       renderSidebar();
@@ -529,7 +537,15 @@ function renderSidebar() {
   const brand = existingBrand || document.createElement('div');
   if (!existingBrand) {
     brand.className = 'brand';
-    brand.innerHTML = '<img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer" width="112"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack" width="34" height="34">';
+    brand.innerHTML = '<a href="/unificado/" aria-label="Ir ao menu principal"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer" width="112"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack" width="34" height="34"></a>';
+  }
+  if (!brand.dataset.homeBound) {
+    brand.dataset.homeBound = '1';
+    brand.querySelector('a[href="/unificado/"]')?.addEventListener('click', event => {
+      if (!window.UnificadoRouter) return;
+      event.preventDefault();
+      window.UnificadoSidebarModelA.navigate(UNIFICADO_BASE.href);
+    });
   }
   sidebar.append(brand);
   appendVersionBadge(sidebar);
@@ -566,8 +582,8 @@ function renderSidebar() {
     button.setAttribute('aria-label', config.label);
     button.setAttribute('aria-pressed', key === currentModule ? 'true' : 'false');
     button.addEventListener('click', () => {
-      if (window.UnificadoRouter) {
-        window.UnificadoRouter.openModule(key);
+      if (window.UnificadoSidebarModelA) {
+        window.UnificadoSidebarModelA.selectModule(key);
         return;
       }
       currentModule = key;
@@ -753,9 +769,9 @@ function renderOpeningModules() {
     link.querySelector('strong').textContent = MENU_CONFIG[module.id].label;
     link.querySelector('small').textContent = module.description;
     link.addEventListener('click', event => {
-      if (!window.UnificadoRouter) return;
+      if (!window.UnificadoSidebarModelA) return;
       event.preventDefault();
-      window.UnificadoRouter.open(link.href, item.id);
+      window.UnificadoSidebarModelA.selectModule(module.id);
     });
     target.append(link);
   }
@@ -765,13 +781,29 @@ function renderOpeningModules() {
     link.href = new URL('ged/dashboard', UNIFICADO_BASE).href;
     link.innerHTML = `<span><strong>GED</strong><small>Documentos e aprovações</small></span>${ICONS.arrow}`;
     link.addEventListener('click', event => {
-      if (!window.UnificadoRouter?.openGed) return;
+      if (!window.UnificadoSidebarModelA) return;
       event.preventDefault();
-      window.UnificadoRouter.openGed('dashboard');
+      window.UnificadoSidebarModelA.selectModule('ged');
     });
     target.append(link);
   }
   document.querySelector('.opening-modules').hidden = !target.children.length;
+}
+
+function selectModuleMenu(moduleId) {
+  if (moduleId === 'ged' ? !hasGedAccess : !MENU_CONFIG[moduleId] || !canAccessModule(moduleId)) return;
+  if (moduleId === 'ged' && !modelASidebarAllowed()) {
+    window.UnificadoRouter?.openGed('dashboard');
+    return;
+  }
+  if (!document.getElementById('module-host')?.hidden) window.UnificadoRouter?.home();
+  menuModuleOverride = moduleId;
+  if (MENU_CONFIG[moduleId]) {
+    currentModule = moduleId;
+    localStorage.setItem('unificado_modulo', moduleId);
+  }
+  renderSidebar();
+  dispatchEvent(new Event('unificado-sidebar-module-selected'));
 }
 
 const today = new Date();
@@ -804,7 +836,8 @@ window.UnificadoSidebarModelA = Object.freeze({
     const role = hasPcp && hasMapa ? `${pcpUser.nivel_acesso} / ${mapaUser.role}` :
       (hasPcp ? pcpUser.nivel_acesso : mapaUser?.role || '');
     return {
-      activeModuleId: document.body.classList.contains('unificado-ged-active') ? 'ged' : currentModule,
+      activeModuleId: document.body.classList.contains('unificado-ged-active') ? 'ged' :
+        (activeItem ? currentModule : menuModuleOverride || currentModule),
       activePath: window.UnificadoSidebarActivePath || location.pathname + location.search,
       allowedModuleIds, allowedItemIds, footerItemIds,
       user: {name, role}, version: APP_VERSION,
@@ -815,6 +848,7 @@ window.UnificadoSidebarModelA = Object.freeze({
     const url = new URL(href, location.origin);
     if (url.origin !== location.origin || url.pathname !== UNIFICADO_BASE.pathname) return;
     const view = url.searchParams.get('view');
+    menuModuleOverride = null;
     if (!view) { window.UnificadoRouter?.home(); return; }
     if (view === 'tv/formas/') {
       window.open(new URL(view, UNIFICADO_BASE).href, '_blank', 'noopener');
@@ -826,6 +860,7 @@ window.UnificadoSidebarModelA = Object.freeze({
     }
     window.UnificadoRouter?.open(new URL(view, UNIFICADO_BASE).href);
   },
+  selectModule: selectModuleMenu,
   update: () => {
     const button = document.getElementById('platform-update');
     if (button) updateApplication(button);

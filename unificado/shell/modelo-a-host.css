@@ -1,0 +1,25 @@
+/* Integração da casca. O visual do componente em modelo-a/menu.css é mantido integralmente. */
+#sidebar-model-a { display: none; }
+body.unificado-model-a .desktop-only {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  min-height: 100vh;
+  padding: 0;
+  overflow: hidden;
+}
+body.unificado-model-a #sidebar { display: none; }
+body.unificado-model-a #sidebar-model-a { display: block; flex: none; width: 272px; }
+body.unificado-model-a #sidebar-model-a:has(.sb.is-collapsed) { width: 80px; }
+body.unificado-model-a .main-panel {
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  min-height: 0;
+  overflow-y: auto;
+  border-radius: 0;
+}
+body.unificado-model-a .module-host { height: calc(100vh - 70px); min-height: 0; }
+body.unificado-model-a .topbar .user-pill,
+body.unificado-model-a .topbar .exit-button { display: none; }
+body.unificado-model-a.unificado-permissions-loading #sidebar-model-a { visibility: hidden; }
