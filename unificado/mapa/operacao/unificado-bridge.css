@@ -137,3 +137,49 @@
 .vc-second-inspection-actions{display:none!important}
 #unificado-report-second{display:inline-flex;align-items:center;justify-content:center;margin:8px 0 0 12px;min-height:42px;padding:8px 14px;border:0;border-radius:10px;background:#E8762A;color:#0B1730;font:700 14px/1.2 Geist,system-ui,sans-serif;cursor:pointer}
 #unificado-report-second:disabled{opacity:.65;cursor:wait}
+/* A programação oficial do PCP também identifica as formas do Setor 4. */
+/* No painel de produção, a fôrma liberada pelo encarregado fica roxa até o apontamento. */
+body:not(.odin-active):not(.liberation-active) .forma-card.is-liberada {
+  border-color: #7c3aed !important;
+  background: #ede9fe !important;
+  color: #4c1d95 !important;
+  box-shadow: 0 0 8px rgba(124, 58, 237, .35) !important;
+}
+body:not(.odin-active):not(.liberation-active) .forma-card.is-liberada:hover {
+  border-color: #6d28d9 !important;
+  background: #ddd6fe !important;
+}
+.unificado-mandril-report { margin-top: 22px; padding: 22px; border: 1px solid #e2e8f0; border-radius: 14px; background: #fff; color: #0b1730; }
+.unificado-mandril-report[hidden] { display: none !important; }
+.unificado-mandril-report-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+.unificado-mandril-report h3 { margin: 0 0 6px; font-size: 20px; }
+.unificado-mandril-report p { margin: 0 0 14px; }
+.unificado-mandril-report-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.unificado-mandril-report-actions button { min-height: 38px; padding: 7px 12px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; color: #15416f; font-weight: 600; cursor: pointer; }
+.unificado-mandril-report-actions button:disabled { opacity: .6; cursor: wait; }
+.unificado-mandril-report-table { overflow-x: auto; }
+.unificado-mandril-report table { width: 100%; border-collapse: collapse; }
+.unificado-mandril-report th, .unificado-mandril-report td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; text-align: left; white-space: nowrap; }
+.unificado-mandril-report th { color: #475569; background: #f8fafc; }
+@media print {
+  body:has(#unificadoMandrilReport:not([hidden])) * { visibility: hidden !important; }
+  #unificadoMandrilReport, #unificadoMandrilReport * { visibility: visible !important; }
+  #unificadoMandrilReport { position: absolute; inset: 0 auto auto 0; width: 100%; margin: 0; padding: 0; border: 0; }
+  #unificadoMandrilReport .unificado-mandril-report-actions { display: none !important; }
+}
+.s4-forma-cell.is-programmed:not(.is-saved),
+body.kiosk-active .s4-forma-cell.is-programmed:not(.is-saved) {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  box-shadow: inset 0 0 0 2px #d97706 !important;
+}
+.pa-kg-homem{margin-top:20px;padding:20px;border:1px solid #dbe4ee;border-radius:12px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.05)}
+.pa-kg-homem-heading h3{margin:0 0 5px;color:#163963;font-size:1.05rem}
+.pa-kg-homem-heading p{margin:0 0 15px;color:#64748b;font-size:.82rem}
+.pa-kg-homem-scroll{overflow-x:auto}
+.pa-kg-homem table{width:100%;min-width:650px;border-collapse:collapse}
+.pa-kg-homem th,.pa-kg-homem td{padding:12px;text-align:left;border-bottom:1px solid #e7edf3;vertical-align:top}
+.pa-kg-homem thead th{font-size:.73rem;letter-spacing:.04em;text-transform:uppercase;color:#64748b}
+.pa-kg-homem tbody th{white-space:nowrap;color:#163963;font-size:.84rem}
+.pa-kg-homem td strong{display:block;color:#0f172a;font-size:1.18rem;font-variant-numeric:tabular-nums}
+.pa-kg-homem td small{display:block;color:#64748b;font-size:.73rem;line-height:1.45}

@@ -22,6 +22,9 @@
   labels.HUB = "Início";
   const requestedMode = new URLSearchParams(location.search).get("tela");
   let requestedModeApplied = false;
+  let kgHomemRequest = null;
+  let kgHomemKey = "";
+  let kgHomemUpdatedAt = 0;
   const desktop = () => matchMedia("(min-width: 1025px)").matches && !document.body.classList.contains("kiosk-active");
   const element = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -34,6 +37,78 @@
     .replace(/Conectado ao Supabase:/gi, "Conectado:")
     .replace(/(?:Erro|Falha) ao sincronizar(?: com o)? Supabase/gi, "Erro ao sincronizar com o servidor")
     .replace(/\bSupabase\b/gi, "servidor");
+  function setupKgHomem() {
+    const summary = document.querySelector("#paSecaoResumo");
+    if (!summary || summary.querySelector("#paKgHomem")) return;
+    const panel = element("section", "pa-kg-homem");
+    panel.id = "paKgHomem";
+    panel.innerHTML = '<div class="pa-kg-homem-heading"><h3>Kg/Homem diário</h3>'
+      + '<p>Peso dos postes produzidos ÷ (MOD + MOI). O MOI dos Setores 3 e 4 é dividido igualmente.</p></div>'
+      + '<div class="pa-kg-homem-scroll"><table><thead><tr><th>Data</th><th>Setores 1 e 2</th><th>Setor 3</th><th>Setor 4</th></tr></thead>'
+      + '<tbody id="paKgHomemRows"><tr><td colspan="4">Carregando...</td></tr></tbody></table></div>';
+    summary.append(panel);
+    for (const id of ["paBtnAtualizar", "paBtnFiltrar", "paBtnLimparFiltros"]) {
+      document.getElementById(id)?.addEventListener("click", () => setTimeout(() => loadKgHomem(true), 0));
+    }
+  }
+  async function pcpDashboardToken(refresh = false) {
+    if (!refresh && localStorage.getItem("pcp_token")) return localStorage.getItem("pcp_token");
+    const response = await fetch("/unificado/mapa/api/unified/pcp-session", {
+      credentials: "same-origin", cache: "no-store"
+    });
+    if (!response.ok) return null;
+    const session = await response.json();
+    if (!session.access_token || !session.usuario) return null;
+    localStorage.setItem("pcp_token", session.access_token);
+    localStorage.setItem("pcp_user", JSON.stringify(session.usuario));
+    return session.access_token;
+  }
+  function renderKgHomem(rows) {
+    const target = document.getElementById("paKgHomemRows");
+    if (!target) return;
+    const days = new Map();
+    for (const row of rows) {
+      if (!days.has(row.data)) days.set(row.data, new Map());
+      days.get(row.data).set(String(row.grupo_id), row);
+    }
+    const number = value => Number(value || 0).toLocaleString("pt-BR", {maximumFractionDigits: 2});
+    const cell = row => row
+      ? `<td><strong>${row.kg_por_homem == null ? "—" : number(row.kg_por_homem) + " kg"}</strong>`
+        + `<small>${number(row.peso_realizado_kg)} kg ÷ ${number(row.pessoas)} pessoa(s)</small>`
+        + `<small>MOD ${number(row.mod)} + MOI ${number(row.moi)}</small></td>`
+      : '<td><strong>—</strong></td>';
+    target.innerHTML = [...days].sort(([a], [b]) => b.localeCompare(a))
+      .map(([day, groups]) => `<tr><th>${day.split("-").reverse().join("/")}</th>${["12", "3", "4"].map(id => cell(groups.get(id))).join("")}</tr>`)
+      .join("") || '<tr><td colspan="4">Sem dados no período.</td></tr>';
+  }
+  async function loadKgHomem(force = false) {
+    if (typeof state === "undefined" || state.mode !== "PROD_ANALISE") return;
+    const start = document.getElementById("paDataInicio")?.value;
+    const end = document.getElementById("paDataFim")?.value;
+    const target = document.getElementById("paKgHomemRows");
+    if (!start || !end || !target || kgHomemRequest) return;
+    const key = `${start}:${end}`;
+    if (!force && key === kgHomemKey && Date.now() - kgHomemUpdatedAt < 60000) return;
+    target.innerHTML = '<tr><td colspan="4">Carregando...</td></tr>';
+    kgHomemRequest = (async () => {
+      let token = await pcpDashboardToken();
+      if (!token) throw new Error("Sem acesso aos dados de mão de obra.");
+      const url = `/unificado/pcp/api/dashboard?data_inicio=${encodeURIComponent(start)}&data_fim=${encodeURIComponent(end)}`;
+      let response = await fetch(url, {headers: {Authorization: `Bearer ${token}`}, cache: "no-store"});
+      if (response.status === 401) {
+        token = await pcpDashboardToken(true);
+        if (token) response = await fetch(url, {headers: {Authorization: `Bearer ${token}`}, cache: "no-store"});
+      }
+      if (!response.ok) throw new Error("Não foi possível carregar Kg/Homem.");
+      const data = await response.json();
+      renderKgHomem(data.kg_homem_diario || []);
+      kgHomemKey = key;
+      kgHomemUpdatedAt = Date.now();
+    })().catch(error => {
+      target.innerHTML = `<tr><td colspan="4">${error.message || "Indicador indisponível."}</td></tr>`;
+    }).finally(() => { kgHomemRequest = null; });
+    await kgHomemRequest;
+  }
   function neutralizeVisibleDatabaseText(root = document.body) {
     if (!root) return;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -248,6 +323,7 @@
       && mode === "HUB";
     document.body.classList.toggle("unificado-tablet-hub", tabletHub);
     placeHistoryFilters();
+    if (mode === "PROD_ANALISE") loadKgHomem();
   }
   function applyRequestedMode() {
     if (requestedModeApplied || !requestedMode
@@ -277,6 +353,7 @@
     main.prepend(makeTopbar());
     addSegments();
     groupHistory();
+    setupKgHomem();
     update();
     neutralizeVisibleDatabaseText();
     new MutationObserver(records => records.forEach(record => {
