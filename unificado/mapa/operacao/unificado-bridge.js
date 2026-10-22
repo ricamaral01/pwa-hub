@@ -44,8 +44,7 @@
     panel.id = "paKgHomem";
     panel.innerHTML = '<div class="pa-kg-homem-heading"><h3>KG / Homem</h3>'
       + '<p>Peso dos postes produzidos ÷ (MOD + MOI). O MOI dos Setores 3 e 4 é dividido igualmente.</p></div>'
-      + '<div class="pa-kg-homem-scroll"><table><thead><tr><th>Data</th><th>Setores 1 e 2</th><th>Setor 3</th><th>Setor 4</th></tr></thead>'
-      + '<tbody id="paKgHomemRows"><tr><td colspan="4">Carregando...</td></tr></tbody></table></div>';
+      + '<div id="paKgHomemDays" class="pa-kg-homem-days">Carregando...</div>';
     summary.append(panel);
     for (const id of ["paBtnAtualizar", "paBtnFiltrar", "paBtnLimparFiltros"]) {
       document.getElementById(id)?.addEventListener("click", () => setTimeout(() => loadKgHomem(true), 0));
@@ -64,7 +63,7 @@
     return session.access_token;
   }
   function renderKgHomem(rows) {
-    const target = document.getElementById("paKgHomemRows");
+    const target = document.getElementById("paKgHomemDays");
     if (!target) return;
     const days = new Map();
     for (const row of rows) {
@@ -73,24 +72,24 @@
     }
     const number = value => Number(value || 0).toLocaleString("pt-BR", {maximumFractionDigits: 2});
     const ratio = value => Number(value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    const cell = row => row
-      ? `<td><strong>${row.kg_por_homem == null ? "—" : ratio(row.kg_por_homem)}</strong>`
-        + `<small>${number(row.peso_realizado_kg)} kg ÷ ${number(row.pessoas)} pessoa(s)</small>`
-        + `<small>MOD ${number(row.mod)} + MOI ${number(row.moi)}</small></td>`
-      : '<td><strong>—</strong></td>';
+    const card = (row, title) => `<article class="pa-kg-homem-card"><h4>${title}</h4>`
+      + `<strong>${row?.kg_por_homem == null ? "—" : ratio(row.kg_por_homem)}</strong>`
+      + '<span class="pa-kg-homem-unit">kg por pessoa</span>'
+      + (row ? `<small>${number(row.peso_realizado_kg)} kg produzidos ÷ ${number(row.pessoas)} pessoa(s)</small>`
+        + `<small>MOD ${number(row.mod)} + MOI ${number(row.moi)}</small>` : '') + '</article>';
     target.innerHTML = [...days].sort(([a], [b]) => b.localeCompare(a))
-      .map(([day, groups]) => `<tr><th>${day.split("-").reverse().join("/")}</th>${["12", "3", "4"].map(id => cell(groups.get(id))).join("")}</tr>`)
-      .join("") || '<tr><td colspan="4">Sem dados no período.</td></tr>';
+      .map(([day, groups]) => `<section><h4>${day.split("-").reverse().join("/")}</h4><div class="pa-kg-homem-grid">${[["12", "Setores 1 e 2"], ["3", "Setor 3"], ["4", "Setor 4"]].map(([id, title]) => card(groups.get(id), title)).join("")}</div></section>`)
+      .join("") || 'Sem dados no período.';
   }
   async function loadKgHomem(force = false) {
     if (typeof state === "undefined" || state.mode !== "PROD_ANALISE") return;
     const start = document.getElementById("paDataInicio")?.value;
     const end = document.getElementById("paDataFim")?.value;
-    const target = document.getElementById("paKgHomemRows");
+    const target = document.getElementById("paKgHomemDays");
     if (!start || !end || !target || kgHomemRequest) return;
     const key = `${start}:${end}`;
     if (!force && key === kgHomemKey && Date.now() - kgHomemUpdatedAt < 60000) return;
-    target.innerHTML = '<tr><td colspan="4">Carregando...</td></tr>';
+    target.textContent = 'Carregando...';
     kgHomemRequest = (async () => {
       let token = await pcpDashboardToken();
       if (!token) throw new Error("Sem acesso aos dados de mão de obra.");
@@ -106,7 +105,7 @@
       kgHomemKey = key;
       kgHomemUpdatedAt = Date.now();
     })().catch(error => {
-      target.innerHTML = `<tr><td colspan="4">${error.message || "Indicador indisponível."}</td></tr>`;
+      target.textContent = error.message || "Indicador indisponível.";
     }).finally(() => { kgHomemRequest = null; });
     await kgHomemRequest;
   }

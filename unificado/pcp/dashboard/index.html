@@ -101,11 +101,17 @@
       font-variant-numeric: tabular-nums;
     }
     .grouped-indicator.achievement strong { color: var(--achievement-color); }
-    .kg-homem-table th { color: #64748b; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
-    .kg-homem-table td { min-width: 180px; vertical-align: middle; }
-    .kg-homem-table td:first-child { min-width: 110px; width: 110px; font-weight: 800; color: #15416f; }
-    .kg-homem-value { display: block; color: #0f172a; font-size: 1.22rem; font-weight: 850; font-variant-numeric: tabular-nums; }
-    .kg-homem-detail { display: block; color: #64748b; font-size: .73rem; }
+    .kg-homem-days { display: grid; gap: 18px; }
+    .kg-homem-date { margin: 0 0 10px; color: #64748b; font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+    .kg-homem-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .kg-homem-card { min-width: 0; padding: 18px; border: 1px solid #dbe4ee; border-radius: 12px; background: #f8fafc; }
+    .kg-homem-card:nth-child(2) { border-top: 3px solid #3b82f6; }
+    .kg-homem-card:nth-child(3) { border-top: 3px solid #f97316; }
+    .kg-homem-card:first-child { border-top: 3px solid #15416f; }
+    .kg-homem-card h4 { margin: 0 0 12px; color: #475569; font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+    .kg-homem-value { display: block; color: #0f172a; font-size: clamp(1.65rem, 2.4vw, 2.3rem); line-height: 1; font-weight: 850; font-variant-numeric: tabular-nums; }
+    .kg-homem-unit { margin: 5px 0 14px; color: #64748b; font-size: .75rem; font-weight: 700; }
+    .kg-homem-detail { display: block; color: #64748b; font-size: .73rem; line-height: 1.45; }
     .achievement-success {
       --achievement-bg: #ecfdf3;
       --achievement-border: #bbf7d0;
@@ -201,6 +207,7 @@
       .dashboard-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 760px) {
+      .kg-homem-grid { grid-template-columns: 1fr; }
       .grouped-indicators { grid-template-columns: 1fr; }
       .grouped-indicator { min-height: 78px; }
       .dash-filter > div { width: 100%; }
@@ -283,12 +290,7 @@
     <div class="section-card">
       <div class="section-title">KG / Homem</div>
       <p class="text-muted mb-3" style="font-size:.82rem">Peso dos postes produzidos ÷ (MOD + MOI). O MOI dos Setores 3 e 4 é dividido igualmente entre eles.</p>
-      <div class="table-responsive">
-        <table class="table table-sm align-middle mb-0 kg-homem-table">
-          <thead><tr><th>Data</th><th>Setores 1 e 2</th><th>Setor 3</th><th>Setor 4</th></tr></thead>
-          <tbody id="kg-homem-diario"><tr><td colspan="4" class="text-center text-muted py-3">Carregando...</td></tr></tbody>
-        </table>
-      </div>
+      <div id="kg-homem-diario" class="kg-homem-days"><div class="text-muted">Carregando...</div></div>
     </div>
 
     <div class="dashboard-grid">
@@ -416,18 +418,18 @@ function renderKgHomemDiario(rows) {
     if (!porDia.has(row.data)) porDia.set(row.data, new Map());
     porDia.get(row.data).set(String(row.grupo_id), row);
   });
-  const cell = row => {
-    if (!row) return '<td><span class="kg-homem-value">—</span></td>';
+  const card = (row, title) => {
+    if (!row) return `<article class="kg-homem-card"><h4>${title}</h4><strong class="kg-homem-value">—</strong><div class="kg-homem-unit">kg por pessoa</div></article>`;
     const numero = row.kg_por_homem == null ? '—' : Number(row.kg_por_homem).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     const pessoas = Number(row.pessoas || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
     const mod = Number(row.mod || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
     const moi = Number(row.moi || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
-    return `<td><strong class="kg-homem-value">${numero}</strong><span class="kg-homem-detail">${fmtKg(row.peso_realizado_kg)} ÷ ${pessoas} pessoa(s)</span><span class="kg-homem-detail">MOD ${mod} + MOI ${moi}</span></td>`;
+    return `<article class="kg-homem-card"><h4>${title}</h4><strong class="kg-homem-value">${numero}</strong><div class="kg-homem-unit">kg por pessoa</div><span class="kg-homem-detail">${fmtKg(row.peso_realizado_kg)} produzidos ÷ ${pessoas} pessoa(s)</span><span class="kg-homem-detail">MOD ${mod} + MOI ${moi}</span></article>`;
   };
   document.getElementById('kg-homem-diario').innerHTML = [...porDia]
     .sort(([a], [b]) => b.localeCompare(a))
-    .map(([dia, grupos]) => `<tr><td>${fmtDate(dia)}</td>${['12', '3', '4'].map(grupo => cell(grupos.get(grupo))).join('')}</tr>`)
-    .join('') || '<tr><td colspan="4" class="text-center text-muted py-3">Sem dados no período</td></tr>';
+    .map(([dia, grupos]) => `<section><h3 class="kg-homem-date">${fmtDate(dia)}</h3><div class="kg-homem-grid">${[['12', 'Setores 1 e 2'], ['3', 'Setor 3'], ['4', 'Setor 4']].map(([id, title]) => card(grupos.get(id), title)).join('')}</div></section>`)
+    .join('') || '<div class="text-muted">Sem dados no período</div>';
 }
 
 function renderGroupedCard({ title, subtitle, icon, indicators }) {
