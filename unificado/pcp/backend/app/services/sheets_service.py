@@ -161,11 +161,17 @@ MODELO_PRODUTO_LEGADO: Dict[tuple, str] = {
     ("setor 2", "ple elektro"):         "15351",
 }
 
-
 def _norm_text(value: Optional[str]) -> str:
     s = (value or "").replace('×', 'X').strip().lower()
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")
     return re.sub(r"[^a-z0-9]+", "", s)
+
+
+# O apontamento varia espaços e pontuação: "Ec. 1CX VR" e "Ec. 1 CX VR".
+MODELO_PRODUTO_LEGADO_NORMALIZADO = {
+    (setor, _norm_text(modelo)): codigo
+    for (setor, modelo), codigo in MODELO_PRODUTO_LEGADO.items()
+}
 
 
 def _resolve_produto(
@@ -400,7 +406,9 @@ def get_producao_sheets(
         # 4) Fallback legado (S1/S2) por modelo da planilha
         if not produto:
             map_key = (setor_nome.lower(), modelo.lower())
-            produto_ref = MODELO_PRODUTO_LEGADO.get(map_key)
+            produto_ref = MODELO_PRODUTO_LEGADO.get(map_key) or MODELO_PRODUTO_LEGADO_NORMALIZADO.get(
+                (setor_nome.lower(), _norm_text(modelo))
+            )
             produto = _resolve_produto(sid, [produto_ref or "", modelo], produtos_por_setor)
 
         if volume_unit is None and produto and produto.volume is not None:
