@@ -238,7 +238,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.21';
+const APP_VERSION = '1.0.22';
 let platformUpdateAvailable = false;
 async function checkPlatformUpdate() {
   const button = document.getElementById('platform-update');
@@ -758,15 +758,16 @@ function renderOpeningModules() {
     {id:'qualidade', description:'Não conformidades e controle'},
     {id:'laboratorio', description:'Ensaios e acompanhamento'},
   ];
-  for (const module of modules) {
+  for (const [index, module] of modules.entries()) {
     if (!canAccessModule(module.id)) continue;
     const item = MENU_CONFIG[module.id].groups.flatMap(group => group.items).find(canUse);
     if (!item) continue;
     const link = document.createElement('a');
     link.className = 'opening-module';
+    link.dataset.module = module.id;
     link.href = new URL('?module=' + encodeURIComponent(module.id), UNIFICADO_BASE).href;
-    link.innerHTML = `<span><strong></strong><small></small></span>${ICONS.arrow}`;
-    link.querySelector('strong').textContent = MENU_CONFIG[module.id].label;
+    link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">${String(index + 1).padStart(2, '0')} / MÓDULO</span><span><strong class="opening-module-title"></strong><small></small></span></span>${ICONS.arrow}`;
+    link.querySelector('.opening-module-title').textContent = MENU_CONFIG[module.id].label;
     link.querySelector('small').textContent = module.description;
     link.addEventListener('click', event => {
       if (!window.UnificadoSidebarModelA) return;
@@ -778,8 +779,9 @@ function renderOpeningModules() {
   if (hasGedAccess) {
     const link = document.createElement('a');
     link.className = 'opening-module';
+    link.dataset.module = 'ged';
     link.href = new URL('?module=ged', UNIFICADO_BASE).href;
-    link.innerHTML = `<span><strong>GED</strong><small>Documentos e aprovações</small></span>${ICONS.arrow}`;
+    link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">05 / MÓDULO</span><span><strong class="opening-module-title">GED</strong><small>Documentos e aprovações</small></span></span>${ICONS.arrow}`;
     link.addEventListener('click', event => {
       if (!window.UnificadoSidebarModelA) return;
       event.preventDefault();
