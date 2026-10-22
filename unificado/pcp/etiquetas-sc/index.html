@@ -100,7 +100,7 @@
       <div class="d-flex align-items-start justify-content-between gap-2 flex-wrap">
         <div>
           <div class="section-title mb-1">Impressão de Etiquetas SC / Prod.</div>
-          <div class="text-muted" style="font-size:.84rem">Formato inicial 95 x 40 mm para Zebra / Argox. Lista as formas com Saque Mandril registrado no Mapa de Produção e gera uma etiqueta de data e outra somente com o modelo na horizontal.</div>
+          <div class="text-muted" style="font-size:.84rem">Formato inicial 95 x 40 mm para Zebra / Argox. Lista as formas programadas no Setor 3 e as formas com Saque Mandril ou produção registrada. Gera uma etiqueta de data e outra com o modelo na horizontal.</div>
         </div>
         <button class="btn btn-primary-pcp btn-sm" onclick="imprimirEtiquetasMarcadas()">
           <i class="bi bi-printer-fill me-1"></i>Imprimir etiquetas marcadas
@@ -140,8 +140,8 @@
     <div class="section-card mb-3 no-print">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
         <div>
-          <div class="section-title mb-1">Postes SC com Saque Mandril</div>
-          <div class="text-muted" style="font-size:.82rem">Selecione as formas produzidas. Cada peça realizada gera uma etiqueta de data e outra de modelo.</div>
+          <div class="section-title mb-1">Postes SC programados</div>
+          <div class="text-muted" style="font-size:.82rem">Selecione as formas da programação ou da produção. Cada peça selecionada gera uma etiqueta de data e outra de modelo.</div>
         </div>
         <div class="d-flex gap-2 flex-wrap">
           <button class="btn btn-outline-secondary btn-sm" type="button" onclick="toggleTodosPostes(true)">Selecionar todos</button>
@@ -184,6 +184,6 @@
 
 <script src="/unificado/vendor/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
-<script src="/unificado/pcp/static/js/etiquetas.js?v=0.6.8-codigo1"></script>
+<script src="/unificado/pcp/static/js/etiquetas.js?v=0.6.9-sc-programacao"></script>
 </body>
 </html>

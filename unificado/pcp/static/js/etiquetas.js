@@ -79,22 +79,26 @@ function escalaHorizontal(texto, fonteMm, larguraMm) {
 
 async function buscarProgramacao(data, setor) {
   if (etiquetasSC) {
-    const [saques, production, schedule] = await Promise.all([
-      API.get(`/api/saques-mandril?data=${encodeURIComponent(data)}`),
+    const [schedule, production, saques] = await Promise.all([
+      API.get(`/api/programacao-circular-s3?data_inicio=${encodeURIComponent(data)}&dias=1`),
       API.get(`/api/producao/circular-formas?data_inicio=${encodeURIComponent(data)}&data_fim=${encodeURIComponent(data)}`).catch(() => []),
-      API.get(`/api/programacao-circular-s3?data_inicio=${encodeURIComponent(data)}&dias=1`).catch(() => []),
+      API.get(`/api/saques-mandril?data=${encodeURIComponent(data)}`).catch(() => []),
     ]);
     const formKey = value => `SC${String(Number(String(value || '').toUpperCase().replace(/^SC0*/, ''))).padStart(2, '0')}`;
     const byForm = new Map(schedule.map(row => [formKey(row.codigo_forma), row.modelo]));
-    const produced = new Map(production.filter(row => Number(row.realizado || 0) > 0).map(row => [formKey(row.forma), row]));
-    const rows = saques.map(saque => {
-      const form = formKey(saque.codigo_forma);
-      const productionRow = produced.get(form);
+    const productionByForm = new Map();
+    for (const row of production) {
+      const form = formKey(row.forma);
+      if (!productionByForm.has(form) || Number(row.realizado || 0) > 0) productionByForm.set(form, row);
+    }
+    const forms = new Set([...byForm.keys(), ...productionByForm.keys(), ...saques.map(row => formKey(row.codigo_forma))]);
+    const rows = [...forms].sort().map(form => {
+      const productionRow = productionByForm.get(form);
       const fromProduction = String(productionRow?.tipo_realizado || '').trim();
       const model = fromProduction && !/^SC$/i.test(fromProduction) ? fromProduction : (byForm.get(form) || productionRow?.tipo_programado || '');
       const cleanModel = model.replace(/^SC(?=[\s-]|\d)[\s-]*/i, '').trim().replace(/×/g, 'X').toUpperCase();
       return {
-        quantidade_programada: 1,
+        quantidade_programada: Math.max(1, Number(productionRow?.realizado || 0), Number(productionRow?.programado || 0)),
         codigo_forma: form,
         modelo_sc: cleanModel,
         produto: {nome: cleanModel},
@@ -102,7 +106,7 @@ async function buscarProgramacao(data, setor) {
         setor: {nome: 'Setor 3'},
       };
     }).filter(row => row.modelo_sc);
-    if (rows.length < saques.length) showToast(`${saques.length - rows.length} forma(s) com saque sem modelo identificado.`, 'warning');
+    if (rows.length < forms.size) showToast(`${forms.size - rows.length} forma(s) sem modelo identificado.`, 'warning');
     return rows;
   }
   const qs = new URLSearchParams({data});
