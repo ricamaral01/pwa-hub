@@ -37,6 +37,9 @@ a{text-decoration:none}
 .module-button[data-module="laboratorio"].is-active{background:#EAB308;color:#0B1730}
 #sidebar[data-module="laboratorio"] .group-title{color:#EAB308}
 #sidebar[data-module="laboratorio"] .nav-link.is-active .mono{background:#EAB308;color:#0B1730}
+.module-button[data-module="usinas"]{color:#35C3C4}
+.module-button[data-module="usinas"].is-active{background:#35C3C4;color:#0B1730}
+#sidebar[data-module="usinas"] .group-title{color:#35C3C4}
 #sidebar .ged-preview-group .group-title{color:#8B5CF6}
 #sidebar .ged-preview-group .nav-link .mono{border-color:rgba(255,255,255,.17);color:rgba(255,255,255,.72)}
 #sidebar .ged-preview-group .nav-link.is-active{background:#8B5CF633;color:#fff}
@@ -80,13 +83,13 @@ body.unificado-ged-active #sidebar .shared-user-footer .nav-footer{display:none}
 .platform-update-button:focus-visible{outline:3px solid #15416f;outline-offset:2px}
 .opening-modules{margin-bottom:32px}.opening-module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:15px}
 .opening-module{--module-color:#5B8DEF;position:relative;isolation:isolate;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;min-height:156px;overflow:hidden;padding:19px 20px;border:1px solid #0b173026;border-radius:5px;background:var(--module-color);color:#0B1730;text-decoration:none;box-shadow:4px 4px 0 #0B1730}
-.opening-module[data-module="producao"]{--module-color:#F08A3C}.opening-module[data-module="qualidade"]{--module-color:#2FB38A}.opening-module[data-module="laboratorio"]{--module-color:#F2B705}.opening-module[data-module="ged"]{--module-color:#9B7BF0}
+.opening-module[data-module="producao"]{--module-color:#F08A3C}.opening-module[data-module="qualidade"]{--module-color:#2FB38A}.opening-module[data-module="laboratorio"]{--module-color:#F2B705}.opening-module[data-module="usinas"]{--module-color:#168E9A}.opening-module[data-module="ged"]{--module-color:#9B7BF0}
 .opening-module::after{content:"";position:absolute;z-index:-1;top:-57px;right:-41px;width:153px;height:153px;border:23px solid #0B173018;border-radius:50%;pointer-events:none}
 .opening-module:hover{color:#0B1730;transform:translate(-2px,-2px);box-shadow:6px 6px 0 #0B1730}.opening-module:focus-visible{outline:3px solid #0B1730;outline-offset:7px}
 .opening-module-copy{display:grid;align-content:space-between;align-self:stretch;min-width:0}.opening-module-number{font:700 11px 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase}.opening-module-title{display:block;font-size:21px;line-height:1.14;letter-spacing:-.045em}.opening-module small{display:block;margin-top:7px;color:#0B1730c9;font-size:12px;line-height:1.35}.opening-module svg{width:19px;height:19px;flex:none;align-self:flex-end;color:#0B1730}
 .module-page{--module-accent:#5B8DEF;max-width:1530px;margin:0 auto;padding:30px 36px 48px;color:var(--text)}
 .module-page[hidden]{display:none!important}
-.module-page[data-module="producao"]{--module-accent:#F08A3C}.module-page[data-module="qualidade"]{--module-accent:#2FB38A}.module-page[data-module="laboratorio"]{--module-accent:#F2B705}.module-page[data-module="ged"]{--module-accent:#9B7BF0}
+.module-page[data-module="producao"]{--module-accent:#F08A3C}.module-page[data-module="qualidade"]{--module-accent:#2FB38A}.module-page[data-module="laboratorio"]{--module-accent:#F2B705}.module-page[data-module="usinas"]{--module-accent:#168E9A}.module-page[data-module="ged"]{--module-accent:#9B7BF0}
 .module-page-back{display:inline-flex;align-items:center;min-height:36px;margin-bottom:20px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none}
 .module-page-back:hover{text-decoration:underline}.module-page-back:focus-visible,.module-page-link:focus-visible{outline:3px solid var(--module-accent);outline-offset:3px}
 .module-page-heading{position:relative;overflow:hidden;margin-bottom:30px;padding:28px 30px;border-radius:5px;background:var(--module-accent);color:#0B1730;box-shadow:5px 5px 0 #0B1730}

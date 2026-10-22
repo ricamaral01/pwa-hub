@@ -3,6 +3,7 @@
 const UNIFICADO_BASE = new URL('../', document.currentScript.src);
 const PCP_BASE = new URL('pcp/', UNIFICADO_BASE);
 const MAPA_BASE = new URL('mapa/', UNIFICADO_BASE);
+const USINAS_BASE = new URL('usinas/', UNIFICADO_BASE);
 
 const MENU_CONFIG = {
   planejamento: {
@@ -73,7 +74,10 @@ const MENU_CONFIG = {
         { id: 'produtividade', mono: 'PR', label: 'Produtividade', path: '/index.html', screen: 'PROD_ANALISE' }
       ] }
     ]
-  }
+  },
+  usinas: { label: 'Usinas', groups: [{ label: 'Geral', items: [
+    { id: 'usinasInicio', label: 'Visão geral', path: '' }
+  ] }] }
 };
 
 const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([module, value]) =>
@@ -86,7 +90,8 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
        'etiquetasArmaduras','acompMensal','acompMensal34','formasPorSetor'].includes(item.id) ? 'PCP' :
       ['pcpDiario','apontamentoMega','producaoPcp','maodeobra','maodeobraRateio'].includes(item.id) ? 'PRODUCAO' :
       item.id === 'testeProgramacao' ? 'ADMIN' : null) : null,
-    url: module === 'planejamento'
+    url: module === 'usinas' ? new URL(item.path, USINAS_BASE).href
+      : module === 'planejamento'
       ? new URL(item.path.replace(/^\/pages\//, ''), PCP_BASE).href
       : new URL(`operacao/?tela=${encodeURIComponent(item.screen)}`, MAPA_BASE).href,
     available: true

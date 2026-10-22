@@ -37,6 +37,8 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
         return user['id'] in lab_users
     if module == 'qualidade':
         return bool(user.get('id'))
+    if module == 'usinas':
+        return False  # liberado inicialmente apenas aos administradores master acima
     if module == 'planejamento':
         if not planning_role:
             return False
@@ -106,13 +108,16 @@ def screen_for_uri(original_uri, screen_header=''):
             return BY_ID.get('qualidadeTratativa')
         return next((row for row in CATALOG if row['module'] == 'qualidade'
                      and row['path'].rstrip('/') == path.rstrip('/')), None)
+    if path == '/unificado/usinas/':
+        return BY_ID.get('usinasInicio')
     if path.startswith('/unificado/pcp/api/usuarios'):
         return BY_ID['pcpUsuarios'] if screen_header == 'pcpUsuarios' else None
     if screen_header in BY_ID:
         candidate = BY_ID[screen_header]
         expected = {'planejamento':'/unificado/pcp/', 'producao':'/unificado/mapa/',
                     'laboratorio':'/unificado/laboratorio/',
-                    'qualidade':'/unificado/qualidade/'}[candidate['module']]
+                    'qualidade':'/unificado/qualidade/',
+                    'usinas':'/unificado/usinas/'}[candidate['module']]
         return candidate if path.startswith(expected) else None
     if path.startswith('/unificado/mapa/api/'):
         if screen_header in {'INSPECAO_DETALHE','MONTAGEM_POSTES_DETALHE'}:

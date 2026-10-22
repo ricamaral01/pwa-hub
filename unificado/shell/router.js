@@ -16,6 +16,7 @@
     if (path !== url.pathname.slice(root.length)) url.pathname = root + path;
     if (/^pcp\/[a-z0-9-]+\/$/.test(path)) return {url, module:'planejamento', path};
     if (path === 'mapa/operacao/') return {url, module:'producao', path};
+    if (path === 'usinas/') return {url, module:'usinas', path};
     return null;
   }
 
@@ -126,6 +127,7 @@
     if (!route) return;
     if (route.module === 'planejamento' && !hasPcp) return;
     if (route.module === 'producao' && !hasMapa) return;
+    if (route.module === 'usinas' && !hasMapa) return;
     const ticket = ++pending;
     host.hidden = false;
     homeContent.hidden = true;
@@ -148,7 +150,7 @@
       show(previous); updateShell(route, itemId, push); return;
     }
     const frame = document.createElement('iframe');
-    frame.title = route.module === 'producao' ? 'Produção' : 'Planejamento';
+    frame.title = route.module === 'producao' ? 'Produção' : route.module === 'usinas' ? 'Usinas' : 'Planejamento';
     frame.allow = 'camera; microphone; fullscreen; clipboard-read; clipboard-write';
     frame.allowFullscreen = true;
     const record = {frame, route, ready:false, onReady:null};
@@ -166,10 +168,10 @@
   }
 
   function openModule(module) {
-    if (module === 'planejamento' && !hasPcp || module === 'producao' && !hasMapa) return;
+    if (module === 'planejamento' && !hasPcp || (module === 'producao' || module === 'usinas') && !hasMapa) return;
     const stored = resolve(localStorage.getItem('unificado_last_' + module));
     open(lastRoute.get(module) || (stored?.module === module && stored.url.href) || (module === 'planejamento'
-      ? root + 'pcp/dashboard/' : root + 'mapa/operacao/?tela=LIBERACAO'));
+      ? root + 'pcp/dashboard/' : module === 'usinas' ? root + 'usinas/' : root + 'mapa/operacao/?tela=LIBERACAO'));
   }
 
   function home(push = true) {

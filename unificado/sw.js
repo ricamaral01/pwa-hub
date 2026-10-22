@@ -1,14 +1,14 @@
-const CACHE = 'concrefer-unificado-shell-v1.0.29-kg-homem';
+const CACHE = 'concrefer-unificado-shell-v1.0.36-usinas';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
-const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.22-cards',
-  ROOT + 'shell/shared-menu.css?v=1.0.20-modulos',
-  ROOT + 'shell/modelo-a/menu.css?v=1.0.20-modulos', ROOT + 'shell/modelo-a-host.css?v=1.0.15',
-  ROOT + 'shell/modelo-a/menu.js?v=1.0.20-modulos',
-  ROOT + 'shell/modelo-a-loader.js?v=1.0.20-modulos',
-  ROOT + 'shell/menu.config.js?v=1.0.16-cronoanalise', ROOT + 'shell/auth.js?v=1.0.15',
-  ROOT + 'shell/shell.js?v=1.0.29-kg-homem', ROOT + 'shell/router.js?v=1.0.16-cronoanalise',
-  ROOT + 'shell/module-pages.js?v=1.0.21-paginas',
+const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
+  ROOT + 'shell/shared-menu.css?v=1.0.36-usinas',
+  ROOT + 'shell/modelo-a/menu.css?v=1.0.36-usinas', ROOT + 'shell/modelo-a-host.css?v=1.0.36-usinas',
+  ROOT + 'shell/modelo-a/menu.js?v=1.0.36-usinas',
+  ROOT + 'shell/modelo-a-loader.js?v=1.0.36-usinas',
+  ROOT + 'shell/menu.config.js?v=1.0.36-usinas', ROOT + 'shell/auth.js?v=1.0.15',
+  ROOT + 'shell/shell.js?v=1.0.36-usinas', ROOT + 'shell/router.js?v=1.0.36-usinas',
+  ROOT + 'shell/module-pages.js?v=1.0.36-usinas',
   ROOT + 'shell/embedded.css?v=1.0'];
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();

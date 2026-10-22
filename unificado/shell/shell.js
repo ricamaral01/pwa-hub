@@ -46,7 +46,7 @@ const moduleHasScreens = module => grantedScreens === null || Object.values(MENU
 const canAccessModule = module =>
   (masterIds.has(mapaUser?.id) && hasMapa ? true :
    module === 'qualidade' ? previewModules && hasMapa :
-   module === 'planejamento' ? hasPcp : module === 'producao' ? hasMapa : hasLab) && moduleHasScreens(module);
+   module === 'planejamento' ? hasPcp : module === 'producao' || module === 'usinas' ? hasMapa : hasLab) && moduleHasScreens(module);
 async function recoverMdoShellSession() {
   const view = new URLSearchParams(location.search).get('view');
   if (view !== 'pcp/maodeobra/') return false;
@@ -123,6 +123,7 @@ function canUse(item) {
   if (route.module === 'qualidade') return previewModules && hasMapa;
   if (route.module === 'laboratorio') return hasLab;
   if (route.module === 'producao') return hasMapa;
+  if (route.module === 'usinas') return hasMapa;
   if (!hasPcp) return false;
   const role = pcpUser?.nivel_acesso;
   if (route.require === 'ADMIN') return role === 'ADMIN';
@@ -415,8 +416,8 @@ function renderSharedSidebar() {
     button.type = 'button';
     button.className = `module-button${key === currentModule ? ' is-active' : ''}`;
     button.dataset.module = key;
-    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : 'LB';
-    button.dataset.railName = key === 'planejamento' ? 'Plan.' : key === 'producao' ? 'Prod.' : key === 'qualidade' ? 'Qual.' : 'Lab.';
+    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : 'LB';
+    button.dataset.railName = key === 'planejamento' ? 'Plan.' : key === 'producao' ? 'Prod.' : key === 'qualidade' ? 'Qual.' : key === 'usinas' ? 'Usinas' : 'Lab.';
     button.innerHTML = `<span class="shared-module-dot" aria-hidden="true"></span><span class="shared-module-code">${button.dataset.short}</span><span class="shared-module-name">${config.label}</span>`;
     button.title = config.label;
     button.setAttribute('aria-label', config.label);
@@ -577,7 +578,7 @@ function renderSidebar() {
     button.className = `module-button${key === currentModule ? ' is-active' : ''}`;
     button.dataset.module = key;
     button.textContent = config.label;
-    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : 'LB';
+    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : 'LB';
     button.title = config.label;
     button.setAttribute('aria-label', config.label);
     button.setAttribute('aria-pressed', key === currentModule ? 'true' : 'false');
@@ -757,6 +758,7 @@ function renderOpeningModules() {
     {id:'producao', description:'Mapa, inspeção e montagem'},
     {id:'qualidade', description:'Não conformidades e controle'},
     {id:'laboratorio', description:'Ensaios e acompanhamento'},
+    {id:'usinas', description:'Operação e acompanhamento das usinas'},
   ];
   for (const [index, module] of modules.entries()) {
     if (!canAccessModule(module.id)) continue;
@@ -781,7 +783,7 @@ function renderOpeningModules() {
     link.className = 'opening-module';
     link.dataset.module = 'ged';
     link.href = new URL('?module=ged', UNIFICADO_BASE).href;
-    link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">05 / MÓDULO</span><span><strong class="opening-module-title">GED</strong><small>Documentos e aprovações</small></span></span>${ICONS.arrow}`;
+    link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">06 / MÓDULO</span><span><strong class="opening-module-title">GED</strong><small>Documentos e aprovações</small></span></span>${ICONS.arrow}`;
     link.addEventListener('click', event => {
       if (!window.UnificadoSidebarModelA) return;
       event.preventDefault();

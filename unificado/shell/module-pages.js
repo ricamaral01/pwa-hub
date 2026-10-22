@@ -9,6 +9,7 @@
     producao: 'Mapa, inspeção e montagem',
     qualidade: 'Não conformidades e controle',
     laboratorio: 'Ensaios e acompanhamento',
+    usinas: 'Operação e acompanhamento das usinas',
     ged: 'Documentos e aprovações',
   };
   const gedItems = [

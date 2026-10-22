@@ -5866,6 +5866,7 @@ const Er = {
   producao: "#F08A3C",
   qualidade: "#2FB38A",
   laboratorio: "#F2B705",
+  usinas: "#168E9A",
   ged: "#9B7BF0"
 }, ji = (v) => "/unificado/?view=" + encodeURIComponent(v), Te = (v, I) => ({
   title: v,
@@ -5965,6 +5966,9 @@ const Er = {
       ["cronoanalise.simular", "Simular", "laboratorio/cronoanalise/simular", "map"],
       ["cronoanalise.metodologia", "Metodologia", "laboratorio/cronoanalise/metodologia", "help"]
     ])
+  ] },
+  { id: "usinas", label: "Usinas", color: Er.usinas, icon: "factory", sections: [
+    Te("GERAL", [["usinasInicio", "Visão geral", "usinas/", "map"]])
   ] },
   { id: "ged", label: "GED", color: Er.ged, icon: "folder", sections: [
     Te("GESTÃO DOCUMENTAL", [

@@ -10,7 +10,7 @@ export type NavModule = { id: string; label: string; color: string; icon: IconNa
 
 export const MODULE_COLORS = {
   planejamento: '#5B8DEF', producao: '#F08A3C', qualidade: '#2FB38A',
-  laboratorio: '#F2B705', ged: '#9B7BF0',
+  laboratorio: '#F2B705', usinas: '#168E9A', ged: '#9B7BF0',
 } as const;
 
 type Entry = [id: string, label: string, route: string, icon: IconName, badge?: NavBadge];
@@ -116,6 +116,9 @@ export const NAV_MODULES: NavModule[] = [
       ['cronoanalise.simular','Simular','laboratorio/cronoanalise/simular','map'],
       ['cronoanalise.metodologia','Metodologia','laboratorio/cronoanalise/metodologia','help'],
     ]),
+  ] },
+  { id:'usinas', label:'Usinas', color:MODULE_COLORS.usinas, icon:'factory', sections:[
+    section('GERAL', [['usinasInicio','Visão geral','usinas/','map']])
   ] },
   { id:'ged', label:'GED', color:MODULE_COLORS.ged, icon:'folder', sections:[
     section('GESTÃO DOCUMENTAL', [

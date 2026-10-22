@@ -498,5 +498,6 @@
   {"id":"cronoanalise.catalogo","module":"laboratorio","label":"Cronoanálise: Catálogo","path":"/unificado/laboratorio/cronoanalise/catalogo","query":"","screen":null,"require":null},
   {"id":"cronoanalise.dimensionar","module":"laboratorio","label":"Cronoanálise: Dimensionar","path":"/unificado/laboratorio/cronoanalise/dimensionar","query":"","screen":null,"require":null},
   {"id":"cronoanalise.simular","module":"laboratorio","label":"Cronoanálise: Simular","path":"/unificado/laboratorio/cronoanalise/simular","query":"","screen":null,"require":null},
-  {"id":"cronoanalise.metodologia","module":"laboratorio","label":"Cronoanálise: Metodologia","path":"/unificado/laboratorio/cronoanalise/metodologia","query":"","screen":null,"require":null}
+  {"id":"cronoanalise.metodologia","module":"laboratorio","label":"Cronoanálise: Metodologia","path":"/unificado/laboratorio/cronoanalise/metodologia","query":"","screen":null,"require":null},
+  {"id":"usinasInicio","module":"usinas","label":"Visão geral","path":"/unificado/usinas/","query":"","screen":null,"require":"GERENCIA"}
 ]
