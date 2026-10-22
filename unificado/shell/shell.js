@@ -238,7 +238,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.20';
+const APP_VERSION = '1.0.21';
 let platformUpdateAvailable = false;
 async function checkPlatformUpdate() {
   const button = document.getElementById('platform-update');
@@ -764,7 +764,7 @@ function renderOpeningModules() {
     if (!item) continue;
     const link = document.createElement('a');
     link.className = 'opening-module';
-    link.href = MENU_ITEMS[item.id].url;
+    link.href = new URL('?module=' + encodeURIComponent(module.id), UNIFICADO_BASE).href;
     link.innerHTML = `<span><strong></strong><small></small></span>${ICONS.arrow}`;
     link.querySelector('strong').textContent = MENU_CONFIG[module.id].label;
     link.querySelector('small').textContent = module.description;
@@ -778,7 +778,7 @@ function renderOpeningModules() {
   if (hasGedAccess) {
     const link = document.createElement('a');
     link.className = 'opening-module';
-    link.href = new URL('ged/dashboard', UNIFICADO_BASE).href;
+    link.href = new URL('?module=ged', UNIFICADO_BASE).href;
     link.innerHTML = `<span><strong>GED</strong><small>Documentos e aprovações</small></span>${ICONS.arrow}`;
     link.addEventListener('click', event => {
       if (!window.UnificadoSidebarModelA) return;
@@ -790,19 +790,16 @@ function renderOpeningModules() {
   document.querySelector('.opening-modules').hidden = !target.children.length;
 }
 
-function selectModuleMenu(moduleId) {
+function selectModuleMenu(moduleId, push = true) {
   if (moduleId === 'ged' ? !hasGedAccess : !MENU_CONFIG[moduleId] || !canAccessModule(moduleId)) return;
-  if (moduleId === 'ged' && !modelASidebarAllowed()) {
-    window.UnificadoRouter?.openGed('dashboard');
-    return;
-  }
-  if (!document.getElementById('module-host')?.hidden) window.UnificadoRouter?.home();
+  if (!document.getElementById('module-host')?.hidden) window.UnificadoRouter?.home(false);
   menuModuleOverride = moduleId;
   if (MENU_CONFIG[moduleId]) {
     currentModule = moduleId;
     localStorage.setItem('unificado_modulo', moduleId);
   }
   renderSidebar();
+  window.UnificadoModulePages?.show(moduleId, push);
   dispatchEvent(new Event('unificado-sidebar-module-selected'));
 }
 
@@ -849,6 +846,7 @@ window.UnificadoSidebarModelA = Object.freeze({
     if (url.origin !== location.origin || url.pathname !== UNIFICADO_BASE.pathname) return;
     const view = url.searchParams.get('view');
     menuModuleOverride = null;
+    window.UnificadoModulePages?.hide();
     if (!view) { window.UnificadoRouter?.home(); return; }
     if (view === 'tv/formas/') {
       window.open(new URL(view, UNIFICADO_BASE).href, '_blank', 'noopener');

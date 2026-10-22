@@ -1,13 +1,14 @@
-const CACHE = 'concrefer-unificado-shell-v1.0.20-modulos';
+const CACHE = 'concrefer-unificado-shell-v1.0.21-paginas';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
-const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.20-modulos',
+const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.21-paginas',
   ROOT + 'shell/shared-menu.css?v=1.0.20-modulos',
   ROOT + 'shell/modelo-a/menu.css?v=1.0.20-modulos', ROOT + 'shell/modelo-a-host.css?v=1.0.15',
   ROOT + 'shell/modelo-a/menu.js?v=1.0.20-modulos',
   ROOT + 'shell/modelo-a-loader.js?v=1.0.20-modulos',
   ROOT + 'shell/menu.config.js?v=1.0.16-cronoanalise', ROOT + 'shell/auth.js?v=1.0.15',
-  ROOT + 'shell/shell.js?v=1.0.20-modulos', ROOT + 'shell/router.js?v=1.0.16-cronoanalise',
+  ROOT + 'shell/shell.js?v=1.0.21-paginas', ROOT + 'shell/router.js?v=1.0.16-cronoanalise',
+  ROOT + 'shell/module-pages.js?v=1.0.21-paginas',
   ROOT + 'shell/embedded.css?v=1.0'];
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
