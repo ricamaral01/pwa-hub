@@ -61,10 +61,12 @@ class KgHomemDiario(BaseModel):
     grupo_id: str
     grupo_nome: str
     peso_realizado_kg: Decimal
+    postes_realizados: int = 0
     mod: Decimal
     moi: Decimal
     pessoas: Decimal
-    kg_por_homem: Optional[float] = None
+    kg_por_homem: Optional[int] = None
+    postes_por_homem: Optional[int] = None
 
 
 class DashboardResponse(BaseModel):

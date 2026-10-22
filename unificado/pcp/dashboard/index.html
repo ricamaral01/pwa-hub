@@ -293,6 +293,12 @@
       <div id="kg-homem-diario" class="kg-homem-days"><div class="text-muted">Carregando...</div></div>
     </div>
 
+    <div class="section-card">
+      <div class="section-title">Postes / Homem</div>
+      <p class="text-muted mb-3" style="font-size:.82rem">Quantidade de postes produzidos &divide; (MOD + MOI). O MOI dos Setores 3 e 4 &eacute; dividido igualmente entre eles.</p>
+      <div id="postes-homem-diario" class="kg-homem-days"><div class="text-muted">Carregando...</div></div>
+    </div>
+
     <div class="dashboard-grid">
       <div class="section-card chart-box">
         <div class="section-title">Programado vs Realizado por Setor</div>
@@ -418,18 +424,25 @@ function renderKgHomemDiario(rows) {
     if (!porDia.has(row.data)) porDia.set(row.data, new Map());
     porDia.get(row.data).set(String(row.grupo_id), row);
   });
-  const card = (row, title) => {
-    if (!row) return `<article class="kg-homem-card"><h4>${title}</h4><strong class="kg-homem-value">—</strong><div class="kg-homem-unit">kg por pessoa</div></article>`;
-    const numero = row.kg_por_homem == null ? '—' : Number(row.kg_por_homem).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const card = (row, title, metric) => {
+    const postes = metric === 'postes';
+    if (!row) return `<article class="kg-homem-card"><h4>${title}</h4><strong class="kg-homem-value">&mdash;</strong></article>`;
+    const valor = postes ? row.postes_por_homem : row.kg_por_homem;
+    const numero = valor == null ? '&mdash;' : Number(valor).toLocaleString('pt-BR', {maximumFractionDigits: 0});
     const pessoas = Number(row.pessoas || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
     const mod = Number(row.mod || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
     const moi = Number(row.moi || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
-    return `<article class="kg-homem-card"><h4>${title}</h4><strong class="kg-homem-value">${numero}</strong><div class="kg-homem-unit">kg por pessoa</div><span class="kg-homem-detail">${fmtKg(row.peso_realizado_kg)} produzidos ÷ ${pessoas} pessoa(s)</span><span class="kg-homem-detail">MOD ${mod} + MOI ${moi}</span></article>`;
+    const total = postes
+      ? `${Number(row.postes_realizados || 0).toLocaleString('pt-BR')} postes produzidos`
+      : `${fmtKg(row.peso_realizado_kg)} produzidos`;
+    return `<article class="kg-homem-card"><h4>${title}</h4><strong class="kg-homem-value">${numero}</strong><div class="kg-homem-unit">${postes ? 'postes' : 'kg'} por pessoa</div><span class="kg-homem-detail">${total} &divide; ${pessoas} pessoa(s)</span><span class="kg-homem-detail">MOD ${mod} + MOI ${moi}</span></article>`;
   };
-  document.getElementById('kg-homem-diario').innerHTML = [...porDia]
-    .sort(([a], [b]) => b.localeCompare(a))
-    .map(([dia, grupos]) => `<section><h3 class="kg-homem-date">${fmtDate(dia)}</h3><div class="kg-homem-grid">${[['12', 'Setores 1 e 2'], ['3', 'Setor 3'], ['4', 'Setor 4']].map(([id, title]) => card(grupos.get(id), title)).join('')}</div></section>`)
-    .join('') || '<div class="text-muted">Sem dados no período</div>';
+  for (const [targetId, metric] of [['kg-homem-diario', 'kg'], ['postes-homem-diario', 'postes']]) {
+    document.getElementById(targetId).innerHTML = [...porDia]
+      .sort(([a], [b]) => b.localeCompare(a))
+      .map(([dia, grupos]) => `<section><h3 class="kg-homem-date">${fmtDate(dia)}</h3><div class="kg-homem-grid">${[['12', 'Setores 1 e 2'], ['3', 'Setor 3'], ['4', 'Setor 4']].map(([id, title]) => card(grupos.get(id), title, metric)).join('')}</div></section>`)
+      .join('') || '<div class="text-muted">Sem dados no per&iacute;odo</div>';
+  }
 }
 
 function renderGroupedCard({ title, subtitle, icon, indicators }) {

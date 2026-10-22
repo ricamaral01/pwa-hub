@@ -43,8 +43,11 @@
     const panel = element("section", "pa-kg-homem");
     panel.id = "paKgHomem";
     panel.innerHTML = '<div class="pa-kg-homem-heading"><h3>KG / Homem</h3>'
-      + '<p>Peso dos postes produzidos ÷ (MOD + MOI). O MOI dos Setores 3 e 4 é dividido igualmente.</p></div>'
-      + '<div id="paKgHomemDays" class="pa-kg-homem-days">Carregando...</div>';
+      + '<p>Peso dos postes produzidos &divide; (MOD + MOI). O MOI dos Setores 3 e 4 &eacute; dividido igualmente.</p></div>'
+      + '<div id="paKgHomemDays" class="pa-kg-homem-days">Carregando...</div>'
+      + '<div class="pa-kg-homem-heading pa-kg-homem-subheading"><h3>Postes / Homem</h3>'
+      + '<p>Quantidade de postes produzidos &divide; (MOD + MOI), com o mesmo rateio de MOI.</p></div>'
+      + '<div id="paPostesHomemDays" class="pa-kg-homem-days">Carregando...</div>';
     summary.append(panel);
     for (const id of ["paBtnAtualizar", "paBtnFiltrar", "paBtnLimparFiltros"]) {
       document.getElementById(id)?.addEventListener("click", () => setTimeout(() => loadKgHomem(true), 0));
@@ -63,23 +66,29 @@
     return session.access_token;
   }
   function renderKgHomem(rows) {
-    const target = document.getElementById("paKgHomemDays");
-    if (!target) return;
     const days = new Map();
     for (const row of rows) {
       if (!days.has(row.data)) days.set(row.data, new Map());
       days.get(row.data).set(String(row.grupo_id), row);
     }
-    const number = value => Number(value || 0).toLocaleString("pt-BR", {maximumFractionDigits: 2});
-    const ratio = value => Number(value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    const card = (row, title) => `<article class="pa-kg-homem-card"><h4>${title}</h4>`
-      + `<strong>${row?.kg_por_homem == null ? "—" : ratio(row.kg_por_homem)}</strong>`
-      + '<span class="pa-kg-homem-unit">kg por pessoa</span>'
-      + (row ? `<small>${number(row.peso_realizado_kg)} kg produzidos ÷ ${number(row.pessoas)} pessoa(s)</small>`
-        + `<small>MOD ${number(row.mod)} + MOI ${number(row.moi)}</small>` : '') + '</article>';
-    target.innerHTML = [...days].sort(([a], [b]) => b.localeCompare(a))
-      .map(([day, groups]) => `<section><h4>${day.split("-").reverse().join("/")}</h4><div class="pa-kg-homem-grid">${[["12", "Setores 1 e 2"], ["3", "Setor 3"], ["4", "Setor 4"]].map(([id, title]) => card(groups.get(id), title)).join("")}</div></section>`)
-      .join("") || 'Sem dados no período.';
+    const count = value => Number(value || 0).toLocaleString("pt-BR", {maximumFractionDigits: 0});
+    const people = value => Number(value || 0).toLocaleString("pt-BR", {maximumFractionDigits: 2});
+    const card = (row, title, metric) => {
+      const postes = metric === "postes";
+      const value = row && (postes ? row.postes_por_homem : row.kg_por_homem);
+      return `<article class="pa-kg-homem-card"><h4>${title}</h4>`
+        + `<strong>${value == null ? "&mdash;" : count(value)}</strong>`
+        + `<span class="pa-kg-homem-unit">${postes ? "postes" : "kg"} por pessoa</span>`
+        + (row ? `<small>${count(postes ? row.postes_realizados : row.peso_realizado_kg)} ${postes ? "postes" : "kg"} produzidos &divide; ${people(row.pessoas)} pessoa(s)</small>`
+          + `<small>MOD ${people(row.mod)} + MOI ${people(row.moi)}</small>` : '') + '</article>';
+    };
+    for (const [id, metric] of [["paKgHomemDays", "kg"], ["paPostesHomemDays", "postes"]]) {
+      const target = document.getElementById(id);
+      if (!target) continue;
+      target.innerHTML = [...days].sort(([a], [b]) => b.localeCompare(a))
+        .map(([day, groups]) => `<section><h4>${day.split("-").reverse().join("/")}</h4><div class="pa-kg-homem-grid">${[["12", "Setores 1 e 2"], ["3", "Setor 3"], ["4", "Setor 4"]].map(([groupId, title]) => card(groups.get(groupId), title, metric)).join("")}</div></section>`)
+        .join("") || 'Sem dados no per&iacute;odo.';
+    }
   }
   async function loadKgHomem(force = false) {
     if (typeof state === "undefined" || state.mode !== "PROD_ANALISE") return;
@@ -90,6 +99,8 @@
     const key = `${start}:${end}`;
     if (!force && key === kgHomemKey && Date.now() - kgHomemUpdatedAt < 60000) return;
     target.textContent = 'Carregando...';
+    const postesTarget = document.getElementById('paPostesHomemDays');
+    if (postesTarget) postesTarget.textContent = 'Carregando...';
     kgHomemRequest = (async () => {
       let token = await pcpDashboardToken();
       if (!token) throw new Error("Sem acesso aos dados de mão de obra.");
@@ -106,6 +117,7 @@
       kgHomemUpdatedAt = Date.now();
     })().catch(error => {
       target.textContent = error.message || "Indicador indisponível.";
+      if (postesTarget) postesTarget.textContent = error.message || "Indicador indisponível.";
     }).finally(() => { kgHomemRequest = null; });
     await kgHomemRequest;
   }

@@ -1,6 +1,6 @@
 from collections import defaultdict
 from datetime import date, timedelta
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional
 
 from sqlalchemy import func
@@ -45,6 +45,12 @@ def _div(numerador, denominador) -> float:
     return round(float(numerador or 0) / denominador, 3)
 
 
+def _inteiro_por_pessoa(total, pessoas: Decimal) -> Optional[int]:
+    if pessoas <= 0:
+        return None
+    return int((_dec(total) / pessoas).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
+
 def _grupo_por_setor(setor_id: Optional[int]) -> Optional[str]:
     if setor_id in (1, 2):
         return "12"
@@ -81,10 +87,12 @@ def _mdo_por_grupo(db: Session, data_inicio: date, data_fim: date):
     return por_grupo, total
 
 
-def _kg_homem_diario(pesos: dict, registros: list, data_inicio: date, data_fim: date) -> list:
+def _kg_homem_diario(pesos: dict, registros: list, data_inicio: date, data_fim: date,
+                     postes: Optional[dict] = None) -> list:
     grupos = ("12", "3", "4")
+    postes = postes or {}
     mao = defaultdict(lambda: {"MOD": Decimal("0"), "MOI": Decimal("0")})
-    datas = {dia for dia, _ in pesos}
+    datas = {dia for dia, _ in pesos} | {dia for dia, _ in postes}
     for row in registros:
         dia = row.data.isoformat()
         datas.add(dia)
@@ -110,13 +118,16 @@ def _kg_homem_diario(pesos: dict, registros: list, data_inicio: date, data_fim: 
     for dia in sorted(datas, reverse=True):
         for grupo in grupos:
             peso = pesos.get((dia, grupo), Decimal("0"))
+            quantidade_postes = postes.get((dia, grupo), 0)
             mod = mao[(dia, grupo)]["MOD"]
             moi = mao[(dia, grupo)]["MOI"]
             pessoas = mod + moi
             resultado.append(KgHomemDiario(
                 data=dia, grupo_id=grupo, grupo_nome=nomes[grupo],
-                peso_realizado_kg=peso, mod=mod, moi=moi, pessoas=pessoas,
-                kg_por_homem=round(float(peso / pessoas), 2) if pessoas > 0 else None,
+                peso_realizado_kg=peso, postes_realizados=quantidade_postes,
+                mod=mod, moi=moi, pessoas=pessoas,
+                kg_por_homem=_inteiro_por_pessoa(peso, pessoas),
+                postes_por_homem=_inteiro_por_pessoa(quantidade_postes, pessoas),
             ))
     return resultado
 
@@ -155,6 +166,7 @@ def get_dashboard(
     total_prog_kg = Decimal("0")
     total_real_kg = Decimal("0")
     pesos_diarios = defaultdict(lambda: Decimal("0"))
+    postes_diarios = defaultdict(int)
 
     for row in rows:
         sid = row.get("setor_id")
@@ -170,6 +182,7 @@ def get_dashboard(
         grupo_diario = "12" if sid in (1, 2) else str(sid) if sid in (3, 4) else None
         if dia and grupo_diario:
             pesos_diarios[(dia, grupo_diario)] += peso_real
+            postes_diarios[(dia, grupo_diario)] += qtd_real
 
         total_prog_m3 += vol_prog
         total_real_m3 += vol_real
@@ -231,7 +244,9 @@ def get_dashboard(
     registros_mdo = db.query(MaoDeObra).filter(
         MaoDeObra.data >= data_inicio, MaoDeObra.data <= data_fim,
     ).all()
-    kg_homem_diario = _kg_homem_diario(pesos_diarios, registros_mdo, data_inicio, data_fim)
+    kg_homem_diario = _kg_homem_diario(
+        pesos_diarios, registros_mdo, data_inicio, data_fim, postes_diarios
+    )
     mdo_hoje = db.query(func.coalesce(func.sum(MaoDeObra.quantidade_pessoas), 0)).filter(
         MaoDeObra.data == date.today()
     ).scalar()

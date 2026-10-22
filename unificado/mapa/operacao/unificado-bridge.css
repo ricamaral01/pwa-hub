@@ -176,6 +176,7 @@ body.kiosk-active .s4-forma-cell.is-programmed:not(.is-saved) {
 .pa-kg-homem{margin-top:20px;padding:20px;border:1px solid #dbe4ee;border-radius:12px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.05)}
 .pa-kg-homem-heading h3{margin:0 0 5px;color:#163963;font-size:1.05rem}
 .pa-kg-homem-heading p{margin:0 0 15px;color:#64748b;font-size:.82rem}
+.pa-kg-homem-subheading{margin-top:24px}
 .pa-kg-homem-days{display:grid;gap:18px}
 .pa-kg-homem-days section>h4{margin:0 0 10px;color:#64748b;font-size:.78rem;font-weight:800}
 .pa-kg-homem-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
