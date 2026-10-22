@@ -237,7 +237,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.18';
+const APP_VERSION = '1.0.19';
 let platformUpdateAvailable = false;
 async function checkPlatformUpdate() {
   const button = document.getElementById('platform-update');
@@ -251,11 +251,15 @@ async function checkPlatformUpdate() {
     platformUpdateAvailable = latest.localeCompare(APP_VERSION, undefined, {numeric:true}) > 0;
     button.disabled = !platformUpdateAvailable;
     button.textContent = platformUpdateAvailable ? 'Atualizar aplicação' : 'Aplicação atualizada';
+    button.title = button.textContent;
+    button.setAttribute('aria-label', button.textContent);
     status.textContent = platformUpdateAvailable ? `Nova versão ${latest} disponível.` : `Versão ${APP_VERSION} em dia.`;
   } catch {
     platformUpdateAvailable = false;
     button.disabled = true;
     button.textContent = 'Versão não verificada';
+    button.title = button.textContent;
+    button.setAttribute('aria-label', button.textContent);
     status.textContent = 'Não foi possível verificar a versão. Verificaremos novamente ao voltar à tela.';
   }
 }
