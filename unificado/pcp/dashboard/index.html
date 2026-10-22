@@ -281,7 +281,7 @@
     </div>
 
     <div class="section-card">
-      <div class="section-title">Kg/Homem diário</div>
+      <div class="section-title">KG / Homem</div>
       <p class="text-muted mb-3" style="font-size:.82rem">Peso dos postes produzidos ÷ (MOD + MOI). O MOI dos Setores 3 e 4 é dividido igualmente entre eles.</p>
       <div class="table-responsive">
         <table class="table table-sm align-middle mb-0 kg-homem-table">
@@ -418,7 +418,7 @@ function renderKgHomemDiario(rows) {
   });
   const cell = row => {
     if (!row) return '<td><span class="kg-homem-value">—</span></td>';
-    const numero = row.kg_por_homem == null ? '—' : `${Number(row.kg_por_homem).toLocaleString('pt-BR', {maximumFractionDigits: 2})} kg`;
+    const numero = row.kg_por_homem == null ? '—' : Number(row.kg_por_homem).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     const pessoas = Number(row.pessoas || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
     const mod = Number(row.mod || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
     const moi = Number(row.moi || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});

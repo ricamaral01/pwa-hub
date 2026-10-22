@@ -42,7 +42,7 @@
     if (!summary || summary.querySelector("#paKgHomem")) return;
     const panel = element("section", "pa-kg-homem");
     panel.id = "paKgHomem";
-    panel.innerHTML = '<div class="pa-kg-homem-heading"><h3>Kg/Homem diário</h3>'
+    panel.innerHTML = '<div class="pa-kg-homem-heading"><h3>KG / Homem</h3>'
       + '<p>Peso dos postes produzidos ÷ (MOD + MOI). O MOI dos Setores 3 e 4 é dividido igualmente.</p></div>'
       + '<div class="pa-kg-homem-scroll"><table><thead><tr><th>Data</th><th>Setores 1 e 2</th><th>Setor 3</th><th>Setor 4</th></tr></thead>'
       + '<tbody id="paKgHomemRows"><tr><td colspan="4">Carregando...</td></tr></tbody></table></div>';
@@ -72,8 +72,9 @@
       days.get(row.data).set(String(row.grupo_id), row);
     }
     const number = value => Number(value || 0).toLocaleString("pt-BR", {maximumFractionDigits: 2});
+    const ratio = value => Number(value).toLocaleString("pt-BR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
     const cell = row => row
-      ? `<td><strong>${row.kg_por_homem == null ? "—" : number(row.kg_por_homem) + " kg"}</strong>`
+      ? `<td><strong>${row.kg_por_homem == null ? "—" : ratio(row.kg_por_homem)}</strong>`
         + `<small>${number(row.peso_realizado_kg)} kg ÷ ${number(row.pessoas)} pessoa(s)</small>`
         + `<small>MOD ${number(row.mod)} + MOI ${number(row.moi)}</small></td>`
       : '<td><strong>—</strong></td>';
@@ -99,7 +100,7 @@
         token = await pcpDashboardToken(true);
         if (token) response = await fetch(url, {headers: {Authorization: `Bearer ${token}`}, cache: "no-store"});
       }
-      if (!response.ok) throw new Error("Não foi possível carregar Kg/Homem.");
+      if (!response.ok) throw new Error("Não foi possível carregar KG / Homem.");
       const data = await response.json();
       renderKgHomem(data.kg_homem_diario || []);
       kgHomemKey = key;
