@@ -101,6 +101,11 @@
       font-variant-numeric: tabular-nums;
     }
     .grouped-indicator.achievement strong { color: var(--achievement-color); }
+    .kg-homem-table th { color: #64748b; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+    .kg-homem-table td { min-width: 180px; vertical-align: middle; }
+    .kg-homem-table td:first-child { min-width: 110px; width: 110px; font-weight: 800; color: #15416f; }
+    .kg-homem-value { display: block; color: #0f172a; font-size: 1.22rem; font-weight: 850; font-variant-numeric: tabular-nums; }
+    .kg-homem-detail { display: block; color: #64748b; font-size: .73rem; }
     .achievement-success {
       --achievement-bg: #ecfdf3;
       --achievement-border: #bbf7d0;
@@ -275,6 +280,17 @@
       <div class="text-center text-muted py-3"><div class="spinner-border spinner-border-sm"></div></div>
     </div>
 
+    <div class="section-card">
+      <div class="section-title">Kg/Homem diário</div>
+      <p class="text-muted mb-3" style="font-size:.82rem">Peso dos postes produzidos ÷ (MOD + MOI). O MOI dos Setores 3 e 4 é dividido igualmente entre eles.</p>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0 kg-homem-table">
+          <thead><tr><th>Data</th><th>Setores 1 e 2</th><th>Setor 3</th><th>Setor 4</th></tr></thead>
+          <tbody id="kg-homem-diario"><tr><td colspan="4" class="text-center text-muted py-3">Carregando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="dashboard-grid">
       <div class="section-card chart-box">
         <div class="section-title">Programado vs Realizado por Setor</div>
@@ -384,6 +400,7 @@ async function loadDashboard() {
   try {
     const data = await API.get(`/api/dashboard?${qs.toString()}`);
     renderGroupedCards(data);
+    renderKgHomemDiario(data.kg_homem_diario || []);
     renderSetores(data.por_setor || []);
     renderChart(data.por_setor || []);
     renderAndamento(data.producao_andamento || []);
@@ -391,6 +408,26 @@ async function loadDashboard() {
   } catch (err) {
     showToast(err.message, 'error');
   }
+}
+
+function renderKgHomemDiario(rows) {
+  const porDia = new Map();
+  rows.forEach(row => {
+    if (!porDia.has(row.data)) porDia.set(row.data, new Map());
+    porDia.get(row.data).set(String(row.grupo_id), row);
+  });
+  const cell = row => {
+    if (!row) return '<td><span class="kg-homem-value">—</span></td>';
+    const numero = row.kg_por_homem == null ? '—' : `${Number(row.kg_por_homem).toLocaleString('pt-BR', {maximumFractionDigits: 2})} kg`;
+    const pessoas = Number(row.pessoas || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
+    const mod = Number(row.mod || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
+    const moi = Number(row.moi || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
+    return `<td><strong class="kg-homem-value">${numero}</strong><span class="kg-homem-detail">${fmtKg(row.peso_realizado_kg)} ÷ ${pessoas} pessoa(s)</span><span class="kg-homem-detail">MOD ${mod} + MOI ${moi}</span></td>`;
+  };
+  document.getElementById('kg-homem-diario').innerHTML = [...porDia]
+    .sort(([a], [b]) => b.localeCompare(a))
+    .map(([dia, grupos]) => `<tr><td>${fmtDate(dia)}</td>${['12', '3', '4'].map(grupo => cell(grupos.get(grupo))).join('')}</tr>`)
+    .join('') || '<tr><td colspan="4" class="text-center text-muted py-3">Sem dados no período</td></tr>';
 }
 
 function renderGroupedCard({ title, subtitle, icon, indicators }) {

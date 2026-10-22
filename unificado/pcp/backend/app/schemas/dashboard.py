@@ -56,6 +56,17 @@ class AndamentoItem(BaseModel):
     eficiencia_pct: float
 
 
+class KgHomemDiario(BaseModel):
+    data: str
+    grupo_id: str
+    grupo_nome: str
+    peso_realizado_kg: Decimal
+    mod: Decimal
+    moi: Decimal
+    pessoas: Decimal
+    kg_por_homem: Optional[float] = None
+
+
 class DashboardResponse(BaseModel):
     total_programado_m3: Decimal
     total_realizado_m3: Decimal
@@ -70,6 +81,7 @@ class DashboardResponse(BaseModel):
     por_setor: List[SetorKPI]
     por_poste: List[PosteKPI]
     producao_andamento: List[AndamentoItem] = []
+    kg_homem_diario: List[KgHomemDiario] = []
 
 
 class VolumeTotalResponse(BaseModel):

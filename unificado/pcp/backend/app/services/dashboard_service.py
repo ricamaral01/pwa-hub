@@ -13,6 +13,7 @@ from app.schemas.dashboard import (
     AndamentoItem,
     DashboardResponse,
     GrupoKPI,
+    KgHomemDiario,
     PosteKPI,
     SetorKPI,
     VolumeTotalResponse,
@@ -80,6 +81,46 @@ def _mdo_por_grupo(db: Session, data_inicio: date, data_fim: date):
     return por_grupo, total
 
 
+def _kg_homem_diario(pesos: dict, registros: list, data_inicio: date, data_fim: date) -> list:
+    grupos = ("12", "3", "4")
+    mao = defaultdict(lambda: {"MOD": Decimal("0"), "MOI": Decimal("0")})
+    datas = {dia for dia, _ in pesos}
+    for row in registros:
+        dia = row.data.isoformat()
+        datas.add(dia)
+        atividade = getattr(row, "atividade", None)
+        tipo = getattr(atividade, "tipo", None)
+        grupo = getattr(atividade, "grupo_setor", None)
+        qtd = _dec(row.quantidade_pessoas)
+        if tipo == "MOD":
+            setor = row.setor_id or getattr(atividade, "setor_id", None)
+            destino = "12" if setor in (1, 2) or grupo == "12" else str(setor) if setor in (3, 4) else None
+            if destino:
+                mao[(dia, destino)]["MOD"] += qtd
+        elif tipo == "MOI" and grupo == "12":
+            mao[(dia, "12")]["MOI"] += qtd
+        elif tipo == "MOI" and grupo == "34":
+            mao[(dia, "3")]["MOI"] += qtd / 2
+            mao[(dia, "4")]["MOI"] += qtd / 2
+
+    if data_inicio == data_fim:
+        datas.add(data_inicio.isoformat())
+    nomes = {"12": "Setores 1 e 2", "3": "Setor 3", "4": "Setor 4"}
+    resultado = []
+    for dia in sorted(datas, reverse=True):
+        for grupo in grupos:
+            peso = pesos.get((dia, grupo), Decimal("0"))
+            mod = mao[(dia, grupo)]["MOD"]
+            moi = mao[(dia, grupo)]["MOI"]
+            pessoas = mod + moi
+            resultado.append(KgHomemDiario(
+                data=dia, grupo_id=grupo, grupo_nome=nomes[grupo],
+                peso_realizado_kg=peso, mod=mod, moi=moi, pessoas=pessoas,
+                kg_por_homem=round(float(peso / pessoas), 2) if pessoas > 0 else None,
+            ))
+    return resultado
+
+
 def get_dashboard(
     db: Session,
     data_inicio: Optional[date] = None,
@@ -113,6 +154,7 @@ def get_dashboard(
     total_real_m3 = Decimal("0")
     total_prog_kg = Decimal("0")
     total_real_kg = Decimal("0")
+    pesos_diarios = defaultdict(lambda: Decimal("0"))
 
     for row in rows:
         sid = row.get("setor_id")
@@ -124,6 +166,10 @@ def get_dashboard(
         vol_real = _dec(row.get("volume_m3"))
         peso_prog = peso_unit * qtd_prog
         peso_real = peso_unit * qtd_real
+        dia = str(row.get("data") or "")[:10]
+        grupo_diario = "12" if sid in (1, 2) else str(sid) if sid in (3, 4) else None
+        if dia and grupo_diario:
+            pesos_diarios[(dia, grupo_diario)] += peso_real
 
         total_prog_m3 += vol_prog
         total_real_m3 += vol_real
@@ -182,6 +228,10 @@ def get_dashboard(
             ))
 
     mdo_grupo, total_pessoas = _mdo_por_grupo(db, data_inicio, data_fim)
+    registros_mdo = db.query(MaoDeObra).filter(
+        MaoDeObra.data >= data_inicio, MaoDeObra.data <= data_fim,
+    ).all()
+    kg_homem_diario = _kg_homem_diario(pesos_diarios, registros_mdo, data_inicio, data_fim)
     mdo_hoje = db.query(func.coalesce(func.sum(MaoDeObra.quantidade_pessoas), 0)).filter(
         MaoDeObra.data == date.today()
     ).scalar()
@@ -244,6 +294,7 @@ def get_dashboard(
         por_setor=setores_out,
         por_poste=postes_out,
         producao_andamento=andamento[:80],
+        kg_homem_diario=kg_homem_diario,
     )
 
 
