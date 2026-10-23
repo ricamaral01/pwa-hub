@@ -111,7 +111,8 @@
         const data=await get('massadas',{data_ini:start.querySelector('input').value,data_fim:end.querySelector('input').value,limit:500});
         const rows=data.rows||[],snapshot=data.snapshot;
         const imported=snapshot?.imported_at?new Date(snapshot.imported_at).toLocaleString('pt-BR'):'data indisponível';
-        message(`${rows.length} massada(s) no período${data.has_more?' (mostrando as primeiras 500)':''}. Cópia importada em ${imported}.`);
+        const stale=!snapshot?.imported_at||Date.now()-new Date(snapshot.imported_at).getTime()>15*60*1000;
+        message(`${rows.length} massada(s) no período${data.has_more?' (mostrando as primeiras 500)':''}. Sincronizado em ${imported}.${stale?' Sincronização atrasada; confirme antes de imprimir.':''}`,stale);
         kpis([['Massadas na cópia',snapshot?.source_count||0],['Última data de produção',snapshot?.source_max_data?.slice(0,10)||'—'],['No período',rows.length]]);
         if(!rows.length)return;
         const grid=E('div','cec-labels');

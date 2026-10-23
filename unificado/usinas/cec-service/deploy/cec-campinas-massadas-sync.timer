@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Campinas massadas mirror every five minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Persistent=true
+Unit=cec-campinas-massadas-sync.service
+
+[Install]
+WantedBy=timers.target
