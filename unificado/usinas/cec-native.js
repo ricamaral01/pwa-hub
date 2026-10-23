@@ -3,14 +3,14 @@
   const host=document.getElementById('area-nativa-conteudo');if(!host)return;
   const base='/unificado/mapa/api/usina/cec/';
   const queueKey='unificado_cec_campinas_pending_v1';
-  const now=new Date(),today=now.toLocaleDateString('en-CA');
+  const now=new Date(),today=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
   const tabs=[
     ['resultados','Resultado Corpos de Prova','Tabela de resultados de resistência à compressão.'],
     ['relatorio','Relatório CEC','Controle estatístico e desempenho dos traços.'],
     ['analise','Análise CEC','Análise diária e mensal de conformidade.'],
     ['leitura','Leitura de CP','Escanear QR Code e registrar a resistência.'],
     ['dashboard','Dashboard CEC','Indicadores da usina de Campinas.'],
-    ['etiquetas','Etiquetas CP','Identificação de corpos de prova registrados.']
+    ['etiquetas','Massadas e etiquetas CP','Massadas importadas para a VPS nova.']
   ];
   const E=(tag,cls,value)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(value!=null)node.textContent=String(value);return node};
   const newId=()=>crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
@@ -102,10 +102,31 @@
     actions.append(save,btn('Enviar pendentes',syncQueue,true),E('span','',`Pendentes: `));const pending=E('strong','',String(queue().length));pending.dataset.pending='';actions.append(pending);right.append(actions);layout.append(left,right);content.append(layout);status();message('As leituras são gravadas no banco CEC da VPS nova.');syncQueue()
   }
   async function labels(){
-    heading('Etiquetas CP','Etiquetas dos corpos de prova que já possuem leitura registrada.');
-    status();try{const data=await get('leituras',{limit:200}),rows=data.rows||[],grid=E('div','cec-labels');message(`${rows.length} leitura(s) disponíveis para impressão.`);
-      for(const row of rows){const label=E('div','cec-label');label.append(E('strong','',`${row.traco_id} · CP ${row.cp}`),E('span','',`Idade ${row.idade_dias} dias · Moldagem ${fmt(row.data_moldagem)}`),E('span','',`ID ${row.id} · ${fmt(row.mpa)} MPa`));grid.append(label)}content.append(btn('Imprimir etiquetas',()=>window.print(),true),grid)
-    }catch(error){message(error.message,true)}
+    heading('Massadas e etiquetas CP','Consulte as massadas importadas para a VPS nova por data de produção.');
+    const form=E('form','cec-filters'),start=field('Data inicial','data_ini','date',today),end=field('Data final','data_fim','date',today);
+    const submit=E('button','cec-button','Consultar');submit.type='submit';form.append(start,end,submit);content.append(form);
+    const load=async()=>{
+      content.querySelectorAll('.cec-message,.cec-labels,.cec-print,.cec-kpis').forEach(n=>n.remove());status();
+      try{
+        const data=await get('massadas',{data_ini:start.querySelector('input').value,data_fim:end.querySelector('input').value,limit:500});
+        const rows=data.rows||[],snapshot=data.snapshot;
+        const imported=snapshot?.imported_at?new Date(snapshot.imported_at).toLocaleString('pt-BR'):'data indisponível';
+        message(`${rows.length} massada(s) no período${data.has_more?' (mostrando as primeiras 500)':''}. Cópia importada em ${imported}.`);
+        kpis([['Massadas na cópia',snapshot?.source_count||0],['Última data de produção',snapshot?.source_max_data?.slice(0,10)||'—'],['No período',rows.length]]);
+        if(!rows.length)return;
+        const grid=E('div','cec-labels');
+        for(const row of rows){
+          const label=E('div','cec-label');
+          label.append(E('strong','',`Massada ${row.id} · Série ${fmt(row.numero_serie)}`),
+            E('span','',`${fmt(row.produto)} · ${fmt(row.formula)}`),
+            E('span','',`Produção ${fmt(row.data?.slice(0,10))} · ${fmt(row.hora)} · ${fmt(row.qtd)} m³`));
+          grid.append(label);
+        }
+        const print=btn('Imprimir identificação',()=>window.print(),true);print.classList.add('cec-print');
+        content.append(print,grid);
+      }catch(error){message(error.message,true)}
+    };
+    form.addEventListener('submit',event=>{event.preventDefault();load()});load()
   }
   function select(id){selected=id;nav.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.id===id)));content.replaceChildren();if(scanner){scanner.stop().catch(()=>{});scanner.clear();scanner=null}
     if(id==='resultados'||id==='relatorio')results(id);else if(id==='analise'||id==='dashboard')analysis(id);else if(id==='leitura')reader();else labels()

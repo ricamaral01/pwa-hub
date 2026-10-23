@@ -34,6 +34,13 @@ class CecApiTest(TestCase):
         self.assertEqual(call.call_args.args[0].full_url,
                          "http://127.0.0.1:3086/api/controle-estatistico/v2/rompimentos-grupos?mes=10&ano=2026")
 
+    def test_massadas_uses_new_local_copy(self):
+        with patch("usinas_cec.urllib.request.urlopen", return_value=Upstream()) as call:
+            response = self.client.get("/usina/cec/massadas?data_ini=2026-10-23")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(call.call_args.args[0].full_url,
+                         "http://127.0.0.1:3086/api/v1/massadas?data_ini=2026-10-23")
+
     def test_reading_parses_qr_and_preserves_id(self):
         reading_id = "db0977b0-5a84-449f-8bc0-73a505205622"
         payload = {"id": reading_id,

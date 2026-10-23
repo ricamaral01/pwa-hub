@@ -16,6 +16,7 @@ from flask import Response, jsonify, request
 BASE = "http://127.0.0.1:3086"
 READS = {
     "leituras": "/api/v1/rompimentos",
+    "massadas": "/api/v1/massadas",
     "resultados": "/api/controle-estatistico/v2/rompimentos-grupos",
     "estatistica-diaria": "/api/controle-estatistico/v2/estatistica-diaria",
     "estatistica-mensal": "/api/controle-estatistico/v2/estatistica-mensal",

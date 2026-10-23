@@ -9,6 +9,7 @@ O controle estatístico de Campinas usa o banco PostgreSQL `controle_est_concre_
 - Leitura e cálculo estatístico foram exercitados em um banco de validação isolado na VPS nova.
 - O ERP antigo mantém código, banco e permissões originais. Apenas o destino de `CONTROLE_ESTATISTICO_API_URL` passou a apontar, via `concretrack-api.service.d/cec-forward.conf`, para `https://concrefer.concretrack.com.br/cec-bridge/api/v1/rompimentos`.
 - A ponte Nginx na VPS nova aceita somente o IP da VPS antiga. O ERP antigo continua aplicando sua autenticação antes do encaminhamento. A interface nativa do Unificado usa a sessão do Unificado e os endpoints `/unificado/mapa/api/usina/cec/`.
+- Em 23/10/2026, a tabela `supervisorio_db.public.tbl_massadas` foi copiada somente para leitura ao banco CEC da VPS nova como `public.tbl_massadas`, com 10.875 linhas e maior ID 69855. O dump tem SHA-256 `870319671e626aa66677be6fa679329dfc4d4762b5120243a378ce1cde8969a6`. A consulta nativa `/usina/cec/massadas` usa exclusivamente esta cópia; `cec_massadas_snapshot` guarda a data e contagem da importação.
 
 ## Operação
 
@@ -18,4 +19,4 @@ Para retorno do leitor antigo ao CEC antigo, remover somente `/etc/systemd/syste
 
 ## Limites atuais
 
-As etiquetas nativas são geradas a partir de leituras já registradas no CEC. A geração prévia de etiquetas a partir das massadas do ERP é uma integração distinta, ainda não migrada para o banco novo. A tabela `supervisorio_db.public.tbl_massadas` contém 10.875 linhas na origem, mas o papel de leitura já disponível na VPS nova não tem `SELECT` nela (`SQLSTATE 42501`). A decisão de não alterar permissões na origem impede um espelho contínuo dessa tabela neste recorte. A validação de uma leitura real com a conta operacional antiga depende do uso do leitor em produção; a ponte, a API e a escrita com recálculo foram verificadas separadamente.
+A cópia de massadas é um retrato, não um espelho contínuo. O papel de leitura já disponível na VPS nova não tem `SELECT` nessa tabela (`SQLSTATE 42501`), e as permissões da origem foram mantidas. Novas massadas do CLP continuam surgindo na origem e não aparecerão automaticamente nesta cópia. A tela mostra a hora da importação para impedir que o operador confunda a cópia com dados ao vivo. As identificações impressas usam os dados da cópia e ainda não geram QR para novos CPs. A validação de uma leitura real com a conta operacional antiga depende do uso do leitor em produção; a ponte, a API e a escrita com recálculo foram verificadas separadamente.

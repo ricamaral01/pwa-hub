@@ -3,6 +3,7 @@ const { randomUUID } = require('crypto');
 const { router: controleEstatisticoRouter } = require('./api/controle_estatistico');
 const { router: legacyRouter } = require('./api/legacy');
 const controleEstatisticoRouterV2 = require('./api/controle_estatistico_v2');
+const { router: massadasRouter } = require('./api/massadas');
 const { readyCheck } = require('./core/database');
 const { corsMiddleware, jsonBodyLimit, rateLimit, securityHeaders } = require('./core/security');
 const { requestId, requestLogger, log } = require('./core/logger');
@@ -63,6 +64,7 @@ function createApp() {
 
   app.use('/api/controle-estatistico', controleEstatisticoRouter);
   app.use('/api/v1', legacyRouter);
+  app.use('/api/v1', massadasRouter);
   app.use('/api/controle-estatistico/v2', controleEstatisticoRouterV2);
 
   app.use(errorHandler);
