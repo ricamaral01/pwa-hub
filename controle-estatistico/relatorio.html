@@ -307,10 +307,10 @@
       </div>
     </div>
 
-    <!-- ======= Controle diario de moldagem ======= -->
+    <!-- ======= Controle diario de rompimentos por data de moldagem ======= -->
     <div class="section-card">
       <div class="section-title"><span>&#128198;</span> Controle Di&#225;rio de Rompimentos por Data de Moldagem (Dias &#218;teis)</div>
-      <div style="font-size:.72rem;color:var(--muted);margin:0 0 8px 0;">Fonte: rompimentos registrados no controle estat&#237;stico. A aus&#234;ncia de registro n&#227;o confirma que n&#227;o houve moldagem.</div>
+      <div style="font-size:.72rem;color:var(--muted);margin:0 0 8px 0;">Fonte: rompimentos registrados no controle estat&#237;stico. Meta operacional: 2 CPs por idade (8 por dia &#250;til). A aus&#234;ncia de registro n&#227;o confirma que n&#227;o houve moldagem.</div>
       <div id="moldagemResumo" style="font-size:.72rem;color:var(--muted);margin:0 0 10px 0;"></div>
       <div class="tbl-wrap">
         <table id="tblMoldagemDiaria" class="stat-tbl">
@@ -794,9 +794,9 @@ function renderControleMoldagemDiaria(groups){
 
       var status='OK';
       var statusCls='v-ok';
-      if(day.total===0){ status='Sem rompimento registrado'; statusCls='v-fail'; }
-      else if(faltantes>0){ status='Incompleto'; statusCls='v-warn'; }
-      else if(day.total>EXPECTED_TOTAL){ status='Acima do esperado'; statusCls='v-neu'; }
+      if(day.total===0){ status='Sem rompimento registrado'; statusCls='v-neu'; }
+      else if(faltantes>0){ status='Abaixo da meta de registros'; statusCls='v-neu'; }
+      else if(day.total>EXPECTED_TOTAL){ status='Acima da meta de registros'; statusCls='v-neu'; }
 
       var resumoDia=faltantes===0
         ? 'Completo'
@@ -827,7 +827,7 @@ function renderControleMoldagemDiaria(groups){
     resumoEl.innerHTML='<b>Resumo do m&#234;s corrente:</b> Nenhuma pend&#234;ncia registrada nos dias &#250;teis at&#233; o momento.';
   }
 
-  if(!html)html='<tr><td colspan="10" style="padding:24px;text-align:center;color:var(--muted);">Sem dados suficientes para o controle de moldagem.</td></tr>';
+  if(!html)html='<tr><td colspan="10" style="padding:24px;text-align:center;color:var(--muted);">Sem dados suficientes para o controle de rompimentos.</td></tr>';
   document.getElementById('tblMoldagemDiariaBody').innerHTML=html;
 }
 
