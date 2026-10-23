@@ -4,11 +4,18 @@ const ASSETS = [
   '/unificado/laboratorio/cec/assets/img/icon-192.png',
   '/unificado/laboratorio/cec/assets/img/icon-512.png',
   '/unificado/laboratorio/cec/assets/img/logo.png',
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
-  'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
-  'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap',
-  'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js',
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+  '/unificado/laboratorio/cec/assets/vendor/fonts/bootstrap-icons.woff2',
+  '/unificado/laboratorio/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2',
+  '/unificado/laboratorio/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wdhyzbi.woff2',
+  '/unificado/laboratorio/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2',
+  '/unificado/laboratorio/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2',
+  '/unificado/laboratorio/cec/assets/vendor/fonts/JTUSjIg1_i6t8kCHKm459WZhyzbi.woff2',
+
+  '/unificado/laboratorio/cec/assets/vendor/bootstrap.min.css',
+  '/unificado/laboratorio/cec/assets/vendor/bootstrap-icons.min.css',
+  '/unificado/laboratorio/cec/assets/vendor/montserrat.css',
+  '/unificado/laboratorio/cec/assets/vendor/html5-qrcode.min.js',
+  '/unificado/laboratorio/cec/assets/vendor/bootstrap.bundle.min.js',
 ];
 
 // Install — cache core assets

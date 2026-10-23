@@ -5,7 +5,8 @@ const ASSETS = [
   "./relatorio.html",
   "./api-client.js",
   "./manifest.json",
-  "./relatorio-icon.svg"
+  "./relatorio-icon.svg",
+  "/unificado/laboratorio/cec/assets/vendor/chart.umd.min.js"
 ];
 
 self.addEventListener("install", (event) => {
