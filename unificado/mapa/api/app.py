@@ -28,23 +28,41 @@ import psycopg
 from psycopg import sql
 from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
-from unified_auth import (adopt_mapa_password, check_link_password, component_links,
+from unified_auth import (adopt_mapa_password, adopt_pcp_password,
+                          check_link_password, component_links,
                           link_for, linked_users,
                           mapa_user_by_login, mark_existing_shared_password,
                           mirror_mapa_password, mirror_pcp_password,
                           PCP_HASHER, pcp_connect, pcp_user_by_login,
-                          set_unified_password, verify_map,
+                          set_unified_password, sync_component_password, verify_map,
                           verify_pcp)
 from formas_por_setor import load_catalog as load_formas_por_setor
 from dashboard_defects_indicators import load_indicators as load_dashboard_defects_indicators
+from screen_access import (CATALOG as SCREEN_CATALOG, BY_ID as SCREENS_BY_ID,
+                           MASTER_USER_ID, MASTER_USER_IDS, DEFAULT_LAB_USERS, GUEST_FORBIDDEN_SCREENS,
+                           allowed_screens,
+                           role_allows, screen_for_uri)
 
 
 app = Flask(__name__)
 validation_logger = logging.getLogger("unificado.validation")
 hasher = PasswordHasher()
 COOKIE_NAME = "mapa_unificado_session"
+COOKIE_PATH = "/unificado/"
+LEGACY_COOKIE_PATH = "/unificado/mapa/api"
 TEST_PAGE_COOKIE_NAME = "unificado_test_session"
+PCP_SCREEN_COOKIE_NAME = "unificado_pcp_screen"
+PCP_REFRESH_COOKIE_NAME = "unificado_pcp_refresh"
+PCP_REFRESH_SECONDS = 30 * 24 * 60 * 60
+PCP_REFRESH_PATH = "/unificado/mapa/api/unified/pcp-session"
 SESSION_SECONDS = 36 * 60 * 60
+TV_SESSION_SECONDS = 30 * 24 * 60 * 60
+TV_USER_IDS = frozenset({'tv-producao', 'tv'})
+
+
+def session_scope_and_age(user):
+    return ('tv_session', TV_SESSION_SECONDS) if user['id'] in TV_USER_IDS else ('session', SESSION_SECONDS)
+
 READ_TABLES = frozenset({
     "usuarios", "programacao_pcp", "liberacao_formas", "producao",
     "montagem_poste", "inspecao_defeitos", "formas_manutencao", "prog_s3_s4", "vw_formas_status",
@@ -59,7 +77,15 @@ OPERATION_TABLES = {
     "concretada": "producao",
 }
 SECTORS = frozenset({"Setor 1", "Setor 2", "Setor 3", "Setor 4"})
+GUEST_ACTIONS = frozenset({'view', 'create', 'edit', 'delete', 'export', 'approve'})
 CHECKLISTS = json.loads((Path(__file__).parent / "checklists.json").read_text(encoding="utf-8"))
+ACTION_CATALOG = json.loads((Path(__file__).parent / "action_catalog.json").read_text(encoding="utf-8"))
+QUALITY_ACTION_CATALOG = [item for item in ACTION_CATALOG if item["module"] == "qualidade"]
+QUALITY_ACTION_IDS = frozenset(item["id"] for item in QUALITY_ACTION_CATALOG)
+CRONO_ACTION_CATALOG = [item for item in ACTION_CATALOG if item["id"].startswith("laboratorio.cronoanalise.")]
+CRONO_ACTION_IDS = frozenset(item["id"] for item in CRONO_ACTION_CATALOG)
+QUALITY_AREA_CATALOG = json.loads((Path(__file__).parent / "quality_area_catalog.json").read_text(encoding="utf-8"))
+QUALITY_AREA_CODES = frozenset(item["code"] for item in QUALITY_AREA_CATALOG)
 
 
 def signer():
@@ -87,18 +113,30 @@ def public_user(row):
     }
 
 
+def record_mapa_login(row):
+    """Record a successful login in the unified Mapa database only."""
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""INSERT INTO unificado_auth.mapa_login_events
+                       (user_id, role_at_login, sector_at_login)
+                       VALUES (%s, %s, %s)""",
+                    (row["id"], row["perfil"], row["setor"]))
+
+
 def session_response(row):
+    record_mapa_login(row)
     response = jsonify(ok=True, user=public_user(row))
+    scope, age = session_scope_and_age(row)
     token = signer().dumps({
-        "scope": "session", "id": row["id"],
+        "scope": scope, "id": row["id"],
         "updated_at": row["updated_at"].isoformat(),
     })
     response.set_cookie(
-        COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
-        secure=True, samesite="Lax", path="/unificado/mapa/api",
+        COOKIE_NAME, token, max_age=age, httponly=True,
+        secure=True, samesite="Lax", path=COOKIE_PATH,
     )
+    response.delete_cookie(COOKIE_NAME, path=LEGACY_COOKIE_PATH)
     response.set_cookie(
-        TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
+        TEST_PAGE_COOKIE_NAME, token, max_age=age, httponly=True,
         secure=True, samesite="Lax", path="/unificado/testar/",
     )
     return response
@@ -165,20 +203,84 @@ def pcp_session_token(user):
     encode = lambda value: base64.urlsafe_b64encode(value).rstrip(b"=").decode("ascii")
     header = encode(b'{"alg":"HS256","typ":"JWT"}')
     claims = {"sub": str(user["id"]), "nivel": user["nivel_acesso"],
-              "exp": int(time.time()) + 8 * 60 * 60}
+              "exp": int(time.time()) + 8 * 60 * 60,
+              "session_epoch_ms": int(time.time() * 1000)}
     payload = encode(json.dumps(claims, separators=(",", ":")).encode())
     signed = f"{header}.{payload}"
     signature = encode(hmac.new(secret.encode(), signed.encode(), hashlib.sha256).digest())
     return signed + "." + signature
 
 
+def pcp_refresh_claim(user):
+    return {"scope": "pcp_refresh", "id": user["id"],
+            "password": hashlib.sha256(user["senha_hash"].encode()).hexdigest(),
+            "revoked": user["token_revoked_at"].isoformat()
+            if user["token_revoked_at"] else None}
+
+
+def pcp_refresh_user():
+    token = request.cookies.get(PCP_REFRESH_COOKIE_NAME)
+    if not token:
+        return None
+    try:
+        claim = signer().loads(token, max_age=PCP_REFRESH_SECONDS)
+        if claim.get("scope") != "pcp_refresh":
+            return None
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,nome,username,email,nivel_acesso,setor_id,ativo,
+                          trocar_senha_primeiro_acesso,deleted_at,senha_hash,token_revoked_at
+                          FROM public.usuarios WHERE id=%s""", (claim["id"],))
+            user = cur.fetchone()
+        if (not user or not user["ativo"] or user["deleted_at"] is not None
+                or user["trocar_senha_primeiro_acesso"]
+                or claim != pcp_refresh_claim(user)):
+            return None
+        return user
+    except (BadSignature, SignatureExpired, KeyError, TypeError, psycopg.Error):
+        return None
+
+
+def set_pcp_refresh_cookie(response, user):
+    response.set_cookie(PCP_REFRESH_COOKIE_NAME, signer().dumps(pcp_refresh_claim(user)),
+                        max_age=PCP_REFRESH_SECONDS, httponly=True, secure=True,
+                        samesite="Lax", path=PCP_REFRESH_PATH)
+
+
+def set_pcp_screen_cookie(response, token):
+    response.set_cookie(PCP_SCREEN_COOKIE_NAME, token, max_age=8 * 60 * 60,
+                        httponly=True, secure=True, samesite="Lax",
+                        path="/unificado/pcp/")
+
+
 @app.get("/unified/pcp-session")
 def unified_pcp_session():
-    """Restore Planning access from the valid Production session, without a password."""
+    """Renew Planning access from Production, bearer, or a remembered PCP session."""
     mapa = authenticated_user()
     if not mapa:
-        return jsonify(ok=False, error="Sessão expirada. Entre novamente."), 401
+        planning = authenticated_planning_bearer() or pcp_refresh_user()
+        if not planning:
+            return jsonify(ok=False, error="Sessão expirada. Entre novamente."), 401
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,nome,username,email,nivel_acesso,setor_id,ativo,
+                          trocar_senha_primeiro_acesso,deleted_at,senha_hash,token_revoked_at
+                          FROM public.usuarios WHERE id=%s""", (planning["id"],))
+            pcp = cur.fetchone()
+        if (not pcp or not pcp["ativo"] or pcp["deleted_at"] is not None
+                or pcp["trocar_senha_primeiro_acesso"]):
+            return jsonify(ok=False, error="Planejamento indisponível para esta conta."), 403
+        token = pcp_session_token(pcp)
+        response = jsonify(ok=True, access_token=token,
+                           usuario={key: pcp[key] for key in (
+                               "id", "nome", "username", "email", "nivel_acesso",
+                               "setor_id", "ativo", "trocar_senha_primeiro_acesso")})
+        response.headers["Cache-Control"] = "no-store"
+        set_pcp_refresh_cookie(response, pcp)
+        set_pcp_screen_cookie(response, token)
+        return response
     try:
+        allowed, _ = screen_access_state(mapa)
+        if not any(SCREENS_BY_ID[item]['module'] == 'planejamento' for item in allowed):
+            return jsonify(ok=False, error='Esta conta não tem telas liberadas no Planejamento.'), 403
         link = link_for(mapa_login=mapa["id"])
         if not link:
             return jsonify(ok=False, error="Esta conta não tem acesso ao Planejamento."), 403
@@ -190,16 +292,27 @@ def unified_pcp_session():
         if not pcp or not pcp["ativo"] or pcp["trocar_senha_primeiro_acesso"]:
             return jsonify(ok=False, error="Planejamento indisponível para esta conta."), 403
         user = dict(pcp)
-        return jsonify(ok=True, access_token=pcp_session_token(user), usuario=user), 200, {
-            "Cache-Control": "no-store"
-        }
+        token = pcp_session_token(user)
+        response = jsonify(ok=True, access_token=token, usuario=user)
+        response.headers["Cache-Control"] = "no-store"
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,senha_hash,token_revoked_at FROM public.usuarios
+                           WHERE id=%s""", (user["id"],))
+            refresh_user = cur.fetchone()
+        set_pcp_refresh_cookie(response, refresh_user)
+        set_pcp_screen_cookie(response, token)
+        return response
     except (KeyError, psycopg.Error):
         return jsonify(ok=False, error="Não foi possível renovar o acesso ao Planejamento."), 503
 
 
 def unified_login_response(pcp, mapa, password):
     payload = {"ok": True, "modules": []}
-    if pcp and pcp["ativo"]:
+    planning_allowed = not mapa or any(
+        SCREENS_BY_ID[item]['module'] == 'planejamento'
+        for item in screen_access_state(mapa)[0]
+    )
+    if pcp and pcp["ativo"] and planning_allowed:
         try:
             token_data = pcp_token_for(pcp["username"], password)
             payload["pcp"] = token_data
@@ -207,26 +320,41 @@ def unified_login_response(pcp, mapa, password):
         except (urllib.error.URLError, TimeoutError, ValueError):
             payload["pcp_unavailable"] = True
     if mapa and mapa["ativo"]:
+        record_mapa_login(mapa)
         payload["mapa"] = public_user(mapa)
         payload["modules"].append("mapa")
     if not payload["modules"]:
         return jsonify(ok=False, error="Módulo temporariamente indisponível."), 503
     response = jsonify(payload)
     if mapa and mapa["ativo"]:
-        token = signer().dumps({"scope": "session", "id": mapa["id"],
+        scope, age = session_scope_and_age(mapa)
+        token = signer().dumps({"scope": scope, "id": mapa["id"],
                                 "updated_at": mapa["updated_at"].isoformat()})
-        response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS,
+        response.set_cookie(COOKIE_NAME, token, max_age=age,
                             httponly=True, secure=True, samesite="Lax",
-                            path="/unificado/mapa/api")
-        response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                            path=COOKIE_PATH)
+        response.delete_cookie(COOKIE_NAME, path=LEGACY_COOKIE_PATH)
+        response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=age,
                             httponly=True, secure=True, samesite="Lax",
                             path="/unificado/testar/")
     elif pcp and pcp["ativo"]:
-        response.delete_cookie(COOKIE_NAME, path="/unificado/mapa/api")
+        response.delete_cookie(COOKIE_NAME, path=COOKIE_PATH)
+        response.delete_cookie(COOKIE_NAME, path=LEGACY_COOKIE_PATH)
         token = signer().dumps({"scope": "pcp_test_session", "id": pcp["id"]})
         response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
                             httponly=True, secure=True, samesite="Lax",
                             path="/unificado/testar/")
+    if payload.get("pcp", {}).get("access_token"):
+        # The browser cannot attach the localStorage bearer to an iframe GET.
+        # This cookie is accepted only by the static-screen auth_request.
+        response.set_cookie(PCP_SCREEN_COOKIE_NAME, payload["pcp"]["access_token"],
+                            max_age=8 * 60 * 60, httponly=True, secure=True,
+                            samesite="Lax", path="/unificado/pcp/")
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,senha_hash,token_revoked_at FROM public.usuarios
+                           WHERE id=%s""", (pcp["id"],))
+            refresh_user = cur.fetchone()
+        set_pcp_refresh_cookie(response, refresh_user)
     return response
 
 
@@ -246,6 +374,8 @@ def unified_login():
             linked_pcp, linked_mapa = linked_users(link)
             if not linked_pcp or not linked_mapa:
                 return jsonify(ok=False, error="Conta temporariamente indisponível."), 503
+            if mapa and mapa['id'] != linked_mapa['id']:
+                mapa = None
             if mapa and not mapa["ativo"]:
                 component = component_links(link["id"])
                 other_ids = [item["mapa_login"] for item in component
@@ -257,7 +387,12 @@ def unified_login():
                         if cur.fetchone():
                             raise ValueError("inactive Mapa alias")
             if not link["unified_password_set"] and not link["requires_reset"]:
-                adopt_mapa_password(link["id"], password)
+                if linked_mapa['ativo'] and verify_map(password, linked_mapa['senha_hash']):
+                    adopt_mapa_password(link['id'], password)
+                elif linked_pcp['ativo'] and verify_pcp(password, linked_pcp['senha_hash']):
+                    adopt_pcp_password(link['id'], password)
+                else:
+                    raise ValueError('invalid password')
                 link = link_for(mapa_login=link["mapa_login"])
                 linked_pcp, linked_mapa = linked_users(link)
             matches = check_link_password(link, password)
@@ -286,7 +421,10 @@ def unified_login():
                                         "updated_at": mapa["updated_at"].isoformat()})
                 return jsonify(ok=True, modules=["mapa"], first_access_token=token)
             return unified_login_response(None, mapa, password)
-    except (ValueError, psycopg.Error, urllib.error.URLError, TimeoutError):
+    except psycopg.Error:
+        app.logger.exception("Falha no banco durante o login unificado")
+        return jsonify(ok=False, error="Não foi possível registrar o login no Mapa. Tente novamente."), 503
+    except (ValueError, urllib.error.URLError, TimeoutError):
         pass
     time.sleep(0.25 + secrets.randbelow(100) / 1000)
     return jsonify(ok=False, error="Usuário ou senha incorretos."), 401
@@ -382,7 +520,11 @@ def login():
             "updated_at": row["updated_at"].isoformat(),
         })
         return jsonify(ok=True, user=public_user(row), first_access_token=token)
-    return session_response(row)
+    try:
+        return session_response(row)
+    except psycopg.Error:
+        app.logger.exception("Falha ao registrar login no Mapa")
+        return jsonify(ok=False, error="Não foi possível registrar o login no Mapa. Tente novamente."), 503
 
 
 @app.post("/first-access")
@@ -433,10 +575,15 @@ def authenticated_user():
     if not token:
         return None
     try:
-        session = signer().loads(token, max_age=SESSION_SECONDS)
-        if (not isinstance(session, dict) or session.get("scope") not in {"session", "legacy_session"}
+        session = signer().loads(token, max_age=TV_SESSION_SECONDS)
+        if (not isinstance(session, dict) or session.get("scope") not in {"session", "legacy_session", "tv_session"}
                 or not isinstance(session.get("id"), str)):
             return None
+        if session['scope'] == 'tv_session':
+            if session['id'] not in TV_USER_IDS:
+                return None
+        else:
+            signer().loads(token, max_age=SESSION_SECONDS)
         with connect() as conn, conn.cursor() as cur:
             cur.execute(
                 """SELECT id, nome, perfil, ativo, setor, primeiro_acesso, updated_at
@@ -450,6 +597,272 @@ def authenticated_user():
             or row["updated_at"].isoformat() != session.get("updated_at")):
         return None
     return row
+
+
+@app.get("/dashboard/montagem-logins")
+def dashboard_montagem_logins():
+    if not authenticated_user():
+        return jsonify(ok=False, error="Sessão expirada. Entre novamente."), 401
+    try:
+        start = date.fromisoformat(request.args.get("start", ""))
+        end = date.fromisoformat(request.args.get("end", ""))
+        if end < start or (end - start).days > 3650:
+            raise ValueError()
+        sector = request.args.get("sector", "").strip()
+        if sector not in {"", "Setores 1 e 2", *SECTORS}:
+            raise ValueError()
+    except ValueError:
+        return jsonify(ok=False, error="Período ou setor inválido."), 400
+    try:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("SELECT started_on FROM unificado_auth.mapa_login_tracking WHERE id=true")
+            tracking = cur.fetchone()
+            cur.execute("""SELECT login_day, count(DISTINCT user_id) AS montadores
+                           FROM unificado_auth.mapa_login_events
+                           WHERE login_day BETWEEN %s AND %s AND role_at_login='MONTADOR'
+                             AND (%s = '' OR
+                                  (%s = 'Setores 1 e 2' AND sector_at_login IN ('Setor 1','Setor 2')) OR
+                                  sector_at_login = %s)
+                           GROUP BY login_day ORDER BY login_day""",
+                        (start, end, sector, sector, sector))
+            days = {str(row["login_day"]): row["montadores"] for row in cur.fetchall()}
+    except psycopg.Error:
+        app.logger.exception("Falha ao consultar logins diários da Montagem")
+        return jsonify(ok=False, error="Não foi possível consultar os logins dos montadores."), 503
+    return jsonify(ok=True, started_on=str(tracking["started_on"]) if tracking else None,
+                   days=days)
+
+
+LAB_COOKIE_NAME = "unificado_laboratorio_session"
+LAB_ALLOWED_USERS = DEFAULT_LAB_USERS
+QUALITY_COOKIE_NAME = "unificado_qualidade_session"
+
+
+def quality_actions(user_id):
+    if user_id in MASTER_USER_IDS:
+        return sorted(QUALITY_ACTION_IDS)
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT action_id FROM unificado_auth.user_action_permissions
+                       WHERE user_id=%s AND action_id LIKE 'qualidade.%%'
+                       ORDER BY action_id""", (user_id,))
+        return [row["action_id"] for row in cur.fetchall()]
+
+
+def crono_actions(user_id):
+    if user_id == MASTER_USER_ID:
+        return sorted(CRONO_ACTION_IDS)
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT action_id FROM unificado_auth.user_action_permissions
+                       WHERE user_id=%s AND action_id LIKE 'laboratorio.cronoanalise.%%'
+                       ORDER BY action_id""", (user_id,))
+        return [row["action_id"] for row in cur.fetchall()]
+
+
+def quality_areas(user_id):
+    if user_id in MASTER_USER_IDS:
+        return sorted(QUALITY_AREA_CODES)
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT area_codigo FROM unificado_auth.user_quality_areas
+                       WHERE user_id=%s ORDER BY area_codigo""", (user_id,))
+        return [row["area_codigo"] for row in cur.fetchall()]
+
+
+@app.post("/unified/qualidade-bootstrap")
+def qualidade_bootstrap():
+    user = authenticated_user()
+    if not user:
+        return jsonify(ok=False), 403
+    screens, _ = screen_access_state(user)
+    if not any(item.startswith("qualidade") for item in screens):
+        return jsonify(ok=False), 403
+    token = signer().dumps({"scope": "session", "id": user["id"],
+                            "updated_at": user["updated_at"].isoformat()})
+    response = jsonify(ok=True)
+    response.set_cookie(QUALITY_COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                        httponly=True, secure=True, samesite="Lax",
+                        path="/unificado/qualidade/")
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+@app.get("/unified/qualidade-authorize")
+def qualidade_authorize():
+    token = request.cookies.get(QUALITY_COOKIE_NAME)
+    try:
+        claim = signer().loads(token, max_age=SESSION_SECONDS) if token else None
+        if not claim or claim.get("scope") != "session":
+            return Response(status=401)
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,nome,perfil,ativo,primeiro_acesso,updated_at
+                           FROM public.usuarios WHERE id=%s AND deleted_at IS NULL""",
+                        (claim["id"],))
+            user = cur.fetchone()
+        if (not user or not user["ativo"] or user["primeiro_acesso"]
+                or user["updated_at"].isoformat() != claim.get("updated_at")):
+            return Response(status=401)
+        screens, _ = screen_access_state(user)
+        if not any(item.startswith("qualidade") for item in screens):
+            return Response(status=403)
+        secret = os.environ["QUALIDADE_GATEWAY_SIGNING_KEY"].encode()
+        if len(secret) < 32:
+            return Response(status=503)
+        payload = base64.urlsafe_b64encode(json.dumps({
+            "id": user["id"], "name": user["nome"], "iss": "unificado",
+            "actions": quality_actions(user["id"]),
+            "areas": quality_areas(user["id"]),
+            "superuser": user["id"] in MASTER_USER_IDS,
+            "exp": int(time.time()) + 20,
+        }, separators=(",", ":")).encode()).rstrip(b"=").decode()
+        signature = base64.urlsafe_b64encode(hmac.new(secret, payload.encode(), hashlib.sha256).digest()).rstrip(b"=").decode()
+        response = Response(status=204)
+        response.headers["X-Qualidade-Assertion"] = payload + "." + signature
+        response.headers["Cache-Control"] = "no-store"
+        return response
+    except (BadSignature, SignatureExpired, KeyError, psycopg.Error):
+        return Response(status=401)
+
+
+def laboratory_role(user_id, screens, guest=False):
+    if not any(item.startswith('lab') or item.startswith('cronoanalise.') for item in screens):
+        return None
+    if (user_id in LAB_ALLOWED_USERS or 'labUsuarios' in screens or
+            guest and bool({'labMonitor', 'labHistory', 'labDevice'} & set(screens))):
+        return 'admin'
+    return 'engenheiro' if ('labCriteria' in screens or guest and
+                           bool({'labRegisters', 'labPole', 'labTests'} & set(screens))) else 'tecnico'
+
+
+@app.post("/unified/laboratorio-bootstrap")
+def laboratorio_bootstrap():
+    user = authenticated_user()
+    if not user:
+        return jsonify(ok=False), 403
+    screens, _ = screen_access_state(user)
+    role = laboratory_role(user['id'], screens, user['perfil'] == 'CONVIDADO')
+    if not role:
+        return jsonify(ok=False), 403
+    token = signer().dumps({"scope": "session", "id": user["id"],
+                            "updated_at": user["updated_at"].isoformat()})
+    response = jsonify(ok=True, role=role)
+    response.set_cookie(LAB_COOKIE_NAME, token, max_age=SESSION_SECONDS,
+                        httponly=True, secure=True, samesite="Lax",
+                        path="/unificado/laboratorio/")
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+@app.get("/unified/laboratorio-authorize")
+def laboratorio_authorize():
+    token = request.cookies.get(LAB_COOKIE_NAME)
+    try:
+        direct_path = urllib.parse.urlsplit(request.headers.get("X-Original-URI", "")).path
+        cec_path = direct_path.startswith(('/unificado/laboratorio/cec/',
+                                           '/unificado/laboratorio/cec-api/'))
+        unified_user = authenticated_user() if cec_path else None
+        claim = ({'scope': 'session', 'id': unified_user['id'],
+                  'updated_at': unified_user['updated_at'].isoformat()}
+                 if unified_user else signer().loads(token, max_age=SESSION_SECONDS) if token else None)
+        if not claim or claim.get("scope") != "session":
+            return Response(status=401)
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("SELECT id,nome,perfil,ativo,primeiro_acesso,updated_at FROM public.usuarios WHERE id=%s", (claim["id"],))
+            user = cur.fetchone()
+        if (not user or not user["ativo"] or user["primeiro_acesso"]
+                or user["updated_at"].isoformat() != claim.get("updated_at")):
+            return Response(status=401)
+        original_uri = request.headers.get("X-Original-URI", "")
+        path = urllib.parse.urlsplit(original_uri).path
+        asset = re.search(r"\.(?:js|css|png|jpg|jpeg|svg|woff2?|ico|webp)$", path, re.I)
+        neutral_api = path.endswith(('/api/auth/me', '/api/auth/logout'))
+        cec_manifest = path in {'/unificado/laboratorio/cec/leitura/manifest.json',
+                                '/unificado/laboratorio/cec/analise/manifest.json'}
+        screen = screen_for_uri(original_uri, request.headers.get("X-Unificado-Screen", ""))
+        method = request.headers.get("X-Original-Method", "GET")
+        accepted = None
+        # The Postes SPA loads shared reference data while opening any tab.
+        # Keep writes scoped to their screen; allow reads from its five tabs.
+        postes_read_screens = {'labPole', 'labAbsorption', 'labTests',
+                               'labRegisters', 'labCriteria'}
+        if path.startswith('/unificado/laboratorio/cec-api/'):
+            accepted = {'labCec'}
+        elif path.startswith('/unificado/laboratorio/dosagem/api/'):
+            accepted = {'labDosagem'}
+        elif '/api/ensaios' in path:
+            accepted = postes_read_screens if method == 'GET' else (
+                {'labPole', 'labTests'} if path.endswith('/revisar') else {'labPole'})
+        elif '/api/postes' in path:
+            accepted = postes_read_screens if method == 'GET' else {'labPole'}
+        elif '/api/criterios' in path:
+            accepted = postes_read_screens if method == 'GET' else {'labCriteria'}
+        elif '/api/equipamentos' in path or '/api/responsaveis' in path:
+            accepted = postes_read_screens if method == 'GET' else {'labRegisters'}
+        elif '/api/absorcao' in path:
+            accepted = postes_read_screens if method == 'GET' else {'labAbsorption'}
+        elif '/api/calculo/' in path:
+            accepted = {'labPole', 'labCriteria'}
+        elif '/api/auth/users' in path:
+            accepted = {'labUsuarios'}
+        elif '/api/v1/' in path:
+            if user['perfil'] != 'CONVIDADO':
+                accepted = {'labMonitor', 'labHistory', 'labDevice'}
+            elif '/history' in path or '/export.csv' in path:
+                accepted = {'labHistory'}
+            elif '/config' in path or '/events' in path:
+                accepted = {'labDevice'}
+            else:
+                accepted = {'labMonitor', 'labHistory', 'labDevice'}
+        allowed, _ = screen_access_state(user)
+        role = laboratory_role(user['id'], allowed, user['perfil'] == 'CONVIDADO')
+        crono_prefix = '/unificado/laboratorio/api/laboratorio/cronoanalise/'
+        crono_api = path.startswith(crono_prefix)
+        crono_path = path[len(crono_prefix):] if crono_api else ''
+        crono_views = (
+            {'cronoanalise.inicio', 'cronoanalise.coletar', 'cronoanalise.medicoes',
+             'cronoanalise.catalogo', 'cronoanalise.dimensionar', 'cronoanalise.simular'}
+            if crono_path == 'status' else
+            {'cronoanalise.coletar'} if crono_path == 'medicoes/lote' else
+            {'cronoanalise.medicoes'} if crono_path.startswith('medicoes/') or crono_path == 'medicoes' else
+            {'cronoanalise.inicio', 'cronoanalise.coletar', 'cronoanalise.medicoes',
+             'cronoanalise.catalogo', 'cronoanalise.dimensionar', 'cronoanalise.simular'}
+            if crono_path.startswith('atividades') else
+            {'cronoanalise.inicio', 'cronoanalise.coletar', 'cronoanalise.medicoes',
+             'cronoanalise.catalogo', 'cronoanalise.dimensionar', 'cronoanalise.simular'}
+            if crono_path == 'estatisticas' else
+            {'cronoanalise.dimensionar'} if crono_path.startswith('dimensionamento/') else
+            {'cronoanalise.inicio', 'cronoanalise.simular'} if crono_path == 'simulacoes' and method == 'GET' else
+            {'cronoanalise.simular'} if crono_path.startswith(('simulacao/', 'cenarios', 'simulacoes')) else
+            set()
+        )
+        crono_allowed = crono_api and bool(crono_views & set(allowed))
+        crono_document = (path == '/unificado/laboratorio/cronoanalise/metodologia-conteudo.html'
+                          and 'cronoanalise.metodologia' in allowed)
+        if not role or not (asset or cec_manifest or neutral_api or crono_allowed or crono_document or screen and
+                               screen["module"] == "laboratorio" and
+                               (accepted is None or screen["id"] in accepted) and
+                               (user['perfil'] != 'CONVIDADO' or '/api/' not in path
+                                or accepted is not None) and
+                               screen["id"] in allowed and
+                               guest_action_allowed(user, screen['id'], method, path)):
+            return Response(status=403)
+        secret = os.environ["LAB_GATEWAY_SIGNING_KEY"].encode()
+        if len(secret) < 32:
+            return Response(status=503)
+        payload = base64.urlsafe_b64encode(json.dumps({
+            "id": user["id"], "name": user["nome"], "role": role,
+            "dosagem": "labDosagem" in allowed and screen is not None and screen["id"] == "labDosagem",
+            "dosagem_role": "admin" if user["id"] in MASTER_USER_IDS else
+                            "engenheiro" if role in {"admin", "engenheiro"} else "laboratorista",
+            "crono_screens": [item for item in allowed if item.startswith('cronoanalise.')],
+            "crono_actions": crono_actions(user['id']) if crono_allowed else [],
+            "exp": int(time.time()) + 20,
+        }, separators=(",", ":")).encode()).rstrip(b"=").decode()
+        signature = base64.urlsafe_b64encode(hmac.new(secret, payload.encode(), hashlib.sha256).digest()).rstrip(b"=").decode()
+        response = Response(status=204)
+        response.headers["X-Lab-Assertion"] = payload + "." + signature
+        response.headers["Cache-Control"] = "no-store"
+        return response
+    except (BadSignature, SignatureExpired, KeyError, psycopg.Error):
+        return Response(status=401)
 
 
 def test_actor():
@@ -566,9 +979,8 @@ def rest_read(resource):
     if resource not in READ_TABLES:
         return jsonify(ok=False), 404
     if (resource == "inspecao_defeitos" and
-            (user["perfil"] not in {"GERENCIA", "MONTADOR"} or
-             request.headers.get("X-Unificado-Screen", "") not in
-             {"INSPECAO", "INSPECAO_DETALHE", "inspecao"})):
+            request.headers.get("X-Unificado-Screen", "") not in
+            {"INSPECAO", "INSPECAO_DETALHE", "inspecao"}):
         return jsonify(error="Você não tem acesso a esta tela"), 403
     first_access_password_change = (
         resource == "usuarios" and request.method == "PATCH"
@@ -583,6 +995,18 @@ def rest_read(resource):
         and request.args.get("limit") == "1"
         and set(request.args) <= {"select", "limit"}
     )
+    if not first_access_password_change and not database_probe:
+        mode = request.headers.get("X-Unificado-Screen", "")
+        allowed, _ = screen_access_state(user)
+        if mode == "HUB" and request.method in {"GET", "HEAD"}:
+            if not any(SCREENS_BY_ID[item]["module"] == "producao" for item in allowed):
+                return jsonify(error="Você não tem acesso a esta tela"), 403
+        else:
+            screen = screen_for_uri("/unificado/mapa/api/rest/v1/" + resource, mode)
+            if not screen or screen["id"] not in allowed:
+                return jsonify(error="Você não tem acesso a esta tela"), 403
+            if not guest_action_allowed(user, screen['id'], request.method, request.path):
+                return jsonify(error="Esta ação não foi liberada para o convidado"), 403
     # The original app grants the Users screen to management and to the
     # account whose displayed name is exactly Ricardo (case insensitive).
     users_screen_allowed = (user["perfil"] == "GERENCIA"
@@ -590,6 +1014,9 @@ def rest_read(resource):
     if (resource == "usuarios" and not users_screen_allowed
             and not first_access_password_change and not database_probe):
         return jsonify(ok=False), 403
+    if (resource == "usuarios" and not first_access_password_change and not database_probe
+            and "prodUsuarios" not in screen_access_state(user)[0]):
+        return jsonify(error="Você não tem acesso a esta tela"), 403
     if user["primeiro_acesso"] and not first_access_password_change:
         return jsonify(ok=False), 403
     writing = request.method not in {"GET", "HEAD"}
@@ -688,6 +1115,1116 @@ def rest_user_object(row):
     }
 
 
+def unified_user_admin():
+    actor = authenticated_user()
+    if actor and actor['id'] in MASTER_USER_IDS:
+        return actor
+    if not actor or actor["perfil"] != "GERENCIA":
+        return None
+    allowed, _ = screen_access_state(actor)
+    if not {'prodUsuarios', 'pcpUsuarios'} & set(allowed):
+        return None
+    return actor
+
+
+def screen_access_state(user):
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT screen_id,allowed FROM unificado_auth.user_screen_permissions
+                       WHERE user_id=%s""", (user["id"],))
+        overrides = {row["screen_id"]: row["allowed"] for row in cur.fetchall()}
+        cur.execute("""SELECT pcp_user_id FROM unificado_auth.identity_links
+                       WHERE mapa_login=%s""", (user["id"],))
+        link = cur.fetchone()
+    planning_role = None
+    if link:
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT nivel_acesso,ativo,deleted_at FROM public.usuarios
+                           WHERE id=%s""", (link["pcp_user_id"],))
+            pcp = cur.fetchone()
+            if pcp and pcp["ativo"] and pcp["deleted_at"] is None:
+                planning_role = str(pcp["nivel_acesso"])
+    lab_users = LAB_ALLOWED_USERS | {user['id']} if any(
+        key.startswith('lab') and value for key, value in overrides.items()
+    ) else LAB_ALLOWED_USERS
+    return allowed_screens(user, planning_role, overrides, lab_users), planning_role
+
+
+def guest_request_action(method, path):
+    """Classify a request for the guest's per-screen action grant."""
+    path = urllib.parse.urlsplit(path).path.lower()
+    if '/rest/v1/rpc/' in path:
+        return 'view'
+    if '/laboratorio/api/calculo/' in path:
+        return 'view'
+    if path.endswith('/usina/leituras-qr.csv'):
+        return 'view'
+    if re.search(r'(?:/export(?:/|$)|/download(?:/|$)|\.(?:csv|xlsx?|pdf)$)', path):
+        return 'export'
+    if method in {'GET', 'HEAD'}:
+        return 'view'
+    if method == 'DELETE' or re.search(r'/(?:excluir(?:-lote)?|remover|limpar)(?:/|$)', path):
+        return 'delete'
+    if re.search(r'/(?:finalizar|revisar|aprovar|liberar)(?:/|$)', path):
+        return 'approve'
+    if method in {'PUT', 'PATCH'} or re.search(r'/(?:atualizar(?:-lote)?|editar)(?:/|$)', path):
+        return 'edit'
+    if method == 'POST':
+        return 'create'
+    return None
+
+
+GUEST_MAPA_WRITE_SCREENS = {
+    'programacao_pcp': {'liberacao', 'setor1', 'setor2', 'setor3', 'setor4'},
+    'liberacao_formas': {'liberacao', 'setor1', 'setor2', 'setor3', 'setor4'},
+    'producao': {'liberacao', 'setor1', 'setor2', 'setor3', 'setor4', 'inspecao'},
+    'montagem_poste': {'inspecao', 'montagem', 'tratativa'},
+    'inspecao_defeitos': {'inspecao'},
+    'formas_manutencao': {'manutencao'},
+    'prog_s3_s4': {'sequencia'},
+}
+GUEST_PCP_API_SCREENS = {
+    'dashboard': {'dashboard', 'comparacao'},
+    'volume-total': {'dashboard', 'comparacao'},
+    'programacao': {'programacao12', 'programacao34', 'programacaoFinal',
+                    'relatorio12', 'relatorio3', 'relatorio4'},
+    'programacao-alex': {'programacao12', 'relatorio12'},
+    'programacao-circular-s3': {'circular3'},
+    'programacao-circular-s4': {'dt4'},
+    'saques-mandril': {'circular3', 'dt4'},
+    'producao': {'producaoPcp', 'relatorio12', 'relatorio3', 'relatorio4'},
+    'maodeobra': {'maodeobra'},
+    'maodeobra-com-rateio': {'maodeobraRateio'},
+    'atividades-maodeobra': {'maodeobra', 'maodeobraRateio'},
+    'apontamento-mega': {'apontamentoMega'},
+    'acompanhamento-mensal': {'acompMensal', 'acompMensal34'},
+    'pcp-diario': {'pcpDiario'},
+    'alocacao-formas': {'formasPorSetor'},
+    'etiquetas-armaduras': {'etiquetasArmaduras'},
+    'teste-prog': {'testeProgramacao'},
+    'usuarios': {'pcpUsuarios'},
+}
+
+
+def guest_endpoint_screen_allowed(screen_id, method, path):
+    path = urllib.parse.urlsplit(path).path.lower()
+    if '/rest/v1/' in path:
+        resource = path.split('/rest/v1/', 1)[1].split('/', 1)[0]
+        if resource == 'usuarios':
+            return False
+        if method not in {'GET', 'HEAD'}:
+            return screen_id in GUEST_MAPA_WRITE_SCREENS.get(resource, set())
+        return True
+    if '/pcp/api/' in path:
+        endpoint = path.split('/pcp/api/', 1)[1].split('/', 1)[0]
+        accepted = GUEST_PCP_API_SCREENS.get(endpoint)
+        if accepted is not None:
+            return screen_id in accepted
+        # Shared reference lists are read by several PCP pages.
+        return method in {'GET', 'HEAD'} and endpoint in {
+            'produtos', 'setores', 'formas', 'modelos', 'configuracoes'}
+    return True
+
+
+def guest_action_allowed(user, screen_id, method, path):
+    if user['perfil'] != 'CONVIDADO':
+        return True
+    action = guest_request_action(method, path)
+    if (not action or screen_id in GUEST_FORBIDDEN_SCREENS or
+            not guest_endpoint_screen_allowed(screen_id, method, path)):
+        return False
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute('''SELECT 1 FROM unificado_auth.guest_action_permissions
+                       WHERE user_id=%s AND screen_id=%s AND action=%s''',
+                    (user['id'], screen_id, action))
+        return bool(cur.fetchone())
+
+
+def screen_data_allowed(user, screen_ids):
+    allowed, _ = screen_access_state(user)
+    screen = screen_for_uri('/unificado/mapa/api/rest/v1/producao',
+                            request.headers.get('X-Unificado-Screen', ''))
+    return bool(screen and screen['id'] in screen_ids and screen['id'] in allowed
+                and guest_action_allowed(user, screen['id'], request.method, request.path))
+
+
+def authenticated_planning_bearer(token_override=None):
+    if token_override is None:
+        value = request.headers.get("Authorization", "")
+        if not value.startswith("Bearer "):
+            return None
+        token = value[7:]
+    else:
+        token = token_override
+    try:
+        header, payload, signature = token.split(".")
+        expected = base64.urlsafe_b64encode(hmac.new(
+            os.environ["UNIFICADO_PCP_JWT_SECRET_KEY"].encode(),
+            f"{header}.{payload}".encode(), hashlib.sha256).digest()).rstrip(b"=").decode()
+        if not hmac.compare_digest(signature, expected):
+            return None
+        claims = json.loads(base64.urlsafe_b64decode(payload + "=" * (-len(payload) % 4)))
+        if int(claims.get("exp", 0)) <= time.time():
+            return None
+        user_id = int(claims["sub"])
+        with pcp_connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,nivel_acesso,ativo,deleted_at,token_revoked_at
+                           FROM public.usuarios WHERE id=%s""", (user_id,))
+            user = cur.fetchone()
+        if not user or not user["ativo"] or user["deleted_at"] is not None:
+            return None
+        revoked = user["token_revoked_at"]
+        if revoked and int(claims.get("session_epoch_ms") or 0) <= int(revoked.timestamp() * 1000):
+            return None
+        return user
+    except (ValueError, KeyError, TypeError, psycopg.Error):
+        return None
+
+
+@app.get("/unified/screen-authorize")
+def unified_screen_authorize():
+    original = request.headers.get("X-Original-URI", "")
+    original_method = request.headers.get('X-Original-Method', 'GET')
+    screen = screen_for_uri(original, request.headers.get("X-Unificado-Screen", ""))
+    hub = (urllib.parse.urlsplit(original).path.rstrip('/') == '/unificado/mapa/operacao'
+           and urllib.parse.parse_qs(urllib.parse.urlsplit(original).query).get('tela') == ['HUB'])
+    if not screen:
+        if not hub:
+            return Response(status=403)
+    user = authenticated_user()
+    if user:
+        allowed, _ = screen_access_state(user)
+        if hub:
+            return Response(status=204 if any(SCREENS_BY_ID[item]["module"] == "producao"
+                                              for item in allowed) else 403)
+        return Response(status=204 if screen["id"] in allowed and
+                        guest_action_allowed(user, screen['id'], original_method, original)
+                        else 403)
+    if hub or screen["module"] != "planejamento":
+        return Response(status=401)
+    screen_cookie = (request.cookies.get(PCP_SCREEN_COOKIE_NAME)
+                     if original_method == 'GET' and
+                     urllib.parse.urlsplit(original).path.startswith('/unificado/pcp/') and
+                     '/api/' not in urllib.parse.urlsplit(original).path else None)
+    planning = authenticated_planning_bearer(screen_cookie)
+    if not planning:
+        return Response(status=401)
+    link = link_for(pcp_id=planning["id"])
+    if link:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute("""SELECT id,nome,perfil,ativo FROM public.usuarios
+                           WHERE id=%s AND deleted_at IS NULL""", (link["mapa_login"],))
+            linked = cur.fetchone()
+        if not linked or not linked["ativo"]:
+            return Response(status=403)
+        allowed, _ = screen_access_state(linked)
+        return Response(status=204 if screen["id"] in allowed and
+                        guest_action_allowed(linked, screen['id'], original_method, original)
+                        else 403)
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT screen_id,allowed FROM unificado_auth.user_screen_permissions
+                       WHERE user_id=%s""", (f'pcp:{planning["id"]}',))
+        overrides = {row['screen_id']: row['allowed'] for row in cur.fetchall()}
+    permitted = role_allows({"id":"", "nome":"", "perfil":""},
+                            screen, str(planning["nivel_acesso"]), LAB_ALLOWED_USERS)
+    return Response(status=204 if permitted and overrides.get(screen['id'], True) else 403)
+
+
+def planning_admin():
+    user = authenticated_planning_bearer()
+    return user if user and str(user['nivel_acesso']) == 'ADMIN' else None
+
+
+@app.get('/unified/planning-screen-access/me')
+def planning_screen_access_me():
+    planning = authenticated_planning_bearer()
+    if not planning:
+        return jsonify(ok=False), 401
+    link = link_for(pcp_id=planning['id'])
+    if link:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute('SELECT id,nome,perfil,ativo FROM public.usuarios WHERE id=%s AND deleted_at IS NULL',
+                        (link['mapa_login'],))
+            mapa = cur.fetchone()
+        if not mapa or not mapa['ativo']:
+            return jsonify(ok=False), 403
+        allowed, _ = screen_access_state(mapa)
+    else:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute('SELECT screen_id,allowed FROM unificado_auth.user_screen_permissions WHERE user_id=%s',
+                        (f'pcp:{planning["id"]}',))
+            overrides = {row['screen_id']: row['allowed'] for row in cur.fetchall()}
+        allowed = allowed_screens({'id':'','nome':'','perfil':''}, str(planning['nivel_acesso']),
+                                  overrides, LAB_ALLOWED_USERS)
+    preview_modules = str(planning.get('username') or '').startswith('e2e-')
+    return jsonify(ok=True, screens=allowed, preview_modules=preview_modules), 200, {'Cache-Control':'no-store'}
+
+
+@app.get('/unified/planning-users')
+def planning_users_list():
+    if not planning_admin():
+        return jsonify(ok=False), 403
+    with pcp_connect() as conn, conn.cursor() as cur:
+        cur.execute('SELECT id,username,nome,nivel_acesso,ativo,setor_id FROM public.usuarios WHERE deleted_at IS NULL ORDER BY nome,id')
+        users = cur.fetchall()
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute('SELECT pcp_user_id FROM unificado_auth.identity_links')
+        linked = {row['pcp_user_id'] for row in cur.fetchall()}
+    return jsonify(ok=True, users=[{'id':row['id'],'login':row['username'],'name':row['nome'],
+                                    'role':str(row['nivel_acesso']),'active':row['ativo'],
+                                    'setor_id':row['setor_id'],
+                                    'linked':row['id'] in linked} for row in users]), 200, {'Cache-Control':'no-store'}
+
+
+@app.get('/unified/planning-users/<int:user_id>/screens')
+def planning_user_screens(user_id):
+    if not planning_admin():
+        return jsonify(ok=False), 403
+    with pcp_connect() as conn, conn.cursor() as cur:
+        cur.execute('SELECT id,nivel_acesso,deleted_at FROM public.usuarios WHERE id=%s',(user_id,))
+        target = cur.fetchone()
+    if not target or target['deleted_at'] is not None:
+        return jsonify(ok=False), 404
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute('SELECT screen_id,allowed FROM unificado_auth.user_screen_permissions WHERE user_id=%s',
+                    (f'pcp:{user_id}',))
+        overrides = {row['screen_id']:row['allowed'] for row in cur.fetchall()}
+    screens = [{**row,'profile_allowed':role_allows({'id':'','nome':'','perfil':''}, row,
+                                                     str(target['nivel_acesso']), LAB_ALLOWED_USERS),
+                'checked':role_allows({'id':'','nome':'','perfil':''}, row,
+                                      str(target['nivel_acesso']), LAB_ALLOWED_USERS)
+                          and overrides.get(row['id'],True)} for row in SCREEN_CATALOG]
+    return jsonify(ok=True,screens=screens), 200, {'Cache-Control':'no-store'}
+
+
+@app.get('/unified/users/pcp/<int:user_id>/screens')
+def master_planning_user_screens(user_id):
+    actor = unified_user_admin()
+    if not actor or actor['id'] not in MASTER_USER_IDS:
+        return jsonify(ok=False), 403
+    with pcp_connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,nivel_acesso,deleted_at FROM public.usuarios
+                       WHERE id=%s""", (user_id,))
+        target = cur.fetchone()
+    if not target or target['deleted_at'] is not None or link_for(pcp_id=user_id):
+        return jsonify(ok=False, error='Conta do PCP não encontrada ou já vinculada.'), 404
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT screen_id,allowed FROM unificado_auth.user_screen_permissions
+                       WHERE user_id=%s""", (f'pcp:{user_id}',))
+        overrides = {row['screen_id']: row['allowed'] for row in cur.fetchall()}
+    catalog = [{**screen, 'profile_allowed': True,
+                'mapa_roles': [role for role in ('GERENCIA','GESTOR','MONTADOR','APONTADOR')
+                               if role_allows({'id':'','nome':'','perfil':role}, screen,
+                                              None, LAB_ALLOWED_USERS)]
+                               if screen['module'] == 'producao' else [],
+                'checked': (overrides.get(screen['id'], role_allows(
+                    {'id':'','nome':'','perfil':''}, screen,
+                    str(target['nivel_acesso']), LAB_ALLOWED_USERS))
+                    if screen['module'] == 'planejamento' else False)}
+               for screen in SCREEN_CATALOG]
+    return jsonify(ok=True, screens=catalog), 200, {'Cache-Control':'no-store'}
+
+
+@app.put('/unified/users/pcp/<int:user_id>/screens')
+def master_planning_user_screens_update(user_id):
+    actor = unified_user_admin()
+    if not actor or actor['id'] not in MASTER_USER_IDS:
+        return jsonify(ok=False), 403
+    if request.headers.get('Origin') != 'https://concrefer.concretrack.com.br':
+        return jsonify(ok=False), 403
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or set(data) != {'screens','name','map_role','map_sector'}:
+        return jsonify(ok=False, error='Dados inválidos.'), 400
+    selected = data['screens']
+    name = data['name']
+    map_role = data['map_role']
+    map_sector = data['map_sector']
+    if (not isinstance(selected, list) or any(item not in SCREENS_BY_ID for item in selected)
+            or not isinstance(name, str) or not name.strip() or len(name) > 120
+            or map_role not in {'GERENCIA','GESTOR','MONTADOR','APONTADOR'}
+            or map_sector not in {'Todos', *SECTORS}):
+        return jsonify(ok=False, error='Dados inválidos.'), 400
+    selected = set(selected)
+    shadow_id = f'unif-pcp-{user_id}'
+    shadow = {'id': shadow_id, 'nome': name.strip(), 'perfil': map_role}
+    if any(SCREENS_BY_ID[item]['module'] == 'producao' and not role_allows(
+            shadow, SCREENS_BY_ID[item], None, LAB_ALLOWED_USERS) for item in selected):
+        return jsonify(ok=False, error='O perfil da Produção não permite uma das telas.'), 403
+    non_planning = any(SCREENS_BY_ID[item]['module'] != 'planejamento' for item in selected)
+    requested_role = required_planning_role(selected) or 'CONSULTA'
+    mapa_conn = connect()
+    pcp_conn = pcp_connect()
+    old_pcp = None
+    pcp_committed = False
+    try:
+        with pcp_conn.cursor() as planning, mapa_conn.cursor() as cur:
+            planning.execute("""SELECT id,nome,username,nivel_acesso,ativo,deleted_at,
+                              token_revoked_at FROM public.usuarios WHERE id=%s FOR UPDATE""",
+                             (user_id,))
+            old_pcp = planning.fetchone()
+            if not old_pcp or old_pcp['deleted_at'] is not None:
+                return jsonify(ok=False, error='Conta do PCP não encontrada.'), 404
+            cur.execute('SELECT 1 FROM unificado_auth.identity_links WHERE pcp_user_id=%s',
+                        (user_id,))
+            if cur.fetchone():
+                return jsonify(ok=False, error='Conta já vinculada. Atualize a lista.'), 409
+            if non_planning:
+                cur.execute('SELECT 1 FROM public.usuarios WHERE id=%s FOR UPDATE', (shadow_id,))
+                if cur.fetchone():
+                    return jsonify(ok=False, error='Identidade de acesso já existe. Atualize a lista.'), 409
+                cur.execute("""INSERT INTO public.usuarios
+                               (id,nome,perfil,senha_hash,ativo,setor,primeiro_acesso)
+                               VALUES (%s,%s,%s,%s,%s,%s,false)""",
+                            (shadow_id, name.strip(), map_role,
+                             hasher.hash(secrets.token_urlsafe(32)), old_pcp['ativo'], map_sector))
+                cur.execute("""INSERT INTO unificado_auth.identity_links
+                               (pcp_user_id,mapa_login,requires_reset)
+                               VALUES (%s,%s,false)""", (user_id, shadow_id))
+            target_key = shadow_id if non_planning else f'pcp:{user_id}'
+            for screen in SCREEN_CATALOG:
+                if not non_planning and screen['module'] != 'planejamento':
+                    continue
+                cur.execute("""INSERT INTO unificado_auth.user_screen_permissions
+                               (user_id,screen_id,allowed,updated_by) VALUES (%s,%s,%s,%s)
+                               ON CONFLICT (user_id,screen_id) DO UPDATE SET
+                               allowed=excluded.allowed,updated_by=excluded.updated_by,
+                               updated_at=now()""",
+                            (target_key, screen['id'], screen['id'] in selected, actor['id']))
+            # Administrative linkage must not change PCP identity, password,
+            # access level, grants or login tokens.
+        pcp_conn.commit()
+        pcp_committed = True
+        try:
+            mapa_conn.commit()
+        except psycopg.Error:
+            raise
+        return jsonify(ok=True, linked=non_planning), 200, {'Cache-Control':'no-store'}
+    except (psycopg.Error, KeyError, ValueError):
+        app.logger.exception('Falha ao salvar alçadas de conta PCP %s', user_id)
+        mapa_conn.rollback()
+        if not pcp_committed:
+            pcp_conn.rollback()
+        return jsonify(ok=False, error='Não foi possível salvar as alçadas da conta PCP.'), 503
+    finally:
+        pcp_conn.close()
+        mapa_conn.close()
+
+
+@app.put('/unified/planning-users/<int:user_id>/screens')
+def planning_user_screens_update(user_id):
+    actor=planning_admin()
+    if not actor or request.headers.get('Origin') != 'https://concrefer.concretrack.com.br':
+        return jsonify(ok=False), 403
+    data=request.get_json(silent=True)
+    selected=data.get('screens') if isinstance(data,dict) else None
+    if not isinstance(selected,list) or any(item not in SCREENS_BY_ID for item in selected):
+        return jsonify(ok=False), 400
+    with pcp_connect() as conn,conn.cursor() as cur:
+        cur.execute('SELECT id,nivel_acesso,deleted_at FROM public.usuarios WHERE id=%s',(user_id,))
+        target=cur.fetchone()
+    if not target or target['deleted_at'] is not None or link_for(pcp_id=user_id):
+        return jsonify(ok=False), 409
+    if any(not role_allows({'id':'','nome':'','perfil':''}, SCREENS_BY_ID[item],
+                           str(target['nivel_acesso']), LAB_ALLOWED_USERS) for item in selected):
+        return jsonify(ok=False), 403
+    selected=set(selected)
+    with connect() as conn,conn.cursor() as cur:
+        for screen in SCREEN_CATALOG:
+            if screen['module'] != 'planejamento':
+                continue
+            cur.execute('''INSERT INTO unificado_auth.user_screen_permissions
+                           (user_id,screen_id,allowed,updated_by) VALUES (%s,%s,%s,%s)
+                           ON CONFLICT (user_id,screen_id) DO UPDATE SET
+                           allowed=excluded.allowed,updated_by=excluded.updated_by,updated_at=now()''',
+                        (f'pcp:{user_id}',screen['id'],screen['id'] in selected,f'pcp:{actor["id"]}'))
+    return jsonify(ok=True), 200, {'Cache-Control':'no-store'}
+
+
+@app.post('/unified/planning-users/<int:user_id>/action')
+def planning_user_action(user_id):
+    actor=planning_admin()
+    if not actor or request.headers.get('Origin') != 'https://concrefer.concretrack.com.br':
+        return jsonify(ok=False), 403
+    data=request.get_json(silent=True) or {}
+    action=data.get('action')
+    if action not in {'deactivate','reactivate','delete'} or user_id == actor['id']:
+        return jsonify(ok=False), 409
+    if link_for(pcp_id=user_id):
+        return jsonify(ok=False,error='Gerencie esta conta vinculada na Produção'), 409
+    with pcp_connect() as conn,conn.cursor() as cur:
+        cur.execute('''SELECT id,username,nome,nivel_acesso,ativo,deleted_at FROM public.usuarios
+                       WHERE id=%s FOR UPDATE''',(user_id,))
+        target=cur.fetchone()
+        if not target or target['deleted_at'] is not None:
+            return jsonify(ok=False), 404
+        if action == 'delete' and data.get('confirm_login') != target['username']:
+            return jsonify(ok=False,error='Digite o login para confirmar'), 400
+        if action in {'delete','deactivate'} and target['nivel_acesso'] == 'ADMIN' and target['ativo']:
+            cur.execute("SELECT count(*) AS total FROM public.usuarios WHERE nivel_acesso='ADMIN' AND ativo AND deleted_at IS NULL")
+            if cur.fetchone()['total'] <= 1:
+                return jsonify(ok=False,error='Não é possível remover o último admin'), 409
+        if action == 'deactivate' and not target['ativo'] or action == 'reactivate' and target['ativo']:
+            return jsonify(ok=False,error='Conta já está neste estado'), 409
+        cur.execute('''UPDATE public.usuarios SET ativo=%s,
+                       token_revoked_at=CASE WHEN %s THEN now() ELSE token_revoked_at END,
+                       deleted_at=CASE WHEN %s THEN now() ELSE deleted_at END
+                       WHERE id=%s''', (action=='reactivate',action!='reactivate',action=='delete',user_id))
+    with connect() as conn,conn.cursor() as cur:
+        cur.execute('''INSERT INTO unificado_auth.user_actions(actor_id,target_id,target_name,action)
+                       VALUES (%s,%s,%s,%s)''',(f'pcp:{actor["id"]}',f'pcp:{user_id}',target['nome'],action))
+    return jsonify(ok=True), 200, {'Cache-Control':'no-store'}
+
+
+@app.get("/unified/screen-access/bootstrap.js")
+def screen_access_bootstrap():
+    user = authenticated_user()
+    allowed, _ = screen_access_state(user) if user else (None, None)
+    modes = [row["screen"] for row in SCREEN_CATALOG if allowed is not None
+             and row["id"] in allowed and row["screen"]]
+    path_screens = {row["path"]: row["id"] for row in SCREEN_CATALOG if row["module"] == "planejamento"}
+    script = ("window.__unificadoAllowedScreens=" + json.dumps(allowed)
+              + ";window.__unificadoAllowedModes=" + json.dumps(modes)
+              + ";window.__unificadoPathScreens=" + json.dumps(path_screens) + ";")
+    return Response(script, content_type="application/javascript; charset=utf-8",
+                    headers={"Cache-Control":"no-store"})
+
+
+@app.get("/unified/screen-access/me")
+def my_screen_access():
+    user = authenticated_user()
+    if not user:
+        return jsonify(ok=False), 401
+    allowed, _ = screen_access_state(user)
+    preview_modules = (user['id'] in MASTER_USER_IDS
+                       or user['id'].startswith(('e2e-', 'unif-pcp-'))
+                       or user['id'] == 'ricardo.teste')
+    response = jsonify(ok=True, screens=allowed, preview_modules=preview_modules)
+    scope, age = session_scope_and_age(user)
+    token = signer().dumps({"scope": "legacy_session" if user["primeiro_acesso"] else scope, "id": user["id"],
+                            "updated_at": user["updated_at"].isoformat()})
+    response.set_cookie(COOKIE_NAME, token, max_age=age,
+                        httponly=True, secure=True, samesite="Lax", path=COOKIE_PATH)
+    response.delete_cookie(COOKIE_NAME, path=LEGACY_COOKIE_PATH)
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+def required_planning_role(selected):
+    planning = [SCREENS_BY_ID[item] for item in selected
+                if SCREENS_BY_ID[item]['module'] == 'planejamento']
+    if not planning:
+        return None
+    requirements = {row['require'] for row in planning}
+    if 'ADMIN' in requirements:
+        return 'ADMIN'
+    if 'PCP' in requirements:
+        return 'PCP'
+    if 'PRODUCAO' in requirements:
+        return 'PRODUCAO'
+    return 'CONSULTA'
+
+
+@app.post('/unified/guests')
+def create_unified_guest():
+    actor = unified_user_admin()
+    if not actor or actor['id'] not in MASTER_USER_IDS:
+        return jsonify(ok=False), 403
+    if request.headers.get('Origin') != 'https://concrefer.concretrack.com.br':
+        return jsonify(ok=False), 403
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or set(data) != {'login', 'name', 'password', 'sector'}:
+        return jsonify(ok=False, error='Dados inválidos.'), 400
+    login, name, password, sector = (data['login'], data['name'],
+                                     data['password'], data['sector'])
+    if (not isinstance(login, str) or not re.fullmatch(r'[a-z][a-z0-9_-]{2,39}', login)
+            or not isinstance(name, str) or not name.strip() or len(name) > 120
+            or not isinstance(password, str) or not 6 <= len(password) <= 128
+            or sector not in {'Todos', *SECTORS}):
+        return jsonify(ok=False, error='Confira o login, o nome, o setor e a senha temporária.'), 400
+    try:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute('SELECT 1 FROM public.usuarios WHERE lower(id)=lower(%s)', (login,))
+            if cur.fetchone():
+                return jsonify(ok=False, error='Este login já está cadastrado.'), 409
+            cur.execute('''INSERT INTO public.usuarios
+                           (id,nome,perfil,senha_hash,ativo,setor,primeiro_acesso)
+                           VALUES (%s,%s,'CONVIDADO',%s,true,%s,true)''',
+                        (login, name.strip(), hasher.hash(password), sector))
+    except psycopg.errors.UniqueViolation:
+        return jsonify(ok=False, error='Este login já está cadastrado.'), 409
+    except psycopg.Error:
+        app.logger.exception('Falha ao criar convidado')
+        return jsonify(ok=False, error='Não foi possível criar o convidado.'), 503
+    return jsonify(ok=True, user={'id': login, 'login': login, 'name': name.strip(),
+                                  'role': 'CONVIDADO', 'source': 'mapa', 'setor': sector,
+                                  'guest': True, 'active': True}), 201, {'Cache-Control': 'no-store'}
+
+
+def save_unified_access(user_id, selected, actor, *, name=None, role=None, sector=None,
+                        guest_actions=None):
+    """Persist explicit grants; provision a personal PCP account on a master grant."""
+    requested_role = required_planning_role(selected)
+    mapa_conn = connect()
+    pcp_conn = None
+    created_pcp_id = None
+    changed_pcp = None
+    pcp_committed = False
+    try:
+        with mapa_conn.cursor() as cur:
+            cur.execute("""SELECT id,nome,perfil,ativo FROM public.usuarios
+                           WHERE id=%s AND deleted_at IS NULL FOR UPDATE""", (user_id,))
+            target = cur.fetchone()
+            if not target:
+                return 404, 'Conta não encontrada.'
+            if target['perfil'] == 'CONVIDADO' and (actor['id'] not in MASTER_USER_IDS
+                                                   or guest_actions is None):
+                return 403, 'Somente Ricardo pode definir as ações do convidado.'
+            cur.execute("""SELECT pcp_user_id FROM unificado_auth.identity_links
+                           WHERE mapa_login=%s ORDER BY id ASC LIMIT 1""", (user_id,))
+            link = cur.fetchone()
+            master_grant = actor['id'] in MASTER_USER_IDS
+            if requested_role and not link and not master_grant:
+                return 403, 'Somente Ricardo pode criar acesso ao Planejamento.'
+            if master_grant and (requested_role or link):
+                pcp_conn = pcp_connect()
+                with pcp_conn.cursor() as planning:
+                    if link:
+                        planning.execute("""SELECT id,username,nivel_acesso,ativo,deleted_at,token_revoked_at
+                                           FROM public.usuarios WHERE id=%s FOR UPDATE""",
+                                         (link['pcp_user_id'],))
+                        old = planning.fetchone()
+                        if not old or old['deleted_at'] is not None:
+                            if requested_role:
+                                return 409, 'A conta vinculada no PCP novo não está disponível.'
+                        else:
+                            pcp_origin = user_id.startswith('unif-pcp-')
+                            desired_active = bool((requested_role or pcp_origin and selected) and target['ativo'])
+                            desired_role = requested_role or ('CONSULTA' if pcp_origin else str(old['nivel_acesso']))
+                            if old['ativo'] != desired_active or str(old['nivel_acesso']) != desired_role:
+                                changed_pcp = old
+                                planning.execute("""UPDATE public.usuarios SET ativo=%s,
+                                                nivel_acesso=%s::nivelacesso,token_revoked_at=now()
+                                                WHERE id=%s""",
+                                                 (desired_active, desired_role, old['id']))
+                    elif requested_role:
+                        shadow_login = 'unif-' + hashlib.sha256(user_id.encode()).hexdigest()[:24]
+                        planning.execute("""INSERT INTO public.usuarios
+                            (nome,username,email,senha_hash,nivel_acesso,ativo,trocar_senha_primeiro_acesso)
+                            VALUES (%s,%s,%s,%s,%s::nivelacesso,%s,false) RETURNING id""",
+                            ((name or target['nome'])[:120], shadow_login,
+                             shadow_login + '@local.invalid',
+                             PCP_HASHER.hash(secrets.token_urlsafe(32)),
+                             requested_role, bool(target['ativo'])))
+                        created_pcp_id = planning.fetchone()['id']
+                        cur.execute("""INSERT INTO unificado_auth.identity_links
+                                       (pcp_user_id,mapa_login,requires_reset)
+                                       VALUES (%s,%s,false)""", (created_pcp_id, user_id))
+            if name is not None:
+                cur.execute("""UPDATE public.usuarios SET nome=%s,perfil=%s,setor=%s,
+                               updated_at=now() WHERE id=%s""",
+                            (name, role, sector, user_id))
+            for screen in SCREEN_CATALOG:
+                cur.execute("""INSERT INTO unificado_auth.user_screen_permissions
+                               (user_id,screen_id,allowed,updated_by) VALUES (%s,%s,%s,%s)
+                               ON CONFLICT (user_id,screen_id) DO UPDATE SET
+                               allowed=excluded.allowed,updated_by=excluded.updated_by,
+                               updated_at=now()""",
+                            (user_id, screen['id'], screen['id'] in selected, actor['id']))
+            if target['perfil'] == 'CONVIDADO':
+                cur.execute('DELETE FROM unificado_auth.guest_action_permissions WHERE user_id=%s',
+                            (user_id,))
+                for screen_id, actions in guest_actions.items():
+                    for action in actions:
+                        cur.execute('''INSERT INTO unificado_auth.guest_action_permissions
+                                       (user_id,screen_id,action,updated_by)
+                                       VALUES (%s,%s,%s,%s)''',
+                                    (user_id, screen_id, action, actor['id']))
+        if pcp_conn:
+            pcp_conn.commit()
+            pcp_committed = True
+        try:
+            mapa_conn.commit()
+        except psycopg.Error:
+            if pcp_committed:
+                with pcp_connect() as undo, undo.cursor() as cur:
+                    if created_pcp_id:
+                        cur.execute('DELETE FROM public.usuarios WHERE id=%s', (created_pcp_id,))
+                    elif changed_pcp:
+                        cur.execute("""UPDATE public.usuarios SET nivel_acesso=%s::nivelacesso,ativo=%s,
+                                       token_revoked_at=%s WHERE id=%s""",
+                                    (str(changed_pcp['nivel_acesso']), changed_pcp['ativo'],
+                                     changed_pcp['token_revoked_at'], changed_pcp['id']))
+            raise
+        return 200, None
+    except (psycopg.Error, KeyError, ValueError):
+        app.logger.exception('Falha ao salvar alçadas unificadas de %s', user_id)
+        mapa_conn.rollback()
+        if pcp_conn and not pcp_committed:
+            pcp_conn.rollback()
+        return 503, 'Não foi possível salvar as alçadas. Nenhuma mudança foi confirmada.'
+    finally:
+        if pcp_conn:
+            pcp_conn.close()
+        mapa_conn.close()
+
+
+@app.get("/unified/users/<user_id>/screens")
+def user_screen_access(user_id):
+    actor = unified_user_admin()
+    if not actor:
+        return jsonify(ok=False), 403
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,nome,perfil,ativo FROM public.usuarios
+                       WHERE id=%s AND deleted_at IS NULL""", (user_id,))
+        user = cur.fetchone()
+    if not user:
+        return jsonify(ok=False), 404
+    if user['perfil'] == 'CONVIDADO' and actor['id'] not in MASTER_USER_IDS:
+        return jsonify(ok=False), 403
+    guest_actions = {}
+    if user['perfil'] == 'CONVIDADO':
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute('''SELECT screen_id,action FROM unificado_auth.guest_action_permissions
+                           WHERE user_id=%s''', (user_id,))
+            for grant in cur.fetchall():
+                guest_actions.setdefault(grant['screen_id'], []).append(grant['action'])
+    allowed, planning_role = screen_access_state(user)
+    editable_lab_users = LAB_ALLOWED_USERS | {user['id']}
+    catalog = [{**screen, "profile_allowed": (
+                    (user['perfil'] != 'CONVIDADO' or
+                     screen['id'] not in GUEST_FORBIDDEN_SCREENS) and
+                    (actor['id'] in MASTER_USER_IDS and
+                     (screen['module'] == 'planejamento' or user['perfil'] == 'CONVIDADO')
+                     or role_allows(user, screen, planning_role, editable_lab_users))),
+                "mapa_roles": [role for role in ("GERENCIA", "GESTOR", "MONTADOR", "APONTADOR")
+                               if role_allows({**user, "perfil": role}, screen, planning_role, LAB_ALLOWED_USERS)]
+                               if screen["module"] == "producao" else [],
+                "checked": screen["id"] in allowed,
+                "actions": guest_actions.get(screen['id'], []) if user['perfil'] == 'CONVIDADO' else None
+                } for screen in SCREEN_CATALOG]
+    return jsonify(ok=True, screens=catalog), 200, {"Cache-Control": "no-store"}
+
+
+@app.get("/unified/users/<user_id>/quality-actions")
+def user_quality_actions(user_id):
+    actor = unified_user_admin()
+    if not actor:
+        return jsonify(ok=False), 403
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,perfil FROM public.usuarios
+                       WHERE id=%s AND deleted_at IS NULL""", (user_id,))
+        target = cur.fetchone()
+    if not target:
+        return jsonify(ok=False), 404
+    if target["perfil"] == "CONVIDADO" and actor["id"] not in MASTER_USER_IDS:
+        return jsonify(ok=False), 403
+    return jsonify(ok=True, actions=QUALITY_ACTION_CATALOG,
+                   granted=quality_actions(user_id), areas=QUALITY_AREA_CATALOG,
+                   granted_areas=quality_areas(user_id)), 200, {"Cache-Control": "no-store"}
+
+
+@app.get("/unified/users/<user_id>/crono-actions")
+def user_crono_actions(user_id):
+    actor = unified_user_admin()
+    if not actor:
+        return jsonify(ok=False), 403
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,perfil FROM public.usuarios
+                       WHERE id=%s AND deleted_at IS NULL""", (user_id,))
+        target = cur.fetchone()
+    if not target:
+        return jsonify(ok=False), 404
+    if target["perfil"] == "CONVIDADO" and actor["id"] not in MASTER_USER_IDS:
+        return jsonify(ok=False), 403
+    return jsonify(ok=True, actions=CRONO_ACTION_CATALOG,
+                   granted=crono_actions(user_id)), 200, {"Cache-Control": "no-store"}
+
+
+@app.put("/unified/users/<user_id>/crono-actions")
+def update_user_crono_actions(user_id):
+    actor = unified_user_admin()
+    if not actor or request.headers.get("Origin") not in {
+            "https://concrefer.concretrack.com.br",
+            "https://concrefer.concretrack.com.br:18446"}:
+        return jsonify(ok=False), 403
+    if user_id == MASTER_USER_ID:
+        return jsonify(ok=False, error="A conta master tem acesso implícito."), 409
+    data = request.get_json(silent=True)
+    selected = data.get("actions") if isinstance(data, dict) and set(data) == {"actions"} else None
+    if (not isinstance(selected, list) or len(selected) != len(set(selected))
+            or any(not isinstance(item, str) or item not in CRONO_ACTION_IDS for item in selected)):
+        return jsonify(ok=False, error="Ações inválidas."), 400
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,perfil FROM public.usuarios
+                       WHERE id=%s AND deleted_at IS NULL FOR UPDATE""", (user_id,))
+        target = cur.fetchone()
+        if not target:
+            return jsonify(ok=False), 404
+        if target["perfil"] == "CONVIDADO" and actor["id"] not in MASTER_USER_IDS:
+            return jsonify(ok=False), 403
+        cur.execute("""DELETE FROM unificado_auth.user_action_permissions
+                       WHERE user_id=%s AND action_id LIKE 'laboratorio.cronoanalise.%%'
+                         AND action_id <> ALL(%s::text[])""", (user_id, selected))
+        for action_id in selected:
+            cur.execute("""INSERT INTO unificado_auth.user_action_permissions
+                           (user_id,action_id,granted_by) VALUES (%s,%s,%s)
+                           ON CONFLICT (user_id,action_id) DO NOTHING""",
+                        (user_id, action_id, actor["id"]))
+    return jsonify(ok=True), 200, {"Cache-Control": "no-store"}
+
+
+@app.get("/unified/quality-actions")
+def quality_action_catalog():
+    if not unified_user_admin():
+        return jsonify(ok=False), 403
+    return jsonify(ok=True, actions=QUALITY_ACTION_CATALOG,
+                   areas=QUALITY_AREA_CATALOG), 200, {"Cache-Control": "no-store"}
+
+
+@app.get("/unified/quality-users")
+def quality_user_directory():
+    user = authenticated_user()
+    if not user:
+        return jsonify(ok=False), 401
+    screens, _ = screen_access_state(user)
+    if not any(item.startswith("qualidade") for item in screens):
+        return jsonify(ok=False), 403
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,nome FROM public.usuarios
+                       WHERE ativo AND NOT primeiro_acesso AND deleted_at IS NULL
+                       ORDER BY nome,id""")
+        users = [{"id": row["id"], "name": row["nome"]} for row in cur.fetchall()]
+    return jsonify(ok=True, users=users), 200, {"Cache-Control": "no-store"}
+
+
+@app.put("/unified/users/<user_id>/quality-actions")
+def update_user_quality_actions(user_id):
+    actor = unified_user_admin()
+    if not actor or request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
+        return jsonify(ok=False), 403
+    if user_id in MASTER_USER_IDS:
+        return jsonify(ok=False, error="A conta master tem acesso implícito."), 409
+    data = request.get_json(silent=True)
+    selected = data.get("actions") if isinstance(data, dict) and set(data) == {"actions", "areas"} else None
+    areas = data.get("areas") if isinstance(data, dict) else None
+    if (not isinstance(selected, list) or len(selected) != len(set(selected))
+            or any(not isinstance(item, str) or item not in QUALITY_ACTION_IDS for item in selected)
+            or not isinstance(areas, list) or len(areas) != len(set(areas))
+            or any(not isinstance(item, str) or item not in QUALITY_AREA_CODES for item in areas)):
+        return jsonify(ok=False, error="Ações inválidas."), 400
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,perfil FROM public.usuarios
+                       WHERE id=%s AND deleted_at IS NULL FOR UPDATE""", (user_id,))
+        target = cur.fetchone()
+        if not target:
+            return jsonify(ok=False), 404
+        if target["perfil"] == "CONVIDADO" and actor["id"] not in MASTER_USER_IDS:
+            return jsonify(ok=False), 403
+        cur.execute("""DELETE FROM unificado_auth.user_action_permissions
+                       WHERE user_id=%s AND action_id LIKE 'qualidade.%%'
+                         AND action_id <> ALL(%s::text[])""", (user_id, selected))
+        for action_id in selected:
+            cur.execute("""INSERT INTO unificado_auth.user_action_permissions
+                           (user_id,action_id,granted_by) VALUES (%s,%s,%s)
+                           ON CONFLICT (user_id,action_id) DO NOTHING""",
+                        (user_id, action_id, actor["id"]))
+        cur.execute("""DELETE FROM unificado_auth.user_quality_areas
+                       WHERE user_id=%s AND area_codigo <> ALL(%s::text[])""", (user_id, areas))
+        for area_code in areas:
+            cur.execute("""INSERT INTO unificado_auth.user_quality_areas
+                           (user_id,area_codigo,granted_by) VALUES (%s,%s,%s)
+                           ON CONFLICT (user_id,area_codigo) DO NOTHING""",
+                        (user_id, area_code, actor["id"]))
+    return jsonify(ok=True), 200, {"Cache-Control": "no-store"}
+
+
+@app.put("/unified/users/<user_id>/screens")
+def update_user_screen_access(user_id):
+    actor = unified_user_admin()
+    if not actor:
+        return jsonify(ok=False), 403
+    if user_id in MASTER_USER_IDS:
+        return jsonify(ok=False, error='A conta do administrador master não pode ser alterada.'), 409
+    if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
+        return jsonify(ok=False), 403
+    data = request.get_json(silent=True)
+    selected = data.get("screens") if isinstance(data, dict) else None
+    if not isinstance(selected, list) or any(not isinstance(item, str) or item not in SCREENS_BY_ID for item in selected):
+        return jsonify(ok=False, error="Telas inválidas"), 400
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,nome,perfil,ativo FROM public.usuarios
+                       WHERE id=%s AND deleted_at IS NULL""", (user_id,))
+        user = cur.fetchone()
+        if not user:
+            return jsonify(ok=False), 404
+    if user['perfil'] == 'CONVIDADO':
+        return jsonify(ok=False, error='Use o editor de ações do convidado.'), 400
+    _, planning_role = screen_access_state(user)
+    if any(SCREENS_BY_ID[item]['module'] != 'planejamento'
+           and not role_allows(user, SCREENS_BY_ID[item], planning_role, LAB_ALLOWED_USERS | {user_id})
+           or SCREENS_BY_ID[item]['module'] == 'planejamento'
+           and actor['id'] not in MASTER_USER_IDS
+           and not role_allows(user, SCREENS_BY_ID[item], planning_role, LAB_ALLOWED_USERS)
+           for item in selected):
+        return jsonify(ok=False, error="O perfil não permite uma das telas"), 403
+    status, error = save_unified_access(user_id, set(selected), actor)
+    if error:
+        return jsonify(ok=False, error=error), status
+    return jsonify(ok=True), 200, {"Cache-Control": "no-store"}
+
+
+@app.patch("/unified/users/<user_id>")
+def update_unified_user(user_id):
+    actor = unified_user_admin()
+    if not actor or request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
+        return jsonify(ok=False), 403
+    if user_id in MASTER_USER_IDS:
+        return jsonify(ok=False, error='A conta do administrador master não pode ser alterada.'), 409
+    data = request.get_json(silent=True)
+    base_fields = {"name", "role", "sector", "screens"}
+    if not isinstance(data, dict) or set(data) not in (base_fields, base_fields | {'actions'}):
+        return jsonify(ok=False, error="Dados inválidos"), 400
+    name, role, sector, selected = data["name"], data["role"], data["sector"], data["screens"]
+    if (not isinstance(name, str) or not name.strip() or len(name) > 200
+            or role not in {"GERENCIA", "GESTOR", "MONTADOR", "APONTADOR", "CONVIDADO"}
+            or not isinstance(sector, str) or sector not in {"Todos", *SECTORS}
+            or not isinstance(selected, list)
+            or any(not isinstance(item, str) or item not in SCREENS_BY_ID for item in selected)):
+        return jsonify(ok=False, error="Dados inválidos"), 400
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,nome,perfil,ativo FROM public.usuarios
+                       WHERE id=%s AND deleted_at IS NULL""", (user_id,))
+        user = cur.fetchone()
+    if not user:
+        return jsonify(ok=False), 404
+    if user['perfil'] == 'CONVIDADO' and actor['id'] not in MASTER_USER_IDS:
+        return jsonify(ok=False), 403
+    if (user['perfil'] == 'CONVIDADO') != (role == 'CONVIDADO'):
+        return jsonify(ok=False, error='O tipo Convidado não pode ser alterado.'), 400
+    if user['perfil'] == 'CONVIDADO':
+        actions = data.get('actions')
+        if (set(data) != base_fields | {'actions'} or not isinstance(actions, dict)
+                or set(actions) != set(selected)
+                or any(screen_id in GUEST_FORBIDDEN_SCREENS or
+                       not isinstance(grants, list) or not grants or 'view' not in grants or
+                       len(grants) != len(set(grants)) or
+                       any(grant not in GUEST_ACTIONS for grant in grants)
+                       for screen_id, grants in actions.items())):
+            return jsonify(ok=False, error='Selecione as ações de cada tela liberada.'), 400
+        status, error = save_unified_access(user_id, set(selected), actor,
+                                            name=name.strip(), role=role, sector=sector,
+                                            guest_actions=actions)
+        if error:
+            return jsonify(ok=False, error=error), status
+        return jsonify(ok=True), 200, {"Cache-Control": "no-store"}
+    if set(data) != base_fields:
+        return jsonify(ok=False, error='Dados inválidos'), 400
+    changed = {**user, "nome": name.strip(), "perfil": role}
+    _, planning_role = screen_access_state(changed)
+    if any(SCREENS_BY_ID[item]['module'] != 'planejamento'
+           and not role_allows(changed, SCREENS_BY_ID[item], planning_role, LAB_ALLOWED_USERS | {user_id})
+           or SCREENS_BY_ID[item]['module'] == 'planejamento'
+           and actor['id'] not in MASTER_USER_IDS
+           and not role_allows(changed, SCREENS_BY_ID[item], planning_role, LAB_ALLOWED_USERS)
+           for item in selected):
+        return jsonify(ok=False, error="O perfil não permite uma das telas"), 403
+    status, error = save_unified_access(user_id, set(selected), actor,
+                                        name=name.strip(), role=role, sector=sector)
+    if error:
+        return jsonify(ok=False, error=error), status
+    return jsonify(ok=True), 200, {"Cache-Control": "no-store"}
+
+
+@app.get("/unified/users")
+def unified_users_list():
+    actor = unified_user_admin()
+    if not actor:
+        return jsonify(ok=False), 403
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT id,nome,perfil,ativo,setor,primeiro_acesso
+                       FROM public.usuarios WHERE deleted_at IS NULL ORDER BY nome,id""")
+        mapa_users = cur.fetchall()
+        cur.execute("""SELECT mapa_login,pcp_user_id FROM unificado_auth.identity_links
+                       ORDER BY id""")
+        all_links = cur.fetchall()
+        links = {}
+        for row in all_links:
+            links.setdefault(row["mapa_login"], row["pcp_user_id"])
+        linked_ids = {row["pcp_user_id"] for row in all_links}
+        cur.execute("""SELECT user_id,screen_id,allowed FROM unificado_auth.user_screen_permissions
+                       WHERE screen_id LIKE 'lab%%'""")
+        lab_permissions = {}
+        for grant in cur.fetchall():
+            lab_permissions.setdefault(grant['user_id'], {})[grant['screen_id']] = grant['allowed']
+    with pcp_connect() as conn, conn.cursor() as cur:
+        cur.execute("""SELECT u.id,u.username,u.nome,u.nivel_acesso,u.ativo,u.setor_id,
+                              s.nome AS setor_nome
+                       FROM public.usuarios u LEFT JOIN public.setores s ON s.id=u.setor_id
+                       WHERE u.deleted_at IS NULL ORDER BY u.nome,u.id""")
+        planning = {row["id"]: row for row in cur.fetchall()}
+    users = []
+    for row in mapa_users:
+        counterpart = planning.get(links.get(row["id"]))
+        item = public_user(row)
+        display_login = (counterpart['username'] if counterpart and
+                         row['id'].startswith('unif-pcp-') else row['id'])
+        item.update(source="mapa", login=display_login,
+                    guest=row['perfil'] == 'CONVIDADO',
+                    can_manage=row['perfil'] != 'CONVIDADO' or actor['id'] in MASTER_USER_IDS,
+                    pcp_id=counterpart["id"] if counterpart else None,
+                    production_role=None if row['perfil'] == 'CONVIDADO' else row["perfil"],
+                    planning_role=str(counterpart["nivel_acesso"]) if counterpart else None,
+                    laboratory_role=laboratory_role(row['id'], {
+                        screen['id'] for screen in SCREEN_CATALOG if screen['module'] == 'laboratorio'
+                        and (row['id'] in MASTER_USER_IDS or lab_permissions.get(row['id'], {}).get(
+                            screen['id'], row['id'] in LAB_ALLOWED_USERS))},
+                        row['perfil'] == 'CONVIDADO'),
+                    planning_sector=counterpart["setor_nome"] if counterpart else None,
+                    planning_active=counterpart["ativo"] if counterpart else None)
+        users.append(item)
+    for row in planning.values():
+        if row["id"] in linked_ids:
+            continue
+        users.append(dict(id=f'pcp:{row["id"]}', pcp_id=row["id"], source="pcp",
+                          can_manage=actor['id'] in MASTER_USER_IDS,
+                          login=row["username"], name=row["nome"], role=str(row["nivel_acesso"]),
+                          active=row["ativo"], setor=row["setor_nome"] or "Todos",
+                          production_role=None, planning_role=str(row["nivel_acesso"]),
+                          laboratory_role=None, planning_sector=row["setor_nome"],
+                          planning_active=row["ativo"]))
+    users.sort(key=lambda item: (item["name"].casefold(), item["login"].casefold()))
+    return jsonify(ok=True, users=users), 200, {"Cache-Control": "no-store"}
+
+
+@app.post("/unified/users/<user_id>/reset-password")
+def unified_user_reset_password(user_id):
+    actor = unified_user_admin()
+    if not actor:
+        return jsonify(ok=False), 403
+    if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
+        return jsonify(ok=False), 403
+    data = request.get_json(silent=True)
+    password = data.get('password') if isinstance(data, dict) else None
+    if not isinstance(password, str) or not 6 <= len(password) <= 128:
+        return jsonify(ok=False, error='A senha temporária deve ter de 6 a 128 caracteres.'), 400
+    if (user_id == actor['id'] or user_id in MASTER_USER_IDS):
+        return jsonify(ok=False, error='Não é possível redefinir esta conta nesta lista.'), 409
+
+    try:
+        if user_id.startswith('pcp:'):
+            if actor['id'] not in MASTER_USER_IDS or not re.fullmatch(r'pcp:[1-9][0-9]*', user_id):
+                return jsonify(ok=False), 403
+            pcp_id = int(user_id[4:])
+            if link_for(pcp_id=pcp_id):
+                return jsonify(ok=False, error='Esta conta já está vinculada. Atualize a lista.'), 409
+            with pcp_connect() as conn, conn.cursor() as cur:
+                cur.execute('''UPDATE public.usuarios SET senha_hash=%s,
+                               trocar_senha_primeiro_acesso=true,token_revoked_at=now()
+                               WHERE id=%s AND deleted_at IS NULL RETURNING id''',
+                            (PCP_HASHER.hash(password), pcp_id))
+                if not cur.fetchone():
+                    return jsonify(ok=False, error='Conta não encontrada.'), 404
+        else:
+            with connect() as conn, conn.cursor() as cur:
+                cur.execute('''SELECT id,perfil FROM public.usuarios
+                               WHERE id=%s AND deleted_at IS NULL''', (user_id,))
+                target = cur.fetchone()
+            if not target:
+                return jsonify(ok=False, error='Conta não encontrada.'), 404
+            if target['perfil'] == 'CONVIDADO' and actor['id'] not in MASTER_USER_IDS:
+                return jsonify(ok=False), 403
+            link = link_for(mapa_login=user_id)
+            if link:
+                links = component_links(link['id'])
+                if any(item['mapa_login'] in MASTER_USER_IDS for item in links):
+                    return jsonify(ok=False), 403
+                sync_component_password(link['id'], password, first_access=True)
+                with pcp_connect() as conn, conn.cursor() as cur:
+                    cur.execute('''UPDATE public.usuarios SET token_revoked_at=now()
+                                   WHERE id=ANY(%s)''',
+                                (list({item['pcp_user_id'] for item in links}),))
+            else:
+                with connect() as conn, conn.cursor() as cur:
+                    cur.execute('''UPDATE public.usuarios SET senha_hash=%s,
+                                   primeiro_acesso=true,updated_at=now()
+                                   WHERE id=%s AND deleted_at IS NULL RETURNING id''',
+                                (hasher.hash(password), user_id))
+                    if not cur.fetchone():
+                        return jsonify(ok=False, error='Conta não encontrada.'), 404
+    except (psycopg.Error, ValueError, KeyError):
+        app.logger.exception('Falha ao redefinir senha da conta %s', user_id)
+        return jsonify(ok=False, error='Não foi possível redefinir a senha.'), 503
+    return jsonify(ok=True, requires_reset=True), 200, {'Cache-Control': 'no-store'}
+
+
+@app.post("/unified/users/<user_id>/action")
+def unified_user_action(user_id):
+    actor = unified_user_admin()
+    if not actor:
+        return jsonify(ok=False), 403
+    if user_id in MASTER_USER_IDS:
+        return jsonify(ok=False, error='A conta do administrador master não pode ser desativada ou excluída.'), 409
+    if request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
+        return jsonify(ok=False), 403
+    data = request.get_json(silent=True) or {}
+    action = data.get("action")
+    if action not in {"deactivate", "reactivate", "delete"}:
+        return jsonify(ok=False, error="Ação inválida"), 400
+    if user_id == actor["id"]:
+        return jsonify(ok=False, error="Não é possível alterar a própria conta"), 409
+    if action == 'delete':
+        confirmed = data.get('confirm_login') == user_id
+        if not confirmed and user_id.startswith('unif-pcp-'):
+            link = link_for(mapa_login=user_id)
+            if link:
+                with pcp_connect() as conn, conn.cursor() as cur:
+                    cur.execute('SELECT username FROM public.usuarios WHERE id=%s',
+                                (link['pcp_user_id'],))
+                    counterpart = cur.fetchone()
+                confirmed = bool(counterpart and
+                                 data.get('confirm_login') == counterpart['username'])
+        if not confirmed:
+            return jsonify(ok=False, error='Digite o login para confirmar'), 400
+    try:
+        with connect() as map_conn, pcp_connect() as planning_conn:
+            with map_conn.cursor() as cur, planning_conn.cursor() as planning:
+                cur.execute("""SELECT id,nome,perfil,ativo,deleted_at FROM public.usuarios
+                               WHERE id=%s FOR UPDATE""", (user_id,))
+                target = cur.fetchone()
+                if not target or target["deleted_at"] is not None:
+                    return jsonify(ok=False, error="Conta não encontrada"), 404
+                if target['perfil'] == 'CONVIDADO' and actor['id'] not in MASTER_USER_IDS:
+                    return jsonify(ok=False), 403
+                if action in {"deactivate", "delete"} and target["perfil"] == "GERENCIA" and target["ativo"]:
+                    cur.execute("""SELECT count(*) AS total FROM public.usuarios
+                                   WHERE perfil='GERENCIA' AND ativo AND deleted_at IS NULL""")
+                    if cur.fetchone()["total"] <= 1:
+                        return jsonify(ok=False, error="Não é possível remover o último admin"), 409
+                if action == "deactivate" and not target["ativo"] or action == "reactivate" and target["ativo"]:
+                    return jsonify(ok=False, error="Conta já está neste estado"), 409
+                cur.execute("""SELECT pcp_user_id FROM unificado_auth.identity_links
+                               WHERE mapa_login=%s""", (user_id,))
+                link = cur.fetchone()
+                if link:
+                    planning.execute("""UPDATE public.usuarios SET ativo=%s,
+                                    token_revoked_at=CASE WHEN %s THEN now() ELSE token_revoked_at END,
+                                    deleted_at=CASE WHEN %s THEN now() ELSE deleted_at END
+                                    WHERE id=%s""",
+                                     (action == "reactivate", action != "reactivate",
+                                      action == "delete", link["pcp_user_id"]))
+                cur.execute("""UPDATE public.usuarios SET ativo=%s,updated_at=now(),
+                               deleted_at=CASE WHEN %s THEN now() ELSE deleted_at END
+                               WHERE id=%s""",
+                            (action == "reactivate", action == "delete", user_id))
+                cur.execute("""INSERT INTO unificado_auth.user_actions
+                               (actor_id,target_id,target_name,action) VALUES (%s,%s,%s,%s)""",
+                            (actor["id"], user_id, target["nome"], action))
+            planning_conn.commit()
+            map_conn.commit()
+    except (psycopg.Error, KeyError):
+        return jsonify(ok=False, error="Falha ao alterar a conta"), 503
+    return jsonify(ok=True, action=action, target=user_id), 200, {"Cache-Control": "no-store"}
+
+
 def rest_legacy_login():
     """Match the original table-filter login without exposing stored password hashes."""
     password_filter = request.args.get("senha", "")
@@ -717,13 +2254,19 @@ def rest_legacy_login():
     if not valid:
         time.sleep(0.25 + secrets.randbelow(100) / 1000)
         return jsonify([])
+    try:
+        record_mapa_login(row)
+    except psycopg.Error:
+        app.logger.exception("Falha ao registrar login da operação Mapa")
+        return jsonify(code="PGRST000", message="Não foi possível registrar o login no Mapa."), 503
     response = jsonify([rest_user_object(row)])
     token = signer().dumps({
         "scope": "legacy_session" if row["primeiro_acesso"] else "session",
         "id": row["id"], "updated_at": row["updated_at"].isoformat(),
     })
     response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS, httponly=True,
-                        secure=True, samesite="Lax", path="/unificado/mapa/api")
+                        secure=True, samesite="Lax", path=COOKIE_PATH)
+    response.delete_cookie(COOKIE_NAME, path=LEGACY_COOKIE_PATH)
     response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
                         httponly=True, secure=True, samesite="Lax",
                         path="/unificado/testar/")
@@ -799,14 +2342,7 @@ def rest_users_write(user):
                     cur.execute("SELECT id FROM public.usuarios WHERE id=%s FOR UPDATE", (user_id,))
                     existing = cur.fetchone()
                     if existing:
-                        fields = {"nome": name, "perfil": role, "ativo": active,
-                                  "setor": sector, "primeiro_acesso": first}
-                        if password is not None:
-                            fields["senha_hash"] = hasher.hash(password)
-                        assignments = sql.SQL(", ").join(
-                            sql.SQL("{}=%s").format(sql.Identifier(key)) for key in fields)
-                        cur.execute(sql.SQL("UPDATE public.usuarios SET {},updated_at=now() WHERE id=%s " + returning)
-                                    .format(assignments), (*fields.values(), user_id))
+                        return jsonify(code="PGRST409", message="Login já cadastrado"), 409
                     else:
                         if password is None:
                             return jsonify(code="PGRST102", message="Password required for new user"), 400
@@ -820,11 +2356,25 @@ def rest_users_write(user):
             if not user_filter.startswith("eq.") or not user_filter[3:]:
                 return jsonify(code="PGRST100", message="id=eq.<user> required"), 400
             user_id = user_filter[3:]
+            cur.execute('SELECT perfil FROM public.usuarios WHERE id=%s', (user_id,))
+            target_profile = cur.fetchone()
+            if target_profile and target_profile['perfil'] == 'CONVIDADO':
+                if user['id'] not in MASTER_USER_IDS:
+                    return jsonify(code='PGRST403', message='Conta Convidado protegida'), 403
+                if isinstance(body, dict) and body.get('perfil', 'CONVIDADO') != 'CONVIDADO':
+                    return jsonify(code='PGRST403', message='O tipo Convidado não pode ser alterado'), 403
+            if user_id in MASTER_USER_IDS and user['id'] != user_id:
+                return jsonify(code='PGRST403', message='A conta do administrador master é protegida'), 403
+            if (user_id in MASTER_USER_IDS and isinstance(body, dict) and
+                    (body.get('perfil', 'GERENCIA') != 'GERENCIA' or body.get('ativo') is False)):
+                return jsonify(code='PGRST409', message='O administrador master deve permanecer ativo como GERENCIA'), 409
             if request.method == "DELETE":
-                cur.execute("DELETE FROM public.usuarios WHERE id=%s " + returning, (user_id,))
+                return jsonify(code="PGRST403", message="Use a ação Excluir com confirmação"), 403
             elif request.method == "PATCH":
                 if not isinstance(body, dict):
                     return jsonify(code="PGRST102", message="Invalid JSON body"), 400
+                if "ativo" in body:
+                    return jsonify(code="PGRST403", message="Use a ação Desativar ou Reativar"), 403
                 fields = {}
                 for key in ("nome", "perfil", "ativo", "setor", "primeiro_acesso"):
                     if key in body:
@@ -863,7 +2413,8 @@ def rest_users_write(user):
                 })
                 response.set_cookie(COOKIE_NAME, token, max_age=SESSION_SECONDS,
                                     httponly=True, secure=True, samesite="Lax",
-                                    path="/unificado/mapa/api")
+                                    path=COOKIE_PATH)
+                response.delete_cookie(COOKIE_NAME, path=LEGACY_COOKIE_PATH)
                 response.set_cookie(TEST_PAGE_COOKIE_NAME, token, max_age=SESSION_SECONDS,
                                     httponly=True, secure=True, samesite="Lax",
                                     path="/unificado/testar/")
@@ -873,8 +2424,21 @@ def rest_users_write(user):
 
 
 def photo_proxy(path):
-    if not authenticated_user():
+    user = authenticated_user()
+    if not user:
         return jsonify(ok=False), 401
+    photo_screens = {'inspecao', 'montagem', 'tratativa', 'historico'}
+    # Image elements cannot attach X-Unificado-Screen. The opaque photo URL is
+    # readable with a valid session and permission for a photo-capable screen.
+    image_read = request.method == "GET" and re.fullmatch(r"fotos/[^/]+/arquivo", path)
+    if image_read:
+        allowed, _ = screen_access_state(user)
+        permitted = any(screen_id in allowed and guest_action_allowed(
+            user, screen_id, request.method, request.path) for screen_id in photo_screens)
+    else:
+        permitted = screen_data_allowed(user, photo_screens)
+    if not permitted:
+        return jsonify(error='Você não tem acesso a esta tela'), 403
     writing = request.method in {"POST", "DELETE"}
     if writing and request.headers.get("Origin") != "https://concrefer.concretrack.com.br":
         return jsonify(ok=False, error="Origem da requisição inválida."), 403
@@ -953,6 +2517,8 @@ def pcp_bearer_user_id() -> int | None:
 def unified_pcp_users(tail):
     """Only test-origin entrypoint for the unchanged PCP Users API."""
     body = request.get_json(silent=True) if request.method in {"POST", "PATCH"} else None
+    if request.method == "DELETE" or (request.method == "PATCH" and isinstance(body, dict) and "ativo" in body):
+        return jsonify(detail="Use as ações Desativar, Reativar ou Excluir do unificado"), 403
     password = None
     if isinstance(body, dict):
         password = body.get("nova_senha", body.get("senha"))
@@ -1049,7 +2615,9 @@ def dashboard_defeitos_indicadores():
     user = authenticated_user()
     if not user:
         return jsonify(detail="Entre na Produção para consultar os indicadores."), 401
-    if user["perfil"] not in {"GERENCIA", "GESTOR"}:
+    if not screen_data_allowed(user, {'dashDefeitos'}):
+        return jsonify(error='Você não tem acesso a esta tela'), 403
+    if user["perfil"] not in {"GERENCIA", "GESTOR", "CONVIDADO"}:
         return jsonify(detail="Seu perfil não permite consultar o Dashboard Defeitos."), 403
     try:
         start = date.fromisoformat(request.args.get("inicio", ""))
@@ -1079,8 +2647,14 @@ def dashboard_defeitos_indicadores():
 @app.route("/pcp/<path:resource>", methods=["GET", "POST", "DELETE"])
 def pcp_for_mapa(resource):
     """Use only the cloned PCP database for Mapa's existing cross-app calls."""
-    if not authenticated_user():
+    user = authenticated_user()
+    if not user:
         return jsonify(ok=False), 401
+    permitted_screens = {'liberacao','setor1','setor2','setor3','setor4','mandril'}
+    if resource == 'saques-mandril' and request.method == 'GET':
+        permitted_screens.add('inspecao')
+    if not screen_data_allowed(user, permitted_screens):
+        return jsonify(error='Você não tem acesso a esta tela'), 403
     allowed = {
         ("GET", "programacao"), ("GET", "saques-mandril"),
         ("POST", "saques-mandril"), ("DELETE", "saques-mandril"),
@@ -1118,8 +2692,11 @@ def pcp_for_mapa(resource):
 @app.get("/usina/massadas")
 def usina_massadas_read():
     """Preserve the current read-only Usina source through the test origin."""
-    if not authenticated_user():
+    user = authenticated_user()
+    if not user:
         return jsonify(ok=False), 401
+    if not screen_data_allowed(user, {'liberacao','setor1','setor2','setor3','setor4','mandril'}):
+        return jsonify(error='Você não tem acesso a esta tela'), 403
     url = "https://dautomacao.com/api/usina/massadas"
     if request.query_string:
         url += "?" + request.query_string.decode("ascii", errors="strict")
@@ -1139,8 +2716,11 @@ def usina_massadas_read():
 @app.get("/usina/leituras-qr.csv")
 def leituras_qr_csv_read():
     """Read the exact public CSV selected by the original Mapa, without storing it."""
-    if not authenticated_user():
+    user = authenticated_user()
+    if not user:
         return jsonify(ok=False), 401
+    if not screen_data_allowed(user, {'liberacao','setor1','setor2','setor3','setor4','mandril'}):
+        return jsonify(error='Você não tem acesso a esta tela'), 403
     url = ("https://docs.google.com/spreadsheets/d/"
            "1CdQhQ0AJ4mWJqAgnP371ez4r-P7ESX5KuTHI96nI0g8/export?format=csv&gid=0")
     try:
@@ -1159,8 +2739,15 @@ def leituras_qr_csv_read():
 @app.route("/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1", methods=["GET", "POST"])
 def produtividade_rpc_read():
     """Forward the original read-only dashboard RPC with the Mapa session."""
-    if not authenticated_user():
+    user = authenticated_user()
+    if not user:
         return jsonify(ok=False), 401
+    if request.headers.get('X-Unificado-Screen'):
+        if not screen_data_allowed(user, {'produtividade','dashMontagem','liberacao','setor1','setor2','setor3','setor4'}):
+            return jsonify(error='Você não tem acesso a esta tela'), 403
+    elif user['perfil'] == 'CONVIDADO' or not any(
+            SCREENS_BY_ID[item]['module'] == 'producao' for item in screen_access_state(user)[0]):
+        return jsonify(error='Você não tem acesso a esta tela'), 403
     url = "http://127.0.0.1:13051/rpc/rpc_dashboard_produtividade_resumo_v1"
     if request.query_string:
         url += "?" + request.query_string.decode("ascii", errors="strict")
@@ -1437,10 +3024,17 @@ def operate_montagem():
 @app.post("/logout")
 def logout():
     response = jsonify(ok=True)
-    response.delete_cookie(COOKIE_NAME, path="/unificado/mapa/api")
+    response.delete_cookie(COOKIE_NAME, path=COOKIE_PATH)
+    response.delete_cookie(COOKIE_NAME, path=LEGACY_COOKIE_PATH)
     response.delete_cookie(TEST_PAGE_COOKIE_NAME, path="/unificado/testar/")
+    response.delete_cookie(PCP_SCREEN_COOKIE_NAME, path="/unificado/pcp/")
+    response.delete_cookie(PCP_REFRESH_COOKIE_NAME, path=PCP_REFRESH_PATH)
+    response.delete_cookie(LAB_COOKIE_NAME, path="/unificado/laboratorio/")
     return response
 
+
+from usina_integration import register as register_usina_integration
+register_usina_integration(app)
 
 from usinas_receitas import register as register_usinas_receitas
 register_usinas_receitas(app, connect, authenticated_user, screen_access_state)

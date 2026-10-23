@@ -17,7 +17,8 @@ MAPA_ROLE_MODES = {
     'GESTOR': {'PROD_ANALISE','LIBERACAO','LIBERACAO_S1','LIBERACAO_S2',
                'LIBERACAO_S3','LIBERACAO_S4','MONTAGEM_POSTES','MONTAGEM_INDICADORES',
                'DASHBOARD_DEFEITOS','RELATORIO','HISTORICO','ACMP_CONCRETAGEM',
-               'SEQUENCIA_S3','MANDRIL_CIRCULAR','RELATORIO_MANUTENCAO','TRATATIVA_DEFEITOS'},
+               'SEQUENCIA_S3','MANDRIL_CIRCULAR','RELATORIO_MANUTENCAO','TRATATIVA_DEFEITOS',
+               'FECHAMENTO_DIARIO'},
     'MONTADOR': {'INSPECAO','MONTAGEM_POSTES','SEQUENCIA_S3',
                  'RELATORIO_MANUTENCAO','TRATATIVA_DEFEITOS'},
     'APONTADOR': {'LIBERACAO_S1','LIBERACAO_S2','LIBERACAO_S3','LIBERACAO_S4',
@@ -80,8 +81,21 @@ def screen_for_uri(original_uri, screen_header=''):
     uri = urlsplit(original_uri)
     path = uri.path.replace('index.html', '')
     query = parse_qs(uri.query)
-    if path == '/unificado/m/inspecao/':
-        return BY_ID.get('inspecao')
+    if path.startswith('/unificado/laboratorio/cec-api/'):
+        return BY_ID.get('labCec')
+    if path.rstrip('/') == '/unificado/laboratorio/cec/resultados':
+        return BY_ID.get('labCecResultados')
+    if path.rstrip('/') == '/unificado/laboratorio/cec/relatorio':
+        return BY_ID.get('labCecRelatorio')
+    if path.startswith('/unificado/laboratorio/dosagem/'):
+        return BY_ID.get('labDosagem')
+    if path in {'/unificado/relatorios/fechamento-diario/',
+                '/unificado/relatorios/api/fechamento-diario'}:
+        return BY_ID.get('fechamentoDiario')
+    if path == '/unificado/pcp/fechamento-diario/data.json':
+        return BY_ID.get('fechamentoDiarioPcp')
+    if path == '/unificado/m/inspecao/' or path == '/unificado/m/inspecao/login.html':
+        return BY_ID.get('inspecao') if path == '/unificado/m/inspecao/' else None
     if path == '/unificado/tv/formas/' or path == '/unificado/tv/formas/tv.js':
         return BY_ID.get('tvFormas')
     if path == '/unificado/painel-tv/api/resumo':
@@ -129,6 +143,8 @@ def screen_for_uri(original_uri, screen_header=''):
             return BY_ID['dashboard']
         return None
     if path.startswith('/unificado/laboratorio/api/'):
+        if path == '/unificado/laboratorio/api/slump':
+            return BY_ID['labSlump']
         if path.startswith('/unificado/laboratorio/api/laboratorio/cronoanalise/'):
             return None  # the Cronoanalise router checks its signed actions per endpoint
         if '/auth/users' in path:

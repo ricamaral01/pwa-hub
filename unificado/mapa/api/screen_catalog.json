@@ -344,11 +344,29 @@
   {
     "id": "produtividade",
     "module": "producao",
-    "label": "Dashboard Concretagem Matriz",
+    "label": "Produtividade",
     "path": "/unificado/mapa/operacao/",
     "query": "?tela=PROD_ANALISE",
     "screen": "PROD_ANALISE",
     "require": null
+  },
+  {
+    "id": "fechamentoDiario",
+    "module": "producao",
+    "label": "Fechamento Diário",
+    "path": "/unificado/relatorios/fechamento-diario/",
+    "query": "",
+    "screen": "FECHAMENTO_DIARIO",
+    "require": null
+  },
+  {
+    "id": "fechamentoDiarioPcp",
+    "module": "planejamento",
+    "label": "Fechamento Diário",
+    "path": "/unificado/pcp/fechamento-diario/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
   },
   {
     "id": "labMonitor",
@@ -374,6 +392,24 @@
     "label": "Dispositivo",
     "path": "/unificado/laboratorio/",
     "query": "?view=settings",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labDosagem",
+    "module": "laboratorio",
+    "label": "Dosagem",
+    "path": "/unificado/laboratorio/dosagem/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labSlump",
+    "module": "laboratorio",
+    "label": "Registro de slump / flow",
+    "path": "/unificado/laboratorio/slump",
+    "query": "",
     "screen": null,
     "require": null
   },
@@ -499,5 +535,11 @@
   {"id":"cronoanalise.dimensionar","module":"laboratorio","label":"Cronoanálise: Dimensionar","path":"/unificado/laboratorio/cronoanalise/dimensionar","query":"","screen":null,"require":null},
   {"id":"cronoanalise.simular","module":"laboratorio","label":"Cronoanálise: Simular","path":"/unificado/laboratorio/cronoanalise/simular","query":"","screen":null,"require":null},
   {"id":"cronoanalise.metodologia","module":"laboratorio","label":"Cronoanálise: Metodologia","path":"/unificado/laboratorio/cronoanalise/metodologia","query":"","screen":null,"require":null},
-  {"id":"usinasInicio","module":"usinas","label":"Cartas de traço","path":"/unificado/usinas/","query":"","screen":null,"require":"GERENCIA"}
+  {"id":"usinasInicio","module":"usinas","label":"Cartas de traço","path":"/unificado/usinas/","query":"","screen":null,"require":"GERENCIA"},
+  {"id":"labCec","module":"laboratorio","label":"Controle estatístico","path":"/unificado/laboratorio/cec/","query":"","screen":null,"require":null},
+  {"id":"labCecResultados","module":"laboratorio","label":"Resultados dos corpos de prova","path":"/unificado/laboratorio/cec/analise/resultado-cp.html","query":"","screen":null,"require":null},
+  {"id":"labCecRelatorio","module":"laboratorio","label":"Relatório CEC","path":"/unificado/laboratorio/cec/analise/relatorio.html","query":"","screen":null,"require":null},
+  {"id":"labCecAnalise","module":"laboratorio","label":"Análise estatística","path":"/unificado/laboratorio/cec/analise/","query":"","screen":null,"require":null},
+  {"id":"labCecEtiquetas","module":"laboratorio","label":"Etiquetas QR","path":"/unificado/laboratorio/cec/etiquetas/","query":"","screen":null,"require":null},
+  {"id":"labCecLeitura","module":"laboratorio","label":"Leitura de CP","path":"/unificado/laboratorio/cec/leitura/","query":"","screen":null,"require":null}
 ]

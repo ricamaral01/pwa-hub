@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CONCRETRACK &#8226; Resultado de Corpos de Prova</title>
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#1a3a5c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script src="./api-client.js?v=3"></script>
+  <style>
+    /* ══ LIGHT THEME BASE ══ */
+    :root {
+      --primary:       #1a3a5c;
+      --primary-light: #2563a8;
+      --accent:        #e8762a;
+      --card-bg:       rgba(0,0,0,0.04);
+      --card-border:   rgba(0,0,0,0.10);
+      --text:          #1a2840;
+      --muted:         #5a6a7e;
+      --radius:        18px;
+      --shadow:        0 8px 28px rgba(0,0,0,0.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body {
+      background: linear-gradient(160deg, #f0f4f8 0%, #ffffff 60%, #eef2f7 100%);
+      color: var(--text); min-height: 100vh; display: flex; flex-direction: column;
+      padding-bottom: 60px;
+    }
+    /* ── TOP BAR ── */
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: rgba(255,255,255,0.92); border-bottom: 1px solid var(--card-border); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; }
+    .topbar-brand { display: flex; align-items: center; gap: 14px; }
+    .topbar-brand img { height: 40px; width: 40px; object-fit: contain; border-radius: 10px; }
+    .topbar-brand .brand-name { font-size: 1rem; font-weight: 900; letter-spacing: .04em; line-height: 1.1; }
+    .topbar-brand .brand-name span { color: var(--accent); }
+    .topbar-brand .brand-sub { font-size: .65rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+    .btn-back { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.07); border: 1px solid rgba(0,0,0,0.18); border-radius: 10px; color: var(--text); font-size: .85rem; font-weight: 700; padding: 8px 16px; text-decoration: none; transition: background .15s, transform .1s; }
+    .btn-back:hover { background: rgba(0,0,0,0.12); transform: translateY(-1px); }
+    /* ── HERO ── */
+    .hero { text-align: center; padding: 36px 20px 24px; }
+    .hero-icon { font-size: 2.4rem; display: inline-flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, #1a3a5c 0%, #2563a8 100%); box-shadow: 0 8px 28px rgba(37,99,168,.38); margin-bottom: 14px; }
+    .hero h1 { font-size: 1.45rem; font-weight: 900; margin-bottom: 6px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: .85rem; color: var(--muted); line-height: 1.5; }
+    .accent-line { width: 60px; height: 3px; background: var(--accent); border-radius: 2px; margin: 14px auto 0; }
+    /* ── LAYOUT ── */
+    .cp-wrap { max-width: none; padding: 16px 20px; }
+    /* ── PRINT BUTTON ── */
+    .btn-print { background: #10b981; color: #fff; border: none; border-radius: 10px; padding: 8px 16px; font-size: .82rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .btn-print:hover { background: #059669; }
+    /* ── FILTER BAR ── */
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+    .filter-bar label { font-size: .78rem; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+    .filter-bar select, .filter-bar input[type="number"], .filter-bar input[type="text"] { background: rgba(0,0,0,.06); border: 1px solid rgba(0,0,0,.15); border-radius: 8px; color: var(--text); padding: 5px 9px; font-size: .78rem; }
+    .filter-bar input[type="text"] { flex: 1; min-width: 150px; }
+    .filter-bar input::placeholder { color: var(--muted); }
+    .btn-filter { background: rgba(232,118,42,0.12); border: 1px solid rgba(232,118,42,.35); color: var(--accent); border-radius: 8px; padding: 6px 14px; font-size: .78rem; font-weight: 700; cursor: pointer; }
+    /* ── TABLE ── */
+    .tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--card-border); }
+    table { border-collapse: collapse; white-space: nowrap; font-size: .75rem; width: 100%; }
+    thead th { padding: 8px 12px; font-size: .70rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 800; text-align: center; color: #fff; background: #1a3a5c; border: 1px solid rgba(255,255,255,.15); }
+    thead th.th-mold  { background: #1a4a7c; }
+    thead th.th-rupt  { background: #14532d; }
+    thead th.th-idade { background: #4c1d95; }
+    thead th.th-cp    { background: #374151; }
+    thead th.th-mpa   { background: #1a3a2f; }
+    thead th.th-med   { background: #2d1a0f; }
+    tbody tr { border-bottom: 1px solid rgba(0,0,0,.06); }
+    tbody tr:nth-child(even) { background: rgba(0,0,0,.02); }
+    tbody tr:hover { background: rgba(0,0,0,.04); }
+    tbody td { padding: 6px 10px; text-align: center; color: var(--text); font-size: .74rem; border-right: 1px solid rgba(0,0,0,.05); }
+    tbody td.lft { text-align: left; }
+    .v-ok   { color: #15803d; font-weight: 700; }
+    .v-fail { color: #dc2626; font-weight: 700; }
+    .v-warn { color: #d97706; font-weight: 700; }
+    .v-pend { color: var(--muted); }
+    .v-med  { color: #1d4ed8; font-weight: 700; }
+    .age-badge { display: inline-block; border-radius: 5px; padding: 1px 7px; font-size: .67rem; font-weight: 700; }
+    .age-1  { background: rgba(30,58,138,.12); color: #1d4ed8; border: 1px solid rgba(59,130,246,.4); }
+    .age-3  { background: rgba(20,83,45,.10);  color: #15803d; border: 1px solid rgba(34,197,94,.4); }
+    .age-7  { background: rgba(124,45,18,.10); color: #c2410c; border: 1px solid rgba(249,115,22,.4); }
+    .age-28 { background: rgba(76,29,149,.10); color: #7c3aed; border: 1px solid rgba(168,85,247,.4); }
+    .age-x  { background: rgba(107,114,128,.08); color: #6b7280; border: 1px solid #9ca3af; }
+    .state-box { text-align: center; padding: 48px 20px; color: var(--muted); }
+    .state-box .sico { font-size: 2.8rem; margin-bottom: 12px; }
+    .state-box p { font-size: .85rem; line-height: 1.55; margin: 6px 0; }
+    .tbl-footer { text-align: right; font-size: .72rem; color: var(--muted); margin-top: 8px; }
+    @media print {
+      .topbar, .btn-print, .btn-back, .filter-bar, .hero, .accent-line { display: none !important; }
+      body { background: #fff; color: #000; padding: 0; }
+      .tbl-wrap { overflow: visible; border: none; }
+      td, th { color: #000 !important; border-color: #999 !important; background: #fff !important; }
+    }
+  </style>
+</head>
+<body>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <img src="./assets/img/concre.png" alt="Concrefer">
+    <div>
+      <div class="brand-name">Laboratório <span>Concrefer</span></div>
+      <div class="brand-sub">Controle Estatístico <span id="sw-version-badge" style="display:none; font-size:9px; background:rgba(0,0,0,0.06); border:1px solid rgba(0,0,0,0.12); padding:1px 5px; border-radius:10px; cursor:pointer; color:var(--muted); font-weight:bold; margin-left:4px; vertical-align:middle; transition:background 0.2s;" title="Clique para forçar atualização e limpar cache">loading</span></div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+    <a class="btn-back" href="./index.html">← Voltar</a>
+  </div>
+</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-icon">🧱</div>
+  <h1>Resultado Corpos de <span>Prova</span></h1>
+  <p>Resistência à compressão — MPa por corpo de prova</p>
+  <div class="accent-line"></div>
+</div>
+<div class="cp-wrap">
+
+  <!-- Progress Indicator -->
+  <div id="renderProgress" style="display:none; text-align:center; padding:12px; background:rgba(245,158,11,.1); border-radius:8px; margin-bottom:14px; color:#f59e0b; font-size:.85rem; font-weight:600; animation:pulse 1.5s infinite;">
+    ⏳ Carregando...
+  </div>
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity:.7; }
+      50% { opacity:1; }
+    }
+  </style>
+
+  <div class="filter-bar">
+    <label>Mês:
+      <select id="filtroMes">
+        <option value="">Todos</option>
+        <option value="01">Janeiro</option><option value="02">Fevereiro</option>
+        <option value="03">Março</option><option value="04">Abril</option>
+        <option value="05">Maio</option><option value="06">Junho</option>
+        <option value="07">Julho</option><option value="08">Agosto</option>
+        <option value="09">Setembro</option><option value="10">Outubro</option>
+        <option value="11">Novembro</option><option value="12">Dezembro</option>
+      </select>
+    </label>
+    <label>Ano: <input type="number" id="filtroAno" min="2020" max="2040" placeholder="Ex: 2026" style="width:90px;"></label>
+  </div>
+
+  <div id="stateBox" class="state-box">
+    <div class="sico">&#8987;</div><p>Carregando dados do banco...</p>
+  </div>
+
+  <div id="tblArea" style="display:none;">
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="th-mold">DATA<br>MOLDAGEM</th>
+            <th class="th-rupt">DATA<br>RUPTURA</th>
+            <th class="th-idade">IDADE</th>
+            <th class="th-cp">TRA&#199;O / ID</th>
+            <th class="th-mpa">MPA<br>CP 1</th>
+            <th class="th-mpa">MPA<br>CP 2</th>
+            <th class="th-med">M&#201;DIA<br>MPa</th>
+            <th class="th-cp">STATUS</th>
+          </tr>
+        </thead>
+        <tbody id="tblBody"></tbody>
+      </table>
+    </div>
+    <div class="tbl-footer" id="tblFooter">0 registros exibidos</div>
+  </div>
+</div>
+
+<script>
+const META_FAIXA = { 1:{min:8,max:14}, 3:{min:16,max:24}, 7:{min:22,max:32}, 28:{min:32,max:42} };
+const CACHE_KEY_RESULTADO_CP = 'ct_resultado_cp_rows_v1';
+
+function cleanDateStr(v) {
+  return String(v || '').trim().replace(/\s*\([^)]*\)\s*$/, '');
+}
+function fmtDate(v){
+  if(!v&&v!==0)return'--';
+  var s=cleanDateStr(v);
+  if(!s)return'--';
+
+  var m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m)return m[3]+'/'+m[2]+'/'+m[1];
+
+  m=s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if(m)return m[1]+'/'+m[2]+'/'+m[3];
+
+  var d=new Date(s);
+  if(!isNaN(d.getTime())){
+    var dd=String(d.getDate()).padStart(2,'0');
+    var mm=String(d.getMonth()+1).padStart(2,'0');
+    var yy=String(d.getFullYear());
+    return dd+'/'+mm+'/'+yy;
+  }
+
+  return s.length>=10?s.substring(0,10):s;
+}
+function parseToComparable(v) {
+  var s = cleanDateStr(v);
+  if (!s) return 0;
+  var mYmd = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (mYmd) {
+    return new Date(parseInt(mYmd[1]), parseInt(mYmd[2]) - 1, parseInt(mYmd[3])).getTime();
+  }
+  var mDmy = s.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (mDmy) {
+    return new Date(parseInt(mDmy[3]), parseInt(mDmy[2]) - 1, parseInt(mDmy[1])).getTime();
+  }
+  var d = new Date(s);
+  if (!isNaN(d.getTime())) {
+    return d.getTime();
+  }
+  return 0;
+}
+function mesNum(d){
+  var s = cleanDateStr(d);
+  var m=s.match(/^(\d{4})-(\d{2})/);
+  if(m)return m[2];
+  m=s.match(/^\d{2}\/(\d{2})\/(\d{4})/);
+  if(m)return m[1];
+  
+  var parsed = new Date(s);
+  if(!isNaN(parsed.getTime())){
+    return String(parsed.getMonth()+1).padStart(2,'0');
+  }
+  return'';
+}
+function anoNum(d){
+  var s = cleanDateStr(d);
+  var m=s.match(/^(\d{4})/);
+  if(m)return m[1];
+  m=s.match(/\d{2}\/\d{2}\/(\d{4})/);
+  if(m)return m[1];
+  
+  var parsed = new Date(s);
+  if(!isNaN(parsed.getTime())){
+    return String(parsed.getFullYear());
+  }
+  return'';
+}
+function r1(v){ return(v!==null&&v!==''&&!isNaN(parseFloat(v)))?Math.round(parseFloat(v)*10)/10:null; }
+function fmtMpa(v){ var n=r1(v); return n!==null?String(n):'--'; }
+
+function mpaClass(v,age){
+  var meta=META_FAIXA[age];
+  var n=r1(v);
+  if(n===null||!meta)return'v-pend';
+  if(n<meta.min)return'v-fail';
+  if(n>meta.max)return'v-warn';
+  return'v-ok';
+}
+function medClass(med,age){
+  var meta=META_FAIXA[age];
+  if(med===null||!meta)return'v-pend';
+  if(med<meta.min)return'v-fail';
+  if(med>meta.max)return'v-warn';
+  return'v-med';
+}
+function ageBadge(age){
+  var map={1:'age-1',3:'age-3',7:'age-7',28:'age-28'};
+  var cls=map[parseInt(age)]||'age-x';
+  return'<span class="age-badge '+cls+'">'+(age?age+'d':'--')+'</span>';
+}
+function statusBadge(mpa1,mpa2,age){
+  var meta=META_FAIXA[parseInt(age)];
+  if(!meta)return'<span class="age-badge age-x">--</span>';
+  var vals=[mpa1,mpa2].map(function(v){return r1(v);}).filter(function(v){return v!==null;});
+  if(!vals.length)return'<span class="age-badge age-x">PEND</span>';
+  if(vals.some(function(v){return v<meta.min;}))
+    return'<span class="age-badge" style="background:rgba(239,68,68,.1);color:#dc2626;border:1px solid #ef4444;">NOK</span>';
+  if(vals.some(function(v){return v>meta.max;}))
+    return'<span class="age-badge" style="background:rgba(245,158,11,.1);color:#b45309;border:1px solid #f59e0b;">AMP</span>';
+  return'<span class="age-badge" style="background:rgba(16,185,129,.1);color:#059669;border:1px solid #10b981;">OK</span>';
+}
+
+function groupRows(rawRows){
+  var map=new Map();
+  rawRows.forEach(function(r){
+    var key=r.data_moldagem+'|'+r.traco_id+'|'+r.idade_dias;
+    if(!map.has(key))map.set(key,{data_moldagem:r.data_moldagem,traco_id:r.traco_id,idade_dias:r.idade_dias,cps:[]});
+    map.get(key).cps.push(r);
+  });
+  return Array.from(map.values()).sort(function(a,b){
+    var tA = parseToComparable(a.data_moldagem);
+    var tB = parseToComparable(b.data_moldagem);
+    if(tA !== tB) return tB - tA;
+    return parseInt(a.idade_dias||0)-parseInt(b.idade_dias||0);
+  });
+}
+
+var _groups=[];
+var _dataStatusHtml='';
+
+function periodoResultado(g){
+  var first = g && g.cps && g.cps[0] ? g.cps[0] : null;
+  return (first && first.data_ruptura) || g.data_ruptura || g.data_moldagem || '';
+}
+
+function renderTable(){
+  var tbody=document.getElementById('tblBody');
+  var footer=document.getElementById('tblFooter');
+  var mes=document.getElementById('filtroMes').value;
+  var ano=String(document.getElementById('filtroAno').value||'');
+  var filtered=_groups.filter(function(g){
+    var periodo=periodoResultado(g);
+    if(ano&&ano.length===4&&anoNum(periodo)!==ano)return false;
+    if(mes&&mesNum(periodo)!==mes)return false;
+    return true;
+  });
+  tbody.innerHTML='';
+  if(!filtered.length){
+    tbody.innerHTML='<tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted);font-style:italic;">Nenhum resultado encontrado.</td></tr>';
+    footer.innerHTML='0 registros exibidos'+(_dataStatusHtml?' | '+_dataStatusHtml:'');
+    return;
+  }
+  filtered.forEach(function(g){
+    var sorted=g.cps.slice().sort(function(a,b){return parseInt(a.cp||0)-parseInt(b.cp||0);});
+    var c1=sorted[0]||null;
+    var c2=sorted[1]||null;
+    var mpa1=c1?r1(c1.mpa):null;
+    var mpa2=c2?r1(c2.mpa):null;
+    var med=(mpa1!==null&&mpa2!==null)?r1((mpa1+mpa2)/2):(mpa1!==null?mpa1:mpa2);
+    var dataRupt=c1?c1.data_ruptura:(c2?c2.data_ruptura:'');
+    var age=parseInt(g.idade_dias)||0;
+    var tr=document.createElement('tr');
+    tr.innerHTML=
+      '<td>'+fmtDate(g.data_moldagem)+'</td>'
+      +'<td>'+fmtDate(dataRupt)+'</td>'
+      +'<td>'+ageBadge(g.idade_dias)+'</td>'
+      +'<td class="lft">'+(g.traco_id||'--')+'</td>'
+      +'<td class="'+mpaClass(mpa1,age)+'">'+fmtMpa(mpa1)+'</td>'
+      +'<td class="'+mpaClass(mpa2,age)+'">'+fmtMpa(mpa2)+'</td>'
+      +'<td class="'+medClass(med,age)+'">'+(med!==null?String(r1(med)):'--')+'</td>'
+      +'<td>'+statusBadge(mpa1,mpa2,age)+'</td>';
+    tbody.appendChild(tr);
+  });
+  footer.innerHTML=filtered.length+' registro'+(filtered.length!==1?'s':'')+' exibido'+(filtered.length!==1?'s':'')
+    +(_dataStatusHtml?' | '+_dataStatusHtml:'');
+}
+
+var _renderQueue = [];
+var _isRendering = false;
+
+function scheduleRender(task){
+  _renderQueue.push(task);
+  if(!_isRendering) processRenderQueue();
+}
+
+function processRenderQueue(){
+  if(!_renderQueue.length){
+    _isRendering = false;
+    hideProgress();
+    return;
+  }
+  _isRendering = true;
+  var task = _renderQueue.shift();
+  if(task.label) updateProgress(task.label);
+  try{
+    task.fn();
+  }catch(e){
+    console.error('Render task error:', task.label, e);
+  }
+  requestAnimationFrame(processRenderQueue);
+}
+
+function updateProgress(label){
+  var pb = document.getElementById('renderProgress');
+  if(pb){
+    pb.style.display = '';
+    pb.textContent = '⏳ Carregando: ' + (label || '...');
+  }
+}
+
+function hideProgress(){
+  var pb = document.getElementById('renderProgress');
+  if(pb) pb.style.display = 'none';
+}
+
+function applyFilters(){ 
+  updateProgress('Tabela');
+  scheduleRender({ label: 'Tabela', fn: renderTable });
+}
+
+document.getElementById('filtroMes').addEventListener('change',applyFilters);
+document.getElementById('filtroAno').addEventListener('input',applyFilters);
+document.getElementById('filtroAno').addEventListener('change',applyFilters);
+
+function showState(icon,html){
+  document.getElementById('stateBox').innerHTML='<div class="sico">'+icon+'</div>'+html;
+  document.getElementById('stateBox').style.display='';
+  document.getElementById('tblArea').style.display='none';
+}
+function showTable(){
+  document.getElementById('stateBox').style.display='none';
+  document.getElementById('tblArea').style.display='';
+}
+
+function renderFromRows(rows){
+  _groups=groupRows(rows);
+  showTable();
+  updateProgress('Tabela');
+  scheduleRender({ label: 'Tabela', fn: renderTable });
+}
+
+function showStaleCacheWarning(err){
+  _dataStatusHtml='<span style="color:#b45309;font-weight:700;">Modo offline - exibindo dados armazenados localmente.</span>'
+    +' <code>'+(err&&err.message?err.message:String(err||''))+'</code>';
+  renderTable();
+}
+
+function showFreshDataStatus(meta){
+  if(!meta) return;
+  _dataStatusHtml='Dados atualizados em '+ControleEstatisticoApi.formatDateTime(meta.generated_at)
+    +' | Fonte: '+(meta.source||'api')
+    +' | Registros: '+(meta.count!==undefined?meta.count:_groups.length);
+  renderTable();
+}
+
+function parseGVizDate_(col,cell){
+  if(!cell||cell.v===null||cell.v===undefined)return'';
+  if(col.type==='date'||col.type==='datetime'){
+    var m=String(cell.v).match(/Date\((\d+),(\d+),(\d+)/);
+    if(m){
+      var mo=String(parseInt(m[2])+1).padStart(2,'0');
+      var d=String(m[3]).padStart(2,'0');
+      return m[1]+'-'+mo+'-'+d;
+    }
+    return cell.f||String(cell.v);
+  }
+  return(cell.v!==null&&cell.v!==undefined)?String(cell.v):'';
+}
+
+async function loadData(){
+  var result = await ControleEstatisticoApi.loadRows({
+    cacheKey: CACHE_KEY_RESULTADO_CP,
+    filters: { limit: 1000 },
+    timeoutMs: 15000
+  });
+
+  if(result.state === 'SUCCESS'){
+    renderFromRows(result.rows);
+    showFreshDataStatus(result.meta);
+    return;
+  }
+  if(result.state === 'EMPTY'){
+    showState('&#128237;','<p>Nenhum resultado encontrado na API.</p>');
+    return;
+  }
+  if(result.state === 'OFFLINE_CACHE'){
+    renderFromRows(result.rows);
+    showStaleCacheWarning(result.error);
+    return;
+  }
+  showState('&#10060;','<p>Falha ao buscar dados da API:<br><code>'+(result.error&&result.error.message?result.error.message:'Erro desconhecido')+'</code></p>');
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  updateProgress('Dados');
+  document.getElementById('filtroMes').value = '';
+  document.getElementById('filtroAno').value = '';
+  loadData();
+});
+
+(async function(){
+  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=10',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
+
+  // SW version badge and force update
+  function initSWVersionBadge() {
+    var badge = document.getElementById('sw-version-badge');
+    if (!badge) return;
+    
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(function() {
+        if (navigator.serviceWorker.controller) {
+          var msgChan = new MessageChannel();
+          msgChan.port1.onmessage = function(event) {
+            if (event.data && event.data.version) {
+              badge.textContent = event.data.version;
+              badge.style.display = 'inline-block';
+            }
+          };
+          navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [msgChan.port2]);
+        } else {
+          badge.textContent = 'SW';
+          badge.style.display = 'inline-block';
+        }
+      });
+
+      badge.addEventListener('click', function() {
+        if (confirm('Deseja forçar a atualização do aplicativo? Isso irá limpar o cache local e recarregar a página.')) {
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            var promises = registrations.map(function(registration) {
+              return registration.unregister();
+            });
+            return Promise.all(promises);
+          }).then(function() {
+            if ('caches' in window) {
+              return caches.keys().then(function(keys) {
+                return Promise.all(keys.map(function(key) {
+                  return caches.delete(key);
+                }));
+              });
+            }
+          }).then(function() {
+            localStorage.removeItem('ct_resultado_cp_rows_v1');
+            localStorage.removeItem('ct_relatorio_rows_v1');
+            window.location.reload(true);
+          }).catch(function() {
+            window.location.reload(true);
+          });
+        }
+      });
+    }
+  }
+  initSWVersionBadge();
+})();
+</script>
+</body>
+</html>

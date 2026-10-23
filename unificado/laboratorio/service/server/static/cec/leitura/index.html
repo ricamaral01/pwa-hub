@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+  <meta name="theme-color" content="#343B43"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Leitura CP"/>
+  <link rel="apple-touch-icon" href="/unificado/laboratorio/cec/assets/img/icon-192.png"/>
+  <link rel="manifest" href="/unificado/laboratorio/cec/leitura/manifest.json"/>
+  <title>Leitura CP • ConcreTrack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ct-orange:#E07A3A;--ct-gray:#343B43;--ct-gray-lt:#5A6270;
+      --ct-blue:#1976D2;--ct-navy:#0D3B66;--ct-silver:#BFC5CC;--ct-bg:#F2F3F5;
+      --ct-green:#059669;--ct-red:#dc2626;
+    }
+    *{font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif;margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--ct-bg);color:var(--ct-gray);min-height:100vh;display:flex;flex-direction:column}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+
+    /* ── Topbar ── */
+    .app-topbar{background:var(--ct-gray);color:#fff;position:sticky;top:0;z-index:1000}
+    .topbar-inner{display:flex;align-items:center;padding:10px 16px;gap:10px}
+    .topbar-logo{width:37px;height:37px;object-fit:contain;border-radius:6px}
+    .topbar-title{font-size:16px;font-weight:700}
+    .topbar-title span{color:var(--ct-orange)}
+    .topbar-sub{font-size:9px;color:var(--ct-silver)}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+    .topbar-accent{height:3px;background:linear-gradient(90deg,var(--ct-orange),var(--ct-navy))}
+
+    .status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+    .status-dot.online{background:var(--ct-green);box-shadow:0 0 6px var(--ct-green)}
+    .status-dot.offline{background:var(--ct-red);box-shadow:0 0 6px var(--ct-red)}
+
+    /* ── Main content ── */
+    .main{flex:1;padding:16px}
+
+    /* ── Scanner ── */
+    .scanner-wrap{
+      background:#fff;border-radius:14px;border:1px solid rgba(15,23,42,.06);
+      box-shadow:0 2px 12px rgba(0,0,0,.04);overflow:hidden;margin-bottom:16px;
+    }
+    .scanner-head{
+      padding:12px 16px;border-bottom:1px solid #eef1f5;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .scanner-head h6{font-weight:800;font-size:14px;margin:0;color:var(--ct-gray)}
+    .scanner-head h6 i{color:var(--ct-orange);margin-right:6px}
+    #qr-reader{width:100%}
+    #qr-reader video{border-radius:0!important}
+
+    /* ── Resultado ── */
+    .result-card{
+      background:#fff;border-radius:14px;border:1px solid rgba(15,23,42,.06);
+      box-shadow:0 2px 12px rgba(0,0,0,.04);padding:16px;margin-bottom:16px;
+      display:none;
+    }
+    .result-card.show{display:block;animation:fadeIn .3s}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+    .field-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+    .field-item{flex:1;min-width:120px}
+    .field-label{font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--ct-gray-lt);font-weight:700;margin-bottom:2px}
+    .field-value{font-size:14px;font-weight:700;color:var(--ct-navy)}
+    .field-value.big{font-size:22px;font-weight:900;color:var(--ct-orange)}
+
+    /* ── Buttons ── */
+    .btn-ct{
+      border:none;border-radius:12px;padding:12px 20px;font-weight:700;font-size:14px;
+      cursor:pointer;transition:all .2s;font-family:inherit;display:inline-flex;
+      align-items:center;gap:8px;width:100%;justify-content:center;
+    }
+    .btn-ct-green{background:var(--ct-green);color:#fff}
+    .btn-ct-green:hover{background:#047857}
+    .btn-ct-green:disabled{opacity:.4;cursor:not-allowed}
+    .btn-ct-orange{background:var(--ct-orange);color:#fff}
+    .btn-ct-orange:hover{background:#c96830}
+    .btn-ct-navy{background:var(--ct-navy);color:#fff}
+    .btn-ct-navy:hover{background:#0a2e52}
+    .btn-ct-outline{background:transparent;border:2px solid var(--ct-gray);color:var(--ct-gray)}
+    .btn-ct-outline:hover{background:rgba(52,59,67,.06)}
+
+    /* ── History ── */
+    .history-card{
+      background:#fff;border-radius:14px;border:1px solid rgba(15,23,42,.06);
+      box-shadow:0 2px 12px rgba(0,0,0,.04);overflow:hidden;margin-bottom:16px;
+    }
+    .history-head{
+      padding:12px 16px;border-bottom:1px solid #eef1f5;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .history-head h6{font-weight:800;font-size:14px;margin:0;color:var(--ct-gray)}
+    .history-head h6 i{color:var(--ct-orange);margin-right:6px}
+    .history-list{max-height:300px;overflow-y:auto}
+    .history-item{
+      padding:10px 16px;border-bottom:1px solid #f1f3f5;
+      display:flex;align-items:center;gap:10px;
+    }
+    .history-item:last-child{border-bottom:none}
+    .history-item .hi-icon{
+      width:36px;height:36px;border-radius:10px;
+      background:rgba(13,59,102,.08);display:flex;align-items:center;
+      justify-content:center;font-size:16px;color:var(--ct-navy);flex-shrink:0;
+    }
+    .history-item .hi-body{flex:1;min-width:0}
+    .history-item .hi-title{font-size:13px;font-weight:700;color:var(--ct-gray)}
+    .history-item .hi-sub{font-size:11px;color:var(--ct-gray-lt)}
+    .history-item .hi-time{font-size:10px;color:var(--ct-silver);font-weight:600;text-align:right}
+
+    .empty-msg{text-align:center;padding:30px;color:var(--ct-silver);font-size:13px}
+
+    /* ── Toast ── */
+    .toast-ct{
+      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+      background:var(--ct-gray);color:#fff;padding:12px 24px;border-radius:12px;
+      font-size:13px;font-weight:700;z-index:9999;display:none;
+      box-shadow:0 8px 24px rgba(0,0,0,.2);
+    }
+    .toast-ct.show{display:flex;align-items:center;gap:8px;animation:fadeIn .3s}
+    .toast-ct.success{border-left:4px solid var(--ct-green)}
+    .toast-ct.error{border-left:4px solid var(--ct-red)}
+
+    /* ── Install banner ── */
+    .install-banner{
+      background:linear-gradient(135deg,var(--ct-navy),var(--ct-gray));
+      color:#fff;padding:14px 16px;border-radius:14px;margin-bottom:16px;
+      display:none;
+    }
+    .install-banner.show{display:flex;align-items:center;gap:12px}
+    .install-banner p{font-size:12px;flex:1;margin:0}
+    .install-banner button{
+      background:var(--ct-orange);color:#fff;border:none;border-radius:10px;
+      padding:8px 16px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;
+      font-family:inherit;
+    }
+    .install-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:18px;cursor:pointer;padding:0 4px}
+
+    /* ── Offline queue ── */
+    .queue-badge{
+      background:var(--ct-orange);color:#fff;border-radius:20px;
+      padding:2px 8px;font-size:11px;font-weight:800;
+    }
+
+    .app-footer{text-align:center;padding:12px;font-size:10px;color:var(--ct-silver)}
+    .app-footer span{color:var(--ct-orange);font-weight:600}
+
+    /* ── MOBILE: fontes maiores, tela mais espaçosa ── */
+    @media (max-width: 768px) {
+      .topbar-inner{padding:14px 18px;gap:12px}
+      .topbar-logo{width:46px;height:46px}
+      .topbar-title{font-size:20px}
+      .topbar-sub{font-size:11px}
+      .topbar-accent{height:4px}
+
+      .main{padding:14px}
+
+      .scanner-head{padding:16px 18px}
+      .scanner-head h6{font-size:18px}
+      .scanner-head button{font-size:15px!important;padding:10px 16px!important;border-radius:10px!important}
+
+      .result-card{padding:20px;border-radius:16px}
+      .result-card > div:first-child{font-size:16px!important;margin-bottom:14px!important}
+
+      .field-row{gap:12px;margin-bottom:14px}
+      .field-item{min-width:100px}
+      .field-label{font-size:13px;margin-bottom:4px}
+      .field-value{font-size:18px}
+      .field-value.big{font-size:30px}
+
+      .btn-ct{padding:16px 24px;font-size:18px;border-radius:14px;gap:10px}
+
+      .history-head{padding:16px 18px}
+      .history-head h6{font-size:18px}
+      .history-head button{font-size:14px!important;padding:8px 14px!important}
+      .history-list{max-height:400px}
+      .history-item{padding:14px 18px;gap:14px}
+      .history-item .hi-icon{width:44px;height:44px;font-size:20px;border-radius:12px}
+      .history-item .hi-title{font-size:16px}
+      .history-item .hi-sub{font-size:14px}
+      .history-item .hi-time{font-size:13px}
+
+      .empty-msg{font-size:16px;padding:40px}
+      .empty-msg i{font-size:36px!important}
+
+      .toast-ct{font-size:16px;padding:16px 28px;border-radius:14px}
+
+      .install-banner{padding:18px;border-radius:16px}
+      .install-banner p{font-size:15px}
+      .install-banner button{font-size:15px;padding:12px 20px;border-radius:12px}
+      .install-close{font-size:22px}
+
+      .queue-badge{font-size:13px;padding:4px 10px}
+      .status-dot{width:10px;height:10px}
+
+      .app-footer{font-size:13px;padding:16px}
+
+      #rawQR{font-size:12px!important;margin:14px 0 18px!important}
+
+      .mpa-box{padding:18px!important;border-radius:14px!important;margin-bottom:18px!important;border-width:3px!important}
+      .mpa-label{font-size:14px!important;margin-bottom:10px!important}
+      .mpa-input{font-size:28px!important;padding:16px 18px!important;border-radius:12px!important}
+      .mpa-unit{font-size:20px!important}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ TOPBAR ═══ -->
+<div class="app-topbar">
+  <div class="topbar-inner">
+    <img src="/unificado/laboratorio/cec/assets/img/PRINCIPAL@2x.png" alt="Logo" class="topbar-logo">
+    <div>
+      <div class="topbar-title"><i class="bi bi-qr-code-scan me-1"></i>Leitura <span>CP</span></div>
+      <div class="topbar-sub">ConcreTrack &bull; CEC</div>
+    </div>
+    <div class="topbar-right">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="queueBadge" class="queue-badge" style="display:none"></span>
+    </div>
+  </div>
+  <div class="topbar-accent"></div>
+</div>
+
+<div class="main">
+
+  <!-- ═══ INSTALL BANNER ═══ -->
+  <div class="install-banner" id="installBanner">
+    <i class="bi bi-download" style="font-size:24px"></i>
+    <p>Instale o <b>Leitura CP</b> na tela inicial para uso rápido e offline.</p>
+    <button onclick="installPWA()">Instalar</button>
+    <button class="install-close" onclick="dismissInstall()">&times;</button>
+  </div>
+
+  <!-- ═══ SCANNER ═══ -->
+  <div class="scanner-wrap">
+    <div class="scanner-head">
+      <h6><i class="bi bi-qr-code-scan"></i>Escanear QR Code</h6>
+      <button class="btn-ct-outline" style="width:auto;padding:6px 12px;font-size:12px;border-radius:8px" onclick="toggleScanner()" id="btnToggle">
+        <i class="bi bi-camera-fill"></i> Iniciar
+      </button>
+    </div>
+    <div id="qr-reader"></div>
+  </div>
+
+  <!-- ═══ RESULTADO LEITURA ═══ -->
+  <div class="result-card" id="resultCard">
+    <div style="font-size:12px;font-weight:800;color:var(--ct-navy);margin-bottom:10px">
+      <i class="bi bi-check-circle-fill me-1" style="color:var(--ct-green)"></i>QR Code Lido
+    </div>
+    <div class="field-row">
+      <div class="field-item">
+        <div class="field-label">Traço</div>
+        <div class="field-value" id="rTraco">—</div>
+      </div>
+      <div class="field-item">
+        <div class="field-label">Nº Série</div>
+        <div class="field-value" id="rNS">—</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-item">
+        <div class="field-label">Produto</div>
+        <div class="field-value" id="rNome">—</div>
+      </div>
+      <div class="field-item">
+        <div class="field-label">CP</div>
+        <div class="field-value" id="rCP">—</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-item">
+        <div class="field-label">Idade</div>
+        <div class="field-value big" id="rIdade">—</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-item">
+        <div class="field-label">Moldagem</div>
+        <div class="field-value" id="rMold">—</div>
+      </div>
+      <div class="field-item">
+        <div class="field-label">Hora</div>
+        <div class="field-value" id="rHora">—</div>
+      </div>
+      <div class="field-item">
+        <div class="field-label">Ruptura</div>
+        <div class="field-value" id="rRupt">—</div>
+      </div>
+    </div>
+
+    <div id="rawQR" class="mono" style="font-size:10px;color:var(--ct-silver);margin:10px 0 14px;word-break:break-all"></div>
+
+    <!-- ── Resistência MPa ── -->
+    <div class="mpa-box" style="background:var(--ct-bg);border-radius:12px;padding:14px;margin-bottom:14px;border:2px solid var(--ct-orange)">
+      <label for="inputMPa" class="mpa-label" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--ct-navy);display:block;margin-bottom:6px">
+        <i class="bi bi-speedometer me-1" style="color:var(--ct-orange)"></i>Resistência (MPa)
+      </label>
+      <div style="display:flex;align-items:center;gap:10px">
+        <input type="number" id="inputMPa" class="mpa-input" step="0.1" min="0" max="200" placeholder="Ex: 32.5"
+               style="flex:1;padding:12px 14px;border:2px solid var(--ct-silver);border-radius:10px;font-size:20px;font-weight:900;color:var(--ct-navy);font-family:inherit;text-align:center;background:#fff"
+               inputmode="decimal">
+        <span class="mpa-unit" style="font-size:16px;font-weight:800;color:var(--ct-gray-lt)">MPa</span>
+      </div>
+    </div>
+
+    <button class="btn-ct btn-ct-green" id="btnSalvar" onclick="salvarLeitura()">
+      <i class="bi bi-cloud-upload-fill"></i> Salvar Leitura
+    </button>
+    <button class="btn-ct btn-ct-outline" style="margin-top:8px" onclick="novaLeitura()">
+      <i class="bi bi-arrow-counterclockwise"></i> Nova Leitura
+    </button>
+  </div>
+
+  <!-- ═══ HISTÓRICO ═══ -->
+  <div class="history-card">
+    <div class="history-head">
+      <h6><i class="bi bi-clock-history"></i>Últimas Leituras</h6>
+      <button class="btn-ct-outline" style="width:auto;padding:4px 10px;font-size:11px;border-radius:8px" onclick="loadHistory()">
+        <i class="bi bi-arrow-clockwise"></i>
+      </button>
+    </div>
+    <div class="history-list" id="historyList">
+      <div class="empty-msg"><i class="bi bi-inbox" style="font-size:28px;display:block;margin-bottom:6px"></i>Nenhuma leitura registrada</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="app-footer">&copy; 2026 <span>ConcreTrack</span> &mdash; DAutomação</div>
+
+<!-- Toast -->
+<div class="toast-ct" id="toast"></div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ═══════════════════════════════════════
+   CONFIG
+   ═══════════════════════════════════════ */
+const API_BASE = '/unificado/laboratorio/cec-api';
+const QUEUE_KEY = 'concretrack_qrcp_queue';
+let scanner = null;
+let scanning = false;
+let currentQR = null;
+let currentReadingId = null;
+let deferredPrompt = null;
+let syncInProgress = false;
+
+function newReadingId() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+/* ═══════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  updateOnlineStatus();
+  window.addEventListener('online', onOnline);
+  window.addEventListener('offline', updateOnlineStatus);
+  loadHistory();
+  syncQueue();
+});
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/unificado/laboratorio/cec/leitura/sw.js', {
+    scope: '/unificado/laboratorio/cec/leitura/',
+    updateViaCache: 'none'
+  }).then(reg => {
+    console.log('SW registered', reg.scope);
+    reg.update();
+  })
+    .catch(err => console.warn('SW failed', err));
+
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    const reloadKey = 'concretrack-leitura-sw-v3-reloaded';
+    if (sessionStorage.getItem(reloadKey)) return;
+    sessionStorage.setItem(reloadKey, '1');
+    window.location.reload();
+  });
+}
+
+// PWA install prompt
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').classList.add('show');
+});
+
+function installPWA() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(r => {
+    deferredPrompt = null;
+    document.getElementById('installBanner').classList.remove('show');
+  });
+}
+
+function dismissInstall() {
+  document.getElementById('installBanner').classList.remove('show');
+}
+
+/* ═══════════════════════════════════════
+   ONLINE / OFFLINE
+   ═══════════════════════════════════════ */
+function updateOnlineStatus() {
+  const dot = document.getElementById('statusDot');
+  dot.className = 'status-dot ' + (navigator.onLine ? 'online' : 'offline');
+  updateQueueBadge();
+}
+
+function onOnline() {
+  updateOnlineStatus();
+  syncQueue();
+}
+
+function updateQueueBadge() {
+  const q = getQueue();
+  const badge = document.getElementById('queueBadge');
+  if (q.length > 0) {
+    badge.style.display = 'inline';
+    badge.textContent = `${q.length} pendente${q.length > 1 ? 's' : ''}`;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+/* ═══════════════════════════════════════
+   OFFLINE QUEUE (localStorage)
+   ═══════════════════════════════════════ */
+function getQueue() {
+  try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function addToQueue(item) {
+  const q = getQueue();
+  const alreadyQueued = item.id && q.some(existing => existing.id === item.id);
+  if (!alreadyQueued) q.push(item);
+  localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+  updateQueueBadge();
+}
+
+function clearQueue() {
+  localStorage.removeItem(QUEUE_KEY);
+  updateQueueBadge();
+}
+
+async function syncQueue() {
+  if (!navigator.onLine || syncInProgress) return;
+  const q = getQueue();
+  if (q.length === 0) return;
+
+  syncInProgress = true;
+  let remaining = [];
+  try {
+    const authRes = await fetch(`${API_BASE}/auth/me`, {
+      credentials: 'include',
+      cache: 'no-store'
+    });
+    if (authRes.status === 401) return;
+    if (!authRes.ok) return;
+
+    for (let index = 0; index < q.length; index += 1) {
+      const item = q[index];
+      item.id = item.id || newReadingId();
+      try {
+        const res = await fetch(`${API_BASE}/qrcp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(item),
+        });
+        if (!res.ok) {
+          remaining.push(item);
+          if (res.status === 401 || res.status === 429 || res.status >= 500) {
+            remaining.push(...q.slice(index + 1));
+            break;
+          }
+        }
+      } catch {
+        remaining.push(item, ...q.slice(index + 1));
+        break;
+      }
+    }
+
+    localStorage.setItem(QUEUE_KEY, JSON.stringify(remaining));
+    updateQueueBadge();
+    if (remaining.length < q.length) {
+      showToast(`${q.length - remaining.length} leitura(s) sincronizada(s)`, 'success');
+      loadHistory();
+    }
+  } finally {
+    syncInProgress = false;
+  }
+}
+
+/* ═══════════════════════════════════════
+   QR SCANNER
+   ═══════════════════════════════════════ */
+function toggleScanner() {
+  if (scanning) {
+    stopScanner();
+  } else {
+    startScanner();
+  }
+}
+
+function startScanner() {
+  const btn = document.getElementById('btnToggle');
+  btn.innerHTML = '<i class="bi bi-stop-circle-fill"></i> Parar';
+
+  scanner = new Html5Qrcode('qr-reader');
+  scanning = true;
+
+  scanner.start(
+    { facingMode: 'environment' },
+    { fps: 10, qrbox: { width: 220, height: 220 }, aspectRatio: 1.0 },
+    onScanSuccess,
+    () => {}
+  ).catch(err => {
+    showToast('Erro ao acessar câmera: ' + err, 'error');
+    scanning = false;
+    btn.innerHTML = '<i class="bi bi-camera-fill"></i> Iniciar';
+  });
+}
+
+function stopScanner() {
+  if (scanner) {
+    scanner.stop().then(() => {
+      scanner.clear();
+      scanning = false;
+      document.getElementById('btnToggle').innerHTML = '<i class="bi bi-camera-fill"></i> Iniciar';
+    }).catch(() => {});
+  }
+}
+
+function onScanSuccess(text) {
+  // Vibrate on scan
+  if (navigator.vibrate) navigator.vibrate(200);
+
+  stopScanner();
+  currentQR = text;
+  currentReadingId = newReadingId();
+  displayResult(text);
+}
+
+/* ═══════════════════════════════════════
+   PARSE & DISPLAY
+   ═══════════════════════════════════════ */
+function parseQR(text) {
+  const data = {};
+  text.split('|').forEach(part => {
+    const eq = part.indexOf('=');
+    if (eq < 0) return;
+    const key = part.substring(0, eq).trim().toLowerCase();
+    const val = part.substring(eq + 1).trim();
+    data[key] = val;
+  });
+  return data;
+}
+
+function displayResult(text) {
+  const d = parseQR(text);
+  document.getElementById('rTraco').textContent = d.traco || '—';
+  document.getElementById('rNS').textContent = d.ns || '—';
+  document.getElementById('rNome').textContent = d.nome || '—';
+  document.getElementById('rCP').textContent = d.cp || '—';
+  document.getElementById('rIdade').textContent = d.idade ? `${d.idade} DIAS` : '—';
+  document.getElementById('rMold').textContent = d.mold || '—';
+  document.getElementById('rHora').textContent = d.hora || '—';
+  document.getElementById('rRupt').textContent = d.rupt || '—';
+  document.getElementById('rawQR').textContent = text;
+
+  const card = document.getElementById('resultCard');
+  card.classList.add('show');
+  card.scrollIntoView({ behavior: 'smooth' });
+
+  document.getElementById('btnSalvar').disabled = false;
+
+  // Focus on MPa input for quick typing
+  setTimeout(() => document.getElementById('inputMPa').focus(), 400);
+}
+
+/* ═══════════════════════════════════════
+   SALVAR
+   ═══════════════════════════════════════ */
+async function salvarLeitura() {
+  if (!currentQR) return;
+
+  const mpaVal = document.getElementById('inputMPa').value;
+  const mpa = Number(String(mpaVal).replace(',', '.'));
+  if (!Number.isFinite(mpa) || mpa <= 0 || mpa >= 200) {
+    showToast('Informe uma resistência MPa válida.', 'error');
+    document.getElementById('inputMPa').focus();
+    return;
+  }
+
+  const btn = document.getElementById('btnSalvar');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Salvando...';
+
+  currentReadingId = currentReadingId || newReadingId();
+  const payload = {
+    id: currentReadingId,
+    qr_raw: currentQR,
+    resistencia_mpa: mpa,
+    timestamp: new Date().toISOString()
+  };
+
+  if (navigator.onLine) {
+    try {
+      const res = await fetch(`${API_BASE}/qrcp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json().catch(() => null);
+      if (!res.ok || !json || !json.ok) {
+        const error = new Error((json && json.detail) || `HTTP ${res.status}`);
+        error.status = res.status;
+        error.retryable = res.status === 429 || res.status >= 500;
+        throw error;
+      }
+      showToast(`Salvo! ID: ${json.id.substring(0,8)}...`, 'success');
+      loadHistory();
+    } catch (e) {
+      if (e.status === 401) {
+        addToQueue(payload);
+        showToast('Sessão expirada — leitura preservada. Entre novamente.', 'error');
+        btn.innerHTML = '<i class="bi bi-clock-fill"></i> Pendente';
+        setTimeout(() => window.location.replace('/unificado/login.html?next=laboratorio/cec/leitura/'), 1200);
+        return;
+      }
+      if (e.retryable === false) {
+        showToast(e.message || 'Leitura inválida.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-cloud-upload-fill"></i> Salvar Leitura';
+        return;
+      }
+      // Fallback to queue
+      addToQueue(payload);
+      showToast('Sem conexão — salvo na fila offline', 'error');
+    }
+  } else {
+    addToQueue(payload);
+    showToast('Offline — salvo na fila local (' + getQueue().length + ')', 'error');
+  }
+
+  btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Salvo';
+}
+
+function novaLeitura() {
+  currentQR = null;
+  currentReadingId = null;
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('inputMPa').value = '';
+  startScanner();
+}
+
+/* ═══════════════════════════════════════
+   HISTORY
+   ═══════════════════════════════════════ */
+async function loadHistory() {
+  const list = document.getElementById('historyList');
+  if (!navigator.onLine) {
+    const q = getQueue();
+    if (q.length > 0) {
+      list.innerHTML = q.map(item => {
+        const d = parseQR(item.qr_raw || '');
+        return `<div class="history-item">
+          <div class="hi-icon"><i class="bi bi-clock"></i></div>
+          <div class="hi-body">
+            <div class="hi-title">${d.traco || '—'} • CP ${d.cp || '—'}</div>
+            <div class="hi-sub">${d.idade || '—'} dias • NS ${d.ns || '—'}</div>
+          </div>
+          <div class="hi-time" style="color:var(--ct-orange)">Pendente</div>
+        </div>`;
+      }).join('');
+    } else {
+      list.innerHTML = '<div class="empty-msg">Offline — sem histórico disponível</div>';
+    }
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/qrcp?limit=20`);
+    if (!res.ok) throw new Error();
+    const rows = await res.json();
+
+    if (rows.length === 0) {
+      list.innerHTML = '<div class="empty-msg"><i class="bi bi-inbox" style="font-size:28px;display:block;margin-bottom:6px"></i>Nenhuma leitura registrada</div>';
+      return;
+    }
+
+    list.innerHTML = rows.map(r => {
+      const time = r.created_at ? new Date(r.created_at).toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '—';
+      const mpa = r.resistencia_mpa != null ? `<b style="color:var(--ct-orange)">${r.resistencia_mpa} MPa</b>` : '';
+      return `<div class="history-item">
+        <div class="hi-icon"><i class="bi bi-qr-code"></i></div>
+        <div class="hi-body">
+          <div class="hi-title">${r.traco || '—'} • CP ${r.cp || '—'} ${mpa}</div>
+          <div class="hi-sub">${r.idade || '—'} dias • NS ${r.numero_serie || '—'} • ${r.nome || ''}</div>
+        </div>
+        <div class="hi-time">${time}</div>
+      </div>`;
+    }).join('');
+  } catch {
+    list.innerHTML = '<div class="empty-msg">Erro ao carregar histórico</div>';
+  }
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════ */
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.className = 'toast-ct show ' + type;
+  t.innerHTML = `<i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'}"></i> ${msg}`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>
