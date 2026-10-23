@@ -18,4 +18,4 @@ Para retorno do leitor antigo ao CEC antigo, remover somente `/etc/systemd/syste
 
 ## Limites atuais
 
-As etiquetas nativas são geradas a partir de leituras já registradas no CEC. A geração prévia de etiquetas a partir das massadas do ERP é uma integração distinta, ainda não migrada para o banco novo. A validação de uma leitura real com a conta operacional antiga depende do uso do leitor em produção; a ponte, a API e a escrita com recálculo foram verificadas separadamente.
+As etiquetas nativas são geradas a partir de leituras já registradas no CEC. A geração prévia de etiquetas a partir das massadas do ERP é uma integração distinta, ainda não migrada para o banco novo. A tabela `supervisorio_db.public.tbl_massadas` contém 10.875 linhas na origem, mas o papel de leitura já disponível na VPS nova não tem `SELECT` nela (`SQLSTATE 42501`). A decisão de não alterar permissões na origem impede um espelho contínuo dessa tabela neste recorte. A validação de uma leitura real com a conta operacional antiga depende do uso do leitor em produção; a ponte, a API e a escrita com recálculo foram verificadas separadamente.
