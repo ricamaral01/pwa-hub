@@ -1,4 +1,4 @@
-const CACHE = 'concrefer-unificado-shell-v1.0.38-campinas';
+const CACHE = 'concrefer-unificado-shell-v1.0.38-campinas-r2';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
 const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
@@ -7,7 +7,7 @@ const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
   ROOT + 'shell/modelo-a/menu.js?v=1.0.38-campinas',
   ROOT + 'shell/modelo-a-loader.js?v=1.0.38-campinas',
   ROOT + 'shell/menu.config.js?v=1.0.38-campinas', ROOT + 'shell/auth.js?v=1.0.15',
-  ROOT + 'shell/shell.js?v=1.0.37-kpi', ROOT + 'shell/router.js?v=1.0.36-usinas',
+  ROOT + 'shell/shell.js?v=1.0.38-campinas', ROOT + 'shell/router.js?v=1.0.36-usinas',
   ROOT + 'shell/module-pages.js?v=1.0.36-usinas',
   ROOT + 'shell/embedded.css?v=1.0'];
 self.addEventListener('message', event => {
