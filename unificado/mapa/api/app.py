@@ -1446,6 +1446,8 @@ from usinas_receitas import register as register_usinas_receitas
 register_usinas_receitas(app, connect, authenticated_user, screen_access_state)
 from usinas_legacy_read import register as register_usinas_legacy_read
 register_usinas_legacy_read(app, authenticated_user, screen_access_state)
+from usinas_cec import register as register_usinas_cec
+register_usinas_cec(app, authenticated_user, screen_access_state)
 
 
 if __name__ == "__main__":

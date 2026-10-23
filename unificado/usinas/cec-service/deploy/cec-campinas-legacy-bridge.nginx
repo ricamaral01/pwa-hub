@@ -1,0 +1,15 @@
+# Called only by the Campinas ERP API after its existing authentication and
+# role guard. The new CEC service itself listens on loopback.
+location = /cec-bridge/api/v1/rompimentos {
+    allow 31.97.241.84;
+    deny all;
+    client_max_body_size 8k;
+    proxy_pass http://127.0.0.1:3086/api/v1/rompimentos;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_read_timeout 25s;
+    add_header Cache-Control "no-store" always;
+}

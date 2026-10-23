@@ -1,7 +1,7 @@
 (function(){
   const key = new URLSearchParams(location.search).get('area');
   const host = document.getElementById('area-nativa-conteudo');
-  if (!host || !['cec','relatorios','estoque'].includes(key)) return;
+  if (!host || !['relatorios','estoque'].includes(key)) return;
   const base = '/unificado/mapa/api/usina/legacy/';
   const today = new Date().toLocaleDateString('en-CA');
   const month = today.slice(0,7);
