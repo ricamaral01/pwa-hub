@@ -309,7 +309,8 @@
 
     <!-- ======= Controle diario de moldagem ======= -->
     <div class="section-card">
-      <div class="section-title"><span>&#128198;</span> Controle Di&#225;rio de Moldagem (Dias &#218;teis)</div>
+      <div class="section-title"><span>&#128198;</span> Controle Di&#225;rio de Rompimentos por Data de Moldagem (Dias &#218;teis)</div>
+      <div style="font-size:.72rem;color:var(--muted);margin:0 0 8px 0;">Fonte: rompimentos registrados no controle estat&#237;stico. A aus&#234;ncia de registro n&#227;o confirma que n&#227;o houve moldagem.</div>
       <div id="moldagemResumo" style="font-size:.72rem;color:var(--muted);margin:0 0 10px 0;"></div>
       <div class="tbl-wrap">
         <table id="tblMoldagemDiaria" class="stat-tbl">
@@ -323,7 +324,7 @@
               <th class="th-3">3d (2)</th>
               <th class="th-7">7d (2)</th>
               <th class="th-28">28d (2)</th>
-              <th class="th-stat">FALTANTES</th>
+              <th class="th-stat">SEM REGISTRO</th>
               <th class="th-stat">RESUMO DO DIA</th>
             </tr>
           </thead>
@@ -793,13 +794,13 @@ function renderControleMoldagemDiaria(groups){
 
       var status='OK';
       var statusCls='v-ok';
-      if(day.total===0){ status='Sem moldagem'; statusCls='v-fail'; }
+      if(day.total===0){ status='Sem rompimento registrado'; statusCls='v-fail'; }
       else if(faltantes>0){ status='Incompleto'; statusCls='v-warn'; }
       else if(day.total>EXPECTED_TOTAL){ status='Acima do esperado'; statusCls='v-neu'; }
 
       var resumoDia=faltantes===0
         ? 'Completo'
-        : ('Faltam '+f1+'(1d), '+f3+'(3d), '+f7+'(7d), '+f28+'(28d)');
+        : ('Sem registro: '+f1+'(1d), '+f3+'(3d), '+f7+'(7d), '+f28+'(28d)');
 
       if(faltantes>0)faltasResumo.push(fmtDate(key)+': '+resumoDia);
 
