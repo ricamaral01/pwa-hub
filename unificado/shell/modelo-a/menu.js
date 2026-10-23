@@ -5968,7 +5968,12 @@ const Er = {
     ])
   ] },
   { id: "usinas", label: "Usinas", color: Er.usinas, icon: "factory", sections: [
-    Te("GERAL", [["usinasInicio", "Visão geral", "usinas/", "map"]])
+    Te("GERAL", [
+      ["usinasInicio", "Cartas de traço", "usinas/", "map"],
+      ["usinasCec", "Controle estatístico", "usinas/?area=cec", "database"],
+      ["usinasRelatorios", "Relatórios gerenciais", "usinas/?area=relatorios", "doc"],
+      ["usinasEstoque", "Controle de estoque", "usinas/?area=estoque", "factory"]
+    ])
   ] },
   { id: "ged", label: "GED", color: Er.ged, icon: "folder", sections: [
     Te("GESTÃO DOCUMENTAL", [

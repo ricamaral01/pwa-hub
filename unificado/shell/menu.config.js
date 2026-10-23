@@ -76,7 +76,10 @@ const MENU_CONFIG = {
     ]
   },
   usinas: { label: 'Usinas', groups: [{ label: 'Geral', items: [
-    { id: 'usinasInicio', label: 'Cartas de traço', path: '' }
+    { id: 'usinasInicio', label: 'Cartas de traço', path: '' },
+    { id: 'usinasCec', label: 'Controle estatístico', path: '?area=cec', permissionId: 'usinasInicio' },
+    { id: 'usinasRelatorios', label: 'Relatórios gerenciais', path: '?area=relatorios', permissionId: 'usinasInicio' },
+    { id: 'usinasEstoque', label: 'Controle de estoque', path: '?area=estoque', permissionId: 'usinasInicio' }
   ] }] }
 };
 

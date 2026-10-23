@@ -9,6 +9,7 @@
   <style>
     :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10233e;background:#f2f5f9}
     *{box-sizing:border-box}
+    [hidden]{display:none!important}
     body{margin:0;min-height:100vh;padding:clamp(18px,3vw,40px)}
     main{max-width:1220px;margin:0 auto}
     .eyebrow{margin:0 0 8px;color:#087f8c;font-size:.76rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
@@ -22,6 +23,9 @@
     .legacy-card:hover,.legacy-card:focus-visible{border-color:#087f8c;outline:none;box-shadow:0 0 0 3px #c4e8e9}
     .legacy-card strong{font-size:1.05rem}.legacy-card span{color:#53657b;font-size:.85rem;line-height:1.45}.legacy-card small{margin-top:auto;color:#086773;font-weight:800}
     .legacy-note{color:#53657b;font-size:.84rem;line-height:1.5}
+    .legacy-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;padding:20px 24px 24px}
+    .legacy-links a{padding:13px 15px;border:1px solid #dbe4ee;border-radius:11px;color:#09677b;font-weight:750;text-decoration:none}
+    .legacy-links a:hover,.legacy-links a:focus-visible{background:#eaf7f9;border-color:#087f8c}
     .metric,.panel{border:1px solid #dbe4ee;border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(11,23,48,.045)}
     .metric{padding:20px 22px}
     .metric span{display:block;color:#586b80;font-size:.82rem;font-weight:700}
@@ -75,10 +79,10 @@
 <body>
   <main>
     <p class="eyebrow">Usinas / Campinas</p>
-    <h1>Cartas de traço</h1>
-    <p class="intro">Receitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.</p>
-    <span class="state">Somente leitura</span>
-    <section class="summary" aria-label="Resumo das cartas de traço">
+    <h1 id="titulo">Cartas de traço</h1>
+    <p id="intro" class="intro">Receitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.</p>
+    <span id="estado" class="state">Somente leitura</span>
+    <section id="resumo" class="summary" aria-label="Resumo das cartas de traço">
       <div class="metric"><span>Cartas e revisões</span><strong id="total">—</strong></div>
       <div class="metric"><span>Ativas</span><strong id="ativas">—</strong></div>
       <div class="metric"><span>Última atualização</span><strong id="atualizacao" style="font-size:1.05rem">—</strong></div>
@@ -89,7 +93,11 @@
       <a class="legacy-card" href="https://dautomacao.com/concretrack/estoque/" target="_blank" rel="noopener noreferrer"><strong>Controle de estoque</strong><span>Entradas, saldos, consumo, silos e acertos de inventário.</span><small>Abrir sistema original ↗</small></a>
     </section>
     <p class="legacy-note">Essas três áreas continuam no sistema original e podem solicitar o login antigo. Os dados e as ações delas ainda não foram migrados para o Unificado.</p>
-    <section class="panel" aria-labelledby="lista-titulo">
+    <section id="area-legado" class="panel" aria-labelledby="area-legado-titulo" hidden>
+      <div class="toolbar"><div><h2 id="area-legado-titulo"></h2><p class="sub">Escolha uma tela para abrir no sistema original.</p></div></div>
+      <div id="area-legado-links" class="legacy-links"></div>
+    </section>
+    <section id="receitas" class="panel" aria-labelledby="lista-titulo">
       <div class="toolbar">
         <div><h2 id="lista-titulo">Receitas</h2><p class="sub">A edição será disponibilizada após a validação do fluxo de gravação.</p></div>
         <label class="search">Buscar carta de traço<input id="buscar" type="search" placeholder="Nome ou ID" autocomplete="off"></label>
@@ -115,6 +123,41 @@
   </main>
   <script>
     const $ = id => document.getElementById(id);
+    const legacyBase = 'https://dautomacao.com/concretrack/';
+    const areas = {
+      cec: {title:'Controle estatístico', links:[
+        ['Visão geral','cec/'],['Leituras','cec/leitura/'],['Resultados','cec/resultados/'],
+        ['Etiquetas','cec/etiquetas/'],['Relatório CEC','cec/relatorio/'],['Análise','cec/analise/']]},
+      relatorios: {title:'Relatórios gerenciais', links:[
+        ['Visão geral','relatorios/'],['Cartas de traço','relatorios/cartas-traco/'],
+        ['Consumo de materiais','relatorios/consumo/'],['Custos do concreto','relatorios/custos/'],
+        ['Comparar traços','relatorios/custos/comparar/'],['Exportar massadas','relatorios/exportar/'],
+        ['Fechamento mensal','relatorios/fechamento/'],['Fechamento diário','relatorios/fechamento-diario/'],
+        ['Produção por período','relatorios/producao-periodo/'],['Reports diários','relatorios/reports-diarios/']]},
+      estoque: {title:'Controle de estoque', links:[
+        ['Visão geral','estoque/'],['Entrada de materiais','estoque/entrada/'],
+        ['Saldo de estoque','estoque/saldo/'],['Relatório de consumo','estoque/relatorio/'],
+        ['Consumo de agregados','estoque/consumo/'],['Consumo de cimento','estoque/consumo-cimento/'],
+        ['Mapeamento das caixas','estoque/mapeamento-agregados/'],['Acerto de estoque','estoque/acerto/']]}
+    };
+    const area = areas[new URLSearchParams(location.search).get('area')];
+    if(area){
+      document.title = `Usinas · ${area.title}`;
+      $('titulo').textContent = area.title;
+      $('intro').textContent = 'Telas operacionais de Campinas disponíveis no sistema original.';
+      $('estado').textContent = 'Sistema original';
+      $('resumo').hidden = true;
+      $('receitas').hidden = true;
+      $('area-legado-titulo').textContent = area.title;
+      $('area-legado').hidden = false;
+      for(const [label,path] of area.links){
+        const link = document.createElement('a');
+        link.href = new URL(path,legacyBase).href;
+        link.target = '_blank';link.rel = 'noopener noreferrer';
+        link.textContent = `${label} ↗`;
+        $('area-legado-links').append(link);
+      }
+    }
     let rows = [];
     const text = value => value == null || value === '' ? '—' : String(value);
     const number = value => value == null ? '—' : new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(Number(value));
@@ -218,7 +261,7 @@
     $('buscar').addEventListener('input', render);
     $('fechar').addEventListener('click',()=>{$('detalhe').hidden=true;$('buscar').focus()});
     $('imprimir').addEventListener('click',()=>window.print());
-    load(); setInterval(load, 60000);
+    if(!area){load(); setInterval(load, 60000)}
   </script>
 </body>
 </html>

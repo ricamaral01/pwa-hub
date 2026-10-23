@@ -118,7 +118,12 @@ export const NAV_MODULES: NavModule[] = [
     ]),
   ] },
   { id:'usinas', label:'Usinas', color:MODULE_COLORS.usinas, icon:'factory', sections:[
-    section('GERAL', [['usinasInicio','Visão geral','usinas/','map']])
+    section('GERAL', [
+      ['usinasInicio','Cartas de traço','usinas/','map'],
+      ['usinasCec','Controle estatístico','usinas/?area=cec','database'],
+      ['usinasRelatorios','Relatórios gerenciais','usinas/?area=relatorios','doc'],
+      ['usinasEstoque','Controle de estoque','usinas/?area=estoque','factory'],
+    ])
   ] },
   { id:'ged', label:'GED', color:MODULE_COLORS.ged, icon:'folder', sections:[
     section('GESTÃO DOCUMENTAL', [
