@@ -1,0 +1,23 @@
+[Unit]
+Description=Concrefer Usinas Campinas recipe mirror (homologation)
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=usinas-sync
+Group=usinas-sync
+WorkingDirectory=/opt/concrefer-unificado/homolog-next/usinas
+EnvironmentFile=/etc/concrefer/usinas-homolog.env
+ExecStart=/opt/concrefer-unificado/homolog-next/usinas/venv/bin/python /opt/concrefer-unificado/homolog-next/usinas/sync_receitas.py
+Restart=on-failure
+RestartSec=15
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

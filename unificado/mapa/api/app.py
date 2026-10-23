@@ -1442,5 +1442,9 @@ def logout():
     return response
 
 
+from usinas_receitas import register as register_usinas_receitas
+register_usinas_receitas(app, connect, authenticated_user, screen_access_state)
+
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=13052)

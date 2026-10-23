@@ -76,7 +76,7 @@ const MENU_CONFIG = {
     ]
   },
   usinas: { label: 'Usinas', groups: [{ label: 'Geral', items: [
-    { id: 'usinasInicio', label: 'Visão geral', path: '' }
+    { id: 'usinasInicio', label: 'Cartas de traço', path: '' }
   ] }] }
 };
 
