@@ -1,4 +1,4 @@
-const CACHE = "ct-controle-est-v7";
+const CACHE = "ct-controle-est-v8";
 const ASSETS = [
   "./index.html",
   "./resultado-cp.html",
