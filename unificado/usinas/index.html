@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0B1730">
   <title>Usinas · Cartas de traço</title>
-  <script>if (top === self) location.replace('/unificado/?view=usinas/');</script>
+  <script>if (top === self) { const area = new URLSearchParams(location.search).get('area'); const view = 'usinas/' + (area ? '?area=' + encodeURIComponent(area) : ''); location.replace('/unificado/?view=' + encodeURIComponent(view)); }</script>
   <style>
     :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10233e;background:#f2f5f9}
     *{box-sizing:border-box}

@@ -87,8 +87,8 @@ disponíveis. Nenhuma instância adicional foi ativada.
 
 ## Campinas: CEC, relatórios e estoque
 
-O menu de `https://dautomacao.com/concretrack/` abre estas três áreas. A tela
-de Usinas no Unificado oferece links identificados para seus menus originais,
+O menu de `https://dautomacao.com/concretrack/` abre estas três áreas. O menu
+Usinas no Unificado mostra entradas próprias e links para as telas originais,
 em nova aba; eles continuam usando a autenticação e as permissões do ERP antigo.
 Isso mantém o acesso operacional enquanto a migração de dados e funções não
 está concluída. Os links não representam integração de sessão, dados ou escrita.
