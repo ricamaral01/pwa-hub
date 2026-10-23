@@ -78,7 +78,9 @@ desligadas. Não existe worker de despacho nem endpoint de edição do Unificado
 Esses itens dependem da solução de autenticação delegada, idempotência no
 endpoint legado e conflito atômico. `espelho_rw` não foi criado.
 
-Pederneiras e Noroeste continuam fora deste recorte. A expansão requer uma
-fonte de leitura já autorizada para cada instância; a decisão atual mantém
-origem e permissões intactas. Isso também impede ativar edição com os contratos
-legados disponíveis.
+Pederneiras e Noroeste continuam fora deste recorte. Em 23/10/2026, não havia
+fonte de leitura autorizada para espelhar as receitas de Pederneiras com o
+acesso atual; para Noroeste, o contrato de unidade e a interpretação dos
+materiais ainda precisam de validação. A decisão atual mantém origem e
+permissões intactas. Isso também impede ativar edição com os contratos legados
+disponíveis. Nenhuma instância adicional foi ativada.
