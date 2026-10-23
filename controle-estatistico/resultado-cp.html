@@ -468,7 +468,7 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 (async function(){
-  try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('./sw.js',{scope:'./'}); }catch(e){}
+  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=10',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
 
   // SW version badge and force update
   function initSWVersionBadge() {
