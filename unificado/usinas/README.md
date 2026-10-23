@@ -84,3 +84,31 @@ acesso atual; para Noroeste, o contrato de unidade e a interpretação dos
 materiais ainda precisam de validação. A decisão atual mantém origem e
 permissões intactas. Isso também impede ativar edição com os contratos legados
 disponíveis. Nenhuma instância adicional foi ativada.
+
+## Campinas: CEC, relatórios e estoque
+
+O menu de `https://dautomacao.com/concretrack/` abre estas três áreas. A tela
+de Usinas no Unificado oferece links identificados para seus menus originais,
+em nova aba; eles continuam usando a autenticação e as permissões do ERP antigo.
+Isso mantém o acesso operacional enquanto a migração de dados e funções não
+está concluída. Os links não representam integração de sessão, dados ou escrita.
+
+| Área | Telas existentes na origem | Fonte necessária para paridade no Unificado |
+|---|---|---|
+| Controle estatístico (CEC) | leitura, resultados, etiquetas, análise, relatório | banco `controle_est_concre_db`, API CEC e vínculo com massadas/QRCP |
+| Relatórios gerenciais | cartas de traço, consumo, custos, exportação, fechamento mensal e diário, produção por período, reports diários | massadas, receitas, movimentos de estoque, custos, paradas, PCP/Mapa e fontes externas do fechamento |
+| Controle de estoque | entrada, saldo, relatório, consumo, consumo de cimento, mapeamento de agregados, acerto | materiais, movimentos, silos, configuração do misturador e massadas |
+
+O papel de espelhamento atual possui `SELECT` apenas em `tbl_receitas` de
+Campinas. A base nova possui somente `usinas.receitas` e `usinas.sync_status`
+para este módulo. Portanto, nenhuma das três áreas dispõe hoje de dados
+completos e atuais no Unificado. O contrato de escrita do ERP/CEC também não
+oferece autenticação delegada e proteção atômica contra duplicatas e conflitos
+para a migração funcional das ações. Com a decisão de não alterar a origem nem
+suas permissões, essas funções permanecem no ERP antigo.
+
+O inventário de telas, rotas, tabelas, fórmulas e integrações está em
+`docs/porting/usinas/`. Para retomar a implementação nativa, é preciso definir
+uma fonte de leitura autorizada para cada banco/tabela sem alterar a origem e
+um contrato de escrita seguro para cada ação. Até então, não publicar saldos,
+estatísticas ou fechamentos calculados só com receitas: seriam incompletos.

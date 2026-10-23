@@ -17,6 +17,11 @@
     .state{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:#e8f3f3;color:#086773;font-size:.8rem;font-weight:800}
     .state::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
     .summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+    .legacy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+    .legacy-card{display:flex;flex-direction:column;gap:10px;padding:20px 22px;border:1px solid #dbe4ee;border-radius:18px;background:#fff;color:inherit;text-decoration:none;box-shadow:0 12px 30px rgba(11,23,48,.045)}
+    .legacy-card:hover,.legacy-card:focus-visible{border-color:#087f8c;outline:none;box-shadow:0 0 0 3px #c4e8e9}
+    .legacy-card strong{font-size:1.05rem}.legacy-card span{color:#53657b;font-size:.85rem;line-height:1.45}.legacy-card small{margin-top:auto;color:#086773;font-weight:800}
+    .legacy-note{color:#53657b;font-size:.84rem;line-height:1.5}
     .metric,.panel{border:1px solid #dbe4ee;border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(11,23,48,.045)}
     .metric{padding:20px 22px}
     .metric span{display:block;color:#586b80;font-size:.82rem;font-weight:700}
@@ -61,8 +66,9 @@
     .carta-meta{margin:-8px 0 18px;color:#607187;font-size:.85rem}
     .carta-indicadores{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:16px 0}
     .carta-indicadores .detail-item:first-child{background:#eaf1f8}
-    @media print{body{padding:0;background:#fff}body main>h1,body main>.eyebrow,body main>.intro,body main>.state,body main>.summary,body main>.panel:not(.detail){display:none!important}.detail{border:0;box-shadow:none;margin:0;padding:0}.detail-actions,.print-extra,#revisoes,.detail-subtitle,#observacao{display:none!important}.detail-head{border-bottom:2px solid #087f8c;padding-bottom:10px}.detail-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.detail-item{break-inside:avoid;border-color:#cbd5e1}.carta-indicadores{grid-template-columns:repeat(5,minmax(0,1fr))}}
+    @media print{body{padding:0;background:#fff}body main>h1,body main>.eyebrow,body main>.intro,body main>.state,body main>.summary,body main>.legacy-grid,body main>.legacy-note,body main>.panel:not(.detail){display:none!important}.detail{border:0;box-shadow:none;margin:0;padding:0}.detail-actions,.print-extra,#revisoes,.detail-subtitle,#observacao{display:none!important}.detail-head{border-bottom:2px solid #087f8c;padding-bottom:10px}.detail-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.detail-item{break-inside:avoid;border-color:#cbd5e1}.carta-indicadores{grid-template-columns:repeat(5,minmax(0,1fr))}}
     @media(max-width:700px){.summary{grid-template-columns:1fr 1fr}.metric:last-child{grid-column:1/-1}.toolbar{display:grid;align-items:stretch}.search input{width:100%}}
+    @media(max-width:850px){.legacy-grid{grid-template-columns:1fr}}
     @media(max-width:700px){.carta-indicadores{grid-template-columns:repeat(2,minmax(0,1fr))}}
   </style>
 </head>
@@ -77,6 +83,12 @@
       <div class="metric"><span>Ativas</span><strong id="ativas">—</strong></div>
       <div class="metric"><span>Última atualização</span><strong id="atualizacao" style="font-size:1.05rem">—</strong></div>
     </section>
+    <section class="legacy-grid" aria-label="Áreas operacionais de Campinas">
+      <a class="legacy-card" href="https://dautomacao.com/concretrack/cec/" target="_blank" rel="noopener noreferrer"><strong>Controle estatístico</strong><span>Leituras, resultados, etiquetas, análise e relatório CEC.</span><small>Abrir sistema original ↗</small></a>
+      <a class="legacy-card" href="https://dautomacao.com/concretrack/relatorios/" target="_blank" rel="noopener noreferrer"><strong>Relatórios gerenciais</strong><span>Produção, consumo, custos, fechamento e exportações.</span><small>Abrir sistema original ↗</small></a>
+      <a class="legacy-card" href="https://dautomacao.com/concretrack/estoque/" target="_blank" rel="noopener noreferrer"><strong>Controle de estoque</strong><span>Entradas, saldos, consumo, silos e acertos de inventário.</span><small>Abrir sistema original ↗</small></a>
+    </section>
+    <p class="legacy-note">Essas três áreas continuam no sistema original e podem solicitar o login antigo. Os dados e as ações delas ainda não foram migrados para o Unificado.</p>
     <section class="panel" aria-labelledby="lista-titulo">
       <div class="toolbar">
         <div><h2 id="lista-titulo">Receitas</h2><p class="sub">A edição será disponibilizada após a validação do fluxo de gravação.</p></div>
