@@ -1,4 +1,4 @@
-const CACHE_NAME = 'concretrack-leitura-v3';
+const CACHE_NAME = 'concretrack-leitura-v4';
 const ASSETS = [
   '/unificado/laboratorio/cec/leitura/',
   '/unificado/laboratorio/cec/assets/img/icon-192.png',

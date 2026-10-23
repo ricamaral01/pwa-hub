@@ -130,7 +130,7 @@
         <div class="brand-sub">Controle Estatístico <span id="sw-version-badge" style="display:none; font-size:9px; background:rgba(0,0,0,0.06); border:1px solid rgba(0,0,0,0.12); padding:1px 5px; border-radius:10px; cursor:pointer; color:var(--muted); font-weight:bold; margin-left:4px; vertical-align:middle; transition:background 0.2s;" title="Clique para forçar atualização e limpar cache">loading</span></div>
       </div>
     </div>
-    <a class="btn-back" href="../index.html">← Hub</a>
+    <a class="btn-back" href="../index.html">← Voltar</a>
     <button class="btn-install" id="btnInstall" aria-label="Instalar App">⬇ Instalar App</button>
   </div>
 
@@ -185,7 +185,7 @@
   // Registrar SW próprio do módulo
   try{
     if ("serviceWorker" in navigator) {
-      const registration = await navigator.serviceWorker.register("./sw.js?v=10", { scope: "./", updateViaCache: "none" });
+      const registration = await navigator.serviceWorker.register("./sw.js?v=11", { scope: "./", updateViaCache: "none" });
       registration.update().catch(function(){});
     }
   }catch(e){}
