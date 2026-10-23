@@ -87,11 +87,23 @@ disponíveis. Nenhuma instância adicional foi ativada.
 
 ## Campinas: CEC, relatórios e estoque
 
-O menu de `https://dautomacao.com/concretrack/` abre estas três áreas. O menu
-Usinas no Unificado mostra entradas próprias e links para as telas originais,
-em nova aba; eles continuam usando a autenticação e as permissões do ERP antigo.
-Isso mantém o acesso operacional enquanto a migração de dados e funções não
-está concluída. Os links não representam integração de sessão, dados ou escrita.
+O menu Usinas no Unificado abre telas próprias de CEC, relatórios e estoque,
+sem encaminhar a navegação para o ERP antigo. `native-areas.js` apresenta as
+consultas e os filtros; `usinas_legacy_read.py` valida primeiro a sessão e a
+permissão `usinasInicio` do Unificado. O usuário entra com sua conta antiga
+dentro da tela para consultar somente rotas GET explicitamente permitidas da
+API de Campinas. O token antigo fica em cookie separado, HttpOnly e limitado
+ao caminho do proxy. A senha não é guardada pelo Unificado.
+
+Essa ponte não copia os dados para a VPS nova e não altera esquema, permissões,
+API ou CLP da origem. Ela depende da disponibilidade da API antiga e da
+permissão da conta antiga. As telas exibem as respostas atuais sem inventar
+saldos ou indicadores. Exportação CSV e impressão trabalham sobre os dados
+consultados. Cadastro de entradas, acertos, leituras CEC e geração de reports
+continuam indisponíveis na nova interface, pois dependem de um contrato seguro
+de escrita. A análise CEC consolidada também não tem rota de consulta autorizada
+nesta ponte. A paridade visual e funcional completa ainda requer migração dessas
+operações e validação autenticada de cada tela.
 
 | Área | Telas existentes na origem | Fonte necessária para paridade no Unificado |
 |---|---|---|
@@ -101,14 +113,14 @@ está concluída. Os links não representam integração de sessão, dados ou es
 
 O papel de espelhamento atual possui `SELECT` apenas em `tbl_receitas` de
 Campinas. A base nova possui somente `usinas.receitas` e `usinas.sync_status`
-para este módulo. Portanto, nenhuma das três áreas dispõe hoje de dados
-completos e atuais no Unificado. O contrato de escrita do ERP/CEC também não
-oferece autenticação delegada e proteção atômica contra duplicatas e conflitos
-para a migração funcional das ações. Com a decisão de não alterar a origem nem
-suas permissões, essas funções permanecem no ERP antigo.
+para este módulo. As demais consultas dependem da sessão antiga via proxy,
+sem espelhamento e sem disponibilidade offline. O contrato de escrita do ERP/CEC
+não oferece autenticação delegada e proteção atômica contra duplicatas e
+conflitos para a migração funcional das ações. Com a decisão de não alterar a
+origem nem suas permissões, essas funções permanecem pendentes.
 
 O inventário de telas, rotas, tabelas, fórmulas e integrações está em
 `docs/porting/usinas/`. Para retomar a implementação nativa, é preciso definir
 uma fonte de leitura autorizada para cada banco/tabela sem alterar a origem e
-um contrato de escrita seguro para cada ação. Até então, não publicar saldos,
-estatísticas ou fechamentos calculados só com receitas: seriam incompletos.
+um contrato de escrita seguro para cada ação. Não calcular saldos, estatísticas
+ou fechamentos só com receitas: seriam incompletos.

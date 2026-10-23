@@ -88,14 +88,13 @@
       <div class="metric"><span>Última atualização</span><strong id="atualizacao" style="font-size:1.05rem">—</strong></div>
     </section>
     <section class="legacy-grid" aria-label="Áreas operacionais de Campinas">
-      <a class="legacy-card" href="https://dautomacao.com/concretrack/cec/" target="_blank" rel="noopener noreferrer"><strong>Controle estatístico</strong><span>Leituras, resultados, etiquetas, análise e relatório CEC.</span><small>Abrir sistema original ↗</small></a>
-      <a class="legacy-card" href="https://dautomacao.com/concretrack/relatorios/" target="_blank" rel="noopener noreferrer"><strong>Relatórios gerenciais</strong><span>Produção, consumo, custos, fechamento e exportações.</span><small>Abrir sistema original ↗</small></a>
-      <a class="legacy-card" href="https://dautomacao.com/concretrack/estoque/" target="_blank" rel="noopener noreferrer"><strong>Controle de estoque</strong><span>Entradas, saldos, consumo, silos e acertos de inventário.</span><small>Abrir sistema original ↗</small></a>
+      <a class="legacy-card" href="?area=cec"><strong>Controle estatístico</strong><span>Leituras, resultados, etiquetas, análise e relatório CEC.</span><small>Abrir no Unificado →</small></a>
+      <a class="legacy-card" href="?area=relatorios"><strong>Relatórios gerenciais</strong><span>Produção, consumo, custos, fechamento e exportações.</span><small>Abrir no Unificado →</small></a>
+      <a class="legacy-card" href="?area=estoque"><strong>Controle de estoque</strong><span>Entradas, saldos, consumo, silos e acertos de inventário.</span><small>Abrir no Unificado →</small></a>
     </section>
-    <p class="legacy-note">Essas três áreas continuam no sistema original e podem solicitar o login antigo. Os dados e as ações delas ainda não foram migrados para o Unificado.</p>
-    <section id="area-legado" class="panel" aria-labelledby="area-legado-titulo" hidden>
-      <div class="toolbar"><div><h2 id="area-legado-titulo"></h2><p class="sub">Escolha uma tela para abrir no sistema original.</p></div></div>
-      <div id="area-legado-links" class="legacy-links"></div>
+    <section id="area-nativa" class="panel" aria-labelledby="area-nativa-titulo" hidden>
+      <div class="toolbar"><div><h2 id="area-nativa-titulo"></h2><p class="sub">Campinas · telas do Unificado</p></div></div>
+      <div id="area-nativa-conteudo"></div>
     </section>
     <section id="receitas" class="panel" aria-labelledby="lista-titulo">
       <div class="toolbar">
@@ -123,40 +122,21 @@
   </main>
   <script>
     const $ = id => document.getElementById(id);
-    const legacyBase = 'https://dautomacao.com/concretrack/';
     const areas = {
-      cec: {title:'Controle estatístico', links:[
-        ['Visão geral','cec/'],['Leituras','cec/leitura/'],['Resultados','cec/resultados/'],
-        ['Etiquetas','cec/etiquetas/'],['Relatório CEC','cec/relatorio/'],['Análise','cec/analise/']]},
-      relatorios: {title:'Relatórios gerenciais', links:[
-        ['Visão geral','relatorios/'],['Cartas de traço','relatorios/cartas-traco/'],
-        ['Consumo de materiais','relatorios/consumo/'],['Custos do concreto','relatorios/custos/'],
-        ['Comparar traços','relatorios/custos/comparar/'],['Exportar massadas','relatorios/exportar/'],
-        ['Fechamento mensal','relatorios/fechamento/'],['Fechamento diário','relatorios/fechamento-diario/'],
-        ['Produção por período','relatorios/producao-periodo/'],['Reports diários','relatorios/reports-diarios/']]},
-      estoque: {title:'Controle de estoque', links:[
-        ['Visão geral','estoque/'],['Entrada de materiais','estoque/entrada/'],
-        ['Saldo de estoque','estoque/saldo/'],['Relatório de consumo','estoque/relatorio/'],
-        ['Consumo de agregados','estoque/consumo/'],['Consumo de cimento','estoque/consumo-cimento/'],
-        ['Mapeamento das caixas','estoque/mapeamento-agregados/'],['Acerto de estoque','estoque/acerto/']]}
+      cec: {title:'Controle estatístico'},
+      relatorios: {title:'Relatórios gerenciais'},
+      estoque: {title:'Controle de estoque'}
     };
     const area = areas[new URLSearchParams(location.search).get('area')];
     if(area){
       document.title = `Usinas · ${area.title}`;
       $('titulo').textContent = area.title;
-      $('intro').textContent = 'Telas operacionais de Campinas disponíveis no sistema original.';
-      $('estado').textContent = 'Sistema original';
+      $('intro').textContent = 'Telas operacionais de Campinas integradas ao Unificado.';
+      $('estado').textContent = 'Consulta nativa';
       $('resumo').hidden = true;
       $('receitas').hidden = true;
-      $('area-legado-titulo').textContent = area.title;
-      $('area-legado').hidden = false;
-      for(const [label,path] of area.links){
-        const link = document.createElement('a');
-        link.href = new URL(path,legacyBase).href;
-        link.target = '_blank';link.rel = 'noopener noreferrer';
-        link.textContent = `${label} ↗`;
-        $('area-legado-links').append(link);
-      }
+      $('area-nativa-titulo').textContent = area.title;
+      $('area-nativa').hidden = false;
     }
     let rows = [];
     const text = value => value == null || value === '' ? '—' : String(value);
@@ -263,5 +243,7 @@
     $('imprimir').addEventListener('click',()=>window.print());
     if(!area){load(); setInterval(load, 60000)}
   </script>
+  <link rel="stylesheet" href="./native-areas.css?v=1">
+  <script src="./native-areas.js?v=1"></script>
 </body>
 </html>
