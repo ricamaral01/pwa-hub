@@ -5945,6 +5945,16 @@ const Er = {
     ])
   ] },
   { id: "laboratorio", label: "Laboratório", color: Er.laboratorio, icon: "flask", sections: [
+    xe("CORPOS DE PROVA", [
+      ["labCecEtiquetas", "Etiquetas QR", "laboratorio/cec/etiquetas/", "doc"],
+      ["labCecLeitura", "Leitura de CP", "laboratorio/cec/leitura/", "database"],
+      ["labCecResultados", "Resultados dos corpos de prova", "laboratorio/cec/analise/resultado-cp.html", "flask"]
+    ]),
+    xe("CONTROLE ESTATÍSTICO", [
+      ["labCec", "Visão geral", "laboratorio/cec/", "database"],
+      ["labCecAnalise", "Análise estatística", "laboratorio/cec/analise/", "map"],
+      ["labCecRelatorio", "Relatório CEC", "laboratorio/cec/analise/relatorio.html", "doc"]
+    ]),
     xe("DOSAGEM", [
       ["labDosagem", "Visão geral", "laboratorio/dosagem/", "flask"],
       ["labDosagemEmpacotamento", "Empacotamento", "laboratorio/dosagem/#/dosagem/empacotamento", "flask"],
@@ -5963,14 +5973,6 @@ const Er = {
     ]),
     xe("CONCRETO FRESCO", [
       ["labSlump", "Registro de slump / flow", "laboratorio/slump", "thermometer"]
-    ]),
-    xe("CONTROLE ESTATÍSTICO", [
-      ["labCec", "Visão geral", "laboratorio/cec/", "database"],
-      ["labCecResultados", "Resultados dos corpos de prova", "laboratorio/cec/analise/resultado-cp.html", "flask"],
-      ["labCecRelatorio", "Relatório CEC", "laboratorio/cec/analise/relatorio.html", "doc"],
-      ["labCecAnalise", "Análise estatística", "laboratorio/cec/analise/", "map"],
-      ["labCecEtiquetas", "Etiquetas QR", "laboratorio/cec/etiquetas/", "doc"],
-      ["labCecLeitura", "Leitura de CP", "laboratorio/cec/leitura/", "database"]
     ]),
     xe("CURA TÉRMICA", [
       ["labMonitor", "Monitoramento", "laboratorio/", "thermometer", { text: "AO VIVO", tone: "live" }],

@@ -1,12 +1,12 @@
-const CACHE = 'concrefer-unificado-shell-v1.0.39-cec-menu';
+const CACHE = 'concrefer-unificado-shell-v1.0.40-lab-cp';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
 const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
   ROOT + 'shell/shared-menu.css?v=1.0.36-usinas',
   ROOT + 'shell/modelo-a/menu.css?v=1.0.20-modulos', ROOT + 'shell/modelo-a-host.css?v=1.0.36-usinas',
-  ROOT + 'shell/modelo-a/menu.js?v=1.0.39-cec-menu',
-  ROOT + 'shell/modelo-a-loader.js?v=1.0.39-cec-menu',
-  ROOT + 'shell/menu.config.js?v=1.0.38-campinas', ROOT + 'shell/auth.js?v=1.0.15',
+  ROOT + 'shell/modelo-a/menu.js?v=1.0.40-lab-cp',
+  ROOT + 'shell/modelo-a-loader.js?v=1.0.40-lab-cp',
+  ROOT + 'shell/menu.config.js?v=1.0.40-lab-cp', ROOT + 'shell/auth.js?v=1.0.15',
   ROOT + 'shell/shell.js?v=1.0.38-campinas', ROOT + 'shell/router.js?v=1.0.36-usinas',
   ROOT + 'shell/module-pages.js?v=1.0.36-usinas',
   ROOT + 'shell/embedded.css?v=1.0'];

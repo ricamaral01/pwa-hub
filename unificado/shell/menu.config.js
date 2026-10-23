@@ -99,6 +99,16 @@ const MENU_CONFIG = {
   laboratorio: {
     label: 'Laboratório',
     groups: [
+      { label: 'Corpos de Prova', items: [
+        { id:'labCecEtiquetas', label:'Etiquetas QR', path:'cec/etiquetas/', permissionId:'labCec' },
+        { id:'labCecLeitura', label:'Leitura de CP', path:'cec/leitura/', permissionId:'labCec' },
+        { id:'labCecResultados', label:'Resultados dos corpos de prova', path:'cec/analise/resultado-cp.html', permissionId:'labCec' }
+      ] },
+      { label: 'Controle estatístico', items: [
+        { id:'labCec', label:'Visão geral', path:'cec/' },
+        { id:'labCecAnalise', label:'Análise estatística', path:'cec/analise/', permissionId:'labCec' },
+        { id:'labCecRelatorio', label:'Relatório CEC', path:'cec/analise/relatorio.html', permissionId:'labCec' }
+      ] },
       { label: 'Dosagem', items: [
         { id:'labDosagem', label:'Visão geral', path:'dosagem/' },
         { id:'labDosagemEmpacotamento', label:'Empacotamento', path:'dosagem/#/dosagem/empacotamento', permissionId:'labDosagem' },
@@ -117,14 +127,6 @@ const MENU_CONFIG = {
       ] },
       { label: 'Concreto fresco', items: [
         { id:'labSlump', label:'Registro de slump / flow', path:'slump' }
-      ] },
-      { label: 'Controle estatístico', items: [
-        { id:'labCec', label:'Visão geral', path:'cec/' },
-        { id:'labCecResultados', label:'Resultados dos corpos de prova', path:'cec/analise/resultado-cp.html', permissionId:'labCec' },
-        { id:'labCecRelatorio', label:'Relatório CEC', path:'cec/analise/relatorio.html', permissionId:'labCec' },
-        { id:'labCecAnalise', label:'Análise estatística', path:'cec/analise/', permissionId:'labCec' },
-        { id:'labCecEtiquetas', label:'Etiquetas QR', path:'cec/etiquetas/', permissionId:'labCec' },
-        { id:'labCecLeitura', label:'Leitura de CP', path:'cec/leitura/', permissionId:'labCec' }
       ] },
       { label: 'Cura térmica', items: [
         { id:'labMonitor', label:'Monitoramento', path:'' },
