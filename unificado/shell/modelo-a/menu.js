@@ -5933,7 +5933,7 @@ const Er = {
     Te("INDICADORES", [
       ["dashMontagem", "Dashboard Montagem", Se("MONTAGEM_INDICADORES"), "map"],
       ["dashDefeitos", "Dashboard Defeitos", Se("DASHBOARD_DEFEITOS"), "map"],
-      ["produtividade", "Concretagem", Se("PROD_ANALISE"), "map"],
+      ["produtividade", "Dashboard Concretagem Matriz", Se("PROD_ANALISE"), "map"],
       ["tvFormas", "Painel TV — Formas", "tv/formas/", "map"]
     ])
   ] },

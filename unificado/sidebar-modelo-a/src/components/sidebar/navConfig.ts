@@ -83,7 +83,7 @@ export const NAV_MODULES: NavModule[] = [
     section('INDICADORES', [
       ['dashMontagem','Dashboard Montagem',p('MONTAGEM_INDICADORES'),'map'],
       ['dashDefeitos','Dashboard Defeitos',p('DASHBOARD_DEFEITOS'),'map'],
-      ['produtividade','Concretagem',p('PROD_ANALISE'),'map'],
+      ['produtividade','Dashboard Concretagem Matriz',p('PROD_ANALISE'),'map'],
       ['tvFormas','Painel TV — Formas','tv/formas/','map'],
     ]),
   ] },

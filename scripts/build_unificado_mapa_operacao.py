@@ -75,7 +75,7 @@ def main() -> None:
     shutil.copy2(ROOT / "assets" / "img" / "icon.png", assets / "img" / "icon.png")
     for name in ("bridge.js", "sw.js", "unificado-bridge.css", "unificado-bridge.js", "unificado-icon.png"):
         shutil.copy2(BRIDGE / name, TARGET / name)
-    for name in ("dashboard-defeitos-v5.css", "dashboard-defeitos-v5.js"):
+    for name in ("dashboard-defeitos-v5.css", "dashboard-defeitos-v5.js", "dashboards-v6.css", "dashboards-v6.js"):
         shutil.copy2(BRIDGE / name, TARGET / name)
     version = (ROOT / "unificado" / "VERSION").read_text(encoding="utf-8").strip()
     sw = (TARGET / "sw.js").read_text(encoding="utf-8")
@@ -140,9 +140,9 @@ def main() -> None:
     html = html.replace('src="app.js?v=unificado-operacao-1"', f'src="app.js?v={version}"')
     html = html.replace('src="unificado-bridge.js"', f'src="unificado-bridge.js?v={version}"')
     html = html.replace('src="unificado-bridge.css"', f'src="unificado-bridge.css?v={version}"')
-    html = html.replace('</head>', f'<link rel="stylesheet" href="dashboard-defeitos-v5.css?v={version}"></head>', 1)
+    html = html.replace('</head>', f'<link rel="stylesheet" href="dashboard-defeitos-v5.css?v={version}"><link rel="stylesheet" href="dashboards-v6.css?v={version}"></head>', 1)
     html = html.replace('<script src="unificado-bridge.js?v=' + version + '"></script>',
-                        '<script src="unificado-bridge.js?v=' + version + '"></script><script src="dashboard-defeitos-v5.js?v=' + version + '"></script>', 1)
+                        '<script src="unificado-bridge.js?v=' + version + '"></script><script src="dashboard-defeitos-v5.js?v=' + version + '"></script><script src="dashboards-v6.js?v=' + version + '"></script>', 1)
     html = html.replace('<div class="modal-box modal-box-loading">',
                         '<div class="modal-box modal-box-loading"><div class="unificado-loading-logos" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"></div>', 1)
     html = html.replace('<head>', '<head><script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\\.html$/,"")+location.search))}</script>', 1)

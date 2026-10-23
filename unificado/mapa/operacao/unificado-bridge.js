@@ -15,7 +15,7 @@
       ["TD","Tratativa Defeitos","TRATATIVA_DEFEITOS"]]],
     ["Indicadores", [["DM","Dashboard Montagem","MONTAGEM_INDICADORES"],
       ["DF","Dashboard Defeitos","DASHBOARD_DEFEITOS"],
-      ["PR","Produtividade","PROD_ANALISE"]]],
+      ["PR","Dashboard Concretagem Matriz","PROD_ANALISE"]]],
     ["Administração", [["US","Usuários","USUARIOS"]]]
   ];
   const labels = Object.fromEntries(groups.flatMap(([, items]) => items.map(([, label, mode]) => [mode, label])));

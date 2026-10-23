@@ -71,7 +71,7 @@ const MENU_CONFIG = {
       { label: 'Indicadores', items: [
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
         { id: 'dashDefeitos', mono: 'DF', label: 'Dashboard Defeitos', path: '/index.html', screen: 'DASHBOARD_DEFEITOS' },
-        { id: 'produtividade', mono: 'PR', label: 'Produtividade', path: '/index.html', screen: 'PROD_ANALISE' }
+        { id: 'produtividade', mono: 'PR', label: 'Dashboard Concretagem Matriz', path: '/index.html', screen: 'PROD_ANALISE' }
       ] }
     ]
   },
