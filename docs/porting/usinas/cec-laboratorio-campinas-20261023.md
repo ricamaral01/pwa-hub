@@ -24,6 +24,7 @@ Publicado em `https://concrefer.concretrack.com.br/unificado/laboratorio/cec/`.
 - Com sessão autorizada, páginas, PWA, histórico, massadas e estatísticas responderam HTTP 200 na VPS nova.
 - No navegador, a etiqueta gerou oito QR para quatro idades, com o payload antigo intacto, e baixou PDF.
 - No navegador, o leitor enviou um POST simulado e preservou uma leitura na fila offline.
+- O service worker do novo leitor instalou e ativou com o escopo `/unificado/laboratorio/cec/leitura/`.
 - Sem sessão, a API retorna HTTP 401 e a página do leitor redireciona ao login.
 
 ## Operação
