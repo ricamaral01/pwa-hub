@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Suporte do sistema unificado</title>
+  <style>
+    @font-face{font-family:Geist;src:url('/unificado/shell/fonts/Geist-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+    @font-face{font-family:Geist;src:url('/unificado/shell/fonts/Geist-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+    @font-face{font-family:'Geist Mono';src:url('/unificado/shell/fonts/GeistMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+    :root{font-family:Geist,system-ui,sans-serif;color:#0E1A2F;background:#0B1730}
+    *{box-sizing:border-box}body{margin:0;padding:10px}main{max-width:1040px;min-height:calc(100vh - 20px);margin:auto;padding:34px 40px 56px;background:#F5F6F8;border-radius:20px}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:28px;font-weight:600;color:#0B1730}
+    .brand img:first-child{width:156px;height:42px;object-fit:contain}.brand img:nth-child(2){width:50px;height:50px;object-fit:contain}
+    h1{font-size:clamp(1.7rem,4vw,2.3rem);letter-spacing:-.04em;margin:0 0 12px}p{line-height:1.5}
+    .notice{background:#fff4d7;border:1px solid #e8cc8e;border-radius:10px;padding:14px 18px;font-weight:600}
+    .meta{color:#5B677A;margin:18px 0 26px}.meta strong{font-family:'Geist Mono',monospace;color:#0E1A2F}
+    .grid{display:grid;gap:12px}
+    .row{background:#fff;border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05);padding:20px;display:grid;grid-template-columns:minmax(190px,1fr) minmax(180px,2fr);gap:14px}
+    .row a{color:#15416F;font-weight:600;text-decoration:none}.row a:hover{text-decoration:underline}
+    .row span{display:block}.status{font-weight:600;margin-bottom:4px}
+    .ready{color:#16794A}.partial{color:#8a5700}.later{color:#5B677A}
+    .tablet-tools{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:20px 0 28px}
+    .tablet-tools img{width:112px;height:112px;background:white;padding:7px;border-radius:12px}
+    .tablet-tools a,.tablet-tools button{border:0;border-radius:10px;background:#E8762A;color:#0B1730;font:600 15px Geist,system-ui;padding:13px 16px;cursor:pointer;text-decoration:none}
+    .tablet-tools .primary{font-size:18px;padding:18px 22px}
+    .version{position:fixed;right:12px;bottom:9px;color:#67758e;font:500 11px 'Geist Mono',monospace}
+    .problem-panel{margin-top:28px;padding:22px;background:#fff;border-radius:16px;box-shadow:0 0 0 1px #E9ECF1,0 6px 20px rgba(14,26,47,.05)}
+    .problem-panel h2{margin:0 0 8px}.problem-panel label{display:block;font-weight:600;margin:14px 0 7px}.problem-panel textarea{width:100%;min-height:100px;resize:vertical;border:1px solid #E9ECF1;border-radius:10px;background:#F1F3F6;padding:12px;font:inherit;color:#0E1A2F}.problem-panel button{border:0;border-radius:10px;background:#E8762A;color:#0B1730;font:600 15px Geist,system-ui;padding:13px 16px;cursor:pointer}.problem-list{display:grid;gap:9px;margin-top:16px}.problem-item{padding:12px 14px;border-radius:10px;background:#F5F6F8}.problem-item small{display:block;color:#5B677A;margin-bottom:4px}.problem-feedback{min-height:22px;color:#16794A}
+    @media(max-width:650px){main{padding:24px 18px 40px}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<main>
+  <div class="brand" aria-label="Concrefer e ConcreTrack"><img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer"><img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack"><span>Acompanhamento e suporte</span></div>
+  <h1>Suporte do sistema unificado</h1>
+  <p class="notice">Acompanhamento do sistema unificado</p>
+  <p class="meta">Fotografia dos dados: <strong>{{SNAPSHOT_AT}}</strong>. Use sua conta ativa do sistema unificado para acessar esta página.</p>
+  <div class="tablet-tools">
+    <img src="/unificado/testar/qr-unificado.png" alt="QR code para abrir o sistema unificado">
+    <a class="primary" href="/unificado/mapa/operacao/">Abrir Produção</a>
+    <button type="button" data-size="1024,768">Abrir como tablet (1024x768)</button>
+    <button type="button" data-size="768,1024">Tablet em pe (768x1024)</button>
+    <button type="button" data-size="390,844">Celular (390x844)</button>
+  </div>
+  <div class="grid">
+    <div class="row"><a href="/unificado/">Início</a><span><span class="status ready">disponível</span>Menu, atalhos e indicadores por setor usam somente os bancos do sistema novo. Login só-PCP, só-Mapa e par Mapa-base estão habilitados.</span></div>
+    <div class="row"><a href="/unificado/mapa/operacao/">Mapa em operação</a><span><span class="status ready">disponível</span>Os 24 fluxos operacionais e as 73 chamadas estão cobertos. As 11 diferenças de ordem das 78 leituras brutas têm resultado final conferido; a paginação completa entrega todas as linhas sem repetição. A segunda inspeção oferece retrabalho ou relatório e registra o estado final sem duplicar defeitos.</span></div>
+    <div class="row"><a href="/unificado/mapa/">Histórico do Mapa</a><span><span class="status ready">disponível</span>Consulta histórica somente leitura.</span></div>
+    <div class="row"><a href="/unificado/mapa/operacao/?tela=LIBERACAO_S1">Abrir Produção no tablet</a><span><span class="status ready">disponível</span>Os 18 modos tiveram 54/54 capturas idênticas em tablet e quiosque, além de 18/18 em celular 390×844. Os 24 fluxos operacionais passaram por perfil e setor aplicáveis.</span></div>
+    <div class="row"><a href="/unificado/pcp/dashboard/">PCP — 24 telas e impressão</a><span><span class="status ready">disponível</span>As 24 páginas, quatro perfis, leituras 63/63, gravações autorizadas e sete famílias de PDF estão disponíveis no banco do sistema novo. A tela Teste Programação preserva a falha de tipos do sistema oficial, registrada na documentação.</span></div>
+  </div>
+  <section class="problem-panel" aria-labelledby="problem-title">
+    <h2 id="problem-title">Relatar problema</h2>
+    <p>Informe o que aconteceu. A tela, o usuário, a hora e a versão são registrados automaticamente no banco do sistema novo.</p>
+    <form id="problem-form"><span id="relatar"></span><label for="problem-text">Descrição</label><textarea id="problem-text" maxlength="4000" required></textarea><button type="submit">Relatar problema</button></form>
+    <p id="problem-feedback" class="problem-feedback" role="status" aria-live="polite"></p>
+    <h3>Relatos recentes</h3><div id="problem-list" class="problem-list"><span>Carregando…</span></div>
+  </section>
+</main>
+<div class="version" id="unificado-version">Versao {{VERSION}}</div>
+<script>document.querySelectorAll('[data-size]').forEach(button => button.addEventListener('click', () => {
+  const [width,height] = button.dataset.size.split(',').map(Number);
+  window.open('/unificado/mapa/operacao/', '_blank', `width=${width},height=${height},resizable=yes,scrollbars=yes`);
+}));</script>
+<script>
+const problemList=document.getElementById('problem-list'),problemFeedback=document.getElementById('problem-feedback');
+function escapeText(value){const node=document.createElement('span');node.textContent=value??'';return node.innerHTML}
+async function loadProblems(){const response=await fetch('/unificado/testar/api/problems',{credentials:'same-origin',cache:'no-store'});if(!response.ok)throw new Error('Não foi possível carregar os relatos.');const rows=await response.json();problemList.innerHTML=rows.length?rows.map(row=>`<article class="problem-item"><small>${escapeText(row.created_at)} · ${escapeText(row.actor)} · ${escapeText(row.screen)} · versão ${escapeText(row.version)}</small><span>${escapeText(row.text)}</span></article>`).join(''):'<span>Nenhum problema relatado.</span>'}
+document.getElementById('problem-form').addEventListener('submit',async event=>{event.preventDefault();const text=document.getElementById('problem-text').value.trim();if(!text)return;problemFeedback.textContent='Enviando…';const response=await fetch('/unificado/testar/api/problems',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({screen:location.pathname,text})});const result=await response.json().catch(()=>({}));if(!response.ok){problemFeedback.textContent=result.error||'Não foi possível registrar.';return}document.getElementById('problem-text').value='';problemFeedback.textContent='Problema registrado.';await loadProblems()});
+window.addEventListener('error',event=>fetch('/unificado/testar/api/client-errors',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({screen:location.pathname,code:'window.error',message:String(event.message||'').slice(0,500)})}).catch(()=>{}));
+loadProblems().catch(error=>{problemList.textContent=error.message});
+</script>
+</body>
+</html>

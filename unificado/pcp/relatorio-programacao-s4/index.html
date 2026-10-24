@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relatório de Produção - Setor 4 - PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <style>
+    .report-controls { display:flex; flex-wrap:wrap; align-items:end; gap:12px; }
+    .report-controls label { display:block; font-size:.8rem; font-weight:700; margin-bottom:3px; }
+    .report-controls .form-control, .report-controls .form-select { min-width:145px; }
+    .report-note { font-size:.8rem; color:#64748b; margin-top:10px; }
+    .report-shell { overflow:auto; background:#fff; border:1px solid #cbd5e1; padding:18px; }
+    .report-paper { width:100%; min-width:760px; max-width:1100px; margin:auto; font:11px Arial,sans-serif; color:#000; }
+    .report-paper + .report-paper { margin-top:24px; }
+    .report-meta, .report-grid { width:100%; border-collapse:collapse; table-layout:fixed; }
+    .report-meta th, .report-meta td, .report-grid th, .report-grid td { border:1px solid #111; padding:2px 4px; text-align:center; vertical-align:middle; line-height:1.15; }
+    .report-meta { margin-bottom:0; }
+    .report-meta .logo { width:28%; height:58px; background:#fff; }
+    .report-meta .logo img { max-width:170px; max-height:46px; object-fit:contain; }
+    .report-meta .meta-label { font-weight:700; }
+    .report-meta .meta-title { font-size:12px; font-weight:700; }
+    .report-meta .meta-period { background:#e7e6e0; font-weight:700; }
+    .report-meta .meta-yellow { background:#f4f500; font-weight:700; }
+    .report-meta .meta-green { background:#dce9d2; font-weight:700; }
+    .report-grid thead th { background:#d9d9d9; font-weight:700; }
+    .report-grid thead .owner { background:#fff; }
+    .report-grid .volume-label, .report-grid .volume-cell { background:#00d9df; font-weight:700; }
+    .report-grid .code-cell, .report-grid .weight-cell { background:#b8d5db; }
+    .report-grid .desc { text-align:left; white-space:normal; }
+    .report-grid .qty { font-weight:700; }
+    .report-grid .total-row td { background:#d9d9d9; font-weight:700; }
+    .report-grid .empty { padding:14px; color:#475569; }
+    @media print {
+      @page { size:A4 landscape; margin:9mm; }
+      body { background:#fff !important; }
+      #sidebar, #sidebar-overlay, .topbar, .report-controls-card, #toast-container { display:none !important; }
+      #main-content { margin:0 !important; padding:0 !important; width:100% !important; }
+      .content-area { padding:0 !important; }
+      .report-shell { border:0; padding:0; overflow:visible; }
+      .report-paper { min-width:0; max-width:none; }
+      .report-paper + .report-paper { margin-top:0; }
+      .report-paper:not(:last-child) { break-after:page; }
+      .report-meta th, .report-meta td, .report-grid th, .report-grid td { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .report-grid tr { break-inside:avoid; }
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body data-report-sector="4">
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <div class="sidebar-brand"><div><span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span><small>Planejamento e Controle</small></div></div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer"><div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div><button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%"><i class="bi bi-box-arrow-right me-1"></i>Sair</button></div>
+</aside>
+<div id="main-content">
+  <div class="topbar"><div class="d-flex align-items-center"><button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button><span class="page-title">Relatório de Produção - Setor 4</span></div><div class="user-info"><span id="user-nome-top"></span><span class="user-badge" id="user-nivel"></span></div></div>
+  <div class="content-area">
+    <div class="section-card mb-3 report-controls-card">
+      <div class="report-controls">
+        <div><label for="report-start">Data inicial</label><input type="date" id="report-start" class="form-control form-control-sm" /></div>
+        <div><label for="report-days">Dias para imprimir</label><input type="number" id="report-days" class="form-control form-control-sm" min="1" max="90" value="6" style="width:100px;min-width:100px" /></div>
+        <div><label for="report-sector">Setor</label><select id="report-sector" class="form-select form-select-sm" disabled><option value="4">Setor 4 DT</option></select></div>
+        <label class="form-check align-self-center mb-0"><input type="checkbox" id="report-hide-empty" class="form-check-input" checked /> <span class="form-check-label">Ocultar itens sem produção na semana</span></label>
+        <div><label for="report-owner">Responsável</label><input type="text" id="report-owner" class="form-control form-control-sm" maxlength="80" placeholder="Nome do responsável" /></div>
+        <button type="button" id="report-load" class="btn btn-primary-pcp btn-sm"><i class="bi bi-arrow-clockwise me-1"></i>Carregar</button>
+        <button type="button" id="report-print" class="btn btn-outline-primary btn-sm"><i class="bi bi-printer me-1"></i>Imprimir / PDF</button>
+      </div>
+      <div id="report-status" class="report-note" role="status">Carregando relatório...</div>
+    </div>
+    <div class="report-shell"><div id="report-pages"></div></div>
+  </div>
+</div>
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/relatorio-producao.js?v=0.6.7"></script>
+</body>
+</html>

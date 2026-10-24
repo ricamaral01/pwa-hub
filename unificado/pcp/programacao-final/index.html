@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programação Final - PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <style>
+    .final-kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(170px, 1fr));
+      gap: 12px;
+    }
+    .final-kpi {
+      border: 1px solid var(--pcp-border);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px 16px;
+    }
+    .final-kpi-label {
+      color: var(--pcp-muted);
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+    .final-kpi-value {
+      color: var(--pcp-primary);
+      font-size: 1.45rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-top: 6px;
+    }
+    .final-kpi-volume {
+      color: var(--pcp-muted);
+      font-size: .82rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .final-table { min-width: 980px; }
+    .final-table th,
+    .final-table td { vertical-align: middle; }
+    @media (max-width: 1199px) {
+      .final-kpis { grid-template-columns: repeat(2, minmax(170px, 1fr)); }
+    }
+    @media (max-width: 575px) {
+      .final-kpis { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Programação Final</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="section-card mb-3">
+      <div class="d-flex flex-wrap align-items-end gap-2">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Início</label>
+          <input type="date" id="f-inicio" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Fim</label>
+          <input type="date" id="f-fim" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Setor</label>
+          <select id="f-setor" class="form-select form-select-sm" style="width:180px">
+            <option value="">Todos os setores</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-buscar" type="button">
+          <i class="bi bi-search me-1"></i>Buscar
+        </button>
+      </div>
+    </div>
+
+    <div class="final-kpis mb-3" id="totais-setores"></div>
+
+    <div class="section-card">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <div class="section-title mb-0">Programação Oficial por Data</div>
+        <div class="text-muted" style="font-size:.78rem;font-weight:700" id="total-registros">0 registros</div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0 final-table">
+          <thead>
+            <tr>
+              <th>Data Programada</th>
+              <th>Setor</th>
+              <th>Forma</th>
+              <th>Produto</th>
+              <th>Cód</th>
+              <th class="text-end">Qtd</th>
+              <th class="text-end">Vol. (m³)</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-final">
+            <tr><td colspan="7" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  initSidebar('programacao-final');
+}
+
+const hoje = todayISO();
+document.getElementById('f-inicio').value = hoje;
+document.getElementById('f-fim').value = hoje;
+
+const ORDEM_CODIGOS_PRODUCAO = [
+  '969', '966', '974', '972', '977', '976', '979', '978',
+  '975', '973', '965', '962', '961', '963', '964', '980',
+  '981', '5019', '5018', '4969', '4970', '4972', '4971', '4973',
+  '988', '971', '968', '970', '967', '2017', '984', '985',
+];
+const ORDEM_CODIGOS_PRODUCAO_INDEX = new Map(
+  ORDEM_CODIGOS_PRODUCAO.map((codigo, index) => [codigo, index])
+);
+
+async function loadSetores() {
+  try {
+    const setores = await API.get('/api/setores');
+    const sel = document.getElementById('f-setor');
+    sel.innerHTML = '<option value="">Todos os setores</option>' + setores
+      .sort((a, b) => Number(a.id) - Number(b.id))
+      .map(s => `<option value="${s.id}">${escapeHtml(s.nome || `Setor ${s.id}`)}</option>`)
+      .join('');
+  } catch(e) {
+    showToast(e.message, 'error');
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[ch]));
+}
+
+function compareProgramacaoFinal(a, b) {
+  const codigoA = String(a.produto?.codigo || '').trim();
+  const codigoB = String(b.produto?.codigo || '').trim();
+  const prioridadeA = ORDEM_CODIGOS_PRODUCAO_INDEX.get(codigoA) ?? Number.MAX_SAFE_INTEGER;
+  const prioridadeB = ORDEM_CODIGOS_PRODUCAO_INDEX.get(codigoB) ?? Number.MAX_SAFE_INTEGER;
+  return String(a.data || '').localeCompare(String(b.data || '')) ||
+    prioridadeA - prioridadeB ||
+    Number(a.setor_id || 0) - Number(b.setor_id || 0) ||
+    codigoA.localeCompare(codigoB, 'pt-BR', { numeric: true }) ||
+    String(a.produto?.nome || '').localeCompare(String(b.produto?.nome || ''), 'pt-BR');
+}
+
+async function loadProgramacaoFinal() {
+  const di = document.getElementById('f-inicio').value;
+  const df = document.getElementById('f-fim').value;
+  const setor = document.getElementById('f-setor').value;
+  const tbody = document.getElementById('tbody-final');
+  tbody.innerHTML = '<tr><td colspan="7" class="text-center"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+
+  try {
+    const qs = new URLSearchParams();
+    if (di) qs.set('data_inicio', di);
+    if (df) qs.set('data_fim', df);
+    if (setor) qs.set('setor_id', setor);
+    const rows = await API.get(`/api/programacao?${qs}`);
+    rows.sort(compareProgramacaoFinal);
+    renderTotais(rows);
+    renderTabela(rows);
+  } catch(e) {
+    showToast(e.message, 'error');
+  }
+}
+
+function renderTotais(rows) {
+  const map = new Map();
+  let geralQtd = 0;
+  let geralVol = 0;
+  rows.forEach(r => {
+    const key = String(r.setor_id || r.setor?.id || '');
+    const nome = r.setor?.nome || (key ? `Setor ${key}` : 'Sem setor');
+    const qtd = Number(r.quantidade_programada || 0);
+    const vol = Number(r.volume_m3_programado || 0);
+    if (!map.has(key)) map.set(key, { nome, qtd: 0, vol: 0 });
+    map.get(key).qtd += qtd;
+    map.get(key).vol += vol;
+    geralQtd += qtd;
+    geralVol += vol;
+  });
+
+  const cards = [...map.entries()]
+    .sort((a, b) => Number(a[0]) - Number(b[0]))
+    .map(([, item]) => kpiCard(item.nome, item.qtd, item.vol));
+  cards.push(kpiCard('Total Geral', geralQtd, geralVol));
+  document.getElementById('totais-setores').innerHTML = cards.join('');
+  document.getElementById('total-registros').textContent = `${rows.length} registro${rows.length === 1 ? '' : 's'}`;
+}
+
+function kpiCard(label, qtd, vol) {
+  return `
+    <div class="final-kpi">
+      <div class="final-kpi-label">${escapeHtml(label)}</div>
+      <div class="final-kpi-value">${fmtN(qtd)}</div>
+      <div class="final-kpi-volume">${fmtM3(vol)}</div>
+    </div>
+  `;
+}
+
+function renderTabela(rows) {
+  const tbody = document.getElementById('tbody-final');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">Nenhum registro encontrado</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td>${fmtDate(r.data)}</td>
+      <td>${escapeHtml(r.setor?.nome || '—')}</td>
+      <td><strong>${escapeHtml(r.codigo_forma || '—')}</strong></td>
+      <td>${escapeHtml(r.produto?.nome || '—')}</td>
+      <td><small class="text-muted">${escapeHtml(r.produto?.codigo || '—')}</small></td>
+      <td class="text-end">${fmtN(r.quantidade_programada)}</td>
+      <td class="text-end">${fmtM3(r.volume_m3_programado)}</td>
+    </tr>
+  `).join('');
+}
+
+document.getElementById('btn-buscar').addEventListener('click', loadProgramacaoFinal);
+
+loadSetores().then(loadProgramacaoFinal);
+</script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Resultado Corpos de Prova • CEC • ConcreTrack</title>
+  <link href="/unificado/laboratorio/cec/assets/vendor/bootstrap.min.css" rel="stylesheet">
+  <link href="/unificado/laboratorio/cec/assets/vendor/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/unificado/laboratorio/cec/assets/vendor/montserrat.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --ct-orange:#E07A3A;--ct-gray:#343B43;--ct-gray-lt:#5A6270;
+      --ct-blue:#1976D2;--ct-navy:#0D3B66;--ct-silver:#BFC5CC;--ct-bg:#F2F3F5;
+      --ct-green:#059669;
+      --hdr-24h:#3B5998;--hdr-3d:#2E7D32;--hdr-7d:#E65100;--hdr-28d:#6A1B9A;
+    }
+    *{font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif;margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--ct-bg)}
+
+    /* ── Topbar ── */
+    .app-topbar{background:var(--ct-gray);color:#fff}
+    .topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px}
+    .topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:6px}
+    .topbar-title{font-size:18px;font-weight:700}
+    .topbar-title span{color:var(--ct-orange)}
+    .topbar-sub{font-size:10px;color:var(--ct-silver)}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .btn-back{
+      border-radius:10px;height:36px;font-weight:600;font-size:12px;
+      border:1px solid rgba(255,255,255,.18);color:#fff;
+      background:rgba(255,255,255,.06);display:inline-flex;align-items:center;
+      gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;font-family:inherit;
+    }
+    .btn-back:hover{background:rgba(255,255,255,.12);color:#fff}
+    .btn-logout{
+      border-radius:10px;border:1px solid rgba(255,255,255,.15);
+      color:#fff;font-size:12px;padding:5px 14px;
+      background:rgba(224,122,58,.25);font-weight:600;
+      cursor:pointer;transition:background .2s;font-family:inherit;
+    }
+    .btn-logout:hover{background:rgba(224,122,58,.5)}
+    .topbar-accent{height:3px;background:linear-gradient(90deg,var(--ct-orange),var(--ct-navy))}
+
+    /* ── Page ── */
+    .page-header{padding:24px 0 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .page-header h2{font-size:20px;font-weight:800;color:var(--ct-gray)}
+    .page-header h2 span{color:var(--ct-orange)}
+    .page-header p{color:var(--ct-gray-lt);font-size:12px;margin:0}
+
+    /* ── Toolbar ── */
+    .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+    .toolbar label{font-size:11px;font-weight:700;color:var(--ct-gray)}
+    .toolbar input,.toolbar select{font-size:12px;border-radius:8px;border:1px solid #ddd;padding:6px 10px;font-family:inherit}
+    .toolbar select{min-width:100px}
+    .btn-ct{
+      border:none;border-radius:10px;font-weight:700;font-size:12px;
+      padding:8px 18px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+      transition:opacity .2s;font-family:inherit;
+    }
+    .btn-ct:hover{opacity:.85}
+    .btn-orange{background:var(--ct-orange);color:#fff}
+    .btn-navy{background:var(--ct-navy);color:#fff}
+    .btn-green{background:var(--ct-green);color:#fff}
+
+    /* ── Table Wrapper ── */
+    .table-wrap{
+      overflow-x:auto;background:#fff;border-radius:14px;
+      border:1px solid rgba(15,23,42,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);
+      margin-bottom:30px;
+    }
+
+    /* ── CEC Table ── */
+    .cec-table{border-collapse:collapse;width:100%;min-width:1800px;font-size:11px}
+    .cec-table th,.cec-table td{border:1px solid #c5cdd8;text-align:center;padding:4px 5px;white-space:nowrap}
+
+    /* ── Header level 0 (top spans) ── */
+    .cec-table thead tr.hdr-0 th{
+      font-size:12px;font-weight:800;color:#fff;padding:8px 6px;letter-spacing:.3px;
+    }
+    .hdr-id{background:var(--ct-gray)}
+    .hdr-res-main{background:var(--ct-navy)}
+
+    /* ── Header level 1 (age group spans) ── */
+    .cec-table thead tr.hdr-1 th{font-size:11px;font-weight:800;color:#fff;padding:6px 4px}
+    .hdr-24h{background:var(--hdr-24h)}
+    .hdr-3d{background:var(--hdr-3d)}
+    .hdr-7d{background:var(--hdr-7d)}
+    .hdr-28d{background:var(--hdr-28d)}
+
+    /* ── Header level 2 (sub-groups: Mpa, AMP) ── */
+    .cec-table thead tr.hdr-2 th{font-size:10px;font-weight:700;color:#fff;padding:4px 3px}
+
+    /* ── Header level 3 (column names) ── */
+    .cec-table thead tr.hdr-3 th{
+      font-size:9px;font-weight:700;padding:5px 3px;
+      color:#fff;text-transform:uppercase;letter-spacing:.3px;
+    }
+
+    /* Age-group bg helpers (lighter for sub-rows) */
+    .bg-24h{background:rgba(59,89,152,.85)}.bg-24h-lt{background:rgba(59,89,152,.7)}
+    .bg-3d{background:rgba(46,125,50,.85)}.bg-3d-lt{background:rgba(46,125,50,.7)}
+    .bg-7d{background:rgba(230,81,0,.85)}.bg-7d-lt{background:rgba(230,81,0,.7)}
+    .bg-28d{background:rgba(106,27,154,.85)}.bg-28d-lt{background:rgba(106,27,154,.7)}
+    .bg-id{background:var(--ct-gray);color:#fff}
+    .bg-id-lt{background:rgba(52,59,67,.75);color:#fff}
+
+    /* ── Data rows ── */
+    .cec-table tbody tr{transition:background .15s}
+    .cec-table tbody tr:hover{background:rgba(224,122,58,.06)}
+    .cec-table tbody td{font-size:11px;color:var(--ct-gray);padding:5px 4px}
+
+    /* Result cell styling */
+    .res-ok{background:rgba(5,150,105,.12);color:#047857;font-weight:700}
+    .res-fail{background:rgba(220,38,38,.1);color:#dc2626;font-weight:700}
+    .res-na{color:var(--ct-silver);font-style:italic}
+
+    /* ── Footer ── */
+    .app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver)}
+    .app-footer span{color:var(--ct-orange);font-weight:600}
+
+    /* ── Print ── */
+    @media print{
+      .app-topbar,.topbar-accent,.toolbar,.btn-ct,.btn-back,.btn-logout,.app-footer{display:none!important}
+      body{background:#fff}
+      .table-wrap{border:none;box-shadow:none;border-radius:0;overflow:visible}
+      .cec-table{min-width:100%;font-size:8px}
+      .cec-table th,.cec-table td{padding:2px 3px}
+      .page-header{padding:8px 0}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ TOPBAR ═══ -->
+<div class="app-topbar">
+  <div class="container-fluid px-3">
+    <div class="topbar-inner">
+      <img src="/unificado/laboratorio/cec/assets/img/PRINCIPAL@2x.png" alt="Logo" class="topbar-logo">
+      <div>
+        <div class="topbar-title"><i class="bi bi-table me-2"></i>Resultado <span>Corpos de Prova</span></div>
+        <div class="topbar-sub">CEC &bull; ConcreTrack &bull; DAutomação</div>
+      </div>
+      <div class="topbar-right">
+        <a class="btn-back" href="/unificado/laboratorio/cec/"><i class="bi bi-arrow-left"></i> Voltar</a>
+        <button class="btn-logout" onclick="location.href='/unificado/'"><i class="bi bi-box-arrow-right me-1"></i>Sair</button>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-accent"></div>
+</div>
+
+<div class="container-fluid px-3">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="page-header">
+    <div>
+      <h2>Resultado Corpos de <span>Prova</span></h2>
+      <p>Resistência à compressão — 24 horas, 3 dias, 7 dias e 28 dias</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-ct btn-green" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir</button>
+    </div>
+  </div>
+
+  <!-- ═══ TOOLBAR ═══ -->
+  <div class="toolbar">
+    <label>Mês:</label>
+    <select id="filtroMes">
+      <option value="">Todos</option>
+      <option>Janeiro</option><option>Fevereiro</option><option>Março</option>
+      <option>Abril</option><option>Maio</option><option>Junho</option>
+      <option>Julho</option><option>Agosto</option><option>Setembro</option>
+      <option>Outubro</option><option>Novembro</option><option>Dezembro</option>
+    </select>
+    <label class="ms-2">Ano:</label>
+    <input type="number" id="filtroAno" value="2026" style="width:80px">
+    <label class="ms-2">Buscar:</label>
+    <input type="text" id="filtroBusca" placeholder="Massada, aplicação..." style="width:160px">
+    <button class="btn-ct btn-orange ms-2" onclick="filtrar()"><i class="bi bi-funnel"></i> Filtrar</button>
+  </div>
+
+  <!-- ═══ TABLE ═══ -->
+  <div class="table-wrap">
+    <table class="cec-table" id="tabelaCEC">
+      <thead>
+        <!-- ── ROW 0: Top-level groups ── -->
+        <tr class="hdr-0">
+          <th colspan="7" class="hdr-id">IDENTIFICAÇÃO DAS AMOSTRAS</th>
+          <th colspan="40" class="hdr-res-main">RESISTÊNCIA À COMPRESSÃO (MPa)</th>
+        </tr>
+
+        <!-- ── ROW 1: Age groups ── -->
+        <tr class="hdr-1">
+          <!-- ID cols (empty spans) -->
+          <th rowspan="3" class="bg-id">DATA<br>Mold.</th>
+          <th rowspan="3" class="bg-id">MÊS</th>
+          <th rowspan="3" class="bg-id">Nº</th>
+          <th rowspan="3" class="bg-id">MASSADA</th>
+          <th rowspan="3" class="bg-id">APLICAÇÃO</th>
+          <th rowspan="3" class="bg-id">FLOW<br>(mm)</th>
+          <th rowspan="3" class="bg-id">fck</th>
+
+          <!-- 24 Horas -->
+          <th colspan="9" class="hdr-24h">&lt; 24 Horas — 75% a 80%</th>
+
+          <!-- 3 Dias -->
+          <th colspan="11" class="hdr-3d">3 dias — 55% a 80%</th>
+
+          <!-- 7 Dias -->
+          <th colspan="11" class="hdr-7d">7 dias — 85% a 100%</th>
+
+          <!-- 28 Dias -->
+          <th colspan="9" class="hdr-28d">28 dias — esperado 120%</th>
+        </tr>
+
+        <!-- ── ROW 2: Sub-group headers ── -->
+        <tr class="hdr-2">
+          <!-- 24h sub-groups -->
+          <th rowspan="2" class="bg-24h">Data<br>Ruptura</th>
+          <th rowspan="2" class="bg-24h">CP<br>Idade</th>
+          <th colspan="2" class="bg-24h">MPa</th>
+          <th colspan="4" class="bg-24h-lt">AMP</th>
+          <th rowspan="2" class="bg-24h">Res.</th>
+
+          <!-- 3d sub-groups -->
+          <th rowspan="2" class="bg-3d">Data<br>Ruptura</th>
+          <th rowspan="2" class="bg-3d">CP<br>Idade</th>
+          <th colspan="2" class="bg-3d">Ton</th>
+          <th colspan="2" class="bg-3d">MPa</th>
+          <th colspan="4" class="bg-3d-lt">AMP</th>
+          <th rowspan="2" class="bg-3d">Res.</th>
+
+          <!-- 7d sub-groups -->
+          <th rowspan="2" class="bg-7d">Data<br>Ruptura</th>
+          <th rowspan="2" class="bg-7d">CP<br>Idade</th>
+          <th colspan="2" class="bg-7d">Ton</th>
+          <th colspan="2" class="bg-7d">MPa</th>
+          <th colspan="4" class="bg-7d-lt">AMP</th>
+          <th rowspan="2" class="bg-7d">Res.</th>
+
+          <!-- 28d sub-groups -->
+          <th rowspan="2" class="bg-28d">Data<br>Ruptura</th>
+          <th rowspan="2" class="bg-28d">CP<br>Idade</th>
+          <th colspan="2" class="bg-28d">MPa</th>
+          <th colspan="4" class="bg-28d-lt">AMP</th>
+          <th rowspan="2" class="bg-28d">Res.</th>
+        </tr>
+
+        <!-- ── ROW 3: Individual columns ── -->
+        <tr class="hdr-3">
+          <!-- 24h columns -->
+          <th class="bg-24h">1/2</th>
+          <th class="bg-24h">2/2</th>
+          <th class="bg-24h-lt">d2</th>
+          <th class="bg-24h-lt">Méd</th>
+          <th class="bg-24h-lt">Exe.</th>
+          <th class="bg-24h-lt">T.R.</th>
+
+          <!-- 3d columns -->
+          <th class="bg-3d">1</th>
+          <th class="bg-3d">2</th>
+          <th class="bg-3d">1/2</th>
+          <th class="bg-3d">2/2</th>
+          <th class="bg-3d-lt">d2</th>
+          <th class="bg-3d-lt">Méd</th>
+          <th class="bg-3d-lt">Exe.</th>
+          <th class="bg-3d-lt">T.R.</th>
+
+          <!-- 7d columns -->
+          <th class="bg-7d">1</th>
+          <th class="bg-7d">2</th>
+          <th class="bg-7d">1/2</th>
+          <th class="bg-7d">2/2</th>
+          <th class="bg-7d-lt">d2</th>
+          <th class="bg-7d-lt">Méd</th>
+          <th class="bg-7d-lt">Exe.</th>
+          <th class="bg-7d-lt">T.R.</th>
+
+          <!-- 28d columns -->
+          <th class="bg-28d">1/2</th>
+          <th class="bg-28d">2/2</th>
+          <th class="bg-28d-lt">d2</th>
+          <th class="bg-28d-lt">Méd</th>
+          <th class="bg-28d-lt">Exe.</th>
+          <th class="bg-28d-lt">T.R.</th>
+        </tr>
+      </thead>
+
+      <tbody id="tabelaBody">
+        <!-- Dados serão carregados do banco de dados -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══ INFO ═══ -->
+  <div class="d-flex align-items-center gap-3 mb-4 flex-wrap" style="font-size:11px;color:var(--ct-gray-lt)">
+    <span><i class="bi bi-info-circle me-1"></i> Dados serão alimentados por tabela do banco de dados (a ser criada).</span>
+    <span class="ms-auto" id="countInfo">0 registros exibidos</span>
+  </div>
+</div>
+
+<div class="app-footer">&copy; 2026 <span>ConcreTrack</span> &mdash; DAutomação</div>
+
+<script src="/unificado/laboratorio/cec/assets/vendor/bootstrap.bundle.min.js"></script>
+<script>
+/* ── Filtro placeholder (será conectado ao backend depois) ── */
+function filtrar(){
+  const busca = document.getElementById('filtroBusca').value.toLowerCase();
+  const rows = document.querySelectorAll('#tabelaBody tr');
+  let visCount = 0;
+  rows.forEach(r => {
+    const text = r.textContent.toLowerCase();
+    const show = !busca || text.includes(busca);
+    r.style.display = show ? '' : 'none';
+    if(show) visCount++;
+  });
+  document.getElementById('countInfo').textContent = visCount + ' registros exibidos';
+}
+document.getElementById('filtroBusca').addEventListener('input', filtrar);
+</script>
+</body>
+</html>

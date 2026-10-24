@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <script src="/unificado/vendor/chart.js/chart.umd.js"></script>
+  <style>
+    .dash-shell { display: grid; gap: 16px; }
+    .dash-shell > * { min-width: 0; }
+    .dash-filter {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: 10px;
+    }
+    .grouped-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .grouped-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #dbe4ee;
+      border-radius: 8px;
+      padding: 18px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .06);
+    }
+    .grouped-card::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #15416f, #f97316);
+      content: "";
+    }
+    .grouped-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .grouped-card-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      border-radius: 10px;
+      background: #eef6ff;
+      color: #15416f;
+      font-size: 1.05rem;
+    }
+    .grouped-card-title {
+      color: #0f172a;
+      font-size: .95rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .grouped-card-subtitle {
+      margin-top: 2px;
+      color: #64748b;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+    .grouped-indicators {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .grouped-indicator {
+      min-width: 0;
+      min-height: 92px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 10px;
+      background: #f8fafc;
+    }
+    .grouped-indicator small {
+      display: block;
+      color: #64748b;
+      font-size: .66rem;
+      font-weight: 800;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .grouped-indicator strong {
+      display: block;
+      margin-top: 12px;
+      color: #0f172a;
+      font-size: clamp(1.12rem, 1.7vw, 1.52rem);
+      line-height: 1;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    .grouped-indicator.achievement strong { color: var(--achievement-color); }
+    .kg-homem-days { display: grid; gap: 18px; }
+    .kg-homem-date { margin: 0 0 10px; color: #64748b; font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+    .kg-homem-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .kg-homem-card { min-width: 0; padding: 18px; border: 1px solid #dbe4ee; border-radius: 12px; background: #f8fafc; }
+    .kg-homem-card:nth-child(2) { border-top: 3px solid #3b82f6; }
+    .kg-homem-card:nth-child(3) { border-top: 3px solid #f97316; }
+    .kg-homem-card:first-child { border-top: 3px solid #15416f; }
+    .kg-homem-card h4 { margin: 0 0 12px; color: #475569; font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+    .kg-homem-value { display: block; color: #0f172a; font-size: clamp(1.65rem, 2.4vw, 2.3rem); line-height: 1; font-weight: 850; font-variant-numeric: tabular-nums; }
+    .kg-homem-unit { margin: 5px 0 14px; color: #64748b; font-size: .75rem; font-weight: 700; }
+    .kg-homem-detail { display: block; color: #64748b; font-size: .73rem; line-height: 1.45; }
+    .achievement-success {
+      --achievement-bg: #ecfdf3;
+      --achievement-border: #bbf7d0;
+      --achievement-color: #15803d;
+    }
+    .achievement-warning {
+      --achievement-bg: #fffbeb;
+      --achievement-border: #fde68a;
+      --achievement-color: #b45309;
+    }
+    .achievement-danger {
+      --achievement-bg: #fef2f2;
+      --achievement-border: #fecaca;
+      --achievement-color: #dc2626;
+    }
+    .grouped-indicator.achievement,
+    .badge-soft.achievement {
+      border-color: var(--achievement-border);
+      background: var(--achievement-bg);
+      color: var(--achievement-color);
+    }
+    .progress-track {
+      height: 9px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: #f97316;
+    }
+    .progress-fill.achievement { background: var(--achievement-color); }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(360px, .9fr);
+      gap: 14px;
+    }
+    .chart-box { height: 330px; }
+    .setor-list { display: grid; gap: 12px; }
+    .setor-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .setor-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .setor-name { font-weight: 800; color: #0f172a; }
+    .setor-meta { color: #64748b; font-size: .76rem; font-weight: 700; }
+    .andamento-table { min-width: 980px; table-layout: fixed; }
+    .andamento-table th, .andamento-table td { white-space: nowrap; vertical-align: middle; }
+    .andamento-table .col-produto { width: 280px; white-space: normal; }
+    .andamento-table .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+    .badge-soft {
+      display: inline-flex;
+      justify-content: center;
+      min-width: 68px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: .74rem;
+      font-weight: 800;
+      background: #eef6ff;
+      color: #15416f;
+      font-variant-numeric: tabular-nums;
+    }
+    .produto-sort-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-weight: 800;
+      padding: 0;
+    }
+    .produto-sort-btn:hover,
+    .produto-sort-btn.active {
+      color: #15416f;
+    }
+    .produto-sort-btn i {
+      color: #94a3b8;
+      font-size: .76rem;
+    }
+    .produto-sort-btn.active i {
+      color: #f97316;
+    }
+    @media (max-width: 1180px) {
+      .grouped-card-grid { grid-template-columns: 1fr; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .kg-homem-grid { grid-template-columns: 1fr; }
+      .grouped-indicators { grid-template-columns: 1fr; }
+      .grouped-indicator { min-height: 78px; }
+      .dash-filter > div { width: 100%; }
+      .dash-filter input, .dash-filter button { width: 100% !important; }
+      .chart-box { height: 280px; }
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Dashboard</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area dash-shell">
+    <div class="section-card">
+      <div class="dash-filter">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Data início</label>
+          <input type="date" id="dt-inicio" class="form-control form-control-sm" style="width:160px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Data fim</label>
+          <input type="date" id="dt-fim" class="form-control form-control-sm" style="width:160px" />
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-filtrar" style="width:130px">
+          <i class="bi bi-funnel me-1"></i>Filtrar
+        </button>
+      </div>
+    </div>
+
+    <div class="grouped-card-grid" id="grouped-card-grid">
+      <div class="text-center text-muted py-3"><div class="spinner-border spinner-border-sm"></div></div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">KG / Homem</div>
+      <p class="text-muted mb-3" style="font-size:.82rem">Peso dos postes produzidos ÷ (MOD + MOI). O MOI dos Setores 3 e 4 é dividido igualmente entre eles.</p>
+      <div id="kg-homem-diario" class="kg-homem-days"><div class="text-muted">Carregando...</div></div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">Postes / Homem</div>
+      <p class="text-muted mb-3" style="font-size:.82rem">Quantidade de postes produzidos &divide; (MOD + MOI). O MOI dos Setores 3 e 4 &eacute; dividido igualmente entre eles.</p>
+      <div id="postes-homem-diario" class="kg-homem-days"><div class="text-muted">Carregando...</div></div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="section-card chart-box">
+        <div class="section-title">Programado vs Realizado por Setor</div>
+        <canvas id="chart-setores"></canvas>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Indicadores por Setor</div>
+        <div class="setor-list" id="setor-list">
+          <div class="text-center text-muted py-3"><div class="spinner-border spinner-border-sm"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">Produção em Andamento</div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0 andamento-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Setor</th>
+              <th class="col-produto">Produto</th>
+              <th class="text-end">Prog.</th>
+              <th class="text-end">Real.</th>
+              <th class="text-end">Faltam</th>
+              <th class="text-end">Vol. Real</th>
+              <th class="text-center">%</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-andamento">
+            <tr><td colspan="8" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">Desempenho por Produto</div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0 andamento-table">
+          <thead>
+            <tr>
+              <th class="col-produto">
+                <button type="button" class="produto-sort-btn active" data-produto-sort="nome">
+                  Produto <i class="bi bi-sort-alpha-down"></i>
+                </button>
+              </th>
+              <th class="text-end">Qtd Prog.</th>
+              <th class="text-end">
+                <button type="button" class="produto-sort-btn ms-auto" data-produto-sort="realizado">
+                  Qtd Real. <i class="bi bi-arrow-down-up"></i>
+                </button>
+              </th>
+              <th class="text-end">m³ Real.</th>
+              <th class="text-end">kg Real.</th>
+              <th class="text-center">
+                <button type="button" class="produto-sort-btn mx-auto" data-produto-sort="percentual">
+                  % <i class="bi bi-arrow-down-up"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tbody-postes"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  initSidebar('dashboard');
+}
+
+const hoje = todayISO();
+document.getElementById('dt-inicio').value = hoje;
+document.getElementById('dt-fim').value = hoje;
+let chartSetores = null;
+let produtosRows = [];
+let produtoSort = { key: 'nome', direction: 'asc' };
+
+function fmtKg(v) {
+  return `${parseFloat(v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} kg`;
+}
+function pct(v) {
+  return `${parseFloat(v || 0).toFixed(1)}%`;
+}
+function achievementTone(v) {
+  const value = parseFloat(v || 0);
+  if (value >= 90) return 'achievement-success';
+  if (value >= 70) return 'achievement-warning';
+  return 'achievement-danger';
+}
+function bar(v) {
+  const w = Math.min(parseFloat(v || 0), 120);
+  return `<div class="progress-track"><div class="progress-fill achievement ${achievementTone(v)}" style="width:${w}%"></div></div>`;
+}
+
+async function loadDashboard() {
+  const qs = new URLSearchParams();
+  qs.set('data_inicio', document.getElementById('dt-inicio').value);
+  qs.set('data_fim', document.getElementById('dt-fim').value);
+  try {
+    const data = await API.get(`/api/dashboard?${qs.toString()}`);
+    renderGroupedCards(data);
+    renderKgHomemDiario(data.kg_homem_diario || []);
+    renderSetores(data.por_setor || []);
+    renderChart(data.por_setor || []);
+    renderAndamento(data.producao_andamento || []);
+    renderProdutos(data.por_poste || []);
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function renderKgHomemDiario(rows) {
+  const porDia = new Map();
+  rows.forEach(row => {
+    if (!porDia.has(row.data)) porDia.set(row.data, new Map());
+    porDia.get(row.data).set(String(row.grupo_id), row);
+  });
+  const card = (row, title, metric) => {
+    const postes = metric === 'postes';
+    if (!row) return `<article class="kg-homem-card"><h4>${title}</h4><strong class="kg-homem-value">&mdash;</strong></article>`;
+    const valor = postes ? row.postes_por_homem : row.kg_por_homem;
+    const numero = valor == null ? '&mdash;' : Number(valor).toLocaleString('pt-BR', {maximumFractionDigits: 0});
+    const pessoas = Number(row.pessoas || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
+    const mod = Number(row.mod || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
+    const moi = Number(row.moi || 0).toLocaleString('pt-BR', {maximumFractionDigits: 2});
+    const total = postes
+      ? `${Number(row.postes_realizados || 0).toLocaleString('pt-BR')} postes produzidos`
+      : `${fmtKg(row.peso_realizado_kg)} produzidos`;
+    return `<article class="kg-homem-card"><h4>${title}</h4><strong class="kg-homem-value">${numero}</strong><div class="kg-homem-unit">${postes ? 'postes' : 'kg'} por pessoa</div><span class="kg-homem-detail">${total} &divide; ${pessoas} pessoa(s)</span><span class="kg-homem-detail">MOD ${mod} + MOI ${moi}</span></article>`;
+  };
+  for (const [targetId, metric] of [['kg-homem-diario', 'kg'], ['postes-homem-diario', 'postes']]) {
+    document.getElementById(targetId).innerHTML = [...porDia]
+      .sort(([a], [b]) => b.localeCompare(a))
+      .map(([dia, grupos]) => `<section><h3 class="kg-homem-date">${fmtDate(dia)}</h3><div class="kg-homem-grid">${[['12', 'Setores 1 e 2'], ['3', 'Setor 3'], ['4', 'Setor 4']].map(([id, title]) => card(grupos.get(id), title, metric)).join('')}</div></section>`)
+      .join('') || '<div class="text-muted">Sem dados no per&iacute;odo</div>';
+  }
+}
+
+function renderGroupedCard({ title, subtitle, icon, indicators }) {
+  return `
+    <section class="grouped-card">
+      <div class="grouped-card-head">
+        <span class="grouped-card-icon"><i class="bi ${icon}"></i></span>
+        <div>
+          <div class="grouped-card-title">${title}</div>
+          <div class="grouped-card-subtitle">${subtitle}</div>
+        </div>
+      </div>
+      <div class="grouped-indicators">
+        ${indicators.map(indicator => `
+          <div class="grouped-indicator${indicator.achievement ? ` achievement ${achievementTone(indicator.rawValue)}` : ''}">
+            <small>${indicator.label}</small>
+            <strong>${indicator.value}</strong>
+          </div>
+        `).join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderGroupedCards(data) {
+  const grupos = data.por_grupo || [];
+  const grupo12 = grupos.find(g => String(g.grupo_id) === '12') || {};
+  const grupo34 = grupos.find(g => String(g.grupo_id) === '34') || {};
+  const cards = [
+    {
+      title: 'GERAL',
+      subtitle: 'Volumes consolidados no período',
+      icon: 'bi-speedometer2',
+      indicators: [
+        { label: 'Programado', value: fmtM3(data.total_programado_m3) },
+        { label: 'Realizado', value: fmtM3(data.total_realizado_m3) },
+        { label: 'Atingimento', value: pct(data.eficiencia_geral_pct), rawValue: data.eficiencia_geral_pct, achievement: true },
+      ],
+    },
+    {
+      title: 'SETOR 1 + SETOR 2',
+      subtitle: 'Postes consolidados no período',
+      icon: 'bi-boxes',
+      indicators: [
+        { label: 'Postes programados', value: fmtN(grupo12.qtd_programada) },
+        { label: 'Postes realizados', value: fmtN(grupo12.qtd_realizada) },
+        { label: 'Atingimento', value: pct(grupo12.eficiencia_pct), rawValue: grupo12.eficiencia_pct, achievement: true },
+      ],
+    },
+    {
+      title: 'SETOR 3 + SETOR 4',
+      subtitle: 'Postes consolidados no período',
+      icon: 'bi-boxes',
+      indicators: [
+        { label: 'Postes programados', value: fmtN(grupo34.qtd_programada) },
+        { label: 'Postes realizados', value: fmtN(grupo34.qtd_realizada) },
+        { label: 'Atingimento', value: pct(grupo34.eficiencia_pct), rawValue: grupo34.eficiencia_pct, achievement: true },
+      ],
+    },
+  ];
+  document.getElementById('grouped-card-grid').innerHTML = cards.map(renderGroupedCard).join('');
+}
+
+function renderSetores(setores) {
+  const el = document.getElementById('setor-list');
+  el.innerHTML = setores.map(s => `
+    <div class="setor-row">
+      <div>
+        <div class="setor-name">${s.setor_nome}</div>
+        <div class="setor-meta">${fmtM3(s.vol_realizado_m3)} de ${fmtM3(s.vol_programado_m3)} • ${fmtKg(s.peso_realizado_kg)}</div>
+        ${bar(s.eficiencia_pct)}
+      </div>
+      <span class="badge-soft achievement ${achievementTone(s.eficiencia_pct)}">${pct(s.eficiencia_pct)}</span>
+    </div>
+  `).join('') || '<div class="text-muted text-center py-3">Sem dados</div>';
+}
+
+function renderChart(setores) {
+  const ctx = document.getElementById('chart-setores').getContext('2d');
+  if (chartSetores) chartSetores.destroy();
+  chartSetores = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: setores.map(s => s.setor_nome),
+      datasets: [
+        { label: 'Programado', data: setores.map(s => Number(s.vol_programado_m3 || 0)), backgroundColor: '#15416f', borderRadius: 6 },
+        { label: 'Realizado', data: setores.map(s => Number(s.vol_realizado_m3 || 0)), backgroundColor: '#f97316', borderRadius: 6 },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#e2e8f0' } },
+        x: { grid: { display: false } },
+      },
+    },
+  });
+}
+
+function renderAndamento(rows) {
+  const tbody = document.getElementById('tbody-andamento');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">Sem produção no período</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td>${fmtDate(r.data)}</td>
+      <td>${r.setor_nome}</td>
+      <td class="col-produto"><strong>${r.produto_nome}</strong><br><small class="text-muted">${r.produto_codigo || '—'}</small></td>
+      <td class="num">${fmtN(r.qtd_programada)}</td>
+      <td class="num">${fmtN(r.qtd_realizada)}</td>
+      <td class="num">${fmtN(r.faltam)}</td>
+      <td class="num">${fmtM3(r.vol_realizado_m3)}</td>
+      <td class="text-center"><span class="badge-soft achievement ${achievementTone(r.eficiencia_pct)}">${pct(r.eficiencia_pct)}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderProdutos(rows) {
+  produtosRows = [...rows];
+  renderProdutosOrdenados();
+}
+
+function renderProdutosOrdenados() {
+  const tbody = document.getElementById('tbody-postes');
+  if (!produtosRows.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">Sem dados no período</td></tr>';
+    atualizarBotoesOrdenacaoProdutos();
+    return;
+  }
+  const direction = produtoSort.direction === 'asc' ? 1 : -1;
+  const rows = [...produtosRows].sort((a, b) => {
+    let result = 0;
+    if (produtoSort.key === 'realizado') {
+      result = Number(a.qtd_realizada || 0) - Number(b.qtd_realizada || 0);
+    } else if (produtoSort.key === 'percentual') {
+      result = Number(a.eficiencia_pct || 0) - Number(b.eficiencia_pct || 0);
+    } else {
+      result = String(a.tipo_poste || '').localeCompare(String(b.tipo_poste || ''), 'pt-BR', { numeric: true });
+    }
+    return result * direction ||
+      String(a.tipo_poste || '').localeCompare(String(b.tipo_poste || ''), 'pt-BR', { numeric: true });
+  });
+  tbody.innerHTML = rows.slice(0, 60).map(p => `
+    <tr>
+      <td class="col-produto"><strong>${p.tipo_poste}</strong></td>
+      <td class="num">${fmtN(p.qtd_programada)}</td>
+      <td class="num">${fmtN(p.qtd_realizada)}</td>
+      <td class="num">${fmtM3(p.vol_realizado_m3)}</td>
+      <td class="num">${fmtKg(p.peso_realizado_kg)}</td>
+      <td class="text-center"><span class="badge-soft achievement ${achievementTone(p.eficiencia_pct)}">${pct(p.eficiencia_pct)}</span></td>
+    </tr>
+  `).join('');
+  atualizarBotoesOrdenacaoProdutos();
+}
+
+function atualizarBotoesOrdenacaoProdutos() {
+  document.querySelectorAll('[data-produto-sort]').forEach(btn => {
+    const active = btn.dataset.produtoSort === produtoSort.key;
+    btn.classList.toggle('active', active);
+    const icon = btn.querySelector('i');
+    if (!icon) return;
+    icon.className = active
+      ? `bi ${produtoSort.key === 'nome'
+        ? (produtoSort.direction === 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up')
+        : (produtoSort.direction === 'asc' ? 'bi-sort-numeric-down' : 'bi-sort-numeric-up')}`
+      : 'bi bi-arrow-down-up';
+  });
+}
+
+function ordenarProdutos(key) {
+  if (produtoSort.key === key) {
+    produtoSort.direction = produtoSort.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    produtoSort = {
+      key,
+      direction: key === 'nome' ? 'asc' : 'desc',
+    };
+  }
+  renderProdutosOrdenados();
+}
+
+document.getElementById('btn-filtrar').addEventListener('click', loadDashboard);
+document.querySelectorAll('[data-produto-sort]').forEach(btn => {
+  btn.addEventListener('click', () => ordenarProdutos(btn.dataset.produtoSort));
+});
+loadDashboard();
+</script>
+</body>
+</html>

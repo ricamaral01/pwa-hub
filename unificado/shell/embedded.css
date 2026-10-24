@@ -1,0 +1,19 @@
+/* A module inside the persistent shell keeps its working UI and hides only its duplicate chrome. */
+html.unificado-embedded, html.unificado-embedded body { background:#F5F6F8!important; }
+html.unificado-embedded body .unificado-sidebar,
+html.unificado-embedded body .unificado-topbar,
+html.unificado-embedded body .unificado-problem-fab,
+html.unificado-embedded body .unificado-pcp-problem-fab,
+html.unificado-embedded body .unificado-pcp-test-brand,
+html.unificado-embedded body .unificado-install-button,
+html.unificado-embedded body .unificado-install-dialog,
+html.unificado-embedded body #unificado-version,
+html.unificado-embedded body #appSidebar,
+html.unificado-embedded body #sidebarOverlay,
+html.unificado-embedded body .app-main > .topbar,
+html.unificado-embedded body #sidebar,
+html.unificado-embedded body #main-content > .topbar,
+html.unificado-embedded body .unificado-pcp-version { display:none!important; }
+html.unificado-embedded body .app-shell { padding:0!important; min-height:100vh!important; }
+html.unificado-embedded body .app-main { width:100%!important;min-height:100vh!important;margin:0!important;border-radius:0!important;transition:none!important; }
+html.unificado-embedded body #main-content { margin:0!important;min-height:100vh!important;border-radius:0!important;transition:none!important; }

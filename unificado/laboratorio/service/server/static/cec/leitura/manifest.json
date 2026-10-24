@@ -1,0 +1,25 @@
+{
+  "name": "ConcreTrack — Leitura CP",
+  "short_name": "Leitura CP",
+  "description": "Leitura de QR Code de Corpos de Prova — ConcreTrack CEC",
+  "start_url": "/unificado/laboratorio/cec/leitura/",
+  "scope": "/unificado/laboratorio/cec/leitura/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#343B43",
+  "theme_color": "#343B43",
+  "icons": [
+    {
+      "src": "/unificado/laboratorio/cec/assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/unificado/laboratorio/cec/assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

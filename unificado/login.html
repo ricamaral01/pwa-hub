@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1730">
+  <link rel="manifest" href="manifest.webmanifest?v=0.6.25">
+  <link rel="icon" href="data:,">
+  <title>Entrar — Concrefer</title>
+  <link rel="stylesheet" href="shell/shell.css?v=0.6.25">
+  <script defer src="shell/auth.js?v=0.6.25"></script>
+</head>
+<body>
+  <main class="login-layout">
+    <section class="login-card" aria-labelledby="login-title">
+      <div class="login-brand" aria-label="Concrefer e ConcreTrack">
+        <img class="login-logo-concrefer" src="assets/img/logo-concrefer.png" alt="Concrefer" width="190" height="50">
+        <span class="login-brand-divider" aria-hidden="true"></span>
+        <img class="login-logo-concretrack" src="assets/img/logo-concretrack.png" alt="ConcreTrack" width="76" height="76">
+      </div>
+      <h1 id="login-title">Bem-vindo de volta</h1>
+      <p>Entre com seu usuário e senha para acessar o sistema.</p>
+      <form id="unificado-login-form">
+        <label class="login-field"><span>Usuário</span><input type="text" name="username" autocomplete="username" required></label>
+        <label class="login-field"><span>Senha</span><input type="password" name="password" autocomplete="current-password" required></label>
+        <button class="button button-primary login-submit" type="submit">Entrar</button>
+      </form>
+      <form id="first-access-form" hidden>
+        <label class="login-field"><span>Nova senha</span><input type="password" name="newPassword" autocomplete="new-password" minlength="6" required></label>
+        <label class="login-field"><span>Confirmar nova senha</span><input type="password" name="confirmPassword" autocomplete="new-password" minlength="6" required></label>
+        <button class="button button-primary login-submit" type="submit">Definir senha e entrar</button>
+      </form>
+      <p id="login-feedback" role="status" aria-live="polite"></p>
+      <small class="login-note">Planejamento e Produção em um só acesso.</small>
+    </section>
+  </main>
+  <small id="unificado-version" style="position:fixed;right:10px;bottom:8px;color:#acb8ca;font:11px monospace"></small>
+  <script>fetch('/unificado/VERSION',{cache:'no-store'}).then(r=>r.ok?r.text():'').then(v=>{
+    document.getElementById('unificado-version').textContent='v'+v.trim();
+  }).catch(()=>{});</script>
+</body>
+</html>

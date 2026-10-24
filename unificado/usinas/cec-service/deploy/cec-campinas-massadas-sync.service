@@ -1,0 +1,24 @@
+[Unit]
+Description=Mirror Campinas massadas into CEC on the new VPS
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=oneshot
+User=cec-campinas
+Group=cec-campinas
+WorkingDirectory=/opt/concrefer-unificado/cec-campinas
+EnvironmentFile=/etc/concrefer/usinas-prod.env
+EnvironmentFile=/etc/concrefer/cec-campinas.env
+Environment=CEC_SOURCE_CA=/opt/concrefer-unificado/cec-campinas/source-ca.pem
+ExecStart=/opt/concrefer-unificado/cec-campinas/venv/bin/python /opt/concrefer-unificado/cec-campinas/sync_massadas.py
+TimeoutStartSec=120
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target

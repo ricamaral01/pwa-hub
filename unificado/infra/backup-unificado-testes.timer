@@ -1,0 +1,11 @@
+[Unit]
+Description=Agenda backup horario dos bancos do unificado
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=5m
+Persistent=true
+Unit=backup-unificado-testes.service
+
+[Install]
+WantedBy=timers.target

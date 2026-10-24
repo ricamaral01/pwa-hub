@@ -1,0 +1,21 @@
+[Unit]
+Description=CEC Campinas API on the new VPS
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=cec-campinas
+Group=cec-campinas
+WorkingDirectory=/opt/concrefer-unificado/cec-campinas
+EnvironmentFile=/etc/concrefer/cec-campinas.env
+ExecStart=/usr/bin/node /opt/concrefer-unificado/cec-campinas/src/server.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

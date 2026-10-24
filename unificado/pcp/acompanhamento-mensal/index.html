@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acompanhamento Mensal - PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <style>
+    .month-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .month-table-shell {
+      overflow: auto;
+      border: 1px solid #0f172a;
+      background: #fff;
+      max-height: calc(100vh - 210px);
+    }
+    .month-table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      min-width: 1420px;
+      width: max-content;
+      font-size: 11px;
+      color: #000;
+    }
+    .month-table th,
+    .month-table td {
+      border: 1px solid #111827;
+      height: 22px;
+      padding: 2px 4px;
+      line-height: 1.05;
+      text-align: center;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .month-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #c9c9c9;
+      font-weight: 800;
+    }
+    .month-table thead tr:first-child th { top: 0; height: 36px; }
+    .month-table thead tr:nth-child(2) th { top: 36px; }
+    .month-table .sticky-desc,
+    .month-table .sticky-setor,
+    .month-table .sticky-cod {
+      position: sticky;
+      z-index: 4;
+    }
+    .month-table thead .sticky-desc,
+    .month-table thead .sticky-setor,
+    .month-table thead .sticky-cod { z-index: 7; }
+    .month-table .sticky-desc {
+      left: 0;
+      width: 250px;
+      min-width: 250px;
+      text-align: left;
+    }
+    .month-table .sticky-setor {
+      left: 250px;
+      width: 60px;
+      min-width: 60px;
+    }
+    .month-table .sticky-cod {
+      left: 310px;
+      width: 58px;
+      min-width: 58px;
+      box-shadow: 4px 0 0 rgba(0,0,0,.08);
+    }
+    .month-table .day-col {
+      width: 39px;
+      min-width: 39px;
+    }
+    .month-table .total-col {
+      width: 68px;
+      min-width: 68px;
+      font-weight: 900;
+    }
+    .row-sector-34 .sticky-desc { background: #ff9900; }
+    .row-sector-34 .sticky-setor { background: #ff9900; }
+    .row-sector-34 .sticky-cod { background: #ffff00; }
+    .row-sector-default .sticky-desc { background: #00f000; }
+    .row-sector-default .sticky-setor { background: #fff; }
+    .row-sector-default .sticky-cod { background: #ffff00; }
+    .qty-cell.has-value {
+      background: #00f000;
+      font-weight: 800;
+    }
+    .qty-cell.weekend-empty {
+      background: #f8fafc;
+    }
+    .total-row td {
+      position: sticky;
+      bottom: 0;
+      z-index: 6;
+      background: #c9c9c9;
+      font-weight: 900;
+    }
+    .total-row .sticky-desc,
+    .total-row .sticky-setor,
+    .total-row .sticky-cod {
+      z-index: 8;
+      background: #c9c9c9;
+    }
+    .muted-small {
+      color: #64748b;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+    @media (max-width: 768px) {
+      .month-table-shell { max-height: calc(100vh - 250px); }
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body data-page-key="acompanhamento-mensal" data-title="Acompanhamento Mensal" data-setor-34="false" data-setor-12="true">
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link active" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title" id="page-title">Acompanhamento Mensal</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="section-card mb-3">
+      <div class="month-toolbar">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Mês</label>
+          <input type="month" id="f-mes" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-buscar">
+          <i class="bi bi-search me-1"></i>Buscar
+        </button>
+        <div class="ms-auto muted-small" id="resumo"></div>
+      </div>
+      <div class="month-table-shell">
+        <table class="month-table" aria-label="Acompanhamento mensal">
+          <thead id="thead-mensal"></thead>
+          <tbody id="tbody-mensal">
+            <tr><td class="text-center p-3">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script>
+const user = requireAuth();
+const pageKey = document.body.dataset.pageKey;
+const pageTitle = document.body.dataset.title;
+const setor34 = document.body.dataset.setor34 === 'true';
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  document.getElementById('page-title').textContent = pageTitle;
+  initSidebar(pageKey);
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[ch]));
+}
+
+function currentMonthValue() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function setLoading() {
+  document.getElementById('thead-mensal').innerHTML = '';
+  document.getElementById('tbody-mensal').innerHTML = '<tr><td class="text-center p-3">Carregando...</td></tr>';
+}
+
+function renderTabela(data) {
+  const thead = document.getElementById('thead-mensal');
+  const tbody = document.getElementById('tbody-mensal');
+  const dias = data.dias || [];
+  thead.innerHTML = `
+    <tr>
+      <th class="sticky-desc"></th>
+      <th class="sticky-setor"></th>
+      <th class="sticky-cod"></th>
+      ${dias.map(d => `<th class="day-col">${escapeHtml(d.dia_semana)}</th>`).join('')}
+      <th class="total-col"></th>
+    </tr>
+    <tr>
+      <th class="sticky-desc">Descrição Poste Duplo T</th>
+      <th class="sticky-setor">SETOR</th>
+      <th class="sticky-cod">Cód. Pro.</th>
+      ${dias.map(d => `<th class="day-col">${escapeHtml(d.rotulo)}</th>`).join('')}
+      <th class="total-col">Total Lib.</th>
+    </tr>
+  `;
+
+  if (!data.linhas?.length) {
+    tbody.innerHTML = `<tr><td colspan="${dias.length + 4}" class="text-center p-3">Nenhuma programação encontrada no mês.</td></tr>`;
+    document.getElementById('resumo').textContent = '0 itens';
+    return;
+  }
+
+  const rows = data.linhas.map(row => {
+    const setorId = Number(row.setor_id || 0);
+    const rowClass = [3, 4].includes(setorId) ? 'row-sector-34' : 'row-sector-default';
+    return `
+      <tr class="${rowClass}">
+        <td class="sticky-desc">${escapeHtml(row.descricao || '-')}</td>
+        <td class="sticky-setor">SETOR ${escapeHtml(setorId || '-')}</td>
+        <td class="sticky-cod">${escapeHtml(row.codigo || '')}</td>
+        ${dias.map(d => {
+          const value = Number(row.dias?.[d.data]?.programado || 0);
+          const cls = value > 0 ? 'has-value' : (d.fim_semana ? 'weekend-empty' : '');
+          return `<td class="qty-cell ${cls}">${value > 0 ? value : ''}</td>`;
+        }).join('')}
+        <td class="total-col">${Number(row.total || 0)}</td>
+      </tr>
+    `;
+  }).join('');
+
+  const totalRow = `
+    <tr class="total-row">
+      <td class="sticky-desc">Total Postes</td>
+      <td class="sticky-setor"></td>
+      <td class="sticky-cod"></td>
+      ${dias.map(d => `<td>${Number(data.totais?.[d.data]?.programado || 0) || ''}</td>`).join('')}
+      <td class="total-col">${Number(data.total_geral || 0)}</td>
+    </tr>
+  `;
+  tbody.innerHTML = rows + totalRow;
+  document.getElementById('resumo').textContent = `${data.linhas.length} item(ns) | Total ${Number(data.total_geral || 0)}`;
+}
+
+async function loadMensal() {
+  const value = document.getElementById('f-mes').value || currentMonthValue();
+  const [ano, mes] = value.split('-').map(Number);
+  const qs = new URLSearchParams({ ano: String(ano), mes: String(mes) });
+  if (setor34) {
+    qs.append('setor_ids', '3');
+    qs.append('setor_ids', '4');
+  } else if (document.body.dataset.setor12 === 'true') {
+    qs.append('setor_ids', '1');
+    qs.append('setor_ids', '2');
+  }
+  setLoading();
+  try {
+    const data = await API.get(`/api/acompanhamento-mensal?${qs}`);
+    renderTabela(data);
+  } catch (e) {
+    showToast(e.message, 'error');
+    document.getElementById('tbody-mensal').innerHTML = '<tr><td class="text-center p-3">Erro ao carregar acompanhamento.</td></tr>';
+  }
+}
+
+document.getElementById('f-mes').value = currentMonthValue();
+document.getElementById('btn-buscar').addEventListener('click', loadMensal);
+document.getElementById('f-mes').addEventListener('change', loadMensal);
+loadMensal();
+</script>
+</body>
+</html>

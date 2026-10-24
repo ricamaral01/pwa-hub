@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1730">
+  <title>Usinas · Cartas de traço</title>
+  <script>if (top === self) { const area = new URLSearchParams(location.search).get('area'); const view = 'usinas/' + (area ? '?area=' + encodeURIComponent(area) : ''); location.replace('/unificado/?view=' + encodeURIComponent(view)); }</script>
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#10233e;background:#f2f5f9}
+    *{box-sizing:border-box}
+    [hidden]{display:none!important}
+    body{margin:0;min-height:100vh;padding:clamp(18px,3vw,40px)}
+    main{max-width:1220px;margin:0 auto}
+    .eyebrow{margin:0 0 8px;color:#087f8c;font-size:.76rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    h1{margin:0;font-size:clamp(2rem,4.2vw,3.5rem);line-height:1.05;letter-spacing:-.045em}
+    .intro{max-width:740px;margin:13px 0 24px;color:#53657b;line-height:1.5}
+    .state{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:#e8f3f3;color:#086773;font-size:.8rem;font-weight:800}
+    .state::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+    .summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+    .legacy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+    .legacy-card{display:flex;flex-direction:column;gap:10px;padding:20px 22px;border:1px solid #dbe4ee;border-radius:18px;background:#fff;color:inherit;text-decoration:none;box-shadow:0 12px 30px rgba(11,23,48,.045)}
+    .legacy-card:hover,.legacy-card:focus-visible{border-color:#087f8c;outline:none;box-shadow:0 0 0 3px #c4e8e9}
+    .legacy-card strong{font-size:1.05rem}.legacy-card span{color:#53657b;font-size:.85rem;line-height:1.45}.legacy-card small{margin-top:auto;color:#086773;font-weight:800}
+    .legacy-note{color:#53657b;font-size:.84rem;line-height:1.5}
+    .legacy-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;padding:20px 24px 24px}
+    .legacy-links a{padding:13px 15px;border:1px solid #dbe4ee;border-radius:11px;color:#09677b;font-weight:750;text-decoration:none}
+    .legacy-links a:hover,.legacy-links a:focus-visible{background:#eaf7f9;border-color:#087f8c}
+    .metric,.panel{border:1px solid #dbe4ee;border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(11,23,48,.045)}
+    .metric{padding:20px 22px}
+    .metric span{display:block;color:#586b80;font-size:.82rem;font-weight:700}
+    .metric strong{display:block;margin-top:7px;font-size:1.75rem;letter-spacing:-.04em}
+    .panel{overflow:hidden}
+    .toolbar{display:flex;justify-content:space-between;align-items:end;gap:20px;padding:22px 24px;border-bottom:1px solid #e6edf4}
+    h2{margin:0;font-size:1.35rem;letter-spacing:-.025em}
+    .sub{margin:5px 0 0;color:#607187;font-size:.88rem}
+    .search{display:grid;gap:6px;color:#3f546d;font-size:.76rem;font-weight:800}
+    .search input{width:min(310px,100%);padding:11px 13px;border:1px solid #bdccda;border-radius:11px;background:#fff;color:#10233e;font:inherit;font-size:.92rem;font-weight:500}
+    .search input:focus{outline:3px solid #c4e8e9;border-color:#078b96}
+    .notice{margin:0;padding:12px 24px;background:#f8fbfd;color:#53657b;font-size:.85rem}
+    .notice.error{background:#fff1e8;color:#894320}
+    .scroll{overflow:auto}
+    table{width:100%;border-collapse:collapse;min-width:830px}
+    th,td{padding:13px 18px;border-top:1px solid #edf1f5;text-align:left;white-space:nowrap}
+    th{color:#617289;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;background:#f8fafc}
+    td{font-size:.88rem}
+    td:first-child{font-weight:750}
+    .pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:#e6f5ec;color:#147446;font-size:.74rem;font-weight:800}
+    .pill.off{background:#f0f2f5;color:#606d7e}
+    .empty{padding:32px 24px;color:#607187;text-align:center}
+    button{font:inherit;cursor:pointer}
+    .open,.action{border:1px solid #b7ced8;border-radius:9px;padding:7px 10px;background:#fff;color:#09677b;font-weight:750}
+    .open:hover,.action:hover{background:#eaf7f9}
+    .detail{margin-top:20px;padding:24px}
+    .detail[hidden]{display:none}
+    .detail-head{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:18px}
+    .detail-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px}
+    .detail-item{padding:12px 14px;border:1px solid #e3eaf1;border-radius:11px;background:#f9fbfd}
+    .detail-item span{display:block;color:#607187;font-size:.72rem;font-weight:700}
+    .detail-item strong{display:block;margin-top:4px;font-size:.96rem;overflow-wrap:anywhere}
+    .revision-link{width:100%;text-align:left;border:1px solid #dbe4ee;border-radius:11px;background:#f9fbfd;padding:12px 14px;color:#10233e}
+    .revision-link:hover,.revision-link:focus-visible{background:#eaf7f9;border-color:#087f8c}
+    .revision-link[aria-current="true"]{border-color:#087f8c;background:#e8f3f3}
+    .revision-link span,.revision-link strong{display:block}
+    .revision-link span{color:#607187;font-size:.72rem;font-weight:700}
+    .revision-link strong{margin-top:4px;font-size:.96rem}
+    .detail-subtitle{margin:23px 0 10px;font-size:1rem}
+    .detail-note{white-space:pre-wrap;color:#42546b;line-height:1.5}
+    .carta-meta{margin:-8px 0 18px;color:#607187;font-size:.85rem}
+    .carta-indicadores{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:16px 0}
+    .carta-indicadores .detail-item:first-child{background:#eaf1f8}
+    @media print{body{padding:0;background:#fff}body main>h1,body main>.eyebrow,body main>.intro,body main>.state,body main>.summary,body main>.legacy-grid,body main>.legacy-note,body main>.panel:not(.detail){display:none!important}.detail{border:0;box-shadow:none;margin:0;padding:0}.detail-actions,.print-extra,#revisoes,.detail-subtitle,#observacao{display:none!important}.detail-head{border-bottom:2px solid #087f8c;padding-bottom:10px}.detail-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.detail-item{break-inside:avoid;border-color:#cbd5e1}.carta-indicadores{grid-template-columns:repeat(5,minmax(0,1fr))}}
+    @media(max-width:700px){.summary{grid-template-columns:1fr 1fr}.metric:last-child{grid-column:1/-1}.toolbar{display:grid;align-items:stretch}.search input{width:100%}}
+    @media(max-width:850px){.legacy-grid{grid-template-columns:1fr}}
+    @media(max-width:700px){.carta-indicadores{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Usinas / Campinas</p>
+    <h1 id="titulo">Cartas de traço</h1>
+    <p id="intro" class="intro">Receitas e revisões da usina de Campinas, atualizadas a partir do cadastro oficial.</p>
+    <span id="estado" class="state">Somente leitura</span>
+    <section id="resumo" class="summary" aria-label="Resumo das cartas de traço">
+      <div class="metric"><span>Cartas e revisões</span><strong id="total">—</strong></div>
+      <div class="metric"><span>Ativas</span><strong id="ativas">—</strong></div>
+      <div class="metric"><span>Última atualização</span><strong id="atualizacao" style="font-size:1.05rem">—</strong></div>
+    </section>
+    <section class="legacy-grid" aria-label="Áreas operacionais de Campinas">
+      <a class="legacy-card" href="?area=cec"><strong>Controle estatístico</strong><span>Leituras, resultados, etiquetas, análise e relatório CEC.</span><small>Abrir no Unificado →</small></a>
+      <a class="legacy-card" href="?area=relatorios"><strong>Relatórios gerenciais</strong><span>Produção, consumo, custos, fechamento e exportações.</span><small>Abrir no Unificado →</small></a>
+      <a class="legacy-card" href="?area=estoque"><strong>Controle de estoque</strong><span>Entradas, saldos, consumo, silos e acertos de inventário.</span><small>Abrir no Unificado →</small></a>
+    </section>
+    <section id="area-nativa" class="panel" aria-labelledby="area-nativa-titulo" hidden>
+      <div class="toolbar"><div><h2 id="area-nativa-titulo"></h2><p class="sub">Campinas · telas do Unificado</p></div></div>
+      <div id="area-nativa-conteudo"></div>
+    </section>
+    <section id="receitas" class="panel" aria-labelledby="lista-titulo">
+      <div class="toolbar">
+        <div><h2 id="lista-titulo">Receitas</h2><p class="sub">A edição será disponibilizada após a validação do fluxo de gravação.</p></div>
+        <label class="search">Buscar carta de traço<input id="buscar" type="search" placeholder="Nome ou ID" autocomplete="off"></label>
+      </div>
+      <p id="aviso" class="notice" role="status">Carregando receitas…</p>
+      <div class="scroll"><table>
+        <thead><tr><th>Nome do traço</th><th>Revisão</th><th>Status</th><th>Cimento 1</th><th>Água</th><th>Alterado por</th><th>ID</th><th>Ação</th></tr></thead>
+        <tbody id="linhas"></tbody>
+      </table></div>
+      <p id="vazio" class="empty" hidden>Nenhuma receita encontrada.</p>
+    </section>
+    <section id="detalhe" class="panel detail" aria-labelledby="detalhe-titulo" hidden>
+      <div class="detail-head"><div><p class="eyebrow">Carta de traço · somente leitura</p><h2 id="detalhe-titulo">Detalhes</h2></div>
+        <div class="detail-actions"><button id="imprimir" class="action" type="button">Imprimir</button><button id="fechar" class="action" type="button">Fechar</button></div>
+      </div>
+      <p id="detalhe-meta" class="carta-meta"></p>
+      <div id="campos" class="detail-grid"></div>
+      <div id="indicadores" class="carta-indicadores"></div>
+      <p class="sub">Resistências acima são os valores cadastrados na receita; a média dos ensaios não está integrada nesta consulta.</p>
+      <h3 class="detail-subtitle">Revisões do mesmo grupo</h3><div id="revisoes" class="detail-grid"></div>
+      <h3 class="detail-subtitle">Observação da revisão</h3><p id="observacao" class="detail-note">—</p>
+    </section>
+  </main>
+  <script>
+    const $ = id => document.getElementById(id);
+    const areas = {
+      cec: {title:'Controle estatístico'},
+      relatorios: {title:'Relatórios gerenciais'},
+      estoque: {title:'Controle de estoque'}
+    };
+    const area = areas[new URLSearchParams(location.search).get('area')];
+    if(area){
+      document.title = `Usinas · ${area.title}`;
+      $('titulo').textContent = area.title;
+      $('intro').textContent = 'Telas operacionais de Campinas integradas ao Unificado.';
+      $('estado').textContent = 'Consulta nativa';
+      $('resumo').hidden = true;
+      $('receitas').hidden = true;
+      $('area-nativa-titulo').textContent = area.title;
+      $('area-nativa').hidden = false;
+    }
+    let rows = [];
+    const text = value => value == null || value === '' ? '—' : String(value);
+    const number = value => value == null ? '—' : new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(Number(value));
+    const fields = [
+      ['Cimento','cimento2','kg',true],['Filler','cimento1','kg',true],
+      ['Pó de Pedra','agregado1','kg',true],['Areia Média','agregado2','kg',true],
+      ['Areia Fina','agregado3','kg',true],['Brita 1/2','agregado4','kg',true],
+      ['Brita 0','agregado5','kg',true],['Aditivo','aditivo1','ml',true],
+      ['Aditivo 2','aditivo2','ml',true],['Água','agua','L',true],
+      ['Cimento adicional','cimento','kg'],['Cimento 3','cimento3','kg'],['Cimento 4','cimento4','kg'],
+      ['Adição 1','adicao_1','kg'],['Adição 2','adicao_2','kg'],
+      ['Areia 1','areia_1','kg'],['Areia 2','areia_2','kg'],['Areia 3','areia_3','kg'],
+      ['Brita 1','brita_1','kg'],['Brita 2','brita_2','kg'],
+      ['Agregado 6','agregado6','kg'],['Agregado 7','agregado7','kg'],
+      ['Aditivo 3','aditivo3','ml'],['Aditivo adicional 1','aditivo_1','ml'],
+      ['Aditivo adicional 2','aditivo_2','ml'],['a/c registrada','ac'],
+      ['Alterado por','alterado_por'],['Revisado em','revisado_em']
+    ];
+    function item(label,value,print=true){
+      const box=document.createElement('div');box.className='detail-item' + (print ? '' : ' print-extra');
+      const caption=document.createElement('span');caption.textContent=label;
+      const content=document.createElement('strong');content.textContent=text(value);
+      box.append(caption,content);return box;
+    }
+    function showDetail(row){
+      $('detalhe-titulo').textContent=row.nome_traco || `Receita ${row.id}`;
+      $('detalhe-meta').textContent=`ID #${text(row.id)} · Revisão ${text(row.revisao_numero)} · ${row.ativa?'Ativa':'Inativa'}`;
+      const values=$('campos');values.replaceChildren();
+      for(const [label,key,unit,print] of fields){
+        if((row[key] == null || row[key] === '') && !print)continue;
+        const raw=row[key];
+        const formatted=raw == null || raw === '' ? '—'
+          : unit && Number.isFinite(Number(raw)) ? number(raw) : text(raw);
+        values.append(item(label,formatted + (formatted !== '—' && unit ? ` ${unit}` : ''),!!print));
+      }
+      const cement=Number(row.cimento2 ?? row.cimento);
+      const water=Number(row.agua);
+      const ac=Number.isFinite(cement) && cement>0 && Number.isFinite(water) && water>0
+        ? new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(water/cement) : '—';
+      const indicators=$('indicadores');indicators.replaceChildren(item('Relação água/cimento',ac));
+      for(const [label,key] of [['R24h','r24h'],['R3','r3'],['R7','r7'],['R28','r28']]){
+        indicators.append(item(label,row[key] == null ? '—' : `${number(row[key])} MPa`));
+      }
+      const revisions=rows.filter(other=>other.revisao_grupo && other.revisao_grupo===row.revisao_grupo)
+        .sort((a,b)=>Number(b.revisao_numero)-Number(a.revisao_numero));
+      const history=$('revisoes');history.replaceChildren();
+      for(const revision of revisions){
+        const button=document.createElement('button');button.type='button';button.className='revision-link';
+        button.setAttribute('aria-current',String(revision.id===row.id));
+        const caption=document.createElement('span');caption.textContent=`Revisão ${text(revision.revisao_numero)}`;
+        const content=document.createElement('strong');content.textContent=`ID ${text(revision.id)} · ${revision.ativa?'Ativa':'Inativa'}`;
+        button.append(caption,content);button.addEventListener('click',()=>showDetail(revision));
+        history.append(button);
+      }
+      $('observacao').textContent=text(row.observacao_revisao);
+      $('detalhe').hidden=false;$('detalhe').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    function render(){
+      const term = $('buscar').value.trim().toLocaleLowerCase('pt-BR');
+      const selected = rows.filter(row => !term || String(row.id).includes(term) || String(row.nome_traco || '').toLocaleLowerCase('pt-BR').includes(term));
+      const body = $('linhas'); body.replaceChildren();
+      for(const row of selected){
+        const tr = document.createElement('tr');
+        for(const value of [text(row.nome_traco), `R${text(row.revisao_numero)}`, row.ativa ? 'Ativa':'Inativa', number(row.cimento1), number(row.agua), text(row.alterado_por), text(row.id)]){
+          const td = document.createElement('td');
+          if(value === 'Ativa' || value === 'Inativa'){
+            const badge = document.createElement('span'); badge.className = 'pill' + (value === 'Inativa' ? ' off':''); badge.textContent = value; td.append(badge);
+          }else td.textContent = value;
+          tr.append(td);
+        }
+        const action=document.createElement('td');const open=document.createElement('button');
+        open.type='button';open.className='open';open.textContent='Consultar';
+        open.setAttribute('aria-label',`Consultar ${text(row.nome_traco)} revisão ${text(row.revisao_numero)}`);
+        open.addEventListener('click',()=>showDetail(row));action.append(open);tr.append(action);
+        body.append(tr);
+      }
+      $('vazio').hidden = selected.length !== 0;
+    }
+    async function load(){
+      try{
+        const response = await fetch('/unificado/mapa/api/usina/receitas',{credentials:'same-origin',cache:'no-store'});
+        if(!response.ok) throw new Error(response.status === 401 ? 'Sessão expirada. Entre novamente no Unificado.' : 'Não foi possível consultar as receitas.');
+        const data = await response.json();
+        rows = Array.isArray(data.rows) ? data.rows : [];
+        $('total').textContent = rows.length.toLocaleString('pt-BR');
+        $('ativas').textContent = rows.filter(row => row.ativa).length.toLocaleString('pt-BR');
+        $('atualizacao').textContent = data.sync?.last_success_at ? new Date(data.sync.last_success_at).toLocaleString('pt-BR') : 'Pendente';
+        const age = Number(data.sync?.age_seconds);
+        const stale = !data.sync?.last_success_at || data.sync?.age_seconds == null
+          || !Number.isFinite(age) || age < 0 || age > 120
+          || !!data.sync?.last_error
+          || (data.sync?.source_count != null && data.sync?.mirror_count != null
+            && Number(data.sync.source_count) !== Number(data.sync.mirror_count));
+        $('aviso').classList.toggle('error', stale);
+        $('aviso').textContent = stale ? 'A atualização está atrasada. As receitas exibidas podem estar desatualizadas.' : 'Cadastro oficial na VPS antiga. Esta lista é atualizada automaticamente a cada minuto.';
+        render();
+      }catch(error){
+        $('aviso').classList.add('error'); $('aviso').textContent = error.message;
+      }
+    }
+    $('buscar').addEventListener('input', render);
+    $('fechar').addEventListener('click',()=>{$('detalhe').hidden=true;$('buscar').focus()});
+    $('imprimir').addEventListener('click',()=>window.print());
+    if(!area){load(); setInterval(load, 60000)}
+  </script>
+  <link rel="stylesheet" href="./native-areas.css?v=1">
+  <link rel="stylesheet" href="./cec-native.css?v=1">
+  <script src="./native-areas.js?v=1"></script>
+  <script src="./assets/html5-qrcode-2.3.8.min.js"></script>
+  <script src="./cec-native.js?v=3"></script>
+</body>
+</html>

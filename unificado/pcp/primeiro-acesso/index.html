@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primeiro Acesso — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-logo unificado-first-access-logos" aria-label="Concrefer e ConcreTrack">
+      <img src="/unificado/assets/img/logo-concrefer.png" alt="Concrefer">
+      <img src="/unificado/assets/img/logo-concretrack.png" alt="ConcreTrack">
+      <div class="brand-name">Primeiro Acesso</div>
+      <div class="brand-sub">Troque sua senha para continuar</div>
+    </div>
+
+    <form id="form-first-pass">
+      <div class="mb-3">
+        <label class="form-label fw-semibold" style="font-size:.85rem">Senha atual</label>
+        <input type="password" id="senha-atual" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold" style="font-size:.85rem">Nova senha</label>
+        <input type="password" id="nova-senha" class="form-control" minlength="6" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold" style="font-size:.85rem">Confirmar nova senha</label>
+        <input type="password" id="conf-senha" class="form-control" minlength="6" required />
+      </div>
+
+      <div id="err" class="alert alert-danger d-none py-2 mb-3" role="alert" style="font-size:.85rem"></div>
+
+      <button type="submit" class="btn w-100 btn-primary-pcp">Atualizar senha</button>
+    </form>
+  </div>
+</div>
+
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script>
+const user = API.getUser();
+if (!API.getToken() || !user) {
+  window.location.href = '/unificado/login.html';
+}
+if (!user.trocar_senha_primeiro_acesso) {
+  window.location.href = '/unificado/pcp/dashboard/';
+}
+
+document.getElementById('form-first-pass').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = document.getElementById('err');
+  err.classList.add('d-none');
+
+  const senha_atual = document.getElementById('senha-atual').value;
+  const nova_senha = document.getElementById('nova-senha').value;
+  const conf = document.getElementById('conf-senha').value;
+
+  if (nova_senha !== conf) {
+    err.textContent = 'Confirmação de senha não confere';
+    err.classList.remove('d-none');
+    return;
+  }
+
+  try {
+    const novoUser = await API.post('/api/usuarios/trocar-senha-primeiro-acesso', { senha_atual, nova_senha });
+    localStorage.setItem('pcp_user', JSON.stringify(novoUser));
+    showToast('Senha atualizada com sucesso', 'success');
+    window.location.href = '/unificado/pcp/dashboard/';
+  } catch (e2) {
+    err.textContent = e2.message;
+    err.classList.remove('d-none');
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "id": "/unificado/mapa/operacao/index.html",
+  "name": "Concrefer Unificado",
+  "short_name": "Concrefer",
+  "start_url": "/unificado/",
+  "scope": "/unificado/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0B1730",
+  "theme_color": "#0B1730",
+  "icons": [
+    {"src": "/unificado/mapa/operacao/unificado-icon.png", "sizes": "1536x1536", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

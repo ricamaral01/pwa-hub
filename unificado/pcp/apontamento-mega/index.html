@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apontamento Mega - PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <style>
+    .mega-shell {
+      border: 1px solid #dbe4ee;
+      border-radius: 10px;
+      overflow: auto;
+      max-height: 66vh;
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, .06);
+    }
+    .mega-table {
+      min-width: 1040px;
+      margin: 0;
+      table-layout: fixed;
+    }
+    .mega-table th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #f8fafc;
+      vertical-align: middle;
+    }
+    .mega-table td {
+      vertical-align: middle;
+      font-variant-numeric: tabular-nums;
+    }
+    .mega-table tbody tr:nth-child(even) { background: #fbfdff; }
+    .mega-table tbody tr:hover { background: #eef6ff; }
+    .mega-table tbody tr.apontado {
+      background: #ecfdf5;
+      color: #14532d;
+    }
+    .mega-table .col-produto {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-weight: 800;
+      font-size: .75rem;
+    }
+    .status-pill.ok { background: #dcfce7; color: #166534; }
+    .status-pill.pending { background: #fff7ed; color: #9a3412; }
+    .check-btn {
+      width: 38px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+    .summary-chip {
+      border: 1px solid #dbe4ee;
+      border-radius: 8px;
+      padding: 8px 12px;
+      background: #f8fafc;
+      font-size: .82rem;
+      font-weight: 800;
+      color: #15416f;
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link active" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Apontamento Mega</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="section-card mb-3">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-3 col-lg-2">
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Dia</label>
+          <input type="date" id="f-data" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-5 col-lg-4">
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Nome de quem aponta</label>
+          <input type="text" id="nome-apontador" class="form-control form-control-sm" placeholder="Obrigatório para realizar" autocomplete="name" />
+        </div>
+        <div class="col-md-3 col-lg-2">
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Setor</label>
+          <select id="f-setor" class="form-select form-select-sm">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-lg-2">
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Código</label>
+          <select id="f-codigo" class="form-select form-select-sm">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-lg-2">
+          <button class="btn btn-primary-pcp btn-sm w-100" id="btn-carregar">
+            <i class="bi bi-search me-1"></i>Carregar dia
+          </button>
+        </div>
+        <div class="col-lg-3 d-flex gap-2 justify-content-lg-end">
+          <div class="summary-chip">Programado: <span id="sum-programado">0</span></div>
+          <div class="summary-chip">Realizado: <span id="sum-realizado">0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card mb-4">
+      <div class="section-title">Setor 1 e 2</div>
+      <div class="mega-shell">
+        <table class="table table-sm mega-table">
+          <thead>
+            <tr>
+              <th style="width:92px">Setor</th>
+              <th style="width:92px">Forma</th>
+              <th style="width:92px">Código</th>
+              <th style="width:180px">Descrição</th>
+              <th class="text-end" style="width:118px">Programado</th>
+              <th class="text-end" style="width:108px">Realizado</th>
+              <th style="width:170px">Status</th>
+              <th class="text-center" style="width:86px">Check</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-dia-12">
+            <tr><td colspan="8" class="text-center text-muted py-3">Carregando</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-card mb-4">
+      <div class="section-title">Setor 3 e 4</div>
+      <div class="mega-shell">
+        <table class="table table-sm mega-table">
+          <thead>
+            <tr>
+              <th style="width:92px">Setor</th>
+              <th style="width:92px">Forma</th>
+              <th style="width:92px">Código</th>
+              <th>Poste / Produto</th>
+              <th class="text-end" style="width:118px">Programado</th>
+              <th class="text-end" style="width:108px">Realizado</th>
+              <th style="width:170px">Status</th>
+              <th class="text-center" style="width:86px">Check</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-dia-34">
+            <tr><td colspan="8" class="text-center text-muted py-3">Carregando</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="d-flex flex-wrap align-items-end gap-2 mb-3">
+        <div class="section-title mb-0 me-auto">Consulta por período</div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Início</label>
+          <input type="date" id="c-inicio" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Fim</label>
+          <input type="date" id="c-fim" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Setor</label>
+          <select id="c-setor" class="form-select form-select-sm" style="width:150px">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:700">Código</label>
+          <select id="c-codigo" class="form-select form-select-sm" style="width:150px">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-consultar">
+          <i class="bi bi-bar-chart-line me-1"></i>Consultar
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Setor</th>
+              <th>Forma</th>
+              <th>Código</th>
+              <th>Descrição</th>
+              <th class="text-end">Programado</th>
+              <th class="text-end">Realizado</th>
+              <th class="text-end">Dif.</th>
+              <th class="text-end">%</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-consulta">
+            <tr><td colspan="9" class="text-center text-muted py-3">Informe o período</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  initSidebar('apontamento-mega');
+}
+
+const hoje = todayISO();
+document.getElementById('f-data').value = hoje;
+document.getElementById('c-inicio').value = hoje;
+document.getElementById('c-fim').value = hoje;
+document.getElementById('nome-apontador').value = localStorage.getItem('mega_nome_apontador') || user?.nome || '';
+
+const ORDEM_CODIGOS = [
+  '938', '935', '943', '941', '946', '945', '948', '947', '944', '942',
+  '934', '931', '930', '932', '933', '949', '950', '5017', '4848', '4031',
+  '4764', '4032', '4765', '4929', '957', '940', '937', '939', '936', '2017',
+  '953', '954',
+];
+
+const DESCRICAO_POR_CODIGO = {
+  '938': '1 CX VR',
+  '935': '1 CX VL',
+  '943': '2 CX VR',
+  '941': '2 CX VL',
+  '946': '3 CX VR',
+  '945': '3 CX VL',
+  '948': '4 CX VR',
+  '947': '4 CX VL',
+  '944': '2 CX VR - 300 DAN',
+  '942': '2 CX VL - 300 DAN',
+  '934': 'POSTE CAIXA LENTE 1 CX VL',
+  '931': 'ECON 1 CX VR',
+  '930': 'ECON 1 CX VL',
+  '932': 'ECON 2 CX VR',
+  '933': 'ECON 3 CX VR',
+  '949': 'SUB 100',
+  '950': 'SUB 200',
+  '5017': 'SUB 200 TC',
+  '4848': 'SUB 100 ELEKTRO',
+  '4031': 'ELEKTRO 1 CX VR',
+  '4764': 'ELEKTRO 1 CX VL',
+  '4032': 'ELEKTRO 2 CX VR',
+  '4765': 'ELEKTRO 2 CX VL',
+  '4929': 'ELEKTRO 3 CX VL',
+  '957': 'EDP 1 CX VL',
+  '940': '7,5X600 TC VR',
+  '937': '7,5X600 TC VL',
+  '939': '7,5X600 BARR VR',
+  '936': '7,5X600 BARR VL',
+  '2017': 'POSTE COLUNA',
+  '953': 'CEMIG 7X150 1 CX VL',
+  '954': 'CEMIG 7X150 2 CX VL',
+};
+
+let rowsDiaCache = [];
+let rowsConsultaCache = [];
+
+function codigoKey(row) {
+  return String(row.codigo || '').trim();
+}
+
+function ordemCodigo(codigo) {
+  const idx = ORDEM_CODIGOS.indexOf(String(codigo || '').trim());
+  return idx >= 0 ? idx : 9999;
+}
+
+function setorTexto(row) {
+  return row.setor?.nome || row.setor || row.setor_id || '-';
+}
+
+function ordenarPorSequencia(rows) {
+  return [...rows].sort((a, b) =>
+    ordemCodigo(codigoKey(a)) - ordemCodigo(codigoKey(b)) ||
+    String(setorTexto(a)).localeCompare(String(setorTexto(b)), 'pt-BR') ||
+    String(a.forma || '').localeCompare(String(b.forma || ''), 'pt-BR', { numeric: true })
+  );
+}
+
+function aplicarFiltros(rows, prefixo) {
+  const setor = document.getElementById(`${prefixo}-setor`)?.value || '';
+  const codigo = document.getElementById(`${prefixo}-codigo`)?.value || '';
+  return rows.filter(row => {
+    const setorVal = String(row.setor_id || row.setor || row.setor?.nome || '');
+    const setorNome = String(setorTexto(row));
+    const codigoVal = codigoKey(row);
+    return (!setor || setorVal === setor || setorNome === setor) && (!codigo || codigoVal === codigo);
+  });
+}
+
+function preencherFiltros(rows, prefixo) {
+  const setorSel = document.getElementById(`${prefixo}-setor`);
+  const codigoSel = document.getElementById(`${prefixo}-codigo`);
+  const setorAtual = setorSel.value;
+  const codigoAtual = codigoSel.value;
+  const setores = [...new Map(rows.map(row => [String(row.setor_id || row.setor || setorTexto(row)), setorTexto(row)])).entries()]
+    .sort((a, b) => String(a[1]).localeCompare(String(b[1]), 'pt-BR', { numeric: true }));
+  const codigos = [...new Set(rows.map(codigoKey).filter(Boolean))]
+    .sort((a, b) => ordemCodigo(a) - ordemCodigo(b) || String(a).localeCompare(String(b), 'pt-BR', { numeric: true }));
+
+  setorSel.innerHTML = '<option value="">Todos</option>' + setores.map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+  codigoSel.innerHTML = '<option value="">Todos</option>' + codigos.map(codigo => `<option value="${codigo}">${codigo} - ${DESCRICAO_POR_CODIGO[codigo] || ''}</option>`).join('');
+  if ([...setorSel.options].some(opt => opt.value === setorAtual)) setorSel.value = setorAtual;
+  if ([...codigoSel.options].some(opt => opt.value === codigoAtual)) codigoSel.value = codigoAtual;
+}
+
+function statusHtml(row) {
+  if (row.apontado) {
+    return `<span class="status-pill ok"><i class="bi bi-check-circle-fill"></i>${row.nome_apontador || 'Apontamento feito'}</span>`;
+  }
+  return '<span class="status-pill pending"><i class="bi bi-clock"></i>Pendente Mega</span>';
+}
+
+function rowHtml(row) {
+  const realizado = Number(row.quantidade_realizada || row.quantidade_apontada || 0);
+  const descricao = DESCRICAO_POR_CODIGO[String(row.codigo || '').trim()] || '-';
+  return `
+    <tr class="${row.apontado ? 'apontado' : ''}" data-id="${row.programacao_id}">
+      <td>${row.setor?.nome || row.setor_id || '-'}</td>
+      <td><strong>${row.forma || '-'}</strong></td>
+      <td><small class="text-muted">${row.codigo || '-'}</small></td>
+      <td>${descricao}</td>
+      <td class="text-end"><strong>${fmtN(row.quantidade_programada)}</strong></td>
+      <td class="text-end">${fmtN(realizado)}</td>
+      <td>${statusHtml(row)}</td>
+      <td class="text-center">
+        <button class="btn ${row.apontado ? 'btn-success' : 'btn-outline-success'} btn-sm check-btn" onclick="realizarLinha(${row.programacao_id})" title="Marcar apontamento no Mega como feito">
+          <i class="bi bi-check2"></i>
+        </button>
+      </td>
+    </tr>
+  `;
+}
+
+function rowHtmlPosteProduto(row) {
+  const realizado = Number(row.quantidade_realizada || row.quantidade_apontada || 0);
+  return `
+    <tr class="${row.apontado ? 'apontado' : ''}" data-id="${row.programacao_id}">
+      <td>${row.setor?.nome || row.setor_id || '-'}</td>
+      <td><strong>${row.forma || '-'}</strong></td>
+      <td><small class="text-muted">${row.codigo || '-'}</small></td>
+      <td class="col-produto" title="${row.produto_nome || ''}">${row.produto_nome || '-'}</td>
+      <td class="text-end"><strong>${fmtN(row.quantidade_programada)}</strong></td>
+      <td class="text-end">${fmtN(realizado)}</td>
+      <td>${statusHtml(row)}</td>
+      <td class="text-center">
+        <button class="btn ${row.apontado ? 'btn-success' : 'btn-outline-success'} btn-sm check-btn" onclick="realizarLinha(${row.programacao_id})" title="Marcar apontamento no Mega como feito">
+          <i class="bi bi-check2"></i>
+        </button>
+      </td>
+    </tr>
+  `;
+}
+
+async function carregarDia() {
+  const data = document.getElementById('f-data').value;
+  document.getElementById('tbody-dia-12').innerHTML = '<tr><td colspan="8" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+  document.getElementById('tbody-dia-34').innerHTML = '<tr><td colspan="8" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+  try {
+    const rows = await API.get(`/api/apontamento-mega?data=${data}`);
+    rowsDiaCache = ordenarPorSequencia(rows);
+    preencherFiltros(rowsDiaCache, 'f');
+    renderDia();
+  } catch(e) {
+    showToast(e.message, 'error');
+  }
+}
+
+function renderDia() {
+  const rows = aplicarFiltros(rowsDiaCache, 'f');
+  const programado = rows.reduce((s, r) => s + Number(r.quantidade_programada || 0), 0);
+  const realizado = rows.reduce((s, r) => s + Number(r.quantidade_realizada || r.quantidade_apontada || 0), 0);
+  document.getElementById('sum-programado').textContent = fmtN(programado);
+  document.getElementById('sum-realizado').textContent = fmtN(realizado);
+
+  const rows12 = rows.filter(row => ['1', '2'].includes(String(row.setor_id || '').trim()));
+  const rows34 = rows.filter(row => ['3', '4'].includes(String(row.setor_id || '').trim()));
+  document.getElementById('tbody-dia-12').innerHTML = rows12.length
+    ? rows12.map(rowHtml).join('')
+    : '<tr><td colspan="8" class="text-center text-muted py-3">Nenhum item do Setor 1/2</td></tr>';
+  document.getElementById('tbody-dia-34').innerHTML = rows34.length
+    ? rows34.map(rowHtmlPosteProduto).join('')
+    : '<tr><td colspan="8" class="text-center text-muted py-3">Nenhum item do Setor 3/4</td></tr>';
+}
+
+async function realizarLinha(programacaoId) {
+  const nome = document.getElementById('nome-apontador').value.trim();
+  if (!nome) {
+    showToast('Informe o nome de quem vai realizar o apontamento', 'warning');
+    document.getElementById('nome-apontador').focus();
+    return;
+  }
+  localStorage.setItem('mega_nome_apontador', nome);
+  try {
+    await API.post(`/api/apontamento-mega/${programacaoId}/apontar`, { nome_apontador: nome });
+    showToast('Apontamento no Mega marcado como feito', 'success');
+    carregarDia();
+  } catch(e) {
+    showToast(e.message, 'error');
+  }
+}
+
+async function consultarPeriodo() {
+  const di = document.getElementById('c-inicio').value;
+  const df = document.getElementById('c-fim').value;
+  const tbody = document.getElementById('tbody-consulta');
+  tbody.innerHTML = '<tr><td colspan="9" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+  try {
+    const rows = await API.get(`/api/apontamento-mega/consulta?data_inicio=${di}&data_fim=${df}`);
+    rowsConsultaCache = ordenarPorSequencia(rows);
+    preencherFiltros(rowsConsultaCache, 'c');
+    renderConsulta();
+  } catch(e) {
+    showToast(e.message, 'error');
+  }
+}
+
+function renderConsulta() {
+  const tbody = document.getElementById('tbody-consulta');
+  const rows = aplicarFiltros(rowsConsultaCache, 'c');
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted py-3">Nenhum item encontrado no período</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(r => {
+      const descricao = DESCRICAO_POR_CODIGO[String(r.codigo || '').trim()] || '-';
+      return `
+        <tr>
+          <td>${fmtDate(r.data)}</td>
+          <td>${r.setor || '-'}</td>
+          <td><strong>${r.forma || '-'}</strong></td>
+          <td><small class="text-muted">${r.codigo || '-'}</small></td>
+          <td>${descricao}</td>
+          <td class="text-end"><strong>${fmtN(r.quantidade_programada)}</strong></td>
+          <td class="text-end">${fmtN(r.quantidade_realizada)}</td>
+          <td class="text-end">${fmtN(r.diferenca)}</td>
+          <td class="text-end">${Number(r.atingimento || 0).toFixed(1).replace('.', ',')}%</td>
+        </tr>
+      `;
+    }).join('');
+}
+
+document.getElementById('btn-carregar').addEventListener('click', carregarDia);
+document.getElementById('f-data').addEventListener('change', carregarDia);
+document.getElementById('f-setor').addEventListener('change', renderDia);
+document.getElementById('f-codigo').addEventListener('change', renderDia);
+document.getElementById('btn-consultar').addEventListener('click', consultarPeriodo);
+document.getElementById('c-setor').addEventListener('change', renderConsulta);
+document.getElementById('c-codigo').addEventListener('change', renderConsulta);
+carregarDia();
+</script>
+</body>
+</html>

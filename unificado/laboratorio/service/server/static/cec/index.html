@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Controle Estatístico do Concreto • ConcreTrack</title>
+  <link href="/unificado/laboratorio/cec/assets/vendor/bootstrap.min.css" rel="stylesheet">
+  <link href="/unificado/laboratorio/cec/assets/vendor/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/unificado/laboratorio/cec/assets/vendor/montserrat.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --ct-orange:#E07A3A; --ct-gray:#343B43; --ct-gray-lt:#5A6270;
+      --ct-blue:#1976D2; --ct-navy:#0D3B66; --ct-silver:#BFC5CC; --ct-bg:#F2F3F5;
+    }
+    * { font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif; margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--ct-bg); }
+    .app-topbar { background:var(--ct-gray); color:#fff; }
+    .topbar-inner { display:flex; align-items:center; padding:12px 0; gap:12px; }
+    .topbar-logo { width:41px; height:41px; object-fit:contain; border-radius:6px; }
+    .topbar-title { font-size:18px; font-weight:700; }
+    .topbar-title span { color:var(--ct-orange); }
+    .topbar-sub { font-size:10px; color:var(--ct-silver); }
+    .topbar-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+    .btn-back {
+      border-radius:10px; height:36px; font-weight:600; font-size:12px;
+      border:1px solid rgba(255,255,255,.18); color:#fff;
+      background:rgba(255,255,255,.06); display:inline-flex; align-items:center;
+      gap:6px; padding:0 14px; text-decoration:none; transition:background .2s; font-family:inherit;
+    }
+    .btn-back:hover { background:rgba(255,255,255,.12); color:#fff; }
+    .btn-logout {
+      border-radius:10px; border:1px solid rgba(255,255,255,.15);
+      color:#fff; font-size:12px; padding:5px 14px;
+      background:rgba(224,122,58,.25); font-weight:600;
+      cursor:pointer; transition:background .2s; font-family:inherit;
+    }
+    .btn-logout:hover { background:rgba(224,122,58,.5); }
+    .topbar-accent { height:3px; background:linear-gradient(90deg, var(--ct-orange), var(--ct-navy)); }
+    .page-header { padding:28px 0 14px; }
+    .page-header h2 { font-size:22px; font-weight:800; color:var(--ct-gray); }
+    .page-header h2 span { color:var(--ct-orange); }
+    .page-header p { color:var(--ct-gray-lt); font-size:13px; }
+    .module-card {
+      background:#fff; border-radius:14px; border:1px solid rgba(15,23,42,.06);
+      padding:22px; transition:box-shadow .2s, transform .2s;
+    }
+    .module-card:hover { box-shadow:0 8px 28px rgba(0,0,0,.07); transform:translateY(-2px); }
+    .module-card h5 { font-weight:700; margin-bottom:4px; font-size:15px; color:var(--ct-gray); }
+    .module-card p { font-size:12px; color:var(--ct-gray-lt); margin:0; }
+    .module-card .icon-box {
+      width:48px; height:48px; border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:22px; color:#fff; flex-shrink:0;
+    }
+    .icon-blue { background:linear-gradient(135deg, var(--ct-blue), #1565C0); }
+    .icon-orange { background:linear-gradient(135deg, var(--ct-orange), #c96830); }
+    .icon-navy { background:linear-gradient(135deg, var(--ct-navy), #0a2e52); }
+    .icon-gray { background:linear-gradient(135deg, var(--ct-gray-lt), var(--ct-gray)); }
+    a.module-link { text-decoration:none; color:inherit; }
+    .app-footer { text-align:center; padding:20px; font-size:11px; color:var(--ct-silver); }
+    .app-footer span { color:var(--ct-orange); font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="app-topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <img src="/unificado/laboratorio/cec/assets/img/PRINCIPAL@2x.png" alt="Logo" class="topbar-logo">
+        <div>
+          <div class="topbar-title"><i class="bi bi-clipboard-data me-2"></i>Controle Estatístico</div>
+          <div class="topbar-sub">Concre<span>Track</span> &bull; DAutomação</div>
+        </div>
+        <div class="topbar-right">
+          <a class="btn-back" href="/unificado/?module=laboratorio"><i class="bi bi-arrow-left"></i> Voltar</a>
+          <button class="btn-logout" onclick="location.href='/unificado/'"><i class="bi bi-box-arrow-right me-1"></i>Sair</button>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-accent"></div>
+  </div>
+
+  <div class="container">
+    <div class="page-header">
+      <h2>CEC — Controle Estatístico do <span>Concreto</span></h2>
+      <p>Leituras de resistência, relatórios estatísticos e análise de conformidade.</p>
+    </div>
+    <div class="row g-3 mb-5">
+      <div class="col-12 col-md-6 col-lg-4">
+        <a class="module-link" href="/unificado/laboratorio/cec/analise/resultado-cp.html">
+          <div class="module-card d-flex align-items-center gap-3">
+            <div class="icon-box icon-orange"><i class="bi bi-table"></i></div>
+            <div><h5>Resultado Corpos de Prova</h5><p>Tabela de resultados de resistência à compressão.</p></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <a class="module-link" href="/unificado/laboratorio/cec/analise/relatorio.html">
+          <div class="module-card d-flex align-items-center gap-3">
+            <div class="icon-box icon-navy"><i class="bi bi-file-earmark-bar-graph"></i></div>
+            <div><h5>Relatório CEC</h5><p>Relatório estatístico de controle do concreto.</p></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <a class="module-link" href="/unificado/laboratorio/cec/analise/">
+          <div class="module-card d-flex align-items-center gap-3">
+            <div class="icon-box icon-blue"><i class="bi bi-graph-up-arrow"></i></div>
+            <div><h5>Analise CEC</h5><p>Análise estatística oficial do concreto.</p></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <a class="module-link" href="/unificado/laboratorio/cec/leitura/">
+          <div class="module-card d-flex align-items-center gap-3">
+            <div class="icon-box icon-orange"><i class="bi bi-qr-code-scan"></i></div>
+            <div><h5>Leitura de CP</h5><p>Escanear QR Code e registrar leituras de corpos de prova.</p></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <a class="module-link" href="/unificado/laboratorio/cec/analise/relatorio.html">
+          <div class="module-card d-flex align-items-center gap-3" >
+            <div class="icon-box icon-blue"><i class="bi bi-bar-chart-line"></i></div>
+            <div><h5>Dashboard CEC</h5><p>Gráficos e indicadores de conformidade estatística.</p></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <a class="module-link" href="/unificado/laboratorio/cec/etiquetas/">
+          <div class="module-card d-flex align-items-center gap-3">
+            <div class="icon-box icon-orange"><i class="bi bi-tags-fill"></i></div>
+            <div><h5>Etiquetas CP</h5><p>Geração e impressão de etiquetas com QR Code para corpos de prova.</p></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-footer">&copy; 2026 <span>ConcreTrack</span> &mdash; DAutomação</div>
+  <script src="/unificado/laboratorio/cec/assets/vendor/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Etiquetas CP • ConcreTrack</title>
+  <link href="/unificado/laboratorio/cec/assets/vendor/bootstrap.min.css" rel="stylesheet">
+  <link href="/unificado/laboratorio/cec/assets/vendor/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/unificado/laboratorio/cec/assets/vendor/montserrat.css" rel="stylesheet">
+  <script src="/unificado/laboratorio/cec/assets/vendor/qrcode.min.js"></script>
+  <script src="/unificado/laboratorio/cec/assets/vendor/jspdf.umd.min.js"></script>
+  
+  <style>
+    :root{
+      --ct-orange:#E07A3A;--ct-gray:#343B43;--ct-gray-lt:#5A6270;
+      --ct-blue:#1976D2;--ct-navy:#0D3B66;--ct-silver:#BFC5CC;--ct-bg:#F2F3F5;
+      --ct-green:#059669;--ct-red:#dc2626;--ct-yellow:#d97706;
+    }
+    *{font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif;margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--ct-bg);color:var(--ct-gray)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+
+    /* ── Topbar ── */
+    .app-topbar{background:var(--ct-gray);color:#fff;position:sticky;top:0;z-index:1000}
+    .topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px}
+    .topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:6px}
+    .topbar-title{font-size:18px;font-weight:700}
+    .topbar-title span{color:var(--ct-orange)}
+    .topbar-sub{font-size:10px;color:var(--ct-silver)}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .btn-back{
+      border-radius:10px;height:36px;font-weight:600;font-size:12px;
+      border:1px solid rgba(255,255,255,.18);color:#fff;
+      background:rgba(255,255,255,.06);display:inline-flex;align-items:center;
+      gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;font-family:inherit;
+    }
+    .btn-back:hover{background:rgba(255,255,255,.12);color:#fff}
+    .btn-logout{
+      border-radius:10px;border:1px solid rgba(255,255,255,.15);
+      color:#fff;font-size:12px;padding:5px 14px;
+      background:rgba(224,122,58,.25);font-weight:600;
+      cursor:pointer;transition:background .2s;font-family:inherit;
+    }
+    .btn-logout:hover{background:rgba(224,122,58,.5)}
+    .topbar-accent{height:3px;background:linear-gradient(90deg,var(--ct-orange),var(--ct-navy))}
+
+    /* ── Page ── */
+    .page-header{padding:24px 0 14px}
+    .page-header h2{font-size:22px;font-weight:800;color:var(--ct-gray)}
+    .page-header h2 span{color:var(--ct-orange)}
+    .page-header p{color:var(--ct-gray-lt);font-size:13px}
+
+    /* ── Section Card ── */
+    .section-card{
+      background:#fff;border-radius:14px;border:1px solid rgba(15,23,42,.06);
+      box-shadow:0 2px 12px rgba(0,0,0,.04);overflow:hidden;margin-bottom:16px;
+    }
+    .section-head{
+      padding:14px 20px;border-bottom:1px solid #eef1f5;
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    }
+    .section-head h6{font-weight:800;font-size:14px;color:var(--ct-gray);margin:0}
+    .section-head h6 i{color:var(--ct-orange);margin-right:6px}
+    .section-body{padding:16px 20px}
+
+    /* ── Table ── */
+    .ct-table{width:100%;border-collapse:collapse}
+    .ct-table th{
+      background:var(--ct-gray);color:#fff;font-size:11px;font-weight:700;
+      text-transform:uppercase;letter-spacing:.3px;padding:10px 12px;position:sticky;top:0;
+    }
+    .ct-table td{padding:8px 12px;border-bottom:1px solid #eef1f5;font-size:13px;color:var(--ct-gray)}
+    .ct-table tbody tr{cursor:pointer;transition:background .15s}
+    .ct-table tbody tr:hover{background:rgba(224,122,58,.06)}
+    .ct-table tbody tr.selected{background:rgba(25,118,210,.08);outline:2px solid var(--ct-blue);outline-offset:-2px}
+
+    /* ── Filters ── */
+    .filter-row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+    .filter-group label{font-size:11px;font-weight:700;color:var(--ct-gray-lt);text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:4px}
+    .filter-group select,.filter-group input{
+      border:1px solid #d1d5db;border-radius:8px;padding:7px 12px;font-size:13px;
+      font-family:inherit;background:#fff;color:var(--ct-gray);min-width:100px;
+    }
+    .filter-group select:focus,.filter-group input:focus{outline:none;border-color:var(--ct-blue);box-shadow:0 0 0 3px rgba(25,118,210,.12)}
+
+    .btn-ct{
+      border:none;border-radius:10px;padding:8px 20px;font-weight:700;font-size:13px;
+      cursor:pointer;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px;
+    }
+    .btn-ct-primary{background:var(--ct-blue);color:#fff}
+    .btn-ct-primary:hover{background:#1565C0}
+    .btn-ct-primary:disabled{opacity:.4;cursor:not-allowed}
+    .btn-ct-orange{background:var(--ct-orange);color:#fff}
+    .btn-ct-orange:hover{background:#c96830}
+    .btn-ct-navy{background:var(--ct-navy);color:#fff}
+    .btn-ct-navy:hover{background:#0a2e52}
+
+    /* ── Etiqueta ── */
+    .etiquetas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px;padding:20px 0}
+
+    .etiqueta{
+      border:2px solid var(--ct-gray);border-radius:10px;padding:14px;
+      background:#fff;page-break-inside:avoid;break-inside:avoid;
+      display:flex;gap:12px;align-items:stretch;min-height:160px;
+    }
+    .etiqueta-left{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+    .etiqueta-right{display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .etiqueta-right svg{width:142px;height:142px;display:block;flex-shrink:0}
+
+    .etq-traco{font-size:15px;font-weight:900;color:var(--ct-navy);letter-spacing:.3px}
+    .etq-cp{font-size:12px;font-weight:700;color:var(--ct-orange);margin-top:2px}
+    .etq-field{font-size:11px;color:var(--ct-gray);margin-top:3px}
+    .etq-field b{font-weight:700;color:var(--ct-gray)}
+    .etq-idade{
+      font-size:28px;font-weight:900;color:var(--ct-navy);
+      letter-spacing:.5px;margin-top:6px;line-height:1;
+    }
+    .etq-ruptura{font-size:11px;color:var(--ct-gray-lt);margin-top:4px}
+
+    /* ── Scrollable table ── */
+    .table-scroll{max-height:420px;overflow-y:auto;border-radius:0 0 14px 14px}
+
+    /* ── Idades config ── */
+    .idade-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .idade-chip{
+      display:inline-flex;align-items:center;gap:4px;
+      background:rgba(13,59,102,.08);border:1px solid rgba(13,59,102,.18);
+      border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--ct-navy);
+    }
+    .idade-chip .remove{cursor:pointer;font-size:14px;color:var(--ct-red);margin-left:2px}
+
+    /* ── Print ── */
+    @media print{
+      body{background:#fff!important}
+      .app-topbar,.topbar-accent,.section-card:not(.print-area),.page-header,.app-footer,.no-print{display:none!important}
+      .print-area{box-shadow:none!important;border:none!important;margin:0!important}
+      .etiquetas-grid{grid-template-columns:repeat(2,1fr);gap:12px;padding:0}
+      .etiqueta{border:1.5px solid #000}
+      .etiqueta-right svg{width:37mm;height:37mm}
+    }
+
+    .app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver)}
+    .app-footer span{color:var(--ct-orange);font-weight:600}
+
+    .count-badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      background:var(--ct-orange);color:#fff;border-radius:20px;
+      min-width:24px;height:24px;font-size:12px;font-weight:800;padding:0 8px;
+    }
+    .empty-state{text-align:center;padding:40px 20px;color:var(--ct-silver)}
+    .empty-state i{font-size:40px;display:block;margin-bottom:8px}
+  </style>
+</head>
+<body>
+
+<!-- ═══ TOPBAR ═══ -->
+<div class="app-topbar">
+  <div class="container">
+    <div class="topbar-inner">
+      <img src="/unificado/laboratorio/cec/assets/img/PRINCIPAL@2x.png" alt="Logo" class="topbar-logo">
+      <div>
+        <div class="topbar-title"><i class="bi bi-tags-fill me-2"></i>Etiquetas <span>CP</span></div>
+        <div class="topbar-sub">ConcreTrack &bull; CEC &bull; Controle Estatístico do Concreto</div>
+      </div>
+      <div class="topbar-right">
+        <a class="btn-back" href="/unificado/laboratorio/cec/"><i class="bi bi-arrow-left"></i> Voltar</a>
+        <button class="btn-logout" onclick="location.href='/unificado/'"><i class="bi bi-box-arrow-right me-1"></i>Sair</button>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-accent"></div>
+</div>
+
+<div class="container">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="page-header">
+    <h2><i class="bi bi-tags-fill me-2"></i>Geração de <span>Etiquetas</span></h2>
+    <p>Selecione uma massada para gerar etiquetas com QR Code para corpos de prova.</p>
+  </div>
+
+  <!-- ═══ FILTROS + TABELA ═══ -->
+  <div class="section-card no-print">
+    <div class="section-head">
+      <h6><i class="bi bi-funnel-fill"></i>Filtrar Massadas</h6>
+      <span id="countBadge" class="count-badge" style="display:none">0</span>
+    </div>
+    <div class="section-body">
+      <div class="filter-row mb-3">
+        <div class="filter-group">
+          <label>Ano</label>
+          <select id="fAno"></select>
+        </div>
+        <div class="filter-group">
+          <label>Mês</label>
+          <select id="fMes">
+            <option value="">Todos</option>
+            <option value="01">Janeiro</option><option value="02">Fevereiro</option>
+            <option value="03">Março</option><option value="04">Abril</option>
+            <option value="05">Maio</option><option value="06">Junho</option>
+            <option value="07">Julho</option><option value="08">Agosto</option>
+            <option value="09">Setembro</option><option value="10">Outubro</option>
+            <option value="11">Novembro</option><option value="12">Dezembro</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Dia</label>
+          <select id="fDia">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <button class="btn-ct btn-ct-primary" onclick="loadMassadas()"><i class="bi bi-search"></i> Buscar</button>
+      </div>
+
+      <!-- ── Configuração Idades (inline) ── -->
+      <div style="border-top:1px solid #eef1f5;padding-top:14px;margin-top:14px">
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-6">
+            <label style="font-size:11px;font-weight:700;color:var(--ct-gray-lt);text-transform:uppercase;letter-spacing:.3px"><i class="bi bi-gear-fill me-1" style="color:var(--ct-orange)"></i>Idades (dias)</label>
+            <div class="d-flex gap-2 mt-1">
+              <input type="number" id="inputIdade" min="1" max="365" placeholder="Ex: 7" style="border:1px solid #d1d5db;border-radius:8px;padding:7px 12px;font-size:13px;width:90px;font-family:inherit">
+              <button class="btn-ct btn-ct-navy" onclick="addIdade()" style="padding:7px 14px"><i class="bi bi-plus-lg"></i> Adicionar</button>
+            </div>
+            <div class="idade-chips mt-2" id="idadeChips"></div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div id="selectedInfo" style="font-size:13px;color:var(--ct-gray)"></div>
+            <div class="mt-2">
+              <button class="btn-ct btn-ct-orange" id="btnGerar" onclick="gerarEtiquetas()" disabled>
+                <i class="bi bi-tags-fill"></i> Gerar Etiquetas
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-scroll">
+      <table class="ct-table" id="tblMassadas">
+        <thead>
+          <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Nº Série</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Produto</th>
+            <th>Fórmula (Traço)</th>
+            <th>Qtd (m³)</th>
+            <th>Misturador</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyMassadas">
+          <tr><td colspan="9" class="empty-state"><i class="bi bi-inbox"></i>Use os filtros acima para buscar massadas</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ ÁREA DE ETIQUETAS ═══ -->
+  <div class="section-card print-area" id="etiquetasArea" style="display:none">
+    <div class="section-head">
+      <h6><i class="bi bi-printer-fill"></i>Etiquetas Geradas</h6>
+      <div class="d-flex gap-2 no-print">
+        <button class="btn-ct btn-ct-orange" onclick="gerarPDF()"><i class="bi bi-file-earmark-pdf-fill"></i> PDF (90×40mm)</button>
+        <button class="btn-ct btn-ct-primary" onclick="window.print()"><i class="bi bi-printer"></i> Imprimir</button>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="etiquetas-grid" id="etiquetasGrid"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="app-footer no-print">&copy; 2026 <span>ConcreTrack</span> &mdash; DAutomação</div>
+
+<script src="/unificado/laboratorio/cec/assets/vendor/bootstrap.bundle.min.js"></script>
+<script>
+/* ───────────────────────────────────────
+   STATE
+   ─────────────────────────────────────── */
+const API = '/unificado/laboratorio/cec-api/massadas';
+let massadas = [];
+let selectedId = null;
+let idades = [1, 3, 7, 28]; // default
+
+/* ───────────────────────────────────────
+   INIT
+   ─────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  initFilters();
+  renderIdadeChips();
+});
+
+function initFilters() {
+  const now = new Date();
+  const anoSel = document.getElementById('fAno');
+  // populate years 2025..current+1
+  const curYear = now.getFullYear();
+  for (let y = curYear; y >= 2025; y--) {
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    anoSel.appendChild(opt);
+  }
+  // set current month
+  document.getElementById('fMes').value = String(now.getMonth()+1).padStart(2,'0');
+  // populate days
+  populateDays();
+  document.getElementById('fMes').addEventListener('change', populateDays);
+  document.getElementById('fAno').addEventListener('change', populateDays);
+  // auto-load
+  loadMassadas();
+}
+
+function populateDays() {
+  const sel = document.getElementById('fDia');
+  const ano = parseInt(document.getElementById('fAno').value);
+  const mes = parseInt(document.getElementById('fMes').value || '1');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">Todos</option>';
+  const daysInMonth = new Date(ano, mes, 0).getDate();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const opt = document.createElement('option');
+    opt.value = String(d).padStart(2,'0');
+    opt.textContent = d;
+    sel.appendChild(opt);
+  }
+  sel.value = prev || '';
+}
+
+/* ───────────────────────────────────────
+   LOAD MASSADAS
+   ─────────────────────────────────────── */
+async function loadMassadas() {
+  const ano = document.getElementById('fAno').value;
+  const mes = document.getElementById('fMes').value;
+  const dia = document.getElementById('fDia').value;
+
+  // Build date range
+  let dataIni, dataFim;
+  if (dia) {
+    dataIni = `${ano}-${mes}-${dia}`;
+    dataFim = dataIni;
+  } else if (mes) {
+    dataIni = `${ano}-${mes}-01`;
+    const lastDay = new Date(parseInt(ano), parseInt(mes), 0).getDate();
+    dataFim = `${ano}-${mes}-${String(lastDay).padStart(2,'0')}`;
+  } else {
+    dataIni = `${ano}-01-01`;
+    dataFim = `${ano}-12-31`;
+  }
+
+  const tbody = document.getElementById('tbodyMassadas');
+  tbody.innerHTML = '<tr><td colspan="9" class="text-center" style="padding:30px;color:var(--ct-silver)"><div class="spinner-border spinner-border-sm me-2"></div>Carregando...</td></tr>';
+
+  try {
+    const res = await fetch(`${API}?data_ini=${dataIni}&data_fim=${dataFim}`);
+    if (!res.ok) throw new Error(res.statusText);
+    massadas = await res.json();
+    renderTable();
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center" style="padding:30px;color:var(--ct-red)"><i class="bi bi-exclamation-triangle me-2"></i>Erro: ${e.message}</td></tr>`;
+  }
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tbodyMassadas');
+  const badge = document.getElementById('countBadge');
+  badge.style.display = 'inline-flex';
+  badge.textContent = massadas.length;
+
+  if (massadas.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><i class="bi bi-inbox"></i>Nenhuma massada encontrada no período</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = massadas.map(m => {
+    const hora = m.hora ? m.hora.substring(0,8) : '—';
+    const data = m.data ? formatDateBR(m.data) : '—';
+    return `<tr data-id="${m.id}" onclick="selectMassada(${m.id})" class="${m.id===selectedId?'selected':''}">
+      <td><input type="radio" name="selMass" ${m.id===selectedId?'checked':''} style="accent-color:var(--ct-blue);width:16px;height:16px"></td>
+      <td class="mono">${m.id}</td>
+      <td class="mono">${m.numero_serie || '—'}</td>
+      <td>${data}</td>
+      <td class="mono">${hora}</td>
+      <td>${m.produto || '—'}</td>
+      <td><strong>${m.formula || '—'}</strong></td>
+      <td class="mono">${m.qtd != null ? Number(m.qtd).toFixed(2) : '—'}</td>
+      <td>${m.misturador || '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function selectMassada(id) {
+  selectedId = id;
+  renderTable();
+  const m = massadas.find(x => x.id === id);
+  if (!m) return;
+
+  document.getElementById('btnGerar').disabled = false;
+  const info = document.getElementById('selectedInfo');
+  info.innerHTML = `
+    <div style="font-size:12px;font-weight:700;color:var(--ct-navy);margin-bottom:6px"><i class="bi bi-check-circle-fill me-1" style="color:var(--ct-green)"></i>Massada Selecionada</div>
+    <div><b>ID:</b> ${m.id} &bull; <b>Traço:</b> ${m.formula || '—'} &bull; <b>Produto:</b> ${m.produto || '—'}</div>
+    <div><b>Data:</b> ${formatDateBR(m.data)} &bull; <b>Hora:</b> ${m.hora ? m.hora.substring(0,8) : '—'} &bull; <b>Qtd:</b> ${m.qtd != null ? Number(m.qtd).toFixed(2) : '—'} m³</div>
+  `;
+}
+
+/* ───────────────────────────────────────
+   IDADES
+   ─────────────────────────────────────── */
+function renderIdadeChips() {
+  const container = document.getElementById('idadeChips');
+  container.innerHTML = idades.sort((a,b) => a-b).map(id =>
+    `<span class="idade-chip">${id} dias <span class="remove" onclick="removeIdade(${id})">&times;</span></span>`
+  ).join('');
+}
+
+function addIdade() {
+  const input = document.getElementById('inputIdade');
+  const v = parseInt(input.value);
+  if (!v || v < 1 || idades.includes(v)) { input.value = ''; return; }
+  idades.push(v);
+  input.value = '';
+  renderIdadeChips();
+}
+
+function removeIdade(v) {
+  idades = idades.filter(x => x !== v);
+  renderIdadeChips();
+}
+
+/* ───────────────────────────────────────
+   GERAR ETIQUETAS
+   ─────────────────────────────────────── */
+function gerarEtiquetas() {
+  const m = massadas.find(x => x.id === selectedId);
+  if (!m) return alert('Selecione uma massada.');
+  if (idades.length === 0) return alert('Adicione pelo menos uma idade.');
+
+  const grid = document.getElementById('etiquetasGrid');
+  grid.innerHTML = '';
+
+  const traco = m.formula || '—';
+  const produto = m.produto || '—';
+  const nSerie = m.numero_serie || m.id;
+  const dataMold = m.data; // YYYY-MM-DD
+  const hora = m.hora ? m.hora.substring(0,5) : '00:00';
+
+  const sortedIdades = [...idades].sort((a,b) => a-b);
+
+  sortedIdades.forEach(idade => {
+    for (let cp = 1; cp <= 2; cp++) {
+      const moldDDMMYY = formatDDMMYY(dataMold);
+      const ruptDate = addDays(dataMold, idade);
+      const ruptDDMMYY = formatDDMMYY(ruptDate);
+      const ruptBR = formatDateBR(ruptDate);
+
+      // QR string
+      const qrStr = `traco=${traco}|ns=${nSerie}|nome=${produto}|cp=${cp}/2|idade=${idade}|mold=${moldDDMMYY}|hora=${hora}|rupt=${ruptDDMMYY}`;
+
+      const card = document.createElement('div');
+      card.className = 'etiqueta';
+      card.innerHTML = `
+        <div class="etiqueta-left">
+          <div>
+            <div class="etq-traco">${traco}</div>
+            <div class="etq-cp">CP ${cp}/2 &bull; <span style="color:var(--ct-navy)">NS ${nSerie}</span></div>
+          </div>
+          <div>
+            <div class="etq-field"><b>Moldagem:</b> ${formatDateBR(dataMold)}</div>
+            <div class="etq-field"><b>Hora:</b> ${hora}</div>
+          </div>
+          <div>
+            <div class="etq-idade">${idade} DIAS</div>
+            <div class="etq-ruptura"><b>Ruptura:</b> ${ruptBR}</div>
+          </div>
+        </div>
+        <div class="etiqueta-right">
+          <div class="qr-code" aria-label="QR Code do corpo de prova"></div>
+        </div>
+      `;
+      grid.appendChild(card);
+
+      card.querySelector('.qr-code').appendChild(criarQrVetorial(qrStr));
+    }
+  });
+
+  document.getElementById('etiquetasArea').style.display = '';
+  // scroll to etiquetas
+  setTimeout(() => {
+    document.getElementById('etiquetasArea').scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+
+function criarQrVetorial(payload) {
+  const qr = qrcode(0, 'M');
+  qr.addData(payload);
+  qr.make();
+  const modules = qr.getModuleCount();
+  const margem = 4; // quiet zone exigida por leitores de QR
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${modules + margem * 2} ${modules + margem * 2}`);
+  svg.setAttribute('shape-rendering', 'crispEdges');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', 'QR Code');
+  const fundo = document.createElementNS(ns, 'rect');
+  fundo.setAttribute('width', modules + margem * 2);
+  fundo.setAttribute('height', modules + margem * 2);
+  fundo.setAttribute('fill', '#fff');
+  svg.appendChild(fundo);
+  const path = document.createElementNS(ns, 'path');
+  let d = '';
+  for (let row = 0; row < modules; row++) {
+    for (let col = 0; col < modules; col++) {
+      if (qr.isDark(row, col)) d += `M${col + margem} ${row + margem}h1v1h-1z`;
+    }
+  }
+  path.setAttribute('d', d);
+  path.setAttribute('fill', '#000');
+  svg.appendChild(path);
+  return svg;
+}
+
+/* ───────────────────────────────────────
+   HELPERS
+   ─────────────────────────────────────── */
+function formatDateBR(d) {
+  if (!d) return '—';
+  const parts = String(d).substring(0,10).split('-');
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+function formatDDMMYY(d) {
+  if (!d) return '—';
+  const parts = String(d).substring(0,10).split('-');
+  return `${parts[2]}-${parts[1]}-${parts[0].substring(2)}`;
+}
+
+function addDays(dateStr, days) {
+  const d = new Date(dateStr + 'T00:00:00');
+  d.setDate(d.getDate() + days);
+  return d.toISOString().substring(0,10);
+}
+
+/* ───────────────────────────────────────
+   PDF  — 1 etiqueta por página (90×40 mm)
+   ─────────────────────────────────────── */
+function gerarPDF() {
+  const m = massadas.find(x => x.id === selectedId);
+  if (!m) return alert('Selecione uma massada.');
+  if (idades.length === 0) return alert('Adicione pelo menos uma idade.');
+
+  const { jsPDF } = window.jspdf;
+  // 90mm × 40mm landscape
+  const W = 90, H = 40;
+  const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [W, H], compress: true });
+
+  const traco   = m.formula || '—';
+  const produto = m.produto || '—';
+  const nSerie  = m.numero_serie || m.id;
+  const dataMold = m.data;
+  const hora     = m.hora ? m.hora.substring(0,5) : '00:00';
+  const sortedIdades = [...idades].sort((a,b) => a-b);
+
+  let first = true;
+
+  sortedIdades.forEach(idade => {
+    for (let cp = 1; cp <= 2; cp++) {
+      if (!first) pdf.addPage([W, H], 'landscape');
+      first = false;
+
+      const moldDDMMYY = formatDDMMYY(dataMold);
+      const ruptDate   = addDays(dataMold, idade);
+      const ruptDDMMYY = formatDDMMYY(ruptDate);
+      const ruptBR     = formatDateBR(ruptDate);
+      const moldBR     = formatDateBR(dataMold);
+      const qrStr = `traco=${traco}|ns=${nSerie}|nome=${produto}|cp=${cp}/2|idade=${idade}|mold=${moldDDMMYY}|hora=${hora}|rupt=${ruptDDMMYY}`;
+
+      // ── Border ──
+      pdf.setDrawColor(52, 59, 67);
+      pdf.setLineWidth(0.4);
+      pdf.rect(1, 1, W - 2, H - 2, 'S');
+
+      // ── Left side text ──
+      const x0 = 3;
+
+      // Traço
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(11);
+      pdf.setTextColor(13, 59, 102);
+      pdf.text(caberTextoPDF(pdf, traco, 47), x0, 6.5);
+
+      // CP + NS
+      pdf.setFontSize(8);
+      pdf.setTextColor(224, 122, 58);
+      pdf.text(`CP ${cp}/2`, x0, 10);
+      pdf.setFontSize(8);
+      pdf.setTextColor(90, 98, 112);
+      pdf.text(caberTextoPDF(pdf, `NS ${nSerie}`, 29), x0 + 18, 10);
+
+      // Moldagem + Hora
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(8);
+      pdf.setTextColor(52, 59, 67);
+      pdf.text(`Moldagem: ${moldBR}`, x0, 14);
+      pdf.text(`Hora: ${hora}`, x0, 17.5);
+
+      // Idade (grande)
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(20);
+      pdf.setTextColor(13, 59, 102);
+      pdf.text(`${idade} DIAS`, x0, 28);
+
+      // Ruptura
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(8);
+      pdf.setTextColor(90, 98, 112);
+      pdf.text(`Ruptura: ${ruptBR}`, x0, 32);
+
+      // Produto (small)
+      pdf.setFontSize(7);
+      pdf.setTextColor(52, 59, 67);
+      pdf.text(caberTextoPDF(pdf, produto, 47), x0, 36.5);
+
+      // ── QR Code (right side) ──
+      const qr = qrcode(0, 'M');
+      qr.addData(qrStr);
+      qr.make();
+      const modules = qr.getModuleCount();
+      const cell = 37 / (modules + 8); // 37 mm incluindo a margem branca
+      const qrSize = modules * cell;
+      const quietZone = 4 * cell;
+      const qrX = W - 1.5 - quietZone - qrSize;
+      const qrY = (H - qrSize) / 2;
+
+      // Margem branca de quatro módulos em todos os lados.
+      pdf.setFillColor(255, 255, 255);
+      pdf.rect(qrX - quietZone, qrY - quietZone, qrSize + 2 * quietZone, qrSize + 2 * quietZone, 'F');
+      pdf.setFillColor(0, 0, 0);
+
+      for (let row = 0; row < modules; row++) {
+        for (let col = 0; col < modules;) {
+          if (!qr.isDark(row, col)) { col++; continue; }
+          const start = col;
+          while (col < modules && qr.isDark(row, col)) col++;
+          pdf.rect(qrX + start * cell, qrY + row * cell, (col - start) * cell, cell, 'F');
+        }
+      }
+    }
+  });
+
+  // Build filename
+  const fname = `etiquetas_${traco.replace(/[^a-zA-Z0-9]/g,'_')}_${dataMold}.pdf`;
+  pdf.save(fname);
+}
+
+function caberTextoPDF(pdf, value, maxWidth) {
+  let texto = String(value);
+  if (pdf.getTextWidth(texto) <= maxWidth) return texto;
+  while (texto.length && pdf.getTextWidth(texto + '...') > maxWidth) texto = texto.slice(0, -1);
+  return texto + '...';
+}
+</script>
+</body>
+</html>

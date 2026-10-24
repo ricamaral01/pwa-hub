@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programação DT Setor 4 - PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <style>
+    .circular-controls { display:flex; flex-wrap:wrap; align-items:end; gap:12px; }
+    .circular-controls label { display:block; font-size:.78rem; font-weight:700; margin-bottom:3px; }
+    .circular-controls .form-control, .circular-controls .form-select { min-width:135px; }
+    .circular-help { color:#64748b; font-size:.8rem; line-height:1.45; }
+    .circular-toolbar { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; }
+    .circular-mode { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .circular-mode label { font-size:.86rem; font-weight:650; cursor:pointer; }
+    .circular-scroll { overflow:auto; max-height:calc(100vh - 285px); border:1px solid #b5c2d0; background:#fff; }
+    .circular-grid { border-collapse:separate; border-spacing:0; table-layout:fixed; width:max-content; font:13px Arial,sans-serif; }
+    .circular-grid th, .circular-grid td { width:92px; min-width:92px; max-width:92px; border-right:1px solid #7d8b98; border-bottom:1px solid #cbd5e1; padding:0; text-align:center; vertical-align:middle; }
+    .circular-grid thead th { position:sticky; top:0; z-index:2; height:34px; color:#0f172a; background:#f4d35e; border-bottom:2px solid #111; font-size:15px; }
+    .circular-grid thead th:nth-child(5n) { background:#b5e5ef; }
+    .circular-grid thead th.warn { background:#fbbf24; }
+    .circular-grid .model-button { width:100%; min-height:27px; border:0; border-radius:0; padding:3px 2px; background:#fff; color:#111; font-weight:700; font-size:12.5px; line-height:1.15; }
+    .circular-grid .model-button:hover, .circular-grid .model-button:focus-visible { background:#dbeafe; outline:2px solid #2563eb; outline-offset:-2px; }
+    .circular-grid .model-button.selected { background:#16a34a; color:#fff; font-weight:800; }
+    .circular-grid .model-button.exception { background:#ea580c; color:#fff; font-weight:800; }
+    .circular-grid td.empty { background:#f8fafc; }
+    .circular-grid .form-code { display:block; font-weight:800; }
+    .circular-grid .form-status { display:block; font-size:9px; font-weight:600; }
+    .circular-status { font-size:.8rem; color:#475569; min-height:20px; }
+    .circular-legend { display:flex; flex-wrap:wrap; gap:12px; font-size:.78rem; color:#475569; }
+    .circular-legend span::before { content:''; display:inline-block; width:11px; height:11px; margin-right:4px; vertical-align:-1px; border:1px solid #94a3b8; background:#16a34a; }
+    .circular-legend .exception-key::before { background:#ea580c; }
+    body.circular-planner .sidebar-hide-btn { width:auto; min-width:120px; padding:0 10px; gap:6px; font-size:.8rem; font-weight:700; }
+    body.circular-planner .sidebar-hide-btn span { white-space:nowrap; }
+    @media (max-width:700px) { .circular-scroll { max-height:calc(100vh - 350px); } }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body class="circular-planner" data-circular-sector="4">
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <div class="sidebar-brand"><div><span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span><small>Planejamento e Controle</small></div></div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer"><div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div><button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%"><i class="bi bi-box-arrow-right me-1"></i>Sair</button></div>
+</aside>
+<div id="main-content">
+  <div class="topbar"><div class="d-flex align-items-center"><button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button><span class="page-title">Programação DT Setor 4</span></div><div class="user-info"><span id="user-nome-top"></span><span class="user-badge" id="user-nivel"></span></div></div>
+  <div class="content-area">
+    <div class="section-card mb-3">
+      <div class="circular-controls">
+        <div><label for="start-date">Data de início</label><input type="date" id="start-date" class="form-control form-control-sm" /></div>
+        <div><label for="days-count">Dias seguidos</label><input type="number" id="days-count" class="form-control form-control-sm" min="1" max="90" value="6" /></div>
+        <button type="button" id="load-period" class="btn btn-outline-primary btn-sm"><i class="bi bi-arrow-clockwise me-1"></i>Carregar período</button>
+        <button type="button" id="save-period" class="btn btn-primary-pcp btn-sm"><i class="bi bi-floppy me-1"></i>Salvar período</button>
+        <button type="button" id="print-period" class="btn btn-outline-primary btn-sm"><i class="bi bi-printer me-1"></i>Imprimir programação</button>
+      </div>
+      <div class="circular-help mt-2">Cada forma selecionada produz uma peça por dia. Escolha um modelo abaixo da forma e salve para repetir em todos os dias. Para alterar só um dia, mude para “Dia específico” e clique em outro modelo; a exceção é salva ao clicar.</div>
+    </div>
+    <div class="section-card mb-3">
+      <div class="circular-toolbar">
+        <div class="circular-mode" role="group" aria-label="Modo de edição">
+          <label><input type="radio" name="edit-mode" value="periodo" checked /> Período inteiro</label>
+          <label><input type="radio" name="edit-mode" value="dia" /> Dia específico</label>
+          <select id="selected-day" class="form-select form-select-sm" style="width:160px" disabled aria-label="Dia para exceção"></select>
+        </div>
+        <div class="circular-legend"><span>Programado</span><span class="exception-key">Exceção do dia</span></div>
+      </div>
+      <div id="circular-status" class="circular-status mt-2" role="status">Carregando formas...</div>
+    </div>
+    <div class="circular-scroll" id="circular-scroll" aria-label="Quadro de formas DT do Setor 4">
+      <table class="circular-grid"><thead id="forms-head"></thead><tbody id="forms-body"></tbody></table>
+    </div>
+  </div>
+</div>
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/programacao-formas.js?v=0.6.7"></script>
+</body>
+</html>

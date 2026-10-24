@@ -1,0 +1,16 @@
+{
+  "id": "/unificado/m/inspecao/",
+  "name": "Inspeção Setor 3 e 4 · Concrefer",
+  "short_name": "Inspeção S3/4",
+  "description": "Levantamento de defeitos dos postes dos setores 3 e 4",
+  "start_url": "/unificado/m/inspecao/",
+  "scope": "/unificado/m/inspecao/",
+  "display": "standalone",
+  "background_color": "#F1F5F8",
+  "theme_color": "#0F2C4C",
+  "icons": [
+    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"./icons/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
+}

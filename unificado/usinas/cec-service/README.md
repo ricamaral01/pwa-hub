@@ -1,0 +1,23 @@
+# CEC Campinas na VPS nova
+
+O controle estatístico de Campinas usa o banco PostgreSQL `controle_est_concre_campinas` e os serviços `cec-campinas-api` e `cec-campinas-worker` na VPS nova. O código desta pasta foi copiado da versão em produção em 23/10/2026, sem os arquivos de credenciais. A API escuta apenas em `127.0.0.1:3086`.
+
+## Migração e virada de 23/10/2026
+
+- Foi gerado um `pg_dump` somente de leitura da origem `controle_est_concre_db` e restaurado no banco isolado da VPS nova. SHA-256 do arquivo: `ccbbd0cd364070740f8c17ebdbebb9395e7b82ad9f01bd91522e5e5b4bb751eb`.
+- Conferência antes da virada: 874 `rompimentos` e 6.431.682 `rompimentos_eventos` em ambos os bancos; o maior `created_at` das leituras era `2026-10-23 14:33:12.035775+00`.
+- Leitura e cálculo estatístico foram exercitados em um banco de validação isolado na VPS nova.
+- O ERP antigo mantém código, banco e permissões originais. Apenas o destino de `CONTROLE_ESTATISTICO_API_URL` passou a apontar, via `concretrack-api.service.d/cec-forward.conf`, para `https://concrefer.concretrack.com.br/cec-bridge/api/v1/rompimentos`.
+- A ponte Nginx na VPS nova aceita somente o IP da VPS antiga. O ERP antigo continua aplicando sua autenticação antes do encaminhamento. A interface nativa do Unificado usa a sessão do Unificado e os endpoints `/unificado/mapa/api/usina/cec/`.
+- Em 23/10/2026, a tabela `supervisorio_db.public.tbl_massadas` foi copiada somente para leitura ao banco CEC da VPS nova como `public.tbl_massadas`, com 10.875 linhas e maior ID 69855. O dump tem SHA-256 `870319671e626aa66677be6fa679329dfc4d4762b5120243a378ce1cde8969a6`. A consulta nativa `/usina/cec/massadas` usa exclusivamente esta cópia; `cec_massadas_snapshot` guarda a data e contagem da importação.
+- Com autorização posterior, foi concedido somente `SELECT` em `public.tbl_massadas` ao papel existente `usinas_mirror_ro`. O serviço `cec-campinas-massadas-sync` lê a origem em transação somente de leitura e atualiza a cópia na VPS nova em transação única a cada cinco minutos. Linhas idênticas não são regravadas. Uma queda de mais de 5% na contagem da origem aborta a sincronização; a cópia anterior fica disponível.
+
+## Operação
+
+Configuração de banco e serviço: `/etc/concrefer/cec-campinas.env` (modo 0600). A sincronização usa também `/etc/concrefer/usinas-prod.env`, já existente, sem copiar senhas para o repositório. Ela roda com o usuário `cec-campinas` e ambiente Python próprio (`requirements-sync.txt`). O certificado público da origem foi copiado para `/opt/concrefer-unificado/cec-campinas/source-ca.pem` para validar a conexão TLS sem mudar as permissões dos arquivos usados pelo espelho de receitas. Unidades systemd e trecho de Nginx estão em `deploy/`. O banco antigo deve ser mantido para consulta e eventual retorno até que a operação confirme leituras reais após a virada.
+
+Para retorno do leitor antigo ao CEC antigo, remover somente `/etc/systemd/system/concretrack-api.service.d/cec-forward.conf` na VPS antiga e executar `systemctl daemon-reload && systemctl restart concretrack-api.service`. A interface nativa continuará consultando o banco da VPS nova. Se houver novas leituras após a virada, reconciliar os dois bancos antes de reativar a origem para evitar divisão dos dados.
+
+## Limites atuais
+
+A tela mostra a hora da última sincronização e avisa se ela passar de 15 minutos sem sucesso. As identificações impressas usam os dados espelhados e ainda não geram QR para novos CPs. A validação de uma leitura real com a conta operacional antiga depende do uso do leitor em produção; a ponte, a API e a escrita com recálculo foram verificadas separadamente.

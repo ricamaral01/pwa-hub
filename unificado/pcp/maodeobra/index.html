@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mão de Obra — PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <style>
+    .modo-card {
+      border: 1px solid rgba(21, 65, 111, .12);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fff;
+      height: 100%;
+    }
+    .modo-hint {
+      font-size: .78rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .mdo-table th {
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: #64748b;
+      white-space: nowrap;
+    }
+    .mdo-table td {
+      vertical-align: middle;
+    }
+    .mdo-qtd {
+      max-width: 110px;
+      text-align: right;
+      font-weight: 700;
+    }
+    .mdo-empty {
+      color: #94a3b8;
+      text-align: center;
+      padding: 22px;
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <!-- Concrefer Logo: Σ (Sigma - concrete/construction symbol) -->
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra-rateio/" data-page="maodeobra-rateio" data-require="PRODUCAO"><i class="bi bi-distribute-horizontal"></i> Rateio MOI</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Mão de Obra</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="section-card mb-4">
+      <div class="section-title"><i class="bi bi-table me-2"></i>Registro em Tabela</div>
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-3">
+          <label class="form-label" style="font-size:.8rem;font-weight:600">Data</label>
+          <input type="date" id="mdo-data" class="form-control form-control-sm" required />
+        </div>
+        <div class="col-12 col-md-4">
+          <label class="form-label" style="font-size:.8rem;font-weight:600">Lançamento</label>
+          <select id="mdo-modo" class="form-select form-select-sm">
+            <option value="">Selecione...</option>
+            <option value="moi-12">MOI S1 / S2</option>
+            <option value="moi-34">MOI S3 / S4</option>
+            <option value="mod-12">MOD S1 / S2</option>
+            <option value="mod-34">MOD S3 / S4</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-5 d-flex align-items-end">
+          <div class="modo-card w-100">
+            <div class="fw-semibold" id="mdo-modo-titulo">Selecione o tipo de lançamento</div>
+            <div class="modo-hint" id="mdo-modo-hint">MOI exibe as atividades do grupo de setores. MOD exibe os setores do grupo para informar a quantidade de pessoas.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mdo-table mb-0">
+          <thead id="thead-mdo-grid"></thead>
+          <tbody id="tbody-mdo-grid">
+            <tr><td colspan="3" class="mdo-empty">Selecione MOI S1/S2, MOI S3/S4, MOD S1/S2 ou MOD S3/S4 para abrir a tabela.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+        <small class="text-muted" id="mdo-grid-resumo">Nenhuma atividade carregada.</small>
+        <button type="button" class="btn btn-accent btn-sm" id="btn-salvar-lote">
+          <i class="bi bi-check-circle me-1"></i>Salvar Lançamentos
+        </button>
+      </div>
+    </div>
+
+    <!-- Resumo hoje -->
+    <div class="row g-3 mb-4" id="resumo-hoje"></div>
+
+    <!-- Filtros + tabela -->
+    <div class="section-card mb-3">
+      <div class="d-flex flex-wrap gap-2 align-items-end">
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Tipo</label>
+          <select id="f-tipo" class="form-select form-select-sm" style="width:120px">
+            <option value="">Todos</option>
+            <option value="MOI">MOI - Indireta</option>
+            <option value="MOD">MOD - Direta</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Início</label>
+          <input type="date" id="f-inicio" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Fim</label>
+          <input type="date" id="f-fim" class="form-control form-control-sm" style="width:150px" />
+        </div>
+        <div>
+          <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Setor</label>
+          <select id="f-setor" class="form-select form-select-sm" style="width:170px">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <button class="btn btn-primary-pcp btn-sm" id="btn-buscar">
+          <i class="bi bi-search me-1"></i>Buscar
+        </button>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">Histórico de Mão de Obra</div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Atividade</th>
+              <th>Setor</th>
+              <th class="text-end">Pessoas</th>
+              <th class="text-center desktop-only">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-mdo">
+            <tr><td colspan="6" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  initSidebar('maodeobra');
+}
+
+const hoje = todayISO();
+document.getElementById('mdo-data').value = hoje;
+document.getElementById('f-inicio').value = hoje;
+document.getElementById('f-fim').value = hoje;
+
+let atividadesGrid = [];
+let setoresMap = {};
+let setoresOrdenados = [];
+
+const MOI_ATIVIDADES = {
+  '12': [
+    'Usina de Concreto',
+    'Fab Armação Padrão',
+    'Fab Estribo (Elias 0,50)',
+    'Encarregado Produção (Zé Carlos)',
+    'Sacador núcleo (Pedro 0,50)',
+    'Desbobinadeira (Zezinho 0,50)',
+  ],
+  '34': [
+    'Usina de Concreto',
+    'Fab Armação setor 3',
+    'Fab Armação setor 4',
+    'Fab Estribo',
+    'Encarregado Produção',
+    'Sacador núcleo',
+    'Desbobinadeira',
+  ],
+};
+
+const MODO_CONFIG = {
+  'moi-12': {
+    titulo: 'MOI S1 / S2',
+    hint: 'Atividades indiretas do grupo Setor 1 e Setor 2.',
+    tipo: 'MOI',
+    grupo_setor: '12',
+  },
+  'moi-34': {
+    titulo: 'MOI S3 / S4',
+    hint: 'Atividades indiretas do grupo Setor 3 e Setor 4.',
+    tipo: 'MOI',
+    grupo_setor: '34',
+  },
+  'mod-12': {
+    titulo: 'MOD S1 / S2',
+    hint: 'Mostra Setor 1 e Setor 2 para lançamento direto de pessoas.',
+    tipo: 'MOD',
+    grupo_setor: '12',
+  },
+  'mod-34': {
+    titulo: 'MOD S3 / S4',
+    hint: 'Mostra Setor 3 e Setor 4 para lançamento direto de pessoas.',
+    tipo: 'MOD',
+    grupo_setor: '34',
+  },
+};
+
+function normTxt(v) {
+  return String(v || '').trim().toLowerCase();
+}
+
+function getSetoresGrupo(grupo) {
+  if (grupo === '12') return setoresOrdenados.slice(0, 2);
+  if (grupo === '34') return setoresOrdenados.slice(2, 4);
+  return [];
+}
+
+function getSetorOrdem(setorId) {
+  const idx = setoresOrdenados.findIndex(s => s.id === setorId);
+  return idx >= 0 ? idx + 1 : null;
+}
+
+async function loadSetores() {
+  try {
+    const setores = await API.get('/api/setores');
+    setoresOrdenados = [...setores].sort((a, b) => a.id - b.id);
+    setoresMap = Object.fromEntries(setoresOrdenados.map(s => [s.id, s.nome]));
+    const filtroSetor = document.getElementById('f-setor');
+    setoresOrdenados.forEach(s => {
+      const ordem = getSetorOrdem(s.id);
+      filtroSetor.innerHTML += `<option value="${s.id}">Setor ${ordem || '—'} - ${s.nome}</option>`;
+    });
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+async function loadGridAtividades() {
+  const modo = document.getElementById('mdo-modo').value;
+  const cfg = MODO_CONFIG[modo];
+  const thead = document.getElementById('thead-mdo-grid');
+  const tbody = document.getElementById('tbody-mdo-grid');
+  const resumo = document.getElementById('mdo-grid-resumo');
+
+  document.getElementById('mdo-modo-titulo').textContent = cfg ? cfg.titulo : 'Selecione o tipo de lançamento';
+  document.getElementById('mdo-modo-hint').textContent = cfg ? cfg.hint : 'MOI exibe as atividades do grupo de setores. MOD exibe os setores do grupo para informar a quantidade de pessoas.';
+
+  if (!cfg) {
+    atividadesGrid = [];
+    thead.innerHTML = '';
+    tbody.innerHTML = '<tr><td colspan="3" class="mdo-empty">Selecione MOI S1/S2, MOI S3/S4, MOD S1/S2 ou MOD S3/S4 para abrir a tabela.</td></tr>';
+    resumo.textContent = 'Nenhuma atividade carregada.';
+    return;
+  }
+
+  try {
+    const qs = new URLSearchParams();
+    qs.set('tipo', cfg.tipo);
+    qs.set('ativo', 'true');
+
+    if (cfg.tipo === 'MOI') {
+      const atividadesMoi = await API.get(`/api/atividades-maodeobra?${qs.toString()}`);
+      const atividadesPermitidas = atividadesMoi.filter(a => !a.grupo_setor || a.grupo_setor === cfg.grupo_setor);
+      const mapaPorDescricao = new Map(atividadesPermitidas.map(a => [normTxt(a.descricao), a]));
+      const listaEsperada = MOI_ATIVIDADES[cfg.grupo_setor] || [];
+      const ausentes = [];
+
+      atividadesGrid = listaEsperada
+        .map(desc => {
+          const atv = mapaPorDescricao.get(normTxt(desc));
+          if (!atv) ausentes.push(desc);
+          return atv || null;
+        })
+        .filter(Boolean);
+
+      if (!atividadesGrid.length) {
+        thead.innerHTML = '';
+        tbody.innerHTML = '<tr><td colspan="3" class="mdo-empty">Nenhuma atividade cadastrada para esta seleção.</td></tr>';
+        resumo.textContent = 'Nenhuma atividade encontrada.';
+        return;
+      }
+
+      thead.innerHTML = '<tr><th>Atividade</th><th class="text-end">Pessoas</th></tr>';
+      tbody.innerHTML = atividadesGrid.map(atividade => `
+        <tr>
+          <td>${atividade.descricao}</td>
+          <td class="text-end">
+            <input type="number" min="0" value="0" class="form-control form-control-sm ms-auto mdo-qtd" data-atividade-id="${atividade.id}" />
+          </td>
+        </tr>
+      `).join('');
+
+      resumo.textContent = `${atividadesGrid.length} atividades indiretas carregadas para lançamento.`;
+      if (ausentes.length) {
+        resumo.textContent += ` (${ausentes.length} atividade(s) não encontrada(s) no cadastro)`;
+      }
+      return;
+    }
+
+    const atividadesMod = await API.get(`/api/atividades-maodeobra?${qs.toString()}`);
+    const setoresGrupo = getSetoresGrupo(cfg.grupo_setor);
+    atividadesGrid = setoresGrupo.map(setor => {
+      const atividade = atividadesMod.find(a => a.setor_id === setor.id);
+      return { setor, atividade };
+    });
+
+    if (!atividadesGrid.length) {
+      thead.innerHTML = '';
+      tbody.innerHTML = '<tr><td colspan="3" class="mdo-empty">Nenhum setor encontrado para este grupo.</td></tr>';
+      resumo.textContent = 'Nenhum setor disponível.';
+      return;
+    }
+
+    thead.innerHTML = '<tr><th>Setor</th><th class="text-end">Pessoas</th></tr>';
+    tbody.innerHTML = atividadesGrid.map(item => {
+      const setorOrdem = getSetorOrdem(item.setor.id);
+      return `
+        <tr>
+          <td><span class="badge text-bg-light">Setor ${setorOrdem || '—'} - ${item.setor.nome}</span></td>
+          <td class="text-end">
+            <input
+              type="number"
+              min="0"
+              value="0"
+              class="form-control form-control-sm ms-auto mdo-qtd"
+              data-atividade-id="${item.atividade ? item.atividade.id : ''}"
+              data-setor-id="${item.setor.id}"
+              ${item.atividade ? '' : 'disabled'}
+            />
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    const semAtividade = atividadesGrid.filter(item => !item.atividade).length;
+    resumo.textContent = `${atividadesGrid.length} setores carregados para lançamento MOD.`;
+    if (semAtividade) {
+      resumo.textContent += ` (${semAtividade} setor(es) sem atividade MOD cadastrada)`;
+    }
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+async function loadHoje() {
+  try {
+    const rows = await API.get(`/api/maodeobra?data_inicio=${hoje}&data_fim=${hoje}`);
+    const setores12 = new Set(getSetoresGrupo('12').map(s => s.id));
+    const setores34 = new Set(getSetoresGrupo('34').map(s => s.id));
+
+    const moi12 = rows
+      .filter(r => r.atividade?.tipo === 'MOI' && r.atividade?.grupo_setor === '12')
+      .reduce((a, r) => a + r.quantidade_pessoas, 0);
+    const moi34 = rows
+      .filter(r => r.atividade?.tipo === 'MOI' && r.atividade?.grupo_setor === '34')
+      .reduce((a, r) => a + r.quantidade_pessoas, 0);
+
+    const mod12 = rows
+      .filter(r => r.atividade?.tipo === 'MOD' && setores12.has(r.setor_id))
+      .reduce((a, r) => a + r.quantidade_pessoas, 0);
+    const mod34 = rows
+      .filter(r => r.atividade?.tipo === 'MOD' && setores34.has(r.setor_id))
+      .reduce((a, r) => a + r.quantidade_pessoas, 0);
+
+    const moTotal12 = moi12 + mod12;
+    const moTotal34 = moi34 + mod34;
+
+    const el = document.getElementById('resumo-hoje');
+    el.innerHTML = `
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="kpi-card">
+          <div class="kpi-label"><i class="bi bi-people me-1"></i>MOI S1/S2</div>
+          <div class="kpi-value">${moi12}</div>
+          <div class="kpi-sub">indireta do grupo S1/S2</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="kpi-card">
+          <div class="kpi-label"><i class="bi bi-people me-1"></i>MOI S3/S4</div>
+          <div class="kpi-value">${moi34}</div>
+          <div class="kpi-sub">indireta do grupo S3/S4</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="kpi-card">
+          <div class="kpi-label"><i class="bi bi-hammer me-1"></i>MOD S1/S2</div>
+          <div class="kpi-value">${mod12}</div>
+          <div class="kpi-sub">direta do grupo S1/S2</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="kpi-card">
+          <div class="kpi-label"><i class="bi bi-hammer me-1"></i>MOD S3/S4</div>
+          <div class="kpi-value">${mod34}</div>
+          <div class="kpi-sub">direta do grupo S3/S4</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="kpi-card kpi-good">
+          <div class="kpi-label"><i class="bi bi-calculator me-1"></i>MO Total S1/S2</div>
+          <div class="kpi-value">${moTotal12}</div>
+          <div class="kpi-sub">soma MOI + MOD do grupo S1/S2</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="kpi-card kpi-good">
+          <div class="kpi-label"><i class="bi bi-calculator me-1"></i>MO Total S3/S4</div>
+          <div class="kpi-value">${moTotal34}</div>
+          <div class="kpi-sub">soma MOI + MOD do grupo S3/S4</div>
+        </div>
+      </div>
+    `;
+  } catch(e) {}
+}
+
+async function loadMdo() {
+  const di = document.getElementById('f-inicio').value;
+  const df = document.getElementById('f-fim').value;
+  const tipo = document.getElementById('f-tipo').value;
+  const si = document.getElementById('f-setor').value;
+  const qs = new URLSearchParams();
+  if (di) qs.set('data_inicio', di);
+  if (df) qs.set('data_fim', df);
+  if (si) qs.set('setor_id', si);
+
+  const tbody = document.getElementById('tbody-mdo');
+  tbody.innerHTML = '<tr><td colspan="6" class="text-center"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+  try {
+    let rows = await API.get(`/api/maodeobra?${qs}`);
+    
+    // Filtrar por tipo se selecionado
+    if (tipo) {
+      rows = rows.filter(r => r.atividade?.tipo === tipo);
+    }
+    
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">Nenhum registro</td></tr>';
+      return;
+    }
+    const canDel = ['ADMIN','PCP','PRODUCAO'].includes(user?.nivel_acesso);
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td>${fmtDate(r.data)}</td>
+        <td><span class="badge bg-${r.atividade?.tipo === 'MOI' ? 'success' : 'info'}">${r.atividade?.tipo}</span></td>
+        <td>${r.atividade?.descricao || '—'}</td>
+        <td>${r.setor?.nome || '—'}</td>
+        <td class="text-end fw-bold">${fmtN(r.quantidade_pessoas)}</td>
+        <td class="text-center desktop-only">
+          ${canDel ? `<button class="btn btn-outline-danger btn-sm py-0" onclick="deleteMdo(${r.id})">
+            <i class="bi bi-trash"></i>
+          </button>` : '—'}
+        </td>
+      </tr>
+    `).join('');
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+async function salvarLoteMdo() {
+  const modo = document.getElementById('mdo-modo').value;
+  if (!modo) {
+    showToast('Selecione um tipo de lançamento', 'warning');
+    return;
+  }
+
+  const data = document.getElementById('mdo-data').value;
+  if (!data) {
+    showToast('Informe a data do lançamento', 'warning');
+    return;
+  }
+
+  const inputs = Array.from(document.querySelectorAll('#tbody-mdo-grid .mdo-qtd'));
+  const possuiInvalido = inputs.some(input => {
+    const qtd = parseInt(input.value || '0', 10);
+    return qtd > 0 && !input.dataset.atividadeId;
+  });
+  if (possuiInvalido) {
+    showToast('Existe setor sem atividade MOD cadastrada para salvar este lançamento', 'warning');
+    return;
+  }
+
+  const itens = inputs
+    .map(input => ({
+      atividade_id: parseInt(input.dataset.atividadeId || '0', 10),
+      setor_id: input.dataset.setorId ? parseInt(input.dataset.setorId, 10) : null,
+      quantidade_pessoas: parseInt(input.value || '0', 10),
+    }))
+    .filter(item => item.quantidade_pessoas > 0 && item.atividade_id > 0);
+
+  if (!itens.length) {
+    showToast('Informe pelo menos uma quantidade maior que zero', 'warning');
+    return;
+  }
+
+  try {
+    await API.post('/api/maodeobra/lote', { data, itens });
+    showToast('Mão de obra registrada com sucesso!', 'success');
+    await loadHoje();
+    await loadMdo();
+    await loadGridAtividades();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function deleteMdo(id) {
+  if (!confirm('Excluir?')) return;
+  try {
+    await API.delete(`/api/maodeobra/${id}`);
+    showToast('Excluído','success');
+    loadHoje();
+    loadMdo();
+  } catch(e) { showToast(e.message,'error'); }
+}
+
+document.getElementById('mdo-modo').addEventListener('change', loadGridAtividades);
+document.getElementById('btn-salvar-lote').addEventListener('click', salvarLoteMdo);
+document.getElementById('btn-buscar').addEventListener('click', loadMdo);
+document.getElementById('f-tipo').addEventListener('change', loadMdo);
+loadSetores();
+loadHoje();
+loadMdo();
+</script>
+</body>
+</html>

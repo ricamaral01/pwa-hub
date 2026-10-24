@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Relatório CEC • ConcreTrack</title>
+  <link href="/unificado/laboratorio/cec/assets/vendor/bootstrap.min.css" rel="stylesheet">
+  <link href="/unificado/laboratorio/cec/assets/vendor/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/unificado/laboratorio/cec/assets/vendor/montserrat.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      --ct-orange:#E07A3A;--ct-gray:#343B43;--ct-gray-lt:#5A6270;
+      --ct-blue:#1976D2;--ct-navy:#0D3B66;--ct-silver:#BFC5CC;--ct-bg:#F2F3F5;
+      --ct-green:#059669;
+    }
+    *{font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif;margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--ct-bg)}
+
+    .app-topbar{background:var(--ct-gray);color:#fff}
+    .topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px}
+    .topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:6px}
+    .topbar-title{font-size:18px;font-weight:700}
+    .topbar-title span{color:var(--ct-orange)}
+    .topbar-sub{font-size:10px;color:var(--ct-silver)}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .btn-back{
+      border-radius:10px;height:36px;font-weight:600;font-size:12px;
+      border:1px solid rgba(255,255,255,.18);color:#fff;
+      background:rgba(255,255,255,.06);display:inline-flex;align-items:center;
+      gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;font-family:inherit;
+    }
+    .btn-back:hover{background:rgba(255,255,255,.12);color:#fff}
+    .btn-logout{
+      border-radius:10px;border:1px solid rgba(255,255,255,.15);
+      color:#fff;font-size:12px;padding:5px 14px;
+      background:rgba(224,122,58,.25);font-weight:600;
+      cursor:pointer;transition:background .2s;font-family:inherit;
+    }
+    .btn-logout:hover{background:rgba(224,122,58,.5)}
+    .topbar-accent{height:3px;background:linear-gradient(90deg,var(--ct-orange),var(--ct-navy))}
+
+    .page-header{padding:28px 0 14px}
+    .page-header h2{font-size:22px;font-weight:800;color:var(--ct-gray)}
+    .page-header h2 span{color:var(--ct-orange)}
+    .page-header p{color:var(--ct-gray-lt);font-size:13px}
+
+    .dev-alert{
+      background:linear-gradient(135deg,var(--ct-navy),#0a2e52);
+      color:#fff;border-radius:14px;padding:30px;margin:20px 0;
+      display:flex;align-items:center;gap:18px;
+    }
+    .dev-alert i{font-size:42px;color:var(--ct-orange)}
+    .dev-alert h4{font-weight:800;margin-bottom:4px;font-size:16px}
+    .dev-alert p{font-size:12px;color:var(--ct-silver);margin:0}
+
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:20px 0}
+    .stat-card{
+      background:#fff;border-radius:14px;padding:20px;text-align:center;
+      border:1px solid rgba(15,23,42,.06);box-shadow:0 2px 10px rgba(0,0,0,.03);
+    }
+    .stat-card .stat-icon{font-size:28px;margin-bottom:8px}
+    .stat-card .stat-value{font-size:28px;font-weight:900;color:var(--ct-navy)}
+    .stat-card .stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--ct-gray-lt);font-weight:700}
+
+    .info-card{
+      background:#fff;border-radius:14px;padding:24px;
+      border:1px solid rgba(15,23,42,.06);margin-bottom:14px;
+    }
+    .info-card h5{font-size:14px;font-weight:800;color:var(--ct-gray);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .info-card h5 i{color:var(--ct-orange)}
+    .info-card ul{padding-left:18px;font-size:12px;color:var(--ct-gray-lt);line-height:1.8}
+    .info-card ul li::marker{color:var(--ct-orange)}
+
+    .app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver)}
+    .app-footer span{color:var(--ct-orange);font-weight:600}
+  </style>
+</head>
+<body>
+
+<div class="app-topbar">
+  <div class="container">
+    <div class="topbar-inner">
+      <img src="/unificado/laboratorio/cec/assets/img/PRINCIPAL@2x.png" alt="Logo" class="topbar-logo">
+      <div>
+        <div class="topbar-title"><i class="bi bi-file-earmark-bar-graph me-2"></i>Relatório <span>CEC</span></div>
+        <div class="topbar-sub">Controle Estatístico do Concreto &bull; ConcreTrack</div>
+      </div>
+      <div class="topbar-right">
+        <a class="btn-back" href="/unificado/laboratorio/cec/"><i class="bi bi-arrow-left"></i> Voltar</a>
+        <button class="btn-logout" onclick="location.href='/unificado/'"><i class="bi bi-box-arrow-right me-1"></i>Sair</button>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-accent"></div>
+</div>
+
+<div class="container">
+  <div class="page-header">
+    <h2>Relatório <span>CEC</span></h2>
+    <p>Relatório estatístico de controle de qualidade do concreto.</p>
+  </div>
+
+  <div class="dev-alert">
+    <i class="bi bi-gear-wide-connected"></i>
+    <div>
+      <h4>Módulo em Desenvolvimento</h4>
+      <p>O relatório CEC será gerado automaticamente a partir dos dados de resistência à compressão registrados na tabela de Resultados de Corpos de Prova. As funcionalidades abaixo serão implementadas em breve.</p>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value">—</div>
+      <div class="stat-label">Amostras no Período</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value">—</div>
+      <div class="stat-label">Conformes (%)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⚠️</div>
+      <div class="stat-value">—</div>
+      <div class="stat-label">Não Conformes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📈</div>
+      <div class="stat-value">—</div>
+      <div class="stat-label">Sd Estimado (MPa)</div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-5">
+    <div class="col-12 col-md-6">
+      <div class="info-card">
+        <h5><i class="bi bi-clipboard-data"></i> Conteúdo do Relatório</h5>
+        <ul>
+          <li>Resumo estatístico por período (mensal / trimestral)</li>
+          <li>Média de resistência por idade (24h, 3d, 7d, 28d)</li>
+          <li>Desvio padrão estimado (Sd)</li>
+          <li>Resistência característica estimada (fck,est)</li>
+          <li>Coeficiente de variação (%)</li>
+          <li>Gráfico de controle — Carta de Shewhart</li>
+          <li>Classificação conforme NBR 12655</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="info-card">
+        <h5><i class="bi bi-journal-check"></i> Normas Utilizadas</h5>
+        <ul>
+          <li>NBR 5739 — Ensaio de compressão de corpos de prova</li>
+          <li>NBR 12655 — Concreto de cimento Portland — Preparo, controle, recebimento e aceitação</li>
+          <li>NBR 7680 — Concreto — Extração, preparo, ensaio e análise de testemunhos</li>
+          <li>NBR 6118 — Projeto de estruturas de concreto</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="app-footer">&copy; 2026 <span>ConcreTrack</span> &mdash; DAutomação</div>
+<script src="/unificado/laboratorio/cec/assets/vendor/bootstrap.bundle.min.js"></script>
+</body>
+</html>

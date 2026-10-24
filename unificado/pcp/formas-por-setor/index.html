@@ -1,0 +1,38 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1730">
+  <title>Formas por Setor — Planejamento</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css">
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css">
+  <link rel="stylesheet" href="/unificado/pcp/static/css/formas-por-setor.css">
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body class="formas-page">
+  <div id="sidebar-overlay" aria-hidden="true"></div>
+  <aside id="sidebar" aria-label="Menu Planejamento"><nav id="formas-menu"></nav><button id="btn-logout" type="button" hidden>Sair</button></aside>
+  <div id="main-content">
+    <header class="topbar">
+      <div class="d-flex align-items-center"><button id="sidebar-toggle" type="button" aria-label="Abrir menu" aria-expanded="false"><i class="bi bi-list"></i></button><strong class="page-title">Formas por Setor</strong></div>
+      <span class="user-info" id="formas-user"></span>
+    </header>
+    <main class="content-area formas-content">
+      <div class="formas-heading"><div><p class="eyebrow">CADASTRO DE FORMAS</p><h1>Formas por Setor</h1><p>Consulte o que cada forma produz e sua situação no PCP e na manutenção.</p></div><div class="formas-actions"><button id="export-csv" type="button" class="action-secondary"><i class="bi bi-download"></i> Exportar CSV</button><button id="print-list" type="button" class="action-primary"><i class="bi bi-printer"></i> Imprimir</button></div></div>
+      <section class="filter-card" aria-label="Filtros de formas">
+        <div class="filter-line"><div class="filter-field sector-field"><span class="filter-label">Setor</span><div id="filter-sector" class="segmented" role="group" aria-label="Setor"></div></div><div class="filter-field status-field"><span class="filter-label">Situação</span><div id="filter-status" class="segmented" role="group" aria-label="Situação"></div></div></div>
+        <div class="filter-line filter-line-bottom"><label class="filter-field" for="filter-type"><span class="filter-label">Tipo de forma</span><select id="filter-type"><option value="">Todos os tipos</option></select></label><label class="filter-field search-field" for="filter-search"><span class="filter-label">Buscar forma ou produto</span><span class="search-wrap"><i class="bi bi-search"></i><input id="filter-search" type="search" placeholder="Código da forma ou produto" autocomplete="off"></span></label></div>
+      </section>
+      <section class="summary-grid" id="formas-summary" aria-label="Resumo das formas"></section>
+      <div class="list-heading"><div><h2>Lista de formas</h2><p id="result-count" aria-live="polite">Carregando…</p></div><small id="catalog-updated"></small></div>
+      <div id="forms-error" class="forms-error" role="alert" hidden></div>
+      <div id="forms-list" class="forms-list" aria-live="polite"></div>
+      <p id="status-source" class="source-note">Situação: cadastro do PCP; quando houver registro de manutenção da mesma forma no Mapa, a parada também aparece aqui.</p>
+      <p id="field-note" class="source-note"></p>
+      <p class="source-note">Dados atuais dos cadastros <code>mapeamento_formas</code>, <code>mapeamento_forma_postes</code>, <code>mapeamento_forma_acessorios</code>, <code>produtos</code> e <code>formas_manutencao</code>. Consulta somente leitura.</p>
+    </main>
+  </div>
+  <script src="/unificado/pcp/static/js/formas-por-setor.js"></script>
+</body>
+</html>

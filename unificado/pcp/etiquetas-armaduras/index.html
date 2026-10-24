@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Etiquetas Armaduras - PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <style>
+    .arm-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+    .arm-controls label{display:block;font-size:.8rem;font-weight:700;margin-bottom:3px}
+    .arm-list{display:grid;gap:10px}
+    .arm-row{display:grid;grid-template-columns:auto minmax(140px,1fr) minmax(200px,1.4fr) auto;gap:12px;align-items:center;padding:12px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}
+    .arm-row strong{font-size:.95rem;color:#15416f}
+    .arm-row small{display:block;color:#64748b}
+    .arm-row select{max-width:100%}
+    .arm-row .qty{font-weight:800;color:#d86615}
+    .arm-row.missing{background:#fff7ed}
+    .arm-sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,370px),1fr));gap:14px}
+    .arm-preview-card{border:1px solid #cbd5e1;border-radius:9px;padding:12px;background:#fff}
+    .arm-preview-meta{font-size:.75rem;color:#64748b;font-weight:700;margin-bottom:6px}
+    .arm-label{width:90mm;height:39mm;max-width:100%;border:1px solid #111;background:#fff;color:#000;box-sizing:border-box;padding:4mm 4mm 2mm 5mm;font-family:Arial,Helvetica,sans-serif;font-weight:700;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+    .arm-title{font-size:12pt;line-height:1.06;margin-bottom:1.4mm;white-space:nowrap}
+    .arm-field{font-size:9pt;line-height:1.12;white-space:nowrap}
+    .arm-weight{font-size:12pt;line-height:1.06;margin-top:1mm;white-space:nowrap}
+    .arm-empty{padding:26px;text-align:center;color:#64748b}
+    @media(max-width:680px){.arm-row{grid-template-columns:auto 1fr}.arm-row select{grid-column:2}.arm-row .qty{grid-column:2}}
+    @media print{
+      @page{size:90mm 39mm;margin:0}
+      body{background:#fff!important}
+      #sidebar,#sidebar-overlay,.topbar,.no-print,#toast-container{display:none!important}
+      #main-content,.content-area{margin:0!important;padding:0!important;width:100%!important}
+      .arm-sheet{display:block}
+      .arm-preview-card{border:0;border-radius:0;padding:0;break-inside:avoid}
+      .arm-preview-meta{display:none}
+      .arm-label{width:90mm!important;height:39mm!important;max-width:none!important;border:0;margin:0;break-after:page;page-break-after:always}
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <div class="sidebar-brand"><div><span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span><small>Planejamento e Controle</small></div></div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer"><div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div><button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">Sair</button></div>
+</aside>
+<div id="main-content">
+  <div class="topbar"><div class="d-flex align-items-center"><button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button><span class="page-title">Etiquetas Armaduras</span></div><div class="user-info"><span id="user-nome-top"></span><span class="user-badge" id="user-nivel"></span></div></div>
+  <div class="content-area">
+    <div class="section-card mb-3 no-print">
+      <div class="section-title mb-1">Etiquetas Armaduras - Postes SC</div>
+      <div class="text-muted mb-3" style="font-size:.84rem">Fichas do modelo Word, disponíveis conforme a programação circular do Setor 3. Se houver mais de uma ficha para o mesmo poste, escolha a versão antes de gerar.</div>
+      <div class="arm-controls">
+        <div><label for="arm-start">Data inicial</label><input id="arm-start" type="date" class="form-control form-control-sm" /></div>
+        <div><label for="arm-days">Dias de programação</label><input id="arm-days" type="number" min="1" max="30" value="1" class="form-control form-control-sm" style="width:120px" /></div>
+        <button id="arm-load" type="button" class="btn btn-primary-pcp btn-sm">Carregar programação</button>
+        <button id="arm-generate" type="button" class="btn btn-outline-primary btn-sm">Gerar etiquetas</button>
+        <button id="arm-print" type="button" class="btn btn-outline-primary btn-sm"><i class="bi bi-printer me-1"></i>Imprimir / PDF</button>
+      </div>
+      <div id="arm-status" class="text-muted mt-2" style="font-size:.83rem" role="status"></div>
+    </div>
+    <div class="section-card mb-3 no-print">
+      <div class="d-flex justify-content-between align-items-center mb-2"><strong>Modelos programados</strong><span id="arm-count" class="text-muted"></span></div>
+      <div id="arm-list" class="arm-list"><div class="arm-empty">Carregando programação...</div></div>
+    </div>
+    <div id="arm-sheet" class="arm-sheet"><div class="arm-empty no-print">Selecione as fichas e gere as etiquetas.</div></div>
+  </div>
+</div>
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/etiquetas-armaduras.js?v=0.6.7"></script>
+</body>
+</html>

@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programação Setor 1 e 2 - PCP Concrefer</title>
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
+  <style>
+    .import-help {
+      color: #64748b;
+      font-size: .78rem;
+      line-height: 1.35;
+    }
+    .alex-table {
+      min-width: 1080px;
+      table-layout: fixed;
+    }
+    .alex-table th,
+    .alex-table td {
+      vertical-align: middle;
+    }
+    .alex-table .col-action {
+      width: 88px;
+      text-align: center;
+    }
+    .alex-table .alex-action-btn {
+      width: 32px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .alex-table .col-desc {
+      width: 340px;
+      white-space: normal;
+    }
+    .alex-control-card {
+      padding: 0;
+      overflow: hidden;
+    }
+    .alex-control-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(300px, .9fr);
+      gap: 0;
+      align-items: stretch;
+    }
+    .alex-import-panel,
+    .alex-setor-panel {
+      padding: 20px 22px;
+    }
+    .alex-import-panel {
+      border-right: 1px solid var(--pcp-border);
+    }
+    .alex-panel-title {
+      font-size: .85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      color: var(--pcp-primary);
+      margin-bottom: 6px;
+    }
+    .alex-import-actions {
+      display: grid;
+      grid-template-columns: minmax(150px, 180px) minmax(190px, 1fr) minmax(190px, 240px);
+      align-items: end;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .alex-import-buttons {
+      display: grid;
+      gap: 8px;
+    }
+    :root {
+      --alex-border: #dbe4ee;
+      --alex-head: #f3f7fb;
+      --alex-row: #ffffff;
+      --alex-row-alt: #f9fbfd;
+      --alex-hover: #eef6ff;
+      --alex-ink: #0f172a;
+      --alex-muted: #64748b;
+      --alex-blue: #15416f;
+      --alex-orange: #f97316;
+      --alex-green: #0f9f6e;
+    }
+    .formas-grid-shell {
+      border: 1px solid var(--alex-border);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .06);
+      overflow: auto;
+      max-height: min(64vh, 720px);
+    }
+    .formas-grid {
+      min-width: 1120px;
+      display: grid;
+      gap: 0;
+      font-size: .82rem;
+      color: var(--alex-ink);
+    }
+    .formas-grid-row {
+      display: grid;
+      grid-template-columns: 110px 82px minmax(220px, 1.15fr) 104px 104px 82px 112px 116px 88px 128px;
+      align-items: center;
+      min-height: 52px;
+    }
+    .formas-grid-head {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      min-height: 46px;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--alex-head) 100%);
+      border-bottom: 1px solid var(--alex-border);
+      box-shadow: 0 8px 16px rgba(15, 23, 42, .05);
+    }
+    .formas-grid-head .formas-cell {
+      color: #334155;
+      font-size: .68rem;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .formas-grid-row > .formas-cell.sticky-setor,
+    .formas-grid-row > .formas-cell.sticky-codigo,
+    .formas-grid-row > .formas-cell.sticky-produto {
+      position: sticky;
+      z-index: 2;
+      background: inherit;
+    }
+    .formas-grid-row > .formas-cell.sticky-setor { left: 0; }
+    .formas-grid-row > .formas-cell.sticky-codigo { left: 110px; }
+    .formas-grid-row > .formas-cell.sticky-produto {
+      left: 192px;
+      box-shadow: 10px 0 16px rgba(15, 23, 42, .06);
+    }
+    .formas-grid-head > .formas-cell.sticky-setor,
+    .formas-grid-head > .formas-cell.sticky-codigo,
+    .formas-grid-head > .formas-cell.sticky-produto {
+      z-index: 4;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--alex-head) 100%);
+    }
+    .formas-grid-body .formas-grid-row {
+      background: var(--alex-row);
+      border-bottom: 1px solid #edf2f7;
+      transition: background .15s ease, box-shadow .15s ease;
+    }
+    .formas-grid-body .formas-grid-row:nth-child(even) { background: var(--alex-row-alt); }
+    .formas-grid-body .formas-grid-row:hover {
+      background: var(--alex-hover);
+      box-shadow: inset 3px 0 0 var(--alex-orange);
+    }
+    .formas-grid-row.formas-grid-total {
+      position: sticky;
+      bottom: 0;
+      z-index: 3;
+      min-height: 54px;
+      background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+      border-top: 2px solid #93c5fd;
+      box-shadow: 0 -8px 18px rgba(15, 23, 42, .08);
+      font-weight: 900;
+    }
+    .formas-grid-row.formas-grid-total .formas-cell {
+      color: var(--alex-blue);
+      border-right-color: #bfdbfe;
+    }
+    .formas-grid-row.formas-grid-total .formas-total-label {
+      justify-content: flex-end;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      font-size: .74rem;
+    }
+    .formas-grid-row.formas-grid-total .formas-total-qtd {
+      color: #9a3412;
+      background: #ffedd5;
+      border-color: #fed7aa;
+      min-width: 92px;
+    }
+    .formas-cell {
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      border-right: 1px solid #eef2f6;
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+    }
+    .formas-cell:last-child { border-right: 0; }
+    .formas-cell.left {
+      justify-content: flex-start;
+      text-align: left;
+    }
+    .formas-cell.num {
+      justify-content: flex-end;
+      text-align: right;
+    }
+    .formas-forma {
+      color: var(--alex-blue);
+      font-weight: 900;
+      letter-spacing: .01em;
+    }
+    .formas-code {
+      color: var(--alex-muted);
+      font-size: .76rem;
+      font-weight: 800;
+    }
+    .formas-produto {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--alex-ink);
+      font-weight: 750;
+    }
+    .metric-pill {
+      min-width: 58px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+      border: 1px solid transparent;
+    }
+    .metric-pill.forms {
+      color: #075985;
+      background: #e0f2fe;
+      border-color: #bae6fd;
+    }
+    .metric-pill.volume {
+      color: #166534;
+      background: #dcfce7;
+      border-color: #bbf7d0;
+      min-width: 82px;
+    }
+    .metric-pill.neutral {
+      color: #334155;
+      background: #f1f5f9;
+      border-color: #e2e8f0;
+    }
+    .metric-pill.saldo-negativo {
+      color: #991b1b;
+      background: #fee2e2;
+      border-color: #fecaca;
+    }
+    .metric-pill.saldo-positivo {
+      color: #1d4ed8;
+      background: #dbeafe;
+      border-color: #bfdbfe;
+    }
+    .prog-cell {
+      background: linear-gradient(180deg, rgba(249, 115, 22, .12), rgba(249, 115, 22, .05));
+    }
+    .prog-input {
+      width: 92px;
+      min-height: 36px;
+      text-align: right;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      border: 1px solid rgba(249, 115, 22, .35);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, .05);
+      padding-right: 10px;
+      touch-action: manipulation;
+    }
+    .prog-input:focus {
+      border-color: var(--alex-orange);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, .16);
+    }
+    .formas-empty {
+      grid-column: 1 / -1;
+      padding: 24px;
+      color: var(--alex-muted);
+      text-align: center;
+      font-weight: 700;
+    }
+    .setor-toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(128px, 1fr));
+      gap: 10px;
+      width: 100%;
+    }
+    .setor-toggle-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .setor-toggle-label {
+      min-height: 54px;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      font-size: .9rem;
+      font-weight: 850;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, .06);
+      transition: transform .14s ease, border-color .14s ease, background .14s ease, box-shadow .14s ease, color .14s ease;
+    }
+    .setor-toggle-label .setor-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #cbd5e1;
+      color: transparent;
+      background: #fff;
+      transition: all .14s ease;
+    }
+    .setor-toggle-label:hover {
+      transform: translateY(-1px);
+      border-color: #94a3b8;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, .09);
+    }
+    .setor-toggle-input:focus-visible + .setor-toggle-label {
+      outline: 3px solid rgba(249, 115, 22, .28);
+      outline-offset: 2px;
+    }
+    .setor-toggle-input:checked + .setor-toggle-label {
+      border-color: #15416f;
+      background: linear-gradient(180deg, rgba(21, 65, 111, .98), rgba(15, 37, 64, .98));
+      color: #fff;
+      box-shadow: 0 12px 26px rgba(21, 65, 111, .24);
+    }
+    .setor-toggle-input:checked + .setor-toggle-label .setor-check {
+      border-color: #f97316;
+      background: #f97316;
+      color: #fff;
+    }
+    .oficial-kpis {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(145px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .oficial-kpi-card {
+      border: 1px solid var(--alex-border);
+      border-radius: 9px;
+      background: linear-gradient(180deg, #fff, #f8fbff);
+      padding: 12px 14px;
+    }
+    .oficial-kpi-label {
+      color: var(--alex-muted);
+      font-size: .68rem;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .oficial-kpi-value {
+      color: var(--alex-blue);
+      font-size: 1.18rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .oficial-qtd-input {
+      width: 92px;
+      margin-left: auto;
+      text-align: right;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    @media (max-width: 1180px) {
+      .formas-grid-shell {
+        max-height: 62vh;
+        border-radius: 8px;
+      }
+      .formas-grid {
+        min-width: 1020px;
+        font-size: .8rem;
+      }
+      .formas-grid-row {
+        grid-template-columns: 100px 76px minmax(200px, 1.1fr) 94px 94px 76px 104px 108px 82px 118px;
+        min-height: 50px;
+      }
+      .formas-grid-row > .formas-cell.sticky-codigo { left: 100px; }
+      .formas-grid-row > .formas-cell.sticky-produto { left: 176px; }
+      .formas-cell { padding: 9px 10px; }
+      .prog-input { min-height: 38px; width: 86px; }
+    }
+    @media (max-width: 1040px) {
+      .oficial-kpis {
+        grid-template-columns: repeat(3, minmax(145px, 1fr));
+      }
+      .alex-control-layout {
+        grid-template-columns: 1fr;
+      }
+      .alex-import-panel {
+        border-right: 0;
+        border-bottom: 1px solid var(--pcp-border);
+      }
+      .alex-import-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+      .alex-import-actions .import-button-wrap {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (max-width: 820px) {
+      .oficial-kpis {
+        grid-template-columns: repeat(2, minmax(135px, 1fr));
+      }
+      .setor-toggle-grid {
+        grid-template-columns: repeat(2, minmax(132px, 1fr));
+      }
+      .setor-toggle-label {
+        min-height: 58px;
+        font-size: .95rem;
+      }
+      .alex-import-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script src="/unificado/pcp/readonly-guard.js"></script>
+</head>
+<body>
+
+<div id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-brand" style="margin-bottom:8px">
+    <svg width="32" height="32" viewBox="0 0 32 32" style="margin-bottom:8px">
+      <rect width="32" height="32" rx="6" fill="#15416F" opacity="0.1" stroke="#15416F" stroke-width="1.5"/>
+      <text x="16" y="22" text-anchor="middle" font-size="20" font-weight="bold" fill="#f97316">Σ</text>
+    </svg>
+  </div>
+  <div class="sidebar-brand">
+    <div>
+      <span><i class="bi bi-bar-chart-steps me-2" style="color:#f97316"></i>PCP Concrefer</span>
+      <small>Planejamento e Controle</small>
+    </div>
+  </div>
+  <nav>
+    <a class="nav-link" href="/unificado/pcp/dashboard/" data-page="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-link" href="/unificado/pcp/programacao/" data-page="programacao" data-require="PCP"><i class="bi bi-calendar-plus"></i> Programação Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/producao/" data-page="producao" data-require="PRODUCAO"><i class="bi bi-hammer"></i> Produção</a>
+    <a class="nav-link" href="/unificado/pcp/maodeobra/" data-page="maodeobra" data-require="PRODUCAO"><i class="bi bi-people"></i> Mão de Obra</a>
+    <a class="nav-link" href="/unificado/pcp/comparacao/" data-page="comparacao"><i class="bi bi-bar-chart-line"></i> Programado vs Realizado</a>
+    <a class="nav-link" href="/unificado/pcp/teste-programacao/" data-page="teste-programacao" data-require="ADMIN"><i class="bi bi-robot"></i> Teste Programação</a>
+    <a class="nav-link active" href="/unificado/pcp/programacao-alex/" data-page="programacao-alex" data-require="PCP"><i class="bi bi-file-earmark-excel"></i> Programação Setor 1 e 2</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal/" data-page="acompanhamento-mensal" data-require="PCP"><i class="bi bi-table"></i> Acompanhamento Mensal</a>
+    <a class="nav-link" href="/unificado/pcp/acompanhamento-mensal-setor-34/" data-page="acompanhamento-mensal-setor-34" data-require="PCP"><i class="bi bi-grid-3x3-gap"></i> Acompanhamento Mensal Setor 3 e 4</a>
+    <a class="nav-link" href="/unificado/pcp/apontamento-mega/" data-page="apontamento-mega" data-require="PRODUCAO"><i class="bi bi-clipboard-check"></i> Apontamento Mega</a>
+    <a class="nav-link" href="/unificado/pcp/usuarios/" data-page="usuarios" data-require="ADMIN"><i class="bi bi-person-gear"></i> Usuários</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div id="user-nome" style="color:rgba(255,255,255,.6);font-size:.8rem"></div>
+    <button class="btn btn-sm mt-1" id="btn-logout" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);font-size:.72rem;width:100%">
+      <i class="bi bi-box-arrow-right me-1"></i>Sair
+    </button>
+  </div>
+</aside>
+
+<div id="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center">
+      <button id="sidebar-toggle" class="mobile-only"><i class="bi bi-list"></i></button>
+      <span class="page-title">Programação Setor 1 e 2</span>
+    </div>
+    <div class="user-info">
+      <span id="user-nome-top"></span>
+      <span class="user-badge" id="user-nivel"></span>
+    </div>
+  </div>
+
+  <div class="content-area">
+    <div class="section-card alex-control-card mb-4" data-require="PCP">
+      <div class="alex-control-layout">
+        <div class="alex-import-panel">
+          <div class="alex-panel-title">Importar arquivo Mega - Setor 1 e 2</div>
+          <div class="import-help">Importe o relatório Mega em XLSX, XLS ou CSV. A coluna <strong>Produção Diária</strong> será usada para salvar a programação oficial.</div>
+          <form id="form-programacao-alex" novalidate>
+            <div class="alex-import-actions">
+              <div>
+                <label class="form-label" style="font-size:.8rem;font-weight:700">Data</label>
+                <input type="date" id="alex-data" class="form-control form-control-sm" required />
+              </div>
+              <div class="form-check mb-1">
+                <input class="form-check-input" type="checkbox" id="alex-substituir" checked />
+                <label class="form-check-label" for="alex-substituir" style="font-size:.84rem;font-weight:700">
+                  Substituir registros da data
+                </label>
+              </div>
+              <div class="import-button-wrap">
+                <input type="file" id="alex-arquivo-mega" class="d-none" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" />
+                <div class="alex-import-buttons">
+                  <button type="button" class="btn btn-primary-pcp btn-sm w-100" id="btn-alex-importar-mega">
+                    <i class="bi bi-file-earmark-excel me-1"></i>Importar arquivo Mega
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm w-100" id="btn-limpar-programacao-alex">
+                    <i class="bi bi-eraser me-1"></i>Limpar programação
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="alex-setor-panel">
+          <div class="alex-panel-title">Setor</div>
+          <input type="hidden" id="f-inicio" />
+          <input type="hidden" id="f-fim" />
+          <div id="f-setores" class="setor-toggle-grid" role="group" aria-label="Selecionar setores"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card mb-4">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <div class="section-title mb-0">Formas do Setor</div>
+        <button type="button" class="btn btn-primary-pcp btn-sm" id="btn-enviar-programacao-alex">
+          <i class="bi bi-send-check me-1"></i>Salvar programação oficial
+        </button>
+      </div>
+      <div class="formas-grid-shell" aria-label="Formas do setor">
+        <div class="formas-grid" role="table">
+          <div class="formas-grid-row formas-grid-head" role="row">
+            <div class="formas-cell sticky-setor" role="columnheader">Setor</div>
+            <div class="formas-cell sticky-codigo" role="columnheader">Cód</div>
+            <div class="formas-cell left sticky-produto" role="columnheader">Poste / Produto</div>
+            <div class="formas-cell num" role="columnheader">Estoque</div>
+            <div class="formas-cell num" role="columnheader">Carteira</div>
+            <div class="formas-cell num" role="columnheader">Saldo</div>
+            <div class="formas-cell num prog-cell" role="columnheader">Programação</div>
+            <div class="formas-cell" role="columnheader">Qtd. Formas</div>
+            <div class="formas-cell num" role="columnheader">Vol. Unit.</div>
+            <div class="formas-cell num" role="columnheader">Vol. Total</div>
+          </div>
+          <div id="tbody-formas-setor" class="formas-grid-body" role="rowgroup">
+            <div class="formas-empty">Selecione um setor</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card d-none">
+      <div class="section-title">Base Mega Setor 1 e 2</div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0 alex-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Setor</th>
+              <th>Cód.Item</th>
+              <th class="col-desc">Descrição</th>
+              <th>Un.</th>
+              <th class="text-end">Estoque</th>
+              <th class="text-end">Carteira</th>
+              <th class="text-end">Saldo</th>
+              <th class="text-end">Produção Diária</th>
+              <th class="text-end">Dias Prev.</th>
+              <th class="col-action desktop-only" data-require="PCP">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-prog-alex">
+            <tr><td colspan="11" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-card mt-4">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+        <div>
+          <div class="section-title mb-1">Registros de Programação Oficial Setor 1 e 2</div>
+          <div class="import-help">Consulta a tabela oficial de programação, limitada aos setores 1 e 2.</div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 align-items-end">
+          <div>
+            <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Início</label>
+            <input type="date" id="oficial-inicio" class="form-control form-control-sm" style="width:150px" />
+          </div>
+          <div>
+            <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Fim</label>
+            <input type="date" id="oficial-fim" class="form-control form-control-sm" style="width:150px" />
+          </div>
+          <div>
+            <label class="form-label mb-1" style="font-size:.78rem;font-weight:600">Setor</label>
+            <select id="oficial-setor" class="form-select form-select-sm" style="width:170px">
+              <option value="">Setor 1 e 2</option>
+            </select>
+          </div>
+          <button class="btn btn-primary-pcp btn-sm" id="btn-buscar-oficial" type="button">
+            <i class="bi bi-search me-1"></i>Buscar
+          </button>
+          <button class="btn btn-success btn-sm" id="btn-salvar-oficial" type="button">
+            <i class="bi bi-check-circle me-1"></i>Salvar quantidades
+          </button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Data Programada</th>
+              <th>Setor</th>
+              <th>Forma</th>
+              <th>Produto</th>
+              <th>Cód</th>
+              <th class="text-end">Qtd</th>
+              <th class="text-end">Vol. (m³)</th>
+              <th class="text-center desktop-only" data-require="PCP">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-prog-oficial-12">
+            <tr><td colspan="8" class="text-center py-3"><div class="spinner-border spinner-border-sm"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="oficial-kpis" aria-label="Resumo da programação oficial">
+        <div class="oficial-kpi-card">
+          <div class="oficial-kpi-label">Total de postes</div>
+          <div class="oficial-kpi-value" id="oficial-total-postes">0</div>
+        </div>
+        <div class="oficial-kpi-card">
+          <div class="oficial-kpi-label">Volume total</div>
+          <div class="oficial-kpi-value" id="oficial-total-volume">0,000 m³</div>
+        </div>
+        <div class="oficial-kpi-card">
+          <div class="oficial-kpi-label">MOD Setor 1 + Setor 2</div>
+          <div class="oficial-kpi-value" id="oficial-total-mod">0</div>
+        </div>
+        <div class="oficial-kpi-card">
+          <div class="oficial-kpi-label">Postes por MOD</div>
+          <div class="oficial-kpi-value" id="oficial-postes-por-mod">-</div>
+        </div>
+        <div class="oficial-kpi-card">
+          <div class="oficial-kpi-label">m³ por MOD</div>
+          <div class="oficial-kpi-value" id="oficial-volume-por-mod">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script>
+const user = requireAuth();
+if (user) {
+  document.getElementById('user-nome-top').textContent = user.nome;
+  initSidebar('programacao-alex');
+}
+
+const hoje = todayISO();
+document.getElementById('alex-data').value = hoje;
+document.getElementById('f-inicio').value = hoje;
+document.getElementById('f-fim').value = hoje;
+document.getElementById('oficial-inicio').value = hoje;
+document.getElementById('oficial-fim').value = hoje;
+let totalModSetor12 = 0;
+
+async function loadSetores() {
+  try {
+    const setores = (await API.get('/api/setores')).filter(s => ['1', '2'].includes(String(s.id)));
+    const wrap = document.getElementById('f-setores');
+    const oficialSetor = document.getElementById('oficial-setor');
+    wrap.innerHTML = setores.map(s => `
+      <div>
+        <input class="setor-toggle-input" type="checkbox" id="setor-${s.id}" value="${s.id}" checked />
+        <label class="setor-toggle-label" for="setor-${s.id}">
+          <span class="setor-check"><i class="bi bi-check-lg"></i></span>
+          <span>${escapeHtml(s.nome || `Setor ${s.id}`)}</span>
+        </label>
+      </div>
+    `).join('');
+    wrap.querySelectorAll('.setor-toggle-input').forEach(input => {
+      input.addEventListener('change', loadProgAlex);
+    });
+    oficialSetor.innerHTML = '<option value="">Setor 1 e 2</option>' + setores.map(s => `<option value="${s.id}">${escapeHtml(s.nome || `Setor ${s.id}`)}</option>`).join('');
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+function getSelectedSetores() {
+  return [...document.querySelectorAll('#f-setores .setor-toggle-input:checked')]
+    .map(input => input.value)
+    .filter(Boolean);
+}
+
+function selectFilterSetores(values) {
+  const wanted = new Set((Array.isArray(values) ? values : [values]).filter(Boolean).map(String));
+  document.querySelectorAll('#f-setores .setor-toggle-input').forEach(input => {
+    input.checked = wanted.has(String(input.value));
+  });
+}
+
+document.getElementById('btn-alex-importar-mega').addEventListener('click', () => {
+  document.getElementById('alex-arquivo-mega').click();
+});
+
+document.getElementById('alex-arquivo-mega').addEventListener('change', importarMegaAlex);
+
+async function limparProgramacaoAlex() {
+  const dataInicio = document.getElementById('f-inicio').value || document.getElementById('alex-data').value;
+  const dataFim = document.getElementById('f-fim').value || dataInicio;
+  const setores = getSelectedSetores();
+  if (!dataInicio && !dataFim && !setores.length) {
+    showToast('Informe uma data ou selecione setores para limpar', 'warning');
+    return;
+  }
+  const periodo = dataInicio === dataFim ? fmtDate(dataInicio) : `${fmtDate(dataInicio)} a ${fmtDate(dataFim)}`;
+  const setorTexto = setores.length ? `setor(es) ${setores.join(', ')}` : 'todos os setores';
+  if (!confirm(`Limpar dados da Programação Setor 1 e 2 de ${periodo} para ${setorTexto}?`)) return;
+
+  const btn = document.getElementById('btn-limpar-programacao-alex');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Limpando';
+  try {
+    const out = await API.post('/api/programacao-alex/limpar', {
+      data_inicio: dataInicio || null,
+      data_fim: dataFim || dataInicio || null,
+      setor_ids: setores,
+    });
+    showToast(`${out.removidos || 0} registro(s) da Programação Setor 1 e 2 removido(s)`, 'success');
+    loadProgAlex();
+  } catch(e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-eraser me-1"></i>Limpar programação';
+  }
+}
+
+async function importarMegaAlex() {
+  const input = document.getElementById('alex-arquivo-mega');
+  const file = input.files?.[0];
+  if (!file) return;
+  if (!/\.(xlsx|xls|csv)$/i.test(file.name)) {
+    showToast('Selecione o arquivo Mega em XLSX, XLS ou CSV', 'warning');
+    input.value = '';
+    return;
+  }
+  const data = document.getElementById('alex-data').value;
+  if (!data) {
+    showToast('Informe a data da Programação Setor 1 e 2', 'warning');
+    input.value = '';
+    return;
+  }
+
+  const btn = document.getElementById('btn-alex-importar-mega');
+  const formData = new FormData();
+  formData.append('data', data);
+  formData.append('substituir', document.getElementById('alex-substituir').checked ? 'true' : 'false');
+  formData.append('file', file);
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Importando Mega';
+  try {
+    const headers = {};
+    const token = API.getToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const res = await fetch('/api/programacao-alex/importar-mega', {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+    if (res.status === 401) {
+      API.clearSession();
+      window.location.href = '/unificado/login.html';
+      return;
+    }
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(out.detail || `Erro ${res.status}`);
+    showToast(`${out.importados} item(ns) Mega importado(s). ${out.ignorados || 0} linha(s) sem Produção Diária foram ignoradas.`, 'success', 6500);
+    input.value = '';
+    document.getElementById('f-inicio').value = data;
+    document.getElementById('f-fim').value = data;
+    loadProgAlex();
+  } catch (e) {
+    showToast(e.message, 'error', 7000);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-file-earmark-excel me-1"></i>Importar arquivo Mega';
+  }
+}
+
+async function loadProgAlex() {
+  const di = document.getElementById('f-inicio').value;
+  const df = document.getElementById('f-fim').value;
+  const setores = getSelectedSetores();
+  const qs = new URLSearchParams();
+  if (di) qs.set('data_inicio', di);
+  if (df) qs.set('data_fim', df);
+
+  const tbody = document.getElementById('tbody-prog-alex');
+  tbody.innerHTML = '<tr><td colspan="11" class="text-center"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+
+  try {
+    if (setores.length) {
+      setores.forEach(setorId => qs.append('setor_ids', setorId));
+      const data = await API.get(`/api/programacao-alex/processado?${qs}`);
+      renderFormasSetor(data.formas || []);
+      renderRegistrosAlex(data.registros || []);
+      return;
+    }
+    renderFormasSetor(null);
+    renderRegistrosAlex([]);
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function loadTotalModSetor12(dataInicio, dataFim) {
+  if (!dataInicio) return 0;
+  const qs = new URLSearchParams();
+  qs.set('data_inicio', dataInicio);
+  qs.set('data_fim', dataFim || dataInicio);
+  const rows = await API.get(`/api/maodeobra?${qs}`);
+  return rows
+    .filter(row => row.atividade?.tipo === 'MOD' && [1, 2].includes(Number(row.setor_id)))
+    .reduce((total, row) => total + Number(row.quantidade_pessoas || 0), 0);
+}
+
+function fmtIndicador(value, digits = 2) {
+  if (!Number.isFinite(value)) return '-';
+  return value.toLocaleString('pt-BR', {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[ch]));
+}
+
+function saldoBadgeClass(value) {
+  const saldo = Number(value || 0);
+  return saldo < 0 ? 'saldo-negativo' : 'saldo-positivo';
+}
+
+function renderFormasSetor(rows) {
+  const tbody = document.getElementById('tbody-formas-setor');
+  if (rows === null) {
+    tbody.innerHTML = '<div class="formas-empty">Selecione um setor</div>';
+    return;
+  }
+  if (!rows || !rows.length) {
+    tbody.innerHTML = '<div class="formas-empty">Nenhuma forma do setor encontrada no arquivo Mega pelo Cód.Item</div>';
+    return;
+  }
+
+  const rowHtml = rows.map((row, idx) => {
+    const volumeUnitario = Number(row.volume_unitario || 0);
+    const forma = escapeHtml(row.forma || '-');
+    const setorId = row.setor_id || '';
+    const setorNome = escapeHtml(row.setor_nome || (setorId ? `Setor ${setorId}` : '-'));
+    const codigo = escapeHtml(row.codigo || '-');
+    const produto = escapeHtml(row.produto_nome || '-');
+    const saldoClass = saldoBadgeClass(row.saldo);
+    const programacao = Math.max(0, parseInt(row.programacao ?? row.quantidade_produzir ?? 0, 10) || 0);
+    const volumeTotal = programacao * volumeUnitario;
+    return `
+      <div class="formas-grid-row" role="row" data-row="${idx}">
+        <div class="d-none row-meta" data-setor-id="${setorId}" data-produto-id="${row.produto_id || ''}" data-codigo="${codigo}" data-forma="${forma}" data-volume="${volumeUnitario}"></div>
+        <div class="formas-cell sticky-setor" role="cell"><span class="formas-code">${setorNome}</span></div>
+        <div class="formas-cell sticky-codigo" role="cell"><span class="formas-code">${codigo}</span></div>
+        <div class="formas-cell left sticky-produto" role="cell">
+          <span class="formas-produto" title="${produto}">${produto}</span>
+        </div>
+        <div class="formas-cell num" role="cell">
+          <span class="metric-pill neutral">${row.qtde_estoque == null ? '-' : fmtN(row.qtde_estoque)}</span>
+        </div>
+        <div class="formas-cell num" role="cell">
+          <span class="metric-pill neutral">${row.qtde_carteira == null ? '-' : fmtN(row.qtde_carteira)}</span>
+        </div>
+        <div class="formas-cell num" role="cell">
+          <span class="metric-pill ${saldoClass}">${row.saldo == null ? '-' : fmtN(row.saldo)}</span>
+        </div>
+        <div class="formas-cell num prog-cell" role="cell">
+          <input type="number" class="form-control form-control-sm prog-input" min="0" step="1"
+            value="${programacao}"
+            inputmode="numeric"
+            data-volume-unit="${volumeUnitario}" />
+        </div>
+        <div class="formas-cell" role="cell">
+          <span class="metric-pill forms">${fmtN(row.quantidade_formas)}</span>
+        </div>
+        <div class="formas-cell num" role="cell">${volumeUnitario.toFixed(3).replace('.', ',')}</div>
+        <div class="formas-cell num" role="cell">
+          <span class="metric-pill volume volume-total-cell">${volumeTotal.toFixed(3).replace('.', ',')}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  tbody.innerHTML = rowHtml + `
+    <div class="formas-grid-row formas-grid-total" role="row" aria-label="Total de postes programados">
+      <div class="formas-cell sticky-setor" role="cell"></div>
+      <div class="formas-cell sticky-codigo" role="cell"></div>
+      <div class="formas-cell left sticky-produto formas-total-label" role="cell">Total de postes programados</div>
+      <div class="formas-cell" role="cell"></div>
+      <div class="formas-cell" role="cell"></div>
+      <div class="formas-cell" role="cell"></div>
+      <div class="formas-cell num prog-cell" role="cell">
+        <span class="metric-pill formas-total-qtd" id="formas-total-programacao">0</span>
+      </div>
+      <div class="formas-cell" role="cell"></div>
+      <div class="formas-cell" role="cell"></div>
+      <div class="formas-cell num" role="cell">
+        <span class="metric-pill volume" id="formas-total-volume">0,000</span>
+      </div>
+    </div>
+  `;
+  tbody.querySelectorAll('.prog-input').forEach(input => {
+    input.addEventListener('input', () => {
+      const qtd = Number(input.value || 0);
+      const volumeUnit = Number(input.dataset.volumeUnit || 0);
+      const cell = input.closest('.formas-grid-row')?.querySelector('.volume-total-cell');
+      if (cell) cell.textContent = (qtd * volumeUnit).toFixed(3).replace('.', ',');
+      updateFormasTotalRow();
+    });
+  });
+  updateFormasTotalRow();
+}
+
+function updateFormasTotalRow() {
+  const rows = [...document.querySelectorAll('#tbody-formas-setor .formas-grid-row[data-row]')];
+  let totalProgramacao = 0;
+  let totalVolume = 0;
+
+  rows.forEach(row => {
+    const input = row.querySelector('.prog-input');
+    const qtd = Math.max(0, parseInt(input?.value || 0, 10) || 0);
+    const volumeUnit = Number(input?.dataset?.volumeUnit || 0);
+    totalProgramacao += qtd;
+    totalVolume += qtd * volumeUnit;
+  });
+
+  const totalProgramacaoEl = document.getElementById('formas-total-programacao');
+  const totalVolumeEl = document.getElementById('formas-total-volume');
+  if (totalProgramacaoEl) totalProgramacaoEl.textContent = fmtN(totalProgramacao);
+  if (totalVolumeEl) totalVolumeEl.textContent = totalVolume.toFixed(3).replace('.', ',');
+}
+
+async function enviarProgramacaoAlex() {
+  const setores = getSelectedSetores();
+  const dataInicio = document.getElementById('f-inicio').value || document.getElementById('alex-data').value;
+  const dataFim = document.getElementById('f-fim').value || dataInicio;
+  if (!setores.length) { showToast('Selecione ao menos um setor antes de enviar', 'warning'); return; }
+  if (!dataInicio) { showToast('Informe a data da programação', 'warning'); return; }
+  if (dataFim && dataFim !== dataInicio) {
+    showToast('Use uma única data para salvar a Programação Setor 1 e 2', 'warning');
+    return;
+  }
+
+  const rows = [...document.querySelectorAll('#tbody-formas-setor .formas-grid-row[data-row]')];
+  const payloads = [];
+  let totalPl = 0;
+  for (const row of rows) {
+    const input = row.querySelector('.prog-input');
+    const qtd = parseInt(input?.value || 0);
+    if (qtd <= 0) continue;
+    const meta = row.querySelector('.row-meta');
+    const setorId = parseInt(meta?.dataset?.setorId || 0);
+    if (setorId === 2 && ['934', '15351'].includes(meta?.dataset?.codigo)) totalPl += qtd;
+    const produtoId = parseInt(meta?.dataset?.produtoId || 0);
+    const forma = meta?.dataset?.forma || null;
+    const volumeUnitario = Number(meta?.dataset?.volume || input?.dataset?.volumeUnit || 0);
+    if (!setorId) {
+      showToast('Setor não identificado em uma linha selecionada', 'warning');
+      return;
+    }
+    if (!produtoId) {
+      showToast(`Produto não vinculado para a forma ${forma || '-'}`, 'warning');
+      return;
+    }
+    payloads.push({
+      data: dataInicio,
+      setor_id: setorId,
+      produto_id: produtoId,
+      codigo_forma: ['3', '4'].includes(String(setorId)) ? forma : null,
+      quantidade_programada: qtd,
+      volume_m3_programado: volumeUnitario * qtd,
+    });
+  }
+
+  if (totalPl > 6) {
+    showToast('As formas PL são 6 no total. Ajuste a soma de 934 e 15351 para no máximo 6.', 'warning');
+    return;
+  }
+
+  if (!payloads.length) {
+    showToast('Preencha ao menos uma quantidade na coluna Programação', 'warning');
+    return;
+  }
+
+  const btn = document.getElementById('btn-enviar-programacao-alex');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Salvando';
+  try {
+    const out = await API.post('/api/programacao/lote', { itens: payloads });
+    showToast(`${out.criados || payloads.length} item(ns) salvos na programação oficial`, 'success');
+    loadProgAlex();
+    loadProgOficial12();
+  } catch(e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-send-check me-1"></i>Salvar programação oficial';
+  }
+}
+
+function renderRegistrosAlex(rows) {
+  const tbody = document.getElementById('tbody-prog-alex');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="11" class="text-center text-muted py-3">Nenhum registro Mega encontrado para Setor 1 e 2</td></tr>';
+    return;
+  }
+  const canDel = ['ADMIN','PCP'].includes(user?.nivel_acesso);
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td>${fmtDate(r.data)}</td>
+      <td>${r.setor?.nome || '-'}</td>
+      <td><small class="text-muted">${r.codigo_item || '-'}</small></td>
+      <td class="col-desc">${r.descricao || '-'}</td>
+      <td>${r.unidade || '-'}</td>
+      <td class="text-end">${fmtN(r.qtde_estoque)}</td>
+      <td class="text-end">${fmtN(r.qtde_carteira)}</td>
+      <td class="text-end"><span class="metric-pill ${saldoBadgeClass(r.saldo)}">${fmtN(r.saldo)}</span></td>
+      <td class="text-end"><strong>${fmtN(r.producao_diaria)}</strong></td>
+      <td class="text-end">${fmtN(r.dias_prev_prod)}</td>
+      <td class="col-action desktop-only">
+        ${canDel ? `<button class="btn btn-outline-danger btn-sm alex-action-btn" onclick="deleteProgAlex(${r.id})" title="Excluir registro" aria-label="Excluir registro">
+          <i class="bi bi-trash"></i>
+        </button>` : '-'}
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function deleteProgAlex(id) {
+  if (!confirm('Excluir este registro da Programação Setor 1 e 2?')) return;
+  try {
+    await API.delete(`/api/programacao-alex/${id}`);
+    showToast('Registro excluído', 'success');
+    loadProgAlex();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function loadProgOficial12() {
+  const di = document.getElementById('oficial-inicio').value;
+  const df = document.getElementById('oficial-fim').value;
+  const si = document.getElementById('oficial-setor').value;
+  const tbody = document.getElementById('tbody-prog-oficial-12');
+  tbody.innerHTML = '<tr><td colspan="8" class="text-center"><div class="spinner-border spinner-border-sm"></div></td></tr>';
+
+  try {
+    totalModSetor12 = await loadTotalModSetor12(di, df);
+    const buildQuery = (setorId) => {
+      const qs = new URLSearchParams();
+      if (di) qs.set('data_inicio', di);
+      if (df) qs.set('data_fim', df);
+      if (setorId) qs.set('setor_id', setorId);
+      return qs.toString();
+    };
+    const rows = si
+      ? await API.get(`/api/programacao?${buildQuery(si)}`)
+      : (await Promise.all(['1', '2'].map(setorId => API.get(`/api/programacao?${buildQuery(setorId)}`)))).flat();
+    rows.sort((a, b) => String(a.data || '').localeCompare(String(b.data || '')) || Number(a.setor_id || 0) - Number(b.setor_id || 0));
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">Nenhum registro oficial encontrado para Setor 1 e 2</td></tr>';
+      atualizarTotaisOficiais12();
+      return;
+    }
+    const canDel = ['ADMIN','PCP'].includes(user?.nivel_acesso);
+    tbody.innerHTML = rows.map(r => {
+      const quantidade = Math.max(0, parseInt(r.quantidade_programada || 0, 10) || 0);
+      const volumeTotal = Number(r.volume_m3_programado || 0);
+      const volumeUnitario = quantidade > 0 ? volumeTotal / quantidade : Number(r.produto?.volume || 0);
+      return `
+      <tr data-programacao-id="${r.id}">
+        <td>${fmtDate(r.data)}</td>
+        <td>${r.setor?.nome || '—'}</td>
+        <td><strong>${r.codigo_forma || '—'}</strong></td>
+        <td>${r.produto?.nome || '—'}</td>
+        <td><small class="text-muted">${r.produto?.codigo || '—'}</small></td>
+        <td class="text-end">
+          <input type="number" class="form-control form-control-sm oficial-qtd-input" min="0" step="1"
+            value="${quantidade}" data-original="${quantidade}" data-volume-unit="${volumeUnitario}" />
+        </td>
+        <td class="text-end oficial-volume-cell">${fmtM3(volumeTotal)}</td>
+        <td class="text-center desktop-only">
+          ${canDel ? `<button class="btn btn-outline-danger btn-sm py-0" onclick="deleteProgOficial12(${r.id})" title="Excluir registro oficial">
+            <i class="bi bi-trash"></i>
+          </button>` : '—'}
+        </td>
+      </tr>
+    `;
+    }).join('');
+    tbody.querySelectorAll('.oficial-qtd-input').forEach(input => {
+      input.addEventListener('input', () => {
+        atualizarVolumeLinhaOficial12(input);
+        atualizarTotaisOficiais12();
+      });
+    });
+    atualizarTotaisOficiais12();
+  } catch(e) {
+    showToast(e.message, 'error');
+  }
+}
+
+function atualizarVolumeLinhaOficial12(input) {
+  const quantidade = Math.max(0, parseInt(input.value || 0, 10) || 0);
+  const volumeUnitario = Number(input.dataset.volumeUnit || 0);
+  const cell = input.closest('tr')?.querySelector('.oficial-volume-cell');
+  if (cell) cell.textContent = fmtM3(quantidade * volumeUnitario);
+}
+
+function atualizarTotaisOficiais12() {
+  let quantidadeTotal = 0;
+  let volumeTotal = 0;
+  document.querySelectorAll('#tbody-prog-oficial-12 tr[data-programacao-id]').forEach(row => {
+    const input = row.querySelector('.oficial-qtd-input');
+    const quantidade = Math.max(0, parseInt(input?.value || 0, 10) || 0);
+    quantidadeTotal += quantidade;
+    volumeTotal += quantidade * Number(input?.dataset?.volumeUnit || 0);
+  });
+  document.getElementById('oficial-total-postes').textContent = fmtN(quantidadeTotal);
+  document.getElementById('oficial-total-volume').textContent = `${fmtIndicador(volumeTotal, 3)} m³`;
+  document.getElementById('oficial-total-mod').textContent = fmtN(totalModSetor12);
+  document.getElementById('oficial-postes-por-mod').textContent = totalModSetor12 ? fmtIndicador(quantidadeTotal / totalModSetor12) : '-';
+  document.getElementById('oficial-volume-por-mod').textContent = totalModSetor12 ? `${fmtIndicador(volumeTotal / totalModSetor12, 3)} m³` : '-';
+}
+
+async function salvarQuantidadesOficiais12() {
+  const itens = [];
+  for (const row of document.querySelectorAll('#tbody-prog-oficial-12 tr[data-programacao-id]')) {
+    const input = row.querySelector('.oficial-qtd-input');
+    const quantidade = Number(input?.value);
+    if (!Number.isInteger(quantidade) || quantidade < 0) {
+      showToast('Informe somente quantidades inteiras maiores ou iguais a zero', 'warning');
+      input?.focus();
+      return;
+    }
+    if (quantidade !== Number(input.dataset.original)) {
+      itens.push({
+        id: Number(row.dataset.programacaoId),
+        quantidade_programada: quantidade,
+      });
+    }
+  }
+  if (!itens.length) {
+    showToast('Nenhuma quantidade foi alterada', 'warning');
+    return;
+  }
+
+  const btn = document.getElementById('btn-salvar-oficial');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Salvando';
+  try {
+    const out = await API.post('/api/programacao/atualizar-lote', { itens });
+    showToast(`${out.atualizados || itens.length} quantidade(s) atualizada(s)`, 'success');
+    loadProgOficial12();
+  } catch(e) {
+    showToast(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Salvar quantidades';
+  }
+}
+
+async function deleteProgOficial12(id) {
+  if (!confirm('Excluir este registro da programação oficial?')) return;
+  try {
+    await API.delete(`/api/programacao/${id}`);
+    showToast('Registro oficial excluído', 'success');
+    loadProgOficial12();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+document.getElementById('btn-enviar-programacao-alex').addEventListener('click', enviarProgramacaoAlex);
+document.getElementById('btn-limpar-programacao-alex').addEventListener('click', limparProgramacaoAlex);
+document.getElementById('btn-buscar-oficial').addEventListener('click', loadProgOficial12);
+document.getElementById('btn-salvar-oficial').addEventListener('click', salvarQuantidadesOficiais12);
+document.getElementById('alex-data').addEventListener('change', () => {
+  const data = document.getElementById('alex-data').value;
+  document.getElementById('f-inicio').value = data;
+  document.getElementById('f-fim').value = data;
+  document.getElementById('oficial-inicio').value = data;
+  document.getElementById('oficial-fim').value = data;
+  loadProgAlex();
+  loadProgOficial12();
+});
+
+loadSetores().then(() => {
+  loadProgAlex();
+  loadProgOficial12();
+});
+</script>
+</body>
+</html>

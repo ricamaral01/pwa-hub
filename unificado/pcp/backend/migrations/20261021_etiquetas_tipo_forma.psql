@@ -1,0 +1,7 @@
+-- Permite resolver o código de tipo das etiquetas pelo mapeamento de formas.
+ALTER TABLE public.mapeamento_formas
+    ADD COLUMN IF NOT EXISTS codigo_tipo_forma text;
+
+-- O catálogo de tipos já é mantido no PCP; a API precisa apenas ler estes campos.
+GRANT SELECT (produto_id, codigo_tipo_forma)
+    ON public.catalogo_tipos_forma TO pcp_unificado_app;
