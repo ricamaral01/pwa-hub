@@ -57,6 +57,7 @@
       return resolve(root + 'mapa/operacao/?tela=USUARIOS');
     if (/^pcp\/[a-z0-9-]+\/$/.test(path)) return {url, module:'planejamento', path};
     if (path === 'mapa/operacao/') return {url, module:'producao', path};
+    if (path === 'producao/pederneiras/') return {url, module:'producao', path};
     if (path === 'usinas/') return {url, module:'usinas', path};
     if (path === 'relatorios/fechamento-diario/') return {url, module:'producao', path};
     if (path === 'laboratorio/' || path === 'laboratorio/dosagem/' || path === 'laboratorio/slump' || path === 'laboratorio/slump/' || path === 'laboratorio/novo/postes' ||

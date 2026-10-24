@@ -68,8 +68,8 @@ def _unit(db: Session, slug: str) -> dict:
 
 
 def _authorize(db: Session, unit: dict, user: Usuario, *, write: bool = False, supervisor: bool = False) -> str:
-    # Master administrator is explicitly named in the product requirement.
-    if user.username.casefold() == "ricardo" and user.nivel_acesso == NivelAcesso.ADMIN:
+    # These three administrators remain masters of every unit.
+    if user.username.casefold() in {"ricardo", "marcelo", "alex"} and user.nivel_acesso == NivelAcesso.ADMIN:
         return "supervisor"
     row = db.execute(text("""
         SELECT papel FROM producao.usuario_unidade

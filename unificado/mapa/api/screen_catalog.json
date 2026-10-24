@@ -344,11 +344,31 @@
   {
     "id": "produtividade",
     "module": "producao",
-    "label": "Produtividade",
+    "label": "Dashboard Concretagem Matriz",
     "path": "/unificado/mapa/operacao/",
     "query": "?tela=PROD_ANALISE",
     "screen": "PROD_ANALISE",
     "require": null
+  },
+  {
+    "id": "pdrApontamento", "module": "producao", "label": "Apontamento do dia",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=apontamento", "screen": null, "require": null
+  },
+  {
+    "id": "pdrMaoDeObra", "module": "producao", "label": "Mão de obra",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=mao-de-obra", "screen": null, "require": null
+  },
+  {
+    "id": "pdrMensal", "module": "producao", "label": "Produção Pederneiras",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=mensal", "screen": null, "require": null
+  },
+  {
+    "id": "pdrIndicadores", "module": "producao", "label": "Indicadores",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=indicadores", "screen": null, "require": null
+  },
+  {
+    "id": "pdrProdutos", "module": "producao", "label": "Cadastro de produtos",
+    "path": "/unificado/producao/pederneiras/", "query": "?tab=produtos", "screen": null, "require": null
   },
   {
     "id": "fechamentoDiario",

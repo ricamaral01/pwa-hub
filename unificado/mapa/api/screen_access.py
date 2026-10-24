@@ -29,6 +29,10 @@ MAPA_ROLE_MODES = {
 def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
     if user['id'] in MASTER_USER_IDS:
         return True
+    if screen['id'].startswith('pdr'):
+        # Visibility is an explicit per-screen grant and requires a PCP account.
+        # Unit membership is checked again by the PCP API for every request.
+        return bool(planning_role)
     if screen['id'] == 'tvFormas':
         return bool(user.get('id'))
     module = screen['module']
@@ -72,9 +76,10 @@ def allowed_screens(user, planning_role, overrides, lab_users):
                      role_allows(user, row, planning_role, lab_users))]
     return [row['id'] for row in CATALOG if role_allows(user, row, planning_role, lab_users)
             and overrides.get(row['id'],
-                              row['module'] not in {'laboratorio', 'qualidade'} and row['id'] != 'tvFormas'
-                              or row['module'] == 'laboratorio' and user['id'] in DEFAULT_LAB_USERS
-                              and not row['id'].startswith('cronoanalise.'))]
+                              not row['id'].startswith('pdr') and (
+                                row['module'] not in {'laboratorio', 'qualidade'} and row['id'] != 'tvFormas'
+                                or row['module'] == 'laboratorio' and user['id'] in DEFAULT_LAB_USERS
+                                and not row['id'].startswith('cronoanalise.')))]
 
 
 def screen_for_uri(original_uri, screen_header=''):
@@ -104,6 +109,10 @@ def screen_for_uri(original_uri, screen_header=''):
         mode = query.get('tela', ['LIBERACAO'])[0]
         return next((row for row in CATALOG if row['module'] == 'producao'
                      and row['screen'] == mode), None)
+    if path == '/unificado/producao/pederneiras/':
+        tab = query.get('tab', ['apontamento'])[0]
+        return next((row for row in CATALOG if row['id'].startswith('pdr')
+                     and row['query'] == f'?tab={tab}'), None)
     if path.startswith('/unificado/pcp/') and not path.startswith('/unificado/pcp/api/'):
         return next((row for row in CATALOG if row['module'] == 'planejamento'
                      and row['path'] == path), None)

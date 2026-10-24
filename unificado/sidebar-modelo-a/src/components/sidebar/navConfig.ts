@@ -60,7 +60,7 @@ export const NAV_MODULES: NavModule[] = [
     ]),
   ] },
   { id:'producao', label:'Produção', color:MODULE_COLORS.producao, icon:'factory', sections:[
-    section('PRODUÇÃO', [
+    section('CAMPINAS · PRODUÇÃO', [
       ['liberacao','Produção / Liberação',p('LIBERACAO'),'factory'],
       ['setor1','Setor 1',p('LIBERACAO_S1'),'factory'],
       ['setor2','Setor 2',p('LIBERACAO_S2'),'factory'],
@@ -68,23 +68,30 @@ export const NAV_MODULES: NavModule[] = [
       ['setor4','Setor 4',p('LIBERACAO_S4'),'factory'],
       ['mandril','Mandril Circular',p('MANDRIL_CIRCULAR'),'sliders'],
     ]),
-    section('MONTAGEM', [
+    section('CAMPINAS · MONTAGEM', [
       ['inspecao','Inspeção Setor 3 e 4',p('INSPECAO'),'shield'],
       ['montagem','Montagem Postes',p('MONTAGEM_POSTES'),'post'],
       ['sequencia','Sequência Setor 3',p('SEQUENCIA_S3'),'history'],
     ]),
-    section('CONTROLE', [
+    section('CAMPINAS · CONTROLE', [
       ['relatorioMapa','Relatório Enc. Produção',p('RELATORIO'),'doc'],
       ['historico','Histórico',p('HISTORICO'),'history'],
       ['acmpConcretagem','Acmp. Concretagem',p('ACMP_CONCRETAGEM'),'sliders'],
       ['manutencao','Manutenção Formas',p('RELATORIO_MANUTENCAO'),'sliders'],
       ['tratativa','Tratativa Defeitos',p('TRATATIVA_DEFEITOS'),'alert'],
     ]),
-    section('INDICADORES', [
+    section('CAMPINAS · INDICADORES', [
       ['dashMontagem','Dashboard Montagem',p('MONTAGEM_INDICADORES'),'map'],
       ['dashDefeitos','Dashboard Defeitos',p('DASHBOARD_DEFEITOS'),'map'],
       ['produtividade','Dashboard Concretagem Matriz',p('PROD_ANALISE'),'map'],
       ['tvFormas','Painel TV — Formas','tv/formas/','map'],
+    ]),
+    section('PEDERNEIRAS', [
+      ['pdrApontamento','Apontamento do dia','producao/pederneiras/?tab=apontamento','factory'],
+      ['pdrMaoDeObra','Mão de obra','producao/pederneiras/?tab=mao-de-obra','users'],
+      ['pdrMensal','Produção Pederneiras','producao/pederneiras/?tab=mensal','map'],
+      ['pdrIndicadores','Indicadores','producao/pederneiras/?tab=indicadores','map'],
+      ['pdrProdutos','Cadastro de produtos','producao/pederneiras/?tab=produtos','database'],
     ]),
   ] },
   { id:'qualidade', label:'Qualidade', color:MODULE_COLORS.qualidade, icon:'shield', sections:[

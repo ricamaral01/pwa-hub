@@ -1,0 +1,33 @@
+"""Pederneiras links are opt-in while Campinas links keep their IDs."""
+import importlib.util
+from pathlib import Path
+
+
+SOURCE = Path(__file__).resolve().parents[2] / "unificado/mapa/api/screen_access.py"
+spec = importlib.util.spec_from_file_location("pdr_screen_access", SOURCE)
+access = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(access)
+
+
+def test_existing_campinas_and_new_pederneiras_routes():
+    old = access.screen_for_uri("/unificado/mapa/operacao/?tela=PROD_ANALISE")
+    new = access.screen_for_uri("/unificado/producao/pederneiras/?tab=apontamento")
+    assert old["id"] == "produtividade"
+    assert new["id"] == "pdrApontamento"
+
+
+def test_pederneiras_requires_explicit_grant_and_pcp_identity():
+    user = {"id": "gestor-teste", "perfil": "GESTOR", "nome": "Gestor Teste"}
+    screens = access.allowed_screens(user, "PRODUCAO", {}, frozenset())
+    assert "liberacao" in screens
+    assert "pdrApontamento" not in screens
+    screens = access.allowed_screens(user, "PRODUCAO", {"pdrApontamento": True}, frozenset())
+    assert "pdrApontamento" in screens
+    screens = access.allowed_screens(user, None, {"pdrApontamento": True}, frozenset())
+    assert "pdrApontamento" not in screens
+
+
+def test_master_screen_visibility():
+    for user_id in ("user-ricardo", "marcelo", "alex"):
+        user = {"id": user_id, "perfil": "GERENCIA", "nome": user_id}
+        assert "pdrProdutos" in access.allowed_screens(user, None, {}, frozenset())
