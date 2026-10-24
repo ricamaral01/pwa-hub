@@ -1,7 +1,7 @@
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
-from typing import Optional
-from pydantic import BaseModel
+from typing import Literal, Optional
+from pydantic import BaseModel, Field, field_validator
 
 from app.schemas.setor import SetorOut
 from app.schemas.produto import ProdutoOut
@@ -13,9 +13,23 @@ class ArividadeMaoDeObraOut(BaseModel):
     descricao: str
     setor_id: Optional[int] = None
     grupo_setor: Optional[str] = None  # '12', '34', ou None
+    ordem: int = 100
+    responsavel: Optional[str] = None
+    fator: Optional[Decimal] = None
     ativo: bool
 
     model_config = {"from_attributes": True}
+
+
+class AtividadeMaoDeObraUpdate(BaseModel):
+    descricao: Optional[str] = None
+    tipo: Optional[Literal["MOD", "MOI"]] = None
+    setor_id: Optional[int] = None
+    grupo_setor: Optional[Literal["12", "34"]] = None
+    ordem: Optional[int] = None
+    ativo: Optional[bool] = None
+    responsavel: Optional[str] = None
+    fator: Optional[Decimal] = Field(default=None, ge=0, le=1, decimal_places=2)
 
 
 class ProgramacaoCreate(BaseModel):
@@ -77,13 +91,27 @@ class MaoDeObraCreate(BaseModel):
     data: date
     atividade_id: int
     setor_id: Optional[int] = None  # Pode ser None para MOI
-    quantidade_pessoas: int
+    quantidade_pessoas: Decimal = Field(ge=0, max_digits=5, decimal_places=2)
+
+    @field_validator("quantidade_pessoas")
+    @classmethod
+    def validar_meio_periodo(cls, value: Decimal) -> Decimal:
+        if value % Decimal("0.5") != 0:
+            raise ValueError("Use quantidades de 0,5 em 0,5")
+        return value
 
 
 class MaoDeObraLoteItemCreate(BaseModel):
     atividade_id: int
     setor_id: Optional[int] = None
-    quantidade_pessoas: int
+    quantidade_pessoas: Decimal = Field(ge=0, max_digits=5, decimal_places=2)
+
+    @field_validator("quantidade_pessoas")
+    @classmethod
+    def validar_meio_periodo(cls, value: Decimal) -> Decimal:
+        if value % Decimal("0.5") != 0:
+            raise ValueError("Use quantidades de 0,5 em 0,5")
+        return value
 
 
 class MaoDeObraLoteCreate(BaseModel):
@@ -91,12 +119,27 @@ class MaoDeObraLoteCreate(BaseModel):
     itens: list[MaoDeObraLoteItemCreate]
 
 
+class MaoDeObraGrupoLoteCreate(BaseModel):
+    data: date
+    grupo_setor: Literal["12", "34"]
+    sem_producao: bool = False
+    confirmar: bool = False
+    motivo: Optional[str] = Field(default=None, max_length=255)
+    itens: list[MaoDeObraLoteItemCreate]
+
+
+class MaoDeObraGrupoConfirmar(BaseModel):
+    data: date
+    grupo_setor: Literal["12", "34"]
+    salvo_em: datetime
+
+
 class MaoDeObraOut(BaseModel):
     id: int
     data: date
     atividade_id: int
     setor_id: Optional[int] = None
-    quantidade_pessoas: int
+    quantidade_pessoas: Decimal
     setor: Optional[SetorOut] = None
     atividade: Optional[ArividadeMaoDeObraOut] = None
 
@@ -131,7 +174,7 @@ class MaoDeObraComRateioOut(BaseModel):
     id: int
     data: date
     atividade_id: int
-    quantidade_pessoas: int
+    quantidade_pessoas: Decimal
     setor: Optional[SetorOut] = None
     atividade: Optional[ArividadeMaoDeObraOut] = None
     rateios: list[MaoDeObraRateioOut] = []

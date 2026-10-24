@@ -5,8 +5,10 @@ from datetime import date, datetime, timedelta
 from decimal import Decimal
 from typing import Literal
 from zoneinfo import ZoneInfo
+from io import BytesIO
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -14,8 +16,9 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.security import get_current_user
 from app.models.usuario import NivelAcesso, Usuario
+from app.services.pederneiras_catalog import parse_catalog, preview
 from app.services.pederneiras_rules import (
-    assert_can_confirm, posts_per_person, production_summary,
+    assert_can_confirm, monthly_target, posts_per_person, production_summary,
     validate_day, validate_people, validate_quantity,
 )
 
@@ -60,6 +63,13 @@ class ReopenInput(BaseModel):
     origem: Literal["desktop", "pwa"] = "desktop"
 
 
+class AreaInputCadastro(BaseModel):
+    descricao: str = Field(min_length=1, max_length=255)
+    tipo: Literal["MOD", "MOI"]
+    ordem: int = Field(ge=0, le=9999)
+    ativo: bool = True
+
+
 def _unit(db: Session, slug: str) -> dict:
     row = db.execute(text("SELECT id,codigo,nome FROM producao.unidade WHERE codigo=:c AND ativo"), {"c": slug}).mappings().first()
     if not row:
@@ -90,7 +100,7 @@ def _day(day: date) -> date:
 
 def _labor_group(unit: dict) -> str:
     # Two-character code fits the legacy day key; unit 1 keeps existing 12/34.
-    if unit["id"] > 99:
+    if unit["id"] > 99 or unit["id"] in {12, 34}:
         raise HTTPException(409, "Código de unidade excede a chave de mão de obra")
     return f"{unit['id']:02d}"
 
@@ -122,6 +132,82 @@ def products(unidade: str, db: Session = Depends(get_db), user: Usuario = Depend
     unit = _unit(db, unidade)
     _authorize(db, unit, user)
     return {"unidade": unit, "produtos": _product_rows(db, unit)}
+
+
+@router.get("/produtos/modelo.xlsx")
+def product_template(unidade: str, db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
+    unit = _unit(db, unidade)
+    _authorize(db, unit, user)
+    from openpyxl import Workbook
+    from openpyxl.styles import Alignment, Font, PatternFill
+
+    book = Workbook()
+    sheet = book.active
+    sheet.title = "Produtos"
+    sheet.append(["Família", "Letra", "Descrição", "Cód. Pro", "Cód. SMA",
+                  "m³/peça", "Ativo", "Situação"])
+    for cell in sheet[1]:
+        cell.fill = PatternFill("solid", fgColor="17324F")
+        cell.font = Font(color="FFFFFF", bold=True)
+        cell.alignment = Alignment(wrap_text=True)
+    for column, width in {"A": 25, "B": 10, "C": 55, "D": 16, "E": 16,
+                          "F": 14, "G": 12, "H": 45}.items():
+        sheet.column_dimensions[column].width = width
+    sheet.freeze_panes = "A2"
+    output = BytesIO()
+    book.save(output)
+    output.seek(0)
+    return StreamingResponse(output, media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                             headers={"Content-Disposition": f'attachment; filename="modelo_produtos_{unit["codigo"]}.xlsx"'})
+
+
+@router.post("/produtos/importar")
+async def import_products(unidade: str, arquivo: UploadFile = File(...), aplicar: bool = Query(False),
+                          db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
+    unit = _unit(db, unidade)
+    _authorize(db, unit, user, write=aplicar)
+    try:
+        rows = parse_catalog(arquivo.filename or "", await arquivo.read())
+    except (ValueError, UnicodeError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    differences = preview(rows, _product_rows(db, unit))
+    counts = {action: sum(item["acao"] == action for item in differences)
+              for action in ("criar", "atualizar", "igual", "conflito")}
+    if not aplicar:
+        return {"aplicado": False, "resumo": counts, "diferencas": differences}
+    if counts["conflito"]:
+        raise HTTPException(409, "Resolva os conflitos na prévia antes de aplicar")
+    try:
+        for difference in differences:
+            action = difference["acao"]
+            if action == "igual":
+                continue
+            values = difference["produto"]
+            if action == "criar":
+                product_id = db.execute(text("""
+                  INSERT INTO producao.produto
+                    (unidade_id,familia,letra,descricao,cod_pro,cod_sma,volume_m3,ativo,pendencia)
+                  VALUES (:uid,:familia,:letra,:descricao,:cod_pro,:cod_sma,:volume_m3,:ativo,:pendencia)
+                  RETURNING id
+                """), {"uid": unit["id"], **values}).scalar_one()
+                _audit(db, unit, "produto", product_id, "importacao", None,
+                       values["descricao"], user, "desktop")
+            else:
+                product_id = difference["produto_id"]
+                db.execute(text("""
+                  UPDATE producao.produto SET familia=:familia,letra=:letra,descricao=:descricao,
+                    cod_pro=:cod_pro,cod_sma=:cod_sma,volume_m3=:volume_m3,ativo=:ativo,
+                    pendencia=:pendencia,atualizado_em=now()
+                  WHERE id=:id AND unidade_id=:uid
+                """), {"id": product_id, "uid": unit["id"], **values})
+                for field, change in difference["alteracoes"].items():
+                    _audit(db, unit, "produto", product_id, field,
+                           change["de"], change["para"], user, "desktop")
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return {"aplicado": True, "resumo": counts, "diferencas": differences}
 
 
 def _product_values(payload: ProductInput) -> dict:
@@ -220,6 +306,30 @@ def get_day(unidade: str, dia: date, db: Session = Depends(get_db), user: Usuari
     return _production(db, unit, _day(dia))
 
 
+@router.get("/apontamentos/{dia}/referencia")
+def production_reference(unidade: str, dia: date, db: Session = Depends(get_db),
+                         user: Usuario = Depends(get_current_user)):
+    unit = _unit(db, unidade)
+    _authorize(db, unit, user)
+    _day(dia)
+    ids = [row[0] for row in db.execute(text("""
+      SELECT d.id FROM producao.apontamento_dia d
+      JOIN producao.apontamento_item i ON i.apontamento_dia_id=d.id
+      WHERE d.unidade_id=:uid AND d.data<:day
+      GROUP BY d.id,d.data HAVING sum(i.quantidade)>0
+      ORDER BY d.data DESC LIMIT 15
+    """), {"uid": unit["id"], "day": dia})]
+    if not ids:
+        return {"dias": 0, "medias": {}}
+    rows = db.execute(text("""
+      SELECT i.produto_id,sum(i.quantidade) AS total
+      FROM producao.apontamento_item i WHERE i.apontamento_dia_id = ANY(:ids)
+      GROUP BY i.produto_id
+    """), {"ids": ids}).mappings()
+    return {"dias": len(ids), "medias": {str(row["produto_id"]):
+            round(row["total"] / len(ids), 2) for row in rows}}
+
+
 @router.put("/apontamentos/{dia}")
 def save_day(unidade: str, dia: date, payload: ApontamentoInput,
              db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
@@ -281,6 +391,7 @@ def save_day(unidade: str, dia: date, payload: ApontamentoInput,
 
 @router.post("/apontamentos/{dia}/repetir-ontem")
 def repeat_last_day(unidade: str, dia: date,
+                    origem: Literal["desktop", "pwa"] = Query("desktop"),
                     db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     unit = _unit(db, unidade)
     _authorize(db, unit, user, write=True)
@@ -304,7 +415,7 @@ def repeat_last_day(unidade: str, dia: date,
                JOIN producao.produto p ON p.id=i.produto_id
                WHERE i.apontamento_dia_id=:id AND i.quantidade>0 AND p.ativo
              """), {"id": source["id"]}).mappings()]
-    result = save_day(unidade, dia, ApontamentoInput(itens=items), db, user)
+    result = save_day(unidade, dia, ApontamentoInput(itens=items, origem=origem), db, user)
     result["copiado_de"] = source["data"]
     return result
 
@@ -355,12 +466,80 @@ def _labor(db: Session, unit: dict, day: date) -> dict:
             "confirmado_em": marker["confirmado_em"] if marker else None}
 
 
+@router.get("/areas")
+def get_areas(unidade: str, db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
+    unit = _unit(db, unidade)
+    _authorize(db, unit, user)
+    return {"unidade": unit, "areas": [dict(row) for row in db.execute(text("""
+      SELECT id,descricao,tipo,ordem,ativo FROM public.atividades_mao_de_obra
+      WHERE unidade_id=:uid ORDER BY ordem,descricao,id
+    """), {"uid": unit["id"]}).mappings()]}
+
+
+@router.post("/areas", status_code=201)
+def create_area(unidade: str, payload: AreaInputCadastro,
+                db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
+    unit = _unit(db, unidade)
+    _authorize(db, unit, user, supervisor=True)
+    name = payload.descricao.strip()
+    if db.execute(text("""
+      SELECT 1 FROM public.atividades_mao_de_obra
+      WHERE unidade_id=:uid AND lower(descricao)=lower(:name)
+    """), {"uid": unit["id"], "name": name}).first():
+        raise HTTPException(409, "Área já cadastrada na unidade")
+    try:
+        area_id = db.execute(text("""
+          INSERT INTO public.atividades_mao_de_obra
+            (unidade_id,descricao,tipo,grupo_setor,ordem,ativo)
+          VALUES (:uid,:name,:kind,:grp,:sort,:active) RETURNING id
+        """), {"uid": unit["id"], "name": name, "kind": payload.tipo,
+               "grp": _labor_group(unit), "sort": payload.ordem, "active": payload.ativo}).scalar_one()
+        _audit(db, unit, "area_mao_obra", area_id, "criacao", None, name, user, "desktop")
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return {"id": area_id, **payload.model_dump(), "descricao": name}
+
+
+@router.patch("/areas/{area_id}")
+def update_area(unidade: str, area_id: int, payload: AreaInputCadastro,
+                db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
+    unit = _unit(db, unidade)
+    _authorize(db, unit, user, supervisor=True)
+    name = payload.descricao.strip()
+    try:
+        old = db.execute(text("""
+          SELECT id,descricao,tipo,ordem,ativo FROM public.atividades_mao_de_obra
+          WHERE id=:id AND unidade_id=:uid FOR UPDATE
+        """), {"id": area_id, "uid": unit["id"]}).mappings().first()
+        if not old:
+            raise HTTPException(404, "Área não encontrada na unidade")
+        if db.execute(text("""
+          SELECT 1 FROM public.atividades_mao_de_obra
+          WHERE unidade_id=:uid AND lower(descricao)=lower(:name) AND id<>:id
+        """), {"uid": unit["id"], "name": name, "id": area_id}).first():
+            raise HTTPException(409, "Área já cadastrada na unidade")
+        values = {**payload.model_dump(), "descricao": name}
+        db.execute(text("""
+          UPDATE public.atividades_mao_de_obra SET descricao=:descricao,tipo=:tipo,
+            ordem=:ordem,ativo=:ativo WHERE id=:id AND unidade_id=:uid
+        """), {"id": area_id, "uid": unit["id"], **values})
+        for key, value in values.items():
+            _audit(db, unit, "area_mao_obra", area_id, key, old[key], value, user, "desktop")
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return {"id": area_id, **values}
+
+
 @router.get("/mao-de-obra/mensal")
 def monthly_labor(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
                   db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     data = monthly(unidade, mes, db, user)
     return {"unidade": data["unidade"], "mes": mes,
-            "dias": [{key: day[key] for key in ("data", "postes", "homens", "mod", "moi", "postes_homem")}
+            "dias": [{key: day[key] for key in ("data", "postes", "homens", "mod", "moi", "postes_homem", "areas")}
                      for day in data["dias"]]}
 
 
@@ -432,6 +611,65 @@ def save_labor(unidade: str, dia: date, payload: MaoDeObraInput,
           UPDATE public.maodeobra_dias SET salvo_em=now(),salvo_por_usuario_id=:user_id
           WHERE id=:id
         """), {"user_id": user.id, "id": marker["id"]})
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return _labor(db, unit, dia)
+
+
+@router.post("/mao-de-obra/{dia}/repetir-ontem")
+def repeat_last_labor(unidade: str, dia: date, origem: Literal["desktop", "pwa"] = Query("desktop"),
+                      db: Session = Depends(get_db),
+                      user: Usuario = Depends(get_current_user)):
+    unit = _unit(db, unidade)
+    _authorize(db, unit, user, write=True)
+    _day(dia)
+    if db.execute(text("""
+      SELECT 1 FROM public.maodeobra_dias
+      WHERE unidade_id=:uid AND data=:day AND grupo_setor=:grp
+    """), {"uid": unit["id"], "day": dia, "grp": _labor_group(unit)}).first():
+        raise HTTPException(409, "Dia já iniciado; repetição não sobrescreve lançamentos")
+    source = db.execute(text("""
+      SELECT m.data FROM public.maodeobra m
+      JOIN public.atividades_mao_de_obra a ON a.id=m.atividade_id AND a.unidade_id=m.unidade_id
+      WHERE m.unidade_id=:uid AND m.data<:day
+      GROUP BY m.data HAVING sum(m.quantidade_pessoas)>0
+      ORDER BY m.data DESC LIMIT 1
+    """), {"uid": unit["id"], "day": dia}).scalar()
+    if not source:
+        raise HTTPException(404, "Não há dia anterior com mão de obra")
+    areas = [AreaInput(atividade_id=row["atividade_id"], homens=row["quantidade_pessoas"],
+                       observacao=row["observacao"])
+             for row in db.execute(text("""
+               SELECT m.atividade_id,m.quantidade_pessoas,m.observacao
+               FROM public.maodeobra m JOIN public.atividades_mao_de_obra a ON a.id=m.atividade_id
+               WHERE m.unidade_id=:uid AND m.data=:day AND a.unidade_id=:uid AND a.ativo
+             """), {"uid": unit["id"], "day": source}).mappings()]
+    result = save_labor(unidade, dia, MaoDeObraInput(areas=areas, origem=origem), db, user)
+    result["copiado_de"] = source
+    return result
+
+
+@router.post("/mao-de-obra/{dia}/reabrir")
+def reopen_labor(unidade: str, dia: date, payload: ReopenInput,
+                 db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
+    unit = _unit(db, unidade)
+    _authorize(db, unit, user, supervisor=True)
+    _day(dia)
+    try:
+        marker = db.execute(text("""
+          SELECT id,confirmado_em FROM public.maodeobra_dias
+          WHERE unidade_id=:uid AND data=:day AND grupo_setor=:grp FOR UPDATE
+        """), {"uid": unit["id"], "day": dia, "grp": _labor_group(unit)}).mappings().first()
+        if not marker or not marker["confirmado_em"]:
+            raise HTTPException(409, "Somente mão de obra confirmada pode ser reaberta")
+        db.execute(text("""
+          UPDATE public.maodeobra_dias SET confirmado_em=NULL,confirmado_por_usuario_id=NULL
+          WHERE id=:id
+        """), {"id": marker["id"]})
+        _audit(db, unit, "maodeobra_dia", marker["id"], "reabertura",
+               marker["confirmado_em"], payload.motivo.strip(), user, payload.origem)
         db.commit()
     except Exception:
         db.rollback()
@@ -516,14 +754,44 @@ def monthly(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
                      "postes_homem": posts_per_person(production["postes"], labor["homens"]),
                      "volume_m3": production["volume_m3"],
                      "produtos_sem_volume": production["produtos_sem_volume"],
+                     "areas": labor["areas"],
                      "itens": production["itens"]})
     meta = db.execute(text("""
       SELECT dias_uteis,pcs_dia,meta_postes_homem FROM producao.meta_producao
       WHERE unidade_id=:uid AND ano_mes=:mes
     """), {"uid": unit["id"], "mes": mes}).mappings().first()
+    total_posts = sum(day["postes"] for day in days)
+    total_people = sum((day["homens"] for day in days), Decimal("0"))
+    total_volume = (sum((day["volume_m3"] for day in days), Decimal("0"))
+                    if all(day["volume_m3"] is not None for day in days) else None)
     return {"unidade": unit, "mes": mes, "meta": dict(meta) if meta else None,
-            "dias": days, "postes": sum(d["postes"] for d in days),
-            "homens": sum((d["homens"] for d in days), Decimal("0")),
-            "pendencias": [d["data"] for d in days if d["postes"] and not d["homens"]]}
+            "meta_total": monthly_target(meta["dias_uteis"], meta["pcs_dia"]) if meta else None,
+            "dias": days, "dias_producao": len(days), "postes": total_posts,
+            "media_postes_dia": round(total_posts / len(days), 2) if days else None,
+            "homens": total_people, "postes_homem": posts_per_person(total_posts, total_people),
+            "volume_m3": total_volume,
+            "produtos_sem_volume": sum(day["produtos_sem_volume"] for day in days),
+            "pendencias": [day["data"] for day in days if day["postes"] and not day["homens"]]}
+
+
+@router.get("/exportar/lt-pro-04.xlsx")
+def export_xlsx(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
+                db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
+    from app.services.pederneiras_exports import xlsx
+    data = monthly(unidade, mes, db, user)
+    stream = BytesIO(xlsx(data, _product_rows(db, data["unidade"])))
+    return StreamingResponse(stream,
+                             media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                             headers={"Content-Disposition": f'attachment; filename="LT-PRO-04-{unidade}-{mes}.xlsx"'})
+
+
+@router.get("/exportar/lt-pro-04.pdf")
+def export_pdf(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
+               db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
+    from app.services.pederneiras_exports import pdf
+    data = monthly(unidade, mes, db, user)
+    stream = BytesIO(pdf(data, _product_rows(db, data["unidade"])))
+    return StreamingResponse(stream, media_type="application/pdf",
+                             headers={"Content-Disposition": f'attachment; filename="LT-PRO-04-{unidade}-{mes}.pdf"'})
 
 

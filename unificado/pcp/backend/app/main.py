@@ -3,10 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from fastapi.responses import JSONResponse
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 import os
+import logging
+import uuid
 
 from app.core.config import settings
 from app.core.database import engine, Base
@@ -14,7 +17,7 @@ from app.core.database import engine, Base
 # Importa todos os models para garantir criação das tabelas
 import app.models  # noqa: F401
 
-from app.api.routers import auth, usuarios, setores, pcp, dashboard, produtos, teste_programacao, alocacao_formas, programacao_circular_s3, programacao_circular_s4, etiquetas_armaduras, producao_unidade
+from app.api.routers import auth, usuarios, setores, pcp, dashboard, produtos, teste_programacao, alocacao_formas, programacao_circular_s3, programacao_circular_s4, etiquetas_armaduras, qualidade_catalogo, producao_unidade
 
 # Cria as tabelas no banco (substitua por Alembic em produção)
 Base.metadata.create_all(bind=engine)
@@ -25,6 +28,7 @@ app = FastAPI(
     docs_url="/api/docs" if settings.ENABLE_DOCS else None,
     redoc_url="/api/redoc" if settings.ENABLE_DOCS else None,
 )
+logger = logging.getLogger("uvicorn.error")
 
 
 def _split_csv(value: str) -> list[str]:
@@ -52,7 +56,25 @@ if settings.FORCE_HTTPS:
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
-    response: Response = await call_next(request)
+    request_id = uuid.uuid4().hex[:12]
+    request.state.request_id = request_id
+    try:
+        response: Response = await call_next(request)
+    except Exception:
+        logger.exception(
+            "Falha no PCP id=%s metodo=%s caminho=%s",
+            request_id, request.method, request.url.path,
+        )
+        response = JSONResponse(
+            status_code=500,
+            content={"detail": f"Falha interna no Planejamento. Informe ao suporte o código {request_id}."},
+        )
+    if request.url.path.endswith("/programacao-alex/importar-mega"):
+        logger.info(
+            "Importação Mega id=%s metodo=%s status=%s",
+            request_id, request.method, response.status_code,
+        )
+    response.headers["X-Request-ID"] = request_id
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
@@ -77,12 +99,13 @@ app.include_router(setores.router)
 app.include_router(pcp.router)
 app.include_router(dashboard.router)
 app.include_router(produtos.router)
-app.include_router(producao_unidade.router)
+app.include_router(qualidade_catalogo.router)
 app.include_router(teste_programacao.router)
 app.include_router(alocacao_formas.router)
 app.include_router(programacao_circular_s3.router)
 app.include_router(programacao_circular_s4.router)
 app.include_router(etiquetas_armaduras.router)
+app.include_router(producao_unidade.router)
 
 # Servir frontend como arquivos estáticos
 _FRONTEND = os.path.join(os.path.dirname(__file__), "..", "frontend")

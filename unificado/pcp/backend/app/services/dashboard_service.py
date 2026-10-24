@@ -51,6 +51,12 @@ def _inteiro_por_pessoa(total, pessoas: Decimal) -> Optional[int]:
     return int((_dec(total) / pessoas).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
 
 
+def _postes_por_pessoa(total, pessoas: Decimal) -> Optional[float]:
+    if pessoas <= 0:
+        return None
+    return float((_dec(total) / pessoas).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+
+
 def _grupo_por_setor(setor_id: Optional[int]) -> Optional[str]:
     if setor_id in (1, 2):
         return "12"
@@ -66,9 +72,9 @@ def _periodo(data_inicio: Optional[date], data_fim: Optional[date]):
 
 def _mdo_por_grupo(db: Session, data_inicio: date, data_fim: date):
     rows = db.query(MaoDeObra).filter(
+        MaoDeObra.unidade_id == 1,
         MaoDeObra.data >= data_inicio,
         MaoDeObra.data <= data_fim,
-        MaoDeObra.unidade_id == 1,
     ).all()
 
     por_grupo = defaultdict(int)
@@ -128,7 +134,7 @@ def _kg_homem_diario(pesos: dict, registros: list, data_inicio: date, data_fim: 
                 peso_realizado_kg=peso, postes_realizados=quantidade_postes,
                 mod=mod, moi=moi, pessoas=pessoas,
                 kg_por_homem=_inteiro_por_pessoa(peso, pessoas),
-                postes_por_homem=_inteiro_por_pessoa(quantidade_postes, pessoas),
+                postes_por_homem=_postes_por_pessoa(quantidade_postes, pessoas),
             ))
     return resultado
 
@@ -243,14 +249,15 @@ def get_dashboard(
 
     mdo_grupo, total_pessoas = _mdo_por_grupo(db, data_inicio, data_fim)
     registros_mdo = db.query(MaoDeObra).filter(
-        MaoDeObra.data >= data_inicio, MaoDeObra.data <= data_fim,
         MaoDeObra.unidade_id == 1,
+        MaoDeObra.data >= data_inicio, MaoDeObra.data <= data_fim,
     ).all()
     kg_homem_diario = _kg_homem_diario(
         pesos_diarios, registros_mdo, data_inicio, data_fim, postes_diarios
     )
     mdo_hoje = db.query(func.coalesce(func.sum(MaoDeObra.quantidade_pessoas), 0)).filter(
-        MaoDeObra.data == date.today(), MaoDeObra.unidade_id == 1,
+        MaoDeObra.unidade_id == 1,
+        MaoDeObra.data == date.today()
     ).scalar()
 
     setores_out = []

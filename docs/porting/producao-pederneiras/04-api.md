@@ -1,22 +1,11 @@
-# T4 — Núcleo de regras da API
+# T4 — API e regras de Pederneiras
 
-Foi criado `app/services/pederneiras_rules.py` como fonte única para os cálculos que serão usados por desktop, PWA e exportação:
+`app/api/routers/producao_unidade.py` resolve `unidade_id` no banco, exige vínculo `producao.usuario_unidade` ou conta master PCP ativa e registra toda mudança de quantidade na mesma transação em `producao.auditoria`. O papel gestor só escreve na unidade vinculada. Reabertura exige supervisor e motivo. Data futura é bloqueada no fuso de São Paulo.
 
-- Data futura bloqueada no fuso de São Paulo; quantidade inteira não negativa.
-- Mão de obra não negativa em passos de 0,25.
-- Postes/homem = postes ÷ total de pessoas, com duas casas; sem denominador retorna vazio.
-- m³ = soma de quantidade × volume por peça; se houver peça produzida sem volume cadastrado, o resultado fica vazio e informa quantos produtos faltam.
-- Confirmação bloqueada quando há produção e não há mão de obra.
-- Meta mensal = dias úteis × peças/dia.
+Rotas: produtos (listagem, criação, edição, prévia/aplicação de CSV/XLSX e modelo), apontamento (consulta, rascunho, envio, repetição, confirmação e reabertura), áreas configuráveis, mão de obra (consulta, salvamento, repetição, confirmação, reabertura e mensal), consolidado mensal e exportações PDF/XLSX. PDF e Excel usam o mesmo resultado mensal da tela.
 
-`python -m pytest tests/pederneiras/test_rules.py -q`: **3 testes passaram** (data futura, quantidades, passos de 0,25, bloqueio, postes/homem, m³ e meta de 1.472).
+`pederneiras_rules.py` centraliza inteiro não negativo, mão de obra em passos de 0,25, m³ com ausência explícita de volume, postes/homem, meta de 1.472 para outubro e bloqueio da confirmação sem equipe. `pederneiras_catalog.py` compara importação antes de gravar e sinaliza conflitos. `pederneiras_exports.py` gera LT-PRO-04.
 
-## Rotas implementadas em código
+Validação local: `python -m pytest tests/pederneiras -q` passou (regras, catálogo, exportações, permissões do menu e telas com API simulada). As revisões Alembic 01–03 foram testadas em banco isolado na VPS. Falta um E2E HTTP com banco operacional clonado; nenhuma migration ou seed foi executada no banco operacional.
 
-`app/api/routers/producao_unidade.py` expõe catálogo, cadastro e edição de produtos; consulta, gravação, repetição, confirmação e reabertura supervisionada de apontamentos; consulta, gravação e confirmação de mão de obra; resumo mensal de produção e mão de obra. A unidade é resolvida pelo catálogo do banco. A autorização consulta `producao.usuario_unidade`; o parâmetro da URL não concede acesso. Ricardo, Marcelo e Alex conservam acesso master com conta PCP `ADMIN` ativa. O perfil `gestor` tem escrita somente na unidade atribuída; `leitor` só consulta.
-
-As alterações de quantidade e de produto são gravadas na mesma transação que `producao.auditoria`. Dias confirmados não aceitam edição. Reabrir exige supervisor e motivo. A rota mensal inclui somente datas até hoje com produção positiva. A migration `20261023_02` cria a associação usuário/unidade e reutiliza as atividades de mão de obra existentes.
-
-Validação de sintaxe Python e importação do roteador: **13 rotas registradas**. A migration foi executada em banco temporário clonado somente com schema, até a revisão `20261023_02`; não foi aplicada ao banco operacional.
-
-**Ainda pendente nesta tarefa:** teste HTTP transacional com dados reais clonados; prévia/importação CSV/Excel, modelo XLSX e exportações LT-PRO-04; vinculação do gestor definitivo; revisão de todos os leitores antigos de Campinas para filtrar `unidade_id=1`. Por isso a API não deve ser ativada em produção ainda. A consulta somente leitura ao PCP operacional encontrou Ricardo e Marcelo ativos como `ADMIN`, mas a conta `Alex` está inativa nesse serviço; o vínculo com a conta master ativa do Mapa precisa ser reconciliado antes de anunciar acesso PCP para Alex.
+Ricardo e Marcelo aparecem ativos no PCP operacional como `ADMIN`. Alex permanece master do Mapa, mas sua conta PCP está inativa; a API PCP não lhe dá sessão até regularizar esse vínculo. O gestor de Pederneiras será criado pelo Ricardo posteriormente.

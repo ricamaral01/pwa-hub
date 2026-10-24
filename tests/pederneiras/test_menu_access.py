@@ -14,6 +14,8 @@ def test_existing_campinas_and_new_pederneiras_routes():
     new = access.screen_for_uri("/unificado/producao/pederneiras/?tab=apontamento")
     assert old["id"] == "produtividade"
     assert new["id"] == "pdrApontamento"
+    assert access.screen_for_uri("/unificado/producao/pederneiras/app/")["id"] == "pdrApontamento"
+    assert access.screen_for_uri("/unificado/producao/pederneiras/mao-de-obra/app/")["id"] == "pdrMaoDeObra"
 
 
 def test_pederneiras_requires_explicit_grant_and_pcp_identity():

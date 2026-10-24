@@ -1,8 +1,9 @@
 from typing import List, Optional
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 import csv
 import io
 import json
+import logging
 import re
 import unicodedata
 import zipfile
@@ -10,14 +11,14 @@ import xml.etree.ElementTree as ET
 from decimal import Decimal, InvalidOperation
 from html.parser import HTMLParser
 
-from fastapi import APIRouter, Body, Depends, File, Form, HTTPException, Query, UploadFile
+from fastapi import APIRouter, Body, Depends, File, Form, HTTPException, Query, Request, UploadFile
 from sqlalchemy import func, or_, text
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.core.security import require_roles
-from app.models.usuario import NivelAcesso
-from app.models.producao import Programacao, ProgramacaoAlex, ApontamentoMega, Producao, MaoDeObra, MaoDeObraRateio, AtividadeMaoDeObra
+from app.models.usuario import NivelAcesso, Usuario
+from app.models.producao import Programacao, ProgramacaoAlex, ApontamentoMega, Producao, MaoDeObra, MaoDeObraDia, MaoDeObraRateio, AtividadeMaoDeObra
 from app.models.setor import Setor
 from app.models.mapeamento_forma import MapeamentoForma
 from app.models.mapeamento_forma_poste import MapeamentoFormaPoste
@@ -27,12 +28,16 @@ from app.schemas.producao import (
     ProducaoCreate, ProducaoOut,
     MaoDeObraCreate, MaoDeObraOut,
     MaoDeObraLoteCreate,
+    MaoDeObraGrupoLoteCreate,
+    MaoDeObraGrupoConfirmar,
     MaoDeObraComRateioOut, MaoDeObraRateioCreate,
     ArividadeMaoDeObraOut,
+    AtividadeMaoDeObraUpdate,
 )
 from app.services import sheets_service
 
 router = APIRouter(prefix="/api", tags=["pcp"])
+logger = logging.getLogger("uvicorn.error")
 
 _LEITURA = (NivelAcesso.ADMIN, NivelAcesso.PCP, NivelAcesso.PRODUCAO, NivelAcesso.CONSULTA)
 _ESCRITA_PCP = (NivelAcesso.ADMIN, NivelAcesso.PCP)
@@ -123,13 +128,21 @@ def _rows_from_matrix(parsed_rows: list[list]) -> list[dict]:
 
 
 def _read_csv_rows(raw: bytes) -> list[dict]:
-    text = None
-    for encoding in ("utf-8-sig", "latin-1"):
+    if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
         try:
-            text = raw.decode(encoding)
-            break
-        except UnicodeDecodeError:
-            continue
+            text = raw.decode("utf-16")
+        except UnicodeDecodeError as exc:
+            raise HTTPException(status_code=400, detail="Arquivo CSV UTF-16 inválido.") from exc
+    else:
+        if b"\x00" in raw:
+            raise HTTPException(status_code=400, detail="O arquivo contém dados binários e não é um CSV válido. Exporte o Mega como XLSX ou CSV UTF-8.")
+        text = None
+        for encoding in ("utf-8-sig", "cp1252", "latin-1"):
+            try:
+                text = raw.decode(encoding)
+                break
+            except UnicodeDecodeError:
+                continue
     if text is None:
         raise HTTPException(status_code=400, detail="Arquivo CSV inválido")
 
@@ -139,7 +152,10 @@ def _read_csv_rows(raw: bytes) -> list[dict]:
     except csv.Error:
         dialect = csv.excel
         dialect.delimiter = ";"
-    parsed_rows = [row for row in csv.reader(io.StringIO(text), dialect) if any(str(v).strip() for v in row)]
+    try:
+        parsed_rows = [row for row in csv.reader(io.StringIO(text), dialect) if any(str(v).strip() for v in row)]
+    except csv.Error as exc:
+        raise HTTPException(status_code=400, detail=f"Não foi possível ler o CSV do Mega: {exc}") from exc
     return _rows_from_matrix(parsed_rows)
 
 
@@ -177,7 +193,7 @@ class _TableParser(HTMLParser):
 
 def _read_html_rows(raw: bytes) -> list[dict]:
     text = None
-    for encoding in ("utf-8-sig", "latin-1"):
+    for encoding in ("utf-8-sig", "cp1252", "latin-1"):
         try:
             text = raw.decode(encoding, errors="strict")
             break
@@ -210,7 +226,7 @@ def _read_xls_rows(raw: bytes) -> list[dict]:
             if any(str(v).strip() for v in row):
                 parsed_rows.append(row)
     except Exception as exc:
-        raise HTTPException(status_code=400, detail=f"Arquivo XLS inválido: {exc}")
+        raise HTTPException(status_code=400, detail="Arquivo XLS inválido ou corrompido. Exporte novamente o relatório no Mega.") from exc
     return _rows_from_matrix(parsed_rows)
 
 
@@ -231,6 +247,8 @@ def _read_mega_rows(raw: bytes, filename: str) -> list[dict]:
             return reader(raw)
         except HTTPException as exc:
             errors.append(str(exc.detail))
+        except (csv.Error, UnicodeError, ValueError) as exc:
+            errors.append(f"{reader.__name__}: {exc}")
     raise HTTPException(status_code=400, detail=f"Não foi possível ler o arquivo Mega. Verifique se o cabeçalho contém Cód.Item e Descrição. Detalhes: {' | '.join(errors[:2])}")
 
 
@@ -297,14 +315,18 @@ def programacao_etiquetas_padrao(
     _=Depends(require_roles(*_LEITURA)),
 ):
     """Provide the registered form type code for each standard label."""
-    query = db.query(Programacao).filter(Programacao.data == data)
+    query = db.query(Programacao).filter(Programacao.data == data, Programacao.setor_id.in_((1, 2)))
     if setor_id is not None:
         query = query.filter(Programacao.setor_id == setor_id)
     rows = query.order_by(Programacao.setor_id, Programacao.id).all()
     if not rows:
         return []
 
+    apontamentos = {item.programacao_id: item for item in db.query(ApontamentoMega).filter(
+        ApontamentoMega.programacao_id.in_([row.id for row in rows])
+    ).all()}
     product_ids = {row.produto_id for row in rows if row.produto_id is not None}
+    product_ids.update(item.produto_id for item in apontamentos.values() if item.produto_id is not None)
     sector_ids = {row.setor_id for row in rows}
     products = {item.id: item for item in db.query(Produto).filter(Produto.id.in_(product_ids)).all()}
     sectors = {item.id: item for item in db.query(Setor).filter(Setor.id.in_(sector_ids)).all()}
@@ -326,7 +348,11 @@ def programacao_etiquetas_padrao(
 
     result = []
     for row in rows:
-        product = products.get(row.produto_id)
+        programado = products.get(row.produto_id)
+        is_pl_ple = (row.setor_id == 2 and programado and
+                     str(programado.codigo).upper() in ("934", "PLE"))
+        apontamento = apontamentos.get(row.id) if is_pl_ple else None
+        product = products.get(apontamento.produto_id if apontamento and apontamento.produto_id else row.produto_id)
         type_code = None
         if row.codigo_forma:
             type_code = unique_code(by_form.get((row.setor_id, _norm_text(row.codigo_forma)), set()))
@@ -334,9 +360,11 @@ def programacao_etiquetas_padrao(
             type_code = unique_code(catalog.get(product.id, set()))
         if not type_code and product:
             type_code = unique_code(by_product_name.get((row.setor_id, _norm_text(product.nome)), set()))
+        if row.setor_id == 2 and product and str(product.codigo).upper() in ("934", "PLE"):
+            type_code = "PL" if str(product.codigo) == "934" else "PLE"
         result.append({
             'id': row.id, 'data': row.data.isoformat(), 'setor_id': row.setor_id,
-            'codigo_forma': row.codigo_forma, 'quantidade_programada': row.quantidade_programada,
+            'codigo_forma': row.codigo_forma, 'quantidade_programada': (apontamento.quantidade_apontada if apontamento else row.quantidade_programada),
             'codigo_tipo_forma': type_code,
             'setor': {'nome': sectors[row.setor_id].nome} if row.setor_id in sectors else None,
             'produto': {'nome': product.nome, 'codigo': product.codigo} if product else None,
@@ -528,6 +556,7 @@ def excluir_programacao_alex(
 
 @router.post("/programacao-alex/importar-mega")
 def importar_programacao_alex_mega(
+    request: Request,
     data: date = Form(...),
     setor_id: Optional[int] = Form(None),
     substituir: bool = Form(False),
@@ -540,7 +569,14 @@ def importar_programacao_alex_mega(
         raise HTTPException(status_code=400, detail="Arquivo vazio")
 
     filename = (file.filename or "").lower()
-    rows = _read_mega_rows(raw, filename)
+    try:
+        rows = _read_mega_rows(raw, filename)
+    except HTTPException as exc:
+        logger.warning(
+            "Importação Mega rejeitada id=%s data=%s setor=%s formato=%s bytes=%s motivo=%s",
+            request.state.request_id, data, setor_id, filename.rsplit(".", 1)[-1], len(raw), exc.detail,
+        )
+        raise
     produtos_query = db.query(Produto)
     if setor_id:
         produtos_query = produtos_query.filter(Produto.setor_id == setor_id)
@@ -589,6 +625,11 @@ def importar_programacao_alex_mega(
     for registro in registros:
         db.add(registro)
     db.commit()
+
+    logger.info(
+        "Importação Mega salva id=%s data=%s setor=%s importados=%s substituidos=%s",
+        request.state.request_id, data, setor_id, len(registros), removidos,
+    )
 
     return {
         "importados": len(registros),
@@ -646,9 +687,12 @@ def _apontamento_payload(
         "data": programacao.data.isoformat(),
         "setor_id": programacao.setor_id,
         "setor": {"id": programacao.setor.id, "nome": programacao.setor.nome} if programacao.setor else None,
-        "produto_id": programacao.produto_id,
-        "produto_nome": programacao.produto.nome if programacao.produto else "-",
-        "codigo": programacao.produto.codigo if programacao.produto else None,
+        "produto_id": apontamento.produto_id if apontamento and apontamento.produto_id else programacao.produto_id,
+        "produto_nome": (apontamento.produto.nome if apontamento and apontamento.produto else
+                         programacao.produto.nome if programacao.produto else "-"),
+        "codigo": (apontamento.produto.codigo if apontamento and apontamento.produto else
+                   programacao.produto.codigo if programacao.produto else None),
+        "produto_programado_id": programacao.produto_id,
         "forma": programacao.codigo_forma,
         "quantidade_programada": int(programacao.quantidade_programada or 0),
         "volume_m3_programado": float(programacao.volume_m3_programado or 0),
@@ -721,6 +765,23 @@ def apontar_programacao_mega(
     if not programacao:
         raise HTTPException(status_code=404, detail="Programação não encontrada")
 
+    produto_realizado_id = programacao.produto_id
+    if payload.get("produto_id") is not None:
+        try:
+            produto_realizado_id = int(payload["produto_id"])
+        except (ValueError, TypeError):
+            raise HTTPException(status_code=400, detail="Produto realizado invalido")
+        codigos_pl = {"934", "PLE"}
+        programado = db.query(Produto).filter(Produto.id == programacao.produto_id).first()
+        realizado = db.query(Produto).filter(Produto.id == produto_realizado_id).first()
+        if not realizado or not programado:
+            raise HTTPException(status_code=400, detail="Produto realizado nao cadastrado")
+        if (programacao.setor_id != 2 or
+                str(programado.codigo).upper() not in codigos_pl or
+                str(realizado.codigo).upper() not in codigos_pl):
+            if produto_realizado_id != programacao.produto_id:
+                raise HTTPException(status_code=400, detail="Troca de produto permitida apenas entre PL e PLE no Setor 2")
+
     quantidade_raw = payload.get("quantidade_apontada")
     if quantidade_raw is None or str(quantidade_raw).strip() == "":
         quantidade = int(programacao.quantidade_programada or 0)
@@ -732,6 +793,7 @@ def apontar_programacao_mega(
     apontamento = db.query(ApontamentoMega).filter(ApontamentoMega.programacao_id == programacao_id).first()
     if apontamento:
         apontamento.quantidade_apontada = quantidade
+        apontamento.produto_id = produto_realizado_id
         apontamento.nome_apontador = nome
         apontamento.usuario_id = current_user.id
         apontamento.apontado_em = func.now()
@@ -740,7 +802,7 @@ def apontar_programacao_mega(
             programacao_id=programacao.id,
             data=programacao.data,
             setor_id=programacao.setor_id,
-            produto_id=programacao.produto_id,
+            produto_id=produto_realizado_id,
             codigo_forma=programacao.codigo_forma,
             quantidade_apontada=quantidade,
             nome_apontador=nome,
@@ -1006,7 +1068,7 @@ def consultar_pcp_diario(
             cell.pop("_produtos", None)
 
     efetivo_por_dia = {
-        d.isoformat(): int(db.query(func.coalesce(func.sum(MaoDeObra.quantidade_pessoas), 0)).filter(MaoDeObra.data == d, MaoDeObra.unidade_id == 1).scalar() or 0)
+        d.isoformat(): float(db.query(func.coalesce(func.sum(MaoDeObra.quantidade_pessoas), 0)).filter(MaoDeObra.data == d, MaoDeObra.unidade_id == 1).scalar() or 0)
         for d in calendario
     }
 
@@ -1249,7 +1311,6 @@ def listar_programacao_opcoes_formas(
     """
     produtos = db.query(Produto).filter(Produto.setor_id == setor_id).all()
     produtos_por_nome = {_norm_text(p.nome): p for p in produtos}
-    produtos_por_codigo = {str(p.codigo): p for p in produtos if p.codigo}
     todos_produtos_por_nome = {_norm_text(p.nome): p for p in db.query(Produto).all()}
 
     def encontrar_produto(*nomes: Optional[str]):
@@ -1281,9 +1342,9 @@ def listar_programacao_opcoes_formas(
             MapeamentoForma.setor_id == setor_id,
             MapeamentoForma.ativo == True,
         ).order_by(MapeamentoForma.codigo_forma).all():
-            codigo_forma = str(item.codigo_forma or "").strip().upper()
-            produto_pl = produtos_por_codigo.get("934") if setor_id == 2 and re.match(r"^PL\s*[- ]\s*[1-6]$", codigo_forma) else None
-            produto = produto_pl or encontrar_produto(item.poste, item.tipo_forma)
+            produto = encontrar_produto(item.poste, item.tipo_forma)
+            if setor_id == 2 and str(item.codigo_forma).startswith("S2-934-"):
+                produto = next((p for p in produtos if str(p.codigo) == "934"), produto)
             payload = produto_payload(produto, item.poste, item.volume_m3)
             key = payload["produto_id"] or _norm_text(item.poste)
             current = agrupados.setdefault(key, {
@@ -1295,19 +1356,6 @@ def listar_programacao_opcoes_formas(
                 **payload,
             })
             current["quantidade_formas"] += 1
-        if setor_id == 2:
-            # As seis formas PL atendem aos dois produtos; a programação distingue o destino.
-            cpfl = next((row for row in agrupados.values() if row.get("produto_codigo") == "934"), None)
-            elektro = produtos_por_codigo.get("15351")
-            if cpfl and elektro and elektro.id not in agrupados:
-                agrupados[elektro.id] = {
-                    "modo": "poste",
-                    "forma": elektro.nome,
-                    "tipo_forma": cpfl["tipo_forma"],
-                    "poste": elektro.nome,
-                    "quantidade_formas": cpfl["quantidade_formas"],
-                    **produto_payload(elektro, elektro.nome, elektro.volume),
-                }
         if setor_id == 1:
             for produto in produtos:
                 key = produto.id
@@ -1322,6 +1370,18 @@ def listar_programacao_opcoes_formas(
                     **produto_payload(produto, produto.nome, produto.volume),
                 }
         rows = list(agrupados.values())
+        if setor_id == 2:
+            pl = next((row for row in rows if str(row.get("produto_codigo")) == "934"), None)
+            ple = next((p for p in produtos if str(p.codigo).upper() == "PLE"), None)
+            if pl and ple:
+                pl["grupo_formas"] = "PL/PLE"
+                pl["limite_grupo"] = pl["quantidade_formas"]
+                rows.append({
+                    "modo": "poste", "forma": "PLE", "tipo_forma": pl["tipo_forma"],
+                    "poste": "PLE", "quantidade_formas": pl["quantidade_formas"],
+                    "grupo_formas": "PL/PLE", "limite_grupo": pl["quantidade_formas"],
+                    **produto_payload(ple, ple.nome, ple.volume),
+                })
         rows.sort(key=lambda row: (
             0 if str(row.get("produto_codigo") or "").isdigit() else 1,
             int(row["produto_codigo"]) if str(row.get("produto_codigo") or "").isdigit() else str(row.get("produto_codigo") or ""),
@@ -1524,12 +1584,16 @@ def processar_programacao_alex(
             if codigo:
                 codigos_opcoes.add(_norm_text(codigo))
             mega = mega_por_codigo.get(_norm_text(codigo))
+            if not mega and opcao.get("setor_id") == 2 and str(codigo).upper() in ("934", "PLE"):
+                mega = {"qtde_estoque": None, "qtde_carteira": None,
+                        "saldo": None, "producao_diaria": 0,
+                        "descricao": produto.get("produto_nome"), "unidade": None,
+                        "dias_prev_prod": 0}
             if not mega:
                 continue
             volume_unit = float(produto.get("volume") or opcao.get("volume") or 0)
             qtd_formas = int(opcao.get("quantidade_formas") or produto.get("quantidade_formas") or 0)
             qtd_mega = int(mega.get("producao_diaria") or 0)
-            qtd_inicial = 0 if opcao.get("setor_id") == 2 and codigo == "15351" and "934" in mega_por_codigo else qtd_formas
             formas.append({
                 "setor_id": opcao.get("setor_id"),
                 "setor_nome": opcao.get("setor_nome"),
@@ -1541,11 +1605,13 @@ def processar_programacao_alex(
                 "qtde_estoque": mega.get("qtde_estoque"),
                 "qtde_carteira": mega.get("qtde_carteira"),
                 "saldo": float(mega.get("qtde_estoque") or 0) - float(mega.get("qtde_carteira") or 0),
-                "quantidade_produzir": qtd_inicial,
-                "programacao": qtd_inicial,
+                "quantidade_produzir": 0 if str(codigo).upper() == "PLE" else qtd_formas,
+                "programacao": 0 if str(codigo).upper() == "PLE" else qtd_formas,
+                "grupo_formas": opcao.get("grupo_formas"),
+                "limite_grupo": opcao.get("limite_grupo"),
                 "producao_diaria_mega": qtd_mega,
                 "volume_unitario": volume_unit,
-                "volume_total": round(volume_unit * qtd_inicial, 3),
+                "volume_total": round(volume_unit * (0 if str(codigo).upper() == "PLE" else qtd_formas), 3),
                 "descricao_mega": mega.get("descricao"),
                 "unidade": mega.get("unidade"),
                 "dias_prev_prod": mega.get("dias_prev_prod"),
@@ -1716,14 +1782,17 @@ def criar_maodeobra(
     db: Session = Depends(get_db),
     _=Depends(require_roles(*_ESCRITA_PROD)),
 ):
-    atividade = db.query(AtividadeMaoDeObra).filter(
-        AtividadeMaoDeObra.id == payload.atividade_id,
-        AtividadeMaoDeObra.unidade_id == 1,
-    ).first()
+    atividade = db.query(AtividadeMaoDeObra).filter_by(id=payload.atividade_id, unidade_id=1).first()
     if not atividade:
-        raise HTTPException(status_code=404, detail="Atividade não encontrada")
-    mdo = MaoDeObra(**payload.model_dump(), unidade_id=1)
-    db.add(mdo)
+        raise HTTPException(status_code=404, detail="Atividade de Campinas não encontrada")
+    mdo = db.query(MaoDeObra).filter_by(
+        data=payload.data, atividade_id=payload.atividade_id, unidade_id=1,
+    ).first()
+    if mdo is None:
+        mdo = MaoDeObra(data=payload.data, atividade_id=payload.atividade_id, unidade_id=1)
+        db.add(mdo)
+    mdo.setor_id = payload.setor_id
+    mdo.quantidade_pessoas = payload.quantidade_pessoas
     db.commit()
     db.refresh(mdo)
     return mdo
@@ -1745,8 +1814,8 @@ def criar_maodeobra_lote(
 
         atividade = db.query(AtividadeMaoDeObra).filter(
             AtividadeMaoDeObra.id == item.atividade_id,
-            AtividadeMaoDeObra.ativo == True,
             AtividadeMaoDeObra.unidade_id == 1,
+            AtividadeMaoDeObra.ativo == True,
         ).first()
         if not atividade:
             raise HTTPException(status_code=404, detail=f"Atividade {item.atividade_id} não encontrada")
@@ -1759,14 +1828,23 @@ def criar_maodeobra_lote(
             if not setor_id:
                 raise HTTPException(status_code=400, detail=f"Setor obrigatório para atividade MOD {atividade.descricao}")
 
-        mdo = MaoDeObra(
-            data=payload.data,
-            atividade_id=atividade.id,
-            unidade_id=1,
-            setor_id=setor_id,
-            quantidade_pessoas=item.quantidade_pessoas,
-        )
-        db.add(mdo)
+        mdo = db.query(MaoDeObra).filter(
+            MaoDeObra.data == payload.data,
+            MaoDeObra.unidade_id == 1,
+            MaoDeObra.atividade_id == atividade.id,
+        ).first()
+        if mdo:
+            mdo.setor_id = setor_id
+            mdo.quantidade_pessoas = item.quantidade_pessoas
+        else:
+            mdo = MaoDeObra(
+                data=payload.data,
+                unidade_id=1,
+                atividade_id=atividade.id,
+                setor_id=setor_id,
+                quantidade_pessoas=item.quantidade_pessoas,
+            )
+            db.add(mdo)
         registros.append(mdo)
 
     if not registros:
@@ -1776,6 +1854,179 @@ def criar_maodeobra_lote(
     for registro in registros:
         db.refresh(registro)
     return registros
+
+
+@router.get("/maodeobra/dia")
+def obter_maodeobra_dia(
+    data: date,
+    grupo_setor: str,
+    db: Session = Depends(get_db),
+    _=Depends(require_roles(*_LEITURA)),
+):
+    if grupo_setor not in ("12", "34"):
+        raise HTTPException(status_code=400, detail="Grupo inválido")
+    dia = db.query(MaoDeObraDia).filter_by(data=data, grupo_setor=grupo_setor, unidade_id=1).first()
+    rows = db.query(MaoDeObra).join(AtividadeMaoDeObra).filter(
+        MaoDeObra.data == data,
+        MaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.grupo_setor == grupo_setor,
+    ).all()
+    return {
+        "data": data,
+        "grupo_setor": grupo_setor,
+        "lancado": dia is not None or bool(rows),
+        "sem_producao": bool(dia and dia.sem_producao),
+        "motivo": dia.motivo_sem_producao if dia else None,
+        "salvo_em": dia.salvo_em if dia else None,
+        "salvo_por": {"id": dia.salvo_por_usuario.id, "nome": dia.salvo_por_usuario.nome}
+        if dia and dia.salvo_por_usuario else None,
+        "confirmado": bool(dia and dia.confirmado_em),
+        "confirmado_em": dia.confirmado_em if dia else None,
+        "confirmado_por": {"id": dia.confirmado_por_usuario.id, "nome": dia.confirmado_por_usuario.nome}
+        if dia and dia.confirmado_por_usuario else None,
+        "itens": [{"atividade_id": row.atividade_id, "quantidade_pessoas": row.quantidade_pessoas} for row in rows],
+    }
+
+
+@router.get("/maodeobra/resumo")
+def resumir_maodeobra(
+    data_inicio: date,
+    data_fim: date,
+    db: Session = Depends(get_db),
+    _=Depends(require_roles(*_LEITURA)),
+):
+    dias = (data_fim - data_inicio).days + 1
+    if not 1 <= dias <= 31:
+        raise HTTPException(status_code=400, detail="Informe um período de 1 a 31 dias")
+    registros = db.query(
+        MaoDeObra.data, AtividadeMaoDeObra.grupo_setor,
+        AtividadeMaoDeObra.tipo, func.sum(MaoDeObra.quantidade_pessoas),
+    ).join(AtividadeMaoDeObra).filter(
+        MaoDeObra.data.between(data_inicio, data_fim),
+        MaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.grupo_setor.in_(("12", "34")),
+    ).group_by(MaoDeObra.data, AtividadeMaoDeObra.grupo_setor, AtividadeMaoDeObra.tipo).all()
+    totais = {(dia, grupo, tipo): quantidade for dia, grupo, tipo, quantidade in registros}
+    marcadores = {
+        (dia.data, dia.grupo_setor): dia
+        for dia in db.query(MaoDeObraDia).filter(MaoDeObraDia.data.between(data_inicio, data_fim), MaoDeObraDia.unidade_id == 1).all()
+    }
+    resultado = []
+    for offset in range(dias):
+        current = data_inicio + timedelta(days=offset)
+        grupos = []
+        for grupo in ("12", "34"):
+            marcador = marcadores.get((current, grupo))
+            mod = totais.get((current, grupo, "MOD"), Decimal("0"))
+            moi = totais.get((current, grupo, "MOI"), Decimal("0"))
+            grupos.append({
+                "grupo_setor": grupo,
+                "lancado": marcador is not None or any(
+                    (current, grupo, tipo) in totais for tipo in ("MOD", "MOI")
+                ),
+                "sem_producao": bool(marcador and marcador.sem_producao),
+                "mod": mod, "moi": moi, "total": mod + moi,
+                "motivo": marcador.motivo_sem_producao if marcador else None,
+                "salvo_em": marcador.salvo_em if marcador else None,
+                "salvo_por": {"id": marcador.salvo_por_usuario.id, "nome": marcador.salvo_por_usuario.nome}
+                if marcador and marcador.salvo_por_usuario else None,
+                "confirmado": bool(marcador and marcador.confirmado_em),
+                "confirmado_em": marcador.confirmado_em if marcador else None,
+                "confirmado_por": {"id": marcador.confirmado_por_usuario.id, "nome": marcador.confirmado_por_usuario.nome}
+                if marcador and marcador.confirmado_por_usuario else None,
+            })
+        resultado.append({"data": current, "grupos": grupos})
+    return {"data_inicio": data_inicio, "data_fim": data_fim, "dias": resultado}
+
+
+@router.post("/maodeobra/grupo")
+def salvar_maodeobra_grupo(
+    payload: MaoDeObraGrupoLoteCreate,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(require_roles(*_ESCRITA_PROD)),
+):
+    if payload.sem_producao and payload.confirmar:
+        raise HTTPException(status_code=400, detail="Dia sem produção já encerra o grupo")
+    if not payload.sem_producao and payload.motivo is not None:
+        raise HTTPException(status_code=400, detail="Motivo permitido somente para dia sem produção")
+    atividades = db.query(AtividadeMaoDeObra).filter_by(
+        grupo_setor=payload.grupo_setor, ativo=True, unidade_id=1,
+    ).all()
+    esperadas = {atividade.id: atividade for atividade in atividades}
+    recebidas = [item.atividade_id for item in payload.itens]
+    if not esperadas or len(recebidas) != len(set(recebidas)) or set(recebidas) != set(esperadas):
+        raise HTTPException(status_code=400, detail="Envie cada atividade ativa do grupo exatamente uma vez")
+    if payload.sem_producao and any(item.quantidade_pessoas != 0 for item in payload.itens):
+        raise HTTPException(status_code=400, detail="Dia sem produção deve ter todas as quantidades zeradas")
+
+    existentes = {
+        row.atividade_id: row for row in db.query(MaoDeObra).filter(
+            MaoDeObra.data == payload.data,
+            MaoDeObra.unidade_id == 1,
+            MaoDeObra.atividade_id.in_(esperadas),
+        ).all()
+    }
+    for item in payload.itens:
+        atividade = esperadas[item.atividade_id]
+        row = existentes.get(item.atividade_id)
+        if row is None:
+            row = MaoDeObra(data=payload.data, atividade_id=item.atividade_id, unidade_id=1)
+            db.add(row)
+        row.setor_id = atividade.setor_id
+        row.quantidade_pessoas = item.quantidade_pessoas
+
+    dia = db.query(MaoDeObraDia).filter_by(
+        data=payload.data, grupo_setor=payload.grupo_setor, unidade_id=1,
+    ).with_for_update().first()
+    if dia is None:
+        dia = MaoDeObraDia(data=payload.data, grupo_setor=payload.grupo_setor, unidade_id=1)
+        db.add(dia)
+    dia.sem_producao = payload.sem_producao
+    dia.motivo_sem_producao = ((payload.motivo or "").strip() or None) if payload.sem_producao else None
+    dia.salvo_em = datetime.now(timezone.utc)
+    dia.salvo_por_usuario_id = usuario.id
+    dia.confirmado_em = datetime.now(timezone.utc) if payload.confirmar else None
+    dia.confirmado_por_usuario_id = usuario.id if payload.confirmar else None
+    db.commit()
+    return {
+        "data": payload.data, "grupo_setor": payload.grupo_setor,
+        "lancado": True, "sem_producao": dia.sem_producao,
+        "motivo": dia.motivo_sem_producao,
+        "salvo_em": dia.salvo_em,
+        "salvo_por": {"id": usuario.id, "nome": usuario.nome},
+        "confirmado": bool(dia.confirmado_em),
+        "confirmado_em": dia.confirmado_em,
+        "confirmado_por": {"id": usuario.id, "nome": usuario.nome} if payload.confirmar else None,
+        "itens": len(payload.itens),
+    }
+
+
+@router.post("/maodeobra/grupo/confirmar")
+def confirmar_maodeobra_grupo(
+    payload: MaoDeObraGrupoConfirmar,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(require_roles(*_ESCRITA_PROD)),
+):
+    if payload.salvo_em.tzinfo is None:
+        raise HTTPException(status_code=400, detail="salvo_em precisa ter fuso horário")
+    dia = db.query(MaoDeObraDia).filter_by(
+        data=payload.data, grupo_setor=payload.grupo_setor, unidade_id=1,
+    ).with_for_update().first()
+    if not dia or dia.sem_producao or dia.salvo_em != payload.salvo_em:
+        raise HTTPException(status_code=409, detail="Lançamento alterado. Recarregue o dia antes de confirmar.")
+    if not dia.confirmado_em:
+        dia.confirmado_em = datetime.now(timezone.utc)
+        dia.confirmado_por_usuario_id = usuario.id
+        db.commit()
+    return {
+        "data": dia.data, "grupo_setor": dia.grupo_setor,
+        "salvo_em": dia.salvo_em, "confirmado": True,
+        "confirmado_em": dia.confirmado_em,
+        "confirmado_por": {"id": dia.confirmado_por_usuario.id, "nome": dia.confirmado_por_usuario.nome}
+        if dia.confirmado_por_usuario else None,
+    }
 
 
 @router.delete("/maodeobra/{mdo_id}", status_code=204)
@@ -1818,7 +2069,7 @@ def listar_atividades_maodeobra(
     if ativo is not None:
         q = q.filter(AtividadeMaoDeObra.ativo == ativo)
     
-    return q.order_by(AtividadeMaoDeObra.tipo, AtividadeMaoDeObra.descricao).all()
+    return q.order_by(AtividadeMaoDeObra.grupo_setor, AtividadeMaoDeObra.ordem, AtividadeMaoDeObra.id).all()
 
 
 @router.post("/atividades-maodeobra", response_model=ArividadeMaoDeObraOut, status_code=201)
@@ -1826,6 +2077,10 @@ def criar_atividade_maodeobra(
     tipo: str,
     descricao: str,
     setor_id: Optional[int] = None,
+    grupo_setor: Optional[str] = None,
+    ordem: int = 100,
+    responsavel: Optional[str] = None,
+    fator: Optional[Decimal] = Query(None, ge=0, le=1),
     db: Session = Depends(get_db),
     _=Depends(require_roles(NivelAcesso.ADMIN, NivelAcesso.PCP)),
 ):
@@ -1839,8 +2094,11 @@ def criar_atividade_maodeobra(
     if tipo.upper() not in ("MOI", "MOD"):
         raise HTTPException(status_code=400, detail="tipo deve ser 'MOI' ou 'MOD'")
     
-    if tipo.upper() == "MOD" and not setor_id:
-        raise HTTPException(status_code=400, detail="setor_id é obrigatório para MOD")
+    if grupo_setor not in (None, "12", "34"):
+        raise HTTPException(status_code=400, detail="grupo_setor deve ser 12 ou 34")
+
+    if tipo.upper() == "MOD" and not setor_id and grupo_setor != "12":
+        raise HTTPException(status_code=400, detail="setor_id é obrigatório para MOD de setor individual")
     
     if tipo.upper() == "MOI" and setor_id:
         raise HTTPException(status_code=400, detail="setor_id deve ser None para MOI")
@@ -1854,20 +2112,56 @@ def criar_atividade_maodeobra(
     
     # Verificar duplicata
     existing = db.query(AtividadeMaoDeObra).filter(
-        AtividadeMaoDeObra.descricao == descricao,
         AtividadeMaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.descricao == descricao,
+        AtividadeMaoDeObra.grupo_setor == grupo_setor,
     ).first()
     if existing:
         raise HTTPException(status_code=409, detail="Esta atividade já existe")
     
     atividade = AtividadeMaoDeObra(
+        unidade_id=1,
         tipo=tipo.upper(),
         descricao=descricao,
         setor_id=setor_id,
-        unidade_id=1,
+        grupo_setor=grupo_setor,
+        ordem=ordem,
+        responsavel=responsavel,
+        fator=fator,
         ativo=True
     )
     db.add(atividade)
+    db.commit()
+    db.refresh(atividade)
+    return atividade
+
+
+@router.patch("/atividades-maodeobra/{atividade_id}", response_model=ArividadeMaoDeObraOut)
+def atualizar_atividade_maodeobra(
+    atividade_id: int,
+    payload: AtividadeMaoDeObraUpdate,
+    db: Session = Depends(get_db),
+    _=Depends(require_roles(NivelAcesso.ADMIN, NivelAcesso.PCP)),
+):
+    atividade = db.query(AtividadeMaoDeObra).filter_by(id=atividade_id, unidade_id=1).first()
+    if not atividade:
+        raise HTTPException(status_code=404, detail="Atividade não encontrada")
+    for campo, valor in payload.model_dump(exclude_unset=True).items():
+        setattr(atividade, campo, valor)
+    if atividade.tipo == "MOI" and atividade.setor_id is not None:
+        raise HTTPException(status_code=400, detail="MOI não pode ter setor_id")
+    if atividade.tipo == "MOD" and atividade.setor_id is None and atividade.grupo_setor != "12":
+        raise HTTPException(status_code=400, detail="MOD precisa de setor ou grupo S1/S2")
+    if not atividade.descricao or not atividade.descricao.strip():
+        raise HTTPException(status_code=400, detail="Descrição obrigatória")
+    duplicada = db.query(AtividadeMaoDeObra).filter(
+        AtividadeMaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.id != atividade_id,
+        AtividadeMaoDeObra.grupo_setor == atividade.grupo_setor,
+        AtividadeMaoDeObra.descricao == atividade.descricao,
+    ).first()
+    if duplicada:
+        raise HTTPException(status_code=409, detail="Esta atividade já existe no grupo")
     db.commit()
     db.refresh(atividade)
     return atividade
@@ -1879,15 +2173,14 @@ def excluir_atividade_maodeobra(
     db: Session = Depends(get_db),
     _=Depends(require_roles(NivelAcesso.ADMIN, NivelAcesso.PCP)),
 ):
-    """Deletar atividade de mão de obra."""
+    """Desativar atividade sem apagar o histórico."""
     atividade = db.query(AtividadeMaoDeObra).filter(
-        AtividadeMaoDeObra.id == atividade_id,
-        AtividadeMaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.id == atividade_id, AtividadeMaoDeObra.unidade_id == 1
     ).first()
     if not atividade:
         raise HTTPException(status_code=404, detail="Atividade não encontrada")
     
-    db.delete(atividade)
+    atividade.ativo = False
     db.commit()
 
 
@@ -1915,8 +2208,7 @@ def criar_maodeobra_com_rateio(
     """
     # Validar atividade
     atividade = db.query(AtividadeMaoDeObra).filter(
-        AtividadeMaoDeObra.id == payload.atividade_id,
-        AtividadeMaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.id == payload.atividade_id, AtividadeMaoDeObra.unidade_id == 1
     ).first()
     if not atividade:
         raise HTTPException(status_code=404, detail="Atividade não encontrada")
@@ -1937,14 +2229,16 @@ def criar_maodeobra_com_rateio(
         )
     
     # Criar registro de MOI (sem setor_id)
-    mdo = MaoDeObra(
-        data=payload.data,
-        atividade_id=payload.atividade_id,
-        unidade_id=1,
-        setor_id=None,  # MOI não tem setor
-        quantidade_pessoas=payload.quantidade_pessoas
-    )
-    db.add(mdo)
+    mdo = db.query(MaoDeObra).filter_by(
+        data=payload.data, atividade_id=payload.atividade_id, unidade_id=1,
+    ).first()
+    if mdo is None:
+        mdo = MaoDeObra(data=payload.data, atividade_id=payload.atividade_id, unidade_id=1)
+        db.add(mdo)
+    else:
+        db.query(MaoDeObraRateio).filter_by(maodeobra_id=mdo.id).delete()
+    mdo.setor_id = None
+    mdo.quantidade_pessoas = payload.quantidade_pessoas
     db.flush()  # Para obter o ID
     
     # Criar rateios
@@ -1998,9 +2292,9 @@ def listar_maodeobra_grupo(
     
     # Buscar atividades do grupo
     atividades = db.query(AtividadeMaoDeObra).filter(
-        AtividadeMaoDeObra.tipo == "MOI",
-        AtividadeMaoDeObra.grupo_setor == grupo_setor,
         AtividadeMaoDeObra.unidade_id == 1,
+        AtividadeMaoDeObra.tipo == "MOI",
+        AtividadeMaoDeObra.grupo_setor == grupo_setor
     ).all()
     
     if not atividades:
@@ -2010,8 +2304,8 @@ def listar_maodeobra_grupo(
     
     # Buscar MOI com esses IDs
     q = db.query(MaoDeObra).filter(
-        MaoDeObra.atividade_id.in_(atividade_ids),
         MaoDeObra.unidade_id == 1,
+        MaoDeObra.atividade_id.in_(atividade_ids),
         MaoDeObra.setor_id.is_(None)  # MOI consolidado
     )
     

@@ -9,10 +9,15 @@ class AtividadeMaoDeObra(Base):
     id = Column(Integer, primary_key=True, index=True)
     unidade_id = Column(Integer, nullable=True, default=1)
     tipo = Column(String(10), nullable=False)  # 'MOI' ou 'MOD'
-    descricao = Column(String(255), nullable=False, unique=True)
+    descricao = Column(String(255), nullable=False)
     setor_id = Column(Integer, ForeignKey("setores.id"), nullable=True)  # NULL para MOI
     grupo_setor = Column(String(10), nullable=True)  # '12' (S1+S2), '34' (S3+S4), None para comum
+    ordem = Column(Integer, nullable=False, default=100)
+    responsavel = Column(String(120), nullable=True)
+    fator = Column(Numeric(5, 2), nullable=True)
     ativo = Column(Boolean, default=True, nullable=False)
+
+    __table_args__ = (UniqueConstraint("grupo_setor", "descricao", name="uq_atividade_mo_grupo_descricao"),)
 
     setor = relationship("Setor", back_populates="atividades_mao_de_obra")
 
@@ -99,7 +104,9 @@ class MaoDeObra(Base):
     data = Column(Date, nullable=False, index=True)
     setor_id = Column(Integer, ForeignKey("setores.id"), nullable=True)  # NULL para MOI
     atividade_id = Column(Integer, ForeignKey("atividades_mao_de_obra.id"), nullable=False)
-    quantidade_pessoas = Column(Integer, nullable=False, default=0)
+    quantidade_pessoas = Column(Numeric(5, 2), nullable=False, default=0)
+
+    __table_args__ = (UniqueConstraint("data", "atividade_id", name="uq_maodeobra_data_atividade"),)
 
     setor = relationship("Setor", back_populates="maodeobras")
     atividade = relationship("AtividadeMaoDeObra")
@@ -122,3 +129,22 @@ class MaoDeObraRateio(Base):
 
     registro_mdo = relationship("MaoDeObra", back_populates="rateios")
     setor = relationship("Setor")
+
+
+class MaoDeObraDia(Base):
+    __tablename__ = "maodeobra_dias"
+
+    id = Column(Integer, primary_key=True)
+    unidade_id = Column(Integer, nullable=True, default=1)
+    data = Column(Date, nullable=False)
+    grupo_setor = Column(String(2), nullable=False)
+    sem_producao = Column(Boolean, nullable=False, default=False)
+    salvo_em = Column(DateTime(timezone=True), nullable=True)
+    salvo_por_usuario_id = Column(Integer, ForeignKey("usuarios.id", ondelete="SET NULL"), nullable=True)
+    confirmado_em = Column(DateTime(timezone=True), nullable=True)
+    confirmado_por_usuario_id = Column(Integer, ForeignKey("usuarios.id", ondelete="SET NULL"), nullable=True)
+    motivo_sem_producao = Column(String(255), nullable=True)
+    salvo_por_usuario = relationship("Usuario", foreign_keys=[salvo_por_usuario_id])
+    confirmado_por_usuario = relationship("Usuario", foreign_keys=[confirmado_por_usuario_id])
+
+    __table_args__ = (UniqueConstraint("data", "grupo_setor", name="uq_maodeobra_dia_grupo"),)
