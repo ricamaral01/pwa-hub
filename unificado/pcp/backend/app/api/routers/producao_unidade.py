@@ -18,7 +18,7 @@ from app.core.security import get_current_user
 from app.models.usuario import NivelAcesso, Usuario
 from app.services.pederneiras_catalog import parse_catalog, preview
 from app.services.pederneiras_rules import (
-    assert_can_confirm, monthly_target, posts_per_person, production_summary,
+    NON_POST_FAMILY, assert_can_confirm, counts_as_post, monthly_target, posts_per_person, production_summary,
     validate_day, validate_people, validate_quantity,
 )
 
@@ -291,7 +291,8 @@ def _production(db: Session, unit: dict, day: date) -> dict:
       WHERE d.unidade_id=:uid AND d.data=:day
       ORDER BY p.familia,p.descricao
     """), {"uid": unit["id"], "day": day}).mappings()]
-    summary = production_summary([(r["quantidade"], r["volume_m3"]) for r in rows])
+    summary = production_summary([(r["quantidade"], r["volume_m3"]) for r in rows
+                                  if counts_as_post(r["familia"])])
     return {"unidade": unit, "data": day, "status": marker["status"] if marker else "rascunho",
             "enviado_em": marker["enviado_em"] if marker else None,
             "confirmado_em": marker["confirmado_em"] if marker else None,
@@ -315,10 +316,12 @@ def production_reference(unidade: str, dia: date, db: Session = Depends(get_db),
     ids = [row[0] for row in db.execute(text("""
       SELECT d.id FROM producao.apontamento_dia d
       JOIN producao.apontamento_item i ON i.apontamento_dia_id=d.id
+      JOIN producao.produto p ON p.id=i.produto_id
       WHERE d.unidade_id=:uid AND d.data<:day
+        AND lower(trim(p.familia))<>lower(:non_post)
       GROUP BY d.id,d.data HAVING sum(i.quantidade)>0
       ORDER BY d.data DESC LIMIT 15
-    """), {"uid": unit["id"], "day": dia})]
+    """), {"uid": unit["id"], "day": dia, "non_post": NON_POST_FAMILY})]
     if not ids:
         return {"dias": 0, "medias": {}}
     rows = db.execute(text("""
@@ -403,10 +406,12 @@ def repeat_last_day(unidade: str, dia: date,
     source = db.execute(text("""
       SELECT d.id,d.data FROM producao.apontamento_dia d
       JOIN producao.apontamento_item i ON i.apontamento_dia_id=d.id
+      JOIN producao.produto p ON p.id=i.produto_id
       WHERE d.unidade_id=:uid AND d.data<:day
+        AND lower(trim(p.familia))<>lower(:non_post)
       GROUP BY d.id,d.data HAVING sum(i.quantidade)>0
       ORDER BY d.data DESC LIMIT 1
-    """), {"uid": unit["id"], "day": dia}).mappings().first()
+    """), {"uid": unit["id"], "day": dia, "non_post": NON_POST_FAMILY}).mappings().first()
     if not source:
         raise HTTPException(404, "Não há dia anterior com produção")
     items = [ItemInput(produto_id=row["produto_id"], quantidade=row["quantidade"])
@@ -714,9 +719,10 @@ def confirm_day(unidade: str, dia: date, db: Session = Depends(get_db), user: Us
         if not marker or marker["status"] != "enviado":
             raise HTTPException(409, "Envie o apontamento antes de confirmar")
         posts = db.execute(text("""
-          SELECT COALESCE(sum(i.quantidade),0) FROM producao.apontamento_item i
-          WHERE apontamento_dia_id=:id
-        """), {"id": marker["id"]}).scalar_one()
+      SELECT COALESCE(sum(i.quantidade),0) FROM producao.apontamento_item i
+      JOIN producao.produto p ON p.id=i.produto_id
+      WHERE i.apontamento_dia_id=:id AND lower(trim(p.familia))<>lower(:non_post)
+        """), {"id": marker["id"], "non_post": NON_POST_FAMILY}).scalar_one()
         people = _labor(db, unit, dia)["homens"]
         try:
             assert_can_confirm(int(posts), people)
@@ -741,9 +747,12 @@ def monthly(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
     dates = [row[0] for row in db.execute(text("""
       SELECT d.data FROM producao.apontamento_dia d
       JOIN producao.apontamento_item i ON i.apontamento_dia_id=d.id
+      JOIN producao.produto p ON p.id=i.produto_id
       WHERE d.unidade_id=:uid AND to_char(d.data,'YYYY-MM')=:mes AND d.data<=:today
+        AND lower(trim(p.familia))<>lower(:non_post)
       GROUP BY d.data HAVING sum(i.quantidade)>0 ORDER BY d.data
     """), {"uid": unit["id"], "mes": mes,
+           "non_post": NON_POST_FAMILY,
            "today": datetime.now(ZoneInfo("America/Sao_Paulo")).date()})]
     days = []
     for day in dates:
