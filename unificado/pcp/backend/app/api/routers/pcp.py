@@ -1006,7 +1006,7 @@ def consultar_pcp_diario(
             cell.pop("_produtos", None)
 
     efetivo_por_dia = {
-        d.isoformat(): int(db.query(func.coalesce(func.sum(MaoDeObra.quantidade_pessoas), 0)).filter(MaoDeObra.data == d).scalar() or 0)
+        d.isoformat(): int(db.query(func.coalesce(func.sum(MaoDeObra.quantidade_pessoas), 0)).filter(MaoDeObra.data == d, MaoDeObra.unidade_id == 1).scalar() or 0)
         for d in calendario
     }
 
@@ -1700,7 +1700,7 @@ def listar_maodeobra(
     db: Session = Depends(get_db),
     _=Depends(require_roles(*_LEITURA)),
 ):
-    q = db.query(MaoDeObra)
+    q = db.query(MaoDeObra).filter(MaoDeObra.unidade_id == 1)
     if data_inicio:
         q = q.filter(MaoDeObra.data >= data_inicio)
     if data_fim:
@@ -1716,7 +1716,13 @@ def criar_maodeobra(
     db: Session = Depends(get_db),
     _=Depends(require_roles(*_ESCRITA_PROD)),
 ):
-    mdo = MaoDeObra(**payload.model_dump())
+    atividade = db.query(AtividadeMaoDeObra).filter(
+        AtividadeMaoDeObra.id == payload.atividade_id,
+        AtividadeMaoDeObra.unidade_id == 1,
+    ).first()
+    if not atividade:
+        raise HTTPException(status_code=404, detail="Atividade não encontrada")
+    mdo = MaoDeObra(**payload.model_dump(), unidade_id=1)
     db.add(mdo)
     db.commit()
     db.refresh(mdo)
@@ -1740,6 +1746,7 @@ def criar_maodeobra_lote(
         atividade = db.query(AtividadeMaoDeObra).filter(
             AtividadeMaoDeObra.id == item.atividade_id,
             AtividadeMaoDeObra.ativo == True,
+            AtividadeMaoDeObra.unidade_id == 1,
         ).first()
         if not atividade:
             raise HTTPException(status_code=404, detail=f"Atividade {item.atividade_id} não encontrada")
@@ -1755,6 +1762,7 @@ def criar_maodeobra_lote(
         mdo = MaoDeObra(
             data=payload.data,
             atividade_id=atividade.id,
+            unidade_id=1,
             setor_id=setor_id,
             quantidade_pessoas=item.quantidade_pessoas,
         )
@@ -1776,7 +1784,7 @@ def excluir_maodeobra(
     db: Session = Depends(get_db),
     _=Depends(require_roles(*_ESCRITA_PROD)),
 ):
-    mdo = db.query(MaoDeObra).filter(MaoDeObra.id == mdo_id).first()
+    mdo = db.query(MaoDeObra).filter(MaoDeObra.id == mdo_id, MaoDeObra.unidade_id == 1).first()
     if mdo:
         db.delete(mdo)
         db.commit()
@@ -1800,7 +1808,7 @@ def listar_atividades_maodeobra(
     - setor_id: Filtra por setor (apenas MOD)
     - ativo: Filtra por status
     """
-    q = db.query(AtividadeMaoDeObra)
+    q = db.query(AtividadeMaoDeObra).filter(AtividadeMaoDeObra.unidade_id == 1)
     if tipo:
         q = q.filter(AtividadeMaoDeObra.tipo == tipo.upper())
     if setor_id is not None:
@@ -1846,7 +1854,8 @@ def criar_atividade_maodeobra(
     
     # Verificar duplicata
     existing = db.query(AtividadeMaoDeObra).filter(
-        AtividadeMaoDeObra.descricao == descricao
+        AtividadeMaoDeObra.descricao == descricao,
+        AtividadeMaoDeObra.unidade_id == 1,
     ).first()
     if existing:
         raise HTTPException(status_code=409, detail="Esta atividade já existe")
@@ -1855,6 +1864,7 @@ def criar_atividade_maodeobra(
         tipo=tipo.upper(),
         descricao=descricao,
         setor_id=setor_id,
+        unidade_id=1,
         ativo=True
     )
     db.add(atividade)
@@ -1871,7 +1881,8 @@ def excluir_atividade_maodeobra(
 ):
     """Deletar atividade de mão de obra."""
     atividade = db.query(AtividadeMaoDeObra).filter(
-        AtividadeMaoDeObra.id == atividade_id
+        AtividadeMaoDeObra.id == atividade_id,
+        AtividadeMaoDeObra.unidade_id == 1,
     ).first()
     if not atividade:
         raise HTTPException(status_code=404, detail="Atividade não encontrada")
@@ -1904,7 +1915,8 @@ def criar_maodeobra_com_rateio(
     """
     # Validar atividade
     atividade = db.query(AtividadeMaoDeObra).filter(
-        AtividadeMaoDeObra.id == payload.atividade_id
+        AtividadeMaoDeObra.id == payload.atividade_id,
+        AtividadeMaoDeObra.unidade_id == 1,
     ).first()
     if not atividade:
         raise HTTPException(status_code=404, detail="Atividade não encontrada")
@@ -1928,6 +1940,7 @@ def criar_maodeobra_com_rateio(
     mdo = MaoDeObra(
         data=payload.data,
         atividade_id=payload.atividade_id,
+        unidade_id=1,
         setor_id=None,  # MOI não tem setor
         quantidade_pessoas=payload.quantidade_pessoas
     )
@@ -1961,7 +1974,7 @@ def obter_maodeobra_com_rateio(
     _=Depends(require_roles(*_LEITURA)),
 ):
     """Obter MOI com seus rateios"""
-    mdo = db.query(MaoDeObra).filter(MaoDeObra.id == mdo_id).first()
+    mdo = db.query(MaoDeObra).filter(MaoDeObra.id == mdo_id, MaoDeObra.unidade_id == 1).first()
     if not mdo:
         raise HTTPException(status_code=404, detail="Registro de mão de obra não encontrado")
     return mdo
@@ -1986,7 +1999,8 @@ def listar_maodeobra_grupo(
     # Buscar atividades do grupo
     atividades = db.query(AtividadeMaoDeObra).filter(
         AtividadeMaoDeObra.tipo == "MOI",
-        AtividadeMaoDeObra.grupo_setor == grupo_setor
+        AtividadeMaoDeObra.grupo_setor == grupo_setor,
+        AtividadeMaoDeObra.unidade_id == 1,
     ).all()
     
     if not atividades:
@@ -1997,6 +2011,7 @@ def listar_maodeobra_grupo(
     # Buscar MOI com esses IDs
     q = db.query(MaoDeObra).filter(
         MaoDeObra.atividade_id.in_(atividade_ids),
+        MaoDeObra.unidade_id == 1,
         MaoDeObra.setor_id.is_(None)  # MOI consolidado
     )
     

@@ -26,7 +26,9 @@ def upgrade():
         (1,'campinas','Campinas'),(2,'pederneiras','Pederneiras')
     """)
     for table in ("atividades_mao_de_obra", "maodeobra", "maodeobra_dias"):
-        op.execute(f"ALTER TABLE public.{table} ADD COLUMN unidade_id smallint")
+        # Legacy Campinas SQL writers remain implicit until every caller has
+        # been moved to unit-aware routes.
+        op.execute(f"ALTER TABLE public.{table} ADD COLUMN unidade_id smallint DEFAULT 1")
         op.execute(f"UPDATE public.{table} SET unidade_id=1 WHERE unidade_id IS NULL")
         op.execute(f"ALTER TABLE public.{table} ADD CONSTRAINT fk_{table}_unidade FOREIGN KEY (unidade_id) REFERENCES producao.unidade(id)")
         op.execute(f"CREATE INDEX ix_{table}_unidade ON public.{table}(unidade_id)")

@@ -14,7 +14,7 @@ from app.core.database import engine, Base
 # Importa todos os models para garantir criação das tabelas
 import app.models  # noqa: F401
 
-from app.api.routers import auth, usuarios, setores, pcp, dashboard, produtos, teste_programacao, alocacao_formas, programacao_circular_s3, programacao_circular_s4, etiquetas_armaduras
+from app.api.routers import auth, usuarios, setores, pcp, dashboard, produtos, teste_programacao, alocacao_formas, programacao_circular_s3, programacao_circular_s4, etiquetas_armaduras, producao_unidade
 
 # Cria as tabelas no banco (substitua por Alembic em produção)
 Base.metadata.create_all(bind=engine)
@@ -77,6 +77,7 @@ app.include_router(setores.router)
 app.include_router(pcp.router)
 app.include_router(dashboard.router)
 app.include_router(produtos.router)
+app.include_router(producao_unidade.router)
 app.include_router(teste_programacao.router)
 app.include_router(alocacao_formas.router)
 app.include_router(programacao_circular_s3.router)

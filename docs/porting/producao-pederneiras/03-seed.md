@@ -4,4 +4,6 @@ O arquivo `seed/seed_produtos_pederneiras.csv` contém 112 produtos de 9 famíli
 
 O importador inicia em simulação e exige `--apply` e `DATABASE_URL` explícitos para gravar. Ele exige catálogo vazio para Pederneiras, preserva as pendências e deixa todo `volume_m3` como `NULL`, pois o CSV não traz esse campo. Também prepara a meta de outubro/2026: 23 dias úteis × 64 peças/dia = **1.472 postes**, meta **5,9 postes/homem**, como no requisito.
 
-**Estado:** simulação validada; sem gravação no banco operacional. A carga real depende da aplicação da migration, da confirmação do gestor e da validação da tabela provisória. As áreas MOD/MOI não foram semeadas enquanto sua classificação continua pendente de confirmação.
+O script também prepara as cinco áreas de mão de obra como registros editáveis no cadastro atual. A classificação MOD/MOI é a proposta provisória do documento de requisitos e continua pendente de confirmação; nenhuma regra a fixa no código da API. O lote é transacional e só prossegue se produtos e áreas da unidade estiverem vazios.
+
+**Estado:** simulação validada; sem gravação no banco operacional. A carga real depende da aplicação da migration, da confirmação do gestor e da validação da tabela provisória.

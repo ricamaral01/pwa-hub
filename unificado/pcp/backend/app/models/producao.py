@@ -7,6 +7,7 @@ class AtividadeMaoDeObra(Base):
     __tablename__ = "atividades_mao_de_obra"
 
     id = Column(Integer, primary_key=True, index=True)
+    unidade_id = Column(Integer, nullable=True, default=1)
     tipo = Column(String(10), nullable=False)  # 'MOI' ou 'MOD'
     descricao = Column(String(255), nullable=False, unique=True)
     setor_id = Column(Integer, ForeignKey("setores.id"), nullable=True)  # NULL para MOI
@@ -94,6 +95,7 @@ class MaoDeObra(Base):
     __tablename__ = "maodeobra"
 
     id = Column(Integer, primary_key=True, index=True)
+    unidade_id = Column(Integer, nullable=True, default=1)
     data = Column(Date, nullable=False, index=True)
     setor_id = Column(Integer, ForeignKey("setores.id"), nullable=True)  # NULL para MOI
     atividade_id = Column(Integer, ForeignKey("atividades_mao_de_obra.id"), nullable=False)

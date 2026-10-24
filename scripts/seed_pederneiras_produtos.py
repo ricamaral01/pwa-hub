@@ -13,6 +13,13 @@ from pathlib import Path
 
 SEED = Path(__file__).resolve().parents[1] / "docs/porting/producao-pederneiras/seed/seed_produtos_pederneiras.csv"
 UNIT_ID = 2
+INITIAL_AREAS = (
+    ("Usina de Concreto", "MOI"),
+    ("Produção", "MOD"),
+    ("Fab. armação e estribos", "MOI"),
+    ("Encarregado de produção", "MOI"),
+    ("Sacador de núcleo", "MOD"),
+)
 
 
 def read_rows():
@@ -55,6 +62,9 @@ def main():
             cursor.execute("SELECT count(*) FROM producao.produto WHERE unidade_id=%s", (UNIT_ID,))
             if cursor.fetchone()[0]:
                 raise RuntimeError("Catálogo já possui produtos; importação inicial cancelada")
+            cursor.execute("SELECT count(*) FROM public.atividades_mao_de_obra WHERE unidade_id=%s", (UNIT_ID,))
+            if cursor.fetchone()[0]:
+                raise RuntimeError("Unidade já possui áreas; importação inicial cancelada")
             for row in rows:
                 cursor.execute("""
                     INSERT INTO producao.produto
@@ -69,7 +79,13 @@ def main():
                 VALUES (%s,%s,%s,%s,%s)
                 ON CONFLICT (unidade_id,ano_mes) DO NOTHING
             """, (UNIT_ID, "2026-10", 23, 64, 5.9))
-    print("Produtos e meta de outubro/2026 gravados")
+            for order, (name, kind) in enumerate(INITIAL_AREAS, start=1):
+                cursor.execute("""
+                    INSERT INTO public.atividades_mao_de_obra
+                      (unidade_id,tipo,descricao,grupo_setor,ordem,ativo)
+                    VALUES (%s,%s,%s,%s,%s,true)
+                """, (UNIT_ID, kind, name, f"{UNIT_ID:02d}", order))
+    print("Produtos, áreas editáveis e meta de outubro/2026 gravados")
 
 
 if __name__ == "__main__":
