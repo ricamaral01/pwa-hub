@@ -1,6 +1,6 @@
 # T2 — Expansão reversível do domínio Produção
 
-Preparação em 23/10/2026. A migration **não foi aplicada ao banco operacional**.
+Preparação em 23/10/2026. As três revisões foram aplicadas ao banco operacional em 24/10/2026 01:19 UTC, após backup.
 
 ## Entrega
 
@@ -15,11 +15,10 @@ Preparação em 23/10/2026. A migration **não foi aplicada ao banco operacional
 
 Foi criado um banco de teste temporário `pcp_pederneiras_t2_test` na VPS nova com **somente o schema** de `pcp_unificado_teste`. O SQL gerado pelo Alembic executou `upgrade` completo e `downgrade` completo sem erro, com `ON_ERROR_STOP=1`. O banco temporário foi removido após a verificação. A reversão impede descartar dados novos se houver produtos, apontamentos, metas, auditoria ou mão de obra de outra unidade.
 
-As revisões 01 e 02 também foram aplicadas no banco isolado `pcp_pederneiras_t4_test`. A revisão 03 passou pelo gerador Alembic e foi aplicada no mesmo banco com `ON_ERROR_STOP=1`. Nenhuma revisão foi aplicada ao banco operacional.
+As revisões 01 e 02 também foram aplicadas no banco isolado `pcp_pederneiras_t4_test`. A revisão 03 passou por subida e reversão nesse banco com `ON_ERROR_STOP=1`, retornando ao estado da revisão 03. No banco operacional, `alembic_version=20261023_03`; os 136 registros existentes de mão de obra e as 19 atividades de Campinas receberam `unidade_id=1`, sem alteração nas contagens. Backup: `/opt/concrefer-unificado/backups/pederneiras-20261024T011809Z/pcp_unificado_teste.dump`.
 
-## Próximas verificações antes de aplicar em produção
+## Próximas verificações operacionais
 
-1. Comparar contagens de registros Campinas antes/depois do backfill no banco de homologação com dados.
-2. Validar permissões do papel da API para criar o schema e as tabelas; fazer backup e ensaio de rollback.
-3. Adaptar consultas/escritas do motor de Mão de Obra para filtrar `unidade_id` e só então gravar Pederneiras.
-4. Confirmar usuário gestor e classificação inicial de áreas, mantendo essa classificação editável.
+1. Validar com o Ricardo a classificação inicial de áreas MOD/MOI e registrar as áreas da unidade 2.
+2. Reconciliar a conta PCP de Alex, que está inativa, para que o acesso master funcione também na API.
+3. Executar o fluxo real com o gestor quando o usuário for criado, antes de abandonar a planilha.

@@ -6,4 +6,4 @@ O importador inicia em simulação e exige `--apply` e `DATABASE_URL` explícito
 
 O CSV recebido em `Downloads` é idêntico ao CSV já versionado (SHA-256 igual). O script não insere áreas de mão de obra: Ricardo informou que enviará uma classificação MOD/MOI corrigida. O lote de produtos é transacional e só prossegue se o catálogo da unidade estiver vazio.
 
-**Estado:** simulação validada; sem gravação no banco operacional. A carga real depende da aplicação da migration e da validação da tabela provisória. O gestor específico será criado depois; Ricardo, Marcelo e Alex permanecem masters.
+**Estado:** simulação e carga transacional executadas no banco operacional em 24/10/2026 UTC. Conferência: **112 produtos** em `unidade_id=2`, meta de outubro `23 × 64 = 1.472`, nenhuma área e nenhum lançamento de produção/mão de obra. Todos os volumes continuam vazios até validação. O gestor específico será criado depois; Ricardo e Marcelo têm sessão PCP master ativa, e a conta PCP de Alex está inativa no momento.
