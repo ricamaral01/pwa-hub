@@ -26,7 +26,8 @@ const tabletMenuMode = () => sharedMenuViewport.matches &&
   (narrowTabletViewport.matches || tabletDevice);
 const sharedMenuAllowed = () => !installedPwa && !phoneDevice && sharedMenuViewport.matches &&
   !document.body.classList.contains('kiosk-active');
-const modelASidebarAllowed = () => sharedMenuAllowed();
+const modelASidebarAllowed = () => sharedMenuAllowed() &&
+  !document.body.classList.contains('unificado-model-a-failed');
 document.body.classList.toggle('unificado-model-a', modelASidebarAllowed());
 document.body.classList.toggle('unificado-shared-menu', sharedMenuAllowed());
 document.body.classList.toggle('unificado-tablet-menu', sharedMenuAllowed() && tabletMenuMode());
@@ -92,7 +93,14 @@ const accessReady = hasMapa ? fetch('/unificado/mapa/api/unified/screen-access/m
   : hasPcp ? fetch('/unificado/mapa/api/unified/planning-screen-access/me', {
       headers:{Authorization:'Bearer ' + localStorage.getItem('pcp_token')}, cache:'no-store'
     }).then(async response => {
-      if (response.status === 401 && await recoverMdoShellSession()) return false;
+      if (response.status === 401) {
+        if (await recoverMdoShellSession()) return false;
+        localStorage.removeItem('pcp_token');
+        localStorage.removeItem('pcp_user');
+        const next = new URLSearchParams(location.search).get('view') || 'pcp/dashboard/';
+        location.replace(new URL('login.html?next=' + encodeURIComponent(next), UNIFICADO_BASE));
+        return false;
+      }
       if (!response.ok) throw new Error('screen access');
       const result = await response.json();
       grantedScreens = new Set(result.screens || []);
@@ -107,7 +115,7 @@ const accessReady = hasMapa ? fetch('/unificado/mapa/api/unified/screen-access/m
     })
     : Promise.resolve(true);
 window.UnificadoScreenAccess = Object.freeze({ready:accessReady,
-  allowed: id => grantedScreens === null || grantedScreens.has(id), moduleAllowed:canAccessModule});
+  allowed: id => grantedScreens === null || grantedScreens.has(MENU_ITEMS[id]?.permissionId || id), moduleAllowed:canAccessModule});
 document.body.classList.toggle('unificado-permissions-loading', hasMapa || hasPcp);
 if (!hasPcp && !hasMapa) location.replace(new URL('login.html', UNIFICADO_BASE));
 const storedModule = localStorage.getItem('unificado_modulo');
@@ -118,7 +126,8 @@ let menuModuleOverride = null;
 
 function canUse(item) {
   const route = MENU_ITEMS[item.id] || item;
-  if (grantedScreens !== null && !grantedScreens.has(route.id)) return false;
+  if (route.dosagemAdmin && !masterIds.has(mapaUser?.id)) return false;
+  if (grantedScreens !== null && !grantedScreens.has(route.permissionId || route.id)) return false;
   if (masterIds.has(mapaUser?.id) && hasMapa) return true;
   if (route.module === 'qualidade') return previewModules && hasMapa;
   if (route.module === 'laboratorio') return hasLab;
@@ -163,6 +172,7 @@ function makeLink(item, className = 'nav-link') {
       return;
     }
     if (item.id === 'tvFormas') {
+      if (phoneDevice || installedPwa) return;
       event.preventDefault();
       window.open(a.href, '_blank', 'noopener');
       return;
@@ -223,6 +233,8 @@ function closeTabletMenu() {
 }
 
 const SHARED_MENU_CODES = {
+  labDosagem:'DO',
+  labSlump:'SL',
   labMonitor:'MC', labHistory:'HM', labDevice:'DP', labPole:'EP',
   labAbsorption:'AB', labTests:'HI', labRegisters:'CD', labCriteria:'CR', labHelp:'CF'
 };
@@ -239,7 +251,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.38';
+const APP_VERSION = '1.0.41';
 let platformUpdateAvailable = false;
 async function checkPlatformUpdate() {
   const button = document.getElementById('platform-update');
@@ -252,17 +264,13 @@ async function checkPlatformUpdate() {
     if (!latest) throw new Error('Versão indisponível');
     platformUpdateAvailable = latest.localeCompare(APP_VERSION, undefined, {numeric:true}) > 0;
     button.disabled = !platformUpdateAvailable;
-    button.textContent = platformUpdateAvailable ? 'Atualizar aplicação' : 'Aplicação atualizada';
-    button.title = button.textContent;
-    button.setAttribute('aria-label', button.textContent);
-    status.textContent = platformUpdateAvailable ? `Nova versão ${latest} disponível.` : `Versão ${APP_VERSION} em dia.`;
+    status.textContent = platformUpdateAvailable ? `v${latest} disponível` : `v${APP_VERSION} em dia`;
+    button.title = platformUpdateAvailable ? `Atualizar aplicação para a versão ${latest}` : `Aplicação atualizada na versão ${APP_VERSION}`;
   } catch {
     platformUpdateAvailable = false;
     button.disabled = true;
-    button.textContent = 'Versão não verificada';
-    button.title = button.textContent;
-    button.setAttribute('aria-label', button.textContent);
-    status.textContent = 'Não foi possível verificar a versão. Verificaremos novamente ao voltar à tela.';
+    button.title = 'Não foi possível verificar a versão';
+    status.textContent = 'Não verificado';
   }
 }
 function waitForWorkerState(worker, accepted, timeoutMs = 15000) {
@@ -311,7 +319,7 @@ async function waitForController(worker) {
 }
 async function updateApplication(button) {
   if (button.disabled || !platformUpdateAvailable) return;
-  const label = button.querySelector('.sb-label') || button;
+  const label = button.querySelector('#platform-update-status, .sb-label') || button;
   const originalLabel = label.textContent;
   button.disabled = true;
   label.textContent = 'Atualizando…';
@@ -469,17 +477,11 @@ function renderSharedSidebar() {
   appendGedPreviewGroup(scroll, true);
   const footer = document.createElement('div');
   footer.className = 'shared-user-footer';
-  if (currentModule === 'laboratorio' && canUse(MENU_ITEMS.labHelp)) {
-    const help = sharedMenuChip(makeLink(MENU_ITEMS.labHelp), 'CF');
-    if (activeItem === 'labHelp') help.classList.add('is-active');
-    help.addEventListener('click', closeTabletMenu);
-    footer.append(help);
-  }
   const usersAllowed = (pcpUser?.nivel_acesso === 'ADMIN' && (grantedScreens === null || grantedScreens.has('pcpUsuarios')))
     || (hasMapa && mapaUser?.role === 'GERENCIA' && (grantedScreens === null || grantedScreens.has('prodUsuarios')));
   if (usersAllowed) {
     const users = document.createElement('a');
-    users.className = 'nav-footer' + (activeItem === 'prodUsuarios' || activeItem === 'pcpUsuarios' ? ' is-active' : '');
+    users.className = 'nav-footer nav-footer-users' + (activeItem === 'prodUsuarios' || activeItem === 'pcpUsuarios' ? ' is-active' : '');
     users.href = hasMapa && mapaUser?.role === 'GERENCIA' && (grantedScreens === null || grantedScreens.has('prodUsuarios'))
       ? new URL('operacao/?tela=USUARIOS', MAPA_BASE).href
       : new URL('usuarios/', PCP_BASE).href;
@@ -489,6 +491,18 @@ function renderSharedSidebar() {
       if (window.UnificadoRouter) { event.preventDefault(); window.UnificadoRouter.open(users.href); }
     });
     footer.append(users);
+  }
+  const report = document.createElement('a');
+  report.className = 'nav-footer';
+  report.href = new URL('testar/#relatar', UNIFICADO_BASE).href;
+  report.innerHTML = '<span class="mono">RP</span><span class="nav-link-label">Relatar problema</span>';
+  report.addEventListener('click', closeTabletMenu);
+  footer.append(report);
+  if (currentModule === 'laboratorio' && canUse(MENU_ITEMS.labHelp)) {
+    const help = sharedMenuChip(makeLink(MENU_ITEMS.labHelp), 'CF');
+    if (activeItem === 'labHelp') help.classList.add('is-active');
+    help.addEventListener('click', closeTabletMenu);
+    footer.append(help);
   }
   sidebar.append(scroll);
   const userRow = document.createElement('div');
@@ -660,7 +674,7 @@ function renderSidebar() {
   appendGedPreviewGroup(scroll);
   sidebar.append(scroll);
   const users = document.createElement('a');
-  users.className = 'nav-footer' + (activeItem === 'prodUsuarios' || activeItem === 'pcpUsuarios' ? ' is-active' : '');
+  users.className = 'nav-footer nav-footer-users' + (activeItem === 'prodUsuarios' || activeItem === 'pcpUsuarios' ? ' is-active' : '');
   users.href = hasMapa && mapaUser?.role === 'GERENCIA' && (grantedScreens === null || grantedScreens.has('prodUsuarios'))
     ? new URL('operacao/?tela=USUARIOS', MAPA_BASE).href
     : new URL('usuarios/', PCP_BASE).href;
@@ -670,6 +684,11 @@ function renderSidebar() {
   });
   if (pcpUser?.nivel_acesso === 'ADMIN' && (grantedScreens === null || grantedScreens.has('pcpUsuarios')) ||
       hasMapa && mapaUser?.role === 'GERENCIA' && (grantedScreens === null || grantedScreens.has('prodUsuarios'))) sidebar.append(users);
+  const report = document.createElement('a');
+  report.className = 'nav-footer';
+  report.href = new URL('testar/#relatar', UNIFICADO_BASE).href;
+  report.innerHTML = '<span class="mono">RP</span><span>Relatar problema</span>';
+  sidebar.append(report);
   window.UnificadoRouter?.syncGedMenu?.();
 }
 
@@ -715,7 +734,7 @@ function renderGuestHome() {
   const empty = grantedScreens.size === 0;
   home.querySelector('section[aria-labelledby="sectors-title"]').hidden = empty;
   home.querySelector('.shortcuts-section').hidden = empty;
-  home.querySelector('.opening-modules').hidden = empty;
+  home.querySelector('.opening-modules').hidden = !document.getElementById('opening-module-grid')?.children.length;
   let notice = document.getElementById('guest-access-notice');
   if (!notice) {
     notice = document.createElement('p');
@@ -772,7 +791,8 @@ function renderOpeningModules() {
     link.querySelector('.opening-module-title').textContent = MENU_CONFIG[module.id].label;
     link.querySelector('small').textContent = module.description;
     link.addEventListener('click', event => {
-      if (!window.UnificadoSidebarModelA) return;
+      if (phoneDevice || installedPwa || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+          !window.UnificadoSidebarModelA?.selectModule || !window.UnificadoModulePages?.show) return;
       event.preventDefault();
       window.UnificadoSidebarModelA.selectModule(module.id);
     });
@@ -785,10 +805,30 @@ function renderOpeningModules() {
     link.href = new URL('?module=ged', UNIFICADO_BASE).href;
     link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">06 / MÓDULO</span><span><strong class="opening-module-title">GED</strong><small>Documentos e aprovações</small></span></span>${ICONS.arrow}`;
     link.addEventListener('click', event => {
-      if (!window.UnificadoSidebarModelA) return;
+      if (phoneDevice || installedPwa || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+          !window.UnificadoSidebarModelA?.selectModule || !window.UnificadoModulePages?.show) return;
       event.preventDefault();
       window.UnificadoSidebarModelA.selectModule('ged');
     });
+    target.append(link);
+  }
+  for (const [module, number, title, description, url, icon] of [
+    ['pederh', '07', 'PedeRH', 'Solicitações e fluxos de RH', 'https://rh.concretrack.com.br/', 'pederh-icon.png'],
+    ['faleaqui', '08', 'FaleAqui', 'Solicitações e atendimento', 'https://faleaqui.concretrack.com.br/', 'faleaqui-icon.png'],
+  ]) {
+    const link = document.createElement('a');
+    link.className = 'opening-module';
+    link.dataset.module = module;
+    link.href = url;
+    const newTab = !phoneDevice && !installedPwa;
+    if (newTab) {
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    }
+    link.setAttribute('aria-label', newTab ? `Abrir ${title} em uma nova aba` : `Abrir ${title}`);
+    link.innerHTML = `<span class="opening-module-copy"><span class="opening-module-number">${number} / APLICAÇÃO</span><span><strong class="opening-module-title"></strong><small></small></span></span><img class="opening-app-icon" src="assets/img/${icon}" alt="" aria-hidden="true">${ICONS.arrow}`;
+    link.querySelector('.opening-module-title').textContent = title;
+    link.querySelector('small').textContent = description;
     target.append(link);
   }
   document.querySelector('.opening-modules').hidden = !target.children.length;
@@ -833,6 +873,7 @@ window.UnificadoSidebarModelA = Object.freeze({
     const footerItemIds = [];
     if (master && canUse(MENU_ITEMS.labHelp)) footerItemIds.push('labHelp');
     if (pcpUsers || mapaUsers) footerItemIds.push('usuarios');
+    footerItemIds.push('reportProblem');
     const name = displayUser?.nome || displayUser?.name || 'Usuário';
     const role = hasPcp && hasMapa ? `${pcpUser.nivel_acesso} / ${mapaUser.role}` :
       (hasPcp ? pcpUser.nivel_acesso : mapaUser?.role || '');
@@ -847,6 +888,10 @@ window.UnificadoSidebarModelA = Object.freeze({
   },
   navigate: href => {
     const url = new URL(href, location.origin);
+    if (url.origin === location.origin && url.pathname === '/unificado/testar/') {
+      location.assign(url.href);
+      return;
+    }
     if (url.origin !== location.origin || url.pathname !== UNIFICADO_BASE.pathname) return;
     const view = url.searchParams.get('view');
     menuModuleOverride = null;
