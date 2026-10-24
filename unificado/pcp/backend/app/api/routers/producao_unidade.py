@@ -86,7 +86,7 @@ def _authorize(db: Session, unit: dict, user: Usuario, *, write: bool = False, s
         WHERE usuario_id=:user_id AND unidade_id=:unit_id AND ativo
     """), {"user_id": user.id, "unit_id": unit["id"]}).first()
     role = row[0] if row else None
-    if role is None or (write and role not in {"gestor", "supervisor"}) or (supervisor and role != "supervisor"):
+    if role is None or (write and role not in {"gestor", "supervisor", "operador"}) or (supervisor and role != "supervisor"):
         raise HTTPException(403, "Sem acesso a esta unidade ou ação")
     return role
 

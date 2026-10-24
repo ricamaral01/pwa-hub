@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.33"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usuários — PCP Concrefer</title>
   <link rel="stylesheet" href="/unificado/vendor/bootstrap/bootstrap.min.css" />
   <link rel="stylesheet" href="/unificado/vendor/bootstrap-icons/bootstrap-icons.css" />
   <link rel="stylesheet" href="/unificado/pcp/static/css/app.css?v=0.6.7" />
-  <script src="/unificado/pcp/readonly-guard.js"></script>
+  <link rel="stylesheet" href="/unificado/shell/password-visibility.css?v=2" />
+  <script defer src="/unificado/shell/password-visibility.js?v=2"></script>
+    <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.33">
 </head>
 <body>
 <div id="sidebar-overlay"></div>
@@ -60,40 +69,10 @@
 
   <div class="content-area">
     <div class="section-card mb-4">
-      <div class="section-title"><i class="bi bi-person-plus me-2"></i>Novo Usuário</div>
-      <form id="form-user">
-        <div class="row g-3">
-          <div class="col-md-3">
-            <label class="form-label">Nome</label>
-            <input id="u-nome" class="form-control form-control-sm" required />
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">Usuário</label>
-            <input id="u-username" class="form-control form-control-sm" required />
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">Senha</label>
-            <input id="u-senha" type="password" class="form-control form-control-sm" minlength="6" required />
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">Setor</label>
-            <select id="u-setor" class="form-select form-select-sm" required></select>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">Nível de Acesso</label>
-            <select id="u-nivel" class="form-select form-select-sm" required>
-              <option value="CONSULTA">CONSULTA</option>
-              <option value="PRODUCAO">PRODUCAO</option>
-              <option value="PCP">PCP</option>
-              <option value="ADMIN">ADMIN</option>
-            </select>
-          </div>
-          <div class="col-md-1 d-flex align-items-end">
-            <button class="btn btn-accent btn-sm w-100" type="submit">Criar</button>
-          </div>
-        </div>
-      </form>
-      <div class="small text-muted mt-2">Todo usuário novo é criado com troca obrigatória de senha no primeiro acesso.</div>
+      <div class="section-title"><i class="bi bi-person-plus me-2"></i>Cadastro de usuários</div>
+      <p class="mb-3">Crie usuários no Unificado. Selecione a Unidade (Campinas, Pederneiras, Ribeirão ou Noroeste), a alçada e revise as telas pré-selecionadas.</p>
+      <a class="btn btn-accent btn-sm" href="/unificado/mapa/operacao/?tela=USUARIOS">Abrir cadastro unificado</a>
+      <div class="small text-muted mt-2">Novos usuários trocam a senha temporária no primeiro acesso.</div>
     </div>
 
     <div class="section-card">
@@ -104,7 +83,7 @@
             <tr>
               <th>Nome</th>
               <th>Usuário</th>
-              <th>Setor</th>
+              <th>Setor PCP (legado)</th>
               <th>Nível</th>
               <th>Ativo</th>
               <th>1º acesso</th>
@@ -121,7 +100,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.33"></script>
 <script>
 const user = requireAuth();
 if (!user) throw new Error('Sem sessão');
@@ -132,16 +111,8 @@ if (user.nivel_acesso !== 'ADMIN') {
 document.getElementById('user-nome-top').textContent = user.nome;
 initSidebar('usuarios');
 
-async function loadSetores() {
-  const setores = await API.get('/api/setores');
-  const sel = document.getElementById('u-setor');
-  sel.innerHTML = '<option value="">Selecione...</option>';
-  setores.forEach(s => {
-    sel.innerHTML += `<option value="${s.id}">${s.nome}</option>`;
-  });
-}
-
 async function loadUsers() {
+  if (window.unifiedPlanningLoadUsers) return window.unifiedPlanningLoadUsers();
   const rows = await API.get('/api/usuarios');
   const setores = await API.get('/api/setores');
   const setMap = Object.fromEntries(setores.map(s => [s.id, s.nome]));
@@ -180,26 +151,7 @@ async function redefinirSenha(userId, nome) {
   }
 }
 
-document.getElementById('form-user').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const payload = {
-    nome: document.getElementById('u-nome').value.trim(),
-    username: document.getElementById('u-username').value.trim(),
-    senha: document.getElementById('u-senha').value,
-    setor_id: parseInt(document.getElementById('u-setor').value),
-    nivel_acesso: document.getElementById('u-nivel').value,
-  };
-  try {
-    await API.post('/api/usuarios', payload);
-    showToast('Usuário criado com sucesso', 'success');
-    document.getElementById('form-user').reset();
-    loadUsers();
-  } catch (e2) {
-    showToast(e2.message, 'error');
-  }
-});
-
-loadSetores().then(loadUsers).catch(e => showToast(e.message, 'error'));
+loadUsers().catch(e => showToast(e.message, 'error'));
 </script>
-</body>
+<link rel="stylesheet" href="/unificado/pcp/users-unificado-planning.css?v=0.6.33"><script src="/unificado/pcp/users-unificado-planning.js?v=0.6.33"></script></body>
 </html>
