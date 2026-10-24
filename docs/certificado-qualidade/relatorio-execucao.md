@@ -57,6 +57,6 @@ Assim, o requisito de comparação **10/10 falhou por ausência de dados**, mesm
 ## Git e links
 
 - Base: `origin/main` em `acda605f`; branch `feat/laboratorio-certificado-qualidade`.
-- `main` não continha o diretório `unificado/`. O commit `18bd19eb` trouxe a árvore já implantada de `origin/feat/sistema-unificado` para a branch baseada em `main`; isso cria uma diferença grande que deve ser reconciliada antes do merge final. Commit do módulo e relatório: **PENDENTE_HASH**.
+- `main` não continha o diretório `unificado/`. O commit `18bd19eb` trouxe a árvore já implantada de `origin/feat/sistema-unificado` para a branch baseada em `main`; isso cria uma diferença grande que deve ser reconciliada antes do merge final. Commit do módulo e relatório: `e843934c45864cdf299ca60dcb25b12667c48ad8`.
 - Homologação: `https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcertificados-qualidade%2F`.
 - Produção: **não publicada**; a URL de produção não foi ativada.
