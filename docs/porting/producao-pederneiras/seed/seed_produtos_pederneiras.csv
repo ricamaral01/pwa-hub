@@ -1,0 +1,113 @@
+familia;letra;descricao;cod_pro;cod_sma;pendencia
+Padrão;C;Padrão Completo 2 cx VR;943;974;letra C proposta (planilha sem letra) - confirmar
+Padrão;D;Padrão Completo 2 cx VL;941;972;
+Padrão;B;Padrão Completo 1 cx VL;935;966;
+Padrão;A;Padrão Completo 1 cx VR;938;969;
+Padrão;BD;Padrão Completo 1 cx VL (EDP);957;988;
+Padrão Elektro;CE;Padrão Completo 2 cx VR Elektro;4032;4972;
+Padrão Elektro;DE;Padrão Completo 2 cx VL Elektro;4765;4971;
+Padrão Elektro;AE;Padrão Completo 1 cx VR Elektro;4031;4969;
+Padrão Elektro;BE;Padrão Completo 1 cx VL Elektro;4764;4970;
+Padrão Elektro;IE;Padrão Completo 3 cxs VL Elektro;;4973;só um código na planilha - confirmar coluna
+Padrão;L;Padrão Completo 4 cx VR;948;979;
+Padrão;J;Padrão Completo 4 cx VL;947;978;
+Padrão;H;Padrão Completo 3 cx VR;946;977;
+Padrão;I;Padrão Completo 3 cx VL;945;976;
+Padrão;;Poste 2 cx VR (7,5 x 300);944;975;
+Padrão;;Poste 2 cx VL (7,5 x 300);942;973;
+Padrão;N;Poste 7,5 X 600 VL;936;967;
+Padrão;M;Poste 7,5 X 600 VR;939;970;
+Padrão;TCL;Poste 7,5 X 600 VL c/ TC;937;968;
+Padrão;TCR;Poste 7,5 X 600 VR c/ TC;940;971;
+Subterrâneo;100;Poste Subterrâneo 100 A;949;980;
+Subterrâneo;SB-E;Poste Subterrâneo 100 A - Elektro;4848;5018;
+Subterrâneo;200;Poste Subterrâneo 200 A;950;981;
+Subterrâneo;200-TC;Poste Subterrâneo 200 A - TC;5017;5019;
+Padrão;;Poste Visor Aéreo 1 cx VL (7,5x300);934;965;codificação tem PL = 7,5 X 300 c/ lente - confirmar se é o mesmo
+Cemig;;Padrão Cemig 1CX - 5,0 x 150;952;983;codificação tem PC-5-A = 5 x 200 - confirmar medida
+Cemig;;Padrão Cemig 1 cx VL - 7,0 x150;953;984;codificação tem PC-7-B = 7 X 200 - confirmar medida
+Cemig;;Padrão Cemig 2 cx VL - 7,0 x150;954;985;codificação tem PC-7-D = 7 X 200 - confirmar medida
+Econômico;E;Poste Econômico 1CX VR;931;962;
+Econômico;F;Poste Econômico 1CX VL;930;961;
+Econômico;G;Poste Econômico 2CX VR;932;963;
+Econômico;;Poste Econômico 2CX VL;10067;15307;
+Econômico;P;Poste Econômico 3CX VR;933;964;letra P repetida
+Econômico;P;Poste Econômico 3CX VL;10068;;letra P repetida; só um código
+Duplo T;;6X90;887;;só um código - confirmar coluna
+Duplo T;;7,5X90;888;;só um código - confirmar coluna
+Duplo T;;7,5X200;889;;só um código - confirmar coluna
+Duplo T;;7,5X300;890;;só um código - confirmar coluna
+Duplo T;;7,5X400;891;;só um código - confirmar coluna
+Duplo T;;7,5X600;892;;só um código - confirmar coluna
+Duplo T;;7,5X700;893;;só um código - confirmar coluna
+Duplo T;;7,5X800;2517;;só um código - confirmar coluna
+Cemig;;Cemig DT 7,0X150;886;;só um código - confirmar coluna
+Coluna;;Coluna VR;10069;;
+Coluna;;Coluna VL;10070;;
+Coluna;;Coluna Esquerda;10071;;
+Coluna;;Coluna Direita;10072;;
+Coluna;;Poste Coluna VL 25X30 7,5X200;4450;;codificação tem CL-300 = Poste Coluna 25x25 7,5x300 - confirmar
+Acessórios;;Caixa de passagem s/fundo c/ tampa;461;;
+Acessórios;;Placa Estai 20X10X100;320;;
+Acessórios;;Placa Estai 20X20X140;321;;
+Acessórios;;Chapéu Sub 100;256;;
+Acessórios;;Chapéu Sub 200;7068;;
+Acessórios;;Chapéu poste coluna;10905;;
+Acessórios;;Chapéu Sub 200 TC;7392;;
+Circular;;Circular 12x1000;811;;
+Circular;;Circular 11x1000;802;;
+Circular;;Circular 10x1000;683;;
+Circular;;Circular 9x1000;677;;
+Circular;;Circular 8x1000;671;;
+Circular;;Circular 8x800;676;;
+Circular;;Circular 10x800;689;;
+Circular;;Circular 9x800;682;;
+Circular;;Circular 13x600;823;;
+Circular;;Circular 12x600;817;;
+Circular;;Circular 11x600;809;;
+Circular;;Circular 10x600;688;;
+Circular;;Circular 9x600;681;;
+Circular;;Circular 13x400;822;;
+Circular;;Circular 11x400;808;;
+Circular;;Circular 12x400;816;;
+Circular;;Circular 10x400;687;;
+Circular;;Circular 9x400;680;;
+Circular;;Circular 8x400;674;;
+Circular;;Circular 12x300;815;;
+Circular;;Circular 11x300;807;;
+Circular;;Circular 10x300;686;;
+Circular;;Circular 9x300;679;;
+Circular;;Circular 8x300;673;;
+Circular;;Circular 12x200;814;;
+Circular;;Circular 11x200;806;;
+Circular;;Circular 10x200;685;;
+Circular;;Circular 9x200;678;;
+Circular;;Circular 8x200;672;;
+Circular;;Circular 7x200;667;;
+Circular;;Circular 6x200;664;;
+Circular;;Circular 12x400 AAT;868;;sem total na planilha - confirmar se ativo
+Circular;;Circular 11x200 AAT;863;;sem total na planilha - confirmar se ativo
+Circular;;Circular 12x1000 AAT;867;;sem total na planilha - confirmar se ativo
+Duplo T;;DT 12X600;914;;
+Duplo T;;DT 11X600;910;;
+Duplo T;;DT 10X600;906;;
+Duplo T;;DT 9X600;902;;
+Duplo T;;DT 8X600;897;;
+Duplo T;;DT 12X400;913;;
+Duplo T;;DT 11X400;909;;
+Duplo T;;DT 10X400;905;;
+Duplo T;;DT 9X400;901;;
+Duplo T;;DT 8X400;896;;
+Duplo T;;DT 12X300;912;;
+Duplo T;;DT 11X300;908;;
+Duplo T;;DT 10X300;904;;
+Duplo T;;DT 9X300;900;;
+Duplo T;;DT 8X300;895;;
+Duplo T;;DT 12X200;911;;
+Duplo T;;DT 11X200;907;;
+Duplo T;;DT 10X200;903;;
+Duplo T;;DT 9X200;899;;
+Duplo T;;DT 8X200;894;;
+Duplo T;;DT 10X150;5407;;corrigido de 5.407 (formato de milhar)
+Duplo T;;DT 9X150;898;;
+Duplo T;;DT 8X150;3756;;corrigido de 3.756 (formato de milhar)
