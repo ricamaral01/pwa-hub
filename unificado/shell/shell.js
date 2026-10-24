@@ -257,7 +257,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.42';
+const APP_VERSION = '1.0.43';
 let platformUpdateAvailable = false;
 async function checkPlatformUpdate() {
   const button = document.getElementById('platform-update');
