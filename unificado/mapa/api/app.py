@@ -77,6 +77,9 @@ OPERATION_TABLES = {
     "concretada": "producao",
 }
 SECTORS = frozenset({"Setor 1", "Setor 2", "Setor 3", "Setor 4"})
+USER_UNITS = frozenset({'campinas', 'pederneiras', 'ribeirao', 'noroeste'})
+PEDERNEIRAS_SCREENS = frozenset(row['id'] for row in SCREEN_CATALOG
+                               if row['id'].startswith('pdr'))
 GUEST_ACTIONS = frozenset({'view', 'create', 'edit', 'delete', 'export', 'approve'})
 CHECKLISTS = json.loads((Path(__file__).parent / "checklists.json").read_text(encoding="utf-8"))
 ACTION_CATALOG = json.loads((Path(__file__).parent / "action_catalog.json").read_text(encoding="utf-8"))
@@ -279,8 +282,9 @@ def unified_pcp_session():
         return response
     try:
         allowed, _ = screen_access_state(mapa)
-        if not any(SCREENS_BY_ID[item]['module'] == 'planejamento' for item in allowed):
-            return jsonify(ok=False, error='Esta conta não tem telas liberadas no Planejamento.'), 403
+        if not any(SCREENS_BY_ID[item]['module'] == 'planejamento' or item in PEDERNEIRAS_SCREENS
+                   for item in allowed):
+            return jsonify(ok=False, error='Esta conta não tem telas liberadas no Planejamento ou Pederneiras.'), 403
         link = link_for(mapa_login=mapa["id"])
         if not link:
             return jsonify(ok=False, error="Esta conta não tem acesso ao Planejamento."), 403
@@ -783,7 +787,9 @@ def laboratorio_authorize():
         # Keep writes scoped to their screen; allow reads from its five tabs.
         postes_read_screens = {'labPole', 'labAbsorption', 'labTests',
                                'labRegisters', 'labCriteria'}
-        if path.startswith('/unificado/laboratorio/cec-api/'):
+        if path.startswith('/unificado/laboratorio/certificados-qualidade/'):
+            accepted = {'labCertificados'}
+        elif path.startswith('/unificado/laboratorio/cec-api/'):
             accepted = {'labCec'}
         elif path.startswith('/unificado/laboratorio/dosagem/api/'):
             accepted = {'labDosagem'}
@@ -842,7 +848,8 @@ def laboratorio_authorize():
                                (user['perfil'] != 'CONVIDADO' or '/api/' not in path
                                 or accepted is not None) and
                                screen["id"] in allowed and
-                               guest_action_allowed(user, screen['id'], method, path)):
+                               (path.startswith('/unificado/laboratorio/certificados-qualidade/')
+                                or guest_action_allowed(user, screen['id'], method, path))):
             return Response(status=403)
         secret = os.environ["LAB_GATEWAY_SIGNING_KEY"].encode()
         if len(secret) < 32:
@@ -1432,22 +1439,25 @@ def master_planning_user_screens_update(user_id):
     if request.headers.get('Origin') != 'https://concrefer.concretrack.com.br':
         return jsonify(ok=False), 403
     data = request.get_json(silent=True)
-    if not isinstance(data, dict) or set(data) != {'screens','name','map_role','map_sector'}:
+    if not isinstance(data, dict) or set(data) != {'screens','name','map_role','map_sector','unit'}:
         return jsonify(ok=False, error='Dados inválidos.'), 400
     selected = data['screens']
     name = data['name']
     map_role = data['map_role']
     map_sector = data['map_sector']
+    unit = data['unit']
     if (not isinstance(selected, list) or any(item not in SCREENS_BY_ID for item in selected)
             or not isinstance(name, str) or not name.strip() or len(name) > 120
             or map_role not in {'GERENCIA','GESTOR','MONTADOR','APONTADOR'}
-            or map_sector not in {'Todos', *SECTORS}):
+            or map_sector not in {'Todos', *SECTORS} or unit not in USER_UNITS):
         return jsonify(ok=False, error='Dados inválidos.'), 400
     selected = set(selected)
+    if any(not unit_allows_screen(unit, item) for item in selected):
+        return jsonify(ok=False, error='Uma tela não pertence à unidade selecionada.'), 400
     shadow_id = f'unif-pcp-{user_id}'
     shadow = {'id': shadow_id, 'nome': name.strip(), 'perfil': map_role}
     if any(SCREENS_BY_ID[item]['module'] == 'producao' and not role_allows(
-            shadow, SCREENS_BY_ID[item], None, LAB_ALLOWED_USERS) for item in selected):
+            shadow, SCREENS_BY_ID[item], 'PRODUCAO', LAB_ALLOWED_USERS) for item in selected):
         return jsonify(ok=False, error='O perfil da Produção não permite uma das telas.'), 403
     non_planning = any(SCREENS_BY_ID[item]['module'] != 'planejamento' for item in selected)
     requested_role = required_planning_role(selected) or 'CONSULTA'
@@ -1455,6 +1465,8 @@ def master_planning_user_screens_update(user_id):
     pcp_conn = pcp_connect()
     old_pcp = None
     pcp_committed = False
+    old_unit_grant = None
+    unit_grant_id = None
     try:
         with pcp_conn.cursor() as planning, mapa_conn.cursor() as cur:
             planning.execute("""SELECT id,nome,username,nivel_acesso,ativo,deleted_at,
@@ -1479,6 +1491,26 @@ def master_planning_user_screens_update(user_id):
                 cur.execute("""INSERT INTO unificado_auth.identity_links
                                (pcp_user_id,mapa_login,requires_reset)
                                VALUES (%s,%s,false)""", (user_id, shadow_id))
+                cur.execute("""INSERT INTO unificado_auth.user_units
+                               (user_id,unit_code,updated_by) VALUES (%s,%s,%s)""",
+                            (shadow_id, unit, actor['id']))
+                if PEDERNEIRAS_SCREENS.intersection(selected):
+                    planning.execute("SELECT id FROM producao.unidade WHERE codigo='pederneiras'")
+                    pederneiras_unit = planning.fetchone()
+                    if not pederneiras_unit:
+                        return jsonify(ok=False, error='Unidade Pederneiras indisponível.'), 503
+                    unit_grant_id = pederneiras_unit['id']
+                    planning.execute("""SELECT papel,ativo FROM producao.usuario_unidade
+                                        WHERE usuario_id=%s AND unidade_id=%s FOR UPDATE""",
+                                     (user_id, unit_grant_id))
+                    old_unit_grant = planning.fetchone()
+                    unit_role = ('supervisor' if map_role in {'GERENCIA','GESTOR'} else
+                                 'operador' if map_role == 'APONTADOR' else 'leitor')
+                    planning.execute("""INSERT INTO producao.usuario_unidade
+                                        (usuario_id,unidade_id,papel,ativo) VALUES (%s,%s,%s,true)
+                                        ON CONFLICT (usuario_id,unidade_id) DO UPDATE SET
+                                        papel=excluded.papel,ativo=true""",
+                                     (user_id, pederneiras_unit['id'], unit_role))
             target_key = shadow_id if non_planning else f'pcp:{user_id}'
             for screen in SCREEN_CATALOG:
                 if not non_planning and screen['module'] != 'planejamento':
@@ -1489,8 +1521,8 @@ def master_planning_user_screens_update(user_id):
                                allowed=excluded.allowed,updated_by=excluded.updated_by,
                                updated_at=now()""",
                             (target_key, screen['id'], screen['id'] in selected, actor['id']))
-            # Administrative linkage must not change PCP identity, password,
-            # access level, grants or login tokens.
+            # Keep the existing PCP identity, password and access level.
+            # Only an explicit Pederneiras selection adds its unit grant.
         pcp_conn.commit()
         pcp_committed = True
         try:
@@ -1503,6 +1535,15 @@ def master_planning_user_screens_update(user_id):
         mapa_conn.rollback()
         if not pcp_committed:
             pcp_conn.rollback()
+        elif unit_grant_id is not None:
+            with pcp_connect() as undo, undo.cursor() as cur:
+                if old_unit_grant:
+                    cur.execute("""UPDATE producao.usuario_unidade SET papel=%s,ativo=%s
+                                   WHERE usuario_id=%s AND unidade_id=%s""",
+                                (old_unit_grant['papel'], old_unit_grant['ativo'], user_id, unit_grant_id))
+                else:
+                    cur.execute("""DELETE FROM producao.usuario_unidade
+                                   WHERE usuario_id=%s AND unidade_id=%s""", (user_id, unit_grant_id))
         return jsonify(ok=False, error='Não foi possível salvar as alçadas da conta PCP.'), 503
     finally:
         pcp_conn.close()
@@ -1612,7 +1653,7 @@ def required_planning_role(selected):
     planning = [SCREENS_BY_ID[item] for item in selected
                 if SCREENS_BY_ID[item]['module'] == 'planejamento']
     if not planning:
-        return None
+        return 'PRODUCAO' if PEDERNEIRAS_SCREENS.intersection(selected) else None
     requirements = {row['require'] for row in planning}
     if 'ADMIN' in requirements:
         return 'ADMIN'
@@ -1621,6 +1662,81 @@ def required_planning_role(selected):
     if 'PRODUCAO' in requirements:
         return 'PRODUCAO'
     return 'CONSULTA'
+
+
+def unit_allows_screen(unit, screen_id):
+    screen = SCREENS_BY_ID[screen_id]
+    return screen['module'] != 'producao' or screen_id not in PEDERNEIRAS_SCREENS or unit == 'pederneiras'
+
+
+@app.get('/unified/users/catalog')
+def unified_user_catalog():
+    if not unified_user_admin():
+        return jsonify(ok=False), 403
+    return jsonify(ok=True, screens=[{'id': row['id'], 'label': row['label'],
+                                      'module': row['module'], 'require': row['require'],
+                                      'mapa_roles': [role for role in
+                                                     ('GERENCIA','GESTOR','MONTADOR','APONTADOR')
+                                                     if role_allows({'id':'', 'nome':'', 'perfil':role},
+                                                                    row, 'PRODUCAO', LAB_ALLOWED_USERS)]}
+                                     for row in SCREEN_CATALOG]), 200, {'Cache-Control': 'no-store'}
+
+
+@app.post('/unified/users')
+def create_unified_user():
+    actor = unified_user_admin()
+    if not actor or actor['id'] not in MASTER_USER_IDS:
+        return jsonify(ok=False), 403
+    if request.headers.get('Origin') != 'https://concrefer.concretrack.com.br':
+        return jsonify(ok=False), 403
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict) or set(data) != {'login','name','password','role','unit','screens'}:
+        return jsonify(ok=False, error='Dados inválidos.'), 400
+    login, name, password = data['login'], data['name'], data['password']
+    role, unit, screens = data['role'], data['unit'], data['screens']
+    if (not isinstance(login, str) or not re.fullmatch(r'[a-z][a-z0-9_-]{2,39}', login)
+            or not isinstance(name, str) or not name.strip() or len(name) > 120
+            or not isinstance(password, str) or not 6 <= len(password) <= 128
+            or role not in {'GERENCIA','GESTOR','MONTADOR','APONTADOR','CONVIDADO'}
+            or unit not in USER_UNITS or not isinstance(screens, list)
+            or any(not isinstance(item, str) or item not in SCREENS_BY_ID for item in screens)
+            or len(screens) != len(set(screens))):
+        return jsonify(ok=False, error='Confira login, nome, alçada, unidade e senha.'), 400
+    selected = set(screens)
+    if any(not unit_allows_screen(unit, item) for item in selected):
+        return jsonify(ok=False, error='Uma tela não pertence à unidade selecionada.'), 400
+    prospective = {'id': login, 'nome': name.strip(), 'perfil': role}
+    planning_role = required_planning_role(selected)
+    if any(item in GUEST_FORBIDDEN_SCREENS and role == 'CONVIDADO'
+           or SCREENS_BY_ID[item]['module'] != 'planejamento'
+           and not role_allows(prospective, SCREENS_BY_ID[item], planning_role,
+                               LAB_ALLOWED_USERS | {login})
+           for item in selected):
+        return jsonify(ok=False, error='A alçada não permite uma das telas.'), 403
+    try:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute('SELECT 1 FROM public.usuarios WHERE lower(id)=lower(%s)', (login,))
+            if cur.fetchone():
+                return jsonify(ok=False, error='Este login já está cadastrado.'), 409
+            cur.execute('''INSERT INTO public.usuarios
+                           (id,nome,perfil,senha_hash,ativo,setor,primeiro_acesso)
+                           VALUES (%s,%s,%s,%s,true,'Todos',true)''',
+                        (login, name.strip(), role, hasher.hash(password)))
+    except psycopg.errors.UniqueViolation:
+        return jsonify(ok=False, error='Este login já está cadastrado.'), 409
+    except psycopg.Error:
+        app.logger.exception('Falha ao criar usuário unificado')
+        return jsonify(ok=False, error='Não foi possível criar o usuário.'), 503
+    guest_actions = {screen_id: ['view'] for screen_id in selected} if role == 'CONVIDADO' else None
+    status, error = save_unified_access(login, selected, actor, unit=unit,
+                                        guest_actions=guest_actions)
+    if error:
+        with connect() as conn, conn.cursor() as cur:
+            cur.execute('DELETE FROM public.usuarios WHERE id=%s', (login,))
+        return jsonify(ok=False, error=error), status
+    return jsonify(ok=True, user={'id': login, 'login': login, 'name': name.strip(),
+                                  'role': role, 'unit': unit, 'source': 'mapa',
+                                  'guest': role == 'CONVIDADO', 'active': True}), 201, {'Cache-Control':'no-store'}
 
 
 @app.post('/unified/guests')
@@ -1660,13 +1776,27 @@ def create_unified_guest():
 
 
 def save_unified_access(user_id, selected, actor, *, name=None, role=None, sector=None,
-                        guest_actions=None):
+                        unit=None, guest_actions=None):
     """Persist explicit grants; provision a personal PCP account on a master grant."""
     requested_role = required_planning_role(selected)
+    if unit is None and PEDERNEIRAS_SCREENS.intersection(selected):
+        with connect() as lookup, lookup.cursor() as cur:
+            cur.execute('SELECT unit_code FROM unificado_auth.user_units WHERE user_id=%s', (user_id,))
+            existing_unit = cur.fetchone()
+            unit = existing_unit['unit_code'] if existing_unit else 'campinas'
+    if unit is not None and unit not in USER_UNITS:
+        return 400, 'Unidade inválida.'
+    if unit is not None and any(not unit_allows_screen(unit, item) for item in selected):
+        return 400, 'Uma tela não pertence à unidade selecionada.'
+    if (unit == 'pederneiras' or PEDERNEIRAS_SCREENS.intersection(selected)) and actor['id'] not in MASTER_USER_IDS:
+        return 403, 'Somente administradores master podem alterar acessos de Pederneiras.'
     mapa_conn = connect()
     pcp_conn = None
     created_pcp_id = None
     changed_pcp = None
+    old_unit_grant = None
+    unit_grant_user_id = None
+    pederneiras_unit_id = None
     pcp_committed = False
     try:
         with mapa_conn.cursor() as cur:
@@ -1718,10 +1848,37 @@ def save_unified_access(user_id, selected, actor, *, name=None, role=None, secto
                         cur.execute("""INSERT INTO unificado_auth.identity_links
                                        (pcp_user_id,mapa_login,requires_reset)
                                        VALUES (%s,%s,false)""", (created_pcp_id, user_id))
+                    linked_pcp_id = created_pcp_id or (link and link['pcp_user_id'])
+                    if unit is not None and linked_pcp_id:
+                        planning.execute("SELECT id FROM producao.unidade WHERE codigo='pederneiras'")
+                        unit_row = planning.fetchone()
+                        if not unit_row:
+                            return 503, 'Unidade Pederneiras indisponível.'
+                        pederneiras_unit_id = unit_row['id']
+                        unit_grant_user_id = linked_pcp_id
+                        planning.execute("""SELECT papel,ativo FROM producao.usuario_unidade
+                                            WHERE usuario_id=%s AND unidade_id=%s FOR UPDATE""",
+                                         (linked_pcp_id, pederneiras_unit_id))
+                        old_unit_grant = planning.fetchone()
+                        can_open = unit == 'pederneiras' and bool(PEDERNEIRAS_SCREENS.intersection(selected))
+                        effective_role = role or target['perfil']
+                        unit_role = ('supervisor' if effective_role in {'GERENCIA','GESTOR'}
+                                     else 'operador' if effective_role == 'APONTADOR' else 'leitor')
+                        planning.execute("""INSERT INTO producao.usuario_unidade
+                                            (usuario_id,unidade_id,papel,ativo) VALUES (%s,%s,%s,%s)
+                                            ON CONFLICT (usuario_id,unidade_id) DO UPDATE SET
+                                            papel=excluded.papel,ativo=excluded.ativo""",
+                                         (linked_pcp_id, pederneiras_unit_id, unit_role, can_open))
             if name is not None:
                 cur.execute("""UPDATE public.usuarios SET nome=%s,perfil=%s,setor=%s,
                                updated_at=now() WHERE id=%s""",
                             (name, role, sector, user_id))
+            if unit is not None:
+                cur.execute("""INSERT INTO unificado_auth.user_units
+                               (user_id,unit_code,updated_by) VALUES (%s,%s,%s)
+                               ON CONFLICT (user_id) DO UPDATE SET
+                               unit_code=excluded.unit_code,updated_by=excluded.updated_by,
+                               updated_at=now()""", (user_id, unit, actor['id']))
             for screen in SCREEN_CATALOG:
                 cur.execute("""INSERT INTO unificado_auth.user_screen_permissions
                                (user_id,screen_id,allowed,updated_by) VALUES (%s,%s,%s,%s)
@@ -1747,12 +1904,24 @@ def save_unified_access(user_id, selected, actor, *, name=None, role=None, secto
             if pcp_committed:
                 with pcp_connect() as undo, undo.cursor() as cur:
                     if created_pcp_id:
+                        cur.execute('DELETE FROM producao.usuario_unidade WHERE usuario_id=%s',
+                                    (created_pcp_id,))
                         cur.execute('DELETE FROM public.usuarios WHERE id=%s', (created_pcp_id,))
                     elif changed_pcp:
                         cur.execute("""UPDATE public.usuarios SET nivel_acesso=%s::nivelacesso,ativo=%s,
                                        token_revoked_at=%s WHERE id=%s""",
                                     (str(changed_pcp['nivel_acesso']), changed_pcp['ativo'],
                                      changed_pcp['token_revoked_at'], changed_pcp['id']))
+                    if unit_grant_user_id and not created_pcp_id:
+                        if old_unit_grant:
+                            cur.execute("""UPDATE producao.usuario_unidade SET papel=%s,ativo=%s
+                                           WHERE usuario_id=%s AND unidade_id=%s""",
+                                        (old_unit_grant['papel'], old_unit_grant['ativo'],
+                                         unit_grant_user_id, pederneiras_unit_id))
+                        else:
+                            cur.execute("""DELETE FROM producao.usuario_unidade
+                                           WHERE usuario_id=%s AND unidade_id=%s""",
+                                        (unit_grant_user_id, pederneiras_unit_id))
             raise
         return 200, None
     except (psycopg.Error, KeyError, ValueError):
@@ -1794,9 +1963,14 @@ def user_screen_access(user_id):
                      screen['id'] not in GUEST_FORBIDDEN_SCREENS) and
                     (actor['id'] in MASTER_USER_IDS and
                      (screen['module'] == 'planejamento' or user['perfil'] == 'CONVIDADO')
-                     or role_allows(user, screen, planning_role, editable_lab_users))),
+                     or role_allows(user, screen, planning_role or 'PRODUCAO'
+                                    if screen['id'] in PEDERNEIRAS_SCREENS else planning_role,
+                                    editable_lab_users))),
                 "mapa_roles": [role for role in ("GERENCIA", "GESTOR", "MONTADOR", "APONTADOR")
-                               if role_allows({**user, "perfil": role}, screen, planning_role, LAB_ALLOWED_USERS)]
+                               if role_allows({**user, "perfil": role}, screen,
+                                              planning_role or 'PRODUCAO'
+                                              if screen['id'] in PEDERNEIRAS_SCREENS else planning_role,
+                                              LAB_ALLOWED_USERS)]
                                if screen["module"] == "producao" else [],
                 "checked": screen["id"] in allowed,
                 "actions": guest_actions.get(screen['id'], []) if user['perfil'] == 'CONVIDADO' else None
@@ -1959,6 +2133,7 @@ def update_user_screen_access(user_id):
     if user['perfil'] == 'CONVIDADO':
         return jsonify(ok=False, error='Use o editor de ações do convidado.'), 400
     _, planning_role = screen_access_state(user)
+    planning_role = planning_role or required_planning_role(set(selected))
     if any(SCREENS_BY_ID[item]['module'] != 'planejamento'
            and not role_allows(user, SCREENS_BY_ID[item], planning_role, LAB_ALLOWED_USERS | {user_id})
            or SCREENS_BY_ID[item]['module'] == 'planejamento'
@@ -1980,14 +2155,15 @@ def update_unified_user(user_id):
     if user_id in MASTER_USER_IDS:
         return jsonify(ok=False, error='A conta do administrador master não pode ser alterada.'), 409
     data = request.get_json(silent=True)
-    base_fields = {"name", "role", "sector", "screens"}
+    base_fields = {"name", "role", "sector", "screens", "unit"}
     if not isinstance(data, dict) or set(data) not in (base_fields, base_fields | {'actions'}):
         return jsonify(ok=False, error="Dados inválidos"), 400
     name, role, sector, selected = data["name"], data["role"], data["sector"], data["screens"]
+    unit = data['unit']
     if (not isinstance(name, str) or not name.strip() or len(name) > 200
             or role not in {"GERENCIA", "GESTOR", "MONTADOR", "APONTADOR", "CONVIDADO"}
             or not isinstance(sector, str) or sector not in {"Todos", *SECTORS}
-            or not isinstance(selected, list)
+            or unit not in USER_UNITS or not isinstance(selected, list)
             or any(not isinstance(item, str) or item not in SCREENS_BY_ID for item in selected)):
         return jsonify(ok=False, error="Dados inválidos"), 400
     with connect() as conn, conn.cursor() as cur:
@@ -2011,7 +2187,7 @@ def update_unified_user(user_id):
                        for screen_id, grants in actions.items())):
             return jsonify(ok=False, error='Selecione as ações de cada tela liberada.'), 400
         status, error = save_unified_access(user_id, set(selected), actor,
-                                            name=name.strip(), role=role, sector=sector,
+                                            name=name.strip(), role=role, sector=sector, unit=unit,
                                             guest_actions=actions)
         if error:
             return jsonify(ok=False, error=error), status
@@ -2020,6 +2196,7 @@ def update_unified_user(user_id):
         return jsonify(ok=False, error='Dados inválidos'), 400
     changed = {**user, "nome": name.strip(), "perfil": role}
     _, planning_role = screen_access_state(changed)
+    planning_role = planning_role or required_planning_role(set(selected))
     if any(SCREENS_BY_ID[item]['module'] != 'planejamento'
            and not role_allows(changed, SCREENS_BY_ID[item], planning_role, LAB_ALLOWED_USERS | {user_id})
            or SCREENS_BY_ID[item]['module'] == 'planejamento'
@@ -2028,7 +2205,7 @@ def update_unified_user(user_id):
            for item in selected):
         return jsonify(ok=False, error="O perfil não permite uma das telas"), 403
     status, error = save_unified_access(user_id, set(selected), actor,
-                                        name=name.strip(), role=role, sector=sector)
+                                        name=name.strip(), role=role, sector=sector, unit=unit)
     if error:
         return jsonify(ok=False, error=error), status
     return jsonify(ok=True), 200, {"Cache-Control": "no-store"}
@@ -2040,8 +2217,11 @@ def unified_users_list():
     if not actor:
         return jsonify(ok=False), 403
     with connect() as conn, conn.cursor() as cur:
-        cur.execute("""SELECT id,nome,perfil,ativo,setor,primeiro_acesso
-                       FROM public.usuarios WHERE deleted_at IS NULL ORDER BY nome,id""")
+        cur.execute("""SELECT u.id,u.nome,u.perfil,u.ativo,u.setor,u.primeiro_acesso,
+                              coalesce(uu.unit_code,'campinas') AS unit_code
+                       FROM public.usuarios u LEFT JOIN unificado_auth.user_units uu
+                         ON uu.user_id=u.id
+                       WHERE u.deleted_at IS NULL ORDER BY u.nome,u.id""")
         mapa_users = cur.fetchall()
         cur.execute("""SELECT mapa_login,pcp_user_id FROM unificado_auth.identity_links
                        ORDER BY id""")
@@ -2067,7 +2247,7 @@ def unified_users_list():
         item = public_user(row)
         display_login = (counterpart['username'] if counterpart and
                          row['id'].startswith('unif-pcp-') else row['id'])
-        item.update(source="mapa", login=display_login,
+        item.update(source="mapa", login=display_login, unit=row['unit_code'],
                     guest=row['perfil'] == 'CONVIDADO',
                     can_manage=row['perfil'] != 'CONVIDADO' or actor['id'] in MASTER_USER_IDS,
                     pcp_id=counterpart["id"] if counterpart else None,
@@ -2087,7 +2267,7 @@ def unified_users_list():
         users.append(dict(id=f'pcp:{row["id"]}', pcp_id=row["id"], source="pcp",
                           can_manage=actor['id'] in MASTER_USER_IDS,
                           login=row["username"], name=row["nome"], role=str(row["nivel_acesso"]),
-                          active=row["ativo"], setor=row["setor_nome"] or "Todos",
+                          active=row["ativo"], setor=row["setor_nome"] or "Todos", unit='campinas',
                           production_role=None, planning_role=str(row["nivel_acesso"]),
                           laboratory_role=None, planning_sector=row["setor_nome"],
                           planning_active=row["ativo"]))

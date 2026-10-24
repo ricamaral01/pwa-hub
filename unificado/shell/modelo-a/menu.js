@@ -5948,6 +5948,7 @@ const Dn = {
     xe("NÃO CONFORMIDADES", [
       ["qualidadePainel", "Painel de RNCs", "qualidade/", "alert"],
       ["qualidadeAbertura", "Abrir RNC", "qualidade/abrir", "doc"],
+      ["qualidadeResultadosBancada", "Resultados de bancada", "qualidade/resultados-bancada", "doc"],
       ["qualidadeCadastros", "Cadastros", "qualidade/cadastros", "database"]
     ])
   ] },
@@ -5958,6 +5959,7 @@ const Dn = {
       ["labDevice", "Dispositivo", "laboratorio/?view=settings", "sliders"]
     ]),
     xe("POSTES", [
+      ["labCertificados", "Certificados de qualidade", "laboratorio/certificados-qualidade/", "doc"],
       ["labPole", "Ensaio de postes", "laboratorio/novo/postes", "post"],
       ["labAbsorption", "Absorção", "laboratorio/novo/postes?tab=absorcao", "drop"],
       ["labTests", "Histórico de ensaios", "laboratorio/novo/postes?tab=historico", "history"],

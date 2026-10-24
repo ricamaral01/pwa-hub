@@ -91,6 +91,7 @@ const MENU_CONFIG = {
     groups: [{ label: 'Não conformidades', items: [
       { id:'qualidadePainel', label:'Painel', path:'' },
       { id:'qualidadeAbertura', label:'Abrir NC', path:'abrir' },
+      { id:'qualidadeResultadosBancada', label:'Resultados de bancada', path:'resultados-bancada' },
       { id:'qualidadeCadastros', label:'Cadastros', path:'cadastros' }
     ] }]
   },
@@ -141,6 +142,7 @@ const MENU_CONFIG = {
         { id:'labDevice', label:'Dispositivo', path:'?view=settings' }
       ] },
       { label: 'Postes', items: [
+        { id:'labCertificados', label:'Certificados de qualidade', path:'certificados-qualidade/' },
         { id:'labPole', label:'Ensaio de postes', path:'novo/postes' },
         { id:'labAbsorption', label:'Absorção', path:'novo/postes?tab=absorcao' },
         { id:'labTests', label:'Histórico de ensaios', path:'novo/postes?tab=historico' },
