@@ -10,6 +10,7 @@ O backend PCP publicado na VPS foi conciliado com o código mais recente do serv
 - `tests/pederneiras/scratch_http_flow.py` no banco isolado `pcp_pederneiras_t4_test`: 5 postes, 0,25 homem, bloqueio sem equipe, confirmação, 20 postes/homem, dois registros de auditoria, PDF e XLSX válidos; consultas legadas de Campinas não exibiram os dados de Pederneiras.
 - API pública com JWT master ativo: produtos 112, áreas 0, meta 1.472, PDF e XLSX HTTP 200. Todas as rotas estáticas, JS, ícones, manifestos e workers testados retornaram HTTP 200. Nginx validado com `nginx -t`; PCP, autenticação Mapa e Nginx ativos.
 - Capturas desktop e celular em `prints/` foram feitas com API sintética. O teste de PWA verificou fila offline e sincronização por API simulada.
+- Acabamento `1.0.45`: build React concluído, 10 testes passaram novamente, commit `a6974220` enviado a `feat/sistema-unificado`. Backup da aplicação estática anterior em `/opt/concrefer-unificado/backups/pederneiras-final-before-1.0.45.tar.gz`; os 13 arquivos novos foram aplicados na VPS nova. `nginx -t` passou. A URL pública `/unificado/VERSION`, o service worker, os três bundles JS/CSS e os dois manifestos PWA responderam HTTP 200. As páginas de trabalho exigem autenticação e retornaram 403 sem sessão, como esperado.
 
 ## Pendências de entrada e validação real
 
