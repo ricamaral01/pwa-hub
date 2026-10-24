@@ -43,7 +43,7 @@ let previewModules = false;
 let hasGedAccess = false;
 let grantedScreens = null;
 const moduleHasScreens = module => grantedScreens === null || Object.values(MENU_ITEMS).some(
-  item => item.module === module && grantedScreens.has(item.id));
+  item => item.module === module && grantedScreens.has(item.permissionId || item.id));
 const canAccessModule = module =>
   (masterIds.has(mapaUser?.id) && hasMapa ? true :
    module === 'qualidade' ? previewModules && hasMapa :
@@ -74,11 +74,17 @@ const accessReady = hasMapa ? fetch('/unificado/mapa/api/unified/screen-access/m
   credentials:'same-origin', cache:'no-store'
 }).then(async response => {
   if (response.status === 401 && await recoverMdoShellSession()) return false;
+  if (response.status === 401) {
+    grantedScreens = new Set();
+    localStorage.removeItem('pwa_mapa_auth_session_v1');
+    location.replace(new URL('login.html?next=index.html', UNIFICADO_BASE));
+    return false;
+  }
   if (!response.ok) throw new Error('screen access');
   const result = await response.json();
   grantedScreens = new Set(result.screens || []);
   previewModules = result.preview_modules === true;
-  hasGedAccess = previewModules && hasMapa;
+  hasGedAccess = hasMapa && (result.ged_access === true || previewModules);
   hasLab = hasLab && moduleHasScreens('laboratorio');
   if (!canAccessModule(currentModule))
     currentModule = ['planejamento','producao','laboratorio'].find(canAccessModule) || '';
@@ -251,7 +257,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.41';
+const APP_VERSION = '1.0.42';
 let platformUpdateAvailable = false;
 async function checkPlatformUpdate() {
   const button = document.getElementById('platform-update');
