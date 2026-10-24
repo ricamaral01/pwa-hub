@@ -14,7 +14,8 @@ O backend PCP publicado na VPS foi conciliado com o código mais recente do serv
 
 ## Pendências de entrada e validação real
 
-1. Classificação MOD/MOI corrigida das áreas, prometida pelo Ricardo: cadastrar em **Produção Pederneiras → Mão de obra → Configurar áreas** quando estiver definida. A tela não atribui mais MOD automaticamente.
-2. Gestor da unidade: Ricardo informou que criará a conta depois. Alex permanece master no Mapa, mas a conta PCP está inativa e precisa de reconciliação para a API.
-3. Excel original LT-PRO-04 indisponível. O PDF impresso diverge do próprio rodapé e contém dia 29/10 futuro; nenhuma produção histórica foi importada. Ver `11-paridade.md`.
-4. Confirmar instalação e fluxo de trabalho dos PWAs em iPhone e Android reais com o gestor e as áreas corretas. A planilha segue em uso paralelo até essa validação.
+1. **Concluído em 24/10:** Ricardo definiu cinco áreas; Produção é MOD e Usina de Concreto, Fab Armação e estribos, Encarregado Produção e Sacador núcleo são MOI. Áreas e histórico validado foram cadastrados em produção. Ver `13-excel-importacao.md`.
+2. **Acesso a configurar pelo Ricardo:** ele criará o gestor da unidade depois. Os cadastros existentes foram mantidos, inclusive Ricardo, Marcelo e Alex como masters no Mapa. A conta PCP de Alex ainda está inativa e requer reconciliação se ele for acessar a API.
+3. **Fonte histórica:** Excel recebido e confrontado com o PDF. Foram importados somente os 16 dias válidos até 23/10. Os 74 postes escritos no rodapé de 29/10, sem itens ou equipe, ficaram fora. Ver `13-excel-importacao.md`.
+4. **Validação em aparelhos reais:** confirmar instalação e fluxo de trabalho dos dois PWAs em iPhone e Android com o gestor. Manter a planilha em paralelo até essa validação.
+5. **Cadastro definitivo:** revisar códigos, letras e m³ por peça dos 112 produtos provisórios quando houver tabela definitiva.

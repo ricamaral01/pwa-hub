@@ -1,5 +1,7 @@
 # T11 — Fonte de outubro e divergências da planilha impressa
 
+**Atualização de 24/10/2026:** o Excel original chegou. A diferença de seis peças é de acessórios fora da fórmula de postes; os 74 do dia 29 estão escritos somente no rodapé. Os dias válidos foram importados com auditoria. Ver [conciliação e importação](13-excel-importacao.md). O texto abaixo registra a análise anterior do PDF.
+
 Foi localizado em `C:\Users\Admin\Downloads` um PDF de uma página intitulado **LT-PRO-04 — Controle de Produção - Poste Padrão SMA - Pederneiras**, outubro/2026, além de uma página de codificações. O Excel original continua ausente. Nenhum lançamento foi importado no banco operacional.
 
 O script `scripts/extract_pederneiras_pdf.py` extraiu as 112 linhas de produtos por coordenadas e conferiu a soma das células com o total impresso de cada linha. A transcrição está em `seed/paridade_pdf_outubro_2026.csv` e permite reproduzir a análise com o PDF local.
