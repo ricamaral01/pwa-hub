@@ -60,7 +60,7 @@
     if (path === 'producao/pederneiras/') return {url, module:'producao', path};
     if (path === 'usinas/') return {url, module:'usinas', path};
     if (path === 'relatorios/fechamento-diario/') return {url, module:'producao', path};
-    if (path === 'laboratorio/' || path === 'laboratorio/dosagem/' || path === 'laboratorio/slump' || path === 'laboratorio/slump/' || path === 'laboratorio/novo/postes' ||
+    if (path === 'laboratorio/' || path === 'laboratorio/certificados-qualidade/' || path === 'laboratorio/dosagem/' || path === 'laboratorio/slump' || path === 'laboratorio/slump/' || path === 'laboratorio/novo/postes' ||
         /^laboratorio\/cec(?:\/(?:resultados|relatorio|analise|etiquetas|leitura))?\/?$/.test(path) ||
         /^laboratorio\/cec\/analise\/(?:resultado-cp|relatorio)\.html$/.test(path) ||
         /^laboratorio\/cronoanalise(?:\/(?:inicio|coletar|medicoes|catalogo|dimensionar|simular|metodologia))?\/?$/.test(path))

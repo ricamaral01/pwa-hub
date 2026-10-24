@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Histórico de certificados</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F8}
+a{color:#0F2C4C}a:hover{color:#0A1E35}
+input,select{font:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F3F5F8; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14202E">
+
+  <nav aria-label="Menu" style="flex: 1 1 232px; max-width: 100%; background: #0F2C4C; color: #FFFFFF; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 0 8px">
+      <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #B9C7D8">Módulo</span>
+      <span style="font-size: 18px; font-weight: 700">Laboratório</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px; font-size: 15px">
+      <a href="#" style="color: #DCE5EF; text-decoration: none; padding: 10px; border-radius: 10px">Rompimentos de CP</a>
+      <a href="#" style="color: #DCE5EF; text-decoration: none; padding: 10px; border-radius: 10px">Controle estatístico</a>
+      <a href="#" style="color: #DCE5EF; text-decoration: none; padding: 10px; border-radius: 10px">Temperatura de cura</a>
+      <a href="#" aria-current="page" style="color: #FFFFFF; text-decoration: none; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.12); font-weight: 600">Certificados de qualidade</a>
+      <a href="#" style="color: #DCE5EF; text-decoration: none; padding: 10px; border-radius: 10px">Equipamentos e calibração</a>
+    </div>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+    <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 13px; color: #5A6675">Laboratório / Certificados</span>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 700">Certificados de qualidade</h1>
+      </div>
+      <a href="Main.dc.html" style="height: 46px; padding: 0 18px; border-radius: 12px; background: #C2561A; color: #FFFFFF; display: flex; align-items: center; font-size: 15px; font-weight: 700; text-decoration: none">+ Novo certificado</a>
+    </header>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+      <div style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #5A6675">Emitidos em outubro</span><strong style="font-size: 26px">[n]</strong></div>
+      <div style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #5A6675">Aguardando 28 dias</span><strong style="font-size: 26px; color: #8A4B00">[n]</strong></div>
+      <div style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #5A6675">Rascunhos</span><strong style="font-size: 26px">[n]</strong></div>
+      <div style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #5A6675">Não conformes (bloqueados)</span><strong style="font-size: 26px; color: #9A1B12">[n]</strong></div>
+    </div>
+
+    <section style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end">
+        <label style="flex: 2 1 240px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Buscar<input placeholder="Nº, cliente, nota fiscal ou lote" style="height: 42px; border: 1px solid #C9D2DD; border-radius: 10px; padding: 0 12px; font-size: 15px; font-weight: 400"></label>
+        <label style="flex: 1 1 160px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Período<input value="01/10/2026 – 18/10/2026" style="height: 42px; border: 1px solid #C9D2DD; border-radius: 10px; padding: 0 12px; font-size: 15px; font-weight: 400"></label>
+        <div role="group" aria-label="Situação" style="flex: 3 1 380px; display: flex; flex-wrap: wrap; gap: 6px">
+          <sc-for list="{{ filtros }}" as="f" hint-placeholder-count="5">
+            <button onClick="{{ f.pick }}" style="{{ f.style }}">{{ f.nome }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto; border: 1px solid #DDE3EA; border-radius: 12px">
+        <table style="width: 100%; min-width: 860px; border-collapse: collapse; font-size: 14px">
+          <thead>
+            <tr style="background: #F8FAFC; color: #5A6675; text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase">
+              <th style="padding: 10px 12px; font-weight: 600">Nº</th>
+              <th style="padding: 10px 8px; font-weight: 600">Emissão</th>
+              <th style="padding: 10px 8px; font-weight: 600">Cliente</th>
+              <th style="padding: 10px 8px; font-weight: 600">NF</th>
+              <th style="padding: 10px 8px; font-weight: 600">Lotes</th>
+              <th style="padding: 10px 8px; font-weight: 600; text-align: right">Postes</th>
+              <th style="padding: 10px 8px; font-weight: 600">Situação</th>
+              <th style="padding: 10px 12px; font-weight: 600; text-align: right">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{ lista }}" as="c" hint-placeholder-count="7">
+              <tr style="border-top: 1px solid #EEF1F5">
+                <td style="padding: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px">{{ c.num }}<sc-if value="{{ c.rev }}" hint-placeholder-val="{{ false }}"><span style="margin-left: 6px; font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; color: #5A6675">{{ c.rev }}</span></sc-if></td>
+                <td style="padding: 12px 8px">{{ c.emissao }}</td>
+                <td style="padding: 12px 8px">{{ c.cliente }}</td>
+                <td style="padding: 12px 8px">{{ c.nf }}</td>
+                <td style="padding: 12px 8px; color: #3D4855">{{ c.lotes }}</td>
+                <td style="padding: 12px 8px; text-align: right; font-variant-numeric: tabular-nums">{{ c.postes }}</td>
+                <td style="padding: 12px 8px"><span style="{{ c.chip }}">{{ c.status }}</span></td>
+                <td style="padding: 8px 12px; text-align: right; white-space: nowrap">
+                  <a href="Certificado.dc.html" style="display: inline-flex; align-items: center; height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #C9D2DD; font-size: 13px; font-weight: 600; text-decoration: none">PDF</a>
+                  <a href="Main.dc.html" style="display: inline-flex; align-items: center; height: 36px; padding: 0 12px; margin-left: 6px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none">{{ c.acao }}</a>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </div>
+      <span style="font-size: 13px; color: #5A6675">{{ rodape }}</span>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { f: 'todos' }; }
+  renderVals() {
+    var self = this, f = this.state.f;
+    var CH = {
+      emit: 'padding: 4px 10px; border-radius: 999px; background: #E3F3EA; color: #17693F; font-size: 13px; font-weight: 600',
+      pend: 'padding: 4px 10px; border-radius: 999px; background: #FFF4E5; color: #8A4B00; font-size: 13px; font-weight: 600; border: 1px solid #F0C68A',
+      rasc: 'padding: 4px 10px; border-radius: 999px; background: #EEF1F5; color: #3D4855; font-size: 13px; font-weight: 600',
+      bad: 'padding: 4px 10px; border-radius: 999px; background: #FDECEC; color: #9A1B12; font-size: 13px; font-weight: 600; border: 1px solid #E8A3A3',
+      canc: 'padding: 4px 10px; border-radius: 999px; background: #FFFFFF; color: #5A6675; font-size: 13px; font-weight: 600; border: 1px dashed #9AA6B4; text-decoration: line-through'
+    };
+    var NOME = { emit: 'Emitido', pend: 'Aguardando 28 dias', rasc: 'Rascunho', bad: 'Não conforme', canc: 'Substituído' };
+    var data = [
+      ['CQ-2026-0148', '', '—', '[Cliente A]', '[NF]', 'L20260910 · L20260915 · L20260925', 30, 'pend'],
+      ['CQ-2026-0147', 'rev. 1', '17/10/2026', '[Cliente B]', '[NF]', 'L20260912', 24, 'emit'],
+      ['CQ-2026-0147', 'rev. 0', '16/10/2026', '[Cliente B]', '[NF]', 'L20260912', 24, 'canc'],
+      ['CQ-2026-0146', '', '15/10/2026', '[Cliente C]', '[NF]', 'L20260908 · L20260910', 40, 'emit'],
+      ['CQ-2026-0145', '', '—', '[Cliente D]', '[NF]', 'L20260930', 6, 'bad'],
+      ['CQ-2026-0144', '', '—', '[Cliente E]', '—', 'L20260918', 12, 'rasc'],
+      ['CQ-2026-0143', '', '10/10/2026', '[Cliente A]', '[NF]', 'L20260901', 18, 'emit']
+    ];
+    var lista = data.filter(function (d) { return f === 'todos' || d[7] === f; }).map(function (d) {
+      return { num: d[0], rev: d[1], emissao: d[2], cliente: d[3], nf: d[4], lotes: d[5], postes: d[6], status: NOME[d[7]], chip: CH[d[7]], acao: d[7] === 'emit' || d[7] === 'canc' ? 'Abrir' : 'Continuar' };
+    });
+    var on = 'height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid #0F2C4C; background: #0F2C4C; color: #FFFFFF; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer';
+    var off = 'height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid #C9D2DD; background: #FFFFFF; color: #14202E; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer';
+    var opts = [['todos', 'Todos'], ['emit', 'Emitidos'], ['pend', 'Aguardando 28 dias'], ['rasc', 'Rascunhos'], ['bad', 'Não conformes']];
+    return {
+      lista: lista,
+      filtros: opts.map(function (o) { return { nome: o[1], style: f === o[0] ? on : off, pick: function () { self.setState({ f: o[0] }); } }; }),
+      rodape: lista.length + ' certificado(s) · dados de exemplo'
+    };
+  }
+}
+</script>
+</body>
+</html>

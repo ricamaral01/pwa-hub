@@ -548,6 +548,10 @@
     "id": "qualidadeCadastros", "module": "qualidade", "label": "Cadastros",
     "path": "/unificado/qualidade/cadastros", "query": "", "screen": null, "require": null
   },
+  {
+    "id": "qualidadeResultadosBancada", "module": "qualidade", "label": "Resultados de bancada",
+    "path": "/unificado/qualidade/resultados-bancada", "query": "", "screen": null, "require": null
+  },
   {"id":"cronoanalise.inicio","module":"laboratorio","label":"Cronoanálise: Início","path":"/unificado/laboratorio/cronoanalise","query":"","screen":null,"require":null},
   {"id":"cronoanalise.coletar","module":"laboratorio","label":"Cronoanálise: Coletar","path":"/unificado/laboratorio/cronoanalise/coletar","query":"","screen":null,"require":null},
   {"id":"cronoanalise.medicoes","module":"laboratorio","label":"Cronoanálise: Medições","path":"/unificado/laboratorio/cronoanalise/medicoes","query":"","screen":null,"require":null},
@@ -561,5 +565,6 @@
   {"id":"labCecRelatorio","module":"laboratorio","label":"Relatório CEC","path":"/unificado/laboratorio/cec/analise/relatorio.html","query":"","screen":null,"require":null},
   {"id":"labCecAnalise","module":"laboratorio","label":"Análise estatística","path":"/unificado/laboratorio/cec/analise/","query":"","screen":null,"require":null},
   {"id":"labCecEtiquetas","module":"laboratorio","label":"Etiquetas QR","path":"/unificado/laboratorio/cec/etiquetas/","query":"","screen":null,"require":null},
-  {"id":"labCecLeitura","module":"laboratorio","label":"Leitura de CP","path":"/unificado/laboratorio/cec/leitura/","query":"","screen":null,"require":null}
+  {"id":"labCecLeitura","module":"laboratorio","label":"Leitura de CP","path":"/unificado/laboratorio/cec/leitura/","query":"","screen":null,"require":null},
+  {"id":"labCertificados","module":"laboratorio","label":"Certificados de qualidade","path":"/unificado/laboratorio/certificados-qualidade/","query":"","screen":null,"require":null}
 ]

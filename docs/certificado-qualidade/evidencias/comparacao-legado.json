@@ -1,0 +1,78 @@
+{
+  "total_legado": 8,
+  "comparaveis": 1,
+  "registros": [
+    {
+      "numero": "CQ-20260331-094454",
+      "data_producao": "2026-03-16",
+      "antigo_r28": null,
+      "novo_r28": null,
+      "novo_status": "sem_resultado",
+      "comparavel": false,
+      "delta_mpa": null
+    },
+    {
+      "numero": "CQ-20260326-153230",
+      "data_producao": "2026-02-04",
+      "antigo_r28": 33,
+      "novo_r28": 33.0,
+      "novo_status": "nao_conforme",
+      "comparavel": true,
+      "delta_mpa": 0.0
+    },
+    {
+      "numero": "CQ-20260323-070618",
+      "data_producao": "2026-02-06",
+      "antigo_r28": 39.555,
+      "novo_r28": null,
+      "novo_status": "aguardando_28_dias",
+      "comparavel": false,
+      "delta_mpa": null
+    },
+    {
+      "numero": "CQ-20260318-170850",
+      "data_producao": "2025-10-07",
+      "antigo_r28": 42.75102420382165,
+      "novo_r28": null,
+      "novo_status": "sem_resultado",
+      "comparavel": false,
+      "delta_mpa": null
+    },
+    {
+      "numero": "CQ-20260305-082518",
+      "data_producao": "2025-10-29",
+      "antigo_r28": 47.16105095541401,
+      "novo_r28": null,
+      "novo_status": "sem_resultado",
+      "comparavel": false,
+      "delta_mpa": null
+    },
+    {
+      "numero": "CQ-20260303-122846",
+      "data_producao": "2026-02-09",
+      "antigo_r28": null,
+      "novo_r28": 46.2,
+      "novo_status": "conforme",
+      "comparavel": false,
+      "delta_mpa": null
+    },
+    {
+      "numero": "CQ-20260302-090516",
+      "data_producao": "2025-11-18",
+      "antigo_r28": 45.8,
+      "novo_r28": null,
+      "novo_status": "sem_resultado",
+      "comparavel": false,
+      "delta_mpa": null
+    },
+    {
+      "numero": "CQ-20260301-140257",
+      "data_producao": "2025-10-10",
+      "antigo_r28": 48.72267515923567,
+      "novo_r28": null,
+      "novo_status": "sem_resultado",
+      "comparavel": false,
+      "delta_mpa": null
+    }
+  ]
+}

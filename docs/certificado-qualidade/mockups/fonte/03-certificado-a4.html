@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Certificado de Qualidade — PDF A4</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#0F2C4C}a:hover{color:#0A1E35}
+</style>
+</helmet>
+<div style="width: 794px; height: 1123px; box-sizing: border-box; position: relative; overflow: hidden; background: #FFFFFF; padding: 34px 44px 26px; display: flex; flex-direction: column; gap: 10px; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #111820; font-size: 12px; line-height: 1.35">
+
+  <div aria-hidden="true" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 64px; font-weight: 700; letter-spacing: 0.08em; color: rgba(15,44,76,0.05); white-space: nowrap">MODELO · DADOS DE EXEMPLO</div>
+
+  <header style="display: grid; grid-template-columns: 140px 1fr 186px; gap: 14px; align-items: center; border-bottom: 2px solid #0F2C4C; padding-bottom: 10px">
+    <div style="height: 50px; border: 1px dashed #9AA6B4; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #5A6675">[Logo Concrefer]</div>
+    <div style="display: flex; flex-direction: column; gap: 1px">
+      <h1 style="margin: 0; font-size: 21px; font-weight: 700; color: #0F2C4C">Certificado de Qualidade</h1>
+      <span style="font-size: 12.5px; color: #3D4855">Postes de concreto armado · ABNT NBR 8451</span>
+    </div>
+    <div style="border: 1px solid #0F2C4C; border-radius: 6px; padding: 6px 9px; display: flex; flex-direction: column; gap: 2px">
+      <div style="display: flex; justify-content: space-between"><span style="color: #3D4855">Nº</span><strong style="font-family: 'IBM Plex Mono', monospace">CQ-2026-0146</strong></div>
+      <div style="display: flex; justify-content: space-between"><span style="color: #3D4855">Revisão</span><strong>0</strong></div>
+      <div style="display: flex; justify-content: space-between"><span style="color: #3D4855">Emissão</span><strong>15/10/2026</strong></div>
+    </div>
+  </header>
+
+  <section style="display: grid; grid-template-columns: 1fr 170px; border: 1px solid #9AA6B4">
+    <div style="padding: 5px 9px; border-right: 1px solid #9AA6B4; border-bottom: 1px solid #9AA6B4"><span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: #3D4855">Cliente </span><strong style="margin-left: 6px">[Razão social do cliente]</strong></div>
+    <div style="padding: 5px 9px; border-bottom: 1px solid #9AA6B4"><span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: #3D4855">NF </span><strong style="margin-left: 6px">[Nº NF]</strong></div>
+    <div style="padding: 5px 9px; border-right: 1px solid #9AA6B4"><span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: #3D4855">Entrega </span><span style="margin-left: 6px">[Endereço, cidade – UF]</span></div>
+    <div style="padding: 5px 9px"><span style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: #3D4855">Unidade </span><span style="margin-left: 6px">[Unidade]</span></div>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: 4px">
+    <h2 style="margin: 0; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.06em; color: #0F2C4C">1. Produtos fornecidos</h2>
+    <table style="width: 100%; border-collapse: collapse">
+      <thead>
+        <tr style="background: #E9EEF4">
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center; width: 38%">Modelo</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">Altura (m)</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">Carga (daN)</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">Peso (kg)</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">Qtd</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">Data de produção</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">Lote</th>
+        </tr>
+      </thead>
+      <tbody>
+        <sc-for list="{{ prod }}" as="p" hint-placeholder-count="10">
+          <tr>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: left">{{ p.modelo }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">{{ p.alt }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">{{ p.carga }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">{{ p.peso }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">{{ p.qtd }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">{{ p.data }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-align: center">{{ p.lote }}</td>
+          </tr>
+        </sc-for>
+        <tr style="background: #F6F8FA"><td colspan="4" style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center; font-weight: 600">Total de postes</td><td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center; font-weight: 700">{{ total }}</td><td colspan="2" style="border: 1px solid #9AA6B4; padding: 2px 7px"></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: 4px">
+    <h2 style="margin: 0; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.06em; color: #0F2C4C">2. Resistência à compressão por data de produção (MPa)</h2>
+    <table style="width: 100%; border-collapse: collapse">
+      <thead>
+        <tr style="background: #E9EEF4">
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">Data de produção</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">CPs</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">3 dias</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">7 dias</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">28 dias</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">fck</th>
+          <th style="border: 1px solid #9AA6B4; padding: 3px 7px; text-align: center">Resultado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <sc-for list="{{ res }}" as="r" hint-placeholder-count="10">
+          <tr>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; font-weight: 600; text-align: center">{{ r.data }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">{{ r.ncp }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">{{ r.r3 }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">{{ r.r7 }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center; font-weight: 700">{{ r.r28 }}</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center">35,0</td>
+            <td style="border: 1px solid #9AA6B4; padding: 2px 7px; text-align: center; font-weight: 700">CONFORME</td>
+          </tr>
+        </sc-for>
+      </tbody>
+    </table>
+    <span style="font-size: 11px; color: #3D4855">Média dos corpos de prova moldados na data de produção dos postes (ABNT NBR 5738 e NBR 5739). Conforme quando a média aos 28 dias supera o fck. Fonte: controle estatístico do laboratório.</span>
+  </section>
+
+  <section style="display: grid; grid-template-columns: 210px 1fr; border: 1px solid #9AA6B4; font-size: 11.5px">
+    <div style="padding: 5px 8px; border-right: 1px solid #9AA6B4; display: flex; flex-direction: column; gap: 1px">
+      <strong style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #0F2C4C">Normas</strong>
+      <span>ABNT NBR 8451-1 a 8451-5</span>
+      <span>ABNT NBR 5738 · ABNT NBR 5739</span>
+    </div>
+    <div style="padding: 5px 8px; display: flex; flex-direction: column; gap: 1px">
+      <strong style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #0F2C4C">Prensa de ensaio (aferição)</strong>
+      <span>[Fabricante] [modelo] · série [nº] · patrimônio [nº] · [kN], classe [1]</span>
+      <span>Calibração: certificado [nº] · [laboratório RBC] · em [data] · <strong>válida até [data]</strong></span>
+    </div>
+  </section>
+
+  <section style="margin-top: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; padding: 0 16px; align-items: end">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center">
+      <div aria-hidden="true" style="{{ sigSpacer }}"></div>
+      <div style="width: 100%; border-top: 1px solid #111820; margin-bottom: 3px"></div>
+      <strong>Ricardo Do Amaral</strong>
+      <span style="color: #3D4855">Responsável pelo laboratório</span>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center">
+      <img src="ASSINATURA_ENGENHEIRO_PNG" alt="Assinatura do engenheiro responsável" style="{{ sigImg }}">
+      <div style="width: 100%; border-top: 1px solid #111820; margin-bottom: 3px"></div>
+      <strong>Eng. Marcelo Eduardo Ishizaki de Sousa</strong>
+      <span style="color: #3D4855">Engenheiro responsável · CREA 5063392251</span>
+    </div>
+  </section>
+
+  <footer style="{{ footBox }}">
+    <svg width="{{ qr }}" height="{{ qr }}" viewBox="0 0 21 21" role="img" aria-label="QR de verificação (ilustrativo)" style="flex: none; display: block">
+      <rect width="21" height="21" fill="#FFFFFF"></rect>
+      <path fill="#111820" d="M0 0h7v7H0zM1 1v5h5V1zM2 2h3v3H2zM14 0h7v7h-7zM15 1v5h5V1zM16 2h3v3h-3zM0 14h7v7H0zM1 15v5h5v-5zM2 16h3v3H2zM8 0h1v2H8zM10 1h2v1h-2zM9 3h2v2H9zM12 4h1v3h-1zM8 6h2v1H8zM0 8h2v1H0zM3 8h3v1H3zM8 8h4v1H8zM13 8h1v2h-1zM15 8h3v1h-3zM19 8h2v2h-2zM1 10h2v2H1zM5 10h3v1H5zM9 10h2v2H9zM12 11h3v1h-3zM16 10h2v3h-2zM4 12h1v1H4zM7 12h1v1H7zM19 12h2v1h-2zM8 14h2v2H8zM11 14h3v1h-3zM15 14h1v3h-1zM17 15h3v1h-3zM9 17h3v1H9zM13 17h1v2h-1zM8 19h2v2H8zM11 19h1v2h-1zM16 18h2v3h-2zM19 18h2v1h-2zM19 20h2v1h-2z"></path>
+    </svg>
+    <span style="{{ footText }}"><strong style="{{ footTitle }}">Documento emitido eletronicamente</strong>Emitido eletronicamente em 15/10/2026 14:32 por [usuário] · Concretrack Laboratório · verificação: concrefer.concretrack.com.br/v/CQ-2026-0146. Válido somente para os lotes e produtos relacionados.</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"datas":{"editor":"range","min":1,"max":10,"step":1,"default":10},"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var M = { 'DT 11/300': [11, 300, '980', 'DT 11/300 – Duplo T padrão rede'], 'DT 12/600': [12, 600, '1.530', 'DT 12/600 – Duplo T reforçado'], 'DT 10/300': [10, 300, '850', 'DT 10/300 – Duplo T padrão rede'], 'DT 9/150': [9, 150, '640', 'DT 9/150 – Duplo T leve'], 'DT 11/600': [11, 600, '1.320', 'DT 11/600 – Duplo T reforçado'] };
+    var n = Math.max(1, Math.min(10, this.props.datas ?? 10));
+    var d = [
+      ['01/09/2026', 'DT 11/300', 8, 21.0, 28.6, 40.1, 6],
+      ['03/09/2026', 'DT 12/600', 6, 20.4, 27.9, 38.4, 6],
+      ['04/09/2026', 'DT 10/300', 10, 22.1, 29.8, 41.6, 6],
+      ['08/09/2026', 'DT 11/300', 12, 21.2, 28.9, 40.5, 6],
+      ['10/09/2026', 'DT 12/600', 6, 21.8, 29.6, 41.2, 6],
+      ['11/09/2026', 'DT 9/150', 14, 19.9, 27.1, 37.6, 4],
+      ['15/09/2026', 'DT 11/600', 4, 20.9, 28.4, 38.7, 6],
+      ['17/09/2026', 'DT 11/300', 10, 21.5, 29.2, 40.8, 6],
+      ['18/09/2026', 'DT 10/300', 8, 20.2, 27.8, 37.9, 6],
+      ['22/09/2026', 'DT 12/600', 6, 22.4, 30.1, 42.0, 6]
+    ];
+    d = d.slice(0, n);
+    var f = function (n) { return n.toFixed(1).replace('.', ','); };
+    var lote = function (s) { var p = s.split('/'); return 'L' + p[2] + p[1] + p[0]; };
+    var total = 0;
+    var prod = d.map(function (x) { var m = M[x[1]]; total += x[2]; return { modelo: m[3], alt: m[0], carga: m[1], peso: m[2], qtd: x[2], data: x[0], lote: lote(x[0]) }; });
+    var res = d.map(function (x) { return { data: x[0], ncp: x[6], r3: f(x[3]), r7: f(x[4]), r28: f(x[5]) }; });
+    var big = n <= 5;
+    return {
+      prod: prod, res: res, total: total,
+      qr: big ? 92 : 44,
+      sigSpacer: 'height: ' + (big ? 72 : 50) + 'px',
+      sigImg: 'height: ' + (big ? 72 : 50) + 'px; width: auto; display: block',
+      footBox: 'display: flex; gap: ' + (big ? 16 : 10) + 'px; align-items: center; border-top: 1px solid #9AA6B4; padding-top: ' + (big ? 12 : 6) + 'px',
+      footText: 'display: flex; flex-direction: column; gap: 2px; color: #3D4855; line-height: 1.4; font-size: ' + (big ? 12.5 : 10.5) + 'px',
+      footTitle: big ? 'font-size: 13.5px; color: #111820' : 'position: absolute; left: -9999px'
+    };
+  }
+}
+</script>
+</body>
+</html>

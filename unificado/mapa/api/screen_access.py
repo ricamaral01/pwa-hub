@@ -32,6 +32,10 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
     if screen['id'].startswith('pdr'):
         # Visibility is an explicit per-screen grant and requires a PCP account.
         # Unit membership is checked again by the PCP API for every request.
+        if screen['id'] == 'pdrProdutos':
+            return bool(planning_role) and user['perfil'] in {'GERENCIA', 'GESTOR'}
+        if screen['id'] in {'pdrApontamento', 'pdrMaoDeObra'}:
+            return bool(planning_role) and user['perfil'] in {'GERENCIA', 'GESTOR', 'APONTADOR'}
         return bool(planning_role)
     if screen['id'] == 'tvFormas':
         return bool(user.get('id'))
@@ -70,22 +74,33 @@ def allowed_screens(user, planning_role, overrides, lab_users):
         return [row['id'] for row in CATALOG
                 if not row['id'].startswith('cronoanalise.') or user['id'] == MASTER_USER_ID]
     if user['perfil'] == 'CONVIDADO':
-        return [row['id'] for row in CATALOG if row['id'] not in GUEST_FORBIDDEN_SCREENS
+        allowed = [row['id'] for row in CATALOG if row['id'] != 'labCertificados' and row['id'] not in GUEST_FORBIDDEN_SCREENS
                 and overrides.get(row['id']) is True
                 and (row['module'] != 'planejamento' or
                      role_allows(user, row, planning_role, lab_users))]
-    return [row['id'] for row in CATALOG if role_allows(user, row, planning_role, lab_users)
+        if user['id'] == 'philippe' or any(BY_ID[item]['module'] == 'laboratorio' for item in allowed):
+            allowed.append('labCertificados')
+        return allowed
+    allowed = [row['id'] for row in CATALOG if row['id'] != 'labCertificados' and role_allows(user, row, planning_role, lab_users)
             and overrides.get(row['id'],
                               not row['id'].startswith('pdr') and (
                                 row['module'] not in {'laboratorio', 'qualidade'} and row['id'] != 'tvFormas'
                                 or row['module'] == 'laboratorio' and user['id'] in DEFAULT_LAB_USERS
                                 and not row['id'].startswith('cronoanalise.')))]
+    if ('qualidadePainel' in allowed and 'qualidadeResultadosBancada' not in allowed
+            and overrides.get('qualidadeResultadosBancada') is not False):
+        allowed.append('qualidadeResultadosBancada')
+    if user['id'] == 'philippe' or any(BY_ID[item]['module'] == 'laboratorio' for item in allowed):
+        allowed.append('labCertificados')
+    return allowed
 
 
 def screen_for_uri(original_uri, screen_header=''):
     uri = urlsplit(original_uri)
     path = uri.path.replace('index.html', '')
     query = parse_qs(uri.query)
+    if path.startswith('/unificado/laboratorio/certificados-qualidade/'):
+        return BY_ID.get('labCertificados')
     if path.startswith('/unificado/laboratorio/cec-api/'):
         return BY_ID.get('labCec')
     if path.rstrip('/') == '/unificado/laboratorio/cec/resultados':

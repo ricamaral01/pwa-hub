@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Emitir certificado de qualidade</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F8}
+a{color:#0F2C4C}a:hover{color:#0A1E35}
+input{font:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; background: #F3F5F8; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14202E">
+
+  <nav aria-label="Menu" style="flex: 1 1 232px; max-width: 100%; background: #0F2C4C; color: #FFFFFF; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 0 8px">
+      <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #B9C7D8">Módulo</span>
+      <span style="font-size: 18px; font-weight: 700">Laboratório</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px; font-size: 15px">
+      <a href="#" style="color: #DCE5EF; text-decoration: none; padding: 10px 10px; border-radius: 10px">Rompimentos de CP</a>
+      <a href="#" style="color: #DCE5EF; text-decoration: none; padding: 10px 10px; border-radius: 10px">Controle estatístico</a>
+      <a href="#" style="color: #DCE5EF; text-decoration: none; padding: 10px 10px; border-radius: 10px">Temperatura de cura</a>
+      <a href="#" aria-current="page" style="color: #FFFFFF; text-decoration: none; padding: 10px 10px; border-radius: 10px; background: rgba(255,255,255,0.12); font-weight: 600">Certificados de qualidade</a>
+      <a href="#" style="color: #DCE5EF; text-decoration: none; padding: 10px 10px; border-radius: 10px">Equipamentos e calibração</a>
+    </div>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+    <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 13px; color: #5A6675">Laboratório / Certificados / Novo</span>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 700">Novo certificado de qualidade</h1>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #5A6675">
+        <span>Nº</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: #14202E; background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 8px; padding: 6px 10px">CQ-2026-0148</span>
+        <span style="padding: 4px 10px; border-radius: 999px; background: #EEF1F5; color: #3D4855; font-weight: 600; font-size: 13px">Rascunho</span>
+      </div>
+    </header>
+
+    <ol aria-label="Etapas" style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <li style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; align-items: center"><span style="width: 28px; height: 28px; border-radius: 50%; background: #0F2C4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">1</span><span style="font-size: 15px; font-weight: 600">Cliente e postes</span></li>
+      <li style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; align-items: center"><span style="width: 28px; height: 28px; border-radius: 50%; background: #0F2C4C; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">2</span><span style="font-size: 15px; font-weight: 600">Correlação com o controle estatístico</span></li>
+      <li style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; align-items: center"><span style="width: 28px; height: 28px; border-radius: 50%; background: #DDE3EA; color: #3D4855; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">3</span><span style="font-size: 15px; font-weight: 600; color: #5A6675">Revisão e emissão</span></li>
+    </ol>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+      <div style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+        <section style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 17px">Cliente</h2>
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+            <label style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Cliente<input value="[Nome do cliente]" style="height: 44px; border: 1px solid #C9D2DD; border-radius: 10px; padding: 0 12px; font-size: 15px; color: #14202E; font-weight: 400"></label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Nota fiscal<input value="[NF]" style="height: 44px; border: 1px solid #C9D2DD; border-radius: 10px; padding: 0 12px; font-size: 15px; color: #14202E; font-weight: 400"></label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Data de emissão<input value="18/10/2026" style="height: 44px; border: 1px solid #C9D2DD; border-radius: 10px; padding: 0 12px; font-size: 15px; color: #14202E; font-weight: 400"></label>
+            <label style="grid-column: span 4; display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Endereço de entrega<input value="[Endereço]" style="height: 44px; border: 1px solid #C9D2DD; border-radius: 10px; padding: 0 12px; font-size: 15px; color: #14202E; font-weight: 400"></label>
+          </div>
+        </section>
+
+        <section style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <h2 style="margin: 0; font-size: 17px">Postes fornecidos</h2>
+              <span style="font-size: 13px; color: #5A6675">Informe modelo, quantidade e data de produção. O sistema busca os corpos de prova moldados em cada data.</span>
+            </div>
+            <button onClick="{{ addRow }}" style="height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #C9D2DD; background: #FFFFFF; color: #0F2C4C; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">+ Adicionar poste</button>
+          </div>
+          <div style="overflow-x: auto; border: 1px solid #DDE3EA; border-radius: 12px">
+            <table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px">
+              <thead>
+                <tr style="background: #F8FAFC; color: #5A6675; text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase">
+                  <th style="padding: 10px 12px; font-weight: 600">Modelo</th>
+                  <th style="padding: 10px 8px; font-weight: 600; text-align: right">Altura (m)</th>
+                  <th style="padding: 10px 8px; font-weight: 600; text-align: right">Carga (daN)</th>
+                  <th style="padding: 10px 8px; font-weight: 600; text-align: right">Peso (kg)</th>
+                  <th style="padding: 10px 8px; font-weight: 600; text-align: right">Qtd</th>
+                  <th style="padding: 10px 8px; font-weight: 600">Data produção</th>
+                  <th style="padding: 10px 8px; font-weight: 600">Lote</th>
+                  <th style="padding: 10px 8px; width: 44px"><span style="position: absolute; left: -9999px">Remover</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+                  <tr style="border-top: 1px solid #EEF1F5">
+                    <td style="padding: 6px 8px 6px 12px"><input aria-label="Modelo" value="{{ r.modelo }}" onChange="{{ r.setModelo }}" style="width: 100%; box-sizing: border-box; height: 38px; border: 1px solid #DDE3EA; border-radius: 8px; padding: 0 10px; font-size: 14px"></td>
+                    <td style="padding: 6px 4px; text-align: right; font-variant-numeric: tabular-nums">{{ r.altura }}</td>
+                    <td style="padding: 6px 4px; text-align: right; font-variant-numeric: tabular-nums">{{ r.carga }}</td>
+                    <td style="padding: 6px 4px; text-align: right; font-variant-numeric: tabular-nums">{{ r.peso }}</td>
+                    <td style="padding: 6px 4px; text-align: right"><input aria-label="Quantidade" inputmode="numeric" value="{{ r.qtd }}" onChange="{{ r.setQtd }}" style="width: 56px; box-sizing: border-box; height: 38px; border: 1px solid #DDE3EA; border-radius: 8px; padding: 0 8px; text-align: right; font-size: 14px"></td>
+                    <td style="padding: 6px 4px"><input aria-label="Data de produção" type="date" value="{{ r.data }}" onChange="{{ r.setData }}" style="height: 38px; border: 1px solid #DDE3EA; border-radius: 8px; padding: 0 8px; font-size: 14px"></td>
+                    <td style="padding: 6px 4px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #3D4855">{{ r.lote }}</td>
+                    <td style="padding: 6px 8px"><button onClick="{{ r.remove }}" aria-label="Remover poste" style="width: 36px; height: 36px; border: 0; border-radius: 8px; background: transparent; color: #5A6675; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <span style="font-size: 13px; color: #5A6675">Altura, carga e peso vêm do cadastro de modelos. {{ totalPostes }} postes no certificado.</span>
+        </section>
+
+        <section style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <h2 style="margin: 0; font-size: 17px">Corpos de prova por data de produção</h2>
+              <span style="font-size: 13px; color: #5A6675">Média dos CPs moldados na data · conforme se média 28 dias &gt; fck · fonte: Controle estatístico</span>
+            </div>
+            <span style="font-size: 14px; color: #3D4855">fck de referência <strong>35 MPa</strong></span>
+          </div>
+          <div style="overflow-x: auto; border: 1px solid #DDE3EA; border-radius: 12px">
+            <table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px">
+              <thead>
+                <tr style="background: #F8FAFC; color: #5A6675; text-align: left; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase">
+                  <th style="padding: 10px 12px; font-weight: 600">Data de produção</th>
+                  <th style="padding: 10px 8px; font-weight: 600">Traço</th>
+                  <th style="padding: 10px 8px; font-weight: 600; text-align: right">CPs</th>
+                  <th style="padding: 10px 8px; font-weight: 600; text-align: right">3 dias</th>
+                  <th style="padding: 10px 8px; font-weight: 600; text-align: right">7 dias</th>
+                  <th style="padding: 10px 8px; font-weight: 600; text-align: right">28 dias (média)</th>
+                  <th style="padding: 10px 12px; font-weight: 600">Resultado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ res }}" as="x" hint-placeholder-count="3">
+                  <tr style="border-top: 1px solid #EEF1F5">
+                    <td style="padding: 12px"><div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 14px">{{ x.dataBR }}</strong><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5A6675">{{ x.lote }}</span></div></td>
+                    <td style="padding: 12px 8px; color: #3D4855">{{ x.traco }}</td>
+                    <td style="padding: 12px 8px; text-align: right; font-variant-numeric: tabular-nums">{{ x.ncp }}</td>
+                    <td style="padding: 12px 8px; text-align: right; font-variant-numeric: tabular-nums">{{ x.r3 }}</td>
+                    <td style="padding: 12px 8px; text-align: right; font-variant-numeric: tabular-nums">{{ x.r7 }}</td>
+                    <td style="padding: 12px 8px; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600">{{ x.r28 }}</td>
+                    <td style="padding: 12px"><span style="{{ x.chip }}">{{ x.status }}</span></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 16px; padding: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Responsável pelo laboratório<select style="height: 44px; border: 1px solid #C9D2DD; border-radius: 10px; padding: 0 12px; font: inherit; font-size: 15px; color: #14202E; font-weight: 400; background: #FFFFFF"><option>Ricardo Do Amaral</option><option>Philippe Augusto</option></select></label>
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Responsável técnico<span style="height: 44px; display: flex; align-items: center; border: 1px solid #DDE3EA; background: #F8FAFC; border-radius: 10px; padding: 0 12px; font-size: 15px; color: #3D4855; font-weight: 400">Eng. Marcelo Eduardo Ishizaki de Sousa · CREA 5063392251</span></div>
+          <div style="grid-column: span 2; display: flex; flex-direction: column; gap: 8px">
+            <label for="prensa" style="font-size: 13px; font-weight: 600; color: #3D4855">Prensa de ensaio (aferição)</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch">
+              <select id="prensa" style="flex: 1 1 260px; height: 44px; border: 1px solid #C9D2DD; border-radius: 10px; padding: 0 12px; font: inherit; font-size: 15px; color: #14202E; background: #FFFFFF">
+                <option>[Fabricante] [modelo] · série [nº]</option>
+              </select>
+              <div style="flex: 2 1 380px; border: 1px solid #DDE3EA; background: #F8FAFC; border-radius: 10px; padding: 8px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 12px; font-size: 13px">
+                <span><span style="display: block; color: #5A6675">Certificado</span>[nº] · [lab. RBC]</span>
+                <span><span style="display: block; color: #5A6675">Calibrada em</span>[data]</span>
+                <span><span style="display: block; color: #5A6675">Válida até</span><strong style="color: #17693F">[data] · vigente</strong></span>
+              </div>
+            </div>
+            <span style="font-size: 12px; color: #5A6675">Dados vêm do cadastro de equipamentos do Laboratório. Com calibração vencida, a emissão é bloqueada.</span>
+          </div>
+          <label style="grid-column: span 2; display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: #3D4855">Observações<textarea rows="2" style="border: 1px solid #C9D2DD; border-radius: 10px; padding: 10px 12px; font: inherit; font-size: 15px; color: #14202E; font-weight: 400; resize: vertical">[Observações do laboratório]</textarea></label>
+        </section>
+      </div>
+
+      <aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <section style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+          <h2 style="margin: 0; font-size: 17px">Situação</h2>
+          <div style="{{ geralBox }}">
+            <span style="font-size: 13px; font-weight: 600">{{ geralLabel }}</span>
+            <span style="font-size: 14px">{{ geralTexto }}</span>
+          </div>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+            <sc-for list="{{ checks }}" as="c" hint-placeholder-count="5">
+              <li style="display: flex; gap: 10px; align-items: flex-start"><span style="{{ c.dot }}" aria-hidden="true"></span><span>{{ c.txt }}</span></li>
+            </sc-for>
+          </ul>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <a href="Certificado.dc.html" style="height: 48px; border-radius: 12px; border: 1px solid #C9D2DD; color: #0F2C4C; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; text-decoration: none">Pré-visualizar PDF</a>
+            <button disabled="{{ bloqueado }}" style="{{ emitirStyle }}">Emitir e gerar PDF</button>
+            <button style="height: 44px; border: 0; border-radius: 12px; background: transparent; color: #0F2C4C; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Salvar rascunho</button>
+          </div>
+        </section>
+        <p style="margin: 0; font-size: 13px; color: #5A6675; line-height: 1.5">Ao emitir, o certificado é numerado, travado para edição e o PDF é gerado no servidor com QR de verificação. Correções geram uma nova revisão.</p>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1560}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      seq: 4,
+      rows: [
+        { id: 1, modelo: 'DT 11/300', qtd: 12, data: '2026-09-10' },
+        { id: 2, modelo: 'DT 12/600', qtd: 8, data: '2026-09-15' },
+        { id: 3, modelo: 'DT 10/300', qtd: 10, data: '2026-09-25' }
+      ]
+    };
+  }
+  cad(m) {
+    var c = { 'DT 11/300': [11, 300, 980], 'DT 12/600': [12, 600, 1530], 'DT 10/300': [10, 300, 850], 'DT 9/150': [9, 150, 640] };
+    return c[m] || ['—', '—', '—'];
+  }
+  ce(d) {
+    var t = {
+      '2026-09-10': { traco: 'T-35 CPV-ARI', ncp: 6, r3: 21.8, r7: 29.6, r28: 41.2, m28: 39.8 },
+      '2026-09-15': { traco: 'T-35 CPV-ARI', ncp: 6, r3: 20.9, r7: 28.4, r28: 38.7, m28: 37.1 },
+      '2026-09-25': { traco: 'T-35 CPV-ARI', ncp: 4, r3: 22.4, r7: 29.4, r28: null, m28: null, prev: '23/10/2026' },
+      '2026-09-30': { traco: 'T-35 CPV-ARI', ncp: 6, r3: 19.2, r7: 26.1, r28: 33.9, m28: 32.4 }
+    };
+    return t[d];
+  }
+  br(d) { if (!d) return '—'; var p = d.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+  n(v) { return v == null ? '—' : String(v.toFixed(1)).replace('.', ','); }
+  upd(id, k, v) {
+    this.setState({ rows: this.state.rows.map(function (r) { if (r.id !== id) return r; var o = Object.assign({}, r); o[k] = v; return o; }) });
+  }
+  renderVals() {
+    var self = this, fck = 35;
+    var rows = this.state.rows.map(function (r) {
+      var c = self.cad(r.modelo);
+      return {
+        modelo: r.modelo, qtd: r.qtd, data: r.data, altura: c[0], carga: c[1], peso: c[2],
+        lote: r.data ? 'L' + r.data.replace(/-/g, '') : '—',
+        setModelo: function (e) { self.upd(r.id, 'modelo', e.target.value); },
+        setQtd: function (e) { self.upd(r.id, 'qtd', parseInt(e.target.value, 10) || 0); },
+        setData: function (e) { self.upd(r.id, 'data', e.target.value); },
+        remove: function () { if (self.state.rows.length > 1) self.setState({ rows: self.state.rows.filter(function (x) { return x.id !== r.id; }) }); }
+      };
+    });
+    var datas = [];
+    this.state.rows.forEach(function (r) { if (r.data && datas.indexOf(r.data) < 0) datas.push(r.data); });
+    datas.sort();
+    var CH = {
+      ok: 'padding: 4px 10px; border-radius: 999px; background: #E3F3EA; color: #17693F; font-size: 13px; font-weight: 600; white-space: nowrap',
+      pend: 'padding: 4px 10px; border-radius: 999px; background: #FFF4E5; color: #8A4B00; font-size: 13px; font-weight: 600; border: 1px solid #F0C68A; white-space: nowrap',
+      bad: 'padding: 4px 10px; border-radius: 999px; background: #FDECEC; color: #9A1B12; font-size: 13px; font-weight: 600; border: 1px solid #E8A3A3; white-space: nowrap',
+      none: 'padding: 4px 10px; border-radius: 999px; background: #EEF1F5; color: #3D4855; font-size: 13px; font-weight: 600; white-space: nowrap'
+    };
+    var cnt = { ok: 0, pend: 0, bad: 0, none: 0 };
+    var res = datas.map(function (d) {
+      var x = self.ce(d), st, k;
+      if (!x) { k = 'none'; st = 'Sem registro no controle'; }
+      else if (x.r28 == null) { k = 'pend'; st = 'Aguardando 28 dias · ' + x.prev; }
+      else if (x.r28 > fck) { k = 'ok'; st = 'Conforme'; }
+      else { k = 'bad'; st = 'Não conforme'; }
+      cnt[k]++;
+      return {
+        lote: 'L' + d.replace(/-/g, ''), dataBR: self.br(d), traco: x ? x.traco : '—', ncp: x ? x.ncp : '—',
+        r3: x ? self.n(x.r3) : '—', r7: x ? self.n(x.r7) : '—',
+        r28: x && x.r28 != null ? self.n(x.r28) : '—', status: st, chip: CH[k]
+      };
+    });
+    var total = this.state.rows.reduce(function (s, r) { return s + (r.qtd || 0); }, 0);
+    var bloq = cnt.pend + cnt.bad + cnt.none > 0;
+    var gL, gT, gB;
+    if (cnt.bad) { gL = 'Não conforme'; gT = cnt.bad + ' lote(s) abaixo do fck. Emissão bloqueada; abra uma não conformidade.'; gB = 'background: #FDECEC; color: #7A1616; border: 1px solid #E8A3A3'; }
+    else if (cnt.none) { gL = 'Dados incompletos'; gT = cnt.none + ' data(s) sem registro no controle estatístico.'; gB = 'background: #EEF1F5; color: #14202E; border: 1px solid #C9D2DD'; }
+    else if (cnt.pend) { gL = 'Aguardando rompimento'; gT = cnt.pend + ' data(s) sem resultado de 28 dias. Salve como rascunho e emita depois.'; gB = 'background: #FFF4E5; color: #5C3A06; border: 1px solid #F0C68A'; }
+    else { gL = 'Pronto para emitir'; gT = 'Todos os lotes conformes aos 28 dias.'; gB = 'background: #E3F3EA; color: #0F4A2B; border: 1px solid #9CD3B4'; }
+    var dot = function (ok) { return 'flex: none; margin-top: 5px; width: 10px; height: 10px; border-radius: 50%; background: ' + (ok ? '#17693F' : '#B86E00'); };
+    return {
+      rows: rows, res: res, totalPostes: total,
+      addRow: function () { var s = self.state.seq; self.setState({ seq: s + 1, rows: self.state.rows.concat([{ id: s, modelo: 'DT 9/150', qtd: 1, data: '2026-09-30' }]) }); },
+      geralLabel: gL, geralTexto: gT, geralBox: 'border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; ' + gB,
+      checks: [
+        { txt: 'Cliente e nota fiscal preenchidos', dot: dot(true) },
+        { txt: total + ' postes em ' + datas.length + ' data(s) de produção', dot: dot(true) },
+        { txt: 'Prensa com calibração válida até [data]', dot: dot(true) },
+        { txt: (cnt.ok) + ' de ' + datas.length + ' data(s) com 28 dias conforme', dot: dot(!bloq) },
+        { txt: 'Engenheiro responsável: Marcelo E. I. de Sousa', dot: dot(true) }
+      ],
+      bloqueado: bloq,
+      emitirStyle: 'height: 52px; border: 0; border-radius: 12px; font: inherit; font-size: 16px; font-weight: 700; ' + (bloq ? 'background: #DDE3EA; color: #5A6675; cursor: not-allowed' : 'background: #C2561A; color: #FFFFFF; cursor: pointer')
+    };
+  }
+}
+</script>
+</body>
+</html>
