@@ -1,13 +1,13 @@
-const CACHE = 'concrefer-unificado-shell-v20261024-pederneiras-v1';
+const CACHE = 'concrefer-unificado-shell-v20261024-pederneiras-v2';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
 const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
   ROOT + 'shell/shared-menu.css?v=1.0.36-usinas',
   ROOT + 'shell/modelo-a/menu.css?v=1.0.20-modulos', ROOT + 'shell/modelo-a-host.css?v=1.0.36-usinas',
-  ROOT + 'shell/modelo-a/menu.js?v=1.0.44-pederneiras',
-  ROOT + 'shell/modelo-a-loader.js?v=1.0.44-pederneiras',
-  ROOT + 'shell/menu.config.js?v=1.0.44-pederneiras', ROOT + 'shell/auth.js?v=1.0.15',
-  ROOT + 'shell/shell.js?v=20261024-dashboards-v7', ROOT + 'shell/router.js?v=1.0.44-pederneiras',
+  ROOT + 'shell/modelo-a/menu.js?v=1.0.45-pederneiras',
+  ROOT + 'shell/modelo-a-loader.js?v=1.0.45-pederneiras',
+  ROOT + 'shell/menu.config.js?v=1.0.45-pederneiras', ROOT + 'shell/auth.js?v=1.0.15',
+  ROOT + 'shell/shell.js?v=20261024-dashboards-v7', ROOT + 'shell/router.js?v=1.0.45-pederneiras',
   ROOT + 'shell/module-pages.js?v=20261024-mobile-cards-1',
   ROOT + 'shell/embedded.css?v=1.0'];
 self.addEventListener('message', event => {
