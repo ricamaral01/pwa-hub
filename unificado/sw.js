@@ -1,4 +1,4 @@
-const CACHE = 'concrefer-unificado-shell-v20261024-pederneiras-v3';
+const CACHE = 'concrefer-unificado-shell-v1.0.48';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
 const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
@@ -7,7 +7,7 @@ const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
   ROOT + 'shell/modelo-a/menu.js?v=1.0.46-pederneiras',
   ROOT + 'shell/modelo-a-loader.js?v=1.0.46-pederneiras',
   ROOT + 'shell/menu.config.js?v=1.0.46-pederneiras', ROOT + 'shell/auth.js?v=1.0.15',
-  ROOT + 'shell/shell.js?v=20261024-dashboards-v7', ROOT + 'shell/router.js?v=1.0.46-pederneiras',
+  ROOT + 'shell/shell.js?v=1.0.48', ROOT + 'shell/router.js?v=1.0.46-pederneiras',
   ROOT + 'shell/module-pages.js?v=20261024-mobile-cards-1',
   ROOT + 'shell/embedded.css?v=1.0'];
 self.addEventListener('message', event => {
@@ -58,11 +58,11 @@ self.addEventListener('fetch', event => {
     return;
   }
   if (!url.pathname.startsWith(ROOT + 'shell/')) return;
-  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
-    if (response.ok) {
+  event.respondWith(fetch(event.request, {cache:'no-store'}).then(response => {
+    if (response.ok && !response.redirected && response.type === 'basic') {
       const copy = response.clone();
-      caches.open(CACHE).then(cache => cache.put(event.request, copy));
+      event.waitUntil(caches.open(CACHE).then(cache => cache.put(event.request, copy)));
     }
     return response;
-  })));
+  }).catch(async () => await caches.match(event.request) || Response.error()));
 });
