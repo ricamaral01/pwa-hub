@@ -2,6 +2,19 @@
 
 **Concluído em 24/10/2026 (horário de São Paulo; VPS em 25/10 UTC).** Homologação em `:18446` e produção publicadas com `CQ_FONTE_CP=novo`. A emissão comercial está bloqueada enquanto o cadastro da prensa não tiver o nome real do laboratório calibrador/RBC.
 
+## Conferência da assinatura de Marcelo — 24/10/2026
+
+Foi cadastrada **somente em homologação** a prensa ID **4**, identificada nos campos de fabricante, modelo, série e certificado como **TESTE**, com `laboratorio_rbc = TESTE HOMOLOGAÇÃO`. Os certificados têm cliente, NF e observação de teste, sem valor comercial. Em produção não foi criado registro nem emitido certificado.
+
+| Datas | Certificado emitido em `:18446` | Rascunho correspondente | Assinatura no PDF emitido |
+| --- | --- | --- | --- |
+| 3 | `CQ-2026-0015`, ID 33: [PDF](exemplos/homolog-assinatura-3-datas-CQ-2026-0015.pdf) · [PNG](exemplos/homolog-assinatura-3-datas-CQ-2026-0015.png) | [PDF](exemplos/homolog-assinatura-rascunho-3-datas-id33.pdf) · [PNG](exemplos/homolog-assinatura-rascunho-3-datas-id33.png) | Imagem **54 pt = 72 px a 96 dpi**, de y=657,89 a 711,89 pt; linha do engenheiro em y=713,89 pt. |
+| 10 | `CQ-2026-0016`, ID 34: [PDF](exemplos/homolog-assinatura-10-datas-CQ-2026-0016.pdf) · [PNG](exemplos/homolog-assinatura-10-datas-CQ-2026-0016.png) | [PDF](exemplos/homolog-assinatura-rascunho-10-datas-id34.pdf) · [PNG](exemplos/homolog-assinatura-rascunho-10-datas-id34.png) | Imagem **37 pt = 49,3 px a 96 dpi**, de y=717,89 a 754,89 pt; linha do engenheiro em y=756,89 pt. |
+
+Os quatro PDFs têm **uma página A4**. Nos emitidos, a assinatura está **2 pt acima da linha** de Marcelo, nos tamanhos do mockup (~72/~50 px). As duas linhas de assinatura estão alinhadas exatamente na mesma coordenada vertical: y=713,89 pt no formato ampliado e y=756,89 pt no compacto. A inspeção visual dos PNGs confirmou a posição; a análise das imagens e dos traços vetoriais do PDF está em [assinatura-homolog-20261024.json](evidencias/assinatura-homolog-20261024.json). Os **dois rascunhos não contêm imagem na área da assinatura**, mantendo a marca RASCUNHO e as linhas vazias.
+
+Em produção, a imagem já estava instalada em `/var/lib/concrefer-cq/assinatura-marcelo.png`, fora de `public`, com **monitorconcreto:monitorconcreto**, modo **0400**, **19.156 bytes** e SHA-256 `be86b5e5486ef44293dcd9cf9cc7ec331a5643851731125ede1edeebdd198aca`, iguais aos do arquivo de homologação. O serviço roda como `monitorconcreto`, define `CQ_DATA_DIR=/var/lib/concrefer-cq`, não tem override `CQ_ENGINEER_SIGNATURE` e, pelo padrão de `app.py`, lê precisamente esse arquivo. O teste de leitura como usuário do serviço passou. **Não foi necessária reinstalação**. A emissão em produção não foi exercida e continua bloqueada até o laboratório calibrador real ser cadastrado na prensa oficial.
+
 ## Ajuste do quadro da prensa — 24/10/2026
 
 - O PDF omite **patrimônio**, **capacidade em kN** e **classe** quando esses campos estão vazios. Valores cadastrados continuam visíveis. O laboratório aparece como **“Laboratório RBC: <nome>”** em linha própria; enquanto não for preenchido, o PDF mostra literalmente “Laboratório RBC: Não informado no cadastro de origem”. A regra que bloqueia a emissão por falta desse nome permanece ativa.

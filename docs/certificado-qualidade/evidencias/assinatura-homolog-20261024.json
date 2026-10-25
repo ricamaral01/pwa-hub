@@ -1,0 +1,102 @@
+[
+  {
+    "datas": 3,
+    "prensa_teste_id": 4,
+    "certificado_id": 33,
+    "numero": "CQ-2026-0015",
+    "rascunho": "docs/certificado-qualidade/exemplos/homolog-assinatura-rascunho-3-datas-id33.pdf",
+    "emitido": "docs/certificado-qualidade/exemplos/homolog-assinatura-3-datas-CQ-2026-0015.pdf",
+    "rascunho_medidas": {
+      "pages": 1,
+      "line_y_pt": 713.89,
+      "signature_lines_pt": [
+        [
+          51.0,
+          713.89,
+          282.64
+        ],
+        [
+          312.64,
+          713.89,
+          544.28
+        ]
+      ],
+      "signature_images_pt": []
+    },
+    "emitido_medidas": {
+      "pages": 1,
+      "line_y_pt": 713.89,
+      "signature_lines_pt": [
+        [
+          51.0,
+          713.89,
+          282.64
+        ],
+        [
+          312.64,
+          713.89,
+          544.28
+        ]
+      ],
+      "signature_images_pt": [
+        [
+          371.89,
+          657.89,
+          485.03,
+          711.89
+        ]
+      ],
+      "signature_height_96dpi_px": 72.0
+    }
+  },
+  {
+    "datas": 10,
+    "prensa_teste_id": 4,
+    "certificado_id": 34,
+    "numero": "CQ-2026-0016",
+    "rascunho": "docs/certificado-qualidade/exemplos/homolog-assinatura-rascunho-10-datas-id34.pdf",
+    "emitido": "docs/certificado-qualidade/exemplos/homolog-assinatura-10-datas-CQ-2026-0016.pdf",
+    "rascunho_medidas": {
+      "pages": 1,
+      "line_y_pt": 756.89,
+      "signature_lines_pt": [
+        [
+          51.0,
+          756.89,
+          282.64
+        ],
+        [
+          312.64,
+          756.89,
+          544.28
+        ]
+      ],
+      "signature_images_pt": []
+    },
+    "emitido_medidas": {
+      "pages": 1,
+      "line_y_pt": 756.89,
+      "signature_lines_pt": [
+        [
+          51.0,
+          756.89,
+          282.64
+        ],
+        [
+          312.64,
+          756.89,
+          544.28
+        ]
+      ],
+      "signature_images_pt": [
+        [
+          389.69,
+          717.89,
+          467.22,
+          754.89
+        ]
+      ],
+      "signature_height_96dpi_px": 49.3
+    }
+  }
+]

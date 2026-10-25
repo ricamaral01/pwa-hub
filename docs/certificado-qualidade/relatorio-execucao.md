@@ -7,6 +7,8 @@
 
 **Ajuste posterior em 24/10/2026:** no quadro da prensa, patrimônio, kN e classe vazios foram ocultados; o laboratório passou a aparecer como “Laboratório RBC: <nome>”. O exemplo de 3 datas foi regenerado em `:18446` e comparado ao mockup. Homologação e produção passaram no gate 7/7. Novo backup de produção: `/opt/concrefer-unificado/backups/cq-production-20261025T015744Z`. O bloqueio de emissão até o preenchimento do laboratório RBC permanece. Detalhes e links no relatório da Fase 2.
 
+**Conferência posterior da assinatura:** em `:18446`, uma prensa identificada como TESTE com RBC “TESTE HOMOLOGAÇÃO” permitiu emitir certificados de 3 e 10 datas (`CQ-2026-0015` e `CQ-2026-0016`). A assinatura de Marcelo aparece acima da linha em 72 e 49,3 px a 96 dpi; as duas linhas estão alinhadas. Os rascunhos não mostram a imagem. PDFs, PNGs e medidas estão no [relatório da Fase 2](relatorio-fase2-fonte-nova.md). Em produção, **sem emitir**, confirmou-se que o PNG protegido já existia fora de `public`, com o mesmo hash, dono e modo 0400 da homologação, e que o serviço aponta para esse caminho. Não houve alteração de código nem reinstalação em produção nesta conferência.
+
 ## Entrega e arquivos
 
 - Módulo isolado em `unificado/laboratorio/certificados-qualidade/`: API FastAPI, regras em `core.py`, PDF de uma página em `report.py`, telas responsivas de emissão, histórico e cadastros em `static/`, exportação e importação legada somente por GET.
