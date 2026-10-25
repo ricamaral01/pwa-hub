@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.33"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Apontamento Mega - PCP Concrefer</title>
@@ -72,7 +78,8 @@
       color: #15416f;
     }
   </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
+    <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.33">
 </head>
 <body>
 
@@ -257,7 +264,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.33"></script>
 <script>
 const user = requireAuth();
 if (user) {
@@ -289,7 +296,8 @@ const DESCRICAO_POR_CODIGO = {
   '947': '4 CX VL',
   '944': '2 CX VR - 300 DAN',
   '942': '2 CX VL - 300 DAN',
-  '934': 'POSTE CAIXA LENTE 1 CX VL',
+  '934': 'PL - 1 Cx Lente Aereo Lateral',
+  'PLE': 'PLE - 1 Cx Lente Aereo Lateral Elektro',
   '931': 'ECON 1 CX VR',
   '930': 'ECON 1 CX VL',
   '932': 'ECON 2 CX VR',
@@ -373,13 +381,18 @@ function statusHtml(row) {
 
 function rowHtml(row) {
   const realizado = Number(row.quantidade_realizada || row.quantidade_apontada || 0);
-  const descricao = DESCRICAO_POR_CODIGO[String(row.codigo || '').trim()] || '-';
+  const descricao = DESCRICAO_POR_CODIGO[String(row.codigo || '').trim()] || row.produto_nome || '-';
+  const plPle = Number(row.setor_id) === 2 && ['934', 'PLE'].includes(String(row.codigo || '').trim().toUpperCase());
+  const produtoSelect = plPle ? `<select class="form-select form-select-sm produto-realizado" data-programacao-id="${row.programacao_id}">
+    <option value="934" ${String(row.codigo) === '934' ? 'selected' : ''}>PL - 1 Cx Lente Aereo Lateral</option>
+    <option value="PLE" ${String(row.codigo).toUpperCase() === 'PLE' ? 'selected' : ''}>PLE - 1 Cx Lente Aereo Lateral Elektro</option>
+  </select>` : descricao;
   return `
     <tr class="${row.apontado ? 'apontado' : ''}" data-id="${row.programacao_id}">
       <td>${row.setor?.nome || row.setor_id || '-'}</td>
       <td><strong>${row.forma || '-'}</strong></td>
       <td><small class="text-muted">${row.codigo || '-'}</small></td>
-      <td>${descricao}</td>
+      <td>${produtoSelect}</td>
       <td class="text-end"><strong>${fmtN(row.quantidade_programada)}</strong></td>
       <td class="text-end">${fmtN(realizado)}</td>
       <td>${statusHtml(row)}</td>
@@ -452,7 +465,12 @@ async function realizarLinha(programacaoId) {
   }
   localStorage.setItem('mega_nome_apontador', nome);
   try {
-    await API.post(`/api/apontamento-mega/${programacaoId}/apontar`, { nome_apontador: nome });
+    const selector = document.querySelector(`tr[data-id="${programacaoId}"] .produto-realizado`);
+    const produtos = selector ? await API.get('/api/produtos?setor_id=2') : [];
+    const produto_id = selector ? produtos.find(p => String(p.codigo).toUpperCase() === selector.value)?.id : null;
+    if (selector && !produto_id) throw new Error('Produto PL/PLE nao encontrado');
+    await API.post(`/api/apontamento-mega/${programacaoId}/apontar`,
+      produto_id ? { nome_apontador: nome, produto_id } : { nome_apontador: nome });
     showToast('Apontamento no Mega marcado como feito', 'success');
     carregarDia();
   } catch(e) {

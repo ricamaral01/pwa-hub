@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.33"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Programação Circular Setor 3 - PCP Concrefer</title>
@@ -36,7 +42,8 @@
     body.circular-planner .sidebar-hide-btn span { white-space:nowrap; }
     @media (max-width:700px) { .circular-scroll { max-height:calc(100vh - 350px); } }
   </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
+    <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.33">
 </head>
 <body class="circular-planner" data-circular-sector="3">
 <div id="sidebar-overlay"></div>
@@ -87,7 +94,7 @@
   </div>
 </div>
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.33"></script>
 <script src="/unificado/pcp/static/js/programacao-formas.js?v=0.6.7"></script>
 </body>
 </html>

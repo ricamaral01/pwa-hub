@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.33"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.33"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Produção — PCP Concrefer</title>
@@ -214,7 +220,8 @@
     .forma-status.divergente { background: #fef3c7; color: #92400e; }
     .forma-status.extra { background: #e0f2fe; color: #0369a1; }
   </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
+    <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.33">
 </head>
 <body>
 
@@ -315,7 +322,7 @@
       <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
         <div class="section-title mb-0">
           <i class="bi bi-file-earmark-spreadsheet me-2" style="color:#16a34a"></i>
-          Producao Realizada -- Supabase
+          Producao Realizada -- banco local
         </div>
         <button class="btn btn-sm" id="btn-refresh-sheets" style="background:#f0fdf4;color:#16a34a;border:1px solid #86efac">
           <i class="bi bi-arrow-clockwise me-1"></i>Atualizar
@@ -496,7 +503,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.33"></script>
 <script>
 const user = requireAuth();
 if (user) {
