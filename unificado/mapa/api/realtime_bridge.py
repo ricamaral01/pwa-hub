@@ -18,13 +18,14 @@ from websockets.asyncio.server import serve
 from websockets.exceptions import ConnectionClosed
 
 
-ORIGIN = "https://concrefer.concretrack.com.br"
+ORIGIN = os.environ.get("MAPA_REALTIME_ORIGIN", "https://concrefer.concretrack.com.br")
 TABLES = ("producao", "formas_manutencao")
 CHANNEL = "unificado_mapa_changes"
 DATABASE_URL = os.environ["MAPA_AUTH_DATABASE_URL"]
 parsed_db = urlsplit(DATABASE_URL)
-if parsed_db.hostname not in {"127.0.0.1", "localhost"} or parsed_db.path != "/mapa_unificado_teste":
-    raise RuntimeError("Realtime must use the isolated Mapa test database")
+expected_database = os.environ.get("MAPA_EXPECTED_DATABASE", "mapa_unificado_teste")
+if parsed_db.hostname not in {"127.0.0.1", "localhost"} or parsed_db.path != "/" + expected_database:
+    raise RuntimeError("Realtime must use the configured Mapa database")
 
 clients: dict[object, dict[str, dict[str, int]]] = {}
 columns_by_table: dict[str, list[dict[str, str]]] = {}
@@ -33,7 +34,8 @@ columns_by_table: dict[str, list[dict[str, str]]] = {}
 def authorized(cookie: str) -> bool:
     if not cookie:
         return False
-    request = Request("http://127.0.0.1:13052/me", headers={"Cookie": cookie})
+    request = Request(os.environ.get("MAPA_REALTIME_AUTH_URL", "http://127.0.0.1:13052/me"),
+                      headers={"Cookie": cookie})
     try:
         with urlopen(request, timeout=4) as response:
             return response.status == 200
@@ -144,7 +146,7 @@ async def database_listener():
 
 
 async def main():
-    async with serve(socket_handler, "127.0.0.1", 13060,
+    async with serve(socket_handler, "127.0.0.1", int(os.environ.get("MAPA_REALTIME_PORT", "13060")),
                      process_request=handshake, ping_interval=25, ping_timeout=25):
         await database_listener()
 

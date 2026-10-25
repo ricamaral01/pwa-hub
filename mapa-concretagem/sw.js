@@ -5,7 +5,7 @@
 
 const APP_ID = self.location.pathname.includes("mapa-concretagem-teste")
   ? "mapa-concretagem-teste" : "mapa-concretagem";
-const CACHE_NAME = `${APP_ID}-v5.31-invite1-insdef5`;
+const CACHE_NAME = `${APP_ID}-v5.31-taxa5-insdef5`;
 const APP_SHELL = [
   "./index.html",
   "./manifest.json?v=v5.31",
@@ -13,8 +13,10 @@ const APP_SHELL = [
   "./inspecao-defeitos.css?v=20261021e",
   "./inspecao-defeitos.js?v=20261021f",
   "./dashboard-defeitos-v4.css?v=v5.31",
+  "./montagem-taxa.css?v=v5.31-taxa5",
   "./modelos-formas.js?v=v5.31",
-  "./app.js?v=v5.31",
+  "./app.js?v=v5.31-taxa5",
+  "./montagem-taxa.js?v=v5.31-taxa5",
   "./unificado-invite.js?v=1",
   "./xlsx.full.min.js?v=v5.31",
   "./supabase.js",

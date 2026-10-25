@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="styles.css?v=v5.31" />
   <link rel="stylesheet" href="inspecao-defeitos.css?v=20261021e" />
   <link rel="stylesheet" href="dashboard-defeitos-v4.css?v=v5.31" />
+  <link rel="stylesheet" href="montagem-taxa.css?v=v5.31-taxa5" />
+  <link rel="stylesheet" href="dashboard-reference-layout.css?v=20261007c" />
   <link rel="stylesheet" href="../assets/msgbox.css" />
   <style>
     .nav-group-title {
@@ -103,7 +105,7 @@
 
       <button class="nav-item" id="navProdAnalise" type="button">
         <span class="nav-icon-wrap">📈</span>
-        Produtividade
+        Dashboard Concretagem Matriz
       </button>
 
       <div class="nav-group-title">Produção</div>
@@ -262,7 +264,7 @@
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="PROD_ANALISE">
               <div class="hub-icon-circle" style="background:#10b981">📈</div>
-              <span class="hub-icon-lbl">Produtividade</span>
+              <span class="hub-icon-lbl">Dashboard Concretagem Matriz</span>
             </button>
             <button class="hub-icon-btn" type="button" data-hub-mode="RELATORIO">
               <div class="hub-icon-circle" style="background:#7c3aed">RE</div>
@@ -315,8 +317,8 @@
           </div>
         </div>
 
-        <div id="paFiltrosDrawer" class="mi-drawer-overlay hidden" aria-hidden="true">
-          <div class="mi-drawer-content" role="dialog" aria-modal="true" aria-labelledby="paDrawerTitle">
+        <div id="paFiltrosDrawer" class="pa-filters-inline" role="group" aria-labelledby="paDrawerTitle">
+          <div class="mi-drawer-content">
             <div class="mi-drawer-header">
               <h3 id="paDrawerTitle">Filtros</h3>
               <button type="button" class="dashboard-filter-save" data-save-dashboard-filter="pa">Salvar filtro</button>
@@ -359,22 +361,24 @@
         </div>
 
         <div id="paSecaoResumo" class="pa-tab-section active">
+          <h3 class="pa-section-heading">Visão geral <small>Produção, qualidade e ritmo no período selecionado</small></h3>
           <div class="mi-kpis-grid pa-kpis-grid">
             <div class="mi-kpi-card mi-kpi-programado"><span class="mi-kpi-label">Formas concretadas</span><span class="mi-kpi-val" id="paKpiFormas">-</span></div>
-            <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Volume total</span><span class="mi-kpi-val" id="paKpiVolume">-</span><span class="db-kpi-sub" id="paKpiVolumeMes">Mes: -</span></div>
+            <div class="mi-kpi-card mi-kpi-realizado"><span class="mi-kpi-label">Volume estimado</span><span class="mi-kpi-val" id="paKpiVolume">-</span><span class="db-kpi-sub" id="paKpiVolumeMes">Mes: -</span></div>
             <div class="mi-kpi-card mi-kpi-aprovados"><span class="mi-kpi-label">Concreto Padrão (Bom)</span><span class="mi-kpi-val" id="paKpiVolBomDia">-</span><span class="db-kpi-sub" id="paKpiVolBomMes">Mes: -</span></div>
             <div class="mi-kpi-card mi-kpi-recusados"><span class="mi-kpi-label">Concreto Fora Padrão</span><span class="mi-kpi-val" id="paKpiVolForaDia">-</span><span class="db-kpi-sub" id="paKpiVolForaMes">Mes: -</span></div>
             <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Ciclo medio</span><span class="mi-kpi-val" id="paKpiCicloMedio">-</span><span class="db-kpi-sub" id="paKpiCicloDetalhes">Mediana: -</span></div>
             <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Eficiencia</span><span class="mi-kpi-val" id="paKpiEficiencia">-</span></div>
             <div class="mi-kpi-card" style="border-left-color: #f59e0b;"><span class="mi-kpi-label">Paradas</span><span class="mi-kpi-val" id="paKpiParadas">-</span><span class="db-kpi-sub" id="paKpiParadasAV">Amarelas: - / Vermelhas: -</span></div>
             <div class="mi-kpi-card"><span class="mi-kpi-label">Desvio padrao</span><span class="mi-kpi-val" id="paKpiDesvioPadrao">-</span></div>
-            <div class="mi-kpi-card"><span class="mi-kpi-label">Formas por hora</span><span class="mi-kpi-val" id="paKpiFormasHora">-</span></div>
-            <div class="mi-kpi-card"><span class="mi-kpi-label">m3 por hora</span><span class="mi-kpi-val" id="paKpiM3Hora">-</span></div>
+            <div class="mi-kpi-card"><span class="mi-kpi-label">Ritmo estimado · formas/h</span><span class="mi-kpi-val" id="paKpiFormasHora">-</span></div>
+            <div class="mi-kpi-card"><span class="mi-kpi-label">Ritmo estimado · m³/h</span><span class="mi-kpi-val" id="paKpiM3Hora">-</span></div>
             <div class="mi-kpi-card" style="border-left-color: #6366f1;"><span class="mi-kpi-label">Jornada (Início / Fim)</span><span class="mi-kpi-val" id="paKpiJornada" style="font-size: 1.15rem; font-weight: bold; white-space: nowrap;">-</span></div>
           </div>
         </div>
 
         <div id="paSecaoProducao" class="pa-tab-section">
+          <h3 class="pa-section-heading">Produção <small>Volume, horário e setores</small></h3>
           <div class="mi-charts-row">
             <div class="mi-chart-card mi-chart-card-wide"><div class="mi-chart-title">Volume de Concreto Diário - Bom vs Fora do Padrão</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaVolDiaStacked"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Producao por hora produtiva</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaHeatmap"></canvas></div></div>
@@ -387,12 +391,14 @@
         </div>
 
         <div id="paSecaoQualidade" class="pa-tab-section">
+          <h3 class="pa-section-heading">Qualidade <small>Composição do concreto por setor</small></h3>
           <div class="mi-charts-row">
             <div class="mi-chart-card mi-chart-card-wide"><div class="mi-chart-title">Volume de concreto por setor - Padrao vs fora do padrao</div><div id="paVolumeTipoSetor" class="pa-volume-sector-list"></div></div>
           </div>
         </div>
 
         <div id="paSecaoProdutividade" class="pa-tab-section">
+          <h3 class="pa-section-heading">Ritmo e produtividade <small>Ciclo médio e distribuição</small></h3>
           <div class="mi-charts-row">
             <div class="mi-chart-card"><div class="mi-chart-title">Ciclo medio por dia</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaCicloDia"></canvas></div></div>
             <div class="mi-chart-card"><div class="mi-chart-title">Distribuicao de tempos de ciclo</div><div class="mi-chart-canvas-wrap"><canvas id="chartPaHistograma"></canvas></div></div>
@@ -401,6 +407,7 @@
         </div>
 
         <div id="paSecaoDados" class="pa-tab-section pa-data-section">
+          <h3 class="pa-section-heading">Registros para auditoria <small>Detalhes e exportação</small></h3>
           <div class="mi-listagem-wrap pa-table-wrap"><div class="mi-list-header"><h3>Dados das concretagens</h3><button id="paBtnExportarDadosCSV" class="mi-secondary-btn" type="button">Exportar CSV</button></div><div class="mi-table-responsive pa-table-responsive"><table class="sheet-table mi-table"><thead><tr><th>Forma</th><th>Setor</th><th>Tipo de Concreto</th><th>Horario</th><th>Operador</th></tr></thead><tbody id="paDadosTbody"><tr><td colspan="5">Nenhum dado encontrado no periodo.</td></tr></tbody></table></div></div>
         </div>
       </section>
@@ -1045,7 +1052,15 @@
           <div class="mi-kpi-card mi-kpi-atingimento"><span class="mi-kpi-label">Atingimento</span><span class="mi-kpi-val" id="miAtingimentoPct">-%</span></div>
           <div class="mi-kpi-card mi-kpi-dia"><span class="mi-kpi-label">Producao do dia</span><span class="mi-kpi-val" id="miProducaoDia">-</span></div>
           <div class="mi-kpi-card mi-kpi-aprovados"><span class="mi-kpi-label">Aprovados</span><span class="mi-kpi-val" id="miTotalAprovados">-</span></div>
+          <div class="mi-kpi-card mi-kpi-taxa-logins"><span class="mi-kpi-label">Postes / montador logado</span><span class="mi-kpi-val" id="miPostesPorMontadorLogado">—</span><small id="miPostesPorMontadorMeta">Inspecionados ÷ presenças diárias</small></div>
+          <div class="mi-kpi-card mi-kpi-logins"><span class="mi-kpi-label">Montadores logados</span><span class="mi-kpi-val" id="miMontadoresLogados">—</span><small>Soma das presenças por dia no mês</small></div>
+          <div class="mi-kpi-card mi-kpi-inspecoes-logins"><span class="mi-kpi-label">Postes inspecionados</span><span class="mi-kpi-val" id="miPostesInspecionadosLogins">—</span><small>Mesmo período da relação</small></div>
         </div>
+        <section class="mi-chart-card mi-timeline-card" aria-labelledby="miMontagemTimelineTitle">
+          <div class="mi-chart-title" id="miMontagemTimelineTitle">Montagem dia a dia no mês</div>
+          <p id="miMontagemTimelineNote">Carregando evolução de montadores e postes inspecionados...</p>
+          <div class="mi-chart-canvas-wrap"><canvas id="miMontagemTimeline" aria-label="Evolução diária de postes inspecionados, montadores logados e postes por montador"></canvas></div>
+        </section>
         <section class="mi-indicator-guide" aria-labelledby="miIndicatorGuideTitle">
           <div class="mi-indicator-guide-heading">
             <div>
@@ -1192,7 +1207,14 @@
         </section>
       </div>
 
-      <div id="miSecaoProdutividade" class="mi-tab-section"><div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div></div>
+      <div id="miSecaoProdutividade" class="mi-tab-section">
+        <div class="mi-chart-card mi-taxa-card">
+          <div class="mi-chart-title">Indicadores diários da montagem</div>
+          <p>Montadores: pessoas identificadas em inspeções concluídas no dia. Postes/montador/dia = postes inspecionados ÷ montadores.</p>
+          <div class="mi-taxa-table-wrap"><table class="sheet-table" aria-label="Postes inspecionados e montadores por dia"><tbody id="miTaxaMontagemBody"><tr><td>Carregando indicadores...</td></tr></tbody></table></div>
+        </div>
+        <div class="mi-charts-row"><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por tipo de poste</div><div id="miTempoMedioModelo" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div><div class="mi-chart-card"><div class="mi-chart-title">Tempo medio por operador</div><div id="miTempoMontador" class="mi-ranking-list"><div class="muted">Carregando...</div></div></div></div>
+      </div>
     </section>
 
     <section id="viewDashboardDefeitos" class="card hidden df-v4-shell">
@@ -1861,8 +1883,10 @@
   <script src="xlsx.full.min.js?v=v5.31"></script>
   <script src="supabase.js"></script>
   <script src="modelos-formas.js?v=v5.31"></script>
-  <script src="app.js?v=v5.31"></script>
+  <script src="montagem-taxa.js?v=v5.31-taxa5"></script>
+  <script src="app.js?v=v5.31-taxa5"></script>
   <script src="inspecao-defeitos.js?v=20261021f"></script>
+  <script src="dashboard-reference-layout.js?v=20261007c"></script>
   <script src="unificado-invite.js?v=1"></script>
 </body>
 </html>

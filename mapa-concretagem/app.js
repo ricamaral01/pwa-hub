@@ -1899,6 +1899,19 @@ async function postToMontagemApi(action, payload) {
   }
 }
 
+async function postToMontagemApiWithTimeout(action, payload, timeoutMs = 15000) {
+  let timeoutId;
+  const timeoutResult = new Promise((resolve) => {
+    timeoutId = setTimeout(() => resolve({ ok: false, timeout: true,
+      error: "Tempo limite de rede excedido" }), timeoutMs);
+  });
+  try {
+    return await Promise.race([postToMontagemApi(action, payload), timeoutResult]);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 function formatDateTime(iso) {
   if (!iso) return "-";
   return new Date(iso).toLocaleString("pt-BR");
@@ -2026,27 +2039,59 @@ function renderPhotoPreview(container, photos) {
 function fileToDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
+    const timeout = setTimeout(() => reader.abort(), 30000);
+    reader.onload = () => {
+      clearTimeout(timeout);
+      if (typeof reader.result === "string") resolve(reader.result);
+      else reject(new Error("Não foi possível ler a foto."));
+    };
+    reader.onerror = () => {
+      clearTimeout(timeout);
+      reject(new Error("Não foi possível ler a foto."));
+    };
+    reader.onabort = () => {
+      clearTimeout(timeout);
+      reject(new Error("A leitura da foto demorou demais. Tente novamente."));
+    };
+    try { reader.readAsDataURL(file); } catch (error) { clearTimeout(timeout); reject(error); }
   });
 }
 
 function compressImage(dataUrl, maxWidth, quality) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const img = new Image();
+    const timeout = setTimeout(() => finish(null, new Error("A foto demorou para abrir. Tente novamente ou use uma foto JPG.")), 15000);
+    let finished = false;
+    function finish(value, error) {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
+      img.onload = null;
+      img.onerror = null;
+      if (error) reject(error);
+      else resolve(value);
+    }
     img.onload = () => {
-      const ratio = img.width > maxWidth ? maxWidth / img.width : 1;
-      const width = Math.round(img.width * ratio);
-      const height = Math.round(img.height * ratio);
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL("image/jpeg", quality));
+      try {
+        if (!img.width || !img.height) throw new Error("A foto está vazia ou danificada.");
+        const ratio = img.width > maxWidth ? maxWidth / img.width : 1;
+        const width = Math.round(img.width * ratio);
+        const height = Math.round(img.height * ratio);
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) throw new Error("Não foi possível processar a foto neste aparelho.");
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressed = canvas.toDataURL("image/jpeg", quality);
+        if (!compressed.startsWith("data:image/jpeg")) throw new Error("Não foi possível converter a foto para JPG.");
+        finish(compressed);
+      } catch (error) {
+        finish(null, error);
+      }
     };
-    img.src = dataUrl;
+    img.onerror = () => finish(null, new Error("Formato de foto não reconhecido. Use JPG, PNG ou WebP."));
+    try { img.src = dataUrl; } catch (error) { finish(null, error); }
   });
 }
 
@@ -4626,7 +4671,7 @@ function buildMontagemPostePayload(entry, etapa = "") {
 
 async function syncMontagemPosteToApi(entry, etapa = "", options = {}) {
   const payload = buildMontagemPostePayload(entry, etapa);
-  const apiResult = await postToMontagemApi("salvar_montagem_poste", payload);
+  const apiResult = await postToMontagemApiWithTimeout("salvar_montagem_poste", payload);
 
   if (apiResult.ok) {
     if (!options.silent) setSyncStatus("ok", "Montagem de poste sincronizada com a planilha.");
@@ -4726,7 +4771,7 @@ function renderMontagemChecklistSections() {
           actionsHtml += `
             <label class="mp-photo-upload-label">
               📸 Tirar Foto da Falha
-              <input type="file" accept="image/*" capture="environment" class="mp-item-photo-input"
+              <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" class="mp-item-photo-input"
                      data-mp-section="${section.id}" data-mp-item="${item.id}" ${disableItem ? "disabled" : ""} />
             </label>
           `;
@@ -4767,13 +4812,27 @@ async function uploadChecklistPhoto(poste, photoBase64) {
   const form = new FormData();
   form.append("foto", blob, "inspecao.jpg");
   form.append("usuario", state.authUser?.name || "sistema");
-  const upload = await fetch(`${getBackendUrl()}/inspecoes/${encodeURIComponent(poste.key)}/fotos`, {
-    method: "POST",
-    body: form
-  });
-  const result = await upload.json();
-  if (!upload.ok || !result.success || !result.data?.url) {
-    throw new Error(result.error || "O servidor não confirmou o salvamento da foto.");
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  let upload;
+  let result;
+  try {
+    upload = await fetch(`${getBackendUrl()}/inspecoes/${encodeURIComponent(poste.key)}/fotos`, {
+      method: "POST",
+      body: form,
+      signal: controller.signal
+    });
+    result = await upload.json().catch(() => ({}));
+  } catch (error) {
+    if (controller.signal.aborted) {
+      throw new Error("O envio demorou demais. Confira as fotos antes de tentar novamente.");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+  if (!upload.ok || !result?.success || !result.data?.url) {
+    throw new Error(result?.error || `O servidor não confirmou o salvamento da foto (HTTP ${upload.status}).`);
   }
   return new URL(result.data.url, getBackendUrl()).href;
 }
@@ -4791,6 +4850,7 @@ async function setMontagemChecklistPhoto(sectionId, itemId, photoBase64) {
   const sync = await syncMontagemPosteToApi(current, "CHECKLIST", { silent: true });
   if (!sync.synced) setSyncStatus("warn", "Foto salva; o checklist aguarda sincronização.");
   renderMontagemChecklistSections();
+  return sync;
 }
 
 function setMontagemChecklistAnswer(sectionId, itemId, value) {
@@ -5048,28 +5108,40 @@ function getDeviceGeolocation() {
       resolve({ error: "Não suportado pelo navegador" });
       return;
     }
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        resolve({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracy: position.coords.accuracy,
-          timestamp: position.timestamp
-        });
-      },
-      (error) => {
-        let errorMsg = "Erro desconhecido";
-        if (error.code === error.PERMISSION_DENIED) {
-          errorMsg = "Permissão negada";
-        } else if (error.code === error.POSITION_UNAVAILABLE) {
-          errorMsg = "Posição indisponível";
-        } else if (error.code === error.TIMEOUT) {
-          errorMsg = "Tempo limite atingido";
-        }
-        resolve({ error: errorMsg });
-      },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-    );
+    let finished = false;
+    const finish = (result) => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
+      resolve(result);
+    };
+    const timeout = setTimeout(() => finish({ error: "Tempo limite atingido" }), 7000);
+    try {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          finish({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy,
+            timestamp: position.timestamp
+          });
+        },
+        (error) => {
+          let errorMsg = "Erro desconhecido";
+          if (error.code === error.PERMISSION_DENIED) {
+            errorMsg = "Permissão negada";
+          } else if (error.code === error.POSITION_UNAVAILABLE) {
+            errorMsg = "Posição indisponível";
+          } else if (error.code === error.TIMEOUT) {
+            errorMsg = "Tempo limite atingido";
+          }
+          finish({ error: errorMsg });
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    } catch (error) {
+      finish({ error: error.message || "Geolocalização indisponível" });
+    }
   });
 }
 
@@ -5507,7 +5579,7 @@ function renderInspecaoChecklistSections() {
           actionsHtml += `
             <label class="mp-photo-upload-label">
               📸 Tirar Foto da Falha
-              <input type="file" accept="image/*" capture="environment" class="ins-item-photo-input"
+              <input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" class="ins-item-photo-input"
                      data-ins-section="${section.id}" data-ins-item="${item.id}" ${disableItem ? "disabled" : ""} />
             </label>
           `;
@@ -5647,6 +5719,7 @@ async function setInspecaoChecklistPhoto(sectionId, itemId, photoBase64) {
   const sync = await syncMontagemPosteToApi(current, "INSPECAO", { silent: true });
   if (!sync.synced) setSyncStatus("warn", "Foto salva; a inspeção aguarda sincronização.");
   renderInspecaoChecklistSections();
+  return sync;
 }
 
 async function finalizarInspecaoPosteAtual() {
@@ -5731,8 +5804,10 @@ async function finalizarInspecaoPosteAtual() {
       timestamp: finalEntry.finalizadoEm
     };
 
-    const apiResult = await postToApi("salvar_inspecao_lote", { entries: [legacyEntry] });
-    if (apiResult.ok) {
+    const apiResult = await postToApiWithTimeout("salvar_inspecao_lote", { entries: [legacyEntry] });
+    if (!syncResult.synced) {
+      setSyncStatus("warn", "Inspeção salva no aparelho; sincronização pendente.");
+    } else if (apiResult.ok) {
       setSyncStatus("ok", "Inspeção sincronizada com sucesso.");
     } else {
       setSyncStatus("ok", "Inspeção salva online.");
@@ -8702,7 +8777,7 @@ function setMode(mode) {
     if (dashboardTitle) dashboardTitle.textContent = "Dashboard Montagem";
     const miDataInicio = document.getElementById("miDataInicio");
     const miDataFim = document.getElementById("miDataFim");
-    if (miDataInicio && !miDataInicio.value) miDataInicio.value = todayYmd();
+    if (miDataInicio && !miDataInicio.value) miDataInicio.value = `${todayYmd().slice(0, 7)}-01`;
     if (miDataFim && !miDataFim.value) miDataFim.value = todayYmd();
     restoreDashboardFilter("mi");
     limparLayoutDashboardDefeitos();
@@ -8794,7 +8869,7 @@ function setMode(mode) {
   const navTitles = {
     HUB: ["navInicio", "Início"],
     DASHBOARD: ["navDashboard", "Dashboard"],
-    PROD_ANALISE: ["navProdAnalise", "Produtividade"],
+    PROD_ANALISE: ["navProdAnalise", "Dashboard Concretagem Matriz"],
     LIBERACAO: ["hubLiberacao", "Produção / Liberação"],
       LIBERACAO_S1: ["hubLiberacaoS1", "Produção Setor 1"],
       LIBERACAO_S2: ["hubLiberacaoS2", "Produção Setor 2"],
@@ -9219,6 +9294,9 @@ function bindEvents() {
       const targetTab = e.currentTarget.dataset.tab;
       limparLayoutDashboardDefeitos();
       ativarAbaMontagem(targetTab || "resumo");
+      if (targetTab === "produtividade" && e.currentTarget.closest("#viewMontagemIndicadores")) {
+        requestAnimationFrame(() => document.querySelector("#miSecaoProdutividade .mi-taxa-card")?.scrollIntoView({ block: "start", behavior: "smooth" }));
+      }
     });
   });
 
@@ -9814,13 +9892,19 @@ function bindEvents() {
       const sectionId = target.dataset.insSection || "";
       const itemId = target.dataset.insItem || "";
 
+      target.disabled = true;
+      setSyncStatus("warn", "Processando foto da inspeção...");
       try {
         const dataUrl = await fileToDataUrl(file);
         const base64 = await compressImage(dataUrl, 1024, 0.7);
-        await setInspecaoChecklistPhoto(sectionId, itemId, base64);
+        const sync = await setInspecaoChecklistPhoto(sectionId, itemId, base64);
+        if (sync?.synced) setSyncStatus("ok", "Foto salva e vinculada à inspeção.");
       } catch (err) {
         console.error("Erro ao salvar foto da inspeção:", err);
         showMsgBox(`Foto não salva: ${err.message || "Tente novamente."}`, "error");
+      } finally {
+        target.disabled = false;
+        target.value = "";
       }
     });
   }
@@ -9921,13 +10005,19 @@ function bindEvents() {
       const sectionId = target.dataset.mpSection || "";
       const itemId = target.dataset.mpItem || "";
 
+      target.disabled = true;
+      setSyncStatus("warn", "Processando foto da montagem...");
       try {
         const dataUrl = await fileToDataUrl(file);
         const base64 = await compressImage(dataUrl, 1024, 0.7);
-        await setMontagemChecklistPhoto(sectionId, itemId, base64);
+        const sync = await setMontagemChecklistPhoto(sectionId, itemId, base64);
+        if (sync?.synced) setSyncStatus("ok", "Foto salva e vinculada ao checklist.");
       } catch (err) {
         console.error("Erro ao salvar foto da montagem:", err);
         showMsgBox(`Foto não salva: ${err.message || "Tente novamente."}`, "error");
+      } finally {
+        target.disabled = false;
+        target.value = "";
       }
     });
   }
@@ -10127,7 +10217,7 @@ async function syncOfflineData() {
       const entry = mpDb.postes[key];
       // Tenta re-enviar para o Supabase
       const payload = buildMontagemPostePayload(entry, entry.etapa || "FINALIZACAO");
-      const apiResult = await postToMontagemApi("salvar_montagem_poste", payload);
+      const apiResult = await postToMontagemApiWithTimeout("salvar_montagem_poste", payload);
       if (apiResult.ok) {
         mpDb.postes[key].pendingSync = false;
         syncedCount++;
@@ -11517,7 +11607,7 @@ function init() {
       }
     });
 
-    navigator.serviceWorker.register("./sw.js?v=v5.31", { updateViaCache: "none" }).then((reg) => {
+    navigator.serviceWorker.register("./sw.js?v=v5.31-taxa5", { updateViaCache: "none" }).then((reg) => {
       reg.update().catch(() => {});
     }).catch(() => {});
   }
@@ -12741,6 +12831,7 @@ function sincronizarDfScopeTabs() {
 function setProdutividadeDrawerOpen(open) {
   const drawer = document.getElementById("paFiltrosDrawer");
   if (!drawer) return;
+  if (drawer.classList.contains("pa-filters-inline")) return;
   drawer.classList.toggle("hidden", !open);
   drawer.setAttribute("aria-hidden", open ? "false" : "true");
 }
@@ -13049,6 +13140,8 @@ function aplicarFiltrosEExibirMontagem() {
 
     return true;
   });
+
+  window.renderTaxaMontagem?.(miFilteredMontagemData);
 
   // 2. Filtrar dados de Produção
   const miFilteredDefeitosData = miFilteredMontagemData.filter(isLinhaDefeitoDashboard);
@@ -13999,8 +14092,9 @@ window.ordenarMiTabela = function(coluna) {
 
 function renderGraficosMontagem(byDay, bySector, byMontador, prodByDay = {}) {
   miUltimosGraficos = { byDay, bySector, byMontador, prodByDay };
-  const shouldRenderProducao = miAbaAtiva === "producao" || window.innerWidth >= 768;
-  const shouldRenderQualidade = miAbaAtiva === "qualidade" || window.innerWidth >= 768;
+  const continuousMontagem = document.body.classList.contains("mode-montagem-indicadores");
+  const shouldRenderProducao = continuousMontagem || miAbaAtiva === "producao" || window.innerWidth >= 768;
+  const shouldRenderQualidade = continuousMontagem || miAbaAtiva === "qualidade" || window.innerWidth >= 768;
   if (!shouldRenderProducao && chartMiPorDiaInstance) {
     chartMiPorDiaInstance.destroy();
     chartMiPorDiaInstance = null;

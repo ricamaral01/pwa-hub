@@ -15,16 +15,9 @@
     if (!body) return;
     const currentRequest = ++requestNumber;
     const posts = new Map();
-    const assemblers = new Map();
     for (const record of records || []) {
       const day = String(record.finalizado_em || record.finalizadoEm || record.inicio_inspecao_montagem || record.data_fabricacao || '').slice(0, 10);
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) continue;
-      posts.set(day, (posts.get(day) || 0) + 1);
-      const name = String(record.montador_nome || '').trim().toLocaleLowerCase('pt-BR');
-      if (name && name !== 'desconhecido') {
-        if (!assemblers.has(day)) assemblers.set(day, new Set());
-        assemblers.get(day).add(name);
-      }
+      if (/^\d{4}-\d{2}-\d{2}$/.test(day)) posts.set(day, (posts.get(day) || 0) + 1);
     }
     const selectedStart = document.getElementById('miDataInicio')?.value;
     const selectedEnd = document.getElementById('miDataFim')?.value;
@@ -65,13 +58,9 @@
     const rows = [
       ['Dia', day => dayFormatter.format(new Date(`${day}T12:00:00Z`))],
       ['Postes inspecionados', day => posts.get(day) || 0],
-      [unified ? 'Montadores' : 'Montadores com inspeção no dia', day => unified
-        ? (!data?.started_on || day < data.started_on ? '—' : data.days[day] || 0)
-        : (assemblers.get(day)?.size || '—')],
+      ['Montadores', day => !data?.started_on || day < data.started_on ? '—' : data.days[day] || 0],
       ['Postes por montador', day => {
-        const count = unified
-          ? (!data?.started_on || day < data.started_on ? null : data.days[day] || 0)
-          : (assemblers.get(day)?.size || 0);
+        const count = !data?.started_on || day < data.started_on ? null : data.days[day] || 0;
         return count ? rateFormatter.format((posts.get(day) || 0) / count) : '—';
       }],
     ];
@@ -84,6 +73,6 @@
     const note = body.closest('.mi-taxa-card')?.querySelector('p');
     if (note) note.textContent = error || (unified
       ? 'Montadores: contas com perfil MONTADOR que entraram no sistema no dia. Antes do início do registro: —.'
-      : 'Montadores: nomes distintos nas inspeções concluídas no dia.');
+      : 'O Mapa antigo não registra logins por usuário e dia. Montadores e divisão aparecem como —.');
   };
 })();

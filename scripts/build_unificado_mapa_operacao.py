@@ -13,6 +13,7 @@ from patch_mapa_defects_unificado import NEW as PATCHED_DEFECT_FUNCTION
 from patch_mapa_defects_unificado import apply as patch_defects
 from patch_mapa_second_inspection_unificado import apply as patch_second_inspection
 from patch_mapa_dashboard_defects_kpis_unificado import apply as patch_dashboard_header
+from patch_unificado_producao import apply as patch_producao
 from utf8_guard_unificado import repair
 
 
@@ -63,7 +64,8 @@ def main() -> None:
     if TARGET.exists():
         shutil.rmtree(TARGET)
     TARGET.mkdir(parents=True, exist_ok=True)
-    for name in ("styles.css", "inspecao-defeitos.css", "inspecao-defeitos.js", "dashboard-defeitos-v4.css", "chart.min.js",
+    for name in ("styles.css", "inspecao-defeitos.css", "inspecao-defeitos.js", "dashboard-defeitos-v4.css", "montagem-taxa.js", "montagem-taxa.css",
+                 "dashboard-reference-layout.js", "dashboard-reference-layout.css", "chart.min.js",
                  "chartjs-plugin-datalabels.min.js", "xlsx.full.min.js",
                  "modelos-formas.js", "supabase.js", "manifest.json"):
         shutil.copy2(SOURCE / name, TARGET / name)
@@ -73,7 +75,8 @@ def main() -> None:
         shutil.copy2(ROOT / "assets" / name, assets / name)
     (assets / "img").mkdir(exist_ok=True)
     shutil.copy2(ROOT / "assets" / "img" / "icon.png", assets / "img" / "icon.png")
-    for name in ("bridge.js", "sw.js", "unificado-bridge.css", "unificado-bridge.js", "unificado-icon.png"):
+    for name in ("bridge.js", "sw.js", "unificado-bridge.css", "unificado-bridge.js", "mandril-report.js", "unificado-icon.png",
+                 "users-unificado.js", "users-unificado.css", "screen-context.js"):
         shutil.copy2(BRIDGE / name, TARGET / name)
     for name in ("dashboard-defeitos-v5.css", "dashboard-defeitos-v5.js", "dashboards-v6.css", "dashboards-v6.js", "dashboards-v7.css", "dashboards-v7.js"):
         shutil.copy2(BRIDGE / name, TARGET / name)
@@ -107,19 +110,55 @@ def main() -> None:
         raise RuntimeError("Mapa original config changed")
     replacement = 'const SUPABASE_CONFIG = {\n  URL: location.origin + "/unificado/mapa/api",\n  KEY: "unificado-test-only"\n};'
     output_app = patch_defects(config.sub(replacement, source_app))
-    output_app = re.sub(r'"\./sw\.js\?v=[^"?]+"', f'"./sw.js?v={version}"', output_app, count=1)
+    output_app = re.sub(r'"\./sw\.js\?v=[^"?]+"', f'"./sw.js?v={version}-taxa5"', output_app, count=1)
     assert output_app.replace(replacement, matches[0], 1).replace(
         PATCHED_DEFECT_FUNCTION, ORIGINAL_DEFECT_FUNCTION, 1
-    ).replace(f'"./sw.js?v={version}"', re.search(r'"\./sw\.js\?v=[^"?]+"', source_app).group(), 1) == source_app
+    ).replace(f'"./sw.js?v={version}-taxa5"', re.search(r'"\./sw\.js\?v=[^"?]+"', source_app).group(), 1) == source_app
     for original, neutral in DATABASE_TEXT_REPLACEMENTS.items():
         if original not in output_app:
             raise RuntimeError(f"Texto de banco mudou na origem: {original}")
         output_app = output_app.replace(original, neutral)
     output_app = patch_second_inspection(output_app)
+    role_marker = 'const ROLE_PERMISSIONS = {\n'
+    if output_app.count(role_marker) != 1:
+        raise RuntimeError('Mapa role configuration changed')
+    output_app = output_app.replace(role_marker,
+        role_marker + '  CONVIDADO: {label: "Convidado", modes: '
+        'ROLE_PERMISSIONS_GUEST_MODES},\n', 1)
+    guest_modes = sorted({row['screen'] for row in json.loads(
+        (ROOT / 'unificado' / 'mapa' / 'api' / 'screen_catalog.json').read_text(encoding='utf-8'))
+        if row['module'] == 'producao'})
+    output_app = output_app.replace('ROLE_PERMISSIONS_GUEST_MODES', json.dumps(guest_modes), 1)
+    setor4_guard = 'if (!data || !setor || setor === "Setor 4") return new Set();'
+    if output_app.count(setor4_guard) != 1:
+        raise RuntimeError('Mapa PCP Setor 4 integration changed')
+    output_app = output_app.replace(setor4_guard,
+                                    'if (!data || !setor) return new Set();', 1)
+    setor4_cell = '  tdForma.className = "s4-forma-cell";'
+    if output_app.count(setor4_cell) != 1:
+        raise RuntimeError('Mapa Setor 4 form cell changed')
+    output_app = output_app.replace(setor4_cell,
+        setor4_cell + '\n  if (state.programmedFormas?.has(normalizeUpper(item.forma))) tdForma.classList.add("is-programmed");', 1)
+    daily_rate_hook = '  window.renderTaxaMontagem?.(miFilteredMontagemData);'
+    if output_app.count(daily_rate_hook) != 1:
+        raise RuntimeError('Mapa daily montage dashboard changed')
+    access_assignment = '  state.allowedModes = next;'
+    if output_app.count(access_assignment) != 1:
+        raise RuntimeError('Mapa access assignment changed')
+    output_app = output_app.replace(access_assignment, '''  if (Array.isArray(window.__unificadoAllowedModes)) {
+    const visible = new Set(window.__unificadoAllowedModes);
+    for (const mode of next) {
+      if (mode !== "HUB" && !visible.has(mode) &&
+          !(mode === "INSPECAO_DETALHE" && visible.has("INSPECAO")) &&
+          !(mode === "MONTAGEM_POSTES_DETALHE" && visible.has("MONTAGEM_POSTES"))) next.delete(mode);
+    }
+  }
+  state.allowedModes = next;''', 1)
     external_pdf = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
     if output_app.count(external_pdf) != 1:
         raise RuntimeError("Mapa original mudou a carga da biblioteca de PDF")
     output_app = output_app.replace(external_pdf, "/unificado/vendor/html2pdf/html2pdf.bundle.min.js")
+    output_app = patch_producao(output_app)
     (TARGET / "app.js").write_text(repair(output_app), encoding="utf-8", newline="\n")
 
     html = (SOURCE / "index.html").read_text(encoding="utf-8")
@@ -130,17 +169,26 @@ def main() -> None:
         raise RuntimeError("Convite do Mapa original mudou")
     html = html.replace(legacy_invite, "", 1)
     html = patch_dashboard_header(html)
+    productivity_tab = '<div id="miSecaoProdutividade" class="mi-tab-section">'
+    if html.count(productivity_tab) != 1 or html.count('id="miTaxaMontagemBody"') != 1:
+        raise RuntimeError('Mapa productivity tab changed')
     html = html.replace('class="auth-checking"', "", 1)
     html = html.replace('  <script defer src="/auth/config.js?v=2"></script><script defer src="/auth/client.js"></script><script defer src="/auth/guard.js?v=2"></script>\n', "", 1)
     html = html.replace('../assets/msgbox.', 'assets/msgbox.')
-    html = html.replace('<script src="app.js?v=v5.31"></script>',
+    html = html.replace('<script src="app.js?v=v5.31-taxa5"></script>',
                         '<script src="bridge.js"></script><script src="app.js?v=unificado-operacao-1"></script><script src="unificado-bridge.js"></script>', 1)
     html = html.replace('?v=v5.31', f'?v={version}')
     html = html.replace('src="bridge.js"', f'src="bridge.js?v={version}"')
-    html = html.replace('src="app.js?v=unificado-operacao-1"', f'src="app.js?v={version}"')
+    html = html.replace('src="app.js?v=unificado-operacao-1"', f'src="app.js?v={version}-taxa5"')
+    html = html.replace(f'<script src="app.js?v={version}-taxa5"></script>',
+                        f'<script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script><script src="screen-context.js?v={version}-photo1"></script><script src="app.js?v={version}-taxa5"></script>', 1)
+    html = html.replace(f'<script src="app.js?v={version}-taxa5"></script>',
+                        f'<script src="app.js?v={version}-taxa5"></script><script src="mandril-report.js?v={version}"></script>', 1)
     html = html.replace('src="unificado-bridge.js"', f'src="unificado-bridge.js?v={version}"')
+    html = html.replace(f'<script src="unificado-bridge.js?v={version}"></script>',
+                        f'<script src="users-unificado.js?v={version}-reset1"></script><script src="unificado-bridge.js?v={version}"></script>', 1)
     html = html.replace('src="unificado-bridge.css"', f'src="unificado-bridge.css?v={version}"')
-    html = html.replace('</head>', f'<link rel="stylesheet" href="dashboard-defeitos-v5.css?v={version}"><link rel="stylesheet" href="dashboards-v6.css?v={version}"><link rel="stylesheet" href="dashboards-v7.css?v={version}"></head>', 1)
+    html = html.replace('</head>', f'<link rel="stylesheet" href="dashboard-defeitos-v5.css?v={version}"><link rel="stylesheet" href="dashboards-v6.css?v={version}"><link rel="stylesheet" href="dashboards-v7.css?v={version}"><link rel="stylesheet" href="users-unificado.css?v={version}-reset1"></head>', 1)
     html = html.replace('<script src="unificado-bridge.js?v=' + version + '"></script>',
                         '<script src="unificado-bridge.js?v=' + version + '"></script><script src="dashboard-defeitos-v5.js?v=' + version + '"></script><script src="dashboards-v6.js?v=' + version + '"></script><script src="dashboards-v7.js?v=' + version + '"></script>', 1)
     html = html.replace('<div class="modal-box modal-box-loading">',
@@ -148,6 +196,9 @@ def main() -> None:
     html = html.replace('<head>', '<head><script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\\.html$/,"")+location.search))}</script>', 1)
     html = html.replace('</head>', '<style>@media(min-width:1025px){html,body:not(.kiosk-active){background:#0B1730!important}}</style><link rel="stylesheet" href="unificado-bridge.css"></head>', 1)
     html = html.replace('href="unificado-bridge.css"', f'href="unificado-bridge.css?v={version}"')
+    # The Mapa service worker and browser cache both keep JS assets by URL.
+    html = html.replace(f'src="app.js?v={version}-taxa5"',
+                        f'src="app.js?v={version}-taxa5-photo3"', 1)
     (TARGET / "index.html").write_text(repair(html), encoding="utf-8", newline="\n")
     print("source_app_sha256=" + hashlib.sha256((SOURCE / "app.js").read_bytes()).hexdigest())
     print("built=" + str(TARGET))

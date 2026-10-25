@@ -63,17 +63,17 @@
   const search = document.createElement('input');
   search.type = 'search';
   search.className = 'unified-users-search';
-  search.placeholder = 'Buscar por nome, login, alçada, unidade ou situação';
+  search.placeholder = 'Buscar por nome, login, perfil, setor ou situação';
   search.setAttribute('aria-label', 'Buscar usuários');
   if (listWrap) {
     listWrap.querySelector('h3').textContent = 'Usuários de todos os módulos';
-    listWrap.querySelector('thead tr').innerHTML = '<th>Usuário</th><th>Perfis por módulo</th><th>Unidade</th><th>Situação</th><th>Ações</th>';
+    listWrap.querySelector('thead tr').innerHTML = '<th>Usuário</th><th>Perfis por módulo</th><th>Setor</th><th>Situação</th><th>Ações</th>';
     listWrap.querySelector('.sheet-box').before(search);
   }
   const createGuestButton = document.createElement('button');
   createGuestButton.type = 'button';
   createGuestButton.className = 'btn primary unified-create-guest';
-  createGuestButton.textContent = 'Criar usuário';
+  createGuestButton.textContent = 'Criar convidado';
   createGuestButton.hidden = !isMaster();
   if (listWrap) search.before(createGuestButton);
   search.addEventListener('input', () => {
@@ -88,8 +88,8 @@
   modal.innerHTML = `<div class="unified-user-editor-card" role="dialog" aria-modal="true" aria-labelledby="unified-user-editor-title">
     <div class="unified-user-editor-head"><h3 id="unified-user-editor-title">Editar usuário</h3><button type="button" data-close aria-label="Fechar">×</button></div>
     <div class="unified-user-editor-fields"><label>Nome<input name="name" autocomplete="off"></label>
-    <label>Alçada<select name="role"><option>GERENCIA</option><option>GESTOR</option><option>MONTADOR</option><option>APONTADOR</option><option>CONVIDADO</option></select></label>
-    <label>Unidade<select name="unit"><option value="campinas">Campinas</option><option value="pederneiras">Pederneiras</option><option value="ribeirao">Ribeirão</option><option value="noroeste">Noroeste</option></select></label></div>
+    <label>Perfil<select name="role"><option>GERENCIA</option><option>GESTOR</option><option>MONTADOR</option><option>APONTADOR</option><option>CONVIDADO</option></select></label>
+    <label>Setor<select name="sector"><option>Todos</option><option>Setor 1</option><option>Setor 2</option><option>Setor 3</option><option>Setor 4</option></select></label></div>
     <p class="unified-user-editor-note">O perfil define o que a pessoa pode fazer. As caixas definem quais telas ela pode abrir.</p>
     <div data-screens class="unified-user-screen-groups"></div>
     <section data-quality-actions hidden class="unified-user-screen-group unified-quality-section">
@@ -111,75 +111,20 @@
   createModal.id = 'unified-guest-create';
   createModal.hidden = true;
   createModal.innerHTML = `<form class="unified-user-editor-card" aria-labelledby="unified-guest-create-title">
-    <div class="unified-user-editor-head"><h3 id="unified-guest-create-title">Criar usuário</h3><button type="button" data-close aria-label="Fechar">×</button></div>
-    <p class="unified-user-editor-note">Escolha a alçada e a unidade. As telas permitidas são pré-selecionadas; ajuste as caixas antes de criar. A senha será trocada no primeiro acesso.</p>
+    <div class="unified-user-editor-head"><h3 id="unified-guest-create-title">Criar convidado</h3><button type="button" data-close aria-label="Fechar">×</button></div>
+    <p class="unified-user-editor-note">O convidado começa sem acesso. Depois de criar, libere cada tela e ação no editor.</p>
     <div class="unified-guest-fields">
       <label>Nome<input name="name" required maxlength="120" autocomplete="name"></label>
       <label>Login<input name="login" required minlength="3" maxlength="40" pattern="[a-z][a-z0-9_-]{2,39}" autocomplete="username"></label>
       <label>Senha temporária<input name="password" required minlength="6" maxlength="128" type="password" autocomplete="new-password"></label>
-      <label>Alçada<select name="role"><option value="GESTOR">Gestor</option><option value="GERENCIA">Gerência</option><option value="APONTADOR">Apontador</option><option value="MONTADOR">Montador</option><option value="CONVIDADO">Convidado</option></select></label>
-      <label>Unidade<select name="unit"><option value="campinas">Campinas</option><option value="pederneiras">Pederneiras</option><option value="ribeirao">Ribeirão</option><option value="noroeste">Noroeste</option></select></label>
-    </div><div data-create-screens class="unified-user-screen-groups"></div>
-    <div class="unified-user-editor-actions"><button type="button" data-close>Cancelar</button><button type="submit" class="btn primary">Criar usuário</button></div>
+      <label>Setor<select name="sector"><option>Todos</option><option>Setor 1</option><option>Setor 2</option><option>Setor 3</option><option>Setor 4</option></select></label>
+    </div><div class="unified-user-editor-actions"><button type="button" data-close>Cancelar</button><button type="submit" class="btn primary">Criar</button></div>
     <p data-error role="alert"></p></form>`;
   document.body.append(createModal);
-  let createCatalog = null;
-  const createForm = createModal.querySelector('form');
-  const createScreenWrap = createModal.querySelector('[data-create-screens]');
-  const applyCreatePreset = () => {
-    const role = createForm.elements.role.value;
-    const unit = createForm.elements.unit.value;
-    createScreenWrap.querySelectorAll('input[data-create-screen]').forEach(input => {
-      const screen = createCatalog.find(item => item.id === input.value);
-      const pederneiras = screen.id.startsWith('pdr');
-      const isProduction = screen.module === 'producao';
-      const eligible = pederneiras ? unit === 'pederneiras' &&
-        (role === 'CONVIDADO' ? ['pdrMensal','pdrIndicadores'].includes(screen.id)
-          : screen.mapa_roles.includes(role))
-        : isProduction ? unit === 'campinas' && role !== 'CONVIDADO' &&
-          screen.mapa_roles.includes(role)
-        : screen.module !== 'usinas' && (role !== 'CONVIDADO' ||
-          !['prodUsuarios','pcpUsuarios','labUsuarios'].includes(screen.id));
-      input.disabled = !eligible;
-      input.checked = eligible && (pederneiras ? role !== 'CONVIDADO'
-        : isProduction && !['prodUsuarios','pcpUsuarios','labUsuarios'].includes(screen.id));
-    });
-  };
-  const loadCreateCatalog = async () => {
-    if (!createCatalog) createCatalog = (await request('/catalog')).screens;
-    createScreenWrap.replaceChildren();
-    for (const [module, title] of modules) {
-      const screens = createCatalog.filter(item => item.module === module);
-      if (!screens.length) continue;
-      const group = document.createElement('section');
-      group.className = 'unified-user-screen-group';
-      const heading = document.createElement('div');
-      heading.className = 'unified-user-screen-heading';
-      const h4 = document.createElement('h4'); h4.textContent = title;
-      heading.append(h4); group.append(heading);
-      for (const screen of screens) {
-        const label = document.createElement('label');
-        const input = document.createElement('input');
-        input.type = 'checkbox'; input.value = screen.id;
-        input.dataset.createScreen = '';
-        label.append(input, document.createTextNode(' ' + screen.label));
-        group.append(label);
-      }
-      createScreenWrap.append(group);
-    }
-    applyCreatePreset();
-  };
-  createGuestButton.addEventListener('click', async () => {
-    createGuestButton.disabled = true;
-    try {
-      await loadCreateCatalog();
-      createModal.hidden = false;
-      createForm.elements.name.focus();
-    } catch (error) { setUgFeedback(error.message, false); }
-    finally { createGuestButton.disabled = false; }
+  createGuestButton.addEventListener('click', () => {
+    createModal.hidden = false;
+    createModal.querySelector('[name="name"]').focus();
   });
-  createForm.elements.role.addEventListener('change', applyCreatePreset);
-  createForm.elements.unit.addEventListener('change', applyCreatePreset);
   createModal.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => { createModal.hidden = true; }));
   createModal.addEventListener('click', event => { if (event.target === createModal) createModal.hidden = true; });
   createModal.querySelector('form').addEventListener('submit', async event => {
@@ -191,18 +136,16 @@
     try {
       const data = Object.fromEntries(new FormData(form));
       data.name = data.name.trim(); data.login = data.login.trim();
-      data.screens = [...createScreenWrap.querySelectorAll('input[data-create-screen]:checked:not(:disabled)')]
-        .map(input => input.value);
-      const result = await fetch('/unificado/mapa/api/unified/users', {
+      const result = await fetch('/unificado/mapa/api/unified/guests', {
         method:'POST', credentials:'same-origin', cache:'no-store',
         headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
       });
       const payload = await result.json().catch(() => ({}));
-      if (!result.ok) throw new Error(payload.error || 'Não foi possível criar o usuário.');
+      if (!result.ok) throw new Error(payload.error || 'Não foi possível criar o convidado.');
       createModal.hidden = true;
       form.reset();
       await renderUsuarios();
-      setUgFeedback(`Usuário ${payload.user.login} criado com as telas selecionadas.`, true);
+      await open(payload.user);
     } catch (error) { form.querySelector('[data-error]').textContent = error.message; }
     finally { submit.disabled = false; }
   });
@@ -298,20 +241,16 @@
   const close = () => { modal.hidden = true; editing = null; };
   modal.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', close));
   modal.addEventListener('click', event => { if (event.target === modal) close(); });
-  const refreshEditorAvailability = () => {
+  modal.querySelector('[name="role"]').addEventListener('change', () => {
     const role = modal.querySelector('[name="role"]').value;
-    const unit = modal.querySelector('[name="unit"]').value;
-    modal.querySelectorAll('input[data-module]').forEach(input => {
+    modal.querySelectorAll('input[data-require]').forEach(input => {
+      if (role === 'CONVIDADO') return;
       if (input.dataset.module !== 'producao') return;
-      const pederneiras = input.dataset.screen.startsWith('pdr');
-      const allowed = (!pederneiras || unit === 'pederneiras') &&
-        (role === 'CONVIDADO' || input.dataset.roles.split(',').includes(role));
+      const allowed = role === 'GERENCIA' || input.dataset.roles.split(',').includes(role);
       input.disabled = !allowed;
       if (!allowed) input.checked = false;
     });
-  };
-  modal.querySelector('[name="role"]').addEventListener('change', refreshEditorAvailability);
-  modal.querySelector('[name="unit"]').addEventListener('change', refreshEditorAvailability);
+  });
   const open = async user => {
     const planningOnly = user.source === 'pcp';
     const guest = Boolean(user.guest || user.role === 'CONVIDADO');
@@ -385,7 +324,7 @@
     modal.querySelector('.unified-user-editor-note').textContent = guest
       ? 'Marque as telas e libere as ações permitidas em cada uma. Visualizar é necessário para usar a tela.'
       : 'O perfil define o que a pessoa pode fazer. As caixas definem quais telas ela pode abrir.';
-    modal.querySelector('[name="unit"]').value = user.unit || 'campinas';
+    modal.querySelector('[name="sector"]').value = planningOnly ? 'Todos' : (user.setor || 'Todos');
     modal.querySelector('[data-error]').textContent = '';
     const wrap = modal.querySelector('[data-screens]');
     wrap.replaceChildren();
@@ -521,8 +460,7 @@
           {method:'PUT', body:JSON.stringify({screens,
             name: modal.querySelector('[name="name"]').value.trim(),
             map_role: modal.querySelector('[name="role"]').value,
-            map_sector: editing.setor || 'Todos',
-            unit: modal.querySelector('[name="unit"]').value})});
+            map_sector: modal.querySelector('[name="sector"]').value})});
       } else {
         const guest = Boolean(editing.guest || editing.role === 'CONVIDADO');
         const actions = guest ? Object.fromEntries(screens.map(id => {
@@ -534,8 +472,7 @@
         await request('/' + encodeURIComponent(editing.id), {method:'PATCH', body:JSON.stringify({
           name: modal.querySelector('[name="name"]').value.trim(),
           role: modal.querySelector('[name="role"]').value,
-          sector: editing.setor || 'Todos',
-          unit: modal.querySelector('[name="unit"]').value, screens,
+          sector: modal.querySelector('[name="sector"]').value, screens,
           ...(guest ? {actions} : {})
         })});
       }
@@ -581,8 +518,10 @@
     el.ugListaBody.replaceChildren();
     for (const user of users) {
       const row = document.createElement('tr');
-      const unit = ({campinas:'Campinas',pederneiras:'Pederneiras',
-        ribeirao:'Ribeirão',noroeste:'Noroeste'})[user.unit] || 'Campinas';
+      const sector = user.source === 'mapa' && user.planning_role && user.planning_sector &&
+        user.planning_sector !== (user.setor || 'Todos')
+        ? `Produção: ${user.setor || 'Todos'} · Planejamento: ${user.planning_sector}`
+        : (user.setor || user.planning_sector || 'Todos');
       const status = !user.active ? 'Inativa' : user.planning_active === false
         ? 'Ativa no Mapa · inativa no Planejamento' : 'Ativa';
       const identity = document.createElement('td');
@@ -609,7 +548,7 @@
         roles.append(chip);
       }
       if (!roles.childElementCount) roles.textContent = '—';
-      const sectorCell = document.createElement('td'); sectorCell.textContent = unit;
+      const sectorCell = document.createElement('td'); sectorCell.textContent = sector;
       const statusCell = document.createElement('td');
       const statusBadge = document.createElement('span');
       statusBadge.className = 'unified-user-status' + (user.active ? '' : ' is-inactive');

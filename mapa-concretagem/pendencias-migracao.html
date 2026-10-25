@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pendências locais — Mapa de Concretagem</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#102c4d;background:#f4f7fb}
+    *{box-sizing:border-box}body{margin:0;padding:24px}main{max-width:720px;margin:auto;background:white;border:1px solid #d8e1eb;border-radius:14px;padding:24px;box-shadow:0 8px 28px #102c4d12}
+    h1{font-size:1.5rem;margin:0 0 8px}p{line-height:1.5}small{color:#53667a}.summary{padding:14px 16px;border-radius:8px;background:#e8f7ed;color:#18582d;font-weight:700}.summary.warn{background:#fff0d6;color:#7d4400}.summary.error{background:#ffe5e2;color:#822c22}
+    dl{display:grid;grid-template-columns:1fr auto;gap:8px 18px;margin:24px 0}dt,dd{border-bottom:1px solid #edf1f5;padding:8px 0;margin:0}dd{font-weight:700;text-align:right}.actions{display:flex;gap:10px;flex-wrap:wrap}a,button{display:inline-block;background:#e8762a;color:#102c4d;border:0;border-radius:8px;padding:11px 14px;font:700 14px system-ui;text-decoration:none;cursor:pointer}a.secondary{background:#e8eef5}button:focus-visible,a:focus-visible{outline:3px solid #1e5da3;outline-offset:2px}
+  </style>
+</head>
+<body><main>
+  <h1>Pendências neste aparelho</h1>
+  <p>Esta conferência lê apenas os dados guardados neste navegador para o Mapa antigo. Nenhum dado é enviado. Abra esta página em cada aparelho e em cada endereço antigo usado pela equipe.</p>
+  <div id="summary" class="summary" role="status">Verificando…</div>
+  <dl id="counts"></dl>
+  <p>Se houver pendências, volte ao Mapa antigo com conexão à internet e aguarde a sincronização. Confira novamente antes de passar ao sistema unificado. Registros de manutenção e saques de mandril também precisam de conferência na tela original.</p>
+  <div class="actions"><button id="refresh" type="button">Verificar novamente</button><a class="secondary" href="./">Voltar ao Mapa antigo</a><a href="https://concrefer.concretrack.com.br/unificado/">Abrir sistema unificado</a></div>
+  <p><small id="checked"></small></p>
+</main>
+<script>
+(() => {
+  const read = key => {
+    const raw = localStorage.getItem(key);
+    if (!raw) return {};
+    return JSON.parse(raw);
+  };
+  const count = values => values.filter(row => row && row.pendingSync === true).length;
+  function refresh() {
+    const summary = document.getElementById('summary');
+    const list = document.getElementById('counts');
+    try {
+      const db = read('pwa_liberacao_inspecao_v1');
+      const montagem = read('pwa_montagem_postes_v1');
+      const sequencia = read('pwa_prog_s3_s4_v1');
+      const mandril = read('pwa_mandril_modelos_produzidos_v1');
+      const rows = [
+        ['Apontamentos e inspeções pendentes', count(db.events || [])],
+        ['Inspeções locais pendentes', count((db.records || []).flatMap(row => row.inspecoes || []))],
+        ['Montagens pendentes', count(Object.values(montagem.postes || {}))],
+        ['Sequências do Setor 3 pendentes', count(Object.values(sequencia.programacoes || {}))],
+        ['Modelos do mandril pendentes', count(Object.values(mandril || {}))]
+      ];
+      list.replaceChildren();
+      for (const [label, total] of rows) {
+        const term = document.createElement('dt'); term.textContent = label;
+        const value = document.createElement('dd'); value.textContent = String(total);
+        list.append(term, value);
+      }
+      const total = rows.reduce((sum, row) => sum + row[1], 0);
+      summary.className = 'summary' + (total ? ' warn' : '');
+      summary.textContent = total ? `${total} marcação(ões) pendente(s) neste navegador.` : 'Nenhuma marcação pendente encontrada neste navegador.';
+    } catch (_) {
+      list.replaceChildren();
+      summary.className = 'summary error';
+      summary.textContent = 'Não foi possível ler o armazenamento deste navegador. Preserve os dados e peça uma conferência manual.';
+    }
+    document.getElementById('checked').textContent = 'Verificado em ' + new Date().toLocaleString('pt-BR');
+  }
+  document.getElementById('refresh').addEventListener('click', refresh);
+  refresh();
+})();
+</script>
+</body></html>

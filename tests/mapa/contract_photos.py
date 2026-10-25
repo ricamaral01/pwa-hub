@@ -46,10 +46,13 @@ def main() -> None:
     poste = "captura-foto-" + secrets.token_hex(5)
     photo_id = None
 
-    def call(method: str, path: str, data=None, content_type=None, authenticated=True):
+    def call(method: str, path: str, data=None, content_type=None, authenticated=True,
+             screen=True):
         headers = {"Origin": "https://concrefer.concretrack.com.br"}
         if authenticated:
             headers["Cookie"] = cookie
+        if screen:
+            headers["X-Unificado-Screen"] = "INSPECAO"
         if content_type:
             headers["Content-Type"] = content_type
         request = urllib.request.Request(BASE + path, data=data, headers=headers, method=method)
@@ -80,7 +83,7 @@ def main() -> None:
         listed = json.loads(raw)
         assert status == 200 and len(listed["data"]) == 1 and listed["data"][0]["id"] == photo_id
         file_path = "/fotos/" + photo_id + "/arquivo"
-        status, image, headers = call("GET", file_path)
+        status, image, headers = call("GET", file_path, screen=False)
         assert status == 200 and image.startswith(b"\xff\xd8") and headers["Content-Type"].startswith("image/jpeg")
         status, _, headers = call("GET", file_path + "?download=1")
         assert status == 200 and "attachment" in headers.get("Content-Disposition", "")
