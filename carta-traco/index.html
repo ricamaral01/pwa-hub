@@ -485,6 +485,10 @@ body {
 </head>
 
 <body>
+  <div id="carta-traco-migrada" role="status" style="position:sticky;top:0;z-index:1000;padding:12px 18px;background:#fff3cd;color:#4a3500;text-align:center;font-weight:700;box-shadow:0 2px 8px #0002">
+    Somente consulta — a Carta Traço agora é no Unificado › Laboratório.
+    <a href="https://concrefer.concretrack.com.br/unificado/laboratorio/carta-traco/">Abrir Carta traço · MCC</a>
+  </div>
 
   <!-- Loading Overlay -->
   <div id="loading-overlay" class="loading-overlay hidden">
@@ -1007,6 +1011,11 @@ var chartDetalhe = null;
 
 // ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('button[type="submit"]').forEach(function(button) {
+    button.disabled = true;
+    button.title = 'Somente consulta. Use a Carta Traço no Unificado.';
+  });
+  document.getElementById('btn-executar-import').disabled = true;
   initNavigation();
   initCadastro();
   initConsulta();
@@ -1076,14 +1085,7 @@ async function apiGet(action, params) {
 }
 
 async function apiPost(action, data) {
-  var response = await fetch(SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(Object.assign({ action: action }, data)),
-    redirect: 'follow'
-  });
-  if (!response.ok) throw new Error('Erro na requisição');
-  return await response.json();
+  throw new Error('Carta Traço migrada para o Unificado (Laboratório). Use o sistema novo.');
 }
 
 // ===========================================
@@ -2001,7 +2003,7 @@ function previewImport() {
   html += '</tbody></table>';
   document.getElementById('import-preview').innerHTML = html;
   document.getElementById('import-preview').style.display = 'block';
-  document.getElementById('btn-executar-import').disabled = false;
+  document.getElementById('btn-executar-import').disabled = true;
   showToast(importParsedItems.length + ' itens prontos para importar.', 'success');
 }
 
