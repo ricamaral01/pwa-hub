@@ -39,3 +39,21 @@ imports/historico/relatorios/*
 !imports/historico/relatorios/.gitkeep
 imports/historico/exemplos/*
 imports/historico/manifesto-arquivos-esperados.json
+
+# Arquivos de trabalho e artefatos gerados
+.codex-tmp*/
+.work-*/
+.tmp*/
+tmp/
+output/
+test-results/
+.next/
+dist-native/
+__screenshots__/
+**/capturas*/
+**/screenshots*/
+*.pyc
+*.pyo
+*.tsbuildinfo
+# Migração auditada de Usinas
+!unificado/usinas/migrations/*.sql
