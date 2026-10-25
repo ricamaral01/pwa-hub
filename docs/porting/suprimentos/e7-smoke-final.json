@@ -1,0 +1,222 @@
+{
+  "ok": true,
+  "solicitacao": "SOL-00002",
+  "total_verificacoes": 43,
+  "verificacoes": [
+    {
+      "etapa": "login e2e-suprimentos-sol",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "bootstrap e2e-suprimentos-sol",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "papel e2e-suprimentos-sol",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "login e2e-suprimentos-aprov1",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "bootstrap e2e-suprimentos-aprov1",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "papel e2e-suprimentos-aprov1",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "login e2e-suprimentos-aprov2",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "bootstrap e2e-suprimentos-aprov2",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "papel e2e-suprimentos-aprov2",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "login e2e-suprimentos-almox",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "bootstrap e2e-suprimentos-almox",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "papel e2e-suprimentos-almox",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "login e2e-suprimentos-compras",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "bootstrap e2e-suprimentos-compras",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "papel e2e-suprimentos-compras",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "login e2e-suprimentos-qualidade",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "bootstrap e2e-suprimentos-qualidade",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "papel e2e-suprimentos-qualidade",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "tela painel",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "PWA entrada",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "PWA manifesto",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "PWA SW",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "CC",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "medidas",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "criar PWA",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "reenvio 1",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "reenvio 2",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "reenvio 3",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "reenvio 4",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "reenvio 5",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "qualidade sem aprovação",
+      "http": 403,
+      "esperado": 403
+    },
+    {
+      "etapa": "preço para duas alçadas",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "enviar",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "nível 2 antes do 1",
+      "http": 403,
+      "esperado": 403
+    },
+    {
+      "etapa": "aprovar nível 1",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "aprovar nível 2",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "separar",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "entregar",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "confirmar",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "detalhe final",
+      "http": 200,
+      "esperado": 200
+    },
+    {
+      "etapa": "API sem sessão",
+      "http": 401,
+      "esperado": 401
+    },
+    {
+      "etapa": "PWA sem sessão",
+      "http": 403,
+      "esperado": 403
+    },
+    {
+      "etapa": "outra unidade",
+      "http": 403,
+      "esperado": 403
+    }
+  ]
+}

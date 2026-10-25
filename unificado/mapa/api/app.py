@@ -3282,6 +3282,11 @@ def suprimentos_authorize():
     if not (original.startswith('/api/suprimentos/') or original.startswith('/unificado/suprimentos/')):
         return Response(status=403)
     user = supply_cookie_user(SUPRIMENTOS_COOKIE_NAME, SESSION_SECONDS, 'session')
+    if not user and original.startswith('/unificado/suprimentos/'):
+        # A primeira abertura ainda não tem cookie próprio; a shell recebe
+        # somente os arquivos estáticos após conferir a sessão principal.
+        user = authenticated_user() or supply_cookie_user(
+            SUPRIMENTOS_REFRESH_COOKIE_NAME, SUPRIMENTOS_REFRESH_SECONDS, 'suprimentos_refresh')
     if not user:
         return Response(status=401)
     if not supply_allowed(user):

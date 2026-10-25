@@ -1,0 +1,4 @@
+unificado/suprimentos/deploy/*.sh text eol=lf
+unificado/suprimentos/deploy/*.service text eol=lf
+unificado/suprimentos/deploy/*.timer text eol=lf
+unificado/suprimentos/deploy/*.nginx.conf text eol=lf

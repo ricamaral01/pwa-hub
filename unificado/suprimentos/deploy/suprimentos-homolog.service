@@ -1,0 +1,22 @@
+[Unit]
+Description=Suprimentos S0–S1 (homologação isolada)
+After=network-online.target postgresql.service
+
+[Service]
+Type=simple
+User=concrefer-suprimentos
+Group=concrefer-suprimentos
+WorkingDirectory=/opt/concrefer-unificado/homolog-next/suprimentos/service
+EnvironmentFile=/etc/concrefer-unificado/homolog/suprimentos.env
+ExecStart=/opt/concrefer-unificado/homolog-next/suprimentos/venv/bin/uvicorn suprimentos.main:app --host 127.0.0.1 --port 13167 --workers 1
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/concrefer-unificado/homolog-next/suprimentos/data
+
+[Install]
+WantedBy=multi-user.target
