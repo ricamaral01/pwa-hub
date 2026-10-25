@@ -71,7 +71,9 @@ done
 cat "$code/migrations/002_seed_modelos_existentes.sql" | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$db" >/dev/null
 cat "$code/migrations/003_seed_prensa_existente.sql" | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$db" >/dev/null
 cd "$code"
-sudo -u monitorconcreto /opt/monitor_concreto/.venv/bin/python \
+# systemd reads this root-only env file before dropping privileges. For this
+# one-time import, run the helper as root so the secret stays in that file.
+PYTHONDONTWRITEBYTECODE=1 /opt/monitor_concreto/.venv/bin/python \
   deploy/import_legacy_with_env.py "$data/legacy-readonly.json"
 
 systemctl daemon-reload
