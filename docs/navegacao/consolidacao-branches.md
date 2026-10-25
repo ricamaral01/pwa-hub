@@ -24,6 +24,6 @@ Data: 25/10/2026. Branch de integração: `feat/unificado-consolidado-20261025`.
 - **Resultado da conferência:** um deploy integral desta branch sobre o serviço do Mapa ainda seria regressivo. O deploy realizado nesta execução foi estritamente o pacote do shell do Unificado; o Mapa instalado foi preservado.
 - A árvore principal permaneceu intocada. O [inventário completo das alterações pendentes](alteracoes-nao-commitadas-raiz-20261025.txt) registra 737 entradas, com diretórios não rastreados agrupados pelo Git.
 
-## Publicação da navegação 1.0.57
+## Publicação da navegação 1.0.58
 
-A branch consolidada contém o novo logo, atualização sempre visível e rodapé compacto. Homologação em `:18446` e produção passaram pelo gate 7/7. Backup final de produção: `/opt/concrefer-unificado/backups/navigation-production-20261025T130140Z`. O service worker atualizou de 1.0.56 para 1.0.57, e os testes de quatro viewports passaram. `main` não foi movida. Detalhes no [relatório de execução](relatorio-execucao.md).
+A branch consolidada contém o novo logo, atualização sempre visível e rodapé compacto. Homologação em `:18446` e produção passaram pelo gate 7/7. Backup final de produção: `/opt/concrefer-unificado/backups/navigation-production-20261025T130724Z`. O service worker atualizou de 1.0.57 para 1.0.58, e os testes de quatro viewports passaram. `main` não foi movida. Detalhes no [relatório de execução](relatorio-execucao.md).

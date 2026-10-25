@@ -4,8 +4,8 @@ Data: 25/10/2026. Branch atual: `feat/unificado-consolidado-20261025`. A navega�
 
 ## Resultado
 
-- **Produção publicada:** `https://concrefer.concretrack.com.br/unificado/`, versão `1.0.57`.
-- **Homologação validada primeiro:** `https://concrefer.concretrack.com.br:18446/unificado/`, versão `1.0.57`.
+- **Produção publicada:** `https://concrefer.concretrack.com.br/unificado/`, versão `1.0.58`.
+- **Homologação validada primeiro:** `https://concrefer.concretrack.com.br:18446/unificado/`, versão `1.0.58`.
 - Correção prioritária do botão de atualização publicada separadamente em `1.0.49` antes da navegação. [Causa e correção](causa-botao-atualizacao.md).
 - Produção agrupa Campinas (Produção, Montagem, Controle, Indicadores) e Pederneiras (itens diretos). Os outros módulos mantêm seus grupos. [Árvore completa](estrutura-menu.md).
 - Celular: barra superior, chips do grupo atual, menu em tela cheia e barra inferior Início/Telas/Recentes/Conta. Tablet: trilho de 84 px e painel recolhível de 300 px. Desktop: seletor de módulo e menu recolhível. Busca global e estado da árvore por usuário/módulo.
@@ -76,6 +76,14 @@ Commit de implementação e evidências: `b0828187`. Push concluído em `origin/
 - Capturas antes e depois: [desktop antes](capturas/desktop-before-1.0.57-producao.png) e [depois](capturas/desktop-homolog-compact-1.0.57.png); [celular antes](capturas/celular-before-1.0.57-producao.png) e [depois](capturas/celular-homolog-compact-1.0.57.png). As quatro resoluções e a matriz de 20 telas em homologação e 24 em produção estão em `capturas/`.
 - Homologação primeiro, backup `/opt/concrefer-unificado/backups/navigation-homolog-20261025T125355Z`. Produção depois, backup `/opt/concrefer-unificado/backups/navigation-production-20261025T130140Z`. O procedimento validou `nginx -t`, leitura por `www-data`, arquivos `root:root 0644`, ausência de 777/666, versão e saúde de Unificado, Mapa, PCP, Laboratório, Qualidade e GED: gate **7/7** nos dois ambientes. O retorno automático restaura o backup se o deploy ou o teste posterior falhar.
 - `node --check`, `py_compile`, `git diff --check`, `nav_interactions.py`, `update_smoke.py`, `compact_acceptance.py` e `nav_matrix.py` passaram. Código e capturas enviados a `origin/feat/unificado-consolidado-20261025`; `main` não foi alterada.
+
+## Conclusão da versão 1.0.58
+
+- O botão **Atualizar** permanece habilitado também durante “Atualizando…”. O fluxo ignora cliques repetidos enquanto processa. `update_smoke.py` verificou esse estado, além de versão atual, versão nova, falha e recuperação.
+- `VERSION`, `APP_VERSION` e a chave do cache do service worker foram elevados juntos para `1.0.58`. Homologação passou no gate 7/7 com backup `/opt/concrefer-unificado/backups/navigation-homolog-20261025T130552Z`.
+- Produção passou no gate 7/7 com backup `/opt/concrefer-unificado/backups/navigation-production-20261025T130724Z`. A atualização real pelo botão fez **1.0.57 → 1.0.58**; a matriz de 24 capturas e a aceitação nos quatro tamanhos passaram depois do deploy. [Resultado final em produção](capturas/compact-acceptance-production-1.0.58.json).
+- Capturas finais: [celular antes](capturas/celular-before-1.0.58.png) e [depois](capturas/celular-production-compact-1.0.58.png); [tablet 1180×820 antes](capturas/tablet-paisagem-before-1.0.58.png) e [depois](capturas/tablet-paisagem-production-compact-1.0.58.png); [desktop antes](capturas/desktop-before-1.0.58.png) e [depois](capturas/desktop-production-compact-1.0.58.png).
+- Branch enviada a `origin/feat/unificado-consolidado-20261025`. O serviço do Mapa e as demais alterações sem commit da árvore principal permaneceram intactos; o limite do deploy integral está documentado acima. `main` não foi movida.
 
 ## Consolidação de branches após o ajuste SVG
 
