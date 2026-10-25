@@ -8,7 +8,7 @@ from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, File, HTTPException, Query, Request, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import FileResponse
 from sqlalchemy import and_, func, insert, or_, select, update
@@ -482,25 +482,36 @@ def upload_root() -> Path:
 
 
 @router.post("/solicitacoes/{request_id}/fotos", status_code=201)
-async def add_photo(request_id: str, arquivo: UploadFile = File(...), unidade: str = "campinas",
+async def add_photo(request_id: str, arquivo: UploadFile = File(...), client_uuid: str | None = Form(None), unidade: str = "campinas",
                     user: Actor = Depends(current_actor), db: Session = Depends(session)):
     ctx = context(unidade, user, db)
     request = get_request(db, ctx, parsed_id(request_id), lock=True)
     require_owner(ctx, request)
     check_action(ctx, "solicitacao.criar", str(request["cc_id"]), write=True, phase="S1", db=db)
-    if request["status"] not in {"RASCUNHO", "DEVOLVIDA"}:
-        raise HTTPException(409, "Fotos só podem ser incluídas antes do envio")
-    t = table("sup_solicitacao_foto")
-    count = db.execute(select(func.count()).select_from(t).where(and_(t.c.solicitacao_id == request["id"], t.c.unidade_id == ctx.unit_id))).scalar_one()
-    if count >= 3:
-        raise HTTPException(422, "Limite de 3 fotos")
+    try:
+        client_id = UUID(client_uuid) if client_uuid else None
+    except ValueError:
+        raise HTTPException(422, "client_uuid da foto inválido") from None
     content = await arquivo.read(2_097_153)
     if len(content) > 2_097_152:
         raise HTTPException(413, "Foto excede 2 MB")
     if not (content.startswith(b"\xff\xd8\xff") or content.startswith(b"\x89PNG\r\n\x1a\n")):
         raise HTTPException(422, "Imagem JPEG ou PNG obrigatória")
-    mime = "image/jpeg" if content.startswith(b"\xff") else "image/png"
     digest = hashlib.sha256(content).hexdigest()
+    t = table("sup_solicitacao_foto")
+    if client_id:
+        existing = db.execute(select(t).where(and_(t.c.solicitacao_id == request["id"],
+            t.c.unidade_id == ctx.unit_id, t.c.client_uuid == client_id))).mappings().one_or_none()
+        if existing:
+            if existing["sha256"] != digest:
+                raise HTTPException(409, "Identificador de foto reutilizado com outro conteúdo")
+            return {"id": str(existing["id"]), "sha256": digest, "tamanho": existing["tamanho"]}
+    if request["status"] not in {"RASCUNHO", "DEVOLVIDA"}:
+        raise HTTPException(409, "Fotos só podem ser incluídas antes do envio")
+    count = db.execute(select(func.count()).select_from(t).where(and_(t.c.solicitacao_id == request["id"], t.c.unidade_id == ctx.unit_id))).scalar_one()
+    if count >= 3:
+        raise HTTPException(422, "Limite de 3 fotos")
+    mime = "image/jpeg" if content.startswith(b"\xff") else "image/png"
     photo_id = uuid7()
     root = upload_root()
     folder = root / str(ctx.unit_id) / str(request["id"])
@@ -510,7 +521,7 @@ async def add_photo(request_id: str, arquivo: UploadFile = File(...), unidade: s
         stream.write(content)
     try:
         db.execute(insert(t).values(id=photo_id, solicitacao_id=request["id"], unidade_id=ctx.unit_id,
-                   storage_path=str(path), sha256=digest, mime=mime, tamanho=len(content),
+                   storage_path=str(path), sha256=digest, mime=mime, tamanho=len(content), client_uuid=client_id,
                    nome_original=Path(arquivo.filename or "foto").name[:120], criado_por=user.id, atualizado_por=user.id))
         db.commit()
     except Exception:
@@ -552,11 +563,39 @@ def pwa_catalog(q: str = "", unidade: str = "campinas", user: Actor = Depends(cu
     check_action(ctx, "catalogo.ver")
     t = table("sup_material")
     m = table("sup_unidade_medida")
-    stmt = select(t.c.id, t.c.codigo, t.c.descricao, m.c.sigla.label("unidade"), t.c.categoria).join(m, t.c.un_estoque == m.c.id).where(and_(t.c.ativo.is_(True), t.c.dominio == "almoxarifado"))
+    stmt = select(t.c.id, t.c.codigo, t.c.descricao, m.c.id.label("un_id"),
+                  m.c.sigla.label("unidade"), t.c.categoria).join(m, t.c.un_estoque == m.c.id).where(and_(t.c.ativo.is_(True), t.c.dominio == "almoxarifado"))
     if q:
         stmt = stmt.where(or_(t.c.codigo.ilike(f"%{q[:80]}%"), t.c.descricao.ilike(f"%{q[:80]}%")))
     return {"items": jsonable_encoder([dict(r) for r in db.execute(stmt.order_by(t.c.descricao).limit(100)).mappings()]),
             "atualizado_em": datetime.now(UTC).isoformat()}
+
+
+@router.get("/pwa/mais-pedidos")
+def pwa_frequent(cc_id: str, unidade: str = "campinas", user: Actor = Depends(current_actor), db: Session = Depends(session)):
+    ctx = context(unidade, user, db)
+    try:
+        cc_uuid = UUID(cc_id)
+    except ValueError:
+        raise HTTPException(422, "Centro de custo inválido") from None
+    if not any(ctx.has(action, cc_id) for action in
+               ("solicitacao.criar", "solicitacao.ver_alcada", "solicitacao.ver_unidade")):
+        raise HTTPException(403, "Sem acesso a este centro de custo")
+    cc = table("sup_centro_custo")
+    if db.execute(select(cc.c.id).where(and_(cc.c.id == cc_uuid, cc.c.unidade_id == ctx.unit_id))).scalar_one_or_none() is None:
+        raise HTTPException(403, "Centro de custo de outra unidade")
+    request = table("sup_solicitacao")
+    item = table("sup_solicitacao_item")
+    material = table("sup_material")
+    rows = db.execute(select(material.c.id, material.c.codigo, material.c.descricao,
+                             material.c.un_estoque.label("un_id"), func.count().label("pedidos"))
+                      .join(item, item.c.material_id == material.c.id)
+                      .join(request, request.c.id == item.c.solicitacao_id)
+                      .where(and_(request.c.unidade_id == ctx.unit_id, request.c.cc_id == cc_uuid,
+                                  request.c.status.not_in(("RASCUNHO", "CANCELADA", "REPROVADA")),
+                                  material.c.ativo.is_(True), material.c.dominio == "almoxarifado"))
+                      .group_by(material.c.id).order_by(func.count().desc()).limit(5)).mappings().all()
+    return {"items": jsonable_encoder([dict(row) for row in rows])}
 
 
 def close_delivered(db: Session, *, now: datetime | None = None) -> int:

@@ -109,6 +109,9 @@ def isolate_requests(request, env):
           suprimentos.sup_solicitacao_item, suprimentos.sup_solicitacao,
           suprimentos.sup_numero_solicitacao, suprimentos.sup_evento CASCADE"""))
         conn.execute(text("UPDATE suprimentos.sup_flag SET habilitado=true WHERE unidade_id=1 AND fase='S1'"))
+        conn.execute(text("DELETE FROM suprimentos.sup_usuario_papel WHERE iam_user_id='admin' AND papel='APROVADOR'"))
+        conn.execute(text("UPDATE suprimentos.sup_usuario_papel SET cc_id=:cc WHERE iam_user_id='sol' AND papel='SOLICITANTE'"),
+                     {"cc": env[1]})
 
 
 def draft(api, c, cc, un, *, client_uuid=None, price=None, urgency="NORMAL"):
@@ -236,6 +239,31 @@ def test_photos_auto_close(env, api):
     with Session(engine) as db:
         assert close_delivered(db) == 1
         assert close_delivered(db) == 0
+
+
+def test_pwa_photo_replay_and_catalog_isolation(env, api):
+    engine, cc, other_cc, un = env
+    sol = api.as_("sol")
+    request = draft(api, sol, cc, un, client_uuid=str(uuid7()))
+    key = str(uuid7())
+    path = f"{BASE}/solicitacoes/{request['id']}/fotos"
+    content = b"\xff\xd8\xffphoto"
+    def upload(payload=content):
+        return sol.post(path, data={"client_uuid": key},
+                        files={"arquivo": ("foto.jpg", io.BytesIO(payload), "image/jpeg")})
+    first = upload()
+    assert first.status_code == 201, first.text
+    for _ in range(5):
+        replay = upload()
+        assert replay.status_code == 201 and replay.json()["id"] == first.json()["id"]
+    assert upload(b"\xff\xd8\xffdifferent").status_code == 409
+    assert sol.post(f"{BASE}/solicitacoes/{request['id']}/enviar").status_code == 200
+    assert upload().json()["id"] == first.json()["id"]
+    with engine.connect() as conn:
+        assert conn.execute(text("SELECT count(*) FROM suprimentos.sup_solicitacao_foto WHERE client_uuid=:key"),
+                            {"key": key}).scalar_one() == 1
+    assert sol.get(f"{BASE}/pwa/mais-pedidos?cc_id={other_cc}").status_code == 403
+    assert api.as_("foreign").get(f"{BASE}/pwa/mais-pedidos?cc_id={cc}&unidade=pederneiras").status_code == 403
 
 
 def test_partial_delivery_problem_and_item_cancel(env, api):
