@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Unificado — desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5F8}
+a{color:#0F2C4C}a:hover{color:#0A1E35}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; background: #F3F5F8; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14202E">
+  <div style="flex: 0 0 300px; max-width: 100%">
+    <dc-import name="Menu" variant="desktop" update="{{ update }}" height="{{ menuH }}" hint-size="300px,900px"></dc-import>
+  </div>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 22px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+      <nav aria-label="Caminho" style="display: flex; gap: 8px; align-items: center; font-size: 14px; color: #5A6675">
+        <span>Produção</span><span aria-hidden="true">›</span>
+        <span style="padding: 3px 10px; border-radius: 999px; background: #E3ECF7; color: #1F4F86; font-weight: 600">Campinas</span><span aria-hidden="true">›</span>
+        <span>Produção</span><span aria-hidden="true">›</span>
+        <strong style="color: #14202E">Setor 3</strong>
+      </nav>
+      <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #17693F; background: #E3F3EA; border-radius: 999px; padding: 6px 12px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #17693F"></span>Sincronizado</span>
+    </header>
+    <section style="flex: 1; min-height: 640px; border: 2px dashed #C9D2DD; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #5A6675; font-size: 16px">Conteúdo da tela (sem alteração)</section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"update":{"editor":"enum","options":["ok","nova"],"default":"ok"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return { update: this.props.update ?? 'ok', menuH: 900 }; }
+}
+</script>
+</body>
+</html>

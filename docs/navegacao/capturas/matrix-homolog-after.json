@@ -1,0 +1,190 @@
+{
+  "celular": {
+    "planejamento": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 11,
+      "items": 2,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "producao": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 1,
+      "groups": 9,
+      "items": 6,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "qualidade": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 6,
+      "items": 0,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "laboratorio": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 9,
+      "items": 1,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "ged": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 6,
+      "items": 0,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nR\nRicardo\nSair",
+      "allowed": 66
+    }
+  },
+  "tablet-retrato": {
+    "planejamento": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 6,
+      "items": 2,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "producao": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 1,
+      "groups": 4,
+      "items": 6,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "qualidade": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 1,
+      "items": 0,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "laboratorio": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 4,
+      "items": 1,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "ged": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 1,
+      "items": 0,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    }
+  },
+  "tablet-paisagem": {
+    "planejamento": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 6,
+      "items": 2,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "producao": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 1,
+      "groups": 4,
+      "items": 6,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "qualidade": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 1,
+      "items": 0,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "laboratorio": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 4,
+      "items": 1,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "ged": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 1,
+      "items": 0,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    }
+  },
+  "desktop": {
+    "planejamento": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 6,
+      "items": 2,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "producao": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 1,
+      "groups": 4,
+      "items": 6,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "qualidade": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 1,
+      "items": 0,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "laboratorio": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 4,
+      "items": 1,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    },
+    "ged": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 1,
+      "items": 0,
+      "update": "Versão 1.0.55 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "allowed": 66
+    }
+  }
+}

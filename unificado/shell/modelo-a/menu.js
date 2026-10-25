@@ -5821,10 +5821,11 @@ function Gf(v) {
           R.items.map(q)
         ] }, R.title)) }),
         /* @__PURE__ */ w.jsxs("div", { className: "sb-footer", children: [
-          v.updateAvailable && /* @__PURE__ */ w.jsxs("button", { type: "button", className: "sb-update", "data-tip": "Atualizar aplicativo", onClick: v.onUpdate, children: [
+          /* @__PURE__ */ w.jsxs("button", { type: "button", className: "sb-update", "data-state": v.updateState, "data-tip": "Estado da atualização", disabled: v.updateState === "updating" || v.updateState === "checking", onClick: v.updateState === "current" ? v.onCheck : v.onUpdate, children: [
             /* @__PURE__ */ w.jsx("span", { className: "sb-update-dot", "aria-hidden": "true" }),
-            /* @__PURE__ */ w.jsx("span", { className: "sb-label", children: "Nova versão — atualizar" })
+            /* @__PURE__ */ w.jsx("span", { className: "sb-label", children: v.updateState === "available" ? `Nova versão ${v.latestVersion} — toque para atualizar` : v.updateState === "updating" ? "Atualizando… não feche" : v.updateState === "failed" ? "Não atualizou — tentar de novo" : v.updateState === "checking" ? "Verificando versão…" : `Versão ${v.version} · em dia · Verificar` })
           ] }),
+          v.updateFailures >= 2 && /* @__PURE__ */ w.jsx("button", { type: "button", className: "sb-update-reset", onClick: v.onClearUpdateCache, children: "Recarregar e limpar cache" }),
           v.footerItems.map(q),
           /* @__PURE__ */ w.jsxs("div", { className: "sb-user", children: [
             /* @__PURE__ */ w.jsx("span", { className: "sb-avatar", "aria-hidden": "true", children: v.user.name.trim().charAt(0).toUpperCase() }),
@@ -6058,10 +6059,15 @@ function Jf() {
         return (T = window.UnificadoSidebarModelA) == null ? void 0 : T.logout();
       },
       updateAvailable: v.updateAvailable,
+      updateState: v.updateState,
+      latestVersion: v.latestVersion,
+      updateFailures: v.updateFailures,
       onUpdate: () => {
         var T;
         return (T = window.UnificadoSidebarModelA) == null ? void 0 : T.update();
-      }
+      },
+      onCheck: () => window.UnificadoSidebarModelA?.checkUpdate(),
+      onClearUpdateCache: () => window.UnificadoSidebarModelA?.clearUpdateCache()
     }
   );
 }

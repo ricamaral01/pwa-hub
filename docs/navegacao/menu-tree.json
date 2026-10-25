@@ -1,0 +1,230 @@
+{
+  "planejamento": {
+    "label": "Planejamento",
+    "groups": [
+      {
+        "label": "",
+        "items": [
+          "Dashboard",
+          "Programado vs Realizado"
+        ]
+      },
+      {
+        "label": "Programação",
+        "items": [
+          "Setor 1 e 2",
+          "Setor 3 e 4",
+          "Circular Setor 3",
+          "DT Setor 4",
+          "Programação Final"
+        ]
+      },
+      {
+        "label": "Relatórios de Programação",
+        "items": [
+          "Setor 1 e 2",
+          "Setor 3",
+          "Setor 4"
+        ]
+      },
+      {
+        "label": "Etiquetas",
+        "items": [
+          "Padrão",
+          "SC-Prod.",
+          "Armaduras"
+        ]
+      },
+      {
+        "label": "Acompanhamento",
+        "items": [
+          "PCP Diário",
+          "Acompanhamento Mensal",
+          "Acompanhamento Mensal Setor 3 e 4",
+          "Apontamento Mega",
+          "Fechamento Diário"
+        ]
+      },
+      {
+        "label": "Produção e apoio",
+        "items": [
+          "Produção PCP",
+          "Mão de Obra",
+          "Rateio de Mão de Obra",
+          "Formas por Setor",
+          "Teste Programação"
+        ]
+      }
+    ]
+  },
+  "producao": {
+    "label": "Produção",
+    "groups": [
+      {
+        "label": "Campinas · Produção",
+        "items": [
+          "Produção / Liberação",
+          "Setor 1",
+          "Setor 2",
+          "Setor 3",
+          "Setor 4",
+          "Mandril Circular"
+        ]
+      },
+      {
+        "label": "Campinas · Montagem",
+        "items": [
+          "Inspeção Setor 3 e 4",
+          "Montagem Postes",
+          "Sequência Setor 3"
+        ]
+      },
+      {
+        "label": "Campinas · Controle",
+        "items": [
+          "Relatório Enc. Produção",
+          "Histórico",
+          "Acmp. Concretagem",
+          "Manutenção Formas",
+          "Tratativa Defeitos"
+        ]
+      },
+      {
+        "label": "Campinas · Indicadores",
+        "items": [
+          "Dashboard Montagem",
+          "Dashboard Defeitos",
+          "Dashboard Concretagem Matriz",
+          "Painel TV — Formas"
+        ]
+      },
+      {
+        "label": "Pederneiras",
+        "items": [
+          "Apontamento do dia",
+          "Mão de obra",
+          "Produção Pederneiras",
+          "Indicadores",
+          "Cadastro de produtos"
+        ]
+      }
+    ]
+  },
+  "qualidade": {
+    "label": "Qualidade",
+    "groups": [
+      {
+        "label": "Não conformidades",
+        "items": [
+          "Painel",
+          "Abrir NC",
+          "Resultados de bancada",
+          "Cadastros"
+        ]
+      }
+    ]
+  },
+  "usinas": {
+    "label": "Usinas",
+    "groups": [
+      {
+        "label": "Geral",
+        "items": [
+          "Cartas de traço",
+          "Controle estatístico",
+          "Relatórios gerenciais",
+          "Controle de estoque"
+        ]
+      }
+    ]
+  },
+  "laboratorio": {
+    "label": "Laboratório",
+    "groups": [
+      {
+        "label": "Corpos de Prova",
+        "items": [
+          "Etiquetas QR",
+          "Leitura de CP",
+          "Resultados dos corpos de prova"
+        ]
+      },
+      {
+        "label": "Controle estatístico",
+        "items": [
+          "Visão geral",
+          "Análise estatística",
+          "Relatório CEC"
+        ]
+      },
+      {
+        "label": "Dosagem",
+        "items": [
+          "Visão geral",
+          "Empacotamento",
+          "Volume",
+          "Comparação dos métodos",
+          "Traços",
+          "Materiais",
+          "Fornecedores",
+          "Ensaios",
+          "Ferramentas",
+          "Custos",
+          "Referência",
+          "Produção",
+          "Importação",
+          "Configurações"
+        ]
+      },
+      {
+        "label": "Concreto fresco",
+        "items": [
+          "Registro de slump / flow"
+        ]
+      },
+      {
+        "label": "Usina de Campinas",
+        "items": [
+          "Relatórios e custos"
+        ]
+      },
+      {
+        "label": "Cura térmica",
+        "items": [
+          "Monitoramento",
+          "Histórico de medições",
+          "Dispositivo"
+        ]
+      },
+      {
+        "label": "Postes",
+        "items": [
+          "Certificados de qualidade",
+          "Ensaio de postes",
+          "Absorção",
+          "Histórico de ensaios",
+          "Cadastros",
+          "Critérios"
+        ]
+      },
+      {
+        "label": "Cronoanálise",
+        "items": [
+          "Início",
+          "Coletar",
+          "Medições",
+          "Catálogo",
+          "Dimensionar",
+          "Simular",
+          "Metodologia"
+        ]
+      },
+      {
+        "label": "",
+        "items": [
+          "Como funciona"
+        ]
+      }
+    ]
+  }
+}

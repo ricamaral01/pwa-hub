@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Unificado — tablet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1180px; height: 820px; box-sizing: border-box; display: flex; background: #F3F5F8; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14202E; overflow: hidden">
+
+  <nav aria-label="Módulos" style="width: 84px; flex: none; background: #0A2038; display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 6px">
+    <button onClick="{{ togglePanel }}" aria-label="Abrir ou fechar o menu" style="width: 56px; height: 48px; border: 0; border-radius: 12px; background: rgba(255,255,255,0.08); color: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-bottom: 8px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    </button>
+    <sc-for list="{{ mods }}" as="m" hint-placeholder-count="5">
+      <a href="#" aria-current="{{ m.cur }}" style="{{ m.style }}">
+        <span style="{{ m.icon }}">{{ m.sig }}</span>
+        <span style="font-size: 11px">{{ m.nome }}</span>
+      </a>
+    </sc-for>
+    <span style="flex: 1"></span>
+    <button aria-label="Nova versão disponível — atualizar" style="width: 56px; height: 56px; border: 0; border-radius: 14px; background: #F08A3C; color: #1A1206; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font: inherit; font-size: 10px; font-weight: 700">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"></path><path d="M21 3v5h-5"></path></svg>
+      Atualizar
+    </button>
+  </nav>
+
+  <sc-if value="{{ panel }}" hint-placeholder-val="{{ true }}">
+    <div style="width: 300px; flex: none; box-shadow: 4px 0 18px rgba(10,32,56,0.18)">
+      <dc-import name="Menu" variant="mobile" update="nova" height="{{ h }}" hint-size="300px,820px"></dc-import>
+    </div>
+  </sc-if>
+
+  <main style="flex: 1; min-width: 0; padding: 20px 24px; display: flex; flex-direction: column; gap: 16px">
+    <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 13px; color: #5A6675">Produção › <strong style="color: #1F4F86">Campinas</strong> › Produção</span>
+        <h1 style="margin: 0; font-size: 24px">Setor 3</h1>
+      </div>
+      <span style="font-size: 13px; color: #5A6675">Toque em ☰ para mostrar/ocultar o menu</span>
+    </header>
+    <section style="flex: 1; border: 2px dashed #C9D2DD; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #5A6675; font-size: 16px; text-align: center; padding: 20px">Conteúdo da tela — ocupa a largura toda quando o menu está recolhido</section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1180,"height":820}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { panel: true }; }
+  renderVals() {
+    var self = this;
+    var list = [['PL','Planejamento'],['PR','Produção'],['QL','Qualidade'],['US','Usinas'],['LB','Laboratório']];
+    return {
+      panel: this.state.panel, h: 820,
+      togglePanel: function () { self.setState({ panel: !self.state.panel }); },
+      mods: list.map(function (x) {
+        var cur = x[0] === 'PR';
+        return {
+          sig: x[0], nome: x[1], cur: cur ? 'page' : 'false',
+          style: 'width: 72px; min-height: 60px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; ' + (cur ? 'background: rgba(255,255,255,0.14); color: #FFFFFF; font-weight: 600' : 'color: #C3D1E0'),
+          icon: 'width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; ' + (cur ? 'background: #2F6FB2; color: #FFFFFF' : 'background: rgba(255,255,255,0.10); color: #DCE5EF')
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

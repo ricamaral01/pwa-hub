@@ -1,0 +1,226 @@
+{
+  "celular": {
+    "planejamento": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 7,
+      "items": 0,
+      "update": "",
+      "allowed": 99
+    },
+    "producao": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 6,
+      "items": 0,
+      "update": "",
+      "allowed": 99
+    },
+    "qualidade": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 2,
+      "items": 0,
+      "update": "",
+      "allowed": 99
+    },
+    "usinas": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 2,
+      "items": 0,
+      "update": "",
+      "allowed": 99
+    },
+    "laboratorio": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 10,
+      "items": 0,
+      "update": "",
+      "allowed": 99
+    },
+    "ged": {
+      "documentWidth": 390,
+      "viewport": 390,
+      "units": 0,
+      "groups": 10,
+      "items": 0,
+      "update": "",
+      "allowed": 99
+    }
+  },
+  "tablet-retrato": {
+    "planejamento": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "producao": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "qualidade": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "usinas": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "laboratorio": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "ged": {
+      "documentWidth": 820,
+      "viewport": 820,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    }
+  },
+  "tablet-paisagem": {
+    "planejamento": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "producao": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "qualidade": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "usinas": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "laboratorio": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "ged": {
+      "documentWidth": 1180,
+      "viewport": 1180,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    }
+  },
+  "desktop": {
+    "planejamento": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "producao": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "qualidade": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "usinas": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "laboratorio": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    },
+    "ged": {
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "units": 0,
+      "groups": 0,
+      "items": 0,
+      "update": null,
+      "allowed": 99
+    }
+  }
+}

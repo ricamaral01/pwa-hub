@@ -136,6 +136,9 @@ const MENU_CONFIG = {
       { label: 'Concreto fresco', items: [
         { id:'labSlump', label:'Registro de slump / flow', path:'slump' }
       ] },
+      { label: 'Usina de Campinas', items: [
+        { id:'labUsinasRelatorios', label:'Relatórios e custos', path:'usinas-relatorios/' }
+      ] },
       { label: 'Cura térmica', items: [
         { id:'labMonitor', label:'Monitoramento', path:'' },
         { id:'labHistory', label:'Histórico de medições', path:'?view=history' },

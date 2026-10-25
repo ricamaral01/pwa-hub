@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Unificado — menu no celular</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #0E2A47; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #FFFFFF; overflow: hidden">
+  <header style="padding: 12px 12px 10px; display: flex; align-items: center; gap: 10px">
+    <strong style="flex: 1; font-size: 18px; letter-spacing: 0.02em">Telas</strong>
+    <a href="Mobile.dc.html" aria-label="Fechar menu" style="width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.08); color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </a>
+  </header>
+  <div role="tablist" aria-label="Módulo" style="display: flex; gap: 8px; overflow-x: auto; padding: 0 12px 10px">
+    <sc-for list="{{ mods }}" as="m" hint-placeholder-count="5">
+      <button role="tab" aria-selected="{{ m.sel }}" onClick="{{ m.pick }}" style="{{ m.style }}">{{ m.nome }}</button>
+    </sc-for>
+  </div>
+  <div style="flex: 1; min-height: 0">
+    <dc-import name="Menu" variant="mobile" update="nova" height="{{ h }}" hint-size="390px,728px"></dc-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { mod: 'Produção' }; }
+  renderVals() {
+    var self = this;
+    return {
+      h: 728,
+      mods: ['Planejamento','Produção','Qualidade','Usinas','Laboratório'].map(function (n) {
+        var sel = n === self.state.mod;
+        return {
+          nome: n, sel: sel ? 'true' : 'false',
+          pick: function () { self.setState({ mod: n }); },
+          style: 'flex: none; height: 40px; padding: 0 14px; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer; ' + (sel ? 'border: 0; background: #FFFFFF; color: #0E2A47; font-weight: 700' : 'border: 1px solid rgba(255,255,255,0.22); background: transparent; color: #DCE5EF')
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

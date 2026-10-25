@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Menu do Unificado</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<nav aria-label="Menu Produção" style="{{ rootStyle }}">
+
+  <sc-if value="{{ showHeader }}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 16px 14px 10px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-size: 18px; font-weight: 700; letter-spacing: 0.02em; color: #FFFFFF">CONCREFER</span>
+        <button aria-label="Recolher menu" style="width: 36px; height: 36px; border: 0; border-radius: 10px; background: rgba(255,255,255,0.08); color: #DCE5EF; cursor: pointer; display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+        </button>
+      </div>
+      <button style="height: 52px; border: 0; border-radius: 12px; background: rgba(255,255,255,0.08); color: #FFFFFF; font: inherit; display: flex; align-items: center; gap: 10px; padding: 0 12px; cursor: pointer; text-align: left">
+        <span style="width: 30px; height: 30px; border-radius: 8px; background: #2F6FB2; display: flex; align-items: center; justify-content: center">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"></path></svg>
+        </span>
+        <span style="display: flex; flex-direction: column; flex: 1"><span style="font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #A9BBD0">Módulo</span><strong style="font-size: 15px">Produção</strong></span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A9BBD0" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 9l4-4 4 4M16 15l-4 4-4-4"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+
+  <div style="padding: 4px 14px 8px; display: flex; flex-direction: column; gap: 8px">
+    <label style="position: relative; display: block">
+      <span style="position: absolute; left: -9999px">Buscar tela</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A9BBD0" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%)"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <input placeholder="Buscar tela…" style="width: 100%; box-sizing: border-box; height: 42px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: #FFFFFF; padding: 0 12px 0 36px; font: inherit; font-size: 14px">
+    </label>
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #A9BBD0">
+      <span>Unidades</span>
+      <span style="display: flex; gap: 4px">
+        <button onClick="{{ expandAll }}" style="height: 30px; padding: 0 8px; border: 0; border-radius: 8px; background: transparent; color: #DCE5EF; font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline">Expandir tudo</button>
+        <button onClick="{{ collapseAll }}" style="height: 30px; padding: 0 8px; border: 0; border-radius: 8px; background: transparent; color: #DCE5EF; font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline">Recolher tudo</button>
+      </span>
+    </div>
+  </div>
+
+  <div style="flex: 1; overflow-y: auto; padding: 0 10px 12px; display: flex; flex-direction: column; gap: 8px">
+    <sc-for list="{{ units }}" as="u" hint-placeholder-count="2">
+      <section style="border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08)">
+        <button onClick="{{ u.toggle }}" aria-expanded="{{ u.open }}" style="width: 100%; min-height: 52px; border: 0; background: transparent; color: #FFFFFF; font: inherit; display: flex; align-items: center; gap: 10px; padding: 0 12px; cursor: pointer; text-align: left">
+          <span style="{{ u.badge }}">{{ u.sigla }}</span>
+          <span style="flex: 1; display: flex; flex-direction: column"><strong style="font-size: 15px">{{ u.nome }}</strong><span style="font-size: 12px; color: #A9BBD0">{{ u.resumo }}</span></span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DCE5EF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="{{ u.chev }}"><path d="M6 9l6 6 6-6"></path></svg>
+        </button>
+        <sc-if value="{{ u.open }}" hint-placeholder-val="{{ true }}">
+          <div style="padding: 0 6px 8px; display: flex; flex-direction: column; gap: 2px">
+            <sc-for list="{{ u.subs }}" as="s" hint-placeholder-count="2">
+              <div style="display: flex; flex-direction: column">
+                <sc-if value="{{ s.hasLabel }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ s.toggle }}" aria-expanded="{{ s.open }}" style="height: 38px; border: 0; background: transparent; color: #A9BBD0; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; padding: 0 8px; cursor: pointer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="{{ s.chev }}"><path d="M9 6l6 6-6 6"></path></svg>
+                    <span style="flex: 1; text-align: left">{{ s.nome }}</span>
+                    <span style="font-weight: 500; letter-spacing: 0">{{ s.n }}</span>
+                  </button>
+                </sc-if>
+                <sc-if value="{{ s.open }}" hint-placeholder-val="{{ true }}">
+                  <div style="display: flex; flex-direction: column; gap: 2px; padding-bottom: 4px">
+                    <sc-for list="{{ s.items }}" as="it" hint-placeholder-count="3">
+                      <a href="#" aria-current="{{ it.current }}" style="{{ it.style }}"><span style="{{ it.mono }}">{{ it.m }}</span><span style="flex: 1">{{ it.label }}</span></a>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </section>
+    </sc-for>
+  </div>
+
+  <div style="padding: 10px 12px 14px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; gap: 10px">
+    <sc-if value="{{ isNew }}" hint-placeholder-val="{{ false }}">
+      <button style="min-height: 52px; border: 0; border-radius: 12px; background: #F08A3C; color: #1A1206; font: inherit; display: flex; align-items: center; gap: 10px; padding: 0 12px; cursor: pointer; text-align: left">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"></path><path d="M21 3v5h-5"></path></svg>
+        <span style="display: flex; flex-direction: column"><strong style="font-size: 14px">Nova versão 1.0.49</strong><span style="font-size: 12px">Toque para atualizar</span></span>
+      </button>
+    </sc-if>
+    <sc-if value="{{ isOk }}" hint-placeholder-val="{{ true }}">
+      <div style="min-height: 44px; border-radius: 12px; background: rgba(255,255,255,0.06); display: flex; align-items: center; gap: 10px; padding: 0 12px; color: #DCE5EF; font-size: 13px">
+        <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #5BC28A"></span>
+        <span style="flex: 1">Versão 1.0.48 · em dia</span>
+        <button style="height: 32px; border: 0; background: transparent; color: #FFFFFF; font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer">Verificar</button>
+      </div>
+    </sc-if>
+    <div style="display: flex; align-items: center; gap: 10px; color: #FFFFFF">
+      <span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; background: #2F6FB2; display: flex; align-items: center; justify-content: center; font-weight: 700">R</span>
+      <span style="display: flex; flex-direction: column; flex: 1"><strong style="font-size: 14px">Ricardo Do Amaral</strong><span style="font-size: 12px; color: #A9BBD0">ADMIN / GERÊNCIA</span></span>
+    </div>
+  </div>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"variant":{"editor":"enum","options":["desktop","mobile"],"default":"desktop"},"update":{"editor":"enum","options":["ok","nova"],"default":"ok"},"height":{"editor":"int","default":900},"$preview":{"width":300,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { units: { cps: true, pdr: false }, subs: { cprod: true, cmont: false, cctrl: false, cind: false, pdr: true } };
+  }
+  renderVals() {
+    var self = this, mobile = (this.props.variant ?? 'desktop') === 'mobile', h = this.props.height ?? 900, active = 'setor3';
+    var DATA = [
+      { id: 'cps', nome: 'Campinas', sigla: 'CP', cor: '#2F6FB2', subs: [
+        { id: 'cprod', nome: 'Produção', items: [['PL','Produção / Liberação','liberacao'],['P1','Setor 1','setor1'],['P2','Setor 2','setor2'],['P3','Setor 3','setor3'],['P4','Setor 4','setor4'],['MC','Mandril Circular','mandril']] },
+        { id: 'cmont', nome: 'Montagem', items: [['MI','Inspeção Setor 3 e 4','i'],['MP','Montagem Postes','m'],['S3','Sequência Setor 3','s']] },
+        { id: 'cctrl', nome: 'Controle', items: [['RE','Relatório Enc. Produção','r'],['HI','Histórico','h'],['CC','Acmp. Concretagem','c'],['MF','Manutenção Formas','mf'],['TD','Tratativa Defeitos','td']] },
+        { id: 'cind', nome: 'Indicadores', items: [['DM','Dashboard Montagem','dm'],['DF','Dashboard Defeitos','df'],['CO','Dashboard Concretagem Matriz','co'],['TV','Painel TV — Formas','tv']] }
+      ] },
+      { id: 'pdr', nome: 'Pederneiras', sigla: 'PD', cor: '#B86A1F', subs: [
+        { id: 'pdr', nome: '', items: [['AP','Apontamento do dia','ap'],['MO','Mão de obra','mo'],['PM','Produção Pederneiras','pm'],['IN','Indicadores','in'],['CP','Cadastro de produtos','cp']] }
+      ] }
+    ];
+    var rowH = mobile ? 48 : 40, fs = mobile ? 15 : 14;
+    var units = DATA.map(function (u) {
+      var open = !!self.state.units[u.id];
+      var total = u.subs.reduce(function (n, s) { return n + s.items.length; }, 0);
+      return {
+        nome: u.nome, sigla: u.sigla, open: open,
+        resumo: total + ' telas' + (u.subs.length > 1 ? ' · ' + u.subs.length + ' grupos' : ''),
+        badge: 'width: 32px; height: 32px; border-radius: 9px; background: ' + u.cor + '; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none',
+        chev: 'transition: transform .15s; transform: rotate(' + (open ? 180 : 0) + 'deg); flex: none',
+        toggle: function () { var x = Object.assign({}, self.state.units); x[u.id] = !open; self.setState({ units: x }); },
+        subs: u.subs.map(function (s) {
+          var so = s.nome ? !!self.state.subs[s.id] : true;
+          return {
+            nome: s.nome, hasLabel: !!s.nome, open: so, n: s.items.length,
+            chev: 'transition: transform .15s; transform: rotate(' + (so ? 90 : 0) + 'deg)',
+            toggle: function () { var x = Object.assign({}, self.state.subs); x[s.id] = !so; self.setState({ subs: x }); },
+            items: s.items.map(function (it) {
+              var cur = it[2] === active;
+              return {
+                m: it[0], label: it[1], current: cur ? 'page' : 'false',
+                style: 'min-height: ' + rowH + 'px; border-radius: 10px; display: flex; align-items: center; gap: 10px; padding: 0 10px; text-decoration: none; font-size: ' + fs + 'px; ' + (cur ? 'background: #FFFFFF; color: #0E2A47; font-weight: 600' : 'color: #DCE5EF'),
+                mono: 'width: 26px; height: 22px; border-radius: 6px; font-size: 10.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex: none; ' + (cur ? 'background: #0E2A47; color: #FFFFFF' : 'background: rgba(255,255,255,0.10); color: #DCE5EF')
+              };
+            })
+          };
+        })
+      };
+    });
+    var upd = this.props.update ?? 'ok';
+    return {
+      rootStyle: 'width: 100%; height: ' + h + 'px; box-sizing: border-box; display: flex; flex-direction: column; background: #0E2A47; font-family: \'IBM Plex Sans\', system-ui, sans-serif; color: #FFFFFF',
+      showHeader: !mobile, units: units, isNew: upd === 'nova', isOk: upd !== 'nova',
+      expandAll: function () { self.setState({ units: { cps: true, pdr: true }, subs: { cprod: true, cmont: true, cctrl: true, cind: true, pdr: true } }); },
+      collapseAll: function () { self.setState({ units: { cps: false, pdr: false }, subs: { cprod: false, cmont: false, cctrl: false, cind: false, pdr: true } }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
