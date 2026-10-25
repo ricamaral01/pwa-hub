@@ -94,6 +94,7 @@ body[data-modulo="suprimentos"] .comment-box .field{margin-bottom:10px}
 body[data-modulo="suprimentos"] .item-row-actions{display:flex;gap:6px;flex-wrap:wrap}
 body[data-modulo="suprimentos"] .photo-list{display:flex;flex-wrap:wrap;gap:8px}
 body[data-modulo="suprimentos"] .photo-list a{display:inline-flex;min-height:44px;align-items:center;padding:0 12px;border:1px solid var(--line);border-radius:9px;font-size:12px}
+body[data-modulo="suprimentos"] .photo-empty{margin:0;padding:4px 2px;color:var(--muted);font-size:12px}
 body[data-modulo="suprimentos"] .stepper{display:flex;gap:8px;align-items:center;margin-bottom:20px}
 body[data-modulo="suprimentos"] .step{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px;font-weight:800}
 body[data-modulo="suprimentos"] .step b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#dce8e9;color:#3b5c5e}

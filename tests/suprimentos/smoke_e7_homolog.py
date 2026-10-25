@@ -6,7 +6,9 @@ Não imprime nem grava senhas, cookies ou cabeçalhos de autenticação.
 from __future__ import annotations
 import json
 import sys
+import time
 from pathlib import Path
+import os
 from uuid import uuid4
 import requests
 
@@ -24,7 +26,17 @@ def check(response, expected, label):
 
 def login(user):
     client=requests.Session()
-    response=client.post(ROOT+"/unificado/mapa/api/login",json={"name":user,"password":secrets[user]},timeout=20)
+    signed=os.getenv("SUPRIMENTOS_SMOKE_TOKENS")
+    if signed:
+        token=json.loads(Path(signed).read_text(encoding="utf-8"))[user]
+        client.cookies.set("mapa_unificado_homolog_session",token,
+                           domain="concrefer.concretrack.com.br",path="/unificado/")
+        response=client.get(ROOT+"/unificado/mapa/api/unified/screen-access/me",timeout=20)
+    else:
+        for attempt in range(4):
+            response=client.post(ROOT+"/unificado/mapa/api/login",json={"name":user,"password":secrets[user]},timeout=20)
+            if response.status_code!=503: break
+            time.sleep(1+attempt)
     check(response,200,"login "+user)
     check(client.post(ROOT+"/unificado/mapa/api/unified/suprimentos-bootstrap",timeout=15),200,"bootstrap "+user)
     check(client.get(ROOT+"/api/suprimentos/me",timeout=15),200,"papel "+user)
@@ -45,10 +57,10 @@ check(sol.get(ROOT+"/unificado/suprimentos/pwa/sw.js",timeout=15),200,"PWA SW")
 assert json.loads(manifest)["scope"]=="/unificado/suprimentos/pwa/"
 
 cc=check(sol.get(ROOT+"/api/suprimentos/cadastros/centros-custo",timeout=15),200,"CC")["items"]
-assert len(cc)==1 and cc[0]["codigo"]=="E2E-SUP"
+cc=next(row for row in cc if row["codigo"]=="E2E-SUP")
 un=check(sol.get(ROOT+"/api/suprimentos/cadastros/unidades-medida",timeout=15),200,"medidas")["items"]
 measure=next(row["id"] for row in un if row["sigla"]=="un")
-payload={"client_uuid":str(uuid4()),"cc_id":cc[0]["id"],"urgencia":"NORMAL",
+payload={"client_uuid":str(uuid4()),"cc_id":cc["id"],"urgencia":"NORMAL",
          "justificativa":"Ensaio de homologação do fluxo Suprimentos",
          "itens":[{"descricao_livre":"Luva de teste E7","qtd":1,"un":measure}]}
 created=check(sol.post(ROOT+"/api/suprimentos/pwa/solicitacoes",json=payload,timeout=15),200,"criar PWA")

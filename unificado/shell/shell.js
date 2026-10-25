@@ -436,7 +436,7 @@ function renderSharedSidebar() {
     button.type = 'button';
     button.className = `module-button${key === currentModule ? ' is-active' : ''}`;
     button.dataset.module = key;
-    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : key === 'suprimentos' ? 'SP' : 'LB';
+    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : key === 'suprimentos' ? 'SU' : 'LB';
     button.dataset.railName = key === 'planejamento' ? 'Plan.' : key === 'producao' ? 'Prod.' : key === 'qualidade' ? 'Qual.' : key === 'usinas' ? 'Usinas' : key === 'suprimentos' ? 'Supri.' : 'Lab.';
     button.innerHTML = `<span class="shared-module-dot" aria-hidden="true"></span><span class="shared-module-code">${button.dataset.short}</span><span class="shared-module-name">${config.label}</span>`;
     button.title = config.label;
@@ -604,7 +604,7 @@ function renderSidebar() {
     button.className = `module-button${key === currentModule ? ' is-active' : ''}`;
     button.dataset.module = key;
     button.textContent = config.label;
-    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : 'LB';
+    button.dataset.short = key === 'planejamento' ? 'PL' : key === 'producao' ? 'PR' : key === 'qualidade' ? 'QL' : key === 'usinas' ? 'US' : key === 'suprimentos' ? 'SU' : 'LB';
     button.title = config.label;
     button.setAttribute('aria-label', config.label);
     button.setAttribute('aria-pressed', key === currentModule ? 'true' : 'false');

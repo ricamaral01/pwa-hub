@@ -1,4 +1,4 @@
-const CACHE = 'suprimentos-shell-s1-v1.0.60-r2';
+const CACHE = 'suprimentos-shell-s1-v1.0.61-r2';
 const SCOPE = '/unificado/suprimentos/pwa/';
 const SHELL = [SCOPE, SCOPE+'index.html', SCOPE+'app.css', SCOPE+'app.js',
   SCOPE+'manifest.webmanifest', SCOPE+'icons/icon-192.png',
