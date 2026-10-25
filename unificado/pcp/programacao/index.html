@@ -612,7 +612,7 @@ async function importarProgramacaoArquivo(ev) {
       return;
     }
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.detail || `Erro ${res.status}`);
+    if (!res.ok) throw new Error(data.detail || `Não foi possível concluir a programação (HTTP ${res.status}). Verifique os dados e tente novamente.`);
     showToast(`${data.importados} registro(s) importado(s). ${data.removidos || 0} substituído(s).`, 'success', 5000);
     input.value = '';
     loadProg();

@@ -4,8 +4,6 @@ from __future__ import annotations
 from datetime import date
 from io import BytesIO
 
-from app.services.pederneiras_rules import counts_as_post
-
 
 def _grid(month: dict, products: list[dict]):
     days = month["dias"]
@@ -17,11 +15,6 @@ def _grid(month: dict, products: list[dict]):
         if any(values):
             rows.append((product, values, sum(values)))
     return days, rows
-
-
-def _accessory_counts(days: list[dict]) -> list[int]:
-    return [sum(item["quantidade"] for item in day["itens"]
-                if not counts_as_post(item.get("familia", ""))) for day in days]
 
 
 def xlsx(month: dict, products: list[dict]) -> bytes:
@@ -45,8 +38,6 @@ def xlsx(month: dict, products: list[dict]) -> bytes:
         ("MOI", [day["moi"] for day in days], sum((day["moi"] for day in days), 0)),
         ("Postes/homem", [day["postes_homem"] for day in days], None),
         ("m³", [day["volume_m3"] for day in days], None),
-        ("Acessórios (fora do total de postes)", _accessory_counts(days),
-         sum(_accessory_counts(days))),
     ]
     for label, values, total in footer:
         sheet.append([label, None, None, *values, total])
@@ -98,9 +89,6 @@ def pdf(month: dict, products: list[dict]) -> bytes:
         values = [day[field] if day[field] is not None else "-" for day in days]
         total = month["postes"] if field == "postes" else month["homens"] if field == "homens" else ""
         table.append([label, "", "", *values, total])
-    accessory_counts = _accessory_counts(days)
-    table.append(["Acessórios (fora do total de postes)", "", "",
-                  *accessory_counts, sum(accessory_counts)])
     page_width = landscape(A3)[0] - 48
     day_width = min(43, max(23, (page_width - 300) / (len(days) + 1)))
     description_width = page_width - 2 * 58 - (len(days) + 1) * day_width

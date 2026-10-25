@@ -1,0 +1,143 @@
+-- Executar com psql -v ON_ERROR_STOP=1 após pg_dump do banco.
+-- A cópia interna preserva os IDs e valores anteriores à consolidação.
+BEGIN;
+
+CREATE TABLE IF NOT EXISTS maodeobra_antes_grupos_20261016 AS
+SELECT * FROM maodeobra;
+
+ALTER TABLE atividades_mao_de_obra
+  ADD COLUMN IF NOT EXISTS ordem integer NOT NULL DEFAULT 100,
+  ADD COLUMN IF NOT EXISTS responsavel varchar(120),
+  ADD COLUMN IF NOT EXISTS fator numeric(5,2);
+
+ALTER TABLE atividades_mao_de_obra
+  DROP CONSTRAINT IF EXISTS atividades_mao_de_obra_descricao_key;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'uq_atividade_mo_grupo_descricao') THEN
+    ALTER TABLE atividades_mao_de_obra
+      ADD CONSTRAINT uq_atividade_mo_grupo_descricao UNIQUE (grupo_setor, descricao);
+  END IF;
+END $$;
+
+ALTER TABLE maodeobra
+  ALTER COLUMN quantidade_pessoas TYPE numeric(5,2)
+  USING quantidade_pessoas::numeric(5,2);
+
+-- Não consolidar automaticamente registros que possuam rateio vinculado.
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM maodeobra_rateio r
+    JOIN maodeobra m ON m.id = r.maodeobra_id
+    JOIN (
+      SELECT data, atividade_id FROM maodeobra
+      GROUP BY data, atividade_id HAVING count(*) > 1
+    ) d USING (data, atividade_id)
+  ) THEN
+    RAISE EXCEPTION 'Há lançamentos duplicados com rateio; conciliar manualmente antes da migração';
+  END IF;
+END $$;
+
+WITH repetidos AS (
+  SELECT min(id) AS manter_id, data, atividade_id, sum(quantidade_pessoas) AS total
+  FROM maodeobra
+  GROUP BY data, atividade_id
+  HAVING count(*) > 1
+)
+UPDATE maodeobra m SET quantidade_pessoas = r.total
+FROM repetidos r WHERE m.id = r.manter_id;
+
+DELETE FROM maodeobra m
+USING maodeobra mantido
+WHERE m.data = mantido.data
+  AND m.atividade_id = mantido.atividade_id
+  AND m.id > mantido.id;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'uq_maodeobra_data_atividade') THEN
+    ALTER TABLE maodeobra
+      ADD CONSTRAINT uq_maodeobra_data_atividade UNIQUE (data, atividade_id);
+  END IF;
+END $$;
+
+-- S1/S2 passa a ter uma linha MOD; o histórico dos dois setores é somado.
+INSERT INTO atividades_mao_de_obra (tipo, descricao, setor_id, grupo_setor, ordem, ativo)
+VALUES ('MOD', 'Produção Setor 1 e 2', NULL, '12', 10, true)
+ON CONFLICT (grupo_setor, descricao) DO UPDATE
+SET tipo = 'MOD', setor_id = NULL, ordem = 10, ativo = true;
+
+WITH consolidado AS (
+  SELECT m.data, sum(m.quantidade_pessoas) AS total
+  FROM maodeobra m
+  JOIN atividades_mao_de_obra a ON a.id = m.atividade_id
+  WHERE a.tipo = 'MOD' AND a.setor_id IN (1, 2)
+  GROUP BY m.data
+)
+INSERT INTO maodeobra (data, atividade_id, setor_id, quantidade_pessoas)
+SELECT c.data, a.id, NULL, c.total
+FROM consolidado c
+CROSS JOIN atividades_mao_de_obra a
+WHERE a.grupo_setor = '12' AND a.descricao = 'Produção Setor 1 e 2'
+ON CONFLICT (data, atividade_id) DO UPDATE
+SET quantidade_pessoas = EXCLUDED.quantidade_pessoas;
+
+DELETE FROM maodeobra m
+USING atividades_mao_de_obra a
+WHERE m.atividade_id = a.id AND a.tipo = 'MOD' AND a.setor_id IN (1, 2);
+
+UPDATE atividades_mao_de_obra SET ativo = false
+WHERE tipo = 'MOD' AND setor_id IN (1, 2);
+
+-- A Usina anterior não indica grupo; fica só no histórico, sem imputação.
+UPDATE atividades_mao_de_obra SET ativo = false
+WHERE tipo = 'MOI' AND descricao = 'Usina de Concreto' AND grupo_setor IS NULL;
+
+INSERT INTO atividades_mao_de_obra (tipo, descricao, grupo_setor, ordem, ativo)
+VALUES ('MOI', 'Usina de Concreto', '12', 10, true),
+       ('MOI', 'Usina de Concreto', '34', 10, true)
+ON CONFLICT (grupo_setor, descricao) DO UPDATE
+SET tipo = 'MOI', ordem = 10, ativo = true;
+
+UPDATE atividades_mao_de_obra SET ordem = 20
+WHERE grupo_setor = '12' AND descricao = 'Fab Armação Padrão';
+UPDATE atividades_mao_de_obra
+SET descricao = 'Fab Estribo', responsavel = 'Elias', fator = 0.50, ordem = 30
+WHERE grupo_setor = '12' AND descricao IN ('Fab Estribo (Elias 0,50)', 'Fab Estribo');
+UPDATE atividades_mao_de_obra
+SET descricao = 'Encarregado Produção', responsavel = 'Zé Carlos', ordem = 40
+WHERE grupo_setor = '12' AND descricao IN ('Encarregado Produção (Zé Carlos)', 'Encarregado Produção');
+UPDATE atividades_mao_de_obra
+SET descricao = 'Sacador núcleo', responsavel = 'Pedro', fator = 0.50, ordem = 50
+WHERE grupo_setor = '12' AND descricao IN ('Sacador núcleo (Pedro 0,50)', 'Sacador núcleo');
+UPDATE atividades_mao_de_obra
+SET descricao = 'Desbobinadeira', responsavel = 'Zezinho', fator = 0.50, ordem = 60
+WHERE grupo_setor = '12' AND descricao IN ('Desbobinadeira (Zezinho 0,50)', 'Desbobinadeira');
+
+UPDATE atividades_mao_de_obra SET ordem = 20 WHERE grupo_setor = '34' AND descricao = 'Fab Armação setor 3';
+UPDATE atividades_mao_de_obra SET ordem = 30 WHERE grupo_setor = '34' AND descricao = 'Fab Armação setor 4';
+UPDATE atividades_mao_de_obra SET ordem = 40 WHERE grupo_setor = '34' AND descricao = 'Fab Estribo';
+UPDATE atividades_mao_de_obra SET ordem = 50 WHERE grupo_setor = '34' AND descricao = 'Encarregado Produção';
+UPDATE atividades_mao_de_obra SET ordem = 60 WHERE grupo_setor = '34' AND descricao = 'Sacador núcleo';
+UPDATE atividades_mao_de_obra SET ordem = 70 WHERE grupo_setor = '34' AND descricao = 'Desbobinadeira';
+
+UPDATE atividades_mao_de_obra
+SET descricao = 'Produção Setor 3', grupo_setor = '34', ordem = 10
+WHERE tipo = 'MOD' AND setor_id = 3;
+UPDATE atividades_mao_de_obra
+SET descricao = 'Produção Setor 4', grupo_setor = '34', ordem = 20
+WHERE tipo = 'MOD' AND setor_id = 4;
+
+CREATE TABLE IF NOT EXISTS maodeobra_dias (
+  id integer GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+  data date NOT NULL,
+  grupo_setor varchar(2) NOT NULL CHECK (grupo_setor IN ('12', '34')),
+  sem_producao boolean NOT NULL DEFAULT false,
+  CONSTRAINT uq_maodeobra_dia_grupo UNIQUE (data, grupo_setor)
+);
+
+ALTER TABLE maodeobra_dias OWNER TO pcp_unificado_app;
+
+COMMIT;

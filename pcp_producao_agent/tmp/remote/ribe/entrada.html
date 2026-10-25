@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Entrada de Materiais • Estoque • ConcreTrack • Ribeirão</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="/concretrack/assets/js/auth.js"></script>
+  <style>
+    :root{--ct-orange:#E07A3A;--ct-gray:#343B43;--ct-gray-lt:#5A6270;--ct-navy:#0D3B66;--ct-silver:#BFC5CC;--ct-bg:#F2F3F5;--ct-green:#059669}
+    *{font-family:"Gotham","Montserrat","Segoe UI",system-ui,sans-serif;margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--ct-bg)}
+    .app-topbar{background:var(--ct-gray);color:#fff}
+    .topbar-inner{display:flex;align-items:center;padding:12px 0;gap:12px}
+    .topbar-logo{width:41px;height:41px;object-fit:contain;border-radius:6px}
+    .topbar-title{font-size:18px;font-weight:700}
+    .topbar-title span{color:var(--ct-orange)}
+    .topbar-sub{font-size:10px;color:var(--ct-silver)}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .btn-back{border-radius:10px;height:36px;font-weight:600;font-size:12px;border:1px solid rgba(255,255,255,.18);color:#fff;background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:6px;padding:0 14px;text-decoration:none;transition:background .2s;font-family:inherit}
+    .btn-back:hover{background:rgba(255,255,255,.12);color:#fff}
+    .btn-logout{border-radius:10px;border:1px solid rgba(255,255,255,.15);color:#fff;font-size:12px;padding:5px 14px;background:rgba(224,122,58,.25);font-weight:600;cursor:pointer;transition:background .2s;font-family:inherit}
+    .btn-logout:hover{background:rgba(224,122,58,.5)}
+    .topbar-accent{height:3px;background:linear-gradient(90deg,var(--ct-orange),var(--ct-navy))}
+    .page-header{padding:26px 0 18px}
+    .page-header h2{font-size:22px;font-weight:900;color:var(--ct-gray)}
+    .page-header h2 span{color:var(--ct-orange)}
+    .card-section{background:#fff;border-radius:16px;border:1px solid rgba(15,23,42,.06);box-shadow:0 2px 12px rgba(0,0,0,.05);overflow:hidden;margin-bottom:22px}
+    .card-section-header{padding:16px 22px;border-bottom:1px solid #f0f4f8;display:flex;align-items:center;gap:10px}
+    .card-section-header h3{font-size:14px;font-weight:800;color:var(--ct-gray);margin:0}
+    .card-section-body{padding:20px 22px}
+    .form-label{font-size:12px;font-weight:700;color:var(--ct-gray-lt);margin-bottom:5px}
+    .form-control,.form-select{border-radius:9px;border:1.5px solid #dde2e8;font-size:13px;height:40px;transition:border-color .2s;font-family:inherit}
+    .form-control:focus,.form-select:focus{border-color:var(--ct-orange);box-shadow:0 0 0 3px rgba(224,122,58,.12)}
+    textarea.form-control{height:auto}
+    .btn-primary-ct{background:var(--ct-orange);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:13px;padding:10px 24px;transition:background .2s;font-family:inherit}
+    .btn-primary-ct:hover{background:#c96830;color:#fff}
+    .btn-danger-sm{background:#dc2626;border:none;border-radius:6px;color:#fff;font-size:11px;padding:3px 10px;cursor:pointer;font-weight:600;font-family:inherit}
+    .btn-danger-sm:hover{background:#b91c1c}
+    .btn-edit-sm{background:#1976D2;border:none;border-radius:6px;color:#fff;font-size:11px;padding:3px 10px;cursor:pointer;font-weight:600;font-family:inherit;margin-right:4px}
+    .btn-edit-sm:hover{background:#155fa8}
+    .tbl{width:100%;border-collapse:collapse;font-size:12px}
+    .tbl thead th{background:#f8fafc;font-weight:700;color:var(--ct-gray-lt);text-transform:uppercase;letter-spacing:.4px;padding:9px 12px;text-align:left;border-bottom:1px solid #e8ecf0}
+    .tbl tbody td{padding:9px 12px;border-bottom:1px solid #f4f6f8;color:var(--ct-gray);vertical-align:middle}
+    .tbl tbody tr:hover td{background:#fafbfc}
+    .badge-tipo{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700}
+    .badge-entrada{background:#d1fae5;color:#065f46}
+    .silo-selector{display:none;background:#f0f7ff;border:2px solid #1976D2;border-radius:12px;padding:14px 16px;margin-top:10px}
+    .silo-selector.show{display:block}
+    .silo-btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .silo-btn{border:2px solid #dde2e8;background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;color:var(--ct-gray-lt);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:110px}
+    .silo-btn:hover{border-color:#1976D2;color:#1976D2}
+    .silo-btn.active{border-color:#1976D2;background:#1976D2;color:#fff}
+    .silo-btn .silo-cap{font-size:10px;font-weight:400;opacity:.8}
+    .alert-toast{position:fixed;bottom:20px;right:20px;background:var(--ct-green);color:#fff;border-radius:12px;padding:12px 20px;font-weight:700;font-size:13px;display:none;align-items:center;gap:8px;z-index:9999;box-shadow:0 4px 18px rgba(0,0,0,.15)}
+    .alert-toast.err{background:#dc2626}
+    .alert-toast.show{display:flex}
+    .app-footer{text-align:center;padding:20px;font-size:11px;color:var(--ct-silver)}
+    .app-footer span{color:var(--ct-orange);font-weight:700}
+    .nf-reader{border:1.5px dashed #90a4b8;background:#f8fbff;border-radius:13px;padding:16px;margin-bottom:18px}
+    .nf-reader-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .btn-nf{border:0;border-radius:9px;background:var(--ct-navy);color:#fff;padding:10px 16px;font-size:12px;font-weight:700;cursor:pointer}
+    .btn-nf:disabled{opacity:.55;cursor:wait}
+    .nf-status{font-size:12px;color:var(--ct-gray-lt)}
+    .nf-result{display:none;margin-top:12px;padding:11px 13px;border-radius:9px;background:#fff7ed;border:1px solid #fed7aa;font-size:12px;color:#9a3412}
+    .nf-result.ok{display:block;background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+    .confirm-box{display:none;background:#fff7ed;border:1.5px solid #fb923c;border-radius:10px;padding:12px 14px}
+    .confirm-box.show{display:block}
+    .form-step{font-size:12px;font-weight:900;color:var(--ct-navy);text-transform:uppercase;letter-spacing:.45px;padding-bottom:7px;border-bottom:1px solid #e8edf2;margin-top:4px}
+    .form-step .step-number{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:50%;background:var(--ct-orange);color:#fff;margin-right:7px}
+    .ai-loading{position:fixed;inset:0;z-index:12000;display:flex;align-items:center;justify-content:center;background:rgba(5,18,29,.76);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}
+    .ai-loading.show{opacity:1;visibility:visible}
+    .ai-loading-card{width:min(88vw,360px);padding:30px 24px 24px;text-align:center;border-radius:24px;background:radial-gradient(circle at 50% 28%,#24434b 0,#112c35 48%,#081d26 100%);border:1px solid rgba(255,255,255,.15);box-shadow:0 24px 70px rgba(0,0,0,.45),0 0 34px rgba(92,255,0,.18)}
+    .ai-loading-ring{position:relative;width:210px;height:210px;margin:0 auto;border-radius:50%;padding:13px;background:conic-gradient(#ff7900 0 39%,#263e46 39% 47%,#72ff00 47% 91%,#263e46 91% 100%);box-shadow:0 0 10px #ff7900,0 0 24px rgba(255,121,0,.5),0 0 34px rgba(114,255,0,.45);animation:processandoGiro 1.35s linear infinite}
+    .ai-loading-ring::before{content:"";position:absolute;inset:14px;border-radius:50%;background:radial-gradient(circle at 48% 42%,#17404a,#09232d 68%,#061820);box-shadow:inset 0 0 20px rgba(0,0,0,.7)}
+    .ai-loading-label{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:21px;font-weight:800;letter-spacing:.3px;text-shadow:0 0 12px rgba(114,255,0,.75);animation:processandoContraGiro 1.35s linear infinite}
+    .ai-loading-detail{margin-top:22px;color:#dce9e6;font-size:12px;font-weight:600}
+    .ai-loading-detail span{color:#72ff00}
+    @keyframes processandoGiro{to{transform:rotate(360deg)}}
+    @keyframes processandoContraGiro{to{transform:rotate(-360deg)}}
+    @media(max-width:480px){.ai-loading-ring{width:178px;height:178px}.ai-loading-card{padding-top:25px}}
+    @media(prefers-reduced-motion:reduce){.ai-loading-ring,.ai-loading-label{animation-duration:3s}}
+  </style>
+</head>
+<body>
+<div class="app-topbar">
+  <div class="container">
+    <div class="topbar-inner">
+      <img src="/concretrack/assets/img/PRINCIPAL@2x.png" alt="" class="topbar-logo" onerror="this.style.display='none'">
+      <div>
+        <div class="topbar-title"><i class="bi bi-arrow-down-circle-fill me-2"></i>Entrada de <span>Materiais</span></div>
+        <div class="topbar-sub">Estoque &bull; ConcreTrack</div>
+      </div>
+      <div class="topbar-right">
+        <a class="btn-back" href="/concretrack/estoque/"><i class="bi bi-arrow-left"></i> Estoque</a>
+        <button class="btn-logout" onclick="concretrackLogout()"><i class="bi bi-box-arrow-right me-1"></i>Sair</button>
+      </div>
+    </div>
+  </div>
+  <div class="topbar-accent"></div>
+</div>
+<div class="container" style="padding-bottom:40px">
+  <div class="page-header">
+    <h2><i class="bi bi-arrow-down-circle me-2"></i>Nova <span>Entrada de Material</span></h2>
+    <p style="font-size:13px;color:var(--ct-gray-lt);margin-top:4px">Registre recebimento de insumos com nota fiscal e fornecedor</p>
+  </div>
+  <div class="card-section">
+    <div class="card-section-header" style="background:linear-gradient(90deg,#E07A3A11,#fff)">
+      <i class="bi bi-plus-circle-fill" style="color:var(--ct-orange);font-size:18px"></i>
+      <h3 id="formTitle">Registrar Nova Entrada</h3>
+    </div>
+    <div class="card-section-body">
+      <form id="formEntrada">
+        <div class="row g-3">
+          <div class="col-12 form-step"><span class="step-number">1</span>Selecione o material</div>
+          <div class="col-md-6">
+            <label class="form-label">Material *</label>
+            <select class="form-select" id="fMaterial" required>
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <div class="nf-reader" style="margin-bottom:0">
+              <div style="font-size:13px;font-weight:800;color:var(--ct-navy);margin-bottom:4px"><span class="step-number">2</span> Preencha pela Nota Fiscal</div>
+              <div style="font-size:11px;color:var(--ct-gray-lt);margin-bottom:11px">Tire uma foto ou envie o PDF. Os campos seguintes serão preenchidos automaticamente para conferência.</div>
+              <div class="nf-reader-actions">
+                <button type="button" class="btn-nf" id="btnFotoNF"><i class="bi bi-camera me-1"></i> Tirar foto</button>
+                <button type="button" class="btn-nf" id="btnEscolherNF"><i class="bi bi-file-earmark-arrow-up me-1"></i> Escolher arquivo</button>
+                <input type="file" id="fotoNF" accept="image/jpeg,image/png,image/webp" capture="environment" hidden>
+                <input type="file" id="arquivoNF" accept="image/jpeg,image/png,image/webp,application/pdf" hidden>
+                <span class="nf-status" id="nfStatus">JPG, PNG, WEBP ou PDF — até 12 MB</span>
+              </div>
+              <div class="nf-result" id="nfResultado"></div>
+            </div>
+          </div>
+
+          <div class="col-12 form-step"><span class="step-number">3</span>Confira a identificação da nota</div>
+          <div class="col-md-4">
+            <label class="form-label">Data de Recebimento *</label>
+            <input type="date" class="form-control" id="fData" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Fornecedor</label>
+            <input type="text" class="form-control" id="fFornecedor" placeholder="Nome do fornecedor" maxlength="120">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Nota Fiscal / Referência</label>
+            <input type="text" class="form-control" id="fNF" placeholder="NF nº ou código" maxlength="60">
+          </div>
+
+          <div class="col-12 form-step"><span class="step-number">4</span>Informe a quantidade e o destino</div>
+          <div class="col-md-3">
+            <label class="form-label">Quantidade *</label>
+            <input type="number" class="form-control" id="fQtd" step="0.01" min="0.01" placeholder="0.00" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Unidade</label>
+            <select class="form-select" id="fUnidade">
+              <option value="kg">Kilo (kg)</option><option value="ton">Tonelada (ton)</option><option value="L">Litro (L)</option><option value="m3">Metro cúbico (m³)</option>
+            </select>
+            <small style="font-size:10px;color:var(--ct-gray-lt)">Sólidos podem ser informados em kg ou ton.</small>
+          </div>
+          <div class="col-12" id="siloSelectorWrap">
+            <div class="silo-selector" id="siloSelector">
+              <div style="font-size:12px;font-weight:800;color:#1976D2;margin-bottom:2px"><i class="bi bi-database-fill me-1"></i>Silo de destino <span style="color:#dc2626">*</span></div>
+              <div style="font-size:11px;color:var(--ct-gray-lt);margin-bottom:2px">Selecione o silo que receberá este material</div>
+              <div class="silo-btn-group" id="siloBtnGroup"></div><input type="hidden" id="fSiloId">
+            </div>
+          </div>
+
+          <div class="col-12 form-step"><span class="step-number">5</span>Confira os valores da nota</div>
+          <div class="col-md-3">
+            <label class="form-label">Valor da Nota Fiscal (R$)</label>
+            <input type="number" class="form-control calc-trigger" id="fValorNota" step="0.01" min="0" placeholder="0.00">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">% ICMS da Nota</label>
+            <input type="number" class="form-control calc-trigger" id="fIcmsPerc" step="0.01" min="0" max="100" placeholder="0.00">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Valor do Frete Unitário (R$/ton ou unidade)</label>
+            <input type="number" class="form-control calc-trigger" id="fValorFrete" step="0.01" min="0" placeholder="Ex.: 40,00">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">% ICMS do Frete</label>
+            <input type="number" class="form-control calc-trigger" id="fIcmsFrete" step="0.01" min="0" max="100" placeholder="Ex.: 12,00">
+          </div>
+          <div class="col-md-12">
+            <label class="form-label">Observação</label>
+            <input type="text" class="form-control" id="fObs" placeholder="Opcional" maxlength="200">
+          </div>
+          
+          <!-- Resumo dos Cálculos para Validação -->
+          <div class="col-12 mt-2" id="resumoCalculosWrap" style="display:none;">
+            <div class="card p-3" style="background-color: #f6ffed; border: 1.5px solid #b7eb8f; border-radius: 12px;">
+              <h4 style="font-size: 13px; font-weight: 800; color: #389e0d; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                <i class="bi bi-calculator"></i> Resumo de Cálculos (Validação do Estoque)
+              </h4>
+              <div class="row g-3 text-dark" style="font-size: 12px;">
+                <div class="col-md-4"><strong>Valor Unitário Bruto:</strong> R$ <span id="calcUnitBruto">0,00</span></div>
+                <div class="col-md-4"><strong>Dedução ICMS/Unitário:</strong> R$ <span id="calcIcmsUnit">0,00</span></div>
+                <div class="col-md-4"><strong>Unitário Líquido (sem ICMS):</strong> R$ <span id="calcUnitLiquido">0,00</span></div>
+                <div class="col-md-4"><strong>Frete líquido por Ton/Unidade:</strong> R$ <span id="calcFretePerTon">0,00</span></div>
+                <div class="col-md-4"><strong>Total líquido com frete:</strong> R$ <span id="calcProdTotal">0,00</span></div>
+                <div class="col-md-4"><strong>Custo Final Unitário Integrado:</strong> <strong style="color: #389e0d; font-size:13px;">R$ <span id="calcCustoFinal">0,00</span></strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form-step"><span class="step-number">6</span>Revise e salve a entrada</div>
+          <div class="col-12">
+            <label class="confirm-box" id="confirmacaoNF">
+              <input class="form-check-input me-2" type="checkbox" id="fConfirmouNF">
+              <strong>Conferi os dados preenchidos com a nota fiscal e autorizo o registro.</strong>
+            </label>
+          </div>
+          <div class="col-12 d-flex justify-content-end gap-2 mt-2">
+            <button type="button" class="btn-back d-inline-flex" style="height:40px;color:#555;background:#f4f6f8;border:1px solid #dde2e8" onclick="limparForm()">Limpar</button>
+            <button type="submit" class="btn-primary-ct" id="btnSalvar"><i class="bi bi-check-circle-fill me-2"></i>Salvar Entrada</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card-section">
+    <div class="card-section-header">
+      <i class="bi bi-clock-history" style="color:var(--ct-navy);font-size:18px"></i>
+      <h3>Últimas Entradas</h3>
+    </div>
+    <div class="card-section-body" style="padding:0">
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead>
+            <tr><th>Data</th><th>Material</th><th>Qtd</th><th>Und</th><th>Custo Unit. Líq.</th><th>Fornecedor</th><th>NF</th><th>Obs</th><th></th></tr>
+          </thead>
+          <tbody id="tbEntradas"><tr><td colspan="8" style="text-align:center;padding:24px;color:var(--ct-gray-lt)">Carregando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="app-footer">&copy; 2026 <span>ConcreTrack</span> &mdash; Entrada de Materiais</div>
+<div class="alert-toast" id="toast"></div>
+<div class="ai-loading" id="aiLoading" role="status" aria-live="polite" aria-hidden="true">
+  <div class="ai-loading-card">
+    <div class="ai-loading-ring"><div class="ai-loading-label">Processando</div></div>
+    <div class="ai-loading-detail" id="aiLoadingDetail">Preparando documento para a <span>IA</span>…</div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const API='/concretrack/api';
+let materiais=[];
+let silos=[];
+let selectedSiloId=null;
+let editingId=null;
+let entradas=[];
+let leituraNFPendente=false;
+
+// Categorias/codigos que exigem silo
+const CAT_SILO=['cimento'];
+const COD_SILO=[];
+
+// Materiais com silo fixo: { codigo: silo_id }
+const SILO_FIXO={'CIM-CP-II':3};
+
+function materialUsaSilo(mat){
+  return mat && (CAT_SILO.includes(mat.categoria) || COD_SILO.includes(mat.codigo));
+}
+
+function toast(msg,err=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='alert-toast'+(err?' err':'')+' show';
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+function mostrarProcessamento(mostrar,detalhe='Preparando documento para a IA…'){
+  const modal=document.getElementById('aiLoading');
+  document.getElementById('aiLoadingDetail').innerHTML=detalhe.replace('IA','<span>IA</span>');
+  modal.classList.toggle('show',mostrar);modal.setAttribute('aria-hidden',mostrar?'false':'true');
+}
+
+function apiErrorMessage(detail){
+  if(Array.isArray(detail))return detail.map(item=>item.msg||String(item)).join('; ');
+  return detail||'falha ao salvar';
+}
+
+async function loadSilos(){
+  try{
+    // Carrega silos com nível atual para mostrar no seletor
+    const r=await fetch(API+'/estoque/silos/nivel');
+    silos=await r.json();
+    renderSiloBtns();
+  }catch(e){silos=[];}
+}
+
+function renderSiloBtns(){
+  const g=document.getElementById('siloBtnGroup');
+  g.innerHTML=silos.map(s=>{
+    const nivel=parseFloat(s.nivel)||0;
+    const capOper=parseFloat(s.capacidade_operacional)||1;
+    const pct=Math.min(100,Math.round(nivel/capOper*100));
+    const cor=pct>=80?'#059669':pct>=40?'#d97706':'#dc2626';
+    const livre=Math.max(0,capOper-nivel).toFixed(1);
+    return `<button type="button" class="silo-btn" id="siloBtn${s.id}" onclick="selecionarSilo(${s.id})">
+      <span style="font-size:13px;font-weight:800"><i class="bi bi-database me-1"></i>${s.nome}</span>
+      <span class="silo-cap" style="font-size:11px">Nível: <strong>${nivel.toFixed(1)}t</strong> / ${capOper}t oper</span>
+      <span class="silo-cap" style="color:${cor}">Livre: ${livre}t &nbsp;(${pct}%)</span>
+    </button>`;
+  }).join('');
+}
+
+function selecionarSilo(id){
+  selectedSiloId=id;
+  document.getElementById('fSiloId').value=id;
+  document.querySelectorAll('.silo-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('siloBtn'+id);
+  if(btn)btn.classList.add('active');
+}
+
+async function loadMateriais(){
+  const r=await fetch(API+'/estoque/materiais');
+  materiais=await r.json();
+  const sel=document.getElementById('fMaterial');
+  materiais.forEach(m=>{
+    const o=document.createElement('option');o.value=m.id;o.textContent=m.nome+' ('+m.categoria+')';o.dataset.unidade=m.unidade_display||m.unidade;o.dataset.categoria=m.categoria;o.dataset.codigo=m.codigo;sel.appendChild(o);
+  });
+  sel.addEventListener('change',function(){
+    const opt=sel.options[sel.selectedIndex];
+    const un=opt?.dataset?.unidade||'';
+    const map={kg:'kg',L:'L',ton:'ton',m3:'m3'};
+    const unSel=document.getElementById('fUnidade');
+    if(un&&map[un])unSel.value=map[un];
+    // Mostrar/ocultar silo
+    const matId=parseInt(sel.value);
+    const mat=materiais.find(m=>m.id===matId);
+    const usaSilo=materialUsaSilo(mat);
+    const siloSel=document.getElementById('siloSelector');
+    const unSel2=document.getElementById('fUnidade');
+    if(usaSilo){
+      siloSel.classList.add('show');
+      // Se material tem silo fixo, selecionar automaticamente e travar
+      const siloFixoId=mat?SILO_FIXO[mat.codigo]:null;
+      if(siloFixoId){
+        selecionarSilo(siloFixoId);
+        // Travar botões de outros silos
+        document.querySelectorAll('.silo-btn').forEach(b=>{
+          if(b.id!=='siloBtn'+siloFixoId){b.setAttribute('disabled','disabled');b.style.opacity='0.4';}
+          else{b.removeAttribute('disabled');b.style.opacity='';}
+        });
+      }else{
+        // Liberar todos os botões
+        document.querySelectorAll('.silo-btn').forEach(b=>{b.removeAttribute('disabled');b.style.opacity='';});
+      }
+    }else{
+      siloSel.classList.remove('show');
+      selectedSiloId=null;
+      document.getElementById('fSiloId').value='';
+      document.querySelectorAll('.silo-btn').forEach(b=>{b.classList.remove('active');b.removeAttribute('disabled');b.style.opacity='';});
+    }
+  });
+}
+
+async function loadEntradas(){
+  const r=await fetch(API+'/estoque/movimentos?tipo=entrada&limit=100');
+  const data=await r.json();
+  entradas=data;
+  const tb=document.getElementById('tbEntradas');
+  if(!data.length){tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--ct-gray-lt)">Nenhuma entrada registrada</td></tr>';return;}
+  tb.innerHTML=data.map(m=>`<tr>
+    <td>${new Date(m.data+'T00:00:00').toLocaleDateString('pt-BR')}</td>
+    <td><strong>${m.material_nome||m.material_id}</strong></td>
+    <td style="font-weight:700;color:var(--ct-navy)">${Number(m.quantidade_display??m.quantidade).toLocaleString('pt-BR',{maximumFractionDigits:2})}</td>
+    <td>${m.unidade_display||m.unidade||''}</td>
+    <td style="font-weight:700;color:var(--ct-green)">R$ ${m.valor_unitario_liquido ? Number(m.valor_unitario_liquido).toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2})+'/'+(m.unidade||'un') : '—'}</td>
+    <td>${m.fornecedor||'—'}</td>
+    <td>${m.nota_fiscal||'—'}</td>
+    <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.observacao||''}</td>
+    <td style="white-space:nowrap"><button class="btn-edit-sm" onclick="editar(${m.id})" title="Editar nota"><i class="bi bi-pencil-square"></i></button><button class="btn-danger-sm" onclick="excluir(${m.id})" title="Excluir"><i class="bi bi-trash"></i></button></td>
+  </tr>`).join('');
+}
+
+function editar(id){
+  const m=entradas.find(item=>item.id===id);
+  if(!m)return;
+  editingId=id;
+  document.getElementById('formTitle').textContent='Editar Nota de Entrada #'+id;
+  document.getElementById('fMaterial').value=m.material_id;
+  document.getElementById('fMaterial').dispatchEvent(new Event('change'));
+  document.getElementById('fQtd').value=m.quantidade;
+  document.getElementById('fUnidade').value=m.unidade||m.material_unidade||'';
+  document.getElementById('fData').value=m.data;
+  document.getElementById('fFornecedor').value=m.fornecedor||'';
+  document.getElementById('fNF').value=m.nota_fiscal||'';
+  document.getElementById('fValorNota').value=m.valor_nota??0;
+  document.getElementById('fIcmsPerc').value=m.icms_perc??0;
+  document.getElementById('fValorFrete').value=m.valor_frete??0;
+  document.getElementById('fIcmsFrete').value=m.icms_frete??0;
+  document.getElementById('fObs').value=m.observacao||'';
+  if(m.silo_id)selecionarSilo(m.silo_id);
+  const btn=document.getElementById('btnSalvar');
+  btn.innerHTML='<i class="bi bi-check-circle-fill me-2"></i>Salvar Correções';
+  atualizarCalculosRealTime();
+  document.getElementById('formEntrada').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+async function excluir(id){
+  if(!confirm('Excluir este registro?'))return;
+  const r=await fetch(API+'/estoque/movimentos/'+id,{method:'DELETE'});
+  if(r.ok){toast('Registro excluído!');loadEntradas();}
+  else toast('Erro ao excluir',true);
+}
+
+function limparForm(){
+  document.getElementById('formEntrada').reset();
+  selectedSiloId=null;
+  document.getElementById('fSiloId').value='';
+  document.getElementById('siloSelector').classList.remove('show');
+  document.querySelectorAll('.silo-btn').forEach(b=>{b.classList.remove('active');b.removeAttribute('disabled');b.style.opacity='';});
+  document.getElementById('fUnidade').removeAttribute('disabled');
+  document.getElementById('resumoCalculosWrap').style.display='none';
+  editingId=null;
+  document.getElementById('formTitle').textContent='Registrar Nova Entrada';
+  document.getElementById('btnSalvar').innerHTML='<i class="bi bi-check-circle-fill me-2"></i>Salvar Entrada';
+  document.getElementById('fData').value=new Date().toISOString().slice(0,10);
+  leituraNFPendente=false;
+  document.getElementById('confirmacaoNF').classList.remove('show');
+  document.getElementById('fConfirmouNF').checked=false;
+  document.getElementById('nfResultado').className='nf-result';
+  document.getElementById('nfResultado').style.display='';
+  document.getElementById('nfResultado').textContent='';
+  document.getElementById('nfStatus').textContent='JPG, PNG, WEBP ou PDF — até 12 MB';
+}
+
+function arquivoParaBase64(file){
+  return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]||'');reader.onerror=()=>reject(new Error('Não foi possível abrir o arquivo'));reader.readAsDataURL(file);});
+}
+
+async function prepararImagemParaLeitura(file,mime){
+  if(mime==='application/pdf')return {conteudo:await arquivoParaBase64(file),mime,nome:file.name};
+  const bitmap=await createImageBitmap(file);
+  const limite=1800,escala=Math.min(1,limite/Math.max(bitmap.width,bitmap.height));
+  const canvas=document.createElement('canvas');canvas.width=Math.round(bitmap.width*escala);canvas.height=Math.round(bitmap.height*escala);
+  const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();
+  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',0.86));
+  if(!blob)throw new Error('Não foi possível preparar a foto');
+  return {conteudo:await arquivoParaBase64(blob),mime:'image/jpeg',nome:file.name.replace(/\.[^.]+$/,'.jpg')};
+}
+
+function preencherSeDisponivel(id,valor){
+  if(valor!==null&&valor!==undefined&&valor!=='')document.getElementById(id).value=valor;
+}
+
+function erroLeituraLocal(mensagem){
+  const resultado=document.getElementById('nfResultado');
+  resultado.className='nf-result';resultado.style.display='block';resultado.textContent=mensagem;
+  toast(mensagem,true);
+}
+
+function aguardar(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+
+async function aguardarResultadoNF(jobId){
+  for(let tentativa=0;tentativa<60;tentativa++){
+    await aguardar(1500);
+    const r=await fetch(API+'/estoque/nota-fiscal/ler/status/'+encodeURIComponent(jobId),{cache:'no-store'});
+    const job=await r.json();
+    if(!r.ok)throw new Error(apiErrorMessage(job.detail));
+    if(job.status==='concluido')return job;
+    if(job.status==='erro')throw new Error(job.detail||'Falha ao ler a nota');
+    document.getElementById('nfStatus').textContent=`Gemini está lendo a nota… ${Math.round((tentativa+1)*1.5)}s`;
+    document.getElementById('aiLoadingDetail').innerHTML=`Analisando a nota com <span>IA</span>… ${Math.round((tentativa+1)*1.5)}s`;
+  }
+  throw new Error('A leitura demorou mais de 90 segundos. Tente novamente.');
+}
+
+async function carregarStatusIA(){
+  try{
+    const r=await fetch(API+'/estoque/nota-fiscal/provider');
+    if(!r.ok)return;
+    const s=await r.json();
+    const status=document.getElementById('nfStatus');
+    status.textContent=s.configured?`IA configurada: ${s.provider}`:s.message;
+    if(!s.configured)status.style.color='#b45309';
+  }catch(e){}
+}
+
+async function lerNotaFiscal(file){
+  const materialId=parseInt(document.getElementById('fMaterial').value)||null;
+  if(!materialId){erroLeituraLocal('Selecione o material antes de escolher a foto ou o PDF.');return;}
+  const extensao=(file.name.split('.').pop()||'').toLowerCase();
+  const mimePorExtensao={jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',pdf:'application/pdf'};
+  const mime=file.type||mimePorExtensao[extensao]||'';
+  if(!['image/jpeg','image/png','image/webp','application/pdf'].includes(mime)){erroLeituraLocal(`Arquivo ${file.name} não suportado. Use JPG, PNG, WEBP ou PDF.`);return;}
+  if(mime==='application/pdf'&&file.size>12*1024*1024){erroLeituraLocal(`O PDF tem ${(file.size/1024/1024).toFixed(1)} MB. O limite é 12 MB.`);return;}
+  if(mime!=='application/pdf'&&file.size>25*1024*1024){erroLeituraLocal(`A foto tem ${(file.size/1024/1024).toFixed(1)} MB. O limite é 25 MB.`);return;}
+  const btn=document.getElementById('btnEscolherNF'),btnFoto=document.getElementById('btnFotoNF');
+  const status=document.getElementById('nfStatus'),resultado=document.getElementById('nfResultado');
+  btn.disabled=true;btnFoto.disabled=true;status.textContent='Lendo a nota fiscal…';resultado.className='nf-result';resultado.style.display='';
+  mostrarProcessamento(true);
+  try{
+    status.textContent='Preparando e enviando a imagem…';
+    const preparado=await prepararImagemParaLeitura(file,mime);
+    status.textContent='Gemini está lendo a nota… aguarde';
+    const r=await fetch(API+'/estoque/nota-fiscal/ler/iniciar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome_arquivo:preparado.nome,mime_type:preparado.mime,conteudo_base64:preparado.conteudo,material_id:materialId})});
+    const inicio=await r.json();if(!r.ok)throw new Error(apiErrorMessage(inicio.detail)||'Não foi possível enviar a nota');
+    const resposta=await aguardarResultadoNF(inicio.job_id);
+    const d=resposta.dados||{};
+    preencherSeDisponivel('fQtd',d.quantidade);preencherSeDisponivel('fData',d.data_emissao);preencherSeDisponivel('fFornecedor',d.fornecedor);
+    preencherSeDisponivel('fNF',d.numero_nota);preencherSeDisponivel('fValorNota',d.valor_nota);preencherSeDisponivel('fIcmsPerc',d.icms_perc);
+    preencherSeDisponivel('fValorFrete',d.valor_frete);preencherSeDisponivel('fIcmsFrete',d.icms_frete);
+    if(d.unidade&&['kg','ton','L','m3'].includes(d.unidade))document.getElementById('fUnidade').value=d.unidade;
+    const obs=[];if(d.cnpj_fornecedor)obs.push('CNPJ: '+d.cnpj_fornecedor);if(d.chave_acesso)obs.push('Chave NF-e: '+d.chave_acesso);if(d.descricao_material)obs.push('Item NF: '+d.descricao_material);
+    if(obs.length)preencherSeDisponivel('fObs',obs.join(' | ').slice(0,200));
+    atualizarCalculosRealTime();leituraNFPendente=true;document.getElementById('fConfirmouNF').checked=false;document.getElementById('confirmacaoNF').classList.add('show');
+    const avisos=(d.avisos||[]).join(' • ');resultado.className='nf-result ok';resultado.textContent=`Leitura concluída por ${resposta.provider} (${Math.round(Number(d.confianca||0)*100)}% de confiança). Confira os campos${avisos?' — '+avisos:''}`;
+    status.textContent=file.name;toast('Nota lida. Confira os dados antes de salvar.');
+  }catch(ex){status.textContent='Falha na leitura';resultado.style.display='block';resultado.textContent=ex.message;toast(ex.message,true);}
+  finally{mostrarProcessamento(false);btn.disabled=false;btnFoto.disabled=false;document.getElementById('arquivoNF').value='';document.getElementById('fotoNF').value='';}
+}
+
+function abrirSeMaterialSelecionado(inputId){
+  if(!document.getElementById('fMaterial').value){erroLeituraLocal('Primeiro selecione o material que está entrando no estoque.');return;}
+  document.getElementById(inputId).click();
+}
+document.getElementById('btnFotoNF').addEventListener('click',()=>abrirSeMaterialSelecionado('fotoNF'));
+document.getElementById('btnEscolherNF').addEventListener('click',()=>abrirSeMaterialSelecionado('arquivoNF'));
+document.getElementById('fotoNF').addEventListener('change',e=>{if(e.target.files[0])lerNotaFiscal(e.target.files[0]);});
+document.getElementById('arquivoNF').addEventListener('change',e=>{if(e.target.files[0])lerNotaFiscal(e.target.files[0]);});
+
+document.getElementById('formEntrada').addEventListener('submit',async function(e){
+  e.preventDefault();
+  if(leituraNFPendente&&!document.getElementById('fConfirmouNF').checked){toast('Confira a nota e marque a confirmação antes de salvar',true);return;}
+  const mat=materiais.find(m=>m.id==document.getElementById('fMaterial').value);
+  // Validar silo se material exige
+  if(materialUsaSilo(mat)&&!selectedSiloId){
+    toast('Selecione o silo de destino para este material',true);return;
+  }
+  const body={
+    material_id:parseInt(document.getElementById('fMaterial').value),
+    tipo:'entrada',
+    origem:'manual',
+    quantidade:parseFloat(document.getElementById('fQtd').value),
+    unidade:document.getElementById('fUnidade').value||(mat?mat.unidade:null)||null,
+    data:document.getElementById('fData').value,
+    fornecedor:document.getElementById('fFornecedor').value||null,
+    nota_fiscal:document.getElementById('fNF').value||null,
+    observacao:document.getElementById('fObs').value||null,
+    silo_id:selectedSiloId||null,
+    valor_nota:parseFloat(document.getElementById('fValorNota').value)||0,
+    icms_perc:parseFloat(document.getElementById('fIcmsPerc').value)||0,
+    valor_frete:parseFloat(document.getElementById('fValorFrete').value)||0,
+    icms_frete:parseFloat(document.getElementById('fIcmsFrete').value)||0
+  };
+  const btn=document.getElementById('btnSalvar');
+  btn.disabled=true;btn.textContent='Salvando...';
+  try{
+    const url=editingId?API+'/estoque/movimentos/'+editingId:API+'/estoque/movimentos';
+    const method=editingId?'PATCH':'POST';
+    const r=await fetch(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.ok){const result=await r.json();toast(editingId?'Nota corrigida! Novo custo: R$ '+Number(result.valor_unitario_liquido||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}):'Entrada registrada com sucesso!');limparForm();selectedSiloId=null;document.querySelectorAll('.silo-btn').forEach(b=>{b.classList.remove('active');b.removeAttribute('disabled');b.style.opacity='';});document.getElementById('siloSelector').classList.remove('show');document.getElementById('fUnidade').removeAttribute('disabled');loadEntradas();loadSilos();}
+    else{const err=await r.json();toast('Erro: '+apiErrorMessage(err.detail),true);}
+  }catch(ex){toast('Erro de conexão',true);}
+  btn.disabled=false;btn.innerHTML=editingId?'<i class="bi bi-check-circle-fill me-2"></i>Salvar Correções':'<i class="bi bi-check-circle-fill me-2"></i>Salvar Entrada';
+});
+
+function atualizarCalculosRealTime() {
+  const qtdInformada = parseFloat(document.getElementById('fQtd').value) || 0;
+  const mat = materiais.find(m=>m.id==document.getElementById('fMaterial').value);
+  const unidadeInformada = document.getElementById('fUnidade').value;
+  const qtd = mat&&mat.unidade==='ton'&&unidadeInformada==='kg' ? qtdInformada/1000 : qtdInformada;
+  const vNota = parseFloat(document.getElementById('fValorNota').value) || 0;
+  const icmsPerc = parseFloat(document.getElementById('fIcmsPerc').value) || 0;
+  const vFreteUnitario = parseFloat(document.getElementById('fValorFrete').value) || 0;
+  const icmsFretePerc = parseFloat(document.getElementById('fIcmsFrete').value) || 0;
+
+  const wrap = document.getElementById('resumoCalculosWrap');
+  
+  if (qtd > 0 && (vNota > 0 || vFreteUnitario > 0)) {
+    wrap.style.display = 'block';
+
+    const unitBruto = vNota / qtd;
+    document.getElementById('calcUnitBruto').textContent = unitBruto.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+    const icmsUnit = unitBruto * (icmsPerc / 100);
+    document.getElementById('calcIcmsUnit').textContent = icmsUnit.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+    const unitLiquido = unitBruto - icmsUnit;
+    document.getElementById('calcUnitLiquido').textContent = unitLiquido.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+    const freteBrutoTotal = vFreteUnitario * qtd;
+    const valorIcmsFrete = freteBrutoTotal * (icmsFretePerc / 100);
+    const freteLiquidoTotal = freteBrutoTotal - valorIcmsFrete;
+    const fretePerTon = freteLiquidoTotal / qtd;
+    document.getElementById('calcFretePerTon').textContent = fretePerTon.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+    const icmsNotaTotal = vNota * (icmsPerc / 100);
+    const prodTotal = vNota - icmsNotaTotal + freteLiquidoTotal;
+    document.getElementById('calcProdTotal').textContent = prodTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+    const custoFinal = unitLiquido + fretePerTon;
+    document.getElementById('calcCustoFinal').textContent = custoFinal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+// Register listeners
+document.querySelectorAll('.calc-trigger, #fQtd, #fUnidade, #fMaterial').forEach(el => {
+  el.addEventListener('input', atualizarCalculosRealTime);
+});
+
+// set default date to today
+document.getElementById('fData').value=new Date().toISOString().slice(0,10);
+
+loadSilos();
+loadMateriais();
+loadEntradas();
+carregarStatusIA();
+</script>
+
+<style id="noroeste-branding-style">
+  .noroeste-unit-badge {
+    position: fixed; top: 76px; right: 14px; z-index: 2147483647;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 13px; border-radius: 999px;
+    background: #e07a3a; color: #fff;
+    border: 1px solid rgba(255,255,255,.35);
+    box-shadow: 0 4px 16px rgba(0,0,0,.22);
+    font: 700 11px/1.2 Montserrat, "Segoe UI", sans-serif;
+    letter-spacing: .45px; text-transform: uppercase;
+  }
+  .noroeste-unit-badge::before { content: "\25CF"; font-size: 8px; color: #fff; }
+  @media (max-width: 640px) {
+    .noroeste-unit-badge { top: 68px; right: 7px; padding: 6px 9px; font-size: 9px; }
+  }
+</style>
+<div class="noroeste-unit-badge" role="status" aria-label="Unidade Ribeirão">Unidade Ribeirão</div>
+
+</body>
+</html>

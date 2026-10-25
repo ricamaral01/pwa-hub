@@ -1,0 +1,1 @@
+for s in concretrack-pederneiras.service supervisorio-ribeirao.service supervisorio_noro.service; do echo ===$s===; systemctl show $s -p ExecStart --no-pager; systemctl status $s --no-pager -l | head -18; done

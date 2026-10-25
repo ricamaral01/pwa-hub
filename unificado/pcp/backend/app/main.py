@@ -100,12 +100,12 @@ app.include_router(pcp.router)
 app.include_router(dashboard.router)
 app.include_router(produtos.router)
 app.include_router(qualidade_catalogo.router)
+app.include_router(producao_unidade.router)
 app.include_router(teste_programacao.router)
 app.include_router(alocacao_formas.router)
 app.include_router(programacao_circular_s3.router)
 app.include_router(programacao_circular_s4.router)
 app.include_router(etiquetas_armaduras.router)
-app.include_router(producao_unidade.router)
 
 # Servir frontend como arquivos estáticos
 _FRONTEND = os.path.join(os.path.dirname(__file__), "..", "frontend")

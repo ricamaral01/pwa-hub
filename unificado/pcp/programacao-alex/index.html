@@ -775,7 +775,7 @@ async function importarMegaAlex() {
       return;
     }
     const out = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(out.detail || `Erro ${res.status}`);
+    if (!res.ok) throw new Error(out.detail || `Não foi possível importar o arquivo Mega (HTTP ${res.status}). Verifique o formato e tente novamente.`);
     showToast(`${out.importados} item(ns) Mega importado(s). ${out.ignorados || 0} linha(s) sem Produção Diária foram ignoradas.`, 'success', 6500);
     input.value = '';
     document.getElementById('f-inicio').value = data;

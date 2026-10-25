@@ -72,7 +72,6 @@ def _periodo(data_inicio: Optional[date], data_fim: Optional[date]):
 
 def _mdo_por_grupo(db: Session, data_inicio: date, data_fim: date):
     rows = db.query(MaoDeObra).filter(
-        MaoDeObra.unidade_id == 1,
         MaoDeObra.data >= data_inicio,
         MaoDeObra.data <= data_fim,
     ).all()
@@ -249,14 +248,12 @@ def get_dashboard(
 
     mdo_grupo, total_pessoas = _mdo_por_grupo(db, data_inicio, data_fim)
     registros_mdo = db.query(MaoDeObra).filter(
-        MaoDeObra.unidade_id == 1,
         MaoDeObra.data >= data_inicio, MaoDeObra.data <= data_fim,
     ).all()
     kg_homem_diario = _kg_homem_diario(
         pesos_diarios, registros_mdo, data_inicio, data_fim, postes_diarios
     )
     mdo_hoje = db.query(func.coalesce(func.sum(MaoDeObra.quantidade_pessoas), 0)).filter(
-        MaoDeObra.unidade_id == 1,
         MaoDeObra.data == date.today()
     ).scalar()
 

@@ -43,7 +43,7 @@ def main() -> None:
             try:
                 match = BAD.search(response.text())
                 if match:
-                    api_bad.append({"url": response.url, "marker": match.group(0)})
+                    api_bad.append({"path": urlsplit(response.url).path, "marker": match.group(0)})
             except Exception:
                 pass
         page.on("response", scan_response)

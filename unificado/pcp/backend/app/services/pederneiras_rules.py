@@ -7,12 +7,6 @@ from zoneinfo import ZoneInfo
 
 BRAZIL_TIME = ZoneInfo("America/Sao_Paulo")
 QUARTER = Decimal("0.25")
-NON_POST_FAMILY = "Acessórios"
-
-
-def counts_as_post(family: str) -> bool:
-    """The LT-PRO-04 total excludes its accessory rows (58 through 64)."""
-    return family.strip().casefold() != NON_POST_FAMILY.casefold()
 
 
 def validate_day(day: date, *, today: date | None = None) -> date:

@@ -1,0 +1,5 @@
+BEGIN;
+ALTER TABLE maodeobra_dias DROP CONSTRAINT IF EXISTS fk_maodeobra_dias_confirmado_por_usuario;
+ALTER TABLE maodeobra_dias DROP COLUMN IF EXISTS confirmado_por_usuario_id;
+ALTER TABLE maodeobra_dias DROP COLUMN IF EXISTS confirmado_em;
+COMMIT;

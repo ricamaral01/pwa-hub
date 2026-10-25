@@ -32,9 +32,10 @@ def main() -> None:
     parser.add_argument("--width", type=int, default=1366)
     parser.add_argument("--height", type=int, default=768)
     parser.add_argument("--screenshots", action="store_true")
+    parser.add_argument("--credential-file", default="/etc/mapa-unificado/pcp-auth-probe.env")
     args = parser.parse_args()
     raw = subprocess.check_output(
-        ["ssh", "vps-staging", "cat", "/etc/mapa-unificado/pcp-auth-probe.env"],
+        ["ssh", "vps-staging", "cat", args.credential_file],
         text=True, encoding="utf-8")
     account = dict(line.split("=", 1) for line in raw.splitlines() if "=" in line)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -72,7 +73,7 @@ def main() -> None:
         page.locator('#unificado-login-form [name="username"]').fill(account["PCP_TEST_USER"])
         page.locator('#unificado-login-form [name="password"]').fill(account["PCP_TEST_PASSWORD"])
         page.locator('#unificado-login-form button[type="submit"]').click()
-        page.wait_for_url("**/unificado/pcp/dashboard/", timeout=20000)
+        page.wait_for_url("**/unificado/?view=pcp%2Fdashboard%2F", timeout=20000)
         for name in (PAGES if not args.only else (args.only,)):
             current_errors.clear()
             response = page.goto(BASE + "/unificado/pcp/" + name + "/",

@@ -39,6 +39,14 @@ def main() -> None:
                 if html.count(original + '"') != 1:
                     raise ValueError(f"Formas por Setor asset changed: {asset}")
                 html = html.replace(original + '"', f'{original}?v={version}"')
+        if page == "usuarios":
+            marker = 'async function loadUsers() {'
+            if html.count(marker) != 1:
+                raise ValueError('PCP Users loader changed')
+            html = html.replace(marker, marker + '\n  if (window.unifiedPlanningLoadUsers) return window.unifiedPlanningLoadUsers();', 1)
+            html = html.replace('</body>',
+                                f'<link rel="stylesheet" href="/unificado/pcp/users-unificado-planning.css?v={version}">'
+                                f'<script src="/unificado/pcp/users-unificado-planning.js?v={version}"></script></body>', 1)
         html = re.sub(r'(/unificado/pcp/static/js/app\.js)(?:\?v=[^"\']+)?(?=["\'])',
                       rf'\g<1>?v={version}', html)
         html, guards = re.subn(
@@ -52,6 +60,9 @@ def main() -> None:
         html, heads = re.subn(
             r"<head>", '<head>\n  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>\n'
             + redirect
+            + (f'  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>\n'
+               f'  <script src="/unificado/pcp/unificado-screen-context.js?v={version}"></script>\n'
+               if page != "primeiro-acesso" else "")
             + f'  <script src="/unificado/pcp/unificado-bridge.js?v={version}"></script>\n'
             + menu_script + f'  <script src="/unificado/pcp/unificado-shell.js?v={version}"></script>',
             html, count=1, flags=re.I)
@@ -72,9 +83,23 @@ def main() -> None:
     old_mapa_link = "https://usina.concretrack.com.br/mapa-concretagem/index.html"
     if script.count(old_mapa_link) != 1:
         raise ValueError("Original PCP Mapa menu link changed")
-    app_script.write_text(script.replace(old_mapa_link, "/unificado/mapa/operacao/"),
+    script = script.replace(old_mapa_link, "/unificado/mapa/operacao/")
+    visibility_marker = '  // Somente ADMIN vê seção de usuários'
+    if script.count(visibility_marker) != 1:
+        raise ValueError('PCP menu visibility marker changed')
+    script = script.replace(visibility_marker, '''  if (Array.isArray(window.__unificadoAllowedScreens)) {
+    const allowed = new Set(window.__unificadoAllowedScreens);
+    document.querySelectorAll('#sidebar a.nav-link').forEach(link => {
+      const route = new URL(link.href, location.href).pathname.replace(/index\\.html$/, '');
+      const screen = window.__unificadoPathScreens?.[route];
+      if (screen && !allowed.has(screen)) link.style.display = 'none';
+    });
+  }
+''' + visibility_marker, 1)
+    app_script.write_text(script,
                           encoding="utf-8", newline="\n")
-    for name in ("unificado-bridge.js", "unificado-shell.js", "unificado-shell.css"):
+    for name in ("unificado-bridge.js", "unificado-shell.js", "unificado-shell.css", "unificado-screen-context.js",
+                 "users-unificado-planning.js", "users-unificado-planning.css"):
         shutil.copy2(SOURCE / name, TARGET / name)
     (TARGET / "index.html").write_text(
         '<!doctype html><html lang="pt-BR"><meta charset="utf-8">'

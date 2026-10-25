@@ -397,6 +397,116 @@
             color: #3b82f6;
             font-weight: 800;
         }
+
+        /* --- FILTERS & ACTIONS FOR TABLES --- */
+        .table-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            background: #f8fafc;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--card-border);
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            font-size: 0.85rem;
+            width: 250px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .status-filters {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-right: 0.25rem;
+        }
+
+        .filter-btn {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-muted);
+        }
+
+        .filter-btn:hover {
+            border-color: #cbd5e1;
+            color: var(--text-main);
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .btn-restore-hidden {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #b45309;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .btn-restore-hidden:hover {
+            background: #fef3c7;
+        }
+
+        .btn-hide-row {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-hide-row:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .manually-hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -409,7 +519,7 @@
         </div>
         <div class="timestamp">
             <div>Data Analisada: <strong>07/07/2026</strong></div>
-            <div style="margin-top:0.25rem;">Gerado em: <strong>08/07/2026 às 06:32</strong></div>
+            <div style="margin-top:0.25rem;">Gerado em: <strong>04/08/2026 às 06:49</strong></div>
         </div>
     </header>
 
@@ -417,30 +527,30 @@
     <section class="kpi-grid">
         <div class="kpi-card">
             <span class="kpi-label">PCP Programado (P)</span>
-            <div class="kpi-value">182</div>
+            <div class="kpi-value">183</div>
             <span class="kpi-sub" style="color:var(--text-muted)">Meta planejada (Planilha)</span>
         </div>
         <div class="kpi-card">
             <span class="kpi-label">PCP Realizado (R)</span>
-            <div class="kpi-value" style="color: #1e3a8a;">163</div>
+            <div class="kpi-value" style="color: #1e3a8a;">164</div>
             <span class="kpi-sub" style="color:var(--text-muted)">Apontado Encarregado</span>
         </div>
         <div class="kpi-card">
             <span class="kpi-label">Realizado Fábrica</span>
-            <div class="kpi-value">138</div>
+            <div class="kpi-value">191</div>
             <span class="kpi-sub" style="color:var(--text-muted)">Concretado (Supabase)</span>
         </div>
         <div class="kpi-card">
             <span class="kpi-label">Desvio Fábrica (vs P)</span>
-            <div class="kpi-value" style="color: var(--color-nao-produzido)">
-                -44
+            <div class="kpi-value" style="color: var(--color-excedente)">
+                +8
             </div>
             <span class="kpi-sub" style="color:var(--text-muted)">Diferença no dia</span>
         </div>
         <div class="kpi-card">
             <span class="kpi-label">Aderência Geral</span>
-            <div class="kpi-value" style="color: var(--color-nao-produzido)">
-                75.8%
+            <div class="kpi-value" style="color: var(--color-realizado)">
+                104.4%
             </div>
             <span class="kpi-sub" style="color:var(--text-muted)">Atendimento real</span>
         </div>
@@ -460,7 +570,7 @@
                         
                             <ul class="summary-nested-list">
                                 
-                                    <li>Cód. 1 (2) no 5 - Prog: 25 pç</li>
+                                    <li>Cód. 1 (2) no 5 - Prog: 26 pç</li>
                                 
                                     <li>Cód. 4031 (ELEKTRO 1 CX VR) no Setor 1 - Prog: 27 pç</li>
                                 
@@ -498,7 +608,7 @@
                         
                     </li>
                     <li>
-                        Itens produzidos fora do planejamento: <strong>11</strong>
+                        Itens produzidos fora do planejamento: <strong>17</strong>
                         
                             <ul class="summary-nested-list">
                                 
@@ -508,19 +618,31 @@
                                 
                                     <li>Cód. 300-VR (2 CXS VR) no Setor 1 - Real: 1 pç</li>
                                 
-                                    <li>Cód. AE (1 CX VR) no Setor 1 - Real: 25 pç</li>
+                                    <li>Cód. AE (1 CX VR) no Setor 1 - Real: 26 pç</li>
+                                
+                                    <li>Cód. BD (SEM MODELO) no Setor 1 - Real: 12 pç</li>
+                                
+                                    <li>Cód. BE (SEM MODELO) no Setor 1 - Real: 4 pç</li>
                                 
                                     <li>Cód. CE (2 CXS VR) no Setor 1 - Real: 7 pç</li>
                                 
                                     <li>Cód. D (2 CXS VL) no Setor 1 - Real: 5 pç</li>
                                 
+                                    <li>Cód. E (SEM MODELO) no Setor 1 - Real: 6 pç</li>
+                                
                                     <li>Cód. SB-E1 (SUB. 100-AMP-E) no Setor 1 - Real: 2 pç</li>
                                 
-                                    <li>Cód. A (1 CX VR) no Setor 2 - Real: 20 pç</li>
+                                    <li>Cód. A (1 CX VR) no Setor 2 - Real: 42 pç</li>
                                 
                                     <li>Cód. B (1 CX VL) no Setor 2 - Real: 7 pç</li>
                                 
                                     <li>Cód. C (2 CXS VR) no Setor 2 - Real: 7 pç</li>
+                                
+                                    <li>Cód. PL (SEM MODELO) no Setor 2 - Real: 4 pç</li>
+                                
+                                    <li>Cód. TCL (SEM MODELO) no Setor 2 - Real: 1 pç</li>
+                                
+                                    <li>Cód. TCR (SEM MODELO) no Setor 2 - Real: 3 pç</li>
                                 
                                     <li>Cód. SEM CODIGO (SEM MODELO) no Setor 3 - Real: 48 pç</li>
                                 
@@ -534,15 +656,15 @@
                 <ul class="summary-list">
                     
                         
-                            <li>947 (4 CX VL) no Setor 1 (Falta: 1 pç)</li>
-                        
-                            <li>938 (1 CX VR) no Setor 2 (Falta: 47 pç)</li>
-                        
-                            <li>949 (SUB 100) no Setor 1 (Falta: 5 pç)</li>
-                        
                             <li>957 (EDP 1 CX VL) no Setor 1 (Falta: 15 pç)</li>
                         
-                            <li>937 (7,5X600 TC VL) no Setor 2 (Falta: 1 pç)</li>
+                            <li>940 (7,5X600 TC VR) no Setor 2 (Falta: 4 pç)</li>
+                        
+                            <li>943 (2 CX VR) no Setor 2 (Falta: 7 pç)</li>
+                        
+                            <li>4031 (ELEKTRO 1 CX VR) no Setor 1 (Falta: 27 pç)</li>
+                        
+                            <li>4032 (ELEKTRO 2 CX VR) no Setor 1 (Falta: 7 pç)</li>
                         
                     
                 </ul>
@@ -571,10 +693,33 @@
             <div class="sector-badge">
                 Prog (P): <strong>74</strong> | 
                 Real (R): <strong>66</strong> | 
-                Fábrica: <strong>46</strong> | 
-                Aderência: <strong>62.2%</strong>
+                Fábrica: <strong>69</strong> | 
+                Aderência: <strong>93.2%</strong>
             </div>
         </div>
+
+        <!-- CONTROLES DE FILTRO -->
+        
+        <div class="table-controls" data-sector="Setor 1">
+            <div class="search-box">
+                <input type="text" placeholder="Filtrar por modelo ou código..." oninput="applyFilters('Setor 1')">
+            </div>
+            <div class="status-filters">
+                <span class="filter-label">Filtrar Status:</span>
+                <button class="filter-btn active" data-status="ALL" onclick="toggleFilter(this, 'ALL', 'Setor 1')">Todos</button>
+                <button class="filter-btn" data-status="REALIZADO" onclick="toggleFilter(this, 'REALIZADO', 'Setor 1')">Realizado</button>
+                <button class="filter-btn" data-status="PARCIAL" onclick="toggleFilter(this, 'PARCIAL', 'Setor 1')">Parcial</button>
+                <button class="filter-btn" data-status="NÃO PRODUZIDO" onclick="toggleFilter(this, 'NÃO PRODUZIDO', 'Setor 1')">Não Produzido</button>
+                <button class="filter-btn" data-status="EXCEDENTE" onclick="toggleFilter(this, 'EXCEDENTE', 'Setor 1')">Excedente</button>
+                <button class="filter-btn" data-status="NÃO PROGRAMADO" onclick="toggleFilter(this, 'NÃO PROGRAMADO', 'Setor 1')">Não Programado</button>
+            </div>
+            <div>
+                <button class="btn-restore-hidden" id="restore-Setor 1" onclick="restoreHiddenRows('Setor 1')" style="display: none;">
+                    Mostrar Ocultados (<span class="hidden-count">0</span>)
+                </button>
+            </div>
+        </div>
+        
 
         <div class="table-container">
             <table>
@@ -587,416 +732,557 @@
                         <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
                         <th style="text-align: center; width: 100px;">Desvio</th>
                         <th style="width: 150px;">Status</th>
+                        <th style="width: 60px; text-align: center;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sub. 100-amp" data-code="100">
                             <td>SUB. 100-AMP</td>
                             <td><strong>100</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">5</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +5
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="2 cxs vl" data-code="300-vl">
                             <td>2 CXS VL</td>
                             <td><strong>300-VL</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">1</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +1
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="2 cxs vr" data-code="300-vr">
                             <td>2 CXS VR</td>
                             <td><strong>300-VR</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">1</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +1
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="elektro 1 cx vr" data-code="4031">
                             <td>ELEKTRO 1 CX VR</td>
                             <td><strong>4031</strong></td>
-                            <td style="text-align: center;">27</td>
-                            <td style="text-align: center;">26</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">27</td>
+                            <td class="cell-real-enc" style="text-align: center;">26</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -27
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="elektro 2 cx vr" data-code="4032">
                             <td>ELEKTRO 2 CX VR</td>
                             <td><strong>4032</strong></td>
-                            <td style="text-align: center;">7</td>
-                            <td style="text-align: center;">7</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">7</td>
+                            <td class="cell-real-enc" style="text-align: center;">7</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -7
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="elektro 1 cx vl" data-code="4764">
                             <td>ELEKTRO 1 CX VL</td>
                             <td><strong>4764</strong></td>
-                            <td style="text-align: center;">4</td>
-                            <td style="text-align: center;">4</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">4</td>
+                            <td class="cell-real-enc" style="text-align: center;">4</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -4
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="elektro 2 cx vl" data-code="4765">
                             <td>ELEKTRO 2 CX VL</td>
                             <td><strong>4765</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="sub 100 elektro" data-code="4848">
                             <td>SUB 100 ELEKTRO</td>
                             <td><strong>4848</strong></td>
-                            <td style="text-align: center;">2</td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">2</td>
+                            <td class="cell-real-enc" style="text-align: center;">1</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -2
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="elektro 3 cx vl" data-code="4929">
                             <td>ELEKTRO 3 CX VL</td>
                             <td><strong>4929</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="sub 200 tc" data-code="5017">
                             <td>SUB 200 TC</td>
                             <td><strong>5017</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="econ 1 cx vl" data-code="930">
                             <td>ECON 1 CX VL</td>
                             <td><strong>930</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="econ 1 cx vr" data-code="931">
                             <td>ECON 1 CX VR</td>
                             <td><strong>931</strong></td>
-                            <td style="text-align: center;">6</td>
-                            <td style="text-align: center;">6</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">6</td>
+                            <td class="cell-real-enc" style="text-align: center;">6</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -6
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="econ 2 cx vr" data-code="932">
                             <td>ECON 2 CX VR</td>
                             <td><strong>932</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="econ 3 cx vr" data-code="933">
                             <td>ECON 3 CX VR</td>
                             <td><strong>933</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="7,5x600 barr vl" data-code="936">
                             <td>7,5X600 BARR VL</td>
                             <td><strong>936</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="7,5x600 barr vr" data-code="939">
                             <td>7,5X600 BARR VR</td>
                             <td><strong>939</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="2 cx vl" data-code="941">
                             <td>2 CX VL</td>
                             <td><strong>941</strong></td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">5</td>
+                            <td class="cell-real-enc" style="text-align: center;">5</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -5
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="3 cx vl" data-code="945">
                             <td>3 CX VL</td>
                             <td><strong>945</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="3 cx vr" data-code="946">
                             <td>3 CX VR</td>
                             <td><strong>946</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="4 cx vl" data-code="947">
                             <td>4 CX VL</td>
                             <td><strong>947</strong></td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">1</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -1
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="4 cx vr" data-code="948">
                             <td>4 CX VR</td>
                             <td><strong>948</strong></td>
-                            <td style="text-align: center;">2</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">2</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -2
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="sub 100" data-code="949">
                             <td>SUB 100</td>
                             <td><strong>949</strong></td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">5</td>
+                            <td class="cell-real-enc" style="text-align: center;">5</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -5
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="sub 200" data-code="950">
                             <td>SUB 200</td>
                             <td><strong>950</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="edp 1 cx vl" data-code="957">
                             <td>EDP 1 CX VL</td>
                             <td><strong>957</strong></td>
-                            <td style="text-align: center;">15</td>
-                            <td style="text-align: center;">12</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">15</td>
+                            <td class="cell-real-enc" style="text-align: center;">12</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -15
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="1 cx vr" data-code="ae">
                             <td>1 CX VR</td>
                             <td><strong>AE</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">25</td>
-                            <td style="text-align: center;" class="text-diff positive">
-                                +25
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">26</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
+                                +26
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sem modelo" data-code="bd">
+                            <td>SEM MODELO</td>
+                            <td><strong>BD</strong></td>
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">12</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
+                                +12
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sem modelo" data-code="be">
+                            <td>SEM MODELO</td>
+                            <td><strong>BE</strong></td>
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">4</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
+                                +4
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="2 cxs vr" data-code="ce">
                             <td>2 CXS VR</td>
                             <td><strong>CE</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">7</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">7</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +7
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="2 cxs vl" data-code="d">
                             <td>2 CXS VL</td>
                             <td><strong>D</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">5</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +5
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sem modelo" data-code="e">
+                            <td>SEM MODELO</td>
+                            <td><strong>E</strong></td>
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">6</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
+                                +6
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sub. 100-amp-e" data-code="sb-e1">
                             <td>SUB. 100-AMP-E</td>
                             <td><strong>SB-E1</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">2</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">2</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +2
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 1')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
+                        <tr class="no-results-row" style="display: none;">
+                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
+                                Nenhum item corresponde aos filtros selecionados.
+                            </td>
+                        </tr>
                     
                 </tbody>
                 
                 <tfoot>
-                    <tr>
-                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
-                        <td style="text-align: center;">74</td>
-                        <td style="text-align: center;">66</td>
-                        <td style="text-align: center;">46</td>
-                        <td style="text-align: center;" class="text-diff negative">
-                            -28
+                    <tr class="table-totals">
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total (Filtrado):</td>
+                        <td class="total-prog" style="text-align: center;">74</td>
+                        <td class="total-real-enc" style="text-align: center;">66</td>
+                        <td class="total-prod" style="text-align: center;">69</td>
+                        <td class="total-diff text-diff negative" style="text-align: center;">
+                            -5
                         </td>
-                        <td></td>
+                        <td colspan="2"></td>
                     </tr>
                 </tfoot>
                 
@@ -1007,7 +1293,7 @@
         
         <div class="sector-narrative">
             <h4>📋 Resumo de Desvios — Apontamento vs. Planejamento</h4>
-            <p class="desc-geral">O encarregado planejou 74 peças (P) e apontou 66 peças como Realizado (R) na planilha. O operador apontou 46 peças no sistema Supabase.</p>
+            <p class="desc-geral">O encarregado planejou 74 peças (P) e apontou 66 peças como Realizado (R) na planilha. O operador apontou 69 peças no sistema Supabase.</p>
             
                 <ul>
                     
@@ -1037,11 +1323,17 @@
                     
                         <li><strong>EDP 1 CX VL (Cód. 957)</strong>: Programado 15 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 12 como Realizado (R) na planilha).</i></li>
                     
-                        <li><strong>1 CX VR (Cód. AE)</strong>: Não programado, mas operador concretou 25 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                        <li><strong>1 CX VR (Cód. AE)</strong>: Não programado, mas operador concretou 26 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>SEM MODELO (Cód. BD)</strong>: Não programado, mas operador concretou 12 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>SEM MODELO (Cód. BE)</strong>: Não programado, mas operador concretou 4 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
                     
                         <li><strong>2 CXS VR (Cód. CE)</strong>: Não programado, mas operador concretou 7 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
                     
                         <li><strong>2 CXS VL (Cód. D)</strong>: Não programado, mas operador concretou 5 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>SEM MODELO (Cód. E)</strong>: Não programado, mas operador concretou 6 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
                     
                         <li><strong>SUB. 100-AMP-E (Cód. SB-E1)</strong>: Não programado, mas operador concretou 2 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
                     
@@ -1057,10 +1349,33 @@
             <div class="sector-badge">
                 Prog (P): <strong>83</strong> | 
                 Real (R): <strong>71</strong> | 
-                Fábrica: <strong>44</strong> | 
-                Aderência: <strong>53.0%</strong>
+                Fábrica: <strong>74</strong> | 
+                Aderência: <strong>89.2%</strong>
             </div>
         </div>
+
+        <!-- CONTROLES DE FILTRO -->
+        
+        <div class="table-controls" data-sector="Setor 2">
+            <div class="search-box">
+                <input type="text" placeholder="Filtrar por modelo ou código..." oninput="applyFilters('Setor 2')">
+            </div>
+            <div class="status-filters">
+                <span class="filter-label">Filtrar Status:</span>
+                <button class="filter-btn active" data-status="ALL" onclick="toggleFilter(this, 'ALL', 'Setor 2')">Todos</button>
+                <button class="filter-btn" data-status="REALIZADO" onclick="toggleFilter(this, 'REALIZADO', 'Setor 2')">Realizado</button>
+                <button class="filter-btn" data-status="PARCIAL" onclick="toggleFilter(this, 'PARCIAL', 'Setor 2')">Parcial</button>
+                <button class="filter-btn" data-status="NÃO PRODUZIDO" onclick="toggleFilter(this, 'NÃO PRODUZIDO', 'Setor 2')">Não Produzido</button>
+                <button class="filter-btn" data-status="EXCEDENTE" onclick="toggleFilter(this, 'EXCEDENTE', 'Setor 2')">Excedente</button>
+                <button class="filter-btn" data-status="NÃO PROGRAMADO" onclick="toggleFilter(this, 'NÃO PROGRAMADO', 'Setor 2')">Não Programado</button>
+            </div>
+            <div>
+                <button class="btn-restore-hidden" id="restore-Setor 2" onclick="restoreHiddenRows('Setor 2')" style="display: none;">
+                    Mostrar Ocultados (<span class="hidden-count">0</span>)
+                </button>
+            </div>
+        </div>
+        
 
         <div class="table-container">
             <table>
@@ -1073,192 +1388,285 @@
                         <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
                         <th style="text-align: center; width: 100px;">Desvio</th>
                         <th style="width: 150px;">Status</th>
+                        <th style="width: 60px; text-align: center;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="totem medição indireta elektro" data-code="13570">
                             <td>TOTEM MEDIÇÃO INDIRETA ELEKTRO</td>
                             <td><strong>13570</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="poste caixa lente 1 cx vl" data-code="934">
                             <td>POSTE CAIXA LENTE 1 CX VL</td>
                             <td><strong>934</strong></td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;">4</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">5</td>
+                            <td class="cell-real-enc" style="text-align: center;">4</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -5
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-PARCIAL">
+                        <tr class="status-PARCIAL" data-status="PARCIAL" data-model="1 cx vl" data-code="935">
                             <td>1 CX VL</td>
                             <td><strong>935</strong></td>
-                            <td style="text-align: center;">12</td>
-                            <td style="text-align: center;">12</td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">12</td>
+                            <td class="cell-real-enc" style="text-align: center;">12</td>
+                            <td class="cell-prod" style="text-align: center;">5</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -7
                             </td>
                             <td>
                                 <span class="badge-status badge-PARCIAL">PARCIAL</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="7,5x600 tc vl" data-code="937">
                             <td>7,5X600 TC VL</td>
                             <td><strong>937</strong></td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">1</td>
+                            <td class="cell-real-enc" style="text-align: center;">1</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -1
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="1 cx vr" data-code="938">
                             <td>1 CX VR</td>
                             <td><strong>938</strong></td>
-                            <td style="text-align: center;">47</td>
-                            <td style="text-align: center;">42</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">47</td>
+                            <td class="cell-real-enc" style="text-align: center;">42</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -47
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="7,5x600 tc vr" data-code="940">
                             <td>7,5X600 TC VR</td>
                             <td><strong>940</strong></td>
-                            <td style="text-align: center;">4</td>
-                            <td style="text-align: center;">3</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">4</td>
+                            <td class="cell-real-enc" style="text-align: center;">3</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -4
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="2 cx vl - 300 dan" data-code="942">
                             <td>2 CX VL - 300 DAN</td>
                             <td><strong>942</strong></td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">1</td>
+                            <td class="cell-real-enc" style="text-align: center;">1</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -1
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-PARCIAL">
+                        <tr class="status-PARCIAL" data-status="PARCIAL" data-model="2 cx vr" data-code="943">
                             <td>2 CX VR</td>
                             <td><strong>943</strong></td>
-                            <td style="text-align: center;">12</td>
-                            <td style="text-align: center;">7</td>
-                            <td style="text-align: center;">5</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">12</td>
+                            <td class="cell-real-enc" style="text-align: center;">7</td>
+                            <td class="cell-prod" style="text-align: center;">5</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -7
                             </td>
                             <td>
                                 <span class="badge-status badge-PARCIAL">PARCIAL</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PRODUZIDO">
+                        <tr class="status-NÃO PRODUZIDO" data-status="NÃO PRODUZIDO" data-model="2 cx vr - 300 dan" data-code="944">
                             <td>2 CX VR - 300 DAN</td>
                             <td><strong>944</strong></td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff negative">
+                            <td class="cell-prog" style="text-align: center;">1</td>
+                            <td class="cell-real-enc" style="text-align: center;">1</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff negative" style="text-align: center;">
                                 -1
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PRODUZIDO">NÃO PRODUZIDO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="1 cx vr" data-code="a">
                             <td>1 CX VR</td>
                             <td><strong>A</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">20</td>
-                            <td style="text-align: center;" class="text-diff positive">
-                                +20
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">42</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
+                                +42
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="1 cx vl" data-code="b">
                             <td>1 CX VL</td>
                             <td><strong>B</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">7</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">7</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +7
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="2 cxs vr" data-code="c">
                             <td>2 CXS VR</td>
                             <td><strong>C</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">7</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">7</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +7
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sem modelo" data-code="pl">
+                            <td>SEM MODELO</td>
+                            <td><strong>PL</strong></td>
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">4</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
+                                +4
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sem modelo" data-code="tcl">
+                            <td>SEM MODELO</td>
+                            <td><strong>TCL</strong></td>
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">1</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
+                                +1
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sem modelo" data-code="tcr">
+                            <td>SEM MODELO</td>
+                            <td><strong>TCR</strong></td>
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">3</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
+                                +3
+                            </td>
+                            <td>
+                                <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 2')" title="Ocultar item">✕</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="no-results-row" style="display: none;">
+                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
+                                Nenhum item corresponde aos filtros selecionados.
+                            </td>
+                        </tr>
                     
                 </tbody>
                 
                 <tfoot>
-                    <tr>
-                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
-                        <td style="text-align: center;">83</td>
-                        <td style="text-align: center;">71</td>
-                        <td style="text-align: center;">44</td>
-                        <td style="text-align: center;" class="text-diff negative">
-                            -39
+                    <tr class="table-totals">
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total (Filtrado):</td>
+                        <td class="total-prog" style="text-align: center;">83</td>
+                        <td class="total-real-enc" style="text-align: center;">71</td>
+                        <td class="total-prod" style="text-align: center;">74</td>
+                        <td class="total-diff text-diff negative" style="text-align: center;">
+                            -9
                         </td>
-                        <td></td>
+                        <td colspan="2"></td>
                     </tr>
                 </tfoot>
                 
@@ -1269,7 +1677,7 @@
         
         <div class="sector-narrative">
             <h4>📋 Resumo de Desvios — Apontamento vs. Planejamento</h4>
-            <p class="desc-geral">O encarregado planejou 83 peças (P) e apontou 71 peças como Realizado (R) na planilha. O operador apontou 44 peças no sistema Supabase.</p>
+            <p class="desc-geral">O encarregado planejou 83 peças (P) e apontou 71 peças como Realizado (R) na planilha. O operador apontou 74 peças no sistema Supabase.</p>
             
                 <ul>
                     
@@ -1289,11 +1697,17 @@
                     
                         <li><strong>2 CX VR - 300 DAN (Cód. 944)</strong>: Programado 1 (P), mas nenhuma peça foi concretada. <i>(Nota: Encarregado apontou 1 como Realizado (R) na planilha).</i></li>
                     
-                        <li><strong>1 CX VR (Cód. A)</strong>: Não programado, mas operador concretou 20 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                        <li><strong>1 CX VR (Cód. A)</strong>: Não programado, mas operador concretou 42 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
                     
                         <li><strong>1 CX VL (Cód. B)</strong>: Não programado, mas operador concretou 7 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
                     
                         <li><strong>2 CXS VR (Cód. C)</strong>: Não programado, mas operador concretou 7 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>SEM MODELO (Cód. PL)</strong>: Não programado, mas operador concretou 4 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>SEM MODELO (Cód. TCL)</strong>: Não programado, mas operador concretou 1 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
+                    
+                        <li><strong>SEM MODELO (Cód. TCR)</strong>: Não programado, mas operador concretou 3 peças. <i>(Nota: Encarregado apontou 0 como Realizado (R) na planilha).</i></li>
                     
                 </ul>
             
@@ -1312,6 +1726,29 @@
             </div>
         </div>
 
+        <!-- CONTROLES DE FILTRO -->
+        
+        <div class="table-controls" data-sector="Setor 3">
+            <div class="search-box">
+                <input type="text" placeholder="Filtrar por modelo ou código..." oninput="applyFilters('Setor 3')">
+            </div>
+            <div class="status-filters">
+                <span class="filter-label">Filtrar Status:</span>
+                <button class="filter-btn active" data-status="ALL" onclick="toggleFilter(this, 'ALL', 'Setor 3')">Todos</button>
+                <button class="filter-btn" data-status="REALIZADO" onclick="toggleFilter(this, 'REALIZADO', 'Setor 3')">Realizado</button>
+                <button class="filter-btn" data-status="PARCIAL" onclick="toggleFilter(this, 'PARCIAL', 'Setor 3')">Parcial</button>
+                <button class="filter-btn" data-status="NÃO PRODUZIDO" onclick="toggleFilter(this, 'NÃO PRODUZIDO', 'Setor 3')">Não Produzido</button>
+                <button class="filter-btn" data-status="EXCEDENTE" onclick="toggleFilter(this, 'EXCEDENTE', 'Setor 3')">Excedente</button>
+                <button class="filter-btn" data-status="NÃO PROGRAMADO" onclick="toggleFilter(this, 'NÃO PROGRAMADO', 'Setor 3')">Não Programado</button>
+            </div>
+            <div>
+                <button class="btn-restore-hidden" id="restore-Setor 3" onclick="restoreHiddenRows('Setor 3')" style="display: none;">
+                    Mostrar Ocultados (<span class="hidden-count">0</span>)
+                </button>
+            </div>
+        </div>
+        
+
         <div class="table-container">
             <table>
                 <thead>
@@ -1323,38 +1760,47 @@
                         <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
                         <th style="text-align: center; width: 100px;">Desvio</th>
                         <th style="width: 150px;">Status</th>
+                        <th style="width: 60px; text-align: center;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     
                         
-                        <tr class="status-NÃO PROGRAMADO">
+                        <tr class="status-NÃO PROGRAMADO" data-status="NÃO PROGRAMADO" data-model="sem modelo" data-code="sem codigo">
                             <td>SEM MODELO</td>
                             <td><strong>SEM CODIGO</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">48</td>
-                            <td style="text-align: center;" class="text-diff positive">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">48</td>
+                            <td class="cell-diff text-diff positive" style="text-align: center;">
                                 +48
                             </td>
                             <td>
                                 <span class="badge-status badge-NÃO PROGRAMADO">NÃO PROGRAMADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 3')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
+                        <tr class="no-results-row" style="display: none;">
+                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
+                                Nenhum item corresponde aos filtros selecionados.
+                            </td>
+                        </tr>
                     
                 </tbody>
                 
                 <tfoot>
-                    <tr>
-                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
-                        <td style="text-align: center;">0</td>
-                        <td style="text-align: center;">0</td>
-                        <td style="text-align: center;">48</td>
-                        <td style="text-align: center;" class="text-diff positive">
+                    <tr class="table-totals">
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total (Filtrado):</td>
+                        <td class="total-prog" style="text-align: center;">0</td>
+                        <td class="total-real-enc" style="text-align: center;">0</td>
+                        <td class="total-prod" style="text-align: center;">48</td>
+                        <td class="total-diff text-diff positive" style="text-align: center;">
                             +48
                         </td>
-                        <td></td>
+                        <td colspan="2"></td>
                     </tr>
                 </tfoot>
                 
@@ -1388,6 +1834,29 @@
             </div>
         </div>
 
+        <!-- CONTROLES DE FILTRO -->
+        
+        <div class="table-controls" data-sector="Setor 4">
+            <div class="search-box">
+                <input type="text" placeholder="Filtrar por modelo ou código..." oninput="applyFilters('Setor 4')">
+            </div>
+            <div class="status-filters">
+                <span class="filter-label">Filtrar Status:</span>
+                <button class="filter-btn active" data-status="ALL" onclick="toggleFilter(this, 'ALL', 'Setor 4')">Todos</button>
+                <button class="filter-btn" data-status="REALIZADO" onclick="toggleFilter(this, 'REALIZADO', 'Setor 4')">Realizado</button>
+                <button class="filter-btn" data-status="PARCIAL" onclick="toggleFilter(this, 'PARCIAL', 'Setor 4')">Parcial</button>
+                <button class="filter-btn" data-status="NÃO PRODUZIDO" onclick="toggleFilter(this, 'NÃO PRODUZIDO', 'Setor 4')">Não Produzido</button>
+                <button class="filter-btn" data-status="EXCEDENTE" onclick="toggleFilter(this, 'EXCEDENTE', 'Setor 4')">Excedente</button>
+                <button class="filter-btn" data-status="NÃO PROGRAMADO" onclick="toggleFilter(this, 'NÃO PROGRAMADO', 'Setor 4')">Não Programado</button>
+            </div>
+            <div>
+                <button class="btn-restore-hidden" id="restore-Setor 4" onclick="restoreHiddenRows('Setor 4')" style="display: none;">
+                    Mostrar Ocultados (<span class="hidden-count">0</span>)
+                </button>
+            </div>
+        </div>
+        
+
         <div class="table-container">
             <table>
                 <thead>
@@ -1399,66 +1868,81 @@
                         <th style="text-align: center; width: 160px;">Produzido (Fábrica - Supabase)</th>
                         <th style="text-align: center; width: 100px;">Desvio</th>
                         <th style="width: 150px;">Status</th>
+                        <th style="width: 60px; text-align: center;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="poste coluna" data-code="2017">
                             <td>POSTE COLUNA</td>
                             <td><strong>2017</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 4')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="cemig 7x150 1 cx vl" data-code="953">
                             <td>CEMIG 7X150 1 CX VL</td>
                             <td><strong>953</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 4')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
-                        <tr class="status-REALIZADO">
+                        <tr class="status-REALIZADO" data-status="REALIZADO" data-model="cemig 7x150 2 cx vl" data-code="954">
                             <td>CEMIG 7X150 2 CX VL</td>
                             <td><strong>954</strong></td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;">0</td>
-                            <td style="text-align: center;" class="text-diff zero">
+                            <td class="cell-prog" style="text-align: center;">0</td>
+                            <td class="cell-real-enc" style="text-align: center;">0</td>
+                            <td class="cell-prod" style="text-align: center;">0</td>
+                            <td class="cell-diff text-diff zero" style="text-align: center;">
                                 0
                             </td>
                             <td>
                                 <span class="badge-status badge-REALIZADO">REALIZADO</span>
                             </td>
+                            <td style="text-align: center;">
+                                <button class="btn-hide-row" onclick="hideRow(this, 'Setor 4')" title="Ocultar item">✕</button>
+                            </td>
                         </tr>
                         
+                        <tr class="no-results-row" style="display: none;">
+                            <td colspan="8" style="text-align: center; color: var(--text-muted); font-style: italic; padding: 2rem;">
+                                Nenhum item corresponde aos filtros selecionados.
+                            </td>
+                        </tr>
                     
                 </tbody>
                 
                 <tfoot>
-                    <tr>
-                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total do Setor:</td>
-                        <td style="text-align: center;">0</td>
-                        <td style="text-align: center;">0</td>
-                        <td style="text-align: center;">0</td>
-                        <td style="text-align: center;" class="text-diff zero">
+                    <tr class="table-totals">
+                        <td colspan="2" style="text-align: right; text-transform: uppercase;">Total (Filtrado):</td>
+                        <td class="total-prog" style="text-align: center;">0</td>
+                        <td class="total-real-enc" style="text-align: center;">0</td>
+                        <td class="total-prod" style="text-align: center;">0</td>
+                        <td class="total-diff text-diff zero" style="text-align: center;">
                             0
                         </td>
-                        <td></td>
+                        <td colspan="2"></td>
                     </tr>
                 </tfoot>
                 
@@ -1481,5 +1965,193 @@
     
 </div>
 
+<script>
+    // Armazena as linhas ocultadas manualmente para cada setor
+    const manuallyHiddenRows = {};
+
+    function toggleFilter(button, status, sector) {
+        const sectorSection = button.closest('.sector-section');
+        const buttons = sectorSection.querySelectorAll('.status-filters .filter-btn');
+        
+        if (status === 'ALL') {
+            // Se clicar em Todos, ativa "Todos" e desativa os outros
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-status') === 'ALL') {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        } else {
+            // Se clicar em qualquer outro, desativa "Todos" e alterna o clicado
+            const allBtn = sectorSection.querySelector('.status-filters .filter-btn[data-status="ALL"]');
+            allBtn.classList.remove('active');
+            
+            button.classList.toggle('active');
+            
+            // Se nenhum botão ficar ativo, reativa o "Todos"
+            const activeButtons = sectorSection.querySelectorAll('.status-filters .filter-btn.active');
+            if (activeButtons.length === 0) {
+                allBtn.classList.add('active');
+            }
+        }
+        
+        applyFilters(sector);
+    }
+
+    function applyFilters(sector) {
+        // Encontra a seção do setor correspondente
+        const sections = document.querySelectorAll('.sector-section');
+        let sectorSection = null;
+        for (let sec of sections) {
+            if (sec.querySelector('.sector-title').textContent.trim() === sector.trim()) {
+                sectorSection = sec;
+                break;
+            }
+        }
+        if (!sectorSection) return;
+
+        const searchInput = sectorSection.querySelector('.search-box input');
+        const query = searchInput.value.toLowerCase().trim();
+        
+        // Obtém status ativos
+        const activeButtons = sectorSection.querySelectorAll('.status-filters .filter-btn.active');
+        const activeStatuses = Array.from(activeButtons).map(btn => btn.getAttribute('data-status'));
+        const isAllActive = activeStatuses.includes('ALL');
+
+        const rows = sectorSection.querySelectorAll('tbody tr:not(.no-results-row)');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const rowStatus = row.getAttribute('data-status');
+            const model = row.getAttribute('data-model') || '';
+            const code = row.getAttribute('data-code') || '';
+            
+            // Verifica se está ocultada manualmente
+            const isManuallyHidden = row.classList.contains('manually-hidden');
+            
+            // Filtro de texto
+            const matchesSearch = query === '' || model.includes(query) || code.includes(query);
+            
+            // Filtro de status
+            const matchesStatus = isAllActive || activeStatuses.includes(rowStatus);
+            
+            if (matchesSearch && matchesStatus && !isManuallyHidden) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Exibe mensagem de "sem resultados" se nenhuma linha estiver visível
+        const noResultsRow = sectorSection.querySelector('.no-results-row');
+        if (noResultsRow) {
+            noResultsRow.style.display = visibleCount === 0 ? '' : 'none';
+        }
+
+        // Atualiza os totais da tabela
+        updateTotals(sectorSection);
+    }
+
+    function hideRow(button, sector) {
+        const row = button.closest('tr');
+        row.classList.add('manually-hidden');
+        row.style.display = 'none';
+
+        if (!manuallyHiddenRows[sector]) {
+            manuallyHiddenRows[sector] = [];
+        }
+        manuallyHiddenRows[sector].push(row);
+
+        updateRestoreButton(sector);
+        applyFilters(sector);
+    }
+
+    function restoreHiddenRows(sector) {
+        const hiddenList = manuallyHiddenRows[sector] || [];
+        hiddenList.forEach(row => {
+            row.classList.remove('manually-hidden');
+        });
+        manuallyHiddenRows[sector] = [];
+
+        updateRestoreButton(sector);
+        applyFilters(sector);
+    }
+
+    function updateRestoreButton(sector) {
+        // Encontra a seção do setor
+        const sections = document.querySelectorAll('.sector-section');
+        let sectorSection = null;
+        for (let sec of sections) {
+            if (sec.querySelector('.sector-title').textContent.trim() === sector.trim()) {
+                sectorSection = sec;
+                break;
+            }
+        }
+        if (!sectorSection) return;
+
+        const restoreBtn = sectorSection.querySelector('.btn-restore-hidden');
+        const countSpan = restoreBtn.querySelector('.hidden-count');
+        const hiddenCount = (manuallyHiddenRows[sector] || []).length;
+
+        if (hiddenCount > 0) {
+            countSpan.textContent = hiddenCount;
+            restoreBtn.style.display = 'inline-flex';
+        } else {
+            restoreBtn.style.display = 'none';
+        }
+    }
+
+    function updateTotals(sectorSection) {
+        const rows = sectorSection.querySelectorAll('tbody tr:not(.no-results-row)');
+        let totalProg = 0;
+        let totalRealEnc = 0;
+        let totalProd = 0;
+
+        rows.forEach(row => {
+            // Apenas soma se a linha estiver visível (style.display !== 'none' e não manualmente oculta)
+            if (row.style.display !== 'none') {
+                const progVal = parseInt(row.querySelector('.cell-prog').textContent) || 0;
+                const realEncVal = parseInt(row.querySelector('.cell-real-enc').textContent) || 0;
+                const prodVal = parseInt(row.querySelector('.cell-prod').textContent) || 0;
+                
+                totalProg += progVal;
+                totalRealEnc += realEncVal;
+                totalProd += prodVal;
+            }
+        });
+
+        const totalDiff = totalProd - totalProg;
+
+        // Atualiza os elementos de total do rodapé
+        const tfoot = sectorSection.querySelector('tfoot');
+        if (tfoot) {
+            const progCell = tfoot.querySelector('.total-prog');
+            const realEncCell = tfoot.querySelector('.total-real-enc');
+            const prodCell = tfoot.querySelector('.total-prod');
+            const diffCell = tfoot.querySelector('.total-diff');
+
+            if (progCell) progCell.textContent = totalProg;
+            if (realEncCell) realEncCell.textContent = totalRealEnc;
+            if (prodCell) prodCell.textContent = totalProd;
+
+            if (diffCell) {
+                const prefix = totalDiff > 0 ? '+' : '';
+                diffCell.textContent = prefix + totalDiff;
+                
+                // Atualiza cores do desvio
+                diffCell.classList.remove('positive', 'negative', 'zero');
+                if (totalDiff > 0) {
+                    diffCell.classList.add('positive');
+                } else if (totalDiff < 0) {
+                    diffCell.classList.add('negative');
+                } else {
+                    diffCell.classList.add('zero');
+                }
+            }
+        }
+    }
+</script>
 </body>
 </html>

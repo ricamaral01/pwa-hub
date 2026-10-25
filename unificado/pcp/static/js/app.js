@@ -42,7 +42,9 @@ const API = (() => {
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      throw new Error(err.detail || `Erro ${res.status}`);
+      const failure = new Error(err.detail || `Não foi possível concluir a operação no PCP (HTTP ${res.status}). Tente novamente; se persistir, avise o suporte.`);
+      failure.status = res.status;
+      throw failure;
     }
 
     if (res.status === 204) return null;
@@ -500,5 +502,8 @@ function fmtDate(d) {
   return `${dd}/${m}/${y}`;
 }
 function todayISO() {
-  return new Date().toISOString().split('T')[0];
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date()).map(part => [part.type, part.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }

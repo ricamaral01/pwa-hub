@@ -18,7 +18,7 @@ from app.core.security import get_current_user
 from app.models.usuario import NivelAcesso, Usuario
 from app.services.pederneiras_catalog import parse_catalog, preview
 from app.services.pederneiras_rules import (
-    NON_POST_FAMILY, assert_can_confirm, counts_as_post, monthly_target, posts_per_person, production_summary,
+    assert_can_confirm, monthly_target, posts_per_person, production_summary,
     validate_day, validate_people, validate_quantity,
 )
 
@@ -86,7 +86,7 @@ def _authorize(db: Session, unit: dict, user: Usuario, *, write: bool = False, s
         WHERE usuario_id=:user_id AND unidade_id=:unit_id AND ativo
     """), {"user_id": user.id, "unit_id": unit["id"]}).first()
     role = row[0] if row else None
-    if role is None or (write and role not in {"gestor", "supervisor", "operador"}) or (supervisor and role != "supervisor"):
+    if role is None or (write and role not in {"gestor", "supervisor"}) or (supervisor and role != "supervisor"):
         raise HTTPException(403, "Sem acesso a esta unidade ou ação")
     return role
 
@@ -100,7 +100,7 @@ def _day(day: date) -> date:
 
 def _labor_group(unit: dict) -> str:
     # Two-character code fits the legacy day key; unit 1 keeps existing 12/34.
-    if unit["id"] > 99 or unit["id"] in {12, 34}:
+    if unit["id"] > 99:
         raise HTTPException(409, "Código de unidade excede a chave de mão de obra")
     return f"{unit['id']:02d}"
 
@@ -291,8 +291,7 @@ def _production(db: Session, unit: dict, day: date) -> dict:
       WHERE d.unidade_id=:uid AND d.data=:day
       ORDER BY p.familia,p.descricao
     """), {"uid": unit["id"], "day": day}).mappings()]
-    summary = production_summary([(r["quantidade"], r["volume_m3"]) for r in rows
-                                  if counts_as_post(r["familia"])])
+    summary = production_summary([(r["quantidade"], r["volume_m3"]) for r in rows])
     return {"unidade": unit, "data": day, "status": marker["status"] if marker else "rascunho",
             "enviado_em": marker["enviado_em"] if marker else None,
             "confirmado_em": marker["confirmado_em"] if marker else None,
@@ -305,32 +304,6 @@ def get_day(unidade: str, dia: date, db: Session = Depends(get_db), user: Usuari
     unit = _unit(db, unidade)
     _authorize(db, unit, user)
     return _production(db, unit, _day(dia))
-
-
-@router.get("/apontamentos/{dia}/referencia")
-def production_reference(unidade: str, dia: date, db: Session = Depends(get_db),
-                         user: Usuario = Depends(get_current_user)):
-    unit = _unit(db, unidade)
-    _authorize(db, unit, user)
-    _day(dia)
-    ids = [row[0] for row in db.execute(text("""
-      SELECT d.id FROM producao.apontamento_dia d
-      JOIN producao.apontamento_item i ON i.apontamento_dia_id=d.id
-      JOIN producao.produto p ON p.id=i.produto_id
-      WHERE d.unidade_id=:uid AND d.data<:day
-        AND lower(trim(p.familia))<>lower(:non_post)
-      GROUP BY d.id,d.data HAVING sum(i.quantidade)>0
-      ORDER BY d.data DESC LIMIT 15
-    """), {"uid": unit["id"], "day": dia, "non_post": NON_POST_FAMILY})]
-    if not ids:
-        return {"dias": 0, "medias": {}}
-    rows = db.execute(text("""
-      SELECT i.produto_id,sum(i.quantidade) AS total
-      FROM producao.apontamento_item i WHERE i.apontamento_dia_id = ANY(:ids)
-      GROUP BY i.produto_id
-    """), {"ids": ids}).mappings()
-    return {"dias": len(ids), "medias": {str(row["produto_id"]):
-            round(row["total"] / len(ids), 2) for row in rows}}
 
 
 @router.put("/apontamentos/{dia}")
@@ -394,7 +367,6 @@ def save_day(unidade: str, dia: date, payload: ApontamentoInput,
 
 @router.post("/apontamentos/{dia}/repetir-ontem")
 def repeat_last_day(unidade: str, dia: date,
-                    origem: Literal["desktop", "pwa"] = Query("desktop"),
                     db: Session = Depends(get_db), user: Usuario = Depends(get_current_user)):
     unit = _unit(db, unidade)
     _authorize(db, unit, user, write=True)
@@ -406,12 +378,10 @@ def repeat_last_day(unidade: str, dia: date,
     source = db.execute(text("""
       SELECT d.id,d.data FROM producao.apontamento_dia d
       JOIN producao.apontamento_item i ON i.apontamento_dia_id=d.id
-      JOIN producao.produto p ON p.id=i.produto_id
       WHERE d.unidade_id=:uid AND d.data<:day
-        AND lower(trim(p.familia))<>lower(:non_post)
       GROUP BY d.id,d.data HAVING sum(i.quantidade)>0
       ORDER BY d.data DESC LIMIT 1
-    """), {"uid": unit["id"], "day": dia, "non_post": NON_POST_FAMILY}).mappings().first()
+    """), {"uid": unit["id"], "day": dia}).mappings().first()
     if not source:
         raise HTTPException(404, "Não há dia anterior com produção")
     items = [ItemInput(produto_id=row["produto_id"], quantidade=row["quantidade"])
@@ -420,7 +390,7 @@ def repeat_last_day(unidade: str, dia: date,
                JOIN producao.produto p ON p.id=i.produto_id
                WHERE i.apontamento_dia_id=:id AND i.quantidade>0 AND p.ativo
              """), {"id": source["id"]}).mappings()]
-    result = save_day(unidade, dia, ApontamentoInput(itens=items, origem=origem), db, user)
+    result = save_day(unidade, dia, ApontamentoInput(itens=items), db, user)
     result["copiado_de"] = source["data"]
     return result
 
@@ -624,8 +594,7 @@ def save_labor(unidade: str, dia: date, payload: MaoDeObraInput,
 
 
 @router.post("/mao-de-obra/{dia}/repetir-ontem")
-def repeat_last_labor(unidade: str, dia: date, origem: Literal["desktop", "pwa"] = Query("desktop"),
-                      db: Session = Depends(get_db),
+def repeat_last_labor(unidade: str, dia: date, db: Session = Depends(get_db),
                       user: Usuario = Depends(get_current_user)):
     unit = _unit(db, unidade)
     _authorize(db, unit, user, write=True)
@@ -651,7 +620,7 @@ def repeat_last_labor(unidade: str, dia: date, origem: Literal["desktop", "pwa"]
                FROM public.maodeobra m JOIN public.atividades_mao_de_obra a ON a.id=m.atividade_id
                WHERE m.unidade_id=:uid AND m.data=:day AND a.unidade_id=:uid AND a.ativo
              """), {"uid": unit["id"], "day": source}).mappings()]
-    result = save_labor(unidade, dia, MaoDeObraInput(areas=areas, origem=origem), db, user)
+    result = save_labor(unidade, dia, MaoDeObraInput(areas=areas), db, user)
     result["copiado_de"] = source
     return result
 
@@ -719,10 +688,9 @@ def confirm_day(unidade: str, dia: date, db: Session = Depends(get_db), user: Us
         if not marker or marker["status"] != "enviado":
             raise HTTPException(409, "Envie o apontamento antes de confirmar")
         posts = db.execute(text("""
-      SELECT COALESCE(sum(i.quantidade),0) FROM producao.apontamento_item i
-      JOIN producao.produto p ON p.id=i.produto_id
-      WHERE i.apontamento_dia_id=:id AND lower(trim(p.familia))<>lower(:non_post)
-        """), {"id": marker["id"], "non_post": NON_POST_FAMILY}).scalar_one()
+          SELECT COALESCE(sum(i.quantidade),0) FROM producao.apontamento_item i
+          WHERE apontamento_dia_id=:id
+        """), {"id": marker["id"]}).scalar_one()
         people = _labor(db, unit, dia)["homens"]
         try:
             assert_can_confirm(int(posts), people)
@@ -747,12 +715,9 @@ def monthly(unidade: str, mes: str = Query(pattern=r"^\d{4}-(0[1-9]|1[0-2])$"),
     dates = [row[0] for row in db.execute(text("""
       SELECT d.data FROM producao.apontamento_dia d
       JOIN producao.apontamento_item i ON i.apontamento_dia_id=d.id
-      JOIN producao.produto p ON p.id=i.produto_id
       WHERE d.unidade_id=:uid AND to_char(d.data,'YYYY-MM')=:mes AND d.data<=:today
-        AND lower(trim(p.familia))<>lower(:non_post)
       GROUP BY d.data HAVING sum(i.quantidade)>0 ORDER BY d.data
     """), {"uid": unit["id"], "mes": mes,
-           "non_post": NON_POST_FAMILY,
            "today": datetime.now(ZoneInfo("America/Sao_Paulo")).date()})]
     days = []
     for day in dates:
