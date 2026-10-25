@@ -1,0 +1,19 @@
+[Unit]
+Description=Unificado homolog TV production summary, read only
+After=postgresql.service
+
+[Service]
+User=tv_homolog_reader
+Group=tv_homolog_reader
+WorkingDirectory=/opt/concrefer-unificado/homolog-next/painel-tv-api
+Environment="TV_MAPA_READ_DSN=dbname=mapa_unificado_homolog_20261016 user=tv_homolog_reader host=/var/run/postgresql"
+Environment="TV_PCP_READ_DSN=dbname=pcp_unificado_homolog_20261016 user=tv_homolog_reader host=/var/run/postgresql"
+ExecStart=/opt/concrefer-unificado/homolog-next/mapa-api/.venv/bin/python -m gunicorn --workers 2 --bind 127.0.0.1:13180 app:app
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

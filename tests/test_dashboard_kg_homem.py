@@ -41,13 +41,13 @@ class KgHomemDiarioTest(unittest.TestCase):
         postes = {("2026-10-22", "12"): 25, ("2026-10-22", "3"): 20, ("2026-10-22", "4"): 9}
         result = {row.grupo_id: row for row in _kg_homem_diario(pesos, registros, day, day, postes)}
         self.assertEqual(result["12"].kg_por_homem, 2000)
-        self.assertEqual(result["12"].postes_por_homem, 4)
+        self.assertEqual(result["12"].postes_por_homem, 4.17)
         self.assertEqual(result["12"].postes_realizados, 25)
         self.assertEqual(result["3"].moi, Decimal("1.5"))
         self.assertEqual(result["3"].kg_por_homem, 1778)
-        self.assertEqual(result["3"].postes_por_homem, 4)
+        self.assertEqual(result["3"].postes_por_homem, 4.44)
         self.assertEqual(result["4"].kg_por_homem, 1714)
-        self.assertEqual(result["4"].postes_por_homem, 3)
+        self.assertEqual(result["4"].postes_por_homem, 2.57)
 
     def test_sem_pessoas_nao_divide_e_dias_nao_se_misturam(self):
         first = date(2026, 10, 21)

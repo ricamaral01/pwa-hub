@@ -7,7 +7,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "unificado/pcp/backend"))
 from app.services.pederneiras_rules import (
-    assert_can_confirm, counts_as_post, monthly_target, posts_per_person, production_summary,
+    assert_can_confirm, monthly_target, posts_per_person, production_summary,
     validate_day, validate_people, validate_quantity,
 )
 
@@ -33,8 +33,6 @@ def test_people_step_and_confirmation():
 
 
 def test_shared_indicators():
-    assert counts_as_post("Padrão")
-    assert not counts_as_post("Acessórios")
     assert posts_per_person(59, Decimal("10")) == Decimal("5.90")
     assert posts_per_person(59, Decimal("0")) is None
     assert monthly_target(23, 64) == 1472

@@ -259,8 +259,7 @@ def run_case(browser, account: dict, viewport_name: str, size: tuple[int, int], 
         }
     except Exception as exc:
         try:
-            safe_page = {"url": page.url, "title": page.title(),
-                         "body": page.locator("body").inner_text()[:300]}
+            safe_page = {"path": urlsplit(page.url).path, "title": page.title()}
         except Exception:
             safe_page = {}
         return {

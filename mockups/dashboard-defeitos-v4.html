@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ConcreTrack — Dashboard Defeitos v3</title>
+<style>
+  :root{
+    --navy:#112647;
+    --navy-2:#173b66;
+    --blue:#2563eb;
+    --blue-2:#1d4ed8;
+    --blue-soft:#eef4ff;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --ink:#12203a;
+    --muted:#667085;
+    --line:#dde4ee;
+    --line-2:#cfd8e6;
+    --green:#059669;
+    --green-soft:#ecfdf5;
+    --yellow:#d97706;
+    --yellow-soft:#fffbeb;
+    --red:#dc2626;
+    --red-soft:#fff1f2;
+    --orange:#ea580c;
+    --orange-soft:#fff7ed;
+    --shadow:0 8px 24px rgba(17,38,71,.055);
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:Gotham, Montserrat, "Segoe UI", Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+  }
+
+  /* =========================================================
+     CSS-FIRST VIEW SELECTION
+     ========================================================= */
+  .view{display:none}
+
+  @media (max-width:599px){
+    .view-mobile{display:block}
+  }
+
+  @media (min-width:600px) and (max-width:1023px){
+    .view-tablet{display:block}
+  }
+
+  @media (min-width:1024px){
+    .view-desktop{display:block}
+  }
+
+  body[data-mode="tv"] .normal-shell{display:none !important}
+  body[data-mode="tv"] .view{display:none !important}
+  body[data-mode="tv"] .view-tv{display:block !important}
+
+  /* =========================================================
+     APP SHELL
+     ========================================================= */
+  .normal-shell{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:236px 1fr;
+  }
+
+  .sidebar{
+    background:linear-gradient(180deg,#102445 0%,#11294e 100%);
+    color:#fff;
+    min-height:100vh;
+    height:100vh;
+    position:sticky;
+    top:0;
+    overflow:auto;
+  }
+
+  .brand{
+    height:80px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 14px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+
+  .brand-mark{
+    width:42px;height:42px;border-radius:11px;
+    background:#f47b20;color:#fff;
+    display:grid;place-items:center;
+    font-weight:900;font-size:14px;
+    box-shadow:0 7px 18px rgba(244,123,32,.22);
+  }
+
+  .brand-copy strong{display:block;font-size:14px}
+  .brand-copy span{
+    display:block;font-size:9.5px;line-height:1.45;
+    color:#9fb0cc;letter-spacing:.7px;margin-top:2px;
+  }
+
+  .nav{padding:14px 0 22px}
+  .nav-group{
+    padding:18px 14px 7px;
+    color:#7fa2d4;font-size:10px;font-weight:900;letter-spacing:1px;
+    text-transform:uppercase;
+  }
+
+  .nav-item{
+    min-height:50px;
+    display:flex;align-items:center;gap:11px;
+    padding:0 14px;
+    color:#b8c7de;
+    font-size:12px;font-weight:800;
+    border-left:3px solid transparent;
+  }
+
+  .nav-item .ico{
+    width:30px;height:30px;border-radius:8px;
+    display:grid;place-items:center;
+    background:rgba(255,255,255,.08);
+    color:#a9bad2;font-size:11px;font-weight:900;
+    flex:none;
+  }
+
+  .nav-item.active{
+    color:#fff;
+    border-left-color:#ef4444;
+    background:linear-gradient(90deg,rgba(220,38,38,.20),rgba(255,255,255,.055));
+  }
+  .nav-item.active .ico{background:#df2833;color:#fff}
+
+  .app-main{min-width:0}
+
+  .topbar{
+    height:80px;background:#fff;
+    border-bottom:1px solid #e6ebf1;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:14px;padding:0 22px;
+    position:sticky;top:0;z-index:10;
+  }
+
+  .topbar-left{display:flex;align-items:center;gap:11px;font-weight:900}
+  .menu{
+    width:36px;height:36px;border-radius:9px;background:var(--navy-2);color:#fff;
+    display:grid;place-items:center;font-size:19px;
+  }
+  .topbar-right{display:flex;align-items:center;gap:8px}
+  .pill{
+    padding:7px 11px;border-radius:999px;
+    border:1px solid var(--line);
+    font-size:10px;font-weight:900;color:#4b5870;background:#fff;white-space:nowrap;
+  }
+  .pill.version{background:#edf3ff;color:#3971dd;border-color:#bfd0f7}
+  .pill.test{background:#fff7d7;color:#d49800;border-color:#ffe39a}
+  .pill.user{background:#f7f9fc}
+
+  .viewport{
+    width:100%;
+    max-width:1700px;
+    margin:0 auto;
+    padding:20px 24px 34px;
+  }
+
+  .page-head{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    gap:16px;margin-bottom:14px;
+  }
+  .page-head h1{font-size:23px;margin:0 0 5px;letter-spacing:-.4px}
+  .page-head p{margin:0;color:var(--muted);font-size:11px;font-weight:700}
+  .live{
+    display:flex;align-items:center;gap:8px;
+    font-size:10px;color:var(--muted);font-weight:800;
+    margin-top:4px;white-space:nowrap;
+  }
+  .live-dot{
+    width:8px;height:8px;border-radius:50%;background:#22c55e;
+    box-shadow:0 0 0 4px #dcfce7;
+  }
+
+  /* =========================================================
+     COMMON UI
+     ========================================================= */
+  .filterbar{
+    background:#fff;border:1px solid var(--line);
+    border-radius:12px;padding:11px 12px;
+    display:flex;gap:9px;align-items:center;flex-wrap:wrap;
+    box-shadow:var(--shadow);margin-bottom:14px;
+  }
+
+  .quick{
+    border:1px solid var(--line);
+    background:#fff;color:#40516a;
+    border-radius:8px;padding:9px 11px;
+    font-size:10px;font-weight:900;
+  }
+  .quick.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .control{
+    height:36px;border:1px solid var(--line-2);border-radius:8px;
+    padding:0 10px;background:#fff;color:#39475c;
+    font-size:10px;font-weight:700;
+  }
+  select.control{min-width:138px}
+  input.control.date-control{width:132px;min-width:132px;flex:0 0 132px}
+  input.control{width:190px;min-width:190px;flex:0 0 190px}
+  .apply{
+    border:0;border-radius:8px;background:var(--blue);color:#fff;
+    padding:10px 14px;font-size:10px;font-weight:900;
+  }
+
+  .group-label{
+    margin:2px 0 8px;
+    color:#778397;font-size:9px;font-weight:900;
+    text-transform:uppercase;letter-spacing:.8px;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+
+  .metric{
+    position:relative;overflow:hidden;
+    padding:14px 15px;min-height:116px;
+  }
+  .metric:before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--blue);
+  }
+  .metric.green:before{background:var(--green)}
+  .metric.red:before{background:var(--red)}
+  .metric.orange:before{background:var(--orange)}
+  .metric .label{
+    color:#66758a;font-size:9px;font-weight:900;
+    letter-spacing:.45px;text-transform:uppercase;
+  }
+  .metric .value{
+    margin-top:7px;font-size:29px;line-height:1;font-weight:950;
+    letter-spacing:-.8px;color:#0f172a;
+  }
+  .metric .sub{margin-top:6px;color:#697586;font-size:10px;font-weight:750}
+  .metric .meta{
+    margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;
+    color:#6b7280;font-size:9px;font-weight:800;
+  }
+  .trend{
+    display:inline-flex;align-items:center;gap:4px;border-radius:999px;
+    padding:4px 7px;background:#f2f4f7;
+  }
+  .trend.good{background:var(--green-soft);color:#067647}
+  .trend.bad{background:var(--red-soft);color:#b42318}
+  .trend.att{background:var(--yellow-soft);color:#b54708}
+
+  .spark{
+    width:64px;height:20px;display:block;flex:none;
+  }
+
+  .section-card{overflow:hidden}
+  .section-head{
+    padding:14px 16px 11px;border-bottom:1px solid #eef1f5;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
+  .section-head .title{font-size:12px;font-weight:950}
+  .section-head .sub{font-size:9px;color:#7a8698;font-weight:700;margin-top:2px}
+  .ghost{
+    border:1px solid var(--line);background:#fff;border-radius:7px;
+    padding:6px 8px;color:#526174;font-size:9px;font-weight:900;
+  }
+
+  .kpi-grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}
+  .mini-grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:14px}
+  .mini{
+    padding:11px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
+  .mini span{font-size:9px;color:#697586;font-weight:900;text-transform:uppercase}
+  .mini b{font-size:17px}
+
+  .desktop-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.34fr) minmax(330px,.66fr);
+    gap:13px;margin-bottom:13px;
+  }
+  .desktop-bottom{
+    display:grid;
+    grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);
+    gap:13px;
+  }
+
+  /* Pareto */
+  .pareto{padding:14px 17px 15px}
+  .pareto-row{
+    display:grid;grid-template-columns:165px 1fr 34px 45px;
+    align-items:center;gap:9px;margin:12px 0;
+  }
+  .pareto-name{font-size:10px;font-weight:850;color:#334155}
+  .bar-track{height:11px;background:#edf1f6;border-radius:999px;overflow:hidden}
+  .bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--navy-2),var(--blue))}
+  .bar.hot{background:linear-gradient(90deg,#f97316,#dc2626)}
+  .count{font-size:10px;font-weight:950;text-align:right}
+  .pct{font-size:9px;color:#6b7280;font-weight:800;text-align:right}
+  .pareto-note{
+    margin-top:14px;padding:9px 11px;border:1px solid #fed7aa;
+    background:var(--orange-soft);border-radius:8px;
+    color:#9a3412;font-size:9px;font-weight:850;
+  }
+
+  /* Flow */
+  .flow{padding:14px 15px}
+  .flow-step{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:11px 12px;border:1px solid var(--line);
+    background:#fbfcfe;border-radius:9px;margin-bottom:8px;
+  }
+  .flow-left{display:flex;align-items:center;gap:10px}
+  .flow-badge{
+    width:28px;height:28px;border-radius:8px;background:var(--blue-soft);color:var(--blue);
+    display:grid;place-items:center;font-size:9px;font-weight:950;
+  }
+  .flow-step strong{display:block;font-size:10px}
+  .flow-step small{display:block;font-size:8.5px;color:#7d8897;font-weight:700;margin-top:2px}
+  .flow-num{font-size:19px;font-weight:950}
+  .flow-arrow{text-align:center;color:#a3afbf;font-size:13px;margin:-2px 0 5px}
+
+  .focus-strip{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 15px 15px;
+  }
+  .focus-box{
+    border-radius:9px;border:1px solid var(--line);padding:10px 11px;background:#fff;
+  }
+  .focus-box .lbl{font-size:8.5px;color:#697586;font-weight:900;text-transform:uppercase}
+  .focus-box .big{font-size:20px;font-weight:950;margin-top:4px}
+  .focus-box.success{background:var(--green-soft);border-color:#a7f3d0}
+  .focus-box.success .lbl,.focus-box.success .big{color:#05603a}
+
+  /* Evolution */
+  .evolution{padding:15px 17px 16px}
+  .evo-svg{display:block;width:100%;height:210px}
+  .legend{
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    font-size:8.5px;color:#6b7280;font-weight:800;margin-top:5px;
+  }
+  .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+  .legend .b{background:var(--blue)}
+  .legend .r{background:var(--red)}
+  .legend .g{background:var(--green)}
+
+  /* Ranking */
+  .ranking{padding:10px 15px 14px}
+  table{width:100%;border-collapse:collapse;font-size:9.5px}
+  th{
+    padding:8px 7px;text-align:left;color:#778397;
+    font-size:8px;text-transform:uppercase;letter-spacing:.35px;border-bottom:1px solid #edf0f4;
+  }
+  td{padding:10px 7px;border-bottom:1px solid #f0f2f5;font-weight:760;color:#3d4b60}
+  td:last-child{text-align:right}
+  .risk{
+    display:inline-flex;justify-content:center;min-width:52px;
+    padding:4px 6px;border-radius:999px;font-size:8.5px;font-weight:950;
+  }
+  .risk.high{background:#fee2e2;color:#b91c1c}
+  .risk.mid{background:#ffedd5;color:#c2410c}
+  .risk.ok{background:#dcfce7;color:#15803d}
+
+  /* =========================================================
+     TABLET
+     ========================================================= */
+  .tablet-wrap{padding:18px}
+  .tablet-head{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;
+  }
+  .tablet-head h1{font-size:20px;margin:0 0 4px}
+  .tablet-head p{font-size:10px;color:var(--muted);margin:0;font-weight:700}
+  .tablet-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
+  .tablet-panels{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tablet-wide{margin-bottom:10px}
+  .tablet-filter{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;
+  }
+  .tablet-filter .control{width:100%;min-width:0}
+  .tablet-filter input{grid-column:1 / -1}
+
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  .mobile-wrap{padding:13px 12px 24px}
+  .mobile-head{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px;
+  }
+  .mobile-head h1{font-size:16px;margin:0 0 2px}
+  .mobile-head p{font-size:9px;color:var(--muted);margin:0;font-weight:700}
+  .mobile-filter{
+    width:36px;height:36px;border:1px solid var(--line);background:#fff;border-radius:9px;
+    display:grid;place-items:center;font-size:16px;color:var(--navy);
+  }
+  .chips{display:flex;gap:6px;overflow:auto;padding-bottom:5px;margin-bottom:9px}
+  .chip{
+    white-space:nowrap;padding:6px 10px;border-radius:999px;border:1px solid var(--line);
+    background:#fff;color:#526174;font-size:9px;font-weight:900;
+  }
+  .chip.active{background:var(--navy);border-color:var(--navy);color:#fff}
+  .mobile-hero{padding:14px;margin-bottom:8px}
+  .mobile-hero .label{font-size:9px;text-transform:uppercase;color:#66758a;font-weight:900}
+  .mobile-hero .value{font-size:35px;font-weight:950;line-height:1;margin-top:6px}
+  .mobile-hero .sub{font-size:9px;color:#697586;font-weight:750;margin-top:6px}
+  .mobile-hero .status{
+    margin-top:9px;display:inline-block;background:var(--red-soft);color:#b42318;
+    padding:5px 7px;border-radius:999px;font-size:8px;font-weight:950;
+  }
+  .mobile-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  .mobile-mini{padding:11px 12px;min-height:86px}
+  .mobile-mini .lbl{font-size:8px;text-transform:uppercase;color:#6b7280;font-weight:900}
+  .mobile-mini .num{font-size:21px;font-weight:950;margin-top:5px}
+  .mobile-mini .sub{font-size:8px;color:#7a8698;font-weight:750;margin-top:3px}
+  .mobile-stack{margin-bottom:8px}
+  .mobile-list{padding:10px 12px}
+  .mobile-list-title{font-size:10px;font-weight:950;margin-bottom:7px}
+  .mobile-row{
+    display:grid;grid-template-columns:1fr 1fr 26px;align-items:center;gap:8px;
+    padding:7px 0;border-bottom:1px solid #f0f2f5;
+  }
+  .mobile-row:last-child{border-bottom:0}
+  .mobile-row .name{font-size:9px;font-weight:800}
+  .mobile-row .bar-track{height:7px}
+  .mobile-row .val{font-size:9px;font-weight:950;text-align:right}
+
+  /* =========================================================
+     TV
+     ========================================================= */
+  .view-tv{
+    min-height:100vh;background:#08111f;color:#fff;padding:24px 28px;
+  }
+  .tv-header{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+    padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.10);margin-bottom:16px;
+  }
+  .tv-title{font-size:25px;font-weight:900}
+  .tv-sub{font-size:11px;color:#8ea0ba;margin-top:4px;font-weight:700}
+  .tv-meta{display:flex;gap:22px;align-items:center}
+  .tv-meta-block{text-align:right}
+  .tv-meta-block .lbl{font-size:8px;text-transform:uppercase;color:#70829d;letter-spacing:1px;font-weight:900}
+  .tv-meta-block .val{font-size:13px;color:#fff;margin-top:3px;font-weight:850}
+  .tv-live{width:10px;height:10px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 5px rgba(34,197,94,.13)}
+
+  .tv-hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:13px}
+  .tv-hero{
+    border-radius:14px;padding:18px 18px 16px;border:1px solid rgba(255,255,255,.10);
+    background:#0e1a2d;
+  }
+  .tv-hero .lbl{font-size:10px;color:#91a0b6;text-transform:uppercase;letter-spacing:1px;font-weight:900}
+  .tv-hero .big{font-size:50px;font-weight:950;line-height:1;margin-top:10px}
+  .tv-hero .foot{font-size:10px;color:#8ea0ba;margin-top:9px;font-weight:750}
+  .tv-hero.red{background:#2a1117;border-color:#6f1d2a}
+  .tv-hero.red .big{color:#fda4af}
+  .tv-hero.green{background:#0d251e;border-color:#1b5d47}
+  .tv-hero.green .big{color:#86efac}
+  .tv-hero.orange{background:#2b1a0b;border-color:#784d18}
+  .tv-hero.orange .big{color:#fdba74}
+
+  .tv-mini-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-bottom:13px}
+  .tv-mini{
+    background:#0e1a2d;border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;padding:13px 15px;
+  }
+  .tv-mini .lbl{font-size:8px;text-transform:uppercase;color:#70829d;letter-spacing:.8px;font-weight:900}
+  .tv-mini .num{font-size:28px;font-weight:950;margin-top:4px}
+  .tv-lower{display:grid;grid-template-columns:1.2fr .8fr;gap:13px}
+  .tv-panel{
+    background:#0e1a2d;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;
+  }
+  .tv-panel-title{
+    font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#70829d;font-weight:900;margin-bottom:12px;
+  }
+  .tv-bar-row{
+    display:grid;grid-template-columns:180px 1fr 36px;gap:10px;align-items:center;
+    padding:7px 0;font-size:11px;
+  }
+  .tv-bar-row .track{height:9px;background:#17263b;border-radius:999px;overflow:hidden}
+  .tv-bar-row .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#f97316,#dc2626)}
+  .tv-bar-row .val{text-align:right;font-size:16px;font-weight:950}
+  .tv-rank{
+    display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)
+  }
+  .tv-rank:last-child{border-bottom:0}
+  .tv-rank .n{width:22px;color:#6f809a;font-size:12px;font-weight:900}
+  .tv-rank .name{flex:1;font-size:12px;font-weight:800}
+  .tv-rank .val{font-size:18px;font-weight:950}
+  .tv-footer{
+    margin-top:14px;padding-top:11px;border-top:1px solid rgba(255,255,255,.09);
+    display:flex;justify-content:space-between;gap:16px;align-items:center;
+    color:#71839f;font-size:9px;font-weight:800;
+  }
+
+  /* =========================================================
+     SHELL ADAPTATION
+     ========================================================= */
+  @media (min-width:600px) and (max-width:1023px){
+    .normal-shell{grid-template-columns:78px 1fr}
+    .brand{justify-content:center;padding:0}
+    .brand-copy,.nav-item span,.nav-group{display:none}
+    .nav-item{justify-content:center;padding:0}
+    .nav-item .ico{width:38px;height:38px}
+    .topbar{height:68px;padding:0 14px}
+    .topbar-right .version,.topbar-right .test{display:none}
+    .viewport{padding:0}
+  }
+
+  @media (max-width:599px){
+    .normal-shell{display:block}
+    .sidebar{display:none}
+    .topbar{
+      height:58px;padding:0 11px;position:sticky;
+    }
+    .topbar-left span{font-size:12px}
+    .topbar-right .version,.topbar-right .test,.topbar-right .user{display:none}
+    .viewport{padding:0}
+  }
+</style>
+</head>
+
+<body data-mode="auto">
+
+<div class="normal-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">MC</div>
+      <div class="brand-copy">
+        <strong>Mapa [TESTE]</strong>
+        <span>PLANEJAMENTO E<br>CONTROLE</span>
+      </div>
+    </div>
+
+    <div class="nav">
+      <div class="nav-item"><div class="ico">⌂</div><span>Início</span></div>
+      <div class="nav-item"><div class="ico">▥</div><span>Dashboard montagem</span></div>
+      <div class="nav-item active"><div class="ico">DF</div><span>Dashboard Defeitos</span></div>
+      <div class="nav-item"><div class="ico">↗</div><span>Produtividade</span></div>
+
+      <div class="nav-group">Produção</div>
+      <div class="nav-item"><div class="ico">PL</div><span>Produção / Liberação</span></div>
+      <div class="nav-item"><div class="ico">P1</div><span>Produção Setor 1</span></div>
+      <div class="nav-item"><div class="ico">P2</div><span>Produção Setor 2</span></div>
+      <div class="nav-item"><div class="ico">P3</div><span>Produção Setor 3</span></div>
+      <div class="nav-item"><div class="ico">P4</div><span>Produção Setor 4</span></div>
+      <div class="nav-item"><div class="ico">MC</div><span>Mandril Circular</span></div>
+    </div>
+  </aside>
+
+  <main class="app-main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="menu">☰</div>
+        <span>Dashboard Defeitos</span>
+      </div>
+      <div class="topbar-right">
+        <span class="pill version">v3.0 mockup</span>
+        <span class="pill test">AMBIENTE DE TESTE</span>
+        <span class="pill user">Ricardo · Gerência</span>
+      </div>
+    </header>
+
+    <div class="viewport">
+
+      <!-- =====================================================
+           DESKTOP
+           ===================================================== -->
+      <section class="view view-desktop">
+        <div class="page-head">
+          <div>
+            <h1>Dashboard de Qualidade</h1>
+            <p>01/08 → 17/08/2026 · Todos os setores · Todos os status</p>
+          </div>
+          <div class="live"><span class="live-dot"></span> Atualizado há 38 s · atualização automática</div>
+        </div>
+
+        <div class="filterbar">
+          <button class="quick">Hoje</button>
+          <button class="quick">7 dias</button>
+          <button class="quick active">Mês</button>
+
+          <label style="display:flex;align-items:center;gap:5px;font-size:9px;font-weight:900;color:#66758a;">
+            INÍCIO
+            <input class="control date-control" type="date" value="2026-08-01" aria-label="Data de início" />
+          </label>
+
+          <label style="display:flex;align-items:center;gap:5px;font-size:9px;font-weight:900;color:#66758a;">
+            FIM
+            <input class="control date-control" type="date" value="2026-08-17" aria-label="Data final" />
+          </label>
+
+          <select class="control"><option>Todos os setores</option></select>
+          <select class="control"><option>Todos os status</option></select>
+          <select class="control"><option>Comparar: período anterior</option></select>
+          <input class="control" placeholder="Buscar forma, modelo ou montador" aria-label="Buscar forma, modelo ou montador" />
+          <button class="apply">Aplicar</button>
+        </div>
+
+        <div class="group-label">Indicadores principais</div>
+        <div class="kpi-grid-4">
+          <div class="card metric red">
+            <div class="label">Índice de reprovação</div>
+            <div class="value">31,0%</div>
+            <div class="sub">22 de 71 postes avaliados</div>
+            <div class="meta">
+              <span class="trend bad">▲ 4,8 p.p. vs anterior</span>
+              <svg class="spark" viewBox="0 0 64 20"><polyline fill="none" stroke="#dc2626" stroke-width="1.7" points="0,14 8,12 16,13 24,9 32,11 40,7 48,8 64,4"/></svg>
+            </div>
+          </div>
+
+          <div class="card metric green">
+            <div class="label">Taxa de não conformidade</div>
+            <div class="value">1,7%</div>
+            <div class="sub">31 NC em 1.846 itens · meta ≤ 2%</div>
+            <div class="meta">
+              <span class="trend good">▼ 0,2 p.p. vs anterior</span>
+              <svg class="spark" viewBox="0 0 64 20"><polyline fill="none" stroke="#059669" stroke-width="1.7" points="0,6 8,8 16,7 24,10 32,9 40,12 48,11 64,14"/></svg>
+            </div>
+          </div>
+
+          <div class="card metric orange">
+            <div class="label">Cobertura de inspeção</div>
+            <div class="value">33,0%</div>
+            <div class="sub">71 avaliados de 215 produzidos</div>
+            <div class="meta">
+              <span class="trend att">▲ 8,0 p.p. de cobertura</span>
+              <svg class="spark" viewBox="0 0 64 20"><polyline fill="none" stroke="#d97706" stroke-width="1.7" points="0,15 8,14 16,13 24,12 32,10 40,11 48,8 64,6"/></svg>
+            </div>
+          </div>
+
+          <div class="card metric green">
+            <div class="label">Taxa de retrabalho</div>
+            <div class="value">4,2%</div>
+            <div class="sub">3 de 71 avaliados · meta ≤ 5%</div>
+            <div class="meta">
+              <span class="trend good">▼ 1,1 p.p. vs anterior</span>
+              <svg class="spark" viewBox="0 0 64 20"><polyline fill="none" stroke="#059669" stroke-width="1.7" points="0,5 8,7 16,6 24,8 32,10 40,9 48,12 64,14"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="mini-grid-4">
+          <div class="card mini"><span>DPU · defeitos/poste</span><b>0,44</b></div>
+          <div class="card mini"><span>NC / 100 postes produzidos</span><b>14,4</b></div>
+          <div class="card mini"><span>Custo estimado retrabalho</span><b>R$ 2.850</b></div>
+          <div class="card mini"><span>Produção no período</span><b>215</b></div>
+        </div>
+
+        <div class="desktop-grid">
+          <section class="card section-card">
+            <div class="section-head">
+              <div>
+                <div class="title">Pareto de não conformidades</div>
+                <div class="sub">3 causas concentram 80,6% das ocorrências</div>
+              </div>
+              <button class="ghost">Ver detalhes</button>
+            </div>
+            <div class="pareto">
+              <div class="pareto-row">
+                <div class="pareto-name">Bolhas em excesso</div>
+                <div class="bar-track"><div class="bar hot" style="width:100%"></div></div>
+                <div class="count">18</div><div class="pct">58,1%</div>
+              </div>
+              <div class="pareto-row">
+                <div class="pareto-name">Falhas de preenchimento</div>
+                <div class="bar-track"><div class="bar hot" style="width:22%"></div></div>
+                <div class="count">4</div><div class="pct">12,9%</div>
+              </div>
+              <div class="pareto-row">
+                <div class="pareto-name">Fissuras</div>
+                <div class="bar-track"><div class="bar hot" style="width:17%"></div></div>
+                <div class="count">3</div><div class="pct">9,7%</div>
+              </div>
+              <div class="pareto-row">
+                <div class="pareto-name">Carimbo identificação</div>
+                <div class="bar-track"><div class="bar" style="width:11%"></div></div>
+                <div class="count">2</div><div class="pct">6,5%</div>
+              </div>
+              <div class="pareto-row">
+                <div class="pareto-name">Outros</div>
+                <div class="bar-track"><div class="bar" style="width:22%"></div></div>
+                <div class="count">4</div><div class="pct">12,9%</div>
+              </div>
+              <div class="pareto-note">Foco recomendado: Bolhas + Falhas de preenchimento + Fissuras = 25 das 31 NC (80,6%).</div>
+            </div>
+          </section>
+
+          <section class="card section-card">
+            <div class="section-head">
+              <div>
+                <div class="title">Fluxo da inspeção</div>
+                <div class="sub">Da produção ao retrabalho</div>
+              </div>
+            </div>
+            <div class="flow">
+              <div class="flow-step">
+                <div class="flow-left"><div class="flow-badge">01</div><div><strong>Produzidos</strong><small>Base do período</small></div></div>
+                <div class="flow-num">215</div>
+              </div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">
+                <div class="flow-left"><div class="flow-badge">02</div><div><strong>Avaliados</strong><small>33,0% da produção</small></div></div>
+                <div class="flow-num">71</div>
+              </div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">
+                <div class="flow-left"><div class="flow-badge">03</div><div><strong>Reprovados</strong><small>31,0% dos avaliados</small></div></div>
+                <div class="flow-num">22</div>
+              </div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-step">
+                <div class="flow-left"><div class="flow-badge">04</div><div><strong>Retrabalho</strong><small>4,2% dos avaliados</small></div></div>
+                <div class="flow-num">3</div>
+              </div>
+            </div>
+            <div class="focus-strip">
+              <div class="focus-box success">
+                <div class="lbl">Sem fissura circular</div>
+                <div class="big">42 dias</div>
+              </div>
+              <div class="focus-box">
+                <div class="lbl">Recorde</div>
+                <div class="big">67 dias</div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="desktop-bottom">
+          <section class="card section-card">
+            <div class="section-head">
+              <div>
+                <div class="title">Evolução da qualidade · 30 dias</div>
+                <div class="sub">Reprovação, taxa de NC e retrabalho</div>
+              </div>
+              <button class="ghost">30 dias ▾</button>
+            </div>
+            <div class="evolution">
+              <svg class="evo-svg" viewBox="0 0 760 210" preserveAspectRatio="none" aria-label="Gráfico de evolução">
+                <line x1="42" y1="20" x2="42" y2="180" stroke="#dbe2ea"/>
+                <line x1="42" y1="180" x2="742" y2="180" stroke="#dbe2ea"/>
+                <line x1="42" y1="50" x2="742" y2="50" stroke="#e8edf3" stroke-dasharray="4 5"/>
+                <line x1="42" y1="90" x2="742" y2="90" stroke="#e8edf3" stroke-dasharray="4 5"/>
+                <line x1="42" y1="130" x2="742" y2="130" stroke="#e8edf3" stroke-dasharray="4 5"/>
+                <polyline fill="none" stroke="#dc2626" stroke-width="2.5" points="42,116 85,108 128,118 171,101 214,95 257,104 300,87 343,91 386,78 429,83 472,75 515,67 558,73 601,61 644,70 687,58 742,64"/>
+                <polyline fill="none" stroke="#2563eb" stroke-width="2.2" points="42,150 85,146 128,148 171,144 214,141 257,145 300,140 343,138 386,142 429,137 472,135 515,139 558,136 601,134 644,137 687,132 742,133"/>
+                <polyline fill="none" stroke="#059669" stroke-width="2.2" points="42,164 85,160 128,162 171,158 214,159 257,155 300,158 343,156 386,154 429,157 472,153 515,155 558,151 601,153 644,150 687,152 742,149"/>
+                <text x="42" y="198" font-size="9" fill="#7b8797">19/07</text>
+                <text x="215" y="198" font-size="9" fill="#7b8797">26/07</text>
+                <text x="388" y="198" font-size="9" fill="#7b8797">02/08</text>
+                <text x="561" y="198" font-size="9" fill="#7b8797">09/08</text>
+                <text x="700" y="198" font-size="9" fill="#7b8797">17/08</text>
+              </svg>
+              <div class="legend">
+                <span><i class="r"></i>Índice de reprovação</span>
+                <span><i class="b"></i>Taxa de NC</span>
+                <span><i class="g"></i>Retrabalho</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card section-card">
+            <div class="section-head">
+              <div>
+                <div class="title">Setores críticos</div>
+                <div class="sub">Ranking por índice de reprovação</div>
+              </div>
+            </div>
+            <div class="ranking">
+              <table>
+                <thead><tr><th>Setor</th><th>Avaliados</th><th>Reprov.</th><th>Índice</th></tr></thead>
+                <tbody>
+                  <tr><td>Setor 2</td><td>18</td><td>9</td><td><span class="risk high">50,0%</span></td></tr>
+                  <tr><td>Setor 3</td><td>20</td><td>7</td><td><span class="risk mid">35,0%</span></td></tr>
+                  <tr><td>Setor 4</td><td>12</td><td>3</td><td><span class="risk mid">25,0%</span></td></tr>
+                  <tr><td>Setor 1</td><td>21</td><td>3</td><td><span class="risk ok">14,3%</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           TABLET
+           ===================================================== -->
+      <section class="view view-tablet">
+        <div class="tablet-wrap">
+          <div class="tablet-head">
+            <div>
+              <h1>Dashboard de Qualidade</h1>
+              <p>01/08 → 17/08/2026 · Todos os setores</p>
+            </div>
+            <div class="live"><span class="live-dot"></span> há 38 s</div>
+          </div>
+
+          <div class="tablet-filter">
+            <input class="control" type="date" value="2026-08-01" aria-label="Data de início" />
+            <input class="control" type="date" value="2026-08-17" aria-label="Data final" />
+            <select class="control"><option>Todos os setores</option></select>
+            <select class="control"><option>Todos os status</option></select>
+            <input class="control" placeholder="Buscar forma, modelo ou montador" aria-label="Buscar forma, modelo ou montador" />
+          </div>
+
+          <div class="group-label">Qualidade</div>
+          <div class="tablet-grid-2">
+            <div class="card metric red">
+              <div class="label">Índice de reprovação</div><div class="value">31,0%</div>
+              <div class="sub">22 de 71 avaliados</div>
+              <div class="meta"><span class="trend bad">▲ 4,8 p.p.</span></div>
+            </div>
+            <div class="card metric green">
+              <div class="label">Taxa de não conformidade</div><div class="value">1,7%</div>
+              <div class="sub">31 / 1.846 · meta ≤ 2%</div>
+              <div class="meta"><span class="trend good">▼ 0,2 p.p.</span></div>
+            </div>
+          </div>
+
+          <div class="tablet-grid-2">
+            <div class="card metric orange">
+              <div class="label">Cobertura de inspeção</div><div class="value">33,0%</div>
+              <div class="sub">71 de 215 produzidos</div>
+            </div>
+            <div class="card metric green">
+              <div class="label">Retrabalho</div><div class="value">4,2%</div>
+              <div class="sub">3 de 71 · meta ≤ 5%</div>
+            </div>
+          </div>
+
+          <div class="mini-grid-4">
+            <div class="card mini"><span>DPU</span><b>0,44</b></div>
+            <div class="card mini"><span>NC / 100</span><b>14,4</b></div>
+            <div class="card mini"><span>Custo retrabalho</span><b>R$ 2.850</b></div>
+            <div class="card mini"><span>Produção</span><b>215</b></div>
+          </div>
+
+          <section class="card section-card tablet-wide">
+            <div class="section-head">
+              <div><div class="title">Fluxo da inspeção</div><div class="sub">Produção → avaliação → reprovação → retrabalho</div></div>
+            </div>
+            <div class="flow" style="display:grid;grid-template-columns:1fr 20px 1fr 20px 1fr 20px 1fr;align-items:center;">
+              <div class="flow-step" style="margin:0"><div><strong>Produzidos</strong><small>base</small></div><div class="flow-num">215</div></div>
+              <div class="flow-arrow" style="margin:0">→</div>
+              <div class="flow-step" style="margin:0"><div><strong>Avaliados</strong><small>33,0%</small></div><div class="flow-num">71</div></div>
+              <div class="flow-arrow" style="margin:0">→</div>
+              <div class="flow-step" style="margin:0"><div><strong>Reprovados</strong><small>31,0%</small></div><div class="flow-num">22</div></div>
+              <div class="flow-arrow" style="margin:0">→</div>
+              <div class="flow-step" style="margin:0"><div><strong>Retrabalho</strong><small>4,2%</small></div><div class="flow-num">3</div></div>
+            </div>
+          </section>
+
+          <div class="tablet-panels">
+            <section class="card section-card">
+              <div class="section-head"><div><div class="title">Pareto</div><div class="sub">3 causas = 80,6%</div></div></div>
+              <div class="pareto">
+                <div class="pareto-row" style="grid-template-columns:120px 1fr 28px">
+                  <div class="pareto-name">Bolhas</div><div class="bar-track"><div class="bar hot" style="width:100%"></div></div><div class="count">18</div>
+                </div>
+                <div class="pareto-row" style="grid-template-columns:120px 1fr 28px">
+                  <div class="pareto-name">Falhas preench.</div><div class="bar-track"><div class="bar hot" style="width:22%"></div></div><div class="count">4</div>
+                </div>
+                <div class="pareto-row" style="grid-template-columns:120px 1fr 28px">
+                  <div class="pareto-name">Fissuras</div><div class="bar-track"><div class="bar hot" style="width:17%"></div></div><div class="count">3</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="card section-card">
+              <div class="section-head"><div><div class="title">Foco de qualidade</div><div class="sub">Indicadores de atenção</div></div></div>
+              <div style="padding:14px">
+                <div class="focus-box success" style="margin-bottom:8px"><div class="lbl">Sem fissura circular</div><div class="big">42 dias</div></div>
+                <div class="focus-box"><div class="lbl">Recorde</div><div class="big">67 dias</div></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           MOBILE
+           ===================================================== -->
+      <section class="view view-mobile">
+        <div class="mobile-wrap">
+          <div class="mobile-head">
+            <div>
+              <h1>Qualidade</h1>
+              <p>01/08 → 17/08 · atualizado há 38 s</p>
+            </div>
+            <button class="mobile-filter" aria-label="Filtros">☷</button>
+          </div>
+
+          <div class="chips">
+            <span class="chip">Hoje</span>
+            <span class="chip">7 dias</span>
+            <span class="chip active">Mês</span>
+            <span class="chip">Setor</span>
+            <span class="chip">Status</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px;">
+            <label class="card" style="padding:8px 9px;">
+              <span style="display:block;font-size:7.5px;color:#66758a;font-weight:900;text-transform:uppercase;margin-bottom:4px;">Início</span>
+              <input type="date" value="2026-08-01" aria-label="Data de início" style="width:100%;border:0;background:transparent;color:#334155;font:inherit;font-size:9px;font-weight:800;outline:none;" />
+            </label>
+            <label class="card" style="padding:8px 9px;">
+              <span style="display:block;font-size:7.5px;color:#66758a;font-weight:900;text-transform:uppercase;margin-bottom:4px;">Fim</span>
+              <input type="date" value="2026-08-17" aria-label="Data final" style="width:100%;border:0;background:transparent;color:#334155;font:inherit;font-size:9px;font-weight:800;outline:none;" />
+            </label>
+          </div>
+
+          <div class="card mobile-hero">
+            <div class="label">Índice de reprovação</div>
+            <div class="value">31,0%</div>
+            <div class="sub">22 de 71 postes avaliados</div>
+            <span class="status">▲ 4,8 p.p. vs período anterior</span>
+          </div>
+
+          <div class="mobile-grid-2">
+            <div class="card mobile-mini">
+              <div class="lbl">Taxa de NC</div><div class="num">1,7%</div>
+              <div class="sub">31 / 1.846 · meta ≤ 2%</div>
+            </div>
+            <div class="card mobile-mini">
+              <div class="lbl">Cobertura</div><div class="num">33,0%</div>
+              <div class="sub">71 de 215</div>
+            </div>
+          </div>
+
+          <div class="mobile-grid-2">
+            <div class="card mobile-mini">
+              <div class="lbl">Retrabalho</div><div class="num">4,2%</div>
+              <div class="sub">3 de 71</div>
+            </div>
+            <div class="card mobile-mini">
+              <div class="lbl">DPU</div><div class="num">0,44</div>
+              <div class="sub">defeitos/poste</div>
+            </div>
+          </div>
+
+          <div class="mobile-grid-2">
+            <div class="card mobile-mini">
+              <div class="lbl">NC / 100 postes</div><div class="num">14,4</div>
+              <div class="sub">sobre produção</div>
+            </div>
+            <div class="card mobile-mini">
+              <div class="lbl">Custo retrabalho</div><div class="num" style="font-size:17px">R$ 2.850</div>
+              <div class="sub">estimado</div>
+            </div>
+          </div>
+
+          <div class="card mobile-stack" style="padding:11px 12px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:8px;color:#66758a;font-weight:900;text-transform:uppercase;">Sem fissura circular</div>
+              <div style="font-size:24px;font-weight:950;color:#05603a;margin-top:3px;">42 dias</div>
+            </div>
+            <div style="text-align:right;font-size:8px;color:#7a8698;font-weight:800">Recorde<br><strong style="font-size:15px;color:#334155">67 dias</strong></div>
+          </div>
+
+          <div class="card mobile-stack">
+            <div class="mobile-list">
+              <div class="mobile-list-title">Top não conformidades · Pareto</div>
+              <div class="mobile-row">
+                <div class="name">Bolhas em excesso</div><div class="bar-track"><div class="bar hot" style="width:100%"></div></div><div class="val">18</div>
+              </div>
+              <div class="mobile-row">
+                <div class="name">Falhas preench.</div><div class="bar-track"><div class="bar hot" style="width:22%"></div></div><div class="val">4</div>
+              </div>
+              <div class="mobile-row">
+                <div class="name">Fissuras</div><div class="bar-track"><div class="bar hot" style="width:17%"></div></div><div class="val">3</div>
+              </div>
+              <div style="font-size:8px;color:#9a3412;font-weight:850;margin-top:8px">3 causas = 80,6% das 31 NC.</div>
+            </div>
+          </div>
+
+          <div class="card mobile-stack">
+            <div class="mobile-list">
+              <div class="mobile-list-title">Fluxo da inspeção</div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;text-align:center">
+                <div class="focus-box"><div class="lbl">Prod.</div><div class="big" style="font-size:16px">215</div></div>
+                <div class="focus-box"><div class="lbl">Aval.</div><div class="big" style="font-size:16px">71</div></div>
+                <div class="focus-box"><div class="lbl">Reprov.</div><div class="big" style="font-size:16px">22</div></div>
+                <div class="focus-box"><div class="lbl">Retrab.</div><div class="big" style="font-size:16px">3</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- =========================================================
+     TV MODE — ?mode=tv
+     ========================================================= -->
+<section class="view view-tv">
+  <div class="tv-header">
+    <div>
+      <div class="tv-title">ConcreTrack · Qualidade em tempo real</div>
+      <div class="tv-sub"><span id="tv-sector-label">Todos os setores</span> · período atual</div>
+    </div>
+    <div class="tv-meta">
+      <div class="tv-meta-block">
+        <div class="lbl">Rotação</div>
+        <div class="val" id="tv-rotation">Todos · 1 de 5</div>
+      </div>
+      <div class="tv-meta-block">
+        <div class="lbl">Atualizado</div>
+        <div class="val" id="tv-updated">há 12 s</div>
+      </div>
+      <div class="tv-live"></div>
+    </div>
+  </div>
+
+  <div class="tv-hero-grid">
+    <div class="tv-hero red">
+      <div class="lbl">Índice de reprovação</div>
+      <div class="big" id="tv-reprov">31,0%</div>
+      <div class="foot">22 de 71 avaliados</div>
+    </div>
+    <div class="tv-hero green">
+      <div class="lbl">Taxa de não conformidade</div>
+      <div class="big" id="tv-nc">1,7%</div>
+      <div class="foot">31 / 1.846 · meta ≤ 2%</div>
+    </div>
+    <div class="tv-hero orange">
+      <div class="lbl">Cobertura de inspeção</div>
+      <div class="big" id="tv-cover">33,0%</div>
+      <div class="foot">71 de 215 produzidos</div>
+    </div>
+    <div class="tv-hero green">
+      <div class="lbl">Sem fissura circular</div>
+      <div class="big" style="font-size:43px">42 dias</div>
+      <div class="foot">recorde · 67 dias</div>
+    </div>
+  </div>
+
+  <div class="tv-mini-grid">
+    <div class="tv-mini"><div class="lbl">Produção</div><div class="num" id="tv-prod">215</div></div>
+    <div class="tv-mini"><div class="lbl">Avaliados</div><div class="num" id="tv-av">71</div></div>
+    <div class="tv-mini"><div class="lbl">Reprovados</div><div class="num" id="tv-rp">22</div></div>
+    <div class="tv-mini"><div class="lbl">Retrabalho</div><div class="num" id="tv-rt">4,2%</div></div>
+    <div class="tv-mini"><div class="lbl">NC / 100 postes</div><div class="num" id="tv-100">14,4</div></div>
+  </div>
+
+  <div class="tv-lower">
+    <div class="tv-panel">
+      <div class="tv-panel-title">Pareto · 3 causas concentram 80,6% das NC</div>
+      <div class="tv-bar-row"><div>Bolhas em excesso</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">18</div></div>
+      <div class="tv-bar-row"><div>Falhas de preenchimento</div><div class="track"><div class="fill" style="width:22%"></div></div><div class="val">4</div></div>
+      <div class="tv-bar-row"><div>Fissuras</div><div class="track"><div class="fill" style="width:17%"></div></div><div class="val">3</div></div>
+      <div class="tv-bar-row"><div>Carimbo identificação</div><div class="track"><div class="fill" style="width:11%;background:#45617f"></div></div><div class="val">2</div></div>
+    </div>
+
+    <div class="tv-panel">
+      <div class="tv-panel-title">Ranking de setores · índice de reprovação</div>
+      <div class="tv-rank"><div class="n">1</div><div class="name">Setor 2</div><div class="val" style="color:#fca5a5">50,0%</div></div>
+      <div class="tv-rank"><div class="n">2</div><div class="name">Setor 3</div><div class="val" style="color:#fdba74">35,0%</div></div>
+      <div class="tv-rank"><div class="n">3</div><div class="name">Setor 4</div><div class="val" style="color:#fdba74">25,0%</div></div>
+      <div class="tv-rank"><div class="n">4</div><div class="name">Setor 1</div><div class="val" style="color:#86efac">14,3%</div></div>
+    </div>
+  </div>
+
+  <div class="tv-footer">
+    <div>Próxima rotação em <strong style="color:#fff" id="tv-countdown">20 s</strong> · próximo: <span id="tv-next">Setor 1</span></div>
+    <div>Auto-refresh de dados: 30 s · modo TV sem interação</div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const isTv = params.get('mode') === 'tv';
+
+  if(isTv){
+    document.body.dataset.mode = 'tv';
+  }
+
+  if(!isTv) return;
+
+  // Mockup: comportamento do modo TV.
+  // Em produção, substituir a parte de dados por fetch ao endpoint real.
+  const sectors = [
+    {name:'Todos os setores', short:'Todos', prod:215, av:71, rp:22, reprov:'31,0%', nc:'1,7%', cover:'33,0%', rt:'4,2%', nc100:'14,4'},
+    {name:'Setor 1 · Fôrmas', short:'Setor 1', prod:58, av:21, rp:3, reprov:'14,3%', nc:'0,9%', cover:'36,2%', rt:'0,0%', nc100:'5,2'},
+    {name:'Setor 2 · Concretagem', short:'Setor 2', prod:54, av:18, rp:9, reprov:'50,0%', nc:'2,8%', cover:'33,3%', rt:'5,6%', nc100:'20,4'},
+    {name:'Setor 3 · Montagem', short:'Setor 3', prod:61, av:20, rp:7, reprov:'35,0%', nc:'2,1%', cover:'32,8%', rt:'5,0%', nc100:'16,4'},
+    {name:'Setor 4 · Acabamento', short:'Setor 4', prod:42, av:12, rp:3, reprov:'25,0%', nc:'1,6%', cover:'28,6%', rt:'8,3%', nc100:'11,9'}
+  ];
+
+  let index = 0;
+  let countdown = 20;
+  let updatedSeconds = 12;
+
+  const el = id => document.getElementById(id);
+
+  function renderSector(){
+    const s = sectors[index];
+    el('tv-sector-label').textContent = s.name;
+    el('tv-rotation').textContent = `${s.short} · ${index+1} de ${sectors.length}`;
+    el('tv-prod').textContent = s.prod;
+    el('tv-av').textContent = s.av;
+    el('tv-rp').textContent = s.rp;
+    el('tv-reprov').textContent = s.reprov;
+    el('tv-nc').textContent = s.nc;
+    el('tv-cover').textContent = s.cover;
+    el('tv-rt').textContent = s.rt;
+    el('tv-100').textContent = s.nc100;
+    el('tv-next').textContent = sectors[(index+1)%sectors.length].short;
+  }
+
+  renderSector();
+
+  setInterval(()=>{
+    countdown -= 1;
+    updatedSeconds += 1;
+    if(countdown <= 0){
+      index = (index + 1) % sectors.length;
+      countdown = 20;
+      renderSector();
+    }
+    el('tv-countdown').textContent = `${countdown} s`;
+    el('tv-updated').textContent = `há ${updatedSeconds} s`;
+  },1000);
+
+  // Mock auto-refresh placeholder every 30 s.
+  setInterval(()=>{
+    updatedSeconds = 0;
+    el('tv-updated').textContent = 'agora';
+    // Produção: fetch('/api/dashboard-defeitos?...').then(...)
+  },30000);
+
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden){
+      updatedSeconds = 0;
+      el('tv-updated').textContent = 'agora';
+      // Produção: refresh imediato via fetch.
+    }
+  });
+
+  if('wakeLock' in navigator){
+    navigator.wakeLock.request('screen').catch(()=>{});
+  }
+
+  // TV sem interação.
+  document.addEventListener('click', e => e.preventDefault(), true);
+  document.addEventListener('keydown', e => e.preventDefault(), true);
+})();
+</script>
+
+</body>
+</html>

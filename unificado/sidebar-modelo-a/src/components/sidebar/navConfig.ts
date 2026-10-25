@@ -60,7 +60,7 @@ export const NAV_MODULES: NavModule[] = [
     ]),
   ] },
   { id:'producao', label:'Produção', color:MODULE_COLORS.producao, icon:'factory', sections:[
-    section('CAMPINAS · PRODUÇÃO', [
+    section('PRODUÇÃO', [
       ['liberacao','Produção / Liberação',p('LIBERACAO'),'factory'],
       ['setor1','Setor 1',p('LIBERACAO_S1'),'factory'],
       ['setor2','Setor 2',p('LIBERACAO_S2'),'factory'],
@@ -68,40 +68,53 @@ export const NAV_MODULES: NavModule[] = [
       ['setor4','Setor 4',p('LIBERACAO_S4'),'factory'],
       ['mandril','Mandril Circular',p('MANDRIL_CIRCULAR'),'sliders'],
     ]),
-    section('CAMPINAS · MONTAGEM', [
+    section('MONTAGEM', [
       ['inspecao','Inspeção Setor 3 e 4',p('INSPECAO'),'shield'],
       ['montagem','Montagem Postes',p('MONTAGEM_POSTES'),'post'],
       ['sequencia','Sequência Setor 3',p('SEQUENCIA_S3'),'history'],
     ]),
-    section('CAMPINAS · CONTROLE', [
+    section('CONTROLE', [
       ['relatorioMapa','Relatório Enc. Produção',p('RELATORIO'),'doc'],
       ['historico','Histórico',p('HISTORICO'),'history'],
       ['acmpConcretagem','Acmp. Concretagem',p('ACMP_CONCRETAGEM'),'sliders'],
       ['manutencao','Manutenção Formas',p('RELATORIO_MANUTENCAO'),'sliders'],
       ['tratativa','Tratativa Defeitos',p('TRATATIVA_DEFEITOS'),'alert'],
     ]),
-    section('CAMPINAS · INDICADORES', [
+    section('INDICADORES', [
       ['dashMontagem','Dashboard Montagem',p('MONTAGEM_INDICADORES'),'map'],
       ['dashDefeitos','Dashboard Defeitos',p('DASHBOARD_DEFEITOS'),'map'],
       ['produtividade','Dashboard Concretagem Matriz',p('PROD_ANALISE'),'map'],
       ['tvFormas','Painel TV — Formas','tv/formas/','map'],
-    ]),
-    section('PEDERNEIRAS', [
-      ['pdrApontamento','Apontamento do dia','producao/pederneiras/?tab=apontamento','factory'],
-      ['pdrMaoDeObra','Mão de obra','producao/pederneiras/?tab=mao-de-obra','users'],
-      ['pdrMensal','Produção Pederneiras','producao/pederneiras/?tab=mensal','map'],
-      ['pdrIndicadores','Indicadores','producao/pederneiras/?tab=indicadores','map'],
-      ['pdrProdutos','Cadastro de produtos','producao/pederneiras/?tab=produtos','database'],
     ]),
   ] },
   { id:'qualidade', label:'Qualidade', color:MODULE_COLORS.qualidade, icon:'shield', sections:[
     section('NÃO CONFORMIDADES', [
       ['qualidadePainel','Painel de RNCs','qualidade/','alert'],
       ['qualidadeAbertura','Abrir RNC','qualidade/abrir','doc'],
+      ['qualidadeResultadosBancada','Resultados de bancada','qualidade/resultados-bancada','doc'],
       ['qualidadeCadastros','Cadastros','qualidade/cadastros','database'],
     ]),
   ] },
   { id:'laboratorio', label:'Laboratório', color:MODULE_COLORS.laboratorio, icon:'flask', sections:[
+    section('DOSAGEM', [
+      ['labDosagem','Visão geral','laboratorio/dosagem/','flask'],
+      ['labDosagemEmpacotamento','Empacotamento','laboratorio/dosagem/#/dosagem/empacotamento','flask'],
+      ['labDosagemVolume','Volume','laboratorio/dosagem/#/dosagem/volume','flask'],
+      ['labDosagemComparacao','Comparação dos métodos','laboratorio/dosagem/#/comparacao-metodos','sliders'],
+      ['labDosagemTracos','Traços','laboratorio/dosagem/#/tracos','doc'],
+      ['labDosagemMateriais','Materiais','laboratorio/dosagem/#/materiais','database'],
+      ['labDosagemFornecedores','Fornecedores','laboratorio/dosagem/#/fornecedores','database'],
+      ['labDosagemEnsaios','Ensaios','laboratorio/dosagem/#/ensaios','flask'],
+      ['labDosagemFerramentas','Ferramentas','laboratorio/dosagem/#/ferramentas','sliders'],
+      ['labDosagemCustos','Custos','laboratorio/dosagem/#/custos','doc'],
+      ['labDosagemReferencia','Referência','laboratorio/dosagem/#/referencia','help'],
+      ['labDosagemProducao','Produção','laboratorio/dosagem/#/producao-r1','factory'],
+      ['labDosagemImportacao','Importação','laboratorio/dosagem/#/importacao-r1','database'],
+      ['labDosagemConfig','Configurações','laboratorio/dosagem/#/config','sliders'],
+    ]),
+    section('CONCRETO FRESCO', [
+      ['labSlump','Registro de slump / flow','laboratorio/slump','thermometer'],
+    ]),
     section('CURA TÉRMICA', [
       ['labMonitor','Monitoramento','laboratorio/','thermometer',{text:'AO VIVO',tone:'live'}],
       ['labHistory','Histórico de medições','laboratorio/?view=history','history'],
@@ -130,7 +143,7 @@ export const NAV_MODULES: NavModule[] = [
       ['usinasCec','Controle estatístico','usinas/?area=cec','database'],
       ['usinasRelatorios','Relatórios gerenciais','usinas/?area=relatorios','doc'],
       ['usinasEstoque','Controle de estoque','usinas/?area=estoque','factory'],
-    ])
+    ]),
   ] },
   { id:'ged', label:'GED', color:MODULE_COLORS.ged, icon:'folder', sections:[
     section('GESTÃO DOCUMENTAL', [
@@ -144,6 +157,7 @@ export const NAV_MODULES: NavModule[] = [
 ];
 
 export const FOOTER_ITEMS: NavItem[] = [
-  {id:'labHelp',label:'Como funciona',href:view('laboratorio/?view=help'),icon:'help'},
   {id:'usuarios',label:'Usuários',href:view(p('USUARIOS')),icon:'users'},
+  {id:'reportProblem',label:'Relatar problema',href:'/unificado/testar/#relatar',icon:'alert'},
+  {id:'labHelp',label:'Como funciona',href:view('laboratorio/?view=help'),icon:'help'},
 ];

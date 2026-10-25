@@ -40,6 +40,14 @@ def main() -> None:
             assert all('1.0.16-cronoanalise' in url for url in versions['scripts']
                        if any(name in url for name in ('menu.config.js', 'shell.js', 'router.js', 'modelo-a-loader.js'))), versions
             print('MENU_OK', reload_count + 1, 'links=7', versions)
+        update = page.locator('#sidebar-model-a .sb-update')
+        if update.is_visible():
+            with page.expect_navigation(wait_until='domcontentloaded', timeout=60000):
+                update.click()
+            page.wait_for_function("document.querySelectorAll('#sidebar-model-a a.sb-link[href*=cronoanalise]').length === 7", timeout=30000)
+            page.frame_locator('#module-host iframe.is-active').get_by_role(
+                'heading', name='Cronoanálise').wait_for(timeout=30000)
+            print('UPDATE_BUTTON_OK links=7')
         page.locator('#sidebar-model-a .sb-scroll').evaluate('el => el.scrollTop = el.scrollHeight')
         page.locator('#sidebar-model-a').screenshot(path=str(OUT))
         context.close()

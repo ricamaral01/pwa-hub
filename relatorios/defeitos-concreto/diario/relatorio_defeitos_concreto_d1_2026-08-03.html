@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Defeitos de Concreto — D-1 03/08/2026</title>
+  <style>
+    :root { --text:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter, Arial, sans-serif; padding:28px; }
+    .wrap { max-width:1120px; margin:0 auto; }
+    h1 { margin:0; font-size:28px; letter-spacing:-.03em; }
+    .sub { color:var(--muted); font-weight:700; margin:6px 0 20px; }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:18px 0 24px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(15,23,42,.05); }
+    .card span { color:var(--muted); font-weight:900; font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+    .card strong { display:block; font-size:28px; margin-top:8px; }
+    table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 6px 18px rgba(15,23,42,.05); }
+    th { text-align:left; font-size:12px; color:#334155; text-transform:uppercase; letter-spacing:.06em; background:#f1f5f9; padding:14px; border-bottom:1px solid var(--line); }
+    td { padding:14px; border-bottom:1px solid #eef2f7; vertical-align:middle; font-weight:600; }
+    tr.child td:first-child { color:#64748b; font-style:italic; padding-left:34px; }
+    tr.defect-row { background:#fff7f7; }
+    tr.total-row { background:#f1f5f9; border-top:2px solid #cbd5e1; }
+    tr.total-row td { font-weight:900; }
+    .tipo { font-weight:900; }
+    .metric { min-width:170px; }
+    .bar { display:inline-block; width:96px; height:7px; margin-left:10px; background:#e2e8f0; border-radius:999px; vertical-align:middle; overflow:hidden; }
+    .bar span { display:block; height:100%; border-radius:999px; }
+    .pill,.status { display:inline-flex; align-items:center; border-radius:999px; padding:6px 10px; font-weight:900; font-size:12px; }
+    .pill.padrao { background:#dbeafe; color:#2563eb; }
+    .pill.normal { background:#e2e8f0; color:#475569; }
+    .pill.defeito { background:#fee2e2; color:#ef4444; }
+    .pill.total { background:#e2e8f0; color:#0f172a; }
+    .status.conforme { background:#d1fae5; color:#047857; }
+    .status.normal { background:#e2e8f0; color:#475569; }
+    .status.defeito { background:#fee2e2; color:#dc2626; }
+    .status.total { background:#e2e8f0; color:#0f172a; }
+    .volume.green { color:#059669; } .volume.orange { color:#d97706; } .volume.red { color:#dc2626; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Relatório Diário de Defeitos de Concreto</h1>
+  <div class="sub">Data analisada: 03/08/2026 · Gerado em 05/08/2026 07:22</div>
+  <div class="cards">
+    <div class="card"><span>Formas únicas</span><strong>238</strong></div>
+    <div class="card"><span>Concreto padrão</span><strong>183</strong></div>
+    <div class="card"><span>Defeitos / não padrão</span><strong>55</strong></div>
+    <div class="card"><span>% defeito</span><strong>23,11 %</strong></div>
+  </div>
+  <table>
+    <thead><tr><th>Tipo de Concreto</th><th>Classificação</th><th>Qtd. Lançamentos</th><th>% do Total</th><th>Volume Estimado</th><th>Vol. % Total</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr class=" ">
+        <td class="tipo">Concreto Padrão</td>
+        <td><span class="pill padrao">Padrão</span></td>
+        <td class="metric"><strong>183</strong><span class="bar"><span style="width:76.89%; background:#2563eb;"></span></span></td>
+        <td>76,89 %</td>
+        <td class="volume green">45,75 m³</td>
+        <td>76,89 %<span class="bar"><span style="width:76.89%; background:#2563eb;"></span></span></td>
+        <td><span class="status conforme">Conforme</span></td>
+      </tr>
+    
+
+      <tr class=" ">
+        <td class="tipo">Não Padrão</td>
+        <td><span class="pill normal">Não Padrão</span></td>
+        <td class="metric"><strong>55</strong><span class="bar"><span style="width:23.11%; background:#f59e0b;"></span></span></td>
+        <td>23,11 %</td>
+        <td class="volume orange">13,75 m³</td>
+        <td>23,11 %<span class="bar"><span style="width:23.11%; background:#f59e0b;"></span></span></td>
+        <td><span class="status normal">Normal</span></td>
+      </tr>
+    
+
+      <tr class="child defect-row">
+        <td class="tipo">↳ Concreto Vibrado</td>
+        <td><span class="pill defeito">Defeito</span></td>
+        <td class="metric"><strong>54</strong><span class="bar"><span style="width:22.69%; background:#ef4444;"></span></span></td>
+        <td>22,69 %</td>
+        <td class="volume red">13,50 m³</td>
+        <td>22,69 %<span class="bar"><span style="width:22.69%; background:#ef4444;"></span></span></td>
+        <td><span class="status defeito">Defeito</span></td>
+      </tr>
+    
+
+      <tr class="child defect-row">
+        <td class="tipo">↳ Concreto Exsudado</td>
+        <td><span class="pill defeito">Defeito</span></td>
+        <td class="metric"><strong>1</strong><span class="bar"><span style="width:0.42%; background:#ef4444;"></span></span></td>
+        <td>0,42 %</td>
+        <td class="volume red">0,25 m³</td>
+        <td>0,42 %<span class="bar"><span style="width:0.42%; background:#ef4444;"></span></span></td>
+        <td><span class="status defeito">Defeito</span></td>
+      </tr>
+    
+
+      <tr class="total-row">
+        <td class="tipo">Total de Lançamentos</td>
+        <td><span class="pill total">Total</span></td>
+        <td class="metric"><strong>238</strong><span class="bar"><span style="width:100.00%; background:#0f172a;"></span></span></td>
+        <td>100,00 %</td>
+        <td class="volume">59,50 m³</td>
+        <td>100,00 %<span class="bar"><span style="width:100.00%; background:#0f172a;"></span></span></td>
+        <td><span class="status total">Base</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

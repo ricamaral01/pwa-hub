@@ -15,6 +15,11 @@ dumps/
 !Controle_est_concre/migrations/*.sql
 !Controle_est_concre/schema.sql
 !unificado/mapa/database/*.sql
+!unificado/usinas/migrations/*.sql
+!carta-traco/migracao-postgres/sql/*.sql
+!carta-traco/migracao-postgres/carga/*.sql
+!carta-traco/migracao-postgres/tests/*.sql
+!docs/qualidade/B1-*.sql
 *.dump
 .work-mapa-migration/
 .work-unificado-pcp-source/
@@ -28,6 +33,7 @@ supabase/.temp/
 mapa-concretagem/node_modules/
 mapa-concretagem/.env
 imports/
+carta-traco/migracao-postgres/dados/
 
 imports/historico/entrada/*
 !imports/historico/entrada/.gitkeep

@@ -1,0 +1,169 @@
+/* Menu lateral — Modelo A. Escopo: classes .sb-*  (não afeta o PWA). */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+.sb {
+  --sb-bg: #0D1934;
+  --sb-bg-deep: #081127;
+  --sb-text: #C9D2E3;
+  --sb-text-strong: #FFFFFF;
+  --sb-muted: #8E9AB5;
+  --sb-line: rgba(255, 255, 255, 0.08);
+  --sb-hover: rgba(255, 255, 255, 0.06);
+  --mod: #F2B705; /* sobrescrito pelo módulo ativo */
+  --mod-soft: color-mix(in srgb, var(--mod) 16%, transparent);
+  --mod-text: color-mix(in srgb, var(--mod) 72%, #FFFFFF);
+
+  width: 272px;
+  flex: none;
+  height: 100vh;
+  position: sticky;
+  z-index: 40; /* dica e seletor ficam acima do conteúdo */
+  top: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 16px 14px;
+  background: var(--sb-bg);
+  color: var(--sb-text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  transition: width 0.18s ease;
+}
+.sb *, .sb *::before, .sb *::after { box-sizing: border-box; }
+
+.sb-ic { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* Marca */
+.sb-brand { display: flex; align-items: center; gap: 10px; }
+.sb-logo {
+  flex: 1; min-width: 0; height: 48px; background: #FFFFFF; border-radius: 10px;
+  display: flex; align-items: center; gap: 10px; padding: 0 12px;
+}
+.sb-logo-concrefer { height: 26px; width: auto; min-width: 0; object-fit: contain; }
+.sb-logo-sep { width: 1px; height: 26px; background: #D5DAE5; flex: none; }
+.sb-logo-ct { height: 30px; width: 30px; object-fit: contain; flex: none; }
+
+.sb-iconbtn {
+  width: 44px; height: 44px; flex: none; border: 0; border-radius: 10px; cursor: pointer;
+  background: transparent; color: var(--sb-text); display: inline-flex; align-items: center; justify-content: center;
+}
+.sb-iconbtn:hover { background: var(--sb-hover); color: var(--sb-text-strong); }
+.sb-collapse { background: var(--sb-hover); }
+
+/* Seletor de módulo */
+.sb-switcher { position: relative; }
+.sb-switcher-btn {
+  width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px 12px; cursor: pointer;
+  border-radius: 12px; background: var(--sb-hover); border: 1px solid var(--sb-line);
+  color: var(--sb-text-strong); font: inherit; text-align: left;
+}
+.sb-switcher-btn:hover { background: rgba(255, 255, 255, 0.09); }
+.sb-mod-tile {
+  width: 36px; height: 36px; flex: none; border-radius: 9px; background: var(--mod); color: #1A1400;
+  display: flex; align-items: center; justify-content: center;
+}
+.sb-switcher-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.sb-eyebrow { font-size: 11px; letter-spacing: 0.08em; color: var(--sb-muted); }
+.sb-switcher-name { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-switcher-chev { color: var(--sb-muted); display: flex; }
+
+.sb-menu {
+  position: absolute; z-index: 50; top: calc(100% + 6px); left: 0; right: 0; min-width: 220px;
+  background: #FFFFFF; border-radius: 12px; padding: 6px; box-shadow: 0 12px 32px rgba(8, 17, 39, 0.35);
+}
+.sb-menu-item {
+  width: 100%; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px;
+  border: 0; border-radius: 8px; background: transparent; cursor: pointer;
+  font: inherit; font-size: 14px; font-weight: 500; color: #141B2D; text-align: left;
+}
+.sb-menu-item:hover { background: #F1F3F8; }
+.sb-menu-item[aria-checked='true'] { font-weight: 600; }
+.sb-menu-check { margin-left: auto; color: #1B2B57; display: flex; }
+.sb-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+
+/* Telas */
+.sb-scroll {
+  flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 18px;
+  margin: 0 -6px; padding: 0 6px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+.sb-section { display: flex; flex-direction: column; gap: 2px; }
+.sb-section-title {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #FFFFFF; padding: 0 12px 6px;
+}
+
+.sb-link {
+  display: flex; align-items: center; gap: 12px; min-height: 40px; padding: 0 12px; border-radius: 8px;
+  color: var(--sb-text); text-decoration: none; font-size: 14px; position: relative;
+}
+.sb-link:hover { background: var(--sb-hover); color: var(--sb-text-strong); }
+.sb-link.is-active { background: var(--mod-soft); color: var(--mod-text); font-weight: 600; }
+.sb-label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.sb-badge { font-size: 11px; font-weight: 600; border-radius: 999px; padding: 2px 8px; flex: none; }
+.sb-badge--live { background: var(--mod); color: #1A1400; }
+.sb-badge--alert { background: #C2410C; color: #FFFFFF; padding: 2px 7px; }
+
+.sb-link:focus-visible, .sb-iconbtn:focus-visible, .sb-switcher-btn:focus-visible,
+.sb-menu-item:focus-visible, .sb-update:focus-visible {
+  outline: 2px solid var(--mod); outline-offset: 2px;
+}
+
+/* Rodapé */
+.sb-footer { display: flex; flex-direction: column; gap: 2px; }
+.sb-update {
+  display: flex; align-items: center; gap: 12px; min-height: 40px; padding: 0 12px; margin-bottom: 6px;
+  border: 0; border-radius: 8px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600;
+  background: rgba(242, 183, 5, 0.12); color: #FFE08A; text-align: left;
+}
+.sb-update-dot { width: 8px; height: 8px; border-radius: 50%; background: #F2B705; flex: none; margin: 0 5px; }
+.sb-user {
+  display: flex; align-items: center; gap: 12px; margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--sb-line);
+}
+.sb-avatar {
+  width: 36px; height: 36px; flex: none; border-radius: 50%; background: #1F3B7A; color: #FFFFFF;
+  display: flex; align-items: center; justify-content: center; font-weight: 600;
+}
+.sb-user-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.sb-user-name { color: #FFFFFF; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-user-meta { color: var(--sb-muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-user-meta.sb-mono { font-size: 11px; }
+.sb-mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+/* ---------- Modo recolhido (só ícones) ---------- */
+.sb.is-collapsed { width: 80px; padding: 16px 16px; align-items: center; gap: 12px; }
+.sb.is-collapsed .sb-brand { flex-direction: column; gap: 6px; }
+.sb.is-collapsed .sb-logo { width: 48px; flex: none; padding: 0; justify-content: center; }
+.sb.is-collapsed .sb-logo-concrefer,
+.sb.is-collapsed .sb-logo-sep { display: none; }
+.sb.is-collapsed .sb-collapse { height: 32px; width: 48px; background: transparent; color: var(--sb-muted); }
+.sb.is-collapsed .sb-switcher-btn { width: 48px; height: 48px; padding: 0; justify-content: center; background: transparent; border: 0; }
+.sb.is-collapsed .sb-mod-tile { width: 48px; height: 48px; border-radius: 12px; }
+.sb.is-collapsed .sb-switcher-text,
+.sb.is-collapsed .sb-switcher-chev,
+.sb.is-collapsed .sb-label,
+.sb.is-collapsed .sb-user-text { display: none; }
+.sb.is-collapsed .sb-menu { left: 0; right: auto; }
+.sb.is-collapsed .sb-scroll { width: calc(100% + 16px); align-items: center; gap: 2px; margin: 0 -8px; padding: 0 8px; scrollbar-width: none; }
+.sb.is-collapsed .sb-section { align-items: center; }
+.sb.is-collapsed .sb-section + .sb-section::before {
+  content: ''; width: 28px; height: 1px; background: rgba(255, 255, 255, 0.12); margin: 4px 0 6px;
+}
+.sb.is-collapsed .sb-section-title { display: none; }
+.sb.is-collapsed .sb-link { width: 48px; height: 44px; min-height: 44px; flex: none; padding: 0; justify-content: center; border-radius: 12px; }
+.sb.is-collapsed .sb-link .sb-ic { width: 20px; height: 20px; }
+.sb.is-collapsed .sb-badge {
+  position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; padding: 0; font-size: 0;
+  border: 2px solid var(--sb-bg); box-sizing: content-box;
+}
+.sb.is-collapsed .sb-footer { align-items: center; }
+.sb.is-collapsed .sb-update { width: 48px; height: 44px; padding: 0; margin-bottom: 2px; justify-content: center; }
+.sb.is-collapsed .sb-user { flex-direction: column; gap: 4px; margin-top: 6px; padding-top: 10px; }
+
+/* Dica flutuante do modo recolhido */
+.sb-tip {
+  position: fixed; z-index: 1000; transform: translateY(-50%); pointer-events: none;
+  background: #FFFFFF; color: #141B2D; font-size: 13px; font-weight: 600; white-space: nowrap;
+  padding: 8px 12px; border-radius: 8px; box-shadow: 0 6px 20px rgba(8, 17, 39, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) { .sb { transition: none; } }

@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 from urllib.parse import urlsplit
 
 from playwright.sync_api import sync_playwright
 
 
-BASE = "https://concrefer.concretrack.com.br"
+BASE = os.environ.get("UNIFICADO_BASE_URL", "https://concrefer.concretrack.com.br").rstrip("/")
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 
@@ -37,7 +38,7 @@ def main() -> None:
             wrong_hosts, errors, responses = [], [], []
             def restrict(route):
                 host = urlsplit(route.request.url).hostname
-                if host != "concrefer.concretrack.com.br":
+                if host not in {"concrefer.concretrack.com.br", "fonts.googleapis.com", "fonts.gstatic.com"}:
                     wrong_hosts.append(host)
                     route.abort()
                 else:
@@ -67,7 +68,7 @@ def main() -> None:
               programado:card.querySelector('[data-stat=programado]').textContent,
               realizado:card.querySelector('[data-stat=realizado]').textContent
             }))""")
-            menu = page.locator(".module-button").all_text_contents()
+            menu = page.locator("#sidebar-model-a .sb-switcher-btn").all_text_contents()
             linked = page.locator("#sidebar a[href],.sector-actions a[href],.shortcut-list a[href]").evaluate_all(
                 "links => links.map(link => new URL(link.href).pathname)")
             results.append({"kind": kind, "menu": menu, "sectors": values,
@@ -83,7 +84,8 @@ def main() -> None:
     for result in results:
         assert len(result["sectors"]) == 4 and not result["official_links"]
         assert not result["external"] and not result["errors"]
-        assert result["menu"] == (["Planejamento"] if result["kind"] == "so_pcp" else ["Produção"])
+        expected = "Planejamento" if result["kind"] == "so_pcp" else "Produção"
+        assert len(result["menu"]) == 1 and result["menu"][0].endswith(expected)
         print(json.dumps(result, ensure_ascii=False))
 
 

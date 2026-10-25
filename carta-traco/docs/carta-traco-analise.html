@@ -1,0 +1,2846 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carta Traço — Análise, Refatoração e Mockups</title>
+<meta name="description" content="Leitura completa do módulo Carta Traço: arquitetura, achados, modelos de refatoração, mockups e código-fonte do frontend.">
+<style>
+:root{--bg:#0d1620;--panel:#142231;--panel2:#1a2e42;--line:#26405a;--txt:#e6eef7;--mut:#8fa6bd;--acc:#2fa4ff;--ok:#2ecc8f;--warn:#f5b53d;--bad:#ff5d5d;--r:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,'Segoe UI',system-ui,sans-serif;background:radial-gradient(1200px 600px at 80% -10%,#17324d 0,transparent 60%),var(--bg);color:var(--txt);line-height:1.55}
+a{color:var(--acc)}
+header.hero{padding:56px 24px 36px;max-width:1180px;margin:0 auto}
+.hero h1{font-size:2.3rem;letter-spacing:-.5px;background:linear-gradient(90deg,#fff,#7cc4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mut);margin-top:8px;max-width:760px}
+nav.toc{position:sticky;top:0;z-index:20;background:rgba(13,22,32,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav.toc .in{max-width:1180px;margin:0 auto;padding:10px 24px;display:flex;gap:6px;flex-wrap:wrap}
+nav.toc a{color:var(--mut);text-decoration:none;font-size:.85rem;padding:6px 12px;border-radius:999px;transition:.2s}
+nav.toc a:hover{background:var(--panel2);color:#fff}
+main{max-width:1180px;margin:0 auto;padding:12px 24px 80px}
+section{margin-top:44px}
+h2{font-size:1.5rem;margin-bottom:6px}
+h2 small{font-size:.8rem;color:var(--mut);font-weight:400;margin-left:8px}
+h3{font-size:1.05rem;margin:22px 0 8px;color:#bcd9f5}
+.lead{color:var(--mut);margin-bottom:16px}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;transition:.25s}
+.card:hover{transform:translateY(-3px);border-color:var(--acc);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.kpi b{display:block;font-size:1.8rem;color:#fff}
+.kpi span{color:var(--mut);font-size:.8rem}
+table{width:100%;border-collapse:collapse;font-size:.88rem;background:var(--panel);border-radius:var(--r);overflow:hidden}
+th{background:var(--panel2);text-align:left;padding:10px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:var(--mut)}
+td{padding:10px;border-top:1px solid var(--line);vertical-align:top}
+.tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.7rem;font-weight:700}
+.t-c{background:#4a1d1d;color:var(--bad)}.t-a{background:#4a3513;color:var(--warn)}.t-m{background:#173a4a;color:var(--acc)}
+pre,code{font-family:'Cascadia Code',Consolas,monospace}
+pre{background:#09111a;border:1px solid var(--line);border-radius:var(--r);padding:14px;overflow:auto;font-size:.8rem;color:#cfe3f6;max-height:460px}
+code.i{background:#09111a;padding:1px 6px;border-radius:5px;font-size:.82rem}
+details{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin-top:12px}
+summary{cursor:pointer;font-weight:600}
+.flow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.node{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.85rem}
+.arrow{color:var(--acc)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+.tabs button{background:var(--panel);color:var(--mut);border:1px solid var(--line);padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:600;transition:.2s}
+.tabs button.on,.tabs button:hover{background:var(--acc);color:#04121f;border-color:var(--acc)}
+.mock{display:none;animation:in .35s ease}.mock.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+/* ===== Mockup canvas ===== */
+.app{background:#eef2f6;color:#1d2b3a;border-radius:16px;overflow:hidden;border:1px solid #cfd9e3;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.app .top{background:linear-gradient(135deg,#102a43,#1f6fb5);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px}
+.app .top h4{font-size:1.05rem;flex:1}
+.app .top .hub{background:rgba(255,255,255,.18);padding:5px 12px;border-radius:8px;font-size:.8rem}
+.app .top select,.app select,.app input{font:inherit;padding:8px 10px;border:1.5px solid #d3dce6;border-radius:8px;background:#fff;color:#1d2b3a}
+.app .body{padding:18px}
+.app .kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.app .kp div{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(16,42,67,.08);border-left:4px solid #1f6fb5}
+.app .kp b{display:block;font-size:1.5rem;color:#102a43}
+.app .kp span{font-size:.75rem;color:#6b7f93}
+.app .kp .w{border-left-color:#f5b53d}
+.app .acts{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.btn{padding:9px 16px;border:0;border-radius:9px;font-weight:700;font-size:.85rem;cursor:pointer;transition:.2s}
+.btn.p{background:#1f6fb5;color:#fff}.btn.p:hover{background:#2f8ad8;transform:translateY(-1px)}
+.btn.s{background:#dfe8f1;color:#102a43}.btn.g{background:#2ecc8f;color:#05261a}
+.alert{background:#fff7e6;border:1px solid #f5d28a;color:#7a5200;border-radius:10px;padding:10px 14px;font-size:.85rem;margin-top:8px}
+.split{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+@media(max-width:820px){.split{grid-template-columns:1fr}}
+.panel{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(16,42,67,.08)}
+.panel h5{color:#1f6fb5;text-transform:uppercase;font-size:.72rem;letter-spacing:.5px;margin-bottom:10px}
+.row{display:grid;grid-template-columns:1.1fr 1.2fr .7fr .7fr;gap:6px;margin-bottom:6px;align-items:center;font-size:.85rem}
+.row.h{font-size:.68rem;text-transform:uppercase;color:#6b7f93;font-weight:700}
+.row input,.row select{width:100%;padding:6px 8px}
+.ind{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ind div{background:#f3f7fb;border-radius:9px;padding:9px;text-align:center}
+.ind b{display:block;font-size:1.15rem;color:#102a43}.ind span{font-size:.65rem;color:#6b7f93;text-transform:uppercase}
+.bar{height:10px;border-radius:99px;background:#e1e9f1;overflow:hidden;margin:5px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,#1f6fb5,#2ecc8f)}
+.donut{width:120px;height:120px;border-radius:50%;margin:10px auto;background:conic-gradient(#1f6fb5 0 46%,#2ecc8f 0 68%,#f5b53d 0 82%,#9b59b6 0 93%,#e74c3c 0 100%);position:relative}
+.donut:after{content:"R$ 318,92";position:absolute;inset:24px;background:#fff;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.8rem;color:#102a43}
+.tbl{width:100%;border-collapse:collapse;font-size:.85rem;background:#fff;border-radius:12px;overflow:hidden}
+.tbl th{background:#102a43;color:#fff;padding:9px;text-align:left;font-size:.7rem;text-transform:uppercase}
+.tbl td{padding:9px;border-bottom:1px solid #e6edf4}.tbl tr:hover td{background:#f1f6fb}
+.pill{padding:2px 10px;border-radius:99px;font-size:.7rem;font-weight:700}.pill.ok{background:#d8f5e8;color:#157a50}.pill.off{background:#e8edf2;color:#6b7f93}
+.up{color:#d35400;font-weight:700}.dn{color:#157a50;font-weight:700}
+.spark{letter-spacing:2px;color:#1f6fb5}
+.drawer{background:#fff;border-left:4px solid #1f6fb5;border-radius:12px;padding:14px;margin-top:14px;box-shadow:0 2px 8px rgba(16,42,67,.08)}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;font-size:.82rem}
+.cmp div{background:#f3f7fb;border-radius:8px;padding:8px}
+footer{text-align:center;color:var(--mut);padding:30px;font-size:.8rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Carta Traço — Análise completa</h1>
+  <p>Leitura integral de <code class="i">carta-traco/index.html</code> (2.072 linhas) e <code class="i">AppsScript_cartaTraco.gs</code> (446 linhas): arquitetura, achados priorizados, modelos de refatoração, mockups e o HTML do frontend.</p>
+</header>
+<nav class="toc"><div class="in">
+  <a href="#visao">Visão geral</a><a href="#achados">Achados</a><a href="#refat">Refatoração</a><a href="#mockups">Mockups</a><a href="#roadmap">Roadmap</a><a href="#frontend">HTML do frontend</a><a href="#backend">Backend (.gs)</a>
+</div></nav>
+<main>
+
+<section id="visao">
+  <h2>1. Visão geral</h2>
+  <p class="lead">PWA em página única (sem framework) + Google Apps Script + Google Sheets. Calcula indicadores técnicos do traço e o MCC (custo de material por m³).</p>
+  <div class="grid g4">
+    <div class="card kpi"><b>2.072</b><span>linhas no index.html (CSS ≈ 460 · HTML ≈ 490 · JS ≈ 1.090)</span></div>
+    <div class="card kpi"><b>5</b><span>páginas internas (home, cadastro, consulta, materiais, resumo)</span></div>
+    <div class="card kpi"><b>7</b><span>actions na API (3 GET + 3 POST + utilidades)</span></div>
+    <div class="card kpi"><b>3</b><span>abas no Sheets: cadastro · custos · resumo</span></div>
+  </div>
+  <div class="flow">
+    <div class="node">index.html (SPA)</div><span class="arrow">⇄ fetch GET/POST text/plain</span>
+    <div class="node">Apps Script doGet/doPost</div><span class="arrow">→</span>
+    <div class="node">Google Sheets</div><span class="arrow">·</span><div class="node">Chart.js (CDN)</div>
+  </div>
+  <h3>Regras de negócio</h3>
+  <table>
+    <tr><th>Regra</th><th>Local</th></tr>
+    <tr><td>Valor líquido = <code class="i">valor × (1 − ICMS/100) + frete</code></td><td>cliente · L1760-1765</td></tr>
+    <tr><td>Conversão p/ kg: ton÷1000 · litro×M.E. · m³÷(M.E.×1000) · saco÷50</td><td>cliente · L1244-1254</td></tr>
+    <tr><td>Indicadores: peso, volume (Σkg/M.E.), A/C, tx. argamassa massa/volume, % aditivos, distribuição areias/britas</td><td>cliente · L1117-1164</td></tr>
+    <tr><td>Editar carta = Revisão + 1; salvar inativa a anterior (mesmo nome+unidade)</td><td>cliente L1602 · servidor L214</td></tr>
+    <tr><td>Resumo (MCC) recalculado inteiro a cada salvarCarta</td><td>servidor · L337-426</td></tr>
+  </table>
+</section>
+
+<section id="achados">
+  <h2>2. Achados <small>priorizados por severidade</small></h2>
+  <table>
+    <tr><th>#</th><th>Sev.</th><th>Problema</th><th>Impacto</th></tr>
+    <tr><td>C1</td><td><span class="tag t-c">Crítico</span></td><td><code class="i">getElementById('fornecedores-list')</code> não existe (L1872). <code class="i">renderCustosList</code> lança TypeError e o <code class="i">catch</code> troca a tabela por "Erro ao carregar."</td><td>Lista de materiais cadastrados nunca aparece com dados</td></tr>
+    <tr><td>C2</td><td><span class="tag t-c">Crítico</span></td><td>Web App "Qualquer pessoa", sem token; URL no front; ID da planilha hardcoded</td><td>Leitura/escrita aberta</td></tr>
+    <tr><td>C3</td><td><span class="tag t-c">Crítico</span></td><td><code class="i">onclick='abrirDetalhe(JSON…)'</code> com <code class="i">&amp;#39;</code> decodificado pelo navegador (L1476)</td><td>XSS armazenado</td></tr>
+    <tr><td>C4</td><td><span class="tag t-c">Crítico</span></td><td>Resumo do servidor não converte unidades nem casa fornecedor; o front sim</td><td>MCC do Resumo ≠ MCC da Consulta</td></tr>
+    <tr><td>A1</td><td><span class="tag t-a">Alto</span></td><td><code class="i">inativarVersaoAnterior</code> ignora a revisão</td><td>Salvar Rev.1 após Rev.3 desativa a Rev.3</td></tr>
+    <tr><td>A2</td><td><span class="tag t-a">Alto</span></td><td>Sem <code class="i">LockService</code></td><td>Corrida corrompe linhas/resumo</td></tr>
+    <tr><td>A3</td><td><span class="tag t-a">Alto</span></td><td><code class="i">setValue</code> por célula em loop</td><td>Lento / quota</td></tr>
+    <tr><td>A4</td><td><span class="tag t-a">Alto</span></td><td><code class="i">getToday()</code> usa UTC (L1061)</td><td>Após ~21h BRT a data sai "amanhã"</td></tr>
+    <tr><td>A5</td><td><span class="tag t-a">Alto</span></td><td><code class="i">custo-material</code> é input texto; JS popula como select (L1741)</td><td>Nome divergente ⇒ custo R$ 0,00 silencioso</td></tr>
+    <tr><td>A6</td><td><span class="tag t-a">Alto</span></td><td>Schema EAV, sem paginação, agrupamento no cliente</td><td>Escala ruim</td></tr>
+    <tr><td>A7</td><td><span class="tag t-a">Alto</span></td><td>Servidor confia no <code class="i">valorLiquido</code> do cliente</td><td>Dado financeiro não validado</td></tr>
+    <tr><td>M</td><td><span class="tag t-m">Médio</span></td><td>Duplicação (tabela MCC ×3, indicadores ×3, unidades ×5); <code class="i">getCustos</code> sem cache; <code class="i">aglomerante</code> não usado; A/C ignora adição; sem fechamento de volume; fornecedor se perde ao editar; sem editar/excluir custo; a11y (zoom bloqueado, sem teclado/ESC); toast sem clearTimeout</td><td>Manutenção e UX</td></tr>
+  </table>
+  <p class="lead" style="margin-top:10px">⚠ Fórmulas de A/C e taxa de argamassa devem ser validadas com o laboratório antes de qualquer mudança.</p>
+</section>
+
+<section id="refat">
+  <h2>3. Modelos de refatoração</h2>
+  <div class="grid g2">
+    <div class="card"><h3 style="margin-top:0">A · Correções rápidas <small>1 dia</small></h3><p class="lead">datalist (C1), data local (A4), delegação de eventos sem JSON inline (C3), select de material (A5), LockService + inativação em lote (A1-A3).</p></div>
+    <div class="card"><h3 style="margin-top:0">B · Modularização ES Modules <small>3-4 dias</small></h3><p class="lead">Domínio puro (<code class="i">mcc.js</code>, <code class="i">indicadores.js</code>, <code class="i">conversao.js</code>), UI reutilizável, testes com <code class="i">node --test</code>.</p></div>
+    <div class="card"><h3 style="margin-top:0">C · Backend normalizado <small>2 dias</small></h3><p class="lead">Abas <code class="i">cartas</code>/<code class="i">carta_itens</code>/<code class="i">custos</code>/<code class="i">config</code>, token, validação, resumo com a mesma regra do front.</p></div>
+    <div class="card"><h3 style="margin-top:0">D · Migração PostgreSQL + SSO <small>1-2 sem</small></h3><p class="lead">Índice único parcial para carta ativa, valor líquido gerado, view de custo vigente. Proposta baseada na estrutura de <code class="i">unificado/usinas</code> (não lida em detalhe).</p></div>
+  </div>
+  <details open><summary>A · Código — correções rápidas</summary>
+<pre>// C1
+&lt;datalist id="fornecedores-list"&gt;&lt;/datalist&gt;
+
+// A4
+function getToday() {
+  const d = new Date(), p = n =&gt; String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
+}
+
+// C3 — delegação + Map
+const cartasIndex = new Map();
+container.addEventListener('click', e =&gt; {
+  const el = e.target.closest('.carta-card');
+  if (el) abrirDetalhe(cartasIndex.get(el.dataset.key));
+});
+
+// Apps Script — A1/A2/A3
+function salvarCarta(payload) {
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    if (status === 'Ativa') inativarRevisoesMenores(sheet, nome, unidade, revisao);
+    sheet.getRange(sheet.getLastRow()+1, 1, rows.length, 14).setValues(rows);
+    atualizarResumo();
+  } finally { lock.releaseLock(); }
+}</pre></details>
+  <details><summary>B · Estrutura de pastas e domínio</summary>
+<pre>carta-traco/
+  index.html            # estrutura + &lt;script type="module" src="src/main.js"&gt;
+  src/
+    main.js  config.js
+    api/client.js                 # cache + timeout + token
+    domain/ indicadores.js mcc.js conversao.js cartas.js   # puro e testável
+    ui/ toast.js modal.js table.js indicadores-view.js mcc-view.js chart.js
+    pages/ cadastro.js consulta.js materiais.js resumo.js importacao.js
+    print/carta-print.js
+  styles/ tokens.css base.css components.css print.css
+  tests/domain.test.js
+
+// domain/mcc.js
+export function calcularMCC(materiais, custos, unidade) {
+  const itens = materiais.map(m =&gt; {
+    const c = custos.find(c =&gt; c.unidade === unidade &amp;&amp;
+      c.material.toLowerCase() === m.produto.toLowerCase() &amp;&amp;
+      (m.fornecedor === '-' || c.fornecedor === m.fornecedor));
+    const unit = c ? converterCustoParaKg(+c.valorLiquido, c.unidadeMedida, m.massaEspecifica) : 0;
+    return { ...m, custoUnitario: unit, custoTotal: m.quantidade * unit, semCusto: !c };
+  });
+  return { itens, total: itens.reduce((s,i)=&gt;s+i.custoTotal,0), pendencias: itens.filter(i=&gt;i.semCusto) };
+}</pre></details>
+  <details><summary>D · SQL PostgreSQL proposto</summary>
+<pre>CREATE TABLE ct_carta (
+  id BIGSERIAL PRIMARY KEY, nome TEXT NOT NULL, revisao INT NOT NULL, unidade TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('Ativa','Inativa')), vigencia DATE NOT NULL,
+  observacao TEXT, criado_por TEXT NOT NULL, criado_em TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (nome, unidade, revisao));
+CREATE UNIQUE INDEX ux_ct_carta_ativa ON ct_carta (nome, unidade) WHERE status = 'Ativa';
+
+CREATE TABLE ct_carta_item (
+  carta_id BIGINT REFERENCES ct_carta(id) ON DELETE CASCADE, material TEXT NOT NULL, fornecedor TEXT,
+  qtd_kg NUMERIC(10,3) NOT NULL CHECK (qtd_kg &gt;= 0), massa_esp NUMERIC(5,3) NOT NULL,
+  PRIMARY KEY (carta_id, material));
+
+CREATE TABLE ct_custo (
+  id BIGSERIAL PRIMARY KEY, unidade TEXT NOT NULL, fornecedor TEXT NOT NULL, material TEXT NOT NULL,
+  un_medida TEXT NOT NULL, valor NUMERIC(12,4) NOT NULL, icms_pct NUMERIC(5,2) NOT NULL DEFAULT 0,
+  frete NUMERIC(12,4) NOT NULL DEFAULT 0, tipo_frete TEXT CHECK (tipo_frete IN ('CIF','FOB')),
+  valor_liquido NUMERIC(12,4) GENERATED ALWAYS AS (valor*(1-icms_pct/100)+frete) STORED,
+  vigente_desde DATE NOT NULL DEFAULT current_date);
+CREATE VIEW ct_custo_vigente AS SELECT DISTINCT ON (unidade,fornecedor,material) *
+  FROM ct_custo ORDER BY unidade,fornecedor,material,vigente_desde DESC,id DESC;</pre></details>
+</section>
+
+<section id="mockups">
+  <h2>4. Mockups <small>proposta de redesenho, interativos</small></h2>
+  <div class="tabs" role="tablist">
+    <button class="on" data-m="m1">M1 · Home com KPIs</button>
+    <button data-m="m2">M2 · Editor ao vivo</button>
+    <button data-m="m3">M3 · Consulta + revisões</button>
+    <button data-m="m4">M4 · Materiais / preços</button>
+  </div>
+
+  <div class="mock on" id="m1"><div class="app">
+    <div class="top"><span class="hub">← Hub</span><h4>📋 Cartas Traço</h4><select><option>Todas as unidades</option><option>Campinas</option><option>Pederneiras</option><option>Ribeirão Preto</option><option>Noroeste</option></select></div>
+    <div class="body">
+      <div class="kp"><div><b>42</b><span>cartas ativas</span></div><div><b>R$ 312,40</b><span>MCC médio / m³</span></div><div class="w"><b>7</b><span>materiais sem custo ⚠</span></div><div><b>12/10</b><span>último reajuste cimento</span></div></div>
+      <div class="acts"><button class="btn p">＋ Nova carta</button><button class="btn s">🔍 Consultar</button><button class="btn s">💰 Materiais</button><button class="btn s">📊 Resumo</button></div>
+      <div class="alert">⚠ FCK 40 – Campinas: <b>Aditivo 2</b> sem custo cadastrado. <a href="#">Resolver</a></div>
+      <div class="alert">⚠ FCK 30 – Noroeste: custo do <b>Cimento CP V</b> desatualizado há 60 dias.</div>
+    </div>
+  </div></div>
+
+  <div class="mock" id="m2"><div class="app">
+    <div class="top"><span class="hub">← Voltar</span><h4>Editar carta · FCK 25 — Rev. 3</h4><button class="btn g">💾 Salvar Rev. 3</button></div>
+    <div class="body"><div class="split">
+      <div class="panel"><h5>Composição (kg/m³)</h5>
+        <div class="row h"><span>Material</span><span>Fornecedor</span><span>kg</span><span>M.E.</span></div>
+        <div class="row"><span>Cimento CP V</span><select><option>Votorantim</option></select><input value="380"><input value="3,150"></div>
+        <div class="row"><span>Areia Fina</span><select><option>Porto A</option></select><input value="420"><input value="2,630"></div>
+        <div class="row"><span>Areia Industrial</span><select><option>Pedreira B</option></select><input value="310"><input value="2,650"></div>
+        <div class="row"><span>Brita 1</span><select><option>Pedreira B</option></select><input value="980"><input value="2,750"></div>
+        <div class="row"><span>Água</span><select><option>—</option></select><input value="171"><input value="1,000"></div>
+        <div class="row"><span>Aditivo 1</span><select><option>Sika</option></select><input value="2,4"><input value="1,200"></div>
+      </div>
+      <div class="panel"><h5>Indicadores · ao vivo</h5>
+        <div class="ind"><div><b>2.263</b><span>peso kg/m³</span></div><div><b>0,45</b><span>A/C</span></div><div><b>52,1%</b><span>tx. argamassa</span></div><div><b>−3,2 L</b><span>fechamento ✔</span></div></div>
+        <div class="bar"><i style="width:68%"></i></div>
+        <div class="donut"></div>
+        <div class="alert">⚠ Aditivo 2 sem custo — MCC parcial</div>
+        <button class="btn s" style="margin-top:10px;width:100%">Comparar com Rev. 2</button>
+      </div>
+    </div></div>
+  </div></div>
+
+  <div class="mock" id="m3"><div class="app">
+    <div class="top"><span class="hub">← Voltar</span><h4>Consulta de cartas</h4><input placeholder="🔎 Buscar nome…"></div>
+    <div class="body">
+      <div class="acts"><select><option>Todas as unidades</option></select><select><option>Status: Ativas</option></select></div>
+      <table class="tbl"><tr><th>Carta</th><th>Rev</th><th>Unidade</th><th>Vigência</th><th>MCC</th><th>Status</th></tr>
+        <tr><td>FCK 25</td><td>3</td><td>Campinas</td><td>12/10/26</td><td>R$ 318,92</td><td><span class="pill ok">Ativa</span></td></tr>
+        <tr><td>FCK 30</td><td>5</td><td>Campinas</td><td>01/10/26</td><td>R$ 341,10</td><td><span class="pill ok">Ativa</span></td></tr>
+        <tr><td>FCK 25</td><td>2</td><td>Campinas</td><td>02/08/26</td><td>R$ 312,30</td><td><span class="pill off">Inativa</span></td></tr></table>
+      <div class="drawer"><b>FCK 25 · Rev. 3 · Campinas</b>
+        <div class="cmp"><div>Rev. 2 — MCC R$ 312,30</div><div>Rev. 3 — MCC R$ 318,92 <span class="up">▲ 2,1%</span></div><div>A/C 0,46</div><div>A/C 0,45 <span class="dn">▼</span></div></div>
+        <div class="acts"><button class="btn p">✏️ Nova revisão</button><button class="btn s">🖨️ PDF</button></div></div>
+    </div>
+  </div></div>
+
+  <div class="mock" id="m4"><div class="app">
+    <div class="top"><span class="hub">← Voltar</span><h4>Materiais e custos</h4><button class="btn g">＋ Novo custo</button></div>
+    <div class="body">
+      <div class="acts"><select><option>Cimento CP V</option></select><select><option>Todas as unidades</option></select><button class="btn s">📥 Importar</button></div>
+      <table class="tbl"><tr><th>Fornecedor</th><th>Líquido / ton</th><th>Frete</th><th>Vigente desde</th><th>Tendência</th></tr>
+        <tr><td>Votorantim</td><td>R$ 612,00</td><td>CIF</td><td>12/10/26</td><td><span class="spark">▁▂▃▅▇</span> <span class="up">+4,1%</span></td></tr>
+        <tr><td>CSN</td><td>R$ 598,30</td><td>FOB</td><td>01/09/26</td><td><span class="spark">▃▃▄▄▅</span> <span class="up">+1,2%</span></td></tr>
+        <tr><td>InterCement</td><td>R$ 604,10</td><td>CIF</td><td>20/09/26</td><td><span class="spark">▅▅▄▃▃</span> <span class="dn">−2,0%</span></td></tr></table>
+      <div class="alert">ℹ Ao salvar um novo custo, o sistema lista as cartas que serão impactadas e o Δ MCC estimado.</div>
+    </div>
+  </div></div>
+</section>
+
+<section id="roadmap">
+  <h2>5. Roadmap</h2>
+  <table><tr><th>Fase</th><th>Entrega</th><th>Esforço</th><th>Risco</th></tr>
+    <tr><td>0</td><td>Modelo A (C1, A4, C3, A5, A1-A3)</td><td>1 dia</td><td>Baixo</td></tr>
+    <tr><td>1</td><td>Token + paridade MCC servidor↔front (C2, C4)</td><td>2 dias</td><td>Baixo</td></tr>
+    <tr><td>2</td><td>Modularização + testes de domínio</td><td>3-4 dias</td><td>Médio</td></tr>
+    <tr><td>3</td><td>Redesenho UI (M1-M4), a11y, comparação de revisões</td><td>4-5 dias</td><td>Médio</td></tr>
+    <tr><td>4</td><td>Migração PostgreSQL/SSO</td><td>1-2 sem</td><td>Alto</td></tr></table>
+</section>
+
+<section id="frontend">
+  <h2>6. HTML do frontend <small>carta-traco/index.html — código-fonte completo</small></h2>
+  <p class="lead">Incluído integralmente (escapado) para consulta junto ao relatório.</p>
+  <details><summary>Expandir index.html (CSS + HTML + JS)</summary><pre>&lt;!doctype html&gt;
+&lt;html lang=&quot;pt-BR&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;
+  &lt;title&gt;CONCRETRACK • Cartas Tra&#231;o&lt;/title&gt;
+
+  &lt;!-- PWA (manifest unificado na raiz) --&gt;
+  &lt;link rel=&quot;manifest&quot; href=&quot;../manifest.json&quot;&gt;
+  &lt;meta name=&quot;theme-color&quot; content=&quot;#2F3640&quot;&gt;
+  &lt;meta name=&quot;apple-mobile-web-app-capable&quot; content=&quot;yes&quot;&gt;
+  &lt;meta name=&quot;apple-mobile-web-app-status-bar-style&quot; content=&quot;black-translucent&quot;&gt;
+
+  &lt;!-- anti-cache --&gt;
+  &lt;meta http-equiv=&quot;Cache-Control&quot; content=&quot;no-cache, no-store, must-revalidate&quot; /&gt;
+  &lt;meta http-equiv=&quot;Pragma&quot; content=&quot;no-cache&quot; /&gt;
+  &lt;meta http-equiv=&quot;Expires&quot; content=&quot;0&quot; /&gt;
+
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;style&gt;
+/* ============================================
+   CARTAS TRA&#199;O — Estilos
+   ============================================ */
+:root {
+  --primary: #1a5276;
+  --primary-light: #2980b9;
+  --primary-dark: #0e3a54;
+  --secondary: #27ae60;
+  --secondary-light: #2ecc71;
+  --danger: #e74c3c;
+  --warning: #f39c12;
+  --info: #3498db;
+  --bg: #f0f2f5;
+  --card-bg: #ffffff;
+  --text: #2c3e50;
+  --text-light: #7f8c8d;
+  --border: #dfe6e9;
+  --shadow: 0 2px 8px rgba(0,0,0,0.1);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.15);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --nav-height: 64px;
+  --header-height: 70px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Header ---- */
+.header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  padding: 16px 20px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+.header h1 { font-size: 1.3rem; font-weight: 700; }
+.header .subtitle { font-size: 0.75rem; opacity: 0.85; margin-top: 2px; }
+.header-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.btn-hub {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.18); color: #fff; border: none;
+  border-radius: 8px; padding: 6px 12px; font-size: 0.82rem;
+  font-weight: 700; cursor: pointer; text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-hub:hover { background: rgba(255,255,255,0.32); }
+
+/* ---- Main Content ---- */
+.main-content { padding: 12px; max-width: 900px; margin: 0 auto; }
+
+/* ---- Pages ---- */
+.page { display: none; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page-header { margin-bottom: 16px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.page-header h2 {
+  font-size: 1.2rem; color: var(--primary);
+  border-bottom: 2px solid var(--primary-light); padding-bottom: 8px;
+  flex: 1;
+}
+.btn-icon-consulta {
+  background: var(--primary-light); color: #fff; border: none; border-radius: 50%;
+  width: 36px; height: 36px; font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.2s; box-shadow: var(--shadow);
+}
+.btn-icon-consulta:hover { background: var(--primary); transform: scale(1.1); }
+
+/* ---- Home Page ---- */
+.home-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px; padding: 20px 0;
+}
+.home-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 32px 24px; text-align: center;
+  cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent;
+}
+.home-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); }
+.home-card:active { transform: translateY(0); }
+.home-card-icon { font-size: 3rem; margin-bottom: 14px; }
+.home-card-title { font-size: 1.3rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.home-card-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; }
+
+/* ---- Back Button ---- */
+.btn-back {
+  background: none; border: none; color: var(--primary-light);
+  font-size: 0.95rem; font-weight: 600; cursor: pointer;
+  padding: 6px 0; margin-bottom: 4px; display: inline-flex;
+  align-items: center; gap: 4px; transition: color 0.2s;
+}
+.btn-back:hover { color: var(--primary); }
+
+/* ---- Form Card ---- */
+.form-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px;
+}
+.form-section {
+  margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.form-section:last-child { border-bottom: none; margin-bottom: 0; }
+.form-section h3 {
+  font-size: 1rem; color: var(--primary); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 6px;
+}
+.form-hint { font-size: 0.8rem; color: var(--text-light); margin-bottom: 12px; }
+.form-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.form-group { flex: 1; min-width: 180px; }
+.form-group-small { flex: 0 0 100px; min-width: 80px; }
+.form-group label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: var(--text); margin-bottom: 4px;
+}
+.form-group input, .form-group select {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 0.9rem;
+  transition: border-color 0.2s; background: white; color: var(--text);
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(41,128,185,0.15);
+}
+.readonly-field { background: #f7f9fa !important; font-weight: 600; color: var(--secondary) !important; }
+.checkbox-label {
+  display: flex !important; align-items: center; gap: 8px;
+  font-size: 0.85rem !important; cursor: pointer; padding-top: 22px;
+}
+.checkbox-label input[type=&quot;checkbox&quot;] { width: 18px; height: 18px; cursor: pointer; }
+
+/* ---- Material Grid (Tra&#231;o) ---- */
+.mat-grid { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+.mat-grid-header {
+  display: grid; grid-template-columns: 1fr 1fr 120px 130px; gap: 0;
+  background: var(--primary); color: white; font-size: 0.75rem;
+  font-weight: 700; text-transform: uppercase;
+}
+.mat-grid-header span { padding: 8px 10px; }
+.mat-grid-row {
+  display: grid; grid-template-columns: 1fr 1fr 120px 130px; gap: 0;
+  border-bottom: 1px solid var(--border); align-items: center;
+}
+.mat-grid-row:nth-child(even) { background: #f8f9fa; }
+.mat-grid-row:hover { background: #eef2f7; }
+.mat-grid-row label { padding: 6px 10px; font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.mat-grid-row input {
+  width: 100%; padding: 6px 8px; border: none;
+  border-left: 1px solid var(--border); font-size: 0.85rem;
+  background: transparent; outline: none;
+}
+.mat-grid-row input[type=&quot;number&quot;] { text-align: right; }
+.mat-grid-row input:focus { background: #fff8e1; }
+.mat-grid-row select {
+  width: 100%; padding: 5px 6px; border: none;
+  border-left: 1px solid var(--border); font-size: 0.82rem;
+  background: transparent; outline: none; cursor: pointer;
+  color: var(--text); appearance: auto;
+}
+.mat-grid-row select:focus { background: #fff8e1; }
+.mat-tipo-cimento {
+  font-weight: 600 !important; font-size: 0.85rem !important;
+  color: var(--text) !important; border-left: none !important;
+  padding: 6px 10px !important;
+}
+
+/* ---- Indicadores T&#233;cnicos ---- */
+.indicadores-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px; margin-bottom: 16px;
+}
+.indicador-card {
+  background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 12px; text-align: center; display: flex;
+  flex-direction: column; gap: 2px;
+}
+.indicador-label {
+  font-size: 0.7rem; font-weight: 600; color: var(--text-light);
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.indicador-valor { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
+.indicador-unit { font-size: 0.7rem; color: var(--text-light); }
+.distribuicao-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.dist-box {
+  flex: 1; min-width: 200px; background: #f8f9fa;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px;
+}
+.dist-box h4 { font-size: 0.8rem; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; }
+.dist-item {
+  display: flex; justify-content: space-between; padding: 4px 0;
+  font-size: 0.85rem; border-bottom: 1px solid var(--border);
+}
+.dist-item:last-child { border-bottom: none; }
+.dist-item .dist-name { color: var(--text); }
+.dist-item .dist-pct { font-weight: 700; color: var(--primary); }
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; border: none; border-radius: var(--radius-sm);
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; text-decoration: none;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-light); }
+.btn-secondary { background: #ecf0f1; color: var(--text); }
+.btn-secondary:hover { background: #dfe6e9; }
+.btn-info { background: var(--info); color: white; }
+.btn-info:hover { background: #2487c7; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-small { padding: 7px 14px; font-size: 0.8rem; }
+.form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+/* ---- Filter Bar ---- */
+.filter-bar {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px;
+  display: flex; gap: 12px; align-items: flex-end;
+  flex-wrap: wrap; margin-bottom: 16px;
+}
+.section-header-row {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap; margin-bottom: 12px;
+}
+.section-header-row h3 { margin-bottom: 0; }
+
+/* ---- Results ---- */
+.results-container { min-height: 100px; }
+.empty-state { text-align: center; color: var(--text-light); padding: 30px; font-size: 0.9rem; }
+
+/* ---- Carta Card ---- */
+.carta-card {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px; margin-bottom: 12px;
+  cursor: pointer; transition: all 0.2s; border-left: 4px solid var(--secondary);
+}
+.carta-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.carta-card.inativa { border-left-color: var(--text-light); opacity: 0.7; }
+.carta-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.carta-card-title { font-size: 1rem; font-weight: 700; color: var(--primary); }
+.carta-card-badge {
+  padding: 3px 10px; border-radius: 12px; font-size: 0.7rem;
+  font-weight: 700; text-transform: uppercase;
+}
+.badge-ativa { background: #d5f5e3; color: #1e8449; }
+.badge-inativa { background: #fadbd8; color: #c0392b; }
+.carta-card-info { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-light); }
+.carta-card-info span { display: flex; align-items: center; gap: 4px; }
+
+/* ---- Cost Table ---- */
+.cost-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 10px; }
+.cost-table th {
+  background: var(--primary); color: white; padding: 8px 10px;
+  text-align: left; font-weight: 600; font-size: 0.75rem; text-transform: uppercase;
+}
+.cost-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+.cost-table tr:nth-child(even) { background: #f8f9fa; }
+.cost-table tr:hover { background: #eef2f7; }
+.cost-table .text-right { text-align: right; }
+.cost-table .total-row { background: #eaf2f8 !important; font-weight: 700; }
+.cost-table .total-row td { border-top: 2px solid var(--primary); }
+
+/* ---- MCC Info ---- */
+.mcc-info { display: flex; justify-content: center; margin-bottom: 12px; }
+.mcc-total {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white; padding: 12px 24px; border-radius: var(--radius);
+  font-size: 1.1rem; display: flex; align-items: center; gap: 10px;
+}
+.mcc-total strong { font-size: 1.4rem; }
+
+/* ---- Chart ---- */
+.chart-container { max-width: 350px; margin: 0 auto 16px; }
+
+/* ---- Modal ---- */
+.modal {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 2000;
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.modal.hidden { display: none; }
+.modal-content {
+  background: white; border-radius: var(--radius);
+  max-height: 90vh; overflow-y: auto; width: 100%;
+  max-width: 600px; box-shadow: var(--shadow-lg);
+}
+.modal-large { max-width: 1100px; }
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: white; z-index: 1;
+}
+.modal-header h3 { font-size: 1.05rem; color: var(--primary); }
+.modal-close {
+  background: none; border: none; font-size: 1.5rem; cursor: pointer;
+  color: var(--text-light); width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; transition: background 0.2s;
+}
+.modal-close:hover { background: #f0f0f0; }
+.modal-body { padding: 20px; }
+.modal-footer {
+  display: flex; gap: 10px; justify-content: flex-end;
+  padding: 12px 20px; border-top: 1px solid var(--border);
+}
+
+/* ---- Loading Overlay ---- */
+.loading-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.92); z-index: 5000;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 12px;
+}
+.loading-overlay.hidden { display: none; }
+.spinner {
+  width: 40px; height: 40px; border: 4px solid var(--border);
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--primary); color: white; padding: 12px 24px;
+  border-radius: var(--radius); z-index: 3000; font-size: 0.9rem;
+  box-shadow: var(--shadow-lg); animation: toastIn 0.3s ease;
+  max-width: 90%; text-align: center;
+}
+.toast.hidden { display: none; }
+.toast.success { background: var(--secondary); }
+.toast.error { background: var(--danger); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ---- Detail Section in Modal ---- */
+.detail-section { margin-bottom: 16px; }
+.detail-section h4 {
+  font-size: 0.9rem; color: var(--primary); margin-bottom: 8px;
+  padding-bottom: 4px; border-bottom: 1px solid var(--border);
+}
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.detail-item { font-size: 0.85rem; }
+.detail-item .label { font-weight: 600; color: var(--text-light); font-size: 0.75rem; text-transform: uppercase; }
+.detail-item .value { color: var(--text); margin-top: 2px; }
+
+/* ---- Print Styles ---- */
+.print-area { display: none; }
+@media print {
+  @page { size: A4 portrait; margin: 15mm 18mm 15mm 18mm; }
+  html, body { width: 210mm; height: 297mm; margin: 0; padding: 0; background: #fff; }
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible !important; display: block !important; }
+  .print-area {
+    position: absolute; top: 0; left: 0; width: 100%;
+    padding: 0; font-family: &#39;Segoe UI&#39;, Arial, sans-serif; font-size: 9pt; color: #222;
+  }
+  .print-area table { display: table !important; }
+  .print-area thead { display: table-header-group !important; }
+  .print-area tbody { display: table-row-group !important; }
+  .print-area tr { display: table-row !important; }
+  .print-area th, .print-area td { display: table-cell !important; }
+  /* Header Banner */
+  .print-area .print-banner {
+    display: flex !important; align-items: center; justify-content: space-between;
+    border-bottom: 3px solid #1a5276; padding-bottom: 10px; margin-bottom: 14px;
+  }
+  .print-area .print-banner-left { font-size: 16pt; font-weight: 800; color: #1a5276; letter-spacing: 0.5px; }
+  .print-area .print-banner-right { text-align: right; font-size: 8pt; color: #555; line-height: 1.5; }
+  /* Info Grid */
+  .print-area .print-info-grid {
+    display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 6px 18px;
+    margin-bottom: 14px; padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; background: #fafbfc;
+  }
+  .print-area .print-info-item { font-size: 8.5pt; }
+  .print-area .print-info-item .label { font-weight: 700; color: #1a5276; text-transform: uppercase; font-size: 7pt; }
+  .print-area .print-info-item .value { margin-top: 1px; color: #222; }
+  /* Section Titles */
+  .print-area .print-section-title {
+    font-size: 10pt; font-weight: 700; color: #1a5276; text-transform: uppercase;
+    border-bottom: 2px solid #2980b9; padding-bottom: 3px; margin: 14px 0 8px;
+  }
+  /* Indicators Grid */
+  .print-area .print-ind-grid {
+    display: grid !important; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 10px;
+  }
+  .print-area .print-ind-card {
+    text-align: center; padding: 6px 4px; border: 1px solid #ddd; border-radius: 4px; background: #f4f7fa;
+  }
+  .print-area .print-ind-label { font-size: 6.5pt; font-weight: 700; color: #555; text-transform: uppercase; }
+  .print-area .print-ind-valor { font-size: 12pt; font-weight: 800; color: #1a5276; margin: 2px 0; }
+  .print-area .print-ind-unit { font-size: 6.5pt; color: #777; }
+  /* Distribution Row */
+  .print-area .print-dist-row { display: flex !important; gap: 18px; margin-bottom: 12px; }
+  .print-area .print-dist-box {
+    flex: 1; border: 1px solid #ddd; border-radius: 4px; padding: 8px 10px;
+  }
+  .print-area .print-dist-box h4 { font-size: 8pt; color: #1a5276; margin-bottom: 4px; text-transform: uppercase; }
+  .print-area .print-dist-item { display: flex !important; justify-content: space-between; font-size: 8.5pt; padding: 2px 0; border-bottom: 1px dotted #ddd; }
+  .print-area .print-dist-item:last-child { border-bottom: none; }
+  /* MCC Total Highlight */
+  .print-area .print-mcc-total {
+    text-align: center; font-size: 12pt; font-weight: 800; color: #1a5276;
+    padding: 8px; border: 2px solid #1a5276; border-radius: 4px; margin-bottom: 10px; background: #eaf2f8;
+  }
+  /* Tables */
+  .print-area .cost-table { width: 100%; border-collapse: collapse; font-size: 8pt; margin-bottom: 10px; }
+  .print-area .cost-table th {
+    background: #1a5276 !important; color: white !important; padding: 6px 8px;
+    font-weight: 700; text-transform: uppercase; font-size: 7pt; letter-spacing: 0.3px;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .print-area .cost-table td { padding: 5px 8px; border-bottom: 1px solid #e0e0e0; }
+  .print-area .cost-table tr:nth-child(even) { background: #f8f9fa !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-area .cost-table .total-row {
+    background: #eaf2f8 !important; font-weight: 800;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .print-area .cost-table .total-row td { border-top: 2px solid #1a5276; }
+  /* Footer */
+  .print-area .print-footer {
+    margin-top: 20px; padding-top: 8px; border-top: 1px solid #ccc;
+    display: flex !important; justify-content: space-between; font-size: 7pt; color: #999;
+  }
+  .header, .modal, .loading-overlay, .toast { display: none !important; }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+  .header h1 { font-size: 1.1rem; }
+  .main-content { padding: 8px; }
+  .form-card { padding: 14px; }
+  .form-row { flex-direction: column; gap: 8px; }
+  .form-group { min-width: 100%; }
+  .form-group-small { flex: 1; min-width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .form-actions { flex-direction: column; }
+  .btn { justify-content: center; }
+  .cost-table { font-size: 0.7rem; }
+  .cost-table th, .cost-table td { padding: 5px 6px; }
+  .detail-grid { grid-template-columns: 1fr 1fr; }
+  .mcc-total { font-size: 0.95rem; }
+  .mcc-total strong { font-size: 1.2rem; }
+}
+&lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  &lt;!-- Loading Overlay --&gt;
+  &lt;div id=&quot;loading-overlay&quot; class=&quot;loading-overlay hidden&quot;&gt;
+    &lt;div class=&quot;spinner&quot;&gt;&lt;/div&gt;
+    &lt;p&gt;Carregando...&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Toast Notification --&gt;
+  &lt;div id=&quot;toast&quot; class=&quot;toast hidden&quot;&gt;&lt;/div&gt;
+
+  &lt;!-- Header --&gt;
+  &lt;header class=&quot;header&quot; style=&quot;position:relative;&quot;&gt;
+    &lt;a class=&quot;btn-hub&quot; href=&quot;../index.html&quot;&gt;← Hub&lt;/a&gt;
+    &lt;h1&gt;📋 Cartas Tra&#231;o&lt;/h1&gt;
+    &lt;p class=&quot;subtitle&quot;&gt;Reposit&#243;rio de Composi&#231;&#245;es&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;!-- Main Content --&gt;
+  &lt;main class=&quot;main-content&quot;&gt;
+
+    &lt;!-- ==================== HOME PAGE ==================== --&gt;
+    &lt;section id=&quot;page-home&quot; class=&quot;page active&quot;&gt;
+      &lt;div class=&quot;home-grid&quot;&gt;
+        &lt;div class=&quot;home-card&quot; data-page=&quot;cadastro&quot;&gt;
+          &lt;div class=&quot;home-card-icon&quot;&gt;📝&lt;/div&gt;
+          &lt;div class=&quot;home-card-title&quot;&gt;Cadastro&lt;/div&gt;
+          &lt;div class=&quot;home-card-desc&quot;&gt;Cadastrar novas cartas tra&#231;o com composi&#231;&#227;o de materiais&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;home-card&quot; data-page=&quot;consulta&quot;&gt;
+          &lt;div class=&quot;home-card-icon&quot;&gt;🔍&lt;/div&gt;
+          &lt;div class=&quot;home-card-title&quot;&gt;Consulta&lt;/div&gt;
+          &lt;div class=&quot;home-card-desc&quot;&gt;Consultar, visualizar e imprimir cartas tra&#231;o existentes&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;home-card&quot; data-page=&quot;materiais&quot;&gt;
+          &lt;div class=&quot;home-card-icon&quot;&gt;💰&lt;/div&gt;
+          &lt;div class=&quot;home-card-title&quot;&gt;Materiais&lt;/div&gt;
+          &lt;div class=&quot;home-card-desc&quot;&gt;Gerenciar custos de materiais e fornecedores&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;home-card&quot; data-page=&quot;resumo&quot;&gt;
+          &lt;div class=&quot;home-card-icon&quot;&gt;📊&lt;/div&gt;
+          &lt;div class=&quot;home-card-title&quot;&gt;Resumo&lt;/div&gt;
+          &lt;div class=&quot;home-card-desc&quot;&gt;Vis&#227;o geral das cartas tra&#231;o com MCC consolidado&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- ==================== PAGE 1: CADASTRO ==================== --&gt;
+    &lt;section id=&quot;page-cadastro&quot; class=&quot;page&quot;&gt;
+      &lt;div class=&quot;page-header&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn-back&quot; data-page=&quot;home&quot;&gt;← Voltar&lt;/button&gt;
+        &lt;h2&gt;Cadastro de Carta Tra&#231;o&lt;/h2&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn-icon-consulta&quot; data-page=&quot;consulta&quot; title=&quot;Consultar Cartas&quot;&gt;🔍&lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;form id=&quot;form-cadastro&quot; class=&quot;form-card&quot;&gt;
+        &lt;!-- Informa&#231;&#245;es da Carta --&gt;
+        &lt;div class=&quot;form-section&quot;&gt;
+          &lt;h3&gt;Informa&#231;&#245;es da Carta&lt;/h3&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;carta-nome&quot;&gt;Nome da Carta Tra&#231;o&lt;/label&gt;
+              &lt;input type=&quot;text&quot; id=&quot;carta-nome&quot; placeholder=&quot;Ex: Concreto FCK 25&quot; required&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;form-group form-group-small&quot;&gt;
+              &lt;label for=&quot;carta-revisao&quot;&gt;Revis&#227;o&lt;/label&gt;
+              &lt;input type=&quot;number&quot; id=&quot;carta-revisao&quot; min=&quot;0&quot; value=&quot;0&quot; required&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;carta-unidade&quot;&gt;Unidade de Vig&#234;ncia&lt;/label&gt;
+              &lt;select id=&quot;carta-unidade&quot; required&gt;
+                &lt;option value=&quot;&quot;&gt;Selecione a unidade...&lt;/option&gt;
+                &lt;option value=&quot;Campinas&quot;&gt;Campinas&lt;/option&gt;
+                &lt;option value=&quot;Pederneiras&quot;&gt;Pederneiras&lt;/option&gt;
+                &lt;option value=&quot;Ribeir&#227;o Preto&quot;&gt;Ribeir&#227;o Preto&lt;/option&gt;
+                &lt;option value=&quot;Noroeste&quot;&gt;Noroeste&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;carta-vigencia&quot;&gt;Data de Vig&#234;ncia&lt;/label&gt;
+              &lt;input type=&quot;date&quot; id=&quot;carta-vigencia&quot; required&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;carta-status&quot;&gt;Status&lt;/label&gt;
+              &lt;select id=&quot;carta-status&quot; required&gt;
+                &lt;option value=&quot;Ativa&quot;&gt;Ativa&lt;/option&gt;
+                &lt;option value=&quot;Inativa&quot;&gt;Inativa&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;carta-observacao&quot;&gt;Observa&#231;&#227;o&lt;/label&gt;
+              &lt;input type=&quot;text&quot; id=&quot;carta-observacao&quot; placeholder=&quot;Observa&#231;&#245;es sobre a carta tra&#231;o&quot;&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Materiais da Carta --&gt;
+        &lt;div class=&quot;form-section&quot;&gt;
+          &lt;h3&gt;Composi&#231;&#227;o de Materiais (kg/m&#179;)&lt;/h3&gt;
+          &lt;p class=&quot;form-hint&quot;&gt;Informe o fornecedor, a quantidade (kg/m&#179;) e a massa espec&#237;fica (kg/dm&#179;) de cada material do tra&#231;o.&lt;/p&gt;
+
+          &lt;div class=&quot;mat-grid&quot;&gt;
+            &lt;div class=&quot;mat-grid-header&quot;&gt;
+              &lt;span&gt;Material&lt;/span&gt;
+              &lt;span&gt;Fornecedor&lt;/span&gt;
+              &lt;span&gt;Consumo (kg/m&#179;)&lt;/span&gt;
+              &lt;span&gt;M.E. (kg/dm&#179;)&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;select id=&quot;tipo-cimento&quot; class=&quot;mat-tipo-cimento&quot;&gt;
+                &lt;option value=&quot;Cimento CP V&quot;&gt;Cimento CP V&lt;/option&gt;
+                &lt;option value=&quot;Cimento CP II F-40&quot;&gt;Cimento CP II F-40&lt;/option&gt;
+              &lt;/select&gt;
+              &lt;select id=&quot;forn-cimento&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-cimento&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-cimento&quot; value=&quot;3.150&quot; placeholder=&quot;3.150&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Adi&#231;&#227;o&lt;/label&gt;
+              &lt;select id=&quot;forn-adicao&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-adicao&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-adicao&quot; value=&quot;2.940&quot; placeholder=&quot;2.940&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Areia Fina&lt;/label&gt;
+              &lt;select id=&quot;forn-areia-fina&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-areia-fina&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-areia-fina&quot; value=&quot;2.630&quot; placeholder=&quot;2.630&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Areia M&#233;dia&lt;/label&gt;
+              &lt;select id=&quot;forn-areia-media&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-areia-media&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-areia-media&quot; value=&quot;2.630&quot; placeholder=&quot;2.630&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Areia Industrial&lt;/label&gt;
+              &lt;select id=&quot;forn-areia-industrial&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-areia-industrial&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-areia-industrial&quot; value=&quot;2.650&quot; placeholder=&quot;2.650&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Areia Grossa&lt;/label&gt;
+              &lt;select id=&quot;forn-areia-grossa&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-areia-grossa&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-areia-grossa&quot; value=&quot;2.630&quot; placeholder=&quot;2.630&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Brita 0&lt;/label&gt;
+              &lt;select id=&quot;forn-brita0&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-brita0&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-brita0&quot; value=&quot;2.750&quot; placeholder=&quot;2.750&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Brita 1&lt;/label&gt;
+              &lt;select id=&quot;forn-brita1&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-brita1&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-brita1&quot; value=&quot;2.750&quot; placeholder=&quot;2.750&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;&#193;gua&lt;/label&gt;
+              &lt;select id=&quot;forn-agua&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-agua&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-agua&quot; value=&quot;1.000&quot; placeholder=&quot;1.000&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Aditivo 1&lt;/label&gt;
+              &lt;select id=&quot;forn-aditivo1&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-aditivo1&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-aditivo1&quot; value=&quot;1.200&quot; placeholder=&quot;1.200&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;mat-grid-row&quot;&gt;
+              &lt;label&gt;Aditivo 2&lt;/label&gt;
+              &lt;select id=&quot;forn-aditivo2&quot;&gt;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&lt;/select&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.01&quot; min=&quot;0&quot; id=&quot;mat-aditivo2&quot; placeholder=&quot;0&quot;&gt;
+              &lt;input type=&quot;number&quot; step=&quot;0.001&quot; min=&quot;0&quot; id=&quot;me-aditivo2&quot; value=&quot;1.200&quot; placeholder=&quot;1.200&quot;&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Indicadores T&#233;cnicos --&gt;
+        &lt;div class=&quot;form-section&quot; id=&quot;indicadores-section&quot; style=&quot;display:none;&quot;&gt;
+          &lt;h3&gt;Indicadores T&#233;cnicos do Tra&#231;o&lt;/h3&gt;
+          &lt;div class=&quot;indicadores-grid&quot;&gt;
+            &lt;div class=&quot;indicador-card&quot;&gt;
+              &lt;span class=&quot;indicador-label&quot;&gt;Peso Total&lt;/span&gt;
+              &lt;span class=&quot;indicador-valor&quot; id=&quot;ind-peso&quot;&gt;-&lt;/span&gt;
+              &lt;span class=&quot;indicador-unit&quot;&gt;kg/m&#179;&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;indicador-card&quot;&gt;
+              &lt;span class=&quot;indicador-label&quot;&gt;Volume Calculado&lt;/span&gt;
+              &lt;span class=&quot;indicador-valor&quot; id=&quot;ind-volume&quot;&gt;-&lt;/span&gt;
+              &lt;span class=&quot;indicador-unit&quot;&gt;dm&#179;&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;indicador-card&quot;&gt;
+              &lt;span class=&quot;indicador-label&quot;&gt;Rela&#231;&#227;o A/C&lt;/span&gt;
+              &lt;span class=&quot;indicador-valor&quot; id=&quot;ind-ac&quot;&gt;-&lt;/span&gt;
+              &lt;span class=&quot;indicador-unit&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;indicador-card&quot;&gt;
+              &lt;span class=&quot;indicador-label&quot;&gt;Tx Argamassa (massa)&lt;/span&gt;
+              &lt;span class=&quot;indicador-valor&quot; id=&quot;ind-argamassa&quot;&gt;-&lt;/span&gt;
+              &lt;span class=&quot;indicador-unit&quot;&gt;%&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;indicador-card&quot;&gt;
+              &lt;span class=&quot;indicador-label&quot;&gt;Tx Argamassa (volume)&lt;/span&gt;
+              &lt;span class=&quot;indicador-valor&quot; id=&quot;ind-argamassa-vol&quot;&gt;-&lt;/span&gt;
+              &lt;span class=&quot;indicador-unit&quot;&gt;%&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;indicador-card&quot;&gt;
+              &lt;span class=&quot;indicador-label&quot;&gt;% Aditivo 1 / Cimento&lt;/span&gt;
+              &lt;span class=&quot;indicador-valor&quot; id=&quot;ind-adit1&quot;&gt;-&lt;/span&gt;
+              &lt;span class=&quot;indicador-unit&quot;&gt;%&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;indicador-card&quot;&gt;
+              &lt;span class=&quot;indicador-label&quot;&gt;% Aditivo 2 / Cimento&lt;/span&gt;
+              &lt;span class=&quot;indicador-valor&quot; id=&quot;ind-adit2&quot;&gt;-&lt;/span&gt;
+              &lt;span class=&quot;indicador-unit&quot;&gt;%&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;distribuicao-row&quot;&gt;
+            &lt;div class=&quot;dist-box&quot;&gt;
+              &lt;h4&gt;Distribui&#231;&#227;o Areias&lt;/h4&gt;
+              &lt;div id=&quot;dist-areias&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;dist-box&quot;&gt;
+              &lt;h4&gt;Distribui&#231;&#227;o Britas&lt;/h4&gt;
+              &lt;div id=&quot;dist-britas&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- MCC Preview --&gt;
+        &lt;div class=&quot;form-section&quot; id=&quot;mcc-preview-section&quot; style=&quot;display:none;&quot;&gt;
+          &lt;h3&gt;MCC - Composi&#231;&#227;o de Custo de Material&lt;/h3&gt;
+          &lt;div class=&quot;mcc-info&quot;&gt;
+            &lt;div class=&quot;mcc-total&quot;&gt;
+              &lt;span&gt;MCC Total:&lt;/span&gt;
+              &lt;strong id=&quot;mcc-total-value&quot;&gt;R$ 0,00&lt;/strong&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;chart-container&quot;&gt;
+            &lt;canvas id=&quot;chart-cadastro-mcc&quot;&gt;&lt;/canvas&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;mcc-table-container&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Bot&#245;es --&gt;
+        &lt;div class=&quot;form-actions&quot;&gt;
+          &lt;button type=&quot;button&quot; id=&quot;btn-calcular-mcc&quot; class=&quot;btn btn-info&quot;&gt;📊 Calcular MCC&lt;/button&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;💾 Salvar Carta Tra&#231;o&lt;/button&gt;
+          &lt;button type=&quot;button&quot; id=&quot;btn-limpar-cadastro&quot; class=&quot;btn btn-secondary&quot;&gt;🗑️ Limpar&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/section&gt;
+
+    &lt;!-- ==================== PAGE 2: CONSULTA ==================== --&gt;
+    &lt;section id=&quot;page-consulta&quot; class=&quot;page&quot;&gt;
+      &lt;div class=&quot;page-header&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn-back&quot; data-page=&quot;home&quot;&gt;← Voltar&lt;/button&gt;
+        &lt;h2&gt;Consulta de Cartas Tra&#231;o&lt;/h2&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;filter-bar&quot;&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+          &lt;label for=&quot;filtro-unidade&quot;&gt;Unidade&lt;/label&gt;
+          &lt;select id=&quot;filtro-unidade&quot;&gt;
+            &lt;option value=&quot;&quot;&gt;Todas as unidades&lt;/option&gt;
+            &lt;option value=&quot;Campinas&quot;&gt;Campinas&lt;/option&gt;
+            &lt;option value=&quot;Pederneiras&quot;&gt;Pederneiras&lt;/option&gt;
+            &lt;option value=&quot;Ribeir&#227;o Preto&quot;&gt;Ribeir&#227;o Preto&lt;/option&gt;
+            &lt;option value=&quot;Noroeste&quot;&gt;Noroeste&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;form-group&quot;&gt;
+          &lt;label class=&quot;checkbox-label&quot;&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;filtro-inativas&quot;&gt; Mostrar vers&#245;es inativas
+          &lt;/label&gt;
+        &lt;/div&gt;
+        &lt;button type=&quot;button&quot; id=&quot;btn-consultar&quot; class=&quot;btn btn-primary&quot;&gt;🔍 Consultar&lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;div id=&quot;consulta-results&quot; class=&quot;results-container&quot;&gt;
+        &lt;p class=&quot;empty-state&quot;&gt;Selecione uma unidade e clique em Consultar para ver as cartas tra&#231;o.&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Modal de Detalhe da Carta --&gt;
+      &lt;div id=&quot;modal-detalhe&quot; class=&quot;modal hidden&quot;&gt;
+        &lt;div class=&quot;modal-content modal-large&quot;&gt;
+          &lt;div class=&quot;modal-header&quot;&gt;
+            &lt;h3 id=&quot;modal-titulo&quot;&gt;Detalhe da Carta Tra&#231;o&lt;/h3&gt;
+            &lt;button class=&quot;modal-close&quot; id=&quot;btn-fechar-modal&quot;&gt;&amp;times;&lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;modal-body&quot; id=&quot;modal-body-detalhe&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;modal-footer&quot;&gt;
+            &lt;button type=&quot;button&quot; id=&quot;btn-editar-carta&quot; class=&quot;btn btn-primary&quot;&gt;✏️ Editar&lt;/button&gt;
+            &lt;button type=&quot;button&quot; id=&quot;btn-imprimir&quot; class=&quot;btn btn-info&quot;&gt;🖨️ Imprimir / Salvar PDF&lt;/button&gt;
+            &lt;button type=&quot;button&quot; id=&quot;btn-fechar-modal-2&quot; class=&quot;btn btn-secondary&quot;&gt;Fechar&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- ==================== PAGE 3: MATERIAIS / CUSTOS ==================== --&gt;
+    &lt;section id=&quot;page-materiais&quot; class=&quot;page&quot;&gt;
+      &lt;div class=&quot;page-header&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn-back&quot; data-page=&quot;home&quot;&gt;← Voltar&lt;/button&gt;
+        &lt;h2&gt;Cadastro de Materiais e Custos&lt;/h2&gt;
+      &lt;/div&gt;
+
+      &lt;form id=&quot;form-custo&quot; class=&quot;form-card&quot;&gt;
+        &lt;div class=&quot;form-section&quot;&gt;
+          &lt;h3&gt;Novo Material&lt;/h3&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-unidade&quot;&gt;Unidade&lt;/label&gt;
+              &lt;select id=&quot;custo-unidade&quot; required&gt;
+                &lt;option value=&quot;&quot;&gt;Selecione a unidade...&lt;/option&gt;
+                &lt;option value=&quot;Campinas&quot;&gt;Campinas&lt;/option&gt;
+                &lt;option value=&quot;Pederneiras&quot;&gt;Pederneiras&lt;/option&gt;
+                &lt;option value=&quot;Ribeir&#227;o Preto&quot;&gt;Ribeir&#227;o Preto&lt;/option&gt;
+                &lt;option value=&quot;Noroeste&quot;&gt;Noroeste&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-fornecedor&quot;&gt;Fornecedor&lt;/label&gt;
+              &lt;input type=&quot;text&quot; id=&quot;custo-fornecedor&quot; placeholder=&quot;Nome do fornecedor&quot; required&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-material&quot;&gt;Material&lt;/label&gt;
+              &lt;input type=&quot;text&quot; id=&quot;custo-material&quot; placeholder=&quot;Nome do material&quot; required&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-produto-fornecedor&quot;&gt;Produto do Fornecedor&lt;/label&gt;
+              &lt;input type=&quot;text&quot; id=&quot;custo-produto-fornecedor&quot; placeholder=&quot;Ex: AdvaCast 518, CP V ARI&quot; autocomplete=&quot;off&quot;&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-un-medida&quot;&gt;Unidade de Medida&lt;/label&gt;
+              &lt;select id=&quot;custo-un-medida&quot; required&gt;
+                &lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;
+                &lt;option value=&quot;kg&quot;&gt;kg&lt;/option&gt;
+                &lt;option value=&quot;ton&quot;&gt;tonelada&lt;/option&gt;
+                &lt;option value=&quot;litro&quot;&gt;litro&lt;/option&gt;
+                &lt;option value=&quot;m&#179;&quot;&gt;m&#179;&lt;/option&gt;
+                &lt;option value=&quot;saco&quot;&gt;saco&lt;/option&gt;
+                &lt;option value=&quot;unidade&quot;&gt;unidade&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-valor&quot;&gt;Valor por Unidade (R$)&lt;/label&gt;
+              &lt;input type=&quot;number&quot; id=&quot;custo-valor&quot; step=&quot;0.01&quot; min=&quot;0&quot; placeholder=&quot;0,00&quot; required&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-icms&quot;&gt;ICMS (%)&lt;/label&gt;
+              &lt;input type=&quot;number&quot; id=&quot;custo-icms&quot; step=&quot;0.01&quot; min=&quot;0&quot; max=&quot;100&quot; placeholder=&quot;0&quot; required&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-frete&quot;&gt;Frete por Unidade (R$)&lt;/label&gt;
+              &lt;input type=&quot;number&quot; id=&quot;custo-frete&quot; step=&quot;0.01&quot; min=&quot;0&quot; placeholder=&quot;0,00&quot; required&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-tipo-frete&quot;&gt;Tipo de Frete&lt;/label&gt;
+              &lt;select id=&quot;custo-tipo-frete&quot; required&gt;
+                &lt;option value=&quot;CIF&quot;&gt;CIF&lt;/option&gt;
+                &lt;option value=&quot;FOB&quot;&gt;FOB&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-row&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;custo-liquido&quot;&gt;Valor L&#237;quido (R$)&lt;/label&gt;
+              &lt;input type=&quot;number&quot; id=&quot;custo-liquido&quot; step=&quot;0.01&quot; readonly class=&quot;readonly-field&quot;&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;form-actions&quot;&gt;
+          &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;💾 Salvar Material&lt;/button&gt;
+          &lt;button type=&quot;button&quot; id=&quot;btn-limpar-custo&quot; class=&quot;btn btn-secondary&quot;&gt;🗑️ Limpar&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+
+      &lt;!-- Lista de Materiais Cadastrados --&gt;
+      &lt;div class=&quot;form-section&quot; style=&quot;margin-top: 20px;&quot;&gt;
+        &lt;div class=&quot;section-header-row&quot;&gt;
+          &lt;h3&gt;Materiais Cadastrados&lt;/h3&gt;
+          &lt;div class=&quot;form-group&quot; style=&quot;min-width: 200px;&quot;&gt;
+            &lt;select id=&quot;filtro-custos-unidade&quot;&gt;
+              &lt;option value=&quot;&quot;&gt;Todas as unidades&lt;/option&gt;
+              &lt;option value=&quot;Campinas&quot;&gt;Campinas&lt;/option&gt;
+              &lt;option value=&quot;Pederneiras&quot;&gt;Pederneiras&lt;/option&gt;
+              &lt;option value=&quot;Ribeir&#227;o Preto&quot;&gt;Ribeir&#227;o Preto&lt;/option&gt;
+              &lt;option value=&quot;Noroeste&quot;&gt;Noroeste&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+          &lt;button type=&quot;button&quot; id=&quot;btn-carregar-custos&quot; class=&quot;btn btn-primary btn-small&quot;&gt;🔄 Carregar&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;custos-lista&quot; class=&quot;results-container&quot;&gt;
+          &lt;p class=&quot;empty-state&quot;&gt;Clique em Carregar para ver os materiais cadastrados.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Consulta de Fornecedores --&gt;
+      &lt;div class=&quot;form-section&quot; style=&quot;margin-top: 20px;&quot;&gt;
+        &lt;div class=&quot;section-header-row&quot;&gt;
+          &lt;h3&gt;Consulta de Fornecedores&lt;/h3&gt;
+          &lt;div class=&quot;form-group&quot; style=&quot;min-width: 200px;&quot;&gt;
+            &lt;select id=&quot;filtro-fornecedor-material&quot;&gt;
+              &lt;option value=&quot;&quot;&gt;Todos os materiais&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+          &lt;button type=&quot;button&quot; id=&quot;btn-consultar-fornecedores&quot; class=&quot;btn btn-primary btn-small&quot;&gt;🔍 Consultar&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;fornecedores-lista&quot; class=&quot;results-container&quot;&gt;
+          &lt;p class=&quot;empty-state&quot;&gt;Clique em Consultar para ver os fornecedores.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Importa&#231;&#227;o em Massa --&gt;
+      &lt;div class=&quot;form-section&quot; style=&quot;margin-top: 20px;&quot;&gt;
+        &lt;div class=&quot;section-header-row&quot;&gt;
+          &lt;h3&gt;📥 Importa&#231;&#227;o em Massa&lt;/h3&gt;
+          &lt;button type=&quot;button&quot; id=&quot;btn-toggle-import&quot; class=&quot;btn btn-secondary btn-small&quot;&gt;Expandir&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;import-section&quot; style=&quot;display:none;&quot;&gt;
+          &lt;div class=&quot;form-row&quot; style=&quot;margin-top:12px;&quot;&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;import-unidade&quot;&gt;Unidade&lt;/label&gt;
+              &lt;select id=&quot;import-unidade&quot; required&gt;
+                &lt;option value=&quot;&quot;&gt;Selecione a unidade...&lt;/option&gt;
+                &lt;option value=&quot;Campinas&quot;&gt;Campinas&lt;/option&gt;
+                &lt;option value=&quot;Pederneiras&quot;&gt;Pederneiras&lt;/option&gt;
+                &lt;option value=&quot;Ribeir&#227;o Preto&quot;&gt;Ribeir&#227;o Preto&lt;/option&gt;
+                &lt;option value=&quot;Noroeste&quot;&gt;Noroeste&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;form-group&quot;&gt;
+              &lt;label for=&quot;import-tipo-frete&quot;&gt;Tipo de Frete&lt;/label&gt;
+              &lt;select id=&quot;import-tipo-frete&quot;&gt;
+                &lt;option value=&quot;CIF&quot;&gt;CIF&lt;/option&gt;
+                &lt;option value=&quot;FOB&quot;&gt;FOB&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;form-group&quot; style=&quot;margin-top:8px;&quot;&gt;
+            &lt;label&gt;Cole os dados (separados por TAB ou ;)&lt;/label&gt;
+            &lt;p class=&quot;form-hint&quot;&gt;Formato: Fornecedor | Material | Produto Fornecedor | Un. Medida | Valor Unit. | ICMS % | Frete&lt;/p&gt;
+            &lt;textarea id=&quot;import-dados&quot; rows=&quot;8&quot; placeholder=&quot;Fornecedor&amp;#9;Material&amp;#9;Produto&amp;#9;kg&amp;#9;150.00&amp;#9;12&amp;#9;5.00&amp;#10;Fornecedor 2&amp;#9;Areia Fina&amp;#9;Areia Lavada&amp;#9;ton&amp;#9;90.00&amp;#9;7&amp;#9;10.00&quot; style=&quot;width:100%;font-family:monospace;font-size:0.85rem;&quot;&gt;&lt;/textarea&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;import-preview&quot; style=&quot;margin-top:12px;display:none;&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;form-actions&quot; style=&quot;margin-top:12px;&quot;&gt;
+            &lt;button type=&quot;button&quot; id=&quot;btn-preview-import&quot; class=&quot;btn btn-info&quot;&gt;👁️ Pr&#233;-visualizar&lt;/button&gt;
+            &lt;button type=&quot;button&quot; id=&quot;btn-executar-import&quot; class=&quot;btn btn-primary&quot; disabled&gt;📥 Importar Todos&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- ==================== PAGE 4: RESUMO ==================== --&gt;
+    &lt;section id=&quot;page-resumo&quot; class=&quot;page&quot;&gt;
+      &lt;div class=&quot;page-header&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn-back&quot; data-page=&quot;home&quot;&gt;← Voltar&lt;/button&gt;
+        &lt;h2&gt;Resumo Geral&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;form-section&quot;&gt;
+        &lt;div class=&quot;section-header-row&quot;&gt;
+          &lt;h3&gt;Cartas Tra&#231;o — Resumo&lt;/h3&gt;
+          &lt;button type=&quot;button&quot; id=&quot;btn-carregar-resumo&quot; class=&quot;btn btn-primary btn-small&quot;&gt;🔄 Carregar&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div id=&quot;resumo-lista&quot; class=&quot;results-container&quot;&gt;
+          &lt;p class=&quot;empty-state&quot;&gt;Clique em Carregar para ver o resumo das cartas tra&#231;o.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+
+  &lt;!-- Print Template (hidden, used for printing) --&gt;
+  &lt;div id=&quot;print-area&quot; class=&quot;print-area&quot;&gt;&lt;/div&gt;
+
+&lt;script&gt;
+/* ============================================
+   CARTAS TRA&#199;O — Application Logic
+   ============================================ */
+
+// ========== CONFIGURA&#199;&#195;O ==========
+var SCRIPT_URL = &#39;https://script.google.com/macros/s/AKfycbyTgfk03591kKj0tSj3AtbBtRxQ2RvBMfWx954ZhyERj-4m84RKCxd6J0AT_eatmZiP/exec&#39;;
+
+// Lista fixa de materiais do tra&#231;o
+var MATERIAIS_TRACO = [
+  { id: &#39;cimento&#39;,          nome: &#39;Cimento&#39;,          meDefault: 3.150, grupo: &#39;aglomerante&#39; },
+  { id: &#39;adicao&#39;,           nome: &#39;Adi&#231;&#227;o&#39;,            meDefault: 2.940, grupo: &#39;aglomerante&#39; },
+  { id: &#39;areia-fina&#39;,       nome: &#39;Areia Fina&#39;,       meDefault: 2.630, grupo: &#39;areia&#39; },
+  { id: &#39;areia-media&#39;,      nome: &#39;Areia M&#233;dia&#39;,      meDefault: 2.630, grupo: &#39;areia&#39; },
+  { id: &#39;areia-industrial&#39;, nome: &#39;Areia Industrial&#39;, meDefault: 2.650, grupo: &#39;areia&#39; },
+  { id: &#39;areia-grossa&#39;,     nome: &#39;Areia Grossa&#39;,     meDefault: 2.630, grupo: &#39;areia&#39; },
+  { id: &#39;brita0&#39;,           nome: &#39;Brita 0&#39;,          meDefault: 2.750, grupo: &#39;brita&#39; },
+  { id: &#39;brita1&#39;,           nome: &#39;Brita 1&#39;,          meDefault: 2.750, grupo: &#39;brita&#39; },
+  { id: &#39;agua&#39;,             nome: &#39;&#193;gua&#39;,              meDefault: 1.000, grupo: &#39;agua&#39; },
+  { id: &#39;aditivo1&#39;,         nome: &#39;Aditivo 1&#39;,        meDefault: 1.200, grupo: &#39;aditivo&#39; },
+  { id: &#39;aditivo2&#39;,         nome: &#39;Aditivo 2&#39;,        meDefault: 1.200, grupo: &#39;aditivo&#39; }
+];
+
+// ========== ESTADO ==========
+var currentPage = &#39;home&#39;;
+var chartCadastro = null;
+var chartDetalhe = null;
+
+// ========== INICIALIZA&#199;&#195;O ==========
+document.addEventListener(&#39;DOMContentLoaded&#39;, function() {
+  initNavigation();
+  initCadastro();
+  initConsulta();
+  initCustos();
+  initImportacao();
+  initResumo();
+});
+
+// ========== NAVEGA&#199;&#195;O ==========
+function initNavigation() {
+  document.querySelectorAll(&#39;.home-card&#39;).forEach(function(card) {
+    card.addEventListener(&#39;click&#39;, function() { navigateTo(card.dataset.page); });
+  });
+  document.querySelectorAll(&#39;.btn-back&#39;).forEach(function(btn) {
+    btn.addEventListener(&#39;click&#39;, function() { navigateTo(btn.dataset.page); });
+  });
+  document.querySelectorAll(&#39;.btn-icon-consulta&#39;).forEach(function(btn) {
+    btn.addEventListener(&#39;click&#39;, function() { navigateTo(btn.dataset.page); });
+  });
+}
+
+function navigateTo(page) {
+  currentPage = page;
+  document.querySelectorAll(&#39;.page&#39;).forEach(function(p) { p.classList.remove(&#39;active&#39;); });
+  document.getElementById(&#39;page-&#39; + page).classList.add(&#39;active&#39;);
+  window.scrollTo(0, 0);
+}
+
+// ========== UTILIT&#193;RIOS ==========
+function showLoading() { document.getElementById(&#39;loading-overlay&#39;).classList.remove(&#39;hidden&#39;); }
+function hideLoading() { document.getElementById(&#39;loading-overlay&#39;).classList.add(&#39;hidden&#39;); }
+
+function showToast(message, type) {
+  type = type || &#39;&#39;;
+  var toast = document.getElementById(&#39;toast&#39;);
+  toast.textContent = message;
+  toast.className = &#39;toast &#39; + type;
+  setTimeout(function() { toast.classList.add(&#39;hidden&#39;); }, 3500);
+}
+
+function formatCurrency(value) {
+  return new Intl.NumberFormat(&#39;pt-BR&#39;, { style: &#39;currency&#39;, currency: &#39;BRL&#39; }).format(value);
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return &#39;-&#39;;
+  var d = dateStr.split(&#39;T&#39;)[0];
+  var parts = d.split(&#39;-&#39;);
+  return parts.length === 3 ? parts[2] + &#39;/&#39; + parts[1] + &#39;/&#39; + parts[0] : dateStr;
+}
+
+function getToday() { return new Date().toISOString().split(&#39;T&#39;)[0]; }
+
+function escapeHtml(text) {
+  var div = document.createElement(&#39;div&#39;);
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ========== API CALLS ==========
+async function apiGet(action, params) {
+  params = params || {};
+  var url = SCRIPT_URL + &#39;?&#39; + new URLSearchParams(Object.assign({ action: action }, params)).toString();
+  var response = await fetch(url, { redirect: &#39;follow&#39; });
+  if (!response.ok) throw new Error(&#39;Erro na requisi&#231;&#227;o&#39;);
+  return await response.json();
+}
+
+async function apiPost(action, data) {
+  var response = await fetch(SCRIPT_URL, {
+    method: &#39;POST&#39;,
+    headers: { &#39;Content-Type&#39;: &#39;text/plain;charset=utf-8&#39; },
+    body: JSON.stringify(Object.assign({ action: action }, data)),
+    redirect: &#39;follow&#39;
+  });
+  if (!response.ok) throw new Error(&#39;Erro na requisi&#231;&#227;o&#39;);
+  return await response.json();
+}
+
+// ===========================================
+// ========== MATERIAIS DO TRA&#199;O =============
+// ===========================================
+function getMateriaisFromForm() {
+  var materiais = [];
+  var tipoCimento = document.getElementById(&#39;tipo-cimento&#39;).value;
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var qtdEl = document.getElementById(&#39;mat-&#39; + mat.id);
+    var meEl = document.getElementById(&#39;me-&#39; + mat.id);
+    var fornEl = document.getElementById(&#39;forn-&#39; + mat.id);
+    var qtd = parseFloat(qtdEl ? qtdEl.value : 0) || 0;
+    var me = parseFloat(meEl ? meEl.value : mat.meDefault) || mat.meDefault;
+    var forn = (fornEl ? fornEl.value.trim() : &#39;&#39;) || &#39;-&#39;;
+    if (qtd &gt; 0) {
+      var nomeProduto = mat.id === &#39;cimento&#39; ? tipoCimento : mat.nome;
+      materiais.push({
+        produto: nomeProduto,
+        quantidade: qtd,
+        massaEspecifica: me,
+        unidade: &#39;kg&#39;,
+        grupo: mat.grupo,
+        fornecedor: forn
+      });
+    }
+  });
+  return materiais;
+}
+
+function calcularIndicadores(materiais) {
+  var cimento = 0, adicao = 0, agua = 0, aditivo1 = 0, aditivo2 = 0;
+  var areias = [], britas = [];
+  var totalAreias = 0, totalBritas = 0;
+
+  materiais.forEach(function(m) {
+    if (m.produto.startsWith(&#39;Cimento&#39;)) cimento += m.quantidade;
+    else if (m.produto === &#39;Adi&#231;&#227;o&#39;) adicao += m.quantidade;
+    else if (m.grupo === &#39;agua&#39;) agua += m.quantidade;
+    else if (m.produto === &#39;Aditivo 1&#39;) aditivo1 += m.quantidade;
+    else if (m.produto === &#39;Aditivo 2&#39;) aditivo2 += m.quantidade;
+    if (m.grupo === &#39;areia&#39;) { areias.push(m); totalAreias += m.quantidade; }
+    if (m.grupo === &#39;brita&#39;) { britas.push(m); totalBritas += m.quantidade; }
+  });
+
+  var pesoTotal = materiais.reduce(function(s, m) { return s + m.quantidade; }, 0);
+  var volume = materiais.reduce(function(s, m) { return s + (m.quantidade / m.massaEspecifica); }, 0);
+  var aglomerante = cimento + adicao;
+  var relacaoAC = cimento &gt; 0 ? agua / cimento : 0;
+
+  // Taxa de argamassa = mi&#250;dos / (mi&#250;dos + gra&#250;dos) — sem &#225;gua
+  var totalAgregados = totalAreias + totalBritas;
+  var taxaArgamassa = totalAgregados &gt; 0 ? (totalAreias / totalAgregados) * 100 : 0;
+
+  // Taxa de argamassa em volume
+  var volAreias = 0, volBritas = 0;
+  areias.forEach(function(a) { volAreias += a.quantidade / a.massaEspecifica; });
+  britas.forEach(function(b) { volBritas += b.quantidade / b.massaEspecifica; });
+  var totalVolAgregados = volAreias + volBritas;
+  var taxaArgamassaVol = totalVolAgregados &gt; 0 ? (volAreias / totalVolAgregados) * 100 : 0;
+
+  var pctAditivo1 = cimento &gt; 0 ? (aditivo1 / cimento) * 100 : 0;
+  var pctAditivo2 = cimento &gt; 0 ? (aditivo2 / cimento) * 100 : 0;
+
+  var distAreias = areias.map(function(a) {
+    return { nome: a.produto, quantidade: a.quantidade, pct: totalAreias &gt; 0 ? (a.quantidade / totalAreias) * 100 : 0 };
+  });
+  var distBritas = britas.map(function(b) {
+    return { nome: b.produto, quantidade: b.quantidade, pct: totalBritas &gt; 0 ? (b.quantidade / totalBritas) * 100 : 0 };
+  });
+
+  return {
+    pesoTotal: pesoTotal, volume: volume, relacaoAC: relacaoAC,
+    taxaArgamassa: taxaArgamassa, taxaArgamassaVol: taxaArgamassaVol,
+    pctAditivo1: pctAditivo1, pctAditivo2: pctAditivo2,
+    distAreias: distAreias, distBritas: distBritas, totalAreias: totalAreias, totalBritas: totalBritas
+  };
+}
+
+function renderIndicadores(ind) {
+  document.getElementById(&#39;ind-peso&#39;).textContent = ind.pesoTotal.toFixed(1);
+  document.getElementById(&#39;ind-volume&#39;).textContent = ind.volume.toFixed(1);
+  document.getElementById(&#39;ind-ac&#39;).textContent = ind.relacaoAC.toFixed(2).replace(&#39;.&#39;, &#39;,&#39;);
+  document.getElementById(&#39;ind-argamassa&#39;).textContent = ind.taxaArgamassa.toFixed(1);
+  document.getElementById(&#39;ind-argamassa-vol&#39;).textContent = ind.taxaArgamassaVol.toFixed(1);
+  document.getElementById(&#39;ind-adit1&#39;).textContent = ind.pctAditivo1.toFixed(3);
+  document.getElementById(&#39;ind-adit2&#39;).textContent = ind.pctAditivo2.toFixed(3);
+
+  var areiasDiv = document.getElementById(&#39;dist-areias&#39;);
+  if (areiasDiv) {
+    var items = ind.distAreias.filter(function(a) { return a.quantidade &gt; 0; });
+    areiasDiv.innerHTML = items.length &gt; 0 ?
+      items.map(function(a) { return &#39;&lt;div class=&quot;dist-item&quot;&gt;&lt;span class=&quot;dist-name&quot;&gt;&#39; + escapeHtml(a.nome) + &#39;&lt;/span&gt;&lt;span class=&quot;dist-pct&quot;&gt;&#39; + a.pct.toFixed(1) + &#39;%&lt;/span&gt;&lt;/div&gt;&#39;; }).join(&#39;&#39;) :
+      &#39;&lt;div class=&quot;dist-item&quot;&gt;&lt;span class=&quot;dist-name&quot;&gt;Nenhuma areia&lt;/span&gt;&lt;/div&gt;&#39;;
+  }
+
+  var britasDiv = document.getElementById(&#39;dist-britas&#39;);
+  if (britasDiv) {
+    var bitems = ind.distBritas.filter(function(b) { return b.quantidade &gt; 0; });
+    britasDiv.innerHTML = bitems.length &gt; 0 ?
+      bitems.map(function(b) { return &#39;&lt;div class=&quot;dist-item&quot;&gt;&lt;span class=&quot;dist-name&quot;&gt;&#39; + escapeHtml(b.nome) + &#39;&lt;/span&gt;&lt;span class=&quot;dist-pct&quot;&gt;&#39; + b.pct.toFixed(1) + &#39;%&lt;/span&gt;&lt;/div&gt;&#39;; }).join(&#39;&#39;) :
+      &#39;&lt;div class=&quot;dist-item&quot;&gt;&lt;span class=&quot;dist-name&quot;&gt;Nenhuma brita&lt;/span&gt;&lt;/div&gt;&#39;;
+  }
+}
+
+// ===========================================
+// ========== CADASTRO DE CARTA TRA&#199;O ========
+// ===========================================
+function initCadastro() {
+  document.getElementById(&#39;carta-vigencia&#39;).value = getToday();
+  document.getElementById(&#39;btn-calcular-mcc&#39;).addEventListener(&#39;click&#39;, calcularMCC);
+  document.getElementById(&#39;btn-limpar-cadastro&#39;).addEventListener(&#39;click&#39;, limparCadastro);
+  document.getElementById(&#39;form-cadastro&#39;).addEventListener(&#39;submit&#39;, async function(e) {
+    e.preventDefault();
+    await salvarCarta();
+  });
+  document.getElementById(&#39;carta-unidade&#39;).addEventListener(&#39;change&#39;, carregarFornecedores);
+}
+
+async function carregarFornecedores() {
+  var unidade = document.getElementById(&#39;carta-unidade&#39;).value;
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var sel = document.getElementById(&#39;forn-&#39; + mat.id);
+    if (sel) { sel.innerHTML = &#39;&lt;option value=&quot;&quot;&gt;Selecione...&lt;/option&gt;&#39;; }
+  });
+  if (!unidade) return;
+  try {
+    var result = await apiGet(&#39;getCustos&#39;, { unidade: unidade });
+    if (result.error) throw new Error(result.error);
+    var custos = result.data || [];
+    MATERIAIS_TRACO.forEach(function(mat) {
+      var sel = document.getElementById(&#39;forn-&#39; + mat.id);
+      if (!sel) return;
+      var fornecedores = [];
+      var nomesBusca = mat.id === &#39;cimento&#39;
+        ? [&#39;cimento&#39;, &#39;cimento cp v&#39;, &#39;cimento cp ii f-40&#39;]
+        : [mat.nome.toLowerCase()];
+      custos.forEach(function(c) {
+        if (c.material &amp;&amp; nomesBusca.indexOf(c.material.toLowerCase()) !== -1 &amp;&amp; c.fornecedor) {
+          var nome = c.fornecedor.trim();
+          if (nome &amp;&amp; fornecedores.indexOf(nome) === -1) fornecedores.push(nome);
+        }
+      });
+      fornecedores.sort();
+      fornecedores.forEach(function(f) {
+        var opt = document.createElement(&#39;option&#39;);
+        opt.value = f;
+        opt.textContent = f;
+        sel.appendChild(opt);
+      });
+    });
+  } catch (error) {
+    showToast(&#39;Erro ao carregar fornecedores: &#39; + error.message, &#39;error&#39;);
+  }
+}
+
+// ========== CONVERS&#195;O DE CUSTO PARA KG ==========
+function converterCustoParaKg(valor, unidadeMedida, massaEspecifica) {
+  if (!valor || valor === 0) return 0;
+  switch ((unidadeMedida || &#39;kg&#39;).toLowerCase()) {
+    case &#39;kg&#39;: return valor;
+    case &#39;ton&#39;: return valor / 1000;
+    case &#39;litro&#39;: return valor * (massaEspecifica || 1);
+    case &#39;m&#179;&#39;: case &#39;m3&#39;: return valor / ((massaEspecifica || 1) * 1000);
+    case &#39;saco&#39;: return valor / 50;
+    default: return valor;
+  }
+}
+
+async function calcularMCC() {
+  var materiais = getMateriaisFromForm();
+  if (materiais.length === 0) { showToast(&#39;Preencha pelo menos um material com quantidade.&#39;, &#39;error&#39;); return; }
+
+  var unidadeCarta = document.getElementById(&#39;carta-unidade&#39;).value;
+  if (!unidadeCarta) { showToast(&#39;Selecione a unidade de vig&#234;ncia antes de calcular.&#39;, &#39;error&#39;); return; }
+
+  var ind = calcularIndicadores(materiais);
+  document.getElementById(&#39;indicadores-section&#39;).style.display = &#39;block&#39;;
+  renderIndicadores(ind);
+
+  showLoading();
+  try {
+    var result = await apiGet(&#39;getCustos&#39;, { unidade: unidadeCarta });
+    if (result.error) throw new Error(result.error);
+    var custos = result.data || [];
+
+    var mccData = [];
+    var mccTotal = 0;
+
+    materiais.forEach(function(mat) {
+      var custoItem = custos.find(function(c) {
+        var matchMaterial = c.material.toLowerCase() === mat.produto.toLowerCase() &amp;&amp; c.unidade === unidadeCarta;
+        if (mat.fornecedor &amp;&amp; mat.fornecedor !== &#39;-&#39;) return matchMaterial &amp;&amp; c.fornecedor === mat.fornecedor;
+        return matchMaterial;
+      });
+      var custoUnitario = 0;
+      if (custoItem) {
+        custoUnitario = converterCustoParaKg(
+          parseFloat(custoItem.valorLiquido),
+          custoItem.unidadeMedida || &#39;kg&#39;,
+          mat.massaEspecifica
+        );
+      }
+      var custoTotal = mat.quantidade * custoUnitario;
+      mccTotal += custoTotal;
+      mccData.push({
+        produto: mat.produto, fornecedor: custoItem ? custoItem.fornecedor : &#39;-&#39;,
+        quantidade: mat.quantidade, massaEspecifica: mat.massaEspecifica,
+        unidade: &#39;kg&#39;, custoUnitario: custoUnitario, custoTotal: custoTotal
+      });
+    });
+
+    document.getElementById(&#39;mcc-preview-section&#39;).style.display = &#39;block&#39;;
+    document.getElementById(&#39;mcc-total-value&#39;).textContent = formatCurrency(mccTotal);
+    renderMCCTable(mccData, mccTotal, &#39;mcc-table-container&#39;);
+    renderPieChart(mccData, mccTotal, &#39;chart-cadastro-mcc&#39;, &#39;cadastro&#39;);
+
+    if (mccData.some(function(m) { return m.custoUnitario === 0; })) {
+      showToast(&#39;Aten&#231;&#227;o: Alguns materiais n&#227;o possuem custo cadastrado.&#39;, &#39;error&#39;);
+    } else {
+      showToast(&#39;MCC e indicadores calculados!&#39;, &#39;success&#39;);
+    }
+  } catch (error) {
+    showToast(&#39;Erro ao calcular MCC: &#39; + error.message, &#39;error&#39;);
+  } finally {
+    hideLoading();
+  }
+}
+
+function renderMCCTable(mccData, mccTotal, containerId) {
+  var container = document.getElementById(containerId);
+  var html = &#39;&lt;table class=&quot;cost-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&#39; +
+    &#39;&lt;th&gt;Material&lt;/th&gt;&lt;th&gt;Fornecedor&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;Consumo (kg)&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;M.E.&lt;/th&gt;&#39; +
+    &#39;&lt;th class=&quot;text-right&quot;&gt;Custo Unit.&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;Custo Total&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;%&lt;/th&gt;&#39; +
+    &#39;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&#39;;
+
+  mccData.forEach(function(item) {
+    var pct = mccTotal &gt; 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : &#39;0.0&#39;;
+    html += &#39;&lt;tr&gt;&lt;td&gt;&#39; + escapeHtml(item.produto) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td&gt;&#39; + escapeHtml(item.fornecedor || &#39;-&#39;) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + item.quantidade.toFixed(2) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + item.massaEspecifica.toFixed(3) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(item.custoUnitario) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(item.custoTotal) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + pct + &#39;%&lt;/td&gt;&lt;/tr&gt;&#39;;
+  });
+
+  html += &#39;&lt;tr class=&quot;total-row&quot;&gt;&lt;td colspan=&quot;5&quot;&gt;&lt;strong&gt;TOTAL MCC&lt;/strong&gt;&lt;/td&gt;&#39; +
+    &#39;&lt;td class=&quot;text-right&quot;&gt;&lt;strong&gt;&#39; + formatCurrency(mccTotal) + &#39;&lt;/strong&gt;&lt;/td&gt;&#39; +
+    &#39;&lt;td class=&quot;text-right&quot;&gt;&lt;strong&gt;100%&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&#39;;
+  container.innerHTML = html;
+}
+
+function renderPieChart(mccData, mccTotal, canvasId, chartKey) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  if (chartKey === &#39;cadastro&#39; &amp;&amp; chartCadastro) chartCadastro.destroy();
+  else if (chartKey === &#39;detalhe&#39; &amp;&amp; chartDetalhe) chartDetalhe.destroy();
+
+  var labels = mccData.map(function(m) { return m.produto; });
+  var data = mccData.map(function(m) { return m.custoTotal; });
+  var colors = generateColors(mccData.length);
+
+  var chart = new Chart(canvas, {
+    type: &#39;pie&#39;,
+    data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 2, borderColor: &#39;#fff&#39; }] },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { position: &#39;bottom&#39;, labels: { font: { size: 11 }, padding: 12 } },
+        tooltip: { callbacks: { label: function(ctx) {
+          var pct = mccTotal &gt; 0 ? ((ctx.parsed / mccTotal) * 100).toFixed(1) : 0;
+          return ctx.label + &#39;: &#39; + formatCurrency(ctx.parsed) + &#39; (&#39; + pct + &#39;%)&#39;;
+        }}}
+      }
+    }
+  });
+  if (chartKey === &#39;cadastro&#39;) chartCadastro = chart;
+  else chartDetalhe = chart;
+}
+
+function generateColors(count) {
+  var palette = [&#39;#3498db&#39;,&#39;#e74c3c&#39;,&#39;#2ecc71&#39;,&#39;#f39c12&#39;,&#39;#9b59b6&#39;,&#39;#1abc9c&#39;,&#39;#e67e22&#39;,&#39;#34495e&#39;,&#39;#16a085&#39;,&#39;#c0392b&#39;,&#39;#8e44ad&#39;,&#39;#27ae60&#39;,&#39;#d35400&#39;,&#39;#2c3e50&#39;,&#39;#f1c40f&#39;,&#39;#7f8c8d&#39;,&#39;#2980b9&#39;,&#39;#e84393&#39;,&#39;#00b894&#39;,&#39;#fdcb6e&#39;];
+  var colors = [];
+  for (var i = 0; i &lt; count; i++) colors.push(palette[i % palette.length]);
+  return colors;
+}
+
+async function salvarCarta() {
+  var nome = document.getElementById(&#39;carta-nome&#39;).value.trim();
+  var revisao = parseInt(document.getElementById(&#39;carta-revisao&#39;).value) || 0;
+  var unidade = document.getElementById(&#39;carta-unidade&#39;).value;
+  var vigencia = document.getElementById(&#39;carta-vigencia&#39;).value;
+  var status = document.getElementById(&#39;carta-status&#39;).value;
+  var observacao = document.getElementById(&#39;carta-observacao&#39;).value.trim();
+  var materiais = getMateriaisFromForm();
+
+  if (!nome || !unidade || !vigencia) { showToast(&#39;Preencha todos os campos obrigat&#243;rios.&#39;, &#39;error&#39;); return; }
+  if (materiais.length === 0) { showToast(&#39;Informe pelo menos um material.&#39;, &#39;error&#39;); return; }
+
+  showLoading();
+  try {
+    var result = await apiPost(&#39;salvarCarta&#39;, {
+      nome: nome, revisao: revisao, unidade: unidade, vigencia: vigencia, status: status,
+      observacao: observacao,
+      materiais: materiais.map(function(m) {
+        return { produto: m.produto, quantidade: m.quantidade, massaEspecifica: m.massaEspecifica, unidade: m.unidade, fornecedor: m.fornecedor };
+      }),
+      dataCadastro: getToday()
+    });
+    if (result.error) throw new Error(result.error);
+    showToast(&#39;Carta Tra&#231;o salva com sucesso!&#39;, &#39;success&#39;);
+    limparCadastro();
+  } catch (error) {
+    showToast(&#39;Erro ao salvar: &#39; + error.message, &#39;error&#39;);
+  } finally {
+    hideLoading();
+  }
+}
+
+function limparCadastro() {
+  document.getElementById(&#39;form-cadastro&#39;).reset();
+  document.getElementById(&#39;carta-vigencia&#39;).value = getToday();
+  document.getElementById(&#39;mcc-preview-section&#39;).style.display = &#39;none&#39;;
+  document.getElementById(&#39;indicadores-section&#39;).style.display = &#39;none&#39;;
+  if (chartCadastro) { chartCadastro.destroy(); chartCadastro = null; }
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var meInput = document.getElementById(&#39;me-&#39; + mat.id);
+    var fornInput = document.getElementById(&#39;forn-&#39; + mat.id);
+    if (meInput) meInput.value = mat.meDefault.toFixed(3);
+    if (fornInput) fornInput.value = &#39;&#39;;
+  });
+}
+
+// ===========================================
+// ========== CONSULTA DE CARTAS =============
+// ===========================================
+function initConsulta() {
+  document.getElementById(&#39;btn-consultar&#39;).addEventListener(&#39;click&#39;, consultarCartas);
+  document.getElementById(&#39;btn-fechar-modal&#39;).addEventListener(&#39;click&#39;, fecharModal);
+  document.getElementById(&#39;btn-fechar-modal-2&#39;).addEventListener(&#39;click&#39;, fecharModal);
+  document.getElementById(&#39;btn-imprimir&#39;).addEventListener(&#39;click&#39;, imprimirCarta);
+  document.getElementById(&#39;btn-editar-carta&#39;).addEventListener(&#39;click&#39;, editarCarta);
+  document.getElementById(&#39;modal-detalhe&#39;).addEventListener(&#39;click&#39;, function(e) {
+    if (e.target === document.getElementById(&#39;modal-detalhe&#39;)) fecharModal();
+  });
+}
+
+async function consultarCartas() {
+  var unidade = document.getElementById(&#39;filtro-unidade&#39;).value;
+  var mostrarInativas = document.getElementById(&#39;filtro-inativas&#39;).checked;
+
+  showLoading();
+  try {
+    var result = await apiGet(&#39;getCartas&#39;, { unidade: unidade, mostrarInativas: mostrarInativas ? &#39;true&#39; : &#39;false&#39; });
+    if (result.error) throw new Error(result.error);
+    renderCartasList(result.data || []);
+  } catch (error) {
+    showToast(&#39;Erro ao consultar: &#39; + error.message, &#39;error&#39;);
+    document.getElementById(&#39;consulta-results&#39;).innerHTML = &#39;&lt;p class=&quot;empty-state&quot;&gt;Erro ao carregar.&lt;/p&gt;&#39;;
+  } finally {
+    hideLoading();
+  }
+}
+
+function renderCartasList(cartas) {
+  var container = document.getElementById(&#39;consulta-results&#39;);
+  if (cartas.length === 0) {
+    container.innerHTML = &#39;&lt;p class=&quot;empty-state&quot;&gt;Nenhuma carta tra&#231;o encontrada.&lt;/p&gt;&#39;;
+    return;
+  }
+
+  var grupos = {};
+  cartas.forEach(function(c) {
+    var key = c.nome + &#39;|&#39; + c.unidade + &#39;|&#39; + c.revisao;
+    if (!grupos[key]) {
+      grupos[key] = { id: c.id, nome: c.nome, revisao: c.revisao, unidade: c.unidade,
+        status: c.status, vigencia: c.vigencia, dataCadastro: c.dataCadastro,
+        tipoFrete: c.tipoFrete || &#39;&#39;, observacao: c.observacao || &#39;&#39;, materiais: [] };
+    }
+    grupos[key].materiais.push({
+      fornecedor: c.fornecedor, produto: c.produto,
+      quantidade: c.quantidade, massaEspecifica: c.massaEspecifica || 0, unidadeMedida: c.unidadeMedida
+    });
+  });
+
+  var html = &#39;&#39;;
+  Object.values(grupos).forEach(function(carta) {
+    var isInativa = carta.status === &#39;Inativa&#39;;
+    html += &#39;&lt;div class=&quot;carta-card &#39; + (isInativa ? &#39;inativa&#39; : &#39;&#39;) + &#39;&quot;&#39; +
+      &quot; onclick=&#39;abrirDetalhe(&quot; + JSON.stringify(carta).replace(/&#39;/g, &quot;&amp;#39;&quot;) + &quot;)&#39;&gt;&quot; +
+      &#39;&lt;div class=&quot;carta-card-header&quot;&gt;&#39; +
+      &#39;&lt;span class=&quot;carta-card-title&quot;&gt;&#39; + escapeHtml(carta.nome) + &#39;&lt;/span&gt;&#39; +
+      &#39;&lt;span class=&quot;carta-card-badge &#39; + (isInativa ? &#39;badge-inativa&#39; : &#39;badge-ativa&#39;) + &#39;&quot;&gt;&#39; + carta.status + &#39;&lt;/span&gt;&lt;/div&gt;&#39; +
+      &#39;&lt;div class=&quot;carta-card-info&quot;&gt;&#39; +
+      &#39;&lt;span&gt;\ud83d\udccb Rev. &#39; + carta.revisao + &#39;&lt;/span&gt;&#39; +
+      &#39;&lt;span&gt;\ud83c\udfed &#39; + escapeHtml(carta.unidade) + &#39;&lt;/span&gt;&#39; +
+      &#39;&lt;span&gt;\ud83d\udcc5 &#39; + formatDate(carta.vigencia) + &#39;&lt;/span&gt;&#39; +
+      &#39;&lt;span&gt;\ud83d\udce6 &#39; + carta.materiais.length + &#39; materiais&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&#39;;
+  });
+  container.innerHTML = html;
+}
+
+async function abrirDetalhe(carta) {
+  var modal = document.getElementById(&#39;modal-detalhe&#39;);
+  var titulo = document.getElementById(&#39;modal-titulo&#39;);
+  var body = document.getElementById(&#39;modal-body-detalhe&#39;);
+
+  titulo.textContent = carta.nome + &#39; - Rev. &#39; + carta.revisao;
+
+  var materiaisComGrupo = carta.materiais.map(function(mat) {
+    var def = MATERIAIS_TRACO.find(function(m) {
+      return m.nome.toLowerCase() === mat.produto.toLowerCase()
+        || (m.id === &#39;cimento&#39; &amp;&amp; mat.produto.toLowerCase().startsWith(&#39;cimento&#39;));
+    });
+    return {
+      produto: mat.produto, quantidade: parseFloat(mat.quantidade) || 0,
+      massaEspecifica: parseFloat(mat.massaEspecifica) || (def ? def.meDefault : 1),
+      unidade: mat.unidadeMedida || &#39;kg&#39;, grupo: def ? def.grupo : &#39;outro&#39;, fornecedor: mat.fornecedor || &#39;-&#39;
+    };
+  });
+
+  var ind = calcularIndicadores(materiaisComGrupo);
+  var mccData = [];
+  var mccTotal = 0;
+
+  try {
+    var result = await apiGet(&#39;getCustos&#39;, { unidade: carta.unidade });
+    var custos = result.data || [];
+    materiaisComGrupo.forEach(function(mat) {
+      var custoItem = custos.find(function(c) {
+        var matchBase = c.material.toLowerCase() === mat.produto.toLowerCase() &amp;&amp; c.unidade === carta.unidade;
+        if (mat.fornecedor &amp;&amp; mat.fornecedor !== &#39;-&#39;) return matchBase &amp;&amp; c.fornecedor === mat.fornecedor;
+        return matchBase;
+      });
+      var custoUnitario = 0;
+      if (custoItem) {
+        custoUnitario = converterCustoParaKg(
+          parseFloat(custoItem.valorLiquido),
+          custoItem.unidadeMedida || &#39;kg&#39;,
+          mat.massaEspecifica
+        );
+      }
+      var custoTotal = mat.quantidade * custoUnitario;
+      mccTotal += custoTotal;
+      mccData.push({ produto: mat.produto, fornecedor: custoItem ? custoItem.fornecedor : &#39;-&#39;,
+        quantidade: mat.quantidade, massaEspecifica: mat.massaEspecifica, unidade: mat.unidade,
+        custoUnitario: custoUnitario, custoTotal: custoTotal });
+    });
+  } catch (e) { console.error(&#39;Erro ao buscar custos:&#39;, e); }
+
+  var html = &#39;&lt;div class=&quot;detail-section&quot;&gt;&lt;h4&gt;Informa&#231;&#245;es da Carta&lt;/h4&gt;&lt;div class=&quot;detail-grid&quot;&gt;&#39; +
+    &#39;&lt;div class=&quot;detail-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Nome&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + escapeHtml(carta.nome) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;detail-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Revis&#227;o&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + carta.revisao + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;detail-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Unidade&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + escapeHtml(carta.unidade) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;detail-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Status&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + carta.status + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;detail-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Data de Vig&#234;ncia&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + formatDate(carta.vigencia) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;detail-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Data de Cadastro&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + formatDate(carta.dataCadastro) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;detail-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Observa&#231;&#227;o&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + escapeHtml(carta.observacao || &#39;-&#39;) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;/div&gt;&lt;/div&gt;&#39;;
+
+  html += &#39;&lt;div class=&quot;detail-section&quot;&gt;&lt;h4&gt;Indicadores T&#233;cnicos&lt;/h4&gt;&lt;div class=&quot;indicadores-grid&quot;&gt;&#39; +
+    &#39;&lt;div class=&quot;indicador-card&quot;&gt;&lt;span class=&quot;indicador-label&quot;&gt;Peso Total&lt;/span&gt;&lt;span class=&quot;indicador-valor&quot;&gt;&#39; + ind.pesoTotal.toFixed(1) + &#39;&lt;/span&gt;&lt;span class=&quot;indicador-unit&quot;&gt;kg/m&#179;&lt;/span&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;indicador-card&quot;&gt;&lt;span class=&quot;indicador-label&quot;&gt;Volume&lt;/span&gt;&lt;span class=&quot;indicador-valor&quot;&gt;&#39; + ind.volume.toFixed(1) + &#39;&lt;/span&gt;&lt;span class=&quot;indicador-unit&quot;&gt;dm&#179;&lt;/span&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;indicador-card&quot;&gt;&lt;span class=&quot;indicador-label&quot;&gt;Rela&#231;&#227;o A/C&lt;/span&gt;&lt;span class=&quot;indicador-valor&quot;&gt;&#39; + ind.relacaoAC.toFixed(2).replace(&#39;.&#39;, &#39;,&#39;) + &#39;&lt;/span&gt;&lt;span class=&quot;indicador-unit&quot;&gt;&lt;/span&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;indicador-card&quot;&gt;&lt;span class=&quot;indicador-label&quot;&gt;Tx Argamassa (massa)&lt;/span&gt;&lt;span class=&quot;indicador-valor&quot;&gt;&#39; + ind.taxaArgamassa.toFixed(1) + &#39;&lt;/span&gt;&lt;span class=&quot;indicador-unit&quot;&gt;%&lt;/span&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;indicador-card&quot;&gt;&lt;span class=&quot;indicador-label&quot;&gt;Tx Argamassa (volume)&lt;/span&gt;&lt;span class=&quot;indicador-valor&quot;&gt;&#39; + ind.taxaArgamassaVol.toFixed(1) + &#39;&lt;/span&gt;&lt;span class=&quot;indicador-unit&quot;&gt;%&lt;/span&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;indicador-card&quot;&gt;&lt;span class=&quot;indicador-label&quot;&gt;% Aditivo 1&lt;/span&gt;&lt;span class=&quot;indicador-valor&quot;&gt;&#39; + ind.pctAditivo1.toFixed(2).replace(&#39;.&#39;, &#39;,&#39;) + &#39;&lt;/span&gt;&lt;span class=&quot;indicador-unit&quot;&gt;% s/ cimento&lt;/span&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;indicador-card&quot;&gt;&lt;span class=&quot;indicador-label&quot;&gt;% Aditivo 2&lt;/span&gt;&lt;span class=&quot;indicador-valor&quot;&gt;&#39; + ind.pctAditivo2.toFixed(2).replace(&#39;.&#39;, &#39;,&#39;) + &#39;&lt;/span&gt;&lt;span class=&quot;indicador-unit&quot;&gt;% s/ cimento&lt;/span&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;/div&gt;&#39;;
+
+  var distAreiasHtml = ind.distAreias.filter(function(a) { return a.quantidade &gt; 0; }).map(function(a) {
+    return &#39;&lt;div class=&quot;dist-item&quot;&gt;&lt;span class=&quot;dist-name&quot;&gt;&#39; + escapeHtml(a.nome) + &#39;&lt;/span&gt;&lt;span class=&quot;dist-pct&quot;&gt;&#39; + a.pct.toFixed(1) + &#39;%&lt;/span&gt;&lt;/div&gt;&#39;;
+  }).join(&#39;&#39;) || &#39;&lt;div class=&quot;dist-item&quot;&gt;&lt;span class=&quot;dist-name&quot;&gt;-&lt;/span&gt;&lt;/div&gt;&#39;;
+
+  var distBritasHtml = ind.distBritas.filter(function(b) { return b.quantidade &gt; 0; }).map(function(b) {
+    return &#39;&lt;div class=&quot;dist-item&quot;&gt;&lt;span class=&quot;dist-name&quot;&gt;&#39; + escapeHtml(b.nome) + &#39;&lt;/span&gt;&lt;span class=&quot;dist-pct&quot;&gt;&#39; + b.pct.toFixed(1) + &#39;%&lt;/span&gt;&lt;/div&gt;&#39;;
+  }).join(&#39;&#39;) || &#39;&lt;div class=&quot;dist-item&quot;&gt;&lt;span class=&quot;dist-name&quot;&gt;-&lt;/span&gt;&lt;/div&gt;&#39;;
+
+  html += &#39;&lt;div class=&quot;distribuicao-row&quot;&gt;&#39; +
+    &#39;&lt;div class=&quot;dist-box&quot;&gt;&lt;h4&gt;Distribui&#231;&#227;o Areias&lt;/h4&gt;&#39; + distAreiasHtml + &#39;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;dist-box&quot;&gt;&lt;h4&gt;Distribui&#231;&#227;o Britas&lt;/h4&gt;&#39; + distBritasHtml + &#39;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&#39;;
+
+  html += &#39;&lt;div class=&quot;detail-section&quot;&gt;&lt;h4&gt;MCC - Composi&#231;&#227;o de Custo de Material&lt;/h4&gt;&#39; +
+    &#39;&lt;div class=&quot;mcc-info&quot;&gt;&lt;div class=&quot;mcc-total&quot;&gt;&lt;span&gt;MCC Total:&lt;/span&gt;&lt;strong&gt;&#39; + formatCurrency(mccTotal) + &#39;&lt;/strong&gt;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;chart-container&quot;&gt;&lt;canvas id=&quot;chart-detalhe-mcc&quot;&gt;&lt;/canvas&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div id=&quot;mcc-detalhe-table&quot;&gt;&lt;/div&gt;&lt;/div&gt;&#39;;
+
+  body.innerHTML = html;
+
+  var tableContainer = document.getElementById(&#39;mcc-detalhe-table&#39;);
+  var tableHtml = &#39;&lt;table class=&quot;cost-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Material&lt;/th&gt;&lt;th&gt;Fornecedor&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;Consumo (kg)&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;M.E.&lt;/th&gt;&#39; +
+    &#39;&lt;th class=&quot;text-right&quot;&gt;Custo Unit.&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;Custo Total&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;%&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&#39;;
+  mccData.forEach(function(item) {
+    var pct = mccTotal &gt; 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : &#39;0.0&#39;;
+    tableHtml += &#39;&lt;tr&gt;&lt;td&gt;&#39; + escapeHtml(item.produto) + &#39;&lt;/td&gt;&lt;td&gt;&#39; + escapeHtml(item.fornecedor || &#39;-&#39;) + &#39;&lt;/td&gt;&lt;td class=&quot;text-right&quot;&gt;&#39; + item.quantidade.toFixed(2) +
+      &#39;&lt;/td&gt;&lt;td class=&quot;text-right&quot;&gt;&#39; + item.massaEspecifica.toFixed(3) + &#39;&lt;/td&gt;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(item.custoUnitario) +
+      &#39;&lt;/td&gt;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(item.custoTotal) + &#39;&lt;/td&gt;&lt;td class=&quot;text-right&quot;&gt;&#39; + pct + &#39;%&lt;/td&gt;&lt;/tr&gt;&#39;;
+  });
+  tableHtml += &#39;&lt;tr class=&quot;total-row&quot;&gt;&lt;td colspan=&quot;5&quot;&gt;&lt;strong&gt;TOTAL MCC&lt;/strong&gt;&lt;/td&gt;&#39; +
+    &#39;&lt;td class=&quot;text-right&quot;&gt;&lt;strong&gt;&#39; + formatCurrency(mccTotal) + &#39;&lt;/strong&gt;&lt;/td&gt;&#39; +
+    &#39;&lt;td class=&quot;text-right&quot;&gt;&lt;strong&gt;100%&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&#39;;
+  tableContainer.innerHTML = tableHtml;
+
+  if (mccData.length &gt; 0) renderPieChart(mccData, mccTotal, &#39;chart-detalhe-mcc&#39;, &#39;detalhe&#39;);
+
+  modal.dataset.printData = JSON.stringify({ carta: carta, mccData: mccData, mccTotal: mccTotal, ind: ind });
+  modal.classList.remove(&#39;hidden&#39;);
+}
+
+function fecharModal() {
+  document.getElementById(&#39;modal-detalhe&#39;).classList.add(&#39;hidden&#39;);
+  if (chartDetalhe) { chartDetalhe.destroy(); chartDetalhe = null; }
+}
+
+async function editarCarta() {
+  var modal = document.getElementById(&#39;modal-detalhe&#39;);
+  var data = JSON.parse(modal.dataset.printData || &#39;{}&#39;);
+  var carta = data.carta;
+  if (!carta) return;
+
+  fecharModal();
+  navigateTo(&#39;cadastro&#39;);
+
+  // Preencher campos de informa&#231;&#227;o
+  document.getElementById(&#39;carta-nome&#39;).value = carta.nome || &#39;&#39;;
+  document.getElementById(&#39;carta-revisao&#39;).value = parseInt(carta.revisao || 0) + 1;
+  document.getElementById(&#39;carta-unidade&#39;).value = carta.unidade || &#39;&#39;;
+  document.getElementById(&#39;carta-vigencia&#39;).value = getToday();
+  document.getElementById(&#39;carta-status&#39;).value = &#39;Ativa&#39;;
+  document.getElementById(&#39;carta-observacao&#39;).value = carta.observacao || &#39;&#39;;
+
+  // Carregar fornecedores da unidade antes de preencher
+  await carregarFornecedores();
+
+  // Limpar todos os campos de materiais primeiro
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var qtdEl = document.getElementById(&#39;mat-&#39; + mat.id);
+    var meEl = document.getElementById(&#39;me-&#39; + mat.id);
+    var fornEl = document.getElementById(&#39;forn-&#39; + mat.id);
+    if (qtdEl) qtdEl.value = &#39;&#39;;
+    if (meEl) meEl.value = mat.meDefault.toFixed(3);
+    if (fornEl) fornEl.value = &#39;&#39;;
+  });
+
+  // Preencher materiais da carta
+  (carta.materiais || []).forEach(function(m) {
+    var isCimento = (m.produto || &#39;&#39;).toLowerCase().startsWith(&#39;cimento&#39;);
+    var def = MATERIAIS_TRACO.find(function(d) {
+      if (isCimento) return d.id === &#39;cimento&#39;;
+      return d.nome.toLowerCase() === (m.produto || &#39;&#39;).toLowerCase();
+    });
+    if (def) {
+      if (isCimento) {
+        document.getElementById(&#39;tipo-cimento&#39;).value = m.produto || &#39;Cimento CP V&#39;;
+      }
+      var qtdEl = document.getElementById(&#39;mat-&#39; + def.id);
+      var meEl = document.getElementById(&#39;me-&#39; + def.id);
+      var fornEl = document.getElementById(&#39;forn-&#39; + def.id);
+      if (qtdEl) qtdEl.value = parseFloat(m.quantidade) || &#39;&#39;;
+      if (meEl) meEl.value = parseFloat(m.massaEspecifica || def.meDefault).toFixed(3);
+      if (fornEl) fornEl.value = m.fornecedor || &#39;&#39;;
+    }
+  });
+
+  showToast(&#39;Carta carregada para edi\u00e7\u00e3o. Revis\u00e3o incrementada automaticamente.&#39;, &#39;success&#39;);
+}
+
+function imprimirCarta() {
+  var modal = document.getElementById(&#39;modal-detalhe&#39;);
+  var data = JSON.parse(modal.dataset.printData || &#39;{}&#39;);
+  var carta = data.carta, mccData = data.mccData, mccTotal = data.mccTotal, ind = data.ind;
+  if (!carta) return;
+
+  var printArea = document.getElementById(&#39;print-area&#39;);
+
+  // === Banner / Cabe\u00e7alho ===
+  var html = &#39;&lt;div class=&quot;print-banner&quot;&gt;&#39; +
+    &#39;&lt;div class=&quot;print-banner-left&quot;&gt;\ud83d\udccb CARTA TRA\u00c7O&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-banner-right&quot;&gt;CONCRETRACK&lt;br&gt;Sistema de Composi\u00e7\u00f5es&lt;/div&gt;&lt;/div&gt;&#39;;
+
+  // === Informa\u00e7\u00f5es da Carta ===
+  html += &#39;&lt;div class=&quot;print-info-grid&quot;&gt;&#39; +
+    &#39;&lt;div class=&quot;print-info-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Nome&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + escapeHtml(carta.nome) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-info-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Revis\u00e3o&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + carta.revisao + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-info-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Unidade&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + escapeHtml(carta.unidade) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-info-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Status&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + carta.status + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-info-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Vig\u00eancia&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + formatDate(carta.vigencia) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-info-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Cadastro&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + formatDate(carta.dataCadastro) + &#39;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-info-item&quot;&gt;&lt;div class=&quot;label&quot;&gt;Observa&#231;&#227;o&lt;/div&gt;&lt;div class=&quot;value&quot;&gt;&#39; + escapeHtml(carta.observacao || &#39;-&#39;) + &#39;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&#39;;
+
+  // === Indicadores T\u00e9cnicos ===
+  html += &#39;&lt;div class=&quot;print-section-title&quot;&gt;Indicadores T\u00e9cnicos&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-ind-grid&quot;&gt;&#39; +
+    &#39;&lt;div class=&quot;print-ind-card&quot;&gt;&lt;div class=&quot;print-ind-label&quot;&gt;Peso Total&lt;/div&gt;&lt;div class=&quot;print-ind-valor&quot;&gt;&#39; + ind.pesoTotal.toFixed(1) + &#39;&lt;/div&gt;&lt;div class=&quot;print-ind-unit&quot;&gt;kg/m\u00b3&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-ind-card&quot;&gt;&lt;div class=&quot;print-ind-label&quot;&gt;Volume&lt;/div&gt;&lt;div class=&quot;print-ind-valor&quot;&gt;&#39; + ind.volume.toFixed(1) + &#39;&lt;/div&gt;&lt;div class=&quot;print-ind-unit&quot;&gt;dm\u00b3&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-ind-card&quot;&gt;&lt;div class=&quot;print-ind-label&quot;&gt;Rela&#231;&#227;o A/C&lt;/div&gt;&lt;div class=&quot;print-ind-valor&quot;&gt;&#39; + ind.relacaoAC.toFixed(2).replace(&#39;.&#39;, &#39;,&#39;) + &#39;&lt;/div&gt;&lt;div class=&quot;print-ind-unit&quot;&gt;&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-ind-card&quot;&gt;&lt;div class=&quot;print-ind-label&quot;&gt;Tx Argamassa (massa)&lt;/div&gt;&lt;div class=&quot;print-ind-valor&quot;&gt;&#39; + ind.taxaArgamassa.toFixed(1) + &#39;&lt;/div&gt;&lt;div class=&quot;print-ind-unit&quot;&gt;%&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-ind-card&quot;&gt;&lt;div class=&quot;print-ind-label&quot;&gt;Tx Argamassa (volume)&lt;/div&gt;&lt;div class=&quot;print-ind-valor&quot;&gt;&#39; + ind.taxaArgamassaVol.toFixed(1) + &#39;&lt;/div&gt;&lt;div class=&quot;print-ind-unit&quot;&gt;%&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-ind-card&quot;&gt;&lt;div class=&quot;print-ind-label&quot;&gt;% Aditivo 1&lt;/div&gt;&lt;div class=&quot;print-ind-valor&quot;&gt;&#39; + ind.pctAditivo1.toFixed(2).replace(&#39;.&#39;, &#39;,&#39;) + &#39;&lt;/div&gt;&lt;div class=&quot;print-ind-unit&quot;&gt;% s/ cim.&lt;/div&gt;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-ind-card&quot;&gt;&lt;div class=&quot;print-ind-label&quot;&gt;% Aditivo 2&lt;/div&gt;&lt;div class=&quot;print-ind-valor&quot;&gt;&#39; + ind.pctAditivo2.toFixed(2).replace(&#39;.&#39;, &#39;,&#39;) + &#39;&lt;/div&gt;&lt;div class=&quot;print-ind-unit&quot;&gt;% s/ cim.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&#39;;
+
+  // === Distribui\u00e7\u00e3o ===
+  var distAItems = ind.distAreias.filter(function(a){ return a.quantidade &gt; 0; }).map(function(a) {
+    return &#39;&lt;div class=&quot;print-dist-item&quot;&gt;&lt;span&gt;&#39; + escapeHtml(a.nome) + &#39;&lt;/span&gt;&lt;span&gt;&#39; + a.pct.toFixed(1) + &#39;%&lt;/span&gt;&lt;/div&gt;&#39;;
+  }).join(&#39;&#39;) || &#39;&lt;div class=&quot;print-dist-item&quot;&gt;&lt;span&gt;-&lt;/span&gt;&lt;/div&gt;&#39;;
+
+  var distBItems = ind.distBritas.filter(function(b){ return b.quantidade &gt; 0; }).map(function(b) {
+    return &#39;&lt;div class=&quot;print-dist-item&quot;&gt;&lt;span&gt;&#39; + escapeHtml(b.nome) + &#39;&lt;/span&gt;&lt;span&gt;&#39; + b.pct.toFixed(1) + &#39;%&lt;/span&gt;&lt;/div&gt;&#39;;
+  }).join(&#39;&#39;) || &#39;&lt;div class=&quot;print-dist-item&quot;&gt;&lt;span&gt;-&lt;/span&gt;&lt;/div&gt;&#39;;
+
+  html += &#39;&lt;div class=&quot;print-dist-row&quot;&gt;&#39; +
+    &#39;&lt;div class=&quot;print-dist-box&quot;&gt;&lt;h4&gt;Distribui\u00e7\u00e3o Areias&lt;/h4&gt;&#39; + distAItems + &#39;&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-dist-box&quot;&gt;&lt;h4&gt;Distribui\u00e7\u00e3o Britas&lt;/h4&gt;&#39; + distBItems + &#39;&lt;/div&gt;&lt;/div&gt;&#39;;
+
+  // === MCC ===
+  html += &#39;&lt;div class=&quot;print-section-title&quot;&gt;Composi\u00e7\u00e3o de Custo de Material (MCC)&lt;/div&gt;&#39; +
+    &#39;&lt;div class=&quot;print-mcc-total&quot;&gt;MCC Total: &#39; + formatCurrency(mccTotal) + &#39;&lt;/div&gt;&#39;;
+
+  html += &#39;&lt;table class=&quot;cost-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&#39; +
+    &#39;&lt;th&gt;Material&lt;/th&gt;&lt;th&gt;Fornecedor&lt;/th&gt;&lt;th style=&quot;text-align:right&quot;&gt;Consumo (kg)&lt;/th&gt;&lt;th style=&quot;text-align:right&quot;&gt;M.E. (kg/dm\u00b3)&lt;/th&gt;&#39; +
+    &#39;&lt;th style=&quot;text-align:right&quot;&gt;Custo Unit.&lt;/th&gt;&lt;th style=&quot;text-align:right&quot;&gt;Custo Total&lt;/th&gt;&lt;th style=&quot;text-align:right&quot;&gt;%&lt;/th&gt;&#39; +
+    &#39;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&#39;;
+
+  (mccData || []).forEach(function(item) {
+    var pct = mccTotal &gt; 0 ? ((item.custoTotal / mccTotal) * 100).toFixed(1) : &#39;0.0&#39;;
+    html += &#39;&lt;tr&gt;&lt;td&gt;&#39; + escapeHtml(item.produto) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td&gt;&#39; + escapeHtml(item.fornecedor || &#39;-&#39;) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td style=&quot;text-align:right&quot;&gt;&#39; + item.quantidade.toFixed(2) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td style=&quot;text-align:right&quot;&gt;&#39; + item.massaEspecifica.toFixed(3) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td style=&quot;text-align:right&quot;&gt;&#39; + formatCurrency(item.custoUnitario) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td style=&quot;text-align:right&quot;&gt;&#39; + formatCurrency(item.custoTotal) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td style=&quot;text-align:right&quot;&gt;&#39; + pct + &#39;%&lt;/td&gt;&lt;/tr&gt;&#39;;
+  });
+
+  html += &#39;&lt;tr class=&quot;total-row&quot;&gt;&lt;td colspan=&quot;5&quot;&gt;&lt;strong&gt;TOTAL MCC&lt;/strong&gt;&lt;/td&gt;&#39; +
+    &#39;&lt;td style=&quot;text-align:right&quot;&gt;&lt;strong&gt;&#39; + formatCurrency(mccTotal) + &#39;&lt;/strong&gt;&lt;/td&gt;&#39; +
+    &#39;&lt;td style=&quot;text-align:right&quot;&gt;&lt;strong&gt;100%&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&#39;;
+
+  // === Rodap\u00e9 ===
+  html += &#39;&lt;div class=&quot;print-footer&quot;&gt;&#39; +
+    &#39;&lt;span&gt;CONCRETRACK - Cartas Tra\u00e7o&lt;/span&gt;&#39; +
+    &#39;&lt;span&gt;&#39; + escapeHtml(carta.nome) + &#39; | Rev. &#39; + carta.revisao + &#39; | &#39; + escapeHtml(carta.unidade) + &#39;&lt;/span&gt;&#39; +
+    &#39;&lt;span&gt;Gerado em &#39; + new Date().toLocaleString(&#39;pt-BR&#39;) + &#39;&lt;/span&gt;&lt;/div&gt;&#39;;
+
+  printArea.innerHTML = html;
+  setTimeout(function() { window.print(); }, 300);
+}
+
+// ===========================================
+// ========== CUSTOS / MATERIAIS =============
+// ===========================================
+function initCustos() {
+  // Populate material dropdown
+  var matSelect = document.getElementById(&#39;custo-material&#39;);
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var opt = document.createElement(&#39;option&#39;);
+    opt.value = mat.nome;
+    opt.textContent = mat.nome;
+    matSelect.appendChild(opt);
+  });
+  // Add cimento types as separate options
+  var optCPV = document.createElement(&#39;option&#39;);
+  optCPV.value = &#39;Cimento CP V&#39;; optCPV.textContent = &#39;Cimento CP V&#39;;
+  var optCPII = document.createElement(&#39;option&#39;);
+  optCPII.value = &#39;Cimento CP II F-40&#39;; optCPII.textContent = &#39;Cimento CP II F-40&#39;;
+  matSelect.appendChild(optCPV);
+  matSelect.appendChild(optCPII);
+
+  var valorInput = document.getElementById(&#39;custo-valor&#39;);
+  var icmsInput = document.getElementById(&#39;custo-icms&#39;);
+  var freteInput = document.getElementById(&#39;custo-frete&#39;);
+
+  function calcularLiquido() {
+    var valor = parseFloat(valorInput.value) || 0;
+    var icms = parseFloat(icmsInput.value) || 0;
+    var frete = parseFloat(freteInput.value) || 0;
+    document.getElementById(&#39;custo-liquido&#39;).value = ((valor * (1 - icms / 100)) + frete).toFixed(2);
+  }
+
+  valorInput.addEventListener(&#39;input&#39;, calcularLiquido);
+  icmsInput.addEventListener(&#39;input&#39;, calcularLiquido);
+  freteInput.addEventListener(&#39;input&#39;, calcularLiquido);
+
+  document.getElementById(&#39;form-custo&#39;).addEventListener(&#39;submit&#39;, async function(e) {
+    e.preventDefault();
+    await salvarCusto();
+  });
+
+  document.getElementById(&#39;btn-limpar-custo&#39;).addEventListener(&#39;click&#39;, function() {
+    document.getElementById(&#39;form-custo&#39;).reset();
+    document.getElementById(&#39;custo-liquido&#39;).value = &#39;&#39;;
+  });
+
+  document.getElementById(&#39;btn-carregar-custos&#39;).addEventListener(&#39;click&#39;, carregarCustos);
+  document.getElementById(&#39;btn-consultar-fornecedores&#39;).addEventListener(&#39;click&#39;, consultarFornecedores);
+
+  // Populate filtro-fornecedor-material dropdown
+  var filtroMat = document.getElementById(&#39;filtro-fornecedor-material&#39;);
+  MATERIAIS_TRACO.forEach(function(mat) {
+    var opt = document.createElement(&#39;option&#39;);
+    opt.value = mat.nome;
+    opt.textContent = mat.nome;
+    filtroMat.appendChild(opt);
+  });
+}
+
+async function salvarCusto() {
+  var unidade = document.getElementById(&#39;custo-unidade&#39;).value;
+  var fornecedor = document.getElementById(&#39;custo-fornecedor&#39;).value.trim();
+  var material = document.getElementById(&#39;custo-material&#39;).value.trim();
+  var unMedida = document.getElementById(&#39;custo-un-medida&#39;).value;
+  var valor = parseFloat(document.getElementById(&#39;custo-valor&#39;).value) || 0;
+  var icms = parseFloat(document.getElementById(&#39;custo-icms&#39;).value) || 0;
+  var frete = parseFloat(document.getElementById(&#39;custo-frete&#39;).value) || 0;
+  var valorLiquido = parseFloat(document.getElementById(&#39;custo-liquido&#39;).value) || 0;
+
+  if (!unidade || !fornecedor || !material || !unMedida) {
+    showToast(&#39;Preencha todos os campos obrigat&#243;rios.&#39;, &#39;error&#39;);
+    return;
+  }
+
+  showLoading();
+  try {
+    var result = await apiPost(&#39;salvarCusto&#39;, {
+      unidade: unidade, fornecedor: fornecedor, material: material,
+      produtoFornecedor: document.getElementById(&#39;custo-produto-fornecedor&#39;).value.trim(),
+      unidadeMedida: unMedida, valor: valor, icms: icms, frete: frete, valorLiquido: valorLiquido,
+      tipoFrete: document.getElementById(&#39;custo-tipo-frete&#39;).value,
+      data: getToday()
+    });
+    if (result.error) throw new Error(result.error);
+    showToast(&#39;Material salvo com sucesso!&#39;, &#39;success&#39;);
+    document.getElementById(&#39;form-custo&#39;).reset();
+    document.getElementById(&#39;custo-liquido&#39;).value = &#39;&#39;;
+    if (document.getElementById(&#39;filtro-custos-unidade&#39;).value) carregarCustos();
+  } catch (error) {
+    showToast(&#39;Erro ao salvar: &#39; + error.message, &#39;error&#39;);
+  } finally {
+    hideLoading();
+  }
+}
+
+async function carregarCustos() {
+  var unidade = document.getElementById(&#39;filtro-custos-unidade&#39;).value;
+  showLoading();
+  try {
+    var result = await apiGet(&#39;getCustos&#39;, { unidade: unidade });
+    if (result.error) throw new Error(result.error);
+    renderCustosList(result.data || []);
+  } catch (error) {
+    showToast(&#39;Erro ao carregar custos: &#39; + error.message, &#39;error&#39;);
+    document.getElementById(&#39;custos-lista&#39;).innerHTML = &#39;&lt;p class=&quot;empty-state&quot;&gt;Erro ao carregar.&lt;/p&gt;&#39;;
+  } finally {
+    hideLoading();
+  }
+}
+
+function renderCustosList(custos) {
+  var container = document.getElementById(&#39;custos-lista&#39;);
+  if (custos.length === 0) {
+    container.innerHTML = &#39;&lt;p class=&quot;empty-state&quot;&gt;Nenhum material cadastrado.&lt;/p&gt;&#39;;
+    return;
+  }
+
+  var html = &#39;&lt;table class=&quot;cost-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&#39; +
+    &#39;&lt;th&gt;Data&lt;/th&gt;&lt;th&gt;Unidade&lt;/th&gt;&lt;th&gt;Fornecedor&lt;/th&gt;&lt;th&gt;Material&lt;/th&gt;&lt;th&gt;Produto&lt;/th&gt;&lt;th&gt;Un. Med.&lt;/th&gt;&#39; +
+    &#39;&lt;th class=&quot;text-right&quot;&gt;Valor Unit.&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;ICMS %&lt;/th&gt;&#39; +
+    &#39;&lt;th class=&quot;text-right&quot;&gt;Frete&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;Vlr. L&#237;quido&lt;/th&gt;&#39; +
+    &#39;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&#39;;
+
+  custos.forEach(function(c) {
+    html += &#39;&lt;tr&gt;&lt;td&gt;&#39; + formatDate(c.data) + &#39;&lt;/td&gt;&lt;td&gt;&#39; + escapeHtml(c.unidade) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td&gt;&#39; + escapeHtml(c.fornecedor) + &#39;&lt;/td&gt;&lt;td&gt;&#39; + escapeHtml(c.material) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td&gt;&#39; + escapeHtml(c.produtoFornecedor || &#39;-&#39;) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td&gt;&#39; + (c.unidadeMedida || &#39;-&#39;) + &#39;&lt;/td&gt;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(c.valor) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + parseFloat(c.icms).toFixed(1) + &#39;%&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(c.frete) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(c.valorLiquido) + &#39;&lt;/td&gt;&lt;/tr&gt;&#39;;
+  });
+
+  html += &#39;&lt;/tbody&gt;&lt;/table&gt;&#39;;
+  container.innerHTML = html;
+
+  // Update fornecedores datalist
+  var datalist = document.getElementById(&#39;fornecedores-list&#39;);
+  var fornSet = {};
+  custos.forEach(function(c) { if (c.fornecedor) fornSet[c.fornecedor] = true; });
+  datalist.innerHTML = Object.keys(fornSet).sort().map(function(f) {
+    return &#39;&lt;option value=&quot;&#39; + escapeHtml(f) + &#39;&quot;&gt;&#39;;
+  }).join(&#39;&#39;);
+}
+
+async function consultarFornecedores() {
+  var filtroMaterial = document.getElementById(&#39;filtro-fornecedor-material&#39;).value;
+  showLoading();
+  try {
+    var result = await apiGet(&#39;getCustos&#39;);
+    if (result.error) throw new Error(result.error);
+    var custos = result.data || [];
+
+    if (filtroMaterial) {
+      custos = custos.filter(function(c) {
+        return c.material &amp;&amp; c.material.toLowerCase() === filtroMaterial.toLowerCase();
+      });
+    }
+
+    var fornMap = {};
+    custos.forEach(function(c) {
+      var key = c.fornecedor + &#39;|&#39; + c.material + &#39;|&#39; + c.unidade;
+      if (!fornMap[key]) {
+        fornMap[key] = { fornecedor: c.fornecedor, material: c.material, unidade: c.unidade,
+          produtoFornecedor: c.produtoFornecedor || &#39;&#39;,
+          valorLiquido: parseFloat(c.valorLiquido) || 0, unidadeMedida: c.unidadeMedida || &#39;-&#39;,
+          tipoFrete: c.tipoFrete || &#39;-&#39;, data: c.data };
+      }
+    });
+
+    var container = document.getElementById(&#39;fornecedores-lista&#39;);
+    var items = Object.values(fornMap);
+    if (items.length === 0) {
+      container.innerHTML = &#39;&lt;p class=&quot;empty-state&quot;&gt;Nenhum fornecedor encontrado.&lt;/p&gt;&#39;;
+      return;
+    }
+
+    items.sort(function(a, b) { return a.material.localeCompare(b.material) || a.fornecedor.localeCompare(b.fornecedor); });
+
+    var html = &#39;&lt;table class=&quot;cost-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&#39; +
+      &#39;&lt;th&gt;Material&lt;/th&gt;&lt;th&gt;Produto&lt;/th&gt;&lt;th&gt;Fornecedor&lt;/th&gt;&lt;th&gt;Unidade&lt;/th&gt;&lt;th&gt;Un. Med.&lt;/th&gt;&#39; +
+      &#39;&lt;th class=&quot;text-right&quot;&gt;Vlr. L&#237;quido&lt;/th&gt;&lt;th&gt;Tipo Frete&lt;/th&gt;&lt;th&gt;Data&lt;/th&gt;&#39; +
+      &#39;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&#39;;
+
+    items.forEach(function(item) {
+      html += &#39;&lt;tr&gt;&lt;td&gt;&#39; + escapeHtml(item.material) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + escapeHtml(item.produtoFornecedor || &#39;-&#39;) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + escapeHtml(item.fornecedor) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + escapeHtml(item.unidade) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + item.unidadeMedida + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(item.valorLiquido) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + escapeHtml(item.tipoFrete) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + formatDate(item.data) + &#39;&lt;/td&gt;&lt;/tr&gt;&#39;;
+    });
+
+    html += &#39;&lt;/tbody&gt;&lt;/table&gt;&#39;;
+    container.innerHTML = html;
+    showToast(&#39;Fornecedores carregados!&#39;, &#39;success&#39;);
+  } catch (error) {
+    showToast(&#39;Erro ao consultar fornecedores: &#39; + error.message, &#39;error&#39;);
+    document.getElementById(&#39;fornecedores-lista&#39;).innerHTML = &#39;&lt;p class=&quot;empty-state&quot;&gt;Erro ao carregar.&lt;/p&gt;&#39;;
+  } finally {
+    hideLoading();
+  }
+}
+
+// ===========================================
+// ========== IMPORTA&#199;&#195;O EM MASSA ============
+// ===========================================
+var importParsedItems = [];
+
+function initImportacao() {
+  document.getElementById(&#39;btn-toggle-import&#39;).addEventListener(&#39;click&#39;, function() {
+    var sec = document.getElementById(&#39;import-section&#39;);
+    var isHidden = sec.style.display === &#39;none&#39;;
+    sec.style.display = isHidden ? &#39;block&#39; : &#39;none&#39;;
+    this.textContent = isHidden ? &#39;Recolher&#39; : &#39;Expandir&#39;;
+  });
+  document.getElementById(&#39;btn-preview-import&#39;).addEventListener(&#39;click&#39;, previewImport);
+  document.getElementById(&#39;btn-executar-import&#39;).addEventListener(&#39;click&#39;, executarImport);
+}
+
+function previewImport() {
+  var unidade = document.getElementById(&#39;import-unidade&#39;).value;
+  if (!unidade) { showToast(&#39;Selecione a unidade.&#39;, &#39;error&#39;); return; }
+
+  var raw = document.getElementById(&#39;import-dados&#39;).value.trim();
+  if (!raw) { showToast(&#39;Cole os dados para importar.&#39;, &#39;error&#39;); return; }
+
+  var tipoFrete = document.getElementById(&#39;import-tipo-frete&#39;).value;
+  var lines = raw.split(&#39;\n&#39;).filter(function(l) { return l.trim() !== &#39;&#39;; });
+  importParsedItems = [];
+
+  lines.forEach(function(line) {
+    var cols = line.indexOf(&#39;\t&#39;) !== -1 ? line.split(&#39;\t&#39;) : line.split(&#39;;&#39;);
+    cols = cols.map(function(c) { return c.trim(); });
+    if (cols.length &lt; 5) return;
+
+    var valor = parseFloat((cols[4] || &#39;0&#39;).replace(&#39;,&#39;, &#39;.&#39;)) || 0;
+    var icms = parseFloat((cols[5] || &#39;0&#39;).replace(&#39;,&#39;, &#39;.&#39;)) || 0;
+    var frete = parseFloat((cols[6] || &#39;0&#39;).replace(&#39;,&#39;, &#39;.&#39;)) || 0;
+    var valorLiquido = (valor * (1 - icms / 100)) + frete;
+
+    importParsedItems.push({
+      unidade: unidade, fornecedor: cols[0], material: cols[1],
+      produtoFornecedor: cols[2] || &#39;&#39;, unidadeMedida: cols[3] || &#39;kg&#39;,
+      valor: valor, icms: icms, frete: frete, valorLiquido: Math.round(valorLiquido * 100) / 100,
+      tipoFrete: tipoFrete, data: getToday()
+    });
+  });
+
+  if (importParsedItems.length === 0) { showToast(&#39;Nenhuma linha v&#225;lida encontrada. Use ao menos 5 colunas.&#39;, &#39;error&#39;); return; }
+
+  var html = &#39;&lt;h4&gt;&#39; + importParsedItems.length + &#39; itens para importar&lt;/h4&gt;&#39; +
+    &#39;&lt;table class=&quot;cost-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Fornecedor&lt;/th&gt;&lt;th&gt;Material&lt;/th&gt;&lt;th&gt;Produto&lt;/th&gt;&lt;th&gt;Un.&lt;/th&gt;&#39; +
+    &#39;&lt;th class=&quot;text-right&quot;&gt;Valor&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;ICMS%&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;Frete&lt;/th&gt;&#39; +
+    &#39;&lt;th class=&quot;text-right&quot;&gt;Vlr. L&#237;q.&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&#39;;
+
+  importParsedItems.forEach(function(item) {
+    html += &#39;&lt;tr&gt;&lt;td&gt;&#39; + escapeHtml(item.fornecedor) + &#39;&lt;/td&gt;&lt;td&gt;&#39; + escapeHtml(item.material) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td&gt;&#39; + escapeHtml(item.produtoFornecedor) + &#39;&lt;/td&gt;&lt;td&gt;&#39; + item.unidadeMedida + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(item.valor) + &#39;&lt;/td&gt;&lt;td class=&quot;text-right&quot;&gt;&#39; + item.icms.toFixed(1) + &#39;%&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(item.frete) + &#39;&lt;/td&gt;&#39; +
+      &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(item.valorLiquido) + &#39;&lt;/td&gt;&lt;/tr&gt;&#39;;
+  });
+
+  html += &#39;&lt;/tbody&gt;&lt;/table&gt;&#39;;
+  document.getElementById(&#39;import-preview&#39;).innerHTML = html;
+  document.getElementById(&#39;import-preview&#39;).style.display = &#39;block&#39;;
+  document.getElementById(&#39;btn-executar-import&#39;).disabled = false;
+  showToast(importParsedItems.length + &#39; itens prontos para importar.&#39;, &#39;success&#39;);
+}
+
+async function executarImport() {
+  if (importParsedItems.length === 0) { showToast(&#39;Nenhum item para importar.&#39;, &#39;error&#39;); return; }
+
+  showLoading();
+  try {
+    var result = await apiPost(&#39;salvarCustoBatch&#39;, { items: importParsedItems });
+    if (result.error) throw new Error(result.error);
+    showToast(result.message || &#39;Importa&#231;&#227;o conclu&#237;da!&#39;, &#39;success&#39;);
+    document.getElementById(&#39;import-dados&#39;).value = &#39;&#39;;
+    document.getElementById(&#39;import-preview&#39;).style.display = &#39;none&#39;;
+    document.getElementById(&#39;import-preview&#39;).innerHTML = &#39;&#39;;
+    document.getElementById(&#39;btn-executar-import&#39;).disabled = true;
+    importParsedItems = [];
+    if (document.getElementById(&#39;filtro-custos-unidade&#39;).value) carregarCustos();
+  } catch (error) {
+    showToast(&#39;Erro na importa&#231;&#227;o: &#39; + error.message, &#39;error&#39;);
+  } finally {
+    hideLoading();
+  }
+}
+
+// ===========================================
+// ============= RESUMO GERAL ===============
+// ===========================================
+function initResumo() {
+  document.getElementById(&#39;btn-carregar-resumo&#39;).addEventListener(&#39;click&#39;, carregarResumo);
+}
+
+async function carregarResumo() {
+  var container = document.getElementById(&#39;resumo-lista&#39;);
+  showLoading();
+  try {
+    var result = await apiGet(&#39;getResumo&#39;);
+    if (result.error) throw new Error(result.error);
+    var data = result.data || [];
+    if (data.length === 0) {
+      container.innerHTML = &#39;&lt;p class=&quot;empty-state&quot;&gt;Nenhum dado de resumo encontrado.&lt;/p&gt;&#39;;
+      return;
+    }
+    var html = &#39;&lt;table class=&quot;cost-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&#39; +
+      &#39;&lt;th&gt;Unidade&lt;/th&gt;&lt;th&gt;Nome&lt;/th&gt;&lt;th class=&quot;text-right&quot;&gt;Revis&#227;o&lt;/th&gt;&#39; +
+      &#39;&lt;th class=&quot;text-right&quot;&gt;MCC Total&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;th&gt;Vig&#234;ncia&lt;/th&gt;&#39; +
+      &#39;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&#39;;
+    data.forEach(function(r) {
+      html += &#39;&lt;tr&gt;&lt;td&gt;&#39; + escapeHtml(r.unidade || &#39;&#39;) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + escapeHtml(r.nome || &#39;&#39;) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + (r.revisao || 0) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td class=&quot;text-right&quot;&gt;&#39; + formatCurrency(parseFloat(r.mccTotal) || 0) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + escapeHtml(r.status || &#39;&#39;) + &#39;&lt;/td&gt;&#39; +
+        &#39;&lt;td&gt;&#39; + formatDate(r.vigencia) + &#39;&lt;/td&gt;&lt;/tr&gt;&#39;;
+    });
+    html += &#39;&lt;/tbody&gt;&lt;/table&gt;&#39;;
+    container.innerHTML = html;
+    showToast(&#39;Resumo carregado!&#39;, &#39;success&#39;);
+  } catch (error) {
+    showToast(&#39;Erro ao carregar resumo: &#39; + error.message, &#39;error&#39;);
+    container.innerHTML = &#39;&lt;p class=&quot;empty-state&quot;&gt;Erro ao carregar.&lt;/p&gt;&#39;;
+  } finally {
+    hideLoading();
+  }
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></details>
+</section>
+
+<section id="backend">
+  <h2>7. Backend <small>AppsScript_cartaTraco.gs</small></h2>
+  <details><summary>Expandir AppsScript_cartaTraco.gs</summary><pre>/* ============================================================
+   CARTAS TRA&#199;O - Google Apps Script Backend
+   ============================================================
+   
+   INSTRU&#199;&#213;ES DE DEPLOY:
+   1. Acesse https://script.google.com
+   2. Crie um novo projeto
+   3. Cole este c&#243;digo no arquivo Code.gs
+   4. Em &quot;Implantar&quot; &gt; &quot;Nova implanta&#231;&#227;o&quot;
+   5. Tipo: &quot;Aplicativo da Web&quot;
+   6. Executar como: &quot;Eu&quot; (sua conta)
+   7. Quem tem acesso: &quot;Qualquer pessoa&quot;
+   8. Clique em &quot;Implantar&quot; e copie a URL gerada
+   9. Cole a URL no arquivo js/app.js na vari&#225;vel SCRIPT_URL
+   
+   ============================================================ */
+
+const SPREADSHEET_ID = &#39;14m7yrpXF2Q3To_C2H9oQqwIHLJ32uhPOzFbrKE63CjE&#39;;
+
+// ========== HELPERS ==========
+
+function getSheet(name) {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+    initSheetHeaders(sheet, name);
+  }
+  return sheet;
+}
+
+function initSheetHeaders(sheet, name) {
+  switch (name) {
+    case &#39;cadastro&#39;:
+      sheet.appendRow([
+        &#39;ID&#39;, &#39;Nome&#39;, &#39;Revis&#227;o&#39;, &#39;Unidade&#39;, &#39;Status&#39;,
+        &#39;Data Vig&#234;ncia&#39;, &#39;Data Cadastro&#39;, &#39;Fornecedor&#39;,
+        &#39;Produto&#39;, &#39;Quantidade&#39;, &#39;Unidade Medida&#39;, &#39;Massa Espec&#237;fica&#39;,
+        &#39;Observa&#231;&#227;o&#39;, &#39;Tipo Frete&#39;
+      ]);
+      sheet.getRange(1, 1, 1, 14).setFontWeight(&#39;bold&#39;).setBackground(&#39;#1a5276&#39;).setFontColor(&#39;white&#39;);
+      sheet.setFrozenRows(1);
+      break;
+    case &#39;custos&#39;:
+      sheet.appendRow([
+        &#39;ID&#39;, &#39;Data&#39;, &#39;Unidade&#39;, &#39;Fornecedor&#39;, &#39;Material&#39;,
+        &#39;Unidade Medida&#39;, &#39;Valor Unit&#225;rio&#39;, &#39;ICMS %&#39;,
+        &#39;Frete&#39;, &#39;Valor L&#237;quido&#39;, &#39;Produto Fornecedor&#39;, &#39;Tipo Frete&#39;
+      ]);
+      sheet.getRange(1, 1, 1, 12).setFontWeight(&#39;bold&#39;).setBackground(&#39;#1a5276&#39;).setFontColor(&#39;white&#39;);
+      sheet.setFrozenRows(1);
+      break;
+    case &#39;resumo&#39;:
+      sheet.appendRow([
+        &#39;Unidade&#39;, &#39;Nome da Carta&#39;, &#39;Revis&#227;o&#39;, &#39;MCC Total (R$)&#39;,
+        &#39;Status&#39;, &#39;Data Vig&#234;ncia&#39;
+      ]);
+      sheet.getRange(1, 1, 1, 6).setFontWeight(&#39;bold&#39;).setBackground(&#39;#1a5276&#39;).setFontColor(&#39;white&#39;);
+      sheet.setFrozenRows(1);
+      break;
+  }
+}
+
+function generateId() {
+  return Utilities.getUuid().substring(0, 8);
+}
+
+function jsonResponse(data) {
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ========== ENDPOINTS ==========
+
+function doGet(e) {
+  try {
+    const action = e.parameter.action;
+    let result;
+
+    switch (action) {
+      case &#39;getCartas&#39;:
+        result = getCartas(e.parameter);
+        break;
+      case &#39;getCustos&#39;:
+        result = getCustos(e.parameter);
+        break;
+      case &#39;getResumo&#39;:
+        result = getResumo();
+        break;
+      default:
+        result = { error: &#39;A&#231;&#227;o n&#227;o reconhecida: &#39; + action };
+    }
+
+    return jsonResponse(result);
+  } catch (error) {
+    return jsonResponse({ error: error.message });
+  }
+}
+
+function doPost(e) {
+  try {
+    const payload = JSON.parse(e.postData.contents);
+    const action = payload.action;
+    let result;
+
+    switch (action) {
+      case &#39;salvarCarta&#39;:
+        result = salvarCarta(payload);
+        break;
+      case &#39;salvarCusto&#39;:
+        result = salvarCusto(payload);
+        break;
+      case &#39;salvarCustoBatch&#39;:
+        result = salvarCustoBatch(payload);
+        break;
+      default:
+        result = { error: &#39;A&#231;&#227;o n&#227;o reconhecida: &#39; + action };
+    }
+
+    return jsonResponse(result);
+  } catch (error) {
+    return jsonResponse({ error: error.message });
+  }
+}
+
+// ========== CARTAS TRA&#199;O ==========
+
+function getCartas(params) {
+  const sheet = getSheet(&#39;cadastro&#39;);
+  const data = sheet.getDataRange().getValues();
+
+  if (data.length &lt;= 1) {
+    return { data: [] };
+  }
+
+  const headers = data[0];
+  const rows = data.slice(1);
+
+  let cartas = rows.map(row =&gt; ({
+    id: row[0],
+    nome: row[1],
+    revisao: row[2],
+    unidade: row[3],
+    status: row[4],
+    vigencia: formatDateForJson(row[5]),
+    dataCadastro: formatDateForJson(row[6]),
+    fornecedor: row[7],
+    produto: row[8],
+    quantidade: row[9],
+    unidadeMedida: row[10],
+    massaEspecifica: row[11] || 0,
+    observacao: row[12] || &#39;&#39;,
+    tipoFrete: row[13] || &#39;&#39;
+  }));
+
+  // Filtrar por unidade
+  if (params.unidade &amp;&amp; params.unidade !== &#39;&#39;) {
+    cartas = cartas.filter(c =&gt; c.unidade === params.unidade);
+  }
+
+  // Filtrar inativas
+  if (params.mostrarInativas !== &#39;true&#39;) {
+    cartas = cartas.filter(c =&gt; c.status === &#39;Ativa&#39;);
+  }
+
+  return { data: cartas };
+}
+
+function salvarCarta(payload) {
+  const sheet = getSheet(&#39;cadastro&#39;);
+  const cartaId = generateId();
+  const nome = payload.nome;
+  const revisao = parseInt(payload.revisao) || 0;
+  const unidade = payload.unidade;
+  const vigencia = payload.vigencia;
+  const status = payload.status || &#39;Ativa&#39;;
+  const dataCadastro = payload.dataCadastro || Utilities.formatDate(new Date(), &#39;America/Sao_Paulo&#39;, &#39;yyyy-MM-dd&#39;);
+  const observacao = payload.observacao || &#39;&#39;;
+  const tipoFrete = payload.tipoFrete || &#39;&#39;;
+  const materiais = payload.materiais || [];
+
+  // Se a nova carta &#233; Ativa, inativar vers&#245;es anteriores do mesmo nome e unidade
+  if (status === &#39;Ativa&#39;) {
+    inativarVersaoAnterior(sheet, nome, unidade);
+  }
+
+  // Salvar cada material como uma linha
+  materiais.forEach(mat =&gt; {
+    sheet.appendRow([
+      cartaId,
+      nome,
+      revisao,
+      unidade,
+      status,
+      vigencia,
+      dataCadastro,
+      mat.fornecedor,
+      mat.produto,
+      mat.quantidade,
+      mat.unidade,
+      mat.massaEspecifica || 0,
+      observacao,
+      tipoFrete
+    ]);
+  });
+
+  // Atualizar aba Resumo
+  atualizarResumo();
+
+  return { success: true, id: cartaId, message: &#39;Carta Tra&#231;o salva com sucesso!&#39; };
+}
+
+function inativarVersaoAnterior(sheet, nome, unidade) {
+  const data = sheet.getDataRange().getValues();
+  if (data.length &lt;= 1) return;
+
+  for (let i = 1; i &lt; data.length; i++) {
+    const rowNome = data[i][1];
+    const rowUnidade = data[i][3];
+    const rowStatus = data[i][4];
+
+    if (rowNome === nome &amp;&amp; rowUnidade === unidade &amp;&amp; rowStatus === &#39;Ativa&#39;) {
+      // Coluna E (index 5 na planilha, mas col 5) = Status
+      sheet.getRange(i + 1, 5).setValue(&#39;Inativa&#39;);
+    }
+  }
+}
+
+// ========== CUSTOS / MATERIAIS ==========
+
+function getCustos(params) {
+  const sheet = getSheet(&#39;custos&#39;);
+  const data = sheet.getDataRange().getValues();
+
+  if (data.length &lt;= 1) {
+    return { data: [] };
+  }
+
+  const rows = data.slice(1);
+
+  let custos = rows.map(row =&gt; ({
+    id: row[0],
+    data: formatDateForJson(row[1]),
+    unidade: row[2],
+    fornecedor: row[3],
+    material: row[4],
+    unidadeMedida: row[5],
+    valor: row[6],
+    icms: row[7],
+    frete: row[8],
+    valorLiquido: row[9],
+    produtoFornecedor: row[10] || &#39;&#39;,
+    tipoFrete: row[11] || &#39;&#39;
+  }));
+
+  // Filtrar por unidade
+  if (params.unidade &amp;&amp; params.unidade !== &#39;&#39;) {
+    custos = custos.filter(c =&gt; c.unidade === params.unidade);
+  }
+
+  // Ordenar: mais recente primeiro (para rastreamento)
+  custos.reverse();
+
+  return { data: custos };
+}
+
+function salvarCusto(payload) {
+  const sheet = getSheet(&#39;custos&#39;);
+  const id = generateId();
+
+  sheet.appendRow([
+    id,
+    payload.data || Utilities.formatDate(new Date(), &#39;America/Sao_Paulo&#39;, &#39;yyyy-MM-dd&#39;),
+    payload.unidade,
+    payload.fornecedor,
+    payload.material,
+    payload.unidadeMedida || &#39;&#39;,
+    payload.valor,
+    payload.icms,
+    payload.frete,
+    payload.valorLiquido,
+    payload.produtoFornecedor || &#39;&#39;,
+    payload.tipoFrete || &#39;&#39;
+  ]);
+
+  return { success: true, id: id, message: &#39;Material salvo com sucesso!&#39; };
+}
+
+function salvarCustoBatch(payload) {
+  const sheet = getSheet(&#39;custos&#39;);
+  const items = payload.items || [];
+  if (items.length === 0) return { error: &#39;Nenhum item para importar.&#39; };
+
+  const rows = items.map(item =&gt; [
+    generateId(),
+    item.data || Utilities.formatDate(new Date(), &#39;America/Sao_Paulo&#39;, &#39;yyyy-MM-dd&#39;),
+    item.unidade,
+    item.fornecedor,
+    item.material,
+    item.unidadeMedida || &#39;&#39;,
+    item.valor || 0,
+    item.icms || 0,
+    item.frete || 0,
+    item.valorLiquido || 0,
+    item.produtoFornecedor || &#39;&#39;,
+    item.tipoFrete || &#39;&#39;
+  ]);
+
+  sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 12).setValues(rows);
+
+  return { success: true, count: rows.length, message: rows.length + &#39; materiais importados com sucesso!&#39; };
+}
+
+// ========== RESUMO ==========
+
+function getResumo() {
+  const sheet = getSheet(&#39;resumo&#39;);
+  const data = sheet.getDataRange().getValues();
+
+  if (data.length &lt;= 1) {
+    return { data: [] };
+  }
+
+  return {
+    data: data.slice(1).map(row =&gt; ({
+      unidade: row[0],
+      nome: row[1],
+      revisao: row[2],
+      mccTotal: row[3],
+      status: row[4],
+      vigencia: formatDateForJson(row[5])
+    }))
+  };
+}
+
+function atualizarResumo() {
+  const cadastroSheet = getSheet(&#39;cadastro&#39;);
+  const custosSheet = getSheet(&#39;custos&#39;);
+  const resumoSheet = getSheet(&#39;resumo&#39;);
+
+  const cadastroData = cadastroSheet.getDataRange().getValues();
+  const custosData = custosSheet.getDataRange().getValues();
+
+  if (cadastroData.length &lt;= 1) return;
+
+  // Obter todos os custos indexados por material+unidade (&#250;ltimo valor)
+  const custosMap = {};
+  if (custosData.length &gt; 1) {
+    custosData.slice(1).forEach(row =&gt; {
+      const key = (row[4] + &#39;|&#39; + row[2]).toLowerCase(); // material|unidade
+      custosMap[key] = parseFloat(row[9]) || 0; // valor l&#237;quido
+    });
+  }
+
+  // Agrupar cartas por nome+unidade, pegar somente a de maior revis&#227;o
+  const cartasMap = {};
+  cadastroData.slice(1).forEach(row =&gt; {
+    const id = row[0];
+    const nome = row[1];
+    const revisao = parseInt(row[2]) || 0;
+    const unidade = row[3];
+    const status = row[4];
+    const vigencia = row[5];
+    const produto = row[8];
+    const quantidade = parseFloat(row[9]) || 0;
+
+    const key = nome + &#39;|&#39; + unidade;
+
+    if (!cartasMap[key]) {
+      cartasMap[key] = {
+        nome: nome,
+        unidade: unidade,
+        revisao: revisao,
+        status: status,
+        vigencia: vigencia,
+        materiais: []
+      };
+    }
+
+    // Se encontramos uma revis&#227;o maior, substituir
+    if (revisao &gt; cartasMap[key].revisao) {
+      cartasMap[key].revisao = revisao;
+      cartasMap[key].status = status;
+      cartasMap[key].vigencia = vigencia;
+      cartasMap[key].materiais = [];
+    }
+
+    // Adicionar material se for da revis&#227;o mais recente
+    if (revisao === cartasMap[key].revisao) {
+      cartasMap[key].materiais.push({ produto, quantidade, unidade: unidade });
+    }
+  });
+
+  // Calcular MCC para cada carta
+  const resumoRows = [];
+  Object.values(cartasMap).forEach(carta =&gt; {
+    let mccTotal = 0;
+    carta.materiais.forEach(mat =&gt; {
+      const key = (mat.produto + &#39;|&#39; + carta.unidade).toLowerCase();
+      const custoUnit = custosMap[key] || 0;
+      mccTotal += mat.quantidade * custoUnit;
+    });
+
+    resumoRows.push([
+      carta.unidade,
+      carta.nome,
+      carta.revisao,
+      mccTotal,
+      carta.status,
+      carta.vigencia
+    ]);
+  });
+
+  // Limpar aba resumo e reescrever
+  resumoSheet.clear();
+  initSheetHeaders(resumoSheet, &#39;resumo&#39;);
+
+  if (resumoRows.length &gt; 0) {
+    resumoSheet.getRange(2, 1, resumoRows.length, 6).setValues(resumoRows);
+
+    // Formatar coluna de MCC como moeda
+    resumoSheet.getRange(2, 4, resumoRows.length, 1)
+      .setNumberFormat(&#39;R$ #,##0.00&#39;);
+  }
+}
+
+// ========== UTILITY FUNCTIONS ==========
+
+function formatDateForJson(date) {
+  if (!date) return &#39;&#39;;
+  if (date instanceof Date) {
+    return Utilities.formatDate(date, &#39;America/Sao_Paulo&#39;, &#39;yyyy-MM-dd&#39;);
+  }
+  return String(date);
+}
+
+// ========== SETUP FUNCTION (run once) ==========
+// Execute esta fun&#231;&#227;o uma vez para criar as abas necess&#225;rias
+function setupSpreadsheet() {
+  getSheet(&#39;cadastro&#39;);
+  getSheet(&#39;custos&#39;);
+  getSheet(&#39;resumo&#39;);
+  Logger.log(&#39;Planilha configurada com sucesso!&#39;);
+}
+</pre></details>
+</section>
+
+</main>
+<footer>Gerado a partir da leitura de carta-traco/ · ver também CARTA_TRACO_ANALISE.md</footer>
+<script>
+document.querySelectorAll('.tabs button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.tabs button').forEach(function(x){x.classList.remove('on')});
+    document.querySelectorAll('.mock').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on'); document.getElementById(b.dataset.m).classList.add('on');
+  });
+});
+</script>
+</body>
+</html>

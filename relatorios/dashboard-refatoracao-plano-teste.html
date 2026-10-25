@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plano de Refatoracao dos Dashboards - Ambiente Teste</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #667085;
+      --line: #d8e0ea;
+      --soft: #f6f8fb;
+      --blue: #1d4ed8;
+      --red: #dc2626;
+      --amber: #d97706;
+      --green: #059669;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: #eef2f7;
+      line-height: 1.45;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+    }
+    header {
+      background: #0f1e3c;
+      color: #fff;
+      padding: 24px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    h2 { margin: 0 0 12px; font-size: 20px; }
+    h3 { margin: 18px 0 8px; font-size: 16px; }
+    p { margin: 0 0 10px; }
+    .meta { color: #cbd5e1; font-size: 13px; }
+    .grid { display: grid; gap: 12px; }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    section, .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .kpi {
+      border-left: 5px solid var(--blue);
+      background: var(--soft);
+      padding: 14px;
+      border-radius: 8px;
+      min-height: 105px;
+    }
+    .kpi strong { display: block; font-size: 24px; margin-bottom: 3px; }
+    .kpi span { color: var(--muted); font-size: 13px; }
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #e0ecff;
+      color: #174ea6;
+      margin: 2px 4px 2px 0;
+    }
+    .tag.red { background: #fee2e2; color: #991b1b; }
+    .tag.amber { background: #fef3c7; color: #92400e; }
+    .tag.green { background: #dcfce7; color: #166534; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 9px 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th { background: #0f1e3c; color: #fff; }
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 12px;
+    }
+    ol, ul { margin-top: 8px; padding-left: 22px; }
+    li { margin: 6px 0; }
+    .warn { border-left: 5px solid var(--amber); }
+    .bad { border-left: 5px solid var(--red); }
+    .good { border-left: 5px solid var(--green); }
+    @media (max-width: 800px) {
+      .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+      table { font-size: 12px; }
+      th, td { padding: 7px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Plano de Refatoracao dos Dashboards</h1>
+    <div class="meta">Ambiente analisado: <strong>mapa-concretagem-teste</strong> | Data: 20/08/2026 | Escopo: revisao sem alteracao funcional</div>
+  </header>
+
+  <section>
+    <h2>Resumo Executivo</h2>
+    <p>Foram revisados os tres dashboards ativos do ambiente de teste: <strong>Produtividade</strong>, <strong>Dashboard Montagem</strong> e <strong>Dashboard Defeitos</strong>. O modo legado <code>DASHBOARD</code> hoje redireciona para <code>PROD_ANALISE</code>, entao nao opera como dashboard separado.</p>
+    <div class="grid cols-3">
+      <div class="kpi"><strong>3</strong><span>dashboards reais em uso</span></div>
+      <div class="kpi"><strong>2</strong><span>tabelas principais consultadas: <code>producao</code> e <code>montagem_poste</code></span></div>
+      <div class="kpi"><strong>1</strong><span>view HTML compartilhada entre Montagem e Defeitos</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Como Esta Orquestrado Hoje</h2>
+    <table>
+      <thead><tr><th>Dashboard</th><th>Modo</th><th>View HTML</th><th>Funcao principal</th><th>Origem dos dados</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Produtividade</td>
+          <td><code>PROD_ANALISE</code></td>
+          <td><code>#viewProdAnalise</code></td>
+          <td><code>carregarProdutividadeConcretagem()</code></td>
+          <td><code>producao</code>, com fallback local</td>
+        </tr>
+        <tr>
+          <td>Dashboard Montagem</td>
+          <td><code>MONTAGEM_INDICADORES</code></td>
+          <td><code>#viewMontagemIndicadores</code></td>
+          <td><code>carregarMontagemIndicadores()</code> + <code>aplicarFiltrosEExibirMontagem()</code></td>
+          <td><code>montagem_poste</code> e <code>producao</code></td>
+        </tr>
+        <tr>
+          <td>Dashboard Defeitos</td>
+          <td><code>DASHBOARD_DEFEITOS</code></td>
+          <td><code>#viewMontagemIndicadores</code>, forcando so <code>#miSecaoDefeitos</code></td>
+          <td><code>renderIndicadoresDefeitosMontagem()</code></td>
+          <td>Mesma consulta de montagem: <code>montagem_poste</code> + <code>producao</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Ponto central:</strong> Defeitos nao tem uma view isolada. Ele reaproveita o dashboard de montagem, muda o titulo, ativa a aba de defeitos e oculta as outras secoes via JavaScript.</p>
+  </section>
+
+  <section>
+    <h2>Tipos de Consulta e Fluxo de Dados</h2>
+    <table>
+      <thead><tr><th>Funcao</th><th>Consulta</th><th>Filtro</th><th>Cache</th><th>Risco atual</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>carregarLinhasSupabaseComCache()</code></td>
+          <td>Consulta paginada de ate 20 paginas x 1000 linhas</td>
+          <td>Recebe filtros por callback</td>
+          <td><code>localStorage</code>, prefixo de relatorio</td>
+          <td>Sem camada de repositorio; cada dashboard decide select/filtro. Pode repetir consultas e esconder falhas com cache antigo.</td>
+        </tr>
+        <tr>
+          <td><code>carregarProdutividadeConcretagem()</code></td>
+          <td><code>producao.select("*")</code> para periodo, ultimos 7 dias e mes</td>
+          <td><code>data_fabricacao</code>, <code>status in LIBERADO/INSPECIONADO</code>, setor</td>
+          <td>Sim, por periodo/ultimos7/mes</td>
+          <td>Tres consultas relacionadas para a mesma tela; muita regra de negocio misturada com DOM.</td>
+        </tr>
+        <tr>
+          <td><code>carregarMontagemIndicadores()</code></td>
+          <td><code>montagem_poste.select("*")</code> e <code>producao.select("*")</code></td>
+          <td>Periodo por <code>data_fabricacao</code></td>
+          <td>Sim, cache separado por periodo</td>
+          <td>Busca todos os campos, filtra em memoria e recalcula tudo no front.</td>
+        </tr>
+        <tr>
+          <td><code>renderIndicadoresDefeitosMontagem()</code></td>
+          <td>Nao consulta direto; recebe dados filtrados</td>
+          <td>Usa subconjunto de montagem com defeito</td>
+          <td>Herdado de montagem</td>
+          <td>Dependencia indireta: mudanca em filtro de montagem altera defeitos.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Status Por Dashboard</h2>
+    <div class="grid cols-3">
+      <div class="card warn">
+        <h3>Produtividade</h3>
+        <p><span class="tag amber">Complexidade alta</span><span class="tag">Muitos KPIs</span></p>
+        <ul>
+          <li>Concentra consulta, regra de negocio, calculo estatistico, render de KPI, graficos e tabelas em uma unica funcao grande.</li>
+          <li>Possui abas com conteudos muito diferentes, mas compartilha classes genericas de montagem.</li>
+          <li>Layout tem excesso de cards no resumo e muitos graficos na aba Producao, gerando baixa hierarquia visual.</li>
+        </ul>
+      </div>
+      <div class="card warn">
+        <h3>Dashboard Montagem</h3>
+        <p><span class="tag amber">View compartilhada</span><span class="tag">Filtro fixo</span></p>
+        <ul>
+          <li>Funciona como base para montagem e defeitos.</li>
+          <li>Filtros ficam fixos no header da propria view, enquanto Produtividade usa drawer. Isso cria experiencia inconsistente.</li>
+          <li>HTML tem linhas muito longas e handlers inline em tabela, dificultando manutencao.</li>
+        </ul>
+      </div>
+      <div class="card bad">
+        <h3>Dashboard Defeitos</h3>
+        <p><span class="tag red">Acoplado</span><span class="tag amber">Layout instavel</span></p>
+        <ul>
+          <li>Nao tem estrutura HTML propria; depende de esconder secoes do dashboard montagem.</li>
+          <li>Tem restos do layout antigo no HTML e render V4 via JavaScript, o que cria dupla fonte de verdade.</li>
+          <li>Indicadores mudam com conceitos proximos: NC visual, poste com NC, poste segregado e retrabalho. Precisa de definicoes visuais claras.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Problemas de Layout Identificados</h2>
+    <table>
+      <thead><tr><th>Area</th><th>Problema</th><th>Impacto</th><th>Direcao recomendada</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Hierarquia visual</td>
+          <td>Muitos KPIs competindo no topo, sem agrupamento por decisao.</td>
+          <td>Usuario nao sabe qual numero e principal.</td>
+          <td>Separar KPIs em grupos: producao, qualidade, eficiencia e alertas.</td>
+        </tr>
+        <tr>
+          <td>Consistencia</td>
+          <td>Produtividade usa drawer; Montagem/Defeitos usam barra fixa.</td>
+          <td>Experiencia muda entre telas similares.</td>
+          <td>Padronizar um componente de filtros responsivo para os tres dashboards.</td>
+        </tr>
+        <tr>
+          <td>Cards</td>
+          <td>Uso intenso de cards pequenos e grids variando entre 2, 3, 4, 5 e 6 colunas.</td>
+          <td>Quebras visuais em tablet/mobile e dificuldade de leitura.</td>
+          <td>Definir sistema de layout: hero KPI + supporting KPIs + graficos prioritarios.</td>
+        </tr>
+        <tr>
+          <td>Defeitos</td>
+          <td>Layout V4 renderizado por string dentro do JS, enquanto HTML antigo permanece.</td>
+          <td>Risco de indicador aparecer em uma versao e nao em outra.</td>
+          <td>Criar HTML base proprio para Defeitos ou renderer componentizado unico.</td>
+        </tr>
+        <tr>
+          <td>Tabelas</td>
+          <td>HTML de tabela em uma linha, ordenacao por <code>onclick</code>.</td>
+          <td>Manutencao dificil e acessibilidade fraca.</td>
+          <td>Renderizar tabela por funcao/componentes e bindar eventos por JS.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Problemas de Codigo e Arquitetura</h2>
+    <ul>
+      <li><strong>Funcoes grandes demais:</strong> <code>carregarProdutividadeConcretagem()</code> mistura fetch, calculo, render, status e exportacao indireta.</li>
+      <li><strong>Acoplamento de dashboards:</strong> Montagem e Defeitos usam a mesma view e a mesma base filtrada; isso acelera entrega, mas atrapalha evolucao.</li>
+      <li><strong>Consultas repetidas:</strong> Produtividade consulta periodo, ultimos 7 dias e mes separadamente, com logica similar.</li>
+      <li><strong>Select amplo:</strong> <code>select("*")</code> em tabelas potencialmente grandes aumenta trafego e tempo de resposta.</li>
+      <li><strong>Estado global disperso:</strong> variaveis como <code>miRawMontagemData</code>, <code>miRawProducaoData</code>, <code>miFilteredMontagemData</code> e <code>state.paLastMetricas</code> ficam compartilhadas sem fronteira clara.</li>
+      <li><strong>CSS acumulado:</strong> varias regras de dashboard convivem com overrides por modo, media queries e estilos inline.</li>
+      <li><strong>Dados e conceito:</strong> status <code>R</code>, <code>RR</code>, item <code>nao</code>, NC visual e segregado precisam de dicionario unico para evitar divergencia de calculo.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Plano de Acao Proposto</h2>
+    <p>Nada abaixo deve ser executado sem aprovacao. A recomendacao e fazer por fases pequenas no ambiente teste.</p>
+    <table>
+      <thead><tr><th>Fase</th><th>Objetivo</th><th>Alteracoes propostas</th><th>Validacao</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>1. Inventario e contrato de dados</td>
+          <td>Congelar definicoes dos indicadores.</td>
+          <td>Criar documento tecnico com formulas oficiais: producao, montados, inspecionados, NC visual, reprovado/segregado, retrabalho.</td>
+          <td>Comparar indicadores atuais com uma amostra de registros reais.</td>
+        </tr>
+        <tr>
+          <td>2. Camada de dados</td>
+          <td>Separar consulta de renderizacao.</td>
+          <td>Criar funcoes tipo <code>fetchProducaoPeriodo()</code>, <code>fetchMontagemPeriodo()</code>, <code>fetchDashboardDefeitos()</code> com selects enxutos.</td>
+          <td>Mesmos totais antes/depois em periodo fechado.</td>
+        </tr>
+        <tr>
+          <td>3. Camada de metricas</td>
+          <td>Isolar calculos puros.</td>
+          <td>Criar calculadores sem DOM: <code>calcularProdutividade()</code>, <code>calcularMontagem()</code>, <code>calcularDefeitos()</code>.</td>
+          <td>Testes unitarios com mocks de <code>producao</code> e <code>montagem_poste</code>.</td>
+        </tr>
+        <tr>
+          <td>4. Layout system</td>
+          <td>Padronizar telas.</td>
+          <td>Definir componentes comuns: topbar, filtros, KPI hero, KPI secundario, chart panel, data table.</td>
+          <td>Print desktop, tablet e mobile sem quebra de texto/overlap.</td>
+        </tr>
+        <tr>
+          <td>5. Refatorar Defeitos</td>
+          <td>Dar autonomia ao dashboard mais critico.</td>
+          <td>Criar view propria para <code>DASHBOARD_DEFEITOS</code> ou um renderer separado com container dedicado; remover HTML antigo de defeitos que nao e usado.</td>
+          <td>Indicadores aparecem em todas as resolucoes e batem com banco.</td>
+        </tr>
+        <tr>
+          <td>6. Refatorar Montagem</td>
+          <td>Limpar tabela, filtros e graficos.</td>
+          <td>Remover handlers inline, padronizar cards mobile/table desktop, manter filtros consistentes com Produtividade.</td>
+          <td>Filtros por data/setor/status/busca preservados.</td>
+        </tr>
+        <tr>
+          <td>7. Refatorar Produtividade</td>
+          <td>Reduzir complexidade e melhorar leitura.</td>
+          <td>Separar resumo operacional, volume/concreto, ciclo/eficiencia e dados brutos em secoes mais claras.</td>
+          <td>KPIs e graficos iguais aos atuais, com melhor hierarquia.</td>
+        </tr>
+        <tr>
+          <td>8. Performance e cache</td>
+          <td>Evitar lentidao e cache enganoso.</td>
+          <td>Selects enxutos, cache com timestamp visivel e botao de recarregar sem cache.</td>
+          <td>Tempo de carregamento medido antes/depois.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Prioridades Recomendadas</h2>
+    <ol>
+      <li><strong>Primeiro:</strong> aprovar dicionario de indicadores e nomes oficiais. Sem isso, layout bonito continuara escondendo divergencia conceitual.</li>
+      <li><strong>Segundo:</strong> separar Dashboard Defeitos da view de Montagem, porque e o ponto de maior atrito e maior risco de regressao.</li>
+      <li><strong>Terceiro:</strong> criar camada de metricas pura e testavel, reduzindo calculo espalhado dentro do render.</li>
+      <li><strong>Quarto:</strong> redesenhar layout com uma hierarquia unica: filtros, indicador principal, secundarios, graficos, tabela.</li>
+      <li><strong>Quinto:</strong> otimizar consultas e cache depois que as regras estiverem estaveis.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Proposta Visual de Direcao</h2>
+    <ul>
+      <li>Usar uma tela menos carregada, com menos cards no primeiro impacto.</li>
+      <li>Em cada dashboard, destacar no maximo 1 indicador hero e 3 a 5 indicadores secundarios.</li>
+      <li>Trocar a mistura de mini-cards e cards grandes por um grid previsivel.</li>
+      <li>Padronizar filtros em uma barra responsiva ou drawer, mas nao ambos dependendo da tela.</li>
+      <li>Evitar textos longos dentro de cards pequenos; usar subtitulo curto e tooltip/detalhe em tabela.</li>
+      <li>Definir cores por semantica: azul para volume/producao, verde para bom/aprovado, vermelho para reprovado/segregado, amarelo para retrabalho/alerta.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Arquivos Revisados</h2>
+    <ul>
+      <li><code>mapa-concretagem-teste/index.html</code>: estrutura HTML dos dashboards e abas.</li>
+      <li><code>mapa-concretagem-teste/app.js</code>: roteamento, consultas, calculos, renderizadores e eventos.</li>
+      <li><code>mapa-concretagem-teste/styles.css</code>: layout, grids, responsividade, cards e overrides por modo.</li>
+    </ul>
+    <p><strong>Observacao:</strong> este arquivo e apenas um plano de acao. Nenhuma alteracao foi aplicada nos dashboards para esta auditoria.</p>
+  </section>
+</main>
+</body>
+</html>

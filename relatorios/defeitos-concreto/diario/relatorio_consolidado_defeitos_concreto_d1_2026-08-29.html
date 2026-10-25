@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relatório Consolidado — Defeitos de Concreto 29/08/2026</title>
+  <style>
+    :root { --text:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter, Arial, sans-serif; padding:28px; }
+    .wrap { max-width:1180px; margin:0 auto; }
+    .header { display:flex; justify-content:space-between; gap:20px; align-items:flex-end; margin-bottom:22px; }
+    h1 { margin:0; font-size:28px; letter-spacing:-.03em; }
+    h2 { margin:26px 0 10px; font-size:20px; }
+    .sub { color:var(--muted); font-weight:700; margin:6px 0 20px; }
+    .section { margin-top:36px; padding-top:28px; border-top:2px solid var(--line); }
+    .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:18px 0 24px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(15,23,42,.05); }
+    .card span { color:var(--muted); font-weight:900; font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+    .card strong { display:block; font-size:28px; margin-top:8px; }
+    table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 6px 18px rgba(15,23,42,.05); margin-bottom:18px; }
+    th { text-align:left; font-size:12px; color:#334155; text-transform:uppercase; letter-spacing:.06em; background:#f1f5f9; padding:14px; border-bottom:1px solid var(--line); }
+    td { padding:14px; border-bottom:1px solid #eef2f7; vertical-align:middle; font-weight:600; }
+    tr.child td:first-child { color:#64748b; font-style:italic; padding-left:34px; }
+    tr.defect-row { background:#fff7f7; }
+    tr.total-row { background:#f1f5f9; border-top:2px solid #cbd5e1; }
+    tr.total-row td { font-weight:900; }
+    .tipo { font-weight:900; }
+    .metric { min-width:170px; }
+    .bar { display:inline-block; width:96px; height:7px; margin-left:10px; background:#e2e8f0; border-radius:999px; vertical-align:middle; overflow:hidden; }
+    .bar span { display:block; height:100%; border-radius:999px; }
+    .pill,.status { display:inline-flex; align-items:center; border-radius:999px; padding:6px 10px; font-weight:900; font-size:12px; }
+    .pill.padrao { background:#dbeafe; color:#2563eb; }
+    .pill.normal { background:#e2e8f0; color:#475569; }
+    .pill.defeito { background:#fee2e2; color:#ef4444; }
+    .pill.total { background:#e2e8f0; color:#0f172a; }
+    .status.conforme { background:#d1fae5; color:#047857; }
+    .status.normal { background:#e2e8f0; color:#475569; }
+    .status.defeito { background:#fee2e2; color:#dc2626; }
+    .status.total { background:#e2e8f0; color:#0f172a; }
+    .volume.green { color:#059669; } .volume.orange { color:#d97706; } .volume.red { color:#dc2626; }
+    .good { color:#059669; font-weight:900; } .bad { color:#dc2626; font-weight:900; } .neutral { color:#64748b; font-weight:900; }
+    @media(max-width:900px) { body { padding:14px; } .cards { grid-template-columns:1fr 1fr; } table { font-size:13px; } th,td { padding:10px; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div>
+      <h1>Relatório Consolidado de Defeitos de Concreto</h1>
+      <div class="sub">D-1 + comparativo mensal no mesmo arquivo</div>
+    </div>
+    <div class="sub">Gerado em 30/08/2026 07:00</div>
+  </div>
+  
+  <section>
+    <h1>Relatório D-1 — Defeitos de Concreto</h1>
+    <div class="sub">Data analisada: 29/08/2026</div>
+    <div class="cards">
+      <div class="card"><span>Formas únicas</span><strong>0</strong></div>
+      <div class="card"><span>Concreto padrão</span><strong>0</strong></div>
+      <div class="card"><span>Defeitos / não padrão</span><strong>0</strong></div>
+      <div class="card"><span>% defeito</span><strong>0,00 %</strong></div>
+    </div>
+
+    <h2>D-1 — Quebra por tipo de concreto</h2> - Resultado do Dia 29/08/2026
+    <table>
+      <thead><tr><th>Tipo de Concreto</th><th>Classificação</th><th>Qtd. Lançamentos</th><th>% do Total</th><th>Volume Estimado</th><th>Vol. % Total</th><th>Status</th></tr></thead>
+      <tbody>
+      <tr class=" ">
+        <td class="tipo">Concreto Padrão</td>
+        <td><span class="pill padrao">Padrão</span></td>
+        <td class="metric"><strong>0</strong><span class="bar"><span style="width:0.00%; background:#2563eb;"></span></span></td>
+        <td>0,00 %</td>
+        <td class="volume green">0,00 m³</td>
+        <td>0,00 %<span class="bar"><span style="width:0.00%; background:#2563eb;"></span></span></td>
+        <td><span class="status conforme">Conforme</span></td>
+      </tr>
+    
+
+      <tr class=" ">
+        <td class="tipo">Não Padrão</td>
+        <td><span class="pill normal">Não Padrão</span></td>
+        <td class="metric"><strong>0</strong><span class="bar"><span style="width:0.00%; background:#f59e0b;"></span></span></td>
+        <td>0,00 %</td>
+        <td class="volume orange">0,00 m³</td>
+        <td>0,00 %<span class="bar"><span style="width:0.00%; background:#f59e0b;"></span></span></td>
+        <td><span class="status normal">Normal</span></td>
+      </tr>
+    
+
+      <tr class="total-row">
+        <td class="tipo">Total de Lançamentos</td>
+        <td><span class="pill total">Total</span></td>
+        <td class="metric"><strong>0</strong><span class="bar"><span style="width:100.00%; background:#0f172a;"></span></span></td>
+        <td>100,00 %</td>
+        <td class="volume">0,00 m³</td>
+        <td>100,00 %<span class="bar"><span style="width:100.00%; background:#0f172a;"></span></span></td>
+        <td><span class="status total">Base</span></td>
+      </tr>
+    </tbody>
+    </table>
+
+    <h2>D-1 — Resumo por Setor</h2> - Resultado do Dia 29/08/2026
+    <table>
+      <thead><tr><th>Setor</th><th>Total</th><th>Padrão</th><th>Defeitos</th><th>% Defeito</th><th>Volume Total</th><th>Volume Defeito</th><th>Status</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  
+  <section class="section">
+    <h1>Comparativo Mensal — Junho x Julho/2026</h1>
+    <div class="sub">Mantido junto ao relatório diário para acompanhamento histórico.</div>
+    <div class="cards">
+      <div class="card"><span>Junho formas únicas</span><strong>4.062</strong></div>
+      <div class="card"><span>Junho defeitos</span><strong>525</strong></div>
+      <div class="card"><span>Julho formas únicas</span><strong>4.619</strong></div>
+      <div class="card"><span>Julho defeitos</span><strong>626</strong></div>
+    </div>
+
+    <h2>Junho/2026 — Quebra por tipo</h2>
+    <table>
+      <thead><tr><th>Tipo de Concreto</th><th>Classificação</th><th>Qtd. Lançamentos</th><th>% do Total</th><th>Volume Estimado</th><th>Vol. % Total</th><th>Status</th></tr></thead>
+      <tbody>
+      <tr class=" ">
+        <td class="tipo">Concreto Padrão</td>
+        <td><span class="pill padrao">Padrão</span></td>
+        <td class="metric"><strong>3.537</strong><span class="bar"><span style="width:87.08%; background:#2563eb;"></span></span></td>
+        <td>87,08 %</td>
+        <td class="volume green">884,25 m³</td>
+        <td>87,08 %<span class="bar"><span style="width:87.08%; background:#2563eb;"></span></span></td>
+        <td><span class="status conforme">Conforme</span></td>
+      </tr>
+    
+
+      <tr class=" ">
+        <td class="tipo">Não Padrão</td>
+        <td><span class="pill normal">Não Padrão</span></td>
+        <td class="metric"><strong>525</strong><span class="bar"><span style="width:12.92%; background:#f59e0b;"></span></span></td>
+        <td>12,92 %</td>
+        <td class="volume orange">131,25 m³</td>
+        <td>12,92 %<span class="bar"><span style="width:12.92%; background:#f59e0b;"></span></span></td>
+        <td><span class="status normal">Normal</span></td>
+      </tr>
+    
+
+      <tr class="child defect-row">
+        <td class="tipo">↳ Concreto Vibrado</td>
+        <td><span class="pill defeito">Defeito</span></td>
+        <td class="metric"><strong>477</strong><span class="bar"><span style="width:11.74%; background:#ef4444;"></span></span></td>
+        <td>11,74 %</td>
+        <td class="volume red">119,25 m³</td>
+        <td>11,74 %<span class="bar"><span style="width:11.74%; background:#ef4444;"></span></span></td>
+        <td><span class="status defeito">Defeito</span></td>
+      </tr>
+    
+
+      <tr class="child defect-row">
+        <td class="tipo">↳ Concreto Exsudado</td>
+        <td><span class="pill defeito">Defeito</span></td>
+        <td class="metric"><strong>38</strong><span class="bar"><span style="width:0.94%; background:#ef4444;"></span></span></td>
+        <td>0,94 %</td>
+        <td class="volume red">9,50 m³</td>
+        <td>0,94 %<span class="bar"><span style="width:0.94%; background:#ef4444;"></span></span></td>
+        <td><span class="status defeito">Defeito</span></td>
+      </tr>
+    
+
+      <tr class="child defect-row">
+        <td class="tipo">↳ Concreto Segregado</td>
+        <td><span class="pill defeito">Defeito</span></td>
+        <td class="metric"><strong>10</strong><span class="bar"><span style="width:0.25%; background:#ef4444;"></span></span></td>
+        <td>0,25 %</td>
+        <td class="volume red">2,50 m³</td>
+        <td>0,25 %<span class="bar"><span style="width:0.25%; background:#ef4444;"></span></span></td>
+        <td><span class="status defeito">Defeito</span></td>
+      </tr>
+    
+
+      <tr class="total-row">
+        <td class="tipo">Total de Lançamentos</td>
+        <td><span class="pill total">Total</span></td>
+        <td class="metric"><strong>4.062</strong><span class="bar"><span style="width:100.00%; background:#0f172a;"></span></span></td>
+        <td>100,00 %</td>
+        <td class="volume">1.015,50 m³</td>
+        <td>100,00 %<span class="bar"><span style="width:100.00%; background:#0f172a;"></span></span></td>
+        <td><span class="status total">Base</span></td>
+      </tr>
+    </tbody>
+    </table>
+
+    <h2>Junho/2026 — Resumo por Setor</h2>
+    <table>
+      <thead><tr><th>Setor</th><th>Total</th><th>Padrão</th><th>Defeitos</th><th>% Defeito</th><th>Volume Total</th><th>Volume Defeito</th><th>Status</th></tr></thead>
+      <tbody>
+            <tr>
+              <td class="tipo">Setor 1</td>
+              <td>1.351</td>
+              <td>1.294</td>
+              <td class="bad">57</td>
+              <td class="bad">4,22 %</td>
+              <td>337,75 m³</td>
+              <td class="bad">14,25 m³</td>
+              <td><span class="status normal">Monitorar</span></td>
+            </tr>
+            
+
+            <tr>
+              <td class="tipo">Setor 2</td>
+              <td>1.458</td>
+              <td>1.398</td>
+              <td class="bad">60</td>
+              <td class="bad">4,12 %</td>
+              <td>364,50 m³</td>
+              <td class="bad">15,00 m³</td>
+              <td><span class="status normal">Monitorar</span></td>
+            </tr>
+            
+
+            <tr>
+              <td class="tipo">Setor 3</td>
+              <td>992</td>
+              <td>599</td>
+              <td class="bad">393</td>
+              <td class="bad">39,62 %</td>
+              <td>248,00 m³</td>
+              <td class="bad">98,25 m³</td>
+              <td><span class="status defeito">Atenção</span></td>
+            </tr>
+            
+
+            <tr>
+              <td class="tipo">Setor 4</td>
+              <td>261</td>
+              <td>246</td>
+              <td class="bad">15</td>
+              <td class="bad">5,75 %</td>
+              <td>65,25 m³</td>
+              <td class="bad">3,75 m³</td>
+              <td><span class="status normal">Monitorar</span></td>
+            </tr>
+            </tbody>
+    </table>
+
+    <h2>Julho/2026 — Quebra por tipo</h2>
+    <table>
+      <thead><tr><th>Tipo de Concreto</th><th>Classificação</th><th>Qtd. Lançamentos</th><th>% do Total</th><th>Volume Estimado</th><th>Vol. % Total</th><th>Status</th></tr></thead>
+      <tbody>
+      <tr class=" ">
+        <td class="tipo">Concreto Padrão</td>
+        <td><span class="pill padrao">Padrão</span></td>
+        <td class="metric"><strong>3.993</strong><span class="bar"><span style="width:86.45%; background:#2563eb;"></span></span></td>
+        <td>86,45 %</td>
+        <td class="volume green">998,25 m³</td>
+        <td>86,45 %<span class="bar"><span style="width:86.45%; background:#2563eb;"></span></span></td>
+        <td><span class="status conforme">Conforme</span></td>
+      </tr>
+    
+
+      <tr class=" ">
+        <td class="tipo">Não Padrão</td>
+        <td><span class="pill normal">Não Padrão</span></td>
+        <td class="metric"><strong>626</strong><span class="bar"><span style="width:13.55%; background:#f59e0b;"></span></span></td>
+        <td>13,55 %</td>
+        <td class="volume orange">156,50 m³</td>
+        <td>13,55 %<span class="bar"><span style="width:13.55%; background:#f59e0b;"></span></span></td>
+        <td><span class="status normal">Normal</span></td>
+      </tr>
+    
+
+      <tr class="child defect-row">
+        <td class="tipo">↳ Concreto Vibrado</td>
+        <td><span class="pill defeito">Defeito</span></td>
+        <td class="metric"><strong>509</strong><span class="bar"><span style="width:11.02%; background:#ef4444;"></span></span></td>
+        <td>11,02 %</td>
+        <td class="volume red">127,25 m³</td>
+        <td>11,02 %<span class="bar"><span style="width:11.02%; background:#ef4444;"></span></span></td>
+        <td><span class="status defeito">Defeito</span></td>
+      </tr>
+    
+
+      <tr class="child defect-row">
+        <td class="tipo">↳ Concreto Exsudado</td>
+        <td><span class="pill defeito">Defeito</span></td>
+        <td class="metric"><strong>108</strong><span class="bar"><span style="width:2.34%; background:#ef4444;"></span></span></td>
+        <td>2,34 %</td>
+        <td class="volume red">27,00 m³</td>
+        <td>2,34 %<span class="bar"><span style="width:2.34%; background:#ef4444;"></span></span></td>
+        <td><span class="status defeito">Defeito</span></td>
+      </tr>
+    
+
+      <tr class="child defect-row">
+        <td class="tipo">↳ Concreto Segregado</td>
+        <td><span class="pill defeito">Defeito</span></td>
+        <td class="metric"><strong>9</strong><span class="bar"><span style="width:0.19%; background:#ef4444;"></span></span></td>
+        <td>0,19 %</td>
+        <td class="volume red">2,25 m³</td>
+        <td>0,19 %<span class="bar"><span style="width:0.19%; background:#ef4444;"></span></span></td>
+        <td><span class="status defeito">Defeito</span></td>
+      </tr>
+    
+
+      <tr class="total-row">
+        <td class="tipo">Total de Lançamentos</td>
+        <td><span class="pill total">Total</span></td>
+        <td class="metric"><strong>4.619</strong><span class="bar"><span style="width:100.00%; background:#0f172a;"></span></span></td>
+        <td>100,00 %</td>
+        <td class="volume">1.154,75 m³</td>
+        <td>100,00 %<span class="bar"><span style="width:100.00%; background:#0f172a;"></span></span></td>
+        <td><span class="status total">Base</span></td>
+      </tr>
+    </tbody>
+    </table>
+
+    <h2>Julho/2026 — Resumo por Setor</h2>
+    <table>
+      <thead><tr><th>Setor</th><th>Total</th><th>Padrão</th><th>Defeitos</th><th>% Defeito</th><th>Volume Total</th><th>Volume Defeito</th><th>Status</th></tr></thead>
+      <tbody>
+            <tr>
+              <td class="tipo">Setor 1</td>
+              <td>1.375</td>
+              <td>1.270</td>
+              <td class="bad">105</td>
+              <td class="bad">7,64 %</td>
+              <td>343,75 m³</td>
+              <td class="bad">26,25 m³</td>
+              <td><span class="status normal">Monitorar</span></td>
+            </tr>
+            
+
+            <tr>
+              <td class="tipo">Setor 2</td>
+              <td>1.531</td>
+              <td>1.468</td>
+              <td class="bad">63</td>
+              <td class="bad">4,11 %</td>
+              <td>382,75 m³</td>
+              <td class="bad">15,75 m³</td>
+              <td><span class="status normal">Monitorar</span></td>
+            </tr>
+            
+
+            <tr>
+              <td class="tipo">Setor 3</td>
+              <td>956</td>
+              <td>514</td>
+              <td class="bad">442</td>
+              <td class="bad">46,23 %</td>
+              <td>239,00 m³</td>
+              <td class="bad">110,50 m³</td>
+              <td><span class="status defeito">Atenção</span></td>
+            </tr>
+            
+
+            <tr>
+              <td class="tipo">Setor 4</td>
+              <td>756</td>
+              <td>740</td>
+              <td class="bad">16</td>
+              <td class="bad">2,12 %</td>
+              <td>189,00 m³</td>
+              <td class="bad">4,00 m³</td>
+              <td><span class="status normal">Monitorar</span></td>
+            </tr>
+            
+
+            <tr>
+              <td class="tipo">Setor de Testes</td>
+              <td>1</td>
+              <td>1</td>
+              <td class="bad">0</td>
+              <td class="bad">0,00 %</td>
+              <td>0,25 m³</td>
+              <td class="bad">0,00 m³</td>
+              <td><span class="status conforme">Conforme</span></td>
+            </tr>
+            </tbody>
+    </table>
+
+    <h2>Comparação mês a mês</h2>
+    <table>
+      <thead><tr><th>Tipo</th><th>Junho</th><th>Julho</th><th>Δ Lançamentos</th><th>Δ %</th><th>Δ Volume</th></tr></thead>
+      <tbody>
+            <tr>
+              <td>Concreto Padrão</td>
+              <td>3.537</td>
+              <td>3.993</td>
+              <td class="neutral">+456</td>
+              <td class="neutral">+12.9%</td>
+              <td>114,00 m³</td>
+            </tr>
+            
+
+            <tr>
+              <td>Não Padrão</td>
+              <td>525</td>
+              <td>626</td>
+              <td class="bad">+101</td>
+              <td class="bad">+19.2%</td>
+              <td>25,25 m³</td>
+            </tr>
+            
+
+            <tr>
+              <td>Concreto Exsudado</td>
+              <td>38</td>
+              <td>108</td>
+              <td class="bad">+70</td>
+              <td class="bad">+184.2%</td>
+              <td>17,50 m³</td>
+            </tr>
+            
+
+            <tr>
+              <td>Concreto Segregado</td>
+              <td>10</td>
+              <td>9</td>
+              <td class="good">-1</td>
+              <td class="good">-10.0%</td>
+              <td>-0,25 m³</td>
+            </tr>
+            
+
+            <tr>
+              <td>Concreto Vibrado</td>
+              <td>477</td>
+              <td>509</td>
+              <td class="bad">+32</td>
+              <td class="bad">+6.7%</td>
+              <td>8,00 m³</td>
+            </tr>
+            </tbody>
+    </table>
+  </section>
+
+</div>
+</body>
+</html>

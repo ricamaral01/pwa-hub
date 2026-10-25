@@ -1,0 +1,19 @@
+[Unit]
+Description=Unificado production TV summary, read only
+After=postgresql.service
+
+[Service]
+User=tv_prod_reader
+Group=tv_prod_reader
+WorkingDirectory=/opt/concrefer-unificado/painel-tv-api
+Environment="TV_MAPA_READ_DSN=dbname=mapa_unificado_teste user=tv_prod_reader host=/var/run/postgresql"
+Environment="TV_PCP_READ_DSN=dbname=pcp_unificado_teste user=tv_prod_reader host=/var/run/postgresql"
+ExecStart=/opt/concrefer-unificado/mapa-api/.venv/bin/python -m gunicorn --workers 2 --bind 127.0.0.1:13181 app:app
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

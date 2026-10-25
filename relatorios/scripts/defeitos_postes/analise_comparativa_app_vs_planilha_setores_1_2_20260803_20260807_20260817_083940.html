@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Comparativo App vs Planilha - Setores 1 e 2</title>
+<style>
+body{font-family:Arial, sans-serif; margin:24px; color:#172033; background:#f6f8fb} .wrap{max-width:1180px;margin:auto} h1{margin-bottom:4px} h2{margin-top:32px;border-bottom:1px solid #d9e1ec;padding-bottom:8px} .sub{color:#5b677a;margin-bottom:18px} .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0} .card{background:#fff;border:1px solid #d9e1ec;border-radius:8px;padding:14px} .card span{display:block;color:#5b677a;font-weight:700;font-size:12px} .card strong{font-size:26px} table{border-collapse:collapse;width:100%;background:#fff;margin:10px 0 22px} th,td{border:1px solid #d9e1ec;padding:8px 10px;text-align:left;vertical-align:top} th{background:#eaf0f7} tr:nth-child(even) td{background:#fbfcfe} .note{background:#fff7ed;border-left:5px solid #f59e0b;padding:14px 18px;margin:18px 0} .ok{background:#ecfdf5;border-left-color:#10b981} .bad{color:#b91c1c;font-weight:700} .small{font-size:12px;color:#5b677a} ul{background:#fff;border:1px solid #d9e1ec;border-radius:8px;padding:16px 28px} @media(max-width:900px){.cards{grid-template-columns:1fr 1fr} table{font-size:12px}}
+</style></head><body><div class="wrap">
+<h1>Analise comparativa - App vs Planilha</h1>
+<div class="sub">Periodo: 03/08/2026 a 07/08/2026 | Escopo: somente Setor 1 e Setor 2 | Gerado em 17/08/2026 08:39:40</div>
+<div class="small">Fonte app: C:\Users\Admin\Documents\pwa-hub-fase1\mapa-concretagem-teste\dashboard-defeitos-2026-08-03-2026-08-07.html<br>Fonte planilha/papel: relatorio gerado em C:\Users\Admin\Documents\pwa-hub-fase1\relatorios\scripts\defeitos_postes\relatorio_comparativo_ago26_ago26_20260803_20260807_20260817_083717.html</div>
+
+<div class="note"><strong>Leitura dos dados:</strong> o relatorio enviado pelo usuario foi tratado somente como fonte de dados do app. O relatorio novo foi gerado a partir da planilha usada pelo script de defeitos de postes. Cada defeito marcado em um mesmo poste foi contado como um evento separado.</div>
+
+<h2>Resumo executivo</h2>
+<ul><li>No app foram encontrados 23 eventos de defeito em 16 postes/formas dos Setores 1 e 2; na planilha foram encontrados 14 eventos em 14 postes/formas.</li><li>A divergencia liquida e de -9 eventos na planilha contra o app, mas a distribuicao e invertida por setor: app concentra 23 eventos no Setor 1 e 0 no Setor 2; planilha registra 4 no Setor 1 e 10 no Setor 2.</li><li>Nenhuma forma/poste bate entre as duas fontes depois da normalizacao simples do identificador.</li><li>A divergencia nao parece ser apenas diferenca de nomenclatura de defeito: ha formas/postes e setores diferentes entre as fontes. Isso sugere falha de transcricao, atraso de lancamento, criterios diferentes de inclusao ou mapeamento diferente entre &#x27;Setor&#x27; do app e &#x27;Montagem&#x27; da planilha.</li></ul>
+<div class="cards">
+<div class="card"><span>Eventos no app</span><strong>23</strong></div>
+<div class="card"><span>Eventos na planilha</span><strong>14</strong></div>
+<div class="card"><span>Divergencia liquida</span><strong>-9</strong></div>
+<div class="card"><span>Formas iguais nas fontes</span><strong>0</strong></div>
+</div>
+
+<h2>Totais principais</h2><table><thead><tr><th>Indicador</th><th>App</th><th>Planilha/papel</th><th>Diferen?a</th></tr></thead><tbody><tr><td>Postes/formas com ao menos um defeito</td><td>16</td><td>14</td><td>-2</td></tr>
+<tr><td>Eventos de defeito (cada tipo contado separadamente)</td><td>23</td><td>14</td><td>-9</td></tr>
+<tr><td>Setor 1 - eventos de defeito</td><td>23</td><td>4</td><td>-19</td></tr>
+<tr><td>Setor 2 - eventos de defeito</td><td>0</td><td>10</td><td>+10</td></tr></tbody></table>
+<h2>Comparativo por setor</h2><table><thead><tr><th>Setor</th><th>App</th><th>Planilha/papel</th><th>Diferen?a</th><th>Varia??o vs app</th></tr></thead><tbody><tr><td>SETOR 1</td><td>23</td><td>4</td><td>-19</td><td>-82,6%</td></tr>
+<tr><td>SETOR 2</td><td>0</td><td>10</td><td>+10</td><td>N/A</td></tr></tbody></table>
+<h2>Comparativo por dia</h2><table><thead><tr><th>Data</th><th>App</th><th>Planilha/papel</th><th>Diferen?a</th><th>Varia??o vs app</th></tr></thead><tbody><tr><td>04/08/2026</td><td>4</td><td>2</td><td>-2</td><td>-50,0%</td></tr>
+<tr><td>05/08/2026</td><td>13</td><td>5</td><td>-8</td><td>-61,5%</td></tr>
+<tr><td>06/08/2026</td><td>0</td><td>4</td><td>+4</td><td>N/A</td></tr>
+<tr><td>07/08/2026</td><td>6</td><td>3</td><td>-3</td><td>-50,0%</td></tr></tbody></table>
+<h2>Comparativo por setor e dia</h2><table><thead><tr><th>Setor</th><th>Data</th><th>App</th><th>Planilha/papel</th><th>Diferen?a</th><th>Varia??o vs app</th></tr></thead><tbody><tr><td>SETOR 1</td><td>04/08/2026</td><td>4</td><td>0</td><td>-4</td><td>-100,0%</td></tr>
+<tr><td>SETOR 1</td><td>05/08/2026</td><td>13</td><td>1</td><td>-12</td><td>-92,3%</td></tr>
+<tr><td>SETOR 1</td><td>06/08/2026</td><td>0</td><td>2</td><td>+2</td><td>N/A</td></tr>
+<tr><td>SETOR 1</td><td>07/08/2026</td><td>6</td><td>1</td><td>-5</td><td>-83,3%</td></tr>
+<tr><td>SETOR 2</td><td>04/08/2026</td><td>0</td><td>2</td><td>+2</td><td>N/A</td></tr>
+<tr><td>SETOR 2</td><td>05/08/2026</td><td>0</td><td>4</td><td>+4</td><td>N/A</td></tr>
+<tr><td>SETOR 2</td><td>06/08/2026</td><td>0</td><td>2</td><td>+2</td><td>N/A</td></tr>
+<tr><td>SETOR 2</td><td>07/08/2026</td><td>0</td><td>2</td><td>+2</td><td>N/A</td></tr></tbody></table>
+<h2>Comparativo por tipo de defeito</h2><table><thead><tr><th>Defeito</th><th>App</th><th>Planilha/papel</th><th>Diferen?a</th><th>Varia??o vs app</th></tr></thead><tbody><tr><td>A - Falha na concretagem</td><td>0</td><td>5</td><td>+5</td><td>N/A</td></tr>
+<tr><td>C - Bolhas em excesso</td><td>6</td><td>0</td><td>-6</td><td>-100,0%</td></tr>
+<tr><td>C - Excesso de Bolhas</td><td>0</td><td>4</td><td>+4</td><td>N/A</td></tr>
+<tr><td>J - Pequenas Avarias</td><td>0</td><td>4</td><td>+4</td><td>N/A</td></tr>
+<tr><td>J - Pequenas avarias</td><td>3</td><td>0</td><td>-3</td><td>-100,0%</td></tr>
+<tr><td>L - Buchas de fixacao</td><td>13</td><td>0</td><td>-13</td><td>-100,0%</td></tr>
+<tr><td>M - Parafuso lacre da caixa do medidor</td><td>0</td><td>1</td><td>+1</td><td>N/A</td></tr>
+<tr><td>Q - Rebarbas</td><td>1</td><td>0</td><td>-1</td><td>-100,0%</td></tr></tbody></table>
+
+<h2>Formas/Postes</h2>
+<div class="note "><strong>Formas em comum:</strong> Nenhuma forma/poste em comum.</div>
+<table><thead><tr><th>Forma/poste somente no app</th></tr></thead><tbody><tr><td>300-VR</td></tr>
+<tr><td>AE-23</td></tr>
+<tr><td>AE-24</td></tr>
+<tr><td>BD-11</td></tr>
+<tr><td>BD-12</td></tr>
+<tr><td>BE-01</td></tr>
+<tr><td>BE-02</td></tr>
+<tr><td>BE-03</td></tr>
+<tr><td>BE-04</td></tr>
+<tr><td>CE-03</td></tr>
+<tr><td>CE-04</td></tr>
+<tr><td>I-01</td></tr>
+<tr><td>L-01</td></tr></tbody></table>
+<table><thead><tr><th>Forma/poste somente na planilha/papel</th></tr></thead><tbody><tr><td>A-14</td></tr>
+<tr><td>A-31</td></tr>
+<tr><td>A-32</td></tr>
+<tr><td>A-38</td></tr>
+<tr><td>A-60</td></tr>
+<tr><td>A-70</td></tr>
+<tr><td>AE-05</td></tr>
+<tr><td>AE-15</td></tr>
+<tr><td>AE-18</td></tr>
+<tr><td>B-09</td></tr>
+<tr><td>C-16</td></tr>
+<tr><td>C-18</td></tr>
+<tr><td>C-21</td></tr>
+<tr><td>D-05</td></tr></tbody></table>
+
+<h2>Eventos somente no app</h2><table><thead><tr><th>Forma</th><th>Defeito</th><th>Qtd</th></tr></thead><tbody><tr><td>300-VR</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr>
+<tr><td>AE-23</td><td>C - BOLHAS EM EXCESSO</td><td>1</td></tr>
+<tr><td>AE-23</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr>
+<tr><td>AE-24</td><td>C - BOLHAS EM EXCESSO</td><td>1</td></tr>
+<tr><td>AE-24</td><td>J - PEQUENAS AVARIAS</td><td>1</td></tr>
+<tr><td>BD-11</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr>
+<tr><td>BD-12</td><td>C - BOLHAS EM EXCESSO</td><td>1</td></tr>
+<tr><td>BE-01</td><td>C - BOLHAS EM EXCESSO</td><td>1</td></tr>
+<tr><td>BE-01</td><td>L - BUCHAS DE FIXA??O</td><td>2</td></tr>
+<tr><td>BE-02</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr>
+<tr><td>BE-03</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr>
+<tr><td>BE-04</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr>
+<tr><td>CE-03</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr>
+<tr><td>CE-04</td><td>C - BOLHAS EM EXCESSO</td><td>1</td></tr>
+<tr><td>CE-04</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr>
+<tr><td>I-01</td><td>J - PEQUENAS AVARIAS</td><td>1</td></tr>
+<tr><td>I-01</td><td>L - BUCHAS DE FIXA??O</td><td>2</td></tr>
+<tr><td>I-01</td><td>Q - REBARBAS</td><td>1</td></tr>
+<tr><td>L-01</td><td>C - BOLHAS EM EXCESSO</td><td>1</td></tr>
+<tr><td>L-01</td><td>J - PEQUENAS AVARIAS</td><td>1</td></tr>
+<tr><td>L-01</td><td>L - BUCHAS DE FIXA??O</td><td>1</td></tr></tbody></table>
+<h2>Eventos somente na planilha/papel</h2><table><thead><tr><th>Forma</th><th>Defeito</th><th>Qtd</th></tr></thead><tbody><tr><td>A-14</td><td>C - EXCESSO DE BOLHAS</td><td>1</td></tr>
+<tr><td>A-31</td><td>A - FALHA NA CONCRETAGEM</td><td>1</td></tr>
+<tr><td>A-32</td><td>J - PEQUENAS AVARIAS</td><td>1</td></tr>
+<tr><td>A-38</td><td>A - FALHA NA CONCRETAGEM</td><td>1</td></tr>
+<tr><td>A-60</td><td>C - EXCESSO DE BOLHAS</td><td>1</td></tr>
+<tr><td>A-70</td><td>A - FALHA NA CONCRETAGEM</td><td>1</td></tr>
+<tr><td>AE-05</td><td>J - PEQUENAS AVARIAS</td><td>1</td></tr>
+<tr><td>AE-15</td><td>A - FALHA NA CONCRETAGEM</td><td>1</td></tr>
+<tr><td>AE-18</td><td>J - PEQUENAS AVARIAS</td><td>1</td></tr>
+<tr><td>B-09</td><td>J - PEQUENAS AVARIAS</td><td>1</td></tr>
+<tr><td>C-16</td><td>C - EXCESSO DE BOLHAS</td><td>1</td></tr>
+<tr><td>C-18</td><td>A - FALHA NA CONCRETAGEM</td><td>1</td></tr>
+<tr><td>C-21</td><td>M - PARAFUSO LACRE DA CAIXA DO MEDIDOR</td><td>1</td></tr>
+<tr><td>D-05</td><td>C - EXCESSO DE BOLHAS</td><td>1</td></tr></tbody></table>
+
+<h2>Detalhe app</h2><table><thead><tr><th>Data</th><th>Setor</th><th>Poste/Forma</th><th>Modelo</th><th>Defeito</th></tr></thead><tbody><tr><td>04/08/2026</td><td>SETOR 1</td><td>BE-04</td><td>1 CX VL</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>04/08/2026</td><td>SETOR 1</td><td>I-01</td><td>3 CXS VL</td><td>J - Pequenas avarias</td></tr>
+<tr><td>04/08/2026</td><td>SETOR 1</td><td>I-01</td><td>3 CXS VL</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>04/08/2026</td><td>SETOR 1</td><td>I-01</td><td>3 CXS VL</td><td>Q - Rebarbas</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>300-VR</td><td>2 CXS VR</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>AE-23</td><td>1 CX VR</td><td>C - Bolhas em excesso</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>AE-23</td><td>1 CX VR</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>AE-24</td><td>1 CX VR</td><td>C - Bolhas em excesso</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>AE-24</td><td>1 CX VR</td><td>J - Pequenas avarias</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>BE-01</td><td>1 CX VL</td><td>C - Bolhas em excesso</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>BE-01</td><td>1 CX VL</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>CE-03</td><td>2 CXS VR</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>CE-04</td><td>2 CXS VR</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>I-01</td><td>3 CXS VL</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>L-01</td><td>4 CXS VR</td><td>C - Bolhas em excesso</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>L-01</td><td>4 CXS VR</td><td>J - Pequenas avarias</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>L-01</td><td>4 CXS VR</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 1</td><td>BD-11</td><td>1 CX VL</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 1</td><td>BD-12</td><td>1 CX VL</td><td>C - Bolhas em excesso</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 1</td><td>BE-01</td><td>1 CX VL</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 1</td><td>BE-02</td><td>1 CX VL</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 1</td><td>BE-03</td><td>1 CX VL</td><td>L - Buchas de fixacao</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 1</td><td>CE-04</td><td>2 CXS VR</td><td>C - Bolhas em excesso</td></tr></tbody></table>
+<h2>Detalhe planilha/papel</h2><table><thead><tr><th>Data</th><th>Setor</th><th>Forma</th><th>Modelo</th><th>Defeito</th></tr></thead><tbody><tr><td>04/08/2026</td><td>SETOR 2</td><td>A-32</td><td>1 cx vr A</td><td>J - Pequenas Avarias</td></tr>
+<tr><td>04/08/2026</td><td>SETOR 2</td><td>B-09</td><td>1 cx vl B</td><td>J - Pequenas Avarias</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 1</td><td>AE-05</td><td>1 cx vr AE</td><td>J - Pequenas Avarias</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 2</td><td>A-14</td><td>1 cx vr A</td><td>C - Excesso de Bolhas</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 2</td><td>A-31</td><td>1 cx vr A</td><td>A - Falha na concretagem</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 2</td><td>C-18</td><td>2 cxs vr C</td><td>A - Falha na concretagem</td></tr>
+<tr><td>05/08/2026</td><td>SETOR 2</td><td>C-21</td><td>2 cxs vr C</td><td>M - Parafuso lacre da caixa do medidor</td></tr>
+<tr><td>06/08/2026</td><td>SETOR 1</td><td>AE-15</td><td>1 cx vr AE</td><td>A - Falha na concretagem</td></tr>
+<tr><td>06/08/2026</td><td>SETOR 1</td><td>D-05</td><td>2 cxs vl D</td><td>C - Excesso de Bolhas</td></tr>
+<tr><td>06/08/2026</td><td>SETOR 2</td><td>A-60</td><td>1 cx vr A</td><td>C - Excesso de Bolhas</td></tr>
+<tr><td>06/08/2026</td><td>SETOR 2</td><td>C-16</td><td>2 cxs vr C</td><td>C - Excesso de Bolhas</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 1</td><td>AE-18</td><td>1 cx vr AE</td><td>J - Pequenas Avarias</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 2</td><td>A-38</td><td>1 cx vr A</td><td>A - Falha na concretagem</td></tr>
+<tr><td>07/08/2026</td><td>SETOR 2</td><td>A-70</td><td>1 cx vr A</td><td>A - Falha na concretagem</td></tr></tbody></table>
+
+<h2>Hipoteses de causa da divergencia</h2>
+<ul>
+<li>O app registra principalmente Setor 1; a planilha/papel registra maioria no Setor 2. O primeiro ponto de auditoria deve ser o mapeamento Setor 1/2 no app contra Montagem 1/2 na ficha de papel.</li>
+<li>As formas/postes quase nao coincidem entre fontes; isso indica que nao e apenas problema de nome do defeito.</li>
+<li>O app permite varios defeitos no mesmo poste. A planilha parece registrar uma linha por defeito. Para comparar corretamente, ambas as bases precisam usar a mesma granularidade: poste com defeito ou evento de defeito.</li>
+<li>Ha defeitos com nomenclaturas diferentes entre fontes, por exemplo bolhas/rebarbas/buchas no app contra falha na concretagem/pequenas avarias/excesso de bolhas/parafuso lacre na planilha.</li>
+<li>Recomendo conferir fisicamente uma amostra dos dias 04/08, 05/08, 06/08 e 07/08 pelas formas listadas nas tabelas somente-app e somente-planilha.</li>
+</ul>
+</div></body></html>
