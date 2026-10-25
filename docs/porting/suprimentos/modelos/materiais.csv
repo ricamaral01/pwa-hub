@@ -1,0 +1,3 @@
+codigo,descricao,categoria,un_estoque,dominio,controla_estoque,exige_ca,patrimoniado
+EPI-EXEMPLO,Luvas de proteção (exemplo),EPI,par,almoxarifado,true,true,false
+CON-EXEMPLO,Lixa abrasiva (exemplo),ABRASIVO,un,almoxarifado,true,false,false
