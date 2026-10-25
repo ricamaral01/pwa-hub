@@ -307,27 +307,27 @@
       </div>
     </div>
 
-    <!-- ======= Controle diario de moldagem ======= -->
+    <!-- ======= Controle diario de rompimentos ======= -->
     <div class="section-card">
-      <div class="section-title"><span>&#128198;</span> Controle Di&#225;rio de Moldagem (Dias &#218;teis)</div>
-      <div id="moldagemResumo" style="font-size:.72rem;color:var(--muted);margin:0 0 10px 0;"></div>
+      <div class="section-title"><span>&#128198;</span> Controle Di&#225;rio de Rompimentos (Dias &#218;teis)</div>
+      <div style="font-size:.72rem;color:var(--muted);margin:0 0 8px 0;">Fonte: resultados de ruptura registrados no CEC, agrupados pela data de ruptura. A data de moldagem consta em cada resultado, mas n&#227;o define o dia deste quadro.</div>
+      <div id="rompimentoResumo" style="font-size:.72rem;color:var(--muted);margin:0 0 10px 0;"></div>
       <div class="tbl-wrap">
-        <table id="tblMoldagemDiaria" class="stat-tbl">
+        <table id="tblRompimentoDiario" class="stat-tbl">
           <thead>
             <tr>
-              <th class="th-mold">DATA</th>
+              <th class="th-mold">DATA RUPTURA</th>
               <th class="th-stat">STATUS</th>
               <th class="th-stat">TOTAL CPs</th>
-              <th class="th-stat">ESPERADO</th>
-              <th class="th-1">1d (2)</th>
-              <th class="th-3">3d (2)</th>
-              <th class="th-7">7d (2)</th>
-              <th class="th-28">28d (2)</th>
-              <th class="th-stat">FALTANTES</th>
-              <th class="th-stat">RESUMO DO DIA</th>
+              <th class="th-1">1d</th>
+              <th class="th-3">3d</th>
+              <th class="th-7">7d</th>
+              <th class="th-28">28d</th>
+              <th class="th-stat">OUTRAS IDADES</th>
+              <th class="th-stat">TRA&#199;OS</th>
             </tr>
           </thead>
-          <tbody id="tblMoldagemDiariaBody"></tbody>
+          <tbody id="tblRompimentoDiarioBody"></tbody>
         </table>
       </div>
     </div>
@@ -394,6 +394,10 @@ function mesAbrev(mes,ano){ return MESES_PT[parseInt(mes)-1]+'/'+(ano?ano.substr
 function r1(v){ return(v!==null&&v!==''&&!isNaN(parseFloat(v)))?Math.round(parseFloat(v)*10)/10:null; }
 function fmtN(v){ return v!==null?String(v):'--'; }
 function avg(arr){ if(!arr.length)return null; return arr.reduce(function(a,b){return a+b;},0)/arr.length; }
+function dayKey(value){
+  var match=String(value||'').match(/^(\d{4}-\d{2}-\d{2})/);
+  return match?match[1]:'';
+}
 function isoFromDate(d){
   var y=d.getFullYear();
   var m=String(d.getMonth()+1).padStart(2,'0');
@@ -468,9 +472,10 @@ function parseGVizDate_(col,cell){
 function buildGroups(rawRows){
   var map=new Map();
   rawRows.forEach(function(r){
-    var key=r.data_moldagem+'|'+r.traco_id+'|'+r.idade_dias;
-    if(!map.has(key))map.set(key,{data_moldagem:r.data_moldagem,traco_id:r.traco_id,idade_dias:parseInt(r.idade_dias)||0,cps:[]});
-    map.get(key).cps.push({cp:parseInt(r.cp)||0,mpa:r.mpa,data_ruptura:r.data_ruptura});
+    var dataMoldagem=dayKey(r.data_moldagem);
+    var key=dataMoldagem+'|'+r.traco_id+'|'+r.idade_dias;
+    if(!map.has(key))map.set(key,{data_moldagem:dataMoldagem,traco_id:r.traco_id,idade_dias:parseInt(r.idade_dias)||0,cps:[]});
+    map.get(key).cps.push({cp:parseInt(r.cp)||0,mpa:r.mpa,data_ruptura:dayKey(r.data_ruptura)});
   });
   // compute avg per group
   var groups=Array.from(map.values());
@@ -759,75 +764,55 @@ function renderMensal(allGroups){
   document.getElementById('tblMensalBody').innerHTML=html;
 }
 
-/* ===================== CONTROLE DIARIO MOLDAGEM ===================== */
-function renderControleMoldagemDiaria(groups){
-  var EXPECTED_TOTAL=8;
-  var EXPECTED_BY_AGE={1:2,3:2,7:2,28:2};
-
+/* ===================== CONTROLE DIARIO DE ROMPIMENTOS ===================== */
+function renderControleRompimentoDiario(groups){
   var byDate={};
   groups.forEach(function(g){
-    if(!g.data_moldagem)return;
-    if(!byDate[g.data_moldagem])byDate[g.data_moldagem]={1:0,3:0,7:0,28:0,total:0};
-    var qtd=(g.cps||[]).length;
-    var age=parseInt(g.idade_dias,10);
-    if(EXPECTED_BY_AGE.hasOwnProperty(age))byDate[g.data_moldagem][age]+=qtd;
-    byDate[g.data_moldagem].total+=qtd;
+    (g.cps||[]).forEach(function(cp){
+      var key=dayKey(cp.data_ruptura);
+      if(!key || r1(cp.mpa)===null)return;
+      if(!byDate[key])byDate[key]={1:0,3:0,7:0,28:0,other:0,total:0,tracos:new Set()};
+      var day=byDate[key];
+      var age=parseInt(g.idade_dias,10);
+      if(age===1||age===3||age===7||age===28)day[age]++;
+      else day.other++;
+      day.total++;
+      if(g.traco_id)day.tracos.add(g.traco_id);
+    });
   });
 
   var today=todayDateOnly();
-  var startDate=new Date(today.getFullYear(),today.getMonth(),1);
-  var endDate=today;
-
+  var cur=new Date(today.getFullYear(),today.getMonth(),1);
   var html='';
-  var faltasResumo=[];
-  var cur=new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate());
-  while(cur<=endDate){
-    if(isBusinessDay(cur) && cur<today){
+  var diasUteis=0;
+  var diasComRompimento=0;
+  var totalCp=0;
+  while(cur<=today){
+    if(isBusinessDay(cur)){
       var key=isoFromDate(cur);
-      var day=byDate[key]||{1:0,3:0,7:0,28:0,total:0};
-      var f1=Math.max(0,EXPECTED_BY_AGE[1]-day[1]);
-      var f3=Math.max(0,EXPECTED_BY_AGE[3]-day[3]);
-      var f7=Math.max(0,EXPECTED_BY_AGE[7]-day[7]);
-      var f28=Math.max(0,EXPECTED_BY_AGE[28]-day[28]);
-      var faltantes=f1+f3+f7+f28;
-
-      var status='OK';
-      var statusCls='v-ok';
-      if(day.total===0){ status='Sem moldagem'; statusCls='v-fail'; }
-      else if(faltantes>0){ status='Incompleto'; statusCls='v-warn'; }
-      else if(day.total>EXPECTED_TOTAL){ status='Acima do esperado'; statusCls='v-neu'; }
-
-      var resumoDia=faltantes===0
-        ? 'Completo'
-        : ('Faltam '+f1+'(1d), '+f3+'(3d), '+f7+'(7d), '+f28+'(28d)');
-
-      if(faltantes>0)faltasResumo.push(fmtDate(key)+': '+resumoDia);
-
+      var day=byDate[key]||{1:0,3:0,7:0,28:0,other:0,total:0,tracos:new Set()};
+      diasUteis++;
+      if(day.total)diasComRompimento++;
+      totalCp+=day.total;
       html+='<tr>';
       html+='<td>'+fmtDate(key)+'</td>';
-      html+='<td class="'+statusCls+'"><b>'+status+'</b></td>';
+      html+='<td class="'+(day.total?'v-ok':'v-neu')+'"><b>'+(day.total?'Registrado':'Sem rompimento registrado')+'</b></td>';
       html+='<td><b>'+day.total+'</b></td>';
-      html+='<td>'+EXPECTED_TOTAL+'</td>';
-      html+='<td class="'+(day[1]===EXPECTED_BY_AGE[1]?'v-ok':'v-warn')+'">'+day[1]+'</td>';
-      html+='<td class="'+(day[3]===EXPECTED_BY_AGE[3]?'v-ok':'v-warn')+'">'+day[3]+'</td>';
-      html+='<td class="'+(day[7]===EXPECTED_BY_AGE[7]?'v-ok':'v-warn')+'">'+day[7]+'</td>';
-      html+='<td class="'+(day[28]===EXPECTED_BY_AGE[28]?'v-ok':'v-warn')+'">'+day[28]+'</td>';
-      html+='<td class="'+(faltantes===0?'v-ok':'v-fail')+'"><b>'+faltantes+'</b></td>';
-      html+='<td class="lft">'+resumoDia+'</td>';
+      html+='<td>'+day[1]+'</td>';
+      html+='<td>'+day[3]+'</td>';
+      html+='<td>'+day[7]+'</td>';
+      html+='<td>'+day[28]+'</td>';
+      html+='<td>'+day.other+'</td>';
+      html+='<td>'+day.tracos.size+'</td>';
       html+='</tr>';
     }
     cur.setDate(cur.getDate()+1);
   }
 
-  var resumoEl=document.getElementById('moldagemResumo');
-  if(faltasResumo.length){
-    resumoEl.innerHTML='<b>Resumo do m&#234;s corrente:</b> '+faltasResumo.join(' &bull; ');
-  }else{
-    resumoEl.innerHTML='<b>Resumo do m&#234;s corrente:</b> Nenhuma pend&#234;ncia registrada nos dias &#250;teis at&#233; o momento.';
-  }
-
-  if(!html)html='<tr><td colspan="10" style="padding:24px;text-align:center;color:var(--muted);">Sem dados suficientes para o controle de moldagem.</td></tr>';
-  document.getElementById('tblMoldagemDiariaBody').innerHTML=html;
+  document.getElementById('rompimentoResumo').textContent=
+    'Mês corrente: '+diasComRompimento+' de '+diasUteis+' dias úteis com rompimento; '+totalCp+' CPs com resultado.';
+  if(!html)html='<tr><td colspan="9" style="padding:24px;text-align:center;color:var(--muted);">Ainda n&#227;o h&#225; dias &#250;teis neste m&#234;s.</td></tr>';
+  document.getElementById('tblRompimentoDiarioBody').innerHTML=html;
 }
 
 /* ===================== PROGRESSIVE RENDERING ===================== */
@@ -936,7 +921,7 @@ function renderAll(){
     label:'Tabelas',
     fn:function(){ 
       renderUltimos(_allGroups);
-      renderControleMoldagemDiaria(_allGroups);
+      renderControleRompimentoDiario(_allGroups);
       renderMensal(_allGroups);
     }
   });
@@ -1045,7 +1030,7 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 (async function(){
-  try{ if('serviceWorker' in navigator) await navigator.serviceWorker.register('./sw.js',{scope:'./'}); }catch(e){}
+  try{ if('serviceWorker' in navigator){ var registration=await navigator.serviceWorker.register('./sw.js?v=10',{scope:'./',updateViaCache:'none'}); registration.update().catch(function(){}); } }catch(e){}
 
   // SW version badge and force update
   function initSWVersionBadge() {

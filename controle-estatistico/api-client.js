@@ -88,7 +88,32 @@
     var opts = options || {};
     var cacheKey = opts.cacheKey;
     try{
-      var payload = await fetchJson(buildUrl(opts.filters), opts.timeoutMs);
+      var requested = Object.assign({}, opts.filters || {});
+      var pageSize = Math.max(1, Math.min(parseInt(requested.limit || 1000, 10), 5000));
+      var offset = Math.max(0, parseInt(requested.offset || 0, 10));
+      var allRows = [];
+      var payload = null;
+      var pages = 0;
+
+      do {
+        payload = await fetchJson(buildUrl(Object.assign({}, requested, {
+          limit: pageSize,
+          offset: offset
+        })), opts.timeoutMs);
+        allRows = allRows.concat(Array.isArray(payload.rows) ? payload.rows : []);
+        offset += Array.isArray(payload.rows) ? payload.rows.length : 0;
+        pages++;
+        if(pages >= 100) throw new Error('Limite de paginação excedido.');
+      } while(payload.pagination && payload.pagination.has_more);
+
+      payload.rows = allRows;
+      payload.count = allRows.length;
+      payload.pagination = {
+        limit: pageSize,
+        offset: 0,
+        has_more: false,
+        pages: pages
+      };
       if (payload && payload.success === true && Array.isArray(payload.rows)) {
         if (payload.rows.length > 0 && payload.rows[0].mpa_cp1 !== undefined) {
           payload.rows = mapGroupsToLegacyRows(payload.rows);

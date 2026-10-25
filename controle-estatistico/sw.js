@@ -1,4 +1,4 @@
-const CACHE = "ct-controle-est-v7";
+const CACHE = "ct-controle-est-v10";
 const ASSETS = [
   "./index.html",
   "./resultado-cp.html",
@@ -15,28 +15,40 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.map((k) => (k !== CACHE ? caches.delete(k) : Promise.resolve())))
-    ).then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)));
+    await self.clients.claim();
+
+    // A release can replace a report already open under an older cache.
+    const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    await Promise.all(windows.filter((client) =>
+      new URL(client.url).pathname.endsWith("/controle-estatistico/relatorio.html")
+    ).map((client) => client.navigate(client.url).catch(() => {})));
+  })());
 });
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  if (url.pathname.startsWith("/api/")) return;
+  if (req.method !== "GET" || url.pathname.startsWith("/api/")) return;
+  if (url.origin !== self.location.origin) return;
 
-  // Passthrough: recursos externos
-  if (
-    url.hostname !== self.location.hostname ||
-    url.href.includes("cdn.jsdelivr.net")
-  ) return;
+  if (req.mode === "navigate" || url.pathname.endsWith(".html")) {
+    event.respondWith(
+      fetch(req).then((response) => {
+        if (response.ok) {
+          const copy = response.clone();
+          event.waitUntil(caches.open(CACHE).then((cache) => cache.put(req, copy)));
+        }
+        return response;
+      }).catch(() => caches.match(req, { ignoreSearch: true }))
+    );
+    return;
+  }
 
-  event.respondWith(
-    caches.match(req).then((cached) => cached || fetch(req))
-  );
+  event.respondWith(caches.match(req).then((cached) => cached || fetch(req)));
 });
 
 self.addEventListener("message", (event) => {
