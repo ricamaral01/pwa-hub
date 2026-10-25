@@ -52,3 +52,39 @@ def test_a4_one_page(count):
 def test_more_than_ten_dates_rejected():
     items=[dict(modelo='DT',quantidade=1,data_producao=(date(2026,7,1)+timedelta(days=i)).isoformat()) for i in range(11)]
     with pytest.raises(ValueError,match='10 datas'):validate_items(items)
+
+
+def test_pdf_approved_columns_number_format_and_verification_domain():
+    day='2026-09-01'
+    cert=dict(numero='CQ-2026-0146',revisao=2,cliente='Cliente Exemplo',
+              endereco='Campinas/SP',nota_fiscal='NF 123',data_emissao=day,
+              resp_laboratorio='Ricardo Do Amaral',fck_mpa=35,
+              prensa_snapshot=dict(fabricante='Kratos',modelo='IK-14 A/P',serie='2220879',
+                                    certificado_calibracao='2354/26',laboratorio_rbc='Laboratório de teste',
+                                    data_calibracao='2026-07-14',validade='2027-07-14'))
+    item=dict(modelo='DT 12/600',altura_m=12,carga_dan=600,peso_kg=1530,
+              quantidade=6,data_producao=day)
+    result=dict(data_producao=day,n_cps=2,r3_media=20.4,r7_media=27.9,
+                r28_media=38.4,resultado='conforme')
+    pdf=make_pdf(cert,[item],[result],issued=True,
+                 verify_base='https://concrefer.concretrack.com.br')
+    text=PdfReader(__import__('io').BytesIO(pdf)).pages[0].extract_text()
+    for expected in ('Postes de concreto armado', 'Altura', 'Carga', 'Peso',
+                     'Data de', 'Lote', 'Total de postes', '1.530', 'CONFORME',
+                     'Documento emitido eletronicamente',
+                     'https://concrefer.concretrack.com.br/v/CQ-2026-0146'):
+        assert expected in text
+    assert 'Traço' not in text
+
+
+def test_missing_weight_renders_dash():
+    day='2026-09-01'
+    cert=dict(numero=None,revisao=0,cliente='Cliente',endereco='Campinas',
+              nota_fiscal='123',data_emissao=day,resp_laboratorio='Ricardo Do Amaral',
+              fck_mpa=35,prensa_snapshot={})
+    item=dict(modelo='C 10/300',altura_m=10,carga_dan=300,peso_kg=None,
+              quantidade=1,data_producao=day)
+    result=dict(data_producao=day,n_cps=2,r3_media=20,r7_media=30,
+                r28_media=40,resultado='conforme')
+    text=PdfReader(__import__('io').BytesIO(make_pdf(cert,[item],[result],issued=False))).pages[0].extract_text()
+    assert '—' in text

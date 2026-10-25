@@ -1,38 +1,44 @@
-# Fase 2 — fonte nova dos certificados de qualidade
+# Fase 2 — fonte nova e certificado A4
 
-**Data local:** 24/10/2026. **Estado:** homologação publicada com `CQ_FONTE_CP=novo`; uma tentativa de produção foi revertida automaticamente, portanto o módulo permanece **fora de produção**.
+**Concluído em 24/10/2026 (horário de São Paulo; VPS em 25/10 UTC).** Homologação em `:18446` e produção publicadas com `CQ_FONTE_CP=novo`. A emissão comercial está bloqueada enquanto o cadastro da prensa não tiver o nome real do laboratório calibrador/RBC.
 
-## Fonte e implementação
+## Fonte e conferência independente
 
-- O CEC Campinas da VPS nova roda em `cec-campinas-api.service`, `127.0.0.1:3086`, banco `controle_est_concre_campinas`. O endpoint `GET /api/controle-estatistico/rompimentos-grupos` entrega `data_moldagem`, traço, idade, CP, MPa e data de ruptura. O módulo passou a usar `source.py` com `CQ_FONTE_CP=novo|antigo`; `novo` aponta para loopback da VPS nova, `antigo` permanece no código para reversão. Nenhuma credencial foi adicionada ao repositório. Detalhes em `fonte-controle-estatistico-novo.md`.
-- O cálculo usa `Decimal` com arredondamento a duas casas compatível com o SQL. Rascunhos recalculam pela fonte configurada; emitidos continuam a servir os resultados e o PDF gravados. Emissão agora exige laboratório calibrador preenchido com nome real: vazio ou “Não informado” retorna HTTP 422. A prensa Kratos do cadastro de origem mantém o placeholder até atualização pelo gestor.
-- Foram adicionados `source.py`, `migrations/003_seed_prensa_existente.sql`, testes de fonte e arredondamento, scripts de auditoria e publicação. `laboratorio-unificado.service`, manifesto e service worker não foram alterados.
+- O Controle Estatístico novo da VPS usa `cec-campinas-api.service`, `127.0.0.1:3086`, banco `controle_est_concre_campinas`, com `data_moldagem`, traço, idade, CP, MPa e data de ruptura. `source.py` permite `CQ_FONTE_CP=novo|antigo`; produção e homologação estão em `novo`. A alternativa antiga continua disponível para retorno operacional. Nenhuma credencial foi adicionada ao Git.
+- O critério original de dez certificados legados foi substituído por decisão do Ricardo, pois o histórico legado inclui datas de 2025 e a fonte de CPs começa em 05/01/2026. O único par comparável, `CQ-20260326-153230`, bateu nas três leituras: **33,00 MPa aos 28 dias** e não conforme para fck 35.
+- Dez datas de 2026 com 28 dias foram recalculadas por SQL direto em `rompimentos_atuais`: **10/10** iguais ao módulo em número de CPs, médias de 3/7/28 dias, traço escolhido e resultado. O cálculo passou a usar `Decimal` após quatro diferenças iniciais de 0,01 MPa por `float`. Evidência: `evidencias/comparacao-fontes-20261024.json`.
+- Nos últimos 90 dias, as fontes antiga e nova retornaram **222 leituras cada**, sem datas ausentes ou diferenças nos campos conferidos. Rascunhos recalculam pela fonte ativa; emitidos preservam PDF, resultados e SHA-256.
+- O cadastro de origem não informou o laboratório calibrador da prensa Kratos IK-14 A/P. Valor vazio ou “Não informado” retorna **HTTP 422** ao emitir, com instrução para completar o cadastro. Nenhum nome foi inventado.
 
-## Conferência de liberação substituída
+## Comparação visual do PDF com os mockups aprovados
 
-O critério de dez certificados antigos foi cancelado por decisão do Ricardo. O resultado aplicado foi:
+Referências: `mockups/png/03-certificado-a4.png` (10 datas), `mockups/png/03b-certificado-a4-poucas-linhas.png` (3 datas) e `mockups/fonte/03-certificado-a4.html`. A renderização foi comparada lado a lado em 1, 3 e 10 datas, com PNGs A4 de 1588 × 2246 px gerados a partir dos PDFs reais de `:18446`:
 
-| Gate | Resultado |
+| Datas | Comparação lado a lado | PDF e PNG de homologação |
+| --- | --- | --- |
+| 1, referência compacta de até 5 datas | [Mockup × resultado](evidencias/comparacao-pdf-1-datas.png) | [PDF](exemplos/fase2-homolog-rascunho-1-datas-id30.pdf) · [PNG](exemplos/fase2-homolog-rascunho-1-datas-id30.png) |
+| 3 | [Mockup × resultado](evidencias/comparacao-pdf-3-datas.png) | [PDF](exemplos/fase2-homolog-rascunho-3-datas-id31.pdf) · [PNG](exemplos/fase2-homolog-rascunho-3-datas-id31.png) |
+| 10 | [Mockup × resultado](evidencias/comparacao-pdf-10-datas.png) | [PDF](exemplos/fase2-homolog-rascunho-10-datas-id32.pdf) · [PNG](exemplos/fase2-homolog-rascunho-10-datas-id32.png) |
+
+| Elemento do mockup | Verificação no PDF gerado |
 | --- | --- |
-| Pares legados disponíveis | **1/1**: `CQ-20260326-153230`, 04/02/2026, 28 dias **33,00 MPa** no legado, fonte antiga e fonte nova; não conforme para fck 35 |
-| Dez datas de 2026 com 28 dias, cálculo independente por SQL direto em `rompimentos_atuais` | **10/10** para nº de CPs, médias 3/7/28d, traço escolhido e situação; datas em `evidencias/comparacao-fontes-20261024.json` |
-| Fontes antiga × nova, últimos 90 dias (26/07–24/10/2026) | **222 leituras em cada**, zero datas ausentes, zero datas com diferença nos campos conferidos |
-| Três certificados para conferência manual em `:18446` | Rascunhos de **1, 3 e 10 datas**, PDFs de uma página em `exemplos/fase2-homolog-rascunho-*-datas-*.pdf`; IDs 27, 28 e 29. A conferência manual não bloqueia a publicação. |
+| Cabeçalho e cliente | Logo real, título e subtítulo ABNT NBR 8451, quadro Nº/Revisão/Emissão e Cliente/NF/Entrega/Unidade. |
+| Produtos | Grade `#9AA6B4` de 0,75 pt (aproximadamente 1 px), cabeçalho `#E9EEF4`, Modelo à esquerda com 38% da largura, demais colunas centralizadas; sete colunas pedidas e “Total de postes”. Altura/carga inteiras e peso com milhar (`1.530` no teste de emissão). |
+| Resistência | Sete colunas pedidas, sem Traço; 28 dias e CONFORME em negrito, resultado em maiúsculas. |
+| Assinaturas e rodapé | Linhas das duas colunas na mesma altura; imagem do engenheiro acima da linha quando emitido. QR de aproximadamente 44 px para 6–10 datas e 92 px para até 5 datas, com o título ampliado. Link emitido usa `https://concrefer.concretrack.com.br/v/<nº>`. |
+| Rascunho | Marca d’água RASCUNHO com opacidade de 6%, atrás das tabelas e legível. Os três exemplos têm uma página A4. |
 
-A primeira comparação SQL revelou quatro diferenças de 0,01 MPa decorrentes de `float`; a implementação foi corrigida para `Decimal`, os testes passaram e a comparação foi refeita, resultando em 10/10. Não se inventou CP de 2025.
+Diferenças esperadas em relação às imagens de referência: os exemplos usam **dados reais** do Controle Estatístico novo e o logo real; estão em **rascunho**, portanto não exibem número definitivo nem a imagem de assinatura. Um teste visual local do caminho `issued=True`, sem gravar certificado no banco, confirmou a imagem da assinatura acima da linha e o domínio de produção no rodapé/QR. O mockup usa pesos fictícios; os **100 modelos ativos** importados estão sem `peso_kg` e mostram “—” no PDF. A lista nominal está em [modelos-sem-peso.md](modelos-sem-peso.md). A prensa mostra fielmente o placeholder do cadastro até a correção pelo gestor.
 
-## Testes e publicação
+## Publicação e retorno
 
-- `pytest`: **15 passaram** (regra > fck, maior traço, pendência/ausência, 1/5/6/10 datas, fonte nova, data de moldagem obrigatória, arredondamento, IAM e calibrador).
-- Homologação `https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcertificados-qualidade%2F`: fonte nova ativa, três rascunhos/PDFs de uma página, tentativa de emissão com calibrador ausente bloqueada em HTTP 422, serviço saudável, Nginx válido e gate geral **7/7**. Último backup com permissões e banco: `/opt/concrefer-unificado/homolog/backups/cq-phase2-20261025T003000Z`.
-- Base de código de produção identificada como `origin/feat/sistema-unificado` (`c38fe79f`). O módulo foi levado por cherry-pick para `feat/laboratorio-certificado-producao`, sem arrastar a restauração inteira de `main`; commit Fase 2 `a85416de`. Branch enviada ao remoto. **Sem merge em `main`**, cuja reconciliação continua pendente.
-- Uma publicação em produção foi tentada com backup e retorno automático. Backup: `/opt/concrefer-unificado/backups/cq-production-20261025T003053Z`. Após migração e patch de rotas, o importador falhou com `PermissionError` ao tentar ler `/etc/concrefer-unificado/laboratorio.env` sob `monitorconcreto`; o diretório pai é protegido. O script restaurou gateway, menu e Nginx, parou o serviço e removeu as novas tabelas `cq_*`. Foi confirmado: serviço inativo/sem unidade instalada, rota ausente, tabelas ausentes e gate original de produção **7/7**. Não houve nova tentativa.
-- A correção posterior faz o importador de uso único ler o ambiente como root, sem imprimir a senha nem copiá-la para o repositório. Ela foi ensaiada com o ambiente protegido de homologação, retornando `historical certificates imported: 0` no importador idempotente. A produção ainda requer uma nova janela autorizada de publicação.
+- Testes automatizados selecionados: **17 passaram** (`test_core_pdf.py`, `test_source.py`, `test_gateway_catalog.py`); incluem uma página em 1/5/6/10 datas, fonte nova, arredondamento, colunas/formatos do PDF, peso ausente e URL de verificação. Os três exemplos de homologação foram baixados novamente após o último ajuste do PDF; emissão de exemplo com RBC não informado permaneceu bloqueada em **422**. Homologação: Nginx válido, serviço ativo, gate geral **7/7**. Backup final: `/opt/concrefer-unificado/homolog/backups/cq-phase2-20261025T013445Z`.
+- A primeira tentativa anterior de produção foi revertida automaticamente após erro de permissão na leitura do ambiente protegido durante a importação legada. O importador de uso único foi corrigido para ler esse arquivo como root, sem registrar nem copiar a senha, e ensaiado em homologação com retorno idempotente de zero importações. Backup da tentativa revertida: `/opt/concrefer-unificado/backups/cq-production-20261025T003053Z`.
+- A **nova tentativa autorizada** passou em produção: backup do banco e snapshot de permissões, migrações, importação de **8** certificados históricos, serviço `cq-laboratorio.service` ativo, Nginx válido, acesso `www-data`, nenhuma permissão 777/666 nos arquivos tocados, smoke e gate geral **7/7**. Backup: `/opt/concrefer-unificado/backups/cq-production-20261025T013559Z`. O procedimento contém retorno automático em erro; ele não foi acionado nesta tentativa.
+- Conferência autenticada após implantação: bootstrap **200**, configuração **200**, `fonte_cp=novo`, **100** modelos e **1** prensa. A rota sem sessão redireciona ao login (**302**). O campo RBC da prensa continua “Não informado no cadastro de origem”; a emissão permanece bloqueada como solicitado.
 
-## Configuração final e pendências
+## Git e pendências
 
-- Homologação: `CQ_FONTE_CP=novo`, serviço `cq-laboratorio-homolog.service` ativo.
-- Produção: módulo de certificados **não publicado** após o retorno; nenhuma configuração `CQ_FONTE_CP` do certificado está ativa. O Laboratório oficial continua operando. Não foi criada credencial dedicada para a VPS antiga: o adaptador antigo usa GET público somente quando selecionado, e não está ativo em homologação.
-- Antes de emitir certificados comerciais, preencher o **laboratório calibrador/RBC** da prensa com o nome verdadeiro no cadastro. A emissão continuará bloqueada até isso ocorrer.
-- Reexecutar o procedimento de produção corrigido em nova janela, com backup, permissões, teste `www-data`, smoke, gate 7/7 e retorno automático. Reconciliar `main` em trabalho separado.
-- A senha fixa encontrada em `db/*.py` do sistema antigo permanece pendente de rotação pelo proprietário da integração; ela não foi usada.
+- Produção parte de `origin/feat/sistema-unificado` (`c38fe79f`); o módulo está em `feat/laboratorio-certificado-producao`, sem merge em `main`. A reconciliação de `main` continua pendente em trabalho separado.
+- Para liberar a emissão, preencher no cadastro da prensa o **nome real do laboratório calibrador/RBC**. Completar `peso_kg` dos modelos quando os dados forem conhecidos; nenhum peso foi estimado.
+- A senha fixa da trilha `db/*.py` do sistema antigo continua pendente de troca pelo proprietário da integração; não foi usada nesta implantação.

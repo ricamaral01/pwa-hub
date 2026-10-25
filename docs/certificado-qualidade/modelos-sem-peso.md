@@ -1,0 +1,104 @@
+# Modelos ativos sem peso cadastrado
+
+Consulta ao cadastro `cq_modelos_poste` da homologação em 24/10/2026. O PDF mostra “—” no peso destes **100 modelos** até que o dado seja preenchido no cadastro.
+
+- C 10,5/1000 · conicidade A
+- C 10,5/1000 · conicidade B
+- C 10,5/150 · conicidade A
+- C 10,5/150 · conicidade B
+- C 10,5/300 · conicidade A
+- C 10,5/300 · conicidade B
+- C 10,5/600 · conicidade A
+- C 10,5/600 · conicidade B
+- C 10/1000 · conicidade A
+- C 10/1000 · conicidade B
+- C 10/150 · conicidade A
+- C 10/150 · conicidade B
+- C 10/1500 · conicidade A
+- C 10/1500 · conicidade B
+- C 10/300 · conicidade A
+- C 10/300 · conicidade B
+- C 10/400 · conicidade A
+- C 10/400 · conicidade B
+- C 10/600 · conicidade A
+- C 10/600 · conicidade B
+- C 11/1000 · conicidade A
+- C 11/1000 · conicidade B
+- C 11/1500 · conicidade A
+- C 11/1500 · conicidade B
+- C 11/200 · conicidade A
+- C 11/200 · conicidade B
+- C 11/300 · conicidade A
+- C 11/300 · conicidade B
+- C 11/400 · conicidade A
+- C 11/400 · conicidade B
+- C 11/600 · conicidade A
+- C 11/600 · conicidade B
+- C 12/1000 · conicidade A
+- C 12/1000 · conicidade B
+- C 12/1500 · conicidade A
+- C 12/1500 · conicidade B
+- C 12/2000 · conicidade A
+- C 12/2000 · conicidade B
+- C 12/300 · conicidade A
+- C 12/300 · conicidade B
+- C 12/3000 · conicidade A
+- C 12/3000 · conicidade B
+- C 12/400 · conicidade A
+- C 12/400 · conicidade B
+- C 12/600 · conicidade A
+- C 12/600 · conicidade B
+- C 13/1000 · conicidade A
+- C 13/1000 · conicidade B
+- C 13/1500 · conicidade A
+- C 13/1500 · conicidade B
+- C 13/2000 · conicidade A
+- C 13/2000 · conicidade B
+- C 13/300 · conicidade A
+- C 13/300 · conicidade B
+- C 13/400 · conicidade A
+- C 13/400 · conicidade B
+- C 13/600 · conicidade A
+- C 13/600 · conicidade B
+- C 14/1000 · conicidade A
+- C 14/1000 · conicidade B
+- C 14/1500 · conicidade A
+- C 14/1500 · conicidade B
+- C 14/400 · conicidade A
+- C 14/400 · conicidade B
+- C 14/600 · conicidade A
+- C 14/600 · conicidade B
+- C 15/1000 · conicidade A
+- C 15/1000 · conicidade B
+- C 15/2000 · conicidade A
+- C 15/2000 · conicidade B
+- C 15/600 · conicidade A
+- C 15/600 · conicidade B
+- C 18/1000 · conicidade A
+- C 18/1000 · conicidade B
+- C 18/2000 · conicidade A
+- C 18/2000 · conicidade B
+- C 18/600 · conicidade A
+- C 18/600 · conicidade B
+- C 20/1000 · conicidade A
+- C 20/1000 · conicidade B
+- C 20/2000 · conicidade A
+- C 20/2000 · conicidade B
+- C 9/1000 · conicidade A
+- C 9/1000 · conicidade B
+- C 9/150 · conicidade A
+- C 9/150 · conicidade B
+- C 9/200 · conicidade A
+- C 9/200 · conicidade B
+- C 9/300 · conicidade A
+- C 9/300 · conicidade B
+- C 9/400 · conicidade A
+- C 9/400 · conicidade B
+- C 9/600 · conicidade A
+- C 9/600 · conicidade B
+- DT 10,5/600 B
+- DT 11/600 B
+- DT 12/1000 B
+- DT 9/300 B
+- PL 7,5/150 A
+- PL 7,5/300 B

@@ -1,7 +1,9 @@
 # Execução — Certificados de qualidade no Laboratório
 
 **Data:** 24/10/2026
-**Estado em 24/10/2026:** implementado e publicado em **homologação** (`:18446`) com a fonte nova. O critério de 10 certificados antigos foi **substituído por decisão do Ricardo**: o par legado disponível bateu (1/1), a comparação independente por SQL passou (10/10), e três PDFs de exemplo foram gerados. A conferência manual dos PDFs não bloqueia o deploy. Houve **uma tentativa de publicação em produção**, que falhou na importação histórica por acesso ao arquivo de ambiente e foi revertida automaticamente. A produção continua sem o módulo; `main` não foi mesclada.
+**Estado final em 24/10/2026:** módulo publicado em **homologação** (`:18446`) e **produção** com `CQ_FONTE_CP=novo`. O critério substituído passou: par legado 1/1 e comparação independente por SQL 10/10. O PDF foi refeito conforme os mockups aprovados; três exemplos de 1, 3 e 10 datas foram comparados visualmente. A tentativa inicial de produção descrita abaixo foi revertida; uma nova tentativa autorizada passou com backup, importação de 8 certificados legados e gate geral 7/7. `main` não foi mesclada. A emissão permanece bloqueada até o preenchimento do laboratório calibrador/RBC da prensa.
+
+**Evidência final:** [relatorio-fase2-fonte-nova.md](relatorio-fase2-fonte-nova.md) contém as comparações lado a lado, os PDFs de exemplo, os testes e os backups. [modelos-sem-peso.md](modelos-sem-peso.md) lista os 100 modelos sem peso cadastrado.
 
 ## Entrega e arquivos
 
@@ -23,14 +25,14 @@
 
 - Emissão: todos os perfis com acesso ao Laboratório. O usuário `philippe` recebeu acesso à tela de certificados para exercer a correção prevista; usuários sem acesso ao Laboratório continuam negados. Correção: IDs reais `user-ricardo`, `user-ricardo-do-amaral`, `alex`, `user-alex`, `philippe`, `marcelo`, validados no servidor. `phe` e `alexh` são contas distintas e não foram incluídas por semelhança de nome.
 - A numeração `CQ-2026-NNNN` é atribuída em transação pelo banco. O último teste simultâneo produziu números distintos `CQ-2026-0011` e `CQ-2026-0012`. A revisão cria novo rascunho; o PDF anterior só passa a “Substituído” quando a nova revisão é emitida. O PDF antigo permaneceu idêntico byte a byte no teste.
-- Homologação usa banco `concretrack_postes_homolog`; produção usa `concretrack_postes`. O backup completo e snapshot da última publicação em homologação estão em `/opt/concrefer-unificado/homolog/backups/cq-phase2-20261025T003000Z`. O backup da tentativa revertida em produção está em `/opt/concrefer-unificado/backups/cq-production-20261025T003053Z`. Após o retorno, a rota, o serviço e as tabelas `cq_*` não estão ativos em produção; o gate original passou 7/7. Não foi criado caminho 777/666 na publicação.
+- Homologação usa banco `concretrack_postes_homolog`; produção usa `concretrack_postes`. O backup completo e snapshot da última publicação em homologação estão em `/opt/concrefer-unificado/homolog/backups/cq-phase2-20261025T013445Z`. O backup da tentativa revertida em produção está em `/opt/concrefer-unificado/backups/cq-production-20261025T003053Z`; o da publicação concluída, em `/opt/concrefer-unificado/backups/cq-production-20261025T013559Z`. O gate geral passou 7/7 após o retorno inicial e novamente após a publicação final. Não foi criado caminho 777/666 na publicação.
 - A senha fixa encontrada na trilha `db/*.py` do sistema antigo **não foi usada**. A rotação dessa senha no sistema legado fica pendente para o proprietário da integração.
 
 ## Testes e homologação
 
 | Verificação | Resultado |
 | --- | --- |
-| `pytest` das regras, fonte nova, arredondamento, PDF 1/5/6/10 datas, acesso ao catálogo IAM | **15 passaram** |
+| `pytest` das regras, fonte nova, arredondamento, PDF 1/5/6/10 datas, acesso ao catálogo IAM | **17 passaram** após a revisão do PDF |
 | Páginas autenticadas Emitir/Histórico, desktop 1440px e celular 390px | **Passaram**; capturas salvas |
 | Menu do Unificado → Laboratório → Certificados → iframe | **Passou** |
 | PDF emitido com 3 e 10 datas reais do Controle Estatístico | **1 página cada**, QR e assinatura conferidos visualmente |
@@ -57,10 +59,10 @@ A comparação solicitada de **10 certificados antigos** é impossível com a fo
 
 O requisito antigo de comparar dez certificados foi **cancelado** pela decisão de 24/10/2026. Seu substituto foi cumprido: o par legado disponível `CQ-20260326-153230` bateu **33,00 MPa** nas fontes antiga e nova; dez datas de 2026 com 28 dias bateram **10/10** contra agregação SQL direta em `controle_est_concre_campinas.rompimentos_atuais`, incluindo nº de CPs, médias 3/7/28d, traço e resultado. A Fase 2 comparou também as fontes antiga e nova nos últimos 90 dias: 222 leituras em cada uma, sem datas faltantes ou diferenças. Três exemplos de rascunho (1, 3 e 10 datas) foram gerados em `:18446`, todos com uma página e dados reais da fonte nova. A revisão manual não é gate.
 
-A tentativa única de produção começou após esses gates. O importador histórico não pôde abrir `/etc/concrefer-unificado/laboratorio.env` como `monitorconcreto` porque o diretório protegido não permite atravessamento. O retorno automático restaurou gateway, menus e Nginx, parou o serviço e removeu as tabelas `cq_*` recém-criadas. O gate geral após retorno passou **7/7**. O importador e o script foram corrigidos fora de produção, e a correção passou com o ambiente de homologação (`importados: 0`, idempotente). **Não houve segunda tentativa de produção**, conforme a ordem de publicar uma vez e retornar se falhar. O campo do laboratório calibrador permanece para preenchimento no cadastro; sem ele, nenhum certificado será emitido.
+A primeira tentativa de produção começou após esses gates. O importador histórico não pôde abrir `/etc/concrefer-unificado/laboratorio.env` como `monitorconcreto` porque o diretório protegido não permite atravessamento. O retorno automático restaurou gateway, menus e Nginx, parou o serviço e removeu as tabelas `cq_*` recém-criadas. O gate geral após retorno passou **7/7**. O importador e o script foram corrigidos fora de produção, e a correção passou com o ambiente de homologação (`importados: 0`, idempotente). Após a autorização posterior do Ricardo para nova tentativa, a publicação passou: backup `/opt/concrefer-unificado/backups/cq-production-20261025T013559Z`, importação de 8 certificados, `CQ_FONTE_CP=novo`, serviço ativo e gate **7/7**. O campo do laboratório calibrador permanece para preenchimento no cadastro; sem ele, nenhum certificado será emitido.
 
 ## Git e links
 
 - Base de publicação identificada: `origin/feat/sistema-unificado` em `c38fe79f`; branch limpa `feat/laboratorio-certificado-producao`, com cherry-picks do módulo e commit da Fase 2 `a85416de`. `main` **não foi mesclada**. A reconciliação de `main` fica pendente, conforme decisão do Ricardo.
 - Homologação: `https://concrefer.concretrack.com.br:18446/unificado/?view=laboratorio%2Fcertificados-qualidade%2F`.
-- Produção: **não publicada após o retorno automático**; a URL de produção não foi ativada.
+- Produção: **publicada na nova tentativa autorizada** em `https://concrefer.concretrack.com.br/unificado/?view=laboratorio%2Fcertificados-qualidade%2F`. O acesso exige sessão do Unificado; sem sessão, retorna 302 para login.

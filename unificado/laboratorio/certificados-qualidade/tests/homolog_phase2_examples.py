@@ -30,7 +30,9 @@ def main():
     days=[row['data'] for row in audit['gate_10_datas']]
     folder=Path(__file__).resolve().parents[4]/'docs/certificado-qualidade/exemplos'
     records=[]
-    for count in (1,3,10):
+    existing=[int(value) for value in os.getenv('CQ_EXAMPLE_IDS','').split(',') if value]
+    if existing: assert len(existing)==3
+    for index,count in enumerate((1,3,10)):
         body={'cliente':'HOMOLOGAÇÃO · EXEMPLO PARA CONFERÊNCIA','endereco':'Campinas/SP',
               'nota_fiscal':'EXEMPLO, SEM VALOR COMERCIAL','data_emissao':date.today().isoformat(),
               'resp_laboratorio':'Ricardo Do Amaral','prensa_id':press_id,
@@ -41,9 +43,12 @@ def main():
         assert checked.status_code==200,checked.text[:200]
         rows=checked.json()['rows']
         assert len(rows)==count and all(row['resultado']=='conforme' for row in rows)
-        draft=session.post(url+'api/certificados',json=body,headers={'Origin':base},timeout=20)
-        assert draft.status_code==200,draft.text[:200]
-        cert_id=draft.json()['id']
+        if existing:
+            cert_id=existing[index]
+        else:
+            draft=session.post(url+'api/certificados',json=body,headers={'Origin':base},timeout=20)
+            assert draft.status_code==200,draft.text[:200]
+            cert_id=draft.json()['id']
         pdf=session.get(url+f'api/certificados/{cert_id}/pdf',timeout=25)
         assert pdf.status_code==200 and pdf.content.startswith(b'%PDF-')
         assert len(PdfReader(BytesIO(pdf.content)).pages)==1

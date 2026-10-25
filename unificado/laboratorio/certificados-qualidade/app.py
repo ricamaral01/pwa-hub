@@ -297,6 +297,9 @@ def issue(cert_id:int, actor:dict=Depends(mutating)):
                 number=f"CQ-{year}-{nextrow['ultimo']:04d}"
             current['numero']=number
             current['prensa_snapshot']=press
+            issued_at=datetime.now(timezone.utc)
+            current['emitido_em']=issued_at
+            current['emitido_por_nome']=actor['name']
             pdf=make_pdf(current,items,rows,issued=True,signature_path=SIGNATURE,logo_path=LOGO,verify_base=VERIFY)
             digest=hashlib.sha256(pdf).hexdigest()
             folder=DATA/'pdf'; folder.mkdir(parents=True,exist_ok=True,mode=0o700)
@@ -304,7 +307,7 @@ def issue(cert_id:int, actor:dict=Depends(mutating)):
             temp=path.with_suffix('.tmp')
             temp.write_bytes(pdf); temp.chmod(0o600); temp.replace(path)
             cur.execute('''UPDATE cq_certificados SET numero=%s,status='emitido',prensa_snapshot=%s,pdf_path=%s,pdf_hash=%s,
-              emitido_por=%s,emitido_em=now() WHERE id=%s''',(number,json.dumps(press),str(path),digest,actor['id'],cert_id))
+              emitido_por=%s,emitido_em=%s WHERE id=%s''',(number,json.dumps(press),str(path),digest,actor['id'],issued_at,cert_id))
             if current['anterior_id']:
                 cur.execute("UPDATE cq_certificados SET status='substituido' WHERE id=%s AND status='emitido'",(current['anterior_id'],))
             for row in rows:
@@ -349,7 +352,7 @@ def pdf(cert_id:int, actor:dict=Depends(user)):
     if cert['status']=='legado': raise HTTPException(404,'PDF legado não armazenado.')
     days=sorted({str(item['data_producao']) for item in items})
     rows=source_days(days,float(cert['fck_mpa']))
-    return Response(make_pdf(cert,items,rows,issued=False,logo_path=LOGO),media_type='application/pdf')
+    return Response(make_pdf(cert,items,rows,issued=False,logo_path=LOGO,verify_base=VERIFY),media_type='application/pdf')
 
 
 @app.post('/api/prensas')
