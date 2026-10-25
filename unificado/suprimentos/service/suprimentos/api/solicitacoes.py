@@ -132,7 +132,7 @@ def create_request(data: dict, unidade: str, origin: str, user: Actor, db: Sessi
 
 @router.get("/solicitacoes")
 def list_requests(unidade: str = "campinas", status: str | None = None, minha_alcada: bool = False,
-                  origem: str | None = None, urgencia: str | None = None, q: str = "",
+                  origem: str | None = None, urgencia: str | None = None, cc_id: str | None = None, q: str = "",
                   page: int = Query(1, ge=1), size: int = Query(25, ge=1, le=100),
                   user: Actor = Depends(current_actor), db: Session = Depends(session)):
     ctx = context(unidade, user, db)
@@ -146,13 +146,32 @@ def list_requests(unidade: str = "campinas", status: str | None = None, minha_al
         conditions.append(t.c.origem == origem)
     if urgencia:
         conditions.append(t.c.urgencia == urgencia)
+    if cc_id:
+        try:
+            conditions.append(t.c.cc_id == UUID(cc_id))
+        except ValueError:
+            raise HTTPException(422, "Centro de custo inválido") from None
     if q:
         conditions.append(or_(t.c.numero.ilike(f"%{q[:80]}%"), t.c.solicitante_nome.ilike(f"%{q[:80]}%")))
     rows = db.execute(select(t).where(and_(*conditions)).order_by(t.c.criado_em.desc())).mappings().all()
     visible = [dict(row) for row in rows if can_view(ctx, row) and (not minha_alcada or
                (row["status"] == "EM_APROVACAO" and ctx.has("solicitacao.aprovar", str(row["cc_id"]), row["nivel_atual"]))) ]
+    selected = visible[(page-1)*size:page*size]
+    if selected:
+        item = table("sup_solicitacao_item")
+        material = table("sup_material")
+        items = db.execute(select(item.c.solicitacao_id, item.c.descricao_livre, material.c.descricao)
+                           .outerjoin(material, item.c.material_id == material.c.id)
+                           .where(and_(item.c.unidade_id == ctx.unit_id,
+                                        item.c.solicitacao_id.in_([row["id"] for row in selected])))).all()
+        summaries = {}
+        for entry in items:
+            summaries.setdefault(entry.solicitacao_id, []).append(entry.descricao_livre or entry.descricao or "Material")
+        for row in selected:
+            names = summaries.get(row["id"], [])
+            row["resumo"] = ", ".join(names[:2]) + (f" +{len(names)-2}" if len(names) > 2 else "")
     return {"total": len(visible), "page": page, "size": size,
-            "items": jsonable_encoder(visible[(page-1)*size:page*size])}
+            "items": jsonable_encoder(selected)}
 
 
 @router.post("/solicitacoes", status_code=201)
