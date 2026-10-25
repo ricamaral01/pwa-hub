@@ -1,0 +1,249 @@
+{
+  "celular": {
+    "horizontal": 0,
+    "footerHeight": 106,
+    "treeTop": 199,
+    "treeBottom": 709,
+    "itemBounds": [
+      [
+        "PLProdução / Liberação",
+        339,
+        387
+      ],
+      [
+        "P1Setor 1",
+        389,
+        437
+      ],
+      [
+        "P2Setor 2",
+        439,
+        487
+      ],
+      [
+        "P3Setor 3",
+        489,
+        537
+      ],
+      [
+        "P4Setor 4",
+        539,
+        587
+      ],
+      [
+        "MCMandril Circular",
+        589,
+        637
+      ]
+    ],
+    "visibleItems": 6
+  },
+  "tablet-retrato": {
+    "horizontal": 0,
+    "footerHeight": 139,
+    "treeTop": 140,
+    "treeBottom": 1014,
+    "itemBounds": [
+      [
+        "PLProdução / Liberação",
+        240,
+        270
+      ],
+      [
+        "P1Setor 1",
+        272,
+        302
+      ],
+      [
+        "P2Setor 2",
+        304,
+        334
+      ],
+      [
+        "P3Setor 3",
+        336,
+        366
+      ],
+      [
+        "P4Setor 4",
+        368,
+        398
+      ],
+      [
+        "MCMandril Circular",
+        400,
+        430
+      ],
+      [
+        "MIInspeção Setor 3 e 4",
+        479,
+        509
+      ],
+      [
+        "MPMontagem Postes",
+        511,
+        541
+      ],
+      [
+        "S3Sequência Setor 3",
+        543,
+        573
+      ],
+      [
+        "RERelatório Enc. Produção",
+        622,
+        652
+      ],
+      [
+        "HIHistórico",
+        654,
+        684
+      ],
+      [
+        "CCAcmp. Concretagem",
+        686,
+        716
+      ]
+    ],
+    "visibleItems": 18
+  },
+  "tablet-paisagem": {
+    "horizontal": 0,
+    "footerHeight": 139,
+    "treeTop": 140,
+    "treeBottom": 654,
+    "itemBounds": [
+      [
+        "PLProdução / Liberação",
+        240,
+        270
+      ],
+      [
+        "P1Setor 1",
+        272,
+        302
+      ],
+      [
+        "P2Setor 2",
+        304,
+        334
+      ],
+      [
+        "P3Setor 3",
+        336,
+        366
+      ],
+      [
+        "P4Setor 4",
+        368,
+        398
+      ],
+      [
+        "MCMandril Circular",
+        400,
+        430
+      ],
+      [
+        "MIInspeção Setor 3 e 4",
+        479,
+        509
+      ],
+      [
+        "MPMontagem Postes",
+        511,
+        541
+      ],
+      [
+        "S3Sequência Setor 3",
+        543,
+        573
+      ],
+      [
+        "RERelatório Enc. Produção",
+        622,
+        652
+      ],
+      [
+        "HIHistórico",
+        654,
+        684
+      ],
+      [
+        "CCAcmp. Concretagem",
+        686,
+        716
+      ]
+    ],
+    "visibleItems": 10
+  },
+  "desktop": {
+    "horizontal": 0,
+    "footerHeight": 139,
+    "treeTop": 197,
+    "treeBottom": 734,
+    "itemBounds": [
+      [
+        "PLProdução / Liberação",
+        297,
+        327
+      ],
+      [
+        "P1Setor 1",
+        329,
+        359
+      ],
+      [
+        "P2Setor 2",
+        361,
+        391
+      ],
+      [
+        "P3Setor 3",
+        393,
+        423
+      ],
+      [
+        "P4Setor 4",
+        425,
+        455
+      ],
+      [
+        "MCMandril Circular",
+        457,
+        487
+      ],
+      [
+        "MIInspeção Setor 3 e 4",
+        536,
+        566
+      ],
+      [
+        "MPMontagem Postes",
+        568,
+        598
+      ],
+      [
+        "S3Sequência Setor 3",
+        600,
+        630
+      ],
+      [
+        "RERelatório Enc. Produção",
+        679,
+        709
+      ],
+      [
+        "HIHistórico",
+        711,
+        741
+      ],
+      [
+        "CCAcmp. Concretagem",
+        743,
+        773
+      ]
+    ],
+    "visibleItems": 10
+  },
+  "update": "available, failed twice, recovery, no-new-version reload and toast"
+}
