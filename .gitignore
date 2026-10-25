@@ -57,3 +57,4 @@ __screenshots__/
 *.tsbuildinfo
 # Migração auditada de Usinas
 !unificado/usinas/migrations/*.sql
+!unificado/laboratorio/service/migrations/*.sql
