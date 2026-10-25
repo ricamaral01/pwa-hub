@@ -1,0 +1,214 @@
+{
+  "periodo": [
+    "2026-07-26",
+    "2026-10-24"
+  ],
+  "fonte_antiga_linhas": 222,
+  "fonte_nova_linhas": 222,
+  "datas_antigas_sem_nova": [],
+  "datas_novas_sem_antiga": [],
+  "diferencas_antiga_nova": [],
+  "gate_10_datas": [
+    {
+      "data": "2026-07-27",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": 39.78,
+        "r7_media": 42.09,
+        "r28_media": 56.52,
+        "traco": "30544",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": 39.78,
+        "r7_media": 42.09,
+        "r28_media": 56.52,
+        "traco": "30544",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-07-29",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": null,
+        "r7_media": null,
+        "r28_media": 52.9,
+        "traco": "T-042",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": null,
+        "r7_media": null,
+        "r28_media": 52.9,
+        "traco": "T-042",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-07-30",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": 43.03,
+        "r7_media": null,
+        "r28_media": 55.79,
+        "traco": "TRAÇO PADRÃO - 30/07",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": 43.03,
+        "r7_media": null,
+        "r28_media": 55.79,
+        "traco": "TRAÇO PADRÃO - 30/07",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-07-31",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": 36.09,
+        "r7_media": 40.81,
+        "r28_media": 48.68,
+        "traco": "TRAÇO PADRÃO - 30/07",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": 36.09,
+        "r7_media": 40.81,
+        "r28_media": 48.68,
+        "traco": "TRAÇO PADRÃO - 30/07",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-08-04",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": 29.27,
+        "r7_media": 38.04,
+        "r28_media": 49.65,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": 29.27,
+        "r7_media": 38.04,
+        "r28_media": 49.65,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-08-05",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": null,
+        "r7_media": 40.95,
+        "r28_media": 49.45,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": null,
+        "r7_media": 40.95,
+        "r28_media": 49.45,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-08-06",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": null,
+        "r7_media": 41.25,
+        "r28_media": 50.52,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": null,
+        "r7_media": 41.25,
+        "r28_media": 50.52,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-08-11",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": 30.31,
+        "r7_media": 39.32,
+        "r28_media": 51.01,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": 30.31,
+        "r7_media": 39.32,
+        "r28_media": 51.01,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-08-13",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": 19.12,
+        "r7_media": 35.06,
+        "r28_media": 40.98,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": 19.12,
+        "r7_media": 35.06,
+        "r28_media": 40.98,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    },
+    {
+      "data": "2026-08-18",
+      "modulo": {
+        "n_cps": 2,
+        "r3_media": 34.42,
+        "r7_media": 37.53,
+        "r28_media": 39.08,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "sql": {
+        "n_cps": 2,
+        "r3_media": 34.42,
+        "r7_media": 37.53,
+        "r28_media": 39.08,
+        "traco": "1.0 - TRAÇO PADRÃO",
+        "resultado": "conforme"
+      },
+      "diferencas": {}
+    }
+  ],
+  "gate_10_10": true
+}

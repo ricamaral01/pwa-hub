@@ -10,8 +10,6 @@ import re
 from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
-from urllib.request import urlopen
 
 import psycopg
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
@@ -21,10 +19,10 @@ from pydantic import BaseModel, Field
 
 from core import can_issue, summarize_day, validate_items
 from report import make_pdf
+from source import summarize_days, selected_source
 
 HERE = Path(__file__).resolve().parent
 DATA = Path(os.getenv('CQ_DATA_DIR', '/var/lib/concrefer-cq'))
-SOURCE = os.getenv('CQ_CP_SOURCE_URL', 'https://concretrack.com.br/api/controle-estatistico/rompimentos-grupos')
 VERIFY = os.getenv('CQ_VERIFY_BASE', 'https://concrefer.concretrack.com.br')
 SIGNATURE = os.getenv('CQ_ENGINEER_SIGNATURE', str(DATA / 'assinatura-marcelo.png'))
 LOGO = os.getenv('CQ_LOGO_PATH', str(HERE.parent.parent / 'assets' / 'img' / 'logo-concrefer.png'))
@@ -113,26 +111,14 @@ def source_days(days: list[str], fck: float):
     if not days:
         return []
     try:
-        def fetch(offset=0):
-            params={'data_inicio':min(days),'data_fim':max(days),'limit':1000,'offset':offset}
-            with urlopen(SOURCE+'?'+urlencode(params),timeout=15) as response:
-                return json.load(response)
-        payload = fetch()
-        if payload.get('success') is not True or payload.get('source') not in ('database', 'server_cache'):
-            raise ValueError('fonte inválida')
-        rows = list(payload.get('rows') or [])
-        offset = len(rows)
-        while payload.get('pagination', {}).get('has_more'):
-            payload = fetch(offset)
-            if payload.get('success') is not True or payload.get('source') not in ('database', 'server_cache'):
-                raise ValueError('pagina inválida')
-            page = list(payload.get('rows') or [])
-            if not page:
-                raise ValueError('paginação incompleta')
-            rows.extend(page); offset += len(page)
-        return [summarize_day(day, rows, fck) for day in days]
+        return summarize_days(days, fck)
     except (HTTPError, URLError, TimeoutError, ValueError, TypeError) as exc:
         raise HTTPException(503, 'Fonte de CPs indisponível. Emissão bloqueada.') from exc
+
+
+def calibrator_recorded(value):
+    name = str(value or '').strip().casefold()
+    return bool(name) and not name.startswith(('não informado', 'nao informado'))
 
 
 def _row(row):
@@ -172,6 +158,7 @@ def config(actor: dict = Depends(user)):
             presses = cur.execute('SELECT * FROM cq_prensas WHERE ativa ORDER BY fabricante,modelo').fetchall()
     return _row({'params':params,'models':models,'presses':presses,'user':actor,
                  'can_correct':actor['id'] in CORRECTORS,
+                 'fonte_cp':selected_source(),
                  'validation_notice':os.getenv('CQ_VALIDATION_NOTICE','')})
 
 
@@ -283,6 +270,8 @@ def issue(cert_id:int, actor:dict=Depends(mutating)):
                                  (cert['prensa_snapshot'].get('id'),)).fetchone()
     if not selected: raise HTTPException(422,'Prensa indisponível; selecione outra.')
     press=_row(selected)
+    if not calibrator_recorded(press.get('laboratorio_rbc')):
+        raise HTTPException(422,'Complete o laboratório calibrador no cadastro da prensa antes de emitir.')
     if date.fromisoformat(str(press['validade'])[:10]) < date.today():
         raise HTTPException(422,'Calibração vencida; emissão bloqueada.')
     days=sorted({str(item['data_producao']) for item in items})

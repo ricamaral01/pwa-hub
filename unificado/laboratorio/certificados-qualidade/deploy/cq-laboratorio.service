@@ -14,6 +14,7 @@ Environment=CQ_ALLOWED_ORIGIN=https://concrefer.concretrack.com.br
 Environment=CQ_VERIFY_BASE=https://concrefer.concretrack.com.br
 Environment=CQ_LOGO_PATH=/opt/concrefer-unificado/public/unificado/assets/img/logo-concrefer.png
 Environment=CQ_REVISION_USER_IDS=user-ricardo,user-ricardo-do-amaral,alex,user-alex,philippe,marcelo
+Environment=CQ_FONTE_CP=novo
 Environment=PYTHONDONTWRITEBYTECODE=1
 ExecStart=/opt/monitor_concreto/.venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 13074 --workers 1 --no-proxy-headers
 Restart=on-failure

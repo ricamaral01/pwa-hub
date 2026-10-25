@@ -1,7 +1,15 @@
 """Pure certificate rules. The old statistical service is a read-only source."""
 from collections import defaultdict
 from datetime import date, timedelta
-from statistics import mean
+from decimal import Decimal, ROUND_HALF_UP
+
+
+def _average(values):
+    return sum(values, Decimal('0')) / len(values)
+
+
+def _mpa(value):
+    return float(value.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))
 
 
 def summarize_day(day: str, rows: list[dict], fck: float = 35) -> dict:
@@ -12,23 +20,23 @@ def summarize_day(day: str, rows: list[dict], fck: float = 35) -> dict:
             continue
         try:
             age = int(row['idade_dias'])
-            value = float(row['mpa'])
-        except (TypeError, ValueError, KeyError):
+            value = Decimal(str(row['mpa']))
+        except (TypeError, ValueError, KeyError, ArithmeticError):
             continue
-        if age in (3, 7, 28) and value >= 0:
+        if age in (3, 7, 28) and value.is_finite() and value >= 0:
             groups[str(row.get('traco_id') or '')][age].append(value)
     if not groups:
         return dict(data_producao=day, resultado='sem_resultado', data_prevista=None)
     # Completed traces take precedence. The choice is persisted in the issue snapshot.
-    trace, values = max(groups.items(), key=lambda item: (mean(item[1][28]) if item[1][28] else -1, item[0]))
+    trace, values = max(groups.items(), key=lambda item: (_average(item[1][28]) if item[1][28] else Decimal('-1'), item[0]))
     r28 = values[28]
     return dict(
         data_producao=day, traco=trace, n_cps=len({(str(r.get('traco_id')), int(r.get('cp') or 0)) for r in rows if r.get('data_moldagem') == day and str(r.get('traco_id') or '') == trace}),
-        r3_media=round(mean(values[3]), 2) if values[3] else None,
-        r7_media=round(mean(values[7]), 2) if values[7] else None,
-        r28_media=round(mean(r28), 2) if r28 else None,
-        r28_min=round(min(r28), 2) if r28 else None,
-        resultado=('conforme' if mean(r28) > fck else 'nao_conforme') if r28 else 'aguardando_28_dias',
+        r3_media=_mpa(_average(values[3])) if values[3] else None,
+        r7_media=_mpa(_average(values[7])) if values[7] else None,
+        r28_media=_mpa(_average(r28)) if r28 else None,
+        r28_min=_mpa(min(r28)) if r28 else None,
+        resultado=('conforme' if _average(r28) > Decimal(str(fck)) else 'nao_conforme') if r28 else 'aguardando_28_dias',
         data_prevista=(date.fromisoformat(day) + timedelta(days=28)).isoformat() if not r28 else None,
     )
 
