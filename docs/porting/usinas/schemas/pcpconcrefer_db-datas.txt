@@ -1,0 +1,5 @@
+BEGIN
+public.mao_de_obra|data||
+public.producoes|data||
+public.programacoes|data||
+COMMIT

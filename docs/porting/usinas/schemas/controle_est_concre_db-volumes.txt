@@ -1,0 +1,10 @@
+BEGIN
+public.estatistica_diaria|221184|216 kB
+public.estatistica_mensal|212992|208 kB
+public.faixas_resistencia|40960|40 kB
+public.fila_recalculo|776314880|740 MB
+public.rompimentos|3252224|3176 kB
+public.rompimentos_atuais|4808704|4696 kB
+public.rompimentos_eventos|7173865472|6842 MB
+public.rompimentos_grupos|262144|256 kB
+COMMIT

@@ -1,0 +1,10 @@
+BEGIN
+public.estatistica_diaria|data_referencia|2026-01-05|2026-10-15
+public.estatistica_mensal|updated_at|2026-09-17 11:21:52.802615+00|2026-10-21 14:38:24.019351+00
+public.faixas_resistencia|created_at|2026-07-16 11:55:00.251342+00|2026-07-16 11:55:00.251342+00
+public.fila_recalculo|created_at|2026-07-16 11:55:12.001865+00|2026-10-21 14:38:23.864724+00
+public.rompimentos|created_at|2026-03-29 01:40:15.110857+00|2026-10-21 14:38:23.864724+00
+public.rompimentos_atuais|created_at|2026-03-29 01:40:15.110857+00|2026-10-21 14:37:43.216501+00
+public.rompimentos_eventos|created_at|2026-03-29 01:40:15.110857+00|2026-10-21 14:38:23.864724+00
+public.rompimentos_grupos|data_moldagem|2026-01-05|2026-10-15
+COMMIT

@@ -1,0 +1,9 @@
+BEGIN
+public.formas|40960|40 kB
+public.mao_de_obra|24576|24 kB
+public.producoes|24576|24 kB
+public.produtos|57344|56 kB
+public.programacoes|24576|24 kB
+public.setores|57344|56 kB
+public.usuarios|65536|64 kB
+COMMIT

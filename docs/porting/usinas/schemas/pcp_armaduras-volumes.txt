@@ -1,0 +1,8 @@
+BEGIN
+public.armaduras|32768|32 kB
+public.estoques|24576|24 kB
+public.inspecoes|24576|24 kB
+public.movimentacoes_estoque|24576|24 kB
+public.producoes|32768|32 kB
+public.usuarios|57344|56 kB
+COMMIT

@@ -1,0 +1,9 @@
+BEGIN
+public.formas|10
+public.mao_de_obra|0
+public.producoes|0
+public.produtos|24
+public.programacoes|0
+public.setores|4
+public.usuarios|4
+COMMIT

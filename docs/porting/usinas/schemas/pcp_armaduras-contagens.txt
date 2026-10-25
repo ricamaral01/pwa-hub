@@ -1,0 +1,8 @@
+BEGIN
+public.armaduras|0
+public.estoques|0
+public.inspecoes|0
+public.movimentacoes_estoque|0
+public.producoes|0
+public.usuarios|4
+COMMIT

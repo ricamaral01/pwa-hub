@@ -1,0 +1,13 @@
+BEGIN
+public.apontamentos_mega|data|2026-05-26|2026-05-26
+public.atividades_mao_de_obra|created_at|2026-04-12 00:33:52.792335|2026-04-12 00:33:52.792335
+public.maodeobra|data|2026-04-27|2026-06-09
+public.maodeobra_rateio|created_at||
+public.producoes|data||
+public.programacoes|data|2026-04-11|2026-10-07
+public.programacoes_alex|data|2026-05-26|2026-10-07
+public.programacoes_circular_s3|data|2026-10-01|2026-10-09
+public.programacoes_circular_s4|data||
+public.saques_mandril|data|2026-10-01|2026-10-13
+public.teste_programacoes|data_criacao||
+COMMIT

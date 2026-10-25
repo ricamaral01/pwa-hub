@@ -1,0 +1,25 @@
+BEGIN
+public.Empresas|16384|16 kB
+public.__EFMigrationsHistory|24576|24 kB
+public.ct_usuarios|81920|80 kB
+public.ct_usuarios_auditoria|49152|48 kB
+public.tbl_agregados|32768|32 kB
+public.tbl_config_traco_campo|49152|48 kB
+public.tbl_controle_estatistico|114688|112 kB
+public.tbl_est_config_massada|49152|48 kB
+public.tbl_est_materiais|40960|40 kB
+public.tbl_est_movimentos|237568|232 kB
+public.tbl_est_movimentos_backup_unidades_20260601|49152|48 kB
+public.tbl_est_movimentos_backup_zero_20260618_125136|57344|56 kB
+public.tbl_est_saldo_backup_zero_20260618_125136|16384|16 kB
+public.tbl_est_silos|24576|24 kB
+public.tbl_leiturasetor|8192000|8000 kB
+public.tbl_massadas|40960|40 kB
+public.tbl_pcpsetor|122880|120 kB
+public.tbl_produtos|32768|32 kB
+public.tbl_qrcp|32768|32 kB
+public.tbl_receitas|73728|72 kB
+public.tbl_receitas_backup_limpeza_20260617_0703|16384|16 kB
+public.tbl_tracos|65536|64 kB
+public.tbl_tracos_backup_limpeza_20260617_0703|16384|16 kB
+COMMIT

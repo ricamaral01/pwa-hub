@@ -87,23 +87,23 @@ disponíveis. Nenhuma instância adicional foi ativada.
 
 ## Campinas: CEC, relatórios e estoque
 
-O menu Usinas no Unificado abre telas próprias de CEC, relatórios e estoque,
-sem encaminhar a navegação para o ERP antigo. `native-areas.js` apresenta as
-consultas e os filtros; `usinas_legacy_read.py` valida primeiro a sessão e a
-permissão `usinasInicio` do Unificado. O usuário entra com sua conta antiga
-dentro da tela para consultar somente rotas GET explicitamente permitidas da
-API de Campinas. O token antigo fica em cookie separado, HttpOnly e limitado
-ao caminho do proxy. A senha não é guardada pelo Unificado.
+Em 25/10/2026, as consultas de custos, cartas de traço, consumo, fechamento
+mensal e diário, produção por período e exportação CSV de massadas passaram a usar o espelho
+`usinas_reporting` da VPS nova. `sync_reporting.py` copia dez tabelas da origem
+com transação somente de leitura e atualiza o espelho a cada minuto. A API
+privada `reporting_service` usa uma conta PostgreSQL com apenas `SELECT`; o
+proxy `usinas_reporting.py` exige sessão do Unificado e `usinasInicio`, recusando
+convidados. Os seis relatórios foram comparados com os cálculos atuais do ERP;
+o fechamento diário coincide após retirar apenas mensagens de diagnóstico
+variáveis das fontes externas. Evidência e operação: [migração de relatórios e
+custos](../../docs/porting/usinas/execucao/RELATORIOS-CUSTOS-20261025.md).
 
-Essa ponte não copia os dados para a VPS nova e não altera esquema, permissões,
-API ou CLP da origem. Ela depende da disponibilidade da API antiga e da
-permissão da conta antiga. As telas exibem as respostas atuais sem inventar
-saldos ou indicadores. Exportação CSV e impressão trabalham sobre os dados
-consultados. Cadastro de entradas, acertos, leituras CEC e geração de reports
-continuam indisponíveis na nova interface, pois dependem de um contrato seguro
-de escrita. A análise CEC consolidada também não tem rota de consulta autorizada
-nesta ponte. A paridade visual e funcional completa ainda requer migração dessas
-operações e validação autenticada de cada tela.
+A geração dos reports diários e os ajustes de custo continuam na origem, pois
+são escritas. As telas de estoque também usam
+`usinas_legacy_read.py`: login antigo em cookie separado, HttpOnly, e apenas
+rotas GET permitidas. O CEC tem serviço e banco próprios na VPS nova, descritos
+em `cec-service/README.md`. O registro de entradas e acertos de estoque ainda
+depende de um contrato seguro de escrita.
 
 | Área | Telas existentes na origem | Fonte necessária para paridade no Unificado |
 |---|---|---|
@@ -111,16 +111,12 @@ operações e validação autenticada de cada tela.
 | Relatórios gerenciais | cartas de traço, consumo, custos, exportação, fechamento mensal e diário, produção por período, reports diários | massadas, receitas, movimentos de estoque, custos, paradas, PCP/Mapa e fontes externas do fechamento |
 | Controle de estoque | entrada, saldo, relatório, consumo, consumo de cimento, mapeamento de agregados, acerto | materiais, movimentos, silos, configuração do misturador e massadas |
 
-O papel de espelhamento atual possui `SELECT` apenas em `tbl_receitas` de
-Campinas. A base nova possui somente `usinas.receitas` e `usinas.sync_status`
-para este módulo. As demais consultas dependem da sessão antiga via proxy,
-sem espelhamento e sem disponibilidade offline. O contrato de escrita do ERP/CEC
-não oferece autenticação delegada e proteção atômica contra duplicatas e
-conflitos para a migração funcional das ações. Com a decisão de não alterar a
-origem nem suas permissões, essas funções permanecem pendentes.
+O papel de espelhamento tem `SELECT` nas dez tabelas necessárias aos relatórios
+de Campinas. A API e o CLP antigos continuam oficiais para produção e escrita.
+O contrato de escrita do ERP não oferece autenticação delegada nem proteção
+atômica contra duplicatas e conflitos; nenhuma escrita nova foi habilitada no
+Unificado para relatórios, custos ou estoque.
 
 O inventário de telas, rotas, tabelas, fórmulas e integrações está em
-`docs/porting/usinas/`. Para retomar a implementação nativa, é preciso definir
-uma fonte de leitura autorizada para cada banco/tabela sem alterar a origem e
-um contrato de escrita seguro para cada ação. Não calcular saldos, estatísticas
-ou fechamentos só com receitas: seriam incompletos.
+`docs/porting/usinas/`. O espelho atual cobre as entradas de cálculo dos
+relatórios de Campinas; Pederneiras e Noroeste continuam fora deste recorte.

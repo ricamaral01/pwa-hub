@@ -1,0 +1,10 @@
+BEGIN
+public.estatistica_diaria|453
+public.estatistica_mensal|388
+public.faixas_resistencia|4
+public.fila_recalculo|3268730
+public.rompimentos|868
+public.rompimentos_atuais|834
+public.rompimentos_eventos|6431676
+public.rompimentos_grupos|461
+COMMIT

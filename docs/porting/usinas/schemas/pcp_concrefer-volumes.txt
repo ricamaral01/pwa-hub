@@ -1,0 +1,21 @@
+BEGIN
+public.apontamentos_mega|139264|136 kB
+public.atividades_mao_de_obra|122880|120 kB
+public.etiquetas_armaduras_modelos|122880|120 kB
+public.formas|40960|40 kB
+public.maodeobra|73728|72 kB
+public.maodeobra_rateio|32768|32 kB
+public.mapeamento_forma_acessorios|106496|104 kB
+public.mapeamento_forma_postes|606208|592 kB
+public.mapeamento_formas|278528|272 kB
+public.producoes|24576|24 kB
+public.produtos|81920|80 kB
+public.programacoes|901120|880 kB
+public.programacoes_alex|3989504|3896 kB
+public.programacoes_circular_s3|180224|176 kB
+public.programacoes_circular_s4|32768|32 kB
+public.saques_mandril|163840|160 kB
+public.setores|57344|56 kB
+public.teste_programacoes|32768|32 kB
+public.usuarios|81920|80 kB
+COMMIT

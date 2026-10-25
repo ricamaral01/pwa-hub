@@ -1,0 +1,7 @@
+BEGIN
+public.armaduras|created_at||
+public.estoques|updated_at||
+public.inspecoes|data_inspecao||
+public.movimentacoes_estoque|data||
+public.producoes|data||
+COMMIT

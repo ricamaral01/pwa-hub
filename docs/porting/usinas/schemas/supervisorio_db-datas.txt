@@ -1,0 +1,19 @@
+BEGIN
+public.ct_usuarios|criado_em|2026-06-11 00:20:09.994983+00|2026-10-06 10:03:21.99376+00
+public.ct_usuarios_auditoria|criado_em|2026-06-19 12:02:47.296268+00|2026-10-16 17:32:09.664645+00
+public.tbl_agregados|criado_em|2026-04-10 00:31:19.347836+00|2026-04-24 12:22:50.822273+00
+public.tbl_est_custos_ajustes|created_at|2026-08-03 12:42:31.334369+00|2026-08-03 12:49:38.153456+00
+public.tbl_est_materiais|created_at|2026-04-09 22:03:05.668564+00|2026-05-18 16:30:41.144293+00
+public.tbl_est_movimentos|data|2020-08-06|2026-10-22
+public.tbl_est_movimentos_backup_unidades_20260601|data|2026-04-22|2026-06-01
+public.tbl_est_silos|created_at|2026-04-17 16:41:02.546559+00|2026-04-17 16:41:02.546559+00
+public.tbl_leiturasetor|datahora|2026-02-17 08:22:39|2026-09-18 10:14:32
+public.tbl_massadas|data|2026-02-19|2026-10-22
+public.tbl_nao_conformidades_apontadas|data||
+public.tbl_paradas_apontadas|data|2026-08-25|2026-10-22
+public.tbl_pcpsetor|data|2026-02-23|2026-08-22
+public.tbl_produtos|criado_em|2026-04-10 00:24:01.11612+00|2026-09-04 10:27:14.877931+00
+public.tbl_qrcp|created_at|2026-02-23 00:51:43.680151|2026-07-24 10:24:43.87962
+public.tbl_receitas|created_at|2026-02-22 19:34:13.459524|2026-10-22 17:03:03.554114
+public.tbl_tracos|created_at|2026-02-22 19:34:13.459524|2026-05-27 12:16:25.138811
+COMMIT
