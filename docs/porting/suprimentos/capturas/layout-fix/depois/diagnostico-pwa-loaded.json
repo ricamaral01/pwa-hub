@@ -1,0 +1,87 @@
+[
+  {
+    "size": "390x844",
+    "zoom": 100,
+    "css": "homologacao 1.0.60",
+    "audit": {
+      "viewport": 390,
+      "docScroll": 390,
+      "bodyScroll": 390,
+      "horizontal": false,
+      "entries": []
+    },
+    "errors": [],
+    "missing": [],
+    "screenshot": "pwa-390x844-z100.png"
+  },
+  {
+    "size": "390x844",
+    "zoom": 125,
+    "css": "homologacao 1.0.60",
+    "audit": {
+      "viewport": 312,
+      "docScroll": 312,
+      "bodyScroll": 312,
+      "horizontal": false,
+      "entries": []
+    },
+    "errors": [],
+    "missing": [],
+    "screenshot": "pwa-390x844-z125.png"
+  },
+  {
+    "size": "360x780",
+    "zoom": 100,
+    "css": "homologacao 1.0.60",
+    "audit": {
+      "viewport": 360,
+      "docScroll": 360,
+      "bodyScroll": 360,
+      "horizontal": false,
+      "entries": []
+    },
+    "errors": [],
+    "missing": [],
+    "screenshot": "pwa-360x780-z100.png"
+  },
+  {
+    "size": "360x780",
+    "zoom": 125,
+    "css": "homologacao 1.0.60",
+    "audit": {
+      "viewport": 288,
+      "docScroll": 288,
+      "bodyScroll": 288,
+      "horizontal": false,
+      "entries": [
+        {
+          "element": "div.top-inner",
+          "width": 256,
+          "scrollWidth": 262,
+          "clientWidth": 256,
+          "parent": "header.top",
+          "parentWidth": 288,
+          "scroll": true,
+          "outside": false,
+          "contained": false,
+          "container": ""
+        },
+        {
+          "element": "span.sync",
+          "width": 90,
+          "scrollWidth": 90,
+          "clientWidth": 90,
+          "parent": "div.top-inner",
+          "parentWidth": 256,
+          "scroll": false,
+          "outside": true,
+          "contained": false,
+          "container": ""
+        }
+      ]
+    },
+    "errors": [],
+    "missing": [],
+    "screenshot": "pwa-360x780-z125.png"
+  }
+]

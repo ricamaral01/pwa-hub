@@ -9,6 +9,7 @@
 | E5 · PWA Solicitação | **Concluída** | [06-pwa-solicitacao.md](06-pwa-solicitacao.md); E1–E5 `21 passed`, mobile Pixel/iPhone, Lighthouse PWA 1,00 | Instalação HTTPS e API real na homologação E7 |
 | E6 · Revisão integrada | **Concluída** | [07-revisao-integrada.md](07-revisao-integrada.md); `21 passed`, revisão de rotas/CC/fotos/segredos, check JS/Python | Validação de nginx, permissões e usuários reais na E7 |
 | E7 · Homologação | **Concluída** | [08-homologacao.md](08-homologacao.md); smoke HTTPS `43/43`, Playwright PC/tablet/celular e PWA offline, snapshot de acessos 5/5, retorno testado e reinstalação | Alçadas/SLA `a_confirmar`, cadastros reais e instalação iOS físico para fases posteriores |
+| Pós E7 · Correção de layout na casca | **Concluída em homologação** | [09-correcao-layout.md](09-correcao-layout.md); matriz autenticada `676/676` antes/depois, E1–E7 `21 passed`, retorno e reinstalação, smoke `43/43` | Homologação para conferência de Ricardo; nenhuma publicação em produção |
 
 **Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
 
