@@ -1,0 +1,2460 @@
+{
+  "desktop": {
+    "dashboard": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 11
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 118
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 212
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 312
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 417
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 510
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 610
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 714
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 814
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1045
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1061
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1126
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1222
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1330
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1414
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1512
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1659
+        },
+        {
+          "frameVisible": true,
+          "heading": "Dashboard",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/dashboard"
+          ],
+          "ms": 1773
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 28
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 119
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 211
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 308
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 418
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 514
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 621
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 706
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 809
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 908
+        },
+        {
+          "frameVisible": true,
+          "heading": "Dashboard",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/dashboard"
+          ],
+          "ms": 1009
+        }
+      ]
+    },
+    "documents": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 6
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 107
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 212
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 322
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 440
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 516
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 619
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 740
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 810
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1033
+        },
+        {
+          "frameVisible": true,
+          "heading": "Documentos",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/documents"
+          ],
+          "ms": 1059
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 76
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 109
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 226
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 413
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 423
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 517
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 620
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 714
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 815
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 933
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1096
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1116
+        },
+        {
+          "frameVisible": true,
+          "heading": "Documentos",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/documents"
+          ],
+          "ms": 1210
+        }
+      ]
+    },
+    "approvals": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 4
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 115
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 216
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 311
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 423
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 524
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 620
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 707
+        },
+        {
+          "frameVisible": true,
+          "heading": "Aprovações",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/approvals"
+          ],
+          "ms": 810
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 46
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 111
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 206
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 317
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 408
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 526
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 616
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 712
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 813
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 909
+        },
+        {
+          "frameVisible": true,
+          "heading": "Aprovações",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/approvals"
+          ],
+          "ms": 1011
+        }
+      ]
+    },
+    "tasks": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 5
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 110
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 211
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 337
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 408
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 506
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 609
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 708
+        },
+        {
+          "frameVisible": true,
+          "heading": "Tarefas",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/tasks"
+          ],
+          "ms": 816
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 36
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 109
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 337
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 340
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 409
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 513
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 614
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 711
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 819
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 919
+        },
+        {
+          "frameVisible": true,
+          "heading": "Tarefas",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/tasks"
+          ],
+          "ms": 1024
+        }
+      ]
+    },
+    "calibrations": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 4
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 111
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 211
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 311
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 427
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 509
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 613
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 711
+        },
+        {
+          "frameVisible": true,
+          "heading": "Certificados de calibração",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/calibrations"
+          ],
+          "ms": 818
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 44
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 113
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 207
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 329
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 410
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 514
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 609
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 719
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 813
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 909
+        },
+        {
+          "frameVisible": true,
+          "heading": "Certificados de calibração",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/calibrations"
+          ],
+          "ms": 1013
+        }
+      ]
+    }
+  },
+  "celular": {
+    "dashboard": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 6
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 112
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 209
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 318
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 411
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 507
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 606
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 761
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 808
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 911
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1010
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1112
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 1211
+        },
+        {
+          "frameVisible": true,
+          "heading": "Dashboard",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/dashboard"
+          ],
+          "ms": 1313
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 36
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 108
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 212
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 306
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 406
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 513
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 608
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 712
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 809
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 920
+        },
+        {
+          "frameVisible": true,
+          "heading": "Dashboard",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/dashboard"
+          ],
+          "ms": 1008
+        }
+      ]
+    },
+    "documents": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 4
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 111
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 205
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 314
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 410
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 507
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 608
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 707
+        },
+        {
+          "frameVisible": true,
+          "heading": "Documentos",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/documents"
+          ],
+          "ms": 816
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 24
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 116
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 211
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 308
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 412
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 512
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 614
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 708
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 813
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 934
+        },
+        {
+          "frameVisible": true,
+          "heading": "Documentos",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/documents"
+          ],
+          "ms": 1011
+        }
+      ]
+    },
+    "approvals": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 4
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 112
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 205
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 325
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 406
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 513
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 609
+        },
+        {
+          "frameVisible": true,
+          "heading": "Aprovações",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/approvals"
+          ],
+          "ms": 712
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 25
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 107
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 214
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 311
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 405
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 527
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 605
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 714
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 807
+        },
+        {
+          "frameVisible": true,
+          "heading": "Aprovações",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/approvals"
+          ],
+          "ms": 906
+        }
+      ]
+    },
+    "tasks": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 5
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 105
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 205
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 309
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 404
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 509
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 609
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 709
+        },
+        {
+          "frameVisible": true,
+          "heading": "Tarefas",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/tasks"
+          ],
+          "ms": 818
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 23
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 118
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 213
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 310
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 410
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 509
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 613
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 715
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 805
+        },
+        {
+          "frameVisible": true,
+          "heading": "Tarefas",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/tasks"
+          ],
+          "ms": 910
+        }
+      ]
+    },
+    "calibrations": {
+      "open": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 2
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 110
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 212
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 309
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 408
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 506
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 603
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 711
+        },
+        {
+          "frameVisible": true,
+          "heading": "Certificados de calibração",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/calibrations"
+          ],
+          "ms": 814
+        }
+      ],
+      "reload": [
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 26
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [],
+          "ms": 107
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 216
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 309
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 406
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 521
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 607
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 705
+        },
+        {
+          "frameVisible": false,
+          "heading": "",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": true,
+          "readyPaths": [],
+          "ms": 810
+        },
+        {
+          "frameVisible": true,
+          "heading": "Certificados de calibração",
+          "login": false,
+          "sidebar": false,
+          "header": false,
+          "accessDenied": false,
+          "loading": false,
+          "readyPaths": [
+            "/unificado/ged/calibrations"
+          ],
+          "ms": 917
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+-- Vincular somente a conta GED Marcelo já existente e equiparar seu papel.
+-- A exigência de troca da senha GED direta permanece intacta.
+BEGIN;
+DO $$ BEGIN
+  IF (SELECT count(*) FROM users WHERE id='02f3d77c-4bb2-4f85-8a4a-0167bfb5d5d0'
+      AND name='Marcelo Ishisaki' AND username='marcelo' AND active) <> 1 THEN
+    RAISE EXCEPTION 'Conta GED Marcelo inesperada';
+  END IF;
+  IF EXISTS (SELECT 1 FROM ged_identity_links WHERE mapa_user_id='marcelo'
+      AND ged_user_id <> '02f3d77c-4bb2-4f85-8a4a-0167bfb5d5d0') THEN
+    RAISE EXCEPTION 'Vínculo GED Marcelo divergente';
+  END IF;
+  IF EXISTS (SELECT 1 FROM ged_identity_links
+      WHERE ged_user_id='02f3d77c-4bb2-4f85-8a4a-0167bfb5d5d0'
+      AND mapa_user_id <> 'marcelo') THEN
+    RAISE EXCEPTION 'Conta GED Marcelo já vinculada a outra identidade';
+  END IF;
+END $$;
+UPDATE users SET role='ADMIN_MASTER', session_version=session_version+1,
+  updated_at=now()
+WHERE id='02f3d77c-4bb2-4f85-8a4a-0167bfb5d5d0' AND role <> 'ADMIN_MASTER';
+INSERT INTO ged_identity_links(mapa_user_id,ged_user_id,active,approved_by)
+VALUES ('marcelo','02f3d77c-4bb2-4f85-8a4a-0167bfb5d5d0',TRUE,'user-ricardo')
+ON CONFLICT(mapa_user_id) DO UPDATE SET active=TRUE,approved_by='user-ricardo',updated_at=now();
+DO $$ BEGIN
+  IF (SELECT count(*) FROM ged_identity_links WHERE mapa_user_id='marcelo'
+      AND ged_user_id='02f3d77c-4bb2-4f85-8a4a-0167bfb5d5d0' AND active) <> 1 THEN
+    RAISE EXCEPTION 'Vínculo GED Marcelo não confirmado';
+  END IF;
+END $$;
+COMMIT;

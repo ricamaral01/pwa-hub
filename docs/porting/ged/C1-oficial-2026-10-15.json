@@ -1,0 +1,51 @@
+{
+  "source_counts": {
+    "rnc_reports": 3,
+    "rnc_root_cause_analyses": 0,
+    "rnc_action_plans": 0,
+    "rnc_effectiveness_reviews": 0,
+    "rnc_history": 9,
+    "rnc_attachments": 0
+  },
+  "rows": [
+    {
+      "ged_id": "02b10424-73f9-42ce-b8ee-8454f3b45ac8",
+      "ged_numero": "RNC-2026-0001",
+      "ged_titulo": "Poste quebou na extração",
+      "ged_status": "ABERTA",
+      "ged_gravidade": "ALTA",
+      "nc_id": "01a141dd-16ba-7b13-acfc-6690b46a58f0",
+      "nc_numero": "NC-2026-0001",
+      "nc_status": "REGISTRADA",
+      "nc_gravidade": "MAIOR",
+      "unidade": "campinas",
+      "reused": false
+    },
+    {
+      "ged_id": "1cc06746-f92f-4252-a3ea-9deffee26166",
+      "ged_numero": "RNC-2026-0002",
+      "ged_titulo": "Cliente reclama que o poste está trincado",
+      "ged_status": "ENCERRADA",
+      "ged_gravidade": "MEDIA",
+      "nc_id": "01a141dd-16c8-7211-8887-f5939e890394",
+      "nc_numero": "NC-2026-0002",
+      "nc_status": "ENCERRADA",
+      "nc_gravidade": "MENOR",
+      "unidade": "campinas",
+      "reused": false
+    },
+    {
+      "ged_id": "69919d1f-195c-446e-a104-6f47247106ff",
+      "ged_numero": "RNC-2026-0003",
+      "ged_titulo": "Cliente reclama que o poste está torto",
+      "ged_status": "ABERTA",
+      "ged_gravidade": "MEDIA",
+      "nc_id": "01a141dd-16cd-7cf7-8bcc-852fefffbfff",
+      "nc_numero": "NC-2026-0003",
+      "nc_status": "REGISTRADA",
+      "nc_gravidade": "MENOR",
+      "unidade": "campinas",
+      "reused": false
+    }
+  ]
+}

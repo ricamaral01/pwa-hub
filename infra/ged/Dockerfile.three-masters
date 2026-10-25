@@ -1,0 +1,2 @@
+FROM ged-concrefer-backend:marcelo-master-v1
+COPY userRoutes.three-masters.js /app/src/routes/userRoutes.js

@@ -1,0 +1,9 @@
+# A7 — backup diário GED destino e Qualidade
+
+**Instalado no destino `vps-staging` em 15/10/2026**, antes da pausa por regressão de menu. Script root-only em `/usr/local/sbin/backup-ged-qualidade`; units/timers systemd versionados em `infra/systemd/backup-ged-qualidade*`. Diretório `/var/backups/concrefer-ged-qualidade/` com modo `0700`, fora de `public`.
+
+Cada execução cria `pg_dump -Fc` do banco `ged_concrefer` no contêiner `ged_postgres`, `pg_dump -Fc` do banco `qualidade` do host, tar numérico dos uploads GED e dos anexos Qualidade, mais `SHA256SUMS`. Valida a listagem dos dumps e arquivos. Retenção programada: 35 dias para essas cópias, com remoção apenas de subdiretórios antigos dentro do diretório exclusivo de backup. O timer diário é às 02:30 e o teste de restauração mensal no dia 1 às 04:30, ambos no fuso `America/Sao_Paulo` e com `Persistent=true`.
+
+Execução manual inicial: `/var/backups/concrefer-ged-qualidade/20261015T134240Z`, `Result=success`. Teste mensal antecipado: `/var/backups/concrefer-ged-qualidade/20261015T134254Z`, `Result=success`; restaurou os dois dumps em contêineres PostgreSQL 16 isolados, sem rede e com dados em tmpfs. Resultado: GED **29 tabelas**, Qualidade **25 tabelas**, GED **52 arquivos extraídos**, Qualidade **1 arquivo de anexo já presente**. Os quatro SHA-256 do manifesto verificaram `OK`. Os contêineres de ensaio foram removidos; os backups e inventários foram preservados.
+
+Este A7 é cópia local no próprio destino; a proteção independente A1 por senha e a segunda cópia cifrada na VPS têm finalidade e artefatos distintos e permanecem pendentes da senha. Os dumps A7 incluem dados reais e ficam acessíveis apenas a root. Monitorar `systemctl status backup-ged-qualidade.timer backup-ged-qualidade-restore.timer` e `journalctl -u backup-ged-qualidade.service -u backup-ged-qualidade-restore.service`.

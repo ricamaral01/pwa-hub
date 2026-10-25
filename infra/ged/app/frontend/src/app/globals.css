@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-color: #1e3a8a; /* Default Concrefer Blue */
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+/* Override tailwind brand colors with CSS variables for white-label */
+.bg-brand-600 { background-color: var(--brand-color) !important; }
+.bg-brand-700 { filter: brightness(0.9); background-color: var(--brand-color) !important; }
+.text-brand-600 { color: var(--brand-color) !important; }
+.from-brand-600 { --tw-gradient-from: var(--brand-color) !important; }
+.to-brand-800 { --tw-gradient-to: #111827 !important; }
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+}
+
+.report-heading { border-bottom: 2px solid #111827; padding-bottom: 7mm; margin-bottom: 6mm; }
+.report-heading > div { display: inline-flex; width: 49%; flex-direction: column; font-size: 10px; }
+.report-heading strong { font-size: 15px; letter-spacing: .04em; }
+@media print {
+  @page { size: A4 landscape; margin: 8mm; }
+  body { background: #fff !important; color: #111 !important; }
+  aside, header, nav { display: none !important; }
+  main { padding: 0 !important; overflow: visible !important; }
+  .task-report { max-width: none !important; margin: 0 !important; gap: 4mm !important; }
+  .task-report .grid { gap: 3mm !important; }
+  .task-report .rounded-xl { border-radius: 0 !important; box-shadow: none !important; }
+  .task-report table { font-size: 9px; width: 100%; }
+  .task-report th, .task-report td { padding: 2mm !important; border-bottom: 1px solid #d1d5db; }
+  .task-report tr { break-inside: avoid; }
+  .task-report a { color: #111 !important; text-decoration: none !important; }
+}

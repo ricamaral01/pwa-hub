@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GED nativo — ensaio de Documentos</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">C</span><span>ConcreTrack <small>GED</small></span></div>
+      <span class="environment">Ensaio visual · sem gravação</span>
+    </header>
+    <main class="main">
+      <nav class="crumb" aria-label="Caminho"><span>GED</span><span aria-hidden="true">›</span><strong id="crumb-current">Documentos</strong></nav>
+      <section id="list-view" aria-labelledby="list-title">
+        <div class="heading"><div><p class="eyebrow">Gestão documental</p><h1 id="list-title">Documentos</h1><p class="subtitle">Consulte a versão vigente, o histórico e o registro de leitura.</p></div><span class="count" id="document-count"></span></div>
+        <div class="filters"><label class="search-label" for="search">Buscar documento<input id="search" type="search" placeholder="Código ou nome"></label><label for="status-filter">Situação<select id="status-filter"><option value="">Todas</option><option value="Aprovado">Aprovado</option><option value="Em revisão">Em revisão</option></select></label></div>
+        <div class="table-wrap"><table><thead><tr><th>Documento</th><th>Área</th><th>Revisão</th><th>Situação</th><th>Atualizado</th><th><span class="sr-only">Abrir</span></th></tr></thead><tbody id="document-rows"></tbody></table></div>
+        <p id="empty-list" class="empty" hidden>Nenhum documento encontrado para este filtro.</p>
+      </section>
+      <section id="detail-view" aria-labelledby="detail-title" hidden>
+        <button id="back" class="back" type="button">← Voltar aos documentos</button>
+        <div class="heading detail-heading"><div><p class="eyebrow" id="detail-code"></p><h1 id="detail-title"></h1><p class="subtitle" id="detail-description"></p></div><span class="status-pill" id="detail-status"></span></div>
+        <div class="summary" id="detail-summary"></div>
+        <div class="detail-grid">
+          <section class="card" aria-labelledby="versions-title"><div class="card-head"><h2 id="versions-title">Versões</h2><span id="version-count" class="muted"></span></div><div id="versions"></div></section>
+          <div class="side-cards"><section class="card" aria-labelledby="science-title"><h2 id="science-title">Ciência</h2><div id="science"></div></section><section class="card" aria-labelledby="reads-title"><h2 id="reads-title">Leituras</h2><div id="reads"></div></section></div>
+        </div>
+      </section>
+      <p class="fixture-note">Protótipo local para gate visual. Os metadados exemplificam documentos do GED; ciências e leituras são dados de demonstração. Nenhuma operação é enviada à produção.</p>
+    </main>
+  </div>
+</body>
+</html>
