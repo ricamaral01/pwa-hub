@@ -74,7 +74,11 @@ def request_detail(db: Session, ctx, request: dict):
     event = table("sup_evento")
     photo = table("sup_solicitacao_foto")
     items = db.execute(select(item).where(and_(item.c.solicitacao_id == request["id"], item.c.unidade_id == ctx.unit_id))).mappings().all()
-    events = db.execute(select(event).where(and_(event.c.unidade_id == ctx.unit_id, event.c.alvo_tipo == "solicitacao", event.c.alvo_id == request["id"])).order_by(event.c.em)).mappings().all()
+    item_ids = [row["id"] for row in items]
+    event_scope = or_(and_(event.c.alvo_tipo == "solicitacao", event.c.alvo_id == request["id"]),
+                      and_(event.c.alvo_tipo == "item", event.c.alvo_id.in_(item_ids)))
+    events = db.execute(select(event).where(and_(event.c.unidade_id == ctx.unit_id, event_scope))
+                        .order_by(event.c.em, event.c.criado_em)).mappings().all()
     photos = db.execute(select(photo.c.id, photo.c.nome_original, photo.c.tamanho).where(and_(photo.c.solicitacao_id == request["id"], photo.c.unidade_id == ctx.unit_id))).mappings().all()
     return jsonable_encoder({**request, "itens": [dict(x) for x in items], "eventos": [dict(x) for x in events], "fotos": [dict(x) for x in photos]})
 

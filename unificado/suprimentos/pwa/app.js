@@ -12,6 +12,11 @@ const labels = {RASCUNHO:'Rascunho',EM_APROVACAO:'Em aprovação',DEVOLVIDA:'Dev
 const fmtDateTime = x => x ? new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(x)) : '—';
 function eventLabel(event,total){
   const target=String(event.para||'');
+  if(event.alvo_tipo==='item'&&event.de==='SEPARADO'&&target==='SEPARADO')return 'Entregue parcialmente';
+  if(event.alvo_tipo==='item'&&target==='SEPARADO')return 'Item separado';
+  if(event.alvo_tipo==='item'&&target==='ENTREGUE')return 'Item entregue';
+  if(event.de==='ENTREGUE'&&target==='EM_ATENDIMENTO')return 'Recebido com problema';
+  if(event.de==='EM_ATENDIMENTO'&&target==='ENTREGUE'&&event.comentario)return 'Problema resolvido · entregue';
   const level=target.match(/^EM_APROVACAO:(\d+)$/);
   if(level)return `Aprovada — nível ${Number(level[1])-1} de ${Number(total)||Number(level[1])}`;
   if(target==='EM_APROVACAO')return 'Enviada para aprovação';

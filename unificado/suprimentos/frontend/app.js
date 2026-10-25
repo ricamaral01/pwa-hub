@@ -11,6 +11,11 @@ const date = value => {if(!value)return '—';if(/^\d{4}-\d{2}-\d{2}$/.test(valu
 const dateTime = value => !value ? '—' : new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(value));
 function eventLabel(event, total){
   const destination=String(event.para||'');
+  if(event.alvo_tipo==='item'&&event.de==='SEPARADO'&&destination==='SEPARADO')return 'Entregue parcialmente';
+  if(event.alvo_tipo==='item'&&destination==='SEPARADO')return 'Item separado';
+  if(event.alvo_tipo==='item'&&destination==='ENTREGUE')return 'Item entregue';
+  if(event.de==='ENTREGUE'&&destination==='EM_ATENDIMENTO')return 'Recebido com problema';
+  if(event.de==='EM_ATENDIMENTO'&&destination==='ENTREGUE'&&event.comentario)return 'Problema resolvido · entregue';
   if(destination==='EM_APROVACAO' && event.de==='EM_APROVACAO')return 'Aprovação em andamento';
   if(destination==='EM_APROVACAO')return 'Enviada para aprovação';
   const level=destination.match(/^EM_APROVACAO:(\d+)$/);

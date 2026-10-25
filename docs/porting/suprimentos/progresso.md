@@ -10,6 +10,7 @@
 | E6 · Revisão integrada | **Concluída** | [07-revisao-integrada.md](07-revisao-integrada.md); `21 passed`, revisão de rotas/CC/fotos/segredos, check JS/Python | Validação de nginx, permissões e usuários reais na E7 |
 | E7 · Homologação | **Concluída** | [08-homologacao.md](08-homologacao.md); smoke HTTPS `43/43`, Playwright PC/tablet/celular e PWA offline, snapshot de acessos 5/5, retorno testado e reinstalação | Alçadas/SLA `a_confirmar`, cadastros reais e instalação iOS físico para fases posteriores |
 | Pós E7 · Correção de layout na casca | **Concluída em homologação** | [09-correcao-layout.md](09-correcao-layout.md); matriz autenticada `676/676` antes/depois, E1–E7 `21 passed`, retorno e reinstalação, smoke `43/43` | Homologação para conferência de Ricardo; nenhuma publicação em produção |
+| F0 · Acabamentos da S1 | **Concluída em homologação** | [10-acabamentos-s1.md](10-acabamentos-s1.md); versão 1.0.62, smoke `43/43`, 57 capturas reais; regressão local posterior `8 passed, 13 skipped` sem banco | F1 · Fornecedores, cotação e pedido de compra |
 
 **Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
 
