@@ -28,6 +28,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
         expires_delta or timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
     to_encode.update({"exp": expire})
+    to_encode["session_epoch_ms"] = int(datetime.now(timezone.utc).timestamp() * 1000)
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
@@ -56,6 +57,11 @@ def get_current_user(
     user = db.query(Usuario).filter(Usuario.id == int(user_id), Usuario.ativo == True).first()
     if not user:
         raise HTTPException(status_code=401, detail="Usuário não encontrado ou inativo")
+    if user.deleted_at is not None or (
+        user.token_revoked_at is not None and
+        int(payload.get("session_epoch_ms") or 0) <= int(user.token_revoked_at.timestamp() * 1000)
+    ):
+        raise HTTPException(status_code=401, detail="Sessão encerrada")
     return user
 
 

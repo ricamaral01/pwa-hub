@@ -18,8 +18,10 @@
   let sessionRecovery = null;
   function recoverPcpSession() {
     if (sessionRecovery) return sessionRecovery;
+    const token = localStorage.getItem("pcp_token");
     sessionRecovery = originalFetch("/unificado/mapa/api/unified/pcp-session", {
-      credentials: "same-origin", cache: "no-store"
+      credentials: "same-origin", cache: "no-store",
+      headers: token ? {Authorization: "Bearer " + token} : {}
     }).then(async response => {
       if (!response.ok) return false;
       const result = await response.json();

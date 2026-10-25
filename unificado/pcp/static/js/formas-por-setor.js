@@ -101,7 +101,8 @@
     if (state.situacao === 'Inativas' && form.situacao !== 'Inativa') return false;
     if (state.tipo && (state.tipo === '__sem_tipo__' ? Boolean(form.tipo_forma) : form.tipo_forma !== state.tipo)) return false;
     const query = normalize(state.busca.trim());
-    return !query || normalize([form.codigo_forma, ...(form.produtos || [])].join(' ')).includes(query);
+    return !query || normalize([form.codigo_forma, form.codigo_tipo_forma,
+      form.codigo_modelo_mega, ...(form.produtos || [])].join(' ')).includes(query);
   }
 
   function summary() {
@@ -136,6 +137,8 @@
     const row = node('tr');
     cell(row, form.codigo_forma, 'form-code');
     cell(row, form.tipo_forma || 'Não cadastrado');
+    cell(row, form.codigo_tipo_forma);
+    cell(row, form.codigo_modelo_mega);
     const products = node('div', 'product-list');
     if (form.produtos?.length) {
       for (const product of form.produtos) products.append(node('span', 'product-chip', product));
@@ -182,7 +185,7 @@
         const scroll = node('div', 'form-table-wrap');
         const table = node('table', 'form-table');
         const thead = node('thead'); const header = node('tr');
-        for (const text of ['Código', 'Tipo de forma', 'O que produz', 'Cód. produto', 'Volume m³', 'Situação e origem', 'Cadastro']) header.append(node('th', '', text));
+        for (const text of ['Código', 'Tipo de forma', 'Cód. tipo', 'Cód. modelo Mega', 'O que produz', 'Cód. produto', 'Volume m³', 'Situação e origem', 'Cadastro']) header.append(node('th', '', text));
         thead.append(header);
         const tbody = node('tbody');
         for (const form of forms) tbody.append(formRow(form));
@@ -202,9 +205,10 @@
   }
 
   function csvExport() {
-    const columns = ['Setor', 'Código da forma', 'Tipo de forma', 'O que produz', 'Códigos de produto', 'Volumes m³', 'Situação', 'Origem da situação', 'Cadastro', 'Compatíveis ativas', 'Compatíveis total'];
+    const columns = ['Setor', 'Código da forma', 'Tipo de forma', 'Código do tipo', 'Código do modelo Mega', 'O que produz', 'Códigos de produto', 'Volumes m³', 'Situação', 'Origem da situação', 'Cadastro', 'Compatíveis ativas', 'Compatíveis total'];
     const quote = value => `"${String(value ?? '').replaceAll('"', '""')}"`;
     const rows = visibleForms.map(form => [form.setor, form.codigo_forma, form.tipo_forma || '',
+      form.codigo_tipo_forma || '', form.codigo_modelo_mega || '',
       (form.produtos || []).join(' | '), (form.codigos_produto || []).join(' | '),
       (form.volumes_m3 || []).join(' | '), form.situacao, form.fonte_situacao,
       form.fonte_cadastro, form.compat_ativas ?? '', form.compat_total ?? '']);

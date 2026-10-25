@@ -36,6 +36,7 @@ class GoogleSheetsRepository:
     def __init__(self, credentials_value: str | None = None, spreadsheet_id: str | None = None) -> None:
         self.credentials_value = credentials_value or settings.GOOGLE_CREDENTIALS
         self.spreadsheet_id = spreadsheet_id or settings.SPREADSHEET_ID
+        self._explicit_spreadsheet_id = spreadsheet_id is not None
 
     def carregar_dados_setor3(
         self,
@@ -93,6 +94,17 @@ class GoogleSheetsRepository:
         data_inicial: date | None = None,
         data_final: date | None = None,
     ) -> str:
+        if self._explicit_spreadsheet_id:
+            return self.spreadsheet_id
+        if (
+            data_inicial
+            and data_final
+            and data_inicial.year == data_final.year == 2026
+            and data_inicial.month == data_final.month == 10
+        ):
+            if not settings.SPREADSHEET_ID_10:
+                raise GoogleSheetsRepositoryError("Planilha de outubro não configurada")
+            return settings.SPREADSHEET_ID_10
         if (
             data_inicial
             and data_final

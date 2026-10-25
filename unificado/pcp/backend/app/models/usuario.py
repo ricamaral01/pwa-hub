@@ -1,6 +1,6 @@
 import enum
 
-from sqlalchemy import Column, Integer, String, Boolean, Enum as SAEnum, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum as SAEnum, ForeignKey
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
@@ -24,5 +24,7 @@ class Usuario(Base):
     setor_id = Column(Integer, ForeignKey("setores.id"), nullable=True)
     ativo = Column(Boolean, default=True, nullable=False)
     trocar_senha_primeiro_acesso = Column(Boolean, default=True, nullable=False)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
+    token_revoked_at = Column(DateTime(timezone=True), nullable=True)
 
     setor = relationship("Setor")

@@ -23,7 +23,7 @@ def listar(
     db: Session = Depends(get_db),
     _=Depends(require_roles(NivelAcesso.ADMIN)),
 ):
-    return db.query(Usuario).all()
+    return db.query(Usuario).filter(Usuario.deleted_at.is_(None)).all()
 
 
 @router.post("", response_model=UsuarioOut, status_code=201)
@@ -67,6 +67,8 @@ def redefinir_senha(
     user = db.query(Usuario).filter(Usuario.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    if user.username.casefold() == 'ricardo':
+        raise HTTPException(status_code=409, detail='A conta do administrador master é protegida. Use a troca de senha da própria conta.')
 
     user.senha_hash = hash_password(payload.nova_senha)
     user.trocar_senha_primeiro_acesso = True
@@ -85,6 +87,10 @@ def atualizar(
     user = db.query(Usuario).filter(Usuario.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    if user.username.casefold() == 'ricardo' and (
+        payload.nivel_acesso not in (None, NivelAcesso.ADMIN) or payload.ativo is False
+    ):
+        raise HTTPException(status_code=409, detail='A conta do administrador master deve permanecer ativa como ADMIN.')
     for field, value in payload.model_dump(exclude_none=True).items():
         if field == "setor_id":
             setor = db.query(Setor).filter(Setor.id == value).first()

@@ -66,7 +66,7 @@ class KgHomemDiario(BaseModel):
     moi: Decimal
     pessoas: Decimal
     kg_por_homem: Optional[int] = None
-    postes_por_homem: Optional[int] = None
+    postes_por_homem: Optional[float] = None
 
 
 class DashboardResponse(BaseModel):

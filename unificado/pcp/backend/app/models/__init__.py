@@ -1,6 +1,6 @@
 from app.models.usuario import Usuario, NivelAcesso
 from app.models.setor import Setor, Forma
-from app.models.producao import Programacao, ProgramacaoAlex, ApontamentoMega, Producao, MaoDeObra, MaoDeObraRateio, AtividadeMaoDeObra
+from app.models.producao import Programacao, ProgramacaoAlex, ApontamentoMega, Producao, MaoDeObra, MaoDeObraDia, MaoDeObraRateio, AtividadeMaoDeObra
 from app.models.produto import Produto
 from app.models.mapeamento_forma import MapeamentoForma
 from app.models.mapeamento_forma_poste import MapeamentoFormaPoste
@@ -20,6 +20,7 @@ __all__ = [
     "ApontamentoMega",
     "Producao",
     "MaoDeObra",
+    "MaoDeObraDia",
     "MaoDeObraRateio",
     "AtividadeMaoDeObra",
     "Produto",
