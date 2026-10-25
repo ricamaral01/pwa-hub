@@ -1,0 +1,9 @@
+[Unit]
+Description=Check legacy Supabase mirror freshness
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+ExecStart=/usr/bin/python3 /opt/concrefer-unificado/migration/supabase-sync/check_health.py
+

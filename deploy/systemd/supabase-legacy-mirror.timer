@@ -1,0 +1,11 @@
+[Unit]
+Description=Run legacy Supabase mirror every minute
+
+[Timer]
+OnCalendar=*-*-* *:*:00
+AccuracySec=1s
+Persistent=true
+Unit=supabase-legacy-mirror.service
+
+[Install]
+WantedBy=timers.target

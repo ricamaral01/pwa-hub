@@ -1,0 +1,14 @@
+[Unit]
+Description=Mirror legacy Supabase Mapa tables into test PostgreSQL
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+WorkingDirectory=/opt/concrefer-unificado/migration/supabase-sync
+ExecStart=/usr/bin/python3 /opt/concrefer-unificado/migration/supabase-sync/sync.py
+TimeoutStartSec=150
+

@@ -1,0 +1,11 @@
+[Unit]
+Description=Run 24-hour Supabase mirror acceptance audit once
+
+[Timer]
+OnCalendar=2026-10-24 18:32:40 UTC
+AccuracySec=1s
+Persistent=true
+Unit=supabase-legacy-mirror-acceptance.service
+
+[Install]
+WantedBy=timers.target

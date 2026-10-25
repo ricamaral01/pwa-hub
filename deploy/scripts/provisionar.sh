@@ -7,7 +7,7 @@ free_kb=$(df -Pk /opt | awk 'NR==2 {print $4}')
 root=/opt/concretrack-dosagem
 source_dir=${1:?Uso: provisionar.sh <diretorio-com-api-e-deploy>}
 [[ -f "$source_dir/api/.env.example" && -f "$source_dir/deploy/nginx/api-dosagem.conf" ]] || exit 1
-command -v python3.12 >/dev/null || { echo 'Python 3.12 ausente; instalar pacote compatível com a distribuição antes do deploy.' >&2; exit 1; }
+[[ -x /opt/concretrack-dosagem/bin/python3.12 ]] || { echo 'Python 3.12 isolado ausente em /opt/concretrack-dosagem/bin.' >&2; exit 1; }
 [[ -f "$root/shared/.env" ]] || { echo "Crie $root/shared/.env antes do provisionamento." >&2; exit 1; }
 [[ $(stat -c %a "$root/shared/.env") == 600 ]] || { echo 'Use chmod 600 no .env.' >&2; exit 1; }
 [[ -x $(command -v nginx) ]] || { echo 'nginx não instalado: integre ao servidor web existente antes de continuar.' >&2; exit 1; }

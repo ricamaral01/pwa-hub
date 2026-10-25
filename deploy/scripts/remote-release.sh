@@ -9,7 +9,7 @@ mv "$release/dosagem-concreto-v2/api" "$release/api"
 rmdir "$release/dosagem-concreto-v2"
 chown -R ctdosagem:ctdosagem "$release"
 chmod 755 "$release/deploy/scripts/"*.sh
-runuser -u ctdosagem -- python3.12 -m venv "$release/api/.venv"
+runuser -u ctdosagem -- /opt/concretrack-dosagem/bin/python3.12 -m venv "$release/api/.venv"
 runuser -u ctdosagem -- "$release/api/.venv/bin/pip" install --no-cache-dir -e "$release/api"
 cd "$release/api"
 set -a; source "$root/shared/.env"; set +a
