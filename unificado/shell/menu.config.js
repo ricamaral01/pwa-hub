@@ -51,7 +51,7 @@ const MENU_CONFIG = {
   producao: {
     label: 'Produção',
     groups: [
-      { label: 'Campinas · Produção', items: [
+      { label: 'Produção', items: [
         { id: 'liberacao', mono: 'PL', label: 'Produção / Liberação', path: '/index.html', screen: 'LIBERACAO' },
         { id: 'setor1', mono: 'P1', label: 'Setor 1', path: '/index.html', screen: 'LIBERACAO_S1' },
         { id: 'setor2', mono: 'P2', label: 'Setor 2', path: '/index.html', screen: 'LIBERACAO_S2' },
@@ -59,30 +59,23 @@ const MENU_CONFIG = {
         { id: 'setor4', mono: 'P4', label: 'Setor 4', path: '/index.html', screen: 'LIBERACAO_S4' },
         { id: 'mandril', mono: 'MC', label: 'Mandril Circular', path: '/index.html', screen: 'MANDRIL_CIRCULAR' }
       ] },
-      { label: 'Campinas · Montagem', items: [
+      { label: 'Montagem', items: [
         { id: 'inspecao', mono: 'MI', label: 'Inspeção Setor 3 e 4', path: '/index.html', screen: 'INSPECAO' },
         { id: 'montagem', mono: 'MP', label: 'Montagem Postes', path: '/index.html', screen: 'MONTAGEM_POSTES' },
         { id: 'sequencia', mono: 'S3', label: 'Sequência Setor 3', path: '/index.html', screen: 'SEQUENCIA_S3' }
       ] },
-      { label: 'Campinas · Controle', items: [
+      { label: 'Controle', items: [
         { id: 'relatorioMapa', mono: 'RE', label: 'Relatório Enc. Produção', path: '/index.html', screen: 'RELATORIO' },
         { id: 'historico', mono: 'HI', label: 'Histórico', path: '/index.html', screen: 'HISTORICO' },
         { id: 'acmpConcretagem', mono: 'CC', label: 'Acmp. Concretagem', path: '/index.html', screen: 'ACMP_CONCRETAGEM' },
         { id: 'manutencao', mono: 'MF', label: 'Manutenção Formas', path: '/index.html', screen: 'RELATORIO_MANUTENCAO' },
         { id: 'tratativa', mono: 'TD', label: 'Tratativa Defeitos', path: '/index.html', screen: 'TRATATIVA_DEFEITOS' }
       ] },
-      { label: 'Campinas · Indicadores', items: [
+      { label: 'Indicadores', items: [
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
         { id: 'dashDefeitos', mono: 'DF', label: 'Dashboard Defeitos', path: '/index.html', screen: 'DASHBOARD_DEFEITOS' },
         { id: 'produtividade', mono: 'CO', label: 'Dashboard Concretagem Matriz', path: '/index.html', screen: 'PROD_ANALISE' },
         { id: 'tvFormas', mono: 'TV', label: 'Painel TV — Formas', path: '/unificado/tv/formas/', screen: 'TV_FORMAS' }
-      ] },
-      { label: 'Pederneiras', items: [
-        { id: 'pdrApontamento', mono: 'AP', label: 'Apontamento do dia', path: 'apontamento', pederneiras: true },
-        { id: 'pdrMaoDeObra', mono: 'MO', label: 'Mão de obra', path: 'mao-de-obra', pederneiras: true },
-        { id: 'pdrMensal', mono: 'PM', label: 'Produção Pederneiras', path: 'mensal', pederneiras: true },
-        { id: 'pdrIndicadores', mono: 'IN', label: 'Indicadores', path: 'indicadores', pederneiras: true },
-        { id: 'pdrProdutos', mono: 'CP', label: 'Cadastro de produtos', path: 'produtos', pederneiras: true }
       ] }
     ]
   },
@@ -107,16 +100,6 @@ const MENU_CONFIG = {
   laboratorio: {
     label: 'Laboratório',
     groups: [
-      { label: 'Corpos de Prova', items: [
-        { id:'labCecEtiquetas', label:'Etiquetas QR', path:'cec/etiquetas/', permissionId:'labCec' },
-        { id:'labCecLeitura', label:'Leitura de CP', path:'cec/leitura/', permissionId:'labCec' },
-        { id:'labCecResultados', label:'Resultados dos corpos de prova', path:'cec/analise/resultado-cp.html', permissionId:'labCec' }
-      ] },
-      { label: 'Controle estatístico', items: [
-        { id:'labCec', label:'Visão geral', path:'cec/' },
-        { id:'labCecAnalise', label:'Análise estatística', path:'cec/analise/', permissionId:'labCec' },
-        { id:'labCecRelatorio', label:'Relatório CEC', path:'cec/analise/relatorio.html', permissionId:'labCec' }
-      ] },
       { label: 'Dosagem', items: [
         { id:'labDosagem', label:'Visão geral', path:'dosagem/' },
         { id:'labDosagemEmpacotamento', label:'Empacotamento', path:'dosagem/#/dosagem/empacotamento', permissionId:'labDosagem' },
@@ -136,6 +119,14 @@ const MENU_CONFIG = {
       { label: 'Concreto fresco', items: [
         { id:'labSlump', label:'Registro de slump / flow', path:'slump' }
       ] },
+      { label: 'Controle estatístico', items: [
+        { id:'labCec', label:'Visão geral', path:'cec/' },
+        { id:'labCecResultados', label:'Resultados dos corpos de prova', path:'cec/analise/resultado-cp.html', permissionId:'labCec' },
+        { id:'labCecRelatorio', label:'Relatório CEC', path:'cec/analise/relatorio.html', permissionId:'labCec' },
+        { id:'labCecAnalise', label:'Análise estatística', path:'cec/analise/', permissionId:'labCec' },
+        { id:'labCecEtiquetas', label:'Etiquetas QR', path:'cec/etiquetas/', permissionId:'labCec' },
+        { id:'labCecLeitura', label:'Leitura de CP', path:'cec/leitura/', permissionId:'labCec' }
+      ] },
       { label: 'Usina de Campinas', items: [
         { id:'labUsinasRelatorios', label:'Relatórios e custos', path:'usinas-relatorios/' }
       ] },
@@ -145,7 +136,6 @@ const MENU_CONFIG = {
         { id:'labDevice', label:'Dispositivo', path:'?view=settings' }
       ] },
       { label: 'Postes', items: [
-        { id:'labCertificados', label:'Certificados de qualidade', path:'certificados-qualidade/' },
         { id:'labPole', label:'Ensaio de postes', path:'novo/postes' },
         { id:'labAbsorption', label:'Absorção', path:'novo/postes?tab=absorcao' },
         { id:'labTests', label:'Histórico de ensaios', path:'novo/postes?tab=historico' },
@@ -184,8 +174,6 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
       ? new URL(item.path, LAB_BASE).href
       : module === 'planejamento'
       ? new URL(item.path.replace(/^\/pages\//, ''), PCP_BASE).href
-      : item.pederneiras
-      ? new URL(`producao/pederneiras/?tab=${encodeURIComponent(item.path)}`, UNIFICADO_BASE).href
       : item.id === 'tvFormas'
       ? new URL('tv/formas/', UNIFICADO_BASE).href
       : new URL(`operacao/?tela=${encodeURIComponent(item.screen)}`, MAPA_BASE).href,

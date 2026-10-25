@@ -1,14 +1,13 @@
-const CACHE = 'concrefer-unificado-shell-v1.0.58';
+const CACHE = 'concrefer-unificado-shell-v1.0.50-lab-reports';
 const CRONO_CACHE = 'concrefer-cronoanalise-v1';
 const ROOT = '/unificado/';
 const CORE = [ROOT + 'index.html', ROOT + 'shell/shell.css?v=1.0.36-usinas',
   ROOT + 'shell/shared-menu.css?v=1.0.36-usinas',
-  ROOT + 'shell/modelo-a/menu.css?v=1.0.58', ROOT + 'shell/modelo-a-host.css?v=1.0.36-usinas',
-  ROOT + 'shell/modelo-a/menu.js?v=1.0.58',
-  ROOT + 'shell/modelo-a-loader.js?v=1.0.58',
-  ROOT + 'shell/menu.config.js?v=1.0.58', ROOT + 'shell/auth.js?v=1.0.15',
-  ROOT + 'shell/shell.js?v=1.0.58', ROOT + 'shell/navigation.css?v=1.0.58',
-  ROOT + 'shell/navigation.js?v=1.0.58', ROOT + 'shell/router.js?v=1.0.58',
+  ROOT + 'shell/modelo-a/menu.css?v=1.0.20-modulos', ROOT + 'shell/modelo-a-host.css?v=1.0.36-usinas',
+  ROOT + 'shell/modelo-a/menu.js?v=1.0.50-lab-reports',
+  ROOT + 'shell/modelo-a-loader.js?v=1.0.50-lab-reports',
+  ROOT + 'shell/menu.config.js?v=1.0.50-lab-reports', ROOT + 'shell/auth.js?v=1.0.15',
+  ROOT + 'shell/shell.js?v=20261024-dashboards-v7', ROOT + 'shell/router.js?v=1.0.50-lab-reports',
   ROOT + 'shell/module-pages.js?v=20261024-mobile-cards-1',
   ROOT + 'shell/embedded.css?v=1.0'];
 self.addEventListener('message', event => {
@@ -59,11 +58,11 @@ self.addEventListener('fetch', event => {
     return;
   }
   if (!url.pathname.startsWith(ROOT + 'shell/')) return;
-  event.respondWith(fetch(event.request, {cache:'no-store'}).then(response => {
-    if (response.ok && !response.redirected && response.type === 'basic') {
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
+    if (response.ok) {
       const copy = response.clone();
-      event.waitUntil(caches.open(CACHE).then(cache => cache.put(event.request, copy)));
+      caches.open(CACHE).then(cache => cache.put(event.request, copy));
     }
     return response;
-  }).catch(async () => await caches.match(event.request) || Response.error()));
+  })));
 });
