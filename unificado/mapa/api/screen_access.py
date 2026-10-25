@@ -87,6 +87,10 @@ def allowed_screens(user, planning_role, overrides, lab_users):
                                 row['module'] not in {'laboratorio', 'qualidade'} and row['id'] != 'tvFormas'
                                 or row['module'] == 'laboratorio' and user['id'] in DEFAULT_LAB_USERS
                                 and not row['id'].startswith('cronoanalise.')))]
+    if (overrides.get('labUsinasRelatorios') is not False
+            and 'labUsinasRelatorios' not in allowed
+            and any(BY_ID[item]['module'] == 'laboratorio' for item in allowed)):
+        allowed.append('labUsinasRelatorios')
     if ('qualidadePainel' in allowed and 'qualidadeResultadosBancada' not in allowed
             and overrides.get('qualidadeResultadosBancada') is not False):
         allowed.append('qualidadeResultadosBancada')
@@ -107,6 +111,8 @@ def screen_for_uri(original_uri, screen_header=''):
         return BY_ID.get('labCecResultados')
     if path.rstrip('/') == '/unificado/laboratorio/cec/relatorio':
         return BY_ID.get('labCecRelatorio')
+    if path.startswith('/unificado/laboratorio/usinas-relatorios/'):
+        return BY_ID.get('labUsinasRelatorios')
     if path.startswith('/unificado/laboratorio/dosagem/'):
         return BY_ID.get('labDosagem')
     if path in {'/unificado/relatorios/fechamento-diario/',
