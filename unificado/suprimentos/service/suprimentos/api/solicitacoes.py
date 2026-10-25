@@ -475,8 +475,8 @@ def upload_root() -> Path:
     if not raw:
         raise HTTPException(503, "Armazenamento privado não configurado")
     root = Path(raw).resolve()
-    if any(str(root).lower().startswith(str(Path(p).resolve()).lower()) for p in
-           (os.getenv("SUPRIMENTOS_PUBLIC_DIR", ""),) if p):
+    public = os.getenv("SUPRIMENTOS_PUBLIC_DIR", "")
+    if public and (root == Path(public).resolve() or Path(public).resolve() in root.parents):
         raise HTTPException(503, "Armazenamento dentro do webroot")
     return root
 
@@ -519,6 +519,7 @@ async def add_photo(request_id: str, arquivo: UploadFile = File(...), client_uui
     path = folder / str(photo_id)
     with path.open("xb") as stream:
         stream.write(content)
+    path.chmod(0o600)
     try:
         db.execute(insert(t).values(id=photo_id, solicitacao_id=request["id"], unidade_id=ctx.unit_id,
                    storage_path=str(path), sha256=digest, mime=mime, tamanho=len(content), client_uuid=client_id,

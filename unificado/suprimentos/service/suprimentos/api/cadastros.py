@@ -125,6 +125,12 @@ def permitted_read(ctx, resource):
     if resource in {"usuarios-papeis", "flags", "alcadas", "parametros"} and not ctx.has("cadastro.admin"):
         raise HTTPException(403, "Cadastro administrativo")
 
+def visible_centers(ctx):
+    """A lista de CCs não amplia o escopo de um papel restrito."""
+    if any(role["cc_id"] is None for role in ctx.roles):
+        return None
+    return [role["cc_id"] for role in ctx.roles]
+
 @router.get("/health")
 def health(db: Session = Depends(session)):
     db.execute(select(func.current_timestamp())).scalar_one()
@@ -163,6 +169,8 @@ def list_cadastro(resource: str, unidade: str = "campinas", q: str = "", page: i
     filters = []
     if unit_scoped:
         filters.append(t.c.unidade_id == ctx.unit_id)
+    if resource == "centros-custo" and visible_centers(ctx) is not None:
+        filters.append(t.c.id.in_(visible_centers(ctx)))
     if ativo is not None and t.c.get("ativo") is not None:
         filters.append(t.c.ativo == ativo)
     if q:
@@ -178,7 +186,11 @@ def list_cadastro(resource: str, unidade: str = "campinas", q: str = "", page: i
 def get_cadastro(resource: str, item_id: str, unidade: str = "campinas", user: Actor = Depends(current_actor), db: Session = Depends(session)):
     name, *_ = config(resource)
     ctx = context(unidade, user, db); permitted_read(ctx, resource)
-    row = db.execute(select(table(name)).where(key_where(table(name), item_id, ctx))).mappings().one_or_none()
+    t = table(name)
+    where = key_where(t, item_id, ctx)
+    if resource == "centros-custo" and visible_centers(ctx) is not None:
+        where = and_(where, t.c.id.in_(visible_centers(ctx)))
+    row = db.execute(select(t).where(where)).mappings().one_or_none()
     if not row:
         raise HTTPException(404, "Registro não encontrado")
     return jsonable_encoder(dict(row))

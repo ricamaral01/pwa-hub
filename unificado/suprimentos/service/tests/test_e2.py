@@ -263,6 +263,8 @@ def test_pwa_photo_replay_and_catalog_isolation(env, api):
         assert conn.execute(text("SELECT count(*) FROM suprimentos.sup_solicitacao_foto WHERE client_uuid=:key"),
                             {"key": key}).scalar_one() == 1
     assert sol.get(f"{BASE}/pwa/mais-pedidos?cc_id={other_cc}").status_code == 403
+    assert {x["id"] for x in sol.get(f"{BASE}/cadastros/centros-custo").json()["items"]} == {cc}
+    assert sol.get(f"{BASE}/cadastros/centros-custo/{other_cc}").status_code == 404
     assert api.as_("foreign").get(f"{BASE}/pwa/mais-pedidos?cc_id={cc}&unidade=pederneiras").status_code == 403
 
 

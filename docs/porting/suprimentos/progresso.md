@@ -7,7 +7,7 @@
 | E3 · Casca, menu, permissões | **Concluída** | [04-casca-permissoes.md](04-casca-permissoes.md); 4 testes gateway, 5 perfis com IDs antigos preservados, typecheck/build do menu | Snapshot de 5 contas reais e instalação nginx/serviço serão verificados na E7 |
 | E4 · Telas desktop/tablet | **Concluída** | [05-telas-desktop.md](05-telas-desktop.md); Playwright fluxo completo, 12 capturas, 1440/820 sem rolagem horizontal; regressão E1–E4 `17 passed` | Validação com sessão/dados reais fica para E7 |
 | E5 · PWA Solicitação | **Concluída** | [06-pwa-solicitacao.md](06-pwa-solicitacao.md); E1–E5 `21 passed`, mobile Pixel/iPhone, Lighthouse PWA 1,00 | Instalação HTTPS e API real na homologação E7 |
-| E6 · Revisão integrada | Não iniciada | — | — |
+| E6 · Revisão integrada | **Concluída** | [07-revisao-integrada.md](07-revisao-integrada.md); `21 passed`, revisão de rotas/CC/fotos/segredos, check JS/Python | Validação de nginx, permissões e usuários reais na E7 |
 | E7 · Homologação | Não iniciada | — | — |
 
 **Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
