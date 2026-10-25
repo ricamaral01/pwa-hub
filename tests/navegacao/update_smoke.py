@@ -48,6 +48,7 @@ def main():
         }''')
         page.wait_for_function("window.UnificadoSidebarModelA.snapshot().updateState==='updating'")
         assert 'Atualizando' in page.locator('.nav-footer .nav-update').inner_text()
+        assert page.locator('.nav-footer .nav-update').is_enabled()
         print(json.dumps({'version':current,'simulated_latest':next_version,
                           'states':['current','failed','recovery','available','updating'],
                           'always_visible_button':True},ensure_ascii=False))

@@ -9,6 +9,7 @@ from nav_matrix import CHROME, HOST, SIZES, token_for
 
 ROOT = Path(__file__).resolve().parents[2]
 CAPTURES = ROOT / 'docs/navegacao/capturas'
+TARGET_VERSION = (ROOT / 'unificado/VERSION').read_text(encoding='utf-8').strip()
 
 
 def main():
@@ -89,7 +90,7 @@ def main():
                 assert page.locator('.nav-rail-update').is_visible()
             else:
                 assert page.locator('.nav-rail-update').is_visible()
-            page.screenshot(path=str(CAPTURES / f'{label}-{environment}-compact-1.0.57.png'))
+            page.screenshot(path=str(CAPTURES / f'{label}-{environment}-compact-{TARGET_VERSION}.png'))
             result[label] = metrics
             context.close()
 
@@ -146,7 +147,7 @@ def main():
         result['update'] = 'available, failed twice, recovery, no-new-version reload and toast'
         context.close()
         browser.close()
-    (CAPTURES / f'compact-acceptance-{environment}-1.0.57.json').write_text(
+    (CAPTURES / f'compact-acceptance-{environment}-{TARGET_VERSION}.json').write_text(
         json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

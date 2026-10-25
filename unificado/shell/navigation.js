@@ -380,7 +380,6 @@
     const update=button('nav-update','',()=>host.update());
     update.append(reloadIcon(),el('span','',updateText()));
     update.dataset.state=snap.updateState;
-    update.disabled=snap.updateState==='updating';
     wrap.append(update,el('small','nav-update-version',`Versão ${snap.version}`));
     return wrap;
   }
