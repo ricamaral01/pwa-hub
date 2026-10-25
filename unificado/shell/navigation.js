@@ -34,16 +34,35 @@
   const button = (className,text,handler) => {
     const node=el('button',className,text); node.type='button'; node.addEventListener('click',handler); return node;
   };
+  const strokeIcon = (className,pathData) => {
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('class',className);
+    svg.setAttribute('viewBox','0 0 24 24');
+    svg.setAttribute('fill','none');
+    svg.setAttribute('stroke','currentColor');
+    svg.setAttribute('stroke-width','2');
+    svg.setAttribute('stroke-linecap','round');
+    svg.setAttribute('stroke-linejoin','round');
+    svg.setAttribute('aria-hidden','true');
+    svg.setAttribute('focusable','false');
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',pathData);
+    svg.append(path);
+    return svg;
+  };
+  const groupChevron=()=>strokeIcon('nav-chevron','m9 18 6-6-6-6');
+  const downChevron=className=>strokeIcon(className,'m6 9 6 6 6-6');
   const nav = el('nav','nav-modern'); nav.id='nav-modern'; nav.setAttribute('aria-label','Navegação do Unificado');
   const rail = el('div','nav-rail');
   const panel = el('div','nav-panel');
   const panelHead = el('div','nav-panel-head');
   const panelTitle = el('strong','nav-panel-title','Telas');
-  const closeButton = button('nav-panel-close','×',() => {
+  const closeButton = button('nav-panel-close','',() => {
     if(matchMedia('(min-width:1280px)').matches)setDesktopCollapsed(true);
     else if(matchMedia('(min-width:768px)').matches)setTabletOpen(false);
     else closeMobile();
   }); closeButton.setAttribute('aria-label','Recolher ou fechar menu');
+  closeButton.append(strokeIcon('nav-close-icon','M18 6 6 18 M6 6l12 12'));
   panelHead.append(panelTitle,closeButton);
   const moduleSwitcher=button('nav-module-switcher','',()=>{
     state.moduleMenuOpen=!state.moduleMenuOpen;
@@ -198,7 +217,7 @@
     if(group.label) {
       const toggleButton=button('nav-group-toggle','',()=>toggle(module.id,id));
       toggleButton.setAttribute('aria-expanded',String(opened));
-      toggleButton.append(el('span','nav-chevron',opened?'⌄':'›'),el('span','nav-group-name',group.label),
+      toggleButton.append(groupChevron(),el('span','nav-group-name',group.label),
         el('span','nav-count',String(group.items.length)));
       section.append(toggleButton);
     }
@@ -218,7 +237,7 @@
     toggleButton.setAttribute('aria-expanded',String(opened));
     toggleButton.append(el('span','nav-unit-code',unit==='Campinas'?'CP':'PD'),
       el('span','nav-unit-name',unit),el('span','nav-unit-count',`${count} telas${unit==='Campinas'?` · ${groups.length} grupos`:''}`),
-      el('span','nav-chevron',opened?'⌃':'⌄'));
+      downChevron('nav-chevron'));
     section.append(toggleButton);
     if(opened) {
       const body=el('div','nav-unit-body');
@@ -265,7 +284,7 @@
     moduleSwitcher.replaceChildren(el('span','nav-switcher-code',moduleCodes[state.module]||'MD'));
     const switcherLabel=el('span','nav-switcher-label');
     switcherLabel.append(el('small','','MÓDULO'),el('strong','',selectedModule?.label||'Telas'));
-    moduleSwitcher.append(switcherLabel,el('span','nav-switcher-chevron','⌄'));
+    moduleSwitcher.append(switcherLabel,downChevron('nav-switcher-chevron'));
     const railToggle=button('nav-rail-menu','☰',()=>{
       if(matchMedia('(min-width:1280px)').matches)setDesktopCollapsed(!state.desktopCollapsed);
       else setTabletOpen(!state.tabletOpen);
