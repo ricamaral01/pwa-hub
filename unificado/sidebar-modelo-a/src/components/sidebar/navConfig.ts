@@ -10,7 +10,7 @@ export type NavModule = { id: string; label: string; color: string; icon: IconNa
 
 export const MODULE_COLORS = {
   planejamento: '#5B8DEF', producao: '#F08A3C', qualidade: '#2FB38A',
-  laboratorio: '#F2B705', usinas: '#168E9A', ged: '#9B7BF0',
+  laboratorio: '#F2B705', usinas: '#168E9A', ged: '#9B7BF0', suprimentos: '#2DD4BF',
 } as const;
 
 type Entry = [id: string, label: string, route: string, icon: IconName, badge?: NavBadge];
@@ -83,7 +83,7 @@ export const NAV_MODULES: NavModule[] = [
     section('INDICADORES', [
       ['dashMontagem','Dashboard Montagem',p('MONTAGEM_INDICADORES'),'map'],
       ['dashDefeitos','Dashboard Defeitos',p('DASHBOARD_DEFEITOS'),'map'],
-      ['produtividade','Concretagem',p('PROD_ANALISE'),'map'],
+      ['produtividade','Dashboard Concretagem Matriz',p('PROD_ANALISE'),'map'],
       ['tvFormas','Painel TV — Formas','tv/formas/','map'],
     ]),
   ] },
@@ -91,10 +91,30 @@ export const NAV_MODULES: NavModule[] = [
     section('NÃO CONFORMIDADES', [
       ['qualidadePainel','Painel de RNCs','qualidade/','alert'],
       ['qualidadeAbertura','Abrir RNC','qualidade/abrir','doc'],
+      ['qualidadeResultadosBancada','Resultados de bancada','qualidade/resultados-bancada','doc'],
       ['qualidadeCadastros','Cadastros','qualidade/cadastros','database'],
     ]),
   ] },
   { id:'laboratorio', label:'Laboratório', color:MODULE_COLORS.laboratorio, icon:'flask', sections:[
+    section('DOSAGEM', [
+      ['labDosagem','Visão geral','laboratorio/dosagem/','flask'],
+      ['labDosagemEmpacotamento','Empacotamento','laboratorio/dosagem/#/dosagem/empacotamento','flask'],
+      ['labDosagemVolume','Volume','laboratorio/dosagem/#/dosagem/volume','flask'],
+      ['labDosagemComparacao','Comparação dos métodos','laboratorio/dosagem/#/comparacao-metodos','sliders'],
+      ['labDosagemTracos','Traços','laboratorio/dosagem/#/tracos','doc'],
+      ['labDosagemMateriais','Materiais','laboratorio/dosagem/#/materiais','database'],
+      ['labDosagemFornecedores','Fornecedores','laboratorio/dosagem/#/fornecedores','database'],
+      ['labDosagemEnsaios','Ensaios','laboratorio/dosagem/#/ensaios','flask'],
+      ['labDosagemFerramentas','Ferramentas','laboratorio/dosagem/#/ferramentas','sliders'],
+      ['labDosagemCustos','Custos','laboratorio/dosagem/#/custos','doc'],
+      ['labDosagemReferencia','Referência','laboratorio/dosagem/#/referencia','help'],
+      ['labDosagemProducao','Produção','laboratorio/dosagem/#/producao-r1','factory'],
+      ['labDosagemImportacao','Importação','laboratorio/dosagem/#/importacao-r1','database'],
+      ['labDosagemConfig','Configurações','laboratorio/dosagem/#/config','sliders'],
+    ]),
+    section('CONCRETO FRESCO', [
+      ['labSlump','Registro de slump / flow','laboratorio/slump','thermometer'],
+    ]),
     section('CURA TÉRMICA', [
       ['labMonitor','Monitoramento','laboratorio/','thermometer',{text:'AO VIVO',tone:'live'}],
       ['labHistory','Histórico de medições','laboratorio/?view=history','history'],
@@ -123,7 +143,7 @@ export const NAV_MODULES: NavModule[] = [
       ['usinasCec','Controle estatístico','usinas/?area=cec','database'],
       ['usinasRelatorios','Relatórios gerenciais','usinas/?area=relatorios','doc'],
       ['usinasEstoque','Controle de estoque','usinas/?area=estoque','factory'],
-    ])
+    ]),
   ] },
   { id:'ged', label:'GED', color:MODULE_COLORS.ged, icon:'folder', sections:[
     section('GESTÃO DOCUMENTAL', [
@@ -134,9 +154,27 @@ export const NAV_MODULES: NavModule[] = [
       ['ged-calibrations','Calibrações','ged/calibrations','sliders'],
     ]),
   ] },
+  { id:'suprimentos', label:'Suprimentos', color:MODULE_COLORS.suprimentos, icon:'database', sections:[
+    section('SOLICITAÇÕES', [
+      ['suprimentosPainel','Painel','suprimentos/painel/','map'],
+      ['suprimentosSolicitacoes','Solicitações','suprimentos/solicitacoes/','doc'],
+      ['suprimentosNova','Nova solicitação','suprimentos/nova/','post'],
+      ['suprimentosAlmoxarifado','Almoxarifado','suprimentos/almoxarifado/','database'],
+      ['suprimentosInventario','Inventário','suprimentos/inventario/','sliders'],
+    ]),
+    section('COMPRAS', [
+      ['suprimentosCotacoes','Cotações e pedidos','suprimentos/cotacoes/','doc'],
+      ['suprimentosRecebimento','Recebimento','suprimentos/recebimento/','post'],
+      ['suprimentosFornecedores','Fornecedores','suprimentos/fornecedores/','users'],
+    ]),
+    section('ADMINISTRAÇÃO', [
+      ['suprimentosCadastros','Cadastros e alçadas','suprimentos/cadastros/','sliders'],
+    ]),
+  ] },
 ];
 
 export const FOOTER_ITEMS: NavItem[] = [
-  {id:'labHelp',label:'Como funciona',href:view('laboratorio/?view=help'),icon:'help'},
   {id:'usuarios',label:'Usuários',href:view(p('USUARIOS')),icon:'users'},
+  {id:'reportProblem',label:'Relatar problema',href:'/unificado/testar/#relatar',icon:'alert'},
+  {id:'labHelp',label:'Como funciona',href:view('laboratorio/?view=help'),icon:'help'},
 ];

@@ -6,7 +6,7 @@ import re
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation
 from uuid import UUID
-from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Query, Request, UploadFile
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import and_, func, insert, or_, select, text, update
 from sqlalchemy.exc import IntegrityError
@@ -129,6 +129,20 @@ def permitted_read(ctx, resource):
 def health(db: Session = Depends(session)):
     db.execute(select(func.current_timestamp())).scalar_one()
     return {"ok": True, "modulo": "suprimentos"}
+
+
+@router.get("/flags")
+def flags_for_gateway(request: Request, unidade: str = "campinas", db: Session = Depends(session)):
+    """Somente o gateway local lê a flag efetiva; sem usuário nem dados de negócio."""
+    if request.client is None or request.client.host not in {"127.0.0.1", "::1"}:
+        raise HTTPException(403, "Consulta interna")
+    u = table("sup_unidade")
+    unit_id = db.execute(select(u.c.id).where(and_(u.c.codigo == unidade, u.c.ativo.is_(True)))).scalar_one_or_none()
+    if unit_id is None:
+        return {"unidade": unidade, "flags": {}}
+    f = table("sup_flag")
+    rows = db.execute(select(f.c.fase, f.c.habilitado).where(f.c.unidade_id == unit_id)).all()
+    return {"unidade": unidade, "flags": {row.fase: bool(row.habilitado) for row in rows}}
 
 @router.get("/me")
 def me(unidade: str = "campinas", user: Actor = Depends(current_actor), db: Session = Depends(session)):

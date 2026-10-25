@@ -22,6 +22,8 @@ body.unificado-shared-menu #sidebar .module-button[data-short="QL"] .shared-modu
 body.unificado-shared-menu #sidebar .module-button[data-short="LB"] .shared-module-dot{background:#EAB308}
 body.unificado-shared-menu #sidebar .module-button[data-module="laboratorio"].is-active{background:#EAB308;color:#0B1730}
 body.unificado-shared-menu #sidebar .module-button[data-module="usinas"].is-active{background:#35C3C4;color:#0B1730}
+body.unificado-shared-menu #sidebar .module-button[data-short="SP"] .shared-module-dot{background:#2DD4BF}
+body.unificado-shared-menu #sidebar .module-button[data-module="suprimentos"].is-active{background:#2DD4BF;color:#0B1730}
 body.unificado-shared-menu #sidebar .shared-module-code{display:none}
 body.unificado-shared-menu #sidebar .module-button::after{content:none!important}
 body.unificado-shared-menu #sidebar .shared-nav-scroll{display:flex;flex-direction:column;gap:2px;flex:1;min-height:0;overflow-x:hidden;overflow-y:auto;margin-top:6px;scrollbar-width:thin;scrollbar-color:#ffffff2e transparent}
@@ -33,6 +35,8 @@ body.unificado-shared-menu #sidebar .group-items{display:flex!important;flex-dir
 body.unificado-shared-menu #sidebar .group-title{display:block;flex:none;width:100%;padding:14px 10px 4px;border:0;background:transparent;color:#8FA1BE;font-size:11px;font-weight:500;letter-spacing:.06em;text-align:left}
 body.unificado-shared-menu #sidebar[data-module="laboratorio"] .group-title{color:#EAB308}
 body.unificado-shared-menu #sidebar[data-module="usinas"] .group-title{color:#35C3C4}
+body.unificado-shared-menu #sidebar[data-module="suprimentos"] .group-title{color:#2DD4BF}
+body.unificado-shared-menu #sidebar[data-module="suprimentos"] .nav-link.is-active .mono{background:#2DD4BF;color:#0B1730}
 body.unificado-shared-menu #sidebar[data-module="laboratorio"] .nav-link.is-active .mono{background:#EAB308;color:#0B1730}
 body.unificado-shared-menu #sidebar .ged-preview-group .group-title{color:#8B5CF6}
 body.unificado-shared-menu #sidebar .ged-preview-group .nav-link .mono{background:#ffffff14;color:#A9B8CF}
@@ -47,7 +51,7 @@ body.unificado-shared-menu #sidebar .ged-preview-group .nav-link.is-active .mono
 body.unificado-shared-menu #sidebar .nav-link-label{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 body.unificado-shared-menu #sidebar .shared-user-footer{display:flex;flex-direction:column;gap:2px;flex:none;width:100%;padding-top:6px}
 body.unificado-shared-menu #sidebar .shared-user-footer .nav-footer{margin:0;padding:0 8px}
-body.unificado-shared-menu.unificado-ged-active #sidebar .shared-user-footer .nav-footer{display:none}
+body.unificado-shared-menu.unificado-ged-active #sidebar .shared-user-footer .nav-footer-users{display:none}
 body.unificado-shared-menu #sidebar .shared-user-row{display:flex;align-items:center;gap:10px;min-height:48px;margin-top:6px;padding:8px 8px 2px}
 body.unificado-shared-menu #sidebar .shared-avatar{display:flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#15416F;color:#fff;font-size:12px;font-weight:600}
 body.unificado-shared-menu #sidebar .shared-user-text{flex:1;min-width:0}

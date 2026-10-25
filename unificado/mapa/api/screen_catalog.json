@@ -344,11 +344,29 @@
   {
     "id": "produtividade",
     "module": "producao",
-    "label": "Produtividade",
+    "label": "Dashboard Concretagem Matriz",
     "path": "/unificado/mapa/operacao/",
     "query": "?tela=PROD_ANALISE",
     "screen": "PROD_ANALISE",
     "require": null
+  },
+  {
+    "id": "fechamentoDiario",
+    "module": "producao",
+    "label": "Fechamento Diário",
+    "path": "/unificado/relatorios/fechamento-diario/",
+    "query": "",
+    "screen": "FECHAMENTO_DIARIO",
+    "require": null
+  },
+  {
+    "id": "fechamentoDiarioPcp",
+    "module": "planejamento",
+    "label": "Fechamento Diário",
+    "path": "/unificado/pcp/fechamento-diario/",
+    "query": "",
+    "screen": null,
+    "require": "PRODUCAO"
   },
   {
     "id": "labMonitor",
@@ -374,6 +392,24 @@
     "label": "Dispositivo",
     "path": "/unificado/laboratorio/",
     "query": "?view=settings",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labDosagem",
+    "module": "laboratorio",
+    "label": "Dosagem",
+    "path": "/unificado/laboratorio/dosagem/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
+    "id": "labSlump",
+    "module": "laboratorio",
+    "label": "Registro de slump / flow",
+    "path": "/unificado/laboratorio/slump",
+    "query": "",
     "screen": null,
     "require": null
   },
@@ -492,6 +528,10 @@
     "id": "qualidadeCadastros", "module": "qualidade", "label": "Cadastros",
     "path": "/unificado/qualidade/cadastros", "query": "", "screen": null, "require": null
   },
+  {
+    "id": "qualidadeResultadosBancada", "module": "qualidade", "label": "Resultados de bancada",
+    "path": "/unificado/qualidade/resultados-bancada", "query": "", "screen": null, "require": null
+  },
   {"id":"cronoanalise.inicio","module":"laboratorio","label":"Cronoanálise: Início","path":"/unificado/laboratorio/cronoanalise","query":"","screen":null,"require":null},
   {"id":"cronoanalise.coletar","module":"laboratorio","label":"Cronoanálise: Coletar","path":"/unificado/laboratorio/cronoanalise/coletar","query":"","screen":null,"require":null},
   {"id":"cronoanalise.medicoes","module":"laboratorio","label":"Cronoanálise: Medições","path":"/unificado/laboratorio/cronoanalise/medicoes","query":"","screen":null,"require":null},
@@ -499,5 +539,19 @@
   {"id":"cronoanalise.dimensionar","module":"laboratorio","label":"Cronoanálise: Dimensionar","path":"/unificado/laboratorio/cronoanalise/dimensionar","query":"","screen":null,"require":null},
   {"id":"cronoanalise.simular","module":"laboratorio","label":"Cronoanálise: Simular","path":"/unificado/laboratorio/cronoanalise/simular","query":"","screen":null,"require":null},
   {"id":"cronoanalise.metodologia","module":"laboratorio","label":"Cronoanálise: Metodologia","path":"/unificado/laboratorio/cronoanalise/metodologia","query":"","screen":null,"require":null},
-  {"id":"usinasInicio","module":"usinas","label":"Cartas de traço","path":"/unificado/usinas/","query":"","screen":null,"require":"GERENCIA"}
+  {"id":"usinasInicio","module":"usinas","label":"Cartas de traço","path":"/unificado/usinas/","query":"","screen":null,"require":"GERENCIA"},
+  {"id":"usinasCartaTraco","module":"usinas","label":"Carta traço · MCC","path":"/unificado/usinas/carta-traco.html","query":"","screen":null,"require":"GERENCIA"},
+  {"id":"labCec","module":"laboratorio","label":"Controle estatístico","path":"/unificado/laboratorio/cec/","query":"","screen":null,"require":null},
+  {"id":"labCecResultados","module":"laboratorio","label":"Resultados dos corpos de prova","path":"/unificado/laboratorio/cec/analise/resultado-cp.html","query":"","screen":null,"require":null},
+  {"id":"labCecRelatorio","module":"laboratorio","label":"Relatório CEC","path":"/unificado/laboratorio/cec/analise/relatorio.html","query":"","screen":null,"require":null},
+  {"id":"labCecAnalise","module":"laboratorio","label":"Análise estatística","path":"/unificado/laboratorio/cec/analise/","query":"","screen":null,"require":null},
+  {"id":"labCecEtiquetas","module":"laboratorio","label":"Etiquetas QR","path":"/unificado/laboratorio/cec/etiquetas/","query":"","screen":null,"require":null},
+  {"id":"labCecLeitura","module":"laboratorio","label":"Leitura de CP","path":"/unificado/laboratorio/cec/leitura/","query":"","screen":null,"require":null},
+  {"id":"labUsinasRelatorios","module":"laboratorio","label":"Relatórios e custos de Campinas","path":"/unificado/laboratorio/usinas-relatorios/","query":"","screen":null,"require":null},
+  {"id":"labCartaTraco","module":"laboratorio","label":"Carta traço e MCC","path":"/unificado/laboratorio/carta-traco/","query":"","screen":null,"require":null},
+  {"id":"suprimentosPainel","module":"suprimentos","label":"Painel","path":"/unificado/suprimentos/painel/","query":"","screen":null,"require":null},
+  {"id":"suprimentosSolicitacoes","module":"suprimentos","label":"Solicitações","path":"/unificado/suprimentos/solicitacoes/","query":"","screen":null,"require":null},
+  {"id":"suprimentosNova","module":"suprimentos","label":"Nova solicitação","path":"/unificado/suprimentos/nova/","query":"","screen":null,"require":null},
+  {"id":"suprimentosFornecedores","module":"suprimentos","label":"Fornecedores","path":"/unificado/suprimentos/fornecedores/","query":"","screen":null,"require":null},
+  {"id":"suprimentosCadastros","module":"suprimentos","label":"Cadastros e alçadas","path":"/unificado/suprimentos/cadastros/","query":"","screen":null,"require":null}
 ]

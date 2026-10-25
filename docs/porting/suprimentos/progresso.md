@@ -4,7 +4,7 @@
 |---|---|---|---|
 | E1 · Serviço e cadastros | **Concluída** | [02-schema-cadastros.md](02-schema-cadastros.md); pytest E1 `5 passed`, upgrade/downgrade em PostgreSQL descartável | Dados reais de Campinas e UI entram depois; alçadas/valores seguem `a_confirmar` |
 | E2 · Solicitação e aprovação | **Concluída** | [03-solicitacao-backend.md](03-solicitacao-backend.md); E1+E2 `12 passed` em 3 execuções consecutivas; downgrade em banco vazio separado | Valores de alçada/SLA ainda `a_confirmar`; timer será instalado na E7 |
-| E3 · Casca, menu, permissões | Não iniciada | — | — |
+| E3 · Casca, menu, permissões | **Concluída** | [04-casca-permissoes.md](04-casca-permissoes.md); 4 testes gateway, 5 perfis com IDs antigos preservados, typecheck/build do menu | Snapshot de 5 contas reais e instalação nginx/serviço serão verificados na E7 |
 | E4 · Telas desktop/tablet | Não iniciada | — | — |
 | E5 · PWA Solicitação | Não iniciada | — | — |
 | E6 · Revisão integrada | Não iniciada | — | — |

@@ -11,6 +11,7 @@
     laboratorio: 'Ensaios e acompanhamento',
     usinas: 'Operação e acompanhamento das usinas',
     ged: 'Documentos e aprovações',
+    suprimentos: 'Solicitações e almoxarifado geral',
   };
   const gedItems = [
     ['Painel', 'dashboard'], ['Documentos', 'documents'],
@@ -38,8 +39,8 @@
     link.append(name, arrow);
     link.addEventListener('click', event => {
       if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      if (open() === false) return;
       event.preventDefault();
-      open();
     });
     return link;
   }
@@ -90,18 +91,20 @@
         if (moduleId === 'ged') {
           const route = item.route;
           grid.append(itemLink(item.label, root + 'ged/' + route, () => {
-            hide();
-            window.UnificadoRouter?.openGed(route);
+            if (!window.UnificadoRouter?.openGed) return false;
+            window.UnificadoRouter.openGed(route);
           }));
         } else {
           const route = MENU_ITEMS[item.id];
           grid.append(itemLink(item.label, route.url, () => {
             if (item.id === 'tvFormas') {
+              if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true ||
+                  navigator.userAgentData?.mobile === true || /iPhone|iPod|Android.*Mobile/i.test(navigator.userAgent)) return false;
               window.open(route.url, '_blank', 'noopener');
               return;
             }
-            hide();
-            window.UnificadoRouter?.open(route.url, item.id);
+            if (!window.UnificadoRouter?.open) return false;
+            window.UnificadoRouter.open(route.url, item.id);
           }));
         }
       }

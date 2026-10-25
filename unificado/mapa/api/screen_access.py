@@ -17,7 +17,8 @@ MAPA_ROLE_MODES = {
     'GESTOR': {'PROD_ANALISE','LIBERACAO','LIBERACAO_S1','LIBERACAO_S2',
                'LIBERACAO_S3','LIBERACAO_S4','MONTAGEM_POSTES','MONTAGEM_INDICADORES',
                'DASHBOARD_DEFEITOS','RELATORIO','HISTORICO','ACMP_CONCRETAGEM',
-               'SEQUENCIA_S3','MANDRIL_CIRCULAR','RELATORIO_MANUTENCAO','TRATATIVA_DEFEITOS'},
+               'SEQUENCIA_S3','MANDRIL_CIRCULAR','RELATORIO_MANUTENCAO','TRATATIVA_DEFEITOS',
+               'FECHAMENTO_DIARIO'},
     'MONTADOR': {'INSPECAO','MONTAGEM_POSTES','SEQUENCIA_S3',
                  'RELATORIO_MANUTENCAO','TRATATIVA_DEFEITOS'},
     'APONTADOR': {'LIBERACAO_S1','LIBERACAO_S2','LIBERACAO_S3','LIBERACAO_S4',
@@ -26,6 +27,8 @@ MAPA_ROLE_MODES = {
 
 
 def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
+    if screen['id'] in {'usinasCartaTraco', 'labCartaTraco'}:
+        return user['id'] == MASTER_USER_ID
     if user['id'] in MASTER_USER_IDS:
         return True
     if screen['id'] == 'tvFormas':
@@ -39,6 +42,8 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
         return bool(user.get('id'))
     if module == 'usinas':
         return False  # liberado inicialmente apenas aos administradores master acima
+    if module == 'suprimentos':
+        return bool(user.get('id'))  # a concessão individual e o papel na API continuam obrigatórios
     if module == 'planejamento':
         if not planning_role:
             return False
@@ -63,25 +68,52 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
 def allowed_screens(user, planning_role, overrides, lab_users):
     if user['id'] in MASTER_USER_IDS:
         return [row['id'] for row in CATALOG
-                if not row['id'].startswith('cronoanalise.') or user['id'] == MASTER_USER_ID]
+                if (not row['id'].startswith('cronoanalise.') or user['id'] == MASTER_USER_ID)
+                and (row['id'] not in {'usinasCartaTraco', 'labCartaTraco'} or user['id'] == MASTER_USER_ID)]
     if user['perfil'] == 'CONVIDADO':
         return [row['id'] for row in CATALOG if row['id'] not in GUEST_FORBIDDEN_SCREENS
+                and row['id'] != 'labCartaTraco'
                 and overrides.get(row['id']) is True
                 and (row['module'] != 'planejamento' or
                      role_allows(user, row, planning_role, lab_users))]
-    return [row['id'] for row in CATALOG if role_allows(user, row, planning_role, lab_users)
+    allowed = [row['id'] for row in CATALOG if role_allows(user, row, planning_role, lab_users)
             and overrides.get(row['id'],
-                              row['module'] not in {'laboratorio', 'qualidade'} and row['id'] != 'tvFormas'
+                              row['module'] not in {'laboratorio', 'qualidade', 'suprimentos'} and row['id'] != 'tvFormas'
                               or row['module'] == 'laboratorio' and user['id'] in DEFAULT_LAB_USERS
                               and not row['id'].startswith('cronoanalise.'))]
+    if (overrides.get('labUsinasRelatorios') is not False
+            and 'labUsinasRelatorios' not in allowed
+            and any(BY_ID[item]['module'] == 'laboratorio' for item in allowed)):
+        allowed.append('labUsinasRelatorios')
+    if ('qualidadePainel' in allowed and 'qualidadeResultadosBancada' not in allowed
+            and overrides.get('qualidadeResultadosBancada') is not False):
+        allowed.append('qualidadeResultadosBancada')
+    return allowed
 
 
 def screen_for_uri(original_uri, screen_header=''):
     uri = urlsplit(original_uri)
     path = uri.path.replace('index.html', '')
     query = parse_qs(uri.query)
-    if path == '/unificado/m/inspecao/':
-        return BY_ID.get('inspecao')
+    if path.startswith('/unificado/laboratorio/carta-traco/'):
+        return BY_ID.get('labCartaTraco')
+    if path.startswith('/unificado/laboratorio/cec-api/'):
+        return BY_ID.get('labCec')
+    if path.rstrip('/') == '/unificado/laboratorio/cec/resultados':
+        return BY_ID.get('labCecResultados')
+    if path.rstrip('/') == '/unificado/laboratorio/cec/relatorio':
+        return BY_ID.get('labCecRelatorio')
+    if path.startswith('/unificado/laboratorio/dosagem/'):
+        return BY_ID.get('labDosagem')
+    if path.startswith('/unificado/laboratorio/usinas-relatorios/'):
+        return BY_ID.get('labUsinasRelatorios')
+    if path in {'/unificado/relatorios/fechamento-diario/',
+                '/unificado/relatorios/api/fechamento-diario'}:
+        return BY_ID.get('fechamentoDiario')
+    if path == '/unificado/pcp/fechamento-diario/data.json':
+        return BY_ID.get('fechamentoDiarioPcp')
+    if path == '/unificado/m/inspecao/' or path == '/unificado/m/inspecao/login.html':
+        return BY_ID.get('inspecao') if path == '/unificado/m/inspecao/' else None
     if path == '/unificado/tv/formas/' or path == '/unificado/tv/formas/tv.js':
         return BY_ID.get('tvFormas')
     if path == '/unificado/painel-tv/api/resumo':
@@ -108,8 +140,17 @@ def screen_for_uri(original_uri, screen_header=''):
             return BY_ID.get('qualidadeTratativa')
         return next((row for row in CATALOG if row['module'] == 'qualidade'
                      and row['path'].rstrip('/') == path.rstrip('/')), None)
+    if path.startswith('/unificado/suprimentos/'):
+        if path.startswith('/unificado/suprimentos/pwa/'):
+            return BY_ID.get('suprimentosSolicitacoes')
+        if path.startswith('/unificado/suprimentos/solicitacao/'):
+            return BY_ID.get('suprimentosSolicitacoes')
+        return next((row for row in CATALOG if row['module'] == 'suprimentos'
+                     and row['path'].rstrip('/') == path.rstrip('/')), None)
     if path == '/unificado/usinas/':
         return BY_ID.get('usinasInicio')
+    if path == '/unificado/usinas/carta-traco.html':
+        return BY_ID.get('usinasCartaTraco')
     if path.startswith('/unificado/pcp/api/usuarios'):
         return BY_ID['pcpUsuarios'] if screen_header == 'pcpUsuarios' else None
     if screen_header in BY_ID:
@@ -117,7 +158,8 @@ def screen_for_uri(original_uri, screen_header=''):
         expected = {'planejamento':'/unificado/pcp/', 'producao':'/unificado/mapa/',
                     'laboratorio':'/unificado/laboratorio/',
                     'qualidade':'/unificado/qualidade/',
-                    'usinas':'/unificado/usinas/'}[candidate['module']]
+                    'usinas':'/unificado/usinas/',
+                    'suprimentos':'/unificado/suprimentos/'}[candidate['module']]
         return candidate if path.startswith(expected) else None
     if path.startswith('/unificado/mapa/api/'):
         if screen_header in {'INSPECAO_DETALHE','MONTAGEM_POSTES_DETALHE'}:
@@ -129,6 +171,8 @@ def screen_for_uri(original_uri, screen_header=''):
             return BY_ID['dashboard']
         return None
     if path.startswith('/unificado/laboratorio/api/'):
+        if path == '/unificado/laboratorio/api/slump':
+            return BY_ID['labSlump']
         if path.startswith('/unificado/laboratorio/api/laboratorio/cronoanalise/'):
             return None  # the Cronoanalise router checks its signed actions per endpoint
         if '/auth/users' in path:
