@@ -6,7 +6,7 @@
       "units": 0,
       "groups": 11,
       "items": 2,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nR\nRicardo\nSair",
       "allowed": 66
     },
     "producao": {
@@ -15,7 +15,7 @@
       "units": 1,
       "groups": 9,
       "items": 6,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nR\nRicardo\nSair",
       "allowed": 66
     },
     "qualidade": {
@@ -24,7 +24,7 @@
       "units": 0,
       "groups": 6,
       "items": 0,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nR\nRicardo\nSair",
       "allowed": 66
     },
     "laboratorio": {
@@ -33,7 +33,7 @@
       "units": 0,
       "groups": 9,
       "items": 1,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nR\nRicardo\nSair",
       "allowed": 66
     },
     "ged": {
@@ -42,7 +42,7 @@
       "units": 0,
       "groups": 6,
       "items": 0,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nR\nRicardo\nSair",
       "allowed": 66
     }
   },
@@ -53,7 +53,7 @@
       "units": 0,
       "groups": 6,
       "items": 2,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "producao": {
@@ -62,7 +62,7 @@
       "units": 1,
       "groups": 4,
       "items": 6,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "qualidade": {
@@ -71,7 +71,7 @@
       "units": 0,
       "groups": 1,
       "items": 0,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "laboratorio": {
@@ -80,7 +80,7 @@
       "units": 0,
       "groups": 4,
       "items": 1,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "ged": {
@@ -89,7 +89,7 @@
       "units": 0,
       "groups": 1,
       "items": 0,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     }
   },
@@ -100,7 +100,7 @@
       "units": 0,
       "groups": 6,
       "items": 2,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "producao": {
@@ -109,7 +109,7 @@
       "units": 1,
       "groups": 4,
       "items": 6,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "qualidade": {
@@ -118,7 +118,7 @@
       "units": 0,
       "groups": 1,
       "items": 0,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "laboratorio": {
@@ -127,7 +127,7 @@
       "units": 0,
       "groups": 4,
       "items": 1,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "ged": {
@@ -136,7 +136,7 @@
       "units": 0,
       "groups": 1,
       "items": 0,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     }
   },
@@ -147,7 +147,7 @@
       "units": 0,
       "groups": 6,
       "items": 2,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "producao": {
@@ -156,7 +156,7 @@
       "units": 1,
       "groups": 4,
       "items": 6,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "qualidade": {
@@ -165,7 +165,7 @@
       "units": 0,
       "groups": 1,
       "items": 0,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "laboratorio": {
@@ -174,7 +174,7 @@
       "units": 0,
       "groups": 4,
       "items": 1,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     },
     "ged": {
@@ -183,7 +183,7 @@
       "units": 0,
       "groups": 1,
       "items": 0,
-      "update": "Versão 1.0.56 · em dia\nVerificar\nComo funciona\nUsuários\nRelatar problema\nR\nRicardo\nSair",
+      "update": "Atualizar\nVersão 1.0.57\nAjuda\nUsuários\nR\nRicardo\nSair",
       "allowed": 66
     }
   }

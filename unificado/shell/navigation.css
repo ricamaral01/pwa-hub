@@ -42,3 +42,66 @@
   .nav-account-title{font-size:22px;margin:8px}.nav-account-role{color:var(--nav-muted);margin:0 8px 12px}.nav-account-exit{min-height:48px;border:1px solid #ffffff4a;border-radius:8px;background:transparent;color:#fff;cursor:pointer}.nav-empty{padding:10px;color:var(--nav-muted)}
   .nav-footer>.nav-footer-links{display:none}.nav-tree>.nav-footer-links{flex-direction:column}.nav-tree>.nav-footer-links .nav-footer-link{font-size:15px;min-height:48px}
 }
+
+/* Compact branded navigation and a persistent update action. */
+.nav-panel{gap:7px;padding:9px 10px 8px}
+.nav-panel-head{min-height:44px;padding:0;gap:8px}
+.nav-brand{display:flex;align-items:center;justify-content:center;flex:none;width:185px;height:44px;padding:5px 10px;border-radius:9px;background:#fff;overflow:hidden}
+.nav-brand-logo{display:block;width:100%;height:31px;object-fit:contain}
+.nav-panel-title{display:none}
+.nav-panel-close{flex:none;width:38px;height:38px}
+.nav-collapse-icon{width:22px;height:22px}
+.nav-close-icon{display:none}
+.nav-module-switcher{min-height:50px;padding:5px 9px}
+.nav-search{height:40px}
+.nav-controls{min-height:26px}
+.nav-tree{gap:4px;padding-bottom:4px}
+.nav-item{min-height:40px;padding:5px 8px}
+.nav-group-toggle{min-height:36px}
+.nav-unit-toggle{min-height:49px}
+.nav-modern .nav-footer{position:relative;flex:none;align-items:stretch;gap:1px;width:100%;padding-top:2px}
+.nav-update-wrap{display:flex;flex-direction:column;align-items:stretch;gap:1px;width:100%;min-height:0;border:0;background:transparent!important}
+.nav-update{display:flex;align-items:center;gap:9px;width:100%;height:44px;min-height:44px;padding:0 12px;text-align:left}
+.nav-reload-icon{flex:none;width:18px;height:18px}
+.nav-update-version{align-self:flex-start;color:var(--nav-muted);font-size:11px;line-height:15px}
+.nav-footer-links{position:relative;display:flex;flex-wrap:nowrap;gap:5px;min-height:32px}
+.nav-help-toggle,.nav-footer-links>.nav-footer-link{display:flex;align-items:center;justify-content:center;gap:5px;flex:1;min-width:0;min-height:32px;padding:3px 5px;border:0;border-radius:7px;background:transparent;color:#d9e8f7;text-decoration:none;font-size:12px;cursor:pointer}
+.nav-footer-icon{flex:none;width:16px;height:16px}
+.nav-help-menu{position:absolute;left:0;bottom:calc(100% + 5px);z-index:120;display:flex;flex-direction:column;min-width:178px;padding:5px;border:1px solid #ffffff44;border-radius:9px;background:#214563;box-shadow:0 10px 22px #04172d99}
+.nav-help-menu .nav-footer-link{min-height:36px;font-size:12px}
+.nav-user{min-height:34px;gap:7px}
+.nav-user-avatar{width:28px;height:28px}
+.nav-logout{min-height:32px}
+.nav-rail-brand{display:grid;place-items:center;flex:none;width:54px;height:48px;border-radius:10px;background:#fff}
+.nav-rail-logo{width:37px;height:37px;object-fit:contain}
+.nav-rail-chevron{width:22px;height:22px}
+.nav-rail-update{display:grid;place-items:center;width:55px;height:44px;min-height:44px;margin-top:auto;font-size:inherit}
+.nav-rail-update .nav-reload-icon{width:22px;height:22px}
+.nav-rail-version{display:block;color:var(--nav-muted);font-size:10px;line-height:11px}
+.nav-update[data-state=available],.nav-rail-update[data-state=available]{background:#f68b3c;color:#241400}
+.nav-update[data-state=failed],.nav-rail-update[data-state=failed]{background:#7b2830;color:#fff}
+.unificado-update-toast{position:fixed;right:16px;bottom:84px;z-index:1000;max-width:min(400px,calc(100vw - 32px));padding:12px 16px;border-radius:10px;background:#102b49;color:#fff;box-shadow:0 8px 24px #0b223d55;font:600 14px/1.4 system-ui,sans-serif}
+@media(min-width:1280px){.nav-modern .nav-panel-close{display:grid}}
+@media(min-width:768px){
+  .nav-tree .nav-item{min-height:30px;padding:2px 7px}
+  .nav-tree .nav-item-code{height:22px}
+  .nav-tree .nav-group-toggle{min-height:28px;padding:2px 7px}
+  .nav-tree .nav-unit-toggle{min-height:40px}
+  .nav-tree .nav-unit-body{gap:2px;padding:2px 0 4px}
+  .nav-tree .nav-unit{padding:3px}
+}
+@media(min-width:768px) and (max-width:1279px){
+  .nav-modern .nav-panel-close{display:grid}.nav-collapse-icon{display:none}.nav-close-icon{display:block}
+}
+@media(max-width:767px){
+  .nav-modern .nav-panel{gap:9px;padding:9px 12px calc(8px + env(safe-area-inset-bottom))}
+  .nav-panel-title{display:block;margin-right:auto;font-size:18px}
+  .nav-brand{width:165px}
+  .nav-modern .nav-panel-close{display:grid}.nav-collapse-icon{display:none}.nav-close-icon{display:block}
+  .nav-item{min-height:48px}
+  .nav-group-toggle{min-height:48px}
+  .nav-unit-toggle{min-height:62px}
+  .nav-tree>.nav-update-wrap{flex:none}
+  .nav-tree>.nav-footer-links{flex-direction:row}
+  .nav-tree>.nav-footer-links .nav-footer-link{min-height:36px;font-size:12px}
+}

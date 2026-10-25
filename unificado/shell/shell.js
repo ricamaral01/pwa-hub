@@ -257,7 +257,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.56';
+const APP_VERSION = '1.0.57';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;
@@ -343,14 +343,22 @@ async function waitForController(worker) {
 }
 async function updateApplication(button) {
   if (platformUpdateState === 'updating') return;
-  if (!platformUpdateAvailable) {
-    await checkPlatformUpdate();
-    if (!platformUpdateAvailable) return;
-  }
   publishUpdateState('updating');
   try {
     const version = await fetch(`/unificado/VERSION?update=${Date.now()}`, {cache:'no-store'});
     if (!version.ok) throw new Error('Não foi possível consultar a versão.');
+    const latest = (await version.text()).trim();
+    if (!latest) throw new Error('Versão indisponível.');
+    if (latest.localeCompare(APP_VERSION, undefined, {numeric:true}) <= 0) {
+      if ('serviceWorker' in navigator) {
+        const shell = await navigator.serviceWorker.getRegistration('/unificado/');
+        if (shell) await shell.update();
+      }
+      sessionStorage.setItem('unificado-update-toast', `Você já está na versão mais recente (${APP_VERSION})`);
+      location.reload();
+      return;
+    }
+    platformLatestVersion = latest;
     if ('serviceWorker' in navigator) {
       await accessReady;
       const shell = await navigator.serviceWorker.register('/unificado/sw.js',
@@ -377,6 +385,17 @@ async function updateApplication(button) {
     console.warn('Atualização do Unificado falhou:', error);
   }
 }
+window.addEventListener('load', () => {
+  const message = sessionStorage.getItem('unificado-update-toast');
+  if (!message) return;
+  sessionStorage.removeItem('unificado-update-toast');
+  const toast = document.createElement('div');
+  toast.className = 'unificado-update-toast';
+  toast.setAttribute('role', 'status');
+  toast.textContent = message;
+  document.body.append(toast);
+  setTimeout(() => toast.remove(), 4000);
+}, {once:true});
 async function clearShellCacheAndReload() {
   if (platformUpdateFailures < 2) return;
   const registrations = await navigator.serviceWorker?.getRegistrations?.() || [];

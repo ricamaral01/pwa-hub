@@ -1,0 +1,740 @@
+Inventario da arvore principal em 2026-10-25T13:00:26.903331+00:00 UTC
+Cada linha conserva o codigo de status do Git; diretorios nao rastreados sao agrupados pelo Git. Nenhum arquivo foi incluido ou descartado.
+
+ M .gitignore
+ M deploy/README.md
+ M deploy/scripts/deploy.ps1
+ M deploy/scripts/deploy.sh
+ M deploy/scripts/provisionar.sh
+ M deploy/scripts/remote-release.sh
+ M docs/correcoes-intencionais.md
+ M docs/dosagem-v2/API.md
+ M docs/dosagem-v2/RELATORIO-EXECUCAO.md
+ M docs/dosagem-v2/VPS-RECONHECIMENTO.md
+ M dosagem-concreto-v2/.env.example
+ M dosagem-concreto-v2/.env.production
+ M dosagem-concreto-v2/README.md
+ M dosagem-concreto-v2/api/README.md
+ M dosagem-concreto-v2/api/app/acoes/documentos.py
+ M dosagem-concreto-v2/api/app/auth.py
+ M dosagem-concreto-v2/api/app/config.py
+ M dosagem-concreto-v2/api/app/db.py
+ M dosagem-concreto-v2/api/app/main.py
+ M dosagem-concreto-v2/api/app/modelos.py
+ M dosagem-concreto-v2/api/app/rpc.py
+ M dosagem-concreto-v2/api/app/validacao.py
+ M dosagem-concreto-v2/api/migrations/env.py
+ M dosagem-concreto-v2/api/migrations/versions/20261017_01_inicial.py
+ M dosagem-concreto-v2/api/pyproject.toml
+ M dosagem-concreto-v2/api/tests/conftest.py
+ M dosagem-concreto-v2/api/tests/test_rpc.py
+ M dosagem-concreto-v2/index.html
+ M dosagem-concreto-v2/package.json
+ M dosagem-concreto-v2/playwright.config.ts
+ M dosagem-concreto-v2/src/app/App.tsx
+ M dosagem-concreto-v2/src/app/Editor.tsx
+ M dosagem-concreto-v2/src/app/editor.css
+ M dosagem-concreto-v2/src/app/layout.css
+ M dosagem-concreto-v2/src/app/layout.tsx
+ M dosagem-concreto-v2/src/core/model.ts
+ M dosagem-concreto-v2/src/data/api.ts
+ M dosagem-concreto-v2/src/data/authAdapter.ts
+ M dosagem-concreto-v2/src/data/db.ts
+ M dosagem-concreto-v2/src/data/sync.ts
+ M dosagem-concreto-v2/src/features/catalogos.tsx
+ M dosagem-concreto-v2/src/features/ensaios.tsx
+ M dosagem-concreto-v2/src/features/ferramentas.tsx
+ M dosagem-concreto-v2/src/main.tsx
+ M dosagem-concreto-v2/src/print/CartaTraco.tsx
+ M dosagem-concreto-v2/src/print/carta.css
+ M dosagem-concreto-v2/src/sw.ts
+ M dosagem-concreto-v2/src/ui/components.tsx
+ M dosagem-concreto-v2/src/ui/icons.tsx
+ M dosagem-concreto-v2/src/ui/tokens.css
+ M dosagem-concreto-v2/src/vite-env.d.ts
+ M dosagem-concreto-v2/tests/e2e/__screenshots__/editor-celular.png
+ M dosagem-concreto-v2/tests/e2e/__screenshots__/editor-desktop.png
+ M dosagem-concreto-v2/tests/e2e/__screenshots__/editor-tablet-paisagem.png
+ M dosagem-concreto-v2/tests/e2e/__screenshots__/editor-tablet-retrato.png
+ M dosagem-concreto-v2/tests/e2e/__screenshots__/inicio-celular.png
+ M dosagem-concreto-v2/tests/e2e/__screenshots__/inicio-desktop.png
+ M dosagem-concreto-v2/tests/e2e/__screenshots__/inicio-tablet-paisagem.png
+ M dosagem-concreto-v2/tests/e2e/__screenshots__/inicio-tablet-retrato.png
+ M dosagem-concreto-v2/tests/e2e/app.spec.ts
+ M dosagem-concreto-v2/tests/golden/c40.test.ts
+ M dosagem-concreto-v2/vite.config.ts
+ M mapa-concretagem/app.js
+ M mapa-concretagem/index.html
+ M mapa-concretagem/sw.js
+ M package.json
+ M pcp_producao_agent/__pycache__/comparator.cpython-314.pyc
+ M pcp_producao_agent/__pycache__/concretrack_client.cpython-314.pyc
+ M pcp_producao_agent/__pycache__/config.cpython-314.pyc
+ M pcp_producao_agent/__pycache__/google_sheets_client.cpython-314.pyc
+ M pcp_producao_agent/__pycache__/html_report.cpython-314.pyc
+ M pcp_producao_agent/__pycache__/whatsapp_sender.cpython-314.pyc
+ M pcp_producao_agent/agent_execution.log
+ M relatorios/pcp-producao/relatorio_pcp_producao_2026-07-07.html
+ M scripts/build_unificado_mapa_operacao.py
+ M scripts/build_unificado_pcp_frontend.py
+ M tests/auth/test_mapa_one_screen_browser.py
+ M tests/auth/test_pcp_only_browser.py
+ M tests/mapa/contract_photos.py
+ M tests/pcp/pages_smoke.py
+ M tests/porting/cronoanalise_production_cache_smoke.py
+ M tests/test_dashboard_kg_homem.py
+ M tests/unificado/blocker_matrix_published.py
+ M tests/unificado/blocker_pcp_published.py
+ M tests/unificado/home_smoke.py
+ M unificado/VERSION
+ M unificado/index.html
+ M unificado/laboratorio/frontend/src/novo/Shell.tsx
+ D unificado/laboratorio/service/server/static/novo/postes/assets/novo-C5mW1pBl.js
+ M unificado/laboratorio/service/server/static/novo/postes/novo.html
+ M unificado/login.html
+ M unificado/mapa/api/app.py
+ M unificado/mapa/api/formas_por_setor.py
+ M unificado/mapa/api/realtime_bridge.py
+ M unificado/mapa/api/screen_access.py
+ M unificado/mapa/api/screen_catalog.json
+ M unificado/mapa/api/unified_auth.py
+ M unificado/mapa/operacao/bridge.js
+ M unificado/mapa/operacao/sw.js
+ M unificado/mapa/operacao/unificado-bridge.js
+ M unificado/pcp/backend/app/api/routers/pcp.py
+ M unificado/pcp/backend/app/api/routers/usuarios.py
+ M unificado/pcp/backend/app/core/config.py
+ M unificado/pcp/backend/app/core/security.py
+ M unificado/pcp/backend/app/main.py
+ M unificado/pcp/backend/app/models/__init__.py
+ M unificado/pcp/backend/app/models/mapeamento_forma.py
+ M unificado/pcp/backend/app/models/producao.py
+ M unificado/pcp/backend/app/models/usuario.py
+ M unificado/pcp/backend/app/repositories/google_sheets_repository.py
+ M unificado/pcp/backend/app/schemas/dashboard.py
+ M unificado/pcp/backend/app/schemas/producao.py
+ M unificado/pcp/backend/app/services/dashboard_service.py
+ M unificado/pcp/backend/requirements.txt
+ M unificado/pcp/maodeobra/index.html
+ M unificado/pcp/primeiro-acesso/index.html
+ M unificado/pcp/programacao-alex/index.html
+ M unificado/pcp/programacao/index.html
+ M unificado/pcp/static/js/app.js
+ M unificado/pcp/static/js/formas-por-setor.js
+ M unificado/pcp/teste-programacao/index.html
+ M unificado/pcp/unificado-bridge.js
+ M unificado/pcp/usuarios/index.html
+ M unificado/shell/auth.js
+ M unificado/shell/menu.config.js
+ M unificado/shell/modelo-a-host.css
+ M unificado/shell/modelo-a-loader.js
+ M unificado/shell/modelo-a/menu.js
+ M unificado/shell/module-pages.js
+ M unificado/shell/router.js
+ M unificado/shell/shared-menu.css
+ M unificado/shell/shell.css
+ M unificado/shell/shell.js
+ M unificado/sidebar-modelo-a/src/components/sidebar/navConfig.ts
+ M unificado/sw.js
+ M unificado/usinas/README.md
+ M unificado/usinas/index.html
+ M unificado/usinas/native-areas.js
+?? .codex-tmp-concretagem-deploy/
+?? .codex-tmp-cq-production/
+?? .codex-tmp-cq/
+?? .codex-tmp-dashboards-v7/
+?? .codex-tmp-deploy-20261016/
+?? .codex-tmp-dosagem-native/
+?? .codex-tmp-ged-frontend-source.tar
+?? .codex-tmp-ged-frontend-source/
+?? .codex-tmp-ged-homolog-source.tar.gz
+?? .codex-tmp-ged-layout-20261015.tar
+?? .codex-tmp-ged-shell-20261015.tar
+?? .codex-tmp-ged-sso-20261016.tar
+?? .codex-tmp-ged-sso-app.live.py
+?? .codex-tmp-ged-sso-users.live.js
+?? .codex-tmp-ged-users-20261015.tar
+?? .codex-tmp-home-app-cards/
+?? .codex-tmp-home-header-deploy/
+?? .codex-tmp-inspecao-publish/
+?? .codex-tmp-inspecao-pwa/
+?? .codex-tmp-inspecao-turno/
+?? .codex-tmp-integracao/
+?? .codex-tmp-lab-dimensions/
+?? .codex-tmp-maodeobra/
+?? .codex-tmp-marcelo/
+?? .codex-tmp-menu-publish-20261016/
+?? .codex-tmp-mobile-cards/
+?? .codex-tmp-mobile-push/
+?? .codex-tmp-montagem-defeitos-deploy/
+?? .codex-tmp-navegacao/
+?? .codex-tmp-noro-label-print/
+?? .codex-tmp-painel-tv-homolog-payload.tar.gz
+?? .codex-tmp-painel-tv-prod/
+?? .codex-tmp-painel-tv-server/
+?? .codex-tmp-prod-index-20261016.html
+?? .codex-tmp-prod-menu-20261016.js
+?? .codex-tmp-prod-router-20261016.js
+?? .codex-tmp-prod-shared-menu-20261016.css
+?? .codex-tmp-prod-shell-20261016.css
+?? .codex-tmp-prod-shell-20261016.js
+?? .codex-tmp-prod-sw-20261016.js
+?? .codex-tmp-prod-users-20261016.css
+?? .codex-tmp-prod-users-20261016.js
+?? .codex-tmp-qrcp-noro/
+?? .codex-tmp-qrcp-offline/
+?? .codex-tmp-unificado-opening/
+?? .codex-tmp/
+?? .md
+?? .py
+?? .tmp-concretrack/
+?? .tmp_ged_fix_20260908/
+?? .work-cec-migration/
+?? .work-consumo-cimento/
+?? .work-custos-replica/
+?? .work-dashv2-volume/
+?? .work-estoque-replica/
+?? .work-evolution/
+?? .work-mapa-old-buildcheck/
+?? .work-mapa-old-github/
+?? .work-mapa-old-publish/
+?? .work-pcp-agent/
+?? .work-pcp-report/
+?? .work-usinas-migration/
+?? MCC_reajuste_cimento_outubro_2026.html
+?? PedeRH/
+?? auth/ponte-dosagem.html
+?? carta-traco/docs/
+?? concrejet/legacy-reference/
+?? concretrack-erp.nginx.conf
+?? current-mapa/
+?? dashboard-defeitos-v4.patch
+?? dashboard-usina.nginx.conf
+?? deploy/nginx/mapa-legacy-handoff-sw.js
+?? deploy/scripts/preparar_env.py
+?? deploy/systemd/concretrack-dosagem-password-reset.service
+?? deploy/systemd/supabase-legacy-mirror-acceptance.service
+?? deploy/systemd/supabase-legacy-mirror-acceptance.timer
+?? deploy/systemd/supabase-legacy-mirror-health.service
+?? deploy/systemd/supabase-legacy-mirror-health.timer
+?? deploy/systemd/supabase-legacy-mirror.service
+?? deploy/systemd/supabase-legacy-mirror.timer
+?? docs/5s/
+?? docs/ambiente-homologacao-unificado.md
+?? docs/capturas-ged-pisca-teste-20261016/
+?? docs/capturas-ged-pisca-teste-final-20261016/
+?? docs/capturas-ged-pisca-teste-shell-1012-20261016/
+?? docs/capturas-inspecao-mockup-20261021/
+?? docs/capturas-menu-modelo-a-0.6.30/
+?? docs/capturas-menu-modelo-a-0.6.31/
+?? docs/capturas-menu-unificado-0.6.29/
+?? docs/capturas-qualidade-usuarios-teste-20261016/
+?? docs/capturas-retorno-ricardo-v0510/
+?? docs/capturas-ricardo-20261004/ipad-webkit-ipad-gen-7-landscape.png
+?? docs/capturas-ricardo-20261004/ipad-webkit-ipad-gen-7.png
+?? docs/capturas-ricardo-20261004/nav-fail-debug.png
+?? docs/certificado-qualidade/
+?? docs/dashboard-mockups.css
+?? docs/dosagem-v2/ADENDO-4.2-RELEASE1.md
+?? docs/dosagem-v2/ADENDO-4.3-PILOTO.md
+?? docs/dosagem-v2/CODEX_DOSAGEM_V2_DEFINITIVA.md
+?? docs/dosagem-v2/GATES-PILOTO.json
+?? docs/dosagem-v2/GATES.json
+?? docs/dosagem-v2/PROJETO-COMPLETO-CODIGO-HTML-20261021.md
+?? docs/dosagem-v2/RELATORIO-AVANCO-R1-20261021.md
+?? docs/dosagem-v2/RELATORIO-IMPLANTACAO-ABRAMS-20261021.md
+?? docs/dosagem-v2/RELATORIO-IMPLANTACAO-R1-PARCIAL-20261021.md
+?? docs/dosagem-v2/RELATORIO-INTEGRACAO-NATIVA-20261022.md
+?? docs/dosagem-v2/RELATORIO-INTEGRACAO-UNIFICADO-20261022.md
+?? docs/dosagem-v2/RELATORIO-LAYOUT-20261021.md
+?? docs/dosagem-v2/RELATORIO-MODULOS-20261021.md
+?? docs/dosagem-v2/RELATORIO-RELEASE1-20261022.md
+?? docs/dosagem-v2/STATUS-PAUSA-2026-10-19.md
+?? docs/dosagem-v2/VPS-PREPARACAO.md
+?? docs/dosagem-v2/arquivado/CODEX_DOSAGEM_V2.md
+?? docs/dosagem-v2/arquivado/README-4.1.md
+?? docs/dosagem-v2/capturas/
+?? docs/dosagem-v2/deploy/
+?? docs/dosagem-v2/mockups/
+?? docs/dosagem-v2/referencia/
+?? docs/esquema-rnc-ged-2026-10-15.md
+?? docs/ged-nativo/
+?? docs/guia-completo-dashboards-2026-10-07.md
+?? docs/laboratorio-unificado-implantacao.md
+?? docs/laboratorio/
+?? docs/levantamento-montagem-defeitos-2026-10-23.md
+?? docs/maodeobra-mobile/
+?? docs/mapa-ged-concretrack-2026-10-15.md
+?? docs/mapeamento-completo-pwa-hub-v2.pdf
+?? docs/mapeamento-completo-pwa-hub.html
+?? docs/mapeamento-completo-pwa-hub.pdf
+?? docs/menu-unificado-0.6.29.md
+?? docs/mockup-dashboard-concretagem-matriz.html
+?? docs/mockup-dashboard-defeitos.html
+?? docs/mockup-dashboard-montagem.html
+?? docs/navegacao/
+?? docs/painel-tv/
+?? docs/plano-dashboard-concretagem-matriz-2026-10-23.md
+?? docs/plano-remocao-supabase-unificado.md
+?? docs/porting/capturas-ged-layout-20261015/
+?? docs/porting/capturas-qualidade-20261015/
+?? docs/porting/cronoanalise/capturas-T6b/joaog-menu-diagnostico.png
+?? docs/porting/cronoanalise/capturas-T6b/users-editor-joaog-diagnostico.png
+?? docs/porting/cronoanalise/integracao/confere-usuario-producao.py
+?? docs/porting/ged-sem-pisca-prod-20261016/
+?? docs/porting/ged/
+?? docs/porting/laboratorio/
+?? docs/porting/maodeobra-grupos/
+?? docs/porting/menu-lateral-modelo-a-evidencias/
+?? docs/porting/producao-pederneiras/
+?? docs/porting/supabase/
+?? docs/porting/usinas/
+?? docs/qualidade/
+?? docs/quality-editor-test-preview.png
+?? docs/refatoracao-indicadores-concretagem.md
+?? docs/referencia-laboratorio/
+?? docs/validacao-pcp/
+?? docs/virada-unificado-2026-10-08.md
+?? dosagem-concreto-v2/api/Dockerfile.hml
+?? dosagem-concreto-v2/api/app/auth_session.py
+?? dosagem-concreto-v2/api/app/bootstrap_admin.py
+?? dosagem-concreto-v2/api/app/calc/
+?? dosagem-concreto-v2/api/app/hml_seed.py
+?? dosagem-concreto-v2/api/app/provision_local_admin.py
+?? dosagem-concreto-v2/api/app/reset_local_password.py
+?? dosagem-concreto-v2/api/app/unified_gateway.py
+?? dosagem-concreto-v2/api/migrations/versions/20261018_02_snapshot.py
+?? dosagem-concreto-v2/api/migrations/versions/20261018_03_auth.py
+?? dosagem-concreto-v2/api/migrations/versions/20261018_04_piloto.py
+?? dosagem-concreto-v2/api/tests/core/
+?? dosagem-concreto-v2/api/tests/test_adjustment41_golden.py
+?? dosagem-concreto-v2/api/tests/test_alternative41_golden.py
+?? dosagem-concreto-v2/api/tests/test_approval41.py
+?? dosagem-concreto-v2/api/tests/test_auth_session41.py
+?? dosagem-concreto-v2/api/tests/test_batch41.py
+?? dosagem-concreto-v2/api/tests/test_caa41.py
+?? dosagem-concreto-v2/api/tests/test_curves41_golden.py
+?? dosagem-concreto-v2/api/tests/test_importacao_release1.py
+?? dosagem-concreto-v2/api/tests/test_migration_guard41.py
+?? dosagem-concreto-v2/api/tests/test_moisture41_golden.py
+?? dosagem-concreto-v2/api/tests/test_n_minus_one41.py
+?? dosagem-concreto-v2/api/tests/test_pilot43.py
+?? dosagem-concreto-v2/api/tests/test_plan41.py
+?? dosagem-concreto-v2/api/tests/test_principal41_golden.py
+?? dosagem-concreto-v2/api/tests/test_rollback41.py
+?? dosagem-concreto-v2/api/tests/test_rules41_golden.py
+?? dosagem-concreto-v2/api/tests/test_s1_impact41.py
+?? dosagem-concreto-v2/api/tests/test_summary41.py
+?? dosagem-concreto-v2/api/tests/test_unified_gateway.py
+?? dosagem-concreto-v2/api/vendor/
+?? dosagem-concreto-v2/deploy/
+?? dosagem-concreto-v2/dist-native/
+?? dosagem-concreto-v2/dist/
+?? dosagem-concreto-v2/docker-compose.hml.yml
+?? dosagem-concreto-v2/dosagem-v2-novo-layout.patch
+?? dosagem-concreto-v2/dosagem-v2-novo-layout.zip
+?? dosagem-concreto-v2/dosagem-v2-novo-layout/
+?? dosagem-concreto-v2/pilot-release.tar.gz
+?? dosagem-concreto-v2/pilot-web-layout-20261021.tar.gz
+?? dosagem-concreto-v2/pilot-web-packing-20261021.tar.gz
+?? dosagem-concreto-v2/pilot-web-update.tar.gz
+?? dosagem-concreto-v2/playwright.hml.config.ts
+?? dosagem-concreto-v2/playwright.pilot.config.ts
+?? dosagem-concreto-v2/public/
+?? dosagem-concreto-v2/release1-20261022.tar.gz
+?? dosagem-concreto-v2/scripts/check-core-ids.mjs
+?? dosagem-concreto-v2/scripts/export-project-md.py
+?? dosagem-concreto-v2/scripts/gates.mjs
+?? dosagem-concreto-v2/scripts/hml-backup-restore.mjs
+?? dosagem-concreto-v2/scripts/release1-audit.mjs
+?? dosagem-concreto-v2/scripts/teste-backup-restauracao.sh
+?? dosagem-concreto-v2/scripts/teste-compat-n-1.sh
+?? dosagem-concreto-v2/shared/
+?? dosagem-concreto-v2/src.bak-layout-20261021/
+?? dosagem-concreto-v2/src/app/home.css
+?? dosagem-concreto-v2/src/core/calc/adjustment41.ts
+?? dosagem-concreto-v2/src/core/calc/alternative41.ts
+?? dosagem-concreto-v2/src/core/calc/batch41.ts
+?? dosagem-concreto-v2/src/core/calc/curves41.ts
+?? dosagem-concreto-v2/src/core/calc/moisture41.ts
+?? dosagem-concreto-v2/src/core/calc/norms41.ts
+?? dosagem-concreto-v2/src/core/calc/optimization41.ts
+?? dosagem-concreto-v2/src/core/calc/principal41.ts
+?? dosagem-concreto-v2/src/core/calc/regression41.ts
+?? dosagem-concreto-v2/src/core/calc/view41.ts
+?? dosagem-concreto-v2/src/data/release1Importer.ts
+?? dosagem-concreto-v2/src/features/AbramsRelease1.tsx
+?? dosagem-concreto-v2/src/features/AgeCurvePanel.tsx
+?? dosagem-concreto-v2/src/features/ImportacaoRelease1.tsx
+?? dosagem-concreto-v2/src/features/PackingPanel.tsx
+?? dosagem-concreto-v2/src/features/ProducaoRelease1.tsx
+?? dosagem-concreto-v2/src/features/Recipe41Page.tsx
+?? dosagem-concreto-v2/src/features/recipe41.css
+?? dosagem-concreto-v2/src/native.tsx
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/age-mobile-debug.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/betonada-celular.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/betonada-desktop.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/betonada-tablet-paisagem.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/betonada-tablet-retrato.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/caa-r1-celular.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/caa-r1-desktop.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/caa-r1-tablet-paisagem.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/caa-r1-tablet-retrato.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/curva-i1-celular.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/curva-i1-desktop.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/curva-i1-tablet-paisagem.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/curva-i1-tablet-retrato.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/impacto-s1-celular.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/impacto-s1-desktop.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/impacto-s1-tablet-paisagem.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/impacto-s1-tablet-retrato.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/offline-r1-celular.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/offline-r1-desktop.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/offline-r1-tablet-paisagem.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/offline-r1-tablet-retrato.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/plano-experimental-celular.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/plano-experimental-desktop.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/plano-experimental-tablet-paisagem.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/plano-experimental-tablet-retrato.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/producao-r1-celular.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/producao-r1-desktop.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/producao-r1-tablet-paisagem.png
+?? dosagem-concreto-v2/tests/e2e/__screenshots__/producao-r1-tablet-retrato.png
+?? dosagem-concreto-v2/tests/e2e/native-unificado-smoke.mjs
+?? dosagem-concreto-v2/tests/golden/adjustment41.test.ts
+?? dosagem-concreto-v2/tests/golden/alternative41.test.ts
+?? dosagem-concreto-v2/tests/golden/batch41.test.ts
+?? dosagem-concreto-v2/tests/golden/curves41.test.ts
+?? dosagem-concreto-v2/tests/golden/moisture41.test.ts
+?? dosagem-concreto-v2/tests/golden/parity41.test.ts
+?? dosagem-concreto-v2/tests/golden/principal41.test.ts
+?? dosagem-concreto-v2/tests/golden/rules41.test.ts
+?? dosagem-concreto-v2/tests/golden/view41.test.ts
+?? dosagem-concreto-v2/tests/hml-e2e/
+?? dosagem-concreto-v2/tests/pilot-e2e/
+?? dosagem-concreto-v2/tests/unit/release1-import.test.ts
+?? dosagem-concreto-v2/vite.native.config.ts
+?? dosagem-concreto/PLANO_MODERNIZACAO.md
+?? dosagem-concreto/docs/
+?? export-estrutura-mapa/
+?? infra/ged/
+?? infra/nginx/qualidade-unificado.conf
+?? infra/nginx/unificado-homolog.conf
+?? infra/qualidade/
+?? infra/systemd/backup-ged-qualidade-restore.service
+?? infra/systemd/backup-ged-qualidade-restore.timer
+?? infra/systemd/backup-ged-qualidade.service
+?? infra/systemd/backup-ged-qualidade.timer
+?? infra/systemd/laboratorio-homolog.service
+?? mapa-concretagem/dashboard-reference-layout.css
+?? mapa-concretagem/dashboard-reference-layout.js
+?? mapa-concretagem/montagem-taxa.css
+?? mapa-concretagem/montagem-taxa.js
+?? mapa-concretagem/pendencias-migracao.html
+?? menu-lateral-modeloA/
+?? mockups/
+?? output/
+?? pcp_producao_agent/output/
+?? pcp_producao_agent/tmp/
+?? pilot-web-abrams-20261021.tar.gz
+?? preview-unificado/Untitled-1.txt
+?? quality-layout-20261015-v2.tar
+?? quality-layout-20261015-v3.tar
+?? quality-layout-20261015.tar
+?? relatorios/dashboard-refatoracao-plano-teste.html
+?? relatorios/defeitos-concreto/
+?? relatorios/defeitos-postes/
+?? relatorios/pcp-producao/relatorio_pcp_producao_2026-08-03.html
+?? relatorios/pcp-producao/relatorio_pcp_producao_2026-08-10.html
+?? relatorios/pcp-producao/relatorio_pcp_producao_2026-08-11.html
+?? relatorios/pcp-producao/relatorio_pcp_producao_2026-08-12.html
+?? relatorios/pcp-producao/relatorio_pcp_producao_2026-08-18.html
+?? relatorios/scripts/
+?? remote-erp/
+?? remote-mapa/
+?? remote-pcp/
+?? remote-ribeirao/
+?? scripts/audit_supabase_legacy_mirror.py
+?? scripts/build_painel_tv_catalog.py
+?? scripts/build_painel_tv_frontend.py
+?? scripts/build_unificado_screen_catalog.js
+?? scripts/check_supabase_legacy_mirror.py
+?? scripts/check_supabase_mirror_acceptance.py
+?? scripts/create_laboratorio_homolog_env.py
+?? scripts/export_supabase_rest_snapshot.py
+?? scripts/extract_pederneiras_pdf.py
+?? scripts/generate_maodeobra_pwa_icons.py
+?? scripts/import_formas_catalog.py
+?? scripts/mark_unificado_homolog.py
+?? scripts/painel-tv/
+?? scripts/patch_old_mapa_dashboards.py
+?? scripts/patch_unificado_producao.py
+?? scripts/patch_unificado_screen_access_nginx.py
+?? scripts/porting/a1_password_recovery.py
+?? scripts/porting/a6_ged_destination.sh
+?? scripts/porting/a6_ged_qr_frontend_switch.sh
+?? scripts/porting/a6_ged_qr_smoke.sh
+?? scripts/porting/a6_old_export.sh
+?? scripts/porting/a6_old_redirect.sh
+?? scripts/porting/append_a5_evidence.py
+?? scripts/porting/append_a5_inventory.py
+?? scripts/porting/apply_alex_files.py
+?? scripts/porting/apply_campinas_migration.py
+?? scripts/porting/backup_ged_qualidade.sh
+?? scripts/porting/backup_maodeobra_mobile_prod.sh
+?? scripts/porting/build_maodeobra_overlay.py
+?? scripts/porting/c1_migrate_rnc.py
+?? scripts/porting/c1_prepare_ensayo.sh
+?? scripts/porting/c2_switch_readonly.sh
+?? scripts/porting/capture_estoque_layout.py
+?? scripts/porting/check_ged_frontend_env.py
+?? scripts/porting/check_ged_verify_bundle.py
+?? scripts/porting/clone_alex_homolog.py
+?? scripts/porting/create_ged_homolog_env.py
+?? scripts/porting/deploy_maodeobra_mobile_prod.sh
+?? scripts/porting/finalize_lab_usinas_menu.py
+?? scripts/porting/fix_homolog_pcp_auth_status.py
+?? scripts/porting/fix_homolog_pcp_missing_token.py
+?? scripts/porting/ged-preview-nginx-test.conf
+?? scripts/porting/ged-unificado-preview.conf
+?? scripts/porting/ged_layout_switch.sh
+?? scripts/porting/ged_link_alex.js
+?? scripts/porting/ged_menu_switch.sh
+?? scripts/porting/ged_preview_logfix_switch.sh
+?? scripts/porting/ged_preview_switch.sh
+?? scripts/porting/ged_users_guard_switch.sh
+?? scripts/porting/ged_users_page_switch.sh
+?? scripts/porting/install_maodeobra_public.py
+?? scripts/porting/marcelo_master_ged.psql
+?? scripts/porting/menu_modelo_a_overlay.py
+?? scripts/porting/menu_modelo_a_publish.sh
+?? scripts/porting/patch_lab_usinas_permissions.py
+?? scripts/porting/patch_lab_usinas_reports.py
+?? scripts/porting/prepare_a6_nginx_syntax_test.py
+?? scripts/porting/prepare_c2_compose.py
+?? scripts/porting/prepare_ged_redirect.py
+?? scripts/porting/prepare_maodeobra_homolog_rehearsal.py
+?? scripts/porting/prepare_maodeobra_mobile_nginx.py
+?? scripts/porting/prepare_maodeobra_mobile_prod.py
+?? scripts/porting/promote_second_master.py
+?? scripts/porting/quality_cleanup.py
+?? scripts/porting/rehearse_maodeobra_homolog.sh
+?? scripts/porting/rehearse_maodeobra_nginx_homolog.py
+?? scripts/porting/restore_maodeobra_public_permissions.py
+?? scripts/porting/rollback_maodeobra_mobile_prod.sh
+?? scripts/porting/sanitize_ged_next_logs.py
+?? scripts/porting/snapshot_maodeobra_public_permissions.py
+?? scripts/porting/switch_ged_three_masters.py
+?? scripts/porting/verify_maodeobra_public_access.py
+?? scripts/qualidade_regression_gate.py
+?? scripts/refresh_mapa_cutover_ops.py
+?? scripts/rollback_mapa_dashboards_20261007.ps1
+?? scripts/seed_pederneiras_produtos.py
+?? scripts/sync_supabase_legacy_tables.py
+?? scripts/version_laboratorio_dimensions.py
+?? test-results/
+?? tests/auth/quality_identity_gate_smoke.py
+?? tests/auth/test_lab_usinas_reporting_access.py
+?? tests/auth/test_quality_adopt_pcp_preserves_hash_db.py
+?? tests/auth/test_quality_pcp_link_live_e2e.py
+?? tests/auth/test_quality_screen_access.py
+?? tests/mapa-inspection-save-timeout.test.js
+?? tests/mapa/test_photo_proxy_access.py
+?? tests/pcp-standard-labels.test.js
+?? tests/pcp/additive_save_smoke.py
+?? tests/pcp/dashboard_navigation_smoke.py
+?? tests/pcp/maodeobra-core.test.cjs
+?? tests/pcp/maodeobra_confirm_homolog.py
+?? tests/pcp/maodeobra_confirm_ios_homolog.py
+?? tests/pcp/maodeobra_grupos_homolog.py
+?? tests/pcp/maodeobra_installer_homolog.py
+?? tests/pcp/maodeobra_prod_smoke.py
+?? tests/pcp/maodeobra_prototype_stepper.py
+?? tests/pcp/maodeobra_stage2_homolog.py
+?? tests/pcp/maodeobra_stage3_access_homolog.py
+?? tests/pcp/maodeobra_stage3_homolog.py
+?? tests/pcp/maodeobra_stage3_ios_homolog.py
+?? tests/pcp/maodeobra_stage3_stepper_homolog.py
+?? tests/pcp/test_google_sheet_month_routing.py
+?? tests/pederneiras/
+?? tests/porting/joaog_menu_diagnostic.py
+?? tests/porting/production_users_editor_diagnostic.py
+?? tests/porting/quality_catalog_patch_isolated.py
+?? tests/porting/test_a1_password_recovery.py
+?? tests/unificado-inspection-photo-routing.test.js
+?? tests/unificado-producao-operacao.test.js
+?? tests/unificado/alex_ged_browser_smoke.py
+?? tests/unificado/ged_a5_20_25_boundaries.py
+?? tests/unificado/ged_a5_20_exact_final.py
+?? tests/unificado/ged_a5_50m_boundary.py
+?? tests/unificado/ged_a5_assets_readonly.py
+?? tests/unificado/ged_a5_live.py
+?? tests/unificado/ged_a5_login_nojs.py
+?? tests/unificado/ged_a5_remaining_live.py
+?? tests/unificado/ged_a5_warning_diagnostic.py
+?? tests/unificado/ged_a5_warning_local_realdata.py
+?? tests/unificado/ged_a5_warning_local_render.py
+?? tests/unificado/ged_a5_warning_selector_check.py
+?? tests/unificado/ged_a5_warning_ui.py
+?? tests/unificado/ged_admin_guard_unlinked.js
+?? tests/unificado/ged_embed_isolated.py
+?? tests/unificado/ged_homolog_blink_capture.py
+?? tests/unificado/ged_homolog_session_smoke.py
+?? tests/unificado/ged_layout_captures.py
+?? tests/unificado/ged_layout_smoke.py
+?? tests/unificado/ged_menu_candidate_smoke.py
+?? tests/unificado/ged_menu_diagnostic.py
+?? tests/unificado/ged_nativo_visual_smoke.py
+?? tests/unificado/ged_office_browser_probe.py
+?? tests/unificado/ged_office_viewer_probe.js
+?? tests/unificado/ged_session_shell_smoke.py
+?? tests/unificado/ged_signed_preview_probe.js
+?? tests/unificado/ged_sso_isolated_contract.py
+?? tests/unificado/ged_sso_office_qr_smoke.py
+?? tests/unificado/ged_sso_published_smoke.py
+?? tests/unificado/homolog_session.py
+?? tests/unificado/laboratorio_navigation_smoke.py
+?? tests/unificado/marcelo_ged_browser_smoke.py
+?? tests/unificado/marcelo_master_smoke.py
+?? tests/unificado/modelo_a_capture.py
+?? tests/unificado/modelo_a_gate.py
+?? tests/unificado/modelo_a_prod_smoke.py
+?? tests/unificado/modelo_a_routes.mjs
+?? tests/unificado/painel_tv_campinas_diagnostic_capture.py
+?? tests/unificado/painel_tv_homolog_capture.py
+?? tests/unificado/painel_tv_homolog_smoke.py
+?? tests/unificado/painel_tv_mapa_prod_capture.py
+?? tests/unificado/painel_tv_menu_prod_smoke.py
+?? tests/unificado/painel_tv_prod_account.py
+?? tests/unificado/painel_tv_prod_account_smoke.py
+?? tests/unificado/painel_tv_prod_smoke.py
+?? tests/unificado/painel_tv_service_account.py
+?? tests/unificado/painel_tv_short_login_smoke.py
+?? tests/unificado/qualidade_additive_nc_smoke.py
+?? tests/unificado/qualidade_additive_triage_smoke.py
+?? tests/unificado/qualidade_lote2_attachment_live.py
+?? tests/unificado/qualidade_lote2_auth_probe.py
+?? tests/unificado/qualidade_lote2_b5_live.py
+?? tests/unificado/qualidade_lote2_concession_live.py
+?? tests/unificado/qualidade_lote2_negative_live.py
+?? tests/unificado/qualidade_lote2_pcp_menu_live.py
+?? tests/unificado/qualidade_lote2_ricardo_context_remote.py
+?? tests/unificado/qualidade_navigation_smoke.py
+?? tests/unificado/quality_editor_presets_smoke.py
+?? tests/unificado/quality_flsgq07_capture.py
+?? tests/unificado/quality_flsgq07_homolog_smoke.py
+?? tests/unificado/quality_flsgq07_prod_browser.py
+?? tests/unificado/quality_flsgq07_prod_smoke.py
+?? tests/unificado/quality_layout_capture.py
+?? tests/unificado_mandril_report_ui.py
+?? tmp/
+?? unificado/.codex-tmp-maodeobra-refresh/
+?? unificado/assets/img/faleaqui-icon.png
+?? unificado/assets/img/pederh-icon.png
+?? unificado/ged-nativo/
+?? unificado/laboratorio/frontend/index.html
+?? unificado/laboratorio/frontend/novo.html
+?? unificado/laboratorio/frontend/package-lock.json
+?? unificado/laboratorio/frontend/package.json
+?? unificado/laboratorio/frontend/src/AbsorptionModule.tsx
+?? unificado/laboratorio/frontend/src/domain/
+?? unificado/laboratorio/frontend/src/main.tsx
+?? unificado/laboratorio/frontend/src/novo/PreviewAbsorptionModule.tsx
+?? unificado/laboratorio/frontend/src/novo/body.inc
+?? unificado/laboratorio/frontend/src/novo/build_postes.py
+?? unificado/laboratorio/frontend/src/novo/postes.css
+?? unificado/laboratorio/frontend/src/novo/postes.tsx
+?? unificado/laboratorio/frontend/src/styles.css
+?? unificado/laboratorio/frontend/src/tokens.css
+?? unificado/laboratorio/frontend/tsconfig.json
+?? unificado/laboratorio/frontend/tsconfig.tsbuildinfo
+?? unificado/laboratorio/frontend/vite.config.ts
+?? unificado/laboratorio/frontend/vite.novo.config.ts
+?? unificado/laboratorio/nginx-laboratorio.conf
+?? unificado/laboratorio/server/
+?? unificado/laboratorio/service/laboratorio-unificado.service
+?? unificado/laboratorio/service/requirements.txt
+?? unificado/laboratorio/service/server/__init__.py
+?? unificado/laboratorio/service/server/absorcao_sheet.py
+?? unificado/laboratorio/service/server/app.py
+?? unificado/laboratorio/service/server/assets/
+?? unificado/laboratorio/service/server/cec_api.py
+?? unificado/laboratorio/service/server/postes_api.py
+?? unificado/laboratorio/service/server/postes_certificates.py
+?? unificado/laboratorio/service/server/postes_db.py
+?? unificado/laboratorio/service/server/postes_report_v2.py
+?? unificado/laboratorio/service/server/postes_reports.py
+?? unificado/laboratorio/service/server/postes_rules.py
+?? unificado/laboratorio/service/server/slump_api.py
+?? unificado/laboratorio/service/server/static/cec/
+?? unificado/laboratorio/service/server/static/index.html
+?? unificado/laboratorio/service/server/static/laboratorio-bridge.js
+?? unificado/laboratorio/service/server/static/laboratorio-embedded.css
+?? unificado/laboratorio/service/server/static/novo/assets/fonts/
+?? unificado/laboratorio/service/server/static/novo/build_cura.py
+?? unificado/laboratorio/service/server/static/novo/index.html
+?? unificado/laboratorio/service/server/static/novo/postes/assets/novo-CbdbA7sW.js
+?? unificado/laboratorio/service/server/static/novo/postes/metodologia-conteudo.html
+?? unificado/laboratorio/service/server/static/postes/
+?? unificado/laboratorio/service/server/static/slump/
+?? unificado/laboratorio/service/server/static/usinas-relatorios/
+?? unificado/laboratorio/service/server/store.py
+?? unificado/laboratorio/service/tests/
+?? unificado/m/maodeobra/
+?? unificado/mapa/api/action_catalog.json
+?? unificado/mapa/api/checklists.json
+?? unificado/mapa/api/ged_bridge.py
+?? unificado/mapa/api/quality_area_catalog.json
+?? unificado/mapa/api/usina_integration.py
+?? unificado/mapa/api/usinas_reporting.py
+?? unificado/mapa/database/ged_approved_links_20261016.sql
+?? unificado/mapa/database/ged_identity_links_20261016.sql
+?? unificado/mapa/database/mapa_login_events.sql
+?? unificado/mapa/database/quality_permissions_20261015.sql
+?? unificado/mapa/database/user_lifecycle.sql
+?? unificado/mapa/operacao/dashboards-v6.css
+?? unificado/mapa/operacao/dashboards-v6.js
+?? unificado/mapa/operacao/dashboards-v7.css
+?? unificado/mapa/operacao/dashboards-v7.js
+?? unificado/mapa/operacao/mandril-report.js
+?? unificado/mapa/operacao/montagem-taxa.css
+?? unificado/mapa/operacao/montagem-taxa.js
+?? unificado/mapa/operacao/screen-context.js
+?? unificado/mapa/operacao/users-unificado.css
+?? unificado/mapa/operacao/users-unificado.js
+?? unificado/painel-tv/
+?? unificado/pcp/backend/alembic.ini
+?? unificado/pcp/backend/alembic/
+?? unificado/pcp/backend/app/api/routers/producao_unidade.py
+?? unificado/pcp/backend/app/api/routers/qualidade_catalogo.py
+?? unificado/pcp/backend/app/services/pederneiras_catalog.py
+?? unificado/pcp/backend/app/services/pederneiras_exports.py
+?? unificado/pcp/backend/app/services/pederneiras_rules.py
+?? unificado/pcp/backend/migrations/20261016_maodeobra_grupos.psql
+?? unificado/pcp/backend/migrations/20261017_maodeobra_confirmacao.psql
+?? unificado/pcp/backend/migrations/20261017_maodeobra_confirmacao_rollback.psql
+?? unificado/pcp/backend/migrations/20261017_maodeobra_mobile_metadata.psql
+?? unificado/pcp/backend/migrations/20261017_maodeobra_mobile_metadata_rollback.psql
+?? unificado/pcp/backend/standard_label_catalog_access.md
+?? unificado/pcp/fechamento-diario/
+?? unificado/pcp/static/css/maodeobra-mobile.css
+?? unificado/pcp/static/js/maodeobra-core.js
+?? unificado/pcp/static/js/maodeobra-grupos.js
+?? unificado/pcp/static/js/maodeobra-mobile.js
+?? unificado/pcp/unificado-screen-context.js
+?? unificado/pcp/users-unificado-planning.css
+?? unificado/pcp/users-unificado-planning.js
+?? unificado/qualidade/
+?? unificado/relatorios/
+?? unificado/shell/home-v2.css
+?? unificado/shell/home-v2.js
+?? unificado/shell/password-visibility.css
+?? unificado/shell/password-visibility.js
+?? unificado/tv/
+?? unificado/usinas/concrefer-usinas-reporting-sync.service
+?? unificado/usinas/concrefer-usinas-reporting-sync.timer
+?? unificado/usinas/migrations/004_reporting.sql
+?? unificado/usinas/reporting_service/
+?? unificado/usinas/scripts/patch_reporting_app.py
+?? unificado/usinas/sync_reporting.py
+?? unificado/usinas/tests/test_reporting_api.py

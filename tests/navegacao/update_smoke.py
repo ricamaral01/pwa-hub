@@ -21,8 +21,8 @@ def main():
         page.goto(BASE,wait_until='domcontentloaded')
         page.wait_for_function("document.body.classList.contains('nav-modern-ready')")
         page.wait_for_function("window.UnificadoSidebarModelA.snapshot().updateState==='current'")
-        assert page.locator('.nav-footer .nav-update-current').is_visible()
-        assert page.locator('.nav-footer .nav-update-check').inner_text()=='Verificar'
+        assert page.locator('.nav-footer .nav-update').is_visible()
+        assert page.locator('.nav-footer .nav-update').inner_text().strip()=='Atualizar'
         current=page.evaluate('window.UnificadoSidebarModelA.snapshot().version')
 
         page.route('**/unificado/VERSION?*',lambda route:route.abort())
@@ -50,7 +50,7 @@ def main():
         assert 'Atualizando' in page.locator('.nav-footer .nav-update').inner_text()
         print(json.dumps({'version':current,'simulated_latest':next_version,
                           'states':['current','failed','recovery','available','updating'],
-                          'verify_link':True},ensure_ascii=False))
+                          'always_visible_button':True},ensure_ascii=False))
         context.close();browser.close()
 
 

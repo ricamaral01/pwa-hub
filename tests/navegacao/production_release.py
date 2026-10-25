@@ -41,7 +41,7 @@ def main():
         page.wait_for_function("window.UnificadoSidebarModelA?.snapshot()?.updateState==='current'")
         old=page.evaluate('window.UnificadoSidebarModelA.snapshot().version')
         old_modern=page.evaluate("document.body.classList.contains('nav-modern-ready')")
-        if old_modern:page.wait_for_selector('.nav-footer .nav-update-check')
+        if old_modern:page.wait_for_selector('.nav-footer .nav-update-check, .nav-footer .nav-update')
         assert old!=TARGET_VERSION,(old,TARGET_VERSION)
         page.evaluate('navigator.serviceWorker.ready')
         print(f'Old shell {old}; service worker ready',flush=True)

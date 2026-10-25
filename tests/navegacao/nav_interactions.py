@@ -35,8 +35,9 @@ def main():
         assert page.locator('.nav-quick-chip').count()>=2
         page.get_by_role('button',name='Abrir telas').click()
         assert page.locator('.nav-modern').is_visible()
-        assert page.locator('.nav-panel-close svg').count()==1
-        assert page.locator('.nav-panel-close').evaluate("button => getComputedStyle(button.querySelector('svg')).width")=='22px'
+        assert page.locator('.nav-panel-close svg').count()==2
+        assert page.locator('.nav-close-icon').is_visible()
+        assert page.locator('.nav-close-icon').evaluate("icon => getComputedStyle(icon).width")=='22px'
         assert page.locator('.nav-unit-toggle').count()==1
         assert page.locator('.nav-unit-toggle svg.nav-chevron').count()==1
         # Homologation IAM grants Ricardo neither Usinas nor the Pederneiras
@@ -90,6 +91,7 @@ def main():
         assert page.locator('.nav-rail').is_visible()
         page.get_by_role('button',name='Abrir painel de telas').click()
         assert page.locator('.nav-panel').is_visible()
+        assert page.locator('.nav-close-icon').is_visible()
         page.locator('.nav-panel-close').click()
         assert not page.locator('.nav-panel').is_visible()
         page.reload(wait_until='domcontentloaded')
@@ -97,11 +99,13 @@ def main():
         assert not page.locator('.nav-panel').is_visible()
         page.get_by_role('button',name='Abrir painel de telas').click()
         assert page.locator('.nav-panel').is_visible()
+        assert page.locator('.nav-close-icon').is_visible()
         result['tablet']='rail, panel toggle, persisted closed state'
         context.close()
 
         context,page=page_for(browser,1440,900,token)
         assert page.locator('.nav-panel').is_visible()
+        assert page.locator('.nav-collapse-icon').is_visible()
         page.get_by_role('button',name='Selecionar módulo').click()
         assert page.locator('.nav-module-area').is_visible()
         assert page.locator('.nav-module-switcher svg.nav-switcher-chevron').count()==1

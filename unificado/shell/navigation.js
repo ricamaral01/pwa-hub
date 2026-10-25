@@ -22,7 +22,7 @@
   const tabletKey = `unificado.navigation.tablet.${userId}`;
   const state = {module:null, route:'', search:'', tree:{}, tabletOpen:safeGet(tabletKey)==='1',
     desktopCollapsed:safeGet('ct.sidebar.collapsed')==='1', mobileOpen:false,
-    mobileMode:'telas', historyAdded:false, recent:[], snapshot:null};
+    mobileMode:'telas', historyAdded:false, helpOpen:false, recent:[], snapshot:null};
   try { state.recent = JSON.parse(safeGet(recentKey) || '[]').slice(0,8); } catch { state.recent=[]; }
 
   const el = (tag, className, text) => {
@@ -52,18 +52,24 @@
   };
   const groupChevron=()=>strokeIcon('nav-chevron','m9 18 6-6-6-6');
   const downChevron=className=>strokeIcon(className,'m6 9 6 6 6-6');
+  const reloadIcon=()=>strokeIcon('nav-reload-icon','M20 11a8 8 0 1 1-2.4-5.7 M20 4v7h-7');
   const nav = el('nav','nav-modern'); nav.id='nav-modern'; nav.setAttribute('aria-label','Navegação do Unificado');
   const rail = el('div','nav-rail');
   const panel = el('div','nav-panel');
   const panelHead = el('div','nav-panel-head');
   const panelTitle = el('strong','nav-panel-title','Telas');
+  const brand=el('a','nav-brand');brand.href='/unificado/';brand.setAttribute('aria-label','Início do Unificado');
+  const brandLogo=el('img','nav-brand-logo');brandLogo.src='/unificado/assets/img/logo-concrefer.png';brandLogo.alt='Concrefer';
+  brand.append(brandLogo);
+  brand.addEventListener('click',event=>{event.preventDefault();navigateHref('/unificado/');});
   const closeButton = button('nav-panel-close','',() => {
     if(matchMedia('(min-width:1280px)').matches)setDesktopCollapsed(true);
     else if(matchMedia('(min-width:768px)').matches)setTabletOpen(false);
     else closeMobile();
   }); closeButton.setAttribute('aria-label','Recolher ou fechar menu');
-  closeButton.append(strokeIcon('nav-close-icon','M18 6 6 18 M6 6l12 12'));
-  panelHead.append(panelTitle,closeButton);
+  closeButton.append(strokeIcon('nav-collapse-icon','m15 18-6-6 6-6'),
+    strokeIcon('nav-close-icon','M18 6 6 18 M6 6l12 12'));
+  panelHead.append(brand,panelTitle,closeButton);
   const moduleSwitcher=button('nav-module-switcher','',()=>{
     state.moduleMenuOpen=!state.moduleMenuOpen;
     nav.classList.toggle('nav-modules-open',state.moduleMenuOpen);
@@ -279,16 +285,23 @@
   }
   function renderModules() {
     moduleArea.replaceChildren();rail.replaceChildren();
+    const railBrand=el('a','nav-rail-brand');railBrand.href='/unificado/';
+    railBrand.setAttribute('aria-label','Início do Unificado');
+    const railLogo=el('img','nav-rail-logo');railLogo.src='/unificado/assets/img/logo-concretrack.png';
+    railLogo.alt='ConcreTrack';railBrand.append(railLogo);
+    railBrand.addEventListener('click',event=>{event.preventDefault();navigateHref('/unificado/');});
+    rail.append(railBrand);
     const modules=visibleModules();
     const selectedModule=modules.find(module=>module.id===state.module);
     moduleSwitcher.replaceChildren(el('span','nav-switcher-code',moduleCodes[state.module]||'MD'));
     const switcherLabel=el('span','nav-switcher-label');
     switcherLabel.append(el('small','','MÓDULO'),el('strong','',selectedModule?.label||'Telas'));
     moduleSwitcher.append(switcherLabel,downChevron('nav-switcher-chevron'));
-    const railToggle=button('nav-rail-menu','☰',()=>{
+    const railToggle=button('nav-rail-menu','',()=>{
       if(matchMedia('(min-width:1280px)').matches)setDesktopCollapsed(!state.desktopCollapsed);
       else setTabletOpen(!state.tabletOpen);
     });
+    railToggle.append(strokeIcon('nav-rail-chevron','m9 18 6-6-6-6'));
     railToggle.setAttribute('aria-label',state.tabletOpen?'Fechar painel de telas':'Abrir painel de telas');
     rail.append(railToggle);
     for(const module of modules) {
@@ -306,17 +319,18 @@
         el('span','nav-rail-label',module.label));
       rail.append(railButton);
     }
-    const railUpdate=button('nav-rail-update','↻',()=>state.snapshot.updateState==='current'?host.checkUpdate():host.update());
+    const railUpdate=button('nav-rail-update','',()=>host.update());
+    railUpdate.append(reloadIcon());
     railUpdate.setAttribute('aria-label',updateText());
     railUpdate.dataset.state=state.snapshot.updateState;
-    rail.append(railUpdate);
+    rail.append(railUpdate,el('small','nav-rail-version',`v${state.snapshot.version}`));
   }
   function updateText() {
     const snap=state.snapshot;
-    return snap.updateState==='available'?`Nova versão ${snap.latestVersion} — toque para atualizar`:
-      snap.updateState==='updating'?'Atualizando… não feche':
-      snap.updateState==='failed'?'Não atualizou — tentar de novo':
-      snap.updateState==='checking'?'Verificando versão…':`Versão ${snap.version} · em dia`;
+    return snap.updateState==='available'?`Nova versão ${snap.latestVersion} — atualizar`:
+      snap.updateState==='updating'?'Atualizando…':
+      snap.updateState==='failed'?'Falhou — tentar de novo':
+      snap.updateState==='checking'?'Verificando…':'Atualizar';
   }
   function renderFooter() {
     footer.replaceChildren();
@@ -332,33 +346,42 @@
   }
   function footerLinks() {
     const links=el('div','nav-footer-links');
-    const add=(label,href)=>{
+    const add=(parent,label,href)=>{
       const link=el('a','nav-footer-link',label);
       link.href=href;
       link.addEventListener('click',event=>{event.preventDefault();navigateHref(href);});
-      links.append(link);
+      if(label==='Usuários')link.prepend(strokeIcon('nav-footer-icon','M16 21v-2a4 4 0 0 0-8 0v2 M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8'));
+      parent.append(link);
     };
+    const helpItems=[];
     if(state.snapshot.footerItemIds.includes('labHelp')&&MENU_ITEMS.labHelp)
-      add('Como funciona',hrefOf(MENU_ITEMS.labHelp));
-    if(state.snapshot.footerItemIds.includes('usuarios'))
-      add('Usuários','/unificado/?view='+encodeURIComponent(
-        state.snapshot.allowedItemIds.includes('prodUsuarios')?'mapa/operacao/?tela=USUARIOS':'pcp/usuarios/'));
+      helpItems.push(['Como funciona',hrefOf(MENU_ITEMS.labHelp)]);
     if(state.snapshot.footerItemIds.includes('reportProblem'))
-      add('Relatar problema','/unificado/testar/#relatar');
+      helpItems.push(['Relatar problema','/unificado/testar/#relatar']);
+    if(helpItems.length){
+      const help=button('nav-help-toggle','',()=>{state.helpOpen=!state.helpOpen;render();});
+      help.setAttribute('aria-expanded',String(state.helpOpen));
+      help.append(strokeIcon('nav-footer-icon','M12 17h.01 M9.1 9a3 3 0 1 1 5.8 1c-.7 1-2.9 1.4-2.9 3'),el('span','','Ajuda'));
+      links.append(help);
+      if(state.helpOpen){
+        const menu=el('div','nav-help-menu');
+        helpItems.forEach(([label,href])=>add(menu,label,href));
+        links.append(menu);
+      }
+    }
+    if(state.snapshot.footerItemIds.includes('usuarios'))
+      add(links,'Usuários','/unificado/?view='+encodeURIComponent(
+        state.snapshot.allowedItemIds.includes('prodUsuarios')?'mapa/operacao/?tela=USUARIOS':'pcp/usuarios/'));
     return links;
   }
   function updateControl() {
     const snap=state.snapshot;
     const wrap=el('div','nav-update-wrap');
-    if(snap.updateState==='current') {
-      wrap.append(el('span','nav-update-current',updateText()),
-        button('nav-update-check','Verificar',()=>host.checkUpdate()));
-    } else {
-      const update=button('nav-update',updateText(),()=>host.update());
-      update.dataset.state=snap.updateState;
-      update.disabled=['updating','checking'].includes(snap.updateState);
-      wrap.append(update);
-    }
+    const update=button('nav-update','',()=>host.update());
+    update.append(reloadIcon(),el('span','',updateText()));
+    update.dataset.state=snap.updateState;
+    update.disabled=snap.updateState==='updating';
+    wrap.append(update,el('small','nav-update-version',`Versão ${snap.version}`));
     return wrap;
   }
   function renderContext() {
@@ -453,7 +476,7 @@
     if(!state.module)return;
     const mode=state.mobileOpen?state.mobileMode:'telas';
     panelTitle.textContent=mode==='recentes'?'Recentes':mode==='conta'?'Conta':
-      matchMedia('(min-width:1280px)').matches?'CONCREFER':'Telas';
+      'Telas';
     moduleArea.hidden=mode!=='telas';
     searchWrap.hidden=mode!=='telas';
     renderModules();
