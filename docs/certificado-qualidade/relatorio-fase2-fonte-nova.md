@@ -2,6 +2,13 @@
 
 **Concluído em 24/10/2026 (horário de São Paulo; VPS em 25/10 UTC).** Homologação em `:18446` e produção publicadas com `CQ_FONTE_CP=novo`. A emissão comercial está bloqueada enquanto o cadastro da prensa não tiver o nome real do laboratório calibrador/RBC.
 
+## Ajuste do quadro da prensa — 24/10/2026
+
+- O PDF omite **patrimônio**, **capacidade em kN** e **classe** quando esses campos estão vazios. Valores cadastrados continuam visíveis. O laboratório aparece como **“Laboratório RBC: <nome>”** em linha própria; enquanto não for preenchido, o PDF mostra literalmente “Laboratório RBC: Não informado no cadastro de origem”. A regra que bloqueia a emissão por falta desse nome permanece ativa.
+- O exemplo de **3 datas** foi regenerado diretamente em `:18446`, usando o rascunho ID **31**: [PDF](exemplos/fase2-homolog-rascunho-3-datas-id31.pdf), [PNG](exemplos/fase2-homolog-rascunho-3-datas-id31.png) e [comparação com o mockup](evidencias/comparacao-pdf-3-datas.png). Uma página A4; o texto extraído confirma a etiqueta RBC e a ausência dos três campos vazios. A inspeção visual confirmou a linha da prensa sem marcadores “—” soltos.
+- `test_core_pdf.py`: **9/9**; conjunto selecionado anterior: **17/17**. A homologação passou novamente no gate **7/7**. Backup: `/opt/concrefer-unificado/homolog/backups/cq-phase2-20261025T015719Z`.
+- A produção foi atualizada com o procedimento de backup, permissões, importação idempotente, Nginx, smoke e retorno automático em erro. **Importados nesta execução: 0** (os 8 históricos já estavam presentes); serviço ativo, `CQ_FONTE_CP=novo`, gate **7/7**, sem acionamento do retorno. Backup: `/opt/concrefer-unificado/backups/cq-production-20261025T015744Z`.
+
 ## Fonte e conferência independente
 
 - O Controle Estatístico novo da VPS usa `cec-campinas-api.service`, `127.0.0.1:3086`, banco `controle_est_concre_campinas`, com `data_moldagem`, traço, idade, CP, MPa e data de ruptura. `source.py` permite `CQ_FONTE_CP=novo|antigo`; produção e homologação estão em `novo`. A alternativa antiga continua disponível para retorno operacional. Nenhuma credencial foi adicionada ao Git.

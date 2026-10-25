@@ -298,15 +298,24 @@ def make_pdf(cert: dict, items: list[dict], results: list[dict], *, issued: bool
     # Compact two-column standards/press block.
     press=cert.get('prensa_snapshot') or {}
     press_identity=' '.join(str(press.get(key) or '').strip() for key in ('fabricante','modelo')).strip() or '—'
-    serial=str(press.get('serie') or '—')
-    patrimonio=str(press.get('patrimonio') or '—')
-    capacity=_one(press.get('capacidade_kn'))
-    press_line=f'{press_identity} · série {serial} · patrimônio {patrimonio} · {capacity} kN · classe {press.get("classe") or "—"}'
-    calibration=f'Calibração: certificado {press.get("certificado_calibracao") or "—"} · {press.get("laboratorio_rbc") or "—"} · em {_date(press.get("data_calibracao"))} · válida até {_date(press.get("validade"))}'
+    press_parts=[press_identity]
+    for key,label in (('serie','série'),('patrimonio','patrimônio')):
+        value=str(press.get(key) or '').strip()
+        if value and value != '—':
+            press_parts.append(f'{label} {value}')
+    if press.get('capacidade_kn') not in (None,'','—'):
+        press_parts.append(f'{_one(press["capacidade_kn"])} kN')
+    klass=str(press.get('classe') or '').strip()
+    if klass and klass != '—':
+        press_parts.append(f'classe {klass}')
+    press_line=' · '.join(press_parts)
+    laboratory=str(press.get('laboratorio_rbc') or '').strip() or 'Não informado'
+    calibration=f'Calibração: certificado {press.get("certificado_calibracao") or "—"} · em {_date(press.get("data_calibracao"))} · válida até {_date(press.get("validade"))}'
+    laboratory_line=f'Laboratório RBC: {laboratory}'
     norms=[[
         _rich('<b><font color="#0F2C4C">NORMAS</font></b><br/>ABNT NBR 8451-1 a 8451-5<br/>ABNT NBR 5738 · ABNT NBR 5739',8,11),
         _rich('<b><font color="#0F2C4C">PRENSA DE ENSAIO (AFERIÇÃO)</font></b><br/>'+
-              escape(press_line)+'<br/>'+escape(calibration),8,11),
+              escape(press_line)+'<br/>'+escape(calibration)+'<br/>'+escape(laboratory_line),8,11),
     ]]
     norms_table=Table(norms,colWidths=[158,CONTENT-158],style=TableStyle([
         ('BOX',(0,0),(-1,-1),.75,GRID),('LINEBEFORE',(1,0),(1,0),.75,GRID),

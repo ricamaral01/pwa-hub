@@ -5,6 +5,8 @@
 
 **Evidência final:** [relatorio-fase2-fonte-nova.md](relatorio-fase2-fonte-nova.md) contém as comparações lado a lado, os PDFs de exemplo, os testes e os backups. [modelos-sem-peso.md](modelos-sem-peso.md) lista os 100 modelos sem peso cadastrado.
 
+**Ajuste posterior em 24/10/2026:** no quadro da prensa, patrimônio, kN e classe vazios foram ocultados; o laboratório passou a aparecer como “Laboratório RBC: <nome>”. O exemplo de 3 datas foi regenerado em `:18446` e comparado ao mockup. Homologação e produção passaram no gate 7/7. Novo backup de produção: `/opt/concrefer-unificado/backups/cq-production-20261025T015744Z`. O bloqueio de emissão até o preenchimento do laboratório RBC permanece. Detalhes e links no relatório da Fase 2.
+
 ## Entrega e arquivos
 
 - Módulo isolado em `unificado/laboratorio/certificados-qualidade/`: API FastAPI, regras em `core.py`, PDF de uma página em `report.py`, telas responsivas de emissão, histórico e cadastros em `static/`, exportação e importação legada somente por GET.

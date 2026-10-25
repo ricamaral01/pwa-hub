@@ -72,9 +72,14 @@ def test_pdf_approved_columns_number_format_and_verification_domain():
     for expected in ('Postes de concreto armado', 'Altura', 'Carga', 'Peso',
                      'Data de', 'Lote', 'Total de postes', '1.530', 'CONFORME',
                      'Documento emitido eletronicamente',
+                     'Laboratório RBC: Laboratório de teste',
                      'https://concrefer.concretrack.com.br/v/CQ-2026-0146'):
         assert expected in text
     assert 'Traço' not in text
+    assert 'patrimônio' not in text and ' kN' not in text and 'classe' not in text
+    cert['prensa_snapshot'].update(patrimonio='P-12',capacidade_kn=100,classe='1')
+    filled=PdfReader(__import__('io').BytesIO(make_pdf(cert,[item],[result],issued=True))).pages[0].extract_text()
+    assert 'patrimônio P-12' in filled and '100,0 kN' in filled and 'classe 1' in filled
 
 
 def test_missing_weight_renders_dash():
