@@ -25,6 +25,7 @@ tar -xzf /tmp/cq-phase2-release.tar.gz -C "$code"
 chown -R monitorconcreto:monitorconcreto "$code"
 find "$code" -type d -exec chmod 0750 {} +
 find "$code" -type f -exec chmod 0640 {} +
+cat "$code/migrations/004_responsavel_padrao.sql" | sudo -u postgres psql -v ON_ERROR_STOP=1 -d concretrack_postes_homolog >/dev/null
 install -o root -g root -m 0644 /tmp/cq-phase2-homolog.service "$service"
 systemctl daemon-reload
 systemctl restart cq-laboratorio-homolog.service

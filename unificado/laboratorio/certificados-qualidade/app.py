@@ -27,6 +27,7 @@ VERIFY = os.getenv('CQ_VERIFY_BASE', 'https://concrefer.concretrack.com.br')
 SIGNATURE = os.getenv('CQ_ENGINEER_SIGNATURE', str(DATA / 'assinatura-marcelo.png'))
 LOGO = os.getenv('CQ_LOGO_PATH', str(HERE.parent.parent / 'assets' / 'img' / 'logo-concrefer.png'))
 CORRECTORS = {v.strip() for v in os.getenv('CQ_REVISION_USER_IDS', '').split(',') if v.strip()}
+RESPONSAVEIS_LABORATORIO = ('Ricardo Do Amaral', 'Philippe Augusto')
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 
@@ -156,7 +157,8 @@ def config(actor: dict = Depends(user)):
             params = cur.execute('SELECT * FROM cq_parametros WHERE id=1').fetchone()
             models = cur.execute('SELECT * FROM cq_modelos_poste WHERE ativo ORDER BY modelo').fetchall()
             presses = cur.execute('SELECT * FROM cq_prensas WHERE ativa ORDER BY fabricante,modelo').fetchall()
-    return _row({'params':params,'models':models,'presses':presses,'user':actor,
+    return _row({'params':params,'models':models,'presses':presses,
+                 'responsaveis_laboratorio':RESPONSAVEIS_LABORATORIO,'user':actor,
                  'can_correct':actor['id'] in CORRECTORS,
                  'fonte_cp':selected_source(),
                  'validation_notice':os.getenv('CQ_VALIDATION_NOTICE','')})
@@ -164,7 +166,7 @@ def config(actor: dict = Depends(user)):
 
 @app.post('/api/resultados')
 def results(body: Draft, _: dict = Depends(mutating)):
-    if body.resp_laboratorio not in ('Ricardo Do Amaral','Philippe Augusto'):
+    if body.resp_laboratorio not in RESPONSAVEIS_LABORATORIO:
         raise HTTPException(422, 'Responsável inválido.')
     days = validate_items([item.model_dump(mode='json') for item in body.itens])
     with db() as conn:
@@ -193,7 +195,7 @@ def _check_models(cur, items):
 @app.post('/api/certificados')
 def create_draft(body: Draft, actor: dict = Depends(mutating)):
     validate_items([item.model_dump(mode='json') for item in body.itens])
-    if body.resp_laboratorio not in ('Ricardo Do Amaral','Philippe Augusto'):
+    if body.resp_laboratorio not in RESPONSAVEIS_LABORATORIO:
         raise HTTPException(422, 'Responsável inválido.')
     with db() as conn:
         with conn.cursor() as cur:
@@ -214,7 +216,7 @@ def create_draft(body: Draft, actor: dict = Depends(mutating)):
 @app.put('/api/certificados/{cert_id}')
 def update_draft(cert_id:int, body:Draft, actor:dict=Depends(mutating)):
     validate_items([item.model_dump(mode='json') for item in body.itens])
-    if body.resp_laboratorio not in ('Ricardo Do Amaral','Philippe Augusto'):
+    if body.resp_laboratorio not in RESPONSAVEIS_LABORATORIO:
         raise HTTPException(422,'Responsável inválido.')
     with db() as conn:
         with conn.cursor() as cur:
@@ -357,11 +359,33 @@ def pdf(cert_id:int, actor:dict=Depends(user)):
 
 @app.post('/api/prensas')
 def add_press(body:Press, actor:dict=Depends(mutating)):
+    _check_press(body)
     with db() as conn:
         with conn.cursor() as cur:
             row=cur.execute('''INSERT INTO cq_prensas(fabricante,modelo,serie,patrimonio,capacidade_kn,classe,
               certificado_calibracao,laboratorio_rbc,data_calibracao,validade,ativa)
               VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id''',tuple(body.model_dump().values())).fetchone()
+    return row
+
+
+def _check_press(body:Press):
+    if not all(value.strip() for value in (body.fabricante, body.modelo, body.serie,
+                                           body.certificado_calibracao, body.laboratorio_rbc)):
+        raise HTTPException(422,'Preencha a identificação, o certificado de calibração e o laboratório RBC.')
+    if body.validade < body.data_calibracao:
+        raise HTTPException(422,'A validade não pode ser anterior à data da calibração.')
+
+
+@app.put('/api/prensas/{press_id}')
+def update_press(press_id:int, body:Press, actor:dict=Depends(mutating)):
+    _check_press(body)
+    with db() as conn:
+        with conn.cursor() as cur:
+            row=cur.execute('''UPDATE cq_prensas SET fabricante=%s,modelo=%s,serie=%s,
+              patrimonio=%s,capacidade_kn=%s,classe=%s,certificado_calibracao=%s,
+              laboratorio_rbc=%s,data_calibracao=%s,validade=%s,ativa=%s
+              WHERE id=%s RETURNING id''',tuple(body.model_dump().values())+(press_id,)).fetchone()
+    if not row: raise HTTPException(404,'Prensa não encontrada.')
     return row
 
 
@@ -404,12 +428,17 @@ def add_model(body:Model, actor:dict=Depends(mutating)):
 
 
 @app.post('/api/parametros')
-def update_params(fck_mpa:float, observacoes:str='', actor:dict=Depends(mutating)):
+def update_params(fck_mpa:float, observacoes:str='',
+                  resp_laboratorio_padrao:str|None=None, actor:dict=Depends(mutating)):
     if actor['id'] not in CORRECTORS: raise HTTPException(403,'Parâmetros restritos aos responsáveis autorizados.')
     if not 1 <= fck_mpa <= 200: raise HTTPException(422,'fck inválido.')
+    if resp_laboratorio_padrao is not None and resp_laboratorio_padrao not in RESPONSAVEIS_LABORATORIO:
+        raise HTTPException(422,'Responsável pelo laboratório inválido.')
     with db() as conn:
         with conn.cursor() as cur:
-            cur.execute('UPDATE cq_parametros SET fck_mpa=%s,observacoes=%s,updated_at=now() WHERE id=1',(fck_mpa,observacoes))
+            cur.execute('''UPDATE cq_parametros SET fck_mpa=%s,observacoes=%s,
+              resp_laboratorio_padrao=COALESCE(%s,resp_laboratorio_padrao),updated_at=now()
+              WHERE id=1''',(fck_mpa,observacoes,resp_laboratorio_padrao))
     return {'ok':True}
 
 

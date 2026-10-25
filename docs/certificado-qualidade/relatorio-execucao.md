@@ -1,5 +1,7 @@
 # Execução — Certificados de qualidade no Laboratório
 
+**Ajuste de configuração em 25/10/2026:** a prensa existente agora pode ser editada em Cadastros para preencher o laboratório RBC real e revisar a calibração. O responsável padrão pelo laboratório agora é configurável entre Ricardo Do Amaral e Philippe Augusto. A alteração foi publicada em produção com backup `/opt/concrefer-unificado/backups/cq-production-20261025T104754Z`, `CQ_FONTE_CP=novo` e gate 7/7. O smoke autenticado confirmou página e configuração HTTP 200. A emissão segue bloqueada até o cadastro do RBC real. Instruções, capturas e verificação: [configuracao-prensa-responsavel.md](configuracao-prensa-responsavel.md).
+
 **Data:** 24/10/2026
 **Estado final em 24/10/2026:** módulo publicado em **homologação** (`:18446`) e **produção** com `CQ_FONTE_CP=novo`. O critério substituído passou: par legado 1/1 e comparação independente por SQL 10/10. O PDF foi refeito conforme os mockups aprovados; três exemplos de 1, 3 e 10 datas foram comparados visualmente. A tentativa inicial de produção descrita abaixo foi revertida; uma nova tentativa autorizada passou com backup, importação de 8 certificados legados e gate geral 7/7. `main` não foi mesclada. A emissão permanece bloqueada até o preenchimento do laboratório calibrador/RBC da prensa.
 
