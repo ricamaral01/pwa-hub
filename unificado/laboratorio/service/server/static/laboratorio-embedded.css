@@ -1,0 +1,22 @@
+.preview-embedded-toolbar {display:none}
+@media (min-width:1025px) {
+  html.unificado-embedded .preview-sidebar,
+  html.unificado-embedded .preview-banner,
+  html.unificado-embedded .preview-ribbon,
+  html.unificado-embedded .preview-top,
+  html.unificado-embedded .preview-bottom-nav,
+  html.unificado-embedded .sidebar,
+  html.unificado-embedded .topbar {display:none!important}
+  html.unificado-embedded .preview-shell,
+  html.unificado-embedded .app {display:block!important; min-height:100vh!important}
+  html.unificado-embedded .preview-main,
+  html.unificado-embedded .main {margin:0!important; width:100%!important; grid-column:auto!important}
+  html.unificado-embedded .preview-content,
+  html.unificado-embedded .content {max-width:none!important; padding:24px!important}
+  html.unificado-embedded .preview-shell .pole,
+  html.unificado-embedded .preview-shell .pole b {color:var(--pv-text)!important}
+  html.unificado-embedded .preview-shell .search {background:var(--pv-field)!important;border:1px solid var(--pv-line)!important}
+  html.unificado-embedded .preview-embedded-toolbar {display:flex;justify-content:flex-end;margin-bottom:16px}
+}
+.lab-official-note {display:inline-flex;align-items:center;gap:3px;margin:5px 8px;color:#5B677A;font-size:12px}
+.lab-official-note a {color:#15416F;text-decoration:underline}

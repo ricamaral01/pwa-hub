@@ -15,6 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlalchemy.exc import SQLAlchemyError
 from .store import Store, now_ms
 from .postes_api import router as postes_router, current_user
+from .postes_certificates import router as postes_certificates_router
 from .slump_api import router as slump_router
 from .cec_api import router as cec_router
 from cronoanalise.api import router as crono_router, CronoError, crono_error_handler
@@ -111,6 +112,7 @@ def create_app(data_dir: Path | None = None, device_key: str | None = None, admi
             # The existing ESP32 collection must stay available during a DB outage.
             app.state.postes_session = None
     app.include_router(postes_router)
+    app.include_router(postes_certificates_router)
     app.include_router(slump_router)
     app.include_router(cec_router)
     app.include_router(crono_router)
@@ -179,6 +181,16 @@ def create_app(data_dir: Path | None = None, device_key: str | None = None, admi
     @app.get('/laboratorio-embedded.css')
     def bridge_style():
         return FileResponse(ROOT / 'server' / 'static' / 'laboratorio-embedded.css', media_type='text/css')
+
+    @app.get('/usinas-relatorios/')
+    def usinas_relatorios_page():
+        return FileResponse(ROOT / 'server' / 'static' / 'usinas-relatorios' / 'index.html', media_type='text/html; charset=utf-8', headers={'Cache-Control': 'no-store'})
+
+    @app.get('/usinas-relatorios/{asset}')
+    def usinas_relatorios_asset(asset: str):
+        if asset not in {'native-areas.js', 'native-areas.css'}:
+            raise HTTPException(404)
+        return FileResponse(ROOT / 'server' / 'static' / 'usinas-relatorios' / asset)
 
     @app.get('/postes')
     def postes_page():

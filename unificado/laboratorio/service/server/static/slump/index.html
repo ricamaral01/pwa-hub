@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1730">
+  <title>Slump e flow · Laboratório Concrefer</title>
+  <link rel="stylesheet" href="/unificado/laboratorio/slump/slump.css?v=1">
+  <script defer src="/unificado/laboratorio/slump/slump.js?v=1"></script>
+</head>
+<body>
+  <main class="layout">
+    <header class="page-heading">
+      <a class="back" href="/unificado/?module=laboratorio" target="_top">← Laboratório</a>
+      <div class="heading-copy"><span class="eyebrow">LABORATÓRIO / CONCRETO FRESCO</span><h1>Registro de slump e flow</h1><p>Informe a massada e a medida realizada.</p></div>
+      <span class="heading-mark" aria-hidden="true">01</span>
+    </header>
+
+    <div class="columns">
+      <section class="panel" aria-labelledby="register-title">
+        <div class="section-title"><span>01</span><h2 id="register-title">Novo registro</h2></div>
+        <form id="slump-form" novalidate>
+          <label class="field"><span>Número de série da massada</span><input id="massada" name="massada" type="text" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required><small>Exatamente 6 dígitos. Zeros à esquerda são mantidos.</small></label>
+
+          <fieldset class="kind"><legend>Tipo de medição</legend><div class="kind-options"><label><input type="radio" name="tipo" value="slump" checked><span>Slump <small>cm</small></span></label><label><input type="radio" name="tipo" value="flow"><span>Flow <small>mm</small></span></label></div></fieldset>
+
+          <label class="field"><span id="value-label">Slump (cm)</span><input id="valor" name="valor" type="text" inputmode="decimal" autocomplete="off" placeholder="Ex.: 10,5" required></label>
+
+          <fieldset class="time-mode"><legend>Data e horário</legend><label><input type="radio" name="origem_horario" value="automatico" checked> Automático, pelo sistema</label><label><input type="radio" name="origem_horario" value="manual"> Informar manualmente</label></fieldset>
+          <p id="automatic-time" class="clock" aria-live="off">Horário do servidor registrado ao salvar.</p>
+          <label id="manual-time-field" class="field" hidden><span>Data e hora da medição</span><input id="manual-time" name="medido_em_local" type="datetime-local"></label>
+
+          <p id="form-message" class="message" role="status" aria-live="polite"></p>
+          <button id="save-button" class="save" type="submit">Salvar registro <span aria-hidden="true">↗</span></button>
+        </form>
+      </section>
+
+      <section class="panel recent" aria-labelledby="recent-title">
+        <div class="section-title"><span>02</span><h2 id="recent-title">Registros recentes</h2></div>
+        <div id="records" class="records" aria-live="polite"><p class="empty">Carregando registros…</p></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
