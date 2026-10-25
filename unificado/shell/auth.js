@@ -6,6 +6,7 @@ function destination(modules) {
   const allowed = new Set(['index.html', 'mapa/consulta/', 'mapa/operacao/', 'testar/']);
   const pcpPages = new Set(['acompanhamento-mensal','acompanhamento-mensal-setor-34',
     'apontamento-mega','comparacao','dashboard','etiquetas','etiquetas-armaduras',
+    'fechamento-diario',
     'etiquetas-sc','formas-por-setor','maodeobra','maodeobra-rateio','pcp-diario',
     'primeiro-acesso','producao','programacao','programacao-alex',
     'programacao-circular-s3','programacao-circular-s4','programacao-final',
@@ -13,6 +14,8 @@ function destination(modules) {
     'teste-programacao','usuarios']);
   if (requestedNext === 'testar/') return new URL(requestedNext, UNIFICADO_ROOT);
   if (requestedNext === 'index.html') return new URL(requestedNext, UNIFICADO_ROOT);
+  if (modules.includes('mapa') && requestedNext === 'laboratorio/')
+    return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('mapa') && requestedNext === 'mapa/operacao/')
     return new URL('?view=' + encodeURIComponent(requestedNext), UNIFICADO_ROOT);
   if (modules.includes('mapa') && allowed.has(requestedNext)) return new URL(requestedNext, UNIFICADO_ROOT);
@@ -20,6 +23,8 @@ function destination(modules) {
       pcpPages.has((requestedNext || '').match(/^pcp\/([^/?]+)\/(?:\?[^#]*)?$/)?.[1]))) {
     return new URL('?view=' + encodeURIComponent(requestedNext === 'pcp/' ? 'pcp/dashboard/' : requestedNext), UNIFICADO_ROOT);
   }
+  if (modules.includes('pcp') && requestedNext === 'm/maodeobra/?launch=1')
+    return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('mapa') && requestedNext === 'm/inspecao/')
     return new URL(requestedNext, UNIFICADO_ROOT);
   if (modules.includes('mapa') && /^mapa\/operacao\/\?tela=[A-Z0-9_]+$/.test(requestedNext || '')) {
@@ -31,6 +36,7 @@ function destination(modules) {
 function storeModuleSessions(result) {
   localStorage.removeItem('unificado_last_planejamento');
   localStorage.removeItem('unificado_last_producao');
+  localStorage.removeItem('unificado_last_laboratorio');
   localStorage.removeItem('pcp_token');
   localStorage.removeItem('pcp_user');
   localStorage.removeItem('pwa_mapa_auth_session_v1');
@@ -46,6 +52,17 @@ function storeModuleSessions(result) {
   }
 }
 
+async function finishLogin(modules) {
+  const target = destination(modules);
+  if (requestedNext === 'laboratorio/' && target.pathname.endsWith('/laboratorio/')) {
+    const response = await fetch(new URL('unified/laboratorio-bootstrap', MAPA_API), {
+      method: 'POST', credentials: 'same-origin', cache: 'no-store'
+    });
+    if (!response.ok) throw new Error('Sua conta não tem acesso ao Laboratório.');
+  }
+  location.assign(target);
+}
+
 window.UnificadoAuth = Object.freeze({
   async me() {
     const response = await fetch(new URL('me', MAPA_API), {
@@ -56,6 +73,7 @@ window.UnificadoAuth = Object.freeze({
   async logout() {
     localStorage.removeItem('unificado_last_planejamento');
     localStorage.removeItem('unificado_last_producao');
+    localStorage.removeItem('unificado_last_laboratorio');
     localStorage.removeItem('pcp_token');
     localStorage.removeItem('pcp_user');
     localStorage.removeItem('pwa_mapa_auth_session_v1');
@@ -75,6 +93,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let passwordToken = null;
   let passwordMode = null;
   let modulesAfterChange = [];
+
+  if (requestedNext === 'm/maodeobra/?launch=1' || requestedNext === 'pcp/maodeobra/') {
+    const token = localStorage.getItem('pcp_token');
+    fetch(new URL('unified/pcp-session', MAPA_API), {
+      credentials: 'same-origin', cache: 'no-store',
+      headers: token ? {Authorization: 'Bearer ' + token} : {}
+    }).then(async response => {
+      if (!response.ok) return;
+      const result = await response.json();
+      if (!result.access_token || !result.usuario) return;
+      storeModuleSessions({pcp: result});
+      await finishLogin(['pcp']);
+    }).catch(() => {});
+  }
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -106,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       storeModuleSessions(result);
-      location.assign(destination(result.modules || []));
+      await finishLogin(result.modules || []);
     } catch (error) {
       feedback.textContent = error.message || 'Falha de conexão.';
     } finally {
@@ -138,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (passwordMode === 'mapa' && result.user) result.mapa = result.user;
       storeModuleSessions(result);
-      location.assign(destination(result.modules || modulesAfterChange));
+      await finishLogin(result.modules || modulesAfterChange);
     } catch (error) {
       feedback.textContent = error.message || 'Falha de conexão.';
     } finally {

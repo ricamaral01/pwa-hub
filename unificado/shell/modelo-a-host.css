@@ -19,7 +19,7 @@ body.unificado-model-a .main-panel {
   overflow-y: auto;
   border-radius: 0;
 }
-body.unificado-model-a .module-host { height: calc(100vh - 70px); min-height: 0; }
+body.unificado-model-a .module-host { height: 100dvh; min-height: 0; }
 body.unificado-model-a .topbar .user-pill,
 body.unificado-model-a .topbar .exit-button { display: none; }
 body.unificado-model-a.unificado-permissions-loading #sidebar-model-a { visibility: hidden; }

@@ -47,7 +47,7 @@ body.unificado-shared-menu #sidebar .ged-preview-group .nav-link.is-active .mono
 body.unificado-shared-menu #sidebar .nav-link-label{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 body.unificado-shared-menu #sidebar .shared-user-footer{display:flex;flex-direction:column;gap:2px;flex:none;width:100%;padding-top:6px}
 body.unificado-shared-menu #sidebar .shared-user-footer .nav-footer{margin:0;padding:0 8px}
-body.unificado-shared-menu.unificado-ged-active #sidebar .shared-user-footer .nav-footer{display:none}
+body.unificado-shared-menu.unificado-ged-active #sidebar .shared-user-footer .nav-footer-users{display:none}
 body.unificado-shared-menu #sidebar .shared-user-row{display:flex;align-items:center;gap:10px;min-height:48px;margin-top:6px;padding:8px 8px 2px}
 body.unificado-shared-menu #sidebar .shared-avatar{display:flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#15416F;color:#fff;font-size:12px;font-weight:600}
 body.unificado-shared-menu #sidebar .shared-user-text{flex:1;min-width:0}
