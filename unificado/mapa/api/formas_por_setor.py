@@ -28,7 +28,8 @@ def load_catalog(pcp_connection, mapa_connection):
         products = {}
         for row in cursor.fetchall():
             products.setdefault((row["setor_id"], _norm(row["nome"])), row["codigo"])
-        cursor.execute("""SELECT setor_id, codigo_forma, tipo_forma, poste, volume_m3, ativo
+        cursor.execute("""SELECT setor_id, codigo_forma, tipo_forma, codigo_tipo_forma,
+                                 codigo_modelo_mega, poste, volume_m3, ativo
                           FROM public.mapeamento_formas WHERE setor_id BETWEEN 1 AND 4""")
         standard = cursor.fetchall()
         cursor.execute("""SELECT setor_id, codigo_forma, poste_circular, volume_m3, ativo
@@ -47,7 +48,8 @@ def load_catalog(pcp_connection, mapa_connection):
     result = []
 
     def add(*, sector_id, code, kind, produced, product_codes, volumes,
-            pcp_active, source, compatible_active=None, compatible_total=None):
+            pcp_active, source, compatible_active=None, compatible_total=None,
+            form_type_code=None, mega_model_code=None):
         sector = sectors.get(sector_id, f"Setor {sector_id}")
         maintenance_status = maintenance.get((_norm(sector), _code(code)))
         inactive = not pcp_active or maintenance_status == "PARADA"
@@ -59,6 +61,8 @@ def load_catalog(pcp_connection, mapa_connection):
             "setor_id": sector_id,
             "codigo_forma": code,
             "tipo_forma": kind,
+            "codigo_tipo_forma": form_type_code,
+            "codigo_modelo_mega": mega_model_code,
             "produtos": produced,
             "codigos_produto": sorted({str(value) for value in product_codes if value}),
             "volumes_m3": sorted({_number(value) for value in volumes if value is not None}),
@@ -74,6 +78,8 @@ def load_catalog(pcp_connection, mapa_connection):
     for row in standard:
         add(sector_id=row["setor_id"], code=row["codigo_forma"],
             kind=row["tipo_forma"], produced=[row["poste"]],
+            form_type_code=row["codigo_tipo_forma"],
+            mega_model_code=row["codigo_modelo_mega"],
             product_codes=[products.get((row["setor_id"], _norm(row["poste"])))],
             volumes=[row["volume_m3"]], pcp_active=row["ativo"],
             source="mapeamento_formas")

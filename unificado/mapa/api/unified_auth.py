@@ -1,8 +1,7 @@
-"""Confirmed test-only identity links and dual password hashes.
+"""Explicit test-only identity links and dual password hashes.
 
-This module never infers a link from a name. A link is inserted only after a
-human confirmation. Passwords live in process memory for the current request;
-only bcrypt/Argon2id hashes are persisted.
+Links are confirmed by a person or created by Ricardo's explicit access grant.
+They are never inferred from a name. Only hashes are persisted.
 """
 
 from __future__ import annotations
@@ -85,7 +84,7 @@ def link_for(*, pcp_id: int | None = None, mapa_login: str | None = None) -> dic
                           OR (%s::text IS NOT NULL AND link.mapa_login=%s)
                        ORDER BY (link.pcp_user_id=%s AND link.mapa_login=%s) DESC,
                                 mapa.ativo DESC, mapa.primeiro_acesso ASC,
-                                link.pcp_user_id DESC, link.id ASC LIMIT 1""",
+                                link.pcp_user_id ASC, link.id ASC LIMIT 1""",
                     (pcp_id, pcp_id, mapa_login, mapa_login, pcp_id, mapa_login))
         return cur.fetchone()
 
@@ -192,7 +191,54 @@ def adopt_mapa_password(link_id: int, password: str) -> None:
     pcp, mapa = linked_users(link)
     if not pcp or not mapa or not pcp["ativo"] or not verify_map(password, mapa["senha_hash"]):
         raise ValueError("Mapa credential invalid")
-    sync_component_password(link_id, password)
+    sync_component_password(link_id, password, first_access=bool(mapa['primeiro_acesso']))
+
+
+def adopt_pcp_password(link_id: int, password: str) -> None:
+    """Initialize a newly granted Mapa identity from a verified PCP login."""
+    with map_connect() as conn, conn.cursor() as cur:
+        cur.execute('SELECT * FROM unificado_auth.identity_links WHERE id=%s', (link_id,))
+        link = cur.fetchone()
+    if not link or link['unified_password_set'] or link['requires_reset']:
+        raise ValueError('Identity is not awaiting PCP adoption')
+    if link['mapa_login'] == f"unif-pcp-{link['pcp_user_id']}":
+        # The administrative Quality linkage must leave the PCP credential
+        # untouched. Only the newly created Mapa shadow needs that password.
+        with map_connect() as map_conn, map_conn.cursor() as map_cur:
+            map_cur.execute('SELECT * FROM unificado_auth.identity_links WHERE id=%s FOR UPDATE',
+                            (link_id,))
+            locked = map_cur.fetchone()
+            if (not locked or locked['unified_password_set'] or locked['requires_reset']
+                    or locked['mapa_login'] != f"unif-pcp-{locked['pcp_user_id']}"):
+                raise ValueError('Identity is not awaiting PCP adoption')
+            map_cur.execute('SELECT id,ativo FROM public.usuarios WHERE id=%s FOR UPDATE',
+                            (locked['mapa_login'],))
+            mapa = map_cur.fetchone()
+            if not mapa or not mapa['ativo']:
+                raise ValueError('Mapa identity unavailable')
+            with pcp_connect() as pcp_conn, pcp_conn.cursor() as pcp_cur:
+                pcp_cur.execute('''SELECT senha_hash,ativo,trocar_senha_primeiro_acesso
+                                   FROM public.usuarios WHERE id=%s FOR UPDATE''',
+                                (locked['pcp_user_id'],))
+                pcp = pcp_cur.fetchone()
+                if not pcp or not pcp['ativo'] or not verify_pcp(password, pcp['senha_hash']):
+                    raise ValueError('PCP credential invalid')
+                mapa_digest = MAPA_HASHER.hash(password)
+                first_access = bool(pcp['trocar_senha_primeiro_acesso'])
+                map_cur.execute('''UPDATE public.usuarios SET senha_hash=%s,
+                                   primeiro_acesso=%s,updated_at=now() WHERE id=%s''',
+                                (mapa_digest, first_access, locked['mapa_login']))
+                map_cur.execute('''UPDATE unificado_auth.identity_links
+                                   SET pcp_hash=%s,mapa_hash=%s,unified_password_set=true,
+                                       requires_reset=%s,updated_at=now() WHERE id=%s''',
+                                (pcp['senha_hash'], mapa_digest, first_access, link_id))
+                map_conn.commit()
+        return
+    pcp, mapa = linked_users(link)
+    if not pcp or not mapa or not pcp['ativo'] or not verify_pcp(password, pcp['senha_hash']):
+        raise ValueError('PCP credential invalid')
+    sync_component_password(link_id, password,
+                            first_access=bool(pcp['trocar_senha_primeiro_acesso']))
 
 
 def check_link_password(link: dict, password: str) -> tuple[bool, bool]:

@@ -1,0 +1,14 @@
+[
+  {"id":"qualidade.nc.abrir","module":"qualidade","label":"Abrir NC","description":"Registrar uma nova não conformidade"},
+  {"id":"qualidade.nc.ver_todas","module":"qualidade","label":"Ver todas","description":"Consultar NCs de todas as áreas autorizadas na unidade"},
+  {"id":"qualidade.nc.ver_area","module":"qualidade","label":"Ver área","description":"Consultar NCs das áreas vinculadas ao usuário"},
+  {"id":"qualidade.nc.triar","module":"qualidade","label":"Triar","description":"Classificar, atribuir responsável e definir prazos"},
+  {"id":"qualidade.nc.tratar","module":"qualidade","label":"Tratar","description":"Registrar contenção, causa e ações"},
+  {"id":"qualidade.nc.aprovar_concessao","module":"qualidade","label":"Aprovar concessão","description":"Aprovar uma disposição por concessão"},
+  {"id":"qualidade.nc.verificar_eficacia","module":"qualidade","label":"Verificar eficácia","description":"Registrar uma rodada de verificação de eficácia"},
+  {"id":"qualidade.nc.encerrar","module":"qualidade","label":"Encerrar","description":"Aprovar encerramento da NC"},
+  {"id":"qualidade.nc.cadastros","module":"qualidade","label":"Cadastros","description":"Administrar cadastros do módulo Qualidade"},
+  {"id":"laboratorio.cronoanalise.coletar","module":"laboratorio","label":"Cronoanálise: coletar","description":"Cronometrar, enviar medições e invalidar as próprias até 24 horas"},
+  {"id":"laboratorio.cronoanalise.analisar","module":"laboratorio","label":"Cronoanálise: analisar","description":"Invalidar ou restaurar medições, exportar e salvar simulações"},
+  {"id":"laboratorio.cronoanalise.configurar","module":"laboratorio","label":"Cronoanálise: configurar","description":"Editar catálogo, parâmetros, layout e base da simulação"}
+]

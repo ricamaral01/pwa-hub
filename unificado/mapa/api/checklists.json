@@ -1,0 +1,245 @@
+{
+  "INSPECAO": [
+    {
+      "id": "inspecao_visual",
+      "title": "Inspeção Visual",
+      "items": [
+        {
+          "id": "homogeneidade_concreto",
+          "label": "Homogeneidade do Concreto",
+          "critical": true
+        },
+        {
+          "id": "falhas_preenchimento",
+          "label": "Falhas de Preenchimento",
+          "critical": true
+        },
+        {
+          "id": "concreto_segregado",
+          "label": "Concreto Segregado",
+          "critical": true
+        },
+        {
+          "id": "grandes_avarias",
+          "label": "Grandes Avarias",
+          "critical": true
+        },
+        {
+          "id": "furacao_obstruida",
+          "label": "Furação Obstruída (pinos)",
+          "critical": true
+        },
+        {
+          "id": "armacao_aparente",
+          "label": "Armação aparente",
+          "critical": true
+        },
+        {
+          "id": "trincas",
+          "label": "Trincas",
+          "critical": true
+        },
+        {
+          "id": "tubulacao_entupida",
+          "label": "Tubulação Entupida",
+          "critical": true
+        },
+        {
+          "id": "bolhas_excesso",
+          "label": "Bolhas em excesso",
+          "critical": false
+        },
+        {
+          "id": "bolhas_fora_padrao",
+          "label": "Bolhas fora do padrão",
+          "critical": false
+        },
+        {
+          "id": "carimbo_identificacao",
+          "label": "Carimbo de Identificação",
+          "critical": false
+        },
+        {
+          "id": "fissuras",
+          "label": "Fissuras",
+          "critical": false
+        },
+        {
+          "id": "rebarbas",
+          "label": "Rebarbas",
+          "critical": false
+        },
+        {
+          "id": "manchas_excessivas",
+          "label": "Manchas excessivas",
+          "critical": false
+        },
+        {
+          "id": "buchas_fixacao",
+          "label": "Buchas de fixação",
+          "critical": false
+        },
+        {
+          "id": "acabamento_face_exposta",
+          "label": "Acabamento face exposta",
+          "critical": false
+        },
+        {
+          "id": "acabamento_abas",
+          "label": "Acabamento abas",
+          "critical": false
+        }
+      ]
+    }
+  ],
+  "MONTAGEM": [
+    {
+      "id": "checagem_inicial",
+      "title": "Inspeção Visual",
+      "items": [
+        {
+          "id": "homogeneidade_concreto",
+          "label": "Homogeneidade do Concreto",
+          "critical": true
+        },
+        {
+          "id": "falhas_preenchimento",
+          "label": "Falhas de Preenchimento",
+          "critical": true
+        },
+        {
+          "id": "concreto_segregado",
+          "label": "Concreto Segregado",
+          "critical": true
+        },
+        {
+          "id": "grandes_avarias",
+          "label": "Grandes Avarias",
+          "critical": true
+        },
+        {
+          "id": "facao_obstruido",
+          "label": "Facão Obstruído",
+          "critical": true
+        },
+        {
+          "id": "furacao_obstruida",
+          "label": "Furação Obstruída (pinos)",
+          "critical": true
+        },
+        {
+          "id": "armacao_aparente",
+          "label": "Armação aparente",
+          "critical": true
+        },
+        {
+          "id": "trincas",
+          "label": "Trincas",
+          "critical": true
+        },
+        {
+          "id": "tubulacao_entupida",
+          "label": "Tubulação Entupida",
+          "critical": true
+        },
+        {
+          "id": "bolhas_excesso",
+          "label": "Bolhas em excesso",
+          "critical": false
+        },
+        {
+          "id": "bolhas_fora_padrao",
+          "label": "Bolhas fora do padrão",
+          "critical": false
+        },
+        {
+          "id": "carimbo_identificacao",
+          "label": "Carimbo de Identificação",
+          "critical": false
+        },
+        {
+          "id": "fissuras",
+          "label": "Fissuras",
+          "critical": false
+        },
+        {
+          "id": "pequenas_avarias",
+          "label": "Pequenas avarias",
+          "critical": false
+        },
+        {
+          "id": "rebarbas",
+          "label": "Rebarbas",
+          "critical": false
+        },
+        {
+          "id": "manchas_excessivas",
+          "label": "Manchas excessivas",
+          "critical": false
+        },
+        {
+          "id": "buchas_fixacao",
+          "label": "Buchas de fixação",
+          "critical": false
+        },
+        {
+          "id": "prisioneiros_lacre_aterramento",
+          "label": "Prisioneiros (lacre / aterramento)",
+          "critical": false
+        },
+        {
+          "id": "acabamento_face_exposta",
+          "label": "Acabamento face exposta",
+          "critical": false
+        },
+        {
+          "id": "acabamento_abas",
+          "label": "Acabamento abas",
+          "critical": false
+        }
+      ]
+    },
+    {
+      "id": "checagem_materiais",
+      "title": "Montagem de Postes",
+      "items": [
+        {
+          "id": "montagem_do_poste",
+          "label": "Montagem do Poste",
+          "critical": false
+        }
+      ]
+    },
+    {
+      "id": "final",
+      "title": "Inspeção Final",
+      "items": [
+        {
+          "id": "rebarbas_final",
+          "label": "Rebarbas",
+          "critical": false
+        },
+        {
+          "id": "liberacao_qualidade",
+          "label": "Liberação Qualidade",
+          "critical": false
+        },
+        {
+          "id": "codificacao_poste",
+          "label": "Codificação Poste",
+          "critical": false
+        },
+        {
+          "id": "aterramento",
+          "label": "Limpeza Aterramento",
+          "critical": false
+        },
+        {
+          "id": "lacre",
+          "label": "Limpeza Lacre",
+          "critical": false
+        }
+      ]
+    }
+  ]
+}

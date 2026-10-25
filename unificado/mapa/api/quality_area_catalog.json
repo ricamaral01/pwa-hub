@@ -1,0 +1,22 @@
+[
+  {"code":"LABORATORIO","label":"Laboratório"},
+  {"code":"QUALIDADE","label":"Qualidade"},
+  {"code":"PRODUCAO","label":"Produção"},
+  {"code":"ENGENHARIA","label":"Engenharia"},
+  {"code":"ADMINISTRATIVO","label":"Administrativo"},
+  {"code":"SEGURANCA","label":"Segurança"},
+  {"code":"AEE","label":"AEE"},
+  {"code":"COM","label":"COM"},
+  {"code":"CQC","label":"CQC"},
+  {"code":"INJ","label":"INJ"},
+  {"code":"MAN","label":"MAN"},
+  {"code":"PCP","label":"PCP"},
+  {"code":"PJT","label":"PJT"},
+  {"code":"PRO","label":"PRO"},
+  {"code":"REC","label":"REC"},
+  {"code":"RHU","label":"RHU"},
+  {"code":"SGA","label":"SGA"},
+  {"code":"SGQ","label":"SGQ"},
+  {"code":"SST","label":"SST"},
+  {"code":"VEN","label":"VEN"}
+]

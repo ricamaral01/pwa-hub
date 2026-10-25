@@ -42,12 +42,12 @@
     if (!summary || summary.querySelector("#paKgHomem")) return;
     const panel = element("section", "pa-kg-homem");
     panel.id = "paKgHomem";
-    panel.innerHTML = '<div class="pa-kg-homem-heading"><h3>KG / Homem</h3>'
-      + '<p>Peso dos postes produzidos &divide; (MOD + MOI). O MOI dos Setores 3 e 4 &eacute; dividido igualmente.</p></div>'
+    panel.innerHTML = '<div class="pa-kg-homem-heading"><h3>Produção por pessoa</h3>'
+      + '<p>Postes/Homem = total produzido pelo setor &divide; (MOD + MOI). O MOI compartilhado dos Setores 3 e 4 &eacute; dividido igualmente entre eles.</p></div>'
+      + '<div class="pa-kg-homem-heading pa-kg-homem-subheading"><h3>Postes / Homem</h3></div>'
+      + '<div id="paPostesHomemDays" class="pa-kg-homem-days">Carregando...</div>'
+      + '<div class="pa-kg-homem-heading pa-kg-homem-subheading"><h3>KG / Homem</h3></div>'
       + '<div id="paKgHomemDays" class="pa-kg-homem-days">Carregando...</div>'
-      + '<div class="pa-kg-homem-heading pa-kg-homem-subheading"><h3>Postes / Homem</h3>'
-      + '<p>Quantidade de postes produzidos &divide; (MOD + MOI), com o mesmo rateio de MOI.</p></div>'
-      + '<div id="paPostesHomemDays" class="pa-kg-homem-days">Carregando...</div>';
     summary.append(panel);
     for (const id of ["paBtnAtualizar", "paBtnFiltrar", "paBtnLimparFiltros"]) {
       document.getElementById(id)?.addEventListener("click", () => setTimeout(() => loadKgHomem(true), 0));
@@ -76,8 +76,11 @@
     const card = (row, title, metric) => {
       const postes = metric === "postes";
       const value = row && (postes ? row.postes_por_homem : row.kg_por_homem);
+      const formatted = value == null ? "&mdash;" : Number(value).toLocaleString("pt-BR", {
+        minimumFractionDigits: postes ? 2 : 0, maximumFractionDigits: postes ? 2 : 0
+      });
       return `<article class="pa-kg-homem-card"><h4>${title}</h4>`
-        + `<strong>${value == null ? "&mdash;" : count(value)}</strong>`
+        + `<strong>${formatted}</strong>`
         + `<span class="pa-kg-homem-unit">${postes ? "postes" : "kg"} por pessoa</span>`
         + (row ? `<small>${count(postes ? row.postes_realizados : row.peso_realizado_kg)} ${postes ? "postes" : "kg"} produzidos &divide; ${people(row.pessoas)} pessoa(s)</small>`
           + `<small>MOD ${people(row.mod)} + MOI ${people(row.moi)}</small>` : '') + '</article>';
