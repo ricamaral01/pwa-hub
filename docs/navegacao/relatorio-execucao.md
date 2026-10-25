@@ -45,3 +45,7 @@ O script `deploy/navigation_shell.sh` prepara backup dos arquivos e permissões,
 - `tests/navegacao/` e `docs/navegacao/`.
 
 Commit de implementação e evidências: `b0828187`. Push concluído em `origin/feat/navegacao-unidades` em 25/10/2026. Nenhum merge em `main` foi feito.
+
+## Consolidação de branches após o ajuste SVG
+
+Todas as 48 branches locais e 19 referências remotas foram reunidas em `feat/unificado-consolidado-20261025`; `git branch -a --no-merged HEAD` não apontou nenhuma. `main` permaneceu no commit atual. As atualizações ativas de acesso por unidade já estavam publicadas e foram comparadas com a produção. O ajuste de navegação permanece publicado na versão `1.0.56`, com gate 7/7 e backup. Os detalhes de conflitos, verificações e do conteúdo posterior presente no serviço do Mapa estão em [consolidacao-branches.md](consolidacao-branches.md).
