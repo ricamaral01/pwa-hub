@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Painel de Não Conformidades</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F3F0}
+a{color:#1E4FD8}a:hover{color:#163BA6}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans', sans-serif; color: #16191D; background: #F3F3F0; min-height: 960px; display: flex; flex-wrap: wrap">
+  <nav aria-label="Módulos" style="flex: 1 1 220px; max-width: 240px; background: #16191D; color: #E8E8E4; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 20px">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: #C2410C; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center">C</div>
+      <div style="font-weight: 600; font-size: 15px">ConcreTrack</div>
+    </div>
+    <a href="#" style="color: #B9BCC0; text-decoration: none; padding: 10px 12px; border-radius: 6px; font-size: 14px">PCP</a>
+    <a href="#" style="color: #B9BCC0; text-decoration: none; padding: 10px 12px; border-radius: 6px; font-size: 14px">Laboratório</a>
+    <a href="#" style="color: #B9BCC0; text-decoration: none; padding: 10px 12px; border-radius: 6px; font-size: 14px">Mapa de Concretagem</a>
+    <div style="color: #fff; padding: 10px 12px; border-radius: 6px; font-size: 14px; background: #2A2F35; font-weight: 600">Qualidade (SGQ)</div>
+    <div style="display: flex; flex-direction: column; gap: 2px; padding-left: 14px">
+      <div style="color: #fff; padding: 8px 12px; font-size: 13px; border-left: 2px solid #F97316">Não conformidades</div>
+      <a href="#" style="color: #B9BCC0; text-decoration: none; padding: 8px 12px; font-size: 13px">Ações corretivas</a>
+      <a href="#" style="color: #B9BCC0; text-decoration: none; padding: 8px 12px; font-size: 13px">Reclamações de cliente</a>
+      <a href="#" style="color: #B9BCC0; text-decoration: none; padding: 8px 12px; font-size: 13px">Certificados</a>
+    </div>
+    <a href="#" style="color: #B9BCC0; text-decoration: none; padding: 10px 12px; border-radius: 6px; font-size: 14px">GED</a>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 28px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+      <div>
+        <div style="font-size: 13px; color: #5B6168">Qualidade · ISO 9001 · 8.7 e 10.2</div>
+        <h1 style="margin: 4px 0 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em">Não conformidades</h1>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <button type="button" style="font: inherit; font-size: 14px; height: 44px; padding: 0 16px; border: 1px solid #D6D5CF; background: #fff; border-radius: 8px; color: #16191D">Exportar relatório</button>
+        <a href="Abertura.dc.html" style="font-size: 15px; font-weight: 600; height: 44px; padding: 0 20px; background: #C2410C; color: #fff; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Abrir NC
+        </a>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px">
+      <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+        <div style="background: #fff; border: 1px solid #E2E1DC; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+          <div style="font-size: 13px; color: #5B6168">{{k.label}}</div>
+          <div style="font-size: 30px; font-weight: 700; color: {{k.color}}">{{k.value}}</div>
+          <div style="font-size: 12px; color: #5B6168">{{k.hint}}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+      <button type="button" style="font: inherit; font-size: 13px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid #16191D; background: #16191D; color: #fff">Todas abertas</button>
+      <button type="button" style="font: inherit; font-size: 13px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid #D6D5CF; background: #fff; color: #16191D">Minhas pendências</button>
+      <button type="button" style="font: inherit; font-size: 13px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid #D6D5CF; background: #fff; color: #16191D">Em atraso</button>
+      <button type="button" style="font: inherit; font-size: 13px; height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid #D6D5CF; background: #fff; color: #16191D">Aguardando eficácia</button>
+      <div style="flex: 1 1 200px"></div>
+      <label style="font-size: 13px; color: #5B6168; display: flex; align-items: center; gap: 8px">Unidade
+        <select style="font: inherit; height: 36px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 10px; background: #fff"><option>Todas</option><option>Pederneiras</option><option>Ribeirão</option><option>Noroeste</option></select>
+      </label>
+    </div>
+
+    <div style="background: #fff; border: 1px solid #E2E1DC; border-radius: 10px; overflow-x: auto">
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px; min-width: 900px">
+        <thead>
+          <tr style="text-align: left; color: #5B6168; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em">
+            <th style="padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Nº</th>
+            <th style="padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Não conformidade</th>
+            <th style="padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Origem</th>
+            <th style="padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Gravidade</th>
+            <th style="padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Etapa</th>
+            <th style="padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Responsável</th>
+            <th style="padding: 12px 16px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Prazo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+            <tr>
+              <td style="padding: 14px 16px; border-bottom: 1px solid #EFEEEA; font-family: 'IBM Plex Mono', monospace; font-size: 13px"><a href="Tratativa.dc.html">{{r.id}}</a></td>
+              <td style="padding: 14px 16px; border-bottom: 1px solid #EFEEEA">
+                <div style="font-weight: 600">{{r.title}}</div>
+                <div style="font-size: 12px; color: #5B6168; margin-top: 2px">{{r.where}}</div>
+              </td>
+              <td style="padding: 14px 16px; border-bottom: 1px solid #EFEEEA; color: #3D434A">{{r.origin}}</td>
+              <td style="padding: 14px 16px; border-bottom: 1px solid #EFEEEA"><span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px; {{r.sevStyle}}">{{r.sev}}</span></td>
+              <td style="padding: 14px 16px; border-bottom: 1px solid #EFEEEA">
+                <div style="display: flex; gap: 3px; margin-bottom: 6px">
+                  <sc-for list="{{r.bars}}" as="b" hint-placeholder-count="6"><div style="width: 18px; height: 6px; border-radius: 3px; background: {{b.c}}"></div></sc-for>
+                </div>
+                <div style="font-size: 12px; color: #3D434A">{{r.step}}</div>
+              </td>
+              <td style="padding: 14px 16px; border-bottom: 1px solid #EFEEEA">{{r.owner}}</td>
+              <td style="padding: 14px 16px; border-bottom: 1px solid #EFEEEA; font-weight: 600; color: {{r.dueColor}}">{{r.due}}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size: 12px; color: #5B6168">Dados ilustrativos. Barra de etapa: Registro · Contenção · Causa · Plano · Eficácia · Encerrada.</div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var done = '#16191D', cur = '#C2410C', todo = '#E2E1DC';
+    function bars(n) { var a = []; for (var i = 0; i < 6; i++) a.push({ c: i < n ? done : (i === n ? cur : todo) }); return a; }
+    var maior = 'background:#FDE7DC;color:#9A3412';
+    var menor = 'background:#E6ECFB;color:#1E3A8A';
+    var obs = 'background:#EEEEEA;color:#3D434A';
+    return {
+      kpis: [
+        { label: 'Abertas', value: '14', hint: '6 Maior · 8 Menor', color: '#16191D' },
+        { label: 'Em atraso', value: '3', hint: 'prazo de etapa vencido', color: '#C2410C' },
+        { label: 'Aguardando eficácia', value: '5', hint: 'verificação agendada', color: '#1E4FD8' },
+        { label: 'Reincidentes (12 meses)', value: '2', hint: 'mesma causa-raiz', color: '#16191D' }
+      ],
+      rows: [
+        { id: 'NC-2026-0142', title: 'Trinca transversal na base do poste DT 11/300', where: 'Pederneiras · Pista 3 · Lote 2610-07', origin: 'Inspeção final', sev: 'Maior', sevStyle: maior, bars: bars(2), step: 'Análise de causa', owner: 'J. Almeida', due: '17/10', dueColor: '#16191D' },
+        { id: 'NC-2026-0141', title: 'Resistência 7 dias abaixo do previsto — traço T-35', where: 'Ribeirão · Laboratório', origin: 'Ensaio de laboratório', sev: 'Maior', sevStyle: maior, bars: bars(1), step: 'Contenção', owner: 'Ricardo', due: '14/10', dueColor: '#C2410C' },
+        { id: 'NC-2026-0139', title: 'Brita 1 fora da faixa granulométrica (NBR 7211)', where: 'Noroeste · Baia 2', origin: 'Recebimento', sev: 'Menor', sevStyle: menor, bars: bars(3), step: 'Plano de ação', owner: 'M. Souza', due: '22/10', dueColor: '#16191D' },
+        { id: 'NC-2026-0136', title: 'Certificado de calibração da prensa vencido', where: 'Pederneiras · Laboratório', origin: 'Auditoria interna', sev: 'Menor', sevStyle: menor, bars: bars(4), step: 'Verificação de eficácia', owner: 'A. Lima', due: '30/10', dueColor: '#16191D' },
+        { id: 'NC-2026-0133', title: 'Cliente recebeu postes com identificação ilegível', where: 'Ribeirão · Expedição', origin: 'Reclamação de cliente', sev: 'Maior', sevStyle: maior, bars: bars(3), step: 'Plano de ação', owner: 'P. Rocha', due: '12/10', dueColor: '#C2410C' },
+        { id: 'NC-2026-0130', title: 'Registro de cura sem assinatura do turno B', where: 'Noroeste · Cura', origin: 'Autoinspeção', sev: 'Observação', sevStyle: obs, bars: bars(5), step: 'Encerramento', owner: 'L. Prado', due: '20/10', dueColor: '#16191D' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

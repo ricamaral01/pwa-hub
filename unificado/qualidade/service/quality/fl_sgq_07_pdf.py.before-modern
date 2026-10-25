@@ -1,0 +1,326 @@
+"""One-page electronic FL-SGQ-07 RNC form.
+
+The coordinates follow the approved RNC-Formulário reference (US Letter, rev 00).
+Values are always taken from the persisted Quality record; no template example
+text is carried into a newly exported RNC.
+"""
+from __future__ import annotations
+
+from datetime import date, datetime
+from io import BytesIO
+from pathlib import Path
+
+from reportlab.lib import colors
+from reportlab.lib.utils import simpleSplit
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
+
+
+PAGE_W, PAGE_H = 612, 792
+LEFT, RIGHT = 36, 572
+YELLOW = colors.HexColor("#FFFF99")
+GRAY = colors.HexColor("#BFBFBF")
+INK = colors.HexColor("#111111")
+
+
+def _fonts() -> tuple[str, str]:
+    regular = (
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+        Path("C:/Windows/Fonts/arial.ttf"),
+    )
+    bold = (
+        Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"),
+        Path("C:/Windows/Fonts/arialbd.ttf"),
+    )
+    base = next((path for path in regular if path.is_file()), None)
+    heavy = next((path for path in bold if path.is_file()), None)
+    if not base or not heavy:
+        return "Helvetica", "Helvetica-Bold"
+    if "FLForm" not in pdfmetrics.getRegisteredFontNames():
+        pdfmetrics.registerFont(TTFont("FLForm", str(base)))
+        pdfmetrics.registerFont(TTFont("FLFormBold", str(heavy)))
+    return "FLForm", "FLFormBold"
+
+
+def _date(value) -> str:
+    if isinstance(value, (date, datetime)):
+        return value.strftime("%d/%m/%Y")
+    return str(value or "")
+
+
+def _yes_no(value) -> str:
+    return "( X ) sim   (   ) não" if value is True else (
+        "(   ) sim   ( X ) não" if value is False else "(   ) sim   (   ) não")
+
+
+def render_rnc_form(nc: dict, *, catalogs: dict[str, str] | None = None,
+                    containments: list[dict] | None = None,
+                    causes: list[dict] | None = None,
+                    actions: list[dict] | None = None,
+                    followups: list[dict] | None = None,
+                    efficacies: list[dict] | None = None,
+                    closures: list[dict] | None = None,
+                    successor_number: str | None = None) -> bytes:
+    catalogs = catalogs or {}
+    containments = containments or []
+    causes = causes or []
+    actions = actions or []
+    followups = followups or []
+    efficacies = efficacies or []
+    closures = closures or []
+    regular, bold = _fonts()
+    output = BytesIO()
+    c = canvas.Canvas(output, pagesize=(PAGE_W, PAGE_H), pageCompression=1)
+    overflow: list[tuple[str, str]] = []
+    c.setTitle(f"RNC - Eletrônico - {nc.get('numero') or 'Rascunho'}")
+    c.setAuthor("Concrefer - Qualidade")
+    c.setStrokeColor(INK)
+    c.setLineWidth(.45)
+
+    def box(x: float, top: float, width: float, height: float, fill=None):
+        if fill is not None:
+            c.setFillColor(fill)
+            c.rect(x, PAGE_H-top-height, width, height, stroke=0, fill=1)
+            c.setFillColor(INK)
+        c.rect(x, PAGE_H-top-height, width, height, stroke=1, fill=0)
+
+    def line(x1: float, top1: float, x2: float, top2: float):
+        c.line(x1, PAGE_H-top1, x2, PAGE_H-top2)
+
+    def text(value, x: float, top: float, width: float, height: float,
+             *, size: float = 7.2, weight: bool = False, center: bool = False,
+             max_lines: int | None = None, track_label: str | None = None):
+        value = str(value or "").replace("\r", "")
+        font = bold if weight else regular
+        max_lines = max_lines or max(1, int((height-3) / (size * 1.25)))
+        lines: list[str] = []
+        for paragraph in value.split("\n"):
+            lines.extend(simpleSplit(paragraph, font, size, max(width-5, 8)) or [""])
+        while len(lines) > max_lines and size > 5.3:
+            size -= .3
+            max_lines = max(1, int((height-3) / (size * 1.2)))
+            lines = []
+            for paragraph in value.split("\n"):
+                lines.extend(simpleSplit(paragraph, font, size, max(width-5, 8)) or [""])
+        if len(lines) > max_lines:
+            if track_label:
+                overflow.append((track_label, value))
+            lines = lines[:max_lines]
+            lines[-1] = lines[-1].rstrip() + "…"
+        c.setFont(font, size)
+        baseline = PAGE_H-top-size-2
+        for item in lines:
+            tx = x + (width - pdfmetrics.stringWidth(item, font, size))/2 if center else x+2
+            c.drawString(max(x+2, tx), baseline, item)
+            baseline -= size*1.2
+
+    def labeled(value, label, x, top, width, height, *, fill=None, size=7.3,
+                center_value=False):
+        box(x, top, width, height, fill)
+        text(label, x, top, width, 8, size=6.1, weight=True)
+        text(value, x, top+8, width, height-8, size=size, center=center_value,
+             track_label=label)
+
+    def choice_row(label, value, top):
+        box(36, top, 536, 18, YELLOW)
+        text(label, 36, top+3, 360, 12, size=6.4, weight=True)
+        text(_yes_no(value), 396, top+3, 176, 12, size=6.5)
+
+    # Header: same three-cell geometry as the printed form.
+    box(LEFT, 57, 202, 42)
+    box(238, 57, 245, 42)
+    box(483, 57, 89, 42)
+    logo = Path(__file__).parent / "assets" / "logo-concrefer.png"
+    if logo.is_file():
+        c.drawImage(str(logo), 47, PAGE_H-84, width=122, height=30,
+                    preserveAspectRatio=True, mask="auto", anchor="c")
+    line(171, 78, 238, 78)
+    text("Código:", 171, 59, 67, 8, size=5.8, weight=True, center=True)
+    text("FL-SGQ-07", 171, 68, 67, 10, size=7, center=True)
+    text("Data da emissão:", 171, 80, 67, 8, size=5.5, weight=True, center=True)
+    text("21/09/07", 171, 89, 67, 8, size=6.4, center=True)
+    line(238, 78, 483, 78)
+    text("Formulário", 238, 64, 245, 14, size=9, weight=True, center=True)
+    text("Registro de Não Conformidade - RNC", 238, 83, 245, 14, size=9, weight=True, center=True)
+    line(483, 78, 572, 78)
+    text("Rev.", 483, 59, 89, 8, size=5.8, weight=True, center=True)
+    text("00", 483, 68, 89, 8, size=7, center=True)
+    text("Data da Rev.:", 483, 80, 89, 8, size=5.8, weight=True, center=True)
+    text("21/09/07", 483, 89, 89, 8, size=6.4, center=True)
+
+    # Identification block.
+    labeled(nc.get("processo_texto") or catalogs.get("area_emissora_id", ""),
+            "Processo Emitente", 36, 107, 202, 25)
+    labeled(nc.get("emitente_nome") or nc.get("criado_por", ""),
+            "Nome do emitente", 238, 107, 245, 25)
+    labeled(_date(nc.get("data_emissao") or nc.get("criado_em")),
+            "Data da emissão", 483, 107, 89, 25)
+    for x, width, label in ((36, 125, "RNC interno"), (161, 77, "Identificação"),
+                            (238, 121, "RNC Auditoria"), (359, 124, "Item normativo")):
+        box(x, 132, width, 10)
+        text(label, x, 132, width, 9, size=6, weight=True, center=True)
+    origin = catalogs.get("origem_id", "").casefold()
+    for index, (left, right, matching) in enumerate((
+        ("Reclamação do cliente", "Interna", "cliente"),
+        ("Fornecedor", "Certificadora", "fornecedor"),
+        ("Processo", "Cliente", "processo"),
+    )):
+        top = 142 + 10*index
+        selected_left = matching in origin and not (matching == "cliente" and "auditoria" in origin)
+        selected_right = ((right == "Interna" and "auditoria interna" in origin)
+                          or (right == "Certificadora" and "auditoria externa" in origin))
+        for x, width in ((36, 125), (161, 77), (238, 121), (359, 124)):
+            box(x, top, width, 10)
+        text(f"{left}  ( {'X' if selected_left else ' '} )", 36, top, 125, 9, size=5.8,
+             weight=selected_left)
+        text(nc.get("identificacao_texto") if selected_left or selected_right else "-", 161, top, 77, 9,
+             size=6.2)
+        text(f"{right}  ( {'X' if selected_right else ' '} )", 238, top, 121, 9,
+             size=5.8, weight=selected_right)
+        text(nc.get("requisito_texto") if selected_left or selected_right else "-", 359, top, 124, 9,
+             size=6.2)
+    labeled(nc.get("numero"), "Nº da RNC atual", 483, 132, 89, 20, size=6.5)
+    labeled(nc.get("numero_anterior_texto") or nc.get("numero_legado") or "-",
+            "Nº da RNC anterior", 483, 152, 89, 20, size=6.2)
+
+    labeled(nc.get("descricao"), "Descrever o problema: (O que é problema?)", 36, 174, 536, 34,
+            size=9, center_value=True)
+    labeled(nc.get("evidencias_texto"), "Evidência objetiva: (Somente para auditoria)",
+            36, 208, 536, 39, size=8.5, center_value=True)
+
+    containment = containments[-1] if containments else {}
+    labeled("\n".join(str(item.get("descricao") or "") for item in containments),
+            "Ações de contenção / provisória (O que pode ser feito de imediato?)",
+            36, 249, 536, 37, size=7.5)
+    labeled(containment.get("responsavel_texto") or containment.get("criado_por"),
+            "Responsável", 36, 286, 202, 17, fill=YELLOW, size=6.5)
+    labeled(_date(containment.get("prazo")), "Prazo", 238, 286, 334, 17,
+            fill=YELLOW, size=6.5)
+
+    box(36, 303, 536, 10, YELLOW)
+    text("Análise do problema:", 36, 303, 536, 10, size=7, weight=True)
+    analysis = [
+        ("Onde ocorreu? (Local)", catalogs.get("local_id", "")),
+        ("Quando ocorreu? (Data)", _date(nc.get("data_ocorrencia"))),
+        ("Como ocorreu? (Atividade)", catalogs.get("atividade_id", "")),
+        ("Quem estava envolvido? (Funções)", nc.get("envolvidos_funcoes", "")),
+    ]
+    for index, (label, value) in enumerate(analysis):
+        top = 313 + index*14
+        box(36, top, 203, 14, YELLOW)
+        box(239, top, 333, 14, YELLOW)
+        text(label, 36, top+1, 203, 12, size=6.4, weight=True)
+        text(value, 239, top+1, 333, 12, size=6.7)
+    labeled(nc.get("causas_provaveis"), "Causas prováveis", 36, 369, 319, 17,
+            fill=YELLOW, size=6.7)
+    labeled(nc.get("equipe_texto"), "Equipe", 355, 369, 217, 17,
+            fill=YELLOW, size=6.7)
+    choice_row("A sistemática utilizada na atividade é adequada?",
+               nc.get("sistematica_adequada"), 386)
+    choice_row("A sistemática documentada está sendo seguida?",
+               nc.get("sistematica_seguida"), 404)
+    root = causes[-1].get("causa_raiz") if causes else ""
+    labeled(root, "Descrever a causa raiz (procurar aplicar a técnica dos 5 porquês):",
+            36, 422, 536, 52, fill=YELLOW, size=8)
+
+    box(36, 474, 536, 13, YELLOW)
+    text("Ação corretiva (O que pode ser feito para eliminar a causa do problema?)",
+         36, 474, 536, 12, size=7, weight=True)
+    choice_row("É possível implantar dispositivo à prova de erros (POKA YOKE)?",
+               nc.get("poka_yoke_possivel"), 487)
+    choice_row("É necessário alterar documentos e/ou formulários?",
+               nc.get("alterar_documentos"), 505)
+    labeled(nc.get("documentos_alterar_texto"),
+            "Relacionar documentos / formulários necessários alterar:",
+            36, 523, 536, 19, fill=YELLOW, size=6.8)
+    corrective = [item for item in actions if item.get("tipo") == "CORRETIVA"]
+    labeled("\n".join(str(item.get("o_que") or "") for item in corrective),
+            "Descrever a ação corretiva:", 36, 542, 536, 43, fill=YELLOW, size=7.5)
+    last_action = corrective[-1] if corrective else {}
+    labeled(last_action.get("quem_id"), "Responsável", 36, 585, 202, 17,
+            fill=YELLOW, size=6.4)
+    labeled(_date(last_action.get("quando")), "Prazo conclusão", 238, 585, 167, 17,
+            fill=YELLOW, size=6.4)
+    labeled(_date(nc.get("verificar_eficacia_a_partir")),
+            "Verificar eficácia a partir de", 405, 585, 167, 17,
+            fill=YELLOW, size=6.2)
+
+    box(36, 602, 536, 11, GRAY)
+    text("Acompanhamento da eficácia da solução (confirmação da eliminação da causa e do problema)",
+         36, 602, 536, 10, size=6.4, weight=True)
+    for x, width, label in ((36, 67, "Data"), (103, 346, "Evidência"),
+                            (449, 123, "Verificador")):
+        box(x, 613, width, 11, GRAY)
+        text(label, x, 613, width, 10, size=6.3, weight=True)
+    for index in range(3):
+        item = followups[index] if index < len(followups) else {}
+        top = 624 + index*10
+        for x, width, value in ((36, 67, _date(item.get("data"))),
+                                (103, 346, item.get("evidencia")),
+                                (449, 123, item.get("verificador_id"))):
+            box(x, top, width, 10, GRAY)
+            text(value, x, top, width, 9, size=6.2)
+    latest = efficacies[-1] if efficacies else {}
+    outcome = latest.get("resultado")
+    answer = "( X ) sim   (   ) não" if outcome == "EFICAZ" else (
+        "(   ) sim   ( X ) não" if outcome == "NAO_EFICAZ" else "(   ) sim   (   ) não")
+    box(36, 654, 369, 14, GRAY)
+    box(405, 654, 167, 14, GRAY)
+    text(f"Ação corretiva eficaz?  {answer}", 36, 656, 369, 12, size=6.7, weight=True)
+    text(f"Nº da nova RNC: {successor_number or ''}", 405, 656, 167, 12, size=6.3, weight=True)
+    closure = closures[-1] if closures else {}
+    box(36, 668, 536, 11, GRAY)
+    text("Encerramento da RNC", 36, 668, 536, 10, size=6.8, weight=True)
+    labeled(closure.get("aprovado_por"), "Responsável pelo encerramento", 36, 679, 260, 17,
+            fill=GRAY, size=6.5)
+    labeled(_date(closure.get("aprovado_em")), "Data", 296, 679, 133, 17,
+            fill=GRAY, size=6.5)
+    labeled("( X ) sim   (   ) não" if nc.get("status") == "ENCERRADA" else
+            "(   ) sim   ( X ) não", "RNC encerrada?", 429, 679, 143, 17,
+            fill=GRAY, size=6.2)
+    box(36, 706, 536, 11)
+    text("Página 1" if overflow or len(followups) > 3 else "Página 1 de 1",
+         36, 706, 536, 10, size=6.5, center=True)
+    c.showPage()
+    if overflow or len(followups) > 3:
+        y = 55
+        c.setFont(bold, 12)
+        c.drawString(36, PAGE_H-y, f"RNC {nc.get('numero') or 'Rascunho'} - continuação")
+        y += 26
+        for label, value in overflow:
+            if y > 710:
+                c.showPage()
+                y = 55
+            c.setFont(bold, 8)
+            c.drawString(36, PAGE_H-y, label[:105])
+            y += 13
+            c.setFont(regular, 8)
+            for paragraph in value.split("\n"):
+                for item in simpleSplit(paragraph, regular, 8, 530) or [""]:
+                    if y > 725:
+                        c.showPage()
+                        y = 55
+                    c.drawString(36, PAGE_H-y, item)
+                    y += 11
+            y += 12
+        if len(followups) > 3:
+            if y > 680:
+                c.showPage()
+                y = 55
+            c.setFont(bold, 9)
+            c.drawString(36, PAGE_H-y, "Acompanhamento da eficácia - demais linhas")
+            y += 17
+            for item in followups[3:]:
+                value = f"{_date(item.get('data'))} | {item.get('evidencia') or ''} | {item.get('verificador_id') or ''}"
+                for part in simpleSplit(value, regular, 8, 530):
+                    if y > 725:
+                        c.showPage()
+                        y = 55
+                    c.setFont(regular, 8)
+                    c.drawString(36, PAGE_H-y, part)
+                    y += 11
+                y += 8
+        c.showPage()
+    c.save()
+    return output.getvalue()

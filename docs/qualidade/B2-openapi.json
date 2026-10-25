@@ -1,0 +1,2822 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Qualidade — Não Conformidades",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contexto": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Context",
+        "operationId": "context_api_contexto_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalogos": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Catalogs",
+        "operationId": "catalogs_api_catalogos_get",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Company"
+            }
+          },
+          {
+            "name": "unit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Unit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/rascunhos": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Draft",
+        "operationId": "draft_api_nc_rascunhos_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/registrar": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Register",
+        "operationId": "register_api_nc__nc_id__registrar_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/descartar": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Discard",
+        "operationId": "discard_api_nc__nc_id__descartar_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasonIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "List Nc",
+        "operationId": "list_nc_api_nc_get",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Company"
+            }
+          },
+          {
+            "name": "unit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "gravidade",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Gravidade"
+            }
+          },
+          {
+            "name": "origem",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Origem"
+            }
+          },
+          {
+            "name": "area",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Area"
+            }
+          },
+          {
+            "name": "busca",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Busca"
+            }
+          },
+          {
+            "name": "minhas",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Minhas"
+            }
+          },
+          {
+            "name": "atribuidas",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Atribuidas"
+            }
+          },
+          {
+            "name": "atraso",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Atraso"
+            }
+          },
+          {
+            "name": "aguardando_eficacia",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Aguardando Eficacia"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/painel": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Dashboard",
+        "operationId": "dashboard_api_painel_get",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Company"
+            }
+          },
+          {
+            "name": "unit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Detail",
+        "operationId": "detail_api_nc__nc_id__get",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/confirmar-notificacao-cliente": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Confirm Client Notice",
+        "operationId": "confirm_client_notice_api_nc__nc_id__confirmar_notificacao_cliente_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasonIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/triagem": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Triage",
+        "operationId": "triage_api_nc__nc_id__triagem_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TriageIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/contencoes": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Add Containment",
+        "operationId": "add_containment_api_nc__nc_id__contencoes_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContainmentIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/contencoes/{contencao_id}/aprovar-concessao": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Approve Concession",
+        "operationId": "approve_concession_api_nc__nc_id__contencoes__contencao_id__aprovar_concessao_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          },
+          {
+            "name": "contencao_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Contencao Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/concluir-contencao": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Finish Containment",
+        "operationId": "finish_containment_api_nc__nc_id__concluir_contencao_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/dispensar-corretiva": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Skip Corrective",
+        "operationId": "skip_corrective_api_nc__nc_id__dispensar_corretiva_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasonIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/causa": {
+      "put": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Set Cause",
+        "operationId": "set_cause_api_nc__nc_id__causa_put",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CauseIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/concluir-causa": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Finish Cause",
+        "operationId": "finish_cause_api_nc__nc_id__concluir_causa_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/acoes": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Add Action",
+        "operationId": "add_action_api_nc__nc_id__acoes_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/acoes/{action_id}/concluir": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Finish Action",
+        "operationId": "finish_action_api_nc__nc_id__acoes__action_id__concluir_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          },
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionFinishIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/acoes/{action_id}": {
+      "patch": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Edit Action",
+        "operationId": "edit_action_api_nc__nc_id__acoes__action_id__patch",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          },
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/acoes/{action_id}/cancelar": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Cancel Action",
+        "operationId": "cancel_action_api_nc__nc_id__acoes__action_id__cancelar_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          },
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Action Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasonIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/concluir-plano": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Finish Plan",
+        "operationId": "finish_plan_api_nc__nc_id__concluir_plano_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/eficacia": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Effectiveness",
+        "operationId": "effectiveness_api_nc__nc_id__eficacia_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EffectivenessIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/encerramento": {
+      "put": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Prepare Closure",
+        "operationId": "prepare_closure_api_nc__nc_id__encerramento_put",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClosureIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/encerrar": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Close",
+        "operationId": "close_api_nc__nc_id__encerrar_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/reabrir": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Reopen",
+        "operationId": "reopen_api_nc__nc_id__reabrir_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasonIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/cancelar": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Cancel",
+        "operationId": "cancel_api_nc__nc_id__cancelar_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasonIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/comentarios": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Comment",
+        "operationId": "comment_api_nc__nc_id__comentarios_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/semelhantes": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Similar",
+        "operationId": "similar_api_nc__nc_id__semelhantes_get",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/vinculos": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Link Nc",
+        "operationId": "link_nc_api_nc__nc_id__vinculos_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/anexos": {
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Upload",
+        "operationId": "upload_api_nc__nc_id__anexos_post",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          },
+          {
+            "name": "etapa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "GERAL",
+              "title": "Etapa"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_api_nc__nc_id__anexos_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/anexos/{attachment_id}": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Download",
+        "operationId": "download_api_nc__nc_id__anexos__attachment_id__get",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Attachment Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nc/{nc_id}/pdf": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Pdf",
+        "operationId": "pdf_api_nc__nc_id__pdf_get",
+        "parameters": [
+          {
+            "name": "nc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Nc Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cadastros/{name}": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "List Catalog",
+        "operationId": "list_catalog_api_cadastros__name__get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          },
+          {
+            "name": "company",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Company"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Create Catalog",
+        "operationId": "create_catalog_api_cadastros__name__post",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cadastros/contatos/usuarios": {
+      "get": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "List Contacts",
+        "operationId": "list_contacts_api_cadastros_contatos_usuarios_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cadastros/contatos/usuarios/{user_id}": {
+      "put": {
+        "tags": [
+          "Qualidade"
+        ],
+        "summary": "Set Contact",
+        "operationId": "set_contact_api_cadastros_contatos_usuarios__user_id__put",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActionFinishIn": {
+        "properties": {
+          "evidencia": {
+            "type": "string",
+            "title": "Evidencia"
+          }
+        },
+        "type": "object",
+        "required": [
+          "evidencia"
+        ],
+        "title": "ActionFinishIn"
+      },
+      "ActionIn": {
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "title": "Tipo"
+          },
+          "o_que": {
+            "type": "string",
+            "title": "O Que"
+          },
+          "por_que": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Por Que"
+          },
+          "onde": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Onde"
+          },
+          "quem_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quem Id"
+          },
+          "quando": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quando"
+          },
+          "como": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Como"
+          },
+          "quanto": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quanto"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tipo",
+          "o_que"
+        ],
+        "title": "ActionIn"
+      },
+      "ActionPatch": {
+        "properties": {
+          "tipo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tipo"
+          },
+          "o_que": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "O Que"
+          },
+          "por_que": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Por Que"
+          },
+          "onde": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Onde"
+          },
+          "quem_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quem Id"
+          },
+          "quando": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quando"
+          },
+          "como": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Como"
+          },
+          "quanto": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quanto"
+          }
+        },
+        "type": "object",
+        "title": "ActionPatch"
+      },
+      "Body_upload_api_nc__nc_id__anexos_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_api_nc__nc_id__anexos_post"
+      },
+      "CatalogIn": {
+        "properties": {
+          "empresa_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Empresa Id"
+          },
+          "unidade_codigo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unidade Codigo"
+          },
+          "codigo": {
+            "type": "string",
+            "title": "Codigo"
+          },
+          "nome": {
+            "type": "string",
+            "title": "Nome"
+          },
+          "ativo": {
+            "type": "boolean",
+            "title": "Ativo",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "empresa_id",
+          "codigo",
+          "nome"
+        ],
+        "title": "CatalogIn"
+      },
+      "CauseIn": {
+        "properties": {
+          "metodo": {
+            "type": "string",
+            "title": "Metodo"
+          },
+          "problema": {
+            "type": "string",
+            "title": "Problema"
+          },
+          "causa_raiz": {
+            "type": "string",
+            "title": "Causa Raiz"
+          },
+          "pode_ocorrer_outro_local": {
+            "type": "boolean",
+            "title": "Pode Ocorrer Outro Local"
+          },
+          "outro_local_descricao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outro Local Descricao"
+          },
+          "porques": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Porques"
+          },
+          "metodo_payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Metodo Payload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "metodo",
+          "problema",
+          "causa_raiz",
+          "pode_ocorrer_outro_local"
+        ],
+        "title": "CauseIn"
+      },
+      "ClosureIn": {
+        "properties": {
+          "atualizar_riscos": {
+            "type": "boolean",
+            "title": "Atualizar Riscos"
+          },
+          "justificativa_riscos": {
+            "type": "string",
+            "title": "Justificativa Riscos"
+          },
+          "revisar_documento": {
+            "type": "boolean",
+            "title": "Revisar Documento"
+          },
+          "justificativa_documento": {
+            "type": "string",
+            "title": "Justificativa Documento"
+          },
+          "treinamento": {
+            "type": "boolean",
+            "title": "Treinamento",
+            "default": false
+          },
+          "conclusao": {
+            "type": "string",
+            "title": "Conclusao"
+          }
+        },
+        "type": "object",
+        "required": [
+          "atualizar_riscos",
+          "justificativa_riscos",
+          "revisar_documento",
+          "justificativa_documento",
+          "conclusao"
+        ],
+        "title": "ClosureIn"
+      },
+      "CommentIn": {
+        "properties": {
+          "texto": {
+            "type": "string",
+            "title": "Texto"
+          }
+        },
+        "type": "object",
+        "required": [
+          "texto"
+        ],
+        "title": "CommentIn"
+      },
+      "ContactIn": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "title": "ContactIn"
+      },
+      "ContainmentIn": {
+        "properties": {
+          "disposicao_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Disposicao Id"
+          },
+          "descricao": {
+            "type": "string",
+            "title": "Descricao"
+          },
+          "quantidade_bloqueada": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantidade Bloqueada"
+          },
+          "aprovador_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aprovador Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "disposicao_id",
+          "descricao"
+        ],
+        "title": "ContainmentIn"
+      },
+      "DraftIn": {
+        "properties": {
+          "empresa_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Empresa Id"
+          },
+          "unidade_codigo": {
+            "type": "string",
+            "title": "Unidade Codigo"
+          },
+          "titulo": {
+            "type": "string",
+            "title": "Titulo",
+            "default": ""
+          },
+          "descricao": {
+            "type": "string",
+            "title": "Descricao",
+            "default": ""
+          },
+          "origem_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origem Id"
+          },
+          "tipo_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tipo Id"
+          },
+          "gravidade_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gravidade Id"
+          },
+          "area_emissora_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Area Emissora Id"
+          },
+          "setor_pcp_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Setor Pcp Id"
+          },
+          "setor_codigo_snapshot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Setor Codigo Snapshot"
+          },
+          "setor_nome_snapshot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Setor Nome Snapshot"
+          },
+          "produto_pcp_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Produto Pcp Id"
+          },
+          "produto_codigo_snapshot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Produto Codigo Snapshot"
+          },
+          "produto_nome_snapshot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Produto Nome Snapshot"
+          },
+          "lote_texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lote Texto"
+          },
+          "data_deteccao": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Deteccao"
+          },
+          "data_ocorrencia": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Ocorrencia"
+          },
+          "impacto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impacto"
+          },
+          "evidencias_texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidencias Texto"
+          },
+          "processo_texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Processo Texto"
+          },
+          "fornecedor_texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fornecedor Texto"
+          },
+          "cliente_texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cliente Texto"
+          },
+          "pedido_texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pedido Texto"
+          },
+          "cliente_afetado": {
+            "type": "boolean",
+            "title": "Cliente Afetado",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "empresa_id",
+          "unidade_codigo"
+        ],
+        "title": "DraftIn"
+      },
+      "EffectivenessIn": {
+        "properties": {
+          "criterio": {
+            "type": "string",
+            "title": "Criterio"
+          },
+          "resultado": {
+            "type": "string",
+            "title": "Resultado"
+          },
+          "notas": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notas"
+          },
+          "verificador_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verificador Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "criterio",
+          "resultado"
+        ],
+        "title": "EffectivenessIn"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LinkIn": {
+        "properties": {
+          "relacionada_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Relacionada Id"
+          },
+          "tipo": {
+            "type": "string",
+            "title": "Tipo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "relacionada_id",
+          "tipo"
+        ],
+        "title": "LinkIn"
+      },
+      "ReasonIn": {
+        "properties": {
+          "motivo": {
+            "type": "string",
+            "title": "Motivo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "motivo"
+        ],
+        "title": "ReasonIn"
+      },
+      "RegistrationIn": {
+        "properties": {
+          "mobile": {
+            "type": "boolean",
+            "title": "Mobile",
+            "default": false
+          },
+          "titulo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Titulo"
+          },
+          "origem_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origem Id"
+          },
+          "tipo_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tipo Id"
+          },
+          "gravidade_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gravidade Id"
+          },
+          "data_deteccao": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Deteccao"
+          }
+        },
+        "type": "object",
+        "title": "RegistrationIn"
+      },
+      "TriageIn": {
+        "properties": {
+          "origem_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origem Id"
+          },
+          "gravidade_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Gravidade Id"
+          },
+          "tipo_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Tipo Id"
+          },
+          "area_responsavel_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Area Responsavel Id"
+          },
+          "responsavel_id": {
+            "type": "string",
+            "title": "Responsavel Id"
+          },
+          "prazo_final": {
+            "type": "string",
+            "format": "date",
+            "title": "Prazo Final"
+          },
+          "observacoes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observacoes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "gravidade_id",
+          "tipo_id",
+          "area_responsavel_id",
+          "responsavel_id",
+          "prazo_final"
+        ],
+        "title": "TriageIn"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

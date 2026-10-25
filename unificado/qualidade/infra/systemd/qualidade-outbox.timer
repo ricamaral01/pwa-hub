@@ -1,0 +1,10 @@
+[Unit]
+Description=Verificação periódica da saída de notificações da Qualidade
+
+[Timer]
+OnCalendar=*:0/5
+Persistent=true
+Unit=qualidade-outbox.service
+
+[Install]
+WantedBy=timers.target

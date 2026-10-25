@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Abrir não conformidade</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F3F0}
+a{color:#1E4FD8}a:hover{color:#163BA6}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans', sans-serif; color: #16191D; background: #F3F3F0; min-height: 1540px; padding: 28px 32px 40px; box-sizing: border-box">
+  <div style="max-width: 1216px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px">
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div>
+        <a href="Main.dc.html" style="font-size: 13px; text-decoration: none">← Não conformidades</a>
+        <h1 style="margin: 6px 0 0; font-size: 28px; font-weight: 700">Nova não conformidade</h1>
+        <div style="font-size: 13px; color: #5B6168; margin-top: 6px">
+          <span style="font-family: 'IBM Plex Mono', monospace; color: #16191D">NC-2026-0143</span> · aberta por Ricardo · Pederneiras · 15/10/2026 07:16 — preenchidos automaticamente
+        </div>
+      </div>
+      <div style="display: flex; gap: 6px; align-items: center; font-size: 13px; color: #5B6168">
+        <span style="width: 28px; height: 28px; border-radius: 14px; background: #16191D; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600">1</span> O que aconteceu
+        <span style="width: 24px; height: 1px; background: #C9C8C2"></span>
+        <span style="width: 28px; height: 28px; border-radius: 14px; background: #fff; border: 1px solid #C9C8C2; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #16191D">2</span> Classificação
+        <span style="width: 24px; height: 1px; background: #C9C8C2"></span>
+        <span style="width: 28px; height: 28px; border-radius: 14px; background: #fff; border: 1px solid #C9C8C2; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #16191D">3</span> Ação imediata
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <form style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+
+        <section style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; align-items: baseline; gap: 10px">
+            <h2 style="margin: 0; font-size: 19px">1 · O que aconteceu?</h2>
+            <span style="font-size: 12px; color: #5B6168">ISO 10.2.2 a — natureza da NC</span>
+          </div>
+
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Título curto
+            <input type="text" value="Trinca transversal na base do poste DT 11/300" style="font: inherit; font-weight: 400; font-size: 15px; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+          </label>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="font-size: 13px; font-weight: 600">Origem</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <sc-for list="{{origens}}" as="o" hint-placeholder-count="7">
+                <button type="button" style="font: inherit; font-size: 13px; height: 38px; padding: 0 14px; border-radius: 19px; {{o.style}}">{{o.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Descrição — o quê, onde, quando, quanto
+            <textarea rows="4" style="font: inherit; font-weight: 400; font-size: 15px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 10px 12px; resize: vertical">Na inspeção final, 4 postes do lote 2610-07 apresentaram trinca transversal a ~30 cm da base, abertura visível sem lupa. Detectado após a desforma, antes da expedição.</textarea>
+          </label>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Setor
+              <select style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 10px; background: #fff"><option>Pista 3 — Postes</option></select>
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Produto / lote (PCP)
+              <input type="text" value="DT 11/300 · 2610-07" style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Qtd. afetada
+              <input type="text" value="4 de 12 un." style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Detectada em
+              <input type="text" value="15/10/2026 06:40" style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+            </label>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="font-size: 13px; font-weight: 600">Evidências</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px">
+              <div style="width: 120px; height: 90px; border-radius: 8px; background: #D9D8D2; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #3D434A">[foto 1]</div>
+              <div style="width: 120px; height: 90px; border-radius: 8px; background: #D9D8D2; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #3D434A">[foto 2]</div>
+              <button type="button" style="font: inherit; width: 120px; height: 90px; border-radius: 8px; border: 1.5px dashed #A9A8A1; background: #FAFAF8; color: #3D434A; font-size: 13px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+                Foto / arquivo
+              </button>
+            </div>
+          </div>
+
+          <div style="background: #FEF3C7; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #5C3D05; display: flex; gap: 10px; align-items: flex-start">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M12 9v4M12 17h.01M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+            <div><strong>NC parecida encontrada:</strong> <a href="#">NC-2026-0098</a> — trinca na base, DT 11/300, mesma pista (jun/2026). Vincular como possível reincidência? <span style="color: #5C3D05">(ISO 10.2.1 b3)</span></div>
+          </div>
+        </section>
+
+        <section style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; align-items: baseline; gap: 10px">
+            <h2 style="margin: 0; font-size: 19px">2 · Classificação</h2>
+            <span style="font-size: 12px; color: #5B6168">define prazos e se exige ação corretiva</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+            <sc-for list="{{gravidades}}" as="g" hint-placeholder-count="3">
+              <button type="button" style="font: inherit; text-align: left; padding: 14px 16px; border-radius: 10px; background: #fff; display: flex; flex-direction: column; gap: 4px; {{g.style}}">
+                <span style="font-weight: 700; font-size: 15px">{{g.label}}</span>
+                <span style="font-size: 12px; color: #3D434A">{{g.desc}}</span>
+                <span style="font-size: 12px; color: #5B6168; margin-top: 4px">{{g.rule}}</span>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Tipo
+              <select style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 10px; background: #fff"><option>Produto</option><option>Processo</option><option>Sistema / documental</option><option>Fornecedor</option></select>
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Requisito não atendido
+              <input type="text" value="NBR 8451-1 · inspeção visual / PR-PRO-22" style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+            </label>
+          </div>
+
+          <fieldset style="border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 20px; font-size: 14px">
+            <legend style="font-size: 13px; font-weight: 600; margin-bottom: 8px">O produto chegou ao cliente?</legend>
+            <label style="display: flex; align-items: center; gap: 8px; min-height: 44px"><input type="radio" name="cli" checked style="width: 18px; height: 18px"> Não, retido internamente</label>
+            <label style="display: flex; align-items: center; gap: 8px; min-height: 44px"><input type="radio" name="cli" style="width: 18px; height: 18px"> Sim — notificar cliente (8.7.1)</label>
+          </fieldset>
+        </section>
+
+        <section style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; align-items: baseline; gap: 10px">
+            <h2 style="margin: 0; font-size: 19px">3 · Ação imediata</h2>
+            <span style="font-size: 12px; color: #5B6168">ISO 8.7 e 10.2.1 a — conter e corrigir</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="font-size: 13px; font-weight: 600">Disposição do material</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <sc-for list="{{disposicoes}}" as="d" hint-placeholder-count="6">
+                <button type="button" style="font: inherit; font-size: 13px; height: 38px; padding: 0 14px; border-radius: 8px; {{d.style}}">{{d.label}}</button>
+              </sc-for>
+            </div>
+            <div style="font-size: 12px; color: #5B6168">"Liberar sob concessão" exige aprovação de quem tem autoridade (alçada) — fica registrado quem decidiu.</div>
+          </div>
+
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">O que já foi feito
+            <textarea rows="2" style="font: inherit; font-weight: 400; font-size: 15px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 10px 12px">4 postes marcados com etiqueta vermelha e segregados na área de bloqueio. Demais 8 do lote reinspecionados — sem trincas.</textarea>
+          </label>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Responsável pela tratativa
+              <select style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 10px; background: #fff"><option>J. Almeida — Produção</option></select>
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Prazo para análise de causa
+              <input type="text" value="20/10/2026 (5 dias · Maior)" style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Notificar
+              <input type="text" value="Qualidade, Gerente da unidade" style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+            </label>
+          </div>
+        </section>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px">
+          <button type="button" style="font: inherit; font-size: 15px; height: 48px; padding: 0 18px; border: 1px solid #D6D5CF; background: #fff; border-radius: 8px; color: #16191D">Salvar rascunho</button>
+          <a href="Tratativa.dc.html" style="font-size: 15px; font-weight: 600; height: 48px; padding: 0 24px; background: #C2410C; color: #fff; border-radius: 8px; text-decoration: none; display: flex; align-items: center">Registrar NC</a>
+        </div>
+      </form>
+
+      <aside style="flex: 1 1 280px; max-width: 340px; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <h3 style="margin: 0; font-size: 15px">Conformidade ISO desta NC</h3>
+          <sc-for list="{{checks}}" as="c" hint-placeholder-count="6">
+            <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 13px">
+              <span style="flex: none; width: 20px; height: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; {{c.style}}">{{c.mark}}</span>
+              <div><div style="font-weight: 600">{{c.label}}</div><div style="color: #5B6168; font-size: 12px">{{c.clause}}</div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background: #16191D; color: #E8E8E4; border-radius: 12px; padding: 20px; font-size: 13px; line-height: 1.55">
+          <div style="font-weight: 600; color: #fff; margin-bottom: 6px">Depois de registrar</div>
+          O responsável recebe a NC para a <strong style="color: #fff">análise de causa</strong>. NC Maior gera ação corretiva obrigatória; Menor e Observação podem ser encerradas só com a correção, com justificativa.
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var on = 'border:1.5px solid #16191D;background:#16191D;color:#fff';
+    var off = 'border:1px solid #D6D5CF;background:#fff;color:#16191D';
+    function chips(list, sel) { return list.map(function (l) { return { label: l, style: l === sel ? on : off }; }); }
+    var ok = 'background:#DCF0E2;color:#14532D';
+    var next = 'background:#EEEEEA;color:#5B6168';
+    return {
+      origens: chips(['Inspeção final', 'Ensaio de laboratório', 'Recebimento', 'Processo / produção', 'Reclamação de cliente', 'Auditoria', 'Fornecedor'], 'Inspeção final'),
+      gravidades: [
+        { label: 'Observação', desc: 'Desvio pontual, sem efeito no produto.', rule: 'Correção basta · 30 dias', style: 'border:1px solid #D6D5CF' },
+        { label: 'Menor', desc: 'Falha isolada, produto recuperável.', rule: 'Ação corretiva se recorrente · 15 dias', style: 'border:1px solid #D6D5CF' },
+        { label: 'Maior', desc: 'Afeta requisito de produto, cliente ou norma.', rule: 'Ação corretiva obrigatória · 5 dias', style: 'border:2px solid #C2410C;background:#FFF7F2' }
+      ],
+      disposicoes: chips(['Segregar / bloquear', 'Retrabalhar', 'Reclassificar', 'Sucatear', 'Liberar sob concessão', 'Devolver ao fornecedor'], 'Segregar / bloquear'),
+      checks: [
+        { mark: '✓', style: ok, label: 'Natureza da NC descrita', clause: '10.2.2 a' },
+        { mark: '✓', style: ok, label: 'Saída não conforme identificada e contida', clause: '8.7.1 / 10.2.1 a' },
+        { mark: '✓', style: ok, label: 'Verificação de NC semelhante', clause: '10.2.1 b3' },
+        { mark: '·', style: next, label: 'Causa-raiz determinada', clause: '10.2.1 b2 — na tratativa' },
+        { mark: '·', style: next, label: 'Ação corretiva e eficácia', clause: '10.2.1 c, d' },
+        { mark: '·', style: next, label: 'Riscos e SGQ atualizados', clause: '10.2.1 e, f' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

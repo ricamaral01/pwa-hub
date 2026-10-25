@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Abertura rápida de NC</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1E4FD8}a:hover{color:#163BA6}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3F3F0; font-family: 'IBM Plex Sans', sans-serif; color: #16191D; display: flex; flex-direction: column">
+  <header style="background: #16191D; color: #fff; padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 4px">
+    <div style="font-size: 12px; color: #B9BCC0">Pederneiras · Pista 3 · Ricardo</div>
+    <div style="font-size: 20px; font-weight: 700">Registrar problema</div>
+  </header>
+
+  <div style="flex: 1; padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+    <button type="button" style="font: inherit; height: 120px; border-radius: 12px; border: 1.5px dashed #A9A8A1; background: #fff; color: #16191D; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 15px; font-weight: 600">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+      Tirar foto do problema
+    </button>
+
+    <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">O que você viu?
+      <textarea rows="3" placeholder="Ex.: trinca na base do poste, perto da marca de lote" style="font: inherit; font-weight: 400; font-size: 16px; border: 1px solid #D6D5CF; border-radius: 10px; padding: 12px; background: #fff"></textarea>
+    </label>
+
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div style="font-size: 13px; font-weight: 600">Onde?</div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <button type="button" style="font: inherit; height: 48px; border-radius: 10px; border: 2px solid #16191D; background: #16191D; color: #fff; font-size: 14px; font-weight: 600">Produto / lote</button>
+        <button type="button" style="font: inherit; height: 48px; border-radius: 10px; border: 1px solid #D6D5CF; background: #fff; color: #16191D; font-size: 14px">Equipamento</button>
+        <button type="button" style="font: inherit; height: 48px; border-radius: 10px; border: 1px solid #D6D5CF; background: #fff; color: #16191D; font-size: 14px">Matéria-prima</button>
+        <button type="button" style="font: inherit; height: 48px; border-radius: 10px; border: 1px solid #D6D5CF; background: #fff; color: #16191D; font-size: 14px">Documento</button>
+      </div>
+      <button type="button" style="font: inherit; height: 48px; border-radius: 10px; border: 1px solid #D6D5CF; background: #fff; color: #16191D; font-size: 14px; display: flex; align-items: center; gap: 10px; padding: 0 14px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2z"/></svg>
+        Ler etiqueta do lote (QR)
+      </button>
+    </div>
+
+    <label style="display: flex; align-items: center; gap: 12px; min-height: 48px; background: #fff; border: 1px solid #D6D5CF; border-radius: 10px; padding: 0 14px; font-size: 14px">
+      <input type="checkbox" checked style="width: 22px; height: 22px">
+      Já separei o material com etiqueta vermelha
+    </label>
+  </div>
+
+  <div style="padding: 16px 20px 24px; background: #fff; border-top: 1px solid #E2E1DC; display: flex; flex-direction: column; gap: 8px">
+    <button type="button" style="font: inherit; height: 56px; border-radius: 12px; border: 0; background: #C2410C; color: #fff; font-size: 17px; font-weight: 700">Registrar NC</button>
+    <div style="font-size: 12px; color: #5B6168; text-align: center">A Qualidade completa classificação e responsável</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

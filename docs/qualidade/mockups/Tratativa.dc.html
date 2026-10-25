@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Tratativa da NC</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F3F0}
+a{color:#1E4FD8}a:hover{color:#163BA6}
+</style>
+</helmet>
+<div style="font-family: 'IBM Plex Sans', sans-serif; color: #16191D; background: #F3F3F0; min-height: 1700px; padding: 28px 32px 40px; box-sizing: border-box">
+  <div style="max-width: 1216px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px">
+
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <a href="Main.dc.html" style="font-size: 13px; text-decoration: none">← Não conformidades</a>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #5B6168">NC-2026-0142</span>
+        <span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px; background: #FDE7DC; color: #9A3412">Maior</span>
+        <span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px; background: #FEF3C7; color: #5C3D05">Possível reincidência de NC-2026-0098</span>
+      </div>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 700">Trinca transversal na base do poste DT 11/300</h1>
+    </div>
+
+    <ol aria-label="Etapas da tratativa" style="list-style: none; margin: 0; padding: 16px; background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px">
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+        <li style="display: flex; flex-direction: column; gap: 6px; padding: 4px 6px">
+          <div style="height: 6px; border-radius: 3px; background: {{s.bar}}"></div>
+          <div style="font-size: 14px; font-weight: 600; color: {{s.color}}">{{s.label}}</div>
+          <div style="font-size: 12px; color: #5B6168">{{s.sub}}</div>
+        </li>
+      </sc-for>
+    </ol>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+
+        <section style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 16px 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+          <div style="display: flex; gap: 12px; align-items: center">
+            <span style="width: 24px; height: 24px; border-radius: 12px; background: #DCF0E2; color: #14532D; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">✓</span>
+            <div><div style="font-weight: 600">Contenção concluída</div><div style="font-size: 13px; color: #5B6168">4 un. segregadas · 8 reinspecionadas OK · Ricardo, 15/10 07:16</div></div>
+          </div>
+          <button type="button" style="font: inherit; font-size: 13px; height: 36px; padding: 0 12px; border: 1px solid #D6D5CF; background: #fff; border-radius: 8px; color: #16191D">Ver detalhes</button>
+        </section>
+
+        <section style="background: #fff; border: 2px solid #C2410C; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 10px">
+            <div style="display: flex; align-items: baseline; gap: 10px">
+              <h2 style="margin: 0; font-size: 19px">Análise de causa</h2>
+              <span style="font-size: 12px; color: #5B6168">ISO 10.2.1 b — prazo 20/10 · J. Almeida</span>
+            </div>
+            <div role="tablist" aria-label="Método" style="display: flex; background: #EFEEEA; border-radius: 8px; padding: 3px">
+              <button type="button" role="tab" aria-selected="true" style="font: inherit; font-size: 13px; height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: #fff; color: #16191D; font-weight: 600">5 Porquês</button>
+              <button type="button" role="tab" aria-selected="false" style="font: inherit; font-size: 13px; height: 36px; padding: 0 14px; border: 0; border-radius: 6px; background: transparent; color: #3D434A">Ishikawa 6M</button>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <sc-for list="{{whys}}" as="w" hint-placeholder-count="5">
+              <div style="display: flex; gap: 12px; align-items: flex-start">
+                <span style="flex: none; width: 52px; font-size: 12px; font-weight: 600; color: #5B6168; padding-top: 12px">{{w.n}}</span>
+                <input type="text" value="{{w.text}}" aria-label="{{w.n}}" style="flex: 1; min-width: 0; font: inherit; font-size: 14px; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <div style="font-size: 13px; font-weight: 600">Categoria 6M da causa</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <sc-for list="{{sixm}}" as="m" hint-placeholder-count="6">
+                <button type="button" style="font: inherit; font-size: 13px; height: 36px; padding: 0 14px; border-radius: 18px; {{m.style}}">{{m.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Causa-raiz
+            <textarea rows="2" style="font: inherit; font-weight: 400; font-size: 15px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 10px 12px">Procedimento de desforma não define resistência mínima nem verificação antes de içar o poste.</textarea>
+          </label>
+
+          <div style="background: #F7F7F4; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 14px">
+            <div style="font-weight: 600; font-size: 13px">Pode ocorrer em outro lugar? (10.2.1 b3)</div>
+            <label style="display: flex; gap: 10px; align-items: center; min-height: 32px"><input type="checkbox" checked style="width: 18px; height: 18px"> Sim — Pistas 1 e 2 usam o mesmo procedimento de desforma</label>
+            <label style="display: flex; gap: 10px; align-items: center; min-height: 32px"><input type="checkbox" checked style="width: 18px; height: 18px"> Vincular NC-2026-0098 como reincidência</label>
+          </div>
+        </section>
+
+        <section style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 10px">
+            <div style="display: flex; align-items: baseline; gap: 10px">
+              <h2 style="margin: 0; font-size: 19px">Plano de ação</h2>
+              <span style="font-size: 12px; color: #5B6168">ISO 10.2.1 c · 5W2H</span>
+            </div>
+            <button type="button" style="font: inherit; font-size: 13px; height: 36px; padding: 0 12px; border: 1px solid #D6D5CF; background: #fff; border-radius: 8px; color: #16191D">+ Ação</button>
+          </div>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px">
+              <thead>
+                <tr style="text-align: left; font-size: 12px; color: #5B6168; text-transform: uppercase; letter-spacing: 0.04em">
+                  <th style="padding: 8px 10px; font-weight: 600; border-bottom: 1px solid #E2E1DC">O quê</th>
+                  <th style="padding: 8px 10px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Quem</th>
+                  <th style="padding: 8px 10px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Quando</th>
+                  <th style="padding: 8px 10px; font-weight: 600; border-bottom: 1px solid #E2E1DC">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{actions}}" as="a" hint-placeholder-count="3">
+                  <tr>
+                    <td style="padding: 12px 10px; border-bottom: 1px solid #EFEEEA"><div style="font-weight: 600">{{a.what}}</div><div style="font-size: 12px; color: #5B6168">{{a.how}}</div></td>
+                    <td style="padding: 12px 10px; border-bottom: 1px solid #EFEEEA">{{a.who}}</td>
+                    <td style="padding: 12px 10px; border-bottom: 1px solid #EFEEEA">{{a.when}}</td>
+                    <td style="padding: 12px 10px; border-bottom: 1px solid #EFEEEA"><span style="font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 10px; background: #EEEEEA; color: #3D434A">{{a.status}}</span></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: baseline; gap: 10px">
+            <h2 style="margin: 0; font-size: 19px">Verificação de eficácia</h2>
+            <span style="font-size: 12px; color: #5B6168">ISO 10.2.1 d — só por pessoa diferente do executor</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Critério de eficácia
+              <input type="text" value="Zero trincas na base em 10 lotes consecutivos" style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600">Verificar em
+              <input type="text" value="30/11/2026 · Qualidade" style="font: inherit; font-weight: 400; height: 44px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 0 12px">
+            </label>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px">
+            <button type="button" disabled style="font: inherit; font-size: 14px; height: 44px; padding: 0 16px; border-radius: 8px; border: 1px solid #D6D5CF; background: #F3F3F0; color: #5B6168">Eficaz — encerrar</button>
+            <button type="button" disabled style="font: inherit; font-size: 14px; height: 44px; padding: 0 16px; border-radius: 8px; border: 1px solid #D6D5CF; background: #F3F3F0; color: #5B6168">Não eficaz — reabrir análise</button>
+          </div>
+        </section>
+
+        <section style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+          <div style="display: flex; align-items: baseline; gap: 10px">
+            <h2 style="margin: 0; font-size: 19px">Encerramento</h2>
+            <span style="font-size: 12px; color: #5B6168">ISO 10.2.1 e, f</span>
+          </div>
+          <label style="display: flex; gap: 10px; align-items: center; min-height: 40px"><input type="checkbox" style="width: 18px; height: 18px"> Atualizar matriz de riscos e oportunidades (6.1)</label>
+          <label style="display: flex; gap: 10px; align-items: center; min-height: 40px"><input type="checkbox" checked style="width: 18px; height: 18px"> Revisar documento do SGQ — PR-PRO-22 Desforma (abre revisão no GED)</label>
+          <label style="display: flex; gap: 10px; align-items: center; min-height: 40px"><input type="checkbox" style="width: 18px; height: 18px"> Treinar equipe no procedimento revisado</label>
+        </section>
+      </div>
+
+      <aside style="flex: 1 1 280px; max-width: 340px; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px; font-size: 13px">
+          <h3 style="margin: 0; font-size: 15px">Resumo</h3>
+          <sc-for list="{{facts}}" as="f" hint-placeholder-count="6">
+            <div style="display: flex; justify-content: space-between; gap: 12px"><span style="color: #5B6168">{{f.k}}</span><span style="font-weight: 600; text-align: right">{{f.v}}</span></div>
+          </sc-for>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <h3 style="margin: 0; font-size: 15px">Histórico <span style="font-weight: 400; color: #5B6168; font-size: 12px">· registro imutável (10.2.2)</span></h3>
+          <sc-for list="{{log}}" as="l" hint-placeholder-count="4">
+            <div style="display: flex; gap: 10px; font-size: 13px">
+              <span style="flex: none; width: 8px; height: 8px; border-radius: 4px; background: #16191D; margin-top: 6px"></span>
+              <div><div>{{l.what}}</div><div style="font-size: 12px; color: #5B6168">{{l.who}}</div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background: #fff; border: 1px solid #E2E1DC; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+          <h3 style="margin: 0; font-size: 15px">Comentários</h3>
+          <textarea rows="2" aria-label="Novo comentário" placeholder="Escreva e use @ para mencionar" style="font: inherit; font-size: 14px; border: 1px solid #D6D5CF; border-radius: 8px; padding: 10px 12px"></textarea>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var labels = [['Registro', '15/10 · Ricardo'], ['Contenção', '15/10 · concluída'], ['Análise de causa', 'até 20/10'], ['Plano de ação', '3 ações'], ['Eficácia', '30/11'], ['Encerrada', 'aprovação Qualidade']];
+    var cur = 2;
+    var steps = labels.map(function (l, i) {
+      return { label: l[0], sub: l[1], bar: i < cur ? '#16191D' : (i === cur ? '#C2410C' : '#E2E1DC'), color: i === cur ? '#9A3412' : (i < cur ? '#16191D' : '#5B6168') };
+    });
+    var on = 'border:1.5px solid #16191D;background:#16191D;color:#fff';
+    var off = 'border:1px solid #D6D5CF;background:#fff;color:#16191D';
+    return {
+      steps: steps,
+      whys: [
+        { n: 'Por quê 1', text: 'O concreto da base não tinha resistência suficiente na desforma' },
+        { n: 'Por quê 2', text: 'A desforma ocorreu com ~10 h, antes do tempo usual de 14 h' },
+        { n: 'Por quê 3', text: 'A pista precisava ser liberada para a próxima concretagem' },
+        { n: 'Por quê 4', text: 'Não há resistência mínima de desforma definida nem ensaio de liberação' },
+        { n: 'Por quê 5', text: '' }
+      ],
+      sixm: ['Método', 'Material', 'Mão de obra', 'Máquina', 'Medição', 'Meio ambiente'].map(function (l) { return { label: l, style: l === 'Método' ? on : off }; }),
+      actions: [
+        { what: 'Definir fck mínimo de desforma no PR-PRO-22', how: 'ensaio de liberação com CP de cura acompanhada', who: 'Qualidade', when: '25/10' },
+        { what: 'Bloqueio no PCP: desforma só com liberação do Laboratório', how: 'regra no sistema, por pista', who: 'Ricardo', when: '31/10' },
+        { what: 'Treinar turnos A e B das pistas 1–3', how: 'lista de presença anexada', who: 'J. Almeida', when: '05/11' }
+      ].map(function (a) { a.status = 'A fazer'; return a; }),
+      facts: [
+        { k: 'Origem', v: 'Inspeção final' },
+        { k: 'Unidade / setor', v: 'Pederneiras · Pista 3' },
+        { k: 'Produto / lote', v: 'DT 11/300 · 2610-07' },
+        { k: 'Qtd. afetada', v: '4 de 12' },
+        { k: 'Requisito', v: 'NBR 8451-1' },
+        { k: 'Cliente afetado', v: 'Não' }
+      ],
+      log: [
+        { what: 'Análise de causa iniciada', who: 'J. Almeida · 15/10 09:02' },
+        { what: 'Contenção registrada: 4 un. segregadas', who: 'Ricardo · 15/10 07:16' },
+        { what: 'Classificada como Maior', who: 'Ricardo · 15/10 07:16' },
+        { what: 'NC aberta com 2 fotos', who: 'Ricardo · 15/10 07:16' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+[Unit]
+Description=Envio de notificações da Qualidade
+After=network-online.target postgresql.service
+Wants=network-online.target
+ConditionPathExists=/etc/qualidade/smtp.env
+
+[Service]
+Type=oneshot
+User=qualidade
+Group=qualidade
+WorkingDirectory=/opt/qualidade/service
+EnvironmentFile=/etc/qualidade/service.env
+EnvironmentFile=/etc/qualidade/smtp.env
+ExecStart=/opt/qualidade/.venv/bin/python -m quality.outbox
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/qualidade
