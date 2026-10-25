@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mão de Obra — Lançamento</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0F2C4C}a:hover{color:#0A1E35}
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #F3F5F8; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14202E; overflow: hidden">
+
+  <header style="background: #0F2C4C; color: #FFFFFF; padding: 18px 16px 16px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <button aria-label="Voltar ao Planejamento" style="width: 44px; height: 44px; border: 0; border-radius: 12px; background: rgba(255,255,255,0.10); color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+        </button>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #B9C7D8">Planejamento</span>
+          <span style="font-size: 20px; font-weight: 700">Mão de Obra</span>
+        </div>
+      </div>
+      <a href="Historico.dc.html" aria-label="Histórico" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.10); color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l3 2"></path></svg>
+      </a>
+    </div>
+
+    <label style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 13px; color: #B9C7D8">Data do lançamento</span>
+      <span style="height: 48px; border-radius: 12px; background: #FFFFFF; color: #14202E; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 17px; font-weight: 600">
+        <span>Sex, 16/10/2026</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F2C4C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></svg>
+      </span>
+    </label>
+
+    <div role="group" aria-label="Grupo" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 4px; background: rgba(255,255,255,0.10); border-radius: 14px">
+      <button onClick="{{ pickS12 }}" style="{{ s12Style }}">S1 / S2</button>
+      <button onClick="{{ pickS34 }}" style="{{ s34Style }}">S3 / S4</button>
+    </div>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 14px">
+
+    <div style="display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 12px; padding: 10px 12px; font-size: 14px">
+      <span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 50%; border: 2px solid #5A6675; box-sizing: border-box"></span>
+      <span style="font-weight: 600">Ainda não lançado</span>
+      <span style="color: #5A6675">· {{ grupoLabel }}</span>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0 2px">
+        <h2 style="margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #0F2C4C">Mão de obra direta</h2>
+        <span style="font-size: 14px; color: #5A6675">MOD <strong style="color: #14202E; font-variant-numeric: tabular-nums">{{ modTxt }}</strong></span>
+      </div>
+      <sc-for list="{{ mod }}" as="item" hint-placeholder-count="1">
+        <div style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px">
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 16px; font-weight: 600">{{ item.nome }}</span>
+            <sc-if value="{{ item.temInfo }}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #5A6675">{{ item.info }}</span></sc-if>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px">
+            <button onClick="{{ item.dec }}" aria-label="Diminuir 0,5" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #C9D2DD; background: #F3F5F8; color: #0F2C4C; font-size: 22px; font-weight: 600; cursor: pointer">−</button>
+            <input aria-label="{{ item.aria }}" inputmode="decimal" value="{{ item.txt }}" onChange="{{ item.change }}" style="width: 64px; height: 44px; box-sizing: border-box; border-radius: 12px; border: 1px solid #C9D2DD; text-align: center; font: inherit; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; color: #14202E; background: #FFFFFF">
+            <button onClick="{{ item.inc }}" aria-label="Aumentar 0,5" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #C9D2DD; background: #F3F5F8; color: #0F2C4C; font-size: 22px; font-weight: 600; cursor: pointer">+</button>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0 2px">
+        <h2 style="margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #0F2C4C">Mão de obra indireta</h2>
+        <span style="font-size: 14px; color: #5A6675">MOI <strong style="color: #14202E; font-variant-numeric: tabular-nums">{{ moiTxt }}</strong></span>
+      </div>
+      <sc-for list="{{ moi }}" as="item" hint-placeholder-count="6">
+        <div style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px">
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 16px; font-weight: 600">{{ item.nome }}</span>
+            <sc-if value="{{ item.temInfo }}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #5A6675">{{ item.info }}</span></sc-if>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px">
+            <button onClick="{{ item.dec }}" aria-label="Diminuir 0,5" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #C9D2DD; background: #F3F5F8; color: #0F2C4C; font-size: 22px; font-weight: 600; cursor: pointer">−</button>
+            <input aria-label="{{ item.aria }}" inputmode="decimal" value="{{ item.txt }}" onChange="{{ item.change }}" style="width: 64px; height: 44px; box-sizing: border-box; border-radius: 12px; border: 1px solid #C9D2DD; text-align: center; font: inherit; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; color: #14202E; background: #FFFFFF">
+            <button onClick="{{ item.inc }}" aria-label="Aumentar 0,5" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #C9D2DD; background: #F3F5F8; color: #0F2C4C; font-size: 22px; font-weight: 600; cursor: pointer">+</button>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <a href="SemProducao.dc.html" style="min-height: 48px; border-radius: 12px; border: 1px dashed #9AA6B4; color: #0F2C4C; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; text-decoration: none">Marcar dia sem produção</a>
+  </div>
+
+  <footer style="background: #FFFFFF; border-top: 1px solid #DDE3EA; padding: 12px 16px 22px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 -6px 18px rgba(15,44,76,0.08)">
+    <div style="display: flex; align-items: baseline; justify-content: space-between">
+      <span style="font-size: 14px; color: #5A6675">MOD {{ modTxt }} + MOI {{ moiTxt }}</span>
+      <span style="font-size: 15px; color: #14202E">Total <strong style="font-size: 26px; font-variant-numeric: tabular-nums">{{ totalTxt }}</strong></span>
+    </div>
+    <a href="Conferencia.dc.html" style="height: 54px; border-radius: 14px; background: #C2561A; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 17px; font-weight: 700; text-decoration: none">
+      Conferir e enviar
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+    </a>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      grupo: 'S12',
+      v: {
+        S12: { p12: 12.5, usina: 1, armP: 3, estribo: 1, enc: 1, sacador: 1, desbob: 1 },
+        S34: { p3: 6, p4: 3, usina: 1, arm3: 4, arm4: 2, estribo: 1, enc: 1, sacador: 1, desbob: 1 }
+      }
+    };
+  }
+  fmt(n) { return String(n).replace('.', ','); }
+  setVal(id, n) {
+    var g = this.state.grupo;
+    var v = JSON.parse(JSON.stringify(this.state.v));
+    v[g][id] = Math.max(0, Math.round(n * 2) / 2);
+    this.setState({ v: v });
+  }
+  build(defs) {
+    var self = this, g = this.state.grupo, vals = this.state.v[g];
+    return defs.map(function (d) {
+      var n = vals[d.id] || 0;
+      return {
+        nome: d.nome, info: d.info || '', temInfo: !!d.info,
+        aria: 'Pessoas em ' + d.nome, txt: self.fmt(n), n: n,
+        inc: function () { self.setVal(d.id, n + 0.5); },
+        dec: function () { self.setVal(d.id, n - 0.5); },
+        change: function (e) { var x = parseFloat(String(e.target.value).replace(',', '.')); if (!isNaN(x)) self.setVal(d.id, x); }
+      };
+    });
+  }
+  renderVals() {
+    var self = this, g = this.state.grupo;
+    var modDefs = g === 'S12'
+      ? [{ id: 'p12', nome: 'Produção Setor 1 e 2' }]
+      : [{ id: 'p3', nome: 'Produção Setor 3' }, { id: 'p4', nome: 'Produção Setor 4' }];
+    var moiDefs = g === 'S12'
+      ? [{ id: 'usina', nome: 'Usina de Concreto' }, { id: 'armP', nome: 'Fab Armação Padrão' }, { id: 'estribo', nome: 'Fab Estribo', info: 'Elias · fator 0,5' }, { id: 'enc', nome: 'Encarregado Produção', info: 'Zé Carlos' }, { id: 'sacador', nome: 'Sacador núcleo', info: 'Pedro · fator 0,5' }, { id: 'desbob', nome: 'Desbobinadeira', info: 'Zezinho · fator 0,5' }]
+      : [{ id: 'usina', nome: 'Usina de Concreto' }, { id: 'arm3', nome: 'Fab Armação setor 3' }, { id: 'arm4', nome: 'Fab Armação setor 4' }, { id: 'estribo', nome: 'Fab Estribo' }, { id: 'enc', nome: 'Encarregado Produção' }, { id: 'sacador', nome: 'Sacador núcleo' }, { id: 'desbob', nome: 'Desbobinadeira' }];
+    var mod = this.build(modDefs), moi = this.build(moiDefs);
+    var sum = function (a) { return a.reduce(function (s, i) { return s + i.n; }, 0); };
+    var m = sum(mod), i = sum(moi);
+    var on = 'height: 44px; border: 0; border-radius: 10px; background: #FFFFFF; color: #0F2C4C; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer';
+    var off = 'height: 44px; border: 0; border-radius: 10px; background: transparent; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer';
+    return {
+      mod: mod, moi: moi,
+      modTxt: this.fmt(m), moiTxt: this.fmt(i), totalTxt: this.fmt(m + i),
+      grupoLabel: g === 'S12' ? 'S1 / S2' : 'S3 / S4',
+      s12Style: g === 'S12' ? on : off, s34Style: g === 'S34' ? on : off,
+      pickS12: function () { self.setState({ grupo: 'S12' }); },
+      pickS34: function () { self.setState({ grupo: 'S34' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

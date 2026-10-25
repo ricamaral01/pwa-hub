@@ -1,5 +1,9 @@
 # Correções intencionais na cópia unificada
 
+## Acesso por tela e ciclo de contas (07/10/2026)
+
+O unificado passa a permitir que um administrador restrinja telas por usuário, além do perfil de cada módulo. O Mapa antigo não tinha essa restrição individual e permanece intacto. A lista inicial marca todas as telas que o perfil já permitia; Laboratório fica disponível apenas para `user-ricardo` e `ricardo.teste`. Uma tela desmarcada é ocultada no menu e recusada pelas rotas e chamadas de dados do unificado. Contas desativadas perdem as sessões imediatamente; a exclusão lógica retira a conta do login e das listas sem apagar o nome dos registros históricos. Ações de desativar, reativar e excluir são auditadas.
+
 ## Ocorrências de defeitos por inspeção (04/10/2026)
 
 O Mapa oficial permanece intacto. Na cópia de testes, uma ocorrência do mesmo
@@ -181,3 +185,29 @@ sistemas oficiais não foram alterados. A segunda parte mantém os blocos,
 colunas e interações; seus totais de defeitos passam a somar apenas `nao`.
 O CSV e o XLSX incluem os indicadores novos, a matriz original e uma seção
 identificada com os indicadores legados preservados.
+
+## Diferença intencional nº 5 — montadores ativos por login (07/10/2026)
+
+No Mapa unificado, a linha Montadores do indicador diário conta contas distintas
+com perfil MONTADOR que fizeram login no dia, inclusive sem inspeção concluída.
+Com setor selecionado, a conta precisa ter aquele setor cadastrado; contas com
+setor Todos ou vazio entram apenas no total sem filtro. Postes por montador é
+postes inspecionados divididos por esses logins; com zero montadores, aparece
+“—”. Dias anteriores ao início do registro de login mostram “—”, sem estimativa.
+O registro fica somente no banco novo, em
+`unificado_auth.mapa_login_events`, criado por
+`unificado/mapa/database/mapa_login_events.sql`.
+
+Por decisão de Ricardo, o banco do Mapa antigo não recebe registro de login.
+Seu indicador mantém os postes inspecionados e mostra “—” para Montadores e
+Postes por montador em todos os dias. Nenhum nome de inspeção é usado como
+substituto de login.
+
+## Diferença intencional nº 6 — banco isolado do Laboratório (07/10/2026)
+
+Para versionar as dimensões sem alterar o serviço antigo, o Laboratório unificado
+foi apontado para `concretrack_postes_unificado`, cópia do banco com 13 ensaios.
+A versão 4 do critério acrescenta as cotas F/J/e já cadastradas no frontend,
+suas tolerâncias e a fonte ABNT NBR 8451-2:2020 às tabelas A.1/A.2 existentes.
+O banco antigo mantém a versão 3. Ensaios finalizados conservam os snapshots
+originais de critérios e limites.

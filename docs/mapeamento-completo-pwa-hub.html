@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapeamento PWA Hub Concretrack</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#eceeee;
+  --surface:#ffffff;
+  --surface-2:#e2e5e6;
+  --border:#c9cdce;
+  --text:#1a2023;
+  --text-muted:#565f63;
+  --text-faint:#7c8589;
+  --accent:#2f6f9e;
+  --accent-ink:#194a6b;
+  --accent-soft:#dbe8f0;
+  --rust:#b5551f;
+  --rust-soft:#f3e2d3;
+  --prod:#2f7d5a;
+  --prod-soft:#dcefe4;
+  --proto:#a8791b;
+  --proto-soft:#f2e8d2;
+  --scaffold:#a5453a;
+  --scaffold-soft:#f3ddd9;
+  --legacy:#6b6560;
+  --legacy-soft:#e9e6e1;
+  --code-bg:#f2f4f4;
+  --shadow: 0 1px 2px rgba(20,28,32,.06), 0 8px 24px -12px rgba(20,28,32,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14181a;
+    --surface:#1c2224;
+    --surface-2:#232a2c;
+    --border:#333c3f;
+    --text:#e7ecee;
+    --text-muted:#a4afb2;
+    --text-faint:#7c8a8e;
+    --accent:#6fa9d4;
+    --accent-ink:#bcdcf2;
+    --accent-soft:#22323e;
+    --rust:#e08a52;
+    --rust-soft:#3a2a1e;
+    --prod:#69c79a;
+    --prod-soft:#1c3128;
+    --proto:#dab35a;
+    --proto-soft:#332a14;
+    --scaffold:#e08b80;
+    --scaffold-soft:#3a2422;
+    --legacy:#a8a29a;
+    --legacy-soft:#2a2825;
+    --code-bg:#20272a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14181a;
+  --surface:#1c2224;
+  --surface-2:#232a2c;
+  --border:#333c3f;
+  --text:#e7ecee;
+  --text-muted:#a4afb2;
+  --text-faint:#7c8a8e;
+  --accent:#6fa9d4;
+  --accent-ink:#bcdcf2;
+  --accent-soft:#22323e;
+  --rust:#e08a52;
+  --rust-soft:#3a2a1e;
+  --prod:#69c79a;
+  --prod-soft:#1c3128;
+  --proto:#dab35a;
+  --proto-soft:#332a14;
+  --scaffold:#e08b80;
+  --scaffold-soft:#3a2422;
+  --legacy:#a8a29a;
+  --legacy-soft:#2a2825;
+  --code-bg:#20272a;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:"IBM Plex Sans", Arial, sans-serif;
+  font-size:15.5px; line-height:1.6;
+}
+a{color:var(--accent);}
+h1,h2,h3,h4{
+  font-family:"IBM Plex Sans Condensed","IBM Plex Sans",Arial,sans-serif;
+  text-wrap:balance; font-weight:700; color:var(--text); letter-spacing:.2px;
+  margin:0 0 .5em;
+}
+code, .mono, .tag, .stat-num, .kv dd, .filelist{
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+}
+p{margin:0 0 1em; max-width:70ch;}
+.wrap{display:flex; min-height:100vh;}
+
+/* ---- sidebar ---- */
+nav.toc{
+  position:sticky; top:0; align-self:flex-start; height:100vh; overflow-y:auto;
+  width:272px; flex:0 0 272px; background:var(--surface); border-right:1px solid var(--border);
+  padding:22px 18px 40px;
+}
+nav.toc .brand{display:flex; align-items:center; gap:9px; margin-bottom:4px;}
+nav.toc .brand .sq{width:11px;height:11px;background:var(--accent);flex:0 0 auto;}
+nav.toc .brand b{font-family:"IBM Plex Sans Condensed"; font-size:15px; letter-spacing:.3px;}
+nav.toc .sub{font-size:11.5px; color:var(--text-faint); margin:0 0 20px; letter-spacing:.3px;}
+nav.toc .grp{font-size:10.5px; text-transform:uppercase; letter-spacing:1px; color:var(--text-faint); margin:18px 0 6px; font-weight:600;}
+nav.toc a{display:block; font-size:13.3px; color:var(--text-muted); text-decoration:none; padding:4px 0; border-left:2px solid transparent; padding-left:9px; margin-left:-1px;}
+nav.toc a:hover{color:var(--accent); border-left-color:var(--border);}
+nav.toc a b{color:var(--text-faint); font-weight:500; margin-right:2px;}
+
+main{flex:1 1 auto; min-width:0; padding:48px 56px 120px; max-width:1180px;}
+
+/* ---- hero ---- */
+.hero{border-bottom:1px solid var(--border); padding-bottom:34px; margin-bottom:38px;}
+.hero .eyebrow{font-size:11.5px; text-transform:uppercase; letter-spacing:1.6px; color:var(--accent); font-weight:600; margin-bottom:14px;}
+.hero h1{font-size:40px; line-height:1.08; max-width:16ch;}
+.hero .lede{font-size:16.5px; color:var(--text-muted); max-width:66ch; margin-top:14px;}
+.hero .meta{display:flex; gap:22px; flex-wrap:wrap; margin-top:20px; font-size:12.5px; color:var(--text-faint);}
+.hero .meta span b{color:var(--text-muted); font-weight:600;}
+
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); margin-top:28px;}
+.stat{background:var(--surface); padding:16px 18px;}
+.stat .stat-num{font-size:26px; font-weight:600; color:var(--text);}
+.stat .stat-label{font-size:11.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.6px; margin-top:4px;}
+
+section{margin-bottom:56px; scroll-margin-top:24px;}
+section.grp-head{margin-bottom:22px;}
+.grp-title{font-size:12px; text-transform:uppercase; letter-spacing:1.8px; color:var(--accent); font-weight:600; display:flex; align-items:center; gap:12px;}
+.grp-title::after{content:""; flex:1; height:1px; background:var(--border);}
+.grp-desc{color:var(--text-muted); font-size:14px; margin-top:8px; max-width:76ch;}
+
+/* app card */
+.app{background:var(--surface); border:1px solid var(--border); border-radius:3px; padding:26px 28px 28px; margin-bottom:22px; scroll-margin-top:24px; box-shadow:var(--shadow);}
+.app-head{display:flex; justify-content:space-between; align-items:flex-start; gap:18px; flex-wrap:wrap; margin-bottom:6px;}
+.app-head h3{font-size:21px; margin:0;}
+.app-path{font-size:12px; color:var(--text-faint); margin-top:2px;}
+.badges{display:flex; gap:6px; flex-wrap:wrap;}
+.pill{font-size:10.5px; font-weight:600; letter-spacing:.4px; text-transform:uppercase; padding:3px 9px; border-radius:20px; white-space:nowrap;}
+.pill.prod{background:var(--prod-soft); color:var(--prod);}
+.pill.proto{background:var(--proto-soft); color:var(--proto);}
+.pill.scaffold{background:var(--scaffold-soft); color:var(--scaffold);}
+.pill.legacy{background:var(--legacy-soft); color:var(--legacy);}
+.tags{display:flex; gap:6px; flex-wrap:wrap; margin:12px 0 16px;}
+.tag{font-size:11px; background:var(--code-bg); border:1px solid var(--border); color:var(--text-muted); padding:2px 8px; border-radius:3px;}
+.app p{color:var(--text-muted); font-size:14.3px;}
+.app p strong{color:var(--text);}
+.kv{display:grid; grid-template-columns:120px 1fr; gap:7px 14px; margin:16px 0; font-size:13px;}
+.kv dt{color:var(--text-faint); text-transform:uppercase; font-size:10.5px; letter-spacing:.5px; padding-top:2px;}
+.kv dd{margin:0; color:var(--text); font-size:12.6px; line-height:1.55; word-break:break-word;}
+.note{border-left:3px solid var(--rust); background:var(--rust-soft); padding:9px 13px; font-size:12.8px; color:var(--text); margin-top:14px; border-radius:0 3px 3px 0;}
+.note b{color:var(--rust);}
+
+table.small{border-collapse:collapse; width:100%; margin:14px 0; font-size:12.8px;}
+table.small th, table.small td{border:1px solid var(--border); padding:6px 10px; text-align:left;}
+table.small th{background:var(--code-bg); font-weight:600; color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:.4px;}
+table.small td.mono{font-size:11.8px;}
+
+.callout{background:var(--accent-soft); border:1px solid var(--border); border-left:3px solid var(--accent); padding:16px 20px; border-radius:0 3px 3px 0; margin:16px 0;}
+.callout h4{color:var(--accent-ink); font-size:13px; text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px;}
+
+.arch{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:20px 0;}
+.arch .isl{border:1px solid var(--border); background:var(--code-bg); padding:14px 16px; border-radius:3px;}
+.arch .isl b{display:block; font-size:13px; margin-bottom:4px;}
+.arch .isl span{font-size:12.3px; color:var(--text-muted);}
+@media(max-width:860px){.arch{grid-template-columns:1fr;}}
+
+ol.reco{margin:0; padding-left:22px;}
+ol.reco li{margin-bottom:10px; color:var(--text-muted); font-size:14px;}
+ol.reco li strong{color:var(--text);}
+
+footer{border-top:1px solid var(--border); padding-top:22px; margin-top:60px; font-size:12px; color:var(--text-faint);}
+
+@media(max-width:960px){
+  .wrap{display:block;}
+  nav.toc{position:relative; width:auto; height:auto; top:auto;}
+  main{padding:32px 20px 80px;}
+  .hero h1{font-size:30px;}
+}
+@media print{
+  nav.toc{display:none;}
+  .wrap{display:block;}
+  main{padding:0; max-width:none;}
+  .app{box-shadow:none; break-inside:avoid;}
+  section{break-inside:avoid-page;}
+  body{font-size:12.5px;}
+}
+</style>
+
+<div class="wrap">
+<nav class="toc">
+  <div class="brand"><span class="sq"></span><b>PWA HUB · MAPA</b></div>
+  <p class="sub">Inventário técnico completo</p>
+
+  <a href="#resumo"><b>00</b>Resumo executivo</a>
+  <a href="#arquitetura"><b>00</b>Arquitetura &amp; backends</a>
+
+  <div class="grp">Núcleo do Hub</div>
+  <a href="#hub-root"><b>01</b>PWA Hub (raiz)</a>
+  <a href="#auth"><b>02</b>auth/ — RBAC compartilhado</a>
+  <a href="#supabase"><b>03</b>Supabase (backend central)</a>
+
+  <div class="grp">Aplicação principal</div>
+  <a href="#mapa-concretagem"><b>04</b>Mapa de Concretagem</a>
+
+  <div class="grp">Sistemas full-stack</div>
+  <a href="#concrejet"><b>05</b>Concrejet (Injeção)</a>
+  <a href="#pederh"><b>06</b>PedeRH</a>
+  <a href="#controle-est"><b>07</b>Controle Est. Concreto</a>
+  <a href="#docflow"><b>08</b>DocFlow (scaffold)</a>
+  <a href="#ged"><b>08b</b>GED Concrefer (VPS)</a>
+
+  <div class="grp">PWAs utilitárias</div>
+  <a href="#qr-concreto"><b>09</b>QR Concreto</a>
+  <a href="#slump"><b>10</b>Slump/Flow</a>
+  <a href="#dosagem"><b>11</b>Dosagem de Concreto</a>
+  <a href="#checklist"><b>12</b>Checklist da Usina</a>
+  <a href="#carta-traco"><b>13</b>Cartas Traço</a>
+  <a href="#controle-estatistico"><b>14</b>Controle Estatístico</a>
+  <a href="#setores"><b>15</b>Setor Botões / Contagem</a>
+  <a href="#pcp-shim"><b>16</b>PCP (atalho no hub)</a>
+  <a href="#pcp-live"><b>16b</b>PCP Concrefer (app real, VPS)</a>
+
+  <div class="grp">Automação &amp; relatórios</div>
+  <a href="#pcp-agent"><b>17</b>Agente PCP × Produção</a>
+  <a href="#defeitos-scripts"><b>18</b>Agente de Defeitos</a>
+  <a href="#relatorios"><b>19</b>relatorios/ (saída)</a>
+
+  <div class="grp">Sistemas externos</div>
+  <a href="#externos"><b>20</b>ERP &amp; Dashboard Usina</a>
+  <a href="#unidades-overview"><b>20b</b>Unidades regionais — visão geral</a>
+  <a href="#unidade-noroeste"><b>20c</b>ConcreTrack Noroeste</a>
+  <a href="#unidade-pederneiras"><b>20d</b>Concrefer Pederneiras</a>
+  <a href="#unidade-ribeirao"><b>20e</b>ConcreTrack Ribeirão Preto</a>
+  <a href="#unificado"><b>20f</b>ConcreTrack Unificado ★</a>
+
+  <div class="grp">Planejamento</div>
+  <a href="#dashboards-v1"><b>21</b>Projeto Dashboards v1</a>
+  <a href="#lab"><b>22</b>Concretrack Lab (futuro)</a>
+
+  <div class="grp">Síntese</div>
+  <a href="#recomendacoes"><b>23</b>Recomendações p/ reconstrução</a>
+</nav>
+
+<main>
+
+<header class="hero">
+  <div class="eyebrow">Repositório · pwa-hub-fase1 · levantamento 100%</div>
+  <h1>Mapeamento completo do ecossistema PWA Hub Concretrack</h1>
+  <p class="lede">Inventário técnico de todas as aplicações, backends, scripts de automação e documentação encontrados no repositório e nas duas VPS de produção, produzido para servir de base ao redesenho e reconstrução da plataforma como um sistema único e coerente.</p>
+  <div class="meta">
+    <span><b>Gerado em</b> 28 ago 2026</span>
+    <span><b>Repositório</b> pwa-hub-fase1</span>
+    <span><b>Branch analisada</b> fix/dashboard-scroll-tablet-500</span>
+    <span><b>Domínio</b> usina.concretrack.com.br</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">31</div><div class="stat-label">Apps &amp; módulos</div></div>
+    <div class="stat"><div class="stat-num">2</div><div class="stat-label">VPS de produção</div></div>
+    <div class="stat"><div class="stat-num">3×</div><div class="stat-label">ERP+Dashboard duplicado por unidade</div></div>
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Apps sem autenticação</div></div>
+    <div class="stat"><div class="stat-num">1</div><div class="stat-label">App com testes automatizados de UI (e2e)</div></div>
+    <div class="stat"><div class="stat-num">17</div><div class="stat-label">Apps registrados em app_permissions</div></div>
+  </div>
+</header>
+
+<section id="resumo">
+  <div class="grp-title">Resumo executivo</div>
+  <p>O repositório <code>pwa-hub-fase1</code> não é uma aplicação única — é um <strong>hub</strong> de ~20 aplicações e scripts, construídos em momentos e com padrões diferentes ao longo do tempo, todos servindo a operação de uma usina de concreto (Concrefer/Concretrack). Vão de PWAs estáticas de página única com backend em Google Apps Script até um sistema full-stack NestJS + React com testes end-to-end, passando por agentes Python de automação que geram relatórios e disparam WhatsApp, e um projeto embrionário de LIMS de laboratório ainda não construído.</p>
+  <p>A aplicação mais madura e ativa é o <a href="#mapa-concretagem"><strong>Mapa de Concretagem</strong></a> (app.js com 12.326 linhas), seguida por <a href="#concrejet"><strong>Concrejet</strong></a>, um sistema à parte (apesar do nome) para produção de injeção plástica, com arquitetura NestJS/React exemplar e a única suíte de testes e2e do repositório. A maior parte das demais PWAs segue um padrão mais simples: HTML/JS estático + Google Apps Script como "backend", sem build, sem testes, com autenticação inconsistente.</p>
+  <p>Fora do repositório versionado, duas VPS de produção hospedam mais oito aplicações não rastreadas em nenhum git: o <a href="#pcp-live">PCP Concrefer</a> e o <a href="#ged">GED Concrefer</a> na VPS 31.97.241.84, e — na VPS 2.25.163.32 — <strong>três cópias quase idênticas</strong> de um "ConcreTrack ERP" (FastAPI) + "Dashboard MES" (Flask), uma por unidade fabril (Noroeste, Pederneiras, Ribeirão Preto). O achado mais relevante para o seu objetivo de unificação: <a href="#unificado"><strong>já existe uma quarta aplicação, ConcreTrack Unificado</strong></a>, publicada em produção desde julho/2026, que começou exatamente esse trabalho de consolidação multi-unidade — ver seção dedicada e as <a href="#recomendacoes">recomendações finais</a>.</p>
+</section>
+
+<section id="arquitetura">
+  <div class="grp-title">Arquitetura &amp; ilhas de backend</div>
+  <p class="grp-desc">Quatro sistemas de backend distintos coexistem hoje, cada um com seu próprio banco de dados e forma de acesso — todos, confirmou-se, rodando na mesma VPS (31.97.241.84). Qualquer reconstrução precisa decidir se consolida tudo em um só.</p>
+  <div class="arch">
+    <div class="isl">
+      <b>① Supabase (fbvvdyirhtgvycullsqy)</b>
+      <span>Postgres + Auth + Edge Functions (Deno). Hub de login/RBAC (<code>users_app</code>, <code>app_permissions</code>), produção (<code>producao</code>, <code>vw_formas_status</code>), dashboards analíticos v1, tabela nova <code>prog_s3_s4</code>. Consumido direto do browser (anon key) por Mapa de Concretagem, Controle Estatístico, auth/, e via REST pelo Agente PCP e scripts de defeitos.</span>
+    </div>
+    <div class="isl">
+      <b>② ConcreTrack ERP</b>
+      <span>FastAPI + PostgreSQL própria (<code>tbl_massadas</code>), rodando em VPS via systemd + Nginx. Serve <code>/concretrack/api/relatorios/*</code> (fechamento mensal, consumo). Documentado só por engenharia reversa (RELATORIO_FECHAMENTO...md) — não está neste repositório.</span>
+    </div>
+    <div class="isl">
+      <b>③ dashboard-usina (MES)</b>
+      <span>Flask/Gunicorn + PostgreSQL própria (<code>tbl_massadas</code>, <code>tbl_pcpsetor</code>), também em VPS. Serve o card "STATUS OPERACIONAL" ao vivo em dautomacao.com/usina. Também documentado por engenharia reversa.</span>
+    </div>
+    <div class="isl">
+      <b>④ PCP Concrefer</b>
+      <span>FastAPI + PostgreSQL própria (<code>pcp_concrefer</code>) em <code>/opt/pcp-concrefer</code>, mas também lê Supabase (mesma <code>producao</code>) e Google Sheets — a única ilha que já fala com as outras três ao mesmo tempo. Ver mapeamento completo em <a href="#pcp-live">PCP Concrefer</a>.</span>
+    </div>
+  </div>
+  <p>Além disso, cinco apps legados (<a href="#carta-traco">Cartas Traço</a>, <a href="#checklist">Checklist</a>, <a href="#dosagem">Dosagem</a>, <a href="#qr-concreto">QR Concreto</a>, <a href="#slump">Slump/Flow</a>) usam cada um seu próprio Google Apps Script Web App ligado a uma planilha Google Sheets específica — nenhum schema ou API compartilhada entre eles. <a href="#pederh">PedeRH</a> e <a href="#controle-est">Controle Estatístico de Concreto</a> têm cada um seu próprio Postgres + Express, independentes de tudo isso. <a href="#concrejet">Concrejet</a> tem seu próprio Postgres + NestJS, também isolado.</p>
+  <div class="note"><b>Ponto de atenção —</b> o arquivo <code>.env.example</code> da raiz do hub descreve variáveis de um serviço (<code>resultado_ensaios_db</code>, porta 8010) que não corresponde a nenhum código presente na raiz — provavelmente resíduo de outro projeto (<code>PROMPT_CODEX_GITHUB_VPS_POSTGRESQL.md</code> documenta o provisionamento desse serviço à parte, "resultado-ensaios-usina").</div>
+</section>
+
+<!-- ======================= NÚCLEO DO HUB ======================= -->
+<section class="grp-head">
+  <div class="grp-title">Núcleo do hub</div>
+</section>
+
+<section id="hub-root" class="app">
+  <div class="app-head">
+    <div><h3>PWA Hub — Shell raiz</h3><div class="app-path">/ (index.html, login.html, splash.html, status.html, alertas.html…)</div></div>
+    <div class="badges"><span class="pill prod">Produção</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML/CSS/JS vanilla</span><span class="tag">sem build</span><span class="tag">Supabase</span><span class="tag">Service Worker</span></div>
+  <p>Página estática que apresenta a grade de ícones (<code>.hub-grid</code>) linkando para cada sub-aplicação, seja como caminho relativo (<code>./qr-concreto/index.html</code>) seja como iframe externo (Dashboard Usina em <code>dautomacao.com/usina/embed</code>). Sem framework, sem bundler — scripts carregados via <code>&lt;script defer&gt;</code>.</p>
+  <dl class="kv">
+    <dt>Fluxo</dt><dd><code>splash.html</code> (start_url do manifest) → <code>index.html</code> (grade) → <code>login.html</code> → sub-apps. <code>status.html</code> é um changelog/status standalone; <code>alertas.html</code> lê histórico de notificações de um IndexedDB (<code>ct-alerts-db</code>) alimentado pelo service worker.</dd>
+    <dt>Backend</dt><dd>Supabase (auth + dados) + Edge Functions (<code>auth-login</code>, <code>change-password</code>, <code>admin-users</code>) + microsserviço de push separado em <code>dautomacao.com/etiquetas</code> (VAPID).</dd>
+    <dt>Service Worker</dt><dd>Cache versionado (atualmente <code>ct-hub-v41-mapa-bypass</code>), estratégia network-first para HTML/navegação e cache-first para estáticos; bypassa explicitamente chamadas a <code>script.google.com</code> e as pastas <code>mapa-concretagem*</code> (que têm SW próprio); implementa Web Push e log de alertas em IndexedDB.</dd>
+    <dt>manifest.json</dt><dd>Nome "Concre HUB", atalhos para QR Concreto, Setor Count, Slump/Flow.</dd>
+    <dt>package.json</dt><dd>Nome <code>pwa-hub</code>, deps: <code>@supabase/supabase-js</code>, <code>xlsx</code>; scripts amarram testes de <code>dosagem-concreto</code>, <code>seed-master.mjs</code> e o bump de versão do Mapa de Concretagem.</dd>
+  </dl>
+  <div class="note"><b>Achado —</b> ícones em <code>assets/img/</code> para "controle de cimento" e "paradas" existem mas não aparecem como blocos na grade atual — possíveis funcionalidades planejadas/descontinuadas a validar no redesenho.</div>
+</section>
+
+<section id="auth" class="app">
+  <div class="app-head">
+    <div><h3>auth/ — módulo de autenticação e RBAC compartilhado</h3><div class="app-path">/auth (8 arquivos)</div></div>
+    <div class="badges"><span class="pill prod">Produção</span></div>
+  </div>
+  <div class="tags"><span class="tag">Supabase Auth</span><span class="tag">Postgres RLS</span><span class="tag">Edge Functions</span></div>
+  <p>Biblioteca central de sessão/RBAC carregada por quase todas as sub-aplicações (<code>config.js</code>, <code>client.js</code>, <code>guard.js</code>, e em algumas <code>hub.js</code>). Senhas e sessões são geridas <strong>exclusivamente</strong> pelo Supabase Auth — a tabela <code>users_app</code> nunca guarda senha.</p>
+  <dl class="kv">
+    <dt>Arquivos</dt><dd><code>config.js</code> (URL/anon key + flag <code>authEnabled</code>), <code>client.js</code> (wrapper + RPC <code>my_access_context</code>), <code>guard.js</code> (gate de página: redireciona sem sessão, expira por <code>sessionMaxAgeSeconds=28800</code>, força troca de senha no primeiro login, checa <code>data-app-key</code> contra permissões), <code>hub.js</code> (renderiza tiles conforme permissão), <code>login.js</code>, <code>change-password.js</code>, <code>admin-users.js</code> (CRUD de usuários, restrito a <code>access_level==='master'</code>), <code>ui.css</code>.</dd>
+    <dt>Segurança</dt><dd>Front usa somente a chave pública <code>anon</code>; operações administrativas passam por Edge Functions com <code>SUPABASE_SERVICE_ROLE_KEY</code> (nunca exposta no cliente). Hospedagem estática no GitHub Pages permanece pública — a proteção real vem do guard de rota + RLS no Postgres, não de esconder arquivos.</dd>
+    <dt>Estado atual</dt><dd><code>authEnabled: false</code> — o gate está hoje <strong>desligado</strong> em todo o hub, embora o fluxo completo esteja implementado e pronto para reativar.</dd>
+    <dt>Cobertura</dt><dd>Nem todas as apps carregam o guard: <a href="#slump">Slump/Flow</a>, <a href="#carta-traco">Cartas Traço</a> e <code>setor_count</code> não o referenciam.</dd>
+  </dl>
+</section>
+
+<section id="supabase" class="app">
+  <div class="app-head">
+    <div><h3>Supabase — backend central do hub</h3><div class="app-path">/supabase (migrations/, functions/) · projeto fbvvdyirhtgvycullsqy</div></div>
+    <div class="badges"><span class="pill prod">Produção</span></div>
+  </div>
+  <div class="tags"><span class="tag">Postgres</span><span class="tag">Deno Edge Functions</span><span class="tag">RLS</span></div>
+  <p>Banco único compartilhado por Mapa de Concretagem, auth/, Agente PCP, scripts de defeitos e (parcialmente) o front-end do Concrejet para sessão. Mesma <code>SUPABASE_URL</code> usada em todos esses pontos.</p>
+  <table class="small">
+    <tr><th>Migração</th><th>Conteúdo</th></tr>
+    <tr><td class="mono">202606290001_auth_hub.sql</td><td>Schema de auth: <code>users_app</code>, <code>login_logs</code>, <code>app_permissions</code> (seed com 17 apps), <code>login_attempts</code> (rate limit), funções <code>is_master()</code> / <code>my_access_context()</code>.</td></tr>
+    <tr><td class="mono">202608200001_add_vibrado_to_producao.sql</td><td>Campo <code>vibrado</code> em <code>producao</code> (usado pela lógica de qualidade do Agente PCP).</td></tr>
+    <tr><td class="mono">202608200002 / 003 …dashboard*</td><td>Schema de analytics dos dashboards v1: funções de setor, <code>dashboard_retrabalho_eventos_v1</code> com custo e aprovação.</td></tr>
+    <tr><td class="mono">202608200004 …contract_fix_v1.sql</td><td>Função recursiva para extrair rótulos "não" de payloads JSONB de checklist/defeito.</td></tr>
+    <tr><td class="mono">202608280001_create_prog_s3_s4.sql</td><td>Nova tabela <code>prog_s3_s4</code> (programação diária Setores 3/4) — a mais recente, corresponde ao commit "Cria tabela de programação do Setor 3".</td></tr>
+  </table>
+  <dl class="kv">
+    <dt>Edge Functions</dt><dd><code>auth-login</code> (rate limit por hash de IP+usuário, <code>verify_jwt=false</code>), <code>admin-users</code>, <code>change-password</code> (ambas exigem sessão + <code>requireMaster()</code>), <code>_shared/security.ts</code> (CORS, clientes admin/user, política de senha 12+ caracteres).</dd>
+    <dt>Apps registrados</dt><dd><code>dashboard-usina, qr-concreto, slump, parada-usina, massadas, setor-botoes, dosagem-concreto, controle-cimento, controle-agregados, checklist-usina, mapa-concretagem, etiquetas-cp, controle-estatistico, manual-dosagem, alertas, cartas-traco-unidades, pcp, admin-usuarios</code> — lista oficial de 17 apps geridos pelo RBAC (nem todos têm código correspondente encontrado no repo, ex.: <code>parada-usina</code>, <code>controle-cimento</code>, <code>controle-agregados</code>, <code>etiquetas-cp</code>).</dd>
+  </dl>
+</section>
+
+<!-- ======================= APP PRINCIPAL ======================= -->
+<section class="grp-head"><div class="grp-title">Aplicação principal</div></section>
+
+<section id="mapa-concretagem" class="app">
+  <div class="app-head">
+    <div><h3>Mapa de Concretagem <span style="font-weight:400;color:var(--text-faint)">+ versão -teste</span></h3><div class="app-path">/mapa-concretagem · /mapa-concretagem-teste</div></div>
+    <div class="badges"><span class="pill prod">Produção · flagship</span></div>
+  </div>
+  <div class="tags"><span class="tag">PWA vanilla JS</span><span class="tag">app.js: 12.326 linhas</span><span class="tag">Supabase realtime</span><span class="tag">Express opcional (fotos)</span></div>
+  <p>A aplicação mais complexa e ativamente desenvolvida do repositório. Acompanha o ciclo de vida completo de fôrmas/moldes pré-moldados: <strong>programação PCP</strong> (amarelo) → <strong>liberação de formas</strong> (azul) → <strong>concretagem/produção</strong> (verde), com relatórios cruzando os três estágios, captura de fotos de inspeção, dashboards de defeitos, controle de manutenção de mandril circular e a nova tabela de programação do "Setor 3".</p>
+  <dl class="kv">
+    <dt>Frontend</dt><dd>PWA estática, <code>app.js</code> monolítico (12.326 linhas) + <code>index.html</code> (1.696 linhas). Bundla localmente <code>supabase.js</code>, Chart.js e plugin de datalabels (sem CDN). SW próprio e versionado independentemente do hub (ex.: v4.61), explicitamente excluído do cache do SW raiz.</dd>
+    <dt>Backend</dt><dd>Supabase direto do browser para todo o CRUD/realtime; API externa <code>pcp.concretrack.com.br/api/programacao</code> (com fallback <code>usina.concretrack.com.br/api/programacao</code> para o Setor 3); API Node/Express própria e opcional (<code>server.js</code>, pacote <code>concretrack-storage-api</code>) para upload de fotos via SFTP (usa <code>multer</code>, <code>sharp</code>, <code>ssh2-sftp-client</code>) — esse mesmo <code>server.js</code> também pode servir o hub inteiro como estático.</dd>
+    <dt>Dados extra</dt><dd><code>supabase-formas-manutencao.sql</code> (schema de manutenção de moldes), <code>data/produto-volumes.json</code> (315 registros peso/volume, gerado 28/08/2026 a partir de cadastro Excel).</dd>
+    <dt>Versão -teste</dt><dd>Cópia de homologação explícita (rotulada "[TESTE]" na grade do hub) — <code>app.js</code>, <code>index.html</code>, <code>manifest.json</code>, <code>sw.js</code> todos divergentes da produção.</dd>
+    <dt>Documentação própria</dt><dd><code>HANDOFF_TECNICO.md</code>, <code>documentacao_completa.html</code>, <code>guia-funcionalidades-v1-v123.html</code> — fontes primárias valiosas para o redesenho.</dd>
+  </dl>
+  <div class="note"><b>Achado —</b> um único arquivo <code>app.js</code> de 12k linhas concentra praticamente toda a lógica de negócio da aplicação mais crítica do hub — forte candidato a modularização em qualquer reconstrução.</div>
+</section>
+
+<!-- ======================= FULL-STACK ======================= -->
+<section class="grp-head"><div class="grp-title">Sistemas full-stack</div></section>
+
+<section id="concrejet" class="app">
+  <div class="app-head">
+    <div><h3>Concrejet — "ConcreTrack Injeção"</h3><div class="app-path">/concrejet (backend/, frontend/, docs/, imports/)</div></div>
+    <div class="badges"><span class="pill prod">Produção · mais maduro</span></div>
+  </div>
+  <div class="tags"><span class="tag">NestJS 10 + TypeScript</span><span class="tag">React 18 + Vite</span><span class="tag">PostgreSQL 16 + TypeORM</span><span class="tag">Playwright e2e</span></div>
+  <p>Apesar do nome do repositório sugerir concreto, este sistema substitui uma planilha Excel de ~160 abas usada para controlar <strong>produção por injeção plástica</strong>: cadastros, apontamentos, ocorrências, resinas/lotes, blendas, estoque e indicadores (OEE). Desenvolvido em fases documentadas (Fase 0 a 7+), com trilha completa de ADRs e handoff.</p>
+  <dl class="kv">
+    <dt>Backend</dt><dd>NestJS + TypeORM com <strong>migrações SQL manuais</strong> (não <code>synchronize</code>, não Prisma) para suportar <code>EXCLUDE USING gist</code>/<code>tstzrange</code> (evita apontamentos sobrepostos por máquina). Auth dupla: cookie JWT httpOnly + Argon2id para admin; matrícula+PIN → bearer token para operador de chão de fábrica.</dd>
+    <dt>Módulos</dt><dd><code>auth, organizacao, usuarios, producao-base, auditoria, cadastros, producao, ocorrencias, estoque, analytics, importacao, health</code>.</dd>
+    <dt>Frontend</dt><dd>React/Vite PWA para tablet (paisagem, chão de fábrica) + painel desktop admin. Zustand + React Query + react-hook-form/zod + axios; offline-first com Dexie (IndexedDB) e fila de sincronização (outbox).</dd>
+    <dt>Testes e2e</dt><dd>Playwright: <code>activation-login</code>, <code>admin-auth</code>, <code>dashboard-scroll-tablet</code>, <code>fases-5-7-admin</code>, <code>resin-lots</code> — <strong>única suíte e2e de todo o repositório</strong>.</dd>
+    <dt>Documentação</dt><dd>ADRs (0001 stack, 0002 ORM/migrações, 0003 auth), <code>arquitetura.md</code>, <code>modelo-dados.md</code>, <code>regras-negocio.md</code>, <code>calculos-oee.md</code>, mockups HTML aprovados em <code>docs/referencia-ui/</code>, e um <code>handoff.md</code> vivo (log de sessão por agente).</dd>
+    <dt>Deploy</dt><dd><code>docker-compose.yml</code> (Postgres + API); frontend via Vite dev server exposto na LAN para tablets; sem pipeline de build/deploy de produção documentado além de <code>vite build</code>.</dd>
+  </dl>
+  <div class="callout">
+    <h4>Trabalho em curso (branch atual)</h4>
+    <p style="margin:0">Rate limiting tornado configurável via env; correção de bug onde <code>current-by-device</code> reexibia apontamento já concluído; correção de vazamento de sessão entre admin e operador (uma chamada global <code>/auth/me</code> derrubava a sessão do operador); specs e2e atualizados para IP de LAN dinâmico.</p>
+  </div>
+</section>
+
+<section id="pederh" class="app">
+  <div class="app-head">
+    <div><h3>PedeRH</h3><div class="app-path">/PedeRH (backend/, frontend/, scripts/)</div></div>
+    <div class="badges"><span class="pill proto">Protótipo avançado</span></div>
+  </div>
+  <div class="tags"><span class="tag">Node.js + Express 4</span><span class="tag">PostgreSQL (SQL puro)</span><span class="tag">HTML/JS vanilla</span></div>
+  <p>Sistema interno de solicitações e fluxos de RH ("Peça RH"): advertências, atrasos, banco de horas, horas extras, dispensas, férias, movimentação de pessoal, recrutamento — mais um módulo completo de entrega/rastreio de EPI com assinatura digital.</p>
+  <dl class="kv">
+    <dt>Backend</dt><dd><code>server.js → app.js</code>, camadas <code>controllers/services/routes/middlewares</code>, <code>schema.sql</code> + <code>seed.sql</code> (sem ferramenta de migração), fallback em JSON (<code>src/data/db.json</code> via <code>utils/store.js</code>).</dd>
+    <dt>Banco</dt><dd>Tabelas: <code>usuarios, solicitacoes, solicitacoes_timeline, solicitacoes_anexos, epi_itens, epi_estoque, epi_entregas, epi_entregas_itens</code>; usa JSONB para campos polimórficos por tipo de solicitação.</dd>
+    <dt>API</dt><dd><code>/api/auth</code>, <code>/api/solicitacoes</code> (+ PDF), <code>/api/dashboard</code>, <code>/api/users</code>, <code>/api/epi</code> (itens/estoque/entregas/assinatura/PDF), <code>/api/credenciais</code>.</dd>
+    <dt>Auth</dt><dd><strong>Frágil</strong>: login valida bcrypt mas retorna <code>token = user.id</code> em texto puro — sem JWT, sem expiração, sem revogação. Guards de perfil (<code>requirePerfis</code>, <code>requireSuperAdmin</code>) existem, mas o "token" é literalmente o ID do usuário.</dd>
+    <dt>Testes</dt><dd>Nenhum.</dd>
+  </dl>
+  <div class="note"><b>Achado —</b> <code>package.json</code> descreve o projeto como "Backend do protótipo PWA RH"; histórico git mostra um único commit "Initial PedeRH production snapshot" — importado como snapshot pronto, não desenvolvido iterativamente neste repositório.</div>
+</section>
+
+<section id="controle-est" class="app">
+  <div class="app-head">
+    <div><h3>Controle_est_concre</h3><div class="app-path">/Controle_est_concre (migrations/, src/, tests/)</div></div>
+    <div class="badges"><span class="pill prod">Produção (backend interno)</span></div>
+  </div>
+  <div class="tags"><span class="tag">Node.js + Express 5</span><span class="tag">PostgreSQL (SQL puro)</span><span class="tag">PM2 + Nginx</span></div>
+  <p>API de sincronização entre ConcreTrack e o app <a href="#qr-concreto">QR Concreto</a>: persiste resultados de rompimento de corpos de prova de concreto, sincroniza a partir do Google Sheets e calcula estatísticas diárias/mensais de resistência contra faixas-alvo.</p>
+  <dl class="kv">
+    <dt>Estrutura</dt><dd><code>src/api</code> (v1 legado + v2), <code>src/core</code> (config, database, cache, security — sem auth), <code>src/services</code> (inclui sync do Google Sheets), <code>src/repositories</code>, <code>src/jobs/backfill.js</code>, <code>src/workers/analytics_worker.js</code> (fila de recálculo).</dd>
+    <dt>Banco</dt><dd><code>rompimentos</code> (base), + migração <code>001_analytics_schema.sql</code>: <code>faixas_resistencia</code>, <code>rompimentos_eventos</code> (auditoria), <code>rompimentos_atuais</code>, <code>rompimentos_grupos</code> (pares CP1/CP2), <code>estatistica_diaria/mensal</code>, <code>fila_recalculo</code>.</dd>
+    <dt>Deploy</dt><dd>Browser → Nginx (:8086) → Express (:3086, interno) → Postgres (:5432 local); <code>ecosystem.config.cjs</code> (PM2), <code>provision_remote.sh</code> para provisionar VPS.</dd>
+    <dt>Auth</dt><dd>Nenhuma no nível de aplicação — apenas allow-list de CORS e rate limit por IP em memória; segurança depende de rede (Nginx + firewall).</dd>
+    <dt>Testes</dt><dd><code>tests/analytics.test.js</code>, <code>tests/controle_estatistico.test.js</code> via <code>node --test</code> — testes de integração reais (sobem o app Express, mockam DB/fetch).</dd>
+  </dl>
+</section>
+
+<section id="docflow" class="app">
+  <div class="app-head">
+    <div><h3>DocFlow</h3><div class="app-path">/docflow (frontend/)</div></div>
+    <div class="badges"><span class="pill scaffold">Scaffold — não construído</span></div>
+  </div>
+  <div class="tags"><span class="tag">React + Vite (existente)</span><span class="tag">FastAPI + Celery (planejado)</span></div>
+  <p>README descreve uma plataforma SaaS de Gestão Eletrônica de Documentos (GED) para ambientes industriais regulados — multi-tenant, com Supabase Auth/RLS, backend FastAPI+JWT+Celery, deploy Ubuntu+Nginx+Gunicorn+Systemd. <strong>Nada disso existe no repositório</strong> além de um esqueleto de frontend.</p>
+  <dl class="kv">
+    <dt>O que existe</dt><dd>Apenas <code>frontend/</code>: <code>App.jsx</code> renderiza um <code>Layout</code> com uma única página <code>Dashboard.jsx</code> estática (um card fixo "Docs Ativos: 1.284"), sem chamadas de API, sem roteamento, sem uso real de <code>zustand</code>/<code>axios</code> apesar de estarem no <code>package.json</code>.</dd>
+    <dt>O que falta</dt><dd>Não existe <code>backend/</code>, <code>docker-compose.yml</code>, workflow de deploy ou scripts — todos referenciados no README mas ausentes.</dd>
+    <dt>Integração</dt><dd>Não está linkado na grade do hub, no manifest nem no cache do service worker raiz — totalmente desconectado do resto do hub hoje.</dd>
+  </dl>
+  <div class="note"><b>Achado —</b> README termina com "Este README é gerado automaticamente pela Antigravity" — reforça que é boilerplate aspiracional, não um produto em construção ativa.</div>
+</section>
+
+<section id="ged" class="app">
+  <div class="app-head">
+    <div><h3>GED Concrefer</h3><div class="app-path">VPS 31.97.241.84 · /opt/ged_concrefer · ged.concretrack.com.br</div></div>
+    <div class="badges"><span class="pill prod">Produção · mapeado via SSH na VPS</span></div>
+  </div>
+  <div class="tags"><span class="tag">Node.js 20 + Express</span><span class="tag">Next.js 14 + Tailwind</span><span class="tag">PostgreSQL 16</span><span class="tag">JWT</span><span class="tag">Google Drive API</span><span class="tag">Docker Compose</span></div>
+  <p><strong>Não está listado em nenhum lugar do repositório <code>pwa-hub-fase1</code></strong> — foi localizado diretamente na VPS que hospeda o PCP Concrefer e outros serviços "concretrack-*". É um sistema de <strong>Gestão Eletrônica de Documentos (GED)</strong> real, completo e ativo (containers Docker rodando há 4 semanas): controle documental com versionamento, aprovação eletrônica, armazenamento no Google Drive e controle de acesso por perfil — cobrindo o mesmo domínio conceitual do <a href="#docflow">DocFlow</a> (que é só scaffold), mas totalmente implementado e em produção fora deste repositório.</p>
+  <div class="note"><b>Achado —</b> a VPS também guarda um documento antigo (<code>/root/GED-CONCREFER_DOCUMENTACAO_COMPLETA.md</code>, maio/2026) que descreve "GED-CONCRETRACK" como um módulo dentro do <a href="#pederh">PedeRH</a> (Node/Express, porta 3010, banco <code>pwa_rh</code>) — uma nomeação/implementação anterior e diferente da atual. O Nginx e os containers Docker de hoje confirmam que <code>ged.concretrack.com.br</code> aponta agora para esta aplicação própria e independente (portas 3000/4000, banco <code>ged_concrefer</code>), não mais para o módulo de RH. Nomeação ambígua a esclarecer na reconstrução.</div>
+  <dl class="kv">
+    <dt>Backend</dt><dd><code>backend/src</code>: <code>controllers</code> (<code>documentController</code>, <code>approvalController</code>, <code>authController</code>, <code>userController</code>, <code>readLogController</code>, <code>calibrationController</code>, <code>rncController</code> — não conformidades, <code>taskController</code>), <code>services</code> (<code>driveService</code>, <code>documentService</code>, <code>pdfService</code>, <code>emailService</code>, <code>rbacService</code>, <code>auditService</code>, <code>alertService</code>, <code>storageService</code>, <code>passwordPolicy</code>), <code>middlewares</code> (<code>auth</code> JWT, <code>roles</code>), <code>db/migrations.sql</code> + <code>seed.sql</code>. Deps: express, pg, jsonwebtoken, bcryptjs, googleapis, multer, pdf-lib, qrcode, nodemailer.</dd>
+    <dt>Frontend</dt><dd>Next.js 14 (App Router) + Tailwind, <code>contexts/AuthContext</code>, <code>hooks/useAuth</code> + <code>useDocuments</code>, client Axios em <code>services/</code>.</dd>
+    <dt>Armazenamento</dt><dd>Arquivos vão para o <strong>Google Drive</strong> via Service Account, em 4 pastas fixas que espelham o ciclo de vida do documento: <code>00_VIGENTES</code>, <code>01_EM_REVISAO</code>, <code>02_OBSOLETOS</code>, <code>03_MODELOS</code> (replicadas localmente em <code>backend/uploads/{vigentes,em_revisao,obsoletos,modelos}</code>, mais pastas extras <code>calibrations</code> e <code>tasks</code> não documentadas no README).</dd>
+    <dt>Perfis de acesso</dt><dd><code>ADMIN</code> (tudo), <code>QUALIDADE</code> e <code>ENGENHARIA</code> (upload/aprovação/leitura), <code>LABORATORIO</code> (upload/leitura), <code>LEITOR</code> (somente leitura + confirmação de ciência) — modelo de RBAC voltado a controle de qualidade (ISO/SGQ), coerente com o módulo de <a href="#dashboards-v1">Dashboards v1</a> do hub.</dd>
+    <dt>Fluxo de versionamento</dt><dd>Upload → <code>EM_REVISÃO</code> → aprovação → <code>VIGENTE</code>; nova versão do mesmo documento move a anterior para <code>OBSOLETO</code> e reinicia em <code>EM_REVISÃO</code> com revisão incrementada (Rev 00 → Rev 01); usuários recebem e-mail e devem confirmar ciência (log de leitura registrado).</dd>
+    <dt>Módulos extra</dt><dd><strong>RNC</strong> (registro de não conformidade) e <strong>Calibração</strong> — controllers/rotas próprias, não mencionados no README principal. <strong>Tarefas</strong> (<code>/tasks</code>): tabelas <code>tasks, task_comments, task_history, task_participants, task_attachments, task_document_links</code>.</dd>
+    <dt>API</dt><dd><code>POST /api/auth/login</code>, <code>GET /api/auth/me</code>, <code>GET/POST /api/documents</code>, <code>POST /api/documents/:id/upload</code> (nova versão), <code>GET /api/documents/:id/versions</code>, <code>GET /api/approvals/pending</code>, <code>POST /api/approvals/:versionId/approve|reject</code>, <code>POST /api/read-logs</code>, <code>GET /api/users</code> (admin).</dd>
+    <dt>Deploy</dt><dd>Docker Compose: 3 containers — <code>ged_postgres</code> (16-alpine, migrations/seed via <code>docker-entrypoint-initdb.d</code>), <code>ged_backend</code> (porta 4000, volume de uploads + credencial Google montada read-only), <code>ged_frontend</code> (porta 3000, build com <code>NEXT_PUBLIC_API_URL</code>). Nginx faz proxy: <code>/</code> → 3000 (frontend, com suporte a upgrade/websocket), <code>/api</code> e <code>/uploads/</code> → 4000 (backend), com <code>client_max_body_size 50M</code> para upload de documentos.</dd>
+    <dt>Credenciais seed</dt><dd><code>admin@concrefer.com.br</code> / <code>Admin@2024</code> — README recomenda troca imediata; mesmo padrão de risco (senha fixa documentada) observado no <a href="#pcp-live">PCP Concrefer</a>.</dd>
+  </dl>
+</section>
+
+<!-- ======================= UTILITÁRIAS ======================= -->
+<section class="grp-head">
+  <div class="grp-title">PWAs utilitárias (padrão legado: HTML + Apps Script)</div>
+  <p class="grp-desc">Cinco aplicações de página única, cada uma com seu próprio backend em Google Apps Script ligado a uma planilha Google Sheets específica — sem schema ou API compartilhada entre si.</p>
+</section>
+
+<section id="qr-concreto" class="app">
+  <div class="app-head">
+    <div><h3>QR Concreto</h3><div class="app-path">/qr-concreto (27 arquivos)</div></div>
+    <div class="badges"><span class="pill prod">Produção</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML/JS + leitor QR</span><span class="tag">Google Apps Script</span></div>
+  <p>Leitura de QR Code em corpos de prova cilíndricos (CPs) para rastreio de ensaios de rompimento — atalho padrão/primeiro do manifest PWA. É a app mais "polida" como PWA instalável: conjunto completo de ícones e splash screens iOS (48×48 até 1024×1024).</p>
+  <dl class="kv">
+    <dt>Backend</dt><dd>Google Apps Script Web App próprio.</dd>
+    <dt>Auth</dt><dd>Usa o guard <code>/auth/</code> do hub.</dd>
+  </dl>
+  <div class="note"><b>Achado —</b> arquivos de ícone duplicados (<code>icon-192x192.png</code> e <code>icon-192x192.png.png</code>) sugerem artefato de exportação a limpar.</div>
+</section>
+
+<section id="slump" class="app">
+  <div class="app-head">
+    <div><h3>Slump/Flow</h3><div class="app-path">/slump (7 arquivos)</div></div>
+    <div class="badges"><span class="pill legacy">Legado, sem auth do hub</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML/JS + fetch clima</span><span class="tag">Google Apps Script</span><span class="tag">GitHub Pages/Jekyll</span></div>
+  <p>Registro de ensaios de abatimento (slump)/espalhamento, com busca automática de clima e cruzamento de riscos por data/hora. Único app do hub com workflow próprio de deploy Jekyll/GitHub Pages — indício de que nasceu como projeto standalone antes de ser absorvido pelo hub.</p>
+  <dl class="kv">
+    <dt>Backend</dt><dd>Google Apps Script com autenticação por token compartilhado (<code>TOKEN</code> em ambos os lados).</dd>
+    <dt>Auth do hub</dt><dd>Não carrega o guard <code>/auth/</code>.</dd>
+  </dl>
+</section>
+
+<section id="dosagem" class="app">
+  <div class="app-head">
+    <div><h3>Dosagem de Concreto</h3><div class="app-path">/dosagem-concreto (15 arquivos + testes)</div></div>
+    <div class="badges"><span class="pill prod">Produção · único com testes unitários</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML/JS modular</span><span class="tag">node --test</span><span class="tag">3× Google Apps Script</span></div>
+  <p>Calculadora de traço/dosagem: cálculo por argamassa, dosagem científica e dosagem por argamassa, mais um manual completo (<code>manual.html</code>). O maior arquivo HTML estático do repositório (<code>index.html</code>: 12.430 linhas).</p>
+  <dl class="kv">
+    <dt>Testes</dt><dd><code>tests/argamassa-calculo.test.js</code>, <code>dosagem-cientifica.test.js</code>, <code>dosagem-por-argamassa.test.js</code> — lógica de cálculo desacoplada da UI e coberta por asserções numéricas reais; único app do repo com testes automatizados de lógica.</dd>
+    <dt>Backend</dt><dd>Três Apps Script separados: custo MCC, dosagem, fornecedores/granulometria.</dd>
+  </dl>
+</section>
+
+<section id="checklist" class="app">
+  <div class="app-head">
+    <div><h3>Checklist da Usina</h3><div class="app-path">/checklist-usina (+ apps-script/)</div></div>
+    <div class="badges"><span class="pill prod">Produção, com resíduo de versões antigas</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML/JS</span><span class="tag">Mini-PWA própria</span><span class="tag">Google Apps Script</span></div>
+  <p>Checklist operacional digital (limpeza, silos, linhas de aditivo, sensores, temperatura da água — 30+ itens). <code>index.html</code> é um shim de redirecionamento para <code>checklist_industrial_usina_mobile_v3.html</code>, indicando pelo menos duas versões anteriores superadas.</p>
+  <dl class="kv">
+    <dt>Backend</dt><dd>Google Apps Script gravando numa planilha específica (<code>doPost</code>).</dd>
+    <dt>Auth</dt><dd>Usa o guard <code>/auth/</code> (<code>data-app-key="checklist-usina"</code>).</dd>
+  </dl>
+  <div class="note"><b>Achado —</b> arquivos de Apps Script duplicados em dois locais (<code>apps-script/Code.gs</code> e <code>AppsScript_checklistUsina.gs</code>) — limpeza incompleta após migração v1→v3.</div>
+</section>
+
+<section id="carta-traco" class="app">
+  <div class="app-head">
+    <div><h3>Cartas Traço</h3><div class="app-path">/carta-traco (2 arquivos)</div></div>
+    <div class="badges"><span class="pill legacy">Legado, órfão</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML + Chart.js</span><span class="tag">Google Apps Script</span></div>
+  <p>Visualizador de registros/referências de traço de concreto para o laboratório. Está no cache do service worker do hub, mas <strong>não aparece como bloco</strong> na grade de <code>index.html</code> — link órfão/legado. Não carrega o guard de autenticação.</p>
+</section>
+
+<section id="controle-estatistico" class="app">
+  <div class="app-head">
+    <div><h3>Controle Estatístico</h3><div class="app-path">/controle-estatistico (7 arquivos)</div></div>
+    <div class="badges"><span class="pill prod">Produção</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML/JS</span><span class="tag">REST API real</span><span class="tag">Mini-PWA própria</span></div>
+  <p>Exibe resultados/relatórios de controle estatístico de rompimentos de concreto. Diferente dos demais legados: consome uma <strong>API REST real</strong> (<code>concretrack.com.br/api/controle-estatistico/v2/rompimentos-grupos</code>), com adaptação de formato v1→v2 e cache em <code>localStorage</code>.</p>
+  <dl class="kv"><dt>Auth</dt><dd>Usa o guard <code>/auth/</code> do hub.</dd></dl>
+</section>
+
+<section id="setores" class="app">
+  <div class="app-head">
+    <div><h3>Setor Botões &amp; Setor Count</h3><div class="app-path">/setor_botoes (1 arquivo) · /setor_count (2 arquivos)</div></div>
+    <div class="badges"><span class="pill proto">Protótipos utilitários</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML/JS de página única</span></div>
+  <p>Duas ferramentas pequenas e relacionadas de contagem de produção por setor no chão de fábrica. <code>setor_botoes</code>: UI de botões grandes coloridos para lançar contagem manualmente, sem arquivo Apps Script próprio (provavelmente fala direto com Supabase). <code>setor_count</code>: contagem via leitor QR, tema escuro — <strong>não carrega</strong> o guard <code>/auth/</code> e só é acessível via atalho do manifest, não pela grade principal do hub.</p>
+</section>
+
+<section id="pcp-shim" class="app">
+  <div class="app-head">
+    <div><h3>PCP — atalho/redirecionador</h3><div class="app-path">/pcp (3 arquivos)</div></div>
+    <div class="badges"><span class="pill legacy">Shim, não é app</span></div>
+  </div>
+  <div class="tags"><span class="tag">HTML redirect</span></div>
+  <p>Não é uma aplicação real — é um "atalho PWA para o login do PCP" (texto literal do manifest): mostra uma tela de carregamento e redireciona para <code>https://pcp.concretrack.com.br/pages/login.html</code>. O verdadeiro sistema de Planejamento e Controle de Produção vive fora deste repositório, em outro domínio — mapeado a seguir via acesso direto à VPS.</p>
+</section>
+
+<section id="pcp-live" class="app">
+  <div class="app-head">
+    <div><h3>PCP Concrefer — aplicação real por trás do atalho</h3><div class="app-path">VPS 31.97.241.84 · /opt/pcp-concrefer · pcp.concretrack.com.br</div></div>
+    <div class="badges"><span class="pill prod">Produção · mapeado via SSH na VPS</span></div>
+  </div>
+  <div class="tags"><span class="tag">Python 3.11 + FastAPI</span><span class="tag">SQLAlchemy + PostgreSQL</span><span class="tag">JWT + bcrypt</span><span class="tag">Bootstrap 5.3 + JS puro</span><span class="tag">Nginx + Systemd</span></div>
+  <p>Sistema completo de <strong>Planejamento e Controle da Produção</strong> para a fábrica de postes de concreto, hospedado na mesma VPS que os demais serviços "concretrack-*". É uma aplicação própria e mais tradicional (FastAPI monolítico + Postgres dedicado) do que o padrão Supabase-direto-do-browser usado no restante do hub, mas também fala com Supabase e Google Sheets como fontes de dado secundárias.</p>
+  <dl class="kv">
+    <dt>Backend</dt><dd><code>app/main.py</code> + routers em <code>app/api/routers/</code>: <code>auth, usuarios, setores, pcp, dashboard, produtos, alocacao_formas, teste_programacao</code>. Camadas <code>core</code> (config/database/security), <code>models</code> (SQLAlchemy: <code>producao, produto, setor, usuario, alocacao_formas, mapeamento_forma(+acessorio/+poste), teste_programacao</code>), <code>schemas</code> (Pydantic), <code>services</code> (<code>auth_service</code>, <code>dashboard_service</code>, <code>alocacao_formas_service</code>, <code>sheets_service</code>) e <code>repositories/google_sheets_repository.py</code>.</dd>
+    <dt>Dados</dt><dd><strong>Três fontes coexistindo</strong>: banco Postgres dedicado (<code>pcp_concrefer</code>, via <code>DATABASE_URL</code>), Supabase (<code>SUPABASE_URL</code>/<code>SUPABASE_ANON_KEY</code>/<code>SUPABASE_PRODUCAO_TABLE</code> no <code>.env</code> — provável leitura da tabela <code>producao</code> do mesmo projeto central usado pelo Mapa de Concretagem) e Google Sheets (credenciais de service account + <code>SPREADSHEET_ID</code>, via <code>gspread</code>).</dd>
+    <dt>Auth</dt><dd>JWT (python-jose) + bcrypt (passlib), 4 níveis de acesso — <code>ADMIN</code>, <code>PCP</code>, <code>PRODUCAO</code>, <code>CONSULTA</code> — com matriz de permissão explícita por ação (criar programação, lançar produção, lançar mão de obra, gerenciar usuários). README documenta usuários padrão com senhas fixas (<code>admin@concrefer.com</code>/<code>Admin@123</code> etc.) — risco de segurança se não trocados em produção.</dd>
+    <dt>Frontend</dt><dd>HTML + Bootstrap 5.3 + JS puro + Chart.js, ~19 páginas em <code>frontend/pages/</code>: <code>login, primeiro-acesso, dashboard, programacao(+alex,+final), producao, maodeobra(+rateio), comparacao, etiquetas, formas-por-setor, acompanhamento-mensal(+setor-34), apontamento-mega, pcp-diario, teste-programacao, usuarios</code>. Nomes como <code>programacao-alex</code>/<code>programacao-final</code>/<code>teste-programacao</code> sugerem iterações/experimentos paralelos ainda não limpos.</dd>
+    <dt>API</dt><dd><code>POST /api/login</code>, <code>GET /api/dashboard</code>, <code>GET /api/volume-total</code>, CRUD de <code>setores</code>, <code>formas</code>, <code>programacao</code>, <code>producao</code>, <code>maodeobra</code>, <code>usuarios</code> (admin). Swagger habilitado em <code>/api/docs</code> (<code>ENABLE_DOCS=true</code>).</dd>
+    <dt>Módulo integrado — Armaduras</dt><dd>Sub-aplicação independente <strong>PCP Armaduras (Ribeirão Preto)</strong> em <code>/opt/pcp-armaduras</code>, também FastAPI, rodando como serviço systemd separado (<code>pcp-armaduras.service</code>, porta 8022) e exposta via Nginx sob <code>/armaduras/</code> (proxy de API + uploads). Estrutura própria de <code>app/api, app/models, app/core</code> e frontend próprio em <code>frontend/src/</code>.</dd>
+    <dt>Infraestrutura</dt><dd>Nginx com TLS (Let's Encrypt), HSTS e headers de segurança (X-Frame-Options, X-Content-Type-Options, Permissions-Policy); dois processos Uvicorn systemd com <code>Restart=always</code>: <code>pcp-concrefer.service</code> (porta 500, 2 workers, rodando como <code>www-data</code>) e <code>pcp-armaduras.service</code> (porta 8022).</dd>
+  </dl>
+  <div class="note"><b>Achado —</b> existe uma <strong>terceira instância</strong> praticamente idêntica em <code>/var/www/PCPCONCREFER</code>, com seu próprio serviço systemd ativo (<code>pcpconcrefer-api.service</code>, porta 8020) — mas nenhum bloco do Nginx encontrado faz proxy para a porta 8020. É um deployment mais antigo (abril/2026, contra agosto/2026 do <code>/opt/pcp-concrefer</code>) que continua rodando em segundo plano sem estar exposto publicamente — candidato a desligar/remover na reconstrução.</div>
+  <div class="note"><b>Achado —</b> a raiz <code>/root/pwa-hub</code> desta mesma VPS contém um checkout completo deste próprio repositório <code>pwa-hub-fase1</code> — ou seja, a VPS 31.97.241.84 é também onde o hub PWA e o agente PCP×Produção (<code>pcp_producao_agent</code>) rodam em produção, ao lado do PCP Concrefer, ConcreTrack ERP e dashboard-usina. Todos os "sistemas externos" documentados por engenharia reversa na seção anterior vivem nesta mesma máquina.</div>
+</section>
+
+<!-- ======================= AUTOMAÇÃO ======================= -->
+<section class="grp-head"><div class="grp-title">Automação &amp; relatórios (agentes Python)</div></section>
+
+<section id="pcp-agent" class="app">
+  <div class="app-head">
+    <div><h3>Agente PCP × Produção</h3><div class="app-path">/pcp_producao_agent</div></div>
+    <div class="badges"><span class="pill prod">Produção · agendado</span></div>
+  </div>
+  <div class="tags"><span class="tag">Python</span><span class="tag">Supabase REST</span><span class="tag">Google Sheets (gspread)</span><span class="tag">Webhook WhatsApp</span></div>
+  <p>Job em lote diário que compara o plano oficial de produção (PCP, em Google Sheets) contra a produção real (tabela <code>producao</code> no Supabase), classifica cada item (Realizado/Parcial/Excedente/Não Produzido/Não Programado), gera um relatório HTML executivo e envia um resumo por WhatsApp.</p>
+  <table class="small">
+    <tr><th>Arquivo</th><th>Papel</th></tr>
+    <tr><td class="mono">agent_pcp_producao.py</td><td>CLI/orquestrador (<code>--data</code>, <code>--dry-run</code>, <code>--check-config</code>)</td></tr>
+    <tr><td class="mono">config.py</td><td>Carrega <code>.env</code>; expõe URLs/keys Supabase, Google, WhatsApp</td></tr>
+    <tr><td class="mono">concretrack_client.py</td><td>Cliente REST PostgREST (produção, <code>vw_formas_status</code>); catálogo de códigos de poste</td></tr>
+    <tr><td class="mono">google_sheets_client.py</td><td>Lê aba "5 - PCP DIÁRIO - PADRÃO" via <code>gspread</code> + service account</td></tr>
+    <tr><td class="mono">comparator.py</td><td>Motor de regras de comparação + análise de qualidade (vibrado/exsudado/segregado)</td></tr>
+    <tr><td class="mono">html_report.py</td><td>Gera relatório HTML responsivo (35KB, gráficos SVG feitos à mão)</td></tr>
+    <tr><td class="mono">whatsapp_sender.py</td><td>Envia resumo via webhook estilo Evolution API</td></tr>
+  </table>
+  <dl class="kv">
+    <dt>Agendamento</dt><dd>Documentado (README) via crontab (07:00, <code>--data ontem</code>) ou Agendador de Tarefas do Windows — não há artefato de agendamento real dentro do repo para <em>este</em> agente especificamente (diferente do agente de defeitos, que tem um <code>.bat</code>).</dd>
+    <dt>Saída</dt><dd><code>relatorios/pcp-producao/relatorio_pcp_producao_YYYY-MM-DD.html</code> (7 relatórios presentes, jul–ago 2026).</dd>
+  </dl>
+  <div class="note"><b>Achado —</b> existe uma cópia paralela quase idêntica deste agente em <code>relatorios/scripts/pcp_producao_agent/</code>, com seu próprio <code>.env</code>/logs — aparenta ser um snapshot arquivado, não uma segunda instância viva.</div>
+</section>
+
+<section id="defeitos-scripts" class="app">
+  <div class="app-head">
+    <div><h3>Agente de Defeitos de Concreto</h3><div class="app-path">/scripts (raiz)</div></div>
+    <div class="badges"><span class="pill prod">Produção · único com agendamento confirmado</span></div>
+  </div>
+  <div class="tags"><span class="tag">Python</span><span class="tag">Supabase</span><span class="tag">Task Scheduler (.bat)</span></div>
+  <p>Agente diário (D-1) que gera um relatório de "Defeitos de Concreto": classifica registros de <code>producao</code> por tipo/status, calcula percentuais e volumes estimados de defeito por setor.</p>
+  <dl class="kv">
+    <dt>Arquivos</dt><dd><code>daily_concrete_defects_agent.py</code> (orquestrador diário, reaproveita <code>generate_defeitos_concreto_report.py</code> para o resumo mensal), <code>seed-master.mjs</code> (bootstrap do primeiro usuário master), <code>AppsScript_unificado.gs</code> (automação dentro da própria planilha de PCP).</dd>
+    <dt>Agendamento real</dt><dd><code>run_daily_concrete_defects_agent.bat</code> — <strong>única evidência concreta de agendamento automatizado</strong> no repositório (chama o script com <code>--data ontem</code>, grava log).</dd>
+    <dt>Saída</dt><dd><code>relatorios/defeitos-concreto/diario/</code>.</dd>
+  </dl>
+</section>
+
+<section id="relatorios" class="app">
+  <div class="app-head">
+    <div><h3>relatorios/ — saída consolidada</h3><div class="app-path">/relatorios (pcp-producao/, defeitos-concreto/, scripts/)</div></div>
+    <div class="badges"><span class="pill legacy">Mistura de ativo + arquivado</span></div>
+  </div>
+  <p>Diretório de saída dos dois agentes acima, mais <code>relatorios/scripts/</code>, uma mini-área à parte com <code>relatorio_defeitos_concreto_mtd_v4.py</code> e dois subdiretórios que parecem <strong>snapshots congelados</strong>: uma cópia antiga do agente PCP e um script standalone de 138KB (<code>analise_comparativa_defeitos_LT-PRO_2026.py</code>) comparando "App vs. Planilha" para Setores 1–2.</p>
+</section>
+
+<!-- ======================= EXTERNOS ======================= -->
+<section class="grp-head"><div class="grp-title">Sistemas externos (fora do repositório, documentados por engenharia reversa)</div></section>
+
+<section id="externos" class="app">
+  <div class="app-head">
+    <div><h3>ConcreTrack ERP &amp; Dashboard Usina (MES)</h3><div class="app-path">VPS externo · não versionado neste repo</div></div>
+    <div class="badges"><span class="pill legacy">Fora do repositório</span></div>
+  </div>
+  <div class="tags"><span class="tag">FastAPI</span><span class="tag">Flask/Gunicorn</span><span class="tag">PostgreSQL própria</span></div>
+  <p>Dois serviços web vivos em produção, cada um com seu próprio Postgres (tabela <code>tbl_massadas</code> compartilhada conceitualmente, mas bancos distintos do Supabase). Documentados neste repo apenas como especificação para reimplementação:</p>
+  <dl class="kv">
+    <dt>ConcreTrack ERP</dt><dd>FastAPI (<code>/opt</code> ou <code>/var/www/concretrack-erp</code>), roteador <code>relatorios.py</code>, serve <code>/concretrack/relatorios/fechamento</code> e <code>/concretrack/relatorios/consumo</code> — fechamento mensal, comparação MoM/YoY, classificação de concreto por prefixo de fórmula. Documentado em <code>RELATORIO_FECHAMENTO_CONCRETRACK_IMPLEMENTACAO.md</code>.</dd>
+    <dt>dashboard-usina (MES)</dt><dd>Flask/Gunicorn (<code>/var/www/dashboard-usina</code>, serviço systemd), endpoint <code>GET /api/usina/dashboard</code>, lê <code>tbl_massadas</code> + <code>tbl_pcpsetor</code>, calcula taxa (m³/h), gap vs. meta das 17h, status ATRASADO/ADIANTADO/NO PRAZO. Documentado em <code>docs/levantamento-mes-dashboard-usina.md</code>.</dd>
+    <dt>Infra de referência</dt><dd><code>PROMPT_CODEX_GITHUB_VPS_POSTGRESQL.md</code> documenta o padrão de provisionamento usado nesses serviços: VPS + Postgres isolado por app + usuário Linux não-root + systemd + Nginx reverse proxy — runbook para um projeto adicional, <code>resultado-ensaios-usina</code>.</dd>
+  </dl>
+</section>
+
+<!-- ======================= UNIDADES REGIONAIS ======================= -->
+<section class="grp-head">
+  <div class="grp-title">Unidades regionais — VPS 2.25.163.32</div>
+  <p class="grp-desc">Uma <strong>segunda VPS</strong> (2.25.163.32), totalmente separada da VPS do PCP Concrefer/GED (31.97.241.84), hospeda três instâncias praticamente idênticas do mesmo par de aplicações — uma para cada unidade fabril: <strong>Noroeste</strong> (<code>noro.concretrack.com.br</code>), <strong>Pederneiras</strong> (<code>pederneiras.concrefer.com.br</code>) e <strong>Ribeirão Preto</strong> (<code>ribeirao.concretrack.com.br</code>). Mapeado 100% via SSH direto na VPS.</p>
+</section>
+
+<section id="unidades-overview" class="app">
+  <div class="app-head">
+    <div><h3>O padrão triplicado: ConcreTrack ERP + Dashboard MES por unidade</h3><div class="app-path">/var/www/{supervisorio_noro, supervisorio_ribe, concretrack-pederneiras} + /var/www/dashboard-{noroeste,pederneiras,ribeirao}</div></div>
+    <div class="badges"><span class="pill scaffold">Código triplicado — maior alvo de consolidação</span></div>
+  </div>
+  <p>Cada unidade roda <strong>dois serviços Python independentes</strong>, sempre com o mesmo par de tecnologias, mesmo entrypoint (<code>uvicorn api.main:app</code> / <code>gunicorn app.app:app</code>) e — na prática — o mesmo código-fonte copiado e adaptado unidade a unidade (confirmado por <code>diff</code> entre as pastas de Noroeste e Ribeirão: divergências pontuais em <code>main.py</code>, <code>auth.py</code>, <code>relatorios.py</code>, <code>tracos.py</code>, o resto é idêntico):</p>
+  <table class="small">
+    <tr><th>Camada</th><th>Nome interno (README)</th><th>Stack</th><th>Escopo</th></tr>
+    <tr><td><strong>ConcreTrack ERP</strong> (API + frontend "supervisório")</td><td class="mono">concretrack-api</td><td>Python + FastAPI + Uvicorn, PostgreSQL própria por unidade (<code>supervisorio_db</code>), frontend HTML/JS servido como estático</td><td>ERP modular completo: cadastros, cartas-traço, agregados, cimento, estoque, custos, PCP, produtos, relatórios, autenticação própria, e <strong>CEC — Controle Estatístico de Concreto</strong> (leitura de QR de corpo de prova, mesmo domínio do <a href="#controle-est">Controle_est_concre</a> da outra VPS, aqui reimplementado do zero) + <strong>leitura de nota fiscal por IA</strong> (OpenAI/Gemini/Groq/HuggingFace/Ollama configurável)</td></tr>
+    <tr><td><strong>Dashboard de Produção (MES)</strong></td><td class="mono">Dashboard Concrefer v2</td><td>Python + Flask + Gunicorn, SQLAlchemy, mesma <code>supervisorio_db</code> Postgres, ingestão automatizada de Excel</td><td>Monitoramento em tempo real (auto-refresh 2 min): ciclos de produção (OK/Aviso/Crítico), tempo de batida, paradas técnicas, qualidade (exsudação), produtividade m³/h, comparativo manhã/tarde. Convive com um <strong>dashboard legado</strong> (<code>legacy_dashboard.py</code>, ~2.800 linhas) que lê Excel diretamente, mantido em paralelo à versão moderna orientada a banco.</td></tr>
+  </table>
+  <p>Os dois serviços de cada unidade compartilham o mesmo banco Postgres local (tabelas como <code>tbl_massadas</code> e <code>tbl_leiturasetor</code> confirmadas via histórico de comandos deixado no servidor) — exatamente o mesmo modelo de dados documentado para o "dashboard-usina" da VPS principal (<code>docs/levantamento-mes-dashboard-usina.md</code>), porém aqui replicado três vezes com bancos totalmente isolados entre unidades.</p>
+  <table class="small">
+    <tr><th>Unidade</th><th>Domínio</th><th>Pasta ERP</th><th>Porta API</th><th>Pasta Dashboard</th><th>Porta Dashboard</th></tr>
+    <tr><td>Noroeste</td><td class="mono">noro.concretrack.com.br</td><td class="mono">supervisorio_noro</td><td class="mono">8010</td><td class="mono">dashboard-noroeste</td><td class="mono">8002</td></tr>
+    <tr><td>Pederneiras</td><td class="mono">pederneiras.concrefer.com.br</td><td class="mono">concretrack-pederneiras</td><td class="mono">8011</td><td class="mono">dashboard-pederneiras</td><td class="mono">8001</td></tr>
+    <tr><td>Ribeirão Preto</td><td class="mono">ribeirao.concretrack.com.br</td><td class="mono">supervisorio_ribe</td><td class="mono">8012</td><td class="mono">dashboard-ribeirao</td><td class="mono">8003</td></tr>
+  </table>
+  <div class="note"><b>Achado —</b> as pastas de cada ERP contêm dezenas de subpastas <code>backups/codex-AAAAMMDD-HHMMSS-*</code> (ex.: <code>codex-20260803-075112</code>, <code>codex-20260821-132651-estoque-frete</code>, <code>codex-auth-filter-20260827-153536</code>) — evidência de que cada unidade vem sendo evoluída de forma independente por agentes de IA (Codex) diretamente em produção, unidade por unidade, o que explica e acelera a divergência de código entre elas.</div>
+  <div class="note"><b>Achado —</b> há também arquivos corrompidos/residuais dentro de <code>supervisorio_noro/</code> (nomes de arquivo literalmente iguais a trechos soltos de CSS e comandos <code>psql</code>, ex.: <code>:18px 18px 0 0 !important</code>, <code>ol id rgba(...)</code>) — resíduo de algum comando com redirecionamento mal-formado executado direto no servidor. Não afeta a aplicação em si, mas é sujeira a limpar antes de qualquer migração.</div>
+</section>
+
+<section id="unidade-noroeste" class="app">
+  <div class="app-head">
+    <div><h3>Unidade Noroeste</h3><div class="app-path">noro.concretrack.com.br</div></div>
+    <div class="badges"><span class="pill prod">Produção</span></div>
+  </div>
+  <dl class="kv">
+    <dt>ERP</dt><dd><code>/var/www/supervisorio_noro</code> — serviço <code>supervisorio_noro.service</code> (porta 8010). Rotas: <code>agregados, auth, custos, estoque, health, massadas, pcp, produtos, qrcp, relatorios, tracos</code>. IA de nota fiscal configurada via <code>GEMINI_API_KEY</code>. Inclui pasta solta <code>erp-concre/</code> (mini front à parte) e config de Nginx própria versionada no repo (<code>nginx/concretrack-erp.conf</code>).</dd>
+    <dt>Dashboard</dt><dd><code>/var/www/dashboard-noroeste</code> — serviço <code>dashboard-noroeste.service</code> (porta 8002, Gunicorn 2 workers). Mesma dualidade legado/moderno das demais unidades.</dd>
+    <dt>Frontend</dt><dd><code>public/</code> com <code>cadastros, cec, estoque, relatorios, trocar-senha, usuarios</code>, mais páginas de diagnóstico (<code>mapa-aplicacao.html</code>, <code>relatorio-sistema.html</code>, <code>test-auth.html</code>) deixadas em produção.</dd>
+  </dl>
+</section>
+
+<section id="unidade-pederneiras" class="app">
+  <div class="app-head">
+    <div><h3>Unidade Pederneiras</h3><div class="app-path">pederneiras.concrefer.com.br / pederneiras.concretrack.com.br</div></div>
+    <div class="badges"><span class="pill prod">Produção</span></div>
+  </div>
+  <dl class="kv">
+    <dt>ERP</dt><dd><code>/var/www/concretrack-pederneiras</code> — serviço <code>concretrack-pederneiras.service</code> (porta 8011). Mesma estrutura de pastas do Noroeste (<code>api/</code>, <code>apps/dashboard</code>, <code>frontend/</code>, <code>public/</code>, <code>static/</code>, <code>erp-concre/</code>). É esta pasta que serve como <strong>raiz do domínio</strong> (nginx <code>root /var/www/concretrack-pederneiras/public</code>), diferente de Noroeste/Ribeirão onde a raiz é a pasta "supervisorio".</dd>
+    <dt>Dashboard</dt><dd><code>/var/www/dashboard-pederneiras</code> — serviço <code>dashboard-pederneiras.service</code> (porta 8001). Única unidade com <code>.git/</code> local (repositório git próprio, não presente nas outras duas) — indício de que esta foi a unidade "modelo" a partir da qual as outras foram copiadas.</dd>
+    <dt>Roteamento</dt><dd>Nginx roteia <code>/</code> → ERP (raiz), <code>/dashboard</code> e <code>/usina</code> e <code>/api/usina/</code> → Dashboard MES (8001), <code>/api/</code> → ERP (8011), <code>/static/</code> → assets do Dashboard. Rota <code>/concretrack</code> faz redirect permanente para <code>/</code> (limpeza de uma URL legada com prefixo).</dd>
+  </dl>
+</section>
+
+<section id="unidade-ribeirao" class="app">
+  <div class="app-head">
+    <div><h3>Unidade Ribeirão Preto</h3><div class="app-path">ribeirao.concretrack.com.br</div></div>
+    <div class="badges"><span class="pill prod">Produção</span></div>
+  </div>
+  <dl class="kv">
+    <dt>ERP</dt><dd><code>/var/www/supervisorio_ribe</code> — serviço <code>supervisorio-ribeirao.service</code> (porta 8012). Mesma base de Noroeste, com <code>auth.py</code>, <code>relatorios.py</code> e <code>tracos.py</code> divergentes (evoluídos separadamente).</dd>
+    <dt>Dashboard</dt><dd><code>/var/www/dashboard-ribeirao</code> — serviço <code>dashboard-ribeirao.service</code> (porta 8003).</dd>
+    <dt>Roteamento</dt><dd>Única unidade com prefixo <code>/concretrack/</code> explícito e duplicado como raiz também (nginx serve o mesmo conteúdo em <code>/</code> e em <code>/concretrack/</code>, ambos apontando para <code>supervisorio_ribe/public</code>) — outra pequena divergência de configuração acumulada entre as três unidades.</dd>
+  </dl>
+</section>
+
+<section id="unificado" class="app" style="border-color:var(--accent); border-width:2px;">
+  <div class="app-head">
+    <div><h3>★ ConcreTrack Unificado — a consolidação já começou</h3><div class="app-path">/var/www/concretrack-unificado · concrefer.concretrack.com.br · v0.3.0</div></div>
+    <div class="badges"><span class="pill proto">Em produção, escopo parcial — base ideal para continuar</span></div>
+  </div>
+  <div class="tags"><span class="tag">FastAPI (mesma stack)</span><span class="tag">config-driven multi-unidade</span><span class="tag">3 bancos via env var</span><span class="tag">já no ar</span></div>
+  <p><strong>Achado mais importante desta VPS:</strong> já existe uma quarta aplicação, <code>concretrack-unificado</code>, criada especificamente para consolidar as três unidades em <strong>um único serviço multi-tenant</strong> — respondendo diretamente ao objetivo de "deixar tudo rodando em uma aplicação só". Está rodando em produção desde 24/07/2026 (<code>concretrack-unificado.service</code>, porta 8015) e já é servida no domínio "canônico" <code>concrefer.concretrack.com.br</code> — mas com escopo bem mais restrito que os três ERPs completos, ou seja, é um começo, não uma migração terminada.</p>
+  <dl class="kv">
+    <dt>Arquitetura multi-tenant</dt><dd><code>config/units.yaml</code> declara as 3 unidades como configuração de dados, não código: cada uma tem <code>display_name</code>, <code>legacy_hosts</code> (domínios antigos), <code>database_url_env</code> (nome da variável de ambiente com a connection string daquela unidade), <code>dashboard_internal_url</code>/<code>api_internal_url</code> (para onde ainda proxya o que não foi migrado) e uma lista de <code>modules</code> habilitados por unidade.</dd>
+    <dt>3 bancos, 1 código</dt><dd><code>.env</code> define <code>PEDERNEIRAS_DATABASE_URL</code>, <code>RIBEIRAO_DATABASE_URL</code>, <code>NOROESTE_DATABASE_URL</code> + um <code>AUTH_DATABASE_URL</code> separado (schema próprio, <code>sql/auth_schema.sql</code>, <code>api/core/auth_db.py</code>) — ou seja, a unificação já resolveu a camada de <strong>autenticação cross-unidade</strong> antes mesmo de migrar os módulos de negócio: existe um conceito explícito de <code>full_access_users</code> e <code>confirmed_multi_unit_users</code> (usuários com acesso a mais de uma unidade) no <code>units.yaml</code>.</dd>
+    <dt>Routers migrados até agora</dt><dd><code>api/main.py</code> (FastAPI, título "ConcreTrack Unificado", v0.3.0) registra apenas: <code>health, auth, config, units, qrcp, tracos, diagnostics</code>. Ou seja, dos ~10 módulos de negócio do ERP completo (cadastros, agregados, custos, estoque, massadas, pcp, produtos, relatorios, CEC/leitura de CP), <strong>só QR-CP e cartas-traço foram migrados</strong> — o restante ainda depende dos serviços antigos por unidade.</dd>
+    <dt>Frontend</dt><dd><code>public/</code> enxuto: <code>index.html</code>, <code>app.js</code>, módulo <code>cartas-traco/</code> — nada comparável ainda ao frontend completo (cadastros/estoque/CEC/relatórios) dos três ERPs individuais.</dd>
+    <dt>Fonte de verdade declarada</dt><dd><code>units.yaml</code> define <code>cec_reference_unit: pederneiras</code> — ou seja, a própria equipe já decidiu que a implementação de CEC (Controle Estatístico de Concreto) da unidade Pederneiras deve ser a referência ao migrar esse módulo para o Unificado.</dd>
+  </dl>
+  <div class="callout">
+    <h4>Por que isso muda o plano de reconstrução</h4>
+    <p style="margin:0">Você não está começando do zero: <code>concretrack-unificado</code> já define o padrão arquitetural certo (FastAPI único + PostgreSQL por unidade selecionado em runtime + config declarativa em YAML + auth cross-unidade) e já está publicado no domínio canônico. O trabalho que falta é essencialmente <strong>continuar essa migração</strong> — portar módulo por módulo (cadastros, estoque, custos, PCP, produtos, relatórios e o restante do CEC) dos três ERPs antigos para dentro do Unificado, usando exatamente o mesmo padrão de <code>units.yaml</code> já validado, em vez de desenhar uma arquitetura nova. Isso também deveria virar o destino natural do <a href="#pcp-live">PCP Concrefer</a> e do <a href="#ged">GED Concrefer</a> da outra VPS, se a intenção for realmente "tudo em uma aplicação só".</p>
+  </div>
+</section>
+
+<!-- ======================= PLANEJAMENTO ======================= -->
+<section class="grp-head"><div class="grp-title">Documentação &amp; planejamento</div></section>
+
+<section id="dashboards-v1" class="app">
+  <div class="app-head">
+    <div><h3>Projeto "Dashboards v1"</h3><div class="app-path">/docs (17 documentos) + mockups/</div></div>
+    <div class="badges"><span class="pill proto">Release candidate — não implantado</span></div>
+  </div>
+  <div class="tags"><span class="tag">Postgres views/RPCs</span><span class="tag">ISO/SGQ (IQ/OQ/PQ)</span><span class="tag">Golden dataset</span></div>
+  <p>Iniciativa de refatoração de backend para os dashboards de <strong>Produtividade, Montagem e Defeitos</strong> dentro do Mapa de Concretagem (-teste): move o cálculo de KPIs, hoje feito ad-hoc no JS do front, para views/RPCs Postgres versionadas e testadas — necessário para validação ISO/SGQ. Estruturado em 15 fases, com auditoria de baseline, migrações aplicadas apenas no projeto Supabase de teste, RPCs novas (<code>rpc_dashboard_produtividade_resumo_v1</code>, <code>...montagem...</code>, <code>...defeitos...</code>, <code>...retrabalho...</code>, etc.), dataset-ouro para testes de contrato e um mockup visual (<code>dashboard-defeitos-v4.html</code>) ainda não reconciliado com a matriz de setores aprovada.</p>
+  <dl class="kv">
+    <dt>Status</dt><dd><strong>Release candidate, não em produção.</strong> 12 pendências de homologação abertas (PH-001…PH-012): sem responsáveis/códigos SGQ definidos, sem validação visual em navegador real, sem medição de performance p50/p95, papéis de aprovação de custo indefinidos.</dd>
+    <dt>Indicadores</dt><dd>Setores <code>S1–S4</code>, agregados <code>TOTAL</code> e <code>S1_S2</code> (soma antes de calcular %, nunca média de percentuais), categoria <code>UNCLASSIFIED</code> para dados de qualidade duvidosa. Indicadores-chave: Taxa NC, índice de reprovação, atingimento de montagem, Pareto de defeitos.</dd>
+  </dl>
+</section>
+
+<section id="lab" class="app">
+  <div class="app-head">
+    <div><h3>Concretrack Lab (planejado)</h3><div class="app-path">docs/plano_implantacao_concretrack_lab.md</div></div>
+    <div class="badges"><span class="pill scaffold">Apenas planejado — nada construído</span></div>
+  </div>
+  <p>Plano de implantação para um <strong>LIMS</strong> (Laboratory Information Management System) especializado em concreto/química de laboratório — produto separado do que existe hoje, com integração planejada ao Concretrack em uma fase futura.</p>
+  <dl class="kv">
+    <dt>Fase 1 (MVP)</dt><dd>Perfis (Técnico, Supervisor/Engenheiro, Cliente), dashboard operacional, entrada de amostra com código único, catálogo normativo de ensaios, controle de rompimento por idade do corpo de prova (7/14/28 dias) com cálculo automático de MPa, laudos em PDF.</dd>
+    <dt>Fase 2</dt><dd>Módulo de dosagem/curva A-C (ABCP/ACI), biblioteca de normas, rastreabilidade de lote de cimento, alertas de calibração de equipamento, dashboard avançado (fck, desvio padrão, taxa de rejeição).</dd>
+    <dt>Fase 3</dt><dd>QR Code para moldes de corpo de prova, integração com o sistema de automação da usina (Concretrack), portal do cliente com envio automático de PDF por e-mail.</dd>
+    <dt>Stack sugerida</dt><dd>React/Vue/Next.js + Supabase (Postgres+Auth) ou backend Node. Modelo inicial: Usuarios, Obras, OrdemServico, Amostras, Ensaios, Rompimentos.</dd>
+  </dl>
+</section>
+
+<!-- ======================= RECOMENDAÇÕES ======================= -->
+<section id="recomendacoes">
+  <div class="grp-title">Recomendações para a reconstrução</div>
+  <p class="grp-desc">Síntese das observações transversais levantadas em todo o inventário, para orientar as decisões de arquitetura da nova aplicação.</p>
+  <ol class="reco">
+    <li><strong>Adote o ConcreTrack Unificado como o alicerce da consolidação, não uma reescrita do zero.</strong> Ele já resolve os três problemas mais difíceis de um multi-tenant: seleção de banco por unidade via <code>units.yaml</code>/env var, autenticação cross-unidade com usuários de acesso múltiplo, e um domínio canônico já publicado (<code>concrefer.concretrack.com.br</code>). O trabalho restante é portar, unidade por unidade, os módulos que faltam (cadastros, agregados, custos, estoque, massadas, PCP, produtos, relatórios e o restante do CEC) dos três ERPs antigos — usando <code>cec_reference_unit: pederneiras</code> como já decidido pela própria equipe.</li>
+    <li><strong>Depois disso, avalie trazer PCP Concrefer e GED Concrefer para dentro do mesmo Unificado.</strong> Ambos já são FastAPI + PostgreSQL (<a href="#pcp-live">PCP Concrefer</a>) ou Node/Express (<a href="#ged">GED Concrefer</a>) — tecnicamente compatíveis com o padrão de módulo do Unificado. Isso reduziria as duas VPS de produção e ~8 serviços systemd/Docker distintos a uma única aplicação com um único banco por unidade/módulo.</li>
+    <li><strong>Elimine a triplicação de código nas 3 unidades antes/durante a migração.</strong> O <code>diff</code> entre Noroeste e Ribeirão mostrou que módulos como <code>auth.py</code>, <code>relatorios.py</code> e <code>tracos.py</code> já divergiram por causa de correções feitas isoladamente por agentes de IA em cada unidade (pastas <code>backups/codex-*</code> datadas). Cada dia sem consolidar aumenta o custo de reconciliar essas divergências — priorize migrar os módulos mais divergentes primeiro.</li>
+    <li><strong>Consolidar as três ilhas de backend do lado do hub PWA.</strong> Supabase, ConcreTrack ERP (FastAPI) e dashboard-usina (Flask) hoje mantêm bancos <code>tbl_massadas</code>/<code>producao</code> paralelos e desincronizados. Os documentos de "levantamento"/"fechamento" no repo existem justamente para extrair a lógica desses dois últimos e sugerem que a consolidação em cima do Supabase é o caminho já sinalizado pela equipe.</li>
+    <li><strong>Padronizar autenticação.</strong> O guard <code>/auth/</code> está pronto e é bem arquitetado (Supabase Auth + RLS + Edge Functions), mas está desligado (<code>authEnabled: false</code>) e nem todo app o carrega (Slump, Cartas Traço, Setor Count). PedeRH tem autenticação própria e frágil (token = ID do usuário). Adotar um único mecanismo de sessão/RBAC para todas as apps da nova plataforma.</li>
+    <li><strong>Substituir os backends em Google Apps Script.</strong> Cinco apps (Cartas Traço, Checklist, Dosagem, QR Concreto, Slump) dependem de planilhas Google Sheets individuais sem schema compartilhado — frágil, sem transações, sem tipo de dado forte. Migrar para tabelas Postgres com o mesmo modelo usado pelo Supabase central.</li>
+    <li><strong>Modularizar o Mapa de Concretagem.</strong> É a aplicação mais crítica e ativa, mas concentra 12k+ linhas em um único <code>app.js</code>. Usar Concrejet (NestJS + React/Vite, módulos bem definidos, testes e2e) como referência de padrão arquitetural para o rebuild.</li>
+    <li><strong>Elevar PedeRH e Controle_est_concre ao mesmo padrão.</strong> Ambos têm modelagem de dados razoável mas SQL puro sem migração versionada e (no caso do Controle_est_concre) nenhuma autenticação de API. Adotar TypeORM/Prisma com migrações versionadas e autenticação de serviço a serviço.</li>
+    <li><strong>Decidir o destino do DocFlow e do Concretrack Lab.</strong> Ambos são visão/planejamento sem implementação real — mas o <a href="#ged">GED Concrefer</a>, achado fora deste repositório, já cobre exatamente o mesmo domínio (gestão eletrônica de documentos) e está em produção. Provavelmente faz mais sentido adotar/evoluir o GED Concrefer como o módulo de GED oficial e descartar o scaffold do DocFlow, em vez de reconstruir do zero.</li>
+    <li><strong>Trazer o GED Concrefer para dentro do repositório versionado.</strong> Hoje ele só existe na VPS (<code>/opt/ged_concrefer</code>), fora de qualquer controle de versão acessível a este repositório — mesmo padrão de risco do ConcreTrack ERP e do dashboard-usina. Também usa uma nomeação ambígua herdada de uma implementação anterior (documentação antiga confundia "GED" com o módulo de RH do PedeRH) — vale renomear/clarificar antes da migração.</li>
+    <li><strong>Limpar deployments órfãos na VPS.</strong> A VPS 31.97.241.84 roda hoje um quarto serviço systemd, <code>pcpconcrefer-api.service</code> (<code>/var/www/PCPCONCREFER</code>, porta 8020), que não está mais referenciado por nenhum bloco do Nginx — deployment de abril/2026 superado pelo de <code>/opt/pcp-concrefer</code> (agosto/2026), mas nunca desligado. Auditar a VPS por outros serviços "fantasma" antes de migrar.</li>
+    <li><strong>Formalizar o agendamento de automações.</strong> Só o agente de defeitos tem artefato de agendamento real (<code>.bat</code>) no repositório; o Agente PCP depende de configuração manual fora do repo. Migrar ambos para um scheduler centralizado (cron/systemd timer) versionado junto ao código.</li>
+    <li><strong>Aproveitar o trabalho já formalizado em "Dashboards v1".</strong> É o único módulo do hub com processo de qualidade completo (IQ/OQ/PQ, dataset-ouro, dicionário de indicadores) — usar sua metodologia de contrato de dados como modelo para os demais domínios (produção, estoque, RH) na reconstrução.</li>
+  </ol>
+</section>
+
+<footer>
+  Mapeamento gerado por leitura integral do repositório <code>pwa-hub-fase1</code> (branch <code>fix/dashboard-scroll-tablet-500</code>) em 28 de agosto de 2026. Cobre 100% das pastas de aplicação identificadas na raiz e subpastas de primeiro nível. Documento de referência técnica — não modifica nenhum arquivo do repositório.
+</footer>
+
+</main>
+</div>
+
+</html>

@@ -1,0 +1,285 @@
+<title>Painel de Formas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: TV 16:9 em carrossel — tela 1 = visão geral (4 setores 2×2, 24 formas por linha); telas 2–5 = um setor por vez, com as formas agrupadas por tipo de poste (programado × realizado). Totais do dia fixos no topo, legenda no rodapé. Visual escuro fixo (chão de fábrica). */
+:root{
+  --bg:#0E1216;
+  --panel:#161C22;
+  --line:#2A333C;
+  --fg:#EEF1F3;
+  --muted:#93A0AC;
+  --prog:#F2B43C;      /* programada: contorno amarelo */
+  --real:#2FBF71;      /* concretada: verde preenchida */
+  --lib:#3D8BFF;       /* liberada: azul preenchida + ✓ */
+  --vol:#9FD8FF;
+  --free:#222A31;      /* sem programação */
+  --falta:#FF7A59;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Barlow","Segoe UI",Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-variant-numeric:tabular-nums;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px;box-sizing:border-box}
+.app{display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;min-height:100%;max-width:1900px;margin:0 auto}
+
+/* topo */
+.top{display:flex;flex-wrap:wrap;align-items:stretch;gap:14px}
+.brand{display:flex;flex-direction:column;justify-content:center;gap:2px;padding-right:10px;min-width:0}
+.brand h1{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(28px,2.6vw,52px);letter-spacing:.02em;line-height:1;text-transform:uppercase}
+.brand p{margin:0;color:var(--muted);font-size:clamp(14px,1vw,20px)}
+.clock{font-family:var(--display);font-weight:600;font-size:clamp(22px,1.8vw,36px);color:var(--fg)}
+.kpis{flex:1 1 760px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 16px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.kpi span{color:var(--muted);font-size:clamp(12px,.85vw,17px);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.kpi b{font-family:var(--display);font-weight:700;font-size:clamp(30px,3vw,62px);line-height:1}
+.kpi small{display:block;color:var(--muted);font-size:clamp(12px,.85vw,17px);margin-top:4px}
+.kpi.real b{color:var(--real)} .kpi.lib b{color:var(--lib)} .kpi.falta b{color:var(--falta)} .kpi.prog b{color:var(--prog)}
+
+/* navegação do carrossel */
+.nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{font:600 clamp(14px,1vw,20px)/1 var(--body);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;min-height:40px}
+.tab[aria-current="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tab:focus-visible,.pause:focus-visible{outline:3px solid var(--vol);outline-offset:2px}
+.timer{flex:1 1 200px;height:4px;background:var(--free);border-radius:2px;overflow:hidden;min-width:120px}
+.timer i{display:block;height:100%;width:0;background:var(--muted)}
+.pause{font:600 clamp(13px,.9vw,18px)/1 var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer;min-height:40px}
+
+/* visão geral */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;min-height:0;align-content:start}
+.setor{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;display:grid;grid-template-rows:auto auto auto 1fr;gap:12px;min-width:0}
+.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sh h2{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(26px,2.2vw,44px);line-height:1;text-transform:uppercase;letter-spacing:.02em}
+.sh small{display:block;color:var(--muted);font-family:var(--body);font-size:clamp(13px,.95vw,19px);font-weight:500;text-transform:none;letter-spacing:0;margin-top:4px}
+.pct{text-align:right}
+.pct b{font-family:var(--display);font-weight:700;font-size:clamp(40px,3.8vw,78px);line-height:.9;color:var(--real)}
+.pct span{display:block;color:var(--muted);font-size:clamp(12px,.85vw,17px);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.pct.alerta b{color:var(--falta)}
+.barwrap{display:grid;gap:6px}
+.bar,.tbar{border-radius:7px;background:var(--free);overflow:hidden;display:flex;width:100%}
+.bar{height:14px}.tbar{height:10px}
+.bar i,.tbar i{display:block;height:100%}
+.b-lib{background:var(--lib)} .b-real{background:var(--real)} .b-falta{background:repeating-linear-gradient(45deg,var(--falta) 0 6px,transparent 6px 12px);opacity:.75}
+.nums{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:clamp(14px,1vw,20px);color:var(--muted)}
+.nums b{color:var(--fg);font-weight:600}
+.nums .nf b{color:var(--falta)}
+.vol{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;font-size:clamp(14px,1vw,20px);color:var(--muted)}
+.vol .vbar{height:10px;border-radius:5px;background:var(--free);overflow:hidden}
+.vol .vbar i{display:block;height:100%;background:var(--vol)}
+.vol b{color:var(--fg);font-weight:600}
+
+/* quadradinhos */
+.formas{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:clamp(3px,.28vw,6px);align-content:start;container-type:inline-size}
+.f{aspect-ratio:1;max-width:100%;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:600;font-size:clamp(9px,calc(100cqw / var(--cols) * .34),22px);position:relative;box-sizing:border-box}
+.f.livre{background:var(--free);color:#55606B}
+.f.prog{border:2.5px solid var(--prog);color:var(--prog);background:transparent}
+.f.real{background:var(--real);color:#062014}
+.f.lib{background:var(--lib);color:#FFFFFF}
+.f.lib::after{content:"";position:absolute;top:9%;right:9%;width:18%;height:9%;border-left:2px solid #FFFFFF;border-bottom:2px solid #FFFFFF;transform:rotate(-45deg)}
+
+/* tela de um setor: formas por tipo */
+.det{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 26px;display:grid;gap:12px;align-content:start;min-width:0}
+.det .sh h2{font-size:clamp(34px,3.2vw,64px)}
+.det .pct b{font-size:clamp(52px,5vw,100px)}
+.tipos{display:grid}
+.tipo{display:grid;grid-template-columns:minmax(150px,15%) minmax(0,1fr) minmax(230px,21%);gap:24px;align-items:center;padding:10px 0;border-top:1px solid var(--line);min-width:0}
+.tipo h3{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(24px,2vw,42px);line-height:1}
+.tipo h3 small{display:block;font-family:var(--body);font-weight:500;font-size:clamp(13px,.9vw,18px);color:var(--muted);margin-top:6px}
+.tipo .formas{--cols:24}
+.tres{display:grid;gap:8px;justify-items:end;text-align:right}
+.tres .big{font-family:var(--display);font-weight:700;font-size:clamp(30px,2.6vw,54px);line-height:1}
+.tres .big em{font-style:normal;color:var(--muted);font-weight:600;font-size:.6em}
+.tres .mini{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;color:var(--muted);font-size:clamp(13px,.9vw,18px)}
+.tres .mini b{color:var(--fg);font-weight:600}
+.tres .mini .nf b{color:var(--falta)}
+.livres{color:var(--muted);font-size:clamp(14px,1vw,20px)}
+
+/* rodapé */
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;color:var(--muted);font-size:clamp(14px,1vw,20px)}
+.leg{display:flex;flex-wrap:wrap;gap:8px 26px;align-items:center}
+.leg span{display:inline-flex;align-items:center;gap:10px}
+.leg .f{width:clamp(20px,1.6vw,30px);aspect-ratio:1;font-size:0}
+.note{color:#6F7C88}
+
+@media (prefers-reduced-motion:no-preference){
+  .entra{animation:fade .45s ease-out}
+  @keyframes fade{from{opacity:.3}to{opacity:1}}
+  .f.prog{animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 3px rgba(242,180,60,.2)}}
+}
+@media (max-width:1100px){.grid{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tipo{grid-template-columns:minmax(0,1fr)}.tres{justify-items:start;text-align:left}.tres .mini{justify-content:flex-start}}
+@media (max-width:700px){.formas,.tipo .formas{--cols:12 !important}}
+@media (max-width:560px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.setor,.det{padding:14px}.vol{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <h1>Programação × Realizado</h1>
+      <p>Concrefer · Pederneiras · <span id="data"></span> · <span class="clock" id="hora">--:--</span></p>
+    </div>
+    <div class="kpis" id="kpis"></div>
+  </header>
+
+  <nav class="nav" aria-label="Telas do painel">
+    <div class="tabs" id="tabs"></div>
+    <div class="timer" aria-hidden="true"><i id="timer"></i></div>
+    <button class="pause" id="pause" type="button">Pausar</button>
+  </nav>
+
+  <main id="view"></main>
+
+  <footer class="foot">
+    <div class="leg">
+      <span><i class="f prog"></i>Programada (aguardando concretagem)</span>
+      <span><i class="f real"></i>Concretada (realizada)</span>
+      <span><i class="f lib"></i>Liberada</span>
+      <span><i class="f livre"></i>Sem programação</span>
+    </div>
+    <div class="note">Dados de exemplo · atualiza a cada 60 s · <span id="atualizado"></span></div>
+  </footer>
+</div>
+
+<script>
+/* Dados de exemplo. Na versão real: programação por tipo (PCP), concretagem e liberação (apontamentos). m3 = volume de concreto por peça. */
+const SETORES=[
+  {nome:"Setor 1",desc:"[descrição do setor]",formas:93,tipos:[
+    {tipo:"DT 9/300",m3:.45,prog:24,real:20,lib:12},
+    {tipo:"DT 10/300",m3:.55,prog:20,real:15,lib:8},
+    {tipo:"DT 11/300",m3:.65,prog:22,real:14,lib:7},
+    {tipo:"DT 12/600",m3:.95,prog:14,real:10,lib:4}]},
+  {nome:"Setor 2",desc:"[descrição do setor]",formas:87,tipos:[
+    {tipo:"C 9/300",m3:.50,prog:24,real:22,lib:12},
+    {tipo:"C 11/400",m3:.70,prog:28,real:24,lib:12},
+    {tipo:"C 12/600",m3:.90,prog:20,real:15,lib:6}]},
+  {nome:"Setor 3",desc:"[descrição do setor]",formas:52,tipos:[
+    {tipo:"DT 11/1000",m3:.85,prog:18,real:8,lib:3},
+    {tipo:"DT 12/1000",m3:1.00,prog:16,real:9,lib:4},
+    {tipo:"DT 13/1000",m3:1.15,prog:12,real:5,lib:1}]},
+  {nome:"Setor 4",desc:"[descrição do setor]",formas:37,tipos:[
+    {tipo:"Cruzeta 2,0 m",m3:.06,prog:18,real:16,lib:8},
+    {tipo:"Cruzeta 2,4 m",m3:.075,prog:12,real:8,lib:4}]}
+];
+
+const pct=(a,b)=>b?Math.round(a/b*100):0;
+const m3=v=>v.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1});
+const sum=(arr,k)=>arr.reduce((t,x)=>t+x[k],0);
+
+SETORES.forEach(s=>{
+  s.prog=sum(s.tipos,"prog");s.real=sum(s.tipos,"real");s.lib=sum(s.tipos,"lib");
+  s.vPrev=s.tipos.reduce((t,x)=>t+x.prog*x.m3,0);s.vReal=s.tipos.reduce((t,x)=>t+x.real*x.m3,0);
+});
+
+/* estado de cada forma: tipos em sequência (liberadas, concretadas, programadas), depois as livres */
+function formasDoSetor(s){
+  const out=[];let n=1;
+  s.tipos.forEach(t=>{for(let i=0;i<t.prog;i++)out.push({n:n++,tipo:t.tipo,c:i<t.lib?"lib":i<t.real?"real":"prog"});});
+  while(n<=s.formas)out.push({n:n++,tipo:null,c:"livre"});
+  return out;
+}
+const sq=list=>list.map(x=>`<div class="f ${x.c}" title="Forma ${x.n}${x.tipo?' · '+x.tipo:''}">${x.n}</div>`).join("");
+function barra(prog,real,lib,cls){
+  const wLib=pct(lib,prog),wReal=pct(real-lib,prog),wFalta=Math.max(0,100-wLib-wReal);
+  return `<div class="${cls}" role="img" aria-label="${pct(real,prog)}% realizado"><i class="b-lib" style="width:${wLib}%"></i><i class="b-real" style="width:${wReal}%"></i><i class="b-falta" style="width:${wFalta}%"></i></div>`;
+}
+function cabecalho(s){
+  const p=pct(s.real,s.prog),f=s.prog-s.real;
+  return `<div class="sh">
+    <h2>${s.nome}<small>${s.desc} · ${s.formas} formas</small></h2>
+    <div class="pct ${p<60?'alerta':''}"><b>${p}%</b><span>realizado</span></div>
+  </div>
+  <div class="barwrap">
+    ${barra(s.prog,s.real,s.lib,"bar")}
+    <div class="nums">
+      <span>Programadas <b>${s.prog}</b></span>
+      <span>Concretadas <b>${s.real}</b></span>
+      <span>Liberadas <b>${s.lib}</b></span>
+      <span class="nf">Faltam <b>${f} (${100-p}%)</b></span>
+    </div>
+  </div>
+  <div class="vol"><span>Concreto</span><div class="vbar" role="img" aria-label="${m3(s.vReal)} de ${m3(s.vPrev)} metros cúbicos"><i style="width:${Math.min(100,pct(s.vReal,s.vPrev))}%"></i></div><span><b>${m3(s.vReal)}</b> / ${m3(s.vPrev)} m³ (${pct(s.vReal,s.vPrev)}%)</span></div>`;
+}
+
+function kpis(){
+  const T={prog:sum(SETORES,"prog"),real:sum(SETORES,"real"),lib:sum(SETORES,"lib"),vPrev:sum(SETORES,"vPrev"),vReal:sum(SETORES,"vReal")};
+  document.getElementById("kpis").innerHTML=`
+    <div class="kpi prog"><span>Programado</span><b>${T.prog}</b><small>formas no dia</small></div>
+    <div class="kpi real"><span>Realizado</span><b>${T.real}</b><small>formas concretadas</small></div>
+    <div class="kpi real"><span>% Realizado</span><b>${pct(T.real,T.prog)}%</b></div>
+    <div class="kpi falta"><span>Falta</span><b>${T.prog-T.real}</b><small>${100-pct(T.real,T.prog)}% do programado</small></div>
+    <div class="kpi lib"><span>Liberadas</span><b>${T.lib}</b></div>
+    <div class="kpi"><span>Concreto m³</span><b>${m3(T.vReal)}</b><small>de ${m3(T.vPrev)} previstos · ${pct(T.vReal,T.vPrev)}%</small></div>`;
+}
+
+function telaGeral(){
+  return `<div class="grid">${SETORES.map(s=>`<section class="setor" aria-label="${s.nome}">${cabecalho(s)}
+    <div class="formas" style="--cols:24">${sq(formasDoSetor(s))}</div></section>`).join("")}</div>`;
+}
+
+function telaSetor(i){
+  const s=SETORES[i],todas=formasDoSetor(s);
+  const linhas=s.tipos.map(t=>{
+    const tp=pct(t.real,t.prog);
+    return `<div class="tipo">
+      <h3>${t.tipo}<small>Concreto ${m3(t.real*t.m3)} / ${m3(t.prog*t.m3)} m³</small></h3>
+      <div class="formas">${sq(todas.filter(x=>x.tipo===t.tipo))}</div>
+      <div class="tres">
+        <div class="big" style="color:${tp<60?'var(--falta)':'var(--real)'}">${t.real}<em> / ${t.prog} · ${tp}%</em></div>
+        ${barra(t.prog,t.real,t.lib,"tbar")}
+        <div class="mini"><span>Liberadas <b>${t.lib}</b></span><span class="nf">Faltam <b>${t.prog-t.real}</b></span></div>
+      </div>
+    </div>`;
+  }).join("");
+  const livres=s.formas-s.prog;
+  return `<section class="det" aria-label="${s.nome} por tipo de poste">${cabecalho(s)}
+    <div class="tipos">${linhas}</div>
+    ${livres?`<div class="livres">${livres} formas sem programação neste setor</div>`:""}</section>`;
+}
+
+/* carrossel: visão geral 30 s, cada setor 20 s */
+const TELAS=[{nome:"Visão geral",dur:30,render:telaGeral},...SETORES.map((s,i)=>({nome:s.nome,dur:20,render:()=>telaSetor(i)}))];
+let atual=0,pausado=false,inicio=Date.now(),decorrido=0;
+const view=document.getElementById("view"),timer=document.getElementById("timer"),btnPause=document.getElementById("pause");
+document.getElementById("tabs").innerHTML=TELAS.map((t,i)=>`<button class="tab" type="button" data-i="${i}">${t.nome}</button>`).join("");
+
+function desenhar(anima){
+  view.innerHTML=TELAS[atual].render();
+  if(anima){view.classList.remove("entra");void view.offsetWidth;view.classList.add("entra");}
+}
+function mostrar(i){
+  atual=(i+TELAS.length)%TELAS.length;inicio=Date.now();decorrido=0;timer.style.width="0%";
+  desenhar(true);
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-current",String(+b.dataset.i===atual)));
+}
+document.getElementById("tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b)mostrar(+b.dataset.i);});
+btnPause.addEventListener("click",()=>{
+  pausado=!pausado;btnPause.textContent=pausado?"Continuar":"Pausar";
+  if(pausado)decorrido=Date.now()-inicio;else inicio=Date.now()-decorrido;
+});
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")mostrar(atual+1);if(e.key==="ArrowLeft")mostrar(atual-1);});
+setInterval(()=>{
+  if(pausado)return;
+  const frac=(Date.now()-inicio)/(TELAS[atual].dur*1000);
+  timer.style.width=Math.min(100,frac*100)+"%";
+  if(frac>=1)mostrar(atual+1);
+},250);
+
+function relogio(){
+  const d=new Date();
+  document.getElementById("hora").textContent=d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+  document.getElementById("data").textContent=d.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"2-digit"});
+}
+function atualizar(){
+  kpis();desenhar(false);
+  document.getElementById("atualizado").textContent="atualizado às "+new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+}
+relogio();kpis();mostrar(0);atualizar();
+setInterval(relogio,10000);
+setInterval(atualizar,60000);
+try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{});}catch(e){}
+</script>

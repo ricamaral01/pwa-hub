@@ -1,0 +1,46 @@
+{
+  "tooltip": "Monitoramento",
+  "pc": {
+    "open_width": 272,
+    "collapsed_width": 80,
+    "scroll": {
+      "height": 493,
+      "content": 1146
+    },
+    "scroll_top_after": 653,
+    "production_url": "/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+    "active_items": 1
+  },
+  "tablet-paisagem": {
+    "open_width": 272,
+    "collapsed_width": 80,
+    "scroll": {
+      "height": 361,
+      "content": 1146
+    },
+    "scroll_top_after": 785,
+    "production_url": "/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+    "active_items": 1
+  },
+  "tablet-retrato": {
+    "open_width": 272,
+    "collapsed_width": 80,
+    "scroll": {
+      "height": 617,
+      "content": 1146
+    },
+    "scroll_top_after": 529,
+    "production_url": "/unificado/?view=mapa%2Foperacao%2F%3Ftela%3DLIBERACAO",
+    "active_items": 1
+  },
+  "celular": {
+    "modelo_a_visible": false,
+    "legacy_sidebar_visible": true,
+    "react_bundle_requests": 0
+  },
+  "pwa": {
+    "modelo_a_visible": false,
+    "legacy_sidebar_visible": true,
+    "react_bundle_requests": 0
+  }
+}

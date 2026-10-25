@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mão de Obra — Histórico</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0F2C4C}a:hover{color:#0A1E35}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #F3F5F8; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14202E; overflow: hidden">
+
+  <header style="background: #0F2C4C; color: #FFFFFF; padding: 18px 16px 16px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <a href="Main.dc.html" aria-label="Voltar ao lançamento" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.10); color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+      </a>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #B9C7D8">Mão de Obra</span>
+        <span style="font-size: 20px; font-weight: 700">Histórico</span>
+      </div>
+    </div>
+    <div role="group" aria-label="Filtro de grupo" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 4px; background: rgba(255,255,255,0.10); border-radius: 14px">
+      <button onClick="{{ fTodos }}" style="{{ sTodos }}">Todos</button>
+      <button onClick="{{ fS12 }}" style="{{ sS12 }}">S1 / S2</button>
+      <button onClick="{{ fS34 }}" style="{{ sS34 }}">S3 / S4</button>
+    </div>
+  </header>
+
+  <div style="flex: 1; overflow-y: auto; padding: 14px 16px 24px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0 2px">
+      <h2 style="margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #0F2C4C">Outubro 2026</h2>
+      <span style="font-size: 13px; color: #5A6675">1 pendência</span>
+    </div>
+
+    <sc-for list="{{ dias }}" as="d" hint-placeholder-count="6">
+      <a href="Main.dc.html" style="background: #FFFFFF; border: 1px solid #DDE3EA; border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: #14202E">
+        <div style="display: flex; justify-content: space-between; align-items: baseline">
+          <strong style="font-size: 16px">{{ d.data }}</strong>
+          <span style="font-size: 14px; color: #5A6675">Total <strong style="color: #14202E; font-size: 18px; font-variant-numeric: tabular-nums">{{ d.total }}</strong></span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <sc-for list="{{ d.grupos }}" as="g" hint-placeholder-count="2">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 14px">
+              <span style="width: 54px; font-weight: 600">{{ g.nome }}</span>
+              <span style="{{ g.chip }}">{{ g.status }}</span>
+              <span style="margin-left: auto; color: #5A6675; font-variant-numeric: tabular-nums">{{ g.det }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { f: 'todos' }; }
+  renderVals() {
+    var self = this, f = this.state.f;
+    var chips = {
+      ok: 'padding: 3px 10px; border-radius: 999px; background: #E3F3EA; color: #17693F; font-size: 13px; font-weight: 600',
+      pend: 'padding: 3px 10px; border-radius: 999px; background: #FFF4E5; color: #8A4B00; font-size: 13px; font-weight: 600; border: 1px solid #F0C68A',
+      sem: 'padding: 3px 10px; border-radius: 999px; background: #EEF1F5; color: #3D4855; font-size: 13px; font-weight: 600'
+    };
+    var G = function (nome, tipo, det) {
+      var st = { ok: 'Lançado', pend: 'Pendente', sem: 'Sem produção' }[tipo];
+      return { nome: nome, status: st, chip: chips[tipo], det: det };
+    };
+    var raw = [
+      { data: 'Sex, 16/10', g: [G('S1/S2', 'ok', 'MOD 12,5 · MOI 8'), G('S3/S4', 'pend', '—')], t: [20.5, 0] },
+      { data: 'Qui, 15/10', g: [G('S1/S2', 'ok', 'MOD 12 · MOI 8'), G('S3/S4', 'ok', 'MOD 9 · MOI 11')], t: [20, 20] },
+      { data: 'Qua, 14/10', g: [G('S1/S2', 'ok', 'MOD 13 · MOI 8'), G('S3/S4', 'ok', 'MOD 10 · MOI 11')], t: [21, 21] },
+      { data: 'Ter, 13/10', g: [G('S1/S2', 'ok', 'MOD 12,5 · MOI 8'), G('S3/S4', 'ok', 'MOD 10 · MOI 11')], t: [20.5, 21] },
+      { data: 'Seg, 12/10', g: [G('S1/S2', 'sem', 'Feriado'), G('S3/S4', 'sem', 'Feriado')], t: [0, 0] },
+      { data: 'Sex, 09/10', g: [G('S1/S2', 'ok', 'MOD 11 · MOI 8'), G('S3/S4', 'ok', 'MOD 10 · MOI 11')], t: [19, 21] }
+    ];
+    var fmt = function (n) { return String(n).replace('.', ','); };
+    var dias = raw.map(function (r) {
+      var gs = r.g, t = r.t[0] + r.t[1];
+      if (f === 'S12') { gs = [r.g[0]]; t = r.t[0]; }
+      if (f === 'S34') { gs = [r.g[1]]; t = r.t[1]; }
+      return { data: r.data, grupos: gs, total: fmt(t) };
+    });
+    var on = 'height: 44px; border: 0; border-radius: 10px; background: #FFFFFF; color: #0F2C4C; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer';
+    var off = 'height: 44px; border: 0; border-radius: 10px; background: transparent; color: #FFFFFF; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer';
+    return {
+      dias: dias,
+      sTodos: f === 'todos' ? on : off, sS12: f === 'S12' ? on : off, sS34: f === 'S34' ? on : off,
+      fTodos: function () { self.setState({ f: 'todos' }); },
+      fS12: function () { self.setState({ f: 'S12' }); },
+      fS34: function () { self.setState({ f: 'S34' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
