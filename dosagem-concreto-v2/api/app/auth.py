@@ -77,6 +77,12 @@ def verificar_permissao(usuario: Usuario, acao: str) -> None:
     leitura = acao.endswith(".listar") or acao.endswith(".obter")
     if acao == "usuarios.listar":
         return
+    if acao == "avaliacoes.listar":
+        return
+    if acao == "avaliacoes.decidir":
+        if usuario.papel not in ("admin", "engenheiro"):
+            raise ErroAPI("SEM_PERMISSAO", "Decisão de impacto exige papel engenheiro.")
+        return
     if acao.startswith("usuarios.") or acao.startswith("importacao.") or acao == "custos.excluir":
         if usuario.papel != "admin":
             raise ErroAPI("SEM_PERMISSAO", "Ação exige administrador.")
@@ -85,9 +91,25 @@ def verificar_permissao(usuario: Usuario, acao: str) -> None:
         if usuario.papel not in ("admin", "engenheiro"):
             raise ErroAPI("SEM_PERMISSAO", "Aprovação exige papel engenheiro.")
         return
-    if acao.split(".")[0] not in ("tracos", "materiais", "fornecedores", "ensaios", "custos"):
+    if acao == "tracos.enviarAprovacao":
+        if usuario.papel not in ("admin", "engenheiro", "laboratorista"):
+            raise ErroAPI("SEM_PERMISSAO", "Liberação exige engenharia ou laboratório.")
+        return
+    if acao.split(".")[0] not in ("tracos", "materiais", "fornecedores", "ensaios", "custos", "producoes", "produtos", "lotes", "equipamentos"):
         raise ErroAPI("NAO_ENCONTRADO", "Ação desconhecida.")
     if leitura:
         return
-    if usuario.papel not in ("admin", "engenheiro", "laboratorio"):
+    if acao == "producoes.salvar":
+        if usuario.papel not in ("admin", "producao", "operador"):
+            raise ErroAPI("SEM_PERMISSAO", "Registro de produção exige papel produção.")
+        return
+    if acao == "producoes.liberarDesforma":
+        if usuario.papel not in ("admin", "engenheiro", "laboratorista"):
+            raise ErroAPI("SEM_PERMISSAO", "Liberacao de desforma exige engenharia ou laboratorio.")
+        return
+    if usuario.papel in ("producao", "operador"):
+        raise ErroAPI("SEM_PERMISSAO", "Produção só pode registrar produção.")
+    if acao == "tracos.salvarVersao" and usuario.papel not in ("admin", "engenheiro", "laboratorista"):
+        raise ErroAPI("SEM_PERMISSAO", "Traço exige engenharia ou laboratório.")
+    if usuario.papel not in ("admin", "engenheiro", "laboratorista", "laboratorio"):
         raise ErroAPI("SEM_PERMISSAO", "Permissão insuficiente.")

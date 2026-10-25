@@ -8,7 +8,11 @@ from .config import get_config
 
 @lru_cache
 def get_engine():
-    return create_engine(get_config().database_url, pool_pre_ping=True)
+    cfg = get_config()
+    if cfg.database_schema and cfg.database_schema != "dosagem":
+        raise ValueError("O esquema da Dosagem deve ser 'dosagem'.")
+    options = {"connect_args": {"options": "-csearch_path=dosagem"}} if cfg.database_schema else {}
+    return create_engine(cfg.database_url, pool_pre_ping=True, **options)
 
 
 @lru_cache

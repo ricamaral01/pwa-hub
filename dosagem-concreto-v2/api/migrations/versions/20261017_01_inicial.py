@@ -13,7 +13,9 @@ depends_on = None
 
 
 def upgrade() -> None:
-    Base.metadata.create_all(bind=op.get_bind())
+    # Freeze the initial schema: later models belong to additive migrations.
+    initial = ("usuarios", "documentos", "idempotencia", "auditoria", "legado_ids")
+    Base.metadata.create_all(bind=op.get_bind(), tables=[Base.metadata.tables[name] for name in initial])
     op.execute("CREATE SEQUENCE IF NOT EXISTS traco_codigo_seq START 1")
 
 

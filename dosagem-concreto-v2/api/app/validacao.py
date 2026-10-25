@@ -74,8 +74,11 @@ def validar_generico(tipo: str, d: dict) -> None:
     sem_nao_finitos(d)
     if not str(d.get("id") or "").strip() or not str(d.get("unidade") or "").strip():
         raise ErroAPI("VALIDACAO", "ID e unidade são obrigatórios.")
-    if tipo in ("materiais", "fornecedores") and not str(d.get("nome") or "").strip():
+    if tipo in ("materiais", "fornecedores", "produtos", "equipamentos") and not str(d.get("nome") or "").strip():
         raise ErroAPI("VALIDACAO", "Nome obrigatório.")
+    if tipo == "produtos":
+        numero(d.get("desformaMinMPa"), "Resistencia minima de desforma", minimo=0.000001)
+        numero(d.get("desformaIdadeAlvoH"), "Idade-alvo de desforma", minimo=0.000001)
     for campo in ("massaEspecificaKgDm3", "custoRsKg", "custoLiq", "preco", "frete"):
         if d.get(campo) is not None:
             numero(d[campo], campo, minimo=0)

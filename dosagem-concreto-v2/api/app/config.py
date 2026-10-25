@@ -14,6 +14,9 @@ class Config(BaseSettings):
     jwt_audience: str = ""
     admin_email: str = ""
     porta: int = 18300
+    modo_piloto: bool = False
+    database_schema: str = ""
+    lab_gateway_signing_key: str = ""
 
 
 @lru_cache

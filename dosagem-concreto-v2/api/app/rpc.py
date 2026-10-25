@@ -7,13 +7,13 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
-from .acoes.documentos import excluir_custo, listar, mudar_status_traco, obter, salvar_generico, salvar_traco
+from .acoes.documentos import decidir_avaliacao, excluir_custo, liberar_desforma41, listar, listar_avaliacoes, mudar_status_traco, obter, salvar_generico, salvar_producao41, salvar_traco
 from .acoes.importacao import importar_legado
 from .acoes.usuarios import listar_usuarios, salvar_usuario
 from .auth import autorizar, verificar_permissao
 from .config import Config
 from .erros import ErroAPI
-from .modelos import Idempotencia
+from .modelos import Idempotencia, Usuario
 
 
 class Pedido(BaseModel):
@@ -35,21 +35,25 @@ def falha(erro: ErroAPI) -> dict:
     return {"ok": False, "erro": {"codigo": erro.codigo, "mensagem": erro.mensagem, **detalhe}, "servidorEm": instante()}
 
 
-def executar(session: Session, pedido: Pedido, token: str, cfg: Config) -> dict:
+def executar(session: Session, pedido: Pedido, token: str, cfg: Config, usuario_sessao: Usuario | None = None) -> dict:
     try:
         UUID(pedido.request_id)
     except (ValueError, AttributeError):
         raise ErroAPI("VALIDACAO", "requestId deve ser UUID.") from None
-    usuario = autorizar(session, token, cfg)
+    usuario = usuario_sessao or autorizar(session, token, cfg)
     acao = pedido.acao
     verificar_permissao(usuario, acao)
     tipo, _, verbo = acao.partition(".")
     dados = pedido.dados
     if acao == "usuarios.listar":
         return resposta(listar_usuarios(session, usuario))
-    if verbo == "listar" and tipo in ("tracos", "materiais", "fornecedores", "ensaios", "custos"):
+    if cfg.modo_piloto and acao == "usuarios.salvar":
+        raise ErroAPI("BLOQUEIO_ESTADO", "No piloto, somente a conta de emergência admin está habilitada.")
+    if acao == "avaliacoes.listar":
+        return resposta(listar_avaliacoes(session, dados, usuario))
+    if verbo == "listar" and tipo in ("tracos", "materiais", "fornecedores", "ensaios", "custos", "producoes", "produtos", "lotes", "equipamentos"):
         return resposta(listar(session, tipo, dados, usuario))
-    if verbo == "obter" and tipo in ("tracos", "materiais", "fornecedores", "ensaios", "custos"):
+    if verbo == "obter" and tipo in ("tracos", "materiais", "fornecedores", "ensaios", "custos", "producoes", "produtos", "lotes", "equipamentos"):
         return resposta(obter(session, tipo, dados, usuario))
 
     # Serializa requisições iguais, inclusive simultâneas, até o commit.
@@ -66,13 +70,19 @@ def executar(session: Session, pedido: Pedido, token: str, cfg: Config) -> dict:
         resultado = mudar_status_traco(session, dados, usuario, False)
     elif acao == "tracos.aprovar":
         resultado = mudar_status_traco(session, dados, usuario, True)
+    elif acao == "producoes.salvar":
+        resultado = salvar_producao41(session, dados, usuario)
+    elif acao == "producoes.liberarDesforma":
+        resultado = liberar_desforma41(session, dados, usuario)
+    elif acao == "avaliacoes.decidir":
+        resultado = decidir_avaliacao(session, dados, usuario)
     elif acao == "usuarios.salvar":
         resultado = salvar_usuario(session, dados, usuario)
     elif acao == "importacao.legado":
         resultado = importar_legado(session, dados, usuario)
     elif acao == "custos.excluir":
         resultado = excluir_custo(session, dados, usuario)
-    elif verbo == "salvar" and tipo in ("materiais", "fornecedores", "ensaios", "custos"):
+    elif verbo == "salvar" and tipo in ("materiais", "fornecedores", "ensaios", "custos", "produtos", "lotes", "equipamentos"):
         resultado = salvar_generico(session, tipo, dados, usuario)
     else:
         raise ErroAPI("NAO_ENCONTRADO", "Ação desconhecida.")

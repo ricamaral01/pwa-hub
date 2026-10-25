@@ -15,9 +15,14 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    engine = create_engine(get_config().database_url, pool_pre_ping=True)
+    cfg = get_config()
+    if cfg.database_schema and cfg.database_schema != "dosagem":
+        raise ValueError("O esquema da Dosagem deve ser 'dosagem'.")
+    options = {"connect_args": {"options": "-csearch_path=dosagem"}} if cfg.database_schema else {}
+    engine = create_engine(cfg.database_url, pool_pre_ping=True, **options)
     with engine.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(connection=connection, target_metadata=target_metadata,
+                          version_table_schema=cfg.database_schema or None)
         with context.begin_transaction():
             context.run_migrations()
     engine.dispose()
