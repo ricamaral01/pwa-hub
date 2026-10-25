@@ -1,6 +1,6 @@
 # API da Dosagem v2
 
-Python 3.12, FastAPI e PostgreSQL. A API usa o token do Hub e guarda documentos completos em JSONB.
+Python 3.12, FastAPI e PostgreSQL. A API usa sessão própria por cookie, ticket de uso único do Hub com PKCE e conta local de emergência. Documentos ficam em JSONB.
 
 ## Desenvolvimento
 
@@ -13,15 +13,14 @@ Copy-Item .env.example .env
 .\.venv\Scripts\python -m uvicorn app.main:app --host 127.0.0.1 --port 18300
 ```
 
-O teste automatizado cria um cluster PostgreSQL temporário quando o binário `postgres` está no `PATH`:
+O teste automatizado sobe um PostgreSQL 16 isolado com Docker Compose e remove o volume ao terminar:
 
 ```powershell
-$env:PATH='C:\Program Files\PostgreSQL\16\bin;'+$env:PATH
 .\.venv\Scripts\python -m pytest -q
 ```
 
 ## Implantação
 
-Consulte `deploy/README.md` e `docs/dosagem-v2/VPS-RECONHECIMENTO.md` na raiz do repositório. O arquivo `.env` de produção fica apenas em `/opt/concretrack-dosagem/shared/.env`. Use a configuração Supabase do Hub ou, somente quando for o provedor real, `JWT_SECRET` e `JWT_AUDIENCE`.
+Consulte `docs/dosagem-v2/API.md` e `docs/dosagem-v2/VPS-RECONHECIMENTO.md` na raiz do repositório. O arquivo `.env` de produção fica apenas em `/opt/concretrack-dosagem/shared/.env`. O endpoint de ticket consulta o Supabase do Hub; Bearer antigo só é aceito em ambiente de desenvolvimento. A implantação na VPS não está autorizada enquanto os portões estiverem reprovados.
 
-`GET /api/v1/saude` testa a conexão com o banco. `POST /api/v1/rpc` exige Bearer e `Idempotency-Key` igual ao `requestId` UUID do JSON.
+`GET /api/v1/saude` testa a conexão com o banco. `POST /api/v1/rpc` exige cookie, mesma origem, `X-Requested-With: dosagem` e `Idempotency-Key` igual ao `requestId` UUID do JSON.

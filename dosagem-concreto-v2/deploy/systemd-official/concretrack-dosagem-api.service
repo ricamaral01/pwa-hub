@@ -1,0 +1,27 @@
+[Unit]
+Description=ConcreTrack Dosagem v2 API
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ctdosagem
+Group=ctdosagem
+WorkingDirectory=/opt/concretrack-dosagem/current/api
+EnvironmentFile=/opt/concretrack-dosagem/shared/.env
+Environment=PYTHONPATH=/opt/concretrack-dosagem/current/api:/opt/concretrack-dosagem/current/api/vendor
+ExecStartPre=/opt/concretrack-dosagem/current/deploy/scripts/prepare-db.sh
+ExecStart=/opt/concretrack-dosagem/current/deploy/scripts/start-api-official.sh
+TimeoutStartSec=300
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+ReadWritePaths=/opt/concretrack-dosagem/shared
+CPUQuota=50%
+MemoryMax=600M
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

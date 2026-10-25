@@ -1,0 +1,21 @@
+[Unit]
+Description=Dosagem nativa do ConcreTrack Unificado
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ctdosagem-native
+Group=ctdosagem-native
+WorkingDirectory=/opt/concrefer-unificado/dosagem-native/api
+EnvironmentFile=/etc/concrefer-unificado/dosagem-native.env
+ExecStart=/opt/concrefer-unificado/dosagem-native/api/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 13067 --proxy-headers --forwarded-allow-ips 127.0.0.1
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

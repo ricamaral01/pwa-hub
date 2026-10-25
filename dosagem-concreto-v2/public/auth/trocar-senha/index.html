@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trocar senha · Dosagem</title></head>
+<body><main><h1>Troca obrigatória de senha</h1><form id="form"><label>Senha provisória <input id="old" type="password" autocomplete="current-password" required></label><label>Nova senha <input id="new" type="password" autocomplete="new-password" minlength="8" required></label><button>Trocar senha</button></form><p id="message" role="alert"></p></main><script src="/auth/pilot-banner.js" defer></script><script>
+const showPasswords=document.createElement('button');
+showPasswords.type='button';showPasswords.textContent='Mostrar senhas';
+showPasswords.setAttribute('aria-controls','old new');showPasswords.setAttribute('aria-pressed','false');
+showPasswords.onclick=()=>{const show=document.getElementById('old').type==='password';for(const id of ['old','new'])document.getElementById(id).type=show?'text':'password';showPasswords.textContent=show?'Ocultar senhas':'Mostrar senhas';showPasswords.setAttribute('aria-pressed',String(show));};
+document.getElementById('new').closest('label').after(showPasswords);
+document.getElementById('form').onsubmit=async event=>{event.preventDefault();const message=document.getElementById('message');try{
+  const response=await fetch('/api/v1/auth/local/trocar-senha',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-Requested-With':'dosagem'},body:JSON.stringify({senha_atual:document.getElementById('old').value,nova_senha:document.getElementById('new').value})});
+  if(!response.ok)throw Error('Não foi possível trocar a senha. Confira a senha atual e o mínimo de oito caracteres.');
+  const next=sessionStorage.getItem('dosagem-retorno')||'/';sessionStorage.removeItem('dosagem-retorno');location.replace(next.startsWith('/')&&!next.startsWith('//')?next:'/');
+}catch(error){message.textContent=error.message;}};
+</script></body></html>

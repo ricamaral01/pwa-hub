@@ -1,0 +1,17 @@
+{
+  "source": "CODEX_DOSAGEM_V2_DEFINITIVA.md §17 P6",
+  "referenceCondition": "sss",
+  "waterEffectiveKg": 200,
+  "waterFromAdmixturesKg": 0,
+  "aggregates": [
+    { "referenceMassKg": 156, "humidityFraction": 0.11, "absorptionFraction": 0.01 },
+    { "referenceMassKg": 632, "humidityFraction": 0.10, "absorptionFraction": 0.008 },
+    { "referenceMassKg": 1037, "humidityFraction": 0.005, "absorptionFraction": 0.005 }
+  ],
+  "expected": {
+    "dryMassesKg": [154.455, 626.984, 1031.841],
+    "weighMassesKg": [171.446, 689.683, 1037],
+    "freeWaterKg": 73.128,
+    "waterToDoseKg": 126.872
+  }
+}

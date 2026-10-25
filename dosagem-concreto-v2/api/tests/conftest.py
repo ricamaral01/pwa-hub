@@ -1,10 +1,11 @@
 import os
+import subprocess
 import time
 from pathlib import Path
 
 import jwt
+import psycopg
 import pytest
-import testing.postgresql
 from alembic import command
 from alembic.config import Config as AlembicConfig
 from fastapi.testclient import TestClient
@@ -16,32 +17,46 @@ from app.config import Config
 
 @pytest.fixture(scope="session")
 def banco_url():
-    # Docker não é necessário: cluster PostgreSQL temporário isolado.
-    with testing.postgresql.Postgresql(initdb_args="-U postgres -A trust --encoding=UTF8 --no-locale") as pg:
-        # testing.postgresql envia SIGINT no encerramento; Windows só aceita
-        # SIGTERM para este subprocesso criado sem grupo de console.
-        if os.name == "nt":
-            pg.terminate = lambda *_: testing.postgresql.Postgresql.__mro__[1].terminate(pg)
-        url = pg.url().replace("postgresql://", "postgresql+psycopg://", 1)
+    api_dir = Path(__file__).resolve().parents[1]
+    compose = ["docker", "compose", "-p", "dosagem-v2-tests", "-f", str(api_dir / "docker-compose.test.yml")]
+    subprocess.run([*compose, "up", "-d", "--wait"], check=True, cwd=api_dir)
+    url = "postgresql+psycopg://dosagem_test:dosagem_test_local@127.0.0.1:15432/concretrack_dosagem_test"
+    # Docker can report container health before the host port is ready on Windows.
+    for attempt in range(20):
+        try:
+            with psycopg.connect(url.replace("postgresql+psycopg://", "postgresql://"), connect_timeout=2):
+                break
+        except psycopg.OperationalError:
+            if attempt == 19:
+                raise
+            time.sleep(0.5)
+    previous = os.environ.get("DATABASE_URL")
+    try:
         os.environ["DATABASE_URL"] = url
-        alembic = AlembicConfig(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
-        alembic.set_main_option("script_location", str(Path(__file__).resolve().parents[1] / "migrations"))
+        alembic = AlembicConfig(str(api_dir / "alembic.ini"))
+        alembic.set_main_option("script_location", str(api_dir / "migrations"))
         command.upgrade(alembic, "head")
         yield url
+    finally:
+        if previous is None:
+            os.environ.pop("DATABASE_URL", None)
+        else:
+            os.environ["DATABASE_URL"] = previous
+        subprocess.run([*compose, "down", "-v"], check=True, cwd=api_dir)
 
 
 @pytest.fixture()
 def ambiente(banco_url):
     engine = create_engine(banco_url, pool_pre_ping=True)
     with engine.begin() as con:
-        for nome in ["legado_ids", "auditoria", "idempotencia", "documentos", "usuarios"]:
+        for nome in ["auth_tickets", "auth_flows", "auth_sessions", "local_credenciais", "avaliacoes_impacto", "traco_versoes", "material_versoes", "legado_ids", "auditoria", "idempotencia", "documentos", "usuarios"]:
             con.execute(text(f"TRUNCATE TABLE {nome} RESTART IDENTITY CASCADE"))
         con.execute(text("ALTER SEQUENCE traco_codigo_seq RESTART WITH 1"))
     from app.main import create_app
     cfg = Config(database_url=banco_url, ambiente="dev", jwt_secret="segredo-de-teste-com-mais-de-trinta-e-dois-bytes", jwt_audience="dosagem-test",
                  admin_email="admin@example.test")
     factory = sessionmaker(engine, expire_on_commit=False)
-    with TestClient(create_app(cfg, factory)) as client:
+    with TestClient(create_app(cfg, factory), base_url="https://testserver") as client:
         yield client, factory, cfg
     engine.dispose()
 

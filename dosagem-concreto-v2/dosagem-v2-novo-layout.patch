@@ -1,0 +1,1460 @@
+From 93bc32ac3a81c5ba21623d4e3e16244375341392 Mon Sep 17 00:00:00 2001
+From: Ricardo <ricardo.rda@gmail.com>
+Date: Wed, 21 Oct 2026 20:25:51 -0300
+Subject: [PATCH] =?UTF-8?q?Dosagem=20v2:=20novo=20layout=20(menu=20por=20a?=
+ =?UTF-8?q?mbiente,=20=C3=A1rea=20de=20trabalho=20com=20resultado=20ao=20v?=
+ =?UTF-8?q?ivo,=20empacotamento=20com=20grade=20e=20gr=C3=A1fico)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01NFociLmQJ1DCsZn2adPRad
+---
+ src/app/App.tsx               | 135 +++++++++++++-
+ src/app/editor.css            |   2 +-
+ src/app/home.css              |  58 ++++++
+ src/app/layout.css            |  95 +++++++++-
+ src/app/layout.tsx            | 169 +++++++++++++++---
+ src/features/PackingPanel.tsx | 138 +++++++++++----
+ src/features/Recipe41Page.tsx | 320 ++++++++++++++++++++++++++++------
+ src/features/recipe41.css     | 158 ++++++++++++++++-
+ src/ui/components.tsx         |  43 ++++-
+ src/ui/icons.tsx              |  26 ++-
+ src/ui/tokens.css             |  73 ++++++--
+ 11 files changed, 1067 insertions(+), 150 deletions(-)
+ create mode 100644 src/app/home.css
+
+diff --git a/src/app/App.tsx b/src/app/App.tsx
+index 9d39fe7..6dece14 100644
+--- a/src/app/App.tsx
++++ b/src/app/App.tsx
+@@ -1,21 +1,138 @@
+-import { useCallback, useEffect, useState } from 'react';
++import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+ import { HashRouter, Link, useLocation, useNavigate } from 'react-router-dom';
+ import type { Traco } from '../core/model';
+ import { calcularTraco } from '../core/calc/metodoManual';
+-import { formatDinheiro, formatNumero } from '../core/units';
++import { validarTraco } from '../core/validate';
++import { formatDinheiro, formatNumero, formatData } from '../core/units';
+ import { chamarApi, apiConfigurada } from '../data/api';
+ import { listarRascunhos, guardarCache, lerCache } from '../data/db';
+ import { iniciarSincronizacao, observarStatus, type SaveStatus } from '../data/sync';
+-import { Button, Card, EmptyState } from '../ui/components';
+-import { AppLayout, PilotBanner, useLayoutMode } from './layout';
++import { Button, EmptyState, Pill, type Tone } from '../ui/components';
++import { Icon } from '../ui/icons';
++import { AppLayout, useLayoutMode, useUsuario } from './layout';
+ import { Editor, novoTraco } from './Editor';
+ import { Recipe41Page } from '../features/Recipe41Page';
+ import { ImportacaoRelease1 } from '../features/ImportacaoRelease1';
+ import { ProducaoRelease1 } from '../features/ProducaoRelease1';
+ import { MateriaisPage, FornecedoresPage, EnsaiosPage, FerramentasPage, CustosPage, ReferenciaPage, ConfigPage } from '../features/pages';
+-function Heading({ title, subtitle, action }: { title: string; subtitle: string; action?: React.ReactNode }) { return <div className="ct-page-heading"><div><h1>{title}</h1><p>{subtitle}</p></div>{action}</div>; }
+-function Home({tracos,onNew,onOpen}: {tracos:Traco[];onNew:()=>void;onOpen:(id:string)=>void}) { const recentes=[...tracos].sort((a,b)=>b.auditoria.alteradoEm.localeCompare(a.auditoria.alteradoEm)).slice(0,5); return <div><Heading title="O que precisa de você hoje" subtitle="Acompanhe traços, ensaios e pendências em um lugar só." action={<Button onClick={onNew}>+ Novo traço</Button>}/>{!apiConfigurada()&&<div className="ct-alert ct-alert--aviso">API v2 ainda não configurada. O editor funciona com rascunhos locais; gravação no servidor depende do deploy.</div>}<div className="ct-grid ct-grid--3"><Card title="Traços em teste"><strong style={{fontSize:32}}>{tracos.filter(t=>t.status==='em_teste').length}</strong><p className="ct-muted">Aguardando resultados ou revisão</p></Card><Card title="Rascunhos locais"><strong style={{fontSize:32}}>{tracos.filter(t=>t.revisao===0).length}</strong><p className="ct-muted">Ainda sem confirmação do servidor</p></Card><Card title="Aguardando aprovação"><strong style={{fontSize:32}}>{tracos.filter(t=>t.status==='em_teste'&&t.revisao>0).length}</strong><p className="ct-muted">Traços em teste já sincronizados</p></Card></div><div className="ct-grid ct-grid--2"><Card title="Dosagem por empacotamento"><p className="ct-muted">Abrams, teor de argamassa e ajuste das proporções das areias pela curva granulométrica.</p><Link className="ct-button ct-button--secondary" to="/dosagem/empacotamento">Abrir módulo de empacotamento</Link></Card><Card title="Dosagem por volume"><p className="ct-muted">Método Concrefer da planilha Rica v4, com frações volumétricas dos agregados.</p><Link className="ct-button ct-button--secondary" to="/dosagem/volume">Abrir módulo por volume</Link></Card></div>{recentes.length>0&&<Card title="Continuar de onde parou"><div className="ct-row ct-space"><div><strong>{recentes[0].nome}</strong><p className="ct-muted">{recentes[0].codigo||'Rascunho local'} · v{recentes[0].versao||'nova'}</p></div><Button variant="secondary" onClick={()=>onOpen(recentes[0].id)}>Continuar</Button></div></Card>}<Card title="Traços recentes">{recentes.length?<div className="ct-table-wrap"><table className="ct-table"><thead><tr><th>Traço</th><th>Versão</th><th>fck</th><th>a/c</th><th>Custo</th><th>Situação</th><th></th></tr></thead><tbody>{recentes.map(t=>{const r=calcularTraco(t);return <tr key={t.id}><td>{t.nome}</td><td>v{t.versao||'—'}</td><td>{formatNumero(t.objetivo.fckMPa,0)} MPa</td><td>{r?formatNumero(r.relacaoAguaCimento,3):'—'}</td><td>{r?formatDinheiro(r.custoRsM3):'—'}</td><td>{t.status.replace('_',' ')}</td><td><Button variant="ghost" onClick={()=>onOpen(t.id)}>Abrir</Button></td></tr>})}</tbody></table></div>:<EmptyState title="Nenhum traço recente" description="Crie um traço para começar a dosagem." action={<Button onClick={onNew}>+ Novo traço</Button>}/>}</Card></div>; }
+-function Tracos({tracos,onNew,onOpen}: {tracos:Traco[];onNew:()=>void;onOpen:(id:string)=>void}) { const [filter,setFilter]=useState('todos'); const [q,setQ]=useState(''); const lista=tracos.filter(t=>(filter==='todos'||t.status===filter)&&`${t.nome} ${t.codigo} ${t.unidade}`.toLowerCase().includes(q.toLowerCase())); return <div><Heading title="Traços" subtitle="Versões, comparações e histórico de dosagem." action={<Button onClick={onNew}>+ Novo traço</Button>}/><Card><div className="ct-row"><label className="ct-field"><span>Buscar traço</span><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Nome, código ou unidade"/></label><label className="ct-field"><span>Situação</span><select value={filter} onChange={e=>setFilter(e.target.value)}><option value="todos">Todos</option><option value="aprovado">Aprovados</option><option value="em_teste">Em teste</option><option value="rascunho">Rascunhos</option></select></label></div></Card>{lista.length?<div className="ct-grid">{lista.map(t=>{const r=calcularTraco(t);return <Card key={t.id}><div className="ct-row ct-space"><div><strong>{t.nome}</strong><p className="ct-muted">{t.codigo||'Local'} · v{t.versao||'nova'} · {t.unidade} · {t.status.replace('_',' ')}</p><p>fck {formatNumero(t.objetivo.fckMPa,0)} MPa · a/c {r?formatNumero(r.relacaoAguaCimento,3):'—'} · {r?formatDinheiro(r.custoRsM3):'Custo não calculado'}</p></div><Button variant="ghost" onClick={()=>onOpen(t.id)}>Abrir</Button></div></Card>})}</div>:<EmptyState title="Nenhum traço encontrado" description="Ajuste os filtros ou crie um traço." action={<Button onClick={onNew}>+ Novo traço</Button>}/>}</div>; }
+-function InnerApp() { const location=useLocation(),navigate=useNavigate(); const [mode,preference,setPreference]=useLayoutMode(); const [tracos,setTracos]=useState<Traco[]>([]); const [status,setStatus]=useState<SaveStatus>('rascunho_local'); const [message,setMessage]=useState(''); const [loading,setLoading]=useState(true); const persist=useCallback((t:Traco)=>setTracos(list=>[t,...list.filter(x=>x.id!==t.id)]),[]); useEffect(()=>{void (async()=>{const local=await listarRascunhos<Traco>();setTracos(local);setLoading(false);try{const server=await chamarApi<Traco[]>('tracos.listar',{});await guardarCache('tracos',server);setTracos(list=>[...server,...list.filter(l=>!server.some(s=>s.id===l.id))])}catch{const cached=await lerCache<Traco[]>('tracos');if(cached)setTracos(list=>[...cached.valor,...list.filter(l=>!cached.valor.some(s=>s.id===l.id))])}})();const unsubscribe=observarStatus((s,m)=>{setStatus(s);setMessage(m||'')});const stop=iniciarSincronizacao();return()=>{unsubscribe();stop()}},[]); const onNew=()=>{const t=novoTraco();persist(t);navigate(`/traco/${t.id}`)}; const onOpen=(id:string)=>navigate(`/traco/${id}`); const path=location.pathname; const title=path==='/dosagem/empacotamento'?'Dosagem por empacotamento':path==='/dosagem/volume'?'Dosagem por volume':path==='/dosagem41'?'Dosagem 4.1':path==='/comparacao-metodos'?'Comparação dos métodos':path.startsWith('/traco/')?'Editor de traço':path==='/tracos'?'Traços':path==='/materiais'?'Materiais':path==='/fornecedores'?'Fornecedores':path==='/ensaios'?'Ensaios':path==='/ferramentas'?'Ferramentas':path==='/custos'?'Custos':path==='/referencia'?'Referência':path==='/config'?'Configurações':'Início'; const id=path.startsWith('/traco/')?path.split('/')[2]:''; const active=tracos.find(t=>t.id===id); return <AppLayout mode={mode} title={title} saveStatus={status} saveMessage={message}>{loading?<div className="ct-card">Carregando rascunhos…</div>:path==='/'?<Home tracos={tracos} onNew={onNew} onOpen={onOpen}/>:path==='/tracos'?<Tracos tracos={tracos} onNew={onNew} onOpen={onOpen}/>:path==='/dosagem/empacotamento'?<Recipe41Page key="packing" fixedMethod="principal_abrams"/>:path==='/dosagem/volume'?<Recipe41Page key="volume" fixedMethod="alternativo_concrefer"/>:path==='/dosagem41'?<LegacyDosagemRedirect/>:path==='/comparacao-metodos'?<Recipe41Page/>:path.startsWith('/traco/')?(active?<Editor initial={active} onPersist={persist} status={status} statusMessage={message}/>:<EmptyState title="Traço não encontrado" description="Volte à lista de traços." action={<Button onClick={()=>navigate('/tracos')}>Ver traços</Button>}/>):path==='/materiais'?<MateriaisPage/>:path==='/fornecedores'?<FornecedoresPage/>:path==='/ensaios'?<EnsaiosPage/>:path==='/ferramentas'?<FerramentasPage/>:path==='/custos'?<CustosPage/>:path==='/referencia'?<ReferenciaPage/>:path==='/producao-r1'?<ProducaoRelease1/>:path==='/importacao-r1'?<ImportacaoRelease1/>:path==='/config'?<ConfigPage preference={preference} setPreference={setPreference}/>:<Home tracos={tracos} onNew={onNew} onOpen={onOpen}/>}</AppLayout>; }
+-export function App() { return <><PilotBanner/><HashRouter><InnerApp/></HashRouter></>; }
++import './home.css';
++
++function Heading({ title, subtitle, action, eyebrow }: { title: string; subtitle: string; action?: ReactNode; eyebrow?: string }) { return <div className="ct-page-heading"><div>{eyebrow && <p className="ct-eyebrow">{eyebrow}</p>}<h1>{title}</h1><p>{subtitle}</p></div>{action}</div>; }
++
++const metodoLabel = (m: string) => ({ principal_abrams: 'Empacotamento', alternativo_concrefer: 'Volume', manual: 'Manual', cientifica: 'Científica', teor_argamassa: 'Teor de argamassa' } as Record<string, string>)[m] ?? m;
++const aguardando = (t: Traco) => t.status === 'em_teste' && t.revisao > 0;
++function statusView(t: Traco): { tone: Tone; label: string } {
++  if (t.revisao === 0 && t.status === 'rascunho') return { tone: 'mute', label: 'Rascunho local' };
++  if (aguardando(t)) return { tone: 'info', label: 'Aguardando parecer' };
++  return ({ rascunho: { tone: 'mute', label: 'Rascunho' }, em_teste: { tone: 'warn', label: 'Em teste' }, aprovado: { tone: 'ok', label: 'Aprovado' }, inativo: { tone: 'mute', label: 'Inativo' } } as Record<string, { tone: Tone; label: string }>)[t.status] ?? { tone: 'mute', label: t.status };
++}
++function saudacao() { const h = new Date().getHours(); return h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite'; }
++function safeCalc(t: Traco) { try { return calcularTraco(t); } catch { return null; } }
++
++function Home({ tracos, onNew, onOpen }: { tracos: Traco[]; onNew: () => void; onOpen: (id: string) => void }) {
++  const user = useUsuario();
++  const recentes = [...tracos].sort((a, b) => b.auditoria.alteradoEm.localeCompare(a.auditoria.alteradoEm)).slice(0, 5);
++  const emTeste = tracos.filter(t => t.status === 'em_teste').length;
++  const espera = tracos.filter(aguardando).length;
++  const locais = tracos.filter(t => t.revisao === 0).length;
++  const aprovados = tracos.filter(t => t.status === 'aprovado').map(safeCalc).filter((r): r is NonNullable<typeof r> => !!r && Number.isFinite(r.custoRsM3) && r.custoRsM3 > 0);
++  const custoMedio = aprovados.length ? aprovados.reduce((s, r) => s + r.custoRsM3, 0) / aprovados.length : null;
++  const pendencias = tracos.filter(t => t.status !== 'aprovado' && t.status !== 'inativo')
++    .map(t => ({ t, erros: (() => { try { return validarTraco(t).filter(p => p.nivel === 'erro'); } catch { return []; } })() }))
++    .filter(x => x.erros.length).slice(0, 4);
++  const resumo = [espera ? `${espera} aguardando seu parecer` : '', emTeste ? `${emTeste} em teste` : '', pendencias.length ? `${pendencias.length} com pendências` : ''].filter(Boolean).join(' · ') || 'Nada pendente agora. Comece um traço novo ou revise os recentes.';
++  return <div className="ct-home">
++    <Heading eyebrow={`${saudacao()}${user?.nome ? `, ${user.nome.split(' ')[0]}` : ''}`} title="O que precisa de você hoje" subtitle={resumo}
++      action={<div className="ct-row"><Link className="ct-button ct-button--secondary" to="/tracos">Ver traços</Link><Button onClick={onNew}><Icon name="mais" size={18} strokeWidth={2.4}/>Novo traço</Button></div>}/>
++    {!apiConfigurada() && <div className="ct-alert ct-alert--aviso"><Icon name="alerta" size={18}/>API v2 ainda não configurada. O editor funciona com rascunhos locais; gravação no servidor depende do deploy.</div>}
++    <section className="ct-kpis" aria-label="Resumo">
++      <div className="ct-kpi-tile"><small>Aguardando aprovação</small><strong>{espera}</strong><span>Traços em teste já sincronizados</span></div>
++      <div className="ct-kpi-tile"><small>Traços em teste</small><strong>{emTeste}</strong><span>Aguardando resultados ou revisão</span></div>
++      <div className="ct-kpi-tile"><small>Rascunhos locais</small><strong>{locais}</strong><span>Ainda sem confirmação do servidor</span></div>
++      <div className="ct-kpi-tile"><small>Custo médio aprovado</small><strong>{custoMedio == null ? '—' : formatDinheiro(custoMedio)}</strong><span>{custoMedio == null ? 'Nenhum traço aprovado com custo' : `por m³ · ${aprovados.length} traço(s)`}</span></div>
++    </section>
++    {recentes.length > 0 && <div className="ct-resume"><div><small>CONTINUAR DE ONDE PAROU</small><strong>{recentes[0].nome || 'Traço sem nome'}</strong><span>{recentes[0].codigo || 'Rascunho local'} · v{recentes[0].versao || 'nova'} · {formatData(recentes[0].auditoria.alteradoEm)}</span></div><Button variant="accent" onClick={() => onOpen(recentes[0].id)}>Continuar<Icon name="seta" size={16}/></Button></div>}
++    <div className="ct-home-cols">
++      <div className="ct-home-stack">
++        <div className="ct-methods">
++          <article className="ct-method-card">
++            <div className="ct-method-viz" aria-hidden="true"><svg viewBox="0 0 260 70" width="100%" height="70"><path d="M8 62 C60 60 90 40 130 28 S210 10 252 8" fill="none" stroke="#0A1530" strokeWidth="2" strokeDasharray="4 4"/><path d="M8 64 C55 62 95 46 132 30 S205 14 252 9" fill="none" stroke="#DB0A40" strokeWidth="2.5"/></svg></div>
++            <h2>Dosagem por empacotamento</h2>
++            <p>Abrams, teor de argamassa e ajuste das proporções das areias pela curva granulométrica.</p>
++            <div className="ct-method-foot"><span>Método principal</span><Link className="ct-link" to="/dosagem/empacotamento">Abrir módulo de empacotamento</Link></div>
++          </article>
++          <article className="ct-method-card">
++            <div className="ct-method-viz" aria-hidden="true"><div className="ct-method-bar"><span style={{ flex: 351, background: '#0A1530' }}/><span style={{ flex: 200, background: '#5B7BD5' }}/><span style={{ flex: 296, background: '#FFC906' }}/><span style={{ flex: 370, background: '#9AA6BD' }}/><span style={{ flex: 20, background: '#E1E6EF' }}/></div></div>
++            <h2>Dosagem por volume</h2>
++            <p>Método Concrefer da planilha Rica v4, com frações volumétricas dos agregados.</p>
++            <div className="ct-method-foot"><span>Método alternativo</span><Link className="ct-link" to="/dosagem/volume">Abrir módulo por volume</Link></div>
++          </article>
++        </div>
++        <section className="ct-card">
++          <div className="ct-card-head"><h2>Traços recentes</h2><Link className="ct-link" to="/tracos">Ver todos</Link></div>
++          {recentes.length ? <div className="ct-table-wrap"><table className="ct-table"><thead><tr><th>Traço</th><th>Método</th><th className="num">fck</th><th className="num">a/c</th><th className="num">Custo/m³</th><th>Situação</th><th><span className="ct-sr">Ações</span></th></tr></thead><tbody>{recentes.map(t => { const r = safeCalc(t); const s = statusView(t); return <tr key={t.id}><td className="ct-cell-name"><strong>{t.nome || 'Sem nome'}</strong><small>{t.unidade || '—'} · v{t.versao || '—'}</small></td><td>{metodoLabel(t.metodo)}</td><td className="num">{formatNumero(t.objetivo.fckMPa, 0)} MPa</td><td className="num">{r ? formatNumero(r.relacaoAguaCimento, 3) : '—'}</td><td className="num">{r ? formatDinheiro(r.custoRsM3) : '—'}</td><td><Pill tone={s.tone}>{s.label}</Pill></td><td><Button variant="ghost" size="sm" onClick={() => onOpen(t.id)}>Abrir</Button></td></tr>; })}</tbody></table></div>
++            : <EmptyState title="Nenhum traço recente" description="Crie um traço para começar a dosagem." action={<Button onClick={onNew}>+ Novo traço</Button>}/>}
++        </section>
++      </div>
++      <div className="ct-home-stack">
++        <section className="ct-card">
++          <div className="ct-card-head"><h2>Pendências</h2>{pendencias.length ? <Pill tone="crit">{pendencias.length} traço(s)</Pill> : <Pill tone="ok">Em dia</Pill>}</div>
++          {pendencias.length ? <ul className="ct-pend">{pendencias.map(({ t, erros }) => <li key={t.id}><Icon name="erro" size={18} strokeWidth={2.2}/><div><button type="button" className="ct-pend-link" onClick={() => onOpen(t.id)}>{t.nome || 'Traço sem nome'}</button><span>{erros[0].mensagem}{erros.length > 1 ? ` (+${erros.length - 1})` : ''}</span></div></li>)}</ul>
++            : <p className="ct-muted" style={{ margin: 0, fontSize: '.875rem' }}>Nenhum traço aberto com erro de preenchimento.</p>}
++        </section>
++        <section className="ct-card">
++          <div className="ct-card-head"><h2>Atalhos</h2></div>
++          <div className="ct-shortcuts">
++            <Link to="/ensaios"><Icon name="ensaios"/>Registrar ensaio</Link>
++            <Link to="/comparacao-metodos"><Icon name="curva"/>Comparar métodos</Link>
++            <Link to="/custos"><Icon name="custos"/>Custos</Link>
++            <Link to="/ferramentas"><Icon name="ferramentas"/>Ferramentas</Link>
++          </div>
++        </section>
++      </div>
++    </div>
++  </div>;
++}
++
++const filtros: { id: string; label: string; test: (t: Traco) => boolean }[] = [
++  { id: 'todos', label: 'Todos', test: () => true },
++  { id: 'rascunho', label: 'Rascunhos', test: t => t.status === 'rascunho' },
++  { id: 'em_teste', label: 'Em teste', test: t => t.status === 'em_teste' },
++  { id: 'aprovado', label: 'Aprovados', test: t => t.status === 'aprovado' }
++];
++function Tracos({ tracos, onNew, onOpen }: { tracos: Traco[]; onNew: () => void; onOpen: (id: string) => void }) {
++  const [filter, setFilter] = useState('todos'); const [q, setQ] = useState(''); const [metodo, setMetodo] = useState('todos'); const [ordem, setOrdem] = useState('recentes');
++  const lista = useMemo(() => {
++    const base = tracos.filter(t => (filtros.find(f => f.id === filter)?.test(t) ?? true) && (metodo === 'todos' || t.metodo === metodo) && `${t.nome} ${t.codigo} ${t.unidade}`.toLowerCase().includes(q.toLowerCase()))
++      .map(t => ({ t, r: safeCalc(t) }));
++    return base.sort((a, b) => ordem === 'custo' ? (a.r?.custoRsM3 ?? Infinity) - (b.r?.custoRsM3 ?? Infinity) : ordem === 'fck' ? b.t.objetivo.fckMPa - a.t.objetivo.fckMPa : b.t.auditoria.alteradoEm.localeCompare(a.t.auditoria.alteradoEm));
++  }, [tracos, filter, q, metodo, ordem]);
++  const metodos = [...new Set(tracos.map(t => t.metodo))];
++  return <div>
++    <Heading eyebrow="Engenharia" title="Traços" subtitle="Versões, situação e custo de cada traço." action={<Button onClick={onNew}><Icon name="mais" size={18} strokeWidth={2.4}/>Novo traço</Button>}/>
++    <div className="ct-filter-chips" role="group" aria-label="Situação">{filtros.map(f => <button key={f.id} type="button" className={`ct-filter-chip${filter === f.id ? ' active' : ''}`} aria-pressed={filter === f.id} onClick={() => setFilter(f.id)}>{f.label}<b>{tracos.filter(f.test).length}</b></button>)}</div>
++    <div className="ct-filter-bar">
++      <div className="ct-field ct-filter-search"><label htmlFor="tracos-busca" className="ct-sr">Buscar traço</label><div className="ct-input-box"><span className="ct-unit" aria-hidden="true"><Icon name="busca" size={16}/></span><input id="tracos-busca" value={q} onChange={e => setQ(e.target.value)} placeholder="Nome, código ou unidade"/></div></div>
++      <div className="ct-field"><label htmlFor="tracos-metodo" className="ct-sr">Método</label><select id="tracos-metodo" value={metodo} onChange={e => setMetodo(e.target.value)}><option value="todos">Todos os métodos</option>{metodos.map(m => <option key={m} value={m}>{metodoLabel(m)}</option>)}</select></div>
++      <div className="ct-field"><label htmlFor="tracos-ordem" className="ct-sr">Ordenar</label><select id="tracos-ordem" value={ordem} onChange={e => setOrdem(e.target.value)}><option value="recentes">Alterados recentemente</option><option value="custo">Menor custo/m³</option><option value="fck">Maior fck</option></select></div>
++    </div>
++    {lista.length ? <div className="ct-trace-list">
++      <div className="ct-trace-head" aria-hidden="true"><span>Traço</span><span>Método</span><span className="num">fck</span><span className="num">a/c</span><span className="num">Custo/m³</span><span>Situação</span><span>Alterado</span><span/></div>
++      {lista.map(({ t, r }) => { const s = statusView(t); return <article className="ct-card ct-trace-row" key={t.id}>
++        <div className="ct-cell-name"><strong>{t.nome || 'Sem nome'}</strong><small>{t.codigo || 'Local'} · v{t.versao || 'nova'} · {t.unidade || '—'}</small></div>
++        <span className="ct-trace-method" data-label="Método">{metodoLabel(t.metodo)}</span>
++        <span className="num" data-label="fck">{formatNumero(t.objetivo.fckMPa, 0)} MPa</span>
++        <span className="num" data-label="a/c">{r ? formatNumero(r.relacaoAguaCimento, 3) : '—'}</span>
++        <span className="num" data-label="Custo/m³">{r ? formatDinheiro(r.custoRsM3) : 'Custo não calculado'}</span>
++        <span><Pill tone={s.tone}>{s.label}</Pill></span>
++        <span className="ct-muted ct-trace-date" data-label="Alterado">{formatData(t.auditoria.alteradoEm)}</span>
++        <Button variant="ghost" size="sm" onClick={() => onOpen(t.id)}>Abrir</Button>
++      </article>; })}
++    </div> : <EmptyState title="Nenhum traço encontrado" description="Ajuste os filtros ou crie um traço." action={<Button onClick={onNew}>+ Novo traço</Button>}/>}
++  </div>;
++}
++
++const titles: Record<string, string> = { '/dosagem/empacotamento': 'Dosagem por empacotamento', '/dosagem/volume': 'Dosagem por volume', '/dosagem41': 'Dosagem 4.1', '/comparacao-metodos': 'Comparação dos métodos', '/tracos': 'Traços', '/materiais': 'Materiais', '/fornecedores': 'Fornecedores', '/ensaios': 'Ensaios', '/ferramentas': 'Ferramentas', '/custos': 'Custos', '/referencia': 'Referência', '/config': 'Configurações', '/producao-r1': 'Produção', '/importacao-r1': 'Importação' };
++function InnerApp() { const location=useLocation(),navigate=useNavigate(); const [mode,preference,setPreference]=useLayoutMode(); const [tracos,setTracos]=useState<Traco[]>([]); const [status,setStatus]=useState<SaveStatus>('rascunho_local'); const [message,setMessage]=useState(''); const [loading,setLoading]=useState(true); const persist=useCallback((t:Traco)=>setTracos(list=>[t,...list.filter(x=>x.id!==t.id)]),[]); useEffect(()=>{void (async()=>{const local=await listarRascunhos<Traco>();setTracos(local);setLoading(false);try{const server=await chamarApi<Traco[]>('tracos.listar',{});await guardarCache('tracos',server);setTracos(list=>[...server,...list.filter(l=>!server.some(s=>s.id===l.id))])}catch{const cached=await lerCache<Traco[]>('tracos');if(cached)setTracos(list=>[...cached.valor,...list.filter(l=>!cached.valor.some(s=>s.id===l.id))])}})();const unsubscribe=observarStatus((s,m)=>{setStatus(s);setMessage(m||'')});const stop=iniciarSincronizacao();return()=>{unsubscribe();stop()}},[]); const onNew=()=>{const t=novoTraco();persist(t);navigate(`/traco/${t.id}`)}; const onOpen=(id:string)=>navigate(`/traco/${id}`); const path=location.pathname; const title=path.startsWith('/traco/')?'Editor de traço':titles[path]??'Início'; const id=path.startsWith('/traco/')?path.split('/')[2]:''; const active=tracos.find(t=>t.id===id); return <AppLayout mode={mode} title={title} saveStatus={status} saveMessage={message} counts={{ tracos: tracos.length }}>{loading?<div className="ct-card">Carregando rascunhos…</div>:path==='/'?<Home tracos={tracos} onNew={onNew} onOpen={onOpen}/>:path==='/tracos'?<Tracos tracos={tracos} onNew={onNew} onOpen={onOpen}/>:path==='/dosagem/empacotamento'?<Recipe41Page key="packing" fixedMethod="principal_abrams" layout={mode}/>:path==='/dosagem/volume'?<Recipe41Page key="volume" fixedMethod="alternativo_concrefer" layout={mode}/>:path==='/dosagem41'?<LegacyDosagemRedirect/>:path==='/comparacao-metodos'?<Recipe41Page layout={mode}/>:path.startsWith('/traco/')?(active?<Editor initial={active} onPersist={persist} status={status} statusMessage={message}/>:<EmptyState title="Traço não encontrado" description="Volte à lista de traços." action={<Button onClick={()=>navigate('/tracos')}>Ver traços</Button>}/>):path==='/materiais'?<MateriaisPage/>:path==='/fornecedores'?<FornecedoresPage/>:path==='/ensaios'?<EnsaiosPage/>:path==='/ferramentas'?<FerramentasPage/>:path==='/custos'?<CustosPage/>:path==='/referencia'?<ReferenciaPage/>:path==='/producao-r1'?<ProducaoRelease1/>:path==='/importacao-r1'?<ImportacaoRelease1/>:path==='/config'?<ConfigPage preference={preference} setPreference={setPreference}/>:<Home tracos={tracos} onNew={onNew} onOpen={onOpen}/>}</AppLayout>; }
++export function App() { return <HashRouter><InnerApp/></HashRouter>; }
+ function LegacyDosagemRedirect() { const navigate = useNavigate(); useEffect(() => { navigate('/dosagem/empacotamento', { replace: true }); }, [navigate]); return null; }
+diff --git a/src/app/editor.css b/src/app/editor.css
+index ee4c98a..fa1cafe 100644
+--- a/src/app/editor.css
++++ b/src/app/editor.css
+@@ -1,4 +1,4 @@
+ .ct-eyebrow{font-size:.7rem;font-weight:700;color:var(--ct-red-ink);letter-spacing:.08em;margin:0 0 6px!important}.ct-stepper{display:flex;background:#fff;border:1px solid var(--ct-line);border-radius:12px;padding:6px;gap:5px}.ct-stepper button{border:0;background:transparent;color:var(--ct-muted);flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:8px;font-weight:600;font-size:.83rem}.ct-stepper button span{width:24px;height:24px;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;font-size:.72rem}.ct-stepper button.active{background:var(--ct-navy);color:#fff}.ct-stepper button b{background:var(--ct-warn-bg);color:var(--ct-warn);border-radius:99px;padding:2px 5px}.ct-editor-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}.ct-editor-content>div{display:grid;gap:16px}.ct-result-panel{position:sticky;top:20px}.ct-kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.ct-kpi{padding:10px;border-radius:9px;background:var(--ct-calc-bg);font-variant-numeric:tabular-nums}.ct-kpi small{display:block;color:var(--ct-muted);font-size:.72rem}.ct-kpi strong{display:block;font-size:1.05rem;margin-top:5px}.ct-kpi span{display:block;font-size:.68rem;color:var(--ct-muted);margin-top:3px}.ct-result-footer{display:grid;gap:4px;margin:16px 0;font-size:.85rem}.ct-material-list{display:grid;gap:12px}.ct-material{padding:16px;background:#f8f9fc;border:1px solid var(--ct-line);border-radius:10px}.ct-material .ct-grid{margin-top:12px}.ct-table input{width:105px;min-height:42px;border:1px solid var(--ct-line);border-radius:6px;padding:5px 8px;font-variant-numeric:tabular-nums}.ct-checkbox{display:flex;align-items:center;gap:8px;font-size:.85rem;font-weight:600;margin-top:22px}.ct-checkbox input{width:18px;height:18px}.ct-editor-actions{position:sticky;bottom:0;z-index:100;background:#fff;border-top:1px solid var(--ct-line);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;color:var(--ct-muted);font-size:.82rem}.ct-conflict{width:min(1100px,95vw);max-height:90vh;overflow:auto}.ct-conflict pre{font-size:.7rem;background:var(--ct-bg);overflow:auto;max-height:350px;padding:12px}
+ @media(min-width:1024px) and (max-width:1279px){.ct-editor-grid{grid-template-columns:minmax(0,1fr) 300px}}
+ @media(max-width:1023px){.ct-editor-grid{display:flex;flex-direction:column}.ct-editor-content,.ct-result-panel{width:100%}.ct-result-panel{order:-1;position:static}.ct-result-panel>.ct-card{padding:12px}.ct-kpi-grid{display:flex;overflow-x:auto}.ct-kpi{min-width:125px}.ct-stepper button{font-size:0;gap:0}.ct-stepper button span{font-size:.72rem}.ct-stepper button.active{font-size:.78rem;gap:6px}}
+-@media(max-width:599px){.ct-mobile-main>div,.ct-editor,.ct-editor-grid,.ct-editor-content,.ct-editor-content>.ct-card{min-width:0;width:100%}.ct-mobile-main>div,.ct-editor{grid-template-columns:minmax(0,1fr)}.ct-mobile-shell{overflow-x:hidden}.ct-editor .ct-page-heading>button{display:none}.ct-editor-actions{position:fixed;left:0;right:0;bottom:68px}.ct-editor{padding-bottom:90px}.ct-kpi strong{font-size:.92rem}.ct-material .ct-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ct-material .ct-field:nth-child(2){grid-column:span 2}.ct-stepper{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));scroll-margin-top:72px}.ct-stepper button{min-width:0;overflow:hidden;font-size:0!important;gap:0!important}.ct-carta{padding:14px}}
++@media(max-width:599px){.ct-mobile-main>div,.ct-editor,.ct-editor-grid,.ct-editor-content,.ct-editor-content>.ct-card{min-width:0;width:100%}.ct-mobile-main>div,.ct-editor{grid-template-columns:minmax(0,1fr)}.ct-mobile-shell{overflow-x:clip}.ct-editor .ct-page-heading>button{display:none}.ct-editor-actions{position:fixed;left:0;right:0;bottom:68px}.ct-editor{padding-bottom:90px}.ct-kpi strong{font-size:.92rem}.ct-material .ct-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ct-material .ct-field:nth-child(2){grid-column:span 2}.ct-stepper{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));scroll-margin-top:72px}.ct-stepper button{min-width:0;overflow:hidden;font-size:0!important;gap:0!important}.ct-carta{padding:14px}}
+diff --git a/src/app/home.css b/src/app/home.css
+new file mode 100644
+index 0000000..0734721
+--- /dev/null
++++ b/src/app/home.css
+@@ -0,0 +1,58 @@
++.ct-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
++.ct-kpi-tile{background:#fff;border:1px solid var(--ct-line);border-radius:var(--ct-radius);padding:16px 18px;display:flex;flex-direction:column;gap:6px}
++.ct-kpi-tile small{font-size:.75rem;font-weight:600;color:var(--ct-muted)}
++.ct-kpi-tile strong{font-size:1.85rem;letter-spacing:-.02em;line-height:1.1}
++.ct-kpi-tile span{font-size:.75rem;color:var(--ct-muted)}
++.ct-resume{display:flex;flex-wrap:wrap;align-items:center;gap:16px;justify-content:space-between;background:var(--ct-navy-2);color:#fff;border-radius:var(--ct-radius);padding:16px 20px}
++.ct-resume small{display:block;color:var(--ct-navy-ink);font-size:.7rem;font-weight:700;letter-spacing:.1em}
++.ct-resume strong{display:block;font-size:1.05rem;margin-top:3px}
++.ct-resume span{display:block;font-size:.8rem;color:var(--ct-navy-ink);margin-top:2px}
++.ct-home-cols{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px;align-items:start}
++.ct-home-stack{display:flex;flex-direction:column;gap:20px;min-width:0}
++.ct-methods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
++.ct-method-card{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--ct-line);border-radius:var(--ct-radius);padding:20px;transition:border-color .15s}
++.ct-method-card:hover{border-color:var(--ct-navy)}
++.ct-method-card h2{margin:0;font-size:1.05rem}
++.ct-method-card p{margin:0;font-size:.82rem;color:var(--ct-muted);line-height:1.5;flex:1}
++.ct-method-viz{height:84px;border-radius:12px;background:var(--ct-bg);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0 12px}
++.ct-method-bar{display:flex;width:100%;max-width:260px;height:26px;border-radius:6px;overflow:hidden}
++.ct-method-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:.75rem;color:var(--ct-muted)}
++.ct-method-foot .ct-link{font-size:.82rem;min-height:44px;display:inline-flex;align-items:center}
++.ct-cell-name strong{display:block;font-weight:600}.ct-cell-name small{display:block;color:var(--ct-muted);font-size:.75rem;margin-top:2px}
++.ct-pend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
++.ct-pend li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:#F7F8FB;color:var(--ct-crit)}
++.ct-pend li svg{flex:none;margin-top:2px}
++.ct-pend li div{display:flex;flex-direction:column;gap:2px;min-width:0}
++.ct-pend span{font-size:.78rem;color:var(--ct-muted);line-height:1.4}
++.ct-pend-link{border:0;background:none;padding:0;text-align:left;font-weight:700;font-size:.85rem;color:var(--ct-ink);min-height:24px}
++.ct-pend-link:hover{text-decoration:underline}
++.ct-shortcuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
++.ct-shortcuts a{display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid var(--ct-line);border-radius:12px;text-decoration:none;color:var(--ct-ink);font-size:.82rem;font-weight:600;min-height:44px}
++.ct-shortcuts a:hover{border-color:var(--ct-navy)}
++.ct-shortcuts svg{color:var(--ct-red-ink)}
++
++.ct-filter-chips{display:flex;flex-wrap:wrap;gap:6px}
++.ct-filter-chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--ct-line-strong);background:#fff;font-size:.82rem;font-weight:600;color:var(--ct-ink-2)}
++.ct-filter-chip b{font-size:.7rem;background:var(--ct-calc-bg);border-radius:999px;padding:1px 7px}
++.ct-filter-chip.active{background:var(--ct-navy);border-color:var(--ct-navy);color:#fff}
++.ct-filter-chip.active b{background:var(--ct-yellow);color:var(--ct-navy)}
++.ct-filter-bar{display:flex;flex-wrap:wrap;gap:10px}
++.ct-filter-bar .ct-field{flex:0 1 220px}.ct-filter-bar .ct-filter-search{flex:1 1 280px}
++.ct-filter-search .ct-unit{padding:0 0 0 12px}
++.ct-trace-list{display:flex;flex-direction:column;gap:8px}
++.ct-trace-head,.ct-trace-row{display:grid;grid-template-columns:minmax(200px,2.2fr) 1.2fr .8fr .7fr 1.1fr 1.3fr 1fr 80px;gap:12px;align-items:center}
++.ct-trace-head{padding:0 20px;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--ct-muted)}
++.ct-trace-row{padding:12px 20px;font-size:.875rem}
++.ct-trace-row .num,.ct-trace-head .num{text-align:right;font-variant-numeric:tabular-nums}
++.ct-trace-date{font-size:.78rem}
++
++@media(max-width:1180px){.ct-home-cols{grid-template-columns:1fr}.ct-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
++  .ct-trace-head{display:none}
++  .ct-trace-row{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:10px}
++  .ct-trace-row .ct-cell-name{grid-column:1/-2}
++  .ct-trace-row>button{grid-column:-2/-1;grid-row:1;justify-self:end}
++  .ct-trace-row .num,.ct-trace-row .ct-trace-method,.ct-trace-row .ct-trace-date{text-align:left}
++  .ct-trace-row [data-label]::before{content:attr(data-label);display:block;font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ct-muted);margin-bottom:2px}}
++@media(max-width:600px){.ct-methods{grid-template-columns:1fr}.ct-kpis{gap:10px}.ct-kpi-tile{padding:12px 14px}.ct-kpi-tile strong{font-size:1.5rem}
++  .ct-trace-row{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px 16px}
++  .ct-home .ct-page-heading .ct-row{width:100%}.ct-home .ct-page-heading .ct-row>*{flex:1}}
+diff --git a/src/app/layout.css b/src/app/layout.css
+index df049fd..e5c8554 100644
+--- a/src/app/layout.css
++++ b/src/app/layout.css
+@@ -1,9 +1,86 @@
+-.ct-desktop-shell{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}.ct-tablet-shell{display:grid;grid-template-columns:76px minmax(0,1fr);min-height:100vh}.ct-shell-body{min-width:0}
+-.ct-sidebar{background:var(--ct-navy);color:#fff;min-height:100vh;padding:22px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}.ct-logo{display:flex;align-items:center;gap:10px;padding:5px 12px 24px;border-bottom:1px solid #ffffff24}.ct-logo-mark{background:var(--ct-yellow);color:var(--ct-navy);font-size:25px;font-weight:800;width:36px;height:36px;border-radius:9px;display:grid;place-items:center}.ct-logo strong{display:block;font-size:.9rem;letter-spacing:.08em}.ct-logo small{display:block;color:#b9c6df;font-size:.66rem;margin-top:3px;letter-spacing:.13em}.ct-sidebar-list{padding-top:18px;display:grid;gap:4px;overflow:auto}.ct-sidebar-list a{display:flex;align-items:center;gap:13px;text-decoration:none;color:#d7def0;font-weight:600;font-size:.87rem;min-height:46px;padding:0 13px;border-radius:9px}.ct-sidebar-list a svg{color:var(--ct-yellow)}.ct-sidebar-list a.active{background:var(--ct-red);color:#fff}.ct-sidebar-list a.active svg{color:#fff}.ct-sidebar-footer{margin-top:auto;padding:18px 12px 0;color:#b9c6df;font-size:.72rem}
+-.ct-topbar{height:78px;background:#fff;border-bottom:1px solid var(--ct-line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:20px}.ct-top-title{display:grid;gap:4px}.ct-top-title small{color:var(--ct-muted);font-size:.65rem;letter-spacing:.1em;font-weight:700}.ct-top-title strong{font-size:1.12rem}.ct-top-actions{display:flex;align-items:center;gap:18px}.ct-top-search{display:flex;align-items:center;gap:10px;color:var(--ct-muted);background:#f7f8fb;border:1px solid var(--ct-line);border-radius:9px;padding:9px 12px;min-width:220px}.ct-top-search kbd{margin-left:auto;font-size:.68rem;background:#fff;border:1px solid var(--ct-line);border-radius:4px;padding:2px 5px}.ct-top-avatar{width:34px;height:34px;border-radius:50%;background:var(--ct-navy);color:#fff;display:grid;place-items:center;font-size:.67rem;font-weight:700}.ct-main{padding:28px;max-width:1480px;margin:0 auto}.ct-main>div{display:grid;gap:20px}.ct-page-heading{display:flex;justify-content:space-between;align-items:start;gap:16px}.ct-page-heading h1{margin:0;font-size:1.5rem}.ct-page-heading p{margin:6px 0 0;color:var(--ct-muted);font-size:.87rem}
+-.ct-tablet-rail{position:sticky;top:0;height:100vh;background:var(--ct-navy);padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:5px}.ct-tablet-rail>a{width:68px;min-height:58px;border-radius:9px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;gap:3px}.ct-tablet-rail>a svg{color:var(--ct-yellow)}.ct-tablet-rail small{font-size:.56rem;max-width:66px;overflow:hidden;text-overflow:ellipsis}.ct-tablet-rail button{color:#fff}.ct-tablet-shell .ct-main{padding:22px}.ct-tablet-shell .ct-topbar{padding:0 20px}
+-.ct-mobile-shell{min-height:100vh;padding-bottom:72px}.ct-mobile-top{height:58px;background:var(--ct-navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 8px;gap:8px}.ct-mobile-top strong{font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ct-mobile-top .ct-chip{font-size:0;width:13px;height:13px;padding:0;overflow:hidden}.ct-mobile-top .ct-chip::first-letter{font-size:10px}.ct-mobile-main{padding:16px;max-width:600px;margin:0 auto}.ct-mobile-main>div{display:grid;gap:16px}.ct-mobile-nav{position:fixed;z-index:20;bottom:0;left:0;right:0;height:68px;background:#fff;border-top:1px solid var(--ct-line);display:flex;align-items:center;justify-content:space-around}.ct-mobile-nav>a,.ct-mobile-nav>button:not(.ct-mobile-add){border:0;background:transparent;text-decoration:none;color:var(--ct-muted);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.64rem;min-width:54px}.ct-mobile-nav .active{color:var(--ct-red-ink)}.ct-mobile-add{border:0;background:var(--ct-red);color:#fff;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;margin-top:-18px;box-shadow:0 5px 13px #0a153033}
+-.ct-modal-backdrop,.ct-sheet-backdrop{position:fixed;inset:0;z-index:50;background:#07132a88;display:flex;align-items:center;justify-content:center}.ct-command{background:#fff;width:min(520px,92vw);padding:12px;border-radius:14px;box-shadow:0 20px 60px #0003}.ct-command input{width:100%;height:48px;padding:12px;border:1px solid var(--ct-line);border-radius:8px}.ct-command button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:#fff;text-align:left;padding:12px;border-radius:7px}.ct-command button:hover{background:var(--ct-bg)}.ct-sheet-backdrop{align-items:end}.ct-bottom-sheet{background:#fff;width:100%;border-radius:18px 18px 0 0;padding:20px 20px 30px;display:grid;gap:6px}.ct-bottom-sheet h2{margin:0}.ct-bottom-sheet>a{padding:12px;color:var(--ct-navy);text-decoration:none;font-weight:600;border-bottom:1px solid var(--ct-line)}
+-.ct-nav-coming { display: flex; flex-direction: column; gap: 2px; padding: 10px 14px; color: #66738a; cursor: default; font-size: 13px; }
+-.ct-nav-coming small { font-size: 11px; }
+-.ct-pilot-banner{position:sticky;top:0;z-index:100;background:#ffca55;color:#302005;padding:10px 16px;text-align:center;font-weight:700;box-shadow:0 2px 8px #0002}.ct-pilot-banner button{margin-left:12px;background:#302005;color:white;border:0;border-radius:5px;padding:5px 12px;cursor:pointer}
++/* Casca — desktop */
++.ct-desktop-shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh;transition:grid-template-columns .2s}
++.ct-desktop-shell.is-collapsed{grid-template-columns:76px minmax(0,1fr)}
++.ct-tablet-shell{display:grid;grid-template-columns:76px minmax(0,1fr);min-height:100vh}
++.ct-shell-body{min-width:0;display:flex;flex-direction:column}
++
++.ct-sidebar{background:var(--ct-navy);color:#D7DEF0;padding:18px 12px;display:flex;flex-direction:column;gap:14px;position:sticky;top:0;height:100vh}
++.ct-sidebar-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
++.ct-sidebar.is-collapsed .ct-sidebar-top{flex-direction:column}
++.ct-sidebar-toggle{color:var(--ct-navy-mute);width:36px;height:36px}.ct-sidebar-toggle:hover{background:var(--ct-navy-hover);color:#fff}
++.ct-logo{display:flex;align-items:center;gap:10px;padding:2px 6px}
++.ct-logo-mark{background:var(--ct-yellow);color:var(--ct-navy);font-size:18px;font-weight:800;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none}
++.ct-logo strong{display:block;font-size:.82rem;letter-spacing:.08em;color:#fff}.ct-logo small{display:block;color:var(--ct-navy-ink);font-size:.66rem;margin-top:2px;letter-spacing:.14em}
++.ct-sidebar-list{display:flex;flex-direction:column;gap:14px;overflow:auto;flex:1;margin:0 -4px;padding:0 4px}
++.ct-nav-group{display:flex;flex-direction:column;gap:2px}
++.ct-nav-group-title{font-size:.66rem;font-weight:700;letter-spacing:.14em;color:var(--ct-navy-mute);padding:0 10px 6px;text-transform:uppercase}
++.ct-nav-group-rule{height:1px;background:var(--ct-navy-3);margin:4px 10px 6px}
++.ct-nav-link{display:flex;align-items:center;gap:11px;text-decoration:none;color:#D7DEF0;font-weight:500;font-size:.875rem;min-height:40px;padding:0 10px;border-radius:9px}
++.ct-nav-link svg{color:var(--ct-navy-mute);flex:none}
++.ct-nav-link:hover{background:var(--ct-navy-hover);color:#fff}
++.ct-nav-link.active{background:var(--ct-red);color:#fff;font-weight:600}.ct-nav-link.active svg{color:#fff}
++.ct-nav-count{margin-left:auto;font-size:.68rem;font-weight:700;background:var(--ct-navy-3);color:#fff;border-radius:999px;padding:2px 8px}
++.ct-nav-link.active .ct-nav-count{background:#fff;color:var(--ct-red-ink)}
++.ct-sidebar.is-collapsed .ct-nav-link{justify-content:center;padding:0}
++.ct-nav-coming{border:1px dashed #33426A;border-radius:9px;font-size:.78rem;color:var(--ct-navy-ink)}
++.ct-nav-coming summary{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;cursor:pointer;list-style:none}
++.ct-nav-coming summary::-webkit-details-marker{display:none}
++.ct-nav-soon{font-size:.66rem;font-weight:700;background:var(--ct-navy-3);color:#fff;border-radius:999px;padding:2px 8px}
++.ct-nav-coming ul{margin:0;padding:0 10px 10px 24px;display:grid;gap:4px;color:var(--ct-navy-mute)}
++.ct-sidebar-footer{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--ct-navy-3);padding-top:10px}
++.ct-sidebar-user{display:flex;align-items:center;gap:10px;padding:4px 6px}
++.ct-sidebar-user strong{display:block;color:#fff;font-size:.82rem}.ct-sidebar-user small{font-size:.68rem;color:var(--ct-navy-ink)}
++.ct-avatar{width:32px;height:32px;border-radius:50%;background:var(--ct-yellow);color:var(--ct-navy);display:grid;place-items:center;font-size:.7rem;font-weight:800;flex:none}
++
++.ct-topbar{min-height:68px;background:#fff;border-bottom:1px solid var(--ct-line);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 28px;gap:12px;position:sticky;top:0;z-index:30}
++.ct-top-title{display:grid;gap:3px;min-width:0}.ct-top-title small{color:var(--ct-muted);font-size:.66rem;letter-spacing:.12em;font-weight:700}.ct-top-title strong{font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
++.ct-top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
++.ct-top-search{display:flex;align-items:center;gap:8px;color:var(--ct-muted);background:#F7F8FB;border:1px solid var(--ct-line);border-radius:10px;padding:0 12px;min-height:40px;min-width:220px;font-size:.875rem}
++.ct-top-search.is-compact{min-width:0;width:44px;justify-content:center;padding:0}
++.ct-top-search kbd{margin-left:auto;font:inherit;font-size:.68rem;background:#fff;border:1px solid var(--ct-line);border-radius:5px;padding:1px 6px}
++.ct-main{padding:24px 28px 40px;max-width:1440px;width:100%;margin:0 auto;flex:1}
++.ct-main>div{display:grid;gap:20px}
++.ct-page-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}.ct-page-heading h1{margin:0;font-size:1.65rem;letter-spacing:-.02em}.ct-page-heading p{margin:6px 0 0;color:var(--ct-muted);font-size:.875rem}
++
++/* Tablet */
++.ct-tablet-rail{position:sticky;top:0;height:100vh;background:var(--ct-navy);padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;z-index:31}
++.ct-tablet-rail>a{width:66px;min-height:56px;border-radius:10px;color:#D7DEF0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;gap:4px}
++.ct-tablet-rail>a svg{color:var(--ct-navy-mute)}.ct-tablet-rail>a.active{background:var(--ct-red);color:#fff}.ct-tablet-rail>a.active svg{color:#fff}
++.ct-tablet-rail small{font-size:.6rem;font-weight:600;max-width:62px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
++.ct-tablet-rail button{color:#fff;margin-bottom:6px}
++.ct-tablet-shell .ct-main{padding:20px}.ct-tablet-shell .ct-topbar{padding:10px 20px}
++.ct-drawer-backdrop{justify-content:flex-start;align-items:stretch}.ct-drawer-backdrop .ct-sidebar{width:280px}
++
++/* Celular */
++.ct-mobile-shell{min-height:100vh;padding-bottom:76px}
++.ct-mobile-top{height:56px;background:var(--ct-navy);color:#fff;display:flex;align-items:center;gap:2px;padding:0 6px;position:sticky;top:0;z-index:30}
++.ct-mobile-top strong{font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
++.ct-mobile-top .ct-chip{padding:6px}.ct-mobile-top .ct-chip .ct-chip-text{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
++.ct-pilot-strip{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--ct-warn-bg);color:var(--ct-warn);border-bottom:1px solid var(--ct-warn-line);font-size:.72rem;font-weight:700;padding:6px 12px;text-align:center}
++.ct-mobile-main{padding:16px;max-width:600px;margin:0 auto}.ct-mobile-main>div{display:grid;gap:14px}
++.ct-mobile-main .ct-page-heading h1{font-size:1.35rem}
++.ct-mobile-nav{position:fixed;z-index:40;bottom:0;left:0;right:0;height:72px;background:#fff;border-top:1px solid var(--ct-line);display:flex;align-items:center;justify-content:space-around;padding-bottom:4px}
++.ct-mobile-nav>a,.ct-mobile-nav>button:not(.ct-mobile-add){border:0;background:transparent;text-decoration:none;color:var(--ct-muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:.68rem;font-weight:600;min-width:56px;min-height:48px}
++.ct-mobile-nav .active{color:var(--ct-red-ink)}
++.ct-mobile-add{border:4px solid var(--ct-bg);background:var(--ct-red);color:#fff;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;margin-top:-26px;box-shadow:0 6px 16px #DB0A4055}
++
++/* Sobreposições */
++.ct-modal-backdrop,.ct-sheet-backdrop{position:fixed;inset:0;z-index:60;background:#07132a88;display:flex;align-items:center;justify-content:center}
++.ct-command{background:#fff;width:min(560px,92vw);padding:12px;border-radius:16px;box-shadow:var(--ct-shadow-pop);max-height:80vh;overflow:auto}
++.ct-command input{width:100%;height:48px;padding:12px;border:1px solid var(--ct-line-input);border-radius:10px;margin-bottom:6px}
++.ct-command button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:#fff;text-align:left;padding:11px 12px;border-radius:9px;color:var(--ct-ink);font-weight:500}
++.ct-command button small{margin-left:auto;color:var(--ct-muted);font-size:.72rem}
++.ct-command button:hover,.ct-command button:focus-visible{background:var(--ct-bg)}
++.ct-sheet-backdrop{align-items:flex-end}
++.ct-bottom-sheet{background:#fff;width:100%;max-height:85vh;overflow:auto;border-radius:20px 20px 0 0;padding:16px 16px 28px;display:grid;gap:2px}
++.ct-bottom-sheet h2{margin:0;font-size:1.1rem}
++.ct-bottom-sheet a,.ct-sheet-exit{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 8px;color:var(--ct-navy);text-decoration:none;font-weight:600;border-radius:10px;border:0;background:transparent;font-size:.95rem}
++.ct-bottom-sheet a svg,.ct-sheet-exit svg{color:var(--ct-red-ink)}
++.ct-sheet-group{display:grid;gap:2px;padding:6px 0;border-bottom:1px solid var(--ct-line-2)}
++.ct-sheet-group small{font-size:.66rem;font-weight:700;letter-spacing:.12em;color:var(--ct-muted);text-transform:uppercase;padding:4px 8px}
++
++@media print{.ct-sidebar,.ct-topbar,.ct-tablet-rail,.ct-mobile-top,.ct-mobile-nav,.ct-pilot-strip{display:none!important}}
++
++.ct-topbar.is-compact{flex-wrap:nowrap}
++.ct-topbar.is-compact .ct-top-actions{flex-wrap:nowrap;gap:8px}
++.ct-topbar.is-compact .ct-chip{padding:6px}.ct-topbar.is-compact .ct-chip .ct-chip-text{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index e4f4519..6e5a997 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
+ import { Icon } from '../ui/icons';
+ import type { SaveStatus } from '../data/sync';
+ import { SaveStatusView } from '../ui/components';
++import { getUsuario } from '../data/authAdapter';
+ import './layout.css';
+ 
+ async function sair() {
+@@ -16,36 +17,162 @@ export function usePilotMode() {
+   return pilot;
+ }
+ 
+-export function PilotBanner() {
++export function useUsuario() {
++  const [user, setUser] = useState<{ nome: string; email: string } | null>(null);
++  useEffect(() => { void getUsuario().then(u => setUser(u)); }, []);
++  return user;
++}
++
++/** Aviso de piloto: continua com papel de status e a palavra PILOTO visível em todos os tamanhos. */
++export function PilotNotice({ compact = false }: { compact?: boolean }) {
+   const pilot = usePilotMode();
+-  return pilot !== false ? <div className="ct-pilot-banner" role="status">⚠ PILOTO — o sistema oficial continua sendo o legado. Não use estas cartas na produção. <button type="button" onClick={() => void sair()}>Sair</button></div> : null;
++  if (pilot === false) return null;
++  return compact
++    ? <div className="ct-pilot-strip" role="status"><Icon name="alerta" size={14} strokeWidth={2.4}/>PILOTO — o sistema oficial continua sendo o legado</div>
++    : <span className="ct-pill ct-pill--pilot" role="status" title="O sistema oficial continua sendo o legado. Não use estas cartas na produção."><Icon name="alerta" size={14} strokeWidth={2.4}/>PILOTO · legado é oficial</span>;
+ }
++/** Mantido por compatibilidade; a casca agora usa PilotNotice. */
++export function PilotBanner() { return <PilotNotice compact/>; }
+ 
+ export type LayoutMode = 'desktop' | 'tablet' | 'mobile';
+ export type LayoutPreference = LayoutMode | 'automatico';
+-const nav = [
+-  { path:'/', label:'Início', icon:'inicio' },
+-  { path:'/dosagem/empacotamento', label:'Dosagem por empacotamento', icon:'tracos' },
+-  { path:'/dosagem/volume', label:'Dosagem por volume', icon:'tracos' },
+-  { path:'/tracos', label:'Traços', icon:'tracos' },
+-  { path:'/materiais', label:'Materiais', icon:'materiais' }, { path:'/fornecedores', label:'Fornecedores', icon:'fornecedores' },
+-  { path:'/ensaios', label:'Ensaios', icon:'ensaios' }, { path:'/ferramentas', label:'Ferramentas', icon:'ferramentas' },
+-  { path:'/custos', label:'Custos', icon:'custos' }, { path:'/referencia', label:'Referência', icon:'referencia' },
+-  { path:'/producao-r1', label:'Produção', icon:'tracos' },
+-  { path:'/importacao-r1', label:'Importação', icon:'referencia' },
+-  { path:'/config', label:'Configurações', icon:'config' }
++type NavItem = { path: string; label: string; short?: string; icon: string; count?: 'tracos' };
++const groups: { title: string; items: NavItem[] }[] = [
++  { title: 'Engenharia', items: [
++    { path: '/', label: 'Início', icon: 'inicio' },
++    { path: '/dosagem/empacotamento', label: 'Dosagem por empacotamento', short: 'Por empacotamento', icon: 'empacotamento' },
++    { path: '/dosagem/volume', label: 'Dosagem por volume', short: 'Por volume', icon: 'volume' },
++    { path: '/tracos', label: 'Traços', icon: 'tracos', count: 'tracos' },
++    { path: '/custos', label: 'Custos', icon: 'custos' },
++    { path: '/ferramentas', label: 'Ferramentas', icon: 'ferramentas' },
++    { path: '/referencia', label: 'Referência', icon: 'referencia' }
++  ] },
++  { title: 'Laboratório', items: [
++    { path: '/ensaios', label: 'Ensaios', icon: 'ensaios' },
++    { path: '/materiais', label: 'Materiais', icon: 'materiais' },
++    { path: '/fornecedores', label: 'Fornecedores', icon: 'fornecedores' }
++  ] },
++  { title: 'Produção', items: [
++    { path: '/producao-r1', label: 'Produção', icon: 'producao' },
++    { path: '/importacao-r1', label: 'Importação', icon: 'importacao' }
++  ] }
+ ];
++const configItem: NavItem = { path: '/config', label: 'Configurações', icon: 'config' };
++const allNav = [...groups.flatMap(g => g.items), configItem];
+ const release2Nav = ['Gestão tecnológica', 'Otimização granulométrica', 'Recomendação por regressão', 'Importação do legado e CSV'];
++export function groupOf(path: string) {
++  if (path.startsWith('/traco/') || path === '/comparacao-metodos') return 'Engenharia';
++  return groups.find(g => g.items.some(i => i.path === path))?.title ?? 'Configurações';
++}
++const isActive = (item: NavItem, path: string) => path === item.path || (item.path === '/tracos' && path.startsWith('/traco/'));
++
++function readPref(key: string) { try { return localStorage.getItem(key); } catch { return null; } }
++function writePref(key: string, value: string) { try { localStorage.setItem(key, value); } catch { /* armazenamento indisponível */ } }
++
+ export function useLayoutMode(): [LayoutMode, LayoutPreference, (v: LayoutPreference) => void] {
+   const [width,setWidth] = useState(window.innerWidth);
+-  const [preference,setPreference] = useState<LayoutPreference>(() => (localStorage.getItem('dosagem-v2-layout') as LayoutPreference) || 'automatico');
++  const [preference,setPreference] = useState<LayoutPreference>(() => (readPref('dosagem-v2-layout') as LayoutPreference) || 'automatico');
+   useEffect(() => { const handler = () => setWidth(window.innerWidth); window.addEventListener('resize',handler); return () => window.removeEventListener('resize',handler); },[]);
+-  const set = (v: LayoutPreference) => { setPreference(v); localStorage.setItem('dosagem-v2-layout',v); };
++  const set = (v: LayoutPreference) => { setPreference(v); writePref('dosagem-v2-layout',v); };
+   return [preference === 'automatico' ? width < 600 ? 'mobile' : width < 1280 ? 'tablet' : 'desktop' : preference, preference, set];
+ }
+-function Logo() { return <div className="ct-logo"><span className="ct-logo-mark">C</span><div><strong>CONCREFER</strong><small>DOSAGEM v2</small></div></div>; }
+-function Sidebar({ collapsed=false, onNavigate }: { collapsed?: boolean; onNavigate?: () => void }) { const location=useLocation(); return <nav className={`ct-sidebar ${collapsed ? 'is-collapsed' : ''}`} aria-label="Navegação principal"><Logo/><div className="ct-sidebar-list">{nav.map(item => <Link onClick={onNavigate} key={item.path} to={item.path} className={location.pathname === item.path || (item.path === '/tracos' && location.pathname.startsWith('/traco/')) ? 'active' : ''}><Icon name={item.icon}/><span>{item.label}</span></Link>)}{release2Nav.map(label => <span key={label} className="ct-nav-coming" aria-disabled="true" title="Em breve (Release 2)"><span>{label}</span><small>Em breve (Release 2)</small></span>)}</div><div className="ct-sidebar-footer">ConcreTrack · v2.0.0</div></nav>; }
+-function Topbar({ title, saveStatus, saveMessage, onSearch }: { title: string; saveStatus: SaveStatus; saveMessage?: string; onSearch: () => void }) { return <header className="ct-topbar"><div className="ct-top-title"><small>CONCRETRACK / DOSAGEM</small><strong>{title}</strong></div><div className="ct-top-actions"><button className="ct-top-search" onClick={onSearch}><Icon name="busca"/><span>Buscar</span><kbd>Ctrl K</kbd></button><SaveStatusView status={saveStatus} message={saveMessage}/><button type="button" onClick={() => void sair()}>Sair</button><span className="ct-top-avatar" aria-label="Usuário atual">CT</span></div></header>; }
+-function MobileNav() { const location=useLocation(); const [more,setMore]=useState(false); const [create,setCreate]=useState(false); return <><nav className="ct-mobile-nav" aria-label="Navegação móvel"><Link className={location.pathname==='/'?'active':''} to="/"><Icon name="inicio"/><span>Início</span></Link><Link className={location.pathname==='/tracos'?'active':''} to="/tracos"><Icon name="tracos"/><span>Traços</span></Link><button className="ct-mobile-add" onClick={()=>setCreate(true)} aria-label="Criar novo"><Icon name="mais" size={25}/></button><Link className={location.pathname==='/ensaios'?'active':''} to="/ensaios"><Icon name="ensaios"/><span>Ensaios</span></Link><button onClick={()=>setMore(true)} aria-label="Mais opções"><Icon name="menu"/><span>Mais</span></button></nav>{(more||create)&&<div className="ct-sheet-backdrop" onClick={()=>{setMore(false);setCreate(false)}}><div onClick={e=>e.stopPropagation()}><div className="ct-row ct-space"><h2>{create?'Criar':'Mais opções'}</h2><button className="ct-icon-button" onClick={()=>{setMore(false);setCreate(false)}} aria-label="Fechar">×</button></div>{create?<><Link to="/dosagem/empacotamento" onClick={()=>setCreate(false)}>Dosagem por empacotamento</Link><Link to="/dosagem/volume" onClick={()=>setCreate(false)}>Dosagem por volume</Link><Link to="/traco/novo" onClick={()=>setCreate(false)}>Novo traço manual</Link><Link to="/ensaios" onClick={()=>setCreate(false)}>Registrar ensaio</Link></>:<>{nav.slice(1).map(item=><Link key={item.path} to={item.path} onClick={()=>setMore(false)}>{item.label}</Link>)}{release2Nav.map(label=><span key={label} className="ct-nav-coming" aria-disabled="true">{label} · Em breve (Release 2)</span>)}</>}</div></div>}</>; }
+-function CommandPalette({ onClose }: { onClose: () => void }) { const [query,setQuery]=useState(''); const navigate=useNavigate(); return <div className="ct-modal-backdrop" role="presentation" onClick={onClose}><div className="ct-command" role="dialog" aria-modal="true" aria-label="Busca rápida" onClick={e=>e.stopPropagation()}><input autoFocus aria-label="Buscar telas" placeholder="Ir para uma tela…" value={query} onChange={e=>setQuery(e.target.value)}/>{nav.filter(x=>x.label.toLowerCase().includes(query.toLowerCase())).map(item=><button key={item.path} onClick={()=>{navigate(item.path);onClose()}}><Icon name={item.icon}/>{item.label}</button>)}</div></div>; }
+-export function AppLayout({ children, mode, title, saveStatus, saveMessage }: { children: ReactNode; mode: LayoutMode; title: string; saveStatus: SaveStatus; saveMessage?: string }) { const [palette,setPalette]=useState(false); const [sidebar,setSidebar]=useState(false); useEffect(()=>{ const handler=(e:KeyboardEvent)=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setPalette(true)}if(e.key==='Escape'){setPalette(false);setSidebar(false)}}; window.addEventListener('keydown',handler);return()=>window.removeEventListener('keydown',handler);},[]); if(mode==='desktop') return <div className="ct-desktop-shell"><Sidebar/><div className="ct-shell-body"><Topbar title={title} saveStatus={saveStatus} saveMessage={saveMessage} onSearch={()=>setPalette(true)}/><main className="ct-main">{children}</main></div>{palette&&<CommandPalette onClose={()=>setPalette(false)}/>}</div>; if(mode==='tablet') return <div className="ct-tablet-shell"><div className="ct-tablet-rail"><button className="ct-icon-button" aria-label="Abrir menu" onClick={()=>setSidebar(true)}><Icon name="menu"/></button>{nav.slice(0,7).map(item=><Link key={item.path} to={item.path} title={item.label}><Icon name={item.icon}/><small>{item.label}</small></Link>)}</div><div className="ct-shell-body"><Topbar title={title} saveStatus={saveStatus} saveMessage={saveMessage} onSearch={()=>setPalette(true)}/><main className="ct-main">{children}</main></div>{sidebar&&<div className="ct-modal-backdrop" onClick={()=>setSidebar(false)}><div onClick={e=>e.stopPropagation()}><Sidebar onNavigate={()=>setSidebar(false)}/></div></div>}{palette&&<CommandPalette onClose={()=>setPalette(false)}/>}</div>; return <div className="ct-mobile-shell"><header className="ct-mobile-top"><button className="ct-icon-button" aria-label="Voltar" onClick={()=>history.back()}><Icon name="voltar"/></button><strong>{title}</strong><SaveStatusView status={saveStatus} message={saveMessage}/></header><main className="ct-mobile-main">{children}</main><MobileNav/>{palette&&<CommandPalette onClose={()=>setPalette(false)}/>}</div>; }
++const initials = (name?: string) => (name || 'ConcreTrack').split(/\s+/).filter(Boolean).slice(0, 2).map(p => p[0]!.toUpperCase()).join('');
++
++function Logo({ collapsed }: { collapsed?: boolean }) { return <div className="ct-logo"><span className="ct-logo-mark">C</span>{!collapsed && <div><strong>CONCRETRACK</strong><small>DOSAGEM</small></div>}</div>; }
++
++function Sidebar({ collapsed=false, onNavigate, onToggle, counts }: { collapsed?: boolean; onNavigate?: () => void; onToggle?: () => void; counts?: { tracos?: number } }) {
++  const location = useLocation(); const user = useUsuario();
++  const link = (item: NavItem) => <Link onClick={onNavigate} key={item.path} to={item.path} title={collapsed ? item.label : undefined} aria-label={collapsed ? item.label : undefined} className={`ct-nav-link${isActive(item, location.pathname) ? ' active' : ''}`} aria-current={isActive(item, location.pathname) ? 'page' : undefined}>
++    <Icon name={item.icon}/>{!collapsed && <span>{item.short ?? item.label}</span>}{!collapsed && item.count && counts?.tracos != null && <span className="ct-nav-count">{counts.tracos}</span>}
++  </Link>;
++  return <nav className={`ct-sidebar${collapsed ? ' is-collapsed' : ''}`} aria-label="Navegação principal">
++    <div className="ct-sidebar-top"><Logo collapsed={collapsed}/>{onToggle && <button type="button" className="ct-icon-button ct-sidebar-toggle" onClick={onToggle} aria-label={collapsed ? 'Expandir menu' : 'Recolher menu'} aria-expanded={!collapsed}><Icon name="recolher" size={18}/></button>}</div>
++    <div className="ct-sidebar-list">
++      {groups.map(group => <div className="ct-nav-group" key={group.title}>{!collapsed ? <div className="ct-nav-group-title">{group.title}</div> : <div className="ct-nav-group-rule" aria-hidden="true"/>}{group.items.map(link)}</div>)}
++      {!collapsed && <details className="ct-nav-coming"><summary><span>Gestão · {release2Nav.length} módulos</span><span className="ct-nav-soon">Release 2</span></summary><ul>{release2Nav.map(label => <li key={label} aria-disabled="true">{label}</li>)}</ul></details>}
++    </div>
++    <div className="ct-sidebar-footer">
++      {link(configItem)}
++      {!collapsed && <div className="ct-sidebar-user"><span className="ct-avatar" aria-hidden="true">{initials(user?.nome)}</span><div><strong>{user?.nome || 'Usuário'}</strong><small>ConcreTrack · v2.0.0</small></div></div>}
++    </div>
++  </nav>;
++}
++
++function Topbar({ title, saveStatus, saveMessage, onSearch, compact=false }: { title: string; saveStatus: SaveStatus; saveMessage?: string; onSearch: () => void; compact?: boolean }) {
++  const location = useLocation(); const user = useUsuario();
++  return <header className={`ct-topbar${compact ? ' is-compact' : ''}`}>
++    <div className="ct-top-title"><small>{groupOf(location.pathname).toUpperCase()}</small><strong>{title}</strong></div>
++    <div className="ct-top-actions">
++      <button type="button" className={`ct-top-search${compact ? ' is-compact' : ''}`} onClick={onSearch} aria-label={compact ? 'Buscar telas' : undefined}><Icon name="busca" size={18}/>{!compact && <><span>Buscar telas</span><kbd>Ctrl K</kbd></>}</button>
++      <SaveStatusView status={saveStatus} message={saveMessage}/>
++      <PilotNotice/>
++      <button type="button" className="ct-button ct-button--ghost ct-button--sm" onClick={() => void sair()} aria-label={compact ? 'Sair' : undefined} title="Sair"><Icon name="sair" size={16}/>{!compact && 'Sair'}</button>
++      {!compact && <span className="ct-avatar" title={user?.email} aria-hidden="true">{initials(user?.nome)}</span>}
++    </div>
++  </header>;
++}
++
++function MobileNav() {
++  const location = useLocation(); const [more,setMore] = useState(false); const [create,setCreate] = useState(false);
++  const close = () => { setMore(false); setCreate(false); };
++  return <>
++    <nav className="ct-mobile-nav" aria-label="Navegação móvel">
++      <Link className={location.pathname==='/'?'active':''} to="/"><Icon name="inicio" size={22}/><span>Início</span></Link>
++      <Link className={location.pathname==='/tracos'||location.pathname.startsWith('/traco/')?'active':''} to="/tracos"><Icon name="tracos" size={22}/><span>Traços</span></Link>
++      <button className="ct-mobile-add" onClick={()=>setCreate(true)} aria-label="Criar novo"><Icon name="mais" size={26} strokeWidth={2.6}/></button>
++      <Link className={location.pathname==='/ensaios'?'active':''} to="/ensaios"><Icon name="ensaios" size={22}/><span>Ensaios</span></Link>
++      <button onClick={()=>setMore(true)} aria-label="Mais opções"><Icon name="menu" size={22}/><span>Mais</span></button>
++    </nav>
++    {(more||create) && <div className="ct-sheet-backdrop" onClick={close}><div className="ct-bottom-sheet" role="dialog" aria-modal="true" aria-label={create ? 'Criar' : 'Mais opções'} onClick={e=>e.stopPropagation()}>
++      <div className="ct-row ct-space"><h2>{create ? 'Criar' : 'Mais opções'}</h2><button className="ct-icon-button" onClick={close} aria-label="Fechar">×</button></div>
++      {create ? <>
++        <Link to="/dosagem/empacotamento" onClick={close}><Icon name="empacotamento"/>Dosagem por empacotamento</Link>
++        <Link to="/dosagem/volume" onClick={close}><Icon name="volume"/>Dosagem por volume</Link>
++        <Link to="/ensaios" onClick={close}><Icon name="ensaios"/>Registrar ensaio</Link>
++      </> : <>
++        {groups.map(group => <div key={group.title} className="ct-sheet-group"><small>{group.title}</small>{group.items.filter(i => i.path !== '/').map(item => <Link key={item.path} to={item.path} onClick={close}><Icon name={item.icon}/>{item.label}</Link>)}</div>)}
++        <Link to="/config" onClick={close}><Icon name="config"/>Configurações</Link>
++        <button type="button" className="ct-sheet-exit" onClick={() => void sair()}><Icon name="sair"/>Sair</button>
++      </>}
++    </div></div>}
++  </>;
++}
++
++function CommandPalette({ onClose }: { onClose: () => void }) {
++  const [query,setQuery] = useState(''); const navigate = useNavigate();
++  const results = allNav.filter(x => x.label.toLowerCase().includes(query.toLowerCase()));
++  return <div className="ct-modal-backdrop" role="presentation" onClick={onClose}><div className="ct-command" role="dialog" aria-modal="true" aria-label="Busca rápida" onClick={e=>e.stopPropagation()}>
++    <input autoFocus aria-label="Buscar telas" placeholder="Ir para uma tela…" value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && results[0]) { navigate(results[0].path); onClose(); } }}/>
++    {results.map(item => <button key={item.path} onClick={()=>{navigate(item.path);onClose()}}><Icon name={item.icon}/>{item.label}<small>{groupOf(item.path)}</small></button>)}
++  </div></div>;
++}
++
++export function AppLayout({ children, mode, title, saveStatus, saveMessage, counts }: { children: ReactNode; mode: LayoutMode; title: string; saveStatus: SaveStatus; saveMessage?: string; counts?: { tracos?: number } }) {
++  const [palette,setPalette] = useState(false); const [drawer,setDrawer] = useState(false);
++  const [collapsed,setCollapsed] = useState(() => readPref('dosagem-v2-menu') === 'recolhido');
++  const toggle = () => setCollapsed(c => { writePref('dosagem-v2-menu', c ? 'aberto' : 'recolhido'); return !c; });
++  useEffect(()=>{ const handler=(e:KeyboardEvent)=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setPalette(true)}if(e.key==='Escape'){setPalette(false);setDrawer(false)}}; window.addEventListener('keydown',handler);return()=>window.removeEventListener('keydown',handler);},[]);
++  if (mode === 'desktop') return <div className={`ct-desktop-shell${collapsed ? ' is-collapsed' : ''}`}><Sidebar collapsed={collapsed} onToggle={toggle} counts={counts}/><div className="ct-shell-body"><Topbar title={title} saveStatus={saveStatus} saveMessage={saveMessage} onSearch={()=>setPalette(true)}/><main className="ct-main">{children}</main></div>{palette&&<CommandPalette onClose={()=>setPalette(false)}/>}</div>;
++  if (mode === 'tablet') return <div className="ct-tablet-shell">
++    <nav className="ct-tablet-rail" aria-label="Navegação principal">
++      <button className="ct-icon-button" aria-label="Abrir menu" onClick={()=>setDrawer(true)}><Icon name="menu"/></button>
++      {[allNav[0], allNav[1], allNav[2], allNav[3], allNav[7], allNav[8], allNav[10]].map(item => <RailLink key={item.path} item={item}/>)}
++    </nav>
++    <div className="ct-shell-body"><Topbar compact title={title} saveStatus={saveStatus} saveMessage={saveMessage} onSearch={()=>setPalette(true)}/><main className="ct-main">{children}</main></div>
++    {drawer&&<div className="ct-modal-backdrop ct-drawer-backdrop" onClick={()=>setDrawer(false)}><div onClick={e=>e.stopPropagation()}><Sidebar onNavigate={()=>setDrawer(false)} counts={counts}/></div></div>}
++    {palette&&<CommandPalette onClose={()=>setPalette(false)}/>}
++  </div>;
++  return <div className="ct-mobile-shell">
++    <header className="ct-mobile-top"><button className="ct-icon-button" aria-label="Voltar" onClick={()=>history.back()}><Icon name="voltar"/></button><strong>{title}</strong><button className="ct-icon-button" aria-label="Buscar telas" onClick={()=>setPalette(true)}><Icon name="busca"/></button><SaveStatusView status={saveStatus} message={saveMessage}/></header>
++    <PilotNotice compact/>
++    <main className="ct-mobile-main">{children}</main>
++    <MobileNav/>
++    {palette&&<CommandPalette onClose={()=>setPalette(false)}/>}
++  </div>;
++}
++function RailLink({ item }: { item: NavItem }) {
++  const location = useLocation();
++  return <Link to={item.path} className={isActive(item, location.pathname) ? 'active' : ''} aria-current={isActive(item, location.pathname) ? 'page' : undefined}><Icon name={item.icon}/><small>{railLabel(item)}</small></Link>;
++}
++
++function railLabel(item: NavItem) { const s = item.short?.replace('Por ', '') ?? item.label; return s.charAt(0).toUpperCase() + s.slice(1); }
+diff --git a/src/features/PackingPanel.tsx b/src/features/PackingPanel.tsx
+index 0de6e3c..a827af1 100644
+--- a/src/features/PackingPanel.tsx
++++ b/src/features/PackingPanel.tsx
+@@ -1,9 +1,12 @@
+-import { useEffect, useMemo, useState } from 'react';
++import { useEffect, useMemo, useState, type ClipboardEvent } from 'react';
+ import { calcularEmpacotamento } from '../core/calc/empacotamento';
+ import { formatNumero, parseNumero } from '../core/units';
+ import { Button, Card, NumberInput } from '../ui/components';
++import { Icon } from '../ui/icons';
+ 
+ const sieves = [25, 19, 12.5, 9.5, 6.3, 4.75, 2.36, 1.18, 0.6, 0.3, 0.15, 0.075];
++const sieveLabel = (d: number) => formatNumero(d, d < 0.1 ? 3 : d % 1 ? 2 : 0).replace(/(,\d*?)0+$/, '$1').replace(/,$/, '');
++const emptyRow = () => sieves.map(() => '');
+ 
+ export type PackingData = {
+   peneirasMm: number[];
+@@ -13,32 +16,66 @@ export type PackingData = {
+   diametroMaximoMm: number;
+ };
+ 
+-function parseCurve(text: string, label: string) {
+-  const values = text.split(/[;\n]+/).map(value => parseNumero(value.trim()));
++function parseCurve(cells: string[], label: string) {
++  const values = cells.map(value => parseNumero(value.trim()));
+   if (values.length !== sieves.length || values.some(value => value == null || value < 0 || value > 100))
+-    throw new Error(`${label}: informe ${sieves.length} percentuais passantes de 0 a 100, separados por ponto e vírgula.`);
++    throw new Error(`${label}: informe ${sieves.length} percentuais passantes de 0 a 100 (um por peneira).`);
+   const curve = values as number[];
+   if (curve.some((value, index) => index > 0 && value > curve[index - 1]))
+     throw new Error(`${label}: o passante não pode aumentar ao reduzir a peneira.`);
+   return curve;
+ }
++const splitValues = (text: string) => text.split(/[;\t\n\r]+/).map(v => v.trim()).filter((v, i, all) => v !== '' || i < all.length - 1);
+ 
+-export function PackingPanel({ fraction, onApply, onChange }: { fraction: number; onApply: (fraction: number) => void; onChange: (data: PackingData | null, touched: boolean) => void }) {
+-  const [sand1, setSand1] = useState('');
+-  const [sand2, setSand2] = useState('');
++function Chart({ curves, alfred, combined }: { curves: (number | null)[][]; alfred: number[]; combined: number[] | null }) {
++  const W = 560, H = 230, L = 34, B = 26, T = 8, R = 8;
++  const lmin = Math.log(sieves[sieves.length - 1]), lmax = Math.log(sieves[0]);
++  const x = (d: number) => L + (Math.log(d) - lmin) / (lmax - lmin) * (W - L - R);
++  const y = (v: number) => T + (1 - v / 100) * (H - T - B);
++  const line = (values: (number | null)[]) => values.map((v, i) => v == null ? null : `${x(sieves[i]).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean).join(' ');
++  return <svg className="ct-packing-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Curvas granulométricas em % passante: areia 1, areia 2, combinada e curva de Alfred (alvo)">
++    {[0, 25, 50, 75, 100].map(v => <g key={v}><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} stroke="#E1E6EF"/><text x={L - 6} y={y(v) + 3} textAnchor="end" fontSize="10" fill="#4A5672">{v}</text></g>)}
++    {[0.075, 0.15, 0.3, 0.6, 1.18, 2.36, 4.75, 9.5, 19].map(d => <text key={d} x={x(d)} y={H - 8} textAnchor="middle" fontSize="10" fill="#4A5672">{sieveLabel(d)}</text>)}
++    <polyline points={line(curves[0])} fill="none" stroke="#9AA6BD" strokeWidth="1.6"/>
++    <polyline points={line(curves[1])} fill="none" stroke="#5B7BD5" strokeWidth="1.6"/>
++    <polyline points={line(alfred)} fill="none" stroke="#0A1530" strokeWidth="2" strokeDasharray="6 5"/>
++    {combined && <polyline points={line(combined)} fill="none" stroke="#DB0A40" strokeWidth="3" strokeLinejoin="round"/>}
++  </svg>;
++}
++
++export function PackingPanel({ fraction, onApply, onChange, onDeviation }: { fraction: number; onApply: (fraction: number) => void; onChange: (data: PackingData | null, touched: boolean) => void; onDeviation?: (rmse: number | null) => void }) {
++  const [rows, setRows] = useState<[string[], string[]]>([emptyRow(), emptyRow()]);
++  const [raw, setRaw] = useState<[string, string]>(['', '']);
+   const [q, setQ] = useState('0,25');
+   const [dmin, setDmin] = useState('0,001');
+   const [dmax, setDmax] = useState('25');
++  const touched = rows.some(row => row.some(cell => cell.trim() !== ''));
++
++  const setRow = (k: 0 | 1, next: string[]) => {
++    setRows(current => { const copy: [string[], string[]] = [current[0], current[1]]; copy[k] = next; return copy; });
++    setRaw(current => { const copy: [string, string] = [current[0], current[1]]; copy[k] = next.some(v => v.trim()) ? next.join('; ') : ''; return copy; });
++  };
++  const pasteRaw = (k: 0 | 1, text: string) => {
++    setRaw(current => { const copy: [string, string] = [current[0], current[1]]; copy[k] = text; return copy; });
++    const values = splitValues(text);
++    setRows(current => { const copy: [string[], string[]] = [current[0], current[1]]; copy[k] = sieves.map((_, i) => values[i] ?? ''); return copy; });
++  };
++  const editCell = (k: 0 | 1, i: number, value: string) => { const next = [...rows[k]]; next[i] = value; setRow(k, next); };
++  const pasteCell = (k: 0 | 1, i: number, event: ClipboardEvent<HTMLInputElement>) => {
++    const values = splitValues(event.clipboardData.getData('text'));
++    if (values.length < 2) return;
++    event.preventDefault();
++    const next = [...rows[k]]; values.forEach((v, j) => { if (i + j < next.length) next[i + j] = v; }); setRow(k, next);
++  };
++
++  const exponent = parseNumero(q) ?? 0, minimum = parseNumero(dmin) ?? 0, maximum = parseNumero(dmax) ?? 0;
++  const alfred = useMemo(() => sieves.map(d => maximum > minimum && minimum > 0 && exponent > 0 ? ((d ** exponent - minimum ** exponent) / (maximum ** exponent - minimum ** exponent)) * 100 : NaN), [exponent, minimum, maximum]);
+   const result = useMemo(() => {
+-    if (!sand1.trim() && !sand2.trim()) return null;
++    if (!touched) return null;
+     try {
+-      if (!sand1.trim() || !sand2.trim()) throw new Error('Informe as curvas das duas areias para salvar o estudo de empacotamento.');
+-      const curves = [parseCurve(sand1, 'Areia 1'), parseCurve(sand2, 'Areia 2')];
+-      const exponent = parseNumero(q) ?? 0;
+-      const minimum = parseNumero(dmin) ?? 0;
+-      const maximum = parseNumero(dmax) ?? 0;
+-      const evaluate = (firstPct: number) => calcularEmpacotamento(
+-        sieves, curves, [firstPct, 100 - firstPct], exponent, minimum, maximum);
++      if (!rows[0].some(v => v.trim()) || !rows[1].some(v => v.trim())) throw new Error('Informe as curvas das duas areias para salvar o estudo de empacotamento.');
++      const curves = [parseCurve(rows[0], 'Areia 1'), parseCurve(rows[1], 'Areia 2')];
++      const evaluate = (firstPct: number) => calcularEmpacotamento(sieves, curves, [firstPct, 100 - firstPct], exponent, minimum, maximum);
+       const current = evaluate(fraction * 100);
+       let best = { firstPct: 0, ...evaluate(0) };
+       for (let step = 1; step <= 200; step++) {
+@@ -46,28 +83,67 @@ export function PackingPanel({ fraction, onApply, onChange }: { fraction: number
+         const candidate = evaluate(firstPct);
+         if (candidate.rmse < best.rmse) best = { firstPct, ...candidate };
+       }
+-      const data: PackingData = { peneirasMm: [...sieves], curvasPassantesPct: curves as [number[], number[]],
+-        expoenteQ: exponent, diametroMinimoMm: minimum, diametroMaximoMm: maximum };
++      const data: PackingData = { peneirasMm: [...sieves], curvasPassantesPct: curves as [number[], number[]], expoenteQ: exponent, diametroMinimoMm: minimum, diametroMaximoMm: maximum };
+       return { current, best, error: '', data };
+     } catch (error) {
+       return { current: null, best: null, error: (error as Error).message, data: null };
+     }
+-  }, [sand1, sand2, q, dmin, dmax, fraction]);
+-  useEffect(() => { onChange(result?.data ?? null, !!(sand1.trim() || sand2.trim())); }, [result, sand1, sand2, onChange]);
++  }, [rows, touched, exponent, minimum, maximum, fraction]);
++  useEffect(() => { onChange(result?.data ?? null, touched); }, [result, touched, onChange]);
++  useEffect(() => { onDeviation?.(result?.current?.rmse ?? null); }, [result, onDeviation]);
++
++  const partial = rows.map(row => row.map(v => parseNumero(v)));
++  const atBest = !!result?.best && Math.abs(result.best.firstPct - fraction * 100) < 0.01;
+ 
+-  return <Card title="Empacotamento das areias">
+-    <p className="ct-muted">Cole o percentual passante de cada areia nas peneiras {sieves.join(' · ')} mm, nessa ordem. A busca sugere a proporção com menor desvio da curva de Alfred.</p>
+-    <div className="ct-grid ct-grid--2">
+-      <div className="ct-field"><label htmlFor="packing-sand-1">Areia 1 · passantes (%)</label><textarea id="packing-sand-1" rows={4} value={sand1} onChange={event => setSand1(event.target.value)} placeholder="100; 95; 80; 65; 50; 35; 20; 12; 8; 5; 2; 1"/></div>
+-      <div className="ct-field"><label htmlFor="packing-sand-2">Areia 2 · passantes (%)</label><textarea id="packing-sand-2" rows={4} value={sand2} onChange={event => setSand2(event.target.value)} placeholder="100; 100; 98; 90; 75; 60; 42; 25; 12; 6; 3; 1"/></div>
++  return <Card id="sec-empacotamento" title="Empacotamento das areias" subtitle="Curva combinada das duas areias × curva de Alfred. A busca sugere a proporção de menor desvio.">
++    <div className="ct-packing">
++      <div className="ct-packing-plot">
++        <Chart curves={partial} alfred={alfred.map(v => Number.isFinite(v) ? v : 0)} combined={result?.current?.combinada ?? null}/>
++        <div className="ct-packing-legend" aria-hidden="true"><span><i style={{ background: '#DB0A40' }}/>Combinada</span><span><i className="is-dashed"/>Alfred (alvo)</span><span><i style={{ background: '#9AA6BD' }}/>Areia 1</span><span><i style={{ background: '#5B7BD5' }}/>Areia 2</span><span className="ct-muted">peneira, mm (escala log)</span></div>
++      </div>
++      <div className="ct-packing-control">
++        <div className="ct-field">
++          <label htmlFor="packing-ratio">Proporção Areia 1 / Areia 2 (% em massa)</label>
++          <div className="ct-packing-ratio"><strong>{formatNumero(fraction * 100, 1)} / {formatNumero((1 - fraction) * 100, 1)}</strong></div>
++          <input id="packing-ratio" type="range" min={0} max={100} step={0.5} value={Math.round(fraction * 200) / 2} onChange={event => onApply(Number(event.target.value) / 100)} aria-valuetext={`Areia 1 ${formatNumero(fraction * 100, 1)} %, Areia 2 ${formatNumero((1 - fraction) * 100, 1)} %`}/>
++        </div>
++        <div className="ct-packing-dev">
++          <div><small>Desvio atual (RMSE)</small><strong>{result?.current ? formatNumero(result.current.rmse, 2) : '—'}</strong></div>
++          <div><small>Menor desvio possível</small><strong>{result?.best ? formatNumero(result.best.rmse, 2) : '—'}</strong></div>
++        </div>
++        {result?.error && <p className="ct-alert ct-alert--erro" role="alert"><Icon name="erro" size={18}/>{result.error}</p>}
++        {result?.best && result.current && <div className={`ct-packing-suggest${atBest ? ' is-best' : ''}`} aria-live="polite">
++          <p>Proporção atual: {formatNumero(fraction * 100, 1)}% / {formatNumero((1 - fraction) * 100, 1)}% · desvio {formatNumero(result.current.rmse, 2)}</p>
++          <p><strong>Sugestão: {formatNumero(result.best.firstPct, 1)}% / {formatNumero(100 - result.best.firstPct, 1)}%</strong> · desvio {formatNumero(result.best.rmse, 2)}</p>
++          {atBest ? <p className="ct-packing-ok"><Icon name="check" size={16} strokeWidth={2.4}/>A proporção do traço já é a de menor desvio.</p>
++            : <Button variant="dark" size="sm" onClick={() => onApply(result.best!.firstPct / 100)}>Aplicar proporção sugerida ao traço</Button>}
++        </div>}
++        {!touched && <p className="ct-muted ct-packing-hint">Cole as curvas abaixo (ou digite peneira a peneira) para ver o gráfico e a sugestão.</p>}
++        <p className="ct-muted ct-packing-hint">Sugestão geométrica de empacotamento; não garante desempenho. Validar em laboratório.</p>
++      </div>
++    </div>
++    <div className="ct-packing-paste">
++      <div className="ct-field"><label htmlFor="packing-sand-1">Colar curva da Areia 1 · {sieves.length} passantes (%)</label><textarea id="packing-sand-1" rows={1} value={raw[0]} onChange={event => pasteRaw(0, event.target.value)} placeholder="100; 95; 80; 65; 50; 35; 20; 12; 8; 5; 2; 1"/></div>
++      <div className="ct-field"><label htmlFor="packing-sand-2">Colar curva da Areia 2 · {sieves.length} passantes (%)</label><textarea id="packing-sand-2" rows={1} value={raw[1]} onChange={event => pasteRaw(1, event.target.value)} placeholder="100; 100; 98; 90; 75; 60; 42; 25; 12; 6; 3; 1"/></div>
+     </div>
+-    <div className="ct-grid ct-grid--3">
+-      <NumberInput id="packing-q" label="Expoente q" value={q} onChange={event => setQ(event.target.value)}/>
+-      <NumberInput id="packing-dmin" label="Diâmetro mínimo" unit="mm" value={dmin} onChange={event => setDmin(event.target.value)}/>
+-      <NumberInput id="packing-dmax" label="Diâmetro máximo" unit="mm" value={dmax} onChange={event => setDmax(event.target.value)}/>
++    <div className="ct-table-wrap ct-sieve-wrap">
++      <table className="ct-sieve-table">
++        <caption className="ct-sr">Percentual passante por peneira</caption>
++        <thead><tr><th scope="col">Passante %</th>{sieves.map(d => <th scope="col" key={d}>{sieveLabel(d)}</th>)}</tr></thead>
++        <tbody>
++          {([0, 1] as const).map(k => <tr key={k}><th scope="row">Areia {k + 1}</th>{sieves.map((d, i) => <td key={d}><input id={`packing-s${k + 1}-${i}`} inputMode="decimal" aria-label={`Areia ${k + 1}, peneira ${sieveLabel(d)} mm, % passante`} value={rows[k][i]} onChange={event => editCell(k, i, event.target.value)} onPaste={event => pasteCell(k, i, event)} aria-invalid={rows[k][i].trim() !== '' && parseNumero(rows[k][i]) == null}/></td>)}</tr>)}
++          <tr className="is-calc"><th scope="row">Combinada</th>{sieves.map((d, i) => <td key={d}><span>{result?.current ? formatNumero(result.current.combinada[i], 0) : '—'}</span></td>)}</tr>
++          <tr className="is-calc is-target"><th scope="row">Alfred</th>{sieves.map((d, i) => <td key={d}><span>{Number.isFinite(alfred[i]) ? formatNumero(alfred[i], 0) : '—'}</span></td>)}</tr>
++        </tbody>
++      </table>
+     </div>
+-    {result?.error && <p className="ct-alert ct-alert--erro" role="alert">{result.error}</p>}
+-    {result?.best && result.current && <div className="ct-recipe41-packing-result"><p>Proporção atual: {formatNumero(fraction * 100, 1)}% / {formatNumero((1 - fraction) * 100, 1)}% · desvio {formatNumero(result.current.rmse, 2)}</p><p><strong>Sugestão: {formatNumero(result.best.firstPct, 1)}% / {formatNumero(100 - result.best.firstPct, 1)}%</strong> · desvio {formatNumero(result.best.rmse, 2)}</p><Button variant="secondary" onClick={() => onApply(result.best!.firstPct / 100)}>Aplicar proporção sugerida ao traço</Button></div>}
+-    <p className="ct-muted">Sugestão geométrica de empacotamento; não garante desempenho. Validar em laboratório.</p>
++    <details className="ct-packing-params">
++      <summary>Parâmetros da curva de Alfred · q {q} · Dmín {dmin} mm · Dmáx {dmax} mm</summary>
++      <div className="ct-grid ct-grid--3">
++        <NumberInput id="packing-q" label="Expoente q" value={q} onChange={event => setQ(event.target.value)}/>
++        <NumberInput id="packing-dmin" label="Diâmetro mínimo" unit="mm" value={dmin} onChange={event => setDmin(event.target.value)}/>
++        <NumberInput id="packing-dmax" label="Diâmetro máximo" unit="mm" value={dmax} onChange={event => setDmax(event.target.value)}/>
++      </div>
++    </details>
+   </Card>;
+ }
+diff --git a/src/features/Recipe41Page.tsx b/src/features/Recipe41Page.tsx
+index 9f78bbf..c61fdbf 100644
+--- a/src/features/Recipe41Page.tsx
++++ b/src/features/Recipe41Page.tsx
+@@ -1,22 +1,50 @@
+-import { useCallback, useMemo, useState } from 'react';
++import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
++import { Link } from 'react-router-dom';
+ import principalFixture from '../../shared/golden/principal-4.1.json';
+ import alternativeFixture from '../../shared/golden/alternative-4.1.json';
+-import { calculateRecipe41, presentation41, type Recipe41 } from '../core/calc/view41';
++import { calculateRecipe41, presentation41, type Recipe41, type RecipeItem41 } from '../core/calc/view41';
+ import type { PrincipalInput } from '../core/calc/principal41';
+ import type { AlternativeInput } from '../core/calc/alternative41';
++import { obterLimite } from '../core/config/nbr12655';
+ import { formatNumero, parseNumero } from '../core/units';
+ import { chamarApi } from '../data/api';
+-import { usePilotMode } from '../app/layout';
+-import { Button, Card, Input, NumberInput, Select } from '../ui/components';
++import { usePilotMode, type LayoutMode } from '../app/layout';
++import { Button, CalcField, Card, Input, Pill, Select, type Tone } from '../ui/components';
++import { Icon } from '../ui/icons';
+ import { PackingPanel, type PackingData } from './PackingPanel';
+ import './recipe41.css';
+ 
+ type Saved = { id: string; versao: number; revisao: number; status: string; documento?: unknown };
+-const valueOf = (raw: string) => parseNumero(raw) ?? 0;
+ const defaultPrincipal = () => structuredClone(principalFixture.base) as PrincipalInput;
+ const defaultAlternative = () => structuredClone(alternativeFixture.a1) as AlternativeInput;
++const editText = (n: number) => Number.isFinite(n) ? String(Number(n.toFixed(6))).replace('.', ',') : '';
+ 
+-export function Recipe41Page({ fixedMethod }: { fixedMethod?: Recipe41['metodo'] }) {
++/** Campo numérico que preserva o texto digitado (ex.: "0,0" a caminho de "0,05") e só repassa números válidos. */
++function NumField({ id, label, value, onChange, unit }: { id: string; label: string; value: number; onChange: (n: number) => void; unit?: string }) {
++  const [text, setText] = useState(() => editText(value));
++  const ref = useRef<string>(text);
++  useEffect(() => { const parsed = parseNumero(ref.current); if (parsed == null || Math.abs(parsed - value) > 1e-9) { const next = editText(value); ref.current = next; setText(next); } }, [value]);
++  const invalid = text.trim() !== '' && parseNumero(text) == null;
++  return <Input id={id} label={label} unit={unit} inputMode="decimal" value={text} error={invalid ? 'Número inválido' : undefined}
++    onChange={event => { const raw = event.target.value; ref.current = raw; setText(raw); const parsed = parseNumero(raw); if (parsed != null) onChange(parsed); }}/>;
++}
++
++const catLabel: Record<string, string> = { cimento: 'Cimento', adicao: 'Adição', areia: 'Areia', brita: 'Brita', agua: 'Água', aditivo: 'Aditivo', outro: 'Adição menor' };
++function itemNames(items: RecipeItem41[]) {
++  const total: Record<string, number> = {}, seen: Record<string, number> = {};
++  items.forEach(i => { total[i.categoria] = (total[i.categoria] ?? 0) + 1; });
++  return items.map(i => { seen[i.categoria] = (seen[i.categoria] ?? 0) + 1; const base = catLabel[i.categoria] ?? i.nome; return total[i.categoria] > 1 ? `${base} ${seen[i.categoria]}` : base; });
++}
++const volumeColors: { key: string; label: string; color: string; cats: string[] }[] = [
++  { key: 'cim', label: 'cimento', color: '#F4F6FA', cats: ['cimento', 'adicao'] },
++  { key: 'agua', label: 'água', color: '#5B7BD5', cats: ['agua'] },
++  { key: 'areia', label: 'areias', color: '#FFC906', cats: ['areia'] },
++  { key: 'brita', label: 'britas', color: '#9AA6BD', cats: ['brita'] },
++  { key: 'outros', label: 'ar e aditivos', color: '#33426A', cats: ['aditivo', 'outro'] }
++];
++type Check = { tone: Tone; title: string; detail?: string };
++
++export function Recipe41Page({ fixedMethod, layout = 'desktop' }: { fixedMethod?: Recipe41['metodo']; layout?: LayoutMode }) {
+   const pilot = usePilotMode();
+   const [id] = useState(() => crypto.randomUUID());
+   const [selectedMethod, setMethod] = useState<Recipe41['metodo']>('principal_abrams');
+@@ -31,6 +59,8 @@ export function Recipe41Page({ fixedMethod }: { fixedMethod?: Recipe41['metodo']
+   const [costs, setCosts] = useState<Record<string, number>>({ m0: .78, m2: .085, m3: .07, m4: .075, m5: .07, m7: 9.5 });
+   const [saved, setSaved] = useState<Saved | null>(null);
+   const [packing, setPacking] = useState<{ data: PackingData | null; touched: boolean }>({ data: null, touched: false });
++  const [deviation, setDeviation] = useState<number | null>(null);
++  const [busy, setBusy] = useState(false);
+   const changePacking = useCallback((data: PackingData | null, touched: boolean) => {
+     setPacking(previous => {
+       const next = { data, touched };
+@@ -38,22 +68,25 @@ export function Recipe41Page({ fixedMethod }: { fixedMethod?: Recipe41['metodo']
+     });
+     setSaved(null);
+   }, []);
+-  const [message, setMessage] = useState('Exemplo inicial da especificação 4.1. Confirme os materiais antes de salvar.');
++  const [message, setMessage] = useState<{ tone: Tone; text: string }>({ tone: 'warn', text: 'Exemplo inicial da especificação 4.1. Confirme os materiais antes de salvar.' });
+   const recipe: Recipe41 = method === 'principal_abrams'
+     ? { metodo: method, balanco: mode, metodoDados: principal, custosRsKg: costs }
+     : { metodo: method, balanco: mode, metodoDados: alternative, custosRsKg: costs };
+   const calculation = useMemo(() => { try { return { value: calculateRecipe41(recipe), error: '' }; } catch (error) { return { value: null, error: (error as Error).message }; } }, [method, mode, principal, alternative, costs]);
+   const view = calculation.value ? presentation41(calculation.value) : null;
++  const names = calculation.value ? itemNames(calculation.value.items) : [];
+   const updatePrincipal = (mutate: (next: PrincipalInput) => void) => { const next = structuredClone(principal); mutate(next); setPrincipal(next); setSaved(null); };
+   const updateAlternative = (mutate: (next: AlternativeInput) => void) => { const next = structuredClone(alternative); mutate(next); setAlternative(next); setSaved(null); };
++  const isPacking = fixedMethod === 'principal_abrams' && principal.sands.length === 2;
+ 
+   const save = async () => {
+     if (!calculation.value) return;
+     if (fixedMethod === 'principal_abrams' && packing.touched && !packing.data) {
+-      setMessage('Corrija as curvas do empacotamento antes de salvar o traço.');
++      setMessage({ tone: 'crit', text: 'Corrija as curvas do empacotamento antes de salvar o traço.' });
+       return;
+     }
+-    setMessage('Enviando traço ao servidor…');
++    setBusy(true);
++    setMessage({ tone: 'info', text: 'Enviando traço ao servidor…' });
+     const now = new Date().toISOString();
+     const document = {
+       id, codigo: '', nome: name, unidade: unit, versao: saved?.versao ?? 0, revisao: saved?.revisao ?? 0,
+@@ -70,58 +103,239 @@ export function Recipe41Page({ fixedMethod }: { fixedMethod?: Recipe41['metodo']
+     try {
+       const response = await chamarApi<Saved>('tracos.salvarVersao', document);
+       setSaved(response);
+-      setMessage(`Salvo no servidor: versão ${response.versao}, revisão ${response.revisao}.`);
++      setMessage({ tone: 'ok', text: `Salvo no servidor: versão ${response.versao}, revisão ${response.revisao}.` });
+       if (response.documento && JSON.stringify((response.documento as { resultadoCalculado?: unknown }).resultadoCalculado) !== JSON.stringify(calculation.value.result)) {
+-        setMessage('Servidor confirmou a gravação com resultado recalculado; revise os valores antes de liberar.');
++        setMessage({ tone: 'warn', text: 'Servidor confirmou a gravação com resultado recalculado; revise os valores antes de liberar.' });
+       }
+-    } catch (error) { setMessage((error as Error).message); }
++    } catch (error) { setMessage({ tone: 'crit', text: (error as Error).message }); }
++    finally { setBusy(false); }
+   };
+   const release = async () => {
+     if (!saved || !calculation.value) return;
+-    setMessage('Validando liberação no servidor…');
++    setMessage({ tone: 'info', text: 'Validando liberação no servidor…' });
+     try {
+       const response = await chamarApi<Saved>('tracos.enviarAprovacao', { id, versao: saved.versao, revisao: saved.revisao, resultadoCliente: calculation.value.result });
+       setSaved(response);
+-      setMessage('Liberado para ensaio pelo servidor. O plano de três misturas deve ser executado antes da aprovação.');
+-    } catch (error) { setMessage((error as Error).message); }
++      setMessage({ tone: 'ok', text: 'Liberado para ensaio pelo servidor. O plano de três misturas deve ser executado antes da aprovação.' });
++    } catch (error) { setMessage({ tone: 'crit', text: (error as Error).message }); }
+   };
+-  const scalar = (id: string, label: string, value: number, onChange: (n: number) => void, unitLabel?: string) =>
+-    <NumberInput id={id} label={label} unit={unitLabel} value={String(value)} onChange={event => onChange(valueOf(event.target.value))}/>;
+-
+-  return <div className="ct-recipe41">
+-    <div className="ct-page-heading"><div><p className="ct-eyebrow">ENGENHARIA / DOSAGEM 4.1</p><h1>{fixedMethod === 'principal_abrams' ? 'Dosagem por empacotamento' : fixedMethod === 'alternativo_concrefer' ? 'Dosagem por volume' : 'Traço de concreto'}</h1><p>{fixedMethod === 'principal_abrams' ? 'Traço principal com Abrams, teor de argamassa e proporções dos agregados.' : fixedMethod === 'alternativo_concrefer' ? 'Método Concrefer da planilha Rica v4, com divisão volumétrica dos agregados.' : 'Dois métodos com balanço de volume e cálculo local.'}</p></div><div className="ct-row"><Button variant="secondary" onClick={() => window.print()} disabled={!view}>Imprimir carta</Button><Button onClick={() => void save()} disabled={!view}>Salvar no servidor</Button></div></div>
+-    <p role="status" className="ct-alert ct-alert--aviso">{message}</p>
+-    <Card title="Identificação do traço"><div className="ct-grid ct-grid--3">
+-      <Input id="r41-name" label="Nome do traço" value={name} onChange={e => { setName(e.target.value); setSaved(null); }}/>
+-      <Input id="r41-unit" label="Unidade" value={unit} onChange={e => { setUnit(e.target.value); setSaved(null); }}/>
+-      {fixedMethod ? <div className="ct-field"><span>Método</span><strong>{fixedMethod === 'principal_abrams' ? 'Principal · Abrams e empacotamento' : 'Alternativo · volume Concrefer'}</strong></div> : <Select id="r41-method" label="Método" value={method} onChange={e => { setMethod(e.target.value as Recipe41['metodo']); setSaved(null); }}><option value="principal_abrams">Principal · Abrams</option><option value="alternativo_concrefer">Alternativo · Concrefer</option></Select>}
+-      <Select id="r41-mode" label="Balanço" value={mode} onChange={e => { setMode(e.target.value as typeof mode); setSaved(null); }}><option value="complete">Completo</option><option value="spreadsheet">Modo planilha · conferência</option></Select>
+-      {scalar('r41-fck', 'Fck', fck, n => { setFck(n); setSaved(null); }, 'MPa')}
+-      {scalar('r41-sd', 'Desvio padrão', sd, n => { setSd(n); setSaved(null); }, 'MPa')}
+-    </div>{mode === 'spreadsheet' && <p className="ct-alert ct-alert--aviso">Modo planilha serve apenas para conferência e não pode ser aprovado.</p>}</Card>
+-    {method === 'principal_abrams' ? <Card title="Parâmetros do método principal"><div className="ct-grid ct-grid--3">
+-      {scalar('r41-water', 'Água efetiva', principal.waterEffectiveKg, n => updatePrincipal(d => { d.waterEffectiveKg = n; }), 'kg/m³')}
+-      {scalar('r41-binder', 'Aglomerante', principal.binderKg, n => updatePrincipal(d => { d.binderKg = n; }), 'kg/m³')}
+-      {scalar('r41-addition', 'Fração da adição', principal.additionFraction * 100, n => updatePrincipal(d => { d.additionFraction = n / 100; }), '%')}
+-      {scalar('r41-mortar', 'Teor de argamassa em volume', principal.mortarVolumeFraction * 100, n => updatePrincipal(d => { d.mortarVolumeFraction = n / 100; }), '%')}
+-      {scalar('r41-air', 'Ar', principal.airFraction * 100, n => updatePrincipal(d => { d.airFraction = n / 100; }), '%')}
+-      {scalar('r41-cement-density', 'Massa específica cimento', principal.cementDensity, n => updatePrincipal(d => { d.cementDensity = n; }), 'kg/dm³')}
+-      {principal.sands.map((part, i) => <div className="ct-recipe41-part" key={`sand-${i}`}><h3>Areia {i + 1}</h3>{scalar(`r41-sf${i}`, 'Fração em massa', part.fraction * 100, n => updatePrincipal(d => { d.sands[i].fraction = n / 100; }), '%')}{scalar(`r41-sd${i}`, 'Massa específica', part.density, n => updatePrincipal(d => { d.sands[i].density = n; }), 'kg/dm³')}</div>)}
+-      {principal.gravels.map((part, i) => <div className="ct-recipe41-part" key={`gravel-${i}`}><h3>Brita {i + 1}</h3>{scalar(`r41-gf${i}`, 'Fração em massa', part.fraction * 100, n => updatePrincipal(d => { d.gravels[i].fraction = n / 100; }), '%')}{scalar(`r41-gd${i}`, 'Massa específica', part.density, n => updatePrincipal(d => { d.gravels[i].density = n; }), 'kg/dm³')}</div>)}
+-    </div></Card> : <Card title="Parâmetros do método alternativo"><div className="ct-grid ct-grid--3">
+-      {scalar('r41-alt-water', 'Água efetiva', alternative.waterEffectiveKg, n => updateAlternative(d => { d.waterEffectiveKg = n; }), 'kg/m³')}
+-      {scalar('r41-alt-ratio', 'Relação a/c', alternative.waterCementRatio, n => updateAlternative(d => { d.waterCementRatio = n; }))}
+-      {scalar('r41-alt-mortar', 'Teor de argamassa em volume', alternative.mortarVolumeFraction * 100, n => updateAlternative(d => { d.mortarVolumeFraction = n / 100; }), '%')}
+-      {scalar('r41-alt-air', 'Ar', alternative.airFraction * 100, n => updateAlternative(d => { d.airFraction = n / 100; }), '%')}
+-      {alternative.sands.map((part, i) => <div className="ct-recipe41-part" key={`alt-sand-${i}`}><h3>Areia {i + 1}</h3>{scalar(`r41-asf${i}`, 'Fração em volume', part.volumeFraction * 100, n => updateAlternative(d => { d.sands[i].volumeFraction = n / 100; }), '%')}{scalar(`r41-asd${i}`, 'Massa específica', part.density, n => updateAlternative(d => { d.sands[i].density = n; }), 'kg/dm³')}</div>)}
+-      {alternative.gravels.map((part, i) => <div className="ct-recipe41-part" key={`alt-gravel-${i}`}><h3>Brita {i + 1}</h3>{scalar(`r41-agf${i}`, 'Fração em volume', part.volumeFraction * 100, n => updateAlternative(d => { d.gravels[i].volumeFraction = n / 100; }), '%')}{scalar(`r41-agd${i}`, 'Massa específica', part.density, n => updateAlternative(d => { d.gravels[i].density = n; }), 'kg/dm³')}</div>)}
+-    </div></Card>}
+-    {fixedMethod === 'principal_abrams' && principal.sands.length === 2 && <PackingPanel fraction={principal.sands[0].fraction} onApply={fraction => updatePrincipal(next => { next.sands[0].fraction = fraction; next.sands[1].fraction = 1 - fraction; })} onChange={changePacking}/>}
+-    {calculation.error && <div className="ct-alert ct-alert--erro" role="alert">{calculation.error}</div>}
+-    {view && calculation.value && <><Card title="Resultado calculado"><div className="ct-recipe41-kpis"><div><small>Volume físico</small><strong>{formatNumero(view.panel.physicalVolumeL, 2)} L</strong></div><div><small>Cimento</small><strong>{formatNumero(view.panel.cementKg, 2)} kg/m³</strong></div><div><small>a/c</small><strong>{formatNumero(view.panel.waterCementRatio, 4)}</strong></div><div><small>a/agl</small><strong>{formatNumero(view.panel.waterBinderRatio, 4)}</strong></div><div><small>α</small><strong>{formatNumero(view.panel.alpha, 4)}</strong></div><div><small>Custo</small><strong>R$ {formatNumero(view.panel.costRsM3, 2)}/m³</strong></div><div><small>Água efetiva</small><strong>{formatNumero(view.panel.waterEffectiveKg, 2)} kg/m³</strong></div></div><div className="ct-table-wrap"><table className="ct-table"><thead><tr><th>Material</th><th>Massa kg/m³</th><th>ρ kg/dm³</th><th>Volume L</th><th>Custo R$/kg</th></tr></thead><tbody>{calculation.value.items.map(item => <tr key={item.id}><td>{item.nome}</td><td>{formatNumero(item.massaKgM3, 3)}</td><td>{formatNumero(item.massaEspecificaKgDm3, 3)}</td><td>{formatNumero(item.massaKgM3 / item.massaEspecificaKgDm3, 3)}</td><td><input aria-label={`Custo de ${item.nome}`} inputMode="decimal" value={String(costs[item.id] || 0)} onChange={e => { setCosts(current => ({ ...current, [item.id]: valueOf(e.target.value) })); setSaved(null); }}/></td></tr>)}</tbody></table></div></Card>
+-      {!fixedMethod && <Card title="Comparação dos métodos"><p className="ct-muted">Os exemplos mantêm entradas próprias; confira as entradas antes de comparar desempenho.</p><div className="ct-grid ct-grid--2">{(['principal_abrams', 'alternativo_concrefer'] as const).map(which => { try { const candidate = calculateRecipe41(which === 'principal_abrams' ? { metodo: which, balanco: mode, metodoDados: principal, custosRsKg: costs } : { metodo: which, balanco: mode, metodoDados: alternative, custosRsKg: costs }); return <div className="ct-recipe41-part" key={which}><h3>{which === 'principal_abrams' ? 'Principal' : 'Alternativo'}</h3><p>Volume {formatNumero(candidate.summary.physicalVolumeL, 2)} L</p><p>Cimento {formatNumero(candidate.summary.cementKg, 2)} kg/m³</p><p>a/c {formatNumero(candidate.summary.waterCementRatio, 4)}</p><p>a/agl {formatNumero(candidate.summary.waterBinderRatio, 4)}</p><p>α {formatNumero(candidate.summary.alpha, 4)}</p><p>Custo R$ {formatNumero(candidate.summary.costRsM3, 2)}/m³</p><p>Areia {formatNumero(candidate.summary.sandKg, 3)} kg/m³ · Brita {formatNumero(candidate.summary.gravelKg, 3)} kg/m³</p></div>; } catch { return <p key={which}>Entradas incompletas.</p>; } })}</div></Card>}
+-      <article className="ct-card ct-recipe41-letter"><div className="ct-row ct-space"><h2>Carta do traço</h2><Button variant="secondary" onClick={() => window.print()}>Imprimir</Button></div><p><strong>{name}</strong> · {unit} · {method === 'principal_abrams' ? 'Principal' : 'Alternativo'} · {mode === 'complete' ? 'balanço completo' : 'modo planilha'}</p><p>Fck {formatNumero(fck, 1)} MPa · Volume {formatNumero(view.letter.physicalVolumeL, 2)} L · Cimento {formatNumero(view.letter.cementKg, 2)} kg/m³ · Água efetiva {formatNumero(view.letter.waterEffectiveKg, 2)} kg/m³ · a/c {formatNumero(view.letter.waterCementRatio, 4)} · a/agl {formatNumero(view.letter.waterBinderRatio, 4)} · α {formatNumero(view.letter.alpha, 4)} · Custo R$ {formatNumero(view.letter.costRsM3, 2)}/m³</p><table className="ct-table"><thead><tr><th>Material</th><th>kg/m³</th></tr></thead><tbody>{calculation.value.items.map(item => <tr key={item.id}><td>{item.nome}</td><td>{formatNumero(item.massaKgM3, 3)}</td></tr>)}</tbody></table>{pilot !== false ? <p className="ct-recipe41-watermark">PILOTO — NÃO LIBERADO PARA PRODUÇÃO</p> : saved?.status !== 'aprovado' && <p className="ct-recipe41-watermark">RASCUNHO · NÃO LIBERADO PARA PRODUÇÃO</p>}</article>
+-      {saved?.status === 'rascunho' && <Button variant="secondary" onClick={() => void release()}>Liberar para ensaio</Button>}
+-    </>}
++
++  // ---- verificações exibidas (as regras de bloqueio continuam no servidor) ----
++  const sandSum = method === 'principal_abrams' ? principal.sands.reduce((s, p) => s + p.fraction, 0) : alternative.sands.reduce((s, p) => s + p.volumeFraction, 0);
++  const gravelSum = method === 'principal_abrams' ? principal.gravels.reduce((s, p) => s + p.fraction, 0) : alternative.gravels.reduce((s, p) => s + p.volumeFraction, 0);
++  const limite = obterLimite('II', 'armado');
++  const checks: Check[] = [];
++  checks.push(Math.abs(sandSum - 1) <= 0.001 && Math.abs(gravelSum - 1) <= 0.001
++    ? { tone: 'ok', title: 'Frações dos grupos somam 100 %' }
++    : { tone: 'crit', title: 'Frações não fecham 100 %', detail: `Areias ${formatNumero(sandSum * 100, 1)} % · britas ${formatNumero(gravelSum * 100, 1)} %. Bloqueia a liberação.` });
++  if (view) {
++    if (mode === 'spreadsheet') checks.push({ tone: 'warn', title: 'Modo planilha', detail: 'Serve só para conferência; não pode ser aprovado.' });
++    else checks.push(Math.abs(view.panel.physicalVolumeL - 1000) <= 1 ? { tone: 'ok', title: 'Volume 1000 ± 1 L' } : { tone: 'crit', title: 'Volume fora de 1000 ± 1 L', detail: `${formatNumero(view.panel.physicalVolumeL, 2)} L. Bloqueia a liberação.` });
++    if (limite) {
++      const okAc = limite.relacaoAguaCimentoMax == null || view.panel.waterCementRatio <= limite.relacaoAguaCimentoMax;
++      const okC = limite.consumoCimentoMinKgM3 == null || view.panel.cementKg >= limite.consumoCimentoMinKgM3;
++      checks.push(okAc && okC
++        ? { tone: 'ok', title: 'NBR 12655 · classe II', detail: `a/c ${formatNumero(view.panel.waterCementRatio, 3)} ≤ ${formatNumero(limite.relacaoAguaCimentoMax ?? 0, 2)} · cimento ${formatNumero(view.panel.cementKg, 0)} ≥ ${limite.consumoCimentoMinKgM3} kg/m³` }
++        : { tone: 'warn', title: 'NBR 12655 · classe II', detail: `${okAc ? '' : `a/c ${formatNumero(view.panel.waterCementRatio, 3)} acima de ${formatNumero(limite.relacaoAguaCimentoMax ?? 0, 2)}. `}${okC ? '' : `Cimento ${formatNumero(view.panel.cementKg, 0)} abaixo de ${limite.consumoCimentoMinKgM3} kg/m³.`} Exige justificativa.` });
++    }
++  }
++  if (fixedMethod === 'principal_abrams' && packing.touched) checks.push(packing.data ? { tone: 'ok', title: 'Curvas do empacotamento completas' } : { tone: 'crit', title: 'Curvas do empacotamento incompletas', detail: 'O salvamento fica bloqueado até corrigir.' });
++  checks.push(saved ? { tone: 'ok', title: `Salvo no servidor · v${saved.versao} rev. ${saved.revisao}`, detail: !saved.status || saved.status === 'rascunho' ? 'Pode ser liberado para ensaio.' : `Situação: ${String(saved.status).replace('_', ' ')}` } : { tone: 'warn', title: 'Ainda não salvo no servidor' });
++  const pending = checks.filter(c => c.tone !== 'ok').length;
++
++  // ---- navegação por seções ----
++  const sections = [
++    { id: 'sec-objetivo', label: 'Objetivo', hint: `fck ${formatNumero(fck, 0)} · sd ${formatNumero(sd, 1)}` },
++    { id: 'sec-proporcoes', label: 'Proporções', hint: method === 'principal_abrams' ? 'Abrams e argamassa' : 'frações volumétricas' },
++    ...(isPacking ? [{ id: 'sec-empacotamento', label: 'Empacotamento', hint: deviation == null ? 'curvas das areias' : `desvio ${formatNumero(deviation, 2)}` }] : []),
++    { id: 'sec-resultado', label: 'Resultado', hint: view ? `R$ ${formatNumero(view.panel.costRsM3, 2)}/m³` : 'entradas incompletas' },
++    { id: 'sec-carta', label: 'Carta', hint: pending ? `${pending} pendência(s)` : 'pronta' }
++  ];
++  const [activeSection, setActiveSection] = useState(sections[0].id);
++  useEffect(() => {
++    if (typeof IntersectionObserver === 'undefined') return;
++    const observer = new IntersectionObserver(entries => { const visible = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0]; if (visible) setActiveSection(visible.target.id); }, { rootMargin: '-120px 0px -55% 0px' });
++    sections.forEach(s => { const el = document.getElementById(s.id); if (el) observer.observe(el); });
++    return () => observer.disconnect();
++  }, [isPacking, Boolean(view)]);
++  const goTo = (sectionId: string) => { setActiveSection(sectionId); document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
++
++  const title = fixedMethod === 'principal_abrams' ? 'Dosagem por empacotamento' : fixedMethod === 'alternativo_concrefer' ? 'Dosagem por volume' : 'Traço de concreto';
++  const statusPill = saved ? <Pill tone={!saved.status || saved.status === 'rascunho' ? 'ok' : 'info'}>{!saved.status || saved.status === 'rascunho' ? `Salvo · v${saved.versao} rev. ${saved.revisao}` : String(saved.status).replace('_', ' ')}</Pill> : <Pill tone="warn">Não salvo</Pill>;
++
++  const volumes = view && calculation.value ? volumeColors.map(group => ({ ...group, litros: calculation.value!.items.filter(i => group.cats.includes(i.categoria)).reduce((s, i) => s + i.massaKgM3 / i.massaEspecificaKgDm3, 0) + (group.key === 'outros' ? recipe.metodoDados.airFraction * 1000 : 0) })) : [];
++  const kpis = view ? [
++    { label: 'Cimento', value: formatNumero(view.panel.cementKg, 1), unit: 'kg/m³' },
++    { label: 'Água efetiva', value: formatNumero(view.panel.waterEffectiveKg, 1), unit: 'kg/m³' },
++    { label: 'a/c', value: formatNumero(view.panel.waterCementRatio, 4) },
++    { label: 'a/agl', value: formatNumero(view.panel.waterBinderRatio, 4) },
++    { label: 'α (argamassa)', value: `${formatNumero(view.panel.alpha * 100, 1)} %` },
++    ...(isPacking ? [{ label: 'Desvio granulom.', value: deviation == null ? '—' : formatNumero(deviation, 2) }] : [])
++  ] : [];
++  const volumeOk = view ? Math.abs(view.panel.physicalVolumeL - 1000) <= 1 : false;
++  const checklist = <section className="ct-card ct-checklist" aria-labelledby="r41-checklist-title">
++    <div className="ct-card-head"><h2 id="r41-checklist-title">Pronto para liberar?</h2>{pending ? <Pill tone="warn">{pending} pendência(s)</Pill> : <Pill tone="ok">Tudo certo</Pill>}</div>
++    <ul>{checks.map(c => <li key={c.title} className={`is-${c.tone}`}><Icon name={c.tone === 'ok' ? 'check' : c.tone === 'crit' ? 'erro' : 'alerta'} size={18} strokeWidth={2.3}/><div><strong>{c.title}</strong>{c.detail && <small>{c.detail}</small>}</div></li>)}</ul>
++    <p className="ct-muted ct-checklist-note">Indicação local. A liberação e a aprovação são validadas pelo servidor.</p>
++  </section>;
++  const strip: ReactNode = view ? <div className="ct-live-strip" aria-label="Resumo do resultado">
++    <div><small>Volume</small><strong>{formatNumero(view.panel.physicalVolumeL, layout === 'mobile' ? 0 : 1)} L{mode === 'complete' && (volumeOk ? ' ✓' : ' ✕')}</strong></div>
++    <div><small>Cimento</small><strong>{formatNumero(view.panel.cementKg, 1)}</strong></div>
++    <div><small>a/c</small><strong>{formatNumero(view.panel.waterCementRatio, 3)}</strong></div>
++    {layout !== 'mobile' && <div><small>α</small><strong>{formatNumero(view.panel.alpha * 100, 1)} %</strong></div>}
++    <div><small>R$/m³</small><strong className="is-accent">{formatNumero(view.panel.costRsM3, 2)}</strong></div>
++  </div> : null;
++
++  return <div className={`ct-recipe41 ct-ws-layout is-${layout}`}>
++    <div className="ct-page-heading ct-recipe-head">
++      <div>
++        <p className="ct-eyebrow">{method === 'principal_abrams' ? 'Abrams + teor de argamassa' : 'Método Concrefer · Rica v4'}</p>
++        <h1>{title}</h1>
++        <div className="ct-row ct-recipe-tags">{statusPill}<Pill tone="mute">{unit || 'sem unidade'}</Pill><Pill tone={mode === 'complete' ? 'mute' : 'warn'}>{mode === 'complete' ? 'Balanço completo' : 'Modo planilha'}</Pill></div>
++      </div>
++      {fixedMethod && <nav className="ct-seg" aria-label="Método de dosagem"><Link className={fixedMethod === 'principal_abrams' ? 'active' : ''} aria-current={fixedMethod === 'principal_abrams' ? 'page' : undefined} to="/dosagem/empacotamento">Empacotamento</Link><Link className={fixedMethod === 'alternativo_concrefer' ? 'active' : ''} aria-current={fixedMethod === 'alternativo_concrefer' ? 'page' : undefined} to="/dosagem/volume">Volume</Link></nav>}
++    </div>
++
++    {layout === 'mobile' && strip && <div className="ct-strip-top">{strip}</div>}
++
++    <nav className="ct-sectionnav" aria-label="Seções do traço">
++      {sections.map((s, i) => <button key={s.id} type="button" className={activeSection === s.id ? 'active' : ''} aria-current={activeSection === s.id ? 'step' : undefined} onClick={() => goTo(s.id)}><span className="ct-sectionnav-n">{i + 1}</span><span><b>{s.label}</b><small>{s.hint}</small></span></button>)}
++    </nav>
++
++    <div className="ct-ws">
++      <div className="ct-ws-main">
++        <Card id="sec-objetivo" title="Objetivo e identificação" subtitle="Borda = valor digitado · fundo cinza = valor calculado">
++          <div className="ct-grid ct-grid--3">
++            <Input id="r41-name" label="Nome do traço" value={name} onChange={e => { setName(e.target.value); setSaved(null); }}/>
++            <Input id="r41-unit" label="Unidade" value={unit} onChange={e => { setUnit(e.target.value); setSaved(null); }}/>
++            {fixedMethod ? <CalcField label="Método" value={fixedMethod === 'principal_abrams' ? 'Principal · Abrams e empacotamento' : 'Alternativo · volume Concrefer'}/> : <Select id="r41-method" label="Método" value={method} onChange={e => { setMethod(e.target.value as Recipe41['metodo']); setSaved(null); }}><option value="principal_abrams">Principal · Abrams</option><option value="alternativo_concrefer">Alternativo · Concrefer</option></Select>}
++            <NumField id="r41-fck" label="Fck" unit="MPa" value={fck} onChange={n => { setFck(n); setSaved(null); }}/>
++            <NumField id="r41-sd" label="Desvio padrão" unit="MPa" value={sd} onChange={n => { setSd(n); setSaved(null); }}/>
++            <CalcField label="fcj = fck + 1,65 · sd" value={formatNumero(fck + 1.65 * sd, 1)} unit="MPa"/>
++            <Select id="r41-mode" label="Balanço de volume" value={mode} onChange={e => { setMode(e.target.value as typeof mode); setSaved(null); }}><option value="complete">Completo</option><option value="spreadsheet">Modo planilha · conferência</option></Select>
++          </div>
++          {mode === 'spreadsheet' && <p className="ct-alert ct-alert--aviso ct-gap-top"><Icon name="alerta" size={18}/>Modo planilha serve apenas para conferência e não pode ser aprovado.</p>}
++        </Card>
++
++        {method === 'principal_abrams' ? <Card id="sec-proporcoes" title="Parâmetros do método principal" subtitle="Cimento e aglomerante por m³; as frações dos agregados são em massa dentro de cada grupo.">
++          <div className="ct-grid ct-grid--4">
++            <NumField id="r41-water" label="Água efetiva" unit="kg/m³" value={principal.waterEffectiveKg} onChange={n => updatePrincipal(d => { d.waterEffectiveKg = n; })}/>
++            <NumField id="r41-binder" label="Aglomerante" unit="kg/m³" value={principal.binderKg} onChange={n => updatePrincipal(d => { d.binderKg = n; })}/>
++            <NumField id="r41-addition" label="Fração da adição" unit="%" value={principal.additionFraction * 100} onChange={n => updatePrincipal(d => { d.additionFraction = n / 100; })}/>
++            <NumField id="r41-mortar" label="Teor de argamassa em volume" unit="%" value={principal.mortarVolumeFraction * 100} onChange={n => updatePrincipal(d => { d.mortarVolumeFraction = n / 100; })}/>
++            <NumField id="r41-air" label="Ar" unit="%" value={principal.airFraction * 100} onChange={n => updatePrincipal(d => { d.airFraction = n / 100; })}/>
++            <NumField id="r41-cement-density" label="Massa específica cimento" unit="kg/dm³" value={principal.cementDensity} onChange={n => updatePrincipal(d => { d.cementDensity = n; })}/>
++            {view && <CalcField label="a/c resultante" value={formatNumero(view.panel.waterCementRatio, 4)}/>}
++          </div>
++          <AggregateGroups
++            groups={[{ title: 'Areias', sum: sandSum, parts: principal.sands.map((p, i) => ({ key: `r41-sf${i}`, densityKey: `r41-sd${i}`, label: `Areia ${i + 1}`, fraction: p.fraction, density: p.density, mass: calculation.value?.result.sandMassesKg[i], tag: isPacking ? 'empacotamento' : undefined, onFraction: (n: number) => updatePrincipal(d => { d.sands[i].fraction = n / 100; }), onDensity: (n: number) => updatePrincipal(d => { d.sands[i].density = n; }) })) },
++              { title: 'Britas', sum: gravelSum, parts: principal.gravels.map((p, i) => ({ key: `r41-gf${i}`, densityKey: `r41-gd${i}`, label: `Brita ${i + 1}`, fraction: p.fraction, density: p.density, mass: calculation.value?.result.gravelMassesKg[i], onFraction: (n: number) => updatePrincipal(d => { d.gravels[i].fraction = n / 100; }), onDensity: (n: number) => updatePrincipal(d => { d.gravels[i].density = n; }) })) }]}
++            fractionLabel="Fração em massa"/>
++        </Card> : <Card id="sec-proporcoes" title="Parâmetros do método alternativo" subtitle="Cimento = água ÷ (a/c). As areias fecham o volume de 1 m³.">
++          <div className="ct-grid ct-grid--4">
++            <NumField id="r41-alt-water" label="Água efetiva" unit="kg/m³" value={alternative.waterEffectiveKg} onChange={n => updateAlternative(d => { d.waterEffectiveKg = n; })}/>
++            <NumField id="r41-alt-ratio" label="Relação a/c" value={alternative.waterCementRatio} onChange={n => updateAlternative(d => { d.waterCementRatio = n; })}/>
++            <NumField id="r41-alt-mortar" label="Teor de argamassa em volume" unit="%" value={alternative.mortarVolumeFraction * 100} onChange={n => updateAlternative(d => { d.mortarVolumeFraction = n / 100; })}/>
++            <NumField id="r41-alt-air" label="Ar" unit="%" value={alternative.airFraction * 100} onChange={n => updateAlternative(d => { d.airFraction = n / 100; })}/>
++            {view && <CalcField label="Cimento resultante" value={formatNumero(view.panel.cementKg, 1)} unit="kg/m³"/>}
++          </div>
++          {view && <div className="ct-volume-bar-block">
++            <div className="ct-row ct-space"><strong className="ct-small-title">Composição de 1 m³ em volume</strong>{mode === 'complete' ? <Pill tone={volumeOk ? 'ok' : 'crit'}>{formatNumero(view.panel.physicalVolumeL, 2)} L</Pill> : <Pill tone="warn">{formatNumero(view.panel.physicalVolumeL, 2)} L · planilha</Pill>}</div>
++            <div className="ct-volume-bar" role="img" aria-label={volumes.map(v => `${v.label} ${formatNumero(v.litros, 0)} L`).join(', ')}>{volumes.map(v => <span key={v.key} style={{ flex: Math.max(v.litros, 0.1), background: v.key === 'cim' ? '#0A1530' : v.color, color: v.key === 'areia' || v.key === 'brita' ? '#0A1530' : '#fff' }}>{v.litros >= 60 ? `${v.label} ${formatNumero(v.litros, 0)}` : ''}</span>)}</div>
++          </div>}
++          <AggregateGroups
++            groups={[{ title: 'Areias', sum: sandSum, parts: alternative.sands.map((p, i) => ({ key: `r41-asf${i}`, densityKey: `r41-asd${i}`, label: `Areia ${i + 1}`, fraction: p.volumeFraction, density: p.density, mass: calculation.value?.result.sandMassesKg[i], onFraction: (n: number) => updateAlternative(d => { d.sands[i].volumeFraction = n / 100; }), onDensity: (n: number) => updateAlternative(d => { d.sands[i].density = n; }) })) },
++              { title: 'Britas', sum: gravelSum, parts: alternative.gravels.map((p, i) => ({ key: `r41-agf${i}`, densityKey: `r41-agd${i}`, label: `Brita ${i + 1}`, fraction: p.volumeFraction, density: p.density, mass: calculation.value?.result.gravelMassesKg[i], onFraction: (n: number) => updateAlternative(d => { d.gravels[i].volumeFraction = n / 100; }), onDensity: (n: number) => updateAlternative(d => { d.gravels[i].density = n; }) })) }]}
++            fractionLabel="Fração em volume"/>
++        </Card>}
++
++        {isPacking && <PackingPanel fraction={principal.sands[0].fraction} onApply={fraction => updatePrincipal(next => { next.sands[0].fraction = fraction; next.sands[1].fraction = 1 - fraction; })} onChange={changePacking} onDeviation={setDeviation}/>}
++        {calculation.error && <div className="ct-alert ct-alert--erro" role="alert"><Icon name="erro" size={18}/>{calculation.error}</div>}
++
++        {view && calculation.value && <>
++          <Card id="sec-resultado" title="Resultado calculado" subtitle="Valores por m³. Custos unitários editáveis por material.">
++            <div className="ct-recipe41-kpis">
++              <div><small>Volume físico</small><strong>{formatNumero(view.panel.physicalVolumeL, 2)} L</strong></div>
++              <div><small>Cimento</small><strong>{formatNumero(view.panel.cementKg, 2)} kg/m³</strong></div>
++              <div><small>a/c</small><strong>{formatNumero(view.panel.waterCementRatio, 4)}</strong></div>
++              <div><small>a/agl</small><strong>{formatNumero(view.panel.waterBinderRatio, 4)}</strong></div>
++              <div><small>α</small><strong>{formatNumero(view.panel.alpha, 4)}</strong></div>
++              <div><small>Custo</small><strong>R$ {formatNumero(view.panel.costRsM3, 2)}/m³</strong></div>
++              <div><small>Água efetiva</small><strong>{formatNumero(view.panel.waterEffectiveKg, 2)} kg/m³</strong></div>
++            </div>
++            <div className="ct-table-wrap"><table className="ct-table ct-materials-table">
++              <thead><tr><th>Material</th><th className="num">Massa kg/m³</th><th className="num">ρ kg/dm³</th><th className="num">Volume L</th><th className="num">Custo R$/kg</th><th className="num">R$/m³</th></tr></thead>
++              <tbody>{calculation.value.items.map((item, i) => <tr key={item.id}><td>{names[i]}</td><td className="num">{formatNumero(item.massaKgM3, 3)}</td><td className="num">{formatNumero(item.massaEspecificaKgDm3, 3)}</td><td className="num">{formatNumero(item.massaKgM3 / item.massaEspecificaKgDm3, 3)}</td><td className="num"><CostInput label={`Custo de ${item.nome}`} value={costs[item.id] || 0} onChange={n => { setCosts(current => ({ ...current, [item.id]: n })); setSaved(null); }}/></td><td className="num">{item.custoRsM3 ? formatNumero(item.custoRsM3, 2) : '—'}</td></tr>)}</tbody>
++              <tfoot><tr><td>Total (com {formatNumero(recipe.metodoDados.airFraction * 1000, 0)} L de ar)</td><td className="num">{formatNumero(calculation.value.items.reduce((s, i) => s + i.massaKgM3, 0), 3)}</td><td/><td className="num">{formatNumero(view.panel.physicalVolumeL, 2)}</td><td/><td className="num">{formatNumero(view.panel.costRsM3, 2)}</td></tr></tfoot>
++            </table></div>
++          </Card>
++          {layout !== 'desktop' && checklist}
++          {!fixedMethod && <Card title="Comparação dos métodos" subtitle="Os exemplos mantêm entradas próprias; confira as entradas antes de comparar desempenho."><div className="ct-grid ct-grid--2">{(['principal_abrams', 'alternativo_concrefer'] as const).map(which => { try { const candidate = calculateRecipe41(which === 'principal_abrams' ? { metodo: which, balanco: mode, metodoDados: principal, custosRsKg: costs } : { metodo: which, balanco: mode, metodoDados: alternative, custosRsKg: costs }); return <div className={`ct-recipe41-part${which === method ? ' is-current' : ''}`} key={which}><h3>{which === 'principal_abrams' ? 'Principal' : 'Alternativo'}</h3><p>Volume {formatNumero(candidate.summary.physicalVolumeL, 2)} L</p><p>Cimento {formatNumero(candidate.summary.cementKg, 2)} kg/m³</p><p>a/c {formatNumero(candidate.summary.waterCementRatio, 4)}</p><p>a/agl {formatNumero(candidate.summary.waterBinderRatio, 4)}</p><p>α {formatNumero(candidate.summary.alpha, 4)}</p><p>Custo R$ {formatNumero(candidate.summary.costRsM3, 2)}/m³</p><p>Areia {formatNumero(candidate.summary.sandKg, 3)} kg/m³ · Brita {formatNumero(candidate.summary.gravelKg, 3)} kg/m³</p></div>; } catch { return <p key={which}>Entradas incompletas.</p>; } })}</div></Card>}
++          <article id="sec-carta" className="ct-card ct-recipe41-letter" aria-labelledby="r41-letter-title">
++            {(pilot !== false || saved?.status !== 'aprovado') && <div className="ct-letter-watermark" aria-hidden="true">{pilot !== false ? 'PILOTO · NÃO LIBERADO' : 'RASCUNHO'}</div>}
++            <header className="ct-letter-head">
++              <div><p className="ct-eyebrow">Carta do traço</p><h2 id="r41-letter-title">{name}</h2><p className="ct-muted">{unit} · {method === 'principal_abrams' ? 'Principal' : 'Alternativo'} · {mode === 'complete' ? 'balanço completo' : 'modo planilha'}{saved ? ` · v${saved.versao} rev. ${saved.revisao}` : ''}</p></div>
++              <Button variant="secondary" size="sm" className="ct-letter-print" onClick={() => window.print()}><Icon name="imprimir" size={16}/>Imprimir</Button>
++            </header>
++            <dl className="ct-letter-kv">
++              <div><dt>Fck</dt><dd>{formatNumero(fck, 1)} MPa</dd></div>
++              <div><dt>Volume</dt><dd>{formatNumero(view.letter.physicalVolumeL, 2)} L</dd></div>
++              <div><dt>Cimento</dt><dd>{formatNumero(view.letter.cementKg, 2)} kg/m³</dd></div>
++              <div><dt>Água efetiva</dt><dd>{formatNumero(view.letter.waterEffectiveKg, 2)} kg/m³</dd></div>
++              <div><dt>a/c</dt><dd>{formatNumero(view.letter.waterCementRatio, 4)}</dd></div>
++              <div><dt>a/agl</dt><dd>{formatNumero(view.letter.waterBinderRatio, 4)}</dd></div>
++              <div><dt>α</dt><dd>{formatNumero(view.letter.alpha, 4)}</dd></div>
++              <div><dt>Custo</dt><dd>R$ {formatNumero(view.letter.costRsM3, 2)}/m³</dd></div>
++            </dl>
++            <table className="ct-table"><thead><tr><th>Material</th><th className="num">kg/m³</th><th className="num">Traço unitário</th></tr></thead><tbody>{calculation.value.items.map((item, i) => <tr key={item.id}><td>{names[i]}</td><td className="num">{formatNumero(item.massaKgM3, 3)}</td><td className="num">{formatNumero(item.massaKgM3 / view.letter.cementKg, 3)}</td></tr>)}</tbody></table>
++            {pilot !== false ? <p className="ct-recipe41-watermark">PILOTO — NÃO LIBERADO PARA PRODUÇÃO</p> : saved?.status !== 'aprovado' && <p className="ct-recipe41-watermark">RASCUNHO · NÃO LIBERADO PARA PRODUÇÃO</p>}
++          </article>
++        </>}
++      </div>
++
++      {layout === 'desktop' && <aside className="ct-ws-aside" aria-label="Resultado ao vivo">
++        <section className="ct-live" aria-live="polite" aria-labelledby="r41-live-title">
++          <h2 id="r41-live-title">Resultado ao vivo</h2>
++          {view ? <>
++            <div className="ct-live-volume"><small>Volume físico</small><div><strong>{formatNumero(view.panel.physicalVolumeL, 1)} L</strong>{mode === 'complete' ? <Pill tone={volumeOk ? 'ok' : 'crit'}>1000 ± 1</Pill> : <Pill tone="warn">planilha</Pill>}</div>
++              <div className="ct-live-bar" aria-hidden="true">{volumes.map(v => <span key={v.key} style={{ flex: Math.max(v.litros, 0.1), background: v.color }}/>)}</div>
++              <div className="ct-live-legend" aria-hidden="true">{volumes.map(v => <span key={v.key}><i style={{ background: v.color }}/>{v.label}</span>)}</div>
++            </div>
++            <div className="ct-live-cost"><small>Custo</small><strong>R$ {formatNumero(view.panel.costRsM3, 2)}</strong><span>por m³</span></div>
++            <div className="ct-live-kpis">{kpis.map(k => <div key={k.label}><small>{k.label}</small><strong>{k.value}</strong>{k.unit && <span>{k.unit}</span>}</div>)}</div>
++          </> : <p className="ct-live-empty">Complete as entradas para ver o resultado.</p>}
++        </section>
++        {checklist}
++      </aside>}
++    </div>
++
++    <div className="ct-dock">
++      {layout === 'tablet' && strip}
++      <div className="ct-actionbar">
++        <p role="status" className={`ct-action-msg is-${message.tone}`}><Icon name={message.tone === 'ok' ? 'check' : message.tone === 'crit' ? 'erro' : message.tone === 'info' ? 'relogio' : 'alerta'} size={16} strokeWidth={2.3}/><span>{message.text}</span></p>
++        <div className="ct-actionbar-buttons">
++          {layout !== 'mobile' && <Button variant="secondary" onClick={() => window.print()} disabled={!view}><Icon name="imprimir" size={16}/>Imprimir carta</Button>}
++          {saved?.status === 'rascunho' && <Button variant="dark" onClick={() => void release()}>Liberar para ensaio</Button>}
++          <Button onClick={() => void save()} disabled={!view || busy}><Icon name="salvar" size={16}/>Salvar no servidor</Button>
++        </div>
++      </div>
++    </div>
+   </div>;
+ }
++
++type Part = { key: string; densityKey: string; label: string; fraction: number; density: number; mass?: number; tag?: string; onFraction: (n: number) => void; onDensity: (n: number) => void };
++function AggregateGroups({ groups, fractionLabel }: { groups: { title: string; sum: number; parts: Part[] }[]; fractionLabel: string }) {
++  return <div className="ct-agg-groups">{groups.map(group => { const ok = Math.abs(group.sum - 1) <= 0.001; return <div className="ct-agg-group" key={group.title}>
++    <div className="ct-agg-head"><h3>{group.title}</h3>{ok ? <Pill tone="ok">Σ 100 %</Pill> : <Pill tone="crit">Σ {formatNumero(group.sum * 100, 1)} %</Pill>}</div>
++    {group.parts.map(part => <div className="ct-agg-row" key={part.key}>
++      <div className="ct-agg-name"><strong>{part.label}</strong>{part.tag && <span className="ct-agg-tag">{part.tag}</span>}</div>
++      <NumField id={part.key} label={fractionLabel} unit="%" value={part.fraction * 100} onChange={part.onFraction}/>
++      <NumField id={part.densityKey} label="Massa específica" unit="kg/dm³" value={part.density} onChange={part.onDensity}/>
++      <CalcField label="Massa" value={part.mass == null ? '—' : formatNumero(part.mass, 1)} unit="kg/m³"/>
++    </div>)}
++  </div>; })}</div>;
++}
++function CostInput({ label, value, onChange }: { label: string; value: number; onChange: (n: number) => void }) {
++  const [text, setText] = useState(() => editText(value));
++  return <input className="ct-cost-input" aria-label={label} inputMode="decimal" value={text} onChange={e => { setText(e.target.value); onChange(parseNumero(e.target.value) ?? 0); }}/>;
++}
+diff --git a/src/features/recipe41.css b/src/features/recipe41.css
+index 41bfd03..1b4e6fe 100644
+--- a/src/features/recipe41.css
++++ b/src/features/recipe41.css
+@@ -1 +1,157 @@
+-.ct-recipe41{display:grid;gap:18px}.ct-recipe41-part{border:1px solid var(--ct-line);border-radius:10px;padding:14px;background:#f8f9fc}.ct-recipe41-part h3{margin:0 0 10px;font-size:.95rem}.ct-recipe41-part .ct-field{margin-top:8px}.ct-recipe41-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:15px 0}.ct-recipe41-kpis>div{background:#eef1f7;padding:16px;border-radius:10px;display:grid;gap:5px}.ct-recipe41-kpis small{color:var(--ct-muted)}.ct-recipe41-kpis strong{font-size:1.2rem}.ct-recipe41-letter{position:relative}.ct-recipe41-watermark{font-weight:800;color:var(--ct-red);letter-spacing:.05em}@media(max-width:800px){.ct-recipe41-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){.ct-recipe41-kpis{grid-template-columns:1fr 1fr}.ct-recipe41 .ct-page-heading{display:grid}}@media print{body *{visibility:hidden!important}.ct-recipe41-letter,.ct-recipe41-letter *{visibility:visible!important}.ct-recipe41-letter{position:absolute;inset:0;width:100%;border:0;box-shadow:none}.ct-recipe41-letter button{display:none!important}}
++.ct-recipe41{display:flex!important;flex-direction:column;gap:18px}
++.ct-recipe-head{align-items:center}
++.ct-recipe-tags{margin-top:10px;gap:6px}
++.ct-gap-top{margin-top:14px}
++.ct-small-title{font-size:.85rem}
++
++/* navegação por seções */
++.ct-sectionnav{display:flex;gap:6px;background:#fff;border:1px solid var(--ct-line);border-radius:14px;padding:6px;position:sticky;top:76px;z-index:20;overflow-x:auto;scrollbar-width:none}
++.ct-sectionnav::-webkit-scrollbar{display:none}
++.ct-sectionnav button{flex:1 0 auto;display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 12px;border:0;border-radius:10px;background:transparent;color:var(--ct-muted);text-align:left}
++.ct-sectionnav button:hover{background:var(--ct-bg)}
++.ct-sectionnav b{display:block;font-size:.82rem;color:var(--ct-ink-2)}
++.ct-sectionnav small{display:block;font-size:.7rem;white-space:nowrap}
++.ct-sectionnav-n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;font-weight:800;background:var(--ct-calc-bg);color:var(--ct-ink-2);flex:none}
++.ct-sectionnav button.active{background:var(--ct-navy);color:#C9D3EA}
++.ct-sectionnav button.active b{color:#fff}
++.ct-sectionnav button.active .ct-sectionnav-n{background:var(--ct-yellow);color:var(--ct-navy)}
++.ct-recipe41 .ct-card{scroll-margin-top:150px}
++
++/* área de trabalho */
++.ct-ws{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
++.ct-ws-layout:not(.is-desktop) .ct-ws{grid-template-columns:minmax(0,1fr)}
++.ct-ws-main{display:flex;flex-direction:column;gap:18px;min-width:0}
++.ct-ws-aside{position:sticky;top:150px;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 160px);overflow-y:auto;scrollbar-width:thin;border-radius:18px}
++
++/* agregados */
++.ct-agg-groups{display:grid;grid-template-columns:1fr;gap:14px;margin-top:18px}
++.ct-agg-group{border:1px solid var(--ct-line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px}
++.ct-agg-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
++.ct-agg-head h3{margin:0;font-size:.92rem}
++.ct-agg-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(110px,150px) minmax(110px,150px) minmax(100px,140px);gap:10px;align-items:end;padding-top:12px;border-top:1px solid var(--ct-line-2)}
++.ct-agg-row:first-of-type{border-top:0;padding-top:0}
++.ct-agg-name{align-self:center;display:flex;flex-direction:column;gap:4px}
++.ct-agg-name strong{font-size:.9rem}
++.ct-agg-tag{align-self:flex-start;font-size:.66rem;font-weight:700;color:var(--ct-ink-2);background:var(--ct-calc-bg);border-radius:6px;padding:2px 7px}
++.ct-ws-layout:not(.is-desktop) .ct-agg-row{grid-template-columns:repeat(3,minmax(0,1fr))}
++.ct-ws-layout:not(.is-desktop) .ct-agg-name{grid-column:1/-1}
++
++.ct-volume-bar-block{margin-top:18px;display:flex;flex-direction:column;gap:8px}
++.ct-volume-bar{display:flex;height:40px;border-radius:10px;overflow:hidden}
++.ct-volume-bar span{display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;white-space:nowrap;overflow:hidden}
++
++/* resultado */
++.ct-recipe41-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 16px}
++.ct-recipe41-kpis>div{background:var(--ct-calc-bg);padding:12px 14px;border-radius:12px;display:grid;gap:4px}
++.ct-recipe41-kpis small{color:var(--ct-muted);font-size:.72rem;font-weight:600}
++.ct-recipe41-kpis strong{font-size:1.05rem}
++.ct-cost-input{width:88px;min-height:36px;border:1px solid var(--ct-line-input);border-radius:8px;padding:0 8px;text-align:right;font-weight:600}
++.ct-materials-table td{white-space:nowrap}
++.ct-recipe41-part{border:1px solid var(--ct-line);border-radius:12px;padding:14px;background:#F7F8FB}
++.ct-recipe41-part.is-current{border-color:var(--ct-navy)}
++.ct-recipe41-part h3{margin:0 0 10px;font-size:.95rem}.ct-recipe41-part p{margin:4px 0;font-size:.85rem}
++
++/* painel ao vivo */
++.ct-live{background:var(--ct-navy);color:#fff;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px}
++.ct-live h2{margin:0;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ct-navy-ink)}
++.ct-live small{display:block;font-size:.7rem;color:var(--ct-navy-ink);font-weight:600}
++.ct-live-volume>div:first-of-type{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
++.ct-live-volume strong{font-size:1.9rem;letter-spacing:-.02em}
++.ct-live-bar{display:flex;height:10px;border-radius:5px;overflow:hidden;margin-top:10px}
++.ct-live-legend{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:8px;font-size:.68rem;color:var(--ct-navy-ink)}
++.ct-live-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
++.ct-live-cost{background:var(--ct-navy-hover);border-radius:12px;padding:10px 12px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
++.ct-live-cost small{width:100%}
++.ct-live-cost strong{font-size:1.45rem;color:var(--ct-yellow)}
++.ct-live-cost span{font-size:.72rem;color:var(--ct-navy-ink)}
++.ct-live-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
++.ct-live-kpis>div{background:var(--ct-navy-hover);border-radius:12px;padding:9px 11px}
++.ct-live-kpis strong{font-size:1.05rem}
++.ct-live-kpis span{font-size:.66rem;color:var(--ct-navy-ink);margin-left:4px}
++.ct-live-empty{margin:0;color:var(--ct-navy-ink);font-size:.85rem}
++.ct-checklist ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
++.ct-checklist li{display:flex;gap:10px;align-items:flex-start;font-size:.85rem}
++.ct-checklist li svg{flex:none;margin-top:1px}
++.ct-checklist li.is-ok svg{color:var(--ct-ok)}.ct-checklist li.is-warn svg{color:var(--ct-warn)}.ct-checklist li.is-crit svg{color:var(--ct-crit)}
++.ct-checklist li strong{display:block;font-weight:600}
++.ct-checklist li small{display:block;color:var(--ct-muted);font-size:.75rem;margin-top:2px;line-height:1.4}
++.ct-checklist-note{margin:14px 0 0;font-size:.72rem}
++
++/* faixa de resultado (tablet e celular) */
++.ct-live-strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:4px;background:var(--ct-navy);color:#fff;padding:10px 16px}
++.ct-live-strip small{display:block;font-size:.66rem;color:var(--ct-navy-ink);font-weight:600}
++.ct-live-strip strong{font-size:1rem;white-space:nowrap}
++.ct-live-strip .is-accent{color:var(--ct-yellow)}
++.ct-strip-top{position:sticky;top:56px;z-index:25;margin:0 -16px}
++.ct-ws-layout.is-mobile .ct-sectionnav{top:118px}
++
++/* barra de ações */
++.ct-dock{position:sticky;bottom:0;z-index:25;margin:0 -28px -40px;box-shadow:0 -6px 18px #0A153014}
++.ct-ws-layout.is-tablet .ct-dock{margin:0 -20px -20px}
++.ct-ws-layout.is-tablet .ct-live-strip{border-radius:0}
++.ct-actionbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border-top:1px solid var(--ct-line);padding:12px 28px}
++.ct-action-msg{margin:0 auto 0 0;display:flex;align-items:center;gap:8px;font-size:.82rem;font-weight:600;min-width:0;flex:1 1 280px}
++.ct-action-msg svg{flex:none}
++.ct-action-msg.is-ok{color:var(--ct-ok)}.ct-action-msg.is-warn{color:var(--ct-warn)}.ct-action-msg.is-crit{color:var(--ct-crit)}.ct-action-msg.is-info{color:var(--ct-info)}.ct-action-msg.is-mute{color:var(--ct-muted)}
++.ct-actionbar-buttons{display:flex;gap:10px;flex-wrap:wrap}
++.ct-ws-layout.is-mobile .ct-dock{bottom:72px;margin:0 -16px -16px}
++.ct-ws-layout.is-mobile .ct-actionbar{padding:10px 16px}
++.ct-ws-layout.is-mobile .ct-action-msg{flex-basis:100%;font-size:.75rem}
++.ct-ws-layout.is-mobile .ct-actionbar-buttons{width:100%}
++.ct-ws-layout.is-mobile .ct-actionbar-buttons .ct-button{flex:1;min-height:48px}
++
++/* empacotamento */
++.ct-packing{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
++.ct-ws-layout:not(.is-desktop) .ct-packing{grid-template-columns:1fr}
++.ct-packing-plot{background:#F7F8FB;border-radius:12px;padding:12px}
++.ct-packing-chart{display:block;width:100%;height:auto}
++.ct-packing-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.72rem;color:var(--ct-ink-2);margin-top:6px}
++.ct-packing-legend i{display:inline-block;width:16px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
++.ct-packing-legend i.is-dashed{background:repeating-linear-gradient(90deg,#0A1530 0 5px,transparent 5px 8px)}
++.ct-packing-control{display:flex;flex-direction:column;gap:14px}
++.ct-packing-ratio strong{font-size:1.6rem;letter-spacing:-.02em}
++.ct-packing-control input[type=range]{width:100%;accent-color:var(--ct-red);min-height:32px;padding:0;border:0}
++.ct-packing-dev{display:grid;grid-template-columns:1fr 1fr;gap:8px}
++.ct-packing-dev>div{background:var(--ct-calc-bg);border-radius:10px;padding:10px 12px}
++.ct-packing-dev small{display:block;font-size:.7rem;color:var(--ct-muted);font-weight:600}
++.ct-packing-dev strong{font-size:1.1rem}
++.ct-packing-suggest{border:1px solid var(--ct-warn-line);background:#FFF9E8;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
++.ct-packing-suggest.is-best{border-color:#A8D5BC;background:var(--ct-ok-bg)}
++.ct-packing-suggest p{margin:0;font-size:.82rem;color:#4A3000}
++.ct-packing-suggest.is-best p{color:var(--ct-ink-2)}
++.ct-packing-ok{display:flex;align-items:center;gap:6px;color:var(--ct-ok)!important;font-weight:600}
++.ct-packing-hint{margin:0;font-size:.72rem}
++.ct-packing-paste{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
++.ct-packing-paste textarea{resize:vertical;min-height:44px}
++.ct-sieve-wrap{margin-top:12px}
++.ct-sieve-table{border-collapse:collapse;font-size:.75rem}
++.ct-sieve-table th{font-weight:700;color:var(--ct-muted);padding:4px;text-align:center;white-space:nowrap}
++.ct-sieve-table th[scope=row]{text-align:left;padding-right:10px;color:var(--ct-ink-2)}
++.ct-sieve-table td{padding:2px}
++.ct-sieve-table input{width:44px;min-height:36px;border:1px solid var(--ct-line-input);border-radius:7px;text-align:center;font-weight:600;font-size:.8rem;color:var(--ct-ink)}
++.ct-sieve-table input[aria-invalid=true]{border-color:var(--ct-crit);background:var(--ct-crit-bg)}
++.ct-sieve-table .is-calc span{display:block;width:44px;line-height:32px;border-radius:7px;text-align:center;background:var(--ct-calc-bg);font-weight:700}
++.ct-sieve-table .is-target span{background:#F7F8FB;font-weight:600}
++.ct-packing-params{margin-top:14px;border-top:1px solid var(--ct-line-2);padding-top:12px}
++.ct-packing-params summary{cursor:pointer;font-size:.8rem;font-weight:600;color:var(--ct-ink-2);min-height:32px;display:flex;align-items:center}
++.ct-packing-params .ct-grid{margin-top:10px}
++
++/* carta */
++.ct-recipe41-letter{position:relative;overflow:hidden}
++.ct-letter-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:2px solid var(--ct-navy);padding-bottom:12px;margin-bottom:14px}
++.ct-letter-head h2{margin:0;font-size:1.2rem}
++.ct-letter-head p{margin:4px 0 0;font-size:.82rem}
++.ct-letter-kv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 14px}
++.ct-letter-kv>div{background:var(--ct-calc-bg);border-radius:10px;padding:8px 10px}
++.ct-letter-kv dt{font-size:.68rem;color:var(--ct-muted);font-weight:600}
++.ct-letter-kv dd{margin:2px 0 0;font-weight:700;font-size:.92rem}
++.ct-letter-watermark{position:absolute;inset:40% -10% auto;transform:rotate(-14deg);text-align:center;font-size:2.4rem;font-weight:800;letter-spacing:.08em;color:var(--ct-red);opacity:.08;pointer-events:none;white-space:nowrap}
++.ct-recipe41-watermark{font-weight:800;color:var(--ct-red-ink);letter-spacing:.05em;margin:14px 0 0}
++
++@media(max-width:900px){.ct-recipe41-kpis,.ct-letter-kv{grid-template-columns:repeat(2,minmax(0,1fr))}}
++@media(max-width:600px){.ct-agg-groups{grid-template-columns:1fr}.ct-packing-paste{grid-template-columns:1fr}
++  .ct-ws-layout.is-mobile .ct-agg-row{grid-template-columns:repeat(2,minmax(0,1fr))}
++  .ct-ws-layout.is-mobile .ct-agg-row>.ct-field:last-child{grid-column:1/-1}
++  .ct-recipe-head{align-items:flex-start}.ct-recipe-head .ct-seg{width:100%}.ct-recipe-head .ct-seg a{flex:1}
++  .ct-sectionnav small{display:none}.ct-sectionnav button{min-height:44px}}
++@media print{body *{visibility:hidden!important}.ct-recipe41-letter,.ct-recipe41-letter *{visibility:visible!important}.ct-recipe41-letter{position:absolute;inset:0;width:100%;border:0;box-shadow:none}.ct-recipe41-letter button{display:none!important}.ct-dock,.ct-sectionnav{display:none!important}}
+diff --git a/src/ui/components.tsx b/src/ui/components.tsx
+index 88a1eb7..cc77d73 100644
+--- a/src/ui/components.tsx
++++ b/src/ui/components.tsx
+@@ -1,9 +1,44 @@
+ import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from 'react';
+ import type { SaveStatus } from '../data/sync';
+-export function Button({ variant='primary', children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'ghost' | 'danger' }) { return <button className={`ct-button ct-button--${variant}`} type="button" {...props}>{children}</button>; }
+-export function Input({ label, id, error, unit, ...props }: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string; error?: string; unit?: string }) { return <div className="ct-field"><label htmlFor={id}>{label}{unit ? ` (${unit})` : ''}</label><input id={id} aria-invalid={!!error} aria-describedby={error ? `${id}-error` : undefined} {...props}/>{error && <small id={`${id}-error`}>{error}</small>}</div>; }
++import { Icon } from './icons';
++
++type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'dark' | 'accent';
++export function Button({ variant='primary', size, children, className, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant; size?: 'sm' }) {
++  return <button className={`ct-button ct-button--${variant}${size === 'sm' ? ' ct-button--sm' : ''}${className ? ` ${className}` : ''}`} type="button" {...props}>{children}</button>;
++}
++
++/** Campo digitado: borda. A unidade fica dentro da caixa, à direita, e também no nome acessível. */
++export function Input({ label, id, error, unit, ...props }: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string; error?: string; unit?: string }) {
++  const input = <input id={id} aria-invalid={!!error} aria-describedby={error ? `${id}-error` : undefined} {...props}/>;
++  return <div className="ct-field">
++    <label htmlFor={id}>{label}{unit && <span className="ct-sr"> ({unit})</span>}</label>
++    {unit ? <div className="ct-input-box">{input}<span className="ct-unit" aria-hidden="true">{unit}</span></div> : input}
++    {error && <small id={`${id}-error`}>{error}</small>}
++  </div>;
++}
+ export function NumberInput({ label, id, error, unit, ...props }: InputHTMLAttributes<HTMLInputElement> & { label: string; id: string; error?: string; unit?: string }) { return <Input label={label} id={id} unit={unit} error={error} type="text" inputMode="decimal" {...props}/>; }
++/** Valor calculado: fundo cinza, sem borda. */
++export function CalcField({ label, value, unit }: { label: string; value: ReactNode; unit?: string }) {
++  return <div className="ct-field"><span>{label}</span><div className="ct-calc"><span>{value}</span>{unit && <span className="ct-unit">{unit}</span>}</div></div>;
++}
+ export function Select({ label, id, children, ...props }: SelectHTMLAttributes<HTMLSelectElement> & { label: string; id: string; children: ReactNode }) { return <div className="ct-field"><label htmlFor={id}>{label}</label><select id={id} {...props}>{children}</select></div>; }
+-export function Card({ title, children, actions }: { title?: string; children: ReactNode; actions?: ReactNode }) { return <section className="ct-card">{title && <div className="ct-row ct-space"><h2>{title}</h2>{actions}</div>}{children}</section>; }
+-export function SaveStatusView({ status, message }: { status: SaveStatus; message?: string }) { const labels: Record<SaveStatus, string> = { rascunho_local:'Rascunho local', sem_rede:'Sem rede · na fila', pendente:'Pendente de envio', enviando:'Enviando', salvo_servidor:'Salvo no servidor', conflito:'Conflito de revisão', erro:'Falha ao salvar' }; const kind = status === 'salvo_servidor' ? 'ok' : status === 'erro' || status === 'conflito' ? 'crit' : 'warn'; return <span role="status" className={`ct-chip ct-chip--${kind}`} title={message}>{status === 'salvo_servidor' ? '✓' : '●'} {labels[status]}</span>; }
++export function Card({ title, subtitle, children, actions, id, className }: { title?: string; subtitle?: string; children: ReactNode; actions?: ReactNode; id?: string; className?: string }) {
++  return <section className={`ct-card${className ? ` ${className}` : ''}`} id={id}>
++    {title && <div className="ct-card-head"><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}{actions && <div className="ct-card-actions">{actions}</div>}</div>}
++    {children}
++  </section>;
++}
++
++export type Tone = 'ok' | 'warn' | 'crit' | 'info' | 'mute' | 'pilot';
++const toneIcon: Record<Tone, string | null> = { ok: 'check', warn: 'alerta', crit: 'erro', info: 'info', mute: null, pilot: 'alerta' };
++/** Estado sempre com ícone e palavra (regra do design system). */
++export function Pill({ tone, children, title, role }: { tone: Tone; children: ReactNode; title?: string; role?: string }) {
++  const icon = toneIcon[tone];
++  return <span className={`ct-pill ct-pill--${tone}`} title={title} role={role}>{icon && <Icon name={icon} size={14} strokeWidth={2.4}/>}{children}</span>;
++}
++export function SaveStatusView({ status, message }: { status: SaveStatus; message?: string }) {
++  const labels: Record<SaveStatus, string> = { rascunho_local:'Rascunho local', sem_rede:'Sem rede · na fila', pendente:'Pendente de envio', enviando:'Enviando', salvo_servidor:'Salvo no servidor', conflito:'Conflito de revisão', erro:'Falha ao salvar' };
++  const kind = status === 'salvo_servidor' ? 'ok' : status === 'erro' || status === 'conflito' ? 'crit' : 'warn';
++  return <span role="status" className={`ct-chip ct-chip--${kind}`} title={message}><Icon name={kind === 'ok' ? 'check' : kind === 'crit' ? 'erro' : 'relogio'} size={14} strokeWidth={2.4}/><span className="ct-chip-text">{labels[status]}</span></span>;
++}
+ export function EmptyState({ title, description, action }: { title: string; description: string; action?: ReactNode }) { return <div className="ct-empty"><strong>{title}</strong><p>{description}</p>{action}</div>; }
+diff --git a/src/ui/icons.tsx b/src/ui/icons.tsx
+index 4fdbd1f..78c9a96 100644
+--- a/src/ui/icons.tsx
++++ b/src/ui/icons.tsx
+@@ -1,5 +1,27 @@
+ import type { SVGProps } from 'react';
++const circle = (cx: number, cy: number, r: number) => `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0`;
+ const paths: Record<string, string> = {
+-  inicio:'M3 10.5 12 3l9 7.5V21h-6v-7H9v7H3z',tracos:'M7 3h10l4 4v14H3V3h4zm0 6h10M7 13h10M7 17h7',materiais:'M3 7l9-4 9 4-9 4-9-4zm0 5 9 4 9-4M3 17l9 4 9-4',fornecedores:'M3 21V7l9-4 9 4v14M8 21v-7h8v7M7 9h2m6 0h2',ensaios:'M9 3h6m-1 0v6l5 9a2 2 0 0 1-2 3H7a2 2 0 0 1-2-3l5-9V3m-2 12h8',ferramentas:'M14 3l7 7-2 2-7-7m-1 1L3 14l7 7 8-8',custos:'M12 2v20m5-16H9a4 4 0 0 0 0 8h6a4 4 0 0 1 0 8H6',referencia:'M4 4h16v17H4zM8 8h8M8 12h8M8 16h5',config:'M12 3v3m0 12v3M3 12h3m12 0h3M5.5 5.5l2 2m9 9 2 2m0-13-2 2m-9 9-2 2M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',menu:'M4 6h16M4 12h16M4 18h16',mais:'M12 5v14M5 12h14',voltar:'M15 18l-6-6 6-6',busca:'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm6-2 4 4',salvar:'M4 3h14l3 3v15H3V3h1zm3 0v6h9V3M7 21v-9h10v9',alerta:'M12 3 2 21h20L12 3zm0 7v5m0 3h.01',check:'M4 12l5 5L20 6',imprimir:'M6 9V3h12v6M6 18H4V9h16v9h-2M6 15h12v6H6z'
++  inicio:'M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
++  tracos:'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
++  empacotamento:`${circle(7, 8, 3)}${circle(16, 7, 2)}${circle(15, 15, 4)}${circle(6, 17, 2)}`,
++  volume:'M5 3h14v18H5zM5 9h14M5 14h14',
++  materiais:'m12 3 9 5-9 5-9-5zM3 13l9 5 9-5',
++  fornecedores:'M3 21V9l6-4v4l6-4v4l6-4v16z',
++  ensaios:'M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3M7.5 15h9',
++  producao:'M4 20V10l4 3V10l4 3V10l4 3V4h4v16z',
++  importacao:'M12 3v12M7 10l5 5 5-5M4 21h16',
++  ferramentas:'M14 3l7 7-2 2-7-7m-1 1L3 14l7 7 8-8',
++  custos:'M12 3v18M17 7H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6',
++  referencia:'M4 4h16v17H4zM8 8h8M8 12h8M8 16h5',
++  config:`${circle(12, 12, 3)}M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1`,
++  menu:'M4 6h16M4 12h16M4 18h16', mais:'M12 5v14M5 12h14', voltar:'m15 6-6 6 6 6', avancar:'m9 6 6 6-6 6',
++  seta:'M5 12h14M13 6l6 6-6 6', busca:`${circle(11, 11, 7)}M20 20l-4-4`,
++  salvar:'M4 3h14l3 3v15H3V3h1zm3 0v6h9V3M7 21v-9h10v9',
++  alerta:'M12 3 2 21h20zM12 10v4M12 17.5v.5', check:'m5 12 5 5 9-10', erro:`${circle(12, 12, 9)}M15 9l-6 6M9 9l6 6`,
++  info:`${circle(12, 12, 9)}M12 11v5M12 8v.5`, relogio:`${circle(12, 12, 9)}M12 7v5l3 2`,
++  imprimir:'M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z',
++  compartilhar:`${circle(18, 5, 3)}${circle(6, 12, 3)}${circle(18, 19, 3)}M8.6 13.5l6.8 4M15.4 6.5l-6.8 4`,
++  recolher:'M4 4h16v16H4zM9 4v16M15 10l-2 2 2 2', sair:'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',
++  curva:'M3 20C9 19 12 12 15 8s4-4 6-4'
+ };
+-export function Icon({ name, size=20, ...rest }: { name: string; size?: number } & SVGProps<SVGSVGElement>) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...rest}><path d={paths[name] || paths.mais}/></svg>; }
++export function Icon({ name, size=20, ...rest }: { name: string; size?: number } & SVGProps<SVGSVGElement>) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...rest}><path d={paths[name] || paths.mais}/></svg>; }
+diff --git a/src/ui/tokens.css b/src/ui/tokens.css
+index 4321738..824be6e 100644
+--- a/src/ui/tokens.css
++++ b/src/ui/tokens.css
+@@ -1,33 +1,68 @@
+-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
++@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+ :root{
+-  --ct-navy:#0A1530;--ct-navy-2:#0E1F45;--ct-navy-3:#1F2C4F;
++  --ct-navy:#0A1530;--ct-navy-2:#0E1F45;--ct-navy-3:#1F2C4F;--ct-navy-hover:#14234A;--ct-navy-ink:#AEBBD6;--ct-navy-mute:#8E9CBB;
+   --ct-red:#DB0A40;--ct-red-hover:#B0083A;--ct-red-ink:#B0083A;
+   --ct-yellow:#FFC906;--ct-yellow-soft:#FFF6D1;--ct-yellow-mid:#FFE27A;
+-  --ct-bg:#EEF1F7;--ct-card:#FFFFFF;--ct-line:#DBE1EC;--ct-line-2:#E8ECF3;
++  --ct-bg:#F3F5F9;--ct-card:#FFFFFF;--ct-line:#E1E6EF;--ct-line-2:#EEF1F7;--ct-line-input:#A8B3C7;--ct-line-strong:#C9D1DF;
+   --ct-ink:#0A1530;--ct-ink-2:#26324D;--ct-muted:#4A5672;
+   --ct-ok:#0B6B3A;--ct-ok-bg:#E7F5EE;--ct-warn:#7A4800;--ct-warn-bg:#FFF4DB;--ct-warn-line:#F0C36D;
+-  --ct-crit:#9F1239;--ct-crit-bg:#FDE8EE;--ct-calc-bg:#EEF1F7;
+-  --ct-radius:14px;--ct-radius-sm:10px;--ct-radius-xs:8px;--ct-font:'Inter',system-ui,sans-serif;
++  --ct-crit:#9F1239;--ct-crit-bg:#FDE8EE;--ct-info:#1D3F8A;--ct-info-bg:#EAF0FB;--ct-calc-bg:#EEF1F7;
++  --ct-radius:16px;--ct-radius-sm:12px;--ct-radius-xs:10px;--ct-font:'Inter',system-ui,sans-serif;
++  --ct-shadow-pop:0 10px 30px #0A153033;
+ }
+ *{box-sizing:border-box}html,body,#root{margin:0;min-height:100%;font-family:var(--ct-font);color:var(--ct-ink);background:var(--ct-bg)}
++body{font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+ button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}
+ :focus-visible{outline:2px solid var(--ct-red);outline-offset:2px}
+-.ct-button{border:0;border-radius:var(--ct-radius-xs);min-height:44px;padding:0 18px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
++.ct-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
++
++.ct-button{border:1px solid transparent;border-radius:var(--ct-radius-xs);min-height:44px;padding:0 18px;font-weight:700;font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;text-decoration:none;transition:background .15s,border-color .15s}
+ .ct-button--primary{color:#fff;background:var(--ct-red)}.ct-button--primary:hover{background:var(--ct-red-hover)}
+-.ct-button--secondary{color:var(--ct-navy);background:var(--ct-yellow)}.ct-button--ghost{color:var(--ct-navy);background:#fff;border:1px solid var(--ct-line)}
+-.ct-button--danger{color:var(--ct-red-ink);background:#fff;border:1px solid var(--ct-red)}
++.ct-button--secondary{color:var(--ct-navy);background:#fff;border-color:var(--ct-line-strong)}.ct-button--secondary:hover{background:var(--ct-bg)}
++.ct-button--ghost{color:var(--ct-navy);background:transparent;border-color:var(--ct-line)}.ct-button--ghost:hover{background:var(--ct-bg)}
++.ct-button--dark{color:#fff;background:var(--ct-navy)}.ct-button--dark:hover{background:var(--ct-navy-2)}
++.ct-button--accent{color:var(--ct-navy);background:var(--ct-yellow)}.ct-button--accent:hover{background:var(--ct-yellow-mid)}
++.ct-button--danger{color:var(--ct-red-ink);background:#fff;border-color:var(--ct-red)}
++.ct-button--sm{min-height:36px;padding:0 12px;font-size:.82rem}
+ a.ct-button{text-decoration:none}
+-.ct-icon-button{width:48px;height:48px;border:0;border-radius:10px;background:transparent;color:inherit;display:grid;place-items:center}
+-.ct-field{display:flex;flex-direction:column;gap:6px;min-width:0}.ct-field label{font-weight:600;font-size:.84rem;color:var(--ct-ink-2)}
+-.ct-field input,.ct-field select,.ct-field textarea{width:100%;min-height:48px;border:1px solid #A8B3C7;border-radius:8px;background:#fff;color:var(--ct-ink);padding:10px 12px}
++.ct-icon-button{width:44px;height:44px;border:0;border-radius:var(--ct-radius-xs);background:transparent;color:inherit;display:grid;place-items:center}
++
++.ct-field{display:flex;flex-direction:column;gap:6px;min-width:0}
++.ct-field label,.ct-field>span{font-weight:600;font-size:.78rem;color:var(--ct-ink-2)}
++.ct-field input,.ct-field select,.ct-field textarea{width:100%;min-height:44px;border:1px solid var(--ct-line-input);border-radius:var(--ct-radius-xs);background:#fff;color:var(--ct-ink);padding:10px 12px;font-weight:600}
++.ct-field textarea{font-weight:500}
+ .ct-field input[aria-invalid='true']{border-color:var(--ct-crit)}.ct-field small{color:var(--ct-crit);font-size:.78rem}
+-.ct-card{background:var(--ct-card);border:1px solid var(--ct-line);border-radius:var(--ct-radius);padding:20px;box-shadow:0 2px 8px #0a153008}
+-.ct-card h2,.ct-card h3{margin:0 0 16px}.ct-muted{color:var(--ct-muted)}.ct-calc{background:var(--ct-calc-bg);padding:10px 12px;border-radius:8px;font-variant-numeric:tabular-nums;font-weight:700}
+-.ct-grid{display:grid;gap:16px}.ct-grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}.ct-grid--3{grid-template-columns:repeat(3,minmax(0,1fr))}
++.ct-input-box{display:flex;align-items:center;min-height:44px;border:1px solid var(--ct-line-input);border-radius:var(--ct-radius-xs);background:#fff;overflow:hidden}
++.ct-input-box:focus-within{outline:2px solid var(--ct-red);outline-offset:1px}
++.ct-field .ct-input-box input{border:0;min-height:42px;flex:1;min-width:0;outline:none;background:transparent}
++.ct-input-box .ct-unit{padding:0 12px 0 4px;font-size:.75rem;color:var(--ct-muted);font-weight:600;white-space:nowrap}
++.ct-calc{background:var(--ct-calc-bg);padding:10px 12px;border-radius:var(--ct-radius-xs);font-variant-numeric:tabular-nums;font-weight:700;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px}
++.ct-calc .ct-unit{font-size:.75rem;color:var(--ct-muted);font-weight:600}
++
++.ct-card{background:var(--ct-card);border:1px solid var(--ct-line);border-radius:var(--ct-radius);padding:20px}
++.ct-card h2,.ct-card h3{margin:0 0 16px}.ct-card h2{font-size:1rem}.ct-muted{color:var(--ct-muted)}
++.ct-card-head{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:4px;align-items:center;margin-bottom:16px}
++.ct-card-head h2{margin:0;grid-column:1}.ct-card-head p{margin:0;font-size:.82rem;color:var(--ct-muted);grid-column:1}
++.ct-card-head>:not(h2):not(p){grid-column:2;grid-row:1/span 2;justify-self:end}
++.ct-card-actions{display:flex;gap:8px;flex-wrap:wrap}
++.ct-grid{display:grid;gap:16px}.ct-grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}.ct-grid--3{grid-template-columns:repeat(3,minmax(0,1fr))}.ct-grid--4{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .ct-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.ct-space{justify-content:space-between}
+-.ct-chip{border-radius:999px;padding:5px 10px;font-weight:700;font-size:.75rem;display:inline-flex;gap:5px;align-items:center}.ct-chip--ok{background:var(--ct-ok-bg);color:var(--ct-ok)}.ct-chip--warn{background:var(--ct-warn-bg);color:var(--ct-warn)}.ct-chip--crit{background:var(--ct-crit-bg);color:var(--ct-crit)}
+-.ct-table-wrap{max-width:100%;overflow-x:auto}.ct-table{width:100%;border-collapse:collapse;font-size:.88rem}.ct-table th,.ct-table td{padding:12px;border-bottom:1px solid var(--ct-line);text-align:left}.ct-table th{color:var(--ct-muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0;background:#fff}.ct-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+-.ct-empty{text-align:center;color:var(--ct-muted);padding:48px 20px;border:1px dashed #A8B3C7;border-radius:var(--ct-radius)}
+-.ct-alert{padding:12px 14px;border-radius:8px;display:flex;gap:10px;align-items:start}.ct-alert--erro{background:var(--ct-crit-bg);color:var(--ct-crit)}.ct-alert--aviso{background:var(--ct-warn-bg);color:var(--ct-warn)}
++
++.ct-chip,.ct-pill{border-radius:999px;padding:5px 11px;font-weight:700;font-size:.75rem;display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
++.ct-chip--ok,.ct-pill--ok{background:var(--ct-ok-bg);color:var(--ct-ok)}
++.ct-chip--warn,.ct-pill--warn{background:var(--ct-warn-bg);color:var(--ct-warn)}
++.ct-chip--crit,.ct-pill--crit{background:var(--ct-crit-bg);color:var(--ct-crit)}
++.ct-pill--info{background:var(--ct-info-bg);color:var(--ct-info)}
++.ct-pill--mute{background:var(--ct-calc-bg);color:var(--ct-ink-2)}
++.ct-pill--pilot{background:var(--ct-warn-bg);color:var(--ct-warn);border:1px solid var(--ct-warn-line)}
++
++.ct-seg{display:inline-flex;background:#E6EAF2;border-radius:var(--ct-radius-sm);padding:4px;gap:4px;flex-wrap:wrap}
++.ct-seg a,.ct-seg button{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 14px;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--ct-ink-2);text-decoration:none;border:0;background:transparent}
++.ct-seg .active{background:#fff;color:var(--ct-navy);box-shadow:0 1px 3px #0A153022}
++
++.ct-table-wrap{max-width:100%;overflow-x:auto}.ct-table{width:100%;border-collapse:collapse;font-size:.88rem}.ct-table th,.ct-table td{padding:11px 12px;border-bottom:1px solid var(--ct-line-2);text-align:left}.ct-table th{color:var(--ct-muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;border-bottom-color:var(--ct-line);background:#fff}.ct-table td.num,.ct-table th.num{text-align:right;font-variant-numeric:tabular-nums}.ct-table tr:last-child td{border-bottom:0}.ct-table tfoot td{font-weight:700;background:#F7F8FB}
++.ct-empty{text-align:center;color:var(--ct-muted);padding:48px 20px;border:1px dashed var(--ct-line-input);border-radius:var(--ct-radius)}
++.ct-alert{padding:12px 14px;border-radius:var(--ct-radius-xs);display:flex;gap:10px;align-items:start;margin:0}.ct-alert--erro{background:var(--ct-crit-bg);color:var(--ct-crit)}.ct-alert--aviso{background:var(--ct-warn-bg);color:var(--ct-warn)}.ct-alert--ok{background:var(--ct-ok-bg);color:var(--ct-ok)}
+ .ct-link{color:var(--ct-red-ink);font-weight:700;text-decoration:none}.ct-link:hover{text-decoration:underline}
+-@media(max-width:700px){.ct-grid--2,.ct-grid--3{grid-template-columns:1fr}.ct-card{padding:16px}.ct-table{font-size:.82rem}}
++.ct-eyebrow{font-size:.72rem;font-weight:700;color:var(--ct-muted);letter-spacing:.1em;margin:0 0 4px!important;text-transform:uppercase}
++@media(max-width:700px){.ct-grid--2,.ct-grid--3,.ct-grid--4{grid-template-columns:1fr}.ct-card{padding:16px}.ct-table{font-size:.82rem}}
+-- 
+2.43.0
+

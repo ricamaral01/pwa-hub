@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro experimental — celular</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#B0083A}a:hover{color:#7E0629}
+.fld{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:#26324D}
+.fld input{height:48px;box-sizing:border-box;border:1px solid #B9C3D6;border-radius:10px;padding:0 14px;font:inherit;font-size:17px;font-weight:600;color:#0A1530;font-variant-numeric:tabular-nums;background:#fff}
+.hint{font-size:12px;font-weight:500}
+</style>
+</head>
+<body>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; font-family: Inter, system-ui, sans-serif; color: #0A1530; background: #EEF1F7; overflow: hidden">
+
+<header style="background: #0A1530; color: #fff; padding: 18px 16px 18px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 10px">
+<a href="01-inicio-desktop.html" aria-label="Voltar" style="width: 44px; height: 44px; display: grid; place-items: center; border-radius: 10px; color: #fff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+<h1 style="margin: 0; font-size: 18px; font-weight: 700">Resultado experimental</h1>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 0 6px">
+<span style="font-size: 15px; font-weight: 600">C40 · Pré-moldado CA III · v3</span>
+<span style="font-size: 12.5px; color: #C7CFE2">Betonada de 17/10/2026 · 60 L · Pederneiras</span>
+</div>
+</header>
+
+<div role="status" style="margin: 12px 16px 0; display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; background: #FFF4DB; color: #7A4800; font-size: 12.5px; font-weight: 600"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7A4800" stroke-width="2.2" aria-hidden="true"><path d="M2 12a10 10 0 0 1 20 0M6 12a6 6 0 0 1 12 0M12 12v.5"></path><path d="M3 3l18 18"></path></svg>Sem rede · rascunho no aparelho, envia ao reconectar</div>
+
+<main style="flex: 1; overflow: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 14px">
+<section style="background: #fff; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 700">Concreto fresco</h2>
+<label class="fld">Abatimento (mm)<input inputmode="numeric" value="110"><span class="hint" style="color: #0B6B3A">✓ alvo 100 ± 20 mm</span></label>
+<label class="fld">Massa específica fresca (kg/m³)<input inputmode="numeric" value="2.381"><span class="hint" style="color: #4A5672">teórica 2.396 · diferença −0,6 %</span></label>
+<label class="fld">Temperatura do concreto (°C)<input inputmode="decimal" value="27"></label>
+</section>
+
+<section style="background: #fff; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 700">Corpos de prova moldados</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 8px 0; border-bottom: 1px solid #E8ECF3"><span>3 CP · ruptura aos 7 dias</span><strong style="font-variant-numeric: tabular-nums">24/10</strong></div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 8px 0"><span>3 CP · ruptura aos 28 dias</span><strong style="font-variant-numeric: tabular-nums">14/11</strong></div>
+<button type="button" style="height: 44px; border: 1px dashed #9AA6BF; border-radius: 10px; background: #fff; font: inherit; font-size: 14px; color: #0A1530">+ Adicionar idade</button>
+</section>
+</main>
+
+<div style="padding: 10px 16px 12px; background: #EEF1F7"><button type="button" style="width: 100%; height: 50px; border: 0; border-radius: 12px; background: #DB0A40; color: #fff; font: inherit; font-size: 16px; font-weight: 700">Salvar resultado</button></div>
+
+<nav aria-label="Navegação" style="height: 68px; background: #fff; border-top: 1px solid #DBE1EC; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+<a href="01-inicio-desktop.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11.5px; color: #4A5672; text-decoration: none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A5672" stroke-width="1.8" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>Início</a>
+<a href="03-dosagem-etapa3-desktop.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11.5px; color: #B0083A; font-weight: 700; text-decoration: none; box-shadow: inset 0 3px 0 #DB0A40"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B0083A" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"></path><circle cx="18" cy="16" r="3"></circle></svg>Traços</a>
+<a href="04-granulometria-desktop.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11.5px; color: #4A5672; text-decoration: none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A5672" stroke-width="1.8" aria-hidden="true"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"></path></svg>Ensaios</a>
+<a href="05-carta-desktop.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11.5px; color: #4A5672; text-decoration: none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A5672" stroke-width="1.8" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"></path><path d="M9 12h7M9 16h5"></path></svg>Cartas</a>
+</nav>
+</div>
+</body>
+</html>

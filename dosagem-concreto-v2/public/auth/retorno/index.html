@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Concluindo acesso · Dosagem</title></head>
+<body><main><h1>Concluindo acesso</h1><p id="message" role="status">Validando ticket…</p></main><script src="/auth/pilot-banner.js" defer></script><script>
+(async()=>{
+  const params=new URLSearchParams(location.search);
+  const ticket=params.get('ticket'),state=params.get('estado');
+  history.replaceState(null,'','/auth/retorno/');
+  const verifier=sessionStorage.getItem('dosagem-pkce-verifier');
+  const expected=sessionStorage.getItem('dosagem-pkce-state');
+  sessionStorage.removeItem('dosagem-pkce-verifier');sessionStorage.removeItem('dosagem-pkce-state');
+  const message=document.getElementById('message');
+  if(!ticket||!state||!verifier||state!==expected){message.textContent='Fluxo inválido. Reinicie o login.';return;}
+  try{
+    const response=await fetch('/api/v1/auth/hub/trocar',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({ticket,estado:state,code_verifier:verifier,manter_conectado:sessionStorage.getItem('dosagem-manter')==='1'})});
+    if(!response.ok)throw Error('Ticket expirado ou acesso não liberado. Reinicie o login.');
+    sessionStorage.removeItem('dosagem-manter');
+    const next=sessionStorage.getItem('dosagem-retorno')||'/';sessionStorage.removeItem('dosagem-retorno');
+    location.replace(next.startsWith('/')&&!next.startsWith('//')?next:'/');
+  }catch(error){message.textContent=error.message;}
+})();
+</script></body></html>

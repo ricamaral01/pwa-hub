@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest run",
+    "test:core": "vitest run tests/golden",
     "test:e2e": "playwright test",
+    "gates": "node scripts/gates.mjs",
     "deploy:check": "node scripts/deploy-check.mjs"
   },
   "dependencies": {

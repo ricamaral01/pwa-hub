@@ -1,0 +1,22 @@
+[Unit]
+Description=One-time production smoke for Dosagem pilot
+ConditionPathExists=/opt/concretrack-dosagem/shared/pilot-smoke-request
+After=concretrack-dosagem-api.service
+
+[Service]
+Type=oneshot
+User=ctdosagem
+Group=ctdosagem
+WorkingDirectory=/opt/concretrack-dosagem/current/api
+EnvironmentFile=/opt/concretrack-dosagem/shared/.env
+Environment=PYTHONPATH=/opt/concretrack-dosagem/current/api:/opt/concretrack-dosagem/current/api/vendor
+ExecStart=/opt/concretrack-dosagem/current/deploy/scripts/run-pilot-smoke.sh
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/concretrack-dosagem/shared
+CPUQuota=25%
+MemoryMax=300M
+Nice=19
+
+[Install]
+WantedBy=multi-user.target

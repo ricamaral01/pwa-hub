@@ -1,0 +1,9 @@
+{
+  "source": "CODEX_DOSAGEM_V2_DEFINITIVA.md §17 P3/P3b",
+  "batchLiters": 25,
+  "extra": { "cementKg": 0.5, "sandWetKg": [0, 0.4], "gravelWetKg": [0, 0], "aggregateHumidity": [0, 0, 0, 0], "waterKg": 0.3 },
+  "cases": [
+    { "id": "P3", "mode": "spreadsheet", "expected": { "binderCorrectedKg": 332.59, "sandMassesKg": [140.43, 577.31], "gravelMassesKg": [319.66, 745.86], "waterLiquidKg": 196.04 } },
+    { "id": "P3b", "mode": "complete", "expected": { "binderCorrectedKg": 332.590, "sandMassesKg": [138.903, 571.219], "gravelMassesKg": [317.164, 740.049], "waterLiquidKg": 196.043, "admixtureMassesKg": [2.348, 1.252, 0.939], "minorVolumeL": 5.939, "physicalVolumeL": 1000 } }
+  ]
+}

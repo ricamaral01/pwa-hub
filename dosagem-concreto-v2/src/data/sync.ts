@@ -21,6 +21,7 @@ async function sincronizarItem(requestId: string): Promise<Confirmacao | null> {
     if (!resposta.id || !Number.isInteger(resposta.versao) || !Number.isInteger(resposta.revisao)) throw new ApiErro('INTERNO', 'Servidor não confirmou ID, versão e revisão.');
     await removerFila(requestId);
     informar('salvo_servidor');
+    if (resposta.documento) window.dispatchEvent(new CustomEvent('dosagem:sincronizado', { detail: resposta }));
     return resposta;
   } catch (e) {
     const error = e as ApiErro;

@@ -87,7 +87,9 @@ def test_cors_rejeita_origem_externa(ambiente):
     client, _, _ = ambiente
     r = client.options("/api/v1/rpc", headers={"Origin": "https://outro.example", "Access-Control-Request-Method": "POST"})
     assert r.status_code == 403
-    r = client.options("/api/v1/rpc", headers={"Origin": "https://usina.concretrack.com.br", "Access-Control-Request-Method": "POST",
-                                               "Access-Control-Request-Headers": "authorization,content-type,idempotency-key"})
+    r = client.options("/api/v1/auth/hub/ticket", headers={"Origin": "https://usina.concretrack.com.br", "Access-Control-Request-Method": "POST",
+                                               "Access-Control-Request-Headers": "authorization,content-type"})
     assert r.status_code == 200
     assert r.headers["access-control-allow-origin"] == "https://usina.concretrack.com.br"
+    r = client.options("/api/v1/rpc", headers={"Origin": "https://usina.concretrack.com.br", "Access-Control-Request-Method": "POST"})
+    assert r.status_code == 403

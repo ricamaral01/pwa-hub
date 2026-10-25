@@ -1,0 +1,288 @@
+{
+  "release": 1,
+  "perfil": "piloto",
+  "startedAt": "2026-10-22T00:58:28.135Z",
+  "finishedAt": "2026-10-22T01:05:33.286Z",
+  "gates": {
+    "P-F1": {
+      "green": true,
+      "commands": [
+        {
+          "command": "npm run test:core",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": 25,
+          "minTests": 25,
+          "passed": true,
+          "at": "2026-10-22T00:58:32.350Z",
+          "error": null
+        },
+        {
+          "command": "python -m pytest api/tests/core -q",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": 17,
+          "minTests": 17,
+          "passed": true,
+          "at": "2026-10-22T00:58:38.260Z",
+          "error": null
+        },
+        {
+          "command": "node scripts/check-core-ids.mjs",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T00:58:38.389Z",
+          "error": null
+        }
+      ]
+    },
+    "P-F2": {
+      "green": true,
+      "commands": [
+        {
+          "command": "python -m pytest api/tests -q",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": 55,
+          "minTests": 30,
+          "passed": true,
+          "at": "2026-10-22T00:59:17.015Z",
+          "error": null
+        },
+        {
+          "command": "npx vitest run tests/unit/release1-import.test.ts",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": 3,
+          "minTests": 3,
+          "passed": true,
+          "at": "2026-10-22T00:59:23.648Z",
+          "error": null
+        },
+        {
+          "command": "cd api && python -m alembic upgrade head --sql | python ../deploy/scripts/verificar-migracoes.py",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T00:59:24.949Z",
+          "error": null
+        },
+        {
+          "command": "node scripts/release1-audit.mjs F2",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T00:59:27.094Z",
+          "error": null
+        }
+      ]
+    },
+    "P-F3": {
+      "green": true,
+      "commands": [
+        {
+          "command": "npm run build",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T00:59:42.928Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml up -d --build --wait",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T00:59:55.505Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_PASSWORD=Hml-Test-2026! api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T00:59:57.043Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_EMAIL=smoke-desktop@example.test -e HML_TEST_PASSWORD=Hml-Test-2026! -e HML_TEST_INITIAL=1 api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T00:59:58.272Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_EMAIL=smoke-tablet-retrato@example.test -e HML_TEST_PASSWORD=Hml-Test-2026! -e HML_TEST_INITIAL=1 api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T00:59:59.637Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_EMAIL=smoke-tablet-paisagem@example.test -e HML_TEST_PASSWORD=Hml-Test-2026! -e HML_TEST_INITIAL=1 api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:00:00.907Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_EMAIL=smoke-celular@example.test -e HML_TEST_PASSWORD=Hml-Test-2026! -e HML_TEST_INITIAL=1 api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:00:02.053Z",
+          "error": null
+        },
+        {
+          "command": "npx playwright test --config=playwright.pilot.config.ts",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": 32,
+          "minTests": 20,
+          "passed": true,
+          "at": "2026-10-22T01:02:26.684Z",
+          "error": null
+        }
+      ]
+    },
+    "P-F4": {
+      "green": true,
+      "commands": [
+        {
+          "command": "docker compose -f docker-compose.hml.yml up -d --build",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:02:39.280Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml up -d --wait",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:02:41.641Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_PASSWORD=Hml-Test-2026! api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:02:42.719Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_EMAIL=smoke-desktop@example.test -e HML_TEST_PASSWORD=Hml-Test-2026! -e HML_TEST_INITIAL=1 api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:02:43.874Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_EMAIL=smoke-tablet-retrato@example.test -e HML_TEST_PASSWORD=Hml-Test-2026! -e HML_TEST_INITIAL=1 api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:02:45.122Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_EMAIL=smoke-tablet-paisagem@example.test -e HML_TEST_PASSWORD=Hml-Test-2026! -e HML_TEST_INITIAL=1 api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:02:46.156Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml exec -T -e HML_TEST_EMAIL=smoke-celular@example.test -e HML_TEST_PASSWORD=Hml-Test-2026! -e HML_TEST_INITIAL=1 api python -m app.hml_seed",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:02:47.360Z",
+          "error": null
+        },
+        {
+          "command": "npx playwright test --config=playwright.pilot.config.ts",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": 32,
+          "minTests": 20,
+          "passed": true,
+          "at": "2026-10-22T01:05:06.308Z",
+          "error": null
+        },
+        {
+          "command": "scripts/teste-backup-restauracao.sh",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:05:11.252Z",
+          "error": null
+        },
+        {
+          "command": "scripts/teste-compat-n-1.sh",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": 1,
+          "minTests": 1,
+          "passed": true,
+          "at": "2026-10-22T01:05:29.403Z",
+          "error": null
+        },
+        {
+          "command": "docker compose -f docker-compose.hml.yml down",
+          "exitCode": 0,
+          "attempts": 1,
+          "tests": null,
+          "minTests": 0,
+          "passed": true,
+          "at": "2026-10-22T01:05:33.282Z",
+          "error": null
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "source": "CODEX_DOSAGEM_V2_DEFINITIVA.md §17 A1/A2/A3; Dosagem_Concreto_Rica_v4.xlsx, 1.0 - TRAÇO ALTERNATIVO",
+  "a1": {
+    "waterEffectiveKg": 200, "waterCementRatio": 0.57, "additionFractionOfCement": 0,
+    "cementDensity": 3.09, "additionDensity": 2.60, "mortarVolumeFraction": 0.525, "airFraction": 0.02,
+    "sands": [{ "volumeFraction": 0.2, "density": 2.63, "finesFraction": 0.02 }, { "volumeFraction": 0.8, "density": 2.67, "finesFraction": 0 }],
+    "gravels": [{ "volumeFraction": 1, "density": 2.80, "finesFraction": 0.03 }],
+    "admixtures": [{ "fraction": 0.0062, "base": "cement", "density": 1.09 }],
+    "expected": { "cementKg": 351, "gravelVolumeL": 370.5, "gravelMassesKg": [1037], "fixedVolumeL": 683.949, "sandVolumeL": 296.051, "sandMassesKg": [156, 632], "admixtureMassesKg": [2.176], "totalMassKg": 2378.176, "physicalVolumeL": 999.97, "waterBinderRatio": 0.5698, "mortarMassFraction": 0.5234, "sandAggregateFraction": 0.4318, "waterDryFraction": 0.0919, "finesKg": 385.23 }
+  },
+  "a3": {
+    "cementKg": 360, "cementDensity": 3.09, "sandMassesKg": [156, 630], "sandDensities": [2.63, 2.65],
+    "gravelMassesKg": [1042], "gravelDensities": [2.99], "admixtureKg": 2.2, "waterKg": 190,
+    "expected": { "sandVolumeFractions": [0.2, 0.8], "gravelVolumeFractions": [1], "mortarMassFraction": 0.5238, "waterCementRatio": 0.5278, "admixturePctCement": 0.611 }
+  }
+}

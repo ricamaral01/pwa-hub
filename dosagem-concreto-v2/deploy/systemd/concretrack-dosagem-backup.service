@@ -1,0 +1,16 @@
+[Unit]
+Description=Backup diario do PostgreSQL da Dosagem v2
+
+[Service]
+Type=oneshot
+User=ctdosagem
+Group=ctdosagem
+EnvironmentFile=/opt/concretrack-dosagem/shared/.env
+ExecStart=/opt/concretrack-dosagem/current/deploy/scripts/backup.sh
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/concretrack-dosagem/backups
+CPUQuota=25%
+MemoryMax=300M
+Nice=19
+IOSchedulingClass=idle

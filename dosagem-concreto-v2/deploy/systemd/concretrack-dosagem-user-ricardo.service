@@ -1,0 +1,21 @@
+[Unit]
+Description=Provision requested local Dosagem administrator
+After=postgresql.service
+ConditionPathExists=/opt/concretrack-dosagem/shared/ricardo-user.hash
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=ctdosagem
+Group=ctdosagem
+WorkingDirectory=/opt/concretrack-dosagem/current/api
+EnvironmentFile=/opt/concretrack-dosagem/shared/.env
+Environment=PYTHONPATH=/opt/concretrack-dosagem/current/api:/opt/concretrack-dosagem/current/api/vendor
+ExecStart=/opt/concretrack-dosagem/current/api/.venv/bin/python -m app.provision_local_admin --email ricardo.rda@gmail.com --name Ricardo --hash-file /opt/concretrack-dosagem/shared/ricardo-user.hash
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+ReadWritePaths=/opt/concretrack-dosagem/shared
+
+[Install]
+WantedBy=multi-user.target

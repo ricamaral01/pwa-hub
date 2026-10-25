@@ -1,0 +1,1 @@
+﻿A especificação CODEX_DOSAGEM_V2.md foi substituída por CODEX_DOSAGEM_V2_DEFINITIVA.md em 18/10/2026. A cópia original em dosagem-concreto/docs foi preservada para manter o legado intacto. Use somente a especificação definitiva para novos trabalhos.

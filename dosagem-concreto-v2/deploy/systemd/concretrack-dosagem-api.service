@@ -1,0 +1,31 @@
+[Unit]
+Description=ConcreTrack Dosagem v2 API
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ctdosagem
+Group=ctdosagem
+WorkingDirectory=/opt/concretrack-dosagem/current/api
+EnvironmentFile=/opt/concretrack-dosagem/shared/.env
+Environment=MODO_PILOTO=true
+Environment=PYTHONPATH=/opt/concretrack-dosagem/current/api:/opt/concretrack-dosagem/current/api/vendor
+Environment=ADMIN_PASSWORD_FIFO=/opt/concretrack-dosagem/shared/admin-pilot.pipe
+ExecStartPre=/opt/concretrack-dosagem/current/deploy/scripts/ensure-pilot-env.sh
+ExecStartPre=/opt/concretrack-dosagem/current/deploy/scripts/prepare-db.sh
+ExecStartPre=/opt/concretrack-dosagem/current/api/.venv/bin/python -m app.bootstrap_admin
+ExecStart=/opt/concretrack-dosagem/current/api/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 18300 --workers 1
+TimeoutStartSec=300
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+ReadWritePaths=/opt/concretrack-dosagem/shared
+CPUQuota=50%
+MemoryMax=600M
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

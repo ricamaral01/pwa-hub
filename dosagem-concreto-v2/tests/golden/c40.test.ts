@@ -26,7 +26,7 @@ const dados: Traco = {
 };
 const proximo = (atual: number, esperado: number, tolerancia: number) => expect(Math.abs(atual - esperado)).toBeLessThanOrEqual(tolerancia);
 
-describe('C40 dos mockups aprovados — Apêndice A incompleto no anexo', () => {
+describe('C40 — conferência de traço digitado da especificação arquivada', () => {
   const r = calcularTraco(dados)!;
   it('volumes individuais, ar e composição', () => {
     for (const [id, volume] of [['cim',109.7],['adic',7.8],['an',197.7],['ai',111.1],['b0',90.9],['b1',284.4],['agua',180],['adit1',2.5],['adit2',.9]] as const) {
@@ -35,9 +35,13 @@ describe('C40 dos mockups aprovados — Apêndice A incompleto no anexo', () => 
     proximo(r.volumeArL, 15, .05);
     proximo(r.massaTotalKgM3, 2395.7, .05);
   });
-  it('volume total anunciado de 1.000,0 L', () => {
-    // Divergência a decidir: fórmula com as densidades publicadas dá 1000,052 L.
-    proximo(r.volumeTotalL, 1000, .05);
+  it('balanço físico: aditivos integrais, água líquida de 180 L', () => {
+    const volumeAditivos = r.itens.filter(i => i.categoria === 'aditivo').reduce((sum, i) => sum + i.volumeL, 0);
+    const volumeOutros = r.itens.filter(i => i.categoria !== 'aditivo' && i.categoria !== 'agua').reduce((sum, i) => sum + i.volumeL, 0);
+    proximo(r.itens.find(i => i.id === 'agua')!.volumeL, 180, 1e-9);
+    proximo(r.volumeTotalL, volumeOutros + volumeAditivos + 180 + r.volumeArL, 1e-9);
+    // O mockup arquivado anunciava 1.000,0 L; as massas e densidades digitadas dão 1.000,052 L.
+    proximo(r.volumeTotalL, 1000.05, .01);
   });
   it('indicadores, custo e resistência', () => {
     proximo(r.relacaoAguaCimento, .53, .005);

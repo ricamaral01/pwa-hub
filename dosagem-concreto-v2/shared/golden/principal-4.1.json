@@ -1,0 +1,22 @@
+{
+  "source": "CODEX_DOSAGEM_V2_DEFINITIVA.md §17, P1/P1b/P5/P7",
+  "base": {
+    "waterEffectiveKg": 189,
+    "binderKg": 321,
+    "additionFraction": 0,
+    "cementDensity": 3.05,
+    "additionDensity": 2.55,
+    "mortarVolumeFraction": 0.48,
+    "airFraction": 0.03,
+    "sands": [{ "fraction": 0.2, "density": 2.63 }, { "fraction": 0.8, "density": 2.68 }],
+    "gravels": [{ "fraction": 0.3, "density": 2.69 }, { "fraction": 0.7, "density": 2.69 }],
+    "admixtures": [{ "fractionOfBinder": 0.0075, "density": 1.08 }, { "fractionOfBinder": 0.004, "density": 1.10 }, { "fractionOfBinder": 0.003, "density": 1.00 }],
+    "minorAdditions": [{ "fractionOfBinder": 0.01, "density": 3.00 }, { "fractionOfBinder": 0.00187, "density": 0.91 }]
+  },
+  "cases": [
+    { "id": "P1", "mode": "spreadsheet", "expected": { "solidVolumeL": 781, "sandVolumeL": 269.634, "gravelVolumeL": 406.12, "sandMassesKg": [143.976, 575.906], "gravelMassesKg": [327.739, 764.724], "waterCementRatio": 0.5888, "outsideBalanceL": 6.089 } },
+    { "id": "P1b", "mode": "complete", "expected": { "minorVolumeL": 6.089, "solidVolumeL": 774.911, "sandMassesKg": [142.416, 569.663], "gravelMassesKg": [325.184, 758.762], "physicalVolumeL": 1000 } },
+    { "id": "P5", "mode": "complete", "changes": { "additionFraction": 0.08 }, "expected": { "cementKg": 295.32, "additionKg": 25.68, "sandVolumeL": 265.060, "sandMassesKg": [141.534, 566.137], "waterCementRatio": 0.6400, "waterBinderRatio": 0.5888, "physicalVolumeL": 1000 } },
+    { "id": "P7", "mode": "complete", "changes": { "admixture0SolidsFraction": 0.30 }, "expected": { "waterFromAdmixturesKg": 1.685, "waterLiquidKg": 187.315, "minorVolumeL": 6.089, "solidVolumeL": 776.596, "sandVolumeL": 267.520, "gravelVolumeL": 403.830, "sandMassesKg": [142.848, 571.391], "gravelMassesKg": [325.891, 760.412], "physicalVolumeL": 1000, "waterCementRatio": 0.5888 } }
+  ]
+}
