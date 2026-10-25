@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Saldo e silos</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F4F1}
+a{color:#1F5FA8}a:hover{color:#163F70}
+.side a{color:#C9CDD2;text-decoration:none}.side a:hover{color:#FFFFFF}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#5B6168;padding:10px 12px;border-bottom:1px solid #E1E3DE}
+.tbl td{padding:11px 12px;white-space:nowrap;border-bottom:1px solid #EEF0EB;color:#17191C}
+.r{text-align:right}
+.in{height:44px;box-sizing:border-box;border:1px solid #C9CCC5;border-radius:6px;padding:0 10px;font:inherit;background:#FFFFFF;color:#17191C;width:100%}
+.fld{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#5B6168}
+.ia{font-size:11px;font-weight:600;color:#7A4A00;background:#FFF6E0;border-radius:8px;padding:1px 6px;margin-left:6px}
+.card{background:#FFFFFF;border:1px solid #E1E3DE;border-radius:8px;padding:18px}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 900px; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #17191C; background: #F3F4F1">
+  <nav class="side" aria-label="Módulos" style="flex: 1 1 240px; max-width: 240px; background: #1B1E22; color: #C9CDD2; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: #F2B705; color: #1B1E22; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">C</div>
+      <div><div style="color: #FFFFFF; font-weight: 700; letter-spacing: .06em; font-size: 14px">CONCREFER</div><div style="font-size: 12px; color: #9AA0A6">ConcreTrack · Unificado</div></div>
+    </div>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #5B9BD5"></span>Planejamento</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #7BC47F"></span>Produção</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px; background: #2A2F35; color: #FFFFFF; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 4px; background: #F2B705"></span>Laboratório</a>
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0 8px 26px; font-size: 13px">
+      <span style="font-size: 11px; letter-spacing: .08em; color: #F2B705; padding: 6px 8px 2px; font-weight: 600">INSUMOS</span>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">CARTA TRAÇO</span>
+      <a href="Main.dc.html" style="padding: 7px 8px; border-radius: 5px">Visão geral</a>
+      <a href="Editor.dc.html" style="padding: 7px 8px; border-radius: 5px">Nova carta</a>
+      <a href="Consulta.dc.html" style="padding: 7px 8px; border-radius: 5px">Consulta</a>
+      <a href="Resumo.dc.html" style="padding: 7px 8px; border-radius: 5px">Resumo MCC</a>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">ESTOQUE</span>
+      <a href="EntradaNF.dc.html" style="padding: 7px 8px; border-radius: 5px">Entrada (NF)</a>
+      <a href="Saldo.dc.html" style="padding: 7px 8px; border-radius: 5px; background: #4A4220; color: #FFFFFF">Saldo e silos</a>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">COMUM</span>
+      <a href="Materiais.dc.html" style="padding: 7px 8px; border-radius: 5px">Materiais e custos</a>
+      <a href="TeoricoReal.dc.html" style="padding: 7px 8px; border-radius: 5px">Teórico × real</a>
+    </div>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #4FB3BF"></span>Usinas</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #C792EA"></span>Qualidade</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #E07A5F"></span>GED</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <div style="font-size: 13px; color: #5B6168">Laboratório / Insumos / Estoque</div>
+        <h1 style="margin: 4px 0 0; font-size: 26px; font-weight: 700">Saldo e silos</h1>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center"><select class="in" aria-label="Unidade" style="width: auto"><option>Campinas</option></select><button type="button" style="height: 44px; padding: 0 16px; border-radius: 6px; border: 1px solid #C9CCC5; background: #FFFFFF; font: inherit">Registrar contagem</button></div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between"><b>Silo 1</b><span style="font-size: 13px; color: #5B6168">CP V-ARI</span></div>
+        <div style="height: 14px; border-radius: 3px; background: #ECEDE9; margin: 14px 0 8px; overflow: hidden"><div style="width: 88.5%; height: 100%; background: #33505A"></div></div>
+        <div class="num" style="font-size: 24px; font-weight: 600">42,5 <span style="font-size: 14px; color: #5B6168">/ 48,0 t</span></div>
+        <div style="font-size: 12px; color: #5B6168; margin-top: 4px">88,5 % · espaço 5,5 t · contagem 03/10</div>
+      </div>
+      <div class="card" style="border-color: #F0C3B9">
+        <div style="display: flex; justify-content: space-between"><b>Silo 2</b><span style="font-size: 13px; color: #5B6168">CP V-ARI</span></div>
+        <div style="height: 14px; border-radius: 3px; background: #ECEDE9; margin: 14px 0 8px"></div>
+        <div class="num" style="font-size: 24px; font-weight: 600">0,0 <span style="font-size: 14px; color: #5B6168">/ 72,0 t</span></div>
+        <div style="font-size: 12px; color: #A12A1F; margin-top: 4px">Contábil −10,0 t: baixas maiores que as entradas. Fazer contagem.</div>
+      </div>
+      <div class="card">
+        <div style="display: flex; justify-content: space-between"><b>Silo 3</b><span style="font-size: 13px; color: #5B6168">CP II</span></div>
+        <div style="height: 14px; border-radius: 3px; background: #ECEDE9; margin: 14px 0 8px; overflow: hidden"><div style="width: 56.7%; height: 100%; background: #6C9EA6"></div></div>
+        <div class="num" style="font-size: 24px; font-weight: 600">61,2 <span style="font-size: 14px; color: #5B6168">/ 108,0 t</span></div>
+        <div style="font-size: 12px; color: #5B6168; margin-top: 4px">56,7 % · espaço 46,8 t · contagem 12/10</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+      <section class="card" style="flex: 999 1 560px; min-width: 0; padding: 18px 6px 6px">
+        <h2 style="margin: 0 12px 10px; font-size: 16px">Saldo por material</h2>
+        <div style="overflow-x: auto"><table class="tbl">
+          <thead><tr><th>Material</th><th class="r">Contábil</th><th class="r">Disponível</th><th class="r">Consumo/dia útil</th><th class="r">Autonomia</th><th>Última contagem</th></tr></thead>
+          <tbody>
+            <tr style="background: #FFF6E0"><td><b>Cimento CP V-ARI</b></td><td class="r num">32,5 t</td><td class="r num">42,5 t</td><td class="r num">9,8 t</td><td class="r num" style="color: #7A4A00; font-weight: 600">4,3 dias</td><td class="num">03/10/2026</td></tr>
+            <tr><td>Cimento CP II</td><td class="r num">61,2 t</td><td class="r num">61,2 t</td><td class="r num">3,1 t</td><td class="r num">19,7 dias</td><td class="num">12/10/2026</td></tr>
+            <tr><td>Areia média</td><td class="r num">130,0 t</td><td class="r num">130,0 t</td><td class="r num">11,4 t</td><td class="r num">11,4 dias</td><td style="color: #5B6168">—</td></tr>
+            <tr><td>Areia fina</td><td class="r num">64,7 t</td><td class="r num">64,7 t</td><td class="r num">7,9 t</td><td class="r num">8,2 dias</td><td style="color: #5B6168">—</td></tr>
+            <tr><td>Brita 0</td><td class="r num">88,0 t</td><td class="r num">88,0 t</td><td class="r num">7,3 t</td><td class="r num">12,1 dias</td><td style="color: #5B6168">—</td></tr>
+            <tr><td>Brita 1</td><td class="r num">212,4 t</td><td class="r num">212,4 t</td><td class="r num">18,2 t</td><td class="r num">11,7 dias</td><td style="color: #5B6168">—</td></tr>
+            <tr><td>Aditivo 1 (PC)</td><td class="r num">1.840 kg</td><td class="r num">1.840 kg</td><td class="r num">74 kg</td><td class="r num">24,9 dias</td><td class="num">01/10/2026</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+      <aside class="card" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+        <h2 style="margin: 0; font-size: 16px">Ressuprimento · CP V-ARI</h2>
+        <div style="background: #FFF6E0; border: 1px solid #F0D58C; border-radius: 6px; padding: 12px; font-size: 14px; color: #7A4A00"><b>Pedir carga amanhã (26/10).</b> Disponível 42,5 t está abaixo do ponto de pedido de 49,0 t.</div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; font-size: 13px">
+          <div style="background: #F7F8F5; border-radius: 6px; padding: 10px"><div style="color: #5B6168">Prazo de entrega</div><b class="num">3 dias úteis</b></div>
+          <div style="background: #F7F8F5; border-radius: 6px; padding: 10px"><div style="color: #5B6168">Estoque de segurança</div><b class="num">19,6 t</b></div>
+          <div style="background: #F7F8F5; border-radius: 6px; padding: 10px"><div style="color: #5B6168">Carga padrão</div><b class="num">40 t</b></div>
+          <div style="background: #F7F8F5; border-radius: 6px; padding: 10px"><div style="color: #5B6168">Chegada prevista</div><b class="num">29/10</b></div>
+        </div>
+        <div style="font-size: 13px; color: #5B6168">Segurança = maior entre 2 dias de consumo e a variação do consumo no prazo (95 %). É uma sugestão: só a entrada lançada muda o saldo.</div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

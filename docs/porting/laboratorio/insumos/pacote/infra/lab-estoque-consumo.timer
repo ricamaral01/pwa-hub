@@ -1,0 +1,9 @@
+[Unit]
+Description=Laboratório · Estoque — baixa automática diária às 00:05 (o ERP rodava às 00:01)
+
+[Timer]
+OnCalendar=*-*-* 00:05:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

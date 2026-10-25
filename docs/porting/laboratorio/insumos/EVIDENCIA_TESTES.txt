@@ -1,0 +1,2 @@
+Saída de 'pytest -q tests/' em PostgreSQL 16, 25/10/2026:
+26 passed in 2.65s

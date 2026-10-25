@@ -1,0 +1,11 @@
+# SÓ DEPOIS do corte do gerador de consumo (insumos.config consumo_gerador = 'vps_nova')
+# e de desligar o cron do ERP (scripts/sync_consumo_producao.py). Um gerador por vez.
+[Unit]
+Description=Laboratório · Estoque — baixa automática pela produção (últimos 2 dias)
+After=postgresql.service
+
+[Service]
+Type=oneshot
+User=monitorconcreto
+EnvironmentFile=/etc/concrefer-unificado/insumos.env
+ExecStart=/bin/sh -c 'psql "$DATABASE_URL_PSQL" -v ON_ERROR_STOP=1 -c "SELECT * FROM estoque.gerar_consumo(current_date - 2, current_date - 1, \x27systemd\x27)"'

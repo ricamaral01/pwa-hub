@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Entrada de material com NF</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F4F1}
+a{color:#1F5FA8}a:hover{color:#163F70}
+.side a{color:#C9CDD2;text-decoration:none}.side a:hover{color:#FFFFFF}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#5B6168;padding:10px 12px;border-bottom:1px solid #E1E3DE}
+.tbl td{padding:11px 12px;white-space:nowrap;border-bottom:1px solid #EEF0EB;color:#17191C}
+.r{text-align:right}
+.in{height:44px;box-sizing:border-box;border:1px solid #C9CCC5;border-radius:6px;padding:0 10px;font:inherit;background:#FFFFFF;color:#17191C;width:100%}
+.fld{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#5B6168}
+.ia{font-size:11px;font-weight:600;color:#7A4A00;background:#FFF6E0;border-radius:8px;padding:1px 6px;margin-left:6px}
+.card{background:#FFFFFF;border:1px solid #E1E3DE;border-radius:8px;padding:18px}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 1000px; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #17191C; background: #F3F4F1">
+  <nav class="side" aria-label="Módulos" style="flex: 1 1 240px; max-width: 240px; background: #1B1E22; color: #C9CDD2; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: #F2B705; color: #1B1E22; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">C</div>
+      <div><div style="color: #FFFFFF; font-weight: 700; letter-spacing: .06em; font-size: 14px">CONCREFER</div><div style="font-size: 12px; color: #9AA0A6">ConcreTrack · Unificado</div></div>
+    </div>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #5B9BD5"></span>Planejamento</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #7BC47F"></span>Produção</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px; background: #2A2F35; color: #FFFFFF; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 4px; background: #F2B705"></span>Laboratório</a>
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0 8px 26px; font-size: 13px">
+      <span style="font-size: 11px; letter-spacing: .08em; color: #F2B705; padding: 6px 8px 2px; font-weight: 600">INSUMOS</span>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">CARTA TRAÇO</span>
+      <a href="Main.dc.html" style="padding: 7px 8px; border-radius: 5px">Visão geral</a>
+      <a href="Editor.dc.html" style="padding: 7px 8px; border-radius: 5px">Nova carta</a>
+      <a href="Consulta.dc.html" style="padding: 7px 8px; border-radius: 5px">Consulta</a>
+      <a href="Resumo.dc.html" style="padding: 7px 8px; border-radius: 5px">Resumo MCC</a>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">ESTOQUE</span>
+      <a href="EntradaNF.dc.html" style="padding: 7px 8px; border-radius: 5px; background: #4A4220; color: #FFFFFF">Entrada (NF)</a>
+      <a href="Saldo.dc.html" style="padding: 7px 8px; border-radius: 5px">Saldo e silos</a>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">COMUM</span>
+      <a href="Materiais.dc.html" style="padding: 7px 8px; border-radius: 5px">Materiais e custos</a>
+      <a href="TeoricoReal.dc.html" style="padding: 7px 8px; border-radius: 5px">Teórico × real</a>
+    </div>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #4FB3BF"></span>Usinas</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #C792EA"></span>Qualidade</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #E07A5F"></span>GED</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <div style="font-size: 13px; color: #5B6168">Laboratório / Insumos / Estoque</div>
+        <h1 style="margin: 4px 0 0; font-size: 26px; font-weight: 700">Entrada de material</h1>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center"><button type="button" style="height: 44px; padding: 0 16px; border-radius: 6px; border: 1px solid #C9CCC5; background: #FFFFFF; font: inherit">Lançar sem nota</button></div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+      <section class="card" style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <h2 style="margin: 0; font-size: 16px">Nota fiscal</h2>
+          <span style="font-size: 12px; padding: 3px 8px; border-radius: 10px; background: #E3F2E7; color: #1E6B3A; font-weight: 600">Lida em 9 s</span>
+        </div>
+        <div role="img" aria-label="Pré-visualização da nota fiscal enviada" style="height: 380px; border-radius: 6px; background: #ECEDE9; border: 1px solid #DADDD6; display: flex; flex-direction: column; gap: 10px; padding: 22px; box-sizing: border-box">
+          <div style="height: 14px; width: 55%; background: #D3D6CF; border-radius: 3px"></div>
+          <div style="height: 10px; width: 80%; background: #DDE0D9; border-radius: 3px"></div>
+          <div style="height: 10px; width: 70%; background: #DDE0D9; border-radius: 3px"></div>
+          <div style="margin-top: 14px; height: 60px; border: 2px solid #E8B64A; border-radius: 4px; background: #FBF1D9"></div>
+          <div style="height: 10px; width: 60%; background: #DDE0D9; border-radius: 3px"></div>
+          <div style="height: 10px; width: 75%; background: #DDE0D9; border-radius: 3px"></div>
+          <div style="margin-top: auto; font-size: 12px; color: #5B6168; text-align: center">[foto ou PDF da NF — região do item destacada]</div>
+        </div>
+        <div style="border: 1px dashed #9EA3A8; border-radius: 6px; padding: 14px; font-size: 13px; color: #5B6168; text-align: center">Arraste outra foto, PDF ou o <b>XML da NF-e</b> (o XML preenche sem IA) · até 12 MB</div>
+      </section>
+
+      <section class="card" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <div style="background: #FFF6E0; border: 1px solid #F0D58C; border-radius: 6px; padding: 10px 12px; font-size: 13px; color: #7A4A00">Campos marcados <span class="ia" style="margin: 0">IA</span> foram lidos da nota. Confira com a imagem antes de confirmar — nada entra no estoque sem você.</div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+          <label class="fld" style="grid-column: span 2">Material<select class="in"><option>Cimento CP V-ARI (CIM-CP-V)</option></select></label>
+          <label class="fld">Data física<input class="in num" value="21/10/2026"></label>
+          <label class="fld">Quantidade (t)<span class="ia">IA</span><input class="in num" value="32,000"></label>
+          <label class="fld" style="grid-column: span 2">Fornecedor<span class="ia">IA</span><input class="in" value="Votorantim · 12.345.678/0001-99"></label>
+          <label class="fld">NF / série<span class="ia">IA</span><input class="in num" value="12345 / 1"></label>
+          <label class="fld">Emissão<span class="ia">IA</span><input class="in num" value="20/10/2026"></label>
+          <label class="fld" style="grid-column: span 4">Chave de acesso<span class="ia">IA</span><input class="in num" value="3526 1012 3456 7800 0199 5500 1000 0123 4510 0012 3456"></label>
+          <label class="fld">Valor da nota (R$)<span class="ia">IA</span><input class="in num" value="21.760,00"></label>
+          <label class="fld">ICMS (%)<span class="ia">IA</span><input class="in num" value="12"></label>
+          <label class="fld">Frete por t (R$)<input class="in num" value="0,00"></label>
+          <label class="fld">ICMS do frete (%)<input class="in num" value="0"></label>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px">
+          <span style="padding: 6px 10px; border-radius: 6px; background: #E3F2E7; color: #1E6B3A">✓ Chave não lançada antes</span>
+          <span style="padding: 6px 10px; border-radius: 6px; background: #F3F4F1; color: #3F454B">Custo líquido <b class="num">R$ 598,40/t</b> · R$ 0,5984/kg</span>
+        </div>
+
+        <div style="border-top: 1px solid #E1E3DE; padding-top: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <h3 style="margin: 0 0 8px; font-size: 14px">Destino: dividir entre silos</h3>
+            <span class="num" style="font-size: 13px; color: #1E6B3A; font-weight: 600">32,000 de 32,000 t ✓</span>
+          </div>
+          <table class="tbl">
+            <thead><tr><th>Silo</th><th>Material no silo</th><th class="r">Espaço livre</th><th class="r">Quantidade (t)</th><th class="r">Valor (R$)</th></tr></thead>
+            <tbody>
+              <tr><td>Silo 1</td><td>CP V-ARI</td><td class="r num">5,5 t</td><td class="r"><input class="in num" aria-label="Quantidade silo 1" value="5,000" style="width: 110px; height: 36px; text-align: right"></td><td class="r num">3.400,00</td></tr>
+              <tr><td>Silo 2</td><td>CP V-ARI</td><td class="r num">72,0 t</td><td class="r"><input class="in num" aria-label="Quantidade silo 2" value="27,000" style="width: 110px; height: 36px; text-align: right"></td><td class="r num">18.360,00</td></tr>
+              <tr><td style="color: #5B6168">Silo 3</td><td style="color: #5B6168">CP II · não permitido</td><td class="r num" style="color: #5B6168">46,8 t</td><td class="r" style="color: #5B6168">—</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px">
+          <button type="button" style="height: 44px; padding: 0 16px; border-radius: 6px; border: 1px solid #C9CCC5; background: #FFFFFF; font: inherit">Descartar leitura</button>
+          <button type="button" style="height: 44px; padding: 0 20px; border-radius: 6px; border: 0; background: #1E6B3A; color: #FFFFFF; font: inherit; font-weight: 600">Confirmar entrada</button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

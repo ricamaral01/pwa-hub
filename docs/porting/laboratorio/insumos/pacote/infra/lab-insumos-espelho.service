@@ -1,0 +1,19 @@
+# MODO PARALELO (antes dos cortes): Carta Traço ← Google Sheets e Estoque ← espelho do ERP.
+# Desligar cada parte no seu corte (ver ROTEIRO_CORTE na pasta docs).
+[Unit]
+Description=Laboratório · Insumos — espelho Sheets (Carta Traço) e ERP (Estoque)
+After=network-online.target postgresql.service
+
+[Service]
+Type=oneshot
+User=monitorconcreto
+EnvironmentFile=/etc/concrefer-unificado/laboratorio.env
+EnvironmentFile=/etc/concrefer-unificado/insumos.env
+WorkingDirectory=/opt/concrefer-unificado/laboratorio/service/insumos
+# Carta Traço (para no corte da Carta: CARTA_ESPELHO=0)
+ExecStart=/bin/sh -c '[ "$CARTA_ESPELHO" = "1" ] || exit 0; /opt/monitor_concreto/.venv/bin/python carga/baixar_planilha.py --saida /var/lib/concrefer-lab/insumos/carta.xlsx && /opt/monitor_concreto/.venv/bin/python carga/importar_sheets.py --xlsx /var/lib/concrefer-lab/insumos/carta.xlsx --mapa /etc/concrefer-unificado/mapa_materiais.csv --relatorio /var/lib/concrefer-lab/insumos/relatorio-carta --aplicar'
+# Estoque (a função recusa sozinha depois do corte do estoque)
+ExecStart=/bin/sh -c '[ "$ESTOQUE_ESPELHO" = "1" ] || exit 0; psql "$DATABASE_URL_PSQL" -v ON_ERROR_STOP=1 -c "SELECT * FROM estoque.sincronizar_legado(\x27Campinas\x27)"'
+ReadWritePaths=/var/lib/concrefer-lab
+NoNewPrivileges=true
+PrivateTmp=true

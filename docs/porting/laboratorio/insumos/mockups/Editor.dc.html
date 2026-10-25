@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Editor de carta traço</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F4F1}
+a{color:#1F5FA8}a:hover{color:#163F70}
+.side a{color:#C9CDD2;text-decoration:none}.side a:hover{color:#FFFFFF}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#5B6168;padding:10px 10px;border-bottom:1px solid #E1E3DE;white-space:nowrap}
+.tbl td{padding:6px 10px;border-bottom:1px solid #EEF0EB;color:#17191C;white-space:nowrap}
+.tbl .r{text-align:right}
+.in{height:36px;box-sizing:border-box;border:1px solid #C9CCC5;border-radius:5px;padding:0 8px;font:inherit;background:#FFFFFF;color:#17191C}
+.fld{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#5B6168}
+.fld .in{height:44px;font-size:15px}
+.kpi{background:#F7F8F5;border:1px solid #E6E8E3;border-radius:6px;padding:10px 12px}
+.kpi b{display:block;font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:#17191C;margin-top:2px}
+.kpi span{font-size:12px;color:#5B6168}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 1040px; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #17191C; background: #F3F4F1">
+  <nav class="side" aria-label="Módulos" style="flex: 1 1 240px; max-width: 240px; background: #1B1E22; color: #C9CDD2; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: #F2B705; color: #1B1E22; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">C</div>
+      <div><div style="color: #FFFFFF; font-weight: 700; letter-spacing: .06em; font-size: 14px">CONCREFER</div><div style="font-size: 12px; color: #9AA0A6">ConcreTrack · Unificado</div></div>
+    </div>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #5B9BD5"></span>Planejamento</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #7BC47F"></span>Produção</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px; background: #2A2F35; color: #FFFFFF; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 4px; background: #F2B705"></span>Laboratório</a>
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0 8px 26px; font-size: 13px">
+      <span style="font-size: 11px; letter-spacing: .08em; color: #F2B705; padding: 6px 8px 2px; font-weight: 600">INSUMOS</span>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">CARTA TRAÇO</span>
+      <a href="Main.dc.html" style="padding: 7px 8px; border-radius: 5px">Visão geral</a>
+      <a href="Editor.dc.html" style="padding: 7px 8px; border-radius: 5px; background: #4A4220; color: #FFFFFF">Nova carta</a>
+      <a href="Consulta.dc.html" style="padding: 7px 8px; border-radius: 5px">Consulta</a>
+      <a href="Resumo.dc.html" style="padding: 7px 8px; border-radius: 5px">Resumo MCC</a>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">ESTOQUE</span>
+      <a href="EntradaNF.dc.html" style="padding: 7px 8px; border-radius: 5px">Entrada (NF)</a>
+      <a href="Saldo.dc.html" style="padding: 7px 8px; border-radius: 5px">Saldo e silos</a>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">COMUM</span>
+      <a href="Materiais.dc.html" style="padding: 7px 8px; border-radius: 5px">Materiais e custos</a>
+      <a href="TeoricoReal.dc.html" style="padding: 7px 8px; border-radius: 5px">Teórico × real</a>
+    </div>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #4FB3BF"></span>Usinas</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #C792EA"></span>Qualidade</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #E07A5F"></span>GED</a>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+      <div>
+        <a href="Consulta.dc.html" style="font-size: 13px; text-decoration: none">← Voltar para consulta</a>
+        <h1 style="margin: 4px 0 0; font-size: 26px; font-weight: 700">FCK 25 · Brita 1 <span style="font-weight: 500; color: #5B6168">— Rev. 3</span> <span style="font-size: 12px; font-weight: 600; vertical-align: middle; padding: 3px 8px; border-radius: 10px; background: #FFF6E0; color: #7A4A00">rascunho</span></h1>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px">
+        <a href="Consulta.dc.html" style="height: 44px; padding: 0 16px; display: inline-flex; align-items: center; border-radius: 6px; border: 1px solid #C9CCC5; background: #FFFFFF; color: #17191C; text-decoration: none; font-weight: 500">Comparar com Rev. 2</a>
+        <button type="button" style="height: 44px; padding: 0 18px; border-radius: 6px; border: 0; background: #1E6B3A; color: #FFFFFF; font: inherit; font-weight: 600">Salvar Rev. 3</button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section style="flex: 999 1 640px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <div style="background: #FFFFFF; border: 1px solid #E1E3DE; border-radius: 8px; padding: 18px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px">
+          <label class="fld" style="grid-column: span 2">Nome da carta<input class="in" value="FCK 25 · Brita 1"></label>
+          <label class="fld">Unidade<select class="in"><option>Campinas</option><option>Pederneiras</option><option>Ribeirão Preto</option><option>Noroeste</option></select></label>
+          <label class="fld">Revisão<input class="in num" value="3" readonly style="background: #F3F4F1"></label>
+          <label class="fld">Vigência<input class="in num" value="25/10/2026"></label>
+          <label class="fld">Status ao salvar<select class="in"><option>Ativa (inativa Rev. 2)</option><option>Rascunho</option></select></label>
+          <label class="fld" style="grid-column: span 2">Observação<input class="in" value="Ajuste de agregado graúdo após ensaio de abatimento"></label>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E1E3DE; border-radius: 8px; padding: 16px 6px 10px">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 12px 8px">
+            <h2 style="margin: 0; font-size: 16px">Composição por m³</h2>
+            <span style="font-size: 12px; color: #5B6168">Custos vigentes de Campinas · convertidos para R$/kg</span>
+          </div>
+          <div style="overflow-x: auto"><table class="tbl">
+            <thead><tr><th>Material</th><th>Fornecedor</th><th class="r">kg/m³</th><th class="r">M.E.</th><th class="r">Vol. (L)</th><th class="r">R$/kg</th><th class="r">R$/m³</th></tr></thead>
+            <tbody>
+              <tr><td>Cimento CP V-ARI</td><td><select class="in" aria-label="Fornecedor cimento"><option>Votorantim</option></select></td><td class="r"><input class="in num" value="380" aria-label="kg cimento" style="width: 84px; text-align: right"></td><td class="r num">3,10</td><td class="r num">122,6</td><td class="r num">0,6120</td><td class="r num">232,56</td></tr>
+              <tr><td>Areia fina</td><td><select class="in" aria-label="Fornecedor areia fina"><option>Areal Tietê</option></select></td><td class="r"><input class="in num" value="320" aria-label="kg areia fina" style="width: 84px; text-align: right"></td><td class="r num">2,63</td><td class="r num">121,7</td><td class="r num">0,0720</td><td class="r num">23,04</td></tr>
+              <tr><td>Areia média</td><td><select class="in" aria-label="Fornecedor areia média"><option>Areal Tietê</option></select></td><td class="r"><input class="in num" value="472" aria-label="kg areia média" style="width: 84px; text-align: right; background: #EAF2FB"></td><td class="r num">2,62</td><td class="r num">180,2</td><td class="r num">0,0680</td><td class="r num">32,10</td></tr>
+              <tr><td>Brita 0</td><td><select class="in" aria-label="Fornecedor brita 0"><option>Pedreira Itapeva</option></select></td><td class="r"><input class="in num" value="300" aria-label="kg brita 0" style="width: 84px; text-align: right"></td><td class="r num">2,72</td><td class="r num">110,3</td><td class="r num">0,0850</td><td class="r num">25,50</td></tr>
+              <tr><td>Brita 1</td><td><select class="in" aria-label="Fornecedor brita 1"><option>Pedreira Itapeva</option></select></td><td class="r"><input class="in num" value="750" aria-label="kg brita 1" style="width: 84px; text-align: right; background: #EAF2FB"></td><td class="r num">2,75</td><td class="r num">272,7</td><td class="r num">0,0800</td><td class="r num">60,00</td></tr>
+              <tr><td>Água</td><td><select class="in" aria-label="Fornecedor água"><option>Poço</option></select></td><td class="r"><input class="in num" value="190" aria-label="kg água" style="width: 84px; text-align: right"></td><td class="r num">1,00</td><td class="r num">190,0</td><td class="r num">0,0040</td><td class="r num">0,76</td></tr>
+              <tr><td>Aditivo 1 (PC)</td><td><select class="in" aria-label="Fornecedor aditivo 1"><option>[Fornecedor aditivo]</option></select></td><td class="r"><input class="in num" value="3,04" aria-label="kg aditivo 1" style="width: 84px; text-align: right; background: #EAF2FB"></td><td class="r num">1,08</td><td class="r num">2,8</td><td class="r num">11,5000</td><td class="r num">34,96</td></tr>
+              <tr style="background: #FFF6E0"><td>Aditivo 2 (RT)</td><td><select class="in" aria-label="Fornecedor aditivo 2"><option>— sem custo na unidade</option></select></td><td class="r"><input class="in num" value="1,90" aria-label="kg aditivo 2" style="width: 84px; text-align: right"></td><td class="r num">1,10</td><td class="r num">1,7</td><td class="r num" style="color: #7A4A00">—</td><td class="r num" style="color: #7A4A00">0,00</td></tr>
+              <tr style="font-weight: 600"><td>Total</td><td></td><td class="r num">2.416,94</td><td></td><td class="r num">1.002,0</td><td></td><td class="r num">408,92</td></tr>
+            </tbody>
+          </table></div>
+          <div style="padding: 10px 12px 4px; display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #5B6168">
+            <button type="button" style="height: 36px; padding: 0 12px; border-radius: 5px; border: 1px dashed #9EA3A8; background: #FFFFFF; font: inherit; color: #17191C">+ Adicionar material</button>
+            <span style="align-self: center">Células em azul mudaram desde a Rev. 2</span>
+          </div>
+        </div>
+      </section>
+
+      <aside style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E1E3DE; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline">
+          <h2 style="margin: 0; font-size: 16px">Indicadores</h2>
+          <span style="font-size: 12px; color: #5B6168">recalculados ao digitar</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <div class="kpi"><span>Peso</span><b>2.416,9</b><span>kg/m³</span></div>
+          <div class="kpi"><span>Volume</span><b>1.002,0</b><span>L</span></div>
+          <div class="kpi"><span>Relação a/c</span><b>0,50</b><span>água ÷ cimento</span></div>
+          <div class="kpi"><span>Teor de argamassa</span><b>52,7 %</b><span>(c + areia) ÷ secos</span></div>
+          <div class="kpi"><span>Aditivos s/ cimento</span><b>1,30 %</b><span>PC + RT</span></div>
+          <div class="kpi" style="background: #E3F2E7; border-color: #BFE0C8"><span style="color: #1E6B3A">Fechamento</span><b style="color: #1E6B3A">−2,0 L ✓</b><span style="color: #1E6B3A">tolerância ±10 L</span></div>
+        </div>
+
+        <div style="border-top: 1px solid #E1E3DE; padding-top: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <span style="font-size: 13px; color: #5B6168">MCC</span>
+            <span style="font-size: 12px; color: #A12A1F" class="num">+R$ 7,40 (+1,8 %) vs Rev. 2</span>
+          </div>
+          <div class="num" style="font-size: 34px; font-weight: 600; margin-top: 2px">R$ 408,92<span style="font-size: 15px; color: #5B6168; font-weight: 400"> /m³</span></div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px">
+          <div style="display: flex; height: 14px; border-radius: 3px; overflow: hidden" role="img" aria-label="Composição do MCC: cimento 56,9 %, brita 1 14,7 %, aditivo 1 8,5 %, areia média 7,9 %, brita 0 6,2 %, areia fina 5,6 %, água 0,2 %">
+            <div style="width: 56.9%; background: #33505A"></div><div style="width: 14.7%; background: #4F8A96"></div><div style="width: 8.5%; background: #D08A1E"></div><div style="width: 7.9%; background: #8FB8BF"></div><div style="width: 6.2%; background: #6C9EA6"></div><div style="width: 5.6%; background: #B7D3D7"></div><div style="width: 0.2%; background: #DDE8EA"></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 14px; color: #3F454B">
+            <span><span style="display: inline-block; width: 9px; height: 9px; background: #33505A"></span> Cimento <span class="num">56,9 %</span></span>
+            <span><span style="display: inline-block; width: 9px; height: 9px; background: #4F8A96"></span> Brita 1 <span class="num">14,7 %</span></span>
+            <span><span style="display: inline-block; width: 9px; height: 9px; background: #D08A1E"></span> Aditivo 1 <span class="num">8,5 %</span></span>
+            <span><span style="display: inline-block; width: 9px; height: 9px; background: #8FB8BF"></span> Areia média <span class="num">7,9 %</span></span>
+            <span><span style="display: inline-block; width: 9px; height: 9px; background: #6C9EA6"></span> Brita 0 <span class="num">6,2 %</span></span>
+            <span><span style="display: inline-block; width: 9px; height: 9px; background: #B7D3D7"></span> Areia fina <span class="num">5,6 %</span></span>
+          </div>
+        </div>
+
+        <div style="background: #FFF6E0; border: 1px solid #F0D58C; border-radius: 6px; padding: 12px; font-size: 13px; color: #7A4A00">
+          <b>Aditivo 2 (RT) sem custo em Campinas.</b> O MCC está subestimado.
+          <div style="margin-top: 8px"><a href="Materiais.dc.html" style="color: #7A4A00; font-weight: 600">Cadastrar custo →</a></div>
+        </div>
+        <div style="font-size: 12px; color: #5B6168">Salvar grava a Rev. 3 como ativa e inativa só revisões menores desta carta nesta unidade (regra garantida pelo banco).</div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

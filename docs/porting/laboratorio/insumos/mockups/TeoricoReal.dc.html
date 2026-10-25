@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Consumo teórico e real</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F4F1}
+a{color:#1F5FA8}a:hover{color:#163F70}
+.side a{color:#C9CDD2;text-decoration:none}.side a:hover{color:#FFFFFF}
+.num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#5B6168;padding:10px 12px;border-bottom:1px solid #E1E3DE}
+.tbl td{padding:11px 12px;white-space:nowrap;border-bottom:1px solid #EEF0EB;color:#17191C}
+.r{text-align:right}
+.in{height:44px;box-sizing:border-box;border:1px solid #C9CCC5;border-radius:6px;padding:0 10px;font:inherit;background:#FFFFFF;color:#17191C;width:100%}
+.fld{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#5B6168}
+.ia{font-size:11px;font-weight:600;color:#7A4A00;background:#FFF6E0;border-radius:8px;padding:1px 6px;margin-left:6px}
+.card{background:#FFFFFF;border:1px solid #E1E3DE;border-radius:8px;padding:18px}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 820px; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #17191C; background: #F3F4F1">
+  <nav class="side" aria-label="Módulos" style="flex: 1 1 240px; max-width: 240px; background: #1B1E22; color: #C9CDD2; padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 6px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: #F2B705; color: #1B1E22; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">C</div>
+      <div><div style="color: #FFFFFF; font-weight: 700; letter-spacing: .06em; font-size: 14px">CONCREFER</div><div style="font-size: 12px; color: #9AA0A6">ConcreTrack · Unificado</div></div>
+    </div>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #5B9BD5"></span>Planejamento</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #7BC47F"></span>Produção</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px; background: #2A2F35; color: #FFFFFF; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 4px; background: #F2B705"></span>Laboratório</a>
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 4px 0 8px 26px; font-size: 13px">
+      <span style="font-size: 11px; letter-spacing: .08em; color: #F2B705; padding: 6px 8px 2px; font-weight: 600">INSUMOS</span>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">CARTA TRAÇO</span>
+      <a href="Main.dc.html" style="padding: 7px 8px; border-radius: 5px">Visão geral</a>
+      <a href="Editor.dc.html" style="padding: 7px 8px; border-radius: 5px">Nova carta</a>
+      <a href="Consulta.dc.html" style="padding: 7px 8px; border-radius: 5px">Consulta</a>
+      <a href="Resumo.dc.html" style="padding: 7px 8px; border-radius: 5px">Resumo MCC</a>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">ESTOQUE</span>
+      <a href="EntradaNF.dc.html" style="padding: 7px 8px; border-radius: 5px">Entrada (NF)</a>
+      <a href="Saldo.dc.html" style="padding: 7px 8px; border-radius: 5px">Saldo e silos</a>
+      <span style="font-size: 10px; letter-spacing: .08em; color: #8A9096; padding: 8px 8px 2px">COMUM</span>
+      <a href="Materiais.dc.html" style="padding: 7px 8px; border-radius: 5px">Materiais e custos</a>
+      <a href="TeoricoReal.dc.html" style="padding: 7px 8px; border-radius: 5px; background: #4A4220; color: #FFFFFF">Teórico × real</a>
+    </div>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #4FB3BF"></span>Usinas</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #C792EA"></span>Qualidade</a>
+    <a href="#" style="display: flex; align-items: center; gap: 10px; padding: 10px 8px; border-radius: 6px; font-size: 14px;"><span style="width: 8px; height: 8px; border-radius: 4px; background: #E07A5F"></span>GED</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <div style="font-size: 13px; color: #5B6168">Laboratório / Insumos</div>
+        <h1 style="margin: 4px 0 0; font-size: 26px; font-weight: 700">Consumo teórico × real</h1>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center"><input class="in num" aria-label="Período" value="01/10/2026 – 24/10/2026" style="width: 220px"><button type="button" style="height: 44px; padding: 0 16px; border-radius: 6px; border: 1px solid #C9CCC5; background: #FFFFFF; font: inherit">Imprimir</button></div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px">
+      <div class="card"><div style="font-size: 13px; color: #5B6168">Volume produzido</div><div class="num" style="font-size: 28px; font-weight: 600; margin-top: 4px">412,5 m³</div></div>
+      <div class="card"><div style="font-size: 13px; color: #5B6168">Sem carta vinculada</div><div class="num" style="font-size: 28px; font-weight: 600; margin-top: 4px">6,0 m³</div><div style="font-size: 12px; color: #5B6168">código de traço sem carta</div></div>
+      <div class="card" style="background: #FBE4DF; border-color: #F0C3B9"><div style="font-size: 13px; color: #8A2318">Cimento acima do teórico</div><div class="num" style="font-size: 28px; font-weight: 600; margin-top: 4px; color: #8A2318">+2,40 %</div><div style="font-size: 12px; color: #8A2318">3.760 kg · R$ 2.301 no período</div></div>
+      <div class="card"><div style="font-size: 13px; color: #5B6168">Faixa de atenção</div><div class="num" style="font-size: 28px; font-weight: 600; margin-top: 4px">± 2 %</div><div style="font-size: 12px; color: #5B6168">configurável</div></div>
+    </div>
+    <section class="card" style="padding: 18px 6px 6px">
+      <div style="display: flex; justify-content: space-between; padding: 0 12px 10px; flex-wrap: wrap; gap: 8px">
+        <h2 style="margin: 0; font-size: 16px">Por material</h2>
+        <span style="font-size: 13px; color: #5B6168">Teórico = volume de cada traço × kg/m³ da revisão vigente no dia · Real = baixa do estoque</span>
+      </div>
+      <div style="overflow-x: auto"><table class="tbl">
+        <thead><tr><th>Material</th><th class="r">Teórico (kg)</th><th class="r">Real (kg)</th><th class="r">Desvio (kg)</th><th class="r">Desvio</th></tr></thead>
+        <tbody>
+            <tr style="background: #FFF6E0"><td>Cimento CP V-ARI</td><td class="r num">156.420</td><td class="r num">160.180</td><td class="r num" style="color: #A12A1F">+3.760</td><td class="r num" style="color: #A12A1F; font-weight: 600">+2,40 %</td></tr>
+            <tr style="background: #FFF6E0"><td>Areia média</td><td class="r num">191.870</td><td class="r num">199.110</td><td class="r num" style="color: #A12A1F">+7.240</td><td class="r num" style="color: #A12A1F; font-weight: 600">+3,77 %</td></tr>
+            <tr style="background: #FFF6E0"><td>Aditivo 1 (PC)</td><td class="r num">1.236</td><td class="r num">1.302</td><td class="r num" style="color: #A12A1F">+66</td><td class="r num" style="color: #A12A1F; font-weight: 600">+5,34 %</td></tr>
+            <tr style="background: #FFF6E0"><td>Areia fina</td><td class="r num">130.080</td><td class="r num">127.300</td><td class="r num" style="color: #1F5FA8">−2.780</td><td class="r num" style="color: #1F5FA8; font-weight: 600">−2,14 %</td></tr>
+            <tr><td>Brita 1</td><td class="r num">304.880</td><td class="r num">301.950</td><td class="r num" style="color: #5B6168">−2.930</td><td class="r num" style="color: #5B6168; font-weight: 600">−0,96 %</td></tr>
+            <tr><td>Brita 0</td><td class="r num">121.950</td><td class="r num">122.700</td><td class="r num" style="color: #5B6168">+750</td><td class="r num" style="color: #5B6168; font-weight: 600">+0,62 %</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+    <div style="font-size: 13px; color: #5B6168">Linhas destacadas passam da faixa de atenção. Clique num material para ver o desvio dia a dia e por traço.</div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":820}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

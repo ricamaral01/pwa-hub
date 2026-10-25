@@ -1,0 +1,7 @@
+# já no serviço do Laboratório: fastapi, pydantic, sqlalchemy, psycopg[binary], openpyxl, python-multipart
+# novos para a carga da Carta Traço (modo espelho)
+google-auth>=2.29
+requests>=2.31
+# testes
+pytest>=8
+httpx>=0.27

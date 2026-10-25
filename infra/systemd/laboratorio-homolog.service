@@ -1,0 +1,29 @@
+[Unit]
+Description=Laboratorio do Concrefer Unificado (homologacao isolada)
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=monitorconcreto
+Group=monitorconcreto
+WorkingDirectory=/opt/concrefer-unificado/homolog/laboratorio/service
+EnvironmentFile=/opt/monitor_concreto/.env
+EnvironmentFile=/etc/concrefer-unificado/laboratorio-homolog.env
+Environment=LAB_UNIFIED_COPY=1
+Environment=DATA_DIR=/opt/monitor_concreto/data
+Environment=POSTES_UPLOAD_DIR=/opt/concrefer-unificado/homolog/data/postes_uploads
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/opt/monitor_concreto/.venv/bin/python -m uvicorn server.app:app --host 127.0.0.1 --port 13065 --workers 1 --no-proxy-headers
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/opt/monitor_concreto/data
+ReadWritePaths=/opt/concrefer-unificado/homolog/data
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target
