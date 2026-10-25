@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.39"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.39"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.39"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Programação Setor 3 e 4 — PCP Concrefer</title>
@@ -48,7 +54,8 @@
       cursor: pointer;
     }
   </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
+    <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.39">
 </head>
 <body>
 
@@ -328,7 +335,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.39"></script>
 <script>
 const user = requireAuth();
 if (user) {
@@ -612,7 +619,7 @@ async function importarProgramacaoArquivo(ev) {
       return;
     }
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.detail || `Erro ${res.status}`);
+    if (!res.ok) throw new Error(data.detail || `Não foi possível concluir a programação (HTTP ${res.status}). Verifique os dados e tente novamente.`);
     showToast(`${data.importados} registro(s) importado(s). ${data.removidos || 0} substituído(s).`, 'success', 5000);
     input.value = '';
     loadProg();

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <style>@media screen{html{background:#0B1730}}@media screen and (min-width:1025px){body{background:#0B1730!important}}</style>
+  <script>if(top===self){location.replace("/unificado/?view="+encodeURIComponent(location.pathname.slice("/unificado/".length).replace(/index\.html$/,"")+location.search))}</script>
+  <script src="/unificado/mapa/api/unified/screen-access/bootstrap.js"></script>
+  <script src="/unificado/pcp/unificado-screen-context.js?v=0.6.39"></script>
+  <script src="/unificado/pcp/unificado-bridge.js?v=0.6.39"></script>
+  <script src="/unificado/pcp/unificado-shell.js?v=0.6.39"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Programação Setor 1 e 2 - PCP Concrefer</title>
@@ -427,7 +433,8 @@
       }
     }
   </style>
-  <script src="/unificado/pcp/readonly-guard.js"></script>
+    <link rel="stylesheet" href="/unificado/pcp/static/css/inter-original.css">
+  <link rel="stylesheet" href="/unificado/pcp/unificado-shell.css?v=0.6.39">
 </head>
 <body>
 
@@ -649,7 +656,7 @@
 </div>
 
 <div id="toast-container"></div>
-<script src="/unificado/pcp/static/js/app.js?v=0.6.7"></script>
+<script src="/unificado/pcp/static/js/app.js?v=0.6.39"></script>
 <script>
 const user = requireAuth();
 if (user) {
@@ -775,7 +782,7 @@ async function importarMegaAlex() {
       return;
     }
     const out = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(out.detail || `Erro ${res.status}`);
+    if (!res.ok) throw new Error(out.detail || `Não foi possível importar o arquivo Mega (HTTP ${res.status}). Verifique o formato e tente novamente.`);
     showToast(`${out.importados} item(ns) Mega importado(s). ${out.ignorados || 0} linha(s) sem Produção Diária foram ignoradas.`, 'success', 6500);
     input.value = '';
     document.getElementById('f-inicio').value = data;
@@ -870,7 +877,7 @@ function renderFormasSetor(rows) {
     const volumeTotal = programacao * volumeUnitario;
     return `
       <div class="formas-grid-row" role="row" data-row="${idx}">
-        <div class="d-none row-meta" data-setor-id="${setorId}" data-produto-id="${row.produto_id || ''}" data-codigo="${codigo}" data-forma="${forma}" data-volume="${volumeUnitario}"></div>
+        <div class="d-none row-meta" data-setor-id="${setorId}" data-produto-id="${row.produto_id || ''}" data-forma="${forma}" data-volume="${volumeUnitario}" data-grupo="${escapeHtml(row.grupo_formas || String())}" data-limite-grupo="${row.limite_grupo || 0}"></div>
         <div class="formas-cell sticky-setor" role="cell"><span class="formas-code">${setorNome}</span></div>
         <div class="formas-cell sticky-codigo" role="cell"><span class="formas-code">${codigo}</span></div>
         <div class="formas-cell left sticky-produto" role="cell">
@@ -964,14 +971,12 @@ async function enviarProgramacaoAlex() {
 
   const rows = [...document.querySelectorAll('#tbody-formas-setor .formas-grid-row[data-row]')];
   const payloads = [];
-  let totalPl = 0;
   for (const row of rows) {
     const input = row.querySelector('.prog-input');
     const qtd = parseInt(input?.value || 0);
     if (qtd <= 0) continue;
     const meta = row.querySelector('.row-meta');
     const setorId = parseInt(meta?.dataset?.setorId || 0);
-    if (setorId === 2 && ['934', '15351'].includes(meta?.dataset?.codigo)) totalPl += qtd;
     const produtoId = parseInt(meta?.dataset?.produtoId || 0);
     const forma = meta?.dataset?.forma || null;
     const volumeUnitario = Number(meta?.dataset?.volume || input?.dataset?.volumeUnit || 0);
@@ -993,11 +998,13 @@ async function enviarProgramacaoAlex() {
     });
   }
 
-  if (totalPl > 6) {
-    showToast('As formas PL são 6 no total. Ajuste a soma de 934 e 15351 para no máximo 6.', 'warning');
+  const grupoPL = rows.filter(row => row.querySelector('.row-meta')?.dataset.grupo === 'PL/PLE');
+  const totalPL = grupoPL.reduce((sum, row) => sum + Math.max(0, parseInt(row.querySelector('.prog-input')?.value || 0, 10) || 0), 0);
+  const limitePL = Number(grupoPL[0]?.querySelector('.row-meta')?.dataset.limiteGrupo || 0);
+  if (limitePL && totalPL > limitePL) {
+    showToast('PL e PLE compartilham as mesmas formas: programe no maximo ' + limitePL + ' postes ao todo.', 'warning');
     return;
   }
-
   if (!payloads.length) {
     showToast('Preencha ao menos uma quantidade na coluna Programação', 'warning');
     return;
