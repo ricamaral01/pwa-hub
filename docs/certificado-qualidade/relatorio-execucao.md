@@ -9,6 +9,8 @@
 
 **Conferência posterior da assinatura:** em `:18446`, uma prensa identificada como TESTE com RBC “TESTE HOMOLOGAÇÃO” permitiu emitir certificados de 3 e 10 datas (`CQ-2026-0015` e `CQ-2026-0016`). A assinatura de Marcelo aparece acima da linha em 72 e 49,3 px a 96 dpi; as duas linhas estão alinhadas. Os rascunhos não mostram a imagem. PDFs, PNGs e medidas estão no [relatório da Fase 2](relatorio-fase2-fonte-nova.md). Em produção, **sem emitir**, confirmou-se que o PNG protegido já existia fora de `public`, com o mesmo hash, dono e modo 0400 da homologação, e que o serviço aponta para esse caminho. Não houve alteração de código nem reinstalação em produção nesta conferência.
 
+**Deploy reiterado em 25/10/2026:** a árvore publicada corresponde ao commit `7806c114` da branch `feat/laboratorio-certificado-producao`, já enviado ao remoto. O procedimento de produção foi executado novamente com backup `/opt/concrefer-unificado/backups/cq-production-20261025T100059Z`, importação histórica idempotente (0 novos), Nginx válido, serviço ativo, `CQ_FONTE_CP=novo` e gate **7/7**. Após o deploy, bootstrap, página autenticada e configuração responderam **200**; há uma prensa oficial e nenhuma prensa TESTE em produção. A emissão segue bloqueada enquanto o laboratório RBC da prensa oficial constar como “Não informado no cadastro de origem”.
+
 ## Entrega e arquivos
 
 - Módulo isolado em `unificado/laboratorio/certificados-qualidade/`: API FastAPI, regras em `core.py`, PDF de uma página em `report.py`, telas responsivas de emissão, histórico e cadastros em `static/`, exportação e importação legada somente por GET.
