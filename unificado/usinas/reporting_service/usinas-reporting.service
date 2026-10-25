@@ -1,0 +1,22 @@
+[Unit]
+Description=Concrefer Campinas reports (private, read-only)
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=usinas-reports
+Group=usinas-reports
+WorkingDirectory=/opt/concrefer-unificado/usinas
+EnvironmentFile=/etc/concrefer/usinas-reporting.env
+ExecStart=/opt/concrefer-unificado/usinas/reporting-venv/bin/uvicorn reporting_service.app:app --host 127.0.0.1 --port 3087 --workers 2
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

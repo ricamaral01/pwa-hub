@@ -566,5 +566,6 @@
   {"id":"labCecAnalise","module":"laboratorio","label":"Análise estatística","path":"/unificado/laboratorio/cec/analise/","query":"","screen":null,"require":null},
   {"id":"labCecEtiquetas","module":"laboratorio","label":"Etiquetas QR","path":"/unificado/laboratorio/cec/etiquetas/","query":"","screen":null,"require":null},
   {"id":"labCecLeitura","module":"laboratorio","label":"Leitura de CP","path":"/unificado/laboratorio/cec/leitura/","query":"","screen":null,"require":null},
-  {"id":"labCertificados","module":"laboratorio","label":"Certificados de qualidade","path":"/unificado/laboratorio/certificados-qualidade/","query":"","screen":null,"require":null}
+  {"id":"labCertificados","module":"laboratorio","label":"Certificados de qualidade","path":"/unificado/laboratorio/certificados-qualidade/","query":"","screen":null,"require":null},
+  {"id":"labUsinasRelatorios","module":"laboratorio","label":"Relatórios e custos de Campinas","path":"/unificado/laboratorio/usinas-relatorios/","query":"","screen":null,"require":null}
 ]

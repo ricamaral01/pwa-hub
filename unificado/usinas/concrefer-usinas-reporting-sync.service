@@ -1,0 +1,18 @@
+[Unit]
+Description=Refresh Campinas reporting mirror from read-only ERP source
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=usinas-sync
+Group=usinas-sync
+WorkingDirectory=/opt/concrefer-unificado/usinas
+EnvironmentFile=/etc/concrefer/usinas-prod.env
+ExecStart=/opt/concrefer-unificado/usinas/venv/bin/python /opt/concrefer-unificado/usinas/sync_reporting.py
+TimeoutStartSec=90
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+UMask=0077

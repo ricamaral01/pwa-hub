@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh Campinas reporting mirror every minute
+
+[Timer]
+OnBootSec=1min
+OnUnitInactiveSec=1min
+AccuracySec=10s
+Persistent=true
+Unit=concrefer-usinas-reporting-sync.service
+
+[Install]
+WantedBy=timers.target

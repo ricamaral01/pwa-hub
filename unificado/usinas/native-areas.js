@@ -1,8 +1,10 @@
 (function(){
-  const key = new URLSearchParams(location.search).get('area');
   const host = document.getElementById('area-nativa-conteudo');
+  const key = host?.dataset.area || new URLSearchParams(location.search).get('area');
   if (!host || !['relatorios','estoque'].includes(key)) return;
-  const base = '/unificado/mapa/api/usina/legacy/';
+  const reporting = key === 'relatorios';
+  const reportingBase = '/unificado/mapa/api/usina/reporting/';
+  const legacyBase = '/unificado/mapa/api/usina/legacy/';
   const today = new Date().toLocaleDateString('en-CA');
   const month = today.slice(0,7);
   const D = (name,label,type='date',value=today) => ({name,label,type,value});
@@ -20,7 +22,7 @@
       {id:'consumo',title:'Consumo de materiais',description:'Consumo agregado por período.',path:'relatorios/consumo',fields:[D('data_ini','Data inicial'),D('data_fim','Data final'),D('produto','Produto','text',''),D('formula','Fórmula','text','')]},
       {id:'custos',title:'Custos do concreto',description:'Custos gerenciais contabilizados.',path:'relatorios/custos'},
       {id:'comparar',title:'Comparar traços',description:'Compare as cartas no resultado da consulta de custos.',path:'relatorios/cartas-traco'},
-      {id:'exportar',title:'Exportar massadas',description:'Consulte e exporte os registros exibidos nesta tela.',path:'massadas',fields:[D('data_ini','Data inicial'),D('data_fim','Data final')]},
+      {id:'exportar',title:'Exportar massadas',description:'Consulte e exporte os registros exibidos nesta tela.',path:'relatorios/massadas',fields:[D('data_ini','Data inicial'),D('data_fim','Data final')]},
       {id:'fechamento',title:'Fechamento mensal',description:'Indicadores do fechamento da usina.',path:'relatorios/fechamento',fields:[D('ano','Ano','number',today.slice(0,4))]},
       {id:'fechamento-diario',title:'Fechamento diário',description:'Resumo diário da produção.',path:'relatorios/fechamento-diario',fields:[D('data','Data')]},
       {id:'producao',title:'Produção por período',description:'Massadas e indicadores de ritmo no período.',path:'relatorios/producao-periodo',fields:[D('data_ini','Data inicial'),D('data_fim','Data final'),D('produto','Produto','text','')]},
@@ -73,16 +75,25 @@
   }
   async function read(){
     if(!current.path)return;
+    const nativeReport=reporting;
+    const base=nativeReport?reportingBase:legacyBase;
     showStatus('Consultando dados…');
     const qs=new URLSearchParams(current.fixed||{});
     panel.querySelectorAll('[data-filter]').forEach(input=>{if(input.value.trim())qs.set(input.name,input.value.trim())});
     try{
       const response=await fetch(base+current.path+(qs.size?'?'+qs:''),{credentials:'same-origin',cache:'no-store'});
-      if(response.status===401){showStatus('Entre com sua conta antiga do ConcreTrack para consultar esta tela.',true);panel.querySelector('.native-login').hidden=false;return}
+      if(response.status===401){showStatus(nativeReport?'Sua sessão do Unificado expirou. Entre novamente.':'Entre com sua conta antiga do ConcreTrack para consultar esta tela.',true);const loginBox=panel.querySelector('.native-login');if(loginBox)loginBox.hidden=false;return}
       const payload=await response.json();
       if(!response.ok)throw new Error(payload.detail||payload.error||`Consulta falhou (${response.status}).`);
-      panel.querySelector('.native-login').hidden=true;
-      renderData(payload);showStatus('Consulta atualizada. Fonte: API de Campinas, somente leitura.');
+      const loginBox=panel.querySelector('.native-login');if(loginBox)loginBox.hidden=true;
+      renderData(payload);
+      if(nativeReport){
+        const syncResponse=await fetch(base+'status',{credentials:'same-origin',cache:'no-store'});
+        if(!syncResponse.ok)throw new Error('Consulta carregada, mas não foi possível validar a atualização do espelho.');
+        const sync=await syncResponse.json();
+        const stale=sync.tables?.length!==10 || sync.tables.some(item=>item.last_error || item.age_seconds==null || Number(item.age_seconds)>300 || item.source_count!==item.mirror_count);
+        showStatus(stale?'Consulta carregada. Atenção: o espelho de relatórios está atrasado ou incompleto.':'Consulta atualizada. Fonte: espelho de Campinas na VPS nova, somente leitura.',stale);
+      }else showStatus('Consulta atualizada. Fonte: API de Campinas, somente leitura.');
     }catch(error){showStatus(error.message||'Falha na consulta.',true)}
   }
   async function login(event){
@@ -90,7 +101,7 @@
     const username=form.elements.username.value,password=form.elements.password.value;
     showStatus('Validando a conta antiga…');
     try{
-      const response=await fetch(base+'login',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({username,password})});
+      const response=await fetch(legacyBase+'login',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({username,password})});
       form.elements.password.value='';
       if(!response.ok)throw new Error('Não foi possível entrar com a conta antiga.');
       form.hidden=true;await read();
@@ -112,12 +123,14 @@
     panel.replaceChildren();
     const head=el('div','native-head'),heading=el('div');heading.append(el('h3','',screen.title),el('p','',screen.description));head.append(heading);panel.append(head);
     if(!screen.path){panel.append(el('p','native-status',screen.description));return}
-    const loginBox=el('form','native-login');loginBox.hidden=true;loginBox.append(el('h4','','Conta antiga do ConcreTrack'),el('p','','A consulta usa seu acesso do ERP de Campinas. A senha é enviada apenas para validação do login e não fica salva nesta página.'));
-    const loginGrid=el('div','native-grid');
-    for(const [name,label,type] of [['username','Usuário','text'],['password','Senha','password']]){
-      const field=el('label','native-field',label),input=el('input');input.name=name;input.type=type;input.required=true;input.autocomplete=name==='password'?'current-password':'username';field.append(input);loginGrid.append(field)
+    if(!reporting){
+      const loginBox=el('form','native-login');loginBox.hidden=true;loginBox.append(el('h4','','Conta antiga do ConcreTrack'),el('p','','A consulta usa seu acesso do ERP de Campinas. A senha é enviada apenas para validação do login e não fica salva nesta página.'));
+      const loginGrid=el('div','native-grid');
+      for(const [name,label,type] of [['username','Usuário','text'],['password','Senha','password']]){
+        const field=el('label','native-field',label),input=el('input');input.name=name;input.type=type;input.required=true;input.autocomplete=name==='password'?'current-password':'username';field.append(input);loginGrid.append(field)
+      }
+      loginBox.append(loginGrid);const submit=el('button','native-primary','Entrar e consultar');submit.type='submit';loginBox.append(submit);loginBox.addEventListener('submit',login);panel.append(loginBox);
     }
-    loginBox.append(loginGrid);const submit=el('button','native-primary','Entrar e consultar');submit.type='submit';loginBox.append(submit);loginBox.addEventListener('submit',login);panel.append(loginBox);
     if(screen.fields?.length){const filters=el('div','native-grid');for(const field of screen.fields){const label=el('label','native-field',field.label),input=el('input');input.type=field.type;input.name=field.name;input.value=field.value;input.dataset.filter='';label.append(input);filters.append(label)}panel.append(filters)}
     const actions=el('div','native-actions');actions.append(button('Consultar','native-primary',read),button('Imprimir','native-secondary',()=>window.print()),button('Exportar CSV','native-secondary',csv));panel.append(actions);
     panel.append(el('p','native-status','Preparando consulta…'),el('div','native-result'));read();
