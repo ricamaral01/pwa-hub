@@ -1,0 +1,10 @@
+[Unit]
+Description=Verifica solicitações entregues a cada hora
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+Unit=suprimentos-fechamento.service
+
+[Install]
+WantedBy=timers.target

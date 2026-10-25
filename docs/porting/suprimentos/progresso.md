@@ -3,7 +3,7 @@
 | Etapa | Estado | Testes/evidência | Pendências |
 |---|---|---|---|
 | E1 · Serviço e cadastros | **Concluída** | [02-schema-cadastros.md](02-schema-cadastros.md); pytest E1 `5 passed`, upgrade/downgrade em PostgreSQL descartável | Dados reais de Campinas e UI entram depois; alçadas/valores seguem `a_confirmar` |
-| E2 · Solicitação e aprovação | Não iniciada | — | — |
+| E2 · Solicitação e aprovação | **Concluída** | [03-solicitacao-backend.md](03-solicitacao-backend.md); E1+E2 `12 passed` em 3 execuções consecutivas; downgrade em banco vazio separado | Valores de alçada/SLA ainda `a_confirmar`; timer será instalado na E7 |
 | E3 · Casca, menu, permissões | Não iniciada | — | — |
 | E4 · Telas desktop/tablet | Não iniciada | — | — |
 | E5 · PWA Solicitação | Não iniciada | — | — |
@@ -11,3 +11,12 @@
 | E7 · Homologação | Não iniciada | — | — |
 
 **Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
+
+## Histórico de bloqueio da E2 e retomada — 25/10/2026
+
+- A primeira execução após criar a migration 0003 falhou na FK composta de `sup_reserva` para `sup_endereco`. A correção adicionou `UNIQUE(id, unidade_id)` na migration 0003; as migrações passaram na execução seguinte.
+- Após a primeira tentativa de correção dos testes E2, o pytest E1+E2 terminou em `5 passed, 4 failed, 1 error`. A solicitação com `client_uuid` era barrada por uma verificação de papel sem CC, e o teardown deixava CC dependente da unidade seed.
+- Após a segunda tentativa, o pytest E1+E2 ainda terminou em `5 passed, 4 failed, 1 error`. A criação idempotente passou; os 403 seguintes decorrem provavelmente do override global de identidade compartilhado entre os clientes de teste. O teardown ainda deixa eventos referenciando a unidade seed. Esta hipótese não foi validada por novo teste, pois a regra de parada foi atingida.
+- Ricardo substituiu a regra 0.3: falhas de infraestrutura de teste não contam como tentativas; defeito real só bloqueia após cinco correções documentadas. A fixture passou a assinar cada requisição e a limpar dados sem usar downgrade. A E2 ficou verde, incluindo as três execuções consecutivas exigidas.
+- O único defeito real encontrado após isolar a infraestrutura foi a precedência do retorno 409 sobre a verificação de autorização. Foi corrigido na primeira tentativa e passou no teste seguinte.
+- A E2 foi concluída; E3–E7 seguem pendentes. Homologação e produção não foram alteradas. Nenhum `git push` foi feito.

@@ -1,0 +1,16 @@
+[Unit]
+Description=Fechamento automático de solicitações de Suprimentos
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=concrefer-suprimentos
+Group=concrefer-suprimentos
+EnvironmentFile=/etc/concrefer/suprimentos.env
+WorkingDirectory=/opt/concrefer-unificado/homolog/unificado/suprimentos/service
+ExecStart=/opt/concrefer-unificado/homolog/unificado/suprimentos/venv/bin/python -m suprimentos.close_delivered
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+

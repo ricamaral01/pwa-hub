@@ -39,9 +39,12 @@ class Context:
 
     def has(self, action: str, cc_id: str | None = None, level: int | None = None) -> bool:
         for role in self.roles:
+            # ADMIN gerencia a unidade, mas não substitui a alçada formal do APROVADOR.
+            if action in {"solicitacao.aprovar", "solicitacao.devolver", "solicitacao.reprovar"} and role["papel"] != "APROVADOR":
+                continue
             if role["papel"] != "ADMIN" and action not in ROLE_ACTIONS[role["papel"]]:
                 continue
-            if role["cc_id"] is not None and str(role["cc_id"]) != str(cc_id):
+            if role["cc_id"] is not None and action != "catalogo.ver" and str(role["cc_id"]) != str(cc_id):
                 continue
             if level is not None and role["papel"] == "APROVADOR" and role["nivel"] != level:
                 continue

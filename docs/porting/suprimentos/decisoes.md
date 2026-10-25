@@ -10,7 +10,7 @@ Fonte: `prompt-execucao-s0-s1.md`, aprovado por Ricardo em 25/10/2026. Esta pág
 | D4 | `sup_unidade` própria com ID smallint, código único e seed `campinas`. Nenhuma FK entre bancos; API aceita código. |
 | D5 | UUIDv7 gerado no serviço para cadastros/documentos, número `SOL-00001` por unidade; bigint identity apenas no livro de movimentos futuro. |
 | D6 | Usuário referenciado por `iam_user_id` textual e nome exibido guardado na ação; sem tabela local de usuários. |
-| D7 | Papéis SOLICITANTE, APROVADOR, ALMOXARIFE, COMPRADOR, QUALIDADE e ADMIN em `sup_usuario_papel`, sempre com controle por ação, unidade e CC. Alçada monetária separada. |
+| D7 | Papéis SOLICITANTE, APROVADOR, ALMOXARIFE, COMPRADOR, QUALIDADE e ADMIN em `sup_usuario_papel`, sempre com controle por ação, unidade e CC. `cc_id NULL` vale para todos os CCs da unidade; CC preenchido vale somente para aquele CC, inclusive para SOLICITANTE e ADMIN. O ADMIN tem todas as ações da unidade dentro do próprio escopo de CC, mas só aprova/devolve/reprova se também tiver APROVADOR do nível exigido. A alçada monetária permanece separada. Esclarecimento aprovado em 25/10/2026. |
 | D8 | `sup_flag` por unidade/fase consultada por API e casca. Campinas S0/S1 habilitadas somente em homologação. |
 | D9 | Auditoria de criação/edição; cadastros desativados logicamente; toda transição documental em `sup_evento`. |
 | D10 | Compras, recebimento, IA, jobs de NF, GED, NC, estoque e integração Laboratório ficam fora de S0–S1. |
