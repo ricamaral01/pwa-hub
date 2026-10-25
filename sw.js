@@ -3,7 +3,7 @@
   Cacheia Home + todos os sub-apps
   ============================================= */
 
-const APP_VERSION = "1.0";
+const APP_VERSION = "1.1-carta-readonly";
 const CACHE = `ct-hub-v${APP_VERSION}`;
 
 const ASSETS = [
