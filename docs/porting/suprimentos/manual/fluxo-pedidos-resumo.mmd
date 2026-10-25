@@ -1,0 +1,16 @@
+flowchart LR
+  A([Solicitante abre]) --> B{Alçada por valor e CC}
+  B --> C[Aprovador N1]
+  C --> D{N2 exigido?}
+  D -- Sim --> E[Aprovador N2]
+  D -- Não --> F[Almoxarife separa]
+  E --> F
+  F --> G[Almoxarife entrega]
+  G --> H[Solicitante confirma]
+  H --> I([Concluída])
+  classDef edge fill:#E3F8F3,stroke:#0F766E,stroke-width:2px,color:#0B3740;
+  classDef step fill:#F4F8FC,stroke:#5B7088,color:#102541;
+  classDef decision fill:#FFF2DD,stroke:#CF7B24,stroke-width:2px,color:#4C300C;
+  class A,I edge;
+  class C,E,F,G,H step;
+  class B,D decision;

@@ -1,0 +1,79 @@
+flowchart LR
+  subgraph Solicitante
+    direction TB
+    inicio([Necessidade de material]) --> abrir[Abrir pedido no web ou PWA]
+    reenvio[Reenviar pedido corrigido]
+    confirmar{Recebimento correto?}
+    problema[Informar problema]
+    fim([Concluída])
+    cancelar([Cancelada antes do atendimento])
+  end
+  subgraph Sistema
+    direction TB
+    offline{Há conexão?}
+    fila[Guardar no aparelho e reenviar sem duplicar]
+    alcada{Valor e CC exigem N2?}
+    auto[Fechar após 48 h sem resposta]
+    futuroLab[S4: sugestão de ressuprimento do Laboratório]
+  end
+  subgraph Aprovador_N1["Aprovador N1"]
+    direction TB
+    avaliar1{Aprovar N1?}
+    devolver[Devolver com comentário]
+    reprovar([Reprovada com comentário])
+  end
+  subgraph Aprovador_N2["Aprovador N2"]
+    direction TB
+    avaliar2{Aprovar N2?}
+  end
+  subgraph Almoxarife
+    direction TB
+    aprovada[Aprovada]
+    separar[Separar item]
+    entregar[Entregar total ou parcial]
+    atender[Atender problema e registrar solução]
+    saldo[S2: conferir saldo e reservar]
+    receber[S3: conferir pedido, NF e itens]
+    inspecao{S3: inspeção da Qualidade}
+    nc[S3: abrir não conformidade]
+    cross[S3: cross-docking para pedido]
+  end
+  subgraph Comprador
+    direction TB
+    cotar[S3: cotar sem saldo]
+    pedido[S3: emitir pedido de compra]
+  end
+
+  abrir --> offline
+  offline -- Não --> fila --> avaliar1
+  offline -- Sim --> avaliar1
+  avaliar1 -- Devolver --> devolver --> reenvio --> avaliar1
+  avaliar1 -- Reprovar --> reprovar
+  avaliar1 -- Aprovar --> alcada
+  alcada -- Exige N2 --> avaliar2
+  alcada -- Somente N1 --> aprovada
+  avaliar2 -- Aprovar --> aprovada
+  avaliar2 -- Devolver --> devolver
+  avaliar2 -- Reprovar --> reprovar
+  aprovada --> separar --> entregar --> confirmar
+  confirmar -- Sim --> fim
+  confirmar -- Problema --> problema --> atender --> confirmar
+  entregar --> auto --> fim
+  abrir --> cancelar
+
+  futuroLab -.-> abrir
+  aprovada -.-> saldo
+  saldo -. Sem saldo .-> cotar -.-> pedido -.-> receber -.-> inspecao
+  inspecao -. Liberado .-> cross -.-> separar
+  inspecao -. Reprovado .-> nc
+
+  classDef startend fill:#E3F8F3,stroke:#0F766E,stroke-width:2px,color:#0B3740;
+  classDef action fill:#F4F8FC,stroke:#5B7088,color:#102541;
+  classDef decision fill:#FFF2DD,stroke:#CF7B24,stroke-width:2px,color:#4C300C;
+  classDef system fill:#E8F0FA,stroke:#2E5E98,color:#102541;
+  classDef future fill:#F4EEFC,stroke:#8A64B3,stroke-width:2px,stroke-dasharray:6 4,color:#4D3865;
+  class inicio,fim,cancelar,reprovar startend;
+  class abrir,reenvio,problema,devolver,aprovada,separar,entregar,atender action;
+  class offline,alcada,avaliar1,avaliar2,confirmar decision;
+  class fila,auto system;
+  class futuroLab,saldo,cotar,pedido,receber,inspecao,nc,cross future;

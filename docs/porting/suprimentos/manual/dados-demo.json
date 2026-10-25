@@ -1,0 +1,79 @@
+{
+  "cc": "01a17535-0717-730f-9818-2299f7280839",
+  "roles": [
+    "01a17535-071f-75f1-9342-9e6dbd4a2b15",
+    "01a17535-0729-74c1-aa4b-4e85c35aa751",
+    "01a17535-0731-7c93-80b2-0bbb2de7028d",
+    "01a17535-073a-731a-aee8-41871553febe",
+    "01a17535-0743-7d31-b7a6-58650e4bca9d"
+  ],
+  "requests": {
+    "rascunho": {
+      "id": "01a17535-0753-7c3e-8eeb-95e42cbb735a",
+      "numero": "SOL-00006",
+      "item": "01a17535-0753-76f9-a52f-f1b80ad7b64c",
+      "esperado": "RASCUNHO",
+      "urgencia": "NORMAL"
+    },
+    "aprovacao-n1": {
+      "id": "01a17535-0768-765f-9f45-e4e8d097def6",
+      "numero": "SOL-00007",
+      "item": "01a17535-0768-750d-add7-23fedbece3a3",
+      "esperado": "EM_APROVACAO",
+      "urgencia": "URGENTE"
+    },
+    "aprovacao-n2": {
+      "id": "01a17535-0789-7a53-bcff-ec346fef9681",
+      "numero": "SOL-00008",
+      "item": "01a17535-0789-7227-8f1c-2462b49698cb",
+      "esperado": "EM_APROVACAO",
+      "urgencia": "PAROU_PRODUCAO"
+    },
+    "devolvida": {
+      "id": "01a17535-07c8-761f-97fd-ca1825a9cff6",
+      "numero": "SOL-00009",
+      "item": "01a17535-07c8-7931-a344-4747c1d42ef9",
+      "esperado": "DEVOLVIDA",
+      "urgencia": "NORMAL"
+    },
+    "aprovada": {
+      "id": "01a17535-07f4-772d-9ccf-673711639cad",
+      "numero": "SOL-00010",
+      "item": "01a17535-07f4-7b84-95fe-bd3c62ec9d15",
+      "esperado": "APROVADA",
+      "urgencia": "URGENTE"
+    },
+    "parcial": {
+      "id": "01a17535-0839-76c5-8774-4c7d389943f8",
+      "numero": "SOL-00011",
+      "item": "01a17535-0839-7cd0-9da8-06df24c61549",
+      "esperado": "EM_ATENDIMENTO",
+      "urgencia": "NORMAL"
+    },
+    "entregue": {
+      "id": "01a17535-0880-796a-9e1d-61a90aa10bd8",
+      "numero": "SOL-00012",
+      "item": "01a17535-0880-73f4-968d-70027b208802",
+      "esperado": "ENTREGUE",
+      "urgencia": "NORMAL"
+    },
+    "concluida": {
+      "id": "01a17535-08c9-7c11-9b91-7fb8dc9d8058",
+      "numero": "SOL-00013",
+      "item": "01a17535-08c9-770b-8bb5-469450edb793",
+      "esperado": "CONCLUIDA",
+      "urgencia": "NORMAL"
+    },
+    "reprovada": {
+      "id": "01a17535-090e-7bf3-99f6-fc3104e623ed",
+      "numero": "SOL-00014",
+      "item": "01a17535-090e-701f-885f-ea24e60b5531",
+      "esperado": "REPROVADA",
+      "urgencia": "URGENTE"
+    }
+  },
+  "photos": [
+    "01a17535-080e-75a8-b056-9b082f4e8111"
+  ],
+  "prefix": "DEMO-MANUAL-20261025"
+}
