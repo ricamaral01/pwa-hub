@@ -42,4 +42,4 @@ O script `deploy/navigation_shell.sh` prepara backup dos arquivos e permissões,
 - `deploy/navigation_shell.sh`, `deploy/navigation_rollback.sh`.
 - `tests/navegacao/` e `docs/navegacao/`.
 
-Commit e push: registrados pelo histórico da branch `feat/navegacao-unidades`.
+Commit de implementação e evidências: `b0828187`. Push concluído em `origin/feat/navegacao-unidades` em 25/10/2026. Nenhum merge em `main` foi feito.
