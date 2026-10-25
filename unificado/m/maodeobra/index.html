@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0F2C4C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mão de Obra">
+  <title>Mão de Obra — Concrefer</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="/unificado/pcp/static/css/maodeobra-mobile.css?v=20261017-prod-v1">
+  <link rel="stylesheet" href="./entry.css?v=20261017-prod-v1">
+</head>
+<body>
+  <div id="mdo-install" class="app" hidden>
+    <main class="screen">
+      <header class="hero install-hero"><img class="install-icon" src="./icons/icon-192.png" alt="" width="88" height="88"><h1>Mão de Obra</h1><p>Lance e confirme os grupos S1/S2 e S3/S4 direto do celular.</p><p class="brand-sub">Versão oficial · Concrefer</p></header>
+      <div class="install-body">
+        <section class="install-card"><h2>Instalar app</h2><p>Tenha um ícone Mão de Obra separado do Unificado na tela inicial.</p><button id="mdo-install-button" class="primary" type="button" hidden>Instalar</button><p id="mdo-android-help" hidden>Abra o menu do navegador e escolha “Instalar app” ou “Adicionar à tela inicial”.</p><div id="mdo-ios-help" hidden><p>No iPhone:</p><ol><li>Abra esta página no Safari.</li><li>Toque em <strong>Compartilhar</strong>.</li><li>Toque em <strong>Adicionar à Tela de Início</strong>.</li><li>Confirme em <strong>Adicionar</strong> e abra o ícone Mão de Obra.</li></ol></div></section>
+        <div class="install-bottom"><button id="mdo-continue" class="secondary" type="button">Continuar no navegador</button><span>Use seu login do Unificado. Os dados só são enviados após confirmação do servidor.</span></div>
+      </div>
+    </main>
+  </div>
+  <div id="mdo-mobile" aria-live="polite"></div>
+  <script src="/unificado/pcp/unificado-bridge.js?v=20261021-refresh1"></script>
+  <script src="/unificado/pcp/static/js/app.js?v=20261017-prod-v1"></script>
+  <script src="/unificado/pcp/static/js/maodeobra-core.js?v=20261017-prod-v1"></script>
+  <script src="./entry.js?v=20261021-refresh1"></script>
+</body>
+</html>

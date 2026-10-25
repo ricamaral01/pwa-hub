@@ -1,0 +1,16 @@
+{
+  "id": "/unificado/m/maodeobra/",
+  "name": "Mão de Obra — Concrefer",
+  "short_name": "Mão de Obra",
+  "description": "Lançamento e confirmação de mão de obra do Planejamento",
+  "start_url": "/unificado/m/maodeobra/?launch=1",
+  "scope": "/unificado/m/maodeobra/",
+  "display": "standalone",
+  "background_color": "#F3F5F8",
+  "theme_color": "#0F2C4C",
+  "icons": [
+    {"src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
