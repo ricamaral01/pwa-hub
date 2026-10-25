@@ -42,7 +42,11 @@ def test_a4_one_page(count):
         results.append(dict(data_producao=day,n_cps=2,r3_media=20,r7_media=30,r28_media=44,r28_min=43,resultado='conforme'))
     cert=dict(numero='CQ-2026-0001',cliente='Cliente Exemplo',endereco='Campinas',nota_fiscal='123',
               data_emissao=start,resp_laboratorio='Ricardo Do Amaral',fck_mpa=35,
-              prensa_snapshot=dict(fabricante='Emic',modelo='PC100C',serie='123',certificado_calibracao='A1',validade='2027-01-01'))
+              prensa_snapshot=dict(fabricante='AMC',modelo='2TQC',serie='S/N',
+                                    patrimonio='2TQC-226',capacidade_kn=1000,
+                                    certificado_calibracao='M-0397/26',
+                                    laboratorio_rbc='Técnica Paraíso Ltda - EPP',
+                                    data_calibracao='2026-07-10',validade='2027-07-10'))
     pdf=make_pdf(cert,items,results,issued=False)
     assert len(PdfReader(__import__('io').BytesIO(pdf)).pages)==1
     assert b'RASCUNHO' not in pdf  # text is compressed; extraction below is authoritative
@@ -59,20 +63,23 @@ def test_pdf_approved_columns_number_format_and_verification_domain():
     cert=dict(numero='CQ-2026-0146',revisao=2,cliente='Cliente Exemplo',
               endereco='Campinas/SP',nota_fiscal='NF 123',data_emissao=day,
               resp_laboratorio='Ricardo Do Amaral',fck_mpa=35,
-              prensa_snapshot=dict(fabricante='Kratos',modelo='IK-14 A/P',serie='2220879',
-                                    certificado_calibracao='2354/26',laboratorio_rbc='Laboratório de teste',
-                                    data_calibracao='2026-07-14',validade='2027-07-14'))
+              prensa_snapshot=dict(fabricante='AMC',modelo='2TQC',serie='S/N',
+                                    certificado_calibracao='M-0397/26',
+                                    laboratorio_rbc='Técnica Paraíso Ltda - EPP',
+                                    data_calibracao='2026-07-10',validade='2027-07-10'))
     item=dict(modelo='DT 12/600',altura_m=12,carga_dan=600,peso_kg=1530,
               quantidade=6,data_producao=day)
     result=dict(data_producao=day,n_cps=2,r3_media=20.4,r7_media=27.9,
                 r28_media=38.4,resultado='conforme')
     pdf=make_pdf(cert,[item],[result],issued=True,
                  verify_base='https://concrefer.concretrack.com.br')
-    text=PdfReader(__import__('io').BytesIO(pdf)).pages[0].extract_text()
+    page=PdfReader(__import__('io').BytesIO(pdf)).pages[0]
+    text=page.extract_text()
+    assert float(page.mediabox.width) == pytest.approx(595.28, abs=.02)
     for expected in ('Postes de concreto armado', 'Altura', 'Carga', 'Peso',
                      'Data de', 'Lote', 'Total de postes', '1.530', 'CONFORME',
                      'Documento emitido eletronicamente',
-                     'Laboratório RBC: Laboratório de teste',
+                     'Empresa/laboratório calibrador: Técnica Paraíso Ltda - EPP',
                      'https://concrefer.concretrack.com.br/v/CQ-2026-0146'):
         assert expected in text
     assert 'Traço' not in text

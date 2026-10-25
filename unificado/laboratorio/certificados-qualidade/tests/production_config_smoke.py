@@ -30,11 +30,12 @@ def main():
     assert config['fonte_cp'] == 'novo'
     assert config['responsaveis_laboratorio'] == ['Ricardo Do Amaral', 'Philippe Augusto']
     assert config['params']['resp_laboratorio_padrao'] in config['responsaveis_laboratorio']
-    assert len(config['presses']) == 1
-    assert not config['presses'][0]['fabricante'].upper().startswith('TESTE')
+    assert len(config['presses']) == 2
+    assert {press['fabricante'] for press in config['presses']} == {'AMC', 'Kratos'}
     print('Production bootstrap/page/config: 200; CP source: novo; '
-          'responsible default: {}; presses: 1'.format(config['params']['resp_laboratorio_padrao']))
-    print('RBC status: {}'.format(config['presses'][0]['laboratorio_rbc']))
+          'responsible default: {}; presses: 2'.format(config['params']['resp_laboratorio_padrao']))
+    for press in config['presses']:
+        print('Press {} {}: {}'.format(press['fabricante'], press['modelo'], press['laboratorio_rbc']))
 
 
 if __name__ == '__main__':

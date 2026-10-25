@@ -71,6 +71,7 @@ done
 cat "$code/migrations/002_seed_modelos_existentes.sql" | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$db" >/dev/null
 cat "$code/migrations/003_seed_prensa_existente.sql" | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$db" >/dev/null
 cat "$code/migrations/004_responsavel_padrao.sql" | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$db" >/dev/null
+cat "$code/migrations/005_seed_prensa_amc_ged.sql" | sudo -u postgres psql -v ON_ERROR_STOP=1 -d "$db" >/dev/null
 cd "$code"
 # systemd reads this root-only env file before dropping privileges. For this
 # one-time import, run the helper as root so the secret stays in that file.

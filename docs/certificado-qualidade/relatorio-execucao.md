@@ -1,5 +1,7 @@
 # Execução — Certificados de qualidade no Laboratório
 
+**Atualização de 25/10/2026 — prensa identificada pelo GED:** a AMC 2TQC, certificado M-0397/26, foi cadastrada em homologação e produção com o PDF de calibração original anexado e o emissor **Técnica Paraíso Ltda - EPP**. Ricardo Do Amaral está definido como responsável padrão. A Kratos anterior foi preservada como equipamento distinto e segue com emissão bloqueada por falta de calibrador próprio. O PDF do módulo agora identifica o **calibrador**, sem afirmar indevidamente acreditação RBC. Deploy de produção concluído com backup `/opt/concrefer-unificado/backups/cq-production-20261025T111734Z` e gate 7/7. [Dados, fonte e verificações](prensa-amc-certificado-ged.md).
+
 **Ajuste de configuração em 25/10/2026:** a prensa existente agora pode ser editada em Cadastros para preencher o laboratório RBC real e revisar a calibração. O responsável padrão pelo laboratório agora é configurável entre Ricardo Do Amaral e Philippe Augusto. A alteração foi publicada em produção com backup `/opt/concrefer-unificado/backups/cq-production-20261025T104754Z`, `CQ_FONTE_CP=novo` e gate 7/7. O smoke autenticado confirmou página e configuração HTTP 200. A emissão segue bloqueada até o cadastro do RBC real. Instruções, capturas e verificação: [configuracao-prensa-responsavel.md](configuracao-prensa-responsavel.md).
 
 **Data:** 24/10/2026

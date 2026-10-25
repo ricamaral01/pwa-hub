@@ -371,7 +371,7 @@ def add_press(body:Press, actor:dict=Depends(mutating)):
 def _check_press(body:Press):
     if not all(value.strip() for value in (body.fabricante, body.modelo, body.serie,
                                            body.certificado_calibracao, body.laboratorio_rbc)):
-        raise HTTPException(422,'Preencha a identificação, o certificado de calibração e o laboratório RBC.')
+        raise HTTPException(422,'Preencha a identificação, o certificado de calibração e a empresa ou laboratório calibrador.')
     if body.validade < body.data_calibracao:
         raise HTTPException(422,'A validade não pode ser anterior à data da calibração.')
 

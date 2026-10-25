@@ -47,7 +47,7 @@
       <div class="step"><span>04</span><div><strong>Responsáveis e prensa</strong><small>Escolha os dados deste certificado; ajuste os cadastros quando necessário.</small></div></div>
       <div class="card grid2">
         <div class="config-field"><label>Responsável pelo laboratório<select id="responsible"></select></label><button class="inline-link" id="configure-responsible" type="button">Definir responsável padrão em Cadastros</button></div>
-        <div class="config-field"><label>Prensa de aferição<select id="press"><option value="">Selecione a prensa</option></select></label><small id="press-status" class="field-status" role="status"></small><button class="inline-link" id="configure-press" type="button">Configurar prensa e laboratório RBC</button></div>
+        <div class="config-field"><label>Prensa de aferição<select id="press"><option value="">Selecione a prensa</option></select></label><small id="press-status" class="field-status" role="status"></small><button class="inline-link" id="configure-press" type="button">Configurar prensa e calibrador</button></div>
         <label>Responsável técnico<input value="Eng. Marcelo Eduardo Ishizaki de Sousa · CREA 5063392251" disabled></label>
         <label>Observações<input id="notes" maxlength="2000"></label>
       </div>
@@ -60,7 +60,7 @@
 
     <section id="cadastros" class="view" hidden>
       <div class="card" id="press-card">
-        <h2>Prensas de aferição</h2><p>Edite a prensa existente para preencher o laboratório RBC. Certificados emitidos preservam os dados e o PDF originais.</p>
+        <h2>Prensas de aferição</h2><p>Cadastre o emissor do certificado de calibração de cada prensa. Certificados emitidos preservam os dados e o PDF originais.</p>
         <div id="press-list" class="history"></div>
         <form id="press-form" class="grid3">
           <div class="form-heading"><strong id="press-form-title">Cadastrar prensa</strong><small>Dados da calibração usados na próxima emissão.</small></div>
@@ -71,7 +71,7 @@
           <label>Capacidade (kN)<input name="capacidade_kn" type="number" step="0.01"></label>
           <label>Classe<input name="classe"></label>
           <label>Certificado de calibração<input name="certificado_calibracao" required></label>
-          <label>Laboratório RBC<input name="laboratorio_rbc" required placeholder="Nome real do laboratório calibrador"></label>
+          <label>Empresa/laboratório calibrador<input name="laboratorio_rbc" required placeholder="Emissor do certificado de calibração"></label>
           <label>Data calibração<input name="data_calibracao" type="date" required></label>
           <label>Validade<input name="validade" type="date" required></label>
           <label>Arquivo da calibração (PDF, até 8 MB)<input name="arquivo" type="file" accept="application/pdf"></label>

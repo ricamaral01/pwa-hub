@@ -311,7 +311,9 @@ def make_pdf(cert: dict, items: list[dict], results: list[dict], *, issued: bool
     press_line=' · '.join(press_parts)
     laboratory=str(press.get('laboratorio_rbc') or '').strip() or 'Não informado'
     calibration=f'Calibração: certificado {press.get("certificado_calibracao") or "—"} · em {_date(press.get("data_calibracao"))} · válida até {_date(press.get("validade"))}'
-    laboratory_line=f'Laboratório RBC: {laboratory}'
+    # The calibration issuer is not necessarily RBC accredited. The source PDF
+    # may cite RBC accreditation only for the reference standard it used.
+    laboratory_line=f'Empresa/laboratório calibrador: {laboratory}'
     norms=[[
         _rich('<b><font color="#0F2C4C">NORMAS</font></b><br/>ABNT NBR 8451-1 a 8451-5<br/>ABNT NBR 5738 · ABNT NBR 5739',8,11),
         _rich('<b><font color="#0F2C4C">PRENSA DE ENSAIO (AFERIÇÃO)</font></b><br/>'+

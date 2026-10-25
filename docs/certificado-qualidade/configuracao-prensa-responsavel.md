@@ -4,11 +4,11 @@
 
 ## Como configurar
 
-1. Abra **Laboratório → Certificados de Qualidade → Cadastros → Prensas**. Na prensa oficial, clique em **Editar**, informe o nome verdadeiro do **Laboratório RBC**, confira certificado e datas da calibração e clique em **Salvar alterações**. Os campos opcionais patrimônio, capacidade e classe podem ficar vazios. O PDF de calibração já anexado continua associado à prensa.
+1. Abra **Laboratório → Certificados de Qualidade → Cadastros → Prensas**. Na prensa desejada, clique em **Editar**, informe a **empresa/laboratório calibrador** que emitiu o certificado, confira número e datas da calibração e clique em **Salvar alterações**. Os campos opcionais patrimônio, capacidade e classe podem ficar vazios. O PDF de calibração já anexado continua associado à prensa.
 2. Em **Cadastros → Parâmetros**, escolha o **responsável padrão pelo laboratório** entre Ricardo Do Amaral e Philippe Augusto e salve. O formulário de novo certificado inicia com esse nome; ele ainda pode ser trocado no próprio certificado.
-3. Em **Emitir → Responsáveis e prensa**, os links levam aos dois cadastros. Uma prensa com RBC ausente ou calibração vencida aparece com aviso e não fica disponível para emissão. O servidor mantém a mesma validação.
+3. Em **Emitir → Responsáveis e prensa**, os links levam aos dois cadastros. Uma prensa com calibrador ausente ou calibração vencida aparece com aviso e não fica disponível para emissão. O servidor mantém a mesma validação.
 
-O nome do laboratório RBC da prensa oficial **não foi preenchido automaticamente**. A origem informa “Não informado no cadastro de origem”, e o sistema exige o dado real antes de emitir. Certificados já emitidos conservam o snapshot da prensa e o PDF original.
+O calibrador da Kratos **não foi preenchido automaticamente**. A origem informa “Não informado no cadastro de origem”, e o sistema exige o dado real antes de emitir com ela. A AMC 2TQC foi cadastrada depois, com [certificado de calibração próprio do GED](prensa-amc-certificado-ged.md). Certificados já emitidos conservam o snapshot da prensa e o PDF original.
 
 ## Implementação e verificação
 
