@@ -1,0 +1,105 @@
+--- postes_api.py
++++ postes_api.py
+@@ -19,7 +19,7 @@
+ from fastapi.encoders import jsonable_encoder
+ from fastapi.responses import FileResponse, HTMLResponse, StreamingResponse
+ from pydantic import BaseModel, ConfigDict, Field, field_validator
+-from sqlalchemy import desc, select
++from sqlalchemy import desc, select, text
+
+ from .postes_db import (Absorption, AbsorptionSheet, Criterion, Equipment, InspectionPhoto, TestAttachment, CertificateAccess, CertificateSession, Pole, Responsible, Session, Test,
+                         TestStep, User, password_hash, verify_password)
+@@ -135,7 +135,7 @@
+     @classmethod
+     def validate_nominals(cls, values):
+         allowed = {"largura_topo", "espessura_topo", "largura_base", "espessura_base",
+-                   "diametro_topo", "diametro_base", "engastamento", "furacao_f", "furacao_j"}
++                   "diametro_topo", "diametro_base", "comprimento", "engastamento", "furacao_f", "furacao_j"}
+         if set(values) - allowed or any(v is not None and (not v.is_finite() or v <= 0) for v in values.values()):
+             raise ValueError("Informe medidas nominais válidas em milímetros.")
+         return values
+@@ -250,6 +250,28 @@
+     return session.scalar(select(Criterion).order_by(desc(Criterion.versao)).limit(1))
+
+
++def references_by_model(session):
++    """Read the imported A.1/A.2 tables once for the whole model catalog."""
++    rows = session.execute(text("""
++        SELECT tipo,face,conicidade,comprimento_m,carga_nominal_dan,
++               tabela,item,subtipo,massa_aproximada_kg,dimensoes_nominais
++        FROM ensaio_postes.referencia_dimensional
++    """)).mappings()
++    return {
++        (r["tipo"], r["face"], r["conicidade"], Decimal(r["comprimento_m"]),
++         Decimal(r["carga_nominal_dan"])): r
++        for r in rows
++    }
++
++
++def reference_for_model(references, model):
++    if model.norma_parte != "8451-2":
++        return None
++    key = (model.tipo.upper(), model.face.upper(), model.conicidade,
++           Decimal(model.altura_m), Decimal(model.resistencia_daN))
++    return references.get(key)
++
++
+ def resolve_nominals(session, payload: TestInput):
+     """Resolve an exact catalog model even when its specifications were typed."""
+     payload.poste.dimensoes_nominais = {}
+@@ -261,8 +283,7 @@
+             Pole.altura_m == payload.poste.altura_m,
+             Pole.resistencia_daN == payload.poste.resistencia_daN,
+             Pole.conicidade == payload.poste.conicidade)).all()
+-        matches = [row for row in rows if row.face == payload.poste.face or
+-                   (row.tipo == "DT" and row.face == "B" and payload.poste.face == "A")]
++        matches = [row for row in rows if row.face == payload.poste.face]
+         if len(matches) != 1:
+             return
+         model = matches[0]
+@@ -270,13 +291,14 @@
+     if model is None or not model.ativo:
+         raise HTTPException(422, "Modelo de poste não encontrado no cadastro.")
+     if (model.tipo != payload.poste.tipo or
+-            not (model.face == payload.poste.face or
+-                 (model.tipo == "DT" and model.face == "B" and payload.poste.face == "A")) or
++            model.face != payload.poste.face or
+             model.conicidade != payload.poste.conicidade or
+             Decimal(model.altura_m) != payload.poste.altura_m or
+             Decimal(model.resistencia_daN) != payload.poste.resistencia_daN):
+         raise HTTPException(422, "O modelo selecionado não corresponde aos dados do poste.")
+-    payload.poste.dimensoes_nominais = catalog_nominals(model)
++    reference = reference_for_model(references_by_model(session), model)
++    payload.poste.dimensoes_nominais = catalog_nominals(
++        model, reference["dimensoes_nominais"] if reference else {})
+
+
+ def evaluate_payload(payload: TestInput, criteria):
+@@ -437,9 +459,24 @@
+ @router.get("/api/postes")
+ def poles(q: str = "", user=Depends(current_user), session=Depends(db)):
+     rows = session.scalars(select(Pole).where(Pole.ativo == True).order_by(Pole.tipo, Pole.altura_m, Pole.resistencia_daN, Pole.conicidade)).all()
+-    return [json_data({"id": r.id, "tipo": r.tipo, "face": r.face, "conicidade": r.conicidade, "altura_m": r.altura_m,
+-            "resistencia_daN": r.resistencia_daN, "ma_daNm": r.ma_daNm, "descricao": r.descricao,
+-            "norma_parte": r.norma_parte, "dimensoes_nominais": catalog_nominals(r)}) for r in rows if q.lower() in (r.descricao or "").lower()]
++    references = references_by_model(session)
++    result = []
++    for r in rows:
++        if q.lower() not in (r.descricao or "").lower():
++            continue
++        reference = reference_for_model(references, r)
++        result.append(json_data({
++            "id": r.id, "tipo": r.tipo, "face": r.face, "conicidade": r.conicidade,
++            "altura_m": r.altura_m, "resistencia_daN": r.resistencia_daN,
++            "ma_daNm": r.ma_daNm, "descricao": r.descricao, "norma_parte": r.norma_parte,
++            "dimensoes_nominais": catalog_nominals(
++                r, reference["dimensoes_nominais"] if reference else {}),
++            "referencia": ({"tabela": reference["tabela"], "item": reference["item"],
++                            "subtipo": reference["subtipo"],
++                            "massa_aproximada_kg": reference["massa_aproximada_kg"]}
++                           if reference else None),
++        }))
++    return result
+
+
+ @router.post("/api/postes", status_code=201)

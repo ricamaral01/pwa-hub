@@ -271,7 +271,7 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.103';
+const APP_VERSION = '1.0.104';
 let platformUpdateAvailable = false;
 let platformUpdateState = 'checking';
 let platformLatestVersion = APP_VERSION;
