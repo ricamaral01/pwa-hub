@@ -1,4 +1,4 @@
-import {supAsk} from './dialog.js';
+import {supAsk} from './dialog.js?v=1.0.100';
 const ROOT = '/unificado/suprimentos/';
 const API = '/api/suprimentos';
 const view = location.pathname.split('/').filter(Boolean).pop() || 'painel';

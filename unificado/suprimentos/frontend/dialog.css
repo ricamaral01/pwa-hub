@@ -16,4 +16,6 @@ body[data-modulo="suprimentos"] .sup-dialog::backdrop, body.sup-pwa .sup-dialog:
 .sup-dialog-cancel {background:#fff;border:1px solid #c9d8d4;color:#31564f}
 .sup-dialog-submit {background:#0f766e;border:1px solid #0f766e;color:#fff}
 .sup-dialog-submit.danger {background:#b4232f;border-color:#b4232f}
+.sup-dialog-submit:disabled {opacity:.6;cursor:wait}
+.sup-dialog-error {padding:10px 12px;margin:12px 0 0;border:1px solid #efc0bd;border-radius:9px;background:#fff1f0;color:#9f2d27;font-size:13px}
 @media(max-width:600px){.sup-dialog form{padding:18px}.sup-dialog-actions button{flex:1}}

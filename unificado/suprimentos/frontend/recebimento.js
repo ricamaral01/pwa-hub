@@ -1,4 +1,4 @@
-import {supDialog, supConfirm} from './dialog.js';
+import {supDialog, supConfirm} from './dialog.js?v=1.0.100';
 const API='/api/suprimentos',ROOT='/unificado/suprimentos/',app=document.querySelector('#app');
 const query=new URLSearchParams(location.search);
 let me,receipt,orders=[];
@@ -15,7 +15,7 @@ async function api(path,opt={},retry=true){const headers={...opt.headers};if(opt
 const send=(path,body,method='POST')=>api(path,{method,body:JSON.stringify(body)});
 async function act(fn){try{await fn()}catch(e){notice(e.message)}}
 function dialog(title,content,onSubmit){
-  return supDialog({title,content}).then(form=>{if(form)return act(()=>onSubmit(form));});
+  return supDialog({title,content,onSubmit});
 }
 function error(e){app.innerHTML=`<div class="error-state"><strong>Não foi possível carregar recebimentos.</strong><span>${esc(e.message)}</span><button class="btn" onclick="location.reload()">Tentar novamente</button></div>`}
 async function list(){const rows=await api('/recebimentos');app.innerHTML=head('Recebimento','NF, conferência, inspeção e entrada rastreável.',role('ALMOXARIFE')?btn('Novo recebimento','new','primary'):'')+

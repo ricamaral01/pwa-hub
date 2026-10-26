@@ -1,4 +1,6 @@
-const stylesheet = new URL('./dialog.css', import.meta.url).href;
+const stylesheetURL = new URL('./dialog.css', import.meta.url);
+stylesheetURL.search = new URL(import.meta.url).search;
+const stylesheet = stylesheetURL.href;
 if (!document.querySelector('link[data-sup-dialog]')) {
   const link = document.createElement('link');
   link.rel = 'stylesheet'; link.href = stylesheet; link.dataset.supDialog = 'true';
@@ -6,7 +8,7 @@ if (!document.querySelector('link[data-sup-dialog]')) {
 }
 
 let dialogNumber = 0;
-export function supDialog({title, message = '', content = '', submit = 'Confirmar', danger = false}) {
+export function supDialog({title, message = '', content = '', submit = 'Confirmar', danger = false, onSubmit = null}) {
   return new Promise(resolve => {
     const previousFocus = document.activeElement;
     const node = document.createElement('dialog');
@@ -29,7 +31,25 @@ export function supDialog({title, message = '', content = '', submit = 'Confirma
     close.onclick = cancel.onclick = () => finish(null);
     node.addEventListener('cancel', event => { event.preventDefault(); finish(null); });
     node.addEventListener('click', event => { if (event.target === node) finish(null); });
-    form.addEventListener('submit', event => { event.preventDefault(); if (form.reportValidity()) finish(new FormData(form)); });
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const values = new FormData(form);
+      if (onSubmit) {
+        accept.disabled = true;
+        cancel.disabled = true; close.disabled = true;
+        accept.textContent = 'Salvando…';
+        try { await onSubmit(values); }
+        catch (error) {
+          let notice = form.querySelector('.sup-dialog-error');
+          if (!notice) { notice = document.createElement('p'); notice.className = 'sup-dialog-error'; actions.before(notice); }
+          notice.textContent = error?.message || 'Não foi possível concluir. Tente novamente.';
+          accept.disabled = false; cancel.disabled = false; close.disabled = false; accept.textContent = submit;
+          return;
+        }
+      }
+      finish(values);
+    });
     node.showModal(); (form.querySelector('input, textarea, select') || cancel).focus();
   });
 }

@@ -1,4 +1,4 @@
-import {supDialog} from './dialog.js';
+import {supDialog} from './dialog.js?v=1.0.100';
 const API='/api/suprimentos';
 const app=document.getElementById('app');
 const page=location.pathname.includes('/inventario/')?'inventario':'almoxarifado';

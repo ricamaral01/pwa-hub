@@ -1,5 +1,5 @@
 /* Telas S3-A: fornecedores, cotações e pedidos. Escopo exclusivo do módulo. */
-import {supAsk, supDialog} from './dialog.js';
+import {supAsk, supDialog} from './dialog.js?v=1.0.100';
 const API='/api/suprimentos', ROOT='/unificado/suprimentos/';
 const app=document.querySelector('#app');
 const page=location.pathname.split('/').filter(Boolean).pop();

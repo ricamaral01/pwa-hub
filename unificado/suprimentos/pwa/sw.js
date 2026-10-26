@@ -1,4 +1,4 @@
-const CACHE = 'suprimentos-shell-s1-v1.0.99';
+const CACHE = 'suprimentos-shell-s1-v1.0.100';
 const SCOPE = '/unificado/suprimentos/pwa/';
 const SHELL = [SCOPE, SCOPE+'index.html', SCOPE+'app.css', SCOPE+'app.js',
   '/unificado/suprimentos/frontend/dialog.js', '/unificado/suprimentos/frontend/dialog.css',
