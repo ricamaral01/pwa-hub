@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from datetime import date
 
 import pymupdf
 from playwright.sync_api import sync_playwright
@@ -14,7 +15,7 @@ HEADINGS = {
     "resumo": "Resumo executivo", "fluxo": "Fluxograma de processamento",
     "raci": "Matriz de responsabilidades", "telas": "Telas web e PWA",
     "instalacao": "Instalar e usar o PWA", "situacoes": "Situações da solicitação",
-    "parametros": "Parâmetros e alçadas", "futuro": "Próximas fases",
+    "parametros": "Parâmetros e alçadas", "futuro": "O que ainda está desligado",
     "glossario": "Glossário",
 }
 
@@ -37,7 +38,7 @@ def render():
         page.pdf(path=str(PDF), format="A4", print_background=True,
                  prefer_css_page_size=True, display_header_footer=True,
                  header_template='<div style="font:8px Arial;color:#536778;width:100%;margin:0 13mm;border-bottom:1px solid #d6e0e7;padding-bottom:3px">Suprimentos · Manual das telas</div>',
-                 footer_template='<div style="font:8px Arial;color:#536778;width:100%;margin:0 13mm;border-top:1px solid #d6e0e7;padding-top:3px;display:flex;justify-content:space-between"><span>Campinas · Homologação v1.0.61 · 25/10/2026</span><span>Página <span class="pageNumber"></span> de <span class="totalPages"></span></span></div>')
+                 footer_template=f'<div style="font:8px Arial;color:#536778;width:100%;margin:0 13mm;border-top:1px solid #d6e0e7;padding-top:3px;display:flex;justify-content:space-between"><span>Campinas · Homologação v1.0.89 · {date.today():%d/%m/%Y}</span><span>Página <span class="pageNumber"></span> de <span class="totalPages"></span></span></div>')
         browser.close()
     doc = pymupdf.open(PDF)
     return doc

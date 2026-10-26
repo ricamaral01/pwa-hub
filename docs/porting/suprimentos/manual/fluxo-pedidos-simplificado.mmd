@@ -1,0 +1,18 @@
+flowchart LR
+ A([Solicitante pede]) --> B{Aprovação N1 e N2?}
+ B --> C{Há saldo?}
+ C -- sim --> D[Reservar e separar]
+ C -- não --> E[Comprar de fornecedor homologado]
+ E --> F[Conferir NF e inspecionar]
+ F --> D
+ D --> G[Entregar]
+ G --> H{Solicitante confirma?}
+ H -- sim --> I([Concluída])
+ H -- problema --> J[Almoxarife corrige] --> G
+ G -. sem resposta em 48 h .-> I
+ classDef final fill:#E3F8F3,stroke:#0F766E,stroke-width:2px,color:#0B3740;
+ classDef action fill:#F4F8FC,stroke:#5B7088,color:#102541;
+ classDef decision fill:#FFF2DD,stroke:#CF7B24,stroke-width:2px,color:#4C300C;
+ class A,I final;
+ class D,E,F,G,J action;
+ class B,C,H decision;

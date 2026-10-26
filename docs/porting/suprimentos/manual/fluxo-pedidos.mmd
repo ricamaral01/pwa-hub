@@ -1,79 +1,93 @@
-flowchart LR
-  subgraph Solicitante
-    direction TB
-    inicio([Necessidade de material]) --> abrir[Abrir pedido no web ou PWA]
-    reenvio[Reenviar pedido corrigido]
-    confirmar{Recebimento correto?}
-    problema[Informar problema]
-    fim([Concluída])
-    cancelar([Cancelada antes do atendimento])
-  end
-  subgraph Sistema
-    direction TB
-    offline{Há conexão?}
-    fila[Guardar no aparelho e reenviar sem duplicar]
-    alcada{Valor e CC exigem N2?}
-    auto[Fechar após 48 h sem resposta]
-    futuroLab[S4: sugestão de ressuprimento do Laboratório]
-  end
-  subgraph Aprovador_N1["Aprovador N1"]
-    direction TB
-    avaliar1{Aprovar N1?}
-    devolver[Devolver com comentário]
-    reprovar([Reprovada com comentário])
-  end
-  subgraph Aprovador_N2["Aprovador N2"]
-    direction TB
-    avaliar2{Aprovar N2?}
-  end
-  subgraph Almoxarife
-    direction TB
-    aprovada[Aprovada]
-    separar[Separar item]
-    entregar[Entregar total ou parcial]
-    atender[Atender problema e registrar solução]
-    saldo[S2: conferir saldo e reservar]
-    receber[S3: conferir pedido, NF e itens]
-    inspecao{S3: inspeção da Qualidade}
-    nc[S3: abrir não conformidade]
-    cross[S3: cross-docking para pedido]
-  end
-  subgraph Comprador
-    direction TB
-    cotar[S3: cotar sem saldo]
-    pedido[S3: emitir pedido de compra]
-  end
+﻿flowchart TB
+ subgraph SOL["Solicitante"]
+  direction TB
+  abrir([Pedir no web ou PWA])
+  corrigir[Corrigir e reenviar]
+  cancelar([Cancelar antes do atendimento])
+  aceite{Recebi tudo?}
+  problema[Relatar problema]
+  fim([ConcluÃ­da])
+ end
+ subgraph N1["Aprovador N1"]
+  direction TB
+  decisao1{DecisÃ£o N1}
+  devolver[Devolver com motivo]
+  reprovar([Reprovar com motivo])
+ end
+ subgraph N2["Aprovador N2"]
+  direction TB
+  decisao2{DecisÃ£o N2}
+ end
+ subgraph ALM["Almoxarife"]
+  direction TB
+  saldo{Tem saldo?}
+  reservar[Reservar e separar]
+  entregar[Entregar total ou parcial]
+  nf[Receber OC e conferir NF]
+  destino[Guardar ou entregar direto]
+  inventario[Contar e revisar divergÃªncia]
+ end
+ subgraph COM["Comprador"]
+  direction TB
+  cotar[Cotar fornecedores habilitados]
+  escolher[Comparar custo e escolher]
+  oc{OC acima da alÃ§ada?}
+  emitir[Emitir PDF e registrar envio]
+  reabastecer[Confirmar ponto de pedido]
+ end
+ subgraph QUA["Qualidade"]
+  direction TB
+  homologar[Homologar fornecedor]
+  inspecao{InspeÃ§Ã£o libera?}
+  nc[Registrar pendÃªncia de NC]
+  iqf[Avaliar fornecedor e IQF]
+ end
+ subgraph SIS["Sistema"]
+  direction TB
+  online{HÃ¡ conexÃ£o?}
+  fila[Guardar e reenviar sem duplicar]
+  exigeN2{Valor exige N2?}
+  lerIA[Leitura de NF por IA se configurada]
+  fechar[Fechar em 48 h sem resposta]
+  pp[Sugerir ressuprimento]
+  laboratorio[S4: sugestÃ£o da usina]
+ end
+ abrir --> online
+ abrir --> cancelar
+ online -- nÃ£o --> fila --> decisao1
+ online -- sim --> decisao1
+ decisao1 -- devolver --> devolver --> corrigir --> decisao1
+ decisao1 -- reprovar --> reprovar
+ decisao1 -- aprovar --> exigeN2
+ exigeN2 -- sim --> decisao2
+ exigeN2 -- nÃ£o --> saldo
+ decisao2 -- aprovar --> saldo
+ decisao2 -- devolver --> devolver
+ decisao2 -- reprovar --> reprovar
+ saldo -- sim --> reservar --> entregar --> aceite
+ saldo -- nÃ£o --> cotar
+ homologar --> cotar --> escolher --> oc
+ oc -- sim --> decisao1
+ oc -- nÃ£o --> emitir --> nf
+ nf -. leitura opcional .-> lerIA --> nf
+ nf --> inspecao
+ inspecao -- nÃ£o --> nc
+ inspecao -- sim --> destino --> entregar
+ destino --> iqf
+ aceite -- sim --> fim
+ aceite -- problema --> problema --> entregar
+ entregar --> fechar --> fim
+ inventario --> saldo
+ pp --> reabastecer --> decisao1
+ laboratorio -. integraÃ§Ã£o desligada .-> reabastecer
+ classDef final fill:#E3F8F3,stroke:#0F766E,stroke-width:2px,color:#0B3740;
+ classDef action fill:#F4F8FC,stroke:#5B7088,color:#102541;
+ classDef decision fill:#FFF2DD,stroke:#CF7B24,stroke-width:2px,color:#4C300C;
+ classDef system fill:#E8F0FA,stroke:#2E5E98,color:#102541;
+ classDef off fill:#F4EEFC,stroke:#8A64B3,stroke-width:2px,stroke-dasharray:6 4,color:#4D3865;
+ class abrir,cancelar,reprovar,fim final;
+ class corrigir,problema,devolver,reservar,entregar,nf,destino,inventario,cotar,escolher,emitir,reabastecer,homologar,nc,iqf action;
+ class aceite,decisao1,decisao2,saldo,oc,online,exigeN2,inspecao decision;
+ class fila,lerIA,fechar,pp system;
+ class laboratorio off;
 
-  abrir --> offline
-  offline -- Não --> fila --> avaliar1
-  offline -- Sim --> avaliar1
-  avaliar1 -- Devolver --> devolver --> reenvio --> avaliar1
-  avaliar1 -- Reprovar --> reprovar
-  avaliar1 -- Aprovar --> alcada
-  alcada -- Exige N2 --> avaliar2
-  alcada -- Somente N1 --> aprovada
-  avaliar2 -- Aprovar --> aprovada
-  avaliar2 -- Devolver --> devolver
-  avaliar2 -- Reprovar --> reprovar
-  aprovada --> separar --> entregar --> confirmar
-  confirmar -- Sim --> fim
-  confirmar -- Problema --> problema --> atender --> confirmar
-  entregar --> auto --> fim
-  abrir --> cancelar
-
-  futuroLab -.-> abrir
-  aprovada -.-> saldo
-  saldo -. Sem saldo .-> cotar -.-> pedido -.-> receber -.-> inspecao
-  inspecao -. Liberado .-> cross -.-> separar
-  inspecao -. Reprovado .-> nc
-
-  classDef startend fill:#E3F8F3,stroke:#0F766E,stroke-width:2px,color:#0B3740;
-  classDef action fill:#F4F8FC,stroke:#5B7088,color:#102541;
-  classDef decision fill:#FFF2DD,stroke:#CF7B24,stroke-width:2px,color:#4C300C;
-  classDef system fill:#E8F0FA,stroke:#2E5E98,color:#102541;
-  classDef future fill:#F4EEFC,stroke:#8A64B3,stroke-width:2px,stroke-dasharray:6 4,color:#4D3865;
-  class inicio,fim,cancelar,reprovar startend;
-  class abrir,reenvio,problema,devolver,aprovada,separar,entregar,atender action;
-  class offline,alcada,avaliar1,avaliar2,confirmar decision;
-  class fila,auto system;
-  class futuroLab,saldo,cotar,pedido,receber,inspecao,nc,cross future;

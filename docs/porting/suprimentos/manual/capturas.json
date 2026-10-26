@@ -1,107 +1,5 @@
 [
   {
-    "tela": "painel",
-    "tamanho": "pc",
-    "papel": "e2e-suprimentos-sol",
-    "rota": "painel/",
-    "arquivo": "painel-pc.png",
-    "marcadores": [
-      {
-        "numero": 1,
-        "nome": "Painel",
-        "x": 358,
-        "y": 146,
-        "selector": ".page-head h1",
-        "encontrado": true
-      },
-      {
-        "numero": 2,
-        "nome": "Indicadores",
-        "x": 358,
-        "y": 240,
-        "selector": ".kpi-grid",
-        "encontrado": true
-      },
-      {
-        "numero": 3,
-        "nome": "Fila de trabalho",
-        "x": 381,
-        "y": 447,
-        "selector": ".table-scroll",
-        "encontrado": true
-      }
-    ],
-    "erros": []
-  },
-  {
-    "tela": "painel",
-    "tamanho": "tablet",
-    "papel": "e2e-suprimentos-sol",
-    "rota": "painel/",
-    "arquivo": "painel-tablet.png",
-    "marcadores": [
-      {
-        "numero": 1,
-        "nome": "Painel",
-        "x": 130,
-        "y": 115,
-        "selector": ".page-head h1",
-        "encontrado": true
-      },
-      {
-        "numero": 2,
-        "nome": "Indicadores",
-        "x": 130,
-        "y": 203,
-        "selector": ".kpi-grid",
-        "encontrado": true
-      },
-      {
-        "numero": 3,
-        "nome": "Fila de trabalho",
-        "x": 149,
-        "y": 406,
-        "selector": ".table-scroll",
-        "encontrado": true
-      }
-    ],
-    "erros": []
-  },
-  {
-    "tela": "painel",
-    "tamanho": "celular",
-    "papel": "e2e-suprimentos-sol",
-    "rota": "painel/",
-    "arquivo": "painel-celular.png",
-    "marcadores": [
-      {
-        "numero": 1,
-        "nome": "Painel",
-        "x": 38,
-        "y": 187,
-        "selector": ".page-head h1",
-        "encontrado": true
-      },
-      {
-        "numero": 2,
-        "nome": "Indicadores",
-        "x": 38,
-        "y": 339,
-        "selector": ".kpi-grid",
-        "encontrado": true
-      },
-      {
-        "numero": 3,
-        "nome": "Fila de trabalho",
-        "x": 57,
-        "y": 680,
-        "selector": ".table-scroll",
-        "encontrado": true
-      }
-    ],
-    "erros": []
-  },
-  {
     "tela": "solicitacoes-lista",
     "tamanho": "pc",
     "papel": "e2e-suprimentos-aprov1",
@@ -198,6 +96,108 @@
         "x": 58,
         "y": 784,
         "selector": ".requests-table",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "solicitacoes-lote",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-aprov1",
+    "rota": "solicitacoes/",
+    "arquivo": "solicitacoes-lote-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Situações",
+        "x": 381,
+        "y": 263,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Seleção",
+        "x": 381,
+        "y": 512,
+        "selector": ".select-row:checked",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Ação em lote",
+        "x": 358,
+        "y": 694,
+        "selector": "#batch",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "solicitacoes-lote",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-aprov1",
+    "rota": "solicitacoes/",
+    "arquivo": "solicitacoes-lote-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Situações",
+        "x": 149,
+        "y": 222,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Seleção",
+        "x": 148,
+        "y": 548,
+        "selector": ".select-row:checked",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Ação em lote",
+        "x": 130,
+        "y": 743,
+        "selector": "#batch",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "solicitacoes-lote",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-aprov1",
+    "rota": "solicitacoes/",
+    "arquivo": "solicitacoes-lote-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Situações",
+        "x": 57,
+        "y": 70,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Seleção",
+        "x": 56,
+        "y": 548,
+        "selector": ".select-row:checked",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Ação em lote",
+        "x": 38,
+        "y": 662,
+        "selector": "#batch",
         "encontrado": true
       }
     ],
@@ -433,7 +433,7 @@
       {
         "numero": 3,
         "nome": "Separar",
-        "x": 914,
+        "x": 821,
         "y": 695,
         "selector": "[data-item-action=separar]",
         "encontrado": true
@@ -467,7 +467,7 @@
       {
         "numero": 3,
         "nome": "Separar",
-        "x": 682,
+        "x": 589,
         "y": 646,
         "selector": "[data-item-action=separar]",
         "encontrado": true
@@ -528,7 +528,7 @@
         "numero": 2,
         "nome": "Quantidade entregue",
         "x": 381,
-        "y": 663,
+        "y": 690,
         "selector": ".table-scroll",
         "encontrado": true
       },
@@ -536,7 +536,7 @@
         "numero": 3,
         "nome": "Entregar restante",
         "x": 983,
-        "y": 716,
+        "y": 743,
         "selector": "[data-item-action=entregar]",
         "encontrado": true
       }
@@ -816,26 +816,26 @@
     "erros": []
   },
   {
-    "tela": "fornecedores",
+    "tela": "cadastros-materiais",
     "tamanho": "pc",
-    "papel": "e2e-suprimentos-compras",
-    "rota": "fornecedores/",
-    "arquivo": "fornecedores-pc.png",
+    "papel": "user-ricardo",
+    "rota": "cadastros/",
+    "arquivo": "cadastros-materiais-pc.png",
     "marcadores": [
       {
         "numero": 1,
-        "nome": "Fornecedores",
-        "x": 358,
-        "y": 146,
-        "selector": ".page-head h1",
+        "nome": "Abas de cadastro",
+        "x": 381,
+        "y": 263,
+        "selector": ".tabs",
         "encontrado": true
       },
       {
         "numero": 2,
-        "nome": "Buscar",
+        "nome": "Materiais",
         "x": 381,
-        "y": 285,
-        "selector": "#resource-search",
+        "y": 406,
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -850,26 +850,26 @@
     "erros": []
   },
   {
-    "tela": "fornecedores",
+    "tela": "cadastros-materiais",
     "tamanho": "tablet",
-    "papel": "e2e-suprimentos-compras",
-    "rota": "fornecedores/",
-    "arquivo": "fornecedores-tablet.png",
+    "papel": "user-ricardo",
+    "rota": "cadastros/",
+    "arquivo": "cadastros-materiais-tablet.png",
     "marcadores": [
       {
         "numero": 1,
-        "nome": "Fornecedores",
-        "x": 130,
-        "y": 115,
-        "selector": ".page-head h1",
+        "nome": "Abas de cadastro",
+        "x": 149,
+        "y": 222,
+        "selector": ".tabs",
         "encontrado": true
       },
       {
         "numero": 2,
-        "nome": "Buscar",
+        "nome": "Materiais",
         "x": 149,
-        "y": 244,
-        "selector": "#resource-search",
+        "y": 365,
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -884,26 +884,26 @@
     "erros": []
   },
   {
-    "tela": "fornecedores",
+    "tela": "cadastros-materiais",
     "tamanho": "celular",
-    "papel": "e2e-suprimentos-compras",
-    "rota": "fornecedores/",
-    "arquivo": "fornecedores-celular.png",
+    "papel": "user-ricardo",
+    "rota": "cadastros/",
+    "arquivo": "cadastros-materiais-celular.png",
     "marcadores": [
       {
         "numero": 1,
-        "nome": "Fornecedores",
-        "x": 38,
-        "y": 187,
-        "selector": ".page-head h1",
+        "nome": "Abas de cadastro",
+        "x": 57,
+        "y": 358,
+        "selector": ".tabs",
         "encontrado": true
       },
       {
         "numero": 2,
-        "nome": "Buscar",
+        "nome": "Materiais",
         "x": 57,
-        "y": 380,
-        "selector": "#resource-search",
+        "y": 555,
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -937,7 +937,7 @@
         "nome": "Centros de custo",
         "x": 381,
         "y": 406,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -971,7 +971,7 @@
         "nome": "Centros de custo",
         "x": 149,
         "y": 365,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1005,7 +1005,7 @@
         "nome": "Centros de custo",
         "x": 57,
         "y": 501,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1039,7 +1039,7 @@
         "nome": "Alçadas",
         "x": 381,
         "y": 406,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1073,7 +1073,7 @@
         "nome": "Alçadas",
         "x": 149,
         "y": 365,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1107,7 +1107,7 @@
         "nome": "Alçadas",
         "x": 57,
         "y": 501,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1141,7 +1141,7 @@
         "nome": "Parâmetros",
         "x": 381,
         "y": 406,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1175,7 +1175,7 @@
         "nome": "Parâmetros",
         "x": 149,
         "y": 365,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1209,7 +1209,7 @@
         "nome": "Parâmetros",
         "x": 57,
         "y": 501,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1243,7 +1243,7 @@
         "nome": "Usuários e papéis",
         "x": 381,
         "y": 406,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1277,7 +1277,7 @@
         "nome": "Usuários e papéis",
         "x": 149,
         "y": 365,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1311,7 +1311,7 @@
         "nome": "Usuários e papéis",
         "x": 57,
         "y": 501,
-        "selector": ".table-scroll",
+        "selector": ".table-scroll, .empty-state",
         "encontrado": true
       },
       {
@@ -1412,7 +1412,7 @@
         "numero": 2,
         "nome": "Item livre",
         "x": 57,
-        "y": 484,
+        "y": 733,
         "selector": "#free",
         "encontrado": true
       },
@@ -1420,7 +1420,7 @@
         "numero": 3,
         "nome": "Continuar",
         "x": 40,
-        "y": 668,
+        "y": 818,
         "selector": "#continue",
         "encontrado": true
       }
@@ -1446,7 +1446,7 @@
         "numero": 2,
         "nome": "Item livre",
         "x": 187,
-        "y": 484,
+        "y": 733,
         "selector": "#free",
         "encontrado": true
       },
@@ -1454,7 +1454,7 @@
         "numero": 3,
         "nome": "Continuar",
         "x": 170,
-        "y": 668,
+        "y": 917,
         "selector": "#continue",
         "encontrado": true
       }
@@ -1472,7 +1472,7 @@
         "numero": 1,
         "nome": "Centro de custo",
         "x": 57,
-        "y": 240,
+        "y": 62,
         "selector": "#cc",
         "encontrado": true
       },
@@ -1480,7 +1480,7 @@
         "numero": 2,
         "nome": "Urgência",
         "x": 275,
-        "y": 413,
+        "y": 235,
         "selector": "[data-urgency=PAROU_PRODUCAO]",
         "encontrado": true
       },
@@ -1488,7 +1488,7 @@
         "numero": 3,
         "nome": "Sem conexão",
         "x": 40,
-        "y": 811,
+        "y": 633,
         "selector": ".banner.warn",
         "encontrado": true
       }
@@ -1598,6 +1598,74 @@
     "erros": []
   },
   {
+    "tela": "pwa-acompanhar",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-sol",
+    "rota": "pwa/",
+    "arquivo": "pwa-acompanhar-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Situação",
+        "x": 57,
+        "y": 26,
+        "selector": ".request-top",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Histórico",
+        "x": 64,
+        "y": 189,
+        "selector": ".timeline",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Recebi tudo",
+        "x": 40,
+        "y": 692,
+        "selector": "#received",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "pwa-acompanhar",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-sol",
+    "rota": "pwa/",
+    "arquivo": "pwa-acompanhar-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Situação",
+        "x": 187,
+        "y": 174,
+        "selector": ".request-top",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Histórico",
+        "x": 194,
+        "y": 467,
+        "selector": ".timeline",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Recebi tudo",
+        "x": 170,
+        "y": 953,
+        "selector": "#received",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
     "tela": "pwa-aprovar",
     "tamanho": "celular",
     "papel": "e2e-suprimentos-aprov1",
@@ -1666,272 +1734,1428 @@
     "erros": []
   },
   {
-    "tela": "solicitacoes-lote",
+    "tela": "painel",
     "tamanho": "pc",
-    "papel": "e2e-suprimentos-aprov1",
-    "rota": "solicitacoes/",
-    "arquivo": "solicitacoes-lote-pc.png",
+    "papel": "e2e-suprimentos-sol",
+    "rota": "painel/",
+    "arquivo": "painel-pc.png",
     "marcadores": [
       {
         "numero": 1,
-        "nome": "Situações",
-        "x": 381,
-        "y": 263,
-        "selector": ".tabs",
-        "encontrado": true
-      },
-      {
-        "numero": 2,
-        "nome": "Seleção",
-        "x": 381,
-        "y": 512,
-        "selector": ".select-row:checked",
-        "encontrado": true
-      },
-      {
-        "numero": 3,
-        "nome": "Ação em lote",
+        "nome": "Painel",
         "x": 358,
-        "y": 694,
-        "selector": "#batch",
+        "y": 146,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Indicadores",
+        "x": 358,
+        "y": 240,
+        "selector": ".kpi-grid",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Fila de trabalho",
+        "x": 381,
+        "y": 447,
+        "selector": ".table-scroll",
         "encontrado": true
       }
     ],
     "erros": []
   },
   {
-    "tela": "solicitacoes-lote",
+    "tela": "painel",
     "tamanho": "tablet",
-    "papel": "e2e-suprimentos-aprov1",
-    "rota": "solicitacoes/",
-    "arquivo": "solicitacoes-lote-tablet.png",
+    "papel": "e2e-suprimentos-sol",
+    "rota": "painel/",
+    "arquivo": "painel-tablet.png",
     "marcadores": [
       {
         "numero": 1,
-        "nome": "Situações",
-        "x": 149,
-        "y": 222,
-        "selector": ".tabs",
-        "encontrado": true
-      },
-      {
-        "numero": 2,
-        "nome": "Seleção",
-        "x": 148,
-        "y": 548,
-        "selector": ".select-row:checked",
-        "encontrado": true
-      },
-      {
-        "numero": 3,
-        "nome": "Ação em lote",
+        "nome": "Painel",
         "x": 130,
-        "y": 743,
-        "selector": "#batch",
-        "encontrado": true
-      }
-    ],
-    "erros": []
-  },
-  {
-    "tela": "solicitacoes-lote",
-    "tamanho": "celular",
-    "papel": "e2e-suprimentos-aprov1",
-    "rota": "solicitacoes/",
-    "arquivo": "solicitacoes-lote-celular.png",
-    "marcadores": [
-      {
-        "numero": 1,
-        "nome": "Situações",
-        "x": 57,
-        "y": 70,
-        "selector": ".tabs",
+        "y": 115,
+        "selector": ".page-head h1",
         "encontrado": true
       },
       {
         "numero": 2,
-        "nome": "Seleção",
-        "x": 56,
-        "y": 548,
-        "selector": ".select-row:checked",
+        "nome": "Indicadores",
+        "x": 130,
+        "y": 203,
+        "selector": ".kpi-grid",
         "encontrado": true
       },
       {
         "numero": 3,
-        "nome": "Ação em lote",
-        "x": 38,
-        "y": 662,
-        "selector": "#batch",
-        "encontrado": true
-      }
-    ],
-    "erros": []
-  },
-  {
-    "tela": "cadastros-materiais",
-    "tamanho": "pc",
-    "papel": "user-ricardo",
-    "rota": "cadastros/",
-    "arquivo": "cadastros-materiais-pc.png",
-    "marcadores": [
-      {
-        "numero": 1,
-        "nome": "Abas de cadastro",
-        "x": 381,
-        "y": 263,
-        "selector": ".tabs",
-        "encontrado": true
-      },
-      {
-        "numero": 2,
-        "nome": "Materiais",
-        "x": 381,
+        "nome": "Fila de trabalho",
+        "x": 149,
         "y": 406,
-        "selector": ".table-scroll, .empty-state",
-        "encontrado": true
-      },
-      {
-        "numero": 3,
-        "nome": "Novo cadastro",
-        "x": 1263,
-        "y": 124,
-        "selector": "#create",
+        "selector": ".table-scroll",
         "encontrado": true
       }
     ],
     "erros": []
   },
   {
-    "tela": "cadastros-materiais",
-    "tamanho": "tablet",
-    "papel": "user-ricardo",
-    "rota": "cadastros/",
-    "arquivo": "cadastros-materiais-tablet.png",
-    "marcadores": [
-      {
-        "numero": 1,
-        "nome": "Abas de cadastro",
-        "x": 149,
-        "y": 222,
-        "selector": ".tabs",
-        "encontrado": true
-      },
-      {
-        "numero": 2,
-        "nome": "Materiais",
-        "x": 149,
-        "y": 365,
-        "selector": ".table-scroll, .empty-state",
-        "encontrado": true
-      },
-      {
-        "numero": 3,
-        "nome": "Novo cadastro",
-        "x": 655,
-        "y": 98,
-        "selector": "#create",
-        "encontrado": true
-      }
-    ],
-    "erros": []
-  },
-  {
-    "tela": "cadastros-materiais",
+    "tela": "painel",
     "tamanho": "celular",
-    "papel": "user-ricardo",
-    "rota": "cadastros/",
-    "arquivo": "cadastros-materiais-celular.png",
+    "papel": "e2e-suprimentos-sol",
+    "rota": "painel/",
+    "arquivo": "painel-celular.png",
     "marcadores": [
       {
         "numero": 1,
-        "nome": "Abas de cadastro",
-        "x": 57,
-        "y": 358,
-        "selector": ".tabs",
+        "nome": "Painel",
+        "x": 38,
+        "y": 187,
+        "selector": ".page-head h1",
         "encontrado": true
       },
       {
         "numero": 2,
-        "nome": "Materiais",
+        "nome": "Indicadores",
+        "x": 38,
+        "y": 339,
+        "selector": ".kpi-grid",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Fila de trabalho",
         "x": 57,
-        "y": 555,
-        "selector": ".table-scroll, .empty-state",
+        "y": 680,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "fornecedores",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "fornecedores/",
+    "arquivo": "fornecedores-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Fornecedores",
+        "x": 358,
+        "y": 146,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Buscar",
+        "x": 381,
+        "y": 290,
+        "selector": "#sup-q",
         "encontrado": true
       },
       {
         "numero": 3,
         "nome": "Novo cadastro",
+        "x": 1265,
+        "y": 124,
+        "selector": "[data-do=\"new-supplier\"]",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "fornecedores",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "fornecedores/",
+    "arquivo": "fornecedores-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Fornecedores",
+        "x": 130,
+        "y": 115,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Buscar",
+        "x": 147,
+        "y": 247,
+        "selector": "#sup-q",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Novo cadastro",
+        "x": 657,
+        "y": 98,
+        "selector": "[data-do=\"new-supplier\"]",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "fornecedores",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "fornecedores/",
+    "arquivo": "fornecedores-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Fornecedores",
+        "x": 38,
+        "y": 187,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Buscar",
+        "x": 55,
+        "y": 404,
+        "selector": "#sup-q",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Novo cadastro",
+        "x": 38,
+        "y": 292,
+        "selector": "[data-do=\"new-supplier\"]",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "fornecedor-ficha",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "fornecedores/?id=01a1758f-75bd-7939-aa2c-d82bcbaf167c",
+    "arquivo": "fornecedor-ficha-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Fornecedor",
+        "x": 358,
+        "y": 190,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 381,
+        "y": 307,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Cadastro e IQF",
+        "x": 358,
+        "y": 284,
+        "selector": ".card",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "fornecedor-ficha",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "fornecedores/?id=01a1758f-75bd-7939-aa2c-d82bcbaf167c",
+    "arquivo": "fornecedor-ficha-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Fornecedor",
+        "x": 130,
+        "y": 159,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 147,
+        "y": 264,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Cadastro e IQF",
+        "x": 130,
+        "y": 247,
+        "selector": ".card",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "fornecedor-ficha",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "fornecedores/?id=01a1758f-75bd-7939-aa2c-d82bcbaf167c",
+    "arquivo": "fornecedor-ficha-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Fornecedor",
+        "x": 38,
+        "y": 167,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 55,
+        "y": 318,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Cadastro e IQF",
+        "x": 38,
+        "y": 301,
+        "selector": ".card",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "cotacoes-lista",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?tab=cotacoes",
+    "arquivo": "cotacoes-lista-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Cotações",
+        "x": 358,
+        "y": 146,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 358,
+        "y": 240,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Cotações abertas",
+        "x": 381,
+        "y": 368,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "cotacoes-lista",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?tab=cotacoes",
+    "arquivo": "cotacoes-lista-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Cotações",
+        "x": 130,
+        "y": 115,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 130,
+        "y": 203,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Cotações abertas",
+        "x": 147,
+        "y": 325,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "cotacoes-lista",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?tab=cotacoes",
+    "arquivo": "cotacoes-lista-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Cotações",
+        "x": 38,
+        "y": 123,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 38,
+        "y": 231,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Cotações abertas",
+        "x": 55,
+        "y": 353,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "cotacao-mapa",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?id=01a1758f-770b-7d13-91a2-b9a228e3fd67",
+    "arquivo": "cotacao-mapa-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Cotação",
+        "x": 358,
+        "y": 190,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Mapa comparativo",
+        "x": 382,
+        "y": 350,
+        "selector": ".sup-matrix",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Propostas",
+        "x": 358,
+        "y": 284,
+        "selector": ".card",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "cotacao-mapa",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?id=01a1758f-770b-7d13-91a2-b9a228e3fd67",
+    "arquivo": "cotacao-mapa-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Cotação",
+        "x": 130,
+        "y": 159,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Mapa comparativo",
+        "x": 148,
+        "y": 345,
+        "selector": ".sup-matrix",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Propostas",
+        "x": 130,
+        "y": 247,
+        "selector": ".card",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "cotacao-mapa",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?id=01a1758f-770b-7d13-91a2-b9a228e3fd67",
+    "arquivo": "cotacao-mapa-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Cotação",
+        "x": 38,
+        "y": 167,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Mapa comparativo",
+        "x": 56,
+        "y": 399,
+        "selector": ".sup-matrix",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Propostas",
+        "x": 38,
+        "y": 301,
+        "selector": ".card",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "pedidos-lista",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?tab=pedidos",
+    "arquivo": "pedidos-lista-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Pedidos",
+        "x": 358,
+        "y": 146,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 358,
+        "y": 240,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Situações",
+        "x": 381,
+        "y": 368,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "pedidos-lista",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?tab=pedidos",
+    "arquivo": "pedidos-lista-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Pedidos",
+        "x": 130,
+        "y": 115,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 130,
+        "y": 203,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Situações",
+        "x": 147,
+        "y": 325,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "pedidos-lista",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?tab=pedidos",
+    "arquivo": "pedidos-lista-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Pedidos",
+        "x": 38,
+        "y": 123,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Abas",
+        "x": 38,
+        "y": 231,
+        "selector": ".tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Situações",
+        "x": 55,
+        "y": 353,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "pedido-detalhe",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?id=01a1758f-7906-7e45-9eba-991dd64bad66&tab=pedido",
+    "arquivo": "pedido-detalhe-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Pedido de compra",
+        "x": 358,
+        "y": 190,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Dados e itens",
+        "x": 358,
+        "y": 284,
+        "selector": ".card",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Ações",
+        "x": 381,
+        "y": 515,
+        "selector": ".actions",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "pedido-detalhe",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?id=01a1758f-7906-7e45-9eba-991dd64bad66&tab=pedido",
+    "arquivo": "pedido-detalhe-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Pedido de compra",
+        "x": 130,
+        "y": 159,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Dados e itens",
+        "x": 130,
+        "y": 247,
+        "selector": ".card",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Ações",
+        "x": 147,
+        "y": 634,
+        "selector": ".actions",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "pedido-detalhe",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "cotacoes/?id=01a1758f-7906-7e45-9eba-991dd64bad66&tab=pedido",
+    "arquivo": "pedido-detalhe-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Pedido de compra",
+        "x": 38,
+        "y": 167,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Dados e itens",
+        "x": 38,
+        "y": 322,
+        "selector": ".card",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Ações",
+        "x": 55,
+        "y": 709,
+        "selector": ".actions",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-saldos",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-saldos-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Almoxarifado",
+        "x": 358,
+        "y": 146,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Indicadores",
+        "x": 358,
+        "y": 240,
+        "selector": ".sup-stock-grid",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Saldos",
+        "x": 377,
+        "y": 549,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-saldos",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-saldos-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Almoxarifado",
+        "x": 130,
+        "y": 115,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Indicadores",
+        "x": 130,
+        "y": 203,
+        "selector": ".sup-stock-grid",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Saldos",
+        "x": 145,
+        "y": 572,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-saldos",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-saldos-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Almoxarifado",
+        "x": 38,
+        "y": 187,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Indicadores",
+        "x": 38,
+        "y": 360,
+        "selector": ".sup-stock-grid",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Saldos",
+        "x": 53,
+        "y": 818,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-reservas",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-reservas-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Abas",
+        "x": 358,
+        "y": 347,
+        "selector": ".sup-stock-tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Reservas e entregas",
+        "x": 358,
+        "y": 411,
+        "selector": "#stock-panel",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Itens",
+        "x": 377,
+        "y": 474,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-reservas",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-reservas-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Abas",
+        "x": 130,
+        "y": 374,
+        "selector": ".sup-stock-tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Reservas e entregas",
+        "x": 130,
+        "y": 438,
+        "selector": "#stock-panel",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Itens",
+        "x": 145,
+        "y": 497,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-reservas",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-reservas-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Abas",
+        "x": 38,
+        "y": 547,
+        "selector": ".sup-stock-tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Reservas e entregas",
+        "x": 38,
+        "y": 611,
+        "selector": "#stock-panel",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Itens",
+        "x": 53,
+        "y": 720,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-epi",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-epi-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Abas",
+        "x": 358,
+        "y": 347,
+        "selector": ".sup-stock-tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Fichas de EPI",
+        "x": 358,
+        "y": 411,
+        "selector": "#stock-panel",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Entregas",
+        "x": 377,
+        "y": 470,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-epi",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-epi-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Abas",
+        "x": 130,
+        "y": 374,
+        "selector": ".sup-stock-tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Fichas de EPI",
+        "x": 130,
+        "y": 438,
+        "selector": "#stock-panel",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Entregas",
+        "x": 145,
+        "y": 493,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "almoxarifado-epi",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "almoxarifado/",
+    "arquivo": "almoxarifado-epi-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Abas",
+        "x": 38,
+        "y": 547,
+        "selector": ".sup-stock-tabs",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Fichas de EPI",
+        "x": 38,
+        "y": 611,
+        "selector": "#stock-panel",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Entregas",
+        "x": 53,
+        "y": 716,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "inventario",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "inventario/",
+    "arquivo": "inventario-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Inventários",
+        "x": 358,
+        "y": 146,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Contagens",
+        "x": 358,
+        "y": 347,
+        "selector": ".sup-stock-card",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Divergências",
+        "x": 377,
+        "y": 410,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "inventario",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "inventario/",
+    "arquivo": "inventario-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Inventários",
+        "x": 130,
+        "y": 115,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Contagens",
+        "x": 130,
+        "y": 374,
+        "selector": ".sup-stock-card",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Divergências",
+        "x": 145,
+        "y": 433,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "inventario",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "inventario/",
+    "arquivo": "inventario-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Inventários",
+        "x": 38,
+        "y": 187,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Contagens",
+        "x": 38,
+        "y": 531,
+        "selector": ".sup-stock-card",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Divergências",
+        "x": 53,
+        "y": 640,
+        "selector": ".table-scroll",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "recebimentos",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "recebimento/",
+    "arquivo": "recebimentos-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Recebimentos",
+        "x": 358,
+        "y": 146,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Documentos",
+        "x": 382,
+        "y": 302,
+        "selector": ".sup-rec-table",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Novo recebimento",
+        "x": 1251,
+        "y": 124,
+        "selector": "[data-action=new]",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "recebimentos",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "recebimento/",
+    "arquivo": "recebimentos-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Recebimentos",
+        "x": 130,
+        "y": 115,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Documentos",
+        "x": 148,
+        "y": 259,
+        "selector": ".sup-rec-table",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Novo recebimento",
+        "x": 643,
+        "y": 98,
+        "selector": "[data-action=new]",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "recebimentos",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "recebimento/",
+    "arquivo": "recebimentos-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Recebimentos",
+        "x": 38,
+        "y": 187,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Documentos",
+        "x": 56,
+        "y": 395,
+        "selector": ".sup-rec-table",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Novo recebimento",
         "x": 38,
         "y": 271,
-        "selector": "#create",
+        "selector": "[data-action=new]",
         "encontrado": true
       }
     ],
     "erros": []
   },
   {
-    "tela": "pwa-acompanhar",
-    "tamanho": "celular",
-    "papel": "e2e-suprimentos-sol",
-    "rota": "pwa/",
-    "arquivo": "pwa-acompanhar-celular.png",
+    "tela": "recebimento-detalhe",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "recebimento/?id=01a175f8-6d64-75e6-b398-e86cd69de641",
+    "arquivo": "recebimento-detalhe-pc.png",
     "marcadores": [
       {
         "numero": 1,
-        "nome": "Situação",
-        "x": 57,
-        "y": 174,
-        "selector": ".request-top",
+        "nome": "Nota fiscal",
+        "x": 358,
+        "y": 190,
+        "selector": ".page-head h1",
         "encontrado": true
       },
       {
         "numero": 2,
-        "nome": "Histórico",
-        "x": 64,
-        "y": 485,
-        "selector": ".timeline",
+        "nome": "Etapas",
+        "x": 358,
+        "y": 280,
+        "selector": ".sup-rec-steps",
         "encontrado": true
       },
       {
         "numero": 3,
-        "nome": "Recebi tudo",
-        "x": 40,
-        "y": 856,
-        "selector": "#received",
+        "nome": "Itens e inspeção",
+        "x": 381,
+        "y": 816,
+        "selector": ".sup-rec-item",
         "encontrado": true
       }
     ],
     "erros": []
   },
   {
-    "tela": "pwa-acompanhar",
+    "tela": "recebimento-detalhe",
     "tamanho": "tablet",
-    "papel": "e2e-suprimentos-sol",
-    "rota": "pwa/",
-    "arquivo": "pwa-acompanhar-tablet.png",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "recebimento/?id=01a175f8-6d64-75e6-b398-e86cd69de641",
+    "arquivo": "recebimento-detalhe-tablet.png",
     "marcadores": [
       {
         "numero": 1,
-        "nome": "Situação",
-        "x": 187,
-        "y": 174,
-        "selector": ".request-top",
+        "nome": "Nota fiscal",
+        "x": 130,
+        "y": 159,
+        "selector": ".page-head h1",
         "encontrado": true
       },
       {
         "numero": 2,
-        "nome": "Histórico",
-        "x": 194,
-        "y": 467,
-        "selector": ".timeline",
+        "nome": "Etapas",
+        "x": 130,
+        "y": 243,
+        "selector": ".sup-rec-steps",
         "encontrado": true
       },
       {
         "numero": 3,
-        "nome": "Recebi tudo",
-        "x": 170,
-        "y": 821,
-        "selector": "#received",
+        "nome": "Itens e inspeção",
+        "x": 147,
+        "y": 805,
+        "selector": ".sup-rec-item",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "recebimento-detalhe",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-almox",
+    "rota": "recebimento/?id=01a175f8-6d64-75e6-b398-e86cd69de641",
+    "arquivo": "recebimento-detalhe-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Nota fiscal",
+        "x": 38,
+        "y": 167,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Etapas",
+        "x": 38,
+        "y": 275,
+        "selector": ".sup-rec-steps",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "Itens e inspeção",
+        "x": 55,
+        "y": 818,
+        "selector": ".sup-rec-item",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "indicadores",
+    "tamanho": "pc",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "analises/",
+    "arquivo": "indicadores-pc.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Indicadores",
+        "x": 358,
+        "y": 146,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Filtros",
+        "x": 381,
+        "y": 263,
+        "selector": "#sup-ana-form",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "KPIs",
+        "x": 358,
+        "y": 431,
+        "selector": ".sup-ana-grid",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "indicadores",
+    "tamanho": "tablet",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "analises/",
+    "arquivo": "indicadores-tablet.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Indicadores",
+        "x": 130,
+        "y": 115,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Filtros",
+        "x": 149,
+        "y": 222,
+        "selector": "#sup-ana-form",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "KPIs",
+        "x": 130,
+        "y": 552,
+        "selector": ".sup-ana-grid",
+        "encontrado": true
+      }
+    ],
+    "erros": []
+  },
+  {
+    "tela": "indicadores",
+    "tamanho": "celular",
+    "papel": "e2e-suprimentos-compras",
+    "rota": "analises/",
+    "arquivo": "indicadores-celular.png",
+    "marcadores": [
+      {
+        "numero": 1,
+        "nome": "Indicadores",
+        "x": 38,
+        "y": 187,
+        "selector": ".page-head h1",
+        "encontrado": true
+      },
+      {
+        "numero": 2,
+        "nome": "Filtros",
+        "x": 57,
+        "y": 315,
+        "selector": "#sup-ana-form",
+        "encontrado": true
+      },
+      {
+        "numero": 3,
+        "nome": "KPIs",
+        "x": 38,
+        "y": 818,
+        "selector": ".sup-ana-grid",
         "encontrado": true
       }
     ],

@@ -1,0 +1,29 @@
+{
+  "prefix": "DEMO-F6-20261026",
+  "fornecedores": [
+    "01a17647-e869-706b-a311-9cb4dc50cf98"
+  ],
+  "requests": {
+    "aberto": "01a17647-e8ac-7d10-8d41-e7419a2b01a8",
+    "atrasado": "01a17647-e9d8-74a1-9114-695b2171fb13",
+    "recebido": "01a17647-eaec-7989-9b59-2a75a2934a9a"
+  },
+  "quotes": {
+    "aberto": "01a17647-e8f1-7a31-a029-f4b4064bb904",
+    "atrasado": "01a17647-ea1a-799d-b022-37cb493e5920",
+    "recebido": "01a17647-eb33-7792-93c4-f68e5ffbe994"
+  },
+  "orders": {
+    "aberto": "01a17647-e9aa-76a7-9e0f-e0e6203ea52e",
+    "atrasado": "01a17647-eac4-7aae-986d-83739935eed1",
+    "recebido": "01a17647-ebe3-71fd-a840-1ca464699121"
+  },
+  "receipts": {
+    "recebido": "01a17647-ec05-7ca9-8895-a3e25cf6445e"
+  },
+  "stock_request": "01a17647-ecbe-767d-9485-07ae594853d9",
+  "epi": "01a17647-ed1e-770b-b9e2-c9e1a3ba1aff",
+  "inventory": "01a17647-ed38-7249-a664-af30af06bce3",
+  "statuses_set": true,
+  "employee": "01a17647-ed04-7fe8-b7f1-6344d8d9d77c"
+}

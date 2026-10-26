@@ -20,6 +20,10 @@ from homolog_session import test_cookie_for  # noqa: E402
 ROOT = "https://concrefer.concretrack.com.br:18446"
 DIR = Path("docs/porting/suprimentos/manual/img")
 DEMO = json.loads(Path("docs/porting/suprimentos/manual/dados-demo.json").read_text(encoding="utf-8"))["requests"]
+F1 = {"cotacao": "01a1758f-770b-7d13-91a2-b9a228e3fd67",
+      "pedido": "01a1758f-7906-7e45-9eba-991dd64bad66",
+      "fornecedor": "01a1758f-75bd-7939-aa2c-d82bcbaf167c"}
+F3 = json.loads(Path("docs/porting/suprimentos/capturas/f3/demo-id.json").read_text(encoding="utf-8"))["id"]
 SIZES = {"pc": (1440, 900), "tablet": (820, 1180), "celular": (390, 844)}
 NAMES = {
     "e2e-suprimentos-sol": "Solicitante Demo",
@@ -48,13 +52,39 @@ CASES = [
     ("nova-detalhes", "e2e-suprimentos-sol", "nova/", "details",
      [("#request-cc", "Centro de custo"), ("#urgency", "Urgência"), ("#photos", "Fotos")]),
     ("fornecedores", "e2e-suprimentos-compras", "fornecedores/", None,
-     [(".page-head h1", "Fornecedores"), ("#resource-search", "Buscar"), ("#create", "Novo cadastro")]),
+     [(".page-head h1", "Fornecedores"), ("#sup-q", "Buscar"), ('[data-do="new-supplier"]', "Novo cadastro")]),
 ]
 for resource, title in (("materiais", "Materiais"), ("centros-custo", "Centros de custo"),
                         ("alcadas", "Alçadas"), ("parametros", "Parâmetros"),
                         ("usuarios-papeis", "Usuários e papéis")):
     CASES.append(("cadastros-" + resource, "user-ricardo", "cadastros/", resource,
                   [(".tabs", "Abas de cadastro"), (".table-scroll, .empty-state", title), ("#create", "Novo cadastro")]))
+CASES.extend([
+    ("fornecedor-ficha", "e2e-suprimentos-compras", "fornecedores/?id=" + F1["fornecedor"], None,
+     [(".page-head h1", "Fornecedor"), (".tabs", "Abas"), (".card", "Cadastro e IQF")]),
+    ("cotacoes-lista", "e2e-suprimentos-compras", "cotacoes/?tab=cotacoes", None,
+     [(".page-head h1", "Cotações"), (".tabs", "Abas"), (".table-scroll", "Cotações abertas")]),
+    ("cotacao-mapa", "e2e-suprimentos-compras", "cotacoes/?id=" + F1["cotacao"], None,
+     [(".page-head h1", "Cotação"), (".sup-matrix", "Mapa comparativo"), (".card", "Propostas")]),
+    ("pedidos-lista", "e2e-suprimentos-compras", "cotacoes/?tab=pedidos", None,
+     [(".page-head h1", "Pedidos"), (".tabs", "Abas"), (".table-scroll", "Situações")]),
+    ("pedido-detalhe", "e2e-suprimentos-compras", "cotacoes/?id=" + F1["pedido"] + "&tab=pedido", None,
+     [(".page-head h1", "Pedido de compra"), (".card", "Dados e itens"), (".actions", "Ações")]),
+    ("almoxarifado-saldos", "e2e-suprimentos-almox", "almoxarifado/", None,
+     [(".page-head h1", "Almoxarifado"), (".sup-stock-grid", "Indicadores"), (".table-scroll", "Saldos")]),
+    ("almoxarifado-reservas", "e2e-suprimentos-almox", "almoxarifado/", "stock:separacao",
+     [(".sup-stock-tabs", "Abas"), ("#stock-panel", "Reservas e entregas"), (".table-scroll", "Itens")]),
+    ("almoxarifado-epi", "e2e-suprimentos-almox", "almoxarifado/", "stock:epi",
+     [(".sup-stock-tabs", "Abas"), ("#stock-panel", "Fichas de EPI"), (".table-scroll", "Entregas")]),
+    ("inventario", "e2e-suprimentos-almox", "inventario/", None,
+     [(".page-head h1", "Inventários"), (".sup-stock-card", "Contagens"), (".table-scroll", "Divergências")]),
+    ("recebimentos", "e2e-suprimentos-almox", "recebimento/", None,
+     [(".page-head h1", "Recebimentos"), (".sup-rec-table", "Documentos"), ("[data-action=new]", "Novo recebimento")]),
+    ("recebimento-detalhe", "e2e-suprimentos-almox", "recebimento/?id=" + F3, None,
+     [(".page-head h1", "Nota fiscal"), (".sup-rec-steps", "Etapas"), (".sup-rec-item", "Itens e inspeção")]),
+    ("indicadores", "e2e-suprimentos-compras", "analises/", None,
+     [(".page-head h1", "Indicadores"), ("#sup-ana-form", "Filtros"), (".sup-ana-grid", "KPIs")]),
+])
 PWA_CASES = [
     ("pwa-inicio", "e2e-suprimentos-sol", "inicio", [(".hello", "Início"), ("[data-view=nova]", "Novo pedido"), ("#install", "Instalar")]),
     ("pwa-nova-itens", "e2e-suprimentos-sol", "nova", [("#search", "Buscar"), ("#free", "Item livre"), ("#continue", "Continuar")]),
@@ -137,6 +167,9 @@ def capture_shell(browser, case, size_name, tokens):
         frame.locator("#free-item").click()
         frame.locator("#continue").click()
         frame.locator("#request-cc").wait_for(timeout=8000)
+    elif mode and mode.startswith("stock:"):
+        frame.locator('[data-tab="' + mode.split(':', 1)[1] + '"]').click()
+        frame.locator('#stock-panel').wait_for(timeout=8000)
     elif mode and mode not in ("batch", "details"):
         frame.locator('[data-resource="' + mode + '"]').click()
         frame.locator('[data-resource="' + mode + '"].active').wait_for(timeout=8000)

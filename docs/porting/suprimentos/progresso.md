@@ -16,6 +16,7 @@
 | F3 · NF, recebimento e inspeção | **Concluída em homologação** | [13-recebimento-nf-inspecao.md](13-recebimento-nf-inspecao.md); versão 1.0.81, `31 passed`, smoke `43/43`, layout `252/252` + complemento `84/84`, retorno `sup_0009` testado | Provedor IA e contrato automático de NC ainda sem chave/serviço; F4 integração Laboratório |
 | F4 · Contrato com Laboratório | **Concluída em homologação** | [14-integracao-laboratorio.md](14-integracao-laboratorio.md); versão 1.0.84, `34 passed`, migração ida/volta/ida, smoke `43/43`, Painel real `28/28` e cartão simulado `28/28`, retorno e reinstalação testados | Flag S4 desligada até migração do Laboratório; F5 Análises |
 | F5 · Análises | **Concluída em homologação** | [15-analises.md](15-analises.md); versão 1.0.88, `37 passed`, migração ida/volta/ida, 50 mil movimentos em `0,310 s`, layout `28/28`, PDF renderizado, smoke `43/43`, retorno/reinstalação testados | SLA histórico e giro com premissas explícitas; F6 manual visual |
+| F6 · Manual visual | **Concluída em homologação** | [16-manual.md](16-manual.md); versão 1.0.89, 33 telas, 93 capturas, 279 marcadores, PDF 78 páginas renderizadas, `37 passed`, smoke `43/43`, retorno/reinstalação testados | Dados DEMO mantidos até a liberação final; F7 revisão integrada |
 
 **Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
 
