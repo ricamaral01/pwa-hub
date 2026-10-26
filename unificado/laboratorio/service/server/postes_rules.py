@@ -136,6 +136,15 @@ def model_key(poste):
     return f"{section}|{height:f}|{resistance:f}|{poste['face'].upper()}"
 
 
+def _without_standard_sections(limits, poste):
+    if poste.get("nao_normatizado_8451"):
+        for key in limits:
+            if key.endswith(("_topo", "_base")):
+                limits[key] = {"nominal_mm": None, "min_mm": None,
+                               "max_mm": None, "aplicavel": False}
+    return limits
+
+
 def limites_dimensionais(poste, criteria):
     """Return only sourced intervals; unknown sections remain non-applicable."""
     dim = criteria.get("dimensional") or {}
@@ -160,7 +169,7 @@ def limites_dimensionais(poste, criteria):
                            "min_mm": nominal - tolerance if applicable else None,
                            "max_mm": nominal + tolerance if applicable else None,
                            "aplicavel": applicable}
-        return limits
+        return _without_standard_sections(limits, poste)
     section_tolerance = dec(dim["tolerancia_secao_mm"])
     models = dim.get("modelos", {})
     circular = poste["tipo"].upper() in {"C", "R"}
@@ -189,7 +198,7 @@ def limites_dimensionais(poste, criteria):
                         "max_mm": nominal + section_tolerance, "aplicavel": True}
                        if nominal is not None else
                        {"nominal_mm": None, "min_mm": None, "max_mm": None, "aplicavel": False})
-    return limits
+    return _without_standard_sections(limits, poste)
 
 
 def normalizar_inspecao(inspecao, poste, criteria):

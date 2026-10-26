@@ -117,7 +117,10 @@ def report_rows(record):
             interval = (f"{fmt(lower, 1)} a {fmt(upper, 1)} {unit}"
                         if lower is not None and upper is not None else
                         "N/A — modelo sem seção parametrizada" if value.get("status") == "N/A" else "A informar")
-            measure_source = ("Limites informados manualmente no ensaio"
+            measure_source = ("Poste não normatizado conforme ABNT NBR 8451 · limites manuais"
+                              if (record.poste_snapshot or {}).get("nao_normatizado_8451")
+                              and key.endswith(("_topo", "_base")) else
+                              "Limites informados manualmente no ensaio"
                               if recorded_inspection.get("medidas", {}).get(key, {}).get("origem") == "manual"
                               else source)
             rows.append(Row("Medições", label, measure_source, interval, f"{fmt(measured, 1)} {unit}",
@@ -141,25 +144,25 @@ def report_rows(record):
         rows.append(Row("Ensaio mecânico", "Momento fletor MA", "NBR 8451-2 · tab. A.1/A.2",
                         f"{fmt(ma_limit, 0)} daN·m" if ma_limit is not None else "Catálogo não parametrizado",
                         f"{fmt(e2.get('ma_daNm'), 0)} daN·m", usage(e2.get("ma_daNm"), ma_limit), status(e2.get("status"))))
-        rows.append(Row("Ensaio mecânico", "Fissura no MA", "FL-PRO-22 / critério v" + str(record.criterio_versao),
+        rows.append(Row("Ensaio mecânico", "Fissura no MA", "Critério cadastrado v" + str(record.criterio_versao),
                         f"≤ {fmt(criteria.get('fissura_max_mm'), 2)} mm",
                         f"{fmt(e2.get('fissura_mm'), 2)} mm", usage(e2.get("fissura_mm"), criteria.get("fissura_max_mm")),
                         status(limited(e2.get("fissura_mm"), criteria.get("fissura_max_mm")))))
     for key, title, parameter in (("e3", "Flecha com carga nominal", "flecha_max_mm"),
                                   ("e4", "Flecha residual", "residual_max_mm")):
         step = steps.get(key, {})
-        rows.append(Row("Ensaio mecânico", title, "NBR 8451-3 · 4.2.6.2 / FL-PRO-22",
+        rows.append(Row("Ensaio mecânico", title, "NBR 8451-3 · 4.2.6.2",
                         f"≤ {fmt(par.get(parameter), 1)} mm", f"{fmt(step.get('valor_mm'), 1)} mm",
                         usage(step.get("valor_mm"), par.get(parameter)),
                         status(limited(step.get("valor_mm"), par.get(parameter)))))
         rows.append(Row("Ensaio mecânico", "Fissura " + ("nominal" if key == "e3" else "residual"),
-                        "FL-PRO-22 / critério v" + str(record.criterio_versao),
+                        "Critério cadastrado v" + str(record.criterio_versao),
                         f"≤ {fmt(criteria.get('fissura_max_mm'), 2)} mm",
                         f"{fmt(step.get('fissura_mm'), 2)} mm",
                         usage(step.get("fissura_mm"), criteria.get("fissura_max_mm")),
                         status(limited(step.get("fissura_mm"), criteria.get("fissura_max_mm")))))
     e5 = steps.get("e5", {})
-    rows.append(Row("Ensaio mecânico", "Carga de ruptura", "NBR 8451-3 · 4.2.7 / FL-PRO-22",
+    rows.append(Row("Ensaio mecânico", "Carga de ruptura", "NBR 8451-3 · 4.2.7",
                     f"≥ {fmt(par.get('ruptura_min_daN'), 0)} daN",
                     f"{fmt(e5.get('valor_daN'), 0)} daN", usage(e5.get("valor_daN"), par.get("ruptura_min_daN")),
                     status(e5.get("status"))))

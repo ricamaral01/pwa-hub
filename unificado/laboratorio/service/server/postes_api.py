@@ -123,6 +123,7 @@ class UserInput(Strict):
 
 class PoleInput(Strict):
     tipo: str = Field(min_length=1, max_length=20)
+    nao_normatizado_8451: bool = False
     face: Literal["A", "B", "C"]
     conicidade: Literal["A", "B"] = "A"
     altura_m: Decimal = Field(ge=5, le=30)

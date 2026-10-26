@@ -109,6 +109,23 @@ class DimensionalReferenceTests(unittest.TestCase):
         self.assertFalse(inspection["medidas"]["largura_base"]["aplicavel"])
         self.assertFalse(inspection["medidas"]["furacao_f"]["aplicavel"])
 
+    def test_nonstandard_check_enables_manual_top_and_base_even_with_table_values(self):
+        pole = {"tipo": "C", "face": "C", "conicidade": "A", "altura_m": 9,
+                "resistencia_daN": 150, "nao_normatizado_8451": True,
+                "dimensoes_nominais": {"comprimento": 9000, "diametro_topo": 140,
+                                        "diametro_base": 320}}
+        limits = rules.limites_dimensionais(pole, self.criteria)
+        self.assertTrue(limits["comprimento"]["aplicavel"])
+        self.assertFalse(limits["diametro_topo"]["aplicavel"])
+        self.assertFalse(limits["diametro_base"]["aplicavel"])
+        inspection = rules.normalizar_inspecao({"medidas": {
+            "diametro_topo": {"min_mm": "130", "max_mm": "150", "leitura_mm": "141"},
+            "diametro_base": {"min_mm": "300", "max_mm": "340", "leitura_mm": "321"}}},
+            pole, self.criteria)
+        self.assertEqual(inspection["medidas"]["diametro_topo"]["origem"], "manual")
+        self.assertEqual(inspection["medidas"]["diametro_base"]["origem"], "manual")
+        self.assertEqual(rules.avaliar_inspecao(inspection)["medidas"]["diametro_base"]["status"], "DENTRO")
+
 
 if __name__ == "__main__":
     unittest.main()
