@@ -9,7 +9,7 @@ from urllib.parse import parse_qs, urlsplit
 CATALOG = json.loads((Path(__file__).parent / 'screen_catalog.json').read_text(encoding='utf-8'))
 BY_ID = {row['id']: row for row in CATALOG}
 MASTER_USER_ID = 'user-ricardo'
-MASTER_USER_IDS = frozenset({MASTER_USER_ID, 'marcelo', 'alex'})
+MASTER_USER_IDS = frozenset({MASTER_USER_ID, 'marcelo', 'alex', 'philippe'})
 DEFAULT_LAB_USERS = frozenset({'user-ricardo', 'ricardo.teste', 'user-alex'})
 GUEST_FORBIDDEN_SCREENS = frozenset({'prodUsuarios', 'pcpUsuarios', 'labUsuarios'})
 MAPA_ROLE_MODES = {
@@ -71,8 +71,7 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
 
 def allowed_screens(user, planning_role, overrides, lab_users):
     if user['id'] in MASTER_USER_IDS:
-        return [row['id'] for row in CATALOG
-                if not row['id'].startswith('cronoanalise.') or user['id'] == MASTER_USER_ID]
+        return [row['id'] for row in CATALOG]
     if user['perfil'] == 'CONVIDADO':
         allowed = [row['id'] for row in CATALOG if row['id'] != 'labCertificados' and row['id'] not in GUEST_FORBIDDEN_SCREENS
                 and overrides.get(row['id']) is True
@@ -113,6 +112,8 @@ def screen_for_uri(original_uri, screen_header=''):
         return BY_ID.get('labCecRelatorio')
     if path.startswith('/unificado/laboratorio/usinas-relatorios/'):
         return BY_ID.get('labUsinasRelatorios')
+    if path.startswith('/unificado/laboratorio/slump/'):
+        return BY_ID.get('labSlump')
     if path.startswith('/unificado/laboratorio/dosagem/'):
         return BY_ID.get('labDosagem')
     if path in {'/unificado/relatorios/fechamento-diario/',
@@ -177,7 +178,7 @@ def screen_for_uri(original_uri, screen_header=''):
             return BY_ID['dashboard']
         return None
     if path.startswith('/unificado/laboratorio/api/'):
-        if path == '/unificado/laboratorio/api/slump':
+        if path == '/unificado/laboratorio/api/slump' or path.startswith('/unificado/laboratorio/api/slump/'):
             return BY_ID['labSlump']
         if path.startswith('/unificado/laboratorio/api/laboratorio/cronoanalise/'):
             return None  # the Cronoanalise router checks its signed actions per endpoint

@@ -1,0 +1,14 @@
+-- Keep generated examples separate from measurements made by laboratory staff.
+CREATE TABLE IF NOT EXISTS ensaio_postes.flow_simulado (
+    id varchar(36) PRIMARY KEY,
+    massada char(6) NOT NULL CHECK (massada ~ '^[0-9]{6}$'),
+    valor numeric(6,2) NOT NULL CHECK (valor BETWEEN 480 AND 700),
+    medido_em timestamptz NOT NULL,
+    serie_id_origem bigint NOT NULL,
+    serie_data_origem date NOT NULL,
+    criado_em timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT flow_simulado_unico UNIQUE (medido_em, serie_id_origem)
+);
+CREATE INDEX IF NOT EXISTS flow_simulado_medido_em_idx
+    ON ensaio_postes.flow_simulado (medido_em);
+ALTER TABLE ensaio_postes.flow_simulado OWNER TO postes_app;

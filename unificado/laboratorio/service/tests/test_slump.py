@@ -82,3 +82,39 @@ def test_rejects_invalid_massada_and_missing_manual_time():
     ):
         assert client.post('/api/slump', json=payload).status_code == 422
     assert session.saved is None
+
+
+def test_flow_report_keeps_simulated_results_identifiable():
+    class ReportSession(Session):
+        def __init__(self):
+            super().__init__()
+            self.ranges = []
+
+        def execute(self, query, values=None):
+            self.ranges.append(values)
+            if 'flow_simulado' in str(query):
+                rows = [SimpleNamespace(
+                    id='sim-1', massada='034852', valor=540,
+                    medido_em=datetime(2026, 10, 26, 12, 10, tzinfo=timezone.utc),
+                    serie_data_origem=datetime(2026, 10, 26).date(), serie_id_origem=34852,
+                    colaborador='Philippe Augusto',
+                )]
+            else:
+                rows = []
+            return SimpleNamespace(mappings=lambda: SimpleNamespace(all=lambda: rows))
+
+    session = ReportSession()
+    app = FastAPI()
+    app.include_router(router)
+    app.dependency_overrides[db] = lambda: session
+    app.dependency_overrides[current_user] = lambda: SimpleNamespace(username='Operador')
+    client = TestClient(app)
+    response = client.get('/api/slump/flow?inicio=2026-10-26&fim=2026-10-26')
+    assert response.status_code == 200
+    assert response.json()['simulados'] == 1
+    assert response.json()['records'][0]['natureza'] == 'simulado'
+    assert response.json()['records'][0]['colaborador'] == 'Philippe Augusto'
+    assert response.json()['records'][0]['serie_data_origem'] == '2026-10-26'
+    assert session.ranges[0]['inicio'] == datetime(2026, 10, 26, 3, tzinfo=timezone.utc)
+    assert session.ranges[0]['fim'] == datetime(2026, 10, 27, 3, tzinfo=timezone.utc)
+    assert client.get('/api/slump/flow?inicio=2026-01-01&fim=2026-12-31').status_code == 422

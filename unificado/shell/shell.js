@@ -37,7 +37,7 @@ const pcpUser = (() => { try { return JSON.parse(localStorage.getItem('pcp_user'
 const mapaUser = (() => { try { return JSON.parse(localStorage.getItem('pwa_mapa_auth_session_v1') || 'null'); } catch { return null; } })();
 const hasPcp = Boolean(localStorage.getItem('pcp_token') && pcpUser);
 const hasMapa = Boolean(mapaUser?.id && mapaUser?.role);
-const masterIds = new Set(['user-ricardo', 'marcelo', 'alex']);
+const masterIds = new Set(['user-ricardo', 'marcelo', 'alex', 'philippe']);
 let hasLab = hasMapa;
 let previewModules = false;
 let hasGedAccess = false;

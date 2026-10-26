@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consulta e relatório de Flow · Concrefer</title>
+  <link rel="stylesheet" href="/unificado/laboratorio/slump/flow.css?v=1">
+  <script defer src="/unificado/laboratorio/slump/flow.js?v=3"></script>
+</head>
+<body>
+  <main class="page">
+    <nav class="screen-only"><a href="/unificado/laboratorio/slump/">← Registro de slump e flow</a></nav>
+    <header class="report-header">
+      <img class="logo" src="/unificado/laboratorio/slump/concrefer-logo.png" alt="Concrefer">
+      <div><p class="eyebrow">LABORATÓRIO · CONCRETO FRESCO</p><h1>Consulta e relatório de Flow</h1><p>Resultados em milímetros · horário de Brasília</p></div>
+    </header>
+    <section class="filters screen-only" aria-label="Filtros do relatório">
+      <div class="presets"><button type="button" data-days="1">Dia</button><button type="button" data-days="5">5 dias</button><button type="button" data-days="15">15 dias</button><button type="button" data-month="1">1 mês</button></div>
+      <form id="filter-form"><label>De <input type="date" id="inicio" required></label><label>Até <input type="date" id="fim" required></label><button type="submit" class="primary">Consultar</button><button type="button" id="print" disabled>Imprimir / salvar PDF</button></form>
+    </section>
+    <p class="disclosure"><strong>Dados simulados:</strong> os valores gerados e os nomes de colaboradores atribuídos para demonstração não representam ensaios realizados. Os números de série vêm de massadas reais. O resumo abaixo separa registros medidos e simulados.</p>
+    <p id="status" role="status" aria-live="polite">Selecione um período para consultar.</p>
+    <section id="report" hidden>
+      <div class="report-meta"><div><b>Período</b><span id="periodo"></span></div><div><b>Registros</b><span id="total"></span></div><div><b>Medidos</b><span id="medidos"></span></div><div><b>Simulados</b><span id="simulados"></span></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Data</th><th>Hora</th><th>Nº de série da massada</th><th>Flow (mm)</th><th>Colaborador</th><th>Origem da série</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <footer>Concrefer · Relatório de Flow <span id="generated"></span></footer>
+    </section>
+  </main>
+</body>
+</html>

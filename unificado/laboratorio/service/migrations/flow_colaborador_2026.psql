@@ -1,0 +1,31 @@
+-- Names are assigned to demonstration records, not attested measurements.
+BEGIN;
+ALTER TABLE ensaio_postes.flow_simulado
+    ADD COLUMN IF NOT EXISTS colaborador varchar(80);
+
+WITH ordered AS (
+    SELECT id, row_number() OVER (ORDER BY medido_em, id) - 1 AS position
+    FROM ensaio_postes.flow_simulado
+)
+UPDATE ensaio_postes.flow_simulado AS flow
+SET colaborador = CASE WHEN ordered.position % 10 = 0
+                       THEN 'Josué Rodrigues' ELSE 'Philippe Augusto' END
+FROM ordered
+WHERE flow.id = ordered.id AND flow.colaborador IS NULL;
+
+ALTER TABLE ensaio_postes.flow_simulado
+    ALTER COLUMN colaborador SET NOT NULL;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint
+        WHERE conrelid = 'ensaio_postes.flow_simulado'::regclass
+          AND conname = 'flow_simulado_colaborador_check'
+    ) THEN
+        ALTER TABLE ensaio_postes.flow_simulado
+            ADD CONSTRAINT flow_simulado_colaborador_check
+            CHECK (colaborador IN ('Philippe Augusto', 'Josué Rodrigues'));
+    END IF;
+END $$;
+COMMIT;

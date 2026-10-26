@@ -1,13 +1,13 @@
 """Slump and flow records for the unified laboratory."""
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from decimal import Decimal
 from typing import Literal
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -56,6 +56,47 @@ def as_record(row):
         'criado_em': row.criado_em.isoformat(),
         'criado_por': row.criado_por,
     }
+
+
+@router.get('/flow')
+def flow_report(
+    inicio: date = Query(...), fim: date = Query(...),
+    session: Session = Depends(db), user=Depends(current_user),
+):
+    """Return measured and explicitly simulated flow in a bounded local-date range."""
+    if fim < inicio or (fim - inicio).days > 31:
+        raise HTTPException(422, 'Selecione um período de até 1 mês.')
+    start = datetime.combine(inicio, time.min, LOCAL_TIMEZONE).astimezone(timezone.utc)
+    end = datetime.combine(fim + timedelta(days=1), time.min, LOCAL_TIMEZONE).astimezone(timezone.utc)
+    measured = session.execute(text('''
+        SELECT id, massada, valor, medido_em, criado_por
+        FROM ensaio_postes.slump_registro
+        WHERE tipo = 'flow' AND medido_em >= :inicio AND medido_em < :fim
+        ORDER BY medido_em, id
+    '''), {'inicio': start, 'fim': end}).mappings().all()
+    simulated = session.execute(text('''
+        SELECT id, massada, valor, medido_em, serie_data_origem, serie_id_origem,
+               colaborador
+        FROM ensaio_postes.flow_simulado
+        WHERE medido_em >= :inicio AND medido_em < :fim
+        ORDER BY medido_em, id
+    '''), {'inicio': start, 'fim': end}).mappings().all()
+    records = [
+        {'id': row.id, 'massada': row.massada.strip(), 'valor': float(row.valor),
+         'medido_em': row.medido_em.isoformat(), 'natureza': 'medido',
+         'colaborador': row.criado_por, 'serie_data_origem': None}
+        for row in measured
+    ] + [
+        {'id': row.id, 'massada': row.massada.strip(), 'valor': float(row.valor),
+         'medido_em': row.medido_em.isoformat(), 'natureza': 'simulado',
+         'colaborador': row.colaborador, 'serie_data_origem': row.serie_data_origem.isoformat(),
+         'serie_id_origem': row.serie_id_origem}
+        for row in simulated
+    ]
+    records.sort(key=lambda row: (row['medido_em'], row['id']))
+    return {'inicio': inicio.isoformat(), 'fim': fim.isoformat(),
+            'records': records, 'total': len(records),
+            'medidos': len(measured), 'simulados': len(simulated)}
 
 
 @router.get('')
