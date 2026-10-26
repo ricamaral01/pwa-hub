@@ -55,7 +55,7 @@
     return data;
   };
   const currentId = () => state.authUser?.id || '';
-  const isMaster = () => ['user-ricardo', 'marcelo', 'alex'].includes(currentId());
+  const isMaster = () => ['user-ricardo', 'marcelo', 'alex', 'philippe'].includes(currentId());
   const isQualityAdmin = () => isMaster() || state.authUser?.role === 'GERENCIA';
   const guestActions = [['create', 'Criar'], ['edit', 'Editar'],
     ['delete', 'Excluir'], ['export', 'Exportar'], ['approve', 'Aprovar/liberar']];
@@ -568,7 +568,7 @@
         });
         actions.append(button);
       };
-      if (['user-ricardo', 'marcelo', 'alex'].includes(user.id)) {
+      if (['user-ricardo', 'marcelo', 'alex', 'philippe'].includes(user.id)) {
         actions.textContent = 'Administrador master';
         row.append(actions);
         row.dataset.search = row.textContent.toLocaleLowerCase('pt-BR');

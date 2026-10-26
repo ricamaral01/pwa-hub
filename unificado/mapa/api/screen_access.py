@@ -9,7 +9,7 @@ from urllib.parse import parse_qs, urlsplit
 CATALOG = json.loads((Path(__file__).parent / 'screen_catalog.json').read_text(encoding='utf-8'))
 BY_ID = {row['id']: row for row in CATALOG}
 MASTER_USER_ID = 'user-ricardo'
-MASTER_USER_IDS = frozenset({MASTER_USER_ID, 'marcelo', 'alex'})
+MASTER_USER_IDS = frozenset({MASTER_USER_ID, 'marcelo', 'alex', 'philippe'})
 DEFAULT_LAB_USERS = frozenset({'user-ricardo', 'ricardo.teste', 'user-alex'})
 GUEST_FORBIDDEN_SCREENS = frozenset({'prodUsuarios', 'pcpUsuarios', 'labUsuarios'})
 MAPA_ROLE_MODES = {
@@ -27,8 +27,10 @@ MAPA_ROLE_MODES = {
 
 
 def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
-    if screen['id'] in {'usinasCartaTraco', 'labCartaTraco'}:
-        return user['id'] == MASTER_USER_ID
+    if screen['id'] == 'labCartaTraco':
+        return user['id'] in MASTER_USER_IDS or user['id'] in lab_users
+    if screen['id'] == 'usinasCartaTraco':
+        return user['id'] in MASTER_USER_IDS
     if user['id'] in MASTER_USER_IDS:
         return True
     if screen['id'] == 'tvFormas':
@@ -67,9 +69,7 @@ def role_allows(user, screen, planning_role=None, lab_users=frozenset()):
 
 def allowed_screens(user, planning_role, overrides, lab_users):
     if user['id'] in MASTER_USER_IDS:
-        return [row['id'] for row in CATALOG
-                if (not row['id'].startswith('cronoanalise.') or user['id'] == MASTER_USER_ID)
-                and (row['id'] not in {'usinasCartaTraco', 'labCartaTraco'} or user['id'] == MASTER_USER_ID)]
+        return [row['id'] for row in CATALOG]
     if user['perfil'] == 'CONVIDADO':
         return [row['id'] for row in CATALOG if row['id'] not in GUEST_FORBIDDEN_SCREENS
                 and row['id'] != 'labCartaTraco'
@@ -95,7 +95,8 @@ def screen_for_uri(original_uri, screen_header=''):
     uri = urlsplit(original_uri)
     path = uri.path.replace('index.html', '')
     query = parse_qs(uri.query)
-    if path.startswith('/unificado/laboratorio/carta-traco/'):
+    if (path.startswith('/unificado/laboratorio/carta-traco/') or
+            path.startswith('/unificado/mapa/api/laboratorio/carta-traco/')):
         return BY_ID.get('labCartaTraco')
     if path.startswith('/unificado/laboratorio/cec-api/'):
         return BY_ID.get('labCec')

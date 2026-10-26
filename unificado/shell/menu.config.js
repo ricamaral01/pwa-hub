@@ -70,7 +70,8 @@ const MENU_CONFIG = {
         { id: 'historico', mono: 'HI', label: 'Histórico', path: '/index.html', screen: 'HISTORICO' },
         { id: 'acmpConcretagem', mono: 'CC', label: 'Acmp. Concretagem', path: '/index.html', screen: 'ACMP_CONCRETAGEM' },
         { id: 'manutencao', mono: 'MF', label: 'Manutenção Formas', path: '/index.html', screen: 'RELATORIO_MANUTENCAO' },
-        { id: 'tratativa', mono: 'TD', label: 'Tratativa Defeitos', path: '/index.html', screen: 'TRATATIVA_DEFEITOS' }
+        { id: 'tratativa', mono: 'TD', label: 'Tratativa Defeitos', path: '/index.html', screen: 'TRATATIVA_DEFEITOS' },
+        { id: 'fechamentoDiario', label: 'Fechamento diário', path: '/unificado/relatorios/fechamento-diario/' }
       ] },
       { label: 'Indicadores', items: [
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
@@ -87,7 +88,11 @@ const MENU_CONFIG = {
       { id:'qualidadeAbertura', label:'Abrir NC', path:'abrir' },
       { id:'qualidadeResultadosBancada', label:'Resultados de bancada', path:'resultados-bancada' },
       { id:'qualidadeCadastros', label:'Cadastros', path:'cadastros' }
-    ] }]
+    ] },
+      { label: 'Certificados', items: [
+        { id:'labCertificados', label:'Certificados de qualidade', path:'/unificado/laboratorio/certificados-qualidade/' },
+        { id:'labTests', label:'Certificados de ensaios', path:'/unificado/laboratorio/novo/postes?tab=historico' }
+      ] }]
   },
   usinas: {
     label: 'Usinas',
@@ -138,6 +143,7 @@ const MENU_CONFIG = {
         { id:'labDevice', label:'Dispositivo', path:'?view=settings' }
       ] },
       { label: 'Postes', items: [
+        { id:'labCertificados', label:'Certificados de qualidade', path:'certificados-qualidade/' },
         { id:'labPole', label:'Ensaio de postes', path:'novo/postes' },
         { id:'labAbsorption', label:'Absorção', path:'novo/postes?tab=absorcao' },
         { id:'labTests', label:'Histórico de ensaios', path:'novo/postes?tab=historico' },
@@ -152,6 +158,9 @@ const MENU_CONFIG = {
         { id:'cronoanalise.dimensionar', label:'Dimensionar', path:'cronoanalise/dimensionar' },
         { id:'cronoanalise.simular', label:'Simular', path:'cronoanalise/simular' },
         { id:'cronoanalise.metodologia', label:'Metodologia', path:'cronoanalise/metodologia' }
+      ] },
+      { label: 'Administração', items: [
+        { id:'labUsuarios', label:'Usuários', path:'novo/postes?tab=usuarios' }
       ] },
       { items: [{ id:'labHelp', label:'Como funciona', path:'?view=help' }] }
     ]
@@ -201,6 +210,8 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
       ? new URL(item.path.replace(/^\/pages\//, ''), PCP_BASE).href
       : item.id === 'tvFormas'
       ? new URL('tv/formas/', UNIFICADO_BASE).href
+      : item.id === 'fechamentoDiario'
+      ? new URL('relatorios/fechamento-diario/', UNIFICADO_BASE).href
       : new URL(`operacao/?tela=${encodeURIComponent(item.screen)}`, MAPA_BASE).href,
     available: true
   }]))

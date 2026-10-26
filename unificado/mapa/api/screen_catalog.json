@@ -414,6 +414,15 @@
     "require": null
   },
   {
+    "id": "labCertificados",
+    "module": "laboratorio",
+    "label": "Certificados de qualidade",
+    "path": "/unificado/laboratorio/certificados-qualidade/",
+    "query": "",
+    "screen": null,
+    "require": null
+  },
+  {
     "id": "labPole",
     "module": "laboratorio",
     "label": "Ensaio de postes",

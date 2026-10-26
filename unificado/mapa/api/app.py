@@ -781,7 +781,7 @@ def quality_actions(user_id):
 
 
 def crono_actions(user_id):
-    if user_id == MASTER_USER_ID:
+    if user_id in MASTER_USER_IDS:
         return sorted(CRONO_ACTION_IDS)
     with connect() as conn, conn.cursor() as cur:
         cur.execute("""SELECT action_id FROM unificado_auth.user_action_permissions

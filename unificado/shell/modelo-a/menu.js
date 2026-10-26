@@ -5929,7 +5929,8 @@ const cn = {
       ["historico", "Histórico", ke("HISTORICO"), "history"],
       ["acmpConcretagem", "Acmp. Concretagem", ke("ACMP_CONCRETAGEM"), "sliders"],
       ["manutencao", "Manutenção Formas", ke("RELATORIO_MANUTENCAO"), "sliders"],
-      ["tratativa", "Tratativa Defeitos", ke("TRATATIVA_DEFEITOS"), "alert"]
+      ["tratativa", "Tratativa Defeitos", ke("TRATATIVA_DEFEITOS"), "alert"],
+      ["fechamentoDiario", "Fechamento diário", "relatorios/fechamento-diario/", "doc"]
     ]),
     pe("INDICADORES", [
       ["dashMontagem", "Dashboard Montagem", ke("MONTAGEM_INDICADORES"), "map"],
@@ -5944,6 +5945,10 @@ const cn = {
       ["qualidadeAbertura", "Abrir RNC", "qualidade/abrir", "doc"],
       ["qualidadeResultadosBancada", "Resultados de bancada", "qualidade/resultados-bancada", "doc"],
       ["qualidadeCadastros", "Cadastros", "qualidade/cadastros", "database"]
+    ]),
+    pe("CERTIFICADOS", [
+      ["labCertificados", "Certificados de qualidade", "laboratorio/certificados-qualidade/", "doc"],
+      ["labTests", "Certificados de ensaios", "laboratorio/novo/postes?tab=historico", "doc"]
     ])
   ] },
   { id: "laboratorio", label: "Laboratório", color: cn.laboratorio, icon: "flask", sections: [
@@ -5972,6 +5977,7 @@ const cn = {
       ["labDevice", "Dispositivo", "laboratorio/?view=settings", "sliders"]
     ]),
     pe("POSTES", [
+      ["labCertificados", "Certificados de qualidade", "laboratorio/certificados-qualidade/", "doc"],
       ["labPole", "Ensaio de postes", "laboratorio/novo/postes", "post"],
       ["labAbsorption", "Absorção", "laboratorio/novo/postes?tab=absorcao", "drop"],
       ["labTests", "Histórico de ensaios", "laboratorio/novo/postes?tab=historico", "history"],
@@ -5986,6 +5992,12 @@ const cn = {
       ["cronoanalise.dimensionar", "Dimensionar", "laboratorio/cronoanalise/dimensionar", "factory"],
       ["cronoanalise.simular", "Simular", "laboratorio/cronoanalise/simular", "map"],
       ["cronoanalise.metodologia", "Metodologia", "laboratorio/cronoanalise/metodologia", "help"]
+    ]),
+    pe("CARTA DE TRAÇO", [
+      ["labCartaTraco", "Carta de traço e MCC", "laboratorio/carta-traco/", "doc"]
+    ]),
+    pe("ADMINISTRAÇÃO", [
+      ["labUsuarios", "Usuários", "laboratorio/novo/postes?tab=usuarios", "users"]
     ])
   ] },
   { id: "usinas", label: "Usinas", color: cn.usinas, icon: "factory", sections: [
