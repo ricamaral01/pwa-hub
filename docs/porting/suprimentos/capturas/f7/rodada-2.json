@@ -1,0 +1,3140 @@
+{
+  "rodada": 2,
+  "estados": 348,
+  "falhas": [],
+  "erros_console_ou_recurso": [],
+  "resultados": [
+    {
+      "tela": "painel",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "painel",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-aprovador",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-detalhes",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-alcadas",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacoes-lista",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-saldos",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimentos",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-inicio",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-inicio",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-inicio",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-inicio",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-acompanhar",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-acompanhar",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-acompanhar",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-acompanhar",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lista",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-almoxarife",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedores",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-parametros",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cotacao-mapa",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-reservas",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "recebimento-detalhe",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-nova-itens",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-nova-itens",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-nova-itens",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-nova-itens",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-aprovar",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-aprovar",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-aprovar",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-aprovar",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "solicitacoes-lote",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-entrega-parcial",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-materiais",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-usuarios-papeis",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedidos-lista",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "almoxarifado-epi",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "indicadores",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-nova-detalhes-offline",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-nova-detalhes-offline",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-nova-detalhes-offline",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-nova-detalhes-offline",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "detalhe-solicitante",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "nova-itens",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "cadastros-centros-custo",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "fornecedor-ficha",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pedido-detalhe",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "pc",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "pc",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "aberto",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "inventario",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "recolhido",
+      "shellHorizontal": false,
+      "frameHorizontal": false,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-minhas",
+      "tamanho": "tablet",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-minhas",
+      "tamanho": "tablet",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-minhas",
+      "tamanho": "celular",
+      "zoom": 100,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    },
+    {
+      "tela": "pwa-minhas",
+      "tamanho": "celular",
+      "zoom": 125,
+      "menu": "pwa",
+      "shellHorizontal": false,
+      "frameHorizontal": null,
+      "problemas": []
+    }
+  ]
+}

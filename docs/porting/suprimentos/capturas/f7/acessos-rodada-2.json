@@ -1,0 +1,64 @@
+[
+  {
+    "id": "user-ricardo",
+    "telas_preexistentes": 68,
+    "telas_suprimentos": 10,
+    "suprimentos_enabled": true,
+    "flags": {
+      "S0": true,
+      "S1": true,
+      "S2": true,
+      "S3A": true,
+      "S3A_EMAIL": false,
+      "S3B": true,
+      "S4": false,
+      "S5": true
+    }
+  },
+  {
+    "id": "ricardo.teste",
+    "telas_preexistentes": 53,
+    "telas_suprimentos": 10,
+    "suprimentos_enabled": true,
+    "flags": {
+      "S0": true,
+      "S1": true,
+      "S2": true,
+      "S3A": true,
+      "S3A_EMAIL": false,
+      "S3B": true,
+      "S4": false,
+      "S5": true
+    }
+  },
+  {
+    "id": "alex",
+    "telas_preexistentes": 59,
+    "telas_suprimentos": 10,
+    "suprimentos_enabled": true,
+    "flags": {
+      "S0": true,
+      "S1": true,
+      "S2": true,
+      "S3A": true,
+      "S3A_EMAIL": false,
+      "S3B": true,
+      "S4": false,
+      "S5": true
+    }
+  },
+  {
+    "id": "jcarlos",
+    "telas_preexistentes": 16,
+    "telas_suprimentos": 0,
+    "suprimentos_enabled": false,
+    "flags": {}
+  },
+  {
+    "id": "alexh",
+    "telas_preexistentes": 5,
+    "telas_suprimentos": 0,
+    "suprimentos_enabled": false,
+    "flags": {}
+  }
+]

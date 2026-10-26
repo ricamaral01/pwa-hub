@@ -46,15 +46,15 @@ class MockApi:
         result = {}
         status = 200
         if suffix == "/me":
-            result = {"id":self.actor,"nome":self.actor,"unidade":"campinas","papeis":[{"papel":role[0],"cc_id":None,"nivel":role[1]}],"flags":{"S0":True,"S1":True}}
+            result = {"id":self.actor,"nome":self.actor,"unidade":"campinas","papeis":[{"papel":role[0],"cc_id":None,"nivel":role[1]}],"flags":{"S0":True,"S1":True,"S3A":True}}
         elif suffix.startswith("/cadastros/centros-custo"):
             result = {"items":[{"id":CC,"codigo":"PROD","nome":"Produção Campinas","ativo":True}],"total":1}
         elif suffix.startswith("/cadastros/unidades-medida"):
             result = {"items":[{"id":UNIT,"sigla":"un","descricao":"Unidade","ativo":True}],"total":1}
         elif suffix.startswith("/cadastros/materiais"):
             result = {"items":[{"id":"019a173e-1111-7000-8000-000000000005","codigo":"MAT-01","descricao":"Luva de proteção","categoria":"EPI","un_estoque":UNIT,"dominio":"almoxarifado","ativo":True}],"total":1}
-        elif suffix.startswith("/cadastros/fornecedores"):
-            result = {"items":[{"id":"019a173e-1111-7000-8000-000000000006","cnpj":"11222333000181","razao":"Fornecedor Exemplo","categorias":["EPI"],"situacao":"qualificado","ativo":True}],"total":1}
+        elif suffix.startswith("/compras/fornecedores"):
+            result = {"items":[{"id":"019a173e-1111-7000-8000-000000000006","cnpj":"11222333000181","razao":"Fornecedor Exemplo","categorias":["EPI"],"situacao":"HOMOLOGADO","ativo":True}],"total":1}
         elif suffix.startswith("/cadastros/"):
             result = {"items":[],"total":0}
         elif suffix == "/pwa/inicio":

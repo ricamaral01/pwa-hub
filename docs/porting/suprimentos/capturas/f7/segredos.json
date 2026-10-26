@@ -1,0 +1,12 @@
+[
+  {
+    "caminho": "dosagem-concreto-v2/.env.production",
+    "linha": 1,
+    "tipo": "env_legado_rastreado_no_HEAD"
+  },
+  {
+    "caminho": "dosagem-concreto-v2/.env.production",
+    "linha": 2,
+    "tipo": "env_legado_rastreado_no_HEAD"
+  }
+]

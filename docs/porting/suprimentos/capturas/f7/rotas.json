@@ -1,0 +1,686 @@
+[
+  {
+    "rota": "analises.indicators",
+    "linha": 221,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "analises.export_csv",
+    "linha": 231,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "analises.export_pdf",
+    "linha": 253,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.health",
+    "linha": 145,
+    "mecanismo": "health sem dados de negócio",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.flags_for_gateway",
+    "linha": 151,
+    "mecanismo": "consulta de flags restrita ao gateway local",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.me",
+    "linha": 164,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.list_cadastro",
+    "linha": 173,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.get_cadastro",
+    "linha": 196,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.create_cadastro",
+    "linha": 209,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.edit_cadastro",
+    "linha": 230,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.status_cadastro",
+    "linha": 252,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "cadastros.import_csv",
+    "linha": 269,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.summary",
+    "linha": 40,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.list_suppliers",
+    "linha": 166,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.create_supplier",
+    "linha": 207,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.get_supplier",
+    "linha": 244,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.edit_supplier",
+    "linha": 251,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.add_supplier_doc",
+    "linha": 289,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.supplier_doc",
+    "linha": 322,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.homologate",
+    "linha": 340,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.list_supplier_criteria",
+    "linha": 409,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.put_supplier_criteria",
+    "linha": 418,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.evaluate",
+    "linha": 456,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.purchase_queue",
+    "linha": 575,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.set_destination",
+    "linha": 597,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.list_quotes",
+    "linha": 626,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.create_quote",
+    "linha": 647,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.get_quote",
+    "linha": 687,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.invite",
+    "linha": 700,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.add_offer",
+    "linha": 731,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.attach_offer",
+    "linha": 787,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.offer_attachment",
+    "linha": 816,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.choose_offer",
+    "linha": 840,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.emergency_supplier",
+    "linha": 886,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.close_quote",
+    "linha": 910,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.approve_quote_close",
+    "linha": 957,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.generate_orders",
+    "linha": 1032,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.list_orders",
+    "linha": 1113,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.get_order",
+    "linha": 1132,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.approve_order",
+    "linha": 1145,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.issue_order",
+    "linha": 1181,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.send_order",
+    "linha": 1198,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.email_order",
+    "linha": 1208,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.follow_up",
+    "linha": 1251,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.cancel_order",
+    "linha": 1266,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.simple_receive",
+    "linha": 1278,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.attach_delivery",
+    "linha": 1343,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.close_order",
+    "linha": 1368,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "compras.order_pdf",
+    "linha": 1377,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.balances",
+    "linha": 221,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.movements",
+    "linha": 243,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.consumption",
+    "linha": 254,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.post_movement",
+    "linha": 274,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.reverse",
+    "linha": 291,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.transfer",
+    "linha": 308,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.reservations",
+    "linha": 325,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.add_employee",
+    "linha": 333,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.employees",
+    "linha": 345,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.issue_epi",
+    "linha": 353,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.confirm_epi",
+    "linha": 378,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.epi_records",
+    "linha": 388,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.open_inventory",
+    "linha": 397,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.inventories",
+    "linha": 413,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.count_sheet",
+    "linha": 421,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.register_count",
+    "linha": 445,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.list_counts",
+    "linha": 460,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.close_inventory",
+    "linha": 479,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.approve_count",
+    "linha": 517,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.replenish",
+    "linha": 532,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.suggestions",
+    "linha": 570,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "estoque.decide_suggestion",
+    "linha": 580,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "integracao.receive_suggestion",
+    "linha": 71,
+    "mecanismo": "assertion assinada do Laboratório e flag S4",
+    "protegida": true
+  },
+  {
+    "rota": "integracao.list_suggestions",
+    "linha": 115,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "integracao.laboratory_received",
+    "linha": 164,
+    "mecanismo": "assertion assinada do Laboratório e flag S4",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.list_receipts",
+    "linha": 86,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.suggest_orders",
+    "linha": 107,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.create_receipt",
+    "linha": 134,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.get_receipt",
+    "linha": 178,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.set_item",
+    "linha": 187,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.attach_nf",
+    "linha": 234,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.download_nf",
+    "linha": 260,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.job_status",
+    "linha": 273,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.confer",
+    "linha": 311,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.resolve",
+    "linha": 337,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.criteria",
+    "linha": 358,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.set_criteria",
+    "linha": 367,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.inspect",
+    "linha": 389,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.pending_ncs",
+    "linha": 461,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.link_nc",
+    "linha": 478,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.confirm",
+    "linha": 537,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.rate_attendance",
+    "linha": 630,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "recebimento.reverse",
+    "linha": 671,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.list_requests",
+    "linha": 140,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.create_web",
+    "linha": 184,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.create_pwa",
+    "linha": 190,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.detail",
+    "linha": 196,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.edit_request",
+    "linha": 204,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.send_request",
+    "linha": 251,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.approve_batch",
+    "linha": 271,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.decide",
+    "linha": 293,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.cancel_request",
+    "linha": 304,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.separate",
+    "linha": 330,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.deliver",
+    "linha": 346,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.price_item",
+    "linha": 375,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.cancel_item",
+    "linha": 396,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.link_material",
+    "linha": 425,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.confirm_delivery",
+    "linha": 450,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.delivery_problem",
+    "linha": 461,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.redeliver",
+    "linha": 475,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.add_photo",
+    "linha": 507,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.get_photo",
+    "linha": 558,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.pwa_home",
+    "linha": 573,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.pwa_catalog",
+    "linha": 584,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  },
+  {
+    "rota": "solicitacoes.pwa_frequent",
+    "linha": 601,
+    "mecanismo": "identidade IAM",
+    "protegida": true
+  }
+]

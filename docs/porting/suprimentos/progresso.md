@@ -17,6 +17,7 @@
 | F4 · Contrato com Laboratório | **Concluída em homologação** | [14-integracao-laboratorio.md](14-integracao-laboratorio.md); versão 1.0.84, `34 passed`, migração ida/volta/ida, smoke `43/43`, Painel real `28/28` e cartão simulado `28/28`, retorno e reinstalação testados | Flag S4 desligada até migração do Laboratório; F5 Análises |
 | F5 · Análises | **Concluída em homologação** | [15-analises.md](15-analises.md); versão 1.0.88, `37 passed`, migração ida/volta/ida, 50 mil movimentos em `0,310 s`, layout `28/28`, PDF renderizado, smoke `43/43`, retorno/reinstalação testados | SLA histórico e giro com premissas explícitas; F6 manual visual |
 | F6 · Manual visual | **Concluída em homologação** | [16-manual.md](16-manual.md); versão 1.0.89, 33 telas, 93 capturas, 279 marcadores, PDF 78 páginas renderizadas, `37 passed`, smoke `43/43`, retorno/reinstalação testados | Dados DEMO mantidos até a liberação final; F7 revisão integrada |
+| F7 · Revisão integrada | **Concluída em homologação** | [17-revisao-final.md](17-revisao-final.md); versão 1.0.90, serviço `37 passed` × 3, UI `8 passed` × 3, layout `348/348` × 3, acessos 5/5 × 3, 114 rotas auditadas, EXPLAIN, dump/restore, smoke `43/43`, retorno/reinstalação | Duas atribuições em `.env.production` legado no HEAD exigem remoção/rotação separada; F8 pacote de entrada em produção |
 
 **Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
 

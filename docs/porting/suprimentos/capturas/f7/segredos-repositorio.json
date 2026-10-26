@@ -1,0 +1,30 @@
+{
+  "arquivos_lidos": 1125,
+  "achados": [
+    {
+      "caminho": "PROMPT_CODEX_GITHUB_VPS_POSTGRESQL.md",
+      "linha": 110,
+      "tipo": "dsn_com_senha"
+    },
+    {
+      "caminho": "PROMPT_CODEX_GITHUB_VPS_POSTGRESQL.md",
+      "linha": 280,
+      "tipo": "dsn_com_senha"
+    },
+    {
+      "caminho": "scripts/configure_mapa_auth.py",
+      "linha": 29,
+      "tipo": "dsn_com_senha"
+    },
+    {
+      "caminho": "scripts/configure_mapa_writer.py",
+      "linha": 29,
+      "tipo": "dsn_com_senha"
+    },
+    {
+      "caminho": "unificado/pcp/backend/app/core/config.py",
+      "linha": 7,
+      "tipo": "dsn_com_senha"
+    }
+  ]
+}

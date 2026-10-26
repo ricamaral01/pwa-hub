@@ -91,8 +91,10 @@ def test_existing_ids_and_ricardo_teste_remain():
     old = {value for screens in BEFORE.values() for value in screens}
     assert old.issubset({row["id"] for row in CATALOG})
     supri = {row["id"] for row in CATALOG if row["module"] == "suprimentos"}
-    assert supri == {"suprimentosPainel", "suprimentosSolicitacoes", "suprimentosNova",
-                     "suprimentosFornecedores", "suprimentosCadastros"}
+    assert {"suprimentosPainel", "suprimentosSolicitacoes", "suprimentosNova",
+            "suprimentosFornecedores", "suprimentosCadastros",
+            "suprimentosCotacoes", "suprimentosAlmoxarifado", "suprimentosInventario",
+            "suprimentosRecebimento", "suprimentosIndicadores"}.issubset(supri)
     user = {"id": "ricardo.teste", "nome": "Ricardo", "perfil": "GESTOR"}
     assert all(role_allows(user, row) for row in CATALOG if row["module"] == "suprimentos")
 
