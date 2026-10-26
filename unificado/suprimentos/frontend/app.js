@@ -77,6 +77,9 @@ async function loadPanel(){
       <section class="card kpi"><span class="label">Pedidos abertos</span><span class="value">${s.pedidos_abertos}</span><small>${s.pedidos_atrasados} atrasados</small></section>
       <section class="card kpi"><span class="label">Fornecedores</span><span class="value">${s.homologacoes_pendentes}</span><small>em qualificação · ${s.documentos_vencendo} documentos vencendo</small></section></div>`)}catch(error){console.warn('Indicadores de compras indisponíveis',error.message)}
   }
+  if(state.me?.flags?.S2&&(hasRole('ALMOXARIFE')||hasRole('COMPRADOR')||canAdmin())){
+    try{const stock=await api('/estoque/saldos?abaixo_pp=true');app.insertAdjacentHTML('beforeend',`<section class="card"><div class="section-head"><h2>Almoxarifado · abaixo do ponto de pedido</h2><a href="${path('almoxarifado')}">Ver saldos →</a></div><p>${stock.items.length} material(is) precisam de atenção.</p></section>`)}catch(error){console.warn('Indicadores de estoque indisponíveis',error.message)}
+  }
 }
 function tableRows(rows,panel=false){
   if(!rows.length)return empty('Nenhuma solicitação nesta fila','As novas solicitações aparecerão aqui.');

@@ -12,6 +12,7 @@
 | Pós E7 · Correção de layout na casca | **Concluída em homologação** | [09-correcao-layout.md](09-correcao-layout.md); matriz autenticada `676/676` antes/depois, E1–E7 `21 passed`, retorno e reinstalação, smoke `43/43` | Homologação para conferência de Ricardo; nenhuma publicação em produção |
 | F0 · Acabamentos da S1 | **Concluída em homologação** | [10-acabamentos-s1.md](10-acabamentos-s1.md); versão 1.0.62, smoke `43/43`, 57 capturas reais; regressão local posterior `8 passed, 13 skipped` sem banco | F1 · Fornecedores, cotação e pedido de compra |
 | F1 · Fornecedores, cotação e pedido | **Concluída em homologação** | [11-compras-fornecedores.md](11-compras-fornecedores.md); versão 1.0.72, `18 passed`, smoke `43/43`, listas `196/196`, detalhes `196/196`, abas `112/112`, convite `16/16`; retorno testado | 403 da consulta do Mapa feita pela casca para conta exclusiva de Suprimentos; F2 Almoxarifado |
+| F2 · Almoxarifado geral | **Concluída em homologação** | [12-almoxarifado.md](12-almoxarifado.md); versão 1.0.77, `27 passed`, smoke `43/43`, layout `84/84`, formulários `4/4`, rollback da migração e reinstalação | Valores de inventário `a_confirmar`; F3 NF e inspeção |
 
 **Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
 

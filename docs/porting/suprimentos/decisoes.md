@@ -30,3 +30,13 @@ Os itens D1–D14 são vinculantes. A implementação deve registrar qualquer im
 | D17 | Validade de homologação de 12 meses, mínimo de três propostas acima de R$ 1.000, retorno à alçada quando a OC excede o aprovado em 10%, pesos e faixas de IQF são parâmetros `a_confirmar` editáveis em Cadastros e alçadas. |
 | D18 | O envio de OC por e-mail permanece desligado por `S3A_EMAIL` até configuração e validação de SMTP. O envio manual registra o evento e preserva o PDF do pedido. |
 | D19 | O custo posto da proposta inclui preço líquido, IPI, ICMS-ST e frete FOB rateado; a recuperação fiscal de tributos depende de definição contábil futura e não é presumida. |
+
+## Decisões F2 — almoxarifado
+
+| ID | Decisão |
+|---|---|
+| D20 | `sup_movimento` é livro imutável com ID `bigint identity`, chave de idempotência por unidade e estorno vinculando o lançamento original. Saldo, reserva e custo médio são projeções transacionais; saída não consome estoque reservado para outra solicitação. |
+| D21 | A aprovação final da solicitação reserva o saldo disponível em ordem estável por endereço. O restante usa a coluna `qtd_comprar` já existente em S1 e só esse restante entra na cotação. A reserva é liberada no cancelamento do item ou da solicitação. |
+| D22 | Inventário cíclico é cego até o corte; movimentos posteriores permanecem. Diferença de EPI exige aprovação por outro almoxarife; para os demais, diferença acima de R$ 200 e fora da tolerância de 2% exige aprovação. Os dois valores estão em `sup_parametro` com `a_confirmar=true`. |
+| D23 | O ponto de pedido usa consumo dos últimos 30 dias × (lead time + dias de segurança). A sugestão reaproveita `sup_sugestao_ressuprimento`; o comprador informa o CC ao confirmar, criando uma solicitação em rascunho que segue à aprovação normal. Sugestões ativas ou já confirmadas com solicitação aberta não se duplicam. |
+| D24 | A valoração definitiva do recebimento de NF (item + IPI + frete rateado, sem crédito presumido de ICMS) entra na F3; a entrada manual da F2 exige custo unitário informado e mantém o custo médio móvel. O tratamento fiscal permanece `a_confirmar` pela contabilidade. |

@@ -67,7 +67,7 @@
     if (path === 'qualidade/' || path === 'qualidade/abrir' ||
         path === 'qualidade/cadastros' || /^qualidade\/nc\/[a-zA-Z0-9-]+$/.test(path))
       return {url, module:'qualidade', path};
-    if (/^suprimentos\/(?:painel|solicitacoes|solicitacao|nova|fornecedores|cotacoes|cadastros)\/$/.test(path))
+    if (/^suprimentos\/(?:painel|solicitacoes|solicitacao|nova|fornecedores|cotacoes|almoxarifado|inventario|cadastros)\/$/.test(path))
       return {url, module:'suprimentos', path};
     return null;
   }

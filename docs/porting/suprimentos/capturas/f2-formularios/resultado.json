@@ -1,0 +1,22 @@
+[
+  {
+    "actor": "e2e-suprimentos-almox",
+    "size": "1440x900",
+    "ok": true
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "size": "390x844",
+    "ok": true
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "size": "1440x900",
+    "ok": true
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "size": "390x844",
+    "ok": true
+  }
+]

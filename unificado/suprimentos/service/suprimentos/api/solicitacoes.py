@@ -203,7 +203,10 @@ def edit_request(request_id: str, data: dict, unidade: str = "campinas", user: A
     ctx = context(unidade, user, db)
     request = get_request(db, ctx, parsed_id(request_id), lock=True)
     require_owner(ctx, request)
-    check_action(ctx, "solicitacao.criar", str(request["cc_id"]), write=True, phase="S1", db=db)
+    if request['origem']=='ressuprimento' and ctx.has('estoque.sugerir',str(request['cc_id'])):
+        check_action(ctx,'estoque.sugerir',str(request['cc_id']),write=True,phase='S2',db=db)
+    else:
+        check_action(ctx, "solicitacao.criar", str(request["cc_id"]), write=True, phase="S1", db=db)
     if request["status"] not in {"RASCUNHO", "DEVOLVIDA"}:
         raise HTTPException(409, "Solicitação não editável")
     values = {}
@@ -247,7 +250,10 @@ def send_request(request_id: str, unidade: str = "campinas", user: Actor = Depen
     ctx = context(unidade, user, db)
     request = get_request(db, ctx, parsed_id(request_id), lock=True)
     require_owner(ctx, request)
-    check_action(ctx, "solicitacao.criar", str(request["cc_id"]), write=True, phase="S1", db=db)
+    if request['origem']=='ressuprimento' and ctx.has('estoque.sugerir',str(request['cc_id'])):
+        check_action(ctx,'estoque.sugerir',str(request['cc_id']),write=True,phase='S2',db=db)
+    else:
+        check_action(ctx, "solicitacao.criar", str(request["cc_id"]), write=True, phase="S1", db=db)
     if request["status"] not in {"RASCUNHO", "DEVOLVIDA"}:
         raise HTTPException(409, "Solicitação já enviada")
     total, missing, items = estimate(db, ctx, request["id"])
@@ -301,6 +307,9 @@ def cancel_request(request_id: str, unidade: str = "campinas", user: Actor = Dep
     item = table("sup_solicitacao_item")
     if db.execute(select(func.count()).select_from(item).where(and_(item.c.solicitacao_id == request["id"], item.c.status != "PENDENTE"))).scalar_one():
         raise HTTPException(409, "Item já em atendimento")
+    from .estoque import release_reservations
+    item_ids=db.execute(select(item.c.id).where(item.c.solicitacao_id==request['id'])).scalars().all()
+    release_reservations(db,ctx,item_ids)
     change(db, ctx, request, "CANCELADA", allowed=("RASCUNHO", "DEVOLVIDA", "EM_APROVACAO", "APROVADA"))
     db.commit()
     return {"status": "CANCELADA"}
@@ -345,6 +354,8 @@ def deliver(item_id: str, data: dict, unidade: str = "campinas", user: Actor = D
     delivered = item["qtd_entregue"] + quantity
     if quantity <= 0 or delivered > item["qtd"]:
         raise HTTPException(422, "Quantidade excede o pedido")
+    from .estoque import deliver_reserved
+    deliver_reserved(db, ctx, item, quantity)
     new_status = "ENTREGUE" if delivered == item["qtd"] else "SEPARADO"
     t = table("sup_solicitacao_item")
     db.execute(update(t).where(t.c.id == item["id"]).values(qtd_entregue=delivered, status=new_status,
@@ -392,6 +403,8 @@ def cancel_item(item_id: str, data: dict | None = None, unidade: str = "campinas
               t.c.id != item["id"], t.c.status != "CANCELADO"))).scalar_one()
     if remaining_before == 0:
         raise HTTPException(409, "O último item deve ser atendido; o solicitante pode cancelar a solicitação antes do atendimento")
+    from .estoque import release_reservations
+    release_reservations(db,ctx,[item['id']])
     db.execute(update(t).where(t.c.id == item["id"]).values(status="CANCELADO",
              atualizado_por=user.id, atualizado_em=datetime.now(UTC)))
     record_event(db, ctx, item["id"], "PENDENTE", "CANCELADO",

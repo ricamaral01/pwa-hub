@@ -131,6 +131,8 @@ def approve_one(db: Session, ctx: Context, request_id, decision: str, comment: s
         return {"id": str(request_id), "status": "EM_APROVACAO", "nivel_atual": level + 1}
     if decision == "APROVADA":
         change(db, ctx, request, "APROVADA", allowed=("EM_APROVACAO",), comment=comment, nivel_atual=None)
+        from .api.estoque import reserve_approved
+        reserve_approved(db, ctx, request)
     else:
         change(db, ctx, request, decision, allowed=("EM_APROVACAO",), comment=comment, nivel_atual=None)
     return {"id": str(request_id), "status": decision, "nivel_atual": None}

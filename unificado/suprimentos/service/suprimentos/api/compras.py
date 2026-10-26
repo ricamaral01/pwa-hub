@@ -676,7 +676,7 @@ def create_quote(data: dict, unidade: str = "campinas", user: Actor = Depends(cu
     for found in selected:
         db.execute(insert(table("sup_cotacao_item")).values(id=uuid7(), unidade_id=ctx.unit_id,
             cotacao_id=quote_id, solicitacao_item_id=found["id"],
-            qtd=found["qtd"] - found["qtd_entregue"], **audit(user)))
+            qtd=found["qtd_comprar"] or (found["qtd"] - found["qtd_entregue"]), **audit(user)))
     record_event(db, ctx, quote_id, None, "RASCUNHO", target_type="cotacao")
     db.commit()
     return quote_detail(db, ctx, quote(db, ctx, str(quote_id)))

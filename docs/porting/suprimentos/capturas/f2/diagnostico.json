@@ -1,0 +1,1514 @@
+[
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1366x768",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1366x768-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1366x768",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1366x768-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1366x768",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1366x768-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1366x768",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1366x768-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1366x768",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1366x768-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1366x768",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1366x768-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1366x768",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1366x768-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1366x768",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1366x768-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1440x900",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1440x900-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1440x900",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1440x900-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1440x900",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1440x900-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1440x900",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1440x900-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1440x900",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1440x900-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1440x900",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1440x900-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1440x900",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1440x900-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1440x900",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1440x900-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1920x1080",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1920x1080-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1920x1080",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1920x1080-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1920x1080",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1920x1080-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1920x1080",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1920x1080-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1920x1080",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1920x1080-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1920x1080",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1920x1080-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1920x1080",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1920x1080-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1920x1080",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1920x1080-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "820x1180",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-820x1180-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "820x1180",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-820x1180-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "820x1180",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-820x1180-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "820x1180",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-820x1180-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "820x1180",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-820x1180-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "820x1180",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-820x1180-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "820x1180",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-820x1180-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "820x1180",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-820x1180-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1180x820",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1180x820-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1180x820",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1180x820-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1180x820",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1180x820-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1180x820",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1180x820-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1180x820",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1180x820-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "1180x820",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-1180x820-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1180x820",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1180x820-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "1180x820",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-1180x820-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "390x844",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-390x844-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "390x844",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-390x844-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "390x844",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-390x844-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "390x844",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-390x844-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "390x844",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-390x844-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "390x844",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-390x844-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "390x844",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-390x844-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "390x844",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-390x844-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "360x780",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-360x780-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "360x780",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-360x780-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "360x780",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-360x780-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "360x780",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-360x780-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "360x780",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-360x780-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "almoxarifado",
+    "size": "360x780",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-almoxarifado-360x780-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "360x780",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-360x780-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-almox",
+    "route": "inventario",
+    "size": "360x780",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-almox-inventario-360x780-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1366x768",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1366x768-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1366x768",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1366x768-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1366x768",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1366x768-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1366x768",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1366x768-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1440x900",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1440x900-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1440x900",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1440x900-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1440x900",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1440x900-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1440x900",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1440x900-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1920x1080",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1920x1080-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1920x1080",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1920x1080-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1920x1080",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1920x1080-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1920x1080",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1920x1080-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "820x1180",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-820x1180-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "820x1180",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-820x1180-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "820x1180",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-820x1180-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "820x1180",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-820x1180-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1180x820",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1180x820-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1180x820",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1180x820-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1180x820",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1180x820-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "1180x820",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-1180x820-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "390x844",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-390x844-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "390x844",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-390x844-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "390x844",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-390x844-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "390x844",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-390x844-z125-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "360x780",
+    "zoom": 100,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-360x780-z100-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "360x780",
+    "zoom": 100,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-360x780-z100-recolhido.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "360x780",
+    "zoom": 125,
+    "menu": "aberto",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-360x780-z125-aberto.png"
+  },
+  {
+    "actor": "e2e-suprimentos-compras",
+    "route": "almoxarifado",
+    "size": "360x780",
+    "zoom": 125,
+    "menu": "recolhido",
+    "shellHorizontal": false,
+    "iframeHorizontal": false,
+    "uncontained": [],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 403 ()"
+    ],
+    "missing": [],
+    "forbidden": [
+      "https://concrefer.concretrack.com.br:18446/unificado/mapa/api/rest/v1/rpc/rpc_dashboard_produtividade_resumo_v1"
+    ],
+    "screenshot": "e2e-suprimentos-compras-almoxarifado-360x780-z125-recolhido.png"
+  }
+]
