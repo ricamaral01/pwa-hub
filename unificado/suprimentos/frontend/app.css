@@ -40,6 +40,8 @@ body[data-modulo="suprimentos"] .kpi small{font-size:12px}
 body[data-modulo="suprimentos"] .kpi.alert{border-color:var(--orange)}
 body[data-modulo="suprimentos"] .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
 body[data-modulo="suprimentos"] .section-head h2{margin-bottom:0}
+body[data-modulo="suprimentos"] .sup-silo-head{flex-wrap:wrap;min-width:0}
+body[data-modulo="suprimentos"] .sup-silo-head h2{min-width:0;overflow-wrap:anywhere}
 body[data-modulo="suprimentos"] .table-scroll{width:100%;overflow:auto;overscroll-behavior-x:contain;border:1px solid var(--line);border-radius:11px;background:#fff}
 body[data-modulo="suprimentos"] table{width:100%;border-collapse:collapse;min-width:760px}
 body[data-modulo="suprimentos"] th, body[data-modulo="suprimentos"] td{text-align:left;padding:13px 14px;border-bottom:1px solid #e9eff1;font-size:13px;vertical-align:middle}

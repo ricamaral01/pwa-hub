@@ -50,3 +50,11 @@ Os itens D1–D14 são vinculantes. A implementação deve registrar qualquer im
 | D27 | O IQF automático usa prazo, quantidade, qualidade e documentação do recebimento. Atendimento começa com nota provisória 3/5 e é confirmado manualmente, com evento e recálculo da média móvel de 12 meses. A avaliação estornada permanece no histórico, excluída da média vigente. |
 | D28 | Reprovação gera `sup_nc_pendente` com chave idempotente e fila visível à Qualidade. A integração automática serviço a serviço aguarda contrato de autenticação da Qualidade; não será usada a sessão privilegiada do operador. |
 | D29 | Recebimento confirmado só é corrigido por estorno e documento de versão seguinte. Movimentos do estoque são compensados, a entrega histórica recebe marca de estorno e a avaliação IQF é preservada como estornada. Não há exclusão física. |
+
+## Decisões F4 — contrato com o Laboratório
+
+| ID | Decisão |
+|---|---|
+| D30 | A integração do estoque da usina é exclusivamente serviço a serviço no loopback da VPS nova, com assertion HMAC de 30 segundos, unidade e audiência fixas. A chave fica fora do Git. A flag S4 começa desligada até o Laboratório assumir a origem física dos dados. |
+| D31 | Sugestões do Laboratório têm chave de origem única por unidade e não criam solicitação automaticamente. Compras as consulta no Painel; material `insumo_usina` só aparece no catálogo e entra em solicitação quando S4 estiver habilitada. |
+| D32 | A confirmação física do Laboratório baixa a OC e a solicitação, cria evento e avaliação IQF, mas nunca lança movimento no almoxarifado. Cada entrega parcial tem chave própria; repetição com conteúdo diferente é conflito. |

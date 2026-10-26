@@ -34,7 +34,7 @@ def parsed_id(value: str) -> UUID:
         raise HTTPException(404, "Solicitação não encontrada") from None
 
 
-def payload_items(db: Session, ctx, items: list[dict]):
+def payload_items(db: Session, ctx, items: list[dict], cc_id: UUID):
     if not isinstance(items, list) or not 1 <= len(items) <= 100:
         raise HTTPException(422, "Informe de 1 a 100 itens")
     material = table("sup_material")
@@ -53,9 +53,11 @@ def payload_items(db: Session, ctx, items: list[dict]):
             if db.execute(select(measures.c.id).where(and_(measures.c.id == measure, measures.c.ativo.is_(True)))).scalar_one_or_none() is None:
                 raise ValueError("Unidade de medida indisponível")
             if mid:
-                found = db.execute(select(material).where(and_(material.c.id == mid, material.c.ativo.is_(True), material.c.dominio == "almoxarifado"))).mappings().one_or_none()
+                found = db.execute(select(material).where(and_(material.c.id == mid, material.c.ativo.is_(True), material.c.dominio.in_(("almoxarifado", "insumo_usina"))))).mappings().one_or_none()
                 if not found:
-                    raise ValueError("Material indisponível no almoxarifado")
+                    raise ValueError("Material indisponível")
+                if found["dominio"] == "insumo_usina":
+                    check_action(ctx, "solicitacao.criar", str(cc_id), write=True, phase="S4", db=db)
             price = raw.get("preco_informado")
             if price is not None:
                 check_action(ctx, "solicitacao.precificar", write=True, phase="S1", db=db)
@@ -110,7 +112,7 @@ def create_request(data: dict, unidade: str, origin: str, user: Actor, db: Sessi
             if existing["solicitante_id"] != user.id:
                 raise HTTPException(409, "client_uuid já utilizado")
             return request_detail(db, ctx, dict(existing)), False
-    items = payload_items(db, ctx, data.get("itens"))
+    items = payload_items(db, ctx, data.get("itens"), cc_id)
     request_id = uuid7()
     row = dict(id=request_id, unidade_id=ctx.unit_id, numero=allocate_number(db, ctx), cc_id=cc_id,
                solicitante_id=user.id, solicitante_nome=user.name, origem=origin,
@@ -222,7 +224,7 @@ def edit_request(request_id: str, data: dict, unidade: str = "campinas", user: A
         except ValueError:
             raise HTTPException(422, "Data inválida") from None
     if "itens" in data:
-        values["itens"] = payload_items(db, ctx, data["itens"])
+        values["itens"] = payload_items(db, ctx, data["itens"], request["cc_id"])
     if set(data) - {"urgencia", "justificativa", "precisa_em", "itens"}:
         raise HTTPException(422, "Campos inválidos")
     if not values:
@@ -431,8 +433,11 @@ def link_material(item_id: str, data: dict, unidade: str = "campinas", user: Act
     except (KeyError, ValueError):
         raise HTTPException(422, "Material inválido") from None
     m = table("sup_material")
-    if db.execute(select(m.c.id).where(and_(m.c.id == mid, m.c.ativo.is_(True), m.c.dominio == "almoxarifado"))).scalar_one_or_none() is None:
+    found = db.execute(select(m.c.dominio).where(and_(m.c.id == mid, m.c.ativo.is_(True), m.c.dominio.in_(("almoxarifado", "insumo_usina"))))).scalar_one_or_none()
+    if found is None:
         raise HTTPException(422, "Material indisponível")
+    if found == "insumo_usina":
+        check_action(ctx, "solicitacao.vincular_material", str(request["cc_id"]), write=True, phase="S4", db=db)
     t = table("sup_solicitacao_item")
     db.execute(update(t).where(t.c.id == item["id"]).values(material_id=mid, descricao_livre=None,
              atualizado_por=user.id, atualizado_em=datetime.now(UTC)))
@@ -581,8 +586,11 @@ def pwa_catalog(q: str = "", unidade: str = "campinas", user: Actor = Depends(cu
     check_action(ctx, "catalogo.ver")
     t = table("sup_material")
     m = table("sup_unidade_medida")
+    f = table("sup_flag")
+    s4 = bool(db.execute(select(f.c.habilitado).where(and_(f.c.unidade_id == ctx.unit_id, f.c.fase == "S4"))).scalar_one_or_none())
+    domains = ("almoxarifado", "insumo_usina") if s4 else ("almoxarifado",)
     stmt = select(t.c.id, t.c.codigo, t.c.descricao, m.c.id.label("un_id"),
-                  m.c.sigla.label("unidade"), t.c.categoria).join(m, t.c.un_estoque == m.c.id).where(and_(t.c.ativo.is_(True), t.c.dominio == "almoxarifado"))
+                  m.c.sigla.label("unidade"), t.c.categoria).join(m, t.c.un_estoque == m.c.id).where(and_(t.c.ativo.is_(True), t.c.dominio.in_(domains)))
     if q:
         stmt = stmt.where(or_(t.c.codigo.ilike(f"%{q[:80]}%"), t.c.descricao.ilike(f"%{q[:80]}%")))
     return {"items": jsonable_encoder([dict(r) for r in db.execute(stmt.order_by(t.c.descricao).limit(100)).mappings()]),

@@ -80,6 +80,12 @@ async function loadPanel(){
   if(state.me?.flags?.S2&&(hasRole('ALMOXARIFE')||hasRole('COMPRADOR')||canAdmin())){
     try{const stock=await api('/estoque/saldos?abaixo_pp=true');app.insertAdjacentHTML('beforeend',`<section class="card"><div class="section-head"><h2>Almoxarifado · abaixo do ponto de pedido</h2><a href="${path('almoxarifado')}">Ver saldos →</a></div><p>${stock.items.length} material(is) precisam de atenção.</p></section>`)}catch(error){console.warn('Indicadores de estoque indisponíveis',error.message)}
   }
+  if(state.me?.flags?.S4&&(hasRole('COMPRADOR')||canAdmin())){
+    try{
+      const silos=await api('/integracao/sugestoes?size=5');
+      app.insertAdjacentHTML('beforeend',`<section class="card"><div class="section-head sup-silo-head"><h2>Silos da usina · Ressuprimento sugerido</h2><span class="badge wait">${silos.total} pendente(s)</span></div><p>Solicitações recebidas do Laboratório para conferência de Compras.</p>${silos.items.length?`<div class="table-scroll"><table><thead><tr><th>Material</th><th>Silo</th><th>Quantidade</th><th>Data limite</th></tr></thead><tbody>${silos.items.map(x=>`<tr><td>${esc(x.material_descricao||x.material_id)}</td><td>${esc(x.destino_ref)}</td><td>${esc(x.qtd)}</td><td>${date(x.data_limite)}</td></tr>`).join('')}</tbody></table></div>`:empty('Nenhuma sugestão dos silos') }</section>`);
+    }catch(error){console.warn('Sugestões dos silos indisponíveis',error.message)}
+  }
 }
 function tableRows(rows,panel=false){
   if(!rows.length)return empty('Nenhuma solicitação nesta fila','As novas solicitações aparecerão aqui.');
@@ -168,7 +174,7 @@ async function itemAction(id,action){let body={};if(action==='entregar'){const q
 
 async function loadNew(){
   const [catalog,measures]=await Promise.all([api('/cadastros/materiais?size=100'),api('/cadastros/unidades-medida?size=100')]);
-  state.catalog=catalog.items.filter(item=>item.dominio==='almoxarifado');state.measures=measures.items;
+  state.catalog=catalog.items.filter(item=>item.dominio==='almoxarifado'||(state.me?.flags?.S4&&item.dominio==='insumo_usina'));state.measures=measures.items;
   state.draftItems=[];state.draftPhotos=[];state.draftStep=1;renderNew();
 }
 function renderNew(){
