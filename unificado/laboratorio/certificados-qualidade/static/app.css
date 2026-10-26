@@ -9,3 +9,5 @@
 .view-tabs .nav:hover{color:#174d8b;background:#edf4fc}
 .view-tabs .nav.active{color:#174d8b;background:transparent;border-bottom-color:#f28a39}
 @media(max-width:700px){.view-tabs{margin:0 0 18px}.view-tabs .nav{font-size:12px;padding:10px 12px}}
+
+td:first-child input.model{min-width:180px}

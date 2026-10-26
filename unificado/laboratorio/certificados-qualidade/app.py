@@ -186,10 +186,11 @@ def _save_items(cur, cert_id, items):
 
 
 def _check_models(cur, items):
-    chosen={item.modelo.strip() for item in items}
-    existing={row['modelo'] for row in cur.execute('SELECT modelo FROM cq_modelos_poste WHERE ativo').fetchall()}
-    if not chosen <= existing:
-        raise HTTPException(422,'Selecione modelos ativos do cadastro de postes.')
+    # O cadastro serve para sugerir medidas, não para limitar os modelos do certificado.
+    # O texto informado fica preservado no item, inclusive para modelos ainda não cadastrados.
+    for item in items:
+        if not item.modelo.strip() or len(item.modelo.strip()) > 64:
+            raise HTTPException(422, 'Informe um modelo de poste com até 64 caracteres.')
 
 
 @app.post('/api/certificados')
