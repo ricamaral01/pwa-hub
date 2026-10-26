@@ -89,7 +89,14 @@ def main() -> None:
             frame.locator('#historico').wait_for()
             assert frame.locator('#historico').is_visible()
             assert frame.locator('#notice.error').is_hidden()
-            print('shell', width, height, 'no nested sidebar, history loaded')
+            if width > 600:
+                page.get_by_role('link', name='Cadastros de certificados').click()
+            else:
+                frame.locator('.view-tabs [data-view="cadastros"]').click()
+            frame.locator('#cadastros').wait_for()
+            assert frame.locator('#cadastros').is_visible()
+            assert frame.locator('#notice.error').is_hidden()
+            print('shell', width, height, 'no nested sidebar, history and registers loaded')
             assert not failures, failures
             context.close()
         browser.close()
