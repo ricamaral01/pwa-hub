@@ -26,6 +26,7 @@ from .postes_db import (Absorption, AbsorptionSheet, Criterion, Equipment, Inspe
 from .postes_rules import (INSPECTION_ITEMS, MEASUREMENT_ITEMS, absorcao, avaliar,
                            catalog_nominals, dec, normalizar_inspecao, parametros)
 from .postes_report_v2 import report_html_v2 as report_html, report_pdf_v2 as report_pdf
+from .postes_public import report_url, valid_report_token, verification_html
 from .postes_reports import report_xlsx
 from .absorcao_sheet import calculate_sheet
 
@@ -631,7 +632,12 @@ def finalize(test_id: str, user=Depends(current_user), session=Depends(db)):
                        or "PENDENTE" in inspection["checklist"].values()
                        or any(row["status"] == "PENDENTE" for row in inspection["medidas"].values())
                        or not str(record.inspecao_data.get("fonte_limites", "")).strip()):
-        raise HTTPException(409, "Complete a checklist e as medições da inspeção geral.")
+        pending = [label for key, (label, _) in MEASUREMENT_ITEMS.items()
+                   if inspection["medidas"].get(key, {}).get("status") == "PENDENTE"]
+        pending += [label for key, label in INSPECTION_ITEMS.items()
+                    if inspection["checklist"].get(key) == "PENDENTE"]
+        detail = ", ".join(pending) if pending else "revise a checklist e as medições"
+        raise HTTPException(409, f"Inspeção pendente: {detail}.")
     if inspection and not record.numero_serie_poste:
         raise HTTPException(409, "Informe o número de série do poste.")
     if record.equipamento_id is None: raise HTTPException(409, "Selecione o equipamento de ensaio.")
@@ -877,14 +883,42 @@ def read_test(test_id: str, user=Depends(current_user), session=Depends(db)):
 
 
 @router.get("/api/ensaios/{test_id}/relatorio", response_class=HTMLResponse)
-def printable(test_id: str, user=Depends(current_user), session=Depends(db)):
-    return HTMLResponse(report_html(get_test(session, test_id), session),
+def printable(test_id: str, request: Request, user=Depends(current_user), session=Depends(db)):
+    record = get_test(session, test_id)
+    return HTMLResponse(report_html(record, session, report_url(record, request)),
                         headers={"Cache-Control": "no-store, max-age=0"})
 
 
 @router.get("/api/ensaios/{test_id}/laudo.pdf")
-def pdf(test_id: str, user=Depends(current_user), session=Depends(db)):
-    content = report_pdf(get_test(session, test_id), session)
+def pdf(test_id: str, request: Request, user=Depends(current_user), session=Depends(db)):
+    record = get_test(session, test_id)
+    content = report_pdf(record, session, report_url(record, request))
     return StreamingResponse(io.BytesIO(content), media_type="application/pdf",
                              headers={"Content-Disposition": f'attachment; filename="laudo_{test_id}.pdf"',
                                       "Cache-Control": "no-store, max-age=0"})
+
+
+def verified_report(test_id: str, token: str, session):
+    if not valid_report_token(test_id, token):
+        raise HTTPException(404, "Laudo não encontrado.")
+    record = get_test(session, test_id)
+    if record.status != "finalizado":
+        raise HTTPException(404, "Laudo não encontrado.")
+    return record
+
+
+@router.get("/v/postes/{test_id}/{token}", response_class=HTMLResponse)
+def public_report(test_id: str, token: str, request: Request, session=Depends(db)):
+    record = verified_report(test_id, token, session)
+    return HTMLResponse(verification_html(record, report_url(record, request)),
+                        headers={"Cache-Control": "private, no-store", "X-Frame-Options": "DENY",
+                                 "X-Content-Type-Options": "nosniff"})
+
+
+@router.get("/v/postes/{test_id}/{token}/laudo.pdf")
+def public_pdf(test_id: str, token: str, request: Request, session=Depends(db)):
+    record = verified_report(test_id, token, session)
+    content = report_pdf(record, session, report_url(record, request))
+    return StreamingResponse(io.BytesIO(content), media_type="application/pdf",
+                             headers={"Content-Disposition": f'attachment; filename="laudo_{test_id}.pdf"',
+                                      "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff"})
