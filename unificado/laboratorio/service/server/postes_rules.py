@@ -193,19 +193,40 @@ def limites_dimensionais(poste, criteria):
 
 
 def normalizar_inspecao(inspecao, poste, criteria):
-    """Server owns the limits even if a client submits different numbers."""
+    """Keep sourced limits authoritative and accept manual gaps for measured dimensions."""
     if inspecao is None:
         return None
     limits = limites_dimensionais(poste, criteria)
     if limits is None:  # Historical criterion snapshots retain their original limits.
         return inspecao
     measures = inspecao.get("medidas") or {}
+    circular = poste["tipo"].upper() in {"C", "R"}
+    manual_keys = {"comprimento", "engastamento"} | (
+        {"diametro_base", "diametro_topo"} if circular else
+        {"largura_base", "largura_topo", "espessura_base", "espessura_topo"})
+    normalized = {}
+    manual_used = False
+    for key, limit in limits.items():
+        alias = (key.replace("espessura_", "diametro_") if poste["face"].upper() == "B" else
+                 key.replace("largura_", "diametro_"))
+        submitted = measures.get(key) or measures.get(alias) or {}
+        reading = submitted.get("leitura_mm")
+        if limit["aplicavel"]:
+            normalized[key] = {**limit, "leitura_mm": reading, "origem": "tabela"}
+        elif key in manual_keys and any(submitted.get(field) is not None
+                                        for field in ("min_mm", "max_mm", "leitura_mm")):
+            normalized[key] = {**limit, "min_mm": submitted.get("min_mm"),
+                               "max_mm": submitted.get("max_mm"), "leitura_mm": reading,
+                               "aplicavel": True, "origem": "manual"}
+            manual_used = True
+        else:
+            normalized[key] = {**limit, "leitura_mm": None}
     source = ("ABNT NBR 8451-5:2020, Anexo A: L ± 0,05 m; seção sem modelo correspondente (N/A)"
               if poste["tipo"].upper() == "PL" else criteria["dimensional"]["fonte"])
+    if manual_used:
+        source += "; limites sem referência informados manualmente no ensaio"
     return {"checklist": inspecao.get("checklist") or {},
-            "medidas": {key: {**limit, "leitura_mm": (measures.get(key) or measures.get(
-                key.replace("espessura_", "diametro_") if poste["face"].upper() == "B" else key.replace("largura_", "diametro_")) or {}).get("leitura_mm")}
-                        for key, limit in limits.items()},
+            "medidas": normalized,
             "fonte_limites": source}
 
 

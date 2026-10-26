@@ -117,7 +117,10 @@ def report_rows(record):
             interval = (f"{fmt(lower, 1)} a {fmt(upper, 1)} {unit}"
                         if lower is not None and upper is not None else
                         "N/A — modelo sem seção parametrizada" if value.get("status") == "N/A" else "A informar")
-            rows.append(Row("Medições", label, source, interval, f"{fmt(measured, 1)} {unit}",
+            measure_source = ("Limites informados manualmente no ensaio"
+                              if recorded_inspection.get("medidas", {}).get(key, {}).get("origem") == "manual"
+                              else source)
+            rows.append(Row("Medições", label, measure_source, interval, f"{fmt(measured, 1)} {unit}",
                             f"{fmt(value.get('uso_tolerancia_pct'), 1)}%" if value.get("uso_tolerancia_pct") is not None else "—",
                             status(value.get("status"))))
     else:

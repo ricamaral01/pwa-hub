@@ -153,6 +153,7 @@ class MeasurementInput(Strict):
     max_mm: Decimal | None = Field(default=None, ge=0)
     leitura_mm: Decimal | None = Field(default=None, ge=0)
     aplicavel: bool | None = None
+    origem: Literal["manual", "tabela"] | None = None
 
     @field_validator("nominal_mm", "min_mm", "max_mm", "leitura_mm", mode="before")
     @classmethod

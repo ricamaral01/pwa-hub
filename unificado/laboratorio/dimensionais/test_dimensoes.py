@@ -22,6 +22,7 @@ class DimensionalReferenceTests(unittest.TestCase):
             "tolerancia_secao_mm": "5",
             "tolerancia_engastamento_mm": "15",
             "tolerancia_furacao_mm": None,
+            "fonte": "Tabela dimensional A.1/A.2",
         }}
 
     def test_circular_a1_variants_and_length(self):
@@ -71,6 +72,42 @@ class DimensionalReferenceTests(unittest.TestCase):
         limits = rules.limites_dimensionais(pole, self.criteria)
         self.assertFalse(limits["comprimento"]["aplicavel"])
         self.assertFalse(limits["largura_base"]["aplicavel"])
+
+    def test_manual_interval_for_missing_reference_is_evaluated_and_identified(self):
+        pole = {"tipo": "C", "face": "C", "conicidade": "A", "altura_m": 10,
+                "resistencia_daN": 250, "dimensoes_nominais": {}}
+        inspection = rules.normalizar_inspecao({"checklist": {}, "medidas": {
+            "diametro_base": {"min_mm": "300", "max_mm": "320", "leitura_mm": "311"}}},
+            pole, self.criteria)
+        measure = inspection["medidas"]["diametro_base"]
+        self.assertEqual(measure["origem"], "manual")
+        self.assertEqual((measure["min_mm"], measure["max_mm"]), ("300", "320"))
+        self.assertIn("manualmente", inspection["fonte_limites"])
+        self.assertEqual(rules.avaliar_inspecao(inspection)["medidas"]["diametro_base"]["status"], "DENTRO")
+        inspection["medidas"]["diametro_base"]["leitura_mm"] = "321"
+        self.assertEqual(rules.avaliar_inspecao(inspection)["medidas"]["diametro_base"]["status"], "FORA")
+        inspection["medidas"]["diametro_base"]["max_mm"] = None
+        self.assertEqual(rules.avaliar_inspecao(inspection)["medidas"]["diametro_base"]["status"], "PENDENTE")
+
+    def test_sourced_interval_cannot_be_overridden_manually(self):
+        pole = {"tipo": "C", "face": "C", "conicidade": "A", "altura_m": 9,
+                "resistencia_daN": 150, "dimensoes_nominais": {"diametro_base": 320}}
+        inspection = rules.normalizar_inspecao({"medidas": {
+            "diametro_base": {"min_mm": "100", "max_mm": "400", "leitura_mm": "321"}}},
+            pole, self.criteria)
+        measure = inspection["medidas"]["diametro_base"]
+        self.assertEqual((measure["min_mm"], measure["max_mm"]), (315, 325))
+        self.assertEqual(measure["origem"], "tabela")
+
+    def test_manual_interval_is_limited_to_expected_dimensions(self):
+        pole = {"tipo": "C", "face": "C", "conicidade": "A", "altura_m": 10,
+                "resistencia_daN": 250, "dimensoes_nominais": {}}
+        inspection = rules.normalizar_inspecao({"medidas": {
+            "largura_base": {"min_mm": "100", "max_mm": "120", "leitura_mm": "110"},
+            "furacao_f": {"min_mm": "100", "max_mm": "120", "leitura_mm": "110"}}},
+            pole, self.criteria)
+        self.assertFalse(inspection["medidas"]["largura_base"]["aplicavel"])
+        self.assertFalse(inspection["medidas"]["furacao_f"]["aplicavel"])
 
 
 if __name__ == "__main__":
