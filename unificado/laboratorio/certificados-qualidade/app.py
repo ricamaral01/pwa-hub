@@ -86,6 +86,10 @@ class Draft(BaseModel):
     itens: list[Item]
 
 
+class ResultsRequest(BaseModel):
+    itens: list[Item]
+
+
 class Press(BaseModel):
     fabricante: str
     modelo: str
@@ -165,9 +169,7 @@ def config(actor: dict = Depends(user)):
 
 
 @app.post('/api/resultados')
-def results(body: Draft, _: dict = Depends(mutating)):
-    if body.resp_laboratorio not in RESPONSAVEIS_LABORATORIO:
-        raise HTTPException(422, 'Responsável inválido.')
+def results(body: ResultsRequest, _: dict = Depends(mutating)):
     days = validate_items([item.model_dump(mode='json') for item in body.itens])
     with db() as conn:
         with conn.cursor() as cur:
