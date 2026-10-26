@@ -120,3 +120,4 @@ def test_draft_pdf_includes_engineer_signature_and_remains_draft(tmp_path):
     text=page.extract_text()
     assert 'RASCUNHO' in text
     assert 'Prévia de rascunho, sem validade comercial.' in text
+    assert 'Gerente de Qualidade' in text

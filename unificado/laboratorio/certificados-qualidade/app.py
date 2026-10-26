@@ -437,7 +437,7 @@ def update_params(fck_mpa:float, observacoes:str='',
     if actor['id'] not in CORRECTORS: raise HTTPException(403,'Parâmetros restritos aos responsáveis autorizados.')
     if not 1 <= fck_mpa <= 200: raise HTTPException(422,'fck inválido.')
     if resp_laboratorio_padrao is not None and resp_laboratorio_padrao not in RESPONSAVEIS_LABORATORIO:
-        raise HTTPException(422,'Responsável pelo laboratório inválido.')
+        raise HTTPException(422,'Gerente de Qualidade inválido.')
     with db() as conn:
         with conn.cursor() as cur:
             cur.execute('''UPDATE cq_parametros SET fck_mpa=%s,observacoes=%s,

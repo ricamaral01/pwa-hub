@@ -187,7 +187,7 @@ def _signatures(canvas, cert, issued, signature_path, expanded):
         canvas.drawImage(signature_path,x2+col/2-58,line_y+2,
                          width=116,height=height,preserveAspectRatio=True,mask='auto')
     _text(canvas,x1+col/2,line_y-14,cert.get('resp_laboratorio') or '—',8.5,True,align='center')
-    _text(canvas,x1+col/2,line_y-27,'Responsável pelo laboratório',7.8,False,MUTED,align='center')
+    _text(canvas,x1+col/2,line_y-27,'Gerente de Qualidade',7.8,False,MUTED,align='center')
     _text(canvas,x2+col/2,line_y-14,'Eng. Marcelo Eduardo Ishizaki de Sousa',8.2,True,align='center')
     _text(canvas,x2+col/2,line_y-27,'Engenheiro responsável · CREA 5063392251',7.4,False,MUTED,align='center')
     return line_y+(54 if expanded else 37)
