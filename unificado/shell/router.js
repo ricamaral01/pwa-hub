@@ -267,7 +267,6 @@
     const screenId = screenFor(route);
     if (!screenId || !window.UnificadoScreenAccess.moduleAllowed(route.module) ||
         !window.UnificadoScreenAccess.allowed(screenId)) { deny(); return; }
-    if (route.module === 'planejamento' && !hasPcp) return;
     if (route.module === 'producao' && !hasMapa) return;
     if (route.module === 'usinas' && !hasMapa) return;
     if (route.module === 'laboratorio' && !hasLab) return;

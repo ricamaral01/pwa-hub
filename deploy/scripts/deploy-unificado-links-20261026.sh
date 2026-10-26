@@ -83,7 +83,7 @@ done
 systemctl restart "$service"
 systemctl is-active --quiet "$service"
 nginx -t
-[[ "$(curl -fkLsS "$origin/unificado/VERSION")" == '1.0.101' ]]
+[[ "$(curl -fkLsS "$origin/unificado/VERSION")" == '1.0.102' ]]
 [[ "$(curl -kLsS -o /dev/null -w '%{http_code}' "$origin/unificado/")" == '200' ]]
 trap - ERR
 echo "DEPLOY_OK=$environment"
