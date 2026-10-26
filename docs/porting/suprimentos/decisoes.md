@@ -58,3 +58,11 @@ Os itens D1–D14 são vinculantes. A implementação deve registrar qualquer im
 | D30 | A integração do estoque da usina é exclusivamente serviço a serviço no loopback da VPS nova, com assertion HMAC de 30 segundos, unidade e audiência fixas. A chave fica fora do Git. A flag S4 começa desligada até o Laboratório assumir a origem física dos dados. |
 | D31 | Sugestões do Laboratório têm chave de origem única por unidade e não criam solicitação automaticamente. Compras as consulta no Painel; material `insumo_usina` só aparece no catálogo e entra em solicitação quando S4 estiver habilitada. |
 | D32 | A confirmação física do Laboratório baixa a OC e a solicitação, cria evento e avaliação IQF, mas nunca lança movimento no almoxarifado. Cada entrega parcial tem chave própria; repetição com conteúdo diferente é conflito. |
+
+## Decisões F5 — análises
+
+| ID | Decisão |
+|---|---|
+| D33 | O período é a coorte de criação para lead time de solicitações e OCs; para consumo/IQF/SLA, é a data do evento. Cada indicador publica sua regra e fonte na tela e nas exportações. |
+| D34 | Estoque físico não tem centro de custo. Valor, giro, cobertura e itens zerados só aparecem em visão da unidade inteira; consultas com CC selecionado ou papel restrito a CC ocultam esses totais. |
+| D35 | O SLA histórico de primeiro nível usa a criação da solicitação como início aproximado, e o giro usa o valor do estoque atual como denominador. Essas limitações são explicitadas no relatório até haver snapshots históricos por decisão e saldo. |

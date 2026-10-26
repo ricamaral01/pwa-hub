@@ -15,6 +15,7 @@
 | F2 · Almoxarifado geral | **Concluída em homologação** | [12-almoxarifado.md](12-almoxarifado.md); versão 1.0.77, `27 passed`, smoke `43/43`, layout `84/84`, formulários `4/4`, rollback da migração e reinstalação | Valores de inventário `a_confirmar`; F3 NF e inspeção |
 | F3 · NF, recebimento e inspeção | **Concluída em homologação** | [13-recebimento-nf-inspecao.md](13-recebimento-nf-inspecao.md); versão 1.0.81, `31 passed`, smoke `43/43`, layout `252/252` + complemento `84/84`, retorno `sup_0009` testado | Provedor IA e contrato automático de NC ainda sem chave/serviço; F4 integração Laboratório |
 | F4 · Contrato com Laboratório | **Concluída em homologação** | [14-integracao-laboratorio.md](14-integracao-laboratorio.md); versão 1.0.84, `34 passed`, migração ida/volta/ida, smoke `43/43`, Painel real `28/28` e cartão simulado `28/28`, retorno e reinstalação testados | Flag S4 desligada até migração do Laboratório; F5 Análises |
+| F5 · Análises | **Concluída em homologação** | [15-analises.md](15-analises.md); versão 1.0.88, `37 passed`, migração ida/volta/ida, 50 mil movimentos em `0,310 s`, layout `28/28`, PDF renderizado, smoke `43/43`, retorno/reinstalação testados | SLA histórico e giro com premissas explícitas; F6 manual visual |
 
 **Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
 
