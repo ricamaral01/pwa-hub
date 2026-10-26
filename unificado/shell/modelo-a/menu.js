@@ -5947,7 +5947,9 @@ const cn = {
       ["qualidadeCadastros", "Cadastros", "qualidade/cadastros", "database"]
     ]),
     pe("CERTIFICADOS", [
-      ["labCertificados", "Certificados de qualidade", "laboratorio/certificados-qualidade/", "doc"],
+      ["labCertificados", "Emitir certificado de qualidade", "laboratorio/certificados-qualidade/", "doc"],
+      ["labCertificadosHistorico", "Histórico de certificados", "laboratorio/certificados-qualidade/?tab=historico", "history"],
+      ["labCertificadosCadastros", "Cadastros de certificados", "laboratorio/certificados-qualidade/?tab=cadastros", "database"],
       ["labTests", "Certificados de ensaios", "laboratorio/novo/postes?tab=historico", "doc"]
     ])
   ] },

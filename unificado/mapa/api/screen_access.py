@@ -106,6 +106,8 @@ def screen_for_uri(original_uri, screen_header=''):
         return BY_ID.get('labCecRelatorio')
     if path.startswith('/unificado/laboratorio/dosagem/'):
         return BY_ID.get('labDosagem')
+    if path.startswith('/unificado/laboratorio/certificados-qualidade/'):
+        return BY_ID.get('labCertificados')
     if path.startswith('/unificado/laboratorio/usinas-relatorios/'):
         return BY_ID.get('labUsinasRelatorios')
     if path in {'/unificado/relatorios/fechamento-diario/',

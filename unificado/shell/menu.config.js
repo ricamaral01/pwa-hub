@@ -90,7 +90,9 @@ const MENU_CONFIG = {
       { id:'qualidadeCadastros', label:'Cadastros', path:'cadastros' }
     ] },
       { label: 'Certificados', items: [
-        { id:'labCertificados', label:'Certificados de qualidade', path:'/unificado/laboratorio/certificados-qualidade/' },
+        { id:'labCertificados', label:'Emitir certificado de qualidade', path:'/unificado/laboratorio/certificados-qualidade/' },
+        { id:'labCertificadosHistorico', label:'Histórico de certificados', path:'/unificado/laboratorio/certificados-qualidade/?tab=historico', permissionId:'labCertificados' },
+        { id:'labCertificadosCadastros', label:'Cadastros de certificados', path:'/unificado/laboratorio/certificados-qualidade/?tab=cadastros', permissionId:'labCertificados' },
         { id:'labTests', label:'Certificados de ensaios', path:'/unificado/laboratorio/novo/postes?tab=historico' }
       ] }]
   },

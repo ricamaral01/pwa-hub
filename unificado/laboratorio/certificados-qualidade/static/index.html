@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Certificados de qualidade · Laboratório</title>
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+<div class="shell">
+  <main>
+    <header class="top">
+      <div><p class="eyebrow">QUALIDADE / CERTIFICADOS DE QUALIDADE</p><h1 id="page-title">Emitir certificado</h1><p class="sub">Resistências vinculadas à data de produção, com resultados do Controle Estatístico.</p></div>
+      <div class="account" id="account">Unificado</div>
+    </header>
+    <nav class="view-tabs" aria-label="Certificados de qualidade">
+      <button type="button" class="nav active" data-view="emitir">Emitir certificado</button>
+      <button type="button" class="nav" data-view="historico">Histórico</button>
+      <button type="button" class="nav" data-view="cadastros">Cadastros</button>
+    </nav>
+    <div id="validation" class="notice validation" role="status" hidden></div>
+    <div id="notice" class="notice" role="status" hidden></div>
+
+    <section id="emitir" class="view">
+      <div class="step"><span>01</span><div><strong>Identificação e cliente</strong><small>Dados que serão impressos no certificado.</small></div></div>
+      <div class="card grid3">
+        <label>Data de emissão<input id="date" type="date"></label>
+        <label>Cliente<input id="client" maxlength="200" placeholder="Razão social"></label>
+        <label>Nota fiscal<input id="invoice" maxlength="100" placeholder="Nº da NF"></label>
+        <label class="wide">Endereço<input id="address" maxlength="300" placeholder="Endereço completo"></label>
+      </div>
+      <div class="step"><span>02</span><div><strong>Postes produzidos</strong><small>Informe até 10 datas de produção distintas.</small></div></div>
+      <div class="card">
+        <div class="card-head"><div><h2>Produtos</h2><p>O lote é gerado pela data de produção.</p></div><button class="secondary" id="add-item">+ Adicionar poste</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Modelo</th><th>Altura (m)</th><th>Carga (daN)</th><th>Peso (kg)</th><th>Qtd.</th><th>Data produção</th><th>Lote</th><th></th></tr></thead><tbody id="items"></tbody></table></div>
+      </div>
+      <div class="step"><span>03</span><div><strong>Resistências dos corpos de prova</strong><small>Leitura automática e somente leitura do Controle Estatístico.</small></div></div>
+      <div class="card">
+        <div class="card-head"><div><h2>Resultados por data</h2><p>Conforme quando a média aos 28 dias é maior que o fck.</p></div><button class="secondary" id="check">↻ Consultar CPs</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Data produção / lote</th><th>Traço</th><th>CPs</th><th>3 dias</th><th>7 dias</th><th>28 dias</th><th>Mín. 28d</th><th>Situação</th></tr></thead><tbody id="results"><tr><td colspan="8" class="empty">Adicione os postes e consulte as resistências.</td></tr></tbody></table></div>
+        <p class="hint" id="fck">fck padrão: 35,00 MPa</p>
+      </div>
+      <div class="step"><span>04</span><div><strong>Responsáveis e prensa</strong><small>Escolha os dados deste certificado; ajuste os cadastros quando necessário.</small></div></div>
+      <div class="card grid2">
+        <div class="config-field"><label>Responsável pelo laboratório<select id="responsible"></select></label><button class="inline-link" id="configure-responsible" type="button">Definir responsável padrão em Cadastros</button></div>
+        <div class="config-field"><label>Prensa de aferição<select id="press"><option value="">Selecione a prensa</option></select></label><small id="press-status" class="field-status" role="status"></small><button class="inline-link" id="configure-press" type="button">Configurar prensa e calibrador</button></div>
+        <label>Responsável técnico<input value="Eng. Marcelo Eduardo Ishizaki de Sousa · CREA 5063392251" disabled></label>
+        <label>Observações<input id="notes" maxlength="2000"></label>
+      </div>
+      <div class="actions"><button class="secondary" id="new">Novo certificado</button><button class="secondary" id="save">Salvar rascunho</button><button class="secondary" id="preview">Pré-visualizar PDF</button><button class="primary" id="issue" disabled>Emitir certificado</button></div>
+    </section>
+
+    <section id="historico" class="view" hidden>
+      <div class="card"><div class="card-head"><div><h2>Histórico de certificados</h2><p>Rascunhos, emitidos, substituídos e legado.</p></div><input id="search" placeholder="Buscar número ou cliente" aria-label="Buscar certificado"></div><div id="history" class="history"></div></div>
+    </section>
+
+    <section id="cadastros" class="view" hidden>
+      <div class="card" id="press-card">
+        <h2>Prensas de aferição</h2><p>Cadastre o emissor do certificado de calibração de cada prensa. Certificados emitidos preservam os dados e o PDF originais.</p>
+        <div id="press-list" class="history"></div>
+        <form id="press-form" class="grid3">
+          <div class="form-heading"><strong id="press-form-title">Cadastrar prensa</strong><small>Dados da calibração usados na próxima emissão.</small></div>
+          <label>Fabricante<input name="fabricante" required></label>
+          <label>Modelo<input name="modelo" required></label>
+          <label>Série<input name="serie" required></label>
+          <label>Patrimônio<input name="patrimonio"></label>
+          <label>Capacidade (kN)<input name="capacidade_kn" type="number" step="0.01"></label>
+          <label>Classe<input name="classe"></label>
+          <label>Certificado de calibração<input name="certificado_calibracao" required></label>
+          <label>Empresa/laboratório calibrador<input name="laboratorio_rbc" required placeholder="Emissor do certificado de calibração"></label>
+          <label>Data calibração<input name="data_calibracao" type="date" required></label>
+          <label>Validade<input name="validade" type="date" required></label>
+          <label>Arquivo da calibração (PDF, até 8 MB)<input name="arquivo" type="file" accept="application/pdf"></label>
+          <div class="form-action"><button class="primary" id="press-submit">Cadastrar prensa</button><button class="secondary" id="press-cancel" type="button" hidden>Cancelar edição</button></div>
+        </form>
+      </div>
+      <div class="card"><h2>Modelos de poste</h2><div id="model-list" class="history"></div><form id="model-form" class="grid3"><label>Modelo<input name="modelo" required></label><label>Altura (m)<input name="altura_m" type="number" step="0.01"></label><label>Carga (daN)<input name="carga_dan" type="number" step="0.01"></label><label>Peso (kg)<input name="peso_kg" type="number" step="0.01"></label><div class="form-action"><button class="primary">Salvar modelo</button></div></form></div>
+      <div class="card" id="params-card" hidden>
+        <h2>Parâmetros do certificado</h2><p>O responsável padrão preenche novos certificados; em cada emissão você pode escolher Ricardo ou Philippe.</p>
+        <form id="params-form" class="grid2">
+          <label>Responsável padrão pelo laboratório<select name="resp_laboratorio_padrao" required></select></label>
+          <label>fck padrão (MPa)<input name="fck_mpa" type="number" min="1" max="200" step="0.01" required></label>
+          <label class="wide">Observações padrão<input name="observacoes"></label>
+          <div class="form-action"><button class="primary">Salvar parâmetros</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="./app.js" defer></script>
+</body>
+</html>
