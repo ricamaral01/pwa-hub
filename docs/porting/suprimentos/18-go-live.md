@@ -1,5 +1,7 @@
 # F8 — Homologação final e pacote de entrada em produção
 
+**Atualização posterior:** Suprimentos foi publicado na produção em 26/10/2026, versão 1.0.95. Veja [19-producao.md](19-producao.md). O estado abaixo registra a entrega F8 antes da publicação.
+
 **Estado em 26/10/2026:** F8 concluída somente em `https://concrefer.concretrack.com.br:18446`. Versão final da casca, `APP_VERSION` e caches dos dois service workers: **1.0.94**. Banco isolado `suprimentos_homolog_20261025`, Alembic `sup_0012`. **Nenhum comando deste runbook foi executado em produção; nenhum push foi feito.**
 
 ## 1. Homologação final

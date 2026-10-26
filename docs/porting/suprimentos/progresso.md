@@ -19,8 +19,9 @@
 | F6 · Manual visual | **Concluída em homologação** | [16-manual.md](16-manual.md); versão 1.0.89, 33 telas, 93 capturas, 279 marcadores, PDF 78 páginas renderizadas, `37 passed`, smoke `43/43`, retorno/reinstalação testados | Dados DEMO mantidos até a liberação final; F7 revisão integrada |
 | F7 · Revisão integrada | **Concluída em homologação** | [17-revisao-final.md](17-revisao-final.md); versão 1.0.90, serviço `37 passed` × 3, UI `8 passed` × 3, layout `348/348` × 3, acessos 5/5 × 3, 114 rotas auditadas, EXPLAIN, dump/restore, smoke `43/43`, retorno/reinstalação | Duas atribuições em `.env.production` legado no HEAD exigem remoção/rotação separada; F8 pacote de entrada em produção |
 | F8 · Homologação final e pacote | **Concluída em homologação; parada prevista** | [18-go-live.md](18-go-live.md); versão 1.0.94, flags S0/S1/S2/S3A/S3B/S5 ligadas, S4/e-mail desligados, smoke `43/43`, acessos 5/5 idênticos; menu Indicadores e upload até 12 MB corrigidos; 4 patches aplicados em cópia da produção, 7 CSV validados, retorno/reinstalação testados | **Nenhuma produção/push**; preencher cadastros, valores e responsáveis, testar iPhone físico, resolver segredo legado e revisar DSNs antes do runbook |
+| Publicação posterior à F8 | **Concluída em produção** | [19-producao.md](19-producao.md); versão 1.0.95, banco isolado `sup_0012`, gate de produção `7/7`, assertions dos três masters e 403 sem papel, retorno automático nas tentativas anteriores | Cadastros, alçadas e estoque de abertura reais ainda serão configurados pelos gestores; S4/e-mail/IA permanecem desligados |
 
-**Limite operacional:** nenhuma alteração em produção ou na VPS antiga; nenhum push.
+**Limite operacional histórico das etapas E1–F8:** até o fim da F8 não houve produção nem push. A publicação posterior está documentada em `19-producao.md`; a VPS antiga não foi acessada e não houve push nesta tarefa.
 
 ## Histórico de bloqueio da E2 e retomada — 25/10/2026
 
