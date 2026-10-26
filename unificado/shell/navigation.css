@@ -30,9 +30,6 @@
 @media(min-width:768px) and (max-width:1279px){
   .nav-modern{width:84px}.nav-rail{display:flex}.nav-panel{display:none;position:fixed;top:0;bottom:0;left:84px;width:300px;z-index:90;background:var(--nav-bg);box-shadow:12px 0 25px #0b223d44}.nav-tablet-open .nav-panel{display:flex}.nav-modern .nav-panel-close{display:block}.nav-modern .nav-module-area{display:none}.nav-modern-ready .main-panel{width:calc(100vw - 84px)}
 }
-.nav-modern[data-module="suprimentos"] .nav-switcher-code,
-.nav-modern .nav-rail-item[aria-label="Suprimentos"].is-active .nav-rail-code,
-.nav-modern[data-module="suprimentos"] .nav-module-chip.is-active{background:#2DD4BF;color:#0B1730}
 @media(min-width:1280px){.nav-modern .nav-panel-close{display:block}.nav-module-switcher{display:flex}.nav-module-area{display:none}.nav-modern.nav-modules-open .nav-module-area{display:flex;position:absolute;top:132px;left:12px;right:12px;z-index:110;max-height:min(60dvh,430px);flex-direction:column;overflow-y:auto;overflow-x:hidden;padding:7px;border:1px solid #ffffff35;border-radius:11px;background:#173a5b;box-shadow:0 14px 30px #04172dbb}.nav-modern.nav-modules-open .nav-module-chip{text-align:left;width:100%}}
 @media(max-width:767px){
   html,body{max-width:100%;overflow-x:hidden}.nav-modern-ready .desktop-only{display:block;height:auto;min-height:100dvh;padding:0;overflow:visible}.nav-modern-ready .main-panel{display:flex;flex-direction:column;width:100%;height:100dvh;min-height:0;padding-bottom:calc(70px + env(safe-area-inset-bottom));overflow:hidden}

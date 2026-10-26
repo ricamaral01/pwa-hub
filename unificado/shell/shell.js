@@ -263,26 +263,44 @@ function sharedMenuChip(link, code) {
   return link;
 }
 
-const APP_VERSION = '1.0.43';
+const APP_VERSION = '1.0.98';
 let platformUpdateAvailable = false;
-async function checkPlatformUpdate() {
+let platformUpdateState = 'checking';
+let platformLatestVersion = APP_VERSION;
+let platformUpdateFailures = 0;
+function publishUpdateState(state, latest = platformLatestVersion) {
+  platformUpdateState = state;
+  platformLatestVersion = latest;
+  platformUpdateAvailable = state === 'available';
   const button = document.getElementById('platform-update');
   const status = document.getElementById('platform-update-status');
-  if (!button || !status) return;
+  if (button && status) {
+    button.disabled = !['available', 'failed'].includes(state);
+    status.textContent = state === 'available' ? `v${latest} disponível` :
+      state === 'updating' ? 'Atualizando… não feche' :
+      state === 'failed' ? 'Não atualizou — tentar de novo' :
+      state === 'checking' ? 'Verificando…' : `v${APP_VERSION} em dia`;
+    button.title = state === 'available' ? `Atualizar aplicação para a versão ${latest}` :
+      state === 'failed' ? 'Tentar atualizar novamente' : `Aplicação na versão ${APP_VERSION}`;
+  }
+  dispatchEvent(new Event('unificado-sidebar-model-a-update'));
+  document.dispatchEvent(new CustomEvent('unificado-update-state', {
+    detail: {state, current:APP_VERSION, latest, failures:platformUpdateFailures}
+  }));
+}
+async function checkPlatformUpdate() {
+  if (platformUpdateState === 'updating') return;
   try {
-    const response = await fetch('/unificado/VERSION', {cache:'no-store'});
+    const response = await fetch(`/unificado/VERSION?check=${Date.now()}`, {cache:'no-store'});
     if (!response.ok) throw new Error('Versão indisponível');
     const latest = (await response.text()).trim();
     if (!latest) throw new Error('Versão indisponível');
-    platformUpdateAvailable = latest.localeCompare(APP_VERSION, undefined, {numeric:true}) > 0;
-    button.disabled = !platformUpdateAvailable;
-    status.textContent = platformUpdateAvailable ? `v${latest} disponível` : `v${APP_VERSION} em dia`;
-    button.title = platformUpdateAvailable ? `Atualizar aplicação para a versão ${latest}` : `Aplicação atualizada na versão ${APP_VERSION}`;
+    const newer = latest.localeCompare(APP_VERSION, undefined, {numeric:true}) > 0;
+    if (!newer) platformUpdateFailures = 0;
+    publishUpdateState(newer ? 'available' : 'current', latest);
   } catch {
-    platformUpdateAvailable = false;
-    button.disabled = true;
-    button.title = 'Não foi possível verificar a versão';
-    status.textContent = 'Não verificado';
+    platformUpdateFailures++;
+    publishUpdateState('failed');
   }
 }
 function waitForWorkerState(worker, accepted, timeoutMs = 15000) {
@@ -330,14 +348,23 @@ async function waitForController(worker) {
   });
 }
 async function updateApplication(button) {
-  if (button.disabled || !platformUpdateAvailable) return;
-  const label = button.querySelector('#platform-update-status, .sb-label') || button;
-  const originalLabel = label.textContent;
-  button.disabled = true;
-  label.textContent = 'Atualizando…';
+  if (platformUpdateState === 'updating') return;
+  publishUpdateState('updating');
   try {
-    const version = await fetch('/unificado/VERSION', {cache:'no-store'});
+    const version = await fetch(`/unificado/VERSION?update=${Date.now()}`, {cache:'no-store'});
     if (!version.ok) throw new Error('Não foi possível consultar a versão.');
+    const latest = (await version.text()).trim();
+    if (!latest) throw new Error('Versão indisponível.');
+    if (latest.localeCompare(APP_VERSION, undefined, {numeric:true}) <= 0) {
+      if ('serviceWorker' in navigator) {
+        const shell = await navigator.serviceWorker.getRegistration('/unificado/');
+        if (shell) await shell.update();
+      }
+      sessionStorage.setItem('unificado-update-toast', `Você já está na versão mais recente (${APP_VERSION})`);
+      location.reload();
+      return;
+    }
+    platformLatestVersion = latest;
     if ('serviceWorker' in navigator) {
       await accessReady;
       const shell = await navigator.serviceWorker.register('/unificado/sw.js',
@@ -359,10 +386,30 @@ async function updateApplication(button) {
     }
     location.reload();
   } catch (error) {
-    label.textContent = 'Falha ao atualizar';
-    button.title = error.message || 'Tente novamente.';
-    setTimeout(() => { label.textContent = originalLabel; button.disabled = !platformUpdateAvailable; }, 4000);
+    platformUpdateFailures++;
+    publishUpdateState('failed');
+    console.warn('Atualização do Unificado falhou:', error);
   }
+}
+window.addEventListener('load', () => {
+  const message = sessionStorage.getItem('unificado-update-toast');
+  if (!message) return;
+  sessionStorage.removeItem('unificado-update-toast');
+  const toast = document.createElement('div');
+  toast.className = 'unificado-update-toast';
+  toast.setAttribute('role', 'status');
+  toast.textContent = message;
+  document.body.append(toast);
+  setTimeout(() => toast.remove(), 4000);
+}, {once:true});
+async function clearShellCacheAndReload() {
+  if (platformUpdateFailures < 2) return;
+  const registrations = await navigator.serviceWorker?.getRegistrations?.() || [];
+  await Promise.all(registrations.filter(registration => registration.scope ===
+    new URL('/unificado/', location.origin).href).map(registration => registration.unregister()));
+  await Promise.all((await caches.keys()).filter(key => key.startsWith('concrefer-unificado-shell-v'))
+    .map(key => caches.delete(key)));
+  location.reload();
 }
 function appendVersionBadge(container) {
   const badge = document.createElement('span');
@@ -909,7 +956,10 @@ window.UnificadoSidebarModelA = Object.freeze({
       activePath: window.UnificadoSidebarActivePath || location.pathname + location.search,
       allowedModuleIds, allowedItemIds, footerItemIds,
       user: {name, role}, version: APP_VERSION,
-      updateAvailable: false,
+      updateAvailable: platformUpdateAvailable,
+      updateState: platformUpdateState,
+      latestVersion: platformLatestVersion,
+      updateFailures: platformUpdateFailures,
     };
   },
   navigate: href => {
@@ -938,6 +988,8 @@ window.UnificadoSidebarModelA = Object.freeze({
     const button = document.getElementById('platform-update');
     if (button) updateApplication(button);
   },
+  checkUpdate: checkPlatformUpdate,
+  clearUpdateCache: clearShellCacheAndReload,
   logout: () => UnificadoAuth.logout(),
 });
 document.querySelector('.user-pill strong').textContent = displayUser?.nome || displayUser?.name || 'Usuário';
@@ -970,6 +1022,7 @@ renderSectors();
 renderShortcuts();
 document.getElementById('platform-update')?.addEventListener('click', event => updateApplication(event.currentTarget));
 checkPlatformUpdate();
+setInterval(checkPlatformUpdate, 15 * 60 * 1000);
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) checkPlatformUpdate();
 });

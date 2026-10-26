@@ -8,7 +8,7 @@
   const main = root?.querySelector('.main-panel');
   if (!root || !main) return;
 
-  const moduleCodes = {planejamento:'PL',producao:'PR',qualidade:'QL',usinas:'US',laboratorio:'LB',ged:'GD',suprimentos:'SU'};
+  const moduleCodes = {planejamento:'PL',producao:'PR',qualidade:'QL',usinas:'US',laboratorio:'LB',ged:'GD'};
   const gedItems = [
     ['ged-dashboard','Painel','dashboard'],['ged-documents','Documentos','documents'],
     ['ged-approvals','Aprovações','approvals'],['ged-tasks','Tarefas','tasks'],
@@ -473,7 +473,6 @@
     if(!state.module||!visibleModules().some(module=>module.id===state.module))
       state.module=snap.activeModuleId||visibleModules()[0]?.id;
     if(!state.module)return;
-    nav.dataset.module=state.module;
     const mode=state.mobileOpen?state.mobileMode:'telas';
     panelTitle.textContent=mode==='recentes'?'Recentes':mode==='conta'?'Conta':
       'Telas';

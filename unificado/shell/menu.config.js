@@ -52,7 +52,7 @@ const MENU_CONFIG = {
   producao: {
     label: 'Produção',
     groups: [
-      { label: 'Produção', items: [
+      { label: 'Campinas · Produção', items: [
         { id: 'liberacao', mono: 'PL', label: 'Produção / Liberação', path: '/index.html', screen: 'LIBERACAO' },
         { id: 'setor1', mono: 'P1', label: 'Setor 1', path: '/index.html', screen: 'LIBERACAO_S1' },
         { id: 'setor2', mono: 'P2', label: 'Setor 2', path: '/index.html', screen: 'LIBERACAO_S2' },
@@ -60,12 +60,12 @@ const MENU_CONFIG = {
         { id: 'setor4', mono: 'P4', label: 'Setor 4', path: '/index.html', screen: 'LIBERACAO_S4' },
         { id: 'mandril', mono: 'MC', label: 'Mandril Circular', path: '/index.html', screen: 'MANDRIL_CIRCULAR' }
       ] },
-      { label: 'Montagem', items: [
+      { label: 'Campinas · Montagem', items: [
         { id: 'inspecao', mono: 'MI', label: 'Inspeção Setor 3 e 4', path: '/index.html', screen: 'INSPECAO' },
         { id: 'montagem', mono: 'MP', label: 'Montagem Postes', path: '/index.html', screen: 'MONTAGEM_POSTES' },
         { id: 'sequencia', mono: 'S3', label: 'Sequência Setor 3', path: '/index.html', screen: 'SEQUENCIA_S3' }
       ] },
-      { label: 'Controle', items: [
+      { label: 'Campinas · Controle', items: [
         { id: 'relatorioMapa', mono: 'RE', label: 'Relatório Enc. Produção', path: '/index.html', screen: 'RELATORIO' },
         { id: 'historico', mono: 'HI', label: 'Histórico', path: '/index.html', screen: 'HISTORICO' },
         { id: 'acmpConcretagem', mono: 'CC', label: 'Acmp. Concretagem', path: '/index.html', screen: 'ACMP_CONCRETAGEM' },
@@ -73,11 +73,18 @@ const MENU_CONFIG = {
         { id: 'tratativa', mono: 'TD', label: 'Tratativa Defeitos', path: '/index.html', screen: 'TRATATIVA_DEFEITOS' },
         { id: 'fechamentoDiario', label: 'Fechamento diário', path: '/unificado/relatorios/fechamento-diario/' }
       ] },
-      { label: 'Indicadores', items: [
+      { label: 'Campinas · Indicadores', items: [
         { id: 'dashMontagem', mono: 'DM', label: 'Dashboard Montagem', path: '/index.html', screen: 'MONTAGEM_INDICADORES' },
         { id: 'dashDefeitos', mono: 'DF', label: 'Dashboard Defeitos', path: '/index.html', screen: 'DASHBOARD_DEFEITOS' },
         { id: 'produtividade', mono: 'CO', label: 'Dashboard Concretagem Matriz', path: '/index.html', screen: 'PROD_ANALISE' },
         { id: 'tvFormas', mono: 'TV', label: 'Painel TV — Formas', path: '/unificado/tv/formas/', screen: 'TV_FORMAS' }
+      ] },
+      { label: 'Pederneiras', items: [
+        { id: 'pdrApontamento', mono: 'AP', label: 'Apontamento do dia', path: 'apontamento', pederneiras: true },
+        { id: 'pdrMaoDeObra', mono: 'MO', label: 'Mão de obra', path: 'mao-de-obra', pederneiras: true },
+        { id: 'pdrMensal', mono: 'PM', label: 'Produção Pederneiras', path: 'mensal', pederneiras: true },
+        { id: 'pdrIndicadores', mono: 'IN', label: 'Indicadores', path: 'indicadores', pederneiras: true },
+        { id: 'pdrProdutos', mono: 'CP', label: 'Cadastro de produtos', path: 'produtos', pederneiras: true }
       ] }
     ]
   },
@@ -108,6 +115,16 @@ const MENU_CONFIG = {
   laboratorio: {
     label: 'Laboratório',
     groups: [
+      { label: 'Corpos de Prova', items: [
+        { id:'labCecEtiquetas', label:'Etiquetas QR', path:'cec/etiquetas/', permissionId:'labCec' },
+        { id:'labCecLeitura', label:'Leitura de CP', path:'cec/leitura/', permissionId:'labCec' },
+        { id:'labCecResultados', label:'Resultados dos corpos de prova', path:'cec/analise/resultado-cp.html', permissionId:'labCec' }
+      ] },
+      { label: 'Controle estatístico', items: [
+        { id:'labCec', label:'Visão geral', path:'cec/' },
+        { id:'labCecAnalise', label:'Análise estatística', path:'cec/analise/', permissionId:'labCec' },
+        { id:'labCecRelatorio', label:'Relatório CEC', path:'cec/analise/relatorio.html', permissionId:'labCec' }
+      ] },
       { label: 'Dosagem', items: [
         { id:'labDosagem', label:'Visão geral', path:'dosagem/' },
         { id:'labDosagemEmpacotamento', label:'Empacotamento', path:'dosagem/#/dosagem/empacotamento', permissionId:'labDosagem' },
@@ -127,17 +144,8 @@ const MENU_CONFIG = {
       { label: 'Concreto fresco', items: [
         { id:'labSlump', label:'Registro de slump / flow', path:'slump' }
       ] },
-      { label: 'Controle estatístico', items: [
-        { id:'labCec', label:'Visão geral', path:'cec/' },
-        { id:'labCecResultados', label:'Resultados dos corpos de prova', path:'cec/analise/resultado-cp.html', permissionId:'labCec' },
-        { id:'labCecRelatorio', label:'Relatório CEC', path:'cec/analise/relatorio.html', permissionId:'labCec' },
-        { id:'labCecAnalise', label:'Análise estatística', path:'cec/analise/', permissionId:'labCec' },
-        { id:'labCecEtiquetas', label:'Etiquetas QR', path:'cec/etiquetas/', permissionId:'labCec' },
-        { id:'labCecLeitura', label:'Leitura de CP', path:'cec/leitura/', permissionId:'labCec' }
-      ] },
       { label: 'Usina de Campinas', items: [
-        { id:'labUsinasRelatorios', label:'Relatórios e custos', path:'usinas-relatorios/' },
-        { id:'labCartaTraco', label:'Carta traço · MCC', path:'carta-traco/' }
+        { id:'labUsinasRelatorios', label:'Relatórios e custos', path:'usinas-relatorios/' }
       ] },
       { label: 'Cura térmica', items: [
         { id:'labMonitor', label:'Monitoramento', path:'' },
@@ -160,6 +168,9 @@ const MENU_CONFIG = {
         { id:'cronoanalise.dimensionar', label:'Dimensionar', path:'cronoanalise/dimensionar' },
         { id:'cronoanalise.simular', label:'Simular', path:'cronoanalise/simular' },
         { id:'cronoanalise.metodologia', label:'Metodologia', path:'cronoanalise/metodologia' }
+      ] },
+      { label: 'Carta de traço', items: [
+        { id:'labCartaTraco', label:'Carta de traço e MCC', path:'carta-traco/' }
       ] },
       { label: 'Administração', items: [
         { id:'labUsuarios', label:'Usuários', path:'novo/postes?tab=usuarios' }
@@ -210,6 +221,8 @@ const MENU_ITEMS = Object.fromEntries(Object.entries(MENU_CONFIG).flatMap(([modu
       ? new URL(item.path, LAB_BASE).href
       : module === 'planejamento'
       ? new URL(item.path.replace(/^\/pages\//, ''), PCP_BASE).href
+      : item.pederneiras
+      ? new URL(`producao/pederneiras/?tab=${encodeURIComponent(item.path)}`, UNIFICADO_BASE).href
       : item.id === 'tvFormas'
       ? new URL('tv/formas/', UNIFICADO_BASE).href
       : item.id === 'fechamentoDiario'

@@ -11,7 +11,6 @@
     laboratorio: 'Ensaios e acompanhamento',
     usinas: 'Operação e acompanhamento das usinas',
     ged: 'Documentos e aprovações',
-    suprimentos: 'Solicitações e almoxarifado geral',
   };
   const gedItems = [
     ['Painel', 'dashboard'], ['Documentos', 'documents'],
